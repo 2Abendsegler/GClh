@@ -12671,7 +12671,7 @@ var mainGC = function () {
         if ( AS ) {
             next_check = 60 * 60 * 1000; // 1 Stunde
             if ((last_check + next_check) < time) {
-                var url = "https://github.com/2Abendsegler/GC_little_helper_2AS/blob/master/gc_little_helper_(2As).user.js";
+                var url = "https://github.com/2Abendsegler/GC_little_helper_2AS/raw/master/gc_little_helper_(2As).user.js";
                 if (GM_xmlhttpRequest) {
                     GM_xmlhttpRequest({
                         method: "GET",
