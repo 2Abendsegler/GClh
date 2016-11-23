@@ -65,4 +65,4 @@
   "settings_menu_number_of_lines": 3,
   "settings_menu_show_separator": true,
   "settings_menu_float_right": false
-}
+} 
