@@ -4,7 +4,7 @@
 //<-- $$000 End of change
 // @namespace      http://www.amshove.net
 //--> $$000 Begin of change "11.6"
-// @version        11.6.2
+// @version        11.6.3
 //<-- $$000 End of change
 // @include        http://www.geocaching.com/*
 // @include        https://www.geocaching.com/*
@@ -404,6 +404,12 @@
 //       |        Image Gallerien: Gallerybreite auf Fenstergröße einstellen (vereinfacht mausaktivierten   |            |               |        |
 //       |        Bildwechsel). Unterbindet im Profil das Verschieben nach links.                           |            |               |        |
 //       | -3   - Orientierung der mausaktivierten Bilder angepaßt. (Best practice: Von links nach rechts.) |            |               |        |
+//       | Fix: v11.6.2 -> v11.6.3                                                                          |            |               |        |
+//       | -4   - Beim Hovern über die mausaktivierten Bilder das Zucken im Hintergrund des Bildes im       |            |               |        |
+//       |        unteren Teil abgestellt.                                                                  |            |               |        |
+//       | -5   - $$023 Teilrückbau:                                                                        |            |               |        |
+//       |        Das Hovern über die mausaktivierten Bilder funktionierte im Cache Listing Bereich nicht.  |            |               |        |
+//       |        (Wenn es auf Kommentar sitzt kann es auch nicht funktionieren. :) )                       |            |               |        |
 //*************************************************************************************************************************************************
 
 var jqueryInit = function (c) {
@@ -8187,6 +8193,9 @@ var mainGC = function () {
 //--> $$023 Begin of insert
                 "a.gclh_thumb:hover img {margin-bottom: -4px;}" +
 //<-- $$023 End of insert
+//--> $$059-4 Begin of insert
+                "a.gclh_thumb img {margin-bottom: -4px;}" +
+//<-- $$059-4 End of insert
                 ".gclh_max {" +
                 "  max-height: " + settings_hover_image_max_size + "px;" +
                 "  max-width:  " + settings_hover_image_max_size + "px;" +
@@ -8233,48 +8242,53 @@ var mainGC = function () {
 //<-- $$023 End of change
             for (var i = 0; i < links.length; i++) {
 //--> $$023 Begin of insert
-                // Das folgende Coding scheint nicht verwendet zu werden, weil die Logs zum hiesigen Zeitpunkt noch gar nicht geladen sind, zumindest nicht alle.
-                // Das gilt für den Fall, dass die Logs im Standard geladen werden wie auch für den Fall, dass GClh die Logs läd. Das Coding scheint alt und noch
-                // aus der Zeit vor dem eigenen Log Template, wo diese Funktionalität für das Cache Listing abgebildet ist.
-                // Dass bei Spoilern die Bilder nicht aufgebaut werden, funktioniert deshalb auch nicht. Ein entsprechendes Coding im eigenen Log Template ist
+                // Dass bei Spoilern die Bilder nicht aufgebaut werden, funktioniert nicht. Ein entsprechendes Coding im eigenen Log Template ist
                 // derzeit nicht vorhanden.
 //<-- $$023 End of insert
 //--> $$023 Begin of delete
 //                if (is_page("cache_listing") && links[i].href.match(/^https?:\/\/img\.geocaching\.com\/cache/) && !links[i].innerHTML.match(regexp)) {
-//                    var span = document.createElement("span");
-//                    var thumb = document.createElement("img");
-//                    var thumb_link = links[i].href;
-//
-//                    if (thumb_link.match(/cache\/log/)) {
-//                        thumb_link = thumb_link.replace(/cache\/log/, "cache/log/thumb");
-//                    } else {
-//                        thumb.style.height = "100px";
-//                        thumb.style.border = "1px solid black";
-//                    }
-//                    thumb.src = thumb_link;
-//                    thumb.title = links[i].innerHTML;
-//                    thumb.alt = links[i].innerHTML;
-//
-//                    links[i].className = links[i].className + " gclh_thumb";
-//                    links[i].onmouseover = placeToolTip;
-//
-//                    var big_img = document.createElement("img");
-//                    big_img.src = links[i].href;
-//                    big_img.className = "gclh_max";
-//
-//                    span.appendChild(big_img);
-//
-//                    var name = links[i].innerHTML;
-//                    links[i].innerHTML = "";
-//                    links[i].appendChild(thumb);
-//                    links[i].innerHTML += "<br>" + name;
-//
-//                    links[i].appendChild(span);
+//--> $$059-5 Begin of insert
+                if (is_page("cache_listing") && links[i].href.match(/^https?:\/\/img\.geocaching\.com\/cache/) ) {
+//<-- $$059-5 End of insert
+//--> $$059-5 Begin of change - Folgendes Coding aus $$023 wieder aktiviert
+                    var span = document.createElement("span");
+                    var thumb = document.createElement("img");
+                    var thumb_link = links[i].href;
+
+                    if (thumb_link.match(/cache\/log/)) {
+                        thumb_link = thumb_link.replace(/cache\/log/, "cache/log/thumb");
+                    } else {
+                        thumb.style.height = "100px";
+                        thumb.style.border = "1px solid black";
+                    }
+                    thumb.src = thumb_link;
+                    thumb.title = links[i].innerHTML;
+                    thumb.alt = links[i].innerHTML;
+
+                    links[i].className = links[i].className + " gclh_thumb";
+                    links[i].onmouseover = placeToolTip;
+
+                    var big_img = document.createElement("img");
+                    big_img.src = links[i].href;
+                    big_img.className = "gclh_max";
+
+                    span.appendChild(big_img);
+
+                    var name = links[i].innerHTML;
+                    links[i].innerHTML = "";
+                    links[i].appendChild(thumb);
+                    links[i].innerHTML += "<br>" + name;
+
+                    links[i].appendChild(span);
+//<-- $$059-5 End of change
 //                } else if (document.location.href.match(/^https?:\/\/www\.geocaching\.com\/(seek\/gallery\.aspx?|profile\/)/) && links[i].href.match(/^https?:\/\/img\.geocaching\.com\/(cache|track)\//) && links[i].childNodes[1] && links[i].childNodes[1].tagName == 'IMG') {
 //<-- $$023 End of delete 
 //--> $$023 Begin of insert
                 // Bilder Gallery Cache, TB und Profil:
-                if ( document.location.href.match(/^https?:\/\/www\.geocaching\.com\/(seek\/gallery\.aspx?|track\/gallery\.aspx?|profile\/)/) && 
+//--> $$059-5 Begin of change
+//                if ( document.location.href.match(/^https?:\/\/www\.geocaching\.com\/(seek\/gallery\.aspx?|track\/gallery\.aspx?|profile\/)/) && 
+                } else if ( document.location.href.match(/^https?:\/\/www\.geocaching\.com\/(seek\/gallery\.aspx?|track\/gallery\.aspx?|profile\/)/) && 
+//<-- $$059-5 End of change
                      links[i].href.match(/^https?:\/\/img\.geocaching\.com\/(cache|track)\//) && links[i].childNodes[1] && links[i].childNodes[1].tagName == 'IMG') {
                     global_imageGallery = true;
 //<-- $$023 End of insert
@@ -8349,7 +8363,7 @@ var mainGC = function () {
 //            if ( global_imageGallery ) appendCssStyle( "#Content .container {width: unset;} .span-20 {width: -moz-available;}" );
 //            else appendCssStyle( "#Content .container {width: unset;}" );
 //        }
-//<-- $$023 End of insert
+////<-- $$023 End of insert
 //<-- $$059-2 End of delete 
     } catch (e) {
         gclh_error("Show Thumbnails", e);
