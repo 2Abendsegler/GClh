@@ -4,7 +4,7 @@
 //<-- $$000 End of change
 // @namespace      http://www.amshove.net
 //--> $$000 Begin of change "11.6"
-// @version        11.6.1
+// @version        11.6.2
 //<-- $$000 End of change
 // @include        http://www.geocaching.com/*
 // @include        https://www.geocaching.com/*
@@ -396,6 +396,14 @@
 //       |      Linklist vorhanden sind.                                                                    |            |               |        |
 //       | New: GClh Config: Linklist: Sortierung ermöglicht für default Bookmark Links für Linklist.       |            |               |        |
 //       |      Gekennzeichnet mit "Sort Linklist".                                                         |            |               |        |
+// ------|--------------------------------------------------------------------------------------------------|------------|---------------|--------|
+// $$059 | Fix: v11.6.1 -> v11.6.2                                                                          | 24.11.2016 | FE            | 11.7   |
+//       | -1   - Die Namen von GClh Sync und GClh Config im Profil und die Bookmark GClh Config sind       |            |               |        |
+//       |        verwirrend wenn man mit GClh (2AS) arbeitet, sie sollten dem Scriptnamen entsprechen.     |            |               |        |
+//       | -2   - $$023 Teilrückbau:                                                                        |            |               |        |
+//       |        Image Gallerien: Gallerybreite auf Fenstergröße einstellen (vereinfacht mausaktivierten   |            |               |        |
+//       |        Bildwechsel). Unterbindet im Profil das Verschieben nach links.                           |            |               |        |
+//       | -3   - Orientierung der mausaktivierten Bilder angepaßt. (Best practice: Von links nach rechts.) |            |               |        |
 //*************************************************************************************************************************************************
 
 var jqueryInit = function (c) {
@@ -562,12 +570,20 @@ var constInit = function (c) {
     c.AS = false; 
     c.scriptNameConfig = "GC little helper Config"
     c.scriptNameSync = "GC little helper Sync"
+//--> $$059-1 Begin of insert
+    c.scriptShortNameConfig = "GClh Config"
+    c.scriptShortNameSync = "GClh Sync"
+//<-- $$059-1 End of insert
     if ( GM_info.script.name == "GC little helper (2As)" ) {
         c.scriptName = GM_info.script.name;
         c.scriptVersion = GM_info.script.version;
         c.AS = true;
         c.scriptNameConfig = c.scriptNameConfig + " (2AS)";
         c.scriptNameSync = c.scriptNameSync + " (2AS)";
+//--> $$059-1 Begin of insert
+        c.scriptShortNameConfig = c.scriptShortNameConfig + " (2AS)";
+        c.scriptShortNameSync = c.scriptShortNameSync + " (2AS)";
+//<-- $$059-1 End of insert
     }
 //<-- $$001 End of insert
     c.anzCustom = 10;
@@ -649,7 +665,10 @@ var constInit = function (c) {
     bookmark("Guidelines", "https://www.geocaching.com/about/guidelines.aspx", c.bookmarks);
 //--> $$038 Begin of change
 //    bookmark("GClhConfig", "https://www.geocaching.com/my/default.aspx#GClhShowConfig", c.bookmarks);
-    profileSpecialBookmark("GClh Config", "https://www.geocaching.com/my/default.aspx#GClhShowConfig", "lnk_gclhconfig", c.bookmarks);
+//--> $$059-1 Begin of change
+//      profileSpecialBookmark("GClh Config", "https://www.geocaching.com/my/default.aspx#GClhShowConfig", "lnk_gclhconfig", c.bookmarks);
+      profileSpecialBookmark(c.scriptShortNameConfig, "https://www.geocaching.com/my/default.aspx#GClhShowConfig", "lnk_gclhconfig", c.bookmarks);
+//<-- $$059-1 End of change
 //<-- $$038 End of change
 //<-- $$002 End of insert
     externalBookmark("Forum", "http://forums.groundspeak.com/", c.bookmarks);
@@ -8108,10 +8127,25 @@ var mainGC = function () {
 //        if (settings_show_thumbnails && (is_page("cache_listing") || document.location.href.match(/^https?:\/\/www\.geocaching\.com\/(seek\/gallery\.aspx?|profile\/)/))) {
         if (settings_show_thumbnails && (is_page("cache_listing") || document.location.href.match(/^https?:\/\/www\.geocaching\.com\/(seek\/gallery\.aspx?|track\/details\.aspx?|track\/gallery\.aspx?|profile\/)/))) {
 //<-- $$023 End of change
+//--> $$059-3 Begin of insert
+            // my: Großes Bild; at: Kleines Bild; Man gibt an, wo sich die beiden berühren. Es scheint so, dass zuerst horizontal und 
+            // anschließend vertikal benannt werden muss. "top left" erzeugt dem entsprechend nur den default, also center. Das legt
+            // zumindest die Ausrichtung aus den Tests nahe. Ein Arbeiten mit plus oder minus an zwei Stellen oder an einer in Verbindung 
+            // mit einem center führen zu Randerweiterungen und erschiebung der Bildnamen. Da die kleinen Bilder im zugehörigen Bereich 
+            // links angeordnet sind und, rechts also ein großer Bereich leer ist, kann mit einem rechten Rand für die Bildberührung 
+            // nicht gearbeitet werden. 
+            // Änderungen bei "collision" haben keine einschlägigen Verbesserungen gebracht hinsichtlich der Erreichbarkeit aller Bilder. 
+            // - my: "left bottom", at: "left bottom-10",: Könnte auch noch nutzbar sein.
+            // - my: "left bottom-15", at: "left-50 bottom",: Geht wohl auch, zuckt aber mehr.
+//<-- $$059-3 End of insert
             function placeToolTip(element, stop) {
                 $('a.gclh_thumb:hover span').position({
-                    my: "top left",
-                    at: "bottom left",
+//--> $$059-3 Begin of change
+//                    my: "top left",
+//                    at: "bottom left",
+                    my: "center bottom",
+                    at: "center top",
+//<-- $$059-3 End of change
                     of: "a.gclh_thumb:hover",
                     collision: "flipfit flipfit"
                 });
@@ -8308,13 +8342,15 @@ var mainGC = function () {
             }
         }
         
-//--> $$023 Begin of insert
-        // Image Gallerien auf Fenstergröße einstellen, um mausaktivierten Bildwechsel zu vereinfachen. 
-        if ( settings_show_thumbnails && document.location.href.match(/^https?:\/\/www\.geocaching\.com\/(seek\/gallery\.aspx?|track\/gallery\.aspx?|profile\/)/)) {
-            if ( global_imageGallery ) appendCssStyle( "#Content .container {width: unset;} .span-20 {width: -moz-available;}" );
-            else appendCssStyle( "#Content .container {width: unset;}" );
-        }
+//--> $$059-2 Begin of delete
+////--> $$023 Begin of insert
+//        // Image Gallerien auf Fenstergröße einstellen, um mausaktivierten Bildwechsel zu vereinfachen. 
+//        if ( settings_show_thumbnails && document.location.href.match(/^https?:\/\/www\.geocaching\.com\/(seek\/gallery\.aspx?|track\/gallery\.aspx?|profile\/)/)) {
+//            if ( global_imageGallery ) appendCssStyle( "#Content .container {width: unset;} .span-20 {width: -moz-available;}" );
+//            else appendCssStyle( "#Content .container {width: unset;}" );
+//        }
 //<-- $$023 End of insert
+//<-- $$059-2 End of delete 
     } catch (e) {
         gclh_error("Show Thumbnails", e);
     }
@@ -10681,7 +10717,10 @@ var mainGC = function () {
 //--> $$055 Begin of delete
 //            html += checkboxy('settings_hideable_souvenirs', 'Make your souvenirs hideable') + "<br/>";
 //<-- $$055 End of delete 
-            html += checkboxy('settings_show_thumbnails', 'Show thumbnails of images') + show_help("With this option the images are displayed as thumbnails to have a preview. If you hover over a thumbnail, you can see the big one. <br><br>This works in cache and TB logs, in the cache and TB image galleries and in the profile image galleries. <br><br>The max size option prevents the hovered images from leaving the browser window.") + "&nbsp; Max size of big image: <input class='gclh_form' size=2 type='text' id='settings_hover_image_max_size' value='" + settings_hover_image_max_size + "'> px <br/>";
+//--> $$059-3 Begin of change
+//            html += checkboxy('settings_show_thumbnails', 'Show thumbnails of images') + show_help("With this option the images are displayed as thumbnails to have a preview. If you hover over a thumbnail, you can see the big one. <br><br>This works in cache and TB logs, in the cache and TB image galleries and in the profile image galleries. <br><br>The max size option prevents the hovered images from leaving the browser window.") + "&nbsp; Max size of big image: <input class='gclh_form' size=2 type='text' id='settings_hover_image_max_size' value='" + settings_hover_image_max_size + "'> px <br/>";
+            html += checkboxy('settings_show_thumbnails', 'Show thumbnails of images') + show_help("With this option the images are displayed as thumbnails to have a preview. If you hover over a thumbnail, you can see the big one.<br><br>This works in cache and TB logs, in the cache and TB image galleries and in the profile image galleries. <br><br><u>Best practice in image galleries:</u> Let the thumbnails as much as possible at the top or at the bottom of your screen. It should be better to hover with your mouse from the right side of your screen to the left side as inverse.") + "&nbsp; Max size of big image: <input class='gclh_form' size=2 type='text' id='settings_hover_image_max_size' value='" + settings_hover_image_max_size + "'> px <br/>";
+//<-- $$059-3 End of change
             html += "&nbsp; " + checkboxy('settings_imgcaption_on_top', 'Show caption on top') + show_help("This option requires \"Show thumbnails of images\".") + "<br/>";
 //--> $$056 Begin of insert
             html += checkboxy('settings_show_big_gallery', 'Show bigger images in gallery') + show_help("With this option the images in the galleries of caches, TBs and profiles are displayed bigger and not in 4 columns, but in 2 columns.") + "<br/>";
@@ -10801,7 +10840,10 @@ var mainGC = function () {
 //<-- $$024 End of insert
 //--> $$050 Begin of change
 //            html += checkboxy('settings_show_thumbnails', 'Show thumbnails of images') + show_help("With this option the images are displayed as thumbnails to have a preview. If you hover over a thumbnail, you can see the big one. <br><br>This works in cache and TB logs, in the cache and TB image galleries and in the profile image galleries. <br><br>The max size option prevents the hovered images from leaving the browser window.") + "&nbsp; Max size of big image: <input class='gclh_form' size=2 type='text' id='settings_hover_image_max_size' value='" + settings_hover_image_max_size + "'> px <br/>";
-            html += checkboxy('settings_show_thumbnailsX0', 'Show thumbnails of images') + show_help("With this option the images are displayed as thumbnails to have a preview. If you hover over a thumbnail, you can see the big one. <br><br>This works in cache and TB logs, in the cache and TB image galleries and in the profile image galleries. <br><br>The max size option prevents the hovered images from leaving the browser window.") + "&nbsp; Max size of big image: <input class='gclh_form' size=2 type='text' id='settings_hover_image_max_sizeX0' value='" + settings_hover_image_max_size + "'> px <br/>";
+//--> $$059-3 Begin of change
+//            html += checkboxy('settings_show_thumbnailsX0', 'Show thumbnails of images') + show_help("With this option the images are displayed as thumbnails to have a preview. If you hover over a thumbnail, you can see the big one. <br><br>This works in cache and TB logs, in the cache and TB image galleries and in the profile image galleries. <br><br>The max size option prevents the hovered images from leaving the browser window.") + "&nbsp; Max size of big image: <input class='gclh_form' size=2 type='text' id='settings_hover_image_max_sizeX0' value='" + settings_hover_image_max_size + "'> px <br/>";
+            html += checkboxy('settings_show_thumbnailsX0', 'Show thumbnails of images') + show_help("With this option the images are displayed as thumbnails to have a preview. If you hover over a thumbnail, you can see the big one. <br><br>This works in cache and TB logs, in the cache and TB image galleries and in the profile image galleries. <br><br><u>Best practice in image galleries:</u> Let the thumbnails as much as possible at the top or at the bottom of your screen. It should be better to hover with your mouse from the right side of your screen to the left side as inverse.") + "&nbsp; Max size of big image: <input class='gclh_form' size=2 type='text' id='settings_hover_image_max_sizeX0' value='" + settings_hover_image_max_size + "'> px <br/>";
+//<-- $$059-3 End of change
 //<-- $$050 End of change
 //--> $$023 Begin of change - Disable Spoiler String
 //            html += " &nbsp; &nbsp;" + "Spoiler-Filter: <input class='gclh_form' type='text' id='settings_spoiler_strings' value='" + settings_spoiler_strings + "'> " + show_help("If one of these words is found in the caption of the image, there will be no thumbnail. It is to prevent seeing spoilers as thumbnails. Words have to be divided by |. <br>Default ist \"spoiler|hinweis|hint\".<br><br>This option requires \"Show Thumbnails of Images\".") + "<br/>";
@@ -12574,7 +12616,10 @@ var mainGC = function () {
             // GClh Config Link auf Seite "My Profile" aufbauen und mit Event versehen.
 //--> $$058 Begin of change
 //            var lnk = " | <a href='#' id='gclh_config_lnk' style='margin-left: 58px;'>GClh Config</a>";
-            var lnk = " | <a href='#' id='gclh_config_lnk' name='gclh_config_lnk' style='margin-left: 58px;'>GClh Config</a>";
+//--> $$059-1 Begin of change
+//            var lnk = " | <a href='#' id='gclh_config_lnk' name='gclh_config_lnk' style='margin-left: 58px;'>GClh Config</a>";
+            var lnk = " | <a href='#' id='gclh_config_lnk' name='gclh_config_lnk' style='margin-left: 58px; font-size: 0.9em;'>" + scriptShortNameConfig + "</a>";
+//<-- $$059-1 End of change
 //<-- $$058 End of change
             document.getElementById('ctl00_ContentBody_WidgetMiniProfile1_logOutLink').parentNode.innerHTML += lnk;
 //--> $$058 Begin of change
@@ -13024,7 +13069,11 @@ var mainGC = function () {
                 lnk.name = "gclh_sync_lnk";
 //<-- $$058 End of insert
                 lnk.href = "#";
-                lnk.innerHTML = "GClh Sync";
+//--> $$059-1 Begin of change
+//                lnk.innerHTML = "GClh Sync";
+                lnk.innerHTML = scriptShortNameSync;
+                lnk.setAttribute("style", "font-size: 0.9em;");
+//<-- $$059-1 End of change
                 document.getElementById('ctl00_ContentBody_WidgetMiniProfile1_logOutLink').parentNode.appendChild(document.createTextNode(" | "));
                 document.getElementById('ctl00_ContentBody_WidgetMiniProfile1_logOutLink').parentNode.appendChild(lnk);
 //--> $$058 Begin of change
