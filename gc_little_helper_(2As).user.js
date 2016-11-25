@@ -12576,7 +12576,10 @@ var mainGC = function () {
         if ( document.getElementById('save_overlay') ) {
         } else {
             var html = "";
-            html += "#save_overlay {background-color: #d8cd9d; width:560px; margin-left: 20px; border: 2px solid #778555; overflow: auto; padding:10px; position: absolute; left:30%; top:70px; z-index:104; border-radius: 10px; }";
+//--> $$059-6 Begin of change (nachträglich)
+//            html += "#save_overlay {background-color: #d8cd9d; width:560px; margin-left: 20px; border: 2px solid #778555; overflow: auto; padding:10px; position: absolute; left:30%; top:70px; z-index:104; border-radius: 10px; }";
+            html += "#save_overlay {background-color: #d8cd9d; width:560px; margin-left: 20px; border: 2px solid #778555; overflow: auto; padding:10px; position: absolute; left:30%; top:70px; z-index:1004; border-radius: 10px; }";
+//<-- $$059-6 End of change
             html += ".gclh_form {background-color: #d8cd9d; border: 2px solid #778555; padding-left: 5px; padding-right: 5px; }";
             var form_side = document.getElementsByTagName('body')[0];
             var form_style = document.createElement("style");
