@@ -4,7 +4,7 @@
 //<-- $$000 End of change
 // @namespace      http://www.amshove.net
 //--> $$000 Begin of change "11.6"
-// @version        11.6.3
+// @version        11.6.4
 //<-- $$000 End of change
 // @include        http://www.geocaching.com/*
 // @include        https://www.geocaching.com/*
@@ -410,6 +410,11 @@
 //       | -5   - $$023 Teilrückbau:                                                                        |            |               |        |
 //       |        Das Hovern über die mausaktivierten Bilder funktionierte im Cache Listing Bereich nicht.  |            |               |        |
 //       |        (Wenn es auf Kommentar sitzt kann es auch nicht funktionieren. :) )                       |            |               |        |
+//       | New: v11.6.3 -> v11.6.4                                                                          | 25.11.2016 |               |        |
+//       | -6   - Link "Find Player" in Linklist für die Seiten im neuen Design ermöglicht.                 |            |               |        |
+//       | -7   - Positionierung im GClh Config bei Aufrufen ermöglichen.                                   |            |               |        |
+//       | Fix: v11.6.3 -> v11.6.4                                                                          |            |               |        |
+//       | -8   - Updates stündlich checken.                                                                |            |               |        |
 //*************************************************************************************************************************************************
 
 var jqueryInit = function (c) {
@@ -2849,7 +2854,7 @@ var mainGC = function () {
 
                 ul.appendChild(li);
             }
-
+            
             div.appendChild(ul);
 //--> $$037 Begin of change
 //            side.appendChild(header);
@@ -9935,21 +9940,46 @@ var mainGC = function () {
                 html += "  position: absolute; ";
                 html += "  left:30%; ";
                 html += "  top:60px; ";
-                html += "  z-index:101; ";
+//--> $$059-6 Begin of change
+//                html += "  z-index:101; ";
+                html += "  z-index:1001; ";
+//<-- $$059-6 End of change
                 html += "  -moz-border-radius:30px; ";
                 html += "  -khtml-border-radius:30px; ";
                 html += "  border-radius: 30px;";
                 html += "  overflow: auto;";
                 html += "}";
+//--> $$059-6 Begin of delete
+//                html += ".gclh_form {";
+//                html += "  background-color: #d8cd9d;";
+//                html += "  border: 2px solid #778555;";
+//                html += "  -moz-border-radius: 7px;";
+//                html += "  -khtml-border-radius: 7px;";
+//                html += "  border-radius: 7px;";
+//                html += "  padding-left: 5px;";
+//                html += "  padding-right: 5px;";
+//                html += "}";
+//<-- $$059-6 End of delete 
+//--> $$059-6 Begin of insert
                 html += ".gclh_form {";
-                html += "  background-color: #d8cd9d;";
-                html += "  border: 2px solid #778555;";
+                html += "  background-color: #d8cd9d !important;";
+                html += "  border: 2px solid #778555 !important;";
                 html += "  -moz-border-radius: 7px;";
                 html += "  -khtml-border-radius: 7px;";
-                html += "  border-radius: 7px;";
-                html += "  padding-left: 5px;";
-                html += "  padding-right: 5px;";
+                html += "  border-radius: 7px !important;";
+                html += "  padding-left: 5px !important;";
+                html += "  padding-right: 5px !important;";
+                html += "  font-family: inherit;";
+                html += "  font-size: 13px !important;";
+                html += "  font-weight: normal !important;";
+                html += "  margin: 0px !important;";
+                html += "  color: rgb(0, 0, 0) !important;";
+                html += "  padding-top: 0px !important;";
+                html += "  padding-bottom: 0px !important;";
+                html += "  box-shadow: unset !important;";
+                html += "  display: unset;";
                 html += "}";
+//<-- $$059-6 End of insert
 //--> $$021 Begin of change
 //                html += "</style>";
 //--> $$038 Begin of insert
@@ -9965,15 +9995,37 @@ var mainGC = function () {
                 var html = "";
 //                html += "<div id='findplayer_overlay' align='center'>";
 //<-- $$021 End of change 
-                html += "<h3 style='margin:5px;'>Find Player</h3>";
-                html += "<form action=\"/find/default.aspx\" method=\"post\" name=\"aspnetForm\" " + (document.location.href.match(/https?:\/\/www\.geocaching\.com\/map/) ? "target='_blank'" : "") + ">";
+//--> $$059-6 Begin of delete
+//                html += "<h3 style='margin:5px;'>Find Player</h3>";
+//                html += "<form action=\"/find/default.aspx\" method=\"post\" name=\"aspnetForm\" " + (document.location.href.match(/https?:\/\/www\.geocaching\.com\/map/) ? "target='_blank'" : "") + ">";
+//                html += "<input class='gclh_form' type='hidden' name='__VIEWSTATE' value=''>";
+//                html += "<input class='gclh_form' id='findplayer_field' class=\"Text\" type=\"text\" maxlength=\"100\" name=\"ctl00$ContentBody$FindUserPanel1$txtUsername\"/>";
+////--> $$021 Begin of change
+////                html += "<input class='gclh_form' type=\"submit\" value=\"Go\" name=\"ctl00$ContentBody$FindUserPanel1$GetUsers\"/><input class='gclh_form' id='btn_close1' type='button' value='close'>";
+//                html += " <input style='cursor: pointer' class='gclh_form' type=\"submit\" value=\"Go\" name=\"ctl00$ContentBody$FindUserPanel1$GetUsers\"/> <input style='cursor: pointer' class='gclh_form' id='btn_close1' type='button' value='close'>";
+////<-- $$021 End of change 
+//                html += "</form>";
+//<-- $$059-6 End of delete 
+//--> $$059-6 Begin of insert
+                html += "<h3 style='margin:5px; font-weight: bold; font-size: 19.5px; line-height: 1; color: #594a42;'>Find Player</h3>";
+                html += "<form style='text-align: unset;' action=\"/find/default.aspx\" method=\"post\" name=\"aspnetForm\" >";
                 html += "<input class='gclh_form' type='hidden' name='__VIEWSTATE' value=''>";
-                html += "<input class='gclh_form' id='findplayer_field' class=\"Text\" type=\"text\" maxlength=\"100\" name=\"ctl00$ContentBody$FindUserPanel1$txtUsername\"/>";
-//--> $$021 Begin of change
-//                html += "<input class='gclh_form' type=\"submit\" value=\"Go\" name=\"ctl00$ContentBody$FindUserPanel1$GetUsers\"/><input class='gclh_form' id='btn_close1' type='button' value='close'>";
-                html += " <input style='cursor: pointer' class='gclh_form' type=\"submit\" value=\"Go\" name=\"ctl00$ContentBody$FindUserPanel1$GetUsers\"/> <input style='cursor: pointer' class='gclh_form' id='btn_close1' type='button' value='close'>";
-//<-- $$021 End of change 
+                if ( is_page("settings") || is_page("map") || is_page("labs") ) {
+                    html += "<input style='width: 171px; height: 20px;' class='gclh_form' id='findplayer_field' class=\"Text\" type=\"text\" maxlength=\"100\" name=\"ctl00$ContentBody$FindUserPanel1$txtUsername\"/>";
+                } else if ( is_page("messagecenter") || is_page("find_cache") || is_page("hide_cache") || is_page("geotours") ) {
+                    html += "<input style='width: 175px; height: 24px;' class='gclh_form' id='findplayer_field' class=\"Text\" type=\"text\" maxlength=\"100\" name=\"ctl00$ContentBody$FindUserPanel1$txtUsername\"/>";
+                } else {
+                    html += "<input style='height: 20px;' class='gclh_form' id='findplayer_field' class=\"Text\" type=\"text\" maxlength=\"100\" name=\"ctl00$ContentBody$FindUserPanel1$txtUsername\"/>";
+                }
+                if ( is_page("messagecenter") || is_page("find_cache") || is_page("hide_cache") || is_page("geotours") || is_page("map") || is_page("labs") ) {
+                    html += " <input style='cursor: pointer; height: 24px;' class='gclh_form' type=\"submit\" value=\"Go\" name=\"ctl00$ContentBody$FindUserPanel1$GetUsers\"/>"; 
+                    html += " <input style='cursor: pointer; height: 24px;' class='gclh_form' id='btn_close1' type='button' value='close'>";
+                } else {
+                    html += " <input style='cursor: pointer;' class='gclh_form' type=\"submit\" value=\"Go\" name=\"ctl00$ContentBody$FindUserPanel1$GetUsers\"/>"; 
+                    html += " <input style='cursor: pointer;' class='gclh_form' id='btn_close1' type='button' value='close'>";
+                }
                 html += "</form>";
+//<-- $$059-6 End of insert
 //--> $$021 Begin of change
 //                html += "</div>";
 //                document.getElementsByTagName('body')[0].innerHTML += html;
@@ -10279,7 +10331,10 @@ var mainGC = function () {
         var shadow = document.createElement("div");
         shadow.setAttribute("id", "bg_shadow");
         // z-index sorgt dafür, dass Menü auch nicht eingabebereit ist.
-        shadow.setAttribute("style", "z-index:100; width: 100%; height: 100%; background-color: #000000; position:fixed; top: 0; left: 0; opacity: 0.5; filter: alpha(opacity=50);");
+//--> $$059-6 Begin of change
+//        shadow.setAttribute("style", "z-index:100; width: 100%; height: 100%; background-color: #000000; position:fixed; top: 0; left: 0; opacity: 0.5; filter: alpha(opacity=50);");
+        shadow.setAttribute("style", "z-index:1000; width: 100%; height: 100%; background-color: #000000; position:fixed; top: 0; left: 0; opacity: 0.5; filter: alpha(opacity=50);");
+//<-- $$059-6 End of change
         document.getElementsByTagName('body')[0].appendChild(shadow);
         document.getElementById('bg_shadow').addEventListener("click", btnClose, false);
     }
@@ -10302,13 +10357,23 @@ var mainGC = function () {
 // Prüfen, ob die spezielle Verarbeitung auf der aktuellen Seite erlaubt ist.
 // Spezielle Verarbeitungen sind derzeit: GClh Config, GClh Config Sync, Find Player.
     function checkTaskAllowed( task, doAlert ) {
-        if ( document.location.href.match(/^https?:\/\/www\.geocaching\.com\/(map|play|account)\//) ||
-             document.location.href.match(/^https?:\/\/labs\.geocaching\.com/)                      || 
-             document.location.href.match(/^https?:\/\/www\.wherigo\.com/)                          || 
-//--> $$048 Begin of insert
-             isMemberInPmoCache()                                                                   ||
-//<-- $$048 End of insert
-             document.location.href.match(/^https?:\/\/www\.waymarking\.com/)                          ) {
+//--> $$059-6 Begin of delete
+//        if ( document.location.href.match(/^https?:\/\/www\.geocaching\.com\/(map|play|account)\//) ||
+//             document.location.href.match(/^https?:\/\/labs\.geocaching\.com/)                      || 
+//             document.location.href.match(/^https?:\/\/www\.wherigo\.com/)                          || 
+////--> $$048 Begin of insert
+//             isMemberInPmoCache()                                                                   ||
+////<-- $$048 End of insert
+//             document.location.href.match(/^https?:\/\/www\.waymarking\.com/)                          ) {
+//<-- $$059-6 End of delete 
+//--> $$059-6 Begin of insert
+        if ( ( document.location.href.match(/^https?:\/\/www\.wherigo\.com/)    || 
+               document.location.href.match(/^https?:\/\/www\.waymarking\.com/) ||
+               isMemberInPmoCache()                                                ) ||
+             ( task != "Find Player" && 
+               ( document.location.href.match(/^https?:\/\/www\.geocaching\.com\/(map|play|account)\//) ||
+                 document.location.href.match(/^https?:\/\/labs\.geocaching\.com/)                         ) ) ) {
+//<-- $$059-6 End of insert
             if ( doAlert != false ) {
                 var mess = "This GC little helper functionality is not available at this page.\n\n"
                          + "Please go to the \"My profile\" page, there is anyway all of these \n"
@@ -10398,7 +10463,10 @@ var mainGC = function () {
         html += "  position: absolute; ";
         html += "  left:30%; ";
         html += "  top:10px; ";
-        html += "  z-index:101; ";
+//--> $$059-6 Begin of change
+//        html += "  z-index:101; ";
+        html += "  z-index:1001; ";
+//<-- $$059-6 End of change
         html += "  -moz-border-radius:30px; ";
         html += "  -khtml-border-radius:30px; ";
         html += "  border-radius: 30px;";
@@ -11755,6 +11823,29 @@ var mainGC = function () {
             // Bezeichnung im Save Button dynamisch anzupassen.
             document.getElementById('settings_f2_save_gclh_config').addEventListener("click", setValueInSaveButton, false);
 //<-- $$030 End of insert
+            
+//--> $$059-7 Begin of insert
+            // Positionierung innerhalb des GClh Config bei Aufrufen.
+            if (document.location.href.match(/#a#/i)) {
+                document.location.href = document.location.href.replace(/#a#/i, "#");
+                var diff = 4; 
+                if (document.location.href.match(/#llb#/i)) {
+                    if ( document.getElementById('settings_bookmarks_top_menu').checked ) diff += 141 - 6;
+                    else diff += 165 - 25;
+                }
+                if (document.location.href.match(/#(ll|llb)#/i)) {
+                    document.location.href = document.location.href.replace(/#(ll|llb)#/i, "#");
+                    gclh_show_linklist();
+                }
+                if ( document.location.href.match(/#(\S+)/) ) {
+                    var arg = document.location.href.match(/#(.*)/);
+                    if ( arg ) {
+                        document.location.href = clearUrlAppendix( document.location.href, false );
+                        $('html,body').animate( { scrollTop: ($('#'+arg[1]).offset().top) - diff } , 1500 , "swing" );
+                    }
+                }
+            }
+//<-- $$059-7 End of insert
         }
 
 //--> $$038 Begin of insert
@@ -12625,8 +12716,10 @@ var mainGC = function () {
         } 
 
         // Seite "My Profile".
-        if ((document.location.href.match(/^https?:\/\/www\.geocaching\.com\/my\/[#a-zA-Z-_]*$/) || document.location.href.match(/^https?:\/\/www\.geocaching\.com\/my\/default\.aspx/)) && document.getElementById('ctl00_ContentBody_WidgetMiniProfile1_logOutLink')) {
-
+//--> $$059-7 Begin of change
+//        if ((document.location.href.match(/^https?:\/\/www\.geocaching\.com\/my\/[#a-zA-Z-_]*$/) || document.location.href.match(/^https?:\/\/www\.geocaching\.com\/my\/default\.aspx/)) && document.getElementById('ctl00_ContentBody_WidgetMiniProfile1_logOutLink')) {
+        if ((document.location.href.match(/^https?:\/\/www\.geocaching\.com\/my\/[#a-zA-Z0-9-_]*$/) || document.location.href.match(/^https?:\/\/www\.geocaching\.com\/my\/default\.aspx/)) && document.getElementById('ctl00_ContentBody_WidgetMiniProfile1_logOutLink')) {
+//<-- $$059-7 End of change
             // GClh Config Link auf Seite "My Profile" aufbauen und mit Event versehen.
 //--> $$058 Begin of change
 //            var lnk = " | <a href='#' id='gclh_config_lnk' style='margin-left: 58px;'>GClh Config</a>";
@@ -12698,7 +12791,10 @@ var mainGC = function () {
             avatar_head.style.opacity = "0.5";
             
             var link = document.createElement("a");
-            link.setAttribute("href", "/my/#GClhShowConfig#settings_hide_avatar");
+//--> $$059-7 Begin of change
+//            link.setAttribute("href", "/my/#GClhShowConfig#settings_hide_avatar");
+            link.setAttribute("href", "/my/#GClhShowConfig#a#settings_hide_avatar");
+//<-- $$059-7 End of change
             link.setAttribute("target", "_blank");
             link.appendChild(document.createTextNode("here"));
             
@@ -12754,6 +12850,9 @@ var mainGC = function () {
                         }
                     });
                 }
+//--> $$059-8 Begin of insert
+                setValue('update_last_check', time.toString());
+//<-- $$059-8 End of insert
             }
             return;
         }
