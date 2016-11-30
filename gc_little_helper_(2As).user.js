@@ -4,7 +4,7 @@
 //<-- $$000 End of change
 // @namespace      http://www.amshove.net
 //--> $$000 Begin of change "11.6"
-// @version        11.6.5
+// @version        11.6.6
 //<-- $$000 End of change
 // @include        http://www.geocaching.com/*
 // @include        https://www.geocaching.com/*
@@ -424,6 +424,13 @@
 //       |        (The tiles moved from toolserver.org to wmflabls.org                                      |            |               |        |
 //       |        new http://{s}.tiles.wmflabs.org/hillshading/{z}/{x}/{y}.png                              |            |               |        |
 //       |        old: http://toolserver.org/~cmarqu/hill/{z}/{x}/{y}.png)                                  |            |               |        |
+//       | Fix: v11.6.5 -> v11.6.6                                                                          | 30.11.2016 |               |        |
+//       | -11  - Anzahl auszugebender Logs wurde fälschlicherweise um 1 reduziert. (Danke an Die Batzen)   |            |               |        |
+//       |        Das zweite Attribute von Slice besagt: ends at, but does not include, the given end       |            |               |        |
+//       |        argument. -1 ist also hier nicht richtig.                                                 |            |               |        |
+//       | -12  - Beschreibung des Parameters "Show x logs" (settings_show_all_logs_count) ist nicht ganz   |            |               |        |
+//       |        korrekt, weil alle gelesenen Logs auch angezeigt werden, der Parameter ist also ein       |            |               |        |
+//       |        Minimalwert. Beschreibung im GClh Config angepaßt: Show at least x logs.                  |            |               |        |
 //*************************************************************************************************************************************************
 
 var jqueryInit = function (c) {
@@ -9223,7 +9230,10 @@ var mainGC = function () {
                     
 //--> $$005 Begin of insert (Größere Anpassungen ohne zeilenweise Änderungsdokumentation.)
                     if (browser === "firefox") {
-                        var logsToAdd = logs.slice(0, num - 1);
+//--> $$059-11 Begin of change
+//                        var logsToAdd = logs.slice(0, num - 1);
+                        var logsToAdd = logs.slice(0, num);
+//<-- $$059-11 End of change
                         injectPageScript("var unsafeWindow = unsafeWindow||window; " + gclh_dynamic_load.toString() + " var settings_hide_top_button=" + settings_hide_top_button + "; ");
                         injectPageScript(addNewLogLines.toString());
                         injectPageScript("(" + addNewLogLines.toString() + ")(\"" + encodeURIComponent(JSON.stringify(logsToAdd)) + "\"); gclh_dynamic_load(JSON.parse(decodeURIComponent(\"" + encodeURIComponent(JSON.stringify(logs)) + "\"))," + num + ");");
@@ -10865,7 +10875,10 @@ var mainGC = function () {
             html += checkboxy('settings_hide_disclaimer', 'Hide disclaimer') + "<br/>";
             html += checkboxy('settings_hide_spoilerwarning', 'Hide spoiler warning') + "<br/>";
             html += checkboxy('settings_hide_top_button', 'Hide green top button') + show_help("Hides the green \"To Top\" button, which appears if you are reading logs.") + "<br/>";
-            html += checkboxy('settings_show_all_logs', 'Show ') + " <input class='gclh_form' type='text' size='2' id='settings_show_all_logs_count' value='" + settings_show_all_logs_count + "'> logs (0 = all)" + show_help("With this option you can choose how many logs should be shown if you load the listing - if you type 0, all logs are shown by default.") + "<br>";
+//--> $$059-12 Begin of change
+//            html += checkboxy('settings_show_all_logs', 'Show ') + " <input class='gclh_form' type='text' size='2' id='settings_show_all_logs_count' value='" + settings_show_all_logs_count + "'> logs (0 = all)" + show_help("With this option you can choose how many logs should be shown if you load the listing - if you type 0, all logs are shown by default.") + "<br>";
+            html += checkboxy('settings_show_all_logs', 'Show at least ') + " <input class='gclh_form' type='text' size='2' id='settings_show_all_logs_count' value='" + settings_show_all_logs_count + "'> logs (0 = all)" + show_help("With this option you can choose how many logs should be shown at least if you load the listing - if you type 0, all logs are shown by default.") + "<br>";
+//<-- $$059-12 End of change
 //--> $$047 Begin of change
 //            html += checkboxy('settings_hide_hint', 'Hide hint behind a link') + show_help("This option hides the hint behind a link - you have to click it to display the hints (already decrypted).") + "<br/>";
 //            html += checkboxy('settings_decrypt_hint', 'Decrypt hint') + "<br/>";
