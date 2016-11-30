@@ -4,7 +4,7 @@
 //<-- $$000 End of change
 // @namespace      http://www.amshove.net
 //--> $$000 Begin of change "11.6"
-// @version        11.6.4
+// @version        11.6.5
 //<-- $$000 End of change
 // @include        http://www.geocaching.com/*
 // @include        https://www.geocaching.com/*
@@ -415,6 +415,15 @@
 //       | -7   - Positionierung im GClh Config bei Aufrufen ermöglichen.                                   |            |               |        |
 //       | Fix: v11.6.3 -> v11.6.4                                                                          |            |               |        |
 //       | -8   - Updates stündlich checken.                                                                |            |               |        |
+//       | Fix: v11.6.4 -> v11.6.5                                                                          | 30.11.2016 |               |        |
+//       | -9   - "Logged in Panel" mit Avatar ... auf "My Profile" Seite wurde durch GS geändert. (Danke   |            |               |        |
+//       |        CachingFox.)                                                                              |            |               |        |
+//       |        (The element ctl00_ContentBody_WidgetMiniProfile1_logOutLink was removed. You can use     |            |               |        |
+//       |        element ctl00_ContentBody_WidgetMiniProfile1_memberProfileLink.)                          |            |               |        |
+//       | -10  - Hillshadow funktionierte nicht, Adresse hat sich geändert. (Danke CachingFox.)            |            |               |        |
+//       |        (The tiles moved from toolserver.org to wmflabls.org                                      |            |               |        |
+//       |        new http://{s}.tiles.wmflabs.org/hillshading/{z}/{x}/{y}.png                              |            |               |        |
+//       |        old: http://toolserver.org/~cmarqu/hill/{z}/{x}/{y}.png)                                  |            |               |        |
 //*************************************************************************************************************************************************
 
 var jqueryInit = function (c) {
@@ -6137,8 +6146,12 @@ var mainGC = function () {
 // Map-Overlays
     var map_overlays = new Object();
     map_overlays["Hillshadow"] = {
-        tileUrl: "http://toolserver.org/~cmarqu/hill/{z}/{x}/{y}.png",
-        attribution: 'hillshadow \u00a9 <a href="http://toolserver.org/" target=\'_blank\'>toolserver.org</a>',
+//--> $$059-10 Begin of change
+//        tileUrl: "http://toolserver.org/~cmarqu/hill/{z}/{x}/{y}.png",
+//        attribution: 'hillshadow \u00a9 <a href="http://toolserver.org/" target=\'_blank\'>toolserver.org</a>',
+        tileUrl: "http://{s}.tiles.wmflabs.org/hillshading/{z}/{x}/{y}.png",
+        attribution: 'hillshadow \u00a9 <a href="http://tiles.wmflabs.org/" target=\'_blank\'>tiles.wmflabs.org</a>',
+//<-- $$059-10 End of change
         tileSize: 256,
         minZoom: 0,
         maxZoom: 17
@@ -12721,7 +12734,10 @@ var mainGC = function () {
         // Seite "My Profile".
 //--> $$059-7 Begin of change
 //        if ((document.location.href.match(/^https?:\/\/www\.geocaching\.com\/my\/[#a-zA-Z-_]*$/) || document.location.href.match(/^https?:\/\/www\.geocaching\.com\/my\/default\.aspx/)) && document.getElementById('ctl00_ContentBody_WidgetMiniProfile1_logOutLink')) {
-        if ((document.location.href.match(/^https?:\/\/www\.geocaching\.com\/my\/[#a-zA-Z0-9-_]*$/) || document.location.href.match(/^https?:\/\/www\.geocaching\.com\/my\/default\.aspx/)) && document.getElementById('ctl00_ContentBody_WidgetMiniProfile1_logOutLink')) {
+//--> $$059-9 Begin of change
+//        if ((document.location.href.match(/^https?:\/\/www\.geocaching\.com\/my\/[#a-zA-Z0-9-_]*$/) || document.location.href.match(/^https?:\/\/www\.geocaching\.com\/my\/default\.aspx/)) && document.getElementById('ctl00_ContentBody_WidgetMiniProfile1_logOutLink')) {
+        if ((document.location.href.match(/^https?:\/\/www\.geocaching\.com\/my\/[#a-zA-Z0-9-_]*$/) || document.location.href.match(/^https?:\/\/www\.geocaching\.com\/my\/default\.aspx/)) && document.getElementById('ctl00_ContentBody_WidgetMiniProfile1_memberProfileLink')) {
+//<-- $$059-9 End of change
 //<-- $$059-7 End of change
             // GClh Config Link auf Seite "My Profile" aufbauen und mit Event versehen.
 //--> $$058 Begin of change
@@ -12731,7 +12747,10 @@ var mainGC = function () {
             var lnk = " | <a href='#' id='gclh_config_lnk' name='gclh_config_lnk' style='margin-left: 58px; font-size: 0.9em;'>" + scriptShortNameConfig + "</a>";
 //<-- $$059-1 End of change
 //<-- $$058 End of change
-            document.getElementById('ctl00_ContentBody_WidgetMiniProfile1_logOutLink').parentNode.innerHTML += lnk;
+//--> $$059-9 Begin of change
+//            document.getElementById('ctl00_ContentBody_WidgetMiniProfile1_logOutLink').parentNode.innerHTML += lnk;
+            document.getElementById('ctl00_ContentBody_WidgetMiniProfile1_memberProfileLink').parentNode.innerHTML += lnk;
+//<-- $$059-9 End of change
 //--> $$058 Begin of change
 //            document.getElementById('gclh_config_lnk').addEventListener("click", gclh_showConfig, false);
             addLinkEvent('gclh_config_lnk', gclh_showConfig, true, false );
@@ -13178,7 +13197,10 @@ var mainGC = function () {
 //<-- $$001 End of change
 //<-- $$015 End of change
             }
-            if ((document.location.href.match(/^https?:\/\/www\.geocaching\.com\/my\/[#a-zA-Z-_]*$/) || document.location.href.match(/^https?:\/\/www\.geocaching\.com\/my\/default\.aspx/)) && document.getElementById('ctl00_ContentBody_WidgetMiniProfile1_logOutLink')) {
+//--> $$059-9 Begin of change
+//            if ((document.location.href.match(/^https?:\/\/www\.geocaching\.com\/my\/[#a-zA-Z-_]*$/) || document.location.href.match(/^https?:\/\/www\.geocaching\.com\/my\/default\.aspx/)) && document.getElementById('ctl00_ContentBody_WidgetMiniProfile1_logOutLink')) {
+            if ((document.location.href.match(/^https?:\/\/www\.geocaching\.com\/my\/[#a-zA-Z-_]*$/) || document.location.href.match(/^https?:\/\/www\.geocaching\.com\/my\/default\.aspx/)) && document.getElementById('ctl00_ContentBody_WidgetMiniProfile1_memberProfileLink')) {
+//<-- $$059-9 End of change
                 var lnk = document.createElement("a");
                 lnk.id = "gclh_sync_lnk";
 //--> $$058 Begin of insert
@@ -13190,8 +13212,12 @@ var mainGC = function () {
                 lnk.innerHTML = scriptShortNameSync;
                 lnk.setAttribute("style", "font-size: 0.9em;");
 //<-- $$059-1 End of change
-                document.getElementById('ctl00_ContentBody_WidgetMiniProfile1_logOutLink').parentNode.appendChild(document.createTextNode(" | "));
-                document.getElementById('ctl00_ContentBody_WidgetMiniProfile1_logOutLink').parentNode.appendChild(lnk);
+//--> $$059-9 Begin of change
+//                document.getElementById('ctl00_ContentBody_WidgetMiniProfile1_logOutLink').parentNode.appendChild(document.createTextNode(" | "));
+//                document.getElementById('ctl00_ContentBody_WidgetMiniProfile1_logOutLink').parentNode.appendChild(lnk);
+                document.getElementById('ctl00_ContentBody_WidgetMiniProfile1_memberProfileLink').parentNode.appendChild(document.createTextNode(" | "));
+                document.getElementById('ctl00_ContentBody_WidgetMiniProfile1_memberProfileLink').parentNode.appendChild(lnk);
+//<-- $$059-9 End of change
 //--> $$058 Begin of change
 //                document.getElementById('gclh_sync_lnk').addEventListener("click", gclh_sync_showConfig, false);
                 addLinkEvent('gclh_sync_lnk', gclh_sync_showConfig, true, false );
