@@ -1,4 +1,4 @@
-﻿// ==UserScript==
+// ==UserScript==
 //--> $$000 Begin of change "GC little helper"
 // @name           GC little helper (2As)
 //<-- $$000 End of change
@@ -433,8 +433,8 @@
 //       |        Minimalwert. Beschreibung im GClh Config angepaßt: Show at least x logs.                  |            |               |        |
 //       | Fix: v11.6.6 -> v11.6.7                                                                          | 01.12.2016 |               |        |
 //       | -13  - Neue Nachrichten des Message Centers wurden nicht mehr oder nicht mehr richtig angezeigt. |            |               |        |
-// ------|--------------------------------------------------------------------------------------------------|------------|---------------|--------|
-// ##001 | Fix    MapQuest slippy map no longer available                                                   | 01.12.2016 | FoX           |        |
+//       | Fix: v11.6.7 -> v11.6.8                                                                          | 01.12.2016 | FoX           | 11.7   |
+//       | -14  - MapQuest slippy map no longer available                                                   |            |               |        |
 //       |         - remove both MapQuest layers                                                            |            |               |        |
 //       |         - use OpenStreetMap Mapnik as default map                                                |            |               |        |
 //*************************************************************************************************************************************************
@@ -1054,10 +1054,10 @@ var variablesInit = function (c) {
     c.settings_show_long_vip = getValue("settings_show_long_vip", false);
     c.settings_load_logs_with_gclh = getValue("settings_load_logs_with_gclh", true);
     c.settings_map_add_layer = getValue("settings_map_add_layer", true);
-//--> ##001 Begin of change	
+//--> $$059-14 Begin of change	
 //    c.settings_map_default_layer = getValue("settings_map_default_layer", "MapQuest OSM");
     c.settings_map_default_layer = getValue("settings_map_default_layer", "OpenStreetMap Default");
-//<-- ##001 End of change
+//<-- $$059-14 End of change
     c.settings_hide_map_header = getValue("settings_hide_map_header", false);
 //--> $$023 Begin of change - Disable Spoiler String
 //    c.settings_spoiler_strings = getValue("settings_spoiler_strings", "spoiler|hinweis|hint");
@@ -6071,20 +6071,18 @@ var mainGC = function () {
         attribution: '&copy; <a href="http://www.opencyclemap.org">OpenCycleMap</a>, <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>'
     };
 
-	//--> ##001 Begin of change	
-    /*
-	all_map_layers["MapQuest OSM"] = {
-        tileUrl: "http://otile{s}.mqcdn.com/tiles/1.0.0/map/{z}/{x}/{y}.jpg",
-        attribution: 'Tiles Courtesy of <a href="http://www.mapquest.com/">MapQuest</a> &mdash; Map data {attribution.OpenStreetMap}',
-        subdomains: "1234"
-    };
-    all_map_layers["MapQuest Aerial"] = {
-        tileUrl: "http://oatile{s}.mqcdn.com/tiles/1.0.0/sat/{z}/{x}/{y}.jpg",
-        attribution: 'Tiles Courtesy of <a href="http://www.mapquest.com/">MapQuest</a> &mdash; ' + "Portions Courtesy NASA/JPL-Caltech and U.S. Depart. of Agriculture, Farm Service Agency",
-        subdomains: "1234"
-    };
-	*/
-	//<-- ##001 End of change
+//--> $$059-14 Begin of change	
+//    all_map_layers["MapQuest OSM"] = {
+//        tileUrl: "http://otile{s}.mqcdn.com/tiles/1.0.0/map/{z}/{x}/{y}.jpg",
+//        attribution: 'Tiles Courtesy of <a href="http://www.mapquest.com/">MapQuest</a> &mdash; Map data {attribution.OpenStreetMap}',
+//        subdomains: "1234"
+//    };
+//    all_map_layers["MapQuest Aerial"] = {
+//        tileUrl: "http://oatile{s}.mqcdn.com/tiles/1.0.0/sat/{z}/{x}/{y}.jpg",
+//        attribution: 'Tiles Courtesy of <a href="http://www.mapquest.com/">MapQuest</a> &mdash; ' + "Portions Courtesy NASA/JPL-Caltech and U.S. Depart. of Agriculture, Farm Service Agency",
+//        subdomains: "1234"
+//    };
+//<-- $$059-14 End of change
 
     all_map_layers["Stamen Toner"] = {
         tileUrl: "http://{s}.tile.stamen.com/toner/{z}/{x}/{y}.png",
