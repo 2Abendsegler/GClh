@@ -4,7 +4,7 @@
 //<-- $$000 End of change
 // @namespace      http://www.amshove.net
 //--> $$000 Begin of change "11.6"
-// @version        11.6.6
+// @version        11.6.7
 //<-- $$000 End of change
 // @include        http://www.geocaching.com/*
 // @include        https://www.geocaching.com/*
@@ -431,6 +431,8 @@
 //       | -12  - Beschreibung des Parameters "Show x logs" (settings_show_all_logs_count) ist nicht ganz   |            |               |        |
 //       |        korrekt, weil alle gelesenen Logs auch angezeigt werden, der Parameter ist also ein       |            |               |        |
 //       |        Minimalwert. Beschreibung im GClh Config angepaßt: Show at least x logs.                  |            |               |        |
+//       | Fix: v11.6.6 -> v11.6.7                                                                          | 01.12.2016 |               |        |
+//       | -13  - Neue Nachrichten des Message Centers wurden nicht mehr oder nicht mehr richtig angezeigt. |            |               |        |
 //*************************************************************************************************************************************************
 
 var jqueryInit = function (c) {
@@ -2023,14 +2025,16 @@ var mainGC = function () {
                 }
             }
             
-            // Versuch, immer wieder auftretende Fehler in Zusammenhang mit dem Message Center zu beseitigen.               // Message Center Fehler
-            if ( !is_page("settings") && !is_page("messagecenter") && !is_page("geotours") && settings_show_smaller_area_top_right ) {
-                var mess_head = getElementsByClass("messagecenterheaderwidget li-messages");
-                for (var mh = 0; mh < mess_head.length; mh++) {
-                    if ( mh == 0 ) mess_head[mh].style.display = "none";
-                    mess_head[mh].setAttribute("class", "messagecenterheaderwidget_gclh li-messages_gclh");
-                }
-            }
+//--> $$059-13 Begin of delete
+//            // Versuch, immer wieder auftretende Fehler in Zusammenhang mit dem Message Center zu beseitigen.               // Message Center Fehler
+//            if ( !is_page("settings") && !is_page("messagecenter") && !is_page("geotours") && settings_show_smaller_area_top_right ) {
+//                var mess_head = getElementsByClass("messagecenterheaderwidget li-messages");
+//                for (var mh = 0; mh < mess_head.length; mh++) {
+//                    if ( mh == 0 ) mess_head[mh].style.display = "none";
+//                    mess_head[mh].setAttribute("class", "messagecenterheaderwidget_gclh li-messages_gclh");
+//                }
+//            }
+//<-- $$059-13 End of delete 
 
             
             // Global verwendete Attribute zur Darstellung der Objekte im Header setzen.
