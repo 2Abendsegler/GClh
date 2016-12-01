@@ -4,7 +4,7 @@
 //<-- $$000 End of change
 // @namespace      http://www.amshove.net
 //--> $$000 Begin of change "11.6"
-// @version        11.6.7
+// @version        11.6.8
 //<-- $$000 End of change
 // @include        http://www.geocaching.com/*
 // @include        https://www.geocaching.com/*
