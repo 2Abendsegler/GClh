@@ -2,11 +2,10 @@ Version 0.1:
 - Fix: Bei Eigenen Favoriten kein VIP Icon aufbauen. Hier steht gegebenenfalls das Pseudonym des Owners.
 - Fix: Save HomeCoords von Account Settings Seite funktionierte nicht mehr.
 - Fix: Select Buttons in einer Bookmarkliste aufbauen, aber nicht bei der Ablistung aller Bookmarklisten.
-- Fix: In Bookmarkliste nach dem Löschen von Einträgen (...bookmarks/bulk.aspx...) fehlt Zebra.
-- Fix: Farbliche Logkennzeichnung für User mit Sonderzeichen [] korrigiert.
+- Fix: In Bookmarkliste nach dem Loeschen von Eintraegen (...bookmarks/bulk.aspx...) fehlt Zebra.
+- Fix: Farbliche Logkennzeichnung fuer User mit Sonderzeichen [] korrigiert.
 - Change: Spezielle Links Profile Tabs, Nearest Lists/Map, Own Trackables, GClh Config, GClh Sync und Find 
-          Player mit rechter und linker Maustaste funktionsfähig machen mit Standard Contextmenü und 
+          Player mit rechter und linker Maustaste funktionsfaehig machen mit Standard Contextmenue und 
           postback. 
-- Change: Config und Sync Aufrufe zusammengelegt und umgebaut. Rechte, linke Maus überall ok.
-- Change: Link zu alter deutscher Anleitung entfernt und Link github angepaßt.
-
+- Change: Config und Sync Aufrufe zusammengelegt und umgebaut. Rechte, linke Maus ueberall ok.
+- Change: Link zu alter deutscher Anleitung entfernt und Link github angepasst.
