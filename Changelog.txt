@@ -1,3 +1,5 @@
+CHANGELOG:
+
 Version 0.1:
 - Fix: Bei Eigenen Favoriten kein VIP Icon aufbauen. Hier steht gegebenenfalls das Pseudonym des Owners.
 - Fix: Save HomeCoords von Account Settings Seite funktionierte nicht mehr.
