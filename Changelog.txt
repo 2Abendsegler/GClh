@@ -1,5 +1,18 @@
 CHANGELOG:
 
+Version 0.2:
+- New: Cache Listing: Latest Logs Symbole im Kopf des Listings anzeigen. Ueber GClh Config steuern.
+- New: GClh Config: GClh Sync als neue Bookmark zum Aufruf aus Linklist eingerichtet.
+- Change: GClh Config: Links im Kopf vom GClh Config ueberarbeitet.
+- New: Logs anzeigen: Wenn nicht alle eigenen Logs geladen werden, weil beispielsweise das Laden der Seite 
+       ueber den Browser gestoppt wurde, dann angeben wieviele Logs geladen wurden und das Datum des 
+       letzten geladenen Logs angeben, Cache und Trackables. (Wird das Laden der Seite ueber den Browser 
+       gestoppt, funktioniert nicht mehr alles auf der Seite, so z.B. die Linklist.)
+       (Anschliessend kann man dann beispielsweise auch GC Vote für eine begrenzte Anzahl an Caches 
+       nachladen.) 
+- New: Cache Listing: Make VIP lists hideable. Ueber GClh Config steuern.
+
+
 Version 0.1:
 - Fix: Bei Eigenen Favoriten kein VIP Icon aufbauen. Hier steht gegebenenfalls das Pseudonym des Owners.
 - Fix: Save HomeCoords von Account Settings Seite funktionierte nicht mehr.
@@ -11,3 +24,4 @@ Version 0.1:
           postback. 
 - Change: Config und Sync Aufrufe zusammengelegt und umgebaut. Rechte, linke Maus ueberall ok.
 - Change: Link zu alter deutscher Anleitung entfernt und Link github angepasst.
+

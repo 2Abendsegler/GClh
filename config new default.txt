@@ -64,5 +64,8 @@
   "settings_font_color_menu_submenu": "93B516",
   "settings_menu_number_of_lines": 3,
   "settings_menu_show_separator": true,
-  "settings_menu_float_right": false
+  "settings_menu_float_right": false,
+  "settings_make_vip_lists_hideable": true,
+  "settings_show_latest_logs_symbols": true,
+  "settings_show_latest_logs_symbols_count": 5
 }
