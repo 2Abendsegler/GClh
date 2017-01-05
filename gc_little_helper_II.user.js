@@ -2,7 +2,7 @@
 // @name           GC little helper II
 // @namespace      http://www.amshove.net
 //--> $$000FE Begin of change
-// @version        0.1
+// @version        0.2.1
 //<-- $$000FE End of change
 // @include        http://www.geocaching.com/*
 // @include        https://www.geocaching.com/*
@@ -35,6 +35,24 @@
 //*************************************************************************************************************************************************
 // Kennz.  | Datum      | Entwickler    | zuVers.|
 //*************************************************************************************************************************************************
+// $$068FE | Jan.2017   | FE            | 0.2.1  |
+// New: Downloadzaehler simulieren.
+// ------------------------------------------------------------------------------------------------------------------------------------------------
+// $$067FE | Jan.2017   | FE            | 0.2.1  |
+// New: Cache Listing: Latest Logs Symbole im Kopf des Listings anzeigen. Über GClh Config steuern.
+// ------------------------------------------------------------------------------------------------------------------------------------------------
+// $$066FE | Jan.2017   | FE            | 0.2.1  |
+// New: GClh Config: GClh Sync als neue Bookmark zum Aufruf aus Linklist eingerichtet.
+// Change: GClh Config: Links im Kopf vom GClh Config überarbeitet.
+// ------------------------------------------------------------------------------------------------------------------------------------------------
+// $$065FE | Dez.2016   | FE            | 0.2.1  |
+// New: Logs anzeigen: Wenn nicht alle eigenen Logs geladen werden, weil beispielsweise das Laden der Seite über den Browser gestoppt wurde, dann
+//      angeben wieviele Logs geladen wurden und das Datum des letzten geladenen Logs angeben, Cache und Trackables. (Wird das Laden der Seite
+//      über den Browser gestoppt, funktioniert nicht mehr alles auf der Seite, so z.B. die Linklist.)
+// ------------------------------------------------------------------------------------------------------------------------------------------------
+// $$064FE | Dez.2016   | FE            | 0.2.1  |
+// New: Cache Listing: Make VIP lists hideable. Über GClh Config steuern.
+//*************************************************************************************************************************************************
 // $$063FE | Dez.2016   | FE            | 0.1    |
 // Fix: Bei Eigenen Favoriten kein VIP Icon aufbauen. Hier steht gegebenenfalls das Pseudonym des Owners.
 // Fix: Save HomeCoords von Account Settings Seite funktionierte nicht mehr.
@@ -57,8 +75,7 @@
 // Change: Umstellung Änderungskennzeichen. Entwicklerkennzeichen für eigene Nummerierung je Entwickler eingebaut. (Nicht dokumentiert.)
 // Change: newParameter umgebaut, so dass sie weiter verwendbar sind. (Nicht dokumentiert.)
 // Change: Link zu alter deutscher Anleitung entfernt und Link github angepaßt.
-// ------------------------------------------------------------------------------------------------------------------------------------------------
-// ------------------------------------------------------------------------------------------------------------------------------------------------
+//*************************************************************************************************************************************************
 // $$000FE | Aug.2016   | FE            | 11.7   |
 // Versionierung, bei neuen Versionen beachten.
 //*************************************************************************************************************************************************
@@ -386,13 +403,13 @@ var variablesInit = function (c) {
     // Settings: Show smaller User-Settings-Message-Area top right
     c.settings_show_smaller_area_top_right = getValue("settings_show_smaller_area_top_right", true);
     // Settings: Show smaller Geocaching Link top left
-    c.settings_show_smaller_gc_link = getValue("settings_show_smaller_gc_link", false);
+    c.settings_show_smaller_gc_link = getValue("settings_show_smaller_gc_link", true);
     // Settings: Show Message-Link
-    c.settings_show_message = getValue("settings_show_message", false);
+    c.settings_show_message = getValue("settings_show_message", true);
     // Settings: Show Coord-Link in Message
     c.settings_show_message_coordslink = getValue("settings_show_message_coordslink", false);
     // Settings: Show Stop Ignoring Link
-    c.settings_show_remove_ignoring_link = getValue("settings_show_remove_ignoring_link", false);
+    c.settings_show_remove_ignoring_link = getValue("settings_show_remove_ignoring_link", true);
     // Settings: Zeilen in gewöhnlichen Listen in Zebra einfärben
     c.settings_show_common_lists_in_zebra = getValue("settings_show_common_lists_in_zebra", true);
     // Settings: Founds in Zeilen in gewöhnlichen Listen einfärben
@@ -428,23 +445,23 @@ var variablesInit = function (c) {
     //Settings: Farbe um Zeilen für VIP einzufärben
     c.settings_lines_color_vip = getValue("settings_lines_color_vip", "F0F0A0");
     // Settings: Show Mail Link beside User in "All my VIPs" List in Profile
-    c.settings_show_mail_in_allmyvips = getValue("settings_show_mail_in_allmyvips", false);
+    c.settings_show_mail_in_allmyvips = getValue("settings_show_mail_in_allmyvips", true);
     // Settings: Show Mail Link beside User in "VIP-List" in Listing
-    c.settings_show_mail_in_viplist = getValue("settings_show_mail_in_viplist", false);
+    c.settings_show_mail_in_viplist = getValue("settings_show_mail_in_viplist", true);
     // Settings: Save GClh Config on F2
-    c.settings_f2_save_gclh_config = getValue("settings_f2_save_gclh_config", false);
+    c.settings_f2_save_gclh_config = getValue("settings_f2_save_gclh_config", true);
     // Settings: Call GClh Config on F4
-    c.settings_f4_call_gclh_config = getValue("settings_f4_call_gclh_config", false);
+    c.settings_f4_call_gclh_config = getValue("settings_f4_call_gclh_config", true);
     // Settings: Anzahl Caches und Anzahl selektierte Caches in Bookmark Listen anzeigen
-    c.settings_show_sums_in_bookmark_lists = getValue("settings_show_sums_in_bookmark_lists", false);
+    c.settings_show_sums_in_bookmark_lists = getValue("settings_show_sums_in_bookmark_lists", true);
     // Settings: Anzahl Caches und Anzahl selektierte Caches in Watchlist anzeigen
-    c.settings_show_sums_in_watchlist = getValue("settings_show_sums_in_watchlist", false);
+    c.settings_show_sums_in_watchlist = getValue("settings_show_sums_in_watchlist", true);
     // Settings: Hide Warning Message
-    c.settings_hide_warning_message = getValue("settings_hide_warning_message", false);
+    c.settings_hide_warning_message = getValue("settings_hide_warning_message", true);
     // Settings: Show info message if GClh data are saved
-    c.settings_show_save_message = getValue("settings_show_save_message", false);
+    c.settings_show_save_message = getValue("settings_show_save_message", true);
     // Settings: Show Map Overview
-    c.settings_map_overview_build = getValue("settings_map_overview_build", false);
+    c.settings_map_overview_build = getValue("settings_map_overview_build", true);
     //Settings: Map zoom value
     c.settings_map_overview_zoom = getValue("settings_map_overview_zoom", 11);
     //Settings: Loggen über Standard "Log It" Icons zu Premium Only Caches für Basic Members
@@ -454,7 +471,7 @@ var variablesInit = function (c) {
     //Settings: Count cache matrix in foreign statistic
     c.settings_count_foreign_matrix = getValue("settings_count_foreign_matrix", true);
     //Settings: Show next cache matrix in own statistic
-    c.settings_count_own_matrix_show_next = getValue("settings_count_own_matrix_show_next", false);
+    c.settings_count_own_matrix_show_next = getValue("settings_count_own_matrix_show_next", true);
     //Settings: Show for next ... matrixes 
     c.settings_count_own_matrix_show_count_next = getValue("settings_count_own_matrix_show_count_next", 2);
     //Settings: Show next cache matrix in color
@@ -468,13 +485,23 @@ var variablesInit = function (c) {
     //Settings: Add link to GC Map on Google Maps 
     c.settings_add_link_gc_map_on_google_maps = getValue("settings_add_link_gc_map_on_google_maps", true);
     //Settings: Switch to GC Map in same browser tab 
-    c.settings_switch_to_gc_map_in_same_tab = getValue("settings_switch_to_gc_map_in_same_tab", true);
+    c.settings_switch_to_gc_map_in_same_tab = getValue("settings_switch_to_gc_map_in_same_tab", false);
     //Settings: Add link to Google Maps on GC Map 
     c.settings_add_link_google_maps_on_gc_map = getValue("settings_add_link_google_maps_on_gc_map", true);
     //Settings: Switch to Google Maps in same browser tab
-    c.settings_switch_to_google_maps_in_same_tab = getValue("settings_switch_to_google_maps_in_same_tab", true);
+    c.settings_switch_to_google_maps_in_same_tab = getValue("settings_switch_to_google_maps_in_same_tab", false);
     //Settings: Sort default links for the Linklist    // Sort Linklist
-    c.settings_sort_default_bookmarks = getValue("settings_sort_default_bookmarks", false);
+    c.settings_sort_default_bookmarks = getValue("settings_sort_default_bookmarks", true);
+//--> $$064FE Begin of insert
+    //Settings: Make VIP lists in cache listing hideable.
+    c.settings_make_vip_lists_hideable = getValue("settings_make_vip_lists_hideable", true);
+//<-- $$064FE End of insert
+//--> $$067FE Begin of insert
+    // Settings: Show latest logs symbols at the top
+    c.settings_show_latest_logs_symbols = getValue("settings_show_latest_logs_symbols", true);
+    // Settings: Count of latest logs symbols at the top
+    c.settings_show_latest_logs_symbols_count = getValue("settings_show_latest_logs_symbols_count", 5);
+//<-- $$067FE End of insert
     // Settings: Show EventDay
     c.settings_show_eventday = getValue("settings_show_eventday", true);
     c.settings_date_format = getValue("settings_date_format", "MM/dd/yyyy");
@@ -616,6 +643,9 @@ var variablesInit = function (c) {
     externalBookmark("Project Geocaching", "http://project-gc.com/", c.bookmarks);
     bookmark("Search TB adv.", "https://www.geocaching.com/track/search.aspx", c.bookmarks);
     bookmark("View Geocache Map", "https://www.geocaching.com/map/", c.bookmarks);
+//--> $$066FE Begin of insert
+    profileSpecialBookmark(scriptShortNameSync, defaultSyncLink, "lnk_gclhsync", c.bookmarks);
+//<-- $$066FE End of insert
 
     // Settings: Custom Bookmark-title
     c.bookmarks_orig_title = new Array();
@@ -865,7 +895,7 @@ var mainGC = function () {
         gclh_error("Run after Redirect", e);
     }
 //<-- $$062FE End of insert
-
+    
     function getElementsByClass(classname) {
         var result = new Array();
         var all_elements = document.getElementsByTagName("*");
@@ -2464,6 +2494,61 @@ var mainGC = function () {
     } catch (e) {
         gclh_error("Map It Button", e);
     }
+
+//--> $$067FE Begin of insert
+// Show the latest logs symbols in cache listings.
+    try {
+        if ( is_page("cache_listing") && settings_show_latest_logs_symbols && settings_load_logs_with_gclh ) {
+            function showLatestLogsSymbols( waitCount ) {
+                var logs = $(('#cache_logs_table', '#cache_logs_table2')).find('tbody tr.log-row'); 
+                if ( logs.length > 0 ) {
+                    var lateLogs = new Array();
+                    for (var i = 0; i < logs.length; i++) {
+                        if ( settings_show_latest_logs_symbols_count == i ) break;
+                        var lateLog = new Object();
+                        lateLog['user'] = $(logs[i]).find('.logOwnerProfileName').find('a[href*="/profile/?guid="]').text();
+                        lateLog['id'] = $(logs[i]).find('.logOwnerProfileName').find('a[href*="/profile/?guid="]').attr('id');
+                        lateLog['src'] = $(logs[i]).find('.LogType').find('img[src*="/images/logtypes/"]').attr('src');
+                        lateLog['type'] = $(logs[i]).find('.LogType').find('img[src*="/images/logtypes/"]').attr('title');
+                        lateLog['date'] = $(logs[i]).find('.LogDate').text();
+                        lateLogs[i] = lateLog;
+                    }
+                    if ( lateLogs.length > 0 && document.getElementById("ctl00_ContentBody_mcd1").parentNode ) {
+                        var side = document.getElementById("ctl00_ContentBody_mcd1").parentNode;
+                        side.style.display = "initial";
+                        var div = document.createElement("div");
+                        var divTitle = "";
+                        div.id = "gclh_latest_logs";
+                        div.setAttribute("style", "float: right; padding-right: 0; padding-top: 2px;");
+                        div.appendChild(document.createTextNode("Latest logs:"));
+                        for (var i = 0; i < lateLogs.length; i++) {
+                            var a = document.createElement("a");
+                            a.class = "gclh_latest_log";
+                            a.href = "#" + lateLogs[i]['id'];
+                            var img = document.createElement("img");
+                            img.src = lateLogs[i]['src'];
+                            img.title = lateLogs[i]['type'] + " - " + lateLogs[i]['date'] + " - " + lateLogs[i]['user'];
+                            img.setAttribute("style", "padding-left: 2px; vertical-align: bottom;");
+                            a.appendChild(img);
+                            div.appendChild(a);
+                            divTitle += ( divTitle == "" ? "" : "\n" ) + img.title;
+                        }
+                        div.title = divTitle;
+                        side.appendChild(div);
+                    }
+                } else {
+                    waitCount++;
+                    if ( waitCount <= 100 ) {  // 50 Sekunden lang (Beispiel: GC4MEGA mit ~ 40 Sekunden)
+                        setTimeout( function () { showLatestLogsSymbols( waitCount ) }, 500); 
+                    } else return;
+                }
+            }
+            showLatestLogsSymbols( 0 );
+        }
+    } catch (e) {
+        gclh_error("Show the latest logs symbols", e);
+    }
+//<-- $$067FE End of insert
 
 // Map on create pocketQuery-page
     try {
@@ -5544,10 +5629,21 @@ var mainGC = function () {
                 body.setAttribute("class", "WidgetBody");
                 body.setAttribute("id", "gclh_vip_list");
                 headline.innerHTML = "<img width=\"16\" height=\"16\" title=\"VIP-List\" alt=\"VIP-List\" src=\"" + http + "://www.geocaching.com/images/icons/icon_attended.gif\"> VIP-List";
+//--> $$064FE Begin of change
+                if ( settings_make_vip_lists_hideable ) {
+                    headline.innerHTML = "<img id='lnk_gclh_vip_list' title='' src='' style='cursor: pointer'> " + headline.innerHTML;
+                }
+//<-- $$064FE End of change
                 box.appendChild(headline);
                 box.appendChild(body);
                 box.setAttribute("style", "margin-top: 1.5em;");
                 map.parentNode.insertBefore(box, map);
+//--> $$064FE Begin of insert
+                if ( settings_make_vip_lists_hideable ) {
+                    showHideBoxCL("lnk_gclh_vip_list", true);
+                    document.getElementById("lnk_gclh_vip_list").addEventListener("click", function() {showHideBoxCL(this.id, false)}, false);
+                }
+//<-- $$064FE End of insert
 
                 // Show VIP List "not found"
                 if (settings_vip_show_nofound) {
@@ -5559,10 +5655,21 @@ var mainGC = function () {
                     body2.setAttribute("class", "WidgetBody");
                     body2.setAttribute("id", "gclh_vip_list_nofound");
                     headline2.innerHTML = "<img width=\"16\" height=\"16\" title=\"VIP-List\" alt=\"VIP-List\" src=\"" + http + "://www.geocaching.com/images/icons/icon_attended.gif\"> VIP-List \"not found\"";
+//--> $$064FE Begin of change  
+                    if ( settings_make_vip_lists_hideable ) {
+                        headline2.innerHTML = "<img id='lnk_gclh_vip_list_nofound' title='' src='' style='cursor: pointer'> " + headline2.innerHTML;
+                    }
+//<-- $$064FE End of change
                     box2.appendChild(headline2);
                     box2.appendChild(body2);
                     box2.innerHTML = box2.innerHTML;
                     map.parentNode.insertBefore(box2, map);
+//--> $$064FE Begin of insert
+                    if ( settings_make_vip_lists_hideable ) {
+                        showHideBoxCL("lnk_gclh_vip_list_nofound", true);
+                        document.getElementById("lnk_gclh_vip_list_nofound").addEventListener("click", function() {showHideBoxCL(this.id, false)}, false);
+                    }
+//<-- $$064FE End of insert
                 }
 
                 var css = "a.gclh_log:hover { " +
@@ -5975,6 +6082,34 @@ var mainGC = function () {
         gclh_error("improve inventory list in cache listing", e);
     }
     
+//--> $$065FE Begin of insert
+// Wenn nicht alle eigenen Logs geladen werden, weil beispielsweise das Laden der Seite über den Browser gestoppt wurde, dann 
+// angeben wieviele Logs geladen wurden und das Datum des letzten geladenen Logs angeben.
+    try {
+        if ( document.location.href.match(/^https?:\/\/www\.geocaching\.com\/my\/logs\.aspx?/) ) {
+            if ( document.getElementById("divContentMain") && document.getElementById("divContentMain").children[2] && document.getElementsByTagName("tr")[0] ) {
+                var result = document.getElementById("divContentMain").children[2];
+                var count = result.innerHTML.match(/\s+(\d+)\s+/);
+                if ( count ) {
+                    var loaded = document.getElementsByTagName("tr").length;
+                    if ( parseInt(count[1]) > loaded ) {
+                        if ( document.getElementsByTagName("tr")[loaded-1].children[2] &&
+                             document.getElementsByTagName("tr")[loaded-1].children[2].innerHTML.match(/(\S+)/) ) var lastLog = loaded-1;
+                        else if ( document.getElementsByTagName("tr")[loaded-2].children[2] &&
+                                  document.getElementsByTagName("tr")[loaded-2].children[2].innerHTML.match(/(\S+)/) ) var lastLog = loaded-2;
+                        else var lastLog = "";
+                        if ( lastLog != "" ) var dateLastLog =  ". Last date is " + document.getElementsByTagName("tr")[lastLog].children[2].innerHTML.replace(/\s/g, "");
+                        else var dateLastLog = ""; 
+                        result.innerHTML = result.innerHTML + " (Only " + loaded + " logs loaded" + dateLastLog + ".)";
+                    }
+                }
+            }
+        }
+    } catch (e) {
+        gclh_error("stopped logs loaded", e);
+    }
+//<-- $$065FE End of insert
+    
 // Improve "My Profile"   
     try {
         if (document.location.href.match(/^https?:\/\/www\.geocaching\.com\/my/)) {
@@ -5992,7 +6127,10 @@ var mainGC = function () {
 
             var script = document.createElement("script");
             script.innerHTML = code;
-            document.getElementsByTagName("body")[0].appendChild(script);
+//--> $$064FE Begin of change
+//            document.getElementsByTagName("body")[0].appendChild(script);
+            if ( document.getElementsByTagName("body")[0] ) document.getElementsByTagName("body")[0].appendChild(script);
+//<-- $$064FE End of change
 
             var boxes = getElementsByClass("WidgetHeader");
 
@@ -7446,7 +7584,7 @@ var mainGC = function () {
         var next_check = parseInt(getValue("update_next_check"), 10);
         if (!next_check) next_check = 0;
         var time = new Date().getTime();
-        
+
         if ( next_check < time) {
             var url = "https://github.com/2Abendsegler/GClh/raw/master/gc_little_helper_II.user.js";
             var token = getValue("token", "");
@@ -7470,6 +7608,9 @@ var mainGC = function () {
                                                "Click OK to upgrade.\n";
                                     if (window.confirm(text)) {
                                         window.open(url, '_blank');
+//--> $$068FE Begin of insert
+                                        simulateDownloadCounter();
+//<-- $$068FE End of insert
                                     } else { 
                                         time += 8 * 60 * 60 * 1000; // 8 Stunden warten, bis zum nächsten Check.
                                         setValue('update_next_check', time.toString());
@@ -7708,6 +7849,20 @@ var mainGC = function () {
         else { newParameterVers += '></span>'; }
         return newParameterVers;
     }
+
+//--> $$068FE Begin of insert
+// Downloadzähler simulieren, weil GitHub das wohl nicht kann.
+    function simulateDownloadCounter() {
+        GM_xmlhttpRequest({
+            method: "GET",
+//--> $$000FE Begin of change
+            url: "https://goo.gl/biwR0R",  // Downloadzähler Version 0.2.1
+//<-- $$000FE End of change
+            onload: function (result) {
+            }
+        });
+    }
+//<-- $$068FE End of insert
     
 // Seite abdunkeln. 
     function buildBgShadow() {
@@ -7785,13 +7940,50 @@ var mainGC = function () {
         return [ aDate, aTime, aDateTime ];
     }
 
+//--> $$064FE Begin of insert
+// Show, hide Box. Beispielsweise die beiden VIP Boxen im Cache Listing. Kann aber auch für andere Dinge genutzt werden.
+    function showHideBoxCL( id_lnk, first ) {
+        var name_show_box = id_lnk.replace("lnk_", "show_box_");
+        var id_box = id_lnk.replace("lnk_", "");
+        var show_box = getValue(name_show_box, true); 
+        if ( document.getElementById(id_lnk) ) var lnk = document.getElementById(id_lnk);
+        if ( document.getElementById(id_box) ) var box = $('#' + id_box);
+        if ( !box ) {
+            if ( document.getElementsByClassName(id_box) ) var box = $('.' + id_box);
+        }
+        if ( lnk && box ) {
+            if ( ( show_box == true && first == true )   ||
+                 ( show_box == false && first == false )    ) {
+                setShowHide( lnk, "hide" );
+                box.show();
+                setValue(name_show_box, true);
+            } else {
+                setShowHide( lnk, "show" );
+                box.hide();
+                setValue(name_show_box, false);
+            }
+        } 
+    }
+
+// Show bzw. hide setzen.
+    function setShowHide( row, whatToDo ) {
+        if ( whatToDo == "show" ) {
+            row.title = "show"; 
+            row.src = http + "://www.geocaching.com/images/plus.gif";
+        } else {
+            row.title = "hide"; 
+            row.src = http + "://www.geocaching.com/images/minus.gif";
+        }
+    }
+//<-- $$064FE End of insert
+
 //--> $$062FE Begin of insert (Größere Anpassungen ohne zeilenweise Änderungsdokumentation.)
 ////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////
 // Find Player
 ////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////
-    // Create and hide the "Find Player" Form
+// Create and hide the "Find Player" Form
     function createFindPlayerForm() {
         // Alle eventuellen Verarbeitungen schließen.
         btnClose();
@@ -8038,9 +8230,15 @@ var mainGC = function () {
 //--> $$060FE Begin of change
 //            html += "&nbsp;" + "<font class='gclh_small'><a href='https://github.com/amshove/GC_little_helper/wiki/German-Help' target='_blank'>Hier</a> gibt es eine deutsche Anleitung zu den Einstellungen.</font><br>";
 //            html += "&nbsp;" + "<font class='gclh_small'>Contribute to GClh on <a href='https://github.com/amshove/GC_little_helper' target='_blank'>github.com</a></font>";
-            html += "&nbsp;" + "<font class='gclh_small'>Contribute to GClh on <a href='https://github.com/2Abendsegler/GC_little_helper_2AS' target='_blank'>github.com</a></font>";
+//--> $$066FE Begin of delete
+//            html += "&nbsp;" + "<font class='gclh_small'>Contribute to GClh on <a href='https://github.com/2Abendsegler/GC_little_helper_2AS' target='_blank'>github.com</a></font>";
+//<-- $$066FE End of delete 
 //<-- $$060FE End of change
-            html += "<br><br>";
+//--> $$066FE Begin of change
+//            html += "<br><br>";
+            html += "&nbsp;" + "<font class='gclh_small' style='float: right' ><a href='http://geoclub.de/forum/viewtopic.php?f=117&t=79372' target='_blank'>Help</a>, <a href='https://raw.githubusercontent.com/2Abendsegler/GClh/master/Changelog.txt' target='_blank'>Changelog</a>, <a href='https://rawgit.com/2Abendsegler/GClh/master/Wish list.pdf' target='_blank'>Wish list</a>, <a href='https://github.com/2Abendsegler/GClh' target='_blank'>GitHub</a></font>";
+            html += "<br>";
+//<-- $$066FE End of change
             html += "<h4 class='gclh_headline2'>Global</h4>";
             html += "&nbsp;" + "Home-Coords: <input class='gclh_form' type='text' size='21' id='settings_home_lat_lng' value='" + DectoDeg(getValue("home_lat"), getValue("home_lng")) + "'>" + show_help("The Home-Coords are filled automatically if you update your Home-Coords on gc.com. If it doesn\'t work you can insert them here. These coords are used for some special links (nearest list, nearest map, ..) and for the homezone circle on the map.") + "<br>";
             html += checkboxy('settings_change_header_layout', "Change header layout") + show_help("Change the header layout to save some vertical space.") + "<br/>";
@@ -8251,6 +8449,16 @@ var mainGC = function () {
             html += checkboxy('settings_strike_archived', 'Strike through title of archived/disabled caches') + "<br/>";
             html += checkboxy('settings_highlight_usercoords', 'Highlight coordinates which are changed by the user with red textcolor') + "<br/>";
             html += checkboxy('settings_show_fav_percentage', 'Show percentage of favourite points') + show_help("This option loads the favourite stats of a cache in the backround and display the percentage under the amount of favourites a cache got.") + "<br/>";
+//--> $$067FE Begin of insert
+            html += newParameterOn2;
+            html += checkboxy('settings_show_latest_logs_symbols', 'Show the ');
+            html += "<select class='gclh_form' id='settings_show_latest_logs_symbols_count'>";
+            for ( var i = 1; i < 11; i++ ){
+                html += "  <option value='" + i + "' " + (settings_show_latest_logs_symbols_count == i ? "selected=\"selected\"" : "") + ">" + i + "</option>";
+            }
+            html += "</select> latest logs symbols at the top" + show_help("With this option, the choosen count of the latest logs symbols is shown at the top of the cache listing. <br><br>This option requires \"Load logs with GClh\".") + "<br>";
+            html += newParameterVersionSetzen(0.2) + newParameterOff;
+//<-- $$067FE End of insert
             html += newParameterOn1;
             html += checkboxy('settings_show_remove_ignoring_link', 'Show \"Stop Ignoring\", if cache is already ignored') + show_help("This option replace the \"Ignore\" link description with the \"Stop Ignoring\" link description in the cache listing, if the cache is already ignored.") + "<br/>";
             html += checkboxy('settings_map_overview_build', 'Show cache location in overview map') + show_help("With this option there will be an additional map top right in the cache listing as an overview of the cache location. This was available in the gc.com standard earlier.") + "<br/>";
@@ -8264,6 +8472,11 @@ var mainGC = function () {
             html += "&nbsp; " + checkboxy('settings_show_owner_vip_list', 'Show owner in VIP list')  + show_help("If you enable this option, the owner is a VIP for the cache, so you can see, what happened with the cache (disable, maint, enable, ..). <br><br>This option requires \"Show VIP list\".")+ "<br/>";
             html += "&nbsp; " + checkboxy('settings_show_long_vip', 'Show long VIP list (one row per log)') + show_help("This is another type of displaying the VIP list. If you disable this option you get the short list - one row per VIP and the logs as icons beside the VIP. If you enable this option, there is a row for every log.<br><br>This option requires \"Show VIP list\".") + "<br/>";
             html += "&nbsp; " + checkboxy('settings_vip_show_nofound', 'Show a list of VIPs who have not found the cache') + show_help("This option enables an additional VIP list with VIPs who have not found the cache.<br><br>This option requires \"Show VIP list\".") + "<br>";
+//--> $$064FE Begin of insert
+            html += newParameterOn2;
+            html += "&nbsp; " + checkboxy('settings_make_vip_lists_hideable', 'Make VIP lists in listing hideable') + show_help("With this option you can hide and show the VIP lists \"VIP-List\" and \"VIP-List not found\" in cache listing with one click.<br><br>This option requires \"Show VIP list\".") + "<br>";
+            html += newParameterVersionSetzen(0.2) + newParameterOff;
+//<-- $$064FE End of insert
             html += newParameterOn1;
             html += content_settings_show_mail_in_viplist.replace("settings_show_mail_in_viplist", "settings_show_mail_in_viplistX0");  
             html += "&nbsp; " + content_settings_show_mail_in_allmyvips.replace("settings_show_mail_in_allmyvips", "settings_show_mail_in_allmyvipsX1"); 
@@ -8506,6 +8719,11 @@ var mainGC = function () {
                     if ( num >= 49 && num <= 65 ) {
                         html +=          newParameterLL1;
                     }
+//--> $$066FE Begin of insert
+                    if ( num >= 66 && num <= 66 ) {
+                        html +=          newParameterLL2;
+                    }
+//<-- $$066FE End of insert
                 }
                 html += "            </td>";
                 // Zweite Spalte mit gegebenenfalls abweichenden Bezeichnungen:
@@ -8514,6 +8732,11 @@ var mainGC = function () {
                 if ( num >= 49 && num <= 65 ) {
                     html +=              newParameterLLVersionSetzen(0.1);
                 }
+//--> $$066FE Begin of insert
+                if ( num >= 66 && num <= 66 ) {
+                    html +=              newParameterLLVersionSetzen(0.2);
+                }
+//<-- $$066FE End of insert
                 html += "            </td>";
                 html += "        </tr>";
             }
@@ -8801,6 +9024,9 @@ var mainGC = function () {
             setEventsForDependentParameters( "settings_show_vip_list", "settings_vip_show_nofound" );
             setEventsForDependentParameters( "settings_show_vip_list", "settings_show_mail_in_viplist" );
             setEventsForDependentParameters( "settings_show_vip_list", "settings_show_mail_in_allmyvips" );
+//--> $$064FE Begin of insert
+            setEventsForDependentParameters( "settings_show_vip_list", "settings_make_vip_lists_hideable" );
+//<-- $$064FE End of insert
             setEventsForDependentParameters( "settings_log_inline", "settings_log_inline_tb", false );
             setEventsForDependentParameters( "settings_log_inline_pmo4basic", "settings_log_inline_tb", false );
             setEventsForDependentParameters( "settings_show_mail", "settings_show_mail_coordslink" );
@@ -8819,6 +9045,11 @@ var mainGC = function () {
             setEventsForDependentParameters( "settings_count_own_matrix_show_next", "settings_count_own_matrix_links" );
             setEventsForDependentParameters( "settings_add_link_gc_map_on_google_maps", "settings_switch_to_gc_map_in_same_tab" );
             setEventsForDependentParameters( "settings_add_link_google_maps_on_gc_map", "settings_switch_to_google_maps_in_same_tab" );
+//--> $$067FE Begin of insert
+            setEventsForDependentParameters( "settings_show_latest_logs_symbols", "settings_show_latest_logs_symbols_count" );
+            setEventsForDependentParameters( "settings_load_logs_with_gclh", "settings_show_latest_logs_symbols" );
+            setEventsForDependentParameters( "settings_load_logs_with_gclh", "settings_show_latest_logs_symbols_count" );
+//<-- $$067FE End of insert
             // Abhängigkeiten der Linklist Parameter.            
             for (var i = 0; i < 100; i++) {
                 // 2. Spalte: Links für die Custom Bookmarks.
@@ -8968,6 +9199,9 @@ var mainGC = function () {
             setValue("settings_count_own_matrix_show_color_next", document.getElementById('settings_count_own_matrix_show_color_next').value);
             setValue("settings_count_own_matrix_links_radius", document.getElementById('settings_count_own_matrix_links_radius').value);
             setValue("settings_count_own_matrix_links", document.getElementById('settings_count_own_matrix_links').value);
+//--> $$067FE Begin of insert
+            setValue("settings_show_latest_logs_symbols_count", document.getElementById('settings_show_latest_logs_symbols_count').value);
+//<-- $$067FE End of insert
 
             var new_map_layers = document.getElementById('settings_map_layers');
             var new_settings_map_layers = new Array();
@@ -9037,6 +9271,12 @@ var mainGC = function () {
                 'settings_add_link_google_maps_on_gc_map',
                 'settings_switch_to_google_maps_in_same_tab',
                 'settings_sort_default_bookmarks',                                                 // Sort Linklist
+//--> $$064FE Begin of insert
+                'settings_make_vip_lists_hideable',
+//<-- $$064FE End of insert
+//--> $$067FE Begin of insert
+                'settings_show_latest_logs_symbols',
+//<-- $$067FE End of insert
                 'settings_show_google_maps',
                 'settings_show_log_it',
                 'settings_show_nearestuser_profil_link',
@@ -9438,7 +9678,10 @@ var mainGC = function () {
             var mess = "If this option is disabled, there are no VIP-, mail-, message- and \n"
                      + "top icons, no line colors and no mouse activated big images at the \n"
                      + "logs. Also the VIP lists, hide avatars, log filter and log search \n"
-                     + "won't work.";
+//--> $$067FE Begin of change
+//                     + "won't work.";
+                     + "and the latest logs won't work.";
+//<-- $$067FE End of change
             alert( mess );
         }
     }
