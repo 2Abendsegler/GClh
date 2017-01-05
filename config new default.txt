@@ -68,4 +68,4 @@
   "settings_make_vip_lists_hideable": true,
   "settings_show_latest_logs_symbols": true,
   "settings_show_latest_logs_symbols_count": 5
-}
+} 
