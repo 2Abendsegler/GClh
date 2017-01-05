@@ -2,7 +2,7 @@
 // @name           GC little helper II
 // @namespace      http://www.amshove.net
 //--> $$000FE Begin of change
-// @version        0.0
+// @version        0.1
 //<-- $$000FE End of change
 // @include        http://www.geocaching.com/*
 // @include        https://www.geocaching.com/*
