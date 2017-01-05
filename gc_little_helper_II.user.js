@@ -7465,7 +7465,7 @@ var mainGC = function () {
                                 var new_version = version[1].replace(/\s/g, "");
                                 if ( new_version != scriptVersion ) {
                                     var currVersion = "version " + scriptVersion;
-                                    var text = "Version " + new_version + " of greasemonkey script " + scriptName + " is available.\n" +
+                                    var text = "Version " + new_version + " of script \""+ scriptName + "\" is available.\n" +
                                                "You are currently using " + currVersion + ".\n\n" +
                                                "Click OK to upgrade.\n";
                                     if (window.confirm(text)) {
