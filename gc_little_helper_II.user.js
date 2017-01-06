@@ -35,11 +35,22 @@
 //*************************************************************************************************************************************************
 // Kennz.  | Datum      | Entwickler    | zuVers.|
 //*************************************************************************************************************************************************
+// $$005CF | Jan.2017   | CF            |    |
+// Change: Configuration Menu: Reorder map options
+//    * Move options "Hide sidebar by default", "Hide header by default" up
+//    * Move option "Add link to Google Maps on GC Map" and child "Switch to Google Maps in same browser tab" into section Google Maps page
+//    * Move option "Show Hillshadow by default" closer to layer section
+//    * In case option Replace layercontrol by GClh is unchecked - depended options are hidden
+//    * Some smaller fixes in the Map option sections
+// ------------------------------------------------------------------------------------------------------------------------------------------------
+// $$004CF | Jan.2017   | CF            |    |
+// Change: Configuration menu: improve layer selection
+// ------------------------------------------------------------------------------------------------------------------------------------------------
 // $$003CF | Jan.2017   | CF            |    |
 // New: Map: Default Geocaching Layer
 // ------------------------------------------------------------------------------------------------------------------------------------------------
 // $$002CF | Jan.2017   | CF            |    |
-// New: Configuration menu: new map icons for cache types
+// Change: Configuration menu: new map icons for cache types
 // ------------------------------------------------------------------------------------------------------------------------------------------------
 // $$001CF | Jan.2017   | CF            |    |
 // New: Configuration menu: clickable label text for checkboxes
@@ -8374,7 +8385,9 @@ var mainGC = function () {
                 html += newHzEl.html();
             }
             html += "<div class='wrapper'></div><button type='button' class='addentry' style='cursor: pointer; border: 2px solid #778555; border-radius: 7px;'>create further Homezone</button></div>"
-
+            html += "<div style='margin-top: 9px;'><b>Hide Map Elements</b></div>";
+            html += checkboxy('settings_map_hide_sidebar', 'Hide sidebar by default') + show_help("If you want to hide the sidebar on the map, just select this option.") + "<br/>";
+            html += checkboxy('settings_hide_map_header', 'Hide header by default') + show_help("If you want to hide the header of the map, just select this option.") + "<br/>";
             html += checkboxy('settings_map_hide_found', 'Hide found caches by default') + show_help("This is a premium feature - it enables automatically the option to hide your found caches on map.") + "<br/>";
             html += checkboxy('settings_map_hide_hidden', 'Hide own caches by default') + show_help("This is a premium feature - it enables automatically the option to hide your caches on map.") + "<br/>";
             html += "&nbsp;" + "Hide cache types by default: " + show_help("This is a premium feature - it enables automatically the option to hide the specific cache type.") + "<br/>";
@@ -8386,11 +8399,12 @@ var mainGC = function () {
             html += " &nbsp; " + checkboxy('settings_map_hide_8', "<img src='" + http + "://www.geocaching.com/map/images/mapicons/8.png' title='Mystery'>") + " &nbsp; " + checkboxy('settings_map_hide_5', "<img src='" + http + "://www.geocaching.com/map/images/mapicons/5.png' title='Letterbox'>") + " &nbsp; " + checkboxy('settings_map_hide_1858', "<img src='" + http + "://www.geocaching.com/map/images/mapicons/1858.png' title='Wherigo'>") + "<br/>";
 //<-- $$002CF End of changes
 //<-- $$018 End of change
-//--> $$003CF Begin of change
-            html += "<div style='margin-top: 9px;'><b>Layers in map</b>" + show_help("Here you can select the map layers which should be display to select with the map. With this option you can reduce the long list to the layers you really need. If the list of Shown layers is empty, all will be displayed. If you use other scripts like \"Geocaching Map Enhancements\" GClh will overwrite its layercontrol. With this option you can disable GClh layers to use the layers from gc.com or GME.") + "</div>";				
-            html += "<div id='MapLayersConfiguration'>";
+//--> $$004CF Begin of change
+            html += "<div style='margin-top: 9px;'><b>Layers in map</b>" + show_help("Here you can select the map layers which should be added into the layer menu with the map. With this option you can reduce the long list to the layers you really need. If the right list of layers is empty, all will be displayed. If you use other scripts like \"Geocaching Map Enhancements\" GClh will overwrite its layercontrol. With this option you can disable GClh layers to use the layers from gc.com or GME.") + "</div>";				
+            html += checkboxy('settings_use_gclh_layercontrol', 'Replace layercontrol by GClh') + show_help("If you use other scripts like \"Geocaching Map Enhancements\" GClh will overwrite its layercontrol. With this option you can disable GClh layers to use the layers from gc.com or GME.") + "<br/>";
+            
+            html += "<div id='MapLayersConfiguration' style='display: "+(settings_use_gclh_layercontrol?"block":"none")+";'>";
             html += "<table cellspacing='0' cellpadding='0' border='0'><tbody>";
-            html += "<tr><td>Hidden layers</td><td></td><td>Shown layers</td></tr>";
             html += "<tr>";
             html += "<td><select class='gclh_form' style='width: 250px;' id='settings_maplayers_unavailable' multiple='single' size='7'></select></td>";
             html += "<td><input style='padding-left: 2px; padding-right: 2px; cursor: pointer;' class='gclh_form' type='button' value='>' id='btn_map_layer_right'><br><br><input style='padding-left: 2px; padding-right: 2px; cursor: pointer;' class='gclh_form' type='button' value='<' id='btn_map_layer_left'></td>";
@@ -8399,22 +8413,17 @@ var mainGC = function () {
             html += "<tr><td colspan='3'>&nbsp;Default layer: <code><span id='settings_mapdefault_layer'>"+settings_map_default_layer +"</span></code>";
             html += "&nbsp;" + show_help("Here you can select the map source you want to use as default in the map. Select a layer from the right list 'Shown layers' and push the button 'Set Default Layer'.");
             html += "<span style='float: right; margin-top: 0px; margin-right: 4px;' ><input style='padding-left: 2px; padding-right: 2px; cursor: pointer;' class='gclh_form' type='button' value='Set Default Layer' id='btn_set_default_layer'></span><br/>";
+            html += checkboxy('settings_show_hillshadow', 'Show Hillshadow by default') + show_help("If you want 3D-like-Shadow to be displayed by default, activate this function. Option \"Replace layercontrol by GClh\" must be enabled.") + "<br/>";
             html += "</td></tr>";
             html += "</tbody></table></div>";
-//<-- $003CF End of change            
-            html += checkboxy('settings_show_hillshadow', 'Show Hillshadow by default') + show_help("If you want 3D-like-Shadow to be displayed by default, activate this function. Option \"Replace layercontrol by GClh\" must be enabled.") + "<br/>";
-            html += checkboxy('settings_use_gclh_layercontrol', 'Replace layercontrol by GClh') + show_help("If you use other scripts like \"Geocaching Map Enhancements\" GClh will overwrite its layercontrol. With this option you can disable GClh layers to use the layers from gc.com or GME.") + "<br/>";
-            html += checkboxy('settings_map_hide_sidebar', 'Hide sidebar by default') + show_help("If you want to hide the sidebar on the map, just select this option.") + "<br/>";
-            html += checkboxy('settings_hide_map_header', 'Hide header by default') + show_help("If you want to hide the header of the map, just select this option.") + "<br/>";
-            html += newParameterOn1;
-            html += checkboxy('settings_add_link_google_maps_on_gc_map', 'Add link to Google Maps on GC Map') + show_help("With this option an icon are placed on the GC Map page to link to the same area in Google Maps.") + "<br/>";
-            html += " &nbsp; " + checkboxy('settings_switch_to_google_maps_in_same_tab', 'Switch to Google Maps in same browser tab') + show_help("With this option you can switch from GC Map to Google Maps in the same browser tab.<br><br>This option requires \"Add link to Google Maps on GC Map\".") + "<br/>";
-            html += newParameterVersionSetzen(0.1) + newParameterOff;
-            html += "<div style='margin-top: 9px;'><b>&nbsp;Google Maps page:</b></div>";
+//<-- $004CF End of change            
+            html += "<div style='margin-top: 9px;'><b>Google Maps page</b></div>";
             html += newParameterOn1;
             html += checkboxy('settings_hide_left_sidebar_on_google_maps', 'Hide left sidebar on Google Maps by default') + show_help("With this option you can blended the left sidebar on the Google Maps page out.") + "<br/>";
             html += checkboxy('settings_add_link_gc_map_on_google_maps', 'Add link to GC Map on Google Maps') + show_help("With this option an icon are placed on the Google Maps page to link to the same area in GC Map.") + "<br/>";
             html += " &nbsp; " + checkboxy('settings_switch_to_gc_map_in_same_tab', 'Switch to GC Map in same browser tab') + show_help("With this option you can switch from Google Maps to GC Map in the same browser tab.<br><br>This option requires \"Add link to GC Map on Google Maps\".") + "<br/>";
+            html += checkboxy('settings_add_link_google_maps_on_gc_map', 'Add link to Google Maps on GC Map') + show_help("With this option an icon are placed on the GC Map page to link to the same area in Google Maps.") + "<br/>";
+            html += " &nbsp; " + checkboxy('settings_switch_to_google_maps_in_same_tab', 'Switch to Google Maps in same browser tab') + show_help("With this option you can switch from GC Map to Google Maps in the same browser tab.<br><br>This option requires \"Add link to Google Maps on GC Map\".") + "<br/>";
             html += newParameterVersionSetzen(0.1) + newParameterOff;
             html += "";
             html += "<br>";
@@ -8798,7 +8807,7 @@ var mainGC = function () {
             div.innerHTML = html;
             document.getElementsByTagName('body')[0].appendChild(div);
 
-//--> $$003CF Begin of change
+//--> $$004CF Begin of change
             // Map / Layers
             // -------------------
             function layerOption( name, selected ) {
@@ -8845,7 +8854,13 @@ var mainGC = function () {
                     $("#settings_maplayers_unavailable").append(layerOption( name , false ) );
                 }
             }
-//<-- $$003CF End of change			
+//<-- $$004CF End of change
+
+//--> $$005CF Begin of change
+            $("#settings_use_gclh_layercontrol").click(function () {
+                $("#MapLayersConfiguration").toggle();
+            });
+//<-- $$005CF End of change
 
             // Bookmarks.
             for (var i = 0; i < bookmarks.length; i++) {
