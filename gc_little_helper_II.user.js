@@ -35,6 +35,9 @@
 //*************************************************************************************************************************************************
 // Kennz.  | Datum      | Entwickler    | zuVers.|
 //*************************************************************************************************************************************************
+// $$006CF | Jan.2017   | CF            |    |
+// Bugfix: cache types which are hidden by default are not shown disabled
+// ------------------------------------------------------------------------------------------------------------------------------------------------
 // $$005CF | Jan.2017   | CF            |    |
 // Change: Configuration Menu: Reorder map options
 //    * Move options "Hide sidebar by default", "Hide header by default" up
@@ -4735,26 +4738,26 @@ var mainGC = function () {
             function hideCacheTypes() {
                 if ( document.location.href.match(/&asq=/) ) return;
                 // Cache Types auf hidden setzen.
-                if (settings_map_hide_2    && document.getElementById("Legend2"))    { document.getElementById("Legend2").click();    document.getElementById("Legend2").setAttribute("class", "ct_toggle ct2 ct_hidden"); }
-                if (settings_map_hide_9    && document.getElementById("Legend9"))    { document.getElementById("Legend9").click();    document.getElementById("Legend9").setAttribute("class", "ct_toggle ct9 ct_hidden"); }
-                if (settings_map_hide_5    && document.getElementById("Legend5"))    { document.getElementById("Legend5").click();    document.getElementById("Legend5").setAttribute("class", "ct_toggle ct5 ct_hidden"); }
-                if (settings_map_hide_3    && document.getElementById("Legend3"))    { document.getElementById("Legend3").click();    document.getElementById("Legend3").setAttribute("class", "ct_toggle ct3 ct_hidden"); }
-                if (settings_map_hide_6    && document.getElementById("Legend6"))    { document.getElementById("Legend6").click();    document.getElementById("Legend6").setAttribute("class", "ct_toggle ct6 ct_hidden"); }
-                if (settings_map_hide_453  && document.getElementById("Legend453"))  { document.getElementById("Legend453").click();  document.getElementById("Legend453").setAttribute("class", "ct_toggle ct453 ct_hidden"); }
-                if (settings_map_hide_7005 && document.getElementById("Legend7005")) { document.getElementById("Legend7005").click(); document.getElementById("Legend7005").setAttribute("class", "ct_toggle ct7005 ct_hidden"); }
-                if (settings_map_hide_13   && document.getElementById("Legend13"))   { document.getElementById("Legend13").click();   document.getElementById("Legend13").setAttribute("class", "ct_toggle ct13 ct_hidden"); }
-                if (settings_map_hide_1304 && document.getElementById("Legend1304")) { document.getElementById("Legend1304").click(); document.getElementById("Legend1304").setAttribute("class", "ct_toggle ct1304 ct_hidden"); }
-                if (settings_map_hide_4    && document.getElementById("Legend4"))    { document.getElementById("Legend4").click();    document.getElementById("Legend4").setAttribute("class", "ct_toggle ct4 ct_hidden"); }
-                if (settings_map_hide_11   && document.getElementById("Legend11"))   { document.getElementById("Legend11").click();   document.getElementById("Legend11").setAttribute("class", "ct_toggle ct11 ct_hidden"); }
-                if (settings_map_hide_137  && document.getElementById("Legend137"))  { document.getElementById("Legend137").click();  document.getElementById("Legend137").setAttribute("class", "ct_toggle ct137 ct_hidden"); }
-                if (settings_map_hide_8    && document.getElementById("Legend8"))    { document.getElementById("Legend8").click();    document.getElementById("Legend8").setAttribute("class", "ct_toggle ct8 ct_hidden"); }
-                if (settings_map_hide_1858 && document.getElementById("Legend1858")) { document.getElementById("Legend1858").click(); document.getElementById("Legend1858").setAttribute("class", "ct_toggle ct1858 ct_hidden"); }
+                if (settings_map_hide_2    && document.getElementById("Legend2"))    { document.getElementById("Legend2").click();    document.getElementById("Legend2").setAttribute("class", "ct_toggle ct2 ct_untoggled"); }
+                if (settings_map_hide_9    && document.getElementById("Legend9"))    { document.getElementById("Legend9").click();    document.getElementById("Legend9").setAttribute("class", "ct_toggle ct9 ct_untoggled"); }
+                if (settings_map_hide_5    && document.getElementById("Legend5"))    { document.getElementById("Legend5").click();    document.getElementById("Legend5").setAttribute("class", "ct_toggle ct5 ct_untoggled"); }
+                if (settings_map_hide_3    && document.getElementById("Legend3"))    { document.getElementById("Legend3").click();    document.getElementById("Legend3").setAttribute("class", "ct_toggle ct3 ct_untoggled"); }
+                if (settings_map_hide_6    && document.getElementById("Legend6"))    { document.getElementById("Legend6").click();    document.getElementById("Legend6").setAttribute("class", "ct_toggle ct6 ct_untoggled"); }
+                if (settings_map_hide_453  && document.getElementById("Legend453"))  { document.getElementById("Legend453").click();  document.getElementById("Legend453").setAttribute("class", "ct_toggle ct453 ct_untoggled"); }
+                if (settings_map_hide_7005 && document.getElementById("Legend7005")) { document.getElementById("Legend7005").click(); document.getElementById("Legend7005").setAttribute("class", "ct_toggle ct7005 ct_untoggled"); }
+                if (settings_map_hide_13   && document.getElementById("Legend13"))   { document.getElementById("Legend13").click();   document.getElementById("Legend13").setAttribute("class", "ct_toggle ct13 ct_untoggled"); }
+                if (settings_map_hide_1304 && document.getElementById("Legend1304")) { document.getElementById("Legend1304").click(); document.getElementById("Legend1304").setAttribute("class", "ct_toggle ct1304 ct_untoggled"); }
+                if (settings_map_hide_4    && document.getElementById("Legend4"))    { document.getElementById("Legend4").click();    document.getElementById("Legend4").setAttribute("class", "ct_toggle ct4 ct_untoggled"); }
+                if (settings_map_hide_11   && document.getElementById("Legend11"))   { document.getElementById("Legend11").click();   document.getElementById("Legend11").setAttribute("class", "ct_toggle ct11 ct_untoggled"); }
+                if (settings_map_hide_137  && document.getElementById("Legend137"))  { document.getElementById("Legend137").click();  document.getElementById("Legend137").setAttribute("class", "ct_toggle ct137 ct_untoggled"); }
+                if (settings_map_hide_8    && document.getElementById("Legend8"))    { document.getElementById("Legend8").click();    document.getElementById("Legend8").setAttribute("class", "ct_toggle ct8 ct_untoggled"); }
+                if (settings_map_hide_1858 && document.getElementById("Legend1858")) { document.getElementById("Legend1858").click(); document.getElementById("Legend1858").setAttribute("class", "ct_toggle ct1858 ct_untoggled"); }
                 // Gesamte Reihen zu den Cache Types auf hidden setzen.
-                if (settings_map_hide_2 && settings_map_hide_9 && settings_map_hide_5 ) document.getElementById("LegendGreen").childNodes[0].setAttribute("class", "a_cat_displayed cat_hidden");
-                if (settings_map_hide_3) document.getElementById("LegendYellow").childNodes[0].setAttribute("class", "a_cat_displayed cat_hidden");
-                if (settings_map_hide_6 && settings_map_hide_453 && settings_map_hide_7005 && settings_map_hide_13 && settings_map_hide_1304) document.getElementById("LegendRed").childNodes[0].setAttribute("class", "a_cat_displayed cat_hidden");
-                if (settings_map_hide_4 && settings_map_hide_11 && settings_map_hide_137) document.getElementById("chkLegendWhite").childNodes[0].setAttribute("class", "a_cat_displayed cat_hidden");
-                if (settings_map_hide_8 && settings_map_hide_1858) document.getElementById("chkLegendBlue").childNodes[0].setAttribute("class", "a_cat_displayed cat_hidden");                
+                if (settings_map_hide_2 /* && settings_map_hide_9 */ ) document.getElementById("LegendGreen").childNodes[0].setAttribute("class", "a_cat_displayed cat_untoggled");
+                if (settings_map_hide_3) document.getElementById("LegendYellow").childNodes[0].setAttribute("class", "a_cat_displayed cat_untoggled");
+                if (settings_map_hide_6 && settings_map_hide_453 && settings_map_hide_7005 && settings_map_hide_13 && settings_map_hide_1304) document.getElementById("LegendRed").childNodes[0].setAttribute("class", "a_cat_displayed cat_untoggled");
+                if (settings_map_hide_4 && settings_map_hide_11 && settings_map_hide_137) document.getElementById("chkLegendWhite").childNodes[0].setAttribute("class", "a_cat_displayed cat_untoggled");
+                if (settings_map_hide_8 && settings_map_hide_5 && settings_map_hide_1858) document.getElementById("chkLegendBlue").childNodes[0].setAttribute("class", "a_cat_displayed cat_untoggled");                
             }
             window.addEventListener("load", hideCacheTypes, false);
         }
