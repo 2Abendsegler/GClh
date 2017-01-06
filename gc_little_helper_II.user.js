@@ -35,6 +35,9 @@
 //*************************************************************************************************************************************************
 // Kennz.  | Datum      | Entwickler    | zuVers.|
 //*************************************************************************************************************************************************
+// $$001CF | Jan.2017   | CF            | 0.2.1  |
+// New: Configuration menu: clickable label text for checkboxes
+// ------------------------------------------------------------------------------------------------------------------------------------------------
 // $$068FE | Jan.2017   | FE            | 0.2.1  |
 // New: Downloadzaehler simulieren.
 // ------------------------------------------------------------------------------------------------------------------------------------------------
@@ -8086,7 +8089,9 @@ var mainGC = function () {
         // Hier werden auch gegebenenfalls "Clone" von Parametern verarbeitet. (Siehe Erläuterung weiter unten bei "setEventsForDoubleParameters".) 
         var setting_idX = setting_id;
         setting_id = setting_idX.replace(/(X[0-9]*)/, "");
+//--> $$060FE Begin of change	
         return "<input type='checkbox' " + (getValue(setting_id) ? "checked='checked'" : "" ) + " id='" + setting_idX + "'><label for='" + setting_idX + "'>" + label + "</label>";
+//<-- $$060FE end of change
     }
 
     function show_help(text) {
