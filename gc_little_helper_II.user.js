@@ -35,10 +35,13 @@
 //*************************************************************************************************************************************************
 // Kennz.  | Datum      | Entwickler    | zuVers.|
 //*************************************************************************************************************************************************
-// $$002CF | Jan.2017   | CF            | 0.2.1  |
+// $$003CF | Jan.2017   | CF            |    |
+// New: Map: Default Geocaching Layer
+// ------------------------------------------------------------------------------------------------------------------------------------------------
+// $$002CF | Jan.2017   | CF            |    |
 // New: Configuration menu: new map icons for cache types
 // ------------------------------------------------------------------------------------------------------------------------------------------------
-// $$001CF | Jan.2017   | CF            | 0.2.1  |
+// $$001CF | Jan.2017   | CF            |    |
 // New: Configuration menu: clickable label text for checkboxes
 // ------------------------------------------------------------------------------------------------------------------------------------------------
 // $$068FE | Jan.2017   | FE            | 0.2.1  |
@@ -4297,6 +4300,18 @@ var mainGC = function () {
                 }
             }
             checkMapLeaflet( 0 );
+//--> $$003CF Begin of insert 	
+            setTimeout(function() {
+                $.ajax({
+                        type: "POST",
+                        url: "/account/oauth/token",
+                        timeout: 10000
+                    })
+                    .done(function(r) {
+                        all_map_layers["Geocaching"].accessToken = r.access_token;
+                    });
+            }, 0);
+//<-- $$003CF End of insert 			
         }
     } catch (e) {
         gclh_error("Hide Map Header", e);
@@ -4305,6 +4320,15 @@ var mainGC = function () {
 // Map-Layers
     var all_map_layers = new Object();
 // gc.com Default-Layers
+//--> $$003CF Begin of insert 			
+    all_map_layers["Geocaching"] = {
+        tileUrl: "https://maptiles{s}.geocaching.com/tile/{z}/{x}/{y}.png?token={accessToken}",
+        accessToken: '',
+        subdomains: ['01', '02', '03', '04', '05', '06', '07', '08'],
+        minZoom: 0,
+        maxZoom: 18
+    };
+//<-- $$003CF End of insert 
     all_map_layers["OpenStreetMap Default"] = {
         tileUrl: "http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
         attribution: '&copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>'
