@@ -8386,17 +8386,22 @@ var mainGC = function () {
             html += " &nbsp; " + checkboxy('settings_map_hide_8', "<img src='" + http + "://www.geocaching.com/map/images/mapicons/8.png' title='Mystery'>") + " &nbsp; " + checkboxy('settings_map_hide_5', "<img src='" + http + "://www.geocaching.com/map/images/mapicons/5.png' title='Letterbox'>") + " &nbsp; " + checkboxy('settings_map_hide_1858', "<img src='" + http + "://www.geocaching.com/map/images/mapicons/1858.png' title='Wherigo'>") + "<br/>";
 //<-- $$002CF End of changes
 //<-- $$018 End of change
-            html += "&nbsp;" + "Available layers in map: <font class='gclh_small'>(multiselect with strg)</font><br>&nbsp;<select class='gclh_form' id='settings_map_layers' multiple='multiple'>";
-            for (name in all_map_layers) {
-                html += "  <option value='" + name + "' " + (settings_map_layers.indexOf(name) != -1 ? "selected='selected'" : "") + ">" + name + "</option>";
-            }
-            html += "</select>" + show_help("Here you can select the maps which should be available to select with the map. With this option you can reduce the long list to the layers you really need. If none is select, all will be displayed. Option \"Replace layercontrol by GClh\" must be enabled.") + "<br>";
-            html += "&nbsp;" + "Default layer: <select class='gclh_form' id='settings_map_default_layer'>";
-            html += "  <option value='false' " + (settings_map_default_layer == 'false' ? "selected='selected'" : "") + ">-- no default --</option>";
-            for (name in all_map_layers) {
-                html += "  <option value='" + name + "' " + (settings_map_default_layer == name ? "selected='selected'" : "") + ">" + name + "</option>";
-            }
-            html += "</select>" + show_help("Here you can select the map source you want to use as default in the map. Option \"Replace layercontrol by GClh\" must be enabled.") + "<br>";
+//--> $$003CF Begin of change
+            html += "<div style='margin-top: 9px;'><b>Layers in map</b>" + show_help("Here you can select the map layers which should be display to select with the map. With this option you can reduce the long list to the layers you really need. If the list of Shown layers is empty, all will be displayed. If you use other scripts like \"Geocaching Map Enhancements\" GClh will overwrite its layercontrol. With this option you can disable GClh layers to use the layers from gc.com or GME.") + "</div>";				
+            html += "<div id='MapLayersConfiguration'>";
+            html += "<table cellspacing='0' cellpadding='0' border='0'><tbody>";
+            html += "<tr><td>Hidden layers</td><td></td><td>Shown layers</td></tr>";
+            html += "<tr>";
+            html += "<td><select class='gclh_form' style='width: 250px;' id='settings_maplayers_unavailable' multiple='single' size='7'></select></td>";
+            html += "<td><input style='padding-left: 2px; padding-right: 2px; cursor: pointer;' class='gclh_form' type='button' value='>' id='btn_map_layer_right'><br><br><input style='padding-left: 2px; padding-right: 2px; cursor: pointer;' class='gclh_form' type='button' value='<' id='btn_map_layer_left'></td>";
+            html += "<td><select class='gclh_form' style='width: 250px;' id='settings_maplayers_available' multiple='single' size='7'></select></td>";
+            html += "</tr>";
+            html += "<tr><td colspan='3'>&nbsp;Default layer: <code><span id='settings_mapdefault_layer'>"+settings_map_default_layer +"</span></code>";
+            html += "&nbsp;" + show_help("Here you can select the map source you want to use as default in the map. Select a layer from the right list 'Shown layers' and push the button 'Set Default Layer'.");
+            html += "<span style='float: right; margin-top: 0px; margin-right: 4px;' ><input style='padding-left: 2px; padding-right: 2px; cursor: pointer;' class='gclh_form' type='button' value='Set Default Layer' id='btn_set_default_layer'></span><br/>";
+            html += "</td></tr>";
+            html += "</tbody></table></div>";
+//<-- $003CF End of change            
             html += checkboxy('settings_show_hillshadow', 'Show Hillshadow by default') + show_help("If you want 3D-like-Shadow to be displayed by default, activate this function. Option \"Replace layercontrol by GClh\" must be enabled.") + "<br/>";
             html += checkboxy('settings_use_gclh_layercontrol', 'Replace layercontrol by GClh') + show_help("If you use other scripts like \"Geocaching Map Enhancements\" GClh will overwrite its layercontrol. With this option you can disable GClh layers to use the layers from gc.com or GME.") + "<br/>";
             html += checkboxy('settings_map_hide_sidebar', 'Hide sidebar by default') + show_help("If you want to hide the sidebar on the map, just select this option.") + "<br/>";
@@ -8792,6 +8797,55 @@ var mainGC = function () {
             // Linklist/Bookmarks aufbauen.
             div.innerHTML = html;
             document.getElementsByTagName('body')[0].appendChild(div);
+
+//--> $$003CF Begin of change
+            // Map / Layers
+            // -------------------
+            function layerOption( name, selected ) {
+            		return "<option value='" + name + "' " + (selected ? "selected='selected'" : "") + ">" + name + "</option>";
+            }
+            $("#btn_map_layer_right").click(function () {
+                var source = "#settings_maplayers_unavailable";
+                var destination = "#settings_maplayers_available";
+                $(source+" option:selected").each(function() {
+                    var name = $(this).html();
+                    if ( name == settings_map_default_layer ) {
+                        $("#settings_mapdefault_layer").html(name);
+                    }
+                    $(destination).append(layerOption( name , (settings_map_default_layer == name) ));
+                });
+                $(source+" option:selected").remove();
+            });	
+            $("#btn_map_layer_left").click(function () {
+                var source = "#settings_maplayers_available";
+                var destination = "#settings_maplayers_unavailable";
+                $(source+" option:selected").each(function() {
+                    var name = $(this).html();
+                    if ( name == settings_map_default_layer ) {
+                        $("#settings_mapdefault_layer").html("<i>not available</i>");
+                    }
+                    $(destination).append(layerOption( name , false ));
+                });
+                $(source+" option:selected").remove();
+            });
+            $("#btn_set_default_layer").click(function () {
+                $("#settings_maplayers_available option:selected").each(function() {
+                    var name = $(this).html();
+                    $("#settings_mapdefault_layer").html(name);
+                    settings_map_default_layer = name;
+                });
+            });
+            // fill layer lists
+            var layerListAvailable="";
+            var layerListUnAvailable="";
+            for (name in all_map_layers) {
+                if ( settings_map_layers.indexOf(name) != -1 ) {
+                    $("#settings_maplayers_available").append(layerOption( name ,(settings_map_default_layer == name)) );
+                } else {
+                    $("#settings_maplayers_unavailable").append(layerOption( name , false ) );
+                }
+            }
+//<-- $$003CF End of change			
 
             // Bookmarks.
             for (var i = 0; i < bookmarks.length; i++) {
@@ -9216,7 +9270,7 @@ var mainGC = function () {
             setValue("settings_mail_signature", document.getElementById('settings_mail_signature').value.replace(/‌/g, "")); // Fix: Entfernt das Steuerzeichen
             setValue("settings_log_signature", document.getElementById('settings_log_signature').value.replace(/‌/g, ""));
             setValue("settings_tb_signature", document.getElementById('settings_tb_signature').value.replace(/‌/g, ""));
-            setValue("settings_map_default_layer", document.getElementById('settings_map_default_layer').value);
+            setValue("settings_map_default_layer", settings_map_default_layer );
             setValue("settings_hover_image_max_size", document.getElementById('settings_hover_image_max_size').value);
             setValue("settings_font_size_menu", document.getElementById('settings_font_size_menu').value);
             setValue("settings_font_size_submenu", document.getElementById('settings_font_size_submenu').value);
@@ -9238,10 +9292,10 @@ var mainGC = function () {
             setValue("settings_show_latest_logs_symbols_count", document.getElementById('settings_show_latest_logs_symbols_count').value);
 //<-- $$067FE End of insert
 
-            var new_map_layers = document.getElementById('settings_map_layers');
+            var new_map_layers = document.getElementById('settings_maplayers_available');
             var new_settings_map_layers = new Array();
             for (var i = 0; i < new_map_layers.options.length; i++) {
-                if (new_map_layers.options[i].selected) new_settings_map_layers.push(new_map_layers.options[i].value);
+                new_settings_map_layers.push(new_map_layers.options[i].value);
             }
             setValue('settings_map_layers', new_settings_map_layers.join("###"));
 
