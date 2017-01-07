@@ -8130,9 +8130,9 @@ var mainGC = function () {
         // Hier werden auch gegebenenfalls "Clone" von Parametern verarbeitet. (Siehe Erläuterung weiter unten bei "setEventsForDoubleParameters".) 
         var setting_idX = setting_id;
         setting_id = setting_idX.replace(/(X[0-9]*)/, "");
-//--> $$060FE Begin of change	
+//--> $$001CF Begin of change	
         return "<input type='checkbox' " + (getValue(setting_id) ? "checked='checked'" : "" ) + " id='" + setting_idX + "'><label for='" + setting_idX + "'>" + label + "</label>";
-//<-- $$060FE end of change
+//<-- $$001CF end of change
     }
 
     function show_help(text) {
