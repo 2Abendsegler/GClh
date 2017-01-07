@@ -9296,7 +9296,6 @@ var mainGC = function () {
             setValue("settings_mail_signature", document.getElementById('settings_mail_signature').value.replace(/‌/g, "")); // Fix: Entfernt das Steuerzeichen
             setValue("settings_log_signature", document.getElementById('settings_log_signature').value.replace(/‌/g, ""));
             setValue("settings_tb_signature", document.getElementById('settings_tb_signature').value.replace(/‌/g, ""));
-//xxxx
             setValue("settings_map_default_layer", settings_map_default_layer );
             setValue("settings_hover_image_max_size", document.getElementById('settings_hover_image_max_size').value);
             setValue("settings_font_size_menu", document.getElementById('settings_font_size_menu').value);
