@@ -35,6 +35,11 @@
 //*************************************************************************************************************************************************
 // Kennz.  | Datum      | Entwickler    | zuVers.|
 //*************************************************************************************************************************************************
+// $$069FE | Jan.2017   | FE/DieBatzen  | 0.2.2  | Issue #2
+// Fix: Overview map in listing: zoom in/out loses cache marker. If you zoom in/out the overview map in a cache listing, the cache marker gets 
+//      replaced by a default marker and the static image shows an error message. The reason is that GME changes the cache image link and 
+//      therefore the proper marker creation fails.
+// ------------------------------------------------------------------------------------------------------------------------------------------------
 // $$006CF | Jan.2017   | CF            | 0.2.2  |
 // Bugfix: cache types which are hidden by default are not shown disabled
 // ------------------------------------------------------------------------------------------------------------------------------------------------
@@ -2309,8 +2314,12 @@ var mainGC = function () {
         if ( zoom_value > 19 ) zoom_value = 19;
 
         if ( document.getElementById('uxLatLon') ) var coords = toDec(document.getElementById("uxLatLon").innerHTML);
-        if ( $("img:first", "a[href='/about/cache_types.aspx']")[0] ) {
-            var src_arr = $("img:first", "a[href='/about/cache_types.aspx']").attr("src").split("/");
+//--> $$069FE Begin of change
+//        if ( $("img:first", "a[href='/about/cache_types.aspx']")[0] ) {
+//            var src_arr = $("img:first", "a[href='/about/cache_types.aspx']").attr("src").split("/");
+        if ( $(".cacheImage").find("img").attr("src") ) {
+            var src_arr = $(".cacheImage").find("img").attr("src").split("/");
+//<-- $$069FE End of change
             var gc_type = src_arr[src_arr.length - 1].split(".")[0];
         }
         var url = 'url(' + http + '://maps.google.com/maps/api/staticmap?zoom=' + zoom_value + '&size=248x248' + '&maptype=roadmap&' 
@@ -4753,7 +4762,7 @@ var mainGC = function () {
                 if (settings_map_hide_8    && document.getElementById("Legend8"))    { document.getElementById("Legend8").click();    document.getElementById("Legend8").setAttribute("class", "ct_toggle ct8 ct_untoggled"); }
                 if (settings_map_hide_1858 && document.getElementById("Legend1858")) { document.getElementById("Legend1858").click(); document.getElementById("Legend1858").setAttribute("class", "ct_toggle ct1858 ct_untoggled"); }
                 // Gesamte Reihen zu den Cache Types auf hidden setzen.
-                if (settings_map_hide_2 /* && settings_map_hide_9 */ ) document.getElementById("LegendGreen").childNodes[0].setAttribute("class", "a_cat_displayed cat_untoggled");
+                if (settings_map_hide_2) document.getElementById("LegendGreen").childNodes[0].setAttribute("class", "a_cat_displayed cat_untoggled");
                 if (settings_map_hide_3) document.getElementById("LegendYellow").childNodes[0].setAttribute("class", "a_cat_displayed cat_untoggled");
                 if (settings_map_hide_6 && settings_map_hide_453 && settings_map_hide_7005 && settings_map_hide_13 && settings_map_hide_1304) document.getElementById("LegendRed").childNodes[0].setAttribute("class", "a_cat_displayed cat_untoggled");
                 if (settings_map_hide_4 && settings_map_hide_11 && settings_map_hide_137) document.getElementById("chkLegendWhite").childNodes[0].setAttribute("class", "a_cat_displayed cat_untoggled");
@@ -8401,7 +8410,6 @@ var mainGC = function () {
             html += " &nbsp; " + checkboxy('settings_map_hide_137', "<img src='" + http + "://www.geocaching.com/map/images/mapicons/137.png' title='EarthCache'>") + " &nbsp; " + checkboxy('settings_map_hide_4', "<img src='" + http + "://www.geocaching.com/map/images/mapicons/4.png' title='Virtual'>") + " &nbsp; " + checkboxy('settings_map_hide_11', "<img src='" + http + "://www.geocaching.com/map/images/mapicons/11.png' title='Webcam'>") + "<br/>";
             html += " &nbsp; " + checkboxy('settings_map_hide_8', "<img src='" + http + "://www.geocaching.com/map/images/mapicons/8.png' title='Mystery'>") + " &nbsp; " + checkboxy('settings_map_hide_5', "<img src='" + http + "://www.geocaching.com/map/images/mapicons/5.png' title='Letterbox'>") + " &nbsp; " + checkboxy('settings_map_hide_1858', "<img src='" + http + "://www.geocaching.com/map/images/mapicons/1858.png' title='Wherigo'>") + "<br/>";
 //<-- $$002CF End of changes
-//<-- $$018 End of change
 //--> $$004CF Begin of change
             html += "<div style='margin-top: 9px;'><b>Layers in map</b>" + show_help("Here you can select the map layers which should be added into the layer menu with the map. With this option you can reduce the long list to the layers you really need. If the right list of layers is empty, all will be displayed. If you use other scripts like \"Geocaching Map Enhancements\" GClh will overwrite its layercontrol. With this option you can disable GClh layers to use the layers from gc.com or GME.") + "</div>";				
             html += checkboxy('settings_use_gclh_layercontrol', 'Replace layercontrol by GClh') + show_help("If you use other scripts like \"Geocaching Map Enhancements\" GClh will overwrite its layercontrol. With this option you can disable GClh layers to use the layers from gc.com or GME.") + "<br/>";
@@ -9288,6 +9296,7 @@ var mainGC = function () {
             setValue("settings_mail_signature", document.getElementById('settings_mail_signature').value.replace(/‌/g, "")); // Fix: Entfernt das Steuerzeichen
             setValue("settings_log_signature", document.getElementById('settings_log_signature').value.replace(/‌/g, ""));
             setValue("settings_tb_signature", document.getElementById('settings_tb_signature').value.replace(/‌/g, ""));
+//xxxx
             setValue("settings_map_default_layer", settings_map_default_layer );
             setValue("settings_hover_image_max_size", document.getElementById('settings_hover_image_max_size').value);
             setValue("settings_font_size_menu", document.getElementById('settings_font_size_menu').value);
