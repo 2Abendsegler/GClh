@@ -4753,9 +4753,9 @@ var mainGC = function () {
                 if (settings_map_hide_8    && document.getElementById("Legend8"))    { document.getElementById("Legend8").click();    document.getElementById("Legend8").setAttribute("class", "ct_toggle ct8 ct_untoggled"); }
                 if (settings_map_hide_1858 && document.getElementById("Legend1858")) { document.getElementById("Legend1858").click(); document.getElementById("Legend1858").setAttribute("class", "ct_toggle ct1858 ct_untoggled"); }
                 // Gesamte Reihen zu den Cache Types auf hidden setzen.
-                if (settings_map_hide_2 /* && settings_map_hide_9 */ ) document.getElementById("LegendGreen").childNodes[0].setAttribute("class", "a_cat_displayed cat_untoggled");
+                if (settings_map_hide_2) document.getElementById("LegendGreen").childNodes[0].setAttribute("class", "a_cat_displayed cat_untoggled");
                 if (settings_map_hide_3) document.getElementById("LegendYellow").childNodes[0].setAttribute("class", "a_cat_displayed cat_untoggled");
-                if (settings_map_hide_6 && settings_map_hide_453 && settings_map_hide_7005 && settings_map_hide_13 && settings_map_hide_1304) document.getElementById("LegendRed").childNodes[0].setAttribute("class", "a_cat_displayed cat_untoggled");
+                if (settings_map_hide_6 && settings_map_hide_453 && settings_map_hide_7005 && settings_map_hide_13) document.getElementById("LegendRed").childNodes[0].setAttribute("class", "a_cat_displayed cat_untoggled");
                 if (settings_map_hide_4 && settings_map_hide_11 && settings_map_hide_137) document.getElementById("chkLegendWhite").childNodes[0].setAttribute("class", "a_cat_displayed cat_untoggled");
                 if (settings_map_hide_8 && settings_map_hide_5 && settings_map_hide_1858) document.getElementById("chkLegendBlue").childNodes[0].setAttribute("class", "a_cat_displayed cat_untoggled");                
             }
