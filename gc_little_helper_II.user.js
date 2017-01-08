@@ -35,6 +35,10 @@
 //*************************************************************************************************************************************************
 // Kennz.  | Datum      | Entwickler    | zuVers.|
 //*************************************************************************************************************************************************
+// $$007CF | Jan.2017   | CF            | 0.x.x  |
+// Bugfix: Configuration Menu: Remove cache types: APE und GPS Maze
+// Bugfix: Map: Disable complete event category if event, cito, mega, giga is disabled (remove GPS maze)
+// ------------------------------------------------------------------------------------------------------------------------------------------------
 // $$069FE | Jan.2017   | FE/DieBatzen  | 0.2.2  | Issue #2
 // Fix: Overview map in listing: zoom in/out loses cache marker. If you zoom in/out the overview map in a cache listing, the cache marker gets 
 //      replaced by a default marker and the static image shows an error message. The reason is that GME changes the cache image link and 
