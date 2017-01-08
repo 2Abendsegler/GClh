@@ -1,5 +1,21 @@
 CHANGELOG:
 
+Version 0.2.2:
+- Bugfix: Configuration Menu - Cachetypen APE und GPS Maze von "Hide cache types by default" entfernt
+- Bugfix: Map - Cache Kategory "Event" wird automatisch deaktiviert (hide by default), wenn Event, CITO, Mega, Giga deaktiviert werden (GPS Maze wird nicht mehr berücksichtigt)
+- Fix: Overview map in listing: zoom in/out loses cache marker. If you zoom in/out the overview map in a cache listing, the cache marker gets replaced by a default marker and the static image shows an error therefore the proper marker creation fails.
+- Bugfix: cache types which are hidden by default are not shown disabled
+- Change: Configuration Menu: Reorder map options
+* Move options "Hide sidebar by default", "Hide header by default" up
+* Move option "Add link to Google Maps on GC Map" and child "Switch to Google Maps in same browser tab" into section Google Maps page
+* Move option "Show Hillshadow by default" closer to layer section
+* In case option Replace layercontrol by GClh is unchecked - depended options are hidden
+* Some smaller fixes in the Map option sections
+- Change: Configuration menu: improve layer selection
+- New: Map: Default Geocaching Layer
+- Change: Configuration menu: new map icons for cache types
+- New: Configuration menu: clickable label text for checkboxes
+
 Version 0.2.1:
 - New: Downloadzaehler simulieren.
 - New: Cache Listing: Latest Logs Symbole im Kopf des Listings anzeigen. Ueber GClh Config steuern.
@@ -9,7 +25,7 @@ Version 0.2.1:
        ueber den Browser gestoppt wurde, dann angeben wieviele Logs geladen wurden und das Datum des 
        letzten geladenen Logs angeben, Cache und Trackables. (Wird das Laden der Seite ueber den Browser 
        gestoppt, funktioniert nicht mehr alles auf der Seite, so z.B. die Linklist.)
-       (Anschliessend kann man dann beispielsweise auch GC Vote f�r eine begrenzte Anzahl an Caches 
+       (Anschliessend kann man dann beispielsweise auch GC Vote für eine begrenzte Anzahl an Caches 
        nachladen.) 
 - New: Cache Listing: Make VIP lists hideable. Ueber GClh Config steuern.
 
