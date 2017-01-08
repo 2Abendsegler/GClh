@@ -1,4 +1,4 @@
-﻿// ==UserScript==
+// ==UserScript==
 // @name           GC little helper II
 // @namespace      http://www.amshove.net
 //--> $$000FE Begin of change
@@ -35,10 +35,15 @@
 //*************************************************************************************************************************************************
 // Kennz.  | Datum      | Entwickler    | zuVers.|
 //*************************************************************************************************************************************************
-// $$006CF | Jan.2017   | CF            |    |
+// $$069FE | Jan.2017   | FE/DieBatzen  | 0.2.2  | Issue #2
+// Fix: Overview map in listing: zoom in/out loses cache marker. If you zoom in/out the overview map in a cache listing, the cache marker gets 
+//      replaced by a default marker and the static image shows an error message. The reason is that GME changes the cache image link and 
+//      therefore the proper marker creation fails.
+// ------------------------------------------------------------------------------------------------------------------------------------------------
+// $$006CF | Jan.2017   | CF            | 0.2.2  |
 // Bugfix: cache types which are hidden by default are not shown disabled
 // ------------------------------------------------------------------------------------------------------------------------------------------------
-// $$005CF | Jan.2017   | CF            |    |
+// $$005CF | Jan.2017   | CF            | 0.2.2  |
 // Change: Configuration Menu: Reorder map options
 //    * Move options "Hide sidebar by default", "Hide header by default" up
 //    * Move option "Add link to Google Maps on GC Map" and child "Switch to Google Maps in same browser tab" into section Google Maps page
@@ -46,18 +51,18 @@
 //    * In case option Replace layercontrol by GClh is unchecked - depended options are hidden
 //    * Some smaller fixes in the Map option sections
 // ------------------------------------------------------------------------------------------------------------------------------------------------
-// $$004CF | Jan.2017   | CF            |    |
+// $$004CF | Jan.2017   | CF            | 0.2.2  |
 // Change: Configuration menu: improve layer selection
 // ------------------------------------------------------------------------------------------------------------------------------------------------
-// $$003CF | Jan.2017   | CF            |    |
+// $$003CF | Jan.2017   | CF            | 0.2.2  |
 // New: Map: Default Geocaching Layer
 // ------------------------------------------------------------------------------------------------------------------------------------------------
-// $$002CF | Jan.2017   | CF            |    |
+// $$002CF | Jan.2017   | CF            | 0.2.2  |
 // Change: Configuration menu: new map icons for cache types
 // ------------------------------------------------------------------------------------------------------------------------------------------------
-// $$001CF | Jan.2017   | CF            |    |
+// $$001CF | Jan.2017   | CF            | 0.2.2  |
 // New: Configuration menu: clickable label text for checkboxes
-// ------------------------------------------------------------------------------------------------------------------------------------------------
+//*************************************************************************************************************************************************
 // $$068FE | Jan.2017   | FE            | 0.2.1  |
 // New: Downloadzaehler simulieren.
 // ------------------------------------------------------------------------------------------------------------------------------------------------
@@ -2309,8 +2314,12 @@ var mainGC = function () {
         if ( zoom_value > 19 ) zoom_value = 19;
 
         if ( document.getElementById('uxLatLon') ) var coords = toDec(document.getElementById("uxLatLon").innerHTML);
-        if ( $("img:first", "a[href='/about/cache_types.aspx']")[0] ) {
-            var src_arr = $("img:first", "a[href='/about/cache_types.aspx']").attr("src").split("/");
+//--> $$069FE Begin of change
+//        if ( $("img:first", "a[href='/about/cache_types.aspx']")[0] ) {
+//            var src_arr = $("img:first", "a[href='/about/cache_types.aspx']").attr("src").split("/");
+        if ( $(".cacheImage").find("img").attr("src") ) {
+            var src_arr = $(".cacheImage").find("img").attr("src").split("/");
+//<-- $$069FE End of change
             var gc_type = src_arr[src_arr.length - 1].split(".")[0];
         }
         var url = 'url(' + http + '://maps.google.com/maps/api/staticmap?zoom=' + zoom_value + '&size=248x248' + '&maptype=roadmap&' 
@@ -8130,9 +8139,9 @@ var mainGC = function () {
         // Hier werden auch gegebenenfalls "Clone" von Parametern verarbeitet. (Siehe Erläuterung weiter unten bei "setEventsForDoubleParameters".) 
         var setting_idX = setting_id;
         setting_id = setting_idX.replace(/(X[0-9]*)/, "");
-//--> $$060FE Begin of change	
+//--> $$001CF Begin of change	
         return "<input type='checkbox' " + (getValue(setting_id) ? "checked='checked'" : "" ) + " id='" + setting_idX + "'><label for='" + setting_idX + "'>" + label + "</label>";
-//<-- $$060FE end of change
+//<-- $$001CF end of change
     }
 
     function show_help(text) {
@@ -8401,7 +8410,6 @@ var mainGC = function () {
             html += " &nbsp; " + checkboxy('settings_map_hide_137', "<img src='" + http + "://www.geocaching.com/map/images/mapicons/137.png' title='EarthCache'>") + " &nbsp; " + checkboxy('settings_map_hide_4', "<img src='" + http + "://www.geocaching.com/map/images/mapicons/4.png' title='Virtual'>") + " &nbsp; " + checkboxy('settings_map_hide_11', "<img src='" + http + "://www.geocaching.com/map/images/mapicons/11.png' title='Webcam'>") + "<br/>";
             html += " &nbsp; " + checkboxy('settings_map_hide_8', "<img src='" + http + "://www.geocaching.com/map/images/mapicons/8.png' title='Mystery'>") + " &nbsp; " + checkboxy('settings_map_hide_5', "<img src='" + http + "://www.geocaching.com/map/images/mapicons/5.png' title='Letterbox'>") + " &nbsp; " + checkboxy('settings_map_hide_1858', "<img src='" + http + "://www.geocaching.com/map/images/mapicons/1858.png' title='Wherigo'>") + "<br/>";
 //<-- $$002CF End of changes
-//<-- $$018 End of change
 //--> $$004CF Begin of change
             html += "<div style='margin-top: 9px;'><b>Layers in map</b>" + show_help("Here you can select the map layers which should be added into the layer menu with the map. With this option you can reduce the long list to the layers you really need. If the right list of layers is empty, all will be displayed. If you use other scripts like \"Geocaching Map Enhancements\" GClh will overwrite its layercontrol. With this option you can disable GClh layers to use the layers from gc.com or GME.") + "</div>";				
             html += checkboxy('settings_use_gclh_layercontrol', 'Replace layercontrol by GClh') + show_help("If you use other scripts like \"Geocaching Map Enhancements\" GClh will overwrite its layercontrol. With this option you can disable GClh layers to use the layers from gc.com or GME.") + "<br/>";
