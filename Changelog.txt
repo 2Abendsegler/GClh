@@ -2,7 +2,7 @@ CHANGELOG:
 
 Version 0.2.2:
 - Bugfix: Configuration Menu - Cachetypen APE und GPS Maze von "Hide cache types by default" entfernt
-- Bugfix: Map - Cache Kategory "Event" wird automatisch deaktiviert (hide by default), wenn Event, CITO, Mega, Giga deaktiviert werden (GPS Maze wird nicht mehr berÃ¼cksichtigt)
+- Bugfix: Map - Cache Kategory "Event" wird automatisch deaktiviert (hide by default), wenn Event, CITO, Mega, Giga deaktiviert werden (GPS Maze wird nicht mehr berücksichtigt)
 - Fix: Overview map in listing: zoom in/out loses cache marker. If you zoom in/out the overview map in a cache listing, the cache marker gets replaced by a default marker and the static image shows an error therefore the proper marker creation fails.
 - Bugfix: cache types which are hidden by default are not shown disabled
 - Change: Configuration Menu: Reorder map options
@@ -15,6 +15,11 @@ Version 0.2.2:
 - New: Map: Default Geocaching Layer
 - Change: Configuration menu: new map icons for cache types
 - New: Configuration menu: clickable label text for checkboxes
+- New: In den Latest logs den Logtext anzeigen beim Drueberfahren mit der Maus. Wie bei der VIP Liste.  
+- New: Sprache auf default Sprache aendern. Default Sprache im GClh Config hinterlegen. Hintergrund sind die Apps ..., die die Sprache abaendern.
+- Change: GClh Config: Title bei Ueberschrift und obere Links wieder mal ueberarbeitet.
+- Fix: Linklist/Seachfield fälschlich in Map/Labs aufgebaut (Issue #24)
+- Fix: GC Seite Jobs funktioniert nicht mit GClh, ist ja auch nicht notwendig. Seite excludieren.
 
 Version 0.2.1:
 - New: Downloadzaehler simulieren.
@@ -22,7 +27,7 @@ Version 0.2.1:
 - New: GClh Config: GClh Sync als neue Bookmark zum Aufruf aus Linklist eingerichtet.
 - Change: GClh Config: Links im Kopf vom GClh Config ueberarbeitet.
 - New: Logs anzeigen: Wenn nicht alle eigenen Logs geladen werden, weil beispielsweise das Laden der Seite ueber den Browser gestoppt wurde, dann angeben wieviele Logs geladen wurden und das Datum des letzten geladenen Logs angeben, Cache und Trackables. (Wird das Laden der Seite ueber den Browser gestoppt, funktioniert nicht mehr alles auf der Seite, so z.B. die Linklist.) 
-  (Anschliessend kann man dann beispielsweise auch GC Vote fÃ¼r eine begrenzte Anzahl an Caches nachladen.) 
+  (Anschliessend kann man dann beispielsweise auch GC Vote für eine begrenzte Anzahl an Caches nachladen.) 
 - New: Cache Listing: Make VIP lists hideable. Ueber GClh Config steuern.
 
 
@@ -35,4 +40,3 @@ Version 0.1:
 - Change: Spezielle Links Profile Tabs, Nearest Lists/Map, Own Trackables, GClh Config, GClh Sync und Find Player mit rechter und linker Maustaste funktionsfaehig machen mit Standard Contextmenue und postback. 
 - Change: Config und Sync Aufrufe zusammengelegt und umgebaut. Rechte, linke Maus ueberall ok.
 - Change: Link zu alter deutscher Anleitung entfernt und Link github angepasst.
-
