@@ -8498,14 +8498,25 @@ var mainGC = function () {
             html += "&nbsp;" + "Hide cache types by default: " + show_help("This is a premium feature - it enables automatically the option to hide the specific cache type.") + "<br/>";
 //--> $$002CF Begin of changes
             var imgStyle = "style='padding-top: 4px; vertical-align: bottom;'"; 
-            html += " &nbsp; " + checkboxy('settings_map_hide_2', "<img "+imgStyle+"src='" + http + "://www.geocaching.com/map/images/mapicons/2.png' title='Traditional'>") + "<br/>";
-            html += " &nbsp; " + checkboxy('settings_map_hide_3', "<img "+imgStyle+"src='" + http + "://www.geocaching.com/map/images/mapicons/3.png' title='Multi-Cache'>") + "<br/>";
-            html += " &nbsp; " + checkboxy('settings_map_hide_6', "<img "+imgStyle+"src='" + http + "://www.geocaching.com/map/images/mapicons/6.png' title='Event'>") + " &nbsp; " + checkboxy('settings_map_hide_13', "<img "+imgStyle+"src='" + http + "://www.geocaching.com/map/images/mapicons/13.png' title='Cache In Trash Out'>") + " &nbsp; " + checkboxy('settings_map_hide_453', "<img "+imgStyle+"src='" + http + "://www.geocaching.com/map/images/mapicons/453.png' title='Mega-Event'>") + " &nbsp; " + checkboxy('settings_map_hide_7005', "<img "+imgStyle+"src='" + http + "://www.geocaching.com/map/images/mapicons/7005.png' title='Giga-Event'>") + "<br/>";
-            html += " &nbsp; " + checkboxy('settings_map_hide_137', "<img "+imgStyle+"src='" + http + "://www.geocaching.com/map/images/mapicons/137.png' title='EarthCache'>") + " &nbsp; " + checkboxy('settings_map_hide_4', "<img "+imgStyle+"src='" + http + "://www.geocaching.com/map/images/mapicons/4.png' title='Virtual'>") + " &nbsp; " + checkboxy('settings_map_hide_11', "<img "+imgStyle+"src='" + http + "://www.geocaching.com/map/images/mapicons/11.png' title='Webcam'>") + "<br/>";
-            html += " &nbsp; " + checkboxy('settings_map_hide_8', "<img "+imgStyle+"src='" + http + "://www.geocaching.com/map/images/mapicons/8.png' title='Mystery'>") + " &nbsp; " + checkboxy('settings_map_hide_5', "<img "+imgStyle+"src='" + http + "://www.geocaching.com/map/images/mapicons/5.png' title='Letterbox'>") + " &nbsp; " + checkboxy('settings_map_hide_1858', "<img "+imgStyle+"src='" + http + "://www.geocaching.com/map/images/mapicons/1858.png' title='Wherigo'>") + "<br/>";
+            var imageBaseUrl = http + "://www.geocaching.com/map/images/mapicons/";
+            html += " &nbsp; " + checkboxy('settings_map_hide_2', "<img "+imgStyle+" src='" + imageBaseUrl + "2.png' title='Traditional'>") + "<br/>";
+            html += " &nbsp; " + checkboxy('settings_map_hide_3', "<img "+imgStyle+" src='"  + imageBaseUrl + "3.png' title='Multi-Cache'>") + "<br/>";
+            
+            html += " &nbsp; " + checkboxy('settings_map_hide_6', "<img "+imgStyle+" src='" + imageBaseUrl + "6.png' title='Event'>");
+            html += " &nbsp; " + checkboxy('settings_map_hide_13', "<img "+imgStyle+" src='" + imageBaseUrl + "13.png' title='Cache In Trash Out'>");
+            html += " &nbsp; " + checkboxy('settings_map_hide_453', "<img "+imgStyle+" src='" + imageBaseUrl + "453.png' title='Mega-Event'>");
+            html += " &nbsp; " + checkboxy('settings_map_hide_7005', "<img "+imgStyle+" src='" + imageBaseUrl + "7005.png' title='Giga-Event'>") + "<br/>";
+            
+            html += " &nbsp; " + checkboxy('settings_map_hide_137', "<img "+imgStyle+" src='" + imageBaseUrl + "137.png' title='EarthCache'>");
+            html += " &nbsp; " + checkboxy('settings_map_hide_4', "<img "+imgStyle+" src='" + imageBaseUrl + "4.png' title='Virtual'>");
+            html += " &nbsp; " + checkboxy('settings_map_hide_11', "<img "+imgStyle+" src='" + imageBaseUrl + "11.png' title='Webcam'>") + "<br/>";
+            
+            html += " &nbsp; " + checkboxy('settings_map_hide_8', "<img "+imgStyle+" src='" + imageBaseUrl + "8.png' title='Mystery'>");
+            html += " &nbsp; " + checkboxy('settings_map_hide_5', "<img "+imgStyle+" src='" + imageBaseUrl + "5.png' title='Letterbox'>");
+            html += " &nbsp; " + checkboxy('settings_map_hide_1858', "<img "+imgStyle+" src='" + imageBaseUrl + "1858.png' title='Wherigo'>") + "<br/>";
 //<-- $$002CF End of changes
 //--> $$004CF Begin of change
-            html += "<div style='margin-top: 9px; margin-left: 5px'><b>Layers in map</b>" + show_help("Here you can select the map layers which should be added into the layer menu with the map. With this option you can reduce the long list to the layers you really need. If the right list of layers is empty, all will be displayed. If you use other scripts like \"Geocaching Map Enhancements\" GClh will overwrite its layercontrol. With this option you can disable GClh layers to use the layers from gc.com or GME.") + "</div>";				
+            html += "<div style='margin-top: 9px; margin-left: 5px'><b>Layers in map</b>" + show_help("Here you can select the map layers which should be added into the layer menu with the map. With this option you can reduce the long list to the layers you really need. If the right list of layers is empty, all will be displayed. If you use other scripts like \"Geocaching Map Enhancements\" GClh will overwrite its layercontrol. With this option you can disable GClh layers to use the layers from gc.com or GME.") + "</div>";
             html += checkboxy('settings_use_gclh_layercontrol', 'Replace layercontrol by GClh') + show_help("If you use other scripts like \"Geocaching Map Enhancements\" GClh will overwrite its layercontrol. With this option you can disable GClh layers to use the layers from gc.com or GME.") + "<br/>";
             
             html += "<div id='MapLayersConfiguration' style='display: "+(settings_use_gclh_layercontrol?"block":"none")+";'>";
