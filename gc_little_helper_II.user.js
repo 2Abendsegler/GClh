@@ -45,6 +45,10 @@
 // Fix: GC Seite Jobs funktioniert nicht mit GClh, ist ja auch nicht notwendig. Seite excludieren.
 // Fix: Linklist/Seachfield fälschlich in Map/Labs aufgebaut (Issue #24)
 // ------------------------------------------------------------------------------------------------------------------------------------------------
+// $$007CF | Jan.2017   | CF            | 0.2.2  |
+// Bugfix: Configuration Menu: Remove cache types: APE und GPS Maze
+// Bugfix: Map: Disable complete event category if event, cito, mega, giga is disabled (remove GPS maze)
+// ------------------------------------------------------------------------------------------------------------------------------------------------
 // $$069FE | Jan.2017   | FE/DieBatzen  | 0.2.2  | Issue #2
 // Fix: Overview map in listing: zoom in/out loses cache marker. If you zoom in/out the overview map in a cache listing, the cache marker gets 
 //      replaced by a default marker and the static image shows an error message. The reason is that GME changes the cache image link and 
@@ -4832,7 +4836,7 @@ var mainGC = function () {
                 // Gesamte Reihen zu den Cache Types auf hidden setzen.
                 if (settings_map_hide_2) document.getElementById("LegendGreen").childNodes[0].setAttribute("class", "a_cat_displayed cat_untoggled");
                 if (settings_map_hide_3) document.getElementById("LegendYellow").childNodes[0].setAttribute("class", "a_cat_displayed cat_untoggled");
-                if (settings_map_hide_6 && settings_map_hide_453 && settings_map_hide_7005 && settings_map_hide_13 && settings_map_hide_1304) document.getElementById("LegendRed").childNodes[0].setAttribute("class", "a_cat_displayed cat_untoggled");
+                if (settings_map_hide_6 && settings_map_hide_453 && settings_map_hide_7005 && settings_map_hide_13) document.getElementById("LegendRed").childNodes[0].setAttribute("class", "a_cat_displayed cat_untoggled");
                 if (settings_map_hide_4 && settings_map_hide_11 && settings_map_hide_137) document.getElementById("chkLegendWhite").childNodes[0].setAttribute("class", "a_cat_displayed cat_untoggled");
                 if (settings_map_hide_8 && settings_map_hide_5 && settings_map_hide_1858) document.getElementById("chkLegendBlue").childNodes[0].setAttribute("class", "a_cat_displayed cat_untoggled");                
             }
