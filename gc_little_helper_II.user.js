@@ -2,7 +2,7 @@
 // @name           GC little helper II
 // @namespace      http://www.amshove.net
 //--> $$000FE Begin of change
-// @version        0.2.1
+// @version        0.2.2
 //<-- $$000FE End of change
 // @include        http://www.geocaching.com/*
 // @include        https://www.geocaching.com/*
@@ -15,6 +15,7 @@
 // @exclude        *www.geocaching.com/seek/sendtogps.aspx*
 // @exclude        *www.geocaching.com/blog/*
 // @exclude        *www.geocaching.com/brandedpromotions/*
+// @exclude        *www.geocaching.com/jobs/*
 // @resource jscolor http://www.amshove.net/greasemonkey/js/jscolor/jscolor.js
 // @require http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js
 // @require http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js
@@ -35,6 +36,15 @@
 //*************************************************************************************************************************************************
 // Kennz.  | Datum      | Entwickler    | zuVers.|
 //*************************************************************************************************************************************************
+// $$071FE | Jan.2017   | FE            | 0.2.2  | 
+// New: In den Latest logs den Logtext anzeigen beim Drueberfahren mit der Maus. Wie bei der VIP Liste.  
+// ------------------------------------------------------------------------------------------------------------------------------------------------
+// $$070FE | Jan.2017   | FE            | 0.2.2  | 
+// New: Sprache auf default Sprache aendern. Default Sprache im GClh Config hinterlegen. Hintergrund sind die Apps ..., die die Sprache abaendern.
+// Change: GClh Config: Title bei Ueberschrift und obere Links wieder mal ueberarbeitet.
+// Fix: GC Seite Jobs funktioniert nicht mit GClh, ist ja auch nicht notwendig. Seite excludieren.
+// Fix: Linklist/Seachfield fälschlich in Map/Labs aufgebaut (Issue #24)
+// ------------------------------------------------------------------------------------------------------------------------------------------------
 // $$069FE | Jan.2017   | FE/DieBatzen  | 0.2.2  | Issue #2
 // Fix: Overview map in listing: zoom in/out loses cache marker. If you zoom in/out the overview map in a cache listing, the cache marker gets 
 //      replaced by a default marker and the static image shows an error message. The reason is that GME changes the cache image link and 
@@ -337,6 +347,9 @@ var constInit = function (c) {
     profileSpecialBookmark("Nearest List (w/o Founds)", "https://www.geocaching.com/seek/nearest.aspx?#gclhpb#errhomecoord", "lnk_nearestlist_wo", c.bookmarks);
     profileSpecialBookmark("Own Trackables", "https://www.geocaching.com/track/search.aspx?#gclhpb#errowntrackables", "lnk_my_trackables", c.bookmarks);
 //<-- $$062FE End of change
+//--> $$070FE Begin of insert
+    c.langus = new Array("Català", "Čeština", "Dansk", "Deutsch", "English", "Ελληνικά", "Eesti", "Español", "Français", "Italiano", "日本語", "한국어", "Latviešu", "Lëtzebuergesch", "Magyar", "Nederlands", "Norsk, Bokmål", "Polski", "Português", "Română", "Русский", "Slovenščina", "Suomi", "Svenska");
+//<-- $$070FE End of insert
 
     c.gclhConfigKeysIgnoreForBackup = {
         "token": true,
@@ -530,6 +543,12 @@ var variablesInit = function (c) {
     // Settings: Count of latest logs symbols at the top
     c.settings_show_latest_logs_symbols_count = getValue("settings_show_latest_logs_symbols_count", 5);
 //<-- $$067FE End of insert
+//--> $$070FE Begin of insert
+    // Settings: Set default language
+    c.settings_set_default_langu = getValue("settings_set_default_langu", false);
+    // Settings: Default language
+    c.settings_default_langu = getValue("settings_default_langu", "English");
+//<-- $$070FE End of insert
     // Settings: Show EventDay
     c.settings_show_eventday = getValue("settings_show_eventday", true);
     c.settings_date_format = getValue("settings_date_format", "MM/dd/yyyy");
@@ -923,6 +942,28 @@ var mainGC = function () {
         gclh_error("Run after Redirect", e);
     }
 //<-- $$062FE End of insert
+    
+//--> $$070FE Begin of insert
+// Set language to default language.
+    try {
+        if ( settings_set_default_langu ) {
+            var languLine = $('.language-list > li > a:contains(' + settings_default_langu + ')');
+            if ( !languLine[0] ) {
+                var languLine = $('.dropdown-menu > li > a:contains(' + settings_default_langu + ')');
+            }
+            if ( languLine[0] ) {
+                if ( languLine[0].className == "selected" || languLine[0].parentNode.className == "selected" );
+                else {
+                    var event  = document.createEvent("MouseEvent");
+                    event.initEvent("click", true, true);
+                    languLine[0].dispatchEvent(event);
+                }
+            }
+        }
+    } catch (e) {
+        gclh_error("set language to default language", e);
+    }
+//<-- $$070FE End of insert
     
     function getElementsByClass(classname) {
         var result = new Array();
@@ -1907,8 +1948,12 @@ var mainGC = function () {
 // Bookmarks on top
     try {
         if ( settings_bookmarks_on_top ) {
-            // Bei Labs Caches gibt es kein Menu, Menu aufbauen.
-            if ( is_page("labs") ) {
+//--> $$070FE Begin of change
+//            // Bei Labs Caches gibt es kein Menu, Menu aufbauen.
+//            if ( is_page("labs") ) {
+            // Bei Labs Caches gibt es kein Menu, Menu aufbauen. Nur wenn Change Header Layout aktiviert ist.
+            if ( is_page("labs") && settings_change_header_layout ) {
+//<-- $$070FE End of change
                 if ( $('.profile-panel')[0] ) {
                     var mainMenu = document.createElement("ul");
                     mainMenu.setAttribute("class", "Menu");
@@ -1917,8 +1962,12 @@ var mainGC = function () {
                     appendCssStyle( css );
                 }
             }
-            // Bei Karten gibt es kein Menu, Menu aufbauen.
-            else if ( is_page("map") ) {
+//--> $$070FE Begin of change
+//            // Bei Karten gibt es kein Menu, Menu aufbauen.
+//            else if ( is_page("map") ) {
+            // Bei Karten gibt es kein Menu, Menu aufbauen. Nur wenn Change Header Layout aktiviert ist.
+            else if ( is_page("map") && settings_change_header_layout ) {
+//<-- $$070FE End of change
                 if ( $('.ProfileWidget')[0] ) {
                     var mainMenu = document.createElement("ul");
                     mainMenu.setAttribute("class", "Menu");
@@ -2528,6 +2577,7 @@ var mainGC = function () {
     }
 
 //--> $$067FE Begin of insert
+//--> $$071FE Begin of change (Größere Anpassungen ohne zeilenweise Änderungsdokumentation.)
 // Show the latest logs symbols in cache listings.
     try {
         if ( is_page("cache_listing") && settings_show_latest_logs_symbols && settings_load_logs_with_gclh ) {
@@ -2543,6 +2593,7 @@ var mainGC = function () {
                         lateLog['src'] = $(logs[i]).find('.LogType').find('img[src*="/images/logtypes/"]').attr('src');
                         lateLog['type'] = $(logs[i]).find('.LogType').find('img[src*="/images/logtypes/"]').attr('title');
                         lateLog['date'] = $(logs[i]).find('.LogDate').text();
+                        lateLog['log'] = $(logs[i]).find('.LogContent').children().clone();
                         lateLogs[i] = lateLog;
                     }
                     if ( lateLogs.length > 0 && document.getElementById("ctl00_ContentBody_mcd1").parentNode ) {
@@ -2555,18 +2606,34 @@ var mainGC = function () {
                         div.appendChild(document.createTextNode("Latest logs:"));
                         for (var i = 0; i < lateLogs.length; i++) {
                             var a = document.createElement("a");
-                            a.class = "gclh_latest_log";
+                            a.className = "gclh_latest_log";
                             a.href = "#" + lateLogs[i]['id'];
                             var img = document.createElement("img");
                             img.src = lateLogs[i]['src'];
-                            img.title = lateLogs[i]['type'] + " - " + lateLogs[i]['date'] + " - " + lateLogs[i]['user'];
                             img.setAttribute("style", "padding-left: 2px; vertical-align: bottom;");
+                            img.title = img.alt = "";
+                            var log_text = document.createElement("span");
+                            log_text.title = "";
+                            log_text.innerHTML = "<img src='" + lateLogs[i]['src'] + "'> <b>" + lateLogs[i]['user'] + " - " + lateLogs[i]['date'] + "</b><br/>";
                             a.appendChild(img);
+                            for (var j = 1; j < lateLogs[i]['log'].length; j++) {
+                                log_text.appendChild(lateLogs[i]['log'][j]);
+                            }
+                            a.appendChild(log_text);
                             div.appendChild(a);
-                            divTitle += ( divTitle == "" ? "" : "\n" ) + img.title;
+                            divTitle += ( divTitle == "" ? "" : "\n" ) + lateLogs[i]['type'] + " - " + lateLogs[i]['date'] + " - " + lateLogs[i]['user'];
                         }
                         div.title = divTitle;
                         side.appendChild(div);
+                        
+                        if ( getValue("settings_new_width") > 0 ) var new_width = parseInt( getValue("settings_new_width") ) - 310 - 180;
+                        else var new_width = 950 - 310 - 180;
+                        var css = "a.gclh_latest_log:hover {position: relative;}"
+                                + "a.gclh_latest_log span {display: none; position: absolute; left: -" + new_width + "px; width: " + new_width + "px;"
+                                +     " padding: 5px; text-decoration:none; text-align:left; vertical-align:top; color: #000000;}"
+                                + "a.gclh_latest_log:hover span {font-size: 13px; display: block; top: 16px; border: 1px solid #8c9e65;"
+                                +     " background-color:#dfe1d2; z-index:10000;}";
+                        appendCssStyle(css);
                     }
                 } else {
                     waitCount++;
@@ -2580,6 +2647,7 @@ var mainGC = function () {
     } catch (e) {
         gclh_error("Show the latest logs symbols", e);
     }
+//<-- $$071FE End of change
 //<-- $$067FE End of insert
 
 // Map on create pocketQuery-page
@@ -7909,7 +7977,7 @@ var mainGC = function () {
         GM_xmlhttpRequest({
             method: "GET",
 //--> $$000FE Begin of change
-            url: "https://goo.gl/biwR0R",  // Downloadzähler Version 0.2.1
+            url: "https://goo.gl/820Slr",  // Downloadzähler Version 0.2.2
 //<-- $$000FE End of change
             onload: function (result) {
             }
@@ -8280,7 +8348,10 @@ var mainGC = function () {
             div.setAttribute("id", "settings_overlay");
             div.setAttribute("class", "settings_overlay");
             var html = "";
-            html += "<h3 class='gclh_headline'>" + scriptNameConfig + " <font class='gclh_small'>v" + scriptVersion + "</font></h3>";
+//--> $$070FE Begin of change
+//            html += "<h3 class='gclh_headline'>" + scriptNameConfig + " <font class='gclh_small'>v" + scriptVersion + "</font></h3>";
+            html += "<h3 class='gclh_headline' title='Some little things to make life easy (on www.geocaching.com).' >" + scriptNameConfig + " <font class='gclh_small'>v" + scriptVersion + "</font></h3>";
+//<-- $$070FE End of change
             html += "<div class='gclh_content'>";
 //--> $$060FE Begin of change
 //            html += "&nbsp;" + "<font class='gclh_small'><a href='https://github.com/amshove/GC_little_helper/wiki/German-Help' target='_blank'>Hier</a> gibt es eine deutsche Anleitung zu den Einstellungen.</font><br>";
@@ -8291,11 +8362,29 @@ var mainGC = function () {
 //<-- $$060FE End of change
 //--> $$066FE Begin of change
 //            html += "<br><br>";
-            html += "&nbsp;" + "<font class='gclh_small' style='float: right' ><a href='http://geoclub.de/forum/viewtopic.php?f=117&t=79372' target='_blank'>Help</a>, <a href='https://raw.githubusercontent.com/2Abendsegler/GClh/master/Changelog.txt' target='_blank'>Changelog</a>, <a href='https://rawgit.com/2Abendsegler/GClh/master/Wish list.pdf' target='_blank'>Wish list</a>, <a href='https://github.com/2Abendsegler/GClh' target='_blank'>GitHub</a></font>";
+//--> $$070FE Begin of change
+//            html += "&nbsp;" + "<font class='gclh_small' style='float: right' ><a href='http://geoclub.de/forum/viewtopic.php?f=117&t=79372' target='_blank'>Help</a>, <a href='https://raw.githubusercontent.com/2Abendsegler/GClh/master/Changelog.txt' target='_blank'>Changelog</a>, <a href='https://rawgit.com/2Abendsegler/GClh/master/Wish list.pdf' target='_blank'>Wish list</a>, <a href='https://github.com/2Abendsegler/GClh' target='_blank'>GitHub</a></font>";
+            html += "&nbsp;" + "<font class='gclh_small' style='float: right' >";
+            html += "<a href='http://geoclub.de/forum/viewtopic.php?f=117&t=79372' title='Help, is available on the geoclub forum' target='_blank'>Help</a>, ";
+            html += "<a href='https://raw.githubusercontent.com/2Abendsegler/GClh/master/Changelog.txt' title='Changelog, on GitHub' target='_blank'>Changelog</a>, ";
+            html += "<a href='https://github.com/2Abendsegler/GClh/issues?q=is:issue is:open sort:created-desc' title='Open issues, on GitHub' target='_blank'>Open issues</a>, ";
+            html += "<a href='https://github.com/2Abendsegler/GClh/issues?q=is:issue is:open label:\"tag: wish\" sort:created-desc' title='Open wishes, on GitHub' target='_blank'>Open wishes</a>, ";
+            html += "<a href='https://github.com/2Abendsegler/GClh' title='GitHub' target='_blank'>GitHub</a></font>";
+//<-- $$070FE End of change
             html += "<br>";
 //<-- $$066FE End of change
             html += "<h4 class='gclh_headline2'>Global</h4>";
             html += "&nbsp;" + "Home-Coords: <input class='gclh_form' type='text' size='21' id='settings_home_lat_lng' value='" + DectoDeg(getValue("home_lat"), getValue("home_lng")) + "'>" + show_help("The Home-Coords are filled automatically if you update your Home-Coords on gc.com. If it doesn\'t work you can insert them here. These coords are used for some special links (nearest list, nearest map, ..) and for the homezone circle on the map.") + "<br>";
+//--> $$070FE Begin of insert
+            html += newParameterOn2;
+            html += checkboxy('settings_set_default_langu', 'Set default language ');
+            html += "<select class='gclh_form' id='settings_default_langu'>";
+            for ( var i = 0; i < langus.length; i++ ){
+                html += "  <option value='" + langus[i] + "' " + (settings_default_langu == langus[i] ? "selected='selected'" : "") + ">" + langus[i] + "</option>";
+            }
+            html += "</select>" + show_help("Here you can change the default language to set on gc pages, in the case, apps changed the language.<br><br>The gc pages map, labs and message-center have no possibility to change a language. On these pages nothing will done.<br><br>For the future is planned to make the GClh multilingual. Until that is realized, the GClh is only in english.") + "<br>";
+            html += newParameterVersionSetzen(0.2) + newParameterOff;
+//<-- $$070FE End of insert
             html += checkboxy('settings_change_header_layout', "Change header layout") + show_help("Change the header layout to save some vertical space.") + "<br/>";
             html += newParameterOn1;
             html += " &nbsp; " + checkboxy('settings_show_smaller_gc_link', 'Show smaller geocaching link top left') + show_help("With this option you can choose a smaller display of the geocaching link top left of every page. <br><br>This option requires \"Change header layout\".") + "<br/>";
@@ -8397,21 +8486,22 @@ var mainGC = function () {
                 html += newHzEl.html();
             }
             html += "<div class='wrapper'></div><button type='button' class='addentry' style='cursor: pointer; border: 2px solid #778555; border-radius: 7px;'>create further Homezone</button></div>"
-            html += "<div style='margin-top: 9px;'><b>Hide Map Elements</b></div>";
+            html += "<div style='margin-top: 9px; margin-left: 5px'><b>Hide Map Elements</b></div>";
             html += checkboxy('settings_map_hide_sidebar', 'Hide sidebar by default') + show_help("If you want to hide the sidebar on the map, just select this option.") + "<br/>";
             html += checkboxy('settings_hide_map_header', 'Hide header by default') + show_help("If you want to hide the header of the map, just select this option.") + "<br/>";
             html += checkboxy('settings_map_hide_found', 'Hide found caches by default') + show_help("This is a premium feature - it enables automatically the option to hide your found caches on map.") + "<br/>";
             html += checkboxy('settings_map_hide_hidden', 'Hide own caches by default') + show_help("This is a premium feature - it enables automatically the option to hide your caches on map.") + "<br/>";
             html += "&nbsp;" + "Hide cache types by default: " + show_help("This is a premium feature - it enables automatically the option to hide the specific cache type.") + "<br/>";
 //--> $$002CF Begin of changes
-            html += " &nbsp; " + checkboxy('settings_map_hide_2', "<img src='" + http + "://www.geocaching.com/map/images/mapicons/2.png' title='Traditional'>") + " &nbsp; " + checkboxy('settings_map_hide_9', "<img src='" + http + "://www.geocaching.com/map/images/mapicons/9.png' title='A.P.E.'>") + "<br/>";
-            html += " &nbsp; " + checkboxy('settings_map_hide_3', "<img src='" + http + "://www.geocaching.com/map/images/mapicons/3.png' title='Multi-Cache'>") + "<br/>";
-            html += " &nbsp; " + checkboxy('settings_map_hide_6', "<img src='" + http + "://www.geocaching.com/map/images/mapicons/6.png' title='Event'>") + " &nbsp; " + checkboxy('settings_map_hide_13', "<img src='" + http + "://www.geocaching.com/map/images/mapicons/13.png' title='Cache In Trash Out'>") + " &nbsp; " + checkboxy('settings_map_hide_453', "<img src='" + http + "://www.geocaching.com/map/images/mapicons/453.png' title='Mega-Event'>") + " &nbsp; " + checkboxy('settings_map_hide_7005', "<img src='" + http + "://www.geocaching.com/map/images/mapicons/7005.png' title='Giga-Event'>") + " &nbsp; " + checkboxy('settings_map_hide_1304', "<img src='" + http + "://www.geocaching.com/map/images/mapicons/1304.png' title='GPS Adventures'>") + "<br/>";
-            html += " &nbsp; " + checkboxy('settings_map_hide_137', "<img src='" + http + "://www.geocaching.com/map/images/mapicons/137.png' title='EarthCache'>") + " &nbsp; " + checkboxy('settings_map_hide_4', "<img src='" + http + "://www.geocaching.com/map/images/mapicons/4.png' title='Virtual'>") + " &nbsp; " + checkboxy('settings_map_hide_11', "<img src='" + http + "://www.geocaching.com/map/images/mapicons/11.png' title='Webcam'>") + "<br/>";
-            html += " &nbsp; " + checkboxy('settings_map_hide_8', "<img src='" + http + "://www.geocaching.com/map/images/mapicons/8.png' title='Mystery'>") + " &nbsp; " + checkboxy('settings_map_hide_5', "<img src='" + http + "://www.geocaching.com/map/images/mapicons/5.png' title='Letterbox'>") + " &nbsp; " + checkboxy('settings_map_hide_1858', "<img src='" + http + "://www.geocaching.com/map/images/mapicons/1858.png' title='Wherigo'>") + "<br/>";
+            var imgStyle = "style='padding-top: 4px; vertical-align: bottom;'"; 
+            html += " &nbsp; " + checkboxy('settings_map_hide_2', "<img "+imgStyle+"src='" + http + "://www.geocaching.com/map/images/mapicons/2.png' title='Traditional'>") + "<br/>";
+            html += " &nbsp; " + checkboxy('settings_map_hide_3', "<img "+imgStyle+"src='" + http + "://www.geocaching.com/map/images/mapicons/3.png' title='Multi-Cache'>") + "<br/>";
+            html += " &nbsp; " + checkboxy('settings_map_hide_6', "<img "+imgStyle+"src='" + http + "://www.geocaching.com/map/images/mapicons/6.png' title='Event'>") + " &nbsp; " + checkboxy('settings_map_hide_13', "<img "+imgStyle+"src='" + http + "://www.geocaching.com/map/images/mapicons/13.png' title='Cache In Trash Out'>") + " &nbsp; " + checkboxy('settings_map_hide_453', "<img "+imgStyle+"src='" + http + "://www.geocaching.com/map/images/mapicons/453.png' title='Mega-Event'>") + " &nbsp; " + checkboxy('settings_map_hide_7005', "<img "+imgStyle+"src='" + http + "://www.geocaching.com/map/images/mapicons/7005.png' title='Giga-Event'>") + "<br/>";
+            html += " &nbsp; " + checkboxy('settings_map_hide_137', "<img "+imgStyle+"src='" + http + "://www.geocaching.com/map/images/mapicons/137.png' title='EarthCache'>") + " &nbsp; " + checkboxy('settings_map_hide_4', "<img "+imgStyle+"src='" + http + "://www.geocaching.com/map/images/mapicons/4.png' title='Virtual'>") + " &nbsp; " + checkboxy('settings_map_hide_11', "<img "+imgStyle+"src='" + http + "://www.geocaching.com/map/images/mapicons/11.png' title='Webcam'>") + "<br/>";
+            html += " &nbsp; " + checkboxy('settings_map_hide_8', "<img "+imgStyle+"src='" + http + "://www.geocaching.com/map/images/mapicons/8.png' title='Mystery'>") + " &nbsp; " + checkboxy('settings_map_hide_5', "<img "+imgStyle+"src='" + http + "://www.geocaching.com/map/images/mapicons/5.png' title='Letterbox'>") + " &nbsp; " + checkboxy('settings_map_hide_1858', "<img "+imgStyle+"src='" + http + "://www.geocaching.com/map/images/mapicons/1858.png' title='Wherigo'>") + "<br/>";
 //<-- $$002CF End of changes
 //--> $$004CF Begin of change
-            html += "<div style='margin-top: 9px;'><b>Layers in map</b>" + show_help("Here you can select the map layers which should be added into the layer menu with the map. With this option you can reduce the long list to the layers you really need. If the right list of layers is empty, all will be displayed. If you use other scripts like \"Geocaching Map Enhancements\" GClh will overwrite its layercontrol. With this option you can disable GClh layers to use the layers from gc.com or GME.") + "</div>";				
+            html += "<div style='margin-top: 9px; margin-left: 5px'><b>Layers in map</b>" + show_help("Here you can select the map layers which should be added into the layer menu with the map. With this option you can reduce the long list to the layers you really need. If the right list of layers is empty, all will be displayed. If you use other scripts like \"Geocaching Map Enhancements\" GClh will overwrite its layercontrol. With this option you can disable GClh layers to use the layers from gc.com or GME.") + "</div>";				
             html += checkboxy('settings_use_gclh_layercontrol', 'Replace layercontrol by GClh') + show_help("If you use other scripts like \"Geocaching Map Enhancements\" GClh will overwrite its layercontrol. With this option you can disable GClh layers to use the layers from gc.com or GME.") + "<br/>";
             
             html += "<div id='MapLayersConfiguration' style='display: "+(settings_use_gclh_layercontrol?"block":"none")+";'>";
@@ -8421,14 +8511,17 @@ var mainGC = function () {
             html += "<td><input style='padding-left: 2px; padding-right: 2px; cursor: pointer;' class='gclh_form' type='button' value='>' id='btn_map_layer_right'><br><br><input style='padding-left: 2px; padding-right: 2px; cursor: pointer;' class='gclh_form' type='button' value='<' id='btn_map_layer_left'></td>";
             html += "<td><select class='gclh_form' style='width: 250px;' id='settings_maplayers_available' multiple='single' size='7'></select></td>";
             html += "</tr>";
-            html += "<tr><td colspan='3'>&nbsp;Default layer: <code><span id='settings_mapdefault_layer'>"+settings_map_default_layer +"</span></code>";
+//--> $$070FE Begin of change
+//            html += "<tr><td colspan='3'>Default layer: <code><span id='settings_mapdefault_layer'>"+settings_map_default_layer +"</span></code>";
+            html += "<tr><td colspan='3'>Default layer: <code><span id='settings_mapdefault_layer'>" + (settings_map_default_layer ? settings_map_default_layer:"<i>not available</i>") +"</span></code>";
+//<-- $$070FE End of change
             html += "&nbsp;" + show_help("Here you can select the map source you want to use as default in the map. Select a layer from the right list 'Shown layers' and push the button 'Set Default Layer'.");
-            html += "<span style='float: right; margin-top: 0px; margin-right: 4px;' ><input style='padding-left: 2px; padding-right: 2px; cursor: pointer;' class='gclh_form' type='button' value='Set Default Layer' id='btn_set_default_layer'></span><br/>";
+            html += "<span style='float: right; margin-top: 0px;' ><input style='padding-left: 2px; padding-right: 2px; cursor: pointer;' class='gclh_form' type='button' value='Set Default Layer' id='btn_set_default_layer'></span><br/><span style='margin-left: -4px'></span>";
             html += checkboxy('settings_show_hillshadow', 'Show Hillshadow by default') + show_help("If you want 3D-like-Shadow to be displayed by default, activate this function. Option \"Replace layercontrol by GClh\" must be enabled.") + "<br/>";
             html += "</td></tr>";
             html += "</tbody></table></div>";
 //<-- $004CF End of change            
-            html += "<div style='margin-top: 9px;'><b>Google Maps page</b></div>";
+            html += "<div style='margin-top: 9px; margin-left: 5px'><b>Google Maps page</b></div>";
             html += newParameterOn1;
             html += checkboxy('settings_hide_left_sidebar_on_google_maps', 'Hide left sidebar on Google Maps by default') + show_help("With this option you can blended the left sidebar on the Google Maps page out.") + "<br/>";
             html += checkboxy('settings_add_link_gc_map_on_google_maps', 'Add link to GC Map on Google Maps') + show_help("With this option an icon are placed on the Google Maps page to link to the same area in GC Map.") + "<br/>";
@@ -8843,6 +8936,9 @@ var mainGC = function () {
                     var name = $(this).html();
                     if ( name == settings_map_default_layer ) {
                         $("#settings_mapdefault_layer").html("<i>not available</i>");
+//--> $$070FE Begin of insert
+                        settings_map_default_layer = "";
+//<-- $$070FE End of insert
                     }
                     $(destination).append(layerOption( name , false ));
                 });
@@ -9317,6 +9413,9 @@ var mainGC = function () {
 //--> $$067FE Begin of insert
             setValue("settings_show_latest_logs_symbols_count", document.getElementById('settings_show_latest_logs_symbols_count').value);
 //<-- $$067FE End of insert
+//--> $$070FE Begin of insert
+            setValue("settings_default_langu", document.getElementById('settings_default_langu').value);
+//<-- $$070FE End of insert
 
             var new_map_layers = document.getElementById('settings_maplayers_available');
             var new_settings_map_layers = new Array();
@@ -9392,6 +9491,9 @@ var mainGC = function () {
 //--> $$067FE Begin of insert
                 'settings_show_latest_logs_symbols',
 //<-- $$067FE End of insert
+//--> $$070FE Begin of insert
+                'settings_set_default_langu',
+//<-- $$070FE End of insert
                 'settings_show_google_maps',
                 'settings_show_log_it',
                 'settings_show_nearestuser_profil_link',
