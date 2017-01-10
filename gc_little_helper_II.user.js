@@ -36,6 +36,9 @@
 //*************************************************************************************************************************************************
 // Kennz.  | Datum      | Entwickler    | zuVers.|
 //*************************************************************************************************************************************************
+// $$072FE | Jan.2017   | FE            | 0.2.3  | 
+// Change: Hervorhebung geänderter Koordinaten flexibler gestalten. Danke an LittleJohn für die Vorarbeit. [Issue #14]
+//*************************************************************************************************************************************************
 // $$071FE | Jan.2017   | FE            | 0.2.2  | 
 // New: In den Latest logs den Logtext anzeigen beim Drueberfahren mit der Maus. Wie bei der VIP Liste.  
 // ------------------------------------------------------------------------------------------------------------------------------------------------
@@ -597,6 +600,10 @@ var variablesInit = function (c) {
     c.settings_hide_hint = getValue('settings_hide_hint', true);
     c.settings_strike_archived = getValue('settings_strike_archived', true);
     c.settings_highlight_usercoords = getValue('settings_highlight_usercoords', true);
+//--> $$#14FE Begin of insert
+    c.settings_highlight_usercoords_bb = getValue('settings_highlight_usercoords_bb', false);
+    c.settings_highlight_usercoords_it = getValue('settings_highlight_usercoords_it', false);
+//<-- $$#14FE End of insert
     c.settings_map_hide_found = getValue('settings_map_hide_found', false);
     c.settings_map_hide_hidden = getValue('settings_map_hide_hidden', false);
     c.settings_map_hide_2 = getValue('settings_map_hide_2', false);
@@ -3133,13 +3140,14 @@ var mainGC = function () {
 
 // Highlight Usercoords
     try {
-        if (settings_highlight_usercoords && is_page("cache_listing")) {
-            var head = document.getElementsByTagName('head')[0];
-            var style = document.createElement('style');
-            style.type = 'text/css';
-            style.innerHTML = ".myLatLon{ color: #FF0000; font-style: unset; border-bottom: unset;}";
-            head.appendChild(style);
+//--> $$#14FE Begin of change
+        if ( is_page("cache_listing") ) {
+            var css = (settings_highlight_usercoords ? ".myLatLon{ color: #FF0000; " : ".myLatLon{ color: unset; ") 
+                    + (settings_highlight_usercoords_bb ? "border-bottom: 2px solid #999; " : "border-bottom: unset; ")
+                    + (settings_highlight_usercoords_it ? "font-style: italic; }" : "font-style: unset; }");
+            appendCssStyle(css);
         }
+//<-- $$#14FE End of change
     } catch (e) {
         gclh_error("Highlight Usercoords", e);
     }
@@ -7714,7 +7722,7 @@ var mainGC = function () {
             var url = "https://github.com/2Abendsegler/GClh/raw/master/gc_little_helper_II.user.js";
             var token = getValue("token", "");
             if (token == "") setValue("token", "" + Math.random());
-            time += 60 * 60 * 1000; // 1 Stunde warten, bis zum nächsten Check.
+            time += 1 * 60 * 60 * 1000; // 1 Stunde warten, bis zum nächsten Check.
             setValue('update_next_check', time.toString());
             
             if (GM_xmlhttpRequest) {
@@ -7737,7 +7745,7 @@ var mainGC = function () {
                                         simulateDownloadCounter();
 //<-- $$068FE End of insert
                                     } else { 
-                                        time += 8 * 60 * 60 * 1000; // 8 Stunden warten, bis zum nächsten Check.
+                                        time += 7 * 60 * 60 * 1000; // 1+7 Stunden warten, bis zum nächsten Check.
                                         setValue('update_next_check', time.toString());
                                     }
                                 }
@@ -8604,7 +8612,11 @@ var mainGC = function () {
             html += newParameterVersionSetzen(0.1) + newParameterOff;
             html += checkboxy('settings_show_google_maps', 'Show link to Google Maps') + show_help("This option shows a link at the top of the second map in the listing. With this link you get directly to Google Maps in the area, where the cache is.") + "<br/>";
             html += checkboxy('settings_strike_archived', 'Strike through title of archived/disabled caches') + "<br/>";
-            html += checkboxy('settings_highlight_usercoords', 'Highlight coordinates which are changed by the user with red textcolor') + "<br/>";
+//--> $$#14FE Begin of change
+            html += newParameterOn2;
+            html += "&nbsp;" + "Highlight user changed coords with " + checkboxy('settings_highlight_usercoords', 'red textcolor ') + checkboxy('settings_highlight_usercoords_bb', 'underline ') + checkboxy('settings_highlight_usercoords_it', 'italic') + "<br/>";
+            html += newParameterVersionSetzen(0.2) + newParameterOff;
+//<-- $$#14FE End of change
             html += checkboxy('settings_show_fav_percentage', 'Show percentage of favourite points') + show_help("This option loads the favourite stats of a cache in the backround and display the percentage under the amount of favourites a cache got.") + "<br/>";
 //--> $$067FE Begin of insert
             html += newParameterOn2;
@@ -9518,6 +9530,10 @@ var mainGC = function () {
                 'settings_hide_hint',
                 'settings_strike_archived',
                 'settings_highlight_usercoords',
+//--> $$#14FE Begin of insert
+                'settings_highlight_usercoords_bb',
+                'settings_highlight_usercoords_it',
+//<-- $$#14FE End of insert
                 'settings_map_hide_found',
                 'settings_map_hide_hidden',
                 'settings_map_hide_2',
