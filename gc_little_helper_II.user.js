@@ -2,7 +2,7 @@
 // @name           GC little helper II
 // @namespace      http://www.amshove.net
 //--> $$000FE Begin of change
-// @version        0.2.2
+// @version        0.2.2.1
 //<-- $$000FE End of change
 // @include        http://www.geocaching.com/*
 // @include        https://www.geocaching.com/*
@@ -34,33 +34,35 @@
 // ==/UserScript==
 
 //*************************************************************************************************************************************************
-// Kennz.  | Datum      | Entwickler    | zuVers.|
+// Kennz.  | Datum      | Entwickler    | zuVers. |
 //*************************************************************************************************************************************************
-// $$072FE | Jan.2017   | FE            | 0.2.3  | 
-// Change: Hervorhebung geänderter Koordinaten flexibler gestalten. Danke an LittleJohn für die Vorarbeit. [Issue #14]
+// $$#  FE | Jan.2017   | FE            | 0.2.2.1 | 
+// Change: [Enhancement #14] Hervorhebung geänderter Koordinaten flexibler gestalten. Danke an LittleJohn für die Vorarbeit.
+// New: [Enhancement #30] Make colored illustration of versions in config selectable.
+// Fix: [Bug #31] When using "Log your visit (inline)" and clicking "All visited" for the trackables list opens an empty new tab.
 //*************************************************************************************************************************************************
-// $$071FE | Jan.2017   | FE            | 0.2.2  | 
+// $$071FE | Jan.2017   | FE            | 0.2.2   | 
 // New: In den Latest logs den Logtext anzeigen beim Drueberfahren mit der Maus. Wie bei der VIP Liste.  
 // ------------------------------------------------------------------------------------------------------------------------------------------------
-// $$070FE | Jan.2017   | FE            | 0.2.2  | 
+// $$070FE | Jan.2017   | FE            | 0.2.2   | 
 // New: Sprache auf default Sprache aendern. Default Sprache im GClh Config hinterlegen. Hintergrund sind die Apps ..., die die Sprache abaendern.
 // Change: GClh Config: Title bei Ueberschrift und obere Links wieder mal ueberarbeitet.
 // Fix: GC Seite Jobs funktioniert nicht mit GClh, ist ja auch nicht notwendig. Seite excludieren.
 // Fix: Linklist/Seachfield fälschlich in Map/Labs aufgebaut (Issue #24)
 // ------------------------------------------------------------------------------------------------------------------------------------------------
-// $$007CF | Jan.2017   | CF            | 0.2.2  |
+// $$007CF | Jan.2017   | CF            | 0.2.2   |
 // Bugfix: Configuration Menu: Remove cache types: APE und GPS Maze
 // Bugfix: Map: Disable complete event category if event, cito, mega, giga is disabled (remove GPS maze)
 // ------------------------------------------------------------------------------------------------------------------------------------------------
-// $$069FE | Jan.2017   | FE/DieBatzen  | 0.2.2  | Issue #2
+// $$069FE | Jan.2017   | FE/DieBatzen  | 0.2.2   | Issue #2
 // Fix: Overview map in listing: zoom in/out loses cache marker. If you zoom in/out the overview map in a cache listing, the cache marker gets 
 //      replaced by a default marker and the static image shows an error message. The reason is that GME changes the cache image link and 
 //      therefore the proper marker creation fails.
 // ------------------------------------------------------------------------------------------------------------------------------------------------
-// $$006CF | Jan.2017   | CF            | 0.2.2  |
+// $$006CF | Jan.2017   | CF            | 0.2.2   |
 // Bugfix: cache types which are hidden by default are not shown disabled
 // ------------------------------------------------------------------------------------------------------------------------------------------------
-// $$005CF | Jan.2017   | CF            | 0.2.2  |
+// $$005CF | Jan.2017   | CF            | 0.2.2   |
 // Change: Configuration Menu: Reorder map options
 //    * Move options "Hide sidebar by default", "Hide header by default" up
 //    * Move option "Add link to Google Maps on GC Map" and child "Switch to Google Maps in same browser tab" into section Google Maps page
@@ -68,60 +70,60 @@
 //    * In case option Replace layercontrol by GClh is unchecked - depended options are hidden
 //    * Some smaller fixes in the Map option sections
 // ------------------------------------------------------------------------------------------------------------------------------------------------
-// $$004CF | Jan.2017   | CF            | 0.2.2  |
+// $$004CF | Jan.2017   | CF            | 0.2.2   |
 // Change: Configuration menu: improve layer selection
 // ------------------------------------------------------------------------------------------------------------------------------------------------
-// $$003CF | Jan.2017   | CF            | 0.2.2  |
+// $$003CF | Jan.2017   | CF            | 0.2.2   |
 // New: Map: Default Geocaching Layer
 // ------------------------------------------------------------------------------------------------------------------------------------------------
-// $$002CF | Jan.2017   | CF            | 0.2.2  |
+// $$002CF | Jan.2017   | CF            | 0.2.2   |
 // Change: Configuration menu: new map icons for cache types
 // ------------------------------------------------------------------------------------------------------------------------------------------------
-// $$001CF | Jan.2017   | CF            | 0.2.2  |
+// $$001CF | Jan.2017   | CF            | 0.2.2   |
 // New: Configuration menu: clickable label text for checkboxes
 //*************************************************************************************************************************************************
-// $$068FE | Jan.2017   | FE            | 0.2.1  |
+// $$068FE | Jan.2017   | FE            | 0.2.1   |
 // New: Downloadzaehler simulieren.
 // ------------------------------------------------------------------------------------------------------------------------------------------------
-// $$067FE | Jan.2017   | FE            | 0.2.1  |
+// $$067FE | Jan.2017   | FE            | 0.2.1   |
 // New: Cache Listing: Latest Logs Symbole im Kopf des Listings anzeigen. Über GClh Config steuern.
 // ------------------------------------------------------------------------------------------------------------------------------------------------
-// $$066FE | Jan.2017   | FE            | 0.2.1  |
+// $$066FE | Jan.2017   | FE            | 0.2.1   |
 // New: GClh Config: GClh Sync als neue Bookmark zum Aufruf aus Linklist eingerichtet.
 // Change: GClh Config: Links im Kopf vom GClh Config überarbeitet.
 // ------------------------------------------------------------------------------------------------------------------------------------------------
-// $$065FE | Dez.2016   | FE            | 0.2.1  |
+// $$065FE | Dez.2016   | FE            | 0.2.1   |
 // New: Logs anzeigen: Wenn nicht alle eigenen Logs geladen werden, weil beispielsweise das Laden der Seite über den Browser gestoppt wurde, dann
 //      angeben wieviele Logs geladen wurden und das Datum des letzten geladenen Logs angeben, Cache und Trackables. (Wird das Laden der Seite
 //      über den Browser gestoppt, funktioniert nicht mehr alles auf der Seite, so z.B. die Linklist.)
 // ------------------------------------------------------------------------------------------------------------------------------------------------
-// $$064FE | Dez.2016   | FE            | 0.2.1  |
+// $$064FE | Dez.2016   | FE            | 0.2.1   |
 // New: Cache Listing: Make VIP lists hideable. Über GClh Config steuern.
 //*************************************************************************************************************************************************
-// $$063FE | Dez.2016   | FE            | 0.1    |
+// $$063FE | Dez.2016   | FE            | 0.1     |
 // Fix: Bei Eigenen Favoriten kein VIP Icon aufbauen. Hier steht gegebenenfalls das Pseudonym des Owners.
 // Fix: Save HomeCoords von Account Settings Seite funktionierte nicht mehr.
 // Fix: Select Buttons in einer Bookmarkliste aufbauen, aber nicht bei der Ablistung aller Bookmarklisten.
 // Fix: In Bookmarkliste nach dem Löschen von Einträgen (...bookmarks/bulk.aspx...) fehlt Zebra.
 // Fix: Farbliche Logkennzeichnung für User mit Sonderzeichen [] korrigiert.
 // ------------------------------------------------------------------------------------------------------------------------------------------------
-// $$062FE | Dez.2016   | FE            | 0.1    |
+// $$062FE | Dez.2016   | FE            | 0.1     |
 // Change: Spezielle Links Profile Tabs, Nearest Lists/Map, Own Trackables, GClh Config, GClh Sync und Find Player mit rechter und linker 
 //         Maustaste funktionsfähig machen mit Standard Contextmenü und postback. (War bei $$058 auf die Schnelle nicht machbar gewesen.)
 // ------------------------------------------------------------------------------------------------------------------------------------------------
-// $$061FE | Dez.2016   | FE            | 0.1    |
+// $$061FE | Dez.2016   | FE            | 0.1     |
 // Change: Check Updates verlegt und ohne functions aufgebaut.
 // Change: Hide Avatar umgelegt.
 // Change: Config und Sync Aufrufe zusammengelegt und umgebaut. Rechte, linke Maus überall ok.
 // ------------------------------------------------------------------------------------------------------------------------------------------------
-// $$060FE | Dez.2016   | FE            | 0.1    |
+// $$060FE | Dez.2016   | FE            | 0.1     |
 // Change: Umstellung GClh (2As) als eigenständig ohne GClh. (Nicht dokumentiert.)
 // Change: Bisherige Doku entfernt. (Nicht dokumentiert.)
 // Change: Umstellung Änderungskennzeichen. Entwicklerkennzeichen für eigene Nummerierung je Entwickler eingebaut. (Nicht dokumentiert.)
 // Change: newParameter umgebaut, so dass sie weiter verwendbar sind. (Nicht dokumentiert.)
 // Change: Link zu alter deutscher Anleitung entfernt und Link github angepaßt.
 //*************************************************************************************************************************************************
-// $$000FE | Aug.2016   | FE            | 11.7   |
+// $$000FE | Aug.2016   | FE            | 11.7    |
 // Versionierung, bei neuen Versionen beachten.
 //*************************************************************************************************************************************************
 
@@ -556,6 +558,10 @@ var variablesInit = function (c) {
     // Settings: Default language
     c.settings_default_langu = getValue("settings_default_langu", "English");
 //<-- $$070FE End of insert
+//--> $$#30FE Begin of insert
+    // Settings: Hide colored illustration of versions
+    c.settings_hide_colored_versions = getValue("settings_hide_colored_versions", false);
+//<-- $$#30FE End of insert
     // Settings: Show EventDay
     c.settings_show_eventday = getValue("settings_show_eventday", true);
     c.settings_date_format = getValue("settings_date_format", "MM/dd/yyyy");
@@ -5204,7 +5210,11 @@ var mainGC = function () {
 
             var links = document.getElementsByTagName("a");
             for (var i = 0; i < links.length; i++) {
-                links[i].setAttribute("target", "_blank");
+//--> $$#31FE Begin of change
+                if ( !links[i].id.match(/(AllDroppedOff|AllVisited|AllClear)/i) ) {    
+                    links[i].setAttribute("target", "_blank");
+                }
+//<-- $$#31FE End of change
             }
             var css = "";
             css += "#Content, #Content .container, .span-20 {width: " + ( parseInt( getValue("settings_new_width") ) - 60 ) + "px;} ";
@@ -5283,7 +5293,11 @@ var mainGC = function () {
 
             var links = document.getElementsByTagName("a");
             for (var i = 0; i < links.length; i++) {
-                links[i].setAttribute("target", "_blank");
+//--> $$#31FE Begin of change
+                if ( !links[i].id.match(/(AllDroppedOff|AllVisited|AllClear)/i) ) {    
+                    links[i].setAttribute("target", "_blank");
+                }
+//<-- $$#31FE End of change
             }
             var css = "";
             css += "#Content, #Content .container, .span-20 {width: 780px;} ";
@@ -7741,9 +7755,6 @@ var mainGC = function () {
                                                "Click OK to upgrade.\n";
                                     if (window.confirm(text)) {
                                         window.open(url, '_blank');
-//--> $$068FE Begin of insert
-                                        simulateDownloadCounter();
-//<-- $$068FE End of insert
                                     } else { 
                                         time += 7 * 60 * 60 * 1000; // 1+7 Stunden warten, bis zum nächsten Check.
                                         setValue('update_next_check', time.toString());
@@ -7756,6 +7767,11 @@ var mainGC = function () {
                     }
                 });
             }
+        }
+        var declaredVersion = getValue("declared_version", scriptVersion);
+        if ( declaredVersion != scriptVersion ) {
+            setValue("declared_version", scriptVersion);
+            simulateDownloadCounter();
         }
     } catch (e) {
         gclh_error("Check for updates", e);
@@ -7973,6 +7989,9 @@ var mainGC = function () {
         var newParameterVers = "<span style='font-size: 70%; font-style: italic; float: right; margin-top: -14px; margin-right: 4px;' ";
         if ( version != "" ) { newParameterVers += "title='Implemented with version " + version + "'>" + version + "</span>"; }         
         else { newParameterVers += "></span>"; }
+//--> $$#30FE Begin of insert
+        if ( settings_hide_colored_versions ) newParameterVers = "";
+//<-- $$#30FE End of insert
         return newParameterVers;
     }
     newParameterOff = "</div>";
@@ -7980,8 +7999,14 @@ var mainGC = function () {
         var newParameterVers = '<span style="font-size: 70%; font-style: italic; margin-top: 10px; margin-left: -192px; position: absolute; cursor: default;"';
         if ( version != "" ) { newParameterVers += 'title="Implemented with version ' + version + '">' + version + '</span>'; }         
         else { newParameterVers += '></span>'; }
+//--> $$#30FE Begin of insert
+        if ( settings_hide_colored_versions ) newParameterVers = "";
+//<-- $$#30FE End of insert
         return newParameterVers;
     }
+//--> $$#30FE Begin of insert
+    if ( settings_hide_colored_versions ) newParameterOn1 = newParameterOn2 = newParameterOn3 = newParameterLL1 = newParameterLL2 = newParameterLL3 = newParameterOff = "";
+//<-- $$#30FE End of insert
 
 //--> $$068FE Begin of insert
 // Downloadzähler simulieren, weil GitHub das wohl nicht kann.
@@ -7989,7 +8014,7 @@ var mainGC = function () {
         GM_xmlhttpRequest({
             method: "GET",
 //--> $$000FE Begin of change
-            url: "https://goo.gl/820Slr",  // Downloadzähler Version 0.2.2
+            url: "https://goo.gl/4ZBbxW",  // Installationszähler Version 0.2.2.1
 //<-- $$000FE End of change
             onload: function (result) {
             }
@@ -8263,7 +8288,7 @@ var mainGC = function () {
         html += "}";
         html += "";
         html += ".gclh_content {";
-        html += "  padding: 10px;";
+        html += "  padding: 2px 10px 10px 10px;";
         html += "  font-family: Verdana;";
         html += "  font-size: 14px;";
         html += "}";
@@ -8376,11 +8401,11 @@ var mainGC = function () {
 //            html += "<br><br>";
 //--> $$070FE Begin of change
 //            html += "&nbsp;" + "<font class='gclh_small' style='float: right' ><a href='http://geoclub.de/forum/viewtopic.php?f=117&t=79372' target='_blank'>Help</a>, <a href='https://raw.githubusercontent.com/2Abendsegler/GClh/master/Changelog.txt' target='_blank'>Changelog</a>, <a href='https://rawgit.com/2Abendsegler/GClh/master/Wish list.pdf' target='_blank'>Wish list</a>, <a href='https://github.com/2Abendsegler/GClh' target='_blank'>GitHub</a></font>";
-            html += "&nbsp;" + "<font class='gclh_small' style='float: right' >";
-            html += "<a href='http://geoclub.de/forum/viewforum.php?f=117' title='Help, is available on the geoclub forum' target='_blank'>Help</a>, ";
-            html += "<a href='https://raw.githubusercontent.com/2Abendsegler/GClh/master/Changelog.txt' title='Changelog, on GitHub' target='_blank'>Changelog</a>, ";
-            html += "<a href='https://github.com/2Abendsegler/GClh/issues?q=is:issue is:open sort:created-desc' title='Open issues, on GitHub' target='_blank'>Open issues</a>, ";
-            html += "<a href='https://github.com/2Abendsegler/GClh/issues?q=is:issue is:open label:\"tag: wish\" sort:created-desc' title='Open wishes, on GitHub' target='_blank'>Open wishes</a>, ";
+            html += "&nbsp;" + "<font style='float: right; font-size: 12px; ' >";
+            html += "<a href='http://geoclub.de/forum/viewforum.php?f=117' title='Help, is available on the geoclub forum' target='_blank'>Help</a> | ";
+            html += "<a href='https://raw.githubusercontent.com/2Abendsegler/GClh/master/Changelog.txt' title='Changelog, on GitHub' target='_blank'>Changelog</a> | ";
+            html += "<a href='https://github.com/2Abendsegler/GClh/issues?q=is:issue is:open sort:created-desc' title='Open issues, on GitHub' target='_blank'>Open issues</a> | ";
+            html += "<a href='https://github.com/2Abendsegler/GClh/issues?q=is:issue is:open label:\"tag: wish\" sort:created-desc' title='Open wishes, on GitHub' target='_blank'>Open wishes</a> | ";
             html += "<a href='https://github.com/2Abendsegler/GClh' title='GitHub' target='_blank'>GitHub</a></font>";
 //<-- $$070FE End of change
             html += "<br>";
@@ -8465,6 +8490,11 @@ var mainGC = function () {
             // Sort Linklist
             html += checkboxy('settings_sort_default_bookmarks', 'Sort default links for the Linklist') + show_help("With this option you can sort the default links for the Linklist by description. Your selection, sort or not, will done first by the next new start of the GClh Config. You can configure these default links to use in your Linklist at the end of this configuration page.") + "<br/>";
             html += newParameterVersionSetzen(0.1) + newParameterOff;
+//--> $$#30FE Begin of insert
+            html += newParameterOn2;
+            html += checkboxy('settings_hide_colored_versions', 'Hide colored illustration of versions') + show_help("With this option the colored illustration of the versions and the version numbers in GClh Config are selectable. A change at this option evolute its effect only after a save.") + "<br/>";
+            html += newParameterVersionSetzen(0.2) + newParameterOff;
+//<-- $$#30FE End of insert
             html += "";
             html += "<br>";
             html += "";
@@ -9510,6 +9540,9 @@ var mainGC = function () {
 //--> $$070FE Begin of insert
                 'settings_set_default_langu',
 //<-- $$070FE End of insert
+//--> $$#30FE Begin of insert
+                'settings_hide_colored_versions',
+//<-- $$#30FE End of insert
                 'settings_show_google_maps',
                 'settings_show_log_it',
                 'settings_show_nearestuser_profil_link',
