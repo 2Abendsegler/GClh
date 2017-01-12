@@ -8173,13 +8173,26 @@ var mainGC = function () {
             html += checkboxy('settings_map_hide_found', 'Hide found caches by default') + show_help("This is a premium feature - it enables automatically the option to hide your found caches on map.") + "<br/>";
             html += checkboxy('settings_map_hide_hidden', 'Hide own caches by default') + show_help("This is a premium feature - it enables automatically the option to hide your caches on map.") + "<br/>";
             html += "&nbsp;" + "Hide cache types by default: " + show_help("This is a premium feature - it enables automatically the option to hide the specific cache type.") + "<br/>";
+
             var imgStyle = "style='padding-top: 4px; vertical-align: bottom;'"; 
-            html += " &nbsp; " + checkboxy('settings_map_hide_2', "<img "+imgStyle+"src='" + http + "://www.geocaching.com/map/images/mapicons/2.png' title='Traditional'>") + "<br/>";
-            html += " &nbsp; " + checkboxy('settings_map_hide_3', "<img "+imgStyle+"src='" + http + "://www.geocaching.com/map/images/mapicons/3.png' title='Multi-Cache'>") + "<br/>";
-            html += " &nbsp; " + checkboxy('settings_map_hide_6', "<img "+imgStyle+"src='" + http + "://www.geocaching.com/map/images/mapicons/6.png' title='Event'>") + " &nbsp; " + checkboxy('settings_map_hide_13', "<img "+imgStyle+"src='" + http + "://www.geocaching.com/map/images/mapicons/13.png' title='Cache In Trash Out'>") + " &nbsp; " + checkboxy('settings_map_hide_453', "<img "+imgStyle+"src='" + http + "://www.geocaching.com/map/images/mapicons/453.png' title='Mega-Event'>") + " &nbsp; " + checkboxy('settings_map_hide_7005', "<img "+imgStyle+"src='" + http + "://www.geocaching.com/map/images/mapicons/7005.png' title='Giga-Event'>") + "<br/>";
-            html += " &nbsp; " + checkboxy('settings_map_hide_137', "<img "+imgStyle+"src='" + http + "://www.geocaching.com/map/images/mapicons/137.png' title='EarthCache'>") + " &nbsp; " + checkboxy('settings_map_hide_4', "<img "+imgStyle+"src='" + http + "://www.geocaching.com/map/images/mapicons/4.png' title='Virtual'>") + " &nbsp; " + checkboxy('settings_map_hide_11', "<img "+imgStyle+"src='" + http + "://www.geocaching.com/map/images/mapicons/11.png' title='Webcam'>") + "<br/>";
-            html += " &nbsp; " + checkboxy('settings_map_hide_8', "<img "+imgStyle+"src='" + http + "://www.geocaching.com/map/images/mapicons/8.png' title='Mystery'>") + " &nbsp; " + checkboxy('settings_map_hide_5', "<img "+imgStyle+"src='" + http + "://www.geocaching.com/map/images/mapicons/5.png' title='Letterbox'>") + " &nbsp; " + checkboxy('settings_map_hide_1858', "<img "+imgStyle+"src='" + http + "://www.geocaching.com/map/images/mapicons/1858.png' title='Wherigo'>") + "<br/>";
-            html += "<div style='margin-top: 9px; margin-left: 5px'><b>Layers in map</b>" + show_help("Here you can select the map layers which should be added into the layer menu with the map. With this option you can reduce the long list to the layers you really need. If the right list of layers is empty, all will be displayed. If you use other scripts like \"Geocaching Map Enhancements\" GClh will overwrite its layercontrol. With this option you can disable GClh layers to use the layers from gc.com or GME.") + "</div>";				
+            var imageBaseUrl = http + "://www.geocaching.com/map/images/mapicons/";
+            html += " &nbsp; " + checkboxy('settings_map_hide_2', "<img "+imgStyle+" src='" + imageBaseUrl + "2.png' title='Traditional'>") + "<br/>";
+            html += " &nbsp; " + checkboxy('settings_map_hide_3', "<img "+imgStyle+" src='"  + imageBaseUrl + "3.png' title='Multi-Cache'>") + "<br/>";
+
+            html += " &nbsp; " + checkboxy('settings_map_hide_6', "<img "+imgStyle+" src='" + imageBaseUrl + "6.png' title='Event'>");
+            html += " &nbsp; " + checkboxy('settings_map_hide_13', "<img "+imgStyle+" src='" + imageBaseUrl + "13.png' title='Cache In Trash Out'>");
+            html += " &nbsp; " + checkboxy('settings_map_hide_453', "<img "+imgStyle+" src='" + imageBaseUrl + "453.png' title='Mega-Event'>");
+            html += " &nbsp; " + checkboxy('settings_map_hide_7005', "<img "+imgStyle+" src='" + imageBaseUrl + "7005.png' title='Giga-Event'>") + "<br/>";
+
+            html += " &nbsp; " + checkboxy('settings_map_hide_137', "<img "+imgStyle+" src='" + imageBaseUrl + "137.png' title='EarthCache'>");
+            html += " &nbsp; " + checkboxy('settings_map_hide_4', "<img "+imgStyle+" src='" + imageBaseUrl + "4.png' title='Virtual'>");
+            html += " &nbsp; " + checkboxy('settings_map_hide_11', "<img "+imgStyle+" src='" + imageBaseUrl + "11.png' title='Webcam'>") + "<br/>";
+
+            html += " &nbsp; " + checkboxy('settings_map_hide_8', "<img "+imgStyle+" src='" + imageBaseUrl + "8.png' title='Mystery'>");
+            html += " &nbsp; " + checkboxy('settings_map_hide_5', "<img "+imgStyle+" src='" + imageBaseUrl + "5.png' title='Letterbox'>");
+            html += " &nbsp; " + checkboxy('settings_map_hide_1858', "<img "+imgStyle+" src='" + imageBaseUrl + "1858.png' title='Wherigo'>") + "<br/>";
+
+            html += "<div style='margin-top: 9px; margin-left: 5px'><b>Layers in map</b>" + show_help("Here you can select the map layers which should be added into the layer menu with the map. With this option you can reduce the long list to the layers you really need. If the right list of layers is empty, all will be displayed. If you use other scripts like \"Geocaching Map Enhancements\" GClh will overwrite its layercontrol. With this option you can disable GClh layers to use the layers from gc.com or GME.") + "</div>";
             html += checkboxy('settings_use_gclh_layercontrol', 'Replace layercontrol by GClh') + show_help("If you use other scripts like \"Geocaching Map Enhancements\" GClh will overwrite its layercontrol. With this option you can disable GClh layers to use the layers from gc.com or GME.") + "<br/>";
             
             html += "<div id='MapLayersConfiguration' style='display: "+(settings_use_gclh_layercontrol?"block":"none")+";'>";
@@ -10092,51 +10105,45 @@ function getValue(name, defaultValue) {
 
 // Wrapper, um zu pruefen auf welche Seite der Link zeigt - um zu vermeiden, die URL-Abfrage mehrfach im Quelltext wiederholen zu muessen
 function is_link(name, url) {
+	var status = false;
     switch (name) {
         case "cache_listing":
-            if (url.match(/^https?:\/\/www\.geocaching\.com\/seek\/cache_details\.aspx/) || document.location.href.match(/^https?:\/\/www\.geocaching\.com\/geocache\//)) return true;
-            else return false;
+            if (url.match(/^https?:\/\/www\.geocaching\.com\/seek\/cache_details\.aspx/) || url.match(/^https?:\/\/www\.geocaching\.com\/geocache\//) ) status = true;
             break;
         case "profile":
-            if (url.match(/^http:\/\/www\.geocaching\.com\/my\/default\.aspx/) || document.location.href.match(/^http:\/\/www\.geocaching\.com\/my/) || url.match(/^https:\/\/www\.geocaching\.com\/my\/default\.aspx/) || document.location.href.match(/^https:\/\/www\.geocaching\.com\/my/)) return true;
-            else return false;
+            if (url.match(/^https?:\/\/www\.geocaching\.com\/my(\/default\.aspx)?/) ) status = true;
             break;
         case "publicProfile":
-            if (url.match(/^http:\/\/www\.geocaching\.com\/profile/) || url.match(/^https:\/\/www\.geocaching\.com\/profile/)) return true;
-            else return false;
+            if (url.match(/^https?:\/\/www\.geocaching\.com\/profile/)) status = true;
             break;
-		case "map":
-			if (url.match(/^http:\/\/www\.geocaching\.com\/map/) || url.match(/^https:\/\/www\.geocaching\.com\/map/)) return true;
-			else return false;
-			break;
-		case "find_cache":
-			if (url.match(/^https:\/\/www\.geocaching\.com\/play\/search/)) return true;
-			else return false;
-			break;
-		case "hide_cache":
-            if (url.match(/^https:\/\/www\.geocaching\.com\/play\/hide/)) return true;
-			else return false;
-			break;
-		case "settings":
-            if (url.match(/^https:\/\/www\.geocaching\.com\/account\/settings/)) return true;
-            else if (url.match(/^https:\/\/www\.geocaching\.com\/account\/lists/)) return true;
-			else return false;
-			break;
-		case "messagecenter":
-            if (url.match(/^https:\/\/www\.geocaching\.com\/account\/messagecenter/)) return true;
-			else return false;
-			break;
+        case "map":
+            if (url.match(/^https?:\/\/www\.geocaching\.com\/map/)) status = true;
+            break;
+        case "find_cache":
+            if (url.match(/^https?:\/\/www\.geocaching\.com\/play\/search/)) status = true;
+            break;
+        case "hide_cache":
+            if (url.match(/^https?:\/\/www\.geocaching\.com\/play\/hide/)) status = true;
+            break;
+        case "settings":
+            if (url.match(/^https?:\/\/www\.geocaching\.com\/account\/(settings|lists)/)) status = true;
+            break;
+        case "messagecenter":
+            if (url.match(/^https?:\/\/www\.geocaching\.com\/account\/messagecenter/)) status = true;
+            break;
         case "geotours":
-			if (url.match(/^https:\/\/www\.geocaching\.com\/play\/geotours/)) return true;
-			else return false;
-			break;
+            if (url.match(/^https?:\/\/www\.geocaching\.com\/play\/geotours/)) status = true;
+            break;
         case "labs":
-			if (url.match(/^https:\/\/labs\.geocaching\.com/)) return true;
-			else return false;
-			break;
+            if (url.match(/^https?:\/\/labs\.geocaching\.com/)) status = true;
+            break;
         default:
-            return false;
+            gclh_error( "is_link", "is_link( "+name+", ... ): unknown name" );        
+            break;
     }
+    // debugging output
+    // status ? (gclh_log( "is_link( "+name+", "+url+"): " + status )) : false;
+    return status;
 }
 
 // Wrapper fuer die aktuelle Seite (siehe is_link)
