@@ -36,6 +36,9 @@
 //*************************************************************************************************************************************************
 // Kennz.  | Datum      | Entwickler    | zuVers. |
 //*************************************************************************************************************************************************
+// $$008CF | Jan.2017   | CF            | 0.2.3   | 
+// Refactoring: is_link function (issue #39)
+// ------------------------------------------------------------------------------------------------------------------------------------------------
 // $$#  FE | Jan.2017   | FE            | 0.2.2.1 | 
 // Change: [Enhancement #14] Hervorhebung geänderter Koordinaten flexibler gestalten. Danke an LittleJohn für die Vorarbeit.
 // New: [Enhancement #30] Make colored illustration of versions in config selectable.
@@ -10544,51 +10547,45 @@ function getValue(name, defaultValue) {
 
 // Wrapper, um zu pruefen auf welche Seite der Link zeigt - um zu vermeiden, die URL-Abfrage mehrfach im Quelltext wiederholen zu muessen
 function is_link(name, url) {
+	var status = false;
     switch (name) {
         case "cache_listing":
-            if (url.match(/^https?:\/\/www\.geocaching\.com\/seek\/cache_details\.aspx/) || document.location.href.match(/^https?:\/\/www\.geocaching\.com\/geocache\//)) return true;
-            else return false;
+            if (url.match(/^https?:\/\/www\.geocaching\.com\/seek\/cache_details\.aspx/) || url.match(/^https?:\/\/www\.geocaching\.com\/geocache\//) ) status = true;
             break;
         case "profile":
-            if (url.match(/^http:\/\/www\.geocaching\.com\/my\/default\.aspx/) || document.location.href.match(/^http:\/\/www\.geocaching\.com\/my/) || url.match(/^https:\/\/www\.geocaching\.com\/my\/default\.aspx/) || document.location.href.match(/^https:\/\/www\.geocaching\.com\/my/)) return true;
-            else return false;
+            if (url.match(/^https?:\/\/www\.geocaching\.com\/my(\/default\.aspx)?/) ) status = true;
             break;
         case "publicProfile":
-            if (url.match(/^http:\/\/www\.geocaching\.com\/profile/) || url.match(/^https:\/\/www\.geocaching\.com\/profile/)) return true;
-            else return false;
+            if (url.match(/^https?:\/\/www\.geocaching\.com\/profile/)) status = true;
             break;
-		case "map":
-			if (url.match(/^http:\/\/www\.geocaching\.com\/map/) || url.match(/^https:\/\/www\.geocaching\.com\/map/)) return true;
-			else return false;
-			break;
-		case "find_cache":
-			if (url.match(/^https:\/\/www\.geocaching\.com\/play\/search/)) return true;
-			else return false;
-			break;
-		case "hide_cache":
-            if (url.match(/^https:\/\/www\.geocaching\.com\/play\/hide/)) return true;
-			else return false;
-			break;
-		case "settings":
-            if (url.match(/^https:\/\/www\.geocaching\.com\/account\/settings/)) return true;
-            else if (url.match(/^https:\/\/www\.geocaching\.com\/account\/lists/)) return true;
-			else return false;
-			break;
-		case "messagecenter":
-            if (url.match(/^https:\/\/www\.geocaching\.com\/account\/messagecenter/)) return true;
-			else return false;
-			break;
+        case "map":
+            if (url.match(/^https?:\/\/www\.geocaching\.com\/map/)) status = true;
+            break;
+        case "find_cache":
+            if (url.match(/^https?:\/\/www\.geocaching\.com\/play\/search/)) status = true;
+            break;
+        case "hide_cache":
+            if (url.match(/^https?:\/\/www\.geocaching\.com\/play\/hide/)) status = true;
+            break;
+        case "settings":
+            if (url.match(/^https?:\/\/www\.geocaching\.com\/account\/(settings|lists)/)) status = true;
+            break;
+        case "messagecenter":
+            if (url.match(/^https?:\/\/www\.geocaching\.com\/account\/messagecenter/)) status = true;
+            break;
         case "geotours":
-			if (url.match(/^https:\/\/www\.geocaching\.com\/play\/geotours/)) return true;
-			else return false;
-			break;
+            if (url.match(/^https?:\/\/www\.geocaching\.com\/play\/geotours/)) status = true;
+            break;
         case "labs":
-			if (url.match(/^https:\/\/labs\.geocaching\.com/)) return true;
-			else return false;
-			break;
+            if (url.match(/^https?:\/\/labs\.geocaching\.com/)) status = true;
+            break;
         default:
-            return false;
+            gclh_error( "is_link", "is_link( "+name+", ... ): unknown name" );        
+            break;
     }
+    // debugging output
+    // status ? (gclh_log( "is_link( "+name+", "+url+"): " + status )) : false;
+    return status;
 }
 
 // Wrapper fuer die aktuelle Seite (siehe is_link)
