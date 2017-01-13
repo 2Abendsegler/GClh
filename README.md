@@ -2,17 +2,16 @@
 GC little helper II
 
 
-Branches: 
+#Branches: 
 =========
-  Ebenen:               Beispiel
-  1. Kunde   2. Collector   3. Projekte   4. Development   
-  ---------------------------------------------------------
-  master     collector      v0.2.2.4      develop_fe
-                                          develop_2
-                            v0.2.3        develop_fe
-                                          develop_LittleJohn
-                                          develop_CF
-                            translation   develop_hugo
+<b>Ebenen: 1. Kunde   2. Collector   3. Projekte   4. Development </b>  
+---------------------------------------------------------
+        master     collector      v0.2.2.4      develop_fe
+                                                develop_2
+                                  v0.2.3        develop_fe
+                                                develop_LittleJohn
+                                                develop_CF
+                                  translation   develop_hugo
 
 4. Ebene Development: Die Namen der Development Branches der Contributoren (Mitarbeiter) auf dem GitHub von 2Abendsegler beginnen mit "develop_" und enthalten folgend einen beliebigen Qualifier für den User. Forked der Entwickler auf seinen eigenen GitHub Account, ist man in der Namensgebung natürlich frei. Geforked wird von der 3. Ebene, der Projektebene je nachdem, für welches Projekt man entwickelt. Für unser Beispiel unten: Hilft man beim Bugfixing der aktuellen Version V0.2.2, forked man vom Projekt v0.2.32.4. Entwickelt man für die nächste Version, dann forked man von v0.2.3.  
 
