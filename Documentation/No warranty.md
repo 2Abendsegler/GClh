@@ -1,4 +1,3 @@
-#
 ## GPL Version 2; Extract from the §§ 11 and 12: NO WARRANTY
 
 NO WARRANTY
