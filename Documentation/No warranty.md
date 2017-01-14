@@ -1,4 +1,4 @@
-### GPL Version 2, Original, Extract from the §§ 11 and 12:
+### GPL Version 2; Extract from the §§ 11 and 12:
 
 ### NO WARRANTY
 
@@ -8,7 +8,7 @@
 
 
 
-### GPL Version 2, Deutsche Übersetzung, Auszug zu den §§ 11 und 12.
+### GPL Version 2; Deutsche Übersetzung; Auszug zu den §§ 11 und 12.
 
 ### Keine Gewährleistung
 
