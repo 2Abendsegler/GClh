@@ -1,4 +1,4 @@
-### GPL Version 2; Extract from the §§ 11 and 12: NO WARRANTY <a id="en" href="#de" style="float: right">(DE)</a>
+### GPL Version 2; Extract from the §§ 11 and 12: NO WARRANTY <a id="en" href="#de" style="float: right; padding-right: 0px;">(DE)</a>
 
 NO WARRANTY
 
