@@ -1,4 +1,4 @@
-## GPL Version 2; Extract from the §§ 11 and 12: NO WARRANTY    
+## GPL Version 2; Extract from the §§ 11 and 12: NO WARRANTY <img id="en" href="#de" src="/2Abendsegler" style="float: right">
 <a id="xde" href="#gpl-version-2-deutsche-Übersetzung-auszug-zu-den--11-und-12-keine-gewährleistung">ddddddddddddddd</a>
 <a id="en" href="#de">de</a>
 
