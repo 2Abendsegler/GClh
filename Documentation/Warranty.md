@@ -18,6 +18,7 @@ Keine Gewährleistung
 
 §12. In keinem Fall, außer wenn durch geltendes Recht gefordert oder schriftlich zugesichert, ist irgendein Copyright-Inhaber oder irgendein Dritter, der das Programm wie oben erlaubt modifiziert oder verbreitet hat, Ihnen gegenüber für irgendwelche Schäden haftbar, einschließlich jeglicher allgemeiner oder spezieller Schäden, Schäden durch Seiteneffekte (Nebenwirkungen) oder Folgeschäden, die aus der Benutzung des Programms oder der Unbenutzbarkeit des Programms folgen (einschließlich – aber nicht beschränkt auf – Datenverluste, fehlerhafte Verarbeitung von Daten, Verluste, die von Ihnen oder anderen getragen werden müssen, oder dem Unvermögen des Programms, mit irgendeinem anderen Programm zusammenzuarbeiten), selbst wenn ein Copyright-Inhaber oder Dritter über die Möglichkeit solcher Schäden unterrichtet worden war. 
   
+---
 *GNU General Public License; Deutsche Übersetzung der Version 2, Juni 1991; Copyright © 1989, 1991 Free Software Foundation, Inc.; 51 Franklin St, Fifth Floor, Boston, MA 02110, USA*  
 *(Diese Übersetzung ist nicht rechtsverbindlich.)*  
 
