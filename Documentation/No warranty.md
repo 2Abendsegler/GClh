@@ -1,4 +1,4 @@
-## GPL Version 2; Extract from the §§ 11 and 12: NO WARRANTY    <span id="de" href="#gpl-version2;deutsche" style="cursor: pointer">ddddddddddddddd</span>
+## GPL Version 2; Extract from the §§ 11 and 12: NO WARRANTY    <a id="de" href="#gpl-version-2-deutsche-Übersetzung-auszug-zu-den--11-und-12-keine-gewährleistung">ddddddddddddddd</a>
 
 NO WARRANTY
 
