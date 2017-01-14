@@ -11,6 +11,7 @@ NO WARRANTY
   
 --- 
 ### GPL Version 2; Deutsche Übersetzung; Auszug zu den §§ 11 und 12: Keine Gewährleistung <a id="user-content-de"></a>
+*(Diese Übersetzung ist nicht rechtsverbindlich.)*
 
 Keine Gewährleistung
 
