@@ -1,4 +1,6 @@
-## GPL Version 2; Extract from the §§ 11 and 12: NO WARRANTY    <a id="de" href="#gpl-version-2-deutsche-Übersetzung-auszug-zu-den--11-und-12-keine-gewährleistung">ddddddddddddddd</a>
+## GPL Version 2; Extract from the §§ 11 and 12: NO WARRANTY    
+<a id="xde" href="#gpl-version-2-deutsche-Übersetzung-auszug-zu-den--11-und-12-keine-gewährleistung">ddddddddddddddd</a>
+<a id="en" href="#de">de</a>
 
 NO WARRANTY
 
@@ -7,7 +9,7 @@ NO WARRANTY
 §12. IN NO EVENT UNLESS REQUIRED BY APPLICABLE LAW OR AGREED TO IN WRITING WILL ANY COPYRIGHT HOLDER, OR ANY OTHER PARTY WHO MAY MODIFY AND/OR REDISTRIBUTE THE PROGRAM AS PERMITTED ABOVE, BE LIABLE TO YOU FOR DAMAGES, INCLUDING ANY GENERAL, SPECIAL, INCIDENTAL OR CONSEQUENTIAL DAMAGES ARISING OUT OF THE USE OR INABILITY TO USE THE PROGRAM (INCLUDING BUT NOT LIMITED TO LOSS OF DATA OR DATA BEING RENDERED INACCURATE OR LOSSES SUSTAINED BY YOU OR THIRD PARTIES OR A FAILURE OF THE PROGRAM TO OPERATE WITH ANY OTHER PROGRAMS), EVEN IF SUCH HOLDER OR OTHER PARTY HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
   
 # 
-## GPL Version 2; Deutsche Übersetzung; Auszug zu den §§ 11 und 12: Keine Gewährleistung
+## GPL Version 2; Deutsche Übersetzung; Auszug zu den §§ 11 und 12: Keine Gewährleistung <a id="de" href="#en">en</a>
 
 Keine Gewährleistung
 
