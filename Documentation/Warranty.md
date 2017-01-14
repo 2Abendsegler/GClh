@@ -1,6 +1,7 @@
-<a href="#user-content-en">(EN)</a><a href="#user-content-de">(DE)</a>
-# <span id="user-content-en"></span>
-### GPL Version 2; Extract from the §§ 11 and 12: NO WARRANTY
+<a href="#user-content-en">(EN) </a>
+<a href="#user-content-de"> (DE)</a>
+# 
+### GPL Version 2; Extract from the §§ 11 and 12: NO WARRANTY <a id="user-content-en"></a>
 
 NO WARRANTY
 
