@@ -1,4 +1,35 @@
+---
+## 
+<br>
 
+---
+## 
+<br>
+
+---
+## 
+<br>
+
+---
+## 
+<br>
+
+---
+## 
+<br>
+
+---
+## 
+<br>
+
+---
+## 
+<br>
+
+---
+## Rebuild GC little helper (2As) as GC little helper II, Version 0.1:
+<br>- Fix: Bei Eigenen Favoriten kein VIP Icon aufbauen. Hier steht gegebenenfalls das Pseudonym des Owners.<br>- Fix: Save HomeCoords von Account Settings Seite funktionierte nicht mehr.<br>- Fix: Select Buttons in einer Bookmarkliste aufbauen, aber nicht bei der Ablistung aller Bookmarklisten.<br>- Fix: In Bookmarkliste nach dem Loeschen von Eintraegen (...bookmarks/bulk.aspx...) fehlt Zebra.<br>- Fix: Farbliche Logkennzeichnung fuer User mit Sonderzeichen [] korrigiert.<br>- Change: Spezielle Links Profile Tabs, Nearest Lists/Map, Own Trackables, GClh Config, GClh Sync und Find <br>          Player mit rechter und linker Maustaste funktionsfaehig machen mit Standard Contextmenue und <br>          postback. <br>- Change: Config und Sync Aufrufe zusammengelegt und umgebaut. Rechte, linke Maus ueberall ok.<br>- Change: Link zu alter deutscher Anleitung entfernt und Link github angepasst.
+<br>
 
 ---
 ## v11.6.7 -&gt; v11.6.8 Fix:
