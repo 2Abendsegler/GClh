@@ -15,9 +15,9 @@ Anstatt mit der Startkonfiguration des "GC little helper II" zu beginnen, kann m
 <li><a href="http://www.geocaching.com/my/">Eigenes Profil</a> neu laden.</li>
 <li>Wählt im eigenen Profil neben dem Avatar den "GClh Sync II" aus und wählt "Manual". Im Fenster dann mit rechter Maustaste "Einfügen" und anschließend den Button "import" wählen.</li>
 </ul>
-<br>Alternativ könnt ihr auch die Datei "*...\gm_scripts\GC_little_helper.db*" aus eurem Firefox Profil kopieren und in "...\gm_scripts\GC_little_helper_II.db" umbenennen, zuvor gegebenenfalls eine vorhandene Datei "...\gm_scripts\GC_little_helper_II.db" löschen. Firefox muß dazu geschlossen sein.<br>
+<br>Alternativ könnt ihr auch die Datei "*...\gm_scripts\GC_little_helper.db*" aus eurem Firefox Profil kopieren und in "*...\gm_scripts\GC_little_helper_II.db*" umbenennen, zuvor gegebenenfalls eine vorhandene Datei "*...\gm_scripts\GC_little_helper_II.db*" löschen. Firefox muß dazu geschlossen sein.<br>
 <br>
-Sollte irgendetwas schiefgehen oder möchte man mit der Startkonfiguration des "GC little helper II" neu beginnen, dann kann man die Datei "...\gm_scripts\GC_little_helper_II.db" im Firefox Profil löschen. Firefox muß dazu geschlossen sein. Beim nächsten Start einer Geocaching Seite wird die Datei "...\gm_scripts\GC_little_helper_II.db" dann mit der Startkonfiguration automatisch angelegt. <br>
+Sollte irgendetwas schiefgehen oder möchte man mit der Startkonfiguration des "GC little helper II" neu beginnen, dann kann man die Datei "*...\gm_scripts\GC_little_helper_II.db*" im Firefox Profil löschen. Firefox muß dazu geschlossen sein. Beim nächsten Start einer Geocaching Seite wird die Datei "*...\gm_scripts\GC_little_helper_II.db*" dann mit der Startkonfiguration automatisch angelegt. <br>
 <br>
 ### 4. Wie kann man die eigenen Systemdaten ermitteln:<a id="4"></a>
 <ul>
@@ -29,5 +29,5 @@ Sollte irgendetwas schiefgehen oder möchte man mit der Startkonfiguration des "
 <li>Im Firefox-Adressfeld "about:support" eingeben.</li>
 <li>Bei "Allgemeinen Informationen / Profilordner" den Button "Ordner anzeigen" wählen.<br>
 Nun befindet man sich im Firefox Profil.</li>
-<li>Im Ordner "gm_scripts" befinden sich dann beispielsweise die ".db" Dateien.</li>
+<li>Im Ordner "*gm_scripts*" befinden sich dann beispielsweise die "*.db*" Dateien.</li>
 </ul></li>
