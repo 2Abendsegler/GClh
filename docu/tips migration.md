@@ -27,7 +27,7 @@ Sollte irgendetwas schiefgehen oder möchte man mit der Startkonfiguration des "
 <li>Ermittlung Firefox Profil:<br>
 <ul>
 <li>Im Firefox-Adressfeld "about:support" eingeben.</li>
-<li>Bei "Allgemeinen Informationen / Profilordner" den Button "Ordner anzeigen" wählen. 
+<li>Bei "Allgemeinen Informationen / Profilordner" den Button "Ordner anzeigen" wählen.<br>
 Nun befindet man sich im Firefox Profil.</li>
 <li>Im Ordner "gm_scripts" befinden sich dann beispielsweise die ".db" Dateien.</li>
 </ul></li>
