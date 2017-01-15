@@ -8,11 +8,11 @@
 <ul>
 <li>Change: [Enhancement #14] Hervorhebung geänderter Koordinaten flexibler gestalten.
 Danke an LittleJohn für die Vorarbeit.
-Das Aussehen der durch den Benutzer geänderten Koordinaten kann nun flexibler angepaßt werden. Das bekannte Aussehen aus dem GClh Original entspricht in etwa folgender Einstellung:
+Das Aussehen der durch den Benutzer geänderten Koordinaten kann nun flexibler angepaßt werden. Das bekannte Aussehen aus dem GClh Original entspricht in etwa folgender Einstellung:  
 <img src="../images/v0.2.2.1_Screen02.jpg" alt="v0.2.2.1_Screen02.jpg">
 </li>
 <li>New: [Enhancement #30] Make colored illustration of versions in config selectable.
-Der teils doch etwas fleckig geratene Hintergrund im GClh Config mit den Informationen zu welcher Version ein Parameter implementiert wurde, kann nun abgewählt werden.
+Der teils doch etwas fleckig geratene Hintergrund im GClh Config mit den Informationen zu welcher Version ein Parameter implementiert wurde, kann nun abgewählt werden.  
 <img src="../images/v0.2.2.1_Screen01.jpg" alt="v0.2.2.1_Screen01.jpg">
 </li>
 <li>Fix: [Bug #31] When using "Log your visit (inline)" and clicking "All visited" for the trackables list opens an empty new tab.</li>
