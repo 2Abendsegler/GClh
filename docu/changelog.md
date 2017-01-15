@@ -1,4 +1,5 @@
 
+---
 ## v0.2.2.1:
 <ul><li>Change: [Enhancement #14] Hervorhebung geänderter Koordinaten flexibler gestalten. <br>Danke an LittleJohn für die Vorarbeit.<br>Das Aussehen der durch den Benutzer geänderten Koordinaten kann nun flexibler angepaßt werden. Das bekannte Aussehen aus dem GClh Original entspricht in etwa folgender Einstellung:<br>
 <div class="inline-attachment"><dl class="file"><dt class="attach-image"><img src="../images/v0.2.2.1_Screen02.jpg" class="postimage" alt="v0.2.2.1_Screen02.jpg"></dt></dl></div></li>
