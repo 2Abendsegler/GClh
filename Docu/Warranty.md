@@ -1,4 +1,4 @@
-<a href="#user-content-en" title="(EN) GPL Version 2; Extract of the §§ 11 and 12: NO WARRANTY"><img src="/Flagg_EN.png"></a> <a href="#user-content-de" title="(DE) GPL Version 2; Deutsche Übersetzung; Auszug zu den §§ 11 und 12: Keine Gewährleistung"><img src="https://github.com/2Abendsegler/GClh/blob/develop_fe/Docu/Flagg_DE.png"></a> 
+<a href="#user-content-en" title="(EN) GPL Version 2; Extract of the §§ 11 and 12: NO WARRANTY"><img src="/Flagg_EN.png"></a> <a href="#user-content-de" title="(DE) GPL Version 2; Deutsche Übersetzung; Auszug zu den §§ 11 und 12: Keine Gewährleistung"><img src="https://github.com/2Abendsegler/GClh/blob/develop_fe/Docu/Flagg_DE.png"><img src="Flagg_DE.png"><img src="./Flagg_DE.png"></a> 
 
 --- 
 ### GPL Version 2; Extract of the §§ 11 and 12: NO WARRANTY <a id="user-content-en"></a>
