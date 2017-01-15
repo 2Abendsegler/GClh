@@ -473,12 +473,12 @@ library.  If this is what you want to do, use the
 instead of this License.
 </p>
 
---- 
-<h1 id="user-content-de" align="center">GNU General Public License</h1>
-<p align="center"><strong>
+----
+<h1 id="user-content-de">GNU General Public License</h1>
+<p><strong>
 Deutsche Übersetzung der Version 2, Juni 1991
 </strong></p>
-<p align="center"><strong>
+<p ><strong>
 Copyright © 1989, 1991 Free Software Foundation, Inc.<br>
 51 Franklin St, Fifth Floor, Boston, MA 02110, USA
 </strong></p>
