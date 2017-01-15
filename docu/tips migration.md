@@ -8,8 +8,6 @@ Den "GC little helper Config II" gibt es im <a href="http://www.geocaching.com/m
 <br>
 ### 3. Konfiguration des "GC little helper" im "GC little helper II" zur Verfügung stellen:
 Anstatt mit der Startkonfiguration des "GC little helper II" zu beginnen, kann man die Konfiguration des "GC little helper" exportieren und im "GC little helper II" importieren.<br>
-<br>
-Vorgehensweise:
 <ul>
 <li>Aktiviert im Greasemonkey Menü den "GC little helper" und deaktiviert den "GC little helper II".</li>
 <li>Geht ins <a href="http://www.geocaching.com/my/">eigene Profil</a> und wählt im Greasemonkey Menü unter Benutzerscript-Befehle den "little helper config sync" aus, wählt dort "Manual" und den Button "Export". Im Fenster dann mit rechter Maustaste "Alles markieren" und anschließend mit rechter Maustaste "kopieren" und dann Button "close". </li>
@@ -19,15 +17,16 @@ Vorgehensweise:
 </ul>
 <br>Alternativ könnt ihr auch die Datei "...\gm_scripts\GC_little_helper.db" aus eurem Firefox Profil kopieren und in "...\gm_scripts\GC_little_helper_II.db" umbenennen, zuvor gegebenenfalls eine vorhandene Datei "...\gm_scripts\GC_little_helper_II.db" löschen. Firefox muß dazu geschlossen sein.<br>
 <br>
-Sollte irgendetwas schiefgehen oder möchte man mit der Startkonfiguration des "GC little helper II" neu beginnen, dann kann man die Datei "...\gm_scripts\GC_little_helper_II.db" im Firefox Profil löschen. Firefox muß dazu geschlossen sein. Beim nächsten Start einer Geocaching Seite wird dann die Startkonfiguration automatisch angelegt. <br>
+Sollte irgendetwas schiefgehen oder möchte man mit der Startkonfiguration des "GC little helper II" neu beginnen, dann kann man die Datei "...\gm_scripts\GC_little_helper_II.db" im Firefox Profil löschen. Firefox muß dazu geschlossen sein. Beim nächsten Start einer Geocaching Seite wird dann die Datei "...\gm_scripts\GC_little_helper_II.db" mit der Startkonfiguration automatisch angelegt. <br>
 <br>
 ### 4. Wie kann man die eigenen Systemdaten ermitteln:
-Ermittlung Betriebssystem: Programm "msinfo32.exe" im Startmenü ausführen.<br>
-Ermittlung Greasemonkey Version: Maus ungedrückt über das Äffchen stellen.<br>
-Ermittlung Firefox Version: Menü "Hilfe / Über Firefox".<br>
-Ermittlung Firefox Profil:<br>
+<ul>
+<li>Ermittlung Betriebssystem: Programm "msinfo32.exe" im Startmenü ausführen.</li>
+<li>Ermittlung Greasemonkey Version: Maus ungedrückt über das Äffchen stellen.</li>
+<li>Ermittlung Firefox Version: Menü "Hilfe / Über Firefox".</li>
+<li>Ermittlung Firefox Profil:<br>
 <ul>
 <li>Im Firefox-Adressfeld "about:support" eingeben.</li>
 <li>Bei "Allgemeinen Informationen / Profilordner" den Button "Ordner anzeigen" wählen.</li>
 <li>Im Ordner "gm_scripts" befinden sich dann die ".db" Dateien.</li>
-</ul>
+</ul></li>
