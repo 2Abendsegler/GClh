@@ -24,7 +24,41 @@
 
 ---
 ## 
-<br>
+<ul><li>New: Downloadzaehler simulieren.</li><li>New: Cache Listing: Latest Logs Symbole im Kopf des Listings anzeigen. Ueber GClh Config steuern.<br><div class="inline-attachment">
+			
+		
+				<dl class="file">
+			<dt class="attach-image"><img src="../images/0.2.1_Screen01.jpg" class="postimage" alt="0.2.1_Screen01.jpg"></dt>
+						<dd></dd>
+		</dl>
+		
+		
+		
+		
+			</div></li><li>New: GClh Config: GClh Sync als neue Bookmark zum Aufruf aus Linklist eingerichtet.</li><li>Change: GClh Config: Links im Kopf vom GClh Config ueberarbeitet.</li><li>New: Logs anzeigen: Wenn nicht alle eigenen Logs geladen werden, weil beispielsweise das Laden der Seite ueber den Browser gestoppt wurde, dann angeben wieviele Logs geladen wurden und das Datum des letzten geladenen Logs angeben, Cache und Trackables. (Wird das Laden der Seite ueber den Browser gestoppt, funktioniert nicht mehr alles auf der Seite, so z.B. die Linklist.)<br>(Anschliessend kann man dann beispielsweise auch GC Vote für eine begrenzte Anzahl an Caches nachladen.)<br><div class="inline-attachment">
+			
+		
+				<dl class="file">
+			<dt class="attach-image"><img src="../images/0.2.1_Screen02.jpg" class="postimage" alt="0.2.1_Screen02.jpg"></dt>
+						<dd></dd>
+		</dl>
+		
+		
+		
+		
+			</div></li><li>New: Cache Listing: Make VIP lists hideable. Ueber GClh Config steuern.<br><div class="inline-attachment">
+			
+		
+				<dl class="file">
+			<dt class="attach-image"><img src="../images/0.2.1_Screen03.jpg" class="postimage" alt="0.2.1_Screen03.jpg"></dt>
+						<dd></dd>
+		</dl>
+		
+		
+		
+		
+			</div></li></ul>
+      <br>
 
 ---
 ## Rebuild GC little helper (2As) as GC little helper II, Version 0.1:
