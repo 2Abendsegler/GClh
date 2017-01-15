@@ -23,7 +23,7 @@
 <br>
 
 ---
-## 
+## Version 0.2.1:
 <ul><li>New: Downloadzaehler simulieren.</li><li>New: Cache Listing: Latest Logs Symbole im Kopf des Listings anzeigen. Ueber GClh Config steuern.<br><div class="inline-attachment">
 			
 		
