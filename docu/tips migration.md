@@ -1,14 +1,15 @@
 ## Tipps für die Migration vom "GC little helper" zum "GC little helper II"
+<br>
 ### 1. Nach der Installation ist auf den Geocaching Seiten alles durcheinander:
-Es darf immer nur ein Script zum "GC little helper" aktiviert sein, ansonsten gibt es ein großes Durcheinander auf den Geocaching Seiten. Im Greasemonkey Menü, oben rechts, kann man prüfen, welche Scripte gerade aktiv sind.<br>
+Es darf immer nur ein Script zum "GC little helper" aktiviert sein, ansonsten gibt es ein großes Durcheinander auf den Geocaching Seiten. Im Greasemonkey Menü kann man prüfen welche Scripte gerade aktiv sind.<br>
 <br>
 ### 2. Wie kann man den "GC little helper Config II" aufrufen:
 Den "GC little helper Config II" gibt es im <a href="http://www.geocaching.com/my/">eigenen Profil</a> neben dem Avatar, im Greasemonkey Menü unter Benutzerscript-Befehle oder per F4 Taste auf den Geocaching Seiten. <br>
 <br>
 ### 3. Konfiguration des "GC little helper" im "GC little helper II" zur Verfügung stellen:
-Anstatt mit der Startkonfiguration des "GC little helper II" zu beginnen, kann man die Konfiguration des "GC little helper" exportieren und im "GC little helper II" wieder importieren.<br>
+Anstatt mit der Startkonfiguration des "GC little helper II" zu beginnen, kann man die Konfiguration des "GC little helper" exportieren und im "GC little helper II" importieren.<br>
 <br>
-Die Vorgehensweise ist einfach: <br>
+<b>Vorgehensweise:</b><br>
 <ul>
 <li>Aktiviert im Greasemonkey Menü den "GC little helper" und deaktiviert den "GC little helper II".</li>
 <li>Geht ins <a href="http://www.geocaching.com/my/">eigene Profil</a> und wählt im Greasemonkey Menü unter Benutzerscript-Befehle den "little helper config sync" aus, wählt dort "Manual" und den Button "Export". Im Fenster dann mit rechter Maustaste "Alles markieren" und anschließend mit rechter Maustaste "kopieren" und dann Button "close". </li>
