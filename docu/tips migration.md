@@ -1,5 +1,6 @@
 ## Tipps für die Migration vom "GC little helper" zum "GC little helper II"
-<strong>1. Nach der Installation ist auf den Geocaching Seiten alles durcheinander:</strong><br>
+
+### 1. Nach der Installation ist auf den Geocaching Seiten alles durcheinander:
 Es darf immer nur ein Script zum "GC little helper" aktiviert sein, ansonsten gibt es ein großes Durcheinander auf den Geocaching Seiten. Im Greasemonkey Menü, oben rechts, kann man prüfen, welche Scripte gerade aktiv sind.<br><br>
 <strong>2. Wie kann man den "GC little helper Config II" aufrufen:</strong><br>
 Den "GC little helper Config II" gibt es wie gewohnt im <a href="http://www.geocaching.com/my/"><span style="text-decoration: underline">eigenen Profil</span></a> neben dem Avatar, im Greasemonkey Menü unter Benutzerscript-Befehle oder per F4 Taste auf den Geocaching Seiten. <br><br>
