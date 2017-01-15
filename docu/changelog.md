@@ -5,11 +5,18 @@
 
 ---
 ## v0.2.2.1:
-<ul><li>Change: [Enhancement #14] Hervorhebung geänderter Koordinaten flexibler gestalten. <br>Danke an LittleJohn für die Vorarbeit.<br>Das Aussehen der durch den Benutzer geänderten Koordinaten kann nun flexibler angepaßt werden. Das bekannte Aussehen aus dem GClh Original entspricht in etwa folgender Einstellung:<br>
-<div class="inline-attachment"><dl class="file"><dt class="attach-image"><img src="../images/v0.2.2.1_Screen02.jpg" class="postimage" alt="v0.2.2.1_Screen02.jpg"></dt></dl></div></li>
-<li>New: [Enhancement #30] Make colored illustration of versions in config selectable.<br>Der teils doch etwas fleckig geratene Hintergrund im GClh Config mit den Informationen zu welcher Version ein Parameter implementiert wurde, kann nun abgewählt werden.<br>
-<div class="inline-attachment"><dl class="file"><dt class="attach-image"><img src="../images/v0.2.2.1_Screen01.jpg" class="postimage" alt="v0.2.2.1_Screen01.jpg" onclick="viewableArea(this);"></dt></dl></div></li>
-<li>Fix: [Bug #31] When using "Log your visit (inline)" and clicking "All visited" for the trackables list opens an empty new tab.</li></ul>
+<ul>
+<li>Change: [Enhancement #14] Hervorhebung geänderter Koordinaten flexibler gestalten. <br>
+Danke an LittleJohn für die Vorarbeit.<br>
+Das Aussehen der durch den Benutzer geänderten Koordinaten kann nun flexibler angepaßt werden. Das bekannte Aussehen aus dem GClh Original entspricht in etwa folgender Einstellung:<br>
+<div><img src="../images/v0.2.2.1_Screen02.jpg" alt="v0.2.2.1_Screen02.jpg"></div>
+</li>
+<li>New: [Enhancement #30] Make colored illustration of versions in config selectable.<br>
+Der teils doch etwas fleckig geratene Hintergrund im GClh Config mit den Informationen zu welcher Version ein Parameter implementiert wurde, kann nun abgewählt werden.<br>
+<div><img src="../images/v0.2.2.1_Screen01.jpg" alt="v0.2.2.1_Screen01.jpg"></div>
+</li>
+<li>Fix: [Bug #31] When using "Log your visit (inline)" and clicking "All visited" for the trackables list opens an empty new tab.</li>
+</ul>
 <br>
 
 ---
