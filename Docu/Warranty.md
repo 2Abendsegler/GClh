@@ -1,4 +1,4 @@
-<a href="#user-content-en" title="(EN) GPL Version 2; Extract of the §§ 11 and 12: NO WARRANTY"><img src="Flagg_EN.png"> </a><a href="#user-content-de" title="(DE) GPL Version 2; Deutsche Übersetzung; Auszug zu den §§ 11 und 12: Keine Gewährleistung"><img src="Flagg_DE.png"></a> 
+<a href="#user-content-en" style="float: right;" title="(EN) GPL Version 2; Extract of the §§ 11 and 12: NO WARRANTY"><img src="Flagg_EN.png" style="float: right;" > </a><a href="#user-content-de" style="float: right;" title="(DE) GPL Version 2; Deutsche Übersetzung; Auszug zu den §§ 11 und 12: Keine Gewährleistung"><img src="Flagg_DE.png" style="float: right;" ></a> 
 
 --- 
 ### GPL Version 2; Extract of the §§ 11 and 12: NO WARRANTY <a id="user-content-en"></a>
