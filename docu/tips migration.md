@@ -9,7 +9,7 @@ Den "GC little helper Config II" gibt es im <a href="http://www.geocaching.com/m
 ### 3. Konfiguration des "GC little helper" im "GC little helper II" zur Verfügung stellen:
 Anstatt mit der Startkonfiguration des "GC little helper II" zu beginnen, kann man die Konfiguration des "GC little helper" exportieren und im "GC little helper II" importieren.<br>
 <br>
-<b>Vorgehensweise:</b>
+Vorgehensweise:
 <ul>
 <li>Aktiviert im Greasemonkey Menü den "GC little helper" und deaktiviert den "GC little helper II".</li>
 <li>Geht ins <a href="http://www.geocaching.com/my/">eigene Profil</a> und wählt im Greasemonkey Menü unter Benutzerscript-Befehle den "little helper config sync" aus, wählt dort "Manual" und den Button "Export". Im Fenster dann mit rechter Maustaste "Alles markieren" und anschließend mit rechter Maustaste "kopieren" und dann Button "close". </li>
