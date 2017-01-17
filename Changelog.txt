@@ -5,6 +5,7 @@ Version 0.2.3:
 - GClh Config changes [issue #35]
 Make main areas in GClh Config hideable.
 Im Config Links zu Lizense, Gewährleistung und Check for Upgrade hinzugefügt und Copyright Informationen vervollständigt.
+- Laufzeit: Try/Catch umbauen [issue #42]
 
 Version 0.2.2.1:
 - Change: [Enhancement #14] Hervorhebung geänderter Koordinaten flexibler gestalten. Danke an LittleJohn für die Vorarbeit.
