@@ -1,9 +1,9 @@
 // ==UserScript==
 // @name           GC little helper II
 // @namespace      http://www.amshove.net
-//--> $$000FE Begin of change
-// @version        0.2.2.1
-//<-- $$000FE End of change
+//--> $$000 Begin of change
+// @version        0.2.3
+//<-- $$000 End of change
 // @include        http://www.geocaching.com/*
 // @include        https://www.geocaching.com/*
 // @include        http://labs.geocaching.com/*
@@ -36,7 +36,7 @@
 //*************************************************************************************************************************************************
 // Kennz.  | Datum      | Entwickler    | zuVers. |
 //*************************************************************************************************************************************************
-// $$000FE | Aug.2016   | FE            | 11.7    |
+// $$000   | Aug.2016   | FE            | 11.7    |
 // Versionierung, bei neuen Versionen beachten.
 //*************************************************************************************************************************************************
 
@@ -440,6 +440,8 @@ var variablesInit = function (c) {
     c.settings_default_langu = getValue("settings_default_langu", "English");
     // Settings: Hide colored illustration of versions
     c.settings_hide_colored_versions = getValue("settings_hide_colored_versions", false);
+    // Settings: Make main areas in GClh Config hideable
+    c.settings_make_config_main_areas_hideable = getValue("settings_make_config_main_areas_hideable", true);
     // Settings: Show EventDay
     c.settings_show_eventday = getValue("settings_show_eventday", true);
     c.settings_date_format = getValue("settings_date_format", "MM/dd/yyyy");
@@ -5278,7 +5280,7 @@ var mainGC = function () {
         gclh_error("Autovisit", e);
     }
 
-// VIP
+// VIP.
     try {
         if ( settings_show_vip_list                                                                    && 
              !isMemberInPmoCache()                                                                     &&
@@ -5301,133 +5303,6 @@ var mainGC = function () {
             var vips = getValue("vips", false);
             if (!vips) vips = new Array();
             else {
-// Für 0.2.3 rausgenommen.
-//                if (vips.match(/\\x/)) {  // Temporary fix for old data ..
-//                    vips = vips.replace(/\\x21/g, "!");
-//                    vips = vips.replace(/\\x22/g, "\"");
-//                    vips = vips.replace(/\\x23/g, "#");
-//                    vips = vips.replace(/\\x24/g, "$");
-//                    vips = vips.replace(/\\x25/g, "%");
-//                    vips = vips.replace(/\\x26/g, "&");
-//                    vips = vips.replace(/\\x27/g, "'");
-//                    vips = vips.replace(/\\x28/g, "(");
-//                    vips = vips.replace(/\\x29/g, ")");
-//                    vips = vips.replace(/\\x2A/g, "*");
-//                    vips = vips.replace(/\\x2B/g, "+");
-//                    vips = vips.replace(/\\x2C/g, ",");
-//                    vips = vips.replace(/\\x2F/g, "/");
-//                    vips = vips.replace(/\\x3A/g, ":");
-//                    vips = vips.replace(/\\x3B/g, ";");
-//                    vips = vips.replace(/\\x3C/g, "<");
-//                    vips = vips.replace(/\\x3D/g, "=");
-//                    vips = vips.replace(/\\x3E/g, ">");
-//                    vips = vips.replace(/\\x3F/g, "?");
-//                    vips = vips.replace(/\\x40/g, "@");
-//                    vips = vips.replace(/\\x5B/g, "[");
-//                    vips = vips.replace(/\\x5C/g, "\\");
-//                    vips = vips.replace(/\\x5D/g, "]");
-//                    vips = vips.replace(/\\x5E/g, "^");
-//                    vips = vips.replace(/\\x60/g, "`");
-//                    vips = vips.replace(/\\x7B/g, "{");
-//                    vips = vips.replace(/\\x7C/g, "|");
-//                    vips = vips.replace(/\\x7D/g, "}");
-//                    vips = vips.replace(/\\x7E/g, "~");
-//                    vips = vips.replace(/\\xA0/g, " ");
-//                    vips = vips.replace(/\\xA1/g, "¡");
-//                    vips = vips.replace(/\\xA2/g, "¢");
-//                    vips = vips.replace(/\\xA3/g, "£");
-//                    vips = vips.replace(/\\xA4/g, "¤");
-//                    vips = vips.replace(/\\xA5/g, "¥");
-//                    vips = vips.replace(/\\xA6/g, "¦");
-//                    vips = vips.replace(/\\xA7/g, "§");
-//                    vips = vips.replace(/\\xA8/g, "¨");
-//                    vips = vips.replace(/\\xA9/g, "©");
-//                    vips = vips.replace(/\\xAA/g, "ª");
-//                    vips = vips.replace(/\\xAB/g, "«");
-//                    vips = vips.replace(/\\xAC/g, "¬");
-//                    vips = vips.replace(/\\xAD/g, "­");
-//                    vips = vips.replace(/\\xAE/g, "®");
-//                    vips = vips.replace(/\\xAF/g, "¯");
-//                    vips = vips.replace(/\\xB0/g, "°");
-//                    vips = vips.replace(/\\xB1/g, "±");
-//                    vips = vips.replace(/\\xB2/g, "²");
-//                    vips = vips.replace(/\\xB3/g, "³");
-//                    vips = vips.replace(/\\xB4/g, "´");
-//                    vips = vips.replace(/\\xB5/g, "µ");
-//                    vips = vips.replace(/\\xB6/g, "¶");
-//                    vips = vips.replace(/\\xB7/g, "·");
-//                    vips = vips.replace(/\\xB8/g, "¸");
-//                    vips = vips.replace(/\\xB9/g, "¹");
-//                    vips = vips.replace(/\\xBA/g, "º");
-//                    vips = vips.replace(/\\xBB/g, "»");
-//                    vips = vips.replace(/\\xBC/g, "¼");
-//                    vips = vips.replace(/\\xBD/g, "½");
-//                    vips = vips.replace(/\\xBE/g, "¾");
-//                    vips = vips.replace(/\\xBF/g, "¿");
-//                    vips = vips.replace(/\\xC0/g, "À");
-//                    vips = vips.replace(/\\xC1/g, "Á");
-//                    vips = vips.replace(/\\xC2/g, "Â");
-//                    vips = vips.replace(/\\xC3/g, "Ã");
-//                    vips = vips.replace(/\\xC4/g, "Ä");
-//                    vips = vips.replace(/\\xC5/g, "Å");
-//                    vips = vips.replace(/\\xC6/g, "Æ");
-//                    vips = vips.replace(/\\xC7/g, "Ç");
-//                    vips = vips.replace(/\\xC8/g, "È");
-//                    vips = vips.replace(/\\xC9/g, "É");
-//                    vips = vips.replace(/\\xCA/g, "Ê");
-//                    vips = vips.replace(/\\xCB/g, "Ë");
-//                    vips = vips.replace(/\\xCC/g, "Ì");
-//                    vips = vips.replace(/\\xCD/g, "Í");
-//                    vips = vips.replace(/\\xCE/g, "Î");
-//                    vips = vips.replace(/\\xCF/g, "Ï");
-//                    vips = vips.replace(/\\xD0/g, "Ð");
-//                    vips = vips.replace(/\\xD1/g, "Ñ");
-//                    vips = vips.replace(/\\xD2/g, "Ò");
-//                    vips = vips.replace(/\\xD3/g, "Ó");
-//                    vips = vips.replace(/\\xD4/g, "Ô");
-//                    vips = vips.replace(/\\xD5/g, "Õ");
-//                    vips = vips.replace(/\\xD6/g, "Ö");
-//                    vips = vips.replace(/\\xD7/g, "×");
-//                    vips = vips.replace(/\\xD8/g, "Ø");
-//                    vips = vips.replace(/\\xD9/g, "Ù");
-//                    vips = vips.replace(/\\xDA/g, "Ú");
-//                    vips = vips.replace(/\\xDB/g, "Û");
-//                    vips = vips.replace(/\\xDC/g, "Ü");
-//                    vips = vips.replace(/\\xDD/g, "Ý");
-//                    vips = vips.replace(/\\xDE/g, "Þ");
-//                    vips = vips.replace(/\\xDF/g, "ß");
-//                    vips = vips.replace(/\\xE0/g, "à");
-//                    vips = vips.replace(/\\xE1/g, "á");
-//                    vips = vips.replace(/\\xE2/g, "â");
-//                    vips = vips.replace(/\\xE3/g, "ã");
-//                    vips = vips.replace(/\\xE4/g, "ä");
-//                    vips = vips.replace(/\\xE5/g, "å");
-//                    vips = vips.replace(/\\xE6/g, "æ");
-//                    vips = vips.replace(/\\xE7/g, "ç");
-//                    vips = vips.replace(/\\xE8/g, "è");
-//                    vips = vips.replace(/\\xEA/g, "ê");
-//                    vips = vips.replace(/\\xEB/g, "ë");
-//                    vips = vips.replace(/\\xEC/g, "ì");
-//                    vips = vips.replace(/\\xED/g, "í");
-//                    vips = vips.replace(/\\xEE/g, "î");
-//                    vips = vips.replace(/\\xEF/g, "ï");
-//                    vips = vips.replace(/\\xF0/g, "ð");
-//                    vips = vips.replace(/\\xF1/g, "ñ");
-//                    vips = vips.replace(/\\xF2/g, "ò");
-//                    vips = vips.replace(/\\xF3/g, "ó");
-//                    vips = vips.replace(/\\xF4/g, "ô");
-//                    vips = vips.replace(/\\xF5/g, "õ");
-//                    vips = vips.replace(/\\xF6/g, "ö");
-//                    vips = vips.replace(/\\xF7/g, "÷");
-//                    vips = vips.replace(/\\xF8/g, "ø");
-//                    vips = vips.replace(/\\xF9/g, "ù");
-//                    vips = vips.replace(/\\xFA/g, "ú");
-//                    vips = vips.replace(/\\xFB/g, "û");
-//                    vips = vips.replace(/\\xFC/g, "ü");
-//                    vips = vips.replace(/\\xFD/g, "ý");
-//                    vips = vips.replace(/\\xFE/g, "þ");
-//                    vips = vips.replace(/\\xFF/g, "ÿ");
-//                }
                 vips = vips.replace(/, (?=,)/g, ",null");
                 vips = JSON.parse(vips);
             }
@@ -7405,55 +7280,67 @@ var mainGC = function () {
         gclh_error("Lab Gpx Downlad Link hinzufügen", e);
     }
 
-// Check for Updates.
+// Check for Upgrade.
     try {
-        var next_check = parseInt(getValue("update_next_check"), 10);
-        if (!next_check) next_check = 0;
-        var time = new Date().getTime();
+        function checkForUpgrade( manual ) {
+            var next_check = parseInt(getValue("update_next_check"), 10);
+            if (!next_check) next_check = 0;
+            var time = new Date().getTime();
 
-        if ( next_check < time) {
-            var url = "https://github.com/2Abendsegler/GClh/raw/master/gc_little_helper_II.user.js";
-            var token = getValue("token", "");
-            if (token == "") setValue("token", "" + Math.random());
-            time += 1 * 60 * 60 * 1000; // 1 Stunde warten, bis zum nächsten Check.
-            setValue('update_next_check', time.toString());
+            if ( next_check < time || manual == true ) {
+                var url = "https://github.com/2Abendsegler/GClh/raw/master/gc_little_helper_II.user.js";
+                var token = getValue("token", "");
+                if (token == "") setValue("token", "" + Math.random());
+                time += 1 * 60 * 60 * 1000; // 1 Stunde warten, bis zum nächsten Check.
+                setValue('update_next_check', time.toString());
             
-            if (GM_xmlhttpRequest) {
-                GM_xmlhttpRequest({
-                    method: "GET",
-                    url: url,
-                    onload: function (result) {
-                        try {
-                            var version = result.responseText.match(/\/\/\s\@version(.*)/);
-                            if ( version ) {
-                                var new_version = version[1].replace(/\s/g, "");
-                                if ( new_version != scriptVersion ) {
-                                    var currVersion = "version " + scriptVersion;
-                                    var text = "Version " + new_version + " of script \""+ scriptName + "\" is available.\n" +
-                                               "You are currently using " + currVersion + ".\n\n" +
-                                               "Click OK to upgrade.\n";
-                                    if (window.confirm(text)) {
-                                        window.open(url, '_blank');
-                                    } else { 
-                                        time += 7 * 60 * 60 * 1000; // 1+7 Stunden warten, bis zum nächsten Check.
-                                        setValue('update_next_check', time.toString());
+                if (GM_xmlhttpRequest) {
+                    GM_xmlhttpRequest({
+                        method: "GET",
+                        url: url,
+                        onload: function (result) {
+                            try {
+                                var version = result.responseText.match(/\/\/\s\@version(.*)/);
+                                if ( version ) {
+                                    var new_version = version[1].replace(/\s/g, "");
+                                    if ( new_version != scriptVersion ) {
+                                        var currVersion = "version " + scriptVersion;
+                                        var text = "Version " + new_version + " of script \""+ scriptName + "\" is available.\n" +
+                                                   "You are currently using " + currVersion + ".\n\n" +
+                                                   "Click OK to upgrade.\n\n" +
+                                                   "(After upgrade, please refresh your page.)\n";
+                                        if (window.confirm(text)) {
+                                            btnClose();
+                                            window.open(url, '_blank');
+                                        } else { 
+                                            time += 7 * 60 * 60 * 1000; // 1+7 Stunden warten, bis zum nächsten Check.
+                                            setValue('update_next_check', time.toString());
+                                        }
+                                    } else if ( manual == true ) {
+                                        var text = "Version " + scriptVersion + " of script \""+ scriptName + "\" \n" +
+                                                   "is the latest and actual version.\n";
+                                        alert(text);
                                     }
                                 }
+                            } catch (e) { 
+                                gclh_error("Check for updates, onload", e); 
                             }
-                        } catch (e) { 
-                            gclh_error("Check for updates, onload", e); 
                         }
-                    }
-                });
+                    });
+                }
+            }
+            var declaredVersion = getValue("declared_version");
+            if ( declaredVersion != scriptVersion ) {
+                setValue("declared_version", scriptVersion);
+//--> $$000 Begin of change
+                simulateInstallCounter( "https://goo.gl/I4E7SO"); // Installationszähler ab Version 0.2.3
+                simulateInstallCounter( "https://goo.gl/VIRyDE"); // Installationszähler ab Version 0.2.3 Abgleich
+//<-- $$000 End of change
             }
         }
-        var declaredVersion = getValue("declared_version", scriptVersion);
-        if ( declaredVersion != scriptVersion ) {
-            setValue("declared_version", scriptVersion);
-            simulateInstallCounter();
-        }
+        checkForUpgrade( false );
     } catch (e) {
-        gclh_error("Check for updates", e);
+        gclh_error("Check for updgrade", e);
     }
 
 ////////////////////////////////////////////////////////////////////////////
@@ -7650,14 +7537,14 @@ var mainGC = function () {
 // Neue Parameter im GClh Config hervorheben und Info setzen, zu welcher Version ein Parameter dazugekommen ist. 
 // Info kann auch ohne Hervorhebung verwendet werden, muß dann aber in jeder Zeile hinterlegt werden.
 // Aufbau idealerweise in eigenen Zeilen, damit man irgendwann man schnell Zeilen rausschmeißen kann, wenn die Infos alt sind: 
-//--> $$000FE Begin of change                                               | Hier.
+//--> $$000 Begin of change                                                 | Hier.
     newParameterOn1 = "<div  style='background-color: rgba(240, 223, 198, 0.6); width: 100%; height: 100%; padding: 2px 0px 2px 2px; margin-left: -2px;'>";
     newParameterOn2 = "<div  style='background-color: rgba(240, 223, 198, 1.0); width: 100%; height: 100%; padding: 2px 0px 2px 2px; margin-left: -2px;'>";
     newParameterOn3 = "<div  style='background-color: rgba(240, 223, 198, 0.3); width: 100%; height: 100%; padding: 2px 0px 2px 2px; margin-left: -2px;'>";
     newParameterLL1 = '<span style="background-color: rgba(240, 223, 198, 0.6); float: right; padding-top: 25px; width: 100%; margin: -22px 2px 0px 0px;"></span>'; 
     newParameterLL2 = '<span style="background-color: rgba(240, 223, 198, 1.0); float: right; padding-top: 25px; width: 100%; margin: -22px 2px 0px 0px;"></span>'; 
     newParameterLL3 = '<span style="background-color: rgba(240, 223, 198, 0.3); float: right; padding-top: 25px; width: 100%; margin: -22px 2px 0px 0px;"></span>'; 
-//<-- $$000FE End of change
+//<-- $$000 End of change
     function newParameterVersionSetzen(version) {
         var newParameterVers = "<span style='font-size: 70%; font-style: italic; float: right; margin-top: -14px; margin-right: 4px;' ";
         if ( version != "" ) { newParameterVers += "title='Implemented with version " + version + "'>" + version + "</span>"; }         
@@ -7676,12 +7563,10 @@ var mainGC = function () {
     if ( settings_hide_colored_versions ) newParameterOn1 = newParameterOn2 = newParameterOn3 = newParameterLL1 = newParameterLL2 = newParameterLL3 = newParameterOff = "";
 
 // Installationszähler simulieren, weil GitHub das wohl nicht kann.
-    function simulateInstallCounter() {
+    function simulateInstallCounter( url ) {
         GM_xmlhttpRequest({
             method: "GET",
-//--> $$000FE Begin of change
-            url: "https://goo.gl/4ZBbxW",  // Installationszähler ab Version 0.2.2.1
-//<-- $$000FE End of change
+            url: url,
             onload: function (result) {
             }
         });
@@ -7943,7 +7828,7 @@ var mainGC = function () {
         html += "}";
         html += "";
         html += ".gclh_headline2 {";
-        html += "  margin: 5px;";
+        html += "  margin: 5px 5px 5px -2px;";
         html += "}";
         html += "";
         html += ".gclh_content {";
@@ -8034,6 +7919,10 @@ var mainGC = function () {
         } else {
             buildBgShadow();
         }
+        // Hauptbereiche im Config gegebenenfalls hideable machen.
+        if ( settings_make_config_main_areas_hideable && !document.location.href.match(/#a#/i) ) {
+            var prepareHideable = "<img id='lnk_gclh_config_#name#' title='' src='' style='cursor: pointer'> ";
+        } else var prepareHideable = "";
 
         if (document.getElementById('settings_overlay') && document.getElementById('settings_overlay').style.display == "none") {
             // If menu already created, just show it
@@ -8046,14 +7935,17 @@ var mainGC = function () {
             var html = "";
             html += "<h3 class='gclh_headline' title='Some little things to make life easy (on www.geocaching.com).' >" + scriptNameConfig + " <font class='gclh_small'>v" + scriptVersion + "</font></h3>";
             html += "<div class='gclh_content'>";
-            html += "&nbsp;" + "<font style='float: right; font-size: 12px; ' >";
-            html += "<a href='http://geoclub.de/forum/viewforum.php?f=117' title='Help, is available on the geoclub forum' target='_blank'>Help</a> | ";
-            html += "<a href='https://raw.githubusercontent.com/2Abendsegler/GClh/master/Changelog.txt' title='Changelog, on GitHub' target='_blank'>Changelog</a> | ";
+            html += "&nbsp;" + "<font style='float: right; font-size: 11px; ' >";
+            html += "<a href='http://geoclub.de/forum/viewforum.php?f=117' title='Help, is available on the Geoclub forum' target='_blank'>Help</a> | ";
             html += "<a href='https://github.com/2Abendsegler/GClh/issues?q=is:issue is:open sort:created-desc' title='Open issues, on GitHub' target='_blank'>Open issues</a> | ";
             html += "<a href='https://github.com/2Abendsegler/GClh/issues?q=is:issue is:open label:\"tag: wish\" sort:created-desc' title='Open wishes, on GitHub' target='_blank'>Open wishes</a> | ";
-            html += "<a href='https://github.com/2Abendsegler/GClh' title='GitHub' target='_blank'>GitHub</a></font>";
+            html += "<a href='https://github.com/2Abendsegler/GClh/blob/master/docu/changelog.md#readme' title='Changelog, on GitHub' target='_blank'>Changelog</a> | ";
+            html += "<a id='check_for_upgrade' href='#' style='cursor: pointer' title='Check for upgrade script'>Check for upgrade</a> | ";
+            html += "<a href='https://github.com/2Abendsegler/GClh/tree/master' title='GitHub' target='_blank'>GitHub</a></font>";
             html += "<br>";
-            html += "<h4 class='gclh_headline2'>Global</h4>";
+            html += "<br>";
+            html += "<h4 class='gclh_headline2'>"+prepareHideable.replace("#name#","global")+"Global</h4>";
+            html += "<div id='gclh_config_global'>";
             html += "&nbsp;" + "Home-Coords: <input class='gclh_form' type='text' size='21' id='settings_home_lat_lng' value='" + DectoDeg(getValue("home_lat"), getValue("home_lng")) + "'>" + show_help("The Home-Coords are filled automatically if you update your Home-Coords on gc.com. If it doesn\'t work you can insert them here. These coords are used for some special links (nearest list, nearest map, ..) and for the homezone circle on the map.") + "<br>";
             html += newParameterOn2;
             html += checkboxy('settings_set_default_langu', 'Set default language ');
@@ -8120,7 +8012,9 @@ var mainGC = function () {
             html += "";
             html += "<br>";
             html += "";
-            html += "<h4 class='gclh_headline2' title='this page'>GClh Config / Sync</h4>";
+            html += "</div>";
+            html += "<h4 class='gclh_headline2' title='this page'>"+prepareHideable.replace("#name#","config")+"GClh Config / Sync</h4>";
+            html += "<div id='gclh_config_config'>";
             html += newParameterOn1;
             html += checkboxy('settings_f4_call_gclh_config', 'Call GClh Config on F4') + show_help("With this option you are able to call the GClh Config page (this page) by pressing F4.") + "<br/>";
             html += checkboxy('settings_f2_save_gclh_config', 'Save GClh Config on F2') + show_help("With this option you are able to save the GClh Config page (this page) by pressing F2 instead of scrolling to the bottom and choose the save button.") + "<br/>";
@@ -8133,17 +8027,22 @@ var mainGC = function () {
             html += newParameterVersionSetzen(0.1) + newParameterOff;
             html += newParameterOn2;
             html += checkboxy('settings_hide_colored_versions', 'Hide colored illustration of versions') + show_help("With this option the colored illustration of the versions and the version numbers in GClh Config are selectable. A change at this option evolute its effect only after a save.") + "<br/>";
+            html += checkboxy('settings_make_config_main_areas_hideable', 'Make main areas in GClh Config hideable') + show_help("With this option you can hide and show the main areas in GClh Config with one click. A change at this option evolute its effect only after a save.") + "<br/>";
             html += newParameterVersionSetzen(0.2) + newParameterOff;
             html += "";
             html += "<br>";
             html += "";
-            html += "<h4 class='gclh_headline2'>Nearest list</h4>";
+            html += "</div>";
+            html += "<h4 class='gclh_headline2'>"+prepareHideable.replace("#name#","nearestlist")+"Nearest list</h4>";
+            html += "<div id='gclh_config_nearestlist'>";
             html += checkboxy('settings_redirect_to_map', 'Redirect to map') + show_help("If you enable this option, you will be automatically redirected from nearest list to map.") + "<br/>";
             html += checkboxy('settings_show_log_it', 'Show GClh \"Log it\" icon (too for basic members for PMO)') + show_help("The GClh \"Log it\" icon is displayed beside cache titles in nearest lists. If you click it, you will be redirected directly to the log form. <br><br>You can use it too as basic member to log Premium Member Only (PMO) caches.") + "<br/>";
             html += checkboxy('settings_show_nearestuser_profil_link', 'Show profile link on search for created / found by caches') + show_help("This option adds an link to the user profile when searching for caches created or found by a certain user") + "<br/>";
             html += "<br>";
             html += "";
-            html += "<h4 class='gclh_headline2'>Maps</h4>";
+            html += "</div>";
+            html += "<h4 class='gclh_headline2'>"+prepareHideable.replace("#name#","maps")+"Maps</h4>";
+            html += "<div id='gclh_config_maps'>";
             html += checkboxy('settings_show_homezone', 'Show Homezone') + "<br>";
             html += "&nbsp; " + "- Radius: <input class='gclh_form' type='text' size='1' id='settings_homezone_radius' value='" + settings_homezone_radius + "' style='margin-left: 5px;'> km" + show_help("This option draws a circle of X kilometers around your home coordinates on the map.") + "<br>";
             html += "&nbsp; " + "- Color: <input class='gclh_form color' type='text' size='5' id='settings_homezone_color' value='" + settings_homezone_color + "' style='margin-left: 15px'>" + show_help("Here you can change the color of your Homezone circle.") + "<br>";
@@ -8219,7 +8118,9 @@ var mainGC = function () {
             html += "";
             html += "<br>";
             html += "";
-            html += "<h4 class='gclh_headline2'>Profile / Statistic <a style='margin-left: 0px'>" + show_help("This section include your profile pages (\/my\/ and \/profile\/ pages) with for example your founded caches and trackables, your earned souvenirs, your image gallery, your statistic ... <br><br>Also the section include the profile pages of the others.") + "</a></h4>";
+            html += "</div>";
+            html += "<h4 class='gclh_headline2'>"+prepareHideable.replace("#name#","profile")+"Profile / Statistic <a style='margin-left: 0px'>" + show_help("This section include your profile pages (\/my\/ and \/profile\/ pages) with for example your founded caches and trackables, your earned souvenirs, your image gallery, your statistic ... <br><br>Also the section include the profile pages of the others.") + "</a></h4>";
+            html += "<div id='gclh_config_profile'>";
             html += checkboxy('settings_bookmarks_show', "Show <a class='gclh_ref' href='#gclh_linklist' id='gclh_linklist_link_2'>Linklist</a> in your profile") + show_help("Show the Linklist at the right side in your profile. You can configure the links in the Linklist at the end of this page.") + "<br/>";
             html += checkboxy('settings_hide_visits_in_profile', 'Hide TB/Coin visits in your profile') + "<br/>";
             html += checkboxy('settings_show_thumbnails', 'Show thumbnails of images') + show_help("With this option the images are displayed as thumbnails to have a preview. If you hover over a thumbnail, you can see the big one.<br><br>This works in cache and TB logs, in the cache and TB image galleries and in the profile image galleries. <br><br><u>Best practice in image galleries:</u> Let the thumbnails as much as possible at the top or at the bottom of your screen. It should be better to hover with your mouse from the right side of your screen to the left side as inverse.") + "&nbsp; Max size of big image: <input class='gclh_form' size=2 type='text' id='settings_hover_image_max_size' value='" + settings_hover_image_max_size + "'> px <br/>";
@@ -8252,7 +8153,9 @@ var mainGC = function () {
             html += "";
             html += "<br>";
             html += "";
-            html += "<h4 class='gclh_headline2'>Listing</h4>";
+            html += "</div>";
+            html += "<h4 class='gclh_headline2'>"+prepareHideable.replace("#name#","listing")+"Listing</h4>";
+            html += "<div id='gclh_config_listing'>";
             html += checkboxy('settings_log_inline', 'Log cache from listing (inline)') + show_help("With the inline log you can open a log form inside the listing, without loading a new page.") + "<br/>"; 
             content_settings_log_inline_tb = "&nbsp; " + checkboxy('settings_log_inline_tb', 'Show TB list') + show_help("With this option you can select, if the TB list should be shown in inline logs.<br><br>This option requires \"Log cache from listing (inline)\" or \"Log cache from listing for PMO (for basic members)\".") + "<br>";
             html += content_settings_log_inline_tb;
@@ -8327,7 +8230,9 @@ var mainGC = function () {
             html += checkboxy('settings_show_real_owner', 'Show real owner name') + show_help("If the option is enabled, GClh will replace the pseudonym a owner took to publish the cache with the real owner name.") + "<br/>";
             html += "<br>";
             html += "";
-            html += "<h4 class='gclh_headline2'>Logging</h4>";
+            html += "</div>";
+            html += "<h4 class='gclh_headline2'>"+prepareHideable.replace("#name#","logging")+"Logging</h4>";
+            html += "<div id='gclh_config_logging'>";
             html += checkboxy('settings_submit_log_button', 'Submit log, Pocket Query or Bookmark on F2') + show_help("With this option you are able to submit your log by pressing F2 instead of scrolling to the bottom and move the mouse to the button. This feature also works to save Pocket Queries or Bookmarks.") + "<br/>";
             html += checkboxy('settings_show_bbcode', 'Show smilies') + show_help("This option displays smilies options beside the log form. If you click on a smilie, it is inserted into your log.") + "<br/>";
             html += checkboxy('settings_autovisit', 'Enable \"AutoVisit\" feature for TBs/Coins') + show_help("With this option you are able to select TBs/Coins which should be automatically set to \"visited\" on every log. You can select \"AutoVisit\" for each TB/Coin in the list on the bottom of the log form.") + "<br/>";
@@ -8384,13 +8289,16 @@ var mainGC = function () {
             html += "&nbsp;" + "<textarea class='gclh_form' rows='8' cols='40' id='settings_tb_signature'>&zwnj;" + getValue("settings_tb_signature", "") + "</textarea><br>";
             html += "<br>";
             html += "";
-            html += "<h4 class='gclh_headline2'>Mail/Message form</h4>";
+            html += "</div>";
+            html += "<h4 class='gclh_headline2'>"+prepareHideable.replace("#name#","mail")+"Mail / Message form</h4>";
+            html += "<div id='gclh_config_mail'>";
             html += "&nbsp;" + "Signature: &nbsp; &nbsp; &nbsp; " + show_help("The signature will automatically be inserted into your mails and messages. #me# will be replaced with your username.") + " <font class='gclh_small'>(#me# will be replaced with your username.)</font><br>";
             html += "&nbsp;" + "<textarea class='gclh_form' rows='8' cols='40' id='settings_mail_signature'>&zwnj;" + getValue("settings_mail_signature", "") + "</textarea><br>";
             html += "<br>";
             html += "";
-            html += "<h4 class='gclh_headline2'><a name='gclh_linklist'></a>Linklist / Navigation" + show_help("In this section you can configure your personal Linklist which is shown on the top of the page and/or in your profile. You can activate it on top of this configuration page respectively in the \"Profile / Statistic\" section.") + " <a class='gclh_small' href='#gclh_linklist' id='gclh_show_linklist_btn'>show</a></h4>";
-            html += "<div id='gclh_settings_linklist' style='display: none;'>";
+            html += "</div>";
+            html += "<h4 class='gclh_headline2'><a name='gclh_linklist'></a>"+prepareHideable.replace("#name#","linklist")+"Linklist / Navigation" + show_help("In this section you can configure your personal Linklist which is shown on the top of the page and/or in your profile. You can activate it on top of this configuration page respectively in the \"Profile / Statistic\" section.") + "</h4>";
+            html += "<div id='gclh_config_linklist'>";
             html += "&nbsp;" + "Remove from Navigation:" + show_help("Here you can select, which of the original gc.com links should be removed to make room for your Linklist.") + "<br>";
             html += "<input type='checkbox' " + (getValue('remove_navi_learn') ? "checked='checked'" : "" ) + " id='remove_navi_learn'> Learn<br>";
             html += "<input type='checkbox' " + (getValue('remove_navi_play') ? "checked='checked'" : "" ) + " id='remove_navi_play'> Play<br>";
@@ -8463,7 +8371,7 @@ var mainGC = function () {
             html += "</div>";
             html += "<br>";
 
-            // Linklist/Bookmarks: (BEGIN) Rechte Spalte mit den für die Linklist ausgewählten Bookmarks.
+            // Linklist/Bookmarks: Rechte Spalte mit den für die Linklist ausgewählten Bookmarks.
             // -------------------
             var firstCust = 0;
             for (var j = 0; j < bookmarks.length; j++) {
@@ -8583,68 +8491,39 @@ var mainGC = function () {
             html += "<br>";
             // Beim Aufbau der GClh Config Seite die Bezeichnung des Save Buttons (save bzw. save (F2))  
             // über Function setValueInSaveButton versorgen. 
-            html += "&nbsp;" + "<input style='padding-left: 2px; padding-right: 2px; cursor: pointer;' class='gclh_form' type='button' value='" + setValueInSaveButton() + "' id='btn_save'> <input style='padding-left: 2px; padding-right: 2px; cursor: pointer;' class='gclh_form' type='button' value='save&upload' id='btn_saveAndUpload'> <input class='gclh_form' type='button' value='close' id='btn_close2' style='cursor: pointer;'> <div width='400px' align='right' class='gclh_small' style='float: right;'>GC little helper by <a href='http://www.amshove.net/' target='_blank'>Torsten Amshove</a></div>";
+            html += "&nbsp;" + "<input style='padding-left: 2px; padding-right: 2px; cursor: pointer;' class='gclh_form' type='button' value='" + setValueInSaveButton() + "' id='btn_save'> <input style='padding-left: 2px; padding-right: 2px; cursor: pointer;' class='gclh_form' type='button' value='save&upload' id='btn_saveAndUpload'> <input class='gclh_form' type='button' value='close' id='btn_close2' style='cursor: pointer;'>";
+            html += "<div width='400px' align='right' class='gclh_small' style='float: right; margin-top: -5px;'>GC little helper, Copyright © 2010 <a href='http://www.amshove.net/' target='_blank'>Torsten Amshove</a></div>";
+            html += "<div width='400px' align='right' class='gclh_small' style='float: right; margin-top: -15px;'>License: <a href='https://github.com/2Abendsegler/GClh/blob/master/docu/license.md#readme' target='_blank' title='GNU General Public License Version 2'>GPLv2</a>, Warranty: <a href='https://github.com/2Abendsegler/GClh/blob/master/docu/warranty.md#readme' target='_blank' title='GC little helper comes with ABSOLUTELY NO WARRANTY'>NO</a></div>";
             html += "</div>";
 
-            // Linklist/Bookmarks: Linklist/Bookmarks und Events aufbauen. Anfangsbestand der Linklist bei den Bookmarks kennzeichnen.
-            // -------------------
-            // Linklist/Bookmarks aufbauen.
+            // Config Content: aufbauen.
+            // ---------------
             div.innerHTML = html;
             document.getElementsByTagName('body')[0].appendChild(div);
 
-            // Map / Layers
-            // -------------------
-            function layerOption( name, selected ) {
-            		return "<option value='" + name + "' " + (selected ? "selected='selected'" : "") + ">" + name + "</option>";
-            }
-            $("#btn_map_layer_right").click(function () {
-                var source = "#settings_maplayers_unavailable";
-                var destination = "#settings_maplayers_available";
-                $(source+" option:selected").each(function() {
-                    var name = $(this).html();
-                    if ( name == settings_map_default_layer ) {
-                        $("#settings_mapdefault_layer").html(name);
-                    }
-                    $(destination).append(layerOption( name , (settings_map_default_layer == name) ));
-                });
-                $(source+" option:selected").remove();
-            });	
-            $("#btn_map_layer_left").click(function () {
-                var source = "#settings_maplayers_available";
-                var destination = "#settings_maplayers_unavailable";
-                $(source+" option:selected").each(function() {
-                    var name = $(this).html();
-                    if ( name == settings_map_default_layer ) {
-                        $("#settings_mapdefault_layer").html("<i>not available</i>");
-                        settings_map_default_layer = "";
-                    }
-                    $(destination).append(layerOption( name , false ));
-                });
-                $(source+" option:selected").remove();
-            });
-            $("#btn_set_default_layer").click(function () {
-                $("#settings_maplayers_available option:selected").each(function() {
-                    var name = $(this).html();
-                    $("#settings_mapdefault_layer").html(name);
-                    settings_map_default_layer = name;
-                });
-            });
-            // fill layer lists
-            var layerListAvailable="";
-            var layerListUnAvailable="";
-            for (name in all_map_layers) {
-                if ( settings_map_layers.indexOf(name) != -1 ) {
-                    $("#settings_maplayers_available").append(layerOption( name ,(settings_map_default_layer == name)) );
-                } else {
-                    $("#settings_maplayers_unavailable").append(layerOption( name , false ) );
+            // Config Content: Hauptbereiche hideable machen.
+            // ---------------
+            function makeConfigAreaHideable( configArea ) {
+                if ( document.getElementById("lnk_gclh_config_" + configArea) ) {
+                    showHideBoxCL("lnk_gclh_config_" + configArea, true);
+                    document.getElementById("lnk_gclh_config_" + configArea).addEventListener("click", function() {showHideBoxCL(this.id, false)}, false);
                 }
             }
-
-            $("#settings_use_gclh_layercontrol").click(function () {
-                $("#MapLayersConfiguration").toggle();
-            });
-
-            // Bookmarks.
+            // Wenn Hauptbereiche im Config hideable gemacht werden sollen, dann Anfangsbestand und Events setzen.
+            if ( settings_make_config_main_areas_hideable && !document.location.href.match(/#a#/i) ) {
+                makeConfigAreaHideable("global");
+                makeConfigAreaHideable("config");
+                makeConfigAreaHideable("nearestlist");
+                makeConfigAreaHideable("maps");
+                makeConfigAreaHideable("profile");
+                makeConfigAreaHideable("listing");
+                makeConfigAreaHideable("logging");
+                makeConfigAreaHideable("mail");
+                makeConfigAreaHideable("linklist");
+            }
+            
+            // Linklist/Bookmarks: Events aufbauen und Anfangsbestand der Linklist bei den Bookmarks kennzeichnen.
+            // -------------------
             for (var i = 0; i < bookmarks.length; i++) {
                 // Input Events in Bookmarks aufbauen, Spalte 2, abweichende Bezeichnungen.
                 document.getElementById('bookmarks_name[' + i + ']').addEventListener("input", updateByInputDescription, false);
@@ -8654,8 +8533,6 @@ var mainGC = function () {
                     flagBmInLl( document.getElementById('gclh_LinkListElement_' + i), false, "not-allowed", "0.4", "Already available in Linklist" );
                 }
             }
-
-            // Linklist.
             var elem = document.getElementsByClassName('gclh_LinkListInlist');
             for (var i = 0; i < elem.length; i++) {
                 // Mousedown und Mouseup Events in Linklist aufbauen, rechte Spalte, Move Icon und Bezeichnung. 
@@ -8750,10 +8627,61 @@ var mainGC = function () {
             }).sortable({
                 items: "tr:not(.gclh_LinkListPlaceHolder)"
             });
-            // Linklist/Bookmarks: (END)
-            // -------------------
 
-            //Colorpicker
+            // Map / Layers:
+            // -------------
+            function layerOption( name, selected ) {
+            		return "<option value='" + name + "' " + (selected ? "selected='selected'" : "") + ">" + name + "</option>";
+            }
+            $("#btn_map_layer_right").click(function () {
+                var source = "#settings_maplayers_unavailable";
+                var destination = "#settings_maplayers_available";
+                $(source+" option:selected").each(function() {
+                    var name = $(this).html();
+                    if ( name == settings_map_default_layer ) {
+                        $("#settings_mapdefault_layer").html(name);
+                    }
+                    $(destination).append(layerOption( name , (settings_map_default_layer == name) ));
+                });
+                $(source+" option:selected").remove();
+            });	
+            $("#btn_map_layer_left").click(function () {
+                var source = "#settings_maplayers_available";
+                var destination = "#settings_maplayers_unavailable";
+                $(source+" option:selected").each(function() {
+                    var name = $(this).html();
+                    if ( name == settings_map_default_layer ) {
+                        $("#settings_mapdefault_layer").html("<i>not available</i>");
+                        settings_map_default_layer = "";
+                    }
+                    $(destination).append(layerOption( name , false ));
+                });
+                $(source+" option:selected").remove();
+            });
+            $("#btn_set_default_layer").click(function () {
+                $("#settings_maplayers_available option:selected").each(function() {
+                    var name = $(this).html();
+                    $("#settings_mapdefault_layer").html(name);
+                    settings_map_default_layer = name;
+                });
+            });
+            // fill layer lists
+            var layerListAvailable="";
+            var layerListUnAvailable="";
+            for (name in all_map_layers) {
+                if ( settings_map_layers.indexOf(name) != -1 ) {
+                    $("#settings_maplayers_available").append(layerOption( name ,(settings_map_default_layer == name)) );
+                } else {
+                    $("#settings_maplayers_unavailable").append(layerOption( name , false ) );
+                }
+            }
+
+            $("#settings_use_gclh_layercontrol").click(function () {
+                $("#MapLayersConfiguration").toggle();
+            });
+            
+            // Colorpicker:
+            // ------------
             if (typeof opera == "object" || typeof(chrome) != "undefined") {
                 $('.gclh_form.color:not(.withPicker)').each(function (i, e) {
                     var homezonepic = new jscolor.color(e, {
@@ -8775,7 +8703,8 @@ var mainGC = function () {
                 document.getElementsByTagName("body")[0].appendChild(script);
             }
 
-            //Multi-Homezone
+            // Multi-Homezone:
+            // ---------------
             function gclh_init_multi_homecoord_remove_listener($el) {
                 $el.find('.remove').click(function () {
                     $(this).closest('.multi_homezone_element').remove()
@@ -8811,23 +8740,15 @@ var mainGC = function () {
                 }
             });
 
+            // Restarbeiten:
+            // -------------
             function gclh_show_linklist() {
-                var linklist = document.getElementById('gclh_settings_linklist');
-                var lnk = document.getElementById('gclh_show_linklist_btn');
-                // Die Links zur Linklist hin sollen sie auch anzeigen, also nicht einklappen.
-                if ( this.id == 'gclh_linklist_link_1' || this.id == 'gclh_linklist_link_2' ) {
-                    if ( linklist.style.display == '' ) return;
-                }
-                if (linklist.style.display == 'none') {
-                    linklist.style.display = '';
-                    lnk.innerHTML = "hide";
-                } else {
-                    linklist.style.display = 'none';
-                    lnk.innerHTML = "show";
+                if ( document.getElementById('lnk_gclh_config_linklist').title == "show" ) {
+                    document.getElementById('lnk_gclh_config_linklist').click();
                 }
             }
 
-            document.getElementById('gclh_show_linklist_btn').addEventListener("click", gclh_show_linklist, false);
+            document.getElementById('check_for_upgrade').addEventListener("click", function () { checkForUpgrade( true ); }, false);
             document.getElementById('gclh_linklist_link_1').addEventListener("click", gclh_show_linklist, false);
             document.getElementById('gclh_linklist_link_2').addEventListener("click", gclh_show_linklist, false);
 
@@ -9156,6 +9077,7 @@ var mainGC = function () {
                 'settings_show_latest_logs_symbols',
                 'settings_set_default_langu',
                 'settings_hide_colored_versions',
+                'settings_make_config_main_areas_hideable',
                 'settings_show_google_maps',
                 'settings_show_log_it',
                 'settings_show_nearestuser_profil_link',
@@ -10139,7 +10061,7 @@ function is_link(name, url) {
             break;
         default:
             gclh_error( "is_link", "is_link( "+name+", ... ): unknown name" );        
-            break;
+            break;    
     }
     // debugging output
     // status ? (gclh_log( "is_link( "+name+", "+url+"): " + status )) : false;
