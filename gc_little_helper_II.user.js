@@ -2905,7 +2905,7 @@ var mainGC = function () {
 // Show disabled/archived caches with strikeout in title
     if (settings_strike_archived && is_page("cache_listing")) {
         try {
-            var warnings = document.getElementsByClassName('OldWarning');
+            var warnings = $('ul.OldWarning > li');
             if (warnings[0]) {
                 var cacheTitle = document.getElementById('ctl00_ContentBody_CacheName');
                 if (cacheTitle) {
@@ -3486,7 +3486,7 @@ var mainGC = function () {
     if (is_page("cache_listing")) {
         try {
             if (document.getElementById("ctl00_ContentBody_uxGalleryImagesLink")) document.getElementById("ctl00_ContentBody_uxGalleryImagesLink").innerHTML = document.getElementById("ctl00_ContentBody_uxGalleryImagesLink").innerHTML.replace("View the ", "");
-            var warnings = document.getElementsByClassName("OldWarning");
+            var warnings = $('ul.OldWarning > li');
             for (var i = 0; i < warnings.length; i++) {
                 if (warnings[i].innerHTML.match(/(archived|archiviert)/)) {
                     if (document.getElementById("ctl00_ContentBody_CacheName")) document.getElementById("ctl00_ContentBody_CacheName").parentNode.style.color = '#8C0B0B';

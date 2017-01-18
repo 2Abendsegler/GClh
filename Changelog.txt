@@ -12,6 +12,8 @@ Umbau function getElementsByClass in standard document.getElementsByClassName.
 - Performance: Umbau function setLinesColorInCacheListing [issue #49]
 In function setLinesColorInCacheListing jedes Log nur einmalig einfärben.
 Hide Personal Cache Notes wenn leer beschleunigt.
+- Cache title of an active cache shown striked [issue #32]
+Danke CachingsFoX für die Analyse.
 
 Version 0.2.2.1:
 - Change: [Enhancement #14] Hervorhebung geänderter Koordinaten flexibler gestalten. Danke an LittleJohn für die Vorarbeit.
