@@ -310,7 +310,7 @@ var variablesInit = function (c) {
     c.settings_hide_empty_cache_notes = getValue("settings_hide_empty_cache_notes", true);
     // Settings: Show all Logs
     c.settings_show_all_logs = getValue("settings_show_all_logs", true);
-    c.settings_show_all_logs_count = getValue("settings_show_all_logs_count", "5");
+    c.settings_show_all_logs_count = getValue("settings_show_all_logs_count", "30");
     // Settings: Decrypt Hint
     c.settings_decrypt_hint = getValue("settings_decrypt_hint", false);
     // Settings: Add visitCount to geochecker.com  links
@@ -2830,18 +2830,15 @@ var mainGC = function () {
                 link.setAttribute("style", "font-size: 12px;");
                 box.parentNode.insertBefore(link, box);
 
-                function hide_on_load() {
-                    var notes = document.getElementsByClassName('Note PersonalCacheNote')[0]; // New Listing design
-                    if (!notes) notes = document.getElementsByClassName('NotesWidget')[0];
-                    var notesText = document.getElementById("cache_note").innerHTML;
-                    if (notesText != null && (notesText == "Click to enter a note" || notesText == "Klicken zum Eingeben einer Notiz")) {
-                        notes.style.display = "none";
-                        if ( document.getElementById('show_hide_personal_cache_notes') ) { 
-                            document.getElementById('show_hide_personal_cache_notes').innerHTML = 'Show ' + description;
-                        }
+                var notes = document.getElementsByClassName('Note PersonalCacheNote')[0]; // New Listing design
+                if (!notes) notes = document.getElementsByClassName('NotesWidget')[0];
+                var notesText = document.getElementById("cache_note").innerHTML;
+                if (notesText != null && (notesText == "" || notesText == "Click to enter a note" || notesText == "Klicken zum Eingeben einer Notiz")) {
+                    notes.style.display = "none";
+                    if ( document.getElementById('show_hide_personal_cache_notes') ) { 
+                        document.getElementById('show_hide_personal_cache_notes').innerHTML = 'Show ' + description;
                     }
                 }
-                window.addEventListener("load", hide_on_load, false);
             }
         } catch (e) {
             gclh_error("Hide Cache Notes", e);
@@ -6786,9 +6783,13 @@ var mainGC = function () {
                 gclh_load_helper(1);
             }
             if (settings_show_all_logs) {
-                if (settings_show_all_logs_count == 0) gclh_load_logs(5000);
-                else gclh_load_logs(settings_show_all_logs_count);
-            } else gclh_load_logs(5);
+                // Gegebenenfalls auf nächste gerade Zahl erhöhen, damit Zebra korrekt erzeugt wird.
+                var logsCount = parseInt(settings_show_all_logs_count);
+                if (logsCount == 0) logsCount = 5000;
+                else if (logsCount < 26) logsCount = 26;
+                else if (logsCount%2 != 0) logsCount += 1;
+                gclh_load_logs( logsCount);
+            } else gclh_load_logs(30);
         } catch (e) {
             gclh_error("Replace Log-Loading function", e);
         }
@@ -6797,8 +6798,9 @@ var mainGC = function () {
 // Zeilen in Cache Listings in Zebra und für User, für Owner, für Reviewer und für VIP einfärben.
     function setLinesColorInCacheListing() {
         if ( is_page("cache_listing") ) {
-            // ('find("tr")' reicht hier nicht wegen der Bilder.)               
-            var lines = $( document.getElementById("cache_logs_table2") || document.getElementById("cache_logs_table") ).find("tbody").find("tr.log-row");
+            // ('find("tr")' reicht hier nicht wegen der Bilder.)
+            var lines = $( document.getElementById("cache_logs_table2") || document.getElementById("cache_logs_table") ).find("tbody").find("tr.log-row:not(.gclh_colored)");
+            lines.addClass("gclh_colored");
             var owner = get_real_owner();
             setLinesColorInZebra( settings_show_cache_listings_in_zebra, lines, 1 );
             setLinesColorUser( "settings_show_cache_listings_color", "user,owner,reviewer,vips", lines, 1, owner );
@@ -7391,7 +7393,7 @@ var mainGC = function () {
         }
     }
     
-// Tabellenzeilen für User und Owner einfärben bzw. Einfärbung entfernen.    
+// Tabellenzeilen für User und Owner einfärben bzw. Einfärbung entfernen.
     function setLinesColorUser( parameterStamm, tasks, lines, linesTogether, owner ) {
         if ( lines.length == 0 ) return;
         var user = $('.li-user-info').children().first().text();
