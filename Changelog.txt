@@ -4,7 +4,14 @@ Version 0.2.3:
 - Refactoring: is_link function [issue #39]
 - GClh Config changes [issue #35]
 Make main areas in GClh Config hideable.
-Im Config Links zu Lizense, Gewährleistung und Check for Upgrade hinzugefügt und Copyright Informationen vervollständigt.
+Im Config Links zu Lizense, Gewährleistung und Check for upgrade hinzugefügt.
+Copyright Informationen vervollständigt.
+- Performance: Umbau Try/Catch [issue #42]
+- Performance: Umbau function getElementsByClass [issue #48]
+Umbau function getElementsByClass in standard document.getElementsByClassName.
+- Performance: Umbau function setLinesColorInCacheListing [issue #49]
+In function setLinesColorInCacheListing jedes Log nur einmalig einfärben.
+Hide Personal Cache Notes wenn leer beschleunigt.
 
 Version 0.2.2.1:
 - Change: [Enhancement #14] Hervorhebung geänderter Koordinaten flexibler gestalten. Danke an LittleJohn für die Vorarbeit.
