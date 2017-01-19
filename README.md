@@ -16,7 +16,7 @@ Alle Geocacher und Interessierte sind herzlich eingeladen, am Support und der We
 
 Im folgenden haben wir einige Informationen zusammengestellt, die den Einstieg etwas vereinfachen sollen.
 
-* Branch:
+### * Branch:
 (Details zu den Branches gibt es [hier](https://github.com/2Abendsegler/GClh/blob/dev_v0.2.3_fe/docu/definitions.md#user-content-branch).)  
 Wir arbeiten bei den Branches mit vier Stufen. 
   * master: Aktuelle Programmversion für die User.
@@ -24,13 +24,13 @@ Wir arbeiten bei den Branches mit vier Stufen.
   * Projekt Branches: Sie erhalten die in der Regel die Namen der nächsten Version, der nächsten Bugfixing Version oder eines langfristigen Projektes.
   * Developer Branches: Ein Fork sollte aus der jeweiligen Projekt Branch erfolgen, für die die Entwicklung erfolgen soll.  
 
-* Issue:
+### * Issue:
 (Details zu den Issues und dem Ticketsystem gibt es [hier](https://github.com/2Abendsegler/GClh/blob/dev_v0.2.3_fe/docu/definitions.md#user-content-issue).)  
 
-* Dokumentation:
+### * Dokumentation:
 (Details zur Dokumentation und Änderungsdokumentation gibt es [hier](https://github.com/2Abendsegler/GClh/blob/dev_v0.2.3_fe/docu/definitions.md#user-content-dokumentation).)  
 Die Dokumentation von Änderungen erfolgt im Changelog (changelog.txt) bzw. in den Issues.
 
-* Links:
+### * Links:
 (Hilfreiche Links gibt es [hier](https://github.com/2Abendsegler/GClh/blob/dev_v0.2.3_fe/docu/definitions.md#user-content-links).)  
 
