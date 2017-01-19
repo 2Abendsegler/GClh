@@ -172,5 +172,9 @@
   "settings_log_template[9]": "",
   "settings_log_signature": "",
   "settings_tb_signature": "",
-  "settings_mail_signature": ""
+  "settings_mail_signature": "",
+  "remove_navi_learn": false,
+  "remove_navi_play": false,
+  "remove_navi_community": false,
+  "remove_navi_shop": false
 }
