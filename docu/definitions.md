@@ -1,9 +1,9 @@
-<a href="#branch--tree" title="Branch">Branch</a> &nbsp; 
-<a href="#Issue" title="Issue">Issue</a> &nbsp; 
-<a href="#Links" title="Links">Links</a> &nbsp; 
+<a href="#branch" title="Branch">Branch</a> &nbsp; 
+<a href="#issue" title="Issue">Issue</a> &nbsp; 
+<a href="#links" title="Links">Links</a> &nbsp; 
 
 ---
-## Branch / Tree:
+## Branch:
 Unsere Branches unterteilen sich in die vier Stufen User, Collector, Projects und Developer.
 
 Beispielsweise könnten in den vier Stufen folgende Branches vorhanden sein. 
