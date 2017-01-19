@@ -3,7 +3,8 @@
 <a href="#user-content-links" title="Links">Links</a> &nbsp; 
 
 ---
-## Branch:
+## Branch:  
+
 Unsere Branches unterteilen sich in die vier Stufen *User*, *Collector*, *Projects* und *Developer*.
 
 Beispielsweise könnten in den vier Stufen folgende Branches vorhanden sein.  
@@ -45,3 +46,40 @@ Referenziert und transportiert (forked) der Entwickler die Arbeiten auf seinen e
 **Beispiel:** Hilft man beim Bugfixing der aktuellen Version *V0.2.2*, und wurden bereits 3 Bugfixing Versionen transportiert, dann forked man vom Projekt *v0.2.2.4*. Die drei vorgegangenen Bugfixing Versionen *v0.2.2.1*, *2* und *3*, stehen dann auch schon nicht mehr zur Auswahl zur Verfügung. Entwickelt man für die nächste Version, dann forked man von *v0.2.3*.  
 
 ---
+## Issue:  
+
+Unter Issues finden wir die Tickets und das Ticketsystem. Ein Issue durchläuft bis zu seiner Schließung in der Regel mehrere Stationen. Die Aufgaben und die Einstellungen der Issues werden im folgenden kurz erläutert.  
+
+Sprache: Englisch wo nötig, ansonsten auch deutsch.  
+
+* Neues Issue:
+  * Kategorie (Label) setzen: *bug*, *enhancement*, *improvement*, *help wanted*, *question* ... 
+  * Priorität (Label) setzen, zumindest wenn sie absehbar hoch ist. 
+    * Die Kategorie *bug* hat in der Regel mindestens die Priorität *high*.
+    * *help wanted* und *question* haben in der Regel nicht mehr als Priorität *middle*.
+  * Handelt es sich um einen Wunsch der User, dann den Tag (Label) *wish* setzen.  
+<br>
+* Issue in Arbeit nehmen:
+  * Issue entsprechend der Person zuordnen/assignen.
+  * Status (Label) *in progress* setzen.  
+<br>
+* Issue zurück an User geben:
+  * Aktion (Label) *user action* setzen.  
+<br>
+* Issue auf erledigt setzen:
+  * Spätestens jetzt grob beschreiben, was man gemacht hat oder zu welchem Ergebnis man aus welchem Grund gekommen ist.
+  * Spätestens jetzt alle Beiträge auf echte Mail-Adressen prüfen und diese entfernen, auch in den Beiträgen anderer. 
+  * Entsprechenden Status (Label) setzen: *fixed*, *completed*, *rejected* ...  
+<br>
+* Issue schließen:
+  * Handelt es sich um Entwicklung, dann das Issue spätestens jetzt in die Milestones integrieren.
+  * Issue auf *close* setzen.  
+<br>
+
+
+
+
+
+
+
+
