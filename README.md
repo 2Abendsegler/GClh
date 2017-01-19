@@ -1,7 +1,8 @@
 # GClh
 ## GC little helper II
-Some little things to make life easy (on www.geocaching.com).
-
+Some little things to make life easy (on www.geocaching.com).  
+<br>
+<br>
 Der GC little helper, kurz GClh, ist ein Tool zur Verbesserung und Erweiterung der Geocaching Seiten auf www.geocaching.com. Alle Funktionen können flexibel über einen Konfigurator eingestellt werden.
 
 Das Tool ist in Javascript entwickelt und läuft derzeit unter Firefox als Greasemonkey Script.
