@@ -6,7 +6,7 @@ Der *GC little helper* ist ein Tool zur Verbesserung und Erweiterung der Geocach
 
 Das Tool ist in Javascript entwickelt und läuft derzeit unter Firefox als Greasemonkey Script.
 
-Um einen kleinen Eindruck zu erhalten um was es hier geht, haben wir hier ...??? PDF einige ausgesuchte Screenshots von den Geocaching Seiten bei Verwendung des *GC little helper* abgelistet. Erweiterungen durch den *GC little helper* sind dort markiert und gegebenenfalls kurz bezeichnet. 
+Um einen kleinen Eindruck zu erhalten, um was es hier geht, haben wir hier ...??? PDF einige ausgesuchte Screenshots von den Geocaching Seiten bei Verwendung des *GC little helper* abgelistet. Erweiterungen durch den *GC little helper* sind dort markiert und gegebenenfalls kurz bezeichnet. 
  
 Ursprünglich erfunden und entwickelt wurde der *GC little helper* von [Torsten Amshove](https://www.amshove.net/blog/webinterfaces/gc-little-helper/). Wir haben das Tool 2016 auf den aktuellen Stand gebracht und etwas aufgefrischt, und haben uns in Abstimmung mit dem Erfinder entschlossen, es unter dem Namen "GC little helper II" zu betreiben und weiterzuentwickeln. 
 
