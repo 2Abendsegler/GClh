@@ -1,4 +1,4 @@
-<a href="#branch" title="Branch">Branch</a> &nbsp; 
+<a href="#user-content-branch" title="Branch">Branch</a> &nbsp; 
 <a href="#issue" title="Issue">Issue</a> &nbsp; 
 <a href="#links" title="Links">Links</a> &nbsp; 
 
