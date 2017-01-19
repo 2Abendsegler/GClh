@@ -24,9 +24,9 @@ Hier gibt es genau eine Branch *master*. Sie enthält die aktuelle Version für 
 ### 2. Collector:  
 Hier gibt es derzeit genau eine Branch *collector*. Sie dient als Sammler aller Bestandteile für eine Version vor der Auslieferung an die User, dem Transport in den “master”.  
 
-Der *collector* ist die standard (default) Branch. Er wird beim Transportieren automatisch als Empfänger vorgeschlagen. Damit wird unter anderem sichergestellt, dass nicht aus versehen in den “master” transportiert wird.  
+Die Branch *collector* ist die standard (default) Branch. Er wird beim Transportieren automatisch als Empfänger vorgeschlagen. Damit wird unter anderem sichergestellt, dass nicht aus Versehen in den “master” transportiert wird.  
 
-Außerdem kann zeitunkritisch, auch gegebenenfalls aus mehreren Branches, in den *collector* transportiert werden, die Sammlung nachbearbeitet werden und gegebenenfals auch ein Kompletttest durchgeführt werden, bevor die Sammlung als neue Version den Usern zur Verfügung gestellt wird.  
+Außerdem kann zeitunkritisch, auch gegebenenfalls aus mehreren Branches, in den *collector* transportiert werden, die Sammlung nachbearbeitet werden und gegebenenfalls auch ein Kompletttest durchgeführt werden, bevor die Sammlung als neue Version den Usern zur Verfügung gestellt wird.  
 
 **Beispiel:** In der Branch *collector* könnten beispielsweise die nächste Version *v0.2.3*, die nächste kleine Bugfixing Version *v0.2.2.4*, die es nicht mehr eigenständig geschafft hat ausgeliefert zu werden, und eine langfristige Entwicklung *translation* eingesammelt werden.  
 
@@ -35,7 +35,7 @@ Die Stufe Projects soll Raum dafür bieten, dass gleichzeitig im Rahmen mehrerer
 
 Diese Stufe kommt aber auch gegebenenfalls zum Einsatz, wenn langfristige Projekte entwickelt werden, für die eine Version noch gar nicht abgeschätzt werden kann.
 
-Nach dem Transport in die Branch *collector* und der Auslieferung an die User über den *master* wird die entsprechende Branch gelöscht.
+Nach dem Transport in die Branch *collector* und der Auslieferung an die User über den *master*, wird die entsprechende Branch gelöscht.
 
 **Beispiel:** Hier sollten zumindest immer die nächste Version *v0.2.3* und die nächste kleine Bugfixing Version *v0.2.2.4* enthalten sein. Das langfristige Projekt *translation* wäre hier dann auch enthalten.  
 
@@ -51,7 +51,7 @@ Referenziert und transportiert (forked) der Entwickler die Arbeiten auf seinen e
 ---
 ## Issue:  
 
-Unter Issues finden wir die Tickets und das Ticketsystem. Ein Issue durchläuft bis zu seiner Schließung in der Regel mehrere Stationen. Die Aufgaben und die Einstellungen der Issues werden im folgenden kurz erläutert.  
+Unter Issues finden wir die Tickets und das Ticketsystem. Ein Issue durchläuft bis zu seiner Schließung in der Regel mehrere Stationen. Die Aufgaben und die Einstellungen der Issues werden im Folgenden kurz erläutert.  
 
 Sprache: Englisch wo nötig, ansonsten auch deutsch.  
 
@@ -71,7 +71,7 @@ Sprache: Englisch wo nötig, ansonsten auch deutsch.
 <br>
 * **Issue auf erledigt setzen:**
   * Spätestens jetzt grob beschreiben, was man gemacht hat oder zu welchem Ergebnis man aus welchem Grund gekommen ist.
-  * Spätestens jetzt alle Beiträge auf echte Mail-Adressen prüfen und diese entfernen, auch in den Beiträgen anderer. 
+  * Spätestens jetzt alle Beiträge auf echte Mailadressen prüfen und diese entfernen, auch in den Beiträgen anderer. 
   * Entsprechenden Status (Label) setzen: *fixed*, *completed*, *rejected* ...  
 <br>
 * **Issue schließen:**
@@ -83,7 +83,7 @@ Sprache: Englisch wo nötig, ansonsten auch deutsch.
 ---
 ## Dokumentation:  
 
-Eine *Änderungsdokumentation im Programmkopf* ist nicht erforderlich. Möchte jemand solche Dokumenation erfassen, dann kann er dies aber tun. Von Zeit zu Zeit wird solche Dokumentation aber entfernt, um das Programm nicht aufzublähen.  
+Eine *Änderungsdokumentation im Programmkopf* ist nicht erforderlich. Möchte jemand solche Dokumentation erfassen, dann kann er dies aber tun. Von Zeit zu Zeit wird solche Dokumentation aber entfernt, um das Programm nicht aufzublähen.  
 
 Eine *Änderungsdokumentation im Programmcode* ist nicht erforderlich. Bei komplexen Zusammenhängen oder wenn besondere Beachtung geboten ist, dann sollte eine Dokumentation an der entsprechenden Programmstelle erfolgen. Ob eine solche Dokumentation sinnvoll ist, entscheidet der jeweilige Entwickler.  
 
