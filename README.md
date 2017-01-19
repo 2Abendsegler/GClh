@@ -18,7 +18,6 @@ Im folgenden haben wir einige Informationen zusammengestellt, die den Einstieg e
 
 * Branch:
 (Details zu den Branches gibt es [hier](https://github.com/2Abendsegler/GClh/blob/dev_v0.2.3_fe/docu/definitions.md#user-content-branch).)  
-
 Wir arbeiten bei den Branches mit vier Stufen.
   * master: Aktuelle Programmversion für die User.
   * collector (default): Sie dient als Sammelstelle für Alles was die nächste Version betrifft. Sie ermöglicht einen Kompletttest der nächsten Version, vor der Auslieferung an die User.
