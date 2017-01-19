@@ -7,6 +7,8 @@
 Unsere Branches unterteilen sich in die vier Stufen User, Collector, Projects und Developer.
 
 Beispielsweise könnten in den vier Stufen folgende Branches vorhanden sein. 
+
+
 | 1. User | 2. Collector        | 3. Projects | 4. Developer   |
 | :------ | :-----------------: | :---------: | -------------: |
 | master  | collector (default) | v0.2.2.4    | dev_bug_fe     |
@@ -14,6 +16,8 @@ Beispielsweise könnten in den vier Stufen folgende Branches vorhanden sein.
 |         |                     |             | dev_v0.2.3_fe  |
 |         |                     |             | dev_LittleJohn |
 |         |                     | translation | dev_trans_CF   |
+
+
 
 <ul>
 <li>Change: [Enhancement #14] Hervorhebung geänderter Koordinaten flexibler gestalten.<br>
