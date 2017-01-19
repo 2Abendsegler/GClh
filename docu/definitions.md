@@ -97,7 +97,7 @@ Außerdem sollte eine aussagekräftige *Dokumentation im Issue* erfolgen.
 ## Links:  
 
 * GitHub:  
-https://github.com/2Abendsegler/GClh
+https://github.com/2Abendsegler/GClh/tree/master
 * Aktuelle Version des Script GClh installieren (User Installation):  
 https://github.com/2Abendsegler/GClh/raw/master/gc_little_helper_II.user.js
 * Testversion des Script GClh vom Collector installieren: (Abschluss-, Testinstallation):  
