@@ -1,5 +1,5 @@
 # GClh
-GC little helper II
+## GC little helper II
 Some little things to make life easy (on www.geocaching.com).
 
 Der GC little helper, kurz GClh, ist ein Tool zur Verbesserung und Erweiterung der Geocaching Seiten auf www.geocaching.com. Alle Funktionen können flexibel über einen Konfigurator eingestellt werden.
@@ -16,26 +16,22 @@ Alle Geocacher und Interessierte sind herzlich eingeladen, am Support und der We
 <br>
 <br>
 Im folgenden haben wir einige Informationen zusammengestellt, die den Einstieg etwas vereinfachen sollen.  
-
-* Branch:
-(Details zu den Branches gibt es [hier](https://github.com/2Abendsegler/GClh/blob/dev_v0.2.3_fe/docu/definitions.md#user-content-branch).)  
+<br>
+* **Branch:**
+Details zu den Branches gibt es [hier](https://github.com/2Abendsegler/GClh/blob/dev_v0.2.3_fe/docu/definitions.md#user-content-branch)  
 Wir arbeiten bei den Branches mit vier Stufen.
   * master: Aktuelle Programmversion für die User.
   * collector (default): Sie dient als Sammelstelle für Alles was die nächste Version betrifft. Sie ermöglicht einen Kompletttest der nächsten Version, vor der Auslieferung an die User.
   * Projekt Branches: Sie erhalten die in der Regel die Namen der nächsten Version, der nächsten Bugfixing Version oder eines langfristigen Projektes.
   * Developer Branches: Ein Fork sollte aus der jeweiligen Projekt Branch erfolgen, für die die Entwicklung erfolgen soll.  
 <br>
+* **Issue:**
+Details zu den Issues und dem Ticketsystem gibt es [hier](https://github.com/2Abendsegler/GClh/blob/dev_v0.2.3_fe/docu/definitions.md#user-content-issue)  
 <br>
-* Issue:
-(Details zu den Issues und dem Ticketsystem gibt es [hier](https://github.com/2Abendsegler/GClh/blob/dev_v0.2.3_fe/docu/definitions.md#user-content-issue).)  
-<br>
-<br>
-* Dokumentation:
-(Details zur Dokumentation und Änderungsdokumentation gibt es [hier](https://github.com/2Abendsegler/GClh/blob/dev_v0.2.3_fe/docu/definitions.md#user-content-dokumentation).)  
+* **Dokumentation:**
+(Details zur Dokumentation und Änderungsdokumentation gibt es [hier](https://github.com/2Abendsegler/GClh/blob/dev_v0.2.3_fe/docu/definitions.md#user-content-dokumentation)  
 Die Dokumentation von Änderungen erfolgt im Changelog (changelog.txt) bzw. in den Issues.  
 <br>
-<br>
-* Links:
-(Hilfreiche Links gibt es [hier](https://github.com/2Abendsegler/GClh/blob/dev_v0.2.3_fe/docu/definitions.md#user-content-links).)  
-<br>
+* **Links:**
+(Hilfreiche Links gibt es [hier](https://github.com/2Abendsegler/GClh/blob/dev_v0.2.3_fe/docu/definitions.md#user-content-links)  
 <br>
