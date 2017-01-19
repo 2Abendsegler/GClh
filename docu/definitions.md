@@ -6,7 +6,8 @@
 ## Branch:
 Unsere Branches unterteilen sich in die vier Stufen *User*, *Collector*, *Projects* und *Developer*.
 
-Beispielsweise könnten in den vier Stufen folgende Branches vorhanden sein. 
+Beispielsweise könnten in den vier Stufen folgende Branches vorhanden sein.  
+
 | 1. User | 2. Collector        | 3. Projects | 4. Developer   |
 | :------ | :-----------------: | :---------: | -------------: |
 | master  | collector (default) | v0.2.2.4    | dev_bug_fe     |
