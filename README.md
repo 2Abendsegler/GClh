@@ -1,4 +1,3 @@
-# GClh
 ## GC little helper II
 Some little things to make life easy (on www.geocaching.com).  
 <br>
