@@ -1,6 +1,7 @@
 <a href="#user-content-branch" title="Branch">Branch</a> &nbsp; 
 <a href="#user-content-issue" title="Issue">Issue</a> &nbsp; 
 <a href="#user-content-links" title="Links">Links</a> &nbsp; 
+<a href="#user-content-dokumentation" title="Dokumentation Programmänderungen">Dokumentation</a> &nbsp; 
 
 ---
 ## Branch:  
@@ -77,11 +78,54 @@ Sprache: Englisch wo nötig, ansonsten auch deutsch.
   * Handelt es sich um Entwicklung, dann das Issue spätestens jetzt in die Milestones integrieren.
   * Issue auf *close* setzen.  
 <br>
+<br>
 
+---
+## Dokumentation:  
 
+Eine *Änderungsdokumentation im Programmkopf* ist nicht erforderlich. Möchte jemand solche Dokumenation erfassen, dann kann er dies aber tun. Von Zeit zu Zeit wird solche Dokumentation aber entfernt, um das Programm nicht aufzublähen.  
 
+Eine *Änderungsdokumentation im Programmcode* ist nicht erforderlich. Bei komplexen Zusammenhängen oder wenn besondere Beachtung geboten ist, dann sollte eine Dokumentation an der entsprechenden Programmstelle erfolgen. Ob eine solche Dokumentation sinnvoll ist, entscheidet der jeweilige Entwickler.  
 
+Es sollte eine aussagekräftige *Änderungsdokumentation im Changelog* (changelog.txt) erfolgen. Diese Datei dient lediglich zu unseren/internen Zwecken. Diese Dokumentation wird insbesondere verwendet, um ein (User) Changelog (changelog.md) zum Zeitpunkt der Auslieferung an die User vorzubefüllen. Dieses Changelog wird dann gegebenenfalls noch um Screens und andere Dinge erweitert und etwas aufbereitet , bevor es an die User geht.  
 
+Außerdem sollte eine aussagekräftige *Dokumentation im Issue* erfolgen.  
+<br>
+<br>
+
+---
+## Links:  
+
+* GitHub:
+https://github.com/2Abendsegler/GClh 
+* Aktuelle Version des Script GClh installieren (User Installation): 
+https://github.com/2Abendsegler/GClh/raw/master/gc_little_helper_II.user.js
+* Testversion des Script GClh vom Collector installieren: (Abschluss-, Testinstallation):
+https://github.com/2Abendsegler/GClh/raw/collector/gc_little_helper_II.user.js
+* License im Browser anzeigen: 
+https://raw.githubusercontent.com/2Abendsegler/GClh/master/License
+* Open Issues auf GitHub aufrufen: 
+https://github.com/2Abendsegler/GClh/issues?q=is:issue%20is:open%20sort:created-desc 
+* Open Wishes auf GitHub aufrufen: 
+https://github.com/2Abendsegler/GClh/issues?q=is:issue%20is:open%20label:%22tag:%20wish%22%20sort:created-desc
+* Changelog auf GitHub anzeigen:
+https://github.com/2Abendsegler/GClh/blob/master/docu/changelog.md 
+* License auf GitHub anzeigen:
+https://github.com/2Abendsegler/GClh/blob/master/docu/license.md 
+* Warranty auf GitHub anzeigen:
+https://github.com/2Abendsegler/GClh/blob/master/docu/warranty.md 
+* Tips Migration auf GitHub anzeigen:
+https://github.com/2Abendsegler/GClh/blob/master/docu/tips migration.md  
+
+* Geoclub Forum, Help (Greasemonkey-Scripte):
+http://geoclub.de/forum/viewforum.php?f=117
+
+* Deutsche Übersetzung der Lizence:
+http://www.gnu.de/documents/gpl-2.0.de.html 
+* Markdown Syntax (deutsch) als PDF:
+https://www.heise.de/mac-and-i/downloads/65/1/1/6/7/1/0/3/Markdown-CheatSheet-Deutsch.pdf 
+* Markdown Editor:
+https://github.com/mike-ward/Markdown-Edit/releases 
 
 
 
