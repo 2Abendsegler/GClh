@@ -8657,7 +8657,7 @@ var mainGC = function () {
                     $("#settings_maplayers_unavailable").append(layerOption( name , false ) );
                 }
             }
-
+            
             $("#settings_use_gclh_layercontrol").click(function () {
                 $("#MapLayersConfiguration").toggle();
             });
@@ -8722,8 +8722,8 @@ var mainGC = function () {
                 }
             });
 
-            // Restarbeiten:
-            // -------------
+            // Rest:
+            // -----
             function gclh_show_linklist() {
                 if ( document.getElementById('lnk_gclh_config_linklist').title == "show" ) {
                     document.getElementById('lnk_gclh_config_linklist').click();
@@ -8987,10 +8987,16 @@ var mainGC = function () {
             setValue("settings_show_latest_logs_symbols_count", document.getElementById('settings_show_latest_logs_symbols_count').value);
             setValue("settings_default_langu", document.getElementById('settings_default_langu').value);
 
-            var new_map_layers = document.getElementById('settings_maplayers_available');
+            // Map Layers in vorgegebener Reihenfolge übernehmen.
+            var new_map_layers_available = document.getElementById('settings_maplayers_available');
             var new_settings_map_layers = new Array();
-            for (var i = 0; i < new_map_layers.options.length; i++) {
-                new_settings_map_layers.push(new_map_layers.options[i].value);
+            for (name in all_map_layers) {
+                for (var i = 0; i < new_map_layers_available.options.length; i++) {
+                    if ( name == new_map_layers_available.options[i].value ) {
+                        new_settings_map_layers.push(new_map_layers_available.options[i].value);
+                        break;
+                    }
+                }
             }
             setValue('settings_map_layers', new_settings_map_layers.join("###"));
 

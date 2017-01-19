@@ -2,6 +2,7 @@ CHANGELOG:
 
 Version 0.2.3:
 - Refactoring: is_link function [issue #39]
+Danke CachingsFoX.
 - GClh Config changes [issue #35]
 Make main areas in GClh Config hideable.
 Im Config Links zu Lizense, Gewährleistung und Check for upgrade hinzugefügt.
@@ -13,7 +14,10 @@ Umbau function getElementsByClass in standard document.getElementsByClassName.
 In function setLinesColorInCacheListing jedes Log nur einmalig einfärben.
 Hide Personal Cache Notes wenn leer beschleunigt.
 - Cache title of an active cache shown striked [issue #32]
+Changed for archieved and for deactivated caches.
 Danke CachingsFoX für die Analyse.
+- Push block of layers right, build unsorted layers in map [isuue 29]
+Take selected map layers in the given order.
 
 Version 0.2.2.1:
 - Change: [Enhancement #14] Hervorhebung geänderter Koordinaten flexibler gestalten. Danke an LittleJohn für die Vorarbeit.
