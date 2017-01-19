@@ -116,10 +116,10 @@ https://github.com/2Abendsegler/GClh/blob/master/docu/license.md
 https://github.com/2Abendsegler/GClh/blob/master/docu/warranty.md
 * Tips Migration auf GitHub anzeigen:  
 https://github.com/2Abendsegler/GClh/blob/master/docu/tips%20migration.md  
-
+<br>
 * Geoclub Forum, Help (Greasemonkey-Scripte):  
 http://geoclub.de/forum/viewforum.php?f=117  
-
+<br>
 * Deutsche Übersetzung der Lizence:  
 http://www.gnu.de/documents/gpl-2.0.de.html
 * Markdown Syntax (deutsch) als PDF:  
