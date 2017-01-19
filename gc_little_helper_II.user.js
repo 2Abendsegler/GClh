@@ -2,7 +2,7 @@
 // @name           GC little helper II
 // @namespace      http://www.amshove.net
 //--> $$000 Begin of change
-// @version        0.2.3
+// @version        0.2.2.1
 //<-- $$000 End of change
 // @include        http://www.geocaching.com/*
 // @include        https://www.geocaching.com/*
@@ -198,7 +198,7 @@ var constInit = function (c) {
     c.scriptShortNameSync = "GClh Sync II";
     c.anzCustom = 10;
     c.anzTemplates = 10;
-    c.bookmarks_def = new Array(16, 18, 13, 14, 17, 12);
+    c.bookmarks_def = new Array(16, 18, 14, 17, 32, 35);
     c.defaultConfigLink = "https://www.geocaching.com/my/default.aspx#GClhShowConfig";
     c.defaultSyncLink = "https://www.geocaching.com/my/default.aspx#GClhShowSync";
 
@@ -287,7 +287,7 @@ var variablesInit = function (c) {
     // Settings: Log Inline
     c.settings_log_inline = getValue("settings_log_inline", true);
     c.settings_log_inline_tb = getValue("settings_log_inline_tb", false);
-    c.settings_log_inline_pmo4basic = getValue("settings_log_inline_pmo4basic", false);
+    c.settings_log_inline_pmo4basic = getValue("settings_log_inline_pmo4basic", true);
     // Settings: Show Bookmarks
     c.settings_bookmarks_show = getValue("settings_bookmarks_show", true);
 	c.settings_change_header_layout = getValue("settings_change_header_layout", true);
@@ -298,10 +298,12 @@ var variablesInit = function (c) {
     c.settings_bookmarks_search_default = getValue("settings_bookmarks_search_default", "");
     // Settings: Redirect to Map
     c.settings_redirect_to_map = getValue("settings_redirect_to_map", false);
+    // Settings: Page-Width
+    c.settings_new_width = getValue("settings_new_width", 1000);
     // Settings: Hide Facebook
-    c.settings_hide_facebook = getValue("settings_hide_facebook", false);
+    c.settings_hide_facebook = getValue("settings_hide_facebook", true);
     // Settings: Hide SocialShare
-    c.settings_hide_socialshare = getValue("settings_hide_socialshare", false);
+    c.settings_hide_socialshare = getValue("settings_hide_socialshare", true);
     // Settings: Hide Disclaimer
     c.settings_hide_disclaimer = getValue("settings_hide_disclaimer", true);
     // Settings: Hide Cache Notes
@@ -312,9 +314,9 @@ var variablesInit = function (c) {
     c.settings_show_all_logs = getValue("settings_show_all_logs", true);
     c.settings_show_all_logs_count = getValue("settings_show_all_logs_count", "30");
     // Settings: Decrypt Hint
-    c.settings_decrypt_hint = getValue("settings_decrypt_hint", false);
+    c.settings_decrypt_hint = getValue("settings_decrypt_hint", true);
     // Settings: Add visitCount to geochecker.com  links
-    c.settings_visitCount_geocheckerCom = getValue("settings_visitCount_geocheckerCom", false);
+    c.settings_visitCount_geocheckerCom = getValue("settings_visitCount_geocheckerCom", true);
     // Settings: Show Smilies & BBCode
     c.settings_show_bbcode = getValue("settings_show_bbcode", true);
     // Settings: Show mail-Link
@@ -356,23 +358,23 @@ var variablesInit = function (c) {
     // Settings: Zeilen in Cache Listings in Zebra einfärben
     c.settings_show_cache_listings_in_zebra = getValue("settings_show_cache_listings_in_zebra", false);
     // Settings: Zeilen in Cache Listings für User einfärben
-    c.settings_show_cache_listings_color_user = getValue("settings_show_cache_listings_color_user", false);
+    c.settings_show_cache_listings_color_user = getValue("settings_show_cache_listings_color_user", true);
     // Settings: Zeilen in Cache Listings für Owner einfärben
-    c.settings_show_cache_listings_color_owner = getValue("settings_show_cache_listings_color_owner", false);
+    c.settings_show_cache_listings_color_owner = getValue("settings_show_cache_listings_color_owner", true);
     // Settings: Zeilen in Cache Listings für Reviewer einfärben
-    c.settings_show_cache_listings_color_reviewer = getValue("settings_show_cache_listings_color_reviewer", false);
+    c.settings_show_cache_listings_color_reviewer = getValue("settings_show_cache_listings_color_reviewer", true);
     // Settings: Zeilen in Cache Listings für VIPs einfärben
-    c.settings_show_cache_listings_color_vip = getValue("settings_show_cache_listings_color_vip", false);
+    c.settings_show_cache_listings_color_vip = getValue("settings_show_cache_listings_color_vip", true);
     // Settings: Zeilen in TB Listings in Zebra einfärben
-    c.settings_show_tb_listings_in_zebra = getValue("settings_show_tb_listings_in_zebra", false);
+    c.settings_show_tb_listings_in_zebra = getValue("settings_show_tb_listings_in_zebra", true);
     // Settings: Zeilen in TB Listings für User einfärben
     c.settings_show_tb_listings_color_user = getValue("settings_show_tb_listings_color_user", true);
     // Settings: Zeilen in TB Listings für Owner einfärben
     c.settings_show_tb_listings_color_owner = getValue("settings_show_tb_listings_color_owner", true);
     // Settings: Zeilen in TB Listings für Reviewer einfärben
-    c.settings_show_tb_listings_color_reviewer = getValue("settings_show_tb_listings_color_reviewer", false);
+    c.settings_show_tb_listings_color_reviewer = getValue("settings_show_tb_listings_color_reviewer", true);
     // Settings: Zeilen in TB Listings für VIPs einfärben
-    c.settings_show_tb_listings_color_vip = getValue("settings_show_tb_listings_color_vip", false);
+    c.settings_show_tb_listings_color_vip = getValue("settings_show_tb_listings_color_vip", true);
     //Settings: Farbe um Zeilen in Zebra einzufärben
     c.settings_lines_color_zebra = getValue("settings_lines_color_zebra", "EBECED");
     //Settings: Farbe um Zeilen für User bzw. founds einzufärben
@@ -404,7 +406,7 @@ var variablesInit = function (c) {
     //Settings: Map zoom value
     c.settings_map_overview_zoom = getValue("settings_map_overview_zoom", 11);
     //Settings: Loggen über Standard "Log It" Icons zu Premium Only Caches für Basic Members
-    c.settings_logit_for_basic_in_pmo = getValue("settings_logit_for_basic_in_pmo", false);
+    c.settings_logit_for_basic_in_pmo = getValue("settings_logit_for_basic_in_pmo", true);
     //Settings: Count cache matrix in own statistic
     c.settings_count_own_matrix = getValue("settings_count_own_matrix", true);
     //Settings: Count cache matrix in foreign statistic
@@ -447,7 +449,7 @@ var variablesInit = function (c) {
     c.settings_make_config_main_areas_hideable = getValue("settings_make_config_main_areas_hideable", true);
     // Settings: Show EventDay
     c.settings_show_eventday = getValue("settings_show_eventday", true);
-    c.settings_date_format = getValue("settings_date_format", "MM/dd/yyyy");
+    c.settings_date_format = getValue("settings_date_format", "yyyy-MM-dd");
     // Settings: Show google-maps Link
     c.settings_show_google_maps = getValue("settings_show_google_maps", true);
     // Settings: Show Log It Icon
@@ -489,9 +491,9 @@ var variablesInit = function (c) {
     c.settings_strike_archived = getValue('settings_strike_archived', true);
     c.settings_highlight_usercoords = getValue('settings_highlight_usercoords', true);
     c.settings_highlight_usercoords_bb = getValue('settings_highlight_usercoords_bb', false);
-    c.settings_highlight_usercoords_it = getValue('settings_highlight_usercoords_it', false);
-    c.settings_map_hide_found = getValue('settings_map_hide_found', false);
-    c.settings_map_hide_hidden = getValue('settings_map_hide_hidden', false);
+    c.settings_highlight_usercoords_it = getValue('settings_highlight_usercoords_it', true);
+    c.settings_map_hide_found = getValue('settings_map_hide_found', true);
+    c.settings_map_hide_hidden = getValue('settings_map_hide_hidden', true);
     c.settings_map_hide_2 = getValue('settings_map_hide_2', false);
     c.settings_map_hide_9 = getValue('settings_map_hide_9', false);
     c.settings_map_hide_5 = getValue('settings_map_hide_5', false);
@@ -506,7 +508,7 @@ var variablesInit = function (c) {
     c.settings_map_hide_137 = getValue('settings_map_hide_137', false);
     c.settings_map_hide_8 = getValue('settings_map_hide_8', false);
     c.settings_map_hide_1858 = getValue('settings_map_hide_1858', false);
-    c.settings_show_fav_percentage = getValue('settings_show_fav_percentage', false);
+    c.settings_show_fav_percentage = getValue('settings_show_fav_percentage', true);
     c.settings_show_vip_list = getValue('settings_show_vip_list', true);
     c.settings_show_owner_vip_list = getValue('settings_show_owner_vip_list', true);
     c.settings_autovisit = getValue("settings_autovisit", "true");
@@ -525,7 +527,7 @@ var variablesInit = function (c) {
     c.settings_show_real_owner = getValue("settings_show_real_owner", false);
     c.settings_hide_visits_in_profile = getValue("settings_hide_visits_in_profile", false);
     c.settings_log_signature_on_fieldnotes = getValue("settings_log_signature_on_fieldnotes", true);
-    c.settings_map_hide_sidebar = getValue("settings_map_hide_sidebar", false);
+    c.settings_map_hide_sidebar = getValue("settings_map_hide_sidebar", true);
     c.settings_hover_image_max_size = getValue("settings_hover_image_max_size", 600);
     c.settings_vip_show_nofound = getValue("settings_vip_show_nofound", false);
     c.settings_use_gclh_layercontrol = getValue("settings_use_gclh_layercontrol", true);
@@ -576,6 +578,11 @@ var variablesInit = function (c) {
     bookmark("Search TB adv.", "https://www.geocaching.com/track/search.aspx", c.bookmarks);
     bookmark("View Geocache Map", "https://www.geocaching.com/map/", c.bookmarks);
     profileSpecialBookmark(scriptShortNameSync, defaultSyncLink, "lnk_gclhsync", c.bookmarks);
+    // Settings: Remove GC Menu from Navigation
+    c.remove_navi_learn = getValue("remove_navi_learn", false);
+    c.remove_navi_play = getValue("remove_navi_play", false);
+    c.remove_navi_community = getValue("remove_navi_community", false);
+    c.remove_navi_shop = getValue("remove_navi_shop", false);
     // Settings: Custom Bookmark-title
     c.bookmarks_orig_title = new Array();
     for (var i = 0; i < c.bookmarks.length; i++) {
@@ -1626,8 +1633,8 @@ var mainGC = function () {
             } 
             // Bei Cache suchen, Cache verstecken und Geotours werden Menu, SubMenu und logo so geschrieben.
             else if ( is_page("find_cache") || is_page("hide_cache") || is_page("geotours") ) {
-                style_tmp.innerHTML = style.innerHTML.replace(/#m/gi, "Menu"); style.innerHTML = style_tmp.innerHTML;
-                style_tmp.innerHTML = style.innerHTML.replace(/#sm/gi, "SubMenu"); style.innerHTML = style_tmp.innerHTML;
+                style_tmp.innerHTML = style.innerHTML.replace(/#m/gi, "menu"); style.innerHTML = style_tmp.innerHTML;
+                style_tmp.innerHTML = style.innerHTML.replace(/#sm/gi, "submenu"); style.innerHTML = style_tmp.innerHTML;
                 style_tmp.innerHTML = style.innerHTML.replace(/#l/gi, "nav .logo"); style.innerHTML = style_tmp.innerHTML;
             }
             // Bei Labs werden Menu, SubMenu und title (logo) so geschrieben.
@@ -7945,7 +7952,7 @@ var mainGC = function () {
             html += newParameterVersionSetzen(0.1) + newParameterOff;
 			html += checkboxy('settings_bookmarks_on_top', "Show <a class='gclh_ref' href='#gclh_linklist' id='gclh_linklist_link_1'>Linklist</a> on top") + show_help("Show the Linklist on the top of the page - beside the other links of gc.com. You can configure the links at the end of this configuration page.<br><br>Some of the features of the linklist on top, like for example the font size or the distance between drop-down links, requires \"Change header layout\". Details you can see at the end of this configuration page by the features of the Linklist.") + "<br/>";
             html += checkboxy('settings_hide_advert_link', 'Hide link to advertisement instructions') + "<br/>";
-            html += "&nbsp;" + "Page-Width: <input class='gclh_form' type='text' size='2' id='settings_new_width' value='" + getValue("settings_new_width", 950) + "'> px" + show_help("With this option you can expand the small layout. The default value of gc.com is 950 px.") + "<br>";
+            html += "&nbsp;" + "Page-Width: <input class='gclh_form' type='text' size='2' id='settings_new_width' value='" + getValue("settings_new_width", 1000) + "'> px" + show_help("With this option you can expand the small layout. The default value of gc.com is 950 px.") + "<br>";
             html += checkboxy('settings_automatic_friend_reset', 'Reset difference counter on friendlist automatically') + show_help("If you enable this option, the difference counter at friendlist will automatically reset if you have seen the difference and if the day changed.") + "<br/>";
             html += checkboxy('settings_hide_facebook', 'Hide Facebook login') + "<br/>";
             html += checkboxy('settings_hide_socialshare', 'Hide social sharing Facebook and Twitter') + "<br/>";
@@ -8650,14 +8657,22 @@ var mainGC = function () {
             // fill layer lists
             var layerListAvailable="";
             var layerListUnAvailable="";
-            for (name in all_map_layers) {
-                if ( settings_map_layers.indexOf(name) != -1 ) {
+
+            // Wenn bisher keine Layer ausgewählt wurden, dann alle auswählen, so wie es auch auf der Karte gehandhabt wird.
+            if (settings_map_layers == "" || settings_map_layers.length < 1) {
+                for (name in all_map_layers) {
                     $("#settings_maplayers_available").append(layerOption( name ,(settings_map_default_layer == name)) );
-                } else {
-                    $("#settings_maplayers_unavailable").append(layerOption( name , false ) );
+                }
+            } else {
+                for (name in all_map_layers) {
+                    if ( settings_map_layers.indexOf(name) != -1 ) {
+                        $("#settings_maplayers_available").append(layerOption( name ,(settings_map_default_layer == name)) );
+                    } else {
+                        $("#settings_maplayers_unavailable").append(layerOption( name , false ) );
+                    }
                 }
             }
-            
+
             $("#settings_use_gclh_layercontrol").click(function () {
                 $("#MapLayersConfiguration").toggle();
             });
