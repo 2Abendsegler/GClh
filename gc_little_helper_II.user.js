@@ -2,7 +2,7 @@
 // @name           GC little helper II
 // @namespace      http://www.amshove.net
 //--> $$000 Begin of change
-// @version        0.2.3
+// @version        0.2.2.1
 //<-- $$000 End of change
 // @include        http://www.geocaching.com/*
 // @include        https://www.geocaching.com/*
@@ -578,6 +578,11 @@ var variablesInit = function (c) {
     bookmark("Search TB adv.", "https://www.geocaching.com/track/search.aspx", c.bookmarks);
     bookmark("View Geocache Map", "https://www.geocaching.com/map/", c.bookmarks);
     profileSpecialBookmark(scriptShortNameSync, defaultSyncLink, "lnk_gclhsync", c.bookmarks);
+    // Settings: Remove GC Menu from Navigation
+    c.remove_navi_learn = getValue("remove_navi_learn", false);
+    c.remove_navi_play = getValue("remove_navi_play", false);
+    c.remove_navi_community = getValue("remove_navi_community", false);
+    c.remove_navi_shop = getValue("remove_navi_shop", false);
     // Settings: Custom Bookmark-title
     c.bookmarks_orig_title = new Array();
     for (var i = 0; i < c.bookmarks.length; i++) {
@@ -8652,14 +8657,22 @@ var mainGC = function () {
             // fill layer lists
             var layerListAvailable="";
             var layerListUnAvailable="";
-            for (name in all_map_layers) {
-                if ( settings_map_layers.indexOf(name) != -1 ) {
+
+            // Wenn bisher keine Layer ausgewählt wurden, dann alle auswählen, so wie es auch auf der Karte gehandhabt wird.
+            if (settings_map_layers == "" || settings_map_layers.length < 1) {
+                for (name in all_map_layers) {
                     $("#settings_maplayers_available").append(layerOption( name ,(settings_map_default_layer == name)) );
-                } else {
-                    $("#settings_maplayers_unavailable").append(layerOption( name , false ) );
+                }
+            } else {
+                for (name in all_map_layers) {
+                    if ( settings_map_layers.indexOf(name) != -1 ) {
+                        $("#settings_maplayers_available").append(layerOption( name ,(settings_map_default_layer == name)) );
+                    } else {
+                        $("#settings_maplayers_unavailable").append(layerOption( name , false ) );
+                    }
                 }
             }
-            
+
             $("#settings_use_gclh_layercontrol").click(function () {
                 $("#MapLayersConfiguration").toggle();
             });
