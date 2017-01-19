@@ -119,6 +119,10 @@ https://github.com/2Abendsegler/GClh/blob/master/docu/tips%20migration.md
 <br>
 * Geoclub Forum, Help (Greasemonkey-Scripte):  
 http://geoclub.de/forum/viewforum.php?f=117  
+* Geoclub Forum, alter Sammelthread:  
+http://geoclub.de/forum/viewtopic.php?f=117&t=46168  
+* Geoclub Forum, neuer Sammelthread::  
+http://geoclub.de/forum/viewtopic.php?f=117&t=79372  
 <br>
 * Deutsche Übersetzung der Lizence:  
 http://www.gnu.de/documents/gpl-2.0.de.html
