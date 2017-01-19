@@ -1,4 +1,4 @@
-<a href="#Branch" title="Branch">Branch</a> &nbsp; 
+<a href="#branch--tree" title="Branch">Branch</a> &nbsp; 
 <a href="#Issue" title="Issue">Issue</a> &nbsp; 
 <a href="#Links" title="Links">Links</a> &nbsp; 
 
