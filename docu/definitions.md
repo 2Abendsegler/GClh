@@ -1,14 +1,12 @@
 <a href="#user-content-branch" title="Branch">Branch</a> &nbsp; 
-<a href="#issue" title="Issue">Issue</a> &nbsp; 
-<a href="#links" title="Links">Links</a> &nbsp; 
+<a href="#user-content-issue" title="Issue">Issue</a> &nbsp; 
+<a href="#user-content-links" title="Links">Links</a> &nbsp; 
 
 ---
 ## Branch:
-Unsere Branches unterteilen sich in die vier Stufen User, Collector, Projects und Developer.
+Unsere Branches unterteilen sich in die vier Stufen *User*, *Collector*, *Projects* und *Developer*.
 
 Beispielsweise könnten in den vier Stufen folgende Branches vorhanden sein. 
-
-
 | 1. User | 2. Collector        | 3. Projects | 4. Developer   |
 | :------ | :-----------------: | :---------: | -------------: |
 | master  | collector (default) | v0.2.2.4    | dev_bug_fe     |
@@ -17,7 +15,8 @@ Beispielsweise könnten in den vier Stufen folgende Branches vorhanden sein.
 |         |                     |             | dev_LittleJohn |
 |         |                     | translation | dev_trans_CF   |
 
-
+1. User
+Hier gibt es nur die eine Branch *master*. Sie enthält die aktuelle Version für die User und dient den Usern zum Abrufen neuer Versionen.
 
 <ul>
 <li>Change: [Enhancement #14] Hervorhebung geänderter Koordinaten flexibler gestalten.<br>
