@@ -16,16 +16,32 @@ Beispielsweise könnten in den vier Stufen folgende Branches vorhanden sein.
 |         |                     |             | dev_LittleJohn |
 |         |                     | translation | dev_trans_CF   |
 
-### 1. User  
+### 1. User:  
 Hier gibt es genau eine Branch *master*. Sie enthält die aktuelle Version für die User und dient den Usern zum Abrufen neuer Versionen.
 
-### 2. Collector  
+### 2. Collector:  
 Hier gibt es derzeit genau eine Branch *collector*. Sie dient als Sammler aller Bestandteile für eine Version vor der Auslieferung an die User, dem Transport in den “master”.  
 
 Der *collector* ist die standard (default) Branch. Er wird beim Transportieren automatisch als Empfänger vorgeschlagen. Damit wird unter anderem sichergestellt, dass nicht aus versehen in den “master” transportiert wird.  
 
 Außerdem kann zeitunkritisch, auch gegebenenfalls aus mehreren Branches, in den *collector* transportiert werden, die Sammlung nachbearbeitet werden und gegebenenfals auch ein Kompletttest durchgeführt werden, bevor die Sammlung als neue Version den Usern zur Verfügung gestellt wird.  
 
+**Beispiel:** In der Branch *collector* könnten beispielsweise die nächste Version *v0.2.3*, die nächste kleine Bugfixing Version *v0.2.2.4*, die es nicht mehr eigenständig geschafft hat ausgeliefert zu werden, und eine langfristige Entwicklung *translation* eingesammelt werden.  
 
+### 3. Projects:  
+Die Stufe Projects soll Raum dafür bieten, dass gleichzeitig im Rahmen mehrerer Projekte entwickelt werden kann. Das ist insbesondere für das Bugfixing zur aktuellen Version (kleine Version) und für die eigentliche Weiterentwicklung zur nächsten Version notwendig. Die Namen der Branches sind in der Regel so gewählt, dass sie der nächsten Version entsprechen.
+
+Diese Stufe kommt aber auch gegebenenfalls zum Einsatz, wenn langfristige Projekte entwickelt werden, für die eine Version noch gar nicht abgeschätzt werden kann.
+
+Nach dem Transport in die Branch *collector* und der Auslieferung an die User über den *master* wird die entsprechende Branch gelöscht.
+
+**Beispiel:** Hier sollten zumindest immer die nächste Version *v0.2.3* und die nächste kleine Bugfixing Version *v0.2.2.4* enthalten sein. Das langfristige Projekt *translation* wäre hier dann auch enthalten.  
+
+### 4. Developer:  
+In dieser Stufe sollen die Namen der Branches der Contributoren (Mitarbeiter) auf dem GitHub von 2Abendsegler mit *dev_* beginnen und folgend einen beliebigen Qualifier für Projekt und Entwickler erhalten, den der Entwickler selbst bestimmen kann. Eine Branche für einen Entwickler soll mit Referenz zu demjenigen Projekt erzeugt werden, für welches der Entwickler entwickelt.
+
+Referenziert und transportiert (forked) der Entwickler die Arbeiten auf seinen eigenen GitHub Account, ist er in der Namensgebung natürlich frei. Auch hier sollte mit Bezug zum jeweiligen Projekt geforked werden, für welches er entwickeln möchte. 
+
+**Beispiel:** Hilft man beim Bugfixing der aktuellen Version *V0.2.2*, und wurden bereits 3 Bugfixing Versionen transportiert, dann forked man vom Projekt *v0.2.2.4*. Die drei vorgegangenen Bugfixing Versionen *v0.2.2.1*, *2* und *3*, stehen dann auch schon nicht mehr zur Auswahl zur Verfügung. Entwickelt man für die nächste Version, dann forked man von *v0.2.3*.  
 
 ---
