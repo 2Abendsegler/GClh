@@ -172,5 +172,5 @@
   "settings_log_template[9]": "",
   "settings_log_signature": "",
   "settings_tb_signature": "",
-  "settings_mail_signature": "",
+  "settings_mail_signature": ""
 }
