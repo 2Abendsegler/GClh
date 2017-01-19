@@ -119,9 +119,9 @@ https://github.com/2Abendsegler/GClh/blob/master/docu/tips%20migration.md
 <br>
 * Geoclub Forum, Help (Greasemonkey-Scripte):  
 http://geoclub.de/forum/viewforum.php?f=117  
-* Geoclub Forum, alter Sammelthread:  
+* Geoclub Forum, alter Sammelthread für GC little helper:  
 http://geoclub.de/forum/viewtopic.php?f=117&t=46168  
-* Geoclub Forum, neuer Sammelthread:  
+* Geoclub Forum, neuer Sammelthread für GC little helper II:  
 http://geoclub.de/forum/viewtopic.php?f=117&t=79372  
 <br>
 * Deutsche Übersetzung der Lizence:  
