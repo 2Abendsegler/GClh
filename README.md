@@ -20,9 +20,9 @@ Im Folgenden haben wir einige Informationen zusammengestellt, die den Einstieg e
 <br>
 * **Branch:**
 Details zu den Branches gibt es [hier](https://github.com/2Abendsegler/GClh/blob/dev_v0.2.3_fe/docu/definitions.md#user-content-branch)  
-Wir arbeiten bei den Branches mit vier Stufen.
-  * master: Aktuelle Programmversion für die User.
-  * collector (default): Sie dient als Sammelstelle für Alles was die nächste Version betrifft. Sie ermöglicht einen Kompletttest der nächsten Version, vor der Auslieferung an die User.
+Wir arbeiten hier mit vier Stufen.
+  * *master*: Aktuelle Programmversion für die User.
+  * *collector* (default): Sie dient als Sammelstelle für Alles was die nächste Version betrifft. Sie ermöglicht einen Kompletttest der nächsten Version, vor der Auslieferung an die User.
   * Projekt Branches: Sie erhalten in der Regel die Namen der nächsten Version, der nächsten Bugfixing Version oder eines langfristigen Projektes.
   * Developer Branches: Ein Fork sollte aus der jeweiligen Projekt Branch erfolgen, für die die Entwicklung erfolgen soll.  
 <br>
