@@ -1,7 +1,7 @@
 <a href="#user-content-branch" title="Branch">Branch</a> &nbsp; 
 <a href="#user-content-issue" title="Issue">Issue</a> &nbsp; 
-<a href="#user-content-links" title="Links">Links</a> &nbsp; 
 <a href="#user-content-dokumentation" title="Dokumentation Programmänderungen">Dokumentation</a> &nbsp; 
+<a href="#user-content-links" title="Links">Links</a> &nbsp; 
 
 ---
 ## Branch:  
@@ -55,26 +55,26 @@ Unter Issues finden wir die Tickets und das Ticketsystem. Ein Issue durchläuft 
 
 Sprache: Englisch wo nötig, ansonsten auch deutsch.  
 
-* Neues Issue:
+* **Neues Issue:**
   * Kategorie (Label) setzen: *bug*, *enhancement*, *improvement*, *help wanted*, *question* ... 
   * Priorität (Label) setzen, zumindest wenn sie absehbar hoch ist. 
     * Die Kategorie *bug* hat in der Regel mindestens die Priorität *high*.
     * *help wanted* und *question* haben in der Regel nicht mehr als Priorität *middle*.
   * Handelt es sich um einen Wunsch der User, dann den Tag (Label) *wish* setzen.  
 <br>
-* Issue in Arbeit nehmen:
+* **Issue in Arbeit nehmen:**
   * Issue entsprechend der Person zuordnen/assignen.
   * Status (Label) *in progress* setzen.  
 <br>
-* Issue zurück an User geben:
+* **Issue zurück an User geben:**
   * Aktion (Label) *user action* setzen.  
 <br>
-* Issue auf erledigt setzen:
+* **Issue auf erledigt setzen:**
   * Spätestens jetzt grob beschreiben, was man gemacht hat oder zu welchem Ergebnis man aus welchem Grund gekommen ist.
   * Spätestens jetzt alle Beiträge auf echte Mail-Adressen prüfen und diese entfernen, auch in den Beiträgen anderer. 
   * Entsprechenden Status (Label) setzen: *fixed*, *completed*, *rejected* ...  
 <br>
-* Issue schließen:
+* **Issue schließen:**
   * Handelt es sich um Entwicklung, dann das Issue spätestens jetzt in die Milestones integrieren.
   * Issue auf *close* setzen.  
 <br>
@@ -96,36 +96,35 @@ Außerdem sollte eine aussagekräftige *Dokumentation im Issue* erfolgen.
 ---
 ## Links:  
 
-* GitHub:
-https://github.com/2Abendsegler/GClh 
-* Aktuelle Version des Script GClh installieren (User Installation): 
+* GitHub:  
+https://github.com/2Abendsegler/GClh
+* Aktuelle Version des Script GClh installieren (User Installation):  
 https://github.com/2Abendsegler/GClh/raw/master/gc_little_helper_II.user.js
-* Testversion des Script GClh vom Collector installieren: (Abschluss-, Testinstallation):
+* Testversion des Script GClh vom Collector installieren: (Abschluss-, Testinstallation):  
 https://github.com/2Abendsegler/GClh/raw/collector/gc_little_helper_II.user.js
-* License im Browser anzeigen: 
+* License im Browser anzeigen:  
 https://raw.githubusercontent.com/2Abendsegler/GClh/master/License
-* Open Issues auf GitHub aufrufen: 
-https://github.com/2Abendsegler/GClh/issues?q=is:issue%20is:open%20sort:created-desc 
-* Open Wishes auf GitHub aufrufen: 
+* Open Issues auf GitHub aufrufen:  
+https://github.com/2Abendsegler/GClh/issues?q=is:issue%20is:open%20sort:created-desc
+* Open Wishes auf GitHub aufrufen:  
 https://github.com/2Abendsegler/GClh/issues?q=is:issue%20is:open%20label:%22tag:%20wish%22%20sort:created-desc
-* Changelog auf GitHub anzeigen:
-https://github.com/2Abendsegler/GClh/blob/master/docu/changelog.md 
-* License auf GitHub anzeigen:
-https://github.com/2Abendsegler/GClh/blob/master/docu/license.md 
-* Warranty auf GitHub anzeigen:
-https://github.com/2Abendsegler/GClh/blob/master/docu/warranty.md 
-* Tips Migration auf GitHub anzeigen:
-https://github.com/2Abendsegler/GClh/blob/master/docu/tips migration.md  
+* Changelog auf GitHub anzeigen:  
+https://github.com/2Abendsegler/GClh/blob/master/docu/changelog.md
+* License auf GitHub anzeigen:  
+https://github.com/2Abendsegler/GClh/blob/master/docu/license.md
+* Warranty auf GitHub anzeigen:  
+https://github.com/2Abendsegler/GClh/blob/master/docu/warranty.md
+* Tips Migration auf GitHub anzeigen:  
+https://github.com/2Abendsegler/GClh/blob/master/docu/tips%20migration.md  
 
-* Geoclub Forum, Help (Greasemonkey-Scripte):
-http://geoclub.de/forum/viewforum.php?f=117
+* Geoclub Forum, Help (Greasemonkey-Scripte):  
+http://geoclub.de/forum/viewforum.php?f=117  
 
-* Deutsche Übersetzung der Lizence:
-http://www.gnu.de/documents/gpl-2.0.de.html 
-* Markdown Syntax (deutsch) als PDF:
-https://www.heise.de/mac-and-i/downloads/65/1/1/6/7/1/0/3/Markdown-CheatSheet-Deutsch.pdf 
-* Markdown Editor:
-https://github.com/mike-ward/Markdown-Edit/releases 
-
-
-
+* Deutsche Übersetzung der Lizence:  
+http://www.gnu.de/documents/gpl-2.0.de.html
+* Markdown Syntax (deutsch) als PDF:  
+https://www.heise.de/mac-and-i/downloads/65/1/1/6/7/1/0/3/Markdown-CheatSheet-Deutsch.pdf
+* Markdown Editor:  
+https://github.com/mike-ward/Markdown-Edit/releases  
+<br>
+<br>
