@@ -87,7 +87,7 @@ Eine *Änderungsdokumentation im Programmkopf* ist nicht erforderlich. Möchte j
 
 Eine *Änderungsdokumentation im Programmcode* ist nicht erforderlich. Bei komplexen Zusammenhängen oder wenn besondere Beachtung geboten ist, dann sollte eine Dokumentation an der entsprechenden Programmstelle erfolgen. Ob eine solche Dokumentation sinnvoll ist, entscheidet der jeweilige Entwickler.  
 
-Es sollte eine aussagekräftige *Änderungsdokumentation im Changelog* ([changelog.txt](https://github.com/2Abendsegler/GClh/blob/master/changelog.txt)) erfolgen. Diese Datei dient lediglich zu unseren, internen Zwecken. Sie wird insbesondere verwendet, um ein (User) Changelog ([changelog.md](https://github.com/2Abendsegler/GClh/blob/master/docu/changelog.md)) zum Zeitpunkt der Auslieferung an die User vorzubefüllen. Dieses Changelog wird dann gegebenenfalls noch um Screens und andere Dinge erweitert und etwas aufbereitet, bevor es an die User geht.  
+Es sollte eine aussagekräftige *Änderungsdokumentation im Changelog* ([changelog.txt](https://github.com/2Abendsegler/GClh/blob/master/changelog.txt)) erfolgen. Diese Datei dient lediglich zu unseren, internen Zwecken. Sie wird insbesondere verwendet, um ein (User) Changelog ([changelog.md](https://github.com/2Abendsegler/GClh/blob/master/docu/changelog.md#readme)) zum Zeitpunkt der Auslieferung an die User vorzubefüllen. Dieses Changelog wird dann gegebenenfalls noch um Screens und andere Dinge erweitert und etwas aufbereitet, bevor es an die User geht.  
 
 Außerdem sollte eine aussagekräftige *Dokumentation im Issue* erfolgen.  
 <br>
@@ -109,13 +109,13 @@ https://github.com/2Abendsegler/GClh/issues?q=is:issue%20is:open%20sort:created-
 * Open Wishes auf GitHub aufrufen:  
 https://github.com/2Abendsegler/GClh/issues?q=is:issue%20is:open%20label:%22tag:%20wish%22%20sort:created-desc
 * Changelog auf GitHub anzeigen:  
-https://github.com/2Abendsegler/GClh/blob/master/docu/changelog.md
+https://github.com/2Abendsegler/GClh/blob/master/docu/changelog.md#readme
 * License auf GitHub anzeigen:  
-https://github.com/2Abendsegler/GClh/blob/master/docu/license.md
+https://github.com/2Abendsegler/GClh/blob/master/docu/license.md#readme
 * Warranty auf GitHub anzeigen:  
-https://github.com/2Abendsegler/GClh/blob/master/docu/warranty.md
+https://github.com/2Abendsegler/GClh/blob/master/docu/warranty.md#readme
 * Tipps Migration auf GitHub anzeigen:  
-https://github.com/2Abendsegler/GClh/blob/master/docu/tips%20migration.md  
+https://github.com/2Abendsegler/GClh/blob/master/docu/tips%20migration.md#readme  
 <br>
 * Geoclub Forum, Help (Greasemonkey-Scripte):  
 http://geoclub.de/forum/viewforum.php?f=117  
