@@ -1,7 +1,9 @@
 CHANGELOG:
 
-Version 0.2.3:
-- Refactoring: is_link function [issue #39]
+
+Version 0.2.2.2:
+- Navigationsmenüs nicht sichtbar auf den Seiten "Find a Geocache", "Hide a Geocache" und "Geotours". [issue 54] 
+Ursache: GS Änderung, Umbenennung der Menüs von "Menu" in "menu" und "SubMenu" in "submenu".
 
 Version 0.2.2.1:
 - Change: [Enhancement #14] Hervorhebung geänderter Koordinaten flexibler gestalten. Danke an LittleJohn für die Vorarbeit.
