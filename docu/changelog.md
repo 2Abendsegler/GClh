@@ -8,7 +8,7 @@
 ---
 ## v0.2.2.3:
 <ul>
-<li>(Again) Navigationsmenüs nicht sichtbar auf den Seiten "Find a Geocache", "Hide a Geocache" und "Geotours". [issue 54] 
+<li>Fix: (Again) Navigationsmenüs nicht sichtbar auf den Seiten "Find a Geocache", "Hide a Geocache" und "Geotours". [issue 54] 
 Ursache: GS Änderung, Umbenennung der Menüs von "Menu" in "menu" und "SubMenu" in "submenu".<br></li>
 </ul>
 <br>
@@ -16,7 +16,7 @@ Ursache: GS Änderung, Umbenennung der Menüs von "Menu" in "menu" und "SubMenu"
 ---
 ## v0.2.2.2:
 <ul>
-<li>Navigationsmenüs nicht sichtbar auf den Seiten "Find a Geocache", "Hide a Geocache" und "Geotours". [issue 54] 
+<li>Fix: Navigationsmenüs nicht sichtbar auf den Seiten "Find a Geocache", "Hide a Geocache" und "Geotours". [issue 54] 
 Ursache: GS Änderung, Umbenennung der Menüs von "Menu" in "menu" und "SubMenu" in "submenu".<br></li>
 </ul>
 <br>
