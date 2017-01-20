@@ -19,6 +19,9 @@ Danke CachingsFoX für die Analyse.
 - Push block of layers right, build unsorted layers in map [isuue 29]
 Take selected map layers in the given order.
 
+Version 0.2.2.4:
+- Fix: [Issue 60] Nearest List parameter generated error. Parameter changed from "&disable_redirect" to "&disable_redirect="
+
 Version 0.2.2.3:
 - Fix: [Issue 54] (Again) Navigationsmenüs nicht sichtbar auf den Seiten "Find a Geocache", "Hide a Geocache" und "Geotours". Ursache: GS Änderung, Umbenennung der Menüs von "Menu" in "menu" und "SubMenu" in "submenu".
 
