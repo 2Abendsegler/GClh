@@ -1,7 +1,25 @@
+<a href="#v0223" title="GClh II Version 0.2.2.3">v0.2.2.3</a> &nbsp; 
+<a href="#v0222" title="GClh II Version 0.2.2.2">v0.2.2.2</a> &nbsp; 
 <a href="#v0221" title="GClh II Version 0.2.2.1">v0.2.2.1</a> &nbsp; 
 <a href="#v022" title="GClh II Version 0.2.2">v0.2.2</a> &nbsp; 
 <a href="#v021" title="GClh II Version 0.2.1">v0.2.1</a> &nbsp; 
 <a href="#v01" title="GClh II Version 0.1">v0.1</a> &nbsp; 
+
+---
+## v0.2.2.3:
+<ul>
+<li>(Again) Navigationsmenüs nicht sichtbar auf den Seiten "Find a Geocache", "Hide a Geocache" und "Geotours". [issue 54] 
+Ursache: GS Änderung, Umbenennung der Menüs von "Menu" in "menu" und "SubMenu" in "submenu".<br></li>
+</ul>
+<br>
+
+---
+## v0.2.2.2:
+<ul>
+<li>Navigationsmenüs nicht sichtbar auf den Seiten "Find a Geocache", "Hide a Geocache" und "Geotours". [issue 54] 
+Ursache: GS Änderung, Umbenennung der Menüs von "Menu" in "menu" und "SubMenu" in "submenu".<br></li>
+</ul>
+<br>
 
 ---
 ## v0.2.2.1:
