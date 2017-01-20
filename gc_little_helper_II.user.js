@@ -2,7 +2,7 @@
 // @name           GC little helper II
 // @namespace      http://www.amshove.net
 //--> $$000FE Begin of change
-// @version        0.2.2.3
+// @version        0.2.2.4
 //<-- $$000FE End of change
 // @include        http://www.geocaching.com/*
 // @include        https://www.geocaching.com/*
@@ -2849,7 +2849,7 @@ var mainGC = function () {
 
 // Redirect to Map (von Search Liste direkt in Karte springen)
     if (settings_redirect_to_map && document.location.href.match(/^https?:\/\/www\.geocaching\.com\/seek\/nearest\.aspx\?/)) {
-        if (!document.location.href.match(/&disable_redirect/) && !document.location.href.match(/key=/) && !document.location.href.match(/ul=/) && document.getElementById('ctl00_ContentBody_LocationPanel1_lnkMapIt')) {
+        if (!document.location.href.match(/&disable_redirect=/) && !document.location.href.match(/key=/) && !document.location.href.match(/ul=/) && document.getElementById('ctl00_ContentBody_LocationPanel1_lnkMapIt')) {
             document.getElementById('ctl00_ContentBody_LocationPanel1_lnkMapIt').click();
         }
     }
@@ -4024,7 +4024,7 @@ var mainGC = function () {
                 if (founds == 0) {
                     friend.getElementsByTagName("dd")[4].innerHTML = founds + "&nbsp;";
                 } else {
-                    friend.getElementsByTagName("dd")[4].innerHTML = "<a href='/seek/nearest.aspx?ul=" + urlencode(name.innerHTML) + "&disable_redirect'>" + founds + "</a>&nbsp;" + add;
+                    friend.getElementsByTagName("dd")[4].innerHTML = "<a href='/seek/nearest.aspx?ul=" + urlencode(name.innerHTML) + "&disable_redirect='>" + founds + "</a>&nbsp;" + add;
                 }
 
 
@@ -4040,7 +4040,7 @@ var mainGC = function () {
                 if (hides == 0) {
                     friend.getElementsByTagName("dd")[5].innerHTML = hides + "&nbsp;";
                 } else {
-                    friend.getElementsByTagName("dd")[5].innerHTML = "<a href='/seek/nearest.aspx?u=" + urlencode(name.innerHTML) + "&disable_redirect'>" + hides + "</a>&nbsp;" + add;
+                    friend.getElementsByTagName("dd")[5].innerHTML = "<a href='/seek/nearest.aspx?u=" + urlencode(name.innerHTML) + "&disable_redirect='>" + hides + "</a>&nbsp;" + add;
                 }
 
 
@@ -4070,12 +4070,12 @@ var mainGC = function () {
                     founds = getValue("friends_founds_new_" + name.innerHTML, 0);
                     setValue("friends_founds_" + name.innerHTML, founds);
                     if (founds == 0) friend.getElementsByTagName("dd")[4].innerHTML = "0&nbsp;";
-                    else friend.getElementsByTagName("dd")[4].innerHTML = "<a href='/seek/nearest.aspx?ul=" + urlencode(name.innerHTML) + "&disable_redirect'>" + founds + "</a>";
+                    else friend.getElementsByTagName("dd")[4].innerHTML = "<a href='/seek/nearest.aspx?ul=" + urlencode(name.innerHTML) + "&disable_redirect='>" + founds + "</a>";
 
                     hides = getValue("friends_hides_new_" + name.innerHTML, 0);
                     setValue("friends_hides_" + name.innerHTML, hides);
                     if (hides == 0) friend.getElementsByTagName("dd")[5].innerHTML = "0&nbsp;";
-                    else friend.getElementsByTagName("dd")[5].innerHTML = "<a href='/seek/nearest.aspx?u=" + urlencode(name.innerHTML) + "&disable_redirect'>" + hides + "</a>&nbsp;";
+                    else friend.getElementsByTagName("dd")[5].innerHTML = "<a href='/seek/nearest.aspx?u=" + urlencode(name.innerHTML) + "&disable_redirect='>" + hides + "</a>&nbsp;";
                 }
             }
 
@@ -4147,7 +4147,7 @@ var mainGC = function () {
             if (document.getElementById("ctl00_ContentBody_LocationPanel1_OriginLabel")) {
                 var urluser = document.location.href.match(/(ul|u)=(.*)/);
                 urluser = urldecode( urluser[2].replace(/&([A-Za-z0-9]+)=(.*)/, "") );
-                urluser = urluser.replace(/&disable_redirect/, "");
+                urluser = urluser.replace(/&disable_redirect=/, "");
                 urluser = urluser.replace(/#(.*)/, "");
                 var linkelement = document.createElement("a");
                 linkelement.href = "/profile/?u=" + urluser;
@@ -7665,7 +7665,7 @@ var mainGC = function () {
         // Links zu Nearest Lists/Map in Linklist und in Ablistung der Listlist im Profile setzen. 
         if (getValue("home_lat", 0) != 0 && getValue("home_lng") != 0) {
             // Nearest List.
-            var link = http + "://www.geocaching.com/seek/nearest.aspx?lat=" + (getValue("home_lat") / 10000000) + "&lng=" + (getValue("home_lng") / 10000000) + "&dist=25&disable_redirect";
+            var link = http + "://www.geocaching.com/seek/nearest.aspx?lat=" + (getValue("home_lat") / 10000000) + "&lng=" + (getValue("home_lng") / 10000000) + "&dist=25&disable_redirect=";
             if ( document.getElementsByName("lnk_nearestlist")[0] ) document.getElementsByName("lnk_nearestlist")[0].href = link;
             if ( document.getElementsByName("lnk_nearestlist_profile")[0] ) document.getElementsByName("lnk_nearestlist_profile")[0].href = link;
             // Nearest Map.
@@ -7673,7 +7673,7 @@ var mainGC = function () {
             if ( document.getElementsByName("lnk_nearestmap")[0] ) document.getElementsByName("lnk_nearestmap")[0].href = link;
             if ( document.getElementsByName("lnk_nearestmap_profile")[0] ) document.getElementsByName("lnk_nearestmap_profile")[0].href = link;
             // Nearest List without Founds.
-            var link = http + "://www.geocaching.com/seek/nearest.aspx?lat=" + (getValue("home_lat") / 10000000) + "&lng=" + (getValue("home_lng") / 10000000) + "&dist=25&f=1&disable_redirect";
+            var link = http + "://www.geocaching.com/seek/nearest.aspx?lat=" + (getValue("home_lat") / 10000000) + "&lng=" + (getValue("home_lng") / 10000000) + "&dist=25&f=1&disable_redirect=";
             if ( document.getElementsByName("lnk_nearestlist_wo")[0] ) document.getElementsByName("lnk_nearestlist_wo")[0].href = link;
             if ( document.getElementsByName("lnk_nearestlist_wo_profile")[0] ) document.getElementsByName("lnk_nearestlist_wo_profile")[0].href = link;
         }
