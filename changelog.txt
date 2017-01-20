@@ -19,6 +19,14 @@ Danke CachingsFoX für die Analyse.
 - Push block of layers right, build unsorted layers in map [isuue 29]
 Take selected map layers in the given order.
 
+Version 0.2.2.3:
+- (Again) Navigationsmenüs nicht sichtbar auf den Seiten "Find a Geocache", "Hide a Geocache" und "Geotours". [issue 54] 
+Ursache: GS Änderung, Umbenennung der Menüs von "Menu" in "menu" und "SubMenu" in "submenu".
+
+Version 0.2.2.2:
+- Navigationsmenüs nicht sichtbar auf den Seiten "Find a Geocache", "Hide a Geocache" und "Geotours". [issue 54] 
+Ursache: GS Änderung, Umbenennung der Menüs von "Menu" in "menu" und "SubMenu" in "submenu".
+
 Version 0.2.2.1:
 - Change: [Enhancement #14] Hervorhebung geänderter Koordinaten flexibler gestalten. Danke an LittleJohn für die Vorarbeit.
 - New: [Enhancement #30] Make colored illustration of versions in config selectable.
