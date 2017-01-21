@@ -1,6 +1,6 @@
 CHANGELOG:
 
-
+ 
 Version 0.2.2.4:
 - Fix: [Issue 60] Nearest List parameter generated error. Parameter changed from "&disable_redirect" to "&disable_redirect="
 
