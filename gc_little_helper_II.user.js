@@ -9135,7 +9135,7 @@ var mainGC = function () {
             // -------------------
 
             //Colorpicker
-            if (typeof opera == "object" || typeof(chrome) != "undefined") {
+            if (typeof opera == "object" /* || typeof(chrome) != "undefined" */) {
                 $('.gclh_form.color:not(.withPicker)').each(function (i, e) {
                     var homezonepic = new jscolor.color(e, {
                         required: true,
