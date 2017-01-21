@@ -162,99 +162,103 @@ var browserInit = function (c) {
     if (typeof(chrome) != "undefined") {
         c.browser = "chrome";
 
-        c.unsafeWindow = window;
+        // only needed for chrome webstore support
+        // c.unsafeWindow = window;
 
-        //Only for migration
-        if ((typeof(c.GM_getValue) === "undefined" || (c.GM_getValue.toString && c.GM_getValue.toString().indexOf("not supported") !== -1)) && typeof(localStorage) !== "undefined") {
-            c.GM_getValue = function (key, defaultValue) {
-                var result = localStorage.getItem(key);
-                if (!result || result == "undefined") {
-                    return defaultValue;
-                }
-                else {
-                    var type = result[0];
-                    switch (type) {
-                        case 'b':
-                            result = result.substring(1);
-                            return result == 'true';
-                        case 'n':
-                            result = result.substring(1);
-                            return Number(result);
-                        case 's':
-                            result = result.substring(1);
-                            return String(result);
-                        default:
-                            return result;
-                    }
-                }
-            };
-        }
+        // //Only for migration
+        // if ((typeof(c.GM_getValue) === "undefined" || (c.GM_getValue.toString && c.GM_getValue.toString().indexOf("not supported") !== -1)) && typeof(localStorage) !== "undefined") {
+            // c.GM_getValue = function (key, defaultValue) {
+                // var result = localStorage.getItem(key);
+                // if (!result || result == "undefined") {
+                    // return defaultValue;
+                // }
+                // else {
+                    // var type = result[0];
+                    // switch (type) {
+                        // case 'b':
+                            // result = result.substring(1);
+                            // return result == 'true';
+                        // case 'n':
+                            // result = result.substring(1);
+                            // return Number(result);
+                        // case 's':
+                            // result = result.substring(1);
+                            // return String(result);
+                        // default:
+                            // return result;
+                    // }
+                // }
+            // };
+        // }
 
-        if (typeof(c.GM_setValue) == "undefined" || (c.GM_setValue.toString && c.GM_setValue.toString().indexOf("not supported") != -1)) {
-            c.GM_setValue = function (key, defaultValue) {
-                console.log("Dummy GM_setValue");
-            }
-        }
+        // if (typeof(c.GM_setValue) == "undefined" || (c.GM_setValue.toString && c.GM_setValue.toString().indexOf("not supported") != -1)) {
+            // c.GM_setValue = function (key, defaultValue) {
+                // console.log("Dummy GM_setValue");
+            // }
+        // }
 
-        if ((typeof(c.GM_listValues) === "undefined" || (c.GM_listValues.toString && c.GM_listValues.toString().indexOf("not supported") !== -1)) && typeof(localStorage) !== "undefined") {
-            c.GM_listValues = function () {
-                return Object.keys(localStorageCache);
-            };
-        }
+        // if ((typeof(c.GM_listValues) === "undefined" || (c.GM_listValues.toString && c.GM_listValues.toString().indexOf("not supported") !== -1)) && typeof(localStorage) !== "undefined") {
+            // c.GM_listValues = function () {
+                // return Object.keys(localStorageCache);
+            // };
+        // }
 
-        if (typeof(c.GM_xmlhttpRequest) == "undefined" || (c.GM_xmlhttpRequest.toString && c.GM_xmlhttpRequest.toString().indexOf("not supported") != -1)) {
-            c.GM_xmlhttpRequest = function (requestData) {
-                var httpReq = new window.XMLHttpRequest();
-                if (requestData["onreadystatechange"]) {
-                    httpReq.onreadystatechange = function (data) {
-                        requestData["onreadystatechange"](this);
-                    }
-                }
+        // if (typeof(c.GM_xmlhttpRequest) == "undefined" || (c.GM_xmlhttpRequest.toString && c.GM_xmlhttpRequest.toString().indexOf("not supported") != -1)) {
+            // c.GM_xmlhttpRequest = function (requestData) {
+                // var httpReq = new window.XMLHttpRequest();
+                // if (requestData["onreadystatechange"]) {
+                    // httpReq.onreadystatechange = function (data) {
+                        // requestData["onreadystatechange"](this);
+                    // }
+                // }
 
-                if (requestData["onload"]) {
-                    httpReq.onload = function (data) {
-                        if (this.status == 200) {
-                            requestData["onload"](this);
-                        }
-                    }
-                }
+                // if (requestData["onload"]) {
+                    // httpReq.onload = function (data) {
+                        // if (this.status == 200) {
+                            // requestData["onload"](this);
+                        // }
+                    // }
+                // }
 
-                if (requestData["onerror"]) {
-                    httpReq.onload = function (data) {
-                        requestData["onerror"](this);
-                    }
-                }
+                // if (requestData["onerror"]) {
+                    // httpReq.onload = function (data) {
+                        // requestData["onerror"](this);
+                    // }
+                // }
 
-                httpReq.open(requestData.method, requestData.url);
+                // httpReq.open(requestData.method, requestData.url);
 
-                if (requestData.headers) {
-                    for (var header in requestData.headers) {
-                        if (header == "User-Agent" || header == "Origin" || header == "Cookie" || header == "Cookie2" || header == "Referer") {
-                            continue;
-                        }
-                        httpReq.setRequestHeader(header, requestData.headers[header]);
-                    }
-                }
+                // if (requestData.headers) {
+                    // for (var header in requestData.headers) {
+                        // if (header == "User-Agent" || header == "Origin" || header == "Cookie" || header == "Cookie2" || header == "Referer") {
+                            // continue;
+                        // }
+                        // httpReq.setRequestHeader(header, requestData.headers[header]);
+                    // }
+                // }
 
-                httpReq.send(typeof requestData.data == 'undefined' ? null : requestData.data);
-            }
-        }
+                // httpReq.send(typeof requestData.data == 'undefined' ? null : requestData.data);
+            // }
+        // }
 
-		var initialConfigRecv = false;
-        chrome.runtime.sendMessage({"getGclhConfig": ""}, function (data) {
-			if(initialConfigRecv){
-				return;
-			}
-			initialConfigRecv = true;
-            if (typeof(data) !== "undefined") {
-                c.CONFIG = data;
-            }
-            else {
-                c.CONFIG = {};
-            }
+		// var initialConfigRecv = false;
+        // chrome.runtime.sendMessage({"getGclhConfig": ""}, function (data) {
+			// if(initialConfigRecv){
+				// return;
+			// }
+			// initialConfigRecv = true;
+            // if (typeof(data) !== "undefined") {
+                // c.CONFIG = data;
+            // }
+            // else {
+                // c.CONFIG = {};
+            // }
 
-            browserInitDeref.resolve();
-        });
+            // browserInitDeref.resolve();
+        // });
+        c.GM_setValue("browser", browser);
+        c.CONFIG = JSON.parse(GM_getValue("CONFIG", '{}'));
+        browserInitDeref.resolve();
     }
     else if (browser === "firefox") {
         // Check for Scriptish bug in Fennec browser (http://www.geoclub.de/viewtopic.php?f=117&t=62130&p=983614#p983614)
@@ -6392,11 +6396,12 @@ var mainGC = function () {
                 newImageTmpl += "</a>&nbsp;&nbsp;" +
                 "";
 
-                if (browser == "chrome") {
-                    $("#tmpl_CacheLogImagesTitle").template("tmplCacheLogImagesTitle");
-                    $("#tmpl_CacheLogImages").html(newImageTmpl).template("tmplCacheLogImages");
-                    $("#tmpl_CacheLogRow").template("tmplCacheLogRow");
-                }
+                // only needed for chrome web store
+                // if (browser == "chrome") {
+                    // $("#tmpl_CacheLogImagesTitle").template("tmplCacheLogImagesTitle");
+                    // $("#tmpl_CacheLogImages").html(newImageTmpl).template("tmplCacheLogImages");
+                    // $("#tmpl_CacheLogRow").template("tmplCacheLogRow");
+                // }
 
                 var code = "function gclh_updateTmpl() { " +
                     "  delete $.template['tmplCacheLogImages'];" +
@@ -6720,6 +6725,7 @@ var mainGC = function () {
             }
 
             //Reinit initalLogs
+            // TODO: here is an error with chrome: .tmpl is not a function..
             var tbody = (document.getElementById("cache_logs_table2") || document.getElementById("cache_logs_table")).getElementsByTagName("tbody");
             if (tbody.length > 0) {
                 tbody = tbody[0];
@@ -7650,9 +7656,10 @@ var mainGC = function () {
         }
         
         // GClh Config und Sync Aufrufe von anderen Seiten auf die Profile Seite mit Zusatz #GClhShowConfig bzw. #GClhShowSync. 
-        // Derzeit teils in GM Menü (1. Schritt) verwendet.    
-        function callConfigDefault() document.location.href = defaultConfigLink;
-        function callSyncDefault() document.location.href = defaultSyncLink;
+        // Derzeit teils in GM Menü (1. Schritt) verwendet.
+        // Chrome cannot handle functions without curly brackets!
+        function callConfigDefault() { document.location.href = defaultConfigLink; }
+        function callSyncDefault() { document.location.href = defaultSyncLink; }
 
     } catch (e) {
         gclh_error("Aufbau Links zum Aufruf von Config, Sync und Find Player", e);
@@ -7853,8 +7860,11 @@ var mainGC = function () {
         if ( owner == undefined ) var owner = "";
         var vips = getValue("vips");
 //--> $$063FE Begin of insert
-        vips = vips.replace(/, (?=,)/g, ",null");
-        vips = JSON.parse(vips);
+        // try if vips not empty
+        if(vips != false) {
+            vips = vips.replace(/, (?=,)/g, ",null");
+            vips = JSON.parse(vips);
+        }
 //<-- $$063FE End of insert
         
         var setSpecUser = "TertiaryRow";
@@ -9125,7 +9135,7 @@ var mainGC = function () {
             // -------------------
 
             //Colorpicker
-            if (typeof opera == "object" || typeof(chrome) != "undefined") {
+            if (typeof opera == "object" /* || typeof(chrome) != "undefined" */) {
                 $('.gclh_form.color:not(.withPicker)').each(function (i, e) {
                     var homezonepic = new jscolor.color(e, {
                         required: true,
@@ -10479,17 +10489,18 @@ function gclh_error(modul, err) {
 function setValue(name, value) {
     var defer = $.Deferred();
     CONFIG[name] = value;
-    if (browser === "chrome") {
-		var data2Store = {};
-		data2Store[name] = value;
-        chrome.runtime.sendMessage({setGclhConfig: data2Store}, function () {
-            defer.resolve();
-        });
-    }
-    else {
+    // only needed for chrome web store
+    // if (browser === "chrome") {
+		// var data2Store = {};
+		// data2Store[name] = value;
+        // chrome.runtime.sendMessage({setGclhConfig: data2Store}, function () {
+            // defer.resolve();
+        // });
+    // }
+    // else {
         GM_setValue("CONFIG", JSON.stringify(CONFIG));
         defer.resolve();
-    }
+    // }
 
     return defer.promise();
 }
@@ -10503,15 +10514,15 @@ function setValueSet(data) {
         data2Store[key] = data[key];
     }
 
-    if (browser === "chrome") {
-        chrome.runtime.sendMessage({setGclhConfig: data2Store}, function (e) {
-            defer.resolve();
-        });
-    }
-    else {
+    // if (browser === "chrome") {
+        // chrome.runtime.sendMessage({setGclhConfig: data2Store}, function (e) {
+            // defer.resolve();
+        // });
+    // }
+    // else {
         GM_setValue("CONFIG", JSON.stringify(CONFIG));
         defer.resolve();
-    }
+    // }
 
     return defer.promise();
 }
