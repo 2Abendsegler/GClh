@@ -7,6 +7,29 @@
 <a href="#v01" title="GClh II Version 0.1">v0.1</a> &nbsp; 
 
 ---
+## v0.2.3:
+<ul>
+<li>New: [Issue #36] Chrome, Opera über Tampermonkey.<br>
+Vielen Dank an Nicole1338 für die tolle Arbeit.<br>
+Vielen Dank auch an pstorch für das Angebot hier zu unterstützen.<br></li>
+<li>New: [Issue #35] GClh Config: Make main areas in GClh Config hideable.<br>
+Und im GClh Config Links zu Lizense, Gewährleistung und Check for upgrade hinzugefügt.<br>
+Und Copyright Informationen vervollständigt.<br></li>
+<li>Refactoring: [Issue #39] is_link function.<br>
+Vielen Dank an CachingsFoX.<br></li>
+<li>Performance: [Issue #42] Umbau Try/Catch.<br></li>
+<li>Performance: [Issue #48] Umbau function getElementsByClass.<br>
+Umbau function getElementsByClass in standard document.getElementsByClassName.<br></li>
+<li>Performance: [Issue #49] Umbau function setLinesColorInCacheListing.<br>
+In function setLinesColorInCacheListing jedes Log nur einmalig einfärben.<br>
+Und Hide Personal Cache Notes wenn leer, beschleunigt.<br></li>
+<li>Fix: [Issue #32] Cache title of an active cache shown striked. Changed for archieved and for deactivated caches.<br>
+Vielen Dank an CachingsFoX für die Analyse.<br></li>
+<li>Fix: [Issue #29] Push block of layers right, build unsorted layers in map.<br></li>
+</ul>
+<br>
+
+---
 ## v0.2.2.4:
 <ul>
 <li>Fix: [Issue 60] Nearest List parameter generated error. Parameter changed from "&disable_redirect" to "&disable_redirect="<br></li>
