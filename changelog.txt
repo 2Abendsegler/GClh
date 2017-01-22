@@ -2,21 +2,22 @@ CHANGELOG:
 
 
 Version 0.2.3:
-- New: Chrome, Opera über Tampermonkey.
-Danke Nicole1338.
+- New: [Issue #36] Chrome, Opera über Tampermonkey.
+Vielen Dank an Nicole1338 für die tolle Arbeit.
+Vielen Dank auch an pstorch für das Angebot hier zu unterstützen.
 - New: [Issue #35] GClh Config: Make main areas in GClh Config hideable.
 Im Config Links zu Lizense, Gewährleistung und Check for upgrade hinzugefügt.
 Copyright Informationen vervollständigt.
+- Refactoring: [Issue #39] is_link function 
+Vielen Dank an CachingsFoX.
 - Performance: [Issue #42] Umbau Try/Catch.
 - Performance: [Issue #48] Umbau function getElementsByClass.
 Umbau function getElementsByClass in standard document.getElementsByClassName.
 - Performance: [Issue #49] Umbau function setLinesColorInCacheListing.
 In function setLinesColorInCacheListing jedes Log nur einmalig einfärben.
 Außerdem Hide Personal Cache Notes wenn leer beschleunigt.
-- Refactoring: [Issue #39] is_link function 
-Danke CachingsFoX.
 - Fix: [Issue #32] Cache title of an active cache shown striked. Changed for archieved and for deactivated caches.
-Danke CachingsFoX für die Analyse.
+Vielen Dank an CachingsFoX für die Analyse.
 - Fix: [Issue #29] Push block of layers right, build unsorted layers in map .
 
 Version 0.2.2.4:
