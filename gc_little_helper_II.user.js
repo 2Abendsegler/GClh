@@ -2,7 +2,7 @@
 // @name           GC little helper II
 // @namespace      2Abendsegler
 //--> $$000 Begin of change
-// @version        0.2.5.2
+// @version        0.2.3
 //<-- $$000 End of change
 // @include        http://www.geocaching.com/*
 // @include        https://www.geocaching.com/*
@@ -22,7 +22,7 @@
 // @require http://cdnjs.cloudflare.com/ajax/libs/dropbox.js/0.10.2/dropbox.min.js
 // @description    Some little things to make life easy (on www.geocaching.com).
 // @copyright      Torsten Amshove <torsten@amshove.net>
-// @author         Torsten Amshove
+// @author         Torsten Amshove; 2Abendsegler
 // @grant          GM_getValue
 // @grant          GM_setValue
 // @grant          GM_log
@@ -80,7 +80,6 @@ var browserInit = function (c) {
         c.GM_setValue("browser", browser);
         var test_browser = c.GM_getValue("browser");
         if (!test_browser) {
-            //console.log("Scriptish GM_getValue bug detected");
             var GM_getValue_Orig = c.GM_getValue;
             c.GM_getValue = function (key, def) {
                 return GM_getValue_Orig("scriptvals.GClittlehelper@httpwww.amshove.net." + key, def);
@@ -7176,11 +7175,9 @@ var mainGC = function () {
             var next_check = parseInt(getValue("update_next_check"), 10);
             if (!next_check) next_check = 0;
             var time = new Date().getTime();
-//xxxx
-next_check = 0;
+
             if ( next_check < time || manual == true ) {
-//xxxx
-                var url = "https://raw.githubusercontent.com/2Abendsegler/GClh/dev_v0.2.3_fe/gc_little_helper_II.user.js";
+                var url = "https://raw.githubusercontent.com/2Abendsegler/GClh/master/gc_little_helper_II.user.js";
                 var token = getValue("token", "");
                 if (token == "") setValue("token", "" + Math.random());
                 time += 1 * 60 * 60 * 1000; // 1 Stunde warten, bis zum nächsten Check.
@@ -7223,8 +7220,6 @@ next_check = 0;
             }
             // Installationszähler simulieren, weil GitHub das wohl nicht kann.
             var declaredVersion = getValue("declared_version");
-console.log("declared :" + declaredVersion + ":");
-console.log("..script :" + scriptVersion + ":");
             if ( declaredVersion != scriptVersion ) {
                 var side = document.getElementsByTagName("body")[0];
                 var div = document.createElement("div");
