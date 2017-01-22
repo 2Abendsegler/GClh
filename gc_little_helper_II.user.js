@@ -1,8 +1,8 @@
 // ==UserScript==
 // @name           GC little helper II
-// @namespace      http://www.amshove.net
+// @namespace      2Abendsegler
 //--> $$000 Begin of change
-// @version        0.2.2.0
+// @version        0.2.5.1
 //<-- $$000 End of change
 // @include        http://www.geocaching.com/*
 // @include        https://www.geocaching.com/*
@@ -12,8 +12,6 @@
 // @include        http://www.google.tld/maps*
 // @include        https://maps.google.tld/*
 // @include        https://www.google.tld/maps*
-// @include        https://goo.gl/5AV1HX
-// @include        https://goo.gl/rMgV6f
 // @exclude        *www.geocaching.com/seek/sendtogps.aspx*
 // @exclude        *www.geocaching.com/blog/*
 // @exclude        *www.geocaching.com/brandedpromotions/*
@@ -678,8 +676,8 @@ var mainGMaps = function () {
 var mainGC = function () {
 
 // Run after Redirect
-    try {
-        if (typeof(unsafeWindow.__doPostBack) == "function") {
+    if (typeof(unsafeWindow.__doPostBack) == "function") {
+        try {
             var splitter = document.location.href.split("#");
             if ( splitter && splitter[1] && splitter[1] == "gclhpb" && splitter[2] && splitter[2] != "" ) {
                 var postbackValue = splitter[2];
@@ -719,9 +717,9 @@ var mainGC = function () {
                     unsafeWindow.__doPostBack(postbackValue, ""); 
                 }
             }
+        } catch (e) {
+            gclh_error("Run after Redirect", e);
         }
-    } catch (e) {
-        gclh_error("Run after Redirect", e);
     }
     
 // Set language to default language.
@@ -6223,8 +6221,9 @@ var mainGC = function () {
             var tbody = (document.getElementById("cache_logs_table2") || document.getElementById("cache_logs_table")).getElementsByTagName("tbody");
             if (tbody.length > 0) {
                 tbody = tbody[0];
-// TODO: here is an error with chrome: .tmpl is not a function... Keine Ahnung was hier nicht geht. Der Bereich ist aber vermutlich gar nicht notwendig.
-//                if (tbody.children.length > 0) {
+                // TODO: here is an error with chrome: .tmpl is not a function... 
+                // Keine Ahnung warum das nicht funktioniert. Der Bereich scheint aber nicht notwendig.ist aber vermutlich gar nicht notwendig.
+                // if (tbody.children.length > 0) {
                 if (tbody.children.length > 0 && browser != "chrome") {
                     var initialLogData = chromeUserData.initalLogs || unsafeWindow.initalLogs || initalLogs;
                     var inclAvatars = chromeUserData.includeAvatars || unsafeWindow.includeAvatars || includeAvatars;
@@ -6935,11 +6934,11 @@ var mainGC = function () {
                             if ( from <= parseInt(cell.innerHTML) && parseInt(cell.innerHTML) <= to ) {
                                 cell.style.color = "black";
                                 var diff = parseInt(cell.innerHTML) - from;
+                                cell.style.backgroundColor = color;
                                 switch (diff) {
-                                    case 0: cell.style.backgroundColor = color;  break;
-                                    case 1: cell.style.backgroundColor = color + "99"; break;
-                                    case 2: cell.style.backgroundColor = color + "65"; break;
-                                    case 3: cell.style.backgroundColor = color + "40"; break;
+                                    case 1: cell.style.backgroundColor = cell.style.backgroundColor.replace(/rgb/i, "rgba").replace(/\)/, ",0.6)"); break;
+                                    case 2: cell.style.backgroundColor = cell.style.backgroundColor.replace(/rgb/i, "rgba").replace(/\)/, ",0.4)"); break;
+                                    case 3: cell.style.backgroundColor = cell.style.backgroundColor.replace(/rgb/i, "rgba").replace(/\)/, ",0.25)"); break;
                                 }
                                 if ( settings_count_own_matrix_links_radius != 0 ) {
                                     var terrain = parseInt(cell.id.match(/^([1-9]{1})(_{1})([1-9]{1})$/)[3]) * 0.5 + 0.5;
@@ -7177,8 +7176,10 @@ var mainGC = function () {
             var next_check = parseInt(getValue("update_next_check"), 10);
             if (!next_check) next_check = 0;
             var time = new Date().getTime();
+//xxxx
 next_check = 0;
             if ( next_check < time || manual == true ) {
+//xxxx
                 var url = "https://raw.githubusercontent.com/2Abendsegler/GClh/dev_v0.2.3_fe/gc_little_helper_II.user.js";
                 var token = getValue("token", "");
                 if (token == "") setValue("token", "" + Math.random());
@@ -7220,19 +7221,23 @@ next_check = 0;
                     });
                 }
             }
+            // Installationszähler simulieren, weil GitHub das wohl nicht kann.
             var declaredVersion = getValue("declared_version");
             if ( declaredVersion != scriptVersion ) {
-//--> $$000 Begin of change
-                simulateInstallCounter( "https://goo.gl/5AV1HX"); // Installationszähler ab Version 0.2.3
-                simulateInstallCounter( "https://goo.gl/rMgV6f"); // Installationszähler ab Version 0.2.3 Abgleich
-//<-- $$000 End of change
+                var side = document.getElementsByTagName("body")[0];
+                var div = document.createElement("div");
+                var img = document.createElement("img");
+                img.setAttribute("src", "http://c.andyhoppe.com/1485103563?output=invisible");
+                div.appendChild(img);
+                side.appendChild(div);
+                setValue("declared_version", scriptVersion);
             }
         }
         checkForUpgrade( false );
     } catch (e) {
         gclh_error("Check for updgrade", e);
     }
-
+    
 ////////////////////////////////////////////////////////////////////////////
 // Functions Helper (fun2)
 ////////////////////////////////////////////////////////////////////////////
@@ -7455,21 +7460,6 @@ next_check = 0;
     }
     if ( settings_hide_colored_versions ) newParameterOn1 = newParameterOn2 = newParameterOn3 = newParameterLL1 = newParameterLL2 = newParameterLL3 = newParameterOff = "";
 
-// Installationszähler simulieren, weil GitHub das wohl nicht kann.
-    function simulateInstallCounter( url ) {
-console.log("ja1");
-        GM_xmlhttpRequest({
-            method: "GET",
-            url: url,
-            onload: function (result) {
-                if ( result.resourceText != "" ) {
-                    setValue("declared_version", scriptVersion);
-console.log("okkkkkkkkkkkk");
-                }
-            }
-        });
-    }
-    
 // Seite abdunkeln. 
     function buildBgShadow() {
         var shadow = document.createElement("div");
@@ -8611,7 +8601,7 @@ console.log("okkkkkkkkkkkk");
                 //initialize remove listener for new element
                 gclh_init_multi_homecoord_remove_listener($newEl);
                 //reinit jscolor
-                if (typeof opera == "object" || typeof(chrome) != "undefined") {
+                if (typeof(chrome) != "undefined") {
                     $('.gclh_form.color:not(.withPicker)').each(function (i, e) {
                         var homezonepic = new jscolor.color(e, {
                             required: true,
