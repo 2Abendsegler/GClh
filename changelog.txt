@@ -1,8 +1,9 @@
 CHANGELOG:
 
+
 Version 0.2.3:
 - New: Chrome, Opera über Tampermonkey.
-Danke 
+Danke Nicole1338.
 - New: [Issue #35] GClh Config: Make main areas in GClh Config hideable.
 Im Config Links zu Lizense, Gewährleistung und Check for upgrade hinzugefügt.
 Copyright Informationen vervollständigt.
