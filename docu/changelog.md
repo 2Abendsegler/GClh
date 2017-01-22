@@ -1,3 +1,4 @@
+<a href="#v023" title="GClh II Version 0.2.3">v0.2.3</a> &nbsp; 
 <a href="#v0224" title="GClh II Version 0.2.2.4">v0.2.2.4</a> &nbsp; 
 <a href="#v0223" title="GClh II Version 0.2.2.3">v0.2.2.3</a> &nbsp; 
 <a href="#v0222" title="GClh II Version 0.2.2.2">v0.2.2.2</a> &nbsp; 
@@ -11,7 +12,9 @@
 <ul>
 <li>New: [Issue #36] Chrome, Opera über Tampermonkey.<br>
 Vielen Dank an Nicole1338 für die tolle Arbeit.<br>
-Vielen Dank auch an pstorch für das Angebot hier zu unterstützen.<br></li>
+Vielen Dank auch an pstorch für das Angebot hier zu unterstützen.<br>
+<img src="../images/chrome_logo.jpg" alt="chrome_logo.jpg">
+<img src="../images/opera_logo.jpg" alt="opera_logo.jpg"></li>
 <li>New: [Issue #35] GClh Config: Make main areas in GClh Config hideable.<br>
 Und im GClh Config Links zu Lizense, Gewährleistung und Check for upgrade hinzugefügt.<br>
 Und Copyright Informationen vervollständigt.<br></li>
