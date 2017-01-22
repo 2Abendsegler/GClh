@@ -1,8 +1,8 @@
-1// ==UserScript==
+// ==UserScript==
 // @name           GC little helper II
 // @namespace      http://www.amshove.net
 //--> $$000 Begin of change
-// @version        0.2.2.1
+// @version        0.2.2.0
 //<-- $$000 End of change
 // @include        http://www.geocaching.com/*
 // @include        https://www.geocaching.com/*
@@ -12,6 +12,8 @@
 // @include        http://www.google.tld/maps*
 // @include        https://maps.google.tld/*
 // @include        https://www.google.tld/maps*
+// @include        https://goo.gl/5AV1HX
+// @include        https://goo.gl/rMgV6f
 // @exclude        *www.geocaching.com/seek/sendtogps.aspx*
 // @exclude        *www.geocaching.com/blog/*
 // @exclude        *www.geocaching.com/brandedpromotions/*
@@ -7221,8 +7223,8 @@ next_check = 0;
             var declaredVersion = getValue("declared_version");
             if ( declaredVersion != scriptVersion ) {
 //--> $$000 Begin of change
-                simulateInstallCounter( "https://goo.gl/I4E7SO"); // Installationszähler ab Version 0.2.3
-                simulateInstallCounter( "https://goo.gl/VIRyDE"); // Installationszähler ab Version 0.2.3 Abgleich
+                simulateInstallCounter( "https://goo.gl/5AV1HX"); // Installationszähler ab Version 0.2.3
+                simulateInstallCounter( "https://goo.gl/rMgV6f"); // Installationszähler ab Version 0.2.3 Abgleich
 //<-- $$000 End of change
             }
         }
