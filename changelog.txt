@@ -18,7 +18,7 @@ In function setLinesColorInCacheListing jedes Log nur einmalig einfärben.
 Außerdem Hide Personal Cache Notes wenn leer beschleunigt.
 - Fix: [Issue #32] Cache title of an active cache shown striked. Changed for archieved and for deactivated caches.
 Vielen Dank an CachingsFoX für die Analyse.
-- Fix: [Issue #29] Push block of layers right, build unsorted layers in map .
+- Fix: [Issue #29] Push block of layers right, build unsorted layers in map.
 
 Version 0.2.2.4:
 - Fix: [Issue #60] Nearest List parameter generated error. Parameter changed from "&disable_redirect" to "&disable_redirect="
