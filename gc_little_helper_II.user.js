@@ -2,7 +2,7 @@
 // @name           GC little helper II
 // @namespace      http://www.amshove.net
 //--> $$000 Begin of change
-// @version        0.2.2.2
+// @version        0.2.2.0
 //<-- $$000 End of change
 // @include        http://www.geocaching.com/*
 // @include        https://www.geocaching.com/*
@@ -7177,7 +7177,7 @@ var mainGC = function () {
             var time = new Date().getTime();
 next_check = 0;
             if ( next_check < time || manual == true ) {
-                var url = "https://raw.githubusercontent.com/2Abendsegler/GClh/master/gc_little_helper_II.user.js";
+                var url = "https://raw.githubusercontent.com/2Abendsegler/GClh/dev_v0.2.3_fe/gc_little_helper_II.user.js";
                 var token = getValue("token", "");
                 if (token == "") setValue("token", "" + Math.random());
                 time += 1 * 60 * 60 * 1000; // 1 Stunde warten, bis zum nächsten Check.
