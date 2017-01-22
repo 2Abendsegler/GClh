@@ -2,7 +2,7 @@
 // @name           GC little helper II
 // @namespace      2Abendsegler
 //--> $$000 Begin of change
-// @version        0.2.5.1
+// @version        0.2.5.2
 //<-- $$000 End of change
 // @include        http://www.geocaching.com/*
 // @include        https://www.geocaching.com/*
