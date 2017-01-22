@@ -1,4 +1,4 @@
-# GC little helper II <span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span> <img src="/images/mozilla_firefox_logo_small.png" title="Mozilla Firefox" alt="Mozilla Firefox"> <span> &nbsp; &nbsp; </span> <img src="/images/google_chrome_logo_small.png" title="Google Chrom" alt="Google Chrom"> <span> &nbsp; &nbsp; </span> <img src="/images/opera_logo_small.png" title="Opera" alt="Opera"> 
+# GC little helper II <span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span> <img src="/images/mozilla_firefox_logo_small.png" title="Mozilla Firefox" alt="Mozilla Firefox"> <span> &nbsp; &nbsp; </span> <img src="/images/google_chrome_logo_small.png" title="Google Chrom" alt="Google Chrom"> <span> &nbsp; &nbsp; </span> <img src="/images/opera_logo_small.png" title="Opera" alt="Opera"> 
 Some little things to make life easy (on www.geocaching.com).  
 <br>
 <br>
