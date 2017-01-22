@@ -1,4 +1,4 @@
-## GC little helper II <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hallo</span>
+## GC little helper II <span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; hallo</span>
 Some little things to make life easy (on www.geocaching.com).  
 <br>
 <br>
