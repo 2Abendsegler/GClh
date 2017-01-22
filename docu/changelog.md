@@ -13,11 +13,12 @@
 <li>New: [Issue #36] Chrome, Opera über Tampermonkey.<br>
 Vielen Dank an Nicole1338 für die tolle Arbeit.<br>
 Vielen Dank auch an pstorch für das Angebot hier zu unterstützen.<br>
-<img src="../images/chrome_logo.jpg" alt="chrome_logo.jpg">
-<img src="../images/opera_logo.jpg" alt="opera_logo.jpg"></li>
+<img src="../images/google_chrome_logo.png" alt="google_chrome_logo.png"> 
+<img src="../images/opera_logo.png" alt="opera_logo.png"></li>
 <li>New: [Issue #35] GClh Config: Make main areas in GClh Config hideable.<br>
 Und im GClh Config Links zu Lizense, Gewährleistung und Check for upgrade hinzugefügt.<br>
-Und Copyright Informationen vervollständigt.<br></li>
+Und Copyright Informationen vervollständigt.<br>
+<img src="../images/v0.2.3_Screen01.jpg" alt="v0.2.3_Screen01.jpg"></li>
 <li>Refactoring: [Issue #39] is_link function.<br>
 Vielen Dank an CachingsFoX.<br></li>
 <li>Performance: [Issue #42] Umbau Try/Catch.<br></li>
