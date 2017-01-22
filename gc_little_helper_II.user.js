@@ -1,8 +1,8 @@
 // ==UserScript==
 // @name           GC little helper II
-// @namespace      2Abendsegler
+// @namespace      http://www.amshove.net
 //--> $$000 Begin of change
-// @version        0.2.3
+// @version        0.2.3.1
 //<-- $$000 End of change
 // @include        http://www.geocaching.com/*
 // @include        https://www.geocaching.com/*
