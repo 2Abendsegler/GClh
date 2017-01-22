@@ -1,14 +1,33 @@
 CHANGELOG:
 
 
+Version 0.2.3:
+- New: [Issue #36] Chrome, Opera über Tampermonkey.
+Vielen Dank an Nicole1338 für die tolle Arbeit.
+Vielen Dank auch an pstorch für das Angebot hier zu unterstützen.
+- New: [Issue #35] GClh Config: Make main areas in GClh Config hideable.
+Im Config Links zu Lizense, Gewährleistung und Check for upgrade hinzugefügt.
+Copyright Informationen vervollständigt.
+- Refactoring: [Issue #39] is_link function 
+Vielen Dank an CachingsFoX.
+- Performance: [Issue #42] Umbau Try/Catch.
+- Performance: [Issue #48] Umbau function getElementsByClass.
+Umbau function getElementsByClass in standard document.getElementsByClassName.
+- Performance: [Issue #49] Umbau function setLinesColorInCacheListing.
+In function setLinesColorInCacheListing jedes Log nur einmalig einfärben.
+Außerdem Hide Personal Cache Notes wenn leer beschleunigt.
+- Fix: [Issue #32] Cache title of an active cache shown striked. Changed for archieved and for deactivated caches.
+Vielen Dank an CachingsFoX für die Analyse.
+- Fix: [Issue #29] Push block of layers right, build unsorted layers in map.
+
 Version 0.2.2.4:
-- Fix: [Issue 60] Nearest List parameter generated error. Parameter changed from "&disable_redirect" to "&disable_redirect="
+- Fix: [Issue #60] Nearest List parameter generated error. Parameter changed from "&disable_redirect" to "&disable_redirect="
 
 Version 0.2.2.3:
-- Fix: [Issue 54] (Again) Navigationsmenüs nicht sichtbar auf den Seiten "Find a Geocache", "Hide a Geocache" und "Geotours". Ursache: GS Änderung, Umbenennung der Menüs von "Menu" in "menu" und "SubMenu" in "submenu".
+- Fix: [Issue #54] (Again) Navigationsmenüs nicht sichtbar auf den Seiten "Find a Geocache", "Hide a Geocache" und "Geotours". Ursache: GS Änderung, Umbenennung der Menüs von "Menu" in "menu" und "SubMenu" in "submenu".
 
 Version 0.2.2.2:
-- Fix: [Issue 54] Navigationsmenüs nicht sichtbar auf den Seiten "Find a Geocache", "Hide a Geocache" und "Geotours". Ursache: GS Änderung, Umbenennung der Menüs von "Menu" in "menu" und "SubMenu" in "submenu".
+- Fix: [Issue #54] Navigationsmenüs nicht sichtbar auf den Seiten "Find a Geocache", "Hide a Geocache" und "Geotours". Ursache: GS Änderung, Umbenennung der Menüs von "Menu" in "menu" und "SubMenu" in "submenu".
 
 Version 0.2.2.1:
 - Change: [Enhancement #14] Hervorhebung geänderter Koordinaten flexibler gestalten. Danke an LittleJohn für die Vorarbeit.
