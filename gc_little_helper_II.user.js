@@ -2,7 +2,7 @@
 // @name           GC little helper II
 // @namespace      http://www.amshove.net
 //--> $$000 Begin of change
-// @version        0.2.2.2x
+// @version        0.2.2.1
 //<-- $$000 End of change
 // @include        http://www.geocaching.com/*
 // @include        https://www.geocaching.com/*
@@ -7175,7 +7175,7 @@ var mainGC = function () {
             var next_check = parseInt(getValue("update_next_check"), 10);
             if (!next_check) next_check = 0;
             var time = new Date().getTime();
-
+next_check = 0;
             if ( next_check < time || manual == true ) {
                 var url = "https://raw.githubusercontent.com/2Abendsegler/GClh/master/gc_little_helper_II.user.js";
                 var token = getValue("token", "");
@@ -7224,7 +7224,6 @@ var mainGC = function () {
                 simulateInstallCounter( "https://goo.gl/I4E7SO"); // Installationszähler ab Version 0.2.3
                 simulateInstallCounter( "https://goo.gl/VIRyDE"); // Installationszähler ab Version 0.2.3 Abgleich
 //<-- $$000 End of change
-                setValue("declared_version", scriptVersion);
             }
         }
         checkForUpgrade( false );
@@ -7461,6 +7460,10 @@ console.log("ja1");
             method: "GET",
             url: url,
             onload: function (result) {
+                if ( result.resourceText != "" ) {
+                    setValue("declared_version", scriptVersion);
+console.log("okkkkkkkkkkkk");
+                }
             }
         });
     }
