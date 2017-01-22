@@ -1,8 +1,8 @@
 // ==UserScript==
 // @name           GC little helper II
-// @namespace      http://www.amshove.net
+// @namespace      2Abendsegler
 //--> $$000 Begin of change
-// @version        0.2.2.4
+// @version        0.2.5.2
 //<-- $$000 End of change
 // @include        http://www.geocaching.com/*
 // @include        https://www.geocaching.com/*
@@ -22,6 +22,7 @@
 // @require http://cdnjs.cloudflare.com/ajax/libs/dropbox.js/0.10.2/dropbox.min.js
 // @description    Some little things to make life easy (on www.geocaching.com).
 // @copyright      Torsten Amshove <torsten@amshove.net>
+// @author         Torsten Amshove
 // @grant          GM_getValue
 // @grant          GM_setValue
 // @grant          GM_log
@@ -83,16 +84,13 @@ var browserInit = function (c) {
             var GM_getValue_Orig = c.GM_getValue;
             c.GM_getValue = function (key, def) {
                 return GM_getValue_Orig("scriptvals.GClittlehelper@httpwww.amshove.net." + key, def);
-            }
+            };
         }
-
         c.CONFIG = JSON.parse(GM_getValue("CONFIG", '{}'));
-
         browserInitDeref.resolve();
     }
     else {
         c.CONFIG = JSON.parse(GM_getValue("CONFIG", '{}'));
-
         browserInitDeref.resolve();
     }
 
@@ -678,8 +676,8 @@ var mainGMaps = function () {
 var mainGC = function () {
 
 // Run after Redirect
-    try {
-        if (typeof(unsafeWindow.__doPostBack) == "function") {
+    if (typeof(unsafeWindow.__doPostBack) == "function") {
+        try {
             var splitter = document.location.href.split("#");
             if ( splitter && splitter[1] && splitter[1] == "gclhpb" && splitter[2] && splitter[2] != "" ) {
                 var postbackValue = splitter[2];
@@ -719,9 +717,9 @@ var mainGC = function () {
                     unsafeWindow.__doPostBack(postbackValue, ""); 
                 }
             }
+        } catch (e) {
+            gclh_error("Run after Redirect", e);
         }
-    } catch (e) {
-        gclh_error("Run after Redirect", e);
     }
     
 // Set language to default language.
@@ -1544,7 +1542,7 @@ var mainGC = function () {
                 style_tmp.innerHTML = style.innerHTML.replace(/#sm/gi, "submenu"); style.innerHTML = style_tmp.innerHTML;
                 style_tmp.innerHTML = style.innerHTML.replace(/#l/gi, "nav .logo"); style.innerHTML = style_tmp.innerHTML;
             } 
-            // Bei Cache suchen, Cache verstecken und Geotours werden Menu, SubMenu und logo so geschrieben.
+            // Bei Cache suchen, Cache verstecken und Geotours werden menu, submenu und logo so geschrieben.
             else if ( is_page("find_cache") || is_page("hide_cache") || is_page("geotours") ) {
                 style_tmp.innerHTML = style.innerHTML.replace(/#m/gi, "menu"); style.innerHTML = style_tmp.innerHTML;
                 style_tmp.innerHTML = style.innerHTML.replace(/#sm/gi, "submenu"); style.innerHTML = style_tmp.innerHTML;
@@ -1776,7 +1774,7 @@ var mainGC = function () {
                 else $(".Menu, .menu").append(searchfield);
             }
 
-            //Chrome menu hover fix / Language selector fix
+            // Chrome menu hover fix
             if (browser == "chrome") {
                 injectPageScriptFunction(function () {
                     $('ul.Menu, ul.menu').children().hover(function () {
@@ -1788,14 +1786,6 @@ var mainGC = function () {
                             $('ul:first', this).css('visibility', 'hidden');
                         }
                     );
-					var head = document.getElementsByTagName('head')[0];
-					var style = document.createElement('style');
-					style.type = 'text/css';
-					style.innerHTML = ".SubMenu{ margin-top: -10px !important;} .submenu{ margin-top: -3px !important;}";
-					head.appendChild(style);
-
-                    //Language selector fix
-                    $('.LanguageSelector script').remove().appendTo('.LanguageSelector');
                  }, "()");
             }
 
@@ -2541,7 +2531,7 @@ var mainGC = function () {
 
 // Redirect to Map (von Search Liste direkt in Karte springen)
     if (settings_redirect_to_map && document.location.href.match(/^https?:\/\/www\.geocaching\.com\/seek\/nearest\.aspx\?/)) {
-        if (!document.location.href.match(/&disable_redirect/) && !document.location.href.match(/key=/) && !document.location.href.match(/ul=/) && document.getElementById('ctl00_ContentBody_LocationPanel1_lnkMapIt')) {
+        if (!document.location.href.match(/&disable_redirect=/) && !document.location.href.match(/key=/) && !document.location.href.match(/ul=/) && document.getElementById('ctl00_ContentBody_LocationPanel1_lnkMapIt')) {
             document.getElementById('ctl00_ContentBody_LocationPanel1_lnkMapIt').click();
         }
     }
@@ -3716,7 +3706,7 @@ var mainGC = function () {
                 if (founds == 0) {
                     friend.getElementsByTagName("dd")[4].innerHTML = founds + "&nbsp;";
                 } else {
-                    friend.getElementsByTagName("dd")[4].innerHTML = "<a href='/seek/nearest.aspx?ul=" + urlencode(name.innerHTML) + "&disable_redirect'>" + founds + "</a>&nbsp;" + add;
+                    friend.getElementsByTagName("dd")[4].innerHTML = "<a href='/seek/nearest.aspx?ul=" + urlencode(name.innerHTML) + "&disable_redirect='>" + founds + "</a>&nbsp;" + add;
                 }
 
                 //hides
@@ -3730,7 +3720,7 @@ var mainGC = function () {
                 if (hides == 0) {
                     friend.getElementsByTagName("dd")[5].innerHTML = hides + "&nbsp;";
                 } else {
-                    friend.getElementsByTagName("dd")[5].innerHTML = "<a href='/seek/nearest.aspx?u=" + urlencode(name.innerHTML) + "&disable_redirect'>" + hides + "</a>&nbsp;" + add;
+                    friend.getElementsByTagName("dd")[5].innerHTML = "<a href='/seek/nearest.aspx?u=" + urlencode(name.innerHTML) + "&disable_redirect='>" + hides + "</a>&nbsp;" + add;
                 }
 
                 //Location
@@ -3755,12 +3745,12 @@ var mainGC = function () {
                     founds = getValue("friends_founds_new_" + name.innerHTML, 0);
                     setValue("friends_founds_" + name.innerHTML, founds);
                     if (founds == 0) friend.getElementsByTagName("dd")[4].innerHTML = "0&nbsp;";
-                    else friend.getElementsByTagName("dd")[4].innerHTML = "<a href='/seek/nearest.aspx?ul=" + urlencode(name.innerHTML) + "&disable_redirect'>" + founds + "</a>";
+                    else friend.getElementsByTagName("dd")[4].innerHTML = "<a href='/seek/nearest.aspx?ul=" + urlencode(name.innerHTML) + "&disable_redirect='>" + founds + "</a>";
 
                     hides = getValue("friends_hides_new_" + name.innerHTML, 0);
                     setValue("friends_hides_" + name.innerHTML, hides);
                     if (hides == 0) friend.getElementsByTagName("dd")[5].innerHTML = "0&nbsp;";
-                    else friend.getElementsByTagName("dd")[5].innerHTML = "<a href='/seek/nearest.aspx?u=" + urlencode(name.innerHTML) + "&disable_redirect'>" + hides + "</a>&nbsp;";
+                    else friend.getElementsByTagName("dd")[5].innerHTML = "<a href='/seek/nearest.aspx?u=" + urlencode(name.innerHTML) + "&disable_redirect='>" + hides + "</a>&nbsp;";
                 }
             }
 
@@ -3831,7 +3821,7 @@ var mainGC = function () {
             try {
                 var urluser = document.location.href.match(/(ul|u)=(.*)/);
                 urluser = urldecode( urluser[2].replace(/&([A-Za-z0-9]+)=(.*)/, "") );
-                urluser = urluser.replace(/&disable_redirect/, "");
+                urluser = urluser.replace(/&disable_redirect=/, "");
                 urluser = urluser.replace(/#(.*)/, "");
                 var linkelement = document.createElement("a");
                 linkelement.href = "/profile/?u=" + urluser;
@@ -6228,12 +6218,13 @@ var mainGC = function () {
             }
 
             //Reinit initalLogs
-//xxxx
-            // TODO: here is an error with chrome: .tmpl is not a function..             
             var tbody = (document.getElementById("cache_logs_table2") || document.getElementById("cache_logs_table")).getElementsByTagName("tbody");
             if (tbody.length > 0) {
                 tbody = tbody[0];
-                if (tbody.children.length > 0) {
+                // TODO: here is an error with chrome: .tmpl is not a function... 
+                // Keine Ahnung warum das nicht funktioniert. Der Bereich scheint aber nicht notwendig.ist aber vermutlich gar nicht notwendig.
+                // if (tbody.children.length > 0) {
+                if (tbody.children.length > 0 && browser != "chrome") {
                     var initialLogData = chromeUserData.initalLogs || unsafeWindow.initalLogs || initalLogs;
                     var inclAvatars = chromeUserData.includeAvatars || unsafeWindow.includeAvatars || includeAvatars;
                     var newInitalLogs = $("#tmpl_CacheLogRow").tmpl(initialLogData.data, {
@@ -6943,11 +6934,11 @@ var mainGC = function () {
                             if ( from <= parseInt(cell.innerHTML) && parseInt(cell.innerHTML) <= to ) {
                                 cell.style.color = "black";
                                 var diff = parseInt(cell.innerHTML) - from;
+                                cell.style.backgroundColor = color;
                                 switch (diff) {
-                                    case 0: cell.style.backgroundColor = color;  break;
-                                    case 1: cell.style.backgroundColor = color + "99"; break;
-                                    case 2: cell.style.backgroundColor = color + "65"; break;
-                                    case 3: cell.style.backgroundColor = color + "40"; break;
+                                    case 1: cell.style.backgroundColor = cell.style.backgroundColor.replace(/rgb/i, "rgba").replace(/\)/, ",0.6)"); break;
+                                    case 2: cell.style.backgroundColor = cell.style.backgroundColor.replace(/rgb/i, "rgba").replace(/\)/, ",0.4)"); break;
+                                    case 3: cell.style.backgroundColor = cell.style.backgroundColor.replace(/rgb/i, "rgba").replace(/\)/, ",0.25)"); break;
                                 }
                                 if ( settings_count_own_matrix_links_radius != 0 ) {
                                     var terrain = parseInt(cell.id.match(/^([1-9]{1})(_{1})([1-9]{1})$/)[3]) * 0.5 + 0.5;
@@ -7120,7 +7111,7 @@ var mainGC = function () {
         // Links zu Nearest Lists/Map in Linklist und in Ablistung der Listlist im Profile setzen. 
         if (getValue("home_lat", 0) != 0 && getValue("home_lng") != 0) {
             // Nearest List.
-            var link = http + "://www.geocaching.com/seek/nearest.aspx?lat=" + (getValue("home_lat") / 10000000) + "&lng=" + (getValue("home_lng") / 10000000) + "&dist=25&disable_redirect";
+            var link = http + "://www.geocaching.com/seek/nearest.aspx?lat=" + (getValue("home_lat") / 10000000) + "&lng=" + (getValue("home_lng") / 10000000) + "&dist=25&disable_redirect=";
             if ( document.getElementsByName("lnk_nearestlist")[0] ) document.getElementsByName("lnk_nearestlist")[0].href = link;
             if ( document.getElementsByName("lnk_nearestlist_profile")[0] ) document.getElementsByName("lnk_nearestlist_profile")[0].href = link;
             // Nearest Map.
@@ -7128,7 +7119,7 @@ var mainGC = function () {
             if ( document.getElementsByName("lnk_nearestmap")[0] ) document.getElementsByName("lnk_nearestmap")[0].href = link;
             if ( document.getElementsByName("lnk_nearestmap_profile")[0] ) document.getElementsByName("lnk_nearestmap_profile")[0].href = link;
             // Nearest List without Founds.
-            var link = http + "://www.geocaching.com/seek/nearest.aspx?lat=" + (getValue("home_lat") / 10000000) + "&lng=" + (getValue("home_lng") / 10000000) + "&dist=25&f=1&disable_redirect";
+            var link = http + "://www.geocaching.com/seek/nearest.aspx?lat=" + (getValue("home_lat") / 10000000) + "&lng=" + (getValue("home_lng") / 10000000) + "&dist=25&f=1&disable_redirect=";
             if ( document.getElementsByName("lnk_nearestlist_wo")[0] ) document.getElementsByName("lnk_nearestlist_wo")[0].href = link;
             if ( document.getElementsByName("lnk_nearestlist_wo_profile")[0] ) document.getElementsByName("lnk_nearestlist_wo_profile")[0].href = link;
         }
@@ -7185,9 +7176,11 @@ var mainGC = function () {
             var next_check = parseInt(getValue("update_next_check"), 10);
             if (!next_check) next_check = 0;
             var time = new Date().getTime();
-
+//xxxx
+next_check = 0;
             if ( next_check < time || manual == true ) {
-                var url = "https://github.com/2Abendsegler/GClh/raw/master/gc_little_helper_II.user.js";
+//xxxx
+                var url = "https://raw.githubusercontent.com/2Abendsegler/GClh/dev_v0.2.3_fe/gc_little_helper_II.user.js";
                 var token = getValue("token", "");
                 if (token == "") setValue("token", "" + Math.random());
                 time += 1 * 60 * 60 * 1000; // 1 Stunde warten, bis zum nächsten Check.
@@ -7228,20 +7221,25 @@ var mainGC = function () {
                     });
                 }
             }
+            // Installationszähler simulieren, weil GitHub das wohl nicht kann.
             var declaredVersion = getValue("declared_version");
+console.log("declared :" + declaredVersion + ":");
+console.log("..script :" + scriptVersion + ":");
             if ( declaredVersion != scriptVersion ) {
+                var side = document.getElementsByTagName("body")[0];
+                var div = document.createElement("div");
+                var img = document.createElement("img");
+                img.setAttribute("src", "http://c.andyhoppe.com/1485103563?output=invisible");
+                div.appendChild(img);
+                side.appendChild(div);
                 setValue("declared_version", scriptVersion);
-//--> $$000 Begin of change
-                simulateInstallCounter( "https://goo.gl/I4E7SO"); // Installationszähler ab Version 0.2.3
-                simulateInstallCounter( "https://goo.gl/VIRyDE"); // Installationszähler ab Version 0.2.3 Abgleich
-//<-- $$000 End of change
             }
         }
         checkForUpgrade( false );
     } catch (e) {
         gclh_error("Check for updgrade", e);
     }
-
+    
 ////////////////////////////////////////////////////////////////////////////
 // Functions Helper (fun2)
 ////////////////////////////////////////////////////////////////////////////
@@ -7464,16 +7462,6 @@ var mainGC = function () {
     }
     if ( settings_hide_colored_versions ) newParameterOn1 = newParameterOn2 = newParameterOn3 = newParameterLL1 = newParameterLL2 = newParameterLL3 = newParameterOff = "";
 
-// Installationszähler simulieren, weil GitHub das wohl nicht kann.
-    function simulateInstallCounter( url ) {
-        GM_xmlhttpRequest({
-            method: "GET",
-            url: url,
-            onload: function (result) {
-            }
-        });
-    }
-    
 // Seite abdunkeln. 
     function buildBgShadow() {
         var shadow = document.createElement("div");
@@ -8615,7 +8603,7 @@ var mainGC = function () {
                 //initialize remove listener for new element
                 gclh_init_multi_homecoord_remove_listener($newEl);
                 //reinit jscolor
-                if (typeof opera == "object" || typeof(chrome) != "undefined") {
+                if (typeof(chrome) != "undefined") {
                     $('.gclh_form.color:not(.withPicker)').each(function (i, e) {
                         var homezonepic = new jscolor.color(e, {
                             required: true,

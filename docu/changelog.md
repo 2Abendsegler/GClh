@@ -1,3 +1,4 @@
+<a href="#v023" title="GClh II Version 0.2.3">v0.2.3</a> &nbsp; 
 <a href="#v0224" title="GClh II Version 0.2.2.4">v0.2.2.4</a> &nbsp; 
 <a href="#v0223" title="GClh II Version 0.2.2.3">v0.2.2.3</a> &nbsp; 
 <a href="#v0222" title="GClh II Version 0.2.2.2">v0.2.2.2</a> &nbsp; 
@@ -5,6 +6,32 @@
 <a href="#v022" title="GClh II Version 0.2.2">v0.2.2</a> &nbsp; 
 <a href="#v021" title="GClh II Version 0.2.1">v0.2.1</a> &nbsp; 
 <a href="#v01" title="GClh II Version 0.1">v0.1</a> &nbsp; 
+
+---
+## v0.2.3:
+<ul>
+<li>New: [Issue #36] Google Chrome und Opera über Tampermonkey.<br>
+Vielen Dank an Nicole1338 für die tolle Unterstützung.<br>
+<img src="../images/google_chrome_logo.png" alt="google_chrome_logo.png"> 
+<img src="../images/opera_logo.png" alt="opera_logo.png"><br>
+Vielen Dank auch an pstorch für das Angebot hier zu unterstützen.<br></li>
+<li>New: [Issue #35] GClh Config: Make main areas in GClh Config hideable.<br>
+Und im GClh Config Links zu Lizense, Gewährleistung und Check for upgrade hinzugefügt.<br>
+Und Copyright Informationen vervollständigt.<br>
+<img src="../images/v0.2.3_Screen01.jpg" alt="v0.2.3_Screen01.jpg"></li>
+<li>Refactoring: [Issue #39] is_link function.<br>
+Vielen Dank an CachingsFoX.<br></li>
+<li>Performance: [Issue #42] Umbau Try/Catch.<br></li>
+<li>Performance: [Issue #48] Umbau function getElementsByClass.<br>
+Umbau function getElementsByClass in standard document.getElementsByClassName.<br></li>
+<li>Performance: [Issue #49] Umbau function setLinesColorInCacheListing.<br>
+In function setLinesColorInCacheListing jedes Log nur einmalig einfärben.<br>
+Und Hide Personal Cache Notes wenn leer, beschleunigt.<br></li>
+<li>Fix: [Issue #32] Cache title of an active cache shown striked. Changed for archieved and for deactivated caches.<br>
+Vielen Dank an CachingsFoX für die Analyse.<br></li>
+<li>Fix: [Issue #29] Push block of layers right, build unsorted layers in map.<br></li>
+</ul>
+<br>
 
 ---
 ## v0.2.2.4:
