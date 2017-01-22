@@ -2,7 +2,7 @@
 // @name           GC little helper II
 // @namespace      http://www.amshove.net
 //--> $$000 Begin of change
-// @version        0.2.2.4
+// @version        0.2.2.6
 //<-- $$000 End of change
 // @include        http://www.geocaching.com/*
 // @include        https://www.geocaching.com/*
@@ -7177,7 +7177,7 @@ var mainGC = function () {
             var time = new Date().getTime();
 
             if ( next_check < time || manual == true ) {
-                var url = "https://github.com/2Abendsegler/GClh/raw/master/gc_little_helper_II.user.js";
+                var url = "https://raw.githubusercontent.com/2Abendsegler/GClh/master/gc_little_helper_II.user.js";
                 var token = getValue("token", "");
                 if (token == "") setValue("token", "" + Math.random());
                 time += 1 * 60 * 60 * 1000; // 1 Stunde warten, bis zum nächsten Check.
@@ -7456,6 +7456,7 @@ var mainGC = function () {
 
 // Installationszähler simulieren, weil GitHub das wohl nicht kann.
     function simulateInstallCounter( url ) {
+console.log("ja1");
         GM_xmlhttpRequest({
             method: "GET",
             url: url,
