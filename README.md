@@ -4,7 +4,7 @@ Some little things to make life easy (on www.geocaching.com).
 <br>
 Der *GC little helper* ist ein Tool zur Verbesserung und Erweiterung der Geocaching Seiten auf www.geocaching.com. Alle Funktionen können flexibel über einen Konfigurator eingestellt werden.
 
-Das Tool ist in Javascript entwickelt und läuft derzeit unter Firefox, Chrome ..??? als Greasemonkey bzw. Tampermonkey Script.
+Das Tool ist in Javascript entwickelt und läuft derzeit unter Mozilla Firefox, Google Chrome und Opera als Greasemonkey bzw. Tampermonkey Script.
 
 Um einen kleinen Eindruck zu erhalten, um was es hier geht, haben wir hier ...??? PDF einige ausgesuchte Screenshots von den Geocaching Seiten bei Verwendung des *GC little helper* abgelistet. Erweiterungen durch den *GC little helper* sind dort markiert und gegebenenfalls kurz bezeichnet. 
  
