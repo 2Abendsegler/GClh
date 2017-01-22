@@ -7223,6 +7223,8 @@ next_check = 0;
             }
             // Installationszähler simulieren, weil GitHub das wohl nicht kann.
             var declaredVersion = getValue("declared_version");
+console.log("declared :" + declaredVersion + ":");
+console.log("..script :" + scriptVersion + ":");
             if ( declaredVersion != scriptVersion ) {
                 var side = document.getElementsByTagName("body")[0];
                 var div = document.createElement("div");
