@@ -1,5 +1,5 @@
 # GC little helper II <span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span> <img src="/images/mozilla_firefox_logo_small.png" title="Mozilla Firefox" alt="Mozilla Firefox"> <span> &nbsp; </span> <img src="/images/google_chrome_logo_small.png" title="Google Chrom" alt="Google Chrom"> <span> &nbsp; </span> <img src="/images/opera_logo_small.png" title="Opera" alt="Opera"> <span> &nbsp; </span> <img src="/images/microsoft_edge_logo_small.png" title="Microsoft Edge" alt="Microsoft Edge">  
-Some little things to make life easy (on www.geocaching.com).  
+*Some little things to make life easy (on www.geocaching.com).*  
 <br>
 <br>
 Der *GC little helper* ist ein Tool zur Verbesserung und Erweiterung der Geocaching Seiten auf www.geocaching.com. Alle Funktionen können flexibel über einen Konfigurator eingestellt werden.
