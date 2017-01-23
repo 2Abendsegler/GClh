@@ -1,6 +1,9 @@
 CHANGELOG:
 
 
+Version 0.2.3.1:
+- Fix: [Issue #79] Script wurde doppelt installiert wegen Änderung Namespace.
+
 Version 0.2.3:
 - New: [Issue #36] Chrome, Opera über Tampermonkey.
 Vielen Dank an Nicole1338 für die tolle Arbeit.
