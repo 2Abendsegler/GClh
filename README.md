@@ -6,7 +6,7 @@ Der *GC little helper II* ist ein Tool zur Verbesserung und Erweiterung der Geoc
 
 Das Tool ist in Javascript entwickelt und läuft unter Mozilla Firefox, Google Chrome, Opera und Microsoft Edge als Greasemonkey bzw. Tampermonkey Script.
 
-[Hier](https://github.com/2Abendsegler/GClh/blob/master/docu/overview_screenshots.md#readme) gibt es einige ausgesuchte Screenshots von den Geocaching Seiten bei Verwendung des *GC little helper II*. Erweiterungen des *GC little helper II* sind dort markiert. 
+[Hier](https://github.com/2Abendsegler/GClh/blob/master/docu/overview_screenshots.md#readme) gibt es einige ausgesuchte Screenshots von den Geocaching Seiten bei Verwendung des *GC little helper II*. Erweiterungen durch den *GC little helper II* sind dort markiert. 
 
 Ursprünglich erfunden und entwickelt wurde der *GC little helper* von [Torsten Amshove](https://www.amshove.net/blog/webinterfaces/gc-little-helper/). Wir haben das Tool 2016 auf den aktuellen Stand gebracht und etwas aufgefrischt, und haben uns in Abstimmung mit dem Erfinder entschlossen, es unter dem Namen *GC little helper II* zu betreiben und weiterzuentwickeln. 
 
