@@ -1,3 +1,4 @@
+<a href="#v0231" title="GClh II Version 0.2.3.1">v0.2.3.1</a> &nbsp; 
 <a href="#v023" title="GClh II Version 0.2.3">v0.2.3</a> &nbsp; 
 <a href="#v0224" title="GClh II Version 0.2.2.4">v0.2.2.4</a> &nbsp; 
 <a href="#v0223" title="GClh II Version 0.2.2.3">v0.2.2.3</a> &nbsp; 
@@ -6,6 +7,14 @@
 <a href="#v022" title="GClh II Version 0.2.2">v0.2.2</a> &nbsp; 
 <a href="#v021" title="GClh II Version 0.2.1">v0.2.1</a> &nbsp; 
 <a href="#v01" title="GClh II Version 0.1">v0.1</a> &nbsp; 
+
+---
+## v0.2.3.1:
+<ul>
+<li>Fix: [Issue #79] Script wurde doppelt installiert wegen Änderung Namespace.
+<br></li>
+</ul>
+<br>
 
 ---
 ## v0.2.3:
