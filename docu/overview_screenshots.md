@@ -19,8 +19,8 @@
 ### Karte:
 <img src="../images/screenshot_karte01.jpg" title="Karte" alt="karte01"><br>
 
-### Watchliste:
-<img src="../images/screenshot_watchlist01.jpg" title="Watchliste" alt="watchlist01"><br>
+### Watchlist:
+<img src="../images/screenshot_watchlist01.jpg" title="Watchlist" alt="watchlist01"><br>
 
 ### Statistik:
 <img src="../images/screenshot_statistic01.jpg" title="Statistik Matrix" alt="statistic01"><br>
@@ -34,3 +34,4 @@
 <img src="../images/screenshot_config03.jpg" title="Konfiguration Linklist" alt="config03"><br>
 <img src="../images/screenshot_config04.jpg" title="Konfiguration Listing" alt="config04"><br>
 
+### ...
