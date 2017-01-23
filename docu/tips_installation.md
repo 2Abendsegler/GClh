@@ -16,6 +16,3 @@
 * Installiere [Tampermonkey](https://www.microsoft.com/en-us/store/p/tampermonkey/9nblggh5162s) als Add-On in Edge. 
 * Installiere den [GC little helper II](https://github.com/2Abendsegler/GClh/raw/master/gc_little_helper_II.user.js) als Tampermonkey Script.  
 
-
-
-
