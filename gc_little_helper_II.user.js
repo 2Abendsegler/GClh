@@ -318,6 +318,8 @@ var variablesInit = function (c) {
     c.settings_map_overview_zoom = getValue("settings_map_overview_zoom", 11);
     //Settings: Loggen über Standard "Log It" Icons zu Premium Only Caches für Basic Members
     c.settings_logit_for_basic_in_pmo = getValue("settings_logit_for_basic_in_pmo", true);
+    //Settings: Calculate number of cache and trackable logs for each logtype
+    c.settings_log_statistic = getValue("settings_log_statistic", true);
     //Settings: Count cache matrix in own statistic
     c.settings_count_own_matrix = getValue("settings_count_own_matrix", true);
     //Settings: Count cache matrix in foreign statistic
@@ -1650,18 +1652,19 @@ var mainGC = function () {
                 css += ".UserSuppliedContent {max-width: unset; width: unset;}";
 
                 // Besonderheiten:
-                if (is_page("cache_listing")                                                 ) {
+                if (is_page("cache_listing") ) {
                     css += ".span-9 {width: " + (new_width - 300 - 270 - 13 - 13 - 10) + "px !important;}";
-                }
-                else if (document.location.href.match(/\/my\/statistics\.aspx/)              ) {
+                } else if ( document.location.href.match(/\/my\/statistics\.aspx/) ||
+                            ( document.location.href.match(/\/\/www\.geocaching\.com\/profile\//) &&
+                              document.getElementById("ctl00_ContentBody_ProfilePanel1_lnkStatistics") &&
+                              document.getElementById("ctl00_ContentBody_ProfilePanel1_lnkStatistics").className == "Active" ) ) {
+                    css += ".span-9 {width: " + ((new_width - 280) / 2) + "px !important; margin-right: 30px;} .last {margin-right: 0px;}";
                     css += ".StatsTable {width: " + (new_width - 250) + "px !important;}";
-                }
-                else if (document.location.href.match(/\/profile\/\?guid/)                ||
-                         document.location.href.match(/\/profile\/\B/)                       ) {
+                } else if ( document.location.href.match(/\/profile\/\?guid/) ||
+                            document.location.href.match(/\/profile\/\B/)        ) {
                     css += ".span-9 {width: " + ((new_width - 250) / 2) + "px !important;}";
                     css += ".StatsTable {width: " + (new_width - 250 - 30) + "px !important;}";
                 }
-
             }
             appendCssStyle( css );
         }
@@ -6931,12 +6934,9 @@ var mainGC = function () {
     try {
         // Soll eigene Statistik gepimpt werden.
         if ( ( settings_count_own_matrix || settings_count_own_matrix_show_next ) && 
-             ( document.location.href.match(/^https?:\/\/www\.geocaching\.com\/my\/statistics\.aspx/)     ||
-               document.location.href.match(/^https?:\/\/www\.geocaching\.com\/profile\/$/)               ||
-               document.location.href.match(/^https?:\/\/www\.geocaching\.com\/profile\/#$/)              ||
-               document.location.href.match(/^https?:\/\/www\.geocaching\.com\/profile\/default\.aspx$/)  ||
-               document.location.href.match(/^https?:\/\/www\.geocaching\.com\/profile\/default\.aspx#$/) ||
-               ( document.location.href.match(/^https?:\/\/www\.geocaching\.com\/profile\/(\?guid=|\?u=)/)   && 
+             ( document.location.href.match(/^https?:\/\/www\.geocaching\.com\/my\/statistics\.aspx/)         ||
+               document.location.href.match(/^https?:\/\/www\.geocaching\.com\/profile\/($|#$|default)/)      ||
+               ( document.location.href.match(/^https?:\/\/www\.geocaching\.com\/profile\/(\?guid=|\?u=)/) && 
                  document.getElementById('ctl00_ContentBody_lblUserProfile').innerHTML.match(": " + $('.li-user-info').children().first().text()) ) ) ) {
             var own = true;
         // Soll fremde Statistik gepimpt werden.
@@ -7034,6 +7034,178 @@ var mainGC = function () {
         gclh_error("improve cache matrix", e);
     }
 
+// Improve own statistics page and own profile page with own log statistic.
+    if ( settings_log_statistic && 
+         ( document.location.href.match(/^https?:\/\/www\.geocaching\.com\/my\/statistics\.aspx/)         ||
+           document.location.href.match(/^https?:\/\/www\.geocaching\.com\/profile\/($|#$|default)/)      ||
+           ( document.location.href.match(/^https?:\/\/www\.geocaching\.com\/profile\/(\?guid=|\?u=)/) && 
+             document.getElementById('ctl00_ContentBody_lblUserProfile').innerHTML.match(": " + $('.li-user-info').children().first().text()) ) ) ) {
+        try {
+            getLogStatistic( "cache", "https://www.geocaching.com/my/logs.aspx?s=1" );
+            getLogStatistic( "track", "https://www.geocaching.com/my/logs.aspx?s=2" );
+        } catch (e) {
+            gclh_error("improve own log statistic", e);
+        }
+    }
+// Funktionen für die Ermittlung und Ausgabe der Log Statistik:
+    // Log Statistik ermitteln.    
+    function getLogStatistic( type, url, manual ) {
+        var next_get = parseInt(getValue( type + "_logs_get_next" ), 10);
+        if (!next_get) next_get = 0;
+        var waiter = 1 * 60 * 60 * 1000; // 1 Stunde
+        var time = new Date().getTime();
+
+        if ( next_get < time || manual == true ) {
+            outputLogStatisticClear( type );
+            if ( manual != true ) outputLogStatisticHeaderFooter( type, url );
+            outputLogStatisticAddWait( type );
+
+            GM_xmlhttpRequest({
+                method: "GET",
+                url: url,
+                onload: function(response) {
+                    var logCount = new Array();
+                    for (var i = 0; i < 101; i++) {
+                        var count = response.responseText.match(new RegExp( "/images/logtypes/" + i + ".png", "g")); 
+                        if ( count ) {
+                            // Das "?" in "(.*?)" bedeutet "nicht gierig", das heißt es wird das erste Vorkommen verwendet.
+                            var title = response.responseText.match('/images/logtypes/' + i + '.png"(.*?)title="(.*?)"'); 
+                            if ( title && title[2] ) {
+                                if ( type == "track" ) {
+                                    if      ( i == 4 )  var lt = "&lt=3";
+                                    else if ( i == 13 ) var lt = "&lt=5";
+                                    else if ( i == 14 ) var lt = "&lt=10";
+                                    else if ( i == 19 ) var lt = "&lt=2";
+                                    else if ( i == 48 ) var lt = "&lt=48";
+                                    else if ( i == 75 ) var lt = "&lt=75";
+                                    else                var lt = "";
+                                } else var lt = "&lt=" + i;
+                                var logType = new Object();
+                                logType["src"] = "/images/logtypes/" + i + ".png";
+                                logType["title"] = title[2];
+                                logType["href"] = url + lt;
+                                logType["count"] = count.length;
+                                logType["no"] = i;
+                                logCount[logCount.length] = logType;
+                            }
+                        }
+                    }
+                    setValue( type + "_log_count", JSON.stringify(logCount) );
+                    setValue( type + "_logs_get_next", time + waiter );
+                    outputLogStatisticClear( type );
+                    var now = new Date().getTime();
+                    var generated = Math.round(( now - time ) / ( 60 * 1000 )); // In Minuten
+                    outputLogStatistic( type, generated );
+                }
+            }); 
+        } else {
+            outputLogStatisticHeaderFooter( type, url );
+            var generated = Math.round(( time - (next_get - waiter) ) / ( 60 * 1000 )); // In Minuten
+            outputLogStatistic( type, generated );
+        }
+    }
+    // Header und Footer der Log Statistic ausgeben.
+    function outputLogStatisticHeaderFooter( type, url ) {
+        if ( document.getElementById("ctl00_ContentBody_StatsChronologyControl1_YearlyBreakdown") ) {
+            var side = document.getElementById("ctl00_ContentBody_StatsChronologyControl1_YearlyBreakdown");
+        } else if ( document.getElementById("ctl00_ContentBody_ProfilePanel1_StatsChronologyControl1_YearlyBreakdown") ) {
+            var side = document.getElementById("ctl00_ContentBody_ProfilePanel1_StatsChronologyControl1_YearlyBreakdown");
+        }
+        if ( side ) {
+            var div = document.createElement("div");
+            if ( type == "cache" ) {
+                var logsName = "Geocaches logs";
+                var logsId = "gclh_reload_geocaches_logs";
+                div.className = "span-9";
+            } else {
+                var logsName = "Trackables logs";
+                var logsId = "gclh_reload_trackables_logs";
+                div.className = "span-9 last";
+            }
+            var html = "";
+            html += '    <br>';
+            html += '    <h3><a href="' + url + '" title="' + logsName + '" style="text-decoration: unset; color: rgb(89, 74, 66)" >Total ' + logsName + ':</a></h3>';
+            html += '    <table class="Table">';
+            html += '        <thead>';
+            html += '            <tr>';
+            html += '                <th scope="col"> Name </th>';
+            html += '                <th scope="col" class="AlignRight"> Count </th>';
+            html += '            </tr>';
+            html += '        </thead>';
+            html += '        <tfoot style="font-style: normal;">';
+            html += '            <tr>';
+            html += '                <td><a href="' + url + '" title="' + logsName + '" style="text-decoration: unset; color: rgb(89, 74, 66)" >Total ' + logsName + ':</a></td>';
+            html += '                <td id="gclh_' + type + '_log_total" class="AlignRight"></td>';
+            html += '            </tr>';
+            html += '            <tr>';
+            html += '                <td style="background-color: unset; line-height: 1em;"><span id="gclh_' + type + '_generated" style="font-size: 11px;" ></span></td>';
+            html += '                <td class="AlignRight" style="background-color: unset; line-height: 1em;"><a id="' + logsId + '" href="javascript:void(0);" style="font-size: 11px;" title="Reload ' + logsName + '">Reload</a></td>';
+            html += '            </tr>';
+            html += '        </tfoot>';
+            html += '        <tbody id="gclh_' + type + '_log_body">';
+            html += '        </tbody>';
+            html += '    </table>';
+            div.innerHTML = html;
+            side.appendChild(div);
+            document.getElementById(logsId).addEventListener( "click", function() { getLogStatistic( type, url, true ); }, false);
+        }
+    }
+    // Entries der Log Statistic ausgeben.
+    function outputLogStatistic( type, generated ) {
+        var logCount = JSON.parse(getValue( type + "_log_count" ).replace(/, (?=,)/g, ",null"));
+        if ( logCount && document.getElementById("gclh_" + type + "_log_body") ) {
+            var side = document.getElementById("gclh_" + type + "_log_body");
+            var total = 0;
+            // Sätze sortieren nach Count.
+            logCount.sort(function (a, b) {
+                if (a.count < b.count) return 1;
+                if (a.count > b.count) return -1;
+                return 0;
+            });
+            for (var i = 0; i < logCount.length; i++) {
+                var tr = document.createElement("tr");
+                var html = "";
+                html += '    <td class="AlignLeft">';
+                html += '        <a title="' + logCount[i]["title"] + '" href="' + logCount[i]["href"] + '" style="text-decoration: unset;" >';
+                html += '            <img src="' + logCount[i]["src"] + '" style="vertical-align: sub;" >';
+                html += '            <span style="text-decoration: underline; margin-left: 4px;" >' + logCount[i]["title"] + '</span>';
+                html += '        </a>';
+                html += '    </td>';
+                html += '    <td class="AlignRight"><span>' + logCount[i]["count"] + '</span></td>';
+                tr.innerHTML = html;
+                side.appendChild(tr);
+                total += parseInt( logCount[i]["count"] );
+            }
+            if ( document.getElementById("gclh_" + type + "_log_total") ) document.getElementById("gclh_" + type + "_log_total").innerHTML = total;
+            if ( document.getElementById("gclh_" + type + "_generated") ) {
+                document.getElementById("gclh_" + type + "_generated").innerHTML = "(Generated " + generated + " minutes ago.)";
+                document.getElementById("gclh_" + type + "_generated").title = "Automated reload in " + (60-generated) + " minutes.";
+            }
+        }
+    }
+    // Log Statistic clearen.
+    function outputLogStatisticClear( type ) {
+        $("#gclh_" + type + "_log_body").children().each(function () { this.remove(); })
+        if ( document.getElementById("gclh_" + type + "_log_total") ) document.getElementById("gclh_" + type + "_log_total").innerHTML = "";
+        if ( document.getElementById("gclh_" + type + "_generated") ) {
+            document.getElementById("gclh_" + type + "_generated").innerHTML = "";
+            document.getElementById("gclh_" + type + "_generated").title = "";
+        }
+    }
+    // Loading als Entries der Log Statistic setzen.
+    function outputLogStatisticAddWait( type ) {
+        if ( document.getElementById("gclh_" + type + "_log_body") ) {
+            outputLogStatisticClear( type );
+            var side = document.getElementById("gclh_" + type + "_log_body");
+            if ( type == "cache" ) var logsName = " Loading Geocaches logs ...";
+            else var logsName = " Loading Trackables logs ...";
+            var span_loading = document.createElement("span");
+            span_loading.setAttribute("style", "line-height: 36px; margin-left: 5px;");
+            span_loading.innerHTML = '<img src="/images/loading2.gif" title="Loading" alt="Loading" style="vertical-align: sub;" />' + logsName;
+            side.appendChild(span_loading);
+        }        
+    }
+    
 // add mailto-link to profilpage
     if ((isLocation("/profile/?guid=") || isLocation("/profile/default.aspx?guid=") || isLocation("/profile/?u=") || isLocation("/profile/default.aspx?u=") || isLocation("/profile/?id=") || isLocation("/profile/default.aspx?id=")) && document.getElementById('ctl00_ContentBody_ProfilePanel1_lnkEmailUser')) {
         try {
@@ -8086,6 +8258,11 @@ var mainGC = function () {
             content_settings_show_mail_in_allmyvips = checkboxy('settings_show_mail_in_allmyvips', 'Show mail link beside user in "All my VIPs" list in your profile') + show_help("With this option there will be an small mail icon beside every username in the list with all your VIPs (All my VIPs) on your profile page. With this icon you get directly to the mail page to mail to this user. <br><br>This option requires \"Show mail link beside usernames\" and \"Show VIP list\".") + "<br>";
             html += content_settings_show_mail_in_allmyvips;
             html += checkboxy('settings_show_sums_in_watchlist', 'Show number of caches in your watchlist') + show_help("With this option the number of caches and the number of selected caches in the categories \"All\", \"Archived\" and \"Deactivated\", corresponding to the select buttons, are shown in your watchlist at the end of the list.") + "<br/>";
+            html += newParameterVersionSetzen(0.1) + newParameterOff;
+            html += newParameterOn2;
+            html += checkboxy('settings_log_statistic', 'Calculate number of cache and trackable logs for each logtype') + show_help("With this option, you can build a statistic for your own cache and trackable logs for each logtype on your own statistic and your own profile page.") + "<br/>";
+            html += newParameterVersionSetzen(0.2) + newParameterOff;
+            html += newParameterOn1;
             html += checkboxy('settings_count_own_matrix', 'Calculate your cache matrix') + show_help("With this option the count of found difficulty and terrain combinations and the count of complete matrixes are calculated and shown above the cache matrix on your statistic page.") + "<br/>";
             html += checkboxy('settings_count_foreign_matrix', 'Calculate other users cache matrix') + show_help("With this option the count of found difficulty and terrain combinations and the count of complete matrixes are calculated and shown above the cache matrix on other users statistic page.") + "<br/>";
             html += checkboxy('settings_count_own_matrix_show_next', 'Mark D/T combinations for your next possible cache matrix') + show_help("With this option the necessary difficulty and terrain combinations to reach the next possible complete matrixes are marked in your cache matrix on your statistic page.") + "<br/>";
@@ -9021,6 +9198,7 @@ var mainGC = function () {
                 'settings_show_save_message',
                 'settings_map_overview_build',
                 'settings_logit_for_basic_in_pmo',
+                'settings_log_statistic',
                 'settings_count_own_matrix',
                 'settings_count_foreign_matrix',
                 'settings_count_own_matrix_show_next',
