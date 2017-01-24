@@ -1,1 +1,1 @@
-<span> <img src="install_counter">install_desc</span>
+<span> <img src="install_counter" alt="">install_desc</span>
