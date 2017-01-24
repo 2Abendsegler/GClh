@@ -1,1 +1,1 @@
-&install_counter
+<p id="install_counter"></p>
