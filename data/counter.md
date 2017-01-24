@@ -1,1 +1,3 @@
 <p id="install_counter"></p>
+
+<img src="http://c.andyhoppe.com/1485103563?output=static">
