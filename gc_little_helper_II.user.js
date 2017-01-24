@@ -102,8 +102,8 @@ var constInit = function (c) {
     // Set defaults
     c.scriptName = GM_info.script.name;
     c.scriptVersion = GM_info.script.version;
-    c.scriptNameConfig = "GC little helper Config II";
-    c.scriptNameSync = "GC little helper Sync II";
+    c.scriptNameConfig = c.scriptName.replace("helper", "helper Config");
+    c.scriptNameSync = c.scriptName.replace("helper", "helper Sync");
     c.scriptShortNameConfig = "GClh Config II";
     c.scriptShortNameSync = "GClh Sync II";
     c.anzCustom = 10;
@@ -113,7 +113,6 @@ var constInit = function (c) {
     c.defaultSyncLink = "https://www.geocaching.com/my/default.aspx#GClhShowSync";
 
     // define bookmarks
-    // New Bookmarks under custom_Bookmarks ..
     c.bookmarks = new Array();
     // WICHTIG: Die Reihenfolge darf hier auf keinen Fall geändert werden, weil dadurch eine falsche Zuordnung zu den 
     //          gespeicherten Userdaten erfolgen würde! Weiter unten gibt es noch einen Bereich mit Bookmarks, die quasi
@@ -303,6 +302,8 @@ var variablesInit = function (c) {
     c.settings_f2_save_gclh_config = getValue("settings_f2_save_gclh_config", true);
     // Settings: Call GClh Config on F4
     c.settings_f4_call_gclh_config = getValue("settings_f4_call_gclh_config", true);
+    // Settings: Call GClh Sync on F10
+    c.settings_f10_call_gclh_sync = getValue("settings_f10_call_gclh_sync", true);
     // Settings: Anzahl Caches und Anzahl selektierte Caches in Bookmark Listen anzeigen
     c.settings_show_sums_in_bookmark_lists = getValue("settings_show_sums_in_bookmark_lists", true);
     // Settings: Anzahl Caches und Anzahl selektierte Caches in Watchlist anzeigen
@@ -1086,6 +1087,25 @@ var mainGC = function () {
         }
     }
 
+// Aufruf GClh Sync per F10 Taste. Nur auf den erlaubten Seiten und auch nur, wenn man nicht schon im GClh Sync ist.
+    if ( settings_f10_call_gclh_sync ) {
+        function keydown(e) {
+            if (e.keyCode == 121) {
+                if ( !check_sync_page() ) {
+                    if ( checkTaskAllowed( "GClh Sync", false ) == true ) gclh_showSync();
+                    else document.location.href = defaultSyncLink;
+                }
+            }
+        }
+        try {
+            if ( !check_sync_page() ) {
+                window.addEventListener('keydown', keydown, true);
+            }
+        } catch (e) {
+            gclh_error("F10 call GClh Sync", e);
+        }
+    }
+    
 // Change Header layout (Umbau)
     change_header_layout:
     try {
@@ -3087,6 +3107,7 @@ var mainGC = function () {
                 //   yyyy/MM/dd
                 //   MM/dd/yyyy
                 //   dd/MM/yyyy
+                //   dd.MM.yyyy
                 //   dd/MMM/yyyy
                 //   MMM/dd/yyyy
                 //   dd MMM yy
@@ -3120,6 +3141,14 @@ var mainGC = function () {
                         break;
                     case "dd/MM/yyyy":
                         var match = datetxt.match(/([0-9]{2})\/([0-9]{2})\/([0-9]{4})/);
+                        if (match) {
+                            day = match[1];
+                            month = match[2];
+                            year = match[3];
+                        }
+                        break;
+                    case "dd.MM.yyyy":
+                        var match = datetxt.match(/([0-9]{1,2})\.([0-9]{1,2})\.([0-9]{4})/);
                         if (match) {
                             day = match[1];
                             month = match[2];
@@ -5850,6 +5879,18 @@ var mainGC = function () {
                 }
             }
 
+            // Um Profile Foto herum Pseudo a Tag aufbauen.
+            var profileFoto = false;
+            if ( is_page("publicProfile") && document.getElementById("ctl00_ContentBody_ProfilePanel1_lnkProfile") && 
+                 document.getElementById("ctl00_ContentBody_ProfilePanel1_lnkProfile").className == "Active" && 
+                 document.getElementById("ctl00_ContentBody_ProfilePanel1_uxProfilePhoto") ) {
+                var profileFoto = true;
+                var image = document.getElementById("ctl00_ContentBody_ProfilePanel1_uxProfilePhoto");
+                var aPseudo = document.createElement("a");
+                aPseudo.appendChild(image.cloneNode(true));
+                image.parentNode.replaceChild(aPseudo, image);
+            }
+            
             var links = document.getElementsByTagName("a");
 
             var css = "a.gclh_thumb:hover { " +
@@ -5870,7 +5911,6 @@ var mainGC = function () {
                 "}" +
                 "a.gclh_thumb:hover span { " +
                 "  visibility: visible;" +
-                    //"  top: 10px;" +
                 "  z-index: 100;" +
                 "  border: 1px solid #8c9e65;" +
                 "  background-color:#dfe1d2;" +
@@ -5998,6 +6038,23 @@ var mainGC = function () {
                         span.appendChild(document.createTextNode( imgDesc ));
                     }
                     // Neues img und neues span einbauen.
+                    links[i].appendChild(span);
+                }
+                // Profile Foto:
+                else if ( profileFoto && links[i].childNodes[0] && links[i].childNodes[0].tagName == 'IMG' &&
+                          links[i].childNodes[0].src.match(/^https?:\/\/img\.geocaching\.com\/user\/avatar/) ) {
+                    var thumb = links[i].childNodes[0];
+
+                    var img = document.createElement('img');
+                    img.src = thumb.src.replace(/img\.geocaching\.com\/user\/avatar/, "s3.amazonaws.com/gs-geo-images");
+                    img.className = "gclh_max";
+
+                    var span = document.createElement('span');
+                    span.appendChild(img);
+
+                    links[i].className += " gclh_thumb";
+                    links[i].onmouseover = placeToolTip;
+
                     links[i].appendChild(span);
                 }
             }
@@ -7074,8 +7131,8 @@ var mainGC = function () {
         if ( is_page("profile") && document.getElementById('ctl00_ContentBody_WidgetMiniProfile1_memberProfileLink') ) {
             
             // GClh Config und Sync Links neben Avatar im Profile. 
-            var lnk_config = " | <a href='#GClhShowConfig' id='gclh_config_lnk' name='gclh_config_lnk' style='margin-left: 58px; font-size: 0.9em;'>" + scriptShortNameConfig + "</a>";
-            var lnk_sync = " | <a href='#GClhShowSync' id='gclh_sync_lnk' name='gclh_sync_lnk' style='font-size: 0.9em;'>" + scriptShortNameSync + "</a>";
+            var lnk_config = " | <a href='#GClhShowConfig' id='gclh_config_lnk' name='gclh_config_lnk' style='margin-left: 58px; font-size: 0.9em;' title='" + scriptShortNameConfig + " v" + scriptVersion + "' >" + scriptShortNameConfig + "</a>";
+            var lnk_sync = " | <a href='#GClhShowSync' id='gclh_sync_lnk' name='gclh_sync_lnk' style='font-size: 0.9em;' title='" + scriptShortNameSync + " v" + scriptVersion + "' >" + scriptShortNameSync + "</a>";
             document.getElementById('ctl00_ContentBody_WidgetMiniProfile1_memberProfileLink').parentNode.innerHTML += lnk_config + lnk_sync;
             document.getElementById('gclh_config_lnk').addEventListener('click', gclh_showConfig, false);
             document.getElementById('gclh_sync_lnk').addEventListener('click', gclh_showSync, false);
@@ -7476,6 +7533,17 @@ var mainGC = function () {
             }
         }
         return config_page;            
+    }
+
+// Check, ob man sich im GClh Sync befindet.
+    function check_sync_page () {
+        var sync_page = false;
+        if ( document.getElementById('bg_shadow') && document.getElementById("bg_shadow").style.display == "" ) {
+            if ( document.getElementById("sync_settings_overlay") && document.getElementById("sync_settings_overlay").style.display == "" ) {
+                sync_page = true;
+            }
+        }
+        return sync_page;            
     }
     
 // Prüfen, ob die spezielle Verarbeitung auf der aktuellen Seite erlaubt ist.
@@ -7904,6 +7972,9 @@ var mainGC = function () {
             html += checkboxy('settings_f4_call_gclh_config', 'Call GClh Config on F4') + show_help("With this option you are able to call the GClh Config page (this page) by pressing F4.") + "<br/>";
             html += checkboxy('settings_f2_save_gclh_config', 'Save GClh Config on F2') + show_help("With this option you are able to save the GClh Config page (this page) by pressing F2 instead of scrolling to the bottom and choose the save button.") + "<br/>";
             html += newParameterVersionSetzen(0.1) + newParameterOff;
+            html += newParameterOn2;
+            html += checkboxy('settings_f10_call_gclh_sync', 'Call GClh Sync on F10') + show_help("With this option you are able to call the GClh Sync page by pressing F10.") + "<br/>";
+            html += newParameterVersionSetzen(0.2) + newParameterOff;
             html += checkboxy('settings_sync_autoImport', 'Auto apply DB Sync') + show_help("If you enable this option, settings from dropbox will be applied automatically about GClh Sync every 10 hours.") + "<br/>";
             html += newParameterOn1;
             html += checkboxy('settings_show_save_message', 'Show info message if GClh data are saved') + show_help("With this option an info message is displayed if the GClh Config data are saved respectively if the GClh Sync data are imported.") + "<br/>";
@@ -8056,13 +8127,14 @@ var mainGC = function () {
             html += checkboxy('settings_decrypt_hint', 'Decrypt hints') + show_help("This option decrypt the hints and remove also the hint description.") + "<br/>";
             html += checkboxy('settings_visitCount_geocheckerCom', 'Show statistic on geochecker.com sites') + show_help("This option adds '&visitCount=1' to all geochecker.com links. This will show some statistics on geochecker.com site like the count of site visits and the count of right and wrong attempts. Firefox and all browser besides Chrome will use the redirector service anonym.to !") + "<br/>";
             html += checkboxy('settings_show_eventday', 'Show weekday of an event') + show_help("With this option the day of the week will be displayed next to the date.") + " Date format: <select class='gclh_form' id='settings_date_format'>";
-            html += "  <option " + (settings_date_format == "yyyy-MM-dd" ? "selected='selected'" : "") + " value='yyyy-MM-dd'> 2012-01-21</option>";
-            html += "  <option " + (settings_date_format == "yyyy/MM/dd" ? "selected='selected'" : "") + " value='yyyy/MM/dd'> 2012/01/21</option>";
-            html += "  <option " + (settings_date_format == "MM/dd/yyyy" ? "selected='selected'" : "") + " value='MM/dd/yyyy'> 01/21/2012</option>";
-            html += "  <option " + (settings_date_format == "dd/MM/yyyy" ? "selected='selected'" : "") + " value='dd/MM/yyyy'> 21/01/2012</option>";
-            html += "  <option " + (settings_date_format == "dd/MMM/yyyy" ? "selected='selected'" : "") + " value='dd/MMM/yyyy'> 21/Jan/2012</option>";
-            html += "  <option " + (settings_date_format == "MMM/dd/yyyy" ? "selected='selected'" : "") + " value='MMM/dd/yyyy'> Jan/21/2012</option>";
-            html += "  <option " + (settings_date_format == "dd MMM yy" ? "selected='selected'" : "") + " value='dd MMM yy'> 21 Jan 12</option>";
+            html += "  <option " + (settings_date_format == "yyyy-MM-dd" ? "selected='selected'" : "") + " value='yyyy-MM-dd'> 2016-12-31</option>";
+            html += "  <option " + (settings_date_format == "yyyy/MM/dd" ? "selected='selected'" : "") + " value='yyyy/MM/dd'> 2016/12/31</option>";
+            html += "  <option " + (settings_date_format == "MM/dd/yyyy" ? "selected='selected'" : "") + " value='MM/dd/yyyy'> 12/31/2016</option>";
+            html += "  <option " + (settings_date_format == "dd/MM/yyyy" ? "selected='selected'" : "") + " value='dd/MM/yyyy'> 31/12/2016</option>";
+            html += "  <option " + (settings_date_format == "dd.MM.yyyy" ? "selected='selected'" : "") + " value='dd.MM.yyyy'> 31.12.2016</option>";
+            html += "  <option " + (settings_date_format == "dd/MMM/yyyy" ? "selected='selected'" : "") + " value='dd/MMM/yyyy'> 31/Dec/2016</option>";
+            html += "  <option " + (settings_date_format == "MMM/dd/yyyy" ? "selected='selected'" : "") + " value='MMM/dd/yyyy'> Dec/31/2016</option>";
+            html += "  <option " + (settings_date_format == "dd MMM yy" ? "selected='selected'" : "") + " value='dd MMM yy'> 31 Dec 16</option>";
             html += "</select>" + show_help("If you have changed the date format on gc.com, you have to change it here to. Instead the day of week may be wrong.") + "<br/>";
             html += checkboxy('settings_show_mail', 'Show mail link beside usernames') + show_help("With this option there will be an small mail icon beside every username. With this icon you get directly to the mail page to mail to this user. If you click it when you are in a listing, the cachename and GCID will be inserted into the mail form - you don't have to remember it :) ") + "<br/>";
             html += "&nbsp; " + checkboxy('settings_show_mail_coordslink', 'Show coord link in mail') + show_help("With this option the GC/TB code in the mail is displayed as coord.info link. <br><br>This option requires \"Show mail link beside usernames\".") + "<br/>";
@@ -8942,6 +9014,7 @@ var mainGC = function () {
                 'settings_show_mail_in_viplist',
                 'settings_f2_save_gclh_config',
                 'settings_f4_call_gclh_config',
+                'settings_f10_call_gclh_sync',
                 'settings_show_sums_in_bookmark_lists',
                 'settings_show_sums_in_watchlist',
                 'settings_hide_warning_message',
