@@ -131,4 +131,4 @@ https://www.heise.de/mac-and-i/downloads/65/1/1/6/7/1/0/3/Markdown-CheatSheet-De
 * Markdown Editor:  
 https://github.com/mike-ward/Markdown-Edit/releases  
 <br>
-<br>
+<img src="http://c.andyhoppe.com/1485234701?output=invisible" alt="">
