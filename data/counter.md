@@ -1,1 +1,1 @@
-<span> <img src="http://c.andyhoppe.com/install_counter?output=static">install_desc</span>
+<span> <img src="install_counter">install_desc</span>
