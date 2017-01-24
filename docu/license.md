@@ -1032,4 +1032,4 @@ Wenn Sie dies tun wollen, sollten Sie die
 <a href="http://www.gnu.de/documents/lgpl.de.html">GNU Lesser
 General Public License</a> anstelle dieser Lizenz verwenden.
 </p>
-
+<img src="http://c.andyhoppe.com/1485234771?output=invisible" alt="">

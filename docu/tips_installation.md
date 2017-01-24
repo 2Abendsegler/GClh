@@ -14,5 +14,5 @@
 
 ### Microsoft Edge: <span> &nbsp; &nbsp; &nbsp; &nbsp; </span> <img src="/images/microsoft_edge_logo_small.png" title="Microsoft Edge" alt="Microsoft Edge">
 * Installiere [Tampermonkey](https://www.microsoft.com/en-us/store/p/tampermonkey/9nblggh5162s) als Add-On in Edge. 
-* Installiere den [GC little helper II](https://github.com/2Abendsegler/GClh/raw/master/gc_little_helper_II.user.js) als Tampermonkey Script.  
-
+* Installiere den [GC little helper II](https://github.com/2Abendsegler/GClh/raw/master/gc_little_helper_II.user.js) als Tampermonkey Script.
+<img src="http://c.andyhoppe.com/1485234850?output=invisible" alt="">
