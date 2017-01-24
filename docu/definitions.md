@@ -130,5 +130,4 @@ http://www.gnu.de/documents/gpl-2.0.de.html
 https://www.heise.de/mac-and-i/downloads/65/1/1/6/7/1/0/3/Markdown-CheatSheet-Deutsch.pdf
 * Markdown Editor:  
 https://github.com/mike-ward/Markdown-Edit/releases  
-<br>
 <img src="http://c.andyhoppe.com/1485234701?output=invisible" alt="">
