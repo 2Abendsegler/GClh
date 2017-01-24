@@ -31,3 +31,4 @@ Sollte irgendetwas schiefgehen oder möchte man mit der Startkonfiguration des "
 Nun befindet man sich im Firefox Profil.</li>
 <li>Im Ordner "*gm_scripts*" befinden sich dann beispielsweise die "*.db*" Dateien.</li>
 </ul></li>
+<img src="http://c.andyhoppe.com/1485234872?output=invisible" alt="">
