@@ -21,7 +21,7 @@
 <ul>
 <li>New: [Issue #36] Google Chrome und Opera über Tampermonkey.<br>
 Vielen Dank an Nicole1338 für die tolle Unterstützung. (<a href="https://github.com/Nicole1338/GClh">Sternchen setzen?</a>)<br>
-<img src="../images/google_chrome_logo.png" alt="google_chrome_logo.png"> 
+<img src="../images/google_chrome_small_logo.png" alt="google_chrome_logo.png"> 
 <img src="../images/opera_logo.png" alt="opera_logo.png"><br>
 Vielen Dank auch an pstorch für das Angebot hier zu unterstützen.<br></li>
 <li>New: [Issue #35] GClh Config: Make main areas in GClh Config hideable.<br>
