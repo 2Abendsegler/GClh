@@ -40,11 +40,11 @@ Nach dem Transport in die Branch *collector* und der Auslieferung an die User ü
 **Beispiel:** Hier sollten zumindest immer die nächste Version *v0.2.3* und die nächste kleine Bugfixing Version *v0.2.2.4* enthalten sein. Das langfristige Projekt *translation* wäre hier dann auch enthalten.  
 
 ### 4. Developer:  
-In dieser Stufe sollen die Namen der Branches der Contributoren (Mitarbeiter) auf dem GitHub von 2Abendsegler mit *dev_* beginnen und folgend einen beliebigen Qualifier für Projekt und Entwickler erhalten, den der Entwickler selbst bestimmen kann. Eine Branche für einen Entwickler soll mit Referenz zu demjenigen Projekt erzeugt werden, für welches der Entwickler entwickelt.
+In dieser Stufe sollen die Namen der Branches auf dem GitHub von 2Abendsegler mit *dev_* beginnen und folgend einen beliebigen Qualifier für Projekt und Entwickler erhalten, den der Entwickler selbst bestimmen kann. Eine Branch für einen Entwickler soll mit Referenz zu demjenigen Projekt erzeugt werden, für welches der Entwickler entwickelt.
 
 Referenziert und transportiert (forked) der Entwickler die Arbeiten auf seinen eigenen GitHub Account, ist er in der Namensgebung natürlich frei. Auch hier sollte mit Bezug zum jeweiligen Projekt geforked werden, für welches er entwickeln möchte. 
 
-**Beispiel:** Hilft man beim Bugfixing der aktuellen Version *V0.2.2*, und wurden bereits 3 Bugfixing Versionen transportiert, dann forked man vom Projekt *v0.2.2.4*. Die drei vorgegangenen Bugfixing Versionen *v0.2.2.1*, *2* und *3*, stehen dann auch schon nicht mehr zur Auswahl zur Verfügung. Entwickelt man für die nächste Version, dann forked man von *v0.2.3*.  
+**Beispiel:** Hilft man beim Bugfixing der aktuellen Version *v0.2.2*, und wurden bereits 3 Bugfixing Versionen transportiert, dann forked man vom Projekt *v0.2.2.4*. Die drei vorgegangenen Bugfixing Versionen *v0.2.2.1*, *2* und *3*, stehen dann auch schon nicht mehr zur Auswahl zur Verfügung. Entwickelt man für die nächste Version, dann forked man von *v0.2.3*.  
 <br>
 <br>
 
