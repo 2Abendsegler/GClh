@@ -22,9 +22,9 @@ Beispielsweise könnten in den vier Stufen folgende Branches vorhanden sein.
 Hier gibt es genau eine Branch *master*. Sie enthält die aktuelle Version für die User und dient den Usern zum Abrufen neuer Versionen.
 
 ### 2. Collector:  
-Hier gibt es derzeit genau eine Branch *collector*. Sie dient als Sammler aller Bestandteile für eine Version vor der Auslieferung an die User, dem Transport in den “master”.  
+Hier gibt es derzeit genau eine Branch *collector*. Sie dient als Sammler aller Bestandteile für eine Version vor der Auslieferung an die User, dem Transport in die Branch *master*.  
 
-Die Branch *collector* ist die standard (default) Branch. Er wird beim Transportieren automatisch als Empfänger vorgeschlagen. Damit wird unter anderem sichergestellt, dass nicht aus Versehen in den “master” transportiert wird.  
+Die Branch *collector* ist die standard (default) Branch. Er wird beim Transportieren automatisch als Empfänger vorgeschlagen. Damit wird unter anderem sichergestellt, dass nicht aus Versehen in die Branch *master* transportiert wird.  
 
 Außerdem kann zeitunkritisch, auch gegebenenfalls aus mehreren Branches, in den *collector* transportiert werden, die Sammlung nachbearbeitet werden und gegebenenfalls auch ein Kompletttest durchgeführt werden, bevor die Sammlung als neue Version den Usern zur Verfügung gestellt wird.  
 
@@ -35,16 +35,16 @@ Die Stufe Projects soll Raum dafür bieten, dass gleichzeitig im Rahmen mehrerer
 
 Diese Stufe kommt aber auch gegebenenfalls zum Einsatz, wenn langfristige Projekte entwickelt werden, für die eine Version noch gar nicht abgeschätzt werden kann.
 
-Nach dem Transport in die Branch *collector* und der Auslieferung an die User über den *master*, wird die entsprechende Branch gelöscht.
+Nach dem Transport in die Branch *collector* und der Auslieferung an die User über die Branch *master*, wird die entsprechende Branch gelöscht.
 
 **Beispiel:** Hier sollten zumindest immer die nächste Version *v0.2.3* und die nächste kleine Bugfixing Version *v0.2.2.4* enthalten sein. Das langfristige Projekt *translation* wäre hier dann auch enthalten.  
 
 ### 4. Developer:  
-In dieser Stufe sollen die Namen der Branches der Contributoren (Mitarbeiter) auf dem GitHub von 2Abendsegler mit *dev_* beginnen und folgend einen beliebigen Qualifier für Projekt und Entwickler erhalten, den der Entwickler selbst bestimmen kann. Eine Branche für einen Entwickler soll mit Referenz zu demjenigen Projekt erzeugt werden, für welches der Entwickler entwickelt.
+In dieser Stufe sollen die Namen der Branches auf dem GitHub von 2Abendsegler mit *dev_* beginnen und folgend einen beliebigen Qualifier für Projekt und Entwickler erhalten, den der Entwickler selbst bestimmen kann. Eine Branch für einen Entwickler soll mit Referenz zu demjenigen Projekt erzeugt werden, für welches der Entwickler entwickelt.
 
 Referenziert und transportiert (forked) der Entwickler die Arbeiten auf seinen eigenen GitHub Account, ist er in der Namensgebung natürlich frei. Auch hier sollte mit Bezug zum jeweiligen Projekt geforked werden, für welches er entwickeln möchte. 
 
-**Beispiel:** Hilft man beim Bugfixing der aktuellen Version *V0.2.2*, und wurden bereits 3 Bugfixing Versionen transportiert, dann forked man vom Projekt *v0.2.2.4*. Die drei vorgegangenen Bugfixing Versionen *v0.2.2.1*, *2* und *3*, stehen dann auch schon nicht mehr zur Auswahl zur Verfügung. Entwickelt man für die nächste Version, dann forked man von *v0.2.3*.  
+**Beispiel:** Hilft man beim Bugfixing der aktuellen Version *v0.2.2*, und wurden bereits 3 Bugfixing Versionen transportiert, dann forked man vom Projekt *v0.2.2.4*. Die drei vorgegangenen Bugfixing Versionen *v0.2.2.1*, *2* und *3*, stehen dann auch schon nicht mehr zur Auswahl zur Verfügung. Entwickelt man für die nächste Version, dann forked man von *v0.2.3*.  
 <br>
 <br>
 
@@ -87,9 +87,9 @@ Eine *Änderungsdokumentation im Programmkopf* ist nicht erforderlich. Möchte j
 
 Eine *Änderungsdokumentation im Programmcode* ist nicht erforderlich. Bei komplexen Zusammenhängen oder wenn besondere Beachtung geboten ist, dann sollte eine Dokumentation an der entsprechenden Programmstelle erfolgen. Ob eine solche Dokumentation sinnvoll ist, entscheidet der jeweilige Entwickler.  
 
-Es sollte eine aussagekräftige *Änderungsdokumentation im Changelog* ([changelog.txt](https://github.com/2Abendsegler/GClh/blob/master/changelog.txt)) erfolgen. Diese Datei dient lediglich zu unseren, internen Zwecken. Sie wird insbesondere verwendet, um ein (User) Changelog ([changelog.md](https://github.com/2Abendsegler/GClh/blob/master/docu/changelog.md#readme)) zum Zeitpunkt der Auslieferung an die User vorzubefüllen. Dieses Changelog wird dann gegebenenfalls noch um Screens und andere Dinge erweitert und etwas aufbereitet, bevor es an die User geht.  
+Es sollte eine aussagekräftige *Dokumentation im Issue* erfolgen.  
 
-Außerdem sollte eine aussagekräftige *Dokumentation im Issue* erfolgen.  
+Außerdem sollte eine aussagekräftige *Änderungsdokumentation im Changelog* ([changelog.txt](https://github.com/2Abendsegler/GClh/blob/master/changelog.txt)) erfolgen, sofern das nicht schon im Issue erfolgt ist. Diese Dokumentation dient, zusammen mit der Dokumentation im Issue, lediglich zu unseren, internen Zwecken. Die Dokumentation wird insbesondere verwendet, um ein (User) Changelog ([changelog.md](https://github.com/2Abendsegler/GClh/blob/master/docu/changelog.md#readme)) zum Zeitpunkt der Auslieferung an die User vorzubefüllen. Dieses Changelog wird dann gegebenenfalls noch um Screens und andere Dinge erweitert und etwas aufbereitet, bevor es an die User geht.  
 <br>
 <br>
 
@@ -114,8 +114,10 @@ https://github.com/2Abendsegler/GClh/blob/master/docu/changelog.md#readme
 https://github.com/2Abendsegler/GClh/blob/master/docu/license.md#readme
 * Warranty auf GitHub anzeigen:  
 https://github.com/2Abendsegler/GClh/blob/master/docu/warranty.md#readme
-* Tipps Migration auf GitHub anzeigen:  
-https://github.com/2Abendsegler/GClh/blob/master/docu/tips%20migration.md#readme  
+* Tipps für die Migration auf GitHub anzeigen:  
+https://github.com/2Abendsegler/GClh/blob/master/docu/tips_migration.md#readme  
+* Tipps für die Installation auf GitHub anzeigen:  
+https://github.com/2Abendsegler/GClh/blob/master/docu/tips_installation.md#readme  
 <br>
 * Geoclub Forum, Help (Greasemonkey-Scripte):  
 http://geoclub.de/forum/viewforum.php?f=117  
