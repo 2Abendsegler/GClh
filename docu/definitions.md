@@ -22,7 +22,7 @@ Beispielsweise könnten in den vier Stufen folgende Branches vorhanden sein.
 Hier gibt es genau eine Branch *master*. Sie enthält die aktuelle Version für die User und dient den Usern zum Abrufen neuer Versionen.
 
 ### 2. Collector:  
-Hier gibt es derzeit genau eine Branch *collector*. Sie dient als Sammler aller Bestandteile für eine Version vor der Auslieferung an die User, dem Transport in den “master”.  
+Hier gibt es derzeit genau eine Branch *collector*. Sie dient als Sammler aller Bestandteile für eine Version vor der Auslieferung an die User, dem Transport in die Branch *master*.  
 
 Die Branch *collector* ist die standard (default) Branch. Er wird beim Transportieren automatisch als Empfänger vorgeschlagen. Damit wird unter anderem sichergestellt, dass nicht aus Versehen in den “master” transportiert wird.  
 
