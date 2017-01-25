@@ -87,9 +87,9 @@ Eine *Änderungsdokumentation im Programmkopf* ist nicht erforderlich. Möchte j
 
 Eine *Änderungsdokumentation im Programmcode* ist nicht erforderlich. Bei komplexen Zusammenhängen oder wenn besondere Beachtung geboten ist, dann sollte eine Dokumentation an der entsprechenden Programmstelle erfolgen. Ob eine solche Dokumentation sinnvoll ist, entscheidet der jeweilige Entwickler.  
 
-Es sollte eine aussagekräftige *Änderungsdokumentation im Changelog* ([changelog.txt](https://github.com/2Abendsegler/GClh/blob/master/changelog.txt)) erfolgen. Diese Datei dient lediglich zu unseren, internen Zwecken. Sie wird insbesondere verwendet, um ein (User) Changelog ([changelog.md](https://github.com/2Abendsegler/GClh/blob/master/docu/changelog.md#readme)) zum Zeitpunkt der Auslieferung an die User vorzubefüllen. Dieses Changelog wird dann gegebenenfalls noch um Screens und andere Dinge erweitert und etwas aufbereitet, bevor es an die User geht.  
-
 Außerdem sollte eine aussagekräftige *Dokumentation im Issue* erfolgen.  
+
+Es sollte eine aussagekräftige *Änderungsdokumentation im Changelog* ([changelog.txt](https://github.com/2Abendsegler/GClh/blob/master/changelog.txt)) erfolgen, sofern nicht schon im Issue erfolgt. Diese Datei dient lediglich zu unseren, internen Zwecken. Sie wird insbesondere verwendet, um ein (User) Changelog ([changelog.md](https://github.com/2Abendsegler/GClh/blob/master/docu/changelog.md#readme)) zum Zeitpunkt der Auslieferung an die User vorzubefüllen. Dieses Changelog wird dann gegebenenfalls noch um Screens und andere Dinge erweitert und etwas aufbereitet, bevor es an die User geht.  
 <br>
 <br>
 
