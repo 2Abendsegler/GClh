@@ -114,8 +114,10 @@ https://github.com/2Abendsegler/GClh/blob/master/docu/changelog.md#readme
 https://github.com/2Abendsegler/GClh/blob/master/docu/license.md#readme
 * Warranty auf GitHub anzeigen:  
 https://github.com/2Abendsegler/GClh/blob/master/docu/warranty.md#readme
-* Tipps Migration auf GitHub anzeigen:  
-https://github.com/2Abendsegler/GClh/blob/master/docu/tips%20migration.md#readme  
+* Tipps für die Migration auf GitHub anzeigen:  
+https://github.com/2Abendsegler/GClh/blob/master/docu/tips_migration.md#readme  
+* Tipps für die Installation auf GitHub anzeigen:  
+https://github.com/2Abendsegler/GClh/blob/master/docu/tips_installation.md#readme  
 <br>
 * Geoclub Forum, Help (Greasemonkey-Scripte):  
 http://geoclub.de/forum/viewforum.php?f=117  
