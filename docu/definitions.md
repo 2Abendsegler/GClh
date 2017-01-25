@@ -35,7 +35,7 @@ Die Stufe Projects soll Raum dafür bieten, dass gleichzeitig im Rahmen mehrerer
 
 Diese Stufe kommt aber auch gegebenenfalls zum Einsatz, wenn langfristige Projekte entwickelt werden, für die eine Version noch gar nicht abgeschätzt werden kann.
 
-Nach dem Transport in die Branch *collector* und der Auslieferung an die User über den *master*, wird die entsprechende Branch gelöscht.
+Nach dem Transport in die Branch *collector* und der Auslieferung an die User über die Branch *master*, wird die entsprechende Branch gelöscht.
 
 **Beispiel:** Hier sollten zumindest immer die nächste Version *v0.2.3* und die nächste kleine Bugfixing Version *v0.2.2.4* enthalten sein. Das langfristige Projekt *translation* wäre hier dann auch enthalten.  
 
