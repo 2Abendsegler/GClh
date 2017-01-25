@@ -19,7 +19,7 @@
 ---
 ## v0.2.3:
 <ul>
-<li>New: [Issue #36] Google Chrome und Opera über Tampermonkey.<br>
+<li>New: [Issue #36] Google Chrome, Opera und Microsoft Edge über Tampermonkey.<br>
 Vielen Dank an Nicole1338 für die tolle Unterstützung. (<a href="https://github.com/Nicole1338/GClh">Sternchen setzen?</a>)<br>
 <img src="../images/google_chrome_logo_small.png" alt="google_chrome_logo_small.png"> 
 <img src="../images/opera_logo_small.png" alt="opera_logo_small.png"> 
