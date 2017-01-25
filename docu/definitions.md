@@ -24,7 +24,7 @@ Hier gibt es genau eine Branch *master*. Sie enthält die aktuelle Version für 
 ### 2. Collector:  
 Hier gibt es derzeit genau eine Branch *collector*. Sie dient als Sammler aller Bestandteile für eine Version vor der Auslieferung an die User, dem Transport in die Branch *master*.  
 
-Die Branch *collector* ist die standard (default) Branch. Er wird beim Transportieren automatisch als Empfänger vorgeschlagen. Damit wird unter anderem sichergestellt, dass nicht aus Versehen in den “master” transportiert wird.  
+Die Branch *collector* ist die standard (default) Branch. Er wird beim Transportieren automatisch als Empfänger vorgeschlagen. Damit wird unter anderem sichergestellt, dass nicht aus Versehen in die Branch *master* transportiert wird.  
 
 Außerdem kann zeitunkritisch, auch gegebenenfalls aus mehreren Branches, in den *collector* transportiert werden, die Sammlung nachbearbeitet werden und gegebenenfalls auch ein Kompletttest durchgeführt werden, bevor die Sammlung als neue Version den Usern zur Verfügung gestellt wird.  
 
