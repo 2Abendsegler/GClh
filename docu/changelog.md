@@ -1,4 +1,4 @@
-<a href="#" ><img src="http://c.andyhoppe.com/1485234823?output=invisible" alt=""></a>
+<a href="#" ><img src="http://c.andyhoppe.com/1485234823?output=invisible" alt="" ></a>
 
 <a href="#v0231" title="GClh II Version 0.2.3.1">v0.2.3.1</a> &nbsp; 
 <a href="#v023" title="GClh II Version 0.2.3">v0.2.3</a> &nbsp; 
