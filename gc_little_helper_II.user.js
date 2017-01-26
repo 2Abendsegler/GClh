@@ -435,6 +435,7 @@ var variablesInit = function (c) {
     c.settings_replace_log_by_last_log = getValue("settings_replace_log_by_last_log", false);
     c.settings_hide_top_button = getValue("settings_hide_top_button", false);
     c.settings_show_real_owner = getValue("settings_show_real_owner", false);
+    c.settings_hide_archived_in_owned = getValue("settings_hide_archived_in_owned", false);
     c.settings_hide_visits_in_profile = getValue("settings_hide_visits_in_profile", false);
     c.settings_log_signature_on_fieldnotes = getValue("settings_log_signature_on_fieldnotes", true);
     c.settings_map_hide_sidebar = getValue("settings_map_hide_sidebar", true);
@@ -4767,6 +4768,24 @@ var mainGC = function () {
         }
     }
 
+    // hide archived at own caches
+    if (settings_hide_archived_in_owned && document.location.href.match(/^https?:\/\/www\.geocaching\.com\/my\/owned\.aspx/)) {
+        try {
+            var links = document.getElementsByTagName("a");
+            for (var i = 0; i < links.length; i++) {
+                if (links[i].href.match(/\/seek\/cache_details\.aspx\?/)) {
+                    var archived = links[i].classList.contains("OldWarning");
+
+                    if (archived) {
+                        links[i].parentNode.parentNode.style.display = 'none';
+                    }
+                }
+            }
+        } catch (e) {
+            gclh_error("Failed to hide archived caches in owned list", e);
+        }
+    }
+
 // Hide TBs/Coins in Profile
     if (settings_hide_visits_in_profile && document.location.href.match(/^https?:\/\/www\.geocaching\.com\/my\//)) {
         try {
@@ -8113,6 +8132,7 @@ var mainGC = function () {
             html += checkboxy('settings_hide_avatar', 'Hide avatars in listing') + show_help("This option hides the avatars in logs. This prevents loading the hundreds of images. You have to change the option here, because GClh overrides the log-load-logic of gc.com, so the avatar option of gc.com doesn't work with GClh.") + "<br/>";
             html += checkboxy('settings_load_logs_with_gclh', 'Load logs with GClh') + show_help("This option should be enabled. <br><br>You just should disable it, if you have problems with loading the logs. <br><br>If this option is disabled, there are no VIP-, mail-, message- and top icons, no line colors and no mouse activated big images at the logs. Also the VIP lists, hide avatars, log filter and log search won't work.") + "<br/>";
             html += checkboxy('settings_show_real_owner', 'Show real owner name') + show_help("If the option is enabled, GClh will replace the pseudonym a owner took to publish the cache with the real owner name.") + "<br/>";
+            html += checkboxy('settings_hide_archived_in_owned', 'Hide archived caches in owned list') + "<br/>";
             html += "<br>";
             html += "";
             html += "</div>";
@@ -9014,6 +9034,7 @@ var mainGC = function () {
                 'settings_hide_map_header',
                 'settings_replace_log_by_last_log',
                 'settings_show_real_owner',
+                'settings_hide_archived_in_owned',
                 'settings_hide_visits_in_profile',
                 'settings_log_signature_on_fieldnotes',
                 'settings_vip_show_nofound',
