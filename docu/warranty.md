@@ -21,4 +21,3 @@ Keine Gewährleistung
 
 --
 *GNU General Public License; Deutsche Übersetzung der Version 2, Juni 1991; Copyright © 1989, 1991 Free Software Foundation, Inc.; 51 Franklin St, Fifth Floor, Boston, MA 02110, USA*
-<img src="http://c.andyhoppe.com/1485234915?output=invisible" alt="">
