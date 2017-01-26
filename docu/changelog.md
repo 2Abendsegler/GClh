@@ -1,4 +1,4 @@
-<img src="https://c.andyhoppe.com/1485234823" style="border: none; visibility: hidden; width: 1px; height: 1px;" alt="">
+<a ><img src="https://c.andyhoppe.com/1485234823?output=invisible" alt=""></a>
 
 <a href="#v0231" title="GClh II Version 0.2.3.1">v0.2.3.1</a> &nbsp; 
 <a href="#v023" title="GClh II Version 0.2.3">v0.2.3</a> &nbsp; 
