@@ -1,3 +1,5 @@
+<img src="https://c.andyhoppe.com/1485234412?output=invisible" alt="">
+
 <a href="#v0231" title="GClh II Version 0.2.3.1">v0.2.3.1</a> &nbsp; 
 <a href="#v023" title="GClh II Version 0.2.3">v0.2.3</a> &nbsp; 
 <a href="#v0224" title="GClh II Version 0.2.2.4">v0.2.2.4</a> &nbsp; 
