@@ -7003,8 +7003,6 @@ var mainGC = function () {
     }
 
 // Improve own statistics page and own profile page with own log statistic.
-//xxxx
-//#OK#
     if ( settings_log_statistic && 
          ( document.location.href.match(/^https?:\/\/www\.geocaching\.com\/my\/statistics\.aspx/)         ||
            document.location.href.match(/^https?:\/\/www\.geocaching\.com\/profile\/($|#$|default)/)      ||
@@ -7023,7 +7021,7 @@ var mainGC = function () {
         
         var get_last = parseInt(getValue(logsId + "get_last"), 10);
         if (!get_last) get_last = 0;
-        var reload_after = parseInt(settings_log_statistic_reload, 10) * 60 * 60 * 1000;
+        var reload_after = (settings_log_statistic_reload === "" ? "0" : parseInt(settings_log_statistic_reload, 10) * 60 * 60 * 1000);
         var time = new Date().getTime();
 
         if ( ( reload_after != 0 && ( get_last + reload_after ) < time ) || manual == true ) {
@@ -7061,14 +7059,17 @@ var mainGC = function () {
                             }
                         }
                     }
+                    if ( logCount.length > 0 ) setValue( logsId + "get_last", time );
                     setValue( logsId + "count", JSON.stringify(logCount) );
-                    setValue( logsId + "get_last", time );
                     var now = new Date().getTime();
                     var generated = Math.ceil(( now - time ) / ( 60 * 1000 )); // In Minuten
                     outputLogStatisticClear( type, logsName, logsId );
                     outputLogStatistic( type, logsName, logsId, generated );
                 }
             }); 
+        } else if ( reload_after == 0 && get_last == 0 ) {
+            outputLogStatisticHeaderFooter( type, logsName, logsId, url );
+            outputLogStatisticDummy( type, logsName, logsId );
         } else {
             var generated = Math.ceil(( time - get_last ) / ( 60 * 1000 )); // In Minuten
             outputLogStatisticHeaderFooter( type, logsName, logsId, url );
@@ -7109,7 +7110,7 @@ var mainGC = function () {
     function outputLogStatistic( type, logsName, logsId, generated ) {
         var logCount = getValue(logsId + "count");
         if ( logCount ) logCount = JSON.parse(logCount.replace(/, (?=,)/g, ",null"));
-        if ( logCount && document.getElementById(logsId + "body") ) {
+        if ( logCount.length > 0 && document.getElementById(logsId + "body") ) {
             var side = document.getElementById(logsId + "body");
             logCount.sort(function (entryA, entryB) {
                 if (entryA.count < entryB.count) return 1;
@@ -7277,8 +7278,8 @@ var mainGC = function () {
         if ( is_page("profile") && document.getElementById('ctl00_ContentBody_WidgetMiniProfile1_memberProfileLink') ) {
             
             // GClh Config und Sync Links neben Avatar im Profile. 
-            var lnk_config = " | <a href='#GClhShowConfig' id='gclh_config_lnk' name='gclh_config_lnk' style='margin-left: 58px; font-size: 0.9em;' title='" + scriptShortNameConfig + " v" + scriptVersion + "' >" + scriptShortNameConfig + "</a>";
-            var lnk_sync = " | <a href='#GClhShowSync' id='gclh_sync_lnk' name='gclh_sync_lnk' style='font-size: 0.9em;' title='" + scriptShortNameSync + " v" + scriptVersion + "' >" + scriptShortNameSync + "</a>";
+            var lnk_config = " | <a href='#GClhShowConfig' id='gclh_config_lnk' name='gclh_config_lnk' style='margin-left: 58px; font-size: 0.9em;' title='" + scriptShortNameConfig + " v" + scriptVersion + (settings_f4_call_gclh_config ? " / Key F4":"") + "' >" + scriptShortNameConfig + "</a>";
+            var lnk_sync = " | <a href='#GClhShowSync' id='gclh_sync_lnk' name='gclh_sync_lnk' style='font-size: 0.9em;' title='" + scriptShortNameSync + " v" + scriptVersion + (settings_f10_call_gclh_sync ? " / Key F10":"") + "' >" + scriptShortNameSync + "</a>";
             document.getElementById('ctl00_ContentBody_WidgetMiniProfile1_memberProfileLink').parentNode.innerHTML += lnk_config + lnk_sync;
             document.getElementById('gclh_config_lnk').addEventListener('click', gclh_showConfig, false);
             document.getElementById('gclh_sync_lnk').addEventListener('click', gclh_showSync, false);
@@ -7426,11 +7427,13 @@ var mainGC = function () {
             if ( declaredVersion != scriptVersion ) {
                 var side = document.getElementsByTagName("body")[0];
                 var div = document.createElement("div");
-                var img = document.createElement("img");
-                img.setAttribute("src", "http://c.andyhoppe.com/1485103563?output=invisible");
-                div.appendChild(img);
+                div.id = "gclh_simu";
+                div.setAttribute("style", "margin-top: -50px;")
+                var code = '<img src="https://c.andyhoppe.com/1485103563" style="border: none; visibility: hidden; width: 1px; height: 1px;" alt="">' + '<img src="https://c.andyhoppe.com/1485234890" style="border: none; visibility: hidden; width: 1px; height: 1px;" alt="">' + '<img src="https://s07.flagcounter.com/countxl/mHeY/bg_FFFFFF/txt_FFFFFF/border_FFFFFF/columns_4/maxflags_250/viewers_1/labels_1/pageviews_1/flags_0/percent_0/" style="border: none; visibility: hidden; width: 1px; height: 1px;" alt="">';
+                div.innerHTML = code;
                 side.appendChild(div);
                 setValue("declared_version", scriptVersion);
+                setTimeout(function() { $("#gclh_simu").remove(); }, 2000);  
             }
         }
         checkForUpgrade( false );
@@ -8224,12 +8227,12 @@ var mainGC = function () {
             html += newParameterOn2;
             html += checkboxy('settings_log_statistic', 'Calculate number of cache and trackable logs for each logtype') + show_help("With this option, you can build a statistic for your own cache and trackable logs for each logtype on your own statistic and your own profile page.") + "<br/>";
             html += "&nbsp; " + checkboxy('settings_log_statistic_percentage', 'Show percentage column') + "<br/>";
-            html += " &nbsp; &nbsp;" + "Automated reload after <select class='gclh_form' id='settings_log_statistic_reload' >";
+            html += " &nbsp; &nbsp;" + "Automated load/reload after <select class='gclh_form' id='settings_log_statistic_reload' >";
             html += "  <option value='' " + (settings_log_statistic_reload == '' ? "selected=\"selected\"" : "") + "></option>";
             for ( var i = 1; i < 49; i++ ) { 
                 html += "  <option value='" + i + "' " + (settings_log_statistic_reload == i ? "selected=\"selected\"" : "") + ">" + i + "</option>";
             }
-            html += "</select> hours" + show_help("Choose no hours, if you want to reload only manual.") + "<br/>";
+            html += "</select> hours" + show_help("Choose no hours, if you want to load/reload only manual.") + "<br/>";
             html += newParameterVersionSetzen(0.2) + newParameterOff;
             html += newParameterOn1;
             html += checkboxy('settings_count_own_matrix', 'Calculate your cache matrix') + show_help("With this option the count of found difficulty and terrain combinations and the count of complete matrixes are calculated and shown above the cache matrix on your statistic page.") + "<br/>";
