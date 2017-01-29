@@ -439,9 +439,7 @@ var variablesInit = function (c) {
     c.settings_map_add_layer = getValue("settings_map_add_layer", true);
     c.settings_map_default_layer = getValue("settings_map_default_layer", "OpenStreetMap Default");
     c.settings_hide_map_header = getValue("settings_hide_map_header", false);
-//--> $$023 Begin of change - Disable Spoiler String
     c.settings_spoiler_strings = getValue("settings_spoiler_strings", "spoiler|hinweis|hint");
-//<-- $$023 End of change
     c.settings_replace_log_by_last_log = getValue("settings_replace_log_by_last_log", false);
     c.settings_hide_top_button = getValue("settings_hide_top_button", false);
     c.settings_show_real_owner = getValue("settings_show_real_owner", false);
@@ -9113,9 +9111,7 @@ var mainGC = function () {
             setValue("settings_tb_signature", document.getElementById('settings_tb_signature').value.replace(/‌/g, ""));
             setValue("settings_map_default_layer", settings_map_default_layer );
             setValue("settings_hover_image_max_size", document.getElementById('settings_hover_image_max_size').value);
-//--> $$023 Begin of change - Disable Spoiler String
             setValue("settings_spoiler_strings", document.getElementById('settings_spoiler_strings').value);
-//<-- $$023 End of change
             setValue("settings_font_size_menu", document.getElementById('settings_font_size_menu').value);
             setValue("settings_font_size_submenu", document.getElementById('settings_font_size_submenu').value);
             setValue("settings_distance_menu", document.getElementById('settings_distance_menu').value);
