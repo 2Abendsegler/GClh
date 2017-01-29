@@ -443,6 +443,7 @@ var variablesInit = function (c) {
     c.settings_replace_log_by_last_log = getValue("settings_replace_log_by_last_log", false);
     c.settings_hide_top_button = getValue("settings_hide_top_button", false);
     c.settings_show_real_owner = getValue("settings_show_real_owner", false);
+    c.settings_hide_archived_in_owned = getValue("settings_hide_archived_in_owned", false);
     c.settings_hide_visits_in_profile = getValue("settings_hide_visits_in_profile", false);
     c.settings_log_signature_on_fieldnotes = getValue("settings_log_signature_on_fieldnotes", true);
     c.settings_map_hide_sidebar = getValue("settings_map_hide_sidebar", true);
@@ -4556,6 +4557,24 @@ var mainGC = function () {
         }
     }
 
+    // hide archived at own caches
+    if (settings_hide_archived_in_owned && document.location.href.match(/^https?:\/\/www\.geocaching\.com\/my\/owned\.aspx/)) {
+        try {
+            var links = document.getElementsByTagName("a");
+            for (var i = 0; i < links.length; i++) {
+                if (links[i].href.match(/\/seek\/cache_details\.aspx\?/)) {
+                    var archived = links[i].classList.contains("OldWarning");
+
+                    if (archived) {
+                        links[i].parentNode.parentNode.style.display = 'none';
+                    }
+                }
+            }
+        } catch (e) {
+            gclh_error("Failed to hide archived caches in owned list", e);
+        }
+    }
+
 // Hide TBs/Coins in Profile
     if (settings_hide_visits_in_profile && document.location.href.match(/^https?:\/\/www\.geocaching\.com\/my\//)) {
         try {
@@ -8242,6 +8261,7 @@ var mainGC = function () {
             html += checkboxy('settings_show_thumbnails', 'Show thumbnails of images') + show_help("With this option the images are displayed as thumbnails to have a preview. If you hover over a thumbnail, you can see the big one.<br><br>This works in cache and TB logs, in the cache and TB image galleries, in public profile for the avatar and in the profile image gallery.") + "&nbsp; Max size of big image: <input class='gclh_form' size=2 type='text' id='settings_hover_image_max_size' value='" + settings_hover_image_max_size + "'> px <br/>";
             html += "&nbsp; " + checkboxy('settings_imgcaption_on_top', 'Show caption on top') + show_help("This option requires \"Show thumbnails of images\".") + "<br/>";
             html += checkboxy('settings_show_big_gallery', 'Show bigger images in gallery') + show_help("With this option the images in the galleries of caches, TBs and profiles are displayed bigger and not in 4 columns, but in 2 columns.") + "<br/>";
+            html += checkboxy('settings_hide_archived_in_owned', 'Hide archived caches in owned list') + "<br/>";
             html += newParameterOn1;
             content_settings_show_mail_in_allmyvips = checkboxy('settings_show_mail_in_allmyvips', 'Show mail link beside user in "All my VIPs" list in your profile') + show_help("With this option there will be an small mail icon beside every username in the list with all your VIPs (All my VIPs) on your profile page. With this icon you get directly to the mail page to mail to this user. <br><br>This option requires \"Show mail link beside usernames\" and \"Show VIP list\".") + "<br>";
             html += content_settings_show_mail_in_allmyvips;
@@ -9266,6 +9286,7 @@ var mainGC = function () {
                 'settings_hide_map_header',
                 'settings_replace_log_by_last_log',
                 'settings_show_real_owner',
+                'settings_hide_archived_in_owned',
                 'settings_hide_visits_in_profile',
                 'settings_log_signature_on_fieldnotes',
                 'settings_vip_show_nofound',
