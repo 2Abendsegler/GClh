@@ -140,9 +140,9 @@ var constInit = function (c) {
     bookmark("Statbar", "https://www.geocaching.com/my/statbar.aspx", c.bookmarks);
     bookmark("Guidelines", "https://www.geocaching.com/about/guidelines.aspx", c.bookmarks);
     profileSpecialBookmark(c.scriptShortNameConfig, "https://www.geocaching.com/my/default.aspx#GClhShowConfig", "lnk_gclhconfig", c.bookmarks);
-    externalBookmark("Forum", "http://forums.groundspeak.com/", c.bookmarks);
-    externalBookmark("Blog", "https://www.geocaching.com/blog/", c.bookmarks);
-    bookmark("Feedback", "https://www.geocaching.com/feedback/", c.bookmarks);
+    externalBookmark("Forum Groundspeak", "http://forums.groundspeak.com/", c.bookmarks);
+    externalBookmark("Blog Groundspeak", "https://www.geocaching.com/blog/", c.bookmarks);
+    bookmark("Feedback Groundspeak", "https://www.geocaching.com/feedback/", c.bookmarks);
     externalBookmark("Geoclub", "http://www.geoclub.de/", c.bookmarks);
     profileSpecialBookmark("Public Profile Geocaches", "https://www.geocaching.com/profile/default.aspx?#gclhpb#ctl00$ContentBody$ProfilePanel1$lnkUserStats", "lnk_profilegeocaches", c.bookmarks);
     profileSpecialBookmark("Public Profile Trackables", "https://www.geocaching.com/profile/default.aspx?#gclhpb#ctl00$ContentBody$ProfilePanel1$lnkCollectibles", "lnk_profiletrackables", c.bookmarks);
@@ -439,10 +439,12 @@ var variablesInit = function (c) {
     c.settings_map_add_layer = getValue("settings_map_add_layer", true);
     c.settings_map_default_layer = getValue("settings_map_default_layer", "OpenStreetMap Default");
     c.settings_hide_map_header = getValue("settings_hide_map_header", false);
+//--> $$023 Begin of change - Disable Spoiler String
+    c.settings_spoiler_strings = getValue("settings_spoiler_strings", "spoiler|hinweis|hint");
+//<-- $$023 End of change
     c.settings_replace_log_by_last_log = getValue("settings_replace_log_by_last_log", false);
     c.settings_hide_top_button = getValue("settings_hide_top_button", false);
     c.settings_show_real_owner = getValue("settings_show_real_owner", false);
-    c.settings_hide_archived_in_owned = getValue("settings_hide_archived_in_owned", false);
     c.settings_hide_visits_in_profile = getValue("settings_hide_visits_in_profile", false);
     c.settings_log_signature_on_fieldnotes = getValue("settings_log_signature_on_fieldnotes", true);
     c.settings_map_hide_sidebar = getValue("settings_map_hide_sidebar", true);
@@ -496,6 +498,7 @@ var variablesInit = function (c) {
     bookmark("Search TB adv.", "https://www.geocaching.com/track/search.aspx", c.bookmarks);
     bookmark("View Geocache Map", "https://www.geocaching.com/map/", c.bookmarks);
     profileSpecialBookmark(scriptShortNameSync, defaultSyncLink, "lnk_gclhsync", c.bookmarks);
+    externalBookmark("Forum Geoclub", "http://geoclub.de/forum/index.php", c.bookmarks);
     // Settings: Remove GC Menu from Navigation
     c.remove_navi_learn = getValue("remove_navi_learn", false);
     c.remove_navi_play = getValue("remove_navi_play", false);
@@ -693,8 +696,8 @@ var mainGC = function () {
                     var mess = "To use this link, GClh has to know your home coordinates. \n"
                              + "Do you want to go to the special area and let GClh save \n"
                              + "your home coordinates automatically?\n\n"
-                             + "(You have then nothing to do at the following page.)\n"
-                             + "(Go ahead with your work.)";
+                             + "GClh will save it automatically. You have nothing to do at the\n"
+                             + "following page \"Home Location\", except, to choose your link again.";
                     if ( window.confirm(mess) ) {
                         document.location.href = http + "://www.geocaching.com/account/settings/homelocation";
                     } else {
@@ -705,8 +708,8 @@ var mainGC = function () {
                     var mess = "To use this link, GClh has to know the identification of \n"
                              + "your trackables. Do you want to go to your profile and \n"
                              + "let GClh save the identification (uid) automatically?\n\n"
-                             + "(You have then nothing to do at the following page.)\n"
-                             + "(Go ahead with your work.)";
+                             + "GClh will save it automatically. You have nothing to do at the\n"
+                             + "following page \"Your Profile\", except, to choose your link again.";
                     if ( window.confirm(mess) ) {
                         document.location.href = http + "://www.geocaching.com/my/default.aspx";
                     } else {
@@ -749,238 +752,10 @@ var mainGC = function () {
         }
     }
     
-    function in_array(search, arr) {
-        for (var i = 0; i < arr.length; i++) if (arr[i] == search) return true;
-        return false;
-    }
-
-    function caseInsensitiveSort(a, b) {  // http://www.codingforums.com/showthread.php?t=10477
-        var ret = 0;
-        a = a.toLowerCase();
-        b = b.toLowerCase();
-        if (a > b)
-            ret = 1;
-        if (a < b)
-            ret = -1;
-        return ret;
-    }
-
-    function urlencode(s) {
-        s = s.replace(/&amp;/g, "&");
-        s = encodeURIComponent(s);  //Kodiert alle außer den folgenden Zeichen: A bis Z und a bis z und - _ . ! ~ * ' ( )
-        s = s.replace(/~/g, "%7e");
-        s = s.replace(/'/g, "%27");
-        s = s.replace(/%26amp%3b/g, "%26");
-        s = s.replace(/ /g, "+");
-        //GC.com codiert - _ . ! * ( ) selbst nicht, daher wird dies hier auch nicht extra behandel
-        return s;
-    }
-
-    function urldecode(s) {
-        s = s.replace(/\+/g, " ");
-        s = s.replace(/%7e/g, "~");
-        s = s.replace(/%27/g, "'");
-        s = decodeURIComponent(s);
-        return s;
-    }
-
-    function html_to_str(s) {
-        s = s.replace(/\&amp;/g, "&");
-        s = s.replace(/\&nbsp;/g, " ");
-        return s;
-    }
-
-    function trim(s) {
-        var whitespace = ' \n ';
-        for (var i = 0; i < whitespace.length; i++) {
-            while (s.substring(0, 1) == whitespace.charAt(i)) {
-                s = s.substring(1, s.length);
-            }
-            while (s.substring(s.length - 1, s.length) == whitespace.charAt(i)) {
-                s = s.substring(0, s.length - 1);
-            }
-        }
-
-        if (s.substring(s.length - 6, s.length) == "&nbsp;") s = s.substring(0, s.length - 6);
-
-        return s;
-    }
-
-// Helper: from N/S/E/W Deg Min.Sec to Dec
-    function toDec(coords) {
-        var match = coords.match(/([0-9]+)°([0-9]+)\.([0-9]+)′(N|S), ([0-9]+)°([0-9]+)\.([0-9]+)′(W|E)/);
-
-        if (match) {
-            var dec1 = parseInt(match[1], 10) + (parseFloat(match[2] + "." + match[3]) / 60);
-            if (match[4] == "S") dec1 = dec1 * -1;
-            dec1 = Math.round(dec1 * 10000000) / 10000000;
-
-            var dec2 = parseInt(match[5], 10) + (parseFloat(match[6] + "." + match[7]) / 60);
-            if (match[8] == "W") dec2 = dec2 * -1;
-            dec2 = Math.round(dec2 * 10000000) / 10000000;
-
-            return new Array(dec1, dec2);
-        }
-        else {
-            match = coords.match(/(N|S) ([0-9]+)°? ([0-9]+)\.([0-9]+) (E|W) ([0-9]+)°? ([0-9]+)\.([0-9]+)/);
-
-            if (match) {
-                var dec1 = parseInt(match[2], 10) + (parseFloat(match[3] + "." + match[4]) / 60);
-                if (match[1] == "S") dec1 = dec1 * -1;
-                dec1 = Math.round(dec1 * 10000000) / 10000000;
-
-                var dec2 = parseInt(match[6], 10) + (parseFloat(match[7] + "." + match[8]) / 60);
-                if (match[5] == "W") dec2 = dec2 * -1;
-                dec2 = Math.round(dec2 * 10000000) / 10000000;
-
-                return new Array(dec1, dec2);
-            }
-            else {
-                match = coords.match(/(N|S) ([0-9]+) ([0-9]+) ([0-9]+)\.([0-9]+) (E|W) ([0-9]+) ([0-9]+) ([0-9]+)\.([0-9]+)/);
-
-                if (match) {
-                    var dec1 = parseInt(match[2], 10) + (parseFloat(match[3]) / 60) + (parseFloat(match[4] + "." + match[5]) / 3600);
-                    if (match[1] == "S") dec1 = dec1 * -1;
-                    dec1 = Math.round(dec1 * 10000000) / 10000000;
-
-                    var dec2 = parseInt(match[7], 10) + (parseFloat(match[8]) / 60) + (parseFloat(match[9] + "." + match[10]) / 3600);
-                    if (match[6] == "W") dec2 = dec2 * -1;
-                    dec2 = Math.round(dec2 * 10000000) / 10000000;
-
-                    return new Array(dec1, dec2);
-                }
-                else {
-                    match = coords.match(/(N|S) ([0-9]+) ([0-9]+) ([0-9]+\..[0-9].) (E|W) ([0-9]+) ([0-9]+) ([0-9]+\..[0-9].)/);
-
-                    if (match) {
-                        var dec1 = parseInt(match[2], 10) + (parseFloat(match[3]) / 60) + (parseFloat(match[4]) / 3600);
-                        if (match[1] == "S") dec1 = dec1 * -1;
-                        dec1 = Math.round(dec1 * 10000000) / 10000000;
-
-                        var dec2 = parseInt(match[6], 10) + (parseFloat(match[7]) / 60) + (parseFloat(match[8]) / 3600);
-                        if (match[5] == "W") dec2 = dec2 * -1;
-                        dec2 = Math.round(dec2 * 10000000) / 10000000;
-
-                        return new Array(dec1, dec2);
-                    } else {
-                        return false;
-                    }
-                }
-            }
-        }
-    }
-
-// Helper: from Deg to DMS
-    function DegtoDMS(coords) {
-        var match = coords.match(/^(N|S) ([0-9][0-9]). ([0-9][0-9])\.([0-9][0-9][0-9]) (E|W) ([0-9][0-9][0-9]). ([0-9][0-9])\.([0-9][0-9][0-9])$/);
-        if (!match) return "";
-
-        var lat1 = parseInt(match[2], 10);
-        var lat2 = parseInt(match[3], 10);
-        var lat3 = parseFloat("0." + match[4]) * 60;
-        lat3 = Math.round(lat3 * 10000) / 10000;
-
-        var lng1 = parseInt(match[6], 10);
-        var lng2 = parseInt(match[7], 10);
-        var lng3 = parseFloat("0." + match[8]) * 60;
-        lng3 = Math.round(lng3 * 10000) / 10000;
-
-        return match[1] + " " + lat1 + "° " + lat2 + "' " + lat3 + "\" " + match[5] + " " + lng1 + "° " + lng2 + "' " + lng3 + "\"";
-    }
-
-// Helper: from Dec to Deg
-    function DectoDeg(lat, lng) {
-        lat = lat / 10000000;
-        var pre = "";
-        if (lat > 0) pre = "N";
-        else {
-            pre = "S";
-            lat = lat * -1;
-        }
-        var tmp1 = parseInt(lat);
-        var tmp2 = (lat - tmp1) * 60;
-        tmp1 = String(tmp1);
-        if (tmp1.length == 1) tmp1 = "0" + tmp1;
-        tmp2 = Math.round(tmp2 * 10000) / 10000;
-        tmp2 = String(tmp2);
-        if (tmp2.length == 0) tmp2 = tmp2 + "0.000";
-        else if (tmp2.length == 1) tmp2 = tmp2 + ".000";
-        else if (tmp2.length == 2) tmp2 = tmp2 + ".000";
-        else if (tmp2.length == 3) tmp2 = tmp2 + "000";
-        else if (tmp2.length == 4) tmp2 = tmp2 + "00";
-        else if (tmp2.length == 5) tmp2 = tmp2 + "0";
-        var new_lat = pre + " " + tmp1 + "° " + tmp2;
-
-        lng = lng / 10000000;
-        var pre = "";
-        if (lng > 0) pre = "E";
-        else {
-            pre = "W";
-            lng = lng * -1;
-        }
-        var tmp1 = parseInt(lng);
-        var tmp2 = (lng - tmp1) * 60;
-        tmp1 = String(tmp1);
-        if (tmp1.length == 2) tmp1 = "0" + tmp1;
-        else if (tmp1.length == 1) tmp1 = "00" + tmp1;
-        tmp2 = Math.round(tmp2 * 10000) / 10000;
-        tmp2 = String(tmp2);
-        if (tmp2.length == 0) tmp2 = tmp2 + "0.000";
-        else if (tmp2.length == 1) tmp2 = tmp2 + ".000";
-        else if (tmp2.length == 2) tmp2 = tmp2 + ".000";
-        else if (tmp2.length == 3) tmp2 = tmp2 + "000";
-        else if (tmp2.length == 4) tmp2 = tmp2 + "00";
-        else if (tmp2.length == 5) tmp2 = tmp2 + "0";
-        var new_lng = pre + " " + tmp1 + "° " + tmp2;
-
-        return new_lat + " " + new_lng;
-    }
-
-// Close the Overlays, Find Player and GClh-Configuration
-    function btnClose( clearUrl ) {
-        if (document.getElementById('bg_shadow')) document.getElementById('bg_shadow').style.display = "none";
-        if (document.getElementById('settings_overlay')) document.getElementById('settings_overlay').style.display = "none";
-        if (document.getElementById('sync_settings_overlay')) document.getElementById('sync_settings_overlay').style.display = "none";
-        if (document.getElementById('findplayer_overlay')) document.getElementById('findplayer_overlay').style.display = "none";
-        if ( clearUrl != false ) {
-            document.location.href = clearUrlAppendix( document.location.href, false );
-        }
-    }
-
-// Function to get the Finds out of the login-Text-Box
-    function get_my_finds() {
-        var finds = "";
-        if ($('.li-user-info').children().length >= 2) {
-            if ( $('.li-user-info').children().next().text() ) {
-                finds = parseInt($('.li-user-info').children().next().text().match(/[0-9,\.]+/)[0].replace(/[,\.]/,""));
-            }
-        }
-        return finds;
-    }
-
-// Sucht den Original Usernamen des Owners aus dem Listing
-    function get_real_owner() {
-        if (document.getElementById("ctl00_ContentBody_bottomSection")) {
-            var links = document.getElementById("ctl00_ContentBody_bottomSection").getElementsByTagName("a");
-            for (var i = 0; i < links.length; i++) {
-                var match = links[i].href.match(/\/seek\/nearest\.aspx\?u\=(.*)$/);
-                if (match) {
-                    return urldecode(match[1]);
-                }
-            }
-            return false;
-        } else return false;
-    }
-
-// Versteckt den Header in der Map-Ansicht
-    function hide_map_header() {
-        var header = document.getElementsByTagName("header");
-        if (header[0].style.display != "none") {  // Header verstecken
-            header[0].style.display = "none";
-            document.getElementById("Content").style.top = 0;
-        } else { // Header zeigen
-            header[0].style.display = "block";
-            document.getElementById("Content").style.top = "63px";
+// Redirect to Map (von Search Liste direkt in Karte springen)
+    if (settings_redirect_to_map && document.location.href.match(/^https?:\/\/www\.geocaching\.com\/seek\/nearest\.aspx\?/)) {
+        if (!document.location.href.match(/&disable_redirect=/) && !document.location.href.match(/key=/) && !document.location.href.match(/ul=/) && document.getElementById('ctl00_ContentBody_LocationPanel1_lnkMapIt')) {
+            document.getElementById('ctl00_ContentBody_LocationPanel1_lnkMapIt').click();
         }
     }
 
@@ -997,8 +772,8 @@ var mainGC = function () {
         }
     }
 
-// F2 zum Log abschicken
-    if (settings_submit_log_button && (document.location.href.match(/^https?:\/\/www\.geocaching\.com\/seek\/log\.aspx\?(id|guid|ID|wp|LUID|PLogGuid)\=/) || document.location.href.match(/^https?:\/\/www\.geocaching\.com\/track\/log\.aspx\?(id|wid|guid|ID|PLogGuid)\=/)) && document.getElementById("ctl00_ContentBody_LogBookPanel1_btnSubmitLog")) {
+// F2 zum Log abschicken (Cache und TB)
+    if (settings_submit_log_button && (document.location.href.match(/^https?:\/\/www\.geocaching\.com\/seek\/log\.aspx\?(id|guid|ID|wp|LUID|PLogGuid)\=/) || document.location.href.match(/^https?:\/\/www\.geocaching\.com\/track\/log\.aspx\?(id|wid|guid|ID|LUID|PLogGuid)\=/)) && document.getElementById("ctl00_ContentBody_LogBookPanel1_btnSubmitLog")) {
         try {
             var but = document.getElementById("ctl00_ContentBody_LogBookPanel1_btnSubmitLog");
             but.value = document.getElementById("ctl00_ContentBody_LogBookPanel1_btnSubmitLog").value + " (F2)";
@@ -1598,7 +1373,6 @@ var mainGC = function () {
     } catch (e) {
         gclh_error("Change Header layout", e);
     }
-
     // GC Logo ändern.
     function changeGcLogo(side) {
         if (settings_show_smaller_gc_link) {
@@ -2550,13 +2324,6 @@ var mainGC = function () {
             });
         } catch (e) {
             gclh_error("Sum up all FP and BM entries on public profile pages", e);
-        }
-    }
-
-// Redirect to Map (von Search Liste direkt in Karte springen)
-    if (settings_redirect_to_map && document.location.href.match(/^https?:\/\/www\.geocaching\.com\/seek\/nearest\.aspx\?/)) {
-        if (!document.location.href.match(/&disable_redirect=/) && !document.location.href.match(/key=/) && !document.location.href.match(/ul=/) && document.getElementById('ctl00_ContentBody_LocationPanel1_lnkMapIt')) {
-            document.getElementById('ctl00_ContentBody_LocationPanel1_lnkMapIt').click();
         }
     }
 
@@ -4791,24 +4558,6 @@ var mainGC = function () {
         }
     }
 
-    // hide archived at own caches
-    if (settings_hide_archived_in_owned && document.location.href.match(/^https?:\/\/www\.geocaching\.com\/my\/owned\.aspx/)) {
-        try {
-            var links = document.getElementsByTagName("a");
-            for (var i = 0; i < links.length; i++) {
-                if (links[i].href.match(/\/seek\/cache_details\.aspx\?/)) {
-                    var archived = links[i].classList.contains("OldWarning");
-
-                    if (archived) {
-                        links[i].parentNode.parentNode.style.display = 'none';
-                    }
-                }
-            }
-        } catch (e) {
-            gclh_error("Failed to hide archived caches in owned list", e);
-        }
-    }
-
 // Hide TBs/Coins in Profile
     if (settings_hide_visits_in_profile && document.location.href.match(/^https?:\/\/www\.geocaching\.com\/my\//)) {
         try {
@@ -5942,14 +5691,13 @@ var mainGC = function () {
                 document.getElementsByTagName("body")[0].appendChild(script);
             }
 
+            var regexp = new RegExp(settings_spoiler_strings, "i");
+
             for (var i = 0; i < links.length; i++) {
-                // Dass bei Spoilern die Bilder nicht aufgebaut werden, funktioniert nicht. Ein entsprechendes Coding im eigenen Log Template ist
-                // derzeit nicht vorhanden.
-                if (is_page("cache_listing") && links[i].href.match(/^https?:\/\/img\.geocaching\.com\/cache/) ) {
+                if ( is_page("cache_listing") && links[i].href.match(/^https?:\/\/img\.geocaching\.com\/cache/) ) {
                     var span = document.createElement("span");
                     var thumb = document.createElement("img");
                     var thumb_link = links[i].href;
-
                     if (thumb_link.match(/cache\/log/)) {
                         thumb_link = thumb_link.replace(/cache\/log/, "cache/log/thumb");
                     } else {
@@ -5959,33 +5707,37 @@ var mainGC = function () {
                     thumb.src = thumb_link;
                     thumb.title = links[i].innerHTML;
                     thumb.alt = links[i].innerHTML;
-
                     links[i].className = links[i].className + " gclh_thumb";
                     links[i].onmouseover = placeToolTip;
-
                     var big_img = document.createElement("img");
                     big_img.src = links[i].href;
                     big_img.className = "gclh_max";
-
                     span.appendChild(big_img);
-
                     var name = links[i].innerHTML;
                     links[i].innerHTML = "";
                     links[i].appendChild(thumb);
                     links[i].innerHTML += "<br>" + name;
-
                     links[i].appendChild(span);
+
+                    if ( links[i].innerHTML.match(regexp) ) {  // Spoiler String
+                        var div = document.createElement("div");
+                        div.innerHTML = "Spoiler warning";
+                        div.setAttribute("style", "transform: rotate(-30grad); width: 130px; z-index: 1000; position: relative; top: -90px; left: -5px; font-size: 15px;");
+                        links[i].childNodes[0].src = "https://raw.githubusercontent.com/2Abendsegler/GClh/master/images/gclh_logo.png";
+                        links[i].childNodes[0].style.opacity = "0.05";
+                        links[i].childNodes[3].remove();
+                        links[i].parentNode.appendChild(div);
+                    }
+                    
                 // Bilder Gallery Cache, TB und Profil:
                 } else if ( document.location.href.match(/^https?:\/\/www\.geocaching\.com\/(seek\/gallery\.aspx?|track\/gallery\.aspx?|profile\/)/) && 
-                     links[i].href.match(/^https?:\/\/img\.geocaching\.com\/(cache|track)\//) && links[i].childNodes[1] && links[i].childNodes[1].tagName == 'IMG') {
+                            links[i].href.match(/^https?:\/\/img\.geocaching\.com\/(cache|track)\//) && links[i].childNodes[1] && links[i].childNodes[1].tagName == 'IMG' ) {
                     global_imageGallery = true;
                     var thumb = links[i].childNodes[1];
                     var span = document.createElement('span');
                     var img = document.createElement('img');
-
                     img.src = thumb.src.replace(/thumb\//, "");
                     img.className = "gclh_max";
-
                     if (settings_imgcaption_on_top) {
                         // Bezeichnung des Bildes.
                         span.appendChild(document.createTextNode(thumb.parentNode.parentNode.childNodes[5].innerHTML));
@@ -5995,15 +5747,26 @@ var mainGC = function () {
                         // Bezeichnung des Bildes.
                         span.appendChild(document.createTextNode(thumb.parentNode.parentNode.childNodes[5].innerHTML));
                     }
-
                     links[i].className = links[i].className + " gclh_thumb";
                     links[i].onmouseover = placeToolTip;
-
                     links[i].appendChild(span);
-                }
+
+                    if ( document.location.href.match(/^https?:\/\/www\.geocaching\.com\/seek\/gallery\.aspx?/) ) {
+                        if ( links[i].dataset.title && links[i].dataset.title.match(regexp) ) {  // Spoiler String
+                            var div = document.createElement("div");
+                            div.innerHTML = "Spoiler warning";
+                            div.setAttribute("style", "transform: rotate(-30grad); width: 130px; z-index: 1000; position: relative; top: -110px; left: -5px; font-size: 15px;");
+                            links[i].childNodes[1].src = "https://raw.githubusercontent.com/2Abendsegler/GClh/master/images/gclh_logo.png";
+                            links[i].childNodes[1].style.opacity = "0.05";
+                            links[i].childNodes[1].style.height = "100px";
+                            links[i].childNodes[2].remove();
+                            links[i].parentNode.appendChild(div);
+                        }
+                    }
+                    
                 // Bilder im TB Listing:
-                else if ( document.location.href.match(/^https?:\/\/www\.geocaching\.com\/track\/details\.aspx?/) &&
-                          links[i].href.match(/^https?:\/\/img\.geocaching\.com\/track/) ) {
+                } else if ( document.location.href.match(/^https?:\/\/www\.geocaching\.com\/track\/details\.aspx?/) &&
+                            links[i].href.match(/^https?:\/\/img\.geocaching\.com\/track/) ) {
                     // Bestehendes a tag (track/log/large) um class und Event ergänzen.
                     links[i].className = links[i].className + " gclh_thumb";
                     links[i].onmouseover = placeToolTip;
@@ -6031,22 +5794,18 @@ var mainGC = function () {
                     }
                     // Neues img und neues span einbauen.
                     links[i].appendChild(span);
-                }
+                
                 // Profile Foto:
-                else if ( profileFoto && links[i].childNodes[0] && links[i].childNodes[0].tagName == 'IMG' &&
-                          links[i].childNodes[0].src.match(/^https?:\/\/img\.geocaching\.com\/user\/avatar/) ) {
+                } else if ( profileFoto && links[i].childNodes[0] && links[i].childNodes[0].tagName == 'IMG' &&
+                            links[i].childNodes[0].src.match(/^https?:\/\/img\.geocaching\.com\/user\/avatar/) ) {
                     var thumb = links[i].childNodes[0];
-
                     var img = document.createElement('img');
                     img.src = thumb.src.replace(/img\.geocaching\.com\/user\/avatar/, "s3.amazonaws.com/gs-geo-images");
                     img.className = "gclh_max";
-
                     var span = document.createElement('span');
                     span.appendChild(img);
-
                     links[i].className += " gclh_thumb";
                     links[i].onmouseover = placeToolTip;
-
                     links[i].appendChild(span);
                 }
             }
@@ -6054,7 +5813,7 @@ var mainGC = function () {
             gclh_error("Show Thumbnails", e);
         }
     }
-
+    
 // Show gallery-Images in 2 instead of 4 cols
     if (settings_show_big_gallery && document.location.href.match(/^https?:\/\/www\.geocaching\.com\/(seek\/gallery\.aspx?|track\/gallery\.aspx?|profile\/)/)) {
         try {
@@ -6333,7 +6092,7 @@ var mainGC = function () {
                 };
             }
 
-            // Helper: Add VIP-Icon
+            // Add VIP-Icon
             function gclh_add_vip_icon() {
                 var elements = $(document.getElementById("cache_logs_table2") || document.getElementById("cache_logs_table")).find("a.gclh_vip").not(".gclh_vip_hasIcon");
 
@@ -7330,30 +7089,36 @@ var mainGC = function () {
        
 // Special Links aus Linklist versorgen.
     try {
-        // Links zu Nearest Lists/Map in Linklist und in Ablistung der Listlist im Profile setzen. 
+        setSpecialLinks();
+    } catch (e) {
+        gclh_error("Special Links", e);
+    }
+    function setSpecialLinks() {
+        // Links zu Nearest Lists/Map in Linklist, im Config und in Ablistung der Listlist im Profile setzen.
         if (getValue("home_lat", 0) != 0 && getValue("home_lng") != 0) {
             // Nearest List.
             var link = http + "://www.geocaching.com/seek/nearest.aspx?lat=" + (getValue("home_lat") / 10000000) + "&lng=" + (getValue("home_lng") / 10000000) + "&dist=25&disable_redirect=";
             if ( document.getElementsByName("lnk_nearestlist")[0] ) document.getElementsByName("lnk_nearestlist")[0].href = link;
+            if ( document.getElementsByName("lnk_nearestlist")[1] ) document.getElementsByName("lnk_nearestlist")[1].href = link;
             if ( document.getElementsByName("lnk_nearestlist_profile")[0] ) document.getElementsByName("lnk_nearestlist_profile")[0].href = link;
             // Nearest Map.
             var link = map_url + "?lat=" + (getValue("home_lat") / 10000000) + "&lng=" + (getValue("home_lng") / 10000000);
             if ( document.getElementsByName("lnk_nearestmap")[0] ) document.getElementsByName("lnk_nearestmap")[0].href = link;
+            if ( document.getElementsByName("lnk_nearestmap")[1] ) document.getElementsByName("lnk_nearestmap")[1].href = link;
             if ( document.getElementsByName("lnk_nearestmap_profile")[0] ) document.getElementsByName("lnk_nearestmap_profile")[0].href = link;
             // Nearest List without Founds.
             var link = http + "://www.geocaching.com/seek/nearest.aspx?lat=" + (getValue("home_lat") / 10000000) + "&lng=" + (getValue("home_lng") / 10000000) + "&dist=25&f=1&disable_redirect=";
             if ( document.getElementsByName("lnk_nearestlist_wo")[0] ) document.getElementsByName("lnk_nearestlist_wo")[0].href = link;
+            if ( document.getElementsByName("lnk_nearestlist_wo")[1] ) document.getElementsByName("lnk_nearestlist_wo")[1].href = link;
             if ( document.getElementsByName("lnk_nearestlist_wo_profile")[0] ) document.getElementsByName("lnk_nearestlist_wo_profile")[0].href = link;
         }
-
-        // Links zu den eigenen Trackables setzen. 
+        // Links zu den eigenen Trackables in Linklist, im Config und in Ablistung der Listlist im Profile setzen.
         if (getValue("uid", "") != "") {
             var link = http + "://www.geocaching.com/track/search.aspx?o=1&uid=" + getValue("uid");
             if ( document.getElementsByName("lnk_my_trackables")[0] ) document.getElementsByName("lnk_my_trackables")[0].href = link;
+            if ( document.getElementsByName("lnk_my_trackables")[1] ) document.getElementsByName("lnk_my_trackables")[1].href = link;
             if ( document.getElementsByName("lnk_my_trackables_profile")[0] ) document.getElementsByName("lnk_my_trackables_profile")[0].href = link;
         }
-    } catch (e) {
-        gclh_error("Special Links", e);
     }
     
 // Add Download Link to Labs cache Pages
@@ -7461,8 +7226,243 @@ var mainGC = function () {
     }
     
 ////////////////////////////////////////////////////////////////////////////
-// Functions Helper (fun2)
+// Functions Helper (fun1)
 ////////////////////////////////////////////////////////////////////////////
+    function in_array(search, arr) {
+        for (var i = 0; i < arr.length; i++) if (arr[i] == search) return true;
+        return false;
+    }
+
+    function caseInsensitiveSort(a, b) {  // http://www.codingforums.com/showthread.php?t=10477
+        var ret = 0;
+        a = a.toLowerCase();
+        b = b.toLowerCase();
+        if (a > b)
+            ret = 1;
+        if (a < b)
+            ret = -1;
+        return ret;
+    }
+
+    function urlencode(s) {
+        s = s.replace(/&amp;/g, "&");
+        s = encodeURIComponent(s);  //Kodiert alle außer den folgenden Zeichen: A bis Z und a bis z und - _ . ! ~ * ' ( )
+        s = s.replace(/~/g, "%7e");
+        s = s.replace(/'/g, "%27");
+        s = s.replace(/%26amp%3b/g, "%26");
+        s = s.replace(/ /g, "+");
+        //GC.com codiert - _ . ! * ( ) selbst nicht, daher wird dies hier auch nicht extra behandel
+        return s;
+    }
+
+    function urldecode(s) {
+        s = s.replace(/\+/g, " ");
+        s = s.replace(/%7e/g, "~");
+        s = s.replace(/%27/g, "'");
+        s = decodeURIComponent(s);
+        return s;
+    }
+
+    function html_to_str(s) {
+        s = s.replace(/\&amp;/g, "&");
+        s = s.replace(/\&nbsp;/g, " ");
+        return s;
+    }
+
+    function trim(s) {
+        var whitespace = ' \n ';
+        for (var i = 0; i < whitespace.length; i++) {
+            while (s.substring(0, 1) == whitespace.charAt(i)) {
+                s = s.substring(1, s.length);
+            }
+            while (s.substring(s.length - 1, s.length) == whitespace.charAt(i)) {
+                s = s.substring(0, s.length - 1);
+            }
+        }
+
+        if (s.substring(s.length - 6, s.length) == "&nbsp;") s = s.substring(0, s.length - 6);
+
+        return s;
+    }
+
+// Change coordinates from N/S/E/W Deg Min.Sec to Dec
+    function toDec(coords) {
+        var match = coords.match(/([0-9]+)°([0-9]+)\.([0-9]+)′(N|S), ([0-9]+)°([0-9]+)\.([0-9]+)′(W|E)/);
+
+        if (match) {
+            var dec1 = parseInt(match[1], 10) + (parseFloat(match[2] + "." + match[3]) / 60);
+            if (match[4] == "S") dec1 = dec1 * -1;
+            dec1 = Math.round(dec1 * 10000000) / 10000000;
+
+            var dec2 = parseInt(match[5], 10) + (parseFloat(match[6] + "." + match[7]) / 60);
+            if (match[8] == "W") dec2 = dec2 * -1;
+            dec2 = Math.round(dec2 * 10000000) / 10000000;
+
+            return new Array(dec1, dec2);
+        }
+        else {
+            match = coords.match(/(N|S) ([0-9]+)°? ([0-9]+)\.([0-9]+) (E|W) ([0-9]+)°? ([0-9]+)\.([0-9]+)/);
+
+            if (match) {
+                var dec1 = parseInt(match[2], 10) + (parseFloat(match[3] + "." + match[4]) / 60);
+                if (match[1] == "S") dec1 = dec1 * -1;
+                dec1 = Math.round(dec1 * 10000000) / 10000000;
+
+                var dec2 = parseInt(match[6], 10) + (parseFloat(match[7] + "." + match[8]) / 60);
+                if (match[5] == "W") dec2 = dec2 * -1;
+                dec2 = Math.round(dec2 * 10000000) / 10000000;
+
+                return new Array(dec1, dec2);
+            }
+            else {
+                match = coords.match(/(N|S) ([0-9]+) ([0-9]+) ([0-9]+)\.([0-9]+) (E|W) ([0-9]+) ([0-9]+) ([0-9]+)\.([0-9]+)/);
+
+                if (match) {
+                    var dec1 = parseInt(match[2], 10) + (parseFloat(match[3]) / 60) + (parseFloat(match[4] + "." + match[5]) / 3600);
+                    if (match[1] == "S") dec1 = dec1 * -1;
+                    dec1 = Math.round(dec1 * 10000000) / 10000000;
+
+                    var dec2 = parseInt(match[7], 10) + (parseFloat(match[8]) / 60) + (parseFloat(match[9] + "." + match[10]) / 3600);
+                    if (match[6] == "W") dec2 = dec2 * -1;
+                    dec2 = Math.round(dec2 * 10000000) / 10000000;
+
+                    return new Array(dec1, dec2);
+                }
+                else {
+                    match = coords.match(/(N|S) ([0-9]+) ([0-9]+) ([0-9]+\..[0-9].) (E|W) ([0-9]+) ([0-9]+) ([0-9]+\..[0-9].)/);
+
+                    if (match) {
+                        var dec1 = parseInt(match[2], 10) + (parseFloat(match[3]) / 60) + (parseFloat(match[4]) / 3600);
+                        if (match[1] == "S") dec1 = dec1 * -1;
+                        dec1 = Math.round(dec1 * 10000000) / 10000000;
+
+                        var dec2 = parseInt(match[6], 10) + (parseFloat(match[7]) / 60) + (parseFloat(match[8]) / 3600);
+                        if (match[5] == "W") dec2 = dec2 * -1;
+                        dec2 = Math.round(dec2 * 10000000) / 10000000;
+
+                        return new Array(dec1, dec2);
+                    } else {
+                        return false;
+                    }
+                }
+            }
+        }
+    }
+
+// Change coordinates from Deg to DMS
+    function DegtoDMS(coords) {
+        var match = coords.match(/^(N|S) ([0-9][0-9]). ([0-9][0-9])\.([0-9][0-9][0-9]) (E|W) ([0-9][0-9][0-9]). ([0-9][0-9])\.([0-9][0-9][0-9])$/);
+        if (!match) return "";
+
+        var lat1 = parseInt(match[2], 10);
+        var lat2 = parseInt(match[3], 10);
+        var lat3 = parseFloat("0." + match[4]) * 60;
+        lat3 = Math.round(lat3 * 10000) / 10000;
+
+        var lng1 = parseInt(match[6], 10);
+        var lng2 = parseInt(match[7], 10);
+        var lng3 = parseFloat("0." + match[8]) * 60;
+        lng3 = Math.round(lng3 * 10000) / 10000;
+
+        return match[1] + " " + lat1 + "° " + lat2 + "' " + lat3 + "\" " + match[5] + " " + lng1 + "° " + lng2 + "' " + lng3 + "\"";
+    }
+
+// Change coordinates from Dec to Deg
+    function DectoDeg(lat, lng) {
+        lat = lat / 10000000;
+        var pre = "";
+        if (lat > 0) pre = "N";
+        else {
+            pre = "S";
+            lat = lat * -1;
+        }
+        var tmp1 = parseInt(lat);
+        var tmp2 = (lat - tmp1) * 60;
+        tmp1 = String(tmp1);
+        if (tmp1.length == 1) tmp1 = "0" + tmp1;
+        tmp2 = Math.round(tmp2 * 10000) / 10000;
+        tmp2 = String(tmp2);
+        if (tmp2.length == 0) tmp2 = tmp2 + "0.000";
+        else if (tmp2.length == 1) tmp2 = tmp2 + ".000";
+        else if (tmp2.length == 2) tmp2 = tmp2 + ".000";
+        else if (tmp2.length == 3) tmp2 = tmp2 + "000";
+        else if (tmp2.length == 4) tmp2 = tmp2 + "00";
+        else if (tmp2.length == 5) tmp2 = tmp2 + "0";
+        var new_lat = pre + " " + tmp1 + "° " + tmp2;
+
+        lng = lng / 10000000;
+        var pre = "";
+        if (lng > 0) pre = "E";
+        else {
+            pre = "W";
+            lng = lng * -1;
+        }
+        var tmp1 = parseInt(lng);
+        var tmp2 = (lng - tmp1) * 60;
+        tmp1 = String(tmp1);
+        if (tmp1.length == 2) tmp1 = "0" + tmp1;
+        else if (tmp1.length == 1) tmp1 = "00" + tmp1;
+        tmp2 = Math.round(tmp2 * 10000) / 10000;
+        tmp2 = String(tmp2);
+        if (tmp2.length == 0) tmp2 = tmp2 + "0.000";
+        else if (tmp2.length == 1) tmp2 = tmp2 + ".000";
+        else if (tmp2.length == 2) tmp2 = tmp2 + ".000";
+        else if (tmp2.length == 3) tmp2 = tmp2 + "000";
+        else if (tmp2.length == 4) tmp2 = tmp2 + "00";
+        else if (tmp2.length == 5) tmp2 = tmp2 + "0";
+        var new_lng = pre + " " + tmp1 + "° " + tmp2;
+
+        return new_lat + " " + new_lng;
+    }
+
+// Close the Overlays, Find Player and GClh-Configuration
+    function btnClose( clearUrl ) {
+        if (document.getElementById('bg_shadow')) document.getElementById('bg_shadow').style.display = "none";
+        if (document.getElementById('settings_overlay')) document.getElementById('settings_overlay').style.display = "none";
+        if (document.getElementById('sync_settings_overlay')) document.getElementById('sync_settings_overlay').style.display = "none";
+        if (document.getElementById('findplayer_overlay')) document.getElementById('findplayer_overlay').style.display = "none";
+        if ( clearUrl != false ) {
+            document.location.href = clearUrlAppendix( document.location.href, false );
+        }
+    }
+
+// Function to get the Finds out of the login-Text-Box
+    function get_my_finds() {
+        var finds = "";
+        if ($('.li-user-info').children().length >= 2) {
+            if ( $('.li-user-info').children().next().text() ) {
+                finds = parseInt($('.li-user-info').children().next().text().match(/[0-9,\.]+/)[0].replace(/[,\.]/,""));
+            }
+        }
+        return finds;
+    }
+
+// Sucht den Original Usernamen des Owners aus dem Listing
+    function get_real_owner() {
+        if (document.getElementById("ctl00_ContentBody_bottomSection")) {
+            var links = document.getElementById("ctl00_ContentBody_bottomSection").getElementsByTagName("a");
+            for (var i = 0; i < links.length; i++) {
+                var match = links[i].href.match(/\/seek\/nearest\.aspx\?u\=(.*)$/);
+                if (match) {
+                    return urldecode(match[1]);
+                }
+            }
+            return false;
+        } else return false;
+    }
+
+// Versteckt den Header in der Map-Ansicht
+    function hide_map_header() {
+        var header = document.getElementsByTagName("header");
+        if (header[0].style.display != "none") {  // Header verstecken
+            header[0].style.display = "none";
+            document.getElementById("Content").style.top = 0;
+        } else { // Header zeigen
+            header[0].style.display = "block";
+            document.getElementById("Content").style.top = "63px";
+        }
+    }
+
 // CSS Style hinzufügen.
     function appendCssStyle( css ) {
         var head = document.getElementsByTagName('head')[0];
@@ -7769,6 +7769,8 @@ var mainGC = function () {
 
 // Show, hide Box. Beispielsweise die beiden VIP Boxen im Cache Listing. Kann aber auch für andere Dinge genutzt werden.
     function showHideBoxCL( id_lnk, first ) {
+        if ( id_lnk.match("lnk_gclh_config_") ) var is_config = true;
+        else is_config = false;
         var name_show_box = id_lnk.replace("lnk_", "show_box_");
         var id_box = id_lnk.replace("lnk_", "");
         var show_box = getValue(name_show_box, true); 
@@ -7780,11 +7782,15 @@ var mainGC = function () {
         if ( lnk && box ) {
             if ( ( show_box == true && first == true )   ||
                  ( show_box == false && first == false )    ) {
-                setShowHide( lnk, "hide" );
+                setShowHide( lnk, "hide", is_config );
                 box.show();
                 setValue(name_show_box, true);
+                if ( !first && is_config ) {
+                    document.getElementById(id_lnk).scrollIntoView(); 
+                    window.scrollBy(0, -8);
+                }
             } else {
-                setShowHide( lnk, "show" );
+                setShowHide( lnk, "show", is_config );
                 box.hide();
                 setValue(name_show_box, false);
             }
@@ -7792,13 +7798,15 @@ var mainGC = function () {
     }
 
 // Show bzw. hide setzen.
-    function setShowHide( row, whatToDo ) {
+    function setShowHide( row, whatToDo, is_config ) {
         if ( whatToDo == "show" ) {
-            row.title = "show"; 
-            row.src = http + "://www.geocaching.com/images/plus.gif";
+            row.title = "show";
+            if ( is_config == true ) row.src = "https://raw.githubusercontent.com/2Abendsegler/GClh/master/images/plus_config2.gif";
+            else row.src = http + "://www.geocaching.com/images/plus.gif";
         } else {
-            row.title = "hide"; 
-            row.src = http + "://www.geocaching.com/images/minus.gif";
+            row.title = "hide";
+            if ( is_config == true ) row.src = "https://raw.githubusercontent.com/2Abendsegler/GClh/master/images/minus_config2.gif";
+            else row.src = http + "://www.geocaching.com/images/minus.gif";
         }
     }
 
@@ -7947,7 +7955,7 @@ var mainGC = function () {
         html += "}";
         html += "";
         html += ".gclh_headline2 {";
-        html += "  margin: 20px 5px 5px -2px;";
+        html += "  margin: 12px 5px 5px -2px;";
         html += "}";
         html += "";
         html += ".gclh_content {";
@@ -8233,10 +8241,9 @@ var mainGC = function () {
             html += "<div id='gclh_config_profile'>";
             html += checkboxy('settings_bookmarks_show', "Show <a class='gclh_ref' href='#gclh_linklist' id='gclh_linklist_link_2'>Linklist</a> in your profile") + show_help("Show the Linklist at the right side in your profile. You can configure the links in the Linklist at the end of this page.") + "<br/>";
             html += checkboxy('settings_hide_visits_in_profile', 'Hide TB/Coin visits in your profile') + "<br/>";
-            html += checkboxy('settings_show_thumbnails', 'Show thumbnails of images') + show_help("With this option the images are displayed as thumbnails to have a preview. If you hover over a thumbnail, you can see the big one.<br><br>This works in cache and TB logs, in the cache and TB image galleries and in the profile image galleries. <br><br><u>Best practice in image galleries:</u> Let the thumbnails as much as possible at the top or at the bottom of your screen. It should be better to hover with your mouse from the right side of your screen to the left side as inverse.") + "&nbsp; Max size of big image: <input class='gclh_form' size=2 type='text' id='settings_hover_image_max_size' value='" + settings_hover_image_max_size + "'> px <br/>";
+            html += checkboxy('settings_show_thumbnails', 'Show thumbnails of images') + show_help("With this option the images are displayed as thumbnails to have a preview. If you hover over a thumbnail, you can see the big one.<br><br>This works in cache and TB logs, in the cache and TB image galleries, in public profile for the avatar and in the profile image gallery.") + "&nbsp; Max size of big image: <input class='gclh_form' size=2 type='text' id='settings_hover_image_max_size' value='" + settings_hover_image_max_size + "'> px <br/>";
             html += "&nbsp; " + checkboxy('settings_imgcaption_on_top', 'Show caption on top') + show_help("This option requires \"Show thumbnails of images\".") + "<br/>";
             html += checkboxy('settings_show_big_gallery', 'Show bigger images in gallery') + show_help("With this option the images in the galleries of caches, TBs and profiles are displayed bigger and not in 4 columns, but in 2 columns.") + "<br/>";
-            html += checkboxy('settings_hide_archived_in_owned', 'Hide archived caches in owned list') + "<br/>";
             html += newParameterOn1;
             content_settings_show_mail_in_allmyvips = checkboxy('settings_show_mail_in_allmyvips', 'Show mail link beside user in "All my VIPs" list in your profile') + show_help("With this option there will be an small mail icon beside every username in the list with all your VIPs (All my VIPs) on your profile page. With this icon you get directly to the mail page to mail to this user. <br><br>This option requires \"Show mail link beside usernames\" and \"Show VIP list\".") + "<br>";
             html += content_settings_show_mail_in_allmyvips;
@@ -8344,7 +8351,8 @@ var mainGC = function () {
             html += content_settings_show_mail_in_viplist.replace("settings_show_mail_in_viplist", "settings_show_mail_in_viplistX0");  
             html += "&nbsp; " + content_settings_show_mail_in_allmyvips.replace("settings_show_mail_in_allmyvips", "settings_show_mail_in_allmyvipsX1"); 
             html += newParameterVersionSetzen(0.1) + newParameterOff;
-            html += checkboxy('settings_show_thumbnailsX0', 'Show thumbnails of images') + show_help("With this option the images are displayed as thumbnails to have a preview. If you hover over a thumbnail, you can see the big one. <br><br>This works in cache and TB logs, in the cache and TB image galleries and in the profile image galleries. <br><br><u>Best practice in image galleries:</u> Let the thumbnails as much as possible at the top or at the bottom of your screen. It should be better to hover with your mouse from the right side of your screen to the left side as inverse.") + "&nbsp; Max size of big image: <input class='gclh_form' size=2 type='text' id='settings_hover_image_max_sizeX0' value='" + settings_hover_image_max_size + "'> px <br/>";
+            html += checkboxy('settings_show_thumbnailsX0', 'Show thumbnails of images') + show_help("With this option the images are displayed as thumbnails to have a preview. If you hover over a thumbnail, you can see the big one.<br><br>This works in cache and TB logs, in the cache and TB image galleries, in public profile for the avatar and in the profile image gallery.") + "&nbsp; Max size of big image: <input class='gclh_form' size=2 type='text' id='settings_hover_image_max_sizeX0' value='" + settings_hover_image_max_size + "'> px <br/>";
+            html += " &nbsp; &nbsp;" + "Spoiler-Filter: <input class='gclh_form' type='text' id='settings_spoiler_strings' value='" + settings_spoiler_strings + "'> " + show_help("If one of these words is found in the caption of the image, there will be no real thumbnail. It is to prevent seeing spoilers. Words have to be divided by |. <br>Default is \"spoiler|hinweis|hint\".<br><br>This option requires \"Show thumbnails of images\".") + "<br/>";
             html += "&nbsp; " + checkboxy('settings_imgcaption_on_topX0', 'Show caption on top') + show_help("This option requires \"Show thumbnails of images\".") + "<br/>";
             html += checkboxy('settings_show_big_galleryX0', 'Show bigger images in gallery') + show_help("With this option the images in the galleries of caches, TBs and profiles are displayed bigger and not in 4 columns, but in 2 columns.") + "<br/>";
             html += checkboxy('settings_hide_avatar', 'Hide avatars in listing') + show_help("This option hides the avatars in logs. This prevents loading the hundreds of images. You have to change the option here, because GClh overrides the log-load-logic of gc.com, so the avatar option of gc.com doesn't work with GClh.") + "<br/>";
@@ -8584,6 +8592,9 @@ var mainGC = function () {
                     if ( num >= 66 && num <= 66 ) {
                         html +=          newParameterLL2;
                     }
+                    if ( num >= 67 && num <= 67 ) {
+                        html +=          newParameterLL3;
+                    }
                 }
                 html += "            </td>";
                 // Zweite Spalte mit gegebenenfalls abweichenden Bezeichnungen:
@@ -8594,6 +8605,9 @@ var mainGC = function () {
                 }
                 if ( num >= 66 && num <= 66 ) {
                     html +=              newParameterLLVersionSetzen(0.2);
+                }
+                if ( num >= 67 && num <= 67 ) {
+                    html +=              newParameterLLVersionSetzen(0.3);
                 }
                 html += "            </td>";
                 html += "        </tr>";
@@ -8612,10 +8626,11 @@ var mainGC = function () {
             html += "<div width='400px' align='right' class='gclh_small' style='float: right; margin-top: -15px;'>License: <a href='https://github.com/2Abendsegler/GClh/blob/master/docu/license.md#readme' target='_blank' title='GNU General Public License Version 2'>GPLv2</a>, Warranty: <a href='https://github.com/2Abendsegler/GClh/blob/master/docu/warranty.md#readme' target='_blank' title='GC little helper comes with ABSOLUTELY NO WARRANTY'>NO</a></div>";
             html += "</div>";
 
-            // Config Content: aufbauen.
+            // Config Content: aufbauen und Special Links Nearest List/Map und Own Trackables versorgen.
             // ---------------
             div.innerHTML = html;
             document.getElementsByTagName('body')[0].appendChild(div);
+            setSpecialLinks();
 
             // Config Content: Hauptbereiche hideable machen.
             // ---------------
@@ -8948,8 +8963,10 @@ var mainGC = function () {
             setEventsForDependentParameters( "settings_show_mail", "settings_show_mail_in_allmyvips" );
             setEventsForDependentParameters( "settings_show_message", "settings_show_message_coordslink" );
             setEventsForDependentParameters( "settings_show_thumbnails", "settings_hover_image_max_size" );
+            setEventsForDependentParameters( "settings_show_thumbnails", "settings_spoiler_strings" );
             setEventsForDependentParameters( "settings_show_thumbnails", "settings_imgcaption_on_top" );
             setEventsForDependentParameters( "settings_show_thumbnailsX0", "settings_hover_image_max_size" );
+            setEventsForDependentParameters( "settings_show_thumbnailsX0", "settings_spoiler_strings" );
             setEventsForDependentParameters( "settings_show_thumbnailsX0", "settings_imgcaption_on_top" );
             setEventsForDependentParameters( "settings_map_overview_build", "settings_map_overview_zoom" );
             setEventsForDependentParameters( "settings_count_own_matrix_show_next", "settings_count_own_matrix_show_count_next" );
@@ -9096,6 +9113,9 @@ var mainGC = function () {
             setValue("settings_tb_signature", document.getElementById('settings_tb_signature').value.replace(/‌/g, ""));
             setValue("settings_map_default_layer", settings_map_default_layer );
             setValue("settings_hover_image_max_size", document.getElementById('settings_hover_image_max_size').value);
+//--> $$023 Begin of change - Disable Spoiler String
+            setValue("settings_spoiler_strings", document.getElementById('settings_spoiler_strings').value);
+//<-- $$023 End of change
             setValue("settings_font_size_menu", document.getElementById('settings_font_size_menu').value);
             setValue("settings_font_size_submenu", document.getElementById('settings_font_size_submenu').value);
             setValue("settings_distance_menu", document.getElementById('settings_distance_menu').value);
@@ -9250,7 +9270,6 @@ var mainGC = function () {
                 'settings_hide_map_header',
                 'settings_replace_log_by_last_log',
                 'settings_show_real_owner',
-                'settings_hide_archived_in_owned',
                 'settings_hide_visits_in_profile',
                 'settings_log_signature_on_fieldnotes',
                 'settings_vip_show_nofound',
@@ -9316,7 +9335,7 @@ var mainGC = function () {
     }
 
 ////////////////////////////////////////////////////////////////////////////
-// Functions Config (fun3)
+// Functions Config (fun2)
 ////////////////////////////////////////////////////////////////////////////
 // Radio Buttons zur Linklist verarbeiten.
     function handleRadioTopMenu( first ) {
@@ -10028,7 +10047,7 @@ var mainGC = function () {
 };
 
 ////////////////////////////////////////////////////////////////////////////
-// Functions global (fun4)
+// Functions global (fun3)
 ////////////////////////////////////////////////////////////////////////////
 // create a bookmark to a page in the geocaching.com name space
 function bookmark(title, href, bookmarkArray) {
