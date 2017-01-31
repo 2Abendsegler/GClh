@@ -7945,6 +7945,9 @@ var mainGC = function () {
     function show_help(text) {
         return " <a class='gclh_info' style='cursor: help' href='javascript:void(0);'><b>?</b><span class='gclh_span'>" + text + "</span></a>";
     }
+    function show_help_big(text) {
+        return " <a class='gclh_info gclh_info_big' style='cursor: help;' href='javascript:void(0);'><b>?</b><span class='gclh_span'>" + text + "</span></a>";
+    }
 
     function create_config_css() {
         var css = document.createElement("style");
@@ -8034,6 +8037,10 @@ var mainGC = function () {
         html += "  font-weight: normal;";
         html += "  border: 1px solid #000000;";
         html += "  background-color: #d8cd9d;";
+        html += "}";
+        html += "";
+        html += "a.gclh_info_big:hover span {";
+        html += "  width: 350px !important;";
         html += "}";
         html += "";
         html += ".multi_homezone_settings {";
@@ -8398,8 +8405,8 @@ var mainGC = function () {
             html += newParameterOn1;
             html += checkboxy('settings_logit_for_basic_in_pmoX0', 'Log PMO caches by standard \"Log It\" icon (for basic members)') + show_help("With this option basic members are able to choose the standard \"Log It\" icon to call the logging screen for premium only caches. The tool tipp blocked not longer this call. You can have the same result by using the right mouse across the \"Log It\" icon and then new tab. <br>The \"Log It\" icon is besides the caches for example in the \"Recently Viewed Caches\" list and in your profile.") + "<br/>";
             html += newParameterVersionSetzen(0.1) + newParameterOff;
-            html += "&nbsp;" + "Log templates:" + show_help("Log templates are pre-defined texts like \"!!! I got the FTF !!!\". All your templates are shown beside the log form. You just have to click to a template and it will be placed in your log. <br><br>Also you are able to use variables: #found# will be replaced with your amount of found caches and will be added with 1 - #found_no# is the same without the +1 - #me# with your username (useful for different accounts at one computer) - #owner# with the name of the owner - #date#, #time# and #datetime# ... . The smilies option has to be enabled. <br><br>Note: You have to set a title and a text - click to the edit icon beside the template to edit the text.") + "<font class='gclh_small'> (Smilies have to be enabled - #found# will be replaced with founds+1 -</font>" + "<br>";
-            html += "&nbsp;" + "<font class='gclh_small'>#found_no# with founds - #me# with you - #owner# ... - #date#, #time# and #datetime# ...)</font>" + "<br>";
+            var placeholderDescription = "Possible placeholder:<br>&nbsp; #Found# : Your founds + 1<br>&nbsp; #Found_no# : Your founds<br>&nbsp; #Me# : Your username<br>&nbsp; #Owner# : Username of the owner<br>&nbsp; #Date# : Actual date<br>&nbsp; #Time# : Actual time in format hh:mm<br>&nbsp; #DateTime# : Actual date actual time<br>&nbsp; #GCTBName# : GC or TB name<br>&nbsp; #GCTBLink# : GC or TB link<br>&nbsp; #GCTBNameLink# : GC or TB name as a link<br>&nbsp; #LogDate# : Content of field \"Date Logged\"<br>(Upper and lower case is not required in the placeholder name.)";
+            html += "&nbsp;" + "Log templates:" + show_help("Log templates are pre-defined texts like \"!!! I got the FTF !!!\". All your templates are shown beside the log form. You just have to click to a template and it will be placed in your log. <br><br>Also you are able to use placeholder for variables which will be replaced in the log. The smilies option has to be enabled. <br><br>Note: You have to set a title and a text - click to the edit icon beside the template to edit the text.") + " &nbsp; (Possible placeholder:" + show_help_big(placeholderDescription) + ")<br>";
             for (var i = 0; i < anzTemplates; i++) {
                 html += "&nbsp;" + "<input class='gclh_form' type='text' size='15' id='settings_log_template_name[" + i + "]' value='" + getValue('settings_log_template_name[' + i + ']', '') + "'> ";
                 html += "<a onClick=\"if(document.getElementById(\'settings_log_template_div[" + i + "]\').style.display == \'\') document.getElementById(\'settings_log_template_div[" + i + "]\').style.display = \'none\'; else document.getElementById(\'settings_log_template_div[" + i + "]\').style.display = \'\'; return false;\" href='#'><img src='" + http + "://www.geocaching.com/images/stockholm/16x16/page_white_edit.gif' border='0'></a><br>";
@@ -8437,17 +8444,15 @@ var mainGC = function () {
             html += "  <option value=\"4\" " + (settings_default_tb_logtype == "4" ? "selected=\"selected\"" : "") + ">Write note</option>";
             html += "  <option value=\"48\" " + (settings_default_tb_logtype == "48" ? "selected=\"selected\"" : "") + ">Discovered it</option>";
             html += "</select>" + show_help("If you set this option, the selected value will be selected automatically, if you open a log page.") + "<br>";
-            html += "&nbsp;" + "Cache log signature:" + show_help("The signature will automatically be inserted into your logs. <br><br>Also you are able to use variables: #found# will be replaced with your amount of found caches and will be added with 1 - #found_no# is the same without the +1 - #me# with your username (useful for different accounts at one computer) - #owner# with the name of the owner - #date#, #time# and #datetime# ... .") + " <font class='gclh_small'>(#found# will be replaced with founds+1 - #found_no# with founds - </font><br>";
-            html += "&nbsp;" + "<font class='gclh_small'>#me# with you - #owner# ... - #date#, #time# and #datetime# ...)</font><br>";
+            html += "&nbsp;" + "Cache log signature:" + show_help("The signature will automatically be inserted into your logs. <br><br>Also you are able to use placeholder for variables which will be replaced in the log.") + " &nbsp; (Possible placeholder:" + show_help_big(placeholderDescription) + ")<br>";
             html += "&nbsp;" + "<textarea class='gclh_form' rows='8' cols='40' id='settings_log_signature'>&zwnj;" + getValue("settings_log_signature", "") + "</textarea><br>";
             html += checkboxy('settings_log_signature_on_fieldnotes', 'Add log signature on Field Notes logs') + show_help('If this option is disabled, the log signature will not be used by logs out of Field Notes - you can use it, if you already have an signature in your Field Notes.') + "<br>";
-            html += "&nbsp;" + "TB log signature:" + show_help("The signature will automatically be inserted into your TB logs. <br><br>Also you are able to use variables: #found# will be replaced with your amount of found caches and will be added with 1 - #found_no# is the same without the +1 - #me# with your username (useful for different accounts at one computer) - #owner# with the name of the owner - #date#, #time# and #datetime# ... .") + " <font class='gclh_small'>(#found# will be replaced with founds+1 - #found_no# with founds - </font><br>";
-            html += "&nbsp;" + "<font class='gclh_small'>#me# with you - #owner# ... - #date#, #time# and #datetime# ...)</font><br>";
+            html += "&nbsp;" + "TB log signature:" + show_help("The signature will automatically be inserted into your TB logs. <br><br>Also you are able to use placeholder for variables which will be replaced in the log.") + " &nbsp; (Possible placeholder:" + show_help_big(placeholderDescription) + ")<br>";
             html += "&nbsp;" + "<textarea class='gclh_form' rows='8' cols='40' id='settings_tb_signature'>&zwnj;" + getValue("settings_tb_signature", "") + "</textarea><br>";
             html += "</div>";
             html += "<h4 class='gclh_headline2'>"+prepareHideable.replace("#name#","mail")+"Mail / Message form</h4>";
             html += "<div id='gclh_config_mail'>";
-            html += "&nbsp;" + "Signature: &nbsp; &nbsp; &nbsp; " + show_help("The signature will automatically be inserted into your mails and messages. #me# will be replaced with your username.") + " <font class='gclh_small'>(#me# will be replaced with your username.)</font><br>";
+            html += "&nbsp;" + "Signature: &nbsp; &nbsp; &nbsp; " + show_help("The signature will automatically be inserted into your mails and messages. #me# will be replaced with your username.") + "<br>";
             html += "&nbsp;" + "<textarea class='gclh_form' rows='8' cols='40' id='settings_mail_signature'>&zwnj;" + getValue("settings_mail_signature", "") + "</textarea><br>";
             html += "</div>";
             html += "<h4 class='gclh_headline2'><a name='gclh_linklist'></a>"+prepareHideable.replace("#name#","linklist")+"Linklist / Navigation" + show_help("In this section you can configure your personal Linklist which is shown on the top of the page and/or in your profile. You can activate it on top of this configuration page respectively in the \"Profile / Statistic\" section.") + "</h4>";
