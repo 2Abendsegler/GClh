@@ -5,13 +5,13 @@ ACE Geocachers#          /(ACE)(.*)(Geocacher)/i#
 Addicted Geocacher Trackables# /(Addicted)(.*)(Geocacher)(.*)(Trackable)/i#
 Ampelman Coins#          /(Ampelman)(.*)(Coin)/i#
 Ampelman Micros#         /(Ampelman)(.*)(Micro)/i#
-Aussie Tags# /(Aussie)(.*)(Tag)/i#
-Bad Trackables# /(Bad)(.*)(Trackable)/i#
-Beer Tags# /(Beer)(.*)(Tag)/i#
-Black Carabiners# /(Black)(.*)(Carabiner)/i#
-Block Party Tags# /(Block)(.*)(Party)(.*)(Tag)/i#
-Bonetags# /(Bone)(.*)(tag)/i#
-Butterflys# /(Butterfly)/i#
+Aussie Tags#             /(Aussie)(.*)(Tag)/i#
+Bad Trackables#          /(Bad)(.*)(Trackable)/i#
+Beer Tags#               /(Beer)(.*)(Tag)/i#
+Black Carabiners#        /(Black)(.*)(Carabiner)/i#
+Block Party Tags#        /(Block)(.*)(Party)(.*)(Tag)/i#
+Bonetags#                /(Bone)(.*)(tag)/i#
+Butterflys#              /(Butterfly)/i#
 Cab's Coins# /(Cab)(.*)(Coin)/i#
 Cache Counters# /(Cach)(.*)(Counter)/i#
 Cache Tags# /(Cach)(.*)(Tag)/i#
