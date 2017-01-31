@@ -1,2 +1,2 @@
-Travel Bugs,    /(Travel)(.*)(Bug)/i
-Geocoins,       /(Geocoin|Geo Coin)/i	
+Travel Bugs# /(Travel)(.*)(Bug)/i#
+Geocoins#    /(Geocoin|Geo Coin)/i#	
