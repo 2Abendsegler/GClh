@@ -12,7 +12,7 @@
 ---
 ## v0.3:
 <ul>
-<li>New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/35">#35</a>] Hide archived caches in owned cache list.<br>
+<li>New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/23">#23</a>] Hide archived caches in owned cache list.<br>
 Vielen Dank an <a href="https://github.com/haarspalter">haarspalter</a> für die Entwicklung.<br>
 <br></li>
 <li>New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/92">#92</a>] Added date format dd.MM.yyyy<br>
@@ -37,9 +37,9 @@ Ist die Funktionalität "Show thumbnails of images" aktiviert, dann wird das Pro
 <img src="../images/v0.3_Screen06.jpg" alt="v0.3_Screen06.jpg"><br>
 <br></li>
 <li>New/Change: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/100">#100</a>] Links in Linklist und Fehlermeldungen zu Nearest List, Own Trackables überarbeitet.<br>
-* Text in der Meldung wegen Fehlender Homekoordinaten oder fehlender uid für die Own Trackables umformuliert.<br>
-* Neuen Link für Linklist einbauen direkt zum "Forum Geoclub" und Link "Forum" in "Forum Groundspeak" umbenennen.<br>
-* Links zu den Nearest Lists und den Own Trackables auch im GClh Config schon prüfen und gegebenenfalls individuell für den User setzen, so dass von dort aus keine unnötigen Fehlermeldungen erzeugt werden.<br>
+- Text in der Meldung wegen Fehlender Homekoordinaten oder fehlender uid für die Own Trackables umformuliert.<br>
+- Neuen Link für Linklist einbauen direkt zum "Forum Geoclub" und Link "Forum" in "Forum Groundspeak" umbenennen.<br>
+- Links zu den Nearest Lists und den Own Trackables auch im GClh Config schon prüfen und gegebenenfalls individuell für den User setzen, so dass von dort aus keine unnötigen Fehlermeldungen erzeugt werden.<br>
 <br></li>
 <li>New/Change: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/100">#100</a>] Dokumentation Linklist im GClh Config überarbeitet. Scheinbar macht die Einrichtung der Linklist einigenorts Probleme, sowohl im Bereich der Standard Links wie auch insbesondere bei den Custom Links. Die Beschreibung zu den einzelnen Spalten der Linklist über die Fragezeichen "?" und die Beschreibung zu den einzelnen Feldern per Tooltip wenn man mit der Maus drübersteht, wurde komplett überarbeitet und erweitert. Beispiel:<br>
 <img src="../images/v0.3_Screen09.jpg" alt="v0.3_Screen09.jpg"><br>
@@ -50,7 +50,8 @@ Ist die Funktionalität "Show thumbnails of images" aktiviert, dann wird das Pro
 Der Filter funktioniert nun für das Cache Listing und für die Cache Gallery, nicht aber für die Bilder in den Cache Logs.<br>
 <img src="../images/v0.3_Screen07.jpg" alt="v0.3_Screen07.jpg"><br>
 <img src="../images/v0.3_Screen08.jpg" alt="v0.3_Screen08.jpg"><br>
-<br>New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/7">#7</a>] Platzhalter in Log Templates und Log Signaturen ergänzt und Dokumentation überarbeitet:<br>
+<br></li>
+<li>New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/7">#7</a>] Platzhalter in Log Templates und Log Signaturen ergänzt und Dokumentation überarbeitet:<br>
 #GCTBName# : GC or TB name<br>
 #GCTBLink# : GC or TB link<br>
 #GCTBNameLink# : GC or TB name as a link<br>
@@ -60,6 +61,7 @@ Upper and lower case is not required in the placeholder name.<br>
 <li>New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/15">#15</a> (not closed)] Profile Trackables pimpen:<br>
 Bisher wurden lediglich die Ladezeiten reduziert, sofern auf die Trackable Icons verzichtet werden kann. Damit wird das eigentliche Problem umgangen, dass man die Summen im Footer nicht gut ansehen kann, weil die Icons noch ziemlich lange nachgeladen werden, und die Anzeige zuckelt.<br>
 Danke auch an SiMaKiDD für die Idee.<br>
+<br>
 <i>(Das Vorhaben, die Trackables im Profile in weitere Kategorien zu untergliedern und die Einzelsätze per Icon ein- und aufzublenden (Issue <a href="https://github.com/2Abendsegler/GClh/issues/15">#15</a>), ist zur Zeit auf Eis gelegt. Es ist bisher nicht gelungen sinnvolle Kategorien zu bilden, weil die Systematic bei der Benennung der Trackable Serien sich noch nicht offenbart hat oder es über große Flächen eben keine gibt. Die Verwendung der Trackable Serien alleine macht nur begrenzt Sinn, weil die Serien häufig zu klein sind, was nicht nur die Darstellung aufblähen würde, sondern auch der Performance schadet. <br>
 Wenn jemand Ideen hat, wie man die Trackables womöglich sinnvoll kategorisieren kann, dann nur her damit.)</i><br>
 </li>
