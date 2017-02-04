@@ -1,175 +1,175 @@
-10 Year Tags#         /(10)(.*)(Year)(.*)(Tag)/i#
-15 Year Tags#         /(15)(.*)(Year)(.*)(Tag)/i#
-12 Elfen#             /(12)(.*)(Elfen)/i#
-ACE Geocachers#       /(ACE)(.*)(Geocacher)/i#
-Addicted Geocacher Trackables# /(Addicted)(.*)(Geocacher)(.*)(Trackable)/i#
-Ampelman Coins#       /(Ampelman)(.*)(Coin)/i#
-Ampelman Micros#      /(Ampelman)(.*)(Micro)/i#
-Aussie Tags#          /(Aussie)(.*)(Tag)/i#
-Bad Trackables#       /(Bad)(.*)(Trackable)/i#
-Beer Tags#            /(Beer)(.*)(Tag)/i#
-Black Carabiners#     /(Black)(.*)(Carabiner)/i#
-Block Party Tags#     /(Block)(.*)(Party)(.*)(Tag)/i#
-Bonetags#             /(Bone)(.*)(tag)/i#
-Butterflys#           /(Butterfly)/i#
-Cab's Coins#          /(Cab)(.*)(Coin)/i#
-Cache Counters#       /(Cach)(.*)(Counter)/i#
-Cache Tags#           /(Cach)(.*)(Tag)/i#
-Cachekinz#            /(Cach)(.*)(kinz)/i#
-Cachemobiles#         /(Cachemobil|Cachmobil|Car-TB|Car TB)/i#
-Cacher On Board#      /(Cacher)(.*)(On)(.*)(Board)/i#
-Cacher's Best Friends# /(Cacher)(.*)(Best)(.*)(Friend)/i#
-Celebrating 10 Years# /(Celebrating)(.*)(10)(.*)(Year)/i#
-Compass Roses#        /(Compas)(.*)(Rose)/i#
-Climbing Belt Patches# /(Climbing)(.*)(Belt)(.*)(Patch)/i#
-Custom Tags#          /(Custom)(.*)(Tag)/i#
-Dark Coins#           /(Dark)(.*)(Coin)/i#
-David Garrett Tags#   /(David Garrett)(.*)(Tag)/i#
-Discover Me Tags#     /(Discover)(.*)(Me)(.*)(Tag)/i#
-Dog Tags#             /(Dog)(.*)(Tag)/i#
-DönersTokens#         /(Döner)(.*)(Token)/i#
-Ducks Tags#           /(Duck)(.*)(Tag)/i#
-Element Tags#         /(Element)(.*)(Tag)/i#
-Element Trackables#   /(Element)(.*)(Trackable)/i#
-Event Coins#          /(Event|Mega|Giga|Multi-Event|Multi Event|Leipzig)(.*)(Coin)/i#
-Event Tags#           /(Event|Mega|Giga|Multi-Event|Multi Event|Leipzig)(.*)(Tag)/i#
-Event Tokens#         /(Event|Mega|Giga|Multi-Event|Multi Event|Leipzig)(.*)(Token)/i#
-Event Trackables#     /(Event|Mega|Giga|Multi-Event|Multi Event|Leipzig)(.*)(Trakable)/i#
-Explorer Tags#        /(Explorer)(.*)(Tag)/i#
-Extrem Coins#         /(Extrem)(.*)(Coin)/i#
-Family Tags#          /(Family)(.*)(Tag)/i#
-FarmtagZ#             /(Farm)(.*)(tag)/i#
-Favourite Points#     /(Favourit|Favorit)(.*)(Point)/i#
-Fish Tags#            /(Fish)(.*)(Tag)/i#
-Flag Tags#            /(Flag)(.*)(Tag)/i#
-Friendship Tags#      /(Friendship)(.*)(Tag)/i#
-Frog Awards#          /(Frog)(.*)(Award)/i#
-Gecko Tags#           /(Gecko)(.*)(Tag)/i#
-Geo Gears#            /(Geo)(.*)(Gear)/i#
-Geo Logo Travellers#  /(Geo)(.*)(Logo)(.*)(Travel)/i#
-Geo Screw Coins#      /(Geo)(.*)(Screw)(.*)(Coin)/i#
-Geo-Achievement Coins# /(Geo)(.*)(Achievement)(.*)(Coin)/i#
-Geo-Awards#           /(Geo)(.*)(Award)/i#
-Geo-Fossil#           /(Geo)(.*)(Fossil)/i#
-Geo-Milestones#       /(Geo)(.*)(Milestone)/i#
-Geo-Nick Sticks#      /(Geo)(.*)(Nick)(.*)(Stick)/i#
-Geobugs#              /(Geo)(.*)(bug)/i#
-GeoButtons#           /(Geo)(.*)(Button)/i#
-Geocacher Tags#       /(Geocacher)(.*)(Tag)/i#
-Geocacher Trackables# /(Geocacher)(.*)(Trackable)/i#
-Geocaching Cards#     /(Geocaching)(.*)(Card)/i#
-Geocaching Center Travellers# /(Geocaching)(.*)(Center)(.*)(Travel)/i#
-Geocaching Geckos#    /(Geocaching)(.*)(Gecko)/i#
-Geocaching Handbuch#  /(Geocaching)(.*)(Handbuch)/i#
-Geocards#             /(Geo)(.*)(card)/i#
-Geoclub Tags#         /(Geo)(.*)(club)(.*)(Tag)/i#
-GeoCoinfests#         /(Geo)(.*)(Coin)(.*)(fest)/i#
-GeoFaex Coins#        /(Geo)(.*)(Faex|Fäx)(.*)(Coin)/i#
-Geofashion Lizards#   /(Geo)(.*)(fashion)(.*)(Lizard)/i#
-Geogames Tags#        /(Geo)(.*)(game)(.*)(Tag)/i#
-GeoGems#              /(Geo)(.*)(Gem)/i#
-Geoguitars#           /(Geo)(.*)(guitar)/i#
-GeoGold#              /(Geo)(.*)(Gold)/i#
-GeoKid Tags#          /(Geo)(.*)(Kid)(.*)(Tag)/i#
-Geomusics Trackables# /(Geo)(.*)(music)(.*)(Trackable)/i#
-Geopins#              /(Geo)(.*)(pin)/i#
-Geotags#              /(Geo)(.*)(tag)/i#
-GeoTokens#            /(Geo)(.*)(Token)/i#
-GeoVersand Trackables# /(Geo)(.*)(Versand)(.*)(Trackable)/i#
-Geowoodstock Coins#   /(Geo)(.*)(woodstock)(.*)(Coin)/i#
-Globe Compass#        /(Globe)(.*)(Compas)/i#
-Gnome Tags#           /(Gnom)(.*)(Tag)/i#
-GPS Maze#             /(GPS)(.*)(Maze)/i#
-GPS Tags#             /(GPS)(.*)(Tag)/i#
-Hamster Tags#         /(Hamster)(.*)(Tag)/i#
-Hardwood Coins#       /(Hardwood)(.*)(Coin)/i#
-Hide It, Find It, Log It, Tags# /(Hide It, Find It, Log It)(.*)(Tag)/i#
-Highway Tags#         /(Highway)(.*)(Tag)/i#
-Hint Tags#            /(Hint)(.*)(Tag)/i#
-HomeTownTokens#       /(Home)(.*)(Town)(.*)(Token)/i#
-HQ Tags#              /(HQ)(.*)(Tag)/i#
-HQ Trackables#        /(HQ)(.*)(Trackable)/i#
-Immer in Bewegung Tags# /(Immer in Bewegung)(.*)(Tag)/i#
-Joker Tags#           /(Joker)(.*)(Tag)/i#
-JubiCoins#            /(Jubi)(.*)(Coin)/i#
-Key Coins#            /(Key)(.*)(Coin)/i#
-Kristall Trackables#  /(Kristal|Cristal)(.*)(Trackable)/i#
-Lackey Coins#         /(Lackey)(.*)(Coin)/i#
-Lackey Tags#          /(Lackey)(.*)(Tag)/i#
-Lasercoins#           /(Laser)(.*)(coin)/i#
-License Plates#       /(Licens|Lizens)(.*)(Plate)/i#
-Lost & Found Tags#    /(Lost)(.*)(Found)(.*)(Tag)/i#
-Love Tags#            /(Love)(.*)(Tag)/i#
-Love Cards#           /(Love)(.*)(Card)/i#
-Michelin Tags#        /(Michelin)(.*)(Tag)/i#
-Micro Coins#          /(Micro)(.*)(Coin)/i#
-Millennium Rings#     /(Millennium)(.*)(Ring)/i#
-Multi-Cache Micros#   /(Multi)(.*)(Cache)(.*)(Micro)/i#
-Multi Events#         /(Multi)(.*)(Event)/i#
-Name Badges#          /(Name)(.*)(Badge)/i#
-Neues aus Geocaching# /(Neues aus Geocaching)/i#
-OceantagZ#            /(Ocean)(.*)(tag)/i#
-Oracle Dragons#       /(Oracle)(.*)(Dragon)/i#
-OWU Tags#             /(OWU)(.*)(Tag)/i#
-Panda Tags#           /(Panda)(.*)(Tag)/i#
-Pandora Trackables#   /(Pandora)(.*)(Trackable)/i#
-Paradise Tags#        /(Paradise)(.*)(Tag)/i#
-Penguin Travellers#   /(Penguin)(.*)(Travel)/i#
-Personal GeoCodes#    /(Personal)(.*)(Geo)(.*)(Code)/i#
-Personal GeoCubes#    /(Personal)(.*)(Geo)(.*)(Cube)/i#
-Pirate Bootys#        /(Pirate)(.*)(Booty)/i#
-Pirate Tags#          /(Pirate)(.*)(Tag)/i#
-Playing Cards#        /(Playing)(.*)(Card)/i#
-PROXY Travellers#     /(PROXY)(.*)(Travel)/i#
-Psychochicken Coins#  /(Psychochicken)(.*)(Coin)/i#
-Published by Geocoins# /(Published by)/i#
-QR Code Talkers#      /(QR)(.*)(Code)(.*)(Talker)/i#
-Racing Tags#          /(Racing)(.*)(Tag)/i#
-Red Lion meets Signal# /(Red)(.*)(Lion)(.*)(meet)(.*)(Signal)/i#
-Rebel Coins#          /(Rebel)(.*)(Coin)/i#
-Reviewer Coins#       /(Reviewer)(.*)(Coin)/i#
-Reviewer Team#        /(Reviewer)(.*)(Team)/i#
-Road Trip Tags#       /(Road)(.*)(Trip)(.*)(Tag)/i#
-Saarlandcoins#        /(Saarland)(.*)(coin)/i#
-Satellite Trackers#   /(Satellit)(.*)(Tracker)/i#
-Scouting Tags#        /(Scouting)(.*)(Tag)/i#
-Scouts Coins#         /(Scout)(.*)(Coin)/i#
-Signal Trackables#    /(Signal)(.*)(Trackable)/i#
-Snake Coins#          /(Snake)(.*)(Coin)/i#
-Social Project#       /(Social)(.*)(Project)/i#
-Souvenir Trackables#  /(Souvenir)(.*)(Trackable)/i#
-Space Coast Trackables# /(Space)(.*)(Coast)(.*)(Trackable)/i#
-State Plate Tags#     /(State)(.*)(Plate)(.*)(Tag)/i#
-Supplies Trackables#  /(Suppl)(.*)(Trackable)/i#
-Technology Tags#      /(Technology)(.*)(Tag)/i#
-Towel Day#            /(Towel)(.*)(Day)/i#
-Track Me Stickers#    /(Track)(.*)(Me)(.*)(Sticker)/i#
-Trackable Adventure Guides# /(Trackable)(.*)(Adventure)(.*)(Guide)/i#
-Trackable Bracelets#  /(Trackable)(.*)(Bracelet)/i#
-Trackable Cards#      /(Trackable)(.*)(Card)/i#
-Trackable Items#      /(Trackable)(.*)(Item)/i#
-Trackable Miniatures# /(Trackable)(.*)(Miniatur)/i#
-Trackable Patches#    /(Trackable)(.*)(Patch)/i#
-Trackable T-Shirts#   /(Trackable)(.*)(T-Shirt)/i#
-Trackable Tags#       /(Trackable)(.*)(Tag)/i#
-Trackable Watchs#     /(Trackable)(.*)(Watch)/i#
-Tracker Tags#         /(Tracker)(.*)(Tag)/i#
-Travel Coins#         /(Travel)(.*)(Coin)/i#
-Travel Firefighters#  /(Travel)(.*)(Firefighter)/i#
-Travel Racer#         /(Travel)(.*)(Racer)/i#
-Travel Tags#          /(Travel)(.*)(Tag)/i#
-Travel Tracks#        /(Travel)(.*)(Track)/i#
-TravelTicks#          /(Travel)(.*)(Tick)/i#
-Traditional Micros#   /(Traditional)(.*)(Micro)/i#
-Trek Tags#            /(Trek)(.*)(Tag)/i#
-Volunteers Tags#      /(Volunteer)(.*)(Tag)/i#
-Walking Stick Medallions# /(Walking)(.*)(Stick)(.*)(Medallion)/i#
-Wedding Coins#        /(Wedding)(.*)(Coin)/i#
-Wolfpack Coins#       /(Wolfpack)(.*)(Coin)/i#
-Wooden Tags#          /(Wooden)(.*)(Tag)/i#
-World Travellers#     /(World)(.*)(Travel)/i#
-XmasTagz#             /(Xmas)(.*)(Tag)/i#
-Travel Bugs#          /(Travel)(.*)(Bug)/i#
-Geocoins#             /(Geocoin|Geo Coin)/i#
-Geopatches#           /(Geopatch|Geo patch)/i#
-Signal Tags#          /(Signal)(.*)(Tag)/i#
+10 Year Tags#         (10)(.*)(Year)(.*)(Tag)#
+15 Year Tags#         (15)(.*)(Year)(.*)(Tag)#
+12 Elfen#             (12)(.*)(Elfen)#
+ACE Geocachers#       (ACE)(.*)(Geocacher)#
+Addicted Geocacher Trackables# (Addicted)(.*)(Geocacher)(.*)(Trackable)#
+Ampelman Coins#       (Ampelman)(.*)(Coin)#
+Ampelman Micros#      (Ampelman)(.*)(Micro)#
+Aussie Tags#          (Aussie)(.*)(Tag)#
+Bad Trackables#       (Bad)(.*)(Trackable)#
+Beer Tags#            (Beer)(.*)(Tag)#
+Black Carabiners#     (Black)(.*)(Carabiner)#
+Block Party Tags#     (Block)(.*)(Party)(.*)(Tag)#
+Bonetags#             (Bone)(.*)(tag)#
+Butterflys#           (Butterfly)#
+Cab's Coins#          (Cab)(.*)(Coin)#
+Cache Counters#       (Cach)(.*)(Counter)#
+Cache Tags#           (Cach)(.*)(Tag)#
+Cachekinz#            (Cach)(.*)(kinz)#
+Cachemobiles#         (Cachemobil|Cachmobil|Car-TB|Car TB)#
+Cacher On Board#      (Cacher)(.*)(On)(.*)(Board)#
+Cacher's Best Friends# (Cacher)(.*)(Best)(.*)(Friend)#
+Celebrating 10 Years# (Celebrating)(.*)(10)(.*)(Year)#
+Compass Roses#        (Compas)(.*)(Rose)#
+Climbing Belt Patches# (Climbing)(.*)(Belt)(.*)(Patch)#
+Custom Tags#          (Custom)(.*)(Tag)#
+Dark Coins#           (Dark)(.*)(Coin)#
+David Garrett Tags#   (David Garrett)(.*)(Tag)#
+Discover Me Tags#     (Discover)(.*)(Me)(.*)(Tag)#
+Dog Tags#             (Dog)(.*)(Tag)#
+DönersTokens#         (Döner)(.*)(Token)#
+Ducks Tags#           (Duck)(.*)(Tag)#
+Element Tags#         (Element)(.*)(Tag)#
+Element Trackables#   (Element)(.*)(Trackable)#
+Event Coins#          (Event|Mega|Giga|Multi-Event|Multi Event|Leipzig)(.*)(Coin)#
+Event Tags#           (Event|Mega|Giga|Multi-Event|Multi Event|Leipzig)(.*)(Tag)#
+Event Tokens#         (Event|Mega|Giga|Multi-Event|Multi Event|Leipzig)(.*)(Token)#
+Event Trackables#     (Event|Mega|Giga|Multi-Event|Multi Event|Leipzig)(.*)(Trakable)#
+Explorer Tags#        (Explorer)(.*)(Tag)#
+Extrem Coins#         (Extrem)(.*)(Coin)#
+Family Tags#          (Family)(.*)(Tag)#
+FarmtagZ#             (Farm)(.*)(tag)#
+Favourite Points#     (Favourit|Favorit)(.*)(Point)#
+Fish Tags#            (Fish)(.*)(Tag)#
+Flag Tags#            (Flag)(.*)(Tag)#
+Friendship Tags#      (Friendship)(.*)(Tag)#
+Frog Awards#          (Frog)(.*)(Award)#
+Gecko Tags#           (Gecko)(.*)(Tag)#
+Geo Gears#            (Geo)(.*)(Gear)#
+Geo Logo Travellers#  (Geo)(.*)(Logo)(.*)(Travel)#
+Geo Screw Coins#      (Geo)(.*)(Screw)(.*)(Coin)#
+Geo-Achievement Coins# (Geo)(.*)(Achievement)(.*)(Coin)#
+Geo-Awards#           (Geo)(.*)(Award)#
+Geo-Fossil#           (Geo)(.*)(Fossil)#
+Geo-Milestones#       (Geo)(.*)(Milestone)#
+Geo-Nick Sticks#      (Geo)(.*)(Nick)(.*)(Stick)#
+Geobugs#              (Geo)(.*)(bug)#
+GeoButtons#           (Geo)(.*)(Button)#
+Geocacher Tags#       (Geocacher)(.*)(Tag)#
+Geocacher Trackables# (Geocacher)(.*)(Trackable)#
+Geocaching Cards#     (Geocaching)(.*)(Card)#
+Geocaching Center Travellers# (Geocaching)(.*)(Center)(.*)(Travel)#
+Geocaching Geckos#    (Geocaching)(.*)(Gecko)#
+Geocaching Handbuch#  (Geocaching)(.*)(Handbuch)#
+Geocards#             (Geo)(.*)(card)#
+Geoclub Tags#         (Geo)(.*)(club)(.*)(Tag)#
+GeoCoinfests#         (Geo)(.*)(Coin)(.*)(fest)#
+GeoFaex Coins#        (Geo)(.*)(Faex|Fäx)(.*)(Coin)#
+Geofashion Lizards#   (Geo)(.*)(fashion)(.*)(Lizard)#
+Geogames Tags#        (Geo)(.*)(game)(.*)(Tag)#
+GeoGems#              (Geo)(.*)(Gem)#
+Geoguitars#           (Geo)(.*)(guitar)#
+GeoGold#              (Geo)(.*)(Gold)#
+GeoKid Tags#          (Geo)(.*)(Kid)(.*)(Tag)#
+Geomusics Trackables# (Geo)(.*)(music)(.*)(Trackable)#
+Geopins#              (Geo)(.*)(pin)#
+Geotags#              (Geo)(.*)(tag)#
+GeoTokens#            (Geo)(.*)(Token)#
+GeoVersand Trackables# (Geo)(.*)(Versand)(.*)(Trackable)#
+Geowoodstock Coins#   (Geo)(.*)(woodstock)(.*)(Coin)#
+Globe Compass#        (Globe)(.*)(Compas)#
+Gnome Tags#           (Gnom)(.*)(Tag)#
+GPS Maze#             (GPS)(.*)(Maze)#
+GPS Tags#             (GPS)(.*)(Tag)#
+Hamster Tags#         (Hamster)(.*)(Tag)#
+Hardwood Coins#       (Hardwood)(.*)(Coin)#
+Hide It, Find It, Log It, Tags# (Hide It, Find It, Log It)(.*)(Tag)#
+Highway Tags#         (Highway)(.*)(Tag)#
+Hint Tags#            (Hint)(.*)(Tag)#
+HomeTownTokens#       (Home)(.*)(Town)(.*)(Token)#
+HQ Tags#              (HQ)(.*)(Tag)#
+HQ Trackables#        (HQ)(.*)(Trackable)#
+Immer in Bewegung Tags# (Immer in Bewegung)(.*)(Tag)#
+Joker Tags#           (Joker)(.*)(Tag)#
+JubiCoins#            (Jubi)(.*)(Coin)#
+Key Coins#            (Key)(.*)(Coin)#
+Kristall Trackables#  (Kristal|Cristal)(.*)(Trackable)#
+Lackey Coins#         (Lackey)(.*)(Coin)#
+Lackey Tags#          (Lackey)(.*)(Tag)#
+Lasercoins#           (Laser)(.*)(coin)#
+License Plates#       (Licens|Lizens)(.*)(Plate)#
+Lost & Found Tags#    (Lost)(.*)(Found)(.*)(Tag)#
+Love Tags#            (Love)(.*)(Tag)#
+Love Cards#           (Love)(.*)(Card)#
+Michelin Tags#        (Michelin)(.*)(Tag)#
+Micro Coins#          (Micro)(.*)(Coin)#
+Millennium Rings#     (Millennium)(.*)(Ring)#
+Multi-Cache Micros#   (Multi)(.*)(Cache)(.*)(Micro)#
+Multi Events#         (Multi)(.*)(Event)#
+Name Badges#          (Name)(.*)(Badge)#
+Neues aus Geocaching# (Neues aus Geocaching)#
+OceantagZ#            (Ocean)(.*)(tag)#
+Oracle Dragons#       (Oracle)(.*)(Dragon)#
+OWU Tags#             (OWU)(.*)(Tag)#
+Panda Tags#           (Panda)(.*)(Tag)#
+Pandora Trackables#   (Pandora)(.*)(Trackable)#
+Paradise Tags#        (Paradise)(.*)(Tag)#
+Penguin Travellers#   (Penguin)(.*)(Travel)#
+Personal GeoCodes#    (Personal)(.*)(Geo)(.*)(Code)#
+Personal GeoCubes#    (Personal)(.*)(Geo)(.*)(Cube)#
+Pirate Bootys#        (Pirate)(.*)(Booty)#
+Pirate Tags#          (Pirate)(.*)(Tag)#
+Playing Cards#        (Playing)(.*)(Card)#
+PROXY Travellers#     (PROXY)(.*)(Travel)#
+Psychochicken Coins#  (Psychochicken)(.*)(Coin)#
+Published by Geocoins# (Published by)#
+QR Code Talkers#      (QR)(.*)(Code)(.*)(Talker)#
+Racing Tags#          (Racing)(.*)(Tag)#
+Red Lion meets Signal# (Red)(.*)(Lion)(.*)(meet)(.*)(Signal)#
+Rebel Coins#          (Rebel)(.*)(Coin)#
+Reviewer Coins#       (Reviewer)(.*)(Coin)#
+Reviewer Team#        (Reviewer)(.*)(Team)#
+Road Trip Tags#       (Road)(.*)(Trip)(.*)(Tag)#
+Saarlandcoins#        (Saarland)(.*)(coin)#
+Satellite Trackers#   (Satellit)(.*)(Tracker)#
+Scouting Tags#        (Scouting)(.*)(Tag)#
+Scouts Coins#         (Scout)(.*)(Coin)#
+Signal Trackables#    (Signal)(.*)(Trackable)#
+Snake Coins#          (Snake)(.*)(Coin)#
+Social Project#       (Social)(.*)(Project)#
+Souvenir Trackables#  (Souvenir)(.*)(Trackable)#
+Space Coast Trackables# (Space)(.*)(Coast)(.*)(Trackable)#
+State Plate Tags#     (State)(.*)(Plate)(.*)(Tag)#
+Supplies Trackables#  (Suppl)(.*)(Trackable)#
+Technology Tags#      (Technology)(.*)(Tag)#
+Towel Day#            (Towel)(.*)(Day)#
+Track Me Stickers#    (Track)(.*)(Me)(.*)(Sticker)#
+Trackable Adventure Guides# (Trackable)(.*)(Adventure)(.*)(Guide)#
+Trackable Bracelets#  (Trackable)(.*)(Bracelet)#
+Trackable Cards#      (Trackable)(.*)(Card)#
+Trackable Items#      (Trackable)(.*)(Item)#
+Trackable Miniatures# (Trackable)(.*)(Miniatur)#
+Trackable Patches#    (Trackable)(.*)(Patch)#
+Trackable T-Shirts#   (Trackable)(.*)(T-Shirt)#
+Trackable Tags#       (Trackable)(.*)(Tag)#
+Trackable Watchs#     (Trackable)(.*)(Watch)#
+Tracker Tags#         (Tracker)(.*)(Tag)#
+Travel Coins#         (Travel)(.*)(Coin)#
+Travel Firefighters#  (Travel)(.*)(Firefighter)#
+Travel Racer#         (Travel)(.*)(Racer)#
+Travel Tags#          (Travel)(.*)(Tag)#
+Travel Tracks#        (Travel)(.*)(Track)#
+TravelTicks#          (Travel)(.*)(Tick)#
+Traditional Micros#   (Traditional)(.*)(Micro)#
+Trek Tags#            (Trek)(.*)(Tag)#
+Volunteers Tags#      (Volunteer)(.*)(Tag)#
+Walking Stick Medallions# (Walking)(.*)(Stick)(.*)(Medallion)#
+Wedding Coins#        (Wedding)(.*)(Coin)#
+Wolfpack Coins#       (Wolfpack)(.*)(Coin)#
+Wooden Tags#          (Wooden)(.*)(Tag)#
+World Travellers#     (World)(.*)(Travel)#
+XmasTagz#             (Xmas)(.*)(Tag)#
+Travel Bugs#          (Travel)(.*)(Bug)#
+Geocoins#             (Geocoin|Geo Coin)#
+Geopatches#           (Geopatch|Geo patch)#
+Signal Tags# (Signal)(.*)(Tag)#
