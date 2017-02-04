@@ -13,37 +13,56 @@
 ## v0.3:
 <ul>
 <li>New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/35">#35</a>] Hide archived caches in owned cache list.<br>
-Vielen Dank an <a href="https://github.com/haarspalter">haarspalter</a> für die Entwicklung.<br><br></li>
+Vielen Dank an <a href="https://github.com/haarspalter">haarspalter</a> für die Entwicklung.<br>
+<br></li>
 <li>New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/92">#92</a>] Added date format dd.MM.yyyy<br>
 Hier ist zu beachten, dass das Datums Format an zwei Stellen eingestellt werden muß. Das <a href="https://goo.gl/9Hgxnk">Event Date Format im GClh Config</a> und das <a href="https://www.geocaching.com/account/settings/preferences#SelectedDateFormat">Date Format in den Account settings</a>.<br>
 Code comes from old <a href="https://github.com/amshove/GC_little_helper/pull/154">pull request 154</a> of the GClh original from petr-hendl.<br>
 Vielen Dank an petr-hendl für das Coding.<br>
 <img src="../images/v0.3_Screen03.jpg" alt="v0.3_Screen03.jpg"><br>
-<img src="../images/v0.3_Screen04.jpg" alt="v0.3_Screen04.jpg"><br></li>
+<img src="../images/v0.3_Screen04.jpg" alt="v0.3_Screen04.jpg"><br>
+<br></li>
 <li>New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/93">#93</a>] Aufruf GClh Sync per Taste F10 ermöglichen.<br>
 In Tampermonkey gibt es kein eigenes Menü, nicht so wie in Greasemonkey. Man kann dort deshalb den GClh Sync lediglich aus dem eigenen Menü aufrufen. Mit dieser Anpassung kann der GClh Sync von überall aufgerufen werden, so wie es beim GClh Config mit der Taste F4 bereits der Fall ist.<br>
 Und für Config und Sync neben Avatar im Profile, als Title Version einblenden.<br>
-<img src="../images/v0.3_Screen02.jpg" alt="v0.3_Screen02.jpg"><br></li>
+<img src="../images/v0.3_Screen02.jpg" alt="v0.3_Screen02.jpg"><br>
+<br></li>
 <li>New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/94">#94</a>] Profile Foto in Originalgröße einbinden in mausaktivierte Bilder.<br>
 Ist die Funktionalität "Show thumbnails of images" aktiviert, dann wird das Profile Foto in Originalgröße angezeigt, wenn man mit der Maus über das kleine Profile Foto fährt.<br>
 (Die Idee stammt noch aus Zeiten des GClh Originals. Die Funktionalität gab es früher auch mal im Standard.)<br>
-<img src="../images/v0.3_Screen01.jpg" alt="v0.3_Screen01.jpg"><br></li>
+<img src="../images/v0.3_Screen01.jpg" alt="v0.3_Screen01.jpg"><br>
+<br></li>
 <li>New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/20">#20</a>] Eigene Logs zu Caches und Trackables nach Logtypen aufsummieren und auf der Statistikseite anzeigen.<br>
 <img src="../images/v0.3_Screen05.jpg" alt="v0.3_Screen05.jpg"><br>
-<img src="../images/v0.3_Screen06.jpg" alt="v0.3_Screen06.jpg"><br></li>
+<img src="../images/v0.3_Screen06.jpg" alt="v0.3_Screen06.jpg"><br>
+<br></li>
 <li>New/Change: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/100">#100</a>] Links in Linklist und Fehlermeldungen zu Nearest List, Own Trackables überarbeitet.<br>
 * Text in der Meldung wegen Fehlender Homekoordinaten oder fehlender uid für die Own Trackables umformuliert.<br>
 * Neuen Link für Linklist einbauen direkt zum "Forum Geoclub" und Link "Forum" in "Forum Groundspeak" umbenennen.<br>
-* Links zu den Nearest Lists und den Own Trackables auch im GClh Config schon prüfen und gegebenenfalls individuell für den User setzen, so dass von dort aus keine unnötigen Fehlermeldungen erzeugt werden.<br></li>
+* Links zu den Nearest Lists und den Own Trackables auch im GClh Config schon prüfen und gegebenenfalls individuell für den User setzen, so dass von dort aus keine unnötigen Fehlermeldungen erzeugt werden.<br>
+<br></li>
 <li>New/Change: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/100">#100</a>] Dokumentation Linklist im GClh Config überarbeitet. Scheinbar macht die Einrichtung der Linklist einigenorts Probleme, sowohl im Bereich der Standard Links wie auch insbesondere bei den Custom Links. Die Beschreibung zu den einzelnen Spalten der Linklist über die Fragezeichen "?" und die Beschreibung zu den einzelnen Feldern per Tooltip wenn man mit der Maus drübersteht, wurde komplett überarbeitet und erweitert. Beispiel:<br>
-<img src="../images/v0.3_Screen09.jpg" alt="v0.3_Screen09.jpg"><br></li>
-<li>Change: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/107">#107</a>] Beim Editieren von TB Logs F2 speichern ermöglicht.<br></li>
+<img src="../images/v0.3_Screen09.jpg" alt="v0.3_Screen09.jpg"><br>
+<br></li>
+<li>Change: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/107">#107</a>] Beim Editieren von TB Logs F2 speichern ermöglicht.<br>
+<br></li>
 <li>Change: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/65">#65</a>] Spoiler Filter bei den Thumbnails aktivieren und reparieren.<br>
 Der Filter funktioniert nun für das Cache Listing und für die Cache Gallery, nicht aber für die Bilder in den Cache Logs.<br>
 <img src="../images/v0.3_Screen07.jpg" alt="v0.3_Screen07.jpg"><br>
-<img src="../images/v0.3_Screen08.jpg" alt="v0.3_Screen08.jpg"><br></li>
-<li><br></li>
-<li><br></li>
+<img src="../images/v0.3_Screen08.jpg" alt="v0.3_Screen08.jpg"><br>
+<br>New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/7">#7</a>] Platzhalter in Log Templates und Log Signaturen ergänzt und Dokumentation überarbeitet:<br>
+#GCTBName# : GC or TB name<br>
+#GCTBLink# : GC or TB link<br>
+#GCTBNameLink# : GC or TB name as a link<br>
+#LogDate# : Content of field "Date Logged"<br>
+Upper and lower case is not required in the placeholder name.<br>
+<br></li>
+<li>New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/15">#15</a> (not closed)] Profile Trackables pimpen:<br>
+Bisher wurden lediglich die Ladezeiten reduziert, sofern auf die Trackable Icons verzichtet werden kann. Damit wird das eigentliche Problem umgangen, dass man die Summen im Footer nicht gut ansehen kann, weil die Icons noch ziemlich lange nachgeladen werden, und die Anzeige zuckelt.<br>
+Danke auch an SiMaKiDD für die Idee.<br>
+<i>(Das Vorhaben, die Trackables im Profile in weitere Kategorien zu untergliedern und die Einzelsätze per Icon ein- und aufzublenden (Issue <a href="https://github.com/2Abendsegler/GClh/issues/15">#15</a>), ist zur Zeit auf Eis gelegt. Es ist bisher nicht gelungen sinnvolle Kategorien zu bilden, weil die Systematic bei der Benennung der Trackable Serien sich noch nicht offenbart hat oder es über große Flächen eben keine gibt. Die Verwendung der Trackable Serien alleine macht nur begrenzt Sinn, weil die Serien häufig zu klein sind, was nicht nur die Darstellung aufblähen würde, sondern auch der Performance schadet. <br>
+Wenn jemand Ideen hat, wie man die Trackables womöglich sinnvoll kategorisieren kann, dann nur her damit.)</i><br>
+</li>
 </ul>
 <br>
 
