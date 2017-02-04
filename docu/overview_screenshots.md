@@ -25,9 +25,6 @@
 ### Statistik:
 <img src="../images/screenshot_statistic01.jpg" title="Statistik Matrix" alt="statistic01"><br>
 
-### Trackables:
-<img src="../images/screenshot_trackables01.jpg" title="Trackables" alt="trackables01"><br>
-
 ### Konfiguration des GC little helper:
 <img src="../images/screenshot_config01.jpg" title="Konfiguration Globale Parameter" alt="config01"><br>
 <img src="../images/screenshot_config02.jpg" title="Konfiguration Homezone Karte" alt="config02"><br>
