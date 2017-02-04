@@ -1,3 +1,4 @@
+<a href="#v03" title="GClh II Version 0.3">v0.3</a> &nbsp; 
 <a href="#v0231" title="GClh II Version 0.2.3.1">v0.2.3.1</a> &nbsp; 
 <a href="#v023" title="GClh II Version 0.2.3">v0.2.3</a> &nbsp; 
 <a href="#v0224" title="GClh II Version 0.2.2.4">v0.2.2.4</a> &nbsp; 
@@ -7,6 +8,24 @@
 <a href="#v022" title="GClh II Version 0.2.2">v0.2.2</a> &nbsp; 
 <a href="#v021" title="GClh II Version 0.2.1">v0.2.1</a> &nbsp; 
 <a href="#v01" title="GClh II Version 0.1">v0.1</a> &nbsp; 
+
+---
+## v0.3:
+<ul>
+<li>New: [Issue #35] Hide archived caches in owned cache list.
+Vielen Dank an haarspalter für die Entwicklung.<br></li>
+<li>New: [Issue #92] Added date format dd.MM.yyyy 
+Hier ist zu beachten, dass das Datums Format an zwei Stellen eingestellt werden muß. Das [Event Date Format im GClh Config](https://goo.gl/9Hgxnk) und das [Date Format in den Account settings](https://www.geocaching.com/account/settings/preferences#SelectedDateFormat).
+Code comes from old [pull request 154](https://github.com/amshove/GC_little_helper/pull/154) of the GClh original from petr-hendl.
+Vielen Dank an petr-hendl für das Coding.<br></li>
+<li><br></li>
+<li><br></li>
+<li><br></li>
+<img src="../images/google_chrome_logo_small.png" alt="google_chrome_logo_small.png"> 
+<img src="../images/opera_logo_small.png" alt="opera_logo_small.png"> 
+<img src="../images/microsoft_edge_logo_small.png" alt="microsoft_edge_logo_small.png"><br>
+</ul>
+<br>
 
 ---
 ## v0.2.3.1:
