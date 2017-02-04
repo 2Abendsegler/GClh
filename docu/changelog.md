@@ -62,7 +62,7 @@ Der Filter funktioniert nun für das Cache Listing und für die Cache Gallery, n
 Upper and lower case is not required in the placeholder name.<br>
 <br></li>
 <li>New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/15">#15</a> (not closed)] Profile Trackables pimpen:<br>
-Bisher wurden lediglich die Ladezeiten reduziert, sofern auf die Trackable Icons verzichtet werden kann. Damit wird das eigentliche Problem umgangen, dass man die Summen im Footer nicht gut ansehen kann, weil die Icons noch ziemlich lange nachgeladen werden, und die Anzeige zuckelt.<br>
+Hiermit werden lediglich die Ladezeiten reduziert, sofern auf die Trackable Icons verzichtet werden kann. Damit wird das eigentliche Problem umgangen, dass man die Summen im Footer nicht gut ansehen kann, weil die Icons noch ziemlich lange nachgeladen werden, und die Anzeige zuckelt.<br>
 Danke auch an SiMaKiDD für die Idee.<br>
 <br>
 <i>(Das Vorhaben, die Trackables im Profile in weitere Kategorien zu untergliedern und die Einzelsätze per Icon ein- und aufzublenden (Issue <a href="https://github.com/2Abendsegler/GClh/issues/15">#15</a>), ist zur Zeit auf Eis gelegt. Es ist bisher nicht gelungen sinnvolle Kategorien zu bilden, weil die Systematic bei der Benennung der Trackable Serien sich noch nicht offenbart hat oder es über große Flächen eben keine gibt. Die Verwendung der Trackable Serien alleine macht nur begrenzt Sinn, weil die Serien häufig zu klein sind, was nicht nur die Darstellung aufblähen würde, sondern auch der Performance schadet. <br>
