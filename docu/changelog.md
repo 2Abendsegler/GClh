@@ -23,7 +23,7 @@ Vielen Dank an petr-hendl für das Coding.<br>
 <img src="../images/v0.3_Screen04.jpg" alt="v0.3_Screen04.jpg"><br>
 <br></li>
 <li>New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/93">#93</a>] Aufruf GClh Sync per Taste F10 ermöglichen:<br>
-In Tampermonkey gibt es kein eigenes Menü, nicht so wie in Greasemonkey. Man kann dort deshalb den GClh Sync lediglich aus dem eigenen Menü aufrufen. Mit dieser Anpassung kann der GClh Sync von überall aufgerufen werden, so wie es beim GClh Config mit der Taste F4 bereits der Fall ist.<br>
+In Tampermonkey gibt es kein eigenes Tampermonkey Menü, nicht so wie in Greasemonkey. Man kann dort also den GClh Sync nur aus dem Profile und gegebenenfalls aus der Linklist aufrufen. Mit dieser Anpassung kann der GClh Sync von überall aufgerufen werden, so wie es beim GClh Config mit der Taste F4 bereits der Fall ist.<br>
 Und für Config und Sync neben Avatar im Profile, als Title Version einblenden.<br>
 <img src="../images/v0.3_Screen02.jpg" alt="v0.3_Screen02.jpg"><br>
 <br></li>
@@ -38,11 +38,12 @@ Ist die Funktionalität "Show thumbnails of images" aktiviert, dann wird das Pro
 <br></li>
 <li>New/Change: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/100">#100</a>] Links in Linklist und Fehlermeldungen zu Nearest List, Own Trackables überarbeitet:<br>
 - Text in der Meldung wegen Fehlender Homekoordinaten oder fehlender uid für die Own Trackables umformuliert.<br>
-- Neuen Link für Linklist einbauen direkt zum "Forum Geoclub" und Link "Forum" in "Forum Groundspeak" umbenennen.<br>
+- Neuen Link für Linklist eingebaut direkt zum "Forum Geoclub" und Link "Forum" in "Forum Groundspeak" umbenannt.<br>
 - Links zu den Nearest Lists und den Own Trackables auch im GClh Config schon prüfen und gegebenenfalls individuell für den User setzen, so dass von dort aus keine unnötigen Fehlermeldungen erzeugt werden.<br>
 <br></li>
 <li>New/Change: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/100">#100</a>] Dokumentation Linklist im GClh Config überarbeitet:<br>
 Scheinbar macht die Einrichtung der Linklist einigenorts Probleme, sowohl im Bereich der Standard Links wie auch insbesondere bei den Custom Links. Die Beschreibung zu den einzelnen Spalten der Linklist über die Fragezeichen "?" und die Beschreibung zu den einzelnen Feldern per Tooltip wenn man mit der Maus drübersteht, wurde komplett überarbeitet und erweitert. <br>
+(Ich hoffe das trägt zu einem besseren Verständnis bei. Es wäre schade, wenn die Linklist nur eingeschränkt genutzt werden kann, weil man die Bedienung und die Einrichtung nicht versteht.)<br>
 Beispiel:<br>
 <img src="../images/v0.3_Screen09.jpg" alt="v0.3_Screen09.jpg"><br>
 <br></li>
