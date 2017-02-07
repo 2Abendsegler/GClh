@@ -8,9 +8,9 @@
 <img src="../images/screenshot_listing03.jpg" title="Listing logs" alt="listing03"><br>
 
 ### Navigationmenu:
-<img src="../images/screenshot_menue01.jpg" title="Navigationmenu different variations" alt="menue01"><br>
-<img src="../images/screenshot_menue02.jpg" title="Navigationmenu different variations" alt="menue02"><br>
-<img src="../images/screenshot_menue03.jpg" title="Navigationmenu different variations" alt="menue03"><br>
+<img src="../images/screenshot_menue01.jpg" title="Navigationmenu different variants" alt="menue01"><br>
+<img src="../images/screenshot_menue02.jpg" title="Navigationmenu different variants" alt="menue02"><br>
+<img src="../images/screenshot_menue03.jpg" title="Navigationmenu different variants" alt="menue03"><br>
 
 ### Profile:
 <img src="../images/screenshot_profile01.jpg" title="Profile" alt="profile01"><br>
