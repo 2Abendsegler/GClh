@@ -35,16 +35,14 @@ Die Stufe Projects soll Raum dafür bieten, dass gleichzeitig im Rahmen mehrerer
 
 Diese Stufe kommt aber auch gegebenenfalls zum Einsatz, wenn langfristige Projekte entwickelt werden, für die eine Version noch gar nicht abgeschätzt werden kann.
 
-Nach dem Transport in die Branch *collector* und der Auslieferung an die User über die Branch *master*, wird die entsprechende Branch gelöscht.
-
-**Beispiel:** Hier sollten zumindest immer die nächste Version *v0.2.3* und die nächste kleine Bugfixing Version *v0.2.2.4* enthalten sein. Das langfristige Projekt *translation* wäre hier dann auch enthalten.  
+**Beispiel:** Hier sollte zumindest die nächste Version *v0.2.3* enthalten sein. Gegebenenfalls auch die nächste kleine Bugfixing Version *v0.2.2.4* und das langfristige Projekt *translation*.  
 
 ### 4. Developer:  
-In dieser Stufe sollen die Namen der Branches auf dem GitHub von 2Abendsegler mit *dev_* beginnen und folgend einen beliebigen Qualifier für Projekt und Entwickler erhalten, den der Entwickler selbst bestimmen kann. Eine Branch für einen Entwickler soll mit Referenz zu demjenigen Projekt erzeugt werden, für welches der Entwickler entwickelt.
+In dieser Stufe sollen die Namen der Branches auf dem GitHub von 2Abendsegler mit *dev_* beginnen und folgend einen beliebigen Qualifier für Projekt und Entwickler erhalten, den der Entwickler selbst bestimmen kann.
 
-Referenziert und transportiert (forked) der Entwickler die Arbeiten auf seinen eigenen GitHub Account, ist er in der Namensgebung natürlich frei. Auch hier sollte mit Bezug zum jeweiligen Projekt geforked werden, für welches er entwickeln möchte. 
+Referenziert und transportiert (forked) der Entwickler die Arbeiten auf seinen eigenen GitHub Account, ist er in der Namensgebung natürlich frei. 
 
-**Beispiel:** Hilft man beim Bugfixing der aktuellen Version *v0.2.2*, und wurden bereits 3 Bugfixing Versionen transportiert, dann forked man vom Projekt *v0.2.2.4*. Die drei vorgegangenen Bugfixing Versionen *v0.2.2.1*, *2* und *3*, stehen dann auch schon nicht mehr zur Auswahl zur Verfügung. Entwickelt man für die nächste Version, dann forked man von *v0.2.3*.  
+Es sollte von der Branch *collector* geforked werden.
 <br>
 <br>
 
