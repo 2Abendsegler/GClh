@@ -1,4 +1,7 @@
-## Tipps für die Installation des *GC little helper II*  
+<a href="#user-content-de" title=""><img src="../images/flag_de.png"></a>
+
+---
+## Tipps für die Installation des *GC little helper II* <a id="user-content-de"></a>  
 
 ### Mozilla Firefox: <span> &nbsp; &nbsp; &nbsp; &nbsp; </span> <img src="/images/mozilla_firefox_logo_small.png" title="Mozilla Firefox" alt="Mozilla Firefox">
 * Installiere [Greasemonkey](https://addons.mozilla.org/de/firefox/addon/greasemonkey/) als Add-On in Firefox. 
