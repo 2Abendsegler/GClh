@@ -10,7 +10,7 @@ Das Tool ist in Javascript entwickelt und läuft unter Mozilla Firefox, Google C
 
 Ursprünglich erfunden und entwickelt wurde der *GC little helper* von [Torsten Amshove](https://www.amshove.net/blog/webinterfaces/gc-little-helper/). Wir haben das Tool 2016 auf den aktuellen Stand gebracht und etwas aufgefrischt, und haben uns in Abstimmung mit dem Erfinder entschlossen, es unter dem Namen *GC little helper II* zu betreiben und weiterzuentwickeln. 
 
-Dazu gibt es auf hiesiger Plattform ein [Ticketsystem](https://github.com/2Abendsegler/GClh/issues), in dem Probleme und Wünsche erfaßt und verfolgt werden können. Im [Geoclub Forum bei den Greasemonkey Scripten](http://geoclub.de/forum/viewforum.php?f=117) gibt es außerdem eine Plattform, auf der Probleme und Wünsche zum *GC little helper II* diskutiert werden können.
+Dazu gibt es auf hiesiger Plattform ein [Ticketsystem](https://github.com/2Abendsegler/GClh/issues), auf dem Fragen, Wünsche und Probleme erfaßt und verfolgt werden können. Im [Geoclub Forum bei den Greasemonkey Scripten](http://geoclub.de/forum/viewforum.php?f=117) gibt es außerdem eine Plattform, auf der diese Dinge diskutiert werden können.
 
 Alle Geocacher und Interessierte sind herzlich eingeladen, am Support und der Weiterentwicklung des Tools mitzuwirken.  
 
