@@ -14,6 +14,7 @@
 <ul>
 <li>New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/23">#23</a>] Hide archived caches in owned cache list:<br>
 Vielen Dank an <a href="https://github.com/haarspalter">haarspalter</a> für die Entwicklung.<br>
+<img src="../images/v0.3_Screen10.jpg" alt="v0.3_Screen10.jpg"><br>
 <br></li>
 <li>New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/92">#92</a>] Added date format dd.MM.yyyy:<br>
 Hier ist zu beachten, dass das Datums Format an zwei Stellen eingestellt werden muß. Das <a href="https://goo.gl/9Hgxnk">Event Date Format im GClh Config</a> und das <a href="https://www.geocaching.com/account/settings/preferences#SelectedDateFormat">Date Format in den Account settings</a>.<br>
