@@ -11,6 +11,8 @@
 <img src="../images/screenshot_menue01.jpg" title="Navigationmenu different variants" alt="menue01"><br>
 <img src="../images/screenshot_menue02.jpg" title="Navigationmenu different variants" alt="menue02"><br>
 <img src="../images/screenshot_menue03.jpg" title="Navigationmenu different variants" alt="menue03"><br>
+<img src="../images/screenshot_menue04.jpg" title="Navigationmenu different variants" alt="menue04"><br>
+<img src="../images/screenshot_menue05.jpg" title="Navigationmenu different variants" alt="menue05"><br>
 
 ### Profile:
 <img src="../images/screenshot_profile01.jpg" title="Profile" alt="profile01"><br>
