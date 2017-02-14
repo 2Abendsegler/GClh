@@ -827,11 +827,10 @@ var mainGC = function () {
 
 // Migration: Installationszähler. Aktuelle TB Rules laden. Migrationsaufgaben erledigen. 
     var declaredVersion = getValue("declared_version");
-declaredVersion = "";//xxxx2
     if ( declaredVersion != scriptVersion ) {
         try {
-//xxxx2            instCount(declaredVersion);
-//xxxx2            loadTBRules();
+            instCount(declaredVersion);
+            loadTBRules();
             migrationTasks();
         } catch (e) {
             gclh_error("migration", e);
@@ -8132,11 +8131,9 @@ console.log(tbsearch);
         setTimeout(function() { $("#gclh_simu").remove(); }, 4000);  
     }
 
-//xxxx2
 // Migrationsaufgaben erledigen für eine neue Version.
     function migrationTasks() {
-//setValue("migration_task_01", false);
-        // Migrate Mail signature to Mail template (v0.4).
+        // Migrate Mail signature to Mail template (zu v0.4).
         if (getValue("migration_task_01", false) != true) {
             if (settings_show_mail || settings_show_message) {           
                 var template = "Hi #Receiver#,";
@@ -8147,7 +8144,6 @@ console.log(tbsearch);
             setValue("migration_task_01", true);
         }
     }
-//xxxx2
 
 // Aktuelles Datum und aktuelle Zeit ermitteln und aufbereiten.
     function getDateTime() {
@@ -10314,8 +10310,7 @@ console.log(tbsearch);
 //<-- $$000 End of change
             }
             if (document.getElementById("rc_temp").checked) {
-//xxxx2                rcGetData("https://raw.githubusercontent.com/2Abendsegler/GClh/master/gc_little_helper_II.user.js", "js");
-                rcGetData("https://raw.githubusercontent.com/2Abendsegler/GClh/v0.4/gc_little_helper_II.user.js", "js");
+                rcGetData("https://raw.githubusercontent.com/2Abendsegler/GClh/master/gc_little_helper_II.user.js", "js");
             }
         } catch (e) {
             gclh_error("reset config data", e);
