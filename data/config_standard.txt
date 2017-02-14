@@ -5,6 +5,7 @@
   "settings_log_inline_pmo4basic": true,
   "settings_bookmarks_show": true,
   "settings_change_header_layout": true,
+  "settings_fixed_header_layout": false,
   "settings_bookmarks_on_top": true,
   "settings_bookmarks_top_menu": true,
   "settings_bookmarks_search": true,
