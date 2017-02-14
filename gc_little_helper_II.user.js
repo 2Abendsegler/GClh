@@ -3567,8 +3567,10 @@ var mainGC = function () {
                 var founds = parseInt(trim(friend.getElementsByTagName("dd")[4].innerHTML).replace(/[,.]*/g, ""));
                 if (isNaN(founds))founds = 0;
                 var last_founds = getValue("friends_founds_" + name.innerHTML);
-//xxxx3 Wenn das undefined ist, dann sollte der neue Wert aber auch abgespeichert werden, sonst wird sich ja nie etwas ändern, wenn man nicht den Reset Button drückt.
-                if (typeof(last_founds) == "undefined") last_founds = founds;
+                if (typeof(last_founds) == "undefined") {
+                    last_founds = founds;
+                    setValue("friends_founds_" + name.innerHTML, last_founds);
+                }
                 if ((founds - last_founds) > 0) add = " <font color='#00AA00'><b>(+" + (founds - last_founds) + ")</b></font>";
                 setValue("friends_founds_new_" + name.innerHTML, founds);
                 if (founds == 0) {
@@ -3582,8 +3584,10 @@ var mainGC = function () {
                 var hides = parseInt(trim(friend.getElementsByTagName("dd")[5].innerHTML).replace(/[,.]*/g, ""));
                 if (isNaN(hides))hides = 0;
                 var last_hides = getValue("friends_hides_" + name.innerHTML);
-//xxxx3 Wenn das undefined ist, dann sollte der neue Wert aber auch abgespeichert werden, sonst wird sich ja nie etwas ändern, wenn man nicht den Reset Button drückt.
-                if (typeof(last_hides) == "undefined") last_hides = hides;
+                if (typeof(last_hides) == "undefined") {
+                    last_hides = hides;
+                    setValue("friends_hides_" + name.innerHTML, last_hides);
+                }
                 if ((hides - last_hides) > 0) add = " <font color='#00AA00'><b>(+" + (hides - last_hides) + ")</b></font>";
                 setValue("friends_hides_new_" + name.innerHTML, hides);
                 if (hides == 0) {
