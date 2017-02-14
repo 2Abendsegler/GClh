@@ -35,7 +35,10 @@
 // ==/UserScript==
 
 //*************************************************************************************************************************************************
-// $$000   | Versionierung, bei neuen Versionen beachten.
+// Kennz.  | Datum      | Entwickler    | zuVers. |
+//*************************************************************************************************************************************************
+// $$000   | Aug.2016   | FE            | 11.7    |
+// Versionierung, bei neuen Versionen beachten.
 //*************************************************************************************************************************************************
 
 var jqueryInit = function (c) {
@@ -157,7 +160,10 @@ var constInit = function (c) {
 
     c.gclhConfigKeysIgnoreForBackup = {
         "token": true,
-        "dbToken": true
+        "settings_configsync_configid": true,
+        "doPostBack_after_redirect": true,
+        "dbToken": true,
+        "hide_contribute": true
     };
     c.global_log_it_icon = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAIAAAAA8CAYAAACuNrLFAAAAAXNSR0IArs4c6QAAAAZiS0dEAP8A/wD/oL2nkwAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SU1FB9sKBBIqEByBYugAAAAZdEVYdENvbW1lbnQAQ3JlYXRlZCB3aXRoIEdJTVBXgQ4XAAAJ3klEQVR42u1cbWwUxxl+Zu+OO4zPzhnFkOI4DhgJI1M7UKA0+AOl6IRcIdPyJeG4Kq0QqKUuWEVGgFpVjhTR2kYoUa2CYiqVqhJORIJB2IXGGDeWPwpycWuloiRt6mJM4PDX5W7vbrc/2DXj8e7e7tlnrmFeaXR367nd8T7P+7zvvDN7ADdu3Lhx48aNGzdu3Lhxe4aMfEmu8ayY/P8ADuFkmDXQ5UQiAOFgPzVSyE+TACTK+QgnyIwBLEfpK88mAUgU7ycG4HMCWJd9mgRyFBWQ400AAgADAwMLnE5nqc1m2wrgNY5bbBaJRP4UDAYbu7q6Lm7ZsuWBDqAs8LIOGWQrJIiFAKS/v39uenr6G4Ig/ITDN7MWDAZPHj58+I2GhgaRAVeiPksM+FKsJLBKADIwMLAgKSnpYwApHK446b8sj5w+fXr1oUOHHjEgSxTYEQZ8SUMhopKAWPX8hQsX3uXgzw4JSkpK8js6OiIU2Op7SeNV0lCDqCQwSwACAA8ePKg1kn27ax7OtPSj8+N7CEck3ZOtyJqP3d7lcBEx5hvk8XgAAD6fLyEA0xvPdMbp8/neWrx48dsKqGGKABHqc5ghgyUSELPgK9J/16jj6aufIPP5ZHz71SWw2wTdfhe7PsWVm5/hlz94FWOjI5wABrZnz551586dC1JghwGElBamXmlymCaBYHYgTqez1OjvriQ3bt6+j60F2RgXCYZGZdwdkTHwSMa/fTI+eSDj9n0J/7wvoWRNFua5HPjX0OiXRrJ9Pl9cyLh3794CAG4AyUpLAjBXaXMAOAE4ANgB2JRGzKq7YMb7ARCbzfZro45jgRDS3E4IhCAQAiLS4xZWWkSSEZaAYPhx/5SkORjxi7MCTnd3N0pLS5GdnY0lS5Zg8+bN6O7untLv0qVLKCgoQEZGBoqLi9HU1ASPxzPhxdEUgO1HfzZ7HtZWrlx5HECqknepJJjHkGAORQCBaUbFONjjMq+VH4MvySoR5IljBqlB3MD3er1YtmwZTp06BZvNhqqqKni9XjQ3N2P16tUAgP7+fuzatQs5OTk4e/YsZFlGVVXVtFVhhkJVKgBRaUHF41WwiUG9QFUCOVYFMJ0oJrsceDgahCTLsAuq98tKe6IE6ljGAiEkuxxxJ0B1dTVkWUZlZSU2bNiAwsJCHDx4ELIso7q6eqLf+fPnAQCVlZUoKipCcXExDhw4kCgRJhXAc4oKuCkVSALgUsKAnWo0OYyqsYYKYKlGEPCP4pXs59F4/Ta2FmRDIE+u/ZlPxsNxGS+kEqS7BVzs+hSjfhEvLXDDPxbfPODWrVsAgLVr104cU9/39fVNIQDdb926dYlEAFGRegcV56FRI1BnA4RpMoWrbDUEmCLD3pJcnGnpx+vH/whJfnyNja+8iN3e5XjRQ/DBR434sPcC/IFhiCER77aVYtPK7QmVzBGSkEsUKQoB9MAPUy3C1AsM/yG7SeBN3ZVwYBxlhZkoK8ycOPbzP9zCoM+PUxffgey6gW8WrkVG2lJ8+LfzeP+vb+H+8CDKN/w4bnduxYoVaGtrQ2dnJzIyMgAAnZ2dAIDc3NyJfqWlpTh+/Dh6enqwaNEiAEBHR8e0ry8IAiRJgiRJEAQh1tO4ldhPg696ekghhzo1ZBNBifL6KfmA6RGFQqF9VkfddOMelr+Uhqp3PsKd/15C/rI8RIQI8l7YiAgJ4esrvoHGtoa4us6RI0dACEFdXR2uXbuG9vZ2nDhxAoQQHD16dBIBAKCmpgbt7e1obW1FXV3dtK+/atUqAEBPT09M36+vr/8VlfHPZaaBTqo5NGYCiDYlNJsEkt7e3iYrAxfhRPc/7mHpV1Jx4vtfw+cjg3CQZGzO2f842XrtN1iS/lWIoeC0CzBaTbU1a9agubkZ8+fPx+7du1FeXo60tDRcvnx5YgYAYFL2v2PHDhw7dgz79+9XayAxj6+iogL5+fnwer0xTQNra2tFhgAuKvFzUlNAug5Ak0BLxUm02E4Y9ggAbENDQ286HI6KWG5E6S9W4VubihGGhKqNDXiz5Xtw2Zx4r6kZH/zsZkIWdy5cuIDy8nLk5eWhtbV11q9/5cqV323bti1VkfYggC8AjAMYAzAMYER5faS8H1X+7gcQoMICXSaeVBW0WSCAEA6HOwoLC/cSQqy7hAC0/f0CshZk4XP/fzA8PoQ/917HpvzXkffy2oQAfPv27cjMzITb7cbVq1dRW1uLwcFB1NbWYunSpbM6FlEUR9avX98biUQ8VMyXqJJwiKoNiEweQK8PsKuEprJ7lgCqrDhOnjyZXlZW9hdCiOUVwbPX3sa7138Lf2AMSa5kfKfgu9hV9MOE8fiWlhbU1NSgr68PKSkpyMnJQUVFBYqKimYd/JycnDMPHz7MVcAUGQUYVdojqg0rx8YoBVBJEdFTAMsEADCnqKgoqaGh4acej+dH4Daj1tzc/PuysjIxHA6/THl7whDAriQdLgBJO3fu9Ozbt68wKyurJCUlpZjDF5vduXOnvbGx8UZ9fb3g8/nydOQ+oJEDDFM5gBYBQjNFAIFSAIdKAKUc6VYKFc/hyaJFKiYvWtDTFLvZMuUzZuxeP7rAE7ck0G4wGBJlkBImb04IUU1NSuw6lStBgwTcpm7/okOAXsLH7gewtCPIbmFQ7MBo8Ok4FVTYR3u6+h2HxhyVEyA6AYKUAgSUph4TDcrAkg4JLK8F0F/SYmdQyQ3UQdqZIoQqZ3QI4GHAWP71QoBfef2CIkFQZ/oHoymgGQKw9WNJZ3B0lmqjKozqRkaRqVhxAlgjgCr7KgHGGRKIlBJEGJwMQ4HdojSxsT+knCOIqRsUZKoPu2vFRiWXPARMvs/0tm82BwgwJPBT4UCrCGTo/dEIwCaCWiQIQXsLEg2+uoyptW2JK8BUz5R0wmyIiv96oSCkAb7ek0OWkkCiAT5dIwhCe41aZe0cahoocAUwrQCSRtk3yBBBVQB2T4DegyIxhQB6cESDBNAAP0Qlhw6d+C9wBdCcXoMhgBYJgsxMQNQBP+YQwHo/YQZIKBKw8hWmYr/WXjVa/jkBtB/4ZMMAmxCGKM/XSwBnLAnUSggjOsfY7JVO/Gj55wQwJgB9P9mai5kHQ0w9HWw1ByBMNS8SJUGk1xD0pB+cAJrP+ksaU8Kn8mgY25d+pQEVGC9nPV7P85918KFTqWOVQEsRZu3hUCMSEA3PtjHEIFHiPieAMQES4vFwGICmBbDAvAcH31IuACTgD0REI4GWh0eTfE4AfRXQUwTgKf5EjBkQ+Y9EzWxSqDdTMEOeuBHArDfzn4mbmVlBNGJYAn6mQeAenjgK8VQIYOZ8nBAzC/i0gJ8tUDjos0sGbty4cePGjRs3bty4cePGzcj+B5C9EH9XK0MTAAAAAElFTkSuQmCC";
     c.global_mail_icon = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAKCAYAAAC9vt6cAAAAAXNSR0IArs4c6QAAAAZiS0dEAP8A/wD/oL2nkwAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SU1FB9oHHg0gKjtwF3IAAAAZdEVYdENvbW1lbnQAQ3JlYXRlZCB3aXRoIEdJTVBXgQ4XAAABdElEQVQoz4WRMaviUBSEv5s8H8RO0Eq00SiCRMQigoiCYC2I/hhbwd8g1lpZWFioECwl2IqIwT5iGdDCK94tlhf27cK+gWmGYZg5R9i2rUzTpFAooOs6AEIINE1DCPEPv/T3+81yuURMJhNlmiYAtVqNSCTCT7her6zXa6SUaFJKms0m8XicxWLB5XIJjUqpkAD3+53tdovruvT7faSUfHyZi8UiyWQSx3HwfZ96vY4QIgy73W5sNhssy6LRaIRztT+rxWIxer0eUkpms1moe57HfD6n0+lQKpXQdT1s9fH3PqUUmUwG13UZjUaUy2V2ux2WZRGNRlFKfWv2LSAIAlzXJQgCBoMBz+eTw+HAcDjE8zym0ynVapVsNhtOCAOOxyOn04l8Pk+73Qbg8/OTSqWCUopcLkcikWC/33M+n2m1Wr9fPh6PVTqdxjAMbNvGMIwf3+j7Po7j8Hg8EJZlqW63SyqVQtO08Dj/gxCC1+vFarXiF7aOl1qte6kYAAAAAElFTkSuQmCC";
@@ -165,8 +171,6 @@ var constInit = function (c) {
     c.global_message_icon = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABUAAAAKCAMAAABsSeXqAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAq1BMVEX/AAAuLi43NzdERERTU1NcXFyBgYGFhYWIiIiJiYmLi4uMjIyNjY2Ojo6Pj4+QkJCRkZGSkpKTk5OUlJSVlZWYmJiampqcnJyenp6fn5+goKCioqKkpKSpqamqqqqrq6uvr6+xsbG2tra4uLi9vb2/v7/CwsLMzMzQ0NDT09PU1NTZ2dnb29vn5+fp6enu7u7x8fHy8vL09PT19fX29vb6+vr8/Pz+/v7///+lQzgqAAAAAXRSTlMAQObYZgAAAIxJREFUCB01wQcSgjAQBdC1Y28LCrGGIoIKomb//U9mJjO8R053MPK88WQ6my+W682qR06Qpj+0nmFADuN+fAAigia5fJiskhmoThmsl8oNmByGlRyAcvsGhIlIMzMAkUxplRuBMDkM1CJobhCpDZgKzRaKcw1LUMXXhsnxdfpFK1Y+OZ3hPgpb0a7/B4B/GcUl57niAAAAAElFTkSuQmCC";
     c.global_stop_ignore_icon = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAAmVBMVEX////Nzc3Pzs/S0tLW1tbX19fZ2dnc3Nzf39/h4eHiDRXjGCDkGyPkHiblJCvlKTHmLDPmLzbmMjnnNTznO0HoQEfoQ0npRkzrVFrt7O3uc3jveX7v7+/wgobwhYnx8fHyk5by8vLzmZzznqH0oaT0pKf0p6r2srX4xsj5z9D5+fn61Nb6+vr7+/v8/Pz98fH9/f3+9vf//Py/jJ9UAAAAAXRSTlMAQObYZgAAAK9JREFUGBkFwQlCwjAURdH7yG8NsUyiIloMLWE0kcj+F+c5APReko8AALdGkiS1GYCbkw2ZHE0uAzRSUwCqVwv0MpMVgGoa4ElDMVkBiJqCU6XYZPsLZBlIQLHJ9msVXnYCpwoUW89P17R++8MrAnzOwxHui2+iXAVm5xSOkFbQylcIP6SQuHSQnazPsxOkcBhfgdxK2i3vcAjdCMAwNW2W42X//PEAAOCxf+82I/wDKl0NPPJFCYkAAAAASUVORK5CYII=";
     c.global_restore_icon = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAA5FBMVEX////q6uqEhITR0dEfHx9HR0f7+/v8/Pz+/v6vr68LCwtHR0b4+Pj+/v6Dg4MBAQEJCQg0NDR3d3fOzs729vZZWVk/Pz/Pz8/+/v68vLwHBwcGBgajo6P4+Pi/v78WFhYLCwvX19fT09IlJSQmJiZqamokJCSHh4fr6+s5OTlHR0f9/fybm5oHBweCgoL39/dUVFT19fX09PRWVlbExMT+/v6xsbFpaWlDQ0P6+vogICAXFxfj4+OWlpYTExPZ2dktLS3V1dXu7u5wcHDs7Oz8/PzJyckCAgIEBAMEBAQAAAAAAADG7gw5AAAAAXRSTlMAQObYZgAAAIVJREFUGBlVwecOQUEQBtBP+4FEDTdKdC43WkIQvYXZmfd/HxlLsnsOrFgcnkQyBVc6887CkcuTKRRLZfxUmAyxiFQDqFqdDLGoRhOq1SYWxdTpQvX6IoPhiMlQiK/xRCJgOiOew1osIwArljX+NgC2soNnfzjCdToHcF2uN7jujyc8L1gfFdIUEEvB1dMAAAAASUVORK5CYII=";
-    c.global_plus_config2 = "data:image/gif;base64,R0lGODlhCwALAPcAAAEBAdHHjQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAAAAAAALAAAAAALAAsABwgoAAEIHEhQYICDCBEaTJhw4UEADSEqjPiQYMWGFCcqlMjwYseKBQsGBAA7";
-    c.global_minus_config2 = "data:image/gif;base64,R0lGODlhCwALAPcAAAEBAeHbtQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAAAAAAALAAAAAALAAsABwgnAAEIHEhQYICDCBEaTJhwIcODDh8uLAgRwEOFFi8GiMiQY8OCIAMCADs=";
 
     constInitDeref.resolve();
     return constInitDeref.promise();
@@ -186,29 +190,6 @@ var variablesInit = function (c) {
     }
     c.global_imageGallery = false;    
     c.global_dependents = new Array();    
-    c.global_mod_reset = false;
-    c.global_rc_data = "";
-    c.global_rc_status = "";
-//--> $$065 Begin of insert
-    c.global_tb_table_id = "";
-    c.global_tb_count = "";
-    c.global_tb_new_count = "";
-    c.global_tb_diff = "";
-    c.global_tb_sums = "";
-    c.global_tb_code = "";
-    c.show_box_gclh_tb_head = false;
-    c.show_box_gclh_tb_head_owned = false;
-    c.show_box_gclh_tb_foot = false;
-    c.show_box_gclh_tb_foot_owned = false;
-    if ( !getValue("settings_tbrules_standard") ) {
-        c.tbrules = new Array();
-        setTBRule( "Travel Bugs", "/(Travel)(.*)(Bug)/i", c.tbrules );
-        setTBRule( "Geocoins", "/(Geocoin|Geo Coin)/i", c.tbrules );
-        setTBRule( "Geopatches", "/(Geopatch|Geo patch)/i", c.tbrules );
-        setTBRule( "Signal Tags", "/(Signal)(.*)(Tag)/i", c.tbrules );
-        setValue("settings_tbrules_standard", JSON.stringify(c.tbrules));
-    }
-//<-- $$065 End of insert
 
     // Settings: Submit Log on F2
     c.settings_submit_log_button = getValue("settings_submit_log_button", true);
@@ -249,6 +230,8 @@ var variablesInit = function (c) {
     c.settings_show_bbcode = getValue("settings_show_bbcode", true);
     // Settings: Show mail-Link
     c.settings_show_mail = getValue("settings_show_mail", true);
+    // Settings: Show Coord-Link in Mail
+    c.settings_show_mail_coordslink = getValue("settings_show_mail_coordslink", false);
     //Settings: Schriftgröße im Menü in Pixel
     c.settings_font_size_menu = getValue("settings_font_size_menu", 15);
     //Settings: Schriftgröße im Untermenü in Pixel
@@ -273,6 +256,8 @@ var variablesInit = function (c) {
     c.settings_show_smaller_gc_link = getValue("settings_show_smaller_gc_link", true);
     // Settings: Show Message-Link
     c.settings_show_message = getValue("settings_show_message", true);
+    // Settings: Show Coord-Link in Message
+    c.settings_show_message_coordslink = getValue("settings_show_message_coordslink", false);
     // Settings: Show Stop Ignoring Link
     c.settings_show_remove_ignoring_link = getValue("settings_show_remove_ignoring_link", true);
     // Settings: Zeilen in gewöhnlichen Listen in Zebra einfärben
@@ -379,54 +364,8 @@ var variablesInit = function (c) {
     c.settings_hide_colored_versions = getValue("settings_hide_colored_versions", false);
     // Settings: Make main areas in GClh Config hideable
     c.settings_make_config_main_areas_hideable = getValue("settings_make_config_main_areas_hideable", true);
-//--> $$065 Begin of insert
     // Settings: Load trackables faster without images
     c.settings_faster_profile_trackables = getValue("settings_faster_profile_trackables", false);
-    // Settings: Show sums and total of the trackables
-    c.settings_tb_sums_total = getValue("settings_tb_sums_total", true);
-    // Settings: Show sums and total of the trackables
-    c.settings_tb_sums_total_owned = getValue("settings_tb_sums_total_owned", true);
-    // Settings: Show the total above
-    c.settings_tb_total_header_desc = getValue("settings_tb_total_header_desc", true);
-    // Settings: Show the total above
-    c.settings_tb_total_header_desc_owned = getValue("settings_tb_total_header_desc_owned", true);
-    // Settings: Show sums in the header
-    c.settings_tb_sums_header = getValue("settings_tb_sums_header", true);
-    // Settings: Show sums in the header
-    c.settings_tb_sums_header_owned = getValue("settings_tb_sums_header_owned", true);
-    // Settings: Show sums in the footer
-    c.settings_tb_sums_footer = getValue("settings_tb_sums_footer", false);
-    // Settings: Show sums in the footer
-    c.settings_tb_sums_footer_owned = getValue("settings_tb_sums_footer_owned", false);
-    // Settings: Make the sums hideable by click
-    c.settings_tb_sums_hideable = getValue("settings_tb_sums_hideable", true);
-    // Settings: Make the sums hideable by click
-    c.settings_tb_sums_hideable_owned = getValue("settings_tb_sums_hideable_owned", true);
-    // Settings: Show sums for more series of trackables
-    c.settings_tb_sums_more = getValue("settings_tb_sums_more", false);
-    // Settings: Show sums for more series of trackables
-    c.settings_tb_sums_more_owned = getValue("settings_tb_sums_more_owned", false);
-    // Settings: Show sums of series if the count is at least
-    c.settings_tb_sums_count = getValue("settings_tb_sums_count", 5);
-    // Settings: Show sums of series if the count is at least
-    c.settings_tb_sums_count_owned = getValue("settings_tb_sums_count_owned", 1);
-    // Settings: Show total in sums lists
-    c.settings_tb_total_sums_lists = getValue("settings_tb_total_sums_lists", true);
-    // Settings: Show total in sums lists
-    c.settings_tb_total_sums_lists_owned = getValue("settings_tb_total_sums_lists_owned", true);
-    // Settings: Make the trackables hideable by click
-    c.settings_tb_sums_breakable = getValue("settings_tb_sums_breakable", true);
-    // Settings: Make the trackables hideable by click
-    c.settings_tb_sums_breakable_owned = getValue("settings_tb_sums_breakable_owned", true);
-    // Settings: Hide footer
-    c.settings_tb_sums_hide_footer = getValue("settings_tb_sums_hide_footer", false);
-    // Settings: Hide footer
-    c.settings_tb_sums_hide_footer_owned = getValue("settings_tb_sums_hide_footer_owned", false);
-    // Settings: Show names of trackable series in bold
-    c.settings_tb_sums_bold = getValue("settings_tb_sums_bold", false);
-    // Settings: Show names of trackable series in bold
-    c.settings_tb_sums_bold_owned = getValue("settings_tb_sums_bold_owned", false);
-//<-- $$065 End of insert
     // Settings: Show EventDay
     c.settings_show_eventday = getValue("settings_show_eventday", true);
     c.settings_date_format = getValue("settings_date_format", "yyyy-MM-dd");
@@ -496,7 +435,7 @@ var variablesInit = function (c) {
     c.settings_imgcaption_on_top = getValue("settings_imgcaption_on_top", false);
     c.settings_hide_avatar = getValue("settings_hide_avatar", false);
     c.settings_show_big_gallery = getValue("settings_show_big_gallery", false);
-    c.settings_automatic_friend_reset = getValue("settings_automatic_friend_reset", false);
+    c.settings_automatic_friend_reset = getValue("settings_automatic_friend_reset", true);
     c.settings_show_long_vip = getValue("settings_show_long_vip", false);
     c.settings_load_logs_with_gclh = getValue("settings_load_logs_with_gclh", true);
     c.settings_map_add_layer = getValue("settings_map_add_layer", true);
@@ -511,9 +450,13 @@ var variablesInit = function (c) {
     c.settings_log_signature_on_fieldnotes = getValue("settings_log_signature_on_fieldnotes", true);
     c.settings_map_hide_sidebar = getValue("settings_map_hide_sidebar", true);
     c.settings_hover_image_max_size = getValue("settings_hover_image_max_size", 600);
-    c.settings_vip_show_nofound = getValue("settings_vip_show_nofound", true);
+    c.settings_vip_show_nofound = getValue("settings_vip_show_nofound", false);
     c.settings_use_gclh_layercontrol = getValue("settings_use_gclh_layercontrol", true);
     c.settings_fixed_pq_header = getValue("settings_fixed_pq_header", false);
+// >> hm -- Issue #111
+    c.settings_friendlist_summary = getValue("settings_friendlist_summary", true);
+    c.settings_friendlist_summary_viponly = getValue("settings_friendlist_summary_viponly", false);
+// << hm -- Issue #111    
     // Settings: Custom Bookmarks
     var num = c.bookmarks.length;
     for (var i = 0; i < c.anzCustom; i++) {
@@ -827,18 +770,6 @@ var mainGC = function () {
         }
     }
 
-// Migration: Installationszähler. Aktuelle TB Rules laden. Migrationsaufgaben erledigen. 
-    var declaredVersion = getValue("declared_version");
-    if ( declaredVersion != scriptVersion ) {
-        try {
-            instCount(declaredVersion);
-            loadTBRules();
-            migrationTasks();
-        } catch (e) {
-            gclh_error("migration", e);
-        }
-    }
-
 // Redirect to Map (von Search Liste direkt in Karte springen)
     if (settings_redirect_to_map && document.location.href.match(/^https?:\/\/www\.geocaching\.com\/seek\/nearest\.aspx\?/)) {
         if (!document.location.href.match(/&disable_redirect=/) && !document.location.href.match(/key=/) && !document.location.href.match(/ul=/) && document.getElementById('ctl00_ContentBody_LocationPanel1_lnkMapIt')) {
@@ -956,11 +887,11 @@ var mainGC = function () {
         }
     }
 
-// Aufruf GClh Sync per F10 Taste. Nur auf den erlaubten Seiten und auch nur, wenn man nicht schon im GClh Sync ist. Nicht im Config Reset Modus.
+// Aufruf GClh Sync per F10 Taste. Nur auf den erlaubten Seiten und auch nur, wenn man nicht schon im GClh Sync ist.
     if ( settings_f10_call_gclh_sync ) {
         function keydown(e) {
             if (e.keyCode == 121) {
-                if ( !check_sync_page() && !global_mod_reset ) {
+                if ( !check_sync_page() ) {
                     if ( checkTaskAllowed( "GClh Sync", false ) == true ) gclh_showSync();
                     else document.location.href = defaultSyncLink;
                 }
@@ -3066,14 +2997,14 @@ var mainGC = function () {
 // Show eMail-Link and Show Message-Center-Link beside Username. (Nicht in den Logs zum Cache Listing, das erfolgt später bei Log-Template.)    
     show_mail_and_message_icon:
     try {
-        // Cache, TB und Aktiv User Infos ermitteln.
-        [ global_gc, global_tb, global_code, global_name, global_link, global_activ_username, global_founds, global_date, global_time, global_dateTime] = getGcTbUserInfo();                            
-
         // Nicht auf der Mail oder Message Seite selbst ausführen. 
         if ( document.getElementById("ctl00_ContentBody_SendMessagePanel1_SendEmailPanel") ||
              document.getElementById("messageArea")                                           ) {
             break show_mail_and_message_icon;
-        }
+        }   
+        
+        // Cache, TB und Aktiv User Infos ermitteln.     
+        [ global_gc, global_tb, global_code, global_name, global_info_mail, global_info_message, global_activ_username ] = getGcTbUserInfo();                            
 
         if ( ( settings_show_mail || settings_show_message ) ) {
             // Öffentliches Profil:
@@ -3122,11 +3053,8 @@ var mainGC = function () {
         var g_tb = false;
         var g_code = "";
         var g_name = "";
-        var g_link = "";
-        var g_founds = "";
-        var g_date = "";
-        var g_time = "";
-        var g_dateTime = "";
+        var g_info_mail = "";
+        var g_info_message = "";
         var g_activ_username = "";
 
         if ( ( settings_show_mail || settings_show_message ) ) {
@@ -3178,18 +3106,20 @@ var mainGC = function () {
                 }    
             }
 
-            // Code und Link zum Cache bzw. zum TB aufbauen.
-            if ( g_code != "" ) {
-                g_link = "(http://coord.info/" + g_code + ")";  
-                g_code = "(" + g_code + ")";
+            // Link zum Cache oder zum TB bzw. Coord Info zum Cache oder zum TB aufbauen.
+            if ( g_name != "" ) {
+                if ( g_code != "" ) {
+                    if ( settings_show_mail && settings_show_mail_coordslink ) g_info_mail = " ( http://coord.info/" + g_code + " )";  
+                    else g_info_mail = " ( " + g_code + " )";
+                    if ( settings_show_message && settings_show_message_coordslink ) g_info_message = " ( http://coord.info/" + g_code + " )";  
+                    else g_info_message = " ( " + g_code + " )";
+                }
             }
-            // Eigene Founds und aktuelles Datum, Zeit.
-            g_founds = get_my_finds();
-            [ g_date, g_time, g_dateTime ] = getDateTime();
+                
             // Aktiven User Namen ermitteln.
             g_activ_username = $('.li-user-info').children().first().text();
         }
-        return [ g_gc, g_tb, g_code, g_name, g_link, g_activ_username, g_founds, g_date, g_time, g_dateTime ];
+        return [ g_gc, g_tb, g_code, g_name, g_info_mail, g_info_message, g_activ_username ];
     }
     // Message Icon und Mail Icon aufbauen. 
     function buildSendIcons( b_side, b_username, b_art ) {
@@ -3228,9 +3158,6 @@ var mainGC = function () {
             username_send = "user";
         }
 
-        // Message, Mail Template aufbauen. 
-        template = urlencode( buildSendTemplate().replace(/#Receiver#/ig, b_username) );
-
         // Message Icon erzeugen.
         if ( settings_show_message && b_art == "per guid" ) {
             var message_link = document.createElement("a");
@@ -3239,7 +3166,20 @@ var mainGC = function () {
             message_img.setAttribute("title", "Send a message to " + username_send);
             message_img.setAttribute("src", global_message_icon);
             message_link.appendChild(message_img);
-            message_link.setAttribute("href", http + "://www.geocaching.com/account/messagecenter?recipientId=" + guid + "&text=" + template);
+            // gcCode oder tbCode nicht nutzen, damit keine Standard Message aufgebaut wird. Die deaktivierten Punkte können 
+            // dann aktiviert werden, wenn die Erzeugung des eigenen Inhaltes sich als nicht praktikabel herausstellt. 
+            if ( global_gc && global_code != "" ) {
+                // message_link.setAttribute("href", http + "://www.geocaching.com/account/messagecenter?recipientId=" + guid + "&gcCode=" + global_code); 
+                message_link.setAttribute("href", http + "://www.geocaching.com/account/messagecenter?recipientId=" + guid + "&text=Hi " + b_username + ",%0A%0A" + global_name + global_info_message); 
+            }    
+            else if ( global_tb && global_code != ""  ) { 
+                // message_link.setAttribute("href", http + "://www.geocaching.com/account/messagecenter?recipientId=" + guid + "&tbCode=" + global_code);
+                message_link.setAttribute("href", http + "://www.geocaching.com/account/messagecenter?recipientId=" + guid + "&text=Hi " + b_username + ",%0A%0A" + global_name + global_info_message); 
+            }
+            else {
+                // message_link.setAttribute("href", http + "://www.geocaching.com/account/messagecenter?recipientId=" + guid);
+                message_link.setAttribute("href", http + "://www.geocaching.com/account/messagecenter?recipientId=" + guid + "&text=Hi " + b_username + ",%0A%0A" + global_name + global_info_message);
+            }
             b_side.parentNode.insertBefore(message_link, b_side.nextSibling);
             b_side.parentNode.insertBefore(document.createTextNode(" "), b_side.nextSibling);
 
@@ -3257,26 +3197,19 @@ var mainGC = function () {
             mail_img.setAttribute("src", global_mail_icon);
             mail_link.appendChild(mail_img);
             if ( b_art == "per guid" ) {
-                mail_link.setAttribute("href", http + "://www.geocaching.com/email/?guid=" + guid + "&text=" + template);
+                mail_link.setAttribute("href", http + "://www.geocaching.com/email/?guid=" + guid + "&text=Hi " + b_username + ",%0A%0A" + global_name + global_info_mail);
                 b_side.parentNode.insertBefore(mail_link, b_side.nextSibling);
                 b_side.parentNode.insertBefore(document.createTextNode(" "), b_side.nextSibling);
             }
             else {
                 b_side.appendChild(document.createTextNode(" "));
-                mail_link.setAttribute("href", http + "://www.geocaching.com/email/?u=" + urlencode(b_username) + "&text=" + template);
+                mail_link.setAttribute("href", http + "://www.geocaching.com/email/?u=" + urlencode(b_username) + "&text=Hi " + b_username + ",%0A%0A" + global_name + global_info_mail);
                 b_side.appendChild(mail_link);
                 b_side.appendChild(document.createTextNode(" "));
             }
         }
+        return;
     } 
-    // Message, Mail Template aufbauen, bis auf Empfänger. 
-    function buildSendTemplate() {
-        var template = getValue("settings_mail_signature", "");
-        template = template.replace(/#Found#/ig, global_founds+1).replace(/#Found_no#/ig, global_founds).replace(/#Me#/ig, global_activ_username);
-        template = template.replace(/#Date#/ig, global_date).replace(/#Time#/ig, global_time).replace(/#DateTime#/ig, global_dateTime);
-        template = template.replace(/#GCTBName#/ig, global_name).replace(/#GCTBCode#/ig, global_code).replace(/#GCTBLink#/ig, global_link);
-        return template;
-    }
 
 // Switch title-color to red, if cache is archived & rename the gallery-link to prevent destroying the layout on to many images ("view the " wegnehmen)
     if (is_page("cache_listing")) {
@@ -3316,20 +3249,24 @@ var mainGC = function () {
             function chgDefaultSendaddress() {
                 setValue("email_sendaddress", document.getElementById("ctl00_ContentBody_SendMessagePanel1_chkSendAddress").checked);
             }
+
             function chgDefaultMailcopy() {
                 setValue("email_mailcopy", document.getElementById("ctl00_ContentBody_SendMessagePanel1_chkEmailCopy").checked);
             }
+
             document.getElementById('ctl00_ContentBody_SendMessagePanel1_chkSendAddress').addEventListener("click", chgDefaultSendaddress, false);
             document.getElementById('ctl00_ContentBody_SendMessagePanel1_chkEmailCopy').addEventListener("click", chgDefaultMailcopy, false);
 
-            // Grab mail template from URL.
+            // Grab Text from URL
             var matches = document.location.href.match(/&text=(.*)/);
-            if (matches) {
-                document.getElementById("ctl00_ContentBody_SendMessagePanel1_tbMessage").innerHTML = decodeURIComponent(matches[1]);
-            // Build mail template.
-            } else {
-                template = buildSendTemplate().replace(/#Receiver#/ig, "");
-                document.getElementById("ctl00_ContentBody_SendMessagePanel1_tbMessage").innerHTML = template;
+            if (matches) document.getElementById("ctl00_ContentBody_SendMessagePanel1_tbMessage").innerHTML = decodeURIComponent(matches[1]);
+
+            // Add Mail-Signature
+            if (getValue("settings_mail_signature", "") != "") {
+                var me = "#me#";
+				var newName = $('.li-user-info').children().first().text();
+                if (newName) me = newName;
+                document.getElementById("ctl00_ContentBody_SendMessagePanel1_tbMessage").innerHTML += "\n\n" + getValue("settings_mail_signature").replace(/#me#/g, me);
             }
         } catch (e) {
             gclh_error("Improve E-Mail-Site", e);
@@ -3354,9 +3291,16 @@ var mainGC = function () {
     if ( settings_show_message && is_page("messagecenter") && document.location.href.match(/&text=(.*)/) ) {      
         try {
             var val = "";
-            // Grab message template from URL.
+            // Grab Text from URL.
             var matches = document.location.href.match(/&text=(.*)/);
             val = decodeURIComponent(matches[1]);
+            // Add Mail-Signature
+            if ( getValue("settings_mail_signature", "" ) != "") {
+                var me = "#me#";
+	            var newName = $('.li-user-info > span:nth-child(2)').text();
+                if (newName) me = newName;
+                val += "\n\n" + getValue("settings_mail_signature").replace(/#me#/g, me);
+            }
             
             function upd() {
                 var checkafter = "Message Center";
@@ -3559,7 +3503,25 @@ var mainGC = function () {
                 }
                 setValue("friends_founds_last", day);
             }
+// >> hm -- Issue #111
+            // Klasse fuer die Links anlegen
+            var myf = "a.myfriends:hover { " +
+                 "  text-decoration:underline;" +
+                 "}" +
+                 "a.myfriends {" +
+                 "  color:#00AA00;" + 
+                 "  text-decoration:none;" +
+                 "}";
+            GM_addStyle(myf);
 
+            var sNewF = "";  // new finds 
+            var sNewH = "";  // new hides          
+
+            var myvips = getValue("vips", false);
+            myvips = myvips.replace(/, (?=,)/g, ",null");
+            myvips = JSON.parse(myvips);
+// << hm -- Issue #111
+            
             for (var i = 0; i < friends.length; i++) {
                 var friend = friends[i];
                 var name = friend.getElementsByTagName("a")[0];
@@ -3569,12 +3531,25 @@ var mainGC = function () {
                 var founds = parseInt(trim(friend.getElementsByTagName("dd")[4].innerHTML).replace(/[,.]*/g, ""));
                 if (isNaN(founds))founds = 0;
                 var last_founds = getValue("friends_founds_" + name.innerHTML);
-                if (typeof(last_founds) == "undefined") {
-                    last_founds = founds;
-                    setValue("friends_founds_" + name.innerHTML, last_founds);
-                }
+                if (typeof(last_founds) == "undefined") last_founds = founds;
                 if ((founds - last_founds) > 0) add = " <font color='#00AA00'><b>(+" + (founds - last_founds) + ")</b></font>";
                 setValue("friends_founds_new_" + name.innerHTML, founds);
+// >> hm -- Issue #111
+                // wenn neue Founds, dann User und Funddifferenz als Link zu string hinzufuegen (ggf. nur VIPs)
+                if  ((settings_friendlist_summary_viponly && in_array(name.innerHTML, myvips)) || (!settings_friendlist_summary_viponly)) 
+                {    
+                   if ((founds - last_founds) > 0) {
+                      if (sNewF != "") sNewF = sNewF + ",&nbsp;";
+                                          
+                      var sHlp = name.innerHTML + " (";  
+                      if (founds - last_founds > 0) sHlp = sHlp + "+";
+                      else sHlp = Hlp + "-";
+                      sHlp = sHlp + (founds - last_founds) + ")";
+                  
+                     sNewF = sNewF + "<a class='myfriends' href='/seek/nearest.aspx?ul=" + urlencode(name.innerHTML) + "&disable_redirect='>" + sHlp + "</a>";                  
+                  }
+                }
+// << hm -- Issue #111                
                 if (founds == 0) {
                     friend.getElementsByTagName("dd")[4].innerHTML = founds + "&nbsp;";
                 } else {
@@ -3586,12 +3561,24 @@ var mainGC = function () {
                 var hides = parseInt(trim(friend.getElementsByTagName("dd")[5].innerHTML).replace(/[,.]*/g, ""));
                 if (isNaN(hides))hides = 0;
                 var last_hides = getValue("friends_hides_" + name.innerHTML);
-                if (typeof(last_hides) == "undefined") {
-                    last_hides = hides;
-                    setValue("friends_hides_" + name.innerHTML, last_hides);
-                }
+                if (typeof(last_hides) == "undefined") last_hides = hides;
                 if ((hides - last_hides) > 0) add = " <font color='#00AA00'><b>(+" + (hides - last_hides) + ")</b></font>";
                 setValue("friends_hides_new_" + name.innerHTML, hides);
+// >> hm -- Issue #111
+                // wenn neue Hides, dann User und Funddifferenz als Link zu string hinzufuegen (ggf. nur VIPs)                
+                if  ((settings_friendlist_summary_viponly && in_array(name.innerHTML, myvips)) || (!settings_friendlist_summary_viponly)) {                    
+                   if ((hides - last_hides) > 0) {
+                      if (sNewH != "") sNewH = sNewH + ",&nbsp;";
+                                          
+                      var sHlp = name.innerHTML + " (";  
+                      if (hides - last_hides > 0) sHlp = sHlp + "+";
+                      else sHlp = Hlp + "-";
+                      sHlp = sHlp + (hides - last_hides) + ")";
+                  
+                     sNewH = sNewH + "<a class='myfriends' href='/seek/nearest.aspx?u=" + urlencode(name.innerHTML) + "&disable_redirect='>" + sHlp + "</a>";                  
+                   }
+                }   
+// << hm -- Issue #111                       
                 if (hides == 0) {
                     friend.getElementsByTagName("dd")[5].innerHTML = hides + "&nbsp;";
                 } else {
@@ -3610,6 +3597,9 @@ var mainGC = function () {
 
             function gclh_reset_counter() {
                 var friends = document.getElementsByClassName("FriendText");
+// >> hm -- Issue #111
+                setValue("friends_founds_last_reset", new Date().getTime());
+// << hm -- Issue #111
 
                 for (var i = 0; i < friends.length; i++) {
                     var friend = friends[i];
@@ -3627,8 +3617,56 @@ var mainGC = function () {
                     if (hides == 0) friend.getElementsByTagName("dd")[5].innerHTML = "0&nbsp;";
                     else friend.getElementsByTagName("dd")[5].innerHTML = "<a href='/seek/nearest.aspx?u=" + urlencode(name.innerHTML) + "&disable_redirect='>" + hides + "</a>&nbsp;";
                 }
+
+// >> hm -- Issue #111
+                if (settings_friendlist_summary) {  
+                   // wenn Reset, dann Differenzen nicht mehr anzeigen...
+                   var divFH = document.getElementsByClassName("divFHclass");
+                   for (var i = 0; i < divFH.length; i++) {
+                      var divC = divFH[i];
+                      divC.innerHTML = "";
+                   }
+                   // und "last check" aktualisieren
+                   var spanTTs = document.getElementsByClassName("spanTclass");
+                   var ld1 = getValue("friends_founds_last_reset", 0);
+                   spanTTs[0].innerHTML = '<br><br>Last check was 0 seconds ago (' + new Date(parseInt(ld1, 10)).toLocaleString() + ')';
+                } 
+// << hm -- Issue #111                       
             }
 
+// >> hm -- Issue #111
+            if (settings_friendlist_summary) { 
+               // "last check" anzeigen
+               var spanT = document.createElement("span");
+               var ld = getValue("friends_founds_last_reset", 0);
+               spanT.className = "spanTclass";
+               spanT.style.color  = "gray";
+               spanT.style.fontSize = "smaller";
+               spanT.innerHTML = '<br>Last check was ' + getDateDiffString(new Date().getTime(), ld) + ' ago (' +
+                  new Date(parseInt(ld, 10)).toLocaleString() + ')';
+               if ((sNewH == "") && (sNewF == "")) spanT.innerHTML = '<br>' + spanT.innerHTML;
+               document.getElementById('ctl00_ContentBody_FindUserPanel1_GetUsers').parentNode.insertBefore(spanT, document.getElementById('ctl00_ContentBody_FindUserPanel1_GetUsers').nextSibling);            
+
+               // wenn neue Hides -> anzeigen
+               if (sNewH != "") {
+                  var boxH = document.createElement("div");
+                   boxH.innerHTML = "<br><b>New hides by:</b> " + sNewH;
+                   boxH.className = 'divFHclass';
+            
+                   document.getElementById('ctl00_ContentBody_FindUserPanel1_GetUsers').parentNode.insertBefore(boxH, document.getElementById('ctl00_ContentBody_FindUserPanel1_GetUsers').nextSibling);            
+               }
+
+               // wenn neue Founds -> anzeigen
+               if (sNewF != "") {
+                  var boxF = document.createElement("div");
+                  boxF.innerHTML = "<br><b>New founds by:</b> " + sNewF;
+                  boxF.className = 'divFHclass';
+            
+                  document.getElementById('ctl00_ContentBody_FindUserPanel1_GetUsers').parentNode.insertBefore(boxF, document.getElementById('ctl00_ContentBody_FindUserPanel1_GetUsers').nextSibling);            
+               }
+            }
+// << hm -- Issue #111            
+            
             var button = document.createElement("input");
             button.setAttribute("type", "button");
             button.setAttribute("value", "Reset counter");
@@ -3969,7 +4007,7 @@ var mainGC = function () {
         }
     }
 
-// Map Layers
+// Map-Layers
     var all_map_layers = new Object();
     // gc.com Default-Layers
     all_map_layers["Geocaching"] = {
@@ -4870,378 +4908,98 @@ var mainGC = function () {
         }
     }
 
-// Show trackable sums and diff.
-//xxxx #OK#
-    if (document.location.href.match(/^https?:\/\/www\.geocaching\.com\/profile\//) && 
-        document.getElementById('ctl00_ContentBody_ProfilePanel1_lnkCollectibles') && 
-        document.getElementById('ctl00_ContentBody_ProfilePanel1_lnkCollectibles').className == "Active") {
+// Show amount of different Coins in public profile
+    if (document.location.href.match(/^https?:\/\/www\.geocaching\.com\/profile\//) && document.getElementById('ctl00_ContentBody_ProfilePanel1_lnkCollectibles') && document.getElementById('ctl00_ContentBody_ProfilePanel1_lnkCollectibles').className == "Active") {
         try {
-            if (settings_tb_sums_total) if (document.getElementById("ctl00_ContentBody_ProfilePanel1_dlCollectibles")) assignTB("ctl00_ContentBody_ProfilePanel1_dlCollectibles");
-//            if (settings_tb_sums_total_owned) if (document.getElementById("ctl00_ContentBody_ProfilePanel1_dlCollectiblesOwned")) assignTB("ctl00_ContentBody_ProfilePanel1_dlCollectiblesOwned");
-        } catch (e) {
-            gclh_error("show trackable sums and diff", e);
-        }
-    }
-    function assignTB(tid) {
-        var table = document.getElementById(tid).getElementsByTagName("table")[0];
-        var thead = table.getElementsByTagName("thead")[0];
-        thead.children[0].children[0].className = "gclh_first";
-        var tbody = table.getElementsByTagName("tbody")[0];
-        var tfoot = table.getElementsByTagName("tfoot")[0];
-        var rows = table.getElementsByTagName("tbody")[0].getElementsByTagName("tr");
-        $(tbody).find('tr td').each( function () { this.className = (this.className.match("AlignRight") ? "AlignRight":""); } );
+            function gclh_coin_stats(table_id) {
+                var table = document.getElementById(table_id).getElementsByTagName("table");
+                table = table[0];
+                var rows = table.getElementsByTagName("tbody")[0].getElementsByTagName("tr");
+                var sums = new Object();
+                sums["tbs"] = 0;
+                sums["coins"] = 0;
+                sums["patches"] = 0;
+                sums["signal"] = 0;
+                sums["unknown"] = 0;
+                var diff = new Object();
+                diff["tbs"] = 0;
+                diff["coins"] = 0;
+                diff["patches"] = 0;
+                diff["signal"] = 0;
+                diff["unknown"] = 0;
 
-        if ((!tid.match("Owned") && settings_tb_sums_more) || (tid.match("Owned") && settings_tb_sums_more_owned)) var tbr = getValue("settings_tbrules");
-        if (!tbr) var tbr = getValue("settings_tbrules_standard");
-        tbr = JSON.parse(tbr.replace(/, (?=,)/g, ",null"));
-
-        var tbodyNew = document.createElement("tbody");
-//        tbody.style.display = "none";
-//        tbodyNew.style.display = "none";
-        table.insertBefore(tbodyNew, tfoot);
-
-        for (var i = 0; i < (rows.length-1); i++) {
-            var match = false;
-            for (var k = 0; k < tbr.length; k++) {
-                if (rows[i].children[1].innerHTML.match(new RegExp(tbr[k].search,'i'))) {
-                    match = true;
-                    
-                    var tbgroup = "gclh_" + tbr[k].name.replace(/(\s|\W)/g,"_");
-                    rows[i].className = tbgroup;
-                    
-                    if (!document.getElementById(tbgroup)) {
-                        var html = '';
-                        html += '<td colspan="3" style="padding: 0px;">';
-                        html += '    <table class="Table gclh_Table ' + tbgroup + '">';
-                        html += '        <thead><tr>';
-                        html += '                <th id="plus_minus_' + tbgroup + '" class="gclh_first"></th>';
-                        html += '                <th>' + tbr[k].name + '</th>';
-                        html += '                <th id="count_' + tbgroup + '" class="AlignRight">...</th>';
-                        html += '        </tr></thead>';
-                        html += '        <tbody id="' + tbgroup + '" style="display: none;"></tbody>';
-                        html += '    </table>';
-                        html += '</td>';
-                        var tr = document.createElement("tr");
-                        tr.innerHTML = html;
-                        tbodyNew.appendChild(tr);
-
-                    }
-//                    $('#'+tbgroup).prepend($(rows[i]).remove().get().reverse());
-//###### nicht clonen, sondern tbodynew über tbody aufmachen und dann verschieben 
-                    $('#'+tbgroup).prepend($(rows[i]).clone().get());
-
-                    break;
-
-                }
-            }
-            if (match == false) {
-                    var tbgroup = "gclh_Unknown";
-                    if (!document.getElementById(tbgroup)) {
-                        var html = '';
-                        html += '<td colspan="3" style="padding: 0px;">';
-                        html += '    <table class="Table gclh_Table ' + tbgroup + '">';
-                        html += '        <thead><tr>';
-                        html += '                <th id="plus_minus_' + tbgroup + '" class="gclh_first"></th>';
-                        html += '                <th>' + 'Unknown' + '</th>';
-                        html += '                <th id="count_' + tbgroup + '" class="AlignRight">...</th>';
-                        html += '        </tr></thead>';
-                        html += '        <tbody id="' + tbgroup + '"></tbody>';
-                        html += '    </table>';
-                        html += '</td>';
-                        var tr = document.createElement("tr");
-                        tr.innerHTML = html;
-                        tbodyNew.appendChild(tr);
-
-                    }
-                    $('#'+tbgroup).prepend($(rows[i]).clone().get());
-                
-            }
-        }
-
-        tbody.remove();
-        
-        var tablesNew = tbodyNew.getElementsByClassName("gclh_Table");
-        for (var i = 0; i < tablesNew.length; i++) {
-            var rowsNew = tablesNew[i].getElementsByTagName("tbody")[0].getElementsByTagName("tr");
-            for (var k = 1; k < rowsNew.length; k+=2) {
-                rowsNew[k].className = "AlternatingRow";
-            }
-            var tr = document.createElement("tr");
-            tr.innerHTML = "<td></td>";
-            tablesNew[i].getElementsByTagName("tbody")[0].appendChild(tr);
-        }
-        
-        
-
-        
-// Als letzte Tabellenzeile überall das hier reinhängen: <tr><td></td></tr>        
-        
-        var css = "";
-        css += "table.gclh_Table {border: none; margin: 0px !important;}"; 
-        css += "table.gclh_Table th {background-color: #ede5dc;}";   //#e4d8cb 
-        css += "th.gclh_first, td.gclh_first {width: 40px;}"; 
-        css += "tr.AlternatingRow td { background-color: #EBECED !important; }";
-        console.log("ja2");
-        appendCssStyle(css);
-        console.log("ja3");
-    
-    }
-/*    
-    // Summen zu den Trackables ermitteln und ausgeben.
-    function XsumsCoin( table_id ) {
-        global_tb_table_id = table_id;
-        global_tb_count = global_tb_new_count = -1;
-        global_tb_diff = new Object();
-        global_tb_sums = new Object();
-        global_tb_code = "";
-        global_tb_diff["Total"] = global_tb_sums["Total"] = global_tb_diff["Unknown"] = global_tb_sums["Unknown"] = 0;
-                
-        var table = document.getElementById(global_tb_table_id).getElementsByTagName("table")[0];
-        var rows = table.getElementsByTagName("tbody")[0].getElementsByTagName("tr");
-        var l = rows.length - 2;
-        var thead = table.getElementsByTagName("thead")[0];
-        var tfoot = table.getElementsByTagName("tfoot")[0];
-                
-        if ( ( !global_tb_table_id.match("Owned") && settings_tb_sums_more )      || 
-             ( global_tb_table_id.match("Owned") && settings_tb_sums_more_owned )    ) {
-            var tbrules = getValue("settings_tbrules");
-            if ( !tbrules ) var tbrules = getValue("settings_tbrules_standard");
-        } else {
-            var tbrules = getValue("settings_tbrules_standard");
-        }
-        tbrules = tbrules.replace(/, (?=,)/g, ",null");
-        tbrules = JSON.parse(tbrules);
-        
-        // Summen zu den Trackables ermitteln und Code aufbauen für die Summenboxen.
-        for (var i = 0; i < (rows.length - 1); i++) {
-            global_tb_count++;
-            for (var k = 0; k < tbrules.length; k++) {
-                processCoin( i, l, rows[i], tbrules[k].name, tbrules[k].search );
-            }
-            processCoin( i, l, rows[i], "Unknown", "Unknown" );
-        }
-        
-        // Für Hide Operationen Links und Box (Hide) Identifier ermitteln.
-        if ( global_tb_table_id.match("Owned") ) var owned = "_owned";
-        else  var owned = "";
-        var linkHead = "lnk_gclh_tb_head" + owned;
-        var linkFoot = "lnk_gclh_tb_foot" + owned;
-        var hideHead = "gclh_tb_head" + owned;
-        var hideFoot = "gclh_tb_foot" + owned;
-        // Code merken.
-        var codeHead = global_tb_code;
-        var codeFoot = global_tb_code;
-        
-        // Summen zum Tabellenheader aufbauen.
-        if ( ( !global_tb_table_id.match("Owned") && settings_tb_sums_header )      || 
-             ( global_tb_table_id.match("Owned") && settings_tb_sums_header_owned )    ) {
-            global_tb_code = "";
-            // Total der Summen aufbauen.
-            if ( ( !global_tb_table_id.match("Owned") && settings_tb_total_sums_lists )      || 
-                 ( global_tb_table_id.match("Owned") && settings_tb_total_sums_lists_owned )    ) {
-                processCoin( "", "", "", "Total", "" );
-            }
-            // Ersetzungen im Code durchführen.
-            codeHead += global_tb_code;
-            codeHead = codeHead.replace(/#style/i, "style='border-top: 1px solid #cab6a3;'").replace(/#style/ig, "");
-            codeHead = codeHead.replace(/#hide/ig, hideHead).replace(/#tag/ig, "th").replace(/#padbot/ig, ".25em");
-            if ( ( !global_tb_table_id.match("Owned") && settings_tb_sums_bold )      || 
-                 ( global_tb_table_id.match("Owned") && settings_tb_sums_bold_owned )    ) {
-                codeHead = codeHead.replace(/#bold/ig, "<b>").replace(/#\/bold/ig, "</b>");
-            } else codeHead = codeHead.replace(/#bold/ig, "").replace(/#\/bold/ig, "");
-            // Summenbox ausgeben.
-            thead.innerHTML = thead.innerHTML + codeHead;
-            thead.children[0].children[1].innerHTML = thead.children[0].children[1].innerHTML 
-                + "<span class='" + hideHead + "' style='float: right !important; text-align: right;'>Different</span>";
-        }
-        // Summen zum Tabellenfooter aufbauen.
-        if ( ( !global_tb_table_id.match("Owned") && settings_tb_sums_footer )      || 
-             ( global_tb_table_id.match("Owned") && settings_tb_sums_footer_owned )    ) {
-            global_tb_code = "";
-            // Nachträglich noch die Beschreibung zu den Spalten aufbauen.
-            processCoin( "", "", "", "Desc", "" );
-            // Ersetzungen im Code durchführen.
-            codeFoot = global_tb_code + codeFoot;
-            codeFoot = codeFoot.replace(/#style/i, "style='border-top: 1px solid #cab6a3;'").replace(/#style/ig, "");
-            codeFoot = codeFoot.replace(/#hide/ig, hideFoot).replace(/#tag/ig, "td").replace(/#padbot/ig, ".5em");
-            if ( ( !global_tb_table_id.match("Owned") && settings_tb_sums_bold )      || 
-                 ( global_tb_table_id.match("Owned") && settings_tb_sums_bold_owned )    ) {
-                codeFoot = codeFoot.replace(/#bold/ig, "<b>").replace(/#\/bold/ig, "</b>");
-            } else codeFoot = codeFoot.replace(/#bold/ig, "").replace(/#\/bold/ig, "");
-            // Summenbox ausgeben.
-            tfoot.innerHTML = tfoot.innerHTML + codeFoot;
-            if ( ( !global_tb_table_id.match("Owned") && settings_tb_total_sums_lists )      || 
-                 ( global_tb_table_id.match("Owned") && settings_tb_total_sums_lists_owned )    ) {
-                tfoot.children[0].children[0].innerHTML = tfoot.children[0].children[0].innerHTML 
-                    + "<span class='" + hideFoot + "' style='float: right !important; text-align: right;'>" + global_tb_diff["Total"] + "</span>";
-            }
-        // Tabellenfooter entfernen.
-        } else if ( ( !global_tb_table_id.match("Owned") && settings_tb_sums_hide_footer )      || 
-                    ( global_tb_table_id.match("Owned") && settings_tb_sums_hide_footer_owned )    ) {
-            $('#' + global_tb_table_id).find('table.Table tfoot').remove();
-            $('#' + global_tb_table_id).find('table.Table tbody tr').last().remove();
-        }
-        // Total Summen neben die Tabellenbeschreibung ganz oben schreiben.
-        if ( ( !global_tb_table_id.match("Owned") && settings_tb_total_header_desc )      || 
-             ( global_tb_table_id.match("Owned") && settings_tb_total_header_desc_owned )    ) {
-            if ( global_tb_sums["Total"] != 0 ) {
-                var side = document.getElementById(global_tb_table_id).parentNode.children[0];
-                side.innerHTML = side.innerHTML + "<span style='float: right; margin-right: 23px;'>" + global_tb_sums["Total"] + "</span>";
-            }
-        }
-        // Die Summenboxen im Tabellenheader bzw. Tabellenfooter hideable machen, plus/minus Button einbauen.
-        if ( ( !global_tb_table_id.match("Owned") && settings_tb_sums_hideable )      || 
-             ( global_tb_table_id.match("Owned") && settings_tb_sums_hideable_owned )    ) {
-            if ( ( !global_tb_table_id.match("Owned") && settings_tb_sums_header )      || 
-                 ( global_tb_table_id.match("Owned") && settings_tb_sums_header_owned )    ) {
-                thead.children[0].children[0].innerHTML = "<img id='" + linkHead + "' title='' src='' style='cursor: pointer'> ";
-                // Startbesetzung herstellen.
-                showHideBoxCL(linkHead, true);
-                // Event im Tabellenheader aufbauen. 
-                document.getElementById(linkHead).addEventListener("click", function() {
-                    var tableHead = $(this).closest('thead');
-                    if ( this.title == "hide" ) {
-                        // Summenzeilen und gegebenenfalls Einzelsätze ausblenden. 
-                        tableHead.find('tr:not(:first)').hide();
-                        // Teils Beschriftung ausblenden, und gegebenenfalls noch weitere Objekte. 
-                        tableHead.find('tr.' + this.id.replace("lnk_", "")).hide();
-                        // In Überschrift und Summenzeilen "show" setzen. 
-                        tableHead.find('img[title="hide"]').each( function () { setShowHide( this, "show" ); });
-                        // Wegen der Speicherung des Standes für die Box (show oder hide), muss auch hier noch aufgerufen werden.
-                        showHideBoxCL(this.id, false);
+                for (var i = 0; i < (rows.length - 1); i++) {
+                    if (rows[i].innerHTML.match(/travel bug/i)) {
+                        diff["tbs"]++;
+                        sums["tbs"] += parseInt(rows[i].childNodes[5].innerHTML, 10);
+                    } else if (rows[i].innerHTML.match(/geocoin/i)) {
+                        diff["coins"]++;
+                        sums["coins"] += parseInt(rows[i].childNodes[5].innerHTML, 10);
+                    } else if (rows[i].innerHTML.match(/geopatch/i)) {
+                        diff["patches"]++;
+                        sums["patches"] += parseInt(rows[i].childNodes[5].innerHTML, 10);
+                    } else if (rows[i].innerHTML.match(/signal/i)) {
+                        diff["signal"]++;
+                        sums["signal"] += parseInt(rows[i].childNodes[5].innerHTML, 10);
                     } else {
-                        showHideBoxCL(this.id, false);
+                        diff["unknown"]++;
+                        sums["unknown"] += parseInt(rows[i].childNodes[5].innerHTML, 10);
                     }
-                }, false);
-            }
-            if ( ( !global_tb_table_id.match("Owned") && settings_tb_sums_footer )      || 
-                 ( global_tb_table_id.match("Owned") && settings_tb_sums_footer_owned )    ) {
-                tfoot.children[0].children[0].setAttribute("colspan", "1");
-                var td = document.createElement("td");
-                td.innerHTML = "<img id='" + linkFoot + "' title='' src='' style='cursor: pointer'> ";
-                tfoot.children[0].insertBefore(td, tfoot.children[0].children[0]);
-                showHideBoxCL(linkFoot, true);
-                document.getElementById(linkFoot).addEventListener("click", function() { showHideBoxCL(this.id, false); }, false);
-            }
-        }
-//xxxx        
-//  - ##### Die Einzelsätze als Tabelle         
-//  - Man sollte noch die Möglichkeit haben alle aufzuklappen und alle einzuklappen. Gibt es sowas wie doppelplus und doppelminus
-//  - Wenn aufgeklappt, dann sollten die braunen oben und unten mit einem Rand versehen werden    
-//  - Bei den umgruppierten in Unknown sollte noch der ursprünglich gruppierte name erwähnung finden.
-//  - Sortieren?
-//  - Zebra muss neu gesetzt werden.
-//  - Total, Unknown, Desc unverwechselbar umbenennen, vielleicht mit # oder mit $.
-        // Summenzeilen breakable machen.
-        if ( ( !global_tb_table_id.match("Owned") && settings_tb_sums_breakable )      || 
-             ( global_tb_table_id.match("Owned") && settings_tb_sums_breakable_owned )    ) {
-            $('#' + global_tb_table_id).find('table.Table thead').find('.' + hideHead).each( function () { 
-                if ( this.tagName == "TR" && this.id != /(Total|Desc)/ ) {
-                    this.children[0].style.padding = "0 0 .3em 1.2em";
-                    this.children[0].innerHTML = '<img style="cursor: pointer;">';
-                    if ( this.children[0].children[0] ) {
-                        setShowHide( this.children[0].children[0], "show" );
-                        this.children[0].children[0].addEventListener("click", function() { showHideEntries(this); }, false);
-                    }
-                    var tbname = this.id;
-                    $('#' + global_tb_table_id).find('table.Table tbody').find('.' + tbname).each( function () { 
-//                        this.hide();
-                    });
-                        
-                        
-
-                    var thisNextElementSibling = this.nextElementSibling;
-                    for (var i = 0; i < rows.length; i++) {
-                        rows[i].hide();
-//xxxx - Zebra muss hier neu gesetzt werden.
-//     - Das funktioniert hier bei der letzten Summe, wenn kein Total da ist, nicht, 
-//       weil das nextElementSibling dann nicht vorhanden ist. Mit insertAfter und dann anstatt this.nextElementSibling zuerst this und 
-//       anschließend row[i-1], das ist ja aber keine Position. ???
-                        this.parentNode.insertBefore(rows[i], thisNextElementSibling);
-                    }
-
-                } 
-            });
-        }
-    } 
-
-// Einzelsätze zu den Summen auf- bzw. einklappen.
-    function showHideEntries( line_img ) {    
-        var tbname = line_img.parentNode.parentNode.id;
-        if ( !tbname ) return;
-        var tableHead = $(line_img).closest('thead');
-
-        if ( line_img.title == "show" ) {
-            setShowHide( line_img, "hide" );
-            tableHead.find('.' + tbname).each( function () { this.show(); });
-        } else {
-            setShowHide( line_img, "show" );
-            tableHead.find('.' + tbname).each( function () { this.hide(); });
-        }
-    }
-    
-// Summen zu den Trackables ermitteln und Code aufbauen für die Summenlisten.
-    function processCoin( akt, last, row, tbname, tbsearch ) {
-console.log(tbsearch);
-        // Initialsierung: Nur in der ersten Runde durchführen.
-        if ( akt == 0 ) {
-            // Keine Initialisierung für Total oder Unknown, die mußten zu beginn schon initialisiert werden. 
-            // Die Descriptionzeile wird sowieso nicht initisalisiert.
-            if ( !tbname.match(/(Total|Unknown|Desc)/) ) {
-                global_tb_diff[tbname] = global_tb_sums[tbname] = 0;
-            }
-        }
-        // Summen aufbauen: In allen Runden. 
-        // Total wird von allen anderen mit aufgebaut. In Descriptionzeile werden sowieso keine Summen aufgebaut.
-        if ( !tbname.match(/(Total|Desc)/) ) {
-            // Wenn für diese Runde noch kein Oberbegriff zugeordnet werden konnte. 
-            if ( global_tb_count != global_tb_new_count ) {
-                // Prüfen ob die Suchkriterien nun passen. Unknown, als letzter in der Runde, wird ohne Prüfung zugeordnet, es passte zuvor ja nichts.
-                if ( row.children[1].innerHTML.match(tbsearch) || tbname == "Unknown" ) {
-                    global_tb_diff[tbname]++;
-                    global_tb_sums[tbname] += parseInt(row.childNodes[5].innerHTML, 10);
-                    global_tb_diff["Total"]++;
-                    global_tb_sums["Total"] += parseInt(row.childNodes[5].innerHTML, 10);
-                    // Zuordnung für diese Runde ist erfolgt.
-                    global_tb_new_count++;
-                    // Zuordnung in tr vermerken, ohne Sonderzeichen oder blanks.
-                    row.className = tbname.replace(/(\s|\W)/g, "_");
                 }
+
+                var tfoot = table.getElementsByTagName("tfoot")[0];
+                var tr = document.createElement("tr");
+                var td = document.createElement("td");
+                var new_table = "";
+                td.colSpan = 3;
+
+                new_table += "<table>";
+                new_table += "  <tr>";
+                new_table += "    <td></td>";
+                new_table += "    <td><b>Sum</b></td>";
+                new_table += "    <td><b>Different</b></td>";
+                new_table += "  </tr>";
+                new_table += "  <tr>";
+                new_table += "    <td><b>Travel Bugs:</b></td>";
+                new_table += "    <td style='text-align: center;'>" + sums["tbs"] + "</td>";
+                new_table += "    <td style='text-align: center;'>" + diff["tbs"] + "</td>";
+                new_table += "  </tr>";
+                new_table += "  <tr>";
+                new_table += "    <td><b>Geocoins:</b></td>";
+                new_table += "    <td style='text-align: center;'>" + sums["coins"] + "</td>";
+                new_table += "    <td style='text-align: center;'>" + diff["coins"] + "</td>";
+                new_table += "  </tr>";
+                new_table += "  <tr>";
+                new_table += "    <td><b>Geopatches:</b></td>";
+                new_table += "    <td style='text-align: center;'>" + sums["patches"] + "</td>";
+                new_table += "    <td style='text-align: center;'>" + diff["patches"] + "</td>";
+                new_table += "  </tr>";
+                new_table += "  <tr>";
+                new_table += "    <td><b>Signal Tags:</b></td>";
+                new_table += "    <td style='text-align: center;'>" + sums["signal"] + "</td>";
+                new_table += "    <td style='text-align: center;'>" + diff["signal"] + "</td>";
+                new_table += "  </tr>";
+                if (sums["unknown"] > 0 || diff["unknown"] > 0) {
+                    new_table += "  <tr>";
+                    new_table += "    <td><b>Unknown:</b></td>";
+                    new_table += "    <td style='text-align: center;'>" + sums["unknown"] + "</td>";
+                    new_table += "    <td style='text-align: center;'>" + diff["unknown"] + "</td>";
+                    new_table += "  </tr>";
+                    new_table += "</table>";
+                }
+
+                td.innerHTML = new_table;
+
+                tr.appendChild(td);
+                tfoot.appendChild(tr);
             }
-        }
-        // In der letzten Runde.
-        if ( akt == last ) {
-            // Umgruppierung, falls nötig:
-            // Wenn die gefundene Anzahl von Trackables zum Oberbegriff die Minimumanzahl unterschreitet, dann zum Oberbegriff nichts ausgeben,
-            // sondern die Trackables über Unknown ausgeben. Bei Total und Unknown gibts es nichts zum Umgruppieren. 
-            if ( ( !global_tb_table_id.match("Owned") && global_tb_sums[tbname] < settings_tb_sums_count && !tbname.match(/(Total|Unknown)/) )      || 
-                 ( global_tb_table_id.match("Owned") && global_tb_sums[tbname] < settings_tb_sums_count_owned && !tbname.match(/(Total|Unknown)/) )    ) {
-                global_tb_diff["Unknown"] += global_tb_diff[tbname];
-                global_tb_sums["Unknown"] += global_tb_sums[tbname];
-                global_tb_diff[tbname] = 0;
-                global_tb_sums[tbname] = 0;
-                // Umgruppierung auch in tr vermerken, ohne Sonderzeichen oder blanks.
-                $('#' + global_tb_table_id).find('.' + tbname.replace(/(\s|\W)/g, "_")).each( function () { this.className = "Unknown " + tbname.replace(/(\s|\W)/g, "_"); } );
-            }
-            // Ausgabe aufbereiten:
-            // Nur wenn Summe nicht 0 ist. Die Descriptionzeile wird auf jedenfall aufbereitet. TB Name vermerken ohne Sonderzeichen oder blanks. 
-            if ( global_tb_sums[tbname] != 0 || tbname == "Desc" ) {
-                global_tb_code += "  <tr id='" + tbname.replace(/(\s|\W)/g, "_") + "' class='#hide' #style>";
-                global_tb_code += "    <#tag scope='col' style='background-color: #e3ddc2b3;'></#tag>";  
-                global_tb_code += "    <#tag scope='col' style='font-size: 13px; padding-top: 0; line-height: 1.5; background-color: #e3ddc2b3;" 
-                              +         (tbname == "Total" ? " border-top: 1px solid #cab6a3;" : "") + "'>#bold" 
-                              +         ((tbname == "Total" || tbname == "Desc") ? "" : tbname + ":") + "#/bold"
-                              +  "      <span style='float: right !important; text-align: right;'>" 
-                              +         (tbname == "Desc" ? "Different" : global_tb_diff[tbname]) + "</span></#tag>";
-                global_tb_code += "    <#tag scope='col' class='AlignRight' style='font-size: 13px; padding: 0 1em #padbot 0; line-height: 1.5; background-color: #e3ddc2b3;" 
-                              +         (tbname == "Total" ? " border-top: 1px solid #cab6a3;" : "") + "'>" 
-                              +         (tbname == "Desc" ? "Count" : global_tb_sums[tbname]) + "</#tag>";
-                global_tb_code += "  </tr>";
-            }
+
+            if ( document.getElementById("ctl00_ContentBody_ProfilePanel1_dlCollectibles") ) gclh_coin_stats("ctl00_ContentBody_ProfilePanel1_dlCollectibles");
+            if ( document.getElementById("ctl00_ContentBody_ProfilePanel1_dlCollectiblesOwned") ) gclh_coin_stats("ctl00_ContentBody_ProfilePanel1_dlCollectiblesOwned");
+        } catch (e) {
+            gclh_error("Show Coin-Sums", e);
         }
     }
-*/
-//<-- $$065 End of insert
 
 // Auto-Visit
     if (settings_autovisit && document.location.href.match(/^https?:\/\/www\.geocaching\.com\/seek\/log\.aspx/) && !document.location.href.match(/^https?:\/\/www\.geocaching\.com\/seek\/log\.aspx\?LUID=/) && !document.getElementById('ctl00_ContentBody_LogBookPanel1_CoordInfoLinkControl1_uxCoordInfoCode')) {
@@ -5442,7 +5200,7 @@ console.log(tbsearch);
                 headline.setAttribute("class", "WidgetHeader");
                 body.setAttribute("class", "WidgetBody");
                 body.setAttribute("id", "gclh_vip_list");
-                headline.innerHTML = "<img width='16' height='16' title='Very important person List' alt='VIP-List' src='" + http + "://www.geocaching.com/images/icons/icon_attended.gif\'> VIP-List";
+                headline.innerHTML = "<img width=\"16\" height=\"16\" title=\"VIP-List\" alt=\"VIP-List\" src=\"" + http + "://www.geocaching.com/images/icons/icon_attended.gif\"> VIP-List";
                 if ( settings_make_vip_lists_hideable ) {
                     headline.innerHTML = "<img id='lnk_gclh_vip_list' title='' src='' style='cursor: pointer'> " + headline.innerHTML;
                 }
@@ -5464,7 +5222,7 @@ console.log(tbsearch);
                     headline2.setAttribute("class", "WidgetHeader");
                     body2.setAttribute("class", "WidgetBody");
                     body2.setAttribute("id", "gclh_vip_list_nofound");
-                    headline2.innerHTML = "<img width='16' height='16' title='Very important person List \"not found\"' alt='VIP-List \"not found\"' src='" + http + "://www.geocaching.com/images/icons/icon_attended.gif'> VIP-List \"not found\"";
+                    headline2.innerHTML = "<img width=\"16\" height=\"16\" title=\"VIP-List\" alt=\"VIP-List\" src=\"" + http + "://www.geocaching.com/images/icons/icon_attended.gif\"> VIP-List \"not found\"";
                     if ( settings_make_vip_lists_hideable ) {
                         headline2.innerHTML = "<img id='lnk_gclh_vip_list_nofound' title='' src='' style='cursor: pointer'> " + headline2.innerHTML;
                     }
@@ -6256,8 +6014,6 @@ console.log(tbsearch);
 // Log-Template definieren
     if ( is_page("cache_listing") ) {
         try {
-            global_MailTemplate = urlencode( buildSendTemplate().replace(/#Receiver#/ig, "__Receiver__") );
-            global_MailTemplate = global_MailTemplate.replace(/__Receiver__/ig, "${UserName}");
             var new_tmpl = "";
             new_tmpl += 
                 '    <tr class="log-row" data-encoded="${IsEncoded}" >' +
@@ -6276,11 +6032,14 @@ console.log(tbsearch);
                 '                        <a href="javascript:void(0);" name="${UserName}" class="gclh_vip"><img class="gclh_vip" border=0 style="margin-left: 0px; margin-right: 0px"></a>';
             if (settings_show_mail) new_tmpl += 
                 '                        {{if UserName !== "' + global_activ_username + '" }}' +
-                '                        <a href="' + http + '://www.geocaching.com/email/?guid=${AccountGuid}&text=' + global_MailTemplate + '"><img border=0 title="Send a mail to ${UserName}" src="' + global_mail_icon + '"></a>' +
+                '                        <a href="' + http + '://www.geocaching.com/email/?guid=${AccountGuid}&text=Hi ${UserName},%0A%0A' + global_name + global_info_mail + '"><img border=0 title="Send a mail to ${UserName}" src="' + global_mail_icon + '"></a>' +
                 '                        {{/if}}';
+            // gcCode oder tbCode nicht nutzen, damit keine Standard Message aufgebaut wird. Der deaktivierte Punkt kann 
+            // dann aktiviert werden, wenn die Erzeugung des eigenen Inhaltes sich als nicht praktikabel herausstellt. 
             if (settings_show_message) new_tmpl += 
                 '                        {{if UserName !== "' + global_activ_username + '" }}' +
-                '                        <a href="' + http + '://www.geocaching.com/account/messagecenter?recipientId=${AccountGuid}&text=' + global_MailTemplate + '"><img border=0 title="Send a message to ${UserName}" src="' + global_message_icon + '"></a>' +
+                // '                        <a href="' + http + '://www.geocaching.com/account/messagecenter?recipientId=${AccountGuid}&gcCode=' + global_code + '"><img border=0 title="Send a message to ${UserName}" src="' + global_message_icon + '"></a>' +
+                '                        <a href="' + http + '://www.geocaching.com/account/messagecenter?recipientId=${AccountGuid}&text=Hi ${UserName},%0A%0A' + global_name + global_info_message + '"><img border=0 title="Send a message to ${UserName}" src="' + global_message_icon + '"></a>' +
                 '                        {{/if}}';
             new_tmpl += 
                 '                        &nbsp;&nbsp;' +
@@ -6310,7 +6069,7 @@ console.log(tbsearch);
                 '                <div class="HalfRight AlignRight">' +
                 '                    <span class="minorDetails LogDate">${Visited}</span></div>' +
                 // "markdown-output" sorgt für die richtige Aufbereitung der Logs, insbesondere nach unten und oben.
-                // Gleichzeitig schneidet es aber auch die Bilder beim Drüberfahren mit der Maus an den Rändern ab, 
+                // Gleichzeitig schneidet es aber auch die Bilder beim drüberfahren mit der Maus an den Rändern ab, 
                 // entsprechend der Maße des Logs. Deshalb Bilder aus diesem Bereich rausnehmen class="TableLogContent".       
                 '                <div class="Clear LogContent markdown-output">' +
                 '                    {{if LatLonString.length > 0}}' +
@@ -7155,16 +6914,10 @@ console.log(tbsearch);
 
 // Improve own statistics page and own profile page with own log statistic.
     if ( settings_log_statistic && 
-         ( ( document.location.href.match(/^https?:\/\/www\.geocaching\.com\/my\/statistics\.aspx/)            ) ||
-           ( document.getElementById("ctl00_ContentBody_ProfilePanel1_lnkStatistics") &&
-             document.getElementById("ctl00_ContentBody_ProfilePanel1_lnkStatistics").className == "Active" &&
-             document.location.href.match(/^https?:\/\/www\.geocaching\.com\/profile\/($|#$|default)/)         ) ||
-           ( document.getElementById("ctl00_ContentBody_ProfilePanel1_lnkStatistics") &&
-             document.getElementById("ctl00_ContentBody_ProfilePanel1_lnkStatistics").className == "Active" &&
-             document.location.href.match(/^https?:\/\/www\.geocaching\.com\/profile\/(\?guid=|\?u=)/) && 
-             document.getElementById('ctl00_ContentBody_lblUserProfile').innerHTML.match(": " + $('.li-user-info').children().first().text()) ) 
-         ) 
-       ) {
+         ( document.location.href.match(/^https?:\/\/www\.geocaching\.com\/my\/statistics\.aspx/)         ||
+           document.location.href.match(/^https?:\/\/www\.geocaching\.com\/profile\/($|#$|default)/)      ||
+           ( document.location.href.match(/^https?:\/\/www\.geocaching\.com\/profile\/(\?guid=|\?u=)/) && 
+             document.getElementById('ctl00_ContentBody_lblUserProfile').innerHTML.match(": " + $('.li-user-info').children().first().text()) ) ) ) {
         try {
             getLogStatistic( "cache", "https://www.geocaching.com/my/logs.aspx?s=1" );
             getLogStatistic( "track", "https://www.geocaching.com/my/logs.aspx?s=2" );
@@ -7180,7 +6933,7 @@ console.log(tbsearch);
         if (!get_last) get_last = 0;
         var reload_after = (settings_log_statistic_reload === "" ? "0" : parseInt(settings_log_statistic_reload, 10) * 60 * 60 * 1000);
         var time = new Date().getTime();
-        
+
         if ( ( reload_after != 0 && ( get_last + reload_after ) < time ) || manual == true ) {
             if ( manual != true ) outputLogStatisticHeaderFooter( type, logsName, logsId, url );
             outputLogStatisticClear( type, logsName, logsId );
@@ -7435,7 +7188,7 @@ console.log(tbsearch);
         if ( is_page("profile") && document.getElementById('ctl00_ContentBody_WidgetMiniProfile1_memberProfileLink') ) {
             
             // GClh Config und Sync Links neben Avatar im Profile. 
-            var lnk_config = " | <br><a href='#GClhShowConfig' id='gclh_config_lnk' name='gclh_config_lnk' style='font-size: 0.9em;' title='" + scriptShortNameConfig + " v" + scriptVersion + (settings_f4_call_gclh_config ? " / Key F4":"") + "' >" + scriptShortNameConfig + "</a>";
+            var lnk_config = " | <a href='#GClhShowConfig' id='gclh_config_lnk' name='gclh_config_lnk' style='margin-left: 58px; font-size: 0.9em;' title='" + scriptShortNameConfig + " v" + scriptVersion + (settings_f4_call_gclh_config ? " / Key F4":"") + "' >" + scriptShortNameConfig + "</a>";
             var lnk_sync = " | <a href='#GClhShowSync' id='gclh_sync_lnk' name='gclh_sync_lnk' style='font-size: 0.9em;' title='" + scriptShortNameSync + " v" + scriptVersion + (settings_f10_call_gclh_sync ? " / Key F10":"") + "' >" + scriptShortNameSync + "</a>";
             document.getElementById('ctl00_ContentBody_WidgetMiniProfile1_memberProfileLink').parentNode.innerHTML += lnk_config + lnk_sync;
             document.getElementById('gclh_config_lnk').addEventListener('click', gclh_showConfig, false);
@@ -7584,6 +7337,19 @@ console.log(tbsearch);
                         }
                     });
                 }
+            }
+            // Installationszähler simulieren, weil GitHub das wohl nicht kann.
+            var declaredVersion = getValue("declared_version");
+            if ( declaredVersion != scriptVersion ) {
+                var side = document.getElementsByTagName("body")[0];
+                var div = document.createElement("div");
+                div.id = "gclh_simu";
+                div.setAttribute("style", "margin-top: -50px;");
+                var code = '<img src="https://c.andyhoppe.com/1485103563" style="border: none; visibility: hidden; width: 1px; height: 1px;" alt="">' + '<img src="https://c.andyhoppe.com/1485234890" style="border: none; visibility: hidden; width: 1px; height: 1px;" alt="">' + '<img src="https://s07.flagcounter.com/countxl/mHeY/bg_FFFFFF/txt_FFFFFF/border_FFFFFF/columns_4/maxflags_250/viewers_1/labels_1/pageviews_1/flags_0/percent_0/" style="border: none; visibility: hidden; width: 1px; height: 1px;" alt="">';
+                div.innerHTML = code;
+                side.appendChild(div);
+                setValue("declared_version", scriptVersion);
+                setTimeout(function() { $("#gclh_simu").remove(); }, 2000);  
             }
         }
         checkForUpgrade( false );
@@ -7783,10 +7549,6 @@ console.log(tbsearch);
 
 // Close the Overlays, Find Player and GClh-Configuration
     function btnClose( clearUrl ) {
-        if ( global_mod_reset ) {
-            rcClose();
-            return;
-        }
         if (document.getElementById('bg_shadow')) document.getElementById('bg_shadow').style.display = "none";
         if (document.getElementById('settings_overlay')) document.getElementById('settings_overlay').style.display = "none";
         if (document.getElementById('sync_settings_overlay')) document.getElementById('sync_settings_overlay').style.display = "none";
@@ -8030,6 +7792,7 @@ console.log(tbsearch);
     newParameterOn1 = "<div  style='background-color: rgba(240, 223, 198, 0.3); width: 100%; height: 100%; padding: 2px 0px 2px 2px; margin-left: -2px;'>";
     newParameterOn2 = "<div  style='background-color: rgba(240, 223, 198, 0.6); width: 100%; height: 100%; padding: 2px 0px 2px 2px; margin-left: -2px;'>";
     newParameterOn3 = "<div  style='background-color: rgba(240, 223, 198, 1.0); width: 100%; height: 100%; padding: 2px 0px 2px 2px; margin-left: -2px;'>";
+    newParameterOn4 = "<div  style='background-color: rgba(240, 223, 198, 1.3); width: 100%; height: 100%; padding: 2px 0px 2px 2px; margin-left: -2px;'>";
     newParameterLL1 = '<span style="background-color: rgba(240, 223, 198, 0.3); float: right; padding-top: 25px; width: 100%; margin: -22px 2px 0px 0px;"></span>'; 
     newParameterLL2 = '<span style="background-color: rgba(240, 223, 198, 0.6); float: right; padding-top: 25px; width: 100%; margin: -22px 2px 0px 0px;"></span>'; 
     newParameterLL3 = '<span style="background-color: rgba(240, 223, 198, 1.0); float: right; padding-top: 25px; width: 100%; margin: -22px 2px 0px 0px;"></span>'; 
@@ -8124,33 +7887,6 @@ console.log(tbsearch);
         }
     }            
 
-// Installationszähler simulieren, weil GitHub das wohl nicht kann.
-    function instCount(declaredVersion) {
-        var side = document.getElementsByTagName("body")[0];
-        var div = document.createElement("div");
-        div.id = "gclh_simu";
-        div.setAttribute("style", "margin-top: -50px;");
-        var code = '<img src="https://c.andyhoppe.com/1485103563" style="border: none; visibility: hidden; width: 2px; height: 2px;" alt="">' + '<img src="https://c.andyhoppe.com/1485234890" style="border: none; visibility: hidden; width: 2px; height: 2px;" alt="">' + '<img src="https://s07.flagcounter.com/countxl/mHeY/bg_FFFFFF/txt_FFFFFF/border_FFFFFF/columns_4/maxflags_250/viewers_0/labels_1/pageviews_1/flags_1/percent_0/" style="border: none; visibility: hidden; width: 2px; height: 2px;" alt="">';
-        div.innerHTML = code;
-        side.appendChild(div);
-        setValue("declared_version", scriptVersion);
-        setTimeout(function() { $("#gclh_simu").remove(); }, 4000);  
-    }
-
-// Migrationsaufgaben erledigen für eine neue Version.
-    function migrationTasks() {
-        // Migrate Mail signature to Mail template (zu v0.4).
-        if (getValue("migration_task_01", false) != true) {
-            if (settings_show_mail || settings_show_message) {           
-                var template = "Hi #Receiver#,";
-                if (getValue("settings_show_mail_coordslink") == true || getValue("settings_show_message_coordslink") == true ) template += "\n\n#GCTBName# #GCTBLink#";
-                if (getValue("settings_mail_signature", "") != "") template += "\n\n" + getValue("settings_mail_signature");
-                setValue("settings_mail_signature", template);
-            }
-            setValue("migration_task_01", true);
-        }
-    }
-
 // Aktuelles Datum und aktuelle Zeit ermitteln und aufbereiten.
     function getDateTime() {
         var now = new Date();
@@ -8177,7 +7913,7 @@ console.log(tbsearch);
         return [ GCTBName, GCTBLink, GCTBNameLink, LogDate ];
     }
 
-// Show, hide Box setzen. Beispielsweise die beiden VIP Boxen im Cache Listing. Kann aber auch für andere Dinge genutzt werden.
+// Show, hide Box. Beispielsweise die beiden VIP Boxen im Cache Listing. Kann aber auch für andere Dinge genutzt werden.
     function showHideBoxCL( id_lnk, first ) {
         if ( id_lnk.match("lnk_gclh_config_") ) var is_config = true;
         else is_config = false;
@@ -8194,7 +7930,6 @@ console.log(tbsearch);
                  ( show_box == false && first == false )    ) {
                 setShowHide( lnk, "hide", is_config );
                 box.show();
-                var showHide = "hide";
                 setValue(name_show_box, true);
                 if ( !first && is_config ) {
                     document.getElementById(id_lnk).scrollIntoView(); 
@@ -8203,50 +7938,24 @@ console.log(tbsearch);
             } else {
                 setShowHide( lnk, "show", is_config );
                 box.hide();
-                var showHide = "show";
                 setValue(name_show_box, false);
             }
-            return showHide;
         } 
     }
+
+// Show bzw. hide setzen.
     function setShowHide( row, whatToDo, is_config ) {
         if ( whatToDo == "show" ) {
             row.title = "show";
-            if ( is_config == true ) row.src = global_plus_config2;
+            if ( is_config == true ) row.src = "https://raw.githubusercontent.com/2Abendsegler/GClh/master/images/plus_config2.gif";
             else row.src = http + "://www.geocaching.com/images/plus.gif";
         } else {
             row.title = "hide";
-            if ( is_config == true ) row.src = global_minus_config2;
+            if ( is_config == true ) row.src = "https://raw.githubusercontent.com/2Abendsegler/GClh/master/images/minus_config2.gif";
             else row.src = http + "://www.geocaching.com/images/minus.gif";
         }
     }
 
-// Show or hide all the areas in config with one click to a plus, minus icon with the right mouse.
-    function showHideConfigAll(id_lnk) {
-        showHide = showHideBoxCL(id_lnk, false);
-        // Alle anderen Boxen identisch aufbauen.
-        setShowHideConfigAll("gclh_config_global", showHide);
-        setShowHideConfigAll("gclh_config_config", showHide);
-        setShowHideConfigAll("gclh_config_nearestlist", showHide);
-        setShowHideConfigAll("gclh_config_maps", showHide);
-        setShowHideConfigAll("gclh_config_profile", showHide);
-        setShowHideConfigAll("gclh_config_listing", showHide);
-        setShowHideConfigAll("gclh_config_logging", showHide);
-        setShowHideConfigAll("gclh_config_mail", showHide);
-        setShowHideConfigAll("gclh_config_linklist", showHide);
-        if (showHide == "show") window.scroll(0, 0);
-        else {
-            document.getElementById(id_lnk).scrollIntoView(); 
-            window.scrollBy(0, -8);
-        }
-    }
-    function setShowHideConfigAll( stamm, whatToDo ) {
-        document.getElementById("lnk_"+stamm).title = (whatToDo == "show" ? "show" : "hide");
-        document.getElementById("lnk_"+stamm).src = (whatToDo == "show" ? global_plus_config2 : global_minus_config2);
-        if (whatToDo == "show") $('#'+stamm).hide(); 
-        else $('#'+stamm).show();
-        setValue("show_box_"+stamm, (whatToDo == "show" ? false : true));
-    }
 
 ////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////
@@ -8357,10 +8066,13 @@ console.log(tbsearch);
         setting_id = setting_idX.replace(/(X[0-9]*)/, "");
         return "<input type='checkbox' " + (getValue(setting_id) ? "checked='checked'" : "" ) + " id='" + setting_idX + "'><label for='" + setting_idX + "'>" + label + "</label>";
     }
-    function show_help(text) { return " <a class='gclh_info'><b>?</b><span class='gclh_span'>" + text + "</span></a>"; }
-    function show_help2(text) { return " <a class='gclh_info gclh_info2'><b>?</b><span class='gclh_span'>" + text + "</span></a>"; }
-    function show_help_big(text) { return " <a class='gclh_info gclh_info_big'><b>?</b><span class='gclh_span'>" + text + "</span></a>"; }
-    function show_help_rc(text) { return " <a class='gclh_info gclh_info_rc'><b>?</b><span class='gclh_span'>" + text + "</span></a>"; }
+
+    function show_help(text) {
+        return " <a class='gclh_info' style='cursor: help' href='javascript:void(0);'><b>?</b><span class='gclh_span'>" + text + "</span></a>";
+    }
+    function show_help_big(text) {
+        return " <a class='gclh_info gclh_info_big' style='cursor: help;' href='javascript:void(0);'><b>?</b><span class='gclh_span'>" + text + "</span></a>";
+    }
 
     function create_config_css() {
         var css = document.createElement("style");
@@ -8378,7 +8090,9 @@ console.log(tbsearch);
         html += "  -moz-border-radius:30px; ";
         html += "  -khtml-border-radius:30px; ";
         html += "  border-radius: 30px;";
+        html += "  overflow: auto;";
         html += "}";
+        html += "";
         html += ".gclh_headline {";
         html += "  height: 21px; ";
         html += "  margin:5px; ";
@@ -8389,12 +8103,17 @@ console.log(tbsearch);
         html += "  border-radius: 30px;";
         html += "  text-align: center;";
         html += "}";
-        html += ".gclh_headline2 {margin: 12px 5px 5px -2px;}";
+        html += "";
+        html += ".gclh_headline2 {";
+        html += "  margin: 12px 5px 5px -2px;";
+        html += "}";
+        html += "";
         html += ".gclh_content {";
         html += "  padding: 2px 10px 10px 10px;";
         html += "  font-family: Verdana;";
         html += "  font-size: 14px;";
         html += "}";
+        html += "";
         html += ".gclh_form {";
         html += "  background-color: #d8cd9d;";
         html += "  border: 2px solid #778555;";
@@ -8409,9 +8128,21 @@ console.log(tbsearch);
         html += "  text-decoration: none;";
         html += "  border-bottom: dotted 1px black;";
         html += "}";
-        html += ".gclh_small {font-size: 10px;}";
-        html += "a.gclh_info {color: #000000; text-decoration: none; cursor: help;}";
-        html += "a.gclh_info:hover {position: relative;}";
+        html += "";
+        html += ".gclh_small {";
+        html += "  font-size: 10px;";
+        html += "}";
+        html += "";
+        // Highlight
+        html += "a.gclh_info {";
+        html += "  color: #000000;";
+        html += "  text-decoration: none;";
+        html += "}";
+        html += "";
+        html += "a.gclh_info:hover {";
+        html += "  position: relative;";
+        html += "}";
+        html += "";
         html += "a.gclh_info span {";
         html += "  visibility: hidden;";
         html += "  position: absolute; top:-310px; left:0px;";
@@ -8422,6 +8153,7 @@ console.log(tbsearch);
         html += "  font-size: 12px;";
         html += "  z-index: 105;";
         html += "}";
+        html += "";
         html += "a.gclh_info:hover span {";
         html += "  width: 250px;";
         html += "  visibility: visible;";
@@ -8431,8 +8163,11 @@ console.log(tbsearch);
         html += "  border: 1px solid #000000;";
         html += "  background-color: #d8cd9d;";
         html += "}";
-        html += "a.gclh_info2:hover span {left: -100px !important;}";
-        html += "a.gclh_info_big:hover span {width: 350px !important;}";
+        html += "";
+        html += "a.gclh_info_big:hover span {";
+        html += "  width: 350px !important;";
+        html += "}";
+        html += "";
         html += ".multi_homezone_settings {";
         html += "  width: 50%;";
         html += "  padding: 10px 0;";
@@ -8440,11 +8175,9 @@ console.log(tbsearch);
         html += "  border: 1px solid #CFC0B8;";
         html += "  border-width: 1px 0;";
         html += "}";
-        html += ".multi_homezone_element {margin-bottom: 10px;}";
-        html += "a.gclh_info_rc:hover span {width: 500px !important; left: -245px !important; font-size: 11px !important;}";
-        html += ".gclh_rc_area {width: 540px; background-color: #d8cd9d; border: 1px solid #778555; padding: 20px; z-index: 1001; -moz-border-radius: 30px; -khtml-border-radius: 30px; border-radius: 30px; margin-top: 15px;}";
-        html += ".gclh_rc_area_button {margin-left: 185px;}";
-        html += ".gclh_rc_form {background-color: #d8cd9d; border: 2px solid #778555; -moz-border-radius: 7px; -khtml-border-radius: 7px; border-radius: 7px; padding-left: 5px; padding-right: 5px; margin-left: 15px; cursor: pointer;}";
+        html += ".multi_homezone_element {";
+        html += "  margin-bottom: 10px;";
+        html += "}";
         css.innerHTML = html;
         document.getElementsByTagName('body')[0].appendChild(css);
     }
@@ -8483,33 +8216,14 @@ console.log(tbsearch);
             var html = "";
             html += "<h3 class='gclh_headline' title='Some little things to make life easy (on www.geocaching.com).' >" + scriptNameConfig + " <font class='gclh_small'>v" + scriptVersion + "</font></h3>";
             html += "<div class='gclh_content'>";
-            html += "<div id='gclh_config_content1'>";
             html += "&nbsp;" + "<font style='float: right; font-size: 11px; ' >";
             html += "<a href='http://geoclub.de/forum/viewforum.php?f=117' title='Help, is available on the Geoclub forum' target='_blank'>Help</a> | ";
             html += "<a href='https://github.com/2Abendsegler/GClh/issues?q=is:issue is:open sort:created-desc' title='Open issues, on GitHub' target='_blank'>Open issues</a> | ";
             html += "<a href='https://github.com/2Abendsegler/GClh/issues?q=is:issue is:open label:\"tag: wish\" sort:created-desc' title='Open wishes, on GitHub' target='_blank'>Open wishes</a> | ";
             html += "<a href='https://github.com/2Abendsegler/GClh/blob/master/docu/changelog.md#readme' title='Changelog, on GitHub' target='_blank'>Changelog</a> | ";
             html += "<a id='check_for_upgrade' href='#' style='cursor: pointer' title='Check for upgrade script'>Check for upgrade</a> | ";
-            html += "<a href='https://github.com/2Abendsegler/GClh/tree/master' title='GitHub' target='_blank'>GitHub</a> | ";
-            html += "<a id='rc_link' href='#' style='cursor: pointer' title='Reset some configuration data'>Reset</a></font>";
-            html += "</div>";
-            
-            html += "<div id='gclh_config_content2'>";
-            html += "<div id='rc_area' class='gclh_rc_area'>"; 
-            html += "<input type='radio' name='rc' checked='checked' id='rc_standard' class='gclh_rc'><label for='rc_standard'>Reset to standard configuration</label>" + show_help_rc("This option should help you to come back to an efficient configuration set, after some experimental or other motivated changes. This option load a reasonable standard configuration and overwrite your configuration data in parts. <br><br>The following data are not overwrited: Home-coords; homezone and multi homezone; date format; log templates; cache log, TB log and other signatures; friends data; links in Linklist and differing description and custom links. <br>Dynamic data, like for example autovisits for named trackables, are not overwrited too.<br><br>After reset, choose button \"close\" and go to Config to skim over the set of data.") + "<br/>";
-            html += "<input type='radio' name='rc' id='rc_temp' class='gclh_rc'><label for='rc_temp'>Reset dynamic and unused data</label>" + show_help_rc("This option reorganize the configuration set. Unused parameters, of older script versions, are deleted. And all the dynamic data, especially the autovisit settings for every TB, are deleted too.<br><br>After reset, choose button \"close\".") + "<br><br>";
-            html += "<input type='radio' name='rc' id='rc_homecoords' class='gclh_rc'><label for='rc_homecoords'>Reset your own home-coords</label>" + show_help_rc("This option could help you with problems around your home-coords, like for example with your main homezone, with nearest lists or with your home-coords itself. Your home-coords are not deleted at gc.com, but only in GClh. <br><br>After reset, you have to go to the account settings page of gc.com to the area \"Home Location\", so that GClh can save your home-coords again automatically. You have only to go to this page, you have nothing to do at this page, GClh save your home-coords automatically. <br>Or you enter your home-coords manually in GClh. <br><br>At last, choose button \"close\".");
-            html += "<font class='gclh_small'> (After reset, go to <a href='https://www.geocaching.com/account/settings/homelocation' target='_blank'>Home Location</a> )</font>" + "<br/>";
-            html += "<input type='radio' name='rc' id='rc_uid' class='gclh_rc'><label for='rc_uid'>Reset your own id for your trackables</label>" + show_help_rc("This option could help you with problems with your own trackables lists, which based on an special id, the uid. The uid are not deleted at gc.com, but only in GClh. <br><br>After reset, you have to go to your profile page of gc.com, so that GClh can save your uid again automatically. You have only to go to this page, you have nothing to do at this page, GClh save the uid automatically. <br><br>At last, choose button \"close\".");
-            html += "<font class='gclh_small'> (After reset, go to <a href='https://www.geocaching.com/my/' target='_blank'>Your Profile</a> )</font>" + "<br><br>";
-            html += "<div class='gclh_rc_area_button'>";
-            html += "<img id='rc_doing' src='' title='' alt='' style='margin-top: 4px; margin-left: -25px; position: absolute;' /><input class='gclh_rc_form' type='button' value='reset' id='rc_reset_button'> <input style='cursor: pointer;' class='gclh_rc_form' type='button' value='close' id='rc_close_button'>";
-            html += "</div>";
-            html += "<pre class='gclh_form' style='width: 525px; height: 220px; overflow: auto; margin-bottom: 0px; font-size: 12px;' type='text' value='' id='rc_configData' contenteditable='true'></pre>";
-            html += "</div>";
-            html += "</div>";
-
-            html += "<div id='gclh_config_content3'>";
+            html += "<a href='https://github.com/2Abendsegler/GClh/tree/master' title='GitHub' target='_blank'>GitHub</a></font>";
+            html += "<br>";
             html += "<br>";
             html += "<h4 class='gclh_headline2'>"+prepareHideable.replace("#name#","global")+"Global</h4>";
             html += "<div id='gclh_config_global'>";
@@ -8528,10 +8242,16 @@ console.log(tbsearch);
             html += " &nbsp; " + checkboxy('settings_show_smaller_area_top_right', 'Show smaller user, settings, message area top right') + show_help("With this option you can choose a smaller display of the area top right with the user, settings and message center icons and description of every page. <br><br>This option requires \"Change header layout\".") + "<br/>";
             html += " &nbsp; " + checkboxy('settings_gc_tour_is_working', 'Reserve a place for GC Tour icon') + show_help("If the script GC Tour is running, you can reserve a place top left of every page for the GC Tour icon. <br><br>This option requires \"Change header layout\".") + "<br/>";
             html += newParameterVersionSetzen(0.1) + newParameterOff;
-			html += checkboxy('settings_bookmarks_on_top', "Show <a class='gclh_ref' href='#gclh_linklist' id='gclh_linklist_link_1'>Linklist</a> on top") + show_help("Show the Linklist on the top of the page - beside the other links of gc.com. You can configure the links at the end of this configuration page.<br><br>Some of the features of the linklist on top, like for example the font size or the distance between drop-down links, requires \"Change header layout\". Details you can see at the end of this configuration page by the features of the Linklist.") + "<br/>";
+			   html += checkboxy('settings_bookmarks_on_top', "Show <a class='gclh_ref' href='#gclh_linklist' id='gclh_linklist_link_1'>Linklist</a> on top") + show_help("Show the Linklist on the top of the page - beside the other links of gc.com. You can configure the links at the end of this configuration page.<br><br>Some of the features of the linklist on top, like for example the font size or the distance between drop-down links, requires \"Change header layout\". Details you can see at the end of this configuration page by the features of the Linklist.") + "<br/>";
             html += checkboxy('settings_hide_advert_link', 'Hide link to advertisement instructions') + "<br/>";
             html += "&nbsp;" + "Page-Width: <input class='gclh_form' type='text' size='2' id='settings_new_width' value='" + getValue("settings_new_width", 1000) + "'> px" + show_help("With this option you can expand the small layout. The default value of gc.com is 950 px.") + "<br>";
             html += checkboxy('settings_automatic_friend_reset', 'Reset difference counter on friendlist automatically') + show_help("If you enable this option, the difference counter at friendlist will automatically reset if you have seen the difference and if the day changed.") + "<br/>";
+// >> hm -- Issue #111            
+            html += newParameterOn4;
+            html += checkboxy('settings_friendlist_summary', 'Show summary for new founds/hides in friends list') + show_help("With this option youn can show a summary of all new founds/hides of your friends on the friend list page") + "<br/>";
+            html += " &nbsp; " + checkboxy('settings_friendlist_summary_viponly', 'Show summary only for frinds in VIP list') + show_help("With this option you can choose to show the summary only for friends who are also marked as VIP.") + "<br/>";
+            html += newParameterVersionSetzen(0.4) + newParameterOff;
+ // << hm -- Issue #111            
             html += checkboxy('settings_hide_facebook', 'Hide Facebook login') + "<br/>";
             html += checkboxy('settings_hide_socialshare', 'Hide social sharing Facebook and Twitter') + "<br/>";
             html += checkboxy('settings_fixed_pq_header', 'Show fixed header in PQ list') + "<br/>";
@@ -8546,14 +8266,16 @@ console.log(tbsearch);
             html += "<span style='margin-left: 30px;' >cache listings</span>";
             html += "<span style='margin-left: 32px;' >TB listings</span>";
             html += "<span style='margin-left: 30px;' >in color</span>" + "<br>";
-            html += "&nbsp;" + "- for zebra:" + show_help2("With this options you can color every second line in the specified lists in the specified \"alternating\" color.");
-            html += "<input type='checkbox' style='margin-left:  37px;' " + (getValue('settings_show_common_lists_in_zebra') ? "checked='checked'" : "" ) + " id='settings_show_common_lists_in_zebra'></span>";
+            html += "&nbsp;" + "- for zebra:";
+            html += "<span style='margin-left: 14px;' ></span>" + show_help("With this options you can color every second line in the specified lists in the specified \"alternating\" color.");
+            html += "<input type='checkbox' style='margin-left:  23px;' " + (getValue('settings_show_common_lists_in_zebra') ? "checked='checked'" : "" ) + " id='settings_show_common_lists_in_zebra'></span>";
             html += "<input type='checkbox' style='margin-left:  56px;' " + (getValue('settings_show_cache_listings_in_zebra') ? "checked='checked'" : "" ) + " id='settings_show_cache_listings_in_zebra'></span>" + show_help("This option requires \"Load logs with GClh\".");
             html += "<input type='checkbox' style='margin-left:  95px;' " + (getValue('settings_show_tb_listings_in_zebra') ? "checked='checked'" : "" ) + " id='settings_show_tb_listings_in_zebra'></span>";
             html += "<input class='gclh_form color' type='text' style='margin-left: 86px;' size=5 id='settings_lines_color_zebra' value='" + getValue("settings_lines_color_zebra", "EBECED") + "'>";
             html += "<img src=" + global_restore_icon + " id='restore_settings_lines_color_zebra' title='back to default' style='width: 12px; cursor: pointer;'>" + "<br>";
-            html += "&nbsp;" + "- for you:" + show_help2("With this options you can color your logs respectively your founds in the specified lists in the specified color.");
-            html += "<input type='checkbox' style='margin-left:  50px;' " + (getValue('settings_show_common_lists_color_user') ? "checked='checked'" : "" ) + " id='settings_show_common_lists_color_user'></span>";
+            html += "&nbsp;" + "- for you:";
+            html += "<span style='margin-left: 27px;' ></span>" + show_help("With this options you can color your logs respectively your founds in the specified lists in the specified color.");
+            html += "<input type='checkbox' style='margin-left:  23px;' " + (getValue('settings_show_common_lists_color_user') ? "checked='checked'" : "" ) + " id='settings_show_common_lists_color_user'></span>";
             html += "<input type='checkbox' style='margin-left:  56px;' " + (getValue('settings_show_cache_listings_color_user') ? "checked='checked'" : "" ) + " id='settings_show_cache_listings_color_user'></span>" + show_help("This option requires \"Load logs with GClh\".");
             html += "<input type='checkbox' style='margin-left:  95px;' " + (getValue('settings_show_tb_listings_color_user') ? "checked='checked'" : "" ) + " id='settings_show_tb_listings_color_user'></span>";
             html += "<input class='gclh_form color' type='text' style='margin-left: 86px;' size=5 id='settings_lines_color_user' value='" + getValue("settings_lines_color_user", "C2E0C3") + "'>";
@@ -8675,7 +8397,7 @@ console.log(tbsearch);
             html += " &nbsp; " + checkboxy('settings_switch_to_google_maps_in_same_tab', 'Switch to Google Maps in same browser tab') + show_help("With this option you can switch from GC Map to Google Maps in the same browser tab.<br><br>This option requires \"Add link to Google Maps on GC Map\".") + "<br/>";
             html += newParameterVersionSetzen(0.1) + newParameterOff;
             html += "</div>";
-            html += "<h4 class='gclh_headline2'>"+prepareHideable.replace("#name#","profile")+"Profile <span style='font-size: 14px'>" + show_help2("This section include your profile pages (\/my\/ and \/profile\/ pages) with for example your founded caches and trackables, your earned souvenirs, your image gallery, your statistic ... <br><br>Also the section include the profile pages of the others.") + "</span></h4>";
+            html += "<h4 class='gclh_headline2'>"+prepareHideable.replace("#name#","profile")+"Profile &nbsp; &nbsp; <a style='margin-left: 0px'>" + show_help("This section include your profile pages (\/my\/ and \/profile\/ pages) with for example your founded caches and trackables, your earned souvenirs, your image gallery, your statistic ... <br><br>Also the section include the profile pages of the others.") + "</a></h4>";
             html += "<div id='gclh_config_profile'>";
             html += checkboxy('settings_bookmarks_show', "Show <a class='gclh_ref' href='#gclh_linklist' id='gclh_linklist_link_2'>Linklist</a> in your profile") + show_help("Show the Linklist at the right side in your profile. You can configure the links in the Linklist at the end of this page.") + "<br/>";
             html += checkboxy('settings_hide_visits_in_profile', 'Hide TB/Coin visits in your profile') + "<br/>";
@@ -8683,7 +8405,7 @@ console.log(tbsearch);
             html += "&nbsp; " + checkboxy('settings_imgcaption_on_top', 'Show caption on top') + show_help("This option requires \"Show thumbnails of images\".") + "<br/>";
             html += checkboxy('settings_show_big_gallery', 'Show bigger images in gallery') + show_help("With this option the images in the galleries of caches, TBs and profiles are displayed bigger and not in 4 columns, but in 2 columns.") + "<br/>";
             html += newParameterOn1;
-            content_settings_show_mail_in_allmyvips = checkboxy('settings_show_mail_in_allmyvips', 'Show mail link beside user in "All my VIPs" list in your profile') + show_help("With this option there will be an small mail icon beside every username in the list with all your VIPs (All my VIPs) on your profile page. With this icon you get directly to the mail page to mail to this user. <br>(VIP: Very important person)<br><br>This option requires \"Show mail link beside usernames\" and \"Show VIP list\".") + "<br>";
+            content_settings_show_mail_in_allmyvips = checkboxy('settings_show_mail_in_allmyvips', 'Show mail link beside user in "All my VIPs" list in your profile') + show_help("With this option there will be an small mail icon beside every username in the list with all your VIPs (All my VIPs) on your profile page. With this icon you get directly to the mail page to mail to this user. <br><br>This option requires \"Show mail link beside usernames\" and \"Show VIP list\".") + "<br>";
             html += content_settings_show_mail_in_allmyvips;
             html += checkboxy('settings_show_sums_in_watchlist', 'Show number of caches in your watchlist') + show_help("With this option the number of caches and the number of selected caches in the categories \"All\", \"Archived\" and \"Deactivated\", corresponding to the select buttons, are shown in your watchlist at the end of the list.") + "<br/>";
             html += checkboxy('settings_logit_for_basic_in_pmo', 'Log PMO caches by standard \"Log It\" icon (for basic members)') + show_help("With this option basic members are able to choose the standard \"Log It\" icon to call the logging screen for premium only caches. The tool tipp blocked not longer this call. You can have the same result by using the right mouse across the \"Log It\" icon and then new tab. <br>The \"Log It\" icon is besides the caches for example in the \"Recently Viewed Caches\" list and in your profile.") + "<br/>";
@@ -8691,35 +8413,10 @@ console.log(tbsearch);
             html += newParameterOn3;
             html += checkboxy('settings_hide_archived_in_owned', 'Hide archived caches in owned list') + "<br/>";
             html += newParameterVersionSetzen(0.3) + newParameterOff;
-//--> $$065 Begin of insert
-//xxxx
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>Trackables</b></div>";
             html += newParameterOn3;
             html += checkboxy('settings_faster_profile_trackables', 'Load trackables faster without images') + show_help("With this option, you can stop the load on the trackable pages after the necessary datas are loaded. You disclaim of the lengthy load of the images of the trackables. This procedure is much faster as load all datas, because every image is loaded separate and not in a bigger bundle like it is for the non image data.") + "<br/>";
-            html += checkboxy('settings_tb_sums_total', '') + checkboxy('settings_tb_sums_total_owned', 'Show sums and total for trackables') + show_help("With this option, sums for similar trackables and the total of trackables are shown.<br><br>The first checkbox is for the moved/discovered trackables, the second one is for your own trackables.") + "<br/>";
-            html += " &nbsp; " + checkboxy('settings_tb_total_header_desc', '') + checkboxy('settings_tb_total_header_desc_owned', 'Show the total above') + show_help("With this option, the total of trackables are shown above the current table beside the table description.<br><br>The first checkbox is for the moved/discovered trackables, the second one is for your own trackables.<br><br>This option requires \"Show sums and total for trackables\".") + "<br/>";
-            html += " &nbsp; " + checkboxy('settings_tb_sums_header', '') + checkboxy('settings_tb_sums_header_owned', 'Show sums in the header') + show_help("With this option, sums for similar trackables are shown in the header of the current table.<br><br>The first checkbox is for the moved/discovered trackables, the second one is for your own trackables.<br><br>This option requires \"Show sums and total for trackables\".") + "<br/>";
-            html += " &nbsp; " + checkboxy('settings_tb_sums_footer', '') + checkboxy('settings_tb_sums_footer_owned', 'Show sums in the footer') + show_help("With this option, sums for similar trackables are shown in the footer of the current table, like it was previously.<br><br>The first checkbox is for the moved/discovered trackables, the second one is for your own trackables.<br><br>This option requires \"Show sums and total for trackables\".") + "<br/>";
-            html += " &nbsp; " + checkboxy('settings_tb_sums_hideable', '') + checkboxy('settings_tb_sums_hideable_owned', 'Make sums lists hideable by click') + show_help("With this option, you can hide and show sums list of similar trackables by one click.<br><br>The first checkbox is for the moved/discovered trackables, the second one is for your own trackables.<br><br>This option requires \"Show sums and total for trackables\" and \"Show sums in the header\" and/or \"Show sums in the footer\".") + "<br/>";
-            html += " &nbsp; " + checkboxy('settings_tb_sums_more', '') + checkboxy('settings_tb_sums_more_owned', 'Show sums for more series of trackables') + show_help("With this option, you can show sums of more than the previous four categories/series of trackables. This feature required rules to assign the TBs to series.<br><br>The first checkbox is for the moved/discovered trackables, the second one is for your own trackables.<br><br>This option requires \"Show sums and total for trackables\" and \"Show sums in the header\" and/or \"Show sums in the footer\".");
-//xxxx #OK# 
-            html += "<span title='rules loaded'> &nbsp; &nbsp; (<span id='gclh_count_tbrules' title='rules loaded'>" + outputCountTBRules() + "</span> rules) </span> <a class='gclh_ref' href='javascript:void(0);' id='gclh_load_tbrules' title='load all available rules'>Load</a> <img src='' id='gclh_loading_tbrules'>" + "<br/>";
-            html += " &nbsp; &nbsp;" + "Show sums of series if count is at least <select class='gclh_form' id='settings_tb_sums_count' >";
-            for ( var i = 1; i < 51; i++ ) { 
-                html += "  <option value='" + i + "' " + (settings_tb_sums_count == i ? "selected=\"selected\"" : "") + ">" + i + "</option>";
-            }
-            html += "</select>";
-            html += " <select class='gclh_form' id='settings_tb_sums_count_owned' >";
-            for ( var i = 1; i < 51; i++ ) { 
-                html += "  <option value='" + i + "' " + (settings_tb_sums_count_owned == i ? "selected=\"selected\"" : "") + ">" + i + "</option>";
-            }
-            html += "</select>" + show_help("With this option, you can reduce the count of sums lines. Only sums are shown with a minimum count.<br><br>The first field is for the moved/discovered trackables, the second one is for your own trackables.<br><br>This option requires \"Show sums and total for trackables\" and \"Show sums in the header\" and/or \"Show sums in the footer\".") + "<br>";
-            html += " &nbsp; " + checkboxy('settings_tb_total_sums_lists', '') + checkboxy('settings_tb_total_sums_lists_owned', 'Show total in sums lists') + show_help("With this option, you can show the total of trackables in the sums lists.<br><br>The first checkbox is for the moved/discovered trackables, the second one is for your own trackables.<br><br>This option requires \"Show sums and total for trackables\" and \"Show sums in the header\" and/or \"Show sums in the footer\".") + "<br/>";
-            html += " &nbsp; " + checkboxy('settings_tb_sums_breakable', '') + checkboxy('settings_tb_sums_breakable_owned', 'Make the trackables hideable by click') + show_help("With this option, you can hide and show trackables in the header sums list by one click.<br><br>The first checkbox is for the moved/discovered trackables, the second one is for your own trackables.<br><br>This option requires \"Show sums and total for trackables\" and \"Show sums in the header\".") + "<br/>";
-            html += " &nbsp; " + checkboxy('settings_tb_sums_hide_footer', '') + checkboxy('settings_tb_sums_hide_footer_owned', 'Remove footer') + show_help("With this option, you can remove the footer of the trackable table.<br><br>The first checkbox is for the moved/discovered trackables, the second one is for your own trackables.<br><br>This option requires \"Show sums and total for trackables\" and not \"Show sums in the footer\".") + "<br/>";
-            html += " &nbsp; " + checkboxy('settings_tb_sums_bold', '') + checkboxy('settings_tb_sums_bold_owned', 'Show names of trackable series in bold') + show_help("With this option, you can show the names of trackable series in the sums lists in bold, like it was previously.<br><br>The first checkbox is for the moved/discovered trackables, the second one is for your own trackables.<br><br>This option requires \"Show sums and total for trackables\" and \"Show sums in the header\" and/or \"Show sums in the footer\".") + "<br/>";
             html += newParameterVersionSetzen(0.3) + newParameterOff;
-//<-- $$065 End of insert
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>Statistic</b></div>";
             html += newParameterOn1;
             html += checkboxy('settings_count_own_matrix', 'Calculate your cache matrix') + show_help("With this option the count of found difficulty and terrain combinations and the count of complete matrixes are calculated and shown above the cache matrix on your statistic page.") + "<br/>";
@@ -8778,12 +8475,14 @@ console.log(tbsearch);
             html += "  <option " + (settings_date_format == "MMM/dd/yyyy" ? "selected='selected'" : "") + " value='MMM/dd/yyyy'> Dec/31/2016</option>";
             html += "  <option " + (settings_date_format == "dd MMM yy" ? "selected='selected'" : "") + " value='dd MMM yy'> 31 Dec 16</option>";
             html += "</select>" + show_help("If you have changed the date format on gc.com, you have to change it here to. Instead the day of week may be wrong.") + "<br/>";
-            html += checkboxy('settings_show_mail', 'Show mail link beside usernames') + show_help("With this option there will be an small mail icon beside every username. With this icon you get directly to the mail page to mail to this user. If you click it for example when you are in a listing, the cachename or GC code can be inserted into the mail form about placeholder in the mail / message form template.") + "<br/>";
+            html += checkboxy('settings_show_mail', 'Show mail link beside usernames') + show_help("With this option there will be an small mail icon beside every username. With this icon you get directly to the mail page to mail to this user. If you click it when you are in a listing, the cachename and GCID will be inserted into the mail form - you don't have to remember it :) ") + "<br/>";
+            html += "&nbsp; " + checkboxy('settings_show_mail_coordslink', 'Show coord link in mail') + show_help("With this option the GC/TB code in the mail is displayed as coord.info link. <br><br>This option requires \"Show mail link beside usernames\".") + "<br/>";
             html += newParameterOn1;
-            content_settings_show_mail_in_viplist = "&nbsp; " + checkboxy('settings_show_mail_in_viplist', 'Show mail link beside user in "VIP-List" in listing') + show_help("With this option there will be an small mail icon beside every username in the VIP lists on the cache listing page. With this icon you get directly to the mail page to mail to this user. <br>(VIP: Very important person)<br><br>This option requires \"Show mail link beside usernames\", \"Show VIP list\" and \"Load logs with GClh\".") + "<br>";
+            content_settings_show_mail_in_viplist = "&nbsp; " + checkboxy('settings_show_mail_in_viplist', 'Show mail link beside user in "VIP-List" in listing') + show_help("With this option there will be an small mail icon beside every username in the VIP lists on the cache listing page. With this icon you get directly to the mail page to mail to this user. <br><br>This option requires \"Show mail link beside usernames\", \"Show VIP list\" and \"Load logs with GClh\".") + "<br>";
             html += content_settings_show_mail_in_viplist;
             html += "&nbsp; " + content_settings_show_mail_in_allmyvips.replace("settings_show_mail_in_allmyvips", "settings_show_mail_in_allmyvipsX0"); 
-            html += checkboxy('settings_show_message', 'Show message link beside usernames') + show_help("With this option there will be an small message icon beside every username. With this icon you get directly to the message page to send a message to this user. If you click it for example when you are in a listing, the cachename or GC code can be inserted into the message form about placeholder in the mail / message form template.") + "<br/>";
+            html += checkboxy('settings_show_message', 'Show message link beside usernames') + show_help("With this option there will be an small message icon beside every username. With this icon you get directly to the message page to send a message to this user. If you click it when you are in a listing, the cachename and GC code respectively the TB name and the TB code will be inserted into the message form.") + "<br/>";
+            html += "&nbsp; " + checkboxy('settings_show_message_coordslink', 'Show coord link in message') + show_help("With this option the GC/TB code in the message is displayed as coord.info link. <br><br>This option requires \"Show message link beside usernames\".") + "<br/>";
             html += newParameterVersionSetzen(0.1) + newParameterOff;
             html += checkboxy('settings_show_google_maps', 'Show link to Google Maps') + show_help("This option shows a link at the top of the second map in the listing. With this link you get directly to Google Maps in the area, where the cache is.") + "<br/>";
             html += checkboxy('settings_strike_archived', 'Strike through title of archived/disabled caches') + "<br/>";
@@ -8808,12 +8507,12 @@ console.log(tbsearch);
             }
             html += "</select>" + show_help("With this option you can choose the zoom value to start in the map. \"1\" is the hole world and \"19\" is the maximal enlargement. Default is \"11\". <br><br>This option requires \"Show cache location in overview map\".") + "<br>";
             html += newParameterVersionSetzen(0.1) + newParameterOff;
-            html += checkboxy('settings_show_vip_list', 'Show VIP list') + show_help("The VIP list is a list, displayed at the right side on a cache listing. You can add any user to your VIP list by clicking the little VIP icon beside the username. If it is green, this person is a VIP. The VIP list only shows VIPs and the logs of VIPs, which already posted a log to this cache. With this option you are able to see which of your VIPs already found this cache. On your profile page there is an overview of all your VIPs.<br>(VIP: Very important person)") + "<br/>";
-            html += "&nbsp; " + checkboxy('settings_show_owner_vip_list', 'Show owner in VIP list')  + show_help("If you enable this option, the owner is a VIP for the cache, so you can see, what happened with the cache (disable, maint, enable, ..). <br>(VIP: Very important person)<br><br>This option requires \"Show VIP list\".")+ "<br/>";
-            html += "&nbsp; " + checkboxy('settings_show_long_vip', 'Show long VIP list (one row per log)') + show_help("This is another type of displaying the VIP list. If you disable this option you get the short list - one row per VIP and the logs as icons beside the VIP. If you enable this option, there is a row for every log.<br>(VIP: Very important person)<br><br>This option requires \"Show VIP list\".") + "<br/>";
-            html += "&nbsp; " + checkboxy('settings_vip_show_nofound', 'Show a list of VIPs who have not found the cache') + show_help("This option enables an additional VIP list with VIPs who have not found the cache.<br>(VIP: Very important person)<br><br>This option requires \"Show VIP list\".") + "<br>";
+            html += checkboxy('settings_show_vip_list', 'Show VIP list') + show_help("The VIP list is a list, displayed at the right side on a cache listing. You can add any user to your VIP list by clicking the little VIP icon beside the username. If it is green, this person is a VIP. The VIP list only shows VIPs and the logs of VIPs, which already posted a log to this cache. With this option you are able to see which of your VIPs already found this cache. On your profile page there is an overview of all your VIPs.") + "<br/>";
+            html += "&nbsp; " + checkboxy('settings_show_owner_vip_list', 'Show owner in VIP list')  + show_help("If you enable this option, the owner is a VIP for the cache, so you can see, what happened with the cache (disable, maint, enable, ..). <br><br>This option requires \"Show VIP list\".")+ "<br/>";
+            html += "&nbsp; " + checkboxy('settings_show_long_vip', 'Show long VIP list (one row per log)') + show_help("This is another type of displaying the VIP list. If you disable this option you get the short list - one row per VIP and the logs as icons beside the VIP. If you enable this option, there is a row for every log.<br><br>This option requires \"Show VIP list\".") + "<br/>";
+            html += "&nbsp; " + checkboxy('settings_vip_show_nofound', 'Show a list of VIPs who have not found the cache') + show_help("This option enables an additional VIP list with VIPs who have not found the cache.<br><br>This option requires \"Show VIP list\".") + "<br>";
             html += newParameterOn2;
-            html += "&nbsp; " + checkboxy('settings_make_vip_lists_hideable', 'Make VIP lists in listing hideable') + show_help("With this option you can hide and show the VIP lists \"VIP-List\" and \"VIP-List not found\" in cache listing with one click.<br>(VIP: Very important person)<br><br>This option requires \"Show VIP list\".") + "<br>";
+            html += "&nbsp; " + checkboxy('settings_make_vip_lists_hideable', 'Make VIP lists in listing hideable') + show_help("With this option you can hide and show the VIP lists \"VIP-List\" and \"VIP-List not found\" in cache listing with one click.<br><br>This option requires \"Show VIP list\".") + "<br>";
             html += newParameterVersionSetzen(0.2) + newParameterOff;
             html += newParameterOn1;
             html += content_settings_show_mail_in_viplist.replace("settings_show_mail_in_viplist", "settings_show_mail_in_viplistX0");  
@@ -8884,11 +8583,10 @@ console.log(tbsearch);
             html += "</div>";
             html += "<h4 class='gclh_headline2'>"+prepareHideable.replace("#name#","mail")+"Mail / Message form</h4>";
             html += "<div id='gclh_config_mail'>";
-            var placeholderDescriptionMail = "Possible placeholder Mail / Message form:<br>&nbsp; #Found# : Your founds + 1<br>&nbsp; #Found_no# : Your founds<br>&nbsp; #Me# : Your username<br>&nbsp; #Receiver# : Username of the receiver<br>&nbsp; #Date# : Actual date<br>&nbsp; #Time# : Actual time in format hh:mm<br>&nbsp; #DateTime# : Actual date actual time<br>&nbsp; #GCTBName# : GC or TB name<br>&nbsp; #GCTBCode# : GC or TB code in brackets<br>&nbsp; #GCTBLink# : GC or TB link in brackets<br>(Upper and lower case is not required in the placeholder name.)";
-            html += "&nbsp;" + "Template:&nbsp;" + show_help2("The template will automatically be inserted into your mails and messages. <br><br>Also you are able to use placeholder for variables which will be replaced in the mail and in the message.") + " &nbsp; (Possible placeholder:" + show_help_big(placeholderDescriptionMail) + ")<br>";
+            html += "&nbsp;" + "Signature: &nbsp; &nbsp; &nbsp; " + show_help("The signature will automatically be inserted into your mails and messages. #me# will be replaced with your username.") + "<br>";
             html += "&nbsp;" + "<textarea class='gclh_form' rows='8' cols='40' id='settings_mail_signature'>&zwnj;" + getValue("settings_mail_signature", "") + "</textarea><br>";
             html += "</div>";
-            html += "<h4 class='gclh_headline2'><a name='gclh_linklist'></a>"+prepareHideable.replace("#name#","linklist")+"Linklist / Navigation <span style='font-size: 14px'>" + show_help("In this section you can configure your personal Linklist which is shown on the top of the page and/or in your profile. You can activate it on top of this configuration page respectively in the \"Profile / Statistic\" section.") + "</span></h4>";
+            html += "<h4 class='gclh_headline2'><a name='gclh_linklist'></a>"+prepareHideable.replace("#name#","linklist")+"Linklist / Navigation" + show_help("In this section you can configure your personal Linklist which is shown on the top of the page and/or in your profile. You can activate it on top of this configuration page respectively in the \"Profile / Statistic\" section.") + "</h4>";
             html += "<div id='gclh_config_linklist'>";
             html += "&nbsp;" + "Remove from Navigation:" + show_help("Here you can select, which of the original gc.com links should be removed to make room for your Linklist.") + "<br>";
             html += "<input type='checkbox' " + (getValue('remove_navi_learn') ? "checked='checked'" : "" ) + " id='remove_navi_learn'> Learn<br>";
@@ -9024,7 +8722,7 @@ console.log(tbsearch);
             // Überschrift.
             html += "        <thead>";
             html += "            <tr>";
-            html += "                <td align='center'>" + show_help2("In this column you can choose the standard links you want to use in your Linklist.<br><br>If there is a text field, then it is a custom link. In this text field you can type any URL you want to be added to the Linklist. The checkbox behind defines, if the link should be opened in a new window.<br><br>With the left button you can grab and move an element to the Linklist.<br><br>If you have problems to drag & drop the lower links because the Linklist area is not on the screen, then use the arrow high button on your keyboard during you hold the mouseclick.") + "</td>";
+            html += "                <td align='center' style='padding-left: 60px;'>" + show_help("In this column you can choose the standard links you want to use in your Linklist.<br><br>If there is a text field, then it is a custom link. In this text field you can type any URL you want to be added to the Linklist. The checkbox behind defines, if the link should be opened in a new window.<br><br>With the left button you can grab and move an element to the Linklist.<br><br>If you have problems to drag & drop the lower links because the Linklist area is not on the screen, then use the arrow high button on your keyboard during you hold the mouseclick.") + "</td>";
             html += "                <td>" + show_help("In this column you can type a differing description for the standard link, if it is a standard link. <br><br>If it is a custom link, you have to type a decription for the custom link. <br><br>If you have problems to drag & drop the lower links because the Linklist area is not on the screen, then use the arrow high button on your keyboard during you hold the mouseclick.") + "</td>";
             html += "            </tr>";
             html += "        </thead>";
@@ -9098,13 +8796,11 @@ console.log(tbsearch);
             html += "<div width='400px' align='right' class='gclh_small' style='float: right; margin-top: -5px;'>GC little helper, Copyright © 2010 <a href='http://www.amshove.net/' target='_blank'>Torsten Amshove</a></div>";
             html += "<div width='400px' align='right' class='gclh_small' style='float: right; margin-top: -15px;'>License: <a href='https://github.com/2Abendsegler/GClh/blob/master/docu/license.md#readme' target='_blank' title='GNU General Public License Version 2'>GPLv2</a>, Warranty: <a href='https://github.com/2Abendsegler/GClh/blob/master/docu/warranty.md#readme' target='_blank' title='GC little helper comes with ABSOLUTELY NO WARRANTY'>NO</a></div>";
             html += "</div>";
-            html += "</div>";
 
-            // Config Content: aufbauen, Reset Area verbergen und Special Links Nearest List/Map und Own Trackables versorgen.
+            // Config Content: aufbauen und Special Links Nearest List/Map und Own Trackables versorgen.
             // ---------------
             div.innerHTML = html;
             document.getElementsByTagName('body')[0].appendChild(div);
-            $('#gclh_config_content2').hide();
             setSpecialLinks();
 
             // Config Content: Hauptbereiche hideable machen.
@@ -9113,9 +8809,6 @@ console.log(tbsearch);
                 if ( document.getElementById("lnk_gclh_config_" + configArea) ) {
                     showHideBoxCL("lnk_gclh_config_" + configArea, true);
                     document.getElementById("lnk_gclh_config_" + configArea).addEventListener("click", function() {showHideBoxCL(this.id, false);}, false);
-                    // Show or hide all the areas in config with one click to a plus, minus icon with the right mouse.
-                    document.getElementById("lnk_gclh_config_" + configArea).oncontextmenu = function(){return false;};
-                    $('#lnk_gclh_config_' + configArea).bind('contextmenu.new', function() {showHideConfigAll(this.id, false);});
                 }
             }
             // Wenn Hauptbereiche im Config hideable gemacht werden sollen, dann Anfangsbestand und Events setzen.
@@ -9353,9 +9046,6 @@ console.log(tbsearch);
             }
 
             document.getElementById('check_for_upgrade').addEventListener("click", function () { checkForUpgrade( true ); }, false);
-            document.getElementById('rc_link').addEventListener("click", rcPrepare, false);
-            document.getElementById('rc_reset_button').addEventListener("click", rcReset, false);
-            document.getElementById('rc_close_button').addEventListener("click", rcClose, false);
             document.getElementById('gclh_linklist_link_1').addEventListener("click", gclh_show_linklist, false);
             document.getElementById('gclh_linklist_link_2').addEventListener("click", gclh_show_linklist, false);
 
@@ -9377,12 +9067,6 @@ console.log(tbsearch);
             document.getElementById('restore_settings_font_color_menu_submenu').addEventListener("click", restoreField, false);
             document.getElementById('restore_settings_font_color_menu_submenuX0').addEventListener("click", restoreField, false);
             document.getElementById('restore_settings_count_own_matrix_show_color_next').addEventListener("click", restoreField, false);
-//xxxx #OK#           
-            document.getElementById('settings_tb_sums_more').addEventListener("click", function () { checkTBRules( this ); }, false);
-            document.getElementById('settings_tb_sums_more_owned').addEventListener("click", function () { checkTBRules( this ); }, false);
-//xxxx #OK#     
-            document.getElementById('gclh_load_tbrules').addEventListener("click", loadTBRules, false);
-//xxxx #OK#         
             
             // Events setzen für Parameter, die im GClh Config mehrfach ausgegeben wurden, weil sie zu mehreren Themen gehören. Es handelt sich hier 
             // um den Parameter selbst. In der Function werden die Events für den Parameter selbst (beispielsweise "settings_show_mail_in_viplist") und dessen 
@@ -9443,8 +9127,10 @@ console.log(tbsearch);
             setEventsForDependentParameters( "settings_show_vip_list", "settings_make_vip_lists_hideable" );
             setEventsForDependentParameters( "settings_log_inline", "settings_log_inline_tb", false );
             setEventsForDependentParameters( "settings_log_inline_pmo4basic", "settings_log_inline_tb", false );
+            setEventsForDependentParameters( "settings_show_mail", "settings_show_mail_coordslink" );
             setEventsForDependentParameters( "settings_show_mail", "settings_show_mail_in_viplist" );
             setEventsForDependentParameters( "settings_show_mail", "settings_show_mail_in_allmyvips" );
+            setEventsForDependentParameters( "settings_show_message", "settings_show_message_coordslink" );
             setEventsForDependentParameters( "settings_show_thumbnails", "settings_hover_image_max_size" );
             setEventsForDependentParameters( "settings_show_thumbnails", "settings_spoiler_strings" );
             setEventsForDependentParameters( "settings_show_thumbnails", "settings_imgcaption_on_top" );
@@ -9463,31 +9149,10 @@ console.log(tbsearch);
             setEventsForDependentParameters( "settings_load_logs_with_gclh", "settings_show_latest_logs_symbols" );
             setEventsForDependentParameters( "settings_log_statistic", "settings_log_statistic_reload" );
             setEventsForDependentParameters( "settings_log_statistic", "settings_log_statistic_percentage" );
-//--> $$065 Begin of insert
-            setEventsForDependentParameters( "settings_tb_sums_total", "settings_tb_total_header_desc" );
-            setEventsForDependentParameters( "settings_tb_sums_total", "settings_tb_sums_header" );
-            setEventsForDependentParameters( "settings_tb_sums_total", "settings_tb_sums_footer" );
-            setEventsForDependentParameters( "settings_tb_sums_total", "settings_tb_sums_hideable" );
-            setEventsForDependentParameters( "settings_tb_sums_total", "settings_tb_sums_more" );
-            setEventsForDependentParameters( "settings_tb_sums_total", "settings_tb_sums_count" );
-            setEventsForDependentParameters( "settings_tb_sums_total", "settings_tb_total_sums_lists" );
-            setEventsForDependentParameters( "settings_tb_sums_total", "settings_tb_sums_breakable" );
-            setEventsForDependentParameters( "settings_tb_sums_total", "settings_tb_sums_hide_footer" );
-            setEventsForDependentParameters( "settings_tb_sums_total", "settings_tb_sums_bold" );
-            setEventsForDependentParameters( "settings_tb_sums_header", "settings_tb_sums_breakable" );
-            setEventsForDependentParameters( "settings_tb_sums_total_owned", "settings_tb_total_header_desc_owned" );
-            setEventsForDependentParameters( "settings_tb_sums_total_owned", "settings_tb_sums_header_owned" );
-            setEventsForDependentParameters( "settings_tb_sums_total_owned", "settings_tb_sums_footer_owned" );
-            setEventsForDependentParameters( "settings_tb_sums_total_owned", "settings_tb_sums_hideable_owned" );
-            setEventsForDependentParameters( "settings_tb_sums_total_owned", "settings_tb_sums_more_owned" );
-            setEventsForDependentParameters( "settings_tb_sums_total_owned", "settings_tb_sums_count_owned" );
-            setEventsForDependentParameters( "settings_tb_sums_total_owned", "settings_tb_total_sums_lists_owned" );
-            setEventsForDependentParameters( "settings_tb_sums_total_owned", "settings_tb_sums_breakable_owned" );
-            setEventsForDependentParameters( "settings_tb_sums_total_owned", "settings_tb_sums_hide_footer_owned" );
-            setEventsForDependentParameters( "settings_tb_sums_total_owned", "settings_tb_sums_bold_owned" );
-            setEventsForDependentParameters( "settings_tb_sums_header_owned", "settings_tb_sums_breakable_owned" );
-//<-- $$065 End of insert
-            // Abhängigkeiten der Linklist Parameter.            
+// >> hm -- Issue #111            
+            setEventsForDependentParameters( "settings_friendlist_summary", "settings_friendlist_summary_viponly" );
+// << hm -- Issue #111            
+            // Abhaengigkeiten der Linklist Parameter.            
             for (var i = 0; i < 100; i++) {
                 // 2. Spalte: Links für die Custom Bookmarks.
                 if ( document.getElementById("gclh_LinkListElement_" + i)) {
@@ -9555,10 +9220,10 @@ console.log(tbsearch);
         }
         // - Event handling dafür.
         //   Das hinzugefügte Event wird nicht unbedingt ausgeführt, deshalb muss sichergestellt werden, dass man sich bei einem F2 immer noch im 
-        //   GClh Config befindet, sonst würde hierfür ein Save durchgeführt, obwohl die F2 Taste irgendwo anders betätigt wurde! Im Config Reset Modus nichts tun. 
+        //   GClh Config befindet, sonst würde hierfür ein Save durchgeführt, obwohl die F2 Taste irgendwo anders betätigt wurde!  
         function keydown(e) {
             if ( check_config_page() ) {
-                if ( document.getElementById("settings_f2_save_gclh_config").checked && !global_mod_reset ) {
+                if ( document.getElementById("settings_f2_save_gclh_config").checked ) {
                     if (e.keyCode == 113) {
                         document.getElementById("btn_save").click();
                     }
@@ -9640,10 +9305,6 @@ console.log(tbsearch);
             setValue("settings_show_latest_logs_symbols_count", document.getElementById('settings_show_latest_logs_symbols_count').value);
             setValue("settings_default_langu", document.getElementById('settings_default_langu').value);
             setValue("settings_log_statistic_reload", document.getElementById('settings_log_statistic_reload').value);
-//--> $$065 Begin of insert
-            setValue("settings_tb_sums_count", document.getElementById('settings_tb_sums_count').value);
-            setValue("settings_tb_sums_count_owned", document.getElementById('settings_tb_sums_count_owned').value);
-//<-- $$065 End of insert
 
             // Map Layers in vorgegebener Reihenfolge übernehmen.
             var new_map_layers_available = document.getElementById('settings_maplayers_available');
@@ -9679,12 +9340,14 @@ console.log(tbsearch);
                 'settings_show_bbcode',
                 'settings_show_eventday',
                 'settings_show_mail',
+                'settings_show_mail_coordslink',
                 'settings_gc_tour_is_working',
                 'settings_show_smaller_gc_link',
                 'settings_show_smaller_area_top_right',
                 'settings_menu_show_separator',
                 'settings_menu_float_right',
                 'settings_show_message',
+                'settings_show_message_coordslink',
                 'settings_show_remove_ignoring_link',
                 'settings_show_common_lists_in_zebra',
                 'settings_show_common_lists_color_user',
@@ -9725,39 +9388,20 @@ console.log(tbsearch);
                 'settings_set_default_langu',
                 'settings_hide_colored_versions',
                 'settings_make_config_main_areas_hideable',
-//--> $$065 Begin of insert
                 'settings_faster_profile_trackables',
-                'settings_tb_sums_total',
-                'settings_tb_total_header_desc',
-                'settings_tb_sums_header',
-                'settings_tb_sums_footer',
-                'settings_tb_sums_hideable',
-                'settings_tb_sums_more',
-                'settings_tb_total_sums_lists',
-                'settings_tb_sums_breakable',
-                'settings_tb_sums_hide_footer',
-                'settings_tb_sums_bold',
-                'settings_faster_profile_trackables_owned',
-                'settings_tb_sums_total_owned',
-                'settings_tb_total_header_desc_owned',
-                'settings_tb_sums_header_owned',
-                'settings_tb_sums_footer_owned',
-                'settings_tb_sums_hideable_owned',
-                'settings_tb_sums_more_owned',
-                'settings_tb_total_sums_lists_owned',
-                'settings_tb_sums_breakable_owned',
-                'settings_tb_sums_hide_footer_owned',
-                'settings_tb_sums_bold_owned',
-//<-- $$065 End of insert
                 'settings_show_google_maps',
                 'settings_show_log_it',
                 'settings_show_nearestuser_profil_link',
                 'settings_show_homezone',
                 'settings_show_hillshadow',
                 'remove_navi_learn',
+                'remove_navi_partnering',
                 'remove_navi_play',
+                'remove_navi_profile',
                 'remove_navi_community',
+                'remove_navi_videos',
                 'remove_navi_shop',
+                'remove_navi_social',
                 'settings_bookmarks_top_menu',
                 'settings_hide_advert_link',
                 'settings_hide_spoilerwarning',
@@ -9804,7 +9448,11 @@ console.log(tbsearch);
                 'settings_use_gclh_layercontrol',
                 'settings_fixed_pq_header',
                 'settings_sync_autoImport',
-                'settings_map_hide_sidebar'
+                'settings_map_hide_sidebar',
+// >> hm -- Issue #111
+                'settings_friendlist_summary',
+                'settings_friendlist_summary_viponly'
+// << hm -- Issue #111                 
             );
             for (var i = 0; i < checkboxes.length; i++) {
                 if ( document.getElementById(checkboxes[i]) ) {
@@ -10313,206 +9961,6 @@ console.log(tbsearch);
         }
     }
 
-// Reset Config functions.
-    function rcPrepare() {
-        global_mod_reset = true; 
-        if (document.getElementById('settings_overlay')) document.getElementById('settings_overlay').style.overflow = "hidden";
-        $('#gclh_config_content1').hide();
-        $('#gclh_config_content3').hide();
-        $('#gclh_config_content2').show(600);
-    }
-    function rcReset() {
-        try {
-            if (document.getElementById("rc_standard").checked || document.getElementById("rc_temp").checked) {
-                if (!window.confirm("Click OK to reset the data. \nPlease note this process can not be revoked.")) return;
-            } 
-            if (document.getElementById("rc_doing")) document.getElementById("rc_doing").src = "/images/loading2.gif";
-            if (document.getElementById("rc_reset_button")) document.getElementById("rc_reset_button").disabled = true;
-            if (document.getElementById("rc_homecoords").checked) {
-                var keysDel = new Array();
-                keysDel[keysDel.length] = "home_lat";
-                keysDel[keysDel.length] = "home_lng";
-                rcConfigDataDel(keysDel);    
-            }
-            if (document.getElementById("rc_uid").checked) {
-                var keysDel = new Array();
-                keysDel[keysDel.length] = "uid";
-                rcConfigDataDel(keysDel);    
-            }
-            if (document.getElementById("rc_standard").checked) {
-//--> $$000 Begin of change
-                // Beachten, dass neue Parameter vermutlich in diese Datei aufgenommen werden müssen.
-                rcGetData("https://raw.githubusercontent.com/2Abendsegler/GClh/master/data/config_standard.txt", "st");
-//<-- $$000 End of change
-            }
-            if (document.getElementById("rc_temp").checked) {
-                rcGetData("https://raw.githubusercontent.com/2Abendsegler/GClh/master/gc_little_helper_II.user.js", "js");
-            }
-        } catch (e) {
-            gclh_error("reset config data", e);
-        }
-    }
-    function rcGetData(url, name) {
-        global_rc_data = global_rc_status = "";
-        GM_xmlhttpRequest({
-            method: "GET",
-            url: url,
-            onload: function (response) {
-                global_rc_status = parseInt(response.status);
-                global_rc_data = response.responseText;
-            }
-        });
-        function rcCheckDataLoad(waitCount, name) {
-            if (global_rc_data == "" || global_rc_status != 200) {
-                waitCount++;
-                if ( waitCount <= 25 ) setTimeout( function () { rcCheckDataLoad(waitCount, name); }, 200); 
-                else {
-                    alert("Can not load file with " + (name == "st" ? "standard configuration data":"script data") + ".\nNothing changed.");
-                    if (document.getElementById("rc_doing")) setTimeout( function () { document.getElementById("rc_doing").src = ""; }, 500); 
-                }
-            } else {
-                if (name == "st") rcConfigDataChange(global_rc_data);
-                if (name == "js") rcConfigDataNotInUseDel(global_rc_data);
-            }
-        }
-        rcCheckDataLoad(0, name);
-    }
-    function rcConfigDataDel(data) {
-        var config_tmp = {}; 
-        var changed = false;
-        for (key in CONFIG) {
-            var del = false;
-            for (var i = 0; i < data.length; i++) {
-                if (key == data[i]) {
-                    changed = true;
-                    del = true;
-                    document.getElementById('rc_configData').innerText += "delete: " + data[i] + ": " + CONFIG[key] + "\n";
-                    break;
-                }
-            }
-            if (!del) {
-                config_tmp[key] = CONFIG[key];
-            }
-        }
-        CONFIG = config_tmp;
-        rcConfigUpdate(changed);
-    }    
-    function rcConfigDataChange(stData) {
-        var data = JSON.parse(stData);
-        var changed = false;
-        for (key in data) {
-            if (data[key] != CONFIG[key]) {
-                changed = true;
-                document.getElementById('rc_configData').innerText += "change: " + key + ": " + CONFIG[key] + " -> " + data[key] + "\n";
-                CONFIG[key] = data[key];
-            }
-        }
-        rcConfigUpdate(changed);
-    }
-    function rcConfigDataNotInUseDel(data) {
-//--> $$000 Begin of change
-        // Beachten, dass neue Parameter womöglich neue Ausnahmeregeln hervorrufen, die hier berücksichtigt werden müssen.
-//<-- $$000 End of change
-        var config_tmp = {}; 
-        var changed = false;
-        for (key in CONFIG) {
-            var kkey = key.split("[");
-            var kkey = kkey[0];
-            if (kkey.match(/^(vips|dbToken|token|uid)$/) ||
-                kkey.match(/^(show_box|friends_founds_|friends_hides_)/) ||
-                kkey.match(/^gclh_(.*)(_logs_get_last|_logs_count)$/)       ) {
-                config_tmp[key] = CONFIG[key];
-            } else if (kkey.match(/autovisit_(\d+)/)) {
-                changed = true;
-                document.getElementById('rc_configData').innerText += "delete: " + key + ": " + CONFIG[key] + "\n";
-            } else if (data.match(kkey)) {
-                config_tmp[key] = CONFIG[key];
-            } else {
-                changed = true;
-                document.getElementById('rc_configData').innerText += "delete: " + key + ": " + CONFIG[key] + "\n";
-            }
-        }
-        CONFIG = config_tmp;
-        rcConfigUpdate(changed);
-    }
-    function rcConfigUpdate(changed) {
-        setTimeout( function () { 
-            if (document.getElementById("rc_doing")) document.getElementById("rc_doing").src = "";
-            if (document.getElementById("rc_reset_button")) document.getElementById("rc_reset_button").disabled = false;
-        }, 500); 
-        if (changed) {
-            var defer = $.Deferred();
-            GM_setValue("CONFIG", JSON.stringify(CONFIG));
-            defer.resolve();
-            return defer.promise();
-        } else {
-            document.getElementById('rc_configData').innerText += "(nothing to change)\n";
-        }
-    }
-    function rcClose() {
-        window.scroll(0, 0);
-        $("#settings_overlay").fadeOut(400);    
-        document.location.href = clearUrlAppendix( document.location.href, false );
-        window.location.reload(false);
-    }
-
-//xxxx #OK#
-// Rules für die TB Zuordnung laden, checken und Anzahl ausgeben.
-    function loadTBRules() {
-        if (document.getElementById('gclh_loading_tbrules')) document.getElementById('gclh_loading_tbrules').src = "/images/loading2.gif";
-        outputCountTBRules( 0 );
-        GM_xmlhttpRequest({
-            method: "GET",
-            url: "https://raw.githubusercontent.com/2Abendsegler/GClh/master/data/settings_tbrules.txt",
-            onload: function (response) {
-                var elements = response.responseText.split('#');
-                var tbrules = new Array();
-                for (var i = 0; i < elements.length; i=i+2) {
-                    if (elements[i+1] != undefined) {
-                        var rule = new Object();
-                        rule['name'] = elements[i].replace(/^(\s*)/,"");
-                        rule['search'] = elements[i+1].replace(/^(\s*)/,"");
-                        tbrules[tbrules.length] = rule;
-                    }
-                }
-                setValue("settings_tbrules", JSON.stringify(tbrules));
-                setTimeout( function () { 
-                    outputCountTBRules(); 
-                    if (document.getElementById('gclh_loading_tbrules')) document.getElementById('gclh_loading_tbrules').src = "";
-                }, 500);
-            }
-        });
-    }
-    function checkTBRules( checkbox ) {
-        if ( checkbox.checked ) {
-            if (!getValue("settings_tbrules") || JSON.parse(getValue("settings_tbrules").replace(/, (?=,)/g, ",null")).length == 0) {
-                var text = "This function required rules to assign\nthe TBs to series.\nClick OK to load the rules.";
-                if (window.confirm(text)) { 
-                    loadTBRules();
-                    checkLoading(0);
-                    function checkLoading(waitCount) {
-                        if (!getValue("settings_tbrules") || JSON.parse(getValue("settings_tbrules").replace(/, (?=,)/g, ",null")).length == 0) {
-                            waitCount++;
-                            if (waitCount <= 6) {  // 3 Sekunden lang
-                                setTimeout( function () { checkLoading(waitCount); }, 500); 
-                            } else return;
-                        } else outputCountTBRules();
-                    }
-                }
-            }
-        }
-    }
-    function outputCountTBRules( count ) {
-        if (count == undefined) {
-            var tbrules = getValue("settings_tbrules");
-            if (tbrules) var count = JSON.parse(getValue("settings_tbrules").replace(/, (?=,)/g, ",null")).length;
-            else var count = 0;
-        }
-        if (document.getElementById('gclh_count_tbrules')) document.getElementById('gclh_count_tbrules').innerHTML = count;
-        return count;
-    }
-//xxxx
-
 ////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////
 // Sync
@@ -10680,6 +10128,7 @@ console.log(tbsearch);
 
             document.getElementsByTagName('body')[0].appendChild(div);
             document.getElementById('btn_close3').addEventListener("click", btnClose, false);
+
             document.getElementById('btn_ExportConfig').addEventListener("click", function () {
                 document.getElementById('configData').innerText = sync_getConfigData();
             }, false);
@@ -10807,15 +10256,6 @@ function profileSpecialBookmark(title, href, name, bookmarkArray) {
     bm['name'] = name;
 }
 
-//xxxx
-// Create standard TB rules for TB assignements.
-function setTBRule( name, search, tbrules ) {
-    var rule = new Object();
-    rule['name'] = '"' + name + '"';
-    rule['search'] = search;
-    tbrules[tbrules.length] = rule;
-}
-
 // check if the current document location matches the given path
 function isLocation(path) {
     path = path.toLowerCase();
@@ -10930,7 +10370,7 @@ function is_page(name) {
     return is_link(name, document.location.href);
 }
 
-//Helperfunctions to inject functions into site context
+// Helperfunctions to inject functions into site context
 function injectPageScript(scriptContent) {
     var script = document.createElement("script");
     script.setAttribute("type", "text/javascript");
@@ -10942,5 +10382,38 @@ function injectPageScript(scriptContent) {
 function injectPageScriptFunction(funct, functCall) {
     injectPageScript("(" + funct.toString() + ")" + functCall + ";");
 }
+
+// >> hm -- Issue #111
+// Funktionen fuer die Zeitdifferenzen
+function adjustPlural(singularWord, timesNumber) {
+	return singularWord + ((Math.abs(timesNumber) != 1) ? "s" : "");
+}
+
+ // Calculates the difference between two dates and returns it as a "humanized" string
+ // borrowed from http://userscripts.org/scripts/show/36353
+function getDateDiffString(dateNew, dateOld) {
+	var dateDiff = new Date(dateNew - dateOld);
+	dateDiff.setUTCFullYear(dateDiff.getUTCFullYear() - 1970); // Substracts 1970 years to compensate Date.getTime's (Unix) epoch (1 Jan 1970 00:00:00 UTC)
+
+	var strDateDiff = "", timeunitValue = 0;
+	var timeunitsHash = {year: "getUTCFullYear", month: "getUTCMonth", day: "getUTCDate",
+						 hour: "getUTCHours", minute: "getUTCMinutes", second: "getUTCSeconds", millisecond: "getUTCMilliseconds"};
+
+	for (var timeunitName in timeunitsHash) {
+		timeunitValue = dateDiff[timeunitsHash[timeunitName]]() - ((timeunitName == "day") ? 1 : 0);
+
+		if (timeunitValue !== 0) {
+			if ((timeunitName == "millisecond") && (strDateDiff.length !== 0)) { continue; } // Milliseconds won't be added unless the difference is less than 1 second
+			strDateDiff += ((strDateDiff.length === 0) ? "" : ", ") + // Adds a comma as separator if another time unit has already been added
+							timeunitValue + " " + adjustPlural(timeunitName, timeunitValue);
+		}
+	}
+
+	// Replaces the last comma with an "and" to humanize the string
+	strDateDiff = strDateDiff.replace(/,([^,]*)$/, " and$1");
+
+	return strDateDiff;
+}
+// << hm -- Issue #111
 
 start(this);
