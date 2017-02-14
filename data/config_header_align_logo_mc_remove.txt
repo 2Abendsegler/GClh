@@ -1,0 +1,12 @@
+{
+  "settings_change_header_layout": true;
+  "settings_show_smaller_gc_link": true;
+  "settings_remove_logo": true;
+  "settings_show_smaller_area_top_right": true;
+  "settings_remove_message_in_header": true;
+  "settings_fixed_header_layout": true;
+  "settings_bookmarks_top_menu": true;
+  "settings_distance_menu": "4"
+}
+
+
