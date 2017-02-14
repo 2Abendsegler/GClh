@@ -35,10 +35,7 @@
 // ==/UserScript==
 
 //*************************************************************************************************************************************************
-// Kennz.  | Datum      | Entwickler    | zuVers. |
-//*************************************************************************************************************************************************
-// $$000   | Aug.2016   | FE            | 11.7    |
-// Versionierung, bei neuen Versionen beachten.
+// $$000   | Versionierung, bei neuen Versionen beachten.
 //*************************************************************************************************************************************************
 
 var jqueryInit = function (c) {
@@ -250,8 +247,8 @@ var variablesInit = function (c) {
     c.settings_show_bbcode = getValue("settings_show_bbcode", true);
     // Settings: Show mail-Link
     c.settings_show_mail = getValue("settings_show_mail", true);
-    // Settings: Show Coord-Link in Mail
-    c.settings_show_mail_coordslink = getValue("settings_show_mail_coordslink", false);
+//xxxx2    // Settings: Show Coord-Link in Mail
+//xxxx2    c.settings_show_mail_coordslink = getValue("settings_show_mail_coordslink", false);
     //Settings: Schriftgröße im Menü in Pixel
     c.settings_font_size_menu = getValue("settings_font_size_menu", 15);
     //Settings: Schriftgröße im Untermenü in Pixel
@@ -276,8 +273,8 @@ var variablesInit = function (c) {
     c.settings_show_smaller_gc_link = getValue("settings_show_smaller_gc_link", true);
     // Settings: Show Message-Link
     c.settings_show_message = getValue("settings_show_message", true);
-    // Settings: Show Coord-Link in Message
-    c.settings_show_message_coordslink = getValue("settings_show_message_coordslink", false);
+//xxxx2    // Settings: Show Coord-Link in Message
+//xxxx2    c.settings_show_message_coordslink = getValue("settings_show_message_coordslink", false);
     // Settings: Show Stop Ignoring Link
     c.settings_show_remove_ignoring_link = getValue("settings_show_remove_ignoring_link", true);
     // Settings: Zeilen in gewöhnlichen Listen in Zebra einfärben
@@ -829,6 +826,19 @@ var mainGC = function () {
             $('table.Table').find('tbody tr td a img').each( function () { this.src = "/images/icons/16/watch.png"; this.title = ""; this.style.paddingLeft = "15px"; } );
         } catch (e) {
             gclh_error("Faster loading profile trackables", e);
+        }
+    }
+
+// Migration: Installationszähler. Aktuelle TB Rules laden. Migrationsaufgaben erledigen. 
+    var declaredVersion = getValue("declared_version");
+declaredVersion = "";//xxxx2
+    if ( declaredVersion != scriptVersion ) {
+        try {
+//xxxx2            instCount(declaredVersion);
+//xxxx2            loadTBRules();
+            migrationTasks();
+        } catch (e) {
+            gclh_error("migration", e);
         }
     }
 
@@ -3059,14 +3069,14 @@ var mainGC = function () {
 // Show eMail-Link and Show Message-Center-Link beside Username. (Nicht in den Logs zum Cache Listing, das erfolgt später bei Log-Template.)    
     show_mail_and_message_icon:
     try {
+        // Cache, TB und Aktiv User Infos ermitteln.
+        [ global_gc, global_tb, global_code, global_name, global_link, global_activ_username, global_founds, global_date, global_time, global_dateTime] = getGcTbUserInfo();                            
+
         // Nicht auf der Mail oder Message Seite selbst ausführen. 
         if ( document.getElementById("ctl00_ContentBody_SendMessagePanel1_SendEmailPanel") ||
              document.getElementById("messageArea")                                           ) {
             break show_mail_and_message_icon;
-        }   
-        
-        // Cache, TB und Aktiv User Infos ermitteln.     
-        [ global_gc, global_tb, global_code, global_name, global_info_mail, global_info_message, global_activ_username ] = getGcTbUserInfo();                            
+        }
 
         if ( ( settings_show_mail || settings_show_message ) ) {
             // Öffentliches Profil:
@@ -3115,8 +3125,11 @@ var mainGC = function () {
         var g_tb = false;
         var g_code = "";
         var g_name = "";
-        var g_info_mail = "";
-        var g_info_message = "";
+        var g_link = "";
+        var g_founds = "";
+        var g_date = "";
+        var g_time = "";
+        var g_dateTime = "";
         var g_activ_username = "";
 
         if ( ( settings_show_mail || settings_show_message ) ) {
@@ -3168,20 +3181,18 @@ var mainGC = function () {
                 }    
             }
 
-            // Link zum Cache oder zum TB bzw. Coord Info zum Cache oder zum TB aufbauen.
-            if ( g_name != "" ) {
-                if ( g_code != "" ) {
-                    if ( settings_show_mail && settings_show_mail_coordslink ) g_info_mail = " ( http://coord.info/" + g_code + " )";  
-                    else g_info_mail = " ( " + g_code + " )";
-                    if ( settings_show_message && settings_show_message_coordslink ) g_info_message = " ( http://coord.info/" + g_code + " )";  
-                    else g_info_message = " ( " + g_code + " )";
-                }
+            // Code und Link zum Cache bzw. zum TB aufbauen.
+            if ( g_code != "" ) {
+                g_link = "(http://coord.info/" + g_code + ")";  
+                g_code = "(" + g_code + ")";
             }
-                
+            // Eigene Founds und aktuelles Datum, Zeit.
+            g_founds = get_my_finds();
+            [ g_date, g_time, g_dateTime ] = getDateTime();
             // Aktiven User Namen ermitteln.
             g_activ_username = $('.li-user-info').children().first().text();
         }
-        return [ g_gc, g_tb, g_code, g_name, g_info_mail, g_info_message, g_activ_username ];
+        return [ g_gc, g_tb, g_code, g_name, g_link, g_activ_username, g_founds, g_date, g_time, g_dateTime ];
     }
     // Message Icon und Mail Icon aufbauen. 
     function buildSendIcons( b_side, b_username, b_art ) {
@@ -3220,6 +3231,9 @@ var mainGC = function () {
             username_send = "user";
         }
 
+        // Message, Mail Template aufbauen. 
+        template = urlencode( buildSendTemplate().replace(/#Receiver#/ig, b_username) );
+
         // Message Icon erzeugen.
         if ( settings_show_message && b_art == "per guid" ) {
             var message_link = document.createElement("a");
@@ -3228,20 +3242,7 @@ var mainGC = function () {
             message_img.setAttribute("title", "Send a message to " + username_send);
             message_img.setAttribute("src", global_message_icon);
             message_link.appendChild(message_img);
-            // gcCode oder tbCode nicht nutzen, damit keine Standard Message aufgebaut wird. Die deaktivierten Punkte können 
-            // dann aktiviert werden, wenn die Erzeugung des eigenen Inhaltes sich als nicht praktikabel herausstellt. 
-            if ( global_gc && global_code != "" ) {
-                // message_link.setAttribute("href", http + "://www.geocaching.com/account/messagecenter?recipientId=" + guid + "&gcCode=" + global_code); 
-                message_link.setAttribute("href", http + "://www.geocaching.com/account/messagecenter?recipientId=" + guid + "&text=Hi " + b_username + ",%0A%0A" + global_name + global_info_message); 
-            }    
-            else if ( global_tb && global_code != ""  ) { 
-                // message_link.setAttribute("href", http + "://www.geocaching.com/account/messagecenter?recipientId=" + guid + "&tbCode=" + global_code);
-                message_link.setAttribute("href", http + "://www.geocaching.com/account/messagecenter?recipientId=" + guid + "&text=Hi " + b_username + ",%0A%0A" + global_name + global_info_message); 
-            }
-            else {
-                // message_link.setAttribute("href", http + "://www.geocaching.com/account/messagecenter?recipientId=" + guid);
-                message_link.setAttribute("href", http + "://www.geocaching.com/account/messagecenter?recipientId=" + guid + "&text=Hi " + b_username + ",%0A%0A" + global_name + global_info_message);
-            }
+            message_link.setAttribute("href", http + "://www.geocaching.com/account/messagecenter?recipientId=" + guid + "&text=" + template);
             b_side.parentNode.insertBefore(message_link, b_side.nextSibling);
             b_side.parentNode.insertBefore(document.createTextNode(" "), b_side.nextSibling);
 
@@ -3259,19 +3260,26 @@ var mainGC = function () {
             mail_img.setAttribute("src", global_mail_icon);
             mail_link.appendChild(mail_img);
             if ( b_art == "per guid" ) {
-                mail_link.setAttribute("href", http + "://www.geocaching.com/email/?guid=" + guid + "&text=Hi " + b_username + ",%0A%0A" + global_name + global_info_mail);
+                mail_link.setAttribute("href", http + "://www.geocaching.com/email/?guid=" + guid + "&text=" + template);
                 b_side.parentNode.insertBefore(mail_link, b_side.nextSibling);
                 b_side.parentNode.insertBefore(document.createTextNode(" "), b_side.nextSibling);
             }
             else {
                 b_side.appendChild(document.createTextNode(" "));
-                mail_link.setAttribute("href", http + "://www.geocaching.com/email/?u=" + urlencode(b_username) + "&text=Hi " + b_username + ",%0A%0A" + global_name + global_info_mail);
+                mail_link.setAttribute("href", http + "://www.geocaching.com/email/?u=" + urlencode(b_username) + "&text=" + template);
                 b_side.appendChild(mail_link);
                 b_side.appendChild(document.createTextNode(" "));
             }
         }
-        return;
     } 
+    // Message, Mail Template aufbauen, bis auf Empfänger. 
+    function buildSendTemplate() {
+        var template = getValue("settings_mail_signature", "");
+        template = template.replace(/#Found#/ig, global_founds+1).replace(/#Found_no#/ig, global_founds).replace(/#Me#/ig, global_activ_username);
+        template = template.replace(/#Date#/ig, global_date).replace(/#Time#/ig, global_time).replace(/#DateTime#/ig, global_dateTime);
+        template = template.replace(/#GCTBName#/ig, global_name).replace(/#GCTBCode#/ig, global_code).replace(/#GCTBLink#/ig, global_link);
+        return template;
+    }
 
 // Switch title-color to red, if cache is archived & rename the gallery-link to prevent destroying the layout on to many images ("view the " wegnehmen)
     if (is_page("cache_listing")) {
@@ -3311,24 +3319,20 @@ var mainGC = function () {
             function chgDefaultSendaddress() {
                 setValue("email_sendaddress", document.getElementById("ctl00_ContentBody_SendMessagePanel1_chkSendAddress").checked);
             }
-
             function chgDefaultMailcopy() {
                 setValue("email_mailcopy", document.getElementById("ctl00_ContentBody_SendMessagePanel1_chkEmailCopy").checked);
             }
-
             document.getElementById('ctl00_ContentBody_SendMessagePanel1_chkSendAddress').addEventListener("click", chgDefaultSendaddress, false);
             document.getElementById('ctl00_ContentBody_SendMessagePanel1_chkEmailCopy').addEventListener("click", chgDefaultMailcopy, false);
 
-            // Grab Text from URL
+            // Grab mail template from URL.
             var matches = document.location.href.match(/&text=(.*)/);
-            if (matches) document.getElementById("ctl00_ContentBody_SendMessagePanel1_tbMessage").innerHTML = decodeURIComponent(matches[1]);
-
-            // Add Mail-Signature
-            if (getValue("settings_mail_signature", "") != "") {
-                var me = "#me#";
-				var newName = $('.li-user-info').children().first().text();
-                if (newName) me = newName;
-                document.getElementById("ctl00_ContentBody_SendMessagePanel1_tbMessage").innerHTML += "\n\n" + getValue("settings_mail_signature").replace(/#me#/g, me);
+            if (matches) {
+                document.getElementById("ctl00_ContentBody_SendMessagePanel1_tbMessage").innerHTML = decodeURIComponent(matches[1]);
+            // Build mail template.
+            } else {
+                template = buildSendTemplate().replace(/#Receiver#/ig, "");
+                document.getElementById("ctl00_ContentBody_SendMessagePanel1_tbMessage").innerHTML = template;
             }
         } catch (e) {
             gclh_error("Improve E-Mail-Site", e);
@@ -3353,16 +3357,9 @@ var mainGC = function () {
     if ( settings_show_message && is_page("messagecenter") && document.location.href.match(/&text=(.*)/) ) {      
         try {
             var val = "";
-            // Grab Text from URL.
+            // Grab message template from URL.
             var matches = document.location.href.match(/&text=(.*)/);
             val = decodeURIComponent(matches[1]);
-            // Add Mail-Signature
-            if ( getValue("settings_mail_signature", "" ) != "") {
-                var me = "#me#";
-	            var newName = $('.li-user-info > span:nth-child(2)').text();
-                if (newName) me = newName;
-                val += "\n\n" + getValue("settings_mail_signature").replace(/#me#/g, me);
-            }
             
             function upd() {
                 var checkafter = "Message Center";
@@ -3575,6 +3572,7 @@ var mainGC = function () {
                 var founds = parseInt(trim(friend.getElementsByTagName("dd")[4].innerHTML).replace(/[,.]*/g, ""));
                 if (isNaN(founds))founds = 0;
                 var last_founds = getValue("friends_founds_" + name.innerHTML);
+//xxxx3 Wenn das undefined ist, dann sollte der neue Wert aber auch abgespeichert werden, sonst wird sich ja nie etwas ändern, wenn man nicht den Reset Button drückt.
                 if (typeof(last_founds) == "undefined") last_founds = founds;
                 if ((founds - last_founds) > 0) add = " <font color='#00AA00'><b>(+" + (founds - last_founds) + ")</b></font>";
                 setValue("friends_founds_new_" + name.innerHTML, founds);
@@ -3589,6 +3587,7 @@ var mainGC = function () {
                 var hides = parseInt(trim(friend.getElementsByTagName("dd")[5].innerHTML).replace(/[,.]*/g, ""));
                 if (isNaN(hides))hides = 0;
                 var last_hides = getValue("friends_hides_" + name.innerHTML);
+//xxxx3 Wenn das undefined ist, dann sollte der neue Wert aber auch abgespeichert werden, sonst wird sich ja nie etwas ändern, wenn man nicht den Reset Button drückt.
                 if (typeof(last_hides) == "undefined") last_hides = hides;
                 if ((hides - last_hides) > 0) add = " <font color='#00AA00'><b>(+" + (hides - last_hides) + ")</b></font>";
                 setValue("friends_hides_new_" + name.innerHTML, hides);
@@ -3969,7 +3968,7 @@ var mainGC = function () {
         }
     }
 
-// Map-Layers
+// Map Layers
     var all_map_layers = new Object();
     // gc.com Default-Layers
     all_map_layers["Geocaching"] = {
@@ -5442,7 +5441,7 @@ console.log(tbsearch);
                 headline.setAttribute("class", "WidgetHeader");
                 body.setAttribute("class", "WidgetBody");
                 body.setAttribute("id", "gclh_vip_list");
-                headline.innerHTML = "<img width=\"16\" height=\"16\" title=\"VIP-List\" alt=\"VIP-List\" src=\"" + http + "://www.geocaching.com/images/icons/icon_attended.gif\"> VIP-List";
+                headline.innerHTML = "<img width='16' height='16' title='Very important person List' alt='VIP-List' src='" + http + "://www.geocaching.com/images/icons/icon_attended.gif\'> VIP-List";
                 if ( settings_make_vip_lists_hideable ) {
                     headline.innerHTML = "<img id='lnk_gclh_vip_list' title='' src='' style='cursor: pointer'> " + headline.innerHTML;
                 }
@@ -5464,7 +5463,7 @@ console.log(tbsearch);
                     headline2.setAttribute("class", "WidgetHeader");
                     body2.setAttribute("class", "WidgetBody");
                     body2.setAttribute("id", "gclh_vip_list_nofound");
-                    headline2.innerHTML = "<img width=\"16\" height=\"16\" title=\"VIP-List\" alt=\"VIP-List\" src=\"" + http + "://www.geocaching.com/images/icons/icon_attended.gif\"> VIP-List \"not found\"";
+                    headline2.innerHTML = "<img width='16' height='16' title='Very important person List \"not found\"' alt='VIP-List \"not found\"' src='" + http + "://www.geocaching.com/images/icons/icon_attended.gif'> VIP-List \"not found\"";
                     if ( settings_make_vip_lists_hideable ) {
                         headline2.innerHTML = "<img id='lnk_gclh_vip_list_nofound' title='' src='' style='cursor: pointer'> " + headline2.innerHTML;
                     }
@@ -6256,6 +6255,8 @@ console.log(tbsearch);
 // Log-Template definieren
     if ( is_page("cache_listing") ) {
         try {
+            global_MailTemplate = urlencode( buildSendTemplate().replace(/#Receiver#/ig, "__Receiver__") );
+            global_MailTemplate = global_MailTemplate.replace(/__Receiver__/ig, "${UserName}");
             var new_tmpl = "";
             new_tmpl += 
                 '    <tr class="log-row" data-encoded="${IsEncoded}" >' +
@@ -6274,14 +6275,11 @@ console.log(tbsearch);
                 '                        <a href="javascript:void(0);" name="${UserName}" class="gclh_vip"><img class="gclh_vip" border=0 style="margin-left: 0px; margin-right: 0px"></a>';
             if (settings_show_mail) new_tmpl += 
                 '                        {{if UserName !== "' + global_activ_username + '" }}' +
-                '                        <a href="' + http + '://www.geocaching.com/email/?guid=${AccountGuid}&text=Hi ${UserName},%0A%0A' + global_name + global_info_mail + '"><img border=0 title="Send a mail to ${UserName}" src="' + global_mail_icon + '"></a>' +
+                '                        <a href="' + http + '://www.geocaching.com/email/?guid=${AccountGuid}&text=' + global_MailTemplate + '"><img border=0 title="Send a mail to ${UserName}" src="' + global_mail_icon + '"></a>' +
                 '                        {{/if}}';
-            // gcCode oder tbCode nicht nutzen, damit keine Standard Message aufgebaut wird. Der deaktivierte Punkt kann 
-            // dann aktiviert werden, wenn die Erzeugung des eigenen Inhaltes sich als nicht praktikabel herausstellt. 
             if (settings_show_message) new_tmpl += 
                 '                        {{if UserName !== "' + global_activ_username + '" }}' +
-                // '                        <a href="' + http + '://www.geocaching.com/account/messagecenter?recipientId=${AccountGuid}&gcCode=' + global_code + '"><img border=0 title="Send a message to ${UserName}" src="' + global_message_icon + '"></a>' +
-                '                        <a href="' + http + '://www.geocaching.com/account/messagecenter?recipientId=${AccountGuid}&text=Hi ${UserName},%0A%0A' + global_name + global_info_message + '"><img border=0 title="Send a message to ${UserName}" src="' + global_message_icon + '"></a>' +
+                '                        <a href="' + http + '://www.geocaching.com/account/messagecenter?recipientId=${AccountGuid}&text=' + global_MailTemplate + '"><img border=0 title="Send a message to ${UserName}" src="' + global_message_icon + '"></a>' +
                 '                        {{/if}}';
             new_tmpl += 
                 '                        &nbsp;&nbsp;' +
@@ -6311,7 +6309,7 @@ console.log(tbsearch);
                 '                <div class="HalfRight AlignRight">' +
                 '                    <span class="minorDetails LogDate">${Visited}</span></div>' +
                 // "markdown-output" sorgt für die richtige Aufbereitung der Logs, insbesondere nach unten und oben.
-                // Gleichzeitig schneidet es aber auch die Bilder beim drüberfahren mit der Maus an den Rändern ab, 
+                // Gleichzeitig schneidet es aber auch die Bilder beim Drüberfahren mit der Maus an den Rändern ab, 
                 // entsprechend der Maße des Logs. Deshalb Bilder aus diesem Bereich rausnehmen class="TableLogContent".       
                 '                <div class="Clear LogContent markdown-output">' +
                 '                    {{if LatLonString.length > 0}}' +
@@ -7156,10 +7154,16 @@ console.log(tbsearch);
 
 // Improve own statistics page and own profile page with own log statistic.
     if ( settings_log_statistic && 
-         ( document.location.href.match(/^https?:\/\/www\.geocaching\.com\/my\/statistics\.aspx/)         ||
-           document.location.href.match(/^https?:\/\/www\.geocaching\.com\/profile\/($|#$|default)/)      ||
-           ( document.location.href.match(/^https?:\/\/www\.geocaching\.com\/profile\/(\?guid=|\?u=)/) && 
-             document.getElementById('ctl00_ContentBody_lblUserProfile').innerHTML.match(": " + $('.li-user-info').children().first().text()) ) ) ) {
+         ( ( document.location.href.match(/^https?:\/\/www\.geocaching\.com\/my\/statistics\.aspx/)            ) ||
+           ( document.getElementById("ctl00_ContentBody_ProfilePanel1_lnkStatistics") &&
+             document.getElementById("ctl00_ContentBody_ProfilePanel1_lnkStatistics").className == "Active" &&
+             document.location.href.match(/^https?:\/\/www\.geocaching\.com\/profile\/($|#$|default)/)         ) ||
+           ( document.getElementById("ctl00_ContentBody_ProfilePanel1_lnkStatistics") &&
+             document.getElementById("ctl00_ContentBody_ProfilePanel1_lnkStatistics").className == "Active" &&
+             document.location.href.match(/^https?:\/\/www\.geocaching\.com\/profile\/(\?guid=|\?u=)/) && 
+             document.getElementById('ctl00_ContentBody_lblUserProfile').innerHTML.match(": " + $('.li-user-info').children().first().text()) ) 
+         ) 
+       ) {
         try {
             getLogStatistic( "cache", "https://www.geocaching.com/my/logs.aspx?s=1" );
             getLogStatistic( "track", "https://www.geocaching.com/my/logs.aspx?s=2" );
@@ -7175,7 +7179,7 @@ console.log(tbsearch);
         if (!get_last) get_last = 0;
         var reload_after = (settings_log_statistic_reload === "" ? "0" : parseInt(settings_log_statistic_reload, 10) * 60 * 60 * 1000);
         var time = new Date().getTime();
-
+        
         if ( ( reload_after != 0 && ( get_last + reload_after ) < time ) || manual == true ) {
             if ( manual != true ) outputLogStatisticHeaderFooter( type, logsName, logsId, url );
             outputLogStatisticClear( type, logsName, logsId );
@@ -7430,7 +7434,7 @@ console.log(tbsearch);
         if ( is_page("profile") && document.getElementById('ctl00_ContentBody_WidgetMiniProfile1_memberProfileLink') ) {
             
             // GClh Config und Sync Links neben Avatar im Profile. 
-            var lnk_config = " | <a href='#GClhShowConfig' id='gclh_config_lnk' name='gclh_config_lnk' style='margin-left: 58px; font-size: 0.9em;' title='" + scriptShortNameConfig + " v" + scriptVersion + (settings_f4_call_gclh_config ? " / Key F4":"") + "' >" + scriptShortNameConfig + "</a>";
+            var lnk_config = " | <br><a href='#GClhShowConfig' id='gclh_config_lnk' name='gclh_config_lnk' style='font-size: 0.9em;' title='" + scriptShortNameConfig + " v" + scriptVersion + (settings_f4_call_gclh_config ? " / Key F4":"") + "' >" + scriptShortNameConfig + "</a>";
             var lnk_sync = " | <a href='#GClhShowSync' id='gclh_sync_lnk' name='gclh_sync_lnk' style='font-size: 0.9em;' title='" + scriptShortNameSync + " v" + scriptVersion + (settings_f10_call_gclh_sync ? " / Key F10":"") + "' >" + scriptShortNameSync + "</a>";
             document.getElementById('ctl00_ContentBody_WidgetMiniProfile1_memberProfileLink').parentNode.innerHTML += lnk_config + lnk_sync;
             document.getElementById('gclh_config_lnk').addEventListener('click', gclh_showConfig, false);
@@ -7579,20 +7583,6 @@ console.log(tbsearch);
                         }
                     });
                 }
-            }
-            // Installationszähler simulieren, weil GitHub das wohl nicht kann und aktuelle TB Rules laden.
-            var declaredVersion = getValue("declared_version");
-            if ( declaredVersion != scriptVersion ) {
-                var side = document.getElementsByTagName("body")[0];
-                var div = document.createElement("div");
-                div.id = "gclh_simu";
-                div.setAttribute("style", "margin-top: -50px;");
-                var code = '<img src="https://c.andyhoppe.com/1485103563" style="border: none; visibility: hidden; width: 2px; height: 2px;" alt="">' + '<img src="https://c.andyhoppe.com/1485234890" style="border: none; visibility: hidden; width: 2px; height: 2px;" alt="">' + '<img src="https://s07.flagcounter.com/countxl/mHeY/bg_FFFFFF/txt_FFFFFF/border_FFFFFF/columns_4/maxflags_250/viewers_1/labels_1/pageviews_1/flags_0/percent_0/" style="border: none; visibility: hidden; width: 2px; height: 2px;" alt="">';
-                div.innerHTML = code;
-                side.appendChild(div);
-                setValue("declared_version", scriptVersion);
-                setTimeout(function() { $("#gclh_simu").remove(); }, 4000);  
-                loadTBRules();
             }
         }
         checkForUpgrade( false );
@@ -8133,6 +8123,36 @@ console.log(tbsearch);
         }
     }            
 
+// Installationszähler simulieren, weil GitHub das wohl nicht kann.
+    function instCount(declaredVersion) {
+        var side = document.getElementsByTagName("body")[0];
+        var div = document.createElement("div");
+        div.id = "gclh_simu";
+        div.setAttribute("style", "margin-top: -50px;");
+        var code = '<img src="https://c.andyhoppe.com/1485103563" style="border: none; visibility: hidden; width: 2px; height: 2px;" alt="">' + '<img src="https://c.andyhoppe.com/1485234890" style="border: none; visibility: hidden; width: 2px; height: 2px;" alt="">' + '<img src="https://s07.flagcounter.com/countxl/mHeY/bg_FFFFFF/txt_FFFFFF/border_FFFFFF/columns_4/maxflags_250/viewers_0/labels_1/pageviews_1/flags_1/percent_0/" style="border: none; visibility: hidden; width: 2px; height: 2px;" alt="">';
+        div.innerHTML = code;
+        side.appendChild(div);
+        setValue("declared_version", scriptVersion);
+        setTimeout(function() { $("#gclh_simu").remove(); }, 4000);  
+    }
+
+//xxxx2
+// Migrationsaufgaben erledigen für eine neue Version.
+    function migrationTasks() {
+//setValue("migration_task_01", false);
+        // Migrate Mail signature to Mail template (v0.4).
+        if (getValue("migration_task_01", false) != true) {
+            if (settings_show_mail || settings_show_message) {           
+                var template = "Hi #Receiver#,";
+                if (getValue("settings_show_mail_coordslink") == true || getValue("settings_show_message_coordslink") == true ) template += "\n\n#GCTBName# #GCTBLink#";
+                if (getValue("settings_mail_signature", "") != "") template += "\n\n" + getValue("settings_mail_signature");
+                setValue("settings_mail_signature", template);
+            }
+            setValue("migration_task_01", true);
+        }
+    }
+//xxxx2
+
 // Aktuelles Datum und aktuelle Zeit ermitteln und aufbereiten.
     function getDateTime() {
         var now = new Date();
@@ -8312,10 +8332,10 @@ console.log(tbsearch);
         setting_id = setting_idX.replace(/(X[0-9]*)/, "");
         return "<input type='checkbox' " + (getValue(setting_id) ? "checked='checked'" : "" ) + " id='" + setting_idX + "'><label for='" + setting_idX + "'>" + label + "</label>";
     }
-
-    function show_help(text) { return " <a class='gclh_info' style='cursor: help' href='javascript:void(0);'><b>?</b><span class='gclh_span'>" + text + "</span></a>"; }
-    function show_help_big(text) { return " <a class='gclh_info gclh_info_big' style='cursor: help;' href='javascript:void(0);'><b>?</b><span class='gclh_span'>" + text + "</span></a>"; }
-    function show_help_rc(text) { return " <a class='gclh_info gclh_info_rc' style='cursor: help;' href='javascript:void(0);'><b>?</b><span class='gclh_span'>" + text + "</span></a>"; }
+    function show_help(text) { return " <a class='gclh_info'><b>?</b><span class='gclh_span'>" + text + "</span></a>"; }
+    function show_help2(text) { return " <a class='gclh_info gclh_info2'><b>?</b><span class='gclh_span'>" + text + "</span></a>"; }
+    function show_help_big(text) { return " <a class='gclh_info gclh_info_big'><b>?</b><span class='gclh_span'>" + text + "</span></a>"; }
+    function show_help_rc(text) { return " <a class='gclh_info gclh_info_rc'><b>?</b><span class='gclh_span'>" + text + "</span></a>"; }
 
     function create_config_css() {
         var css = document.createElement("style");
@@ -8344,9 +8364,7 @@ console.log(tbsearch);
         html += "  border-radius: 30px;";
         html += "  text-align: center;";
         html += "}";
-        html += ".gclh_headline2 {";
-        html += "  margin: 12px 5px 5px -2px;";
-        html += "}";
+        html += ".gclh_headline2 {margin: 12px 5px 5px -2px;}";
         html += ".gclh_content {";
         html += "  padding: 2px 10px 10px 10px;";
         html += "  font-family: Verdana;";
@@ -8366,18 +8384,9 @@ console.log(tbsearch);
         html += "  text-decoration: none;";
         html += "  border-bottom: dotted 1px black;";
         html += "}";
-        html += ".gclh_small {";
-        html += "  font-size: 10px;";
-        html += "}";
-        html += "";
-        html += "a.gclh_info {";
-        html += "  color: #000000;";
-        html += "  text-decoration: none;";
-        html += "}";
-        html += "";
-        html += "a.gclh_info:hover {";
-        html += "  position: relative;";
-        html += "}";
+        html += ".gclh_small {font-size: 10px;}";
+        html += "a.gclh_info {color: #000000; text-decoration: none; cursor: help;}";
+        html += "a.gclh_info:hover {position: relative;}";
         html += "a.gclh_info span {";
         html += "  visibility: hidden;";
         html += "  position: absolute; top:-310px; left:0px;";
@@ -8397,9 +8406,8 @@ console.log(tbsearch);
         html += "  border: 1px solid #000000;";
         html += "  background-color: #d8cd9d;";
         html += "}";
-        html += "a.gclh_info_big:hover span {";
-        html += "  width: 350px !important;";
-        html += "}";
+        html += "a.gclh_info2:hover span {left: -100px !important;}";
+        html += "a.gclh_info_big:hover span {width: 350px !important;}";
         html += ".multi_homezone_settings {";
         html += "  width: 50%;";
         html += "  padding: 10px 0;";
@@ -8407,9 +8415,7 @@ console.log(tbsearch);
         html += "  border: 1px solid #CFC0B8;";
         html += "  border-width: 1px 0;";
         html += "}";
-        html += ".multi_homezone_element {";
-        html += "  margin-bottom: 10px;";
-        html += "}";
+        html += ".multi_homezone_element {margin-bottom: 10px;}";
         html += "a.gclh_info_rc:hover span {width: 500px !important; left: -245px !important; font-size: 11px !important;}";
         html += ".gclh_rc_area {width: 540px; background-color: #d8cd9d; border: 1px solid #778555; padding: 20px; z-index: 1001; -moz-border-radius: 30px; -khtml-border-radius: 30px; border-radius: 30px; margin-top: 15px;}";
         html += ".gclh_rc_area_button {margin-left: 185px;}";
@@ -8462,20 +8468,22 @@ console.log(tbsearch);
             html += "<a href='https://github.com/2Abendsegler/GClh/tree/master' title='GitHub' target='_blank'>GitHub</a> | ";
             html += "<a id='rc_link' href='#' style='cursor: pointer' title='Reset some configuration data'>Reset</a></font>";
             html += "</div>";
+            
             html += "<div id='gclh_config_content2'>";
             html += "<div id='rc_area' class='gclh_rc_area'>"; 
+            html += "<input type='radio' name='rc' checked='checked' id='rc_standard' class='gclh_rc'><label for='rc_standard'>Reset to standard configuration</label>" + show_help_rc("This option should help you to come back to an efficient configuration set, after some experimental or other motivated changes. This option load a reasonable standard configuration and overwrite your configuration data in parts. <br><br>The following data are not overwrited: Home-coords; homezone and multi homezone; date format; log templates; cache log, TB log and other signatures; friends data; links in Linklist and differing description and custom links. <br>Dynamic data, like for example autovisits for named trackables, are not overwrited too.<br><br>After reset, choose button \"close\" and go to Config to skim over the set of data.") + "<br/>";
+            html += "<input type='radio' name='rc' id='rc_temp' class='gclh_rc'><label for='rc_temp'>Reset dynamic and unused data</label>" + show_help_rc("This option reorganize the configuration set. Unused parameters, of older script versions, are deleted. And all the dynamic data, especially the autovisit settings for every TB, are deleted too.<br><br>After reset, choose button \"close\".") + "<br><br>";
             html += "<input type='radio' name='rc' id='rc_homecoords' class='gclh_rc'><label for='rc_homecoords'>Reset your own home-coords</label>" + show_help_rc("This option could help you with problems around your home-coords, like for example with your main homezone, with nearest lists or with your home-coords itself. Your home-coords are not deleted at gc.com, but only in GClh. <br><br>After reset, you have to go to the account settings page of gc.com to the area \"Home Location\", so that GClh can save your home-coords again automatically. You have only to go to this page, you have nothing to do at this page, GClh save your home-coords automatically. <br>Or you enter your home-coords manually in GClh. <br><br>At last, choose button \"close\".");
             html += "<font class='gclh_small'> (After reset, go to <a href='https://www.geocaching.com/account/settings/homelocation' target='_blank'>Home Location</a> )</font>" + "<br/>";
             html += "<input type='radio' name='rc' id='rc_uid' class='gclh_rc'><label for='rc_uid'>Reset your own id for your trackables</label>" + show_help_rc("This option could help you with problems with your own trackables lists, which based on an special id, the uid. The uid are not deleted at gc.com, but only in GClh. <br><br>After reset, you have to go to your profile page of gc.com, so that GClh can save your uid again automatically. You have only to go to this page, you have nothing to do at this page, GClh save the uid automatically. <br><br>At last, choose button \"close\".");
             html += "<font class='gclh_small'> (After reset, go to <a href='https://www.geocaching.com/my/' target='_blank'>Your Profile</a> )</font>" + "<br><br>";
-            html += "<input type='radio' name='rc' checked='checked' id='rc_standard' class='gclh_rc'><label for='rc_standard'>Reset to standard configuration</label>" + show_help_rc("This option should help you to come back to an efficient configuration set, after some experimental or other motivated changes. This option load a reasonable standard configuration and overwrite your configuration data in parts. <br><br>The following data are not overwrited: Home-coords; homezone and multi homezone; date format; log templates; cache log, TB log and other signatures; friends data; links in Linklist and differing description and custom links. <br>Dynamic data, like for example autovisits for named trackables, are not overwrited too.<br><br>After reset, choose button \"close\" and go to Config to skim over the set of data.") + "<br/>";
-            html += "<input type='radio' name='rc' id='rc_temp' class='gclh_rc'><label for='rc_temp'>Reset dynamic and unused data</label>" + show_help_rc("This option reorganize the configuration set. Unused parameters, of older script versions, are deleted. And all the dynamic data, especially the autovisit settings for every TB, are deleted too.<br><br>After reset, choose button \"close\".") + "<br><br>";
             html += "<div class='gclh_rc_area_button'>";
             html += "<img id='rc_doing' src='' title='' alt='' style='margin-top: 4px; margin-left: -25px; position: absolute;' /><input class='gclh_rc_form' type='button' value='reset' id='rc_reset_button'> <input style='cursor: pointer;' class='gclh_rc_form' type='button' value='close' id='rc_close_button'>";
             html += "</div>";
             html += "<pre class='gclh_form' style='width: 525px; height: 220px; overflow: auto; margin-bottom: 0px; font-size: 12px;' type='text' value='' id='rc_configData' contenteditable='true'></pre>";
             html += "</div>";
             html += "</div>";
+
             html += "<div id='gclh_config_content3'>";
             html += "<br>";
             html += "<h4 class='gclh_headline2'>"+prepareHideable.replace("#name#","global")+"Global</h4>";
@@ -8513,16 +8521,14 @@ console.log(tbsearch);
             html += "<span style='margin-left: 30px;' >cache listings</span>";
             html += "<span style='margin-left: 32px;' >TB listings</span>";
             html += "<span style='margin-left: 30px;' >in color</span>" + "<br>";
-            html += "&nbsp;" + "- for zebra:";
-            html += "<span style='margin-left: 14px;' ></span>" + show_help("With this options you can color every second line in the specified lists in the specified \"alternating\" color.");
-            html += "<input type='checkbox' style='margin-left:  23px;' " + (getValue('settings_show_common_lists_in_zebra') ? "checked='checked'" : "" ) + " id='settings_show_common_lists_in_zebra'></span>";
+            html += "&nbsp;" + "- for zebra:" + show_help2("With this options you can color every second line in the specified lists in the specified \"alternating\" color.");
+            html += "<input type='checkbox' style='margin-left:  37px;' " + (getValue('settings_show_common_lists_in_zebra') ? "checked='checked'" : "" ) + " id='settings_show_common_lists_in_zebra'></span>";
             html += "<input type='checkbox' style='margin-left:  56px;' " + (getValue('settings_show_cache_listings_in_zebra') ? "checked='checked'" : "" ) + " id='settings_show_cache_listings_in_zebra'></span>" + show_help("This option requires \"Load logs with GClh\".");
             html += "<input type='checkbox' style='margin-left:  95px;' " + (getValue('settings_show_tb_listings_in_zebra') ? "checked='checked'" : "" ) + " id='settings_show_tb_listings_in_zebra'></span>";
             html += "<input class='gclh_form color' type='text' style='margin-left: 86px;' size=5 id='settings_lines_color_zebra' value='" + getValue("settings_lines_color_zebra", "EBECED") + "'>";
             html += "<img src=" + global_restore_icon + " id='restore_settings_lines_color_zebra' title='back to default' style='width: 12px; cursor: pointer;'>" + "<br>";
-            html += "&nbsp;" + "- for you:";
-            html += "<span style='margin-left: 27px;' ></span>" + show_help("With this options you can color your logs respectively your founds in the specified lists in the specified color.");
-            html += "<input type='checkbox' style='margin-left:  23px;' " + (getValue('settings_show_common_lists_color_user') ? "checked='checked'" : "" ) + " id='settings_show_common_lists_color_user'></span>";
+            html += "&nbsp;" + "- for you:" + show_help2("With this options you can color your logs respectively your founds in the specified lists in the specified color.");
+            html += "<input type='checkbox' style='margin-left:  50px;' " + (getValue('settings_show_common_lists_color_user') ? "checked='checked'" : "" ) + " id='settings_show_common_lists_color_user'></span>";
             html += "<input type='checkbox' style='margin-left:  56px;' " + (getValue('settings_show_cache_listings_color_user') ? "checked='checked'" : "" ) + " id='settings_show_cache_listings_color_user'></span>" + show_help("This option requires \"Load logs with GClh\".");
             html += "<input type='checkbox' style='margin-left:  95px;' " + (getValue('settings_show_tb_listings_color_user') ? "checked='checked'" : "" ) + " id='settings_show_tb_listings_color_user'></span>";
             html += "<input class='gclh_form color' type='text' style='margin-left: 86px;' size=5 id='settings_lines_color_user' value='" + getValue("settings_lines_color_user", "C2E0C3") + "'>";
@@ -8644,7 +8650,7 @@ console.log(tbsearch);
             html += " &nbsp; " + checkboxy('settings_switch_to_google_maps_in_same_tab', 'Switch to Google Maps in same browser tab') + show_help("With this option you can switch from GC Map to Google Maps in the same browser tab.<br><br>This option requires \"Add link to Google Maps on GC Map\".") + "<br/>";
             html += newParameterVersionSetzen(0.1) + newParameterOff;
             html += "</div>";
-            html += "<h4 class='gclh_headline2'>"+prepareHideable.replace("#name#","profile")+"Profile &nbsp; &nbsp; <a style='margin-left: 0px'>" + show_help("This section include your profile pages (\/my\/ and \/profile\/ pages) with for example your founded caches and trackables, your earned souvenirs, your image gallery, your statistic ... <br><br>Also the section include the profile pages of the others.") + "</a></h4>";
+            html += "<h4 class='gclh_headline2'>"+prepareHideable.replace("#name#","profile")+"Profile <span style='font-size: 14px'>" + show_help2("This section include your profile pages (\/my\/ and \/profile\/ pages) with for example your founded caches and trackables, your earned souvenirs, your image gallery, your statistic ... <br><br>Also the section include the profile pages of the others.") + "</span></h4>";
             html += "<div id='gclh_config_profile'>";
             html += checkboxy('settings_bookmarks_show', "Show <a class='gclh_ref' href='#gclh_linklist' id='gclh_linklist_link_2'>Linklist</a> in your profile") + show_help("Show the Linklist at the right side in your profile. You can configure the links in the Linklist at the end of this page.") + "<br/>";
             html += checkboxy('settings_hide_visits_in_profile', 'Hide TB/Coin visits in your profile') + "<br/>";
@@ -8652,7 +8658,7 @@ console.log(tbsearch);
             html += "&nbsp; " + checkboxy('settings_imgcaption_on_top', 'Show caption on top') + show_help("This option requires \"Show thumbnails of images\".") + "<br/>";
             html += checkboxy('settings_show_big_gallery', 'Show bigger images in gallery') + show_help("With this option the images in the galleries of caches, TBs and profiles are displayed bigger and not in 4 columns, but in 2 columns.") + "<br/>";
             html += newParameterOn1;
-            content_settings_show_mail_in_allmyvips = checkboxy('settings_show_mail_in_allmyvips', 'Show mail link beside user in "All my VIPs" list in your profile') + show_help("With this option there will be an small mail icon beside every username in the list with all your VIPs (All my VIPs) on your profile page. With this icon you get directly to the mail page to mail to this user. <br><br>This option requires \"Show mail link beside usernames\" and \"Show VIP list\".") + "<br>";
+            content_settings_show_mail_in_allmyvips = checkboxy('settings_show_mail_in_allmyvips', 'Show mail link beside user in "All my VIPs" list in your profile') + show_help("With this option there will be an small mail icon beside every username in the list with all your VIPs (All my VIPs) on your profile page. With this icon you get directly to the mail page to mail to this user. <br>(VIP: Very important person)<br><br>This option requires \"Show mail link beside usernames\" and \"Show VIP list\".") + "<br>";
             html += content_settings_show_mail_in_allmyvips;
             html += checkboxy('settings_show_sums_in_watchlist', 'Show number of caches in your watchlist') + show_help("With this option the number of caches and the number of selected caches in the categories \"All\", \"Archived\" and \"Deactivated\", corresponding to the select buttons, are shown in your watchlist at the end of the list.") + "<br/>";
             html += checkboxy('settings_logit_for_basic_in_pmo', 'Log PMO caches by standard \"Log It\" icon (for basic members)') + show_help("With this option basic members are able to choose the standard \"Log It\" icon to call the logging screen for premium only caches. The tool tipp blocked not longer this call. You can have the same result by using the right mouse across the \"Log It\" icon and then new tab. <br>The \"Log It\" icon is besides the caches for example in the \"Recently Viewed Caches\" list and in your profile.") + "<br/>";
@@ -8747,14 +8753,14 @@ console.log(tbsearch);
             html += "  <option " + (settings_date_format == "MMM/dd/yyyy" ? "selected='selected'" : "") + " value='MMM/dd/yyyy'> Dec/31/2016</option>";
             html += "  <option " + (settings_date_format == "dd MMM yy" ? "selected='selected'" : "") + " value='dd MMM yy'> 31 Dec 16</option>";
             html += "</select>" + show_help("If you have changed the date format on gc.com, you have to change it here to. Instead the day of week may be wrong.") + "<br/>";
-            html += checkboxy('settings_show_mail', 'Show mail link beside usernames') + show_help("With this option there will be an small mail icon beside every username. With this icon you get directly to the mail page to mail to this user. If you click it when you are in a listing, the cachename and GCID will be inserted into the mail form - you don't have to remember it :) ") + "<br/>";
-            html += "&nbsp; " + checkboxy('settings_show_mail_coordslink', 'Show coord link in mail') + show_help("With this option the GC/TB code in the mail is displayed as coord.info link. <br><br>This option requires \"Show mail link beside usernames\".") + "<br/>";
+            html += checkboxy('settings_show_mail', 'Show mail link beside usernames') + show_help("With this option there will be an small mail icon beside every username. With this icon you get directly to the mail page to mail to this user. If you click it for example when you are in a listing, the cachename or GC code can be inserted into the mail form about placeholder in the mail / message form template.") + "<br/>";
+//xxxx2            html += "&nbsp; " + checkboxy('settings_show_mail_coordslink', 'Show coord link in mail') + show_help("With this option the GC/TB code in the mail is displayed as coord.info link. <br><br>This option requires \"Show mail link beside usernames\".") + "<br/>";
             html += newParameterOn1;
-            content_settings_show_mail_in_viplist = "&nbsp; " + checkboxy('settings_show_mail_in_viplist', 'Show mail link beside user in "VIP-List" in listing') + show_help("With this option there will be an small mail icon beside every username in the VIP lists on the cache listing page. With this icon you get directly to the mail page to mail to this user. <br><br>This option requires \"Show mail link beside usernames\", \"Show VIP list\" and \"Load logs with GClh\".") + "<br>";
+            content_settings_show_mail_in_viplist = "&nbsp; " + checkboxy('settings_show_mail_in_viplist', 'Show mail link beside user in "VIP-List" in listing') + show_help("With this option there will be an small mail icon beside every username in the VIP lists on the cache listing page. With this icon you get directly to the mail page to mail to this user. <br>(VIP: Very important person)<br><br>This option requires \"Show mail link beside usernames\", \"Show VIP list\" and \"Load logs with GClh\".") + "<br>";
             html += content_settings_show_mail_in_viplist;
             html += "&nbsp; " + content_settings_show_mail_in_allmyvips.replace("settings_show_mail_in_allmyvips", "settings_show_mail_in_allmyvipsX0"); 
-            html += checkboxy('settings_show_message', 'Show message link beside usernames') + show_help("With this option there will be an small message icon beside every username. With this icon you get directly to the message page to send a message to this user. If you click it when you are in a listing, the cachename and GC code respectively the TB name and the TB code will be inserted into the message form.") + "<br/>";
-            html += "&nbsp; " + checkboxy('settings_show_message_coordslink', 'Show coord link in message') + show_help("With this option the GC/TB code in the message is displayed as coord.info link. <br><br>This option requires \"Show message link beside usernames\".") + "<br/>";
+            html += checkboxy('settings_show_message', 'Show message link beside usernames') + show_help("With this option there will be an small message icon beside every username. With this icon you get directly to the message page to send a message to this user. If you click it for example when you are in a listing, the cachename or GC code can be inserted into the message form about placeholder in the mail / message form template.") + "<br/>";
+//xxxx2            html += "&nbsp; " + checkboxy('settings_show_message_coordslink', 'Show coord link in message') + show_help("With this option the GC/TB code in the message is displayed as coord.info link. <br><br>This option requires \"Show message link beside usernames\".") + "<br/>";
             html += newParameterVersionSetzen(0.1) + newParameterOff;
             html += checkboxy('settings_show_google_maps', 'Show link to Google Maps') + show_help("This option shows a link at the top of the second map in the listing. With this link you get directly to Google Maps in the area, where the cache is.") + "<br/>";
             html += checkboxy('settings_strike_archived', 'Strike through title of archived/disabled caches') + "<br/>";
@@ -8779,12 +8785,12 @@ console.log(tbsearch);
             }
             html += "</select>" + show_help("With this option you can choose the zoom value to start in the map. \"1\" is the hole world and \"19\" is the maximal enlargement. Default is \"11\". <br><br>This option requires \"Show cache location in overview map\".") + "<br>";
             html += newParameterVersionSetzen(0.1) + newParameterOff;
-            html += checkboxy('settings_show_vip_list', 'Show VIP list') + show_help("The VIP list is a list, displayed at the right side on a cache listing. You can add any user to your VIP list by clicking the little VIP icon beside the username. If it is green, this person is a VIP. The VIP list only shows VIPs and the logs of VIPs, which already posted a log to this cache. With this option you are able to see which of your VIPs already found this cache. On your profile page there is an overview of all your VIPs.") + "<br/>";
-            html += "&nbsp; " + checkboxy('settings_show_owner_vip_list', 'Show owner in VIP list')  + show_help("If you enable this option, the owner is a VIP for the cache, so you can see, what happened with the cache (disable, maint, enable, ..). <br><br>This option requires \"Show VIP list\".")+ "<br/>";
-            html += "&nbsp; " + checkboxy('settings_show_long_vip', 'Show long VIP list (one row per log)') + show_help("This is another type of displaying the VIP list. If you disable this option you get the short list - one row per VIP and the logs as icons beside the VIP. If you enable this option, there is a row for every log.<br><br>This option requires \"Show VIP list\".") + "<br/>";
-            html += "&nbsp; " + checkboxy('settings_vip_show_nofound', 'Show a list of VIPs who have not found the cache') + show_help("This option enables an additional VIP list with VIPs who have not found the cache.<br><br>This option requires \"Show VIP list\".") + "<br>";
+            html += checkboxy('settings_show_vip_list', 'Show VIP list') + show_help("The VIP list is a list, displayed at the right side on a cache listing. You can add any user to your VIP list by clicking the little VIP icon beside the username. If it is green, this person is a VIP. The VIP list only shows VIPs and the logs of VIPs, which already posted a log to this cache. With this option you are able to see which of your VIPs already found this cache. On your profile page there is an overview of all your VIPs.<br>(VIP: Very important person)") + "<br/>";
+            html += "&nbsp; " + checkboxy('settings_show_owner_vip_list', 'Show owner in VIP list')  + show_help("If you enable this option, the owner is a VIP for the cache, so you can see, what happened with the cache (disable, maint, enable, ..). <br>(VIP: Very important person)<br><br>This option requires \"Show VIP list\".")+ "<br/>";
+            html += "&nbsp; " + checkboxy('settings_show_long_vip', 'Show long VIP list (one row per log)') + show_help("This is another type of displaying the VIP list. If you disable this option you get the short list - one row per VIP and the logs as icons beside the VIP. If you enable this option, there is a row for every log.<br>(VIP: Very important person)<br><br>This option requires \"Show VIP list\".") + "<br/>";
+            html += "&nbsp; " + checkboxy('settings_vip_show_nofound', 'Show a list of VIPs who have not found the cache') + show_help("This option enables an additional VIP list with VIPs who have not found the cache.<br>(VIP: Very important person)<br><br>This option requires \"Show VIP list\".") + "<br>";
             html += newParameterOn2;
-            html += "&nbsp; " + checkboxy('settings_make_vip_lists_hideable', 'Make VIP lists in listing hideable') + show_help("With this option you can hide and show the VIP lists \"VIP-List\" and \"VIP-List not found\" in cache listing with one click.<br><br>This option requires \"Show VIP list\".") + "<br>";
+            html += "&nbsp; " + checkboxy('settings_make_vip_lists_hideable', 'Make VIP lists in listing hideable') + show_help("With this option you can hide and show the VIP lists \"VIP-List\" and \"VIP-List not found\" in cache listing with one click.<br>(VIP: Very important person)<br><br>This option requires \"Show VIP list\".") + "<br>";
             html += newParameterVersionSetzen(0.2) + newParameterOff;
             html += newParameterOn1;
             html += content_settings_show_mail_in_viplist.replace("settings_show_mail_in_viplist", "settings_show_mail_in_viplistX0");  
@@ -8855,10 +8861,11 @@ console.log(tbsearch);
             html += "</div>";
             html += "<h4 class='gclh_headline2'>"+prepareHideable.replace("#name#","mail")+"Mail / Message form</h4>";
             html += "<div id='gclh_config_mail'>";
-            html += "&nbsp;" + "Signature: &nbsp; &nbsp; &nbsp; " + show_help("The signature will automatically be inserted into your mails and messages. #me# will be replaced with your username.") + "<br>";
+            var placeholderDescriptionMail = "Possible placeholder Mail / Message form:<br>&nbsp; #Found# : Your founds + 1<br>&nbsp; #Found_no# : Your founds<br>&nbsp; #Me# : Your username<br>&nbsp; #Receiver# : Username of the receiver<br>&nbsp; #Date# : Actual date<br>&nbsp; #Time# : Actual time in format hh:mm<br>&nbsp; #DateTime# : Actual date actual time<br>&nbsp; #GCTBName# : GC or TB name<br>&nbsp; #GCTBCode# : GC or TB code in brackets<br>&nbsp; #GCTBLink# : GC or TB link in brackets<br>(Upper and lower case is not required in the placeholder name.)";
+            html += "&nbsp;" + "Template:&nbsp;" + show_help2("The template will automatically be inserted into your mails and messages. <br><br>Also you are able to use placeholder for variables which will be replaced in the mail and in the message.") + " &nbsp; (Possible placeholder:" + show_help_big(placeholderDescriptionMail) + ")<br>";
             html += "&nbsp;" + "<textarea class='gclh_form' rows='8' cols='40' id='settings_mail_signature'>&zwnj;" + getValue("settings_mail_signature", "") + "</textarea><br>";
             html += "</div>";
-            html += "<h4 class='gclh_headline2'><a name='gclh_linklist'></a>"+prepareHideable.replace("#name#","linklist")+"Linklist / Navigation" + show_help("In this section you can configure your personal Linklist which is shown on the top of the page and/or in your profile. You can activate it on top of this configuration page respectively in the \"Profile / Statistic\" section.") + "</h4>";
+            html += "<h4 class='gclh_headline2'><a name='gclh_linklist'></a>"+prepareHideable.replace("#name#","linklist")+"Linklist / Navigation <span style='font-size: 14px'>" + show_help("In this section you can configure your personal Linklist which is shown on the top of the page and/or in your profile. You can activate it on top of this configuration page respectively in the \"Profile / Statistic\" section.") + "</span></h4>";
             html += "<div id='gclh_config_linklist'>";
             html += "&nbsp;" + "Remove from Navigation:" + show_help("Here you can select, which of the original gc.com links should be removed to make room for your Linklist.") + "<br>";
             html += "<input type='checkbox' " + (getValue('remove_navi_learn') ? "checked='checked'" : "" ) + " id='remove_navi_learn'> Learn<br>";
@@ -8994,7 +9001,7 @@ console.log(tbsearch);
             // Überschrift.
             html += "        <thead>";
             html += "            <tr>";
-            html += "                <td align='center' style='padding-left: 60px;'>" + show_help("In this column you can choose the standard links you want to use in your Linklist.<br><br>If there is a text field, then it is a custom link. In this text field you can type any URL you want to be added to the Linklist. The checkbox behind defines, if the link should be opened in a new window.<br><br>With the left button you can grab and move an element to the Linklist.<br><br>If you have problems to drag & drop the lower links because the Linklist area is not on the screen, then use the arrow high button on your keyboard during you hold the mouseclick.") + "</td>";
+            html += "                <td align='center'>" + show_help2("In this column you can choose the standard links you want to use in your Linklist.<br><br>If there is a text field, then it is a custom link. In this text field you can type any URL you want to be added to the Linklist. The checkbox behind defines, if the link should be opened in a new window.<br><br>With the left button you can grab and move an element to the Linklist.<br><br>If you have problems to drag & drop the lower links because the Linklist area is not on the screen, then use the arrow high button on your keyboard during you hold the mouseclick.") + "</td>";
             html += "                <td>" + show_help("In this column you can type a differing description for the standard link, if it is a standard link. <br><br>If it is a custom link, you have to type a decription for the custom link. <br><br>If you have problems to drag & drop the lower links because the Linklist area is not on the screen, then use the arrow high button on your keyboard during you hold the mouseclick.") + "</td>";
             html += "            </tr>";
             html += "        </thead>";
@@ -9410,10 +9417,10 @@ console.log(tbsearch);
             setEventsForDependentParameters( "settings_show_vip_list", "settings_make_vip_lists_hideable" );
             setEventsForDependentParameters( "settings_log_inline", "settings_log_inline_tb", false );
             setEventsForDependentParameters( "settings_log_inline_pmo4basic", "settings_log_inline_tb", false );
-            setEventsForDependentParameters( "settings_show_mail", "settings_show_mail_coordslink" );
+//xxxx2            setEventsForDependentParameters( "settings_show_mail", "settings_show_mail_coordslink" );
             setEventsForDependentParameters( "settings_show_mail", "settings_show_mail_in_viplist" );
             setEventsForDependentParameters( "settings_show_mail", "settings_show_mail_in_allmyvips" );
-            setEventsForDependentParameters( "settings_show_message", "settings_show_message_coordslink" );
+//xxxx2            setEventsForDependentParameters( "settings_show_message", "settings_show_message_coordslink" );
             setEventsForDependentParameters( "settings_show_thumbnails", "settings_hover_image_max_size" );
             setEventsForDependentParameters( "settings_show_thumbnails", "settings_spoiler_strings" );
             setEventsForDependentParameters( "settings_show_thumbnails", "settings_imgcaption_on_top" );
@@ -9648,14 +9655,14 @@ console.log(tbsearch);
                 'settings_show_bbcode',
                 'settings_show_eventday',
                 'settings_show_mail',
-                'settings_show_mail_coordslink',
+//xxxx2                'settings_show_mail_coordslink',
                 'settings_gc_tour_is_working',
                 'settings_show_smaller_gc_link',
                 'settings_show_smaller_area_top_right',
                 'settings_menu_show_separator',
                 'settings_menu_float_right',
                 'settings_show_message',
-                'settings_show_message_coordslink',
+//xxxx2                'settings_show_message_coordslink',
                 'settings_show_remove_ignoring_link',
                 'settings_show_common_lists_in_zebra',
                 'settings_show_common_lists_color_user',
@@ -10244,7 +10251,7 @@ console.log(tbsearch);
             tdBmEntry.children[0].style.opacity = setOpacity;
             tdBmEntry.children[1].style.cursor = setCursor;
             tdBmEntry.children[1].style.opacity = setOpacity;
-        } else {                                                        
+        } else {
             tdBmEntry.children[0].style.cursor = setCursor;
             tdBmEntry.children[0].style.opacity = setOpacity;
             tdBmEntry.children[0].title = setTitle;
@@ -10294,6 +10301,9 @@ console.log(tbsearch);
     }
     function rcReset() {
         try {
+            if (document.getElementById("rc_standard").checked || document.getElementById("rc_temp").checked) {
+                if (!window.confirm("Click OK to reset the data. \nPlease note this process can not be revoked.")) return;
+            } 
             if (document.getElementById("rc_doing")) document.getElementById("rc_doing").src = "/images/loading2.gif";
             if (document.getElementById("rc_reset_button")) document.getElementById("rc_reset_button").disabled = true;
             if (document.getElementById("rc_homecoords").checked) {
@@ -10308,7 +10318,11 @@ console.log(tbsearch);
                 rcConfigDataDel(keysDel);    
             }
             if (document.getElementById("rc_standard").checked) {
-                rcGetData("https://raw.githubusercontent.com/2Abendsegler/GClh/master/data/config_standard.txt", "st");
+//--> $$000 Begin of change
+                // Beachten, dass neue Parameter vermutlich in diese Datei aufgenommen werden müssen.
+//                rcGetData("https://raw.githubusercontent.com/2Abendsegler/GClh/master/data/config_standard.txt", "st");
+                rcGetData("https://raw.githubusercontent.com/2Abendsegler/GClh/v0.4/data/config_standard.txt", "st");
+//<-- $$000 End of change
             }
             if (document.getElementById("rc_temp").checked) {
                 rcGetData("https://raw.githubusercontent.com/2Abendsegler/GClh/master/gc_little_helper_II.user.js", "js");
@@ -10375,6 +10389,9 @@ console.log(tbsearch);
         rcConfigUpdate(changed);
     }
     function rcConfigDataNotInUseDel(data) {
+//--> $$000 Begin of change
+        // Beachten, dass neue Parameter womöglich neue Ausnahmeregeln hervorrufen, die hier berücksichtigt werden müssen.
+//<-- $$000 End of change
         var config_tmp = {}; 
         var changed = false;
         for (key in CONFIG) {
@@ -10484,12 +10501,12 @@ console.log(tbsearch);
         var data = {};
         var value = null;
         for (key in CONFIG) {
-//            if (!gclhConfigKeysIgnoreForBackup[key]) {
+            if (!gclhConfigKeysIgnoreForBackup[key]) {
                 value = getValue(key, null);
                 if (value != null) {
                     data[key] = value;
                 }
-//            }
+            }
         }
         return JSON.stringify(data, undefined, 2);
     }
@@ -10618,7 +10635,7 @@ console.log(tbsearch);
             var html = "";
             html += "<h3 class='gclh_headline'>" + scriptNameSync + " <font class='gclh_small'>v" + scriptVersion + "</font></h3>";
             html += "<div class='gclh_content'>";
-            html += "<h3 id='syncDBLabel' style='cursor: pointer;'>DropBox <font class='gclh_small'>(Click to hide/show)</font></h3>";
+            html += "<h3 id='syncDBLabel' style='cursor: pointer;'>DropBox <font class='gclh_small'>(Click to hide/show)<span style='color: #d14f4f;'> (Not yet fully supported)</span></font></h3>";
             html += "<div style='display:none;' id='syncDB' >";
             html += "<img style='display:none;height: 40px;' id='syncDBLoader' src='data:image/gif;base64,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'>";
             html += "<br>";
@@ -10639,7 +10656,7 @@ console.log(tbsearch);
             html += "<input class='gclh_form' type='button' value='close' id='btn_close3' style='cursor: pointer;'>";
             html += "</div>";
             div.innerHTML = html;
-            
+
             document.getElementsByTagName('body')[0].appendChild(div);
             document.getElementById('btn_close3').addEventListener("click", btnClose, false);
             document.getElementById('btn_ExportConfig').addEventListener("click", function () {
