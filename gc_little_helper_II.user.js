@@ -453,6 +453,10 @@ var variablesInit = function (c) {
     c.settings_vip_show_nofound = getValue("settings_vip_show_nofound", false);
     c.settings_use_gclh_layercontrol = getValue("settings_use_gclh_layercontrol", true);
     c.settings_fixed_pq_header = getValue("settings_fixed_pq_header", false);
+// >> hm -- Issue #111
+    c.settings_friendlist_summary = getValue("settings_friendlist_summary", true);
+    c.settings_friendlist_summary_viponly = getValue("settings_friendlist_summary_viponly", false);
+// << hm -- Issue #111    
     // Settings: Custom Bookmarks
     var num = c.bookmarks.length;
     for (var i = 0; i < c.anzCustom; i++) {
@@ -3499,7 +3503,25 @@ var mainGC = function () {
                 }
                 setValue("friends_founds_last", day);
             }
+// >> hm -- Issue #111
+            // Klasse fuer die Links anlegen
+            var myf = "a.myfriends:hover { " +
+                 "  text-decoration:underline;" +
+                 "}" +
+                 "a.myfriends {" +
+                 "  color:#00AA00;" + 
+                 "  text-decoration:none;" +
+                 "}";
+            GM_addStyle(myf);
 
+            var sNewF = "";  // new finds 
+            var sNewH = "";  // new hides          
+
+            var myvips = getValue("vips", false);
+            myvips = myvips.replace(/, (?=,)/g, ",null");
+            myvips = JSON.parse(myvips);
+// << hm -- Issue #111
+            
             for (var i = 0; i < friends.length; i++) {
                 var friend = friends[i];
                 var name = friend.getElementsByTagName("a")[0];
@@ -3512,6 +3534,22 @@ var mainGC = function () {
                 if (typeof(last_founds) == "undefined") last_founds = founds;
                 if ((founds - last_founds) > 0) add = " <font color='#00AA00'><b>(+" + (founds - last_founds) + ")</b></font>";
                 setValue("friends_founds_new_" + name.innerHTML, founds);
+// >> hm -- Issue #111
+                // wenn neue Founds, dann User und Funddifferenz als Link zu string hinzufuegen (ggf. nur VIPs)
+                if  ((settings_friendlist_summary_viponly && in_array(name.innerHTML, myvips)) || (!settings_friendlist_summary_viponly)) 
+                {    
+                   if ((founds - last_founds) > 0) {
+                      if (sNewF != "") sNewF = sNewF + ",&nbsp;";
+                                          
+                      var sHlp = name.innerHTML + " (";  
+                      if (founds - last_founds > 0) sHlp = sHlp + "+";
+                      else sHlp = Hlp + "-";
+                      sHlp = sHlp + (founds - last_founds) + ")";
+                  
+                     sNewF = sNewF + "<a class='myfriends' href='/seek/nearest.aspx?ul=" + urlencode(name.innerHTML) + "&disable_redirect='>" + sHlp + "</a>";                  
+                  }
+                }
+// << hm -- Issue #111                
                 if (founds == 0) {
                     friend.getElementsByTagName("dd")[4].innerHTML = founds + "&nbsp;";
                 } else {
@@ -3526,6 +3564,21 @@ var mainGC = function () {
                 if (typeof(last_hides) == "undefined") last_hides = hides;
                 if ((hides - last_hides) > 0) add = " <font color='#00AA00'><b>(+" + (hides - last_hides) + ")</b></font>";
                 setValue("friends_hides_new_" + name.innerHTML, hides);
+// >> hm -- Issue #111
+                // wenn neue Hides, dann User und Funddifferenz als Link zu string hinzufuegen (ggf. nur VIPs)                
+                if  ((settings_friendlist_summary_viponly && in_array(name.innerHTML, myvips)) || (!settings_friendlist_summary_viponly)) {                    
+                   if ((hides - last_hides) > 0) {
+                      if (sNewH != "") sNewH = sNewH + ",&nbsp;";
+                                          
+                      var sHlp = name.innerHTML + " (";  
+                      if (hides - last_hides > 0) sHlp = sHlp + "+";
+                      else sHlp = Hlp + "-";
+                      sHlp = sHlp + (hides - last_hides) + ")";
+                  
+                     sNewH = sNewH + "<a class='myfriends' href='/seek/nearest.aspx?u=" + urlencode(name.innerHTML) + "&disable_redirect='>" + sHlp + "</a>";                  
+                   }
+                }   
+// << hm -- Issue #111                       
                 if (hides == 0) {
                     friend.getElementsByTagName("dd")[5].innerHTML = hides + "&nbsp;";
                 } else {
@@ -3544,6 +3597,9 @@ var mainGC = function () {
 
             function gclh_reset_counter() {
                 var friends = document.getElementsByClassName("FriendText");
+// >> hm -- Issue #111
+                setValue("friends_founds_last_reset", new Date().getTime());
+// << hm -- Issue #111
 
                 for (var i = 0; i < friends.length; i++) {
                     var friend = friends[i];
@@ -3561,8 +3617,56 @@ var mainGC = function () {
                     if (hides == 0) friend.getElementsByTagName("dd")[5].innerHTML = "0&nbsp;";
                     else friend.getElementsByTagName("dd")[5].innerHTML = "<a href='/seek/nearest.aspx?u=" + urlencode(name.innerHTML) + "&disable_redirect='>" + hides + "</a>&nbsp;";
                 }
+
+// >> hm -- Issue #111
+                if (settings_friendlist_summary) {  
+                   // wenn Reset, dann Differenzen nicht mehr anzeigen...
+                   var divFH = document.getElementsByClassName("divFHclass");
+                   for (var i = 0; i < divFH.length; i++) {
+                      var divC = divFH[i];
+                      divC.innerHTML = "";
+                   }
+                   // und "last check" aktualisieren
+                   var spanTTs = document.getElementsByClassName("spanTclass");
+                   var ld1 = getValue("friends_founds_last_reset", 0);
+                   spanTTs[0].innerHTML = '<br><br>Last check was 0 seconds ago (' + new Date(parseInt(ld1, 10)).toLocaleString() + ')';
+                } 
+// << hm -- Issue #111                       
             }
 
+// >> hm -- Issue #111
+            if (settings_friendlist_summary) { 
+               // "last check" anzeigen
+               var spanT = document.createElement("span");
+               var ld = getValue("friends_founds_last_reset", 0);
+               spanT.className = "spanTclass";
+               spanT.style.color  = "gray";
+               spanT.style.fontSize = "smaller";
+               spanT.innerHTML = '<br>Last check was ' + getDateDiffString(new Date().getTime(), ld) + ' ago (' +
+                  new Date(parseInt(ld, 10)).toLocaleString() + ')';
+               if ((sNewH == "") && (sNewF == "")) spanT.innerHTML = '<br>' + spanT.innerHTML;
+               document.getElementById('ctl00_ContentBody_FindUserPanel1_GetUsers').parentNode.insertBefore(spanT, document.getElementById('ctl00_ContentBody_FindUserPanel1_GetUsers').nextSibling);            
+
+               // wenn neue Hides -> anzeigen
+               if (sNewH != "") {
+                  var boxH = document.createElement("div");
+                   boxH.innerHTML = "<br><b>New hides by:</b> " + sNewH;
+                   boxH.className = 'divFHclass';
+            
+                   document.getElementById('ctl00_ContentBody_FindUserPanel1_GetUsers').parentNode.insertBefore(boxH, document.getElementById('ctl00_ContentBody_FindUserPanel1_GetUsers').nextSibling);            
+               }
+
+               // wenn neue Founds -> anzeigen
+               if (sNewF != "") {
+                  var boxF = document.createElement("div");
+                  boxF.innerHTML = "<br><b>New founds by:</b> " + sNewF;
+                  boxF.className = 'divFHclass';
+            
+                  document.getElementById('ctl00_ContentBody_FindUserPanel1_GetUsers').parentNode.insertBefore(boxF, document.getElementById('ctl00_ContentBody_FindUserPanel1_GetUsers').nextSibling);            
+               }
+            }
+// << hm -- Issue #111            
+            
             var button = document.createElement("input");
             button.setAttribute("type", "button");
             button.setAttribute("value", "Reset counter");
@@ -7688,6 +7792,7 @@ var mainGC = function () {
     newParameterOn1 = "<div  style='background-color: rgba(240, 223, 198, 0.3); width: 100%; height: 100%; padding: 2px 0px 2px 2px; margin-left: -2px;'>";
     newParameterOn2 = "<div  style='background-color: rgba(240, 223, 198, 0.6); width: 100%; height: 100%; padding: 2px 0px 2px 2px; margin-left: -2px;'>";
     newParameterOn3 = "<div  style='background-color: rgba(240, 223, 198, 1.0); width: 100%; height: 100%; padding: 2px 0px 2px 2px; margin-left: -2px;'>";
+    newParameterOn4 = "<div  style='background-color: rgba(240, 223, 198, 1.3); width: 100%; height: 100%; padding: 2px 0px 2px 2px; margin-left: -2px;'>";
     newParameterLL1 = '<span style="background-color: rgba(240, 223, 198, 0.3); float: right; padding-top: 25px; width: 100%; margin: -22px 2px 0px 0px;"></span>'; 
     newParameterLL2 = '<span style="background-color: rgba(240, 223, 198, 0.6); float: right; padding-top: 25px; width: 100%; margin: -22px 2px 0px 0px;"></span>'; 
     newParameterLL3 = '<span style="background-color: rgba(240, 223, 198, 1.0); float: right; padding-top: 25px; width: 100%; margin: -22px 2px 0px 0px;"></span>'; 
@@ -8137,10 +8242,16 @@ var mainGC = function () {
             html += " &nbsp; " + checkboxy('settings_show_smaller_area_top_right', 'Show smaller user, settings, message area top right') + show_help("With this option you can choose a smaller display of the area top right with the user, settings and message center icons and description of every page. <br><br>This option requires \"Change header layout\".") + "<br/>";
             html += " &nbsp; " + checkboxy('settings_gc_tour_is_working', 'Reserve a place for GC Tour icon') + show_help("If the script GC Tour is running, you can reserve a place top left of every page for the GC Tour icon. <br><br>This option requires \"Change header layout\".") + "<br/>";
             html += newParameterVersionSetzen(0.1) + newParameterOff;
-			html += checkboxy('settings_bookmarks_on_top', "Show <a class='gclh_ref' href='#gclh_linklist' id='gclh_linklist_link_1'>Linklist</a> on top") + show_help("Show the Linklist on the top of the page - beside the other links of gc.com. You can configure the links at the end of this configuration page.<br><br>Some of the features of the linklist on top, like for example the font size or the distance between drop-down links, requires \"Change header layout\". Details you can see at the end of this configuration page by the features of the Linklist.") + "<br/>";
+			   html += checkboxy('settings_bookmarks_on_top', "Show <a class='gclh_ref' href='#gclh_linklist' id='gclh_linklist_link_1'>Linklist</a> on top") + show_help("Show the Linklist on the top of the page - beside the other links of gc.com. You can configure the links at the end of this configuration page.<br><br>Some of the features of the linklist on top, like for example the font size or the distance between drop-down links, requires \"Change header layout\". Details you can see at the end of this configuration page by the features of the Linklist.") + "<br/>";
             html += checkboxy('settings_hide_advert_link', 'Hide link to advertisement instructions') + "<br/>";
             html += "&nbsp;" + "Page-Width: <input class='gclh_form' type='text' size='2' id='settings_new_width' value='" + getValue("settings_new_width", 1000) + "'> px" + show_help("With this option you can expand the small layout. The default value of gc.com is 950 px.") + "<br>";
             html += checkboxy('settings_automatic_friend_reset', 'Reset difference counter on friendlist automatically') + show_help("If you enable this option, the difference counter at friendlist will automatically reset if you have seen the difference and if the day changed.") + "<br/>";
+// >> hm -- Issue #111            
+            html += newParameterOn4;
+            html += checkboxy('settings_friendlist_summary', 'Show summary for new founds/hides in friends list') + show_help("With this option youn can show a summary of all new founds/hides of your friends on the friend list page") + "<br/>";
+            html += " &nbsp; " + checkboxy('settings_friendlist_summary_viponly', 'Show summary only for frinds in VIP list') + show_help("With this option you can choose to show the summary only for friends who are also marked as VIP.") + "<br/>";
+            html += newParameterVersionSetzen(0.4) + newParameterOff;
+ // << hm -- Issue #111            
             html += checkboxy('settings_hide_facebook', 'Hide Facebook login') + "<br/>";
             html += checkboxy('settings_hide_socialshare', 'Hide social sharing Facebook and Twitter') + "<br/>";
             html += checkboxy('settings_fixed_pq_header', 'Show fixed header in PQ list') + "<br/>";
@@ -9038,7 +9149,10 @@ var mainGC = function () {
             setEventsForDependentParameters( "settings_load_logs_with_gclh", "settings_show_latest_logs_symbols" );
             setEventsForDependentParameters( "settings_log_statistic", "settings_log_statistic_reload" );
             setEventsForDependentParameters( "settings_log_statistic", "settings_log_statistic_percentage" );
-            // Abhängigkeiten der Linklist Parameter.            
+// >> hm -- Issue #111            
+            setEventsForDependentParameters( "settings_friendlist_summary", "settings_friendlist_summary_viponly" );
+// << hm -- Issue #111            
+            // Abhaengigkeiten der Linklist Parameter.            
             for (var i = 0; i < 100; i++) {
                 // 2. Spalte: Links für die Custom Bookmarks.
                 if ( document.getElementById("gclh_LinkListElement_" + i)) {
@@ -9334,7 +9448,11 @@ var mainGC = function () {
                 'settings_use_gclh_layercontrol',
                 'settings_fixed_pq_header',
                 'settings_sync_autoImport',
-                'settings_map_hide_sidebar'
+                'settings_map_hide_sidebar',
+// >> hm -- Issue #111
+                'settings_friendlist_summary',
+                'settings_friendlist_summary_viponly'
+// << hm -- Issue #111                 
             );
             for (var i = 0; i < checkboxes.length; i++) {
                 if ( document.getElementById(checkboxes[i]) ) {
@@ -10264,5 +10382,39 @@ function injectPageScript(scriptContent) {
 function injectPageScriptFunction(funct, functCall) {
     injectPageScript("(" + funct.toString() + ")" + functCall + ";");
 }
+
+// >> hm -- Issue #111
+// Funktionen fuer die Zeitdifferenzen
+function adjustPlural(singularWord, timesNumber) {
+	return singularWord + ((Math.abs(timesNumber) != 1) ? "s" : "");
+}
+
+ // Calculates the difference between two dates and returns it as a "humanized" string
+ // borrowed from http://userscripts.org/scripts/show/36353
+function getDateDiffString(dateNew, dateOld) {
+	var dateDiff = new Date(dateNew - dateOld);
+	dateDiff.setUTCFullYear(dateDiff.getUTCFullYear() - 1970); // Substracts 1970 years to compensate Date.getTime's (Unix) epoch (1 Jan 1970 00:00:00 UTC)
+
+	var strDateDiff = "", timeunitValue = 0;
+	var timeunitsHash = {year: "getUTCFullYear", month: "getUTCMonth", day: "getUTCDate",
+						 hour: "getUTCHours", minute: "getUTCMinutes", second: "getUTCSeconds", millisecond: "getUTCMilliseconds"};
+
+	for (var timeunitName in timeunitsHash) {
+		timeunitValue = dateDiff[timeunitsHash[timeunitName]]() - ((timeunitName == "day") ? 1 : 0);
+
+		if (timeunitValue !== 0) {
+			if ((timeunitName == "millisecond") && (strDateDiff.length !== 0)) { continue; } // Milliseconds won't be added unless the difference is less than 1 second
+			strDateDiff += ((strDateDiff.length === 0) ? "" : ", ") + // Adds a comma as separator if another time unit has already been added
+							timeunitValue + " " + adjustPlural(timeunitName, timeunitValue);
+		}
+	}
+
+	// Replaces the last comma with an "and" to humanize the string
+	strDateDiff = strDateDiff.replace(/,([^,]*)$/, " and$1");
+
+	return strDateDiff;
+}
+// << hm -- Issue #111
+
 
 start(this);
