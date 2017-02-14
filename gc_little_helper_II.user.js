@@ -10320,12 +10320,12 @@ console.log(tbsearch);
             if (document.getElementById("rc_standard").checked) {
 //--> $$000 Begin of change
                 // Beachten, dass neue Parameter vermutlich in diese Datei aufgenommen werden müssen.
-//                rcGetData("https://raw.githubusercontent.com/2Abendsegler/GClh/master/data/config_standard.txt", "st");
-                rcGetData("https://raw.githubusercontent.com/2Abendsegler/GClh/v0.4/data/config_standard.txt", "st");
+                rcGetData("https://raw.githubusercontent.com/2Abendsegler/GClh/master/data/config_standard.txt", "st");
 //<-- $$000 End of change
             }
             if (document.getElementById("rc_temp").checked) {
-                rcGetData("https://raw.githubusercontent.com/2Abendsegler/GClh/master/gc_little_helper_II.user.js", "js");
+//xxxx2                rcGetData("https://raw.githubusercontent.com/2Abendsegler/GClh/master/gc_little_helper_II.user.js", "js");
+                rcGetData("https://raw.githubusercontent.com/2Abendsegler/GClh/v0.4/gc_little_helper_II.user.js", "js");
             }
         } catch (e) {
             gclh_error("reset config data", e);
