@@ -8,5 +8,3 @@
   "settings_bookmarks_top_menu": true,
   "settings_distance_menu": "4"
 }
-
-
