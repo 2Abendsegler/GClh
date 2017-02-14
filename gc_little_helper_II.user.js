@@ -247,8 +247,6 @@ var variablesInit = function (c) {
     c.settings_show_bbcode = getValue("settings_show_bbcode", true);
     // Settings: Show mail-Link
     c.settings_show_mail = getValue("settings_show_mail", true);
-//xxxx2    // Settings: Show Coord-Link in Mail
-//xxxx2    c.settings_show_mail_coordslink = getValue("settings_show_mail_coordslink", false);
     //Settings: Schriftgröße im Menü in Pixel
     c.settings_font_size_menu = getValue("settings_font_size_menu", 15);
     //Settings: Schriftgröße im Untermenü in Pixel
@@ -273,8 +271,6 @@ var variablesInit = function (c) {
     c.settings_show_smaller_gc_link = getValue("settings_show_smaller_gc_link", true);
     // Settings: Show Message-Link
     c.settings_show_message = getValue("settings_show_message", true);
-//xxxx2    // Settings: Show Coord-Link in Message
-//xxxx2    c.settings_show_message_coordslink = getValue("settings_show_message_coordslink", false);
     // Settings: Show Stop Ignoring Link
     c.settings_show_remove_ignoring_link = getValue("settings_show_remove_ignoring_link", true);
     // Settings: Zeilen in gewöhnlichen Listen in Zebra einfärben
@@ -8754,13 +8750,11 @@ console.log(tbsearch);
             html += "  <option " + (settings_date_format == "dd MMM yy" ? "selected='selected'" : "") + " value='dd MMM yy'> 31 Dec 16</option>";
             html += "</select>" + show_help("If you have changed the date format on gc.com, you have to change it here to. Instead the day of week may be wrong.") + "<br/>";
             html += checkboxy('settings_show_mail', 'Show mail link beside usernames') + show_help("With this option there will be an small mail icon beside every username. With this icon you get directly to the mail page to mail to this user. If you click it for example when you are in a listing, the cachename or GC code can be inserted into the mail form about placeholder in the mail / message form template.") + "<br/>";
-//xxxx2            html += "&nbsp; " + checkboxy('settings_show_mail_coordslink', 'Show coord link in mail') + show_help("With this option the GC/TB code in the mail is displayed as coord.info link. <br><br>This option requires \"Show mail link beside usernames\".") + "<br/>";
             html += newParameterOn1;
             content_settings_show_mail_in_viplist = "&nbsp; " + checkboxy('settings_show_mail_in_viplist', 'Show mail link beside user in "VIP-List" in listing') + show_help("With this option there will be an small mail icon beside every username in the VIP lists on the cache listing page. With this icon you get directly to the mail page to mail to this user. <br>(VIP: Very important person)<br><br>This option requires \"Show mail link beside usernames\", \"Show VIP list\" and \"Load logs with GClh\".") + "<br>";
             html += content_settings_show_mail_in_viplist;
             html += "&nbsp; " + content_settings_show_mail_in_allmyvips.replace("settings_show_mail_in_allmyvips", "settings_show_mail_in_allmyvipsX0"); 
             html += checkboxy('settings_show_message', 'Show message link beside usernames') + show_help("With this option there will be an small message icon beside every username. With this icon you get directly to the message page to send a message to this user. If you click it for example when you are in a listing, the cachename or GC code can be inserted into the message form about placeholder in the mail / message form template.") + "<br/>";
-//xxxx2            html += "&nbsp; " + checkboxy('settings_show_message_coordslink', 'Show coord link in message') + show_help("With this option the GC/TB code in the message is displayed as coord.info link. <br><br>This option requires \"Show message link beside usernames\".") + "<br/>";
             html += newParameterVersionSetzen(0.1) + newParameterOff;
             html += checkboxy('settings_show_google_maps', 'Show link to Google Maps') + show_help("This option shows a link at the top of the second map in the listing. With this link you get directly to Google Maps in the area, where the cache is.") + "<br/>";
             html += checkboxy('settings_strike_archived', 'Strike through title of archived/disabled caches') + "<br/>";
@@ -9417,10 +9411,8 @@ console.log(tbsearch);
             setEventsForDependentParameters( "settings_show_vip_list", "settings_make_vip_lists_hideable" );
             setEventsForDependentParameters( "settings_log_inline", "settings_log_inline_tb", false );
             setEventsForDependentParameters( "settings_log_inline_pmo4basic", "settings_log_inline_tb", false );
-//xxxx2            setEventsForDependentParameters( "settings_show_mail", "settings_show_mail_coordslink" );
             setEventsForDependentParameters( "settings_show_mail", "settings_show_mail_in_viplist" );
             setEventsForDependentParameters( "settings_show_mail", "settings_show_mail_in_allmyvips" );
-//xxxx2            setEventsForDependentParameters( "settings_show_message", "settings_show_message_coordslink" );
             setEventsForDependentParameters( "settings_show_thumbnails", "settings_hover_image_max_size" );
             setEventsForDependentParameters( "settings_show_thumbnails", "settings_spoiler_strings" );
             setEventsForDependentParameters( "settings_show_thumbnails", "settings_imgcaption_on_top" );
@@ -9655,14 +9647,12 @@ console.log(tbsearch);
                 'settings_show_bbcode',
                 'settings_show_eventday',
                 'settings_show_mail',
-//xxxx2                'settings_show_mail_coordslink',
                 'settings_gc_tour_is_working',
                 'settings_show_smaller_gc_link',
                 'settings_show_smaller_area_top_right',
                 'settings_menu_show_separator',
                 'settings_menu_float_right',
                 'settings_show_message',
-//xxxx2                'settings_show_message_coordslink',
                 'settings_show_remove_ignoring_link',
                 'settings_show_common_lists_in_zebra',
                 'settings_show_common_lists_color_user',
