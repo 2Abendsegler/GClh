@@ -40,7 +40,7 @@
 // $$000   | Aug.2016   | FE            | 11.7    |
 // Versionierung, bei neuen Versionen beachten.
 //*************************************************************************************************************************************************
-
+ 
 var jqueryInit = function (c) {
     if (typeof c.$ === "undefined") {
         c.$ = c.$ || unsafeWindow.$ || window.$ || null;
