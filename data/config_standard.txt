@@ -153,5 +153,7 @@
   "remove_navi_shop": false,
   "settings_fixed_header_layout": false,
   "settings_remove_logo": false,
-  "settings_remove_message_in_header": false
+  "settings_remove_message_in_header": false,
+  "settings_friendlist_summary": true,
+  "settings_friendlist_summary_viponly": false
 }
