@@ -3616,7 +3616,6 @@ var mainGC = function () {
                     if (hides == 0) friend.getElementsByTagName("dd")[5].innerHTML = "0&nbsp;";
                     else friend.getElementsByTagName("dd")[5].innerHTML = "<a href='/seek/nearest.aspx?u=" + urlencode(name.innerHTML) + "&disable_redirect='>" + hides + "</a>&nbsp;";
                 }
-
 // >> hm -- Issue #111
                 if (settings_friendlist_summary) {  
                     // wenn Reset, dann Differenzen nicht mehr anzeigen...
