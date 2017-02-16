@@ -155,5 +155,6 @@
   "settings_remove_logo": false,
   "settings_remove_message_in_header": false,
   "settings_friendlist_summary": true,
-  "settings_friendlist_summary_viponly": false
+  "settings_friendlist_summary_viponly": false,
+  "settings_provide_vup": false
 }
