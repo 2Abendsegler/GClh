@@ -1,37 +1,28 @@
 // ==UserScript==
-// @name           GC little helper II
-// @namespace      http://www.amshove.net
+// @name             GC little helper II
+// @namespace        http://www.amshove.net
 //--> $$000 Begin of change
-// @version        0.3
+// @version          0.3
 //<-- $$000 End of change
-// @include        http://www.geocaching.com/*
-// @include        https://www.geocaching.com/*
-// @include        http://labs.geocaching.com/*
-// @include        https://labs.geocaching.com/*
-// @include        http://maps.google.tld/*
-// @include        http://www.google.tld/maps*
-// @include        https://maps.google.tld/*
-// @include        https://www.google.tld/maps*
-// @exclude        *www.geocaching.com/seek/sendtogps.aspx*
-// @exclude        *www.geocaching.com/blog/*
-// @exclude        *www.geocaching.com/brandedpromotions/*
-// @exclude        *www.geocaching.com/jobs/*
+// @include          http*://www.geocaching.com/*
+// @include          http*://labs.geocaching.com/*
+// @exclude          /^https?://www\.geocaching\.com/(login|jobs|brandedpromotions|promotions|blog|seek/sendtogps)/
 // @resource jscolor https://raw.githubusercontent.com/2Abendsegler/GClh/master/data/jscolor.js
-// @require http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js
-// @require http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js
-// @require http://cdnjs.cloudflare.com/ajax/libs/dropbox.js/0.10.2/dropbox.min.js
-// @description    Some little things to make life easy (on www.geocaching.com).
-// @copyright      Torsten Amshove <torsten@amshove.net>
-// @author         Torsten Amshove; 2Abendsegler
-// @grant          GM_getValue
-// @grant          GM_setValue
-// @grant          GM_log
-// @grant          GM_addStyle
-// @grant          GM_listValues
-// @grant          GM_xmlhttpRequest
-// @grant          GM_getResourceText
-// @grant          GM_registerMenuCommand
-// @grant          GM_info
+// @require          http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js
+// @require          http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js
+// @require          http://cdnjs.cloudflare.com/ajax/libs/dropbox.js/0.10.2/dropbox.min.js
+// @description      Some little things to make life easy (on www.geocaching.com).
+// @copyright        Torsten Amshove <torsten@amshove.net>
+// @author           Torsten Amshove; 2Abendsegler
+// @grant            GM_getValue
+// @grant            GM_setValue
+// @grant            GM_log
+// @grant            GM_addStyle
+// @grant            GM_listValues
+// @grant            GM_xmlhttpRequest
+// @grant            GM_getResourceText
+// @grant            GM_registerMenuCommand
+// @grant            GM_info
 // ==/UserScript==
 
 ////////////////////////////////////////////////////////////////////////////
@@ -321,6 +312,8 @@ var variablesInit = function (c) {
     c.settings_show_mail_in_viplist = getValue("settings_show_mail_in_viplist", true);
     // Settings: Provide VUP functionality
     c.settings_provide_vup = getValue("settings_provide_vup", false);
+    // Settings: Show VUP icon on friends list
+    c.settings_show_vup_friends = getValue("settings_show_vup_friends", false);
     // Settings: Save GClh Config on F2
     c.settings_f2_save_gclh_config = getValue("settings_f2_save_gclh_config", true);
     // Settings: Call GClh Config on F4
@@ -5397,10 +5390,12 @@ console.log(tbsearch);
 
                         if (addDesc == "vup" && is_page("cache_listing")) {
                             var rows = $(icons[i]).closest('td').find('.LogContent').children();
-                            rows[0].innerHTML = "censored";
-                            rows[0].style.fontStyle = "unset";
-                            for (var k = 1; k < rows.length; k++) {
-                                rows[k].style.display = "none";
+                            if (rows && rows[0]) {
+                                rows[0].innerHTML = "censored";
+                                rows[0].style.fontStyle = "unset";
+                                for (var k = 1; k < rows.length; k++) {
+                                    rows[k].style.display = "none";
+                                }
                             }
                         }
                     }
@@ -5439,13 +5434,15 @@ console.log(tbsearch);
 
                         if (delDesc == "vup" && is_page("cache_listing")) {
                             var rows = $(icons[i]).closest('td').find('.LogContent').children();
-                            if (rows.length == 1) {
-                                rows[0].innerHTML = "please refresh page";
-                                rows[0].style.fontStyle = "italic";
-                            } else {
-                                rows[0].innerHTML = "";
-                                for (var k = 1; k < rows.length; k++) {
-                                    rows[k].style.display = "";
+                            if (rows && rows[0]) {
+                                if (rows.length == 1) {
+                                    rows[0].innerHTML = "please refresh page";
+                                    rows[0].style.fontStyle = "italic";
+                                } else {
+                                    rows[0].innerHTML = "";
+                                    for (var k = 1; k < rows.length; k++) {
+                                        rows[k].style.display = "";
+                                    }
                                 }
                             }
                         }
@@ -5618,8 +5615,9 @@ console.log(tbsearch);
                                 if (owner_name && owner_name == user) profile.style.color = '#8C0B0B';
                                 else if (user == myself) profile.style.color = 'rgb(91, 200, 51)';
                                 span.appendChild(profile);
-                                // Build VIP Icon.
-                                link = gclh_build_vipvup(user, global_vips, "vip");
+                                // Build VIP Icon. Wenn es Owner ist und Owner in VUP array, dann VUP Icon.
+                                if (owner_name && owner_name == user && in_array(user, global_vups)) link = gclh_build_vipvup(user, global_vups, "vup");
+                                else link = gclh_build_vipvup(user, global_vips, "vip");
                                 // Log-Date and Link
                                 var log_text = document.createElement("span");
                                 log_text.innerHTML = "<img src='" + log_infos_long[i]["icon"] + "'> <b>" + user + " - " + log_infos_long[i]["date"] + "</b><br/>" + log_infos_long[i]["log"];
@@ -5663,8 +5661,9 @@ console.log(tbsearch);
                                 span.appendChild(document.createTextNode("Me: "));
                             }
                             span.appendChild(profile);
-                            // Build VIP Icon.
-                            link = gclh_build_vipvup(user, global_vips, "vip");
+                            // Build VIP Icon. Wenn es Owner ist und Owner in VUP array, dann VUP Icon.
+                            if (owner_name && owner_name == user && in_array(user, global_vups)) link = gclh_build_vipvup(user, global_vups, "vup");
+                            else link = gclh_build_vipvup(user, global_vips, "vip");
                             list.appendChild(span);
                             list.appendChild(document.createTextNode("   "));
                             list.appendChild(link);
@@ -5802,26 +5801,34 @@ console.log(tbsearch);
                     }
                 };
                 
-            // Friendlist:
-            // -----------
+            // Friends list:
+            // -------------
             } else if (document.location.href.match(/^https?:\/\/www\.geocaching\.com\/my\/myfriends\.aspx/)) {
-                gclh_build_vip_list = function () {}; // There is no list to show, but ths function will be called from gclh_del_vip/gclh_add_vip
-                var links = document.getElementsByTagName('a');
-                for (var i = 0; i < links.length; i++) {
-                    if (links[i].href.match(/https?:\/\/www\.geocaching\.com\/profile\/\?guid=/) && links[i].id) {
-                        var user = links[i].innerHTML.replace(/&amp;/, '&');
-                        // Build VUP Icon.
-                        if (settings_provide_vup && user != global_activ_username) {
-                            link = gclh_build_vipvup(user, global_vups, "vup");
+                gclh_build_vip_list = function () {
+                    // Delete VIP, VUP Icons. Sie werden bei einer Deaktivierung bzw. Aktivierung immer neu aufgebaut. Dadurch wird verhindert, dass
+                    // das VUP Icon nicht stehen bleibt, wenn es als Ersatz für das VIP Icon eingebaut wurde und das VUP Icon nun deaktiviert wurde.
+                    $('.gclh_vip').closest('a').remove();
+                    $('.gclh_vup').closest('a').remove();
+                    // VIP, VUP Icons aufbauen.
+                    var links = document.getElementsByTagName('a');
+                    for (var i = 0; i < links.length; i++) {
+                        if (links[i].href.match(/https?:\/\/www\.geocaching\.com\/profile\/\?guid=/) && links[i].id) {
+                            var user = links[i].innerHTML.replace(/&amp;/, '&');
+                            // Build VUP Icon.
+                            if (settings_provide_vup && settings_show_vup_friends) {
+                                link = gclh_build_vipvup(user, global_vups, "vup");
+                                links[i].parentNode.insertBefore(link, links[i].nextSibling);
+                                links[i].parentNode.insertBefore(document.createTextNode("   "), links[i].nextSibling);
+                            }
+                            // Build VIP Icon. Wenn User in VUP array, dann VUP Icon, wenn ansonsten das Icon nicht angezeigt werden würde.
+                            if (settings_provide_vup && !settings_show_vup_friends && in_array(user, global_vups)) link = gclh_build_vipvup(user, global_vups, "vup");
+                            else link = gclh_build_vipvup(user, global_vips, "vip");
                             links[i].parentNode.insertBefore(link, links[i].nextSibling);
                             links[i].parentNode.insertBefore(document.createTextNode("   "), links[i].nextSibling);
                         }
-                        // Build VIP Icon.
-                        link = gclh_build_vipvup(user, global_vips, "vip");
-                        links[i].parentNode.insertBefore(link, links[i].nextSibling);
-                        links[i].parentNode.insertBefore(document.createTextNode("   "), links[i].nextSibling);
                     }
-                }
+                };
+                gclh_build_vip_list();
             
             // TB Listing. Post, Edit, View Cache-Logs und TB-Logs. Mail schreiben.
             // ---------------
@@ -8721,13 +8728,15 @@ console.log(tbsearch);
             html += "&nbsp; " + checkboxy('settings_imgcaption_on_top', 'Show caption on top') + show_help("This option requires \"Show thumbnails of images\".") + "<br/>";
             html += checkboxy('settings_show_big_gallery', 'Show bigger images in gallery') + show_help("With this option the images in the galleries of caches, TBs and profiles are displayed bigger and not in 4 columns, but in 2 columns.") + "<br/>";
             html += newParameterOn1;
-            content_settings_show_mail_in_allmyvips = checkboxy('settings_show_mail_in_allmyvips', 'Show mail link beside user in "All my VIPs" list in your profile') + show_help("With this option there will be an small mail icon beside every username in the list with all your VIPs (All my VIPs) on your profile page. With this icon you get directly to the mail page to mail to this user. <br>(VIP: Very important person)<br><br>This option requires \"Show mail link beside usernames\" and \"Show VIP list\".") + "<br>";
+            var content_settings_show_mail_in_allmyvips = checkboxy('settings_show_mail_in_allmyvips', 'Show mail link beside user in "All my VIPs" list in your profile') + show_help("With this option there will be an small mail icon beside every username in the list with all your VIPs (All my VIPs) on your profile page. With this icon you get directly to the mail page to mail to this user. <br>(VIP: Very important person)<br><br>This option requires \"Show mail link beside usernames\" and \"Show VIP list\".") + "<br>";
             html += content_settings_show_mail_in_allmyvips;
             html += checkboxy('settings_show_sums_in_watchlist', 'Show number of caches in your watchlist') + show_help("With this option the number of caches and the number of selected caches in the categories \"All\", \"Archived\" and \"Deactivated\", corresponding to the select buttons, are shown in your watchlist at the end of the list.") + "<br/>";
             html += checkboxy('settings_logit_for_basic_in_pmo', 'Log PMO caches by standard \"Log It\" icon (for basic members)') + show_help("With this option basic members are able to choose the standard \"Log It\" icon to call the logging screen for premium only caches. The tool tipp blocked not longer this call. You can have the same result by using the right mouse across the \"Log It\" icon and then new tab. <br>The \"Log It\" icon is besides the caches for example in the \"Recently Viewed Caches\" list and in your profile.") + "<br/>";
             html += newParameterVersionSetzen(0.1) + newParameterOff;
             html += newParameterOn3;
             html += checkboxy('settings_hide_archived_in_owned', 'Hide archived caches in owned list') + "<br/>";
+            var content_settings_show_vup_friends = checkboxy('settings_show_vup_friends', 'Show VUP icons on friends list') + show_help("With this option you can choose if VUP icons are shown addional on friends list or not. If you deactivate this option and a friend is a VUP, then the VIP icon is replaced by the VUP icon anyway.<br>(VUP: Very unimportant person)<br>(VIP: Very important person)<br><br>This option requires \"Provide VUP functionality\" and \"Show VIP list\".") + "<br>";
+            html += content_settings_show_vup_friends;
             html += newParameterVersionSetzen(0.3) + newParameterOff;
 //--> $$065 Begin of insert
 //xxxx
@@ -8794,7 +8803,7 @@ console.log(tbsearch);
             html += "<h4 class='gclh_headline2'>"+prepareHideable.replace("#name#","listing")+"Listing</h4>";
             html += "<div id='gclh_config_listing'>";
             html += checkboxy('settings_log_inline', 'Log cache from listing (inline)') + show_help("With the inline log you can open a log form inside the listing, without loading a new page.") + "<br/>"; 
-            content_settings_log_inline_tb = "&nbsp; " + checkboxy('settings_log_inline_tb', 'Show TB list') + show_help("With this option you can select, if the TB list should be shown in inline logs.<br><br>This option requires \"Log cache from listing (inline)\" or \"Log cache from listing for PMO (for basic members)\".") + "<br>";
+            var content_settings_log_inline_tb = "&nbsp; " + checkboxy('settings_log_inline_tb', 'Show TB list') + show_help("With this option you can select, if the TB list should be shown in inline logs.<br><br>This option requires \"Log cache from listing (inline)\" or \"Log cache from listing for PMO (for basic members)\".") + "<br>";
             html += content_settings_log_inline_tb;
             html += checkboxy('settings_log_inline_pmo4basic', 'Log cache from listing for PMO (for basic members)') + show_help("With this option you can select, if inline logs should appear for Premium-Member-Only caches althought you are a basic member (logging of PMO caches by basic members is allowed by Groundspeak).") + "<br/>";
             html += content_settings_log_inline_tb.replace("settings_log_inline_tb", "settings_log_inline_tbX0");  
@@ -8819,7 +8828,7 @@ console.log(tbsearch);
             html += "</select>" + show_help("If you have changed the date format on gc.com, you have to change it here to. Instead the day of week may be wrong.") + "<br/>";
             html += checkboxy('settings_show_mail', 'Show mail link beside usernames') + show_help("With this option there will be an small mail icon beside every username. With this icon you get directly to the mail page to mail to this user. If you click it for example when you are in a listing, the cachename or GC code can be inserted into the mail form about placeholder in the mail / message form template.") + "<br/>";
             html += newParameterOn1;
-            content_settings_show_mail_in_viplist = "&nbsp; " + checkboxy('settings_show_mail_in_viplist', 'Show mail link beside user in "VIP-List" in listing') + show_help("With this option there will be an small mail icon beside every username in the VIP lists on the cache listing page. With this icon you get directly to the mail page to mail to this user. <br>(VIP: Very important person)<br><br>This option requires \"Show mail link beside usernames\", \"Show VIP list\" and \"Load logs with GClh\".") + "<br>";
+            var content_settings_show_mail_in_viplist = "&nbsp; " + checkboxy('settings_show_mail_in_viplist', 'Show mail link beside user in "VIP-List" in listing') + show_help("With this option there will be an small mail icon beside every username in the VIP lists on the cache listing page. With this icon you get directly to the mail page to mail to this user. <br>(VIP: Very important person)<br><br>This option requires \"Show mail link beside usernames\", \"Show VIP list\" and \"Load logs with GClh\".") + "<br>";
             html += content_settings_show_mail_in_viplist;
             html += "&nbsp; " + content_settings_show_mail_in_allmyvips.replace("settings_show_mail_in_allmyvips", "settings_show_mail_in_allmyvipsX0"); 
             html += checkboxy('settings_show_message', 'Show message link beside usernames') + show_help("With this option there will be an small message icon beside every username. With this icon you get directly to the message page to send a message to this user. If you click it for example when you are in a listing, the cachename or GC code can be inserted into the message form about placeholder in the mail / message form template.") + "<br/>";
@@ -8859,6 +8868,7 @@ console.log(tbsearch);
             html += "&nbsp; " + content_settings_show_mail_in_allmyvips.replace("settings_show_mail_in_allmyvips", "settings_show_mail_in_allmyvipsX1"); 
             html += newParameterVersionSetzen(0.1) + newParameterOff;
             html += "&nbsp; " + checkboxy('settings_provide_vup', 'Provide VUP functionality') + show_help("With this option you can activate the possibility to add any user to a VUP list by clicking the little VUP icon beside the username. If it is red, this person is a VUP. For such persons in cache logs will only shown \"censored\" instead of the log text. On your profile page there is an overview of all your VUPs.<br>(VUP: Very unimportant person)<br><br>This option requires \"Show VIP list\".") + "<br>";
+            html += " &nbsp; &nbsp; " + content_settings_show_vup_friends.replace("settings_show_vup_friends", "settings_show_vup_friendsX0");  
             html += checkboxy('settings_show_thumbnailsX0', 'Show thumbnails of images') + show_help("With this option the images are displayed as thumbnails to have a preview. If you hover over a thumbnail, you can see the big one.<br><br>This works in cache and TB logs, in the cache and TB image galleries, in public profile for the avatar and in the profile image gallery.") + "&nbsp; Max size of big image: <input class='gclh_form' size=2 type='text' id='settings_hover_image_max_sizeX0' value='" + settings_hover_image_max_size + "'> px <br/>";
             html += " &nbsp; &nbsp;" + "Spoiler-Filter: <input class='gclh_form' type='text' id='settings_spoiler_strings' value='" + settings_spoiler_strings + "'> " + show_help("If one of these words is found in the caption of the image, there will be no real thumbnail. It is to prevent seeing spoilers. Words have to be divided by |. <br>Default is \"spoiler|hinweis|hint\".<br><br>This option requires \"Show thumbnails of images\".") + "<br/>";
             html += "&nbsp; " + checkboxy('settings_imgcaption_on_topX0', 'Show caption on top') + show_help("This option requires \"Show thumbnails of images\".") + "<br/>";
@@ -9432,6 +9442,7 @@ console.log(tbsearch);
             // "Clone" gesetzt, die hinten mit einem "X" und eine Nummerierung von 0 bis 9 enden können (beispielsweise "settings_show_mail_in_viplistX0").
             setEventsForDoubleParameters( "settings_show_mail_in_viplist", "click" );
             setEventsForDoubleParameters( "settings_show_mail_in_allmyvips", "click" );
+            setEventsForDoubleParameters( "settings_show_vup_friends", "click" );
             setEventsForDoubleParameters( "settings_log_inline_tb", "click" );
             setEventsForDoubleParameters( "settings_font_color_menu_submenu", "input" );
             setEventsForDoubleParameters( "settings_font_color_menu_submenu", "change" );
@@ -9490,6 +9501,8 @@ console.log(tbsearch);
             setEventsForDependentParameters( "settings_show_vip_list", "settings_show_mail_in_allmyvips" );
             setEventsForDependentParameters( "settings_show_vip_list", "settings_make_vip_lists_hideable" );
             setEventsForDependentParameters( "settings_show_vip_list", "settings_provide_vup" );
+            setEventsForDependentParameters( "settings_show_vip_list", "settings_show_vup_friends" );
+            setEventsForDependentParameters( "settings_provide_vup", "settings_show_vup_friends" );
             setEventsForDependentParameters( "settings_log_inline", "settings_log_inline_tb", false );
             setEventsForDependentParameters( "settings_log_inline_pmo4basic", "settings_log_inline_tb", false );
             setEventsForDependentParameters( "settings_show_mail", "settings_show_mail_in_viplist" );
@@ -9753,6 +9766,7 @@ console.log(tbsearch);
                 'settings_show_mail_in_allmyvips',
                 'settings_show_mail_in_viplist',
                 'settings_provide_vup',
+                'settings_show_vup_friends',
                 'settings_f2_save_gclh_config',
                 'settings_f4_call_gclh_config',
                 'settings_f10_call_gclh_sync',
