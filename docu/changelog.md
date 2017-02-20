@@ -79,6 +79,7 @@ Wenn jemand Ideen hat, wie man die Trackables womöglich sinnvoll kategorisieren
 <li>Fix: [Issue #79] Script wurde doppelt installiert wegen Änderung Namespace.
 <br></li>
 </ul>
+(22.01.2017)<br>
 <br>
 
 ---
@@ -106,6 +107,7 @@ Und Hide Personal Cache Notes wenn leer, beschleunigt.<br></li>
 Vielen Dank an CachingFoX für die Analyse.<br></li>
 <li>Fix: [Issue #29] Push block of layers right, build unsorted layers in map.<br></li>
 </ul>
+(22.01.2017)<br>
 <br>
 
 ---
