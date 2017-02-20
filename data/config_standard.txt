@@ -156,5 +156,6 @@
   "settings_remove_message_in_header": false,
   "settings_friendlist_summary": true,
   "settings_friendlist_summary_viponly": false,
-  "settings_provide_vup": false
+  "settings_process_vup": false,
+  "settings_show_vup_friends": false
 }
