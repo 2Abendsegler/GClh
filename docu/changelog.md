@@ -113,6 +113,7 @@ Vielen Dank an CachingFoX für die Analyse.<br></li>
 <ul>
 <li>Fix: [Issue 60] Nearest List parameter generated error. Parameter changed from "&disable_redirect" to "&disable_redirect="<br></li>
 </ul>
+(20.01.2017)<br>
 <br>
 
 ---
@@ -120,6 +121,7 @@ Vielen Dank an CachingFoX für die Analyse.<br></li>
 <ul>
 <li>Fix: [Issue 54] (Again) Navigationsmenüs nicht sichtbar auf den Seiten "Find a Geocache", "Hide a Geocache" und "Geotours". Ursache: GS Änderung, Umbenennung der Menüs von "Menu" in "menu" und "SubMenu" in "submenu".<br></li>
 </ul>
+(20.01.2017)<br>
 <br>
 
 ---
@@ -127,6 +129,7 @@ Vielen Dank an CachingFoX für die Analyse.<br></li>
 <ul>
 <li>Fix: [Issue 54] Navigationsmenüs nicht sichtbar auf den Seiten "Find a Geocache", "Hide a Geocache" und "Geotours". Ursache: GS Änderung, Umbenennung der Menüs von "Menu" in "menu" und "SubMenu" in "submenu".<br></li>
 </ul>
+(20.01.2017)<br>
 <br>
 
 ---
