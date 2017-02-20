@@ -170,6 +170,7 @@ Der teils doch etwas fleckig geratene Hintergrund im GClh Config mit den Informa
 <div class="inline-attachment"><dl class="file"><dt class="attach-image"><img src="../images/v0.2.1_Screen02.jpg" class="postimage" alt="v0.2.1_Screen02.jpg"></dt></dl></div></li>
 <li>New: Cache Listing: Make VIP lists hideable. Ueber GClh Config steuern.<br>
 <div class="inline-attachment"><dl class="file"><dt class="attach-image"><img src="../images/v0.2.1_Screen03.jpg" class="postimage" alt="v0.2.1_Screen03.jpg"></dt></dl></div></li></ul>
+(05.02.2017)<br>
 <br>
 
 ---
