@@ -1,13 +1,13 @@
-<a href="#v03" title="GClh II Version 0.3">v0.3</a> &nbsp; 
-<a href="#v0231" title="GClh II Version 0.2.3.1">v0.2.3.1</a> &nbsp; 
-<a href="#v023" title="GClh II Version 0.2.3">v0.2.3</a> &nbsp; 
-<a href="#v0224" title="GClh II Version 0.2.2.4">v0.2.2.4</a> &nbsp; 
-<a href="#v0223" title="GClh II Version 0.2.2.3">v0.2.2.3</a> &nbsp; 
-<a href="#v0222" title="GClh II Version 0.2.2.2">v0.2.2.2</a> &nbsp; 
-<a href="#v0221" title="GClh II Version 0.2.2.1">v0.2.2.1</a> &nbsp; 
-<a href="#v022" title="GClh II Version 0.2.2">v0.2.2</a> &nbsp; 
-<a href="#v021" title="GClh II Version 0.2.1">v0.2.1</a> &nbsp; 
-<a href="#v01" title="GClh II Version 0.1">v0.1</a> &nbsp; 
+<a href="#v03" title="GClh II Version 0.3 (05.02.2017)">v0.3</a> &nbsp; 
+<a href="#v0231" title="GClh II Version 0.2.3.1 (22.01.2017)">v0.2.3.1</a> &nbsp; 
+<a href="#v023" title="GClh II Version 0.2.3 (22.01.2017)">v0.2.3</a> &nbsp; 
+<a href="#v0224" title="GClh II Version 0.2.2.4 (20.01.2017)">v0.2.2.4</a> &nbsp; 
+<a href="#v0223" title="GClh II Version 0.2.2.3 (20.01.2017)">v0.2.2.3</a> &nbsp; 
+<a href="#v0222" title="GClh II Version 0.2.2.2 (20.01.2017)">v0.2.2.2</a> &nbsp; 
+<a href="#v0221" title="GClh II Version 0.2.2.1 (12.01.2017)">v0.2.2.1</a> &nbsp; 
+<a href="#v022" title="GClh II Version 0.2.2 (09.01.2017)">v0.2.2</a> &nbsp; 
+<a href="#v021" title="GClh II Version 0.2.1 (05.01.2017)">v0.2.1</a> &nbsp; 
+<a href="#v01" title="GClh II Version 0.1 (05.01.2017)">v0.1</a> &nbsp; 
 
 ---
 ## v0.3:
@@ -70,6 +70,7 @@ Danke auch an SiMaKiDD für die Idee das Laden zu stoppen.<br>
 Wenn jemand Ideen hat, wie man die Trackables womöglich sinnvoll kategorisieren kann, dann nur her damit.)</i><br>
 </li>
 </ul>
+(05.02.2017)<br>
 <br>
 
 ---
@@ -78,6 +79,7 @@ Wenn jemand Ideen hat, wie man die Trackables womöglich sinnvoll kategorisieren
 <li>Fix: [Issue #79] Script wurde doppelt installiert wegen Änderung Namespace.
 <br></li>
 </ul>
+(22.01.2017)<br>
 <br>
 
 ---
@@ -105,6 +107,7 @@ Und Hide Personal Cache Notes wenn leer, beschleunigt.<br></li>
 Vielen Dank an CachingFoX für die Analyse.<br></li>
 <li>Fix: [Issue #29] Push block of layers right, build unsorted layers in map.<br></li>
 </ul>
+(22.01.2017)<br>
 <br>
 
 ---
@@ -112,6 +115,7 @@ Vielen Dank an CachingFoX für die Analyse.<br></li>
 <ul>
 <li>Fix: [Issue 60] Nearest List parameter generated error. Parameter changed from "&disable_redirect" to "&disable_redirect="<br></li>
 </ul>
+(20.01.2017)<br>
 <br>
 
 ---
@@ -119,6 +123,7 @@ Vielen Dank an CachingFoX für die Analyse.<br></li>
 <ul>
 <li>Fix: [Issue 54] (Again) Navigationsmenüs nicht sichtbar auf den Seiten "Find a Geocache", "Hide a Geocache" und "Geotours". Ursache: GS Änderung, Umbenennung der Menüs von "Menu" in "menu" und "SubMenu" in "submenu".<br></li>
 </ul>
+(20.01.2017)<br>
 <br>
 
 ---
@@ -126,6 +131,7 @@ Vielen Dank an CachingFoX für die Analyse.<br></li>
 <ul>
 <li>Fix: [Issue 54] Navigationsmenüs nicht sichtbar auf den Seiten "Find a Geocache", "Hide a Geocache" und "Geotours". Ursache: GS Änderung, Umbenennung der Menüs von "Menu" in "menu" und "SubMenu" in "submenu".<br></li>
 </ul>
+(20.01.2017)<br>
 <br>
 
 ---
@@ -140,6 +146,7 @@ Der teils doch etwas fleckig geratene Hintergrund im GClh Config mit den Informa
 <img src="../images/v0.2.2.1_Screen01.jpg" alt="v0.2.2.1_Screen01.jpg"></li>
 <li>Fix: [Bug #31] When using "Log your visit (inline)" and clicking "All visited" for the trackables list opens an empty new tab.<br></li>
 </ul>
+(12.01.2017)<br>
 <br>
 
 ---
@@ -156,6 +163,7 @@ Der teils doch etwas fleckig geratene Hintergrund im GClh Config mit den Informa
 <div class="inline-attachment"><dl class="file"><dt class="attach-image"><img src="../images/v0.2.2_Screen05.jpg" class="postimage" alt="v0.2.2_Screen05.jpg" onclick="viewableArea(this);"></dt></dl></div></li>
 <li>Fix: Overview map in listing: zoom in/out loses cache marker. If you zoom in/out the overview map in a cache listing, the cache marker gets replaced by a default marker and the static image shows an error therefore the proper marker creation fails. <br>[Bug Issue #2]<br> <br></li>
 <li>Fix: Linklist/Seachfield fälschlich in Map/Labs aufgebaut. <br>[Bug Issue #24]</li></ul>
+(09.01.2017)<br>
 <br>
 
 ---
@@ -169,12 +177,14 @@ Der teils doch etwas fleckig geratene Hintergrund im GClh Config mit den Informa
 <div class="inline-attachment"><dl class="file"><dt class="attach-image"><img src="../images/v0.2.1_Screen02.jpg" class="postimage" alt="v0.2.1_Screen02.jpg"></dt></dl></div></li>
 <li>New: Cache Listing: Make VIP lists hideable. Ueber GClh Config steuern.<br>
 <div class="inline-attachment"><dl class="file"><dt class="attach-image"><img src="../images/v0.2.1_Screen03.jpg" class="postimage" alt="v0.2.1_Screen03.jpg"></dt></dl></div></li></ul>
+(05.01.2017)<br>
 <br>
 
 ---
 ## v0.1:
 Rebuild GC little helper (2As) as GC little helper II:
 <ol style="list-style-type: decimal"><li>Fix: Bei Eigenen Favoriten kein VIP Icon aufbauen. Hier steht gegebenenfalls das Pseudonym des Owners.</li><li>Fix: Save HomeCoords von Account Settings Seite funktionierte nicht mehr.</li><li>Fix: Select Buttons in einer Bookmarkliste aufbauen, aber nicht bei der Ablistung aller Bookmarklisten.</li><li>Fix: In Bookmarkliste nach dem Loeschen von Eintraegen (...bookmarks/bulk.aspx...) fehlt Zebra.</li><li>Fix: Farbliche Logkennzeichnung fuer User mit Sonderzeichen [] korrigiert.</li><li>Change: Spezielle Links Profile Tabs, Nearest Lists/Map, Own Trackables, GClh Config, GClh Sync und Find Player mit rechter und linker Maustaste funktionsfaehig machen mit Standard Contextmenue und postback.</li><li>Change: Config und Sync Aufrufe zusammengelegt und umgebaut. Rechte, linke Maus ueberall ok.</li><li>Change: Link zu alter deutscher Anleitung entfernt und Link github angepasst.</li></ol>
+(05.01.2017)<br>
 <br>
 
 ---
