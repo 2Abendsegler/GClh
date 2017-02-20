@@ -157,6 +157,7 @@ Der teils doch etwas fleckig geratene Hintergrund im GClh Config mit den Informa
 <div class="inline-attachment"><dl class="file"><dt class="attach-image"><img src="../images/v0.2.2_Screen05.jpg" class="postimage" alt="v0.2.2_Screen05.jpg" onclick="viewableArea(this);"></dt></dl></div></li>
 <li>Fix: Overview map in listing: zoom in/out loses cache marker. If you zoom in/out the overview map in a cache listing, the cache marker gets replaced by a default marker and the static image shows an error therefore the proper marker creation fails. <br>[Bug Issue #2]<br> <br></li>
 <li>Fix: Linklist/Seachfield fälschlich in Map/Labs aufgebaut. <br>[Bug Issue #24]</li></ul>
+(09.02.2017)<br>
 <br>
 
 ---
