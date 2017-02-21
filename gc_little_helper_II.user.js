@@ -453,7 +453,7 @@ var variablesInit = function (c) {
     c.settings_vip_show_nofound = getValue("settings_vip_show_nofound", false);
     c.settings_use_gclh_layercontrol = getValue("settings_use_gclh_layercontrol", true);
     c.settings_fixed_pq_header = getValue("settings_fixed_pq_header", false);
-    c.settings_search_list = JSON.parse(getValue("settings_search_list", "[]"));
+    c.settings_search_data = JSON.parse(getValue("settings_search_data", "[]"));
     c.settings_search_enable_user_defined = getValue("settings_search_enable_user_defined",true);
     
     // Settings: Custom Bookmarks
@@ -7988,13 +7988,13 @@ var mainGC = function () {
     }
 
     function saveFilterSet() {
-        setValue("settings_search_list", JSON.stringify(settings_search_list));
+        setValue("settings_search_data", JSON.stringify(settings_search_data));
     }
    
     function actionOpen( id ) {
-        for (var i = 0; i < settings_search_list.length; i++) {
-            if ( settings_search_list[i].id == id ) {
-                document.location.href = settings_search_list[i].url;
+        for (var i = 0; i < settings_search_data.length; i++) {
+            if ( settings_search_data[i].id == id ) {
+                document.location.href = settings_search_data[i].url;
                 break;
             }
         }        
@@ -8002,9 +8002,9 @@ var mainGC = function () {
 
     // SaveSas
     function actionRename( id, name ) {
-        for (var i = 0; i < settings_search_list.length; i++) {
-            if ( settings_search_list[i].id == id ) {
-                settings_search_list[i].name = name;
+        for (var i = 0; i < settings_search_data.length; i++) {
+            if ( settings_search_data[i].id == id ) {
+                settings_search_data[i].name = name;
                 saveFilterSet(); 
                 break;
             }
@@ -8012,9 +8012,9 @@ var mainGC = function () {
     }
     
     function actionUpdate( id, page ) {
-        for (var i = 0; i < settings_search_list.length; i++) {
-            if ( settings_search_list[i].id == id ) {
-                settings_search_list[i].url = page.split("#")[0];  
+        for (var i = 0; i < settings_search_data.length; i++) {
+            if ( settings_search_data[i].id == id ) {
+                settings_search_data[i].url = page.split("#")[0];  
                 saveFilterSet(); 
                 break;
             }
@@ -8023,17 +8023,17 @@ var mainGC = function () {
 
     function actionNew( name, page ) {
         // find latest id
-        var i = settings_search_list.length;
+        var i = settings_search_data.length;
         var id = -1;
-        for (var i = 0; i < settings_search_list.length; i++) {
-            if ( id < settings_search_list[i].id ) { id = settings_search_list[i].id; }
+        for (var i = 0; i < settings_search_data.length; i++) {
+            if ( id < settings_search_data[i].id ) { id = settings_search_data[i].id; }
         } 
         console.log("next index: " + i + " next id: " + (id+1) );
-        settings_search_list[i] = {};
-        settings_search_list[i].id = id+1;
-        settings_search_list[i].name = name;
-        settings_search_list[i].url = page.split("#")[0];
-        console.log(settings_search_list);
+        settings_search_data[i] = {};
+        settings_search_data[i].id = id+1;
+        settings_search_data[i].name = name;
+        settings_search_data[i].url = page.split("#")[0];
+        console.log(settings_search_data);
         saveFilterSet();
     }
 
@@ -8041,13 +8041,13 @@ var mainGC = function () {
     // Delete
     function actionSearchDelete( id ) {
         console.log("actionSearchDelete()");   
-        var settings_search_list_tmp = [];
-        for (var i = 0; i < settings_search_list.length; i++) {
-            if ( settings_search_list[i].id != id ) {
-                settings_search_list_tmp[settings_search_list_tmp.length] = settings_search_list[i];
+        var settings_search_data_tmp = [];
+        for (var i = 0; i < settings_search_data.length; i++) {
+            if ( settings_search_data[i].id != id ) {
+                settings_search_data_tmp[settings_search_data_tmp.length] = settings_search_data[i];
             }                
         }     
-        settings_search_list = settings_search_list_tmp;
+        settings_search_data = settings_search_data_tmp;
         saveFilterSet();   
     }
 
@@ -8115,16 +8115,16 @@ var mainGC = function () {
         }
             
         var html = "";
-        console.log(settings_search_list);
-        if ( settings_search_list.length ) {
-            settings_search_list.sort(function(a, b){return a.name.toUpperCase()>b.name.toUpperCase()});
+        console.log(settings_search_data);
+        if ( settings_search_data.length ) {
+            settings_search_data.sort(function(a, b){return a.name.toUpperCase()>b.name.toUpperCase()});
         }
         
-        for (var i = 0; i < settings_search_list.length; i++) {
-            html += '<li data-id="'+settings_search_list[i].id+'">';
-            var id = 'data-id="'+settings_search_list[i].id+'"';
-            var t = (settings_search_list[i].url == document.location.href.split("#")[0])?true:false;
-            html += '<button type="button" class="btn-item-action action-open" '+id+'>'+(t?'<b>':'')+settings_search_list[i].name+(t?'</b>':'')+'</button>';
+        for (var i = 0; i < settings_search_data.length; i++) {
+            html += '<li data-id="'+settings_search_data[i].id+'">';
+            var id = 'data-id="'+settings_search_data[i].id+'"';
+            var t = (settings_search_data[i].url == document.location.href.split("#")[0])?true:false;
+            html += '<button type="button" class="btn-item-action action-open" '+id+'>'+(t?'<b>':'')+settings_search_data[i].name+(t?'</b>':'')+'</button>';
             html += '<div type="button" title="Remove Filter" class="status btn-iconsvg action-delete" '+id+'><svg class="icon icon-svg-button" role="presentation"><use xlink:href="/account/Content/ui-icons/sprites/global.svg#icon-delete"></use></svg></div>';                  
             html += '<div type="button" title="Rename Filter" class="status btn-iconsvg action-rename" '+id+'><svg class="icon icon-svg-button" role="presentation"><use xlink:href="/account/Content/ui-icons/sprites/global.svg#icon-more"></use></svg></div>';                  
             
@@ -8161,10 +8161,10 @@ var mainGC = function () {
             }
             
             $("#filter-name-rename").val("n/a");
-            for (var i = 0; i < settings_search_list.length; i++) {
-                if ( settings_search_list[i].id == id ) {
-                    $("#filter-name-rename").val(settings_search_list[i].name);
-                    $('#filterName').text(settings_search_list[i].name);
+            for (var i = 0; i < settings_search_data.length; i++) {
+                if ( settings_search_data[i].id == id ) {
+                    $("#filter-name-rename").val(settings_search_data[i].name);
+                    $('#filterName').text(settings_search_data[i].name);
                     break;
                 }
             }                        
@@ -8178,7 +8178,7 @@ var mainGC = function () {
     
     if ( settings_search_enable_user_defined && is_page("find_cache") ) {
         try {
-            if ( !( $(".results").length || settings_search_list.length ) ) {
+            if ( !( $(".results").length || settings_search_data.length ) ) {
                 // no result list and no user defined filter => do nothing
                 return;
             }
@@ -8200,9 +8200,9 @@ var mainGC = function () {
             });
          
             var currentFilter = "";
-            for (var i = 0; i < settings_search_list.length; i++) {
-                if ( settings_search_list[i].url == document.location.href.split("#")[0] ) {
-                    currentFilter = "Current Filter: "+settings_search_list[i].name;
+            for (var i = 0; i < settings_search_data.length; i++) {
+                if ( settings_search_data[i].url == document.location.href.split("#")[0] ) {
+                    currentFilter = "Current Filter: "+settings_search_data[i].name;
                 }
             }        
             $(".button-group-dynamic").append('<span>'+currentFilter+'</span>')
