@@ -454,6 +454,7 @@ var variablesInit = function (c) {
     c.settings_use_gclh_layercontrol = getValue("settings_use_gclh_layercontrol", true);
     c.settings_fixed_pq_header = getValue("settings_fixed_pq_header", false);
     c.settings_search_list = JSON.parse(getValue("settings_search_list", "[]"));
+    c.settings_search_enable_user_defined = getValue("settings_search_enable_user_defined",true);
     
     // Settings: Custom Bookmarks
     var num = c.bookmarks.length;
@@ -8175,7 +8176,7 @@ var mainGC = function () {
         $('#filterCtxMenu').removeClass( 'btn-user-active' );
     }
     
-    if ( is_page("find_cache") /* && settings... */ ) {
+    if ( settings_search_enable_user_defined && is_page("find_cache") ) {
         try {
             if ( !( $(".results").length || settings_search_list.length ) ) {
                 // no result list and no user defined filter => do nothing
@@ -8481,6 +8482,10 @@ var mainGC = function () {
             html += checkboxy('settings_hide_colored_versions', 'Hide colored illustration of versions') + show_help("With this option the colored illustration of the versions and the version numbers in GClh Config are selectable. A change at this option evolute its effect only after a save.") + "<br/>";
             html += checkboxy('settings_make_config_main_areas_hideable', 'Make main areas in GClh Config hideable') + show_help("With this option you can hide and show the main areas in GClh Config with one click. A change at this option evolute its effect only after a save.") + "<br/>";
             html += newParameterVersionSetzen(0.2) + newParameterOff;
+            html += "</div>";
+            html += "<h4 class='gclh_headline2'>"+prepareHideable.replace("#name#","search")+"Search</h4>";
+            html += "<div id='gclh_config_search'>";
+            html += checkboxy('settings_search_enable_user_defined', 'Enable user search') + show_help("This features enables you to store favourites filter settings in the geocache search and call them quickly.") + "<br/>";
             html += "</div>";
             html += "<h4 class='gclh_headline2'>"+prepareHideable.replace("#name#","nearestlist")+"Nearest list</h4>";
             html += "<div id='gclh_config_nearestlist'>";
@@ -9611,7 +9616,8 @@ var mainGC = function () {
                 'settings_use_gclh_layercontrol',
                 'settings_fixed_pq_header',
                 'settings_sync_autoImport',
-                'settings_map_hide_sidebar'
+                'settings_map_hide_sidebar',
+                'settings_search_enable_user_defined'
             );
             for (var i = 0; i < checkboxes.length; i++) {
                 if ( document.getElementById(checkboxes[i]) ) {
