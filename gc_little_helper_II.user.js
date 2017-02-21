@@ -453,6 +453,8 @@ var variablesInit = function (c) {
     c.settings_vip_show_nofound = getValue("settings_vip_show_nofound", false);
     c.settings_use_gclh_layercontrol = getValue("settings_use_gclh_layercontrol", true);
     c.settings_fixed_pq_header = getValue("settings_fixed_pq_header", false);
+    c.settings_search_list = JSON.parse(getValue("settings_search_list", "[]"));
+    
     // Settings: Custom Bookmarks
     var num = c.bookmarks.length;
     for (var i = 0; i < c.anzCustom; i++) {
@@ -7950,6 +7952,281 @@ var mainGC = function () {
         document.getElementById("findplayer_field").focus();
     }
 
+// User defined searchs
+    function create_config_css_search() {
+        var css = document.createElement("style");
+        var html = "";
+        html += ".btn-context {";
+        html += "   border: 0;    height: 40px;    margin-top: -4px;    text-indent: -9999px;    width: 30px;    margin-left: -8px; margin-right: 10px;";
+        html += "}";
+        html += ".btn-user {";
+        html += "   background-color: transparent;";
+        html += "   background-image: none;";
+        html += "   clear: both;";
+        html += "   color: #fff;";
+        html += "   font-size: .85em;";
+        html += "   margin-bottom: 1.75em;";
+        html += "   margin-top: 1.75em;";
+        html += "   padding-left: 3em;";
+        html += "   padding-right: 3em;  ";   
+        html += "   border: 2px solid #ffffff;"; 
+        html += "   border-radius: 0;";    
+        html += "}";
+        html += ".btn-user-active, .btn-user:hover, .btn-user:active {";
+        html += "   background-color: #00b265;";  
+        html += "   border: 2px solid #00b265;";    
+        html += "}";
+        html += ""
+        html += ".btn-iconsvg svg {"
+        html += "    width: 22px;"
+        html += "    height: 22px;"
+        html += "    margin-right: 3px;"
+        html += "}       " 
+        css.innerHTML = html;
+        document.getElementsByTagName('body')[0].appendChild(css);
+    }
+
+    function saveFilterSet() {
+        setValue("settings_search_list", JSON.stringify(settings_search_list));
+    }
+   
+    function actionOpen( id ) {
+        for (var i = 0; i < settings_search_list.length; i++) {
+            if ( settings_search_list[i].id == id ) {
+                document.location.href = settings_search_list[i].url;
+                break;
+            }
+        }        
+    }
+
+    // SaveSas
+    function actionRename( id, name ) {
+        for (var i = 0; i < settings_search_list.length; i++) {
+            if ( settings_search_list[i].id == id ) {
+                settings_search_list[i].name = name;
+                saveFilterSet(); 
+                break;
+            }
+        }         
+    }
+    
+    function actionUpdate( id, page ) {
+        for (var i = 0; i < settings_search_list.length; i++) {
+            if ( settings_search_list[i].id == id ) {
+                settings_search_list[i].url = page.split("#")[0];  
+                saveFilterSet(); 
+                break;
+            }
+        }         
+    }    
+
+    function actionNew( name, page ) {
+        // find latest id
+        var i = settings_search_list.length;
+        var id = -1;
+        for (var i = 0; i < settings_search_list.length; i++) {
+            if ( id < settings_search_list[i].id ) { id = settings_search_list[i].id; }
+        } 
+        console.log("next index: " + i + " next id: " + (id+1) );
+        settings_search_list[i] = {};
+        settings_search_list[i].id = id+1;
+        settings_search_list[i].name = name;
+        settings_search_list[i].url = page.split("#")[0];
+        console.log(settings_search_list);
+        saveFilterSet();
+    }
+
+
+    // Delete
+    function actionSearchDelete( id ) {
+        console.log("actionSearchDelete()");   
+        var settings_search_list_tmp = [];
+        for (var i = 0; i < settings_search_list.length; i++) {
+            if ( settings_search_list[i].id != id ) {
+                settings_search_list_tmp[settings_search_list_tmp.length] = settings_search_list[i];
+            }                
+        }     
+        settings_search_list = settings_search_list_tmp;
+        saveFilterSet();   
+    }
+
+    function updateUI() {
+        console.log("updateUI()");
+        if ( $("#searchContextMenu").length == 0 ) {
+            var html = "";
+            html += '<div id="searchContextMenu" class="pop-modal" style="top: auto; left: auto; width: 100%; position: absolute;">';
+            
+            html += '<div id="filter-new" class="add-menu" style="display: none;"><label for="newListName">Save current filter</label>';
+            html += '<div class="input-control active">';
+            html += '<input id="nameSearch" name="newListName" maxlength="150" placeholder="New Name" type="text">';
+            html += '<div class="add-list-status"><button id= "btn-save" class="add-list-submit" type="button" style="display: inline-block;">Save</button></div></div>';
+            html += '</div>';
+            
+            html += '<div id="filter-edit" class="add-menu" style="display: none;"><label for="newListName">Edit filter <i><span id="filterName"></span></i></label>';
+            html += '<div class="input-control active">';
+            html += '<input id="filter-name-rename" name="newListName" maxlength="150" placeholder="New Name" type="text">';
+            html += '<div class="add-list-status"><button id= "btn-rename" class="add-list-submit" type="button" style="display: inline-block;">Rename</button></div>';
+            html += '<div id="div-btn-update" class="add-list-status"><button id="btn-update" class="add-list-submit" type="button" style="display: inline-block;">Update</button></div>';
+            html += '</div></div>';            
+            
+            html += '<label class="add-list-label">Available Filters</label>';
+            html += '<ul id="filterlist" class="add-list"></ul>';
+            
+            // end of div
+            html += '</div>'; 
+            $( "#ctxMenu" ).html(html);   
+
+            $('#btn-save').click( function() {
+                console.log("save search")
+                var name = $("#nameSearch").val();
+                if ( name == "" ) {
+                    alert("Insert name!");
+                    $("#nameSearch").css('background-color', '#ffc9c9'); 
+                    return;
+                } else {
+                    actionNew( name, document.location.href );
+                    $("#nameSearch").css('background-color', '#ffffff');  
+                }
+                hideCtxMenu();
+            });  
+
+            // rename
+            $('#btn-rename').click( function() {              
+                var id = $(this).data('id');
+                var name = $("#filter-name-rename").val();
+                actionRename( id, name );    
+                updateUI();
+            });  
+
+            // rename
+            $('#btn-update').click( function() {    
+                var id = $(this).data('id');
+                var update = (document.location.href.indexOf("?")>=0?true:false);
+                if ( update ) {
+                    actionUpdate( id, document.location.href );
+                    hideCtxMenu();
+                }
+            });             
+        }
+        $("#filter-edit").hide();
+        if ( $(".results").length != 0 ) {
+            $("#filter-new").show();
+        }
+            
+        var html = "";
+        console.log(settings_search_list);
+        if ( settings_search_list.length ) {
+            settings_search_list.sort(function(a, b){return a.name.toUpperCase()>b.name.toUpperCase()});
+        }
+        
+        for (var i = 0; i < settings_search_list.length; i++) {
+            html += '<li data-id="'+settings_search_list[i].id+'">';
+            var id = 'data-id="'+settings_search_list[i].id+'"';
+            var t = (settings_search_list[i].url == document.location.href.split("#")[0])?true:false;
+            html += '<button type="button" class="btn-item-action action-open" '+id+'>'+(t?'<b>':'')+settings_search_list[i].name+(t?'</b>':'')+'</button>';
+            html += '<div type="button" title="Remove Filter" class="status btn-iconsvg action-delete" '+id+'><svg class="icon icon-svg-button" role="presentation"><use xlink:href="/account/Content/ui-icons/sprites/global.svg#icon-delete"></use></svg></div>';                  
+            html += '<div type="button" title="Rename Filter" class="status btn-iconsvg action-rename" '+id+'><svg class="icon icon-svg-button" role="presentation"><use xlink:href="/account/Content/ui-icons/sprites/global.svg#icon-more"></use></svg></div>';                  
+            
+            html += '</li>';
+        }          
+        $( "#filterlist" ).html(html);    
+
+        // save
+        $('.action-open').click( function() {
+            var id = $(this).data('id');
+            actionOpen( id );
+        });    
+        // delete
+        $('.action-delete').click( function() {
+            var id = $(this).data('id');
+            console.log(id);
+            actionSearchDelete( id );
+            updateUI();
+        });  
+        // rename
+        $('.action-rename').click( function() {
+            var id = $(this).data('id');
+            $('#filter-new').hide();
+            $('#filter-edit').show();
+            $('#btn-rename').data('id', id ); 
+            $('#btn-update').data('id', id );       
+            
+            
+            var update = (document.location.href.indexOf("?")>=0?true:false);
+            if ( update ) { 
+                $('#div-btn-update').show();
+            } else {
+                $('#div-btn-update').hide();
+            }
+            
+            $("#filter-name-rename").val("n/a");
+            for (var i = 0; i < settings_search_list.length; i++) {
+                if ( settings_search_list[i].id == id ) {
+                    $("#filter-name-rename").val(settings_search_list[i].name);
+                    $('#filterName').text(settings_search_list[i].name);
+                    break;
+                }
+            }                        
+        });         
+    }
+        
+    function hideCtxMenu() {
+        $('#ctxMenu').hide();
+        $('#filterCtxMenu').removeClass( 'btn-user-active' );
+    }
+    
+    if ( is_page("find_cache") /* && settings... */ ) {
+        try {
+            if ( !( $(".results").length || settings_search_list.length ) ) {
+                // no result list and no user defined filter => do nothing
+                return;
+            }
+            create_config_css_search();
+                       
+            $( ".filters-toggle" ).append('&nbsp;<button id="filterCtxMenu" class="btn btn-user" type="button">Manage Filter Sets</button>  '); // &#x2630;
+            $( ".filters-toggle" ).append('<div id="ctxMenu" style="display:none;"></div>');
+                        
+            $('#filterCtxMenu').click( function() {
+                var element = $('#ctxMenu');
+                if ( element.css('display') == 'none' ){
+                   updateUI();           
+                   element.show();
+                   $(this).addClass( 'btn-user-active' );
+                } else {
+                   element.hide();
+                   $(this).removeClass( 'btn-user-active' );
+                }
+            });
+         
+            var currentFilter = "";
+            for (var i = 0; i < settings_search_list.length; i++) {
+                if ( settings_search_list[i].url == document.location.href.split("#")[0] ) {
+                    currentFilter = "Current Filter: "+settings_search_list[i].name;
+                }
+            }        
+            $(".button-group-dynamic").append('<span>'+currentFilter+'</span>')
+            
+            // helper function to close the dialog div if a mouse click outside
+            $(document).mouseup(function (e) {
+                var container = $('#ctxMenu');
+                if ( container.css('display') != 'none' ){
+                    if (!container.is(e.target) && !($('#filterCtxMenu').is(e.target))  // if the target of the click isn't the container...
+                        && container.has(e.target).length === 0) // ... nor a descendant of the container
+                    {
+                        container.hide();
+                        $('#filterCtxMenu').removeClass( 'btn-user-active' );
+                        console.log(":-D");
+                    }
+                }
+                return false;
+            });               
+        }
+        catch (e) {
+            gclh_error("Error in 'User defined search' modifications", e);
+        }        
+    }
+    
+    
 ////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////
 // Config
@@ -10102,7 +10379,7 @@ var mainGC = function () {
             });
         }
     } // Sync
-};
+}; // end of mainGC
 
 ////////////////////////////////////////////////////////////////////////////
 // Functions global (fun3)
