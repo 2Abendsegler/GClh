@@ -13,7 +13,7 @@
 ## v0.3:
 <ul>
 <li>New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/23">#23</a>] Hide archived caches in owned cache list:<br>
-Vielen Dank an <a href="https://github.com/haarspalter">haarspalter</a> für die Entwicklung.<br>
+Vielen Dank an <a href="https://www.geocaching.com/profile/?u=dontp%C3%A4nic">dontpänic</a> für die Entwicklung.<br>
 <img src="../images/v0.3_Screen10.jpg" alt="v0.3_Screen10.jpg"><br>
 <br></li>
 <li>New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/92">#92</a>] Added date format dd.MM.yyyy:<br>
@@ -86,7 +86,7 @@ Wenn jemand Ideen hat, wie man die Trackables womöglich sinnvoll kategorisieren
 ## v0.2.3:
 <ul>
 <li>New: [Issue #36] Google Chrome, Opera und Microsoft Edge über Tampermonkey.<br>
-Vielen Dank an Nicole1338 für die tolle Unterstützung.<br>
+Vielen Dank an <a href="https://www.geocaching.com/profile/?u=Nicole1338">Nicole1338</a> für die tolle Unterstützung.<br>
 <img src="../images/google_chrome_logo_small.png" alt="google_chrome_logo_small.png"> 
 <img src="../images/opera_logo_small.png" alt="opera_logo_small.png"> 
 <img src="../images/microsoft_edge_logo_small.png" alt="microsoft_edge_logo_small.png"><br>
@@ -96,7 +96,7 @@ Und im GClh Config Links zu Lizense, Gewährleistung und Check for upgrade hinzu
 Und Copyright Informationen vervollständigt.<br>
 <img src="../images/v0.2.3_Screen01.jpg" alt="v0.2.3_Screen01.jpg"></li>
 <li>Refactoring: [Issue #39] is_link function.<br>
-Vielen Dank an CachingFoX.<br></li>
+Vielen Dank an <a href="https://www.geocaching.com/profile/?u=CachingFoX">CachingFoX</a>.<br></li>
 <li>Performance: [Issue #42] Umbau Try/Catch.<br></li>
 <li>Performance: [Issue #48] Umbau function getElementsByClass.<br>
 Umbau function getElementsByClass in standard document.getElementsByClassName.<br></li>
@@ -104,7 +104,7 @@ Umbau function getElementsByClass in standard document.getElementsByClassName.<b
 In function setLinesColorInCacheListing jedes Log nur einmalig einfärben.<br>
 Und Hide Personal Cache Notes wenn leer, beschleunigt.<br></li>
 <li>Fix: [Issue #32] Cache title of an active cache shown striked. Changed for archieved and for deactivated caches.<br>
-Vielen Dank an CachingFoX für die Analyse.<br></li>
+Vielen Dank an <a href="https://www.geocaching.com/profile/?u=CachingFoX">CachingFoX</a> für die Analyse.<br></li>
 <li>Fix: [Issue #29] Push block of layers right, build unsorted layers in map.<br></li>
 </ul>
 (22.01.2017)<br>
@@ -151,15 +151,15 @@ Der teils doch etwas fleckig geratene Hintergrund im GClh Config mit den Informa
 
 ---
 ## v0.2.2:
-<ul><li>Der Bereich Map im GClh Config wurde komplett umgebaut und an die letzten Änderungen von GS angepaßt. Es gibt die neue Untergruppierung "Hide Map Elements", in der nun alle Hide Operationen zusammengefaßt sind. Die neuen Icons sind nun auch hier verfügbar und die beiden entfallenen A.P.E. und GPS Maze wurden auch hier entfernt. Außerdem wurde die Letterbox umgruppiert. Ist nun so wie auf der Karte. <br>Vielen Dank an CachingFoX. <br>[Bug Issue #18, #19] <br>
+<ul><li>Der Bereich Map im GClh Config wurde komplett umgebaut und an die letzten Änderungen von GS angepaßt. Es gibt die neue Untergruppierung "Hide Map Elements", in der nun alle Hide Operationen zusammengefaßt sind. Die neuen Icons sind nun auch hier verfügbar und die beiden entfallenen A.P.E. und GPS Maze wurden auch hier entfernt. Außerdem wurde die Letterbox umgruppiert. Ist nun so wie auf der Karte. <br>Vielen Dank an <a href="https://www.geocaching.com/profile/?u=CachingFoX">CachingFoX</a>. <br>[Bug Issue #18, #19] <br>
 <div class="inline-attachment"><dl class="file"><dt class="attach-image"><img src="../images/v0.2.2_Screen01.jpg" class="postimage" alt="v0.2.2_Screen01.jpg"></dt></dl></div></li>
-<li>Im Bereich Map im GClh Config gibt es noch eine neue Gruppierung "Layers in map", die die gesamten Aufgaben der Kartenlayer abdeckt. Sollen die Layer nicht vom GClh geladen werden, wird der gesamte Bereich ausgeblendet. In der linken Liste sind die nicht verwendeten Layer, in der rechten die zu verwendenden Layer. <br>Und es wurde auch der standard Layer "Geocaching" von GS integriert!<br>Vielen Dank an CachingFoX. <br>[Enhancement Issue #16, #17] <br>
+<li>Im Bereich Map im GClh Config gibt es noch eine neue Gruppierung "Layers in map", die die gesamten Aufgaben der Kartenlayer abdeckt. Sollen die Layer nicht vom GClh geladen werden, wird der gesamte Bereich ausgeblendet. In der linken Liste sind die nicht verwendeten Layer, in der rechten die zu verwendenden Layer. <br>Und es wurde auch der standard Layer "Geocaching" von GS integriert!<br>Vielen Dank an <a href="https://www.geocaching.com/profile/?u=CachingFoX">CachingFoX</a>. <br>[Enhancement Issue #16, #17] <br>
 <div class="inline-attachment"><dl class="file"><dt class="attach-image"><img src="../images/v0.2.2_Screen02.jpg" class="postimage" alt="v0.2.2_Screen02.jpg" onclick="viewableArea(this);"></dt></dl></div></li>
 <li>Im GClh Config wurde eine default Sprache vorgesehen. Ist sie aktiviert, wird auf den GC Seiten die Sprache geprüft, entspricht sie nicht der default Sprache, wird sie geändert. Hier geht es im wesentlichen um die automatische Korrektur der Englischumstellungen, die einige Apps benötigen, um korrekt zu laufen. Das betrifft dann insbesondere diejenigen User, die auf den GC Seiten auf Deutsch unterwegs sind. (Soweit ich mich erinnere, stammt dieser Wunsch noch aus dem Block von Torsten.)  <br>[Enhancement Issue #21]<br>
 <div class="inline-attachment"><dl class="file"><dt class="attach-image"><img src="../images/v0.2.2_Screen03.jpg" class="postimage" alt="v0.2.2_Screen03.jpg"></dt></dl></div></li></ul>
 <ul><li>In den Latest logs wurde der Logtext integriert beim Drüberfahren mit der Maus. <br>[Enhancement Issue #22] <br>
 <div class="inline-attachment"><dl class="file"><dt class="attach-image"><img src="../images/v0.2.2_Screen04.jpg" class="postimage" alt="v0.2.2_Screen04.jpg"></dt></dl></div></li>
-<li>Im GClh Config wurden die Verbindungen zwischen Checkboxen und Texten hergestellt. Nun muß man nicht mehr genau auf die Checkbox zielen, sondern kann die Checkbox auch durch einen Click auf den Text bedienen. <br>Vielen Dank an CachingFoX.<br>
+<li>Im GClh Config wurden die Verbindungen zwischen Checkboxen und Texten hergestellt. Nun muß man nicht mehr genau auf die Checkbox zielen, sondern kann die Checkbox auch durch einen Click auf den Text bedienen. <br>Vielen Dank an <a href="https://www.geocaching.com/profile/?u=CachingFoX">CachingFoX</a>.<br>
 <div class="inline-attachment"><dl class="file"><dt class="attach-image"><img src="../images/v0.2.2_Screen05.jpg" class="postimage" alt="v0.2.2_Screen05.jpg" onclick="viewableArea(this);"></dt></dl></div></li>
 <li>Fix: Overview map in listing: zoom in/out loses cache marker. If you zoom in/out the overview map in a cache listing, the cache marker gets replaced by a default marker and the static image shows an error therefore the proper marker creation fails. <br>[Bug Issue #2]<br> <br></li>
 <li>Fix: Linklist/Seachfield fälschlich in Map/Labs aufgebaut. <br>[Bug Issue #24]</li></ul>
