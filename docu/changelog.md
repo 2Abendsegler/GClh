@@ -12,16 +12,42 @@
 
 ---
 ## v0.4:
-<ul>
-<li>New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/111">#111</a>] New found / hidden in a summary in the beginning of the Friends page:<br>
+<ul><li>New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/111">#111</a>] New found / hidden in a summary in the beginning of the Friends page:<br>
 Many thanks to <a href="https://www.geocaching.com/profile/?u=Herr%20Ma">Herr Ma</a> for the development.<br>
-<ul>
-<li>Summary for new founds/hides for friends on the friends page will be shown as follow:<br>
-<img src="../images/v0.4_Screen17.jpg" alt="v0.4_Screen17.jpg"><br></li>
+<br>
+<ul><li>Summary for new founds/hides for friends on the friends page will be shown as follow:<br>
+<img src="../images/v0.4_Screen17.jpg" alt="v0.4_Screen17.jpg"><br>
+<br></li>
 <li>There is also a timestamp with the date/time of the last check. After pushing the Reset counter-Button or if there are no new founds/hides, the summary is hidden and only the timestamp is visible:<br>
-<img src="../images/v0.4_Screen18.jpg" alt="v0.4_Screen18.jpg"><br></li></ul>
+<img src="../images/v0.4_Screen18.jpg" alt="v0.4_Screen18.jpg"><br>
+<br></li>
+<li>To use the new summary feature you have to set the checkbox "Show summary for new founds/hides in friends list". Special feature. If you set the checkbox "Show summary only for friends in VIP list" the summary will be shown only for friends which are marked as VIPs.<br>
+<img src="../images/v0.4_Screen20.jpg" alt="v0.4_Screen20.jpg"><br></li></ul>
+<br></li>
+<li>New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/145">#145</a>] User ignore processing in cache listing logs, VUPs (Very unimportant persons):<br>
+Many thanks to <a href="https://www.geocaching.com/profile/?u=Herr%20Ma">Herr Ma</a> for the idea and a lot of the coding.<br>
+<br>
+<ul><li>The VUP processing is integrated in the VIP processing as a second part and have the most of the VIP functionality. The main idea are "censored" cache logs for the VUPs. If you mark a person as a VUP, the cache log text will only contain the text "censored", so you can be relaxed and you have not to be exercised.<br>
+<img src="../images/v0.4_Screen14.jpg" alt="v0.4_Screen14.jpg"><br>
+<br></li>
+<li>Cache listing, if cache owner is a VUP.<br>
+<img src="../images/v0.4_Screen12.jpg" alt="v0.4_Screen12.jpg"><br>
+<br></li>
+<li>Cache listing, if cache owner is a VUP, it is shown in the VIP list if owner is shown there.<br>
+<img src="../images/v0.4_Screen13.jpg" alt="v0.4_Screen13.jpg"><br>
+<br></li>
+<li>Your profile contain a list of all your VUPs.<br>
+<img src="../images/v0.4_Screen15.jpg" alt="v0.4_Screen15.jpg"><br>
+<br></li>
+<li>The VUP processing can be activated and customized in Config.<br>
+<img src="../images/v0.4_Screen16.jpg" alt="v0.4_Screen16.jpg"><br></li></ul>
 <br></li>
 
+
+
+
+<img src="../images/v0.4_Screen10.jpg" alt="v0.4_Screen10.jpg"><br>
+<br></li>
 
 <li><br>
 <br>
