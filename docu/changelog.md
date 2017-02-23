@@ -14,6 +14,7 @@
 ## v0.4:
 <ul><li>New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/111">#111</a>] New found / hidden in a summary in the beginning of the Friends page:<br>
 Many thanks to <a href="https://www.geocaching.com/profile/?u=Herr%20Ma">Herr Ma</a> for the development.<br>
+<br>
 Summary for new founds/hides for friends on the friends page will be shown as follow:<br>
 <img src="../images/v0.4_Screen17.jpg" alt="v0.4_Screen17.jpg"><br>
 <br>
@@ -25,6 +26,7 @@ To use the new summary feature you have to set the checkbox "Show summary for ne
 <br></li>
 <li>New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/145">#145</a>] User ignore processing in cache listing logs, VUPs (Very unimportant persons):<br>
 Many thanks to <a href="https://www.geocaching.com/profile/?u=Herr%20Ma">Herr Ma</a> for the idea and a lot of the coding.<br>
+<br>
 The VUP processing is integrated in the VIP processing as a second part and have the most of the VIP functionality. The main idea are "censored" cache logs for the VUPs. If you mark a person as a VUP, the cache log text will only contain the text "censored", so you can be relaxed and you have not to be exercised.<br>
 <img src="../images/v0.4_Screen14.jpg" alt="v0.4_Screen14.jpg"><br>
 <br>
@@ -41,11 +43,14 @@ The VUP processing can be activated and customized in Config.<br>
 <img src="../images/v0.4_Screen16.jpg" alt="v0.4_Screen16.jpg"><br>
 <br></li>
 <li>New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/9">#9</a>] Provide standard configuration set (GClh Config):<br>
-- Reset to standard configuration: <br>
+- Reset to standard configuration:<br>
 This is the main functionality to reset to standard configuration set. This is the way to come back to an efficient configuration set, after some experimental or other motivated changes. This option load a reasonable standard configuration and overwrite your configuration data in parts. Of course, personal data, like home-coords, homezone or similar data are not overwritten.<br>
-<u>Reset your own home-coords</u> could help you with problems around your home-coords, like for example with your main homezone, with nearest lists or with your home-coords itself.<br>
-<u>Reset your own id for your trackables</u> could help you with problems with your own trackables lists.<br>
-<u>Reset dynamic and unused data</u> is the possibility to reorganize the configuration set. Unused parameters, of older script versions, are deleted. And all the dynamic data, especially the autovisit settings for every TB, are deleted too.<br>
+- Reset your own home-coords:<br>
+This could help you with problems around your home-coords, like for example with your main homezone, with nearest lists or with your home-coords itself.<br>
+- Reset your own id for your trackables:<br> 
+This could help you with problems with your own trackables lists.<br>
+- Reset dynamic and unused data:<br> 
+This is the possibility to reorganize the configuration set. Unused parameters, of older script versions, are deleted. And all the dynamic data, especially the autovisit settings for every TB, are deleted too.<br>
 <img src="../images/v0.4_Screen01.jpg" alt="v0.4_Screen01.jpg"><br>
 <img src="../images/v0.4_Screen02.jpg" alt="v0.4_Screen02.jpg"><br>
 <br></li>
@@ -69,11 +74,11 @@ But we hope the friends of this specific header design can deal with it.<br>
 <img src="../images/v0.4_Screen09.jpg" alt="v0.4_Screen09.jpg"><br>
 <br></li>
 <li>New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/12">#12</a>] Logo und Message Center Icon wahlweise entfernen / Remove logo and message center in header:<br>
-<u>Remove logo in header:</u><br>
+- Remove logo in header:<br>
 With this option you can remove the logo in the header. This is an easy feature with some restrictions.<br>
 This feature is available at all pages in the older design like for example cache and TB listings, bookmarks, pocket queries, nearest lists, profiles, statistics, watchlists and field notes, to name just a few.<br>
 At maps and at the pages in the newer design it is not available. Also this feature is not fully integrated in the diverse possibilities of the header layout and the navigation menus.<br>
-<u>Remove message center in header:</u><br>
+- Remove message center in header:<br>
 With this option you can remove the complete message center in the header.<br>
 You will not be informed longer about new messages.<br>
 <img src="../images/v0.4_Screen10.jpg" alt="v0.4_Screen10.jpg"><br>
