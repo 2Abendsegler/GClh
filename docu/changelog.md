@@ -58,10 +58,10 @@ The VUP processing can be activated and customized in Config.<br>
 <img src="../images/v0.4_Screen04.jpg" alt="v0.4_Screen04.jpg"><br>
 <br></li>
 <li>New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/11">#11</a>] Seitenheader ausrichten / Arrange header layout on content:<br>
-With this option you can arrange the header width on the width of the content of the page. This is an easy feature with some restrictions, like for example the available place, especially for horizontal navigation menues.<br>
-The fixed header is available at all pages in the older design like for example cache and TB listings, bookmarks, pocket queries, profiles, statistics, watchlists and field notes, to name just a few.<br>
-At maps and at the pages in the newer design it is not available, partly because the content of the pages are not yet in an accurate width, like the newer search cache page or the message center page. Also this feature is not fully integrated in the diverse possibilities of the header layout and the navigation menus.<br>
-But we hope the friends of this specific header design can deal with it.<br>
+<ul><li>With this option you can arrange the header width on the width of the content of the page. This is an easy feature with some restrictions, like for example the available place, especially for horizontal navigation menues.<br></li>
+<li>The fixed header is available at all pages in the older design like for example cache and TB listings, bookmarks, pocket queries, profiles, statistics, watchlists and field notes, to name just a few.<br></li>
+<li>At maps and at the pages in the newer design it is not available, partly because the content of the pages are not yet in an accurate width, like the newer search cache page or the message center page. Also this feature is not fully integrated in the diverse possibilities of the header layout and the navigation menus.<br></li></ul>
+(We hope the friends of this specific header design can deal with it.)<br>
 <img src="../images/v0.4_Screen05.jpg" alt="v0.4_Screen05.jpg"><br>
 <img src="../images/v0.4_Screen06.jpg" alt="v0.4_Screen06.jpg"><br>
 <img src="../images/v0.4_Screen07.jpg" alt="v0.4_Screen07.jpg"><br>
