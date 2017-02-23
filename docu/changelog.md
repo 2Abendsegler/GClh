@@ -42,14 +42,18 @@ Many thanks to <a href="https://www.geocaching.com/profile/?u=Herr%20Ma">Herr Ma
 <li>The VUP processing can be activated and customized in Config.<br>
 <img src="../images/v0.4_Screen16.jpg" alt="v0.4_Screen16.jpg"><br></li></ul>
 <br></li>
-
-
-
-
-<img src="../images/v0.4_Screen10.jpg" alt="v0.4_Screen10.jpg"><br>
+<li>New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/9">#9</a>] Provide standard configuration set (GClh Config):<br>
+<ul><li>Reset to standard configuration: This is the main functionality to reset to standard configuration set. This is the way to come back to an efficient configuration set, after some experimental or other motivated changes. This option load a reasonable standard configuration and overwrite your configuration data in parts. Of course, personal data, like home-coords, homezone or similar data are not overwritten.<br></li>
+<li>Reset your own home-coords could help you with problems around your home-coords, like for example with your main homezone, with nearest lists or with your home-coords itself.<br></li>
+<li>Reset your own id for your trackables could help you with problems with your own trackables lists.<br></li>
+<li>Reset dynamic and unused data is the possibility to reorganize the configuration set. Unused parameters, of older script versions, are deleted. And all the dynamic data, especially the autovisit settings for every TB, are deleted too.<br></li></ul>
+<img src="../images/v0.4_Screen01.jpg" alt="v0.4_Screen01.jpg"><br>
+<img src="../images/v0.4_Screen02.jpg" alt="v0.4_Screen02.jpg"><br>
 <br></li>
 
-<li><br>
+
+<li>
+<br>
 <br>
 <img src="../images/v0.4_Screen10.jpg" alt="v0.4_Screen10.jpg"><br>
 <br></li>
