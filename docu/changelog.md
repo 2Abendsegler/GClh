@@ -27,42 +27,42 @@ To use the new summary feature you have to set the checkbox "Show summary for ne
 <li>New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/145">#145</a>] User ignore processing in cache listing logs, VUPs (Very unimportant persons):<br>
 Many thanks to <a href="https://www.geocaching.com/profile/?u=Herr%20Ma">Herr Ma</a> for the idea and a lot of the coding.<br>
 <br>
-<ul><li>The VUP processing is integrated in the VIP processing as a second part and have the most of the VIP functionality. The main idea are "censored" cache logs for the VUPs. If you mark a person as a VUP, the cache log text will only contain the text "censored", so you can be relaxed and you have not to be exercised.<br>
+The VUP processing is integrated in the VIP processing as a second part and have the most of the VIP functionality. The main idea are "censored" cache logs for the VUPs. If you mark a person as a VUP, the cache log text will only contain the text "censored", so you can be relaxed and you have not to be exercised.<br>
 <img src="../images/v0.4_Screen14.jpg" alt="v0.4_Screen14.jpg"><br>
-<br></li>
-<li>Cache listing, if cache owner is a VUP.<br>
+<br>
+Cache listing, if cache owner is a VUP.<br>
 <img src="../images/v0.4_Screen12.jpg" alt="v0.4_Screen12.jpg"><br>
-<br></li>
-<li>Cache listing, if cache owner is a VUP, it is shown in the VIP list if owner is shown there.<br>
+<br>
+Cache listing, if cache owner is a VUP, it is shown in the VIP list if owner is shown there.<br>
 <img src="../images/v0.4_Screen13.jpg" alt="v0.4_Screen13.jpg"><br>
-<br></li>
-<li>Your profile contain a list of all your VUPs.<br>
+<br>
+Your profile contain a list of all your VUPs.<br>
 <img src="../images/v0.4_Screen15.jpg" alt="v0.4_Screen15.jpg"><br>
-<br></li>
-<li>The VUP processing can be activated and customized in Config.<br>
-<img src="../images/v0.4_Screen16.jpg" alt="v0.4_Screen16.jpg"><br></li></ul>
+<br>
+The VUP processing can be activated and customized in Config.<br>
+<img src="../images/v0.4_Screen16.jpg" alt="v0.4_Screen16.jpg"><br>
 <br></li>
 <li>New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/9">#9</a>] Provide standard configuration set (GClh Config):<br>
-<ul><li>Reset to standard configuration: This is the main functionality to reset to standard configuration set. This is the way to come back to an efficient configuration set, after some experimental or other motivated changes. This option load a reasonable standard configuration and overwrite your configuration data in parts. Of course, personal data, like home-coords, homezone or similar data are not overwritten.<br></li>
-<li>Reset your own home-coords could help you with problems around your home-coords, like for example with your main homezone, with nearest lists or with your home-coords itself.<br></li>
-<li>Reset your own id for your trackables could help you with problems with your own trackables lists.<br></li>
-<li>Reset dynamic and unused data is the possibility to reorganize the configuration set. Unused parameters, of older script versions, are deleted. And all the dynamic data, especially the autovisit settings for every TB, are deleted too.<br></li></ul>
+Reset to standard configuration: This is the main functionality to reset to standard configuration set. This is the way to come back to an efficient configuration set, after some experimental or other motivated changes. This option load a reasonable standard configuration and overwrite your configuration data in parts. Of course, personal data, like home-coords, homezone or similar data are not overwritten.<br>
+Reset your own home-coords could help you with problems around your home-coords, like for example with your main homezone, with nearest lists or with your home-coords itself.<br>
+Reset your own id for your trackables could help you with problems with your own trackables lists.<br>
+Reset dynamic and unused data is the possibility to reorganize the configuration set. Unused parameters, of older script versions, are deleted. And all the dynamic data, especially the autovisit settings for every TB, are deleted too.<br>
 <img src="../images/v0.4_Screen01.jpg" alt="v0.4_Screen01.jpg"><br>
 <img src="../images/v0.4_Screen02.jpg" alt="v0.4_Screen02.jpg"><br>
 <br></li>
 <li>Change: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/138">#138</a>] Enlarge mail form signature to mail form template with known placeholder:<br>
 Inspired by <a href="https://www.geocaching.com/seek/nearest.aspx?u=Herr%20Ma">Herr Ma</a>.<br>
-<ul><li>Enlarge the mail and message form signature functionality to a mail and message form template with the known placeholder in the log templates. Especially integrate GC, TB name and GC, TB Link, in order that these things can be placed variable. For example above in the mail as subject.<br></li>
-<li>The signature content is migrated automatically.<br></li>
-<li>The settings "Show coord link in mail" and "Show coord link in message" are no longer necessary and are removed. <br></li></ul>
+Enlarge the mail and message form signature functionality to a mail and message form template with the known placeholder in the log templates. Especially integrate GC, TB name and GC, TB Link, in order that these things can be placed variable. For example above in the mail as subject.<br>
+The signature content is migrated automatically.<br>
+The settings "Show coord link in mail" and "Show coord link in message" are no longer necessary and are removed. <br>
 <img src="../images/v0.4_Screen03.jpg" alt="v0.4_Screen03.jpg"><br>
 <img src="../images/v0.4_Screen04.jpg" alt="v0.4_Screen04.jpg"><br>
 <br></li>
 <li>New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/11">#11</a>] Seitenheader ausrichten / Arrange header layout on content:<br>
-<ul><li>With this option you can arrange the header width on the width of the content of the page. This is an easy feature with some restrictions, like for example the available place, especially for horizontal navigation menues.<br></li>
-<li>The fixed header is available at all pages in the older design like for example cache and TB listings, bookmarks, pocket queries, profiles, statistics, watchlists and field notes, to name just a few.<br></li>
-<li>At maps and at the pages in the newer design it is not available, partly because the content of the pages are not yet in an accurate width, like the newer search cache page or the message center page. Also this feature is not fully integrated in the diverse possibilities of the header layout and the navigation menus.<br></li>
-<li>But we hope the friends of this specific header design can deal with it.<br></li></ul>
+With this option you can arrange the header width on the width of the content of the page. This is an easy feature with some restrictions, like for example the available place, especially for horizontal navigation menues.<br>
+The fixed header is available at all pages in the older design like for example cache and TB listings, bookmarks, pocket queries, profiles, statistics, watchlists and field notes, to name just a few.<br>
+At maps and at the pages in the newer design it is not available, partly because the content of the pages are not yet in an accurate width, like the newer search cache page or the message center page. Also this feature is not fully integrated in the diverse possibilities of the header layout and the navigation menus.<br>
+But we hope the friends of this specific header design can deal with it.<br>
 <img src="../images/v0.4_Screen05.jpg" alt="v0.4_Screen05.jpg"><br>
 <img src="../images/v0.4_Screen06.jpg" alt="v0.4_Screen06.jpg"><br>
 <img src="../images/v0.4_Screen07.jpg" alt="v0.4_Screen07.jpg"><br>
@@ -71,12 +71,12 @@ Inspired by <a href="https://www.geocaching.com/seek/nearest.aspx?u=Herr%20Ma">H
 <br></li>
 <li>New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/12">#12</a>] Logo und Message Center Icon wahlweise entfernen / Remove logo and message center in header:<br>
 Remove logo in header:<br>
-<ul><li>With this option you can remove the logo in the header. This is an easy feature with some restrictions.<br></li>
-<li>This feature is available at all pages in the older design like for example cache and TB listings, bookmarks, pocket queries, nearest lists, profiles, statistics, watchlists and field notes, to name just a few.<br></li>
-<li>At maps and at the pages in the newer design it is not available. Also this feature is not fully integrated in the diverse possibilities of the header layout and the navigation menus.<br></li></ul>
+With this option you can remove the logo in the header. This is an easy feature with some restrictions.<br>
+This feature is available at all pages in the older design like for example cache and TB listings, bookmarks, pocket queries, nearest lists, profiles, statistics, watchlists and field notes, to name just a few.<br>
+At maps and at the pages in the newer design it is not available. Also this feature is not fully integrated in the diverse possibilities of the header layout and the navigation menus.<br>
 Remove message center in header: <br>
-<ul><li>With this option you can remove the complete message center in the header.<br></li>
-<li>You will not be informed longer about new messages.<br></li></ul>
+With this option you can remove the complete message center in the header.<br>
+You will not be informed longer about new messages.<br>
 <img src="../images/v0.4_Screen10.jpg" alt="v0.4_Screen10.jpg"><br>
 <img src="../images/v0.4_Screen11.jpg" alt="v0.4_Screen11.jpg"><br>
 <br>
@@ -85,14 +85,15 @@ Remove message center in header: <br>
 <li>New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/146">#146</a>] Show Cache log counter in cache listing:<br>
 With the link "Show log counter" two counter are shown in every log. The first one is a counter only for logs with the same logtyp like for example "Found it" or "Enable Listing". The second one is the counter for all logs.<br>
 (Only possible if all logs are shown.)<br>
-
-<li>
-<br>
-<br>
-<img src="../images/v0.4_Screen10.jpg" alt="v0.4_Screen10.jpg"><br>
+<img src="../images/v0.4_Screen19.jpg" alt="v0.4_Screen19.jpg"><br>
 <br></li>
-
-
+<li>New: Show or hide all the areas in config with one click to a plus or minus icon with the right mouse.<br>
+<br></li>
+<li>Fix: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/139">#139</a>] Missing new founds and hiddens in friends list:<br>
+In some cases, starting count of founds and hiddens are not saved. This has to be changed.<br>
+<br></li>
+<li>Fix: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/147">#147</a>] Width in section "Profile Information" of public profile is cut.<br>
+<br></li>
 </ul>
 (25.02.2017)<br>
 <br>
