@@ -79,19 +79,19 @@ You will not be informed longer about new messages.<br></li></ul>
 <img src="../images/v0.4_Screen10.jpg" alt="v0.4_Screen10.jpg"><br>
 <img src="../images/v0.4_Screen11.jpg" alt="v0.4_Screen11.jpg"><br>
 <br>
-<a href="https://raw.githubusercontent.com/2Abendsegler/GClh/v0.4/data/config_header_align_logo_mc_remove.txt ">Here</a> is a small config file with the necessary changes to arrange the header and remove the logo and the message center icon and text. You can copy the lines and insert and import it with GClh Sync II.<br>
+<a href="https://raw.githubusercontent.com/2Abendsegler/GClh/master/data/config_header_align_logo_mc_remove.txt ">Here</a> is a small config file with the necessary changes to arrange the header and remove the logo and the message center icon and text. You can copy the lines and insert and import it with GClh Sync II.<br>
 <br></li>
 <li>New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/146">#146</a>] Show Cache log counter in cache listing:<br>
 With the link "Show log counter" two counter are shown in every log. The first one is a counter only for logs with the same logtyp like for example "Found it" or "Enable Listing". The second one is the counter for all logs.<br>
 (Only possible if all logs are shown.)<br>
 <img src="../images/v0.4_Screen19.jpg" alt="v0.4_Screen19.jpg"><br>
 <br></li>
-<li>New: Show or hide all the areas in config with one click to a plus or minus icon with the right mouse.<br>
+<li>New: Show or hide all the areas in Config with one click to a plus or minus icon with the right mouse.<br>
 <br></li>
 <li>Fix: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/139">#139</a>] Missing new founds and hiddens in friends list:<br>
-In some cases, starting count of founds and hiddens are not saved. This has to be changed.<br>
+In some cases, starting count of founds and hiddens are not saved.<br>
 <br></li>
-<li>Fix: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/147">#147</a>] Width in section "Profile Information" of public profile is cut.<br>
+<li>Fix: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/147">#147</a>] Width in section "Profile Information" of public profile was cut.<br>
 </li>
 </ul>
 (25.02.2017)<br>
