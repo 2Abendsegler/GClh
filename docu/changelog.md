@@ -51,7 +51,6 @@ The VUP processing can be activated and customized in Config.<br>
 <img src="../images/v0.4_Screen02.jpg" alt="v0.4_Screen02.jpg"><br>
 <br></li>
 <li>Change: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/138">#138</a>] Enlarge mail form signature to mail form template with known placeholder:<br>
-Inspired by <a href="https://www.geocaching.com/seek/nearest.aspx?u=Herr%20Ma">Herr Ma</a>.<br>
 Enlarge the mail and message form signature functionality to a mail and message form template with the known placeholder in the log templates. Especially integrate GC, TB name and GC, TB Link, in order that these things can be placed variable. For example above in the mail as subject.<br>
 The signature content is migrated automatically.<br>
 The settings "Show coord link in mail" and "Show coord link in message" are no longer necessary and are removed. <br>
