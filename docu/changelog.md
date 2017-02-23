@@ -50,7 +50,14 @@ Many thanks to <a href="https://www.geocaching.com/profile/?u=Herr%20Ma">Herr Ma
 <img src="../images/v0.4_Screen01.jpg" alt="v0.4_Screen01.jpg"><br>
 <img src="../images/v0.4_Screen02.jpg" alt="v0.4_Screen02.jpg"><br>
 <br></li>
-
+<li>Change: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/138">#138</a>] Enlarge mail form signature to mail form template with known placeholder:<br>
+Inspired by <a href="https://www.geocaching.com/seek/nearest.aspx?u=Herr%20Ma">Herr Ma</a>.<br>
+<ul><li>Enlarge the mail and message form signature functionality to a mail and message form template with the known placeholder in the log templates. Especially integrate GC, TB name and GC, TB Link, in order that these things can be placed variable. For example above in the mail as subject.<br></li>
+<li>The signature content is migrated automatically.<br></li>
+<li>The settings "Show coord link in mail" and "Show coord link in message" are no longer necessary and are removed. <br></li></ul>
+<img src="../images/v0.4_Screen03.jpg" alt="v0.4_Screen03.jpg"><br>
+<img src="../images/v0.4_Screen04.jpg" alt="v0.4_Screen04.jpg"><br>
+<br></li>
 
 <li>
 <br>
