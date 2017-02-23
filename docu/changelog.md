@@ -14,7 +14,6 @@
 ## v0.4:
 <ul><li>New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/111">#111</a>] New found / hidden in a summary in the beginning of the Friends page:<br>
 Many thanks to <a href="https://www.geocaching.com/profile/?u=Herr%20Ma">Herr Ma</a> for the development.<br>
-<br>
 Summary for new founds/hides for friends on the friends page will be shown as follow:<br>
 <img src="../images/v0.4_Screen17.jpg" alt="v0.4_Screen17.jpg"><br>
 <br>
@@ -26,7 +25,6 @@ To use the new summary feature you have to set the checkbox "Show summary for ne
 <br></li>
 <li>New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/145">#145</a>] User ignore processing in cache listing logs, VUPs (Very unimportant persons):<br>
 Many thanks to <a href="https://www.geocaching.com/profile/?u=Herr%20Ma">Herr Ma</a> for the idea and a lot of the coding.<br>
-<br>
 The VUP processing is integrated in the VIP processing as a second part and have the most of the VIP functionality. The main idea are "censored" cache logs for the VUPs. If you mark a person as a VUP, the cache log text will only contain the text "censored", so you can be relaxed and you have not to be exercised.<br>
 <img src="../images/v0.4_Screen14.jpg" alt="v0.4_Screen14.jpg"><br>
 <br>
@@ -43,7 +41,8 @@ The VUP processing can be activated and customized in Config.<br>
 <img src="../images/v0.4_Screen16.jpg" alt="v0.4_Screen16.jpg"><br>
 <br></li>
 <li>New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/9">#9</a>] Provide standard configuration set (GClh Config):<br>
-<u>Reset to standard configuration:</u> This is the main functionality to reset to standard configuration set. This is the way to come back to an efficient configuration set, after some experimental or other motivated changes. This option load a reasonable standard configuration and overwrite your configuration data in parts. Of course, personal data, like home-coords, homezone or similar data are not overwritten.<br>
+- Reset to standard configuration: <br>
+This is the main functionality to reset to standard configuration set. This is the way to come back to an efficient configuration set, after some experimental or other motivated changes. This option load a reasonable standard configuration and overwrite your configuration data in parts. Of course, personal data, like home-coords, homezone or similar data are not overwritten.<br>
 <u>Reset your own home-coords</u> could help you with problems around your home-coords, like for example with your main homezone, with nearest lists or with your home-coords itself.<br>
 <u>Reset your own id for your trackables</u> could help you with problems with your own trackables lists.<br>
 <u>Reset dynamic and unused data</u> is the possibility to reorganize the configuration set. Unused parameters, of older script versions, are deleted. And all the dynamic data, especially the autovisit settings for every TB, are deleted too.<br>
