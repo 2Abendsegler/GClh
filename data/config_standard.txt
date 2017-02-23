@@ -157,5 +157,6 @@
   "settings_friendlist_summary": true,
   "settings_friendlist_summary_viponly": false,
   "settings_process_vup": false,
-  "settings_show_vup_friends": false
+  "settings_show_vup_friends": false,
+  "settings_search_enable_user_defined": true
 }
