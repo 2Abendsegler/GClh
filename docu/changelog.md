@@ -25,7 +25,7 @@ To use the new summary feature you have to set the checkbox "Show summary for ne
 <img src="../images/v0.4_Screen20.jpg" alt="v0.4_Screen20.jpg"><br>
 <br></li>
 <li>New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/145">#145</a>] User ignore processing in cache listing logs, VUPs (Very unimportant persons):<br>
-Many thanks to <a href="https://www.geocaching.com/profile/?u=Herr%20Ma">Herr Ma</a> for the idea and a lot of the coding.<br>
+Many thanks to <a href="https://www.geocaching.com/profile/?u=Herr%20Ma">Herr Ma</a> for the idea and a lot of coding.<br>
 <br>
 The VUP processing is integrated in the VIP processing as a second part and have the most of the VIP functionality. The main idea are "censored" cache logs for the VUPs. If you mark a person as a VUP, the cache log text will only contain the text "censored", so you can be relaxed and you have not to be stressed.<br>
 <img src="../images/v0.4_Screen14.jpg" alt="v0.4_Screen14.jpg"><br>
