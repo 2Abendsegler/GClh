@@ -59,7 +59,7 @@ Inspired by <a href="https://www.geocaching.com/seek/nearest.aspx?u=Herr%20Ma">H
 <img src="../images/v0.4_Screen04.jpg" alt="v0.4_Screen04.jpg"><br>
 <br></li>
 <li>New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/11">#11</a>] Seitenheader ausrichten / Arrange header layout on content:<br>
-<li>With this option you can arrange the header width on the width of the content of the page. This is an easy feature with some restrictions, like for example the available place, especially for horizontal navigation menues.<br></li>
+<ul><li>With this option you can arrange the header width on the width of the content of the page. This is an easy feature with some restrictions, like for example the available place, especially for horizontal navigation menues.<br></li>
 <li>The fixed header is available at all pages in the older design like for example cache and TB listings, bookmarks, pocket queries, profiles, statistics, watchlists and field notes, to name just a few.<br></li>
 <li>At maps and at the pages in the newer design it is not available, partly because the content of the pages are not yet in an accurate width, like the newer search cache page or the message center page. Also this feature is not fully integrated in the diverse possibilities of the header layout and the navigation menus.<br></li>
 <li>But we hope the friends of this specific header design can deal with it.<br></li></ul>
