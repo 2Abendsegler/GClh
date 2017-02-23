@@ -69,6 +69,19 @@ Inspired by <a href="https://www.geocaching.com/seek/nearest.aspx?u=Herr%20Ma">H
 <img src="../images/v0.4_Screen08.jpg" alt="v0.4_Screen08.jpg"><br>
 <img src="../images/v0.4_Screen09.jpg" alt="v0.4_Screen09.jpg"><br>
 <br></li>
+<li>New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/12">#12</a>] Logo und Message Center Icon wahlweise entfernen / Remove logo and message center in header:<br>
+Remove logo in header:<br>
+<ul><li>With this option you can remove the logo in the header. This is an easy feature with some restrictions.<br></li>
+<li>This feature is available at all pages in the older design like for example cache and TB listings, bookmarks, pocket queries, nearest lists, profiles, statistics, watchlists and field notes, to name just a few.<br></li>
+<li>At maps and at the pages in the newer design it is not available. Also this feature is not fully integrated in the diverse possibilities of the header layout and the navigation menus.<br></li></ul>
+Remove message center in header: <br>
+<ul><li>With this option you can remove the complete message center in the header. You will not be informed longer about new messages.<br></li></ul>
+<img src="../images/v0.4_Screen10.jpg" alt="v0.4_Screen10.jpg"><br>
+<img src="../images/v0.4_Screen11.jpg" alt="v0.4_Screen11.jpg"><br>
+<br>
+<a href="https://raw.githubusercontent.com/2Abendsegler/GClh/v0.4/data/config_header_align_logo_mc_remove.txt ">Here</a> is a small config file with the necessary changes to arrange the header and remove the logo and the message center icon and text. You can copy the lines and insert and import it with GClh Sync II.<br>
+<br></li>
+
 
 
 <li>
