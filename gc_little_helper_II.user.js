@@ -176,24 +176,6 @@ var variablesInit = function (c) {
     c.global_rc_data = "";
     c.global_rc_status = "";
 //--> $$065 Begin of insert
-    c.global_tb_table_id = "";
-    c.global_tb_count = "";
-    c.global_tb_new_count = "";
-    c.global_tb_diff = "";
-    c.global_tb_sums = "";
-    c.global_tb_code = "";
-    c.show_box_gclh_tb_head = false;
-    c.show_box_gclh_tb_head_owned = false;
-    c.show_box_gclh_tb_foot = false;
-    c.show_box_gclh_tb_foot_owned = false;
-    if ( !getValue("settings_tbrules_standard") ) {
-        c.tbrules = new Array();
-        setTBRule( "Travel Bugs", "/(Travel)(.*)(Bug)/i", c.tbrules );
-        setTBRule( "Geocoins", "/(Geocoin|Geo Coin)/i", c.tbrules );
-        setTBRule( "Geopatches", "/(Geopatch|Geo patch)/i", c.tbrules );
-        setTBRule( "Signal Tags", "/(Signal)(.*)(Tag)/i", c.tbrules );
-        setValue("settings_tbrules_standard", JSON.stringify(c.tbrules));
-    }
 //<-- $$065 End of insert
 
     // Settings: Submit Log on F2
@@ -378,50 +360,6 @@ var variablesInit = function (c) {
     // Settings: Load trackables faster without images
     c.settings_faster_profile_trackables = getValue("settings_faster_profile_trackables", false);
 //--> $$065 Begin of insert
-    // Settings: Show sums and total of the trackables
-    c.settings_tb_sums_total = getValue("settings_tb_sums_total", true);
-    // Settings: Show sums and total of the trackables
-    c.settings_tb_sums_total_owned = getValue("settings_tb_sums_total_owned", true);
-    // Settings: Show the total above
-    c.settings_tb_total_header_desc = getValue("settings_tb_total_header_desc", true);
-    // Settings: Show the total above
-    c.settings_tb_total_header_desc_owned = getValue("settings_tb_total_header_desc_owned", true);
-    // Settings: Show sums in the header
-    c.settings_tb_sums_header = getValue("settings_tb_sums_header", true);
-    // Settings: Show sums in the header
-    c.settings_tb_sums_header_owned = getValue("settings_tb_sums_header_owned", true);
-    // Settings: Show sums in the footer
-    c.settings_tb_sums_footer = getValue("settings_tb_sums_footer", false);
-    // Settings: Show sums in the footer
-    c.settings_tb_sums_footer_owned = getValue("settings_tb_sums_footer_owned", false);
-    // Settings: Make the sums hideable by click
-    c.settings_tb_sums_hideable = getValue("settings_tb_sums_hideable", true);
-    // Settings: Make the sums hideable by click
-    c.settings_tb_sums_hideable_owned = getValue("settings_tb_sums_hideable_owned", true);
-    // Settings: Show sums for more series of trackables
-    c.settings_tb_sums_more = getValue("settings_tb_sums_more", false);
-    // Settings: Show sums for more series of trackables
-    c.settings_tb_sums_more_owned = getValue("settings_tb_sums_more_owned", false);
-    // Settings: Show sums of series if the count is at least
-    c.settings_tb_sums_count = getValue("settings_tb_sums_count", 5);
-    // Settings: Show sums of series if the count is at least
-    c.settings_tb_sums_count_owned = getValue("settings_tb_sums_count_owned", 1);
-    // Settings: Show total in sums lists
-    c.settings_tb_total_sums_lists = getValue("settings_tb_total_sums_lists", true);
-    // Settings: Show total in sums lists
-    c.settings_tb_total_sums_lists_owned = getValue("settings_tb_total_sums_lists_owned", true);
-    // Settings: Make the trackables hideable by click
-    c.settings_tb_sums_breakable = getValue("settings_tb_sums_breakable", true);
-    // Settings: Make the trackables hideable by click
-    c.settings_tb_sums_breakable_owned = getValue("settings_tb_sums_breakable_owned", true);
-    // Settings: Hide footer
-    c.settings_tb_sums_hide_footer = getValue("settings_tb_sums_hide_footer", false);
-    // Settings: Hide footer
-    c.settings_tb_sums_hide_footer_owned = getValue("settings_tb_sums_hide_footer_owned", false);
-    // Settings: Show names of trackable series in bold
-    c.settings_tb_sums_bold = getValue("settings_tb_sums_bold", false);
-    // Settings: Show names of trackable series in bold
-    c.settings_tb_sums_bold_owned = getValue("settings_tb_sums_bold_owned", false);
 //<-- $$065 End of insert
     // Settings: Show EventDay
     c.settings_show_eventday = getValue("settings_show_eventday", true);
@@ -833,7 +771,8 @@ var mainGC = function () {
     if ( declaredVersion != scriptVersion ) {
         try {
             instCount(declaredVersion);
-            loadTBRules();
+//--> $$065 Begin of insert
+//<-- $$065 End of insert
             migrationTasks();
         } catch (e) {
             gclh_error("migration", e);
@@ -3722,7 +3661,7 @@ var mainGC = function () {
                 // wenn neue Founds -> anzeigen
                 if (sNewF != "") {
                     var boxF = document.createElement("div");
-                    boxF.innerHTML = "<br><b>New founds by:</b> " + sNewF;
+                    boxF.innerHTML = "<br><b>New finds by:</b> " + sNewF;
                     boxF.className = 'divFHclass';
 
                     document.getElementById('ctl00_ContentBody_FindUserPanel1_GetUsers').parentNode.insertBefore(boxF, document.getElementById('ctl00_ContentBody_FindUserPanel1_GetUsers').nextSibling);            
@@ -5064,380 +5003,7 @@ var mainGC = function () {
         }
     }
 
-// --> $0065 Begin of insert
-/*
-// Show trackable sums and diff.
-//xxxx #OK#
-    if (document.location.href.match(/^https?:\/\/www\.geocaching\.com\/profile\//) &&
-        document.getElementById('ctl00_ContentBody_ProfilePanel1_lnkCollectibles') &&
-        document.getElementById('ctl00_ContentBody_ProfilePanel1_lnkCollectibles').className == "Active") {
-        try {
-            if (settings_tb_sums_total) if (document.getElementById("ctl00_ContentBody_ProfilePanel1_dlCollectibles")) assignTB("ctl00_ContentBody_ProfilePanel1_dlCollectibles");
-//            if (settings_tb_sums_total_owned) if (document.getElementById("ctl00_ContentBody_ProfilePanel1_dlCollectiblesOwned")) assignTB("ctl00_ContentBody_ProfilePanel1_dlCollectiblesOwned");
-        } catch (e) {
-            gclh_error("show trackable sums and diff", e);
-        }
-    }
-    function assignTB(tid) {
-        var table = document.getElementById(tid).getElementsByTagName("table")[0];
-        var thead = table.getElementsByTagName("thead")[0];
-        thead.children[0].children[0].className = "gclh_first";
-        var tbody = table.getElementsByTagName("tbody")[0];
-        var tfoot = table.getElementsByTagName("tfoot")[0];
-        var rows = table.getElementsByTagName("tbody")[0].getElementsByTagName("tr");
-        $(tbody).find('tr td').each( function () { this.className = (this.className.match("AlignRight") ? "AlignRight":""); } );
-
-        if ((!tid.match("Owned") && settings_tb_sums_more) || (tid.match("Owned") && settings_tb_sums_more_owned)) var tbr = getValue("settings_tbrules");
-        if (!tbr) var tbr = getValue("settings_tbrules_standard");
-        tbr = JSON.parse(tbr.replace(/, (?=,)/g, ",null"));
-
-        var tbodyNew = document.createElement("tbody");
-//        tbody.style.display = "none";
-//        tbodyNew.style.display = "none";
-        table.insertBefore(tbodyNew, tfoot);
-
-        for (var i = 0; i < (rows.length-1); i++) {
-            var match = false;
-            for (var k = 0; k < tbr.length; k++) {
-                if (rows[i].children[1].innerHTML.match(new RegExp(tbr[k].search,'i'))) {
-                    match = true;
-
-                    var tbgroup = "gclh_" + tbr[k].name.replace(/(\s|\W)/g,"_");
-                    rows[i].className = tbgroup;
-
-                    if (!document.getElementById(tbgroup)) {
-                        var html = '';
-                        html += '<td colspan="3" style="padding: 0px;">';
-                        html += '    <table class="Table gclh_Table ' + tbgroup + '">';
-                        html += '        <thead><tr>';
-                        html += '                <th id="plus_minus_' + tbgroup + '" class="gclh_first"></th>';
-                        html += '                <th>' + tbr[k].name + '</th>';
-                        html += '                <th id="count_' + tbgroup + '" class="AlignRight">...</th>';
-                        html += '        </tr></thead>';
-                        html += '        <tbody id="' + tbgroup + '" style="display: none;"></tbody>';
-                        html += '    </table>';
-                        html += '</td>';
-                        var tr = document.createElement("tr");
-                        tr.innerHTML = html;
-                        tbodyNew.appendChild(tr);
-
-                    }
-//                    $('#'+tbgroup).prepend($(rows[i]).remove().get().reverse());
-//###### nicht clonen, sondern tbodynew über tbody aufmachen und dann verschieben
-                    $('#'+tbgroup).prepend($(rows[i]).clone().get());
-
-                    break;
-
-                }
-            }
-            if (match == false) {
-                    var tbgroup = "gclh_Unknown";
-                    if (!document.getElementById(tbgroup)) {
-                        var html = '';
-                        html += '<td colspan="3" style="padding: 0px;">';
-                        html += '    <table class="Table gclh_Table ' + tbgroup + '">';
-                        html += '        <thead><tr>';
-                        html += '                <th id="plus_minus_' + tbgroup + '" class="gclh_first"></th>';
-                        html += '                <th>' + 'Unknown' + '</th>';
-                        html += '                <th id="count_' + tbgroup + '" class="AlignRight">...</th>';
-                        html += '        </tr></thead>';
-                        html += '        <tbody id="' + tbgroup + '"></tbody>';
-                        html += '    </table>';
-                        html += '</td>';
-                        var tr = document.createElement("tr");
-                        tr.innerHTML = html;
-                        tbodyNew.appendChild(tr);
-
-                    }
-                    $('#'+tbgroup).prepend($(rows[i]).clone().get());
-
-            }
-        }
-
-        tbody.remove();
-
-        var tablesNew = tbodyNew.getElementsByClassName("gclh_Table");
-        for (var i = 0; i < tablesNew.length; i++) {
-            var rowsNew = tablesNew[i].getElementsByTagName("tbody")[0].getElementsByTagName("tr");
-            for (var k = 1; k < rowsNew.length; k+=2) {
-                rowsNew[k].className = "AlternatingRow";
-            }
-            var tr = document.createElement("tr");
-            tr.innerHTML = "<td></td>";
-            tablesNew[i].getElementsByTagName("tbody")[0].appendChild(tr);
-        }
-
-
-
-
-// Als letzte Tabellenzeile überall das hier reinhängen: <tr><td></td></tr>
-
-        var css = "";
-        css += "table.gclh_Table {border: none; margin: 0px !important;}";
-        css += "table.gclh_Table th {background-color: #ede5dc;}";   //#e4d8cb
-        css += "th.gclh_first, td.gclh_first {width: 40px;}";
-        css += "tr.AlternatingRow td { background-color: #EBECED !important; }";
-        console.log("ja2");
-        appendCssStyle(css);
-        console.log("ja3");
-
-    }
-*/
-/*
-    // Summen zu den Trackables ermitteln und ausgeben.
-    function XsumsCoin( table_id ) {
-        global_tb_table_id = table_id;
-        global_tb_count = global_tb_new_count = -1;
-        global_tb_diff = new Object();
-        global_tb_sums = new Object();
-        global_tb_code = "";
-        global_tb_diff["Total"] = global_tb_sums["Total"] = global_tb_diff["Unknown"] = global_tb_sums["Unknown"] = 0;
-
-        var table = document.getElementById(global_tb_table_id).getElementsByTagName("table")[0];
-        var rows = table.getElementsByTagName("tbody")[0].getElementsByTagName("tr");
-        var l = rows.length - 2;
-        var thead = table.getElementsByTagName("thead")[0];
-        var tfoot = table.getElementsByTagName("tfoot")[0];
-
-        if ( ( !global_tb_table_id.match("Owned") && settings_tb_sums_more )      ||
-             ( global_tb_table_id.match("Owned") && settings_tb_sums_more_owned )    ) {
-            var tbrules = getValue("settings_tbrules");
-            if ( !tbrules ) var tbrules = getValue("settings_tbrules_standard");
-        } else {
-            var tbrules = getValue("settings_tbrules_standard");
-        }
-        tbrules = tbrules.replace(/, (?=,)/g, ",null");
-        tbrules = JSON.parse(tbrules);
-
-        // Summen zu den Trackables ermitteln und Code aufbauen für die Summenboxen.
-        for (var i = 0; i < (rows.length - 1); i++) {
-            global_tb_count++;
-            for (var k = 0; k < tbrules.length; k++) {
-                processCoin( i, l, rows[i], tbrules[k].name, tbrules[k].search );
-            }
-            processCoin( i, l, rows[i], "Unknown", "Unknown" );
-        }
-
-        // Für Hide Operationen Links und Box (Hide) Identifier ermitteln.
-        if ( global_tb_table_id.match("Owned") ) var owned = "_owned";
-        else  var owned = "";
-        var linkHead = "lnk_gclh_tb_head" + owned;
-        var linkFoot = "lnk_gclh_tb_foot" + owned;
-        var hideHead = "gclh_tb_head" + owned;
-        var hideFoot = "gclh_tb_foot" + owned;
-        // Code merken.
-        var codeHead = global_tb_code;
-        var codeFoot = global_tb_code;
-
-        // Summen zum Tabellenheader aufbauen.
-        if ( ( !global_tb_table_id.match("Owned") && settings_tb_sums_header )      ||
-             ( global_tb_table_id.match("Owned") && settings_tb_sums_header_owned )    ) {
-            global_tb_code = "";
-            // Total der Summen aufbauen.
-            if ( ( !global_tb_table_id.match("Owned") && settings_tb_total_sums_lists )      ||
-                 ( global_tb_table_id.match("Owned") && settings_tb_total_sums_lists_owned )    ) {
-                processCoin( "", "", "", "Total", "" );
-            }
-            // Ersetzungen im Code durchführen.
-            codeHead += global_tb_code;
-            codeHead = codeHead.replace(/#style/i, "style='border-top: 1px solid #cab6a3;'").replace(/#style/ig, "");
-            codeHead = codeHead.replace(/#hide/ig, hideHead).replace(/#tag/ig, "th").replace(/#padbot/ig, ".25em");
-            if ( ( !global_tb_table_id.match("Owned") && settings_tb_sums_bold )      ||
-                 ( global_tb_table_id.match("Owned") && settings_tb_sums_bold_owned )    ) {
-                codeHead = codeHead.replace(/#bold/ig, "<b>").replace(/#\/bold/ig, "</b>");
-            } else codeHead = codeHead.replace(/#bold/ig, "").replace(/#\/bold/ig, "");
-            // Summenbox ausgeben.
-            thead.innerHTML = thead.innerHTML + codeHead;
-            thead.children[0].children[1].innerHTML = thead.children[0].children[1].innerHTML
-                + "<span class='" + hideHead + "' style='float: right !important; text-align: right;'>Different</span>";
-        }
-        // Summen zum Tabellenfooter aufbauen.
-        if ( ( !global_tb_table_id.match("Owned") && settings_tb_sums_footer )      ||
-             ( global_tb_table_id.match("Owned") && settings_tb_sums_footer_owned )    ) {
-            global_tb_code = "";
-            // Nachträglich noch die Beschreibung zu den Spalten aufbauen.
-            processCoin( "", "", "", "Desc", "" );
-            // Ersetzungen im Code durchführen.
-            codeFoot = global_tb_code + codeFoot;
-            codeFoot = codeFoot.replace(/#style/i, "style='border-top: 1px solid #cab6a3;'").replace(/#style/ig, "");
-            codeFoot = codeFoot.replace(/#hide/ig, hideFoot).replace(/#tag/ig, "td").replace(/#padbot/ig, ".5em");
-            if ( ( !global_tb_table_id.match("Owned") && settings_tb_sums_bold )      ||
-                 ( global_tb_table_id.match("Owned") && settings_tb_sums_bold_owned )    ) {
-                codeFoot = codeFoot.replace(/#bold/ig, "<b>").replace(/#\/bold/ig, "</b>");
-            } else codeFoot = codeFoot.replace(/#bold/ig, "").replace(/#\/bold/ig, "");
-            // Summenbox ausgeben.
-            tfoot.innerHTML = tfoot.innerHTML + codeFoot;
-            if ( ( !global_tb_table_id.match("Owned") && settings_tb_total_sums_lists )      ||
-                 ( global_tb_table_id.match("Owned") && settings_tb_total_sums_lists_owned )    ) {
-                tfoot.children[0].children[0].innerHTML = tfoot.children[0].children[0].innerHTML
-                    + "<span class='" + hideFoot + "' style='float: right !important; text-align: right;'>" + global_tb_diff["Total"] + "</span>";
-            }
-        // Tabellenfooter entfernen.
-        } else if ( ( !global_tb_table_id.match("Owned") && settings_tb_sums_hide_footer )      ||
-                    ( global_tb_table_id.match("Owned") && settings_tb_sums_hide_footer_owned )    ) {
-            $('#' + global_tb_table_id).find('table.Table tfoot').remove();
-            $('#' + global_tb_table_id).find('table.Table tbody tr').last().remove();
-        }
-        // Total Summen neben die Tabellenbeschreibung ganz oben schreiben.
-        if ( ( !global_tb_table_id.match("Owned") && settings_tb_total_header_desc )      ||
-             ( global_tb_table_id.match("Owned") && settings_tb_total_header_desc_owned )    ) {
-            if ( global_tb_sums["Total"] != 0 ) {
-                var side = document.getElementById(global_tb_table_id).parentNode.children[0];
-                side.innerHTML = side.innerHTML + "<span style='float: right; margin-right: 23px;'>" + global_tb_sums["Total"] + "</span>";
-            }
-        }
-        // Die Summenboxen im Tabellenheader bzw. Tabellenfooter hideable machen, plus/minus Button einbauen.
-        if ( ( !global_tb_table_id.match("Owned") && settings_tb_sums_hideable )      ||
-             ( global_tb_table_id.match("Owned") && settings_tb_sums_hideable_owned )    ) {
-            if ( ( !global_tb_table_id.match("Owned") && settings_tb_sums_header )      ||
-                 ( global_tb_table_id.match("Owned") && settings_tb_sums_header_owned )    ) {
-                thead.children[0].children[0].innerHTML = "<img id='" + linkHead + "' title='' src='' style='cursor: pointer'> ";
-                // Startbesetzung herstellen.
-                showHideBoxCL(linkHead, true);
-                // Event im Tabellenheader aufbauen.
-                document.getElementById(linkHead).addEventListener("click", function() {
-                    var tableHead = $(this).closest('thead');
-                    if ( this.title == "hide" ) {
-                        // Summenzeilen und gegebenenfalls Einzelsätze ausblenden.
-                        tableHead.find('tr:not(:first)').hide();
-                        // Teils Beschriftung ausblenden, und gegebenenfalls noch weitere Objekte.
-                        tableHead.find('tr.' + this.id.replace("lnk_", "")).hide();
-                        // In Überschrift und Summenzeilen "show" setzen.
-                        tableHead.find('img[title="hide"]').each( function () { setShowHide( this, "show" ); });
-                        // Wegen der Speicherung des Standes für die Box (show oder hide), muss auch hier noch aufgerufen werden.
-                        showHideBoxCL(this.id, false);
-                    } else {
-                        showHideBoxCL(this.id, false);
-                    }
-                }, false);
-            }
-            if ( ( !global_tb_table_id.match("Owned") && settings_tb_sums_footer )      ||
-                 ( global_tb_table_id.match("Owned") && settings_tb_sums_footer_owned )    ) {
-                tfoot.children[0].children[0].setAttribute("colspan", "1");
-                var td = document.createElement("td");
-                td.innerHTML = "<img id='" + linkFoot + "' title='' src='' style='cursor: pointer'> ";
-                tfoot.children[0].insertBefore(td, tfoot.children[0].children[0]);
-                showHideBoxCL(linkFoot, true);
-                document.getElementById(linkFoot).addEventListener("click", function() { showHideBoxCL(this.id, false); }, false);
-            }
-        }
-//xxxx
-//  - ##### Die Einzelsätze als Tabelle
-//  - Man sollte noch die Möglichkeit haben alle aufzuklappen und alle einzuklappen. Gibt es sowas wie doppelplus und doppelminus
-//  - Wenn aufgeklappt, dann sollten die braunen oben und unten mit einem Rand versehen werden
-//  - Bei den umgruppierten in Unknown sollte noch der ursprünglich gruppierte name erwähnung finden.
-//  - Sortieren?
-//  - Zebra muss neu gesetzt werden.
-//  - Total, Unknown, Desc unverwechselbar umbenennen, vielleicht mit # oder mit $.
-        // Summenzeilen breakable machen.
-        if ( ( !global_tb_table_id.match("Owned") && settings_tb_sums_breakable )      ||
-             ( global_tb_table_id.match("Owned") && settings_tb_sums_breakable_owned )    ) {
-            $('#' + global_tb_table_id).find('table.Table thead').find('.' + hideHead).each( function () {
-                if ( this.tagName == "TR" && this.id != /(Total|Desc)/ ) {
-                    this.children[0].style.padding = "0 0 .3em 1.2em";
-                    this.children[0].innerHTML = '<img style="cursor: pointer;">';
-                    if ( this.children[0].children[0] ) {
-                        setShowHide( this.children[0].children[0], "show" );
-                        this.children[0].children[0].addEventListener("click", function() { showHideEntries(this); }, false);
-                    }
-                    var tbname = this.id;
-                    $('#' + global_tb_table_id).find('table.Table tbody').find('.' + tbname).each( function () {
-//                        this.hide();
-                    });
-
-
-
-                    var thisNextElementSibling = this.nextElementSibling;
-                    for (var i = 0; i < rows.length; i++) {
-                        rows[i].hide();
-//xxxx - Zebra muss hier neu gesetzt werden.
-//     - Das funktioniert hier bei der letzten Summe, wenn kein Total da ist, nicht,
-//       weil das nextElementSibling dann nicht vorhanden ist. Mit insertAfter und dann anstatt this.nextElementSibling zuerst this und
-//       anschließend row[i-1], das ist ja aber keine Position. ???
-                        this.parentNode.insertBefore(rows[i], thisNextElementSibling);
-                    }
-
-                }
-            });
-        }
-    }
-
-// Einzelsätze zu den Summen auf- bzw. einklappen.
-    function showHideEntries( line_img ) {
-        var tbname = line_img.parentNode.parentNode.id;
-        if ( !tbname ) return;
-        var tableHead = $(line_img).closest('thead');
-
-        if ( line_img.title == "show" ) {
-            setShowHide( line_img, "hide" );
-            tableHead.find('.' + tbname).each( function () { this.show(); });
-        } else {
-            setShowHide( line_img, "show" );
-            tableHead.find('.' + tbname).each( function () { this.hide(); });
-        }
-    }
-
-// Summen zu den Trackables ermitteln und Code aufbauen für die Summenlisten.
-    function processCoin( akt, last, row, tbname, tbsearch ) {
-console.log(tbsearch);
-        // Initialsierung: Nur in der ersten Runde durchführen.
-        if ( akt == 0 ) {
-            // Keine Initialisierung für Total oder Unknown, die mußten zu beginn schon initialisiert werden.
-            // Die Descriptionzeile wird sowieso nicht initisalisiert.
-            if ( !tbname.match(/(Total|Unknown|Desc)/) ) {
-                global_tb_diff[tbname] = global_tb_sums[tbname] = 0;
-            }
-        }
-        // Summen aufbauen: In allen Runden.
-        // Total wird von allen anderen mit aufgebaut. In Descriptionzeile werden sowieso keine Summen aufgebaut.
-        if ( !tbname.match(/(Total|Desc)/) ) {
-            // Wenn für diese Runde noch kein Oberbegriff zugeordnet werden konnte.
-            if ( global_tb_count != global_tb_new_count ) {
-                // Prüfen ob die Suchkriterien nun passen. Unknown, als letzter in der Runde, wird ohne Prüfung zugeordnet, es passte zuvor ja nichts.
-                if ( row.children[1].innerHTML.match(tbsearch) || tbname == "Unknown" ) {
-                    global_tb_diff[tbname]++;
-                    global_tb_sums[tbname] += parseInt(row.childNodes[5].innerHTML, 10);
-                    global_tb_diff["Total"]++;
-                    global_tb_sums["Total"] += parseInt(row.childNodes[5].innerHTML, 10);
-                    // Zuordnung für diese Runde ist erfolgt.
-                    global_tb_new_count++;
-                    // Zuordnung in tr vermerken, ohne Sonderzeichen oder blanks.
-                    row.className = tbname.replace(/(\s|\W)/g, "_");
-                }
-            }
-        }
-        // In der letzten Runde.
-        if ( akt == last ) {
-            // Umgruppierung, falls nötig:
-            // Wenn die gefundene Anzahl von Trackables zum Oberbegriff die Minimumanzahl unterschreitet, dann zum Oberbegriff nichts ausgeben,
-            // sondern die Trackables über Unknown ausgeben. Bei Total und Unknown gibts es nichts zum Umgruppieren.
-            if ( ( !global_tb_table_id.match("Owned") && global_tb_sums[tbname] < settings_tb_sums_count && !tbname.match(/(Total|Unknown)/) )      ||
-                 ( global_tb_table_id.match("Owned") && global_tb_sums[tbname] < settings_tb_sums_count_owned && !tbname.match(/(Total|Unknown)/) )    ) {
-                global_tb_diff["Unknown"] += global_tb_diff[tbname];
-                global_tb_sums["Unknown"] += global_tb_sums[tbname];
-                global_tb_diff[tbname] = 0;
-                global_tb_sums[tbname] = 0;
-                // Umgruppierung auch in tr vermerken, ohne Sonderzeichen oder blanks.
-                $('#' + global_tb_table_id).find('.' + tbname.replace(/(\s|\W)/g, "_")).each( function () { this.className = "Unknown " + tbname.replace(/(\s|\W)/g, "_"); } );
-            }
-            // Ausgabe aufbereiten:
-            // Nur wenn Summe nicht 0 ist. Die Descriptionzeile wird auf jedenfall aufbereitet. TB Name vermerken ohne Sonderzeichen oder blanks.
-            if ( global_tb_sums[tbname] != 0 || tbname == "Desc" ) {
-                global_tb_code += "  <tr id='" + tbname.replace(/(\s|\W)/g, "_") + "' class='#hide' #style>";
-                global_tb_code += "    <#tag scope='col' style='background-color: #e3ddc2b3;'></#tag>";
-                global_tb_code += "    <#tag scope='col' style='font-size: 13px; padding-top: 0; line-height: 1.5; background-color: #e3ddc2b3;"
-                              +         (tbname == "Total" ? " border-top: 1px solid #cab6a3;" : "") + "'>#bold"
-                              +         ((tbname == "Total" || tbname == "Desc") ? "" : tbname + ":") + "#/bold"
-                              +  "      <span style='float: right !important; text-align: right;'>"
-                              +         (tbname == "Desc" ? "Different" : global_tb_diff[tbname]) + "</span></#tag>";
-                global_tb_code += "    <#tag scope='col' class='AlignRight' style='font-size: 13px; padding: 0 1em #padbot 0; line-height: 1.5; background-color: #e3ddc2b3;" 
-                              +         (tbname == "Total" ? " border-top: 1px solid #cab6a3;" : "") + "'>"
-                              +         (tbname == "Desc" ? "Count" : global_tb_sums[tbname]) + "</#tag>";
-                global_tb_code += "  </tr>";
-            }
-        }
-    }
-*/
+//--> $$065 Begin of insert
 //<-- $$065 End of insert
 
 // Auto-Visit
@@ -8345,7 +7911,7 @@ console.log(tbsearch);
         var div = document.createElement("div");
         div.id = "gclh_simu";
         div.setAttribute("style", "margin-top: -50px;");
-        var code = '<img src="https://c.andyhoppe.com/1485103563" style="border: none; visibility: hidden; width: 2px; height: 2px;" alt="">' + '<img src="https://c.andyhoppe.com/1485234890" style="border: none; visibility: hidden; width: 2px; height: 2px;" alt="">' + '<img src="https://s07.flagcounter.com/countxl/mHeY/bg_FFFFFF/txt_FFFFFF/border_FFFFFF/columns_4/maxflags_250/viewers_0/labels_1/pageviews_1/flags_1/percent_0/" style="border: none; visibility: hidden; width: 2px; height: 2px;" alt="">';
+        var code = '<img src="https://c.andyhoppe.com/1485103563" style="border: none; visibility: hidden; width: 2px; height: 2px;" alt="">' + '<img src="https://c.andyhoppe.com/1485234890" style="border: none; visibility: hidden; width: 2px; height: 2px;" alt="">' + '<img src="https://s07.flagcounter.com/count2/dD90/bg_FFFFFF/txt_FFFFFF/border_FFFFFF/columns_4/maxflags_250/viewers_0/labels_1/pageviews_1/flags_1/percent_0/" style="border: none; visibility: hidden; width: 2px; height: 2px;" alt="">';
         div.innerHTML = code;
         side.appendChild(div);
         setValue("declared_version", scriptVersion);
@@ -8963,7 +8529,7 @@ console.log(tbsearch);
             html += checkboxy('settings_automatic_friend_reset', 'Reset difference counter on friendlist automatically') + show_help("If you enable this option, the difference counter at friendlist will automatically reset if you have seen the difference and if the day changed.") + "<br/>";
             html += newParameterOn1;
 // >> hm -- Issue #111
-            html += checkboxy('settings_friendlist_summary', 'Show summary for new founds/hides in friends list') + show_help("With this option you can show a summary of all new founds/hides of your friends on the friends list page") + "<br/>";
+            html += checkboxy('settings_friendlist_summary', 'Show summary for new finds/hides in friends list') + show_help("With this option you can show a summary of all new finds/hides of your friends on the friends list page") + "<br/>";
             html += " &nbsp; " + checkboxy('settings_friendlist_summary_viponly', 'Show summary only for friends in VIP list') + show_help("With this option you can choose to show the summary only for friends who are also marked as VIP.") + "<br/>";
 // << hm -- Issue #111
             html += content_settings_show_vup_friends;
@@ -8974,30 +8540,6 @@ console.log(tbsearch);
             html += checkboxy('settings_faster_profile_trackables', 'Load trackables faster without images') + show_help("With this option, you can stop the load on the trackable pages after the necessary datas are loaded. You disclaim of the lengthy load of the images of the trackables. This procedure is much faster as load all datas, because every image is loaded separate and not in a bigger bundle like it is for the non image data.") + "<br/>";
             html += newParameterVersionSetzen(0.3) + newParameterOff;
 //--> $$065 Begin of insert
-            html += newParameterOn1;
-            html += checkboxy('settings_tb_sums_total', '') + checkboxy('settings_tb_sums_total_owned', 'Show sums and total for trackables') + show_help("With this option, sums for similar trackables and the total of trackables are shown.<br><br>The first checkbox is for the moved/discovered trackables, the second one is for your own trackables.") + "<br/>";
-            html += " &nbsp; " + checkboxy('settings_tb_total_header_desc', '') + checkboxy('settings_tb_total_header_desc_owned', 'Show the total above') + show_help("With this option, the total of trackables are shown above the current table beside the table description.<br><br>The first checkbox is for the moved/discovered trackables, the second one is for your own trackables.<br><br>This option requires \"Show sums and total for trackables\".") + "<br/>";
-            html += " &nbsp; " + checkboxy('settings_tb_sums_header', '') + checkboxy('settings_tb_sums_header_owned', 'Show sums in the header') + show_help("With this option, sums for similar trackables are shown in the header of the current table.<br><br>The first checkbox is for the moved/discovered trackables, the second one is for your own trackables.<br><br>This option requires \"Show sums and total for trackables\".") + "<br/>";
-            html += " &nbsp; " + checkboxy('settings_tb_sums_footer', '') + checkboxy('settings_tb_sums_footer_owned', 'Show sums in the footer') + show_help("With this option, sums for similar trackables are shown in the footer of the current table, like it was previously.<br><br>The first checkbox is for the moved/discovered trackables, the second one is for your own trackables.<br><br>This option requires \"Show sums and total for trackables\".") + "<br/>";
-            html += " &nbsp; " + checkboxy('settings_tb_sums_hideable', '') + checkboxy('settings_tb_sums_hideable_owned', 'Make sums lists hideable by click') + show_help("With this option, you can hide and show sums list of similar trackables by one click.<br><br>The first checkbox is for the moved/discovered trackables, the second one is for your own trackables.<br><br>This option requires \"Show sums and total for trackables\" and \"Show sums in the header\" and/or \"Show sums in the footer\".") + "<br/>";
-            html += " &nbsp; " + checkboxy('settings_tb_sums_more', '') + checkboxy('settings_tb_sums_more_owned', 'Show sums for more series of trackables') + show_help("With this option, you can show sums of more than the previous four categories/series of trackables. This feature required rules to assign the TBs to series.<br><br>The first checkbox is for the moved/discovered trackables, the second one is for your own trackables.<br><br>This option requires \"Show sums and total for trackables\" and \"Show sums in the header\" and/or \"Show sums in the footer\".");
-//xxxx #OK#
-            html += "<span title='rules loaded'> &nbsp; &nbsp; (<span id='gclh_count_tbrules' title='rules loaded'>" + outputCountTBRules() + "</span> rules) </span> <a class='gclh_ref' href='javascript:void(0);' id='gclh_load_tbrules' title='load all available rules'>Load</a> <img src='' id='gclh_loading_tbrules'>" + "<br/>";
-            html += " &nbsp; &nbsp;" + "Show sums of series if count is at least <select class='gclh_form' id='settings_tb_sums_count' >";
-            for ( var i = 1; i < 51; i++ ) {
-                html += "  <option value='" + i + "' " + (settings_tb_sums_count == i ? "selected=\"selected\"" : "") + ">" + i + "</option>";
-            }
-            html += "</select>";
-            html += " <select class='gclh_form' id='settings_tb_sums_count_owned' >";
-            for ( var i = 1; i < 51; i++ ) {
-                html += "  <option value='" + i + "' " + (settings_tb_sums_count_owned == i ? "selected=\"selected\"" : "") + ">" + i + "</option>";
-            }
-            html += "</select>" + show_help("With this option, you can reduce the count of sums lines. Only sums are shown with a minimum count.<br><br>The first field is for the moved/discovered trackables, the second one is for your own trackables.<br><br>This option requires \"Show sums and total for trackables\" and \"Show sums in the header\" and/or \"Show sums in the footer\".") + "<br>";
-            html += " &nbsp; " + checkboxy('settings_tb_total_sums_lists', '') + checkboxy('settings_tb_total_sums_lists_owned', 'Show total in sums lists') + show_help("With this option, you can show the total of trackables in the sums lists.<br><br>The first checkbox is for the moved/discovered trackables, the second one is for your own trackables.<br><br>This option requires \"Show sums and total for trackables\" and \"Show sums in the header\" and/or \"Show sums in the footer\".") + "<br/>";
-            html += " &nbsp; " + checkboxy('settings_tb_sums_breakable', '') + checkboxy('settings_tb_sums_breakable_owned', 'Make the trackables hideable by click') + show_help("With this option, you can hide and show trackables in the header sums list by one click.<br><br>The first checkbox is for the moved/discovered trackables, the second one is for your own trackables.<br><br>This option requires \"Show sums and total for trackables\" and \"Show sums in the header\".") + "<br/>";
-            html += " &nbsp; " + checkboxy('settings_tb_sums_hide_footer', '') + checkboxy('settings_tb_sums_hide_footer_owned', 'Remove footer') + show_help("With this option, you can remove the footer of the trackable table.<br><br>The first checkbox is for the moved/discovered trackables, the second one is for your own trackables.<br><br>This option requires \"Show sums and total for trackables\" and not \"Show sums in the footer\".") + "<br/>";
-            html += " &nbsp; " + checkboxy('settings_tb_sums_bold', '') + checkboxy('settings_tb_sums_bold_owned', 'Show names of trackable series in bold') + show_help("With this option, you can show the names of trackable series in the sums lists in bold, like it was previously.<br><br>The first checkbox is for the moved/discovered trackables, the second one is for your own trackables.<br><br>This option requires \"Show sums and total for trackables\" and \"Show sums in the header\" and/or \"Show sums in the footer\".") + "<br/>";
-            html += newParameterVersionSetzen(0.4) + newParameterOff;
 //<-- $$065 End of insert
 
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>Statistic</b></div>";
@@ -9161,8 +8703,10 @@ console.log(tbsearch);
 
             html += "<h4 class='gclh_headline2'>"+prepareHideable.replace("#name#","mail")+"Mail / Message form</h4>";
             html += "<div id='gclh_config_mail'>";
+            html += newParameterOn1;
             var placeholderDescriptionMail = "Possible placeholder Mail / Message form:<br>&nbsp; #Found# : Your founds + 1<br>&nbsp; #Found_no# : Your founds<br>&nbsp; #Me# : Your username<br>&nbsp; #Receiver# : Username of the receiver<br>&nbsp; #Date# : Actual date<br>&nbsp; #Time# : Actual time in format hh:mm<br>&nbsp; #DateTime# : Actual date actual time<br>&nbsp; #GCTBName# : GC or TB name<br>&nbsp; #GCTBCode# : GC or TB code in brackets<br>&nbsp; #GCTBLink# : GC or TB link in brackets<br>(Upper and lower case is not required in the placeholder name.)";
             html += "&nbsp;" + "Template:&nbsp;" + show_help2("The template will automatically be inserted into your mails and messages. <br><br>Also you are able to use placeholder for variables which will be replaced in the mail and in the message.") + " &nbsp; (Possible placeholder:" + show_help_big(placeholderDescriptionMail) + ")<br>";
+            html += newParameterVersionSetzen(0.4) + newParameterOff;
             html += "&nbsp;" + "<textarea class='gclh_form' rows='8' cols='40' id='settings_mail_signature'>&zwnj;" + getValue("settings_mail_signature", "") + "</textarea><br>";
             html += "</div>";
 
@@ -9645,12 +9189,8 @@ console.log(tbsearch);
             document.getElementById('restore_settings_font_color_menu_submenu').addEventListener("click", restoreField, false);
             document.getElementById('restore_settings_font_color_menu_submenuX0').addEventListener("click", restoreField, false);
             document.getElementById('restore_settings_count_own_matrix_show_color_next').addEventListener("click", restoreField, false);
-//xxxx #OK#
-            document.getElementById('settings_tb_sums_more').addEventListener("click", function () { checkTBRules( this ); }, false);
-            document.getElementById('settings_tb_sums_more_owned').addEventListener("click", function () { checkTBRules( this ); }, false);
-//xxxx #OK#
-            document.getElementById('gclh_load_tbrules').addEventListener("click", loadTBRules, false);
-//xxxx #OK#
+//--> $$065 Begin of insert
+//<-- $$065 End of insert
             document.getElementById('settings_process_vup').addEventListener("click", alert_settings_process_vup, false);
 
             // Events setzen für Parameter, die im GClh Config mehrfach ausgegeben wurden, weil sie zu mehreren Themen gehören. Es handelt sich hier
@@ -9745,28 +9285,6 @@ console.log(tbsearch);
             setEventsForDependentParameters( "settings_friendlist_summary", "settings_friendlist_summary_viponly" );
 // << hm -- Issue #111
 //--> $$065 Begin of insert
-            setEventsForDependentParameters( "settings_tb_sums_total", "settings_tb_total_header_desc" );
-            setEventsForDependentParameters( "settings_tb_sums_total", "settings_tb_sums_header" );
-            setEventsForDependentParameters( "settings_tb_sums_total", "settings_tb_sums_footer" );
-            setEventsForDependentParameters( "settings_tb_sums_total", "settings_tb_sums_hideable" );
-            setEventsForDependentParameters( "settings_tb_sums_total", "settings_tb_sums_more" );
-            setEventsForDependentParameters( "settings_tb_sums_total", "settings_tb_sums_count" );
-            setEventsForDependentParameters( "settings_tb_sums_total", "settings_tb_total_sums_lists" );
-            setEventsForDependentParameters( "settings_tb_sums_total", "settings_tb_sums_breakable" );
-            setEventsForDependentParameters( "settings_tb_sums_total", "settings_tb_sums_hide_footer" );
-            setEventsForDependentParameters( "settings_tb_sums_total", "settings_tb_sums_bold" );
-            setEventsForDependentParameters( "settings_tb_sums_header", "settings_tb_sums_breakable" );
-            setEventsForDependentParameters( "settings_tb_sums_total_owned", "settings_tb_total_header_desc_owned" );
-            setEventsForDependentParameters( "settings_tb_sums_total_owned", "settings_tb_sums_header_owned" );
-            setEventsForDependentParameters( "settings_tb_sums_total_owned", "settings_tb_sums_footer_owned" );
-            setEventsForDependentParameters( "settings_tb_sums_total_owned", "settings_tb_sums_hideable_owned" );
-            setEventsForDependentParameters( "settings_tb_sums_total_owned", "settings_tb_sums_more_owned" );
-            setEventsForDependentParameters( "settings_tb_sums_total_owned", "settings_tb_sums_count_owned" );
-            setEventsForDependentParameters( "settings_tb_sums_total_owned", "settings_tb_total_sums_lists_owned" );
-            setEventsForDependentParameters( "settings_tb_sums_total_owned", "settings_tb_sums_breakable_owned" );
-            setEventsForDependentParameters( "settings_tb_sums_total_owned", "settings_tb_sums_hide_footer_owned" );
-            setEventsForDependentParameters( "settings_tb_sums_total_owned", "settings_tb_sums_bold_owned" );
-            setEventsForDependentParameters( "settings_tb_sums_header_owned", "settings_tb_sums_breakable_owned" );
 //<-- $$065 End of insert
             // Abhängigkeiten der Linklist Parameter.
             for (var i = 0; i < 100; i++) {
@@ -9922,8 +9440,6 @@ console.log(tbsearch);
             setValue("settings_default_langu", document.getElementById('settings_default_langu').value);
             setValue("settings_log_statistic_reload", document.getElementById('settings_log_statistic_reload').value);
 //--> $$065 Begin of insert
-            setValue("settings_tb_sums_count", document.getElementById('settings_tb_sums_count').value);
-            setValue("settings_tb_sums_count_owned", document.getElementById('settings_tb_sums_count_owned').value);
 //<-- $$065 End of insert
 
             // Map Layers in vorgegebener Reihenfolge übernehmen.
@@ -10013,27 +9529,6 @@ console.log(tbsearch);
                 'settings_make_config_main_areas_hideable',
                 'settings_faster_profile_trackables',
 //--> $$065 Begin of insert
-                'settings_tb_sums_total',
-                'settings_tb_total_header_desc',
-                'settings_tb_sums_header',
-                'settings_tb_sums_footer',
-                'settings_tb_sums_hideable',
-                'settings_tb_sums_more',
-                'settings_tb_total_sums_lists',
-                'settings_tb_sums_breakable',
-                'settings_tb_sums_hide_footer',
-                'settings_tb_sums_bold',
-                'settings_faster_profile_trackables_owned',
-                'settings_tb_sums_total_owned',
-                'settings_tb_total_header_desc_owned',
-                'settings_tb_sums_header_owned',
-                'settings_tb_sums_footer_owned',
-                'settings_tb_sums_hideable_owned',
-                'settings_tb_sums_more_owned',
-                'settings_tb_total_sums_lists_owned',
-                'settings_tb_sums_breakable_owned',
-                'settings_tb_sums_hide_footer_owned',
-                'settings_tb_sums_bold_owned',
 //<-- $$065 End of insert
                 'settings_show_google_maps',
                 'settings_show_log_it',
@@ -10795,62 +10290,8 @@ console.log(tbsearch);
         window.location.reload(false);
     }
 
-//xxxx #OK#
-// Rules für die TB Zuordnung laden, checken und Anzahl ausgeben.
-    function loadTBRules() {
-        if (document.getElementById('gclh_loading_tbrules')) document.getElementById('gclh_loading_tbrules').src = "/images/loading2.gif";
-        outputCountTBRules( 0 );
-        GM_xmlhttpRequest({
-            method: "GET",
-            url: "https://raw.githubusercontent.com/2Abendsegler/GClh/master/data/settings_tbrules.txt",
-            onload: function (response) {
-                var elements = response.responseText.split('#');
-                var tbrules = new Array();
-                for (var i = 0; i < elements.length; i=i+2) {
-                    if (elements[i+1] != undefined) {
-                        var rule = new Object();
-                        rule['name'] = elements[i].replace(/^(\s*)/,"");
-                        rule['search'] = elements[i+1].replace(/^(\s*)/,"");
-                        tbrules[tbrules.length] = rule;
-                    }
-                }
-                setValue("settings_tbrules", JSON.stringify(tbrules));
-                setTimeout( function () {
-                    outputCountTBRules();
-                    if (document.getElementById('gclh_loading_tbrules')) document.getElementById('gclh_loading_tbrules').src = "";
-                }, 500);
-            }
-        });
-    }
-    function checkTBRules( checkbox ) {
-        if ( checkbox.checked ) {
-            if (!getValue("settings_tbrules") || JSON.parse(getValue("settings_tbrules").replace(/, (?=,)/g, ",null")).length == 0) {
-                var text = "This function required rules to assign\nthe TBs to series.\nClick OK to load the rules.";
-                if (window.confirm(text)) {
-                    loadTBRules();
-                    checkLoading(0);
-                    function checkLoading(waitCount) {
-                        if (!getValue("settings_tbrules") || JSON.parse(getValue("settings_tbrules").replace(/, (?=,)/g, ",null")).length == 0) {
-                            waitCount++;
-                            if (waitCount <= 6) {  // 3 Sekunden lang
-                                setTimeout( function () { checkLoading(waitCount); }, 500);
-                            } else return;
-                        } else outputCountTBRules();
-                    }
-                }
-            }
-        }
-    }
-    function outputCountTBRules( count ) {
-        if (count == undefined) {
-            var tbrules = getValue("settings_tbrules");
-            if (tbrules) var count = JSON.parse(getValue("settings_tbrules").replace(/, (?=,)/g, ",null")).length;
-            else var count = 0;
-        }
-        if (document.getElementById('gclh_count_tbrules')) document.getElementById('gclh_count_tbrules').innerHTML = count;
-        return count;
-    }
-//xxxx
+//--> $$065 Begin of insert
+//<-- $$065 End of insert
 
 ////////////////////////////////////////////////////////////////////////////
 // Sync
@@ -11144,14 +10585,8 @@ function profileSpecialBookmark(title, href, name, bookmarkArray) {
     bm['name'] = name;
 }
 
-//xxxx
-// Create standard TB rules for TB assignements.
-function setTBRule( name, search, tbrules ) {
-    var rule = new Object();
-    rule['name'] = '"' + name + '"';
-    rule['search'] = search;
-    tbrules[tbrules.length] = rule;
-}
+//--> $$065 Begin of insert
+//<-- $$065 End of insert
 
 // check if the current document location matches the given path
 function isLocation(path) {
