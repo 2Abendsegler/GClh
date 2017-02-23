@@ -15,13 +15,11 @@
 <ul>
 <li>New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/111">#111</a>] New found / hidden in a summary in the beginning of the Friends page:<br>
 Many thanks to <a href="https://www.geocaching.com/profile/?u=Herr%20Ma">Herr Ma</a> for the development.<br>
-<br>
-Summary for new founds/hides for friends on the friends page will be shown as follow:<br>
-<img src="../images/v0.4_Screen17.jpg" alt="v0.4_Screen17.jpg"><br>
-<br>
-There is also a timestamp with the date/time of the last check. After pushing the Reset counter-Button or if there are no new founds/hides, the summary is hidden and only the timestamp is visible:<br>
-<img src="../images/v0.4_Screen18.jpg" alt="v0.4_Screen18.jpg"><br>
-<br>
+<ul>
+<li>Summary for new founds/hides for friends on the friends page will be shown as follow:<br>
+<img src="../images/v0.4_Screen17.jpg" alt="v0.4_Screen17.jpg"><br></li>
+<li>There is also a timestamp with the date/time of the last check. After pushing the Reset counter-Button or if there are no new founds/hides, the summary is hidden and only the timestamp is visible:<br>
+<img src="../images/v0.4_Screen18.jpg" alt="v0.4_Screen18.jpg"><br></li></ul>
 <br></li>
 
 
