@@ -93,7 +93,7 @@ With the link "Show log counter" two counter are shown in every log. The first o
 In some cases, starting count of founds and hiddens are not saved. This has to be changed.<br>
 <br></li>
 <li>Fix: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/147">#147</a>] Width in section "Profile Information" of public profile is cut.<br>
-<br></li>
+</li>
 </ul>
 (25.02.2017)<br>
 <br>
