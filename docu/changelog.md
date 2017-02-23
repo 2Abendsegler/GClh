@@ -1,14 +1,14 @@
-<a href="#v04" title="GClh II Version 0.4 (25.02.2017)">v0.4</a> &nbsp; 
-<a href="#v03" title="GClh II Version 0.3 (05.02.2017)">v0.3</a> &nbsp; 
-<a href="#v0231" title="GClh II Version 0.2.3.1 (22.01.2017)">v0.2.3.1</a> &nbsp; 
-<a href="#v023" title="GClh II Version 0.2.3 (22.01.2017)">v0.2.3</a> &nbsp; 
-<a href="#v0224" title="GClh II Version 0.2.2.4 (20.01.2017)">v0.2.2.4</a> &nbsp; 
-<a href="#v0223" title="GClh II Version 0.2.2.3 (20.01.2017)">v0.2.2.3</a> &nbsp; 
-<a href="#v0222" title="GClh II Version 0.2.2.2 (20.01.2017)">v0.2.2.2</a> &nbsp; 
-<a href="#v0221" title="GClh II Version 0.2.2.1 (12.01.2017)">v0.2.2.1</a> &nbsp; 
-<a href="#v022" title="GClh II Version 0.2.2 (09.01.2017)">v0.2.2</a> &nbsp; 
-<a href="#v021" title="GClh II Version 0.2.1 (05.01.2017)">v0.2.1</a> &nbsp; 
-<a href="#v01" title="GClh II Version 0.1 (05.01.2017)">v0.1</a> &nbsp; 
+<a href="#v04" title="GClh II version 0.4 (25.02.2017)">v0.4</a> &nbsp; 
+<a href="#v03" title="GClh II version 0.3 (05.02.2017)">v0.3</a> &nbsp; 
+<a href="#v0231" title="GClh II version 0.2.3.1 (22.01.2017)">v0.2.3.1</a> &nbsp; 
+<a href="#v023" title="GClh II version 0.2.3 (22.01.2017)">v0.2.3</a> &nbsp; 
+<a href="#v0224" title="GClh II version 0.2.2.4 (20.01.2017)">v0.2.2.4</a> &nbsp; 
+<a href="#v0223" title="GClh II version 0.2.2.3 (20.01.2017)">v0.2.2.3</a> &nbsp; 
+<a href="#v0222" title="GClh II version 0.2.2.2 (20.01.2017)">v0.2.2.2</a> &nbsp; 
+<a href="#v0221" title="GClh II version 0.2.2.1 (12.01.2017)">v0.2.2.1</a> &nbsp; 
+<a href="#v022" title="GClh II version 0.2.2 (09.01.2017)">v0.2.2</a> &nbsp; 
+<a href="#v021" title="GClh II version 0.2.1 (05.01.2017)">v0.2.1</a> &nbsp; 
+<a href="#v01" title="GClh II version 0.1 (05.01.2017)">v0.1</a> &nbsp; 
 
 ---
 ## v0.4:
