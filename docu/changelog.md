@@ -23,6 +23,7 @@ There is also a timestamp with the date/time of the last check. After pushing th
 <br>
 To use the new summary feature you have to set the checkbox "Show summary for new finds/hides in friends list". Special feature. If you set the checkbox "Show summary only for friends in VIP list" the summary will be shown only for friends which are marked as VIPs.<br>
 <img src="../images/v0.4_Screen20.jpg" alt="v0.4_Screen20.jpg"><br>
+<br>
 <br></li>
 <li>New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/145">#145</a>] User ignore processing in cache listing logs, VUPs (Very unimportant persons):<br>
 Many thanks to <a href="https://www.geocaching.com/profile/?u=Herr%20Ma">Herr Ma</a> for the idea and a lot of coding.<br>
