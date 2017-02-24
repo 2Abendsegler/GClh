@@ -58,6 +58,7 @@ At the geocache search / find page, the current Filter Set will be shown. <br>
 <br>
 To activate and deactivate this functionality there is a parameter in Config.<br>
 <img src="../images/v0.4_Screen25.jpg" alt="v0.4_Screen25.jpg"><br>
+<br>
 <br></li>
 <li>New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/9">#9</a>] Provide standard configuration set (GClh Config):<br>
 <ul><li>Reset to standard configuration: This is the main functionality to reset to standard configuration set. This is the way to come back to an efficient configuration set, after some experimental or other motivated changes. This option load a reasonable standard configuration and overwrite your configuration data in parts. Of course, personal data, like home-coords, homezone or similar data are not overwritten.<br></li>
