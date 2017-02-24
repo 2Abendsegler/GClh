@@ -452,7 +452,7 @@ var variablesInit = function (c) {
     c.settings_friendlist_summary = getValue("settings_friendlist_summary", true);
     c.settings_friendlist_summary_viponly = getValue("settings_friendlist_summary_viponly", false);
 // << hm -- Issue #111
-    c.settings_search_data = JSON.parse(getValue("settings_search_data", "[]"));
+    c.settings_search_data = JSON.parse(getValue("settings_search_data", "[]")); 
     c.settings_search_enable_user_defined = getValue("settings_search_enable_user_defined",true);
 
     // Settings: Custom Bookmarks
@@ -8145,7 +8145,7 @@ var mainGC = function () {
         document.getElementById("findplayer_field").focus();
     }
 
-// User defined searchs
+// User defined searchs 
     function create_config_css_search() {
         var css = document.createElement("style");
         var html = "";
