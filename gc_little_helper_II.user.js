@@ -9888,9 +9888,8 @@ var mainGC = function () {
                 'settings_map_hide_sidebar',
 // >> hm -- Issue #111
                 'settings_friendlist_summary',
-                'settings_friendlist_summary_viponly',
+                'settings_friendlist_summary_viponly'
 // << hm -- Issue #111
-                'settings_search_enable_user_defined'
             );
             for (var i = 0; i < checkboxes.length; i++) {
                 if ( document.getElementById(checkboxes[i]) ) {
