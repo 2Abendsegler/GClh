@@ -42,6 +42,7 @@ Your profile contain a list of all your VUPs.<br>
 <br>
 The VUP processing can be activated and customized in Config.<br>
 <img src="../images/v0.4_Screen16.jpg" alt="v0.4_Screen16.jpg"><br>
+<br>
 <br></li>
 <li>New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/9">#9</a>] Provide standard configuration set (GClh Config):<br>
 <ul><li>Reset to standard configuration: This is the main functionality to reset to standard configuration set. This is the way to come back to an efficient configuration set, after some experimental or other motivated changes. This option load a reasonable standard configuration and overwrite your configuration data in parts. Of course, personal data, like home-coords, homezone or similar data are not overwritten.<br></li>
@@ -50,6 +51,7 @@ The VUP processing can be activated and customized in Config.<br>
 <li>Reset dynamic and unused is the possibility to reorganize the configuration set. Unused parameters, of older script versions, are deleted. And all the dynamic data, especially the autovisit settings for every TB, are deleted too.<br></li></ul>
 <img src="../images/v0.4_Screen01.jpg" alt="v0.4_Screen01.jpg"><br>
 <img src="../images/v0.4_Screen02.jpg" alt="v0.4_Screen02.jpg"><br>
+<br>
 <br></li>
 <li>Change: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/138">#138</a>] Enlarge mail form signature to mail form template with known placeholder:<br>
 <ul><li>Enlarge the mail and message form signature functionality to a mail and message form template with the known placeholder in the log templates. Especially integrate GC, TB name and GC, TB Link, in order that these things can be placed variable. For example above in the mail as subject.<br></li>
@@ -57,6 +59,7 @@ The VUP processing can be activated and customized in Config.<br>
 <li>The settings "Show coord link in mail" and "Show coord link in message" are no longer necessary and are removed. <br></li></ul>
 <img src="../images/v0.4_Screen03.jpg" alt="v0.4_Screen03.jpg"><br>
 <img src="../images/v0.4_Screen04.jpg" alt="v0.4_Screen04.jpg"><br>
+<br>
 <br></li>
 <li>New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/11">#11</a>] Seitenheader ausrichten / Arrange header layout on content:<br>
 <ul><li>With this option you can arrange the header width on the width of the content of the page. This is an easy feature with some restrictions, like for example the available place, especially for horizontal navigation menues.<br></li>
@@ -68,6 +71,7 @@ The VUP processing can be activated and customized in Config.<br>
 <img src="../images/v0.4_Screen07.jpg" alt="v0.4_Screen07.jpg"><br>
 <img src="../images/v0.4_Screen08.jpg" alt="v0.4_Screen08.jpg"><br>
 <img src="../images/v0.4_Screen09.jpg" alt="v0.4_Screen09.jpg"><br>
+<br>
 <br></li>
 <li>New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/12">#12</a>] Logo und Message Center Icon wahlweise entfernen / Remove logo and message center in header:<br>
 <ul><li>Remove logo in header:<br>
@@ -81,11 +85,13 @@ You will not be informed longer about new messages.<br></li></ul>
 <img src="../images/v0.4_Screen11.jpg" alt="v0.4_Screen11.jpg"><br>
 <br>
 <a href="https://raw.githubusercontent.com/2Abendsegler/GClh/master/data/config_header_align_logo_mc_remove.txt ">Here</a> is a small config file with the necessary changes to arrange the header and remove the logo and the message center icon and text. You can copy the lines and insert and import it with GClh Sync II.<br>
+<br>
 <br></li>
 <li>New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/146">#146</a>] Show Cache log counter in cache listing:<br>
 With the link "Show log counter" two counter are shown in every log. The first one is a counter only for logs with the same logtyp like for example "Found it" or "Enable Listing". The second one is the counter for all logs.<br>
 (Only possible if all logs are shown.)<br>
 <img src="../images/v0.4_Screen19.jpg" alt="v0.4_Screen19.jpg"><br>
+<br>
 <br></li>
 <li>New: Show or hide all the areas in Config with one click to a plus or minus icon with the right mouse.<br>
 <br></li>
