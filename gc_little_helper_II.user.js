@@ -2,7 +2,7 @@
 // @name             GC little helper II
 // @namespace        http://www.amshove.net
 //--> $$000 Begin of change
-// @version          0.3
+// @version          0.4
 //<-- $$000 End of change
 // @include          http*://www.geocaching.com/*
 // @include          http*://labs.geocaching.com/*
@@ -8049,11 +8049,9 @@ var mainGC = function () {
         }
     }
 
-//--> xxxx2
 ////////////////////////////////////////////////////////////////////////////
 // User defined searchs
 ////////////////////////////////////////////////////////////////////////////
-//<-- xxxx2
     function create_config_css_search() {
         var css = document.createElement("style");
         var html = "";
@@ -8156,29 +8154,20 @@ var mainGC = function () {
             var html = "";
             html += '<div id="searchContextMenu" class="pop-modal" style="top: auto; left: auto; width: 100%; position: absolute;">';
 
-//--> xxxx2
-//            html += '<div id="filter-new" class="add-menu" style="display: none;"><label for="newListName">Save current filter</label>';
             html += '<div id="filter-new" class="add-menu" style="display: none;"><label for="newListName">Save current Filter Set</label>';
-//<-- xxxx2
             html += '<div class="input-control active">';
             html += '<input id="nameSearch" name="newListName" maxlength="150" placeholder="New Name" type="text">';
             html += '<div class="add-list-status"><button id= "btn-save" class="add-list-submit" type="button" style="display: inline-block;">Save</button></div></div>';
             html += '</div>';
 
-//--> xxxx2
-//            html += '<div id="filter-edit" class="add-menu" style="display: none;"><label for="newListName">Edit filter <i><span id="filterName"></span></i></label>';
             html += '<div id="filter-edit" class="add-menu" style="display: none;"><label for="newListName">Edit Filter Set <i><span id="filterName"></span></i></label>';
-//<-- xxxx2
             html += '<div class="input-control active">';
             html += '<input id="filter-name-rename" name="newListName" maxlength="150" placeholder="New Name" type="text">';
             html += '<div class="add-list-status"><button id= "btn-rename" class="add-list-submit" type="button" style="display: inline-block;">Rename</button></div>';
             html += '<div id="div-btn-update" class="add-list-status"><button id="btn-update" class="add-list-submit" type="button" style="display: inline-block;">Update</button></div>';
             html += '</div></div>';
 
-//--> xxxx2
-//            html += '<label class="add-list-label">Available Filters</label>';
             html += '<label class="add-list-label">Available Filter Sets</label>';
-//<-- xxxx2
             html += '<ul id="filterlist" class="add-list"></ul>';
 
             // end of div
@@ -8233,13 +8222,8 @@ var mainGC = function () {
             var id = 'data-id="'+settings_search_data[i].id+'"';
             var t = (settings_search_data[i].url == document.location.href.split("#")[0])?true:false;
             html += '<button type="button" class="btn-item-action action-open" '+id+'>'+(t?'<b>':'')+settings_search_data[i].name+(t?'</b>':'')+'</button>';
-//--> xxxx2
-//            html += '<div type="button" title="Remove Filter" class="status btn-iconsvg action-delete" '+id+'><svg class="icon icon-svg-button" role="presentation"><use xlink:href="/account/Content/ui-icons/sprites/global.svg#icon-delete"></use></svg></div>';
-//            html += '<div type="button" title="Rename Filter" class="status btn-iconsvg action-rename" '+id+'><svg class="icon icon-svg-button" role="presentation"><use xlink:href="/account/Content/ui-icons/sprites/global.svg#icon-more"></use></svg></div>';
             html += '<div type="button" title="Remove Filter Set" class="status btn-iconsvg action-delete" '+id+'><svg class="icon icon-svg-button" role="presentation"><use xlink:href="/account/Content/ui-icons/sprites/global.svg#icon-delete"></use></svg></div>';
             html += '<div type="button" title="Change Filter Set" class="status btn-iconsvg action-rename" '+id+'><svg class="icon icon-svg-button" role="presentation"><use xlink:href="/account/Content/ui-icons/sprites/global.svg#icon-more"></use></svg></div>';
-//<-- xxxx2
-
             html += '</li>';
         }
         $( "#filterlist" ).html(html);
@@ -8313,10 +8297,7 @@ var mainGC = function () {
             var currentFilter = "";
             for (var i = 0; i < settings_search_data.length; i++) {
                 if ( settings_search_data[i].url == document.location.href.split("#")[0] ) {
-//--> xxxx2
-//                    currentFilter = "Current Filter: "+settings_search_data[i].name;
                     currentFilter = "Current Filter Set: "+settings_search_data[i].name;
-//<-- xxxx2
                 }
             }
             $(".button-group-dynamic").append('<span>'+currentFilter+'</span>')
@@ -8672,10 +8653,7 @@ var mainGC = function () {
             html += checkboxy('settings_show_sums_in_bookmark_lists', 'Show number of caches in bookmark lists') + show_help("With this option the number of caches and the number of selected caches in the categories \"All\", \"Found\", \"Archived\" and \"Deactivated\", corresponding to the select buttons, are shown in bookmark lists at the end of the list.") + "<br/>";
             html += checkboxy('settings_hide_warning_message', 'Hide warning message') + show_help("With this option you can choose the possibility to hide a potential warning message of the masters of gc.com. <br><br>One example is the down time warning message which comes from time to time and is placed unnecessarily a lot of days at the top of pages. You can hide it except for a small line in the top right side of the pages. You can activate the warning message again if your mouse goes to this area. <br><br>If the warning message is deleted of the masters, this small area is deleted too.") + "<br/>";
             html += newParameterOn1;
-//--> xxxx2
-//            html += checkboxy('settings_search_enable_user_defined', 'Enable user search') + show_help("This features enables you to store favourites filter settings in the geocache search and call them quickly.") + "<br/>";
-            html += checkboxy('settings_search_enable_user_defined', 'Enable user defined Filter Sets for geocache search') + show_help("This features enables you to store favourites filter settings in the geocache search and call them quickly.") + "<br/>";
-//<-- xxxx2
+            html += checkboxy('settings_search_enable_user_defined', 'Enable user defined Filter Sets for geocache searchs') + show_help("This features enables you to store favourites filter settings in the geocache search and call them quickly.") + "<br/>";
             html += newParameterVersionSetzen(0.4) + newParameterOff;
             html += "<br>";
             html += "&nbsp;" + "Show lines in";
@@ -9888,8 +9866,9 @@ var mainGC = function () {
                 'settings_map_hide_sidebar',
 // >> hm -- Issue #111
                 'settings_friendlist_summary',
-                'settings_friendlist_summary_viponly'
+                'settings_friendlist_summary_viponly',
 // << hm -- Issue #111
+                'settings_search_enable_user_defined'
             );
             for (var i = 0; i < checkboxes.length; i++) {
                 if ( document.getElementById(checkboxes[i]) ) {

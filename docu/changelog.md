@@ -13,7 +13,7 @@
 ---
 ## v0.4:
 <ul><li>New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/111">#111</a>] New found / hidden in a summary in the beginning of the Friends page:<br>
-Many thanks to <a href="https://www.geocaching.com/profile/?u=Herr%20Ma">Herr Ma</a> for the development.<br>
+Many thanks to <a href="https://www.geocaching.com/profile/?u=Herr%20Ma">Herr Ma</a> for the idea and the development.<br>
 <br>
 Summary for new finds/hides for friends of the friends page will be shown as follow:<br>
 <img src="../images/v0.4_Screen17.jpg" alt="v0.4_Screen17.jpg"><br>
@@ -23,6 +23,7 @@ There is also a timestamp with the date/time of the last check. After pushing th
 <br>
 To use the new summary feature you have to set the checkbox "Show summary for new finds/hides in friends list". Special feature. If you set the checkbox "Show summary only for friends in VIP list" the summary will be shown only for friends which are marked as VIPs.<br>
 <img src="../images/v0.4_Screen20.jpg" alt="v0.4_Screen20.jpg"><br>
+<br>
 <br></li>
 <li>New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/145">#145</a>] User ignore processing in cache listing logs, VUPs (Very unimportant persons):<br>
 Many thanks to <a href="https://www.geocaching.com/profile/?u=Herr%20Ma">Herr Ma</a> for the idea and a lot of coding.<br>
@@ -41,6 +42,23 @@ Your profile contain a list of all your VUPs.<br>
 <br>
 The VUP processing can be activated and customized in Config.<br>
 <img src="../images/v0.4_Screen16.jpg" alt="v0.4_Screen16.jpg"><br>
+<br>
+<br></li>
+<li>New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/34">#34</a>] Manage user defined Filter Sets for geocache searchs:<br>
+Many thanks to <a href="https://www.geocaching.com/profile/?u=CachingFoX">CachingFoX</a> for the idea and the development.<br>
+<br>
+The handling of the Filter Sets for geocache searchs are integrated in the standard geocache search / find "Find a geocache". About "Manage Filter Sets", a geocache search can be saved as a Filter Set.<br>
+<img src="../images/v0.4_Screen22.jpg" alt="v0.4_Screen22.jpg"><br>
+<br>
+With double click of a Filter Set in the column "Available Filter Sets", you can start the geocache search with this Filter Set. If you have changed the filter of a geocache search, you can update the Filter Set here too.<br>
+<img src="../images/v0.4_Screen23.jpg" alt="v0.4_Screen23.jpg"><br>
+<br>
+At the geocache search / find page, the current Filter Set will be shown. <br>
+<img src="../images/v0.4_Screen24.jpg" alt="v0.4_Screen24.jpg"><br>
+<br>
+To activate and deactivate this functionality there is a parameter in Config.<br>
+<img src="../images/v0.4_Screen25.jpg" alt="v0.4_Screen25.jpg"><br>
+<br>
 <br></li>
 <li>New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/9">#9</a>] Provide standard configuration set (GClh Config):<br>
 <ul><li>Reset to standard configuration: This is the main functionality to reset to standard configuration set. This is the way to come back to an efficient configuration set, after some experimental or other motivated changes. This option load a reasonable standard configuration and overwrite your configuration data in parts. Of course, personal data, like home-coords, homezone or similar data are not overwritten.<br></li>
@@ -49,6 +67,7 @@ The VUP processing can be activated and customized in Config.<br>
 <li>Reset dynamic and unused is the possibility to reorganize the configuration set. Unused parameters, of older script versions, are deleted. And all the dynamic data, especially the autovisit settings for every TB, are deleted too.<br></li></ul>
 <img src="../images/v0.4_Screen01.jpg" alt="v0.4_Screen01.jpg"><br>
 <img src="../images/v0.4_Screen02.jpg" alt="v0.4_Screen02.jpg"><br>
+<br>
 <br></li>
 <li>Change: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/138">#138</a>] Enlarge mail form signature to mail form template with known placeholder:<br>
 <ul><li>Enlarge the mail and message form signature functionality to a mail and message form template with the known placeholder in the log templates. Especially integrate GC, TB name and GC, TB Link, in order that these things can be placed variable. For example above in the mail as subject.<br></li>
@@ -56,6 +75,7 @@ The VUP processing can be activated and customized in Config.<br>
 <li>The settings "Show coord link in mail" and "Show coord link in message" are no longer necessary and are removed. <br></li></ul>
 <img src="../images/v0.4_Screen03.jpg" alt="v0.4_Screen03.jpg"><br>
 <img src="../images/v0.4_Screen04.jpg" alt="v0.4_Screen04.jpg"><br>
+<br>
 <br></li>
 <li>New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/11">#11</a>] Seitenheader ausrichten / Arrange header layout on content:<br>
 <ul><li>With this option you can arrange the header width on the width of the content of the page. This is an easy feature with some restrictions, like for example the available place, especially for horizontal navigation menues.<br></li>
@@ -67,6 +87,7 @@ The VUP processing can be activated and customized in Config.<br>
 <img src="../images/v0.4_Screen07.jpg" alt="v0.4_Screen07.jpg"><br>
 <img src="../images/v0.4_Screen08.jpg" alt="v0.4_Screen08.jpg"><br>
 <img src="../images/v0.4_Screen09.jpg" alt="v0.4_Screen09.jpg"><br>
+<br>
 <br></li>
 <li>New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/12">#12</a>] Logo und Message Center Icon wahlweise entfernen / Remove logo and message center in header:<br>
 <ul><li>Remove logo in header:<br>
@@ -80,11 +101,13 @@ You will not be informed longer about new messages.<br></li></ul>
 <img src="../images/v0.4_Screen11.jpg" alt="v0.4_Screen11.jpg"><br>
 <br>
 <a href="https://raw.githubusercontent.com/2Abendsegler/GClh/master/data/config_header_align_logo_mc_remove.txt ">Here</a> is a small config file with the necessary changes to arrange the header and remove the logo and the message center icon and text. You can copy the lines and insert and import it with GClh Sync II.<br>
+<br>
 <br></li>
 <li>New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/146">#146</a>] Show Cache log counter in cache listing:<br>
 With the link "Show log counter" two counter are shown in every log. The first one is a counter only for logs with the same logtyp like for example "Found it" or "Enable Listing". The second one is the counter for all logs.<br>
 (Only possible if all logs are shown.)<br>
 <img src="../images/v0.4_Screen19.jpg" alt="v0.4_Screen19.jpg"><br>
+<br>
 <br></li>
 <li>New: Show or hide all the areas in Config with one click to a plus or minus icon with the right mouse.<br>
 <br></li>
@@ -94,6 +117,7 @@ In some cases, starting count of founds and hiddens are not saved.<br>
 <li>Fix: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/147">#147</a>] Width in section "Profile Information" of public profile was cut.<br>
 </li>
 </ul>
+<br>
 (25.02.2017)<br>
 <br>
 
