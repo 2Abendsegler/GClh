@@ -44,6 +44,21 @@ The VUP processing can be activated and customized in Config.<br>
 <img src="../images/v0.4_Screen16.jpg" alt="v0.4_Screen16.jpg"><br>
 <br>
 <br></li>
+<li>New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/34">#34</a>] Manage user defined Filter Sets for geocache searchs:<br>
+Many thanks to <a href="https://www.geocaching.com/profile/?u=CachingFoX">CachingFoX</a> for the idea and the development.<br>
+<br>
+The handling of the Filter Sets for geocache searchs are integrated in the standard geocache search / find "Find a geocache". With button "Manage Filter Sets" a geocache search can be saved as a Filter Set.<br>
+<img src="../images/v0.4_Screen22.jpg" alt="v0.4_Screen22.jpg"><br>
+<br>
+With double click of a Filter Set in the column "Available Filter Sets", you can start the geocache search with this Filter Set. If you have changed the filter of a geocache search, you can update the Filter Set here too.<br>
+<img src="../images/v0.4_Screen23.jpg" alt="v0.4_Screen23.jpg"><br>
+<br>
+At the geocache search / find page, the current Filter Set will be shown. <br>
+<img src="../images/v0.4_Screen24.jpg" alt="v0.4_Screen24.jpg"><br>
+<br>
+To activate and deactivate this functionality there is a parameter in Config.<br>
+<img src="../images/v0.4_Screen25.jpg" alt="v0.4_Screen25.jpg"><br>
+<br></li>
 <li>New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/9">#9</a>] Provide standard configuration set (GClh Config):<br>
 <ul><li>Reset to standard configuration: This is the main functionality to reset to standard configuration set. This is the way to come back to an efficient configuration set, after some experimental or other motivated changes. This option load a reasonable standard configuration and overwrite your configuration data in parts. Of course, personal data, like home-coords, homezone or similar data are not overwritten.<br></li>
 <li>Reset your own home-coords could help you with problems around your home-coords, like for example with your main homezone, with nearest lists or with your home-coords itself.<br></li>
