@@ -4457,7 +4457,7 @@ var mainGC = function () {
                     // dann ist wohl Google aktiv. Prüfen, ob zuvor Leaflet-Map aktiv war, der Status sich also geändert
                     // hat, dann Meldung ausgeben und neuen Status "nicht aktiv" merken.
                     if ( getValue("gclhLeafletMapActive", true) ) {
-                        var mess = "Please note that GC little helper only supports\n"
+                        var mess = "Please note, that GC little helper only supports\n"
                                  + "the Leaflet-Map. You are using the Google-Map.\n\n"
                                  + "You can change the map in the left sidebar with \n"
                                  + "the button \"Set Map Preferences\".";
@@ -4537,7 +4537,7 @@ var mainGC = function () {
                 }
             }
 
-            //Mark duplicate field notes
+            // Mark duplicate field notes
             var existingNotes = {};
             var link = null;
             var date = null;
@@ -8049,6 +8049,298 @@ var mainGC = function () {
         }
     }
 
+//--> xxxx2
+////////////////////////////////////////////////////////////////////////////
+// User defined searchs
+////////////////////////////////////////////////////////////////////////////
+//<-- xxxx2
+    function create_config_css_search() {
+        var css = document.createElement("style");
+        var html = "";
+        html += ".btn-context {";
+        html += "   border: 0;    height: 40px;    margin-top: -4px;    text-indent: -9999px;    width: 30px;    margin-left: -8px; margin-right: 10px;";
+        html += "}";
+        html += ".btn-user {";
+        html += "   background-color: transparent;";
+        html += "   background-image: none;";
+        html += "   clear: both;";
+        html += "   color: #fff;";
+        html += "   font-size: .85em;";
+        html += "   margin-bottom: 1.75em;";
+        html += "   margin-top: 1.75em;";
+        html += "   padding-left: 3em;";
+        html += "   padding-right: 3em;  ";
+        html += "   border: 2px solid #ffffff;";
+        html += "   border-radius: 0;";
+        html += "}";
+        html += ".btn-user-active, .btn-user:hover, .btn-user:active {";
+        html += "   background-color: #00b265;";
+        html += "   border: 2px solid #00b265;";
+        html += "}";
+        html += ""
+        html += ".btn-iconsvg svg {"
+        html += "    width: 22px;"
+        html += "    height: 22px;"
+        html += "    margin-right: 3px;"
+        html += "}       "
+        css.innerHTML = html;
+        document.getElementsByTagName('body')[0].appendChild(css);
+    }
+
+    function saveFilterSet() {
+        setValue("settings_search_data", JSON.stringify(settings_search_data));
+    }
+
+    function actionOpen( id ) {
+        for (var i = 0; i < settings_search_data.length; i++) {
+            if ( settings_search_data[i].id == id ) {
+                document.location.href = settings_search_data[i].url;
+                break;
+            }
+        }
+    }
+
+    // SaveSas
+    function actionRename( id, name ) {
+        for (var i = 0; i < settings_search_data.length; i++) {
+            if ( settings_search_data[i].id == id ) {
+                settings_search_data[i].name = name;
+                saveFilterSet();
+                break;
+            }
+        }
+    }
+
+    function actionUpdate( id, page ) {
+        for (var i = 0; i < settings_search_data.length; i++) {
+            if ( settings_search_data[i].id == id ) {
+                settings_search_data[i].url = page.split("#")[0];
+                saveFilterSet();
+                break;
+            }
+        }
+    }
+
+    function actionNew( name, page ) {
+        // find latest id
+        var i = settings_search_data.length;
+        var id = -1;
+        for (var i = 0; i < settings_search_data.length; i++) {
+            if ( id < settings_search_data[i].id ) { id = settings_search_data[i].id; }
+        }
+        console.log("next index: " + i + " next id: " + (id+1) );
+        settings_search_data[i] = {};
+        settings_search_data[i].id = id+1;
+        settings_search_data[i].name = name;
+        settings_search_data[i].url = page.split("#")[0];
+        console.log(settings_search_data);
+        saveFilterSet();
+    }
+
+    // Delete
+    function actionSearchDelete( id ) {
+        console.log("actionSearchDelete()");
+        var settings_search_data_tmp = [];
+        for (var i = 0; i < settings_search_data.length; i++) {
+            if ( settings_search_data[i].id != id ) {
+                settings_search_data_tmp[settings_search_data_tmp.length] = settings_search_data[i];
+            }
+        }
+        settings_search_data = settings_search_data_tmp;
+        saveFilterSet();
+    }
+
+    function updateUI() {
+        console.log("updateUI()");
+        if ( $("#searchContextMenu").length == 0 ) {
+            var html = "";
+            html += '<div id="searchContextMenu" class="pop-modal" style="top: auto; left: auto; width: 100%; position: absolute;">';
+
+//--> xxxx2
+//            html += '<div id="filter-new" class="add-menu" style="display: none;"><label for="newListName">Save current filter</label>';
+            html += '<div id="filter-new" class="add-menu" style="display: none;"><label for="newListName">Save current Filter Set</label>';
+//<-- xxxx2
+            html += '<div class="input-control active">';
+            html += '<input id="nameSearch" name="newListName" maxlength="150" placeholder="New Name" type="text">';
+            html += '<div class="add-list-status"><button id= "btn-save" class="add-list-submit" type="button" style="display: inline-block;">Save</button></div></div>';
+            html += '</div>';
+
+//--> xxxx2
+//            html += '<div id="filter-edit" class="add-menu" style="display: none;"><label for="newListName">Edit filter <i><span id="filterName"></span></i></label>';
+            html += '<div id="filter-edit" class="add-menu" style="display: none;"><label for="newListName">Edit Filter Set <i><span id="filterName"></span></i></label>';
+//<-- xxxx2
+            html += '<div class="input-control active">';
+            html += '<input id="filter-name-rename" name="newListName" maxlength="150" placeholder="New Name" type="text">';
+            html += '<div class="add-list-status"><button id= "btn-rename" class="add-list-submit" type="button" style="display: inline-block;">Rename</button></div>';
+            html += '<div id="div-btn-update" class="add-list-status"><button id="btn-update" class="add-list-submit" type="button" style="display: inline-block;">Update</button></div>';
+            html += '</div></div>';
+
+//--> xxxx2
+//            html += '<label class="add-list-label">Available Filters</label>';
+            html += '<label class="add-list-label">Available Filter Sets</label>';
+//<-- xxxx2
+            html += '<ul id="filterlist" class="add-list"></ul>';
+
+            // end of div
+            html += '</div>';
+            $( "#ctxMenu" ).html(html);
+
+            $('#btn-save').click( function() {
+                console.log("save search")
+                var name = $("#nameSearch").val();
+                if ( name == "" ) {
+                    alert("Insert name!");
+                    $("#nameSearch").css('background-color', '#ffc9c9');
+                    return;
+                } else {
+                    actionNew( name, document.location.href );
+                    $("#nameSearch").css('background-color', '#ffffff');
+                }
+                hideCtxMenu();
+            });
+
+            // rename
+            $('#btn-rename').click( function() {
+                var id = $(this).data('id');
+                var name = $("#filter-name-rename").val();
+                actionRename( id, name );
+                updateUI();
+            });
+
+            // update
+            $('#btn-update').click( function() {
+                var id = $(this).data('id');
+                var update = (document.location.href.indexOf("?")>=0?true:false);
+                if ( update ) {
+                    actionUpdate( id, document.location.href );
+                    hideCtxMenu();
+                }
+            });
+        }
+        $("#filter-edit").hide();
+        if ( $(".results").length != 0 ) {
+            $("#filter-new").show();
+        }
+
+        var html = "";
+        console.log(settings_search_data);
+        if ( settings_search_data.length ) {
+            settings_search_data.sort(function(a, b){return a.name.toUpperCase()>b.name.toUpperCase()});
+        }
+
+        for (var i = 0; i < settings_search_data.length; i++) {
+            html += '<li data-id="'+settings_search_data[i].id+'">';
+            var id = 'data-id="'+settings_search_data[i].id+'"';
+            var t = (settings_search_data[i].url == document.location.href.split("#")[0])?true:false;
+            html += '<button type="button" class="btn-item-action action-open" '+id+'>'+(t?'<b>':'')+settings_search_data[i].name+(t?'</b>':'')+'</button>';
+//--> xxxx2
+//            html += '<div type="button" title="Remove Filter" class="status btn-iconsvg action-delete" '+id+'><svg class="icon icon-svg-button" role="presentation"><use xlink:href="/account/Content/ui-icons/sprites/global.svg#icon-delete"></use></svg></div>';
+//            html += '<div type="button" title="Rename Filter" class="status btn-iconsvg action-rename" '+id+'><svg class="icon icon-svg-button" role="presentation"><use xlink:href="/account/Content/ui-icons/sprites/global.svg#icon-more"></use></svg></div>';
+            html += '<div type="button" title="Remove Filter Set" class="status btn-iconsvg action-delete" '+id+'><svg class="icon icon-svg-button" role="presentation"><use xlink:href="/account/Content/ui-icons/sprites/global.svg#icon-delete"></use></svg></div>';
+            html += '<div type="button" title="Change Filter Set" class="status btn-iconsvg action-rename" '+id+'><svg class="icon icon-svg-button" role="presentation"><use xlink:href="/account/Content/ui-icons/sprites/global.svg#icon-more"></use></svg></div>';
+//<-- xxxx2
+
+            html += '</li>';
+        }
+        $( "#filterlist" ).html(html);
+
+        // save
+        $('.action-open').click( function() {
+            var id = $(this).data('id');
+            actionOpen( id );
+        });
+        // delete
+        $('.action-delete').click( function() {
+            var id = $(this).data('id');
+            console.log(id);
+            actionSearchDelete( id );
+            updateUI();
+        });
+        // rename
+        $('.action-rename').click( function() {
+            var id = $(this).data('id');
+            $('#filter-new').hide();
+            $('#filter-edit').show();
+            $('#btn-rename').data('id', id );
+            $('#btn-update').data('id', id );
+
+            var update = (document.location.href.indexOf("?")>=0?true:false);
+            if ( update ) { 
+                $('#div-btn-update').show();
+            } else {
+                $('#div-btn-update').hide();
+            }
+
+            $("#filter-name-rename").val("n/a");
+            for (var i = 0; i < settings_search_data.length; i++) {
+                if ( settings_search_data[i].id == id ) {
+                    $("#filter-name-rename").val(settings_search_data[i].name);
+                    $('#filterName').text(settings_search_data[i].name);
+                    break;
+                }
+            }
+        });
+    }
+
+    function hideCtxMenu() {
+        $('#ctxMenu').hide();
+        $('#filterCtxMenu').removeClass( 'btn-user-active' );
+    }
+
+    if ( settings_search_enable_user_defined && is_page("find_cache") ) {
+        try {
+            if ( !( $(".results").length || settings_search_data.length ) ) {
+                // no result list and no user defined filter => do nothing
+                return;
+            }
+            create_config_css_search();
+
+            $( ".filters-toggle" ).append('&nbsp;<button id="filterCtxMenu" class="btn btn-user" type="button">Manage Filter Sets</button>  '); // &#x2630;
+            $( ".filters-toggle" ).append('<div id="ctxMenu" style="display:none;"></div>');
+
+            $('#filterCtxMenu').click( function() {
+                var element = $('#ctxMenu');
+                if ( element.css('display') == 'none' ){
+                   updateUI();
+                   element.show();
+                   $(this).addClass( 'btn-user-active' );
+                } else {
+                   element.hide();
+                   $(this).removeClass( 'btn-user-active' );
+                }
+            });
+
+            var currentFilter = "";
+            for (var i = 0; i < settings_search_data.length; i++) {
+                if ( settings_search_data[i].url == document.location.href.split("#")[0] ) {
+//--> xxxx2
+//                    currentFilter = "Current Filter: "+settings_search_data[i].name;
+                    currentFilter = "Current Filter Set: "+settings_search_data[i].name;
+//<-- xxxx2
+                }
+            }
+            $(".button-group-dynamic").append('<span>'+currentFilter+'</span>')
+
+            // helper function to close the dialog div if a mouse click outside
+            $(document).mouseup(function (e) {
+                var container = $('#ctxMenu');
+                if ( container.css('display') != 'none' ){
+                    if (!container.is(e.target) && !($('#filterCtxMenu').is(e.target))  // if the target of the click isn't the container...
+                        && container.has(e.target).length === 0) // ... nor a descendant of the container
+                    {
+                        container.hide();
+                        $('#filterCtxMenu').removeClass( 'btn-user-active' );
+                        console.log(":-D");
+                    }
+                }
+                return false;
+            });
+        }
+        catch (e) {
+            gclh_error("Error in 'User defined search' modifications", e);
+        }
+    }
+
 ////////////////////////////////////////////////////////////////////////////
 // Find Player
 ////////////////////////////////////////////////////////////////////////////
@@ -8143,280 +8435,6 @@ var mainGC = function () {
         document.getElementById("findplayer_overlay").click();
         // Stell den Cursor ins Feld.
         document.getElementById("findplayer_field").focus();
-    }
-
-// User defined searchs 
-    function create_config_css_search() { 
-        var css = document.createElement("style"); 
-        var html = "";
-        html += ".btn-context {";
-        html += "   border: 0;    height: 40px;    margin-top: -4px;    text-indent: -9999px;    width: 30px;    margin-left: -8px; margin-right: 10px;";
-        html += "}";
-        html += ".btn-user {";
-        html += "   background-color: transparent;";
-        html += "   background-image: none;";
-        html += "   clear: both;";
-        html += "   color: #fff;";
-        html += "   font-size: .85em;";
-        html += "   margin-bottom: 1.75em;";
-        html += "   margin-top: 1.75em;";
-        html += "   padding-left: 3em;";
-        html += "   padding-right: 3em;  ";   
-        html += "   border: 2px solid #ffffff;"; 
-        html += "   border-radius: 0;";    
-        html += "}";
-        html += ".btn-user-active, .btn-user:hover, .btn-user:active {";
-        html += "   background-color: #00b265;";  
-        html += "   border: 2px solid #00b265;";    
-        html += "}";
-        html += ""
-        html += ".btn-iconsvg svg {"
-        html += "    width: 22px;"
-        html += "    height: 22px;"
-        html += "    margin-right: 3px;"
-        html += "}       " 
-        css.innerHTML = html;
-        document.getElementsByTagName('body')[0].appendChild(css);
-    }
-
-    function saveFilterSet() {
-        setValue("settings_search_data", JSON.stringify(settings_search_data));
-    }
-   
-    function actionOpen( id ) {
-        for (var i = 0; i < settings_search_data.length; i++) {
-            if ( settings_search_data[i].id == id ) {
-                document.location.href = settings_search_data[i].url;
-                break;
-            }
-        }        
-    }
-
-    // SaveSas
-    function actionRename( id, name ) {
-        for (var i = 0; i < settings_search_data.length; i++) {
-            if ( settings_search_data[i].id == id ) {
-                settings_search_data[i].name = name;
-                saveFilterSet(); 
-                break;
-            }
-        }         
-    }
-    
-    function actionUpdate( id, page ) {
-        for (var i = 0; i < settings_search_data.length; i++) {
-            if ( settings_search_data[i].id == id ) {
-                settings_search_data[i].url = page.split("#")[0];  
-                saveFilterSet(); 
-                break;
-            }
-        }         
-    }    
-
-    function actionNew( name, page ) {
-        // find latest id
-        var i = settings_search_data.length;
-        var id = -1;
-        for (var i = 0; i < settings_search_data.length; i++) {
-            if ( id < settings_search_data[i].id ) { id = settings_search_data[i].id; }
-        } 
-        console.log("next index: " + i + " next id: " + (id+1) );
-        settings_search_data[i] = {};
-        settings_search_data[i].id = id+1;
-        settings_search_data[i].name = name;
-        settings_search_data[i].url = page.split("#")[0];
-        console.log(settings_search_data);
-        saveFilterSet();
-    }
-
-
-    // Delete
-    function actionSearchDelete( id ) {
-        console.log("actionSearchDelete()");   
-        var settings_search_data_tmp = [];
-        for (var i = 0; i < settings_search_data.length; i++) {
-            if ( settings_search_data[i].id != id ) {
-                settings_search_data_tmp[settings_search_data_tmp.length] = settings_search_data[i];
-            }                
-        }     
-        settings_search_data = settings_search_data_tmp;
-        saveFilterSet();   
-    }
-
-    function updateUI() {
-        console.log("updateUI()");
-        if ( $("#searchContextMenu").length == 0 ) {
-            var html = "";
-            html += '<div id="searchContextMenu" class="pop-modal" style="top: auto; left: auto; width: 100%; position: absolute;">';
-            
-            html += '<div id="filter-new" class="add-menu" style="display: none;"><label for="newListName">Save current filter</label>';
-            html += '<div class="input-control active">';
-            html += '<input id="nameSearch" name="newListName" maxlength="150" placeholder="New Name" type="text">';
-            html += '<div class="add-list-status"><button id= "btn-save" class="add-list-submit" type="button" style="display: inline-block;">Save</button></div></div>';
-            html += '</div>';
-            
-            html += '<div id="filter-edit" class="add-menu" style="display: none;"><label for="newListName">Edit filter <i><span id="filterName"></span></i></label>';
-            html += '<div class="input-control active">';
-            html += '<input id="filter-name-rename" name="newListName" maxlength="150" placeholder="New Name" type="text">';
-            html += '<div class="add-list-status"><button id= "btn-rename" class="add-list-submit" type="button" style="display: inline-block;">Rename</button></div>';
-            html += '<div id="div-btn-update" class="add-list-status"><button id="btn-update" class="add-list-submit" type="button" style="display: inline-block;">Update</button></div>';
-            html += '</div></div>';            
-            
-            html += '<label class="add-list-label">Available Filters</label>';
-            html += '<ul id="filterlist" class="add-list"></ul>';
-            
-            // end of div
-            html += '</div>'; 
-            $( "#ctxMenu" ).html(html);   
-
-            $('#btn-save').click( function() {
-                console.log("save search")
-                var name = $("#nameSearch").val();
-                if ( name == "" ) {
-                    alert("Insert name!");
-                    $("#nameSearch").css('background-color', '#ffc9c9'); 
-                    return;
-                } else {
-                    actionNew( name, document.location.href );
-                    $("#nameSearch").css('background-color', '#ffffff');  
-                }
-                hideCtxMenu();
-            });  
-
-            // rename
-            $('#btn-rename').click( function() {              
-                var id = $(this).data('id');
-                var name = $("#filter-name-rename").val();
-                actionRename( id, name );    
-                updateUI();
-            });  
-
-            // rename
-            $('#btn-update').click( function() {    
-                var id = $(this).data('id');
-                var update = (document.location.href.indexOf("?")>=0?true:false);
-                if ( update ) {
-                    actionUpdate( id, document.location.href );
-                    hideCtxMenu();
-                }
-            });             
-        }
-        $("#filter-edit").hide();
-        if ( $(".results").length != 0 ) {
-            $("#filter-new").show();
-        }
-            
-        var html = "";
-        console.log(settings_search_data);
-        if ( settings_search_data.length ) {
-            settings_search_data.sort(function(a, b){return a.name.toUpperCase()>b.name.toUpperCase()});
-        }
-        
-        for (var i = 0; i < settings_search_data.length; i++) {
-            html += '<li data-id="'+settings_search_data[i].id+'">';
-            var id = 'data-id="'+settings_search_data[i].id+'"';
-            var t = (settings_search_data[i].url == document.location.href.split("#")[0])?true:false;
-            html += '<button type="button" class="btn-item-action action-open" '+id+'>'+(t?'<b>':'')+settings_search_data[i].name+(t?'</b>':'')+'</button>';
-            html += '<div type="button" title="Remove Filter" class="status btn-iconsvg action-delete" '+id+'><svg class="icon icon-svg-button" role="presentation"><use xlink:href="/account/Content/ui-icons/sprites/global.svg#icon-delete"></use></svg></div>';                  
-            html += '<div type="button" title="Rename Filter" class="status btn-iconsvg action-rename" '+id+'><svg class="icon icon-svg-button" role="presentation"><use xlink:href="/account/Content/ui-icons/sprites/global.svg#icon-more"></use></svg></div>';                  
-            
-            html += '</li>';
-        }          
-        $( "#filterlist" ).html(html);    
-
-        // save
-        $('.action-open').click( function() {
-            var id = $(this).data('id');
-            actionOpen( id );
-        });    
-        // delete
-        $('.action-delete').click( function() {
-            var id = $(this).data('id');
-            console.log(id);
-            actionSearchDelete( id );
-            updateUI();
-        });  
-        // rename
-        $('.action-rename').click( function() {
-            var id = $(this).data('id');
-            $('#filter-new').hide();
-            $('#filter-edit').show();
-            $('#btn-rename').data('id', id ); 
-            $('#btn-update').data('id', id );       
-            
-            
-            var update = (document.location.href.indexOf("?")>=0?true:false);
-            if ( update ) { 
-                $('#div-btn-update').show();
-            } else {
-                $('#div-btn-update').hide();
-            }
-            
-            $("#filter-name-rename").val("n/a");
-            for (var i = 0; i < settings_search_data.length; i++) {
-                if ( settings_search_data[i].id == id ) {
-                    $("#filter-name-rename").val(settings_search_data[i].name);
-                    $('#filterName').text(settings_search_data[i].name);
-                    break;
-                }
-            }                        
-        });         
-    }
-        
-    function hideCtxMenu() {
-        $('#ctxMenu').hide();
-        $('#filterCtxMenu').removeClass( 'btn-user-active' );
-    }
-    
-    if ( settings_search_enable_user_defined && is_page("find_cache") ) {
-        try {
-            if ( !( $(".results").length || settings_search_data.length ) ) {
-                // no result list and no user defined filter => do nothing
-                return;
-            }
-            create_config_css_search();
-                       
-            $( ".filters-toggle" ).append('&nbsp;<button id="filterCtxMenu" class="btn btn-user" type="button">Manage Filter Sets</button>  '); // &#x2630;
-            $( ".filters-toggle" ).append('<div id="ctxMenu" style="display:none;"></div>');
-                        
-            $('#filterCtxMenu').click( function() {
-                var element = $('#ctxMenu');
-                if ( element.css('display') == 'none' ){
-                   updateUI();           
-                   element.show();
-                   $(this).addClass( 'btn-user-active' );
-                } else {
-                   element.hide();
-                   $(this).removeClass( 'btn-user-active' );
-                }
-            });
-         
-            var currentFilter = "";
-            for (var i = 0; i < settings_search_data.length; i++) {
-                if ( settings_search_data[i].url == document.location.href.split("#")[0] ) {
-                    currentFilter = "Current Filter: "+settings_search_data[i].name;
-                }
-            }        
-            $(".button-group-dynamic").append('<span>'+currentFilter+'</span>')
-            
-            // helper function to close the dialog div if a mouse click outside
-            $(document).mouseup(function (e) {
-                var container = $('#ctxMenu');
-                if ( container.css('display') != 'none' ){
-                    if (!container.is(e.target) && !($('#filterCtxMenu').is(e.target))  // if the target of the click isn't the container...
-                        && container.has(e.target).length === 0) // ... nor a descendant of the container
-                    {
-                        container.hide();
-                        $('#filterCtxMenu').removeClass( 'btn-user-active' );
-                        console.log(":-D");
-                    }
-                }
-                return false;
-            });               
-        }
-        catch (e) {
-            gclh_error("Error in 'User defined search' modifications", e);
-        }        
     }
 
 ////////////////////////////////////////////////////////////////////////////
@@ -8529,7 +8547,6 @@ var mainGC = function () {
         html += "a.gclh_info_rc:hover span {";
         html += "  width: 500px !important;";
         html += "  left: -245px !important;";
-        html += "  font-size: 11px !important;";
         html += "}";
         html += ".gclh_rc_area {";
         html += "  width: 540px;";
@@ -8608,7 +8625,7 @@ var mainGC = function () {
             html += "<div id='gclh_config_content2'>";
             html += "<div id='rc_area' class='gclh_rc_area'>";
             html += "<input type='radio' name='rc' checked='checked' id='rc_standard' class='gclh_rc'><label for='rc_standard'>Reset to standard configuration</label>" + show_help_rc("This option should help you to come back to an efficient configuration set, after some experimental or other motivated changes. This option load a reasonable standard configuration and overwrite your configuration data in parts. <br><br>The following data are not overwrited: Home-coords; homezone and multi homezone; date format; log templates; cache log, TB log and other signatures; friends data; links in Linklist and differing description and custom links. <br>Dynamic data, like for example autovisits for named trackables, are not overwrited too.<br><br>After reset, choose button \"close\" and go to Config to skim over the set of data.") + "<br/>";
-            html += "<input type='radio' name='rc' id='rc_temp' class='gclh_rc'><label for='rc_temp'>Reset dynamic and unused data</label>" + show_help_rc("This option reorganize the configuration set. Unused parameters, of older script versions, are deleted. And all the dynamic data, especially the autovisit settings for every TB, are deleted too.<br><br>After reset, choose button \"close\".") + "<br><br>";
+            html += "<input type='radio' name='rc' id='rc_temp' class='gclh_rc'><label for='rc_temp'>Reset dynamic and unused data</label>" + show_help_rc("This option reorganize the configuration set. Unused parameters of older script versions are deleted. And all the dynamic data, especially the autovisit settings for every TB, are deleted too.<br><br>After reset, choose button \"close\".") + "<br><br>";
             html += "<input type='radio' name='rc' id='rc_homecoords' class='gclh_rc'><label for='rc_homecoords'>Reset your own home-coords</label>" + show_help_rc("This option could help you with problems around your home-coords, like for example with your main homezone, with nearest lists or with your home-coords itself. Your home-coords are not deleted at gc.com, but only in GClh. <br><br>After reset, you have to go to the account settings page of gc.com to the area \"Home Location\", so that GClh can save your home-coords again automatically. You have only to go to this page, you have nothing to do at this page, GClh save your home-coords automatically. <br>Or you enter your home-coords manually in GClh. <br><br>At last, choose button \"close\".");
             html += "<font class='gclh_small'> (After reset, go to <a href='https://www.geocaching.com/account/settings/homelocation' target='_blank'>Home Location</a> )</font>" + "<br/>";
             html += "<input type='radio' name='rc' id='rc_uid' class='gclh_rc'><label for='rc_uid'>Reset your own id for your trackables</label>" + show_help_rc("This option could help you with problems with your own trackables lists, which based on an special id, the uid. The uid are not deleted at gc.com, but only in GClh. <br><br>After reset, you have to go to your profile page of gc.com, so that GClh can save your uid again automatically. You have only to go to this page, you have nothing to do at this page, GClh save the uid automatically. <br><br>At last, choose button \"close\".");
@@ -8654,6 +8671,12 @@ var mainGC = function () {
             html += checkboxy('settings_fixed_pq_header', 'Show fixed header in PQ list') + "<br/>";
             html += checkboxy('settings_show_sums_in_bookmark_lists', 'Show number of caches in bookmark lists') + show_help("With this option the number of caches and the number of selected caches in the categories \"All\", \"Found\", \"Archived\" and \"Deactivated\", corresponding to the select buttons, are shown in bookmark lists at the end of the list.") + "<br/>";
             html += checkboxy('settings_hide_warning_message', 'Hide warning message') + show_help("With this option you can choose the possibility to hide a potential warning message of the masters of gc.com. <br><br>One example is the down time warning message which comes from time to time and is placed unnecessarily a lot of days at the top of pages. You can hide it except for a small line in the top right side of the pages. You can activate the warning message again if your mouse goes to this area. <br><br>If the warning message is deleted of the masters, this small area is deleted too.") + "<br/>";
+            html += newParameterOn1;
+//--> xxxx2
+//            html += checkboxy('settings_search_enable_user_defined', 'Enable user search') + show_help("This features enables you to store favourites filter settings in the geocache search and call them quickly.") + "<br/>";
+            html += checkboxy('settings_search_enable_user_defined', 'Enable user defined Filter Sets for geocache search') + show_help("This features enables you to store favourites filter settings in the geocache search and call them quickly.") + "<br/>";
+//<-- xxxx2
+            html += newParameterVersionSetzen(0.4) + newParameterOff;
             html += "<br>";
             html += "&nbsp;" + "Show lines in";
             html += "<span style='margin-left: 40px;' >lists</span>" + show_help("Lists are all common lists but not the TB listing and not the cache listing.");
@@ -10226,7 +10249,7 @@ var mainGC = function () {
             if (vups.length > 0) {
                 var text = "You have " + vups.length + " VUPs (very unimportant persons) saved. \n"
                          + "If you disable this feature of VUP processing, the VUPs\n"
-                         + "are deleted. Please note it can not be revoked.\n\n"
+                         + "are deleted. Please note, it can not be revoked.\n\n"
                          + "Click OK to delete the VUPs now and disable the feature.";
                 if (window.confirm(text)) {
                     var vups = new Array();
@@ -10435,7 +10458,7 @@ var mainGC = function () {
     function rcReset() {
         try {
             if (document.getElementById("rc_standard").checked || document.getElementById("rc_temp").checked) {
-                if (!window.confirm("Click OK to reset the data. \nPlease note this process can not be revoked.")) return;
+                if (!window.confirm("Click OK to reset the data. \nPlease note, this process can not be revoked.")) return;
             }
             if (document.getElementById("rc_doing")) document.getElementById("rc_doing").src = "/images/loading2.gif";
             if (document.getElementById("rc_reset_button")) document.getElementById("rc_reset_button").disabled = true;
