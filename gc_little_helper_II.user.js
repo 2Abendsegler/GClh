@@ -186,7 +186,7 @@ var variablesInit = function (c) {
     c.settings_log_inline_pmo4basic = getValue("settings_log_inline_pmo4basic", true);
     // Settings: Show Bookmarks
     c.settings_bookmarks_show = getValue("settings_bookmarks_show", true);
-	c.settings_change_header_layout = getValue("settings_change_header_layout", true);
+    c.settings_change_header_layout = getValue("settings_change_header_layout", true);
     // Settings: Arrange header layout on content
     c.settings_fixed_header_layout = getValue("settings_fixed_header_layout", false);
     // Settings: Remove logo in header
@@ -455,7 +455,7 @@ var variablesInit = function (c) {
     c.settings_search_data = JSON.parse(getValue("settings_search_data", "[]"));
     c.settings_search_enable_user_defined = getValue("settings_search_enable_user_defined",true);
 
-// Settings: Custom Bookmarks
+    // Settings: Custom Bookmarks
     var num = c.bookmarks.length;
     for (var i = 0; i < c.anzCustom; i++) {
         c.bookmarks[num] = Object();
