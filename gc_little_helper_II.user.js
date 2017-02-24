@@ -453,8 +453,8 @@ var variablesInit = function (c) {
     c.settings_vip_show_nofound = getValue("settings_vip_show_nofound", false);
     c.settings_use_gclh_layercontrol = getValue("settings_use_gclh_layercontrol", true);
     c.settings_fixed_pq_header = getValue("settings_fixed_pq_header", false);
-    c.settings_search_data = JSON.parse(getValue("settings_search_data", "[]"));
-    c.settings_search_enable_user_defined = getValue("settings_search_enable_user_defined",true);
+    c.settings_search_data = JSON.parse(getValue("settings_search_data", "[]")); 
+    c.settings_search_enable_user_defined = getValue("settings_search_enable_user_defined",true); 
     
     // Settings: Custom Bookmarks
     var num = c.bookmarks.length;
@@ -7953,9 +7953,9 @@ var mainGC = function () {
         document.getElementById("findplayer_field").focus();
     }
 
-// User defined searchs
-    function create_config_css_search() {
-        var css = document.createElement("style");
+// User defined searchs 
+    function create_config_css_search() { 
+        var css = document.createElement("style"); 
         var html = "";
         html += ".btn-context {";
         html += "   border: 0;    height: 40px;    margin-top: -4px;    text-indent: -9999px;    width: 30px;    margin-left: -8px; margin-right: 10px;";
