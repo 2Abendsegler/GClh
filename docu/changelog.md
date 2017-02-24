@@ -47,7 +47,7 @@ The VUP processing can be activated and customized in Config.<br>
 <li>New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/34">#34</a>] Manage user defined Filter Sets for geocache searchs:<br>
 Many thanks to <a href="https://www.geocaching.com/profile/?u=CachingFoX">CachingFoX</a> for the idea and the development.<br>
 <br>
-The handling of the Filter Sets for geocache searchs are integrated in the standard geocache search / find "Find a geocache". With button "Manage Filter Sets" a geocache search can be saved as a Filter Set.<br>
+The handling of the Filter Sets for geocache searchs are integrated in the standard geocache search / find "Find a geocache". About "Manage Filter Sets", a geocache search can be saved as a Filter Set.<br>
 <img src="../images/v0.4_Screen22.jpg" alt="v0.4_Screen22.jpg"><br>
 <br>
 With double click of a Filter Set in the column "Available Filter Sets", you can start the geocache search with this Filter Set. If you have changed the filter of a geocache search, you can update the Filter Set here too.<br>
