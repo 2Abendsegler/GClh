@@ -13,7 +13,7 @@
 ---
 ## v0.4:
 <ul><li>New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/111">#111</a>] New found / hidden in a summary in the beginning of the Friends page:<br>
-Many thanks to <a href="https://www.geocaching.com/profile/?u=Herr%20Ma">Herr Ma</a> for the development.<br>
+Many thanks to <a href="https://www.geocaching.com/profile/?u=Herr%20Ma">Herr Ma</a> for the idea and the development.<br>
 <br>
 Summary for new finds/hides for friends of the friends page will be shown as follow:<br>
 <img src="../images/v0.4_Screen17.jpg" alt="v0.4_Screen17.jpg"><br>
