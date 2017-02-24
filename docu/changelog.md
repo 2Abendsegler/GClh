@@ -1,13 +1,101 @@
-<a href="#v03" title="GClh II Version 0.3">v0.3</a> &nbsp; 
-<a href="#v0231" title="GClh II Version 0.2.3.1">v0.2.3.1</a> &nbsp; 
-<a href="#v023" title="GClh II Version 0.2.3">v0.2.3</a> &nbsp; 
-<a href="#v0224" title="GClh II Version 0.2.2.4">v0.2.2.4</a> &nbsp; 
-<a href="#v0223" title="GClh II Version 0.2.2.3">v0.2.2.3</a> &nbsp; 
-<a href="#v0222" title="GClh II Version 0.2.2.2">v0.2.2.2</a> &nbsp; 
-<a href="#v0221" title="GClh II Version 0.2.2.1">v0.2.2.1</a> &nbsp; 
-<a href="#v022" title="GClh II Version 0.2.2">v0.2.2</a> &nbsp; 
-<a href="#v021" title="GClh II Version 0.2.1">v0.2.1</a> &nbsp; 
-<a href="#v01" title="GClh II Version 0.1">v0.1</a> &nbsp; 
+<a href="#v04" title="GClh II version 0.4 (25.02.2017)">v0.4</a> &nbsp; 
+<a href="#v03" title="GClh II version 0.3 (05.02.2017)">v0.3</a> &nbsp; 
+<a href="#v0231" title="GClh II version 0.2.3.1 (22.01.2017)">v0.2.3.1</a> &nbsp; 
+<a href="#v023" title="GClh II version 0.2.3 (22.01.2017)">v0.2.3</a> &nbsp; 
+<a href="#v0224" title="GClh II version 0.2.2.4 (20.01.2017)">v0.2.2.4</a> &nbsp; 
+<a href="#v0223" title="GClh II version 0.2.2.3 (20.01.2017)">v0.2.2.3</a> &nbsp; 
+<a href="#v0222" title="GClh II version 0.2.2.2 (20.01.2017)">v0.2.2.2</a> &nbsp; 
+<a href="#v0221" title="GClh II version 0.2.2.1 (12.01.2017)">v0.2.2.1</a> &nbsp; 
+<a href="#v022" title="GClh II version 0.2.2 (09.01.2017)">v0.2.2</a> &nbsp; 
+<a href="#v021" title="GClh II version 0.2.1 (05.01.2017)">v0.2.1</a> &nbsp; 
+<a href="#v01" title="GClh II version 0.1 (05.01.2017)">v0.1</a> &nbsp; 
+
+---
+## v0.4:
+<ul><li>New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/111">#111</a>] New found / hidden in a summary in the beginning of the Friends page:<br>
+Many thanks to <a href="https://www.geocaching.com/profile/?u=Herr%20Ma">Herr Ma</a> for the development.<br>
+<br>
+Summary for new finds/hides for friends of the friends page will be shown as follow:<br>
+<img src="../images/v0.4_Screen17.jpg" alt="v0.4_Screen17.jpg"><br>
+<br>
+There is also a timestamp with the date/time of the last check. After pushing the Reset counter button or if there are no new finds/hides, the summary is hidden and only the timestamp is visible:<br>
+<img src="../images/v0.4_Screen18.jpg" alt="v0.4_Screen18.jpg"><br>
+<br>
+To use the new summary feature you have to set the checkbox "Show summary for new finds/hides in friends list". Special feature. If you set the checkbox "Show summary only for friends in VIP list" the summary will be shown only for friends which are marked as VIPs.<br>
+<img src="../images/v0.4_Screen20.jpg" alt="v0.4_Screen20.jpg"><br>
+<br></li>
+<li>New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/145">#145</a>] User ignore processing in cache listing logs, VUPs (Very unimportant persons):<br>
+Many thanks to <a href="https://www.geocaching.com/profile/?u=Herr%20Ma">Herr Ma</a> for the idea and a lot of coding.<br>
+<br>
+The VUP processing is integrated in the VIP processing as a second part and have the most of the VIP functionality. The main idea are "censored" cache logs for the VUPs. If you mark a person as a VUP, the cache log text will only contain the text "censored", so you can be relaxed and you have not to be stressed.<br>
+<img src="../images/v0.4_Screen14.jpg" alt="v0.4_Screen14.jpg"><br>
+<br>
+Cache listing, if cache owner is a VUP.<br>
+<img src="../images/v0.4_Screen12.jpg" alt="v0.4_Screen12.jpg"><br>
+<br>
+Cache listing, if cache owner is a VUP, it is shown in the VIP list if owner is shown there.<br>
+<img src="../images/v0.4_Screen13.jpg" alt="v0.4_Screen13.jpg"><br>
+<br>
+Your profile contain a list of all your VUPs.<br>
+<img src="../images/v0.4_Screen15.jpg" alt="v0.4_Screen15.jpg"><br>
+<br>
+The VUP processing can be activated and customized in Config.<br>
+<img src="../images/v0.4_Screen16.jpg" alt="v0.4_Screen16.jpg"><br>
+<br></li>
+<li>New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/9">#9</a>] Provide standard configuration set (GClh Config):<br>
+<ul><li>Reset to standard configuration: This is the main functionality to reset to standard configuration set. This is the way to come back to an efficient configuration set, after some experimental or other motivated changes. This option load a reasonable standard configuration and overwrite your configuration data in parts. Of course, personal data, like home-coords, homezone or similar data are not overwritten.<br></li>
+<li>Reset your own home-coords could help you with problems around your home-coords, like for example with your main homezone, with nearest lists or with your home-coords itself.<br></li>
+<li>Reset your own id for your trackables could help you with problems with your own trackables lists.<br></li>
+<li>Reset dynamic and unused is the possibility to reorganize the configuration set. Unused parameters, of older script versions, are deleted. And all the dynamic data, especially the autovisit settings for every TB, are deleted too.<br></li></ul>
+<img src="../images/v0.4_Screen01.jpg" alt="v0.4_Screen01.jpg"><br>
+<img src="../images/v0.4_Screen02.jpg" alt="v0.4_Screen02.jpg"><br>
+<br></li>
+<li>Change: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/138">#138</a>] Enlarge mail form signature to mail form template with known placeholder:<br>
+<ul><li>Enlarge the mail and message form signature functionality to a mail and message form template with the known placeholder in the log templates. Especially integrate GC, TB name and GC, TB Link, in order that these things can be placed variable. For example above in the mail as subject.<br></li>
+<li>The signature content is migrated automatically.<br></li>
+<li>The settings "Show coord link in mail" and "Show coord link in message" are no longer necessary and are removed. <br></li></ul>
+<img src="../images/v0.4_Screen03.jpg" alt="v0.4_Screen03.jpg"><br>
+<img src="../images/v0.4_Screen04.jpg" alt="v0.4_Screen04.jpg"><br>
+<br></li>
+<li>New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/11">#11</a>] Seitenheader ausrichten / Arrange header layout on content:<br>
+<ul><li>With this option you can arrange the header width on the width of the content of the page. This is an easy feature with some restrictions, like for example the available place, especially for horizontal navigation menues.<br></li>
+<li>The fixed header is available at all pages in the older design like for example cache and TB listings, bookmarks, pocket queries, profiles, statistics, watchlists and field notes, to name just a few.<br></li>
+<li>At maps and at the pages in the newer design it is not available, partly because the content of the pages are not yet in an accurate width, like the newer search cache page or the message center page. Also this feature is not fully integrated in the diverse possibilities of the header layout and the navigation menus.<br></li></ul>
+(We hope the friends of this specific header design can deal with it.)<br>
+<img src="../images/v0.4_Screen05.jpg" alt="v0.4_Screen05.jpg"><br>
+<img src="../images/v0.4_Screen06.jpg" alt="v0.4_Screen06.jpg"><br>
+<img src="../images/v0.4_Screen07.jpg" alt="v0.4_Screen07.jpg"><br>
+<img src="../images/v0.4_Screen08.jpg" alt="v0.4_Screen08.jpg"><br>
+<img src="../images/v0.4_Screen09.jpg" alt="v0.4_Screen09.jpg"><br>
+<br></li>
+<li>New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/12">#12</a>] Logo und Message Center Icon wahlweise entfernen / Remove logo and message center in header:<br>
+<ul><li>Remove logo in header:<br>
+With this option you can remove the logo in the header. This is an easy feature with some restrictions.<br>
+This feature is available at all pages in the older design like for example cache and TB listings, bookmarks, pocket queries, nearest lists, profiles, statistics, watchlists and field notes, to name just a few.<br>
+At maps and at the pages in the newer design it is not available. Also this feature is not fully integrated in the diverse possibilities of the header layout and the navigation menus.<br></li>
+<li>Remove message center in header:<br>
+With this option you can remove the complete message center in the header.<br>
+You will not be informed longer about new messages.<br></li></ul>
+<img src="../images/v0.4_Screen10.jpg" alt="v0.4_Screen10.jpg"><br>
+<img src="../images/v0.4_Screen11.jpg" alt="v0.4_Screen11.jpg"><br>
+<br>
+<a href="https://raw.githubusercontent.com/2Abendsegler/GClh/master/data/config_header_align_logo_mc_remove.txt ">Here</a> is a small config file with the necessary changes to arrange the header and remove the logo and the message center icon and text. You can copy the lines and insert and import it with GClh Sync II.<br>
+<br></li>
+<li>New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/146">#146</a>] Show Cache log counter in cache listing:<br>
+With the link "Show log counter" two counter are shown in every log. The first one is a counter only for logs with the same logtyp like for example "Found it" or "Enable Listing". The second one is the counter for all logs.<br>
+(Only possible if all logs are shown.)<br>
+<img src="../images/v0.4_Screen19.jpg" alt="v0.4_Screen19.jpg"><br>
+<br></li>
+<li>New: Show or hide all the areas in Config with one click to a plus or minus icon with the right mouse.<br>
+<br></li>
+<li>Fix: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/139">#139</a>] Missing new founds and hiddens in friends list:<br>
+In some cases, starting count of founds and hiddens are not saved.<br>
+<br></li>
+<li>Fix: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/147">#147</a>] Width in section "Profile Information" of public profile was cut.<br>
+</li>
+</ul>
+(25.02.2017)<br>
+<br>
 
 ---
 ## v0.3:
@@ -70,6 +158,7 @@ Danke auch an SiMaKiDD für die Idee das Laden zu stoppen.<br>
 Wenn jemand Ideen hat, wie man die Trackables womöglich sinnvoll kategorisieren kann, dann nur her damit.)</i><br>
 </li>
 </ul>
+(05.02.2017)<br>
 <br>
 
 ---
@@ -78,13 +167,14 @@ Wenn jemand Ideen hat, wie man die Trackables womöglich sinnvoll kategorisieren
 <li>Fix: [Issue #79] Script wurde doppelt installiert wegen Änderung Namespace.
 <br></li>
 </ul>
+(22.01.2017)<br>
 <br>
 
 ---
 ## v0.2.3:
 <ul>
 <li>New: [Issue #36] Google Chrome, Opera und Microsoft Edge über Tampermonkey.<br>
-Vielen Dank an Nicole1338 für die tolle Unterstützung. (<a href="https://github.com/Nicole1338/GClh">Sternchen setzen?</a>)<br>
+Vielen Dank an <a href="https://www.geocaching.com/profile/?u=Nicole1338">Nicole1338</a> für die tolle Unterstützung.<br>
 <img src="../images/google_chrome_logo_small.png" alt="google_chrome_logo_small.png"> 
 <img src="../images/opera_logo_small.png" alt="opera_logo_small.png"> 
 <img src="../images/microsoft_edge_logo_small.png" alt="microsoft_edge_logo_small.png"><br>
@@ -94,7 +184,7 @@ Und im GClh Config Links zu Lizense, Gewährleistung und Check for upgrade hinzu
 Und Copyright Informationen vervollständigt.<br>
 <img src="../images/v0.2.3_Screen01.jpg" alt="v0.2.3_Screen01.jpg"></li>
 <li>Refactoring: [Issue #39] is_link function.<br>
-Vielen Dank an CachingFoX.<br></li>
+Vielen Dank an <a href="https://www.geocaching.com/profile/?u=CachingFoX">CachingFoX</a>.<br></li>
 <li>Performance: [Issue #42] Umbau Try/Catch.<br></li>
 <li>Performance: [Issue #48] Umbau function getElementsByClass.<br>
 Umbau function getElementsByClass in standard document.getElementsByClassName.<br></li>
@@ -102,9 +192,10 @@ Umbau function getElementsByClass in standard document.getElementsByClassName.<b
 In function setLinesColorInCacheListing jedes Log nur einmalig einfärben.<br>
 Und Hide Personal Cache Notes wenn leer, beschleunigt.<br></li>
 <li>Fix: [Issue #32] Cache title of an active cache shown striked. Changed for archieved and for deactivated caches.<br>
-Vielen Dank an CachingFoX für die Analyse.<br></li>
+Vielen Dank an <a href="https://www.geocaching.com/profile/?u=CachingFoX">CachingFoX</a> für die Analyse.<br></li>
 <li>Fix: [Issue #29] Push block of layers right, build unsorted layers in map.<br></li>
 </ul>
+(22.01.2017)<br>
 <br>
 
 ---
@@ -112,6 +203,7 @@ Vielen Dank an CachingFoX für die Analyse.<br></li>
 <ul>
 <li>Fix: [Issue 60] Nearest List parameter generated error. Parameter changed from "&disable_redirect" to "&disable_redirect="<br></li>
 </ul>
+(20.01.2017)<br>
 <br>
 
 ---
@@ -119,6 +211,7 @@ Vielen Dank an CachingFoX für die Analyse.<br></li>
 <ul>
 <li>Fix: [Issue 54] (Again) Navigationsmenüs nicht sichtbar auf den Seiten "Find a Geocache", "Hide a Geocache" und "Geotours". Ursache: GS Änderung, Umbenennung der Menüs von "Menu" in "menu" und "SubMenu" in "submenu".<br></li>
 </ul>
+(20.01.2017)<br>
 <br>
 
 ---
@@ -126,6 +219,7 @@ Vielen Dank an CachingFoX für die Analyse.<br></li>
 <ul>
 <li>Fix: [Issue 54] Navigationsmenüs nicht sichtbar auf den Seiten "Find a Geocache", "Hide a Geocache" und "Geotours". Ursache: GS Änderung, Umbenennung der Menüs von "Menu" in "menu" und "SubMenu" in "submenu".<br></li>
 </ul>
+(20.01.2017)<br>
 <br>
 
 ---
@@ -140,22 +234,24 @@ Der teils doch etwas fleckig geratene Hintergrund im GClh Config mit den Informa
 <img src="../images/v0.2.2.1_Screen01.jpg" alt="v0.2.2.1_Screen01.jpg"></li>
 <li>Fix: [Bug #31] When using "Log your visit (inline)" and clicking "All visited" for the trackables list opens an empty new tab.<br></li>
 </ul>
+(12.01.2017)<br>
 <br>
 
 ---
 ## v0.2.2:
-<ul><li>Der Bereich Map im GClh Config wurde komplett umgebaut und an die letzten Änderungen von GS angepaßt. Es gibt die neue Untergruppierung "Hide Map Elements", in der nun alle Hide Operationen zusammengefaßt sind. Die neuen Icons sind nun auch hier verfügbar und die beiden entfallenen A.P.E. und GPS Maze wurden auch hier entfernt. Außerdem wurde die Letterbox umgruppiert. Ist nun so wie auf der Karte. <br>Vielen Dank an CachingFoX. <br>[Bug Issue #18, #19] <br>
+<ul><li>Der Bereich Map im GClh Config wurde komplett umgebaut und an die letzten Änderungen von GS angepaßt. Es gibt die neue Untergruppierung "Hide Map Elements", in der nun alle Hide Operationen zusammengefaßt sind. Die neuen Icons sind nun auch hier verfügbar und die beiden entfallenen A.P.E. und GPS Maze wurden auch hier entfernt. Außerdem wurde die Letterbox umgruppiert. Ist nun so wie auf der Karte. <br>Vielen Dank an <a href="https://www.geocaching.com/profile/?u=CachingFoX">CachingFoX</a>. <br>[Bug Issue #18, #19] <br>
 <div class="inline-attachment"><dl class="file"><dt class="attach-image"><img src="../images/v0.2.2_Screen01.jpg" class="postimage" alt="v0.2.2_Screen01.jpg"></dt></dl></div></li>
-<li>Im Bereich Map im GClh Config gibt es noch eine neue Gruppierung "Layers in map", die die gesamten Aufgaben der Kartenlayer abdeckt. Sollen die Layer nicht vom GClh geladen werden, wird der gesamte Bereich ausgeblendet. In der linken Liste sind die nicht verwendeten Layer, in der rechten die zu verwendenden Layer. <br>Und es wurde auch der standard Layer "Geocaching" von GS integriert!<br>Vielen Dank an CachingFoX. <br>[Enhancement Issue #16, #17] <br>
+<li>Im Bereich Map im GClh Config gibt es noch eine neue Gruppierung "Layers in map", die die gesamten Aufgaben der Kartenlayer abdeckt. Sollen die Layer nicht vom GClh geladen werden, wird der gesamte Bereich ausgeblendet. In der linken Liste sind die nicht verwendeten Layer, in der rechten die zu verwendenden Layer. <br>Und es wurde auch der standard Layer "Geocaching" von GS integriert!<br>Vielen Dank an <a href="https://www.geocaching.com/profile/?u=CachingFoX">CachingFoX</a>. <br>[Enhancement Issue #16, #17] <br>
 <div class="inline-attachment"><dl class="file"><dt class="attach-image"><img src="../images/v0.2.2_Screen02.jpg" class="postimage" alt="v0.2.2_Screen02.jpg" onclick="viewableArea(this);"></dt></dl></div></li>
 <li>Im GClh Config wurde eine default Sprache vorgesehen. Ist sie aktiviert, wird auf den GC Seiten die Sprache geprüft, entspricht sie nicht der default Sprache, wird sie geändert. Hier geht es im wesentlichen um die automatische Korrektur der Englischumstellungen, die einige Apps benötigen, um korrekt zu laufen. Das betrifft dann insbesondere diejenigen User, die auf den GC Seiten auf Deutsch unterwegs sind. (Soweit ich mich erinnere, stammt dieser Wunsch noch aus dem Block von Torsten.)  <br>[Enhancement Issue #21]<br>
 <div class="inline-attachment"><dl class="file"><dt class="attach-image"><img src="../images/v0.2.2_Screen03.jpg" class="postimage" alt="v0.2.2_Screen03.jpg"></dt></dl></div></li></ul>
 <ul><li>In den Latest logs wurde der Logtext integriert beim Drüberfahren mit der Maus. <br>[Enhancement Issue #22] <br>
 <div class="inline-attachment"><dl class="file"><dt class="attach-image"><img src="../images/v0.2.2_Screen04.jpg" class="postimage" alt="v0.2.2_Screen04.jpg"></dt></dl></div></li>
-<li>Im GClh Config wurden die Verbindungen zwischen Checkboxen und Texten hergestellt. Nun muß man nicht mehr genau auf die Checkbox zielen, sondern kann die Checkbox auch durch einen Click auf den Text bedienen. <br>Vielen Dank an CachingFoX.<br>
+<li>Im GClh Config wurden die Verbindungen zwischen Checkboxen und Texten hergestellt. Nun muß man nicht mehr genau auf die Checkbox zielen, sondern kann die Checkbox auch durch einen Click auf den Text bedienen. <br>Vielen Dank an <a href="https://www.geocaching.com/profile/?u=CachingFoX">CachingFoX</a>.<br>
 <div class="inline-attachment"><dl class="file"><dt class="attach-image"><img src="../images/v0.2.2_Screen05.jpg" class="postimage" alt="v0.2.2_Screen05.jpg" onclick="viewableArea(this);"></dt></dl></div></li>
 <li>Fix: Overview map in listing: zoom in/out loses cache marker. If you zoom in/out the overview map in a cache listing, the cache marker gets replaced by a default marker and the static image shows an error therefore the proper marker creation fails. <br>[Bug Issue #2]<br> <br></li>
 <li>Fix: Linklist/Seachfield fälschlich in Map/Labs aufgebaut. <br>[Bug Issue #24]</li></ul>
+(09.01.2017)<br>
 <br>
 
 ---
@@ -169,12 +265,14 @@ Der teils doch etwas fleckig geratene Hintergrund im GClh Config mit den Informa
 <div class="inline-attachment"><dl class="file"><dt class="attach-image"><img src="../images/v0.2.1_Screen02.jpg" class="postimage" alt="v0.2.1_Screen02.jpg"></dt></dl></div></li>
 <li>New: Cache Listing: Make VIP lists hideable. Ueber GClh Config steuern.<br>
 <div class="inline-attachment"><dl class="file"><dt class="attach-image"><img src="../images/v0.2.1_Screen03.jpg" class="postimage" alt="v0.2.1_Screen03.jpg"></dt></dl></div></li></ul>
+(05.01.2017)<br>
 <br>
 
 ---
 ## v0.1:
 Rebuild GC little helper (2As) as GC little helper II:
 <ol style="list-style-type: decimal"><li>Fix: Bei Eigenen Favoriten kein VIP Icon aufbauen. Hier steht gegebenenfalls das Pseudonym des Owners.</li><li>Fix: Save HomeCoords von Account Settings Seite funktionierte nicht mehr.</li><li>Fix: Select Buttons in einer Bookmarkliste aufbauen, aber nicht bei der Ablistung aller Bookmarklisten.</li><li>Fix: In Bookmarkliste nach dem Loeschen von Eintraegen (...bookmarks/bulk.aspx...) fehlt Zebra.</li><li>Fix: Farbliche Logkennzeichnung fuer User mit Sonderzeichen [] korrigiert.</li><li>Change: Spezielle Links Profile Tabs, Nearest Lists/Map, Own Trackables, GClh Config, GClh Sync und Find Player mit rechter und linker Maustaste funktionsfaehig machen mit Standard Contextmenue und postback.</li><li>Change: Config und Sync Aufrufe zusammengelegt und umgebaut. Rechte, linke Maus ueberall ok.</li><li>Change: Link zu alter deutscher Anleitung entfernt und Link github angepasst.</li></ol>
+(05.01.2017)<br>
 <br>
 
 ---

@@ -22,7 +22,6 @@
   "settings_visitCount_geocheckerCom": true,
   "settings_show_bbcode": true,
   "settings_show_mail": true,
-  "settings_show_mail_coordslink": false,
   "settings_font_size_menu": "15",
   "settings_font_size_submenu": "13",
   "settings_distance_menu": "8",
@@ -35,7 +34,6 @@
   "settings_show_smaller_area_top_right": true,
   "settings_show_smaller_gc_link": true,
   "settings_show_message": true,
-  "settings_show_message_coordslink": false,
   "settings_show_remove_ignoring_link": true,
   "settings_show_common_lists_in_zebra": true,
   "settings_show_common_lists_color_user": true,
@@ -152,5 +150,13 @@
   "remove_navi_learn": false,
   "remove_navi_play": false,
   "remove_navi_community": false,
-  "remove_navi_shop": false
+  "remove_navi_shop": false,
+  "settings_fixed_header_layout": false,
+  "settings_remove_logo": false,
+  "settings_remove_message_in_header": false,
+  "settings_friendlist_summary": true,
+  "settings_friendlist_summary_viponly": false,
+  "settings_process_vup": false,
+  "settings_show_vup_friends": false,
+  "settings_search_enable_user_defined": true
 }
