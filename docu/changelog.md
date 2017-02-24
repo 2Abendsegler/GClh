@@ -101,6 +101,7 @@ In some cases, starting count of founds and hiddens are not saved.<br>
 <li>Fix: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/147">#147</a>] Width in section "Profile Information" of public profile was cut.<br>
 </li>
 </ul>
+<br>
 (25.02.2017)<br>
 <br>
 
