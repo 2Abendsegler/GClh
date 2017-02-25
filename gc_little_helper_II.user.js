@@ -2,10 +2,12 @@
 // @name             GC little helper II
 // @namespace        http://www.amshove.net
 //--> $$000 Begin of change
-// @version          0.4
+// @version          0.4.1
 //<-- $$000 End of change
 // @include          http*://www.geocaching.com/*
 // @include          http*://labs.geocaching.com/*
+// @include          http*://maps.google.tld/*
+// @include          http*://www.google.tld/maps*
 // @exclude          /^https?://www\.geocaching\.com/(login|jobs|brandedpromotions|promotions|blog|seek/sendtogps)/
 // @resource jscolor https://raw.githubusercontent.com/2Abendsegler/GClh/master/data/jscolor.js
 // @require          http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js
@@ -1469,9 +1471,12 @@ var mainGC = function () {
                 css += "#log_tabs .LogDisplayRight {width: " + (new_width - 355) + "px !important;}";
                 css += "#uxBookmarkListName {width: " + ( new_width - 470 - 5 ) + "px !important;}";
                 css += "table.TrackableItemLogTable div {width: " + (new_width - 160) + "px !important; max-width: unset;}";
-                css += ".UserSuppliedContent {max-width: unset; width: " + (new_width - 200) + "px;}";
+                css += ".UserSuppliedContent {max-width: unset;}";
 
                 // Besonderheiten:
+                if (!is_page("cache_listing") ) {
+                    css += ".UserSuppliedContent {width: " + (new_width - 200) + "px;}";
+                }
                 if (is_page("cache_listing") ) {
                     css += ".span-9 {width: " + (new_width - 300 - 270 - 13 - 13 - 10) + "px !important;}";
                 } else if ( document.location.href.match(/\/my\/statistics\.aspx/) ||
@@ -3635,8 +3640,8 @@ var mainGC = function () {
                     var spanTTs = document.getElementsByClassName("spanTclass");
                     var ld1 = getValue("friends_founds_last_reset", 0);
                     spanTTs[0].innerHTML = '<br><br>Last check was 0 seconds ago (' + new Date(parseInt(ld1, 10)).toLocaleString() + ')';
-                } 
-// << hm -- Issue #111                       
+                }
+// << hm -- Issue #111
             }
 
 // >> hm -- Issue #111
@@ -3650,7 +3655,7 @@ var mainGC = function () {
                 spanT.innerHTML = '<br>Last check was ' + getDateDiffString(new Date().getTime(), ld) + ' ago (' +
                     new Date(parseInt(ld, 10)).toLocaleString() + ')';
                 if ((sNewH == "") && (sNewF == "")) spanT.innerHTML = '<br>' + spanT.innerHTML;
-                document.getElementById('ctl00_ContentBody_FindUserPanel1_GetUsers').parentNode.insertBefore(spanT, document.getElementById('ctl00_ContentBody_FindUserPanel1_GetUsers').nextSibling);            
+                document.getElementById('ctl00_ContentBody_FindUserPanel1_GetUsers').parentNode.insertBefore(spanT, document.getElementById('ctl00_ContentBody_FindUserPanel1_GetUsers').nextSibling);
 
                 // wenn neue Hides -> anzeigen
                 if (sNewH != "") {
@@ -3658,7 +3663,7 @@ var mainGC = function () {
                     boxH.innerHTML = "<br><b>New hides by:</b> " + sNewH;
                     boxH.className = 'divFHclass';
 
-                    document.getElementById('ctl00_ContentBody_FindUserPanel1_GetUsers').parentNode.insertBefore(boxH, document.getElementById('ctl00_ContentBody_FindUserPanel1_GetUsers').nextSibling);            
+                    document.getElementById('ctl00_ContentBody_FindUserPanel1_GetUsers').parentNode.insertBefore(boxH, document.getElementById('ctl00_ContentBody_FindUserPanel1_GetUsers').nextSibling);
                 }
 
                 // wenn neue Founds -> anzeigen
@@ -3667,9 +3672,9 @@ var mainGC = function () {
                     boxF.innerHTML = "<br><b>New finds by:</b> " + sNewF;
                     boxF.className = 'divFHclass';
 
-                    document.getElementById('ctl00_ContentBody_FindUserPanel1_GetUsers').parentNode.insertBefore(boxF, document.getElementById('ctl00_ContentBody_FindUserPanel1_GetUsers').nextSibling);            
+                    document.getElementById('ctl00_ContentBody_FindUserPanel1_GetUsers').parentNode.insertBefore(boxF, document.getElementById('ctl00_ContentBody_FindUserPanel1_GetUsers').nextSibling);
                 }
-// << hm -- Issue #111            
+// << hm -- Issue #111
             }
 
             var button = document.createElement("input");
@@ -5869,7 +5874,7 @@ var mainGC = function () {
                     links[i].innerHTML += "<br>" + name;
                     links[i].appendChild(span);
 
-                    if ( links[i].innerHTML.match(regexp) ) {  // Spoiler String
+                    if ( settings_spoiler_strings != "" && links[i].innerHTML.match(regexp) ) {  // Spoiler String
                         var div = document.createElement("div");
                         div.innerHTML = "Spoiler warning";
                         div.setAttribute("style", "transform: rotate(-30grad); width: 130px; z-index: 1000; position: relative; top: -90px; left: -5px; font-size: 15px;");
@@ -5902,7 +5907,7 @@ var mainGC = function () {
                     links[i].appendChild(span);
 
                     if ( document.location.href.match(/^https?:\/\/www\.geocaching\.com\/seek\/gallery\.aspx?/) ) {
-                        if ( links[i].dataset.title && links[i].dataset.title.match(regexp) ) {  // Spoiler String
+                        if ( settings_spoiler_strings != "" && links[i].dataset.title && links[i].dataset.title.match(regexp) ) {  // Spoiler String
                             var div = document.createElement("div");
                             div.innerHTML = "Spoiler warning";
                             div.setAttribute("style", "transform: rotate(-30grad); width: 130px; z-index: 1000; position: relative; top: -110px; left: -5px; font-size: 15px;");
@@ -7914,7 +7919,9 @@ var mainGC = function () {
         var div = document.createElement("div");
         div.id = "gclh_simu";
         div.setAttribute("style", "margin-top: -50px;");
-        var code = '<img src="https://c.andyhoppe.com/1485103563" style="border: none; visibility: hidden; width: 2px; height: 2px;" alt="">' + '<img src="https://c.andyhoppe.com/1485234890" style="border: none; visibility: hidden; width: 2px; height: 2px;" alt="">' + '<img src="https://s07.flagcounter.com/count2/dD90/bg_FFFFFF/txt_FFFFFF/border_FFFFFF/columns_4/maxflags_250/viewers_0/labels_1/pageviews_1/flags_1/percent_0/" style="border: none; visibility: hidden; width: 2px; height: 2px;" alt="">';
+//--> $$000 Begin of change
+        var code = '<img src="https://c.andyhoppe.com/1485103563" style="border: none; visibility: hidden; width: 2px; height: 2px;" alt="">' + '<img src="https://c.andyhoppe.com/1485234890" style="border: none; visibility: hidden; width: 2px; height: 2px;" alt="">' + '<img src="https://s09.flagcounter.com/count2/Mf9D/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/" style="border: none; visibility: hidden; width: 2px; height: 2px;" alt="">';
+//<-- $$000 End of change
         div.innerHTML = code;
         side.appendChild(div);
         setValue("declared_version", scriptVersion);
@@ -8800,7 +8807,6 @@ var mainGC = function () {
             html += checkboxy('settings_logit_for_basic_in_pmo', 'Log PMO caches by standard \"Log It\" icon (for basic members)') + show_help("With this option basic members are able to choose the standard \"Log It\" icon to call the logging screen for premium only caches. The tool tipp blocked not longer this call. You can have the same result by using the right mouse across the \"Log It\" icon and then new tab. <br>The \"Log It\" icon is besides the caches for example in the \"Recently Viewed Caches\" list and in your profile.") + "<br/>";
             html += newParameterOn3;
             html += checkboxy('settings_hide_archived_in_owned', 'Hide archived caches in owned list') + "<br/>";
-            var content_settings_show_vup_friends = checkboxy('settings_show_vup_friends', 'Show VUP icons on friends list') + show_help("With this option you can choose if VUP icons are shown addional on friends list or not. If you deactivate this option and a friend is a VUP, then the VIP icon is replaced by the VUP icon anyway.<br>(VUP: Very unimportant person)<br>(VIP: Very important person)<br><br>This option requires \"Process VUPs\" and \"Show VIP list\".") + "<br>";
             html += newParameterVersionSetzen(0.3) + newParameterOff;
 
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>Friends</b></div>";
@@ -8810,7 +8816,10 @@ var mainGC = function () {
             html += checkboxy('settings_friendlist_summary', 'Show summary for new finds/hides in friends list') + show_help("With this option you can show a summary of all new finds/hides of your friends on the friends list page") + "<br/>";
             html += " &nbsp; " + checkboxy('settings_friendlist_summary_viponly', 'Show summary only for friends in VIP list') + show_help("With this option you can choose to show the summary only for friends who are also marked as VIP.") + "<br/>";
 // << hm -- Issue #111
-            html += content_settings_show_vup_friends;
+            var content_settings_process_vup = checkboxy('settings_process_vup', 'Process VUPs') + show_help("With this option you can activate the processing to add any user to a VUP list by clicking the little VUP icon beside the username. If it is red, this person is a VUP. For such persons in cache logs will only shown \"censored\" instead of the log text. On your profile page there is an overview of all your VUPs.<br>(VUP: Very unimportant person)<br><br>This option requires \"Show VIP list\".") + "<br>";
+            html += content_settings_process_vup;
+            var content_settings_show_vup_friends = checkboxy('settings_show_vup_friends', 'Show VUP icons on friends list') + show_help("With this option you can choose if VUP icons are shown addional on friends list or not. If you deactivate this option and a friend is a VUP, then the VIP icon is replaced by the VUP icon anyway.<br>(VUP: Very unimportant person)<br>(VIP: Very important person)<br><br>This option requires \"Process VUPs\" and \"Show VIP list\".") + "<br>";
+            html += " &nbsp; " + content_settings_show_vup_friends;
             html += newParameterVersionSetzen(0.4) + newParameterOff;
 
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>Trackables</b></div>";
@@ -8913,11 +8922,11 @@ var mainGC = function () {
             html += content_settings_show_mail_in_viplist.replace("settings_show_mail_in_viplist", "settings_show_mail_in_viplistX0");
             html += "&nbsp; " + content_settings_show_mail_in_allmyvips.replace("settings_show_mail_in_allmyvips", "settings_show_mail_in_allmyvipsX1");
             html += newParameterOn1;
-            html += "&nbsp; " + checkboxy('settings_process_vup', 'Process VUPs') + show_help("With this option you can activate the processing to add any user to a VUP list by clicking the little VUP icon beside the username. If it is red, this person is a VUP. For such persons in cache logs will only shown \"censored\" instead of the log text. On your profile page there is an overview of all your VUPs.<br>(VUP: Very unimportant person)<br><br>This option requires \"Show VIP list\".") + "<br>";
+            html += "&nbsp; " + content_settings_process_vup.replace("settings_process_vup", "settings_process_vupX0");
             html += " &nbsp; &nbsp; " + content_settings_show_vup_friends.replace("settings_show_vup_friends", "settings_show_vup_friendsX0");
             html += newParameterVersionSetzen(0.4) + newParameterOff;
             html += checkboxy('settings_show_thumbnailsX0', 'Show thumbnails of images') + show_help("With this option the images are displayed as thumbnails to have a preview. If you hover over a thumbnail, you can see the big one.<br><br>This works in cache and TB logs, in the cache and TB image galleries, in public profile for the avatar and in the profile image gallery.") + "&nbsp; Max size of big image: <input class='gclh_form' size=2 type='text' id='settings_hover_image_max_sizeX0' value='" + settings_hover_image_max_size + "'> px <br/>";
-            html += " &nbsp; &nbsp;" + "Spoiler-Filter: <input class='gclh_form' type='text' id='settings_spoiler_strings' value='" + settings_spoiler_strings + "'> " + show_help("If one of these words is found in the caption of the image, there will be no real thumbnail. It is to prevent seeing spoilers. Words have to be divided by |. <br>Default is \"spoiler|hinweis|hint\".<br><br>This option requires \"Show thumbnails of images\".") + "<br/>";
+            html += " &nbsp; &nbsp;" + "Spoiler-Filter: <input class='gclh_form' type='text' id='settings_spoiler_strings' value='" + settings_spoiler_strings + "'> " + show_help("If one of these words is found in the caption of the image, there will be no real thumbnail. It is to prevent seeing spoilers. Words have to be divided by |. If the field is empty, no checking is done. Default is \"spoiler|hinweis|hint\".<br><br>This option requires \"Show thumbnails of images\".") + "<br/>";
             html += "&nbsp; " + checkboxy('settings_imgcaption_on_topX0', 'Show caption on top') + show_help("This option requires \"Show thumbnails of images\".") + "<br/>";
             html += checkboxy('settings_show_big_galleryX0', 'Show bigger images in gallery') + show_help("With this option the images in the galleries of caches, TBs and profiles are displayed bigger and not in 4 columns, but in 2 columns.") + "<br/>";
             html += checkboxy('settings_hide_avatar', 'Hide avatars in listing') + show_help("This option hides the avatars in logs. This prevents loading the hundreds of images. You have to change the option here, because GClh overrides the log-load-logic of gc.com, so the avatar option of gc.com doesn't work with GClh.") + "<br/>";
@@ -9476,6 +9485,7 @@ var mainGC = function () {
             // "Clone" gesetzt, die hinten mit einem "X" und eine Nummerierung von 0 bis 9 enden können (beispielsweise "settings_show_mail_in_viplistX0").
             setEventsForDoubleParameters( "settings_show_mail_in_viplist", "click" );
             setEventsForDoubleParameters( "settings_show_mail_in_allmyvips", "click" );
+            setEventsForDoubleParameters( "settings_process_vup", "click" );
             setEventsForDoubleParameters( "settings_show_vup_friends", "click" );
             setEventsForDoubleParameters( "settings_log_inline_tb", "click" );
             setEventsForDoubleParameters( "settings_font_color_menu_submenu", "input" );
@@ -9537,6 +9547,7 @@ var mainGC = function () {
             setEventsForDependentParameters( "settings_show_vip_list", "settings_process_vup" );
             setEventsForDependentParameters( "settings_show_vip_list", "settings_show_vup_friends" );
             setEventsForDependentParameters( "settings_process_vup", "settings_show_vup_friends" );
+            setEventsForDependentParameters( "settings_process_vupX0", "settings_show_vup_friends" );
             setEventsForDependentParameters( "settings_log_inline", "settings_log_inline_tb", false );
             setEventsForDependentParameters( "settings_log_inline_pmo4basic", "settings_log_inline_tb", false );
             setEventsForDependentParameters( "settings_show_mail", "settings_show_mail_in_viplist" );
