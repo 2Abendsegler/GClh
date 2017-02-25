@@ -3,9 +3,9 @@
 
 ---
 ### v0.3:
-Number of installations between 05.02.2017 and 24.02.2017 under v0.3.<br>
+Number of installations between 05.02.2017 and 24.02.2017 under version 0.3.<br>
 <ul><li>On different adresses, corresponding Flag Counter, total: 656<br>
-<img src="../images/v0.3_counter_flag.jpg" alt="v0.3_counter_flag.jpg"><br></li>
-<li>On different adresses, corresponding Andy Hope, total: 722<br></li>
+<img src="../images/v0.3_counter_flag.jpg" alt="v0.3_counter_flag.jpg"><br><br></li>
+<li>On different adresses, corresponding Andy Hope, total: 722<br><br></li>
 <li>Corresponding Andy Hope, total: 832<br></li></ul>
 <br>
