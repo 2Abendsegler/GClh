@@ -13,8 +13,7 @@
 
 ---
 ## v0.4.1:
-<ul><li>Fix: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/169">#169</a>] Width in cache description is to big.<br>
-Fix: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/173">#173</a>] listing text "underflows" the right column.<br></li>
+<ul><li>Fix: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/169">#169</a>] Width in cache description is to big. Fix: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/173">#173</a>] listing text "underflows" the right column.<br></li>
 <li>Fix: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/174">#174</a>] Button to GC Maps on Google Maps page was missing.<br></li>
 <li>Change: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/170">#170</a>] If empty "Spoiler Filter", no checking is done.<br></li>
 <li>Change: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/172">#172</a>] Checkbox "show VUP icons on friends list" without checkbox "Process VUPs" is misunderstood. Implement both checkboxes in section profile / friends.<br></li>
