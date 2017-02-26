@@ -4319,67 +4319,84 @@ var mainGC = function () {
 // Add link to Google Maps on GC Map.
     if ( is_page("map") && settings_add_link_google_maps_on_gc_map ) {
         try {
-            function addGoogleButton( waitCount ) {
+            function getMapCooords() {
+                // Mögliche URL Zusammensetzungen, Beispiele:
+                // 1. https://www.geocaching.com/map/default.aspx?lat=50.889233&lng=13.386967#?ll=50.89091,13.39551&z=14
+                //    https://www.geocaching.com/map/default.aspx?lat=50.889233&lng=13.386967#clist?ll=50.89172,13.36779&z=14
+                //    https://www.geocaching.com/map/default.aspx?lat=50.889233&lng=13.386967#pq?ll=50.89204,13.36667&z=14
+                //    https://www.geocaching.com/map/default.aspx?lat=50.889233&lng=13.386967#search?ll=50.89426,13.35955&z=14
+                // 2. https://www.geocaching.com/map/?ll=50.89093,13.38437#?ll=50.89524,13.35912&z=14
+                // 3. https://www.geocaching.com/map/#?ll=50.95397,6.9713&z=15
+
+                var matches = document.location.href.match(/\\?ll=(-?[0-9.]*),(-?[0-9.]*)&z=([0-9.]*)/); // Beispiel 1., 2. und 3. hinten
+                var matchesMarker = document.location.href.match(/\\?lat=(-?[0-9.]*)&lng=(-?[0-9.]*)/);  // Beispiel 1. vorne
+                if (matchesMarker == null) {
+                    var matchesMarker = document.location.href.match(/\\?ll=(-?[0-9.]*),(-?[0-9.]*)#/);  // Beispiel 2. vorne
+                    if (matchesMarker == null) {
+                        var matchesMarker = matches;                                                     // Beispiel 3.
+                    }
+                }
+                var coords = null;
+                if ( matches != null && matchesMarker != null ) {
+                    coords = new Object();
+                    coords.marker = {};
+                    coords.marker.lat = matchesMarker[1];
+                    coords.marker.lon = matchesMarker[2];
+                    coords.map = {};
+                    coords.map.lat = matches[1];
+                    coords.map.lon = matches[2];
+                    coords.map.zoom = matches[3];
+                }
+                return coords;
+            }
+                      
+            function addGoogleButton( ) { 
+                var div = document.createElement("div");
+                div.setAttribute("class", "leaflet-control-layers leaflet-control");
+                var aTag = document.createElement("a");
+                aTag.setAttribute("id", "gclh_google_button");
+                aTag.setAttribute("class", "leaflet-control-layers-toggle");
+                aTag.setAttribute("title", "Show area on Google Maps");
+                aTag.setAttribute("style", "background-image: url('/images/silk/map_go.png'); cursor: pointer;");
+                var side = document.getElementsByClassName("leaflet-top leaflet-right")[0];
+
+                div.appendChild(script);
+                div.appendChild(aTag);
+                side.appendChild(div);
+                
+                $("#gclh_google_button").click( function() {
+                    var coords = getMapCooords();
+                    if ( coords != null ) {
+                        var url = 'https://maps.google.de/maps?q=' + coords.marker.lat + ',' + coords.marker.lon + '&z=' + coords.map.zoom + '&ll=' + coords.map.lat + ',' + coords.map.lon;
+                    
+                        if ( settings_switch_to_google_maps_in_same_tab ) {
+                            location = url;
+                        } else {
+                            window.open( url );
+                        }
+                    } else {
+                        alert('This map has no geographical coordinates in its link. Just zoom or drag the map, afterwards this will work fine.');
+                    }                    
+                } );
+
+                // Damit auch mehr als 2 Buttons handlebar sind, also auch beispielsweise noch GC Vote.
+                appendCssStyle(".leaflet-control-layers + .leaflet-control {position: unset; right: unset;} .leaflet-control {clear: unset}");            
+            }
+            
+            function addGeoServiceButton( waitCount ) {
                 // Prüfen, ob die Layers schon vorhanden sind, erst dann den Button hinzufügen.
                 if ( $('.leaflet-control-layers-base').find('input.leaflet-control-layers-selector')[0] ) {
                     // Damit Button nicht ständig den Platz wechselt, um 1 Sekunde verzögern, dann sollte er links von den anderen Buttons stehen.
-                    setTimeout( function () {
-                        var code = "";
-                        code += "    function openGoogleMaps(){";
-                        // Mögliche URL Zusammensetzungen, Beispiele:
-                        // 1. https://www.geocaching.com/map/default.aspx?lat=50.889233&lng=13.386967#?ll=50.89091,13.39551&z=14
-                        //    https://www.geocaching.com/map/default.aspx?lat=50.889233&lng=13.386967#clist?ll=50.89172,13.36779&z=14
-                        //    https://www.geocaching.com/map/default.aspx?lat=50.889233&lng=13.386967#pq?ll=50.89204,13.36667&z=14
-                        //    https://www.geocaching.com/map/default.aspx?lat=50.889233&lng=13.386967#search?ll=50.89426,13.35955&z=14
-                        // 2. https://www.geocaching.com/map/?ll=50.89093,13.38437#?ll=50.89524,13.35912&z=14
-                        // 3. https://www.geocaching.com/map/#?ll=50.95397,6.9713&z=15
-                        code += "        var matches = document.location.href.match(/\\?ll=(-?[0-9.]*),(-?[0-9.]*)&z=([0-9.]*)/);"; // Beispiel 1., 2. und 3. hinten
-                        code += "        var matchesMarker = document.location.href.match(/\\?lat=(-?[0-9.]*)&lng=(-?[0-9.]*)/);";  // Beispiel 1. vorne
-                        code += "        if (matchesMarker == null) {";
-                        code += "            var matchesMarker = document.location.href.match(/\\?ll=(-?[0-9.]*),(-?[0-9.]*)#/);";  // Beispiel 2. vorne
-                        code += "            if (matchesMarker == null) {";
-                        code += "                var matchesMarker = matches;";                                                     // Beispiel 3.
-                        code += "            }";
-                        code += "        }";
-                        code += "        if (matches != null && matchesMarker != null) {";
-                        code += "            var url = 'https://maps.google.de/maps?q=' + matchesMarker[1] + ',' + matchesMarker[2] + '&z=' + matches[3] + '&ll=' + matches[1] + ',' + matches[2];";
-                        if ( settings_switch_to_google_maps_in_same_tab ) {
-                            code += "        location = url;";
-                        } else {
-                            code += "        window.open( url );";
-                        }
-                        code += "        } else {";
-                        code += "            alert('This map has no geographical coordinates in its link. Just zoom or drag the map, afterwards this will work fine.');";
-                        code += "        }";
-                        code += "    }";
-                        var script = document.createElement("script");
-                        script.innerHTML = code;
-
-                        var div = document.createElement("div");
-                        div.setAttribute("class", "leaflet-control-layers leaflet-control");
-                        var aTag = document.createElement("a");
-                        aTag.setAttribute("id", "gclh_google_button");
-                        aTag.setAttribute("class", "leaflet-control-layers-toggle");
-                        aTag.setAttribute("onClick", "openGoogleMaps();");
-                        aTag.setAttribute("title", "Show area on Google Maps");
-                        aTag.setAttribute("style", "background-image: url('/images/silk/map_go.png'); cursor: pointer;");
-                        var side = document.getElementsByClassName("leaflet-top leaflet-right")[0];
-
-                        div.appendChild(script);
-                        div.appendChild(aTag);
-                        side.appendChild(div);
-
-                        // Damit auch mehr als 2 Buttons handlebar sind, also auch beispielsweise noch GC Vote.
-                        appendCssStyle(".leaflet-control-layers + .leaflet-control {position: unset; right: unset;} .leaflet-control {clear: unset}");
-                    }, 1000);
+                    setTimeout( addGoogleButton, 1000);
                 } else {
                     waitCount++;
                     if ( waitCount <= 50 ) {  // 10 Sekunden lang
-                        setTimeout( function () { addGoogleButton( waitCount ); }, 200);
+                        setTimeout( function () { addGeoServiceButton( waitCount ); }, 200);
                     } else return;
                 }
             }
-            addGoogleButton( 0 );
+            addGeoServiceButton( 0 );
+            
         } catch (e) {
             gclh_error("add link google maps on gc map", e);
         }
