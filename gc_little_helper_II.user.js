@@ -4252,53 +4252,128 @@ var mainGC = function () {
                 }
                 return coords;
             }
-                      
-            function addGoogleButton( ) { 
-                var div = document.createElement("div");
+                       
+            function openGeohack() {
+                var coords = getMapCooords();
+                if ( coords != null ) {
+                    
+                    latd = coords.map.lat;
+                    lond = coords.map.lon;
+        
+
+                    sign = latd > 0 ? 1 : -1 ;
+                    lat4 = latd > 0 ? 'N' : 'S' ;
+                    latd *= sign ;
+                    lat1 = Math.floor ( latd ) ;
+                    lat2 = Math.floor ( ( latd - lat1 ) * 60 ) ;
+                    lat3 = Math.floor ( ( latd - lat1 - lat2 / 60 ) * 3600 ) ;
+
+                    sign = lond > 0 ? 1 : -1 ;
+                    lon4 = lond > 0 ? 'E' : 'W' ;
+                    lond *= sign ;
+                    lon1 = Math.floor ( lond ) ;
+                    lon2 = Math.floor ( ( lond - lon1 ) * 60 ) ;
+                    lon3 = Math.floor ( ( lond - lon1 - lon2 / 60 ) * 3600 ) ;
+
+        
+                    p = lat1 + '_' + lat2 + '_' + lat3 + '_' + lat4 + '_' ;
+                    p += lon1 + '_' + lon2 + '_' + lon3 + '_' + lon4 ;                    
+                    
+                    var url = "https://tools.wmflabs.org/geohack/geohack.php?pagename=Geocaching&params="+p;
+                                    
+                    if ( settings_switch_to_google_maps_in_same_tab ) {
+                        location = url;
+                    } else {
+                        window.open( url );
+                    }
+                } else {
+                    alert('This map has no geographical coordinates in its link. Just zoom or drag the map, afterwards this will work fine.');
+                }                    
+            }            
+
+            var urlGoogleMaps = 'https://maps.google.de/maps?q={marker-lat},{marker-lon}&z={zoom}&ll={lat},{lon}';
+            var urlOSM = 'https://www.openstreetmap.org/?#map={zoom}/{lat}/{lon}';
+            // var urlOSM = 'https://www.openstreetmap.org/?mlat={lat}&mlon={lon}&zoom={zoom}&layers=M';
+            var urlFlopps = 'http://flopp.net/?c={lat}:{lon}&z={zoom}&t=OSM&f=n&m=&d=';
+            
+            function callGeoService( url, in_same_tab ) {
+                
+                var coords = getMapCooords();
+                if ( coords != null ) {                
+                    url = url.replace('{zoom}',coords.map.zoom);
+                    url = url.replace('{lat}',coords.map.lat);
+                    url = url.replace('{lon}',coords.map.lon);
+                    url = url.replace('{marker-lat}',coords.marker.lat);
+                    url = url.replace('{marker-lon}',coords.marker.lon);               
+                    if ( in_same_tab ) {
+                        location = url;
+                    } else {
+                        window.open( url );
+                    }
+                } else {
+                    alert('This map has no geographical coordinates in its link. Just zoom or drag the map, afterwards this will work fine.');
+                }                    
+            }
+            
+            function initGeoServiceControl( ) { 
+               var div = document.createElement("div");
+                div.setAttribute("id", "gclh_geoservices_control");
                 div.setAttribute("class", "leaflet-control-layers leaflet-control");
                 var aTag = document.createElement("a");
                 aTag.setAttribute("id", "gclh_google_button");
                 aTag.setAttribute("class", "leaflet-control-layers-toggle");
                 aTag.setAttribute("title", "Show area on Google Maps");
-                aTag.setAttribute("style", "background-image: url('/images/silk/map_go.png'); cursor: pointer;");
+                aTag.setAttribute("style", "background-image: url('/images/silk/map_go.png');");
                 var side = document.getElementsByClassName("leaflet-top leaflet-right")[0];
 
                 div.appendChild(script);
                 div.appendChild(aTag);
                 side.appendChild(div);
                 
-                $("#gclh_google_button").click( function() {
-                    var coords = getMapCooords();
-                    if ( coords != null ) {
-                        var url = 'https://maps.google.de/maps?q=' + coords.marker.lat + ',' + coords.marker.lon + '&z=' + coords.map.zoom + '&ll=' + coords.map.lat + ',' + coords.map.lon;
-                    
-                        if ( settings_switch_to_google_maps_in_same_tab ) {
-                            location = url;
-                        } else {
-                            window.open( url );
-                        }
-                    } else {
-                        alert('This map has no geographical coordinates in its link. Just zoom or drag the map, afterwards this will work fine.');
-                    }                    
-                } );
+                
+                $("#gclh_geoservices_control").append('<div id="gclh_geoservices_list" class="leaflet-control-layers-base" style="display: none;"></div>');
+                $("#gclh_geoservices_list").append('<b style="padding:5px; font-size:120%; color: #000000;">Go to ...</b>');
+                $("#gclh_geoservices_list").append('<a id="gclh_geoservice_googlemaps" style="padding: 5px; cursor: pointer; color: #000;" >Google Maps</a>');
+                $("#gclh_geoservices_list").append('<a id="gclh_geoservice_osm" style="padding: 5px; cursor: pointer; color: #000;">Openstreepmap</a>');
+                $("#gclh_geoservices_list").append('<a id="gclh_geoservice_flopps" style="padding: 5px; cursor: pointer; color: #000;">Flopp\'s Map</a>');
+                $("#gclh_geoservices_list").append('<a id="gclh_geoservice_geohack" style="padding: 5px; cursor: pointer; color: #000;">GeoHack</a>');
+                
+                $("#gclh_geoservice_googlemaps").click( function() { callGeoService( urlGoogleMaps, settings_switch_to_google_maps_in_same_tab ) }  );
+                $("#gclh_geoservice_osm").click( function() { callGeoService( urlOSM, settings_switch_to_google_maps_in_same_tab ) } );
+                $("#gclh_geoservice_flopps").click( function() { callGeoService( urlFlopps, settings_switch_to_google_maps_in_same_tab ) } );
+                $("#gclh_geoservice_geohack").click( openGeohack );
+                
+                $("#gclh_geoservices_control").hover( 
+                    function() { 
+                        $("#gclh_geoservices_control").addClass("leaflet-control-layers-expanded");
+                        $("#gclh_google_button").hide();
+                        $("#gclh_geoservices_list").show();
+                    },
+                    function() {
+                        $("#gclh_geoservices_control").removeClass("leaflet-control-layers-expanded");
+                        $("#gclh_geoservices_list").hide(); 
+                        $("#gclh_google_button").show();
+                     }
+                 );
+                
 
                 // Damit auch mehr als 2 Buttons handlebar sind, also auch beispielsweise noch GC Vote.
                 appendCssStyle(".leaflet-control-layers + .leaflet-control {position: unset; right: unset;} .leaflet-control {clear: unset}");            
             }
             
-            function addGeoServiceButton( waitCount ) {
+            function attachGeoServiceControl( waitCount ) {
                 // Prüfen, ob die Layers schon vorhanden sind, erst dann den Button hinzufügen.
                 if ( $('.leaflet-control-layers-base').find('input.leaflet-control-layers-selector')[0] ) {
                     // Damit Button nicht ständig den Platz wechselt, um 1 Sekunde verzögern, dann sollte er links von den anderen Buttons stehen.
-                    setTimeout( addGoogleButton, 1000);
+                    setTimeout( initGeoServiceControl, 1000);
                 } else {
                     waitCount++;
                     if ( waitCount <= 50 ) {  // 10 Sekunden lang
-                        setTimeout( function () { addGeoServiceButton( waitCount ); }, 200);
+                        setTimeout( function () { attachGeoServiceControl( waitCount ); }, 200);
                     } else return;
                 }
             }
-            addGeoServiceButton( 0 );
+            attachGeoServiceControl( 0 );
             
         } catch (e) {
             gclh_error("add link google maps on gc map", e);
