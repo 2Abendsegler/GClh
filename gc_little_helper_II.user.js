@@ -797,7 +797,6 @@ var mainGC = function () {
             function send_log(e) {
                 setValue("last_logtext", document.getElementById('ctl00_ContentBody_LogBookPanel1_uxLogInfo').value);
             }
-
             document.getElementById("ctl00_ContentBody_LogBookPanel1_btnSubmitLog").addEventListener('click', send_log, true);
         } catch (e) {
             gclh_error("Last-Log-Text speichern", e);
@@ -816,7 +815,6 @@ var mainGC = function () {
                     }
                 }
             }
-
             window.addEventListener('keydown', keydown, true);
         } catch (e) {
             gclh_error("F2 logging", e);
@@ -835,7 +833,6 @@ var mainGC = function () {
                     }
                 }
             }
-
             window.addEventListener('keydown', keydown, true);
         } catch (e) {
             gclh_error("F2 save PQ", e);
