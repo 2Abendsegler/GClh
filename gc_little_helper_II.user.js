@@ -3524,8 +3524,12 @@ var mainGC = function () {
             var sNewH = "";  // new hides
 
             var myvips = getValue("vips", false);
-            myvips = myvips.replace(/, (?=,)/g, ",null");
-            myvips = JSON.parse(myvips);
+            if (!myvips) {
+                myvips = new Array();
+            } else {
+                myvips = myvips.replace(/, (?=,)/g, ",null");
+                myvips = JSON.parse(myvips);
+            }
 // << hm -- Issue #111
 
             for (var i = 0; i < friends.length; i++) {
