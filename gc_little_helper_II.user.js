@@ -6760,7 +6760,7 @@ var mainGC = function () {
                     if ( document.location.href.match(/^https?:\/\/www\.geocaching\.com\/seek\/nearest\.aspx\?/)          ||      // - Pocket Query oder ähnlich
                          document.location.href.match(/^https?:\/\/www\.geocaching\.com\/my\/recentlyviewedcaches\.aspx/)    ) {  //   oder Recently Viewed,
                         var lines = $("table.Table").find("tbody").find("tr").slice(1);                                           //   dann Überschrift weglassen.
-                        setLinesColorInZebra( settings_show_tb_listings_in_zebra, lines, 1 );                                     //   Einzeilig.
+                        setLinesColorInZebra( settings_show_common_lists_in_zebra, lines, 1 );                                     //   Einzeilig.
                     }
                 }
             }
