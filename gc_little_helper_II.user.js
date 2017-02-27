@@ -373,6 +373,18 @@ var variablesInit = function (c) {
     c.settings_add_link_google_maps_on_gc_map = getValue("settings_add_link_google_maps_on_gc_map", true);
     //Settings: Switch to Google Maps in same browser tab
     c.settings_switch_to_google_maps_in_same_tab = getValue("settings_switch_to_google_maps_in_same_tab", false);
+    //Settings: Add link to Openstreetmap on GC Map
+    c.settings_add_link_osm_on_gc_map = getValue("settings_add_link_osm_on_gc_map", true);
+    //Settings: Switch toOpenstreetmap in same browser tab
+    c.settings_switch_to_osm_in_same_tab = getValue("settings_switch_osm_in_same_tab", false);
+    //Settings: Add link to Flopps Map on GC Map
+    c.settings_add_link_flopps_on_gc_map = getValue("settings_add_link_flopps_on_gc_map", true);
+    //Settings: Switch to Flopps Map in same browser tab
+    c.settings_switch_to_flopps_in_same_tab = getValue("settings_switch_flopps_in_same_tab", false);
+    //Settings: Add link to GeoHack on GC Map
+    c.settings_add_link_geohack_on_gc_map = getValue("settings_add_link_geohack_on_gc_map", true);
+    //Settings: Switch to GeoHack in same browser tab
+    c.settings_switch_to_geohack_in_same_tab = getValue("settings_switch_to_geohack_in_same_tab", false);    
     //Settings: Sort default links for the Linklist
     c.settings_sort_default_bookmarks = getValue("settings_sort_default_bookmarks", true);
     //Settings: Make VIP lists in cache listing hideable.
@@ -4220,7 +4232,7 @@ var mainGC = function () {
     }
 
 // Add link to Google Maps on GC Map.
-    if ( is_page("map") && settings_add_link_google_maps_on_gc_map ) {
+    if ( is_page("map") && ( settings_add_link_google_maps_on_gc_map || settings_add_link_osm_on_gc_map || settings_add_link_flopps_on_gc_map || settings_add_link_geohack_on_gc_map ) ) {
         try {
             function getMapCooords() {
                 // Mögliche URL Zusammensetzungen, Beispiele:
@@ -4321,10 +4333,18 @@ var mainGC = function () {
                 
                 $("#gclh_geoservices_control").append('<div id="gclh_geoservices_list" class="leaflet-control-layers-base" style="display: none;"></div>');
                 $("#gclh_geoservices_list").append('<b style="padding:5px; font-size:120%; color: #000000;">Go to ...</b>');
-                $("#gclh_geoservices_list").append('<a id="gclh_geoservice_googlemaps" style="padding: 5px; cursor: pointer; color: #000;" >Google Maps</a>');
-                $("#gclh_geoservices_list").append('<a id="gclh_geoservice_osm" style="padding: 5px; cursor: pointer; color: #000;">Openstreepmap</a>');
-                $("#gclh_geoservices_list").append('<a id="gclh_geoservice_flopps" style="padding: 5px; cursor: pointer; color: #000;">Flopp\'s Map</a>');
-                $("#gclh_geoservices_list").append('<a id="gclh_geoservice_geohack" style="padding: 5px; cursor: pointer; color: #000;">GeoHack</a>');
+                if ( settings_add_link_google_maps_on_gc_map ) {
+                    $("#gclh_geoservices_list").append('<a id="gclh_geoservice_googlemaps" style="padding: 5px; cursor: pointer; color: #000;" >Google Maps</a>');
+                }
+                if ( settings_add_link_osm_on_gc_map ) { 
+                    $("#gclh_geoservices_list").append('<a id="gclh_geoservice_osm" style="padding: 5px; cursor: pointer; color: #000;">Openstreepmap</a>');
+                }
+                if ( settings_add_link_flopps_on_gc_map ) {
+                    $("#gclh_geoservices_list").append('<a id="gclh_geoservice_flopps" style="padding: 5px; cursor: pointer; color: #000;">Flopp\'s Map</a>');
+                }
+                if ( settings_add_link_geohack_on_gc_map ) {
+                    $("#gclh_geoservices_list").append('<a id="gclh_geoservice_geohack" style="padding: 5px; cursor: pointer; color: #000;">GeoHack</a>');
+                }
                 
                 $("#gclh_geoservice_googlemaps").click( function() { callGeoService( urlGoogleMaps, settings_switch_to_google_maps_in_same_tab ) }  );
                 $("#gclh_geoservice_osm").click( function() { callGeoService( urlOSM, settings_switch_to_osm_in_same_tab ) } );
@@ -8775,6 +8795,17 @@ var mainGC = function () {
             html += " &nbsp; " + checkboxy('settings_switch_to_gc_map_in_same_tab', 'Switch to GC Map in same browser tab') + show_help("With this option you can switch from Google Maps to GC Map in the same browser tab.<br><br>This option requires \"Add link to GC Map on Google Maps\".") + "<br/>";
             html += checkboxy('settings_add_link_google_maps_on_gc_map', 'Add link to Google Maps on GC Map') + show_help("With this option an icon are placed on the GC Map page to link to the same area in Google Maps.") + "<br/>";
             html += " &nbsp; " + checkboxy('settings_switch_to_google_maps_in_same_tab', 'Switch to Google Maps in same browser tab') + show_help("With this option you can switch from GC Map to Google Maps in the same browser tab.<br><br>This option requires \"Add link to Google Maps on GC Map\".") + "<br/>";
+            html += "<div style='margin-top: 9px; margin-left: 5px'><b>Openstreetmap page</b></div>";           
+            // html += checkboxy('settings_add_link_gc_map_on_google_maps', 'Add link to GC Map on Google Maps') + show_help("With this option an icon are placed on the Google Maps page to link to the same area in GC Map.") + "<br/>";
+            // html += " &nbsp; " + checkboxy('settings_switch_to_gc_map_in_same_tab', 'Switch to GC Map in same browser tab') + show_help("With this option you can switch from Google Maps to GC Map in the same browser tab.<br><br>This option requires \"Add link to GC Map on Google Maps\".") + "<br/>";
+            html += checkboxy('settings_add_link_osm_on_gc_map', 'Add link to Openstreetmap on GC Map') + show_help("With this option an icon are placed on the GC Map page to link to the same area in Openstreetmap.") + "<br/>";
+            html += " &nbsp; " + checkboxy('settings_switch_to_osm_in_same_tab', 'Switch to OpenstreetMap in same browser tab') + show_help("With this option you can switch from GC Map to OpenstreetMap in the same browser tab.<br><br>This option requires \"Add link to Openstreetmap on GC Map\".") + "<br/>";
+            html += "<div style='margin-top: 9px; margin-left: 5px'><b>Flopp's Map page</b></div>";           
+            html += checkboxy('settings_add_link_flopps_on_gc_map', 'Add link to Flopp\'s Map on GC Map') + show_help("With this option an icon are placed on the GC Map page to link to the same area in Flopp\'s Map.") + "<br/>";
+            html += " &nbsp; " + checkboxy('settings_switch_to_flopps_in_same_tab', 'Switch to Flopp\'s Map in same browser tab') + show_help("With this option you can switch from GC Map to Flopp\'s Map in the same browser tab.<br><br>This option requires \"Add link to Flopp\'s Map on GC Map\".") + "<br/>";
+            html += "<div style='margin-top: 9px; margin-left: 5px'><b>GeoHack page</b></div>";           
+            html += checkboxy('settings_add_link_geohack_on_gc_map', 'Add link to GeoHack on GC Map') + show_help("With this option an icon are placed on the GC Map page to link to the same area in GeoHack.") + "<br/>";
+            html += " &nbsp; " + checkboxy('settings_switch_to_geohack_in_same_tab', 'Switch to GeoHack in same browser tab') + show_help("With this option you can switch from GC Map to GeoHack in the same browser tab.<br><br>This option requires \"Add link to GeoHack on GC Map\".") + "<br/>";
             html += "</div>";            
 
             html += "<h4 class='gclh_headline2'>"+prepareHideable.replace("#name#","profile")+"Profile <span style='font-size: 14px'>" + show_help2("This section include your profile pages (\/my\/ and \/profile\/ pages) with for example your founded caches and trackables, your earned souvenirs, your image gallery, your statistic ... <br><br>Also the section include the profile pages of the others.") + "</span></h4>";
@@ -9549,6 +9580,9 @@ var mainGC = function () {
             setEventsForDependentParameters( "settings_count_own_matrix_show_next", "settings_count_own_matrix_links" );
             setEventsForDependentParameters( "settings_add_link_gc_map_on_google_maps", "settings_switch_to_gc_map_in_same_tab" );
             setEventsForDependentParameters( "settings_add_link_google_maps_on_gc_map", "settings_switch_to_google_maps_in_same_tab" );
+            setEventsForDependentParameters( "settings_add_link_osm_on_gc_map", "settings_switch_to_osm_in_same_tab" );
+            setEventsForDependentParameters( "settings_add_link_flopps_on_gc_map", "settings_switch_to_flopps_in_same_tab" );
+            setEventsForDependentParameters( "settings_add_link_geohack_on_gc_map", "settings_switch_to_geohack_in_same_tab" );
             setEventsForDependentParameters( "settings_show_latest_logs_symbols", "settings_show_latest_logs_symbols_count" );
             setEventsForDependentParameters( "settings_load_logs_with_gclh", "settings_show_latest_logs_symbols" );
             setEventsForDependentParameters( "settings_log_statistic", "settings_log_statistic_reload" );
@@ -9793,6 +9827,12 @@ var mainGC = function () {
                 'settings_switch_to_gc_map_in_same_tab',
                 'settings_add_link_google_maps_on_gc_map',
                 'settings_switch_to_google_maps_in_same_tab',
+                'settings_add_link_osm_on_gc_map',
+                'settings_switch_to_osm_in_same_tab',
+                'settings_add_link_flopps_on_gc_map',
+                'settings_switch_to_flopps_in_same_tab',
+                'settings_add_link_geohack_on_gc_map',
+                'settings_switch_to_geohack_in_same_tab',
                 'settings_sort_default_bookmarks',
                 'settings_make_vip_lists_hideable',
                 'settings_show_latest_logs_symbols',
