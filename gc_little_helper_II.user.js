@@ -4242,73 +4242,61 @@ var mainGC = function () {
                 var coords = null;
                 if ( matches != null && matchesMarker != null ) {
                     coords = new Object();
-                    coords.marker = {};
-                    coords.marker.lat = matchesMarker[1];
-                    coords.marker.lon = matchesMarker[2];
-                    coords.map = {};
-                    coords.map.lat = matches[1];
-                    coords.map.lon = matches[2];
-                    coords.map.zoom = matches[3];
+                    coords.zoom = matches[3];
+                    coords.lat = matches[1];
+                    coords.lon = matches[2];
+                    coords["marker-lat"] = matchesMarker[1];
+                    coords["marker-lon"] = matchesMarker[2];
+
+                    var latd = coords.lat;
+                    var lond = coords.lon;
+                    sign = latd > 0 ? 1 : -1 ;
+                    coords.latOrient = latd > 0 ? 'N' : 'S' ;
+                    latd *= sign ;
+                    coords.latDeg = Math.floor ( latd ) ;
+                    coords.latMin = Math.floor ( ( latd - coords.latDeg ) * 60 ) ;
+                    coords.latSec = Math.floor ( ( latd - coords.latDeg - coords.latMin / 60 ) * 3600 ) ;
+                    sign = lond > 0 ? 1 : -1 ;
+                    coords.lonOrient = lond > 0 ? 'E' : 'W' ;
+                    lond *= sign ;
+                    coords.lonDeg = Math.floor ( lond ) ;
+                    coords.lonMin = Math.floor ( ( lond - coords.lonDeg ) * 60 ) ;
+                    coords.lonSec = Math.floor ( ( lond - coords.lonDeg - coords.lonMin / 60 ) * 3600 ) ;                    
                 }
                 return coords;
             }
                        
-            function openGeohack() {
-                var coords = getMapCooords();
-                if ( coords != null ) {
-                    
-                    latd = coords.map.lat;
-                    lond = coords.map.lon;
-        
-
-                    sign = latd > 0 ? 1 : -1 ;
-                    lat4 = latd > 0 ? 'N' : 'S' ;
-                    latd *= sign ;
-                    lat1 = Math.floor ( latd ) ;
-                    lat2 = Math.floor ( ( latd - lat1 ) * 60 ) ;
-                    lat3 = Math.floor ( ( latd - lat1 - lat2 / 60 ) * 3600 ) ;
-
-                    sign = lond > 0 ? 1 : -1 ;
-                    lon4 = lond > 0 ? 'E' : 'W' ;
-                    lond *= sign ;
-                    lon1 = Math.floor ( lond ) ;
-                    lon2 = Math.floor ( ( lond - lon1 ) * 60 ) ;
-                    lon3 = Math.floor ( ( lond - lon1 - lon2 / 60 ) * 3600 ) ;
-
-        
-                    p = lat1 + '_' + lat2 + '_' + lat3 + '_' + lat4 + '_' ;
-                    p += lon1 + '_' + lon2 + '_' + lon3 + '_' + lon4 ;                    
-                    
-                    var url = "https://tools.wmflabs.org/geohack/geohack.php?pagename=Geocaching&params="+p;
-                                    
-                    if ( settings_switch_to_google_maps_in_same_tab ) {
-                        location = url;
-                    } else {
-                        window.open( url );
-                    }
-                } else {
-                    alert('This map has no geographical coordinates in its link. Just zoom or drag the map, afterwards this will work fine.');
-                }                    
-            }            
-
             var urlGoogleMaps = 'https://maps.google.de/maps?q={marker-lat},{marker-lon}&z={zoom}&ll={lat},{lon}';
             var urlOSM = 'https://www.openstreetmap.org/?#map={zoom}/{lat}/{lon}';
             // var urlOSM = 'https://www.openstreetmap.org/?mlat={lat}&mlon={lon}&zoom={zoom}&layers=M';
             var urlFlopps = 'http://flopp.net/?c={lat}:{lon}&z={zoom}&t=OSM&f=n&m=&d=';
+            var urlGeoHack = "https://tools.wmflabs.org/geohack/geohack.php?pagename=Geocaching&params={latDeg}_{latMin}_{latSec}_{latOrient}_{lonDeg}_{lonMin}_{lonSec}_{lonOrient}";
+            
+            function replaceData( str, coords ) 
+            {
+                re = new RegExp( "\{[a-zA-Z]+\}", "g");
+                var replacements = str.match(re); 
+                if ( replacements != null ) {
+                    for ( var i=0; i<replacements.length; i++ ) {
+                        var replacement = replacements[i];
+                        var name = replacement.substring(1,replacement.length-1)
+                        if ( name in coords ) {
+                            str = str.replace( replacement, coords[name] );
+                        }
+                    }
+                }
+                return str;
+            }
             
             function callGeoService( url, in_same_tab ) {
                 
                 var coords = getMapCooords();
-                if ( coords != null ) {                
-                    url = url.replace('{zoom}',coords.map.zoom);
-                    url = url.replace('{lat}',coords.map.lat);
-                    url = url.replace('{lon}',coords.map.lon);
-                    url = url.replace('{marker-lat}',coords.marker.lat);
-                    url = url.replace('{marker-lon}',coords.marker.lon);               
+                if ( coords != null ) {   
+                    url = replaceData( url, coords );
                     if ( in_same_tab ) {
-                        location = url;
+                       location = url;
                     } else {
-                        window.open( url );
+                       window.open( url );
                     }
                 } else {
                     alert('This map has no geographical coordinates in its link. Just zoom or drag the map, afterwards this will work fine.');
@@ -4339,9 +4327,9 @@ var mainGC = function () {
                 $("#gclh_geoservices_list").append('<a id="gclh_geoservice_geohack" style="padding: 5px; cursor: pointer; color: #000;">GeoHack</a>');
                 
                 $("#gclh_geoservice_googlemaps").click( function() { callGeoService( urlGoogleMaps, settings_switch_to_google_maps_in_same_tab ) }  );
-                $("#gclh_geoservice_osm").click( function() { callGeoService( urlOSM, settings_switch_to_google_maps_in_same_tab ) } );
-                $("#gclh_geoservice_flopps").click( function() { callGeoService( urlFlopps, settings_switch_to_google_maps_in_same_tab ) } );
-                $("#gclh_geoservice_geohack").click( openGeohack );
+                $("#gclh_geoservice_osm").click( function() { callGeoService( urlOSM, settings_switch_to_osm_in_same_tab ) } );
+                $("#gclh_geoservice_flopps").click( function() { callGeoService( urlFlopps, settings_switch_to_flopps_in_same_tab ) } );
+                $("#gclh_geoservice_geohack").click( function() { callGeoService( urlGeoHack, settings_switch_to_geohack_in_same_tab ) } );
                 
                 $("#gclh_geoservices_control").hover( 
                     function() { 
@@ -8787,7 +8775,7 @@ var mainGC = function () {
             html += " &nbsp; " + checkboxy('settings_switch_to_gc_map_in_same_tab', 'Switch to GC Map in same browser tab') + show_help("With this option you can switch from Google Maps to GC Map in the same browser tab.<br><br>This option requires \"Add link to GC Map on Google Maps\".") + "<br/>";
             html += checkboxy('settings_add_link_google_maps_on_gc_map', 'Add link to Google Maps on GC Map') + show_help("With this option an icon are placed on the GC Map page to link to the same area in Google Maps.") + "<br/>";
             html += " &nbsp; " + checkboxy('settings_switch_to_google_maps_in_same_tab', 'Switch to Google Maps in same browser tab') + show_help("With this option you can switch from GC Map to Google Maps in the same browser tab.<br><br>This option requires \"Add link to Google Maps on GC Map\".") + "<br/>";
-            html += "</div>";
+            html += "</div>";            
 
             html += "<h4 class='gclh_headline2'>"+prepareHideable.replace("#name#","profile")+"Profile <span style='font-size: 14px'>" + show_help2("This section include your profile pages (\/my\/ and \/profile\/ pages) with for example your founded caches and trackables, your earned souvenirs, your image gallery, your statistic ... <br><br>Also the section include the profile pages of the others.") + "</span></h4>";
             html += "<div id='gclh_config_profile'>";
