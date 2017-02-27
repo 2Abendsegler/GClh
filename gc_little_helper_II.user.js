@@ -346,11 +346,11 @@ var variablesInit = function (c) {
     //Settings: Add link to Openstreetmap on GC Map
     c.settings_add_link_osm_on_gc_map = getValue("settings_add_link_osm_on_gc_map", true);
     //Settings: Switch toOpenstreetmap in same browser tab
-    c.settings_switch_to_osm_in_same_tab = getValue("settings_switch_osm_in_same_tab", false);
+    c.settings_switch_to_osm_in_same_tab = getValue("settings_switch_to_osm_in_same_tab", false);
     //Settings: Add link to Flopps Map on GC Map
     c.settings_add_link_flopps_on_gc_map = getValue("settings_add_link_flopps_on_gc_map", true);
     //Settings: Switch to Flopps Map in same browser tab
-    c.settings_switch_to_flopps_in_same_tab = getValue("settings_switch_flopps_in_same_tab", false);
+    c.settings_switch_to_flopps_in_same_tab = getValue("settings_switch_to_flopps_in_same_tab", false);
     //Settings: Add link to GeoHack on GC Map
     c.settings_add_link_geohack_on_gc_map = getValue("settings_add_link_geohack_on_gc_map", true);
     //Settings: Switch to GeoHack in same browser tab
@@ -4354,8 +4354,8 @@ var mainGC = function () {
                     coords.zoom = matches[3];
                     coords.lat = matches[1];
                     coords.lon = matches[2];
-                    coords["marker-lat"] = matchesMarker[1];
-                    coords["marker-lon"] = matchesMarker[2];
+                    coords.markerLat = matchesMarker[1];
+                    coords.markerLon = matchesMarker[2];
 
                     var latd = coords.lat;
                     var lond = coords.lon;
@@ -4375,7 +4375,7 @@ var mainGC = function () {
                 return coords;
             }
                        
-            var urlGoogleMaps = 'https://maps.google.de/maps?q={marker-lat},{marker-lon}&z={zoom}&ll={lat},{lon}';
+            var urlGoogleMaps = 'https://maps.google.de/maps?q={markerLat},{markerLon}&z={zoom}&ll={lat},{lon}';
             var urlOSM = 'https://www.openstreetmap.org/?#map={zoom}/{lat}/{lon}';
             // var urlOSM = 'https://www.openstreetmap.org/?mlat={lat}&mlon={lon}&zoom={zoom}&layers=M';
             var urlFlopps = 'http://flopp.net/?c={lat}:{lon}&z={zoom}&t=OSM&f=n&m=&d=';
@@ -4398,14 +4398,14 @@ var mainGC = function () {
             }
             
             function callGeoService( url, in_same_tab ) {
-                
+                console.log(in_same_tab);
                 var coords = getMapCooords();
                 if ( coords != null ) {   
                     url = replaceData( url, coords );
                     if ( in_same_tab ) {
-                       location = url;
+                      location = url;
                     } else {
-                       window.open( url );
+                      window.open( url );
                     }
                 } else {
                     alert('This map has no geographical coordinates in its link. Just zoom or drag the map, afterwards this will work fine.');
@@ -8896,7 +8896,7 @@ var mainGC = function () {
             // html += checkboxy('settings_add_link_gc_map_on_google_maps', 'Add link to GC Map on Google Maps') + show_help("With this option an icon are placed on the Google Maps page to link to the same area in GC Map.") + "<br/>";
             // html += " &nbsp; " + checkboxy('settings_switch_to_gc_map_in_same_tab', 'Switch to GC Map in same browser tab') + show_help("With this option you can switch from Google Maps to GC Map in the same browser tab.<br><br>This option requires \"Add link to GC Map on Google Maps\".") + "<br/>";
             html += checkboxy('settings_add_link_osm_on_gc_map', 'Add link to Openstreetmap on GC Map') + show_help("With this option an icon are placed on the GC Map page to link to the same area in Openstreetmap.") + "<br/>";
-            html += " &nbsp; " + checkboxy('settings_switch_to_osm_in_same_tab', 'Switch to OpenstreetMap in same browser tab') + show_help("With this option you can switch from GC Map to OpenstreetMap in the same browser tab.<br><br>This option requires \"Add link to Openstreetmap on GC Map\".") + "<br/>";
+            html += " &nbsp; " + checkboxy('settings_switch_to_osm_in_same_tab', 'Switch to Openstreetmap in same browser tab') + show_help("With this option you can switch from GC Map to Openstreetmap in the same browser tab.<br><br>This option requires \"Add link to Openstreetmap on GC Map\".") + "<br/>";
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>Flopp's Map page</b></div>";           
             html += checkboxy('settings_add_link_flopps_on_gc_map', 'Add link to Flopp\'s Map on GC Map') + show_help("With this option an icon are placed on the GC Map page to link to the same area in Flopp\'s Map.") + "<br/>";
             html += " &nbsp; " + checkboxy('settings_switch_to_flopps_in_same_tab', 'Switch to Flopp\'s Map in same browser tab') + show_help("With this option you can switch from GC Map to Flopp\'s Map in the same browser tab.<br><br>This option requires \"Add link to Flopp\'s Map on GC Map\".") + "<br/>";
