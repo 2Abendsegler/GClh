@@ -156,36 +156,6 @@ var constInit = function (c) {
     // Icons intern aufbauen (data base64 ist viel schneller, als das Laden von externen Icons über url.).
     iconsInit();
 
-    c.all_map_layers = new Object();     // gc.com Default-Layers  
-    c.all_map_layers = {  
-         "Geocaching" : { tileUrl: "https://maptiles{s}.geocaching.com/tile/{z}/{x}/{y}.png?token={accessToken}",  accessToken: '',  subdomains: ['01', '02', '03', '04', '05', '06', '07', '08'],  minZoom: 0,  maxZoom: 18 }
-        ,"OpenStreetMap Default" : { tileUrl: "http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",  attribution: '&copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>' }
-        ,"OpenStreetMap German Style" : { tileUrl: "http://{s}.tile.openstreetmap.de/tiles/osmde/{z}/{x}/{y}.png",  attribution: '&copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>' }
-        ,"OpenStreetMap Black and White" : { tileUrl: "http://{s}.www.toolserver.org/tiles/bw-mapnik/{z}/{x}/{y}.png",  attribution: '&copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>' }
-        ,"Thunderforest OpenCycleMap" : { tileUrl: "http://{s}.tile.opencyclemap.org/cycle/{z}/{x}/{y}.png",  attribution: '&copy; <a href="http://www.opencyclemap.org">OpenCycleMap</a>, <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>' }
-        ,"Thunderforest Transport" : { tileUrl: "http://{s}.tile2.opencyclemap.org/transport/{z}/{x}/{y}.png",  attribution: '&copy; <a href="http://www.opencyclemap.org">OpenCycleMap</a>, <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>' }
-        ,"Thunderforest Landscape" : { tileUrl: "http://{s}.tile3.opencyclemap.org/landscape/{z}/{x}/{y}.png",  attribution: '&copy; <a href="http://www.opencyclemap.org">OpenCycleMap</a>, <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>' }
-        ,"Stamen Toner" : { tileUrl: "http://{s}.tile.stamen.com/toner/{z}/{x}/{y}.png",  attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; ' + "Map data {attribution.OpenStreetMap}",  subdomains: "abcd",  minZoom: 0,  maxZoom: 20 }
-        ,"Stamen Terrain" : { tileUrl: "http://{s}.tile.stamen.com/terrain/{z}/{x}/{y}.png",  attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; ' + "Map data {attribution.OpenStreetMap}",  subdomains: "abcd",  minZoom: 4,  maxZoom: 18 }
-        ,"Stamen Watercolor" : { tileUrl: "http://{s}.tile.stamen.com/watercolor/{z}/{x}/{y}.png",  attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; ' + "Map data {attribution.OpenStreetMap}",  subdomains: "abcd",  minZoom: 3,  maxZoom: 16 }
-        ,"Esri WorldStreetMap" : { tileUrl: "http://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}",  attribution: "Tiles &copy; Esri" }
-        ,"Esri DeLorme" : { tileUrl: "http://server.arcgisonline.com/ArcGIS/rest/services/Specialty/DeLorme_World_Base_Map/MapServer/tile/{z}/{y}/{x}",  attribution: "Tiles &copy; Esri &mdash; Copyright: \u00a92012 DeLorme",  maxZoom: 11 }
-        ,"Esri WorldTopoMap" : { tileUrl: "http://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}",  attribution: "Tiles &copy; Esri &mdash; Esri, DeLorme, NAVTEQ, TomTom, Intermap, iPC, USGS, FAO, NPS, NRCAN, GeoBase, Kadaster NL, Ordnance Survey, Esri Japan, METI, Esri China (Hong Kong), and the GIS User Community" }
-        ,"Esri WorldImagery" : { tileUrl: "http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",  attribution: "Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community" }
-        ,"Esri OceanBasemap" : { tileUrl: "http://services.arcgisonline.com/ArcGIS/rest/services/Ocean_Basemap/MapServer/tile/{z}/{y}/{x}",  attribution: "Tiles &copy; Esri &mdash; Sources: GEBCO, NOAA, CHS, OSU, UNH, CSUMB, National Geographic, DeLorme, NAVTEQ, and Esri",  maxZoom: 11 }
-        ,"Esri NatGeoWorldMap" : { tileUrl: "http://services.arcgisonline.com/ArcGIS/rest/services/NatGeo_World_Map/MapServer/tile/{z}/{y}/{x}",  attribution: "Tiles &copy; Esri &mdash; National Geographic, Esri, DeLorme, NAVTEQ, UNEP-WCMC, USGS, NASA, ESA, METI, NRCAN, GEBCO, NOAA, iPC" }
-        ,"OpenStreetMap Hike and Bike" : { tileUrl: "http://toolserver.org/tiles/hikebike/{z}/{x}/{y}.png",  attribution: 'Map and map data \u00a9 2012 <a href="http://www.openstreetmap.org" target=\'_blank\'>OpenStreetMap</a> and contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>.',  tileSize: 256,  minZoom: 0,  maxZoom: 20 }
-        ,"Google Maps" : { tileUrl: "http://mt.google.com/vt?x={x}&y={y}&z={z}",  attribution: "Google Maps",  tileSize: 256,  minZoom: 0,  maxZoom: 20 }
-        ,"Google Maps Satellite" : { tileUrl: "http://mt.google.com/vt?lyrs=s&x={x}&y={y}&z={z}",  attribution: "Google Maps",  tileSize: 256,  minZoom: 3,  maxZoom: 20 }
-        ,"Google Maps Hybrid" : { tileUrl: "http://mt0.google.com/vt/lyrs=s,m@110&hl=en&x={x}&y={y}&z={z}",  attribution: "Google Maps",  tileSize: 256,  minZoom: 0,  maxZoom: 20 }
-    };
-
-    c.map_overlays = new Object();     
-    c.map_overlays = {
-         "Hillshadow" : { tileUrl: "http://{s}.tiles.wmflabs.org/hillshading/{z}/{x}/{y}.png",  attribution: 'hillshadow \u00a9 <a href="http://tiles.wmflabs.org/" target=\'_blank\'>tiles.wmflabs.org</a>',  tileSize: 256,  minZoom: 0,  maxZoom: 17 }
-        ,"Public Transport Lines" : { tileUrl: "http://openptmap.org/tiles/{z}/{x}/{y}.png",  attribution: 'Public Transport Lines\u00a9 <a href="http://openptmap.org/" target=\'_blank\'>OpenPTMap</a>',  tileSize: 256,  minZoom: 0,  maxZoom: 17 }
-    }    
-    
     constInitDeref.resolve();
     return constInitDeref.promise();
 };
@@ -827,7 +797,6 @@ var mainGC = function () {
             function send_log(e) {
                 setValue("last_logtext", document.getElementById('ctl00_ContentBody_LogBookPanel1_uxLogInfo').value);
             }
-
             document.getElementById("ctl00_ContentBody_LogBookPanel1_btnSubmitLog").addEventListener('click', send_log, true);
         } catch (e) {
             gclh_error("Last-Log-Text speichern", e);
@@ -846,7 +815,6 @@ var mainGC = function () {
                     }
                 }
             }
-
             window.addEventListener('keydown', keydown, true);
         } catch (e) {
             gclh_error("F2 logging", e);
@@ -865,7 +833,6 @@ var mainGC = function () {
                     }
                 }
             }
-
             window.addEventListener('keydown', keydown, true);
         } catch (e) {
             gclh_error("F2 save PQ", e);
@@ -3554,8 +3521,12 @@ var mainGC = function () {
             var sNewH = "";  // new hides
 
             var myvips = getValue("vips", false);
-            myvips = myvips.replace(/, (?=,)/g, ",null");
-            myvips = JSON.parse(myvips);
+            if (!myvips) {
+                myvips = new Array();
+            } else {
+                myvips = myvips.replace(/, (?=,)/g, ",null");
+                myvips = JSON.parse(myvips);
+            }
 // << hm -- Issue #111
 
             for (var i = 0; i < friends.length; i++) {
@@ -4046,6 +4017,133 @@ var mainGC = function () {
             gclh_error("Hide Map Header", e);
         }
     }
+
+// Map Layers
+    var all_map_layers = new Object();
+    // gc.com Default-Layers
+    all_map_layers["Geocaching"] = {
+        tileUrl: "https://maptiles{s}.geocaching.com/tile/{z}/{x}/{y}.png?token={accessToken}",
+        accessToken: '',
+        subdomains: ['01', '02', '03', '04', '05', '06', '07', '08'],
+        minZoom: 0,
+        maxZoom: 18
+    };
+    all_map_layers["OpenStreetMap Default"] = {
+        tileUrl: "http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+        attribution: '&copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>'
+    };
+    all_map_layers["OpenStreetMap German Style"] = {
+        tileUrl: "http://{s}.tile.openstreetmap.de/tiles/osmde/{z}/{x}/{y}.png",
+        attribution: '&copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>'
+    };
+    all_map_layers["OpenStreetMap Black and White"] = {
+        tileUrl: "http://{s}.www.toolserver.org/tiles/bw-mapnik/{z}/{x}/{y}.png",
+        attribution: '&copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>'
+    };
+    all_map_layers["Thunderforest OpenCycleMap"] = {
+        tileUrl: "http://{s}.tile.opencyclemap.org/cycle/{z}/{x}/{y}.png",
+        attribution: '&copy; <a href="http://www.opencyclemap.org">OpenCycleMap</a>, <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>'
+    };
+    all_map_layers["Thunderforest Transport"] = {
+        tileUrl: "http://{s}.tile2.opencyclemap.org/transport/{z}/{x}/{y}.png",
+        attribution: '&copy; <a href="http://www.opencyclemap.org">OpenCycleMap</a>, <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>'
+    };
+    all_map_layers["Thunderforest Landscape"] = {
+        tileUrl: "http://{s}.tile3.opencyclemap.org/landscape/{z}/{x}/{y}.png",
+        attribution: '&copy; <a href="http://www.opencyclemap.org">OpenCycleMap</a>, <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>'
+    };
+    all_map_layers["Stamen Toner"] = {
+        tileUrl: "http://{s}.tile.stamen.com/toner/{z}/{x}/{y}.png",
+        attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; ' + "Map data {attribution.OpenStreetMap}",
+        subdomains: "abcd",
+        minZoom: 0,
+        maxZoom: 20
+    };
+    all_map_layers["Stamen Terrain"] = {
+        tileUrl: "http://{s}.tile.stamen.com/terrain/{z}/{x}/{y}.png",
+        attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; ' + "Map data {attribution.OpenStreetMap}",
+        subdomains: "abcd",
+        minZoom: 4,
+        maxZoom: 18
+    };
+    all_map_layers["Stamen Watercolor"] = {
+        tileUrl: "http://{s}.tile.stamen.com/watercolor/{z}/{x}/{y}.png",
+        attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; ' + "Map data {attribution.OpenStreetMap}",
+        subdomains: "abcd",
+        minZoom: 3,
+        maxZoom: 16
+    };
+    all_map_layers["Esri WorldStreetMap"] = {
+        tileUrl: "http://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}",
+        attribution: "Tiles &copy; Esri"
+    };
+    all_map_layers["Esri DeLorme"] = {
+        tileUrl: "http://server.arcgisonline.com/ArcGIS/rest/services/Specialty/DeLorme_World_Base_Map/MapServer/tile/{z}/{y}/{x}",
+        attribution: "Tiles &copy; Esri &mdash; Copyright: \u00a92012 DeLorme",
+        maxZoom: 11
+    };
+    all_map_layers["Esri WorldTopoMap"] = {
+        tileUrl: "http://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}",
+        attribution: "Tiles &copy; Esri &mdash; Esri, DeLorme, NAVTEQ, TomTom, Intermap, iPC, USGS, FAO, NPS, NRCAN, GeoBase, Kadaster NL, Ordnance Survey, Esri Japan, METI, Esri China (Hong Kong), and the GIS User Community"
+    };
+    all_map_layers["Esri WorldImagery"] = {
+        tileUrl: "http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
+        attribution: "Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community"
+    };
+    all_map_layers["Esri OceanBasemap"] = {
+        tileUrl: "http://services.arcgisonline.com/ArcGIS/rest/services/Ocean_Basemap/MapServer/tile/{z}/{y}/{x}",
+        attribution: "Tiles &copy; Esri &mdash; Sources: GEBCO, NOAA, CHS, OSU, UNH, CSUMB, National Geographic, DeLorme, NAVTEQ, and Esri",
+        maxZoom: 11
+    };
+    all_map_layers["Esri NatGeoWorldMap"] = {
+        tileUrl: "http://services.arcgisonline.com/ArcGIS/rest/services/NatGeo_World_Map/MapServer/tile/{z}/{y}/{x}",
+        attribution: "Tiles &copy; Esri &mdash; National Geographic, Esri, DeLorme, NAVTEQ, UNEP-WCMC, USGS, NASA, ESA, METI, NRCAN, GEBCO, NOAA, iPC"
+    };
+    // GClh additional Layers
+    all_map_layers["OpenStreetMap Hike and Bike"] = {
+        tileUrl: "http://toolserver.org/tiles/hikebike/{z}/{x}/{y}.png",
+        attribution: 'Map and map data \u00a9 2012 <a href="http://www.openstreetmap.org" target=\'_blank\'>OpenStreetMap</a> and contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>.',
+        tileSize: 256,
+        minZoom: 0,
+        maxZoom: 20
+    };
+    all_map_layers["Google Maps"] = {
+        tileUrl: "http://mt.google.com/vt?x={x}&y={y}&z={z}",
+        attribution: "Google Maps",
+        tileSize: 256,
+        minZoom: 0,
+        maxZoom: 20
+    };
+    all_map_layers["Google Maps Satellite"] = {
+        tileUrl: "http://mt.google.com/vt?lyrs=s&x={x}&y={y}&z={z}",
+        attribution: "Google Maps",
+        tileSize: 256,
+        minZoom: 3,
+        maxZoom: 20
+    };
+    all_map_layers["Google Maps Hybrid"] = {
+        tileUrl: "http://mt0.google.com/vt/lyrs=s,m@110&hl=en&x={x}&y={y}&z={z}",
+        attribution: "Google Maps",
+        tileSize: 256,
+        minZoom: 0,
+        maxZoom: 20
+    };
+    // Map-Overlays
+    var map_overlays = new Object();
+    map_overlays["Hillshadow"] = {
+        tileUrl: "http://{s}.tiles.wmflabs.org/hillshading/{z}/{x}/{y}.png",
+        attribution: 'hillshadow \u00a9 <a href="http://tiles.wmflabs.org/" target=\'_blank\'>tiles.wmflabs.org</a>',
+        tileSize: 256,
+        minZoom: 0,
+        maxZoom: 17
+    };
+    map_overlays["Public Transport Lines"] = {
+        tileUrl: "http://openptmap.org/tiles/{z}/{x}/{y}.png",
+        attribution: 'Public Transport Lines\u00a9 <a href="http://openptmap.org/" target=\'_blank\'>OpenPTMap</a>',
+        tileSize: 256,
+        minZoom: 0,
+        maxZoom: 17
+    };
 
 // Add additional Layers to Map & Select Default-Layer, add Hill-Shadow, add Homezone
     if (document.location.href.match(/^https?:\/\/www\.geocaching\.com\/map\//)) {
@@ -5943,10 +6041,10 @@ var mainGC = function () {
             global_MailTemplate = urlencode( buildSendTemplate().replace(/#Receiver#/ig, "__Receiver__") );
             global_MailTemplate = global_MailTemplate.replace(/__Receiver__/ig, "${UserName}");
 
-            var vupUserString = "if UserName.match(/(#)/)";
+            var vupUserString = 'if UserName == "#" ';
             if (settings_process_vup && global_vups && global_vups.length > 0) {
                 for (var i = 0; i < global_vups.length; i++) {
-                    vupUserString = vupUserString.replace(/#/, "#|" + global_vups[i]);
+                    vupUserString += '|| UserName == "' + global_vups[i] + '"';
                 }
             }
 
@@ -6659,7 +6757,7 @@ var mainGC = function () {
                     if ( document.location.href.match(/^https?:\/\/www\.geocaching\.com\/seek\/nearest\.aspx\?/)          ||      // - Pocket Query oder ähnlich
                          document.location.href.match(/^https?:\/\/www\.geocaching\.com\/my\/recentlyviewedcaches\.aspx/)    ) {  //   oder Recently Viewed,
                         var lines = $("table.Table").find("tbody").find("tr").slice(1);                                           //   dann Überschrift weglassen.
-                        setLinesColorInZebra( settings_show_tb_listings_in_zebra, lines, 1 );                                     //   Einzeilig.
+                        setLinesColorInZebra( settings_show_common_lists_in_zebra, lines, 1 );                                     //   Einzeilig.
                     }
                 }
             }

@@ -1,3 +1,4 @@
+<a href="#v041" title="GClh II version 0.4.1 (26.02.2017)">v0.4.1</a> &nbsp; 
 <a href="#v04" title="GClh II version 0.4 (25.02.2017)">v0.4</a> &nbsp; 
 <a href="#v03" title="GClh II version 0.3 (05.02.2017)">v0.3</a> &nbsp; 
 <a href="#v0231" title="GClh II version 0.2.3.1 (22.01.2017)">v0.2.3.1</a> &nbsp; 
@@ -9,6 +10,16 @@
 <a href="#v022" title="GClh II version 0.2.2 (09.01.2017)">v0.2.2</a> &nbsp; 
 <a href="#v021" title="GClh II version 0.2.1 (05.01.2017)">v0.2.1</a> &nbsp; 
 <a href="#v01" title="GClh II version 0.1 (05.01.2017)">v0.1</a> &nbsp; 
+
+---
+## v0.4.1:
+<ul><li>Fix: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/169">#169</a>] Width in cache description is to big. Fix: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/173">#173</a>] listing text "underflows" the right column.<br></li>
+<li>Fix: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/174">#174</a>] Button to GC Maps on Google Maps page was missing.<br></li>
+<li>Change: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/170">#170</a>] If empty "Spoiler Filter", no checking is done.<br></li>
+<li>Change: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/172">#172</a>] Checkbox "show VUP icons on friends list" without checkbox "Process VUPs" is misunderstood. Implement both checkboxes in section profile / friends.<br></li>
+</ul>
+(26.02.2017)<br>
+<br>
 
 ---
 ## v0.4:
