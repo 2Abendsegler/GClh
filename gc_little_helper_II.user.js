@@ -4301,7 +4301,7 @@ var mainGC = function () {
             }
             
             function callGeoService( url, in_same_tab ) {
-                console.log(in_same_tab);
+                
                 var coords = getMapCooords();
                 if ( coords != null ) {   
                     url = replaceData( url, coords );
