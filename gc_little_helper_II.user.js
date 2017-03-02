@@ -6040,13 +6040,16 @@ var mainGC = function () {
             global_MailTemplate = urlencode( buildSendTemplate().replace(/#Receiver#/ig, "__Receiver__") );
             global_MailTemplate = global_MailTemplate.replace(/__Receiver__/ig, "${UserName}");
 
-            var vupUserString = "if UserName.match(/(#)/)";
+            var vupUserEqOrString = 'if UserName == "#" ';  // EqOr = 'equal-or' conjunction
+            var vupUserNeqAString = 'if (UserName != "#" '; // NeqA = 'not equal-and' conjunction            
             if (settings_process_vup && global_vups && global_vups.length > 0) {
                 for (var i = 0; i < global_vups.length; i++) {
-                    vupUserString = vupUserString.replace(/#/, "#|" + global_vups[i]);
+                    vupUserEqOrString += '|| UserName == "' + global_vups[i] + '"';
+                    vupUserNeqAString += '&& UserName != "' + global_vups[i] + '"';
                 }
             }
-
+            vupUserNeqAString += ')';
+            
             var new_tmpl = "";
             new_tmpl +=
                 '    <tr class="log-row" data-encoded="${IsEncoded}" >' +
@@ -6054,7 +6057,11 @@ var mainGC = function () {
                 '            <div class="FloatLeft LogDisplayLeft" >' +
                 '                <p class="logOwnerProfileName">' +
                 '                    <strong>' +
+                '                    {{' + vupUserEqOrString + '}}' +
+                '                        <a id="${LogID}" name="${LogID}" href="/profile/?guid=${AccountGuid}" title="${UserName}">V.U.P.</a>' +
+                '                    {{else}}' +
                 '                        <a id="${LogID}" name="${LogID}" href="/profile/?guid=${AccountGuid}">${UserName}</a>' +
+                '                    {{/if}}' +
                 '                    </strong>' +
                 '                </p>' +
                 '                <p class="logIcons">' +
@@ -6083,15 +6090,15 @@ var mainGC = function () {
                 '                <p class="logOwnerAvatar">' +
                 '                    <a href="/profile/?guid=${AccountGuid}">';
             if (!settings_hide_avatar) new_tmpl +=
-                '                        {{if AvatarImage}}' +
-                '                        <img width="48" height="48" src="' + http + '://img.geocaching.com/user/avatar/${AvatarImage}">' +
+                '                        {{' + vupUserNeqAString + ' && AvatarImage}}' +
+                '                        <img width="48" height="48" src="' + http + '://img.geocaching.com/user/avatar/${AvatarImage}">' +                
                 '                        {{else}}' +
-                '                        <img width="48" height="48" src="/images/default_avatar.jpg">' +
+                '                        <img width="48" height="48" src="/images/default_avatar.jpg">' +                
                 '                        {{/if}}';
             new_tmpl +=
                 '                </a></p>' +
                 '                <p class="logOwnerStats">' +
-                '                    {{if GeocacheFindCount > 0 }}' +
+                '                    {{' + vupUserNeqAString + ' && (GeocacheFindCount > 0) }}' +
                 '                    <img title="Caches Found" src="/images/icons/icon_smile.png"> ${GeocacheFindCount}' +
                 '                    {{/if}}' +
                 '                </p>' +
@@ -6106,7 +6113,7 @@ var mainGC = function () {
                 '                    {{if LatLonString.length > 0}}' +
                 '                    <strong>${LatLonString}</strong>' +
                 '                    {{/if}}' +
-                '                    {{' + vupUserString + '}}' +
+                '                    {{' + vupUserEqOrString + '}}' +
                 '                    <p class="LogText">censored</p>' +
                 '                    {{else}}' +
                 '                    <p class="LogText">{{html LogText}}</p>' +
