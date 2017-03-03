@@ -19,8 +19,18 @@
 <br>
 New geoservices in GC Map<br>
 <img src="../images/v0.5_Screen01.png" alt="GC Map"><br>
+<br>
 New geoservices are configurable<br>
 <img src="../images/v0.5_Screen02.png" alt="Settings"><br>
+<br>
+</li>
+<li>New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/191">#191</a>] Add a link from Openstreetmap.org map to open GC Map
+<br>
+<img src="../images/v0.5_Screen03.png" alt="GC Map link on openstreetmap.org"><br>
+<br>
+<img src="../images/v0.5_Screen02.png" alt="Settings"><br>
+<br>
+</li>
 </ul>
 (xx.xx.2017)<br> 
 <br>
