@@ -8,7 +8,7 @@
 // @include          http*://labs.geocaching.com/*
 // @include          http*://maps.google.tld/*
 // @include          http*://www.google.tld/maps*
-// @include          http*://www.openstreetmap.org/#map=*
+// @include          http*://www.openstreetmap.org*
 // @exclude          /^https?://www\.geocaching\.com/(login|jobs|brandedpromotions|promotions|blog|seek/sendtogps)/
 // @resource jscolor https://raw.githubusercontent.com/2Abendsegler/GClh/master/data/jscolor.js
 // @require          http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js
@@ -640,7 +640,7 @@ var start = function (c) {
         .done(function () {
             if (document.location.href.match(/^(http|https):\/\/maps\.google\./) || document.location.href.match(/^(http|https):\/\/www\.google\.[a-zA-Z.]*\/maps/)) {
                 mainGMaps();
-            } else if (document.location.href.match(/^(http|https):\/\/www\.openstreetmap\.org\/#map=/ )) {
+            } else if (document.location.href.match(/^(http|https):\/\/www\.openstreetmap\.org/ )) {
                 mainOSM();
             } else {
                 mainGC();
@@ -744,7 +744,7 @@ var mainOSM = function () {
         // Add link to GC Map on Google Maps page.
         function addGCButton( wait ) {
             console.log("addGCButton("+wait+")");
-            if ( $(".control-key").length ) {
+            if ( document.location.href.match(/^(http|https):\/\/www\.openstreetmap\.org\/#map=/ ) && $(".control-key").length ) {
                 if ( settings_add_link_gc_map_on_osm  ) {
                     var code = '<div class="control-gc leaflet-control"><a class="control-button" href="#" data-original-title="Geocaching.com" style="outline: medium none;"><span class="icon" title="Geocaching Map" style="margin: 5px; display: inline-block; vertical-align: middle; height: 32px; width: 32px; background-image: url(\''+global_gc_icon_sw+'\'); background-size: 25px 25px;  background-position: center; background-repeat: no-repeat;"></span></a></div>';
                     $(".control-share").after(code);  
