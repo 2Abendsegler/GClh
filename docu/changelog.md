@@ -1,4 +1,3 @@
-<a href="#v05" title="GClh II version 0.5 (xx.xx.2017)">v0.5</a> &nbsp;
 <a href="#v041" title="GClh II version 0.4.1 (26.02.2017)">v0.4.1</a> &nbsp; 
 <a href="#v04" title="GClh II version 0.4 (25.02.2017)">v0.4</a> &nbsp; 
 <a href="#v03" title="GClh II version 0.3 (05.02.2017)">v0.3</a> &nbsp; 
@@ -12,18 +11,6 @@
 <a href="#v021" title="GClh II version 0.2.1 (05.01.2017)">v0.2.1</a> &nbsp; 
 <a href="#v01" title="GClh II version 0.1 (05.01.2017)">v0.1</a> &nbsp; 
 
----
-## v0.5:
-<ul>
-<li>New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/180">#180</a>] Additional geoservices (OSM, Flopp's Map, GeoHack) from GC Map<br>
-<br>
-New geoservices in GC Map<br>
-<img src="../images/v0.5_Screen01.png" alt="GC Map"><br>
-New geoservices are configurable<br>
-<img src="../images/v0.5_Screen02.png" alt="Settings"><br>
-</ul>
-(xx.xx.2017)<br> 
-<br>
 ---
 ## v0.4.1:
 <ul><li>Fix: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/169">#169</a>] Width in cache description is to big. Fix: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/173">#173</a>] listing text "underflows" the right column.<br></li>
