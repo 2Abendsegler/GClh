@@ -8,6 +8,7 @@
 // @include          http*://labs.geocaching.com/*
 // @include          http*://maps.google.tld/*
 // @include          http*://www.google.tld/maps*
+// @include          http*://www.openstreetmap.org/#map=*
 // @exclude          /^https?://www\.geocaching\.com/(login|jobs|brandedpromotions|promotions|blog|seek/sendtogps)/
 // @resource jscolor https://raw.githubusercontent.com/2Abendsegler/GClh/master/data/jscolor.js
 // @require          http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js
@@ -373,6 +374,10 @@ var variablesInit = function (c) {
     c.settings_add_link_google_maps_on_gc_map = getValue("settings_add_link_google_maps_on_gc_map", true);
     //Settings: Switch to Google Maps in same browser tab
     c.settings_switch_to_google_maps_in_same_tab = getValue("settings_switch_to_google_maps_in_same_tab", false);
+    //Settings: Add link to GC Map on OSM
+    c.settings_add_link_gc_map_on_osm = getValue("settings_add_link_gc_map_on_osm", true);
+    //Settings: Switch from OSM to GC Map in same browser tab
+    c.settings_switch_from_osm_to_gc_map_in_same_tab = getValue("settings_switch_from_osm_to_gc_map_in_same_tab", false);    
     //Settings: Add link to Openstreetmap on GC Map
     c.settings_add_link_osm_on_gc_map = getValue("settings_add_link_osm_on_gc_map", true);
     //Settings: Switch toOpenstreetmap in same browser tab
@@ -635,8 +640,9 @@ var start = function (c) {
         .done(function () {
             if (document.location.href.match(/^(http|https):\/\/maps\.google\./) || document.location.href.match(/^(http|https):\/\/www\.google\.[a-zA-Z.]*\/maps/)) {
                 mainGMaps();
-            }
-            else {
+            } else if (document.location.href.match(/^(http|https):\/\/www\.openstreetmap\.org\/#map=/ )) {
+                mainOSM();
+            } else {
                 mainGC();
             }
         });
@@ -725,6 +731,49 @@ var mainGMaps = function () {
         }
     } catch (e) {
         gclh_error("mainGMaps", e);
+    }
+};
+
+////////////////////////////////////////////////////////////////////////////
+// Openstreetmap
+////////////////////////////////////////////////////////////////////////////
+// Improve Google Maps page.
+var mainOSM = function () {
+    
+    try {
+        // Add link to GC Map on Google Maps page.
+        function addGCButton( wait ) {
+            console.log("addGCButton("+wait+")");
+            if ( $(".control-key").length ) {
+                if ( settings_add_link_gc_map_on_osm  ) {
+                    var code = '<div class="control-gc leaflet-control"><a class="control-button" href="#" data-original-title="Geocaching.com" style="outline: medium none;"><span class="icon" title="Geocaching Map" style="margin: 5px; display: inline-block; vertical-align: middle; height: 32px; width: 32px; background-image: url(\''+global_gc_icon_sw+'\'); background-size: 25px 25px;  background-position: center; background-repeat: no-repeat;"></span></a></div>';
+                    $(".control-share").after(code);  
+                    
+                    $(".control-gc").click( function () {
+                       // var matches = document.location.href.match(/=([0-9]+)\/(-?[0-9.]*)\/(-?[0-9.]*)/);";
+                        var matches = document.location.href.match(/=([0-9]+)\/(-?[0-9.]*)\/(-?[0-9.]*)/);
+                        if (matches != null) {
+                            var url = map_url + '?lat=' + matches[2] + '&lng=' + matches[3] + '#?ll=' + matches[2] + ',' + matches[3] + '&z=' + matches[1];
+                            console.log( "settings_switch_from_osm_to_gc_map_in_same_tab: "+ settings_switch_from_osm_to_gc_map_in_same_tab );
+                            if ( settings_switch_from_osm_to_gc_map_in_same_tab ) {
+                                location = url;
+                            } else {
+                                window.open( url );
+                            }
+                        } else {
+                            alert('This map has no geographical coordinates in its link. Just zoom or drag the map, afterwards this will work fine.');
+                        }
+                    });
+                    console.log("addGCButton("+wait+") - found it");
+                }                
+            } else {
+                wait++;
+                if ( wait < 50 ) { setTimeout( function() { addGCButton(wait) }, 100 ); }
+            }
+        } 
+        addGCButton(0);
+    } catch (e) {
+        gclh_error("mainOSM", e);
     }
 };
 
@@ -8796,8 +8845,8 @@ var mainGC = function () {
             html += checkboxy('settings_add_link_google_maps_on_gc_map', 'Add link to Google Maps on GC Map') + show_help("With this option an icon are placed on the GC Map page to link to the same area in Google Maps.") + "<br/>";
             html += " &nbsp; " + checkboxy('settings_switch_to_google_maps_in_same_tab', 'Switch to Google Maps in same browser tab') + show_help("With this option you can switch from GC Map to Google Maps in the same browser tab.<br><br>This option requires \"Add link to Google Maps on GC Map\".") + "<br/>";
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>Openstreetmap page</b></div>";           
-            // html += checkboxy('settings_add_link_gc_map_on_google_maps', 'Add link to GC Map on Google Maps') + show_help("With this option an icon are placed on the Google Maps page to link to the same area in GC Map.") + "<br/>";
-            // html += " &nbsp; " + checkboxy('settings_switch_to_gc_map_in_same_tab', 'Switch to GC Map in same browser tab') + show_help("With this option you can switch from Google Maps to GC Map in the same browser tab.<br><br>This option requires \"Add link to GC Map on Google Maps\".") + "<br/>";
+            html += checkboxy('settings_add_link_gc_map_on_osm', 'Add link to GC Map on Openstreetmap') + show_help("With this option an icon are placed on the OpenstreetMap page to link to the same area in GC Map.") + "<br/>";
+            html += " &nbsp; " + checkboxy('settings_switch_from_osm_to_gc_map_in_same_tab', 'Switch to GC Map in same browser tab') + show_help("With this option you can switch from Openstreetmap to GC Map in the same browser tab.<br><br>This option requires \"Add link to GC Map on OpenstreetMap\".") + "<br/>";
             html += checkboxy('settings_add_link_osm_on_gc_map', 'Add link to Openstreetmap on GC Map') + show_help("With this option an icon are placed on the GC Map page to link to the same area in Openstreetmap.") + "<br/>";
             html += " &nbsp; " + checkboxy('settings_switch_to_osm_in_same_tab', 'Switch to Openstreetmap in same browser tab') + show_help("With this option you can switch from GC Map to Openstreetmap in the same browser tab.<br><br>This option requires \"Add link to Openstreetmap on GC Map\".") + "<br/>";
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>Flopp's Map page</b></div>";           
@@ -9580,6 +9629,7 @@ var mainGC = function () {
             setEventsForDependentParameters( "settings_count_own_matrix_show_next", "settings_count_own_matrix_links" );
             setEventsForDependentParameters( "settings_add_link_gc_map_on_google_maps", "settings_switch_to_gc_map_in_same_tab" );
             setEventsForDependentParameters( "settings_add_link_google_maps_on_gc_map", "settings_switch_to_google_maps_in_same_tab" );
+            setEventsForDependentParameters( "settings_add_link_gc_map_on_osm", "settings_switch_from_osm_to_gc_map_in_same_tab" );
             setEventsForDependentParameters( "settings_add_link_osm_on_gc_map", "settings_switch_to_osm_in_same_tab" );
             setEventsForDependentParameters( "settings_add_link_flopps_on_gc_map", "settings_switch_to_flopps_in_same_tab" );
             setEventsForDependentParameters( "settings_add_link_geohack_on_gc_map", "settings_switch_to_geohack_in_same_tab" );
@@ -9829,6 +9879,8 @@ var mainGC = function () {
                 'settings_switch_to_google_maps_in_same_tab',
                 'settings_add_link_osm_on_gc_map',
                 'settings_switch_to_osm_in_same_tab',
+                'settings_add_link_gc_map_on_osm',
+                'settings_switch_from_osm_to_gc_map_in_same_tab',
                 'settings_add_link_flopps_on_gc_map',
                 'settings_switch_to_flopps_in_same_tab',
                 'settings_add_link_geohack_on_gc_map',
