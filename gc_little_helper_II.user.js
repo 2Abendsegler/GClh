@@ -1,4 +1,4 @@
-// ==UserScript==
+﻿// ==UserScript==
 // @name             GC little helper II
 // @namespace        http://www.amshove.net
 //--> $$000 Begin of change
@@ -6041,10 +6041,10 @@ var mainGC = function () {
             global_MailTemplate = urlencode( buildSendTemplate().replace(/#Receiver#/ig, "__Receiver__") );
             global_MailTemplate = global_MailTemplate.replace(/__Receiver__/ig, "${UserName}");
 
-            var vupUserString = "if UserName.match(/(#)/)";
+            var vupUserString = 'if UserName == "#" ';
             if (settings_process_vup && global_vups && global_vups.length > 0) {
                 for (var i = 0; i < global_vups.length; i++) {
-                    vupUserString = vupUserString.replace(/#/, "#|" + global_vups[i]);
+                    vupUserString += '|| UserName == "' + global_vups[i] + '"';
                 }
             }
 
