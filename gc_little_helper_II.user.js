@@ -1,4 +1,4 @@
-// ==UserScript==
+﻿// ==UserScript==
 // @name             GC little helper II
 // @namespace        http://www.amshove.net
 //--> $$000 Begin of change
@@ -797,7 +797,6 @@ var mainGC = function () {
             function send_log(e) {
                 setValue("last_logtext", document.getElementById('ctl00_ContentBody_LogBookPanel1_uxLogInfo').value);
             }
-
             document.getElementById("ctl00_ContentBody_LogBookPanel1_btnSubmitLog").addEventListener('click', send_log, true);
         } catch (e) {
             gclh_error("Last-Log-Text speichern", e);
@@ -816,7 +815,6 @@ var mainGC = function () {
                     }
                 }
             }
-
             window.addEventListener('keydown', keydown, true);
         } catch (e) {
             gclh_error("F2 logging", e);
@@ -835,7 +833,6 @@ var mainGC = function () {
                     }
                 }
             }
-
             window.addEventListener('keydown', keydown, true);
         } catch (e) {
             gclh_error("F2 save PQ", e);
@@ -3524,8 +3521,12 @@ var mainGC = function () {
             var sNewH = "";  // new hides
 
             var myvips = getValue("vips", false);
-            myvips = myvips.replace(/, (?=,)/g, ",null");
-            myvips = JSON.parse(myvips);
+            if (!myvips) {
+                myvips = new Array();
+            } else {
+                myvips = myvips.replace(/, (?=,)/g, ",null");
+                myvips = JSON.parse(myvips);
+            }
 // << hm -- Issue #111
 
             for (var i = 0; i < friends.length; i++) {
@@ -6040,10 +6041,10 @@ var mainGC = function () {
             global_MailTemplate = urlencode( buildSendTemplate().replace(/#Receiver#/ig, "__Receiver__") );
             global_MailTemplate = global_MailTemplate.replace(/__Receiver__/ig, "${UserName}");
 
-            var vupUserString = "if UserName.match(/(#)/)";
+            var vupUserString = 'if UserName == "#" ';
             if (settings_process_vup && global_vups && global_vups.length > 0) {
                 for (var i = 0; i < global_vups.length; i++) {
-                    vupUserString = vupUserString.replace(/#/, "#|" + global_vups[i]);
+                    vupUserString += '|| UserName == "' + global_vups[i] + '"';
                 }
             }
 
@@ -6756,7 +6757,7 @@ var mainGC = function () {
                     if ( document.location.href.match(/^https?:\/\/www\.geocaching\.com\/seek\/nearest\.aspx\?/)          ||      // - Pocket Query oder ähnlich
                          document.location.href.match(/^https?:\/\/www\.geocaching\.com\/my\/recentlyviewedcaches\.aspx/)    ) {  //   oder Recently Viewed,
                         var lines = $("table.Table").find("tbody").find("tr").slice(1);                                           //   dann Überschrift weglassen.
-                        setLinesColorInZebra( settings_show_tb_listings_in_zebra, lines, 1 );                                     //   Einzeilig.
+                        setLinesColorInZebra( settings_show_common_lists_in_zebra, lines, 1 );                                     //   Einzeilig.
                     }
                 }
             }
