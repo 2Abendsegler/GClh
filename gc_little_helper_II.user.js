@@ -8854,10 +8854,6 @@ var mainGC = function () {
             var content_settings_show_vup_friends = checkboxy('settings_show_vup_friends', 'Show VUP icons on friends list') + show_help("With this option you can choose if VUP icons are shown addional on friends list or not. If you deactivate this option and a friend is a VUP, then the VIP icon is replaced by the VUP icon anyway.<br>(VUP: Very unimportant person)<br>(VIP: Very important person)<br><br>This option requires \"Process VUPs\" and \"Show VIP list\".") + "<br>";
             html += " &nbsp; " + content_settings_show_vup_friends;
             html += newParameterVersionSetzen(0.4) + newParameterOff;
-            html += " &nbsp; &nbsp; " + checkboxy('settings_vup_hide_avatar', 'Also hide name, avatar and counter from log') + show_help("With this option you can also hide the cacher name, his avatar and his found counter<br><br>This option requires \"Process VUPs\" and \"Show VIP list\".") + "<br>";
-            html += newParameterVersionSetzen(0.5);
-            html += " &nbsp; &nbsp; &nbsp; " + checkboxy('settings_vup_hide_log', 'Hide complete log') + show_help("With this option you hide the complete log of the cacher.<br><br>This option requires \"Also hide name, avatar and counter from log\", \"Process VUPs\" and \"Show VIP list\".") + "<br>";
-            html += newParameterVersionSetzen(0.5);
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>Trackables</b></div>";
             html += newParameterOn3;
             html += checkboxy('settings_faster_profile_trackables', 'Load trackables faster without images') + show_help("With this option, you can stop the load on the trackable pages after the necessary datas are loaded. You disclaim of the lengthy load of the images of the trackables. This procedure is much faster as load all datas, because every image is loaded separate and not in a bigger bundle like it is for the non image data.") + "<br/>";
@@ -8961,6 +8957,10 @@ var mainGC = function () {
             html += "&nbsp; " + content_settings_process_vup.replace("settings_process_vup", "settings_process_vupX0");
             html += " &nbsp; &nbsp; " + content_settings_show_vup_friends.replace("settings_show_vup_friends", "settings_show_vup_friendsX0");
             html += newParameterVersionSetzen(0.4) + newParameterOff;
+            html += " &nbsp; &nbsp; " + checkboxy('settings_vup_hide_avatar', 'Also hide name, avatar and counter from log') + show_help("With this option you can also hide the cacher name, his avatar and his found counter<br><br>This option requires \"Process VUPs\" and \"Show VIP list\".") + "<br>";
+            html += newParameterVersionSetzen(0.5);
+            html += " &nbsp; &nbsp; &nbsp; " + checkboxy('settings_vup_hide_log', 'Hide complete log') + show_help("With this option you hide the complete log of the cacher.<br><br>This option requires \"Also hide name, avatar and counter from log\", \"Process VUPs\" and \"Show VIP list\".") + "<br>";
+            html += newParameterVersionSetzen(0.5)
             html += checkboxy('settings_show_thumbnailsX0', 'Show thumbnails of images') + show_help("With this option the images are displayed as thumbnails to have a preview. If you hover over a thumbnail, you can see the big one.<br><br>This works in cache and TB logs, in the cache and TB image galleries, in public profile for the avatar and in the profile image gallery.") + "&nbsp; Max size of big image: <input class='gclh_form' size=2 type='text' id='settings_hover_image_max_sizeX0' value='" + settings_hover_image_max_size + "'> px <br/>";
             html += " &nbsp; &nbsp;" + "Spoiler-Filter: <input class='gclh_form' type='text' id='settings_spoiler_strings' value='" + settings_spoiler_strings + "'> " + show_help("If one of these words is found in the caption of the image, there will be no real thumbnail. It is to prevent seeing spoilers. Words have to be divided by |. If the field is empty, no checking is done. Default is \"spoiler|hinweis|hint\".<br><br>This option requires \"Show thumbnails of images\".") + "<br/>";
             html += "&nbsp; " + checkboxy('settings_imgcaption_on_topX0', 'Show caption on top') + show_help("This option requires \"Show thumbnails of images\".") + "<br/>";
