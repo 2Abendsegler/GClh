@@ -293,6 +293,10 @@ var variablesInit = function (c) {
     c.settings_process_vup = getValue("settings_process_vup", false);
     // Settings: Show VUP icon on friends list
     c.settings_show_vup_friends = getValue("settings_show_vup_friends", false);
+    // Settings: Also Hide name, Avatar and counter
+    c.settings_vup_hide_avatar = getValue("settings_vup_hide_avatar", false);
+    // Settings: hide all links
+    c.settings_vup_hide_log = getValue("settings_vup_hide_log", false);	
     // Settings: Save GClh Config on F2
     c.settings_f2_save_gclh_config = getValue("settings_f2_save_gclh_config", true);
     // Settings: Call GClh Config on F4
@@ -6055,20 +6059,35 @@ var mainGC = function () {
             global_MailTemplate = global_MailTemplate.replace(/__Receiver__/ig, "${UserName}");
 
             var vupUserString = 'if UserName == "#" ';
+            var vupHideAvatarString  = 'if (UserName != "#" '; 
+            var vupHideCompleteLog = vupUserString;
             if (settings_process_vup && global_vups && global_vups.length > 0) {
                 for (var i = 0; i < global_vups.length; i++) {
-                    vupUserString += '|| UserName == "' + global_vups[i] + '"';
+                    vupUserString  += '|| UserName == "' + global_vups[i] + '"';
+                    if (settings_vup_hide_avatar)
+                       vupHideAvatarString  += '&& UserName !== "' + global_vups[i] + '"';
                 }
+                if (settings_vup_hide_avatar && settings_vup_hide_log)
+                   vupHideCompleteLog = vupUserString;
             }
-
+            vupHideAvatarString  += ')';
+            
             var new_tmpl = "";
             new_tmpl +=
+                '    {{' + vupHideCompleteLog  + '}}' +
+                '    <tr class="log-row" data-encoded="${IsEncoded}" style="display:none" >' +
+                '    {{else}}' +       
                 '    <tr class="log-row" data-encoded="${IsEncoded}" >' +
+                '    {{/if}}' +
                 '        <td>' +
                 '            <div class="FloatLeft LogDisplayLeft" >' +
                 '                <p class="logOwnerProfileName">' +
                 '                    <strong>' +
+                '                    {{' + vupHideAvatarString  + '}}' +
                 '                        <a id="${LogID}" name="${LogID}" href="/profile/?guid=${AccountGuid}">${UserName}</a>' +
+                '                    {{else}}' +
+                '                        <a id="${LogID}" name="${LogID}" href="/profile/?guid=${AccountGuid}">V.U.P.</a>' +
+                '                    {{/if}}' +
                 '                    </strong>' +
                 '                </p>' +
                 '                <p class="logIcons">' +
@@ -6097,7 +6116,7 @@ var mainGC = function () {
                 '                <p class="logOwnerAvatar">' +
                 '                    <a href="/profile/?guid=${AccountGuid}">';
             if (!settings_hide_avatar) new_tmpl +=
-                '                        {{if AvatarImage}}' +
+                '                        {{' + vupHideAvatarString  + ' && AvatarImage}}' +
                 '                        <img width="48" height="48" src="' + http + '://img.geocaching.com/user/avatar/${AvatarImage}">' +
                 '                        {{else}}' +
                 '                        <img width="48" height="48" src="/images/default_avatar.jpg">' +
@@ -6105,7 +6124,7 @@ var mainGC = function () {
             new_tmpl +=
                 '                </a></p>' +
                 '                <p class="logOwnerStats">' +
-                '                    {{if GeocacheFindCount > 0 }}' +
+                '                    {{' + vupHideAvatarString  + ' && (GeocacheFindCount > 0) }}' +
                 '                    <img title="Caches Found" src="/images/icons/icon_smile.png"> ${GeocacheFindCount}' +
                 '                    {{/if}}' +
                 '                </p>' +
@@ -8835,7 +8854,10 @@ var mainGC = function () {
             var content_settings_show_vup_friends = checkboxy('settings_show_vup_friends', 'Show VUP icons on friends list') + show_help("With this option you can choose if VUP icons are shown addional on friends list or not. If you deactivate this option and a friend is a VUP, then the VIP icon is replaced by the VUP icon anyway.<br>(VUP: Very unimportant person)<br>(VIP: Very important person)<br><br>This option requires \"Process VUPs\" and \"Show VIP list\".") + "<br>";
             html += " &nbsp; " + content_settings_show_vup_friends;
             html += newParameterVersionSetzen(0.4) + newParameterOff;
-
+            html += " &nbsp; &nbsp; " + checkboxy('settings_vup_hide_avatar', 'Also hide name, avatar and counter from log') + show_help("With this option you can also hide the cacher name, his avatar and his found counter<br><br>This option requires \"Process VUPs\" and \"Show VIP list\".") + "<br>";
+            html += newParameterVersionSetzen(0.5);
+            html += " &nbsp; &nbsp; &nbsp; " + checkboxy('settings_vup_hide_log', 'Hide complete log') + show_help("With this option you hide the complete log of the cacher.<br><br>This option requires \"Also hide name, avatar and counter from log\", \"Process VUPs\" and \"Show VIP list\".") + "<br>";
+            html += newParameterVersionSetzen(0.5);
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>Trackables</b></div>";
             html += newParameterOn3;
             html += checkboxy('settings_faster_profile_trackables', 'Load trackables faster without images') + show_help("With this option, you can stop the load on the trackable pages after the necessary datas are loaded. You disclaim of the lengthy load of the images of the trackables. This procedure is much faster as load all datas, because every image is loaded separate and not in a bigger bundle like it is for the non image data.") + "<br/>";
@@ -9563,7 +9585,12 @@ var mainGC = function () {
             setEventsForDependentParameters( "settings_show_vip_list", "settings_show_vup_friends" );
             setEventsForDependentParameters( "settings_process_vup", "settings_show_vup_friends" );
             setEventsForDependentParameters( "settings_process_vupX0", "settings_show_vup_friends" );
-            setEventsForDependentParameters( "settings_log_inline", "settings_log_inline_tb", false );
+            setEventsForDependentParameters( "settings_process_vup", "settings_vup_hide_avatar" );            
+            setEventsForDependentParameters( "settings_process_vup", "settings_vup_hide_log" );                        
+            setEventsForDependentParameters( "settings_process_vupX0", "settings_vup_hide_avatar" );            
+            setEventsForDependentParameters( "settings_process_vupX0", "settings_vup_hide_log" );      
+            setEventsForDependentParameters( "settings_vup_hide_avatar", "settings_vup_hide_log"  );      
+	    setEventsForDependentParameters( "settings_log_inline", "settings_log_inline_tb", false );
             setEventsForDependentParameters( "settings_log_inline_pmo4basic", "settings_log_inline_tb", false );
             setEventsForDependentParameters( "settings_show_mail", "settings_show_mail_in_viplist" );
             setEventsForDependentParameters( "settings_show_mail", "settings_show_mail_in_allmyvips" );
@@ -9806,7 +9833,9 @@ var mainGC = function () {
                 'settings_show_mail_in_viplist',
                 'settings_process_vup',
                 'settings_show_vup_friends',
-                'settings_f2_save_gclh_config',
+                'settings_vup_hide_avatar',
+                'settings_vup_hide_log',
+		'settings_f2_save_gclh_config',
                 'settings_f4_call_gclh_config',
                 'settings_f10_call_gclh_sync',
                 'settings_show_sums_in_bookmark_lists',
