@@ -745,7 +745,7 @@ var mainOSM = function () {
         function addGCButton( wait ) {
             console.log("addGCButton("+wait+")");
 //$$FE001     if ( document.location.href.match(/^(http|https):\/\/www\.openstreetmap\.org\/#map=/ ) && $(".control-key").length ) {
-            if ( document.location.href.match(/^(http|https):\/\/www\.openstreetmap\.org\/(|\?)#map=/ ) && $(".control-key").length ) {		    
+            if ( document.location.href.match(/^(http|https):\/\/www\.openstreetmap\.org\/(.*)#map=/ ) && $(".control-key").length ) {
                 if ( settings_add_link_gc_map_on_osm  ) {
                     var code = '<div class="control-gc leaflet-control"><a class="control-button" href="#" data-original-title="Geocaching.com" style="outline: medium none;"><span class="icon" title="Geocaching Map" style="margin: 5px; display: inline-block; vertical-align: middle; height: 32px; width: 32px; background-image: url(\''+global_gc_icon_sw+'\'); background-size: 25px 25px;  background-position: center; background-repeat: no-repeat;"></span></a></div>';
                     $(".control-share").after(code);  
