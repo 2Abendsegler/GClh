@@ -1,3 +1,4 @@
+<a href="#v05" title="GClh II version 0.5 (11.03.2017)">v0.5</a> &nbsp;
 <a href="#v041" title="GClh II version 0.4.1 (26.02.2017)">v0.4.1</a> &nbsp; 
 <a href="#v04" title="GClh II version 0.4 (25.02.2017)">v0.4</a> &nbsp; 
 <a href="#v03" title="GClh II version 0.3 (05.02.2017)">v0.3</a> &nbsp; 
@@ -10,6 +11,58 @@
 <a href="#v022" title="GClh II version 0.2.2 (09.01.2017)">v0.2.2</a> &nbsp; 
 <a href="#v021" title="GClh II version 0.2.1 (05.01.2017)">v0.2.1</a> &nbsp; 
 <a href="#v01" title="GClh II version 0.1 (05.01.2017)">v0.1</a> &nbsp; 
+
+---
+## v0.5:
+<ul>
+<li>New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/180">#180</a>] Additional geoservices (OSM, Flopp's Map, GeoHack) from GC Map:<br>
+Many thanks to <a href="https://www.geocaching.com/profile/?u=CachingFoX">CachingFoX</a> for the idea and the implementation.<br>
+<br>
+New geoservices in GC Map<br>
+<img src="../images/v0.5_Screen01.png" alt="GC Map"><br>
+<br>
+New geoservices are configurable<br>
+<img src="../images/v0.5_Screen02.png" alt="Settings"><br>
+<br>
+</li>
+<li>New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/191">#191</a>] Add a link from Openstreetmap.org map to GC Map:<br>
+Many thanks to <a href="https://www.geocaching.com/profile/?u=CachingFoX">CachingFoX</a> for the idea and the development.<br>
+<br>
+<img src="../images/v0.5_Screen03.png" alt="GC Map link on openstreetmap.org"><br>
+<br>
+<img src="../images/v0.5_Screen02.png" alt="Settings"><br>
+<br>
+</li>
+<li>New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/181">#181</a>] Replace img links in cache listing to an img link with the larger image if possible: <br>
+Many thanks to <a href="https://www.geocaching.com/profile/?u=Herr%20Ma">Herr Ma</a> for the development.<br>
+<br>
+<img src="../images/v0.5_Screen04.jpg" alt="v0.5_Screen04.jpg"><br>
+<br></li>
+<li>New: Enlarge VUP list with new features:<br>
+Many thanks to <a href="https://www.geocaching.com/profile/?u=Herr%20Ma">Herr Ma</a> for the idea and the development.<br>
+<br>
+<img src="../images/v0.5_Screen05.jpg" alt="v0.5_Screen05.jpg"><br>
+<br>
+Original Log:<br>
+<img src="../images/v0.5_Screen06.jpg" alt="v0.5_Screen06.jpg"><br>
+<br>
+Log, if Cacher is on VUP list:<br>
+<img src="../images/v0.5_Screen07.jpg" alt="v0.5_Screen07.jpg"><br>
+<br>
+Log with new option "Also hide name, avatar and counter from log":<br>
+<img src="../images/v0.5_Screen08.jpg" alt="v0.5_Screen08.jpg"><br>
+<br>
+With the second new option "Hide complete log", the complete log is hidden.<br>
+<br></li>
+<li>Fix: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/179">#179</a>] Zebra effect in common lists not always available: Wrong parameter promt in special processing for common lists if user color is not set.<br></li>
+<li>Fix: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/179">#171</a>] No GClh enhancement on friends page<br></li>
+<li>Fix: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/185">#185</a>] Cacher names with brackets will not work in VUP List<br></li>
+<li>Fix: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/203">#203</a>] "Spoiler warning" text shining through in overlapping images<br></li>
+<li>Fix: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/204">#204</a>] Own log statistics is generated on other user profile page<br></li>
+<br>
+</ul>
+(11.03.2017)<br> 
+<br>
 
 ---
 ## v0.4.1:
