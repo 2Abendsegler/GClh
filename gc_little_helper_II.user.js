@@ -1,4 +1,4 @@
-﻿// ==UserScript==
+// ==UserScript==
 // @name             GC little helper II
 // @namespace        http://www.amshove.net
 //--> $$000 Begin of change
@@ -293,6 +293,10 @@ var variablesInit = function (c) {
     c.settings_process_vup = getValue("settings_process_vup", false);
     // Settings: Show VUP icon on friends list
     c.settings_show_vup_friends = getValue("settings_show_vup_friends", false);
+    // Settings: Also Hide name, Avatar and counter
+    c.settings_vup_hide_avatar = getValue("settings_vup_hide_avatar", false);
+    // Settings: hide all links
+    c.settings_vup_hide_log = getValue("settings_vup_hide_log", false);
     // Settings: Save GClh Config on F2
     c.settings_f2_save_gclh_config = getValue("settings_f2_save_gclh_config", true);
     // Settings: Call GClh Config on F4
@@ -431,6 +435,7 @@ var variablesInit = function (c) {
     c.settings_show_thumbnails = getValue("settings_show_thumbnails", true);
     c.settings_imgcaption_on_top = getValue("settings_imgcaption_on_top", false);
     c.settings_hide_avatar = getValue("settings_hide_avatar", false);
+    c.settings_link_big_listing = getValue("settings_link_big_listing", false);
     c.settings_show_big_gallery = getValue("settings_show_big_gallery", false);
     c.settings_automatic_friend_reset = getValue("settings_automatic_friend_reset", false);
     c.settings_show_long_vip = getValue("settings_show_long_vip", false);
@@ -5970,6 +5975,16 @@ var mainGC = function () {
         }
     }
 
+// Link to bigger pictures for owner added images
+   if (settings_link_big_listing && is_page("cache_listing")) {
+      var a = document.getElementsByTagName("a");
+      for(var i = 0; i < a.length; i++) {
+         if ((a[i].href.search('img.geocaching.com') > 0) && (a[i].href.search('/large/') > 0)) {
+            a[i].href = a[i].href.replace('/large/', '/');
+         }
+      }
+   }
+
 // Show gallery-Images in 2 instead of 4 cols
     if (settings_show_big_gallery && document.location.href.match(/^https?:\/\/www\.geocaching\.com\/(seek\/gallery\.aspx?|track\/gallery\.aspx?|profile\/)/)) {
         try {
@@ -6042,20 +6057,33 @@ var mainGC = function () {
             global_MailTemplate = global_MailTemplate.replace(/__Receiver__/ig, "${UserName}");
 
             var vupUserString = 'if UserName == "#" ';
+            var vupHideAvatarString  = 'if (UserName != "#" ';
+            var vupHideCompleteLog = vupUserString;
             if (settings_process_vup && global_vups && global_vups.length > 0) {
                 for (var i = 0; i < global_vups.length; i++) {
                     vupUserString += '|| UserName == "' + global_vups[i] + '"';
+                    if (settings_vup_hide_avatar) vupHideAvatarString += '&& UserName !== "' + global_vups[i] + '"';
                 }
+                if (settings_vup_hide_avatar && settings_vup_hide_log) vupHideCompleteLog = vupUserString;
             }
+            vupHideAvatarString  += ')';
 
             var new_tmpl = "";
             new_tmpl +=
+                '    {{' + vupHideCompleteLog  + '}}' +
+                '    <tr class="log-row" data-encoded="${IsEncoded}" style="display:none" >' +
+                '    {{else}}' +       
                 '    <tr class="log-row" data-encoded="${IsEncoded}" >' +
+                '    {{/if}}' +
                 '        <td>' +
                 '            <div class="FloatLeft LogDisplayLeft" >' +
                 '                <p class="logOwnerProfileName">' +
                 '                    <strong>' +
+                '                    {{' + vupHideAvatarString  + '}}' +
                 '                        <a id="${LogID}" name="${LogID}" href="/profile/?guid=${AccountGuid}">${UserName}</a>' +
+                '                    {{else}}' +
+                '                        <a id="${LogID}" name="${LogID}" href="/profile/?guid=${AccountGuid}">V.U.P.</a>' +
+                '                    {{/if}}' +
                 '                    </strong>' +
                 '                </p>' +
                 '                <p class="logIcons">' +
@@ -6084,7 +6112,7 @@ var mainGC = function () {
                 '                <p class="logOwnerAvatar">' +
                 '                    <a href="/profile/?guid=${AccountGuid}">';
             if (!settings_hide_avatar) new_tmpl +=
-                '                        {{if AvatarImage}}' +
+                '                        {{' + vupHideAvatarString  + ' && AvatarImage}}' +
                 '                        <img width="48" height="48" src="' + http + '://img.geocaching.com/user/avatar/${AvatarImage}">' +
                 '                        {{else}}' +
                 '                        <img width="48" height="48" src="/images/default_avatar.jpg">' +
@@ -6092,7 +6120,7 @@ var mainGC = function () {
             new_tmpl +=
                 '                </a></p>' +
                 '                <p class="logOwnerStats">' +
-                '                    {{if GeocacheFindCount > 0 }}' +
+                '                    {{' + vupHideAvatarString  + ' && (GeocacheFindCount > 0) }}' +
                 '                    <img title="Caches Found" src="/images/icons/icon_smile.png"> ${GeocacheFindCount}' +
                 '                    {{/if}}' +
                 '                </p>' +
@@ -8926,9 +8954,13 @@ var mainGC = function () {
             html += "&nbsp; " + content_settings_process_vup.replace("settings_process_vup", "settings_process_vupX0");
             html += " &nbsp; &nbsp; " + content_settings_show_vup_friends.replace("settings_show_vup_friends", "settings_show_vup_friendsX0");
             html += newParameterVersionSetzen(0.4) + newParameterOff;
+            html += " &nbsp; &nbsp; " + checkboxy('settings_vup_hide_avatar', 'Also hide name, avatar and counter from log') + show_help("With this option you can also hide the cacher name, his avatar and his found counter<br><br>This option requires \"Process VUPs\" and \"Show VIP list\".") + "<br>";
+            html += " &nbsp; &nbsp; &nbsp; " + checkboxy('settings_vup_hide_log', 'Hide complete log') + show_help("With this option you can hide the complete log of the cacher.<br><br>This option requires \"Also hide name, avatar and counter from log\", \"Process VUPs\" and \"Show VIP list\".") + "<br>";
+            html += newParameterVersionSetzen(0.5)
             html += checkboxy('settings_show_thumbnailsX0', 'Show thumbnails of images') + show_help("With this option the images are displayed as thumbnails to have a preview. If you hover over a thumbnail, you can see the big one.<br><br>This works in cache and TB logs, in the cache and TB image galleries, in public profile for the avatar and in the profile image gallery.") + "&nbsp; Max size of big image: <input class='gclh_form' size=2 type='text' id='settings_hover_image_max_sizeX0' value='" + settings_hover_image_max_size + "'> px <br/>";
             html += " &nbsp; &nbsp;" + "Spoiler-Filter: <input class='gclh_form' type='text' id='settings_spoiler_strings' value='" + settings_spoiler_strings + "'> " + show_help("If one of these words is found in the caption of the image, there will be no real thumbnail. It is to prevent seeing spoilers. Words have to be divided by |. If the field is empty, no checking is done. Default is \"spoiler|hinweis|hint\".<br><br>This option requires \"Show thumbnails of images\".") + "<br/>";
             html += "&nbsp; " + checkboxy('settings_imgcaption_on_topX0', 'Show caption on top') + show_help("This option requires \"Show thumbnails of images\".") + "<br/>";
+            html += checkboxy('settings_link_big_listing', 'Rebuild image links in cache listing to bigger image') + show_help("With this option the links of owner images in the cache listing points to the bigger, original image.") + "<br/>";
             html += checkboxy('settings_show_big_galleryX0', 'Show bigger images in gallery') + show_help("With this option the images in the galleries of caches, TBs and profiles are displayed bigger and not in 4 columns, but in 2 columns.") + "<br/>";
             html += checkboxy('settings_hide_avatar', 'Hide avatars in listing') + show_help("This option hides the avatars in logs. This prevents loading the hundreds of images. You have to change the option here, because GClh overrides the log-load-logic of gc.com, so the avatar option of gc.com doesn't work with GClh.") + "<br/>";
             html += checkboxy('settings_load_logs_with_gclh', 'Load logs with GClh') + show_help("This option should be enabled. <br><br>You just should disable it, if you have problems with loading the logs. <br><br>If this option is disabled, there are no VIP-, mail-, message- and top icons, no line colors and no mouse activated big images at the logs. Also the VIP lists, hide avatars, log filter and log search won't work.") + "<br/>";
@@ -9549,6 +9581,9 @@ var mainGC = function () {
             setEventsForDependentParameters( "settings_show_vip_list", "settings_show_vup_friends" );
             setEventsForDependentParameters( "settings_process_vup", "settings_show_vup_friends" );
             setEventsForDependentParameters( "settings_process_vupX0", "settings_show_vup_friends" );
+            setEventsForDependentParameters( "settings_process_vup", "settings_vup_hide_avatar" );
+            setEventsForDependentParameters( "settings_process_vup", "settings_vup_hide_log" );
+            setEventsForDependentParameters( "settings_vup_hide_avatar", "settings_vup_hide_log"  );
             setEventsForDependentParameters( "settings_log_inline", "settings_log_inline_tb", false );
             setEventsForDependentParameters( "settings_log_inline_pmo4basic", "settings_log_inline_tb", false );
             setEventsForDependentParameters( "settings_show_mail", "settings_show_mail_in_viplist" );
@@ -9792,6 +9827,8 @@ var mainGC = function () {
                 'settings_show_mail_in_viplist',
                 'settings_process_vup',
                 'settings_show_vup_friends',
+                'settings_vup_hide_avatar',
+                'settings_vup_hide_log',
                 'settings_f2_save_gclh_config',
                 'settings_f4_call_gclh_config',
                 'settings_f10_call_gclh_sync',
@@ -9861,6 +9898,7 @@ var mainGC = function () {
                 'settings_show_thumbnails',
                 'settings_imgcaption_on_top',
                 'settings_hide_avatar',
+                'settings_link_big_listing',
                 'settings_show_big_gallery',
                 'settings_automatic_friend_reset',
                 'settings_show_long_vip',
