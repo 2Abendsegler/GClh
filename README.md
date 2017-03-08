@@ -1,7 +1,5 @@
 <a href="#user-content-de" title=""><img src="/images/flag_de.png"></a>
 
-Test
-
 ---
 # GC little helper II <a id="user-content-de"></a><span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span> <img src="/images/mozilla_firefox_logo_small.png" title="Mozilla Firefox" alt="Mozilla Firefox"> <span> &nbsp; </span> <img src="/images/google_chrome_logo_small.png" title="Google Chrom" alt="Google Chrom"> <span> &nbsp; </span> <img src="/images/opera_logo_small.png" title="Opera" alt="Opera"> <span> &nbsp; </span> <img src="/images/microsoft_edge_logo_small.png" title="Microsoft Edge" alt="Microsoft Edge">  
 *Some little things to make life easy (on www.geocaching.com).* <span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span> [Tipps für die Installation](https://github.com/2Abendsegler/GClh/blob/master/docu/tips_installation.md#readme)<br>
