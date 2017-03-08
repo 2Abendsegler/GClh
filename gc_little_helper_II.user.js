@@ -6061,13 +6061,13 @@ var mainGC = function () {
             var vupHideCompleteLog = vupUserString;
             if (settings_process_vup && global_vups && global_vups.length > 0) {
                 for (var i = 0; i < global_vups.length; i++) {
-                    vupUserString  += '|| UserName == "' + global_vups[i] + '"';
-                    if (settings_vup_hide_avatar) vupHideAvatarString  += '&& UserName !== "' + global_vups[i] + '"';
+                    vupUserString += '|| UserName == "' + global_vups[i] + '"';
+                    if (settings_vup_hide_avatar) vupHideAvatarString += '&& UserName !== "' + global_vups[i] + '"';
                 }
                 if (settings_vup_hide_avatar && settings_vup_hide_log) vupHideCompleteLog = vupUserString;
             }
             vupHideAvatarString  += ')';
-            
+
             var new_tmpl = "";
             new_tmpl +=
                 '    {{' + vupHideCompleteLog  + '}}' +
