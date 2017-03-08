@@ -35,10 +35,12 @@ Many thanks to <a href="https://www.geocaching.com/profile/?u=CachingFoX">Cachin
 </li>
 <li>New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/181">#181</a>] Replace img links in cache listing to an img link with the larger image if possible: <br>
 Many thanks to <a href="https://www.geocaching.com/profile/?u=Herr%20Ma">Herr Ma</a> for the development.<br>
+<br>
 <img src="../images/v0.5_Screen04.jpg" alt="v0.5_Screen04.jpg"><br>
 <br></li>
 <li>New: Enlarge VUP list with new features:<br>
 Many thanks to <a href="https://www.geocaching.com/profile/?u=Herr%20Ma">Herr Ma</a> for the idea and the development.<br>
+<br>
 <img src="../images/v0.5_Screen05.jpg" alt="v0.5_Screen05.jpg"><br>
 <br>
 Original Log:<br>
@@ -50,7 +52,7 @@ Log, if Cacher is on VUP list:<br>
 Log with new option "Also hide name, avatar and counter from log":<br>
 <img src="../images/v0.5_Screen08.jpg" alt="v0.5_Screen08.jpg"><br>
 <br>
-With the second new option "Hide complete log", the complete log is hidden.
+With the second new option "Hide complete log", the complete log is hidden.<br>
 <br></li>
 </ul>
 (11.03.2017)<br> 
