@@ -158,5 +158,8 @@
   "settings_friendlist_summary_viponly": false,
   "settings_process_vup": false,
   "settings_show_vup_friends": false,
-  "settings_search_enable_user_defined": true
+  "settings_search_enable_user_defined": true,
+  "settings_link_big_listing": true,
+  "settings_vup_hide_avatar": false,
+  "settings_vup_hide_log": false
 }
