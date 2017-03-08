@@ -25,7 +25,7 @@ New geoservices are configurable<br>
 <img src="../images/v0.5_Screen02.png" alt="Settings"><br>
 <br>
 </li>
-<li>New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/191">#191</a>] Add a link from Openstreetmap.org map to GC Map
+<li>New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/191">#191</a>] Add a link from Openstreetmap.org map to GC Map<br>
 Many thanks to <a href="https://www.geocaching.com/profile/?u=CachingFoX">CachingFoX</a> for the development.<br>
 <br>
 <img src="../images/v0.5_Screen03.png" alt="GC Map link on openstreetmap.org"><br>
