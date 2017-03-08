@@ -200,7 +200,7 @@ var variablesInit = function (c) {
     c.settings_bookmarks_top_menu = getValue("settings_bookmarks_top_menu", "true");
     c.settings_bookmarks_search = getValue("settings_bookmarks_search", "true");
     c.settings_bookmarks_search_default = getValue("settings_bookmarks_search_default", "");
-    // Settings: Redirect to Map
+    // Settings: Redirect cache search lists to map display
     c.settings_redirect_to_map = getValue("settings_redirect_to_map", false);
     // Settings: Page-Width
     c.settings_new_width = getValue("settings_new_width", 1000);
@@ -435,7 +435,7 @@ var variablesInit = function (c) {
     c.settings_show_thumbnails = getValue("settings_show_thumbnails", true);
     c.settings_imgcaption_on_top = getValue("settings_imgcaption_on_top", false);
     c.settings_hide_avatar = getValue("settings_hide_avatar", false);
-    c.settings_link_big_listing = getValue("settings_link_big_listing", false);
+    c.settings_link_big_listing = getValue("settings_link_big_listing", true);
     c.settings_show_big_gallery = getValue("settings_show_big_gallery", false);
     c.settings_automatic_friend_reset = getValue("settings_automatic_friend_reset", false);
     c.settings_show_long_vip = getValue("settings_show_long_vip", false);
@@ -5893,7 +5893,7 @@ var mainGC = function () {
                     if ( settings_spoiler_strings != "" && links[i].innerHTML.match(regexp) ) {  // Spoiler String
                         var div = document.createElement("div");
                         div.innerHTML = "Spoiler warning";
-                        div.setAttribute("style", "transform: rotate(-30grad); width: 130px; z-index: 1000; position: relative; top: -90px; left: -5px; font-size: 15px;");
+                        div.setAttribute("style", "transform: rotate(-30grad); width: 130px; position: relative; top: -90px; left: -5px; font-size: 15px;");
                         links[i].childNodes[0].src = "https://raw.githubusercontent.com/2Abendsegler/GClh/master/images/gclh_logo.png";
                         links[i].childNodes[0].style.opacity = "0.05";
                         links[i].childNodes[3].remove();
@@ -5926,7 +5926,7 @@ var mainGC = function () {
                         if ( settings_spoiler_strings != "" && links[i].dataset.title && links[i].dataset.title.match(regexp) ) {  // Spoiler String
                             var div = document.createElement("div");
                             div.innerHTML = "Spoiler warning";
-                            div.setAttribute("style", "transform: rotate(-30grad); width: 130px; z-index: 1000; position: relative; top: -110px; left: -5px; font-size: 15px;");
+                            div.setAttribute("style", "transform: rotate(-30grad); width: 130px; position: relative; top: -110px; left: -5px; font-size: 15px;");
                             links[i].childNodes[1].src = "https://raw.githubusercontent.com/2Abendsegler/GClh/master/images/gclh_logo.png";
                             links[i].childNodes[1].style.opacity = "0.05";
                             links[i].childNodes[1].style.height = "100px";
@@ -6870,15 +6870,11 @@ var mainGC = function () {
 // Improve cache matrix on statistics page and profile page and handle cache search links in list or map.
     try {
         // Soll eigene Statistik gepimpt werden.
-        if ( ( settings_count_own_matrix || settings_count_own_matrix_show_next ) &&
-             ( document.location.href.match(/^https?:\/\/www\.geocaching\.com\/my\/statistics\.aspx/)         ||
-               document.location.href.match(/^https?:\/\/www\.geocaching\.com\/profile\/($|#$|default)/)      ||
-               ( document.location.href.match(/^https?:\/\/www\.geocaching\.com\/profile\/(\?guid=|\?u=)/) &&
-                 document.getElementById('ctl00_ContentBody_lblUserProfile').innerHTML.match(": " + $('.li-user-info').children().first().text()) ) ) ) {
+        if ( ( settings_count_own_matrix || settings_count_own_matrix_show_next ) && isOwnStatisticsPage() ) {
             var own = true;
         // Soll fremde Statistik gepimpt werden.
         } else if ( settings_count_foreign_matrix &&
-                    document.location.href.match(/^https?:\/\/www\.geocaching\.com\/profile\/(\?guid=|\?u=)/) &&
+                    document.location.href.match(/^https?:\/\/www\.geocaching\.com\/profile\/(.*)(\?guid=|\?u=)/) &&
                     !document.getElementById('ctl00_ContentBody_lblUserProfile').innerHTML.match(": " + $('.li-user-info').children().first().text()) ) {
             var own = false;
         } else var own = "";
@@ -6972,17 +6968,7 @@ var mainGC = function () {
     }
 
 // Improve own statistics page and own profile page with own log statistic.
-    if ( settings_log_statistic &&
-         ( ( document.location.href.match(/^https?:\/\/www\.geocaching\.com\/my\/statistics\.aspx/)            ) ||
-           ( document.getElementById("ctl00_ContentBody_ProfilePanel1_lnkStatistics") &&
-             document.getElementById("ctl00_ContentBody_ProfilePanel1_lnkStatistics").className == "Active" &&
-             document.location.href.match(/^https?:\/\/www\.geocaching\.com\/profile\/($|#$|default)/)         ) ||
-           ( document.getElementById("ctl00_ContentBody_ProfilePanel1_lnkStatistics") &&
-             document.getElementById("ctl00_ContentBody_ProfilePanel1_lnkStatistics").className == "Active" &&
-             document.location.href.match(/^https?:\/\/www\.geocaching\.com\/profile\/(\?guid=|\?u=)/) &&
-             document.getElementById('ctl00_ContentBody_lblUserProfile').innerHTML.match(": " + $('.li-user-info').children().first().text()) )
-         )
-       ) {
+    if ( settings_log_statistic && isOwnStatisticsPage() ) {
         try {
             getLogStatistic( "cache", "https://www.geocaching.com/my/logs.aspx?s=1" );
             getLogStatistic( "track", "https://www.geocaching.com/my/logs.aspx?s=2" );
@@ -8085,6 +8071,21 @@ var mainGC = function () {
         }
     }
 
+// Prüfen, ob die Seite die eigene Statistik ist.
+    function isOwnStatisticsPage(){
+        if ( ( document.location.href.match(/^https?:\/\/www\.geocaching\.com\/my\/statistics\.aspx/)            ) ||
+             ( document.getElementById("ctl00_ContentBody_ProfilePanel1_lnkStatistics") &&
+               document.getElementById("ctl00_ContentBody_ProfilePanel1_lnkStatistics").className == "Active" &&
+               document.location.href.match(/^https?:\/\/www\.geocaching\.com\/profile/) &&
+               !document.location.href.match(/(\?guid=|\?u=)/)                                                   ) ||
+             ( document.getElementById("ctl00_ContentBody_ProfilePanel1_lnkStatistics") &&
+               document.getElementById("ctl00_ContentBody_ProfilePanel1_lnkStatistics").className == "Active" &&
+               document.location.href.match(/^https?:\/\/www\.geocaching\.com\/profile\/(.*)(\?guid=|\?u=)/) &&
+               document.getElementById('ctl00_ContentBody_lblUserProfile').innerHTML.match(": " + $('.li-user-info').children().first().text()) ) ) {
+            return true;
+        } else return false;
+    }
+
 ////////////////////////////////////////////////////////////////////////////
 // User defined searchs
 ////////////////////////////////////////////////////////////////////////////
@@ -8740,7 +8741,7 @@ var mainGC = function () {
 
             html += "<h4 class='gclh_headline2'>"+prepareHideable.replace("#name#","nearestlist")+"Nearest list</h4>";
             html += "<div id='gclh_config_nearestlist'>";
-            html += checkboxy('settings_redirect_to_map', 'Redirect to map') + show_help("If you enable this option, you will be automatically redirected from nearest list to map.") + "<br/>";
+            html += checkboxy('settings_redirect_to_map', 'Redirect cache search lists to map display') + show_help("If you enable this option, you will be automatically redirected from the older cache search lists (nearest lists) to map display.") + "<br/>";
             html += checkboxy('settings_show_log_it', 'Show GClh \"Log it\" icon (too for basic members for PMO)') + show_help("The GClh \"Log it\" icon is displayed beside cache titles in nearest lists. If you click it, you will be redirected directly to the log form. <br><br>You can use it too as basic member to log Premium Member Only (PMO) caches.") + "<br/>";
             html += checkboxy('settings_show_nearestuser_profil_link', 'Show profile link on search for created / found by caches') + show_help("This option adds an link to the user profile when searching for caches created or found by a certain user") + "<br/>";
             html += "</div>";
