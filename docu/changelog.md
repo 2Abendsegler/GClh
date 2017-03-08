@@ -1,4 +1,4 @@
-<a href="#v05" title="GClh II version 0.5 (xx.xx.2017)">v0.5</a> &nbsp;
+<a href="#v05" title="GClh II version 0.5 (11.03.2017)">v0.5</a> &nbsp;
 <a href="#v041" title="GClh II version 0.4.1 (26.02.2017)">v0.4.1</a> &nbsp; 
 <a href="#v04" title="GClh II version 0.4 (25.02.2017)">v0.4</a> &nbsp; 
 <a href="#v03" title="GClh II version 0.3 (05.02.2017)">v0.3</a> &nbsp; 
@@ -16,6 +16,7 @@
 ## v0.5:
 <ul>
 <li>New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/180">#180</a>] Additional geoservices (OSM, Flopp's Map, GeoHack) from GC Map<br>
+Many thanks to <a href="https://www.geocaching.com/profile/?u=CachingFoX">CachingFoX</a> for the implementation.<br>
 <br>
 New geoservices in GC Map<br>
 <img src="../images/v0.5_Screen01.png" alt="GC Map"><br>
@@ -24,7 +25,8 @@ New geoservices are configurable<br>
 <img src="../images/v0.5_Screen02.png" alt="Settings"><br>
 <br>
 </li>
-<li>New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/191">#191</a>] Add a link from Openstreetmap.org map to open GC Map
+<li>New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/191">#191</a>] Add a link from Openstreetmap.org map to GC Map
+Many thanks to <a href="https://www.geocaching.com/profile/?u=CachingFoX">CachingFoX</a> for the development.<br>
 <br>
 <img src="../images/v0.5_Screen03.png" alt="GC Map link on openstreetmap.org"><br>
 <br>
@@ -32,7 +34,7 @@ New geoservices are configurable<br>
 <br>
 </li>
 </ul>
-(xx.xx.2017)<br> 
+(11.03.2017)<br> 
 <br>
 
 ---
