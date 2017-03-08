@@ -15,7 +15,7 @@
 ---
 ## v0.5:
 <ul>
-<li>New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/180">#180</a>] Additional geoservices (OSM, Flopp's Map, GeoHack) from GC Map<br>
+<li>New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/180">#180</a>] Additional geoservices (OSM, Flopp's Map, GeoHack) from GC Map:<br>
 Many thanks to <a href="https://www.geocaching.com/profile/?u=CachingFoX">CachingFoX</a> for the idea and the implementation.<br>
 <br>
 New geoservices in GC Map<br>
@@ -25,7 +25,7 @@ New geoservices are configurable<br>
 <img src="../images/v0.5_Screen02.png" alt="Settings"><br>
 <br>
 </li>
-<li>New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/191">#191</a>] Add a link from Openstreetmap.org map to GC Map<br>
+<li>New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/191">#191</a>] Add a link from Openstreetmap.org map to GC Map:<br>
 Many thanks to <a href="https://www.geocaching.com/profile/?u=CachingFoX">CachingFoX</a> for the idea and the development.<br>
 <br>
 <img src="../images/v0.5_Screen03.png" alt="GC Map link on openstreetmap.org"><br>
@@ -33,6 +33,25 @@ Many thanks to <a href="https://www.geocaching.com/profile/?u=CachingFoX">Cachin
 <img src="../images/v0.5_Screen02.png" alt="Settings"><br>
 <br>
 </li>
+<li>New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/181">#181</a>] Replace img links in cache listing to an img link with the larger image if possible: <br>
+Many thanks to <a href="https://www.geocaching.com/profile/?u=Herr%20Ma">Herr Ma</a> for the development.<br>
+<img src="../images/v0.5_Screen04.png" alt="v0.5_Screen04.png"><br>
+<br></li>
+<li>New: Enlarge VUP list with new features:<br>
+Many thanks to <a href="https://www.geocaching.com/profile/?u=Herr%20Ma">Herr Ma</a> for the idea and the development.<br>
+<img src="../images/v0.5_Screen05.png" alt="v0.5_Screen05.png"><br>
+<br>
+Original Log:<br>
+<img src="../images/v0.5_Screen06.png" alt="v0.5_Screen06.png"><br>
+<br>
+Log, if Cacher is on VUP list:<br>
+<img src="../images/v0.5_Screen07.png" alt="v0.5_Screen07.png"><br>
+<br>
+Log with new option "Also hide name, avatar and counter from log":<br>
+<img src="../images/v0.5_Screen08.png" alt="v0.5_Screen08.png"><br>
+<br>
+With the second new option "Hide complete log", the complete log is hidden.
+<br></li>
 </ul>
 (11.03.2017)<br> 
 <br>
