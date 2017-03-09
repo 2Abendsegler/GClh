@@ -17,14 +17,13 @@
 ## Branches:  
 
 Unsere Branches unterteilen sich in die drei Stufen *User*, *Collector* und *Projects / Developer*.
-
+(Beispiel)
 | 1. User | 2. Collector        | 3. Projects / Developer  |
 | :------ | :------------------ | :----------------------- |
 | master  | collector (default) | v0.5_f                   |
 |         |                     | v0.5_cf_geoservices      |
 |         |                     | VUP_Herr_Ma              |
-|         |                     | translation              |
-(Beispiel)
+|         |                     | translation              |  
 
 Anpassungen sollten mit den Resourcen der Branch *collector* erfolgen.  
 Pull requests sollten in die Branch *collector* erfolgen.  
