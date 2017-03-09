@@ -72,7 +72,7 @@ Eine *Änderungsdokumentation im Programmkopf* ist nicht erforderlich. Möchte j
 
 Eine *Änderungsdokumentation im Programmcode* ist nicht erforderlich. Bei komplexen Zusammenhängen oder wenn besondere Beachtung geboten ist, dann sollte eine Dokumentation an der entsprechenden Programmstelle erfolgen. Ob eine solche Dokumentation sinnvoll ist, entscheidet der jeweilige Entwickler.  
 
-Es sollte eine aussagekräftige *Dokumentation im Issue* bzw. im *Pull request* erfolgen. Diese Dokumentation wird im Changelog verwendet.
+Es sollte eine aussagekräftige *Dokumentation im Issue* bzw. im *Pull request* erfolgen. (Dokumentation wird für Changelog verwendet.)
 <br>
 <br>
 
