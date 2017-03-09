@@ -28,7 +28,7 @@ Beispiel:
 |         |                     | translation              |
 
 Anpassungen sollten mit den Resourcen der Branch *collector* erfolgen.  
-Pull requests sollten in die Branch *collector* einfließen.  
+Pull requests sollten in die Branch *collector* erfolgen.  
 
 ### 1. User:  
 Hier gibt es genau eine Branch *master*. Sie enthält die aktuelle Version für die User und dient den Usern zum Abrufen neuer Versionen.
@@ -38,10 +38,10 @@ Hier gibt es derzeit genau eine Branch *collector*. Sie dient als Sammler aller 
 
 Die Branch *collector* ist die standard (default) Branch. Sie wird beim Transportieren automatisch als Empfänger vorgeschlagen. Damit wird unter anderem sichergestellt, dass nicht aus Versehen in die Branch *master* transportiert wird.  
 
-Außerdem kann zeitunkritisch, auch gegebenenfalls aus mehreren Branches, in den *collector* transportiert werden, die Sammlung nachbearbeitet werden und gegebenenfalls auch ein Kompletttest durchgeführt werden, bevor die Sammlung als neue Version den Usern zur Verfügung gestellt wird.  
+Außerdem kann zeitunkritisch, auch gegebenenfalls aus mehreren Branches, in den *collector* transportiert werden, die Sammlung nachbearbeitet werden und auch ein Kompletttest durchgeführt werden, bevor die Sammlung als neue Version den Usern zur Verfügung gestellt wird.  
 
 ### 3. Projects / Developer:  
-Diese Stufe soll Raum für unterschiedliche Projekte unterschiedlicher Entwickler bieten. Die Namen sollten einen beliebigen Qualifier für Projekt und Entwickler erhalten, den der Entwickler selbst bestimmen kann.
+Diese Stufe soll Raum für unterschiedliche Projekte unterschiedlicher Entwickler bieten. Die Namen der Branches sollten aus einer allgemein verständlichen Bezeichnung für Projekt und Entwickler bestehen, den der Entwickler selbst bestimmen kann.
 <br>
 <br>
 
