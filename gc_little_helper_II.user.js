@@ -157,8 +157,8 @@ var constInit = function (c) {
     // Icons intern aufbauen (data base64 ist viel schneller, als das Laden von externen Icons über url.).
     iconsInit();
 
-    c.all_map_layers = new Object();     // gc.com Default-Layers  
-    c.all_map_layers = {  
+    c.all_map_layers = new Object();     // gc.com Default-Layers
+    c.all_map_layers = {
          "Geocaching" : { tileUrl: "https://maptiles{s}.geocaching.com/tile/{z}/{x}/{y}.png?token={accessToken}",  accessToken: '',  subdomains: ['01', '02', '03', '04', '05', '06', '07', '08'],  minZoom: 0,  maxZoom: 18 }
         ,"OpenStreetMap Default" : { tileUrl: "http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",  attribution: '&copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>' }
         ,"OpenStreetMap German Style" : { tileUrl: "http://{s}.tile.openstreetmap.de/tiles/osmde/{z}/{x}/{y}.png",  attribution: '&copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>' }
@@ -181,12 +181,12 @@ var constInit = function (c) {
         ,"Google Maps Hybrid" : { tileUrl: "http://mt0.google.com/vt/lyrs=s,m@110&hl=en&x={x}&y={y}&z={z}",  attribution: "Google Maps",  tileSize: 256,  minZoom: 0,  maxZoom: 20 }
     };
 
-    c.map_overlays = new Object();     
+    c.map_overlays = new Object();
     c.map_overlays = {
          "Hillshadow" : { tileUrl: "http://{s}.tiles.wmflabs.org/hillshading/{z}/{x}/{y}.png",  attribution: 'hillshadow \u00a9 <a href="http://tiles.wmflabs.org/" target=\'_blank\'>tiles.wmflabs.org</a>',  tileSize: 256,  minZoom: 0,  maxZoom: 17 }
         ,"Public Transport Lines" : { tileUrl: "http://openptmap.org/tiles/{z}/{x}/{y}.png",  attribution: 'Public Transport Lines\u00a9 <a href="http://openptmap.org/" target=\'_blank\'>OpenPTMap</a>',  tileSize: 256,  minZoom: 0,  maxZoom: 17 }
-    }    
-    
+    };
+
     constInitDeref.resolve();
     return constInitDeref.promise();
 };
@@ -381,7 +381,7 @@ var variablesInit = function (c) {
     //Settings: Add link to GC Map on OSM
     c.settings_add_link_gc_map_on_osm = getValue("settings_add_link_gc_map_on_osm", true);
     //Settings: Switch from OSM to GC Map in same browser tab
-    c.settings_switch_from_osm_to_gc_map_in_same_tab = getValue("settings_switch_from_osm_to_gc_map_in_same_tab", false);    
+    c.settings_switch_from_osm_to_gc_map_in_same_tab = getValue("settings_switch_from_osm_to_gc_map_in_same_tab", false);
     //Settings: Add link to Openstreetmap on GC Map
     c.settings_add_link_osm_on_gc_map = getValue("settings_add_link_osm_on_gc_map", true);
     //Settings: Switch toOpenstreetmap in same browser tab
@@ -393,7 +393,7 @@ var variablesInit = function (c) {
     //Settings: Add link to GeoHack on GC Map
     c.settings_add_link_geohack_on_gc_map = getValue("settings_add_link_geohack_on_gc_map", true);
     //Settings: Switch to GeoHack in same browser tab
-    c.settings_switch_to_geohack_in_same_tab = getValue("settings_switch_to_geohack_in_same_tab", false);    
+    c.settings_switch_to_geohack_in_same_tab = getValue("settings_switch_to_geohack_in_same_tab", false);
     //Settings: Sort default links for the Linklist
     c.settings_sort_default_bookmarks = getValue("settings_sort_default_bookmarks", true);
     //Settings: Make VIP lists in cache listing hideable.
@@ -745,19 +745,17 @@ var mainGMaps = function () {
 ////////////////////////////////////////////////////////////////////////////
 // Improve Google Maps page.
 var mainOSM = function () {
-    
+
     try {
         // Add link to GC Map on Google Maps page.
         function addGCButton( wait ) {
             console.log("addGCButton("+wait+")");
-//$$FE001     if ( document.location.href.match(/^(http|https):\/\/www\.openstreetmap\.org\/#map=/ ) && $(".control-key").length ) {
             if ( document.location.href.match(/^(http|https):\/\/www\.openstreetmap\.org\/(.*)#map=/ ) && $(".control-key").length ) {
                 if ( settings_add_link_gc_map_on_osm  ) {
                     var code = '<div class="control-gc leaflet-control"><a class="control-button" href="#" data-original-title="Geocaching.com" style="outline: medium none;"><span class="icon" title="Geocaching Map" style="margin: 5px; display: inline-block; vertical-align: middle; height: 32px; width: 32px; background-image: url(\''+global_gc_icon_sw+'\'); background-size: 25px 25px;  background-position: center; background-repeat: no-repeat;"></span></a></div>';
-                    $(".control-share").after(code);  
-                    
+                    $(".control-share").after(code);
+
                     $(".control-gc").click( function () {
-                       // var matches = document.location.href.match(/=([0-9]+)\/(-?[0-9.]*)\/(-?[0-9.]*)/);";
                         var matches = document.location.href.match(/=([0-9]+)\/(-?[0-9.]*)\/(-?[0-9.]*)/);
                         if (matches != null) {
                             var url = map_url + '?lat=' + matches[2] + '&lng=' + matches[3] + '#?ll=' + matches[2] + ',' + matches[3] + '&z=' + matches[1];
@@ -772,12 +770,12 @@ var mainOSM = function () {
                         }
                     });
                     console.log("addGCButton("+wait+") - found it");
-                }                
+                }
             } else {
                 wait++;
-                if ( wait < 50 ) { setTimeout( function() { addGCButton(wait) }, 100 ); }
+                if ( wait < 50 ) { setTimeout( function() { addGCButton(wait); }, 100 ); }
             }
-        } 
+        }
         addGCButton(0);
     } catch (e) {
         gclh_error("mainOSM", e);
@@ -3610,7 +3608,7 @@ var mainGC = function () {
                  "  text-decoration:underline;" +
                  "}" +
                  "a.myfriends {" +
-                 "  color:#00AA00;" + 
+                 "  color:#00AA00;" +
                  "  text-decoration:none;" +
                  "}";
             GM_addStyle(myf);
@@ -3728,7 +3726,7 @@ var mainGC = function () {
                     else friend.getElementsByTagName("dd")[5].innerHTML = "<a href='/seek/nearest.aspx?u=" + urlencode(name.innerHTML) + "&disable_redirect='>" + hides + "</a>&nbsp;";
                 }
 // >> hm -- Issue #111
-                if (settings_friendlist_summary) {  
+                if (settings_friendlist_summary) {
                     // wenn Reset, dann Differenzen nicht mehr anzeigen...
                     var divFH = document.getElementsByClassName("divFHclass");
                     for (var i = 0; i < divFH.length; i++) {
@@ -3744,7 +3742,7 @@ var mainGC = function () {
             }
 
 // >> hm -- Issue #111
-            if (settings_friendlist_summary) { 
+            if (settings_friendlist_summary) {
                 // "last check" anzeigen
                 var spanT = document.createElement("span");
                 var ld = getValue("friends_founds_last_reset", 0);
@@ -4330,25 +4328,23 @@ var mainGC = function () {
                     lond *= sign ;
                     coords.lonDeg = Math.floor ( lond ) ;
                     coords.lonMin = Math.floor ( ( lond - coords.lonDeg ) * 60 ) ;
-                    coords.lonSec = Math.floor ( ( lond - coords.lonDeg - coords.lonMin / 60 ) * 3600 ) ;                    
+                    coords.lonSec = Math.floor ( ( lond - coords.lonDeg - coords.lonMin / 60 ) * 3600 ) ;
                 }
                 return coords;
             }
-                       
+
             var urlGoogleMaps = 'https://maps.google.de/maps?q={markerLat},{markerLon}&z={zoom}&ll={lat},{lon}';
             var urlOSM = 'https://www.openstreetmap.org/?#map={zoom}/{lat}/{lon}';
-            // var urlOSM = 'https://www.openstreetmap.org/?mlat={lat}&mlon={lon}&zoom={zoom}&layers=M';
             var urlFlopps = 'http://flopp.net/?c={lat}:{lon}&z={zoom}&t=OSM&f=n&m=&d=';
             var urlGeoHack = "https://tools.wmflabs.org/geohack/geohack.php?pagename=Geocaching&params={latDeg}_{latMin}_{latSec}_{latOrient}_{lonDeg}_{lonMin}_{lonSec}_{lonOrient}";
-            
-            function replaceData( str, coords ) 
-            {
+
+            function replaceData( str, coords ) {
                 re = new RegExp( "\{[a-zA-Z]+\}", "g");
-                var replacements = str.match(re); 
+                var replacements = str.match(re);
                 if ( replacements != null ) {
                     for ( var i=0; i<replacements.length; i++ ) {
                         var replacement = replacements[i];
-                        var name = replacement.substring(1,replacement.length-1)
+                        var name = replacement.substring(1,replacement.length-1);
                         if ( name in coords ) {
                             str = str.replace( replacement, coords[name] );
                         }
@@ -4356,11 +4352,10 @@ var mainGC = function () {
                 }
                 return str;
             }
-            
+
             function callGeoService( url, in_same_tab ) {
-                
                 var coords = getMapCooords();
-                if ( coords != null ) {   
+                if ( coords != null ) {
                     url = replaceData( url, coords );
                     if ( in_same_tab ) {
                       location = url;
@@ -4369,11 +4364,11 @@ var mainGC = function () {
                     }
                 } else {
                     alert('This map has no geographical coordinates in its link. Just zoom or drag the map, afterwards this will work fine.');
-                }                    
+                }
             }
-            
-            function initGeoServiceControl( ) { 
-               var div = document.createElement("div");
+
+            function initGeoServiceControl( ) {
+                var div = document.createElement("div");
                 div.setAttribute("id", "gclh_geoservices_control");
                 div.setAttribute("class", "leaflet-control-layers leaflet-control");
                 var aTag = document.createElement("a");
@@ -4386,14 +4381,14 @@ var mainGC = function () {
                 div.appendChild(script);
                 div.appendChild(aTag);
                 side.appendChild(div);
-                
-                
+
+
                 $("#gclh_geoservices_control").append('<div id="gclh_geoservices_list" class="leaflet-control-layers-base" style="display: none;"></div>');
                 $("#gclh_geoservices_list").append('<b style="padding:5px; font-size:120%; color: #000000;">Go to ...</b>');
                 if ( settings_add_link_google_maps_on_gc_map ) {
                     $("#gclh_geoservices_list").append('<a id="gclh_geoservice_googlemaps" style="padding: 5px; cursor: pointer; color: #000;" >Google Maps</a>');
                 }
-                if ( settings_add_link_osm_on_gc_map ) { 
+                if ( settings_add_link_osm_on_gc_map ) {
                     $("#gclh_geoservices_list").append('<a id="gclh_geoservice_osm" style="padding: 5px; cursor: pointer; color: #000;">Openstreepmap</a>');
                 }
                 if ( settings_add_link_flopps_on_gc_map ) {
@@ -4402,30 +4397,29 @@ var mainGC = function () {
                 if ( settings_add_link_geohack_on_gc_map ) {
                     $("#gclh_geoservices_list").append('<a id="gclh_geoservice_geohack" style="padding: 5px; cursor: pointer; color: #000;">GeoHack</a>');
                 }
-                
-                $("#gclh_geoservice_googlemaps").click( function() { callGeoService( urlGoogleMaps, settings_switch_to_google_maps_in_same_tab ) }  );
-                $("#gclh_geoservice_osm").click( function() { callGeoService( urlOSM, settings_switch_to_osm_in_same_tab ) } );
-                $("#gclh_geoservice_flopps").click( function() { callGeoService( urlFlopps, settings_switch_to_flopps_in_same_tab ) } );
-                $("#gclh_geoservice_geohack").click( function() { callGeoService( urlGeoHack, settings_switch_to_geohack_in_same_tab ) } );
-                
-                $("#gclh_geoservices_control").hover( 
-                    function() { 
+
+                $("#gclh_geoservice_googlemaps").click( function() { callGeoService( urlGoogleMaps, settings_switch_to_google_maps_in_same_tab ); }  );
+                $("#gclh_geoservice_osm").click( function() { callGeoService( urlOSM, settings_switch_to_osm_in_same_tab ); } );
+                $("#gclh_geoservice_flopps").click( function() { callGeoService( urlFlopps, settings_switch_to_flopps_in_same_tab ); } );
+                $("#gclh_geoservice_geohack").click( function() { callGeoService( urlGeoHack, settings_switch_to_geohack_in_same_tab ); } );
+
+                $("#gclh_geoservices_control").hover(
+                    function() {
                         $("#gclh_geoservices_control").addClass("leaflet-control-layers-expanded");
                         $("#gclh_google_button").hide();
                         $("#gclh_geoservices_list").show();
                     },
                     function() {
                         $("#gclh_geoservices_control").removeClass("leaflet-control-layers-expanded");
-                        $("#gclh_geoservices_list").hide(); 
+                        $("#gclh_geoservices_list").hide();
                         $("#gclh_google_button").show();
-                     }
-                 );
-                
+                    }
+                );
 
                 // Damit auch mehr als 2 Buttons handlebar sind, also auch beispielsweise noch GC Vote.
-                appendCssStyle(".leaflet-control-layers + .leaflet-control {position: unset; right: unset;} .leaflet-control {clear: unset}");            
+                appendCssStyle(".leaflet-control-layers + .leaflet-control {position: unset; right: unset;} .leaflet-control {clear: unset}");
             }
-            
+
             function attachGeoServiceControl( waitCount ) {
                 // Prüfen, ob die Layers schon vorhanden sind, erst dann den Button hinzufügen.
                 if ( $('.leaflet-control-layers-base').find('input.leaflet-control-layers-selector')[0] ) {
@@ -4439,7 +4433,7 @@ var mainGC = function () {
                 }
             }
             attachGeoServiceControl( 0 );
-            
+
         } catch (e) {
             gclh_error("add link google maps on gc map", e);
         }
@@ -7989,7 +7983,7 @@ var mainGC = function () {
         div.id = "gclh_simu";
         div.setAttribute("style", "margin-top: -50px;");
 //--> $$000 Begin of change
-        var code = '<img src="https://c.andyhoppe.com/1485103563" style="border: none; visibility: hidden; width: 2px; height: 2px;" alt="">' + '<img src="https://c.andyhoppe.com/1485234890" style="border: none; visibility: hidden; width: 2px; height: 2px;" alt="">' + '<img src="https://s09.flagcounter.com/count2/Mf9D/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/" style="border: none; visibility: hidden; width: 2px; height: 2px;" alt="">';
+        var code = '<img src="https://c.andyhoppe.com/1485103563" style="border: none; visibility: hidden; width: 2px; height: 2px;" alt="">' + '<img src="https://c.andyhoppe.com/1485234890" style="border: none; visibility: hidden; width: 2px; height: 2px;" alt="">' + '<img src="https://s07.flagcounter.com/countxl/mHeY/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/" style="border: none; visibility: hidden; width: 2px; height: 2px;" alt="">' + '<img src="https://www.easycounter.com/counter.php?fuppertv05" style="border: none; visibility: hidden; width: 2px; height: 2px;" alt="">';
 //<-- $$000 End of change
         div.innerHTML = code;
         side.appendChild(div);
@@ -8167,12 +8161,12 @@ var mainGC = function () {
         html += "   background-color: #00b265;";
         html += "   border: 2px solid #00b265;";
         html += "}";
-        html += ""
-        html += ".btn-iconsvg svg {"
-        html += "    width: 22px;"
-        html += "    height: 22px;"
-        html += "    margin-right: 3px;"
-        html += "}       "
+        html += "";
+        html += ".btn-iconsvg svg {";
+        html += "    width: 22px;";
+        html += "    height: 22px;";
+        html += "    margin-right: 3px;";
+        html += "}       ";
         css.innerHTML = html;
         document.getElementsByTagName('body')[0].appendChild(css);
     }
@@ -8267,7 +8261,7 @@ var mainGC = function () {
             $( "#ctxMenu" ).html(html);
 
             $('#btn-save').click( function() {
-                console.log("save search")
+                console.log("save search");
                 var name = $("#nameSearch").val();
                 if ( name == "" ) {
                     alert("Insert name!");
@@ -8306,7 +8300,7 @@ var mainGC = function () {
         var html = "";
         console.log(settings_search_data);
         if ( settings_search_data.length ) {
-            settings_search_data.sort(function(a, b){return a.name.toUpperCase()>b.name.toUpperCase()});
+            settings_search_data.sort(function(a, b){ return a.name.toUpperCase()>b.name.toUpperCase(); });
         }
 
         for (var i = 0; i < settings_search_data.length; i++) {
@@ -8341,7 +8335,7 @@ var mainGC = function () {
             $('#btn-update').data('id', id );
 
             var update = (document.location.href.indexOf("?")>=0?true:false);
-            if ( update ) { 
+            if ( update ) {
                 $('#div-btn-update').show();
             } else {
                 $('#div-btn-update').hide();
@@ -8392,7 +8386,7 @@ var mainGC = function () {
                     currentFilter = "Current Filter Set: "+settings_search_data[i].name;
                 }
             }
-            $(".button-group-dynamic").append('<span>'+currentFilter+'</span>')
+            $(".button-group-dynamic").append('<span>'+currentFilter+'</span>');
 
             // helper function to close the dialog div if a mouse click outside
             $(document).mouseup(function (e) {
@@ -8873,18 +8867,24 @@ var mainGC = function () {
             html += " &nbsp; " + checkboxy('settings_switch_to_gc_map_in_same_tab', 'Switch to GC Map in same browser tab') + show_help("With this option you can switch from Google Maps to GC Map in the same browser tab.<br><br>This option requires \"Add link to GC Map on Google Maps\".") + "<br/>";
             html += checkboxy('settings_add_link_google_maps_on_gc_map', 'Add link to Google Maps on GC Map') + show_help("With this option an icon are placed on the GC Map page to link to the same area in Google Maps.") + "<br/>";
             html += " &nbsp; " + checkboxy('settings_switch_to_google_maps_in_same_tab', 'Switch to Google Maps in same browser tab') + show_help("With this option you can switch from GC Map to Google Maps in the same browser tab.<br><br>This option requires \"Add link to Google Maps on GC Map\".") + "<br/>";
-            html += "<div style='margin-top: 9px; margin-left: 5px'><b>Openstreetmap page</b></div>";           
+            html += "<div style='margin-top: 9px; margin-left: 5px'><b>Openstreetmap page</b></div>";
+            html += newParameterOn2;
             html += checkboxy('settings_add_link_gc_map_on_osm', 'Add link to GC Map on Openstreetmap') + show_help("With this option an icon are placed on the OpenstreetMap page to link to the same area in GC Map.") + "<br/>";
             html += " &nbsp; " + checkboxy('settings_switch_from_osm_to_gc_map_in_same_tab', 'Switch to GC Map in same browser tab') + show_help("With this option you can switch from Openstreetmap to GC Map in the same browser tab.<br><br>This option requires \"Add link to GC Map on OpenstreetMap\".") + "<br/>";
             html += checkboxy('settings_add_link_osm_on_gc_map', 'Add link to Openstreetmap on GC Map') + show_help("With this option an icon are placed on the GC Map page to link to the same area in Openstreetmap.") + "<br/>";
             html += " &nbsp; " + checkboxy('settings_switch_to_osm_in_same_tab', 'Switch to Openstreetmap in same browser tab') + show_help("With this option you can switch from GC Map to Openstreetmap in the same browser tab.<br><br>This option requires \"Add link to Openstreetmap on GC Map\".") + "<br/>";
-            html += "<div style='margin-top: 9px; margin-left: 5px'><b>Flopp's Map page</b></div>";           
+            html += newParameterVersionSetzen(0.5) + newParameterOff;
+            html += "<div style='margin-top: 9px; margin-left: 5px'><b>Flopp's Map page</b></div>";
+            html += newParameterOn2;
             html += checkboxy('settings_add_link_flopps_on_gc_map', 'Add link to Flopp\'s Map on GC Map') + show_help("With this option an icon are placed on the GC Map page to link to the same area in Flopp\'s Map.") + "<br/>";
             html += " &nbsp; " + checkboxy('settings_switch_to_flopps_in_same_tab', 'Switch to Flopp\'s Map in same browser tab') + show_help("With this option you can switch from GC Map to Flopp\'s Map in the same browser tab.<br><br>This option requires \"Add link to Flopp\'s Map on GC Map\".") + "<br/>";
-            html += "<div style='margin-top: 9px; margin-left: 5px'><b>GeoHack page</b></div>";           
+            html += newParameterVersionSetzen(0.5) + newParameterOff;
+            html += "<div style='margin-top: 9px; margin-left: 5px'><b>GeoHack page</b></div>";
+            html += newParameterOn2;
             html += checkboxy('settings_add_link_geohack_on_gc_map', 'Add link to GeoHack on GC Map') + show_help("With this option an icon are placed on the GC Map page to link to the same area in GeoHack.") + "<br/>";
             html += " &nbsp; " + checkboxy('settings_switch_to_geohack_in_same_tab', 'Switch to GeoHack in same browser tab') + show_help("With this option you can switch from GC Map to GeoHack in the same browser tab.<br><br>This option requires \"Add link to GeoHack on GC Map\".") + "<br/>";
-            html += "</div>";            
+            html += newParameterVersionSetzen(0.5) + newParameterOff;
+            html += "</div>";
 
             html += "<h4 class='gclh_headline2'>"+prepareHideable.replace("#name#","profile")+"Profile <span style='font-size: 14px'>" + show_help2("This section include your profile pages (\/my\/ and \/profile\/ pages) with for example your founded caches and trackables, your earned souvenirs, your image gallery, your statistic ... <br><br>Also the section include the profile pages of the others.") + "</span></h4>";
             html += "<div id='gclh_config_profile'>";
@@ -9399,7 +9399,7 @@ var mainGC = function () {
                     // Bookmark in Linklist aufbauen.
                     var htmlRight = "";
                     htmlRight += "   <td style='padding: 0px; vertical-align: top; text-overflow: ellipsis; max-width: 166px; overflow: hidden; white-space: nowrap;'>";
-                    htmlRight += "       <img style='height: 12px; margin-right: 3px; cursor: grab;' title ='Grab it' src='"+global_grab_it_icon+"' />"; 
+                    htmlRight += "       <img style='height: 12px; margin-right: 3px; cursor: grab;' title ='Grab it' src='"+global_grab_it_icon+"' />";
                     htmlRight +=         text;
                     htmlRight += "   </td>";
                     htmlRight += "   <td style='padding: 0px;'>";
