@@ -1,11 +1,11 @@
-<a href="#user-content-branch" title="Branch">Branch</a> &nbsp; 
-<a href="#user-content-coding_conventions" title="Coding Conventions">Coding Conventions</a> &nbsp; 
-<a href="#user-content-issue" title="Issue">Issue</a> &nbsp; 
-<a href="#user-content-documentation" title="Documentation">Documentation</a> &nbsp; 
-<a href="#user-content-links" title="Links">Links</a> &nbsp; 
+<a href="#user-content-branches" title="Branches">Branches</a> &nbsp; &nbsp; 
+<a href="#user-content-coding-conventions" title="Coding Conventions">Coding Conventions</a> &nbsp; &nbsp; 
+<a href="#user-content-issues" title="Issues">Issues</a> &nbsp; &nbsp; 
+<a href="#user-content-documentation" title="Documentation">Documentation</a> &nbsp; &nbsp; 
+<a href="#user-content-links" title="Links">Links</a> &nbsp; &nbsp; 
 
 ---
-## Branch:  
+## Branches:  
 
 Unsere Branches unterteilen sich in die drei Stufen *User*, *Collector* und *Projects / Developer*.
 
@@ -54,7 +54,7 @@ bzw.
 <br>
 
 ---
-## Issue:  
+## Issues:  
 
 Unter Issues finden wir die Tickets und das Ticketsystem. Ein Issue durchläuft bis zu seiner Schließung in der Regel mehrere Stationen. Die Aufgaben und die Einstellungen der Issues werden im Folgenden kurz erläutert.  
 
@@ -87,11 +87,11 @@ Sprache: Englisch wo nötig, ansonsten auch deutsch.
 ---
 ## Documentation:  
 
+Es sollte eine aussagekräftige *Dokumentation im Issue* bzw. im *Pull request* erfolgen. (Dokumentation wird für Changelog verwendet.)  
+
 Eine *Änderungsdokumentation im Programmkopf* ist nicht erforderlich. Möchte jemand solche Dokumentation erfassen, dann kann er dies aber tun. Von Zeit zu Zeit wird solche Dokumentation aber entfernt, um das Programm nicht aufzublähen.  
 
-Eine *Änderungsdokumentation im Programmcode* ist nicht erforderlich. Bei komplexen Zusammenhängen oder wenn besondere Beachtung geboten ist, dann sollte eine Dokumentation an der entsprechenden Programmstelle erfolgen. Ob eine solche Dokumentation sinnvoll ist, entscheidet der jeweilige Entwickler.  
-
-Es sollte eine aussagekräftige *Dokumentation im Issue* bzw. im *Pull request* erfolgen. (Dokumentation wird für Changelog verwendet.)
+Eine *Änderungsdokumentation im Programmcode* ist nicht erforderlich. Bei komplexen Zusammenhängen oder wenn besondere Beachtung geboten ist, dann sollte eine Dokumentation an der entsprechenden Programmstelle erfolgen. Ob eine solche Dokumentation sinnvoll ist, entscheidet der jeweilige Entwickler.
 <br>
 <br>
 
