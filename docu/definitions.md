@@ -6,17 +6,16 @@
 ---
 ## Branch:  
 
-Unsere Branches unterteilen sich in die vier Stufen *User*, *Collector*, *Projects* und *Developer*.
+Unsere Branches unterteilen sich in die drei Stufen *User*, *Collector*, *Projects / Developer*.
 
-Beispielsweise könnten in den vier Stufen folgende Branches vorhanden sein.  
+Beispielsweise könnten in den drei Stufen folgende Branches vorhanden sein.  
 
-| 1. User | 2. Collector        | 3. Projects | 4. Developer   |
-| :------ | :------------------ | :---------- | :------------- |
-| master  | collector (default) | v0.2.2.4    | dev_bug_fe     |
-|         |                     | v0.2.3      | dev_CF         |
-|         |                     |             | dev_v0.2.3_fe  |
-|         |                     |             | dev_LittleJohn |
-|         |                     | translation | dev_trans_CF   |
+| 1. User | 2. Collector        | 3. Projects / Developer   |
+| :------ | :------------------ | :------------------------ |
+| master  | collector (default) | v0.5_f                    |
+|         |                     | v0.5_cf_geoservices       |
+|         |                     | VUP_Herr_Ma               |
+|         |                     | translation               |
 
 ### 1. User:  
 Hier gibt es genau eine Branch *master*. Sie enthält die aktuelle Version für die User und dient den Usern zum Abrufen neuer Versionen.
@@ -28,19 +27,8 @@ Die Branch *collector* ist die standard (default) Branch. Er wird beim Transport
 
 Außerdem kann zeitunkritisch, auch gegebenenfalls aus mehreren Branches, in den *collector* transportiert werden, die Sammlung nachbearbeitet werden und gegebenenfalls auch ein Kompletttest durchgeführt werden, bevor die Sammlung als neue Version den Usern zur Verfügung gestellt wird.  
 
-**Beispiel:** In der Branch *collector* könnten beispielsweise die nächste Version *v0.2.3*, die nächste kleine Bugfixing Version *v0.2.2.4*, die es nicht mehr eigenständig geschafft hat ausgeliefert zu werden, und eine langfristige Entwicklung *translation* eingesammelt werden.  
-
-### 3. Projects:  
-Die Stufe Projects soll Raum dafür bieten, dass gleichzeitig im Rahmen mehrerer Projekte entwickelt werden kann. Das ist insbesondere für das Bugfixing zur aktuellen Version (kleine Version) und für die eigentliche Weiterentwicklung zur nächsten Version notwendig. Die Namen der Branches sind in der Regel so gewählt, dass sie der nächsten Version entsprechen.
-
-Diese Stufe kommt aber auch gegebenenfalls zum Einsatz, wenn langfristige Projekte entwickelt werden, für die eine Version noch gar nicht abgeschätzt werden kann.
-
-**Beispiel:** Hier sollte zumindest die nächste Version *v0.2.3* enthalten sein. Gegebenenfalls auch die nächste kleine Bugfixing Version *v0.2.2.4* und das langfristige Projekt *translation*.  
-
-### 4. Developer:  
-In dieser Stufe sollen die Namen der Branches auf dem GitHub von 2Abendsegler mit *dev_* beginnen und folgend einen beliebigen Qualifier für Projekt und Entwickler erhalten, den der Entwickler selbst bestimmen kann.
-
-Referenziert und transportiert (forked) der Entwickler die Arbeiten auf seinen eigenen GitHub Account, ist er in der Namensgebung natürlich frei. 
+### 3. Projects / Developer:  
+Diese Stufe soll Raum für unterschiedliche Projekte unterschiedlicher Entwickler bieten. Die Namen sollten einen beliebigen Qualifier für Projekt und Entwickler erhalten, den der Entwickler selbst bestimmen kann.
 
 Es sollte von der Branch *collector* geforked werden.
 <br>
@@ -61,19 +49,18 @@ Sprache: Englisch wo nötig, ansonsten auch deutsch.
   * Handelt es sich um einen Wunsch der User, dann den Tag (Label) *wish* setzen.  
 <br>
 * **Issue in Arbeit nehmen:**
-  * Issue entsprechend der Person zuordnen/assignen.
+  * Issue einer Person zuordnen/assignen.
   * Status (Label) *in progress* setzen.  
 <br>
 * **Issue zurück an User geben:**
   * Aktion (Label) *user action* setzen.  
 <br>
 * **Issue auf erledigt setzen:**
-  * Spätestens jetzt grob beschreiben, was man gemacht hat oder zu welchem Ergebnis man aus welchem Grund gekommen ist.
-  * Spätestens jetzt alle Beiträge auf echte Mailadressen prüfen und diese entfernen, auch in den Beiträgen anderer. 
+  * Spätestens jetzt grob beschreiben, zu welchem Ergebnis man gekommen ist. Diese Beschreibung wird für das Changelog verwendet.
   * Entsprechenden Status (Label) setzen: *fixed*, *completed*, *rejected* ...  
 <br>
 * **Issue schließen:**
-  * Handelt es sich um Entwicklung, dann das Issue spätestens jetzt in die Milestones integrieren.
+  * Wurde <a href="https://github.com/2Abendsegler/GClh" title="Reiter Code">Code</a> geändert, dann das Issue spätestens jetzt einem Milestone zuordnen.
   * Issue auf *close* setzen.  
 <br>
 <br>
