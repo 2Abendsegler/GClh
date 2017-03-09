@@ -26,7 +26,7 @@ Unsere Branches unterteilen sich in die drei Stufen *User*, *Collector* und *Pro
 |         |                     | VUP_Herr_Ma              |
 |         |                     | translation              |
 
-Anpassungen sollten mit den Resourcen der Branch *collector* erfolgen.  
+Anpassungen sollten mit den Resourcen aus der Branch *collector* erfolgen.  
 Pull requests sollten in die Branch *collector* erfolgen.  
 
 ### 1. User:  
