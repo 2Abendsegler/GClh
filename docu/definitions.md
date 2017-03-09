@@ -38,12 +38,12 @@ Diese Stufe soll Raum für unterschiedliche Projekte unterschiedlicher Entwickle
 
 ---
 ## Coding Conventions:  
-* Favorisierter Einrückungsstil:
-    if (x < 0) {
-        negativ++;
-    } else {
-        positiv++;
-    }
+* Favorisierter Einrückungsstil:  
+`    if (x < 0) {`  
+`       negativ++;`  
+`   } else {`  
+`       positiv++;`  
+`   }`  
 bzw.
     if (x < 0) { negativ++; }
 bzw.
