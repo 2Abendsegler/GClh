@@ -99,7 +99,7 @@ var constInit = function (c) {
     c.scriptShortNameSync = "GClh Sync II";
     c.anzCustom = 10;
     c.anzTemplates = 10;
-    c.bookmarks_def = new Array(22, 31, 16, 14, 32, 48, "0", 8, 18, 54, 51, 10, 2, 35, 9, 17, 67);
+    c.bookmarks_def = new Array(22, 31, 16, 14, 32, 33, 48, "0", 8, 18, 54, 51, 55, 47, 10, 2, 35, 9, 17, 67, 23, 68);
     c.defaultConfigLink = "https://www.geocaching.com/my/default.aspx#GClhShowConfig";
     c.defaultSyncLink = "https://www.geocaching.com/my/default.aspx#GClhShowSync";
 
@@ -509,6 +509,7 @@ var variablesInit = function (c) {
     bookmark("View Geocache Map", "https://www.geocaching.com/map/", c.bookmarks);
     profileSpecialBookmark(scriptShortNameSync, defaultSyncLink, "lnk_gclhsync", c.bookmarks);
     externalBookmark("Forum Geoclub", "http://geoclub.de/forum/index.php", c.bookmarks);
+    externalBookmark("Changelog", "https://github.com/2Abendsegler/GClh/blob/master/docu/changelog.md#readme", c.bookmarks);
     // Settings: Remove GC Menu from Navigation
     c.remove_navi_learn = getValue("remove_navi_learn", false);
     c.remove_navi_play = getValue("remove_navi_play", false);
@@ -8032,7 +8033,8 @@ var mainGC = function () {
         var a = document.createElement("a");
         a.appendChild(document.createTextNode("Show log counter"));
         a.setAttribute("href", "javascript:void(0);");
-        a.setAttribute("title", "(Only possible if all logs are shown)");
+//$$FE001 a.setAttribute("title", "(Only possible if all logs are shown)");
+        a.setAttribute("title", "Show log counter for log type and total"); //$$FE001
         a.setAttribute("id", "gclh_show_log_counter");
         a.setAttribute("style", "float: right");
         a.addEventListener("click", showLogCounter, false);
@@ -8054,7 +8056,7 @@ var mainGC = function () {
             }
             if (logCounter["all"] != 0) {
                 var logs = $('#cache_logs_table2').find('tbody tr td').find('.LogType');
-                if (logCounter["all"] == logs.length) {
+//$$FE001         if (logCounter["all"] == logs.length) {
                     for (var i = 0; i < logs.length; i++) {
                         var log = logs[i];
                         if (log && log.children[1] && log.children[0].children[0].title && logCounter[log.children[0].children[0].title]) {
@@ -8064,7 +8066,7 @@ var mainGC = function () {
                             logCounter["all"]--;
                         }
                     }
-                }
+//$$FE001         }
             }
         } catch (e) {
             gclh_error("showLogCounter", e);
