@@ -1,8 +1,17 @@
-<a href="#user-content-branches" title="Branches">Branches</a> &nbsp; &nbsp; 
 <a href="#user-content-coding-conventions" title="Coding Conventions">Coding Conventions</a> &nbsp; &nbsp; 
+<a href="#user-content-branches" title="Branches">Branches</a> &nbsp; &nbsp; 
 <a href="#user-content-issues" title="Issues">Issues</a> &nbsp; &nbsp; 
 <a href="#user-content-documentation" title="Documentation">Documentation</a> &nbsp; &nbsp; 
 <a href="#user-content-links" title="Links">Links</a> &nbsp; &nbsp; 
+
+---
+## Coding Conventions:  
+* Favorisierter Einrückungsstil:  
+<img src="../images/coding_conventions01.jpg" alt="coding_conventions01.jpg"><br>
+* Einrücken mit 4 Leerzeichen (nicht mit Tabulator).
+* Keine Leerzeichen am Ende einer Zeile.
+<br>
+<br>
 
 ---
 ## Branches:  
@@ -33,15 +42,6 @@ Außerdem kann zeitunkritisch, auch gegebenenfalls aus mehreren Branches, in den
 
 ### 3. Projects / Developer:  
 Diese Stufe soll Raum für unterschiedliche Projekte unterschiedlicher Entwickler bieten. Die Namen sollten einen beliebigen Qualifier für Projekt und Entwickler erhalten, den der Entwickler selbst bestimmen kann.
-<br>
-<br>
-
----
-## Coding Conventions:  
-* Favorisierter Einrückungsstil:  
-<img src="../images/coding_conventions01.jpg" alt="coding_conventions01.jpg"><br>
-* Einrücken mit 4 Leerzeichen (nicht mit Tabulator).
-* Keine Leerzeichen am Ende einer Zeile.
 <br>
 <br>
 
