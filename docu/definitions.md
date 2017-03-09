@@ -56,7 +56,7 @@ Sprache: Englisch wo nötig, ansonsten auch deutsch.
   * Aktion (Label) *user action* setzen.  
 <br>
 * **Issue auf erledigt setzen:**
-  * Grob beschreiben, zu welchem Ergebnis man gekommen ist. Diese Beschreibung wird in der Regel im Changelog verwendet.
+  * Grob beschreiben, zu welchem Ergebnis man gekommen ist.  Diese Beschreibung wird in der Regel im Changelog verwendet.
   * Entsprechenden Status (Label) setzen: *fixed*, *completed*, *rejected* ...  
 <br>
 * **Issue schließen:**
