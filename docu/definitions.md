@@ -6,7 +6,7 @@
 ---
 ## Branch:  
 
-Unsere Branches unterteilen sich in die drei Stufen *User*, *Collector*, *Projects / Developer*.
+Unsere Branches unterteilen sich in die drei Stufen *User*, *Collector* und *Projects / Developer*.
 
 Beispielsweise könnten in den drei Stufen folgende Branches vorhanden sein.  
 
@@ -56,7 +56,7 @@ Sprache: Englisch wo nötig, ansonsten auch deutsch.
   * Aktion (Label) *user action* setzen.  
 <br>
 * **Issue auf erledigt setzen:**
-  * Spätestens jetzt grob beschreiben, zu welchem Ergebnis man gekommen ist. Diese Beschreibung wird für das Changelog verwendet.
+  * Spätestens jetzt grob beschreiben, zu welchem Ergebnis man gekommen ist. Diese Beschreibung wird im Changelog verwendet.
   * Entsprechenden Status (Label) setzen: *fixed*, *completed*, *rejected* ...  
 <br>
 * **Issue schließen:**
@@ -64,7 +64,6 @@ Sprache: Englisch wo nötig, ansonsten auch deutsch.
   * Issue auf *close* setzen.  
 <br>
 <br>
-
 ---
 ## Dokumentation:  
 
@@ -72,7 +71,7 @@ Eine *Änderungsdokumentation im Programmkopf* ist nicht erforderlich. Möchte j
 
 Eine *Änderungsdokumentation im Programmcode* ist nicht erforderlich. Bei komplexen Zusammenhängen oder wenn besondere Beachtung geboten ist, dann sollte eine Dokumentation an der entsprechenden Programmstelle erfolgen. Ob eine solche Dokumentation sinnvoll ist, entscheidet der jeweilige Entwickler.  
 
-Es sollte eine aussagekräftige *Dokumentation im Issue* bzw. im *Pull request* erfolgen.  
+Es sollte eine aussagekräftige *Dokumentation im Issue* bzw. im *Pull request* erfolgen. Diese Dokumentation wird im Changelog verwendet.
 <br>
 <br>
 
