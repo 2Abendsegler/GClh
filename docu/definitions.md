@@ -1,6 +1,7 @@
 <a href="#user-content-branch" title="Branch">Branch</a> &nbsp; 
+<a href="#user-content-coding_conventions" title="Coding Conventions">Coding Conventions</a> &nbsp; 
 <a href="#user-content-issue" title="Issue">Issue</a> &nbsp; 
-<a href="#user-content-dokumentation" title="Dokumentation Programmänderungen">Dokumentation</a> &nbsp; 
+<a href="#user-content-documentation" title="Documentation">Documentation</a> &nbsp; 
 <a href="#user-content-links" title="Links">Links</a> &nbsp; 
 
 ---
@@ -8,7 +9,7 @@
 
 Unsere Branches unterteilen sich in die drei Stufen *User*, *Collector* und *Projects / Developer*.
 
-Beispielsweise könnten in den drei Stufen folgende Branches vorhanden sein.  
+Beispiel:  
 
 | 1. User | 2. Collector        | 3. Projects / Developer  |
 | :------ | :------------------ | :----------------------- |
@@ -32,6 +33,23 @@ Außerdem kann zeitunkritisch, auch gegebenenfalls aus mehreren Branches, in den
 
 ### 3. Projects / Developer:  
 Diese Stufe soll Raum für unterschiedliche Projekte unterschiedlicher Entwickler bieten. Die Namen sollten einen beliebigen Qualifier für Projekt und Entwickler erhalten, den der Entwickler selbst bestimmen kann.
+<br>
+<br>
+
+---
+## Coding Conventions:  
+* Favorisierter Einrückungsstil:
+    if (x < 0) {
+        negativ++;
+    } else {
+        positiv++;
+    }
+bzw.
+    if (x < 0) { negativ++; }
+bzw.
+    if (x < 0) negativ++;
+* Einrücken mit 4 Leerzeichen (nicht mit Tabulator).
+* Keine Leerzeichen am Ende einer Zeile.
 <br>
 <br>
 
@@ -67,7 +85,7 @@ Sprache: Englisch wo nötig, ansonsten auch deutsch.
 <br>
 
 ---
-## Dokumentation:  
+## Documentation:  
 
 Eine *Änderungsdokumentation im Programmkopf* ist nicht erforderlich. Möchte jemand solche Dokumentation erfassen, dann kann er dies aber tun. Von Zeit zu Zeit wird solche Dokumentation aber entfernt, um das Programm nicht aufzublähen.  
 
