@@ -23,7 +23,7 @@ Hier gibt es genau eine Branch *master*. Sie enthält die aktuelle Version für 
 ### 2. Collector:  
 Hier gibt es derzeit genau eine Branch *collector*. Sie dient als Sammler aller Bestandteile für eine Version vor der Auslieferung an die User, dem Transport in die Branch *master*.  
 
-Die Branch *collector* ist die standard (default) Branch. Er wird beim Transportieren automatisch als Empfänger vorgeschlagen. Damit wird unter anderem sichergestellt, dass nicht aus Versehen in die Branch *master* transportiert wird.  
+Die Branch *collector* ist die standard (default) Branch. Sie wird beim Transportieren automatisch als Empfänger vorgeschlagen. Damit wird unter anderem sichergestellt, dass nicht aus Versehen in die Branch *master* transportiert wird.  
 
 Außerdem kann zeitunkritisch, auch gegebenenfalls aus mehreren Branches, in den *collector* transportiert werden, die Sammlung nachbearbeitet werden und gegebenenfalls auch ein Kompletttest durchgeführt werden, bevor die Sammlung als neue Version den Usern zur Verfügung gestellt wird.  
 
@@ -56,12 +56,12 @@ Sprache: Englisch wo nötig, ansonsten auch deutsch.
   * Aktion (Label) *user action* setzen.  
 <br>
 * **Issue auf erledigt setzen:**
-  * Spätestens jetzt grob beschreiben, zu welchem Ergebnis man gekommen ist. Diese Beschreibung wird im Changelog verwendet.
+  * Grob beschreiben, zu welchem Ergebnis man gekommen ist. Diese Beschreibung wird im Changelog verwendet.
   * Entsprechenden Status (Label) setzen: *fixed*, *completed*, *rejected* ...  
 <br>
 * **Issue schließen:**
-  * Wurde <a href="https://github.com/2Abendsegler/GClh" title="Reiter Code">Code</a> geändert, dann das Issue spätestens jetzt einem Milestone zuordnen.
-  * Issue auf *close* setzen.  
+  * Wurde <a href="https://github.com/2Abendsegler/GClh" title="Reiter Code">Code</a> geändert, dann das Issue einem Milestone zuordnen.
+  * Issue auf *close* setzen.
 <br>
 <br>
 ---
