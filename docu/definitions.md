@@ -56,11 +56,11 @@ Sprache: Englisch wo nötig, ansonsten auch deutsch.
   * Aktion (Label) *user action* setzen.  
 <br>
 * **Issue auf erledigt setzen:**
-  * Grob beschreiben, zu welchem Ergebnis man gekommen ist. Diese Beschreibung wird im Changelog verwendet.
+  * Grob beschreiben, zu welchem Ergebnis man gekommen ist. Diese Beschreibung wird in der Regel im Changelog verwendet.
   * Entsprechenden Status (Label) setzen: *fixed*, *completed*, *rejected* ...  
 <br>
 * **Issue schließen:**
-  * Wurde <a href="https://github.com/2Abendsegler/GClh" title="Reiter Code">Code</a> geändert, dann das Issue einem Milestone zuordnen.
+  * Sollen Objekte transportiert werden oder soll eine Dokumentation im Changelog erfolgen, dann das Issue einem Milestone zuordnen.
   * Issue auf *close* setzen.
 <br>
 <br>
