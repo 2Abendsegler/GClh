@@ -1,22 +1,33 @@
-<a href="#user-content-branch" title="Branch">Branch</a> &nbsp; 
-<a href="#user-content-issue" title="Issue">Issue</a> &nbsp; 
-<a href="#user-content-dokumentation" title="Dokumentation Programmänderungen">Dokumentation</a> &nbsp; 
-<a href="#user-content-links" title="Links">Links</a> &nbsp; 
+<a href="#user-content-coding-conventions" title="Coding Conventions">Coding Conventions</a> &nbsp; &nbsp; 
+<a href="#user-content-branches" title="Branches">Branches</a> &nbsp; &nbsp; 
+<a href="#user-content-issues" title="Issues">Issues</a> &nbsp; &nbsp; 
+<a href="#user-content-documentation" title="Documentation">Documentation</a> &nbsp; &nbsp; 
+<a href="#user-content-links" title="Links">Links</a> &nbsp; &nbsp; 
 
 ---
-## Branch:  
+## Coding Conventions:  
+* Favorisierter Einrückungsstil:  
+<img src="../images/coding_conventions01.jpg" alt="coding_conventions01.jpg"><br>
+* Einrücken mit 4 Leerzeichen (nicht mit Tabulator).
+* Keine Leerzeichen am Ende einer Zeile.
+<br>
+<br>
 
-Unsere Branches unterteilen sich in die vier Stufen *User*, *Collector*, *Projects* und *Developer*.
+---
+## Branches:  
 
-Beispielsweise könnten in den vier Stufen folgende Branches vorhanden sein.  
+Unsere Branches unterteilen sich in die drei Stufen *User*, *Collector* und *Projects / Developer*.  
+(Beispiel)
 
-| 1. User | 2. Collector        | 3. Projects | 4. Developer   |
-| :------ | :------------------ | :---------- | :------------- |
-| master  | collector (default) | v0.2.2.4    | dev_bug_fe     |
-|         |                     | v0.2.3      | dev_CF         |
-|         |                     |             | dev_v0.2.3_fe  |
-|         |                     |             | dev_LittleJohn |
-|         |                     | translation | dev_trans_CF   |
+| 1. User | 2. Collector        | 3. Projects / Developer  |
+| :------ | :------------------ | :----------------------- |
+| master  | collector (default) | v0.5_f                   |
+|         |                     | v0.5_cf_geoservices      |
+|         |                     | VUP_Herr_Ma              |
+|         |                     | translation              |
+
+Anpassungen sollten mit den Resourcen aus der Branch *collector* erfolgen.  
+Pull requests sollten in die Branch *collector* erfolgen.  
 
 ### 1. User:  
 Hier gibt es genau eine Branch *master*. Sie enthält die aktuelle Version für die User und dient den Usern zum Abrufen neuer Versionen.
@@ -24,30 +35,17 @@ Hier gibt es genau eine Branch *master*. Sie enthält die aktuelle Version für 
 ### 2. Collector:  
 Hier gibt es derzeit genau eine Branch *collector*. Sie dient als Sammler aller Bestandteile für eine Version vor der Auslieferung an die User, dem Transport in die Branch *master*.  
 
-Die Branch *collector* ist die standard (default) Branch. Er wird beim Transportieren automatisch als Empfänger vorgeschlagen. Damit wird unter anderem sichergestellt, dass nicht aus Versehen in die Branch *master* transportiert wird.  
+Die Branch *collector* ist die standard (default) Branch. Sie wird beim Transportieren automatisch als Empfänger vorgeschlagen. Damit wird unter anderem sichergestellt, dass nicht aus Versehen in die Branch *master* transportiert wird.  
 
-Außerdem kann zeitunkritisch, auch gegebenenfalls aus mehreren Branches, in den *collector* transportiert werden, die Sammlung nachbearbeitet werden und gegebenenfalls auch ein Kompletttest durchgeführt werden, bevor die Sammlung als neue Version den Usern zur Verfügung gestellt wird.  
+Außerdem kann zeitunkritisch, auch gegebenenfalls aus mehreren Branches, in den *collector* transportiert werden, die Sammlung nachbearbeitet werden und auch ein Kompletttest durchgeführt werden, bevor die Sammlung als neue Version den Usern zur Verfügung gestellt wird.  
 
-**Beispiel:** In der Branch *collector* könnten beispielsweise die nächste Version *v0.2.3*, die nächste kleine Bugfixing Version *v0.2.2.4*, die es nicht mehr eigenständig geschafft hat ausgeliefert zu werden, und eine langfristige Entwicklung *translation* eingesammelt werden.  
-
-### 3. Projects:  
-Die Stufe Projects soll Raum dafür bieten, dass gleichzeitig im Rahmen mehrerer Projekte entwickelt werden kann. Das ist insbesondere für das Bugfixing zur aktuellen Version (kleine Version) und für die eigentliche Weiterentwicklung zur nächsten Version notwendig. Die Namen der Branches sind in der Regel so gewählt, dass sie der nächsten Version entsprechen.
-
-Diese Stufe kommt aber auch gegebenenfalls zum Einsatz, wenn langfristige Projekte entwickelt werden, für die eine Version noch gar nicht abgeschätzt werden kann.
-
-**Beispiel:** Hier sollte zumindest die nächste Version *v0.2.3* enthalten sein. Gegebenenfalls auch die nächste kleine Bugfixing Version *v0.2.2.4* und das langfristige Projekt *translation*.  
-
-### 4. Developer:  
-In dieser Stufe sollen die Namen der Branches auf dem GitHub von 2Abendsegler mit *dev_* beginnen und folgend einen beliebigen Qualifier für Projekt und Entwickler erhalten, den der Entwickler selbst bestimmen kann.
-
-Referenziert und transportiert (forked) der Entwickler die Arbeiten auf seinen eigenen GitHub Account, ist er in der Namensgebung natürlich frei. 
-
-Es sollte von der Branch *collector* geforked werden.
+### 3. Projects / Developer:  
+Diese Stufe soll Raum für unterschiedliche Projekte unterschiedlicher Entwickler bieten. Die Namen der Branches sollten aus einer allgemein verständlichen Bezeichnung für Projekt und Entwickler bestehen, den der Entwickler selbst bestimmen kann.
 <br>
 <br>
 
 ---
-## Issue:  
+## Issues:  
 
 Unter Issues finden wir die Tickets und das Ticketsystem. Ein Issue durchläuft bis zu seiner Schließung in der Regel mehrere Stationen. Die Aufgaben und die Einstellungen der Issues werden im Folgenden kurz erläutert.  
 
@@ -61,31 +59,30 @@ Sprache: Englisch wo nötig, ansonsten auch deutsch.
   * Handelt es sich um einen Wunsch der User, dann den Tag (Label) *wish* setzen.  
 <br>
 * **Issue in Arbeit nehmen:**
-  * Issue entsprechend der Person zuordnen/assignen.
+  * Issue einer Person zuordnen/assignen.
   * Status (Label) *in progress* setzen.  
 <br>
 * **Issue zurück an User geben:**
   * Aktion (Label) *user action* setzen.  
 <br>
 * **Issue auf erledigt setzen:**
-  * Spätestens jetzt grob beschreiben, was man gemacht hat oder zu welchem Ergebnis man aus welchem Grund gekommen ist.
-  * Spätestens jetzt alle Beiträge auf echte Mailadressen prüfen und diese entfernen, auch in den Beiträgen anderer. 
+  * Grob beschreiben, zu welchem Ergebnis man gekommen ist. (Beschreibung wird für Changelog verwendet.)
   * Entsprechenden Status (Label) setzen: *fixed*, *completed*, *rejected* ...  
 <br>
 * **Issue schließen:**
-  * Handelt es sich um Entwicklung, dann das Issue spätestens jetzt in die Milestones integrieren.
-  * Issue auf *close* setzen.  
+  * Sollen Objekte transportiert werden oder soll eine Dokumentation im Changelog erfolgen, dann Issue einem Milestone zuordnen.
+  * Issue auf *close* setzen.
 <br>
 <br>
 
 ---
-## Dokumentation:  
+## Documentation:  
+
+Es sollte eine aussagekräftige *Dokumentation im Issue* bzw. im *Pull request* erfolgen. (Dokumentation wird für Changelog verwendet.)  
 
 Eine *Änderungsdokumentation im Programmkopf* ist nicht erforderlich. Möchte jemand solche Dokumentation erfassen, dann kann er dies aber tun. Von Zeit zu Zeit wird solche Dokumentation aber entfernt, um das Programm nicht aufzublähen.  
 
-Eine *Änderungsdokumentation im Programmcode* ist nicht erforderlich. Bei komplexen Zusammenhängen oder wenn besondere Beachtung geboten ist, dann sollte eine Dokumentation an der entsprechenden Programmstelle erfolgen. Ob eine solche Dokumentation sinnvoll ist, entscheidet der jeweilige Entwickler.  
-
-Es sollte eine aussagekräftige *Dokumentation im Issue* bzw. im *Pull request* erfolgen.  
+Eine *Änderungsdokumentation im Programmcode* ist nicht erforderlich. Bei komplexen Zusammenhängen oder wenn besondere Beachtung geboten ist, dann sollte eine Dokumentation an der entsprechenden Programmstelle erfolgen. Ob eine solche Dokumentation sinnvoll ist, entscheidet der jeweilige Entwickler.
 <br>
 <br>
 
