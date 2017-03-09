@@ -39,7 +39,7 @@ Diese Stufe soll Raum für unterschiedliche Projekte unterschiedlicher Entwickle
 ---
 ## Coding Conventions:  
 * Favorisierter Einrückungsstil:  
-<img src="../images/coding_conventions01.jpg" alt="coding_conventions01.jpg"><br>
+<img src="../images/coding_conventions0s1.jpg" alt="coding_conventions01.jpg"><br>
 * Einrücken mit 4 Leerzeichen (nicht mit Tabulator).
 * Keine Leerzeichen am Ende einer Zeile.
 <br>
