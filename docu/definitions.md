@@ -17,6 +17,9 @@ Beispielsweise könnten in den drei Stufen folgende Branches vorhanden sein.
 |         |                     | VUP_Herr_Ma               |
 |         |                     | translation               |
 
+Anpassungen sollten mit den Resourcen der Branch *collector* erfolgen.  
+Pull requests sollten in die Branch *collector* einfließen.  
+
 ### 1. User:  
 Hier gibt es genau eine Branch *master*. Sie enthält die aktuelle Version für die User und dient den Usern zum Abrufen neuer Versionen.
 
