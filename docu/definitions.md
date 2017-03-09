@@ -60,7 +60,7 @@ Sprache: Englisch wo nötig, ansonsten auch deutsch.
   * Entsprechenden Status (Label) setzen: *fixed*, *completed*, *rejected* ...  
 <br>
 * **Issue schließen:**
-  * Wurde <a href="https://github.com/2Abendsegler/GClh" title="Reiter Code">Code</a> geändert, dann das Issue einem Milestone zuordnen.
+  * Wurde  geändert, dann das Issue einem Milestone zuordnen.
   * Issue auf *close* setzen.
 <br>
 <br>
