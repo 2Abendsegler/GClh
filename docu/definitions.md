@@ -10,12 +10,12 @@ Unsere Branches unterteilen sich in die drei Stufen *User*, *Collector* und *Pro
 
 Beispielsweise könnten in den drei Stufen folgende Branches vorhanden sein.  
 
-| 1. User | 2. Collector        | 3. Projects / Developer   |
-| :------ | :------------------ | :------------------------ |
-| master  | collector (default) | v0.5_f                    |
-|         |                     | v0.5_cf_geoservices       |
-|         |                     | VUP_Herr_Ma               |
-|         |                     | translation               |
+| 1. User        | 2. Collector        | 3. Projects / Developer   |
+| :------------- | :------------------ | :------------------------ |
+| master         | collector (default) | v0.5_f                    |
+|                |                     | v0.5_cf_geoservices       |
+|                |                     | VUP_Herr_Ma               |
+|                |                     | translation               |
 
 Anpassungen sollten mit den Resourcen der Branch *collector* erfolgen.  
 Pull requests sollten in die Branch *collector* einfließen.  
@@ -32,8 +32,6 @@ Außerdem kann zeitunkritisch, auch gegebenenfalls aus mehreren Branches, in den
 
 ### 3. Projects / Developer:  
 Diese Stufe soll Raum für unterschiedliche Projekte unterschiedlicher Entwickler bieten. Die Namen sollten einen beliebigen Qualifier für Projekt und Entwickler erhalten, den der Entwickler selbst bestimmen kann.
-
-Es sollte von der Branch *collector* geforked werden.
 <br>
 <br>
 
