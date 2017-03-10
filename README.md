@@ -17,4 +17,4 @@ Dazu gibt es auf hiesiger Plattform ein [Ticketsystem](https://github.com/2Abend
 
 Alle Geocacher und Interessierte sind herzlich eingeladen, am Support und der Weiterentwicklung des Tools mitzuwirken.  
 
-Informationen zu Branches, Issues, Änderungsdokumentation und hilfreichen Links, gibt es [hier](https://github.com/2Abendsegler/GClh/blob/master/docu/definitions.md#readme).  
+Informationen zu Coding Konventionen, Branches, Issues, Änderungsdokumentation und hilfreichen Links, gibt es [hier](https://github.com/2Abendsegler/GClh/blob/master/docu/definitions.md#readme).  
