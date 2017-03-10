@@ -114,10 +114,14 @@ https://github.com/2Abendsegler/GClh/blob/master/docu/tips_installation.md#readm
 <br>
 * Geoclub Forum, Help (Greasemonkey-Scripte):  
 http://geoclub.de/forum/viewforum.php?f=117  
-* Geoclub Forum, alter Sammelthread für GC little helper:  
-http://geoclub.de/forum/viewtopic.php?f=117&t=46168  
 * Geoclub Forum, neuer Sammelthread für GC little helper II:  
 http://geoclub.de/forum/viewtopic.php?f=117&t=79372  
+* Groundspeak Forum, Sammelthread für GC little helper II (seit v0.3):  
+http://forums.groundspeak.com/GC/index.php?showtopic=343005  
+* Swisscacher Forum, Sammelthread für GC little helper II (seit v0.5):  
+http://www.swissgeocacheforum.ch/forum/topic/12872-gc-little-helper-ii/  
+* Geoclub Forum, alter Sammelthread für GC little helper:  
+http://geoclub.de/forum/viewtopic.php?f=117&t=46168  
 <br>
 * Deutsche Übersetzung der Lizence:  
 http://www.gnu.de/documents/gpl-2.0.de.html
