@@ -31,6 +31,10 @@ Etliche Funktionen auf der obersten Ebene sind Hilfesfunktionen. Die meisten der
 
 ## Persistenz
 :question:
+### Bool'sche Optionen
+=> Checkboxes
+### Other
+=>
 
 ## Debugging
 :question:
