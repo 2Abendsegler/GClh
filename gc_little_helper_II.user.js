@@ -508,6 +508,7 @@ var variablesInit = function (c) {
 // << hm -- Issue #111
     c.settings_search_data = JSON.parse(getValue("settings_search_data", "[]"));
     c.settings_search_enable_user_defined = getValue("settings_search_enable_user_defined",true);
+    c.settings_pq_warning = getValue("settings_pq_warning",true);
     c.settings_pq_set_cachestotal = getValue("settings_pq_set_cachestotal",1000);
     c.settings_pq_cachestotal = getValue("settings_pq_cachestotal",1000);
     c.settings_pq_option_ihaventfound = getValue("settings_pq_option_ihaventfound",true);
@@ -2305,6 +2306,40 @@ var mainGC = function () {
         }
     }
 
+    function optionsInConflict( idOption1, idOption2 ) {
+        var status = false;
+        if ( $("#"+idOption1).is(':checked') && $("#"+idOption2).is(':checked') ) {
+            $("label[for='"+idOption1+"']").css('background-color','#ffff00');
+            $("label[for='"+idOption2+"']").css('background-color','#ffff00');
+            $("label[for='"+idOption1+"']").css('color','#ff0000');
+            $("label[for='"+idOption2+"']").css('color','#ff0000');
+            status = true;
+        }
+        else {
+            $("label[for='"+idOption1+"']").css('background-color','#ffffff');
+            $("label[for='"+idOption2+"']").css('background-color','#ffffff');
+            $("label[for='"+idOption1+"']").css('color','#000000');
+            $("label[for='"+idOption2+"']").css('color','#000000');
+        }
+        return status;
+    }
+    
+    function verifyPqOptions() {
+        var status = false;
+        
+        status = status | optionsInConflict( "ctl00_ContentBody_cbOptions_0", "ctl00_ContentBody_cbOptions_1" ); // I haven't found / I have found
+        status = status | optionsInConflict( "ctl00_ContentBody_cbOptions_2", "ctl00_ContentBody_cbOptions_3" ); // I don't vs. own	I own
+        status = status | optionsInConflict( "ctl00_ContentBody_cbOptions_4", "ctl00_ContentBody_cbOptions_5" ); // Are available to all users	vs. Are for members only
+        status = status | optionsInConflict( "ctl00_ContentBody_cbOptions_8", "ctl00_ContentBody_cbOptions_9" ); // Found in the last 7 days  vs.	Have not been found
+        status = status | optionsInConflict( "ctl00_ContentBody_cbOptions_12", "ctl00_ContentBody_cbOptions_13" ); // Is Disabled  vs.	Is Enabled
+        
+        if ( status ) {
+            $("#warning").show();
+        } else {
+            $("#warning").hide();
+        }
+    }
+
 // set default value ONLY for new pocket queries    
     if (document.location.href.match(/^https?:\/\/www\.geocaching\.com\/pocket\/gcquery\.aspx/)) {
         try {
@@ -2369,6 +2404,13 @@ var mainGC = function () {
                         // do nothing
                     }   
                 }
+            }
+            if ( settings_pq_warning ) {
+                $("#ctl00_ContentBody_cbOptions").after("<div id='warning' style='display: none; border: 1px solid #dfdf80; background-color: #ffffa5; padding: 10px;'><div style='float: left'><img src='https://www.geocaching.com/play/Content/ui-icons/icons/global/attention.svg'></div><div>&nbsp;&nbsp;One or more options are in conflict and creates an empty result set. Please change your selection.</div></div>");
+                for ( var i=0; i<=13; i++ ) {
+                    $("#ctl00_ContentBody_cbOptions_"+i ).change( verifyPqOptions );
+                }
+                verifyPqOptions();
             }
         } catch (e) {
             gclh_error("pq warning", e);
@@ -8985,6 +9027,7 @@ var mainGC = function () {
             html += newParameterOn2;
             html += "<h4 class='gclh_headline2'>"+prepareHideable.replace("#name#","pq")+"Pocket Queries</h4>";
             html += "<div id='gclh_config_pq'>";
+            html += checkboxy('settings_pq_warning', "Get a warning in case of empty pocket queries") + show_help("Show a message if one or more options are in conflict. This helps to avoid empty pocket queries.") + "<br/>";
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>New Pocket Query</b></div>";
             html += checkboxy('settings_pq_set_cachestotal', "Set number of caches to ") + "<input class='gclh_form' size=3 type='text' id='settings_pq_cachestotal' value='" + settings_pq_cachestotal + "'>&nbsp;" + show_help("Specifies the default value for total caches.") + "<br/>";
             html += checkboxy('settings_pq_option_ihaventfound', "Enable option '<i>I haven't found</i>' by default") + show_help("This activates the option '<i>I haven't found</i>' by default.") + "<br/>";
@@ -10112,6 +10155,7 @@ var mainGC = function () {
                 'settings_friendlist_summary_viponly',
 // << hm -- Issue #111
                 'settings_search_enable_user_defined',
+                'settings_pq_warning',
                 'settings_pq_set_cachestotal',
                 'settings_pq_option_ihaventfound',
                 'settings_pq_option_idontown',
