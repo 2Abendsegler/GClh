@@ -158,5 +158,16 @@
   "settings_friendlist_summary_viponly": false,
   "settings_process_vup": false,
   "settings_show_vup_friends": false,
-  "settings_search_enable_user_defined": true
+  "settings_search_enable_user_defined": true,
+  "settings_link_big_listing": true,
+  "settings_vup_hide_avatar": false,
+  "settings_vup_hide_log": false,
+  "settings_add_link_gc_map_on_osm": true,
+  "settings_switch_from_osm_to_gc_map_in_same_tab": false,
+  "settings_add_link_osm_on_gc_map": true,
+  "settings_switch_to_osm_in_same_tab": false,
+  "settings_add_link_flopps_on_gc_map": true,
+  "settings_switch_to_flopps_in_same_tab": false,
+  "settings_add_link_geohack_on_gc_map": true,
+  "settings_switch_to_geohack_in_same_tab": false
 }
