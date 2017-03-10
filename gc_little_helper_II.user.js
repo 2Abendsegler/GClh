@@ -14,7 +14,7 @@
 // @require          http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js
 // @require          http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js
 // @require          http://cdnjs.cloudflare.com/ajax/libs/dropbox.js/0.10.2/dropbox.min.js
-// @require          https://raw.githubusercontent.com/2Abendsegler/GClh/collector/data/gclh_icons.js
+// @require          https://raw.githubusercontent.com/2Abendsegler/GClh/master/data/gclh_icons.js
 // @description      Some little things to make life easy (on www.geocaching.com).
 // @copyright        Torsten Amshove <torsten@amshove.net>
 // @author           Torsten Amshove; 2Abendsegler
