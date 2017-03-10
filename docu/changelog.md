@@ -54,6 +54,11 @@ Log with new option "Also hide name, avatar and counter from log":<br>
 <br>
 With the second new option "Hide complete log", the complete log is hidden.<br>
 <br></li>
+
+<li>
+New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/199">#199</a>] Default settings for new pocket queries 
+<br></li>
+
 <li>Fix: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/179">#179</a>] Zebra effect in common lists not always available: Wrong parameter promt in special processing for common lists if user color is not set.<br></li>
 <li>Fix: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/179">#171</a>] No GClh enhancement on friends page<br></li>
 <li>Fix: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/185">#185</a>] Cacher names with brackets will not work in VUP List<br></li>

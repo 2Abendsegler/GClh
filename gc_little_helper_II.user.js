@@ -508,6 +508,20 @@ var variablesInit = function (c) {
 // << hm -- Issue #111
     c.settings_search_data = JSON.parse(getValue("settings_search_data", "[]"));
     c.settings_search_enable_user_defined = getValue("settings_search_enable_user_defined",true);
+    c.settings_pq_set_cachestotal = getValue("settings_pq_set_cachestotal",1000);
+    c.settings_pq_cachestotal = getValue("settings_pq_cachestotal",1000);
+    c.settings_pq_option_ihaventfound = getValue("settings_pq_option_ihaventfound",true);
+    c.settings_pq_option_idontown = getValue("settings_pq_option_idontown",true);
+    c.settings_pq_option_ignorelist = getValue("settings_pq_option_ignorelist",true);
+    c.settings_pq_option_isenabled = getValue("settings_pq_option_isenabled",true);
+    c.settings_pq_option_filename = getValue("settings_pq_option_filename",true);
+    c.settings_pq_set_terrain = getValue("settings_pq_set_terrain",true);
+    c.settings_pq_set_difficulty = getValue("settings_pq_set_difficulty",true);
+    c.settings_pq_difficulty = getValue("settings_pq_difficulty",">=");
+    c.settings_pq_difficulty_score = getValue("settings_pq_difficulty_score","1");
+    c.settings_pq_terrain = getValue("settings_pq_terrain",">=");
+    c.settings_pq_terrain_score = getValue("settings_pq_terrain_score","1"); 
+    c.settings_pq_automatically_day = getValue("settings_pq_automatically_day",true);
 
     // Settings: Custom Bookmarks
     var num = c.bookmarks.length;
@@ -2289,6 +2303,76 @@ var mainGC = function () {
         } catch (e) {
             gclh_error("Show the latest logs symbols", e);
         }
+    }
+
+// set default value ONLY for new pocket queries    
+    if (document.location.href.match(/^https?:\/\/www\.geocaching\.com\/pocket\/gcquery\.aspx/)) {
+        try {
+            // mark all elements for an easier access
+            $( "#ctl00_ContentBody_QueryPanel > *" ).each(function( index ) {
+                $(this).attr('id',index);
+            });
+            
+            if (document.location.href.match(/^https?:\/\/www\.geocaching\.com\/pocket\/gcquery\.aspx$/) ||
+                document.location.href.match(/^https?:\/\/www\.geocaching\.com\/pocket\/gcquery\.aspx\/ll=/) ) {
+                if ( settings_pq_set_cachestotal ) {
+                    $("#ctl00_ContentBody_tbResults").val(settings_pq_cachestotal);
+                }        
+                if ( settings_pq_option_ihaventfound ) {
+                    $("#ctl00_ContentBody_cbOptions_0").prop('checked', true);
+                    $("#ctl00_ContentBody_cbOptions_1").prop('checked', false); // avoid conflicts
+                }
+                if ( settings_pq_option_idontown ) {
+                    $("#ctl00_ContentBody_cbOptions_2").prop('checked', true);
+                    $("#ctl00_ContentBody_cbOptions_3").prop('checked', false); // avoid conflicts
+                }
+                if ( settings_pq_option_ignorelist ) {
+                    $("#ctl00_ContentBody_cbOptions_6").prop('checked', true);
+                }
+                if ( settings_pq_option_isenabled ) {
+                    $("#ctl00_ContentBody_cbOptions_13").prop('checked', true);
+                    $("#ctl00_ContentBody_cbOptions_12").prop('checked', false); // avoid conflicts
+                }        
+                if ( settings_pq_option_filename ) {
+                    $("#ctl00_ContentBody_cbIncludePQNameInFileName").prop('checked', true);
+                } 
+                
+                if ( settings_pq_set_difficulty ) {
+                    $("#ctl00_ContentBody_cbDifficulty").prop('checked', true);
+                    $("#ctl00_ContentBody_ddDifficulty").val( settings_pq_difficulty );
+                    $("#ctl00_ContentBody_ddDifficultyScore").val( settings_pq_difficulty_score );
+                }
+                
+                if ( settings_pq_set_terrain ) {
+                    $("#ctl00_ContentBody_cbTerrain").prop('checked', true);
+                    $("#ctl00_ContentBody_ddTerrain").val( settings_pq_terrain );
+                    $("#ctl00_ContentBody_ddTerrainScore").val( settings_pq_terrain_score );
+                }
+
+                if ( settings_pq_automatically_day ) {
+                    var servertime = $("#1").find("legend").find("small").text();
+                    if ( servertime.match(/.*Sunday.*/) ) {
+                        $("#ctl00_ContentBody_cbDays_0").prop('checked', true);
+                    } else if ( servertime.match(/.*Monday.*/) ) {
+                        $("#ctl00_ContentBody_cbDays_1").prop('checked', true);
+                    } else if ( servertime.match(/.*Tuesday.*/) ) {
+                        $("#ctl00_ContentBody_cbDays_2").prop('checked', true);
+                    } else if ( servertime.match(/.*Wednesday.*/) ) {
+                        $("#ctl00_ContentBody_cbDays_3").prop('checked', true);
+                    } else if ( servertime.match(/.*Thursday.*/) ) {
+                        $("#ctl00_ContentBody_cbDays_4").prop('checked', true);
+                    } else if ( servertime.match(/.*Friday.*/) ) {
+                        $("#ctl00_ContentBody_cbDays_5").prop('checked', true);
+                    } else if ( servertime.match(/.*Saturday.*/) ) {
+                        $("#ctl00_ContentBody_cbDays_6").prop('checked', true);
+                    } else {
+                        // do nothing
+                    }   
+                }
+            }
+        } catch (e) {
+            gclh_error("pq warning", e);
+        }        
     }
 
 // Map on create pocketQuery-page
@@ -8644,6 +8728,18 @@ var mainGC = function () {
         document.getElementsByTagName('body')[0].appendChild(css);
     }
 
+    var dt_display = [ ["greater than or equal to",">="], ["equal to","="], ["less than or equal to","<="] ];
+    var dt_score = [ ["1","1"], ["1.5","1.5"], ["2","2"], ["2.5","2.5"], ["3","3"], ["3.5","3.5"], ["4","4"], ["4.5","4.5"], ["5","5"] ]; 
+    function gclh_createSelectOptionCode( id, data, selectedValue ) {
+        var html = "";
+        html += '<select class="gclh_form" id="'+id+'">'; 
+        for ( var i = 0; i < data.length; i++ ){
+            html += "  <option value='" + data[i][1] + "' " + (selectedValue == data[i][1] ? "selected='selected'" : "") + "> " + data[i][0] + "</option>";
+        }
+        html += '</select>';
+        return html;
+    }    
+    
 // Configuration Menu
     function gclh_showConfig() {
         // Alle eventuellen Verarbeitungen schließen ohne Url zu clearen.
@@ -8883,6 +8979,30 @@ var mainGC = function () {
             html += newParameterOn2;
             html += checkboxy('settings_add_link_geohack_on_gc_map', 'Add link to GeoHack on GC Map') + show_help("With this option an icon are placed on the GC Map page to link to the same area in GeoHack.") + "<br/>";
             html += " &nbsp; " + checkboxy('settings_switch_to_geohack_in_same_tab', 'Switch to GeoHack in same browser tab') + show_help("With this option you can switch from GC Map to GeoHack in the same browser tab.<br><br>This option requires \"Add link to GeoHack on GC Map\".") + "<br/>";
+            html += newParameterVersionSetzen(0.5) + newParameterOff;
+            html += "</div>";
+
+            html += newParameterOn2;
+            html += "<h4 class='gclh_headline2'>"+prepareHideable.replace("#name#","pq")+"Pocket Queries</h4>";
+            html += "<div id='gclh_config_pq'>";
+            html += "<div style='margin-top: 9px; margin-left: 5px'><b>New Pocket Query</b></div>";
+            html += checkboxy('settings_pq_set_cachestotal', "Set number of caches to ") + "<input class='gclh_form' size=3 type='text' id='settings_pq_cachestotal' value='" + settings_pq_cachestotal + "'>&nbsp;" + show_help("") + "<br/>";
+            html += checkboxy('settings_pq_option_ihaventfound', "Enable option '<i>I haven't found</i>' by default") + show_help("") + "<br/>";
+            html += checkboxy('settings_pq_option_idontown', "Enable option '<i>I don't own</i>' by default") + show_help("") + "<br/>";
+            html += checkboxy('settings_pq_option_ignorelist', "Enable option '<i>Are not on my ignore list</i>' by default") + show_help("") + "<br/>";
+            html += checkboxy('settings_pq_option_isenabled', "Enable option '<i>Is Enabled</i>' by default") + show_help("") + "<br/>";
+            html += checkboxy('settings_pq_option_filename', "Enable option '<i>Include PQ name in download file name</i>' by default") + show_help("") + "<br/>";
+            html += checkboxy('settings_pq_set_difficulty', "Set difficulity ");
+            html += gclh_createSelectOptionCode( "settings_pq_difficulty", dt_display, settings_pq_difficulty );
+            html += '&nbsp;';            
+            html += gclh_createSelectOptionCode( "settings_pq_difficulty_score", dt_score, settings_pq_difficulty_score );
+            html += " by default" + show_help("") + "<br/>";
+            html += checkboxy('settings_pq_set_terrain', "Set terrain ");
+            html += gclh_createSelectOptionCode( "settings_pq_terrain", dt_display, settings_pq_terrain );
+            html += '&nbsp;';
+            html += gclh_createSelectOptionCode( "settings_pq_terrain_score", dt_score, settings_pq_terrain_score );
+            html += " by default" + show_help("") + "<br/>";
+            html += checkboxy('settings_pq_automatically_day', "Generate PQ today") + show_help("") + "<br/>";
             html += newParameterVersionSetzen(0.5) + newParameterOff;
             html += "</div>";
 
@@ -9308,6 +9428,7 @@ var mainGC = function () {
                 makeConfigAreaHideable("config");
                 makeConfigAreaHideable("nearestlist");
                 makeConfigAreaHideable("maps");
+                makeConfigAreaHideable("pq");
                 makeConfigAreaHideable("profile");
                 makeConfigAreaHideable("listing");
                 makeConfigAreaHideable("logging");
@@ -9823,6 +9944,11 @@ var mainGC = function () {
             setValue("settings_show_latest_logs_symbols_count", document.getElementById('settings_show_latest_logs_symbols_count').value);
             setValue("settings_default_langu", document.getElementById('settings_default_langu').value);
             setValue("settings_log_statistic_reload", document.getElementById('settings_log_statistic_reload').value);
+            setValue("settings_pq_cachestotal", document.getElementById('settings_pq_cachestotal').value);
+            setValue("settings_pq_difficulty", document.getElementById('settings_pq_difficulty').value);
+            setValue("settings_pq_difficulty_score", document.getElementById('settings_pq_difficulty_score').value);
+            setValue("settings_pq_terrain", document.getElementById('settings_pq_terrain').value);
+            setValue("settings_pq_terrain_score", document.getElementById('settings_pq_terrain_score').value);
 //--> $$065 Begin of insert
 //<-- $$065 End of insert
 
@@ -9985,7 +10111,16 @@ var mainGC = function () {
                 'settings_friendlist_summary',
                 'settings_friendlist_summary_viponly',
 // << hm -- Issue #111
-                'settings_search_enable_user_defined'
+                'settings_search_enable_user_defined',
+                'settings_pq_set_cachestotal',
+                'settings_pq_option_ihaventfound',
+                'settings_pq_option_idontown',
+                'settings_pq_option_ignorelist',
+                'settings_pq_option_isenabled',
+                'settings_pq_option_filename',
+                'settings_pq_set_difficulty',
+                'settings_pq_set_terrain',
+                'settings_pq_automatically_day'
             );
             for (var i = 0; i < checkboxes.length; i++) {
                 if ( document.getElementById(checkboxes[i]) ) {
