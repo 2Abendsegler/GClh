@@ -56,7 +56,8 @@ With the second new option "Hide complete log", the complete log is hidden.<br>
 <br></li>
 
 <li>
-New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/199">#199</a>] Default settings for new pocket queries 
+New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/199">#199</a>] Default settings for new pocket queries <br>
+<img src="../images/v0.5_Screen11.png" alt="v0.5_Screen11.png"><br>
 <br></li>
 
 <li>Fix: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/179">#179</a>] Zebra effect in common lists not always available: Wrong parameter promt in special processing for common lists if user color is not set.<br></li>
