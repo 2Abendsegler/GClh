@@ -89,6 +89,7 @@ Eine *Änderungsdokumentation im Programmcode* ist nicht erforderlich. Bei kompl
 ---
 ## Links:  
 
+#### GitHub:  
 * GitHub:  
 https://github.com/2Abendsegler/GClh/tree/master
 * Aktuelle Version des Script GClh installieren (User Installation):  
@@ -112,6 +113,7 @@ https://github.com/2Abendsegler/GClh/blob/master/docu/tips_migration.md#readme
 * Tipps für die Installation auf GitHub anzeigen:  
 https://github.com/2Abendsegler/GClh/blob/master/docu/tips_installation.md#readme  
 <br>
+#### Foren:  
 * Geoclub Forum, Help (Greasemonkey-Scripte):  
 http://geoclub.de/forum/viewforum.php?f=117  
 * Geoclub Forum, neuer Sammelthread für GC little helper II:  
@@ -123,6 +125,7 @@ http://www.swissgeocacheforum.ch/forum/topic/12872-gc-little-helper-ii/
 * Geoclub Forum, alter Sammelthread für GC little helper:  
 http://geoclub.de/forum/viewtopic.php?f=117&t=46168  
 <br>
+#### Sonstiges:  
 * Deutsche Übersetzung der Lizence:  
 http://www.gnu.de/documents/gpl-2.0.de.html
 * Markdown Syntax (deutsch) als PDF:  
