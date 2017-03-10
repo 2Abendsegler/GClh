@@ -1,5 +1,7 @@
 # Architecture and Development GUIDE of GClh
 
+:exclamation: ** DRAFT ** 
+
 ## Startup Sequenze
 Nach dem Laden des Skripts wird die Funktion ```start()``` (Einsprungspunkt) aufgerufen. Der Aufruf der Funktion ```start()``` befindet sich in der letzten Zeile des Skripts. Anschließend werden einige Start- und Initalisierungsfunktionen durchlaufen. Am Schluß wird entschieden, ob Modifikationen für Geocaching.com oder andere Seiten durchgeführt werden sollen.
 
@@ -26,10 +28,10 @@ Die Hauptfunktionen werden am Ende der Initalisierungsroutine aufgerufen:
 Etliche Funktionen auf der obersten Ebene sind Hilfesfunktionen. Die meisten der Funktionen erledigen kleine spezialisierte Aufgaben.
 
 ## Persistenz
-*todo*
+:question:
 
 ## Debugging
-*todo*
+:question:
 
 ## Modificationen mit zeitlicher Verzögerung
-*todo*
+:question:
