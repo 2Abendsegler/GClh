@@ -5,7 +5,7 @@
 ---
 ### v0.4.1:
 Number of installations between 25.02.2017 and 10.03.2017 (14 days) under GClh II version 0.4.1.<br>
-<ul><li>On different addresses, corresponding Andy Hope: Total 831<br></li>
+<ul><li>On different addresses, corresponding Andy Hope: Total 831<br></li> 
 <li>On different addresses, corresponding Flag Counter: Total 690 (loss 141 or 17,97%)<br>
 <img src="../images/v0.4.1_counter_flag.jpg" alt="v0.4.1_counter_flag.jpg"><br></li>
 <li>All, corresponding Andy Hope: Total 976<br></li>
