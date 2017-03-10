@@ -121,9 +121,9 @@ http://geoclub.de/forum/viewforum.php?f=117
 http://geoclub.de/forum/viewtopic.php?f=117&t=79372  
 * Geoclub Forum, alter Sammelthread für GC little helper:  
 http://geoclub.de/forum/viewtopic.php?f=117&t=46168  
-* Groundspeak Forum, Sammelthread für GC little helper II (seit v0.3):  
+* Groundspeak Forum, Sammelthread für GC little helper II (mit v0.3):  
 http://forums.groundspeak.com/GC/index.php?showtopic=343005  
-* Swisscacher Forum, Sammelthread für GC little helper II (seit v0.5):  
+* Swisscacher Forum, Sammelthread für GC little helper II (mit v0.5):  
 http://www.swissgeocacheforum.ch/forum/topic/12872-gc-little-helper-ii/  
 <br>
 
