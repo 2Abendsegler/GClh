@@ -2,12 +2,13 @@
 // @name             GC little helper II
 // @namespace        http://www.amshove.net
 //--> $$000 Begin of change
-// @version          0.4.1
+// @version          0.5
 //<-- $$000 End of change
 // @include          http*://www.geocaching.com/*
 // @include          http*://labs.geocaching.com/*
 // @include          http*://maps.google.tld/*
 // @include          http*://www.google.tld/maps*
+// @include          http*://www.openstreetmap.org*
 // @exclude          /^https?://www\.geocaching\.com/(login|jobs|brandedpromotions|promotions|blog|seek/sendtogps)/
 // @resource jscolor https://raw.githubusercontent.com/2Abendsegler/GClh/master/data/jscolor.js
 // @require          http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js
@@ -99,7 +100,7 @@ var constInit = function (c) {
     c.scriptShortNameSync = "GClh Sync II";
     c.anzCustom = 10;
     c.anzTemplates = 10;
-    c.bookmarks_def = new Array(22, 31, 16, 14, 32, 48, "0", 8, 18, 54, 51, 10, 2, 35, 9, 17, 67);
+    c.bookmarks_def = new Array(22, 31, 16, 14, 32, 33, 48, "0", 8, 18, 54, 51, 55, 47, 10, 2, 35, 9, 17, 67, 23, 68);
     c.defaultConfigLink = "https://www.geocaching.com/my/default.aspx#GClhShowConfig";
     c.defaultSyncLink = "https://www.geocaching.com/my/default.aspx#GClhShowSync";
 
@@ -156,6 +157,36 @@ var constInit = function (c) {
     // Icons intern aufbauen (data base64 ist viel schneller, als das Laden von externen Icons über url.).
     iconsInit();
 
+    c.all_map_layers = new Object();     // gc.com Default-Layers
+    c.all_map_layers = {
+         "Geocaching" : { tileUrl: "https://maptiles{s}.geocaching.com/tile/{z}/{x}/{y}.png?token={accessToken}",  accessToken: '',  subdomains: ['01', '02', '03', '04', '05', '06', '07', '08'],  minZoom: 0,  maxZoom: 18 }
+        ,"OpenStreetMap Default" : { tileUrl: "http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",  attribution: '&copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>' }
+        ,"OpenStreetMap German Style" : { tileUrl: "http://{s}.tile.openstreetmap.de/tiles/osmde/{z}/{x}/{y}.png",  attribution: '&copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>' }
+        ,"OpenStreetMap Black and White" : { tileUrl: "http://{s}.www.toolserver.org/tiles/bw-mapnik/{z}/{x}/{y}.png",  attribution: '&copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>' }
+        ,"Thunderforest OpenCycleMap" : { tileUrl: "http://{s}.tile.opencyclemap.org/cycle/{z}/{x}/{y}.png",  attribution: '&copy; <a href="http://www.opencyclemap.org">OpenCycleMap</a>, <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>' }
+        ,"Thunderforest Transport" : { tileUrl: "http://{s}.tile2.opencyclemap.org/transport/{z}/{x}/{y}.png",  attribution: '&copy; <a href="http://www.opencyclemap.org">OpenCycleMap</a>, <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>' }
+        ,"Thunderforest Landscape" : { tileUrl: "http://{s}.tile3.opencyclemap.org/landscape/{z}/{x}/{y}.png",  attribution: '&copy; <a href="http://www.opencyclemap.org">OpenCycleMap</a>, <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>' }
+        ,"Stamen Toner" : { tileUrl: "http://{s}.tile.stamen.com/toner/{z}/{x}/{y}.png",  attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; ' + "Map data {attribution.OpenStreetMap}",  subdomains: "abcd",  minZoom: 0,  maxZoom: 20 }
+        ,"Stamen Terrain" : { tileUrl: "http://{s}.tile.stamen.com/terrain/{z}/{x}/{y}.png",  attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; ' + "Map data {attribution.OpenStreetMap}",  subdomains: "abcd",  minZoom: 4,  maxZoom: 18 }
+        ,"Stamen Watercolor" : { tileUrl: "http://{s}.tile.stamen.com/watercolor/{z}/{x}/{y}.png",  attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; ' + "Map data {attribution.OpenStreetMap}",  subdomains: "abcd",  minZoom: 3,  maxZoom: 16 }
+        ,"Esri WorldStreetMap" : { tileUrl: "http://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}",  attribution: "Tiles &copy; Esri" }
+        ,"Esri DeLorme" : { tileUrl: "http://server.arcgisonline.com/ArcGIS/rest/services/Specialty/DeLorme_World_Base_Map/MapServer/tile/{z}/{y}/{x}",  attribution: "Tiles &copy; Esri &mdash; Copyright: \u00a92012 DeLorme",  maxZoom: 11 }
+        ,"Esri WorldTopoMap" : { tileUrl: "http://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}",  attribution: "Tiles &copy; Esri &mdash; Esri, DeLorme, NAVTEQ, TomTom, Intermap, iPC, USGS, FAO, NPS, NRCAN, GeoBase, Kadaster NL, Ordnance Survey, Esri Japan, METI, Esri China (Hong Kong), and the GIS User Community" }
+        ,"Esri WorldImagery" : { tileUrl: "http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",  attribution: "Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community" }
+        ,"Esri OceanBasemap" : { tileUrl: "http://services.arcgisonline.com/ArcGIS/rest/services/Ocean_Basemap/MapServer/tile/{z}/{y}/{x}",  attribution: "Tiles &copy; Esri &mdash; Sources: GEBCO, NOAA, CHS, OSU, UNH, CSUMB, National Geographic, DeLorme, NAVTEQ, and Esri",  maxZoom: 11 }
+        ,"Esri NatGeoWorldMap" : { tileUrl: "http://services.arcgisonline.com/ArcGIS/rest/services/NatGeo_World_Map/MapServer/tile/{z}/{y}/{x}",  attribution: "Tiles &copy; Esri &mdash; National Geographic, Esri, DeLorme, NAVTEQ, UNEP-WCMC, USGS, NASA, ESA, METI, NRCAN, GEBCO, NOAA, iPC" }
+        ,"OpenStreetMap Hike and Bike" : { tileUrl: "http://toolserver.org/tiles/hikebike/{z}/{x}/{y}.png",  attribution: 'Map and map data \u00a9 2012 <a href="http://www.openstreetmap.org" target=\'_blank\'>OpenStreetMap</a> and contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>.',  tileSize: 256,  minZoom: 0,  maxZoom: 20 }
+        ,"Google Maps" : { tileUrl: "http://mt.google.com/vt?x={x}&y={y}&z={z}",  attribution: "Google Maps",  tileSize: 256,  minZoom: 0,  maxZoom: 20 }
+        ,"Google Maps Satellite" : { tileUrl: "http://mt.google.com/vt?lyrs=s&x={x}&y={y}&z={z}",  attribution: "Google Maps",  tileSize: 256,  minZoom: 3,  maxZoom: 20 }
+        ,"Google Maps Hybrid" : { tileUrl: "http://mt0.google.com/vt/lyrs=s,m@110&hl=en&x={x}&y={y}&z={z}",  attribution: "Google Maps",  tileSize: 256,  minZoom: 0,  maxZoom: 20 }
+    };
+
+    c.map_overlays = new Object();
+    c.map_overlays = {
+         "Hillshadow" : { tileUrl: "http://{s}.tiles.wmflabs.org/hillshading/{z}/{x}/{y}.png",  attribution: 'hillshadow \u00a9 <a href="http://tiles.wmflabs.org/" target=\'_blank\'>tiles.wmflabs.org</a>',  tileSize: 256,  minZoom: 0,  maxZoom: 17 }
+        ,"Public Transport Lines" : { tileUrl: "http://openptmap.org/tiles/{z}/{x}/{y}.png",  attribution: 'Public Transport Lines\u00a9 <a href="http://openptmap.org/" target=\'_blank\'>OpenPTMap</a>',  tileSize: 256,  minZoom: 0,  maxZoom: 17 }
+    };
+
     constInitDeref.resolve();
     return constInitDeref.promise();
 };
@@ -200,7 +231,7 @@ var variablesInit = function (c) {
     c.settings_bookmarks_top_menu = getValue("settings_bookmarks_top_menu", "true");
     c.settings_bookmarks_search = getValue("settings_bookmarks_search", "true");
     c.settings_bookmarks_search_default = getValue("settings_bookmarks_search_default", "");
-    // Settings: Redirect to Map
+    // Settings: Redirect cache search lists to map display
     c.settings_redirect_to_map = getValue("settings_redirect_to_map", false);
     // Settings: Page-Width
     c.settings_new_width = getValue("settings_new_width", 1000);
@@ -293,6 +324,10 @@ var variablesInit = function (c) {
     c.settings_process_vup = getValue("settings_process_vup", false);
     // Settings: Show VUP icon on friends list
     c.settings_show_vup_friends = getValue("settings_show_vup_friends", false);
+    // Settings: Also Hide name, Avatar and counter
+    c.settings_vup_hide_avatar = getValue("settings_vup_hide_avatar", false);
+    // Settings: hide all links
+    c.settings_vup_hide_log = getValue("settings_vup_hide_log", false);
     // Settings: Save GClh Config on F2
     c.settings_f2_save_gclh_config = getValue("settings_f2_save_gclh_config", true);
     // Settings: Call GClh Config on F4
@@ -343,6 +378,22 @@ var variablesInit = function (c) {
     c.settings_add_link_google_maps_on_gc_map = getValue("settings_add_link_google_maps_on_gc_map", true);
     //Settings: Switch to Google Maps in same browser tab
     c.settings_switch_to_google_maps_in_same_tab = getValue("settings_switch_to_google_maps_in_same_tab", false);
+    //Settings: Add link to GC Map on OSM
+    c.settings_add_link_gc_map_on_osm = getValue("settings_add_link_gc_map_on_osm", true);
+    //Settings: Switch from OSM to GC Map in same browser tab
+    c.settings_switch_from_osm_to_gc_map_in_same_tab = getValue("settings_switch_from_osm_to_gc_map_in_same_tab", false);
+    //Settings: Add link to Openstreetmap on GC Map
+    c.settings_add_link_osm_on_gc_map = getValue("settings_add_link_osm_on_gc_map", true);
+    //Settings: Switch toOpenstreetmap in same browser tab
+    c.settings_switch_to_osm_in_same_tab = getValue("settings_switch_to_osm_in_same_tab", false);
+    //Settings: Add link to Flopps Map on GC Map
+    c.settings_add_link_flopps_on_gc_map = getValue("settings_add_link_flopps_on_gc_map", true);
+    //Settings: Switch to Flopps Map in same browser tab
+    c.settings_switch_to_flopps_in_same_tab = getValue("settings_switch_to_flopps_in_same_tab", false);
+    //Settings: Add link to GeoHack on GC Map
+    c.settings_add_link_geohack_on_gc_map = getValue("settings_add_link_geohack_on_gc_map", true);
+    //Settings: Switch to GeoHack in same browser tab
+    c.settings_switch_to_geohack_in_same_tab = getValue("settings_switch_to_geohack_in_same_tab", false);
     //Settings: Sort default links for the Linklist
     c.settings_sort_default_bookmarks = getValue("settings_sort_default_bookmarks", true);
     //Settings: Make VIP lists in cache listing hideable.
@@ -431,6 +482,7 @@ var variablesInit = function (c) {
     c.settings_show_thumbnails = getValue("settings_show_thumbnails", true);
     c.settings_imgcaption_on_top = getValue("settings_imgcaption_on_top", false);
     c.settings_hide_avatar = getValue("settings_hide_avatar", false);
+    c.settings_link_big_listing = getValue("settings_link_big_listing", true);
     c.settings_show_big_gallery = getValue("settings_show_big_gallery", false);
     c.settings_automatic_friend_reset = getValue("settings_automatic_friend_reset", false);
     c.settings_show_long_vip = getValue("settings_show_long_vip", false);
@@ -504,6 +556,7 @@ var variablesInit = function (c) {
     bookmark("View Geocache Map", "https://www.geocaching.com/map/", c.bookmarks);
     profileSpecialBookmark(scriptShortNameSync, defaultSyncLink, "lnk_gclhsync", c.bookmarks);
     externalBookmark("Forum Geoclub", "http://geoclub.de/forum/index.php", c.bookmarks);
+    externalBookmark("Changelog", "https://github.com/2Abendsegler/GClh/blob/master/docu/changelog.md#readme", c.bookmarks);
     // Settings: Remove GC Menu from Navigation
     c.remove_navi_learn = getValue("remove_navi_learn", false);
     c.remove_navi_play = getValue("remove_navi_play", false);
@@ -593,8 +646,9 @@ var start = function (c) {
         .done(function () {
             if (document.location.href.match(/^(http|https):\/\/maps\.google\./) || document.location.href.match(/^(http|https):\/\/www\.google\.[a-zA-Z.]*\/maps/)) {
                 mainGMaps();
-            }
-            else {
+            } else if (document.location.href.match(/^(http|https):\/\/www\.openstreetmap\.org/ )) {
+                mainOSM();
+            } else {
                 mainGC();
             }
         });
@@ -683,6 +737,48 @@ var mainGMaps = function () {
         }
     } catch (e) {
         gclh_error("mainGMaps", e);
+    }
+};
+
+////////////////////////////////////////////////////////////////////////////
+// Openstreetmap
+////////////////////////////////////////////////////////////////////////////
+// Improve Google Maps page.
+var mainOSM = function () {
+
+    try {
+        // Add link to GC Map on Google Maps page.
+        function addGCButton( wait ) {
+            console.log("addGCButton("+wait+")");
+            if ( document.location.href.match(/^(http|https):\/\/www\.openstreetmap\.org\/(.*)#map=/ ) && $(".control-key").length ) {
+                if ( settings_add_link_gc_map_on_osm  ) {
+                    var code = '<div class="control-gc leaflet-control"><a class="control-button" href="#" data-original-title="Geocaching.com" style="outline: medium none;"><span class="icon" title="Geocaching Map" style="margin: 5px; display: inline-block; vertical-align: middle; height: 32px; width: 32px; background-image: url(\''+global_gc_icon_sw+'\'); background-size: 25px 25px;  background-position: center; background-repeat: no-repeat;"></span></a></div>';
+                    $(".control-share").after(code);
+
+                    $(".control-gc").click( function () {
+                        var matches = document.location.href.match(/=([0-9]+)\/(-?[0-9.]*)\/(-?[0-9.]*)/);
+                        if (matches != null) {
+                            var url = map_url + '?lat=' + matches[2] + '&lng=' + matches[3] + '#?ll=' + matches[2] + ',' + matches[3] + '&z=' + matches[1];
+                            console.log( "settings_switch_from_osm_to_gc_map_in_same_tab: "+ settings_switch_from_osm_to_gc_map_in_same_tab );
+                            if ( settings_switch_from_osm_to_gc_map_in_same_tab ) {
+                                location = url;
+                            } else {
+                                window.open( url );
+                            }
+                        } else {
+                            alert('This map has no geographical coordinates in its link. Just zoom or drag the map, afterwards this will work fine.');
+                        }
+                    });
+                    console.log("addGCButton("+wait+") - found it");
+                }
+            } else {
+                wait++;
+                if ( wait < 50 ) { setTimeout( function() { addGCButton(wait); }, 100 ); }
+            }
+        }
+        addGCButton(0);
+    } catch (e) {
+        gclh_error("mainOSM", e);
     }
 };
 
@@ -2129,7 +2225,7 @@ var mainGC = function () {
     if ( is_page("cache_listing") && settings_show_latest_logs_symbols && settings_load_logs_with_gclh ) {
         try {
             function showLatestLogsSymbols( waitCount ) {
-                var logs = $(('#cache_logs_table', '#cache_logs_table2')).find('tbody tr.log-row');
+                var logs = $(('#cache_logs_table', '#cache_logs_table2')).find('tbody tr.log-row:not(.display_none)');
                 if ( logs.length > 0 ) {
                     var lateLogs = new Array();
                     for (var i = 0; i < logs.length; i++) {
@@ -3512,7 +3608,7 @@ var mainGC = function () {
                  "  text-decoration:underline;" +
                  "}" +
                  "a.myfriends {" +
-                 "  color:#00AA00;" + 
+                 "  color:#00AA00;" +
                  "  text-decoration:none;" +
                  "}";
             GM_addStyle(myf);
@@ -3630,7 +3726,7 @@ var mainGC = function () {
                     else friend.getElementsByTagName("dd")[5].innerHTML = "<a href='/seek/nearest.aspx?u=" + urlencode(name.innerHTML) + "&disable_redirect='>" + hides + "</a>&nbsp;";
                 }
 // >> hm -- Issue #111
-                if (settings_friendlist_summary) {  
+                if (settings_friendlist_summary) {
                     // wenn Reset, dann Differenzen nicht mehr anzeigen...
                     var divFH = document.getElementsByClassName("divFHclass");
                     for (var i = 0; i < divFH.length; i++) {
@@ -3646,7 +3742,7 @@ var mainGC = function () {
             }
 
 // >> hm -- Issue #111
-            if (settings_friendlist_summary) { 
+            if (settings_friendlist_summary) {
                 // "last check" anzeigen
                 var spanT = document.createElement("span");
                 var ld = getValue("friends_founds_last_reset", 0);
@@ -4018,133 +4114,6 @@ var mainGC = function () {
         }
     }
 
-// Map Layers
-    var all_map_layers = new Object();
-    // gc.com Default-Layers
-    all_map_layers["Geocaching"] = {
-        tileUrl: "https://maptiles{s}.geocaching.com/tile/{z}/{x}/{y}.png?token={accessToken}",
-        accessToken: '',
-        subdomains: ['01', '02', '03', '04', '05', '06', '07', '08'],
-        minZoom: 0,
-        maxZoom: 18
-    };
-    all_map_layers["OpenStreetMap Default"] = {
-        tileUrl: "http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-        attribution: '&copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>'
-    };
-    all_map_layers["OpenStreetMap German Style"] = {
-        tileUrl: "http://{s}.tile.openstreetmap.de/tiles/osmde/{z}/{x}/{y}.png",
-        attribution: '&copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>'
-    };
-    all_map_layers["OpenStreetMap Black and White"] = {
-        tileUrl: "http://{s}.www.toolserver.org/tiles/bw-mapnik/{z}/{x}/{y}.png",
-        attribution: '&copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>'
-    };
-    all_map_layers["Thunderforest OpenCycleMap"] = {
-        tileUrl: "http://{s}.tile.opencyclemap.org/cycle/{z}/{x}/{y}.png",
-        attribution: '&copy; <a href="http://www.opencyclemap.org">OpenCycleMap</a>, <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>'
-    };
-    all_map_layers["Thunderforest Transport"] = {
-        tileUrl: "http://{s}.tile2.opencyclemap.org/transport/{z}/{x}/{y}.png",
-        attribution: '&copy; <a href="http://www.opencyclemap.org">OpenCycleMap</a>, <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>'
-    };
-    all_map_layers["Thunderforest Landscape"] = {
-        tileUrl: "http://{s}.tile3.opencyclemap.org/landscape/{z}/{x}/{y}.png",
-        attribution: '&copy; <a href="http://www.opencyclemap.org">OpenCycleMap</a>, <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>'
-    };
-    all_map_layers["Stamen Toner"] = {
-        tileUrl: "http://{s}.tile.stamen.com/toner/{z}/{x}/{y}.png",
-        attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; ' + "Map data {attribution.OpenStreetMap}",
-        subdomains: "abcd",
-        minZoom: 0,
-        maxZoom: 20
-    };
-    all_map_layers["Stamen Terrain"] = {
-        tileUrl: "http://{s}.tile.stamen.com/terrain/{z}/{x}/{y}.png",
-        attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; ' + "Map data {attribution.OpenStreetMap}",
-        subdomains: "abcd",
-        minZoom: 4,
-        maxZoom: 18
-    };
-    all_map_layers["Stamen Watercolor"] = {
-        tileUrl: "http://{s}.tile.stamen.com/watercolor/{z}/{x}/{y}.png",
-        attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; ' + "Map data {attribution.OpenStreetMap}",
-        subdomains: "abcd",
-        minZoom: 3,
-        maxZoom: 16
-    };
-    all_map_layers["Esri WorldStreetMap"] = {
-        tileUrl: "http://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}",
-        attribution: "Tiles &copy; Esri"
-    };
-    all_map_layers["Esri DeLorme"] = {
-        tileUrl: "http://server.arcgisonline.com/ArcGIS/rest/services/Specialty/DeLorme_World_Base_Map/MapServer/tile/{z}/{y}/{x}",
-        attribution: "Tiles &copy; Esri &mdash; Copyright: \u00a92012 DeLorme",
-        maxZoom: 11
-    };
-    all_map_layers["Esri WorldTopoMap"] = {
-        tileUrl: "http://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}",
-        attribution: "Tiles &copy; Esri &mdash; Esri, DeLorme, NAVTEQ, TomTom, Intermap, iPC, USGS, FAO, NPS, NRCAN, GeoBase, Kadaster NL, Ordnance Survey, Esri Japan, METI, Esri China (Hong Kong), and the GIS User Community"
-    };
-    all_map_layers["Esri WorldImagery"] = {
-        tileUrl: "http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
-        attribution: "Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community"
-    };
-    all_map_layers["Esri OceanBasemap"] = {
-        tileUrl: "http://services.arcgisonline.com/ArcGIS/rest/services/Ocean_Basemap/MapServer/tile/{z}/{y}/{x}",
-        attribution: "Tiles &copy; Esri &mdash; Sources: GEBCO, NOAA, CHS, OSU, UNH, CSUMB, National Geographic, DeLorme, NAVTEQ, and Esri",
-        maxZoom: 11
-    };
-    all_map_layers["Esri NatGeoWorldMap"] = {
-        tileUrl: "http://services.arcgisonline.com/ArcGIS/rest/services/NatGeo_World_Map/MapServer/tile/{z}/{y}/{x}",
-        attribution: "Tiles &copy; Esri &mdash; National Geographic, Esri, DeLorme, NAVTEQ, UNEP-WCMC, USGS, NASA, ESA, METI, NRCAN, GEBCO, NOAA, iPC"
-    };
-    // GClh additional Layers
-    all_map_layers["OpenStreetMap Hike and Bike"] = {
-        tileUrl: "http://toolserver.org/tiles/hikebike/{z}/{x}/{y}.png",
-        attribution: 'Map and map data \u00a9 2012 <a href="http://www.openstreetmap.org" target=\'_blank\'>OpenStreetMap</a> and contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>.',
-        tileSize: 256,
-        minZoom: 0,
-        maxZoom: 20
-    };
-    all_map_layers["Google Maps"] = {
-        tileUrl: "http://mt.google.com/vt?x={x}&y={y}&z={z}",
-        attribution: "Google Maps",
-        tileSize: 256,
-        minZoom: 0,
-        maxZoom: 20
-    };
-    all_map_layers["Google Maps Satellite"] = {
-        tileUrl: "http://mt.google.com/vt?lyrs=s&x={x}&y={y}&z={z}",
-        attribution: "Google Maps",
-        tileSize: 256,
-        minZoom: 3,
-        maxZoom: 20
-    };
-    all_map_layers["Google Maps Hybrid"] = {
-        tileUrl: "http://mt0.google.com/vt/lyrs=s,m@110&hl=en&x={x}&y={y}&z={z}",
-        attribution: "Google Maps",
-        tileSize: 256,
-        minZoom: 0,
-        maxZoom: 20
-    };
-    // Map-Overlays
-    var map_overlays = new Object();
-    map_overlays["Hillshadow"] = {
-        tileUrl: "http://{s}.tiles.wmflabs.org/hillshading/{z}/{x}/{y}.png",
-        attribution: 'hillshadow \u00a9 <a href="http://tiles.wmflabs.org/" target=\'_blank\'>tiles.wmflabs.org</a>',
-        tileSize: 256,
-        minZoom: 0,
-        maxZoom: 17
-    };
-    map_overlays["Public Transport Lines"] = {
-        tileUrl: "http://openptmap.org/tiles/{z}/{x}/{y}.png",
-        attribution: 'Public Transport Lines\u00a9 <a href="http://openptmap.org/" target=\'_blank\'>OpenPTMap</a>',
-        tileSize: 256,
-        minZoom: 0,
-        maxZoom: 17
-    };
-
 // Add additional Layers to Map & Select Default-Layer, add Hill-Shadow, add Homezone
     if (document.location.href.match(/^https?:\/\/www\.geocaching\.com\/map\//)) {
         try {
@@ -4318,69 +4287,153 @@ var mainGC = function () {
     }
 
 // Add link to Google Maps on GC Map.
-    if ( is_page("map") && settings_add_link_google_maps_on_gc_map ) {
+    if ( is_page("map") && ( settings_add_link_google_maps_on_gc_map || settings_add_link_osm_on_gc_map || settings_add_link_flopps_on_gc_map || settings_add_link_geohack_on_gc_map ) ) {
         try {
-            function addGoogleButton( waitCount ) {
+            function getMapCooords() {
+                // Mögliche URL Zusammensetzungen, Beispiele:
+                // 1. https://www.geocaching.com/map/default.aspx?lat=50.889233&lng=13.386967#?ll=50.89091,13.39551&z=14
+                //    https://www.geocaching.com/map/default.aspx?lat=50.889233&lng=13.386967#clist?ll=50.89172,13.36779&z=14
+                //    https://www.geocaching.com/map/default.aspx?lat=50.889233&lng=13.386967#pq?ll=50.89204,13.36667&z=14
+                //    https://www.geocaching.com/map/default.aspx?lat=50.889233&lng=13.386967#search?ll=50.89426,13.35955&z=14
+                // 2. https://www.geocaching.com/map/?ll=50.89093,13.38437#?ll=50.89524,13.35912&z=14
+                // 3. https://www.geocaching.com/map/#?ll=50.95397,6.9713&z=15
+
+                var matches = document.location.href.match(/\\?ll=(-?[0-9.]*),(-?[0-9.]*)&z=([0-9.]*)/); // Beispiel 1., 2. und 3. hinten
+                var matchesMarker = document.location.href.match(/\\?lat=(-?[0-9.]*)&lng=(-?[0-9.]*)/);  // Beispiel 1. vorne
+                if (matchesMarker == null) {
+                    var matchesMarker = document.location.href.match(/\\?ll=(-?[0-9.]*),(-?[0-9.]*)#/);  // Beispiel 2. vorne
+                    if (matchesMarker == null) {
+                        var matchesMarker = matches;                                                     // Beispiel 3.
+                    }
+                }
+                var coords = null;
+                if ( matches != null && matchesMarker != null ) {
+                    coords = new Object();
+                    coords.zoom = matches[3];
+                    coords.lat = matches[1];
+                    coords.lon = matches[2];
+                    coords.markerLat = matchesMarker[1];
+                    coords.markerLon = matchesMarker[2];
+
+                    var latd = coords.lat;
+                    var lond = coords.lon;
+                    sign = latd > 0 ? 1 : -1 ;
+                    coords.latOrient = latd > 0 ? 'N' : 'S' ;
+                    latd *= sign ;
+                    coords.latDeg = Math.floor ( latd ) ;
+                    coords.latMin = Math.floor ( ( latd - coords.latDeg ) * 60 ) ;
+                    coords.latSec = Math.floor ( ( latd - coords.latDeg - coords.latMin / 60 ) * 3600 ) ;
+                    sign = lond > 0 ? 1 : -1 ;
+                    coords.lonOrient = lond > 0 ? 'E' : 'W' ;
+                    lond *= sign ;
+                    coords.lonDeg = Math.floor ( lond ) ;
+                    coords.lonMin = Math.floor ( ( lond - coords.lonDeg ) * 60 ) ;
+                    coords.lonSec = Math.floor ( ( lond - coords.lonDeg - coords.lonMin / 60 ) * 3600 ) ;
+                }
+                return coords;
+            }
+
+            var urlGoogleMaps = 'https://maps.google.de/maps?q={markerLat},{markerLon}&z={zoom}&ll={lat},{lon}';
+            var urlOSM = 'https://www.openstreetmap.org/?#map={zoom}/{lat}/{lon}';
+            var urlFlopps = 'http://flopp.net/?c={lat}:{lon}&z={zoom}&t=OSM&f=n&m=&d=';
+            var urlGeoHack = "https://tools.wmflabs.org/geohack/geohack.php?pagename=Geocaching&params={latDeg}_{latMin}_{latSec}_{latOrient}_{lonDeg}_{lonMin}_{lonSec}_{lonOrient}";
+
+            function replaceData( str, coords ) {
+                re = new RegExp( "\{[a-zA-Z]+\}", "g");
+                var replacements = str.match(re);
+                if ( replacements != null ) {
+                    for ( var i=0; i<replacements.length; i++ ) {
+                        var replacement = replacements[i];
+                        var name = replacement.substring(1,replacement.length-1);
+                        if ( name in coords ) {
+                            str = str.replace( replacement, coords[name] );
+                        }
+                    }
+                }
+                return str;
+            }
+
+            function callGeoService( url, in_same_tab ) {
+                var coords = getMapCooords();
+                if ( coords != null ) {
+                    url = replaceData( url, coords );
+                    if ( in_same_tab ) {
+                      location = url;
+                    } else {
+                      window.open( url );
+                    }
+                } else {
+                    alert('This map has no geographical coordinates in its link. Just zoom or drag the map, afterwards this will work fine.');
+                }
+            }
+
+            function initGeoServiceControl( ) {
+                var div = document.createElement("div");
+                div.setAttribute("id", "gclh_geoservices_control");
+                div.setAttribute("class", "leaflet-control-layers leaflet-control");
+                var aTag = document.createElement("a");
+                aTag.setAttribute("id", "gclh_google_button");
+                aTag.setAttribute("class", "leaflet-control-layers-toggle");
+                aTag.setAttribute("title", "Show area on Google Maps");
+                aTag.setAttribute("style", "background-image: url('/images/silk/map_go.png');");
+                var side = document.getElementsByClassName("leaflet-top leaflet-right")[0];
+
+//$$FE002         div.appendChild(script);
+                div.appendChild(aTag);
+                side.appendChild(div);
+
+
+                $("#gclh_geoservices_control").append('<div id="gclh_geoservices_list" class="leaflet-control-layers-base" style="display: none;"></div>');
+                $("#gclh_geoservices_list").append('<b style="padding:5px; font-size:120%; color: #000000;">Go to ...</b>');
+                if ( settings_add_link_google_maps_on_gc_map ) {
+                    $("#gclh_geoservices_list").append('<a id="gclh_geoservice_googlemaps" style="padding: 5px; cursor: pointer; color: #000;" >Google Maps</a>');
+                }
+                if ( settings_add_link_osm_on_gc_map ) {
+                    $("#gclh_geoservices_list").append('<a id="gclh_geoservice_osm" style="padding: 5px; cursor: pointer; color: #000;">Openstreepmap</a>');
+                }
+                if ( settings_add_link_flopps_on_gc_map ) {
+                    $("#gclh_geoservices_list").append('<a id="gclh_geoservice_flopps" style="padding: 5px; cursor: pointer; color: #000;">Flopp\'s Map</a>');
+                }
+                if ( settings_add_link_geohack_on_gc_map ) {
+                    $("#gclh_geoservices_list").append('<a id="gclh_geoservice_geohack" style="padding: 5px; cursor: pointer; color: #000;">GeoHack</a>');
+                }
+
+                $("#gclh_geoservice_googlemaps").click( function() { callGeoService( urlGoogleMaps, settings_switch_to_google_maps_in_same_tab ); }  );
+                $("#gclh_geoservice_osm").click( function() { callGeoService( urlOSM, settings_switch_to_osm_in_same_tab ); } );
+                $("#gclh_geoservice_flopps").click( function() { callGeoService( urlFlopps, settings_switch_to_flopps_in_same_tab ); } );
+                $("#gclh_geoservice_geohack").click( function() { callGeoService( urlGeoHack, settings_switch_to_geohack_in_same_tab ); } );
+
+                $("#gclh_geoservices_control").hover(
+                    function() {
+                        $("#gclh_geoservices_control").addClass("leaflet-control-layers-expanded");
+                        $("#gclh_google_button").hide();
+                        $("#gclh_geoservices_list").show();
+                    },
+                    function() {
+                        $("#gclh_geoservices_control").removeClass("leaflet-control-layers-expanded");
+                        $("#gclh_geoservices_list").hide();
+                        $("#gclh_google_button").show();
+                    }
+                );
+
+                // Damit auch mehr als 2 Buttons handlebar sind, also auch beispielsweise noch GC Vote.
+                appendCssStyle(".leaflet-control-layers + .leaflet-control {position: unset; right: unset;} .leaflet-control {clear: unset}");
+            }
+
+            function attachGeoServiceControl( waitCount ) {
                 // Prüfen, ob die Layers schon vorhanden sind, erst dann den Button hinzufügen.
                 if ( $('.leaflet-control-layers-base').find('input.leaflet-control-layers-selector')[0] ) {
                     // Damit Button nicht ständig den Platz wechselt, um 1 Sekunde verzögern, dann sollte er links von den anderen Buttons stehen.
-                    setTimeout( function () {
-                        var code = "";
-                        code += "    function openGoogleMaps(){";
-                        // Mögliche URL Zusammensetzungen, Beispiele:
-                        // 1. https://www.geocaching.com/map/default.aspx?lat=50.889233&lng=13.386967#?ll=50.89091,13.39551&z=14
-                        //    https://www.geocaching.com/map/default.aspx?lat=50.889233&lng=13.386967#clist?ll=50.89172,13.36779&z=14
-                        //    https://www.geocaching.com/map/default.aspx?lat=50.889233&lng=13.386967#pq?ll=50.89204,13.36667&z=14
-                        //    https://www.geocaching.com/map/default.aspx?lat=50.889233&lng=13.386967#search?ll=50.89426,13.35955&z=14
-                        // 2. https://www.geocaching.com/map/?ll=50.89093,13.38437#?ll=50.89524,13.35912&z=14
-                        // 3. https://www.geocaching.com/map/#?ll=50.95397,6.9713&z=15
-                        code += "        var matches = document.location.href.match(/\\?ll=(-?[0-9.]*),(-?[0-9.]*)&z=([0-9.]*)/);"; // Beispiel 1., 2. und 3. hinten
-                        code += "        var matchesMarker = document.location.href.match(/\\?lat=(-?[0-9.]*)&lng=(-?[0-9.]*)/);";  // Beispiel 1. vorne
-                        code += "        if (matchesMarker == null) {";
-                        code += "            var matchesMarker = document.location.href.match(/\\?ll=(-?[0-9.]*),(-?[0-9.]*)#/);";  // Beispiel 2. vorne
-                        code += "            if (matchesMarker == null) {";
-                        code += "                var matchesMarker = matches;";                                                     // Beispiel 3.
-                        code += "            }";
-                        code += "        }";
-                        code += "        if (matches != null && matchesMarker != null) {";
-                        code += "            var url = 'https://maps.google.de/maps?q=' + matchesMarker[1] + ',' + matchesMarker[2] + '&z=' + matches[3] + '&ll=' + matches[1] + ',' + matches[2];";
-                        if ( settings_switch_to_google_maps_in_same_tab ) {
-                            code += "        location = url;";
-                        } else {
-                            code += "        window.open( url );";
-                        }
-                        code += "        } else {";
-                        code += "            alert('This map has no geographical coordinates in its link. Just zoom or drag the map, afterwards this will work fine.');";
-                        code += "        }";
-                        code += "    }";
-                        var script = document.createElement("script");
-                        script.innerHTML = code;
-
-                        var div = document.createElement("div");
-                        div.setAttribute("class", "leaflet-control-layers leaflet-control");
-                        var aTag = document.createElement("a");
-                        aTag.setAttribute("id", "gclh_google_button");
-                        aTag.setAttribute("class", "leaflet-control-layers-toggle");
-                        aTag.setAttribute("onClick", "openGoogleMaps();");
-                        aTag.setAttribute("title", "Show area on Google Maps");
-                        aTag.setAttribute("style", "background-image: url('/images/silk/map_go.png'); cursor: pointer;");
-                        var side = document.getElementsByClassName("leaflet-top leaflet-right")[0];
-
-                        div.appendChild(script);
-                        div.appendChild(aTag);
-                        side.appendChild(div);
-
-                        // Damit auch mehr als 2 Buttons handlebar sind, also auch beispielsweise noch GC Vote.
-                        appendCssStyle(".leaflet-control-layers + .leaflet-control {position: unset; right: unset;} .leaflet-control {clear: unset}");
-                    }, 1000);
+                    setTimeout( initGeoServiceControl, 1000);
                 } else {
                     waitCount++;
                     if ( waitCount <= 50 ) {  // 10 Sekunden lang
-                        setTimeout( function () { addGoogleButton( waitCount ); }, 200);
+                        setTimeout( function () { attachGeoServiceControl( waitCount ); }, 200);
                     } else return;
                 }
             }
-            addGoogleButton( 0 );
+            attachGeoServiceControl( 0 );
+
         } catch (e) {
             gclh_error("add link google maps on gc map", e);
         }
@@ -5750,6 +5803,16 @@ var mainGC = function () {
         }
     }
 
+// Link to bigger pictures for owner added images
+   if (settings_link_big_listing && is_page("cache_listing")) {
+      var a = document.getElementsByTagName("a");
+      for(var i = 0; i < a.length; i++) {
+         if ((a[i].href.search('img.geocaching.com') > 0) && (a[i].href.search('/large/') > 0)) {
+            a[i].href = a[i].href.replace('/large/', '/');
+         }
+      }
+   }
+
 // Show thumbnails
     if (settings_show_thumbnails && (is_page("cache_listing") || document.location.href.match(/^https?:\/\/www\.geocaching\.com\/(seek\/gallery\.aspx?|track\/details\.aspx?|track\/gallery\.aspx?|profile\/)/))) {
         try {
@@ -5878,7 +5941,7 @@ var mainGC = function () {
                     if ( settings_spoiler_strings != "" && links[i].innerHTML.match(regexp) ) {  // Spoiler String
                         var div = document.createElement("div");
                         div.innerHTML = "Spoiler warning";
-                        div.setAttribute("style", "transform: rotate(-30grad); width: 130px; z-index: 1000; position: relative; top: -90px; left: -5px; font-size: 15px;");
+                        div.setAttribute("style", "transform: rotate(-30grad); width: 130px; position: relative; top: -90px; left: -5px; font-size: 15px;");
                         links[i].childNodes[0].src = "https://raw.githubusercontent.com/2Abendsegler/GClh/master/images/gclh_logo.png";
                         links[i].childNodes[0].style.opacity = "0.05";
                         links[i].childNodes[3].remove();
@@ -5911,7 +5974,7 @@ var mainGC = function () {
                         if ( settings_spoiler_strings != "" && links[i].dataset.title && links[i].dataset.title.match(regexp) ) {  // Spoiler String
                             var div = document.createElement("div");
                             div.innerHTML = "Spoiler warning";
-                            div.setAttribute("style", "transform: rotate(-30grad); width: 130px; z-index: 1000; position: relative; top: -110px; left: -5px; font-size: 15px;");
+                            div.setAttribute("style", "transform: rotate(-30grad); width: 130px; position: relative; top: -110px; left: -5px; font-size: 15px;");
                             links[i].childNodes[1].src = "https://raw.githubusercontent.com/2Abendsegler/GClh/master/images/gclh_logo.png";
                             links[i].childNodes[1].style.opacity = "0.05";
                             links[i].childNodes[1].style.height = "100px";
@@ -6042,20 +6105,33 @@ var mainGC = function () {
             global_MailTemplate = global_MailTemplate.replace(/__Receiver__/ig, "${UserName}");
 
             var vupUserString = 'if UserName == "#" ';
+            var vupHideAvatarString  = 'if (UserName != "#" ';
+            var vupHideCompleteLog = vupUserString;
             if (settings_process_vup && global_vups && global_vups.length > 0) {
                 for (var i = 0; i < global_vups.length; i++) {
                     vupUserString += '|| UserName == "' + global_vups[i] + '"';
+                    if (settings_vup_hide_avatar) vupHideAvatarString += '&& UserName !== "' + global_vups[i] + '"';
                 }
+                if (settings_vup_hide_avatar && settings_vup_hide_log) vupHideCompleteLog = vupUserString;
             }
+            vupHideAvatarString  += ')';
 
             var new_tmpl = "";
             new_tmpl +=
+                '    {{' + vupHideCompleteLog  + '}}' +
+                '    <tr class="log-row display_none" data-encoded="${IsEncoded}" style="display:none" >' +
+                '    {{else}}' +
                 '    <tr class="log-row" data-encoded="${IsEncoded}" >' +
+                '    {{/if}}' +
                 '        <td>' +
                 '            <div class="FloatLeft LogDisplayLeft" >' +
                 '                <p class="logOwnerProfileName">' +
                 '                    <strong>' +
+                '                    {{' + vupHideAvatarString  + '}}' +
                 '                        <a id="${LogID}" name="${LogID}" href="/profile/?guid=${AccountGuid}">${UserName}</a>' +
+                '                    {{else}}' +
+                '                        <a id="${LogID}" name="${LogID}" href="/profile/?guid=${AccountGuid}">V.U.P.</a>' +
+                '                    {{/if}}' +
                 '                    </strong>' +
                 '                </p>' +
                 '                <p class="logIcons">' +
@@ -6084,7 +6160,7 @@ var mainGC = function () {
                 '                <p class="logOwnerAvatar">' +
                 '                    <a href="/profile/?guid=${AccountGuid}">';
             if (!settings_hide_avatar) new_tmpl +=
-                '                        {{if AvatarImage}}' +
+                '                        {{' + vupHideAvatarString  + ' && AvatarImage}}' +
                 '                        <img width="48" height="48" src="' + http + '://img.geocaching.com/user/avatar/${AvatarImage}">' +
                 '                        {{else}}' +
                 '                        <img width="48" height="48" src="/images/default_avatar.jpg">' +
@@ -6092,7 +6168,7 @@ var mainGC = function () {
             new_tmpl +=
                 '                </a></p>' +
                 '                <p class="logOwnerStats">' +
-                '                    {{if GeocacheFindCount > 0 }}' +
+                '                    {{' + vupHideAvatarString  + ' && (GeocacheFindCount > 0) }}' +
                 '                    <img title="Caches Found" src="/images/icons/icon_smile.png"> ${GeocacheFindCount}' +
                 '                    {{/if}}' +
                 '                </p>' +
@@ -6675,7 +6751,7 @@ var mainGC = function () {
     function setLinesColorInCacheListing() {
         if ( is_page("cache_listing") ) {
             // ('find("tr")' reicht hier nicht wegen der Bilder.)
-            var lines = $( document.getElementById("cache_logs_table2") || document.getElementById("cache_logs_table") ).find("tbody").find("tr.log-row:not(.gclh_colored)");
+            var lines = $( document.getElementById("cache_logs_table2") || document.getElementById("cache_logs_table") ).find("tbody").find("tr.log-row:not(.gclh_colored,.display_none)");
             lines.addClass("gclh_colored");
             var owner = get_real_owner();
             setLinesColorInZebra( settings_show_cache_listings_in_zebra, lines, 1 );
@@ -6842,15 +6918,11 @@ var mainGC = function () {
 // Improve cache matrix on statistics page and profile page and handle cache search links in list or map.
     try {
         // Soll eigene Statistik gepimpt werden.
-        if ( ( settings_count_own_matrix || settings_count_own_matrix_show_next ) &&
-             ( document.location.href.match(/^https?:\/\/www\.geocaching\.com\/my\/statistics\.aspx/)         ||
-               document.location.href.match(/^https?:\/\/www\.geocaching\.com\/profile\/($|#$|default)/)      ||
-               ( document.location.href.match(/^https?:\/\/www\.geocaching\.com\/profile\/(\?guid=|\?u=)/) &&
-                 document.getElementById('ctl00_ContentBody_lblUserProfile').innerHTML.match(": " + $('.li-user-info').children().first().text()) ) ) ) {
+        if ( ( settings_count_own_matrix || settings_count_own_matrix_show_next ) && isOwnStatisticsPage() ) {
             var own = true;
         // Soll fremde Statistik gepimpt werden.
         } else if ( settings_count_foreign_matrix &&
-                    document.location.href.match(/^https?:\/\/www\.geocaching\.com\/profile\/(\?guid=|\?u=)/) &&
+                    document.location.href.match(/^https?:\/\/www\.geocaching\.com\/profile\/(.*)(\?guid=|\?u=)/) &&
                     !document.getElementById('ctl00_ContentBody_lblUserProfile').innerHTML.match(": " + $('.li-user-info').children().first().text()) ) {
             var own = false;
         } else var own = "";
@@ -6944,17 +7016,7 @@ var mainGC = function () {
     }
 
 // Improve own statistics page and own profile page with own log statistic.
-    if ( settings_log_statistic &&
-         ( ( document.location.href.match(/^https?:\/\/www\.geocaching\.com\/my\/statistics\.aspx/)            ) ||
-           ( document.getElementById("ctl00_ContentBody_ProfilePanel1_lnkStatistics") &&
-             document.getElementById("ctl00_ContentBody_ProfilePanel1_lnkStatistics").className == "Active" &&
-             document.location.href.match(/^https?:\/\/www\.geocaching\.com\/profile\/($|#$|default)/)         ) ||
-           ( document.getElementById("ctl00_ContentBody_ProfilePanel1_lnkStatistics") &&
-             document.getElementById("ctl00_ContentBody_ProfilePanel1_lnkStatistics").className == "Active" &&
-             document.location.href.match(/^https?:\/\/www\.geocaching\.com\/profile\/(\?guid=|\?u=)/) &&
-             document.getElementById('ctl00_ContentBody_lblUserProfile').innerHTML.match(": " + $('.li-user-info').children().first().text()) )
-         )
-       ) {
+    if ( settings_log_statistic && isOwnStatisticsPage() ) {
         try {
             getLogStatistic( "cache", "https://www.geocaching.com/my/logs.aspx?s=1" );
             getLogStatistic( "track", "https://www.geocaching.com/my/logs.aspx?s=2" );
@@ -7817,12 +7879,12 @@ var mainGC = function () {
 // Info kann auch ohne Hervorhebung verwendet werden, muß dann aber in jeder Zeile hinterlegt werden.
 // Aufbau idealerweise in eigenen Zeilen, damit man irgendwann man schnell Zeilen rausschmeißen kann, wenn die Infos alt sind:
 //--> $$000 Begin of change                                                 | Hier.
-    newParameterOn1 = "<div  style='background-color: rgba(240, 223, 198, 1.0); width: 100%; height: 100%; padding: 2px 0px 2px 2px; margin-left: -2px;'>";
-    newParameterOn2 = "<div  style='background-color: rgba(240, 223, 198, 0.3); width: 100%; height: 100%; padding: 2px 0px 2px 2px; margin-left: -2px;'>";
-    newParameterOn3 = "<div  style='background-color: rgba(240, 223, 198, 0.6); width: 100%; height: 100%; padding: 2px 0px 2px 2px; margin-left: -2px;'>";
-    newParameterLL1 = '<span style="background-color: rgba(240, 223, 198, 1.0); float: right; padding-top: 25px; width: 100%; margin: -22px 2px 0px 0px;"></span>';
-    newParameterLL2 = '<span style="background-color: rgba(240, 223, 198, 0.3); float: right; padding-top: 25px; width: 100%; margin: -22px 2px 0px 0px;"></span>';
-    newParameterLL3 = '<span style="background-color: rgba(240, 223, 198, 0.6); float: right; padding-top: 25px; width: 100%; margin: -22px 2px 0px 0px;"></span>';
+    newParameterOn1 = "<div  style='background-color: rgba(240, 223, 198, 0.6); width: 100%; height: 100%; padding: 2px 0px 2px 2px; margin-left: -2px;'>";
+    newParameterOn2 = "<div  style='background-color: rgba(240, 223, 198, 1.0); width: 100%; height: 100%; padding: 2px 0px 2px 2px; margin-left: -2px;'>";
+    newParameterOn3 = "<div  style='background-color: rgba(240, 223, 198, 0.3); width: 100%; height: 100%; padding: 2px 0px 2px 2px; margin-left: -2px;'>";
+    newParameterLL1 = '<span style="background-color: rgba(240, 223, 198, 0.6); float: right; padding-top: 25px; width: 100%; margin: -22px 2px 0px 0px;"></span>';
+    newParameterLL2 = '<span style="background-color: rgba(240, 223, 198, 1.0); float: right; padding-top: 25px; width: 100%; margin: -22px 2px 0px 0px;"></span>';
+    newParameterLL3 = '<span style="background-color: rgba(240, 223, 198, 0.3); float: right; padding-top: 25px; width: 100%; margin: -22px 2px 0px 0px;"></span>';
 //<-- $$000 End of change
     function newParameterVersionSetzen(version) {
         var newParameterVers = "<span style='font-size: 70%; font-style: italic; float: right; margin-top: -14px; margin-right: 4px;' ";
@@ -7921,7 +7983,7 @@ var mainGC = function () {
         div.id = "gclh_simu";
         div.setAttribute("style", "margin-top: -50px;");
 //--> $$000 Begin of change
-        var code = '<img src="https://c.andyhoppe.com/1485103563" style="border: none; visibility: hidden; width: 2px; height: 2px;" alt="">' + '<img src="https://c.andyhoppe.com/1485234890" style="border: none; visibility: hidden; width: 2px; height: 2px;" alt="">' + '<img src="https://s09.flagcounter.com/count2/Mf9D/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/" style="border: none; visibility: hidden; width: 2px; height: 2px;" alt="">';
+        var code = '<img src="https://c.andyhoppe.com/1485103563" style="border: none; visibility: hidden; width: 2px; height: 2px;" alt="">' + '<img src="https://c.andyhoppe.com/1485234890" style="border: none; visibility: hidden; width: 2px; height: 2px;" alt="">' + '<img src="https://s07.flagcounter.com/countxl/mHeY/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/" style="border: none; visibility: hidden; width: 2px; height: 2px;" alt="">' + '<img src="https://www.easycounter.com/counter.php?fuppertv05" style="border: none; visibility: hidden; width: 2px; height: 2px;" alt="">';
 //<-- $$000 End of change
         div.innerHTML = code;
         side.appendChild(div);
@@ -8018,7 +8080,8 @@ var mainGC = function () {
         var a = document.createElement("a");
         a.appendChild(document.createTextNode("Show log counter"));
         a.setAttribute("href", "javascript:void(0);");
-        a.setAttribute("title", "(Only possible if all logs are shown)");
+//$$FE001 a.setAttribute("title", "(Only possible if all logs are shown)");
+        a.setAttribute("title", "Show log counter for log type and total"); //$$FE001
         a.setAttribute("id", "gclh_show_log_counter");
         a.setAttribute("style", "float: right");
         a.addEventListener("click", showLogCounter, false);
@@ -8040,7 +8103,7 @@ var mainGC = function () {
             }
             if (logCounter["all"] != 0) {
                 var logs = $('#cache_logs_table2').find('tbody tr td').find('.LogType');
-                if (logCounter["all"] == logs.length) {
+//$$FE001         if (logCounter["all"] == logs.length) {
                     for (var i = 0; i < logs.length; i++) {
                         var log = logs[i];
                         if (log && log.children[1] && log.children[0].children[0].title && logCounter[log.children[0].children[0].title]) {
@@ -8050,11 +8113,26 @@ var mainGC = function () {
                             logCounter["all"]--;
                         }
                     }
-                }
+//$$FE001         }
             }
         } catch (e) {
             gclh_error("showLogCounter", e);
         }
+    }
+
+// Prüfen, ob die Seite die eigene Statistik ist.
+    function isOwnStatisticsPage(){
+        if ( ( document.location.href.match(/^https?:\/\/www\.geocaching\.com\/my\/statistics\.aspx/)            ) ||
+             ( document.getElementById("ctl00_ContentBody_ProfilePanel1_lnkStatistics") &&
+               document.getElementById("ctl00_ContentBody_ProfilePanel1_lnkStatistics").className == "Active" &&
+               document.location.href.match(/^https?:\/\/www\.geocaching\.com\/profile/) &&
+               !document.location.href.match(/(\?guid=|\?u=)/)                                                   ) ||
+             ( document.getElementById("ctl00_ContentBody_ProfilePanel1_lnkStatistics") &&
+               document.getElementById("ctl00_ContentBody_ProfilePanel1_lnkStatistics").className == "Active" &&
+               document.location.href.match(/^https?:\/\/www\.geocaching\.com\/profile\/(.*)(\?guid=|\?u=)/) &&
+               document.getElementById('ctl00_ContentBody_lblUserProfile').innerHTML.match(": " + $('.li-user-info').children().first().text()) ) ) {
+            return true;
+        } else return false;
     }
 
 ////////////////////////////////////////////////////////////////////////////
@@ -8083,12 +8161,12 @@ var mainGC = function () {
         html += "   background-color: #00b265;";
         html += "   border: 2px solid #00b265;";
         html += "}";
-        html += ""
-        html += ".btn-iconsvg svg {"
-        html += "    width: 22px;"
-        html += "    height: 22px;"
-        html += "    margin-right: 3px;"
-        html += "}       "
+        html += "";
+        html += ".btn-iconsvg svg {";
+        html += "    width: 22px;";
+        html += "    height: 22px;";
+        html += "    margin-right: 3px;";
+        html += "}       ";
         css.innerHTML = html;
         document.getElementsByTagName('body')[0].appendChild(css);
     }
@@ -8183,7 +8261,7 @@ var mainGC = function () {
             $( "#ctxMenu" ).html(html);
 
             $('#btn-save').click( function() {
-                console.log("save search")
+                console.log("save search");
                 var name = $("#nameSearch").val();
                 if ( name == "" ) {
                     alert("Insert name!");
@@ -8222,7 +8300,7 @@ var mainGC = function () {
         var html = "";
         console.log(settings_search_data);
         if ( settings_search_data.length ) {
-            settings_search_data.sort(function(a, b){return a.name.toUpperCase()>b.name.toUpperCase()});
+            settings_search_data.sort(function(a, b){ return a.name.toUpperCase()>b.name.toUpperCase(); });
         }
 
         for (var i = 0; i < settings_search_data.length; i++) {
@@ -8257,7 +8335,7 @@ var mainGC = function () {
             $('#btn-update').data('id', id );
 
             var update = (document.location.href.indexOf("?")>=0?true:false);
-            if ( update ) { 
+            if ( update ) {
                 $('#div-btn-update').show();
             } else {
                 $('#div-btn-update').hide();
@@ -8308,7 +8386,7 @@ var mainGC = function () {
                     currentFilter = "Current Filter Set: "+settings_search_data[i].name;
                 }
             }
-            $(".button-group-dynamic").append('<span>'+currentFilter+'</span>')
+            $(".button-group-dynamic").append('<span>'+currentFilter+'</span>');
 
             // helper function to close the dialog div if a mouse click outside
             $(document).mouseup(function (e) {
@@ -8631,14 +8709,12 @@ var mainGC = function () {
             html += "<h4 class='gclh_headline2'>"+prepareHideable.replace("#name#","global")+"Global</h4>";
             html += "<div id='gclh_config_global'>";
             html += "&nbsp;" + "Home-Coords: <input class='gclh_form' type='text' size='21' id='settings_home_lat_lng' value='" + DectoDeg(getValue("home_lat"), getValue("home_lng")) + "'>" + show_help("The Home-Coords are filled automatically if you update your Home-Coords on gc.com. If it doesn\'t work you can insert them here. These coords are used for some special links (nearest list, nearest map, ..) and for the homezone circle on the map.") + "<br>";
-            html += newParameterOn2;
             html += checkboxy('settings_set_default_langu', 'Set default language ');
             html += "<select class='gclh_form' id='settings_default_langu'>";
             for ( var i = 0; i < langus.length; i++ ){
                 html += "  <option value='" + langus[i] + "' " + (settings_default_langu == langus[i] ? "selected='selected'" : "") + "> " + langus[i] + "</option>";
             }
             html += "</select>" + show_help("Here you can change the default language to set on gc pages, in the case, apps changed the language.<br><br>The gc pages map, labs and message-center have no possibility to change a language. On these pages nothing will done.<br><br>For the future is planned to make the GClh multilingual. Until that is realized, the GClh is only in english.") + "<br>";
-            html += newParameterVersionSetzen(0.2) + newParameterOff;
             html += checkboxy('settings_change_header_layout', "Change header layout") + show_help("Change the header layout to save some vertical space.") + "<br/>";
             html += " &nbsp; " + checkboxy('settings_show_smaller_gc_link', 'Show smaller geocaching link top left') + show_help("With this option you can choose a smaller display of the geocaching link top left of every page. <br><br>This option requires \"Change header layout\".") + "<br/>";
             html += newParameterOn1;
@@ -8708,15 +8784,13 @@ var mainGC = function () {
             html += checkboxy('settings_sync_autoImport', 'Auto apply DB Sync') + show_help("If you enable this option, settings from dropbox will be applied automatically about GClh Sync every 10 hours.") + "<br/>";
             html += checkboxy('settings_show_save_message', 'Show info message if GClh data are saved') + show_help("With this option an info message is displayed if the GClh Config data are saved respectively if the GClh Sync data are imported.") + "<br/>";
             html += checkboxy('settings_sort_default_bookmarks', 'Sort default links for the Linklist') + show_help("With this option you can sort the default links for the Linklist by description. Your selection, sort or not, will done first by the next new start of the GClh Config. You can configure these default links to use in your Linklist at the end of this configuration page.") + "<br/>";
-            html += newParameterOn2;
             html += checkboxy('settings_hide_colored_versions', 'Hide colored illustration of versions') + show_help("With this option the colored illustration of the versions and the version numbers in GClh Config are selectable. A change at this option evolute its effect only after a save.") + "<br/>";
             html += checkboxy('settings_make_config_main_areas_hideable', 'Make main areas in GClh Config hideable') + show_help("With this option you can hide and show the main areas in GClh Config with one click. A change at this option evolute its effect only after a save.") + "<br/>";
-            html += newParameterVersionSetzen(0.2) + newParameterOff;
             html += "</div>";
 
             html += "<h4 class='gclh_headline2'>"+prepareHideable.replace("#name#","nearestlist")+"Nearest list</h4>";
             html += "<div id='gclh_config_nearestlist'>";
-            html += checkboxy('settings_redirect_to_map', 'Redirect to map') + show_help("If you enable this option, you will be automatically redirected from nearest list to map.") + "<br/>";
+            html += checkboxy('settings_redirect_to_map', 'Redirect cache search lists to map display') + show_help("If you enable this option, you will be automatically redirected from the older cache search lists (nearest lists) to map display.") + "<br/>";
             html += checkboxy('settings_show_log_it', 'Show GClh \"Log it\" icon (too for basic members for PMO)') + show_help("The GClh \"Log it\" icon is displayed beside cache titles in nearest lists. If you click it, you will be redirected directly to the log form. <br><br>You can use it too as basic member to log Premium Member Only (PMO) caches.") + "<br/>";
             html += checkboxy('settings_show_nearestuser_profil_link', 'Show profile link on search for created / found by caches') + show_help("This option adds an link to the user profile when searching for caches created or found by a certain user") + "<br/>";
             html += "</div>";
@@ -8793,6 +8867,23 @@ var mainGC = function () {
             html += " &nbsp; " + checkboxy('settings_switch_to_gc_map_in_same_tab', 'Switch to GC Map in same browser tab') + show_help("With this option you can switch from Google Maps to GC Map in the same browser tab.<br><br>This option requires \"Add link to GC Map on Google Maps\".") + "<br/>";
             html += checkboxy('settings_add_link_google_maps_on_gc_map', 'Add link to Google Maps on GC Map') + show_help("With this option an icon are placed on the GC Map page to link to the same area in Google Maps.") + "<br/>";
             html += " &nbsp; " + checkboxy('settings_switch_to_google_maps_in_same_tab', 'Switch to Google Maps in same browser tab') + show_help("With this option you can switch from GC Map to Google Maps in the same browser tab.<br><br>This option requires \"Add link to Google Maps on GC Map\".") + "<br/>";
+            html += "<div style='margin-top: 9px; margin-left: 5px'><b>Openstreetmap page</b></div>";
+            html += newParameterOn2;
+            html += checkboxy('settings_add_link_gc_map_on_osm', 'Add link to GC Map on Openstreetmap') + show_help("With this option an icon are placed on the OpenstreetMap page to link to the same area in GC Map.") + "<br/>";
+            html += " &nbsp; " + checkboxy('settings_switch_from_osm_to_gc_map_in_same_tab', 'Switch to GC Map in same browser tab') + show_help("With this option you can switch from Openstreetmap to GC Map in the same browser tab.<br><br>This option requires \"Add link to GC Map on OpenstreetMap\".") + "<br/>";
+            html += checkboxy('settings_add_link_osm_on_gc_map', 'Add link to Openstreetmap on GC Map') + show_help("With this option an icon are placed on the GC Map page to link to the same area in Openstreetmap.") + "<br/>";
+            html += " &nbsp; " + checkboxy('settings_switch_to_osm_in_same_tab', 'Switch to Openstreetmap in same browser tab') + show_help("With this option you can switch from GC Map to Openstreetmap in the same browser tab.<br><br>This option requires \"Add link to Openstreetmap on GC Map\".") + "<br/>";
+            html += newParameterVersionSetzen(0.5) + newParameterOff;
+            html += "<div style='margin-top: 9px; margin-left: 5px'><b>Flopp's Map page</b></div>";
+            html += newParameterOn2;
+            html += checkboxy('settings_add_link_flopps_on_gc_map', 'Add link to Flopp\'s Map on GC Map') + show_help("With this option an icon are placed on the GC Map page to link to the same area in Flopp\'s Map.") + "<br/>";
+            html += " &nbsp; " + checkboxy('settings_switch_to_flopps_in_same_tab', 'Switch to Flopp\'s Map in same browser tab') + show_help("With this option you can switch from GC Map to Flopp\'s Map in the same browser tab.<br><br>This option requires \"Add link to Flopp\'s Map on GC Map\".") + "<br/>";
+            html += newParameterVersionSetzen(0.5) + newParameterOff;
+            html += "<div style='margin-top: 9px; margin-left: 5px'><b>GeoHack page</b></div>";
+            html += newParameterOn2;
+            html += checkboxy('settings_add_link_geohack_on_gc_map', 'Add link to GeoHack on GC Map') + show_help("With this option an icon are placed on the GC Map page to link to the same area in GeoHack.") + "<br/>";
+            html += " &nbsp; " + checkboxy('settings_switch_to_geohack_in_same_tab', 'Switch to GeoHack in same browser tab') + show_help("With this option you can switch from GC Map to GeoHack in the same browser tab.<br><br>This option requires \"Add link to GeoHack on GC Map\".") + "<br/>";
+            html += newParameterVersionSetzen(0.5) + newParameterOff;
             html += "</div>";
 
             html += "<h4 class='gclh_headline2'>"+prepareHideable.replace("#name#","profile")+"Profile <span style='font-size: 14px'>" + show_help2("This section include your profile pages (\/my\/ and \/profile\/ pages) with for example your founded caches and trackables, your earned souvenirs, your image gallery, your statistic ... <br><br>Also the section include the profile pages of the others.") + "</span></h4>";
@@ -8894,18 +8985,14 @@ var mainGC = function () {
             html += checkboxy('settings_show_message', 'Show message link beside usernames') + show_help("With this option there will be an small message icon beside every username. With this icon you get directly to the message page to send a message to this user. If you click it for example when you are in a listing, the cachename or GC code can be inserted into the message form about placeholder in the mail / message form template.") + "<br/>";
             html += checkboxy('settings_show_google_maps', 'Show link to Google Maps') + show_help("This option shows a link at the top of the second map in the listing. With this link you get directly to Google Maps in the area, where the cache is.") + "<br/>";
             html += checkboxy('settings_strike_archived', 'Strike through title of archived/disabled caches') + "<br/>";
-            html += newParameterOn2;
             html += "&nbsp;" + "Highlight user changed coords with " + checkboxy('settings_highlight_usercoords', 'red textcolor ') + checkboxy('settings_highlight_usercoords_bb', 'underline ') + checkboxy('settings_highlight_usercoords_it', 'italic') + "<br/>";
-            html += newParameterVersionSetzen(0.2) + newParameterOff;
             html += checkboxy('settings_show_fav_percentage', 'Show percentage of favourite points') + show_help("This option loads the favourite stats of a cache in the backround and display the percentage under the amount of favourites a cache got.") + "<br/>";
-            html += newParameterOn2;
             html += checkboxy('settings_show_latest_logs_symbols', 'Show the ');
             html += "<select class='gclh_form' id='settings_show_latest_logs_symbols_count'>";
             for ( var i = 1; i < 11; i++ ){
                 html += "  <option value='" + i + "' " + (settings_show_latest_logs_symbols_count == i ? "selected=\"selected\"" : "") + ">" + i + "</option>";
             }
             html += "</select> latest logs symbols at the top" + show_help("With this option, the choosen count of the latest logs symbols is shown at the top of the cache listing. <br><br>This option requires \"Load logs with GClh\".") + "<br>";
-            html += newParameterVersionSetzen(0.2) + newParameterOff;
             html += checkboxy('settings_show_remove_ignoring_link', 'Show \"Stop Ignoring\", if cache is already ignored') + show_help("This option replace the \"Ignore\" link description with the \"Stop Ignoring\" link description in the cache listing, if the cache is already ignored.") + "<br/>";
             html += checkboxy('settings_map_overview_build', 'Show cache location in overview map') + show_help("With this option there will be an additional map top right in the cache listing as an overview of the cache location. This was available in the gc.com standard earlier.") + "<br/>";
             html += " &nbsp; &nbsp;" + "Map zoom value: <select class='gclh_form' id='settings_map_overview_zoom'>";
@@ -8917,15 +9004,18 @@ var mainGC = function () {
             html += "&nbsp; " + checkboxy('settings_show_owner_vip_list', 'Show owner in VIP list')  + show_help("If you enable this option, the owner is a VIP for the cache, so you can see, what happened with the cache (disable, maint, enable, ..). <br>(VIP: Very important person)<br><br>This option requires \"Show VIP list\".")+ "<br/>";
             html += "&nbsp; " + checkboxy('settings_show_long_vip', 'Show long VIP list (one row per log)') + show_help("This is another type of displaying the VIP list. If you disable this option you get the short list - one row per VIP and the logs as icons beside the VIP. If you enable this option, there is a row for every log.<br>(VIP: Very important person)<br><br>This option requires \"Show VIP list\".") + "<br/>";
             html += "&nbsp; " + checkboxy('settings_vip_show_nofound', 'Show a list of VIPs who have not found the cache') + show_help("This option enables an additional VIP list with VIPs who have not found the cache.<br>(VIP: Very important person)<br><br>This option requires \"Show VIP list\".") + "<br>";
-            html += newParameterOn2;
             html += "&nbsp; " + checkboxy('settings_make_vip_lists_hideable', 'Make VIP lists in listing hideable') + show_help("With this option you can hide and show the VIP lists \"VIP-List\" and \"VIP-List not found\" in cache listing with one click.<br>(VIP: Very important person)<br><br>This option requires \"Show VIP list\".") + "<br>";
-            html += newParameterVersionSetzen(0.2) + newParameterOff;
             html += content_settings_show_mail_in_viplist.replace("settings_show_mail_in_viplist", "settings_show_mail_in_viplistX0");
             html += "&nbsp; " + content_settings_show_mail_in_allmyvips.replace("settings_show_mail_in_allmyvips", "settings_show_mail_in_allmyvipsX1");
             html += newParameterOn1;
             html += "&nbsp; " + content_settings_process_vup.replace("settings_process_vup", "settings_process_vupX0");
             html += " &nbsp; &nbsp; " + content_settings_show_vup_friends.replace("settings_show_vup_friends", "settings_show_vup_friendsX0");
             html += newParameterVersionSetzen(0.4) + newParameterOff;
+            html += newParameterOn2;
+            html += " &nbsp; &nbsp; " + checkboxy('settings_vup_hide_avatar', 'Also hide name, avatar and counter from log') + show_help("With this option you can also hide the cacher name, his avatar and his found counter<br><br>This option requires \"Process VUPs\" and \"Show VIP list\".") + "<br>";
+            html += " &nbsp; &nbsp; &nbsp; " + checkboxy('settings_vup_hide_log', 'Hide complete log') + show_help("With this option you can hide the complete log of the cacher.<br><br>This option requires \"Also hide name, avatar and counter from log\", \"Process VUPs\" and \"Show VIP list\".") + "<br>";
+            html += checkboxy('settings_link_big_listing', 'Replace image links in cache listing to bigger image') + show_help("With this option the links of owner images in the cache listing points to the bigger, original image.") + "<br/>";
+            html += newParameterVersionSetzen(0.5) + newParameterOff;
             html += checkboxy('settings_show_thumbnailsX0', 'Show thumbnails of images') + show_help("With this option the images are displayed as thumbnails to have a preview. If you hover over a thumbnail, you can see the big one.<br><br>This works in cache and TB logs, in the cache and TB image galleries, in public profile for the avatar and in the profile image gallery.") + "&nbsp; Max size of big image: <input class='gclh_form' size=2 type='text' id='settings_hover_image_max_sizeX0' value='" + settings_hover_image_max_size + "'> px <br/>";
             html += " &nbsp; &nbsp;" + "Spoiler-Filter: <input class='gclh_form' type='text' id='settings_spoiler_strings' value='" + settings_spoiler_strings + "'> " + show_help("If one of these words is found in the caption of the image, there will be no real thumbnail. It is to prevent seeing spoilers. Words have to be divided by |. If the field is empty, no checking is done. Default is \"spoiler|hinweis|hint\".<br><br>This option requires \"Show thumbnails of images\".") + "<br/>";
             html += "&nbsp; " + checkboxy('settings_imgcaption_on_topX0', 'Show caption on top') + show_help("This option requires \"Show thumbnails of images\".") + "<br/>";
@@ -9159,9 +9249,6 @@ var mainGC = function () {
                     }
                     var outTitle = (typeof(bookmarks_orig_title[num]) != "undefined" && bookmarks_orig_title[num] != "" ? bookmarks_orig_title[num] : bookmarks[i]['title']);
                     html += "            >" + outTitle + "</a>";
-                    if ( num >= 66 && num <= 66 ) {
-                        html +=          newParameterLL2;
-                    }
                     if ( num >= 67 && num <= 67 ) {
                         html +=          newParameterLL3;
                     }
@@ -9175,9 +9262,6 @@ var mainGC = function () {
                 // Wenn default Bookmark.
                 } else {
                     html += "                <input style='padding-left: 2px; padding-right: 2px;' class='gclh_form' title='Differing description for standard link' id='bookmarks_name[" + num + "]' type='text' size='15' value='" + getValue("settings_bookmarks_title[" + num + "]", "") + "'>";
-                    if ( num >= 66 && num <= 66 ) {
-                        html +=              newParameterLLVersionSetzen(0.2);
-                    }
                     if ( num >= 67 && num <= 67 ) {
                         html +=              newParameterLLVersionSetzen(0.3);
                     }
@@ -9315,7 +9399,7 @@ var mainGC = function () {
                     // Bookmark in Linklist aufbauen.
                     var htmlRight = "";
                     htmlRight += "   <td style='padding: 0px; vertical-align: top; text-overflow: ellipsis; max-width: 166px; overflow: hidden; white-space: nowrap;'>";
-                    htmlRight += "       <img style='height: 12px; margin-right: 3px; cursor: grab;' title ='Grab it' src='"+global_grab_it_icon+"' />"; 
+                    htmlRight += "       <img style='height: 12px; margin-right: 3px; cursor: grab;' title ='Grab it' src='"+global_grab_it_icon+"' />";
                     htmlRight +=         text;
                     htmlRight += "   </td>";
                     htmlRight += "   <td style='padding: 0px;'>";
@@ -9480,6 +9564,7 @@ var mainGC = function () {
 //--> $$065 Begin of insert
 //<-- $$065 End of insert
             document.getElementById('settings_process_vup').addEventListener("click", alert_settings_process_vup, false);
+            document.getElementById('settings_process_vupX0').addEventListener("click", alert_settings_process_vup, false);
 
             // Events setzen für Parameter, die im GClh Config mehrfach ausgegeben wurden, weil sie zu mehreren Themen gehören. Es handelt sich hier
             // um den Parameter selbst. In der Function werden die Events für den Parameter selbst (beispielsweise "settings_show_mail_in_viplist") und dessen
@@ -9549,6 +9634,11 @@ var mainGC = function () {
             setEventsForDependentParameters( "settings_show_vip_list", "settings_show_vup_friends" );
             setEventsForDependentParameters( "settings_process_vup", "settings_show_vup_friends" );
             setEventsForDependentParameters( "settings_process_vupX0", "settings_show_vup_friends" );
+            setEventsForDependentParameters( "settings_process_vup", "settings_vup_hide_avatar" );
+            setEventsForDependentParameters( "settings_process_vup", "settings_vup_hide_log" );
+            setEventsForDependentParameters( "settings_process_vupX0", "settings_vup_hide_avatar" );
+            setEventsForDependentParameters( "settings_process_vupX0", "settings_vup_hide_log" );
+            setEventsForDependentParameters( "settings_vup_hide_avatar", "settings_vup_hide_log"  );
             setEventsForDependentParameters( "settings_log_inline", "settings_log_inline_tb", false );
             setEventsForDependentParameters( "settings_log_inline_pmo4basic", "settings_log_inline_tb", false );
             setEventsForDependentParameters( "settings_show_mail", "settings_show_mail_in_viplist" );
@@ -9567,6 +9657,10 @@ var mainGC = function () {
             setEventsForDependentParameters( "settings_count_own_matrix_show_next", "settings_count_own_matrix_links" );
             setEventsForDependentParameters( "settings_add_link_gc_map_on_google_maps", "settings_switch_to_gc_map_in_same_tab" );
             setEventsForDependentParameters( "settings_add_link_google_maps_on_gc_map", "settings_switch_to_google_maps_in_same_tab" );
+            setEventsForDependentParameters( "settings_add_link_gc_map_on_osm", "settings_switch_from_osm_to_gc_map_in_same_tab" );
+            setEventsForDependentParameters( "settings_add_link_osm_on_gc_map", "settings_switch_to_osm_in_same_tab" );
+            setEventsForDependentParameters( "settings_add_link_flopps_on_gc_map", "settings_switch_to_flopps_in_same_tab" );
+            setEventsForDependentParameters( "settings_add_link_geohack_on_gc_map", "settings_switch_to_geohack_in_same_tab" );
             setEventsForDependentParameters( "settings_show_latest_logs_symbols", "settings_show_latest_logs_symbols_count" );
             setEventsForDependentParameters( "settings_load_logs_with_gclh", "settings_show_latest_logs_symbols" );
             setEventsForDependentParameters( "settings_log_statistic", "settings_log_statistic_reload" );
@@ -9792,6 +9886,8 @@ var mainGC = function () {
                 'settings_show_mail_in_viplist',
                 'settings_process_vup',
                 'settings_show_vup_friends',
+                'settings_vup_hide_avatar',
+                'settings_vup_hide_log',
                 'settings_f2_save_gclh_config',
                 'settings_f4_call_gclh_config',
                 'settings_f10_call_gclh_sync',
@@ -9811,6 +9907,14 @@ var mainGC = function () {
                 'settings_switch_to_gc_map_in_same_tab',
                 'settings_add_link_google_maps_on_gc_map',
                 'settings_switch_to_google_maps_in_same_tab',
+                'settings_add_link_osm_on_gc_map',
+                'settings_switch_to_osm_in_same_tab',
+                'settings_add_link_gc_map_on_osm',
+                'settings_switch_from_osm_to_gc_map_in_same_tab',
+                'settings_add_link_flopps_on_gc_map',
+                'settings_switch_to_flopps_in_same_tab',
+                'settings_add_link_geohack_on_gc_map',
+                'settings_switch_to_geohack_in_same_tab',
                 'settings_sort_default_bookmarks',
                 'settings_make_vip_lists_hideable',
                 'settings_show_latest_logs_symbols',
@@ -9861,6 +9965,7 @@ var mainGC = function () {
                 'settings_show_thumbnails',
                 'settings_imgcaption_on_top',
                 'settings_hide_avatar',
+                'settings_link_big_listing',
                 'settings_show_big_gallery',
                 'settings_automatic_friend_reset',
                 'settings_show_long_vip',
@@ -10233,7 +10338,7 @@ var mainGC = function () {
 // Wenn VUPs im Config deaktiviert wird und es sind VUPs vorhanden, dann Confirm Meldung, dass die VUPs gelöscht werden.
 // Ansonsten können Konstellationen entstehen, mit Usern, die gleichzeitig VIP und VUP sind.
     function alert_settings_process_vup() {
-        if (!document.getElementById("settings_process_vup").checked && getValue("vups")) {
+        if ((!document.getElementById("settings_process_vup").checked || !document.getElementById("settings_process_vupX0").checked) && getValue("vups")) {
             var vups = getValue("vups");
             vups = vups.replace(/, (?=,)/g, ",null");
             vups = JSON.parse(vups);
@@ -10247,6 +10352,7 @@ var mainGC = function () {
                     setValue("vups", JSON.stringify(vups));
                 } else {
                     document.getElementById("settings_process_vup").checked = "checked";
+                    document.getElementById("settings_process_vupX0").checked = "checked";
                 }
             }
         }
