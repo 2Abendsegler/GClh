@@ -23,11 +23,11 @@ Neben der Funktion ```start()```  gibt es eine Reihe weitere Funktionen, die sic
 ### Hauptfunktionen
 Die Hauptfunktionen werden am Ende der Initalisierungsroutine aufgerufen:
 * ```mainGMaps()```
-* ```mainOSM()``` - Modifikationen für Geocaching.com - Enthält den größten Teil des Codes (~10,000 lines of code)
-* ```mainGC()```
+* ```mainOSM()```
+* ```mainGC()``` - Modifikationen für Geocaching.com - Enthält den größten Teil des Codes (~10,000 lines of code)
 
 ### Hilfsfunktionen
-Etliche Funktionen auf der obersten Ebene sind Hilfesfunktionen. Die meisten der Funktionen erledigen kleine spezialisierte Aufgaben.
+Etliche Funktionen auf der obersten Ebene sind Hilfsfunktionen. Die meisten der Funktionen erledigen kleine spezialisierte Aufgaben.
 
 ## Persistenz
 :question:
@@ -39,5 +39,5 @@ Etliche Funktionen auf der obersten Ebene sind Hilfesfunktionen. Die meisten der
 ## Debugging
 :question:
 
-## Modificationen mit zeitlicher Verzögerung
+## Modifikationen mit zeitlicher Verzögerung
 :question:
