@@ -7,7 +7,7 @@ Dokumenten Status:  **DRAFT** :exclamation:
 ## Startup Sequenze
 Nach dem Laden des Skripts wird die Funktion ```start()``` (Einsprungspunkt) aufgerufen. Der Aufruf der Funktion ```start()``` befindet sich in der letzten Zeile des Skripts. Anschließend werden einige Start- und Initalisierungsfunktionen durchlaufen. Am Schluß wird entschieden, ob Modifikationen für Geocaching.com oder andere Seiten durchgeführt werden sollen.
 
-Neben der Funktion ```start()```  gibt es eine Reihe weitere Funktionen, die sich auf der obersten Ebene befinden. Diese können in drei Kategorien unterteilt werden:
+Neben der Funktion ```start()```  gibt es eine Reihe weiterer Funktionen, die sich auf der obersten Ebene befinden. Diese können in drei Kategorien unterteilt werden:
 * Start- und Initialisierungfunktionen
 * Hauptfunktionen
 * Hilfsfunktionen
