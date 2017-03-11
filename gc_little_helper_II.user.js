@@ -4378,7 +4378,7 @@ var mainGC = function () {
                 aTag.setAttribute("style", "background-image: url('/images/silk/map_go.png');");
                 var side = document.getElementsByClassName("leaflet-top leaflet-right")[0];
 
-                div.appendChild(script);
+//$$FE002         div.appendChild(script);
                 div.appendChild(aTag);
                 side.appendChild(div);
 
