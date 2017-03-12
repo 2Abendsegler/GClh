@@ -17,4 +17,8 @@
 
 ### Microsoft Edge: <span> &nbsp; &nbsp; &nbsp; &nbsp; </span> <img src="/images/microsoft_edge_logo_small.png" title="Microsoft Edge" alt="Microsoft Edge">
 * Installiere [Tampermonkey](https://www.microsoft.com/en-us/store/p/tampermonkey/9nblggh5162s) als Add-On in Edge. 
+* Installiere den [GC little helper II](https://github.com/2Abendsegler/GClh/raw/master/gc_little_helper_II.user.js) als Tampermonkey Script.  
+
+### Vivaldi: <span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span> <img src="/images/vivaldi_logo_small.png" title="Vivaldi" alt="Vivaldi"> 
+* Installiere [Tampermonkey](https://chrome.google.com/webstore/detail/tampermonkey/dhdgffkkebhmkfjojejmpbldmpobfkfo?hl=de) als Add-On in Vivaldi über den Chrome Webstore. 
 * Installiere den [GC little helper II](https://github.com/2Abendsegler/GClh/raw/master/gc_little_helper_II.user.js) als Tampermonkey Script.
