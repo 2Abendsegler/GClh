@@ -20,5 +20,5 @@
 * Installiere den [GC little helper II](https://github.com/2Abendsegler/GClh/raw/master/gc_little_helper_II.user.js) als Tampermonkey Script.  
 
 ### Vivaldi: <span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span> <img src="/images/vivaldi_logo_small.png" title="Vivaldi" alt="Vivaldi"> 
-* Installiere [Tampermonkey](https://chrome.google.com/webstore/detail/tampermonkey/dhdgffkkebhmkfjojejmpbldmpobfkfo?hl=de) als Add-On in Vivaldi über den Chrome Webstore. 
+* Installiere [Tampermonkey](https://chrome.google.com/webstore/detail/tampermonkey/dhdgffkkebhmkfjojejmpbldmpobfkfo?hl=de) als Add-On in Vivaldi über den Chrome Web Store. 
 * Installiere den [GC little helper II](https://github.com/2Abendsegler/GClh/raw/master/gc_little_helper_II.user.js) als Tampermonkey Script.
