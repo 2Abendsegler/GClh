@@ -114,6 +114,21 @@ https://github.com/2Abendsegler/GClh/blob/master/docu/tips_migration.md#readme
 https://github.com/2Abendsegler/GClh/blob/master/docu/tips_installation.md#readme  
 <br>
 
+#### Browser:  
+* Mozilla Firefox:  
+https://www.mozilla.org  
+* Google Chrome:  
+https://www.google.com/chrome  
+* Opera:  
+https://www.opera.com  
+* Microsoft Edge:  
+https://www.microsoft.com/microsoft-edge  
+* Vivaldi:  
+https://vivaldi.com/  
+* Safari:  
+https://www.apple.com/safari/  
+<br>
+
 #### Foren:  
 * Geoclub Forum, Help (Greasemonkey-Scripte):  
 http://geoclub.de/forum/viewforum.php?f=117  
