@@ -24,6 +24,8 @@ New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/199">#199</a>] 
 New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/200">#200</a>] Warning for mutually exclusive option in pocket queries<br>
 <img src="../images/v0.6_Screen02.jpg" alt="v0.6_Screen02.jpg"><br>
 <br></li>
+<li>
+New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/222">#222</a>] Compact Layout of page 'New Pocket Query'
 </ul>
 
 ---
