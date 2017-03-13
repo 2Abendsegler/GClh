@@ -9025,7 +9025,7 @@ var mainGC = function () {
             html += "</div>";
 
             html += newParameterOn2;
-            html += "<h4 class='gclh_headline2'>"+prepareHideable.replace("#name#","pq")+"Pocket Queries</h4>";
+            html += "<h4 class='gclh_headline2'>"+prepareHideable.replace("#name#","pq")+"Pocket Query</h4>";
             html += "<div id='gclh_config_pq'>";
             html += checkboxy('settings_pq_warning', "Get a warning in case of empty pocket queries") + show_help("Show a message if one or more options are in conflict. This helps to avoid empty pocket queries.") + "<br/>";
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>New Pocket Query</b></div>";
