@@ -8933,6 +8933,31 @@ var mainGC = function () {
             html += checkboxy('settings_show_nearestuser_profil_link', 'Show profile link on search for created / found by caches') + show_help("This option adds an link to the user profile when searching for caches created or found by a certain user") + "<br/>";
             html += "</div>";
 
+            html += newParameterOn2;
+            html += "<h4 class='gclh_headline2'>"+prepareHideable.replace("#name#","pq")+"Pocket Query</h4>";
+            html += "<div id='gclh_config_pq'>";
+            html += checkboxy('settings_pq_warning', "Get a warning in case of empty pocket queries") + show_help("Show a message if one or more options are in conflict. This helps to avoid empty pocket queries.") + "<br/>";
+            html += "<div style='margin-top: 9px; margin-left: 5px'><b>New Pocket Query</b></div>";
+            html += checkboxy('settings_pq_set_cachestotal', "Set number of caches to ") + "<input class='gclh_form' size=3 type='text' id='settings_pq_cachestotal' value='" + settings_pq_cachestotal + "'>&nbsp;" + show_help("Specifies the default value for total caches.") + "<br/>";
+            html += checkboxy('settings_pq_option_ihaventfound', "Enable option '<i>I haven't found</i>' by default") + show_help("This activates the option '<i>I haven't found</i>' by default.") + "<br/>";
+            html += checkboxy('settings_pq_option_idontown', "Enable option '<i>I don't own</i>' by default") + show_help("This activates the option '<i>I don't own</i>' by default.") + "<br/>";
+            html += checkboxy('settings_pq_option_ignorelist', "Enable option '<i>Are not on my ignore list</i>' by default") + show_help("This activates the option '<i>Are not on my ignore list</i>' by default.") + "<br/>";
+            html += checkboxy('settings_pq_option_isenabled', "Enable option '<i>Is Enabled</i>' by default") + show_help("This activates the option '<i>Is Enabled</i>' by default.") + "<br/>";
+            html += checkboxy('settings_pq_option_filename', "Enable option '<i>Include PQ name in download file name</i>' by default") + show_help("This activates the option '<i>Include PQ name in download file name</i>' by default.") + "<br/>";
+            html += checkboxy('settings_pq_set_difficulty', "Set difficulity ");
+            html += gclh_createSelectOptionCode( "settings_pq_difficulty", dt_display, settings_pq_difficulty );
+            html += '&nbsp;';            
+            html += gclh_createSelectOptionCode( "settings_pq_difficulty_score", dt_score, settings_pq_difficulty_score );
+            html += " by default" + show_help("Specifies the default settings for difficulty score.") + "<br/>";
+            html += checkboxy('settings_pq_set_terrain', "Set terrain ");
+            html += gclh_createSelectOptionCode( "settings_pq_terrain", dt_display, settings_pq_terrain );
+            html += '&nbsp;';
+            html += gclh_createSelectOptionCode( "settings_pq_terrain_score", dt_score, settings_pq_terrain_score );
+            html += " by default" + show_help("Specifies the default settings for terrain score.") + "<br/>";
+            html += checkboxy('settings_pq_automatically_day', "Generate PQ today") + show_help("Use the server time to set the week day for creation.") + "<br/>";
+            html += newParameterVersionSetzen(0.5) + newParameterOff;
+            html += "</div>";            
+            
             html += "<h4 class='gclh_headline2'>"+prepareHideable.replace("#name#","maps")+"Maps</h4>";
             html += "<div id='gclh_config_maps'>";
             html += checkboxy('settings_show_homezone', 'Show Homezone') + "<br>";
@@ -9023,32 +9048,7 @@ var mainGC = function () {
             html += " &nbsp; " + checkboxy('settings_switch_to_geohack_in_same_tab', 'Switch to GeoHack in same browser tab') + show_help("With this option you can switch from GC Map to GeoHack in the same browser tab.<br><br>This option requires \"Add link to GeoHack on GC Map\".") + "<br/>";
             html += newParameterVersionSetzen(0.5) + newParameterOff;
             html += "</div>";
-
-            html += newParameterOn2;
-            html += "<h4 class='gclh_headline2'>"+prepareHideable.replace("#name#","pq")+"Pocket Query</h4>";
-            html += "<div id='gclh_config_pq'>";
-            html += checkboxy('settings_pq_warning', "Get a warning in case of empty pocket queries") + show_help("Show a message if one or more options are in conflict. This helps to avoid empty pocket queries.") + "<br/>";
-            html += "<div style='margin-top: 9px; margin-left: 5px'><b>New Pocket Query</b></div>";
-            html += checkboxy('settings_pq_set_cachestotal', "Set number of caches to ") + "<input class='gclh_form' size=3 type='text' id='settings_pq_cachestotal' value='" + settings_pq_cachestotal + "'>&nbsp;" + show_help("Specifies the default value for total caches.") + "<br/>";
-            html += checkboxy('settings_pq_option_ihaventfound', "Enable option '<i>I haven't found</i>' by default") + show_help("This activates the option '<i>I haven't found</i>' by default.") + "<br/>";
-            html += checkboxy('settings_pq_option_idontown', "Enable option '<i>I don't own</i>' by default") + show_help("This activates the option '<i>I don't own</i>' by default.") + "<br/>";
-            html += checkboxy('settings_pq_option_ignorelist', "Enable option '<i>Are not on my ignore list</i>' by default") + show_help("This activates the option '<i>Are not on my ignore list</i>' by default.") + "<br/>";
-            html += checkboxy('settings_pq_option_isenabled', "Enable option '<i>Is Enabled</i>' by default") + show_help("This activates the option '<i>Is Enabled</i>' by default.") + "<br/>";
-            html += checkboxy('settings_pq_option_filename', "Enable option '<i>Include PQ name in download file name</i>' by default") + show_help("This activates the option '<i>Include PQ name in download file name</i>' by default.") + "<br/>";
-            html += checkboxy('settings_pq_set_difficulty', "Set difficulity ");
-            html += gclh_createSelectOptionCode( "settings_pq_difficulty", dt_display, settings_pq_difficulty );
-            html += '&nbsp;';            
-            html += gclh_createSelectOptionCode( "settings_pq_difficulty_score", dt_score, settings_pq_difficulty_score );
-            html += " by default" + show_help("Specifies the default settings for difficulty score.") + "<br/>";
-            html += checkboxy('settings_pq_set_terrain', "Set terrain ");
-            html += gclh_createSelectOptionCode( "settings_pq_terrain", dt_display, settings_pq_terrain );
-            html += '&nbsp;';
-            html += gclh_createSelectOptionCode( "settings_pq_terrain_score", dt_score, settings_pq_terrain_score );
-            html += " by default" + show_help("Specifies the default settings for terrain score.") + "<br/>";
-            html += checkboxy('settings_pq_automatically_day', "Generate PQ today") + show_help("Use the server time to set the week day for creation.") + "<br/>";
-            html += newParameterVersionSetzen(0.5) + newParameterOff;
-            html += "</div>";
-
+            
             html += "<h4 class='gclh_headline2'>"+prepareHideable.replace("#name#","profile")+"Profile <span style='font-size: 14px'>" + show_help2("This section include your profile pages (\/my\/ and \/profile\/ pages) with for example your founded caches and trackables, your earned souvenirs, your image gallery, your statistic ... <br><br>Also the section include the profile pages of the others.") + "</span></h4>";
             html += "<div id='gclh_config_profile'>";
             html += checkboxy('settings_bookmarks_show', "Show <a class='gclh_ref' href='#gclh_linklist' id='gclh_linklist_link_2'>Linklist</a> in your profile") + show_help("Show the Linklist at the right side in your profile. You can configure the links in the Linklist at the end of this page.") + "<br/>";
