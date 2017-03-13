@@ -2306,7 +2306,8 @@ var mainGC = function () {
         }
     }
 
-    function optionsInConflict( idOption1, idOption2 ) {
+// helper function marks two PQ options, which are in rejection 
+    function markPqOptionsAreInRejection( idOption1, idOption2 ) {
         var status = false;
         if ( $("#"+idOption1).is(':checked') && $("#"+idOption2).is(':checked') ) {
             $("label[for='"+idOption1+"']").css('background-color','#ffff00');
@@ -2323,15 +2324,16 @@ var mainGC = function () {
         }
         return status;
     }
-    
+
+// helper function to find PQ options, which are in rejection    
     function verifyPqOptions() {
         var status = false;
         
-        status = status | optionsInConflict( "ctl00_ContentBody_cbOptions_0", "ctl00_ContentBody_cbOptions_1" ); // I haven't found / I have found
-        status = status | optionsInConflict( "ctl00_ContentBody_cbOptions_2", "ctl00_ContentBody_cbOptions_3" ); // I don't vs. own	I own
-        status = status | optionsInConflict( "ctl00_ContentBody_cbOptions_4", "ctl00_ContentBody_cbOptions_5" ); // Are available to all users	vs. Are for members only
-        status = status | optionsInConflict( "ctl00_ContentBody_cbOptions_8", "ctl00_ContentBody_cbOptions_9" ); // Found in the last 7 days  vs.	Have not been found
-        status = status | optionsInConflict( "ctl00_ContentBody_cbOptions_12", "ctl00_ContentBody_cbOptions_13" ); // Is Disabled  vs.	Is Enabled
+        status = status | markPqOptionsAreInRejection( "ctl00_ContentBody_cbOptions_0", "ctl00_ContentBody_cbOptions_1" ); // I haven't found / I have found
+        status = status | markPqOptionsAreInRejection( "ctl00_ContentBody_cbOptions_2", "ctl00_ContentBody_cbOptions_3" ); // I don't vs. own	I own
+        status = status | markPqOptionsAreInRejection( "ctl00_ContentBody_cbOptions_4", "ctl00_ContentBody_cbOptions_5" ); // Are available to all users	vs. Are for members only
+        status = status | markPqOptionsAreInRejection( "ctl00_ContentBody_cbOptions_8", "ctl00_ContentBody_cbOptions_9" ); // Found in the last 7 days  vs.	Have not been found
+        status = status | markPqOptionsAreInRejection( "ctl00_ContentBody_cbOptions_12", "ctl00_ContentBody_cbOptions_13" ); // Is Disabled  vs.	Is Enabled
         
         if ( status ) {
             $("#warning").show();
