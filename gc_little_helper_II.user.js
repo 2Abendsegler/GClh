@@ -8939,7 +8939,7 @@ var mainGC = function () {
             html += "<div id='gclh_config_pq'>";
             html += checkboxy('settings_fixed_pq_header', 'Show fixed header in PQ list') + "<br/>";
             html += checkboxy('settings_pq_warning', "Get a warning in case of empty pocket queries") + show_help("Show a message if one or more options are in conflict. This helps to avoid empty pocket queries.") + "<br/>";
-            html += "<div style='margin-top: 9px; margin-left: 5px'><b>New Pocket Query</b></div>";
+            html += "<div style='margin-top: 9px; margin-left: 5px'><b>Default values for new Pocket Query</b></div>";
             html += checkboxy('settings_pq_set_cachestotal', "Set number of caches to ") + "<input class='gclh_form' size=3 type='text' id='settings_pq_cachestotal' value='" + settings_pq_cachestotal + "'>&nbsp;" + show_help("Specifies the default value for total caches.") + "<br/>";
             html += checkboxy('settings_pq_option_ihaventfound', "Enable option '<i>I haven't found</i>' by default") + show_help("This activates the option '<i>I haven't found</i>' by default.") + "<br/>";
             html += checkboxy('settings_pq_option_idontown', "Enable option '<i>I don't own</i>' by default") + show_help("This activates the option '<i>I don't own</i>' by default.") + "<br/>";
