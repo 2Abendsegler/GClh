@@ -2368,32 +2368,32 @@ var mainGC = function () {
                 { index: 17, id: "gclhpq_Output", child: ".PQOutputList" },
                 { index: 18, id: "gclhpq_SubmitDelete", child: "#ctl00_ContentBody_btnSubmit" },
                 { index: 19, id: "gclhpq_", child: "" }, // Pocket Query Tips header
-                { index: 20, id: "gclhpq_", child: "" } // Pocket Query Tips  
+                { index: 20, id: "gclhpq_", child: "" } // Pocket Query Tips
             ];
-            
+
             $( "#ctl00_ContentBody_QueryPanel > *[class!='Validation']" ).each(function( index ) {
                 for ( var i=0; i<pqelements.length; i++) {
-                    if ( pqelements[i].child.length > 0 ) { 
+                    if ( pqelements[i].child.length > 0 ) {
                         if ( $(this).find(pqelements[i].child).length > 0 ) {
                             console.log( "index: " + index + " " + pqelements[i].child + " -> " + pqelements[i].id );
                             $(this).attr('id',pqelements[i].id);
                             break;
-                        } 
-                        
+                        }
+
                     }
                 }
             });
             $("#gclhpq_Options").next().attr('id',"gclhpq_And");
-            
+
             function moveElementAfter( elementA, elementB ) {
                 var element = elementA.detach();
-                elementB.after(element); 
-                return element;                
+                elementB.after(element);
+                return element;
             }
-            
-            
+
+
             if ( settings_pq_modify_dialog ) {
-                
+
                 moveElementAfter( $("#gclhpq_Origin"), $("#gclhpq_QueryName") );
                 moveElementAfter( $("#gclhpq_DaysOfGenerate"), $("#gclhpq_Output") );
                 moveElementAfter( $("#gclhpq_Radius"), $("#gclhpq_CachesTotal") );
@@ -2405,42 +2405,42 @@ var mainGC = function () {
                 var object = hidePqSection( $("#gclhpq_Within"), "Show <i>Within</i> dialog..." );
                 var element = object.detach();
                 $("#12 p:last-child").after(element);
-                                
+
                 // move "Within radius" in Within section
                 var element = $("#gclhpq_Radius").detach();
                 $("#gclhpq_Within").append(element);
-                
-                
+
+
                 $("#gclhpq_Within").append('<table border="1" class="CheckboxTable SetHalfWidth"><tr><td id="within-left" style="vertical-align: top;"></td><td id="within-right" style="vertical-align: top;"></td></tr></table>');
                 var withinChildren = $("#gclhpq_Within").children("p");
                 var element = $(withinChildren[0]).find("span").detach();
                 $("#within-left").append(element);
                 element.change( actionWithinRadioButtons );
                 $("#within-left").append("<br/><br/>");
-                
+
                 var element = $(withinChildren[1]).find("span").detach();
                 $("#within-left").append(element);
                 element.change( actionWithinRadioButtons );
                 $("#within-left").append("<br/><br/>");
-                
+
                 var element = $(withinChildren[2]).find("span").detach();
                 $("#within-left").append(element);
                 element.change( actionWithinRadioButtons );
                 $("#within-left").append("<br/><br/>");
- 
+
                 var element = $("#ctl00_ContentBody_lbCountries").detach();
                 element.attr('size', 8);
                 $("#within-right").append(element);
                 var element = $("#ctl00_ContentBody_lbStates").detach();
                 element.attr('size', 8);
                 $("#within-right").append(element);
-                
+
                 var element = $(withinChildren[0]).detach();
                 var element = $(withinChildren[1]).detach();
                 var element = $(withinChildren[2]).detach();
-                
+
                 actionWithinRadioButtons();
-                
+
                 function actionWithinRadioButtons() {
                     console.log("actionWithinRadioButtons()");
                     var selectedVal = "";
@@ -2459,7 +2459,7 @@ var mainGC = function () {
                         }
                     }
                 }
-                
+
                 // move Difficulty
                 var element = $("#gclhpq_Difficulty").detach();
                 $("#ctl00_ContentBody_cbOptions tr:last").after('<tr><td colspan="2" id="option_difficulty"></td></tr>');
@@ -2469,7 +2469,7 @@ var mainGC = function () {
                 var element = $("#gclhpq_Terrain").detach();
                 $("#ctl00_ContentBody_cbOptions tr:last").after('<tr><td colspan="2" id="option_terrain"></td></tr>');
                 $("#option_terrain").append(element.html());
-                
+
                 // select each cache type and hide radio buttons
                 $("#gclhpq_AnyType").hide();
                 $("#ctl00_ContentBody_rbTypeSelect").prop('checked', true);
@@ -2477,7 +2477,7 @@ var mainGC = function () {
                 $( "#4" ).find("input").each(function( index ) {
                     $(this).prop('checked', true);
                 });
-                
+
                 // select each cache container and hide radio buttons
                 $("#gclhpq_AnyContainer").hide();
                 $("#ctl00_ContentBody_rbContainerSelect").prop('checked', true);
@@ -2485,14 +2485,13 @@ var mainGC = function () {
                 $( "#6" ).find("input").each(function( index ) {
                     $(this).prop('checked', true);
                 });
-                
-                
-                
+
+
+
                 function hidePqSection( object,text ) {
                     console.log("hidePqSection");
                     var buttonId = "toggle_button_"+object.attr('id');
-                     // todo make link nicer
-                     
+
                     object.before('<botton value="" id="'+buttonId+'" style="padding: 5px 10px 5px 10px;  border: 1px solid; cursor: pointer;">'+text+'</button>');
                     object.hide();
                     object.css('margin-top','15px');
@@ -2502,32 +2501,32 @@ var mainGC = function () {
                     } );
                     return $("#"+buttonId);
                 }
-                
+
                 hidePqSection( $("#gclhpq_Types"), "Show Cache Types" );
                 hidePqSection( $("#gclhpq_Container"), "Show Container Size" );
                 $("#gclhpq_Options").css('margin-top','15px');
-                
+
                 hidePqSection( $("#gclhpq_PlacedDuring"), "Show Placed During dialog" );
                 hidePqSection( $("#gclhpq_AttributesIncludes"), "Show Attributes to Include" );
                 hidePqSection( $("#gclhpq_AttributesExcludes"), "Show Attributes to Exclude" );
-                
+
                 $("#gclhpq_DaysOfGenerate").css('margin-top','15px');
-                
+
                 // reorg
                 $("#gclhpq_Output").find("dl").attr('id','PQOutputList');
                 var serverTime = $("#gclhpq_DaysOfGenerate").find("legend").find("small").text();
                 $("#gclhpq_DaysOfGenerate").find("legend").text("Generate "+serverTime);
                 $("#gclhpq_DaysOfGenerate").append("<hr/>");
                 $("#gclhpq_DaysOfGenerate").append($("#PQOutputList"));
-                
+
                 hidePqSection( $("#PQOutputList"), "Advanced..." );
-                
+
                 $("#gclhpq_Output").hide();
             }
-            
+
             if ( ( $("p.Success").length<=0 ) && (document.location.href.match(/^https?:\/\/www\.geocaching\.com\/pocket\/gcquery\.aspx$/) ||
                 document.location.href.match(/^https?:\/\/www\.geocaching\.com\/pocket\/gcquery\.aspx\/ll=/)) ) {
-                    
+
                 if ( settings_pq_set_cachestotal ) {
                     $("#ctl00_ContentBody_tbResults").val(settings_pq_cachestotal);
                 }
