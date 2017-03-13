@@ -9470,8 +9470,8 @@ var mainGC = function () {
                 makeConfigAreaHideable("global");
                 makeConfigAreaHideable("config");
                 makeConfigAreaHideable("nearestlist");
-                makeConfigAreaHideable("maps");
                 makeConfigAreaHideable("pq");
+                makeConfigAreaHideable("maps");
                 makeConfigAreaHideable("profile");
                 makeConfigAreaHideable("listing");
                 makeConfigAreaHideable("logging");
@@ -10703,6 +10703,7 @@ var mainGC = function () {
         setShowHideConfigAll("gclh_config_global", showHide);
         setShowHideConfigAll("gclh_config_config", showHide);
         setShowHideConfigAll("gclh_config_nearestlist", showHide);
+        setShowHideConfigAll("gclh_config_pq", showHide);
         setShowHideConfigAll("gclh_config_maps", showHide);
         setShowHideConfigAll("gclh_config_profile", showHide);
         setShowHideConfigAll("gclh_config_listing", showHide);
