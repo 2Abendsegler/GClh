@@ -509,6 +509,7 @@ var variablesInit = function (c) {
     c.settings_search_data = JSON.parse(getValue("settings_search_data", "[]"));
     c.settings_search_enable_user_defined = getValue("settings_search_enable_user_defined",true);
     c.settings_pq_warning = getValue("settings_pq_warning",true);
+    c.settings_pq_modify_dialog = getValue("settings_pq_modify_dialog",true);
     c.settings_pq_set_cachestotal = getValue("settings_pq_set_cachestotal",1000);
     c.settings_pq_cachestotal = getValue("settings_pq_cachestotal",1000);
     c.settings_pq_option_ihaventfound = getValue("settings_pq_option_ihaventfound",true);
@@ -2346,12 +2347,187 @@ var mainGC = function () {
     if (document.location.href.match(/^https?:\/\/www\.geocaching\.com\/pocket\/gcquery\.aspx/)) {
         try {
             // mark all elements for an easier access
-            $( "#ctl00_ContentBody_QueryPanel > *" ).each(function( index ) {
-                $(this).attr('id',index);
+            var pqelements = [
+                { index: 0, id: "gclhpq_QueryName", child: "#ctl00_ContentBody_tbName" },
+                { index: 1, id: "gclhpq_DaysOfGenerate", child: "#ctl00_ContentBody_cbDays" },
+                { index: 2, id: "gclhpq_CachesTotal", child: "#ctl00_ContentBody_tbResults" },
+                { index: 3, id: "gclhpq_AnyType", child: "#ctl00_ContentBody_rbTypeAny" },
+                { index: 4, id: "gclhpq_Types", child: "#ctl00_ContentBody_cbTaxonomy" },
+                { index: 5, id: "gclhpq_AnyContainer", child: "#ctl00_ContentBody_rbContainerAny" },
+                { index: 6, id: "gclhpq_Container", child: "#ctl00_ContentBody_rbContainerSelect" },
+                { index: 7, id: "gclhpq_Options", child: "#ctl00_ContentBody_cbOptions" },
+                { index: 8, id: "gclhpq_", child: "" }, // And
+                { index: 9, id: "gclhpq_Difficulty", child: "#ctl00_ContentBody_cbDifficulty" },
+                { index: 10, id: "gclhpq_Terrain", child: "#ctl00_ContentBody_cbTerrain" },
+                { index: 11, id: "gclhpq_Within", child: "#ctl00_ContentBody_rbNone" },
+                { index: 12, id: "gclhpq_Origin", child: "#ctl00_ContentBody_rbOriginNone" },
+                { index: 13, id: "gclhpq_Radius", child: "#ctl00_ContentBody_tbRadius" },
+                { index: 14, id: "gclhpq_PlacedDuring", child: "#ctl00_ContentBody_rbPlacedNone" },
+                { index: 15, id: "gclhpq_AttributesIncludes", child: "#ctl00_ContentBody_ctlAttrInclude_dtlAttributeIcons" },
+                { index: 16, id: "gclhpq_AttributesExcludes", child: "#ctl00_ContentBody_ctlAttrExclude_dtlAttributeIcons" },
+                { index: 17, id: "gclhpq_Output", child: ".PQOutputList" },
+                { index: 18, id: "gclhpq_SubmitDelete", child: "#ctl00_ContentBody_btnSubmit" },
+                { index: 19, id: "gclhpq_", child: "" }, // Pocket Query Tips header
+                { index: 20, id: "gclhpq_", child: "" } // Pocket Query Tips  
+            ];
+            
+            $( "#ctl00_ContentBody_QueryPanel > *[class!='Validation']" ).each(function( index ) {
+                for ( var i=0; i<pqelements.length; i++) {
+                    if ( pqelements[i].child.length > 0 ) { 
+                        if ( $(this).find(pqelements[i].child).length > 0 ) {
+                            console.log( "index: " + index + " " + pqelements[i].child + " -> " + pqelements[i].id );
+                            $(this).attr('id',pqelements[i].id);
+                            break;
+                        } 
+                        
+                    }
+                }
             });
+            $("#gclhpq_Options").next().attr('id',"gclhpq_And");
+            
+            function moveElementAfter( elementA, elementB ) {
+                var element = elementA.detach();
+                elementB.after(element); 
+                return element;                
+            }
+            
+            
+            if ( settings_pq_modify_dialog ) {
+                
+                moveElementAfter( $("#gclhpq_Origin"), $("#gclhpq_QueryName") );
+                moveElementAfter( $("#gclhpq_DaysOfGenerate"), $("#gclhpq_Output") );
+                moveElementAfter( $("#gclhpq_Radius"), $("#gclhpq_CachesTotal") );
+                moveElementAfter( $("#gclhpq_Within"), $("#gclhpq_Origin") );
+                $("#gclhpq_And").hide(); // hide header 'And'
 
-            if (document.location.href.match(/^https?:\/\/www\.geocaching\.com\/pocket\/gcquery\.aspx$/) ||
-                document.location.href.match(/^https?:\/\/www\.geocaching\.com\/pocket\/gcquery\.aspx\/ll=/) ) {
+
+                // hide within section
+                var object = hidePqSection( $("#gclhpq_Within"), "Show <i>Within</i> dialog..." );
+                var element = object.detach();
+                $("#12 p:last-child").after(element);
+                                
+                // move "Within radius" in Within section
+                var element = $("#gclhpq_Radius").detach();
+                $("#gclhpq_Within").append(element);
+                
+                
+                $("#gclhpq_Within").append('<table border="1" class="CheckboxTable SetHalfWidth"><tr><td id="within-left" style="vertical-align: top;"></td><td id="within-right" style="vertical-align: top;"></td></tr></table>');
+                var withinChildren = $("#gclhpq_Within").children("p");
+                var element = $(withinChildren[0]).find("span").detach();
+                $("#within-left").append(element);
+                element.change( actionWithinRadioButtons );
+                $("#within-left").append("<br/><br/>");
+                
+                var element = $(withinChildren[1]).find("span").detach();
+                $("#within-left").append(element);
+                element.change( actionWithinRadioButtons );
+                $("#within-left").append("<br/><br/>");
+                
+                var element = $(withinChildren[2]).find("span").detach();
+                $("#within-left").append(element);
+                element.change( actionWithinRadioButtons );
+                $("#within-left").append("<br/><br/>");
+ 
+                var element = $("#ctl00_ContentBody_lbCountries").detach();
+                element.attr('size', 8);
+                $("#within-right").append(element);
+                var element = $("#ctl00_ContentBody_lbStates").detach();
+                element.attr('size', 8);
+                $("#within-right").append(element);
+                
+                var element = $(withinChildren[0]).detach();
+                var element = $(withinChildren[1]).detach();
+                var element = $(withinChildren[2]).detach();
+                
+                actionWithinRadioButtons();
+                
+                function actionWithinRadioButtons() {
+                    console.log("actionWithinRadioButtons()");
+                    var selectedVal = "";
+                    var selected = $("input[type='radio'][name='ctl00$ContentBody$CountryState']:checked");
+                    if (selected.length > 0) {
+                        selectedVal = selected.val();
+                        if ( selectedVal == "rbCountries" ) {
+                            $("#ctl00_ContentBody_lbCountries").show();
+                            $("#ctl00_ContentBody_lbStates").hide();
+                        } else if ( selectedVal == "rbStates" ) {
+                            $("#ctl00_ContentBody_lbCountries").hide();
+                            $("#ctl00_ContentBody_lbStates").show();
+                        } else {
+                            $("#ctl00_ContentBody_lbCountries").hide();
+                            $("#ctl00_ContentBody_lbStates").hide();
+                        }
+                    }
+                }
+                
+                // move Difficulty
+                var element = $("#gclhpq_Difficulty").detach();
+                $("#ctl00_ContentBody_cbOptions tr:last").after('<tr><td colspan="2" id="option_difficulty"></td></tr>');
+                $("#option_difficulty").append(element.html());
+
+                // move Terrain
+                var element = $("#gclhpq_Terrain").detach();
+                $("#ctl00_ContentBody_cbOptions tr:last").after('<tr><td colspan="2" id="option_terrain"></td></tr>');
+                $("#option_terrain").append(element.html());
+                
+                // select each cache type and hide radio buttons
+                $("#gclhpq_AnyType").hide();
+                $("#ctl00_ContentBody_rbTypeSelect").prop('checked', true);
+                $("#ctl00_ContentBody_rbTypeSelect").hide();
+                $( "#4" ).find("input").each(function( index ) {
+                    $(this).prop('checked', true);
+                });
+                
+                // select each cache container and hide radio buttons
+                $("#gclhpq_AnyContainer").hide();
+                $("#ctl00_ContentBody_rbContainerSelect").prop('checked', true);
+                $("#ctl00_ContentBody_rbContainerSelect").hide();
+                $( "#6" ).find("input").each(function( index ) {
+                    $(this).prop('checked', true);
+                });
+                
+                
+                
+                function hidePqSection( object,text ) {
+                    console.log("hidePqSection");
+                    var buttonId = "toggle_button_"+object.attr('id');
+                     // todo make link nicer
+                     
+                    object.before('<botton value="" id="'+buttonId+'" style="padding: 5px 10px 5px 10px;  border: 1px solid; cursor: pointer;">'+text+'</button>');
+                    object.hide();
+                    object.css('margin-top','15px');
+                    $("#"+buttonId).click( function() {
+                        object.show();
+                        $("#"+buttonId).hide();
+                    } );
+                    return $("#"+buttonId);
+                }
+                
+                hidePqSection( $("#gclhpq_Types"), "Show Cache Types" );
+                hidePqSection( $("#gclhpq_Container"), "Show Container Size" );
+                $("#gclhpq_Options").css('margin-top','15px');
+                
+                hidePqSection( $("#gclhpq_PlacedDuring"), "Show Placed During dialog" );
+                hidePqSection( $("#gclhpq_AttributesIncludes"), "Show Attributes to Include" );
+                hidePqSection( $("#gclhpq_AttributesExcludes"), "Show Attributes to Exclude" );
+                
+                $("#gclhpq_DaysOfGenerate").css('margin-top','15px');
+                
+                // reorg
+                $("#gclhpq_Output").find("dl").attr('id','PQOutputList');
+                var serverTime = $("#gclhpq_DaysOfGenerate").find("legend").find("small").text();
+                $("#gclhpq_DaysOfGenerate").find("legend").text("Generate "+serverTime);
+                $("#gclhpq_DaysOfGenerate").append("<hr/>");
+                $("#gclhpq_DaysOfGenerate").append($("#PQOutputList"));
+                
+                hidePqSection( $("#PQOutputList"), "Advanced..." );
+                
+                $("#gclhpq_Output").hide();
+            }
+            
+            if ( ( $("p.Success").length<=0 ) && (document.location.href.match(/^https?:\/\/www\.geocaching\.com\/pocket\/gcquery\.aspx$/) ||
+                document.location.href.match(/^https?:\/\/www\.geocaching\.com\/pocket\/gcquery\.aspx\/ll=/)) ) {
+                    
                 if ( settings_pq_set_cachestotal ) {
                     $("#ctl00_ContentBody_tbResults").val(settings_pq_cachestotal);
                 }
@@ -2387,7 +2563,7 @@ var mainGC = function () {
                 }
 
                 if ( settings_pq_automatically_day ) {
-                    var servertime = $("#1").find("legend").find("small").text();
+                    var servertime = $("#gclhpq_DaysOfGenerate").find("legend").text();
                     if ( servertime.match(/.*Sunday.*/) ) {
                         $("#ctl00_ContentBody_cbDays_0").prop('checked', true);
                     } else if ( servertime.match(/.*Monday.*/) ) {
@@ -8939,6 +9115,7 @@ var mainGC = function () {
             html += "<div id='gclh_config_pq'>";
             html += checkboxy('settings_fixed_pq_header', 'Show fixed header in PQ list') + "<br/>";
             html += checkboxy('settings_pq_warning', "Get a warning in case of empty pocket queries") + show_help("Show a message if one or more options are in conflict. This helps to avoid empty pocket queries.") + "<br/>";
+            html += checkboxy('settings_pq_modify_dialog', "Modify layout of page 'New Pocket Query'") + show_help("This option modifies the layout and order of the 'New Pocket Query' page.") + "<br/>";
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>Default values for new Pocket Query</b></div>";
             html += checkboxy('settings_pq_set_cachestotal', "Set number of caches to ") + "<input class='gclh_form' size=3 type='text' id='settings_pq_cachestotal' value='" + settings_pq_cachestotal + "'>&nbsp;" + show_help("Specifies the default value for total caches.") + "<br/>";
             html += checkboxy('settings_pq_option_ihaventfound', "Enable option '<i>I haven't found</i>' by default") + show_help("This activates the option '<i>I haven't found</i>' by default.") + "<br/>";
@@ -10158,6 +10335,7 @@ var mainGC = function () {
 // << hm -- Issue #111
                 'settings_search_enable_user_defined',
                 'settings_pq_warning',
+                'settings_pq_modify_dialog',
                 'settings_pq_set_cachestotal',
                 'settings_pq_option_ihaventfound',
                 'settings_pq_option_idontown',
