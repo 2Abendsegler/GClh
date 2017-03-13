@@ -521,7 +521,7 @@ var variablesInit = function (c) {
     c.settings_pq_difficulty = getValue("settings_pq_difficulty",">=");
     c.settings_pq_difficulty_score = getValue("settings_pq_difficulty_score","1");
     c.settings_pq_terrain = getValue("settings_pq_terrain",">=");
-    c.settings_pq_terrain_score = getValue("settings_pq_terrain_score","1"); 
+    c.settings_pq_terrain_score = getValue("settings_pq_terrain_score","1");
     c.settings_pq_automatically_day = getValue("settings_pq_automatically_day",true);
 
     // Settings: Custom Bookmarks
@@ -1561,7 +1561,7 @@ var mainGC = function () {
 
             // Bei folgenden Seiten keine weiteren Anpassungen vornehmen.
             if ( document.location.href.match(/\/\/www\.geocaching\.com\/pocket\/gcquery\.aspx/) ||      // Pocket Query: Einstellungen zur Selektion
-                 document.location.href.match(/\/\/www\.geocaching\.com\/pocket\/bmquery\.aspx/)    );   // Pocket Query aus Bockmarkliste: Einstellungen zur Selektion     
+                 document.location.href.match(/\/\/www\.geocaching\.com\/pocket\/bmquery\.aspx/)    );   // Pocket Query aus Bockmarkliste: Einstellungen zur Selektion
             else {
 
                 // Weitere Anpassungen auf allen Seiten:
@@ -1692,7 +1692,7 @@ var mainGC = function () {
                 nav_list.appendChild(menu);
 
                 // Bei Labs Caches hover aufbauen.
-                // Und auf den Seiten Suchen, Verstecken, Geotours, Account Setting, Message Center und in Karten wird die Linklist ohne Event aufgebaut, hover aufbauen. 
+                // Und auf den Seiten Suchen, Verstecken, Geotours, Account Setting, Message Center und in Karten wird die Linklist ohne Event aufgebaut, hover aufbauen.
                 if ( is_page("labs") || is_page("find_cache") || is_page("hide_cache") || is_page("geotours") || is_page("settings") || is_page("messagecenter") || is_page("map")) {
                     buildHover();
                 }
@@ -1920,7 +1920,7 @@ var mainGC = function () {
                     var div = document.createElement("div");
                     div.setAttribute("class", "GoAwayWarningMessage");
                     div.setAttribute("title", "Go away message");
-                    div.setAttribute("style", "float: right; width: 70px; color: rgb(255, 255, 255); box-sizing: border-box; border: 2px solid rgb(255, 255, 255); opacity: 0.7; cursor: pointer; border-radius: 3px; margin-right: 2px; margin-top: 2px; text-align: center;");        
+                    div.setAttribute("style", "float: right; width: 70px; color: rgb(255, 255, 255); box-sizing: border-box; border: 2px solid rgb(255, 255, 255); opacity: 0.7; cursor: pointer; border-radius: 3px; margin-right: 2px; margin-top: 2px; text-align: center;");
                     div.appendChild(document.createTextNode("Go away"));
                     div.addEventListener("click", warnMessageHideAndSave, false);
                     $('.WarningMessage')[0].parentNode.insertBefore(div, $('.WarningMessage')[0]);
@@ -1946,7 +1946,7 @@ var mainGC = function () {
         // Balken im rechten Headerbereich zur erneuten Aktivierung der Warnmeldung.
         var divShow = document.createElement("div");
         divShow.setAttribute("class", "ShowWarningMessage");
-        divShow.setAttribute("style", "z-index: 1004; float: right; right: 0px; width: 6px; background-color: rgb(224, 183, 10); height: 65px; position: absolute;");        
+        divShow.setAttribute("style", "z-index: 1004; float: right; right: 0px; width: 6px; background-color: rgb(224, 183, 10); height: 65px; position: absolute;");
         $('.WarningMessage')[0].parentNode.insertBefore(divShow, $('.WarningMessage')[0]);
 
         // Bereich für die Aufnahme des Mouseout Events, um die Warnmeldung wieder zu verbergen. Das ist notwendig, weil die eigentliche Warnmeldung
@@ -2306,7 +2306,7 @@ var mainGC = function () {
         }
     }
 
-// helper function marks two PQ options, which are in rejection 
+// helper function marks two PQ options, which are in rejection
     function markPqOptionsAreInRejection( idOption1, idOption2 ) {
         var status = false;
         if ( $("#"+idOption1).is(':checked') && $("#"+idOption2).is(':checked') ) {
@@ -2325,16 +2325,16 @@ var mainGC = function () {
         return status;
     }
 
-// helper function to find PQ options, which are in rejection    
+// helper function to find PQ options, which are in rejection
     function verifyPqOptions() {
         var status = false;
-        
+
         status = status | markPqOptionsAreInRejection( "ctl00_ContentBody_cbOptions_0", "ctl00_ContentBody_cbOptions_1" ); // I haven't found / I have found
         status = status | markPqOptionsAreInRejection( "ctl00_ContentBody_cbOptions_2", "ctl00_ContentBody_cbOptions_3" ); // I don't vs. own	I own
         status = status | markPqOptionsAreInRejection( "ctl00_ContentBody_cbOptions_4", "ctl00_ContentBody_cbOptions_5" ); // Are available to all users	vs. Are for members only
         status = status | markPqOptionsAreInRejection( "ctl00_ContentBody_cbOptions_8", "ctl00_ContentBody_cbOptions_9" ); // Found in the last 7 days  vs.	Have not been found
         status = status | markPqOptionsAreInRejection( "ctl00_ContentBody_cbOptions_12", "ctl00_ContentBody_cbOptions_13" ); // Is Disabled  vs.	Is Enabled
-        
+
         if ( status ) {
             $("#warning").show();
         } else {
@@ -2342,19 +2342,19 @@ var mainGC = function () {
         }
     }
 
-// set default value ONLY for new pocket queries    
+// set default value ONLY for new pocket queries
     if (document.location.href.match(/^https?:\/\/www\.geocaching\.com\/pocket\/gcquery\.aspx/)) {
         try {
             // mark all elements for an easier access
             $( "#ctl00_ContentBody_QueryPanel > *" ).each(function( index ) {
                 $(this).attr('id',index);
             });
-            
+
             if (document.location.href.match(/^https?:\/\/www\.geocaching\.com\/pocket\/gcquery\.aspx$/) ||
                 document.location.href.match(/^https?:\/\/www\.geocaching\.com\/pocket\/gcquery\.aspx\/ll=/) ) {
                 if ( settings_pq_set_cachestotal ) {
                     $("#ctl00_ContentBody_tbResults").val(settings_pq_cachestotal);
-                }        
+                }
                 if ( settings_pq_option_ihaventfound ) {
                     $("#ctl00_ContentBody_cbOptions_0").prop('checked', true);
                     $("#ctl00_ContentBody_cbOptions_1").prop('checked', false); // avoid conflicts
@@ -2369,17 +2369,17 @@ var mainGC = function () {
                 if ( settings_pq_option_isenabled ) {
                     $("#ctl00_ContentBody_cbOptions_13").prop('checked', true);
                     $("#ctl00_ContentBody_cbOptions_12").prop('checked', false); // avoid conflicts
-                }        
+                }
                 if ( settings_pq_option_filename ) {
                     $("#ctl00_ContentBody_cbIncludePQNameInFileName").prop('checked', true);
-                } 
-                
+                }
+
                 if ( settings_pq_set_difficulty ) {
                     $("#ctl00_ContentBody_cbDifficulty").prop('checked', true);
                     $("#ctl00_ContentBody_ddDifficulty").val( settings_pq_difficulty );
                     $("#ctl00_ContentBody_ddDifficultyScore").val( settings_pq_difficulty_score );
                 }
-                
+
                 if ( settings_pq_set_terrain ) {
                     $("#ctl00_ContentBody_cbTerrain").prop('checked', true);
                     $("#ctl00_ContentBody_ddTerrain").val( settings_pq_terrain );
@@ -2404,7 +2404,7 @@ var mainGC = function () {
                         $("#ctl00_ContentBody_cbDays_6").prop('checked', true);
                     } else {
                         // do nothing
-                    }   
+                    }
                 }
             }
             if ( settings_pq_warning ) {
@@ -2416,7 +2416,7 @@ var mainGC = function () {
             }
         } catch (e) {
             gclh_error("pq warning", e);
-        }        
+        }
     }
 
 // Map on create pocketQuery-page
@@ -3238,7 +3238,7 @@ var mainGC = function () {
     show_mail_and_message_icon:
     try {
         // Cache, TB und Aktiv User Infos ermitteln.
-        [ global_gc, global_tb, global_code, global_name, global_link, global_activ_username, global_founds, global_date, global_time, global_dateTime] = getGcTbUserInfo();                            
+        [ global_gc, global_tb, global_code, global_name, global_link, global_activ_username, global_founds, global_date, global_time, global_dateTime] = getGcTbUserInfo();
 
         // Nicht auf der Mail oder Message Seite selbst ausführen.
         if ( document.getElementById("ctl00_ContentBody_SendMessagePanel1_SendEmailPanel") ||
@@ -4614,7 +4614,7 @@ var mainGC = function () {
                 if (settings_map_hide_3) document.getElementById("LegendYellow").childNodes[0].setAttribute("class", "a_cat_displayed cat_untoggled");
                 if (settings_map_hide_6 && settings_map_hide_453 && settings_map_hide_7005 && settings_map_hide_13) document.getElementById("LegendRed").childNodes[0].setAttribute("class", "a_cat_displayed cat_untoggled");
                 if (settings_map_hide_4 && settings_map_hide_11 && settings_map_hide_137) document.getElementById("chkLegendWhite").childNodes[0].setAttribute("class", "a_cat_displayed cat_untoggled");
-                if (settings_map_hide_8 && settings_map_hide_5 && settings_map_hide_1858) document.getElementById("chkLegendBlue").childNodes[0].setAttribute("class", "a_cat_displayed cat_untoggled");                
+                if (settings_map_hide_8 && settings_map_hide_5 && settings_map_hide_1858) document.getElementById("chkLegendBlue").childNodes[0].setAttribute("class", "a_cat_displayed cat_untoggled");
             }
             window.addEventListener("load", hideCacheTypes, false);
         } catch (e) {
@@ -8609,7 +8609,7 @@ var mainGC = function () {
                 html += "<input style='height: 20px;' class='gclh_form' id='findplayer_field' class=\"Text\" type=\"text\" maxlength=\"100\" name=\"ctl00$ContentBody$FindUserPanel1$txtUsername\"/>";
             }
             if ( is_page("messagecenter") || is_page("find_cache") || is_page("hide_cache") || is_page("geotours") || is_page("map") || is_page("labs") ) {
-                html += " <input style='cursor: pointer; height: 24px;' class='gclh_form' type=\"submit\" value=\"Go\" name=\"ctl00$ContentBody$FindUserPanel1$GetUsers\"/>"; 
+                html += " <input style='cursor: pointer; height: 24px;' class='gclh_form' type=\"submit\" value=\"Go\" name=\"ctl00$ContentBody$FindUserPanel1$GetUsers\"/>";
                 html += " <input style='cursor: pointer; height: 24px;' class='gclh_form' id='btn_close1' type='button' value='close'>";
             } else {
                 html += " <input style='cursor: pointer;' class='gclh_form' type=\"submit\" value=\"Go\" name=\"ctl00$ContentBody$FindUserPanel1$GetUsers\"/>";
@@ -8773,17 +8773,17 @@ var mainGC = function () {
     }
 
     var dt_display = [ ["greater than or equal to",">="], ["equal to","="], ["less than or equal to","<="] ];
-    var dt_score = [ ["1","1"], ["1.5","1.5"], ["2","2"], ["2.5","2.5"], ["3","3"], ["3.5","3.5"], ["4","4"], ["4.5","4.5"], ["5","5"] ]; 
+    var dt_score = [ ["1","1"], ["1.5","1.5"], ["2","2"], ["2.5","2.5"], ["3","3"], ["3.5","3.5"], ["4","4"], ["4.5","4.5"], ["5","5"] ];
     function gclh_createSelectOptionCode( id, data, selectedValue ) {
         var html = "";
-        html += '<select class="gclh_form" id="'+id+'">'; 
+        html += '<select class="gclh_form" id="'+id+'">';
         for ( var i = 0; i < data.length; i++ ){
             html += "  <option value='" + data[i][1] + "' " + (selectedValue == data[i][1] ? "selected='selected'" : "") + "> " + data[i][0] + "</option>";
         }
         html += '</select>';
         return html;
-    }    
-    
+    }
+
 // Configuration Menu
     function gclh_showConfig() {
         // Alle eventuellen Verarbeitungen schließen ohne Url zu clearen.
@@ -8948,7 +8948,7 @@ var mainGC = function () {
             html += checkboxy('settings_pq_option_filename', "Enable option '<i>Include PQ name in download file name</i>' by default") + show_help("This activates the option '<i>Include PQ name in download file name</i>' by default.") + "<br/>";
             html += checkboxy('settings_pq_set_difficulty', "Set difficulity ");
             html += gclh_createSelectOptionCode( "settings_pq_difficulty", dt_display, settings_pq_difficulty );
-            html += '&nbsp;';            
+            html += '&nbsp;';
             html += gclh_createSelectOptionCode( "settings_pq_difficulty_score", dt_score, settings_pq_difficulty_score );
             html += " by default" + show_help("Specifies the default settings for difficulty score.") + "<br/>";
             html += checkboxy('settings_pq_set_terrain', "Set terrain ");
@@ -8958,8 +8958,8 @@ var mainGC = function () {
             html += " by default" + show_help("Specifies the default settings for terrain score.") + "<br/>";
             html += checkboxy('settings_pq_automatically_day', "Generate PQ today") + show_help("Use the server time to set the week day for creation.") + "<br/>";
             html += newParameterVersionSetzen(0.5) + newParameterOff;
-            html += "</div>";            
-            
+            html += "</div>";
+
             html += "<h4 class='gclh_headline2'>"+prepareHideable.replace("#name#","maps")+"Maps</h4>";
             html += "<div id='gclh_config_maps'>";
             html += checkboxy('settings_show_homezone', 'Show Homezone') + "<br>";
@@ -9050,7 +9050,7 @@ var mainGC = function () {
             html += " &nbsp; " + checkboxy('settings_switch_to_geohack_in_same_tab', 'Switch to GeoHack in same browser tab') + show_help("With this option you can switch from GC Map to GeoHack in the same browser tab.<br><br>This option requires \"Add link to GeoHack on GC Map\".") + "<br/>";
             html += newParameterVersionSetzen(0.5) + newParameterOff;
             html += "</div>";
-            
+
             html += "<h4 class='gclh_headline2'>"+prepareHideable.replace("#name#","profile")+"Profile <span style='font-size: 14px'>" + show_help2("This section include your profile pages (\/my\/ and \/profile\/ pages) with for example your founded caches and trackables, your earned souvenirs, your image gallery, your statistic ... <br><br>Also the section include the profile pages of the others.") + "</span></h4>";
             html += "<div id='gclh_config_profile'>";
             html += checkboxy('settings_bookmarks_show', "Show <a class='gclh_ref' href='#gclh_linklist' id='gclh_linklist_link_2'>Linklist</a> in your profile") + show_help("Show the Linklist at the right side in your profile. You can configure the links in the Linklist at the end of this page.") + "<br/>";
