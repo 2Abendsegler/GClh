@@ -1,3 +1,4 @@
+<a href="#v06" title="GClh II version 0.6 (??.03.2017)">v0.6</a> &nbsp;
 <a href="#v05" title="GClh II version 0.5 (11.03.2017)">v0.5</a> &nbsp;
 <a href="#v041" title="GClh II version 0.4.1 (26.02.2017)">v0.4.1</a> &nbsp; 
 <a href="#v04" title="GClh II version 0.4 (25.02.2017)">v0.4</a> &nbsp; 
@@ -11,6 +12,21 @@
 <a href="#v022" title="GClh II version 0.2.2 (09.01.2017)">v0.2.2</a> &nbsp; 
 <a href="#v021" title="GClh II version 0.2.1 (05.01.2017)">v0.2.1</a> &nbsp; 
 <a href="#v01" title="GClh II version 0.1 (05.01.2017)">v0.1</a> &nbsp; 
+
+---
+## v0.6:
+<ul>
+<li>
+New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/199">#199</a>] Default settings for new pocket queries <br>
+<img src="../images/v0.6_Screen01.png" alt="v0.6_Screen01.png"><br>
+<br></li>
+<li>
+New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/200">#200</a>] Warning for mutually exclusive option in pocket queries<br>
+<img src="../images/v0.6_Screen02.jpg" alt="v0.6_Screen02.jpg"><br>
+<br></li>
+<li>
+New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/222">#222</a>] Compact Layout of page 'New Pocket Query'
+</ul>
 
 ---
 ## v0.5:

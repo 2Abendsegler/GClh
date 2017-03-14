@@ -508,6 +508,22 @@ var variablesInit = function (c) {
 // << hm -- Issue #111
     c.settings_search_data = JSON.parse(getValue("settings_search_data", "[]"));
     c.settings_search_enable_user_defined = getValue("settings_search_enable_user_defined",true);
+    c.settings_pq_warning = getValue("settings_pq_warning",true);
+    c.settings_pq_modify_dialog = getValue("settings_pq_modify_dialog",true);
+    c.settings_pq_set_cachestotal = getValue("settings_pq_set_cachestotal",1000);
+    c.settings_pq_cachestotal = getValue("settings_pq_cachestotal",1000);
+    c.settings_pq_option_ihaventfound = getValue("settings_pq_option_ihaventfound",true);
+    c.settings_pq_option_idontown = getValue("settings_pq_option_idontown",true);
+    c.settings_pq_option_ignorelist = getValue("settings_pq_option_ignorelist",true);
+    c.settings_pq_option_isenabled = getValue("settings_pq_option_isenabled",true);
+    c.settings_pq_option_filename = getValue("settings_pq_option_filename",true);
+    c.settings_pq_set_terrain = getValue("settings_pq_set_terrain",true);
+    c.settings_pq_set_difficulty = getValue("settings_pq_set_difficulty",true);
+    c.settings_pq_difficulty = getValue("settings_pq_difficulty",">=");
+    c.settings_pq_difficulty_score = getValue("settings_pq_difficulty_score","1");
+    c.settings_pq_terrain = getValue("settings_pq_terrain",">=");
+    c.settings_pq_terrain_score = getValue("settings_pq_terrain_score","1");
+    c.settings_pq_automatically_day = getValue("settings_pq_automatically_day",true);
 
     // Settings: Custom Bookmarks
     var num = c.bookmarks.length;
@@ -1546,7 +1562,7 @@ var mainGC = function () {
 
             // Bei folgenden Seiten keine weiteren Anpassungen vornehmen.
             if ( document.location.href.match(/\/\/www\.geocaching\.com\/pocket\/gcquery\.aspx/) ||      // Pocket Query: Einstellungen zur Selektion
-                 document.location.href.match(/\/\/www\.geocaching\.com\/pocket\/bmquery\.aspx/)    );   // Pocket Query aus Bockmarkliste: Einstellungen zur Selektion     
+                 document.location.href.match(/\/\/www\.geocaching\.com\/pocket\/bmquery\.aspx/)    );   // Pocket Query aus Bockmarkliste: Einstellungen zur Selektion
             else {
 
                 // Weitere Anpassungen auf allen Seiten:
@@ -1677,7 +1693,7 @@ var mainGC = function () {
                 nav_list.appendChild(menu);
 
                 // Bei Labs Caches hover aufbauen.
-                // Und auf den Seiten Suchen, Verstecken, Geotours, Account Setting, Message Center und in Karten wird die Linklist ohne Event aufgebaut, hover aufbauen. 
+                // Und auf den Seiten Suchen, Verstecken, Geotours, Account Setting, Message Center und in Karten wird die Linklist ohne Event aufgebaut, hover aufbauen.
                 if ( is_page("labs") || is_page("find_cache") || is_page("hide_cache") || is_page("geotours") || is_page("settings") || is_page("messagecenter") || is_page("map")) {
                     buildHover();
                 }
@@ -1905,7 +1921,7 @@ var mainGC = function () {
                     var div = document.createElement("div");
                     div.setAttribute("class", "GoAwayWarningMessage");
                     div.setAttribute("title", "Go away message");
-                    div.setAttribute("style", "float: right; width: 70px; color: rgb(255, 255, 255); box-sizing: border-box; border: 2px solid rgb(255, 255, 255); opacity: 0.7; cursor: pointer; border-radius: 3px; margin-right: 2px; margin-top: 2px; text-align: center;");        
+                    div.setAttribute("style", "float: right; width: 70px; color: rgb(255, 255, 255); box-sizing: border-box; border: 2px solid rgb(255, 255, 255); opacity: 0.7; cursor: pointer; border-radius: 3px; margin-right: 2px; margin-top: 2px; text-align: center;");
                     div.appendChild(document.createTextNode("Go away"));
                     div.addEventListener("click", warnMessageHideAndSave, false);
                     $('.WarningMessage')[0].parentNode.insertBefore(div, $('.WarningMessage')[0]);
@@ -1931,7 +1947,7 @@ var mainGC = function () {
         // Balken im rechten Headerbereich zur erneuten Aktivierung der Warnmeldung.
         var divShow = document.createElement("div");
         divShow.setAttribute("class", "ShowWarningMessage");
-        divShow.setAttribute("style", "z-index: 1004; float: right; right: 0px; width: 6px; background-color: rgb(224, 183, 10); height: 65px; position: absolute;");        
+        divShow.setAttribute("style", "z-index: 1004; float: right; right: 0px; width: 6px; background-color: rgb(224, 183, 10); height: 65px; position: absolute;");
         $('.WarningMessage')[0].parentNode.insertBefore(divShow, $('.WarningMessage')[0]);
 
         // Bereich für die Aufnahme des Mouseout Events, um die Warnmeldung wieder zu verbergen. Das ist notwendig, weil die eigentliche Warnmeldung
@@ -2288,6 +2304,293 @@ var mainGC = function () {
             showLatestLogsSymbols( 0 );
         } catch (e) {
             gclh_error("Show the latest logs symbols", e);
+        }
+    }
+
+// helper function marks two PQ options, which are in rejection
+    function markPqOptionsAreInRejection( idOption1, idOption2 ) {
+        var status = false;
+        if ( $("#"+idOption1).is(':checked') && $("#"+idOption2).is(':checked') ) {
+            $("label[for='"+idOption1+"']").css('background-color','#ffff00');
+            $("label[for='"+idOption2+"']").css('background-color','#ffff00');
+            $("label[for='"+idOption1+"']").css('color','#ff0000');
+            $("label[for='"+idOption2+"']").css('color','#ff0000');
+            status = true;
+        }
+        else {
+            $("label[for='"+idOption1+"']").css('background-color','#ffffff');
+            $("label[for='"+idOption2+"']").css('background-color','#ffffff');
+            $("label[for='"+idOption1+"']").css('color','#000000');
+            $("label[for='"+idOption2+"']").css('color','#000000');
+        }
+        return status;
+    }
+
+// helper function to find PQ options, which are in rejection
+    function verifyPqOptions() {
+        var status = false;
+
+        status = status | markPqOptionsAreInRejection( "ctl00_ContentBody_cbOptions_0", "ctl00_ContentBody_cbOptions_1" ); // I haven't found / I have found
+        status = status | markPqOptionsAreInRejection( "ctl00_ContentBody_cbOptions_2", "ctl00_ContentBody_cbOptions_3" ); // I don't vs. own	I own
+        status = status | markPqOptionsAreInRejection( "ctl00_ContentBody_cbOptions_4", "ctl00_ContentBody_cbOptions_5" ); // Are available to all users	vs. Are for members only
+        status = status | markPqOptionsAreInRejection( "ctl00_ContentBody_cbOptions_8", "ctl00_ContentBody_cbOptions_9" ); // Found in the last 7 days  vs.	Have not been found
+        status = status | markPqOptionsAreInRejection( "ctl00_ContentBody_cbOptions_12", "ctl00_ContentBody_cbOptions_13" ); // Is Disabled  vs.	Is Enabled
+
+        if ( status ) {
+            $("#warning").show();
+        } else {
+            $("#warning").hide();
+        }
+    }
+
+// set default value ONLY for new pocket queries
+    if (document.location.href.match(/^https?:\/\/www\.geocaching\.com\/pocket\/gcquery\.aspx/)) {
+        try {
+            // mark all elements for an easier access
+            var pqelements = [
+                { index: 0, id: "gclhpq_QueryName", child: "#ctl00_ContentBody_tbName" },
+                { index: 1, id: "gclhpq_DaysOfGenerate", child: "#ctl00_ContentBody_cbDays" },
+                { index: 2, id: "gclhpq_CachesTotal", child: "#ctl00_ContentBody_tbResults" },
+                { index: 3, id: "gclhpq_AnyType", child: "#ctl00_ContentBody_rbTypeAny" },
+                { index: 4, id: "gclhpq_Types", child: "#ctl00_ContentBody_cbTaxonomy" },
+                { index: 5, id: "gclhpq_AnyContainer", child: "#ctl00_ContentBody_rbContainerAny" },
+                { index: 6, id: "gclhpq_Container", child: "#ctl00_ContentBody_rbContainerSelect" },
+                { index: 7, id: "gclhpq_Options", child: "#ctl00_ContentBody_cbOptions" },
+                { index: 8, id: "gclhpq_", child: "" }, // And
+                { index: 9, id: "gclhpq_Difficulty", child: "#ctl00_ContentBody_cbDifficulty" },
+                { index: 10, id: "gclhpq_Terrain", child: "#ctl00_ContentBody_cbTerrain" },
+                { index: 11, id: "gclhpq_Within", child: "#ctl00_ContentBody_rbNone" },
+                { index: 12, id: "gclhpq_Origin", child: "#ctl00_ContentBody_rbOriginNone" },
+                { index: 13, id: "gclhpq_Radius", child: "#ctl00_ContentBody_tbRadius" },
+                { index: 14, id: "gclhpq_PlacedDuring", child: "#ctl00_ContentBody_rbPlacedNone" },
+                { index: 15, id: "gclhpq_AttributesIncludes", child: "#ctl00_ContentBody_ctlAttrInclude_dtlAttributeIcons" },
+                { index: 16, id: "gclhpq_AttributesExcludes", child: "#ctl00_ContentBody_ctlAttrExclude_dtlAttributeIcons" },
+                { index: 17, id: "gclhpq_Output", child: ".PQOutputList" },
+                { index: 18, id: "gclhpq_SubmitDelete", child: "#ctl00_ContentBody_btnSubmit" },
+                { index: 19, id: "gclhpq_", child: "" }, // Pocket Query Tips header
+                { index: 20, id: "gclhpq_", child: "" } // Pocket Query Tips
+            ];
+
+            $( "#ctl00_ContentBody_QueryPanel > *[class!='Validation']" ).each(function( index ) {
+                for ( var i=0; i<pqelements.length; i++) {
+                    if ( pqelements[i].child.length > 0 ) {
+                        if ( $(this).find(pqelements[i].child).length > 0 ) {
+                            console.log( "index: " + index + " " + pqelements[i].child + " -> " + pqelements[i].id );
+                            $(this).attr('id',pqelements[i].id);
+                            break;
+                        }
+
+                    }
+                }
+            });
+            $("#gclhpq_Options").next().attr('id',"gclhpq_And");
+
+            function moveElementAfter( elementA, elementB ) {
+                var element = elementA.detach();
+                elementB.after(element);
+                return element;
+            }
+
+
+            if ( settings_pq_modify_dialog ) {
+
+                moveElementAfter( $("#gclhpq_Origin"), $("#gclhpq_QueryName") );
+                moveElementAfter( $("#gclhpq_DaysOfGenerate"), $("#gclhpq_Output") );
+                moveElementAfter( $("#gclhpq_Radius"), $("#gclhpq_CachesTotal") );
+                moveElementAfter( $("#gclhpq_Within"), $("#gclhpq_Origin") );
+                $("#gclhpq_And").hide(); // hide header 'And'
+
+
+                // hide within section
+                var object = hidePqSection( $("#gclhpq_Within"), "Show <i>Within</i> dialog..." );
+                var element = object.detach();
+                $("#12 p:last-child").after(element);
+
+                // move "Within radius" in Within section
+                var element = $("#gclhpq_Radius").detach();
+                $("#gclhpq_Within").append(element);
+
+
+                $("#gclhpq_Within").append('<table border="1" class="CheckboxTable SetHalfWidth"><tr><td id="within-left" style="vertical-align: top;"></td><td id="within-right" style="vertical-align: top;"></td></tr></table>');
+                var withinChildren = $("#gclhpq_Within").children("p");
+                var element = $(withinChildren[0]).find("span").detach();
+                $("#within-left").append(element);
+                element.change( actionWithinRadioButtons );
+                $("#within-left").append("<br/><br/>");
+
+                var element = $(withinChildren[1]).find("span").detach();
+                $("#within-left").append(element);
+                element.change( actionWithinRadioButtons );
+                $("#within-left").append("<br/><br/>");
+
+                var element = $(withinChildren[2]).find("span").detach();
+                $("#within-left").append(element);
+                element.change( actionWithinRadioButtons );
+                $("#within-left").append("<br/><br/>");
+
+                var element = $("#ctl00_ContentBody_lbCountries").detach();
+                element.attr('size', 8);
+                $("#within-right").append(element);
+                var element = $("#ctl00_ContentBody_lbStates").detach();
+                element.attr('size', 8);
+                $("#within-right").append(element);
+
+                var element = $(withinChildren[0]).detach();
+                var element = $(withinChildren[1]).detach();
+                var element = $(withinChildren[2]).detach();
+
+                actionWithinRadioButtons();
+
+                function actionWithinRadioButtons() {
+                    console.log("actionWithinRadioButtons()");
+                    var selectedVal = "";
+                    var selected = $("input[type='radio'][name='ctl00$ContentBody$CountryState']:checked");
+                    if (selected.length > 0) {
+                        selectedVal = selected.val();
+                        if ( selectedVal == "rbCountries" ) {
+                            $("#ctl00_ContentBody_lbCountries").show();
+                            $("#ctl00_ContentBody_lbStates").hide();
+                        } else if ( selectedVal == "rbStates" ) {
+                            $("#ctl00_ContentBody_lbCountries").hide();
+                            $("#ctl00_ContentBody_lbStates").show();
+                        } else {
+                            $("#ctl00_ContentBody_lbCountries").hide();
+                            $("#ctl00_ContentBody_lbStates").hide();
+                        }
+                    }
+                }
+
+                // move Difficulty
+                var element = $("#gclhpq_Difficulty").detach();
+                $("#ctl00_ContentBody_cbOptions tr:last").after('<tr><td colspan="2" id="option_difficulty"></td></tr>');
+                $("#option_difficulty").append(element.html());
+
+                // move Terrain
+                var element = $("#gclhpq_Terrain").detach();
+                $("#ctl00_ContentBody_cbOptions tr:last").after('<tr><td colspan="2" id="option_terrain"></td></tr>');
+                $("#option_terrain").append(element.html());
+
+                // select each cache type and hide radio buttons
+                $("#gclhpq_AnyType").hide();
+                $("#ctl00_ContentBody_rbTypeSelect").prop('checked', true);
+                $("#ctl00_ContentBody_rbTypeSelect").hide();
+                $( "#4" ).find("input").each(function( index ) {
+                    $(this).prop('checked', true);
+                });
+
+                // select each cache container and hide radio buttons
+                $("#gclhpq_AnyContainer").hide();
+                $("#ctl00_ContentBody_rbContainerSelect").prop('checked', true);
+                $("#ctl00_ContentBody_rbContainerSelect").hide();
+                $( "#6" ).find("input").each(function( index ) {
+                    $(this).prop('checked', true);
+                });
+
+
+
+                function hidePqSection( object,text ) {
+                    console.log("hidePqSection");
+                    var buttonId = "toggle_button_"+object.attr('id');
+
+                    object.before('<botton value="" id="'+buttonId+'" style="padding: 5px 10px 5px 10px;  border: 1px solid; cursor: pointer;">'+text+'</button>');
+                    object.hide();
+                    object.css('margin-top','15px');
+                    $("#"+buttonId).click( function() {
+                        object.show();
+                        $("#"+buttonId).hide();
+                    } );
+                    return $("#"+buttonId);
+                }
+
+                hidePqSection( $("#gclhpq_Types"), "Show Cache Types" );
+                hidePqSection( $("#gclhpq_Container"), "Show Container Size" );
+                $("#gclhpq_Options").css('margin-top','15px');
+
+                hidePqSection( $("#gclhpq_PlacedDuring"), "Show Placed During dialog" );
+                hidePqSection( $("#gclhpq_AttributesIncludes"), "Show Attributes to Include" );
+                hidePqSection( $("#gclhpq_AttributesExcludes"), "Show Attributes to Exclude" );
+
+                $("#gclhpq_DaysOfGenerate").css('margin-top','15px');
+
+                // reorg
+                $("#gclhpq_Output").find("dl").attr('id','PQOutputList');
+                var serverTime = $("#gclhpq_DaysOfGenerate").find("legend").find("small").text();
+                $("#gclhpq_DaysOfGenerate").find("legend").text("Generate "+serverTime);
+                $("#gclhpq_DaysOfGenerate").append("<hr/>");
+                $("#gclhpq_DaysOfGenerate").append($("#PQOutputList"));
+
+                hidePqSection( $("#PQOutputList"), "Advanced..." );
+
+                $("#gclhpq_Output").hide();
+            }
+
+            if ( ( $("p.Success").length<=0 ) && (document.location.href.match(/^https?:\/\/www\.geocaching\.com\/pocket\/gcquery\.aspx$/) ||
+                document.location.href.match(/^https?:\/\/www\.geocaching\.com\/pocket\/gcquery\.aspx\/ll=/)) ) {
+
+                if ( settings_pq_set_cachestotal ) {
+                    $("#ctl00_ContentBody_tbResults").val(settings_pq_cachestotal);
+                }
+                if ( settings_pq_option_ihaventfound ) {
+                    $("#ctl00_ContentBody_cbOptions_0").prop('checked', true);
+                    $("#ctl00_ContentBody_cbOptions_1").prop('checked', false); // avoid conflicts
+                }
+                if ( settings_pq_option_idontown ) {
+                    $("#ctl00_ContentBody_cbOptions_2").prop('checked', true);
+                    $("#ctl00_ContentBody_cbOptions_3").prop('checked', false); // avoid conflicts
+                }
+                if ( settings_pq_option_ignorelist ) {
+                    $("#ctl00_ContentBody_cbOptions_6").prop('checked', true);
+                }
+                if ( settings_pq_option_isenabled ) {
+                    $("#ctl00_ContentBody_cbOptions_13").prop('checked', true);
+                    $("#ctl00_ContentBody_cbOptions_12").prop('checked', false); // avoid conflicts
+                }
+                if ( settings_pq_option_filename ) {
+                    $("#ctl00_ContentBody_cbIncludePQNameInFileName").prop('checked', true);
+                }
+
+                if ( settings_pq_set_difficulty ) {
+                    $("#ctl00_ContentBody_cbDifficulty").prop('checked', true);
+                    $("#ctl00_ContentBody_ddDifficulty").val( settings_pq_difficulty );
+                    $("#ctl00_ContentBody_ddDifficultyScore").val( settings_pq_difficulty_score );
+                }
+
+                if ( settings_pq_set_terrain ) {
+                    $("#ctl00_ContentBody_cbTerrain").prop('checked', true);
+                    $("#ctl00_ContentBody_ddTerrain").val( settings_pq_terrain );
+                    $("#ctl00_ContentBody_ddTerrainScore").val( settings_pq_terrain_score );
+                }
+
+                if ( settings_pq_automatically_day ) {
+                    var servertime = $("#gclhpq_DaysOfGenerate").find("legend").text();
+                    if ( servertime.match(/.*Sunday.*/) ) {
+                        $("#ctl00_ContentBody_cbDays_0").prop('checked', true);
+                    } else if ( servertime.match(/.*Monday.*/) ) {
+                        $("#ctl00_ContentBody_cbDays_1").prop('checked', true);
+                    } else if ( servertime.match(/.*Tuesday.*/) ) {
+                        $("#ctl00_ContentBody_cbDays_2").prop('checked', true);
+                    } else if ( servertime.match(/.*Wednesday.*/) ) {
+                        $("#ctl00_ContentBody_cbDays_3").prop('checked', true);
+                    } else if ( servertime.match(/.*Thursday.*/) ) {
+                        $("#ctl00_ContentBody_cbDays_4").prop('checked', true);
+                    } else if ( servertime.match(/.*Friday.*/) ) {
+                        $("#ctl00_ContentBody_cbDays_5").prop('checked', true);
+                    } else if ( servertime.match(/.*Saturday.*/) ) {
+                        $("#ctl00_ContentBody_cbDays_6").prop('checked', true);
+                    } else {
+                        // do nothing
+                    }
+                }
+            }
+            if ( settings_pq_warning ) {
+                $("#ctl00_ContentBody_cbOptions").after("<div id='warning' style='display: none; border: 1px solid #dfdf80; background-color: #ffffa5; padding: 10px;'><div style='float: left'><img src='https://www.geocaching.com/play/Content/ui-icons/icons/global/attention.svg'></div><div>&nbsp;&nbsp;One or more options are in conflict and creates an empty result set. Please change your selection.</div></div>");
+                for ( var i=0; i<=13; i++ ) {
+                    $("#ctl00_ContentBody_cbOptions_"+i ).change( verifyPqOptions );
+                }
+                verifyPqOptions();
+            }
+        } catch (e) {
+            gclh_error("pq warning", e);
         }
     }
 
@@ -3110,7 +3413,7 @@ var mainGC = function () {
     show_mail_and_message_icon:
     try {
         // Cache, TB und Aktiv User Infos ermitteln.
-        [ global_gc, global_tb, global_code, global_name, global_link, global_activ_username, global_founds, global_date, global_time, global_dateTime] = getGcTbUserInfo();                            
+        [ global_gc, global_tb, global_code, global_name, global_link, global_activ_username, global_founds, global_date, global_time, global_dateTime] = getGcTbUserInfo();
 
         // Nicht auf der Mail oder Message Seite selbst ausführen.
         if ( document.getElementById("ctl00_ContentBody_SendMessagePanel1_SendEmailPanel") ||
@@ -4486,7 +4789,7 @@ var mainGC = function () {
                 if (settings_map_hide_3) document.getElementById("LegendYellow").childNodes[0].setAttribute("class", "a_cat_displayed cat_untoggled");
                 if (settings_map_hide_6 && settings_map_hide_453 && settings_map_hide_7005 && settings_map_hide_13) document.getElementById("LegendRed").childNodes[0].setAttribute("class", "a_cat_displayed cat_untoggled");
                 if (settings_map_hide_4 && settings_map_hide_11 && settings_map_hide_137) document.getElementById("chkLegendWhite").childNodes[0].setAttribute("class", "a_cat_displayed cat_untoggled");
-                if (settings_map_hide_8 && settings_map_hide_5 && settings_map_hide_1858) document.getElementById("chkLegendBlue").childNodes[0].setAttribute("class", "a_cat_displayed cat_untoggled");                
+                if (settings_map_hide_8 && settings_map_hide_5 && settings_map_hide_1858) document.getElementById("chkLegendBlue").childNodes[0].setAttribute("class", "a_cat_displayed cat_untoggled");
             }
             window.addEventListener("load", hideCacheTypes, false);
         } catch (e) {
@@ -8481,7 +8784,7 @@ var mainGC = function () {
                 html += "<input style='height: 20px;' class='gclh_form' id='findplayer_field' class=\"Text\" type=\"text\" maxlength=\"100\" name=\"ctl00$ContentBody$FindUserPanel1$txtUsername\"/>";
             }
             if ( is_page("messagecenter") || is_page("find_cache") || is_page("hide_cache") || is_page("geotours") || is_page("map") || is_page("labs") ) {
-                html += " <input style='cursor: pointer; height: 24px;' class='gclh_form' type=\"submit\" value=\"Go\" name=\"ctl00$ContentBody$FindUserPanel1$GetUsers\"/>"; 
+                html += " <input style='cursor: pointer; height: 24px;' class='gclh_form' type=\"submit\" value=\"Go\" name=\"ctl00$ContentBody$FindUserPanel1$GetUsers\"/>";
                 html += " <input style='cursor: pointer; height: 24px;' class='gclh_form' id='btn_close1' type='button' value='close'>";
             } else {
                 html += " <input style='cursor: pointer;' class='gclh_form' type=\"submit\" value=\"Go\" name=\"ctl00$ContentBody$FindUserPanel1$GetUsers\"/>";
@@ -8644,6 +8947,18 @@ var mainGC = function () {
         document.getElementsByTagName('body')[0].appendChild(css);
     }
 
+    var dt_display = [ ["greater than or equal to",">="], ["equal to","="], ["less than or equal to","<="] ];
+    var dt_score = [ ["1","1"], ["1.5","1.5"], ["2","2"], ["2.5","2.5"], ["3","3"], ["3.5","3.5"], ["4","4"], ["4.5","4.5"], ["5","5"] ];
+    function gclh_createSelectOptionCode( id, data, selectedValue ) {
+        var html = "";
+        html += '<select class="gclh_form" id="'+id+'">';
+        for ( var i = 0; i < data.length; i++ ){
+            html += "  <option value='" + data[i][1] + "' " + (selectedValue == data[i][1] ? "selected='selected'" : "") + "> " + data[i][0] + "</option>";
+        }
+        html += '</select>';
+        return html;
+    }
+
 // Configuration Menu
     function gclh_showConfig() {
         // Alle eventuellen Verarbeitungen schließen ohne Url zu clearen.
@@ -8733,7 +9048,6 @@ var mainGC = function () {
             html += "&nbsp;" + "Page-Width: <input class='gclh_form' type='text' size='2' id='settings_new_width' value='" + getValue("settings_new_width", 1000) + "'> px" + show_help("With this option you can expand the small layout. The default value of gc.com is 950 px.") + "<br>";
             html += checkboxy('settings_hide_facebook', 'Hide Facebook login') + "<br/>";
             html += checkboxy('settings_hide_socialshare', 'Hide social sharing Facebook and Twitter') + "<br/>";
-            html += checkboxy('settings_fixed_pq_header', 'Show fixed header in PQ list') + "<br/>";
             html += checkboxy('settings_show_sums_in_bookmark_lists', 'Show number of caches in bookmark lists') + show_help("With this option the number of caches and the number of selected caches in the categories \"All\", \"Found\", \"Archived\" and \"Deactivated\", corresponding to the select buttons, are shown in bookmark lists at the end of the list.") + "<br/>";
             html += checkboxy('settings_hide_warning_message', 'Hide warning message') + show_help("With this option you can choose the possibility to hide a potential warning message of the masters of gc.com. <br><br>One example is the down time warning message which comes from time to time and is placed unnecessarily a lot of days at the top of pages. You can hide it except for a small line in the top right side of the pages. You can activate the warning message again if your mouse goes to this area. <br><br>If the warning message is deleted of the masters, this small area is deleted too.") + "<br/>";
             html += newParameterOn1;
@@ -8793,6 +9107,33 @@ var mainGC = function () {
             html += checkboxy('settings_redirect_to_map', 'Redirect cache search lists to map display') + show_help("If you enable this option, you will be automatically redirected from the older cache search lists (nearest lists) to map display.") + "<br/>";
             html += checkboxy('settings_show_log_it', 'Show GClh \"Log it\" icon (too for basic members for PMO)') + show_help("The GClh \"Log it\" icon is displayed beside cache titles in nearest lists. If you click it, you will be redirected directly to the log form. <br><br>You can use it too as basic member to log Premium Member Only (PMO) caches.") + "<br/>";
             html += checkboxy('settings_show_nearestuser_profil_link', 'Show profile link on search for created / found by caches') + show_help("This option adds an link to the user profile when searching for caches created or found by a certain user") + "<br/>";
+            html += "</div>";
+
+            html += newParameterOn2;
+            html += "<h4 class='gclh_headline2'>"+prepareHideable.replace("#name#","pq")+"Pocket Query</h4>";
+            html += "<div id='gclh_config_pq'>";
+            html += checkboxy('settings_fixed_pq_header', 'Show fixed header in PQ list') + "<br/>";
+            html += checkboxy('settings_pq_warning', "Get a warning in case of empty pocket queries") + show_help("Show a message if one or more options are in conflict. This helps to avoid empty pocket queries.") + "<br/>";
+            html += checkboxy('settings_pq_modify_dialog', "Modify layout of page 'New Pocket Query'") + show_help("This option modifies the layout and order of the 'New Pocket Query' page.") + "<br/>";
+            html += "<div style='margin-top: 9px; margin-left: 5px'><b>Default values for new Pocket Query</b></div>";
+            html += checkboxy('settings_pq_set_cachestotal', "Set number of caches to ") + "<input class='gclh_form' size=3 type='text' id='settings_pq_cachestotal' value='" + settings_pq_cachestotal + "'>&nbsp;" + show_help("Specifies the default value for total caches.") + "<br/>";
+            html += checkboxy('settings_pq_option_ihaventfound', "Enable option '<i>I haven't found</i>' by default") + show_help("This activates the option '<i>I haven't found</i>' by default.") + "<br/>";
+            html += checkboxy('settings_pq_option_idontown', "Enable option '<i>I don't own</i>' by default") + show_help("This activates the option '<i>I don't own</i>' by default.") + "<br/>";
+            html += checkboxy('settings_pq_option_ignorelist', "Enable option '<i>Are not on my ignore list</i>' by default") + show_help("This activates the option '<i>Are not on my ignore list</i>' by default.") + "<br/>";
+            html += checkboxy('settings_pq_option_isenabled', "Enable option '<i>Is Enabled</i>' by default") + show_help("This activates the option '<i>Is Enabled</i>' by default.") + "<br/>";
+            html += checkboxy('settings_pq_option_filename', "Enable option '<i>Include PQ name in download file name</i>' by default") + show_help("This activates the option '<i>Include PQ name in download file name</i>' by default.") + "<br/>";
+            html += checkboxy('settings_pq_set_difficulty', "Set difficulity ");
+            html += gclh_createSelectOptionCode( "settings_pq_difficulty", dt_display, settings_pq_difficulty );
+            html += '&nbsp;';
+            html += gclh_createSelectOptionCode( "settings_pq_difficulty_score", dt_score, settings_pq_difficulty_score );
+            html += " by default" + show_help("Specifies the default settings for difficulty score.") + "<br/>";
+            html += checkboxy('settings_pq_set_terrain', "Set terrain ");
+            html += gclh_createSelectOptionCode( "settings_pq_terrain", dt_display, settings_pq_terrain );
+            html += '&nbsp;';
+            html += gclh_createSelectOptionCode( "settings_pq_terrain_score", dt_score, settings_pq_terrain_score );
+            html += " by default" + show_help("Specifies the default settings for terrain score.") + "<br/>";
+            html += checkboxy('settings_pq_automatically_day', "Generate PQ today") + show_help("Use the server time to set the week day for creation.") + "<br/>";
+            html += newParameterVersionSetzen(0.5) + newParameterOff;
             html += "</div>";
 
             html += "<h4 class='gclh_headline2'>"+prepareHideable.replace("#name#","maps")+"Maps</h4>";
@@ -9307,6 +9648,7 @@ var mainGC = function () {
                 makeConfigAreaHideable("global");
                 makeConfigAreaHideable("config");
                 makeConfigAreaHideable("nearestlist");
+                makeConfigAreaHideable("pq");
                 makeConfigAreaHideable("maps");
                 makeConfigAreaHideable("profile");
                 makeConfigAreaHideable("listing");
@@ -9823,6 +10165,11 @@ var mainGC = function () {
             setValue("settings_show_latest_logs_symbols_count", document.getElementById('settings_show_latest_logs_symbols_count').value);
             setValue("settings_default_langu", document.getElementById('settings_default_langu').value);
             setValue("settings_log_statistic_reload", document.getElementById('settings_log_statistic_reload').value);
+            setValue("settings_pq_cachestotal", document.getElementById('settings_pq_cachestotal').value);
+            setValue("settings_pq_difficulty", document.getElementById('settings_pq_difficulty').value);
+            setValue("settings_pq_difficulty_score", document.getElementById('settings_pq_difficulty_score').value);
+            setValue("settings_pq_terrain", document.getElementById('settings_pq_terrain').value);
+            setValue("settings_pq_terrain_score", document.getElementById('settings_pq_terrain_score').value);
 //--> $$065 Begin of insert
 //<-- $$065 End of insert
 
@@ -9985,7 +10332,18 @@ var mainGC = function () {
                 'settings_friendlist_summary',
                 'settings_friendlist_summary_viponly',
 // << hm -- Issue #111
-                'settings_search_enable_user_defined'
+                'settings_search_enable_user_defined',
+                'settings_pq_warning',
+                'settings_pq_modify_dialog',
+                'settings_pq_set_cachestotal',
+                'settings_pq_option_ihaventfound',
+                'settings_pq_option_idontown',
+                'settings_pq_option_ignorelist',
+                'settings_pq_option_isenabled',
+                'settings_pq_option_filename',
+                'settings_pq_set_difficulty',
+                'settings_pq_set_terrain',
+                'settings_pq_automatically_day'
             );
             for (var i = 0; i < checkboxes.length; i++) {
                 if ( document.getElementById(checkboxes[i]) ) {
@@ -10524,6 +10882,7 @@ var mainGC = function () {
         setShowHideConfigAll("gclh_config_global", showHide);
         setShowHideConfigAll("gclh_config_config", showHide);
         setShowHideConfigAll("gclh_config_nearestlist", showHide);
+        setShowHideConfigAll("gclh_config_pq", showHide);
         setShowHideConfigAll("gclh_config_maps", showHide);
         setShowHideConfigAll("gclh_config_profile", showHide);
         setShowHideConfigAll("gclh_config_listing", showHide);
