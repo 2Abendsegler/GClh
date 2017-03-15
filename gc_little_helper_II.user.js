@@ -4678,7 +4678,6 @@ var mainGC = function () {
                 aTag.setAttribute("style", "background-image: url('/images/silk/map_go.png');");
                 var side = document.getElementsByClassName("leaflet-top leaflet-right")[0];
 
-//$$FE002         div.appendChild(script);
                 div.appendChild(aTag);
                 side.appendChild(div);
 
@@ -8184,12 +8183,12 @@ var mainGC = function () {
 // Info kann auch ohne Hervorhebung verwendet werden, muß dann aber in jeder Zeile hinterlegt werden.
 // Aufbau idealerweise in eigenen Zeilen, damit man irgendwann man schnell Zeilen rausschmeißen kann, wenn die Infos alt sind:
 //--> $$000 Begin of change                                                 | Hier.
-    newParameterOn1 = "<div  style='background-color: rgba(240, 223, 198, 0.6); width: 100%; height: 100%; padding: 2px 0px 2px 2px; margin-left: -2px;'>";
-    newParameterOn2 = "<div  style='background-color: rgba(240, 223, 198, 1.0); width: 100%; height: 100%; padding: 2px 0px 2px 2px; margin-left: -2px;'>";
-    newParameterOn3 = "<div  style='background-color: rgba(240, 223, 198, 0.3); width: 100%; height: 100%; padding: 2px 0px 2px 2px; margin-left: -2px;'>";
-    newParameterLL1 = '<span style="background-color: rgba(240, 223, 198, 0.6); float: right; padding-top: 25px; width: 100%; margin: -22px 2px 0px 0px;"></span>';
-    newParameterLL2 = '<span style="background-color: rgba(240, 223, 198, 1.0); float: right; padding-top: 25px; width: 100%; margin: -22px 2px 0px 0px;"></span>';
-    newParameterLL3 = '<span style="background-color: rgba(240, 223, 198, 0.3); float: right; padding-top: 25px; width: 100%; margin: -22px 2px 0px 0px;"></span>';
+    newParameterOn1 = "<div  style='background-color: rgba(240, 223, 198, 0.3); width: 100%; height: 100%; padding: 2px 0px 2px 2px; margin-left: -2px;'>";
+    newParameterOn2 = "<div  style='background-color: rgba(240, 223, 198, 0.6); width: 100%; height: 100%; padding: 2px 0px 2px 2px; margin-left: -2px;'>";
+    newParameterOn3 = "<div  style='background-color: rgba(240, 223, 198, 1.0); width: 100%; height: 100%; padding: 2px 0px 2px 2px; margin-left: -2px;'>";
+    newParameterLL1 = '<span style="background-color: rgba(240, 223, 198, 0.3); float: right; padding-top: 25px; width: 100%; margin: -22px 2px 0px 0px;"></span>';
+    newParameterLL2 = '<span style="background-color: rgba(240, 223, 198, 0.6); float: right; padding-top: 25px; width: 100%; margin: -22px 2px 0px 0px;"></span>';
+    newParameterLL3 = '<span style="background-color: rgba(240, 223, 198, 1.0); float: right; padding-top: 25px; width: 100%; margin: -22px 2px 0px 0px;"></span>';
 //<-- $$000 End of change
     function newParameterVersionSetzen(version) {
         var newParameterVers = "<span style='font-size: 70%; font-style: italic; float: right; margin-top: -14px; margin-right: 4px;' ";
@@ -8385,8 +8384,7 @@ var mainGC = function () {
         var a = document.createElement("a");
         a.appendChild(document.createTextNode("Show log counter"));
         a.setAttribute("href", "javascript:void(0);");
-//$$FE001 a.setAttribute("title", "(Only possible if all logs are shown)");
-        a.setAttribute("title", "Show log counter for log type and total"); //$$FE001
+        a.setAttribute("title", "Show log counter for log type and total");
         a.setAttribute("id", "gclh_show_log_counter");
         a.setAttribute("style", "float: right");
         a.addEventListener("click", showLogCounter, false);
@@ -8408,17 +8406,15 @@ var mainGC = function () {
             }
             if (logCounter["all"] != 0) {
                 var logs = $('#cache_logs_table2').find('tbody tr td').find('.LogType');
-//$$FE001         if (logCounter["all"] == logs.length) {
-                    for (var i = 0; i < logs.length; i++) {
-                        var log = logs[i];
-                        if (log && log.children[1] && log.children[0].children[0].title && logCounter[log.children[0].children[0].title]) {
-                            var logTyp = log.children[0].children[0].title;
-                            log.children[1].innerHTML = " Log " + logCounter[logTyp] + " / Total Log " + logCounter["all"];
-                            logCounter[logTyp]--;
-                            logCounter["all"]--;
-                        }
+                for (var i = 0; i < logs.length; i++) {
+                    var log = logs[i];
+                    if (log && log.children[1] && log.children[0].children[0].title && logCounter[log.children[0].children[0].title]) {
+                        var logTyp = log.children[0].children[0].title;
+                        log.children[1].innerHTML = " Log " + logCounter[logTyp] + " / Total Log " + logCounter["all"];
+                        logCounter[logTyp]--;
+                        logCounter["all"]--;
                     }
-//$$FE001         }
+                }
             }
         } catch (e) {
             gclh_error("showLogCounter", e);
@@ -8428,13 +8424,9 @@ var mainGC = function () {
 // Prüfen, ob die Seite die eigene Statistik ist.
     function isOwnStatisticsPage(){
         if ( ( document.location.href.match(/^https?:\/\/www\.geocaching\.com\/my\/statistics\.aspx/)            ) ||
-             ( document.getElementById("ctl00_ContentBody_ProfilePanel1_lnkStatistics") &&
+             ( document.location.href.match(/^https?:\/\/www\.geocaching\.com\/profile/) &&
+               document.getElementById("ctl00_ContentBody_ProfilePanel1_lnkStatistics") &&
                document.getElementById("ctl00_ContentBody_ProfilePanel1_lnkStatistics").className == "Active" &&
-               document.location.href.match(/^https?:\/\/www\.geocaching\.com\/profile/) &&
-               !document.location.href.match(/(\?guid=|\?u=)/)                                                   ) ||
-             ( document.getElementById("ctl00_ContentBody_ProfilePanel1_lnkStatistics") &&
-               document.getElementById("ctl00_ContentBody_ProfilePanel1_lnkStatistics").className == "Active" &&
-               document.location.href.match(/^https?:\/\/www\.geocaching\.com\/profile\/(.*)(\?guid=|\?u=)/) &&
                document.getElementById('ctl00_ContentBody_lblUserProfile').innerHTML.match(": " + $('.li-user-info').children().first().text()) ) ) {
             return true;
         } else return false;
@@ -9094,9 +9086,7 @@ var mainGC = function () {
             html += "<div id='gclh_config_config'>";
             html += checkboxy('settings_f4_call_gclh_config', 'Call GClh Config on F4') + show_help("With this option you are able to call the GClh Config page (this page) by pressing F4.") + "<br/>";
             html += checkboxy('settings_f2_save_gclh_config', 'Save GClh Config on F2') + show_help("With this option you are able to save the GClh Config page (this page) by pressing F2 instead of scrolling to the bottom and choose the save button.") + "<br/>";
-            html += newParameterOn3;
             html += checkboxy('settings_f10_call_gclh_sync', 'Call GClh Sync on F10') + show_help("With this option you are able to call the GClh Sync page by pressing F10.") + "<br/>";
-            html += newParameterVersionSetzen(0.3) + newParameterOff;
             html += checkboxy('settings_sync_autoImport', 'Auto apply DB Sync') + show_help("If you enable this option, settings from dropbox will be applied automatically about GClh Sync every 10 hours.") + "<br/>";
             html += checkboxy('settings_show_save_message', 'Show info message if GClh data are saved') + show_help("With this option an info message is displayed if the GClh Config data are saved respectively if the GClh Sync data are imported.") + "<br/>";
             html += checkboxy('settings_sort_default_bookmarks', 'Sort default links for the Linklist') + show_help("With this option you can sort the default links for the Linklist by description. Your selection, sort or not, will done first by the next new start of the GClh Config. You can configure these default links to use in your Linklist at the end of this configuration page.") + "<br/>";
@@ -9111,13 +9101,15 @@ var mainGC = function () {
             html += checkboxy('settings_show_nearestuser_profil_link', 'Show profile link on search for created / found by caches') + show_help("This option adds an link to the user profile when searching for caches created or found by a certain user") + "<br/>";
             html += "</div>";
 
-            html += newParameterOn2;
             html += "<h4 class='gclh_headline2'>"+prepareHideable.replace("#name#","pq")+"Pocket Query</h4>";
             html += "<div id='gclh_config_pq'>";
             html += checkboxy('settings_fixed_pq_header', 'Show fixed header in PQ list') + "<br/>";
+            html += newParameterOn3;
             html += checkboxy('settings_pq_warning', "Get a warning in case of empty pocket queries") + show_help("Show a message if one or more options are in conflict. This helps to avoid empty pocket queries.") + "<br/>";
             html += checkboxy('settings_pq_modify_dialog', "Modify layout of page 'New Pocket Query'") + show_help("This option modifies the layout and order of the 'New Pocket Query' page.") + "<br/>";
+            html += newParameterVersionSetzen(0.6) + newParameterOff;
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>Default values for new Pocket Query</b></div>";
+            html += newParameterOn3;
             html += checkboxy('settings_pq_set_cachestotal', "Set number of caches to ") + "<input class='gclh_form' size=3 type='text' id='settings_pq_cachestotal' value='" + settings_pq_cachestotal + "'>&nbsp;" + show_help("Specifies the default value for total caches.") + "<br/>";
             html += checkboxy('settings_pq_option_ihaventfound', "Enable option '<i>I haven't found</i>' by default") + show_help("This activates the option '<i>I haven't found</i>' by default.") + "<br/>";
             html += checkboxy('settings_pq_option_idontown', "Enable option '<i>I don't own</i>' by default") + show_help("This activates the option '<i>I don't own</i>' by default.") + "<br/>";
@@ -9135,7 +9127,7 @@ var mainGC = function () {
             html += gclh_createSelectOptionCode( "settings_pq_terrain_score", dt_score, settings_pq_terrain_score );
             html += " by default" + show_help("Specifies the default settings for terrain score.") + "<br/>";
             html += checkboxy('settings_pq_automatically_day', "Generate PQ today") + show_help("Use the server time to set the week day for creation.") + "<br/>";
-            html += newParameterVersionSetzen(0.5) + newParameterOff;
+            html += newParameterVersionSetzen(0.6) + newParameterOff;
             html += "</div>";
 
             html += "<h4 class='gclh_headline2'>"+prepareHideable.replace("#name#","maps")+"Maps</h4>";
@@ -9240,9 +9232,7 @@ var mainGC = function () {
             html += content_settings_show_mail_in_allmyvips;
             html += checkboxy('settings_show_sums_in_watchlist', 'Show number of caches in your watchlist') + show_help("With this option the number of caches and the number of selected caches in the categories \"All\", \"Archived\" and \"Deactivated\", corresponding to the select buttons, are shown in your watchlist at the end of the list.") + "<br/>";
             html += checkboxy('settings_logit_for_basic_in_pmo', 'Log PMO caches by standard \"Log It\" icon (for basic members)') + show_help("With this option basic members are able to choose the standard \"Log It\" icon to call the logging screen for premium only caches. The tool tipp blocked not longer this call. You can have the same result by using the right mouse across the \"Log It\" icon and then new tab. <br>The \"Log It\" icon is besides the caches for example in the \"Recently Viewed Caches\" list and in your profile.") + "<br/>";
-            html += newParameterOn3;
             html += checkboxy('settings_hide_archived_in_owned', 'Hide archived caches in owned list') + "<br/>";
-            html += newParameterVersionSetzen(0.3) + newParameterOff;
 
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>Friends</b></div>";
             html += checkboxy('settings_automatic_friend_reset', 'Reset difference counter on friendlist automatically') + show_help("If you enable this option, the difference counter at friendlist will automatically reset if you have seen the difference and if the day changed.") + "<br/>";
@@ -9256,9 +9246,7 @@ var mainGC = function () {
             html += newParameterVersionSetzen(0.4) + newParameterOff;
 
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>Trackables</b></div>";
-            html += newParameterOn3;
             html += checkboxy('settings_faster_profile_trackables', 'Load trackables faster without images') + show_help("With this option, you can stop the load on the trackable pages after the necessary datas are loaded. You disclaim of the lengthy load of the images of the trackables. This procedure is much faster as load all datas, because every image is loaded separate and not in a bigger bundle like it is for the non image data.") + "<br/>";
-            html += newParameterVersionSetzen(0.3) + newParameterOff;
 //--> $$065 Begin of insert
 //<-- $$065 End of insert
 
@@ -9281,7 +9269,6 @@ var mainGC = function () {
             html += "  <option value='map' " + (settings_count_own_matrix_links == "map" ? "selected=\"selected\"" : "") + ">map</option>";
             html += "  <option value='list' " + (settings_count_own_matrix_links == "list" ? "selected=\"selected\"" : "") + ">list</option>";
             html += "</select>" + show_help("With this option the searched caches are shown in a map or in a list.<br><br>This option requires \"Mark D/T combinations for your next possible cache matrix\".") + "<br>";
-            html += newParameterOn3;
             html += checkboxy('settings_log_statistic', 'Calculate number of cache and trackable logs for each logtype') + show_help("With this option, you can build a statistic for your own cache and trackable logs for each logtype on your own statistic and your own profile page.") + "<br/>";
             html += "&nbsp; " + checkboxy('settings_log_statistic_percentage', 'Show percentage column') + "<br/>";
             html += " &nbsp; &nbsp;" + "Automated load/reload after <select class='gclh_form' id='settings_log_statistic_reload' >";
@@ -9290,7 +9277,6 @@ var mainGC = function () {
                 html += "  <option value='" + i + "' " + (settings_log_statistic_reload == i ? "selected=\"selected\"" : "") + ">" + i + "</option>";
             }
             html += "</select> hours" + show_help("Choose no hours, if you want to load/reload only manual.") + "<br/>";
-            html += newParameterVersionSetzen(0.3) + newParameterOff;
             html += "</div>";
 
             html += "<h4 class='gclh_headline2'>"+prepareHideable.replace("#name#","listing")+"Listing</h4>";
@@ -9596,9 +9582,10 @@ var mainGC = function () {
                     }
                     var outTitle = (typeof(bookmarks_orig_title[num]) != "undefined" && bookmarks_orig_title[num] != "" ? bookmarks_orig_title[num] : bookmarks[i]['title']);
                     html += "            >" + outTitle + "</a>";
-                    if ( num >= 67 && num <= 67 ) {
-                        html +=          newParameterLL3;
-                    }
+                    // Kennzeichnung neuer Parameter in Linklist Bereich.
+                    // if ( num >= 67 && num <= 67 ) {
+                    //     html +=          newParameterLL?;
+                    // }
                 }
                 html += "            </td>";
                 // Zweite Spalte mit gegebenenfalls abweichenden Bezeichnungen:
@@ -9609,9 +9596,10 @@ var mainGC = function () {
                 // Wenn default Bookmark.
                 } else {
                     html += "                <input style='padding-left: 2px; padding-right: 2px;' class='gclh_form' title='Differing description for standard link' id='bookmarks_name[" + num + "]' type='text' size='15' value='" + getValue("settings_bookmarks_title[" + num + "]", "") + "'>";
-                    if ( num >= 67 && num <= 67 ) {
-                        html +=              newParameterLLVersionSetzen(0.3);
-                    }
+                    // Kennzeichnung neuer Parameter in Linklist Bereich.
+                    // if ( num >= 67 && num <= 67 ) {
+                    //     html +=              newParameterLLVersionSetzen(?);
+                    // }
                 }
                 html += "            </td>";
                 html += "        </tr>";

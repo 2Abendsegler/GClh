@@ -1,4 +1,4 @@
-<a href="#v06" title="GClh II version 0.6 (??.03.2017)">v0.6</a> &nbsp;
+<a href="#v06" title="GClh II version 0.6 (25.03.2017)">v0.6</a> &nbsp;
 <a href="#v05" title="GClh II version 0.5 (11.03.2017)">v0.5</a> &nbsp;
 <a href="#v041" title="GClh II version 0.4.1 (26.02.2017)">v0.4.1</a> &nbsp; 
 <a href="#v04" title="GClh II version 0.4 (25.02.2017)">v0.4</a> &nbsp; 
@@ -17,16 +17,48 @@
 ## v0.6:
 <ul>
 <li>
-New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/199">#199</a>] Default settings for new pocket queries <br>
-<img src="../images/v0.6_Screen01.png" alt="v0.6_Screen01.png"><br>
+New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/226">#226</a>] Make the using of browser Vivaldi possible:<br>
+<img src="../images/vivaldi_logo_small.png" alt="vivaldi_logo_small.png"><br>
 <br></li>
 <li>
-New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/200">#200</a>] Warning for mutually exclusive option in pocket queries<br>
+New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/199">#199</a>] Default settings for new pocket queries: <br>
+Many thanks to <a href="https://www.geocaching.com/profile/?u=CachingFoX">CachingFoX</a> for the idea and the implementation.<br>
+<img src="../images/v0.6_Screen01.jpg" alt="v0.6_Screen01.jpg"><br>
+<br></li>
+<li>
+New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/200">#200</a>] Warning for mutually exclusive option in pocket queries:<br>
+Many thanks to <a href="https://www.geocaching.com/profile/?u=CachingFoX">CachingFoX</a> for the idea and the development.<br>
 <img src="../images/v0.6_Screen02.jpg" alt="v0.6_Screen02.jpg"><br>
+<br>
+<img src="../images/v0.6_Screen03.jpg" alt="v0.6_Screen03.jpg"><br>
 <br></li>
 <li>
-New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/222">#222</a>] Compact Layout of page 'New Pocket Query'
+New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/222">#222</a>] Compact Layout of page 'New Pocket Query':<br>
+Many thanks to <a href="https://www.geocaching.com/profile/?u=CachingFoX">CachingFoX</a> for the idea and the implementation.<br>
+For example:<br>
+<img src="../images/v0.6_Screen04.jpg" alt="v0.6_Screen04.jpg"><br>
+<br>
+<img src="../images/v0.6_Screen05.jpg" alt="v0.6_Screen05.jpg"><br>
+<br></li>
+<li>
+New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/226">#226</a>] New Config parameter to open mail/message form in a new window.:<br>
+Many thanks to <a href="https://www.geocaching.com/profile/?u=Herr%20Ma">Herr Ma</a> for the development.<br>
+<img src="../images/v0.6_Screen06.jpg" alt="v0.6_Screen06.jpg"><br>
+<br></li>
+<li>
+Fix: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/224">#224</a>] Trim empty lines from mail/message template after replacing placeholders with empty strings.<br>
+Many thanks to <a href="https://www.geocaching.com/profile/?u=Herr%20Ma">Herr Ma</a> for the fix.<br>
+</li>
+<li>
+Fix: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/227">#227</a>] Build maps linking on gc.map not always possible (Vorabkorrektur)<br>
+</li>
+<li>
+Fix: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/225">#225</a>] Own log statistics is generated on other user profile page (id)<br>
+</li>
+<br>
 </ul>
+(25.03.2017)<br> 
+<br>
 
 ---
 ## v0.5:
