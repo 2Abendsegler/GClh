@@ -23,23 +23,27 @@ New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/226">#226</a>] 
 <li>
 New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/199">#199</a>] Default settings for new pocket queries: <br>
 Many thanks to <a href="https://www.geocaching.com/profile/?u=CachingFoX">CachingFoX</a> for the idea and the implementation.<br>
-<img src="../images/v0.6_Screen01.png" alt="v0.6_Screen01.png"><br>
+<img src="../images/v0.6_Screen01.jpg" alt="v0.6_Screen01.jpg"><br>
 <br></li>
 <li>
 New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/200">#200</a>] Warning for mutually exclusive option in pocket queries:<br>
 Many thanks to <a href="https://www.geocaching.com/profile/?u=CachingFoX">CachingFoX</a> for the idea and the development.<br>
 <img src="../images/v0.6_Screen02.jpg" alt="v0.6_Screen02.jpg"><br>
+<br>
+<img src="../images/v0.6_Screen03.jpg" alt="v0.6_Screen03.jpg"><br>
 <br></li>
 <li>
 New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/222">#222</a>] Compact Layout of page 'New Pocket Query':<br>
 Many thanks to <a href="https://www.geocaching.com/profile/?u=CachingFoX">CachingFoX</a> for the idea and the implementation.<br>
 For example:<br>
-<img src="../images/v0.6_Screen03.jpg" alt="v0.6_Screen03.jpg"><br>
+<img src="../images/v0.6_Screen04.jpg" alt="v0.6_Screen04.jpg"><br>
+<br>
+<img src="../images/v0.6_Screen05.jpg" alt="v0.6_Screen05.jpg"><br>
 <br></li>
 <li>
 New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/226">#226</a>] New Config parameter to open mail/message form in a new window.:<br>
 Many thanks to <a href="https://www.geocaching.com/profile/?u=Herr%20Ma">Herr Ma</a> for the development.<br>
-<img src="../images/v0.6_Screen04.jpg" alt="v0.6_Screen04.jpg"><br>
+<img src="../images/v0.6_Screen06.jpg" alt="v0.6_Screen06.jpg"><br>
 <br></li>
 <li>
 Fix: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/224">#224</a>] Trim empty lines from mail/message template after replacing placeholders with empty strings.<br>
