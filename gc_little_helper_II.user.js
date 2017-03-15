@@ -3622,9 +3622,11 @@ var mainGC = function () {
     // Message, Mail Template aufbauen, bis auf Empfänger.
     function buildSendTemplate() {
         var template = getValue("settings_mail_signature", "");
+        var trimIt = (template.length == template.trim().length);
         template = template.replace(/#Found#/ig, global_founds+1).replace(/#Found_no#/ig, global_founds).replace(/#Me#/ig, global_activ_username);
         template = template.replace(/#Date#/ig, global_date).replace(/#Time#/ig, global_time).replace(/#DateTime#/ig, global_dateTime);
         template = template.replace(/#GCTBName#/ig, global_name).replace(/#GCTBCode#/ig, global_code).replace(/#GCTBLink#/ig, global_link);
+        if (trimIt) template = template.trim();
         return template;
     }
 
