@@ -524,6 +524,8 @@ var variablesInit = function (c) {
     c.settings_pq_terrain = getValue("settings_pq_terrain",">=");
     c.settings_pq_terrain_score = getValue("settings_pq_terrain_score","1");
     c.settings_pq_automatically_day = getValue("settings_pq_automatically_day",true);
+    c.settings_mail_icon_new_win = getValue("settings_mail_icon_new_win",false);
+    c.settings_message_icon_new_win = getValue("settings_message_icon_new_win",false);    
 
     // Settings: Custom Bookmarks
     var num = c.bookmarks.length;
@@ -3585,6 +3587,7 @@ var mainGC = function () {
             message_img.setAttribute("title", "Send a message to " + username_send);
             message_img.setAttribute("src", global_message_icon);
             message_link.appendChild(message_img);
+            if ( settings_message_icon_new_win ) message_link.setAttribute("target", "_blank");		
             message_link.setAttribute("href", http + "://www.geocaching.com/account/messagecenter?recipientId=" + guid + "&text=" + template);
             b_side.parentNode.insertBefore(message_link, b_side.nextSibling);
             b_side.parentNode.insertBefore(document.createTextNode(" "), b_side.nextSibling);
@@ -3602,6 +3605,7 @@ var mainGC = function () {
             mail_img.setAttribute("title", "Send a mail to " + username_send);
             mail_img.setAttribute("src", global_mail_icon);
             mail_link.appendChild(mail_img);
+            if ( settings_mail_icon_new_win ) mail_link.setAttribute("target", "_blank");
             if ( b_art == "per guid" ) {
                 mail_link.setAttribute("href", http + "://www.geocaching.com/email/?guid=" + guid + "&text=" + template);
                 b_side.parentNode.insertBefore(mail_link, b_side.nextSibling);
@@ -6418,7 +6422,12 @@ var mainGC = function () {
                 if (settings_vup_hide_avatar && settings_vup_hide_log) vupHideCompleteLog = vupUserString;
             }
             vupHideAvatarString  += ')';
-
+            
+            var mailNewWin = "";
+            if ( settings_mail_icon_new_win) mailNewWin = 'target="_blank" ';
+            var messageNewWin = "";
+            if ( settings_message_icon_new_win) messageNewWin = 'target="_blank" ';
+	
             var new_tmpl = "";
             new_tmpl +=
                 '    {{' + vupHideCompleteLog  + '}}' +
@@ -6449,11 +6458,11 @@ var mainGC = function () {
                 '                        {{/if}}';
             if (settings_show_mail) new_tmpl +=
                 '                        {{if UserName !== "' + global_activ_username + '" }}' +
-                '                        <a href="' + http + '://www.geocaching.com/email/?guid=${AccountGuid}&text=' + global_MailTemplate + '"><img border=0 title="Send a mail to ${UserName}" src="' + global_mail_icon + '"></a>' +
+                '                        <a ' + mailNewWin + 'href="' + http + '://www.geocaching.com/email/?guid=${AccountGuid}&text=' + global_MailTemplate + '"><img border=0 title="Send a mail to ${UserName}" src="' + global_mail_icon + '"></a>' +
                 '                        {{/if}}';
             if (settings_show_message) new_tmpl +=
                 '                        {{if UserName !== "' + global_activ_username + '" }}' +
-                '                        <a href="' + http + '://www.geocaching.com/account/messagecenter?recipientId=${AccountGuid}&text=' + global_MailTemplate + '"><img border=0 title="Send a message to ${UserName}" src="' + global_message_icon + '"></a>' +
+                '                        <a ' + messageNewWin + 'href="' + http + '://www.geocaching.com/account/messagecenter?recipientId=${AccountGuid}&text=' + global_MailTemplate + '"><img border=0 title="Send a message to ${UserName}" src="' + global_message_icon + '"></a>' +
                 '                        {{/if}}';
             new_tmpl +=
                 '                        &nbsp;&nbsp;' +
@@ -9323,7 +9332,13 @@ var mainGC = function () {
             var content_settings_show_mail_in_viplist = "&nbsp; " + checkboxy('settings_show_mail_in_viplist', 'Show mail link beside user in "VIP-List" in listing') + show_help("With this option there will be an small mail icon beside every username in the VIP lists on the cache listing page. With this icon you get directly to the mail page to mail to this user. <br>(VIP: Very important person)<br><br>This option requires \"Show mail link beside usernames\", \"Show VIP list\" and \"Load logs with GClh\".") + "<br>";
             html += content_settings_show_mail_in_viplist;
             html += "&nbsp; " + content_settings_show_mail_in_allmyvips.replace("settings_show_mail_in_allmyvips", "settings_show_mail_in_allmyvipsX0");
+            html += newParameterOn2;
+            html += "&nbsp; " + checkboxy('settings_mail_icon_new_win', 'Open mail page in new window')  + show_help("If you enable this option, the mail page will open in an new window.<br><br>This option requires \"Show mail link beside usernames\".")+ "<br/>";     
+            html += newParameterVersionSetzen(0.6) + newParameterOff;
             html += checkboxy('settings_show_message', 'Show message link beside usernames') + show_help("With this option there will be an small message icon beside every username. With this icon you get directly to the message page to send a message to this user. If you click it for example when you are in a listing, the cachename or GC code can be inserted into the message form about placeholder in the mail / message form template.") + "<br/>";
+            html += newParameterOn2;
+            html += "&nbsp; " + checkboxy('settings_message_icon_new_win', 'Open Message page in new window')  + show_help("If you enable this option, the message page will open in an new window.<br><br>This option requires \"Show message link beside usernames\".")+ "<br/>";
+            html += newParameterVersionSetzen(0.6) + newParameterOff;
             html += checkboxy('settings_show_google_maps', 'Show link to Google Maps') + show_help("This option shows a link at the top of the second map in the listing. With this link you get directly to Google Maps in the area, where the cache is.") + "<br/>";
             html += checkboxy('settings_strike_archived', 'Strike through title of archived/disabled caches') + "<br/>";
             html += "&nbsp;" + "Highlight user changed coords with " + checkboxy('settings_highlight_usercoords', 'red textcolor ') + checkboxy('settings_highlight_usercoords_bb', 'underline ') + checkboxy('settings_highlight_usercoords_it', 'italic') + "<br/>";
@@ -9985,6 +10000,8 @@ var mainGC = function () {
             setEventsForDependentParameters( "settings_log_inline_pmo4basic", "settings_log_inline_tb", false );
             setEventsForDependentParameters( "settings_show_mail", "settings_show_mail_in_viplist" );
             setEventsForDependentParameters( "settings_show_mail", "settings_show_mail_in_allmyvips" );
+            setEventsForDependentParameters( "settings_show_mail", "settings_mail_icon_new_win" );            
+            setEventsForDependentParameters( "settings_show_message", "settings_message_icon_new_win" );                        
             setEventsForDependentParameters( "settings_show_thumbnails", "settings_hover_image_max_size" );
             setEventsForDependentParameters( "settings_show_thumbnails", "settings_spoiler_strings" );
             setEventsForDependentParameters( "settings_show_thumbnails", "settings_imgcaption_on_top" );
@@ -10343,7 +10360,9 @@ var mainGC = function () {
                 'settings_pq_option_filename',
                 'settings_pq_set_difficulty',
                 'settings_pq_set_terrain',
-                'settings_pq_automatically_day'
+                'settings_pq_automatically_day',
+                'settings_mail_icon_new_win',
+                'settings_message_icon_new_win'
             );
             for (var i = 0; i < checkboxes.length; i++) {
                 if ( document.getElementById(checkboxes[i]) ) {
