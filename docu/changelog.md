@@ -42,7 +42,8 @@ Many thanks to <a href="https://www.geocaching.com/profile/?u=Herr%20Ma">Herr Ma
 <img src="../images/v0.6_Screen04.jpg" alt="v0.6_Screen04.jpg"><br>
 <br></li>
 <li>
-Fix: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/224">#224</a>] Trim empty lines from mail/message template after replacing placeholders with empty strings. Many thanks to <a href="https://www.geocaching.com/profile/?u=Herr%20Ma">Herr Ma</a> for the fix.<br>
+Fix: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/224">#224</a>] Trim empty lines from mail/message template after replacing placeholders with empty strings.<br>
+Many thanks to <a href="https://www.geocaching.com/profile/?u=Herr%20Ma">Herr Ma</a> for the fix.<br>
 </li>
 <li>
 Fix: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/227">#227</a>] Build maps linking on gc.map not always possible (Vorabkorrektur)<br>
