@@ -502,10 +502,8 @@ var variablesInit = function (c) {
     c.settings_vip_show_nofound = getValue("settings_vip_show_nofound", true);
     c.settings_use_gclh_layercontrol = getValue("settings_use_gclh_layercontrol", true);
     c.settings_fixed_pq_header = getValue("settings_fixed_pq_header", false);
-// >> hm -- Issue #111
     c.settings_friendlist_summary = getValue("settings_friendlist_summary", true);
     c.settings_friendlist_summary_viponly = getValue("settings_friendlist_summary_viponly", false);
-// << hm -- Issue #111
     c.settings_search_data = JSON.parse(getValue("settings_search_data", "[]"));
     c.settings_search_enable_user_defined = getValue("settings_search_enable_user_defined",true);
     c.settings_pq_warning = getValue("settings_pq_warning",true);
@@ -524,6 +522,8 @@ var variablesInit = function (c) {
     c.settings_pq_terrain = getValue("settings_pq_terrain",">=");
     c.settings_pq_terrain_score = getValue("settings_pq_terrain_score","1");
     c.settings_pq_automatically_day = getValue("settings_pq_automatically_day",true);
+    c.settings_mail_icon_new_win = getValue("settings_mail_icon_new_win",false);
+    c.settings_message_icon_new_win = getValue("settings_message_icon_new_win",false);    
 
     // Settings: Custom Bookmarks
     var num = c.bookmarks.length;
@@ -3585,6 +3585,7 @@ var mainGC = function () {
             message_img.setAttribute("title", "Send a message to " + username_send);
             message_img.setAttribute("src", global_message_icon);
             message_link.appendChild(message_img);
+            if ( settings_message_icon_new_win ) message_link.setAttribute("target", "_blank");		
             message_link.setAttribute("href", http + "://www.geocaching.com/account/messagecenter?recipientId=" + guid + "&text=" + template);
             b_side.parentNode.insertBefore(message_link, b_side.nextSibling);
             b_side.parentNode.insertBefore(document.createTextNode(" "), b_side.nextSibling);
@@ -3602,6 +3603,7 @@ var mainGC = function () {
             mail_img.setAttribute("title", "Send a mail to " + username_send);
             mail_img.setAttribute("src", global_mail_icon);
             mail_link.appendChild(mail_img);
+            if ( settings_mail_icon_new_win ) mail_link.setAttribute("target", "_blank");
             if ( b_art == "per guid" ) {
                 mail_link.setAttribute("href", http + "://www.geocaching.com/email/?guid=" + guid + "&text=" + template);
                 b_side.parentNode.insertBefore(mail_link, b_side.nextSibling);
@@ -3618,9 +3620,11 @@ var mainGC = function () {
     // Message, Mail Template aufbauen, bis auf Empfänger.
     function buildSendTemplate() {
         var template = getValue("settings_mail_signature", "");
+        var trimIt = (template.length == template.trim().length);
         template = template.replace(/#Found#/ig, global_founds+1).replace(/#Found_no#/ig, global_founds).replace(/#Me#/ig, global_activ_username);
         template = template.replace(/#Date#/ig, global_date).replace(/#Time#/ig, global_time).replace(/#DateTime#/ig, global_dateTime);
         template = template.replace(/#GCTBName#/ig, global_name).replace(/#GCTBCode#/ig, global_code).replace(/#GCTBLink#/ig, global_link);
+        if (trimIt) template = template.trim();
         return template;
     }
 
@@ -3905,7 +3909,7 @@ var mainGC = function () {
                 }
                 setValue("friends_founds_last", day);
             }
-// >> hm -- Issue #111
+
             // Klasse fuer die Links anlegen
             var myf = "a.myfriends:hover { " +
                  "  text-decoration:underline;" +
@@ -3926,7 +3930,6 @@ var mainGC = function () {
                 myvips = myvips.replace(/, (?=,)/g, ",null");
                 myvips = JSON.parse(myvips);
             }
-// << hm -- Issue #111
 
             for (var i = 0; i < friends.length; i++) {
                 var friend = friends[i];
@@ -3943,7 +3946,7 @@ var mainGC = function () {
                 }
                 if ((founds - last_founds) > 0) add = " <font color='#00AA00'><b>(+" + (founds - last_founds) + ")</b></font>";
                 setValue("friends_founds_new_" + name.innerHTML, founds);
-// >> hm -- Issue #111
+
                 // wenn neue Founds, dann User und Funddifferenz als Link zu string hinzufuegen (ggf. nur VIPs)
                 if  ((settings_friendlist_summary_viponly && in_array(name.innerHTML, myvips)) || (!settings_friendlist_summary_viponly)) {
                     if ((founds - last_founds) > 0) {
@@ -3957,7 +3960,7 @@ var mainGC = function () {
                         sNewF = sNewF + "<a class='myfriends' href='/seek/nearest.aspx?ul=" + urlencode(name.innerHTML) + "&disable_redirect='>" + sHlp + "</a>";
                     }
                 }
-// << hm -- Issue #111
+
                 if (founds == 0) {
                     friend.getElementsByTagName("dd")[4].innerHTML = founds + "&nbsp;";
                 } else {
@@ -3975,7 +3978,7 @@ var mainGC = function () {
                 }
                 if ((hides - last_hides) > 0) add = " <font color='#00AA00'><b>(+" + (hides - last_hides) + ")</b></font>";
                 setValue("friends_hides_new_" + name.innerHTML, hides);
-// >> hm -- Issue #111
+
                 // wenn neue Hides, dann User und Funddifferenz als Link zu string hinzufuegen (ggf. nur VIPs)
                 if  ((settings_friendlist_summary_viponly && in_array(name.innerHTML, myvips)) || (!settings_friendlist_summary_viponly)) {
                     if ((hides - last_hides) > 0) {
@@ -3989,7 +3992,6 @@ var mainGC = function () {
                         sNewH = sNewH + "<a class='myfriends' href='/seek/nearest.aspx?u=" + urlencode(name.innerHTML) + "&disable_redirect='>" + sHlp + "</a>";
                     }
                 }
-// << hm -- Issue #111
                 if (hides == 0) {
                     friend.getElementsByTagName("dd")[5].innerHTML = hides + "&nbsp;";
                 } else {
@@ -4008,9 +4010,7 @@ var mainGC = function () {
 
             function gclh_reset_counter() {
                 var friends = document.getElementsByClassName("FriendText");
-// >> hm -- Issue #111
                 setValue("friends_founds_last_reset", new Date().getTime());
-// << hm -- Issue #111
 
                 for (var i = 0; i < friends.length; i++) {
                     var friend = friends[i];
@@ -4028,7 +4028,7 @@ var mainGC = function () {
                     if (hides == 0) friend.getElementsByTagName("dd")[5].innerHTML = "0&nbsp;";
                     else friend.getElementsByTagName("dd")[5].innerHTML = "<a href='/seek/nearest.aspx?u=" + urlencode(name.innerHTML) + "&disable_redirect='>" + hides + "</a>&nbsp;";
                 }
-// >> hm -- Issue #111
+
                 if (settings_friendlist_summary) {
                     // wenn Reset, dann Differenzen nicht mehr anzeigen...
                     var divFH = document.getElementsByClassName("divFHclass");
@@ -4041,10 +4041,8 @@ var mainGC = function () {
                     var ld1 = getValue("friends_founds_last_reset", 0);
                     spanTTs[0].innerHTML = '<br><br>Last check was 0 seconds ago (' + new Date(parseInt(ld1, 10)).toLocaleString() + ')';
                 }
-// << hm -- Issue #111
             }
 
-// >> hm -- Issue #111
             if (settings_friendlist_summary) {
                 // "last check" anzeigen
                 var spanT = document.createElement("span");
@@ -4074,7 +4072,6 @@ var mainGC = function () {
 
                     document.getElementById('ctl00_ContentBody_FindUserPanel1_GetUsers').parentNode.insertBefore(boxF, document.getElementById('ctl00_ContentBody_FindUserPanel1_GetUsers').nextSibling);
                 }
-// << hm -- Issue #111
             }
 
             var button = document.createElement("input");
@@ -6418,7 +6415,12 @@ var mainGC = function () {
                 if (settings_vup_hide_avatar && settings_vup_hide_log) vupHideCompleteLog = vupUserString;
             }
             vupHideAvatarString  += ')';
-
+            
+            var mailNewWin = "";
+            if ( settings_mail_icon_new_win) mailNewWin = 'target="_blank" ';
+            var messageNewWin = "";
+            if ( settings_message_icon_new_win) messageNewWin = 'target="_blank" ';
+	
             var new_tmpl = "";
             new_tmpl +=
                 '    {{' + vupHideCompleteLog  + '}}' +
@@ -6449,11 +6451,11 @@ var mainGC = function () {
                 '                        {{/if}}';
             if (settings_show_mail) new_tmpl +=
                 '                        {{if UserName !== "' + global_activ_username + '" }}' +
-                '                        <a href="' + http + '://www.geocaching.com/email/?guid=${AccountGuid}&text=' + global_MailTemplate + '"><img border=0 title="Send a mail to ${UserName}" src="' + global_mail_icon + '"></a>' +
+                '                        <a ' + mailNewWin + 'href="' + http + '://www.geocaching.com/email/?guid=${AccountGuid}&text=' + global_MailTemplate + '"><img border=0 title="Send a mail to ${UserName}" src="' + global_mail_icon + '"></a>' +
                 '                        {{/if}}';
             if (settings_show_message) new_tmpl +=
                 '                        {{if UserName !== "' + global_activ_username + '" }}' +
-                '                        <a href="' + http + '://www.geocaching.com/account/messagecenter?recipientId=${AccountGuid}&text=' + global_MailTemplate + '"><img border=0 title="Send a message to ${UserName}" src="' + global_message_icon + '"></a>' +
+                '                        <a ' + messageNewWin + 'href="' + http + '://www.geocaching.com/account/messagecenter?recipientId=${AccountGuid}&text=' + global_MailTemplate + '"><img border=0 title="Send a message to ${UserName}" src="' + global_message_icon + '"></a>' +
                 '                        {{/if}}';
             new_tmpl +=
                 '                        &nbsp;&nbsp;' +
@@ -9245,10 +9247,8 @@ var mainGC = function () {
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>Friends</b></div>";
             html += checkboxy('settings_automatic_friend_reset', 'Reset difference counter on friendlist automatically') + show_help("If you enable this option, the difference counter at friendlist will automatically reset if you have seen the difference and if the day changed.") + "<br/>";
             html += newParameterOn1;
-// >> hm -- Issue #111
             html += checkboxy('settings_friendlist_summary', 'Show summary for new finds/hides in friends list') + show_help("With this option you can show a summary of all new finds/hides of your friends on the friends list page") + "<br/>";
             html += " &nbsp; " + checkboxy('settings_friendlist_summary_viponly', 'Show summary only for friends in VIP list') + show_help("With this option you can choose to show the summary only for friends who are also marked as VIP.") + "<br/>";
-// << hm -- Issue #111
             var content_settings_process_vup = checkboxy('settings_process_vup', 'Process VUPs') + show_help("With this option you can activate the processing to add any user to a VUP list by clicking the little VUP icon beside the username. If it is red, this person is a VUP. For such persons in cache logs will only shown \"censored\" instead of the log text. On your profile page there is an overview of all your VUPs.<br>(VUP: Very unimportant person)<br><br>This option requires \"Show VIP list\".") + "<br>";
             html += content_settings_process_vup;
             var content_settings_show_vup_friends = checkboxy('settings_show_vup_friends', 'Show VUP icons on friends list') + show_help("With this option you can choose if VUP icons are shown addional on friends list or not. If you deactivate this option and a friend is a VUP, then the VIP icon is replaced by the VUP icon anyway.<br>(VUP: Very unimportant person)<br>(VIP: Very important person)<br><br>This option requires \"Process VUPs\" and \"Show VIP list\".") + "<br>";
@@ -9323,7 +9323,13 @@ var mainGC = function () {
             var content_settings_show_mail_in_viplist = "&nbsp; " + checkboxy('settings_show_mail_in_viplist', 'Show mail link beside user in "VIP-List" in listing') + show_help("With this option there will be an small mail icon beside every username in the VIP lists on the cache listing page. With this icon you get directly to the mail page to mail to this user. <br>(VIP: Very important person)<br><br>This option requires \"Show mail link beside usernames\", \"Show VIP list\" and \"Load logs with GClh\".") + "<br>";
             html += content_settings_show_mail_in_viplist;
             html += "&nbsp; " + content_settings_show_mail_in_allmyvips.replace("settings_show_mail_in_allmyvips", "settings_show_mail_in_allmyvipsX0");
+            html += newParameterOn3;
+            html += "&nbsp; " + checkboxy('settings_mail_icon_new_win', 'Open mail form in new window')  + show_help("If you enable this option, the mail form will open in an new window.<br><br>This option requires \"Show mail link beside usernames\".")+ "<br/>";     
+            html += newParameterVersionSetzen(0.6) + newParameterOff;
             html += checkboxy('settings_show_message', 'Show message link beside usernames') + show_help("With this option there will be an small message icon beside every username. With this icon you get directly to the message page to send a message to this user. If you click it for example when you are in a listing, the cachename or GC code can be inserted into the message form about placeholder in the mail / message form template.") + "<br/>";
+            html += newParameterOn3;
+            html += "&nbsp; " + checkboxy('settings_message_icon_new_win', 'Open message form in new window')  + show_help("If you enable this option, the message form will open in an new window.<br><br>This option requires \"Show message link beside usernames\".")+ "<br/>";
+            html += newParameterVersionSetzen(0.6) + newParameterOff;
             html += checkboxy('settings_show_google_maps', 'Show link to Google Maps') + show_help("This option shows a link at the top of the second map in the listing. With this link you get directly to Google Maps in the area, where the cache is.") + "<br/>";
             html += checkboxy('settings_strike_archived', 'Strike through title of archived/disabled caches') + "<br/>";
             html += "&nbsp;" + "Highlight user changed coords with " + checkboxy('settings_highlight_usercoords', 'red textcolor ') + checkboxy('settings_highlight_usercoords_bb', 'underline ') + checkboxy('settings_highlight_usercoords_it', 'italic') + "<br/>";
@@ -9985,6 +9991,8 @@ var mainGC = function () {
             setEventsForDependentParameters( "settings_log_inline_pmo4basic", "settings_log_inline_tb", false );
             setEventsForDependentParameters( "settings_show_mail", "settings_show_mail_in_viplist" );
             setEventsForDependentParameters( "settings_show_mail", "settings_show_mail_in_allmyvips" );
+            setEventsForDependentParameters( "settings_show_mail", "settings_mail_icon_new_win" );            
+            setEventsForDependentParameters( "settings_show_message", "settings_message_icon_new_win" );                        
             setEventsForDependentParameters( "settings_show_thumbnails", "settings_hover_image_max_size" );
             setEventsForDependentParameters( "settings_show_thumbnails", "settings_spoiler_strings" );
             setEventsForDependentParameters( "settings_show_thumbnails", "settings_imgcaption_on_top" );
@@ -10007,9 +10015,7 @@ var mainGC = function () {
             setEventsForDependentParameters( "settings_load_logs_with_gclh", "settings_show_latest_logs_symbols" );
             setEventsForDependentParameters( "settings_log_statistic", "settings_log_statistic_reload" );
             setEventsForDependentParameters( "settings_log_statistic", "settings_log_statistic_percentage" );
-// >> hm -- Issue #111
             setEventsForDependentParameters( "settings_friendlist_summary", "settings_friendlist_summary_viponly" );
-// << hm -- Issue #111
 //--> $$065 Begin of insert
 //<-- $$065 End of insert
             // Abhängigkeiten der Linklist Parameter.
@@ -10328,10 +10334,8 @@ var mainGC = function () {
                 'settings_fixed_pq_header',
                 'settings_sync_autoImport',
                 'settings_map_hide_sidebar',
-// >> hm -- Issue #111
                 'settings_friendlist_summary',
                 'settings_friendlist_summary_viponly',
-// << hm -- Issue #111
                 'settings_search_enable_user_defined',
                 'settings_pq_warning',
                 'settings_pq_modify_dialog',
@@ -10343,7 +10347,9 @@ var mainGC = function () {
                 'settings_pq_option_filename',
                 'settings_pq_set_difficulty',
                 'settings_pq_set_terrain',
-                'settings_pq_automatically_day'
+                'settings_pq_automatically_day',
+                'settings_mail_icon_new_win',
+                'settings_message_icon_new_win'
             );
             for (var i = 0; i < checkboxes.length; i++) {
                 if ( document.getElementById(checkboxes[i]) ) {
@@ -11471,7 +11477,6 @@ function injectPageScriptFunction(funct, functCall) {
     injectPageScript("(" + funct.toString() + ")" + functCall + ";");
 }
 
-// >> hm -- Issue #111
 // Funktionen fuer die Zeitdifferenzen
 function adjustPlural(singularWord, timesNumber) {
     return singularWord + ((Math.abs(timesNumber) != 1) ? "s" : "");
@@ -11502,6 +11507,5 @@ function getDateDiffString(dateNew, dateOld) {
 
     return strDateDiff;
 }
-// << hm -- Issue #111
 
 start(this);
