@@ -3745,8 +3745,9 @@ var mainGC = function () {
             gclh_error("Improve Message Site", e);
         }
     }
-    
-// helper function
+
+
+    // helper function
     function roundTO(val, decimals)
     {
     return Number(Math.round(val+'e'+decimals)+'e-'+decimals);
@@ -3775,8 +3776,8 @@ function getAdditionalWaypoints() {
                     waypoint.lookup = td_list[4].textContent.trim();
                     // var name = td_list[5].textContent.trim().match(/(.*) \((.+)\)/);
                     waypoint.name = td_list[5].getElementsByTagName("a")[0].textContent
-                   
-                    
+
+
                     var oDiv = td_list[5];
                     var firstText = "";
                     for (var j = 0; j < oDiv.childNodes.length; j++) {
@@ -3784,13 +3785,13 @@ function getAdditionalWaypoints() {
                         if (curNode.nodeName === "#text") {
                             firstText += curNode.nodeValue.trim();
                         }
-                    }                   
-                    waypoint.subtype_name = firstText; 
-                    
+                    }
+                    waypoint.subtype_name = firstText;
+
                     waypoint.link = td_list[5].getElementsByTagName("a")[0].getAttribute("href");
-                    
+
                     // /images/icons/icon_viewable.jpg
-                    
+
                     var subtype = "";
                     var icon = waypoint.icon;
                     if ( icon.match(/trailhead.jpg/g) ) {
@@ -3808,14 +3809,14 @@ function getAdditionalWaypoints() {
                     } else {
                         console.log("getAdditionalWaypoints(): problem with waypoint "+waypoint.lookup+"/"+waypoint.prefix);
                         console.log("    unknown waypoint type ("+icon+")");
-                    } 
+                    }
                     waypoint.subtype = subtype;
-                    
+
                     waypoint.visible = false;
                     tmp_coords = toDec(td_list[6].textContent.trim());
                     if(typeof tmp_coords[0] !== 'undefined' && typeof tmp_coords[1] !== 'undefined') {
                         waypoint.latitude = tmp_coords[0];
-                        waypoint.longitude = tmp_coords[1];                        
+                        waypoint.longitude = tmp_coords[1];
                         waypoint.visible = true;
                     }
                     waypoint.note = td_list2nd[2].textContent.trim();
@@ -3834,7 +3835,7 @@ function getAdditionalWaypoints() {
 function getListingCoordinates() {
     var addWP  = [];
     try {
-        var waypoint = {};        
+        var waypoint = {};
         var gccode = "n/a";
         var gcname = "n/a";
         if(document.getElementById('ctl00_ContentBody_CoordInfoLinkControl1_uxCoordInfoCode')) {
@@ -3843,7 +3844,7 @@ function getListingCoordinates() {
         if(document.getElementById('ctl00_ContentBody_CacheName')) {
             gcname = document.getElementById('ctl00_ContentBody_CacheName').textContent;
         }
-        
+
         if((typeof(unsafeWindow.userDefinedCoords) != 'undefined') && (unsafeWindow.userDefinedCoords.data.isUserDefined==true)) {
             waypoint = {};
             waypoint.visible = true;
@@ -3866,7 +3867,7 @@ function getListingCoordinates() {
             waypoint.latitude = tmp_coords[0];
             waypoint.longitude = tmp_coords[1];
         } else {
-            console.log("getListingCoordinates(): warning: listing coordinates are not found."); 
+            console.log("getListingCoordinates(): warning: listing coordinates are not found.");
         }
         waypoint.visible = true;
         waypoint.lookup = gccode;
@@ -3894,7 +3895,7 @@ function floppsMapWaypoint( waypoint, id, radius, name ) {
 function lat2tile(lat,zoom)  { return (Math.floor((1-Math.log(Math.tan(lat*Math.PI/180) + 1/Math.cos(lat*Math.PI/180))/Math.PI)/2 *Math.pow(2,zoom))); }
 function long2tile(lon,zoom) { return (Math.floor((lon+180)/360*Math.pow(2,zoom))); }
 
-function buildFloppsMapLink( waypoints ) {
+function buildFloppsMapLink( waypoints, map ) {
     var url = "";
     var floppsWaypoints = [];
 
@@ -3922,7 +3923,7 @@ function buildFloppsMapLink( waypoints ) {
             Latmin = Math.min( Latmin, waypoint.latitude );
             Lonmax = Math.max( Lonmax, waypoint.longitude );
             Lonmin = Math.min( Lonmin, waypoint.longitude );
-            
+
             // TODO: maximum markers? if ( floppsWaypoints.length>26 ) { break; }
         }
     }
@@ -3944,7 +3945,6 @@ function buildFloppsMapLink( waypoints ) {
         }
     }
 
-    var map="osm"; // todo        
     var url = "";
     for ( var i=0; i<floppsWaypoints.length; i++) {
         url += ( ( i == 0 ) ? '&m=' : '*' );
@@ -3953,7 +3953,7 @@ function buildFloppsMapLink( waypoints ) {
     var center_latitude = ((Latmax+90.0)+(Latmin+90.0))/2-90.0
     var center_longitude = ((Lonmax+180.0)+(Lonmin+180.0))/2-180.0
     var url = 'http://flopp.net/'+'?c='+center_latitude+':'+center_longitude+'&z='+zoom+'&t='+map+url;
-    
+
     url += '&d=O:C'; // TODO: what happens if there no C or no O and C?
     return encodeURI(url);
 }
@@ -3967,7 +3967,7 @@ function extractWaypointsFromListing() {
     console.log(waypoints);
     return waypoints;
 }
-    
+
 // test case/caches
 //Runde und mehr als 26 waypoints:
 //https://www.geocaching.com/geocache/GC618KK_rad-funf-flusse-radweg?guid=93775b23-613e-47de-bb5c-efc105d626e8
@@ -3977,34 +3977,80 @@ function extractWaypointsFromListing() {
 // https://www.geocaching.com/geocache/GC1FPN1_munchen-venedig-munich-venice-monaco-venezia
 //Allgemein
 //https://www.geocaching.com/geocache/GC6K60B_abenteuer-mittelalter-wie-ein-kleiner-ritter
-// https://www.geocaching.com/geocache/GC567MN_hochwassermarken-flood-marks    
+// https://www.geocaching.com/geocache/GC567MN_hochwassermarken-flood-marks
 // extract waypoints
-    // TODO: https://www.geocaching.com/hide/wptlist.aspx*    
+    // TODO: https://www.geocaching.com/hide/wptlist.aspx*
     if ( 1 /* TODO: settings*/ && ( is_page("cache_listing") || (is_page("hide_cache") ) ) ) {
         try {
-            var waypoints = extractWaypointsFromListing();
-            var link = buildFloppsMapLink( waypoints );
-            console.log(link);
-    
-            var tbl = document.getElementById('ctl00_ContentBody_Waypoints');
-            if ( tbl == null ) {
-                tbl = document.getElementById('ctl00_ContentBody_WaypointList');
+            var css = "";
+            css += "/* Style The Dropdown Button */";
+            css += ".GClhdropbtn {";
+            css += "    background-color: #4CAF50;";
+            css += "    color: white;";
+            css += "    padding: 8px;";
+            css += "    font-size: 16px;";
+            css += "    border: none;";
+            css += "    cursor: pointer;";
+            css += "}";
+            css += "/* The container <div> - needed to position the dropdown content */";
+            css += ".GClhdropdown {";
+            css += "    position: relative;";
+            css += "    display: inline-block;";
+            css += "}";
+            css += "/* Dropdown Content (Hidden by Default) */";
+            css += ".GClhdropdown-content {";
+            css += "    display: none;";
+            css += "    position: absolute;";
+            css += "    background-color: #f9f9f9;";
+            css += "    min-width: 160px;";
+            css += "    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);";
+            css += "    z-index: 1;";
+            css += "}";
+            css += "/* Links inside the dropdown */";
+            css += ".GClhdropdown-content div {";
+            css += "    color: black;";
+            css += "    padding: 12px 16px;";
+            css += "    text-decoration: none;";
+            css += "    display: block;";
+            css += "}";
+
+            css += "/* Change color of dropdown links on hover */";
+            css += ".GClhdropdown-content div:hover {background-color: #e1e1e1; cursor: pointer; }";
+
+            css += "/* Show the dropdown menu on hover */";
+            css += ".GClhdropdown:hover .GClhdropdown-content {";
+            css += "    display: block;";
+            css += "}";
+
+            css += "/* Change the background color of the dropdown button when the dropdown content is shown */";
+            css += ".GClhdropdown:hover .GClhdropbtn {";
+            css += "    background-color: #3e8e41;";
+            css += "}";
+            appendCssStyle( css );
+
+            var tbl = $('#ctl00_ContentBody_Waypoints');
+            if ( tbl.length == 0 ) {
+                tbl = $('#ctl00_ContentBody_WaypointList');
             }
 
-            function insertAfter(newNode, referenceNode) {
-                referenceNode.parentNode.insertBefore(newNode, referenceNode.nextSibling);
-            }
-            // Insert Link to Listing
-            // TODO make it nicer :-)
-            // TODO use jQuery 
-            var txt = document.createTextNode('Show waypoint on Flopp\'s Map');
-            var ins = document.createElement('a');
-            ins.setAttribute ('id', 'LinkToFloppMap2');
-            ins.setAttribute ('href', link);
-            ins.setAttribute ('target', '_blank');
-            ins.setAttribute ('style', 'display:inline-block; margin:0 0 5px 20px; padding:2px 3px; border:1px solid #03AB17; background-color:#F9F7F5; color:#03AB17; font-size:85%; text-decoration:none;');
-            ins.appendChild(txt);
-            insertAfter(ins, tbl);
+            tbl.after('<div class="GClhdropdown"><button class="GClhdropbtn">Show Waypoints on Flopp\'s Map in ...</button><div id="FloppsMapLayers" class="GClhdropdown-content"></div></div>');
+            $('#FloppsMapLayers').append('<div class="openFloppsMap" data-map="OSM">Openstreetmap Mapnik</div>');
+            $('#FloppsMapLayers').append('<div class="openFloppsMap" data-map="OSM/DE">Openstreetmap Germany Style</div>');
+            $('#FloppsMapLayers').append('<div class="openFloppsMap" data-map="OCM">OpenCycleMap</div>');
+            $('#FloppsMapLayers').append('<div class="openFloppsMap" data-map="TOPO">OpenTopMap</div>');
+            $('#FloppsMapLayers').append('<div class="openFloppsMap" data-map="OUTD">Thunderforest Outdoors</div>');
+            $('#FloppsMapLayers').append('<div class="openFloppsMap" data-map="roadmap">Google Maps</div>');
+            $('#FloppsMapLayers').append('<div class="openFloppsMap" data-map="satellite">Google Maps Satellite</div>');
+            $('#FloppsMapLayers').append('<div class="openFloppsMap" data-map="hybrid">Google Maps Hybrid</div>');
+            $('#FloppsMapLayers').append('<div class="openFloppsMap" data-map="terrain">Googles Maps Terrain</div>');
+
+            $('.openFloppsMap').click( function() {
+                var map = $(this).data('map');
+                var waypoints = extractWaypointsFromListing();
+                var link = buildFloppsMapLink( waypoints, map );
+                window.open( link ); // todo settings: in_same_tab
+                console.log(link);
+            });
 
             // TODO: settings: enable/disable feature, default layer
             // TODO: settings: default layer
@@ -4016,10 +4062,8 @@ function extractWaypointsFromListing() {
         }
     }
 
-  
-   
-    
-    
+
+
 // Default Log Type && Log Signature
     if (document.location.href.match(/^https?:\/\/www\.geocaching\.com\/seek\/log\.aspx\?(id|guid|ID|PLogGuid|wp)\=/) && document.getElementById('ctl00_ContentBody_LogBookPanel1_ddLogType') && $('#ctl00_ContentBody_LogBookPanel1_lbConfirm').length == 0) {
         try {
