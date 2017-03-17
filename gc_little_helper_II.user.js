@@ -523,7 +523,7 @@ var variablesInit = function (c) {
     c.settings_pq_terrain_score = getValue("settings_pq_terrain_score","1");
     c.settings_pq_automatically_day = getValue("settings_pq_automatically_day",true);
     c.settings_mail_icon_new_win = getValue("settings_mail_icon_new_win",false);
-    c.settings_message_icon_new_win = getValue("settings_message_icon_new_win",false);    
+    c.settings_message_icon_new_win = getValue("settings_message_icon_new_win",false);
 
     // Settings: Custom Bookmarks
     var num = c.bookmarks.length;
@@ -3545,8 +3545,7 @@ var mainGC = function () {
             if ( guid.match(/\#/) ) return;
             // Keine Verarbeitung für Stat Bar.
             if ( b_side.innerHTML.match(/https?:\/\/img\.geocaching\.com\/stats\/img\.aspx/) ) return;
-        }
-        else {
+        } else {
             if ( b_username == "" || b_username == undefined ) return;
         }
 
@@ -3585,7 +3584,7 @@ var mainGC = function () {
             message_img.setAttribute("title", "Send a message to " + username_send);
             message_img.setAttribute("src", global_message_icon);
             message_link.appendChild(message_img);
-            if ( settings_message_icon_new_win ) message_link.setAttribute("target", "_blank");		
+            if ( settings_message_icon_new_win ) message_link.setAttribute("target", "_blank");
             message_link.setAttribute("href", http + "://www.geocaching.com/account/messagecenter?recipientId=" + guid + "&text=" + template);
             b_side.parentNode.insertBefore(message_link, b_side.nextSibling);
             b_side.parentNode.insertBefore(document.createTextNode(" "), b_side.nextSibling);
@@ -3608,8 +3607,7 @@ var mainGC = function () {
                 mail_link.setAttribute("href", http + "://www.geocaching.com/email/?guid=" + guid + "&text=" + template);
                 b_side.parentNode.insertBefore(mail_link, b_side.nextSibling);
                 b_side.parentNode.insertBefore(document.createTextNode(" "), b_side.nextSibling);
-            }
-            else {
+            } else {
                 b_side.appendChild(document.createTextNode(" "));
                 mail_link.setAttribute("href", http + "://www.geocaching.com/email/?u=" + urlencode(b_username) + "&text=" + template);
                 b_side.appendChild(mail_link);
@@ -6414,12 +6412,12 @@ var mainGC = function () {
                 if (settings_vup_hide_avatar && settings_vup_hide_log) vupHideCompleteLog = vupUserString;
             }
             vupHideAvatarString  += ')';
-            
+
             var mailNewWin = "";
             if ( settings_mail_icon_new_win) mailNewWin = 'target="_blank" ';
             var messageNewWin = "";
             if ( settings_message_icon_new_win) messageNewWin = 'target="_blank" ';
-	
+
             var new_tmpl = "";
             new_tmpl +=
                 '    {{' + vupHideCompleteLog  + '}}' +
@@ -9305,16 +9303,16 @@ var mainGC = function () {
             html += "  <option " + (settings_date_format == "MMM/dd/yyyy" ? "selected='selected'" : "") + " value='MMM/dd/yyyy'> Dec/31/2016</option>";
             html += "  <option " + (settings_date_format == "dd MMM yy" ? "selected='selected'" : "") + " value='dd MMM yy'> 31 Dec 16</option>";
             html += "</select>" + show_help("If you have changed the date format on gc.com, you have to change it here to. Instead the day of week may be wrong.") + "<br/>";
-            html += checkboxy('settings_show_mail', 'Show mail link beside usernames') + show_help("With this option there will be an small mail icon beside every username. With this icon you get directly to the mail page to mail to this user. If you click it for example when you are in a listing, the cachename or GC code can be inserted into the mail form about placeholder in the mail / message form template.") + "<br/>";
+            html += checkboxy('settings_show_mail', 'Show mail link beside usernames') + show_help("With this option there will be an small mail icon beside every username. With this icon you get directly to the mail form to mail to this user. If you click it for example when you are in a listing, the cachename or GC code can be inserted into the mail form about placeholder in the mail / message form template.") + "<br/>";
             var content_settings_show_mail_in_viplist = "&nbsp; " + checkboxy('settings_show_mail_in_viplist', 'Show mail link beside user in "VIP-List" in listing') + show_help("With this option there will be an small mail icon beside every username in the VIP lists on the cache listing page. With this icon you get directly to the mail page to mail to this user. <br>(VIP: Very important person)<br><br>This option requires \"Show mail link beside usernames\", \"Show VIP list\" and \"Load logs with GClh\".") + "<br>";
             html += content_settings_show_mail_in_viplist;
             html += "&nbsp; " + content_settings_show_mail_in_allmyvips.replace("settings_show_mail_in_allmyvips", "settings_show_mail_in_allmyvipsX0");
             html += newParameterOn3;
-            html += "&nbsp; " + checkboxy('settings_mail_icon_new_win', 'Open mail form in new window')  + show_help("If you enable this option, the mail form will open in an new window.<br><br>This option requires \"Show mail link beside usernames\".")+ "<br/>";     
+            html += "&nbsp; " + checkboxy('settings_mail_icon_new_win', 'Open mail form in new tab')  + show_help("If you enable this option, the mail form will open in an new tab.<br><br>This option requires \"Show mail link beside usernames\".")+ "<br/>";
             html += newParameterVersionSetzen(0.6) + newParameterOff;
-            html += checkboxy('settings_show_message', 'Show message link beside usernames') + show_help("With this option there will be an small message icon beside every username. With this icon you get directly to the message page to send a message to this user. If you click it for example when you are in a listing, the cachename or GC code can be inserted into the message form about placeholder in the mail / message form template.") + "<br/>";
+            html += checkboxy('settings_show_message', 'Show message link beside usernames') + show_help("With this option there will be an small message icon beside every username. With this icon you get directly to the message form to send a message to this user. If you click it for example when you are in a listing, the cachename or GC code can be inserted into the message form about placeholder in the mail / message form template.") + "<br/>";
             html += newParameterOn3;
-            html += "&nbsp; " + checkboxy('settings_message_icon_new_win', 'Open message form in new window')  + show_help("If you enable this option, the message form will open in an new window.<br><br>This option requires \"Show message link beside usernames\".")+ "<br/>";
+            html += "&nbsp; " + checkboxy('settings_message_icon_new_win', 'Open message form in new tab')  + show_help("If you enable this option, the message form will open in an new tab.<br><br>This option requires \"Show message link beside usernames\".")+ "<br/>";
             html += newParameterVersionSetzen(0.6) + newParameterOff;
             html += checkboxy('settings_show_google_maps', 'Show link to Google Maps') + show_help("This option shows a link at the top of the second map in the listing. With this link you get directly to Google Maps in the area, where the cache is.") + "<br/>";
             html += checkboxy('settings_strike_archived', 'Strike through title of archived/disabled caches') + "<br/>";
@@ -9979,8 +9977,8 @@ var mainGC = function () {
             setEventsForDependentParameters( "settings_log_inline_pmo4basic", "settings_log_inline_tb", false );
             setEventsForDependentParameters( "settings_show_mail", "settings_show_mail_in_viplist" );
             setEventsForDependentParameters( "settings_show_mail", "settings_show_mail_in_allmyvips" );
-            setEventsForDependentParameters( "settings_show_mail", "settings_mail_icon_new_win" );            
-            setEventsForDependentParameters( "settings_show_message", "settings_message_icon_new_win" );                        
+            setEventsForDependentParameters( "settings_show_mail", "settings_mail_icon_new_win" );
+            setEventsForDependentParameters( "settings_show_message", "settings_message_icon_new_win" );
             setEventsForDependentParameters( "settings_show_thumbnails", "settings_hover_image_max_size" );
             setEventsForDependentParameters( "settings_show_thumbnails", "settings_spoiler_strings" );
             setEventsForDependentParameters( "settings_show_thumbnails", "settings_imgcaption_on_top" );
