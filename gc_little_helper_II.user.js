@@ -3885,12 +3885,14 @@ function getListingCoordinates() {
 
 
 
-// replace . : * -> _,   
+
 function floppsMapWaypoint( waypoint, id, radius, name ) {
     name = name.replace(/[^a-zA-Z0-9_]/g,'_'); // A–Z, a–z, 0–9, - und _
     return id+':'+waypoint.latitude+':'+waypoint.longitude+':'+radius+':'+name;
 }
 
+function lat2tile(lat,zoom)  { return (Math.floor((1-Math.log(Math.tan(lat*Math.PI/180) + 1/Math.cos(lat*Math.PI/180))/Math.PI)/2 *Math.pow(2,zoom))); }
+function long2tile(lon,zoom) { return (Math.floor((lon+180)/360*Math.pow(2,zoom))); }
 
 function buildFloppsMapLink( y ) {
     var map="osm"; // todo
@@ -3899,16 +3901,45 @@ function buildFloppsMapLink( y ) {
     var waypointListingOrigin = null;
     var waypointListingChanged = null;
     var waypointAdditional = [];
-//    var boundarybox = { minLatitude : 0, minLongitude : 0, maxLatitude: 0, maxLongitude : 0 };
+
+    var Latmax = -90.0;
+    var Latmin = 90.0;
+    var Lonmax = -180.0;
+    var Lonmin = 180.0;
+    var count = 0;
 
     for ( var i=0; i<y.length; i++) {
         var waypoint = y[i];
-        if ( waypoint.type == "waypoint" ) {
-            waypointAdditional.push(waypoint);
-        } else if ( waypoint.type == "listing" && waypoint.subtype == "origin" ) {
-            waypointListingOrigin = waypoint;
-        } else if ( waypoint.type == "listing" && waypoint.subtype == "changed" ) {
-            waypointListingChanged = waypoint;
+        if ( waypoint.visible == true ) {
+            count++;
+            if ( waypoint.type == "waypoint" ) {
+                waypointAdditional.push(waypoint);
+            } else if ( waypoint.type == "listing" && waypoint.subtype == "origin" ) {
+                waypointListingOrigin = waypoint;
+            } else if ( waypoint.type == "listing" && waypoint.subtype == "changed" ) {
+                waypointListingChanged = waypoint;
+            }
+            Latmax = Math.max( Latmax, waypoint.latitude );
+            Latmin = Math.min( Latmin, waypoint.latitude );
+            Lonmax = Math.max( Lonmax, waypoint.longitude );
+            Lonmin = Math.min( Lonmin, waypoint.longitude );
+        }
+        if ( count >= 26) break;
+    }
+
+    var floppsMapWidth = window.innerWidth-280;
+    var floppsMapHeigth = window.innerHeight-50;
+    console.log( "Calculate zoom level for Flopp's Map" + " (width="+floppsMapWidth+"px heigth="+floppsMapHeigth+"px)" );
+    for ( var zoom=20; zoom>=0; zoom--) {
+        var a = lat2tile(Latmin,zoom);
+        var b = lat2tile(Latmax,zoom);
+        var tiles_Y = (a-b+1); // boundary box heigth in number of tiles
+        var tileX_min = long2tile(Lonmin,zoom);
+        var tileX_max = long2tile(Lonmax,zoom);
+        var tiles_X = (tileX_max-tileX_min+1); // boundary box width in  number of tiles
+        console.log( "  Tiles @ zoom="+zoom+": Xmin="+tileX_min+" Xmas="+tileX_max+" ΔX="+tiles_X+" => "+tiles_X*256+"px | Ymin="+a+" Ymas="+b+" ΔY="+tiles_Y+" => "+tiles_Y*256+"px" );
+        if ( (tiles_Y*256 < floppsMapHeigth ) && (tiles_X*256 < floppsMapWidth ) ) {
+            break;
         }
     }
 
@@ -3939,13 +3970,16 @@ function buildFloppsMapLink( y ) {
         }
     }
     
-    var url = 'http://flopp.net/'+'?c='+waypointListingOrigin.latitude+':'+waypointListingOrigin.longitude+'&z='+zoom+'&t='+map;
+    var url = "";
     for ( var i=0; i<floppsWaypoints.length; i++) {
         url += ( ( i == 0 ) ? '&m=' : '*' );
         url += floppsWaypoints[i];
         // todo: caluclate center of the boundary box
     }
-
+    var center_latitude = ((Latmax+90.0)+(Latmin+90.0))/2-90.0
+    var center_longitude = ((Lonmax+180.0)+(Lonmin+180.0))/2-180.0
+    var url = 'http://flopp.net/'+'?c='+center_latitude+':'+center_longitude+'&z='+zoom+'&t='+map+url;
+    
     if ( waypointListingChanged != null ) {
        url += '&d=O:C';
     }
@@ -3970,6 +4004,16 @@ function buildFloppsMapLink( y ) {
 
             var link = buildFloppsMapLink( x );
             console.log(link);
+
+            var B = document.body,
+                H = document.documentElement,
+                height;
+
+            if (typeof document.height !== 'undefined') {
+                height = document.height // For webkit browsers
+            } else {
+                height = Math.max( B.scrollHeight, B.offsetHeight,H.clientHeight, H.scrollHeight, H.offsetHeight );
+            } 
 
             var tbl = document.getElementById('ctl00_ContentBody_Waypoints');
             if ( tbl == null ) {
