@@ -3745,6 +3745,7 @@ var mainGC = function () {
             gclh_error("Improve Message Site", e);
         }
     }
+    
 // helper function
     function roundTO(val, decimals)
     {
@@ -3907,8 +3908,7 @@ function buildFloppsMapLink( waypoints ) {
         var waypoint = waypoints[i];
         if ( waypoint.visible == true ) {
             if ( waypoint.type == "waypoint" ) {
-                // TODO: sorting order of id not A1, A2, A3 , ..., B1, B2, B3, ... but A1, B1, A2, B2, A3, B3, ...
-                var id = String.fromCharCode(65+Math.floor(count/9))+(count%9+1); // create Flopps Map id: A1-A9 B1-B9 ....
+                var id = String.fromCharCode(65+Math.floor(count%26))+Math.floor(count/26+1); // create Flopps Map id: A1-A9 B1-B9 ....
                 console.log(id);
                 var radius = (( waypoint.subtype == "Physical Stage" || waypoint.subtype == "Final Location" ) ? "161" : "");
                 floppsWaypoints.push( floppsMapWaypoint( waypoint, id, radius, waypoint.name ) );
@@ -3923,7 +3923,7 @@ function buildFloppsMapLink( waypoints ) {
             Lonmax = Math.max( Lonmax, waypoint.longitude );
             Lonmin = Math.min( Lonmin, waypoint.longitude );
             
-            if ( floppsWaypoints.length>26 ) { break; }
+            // TODO: maximum markers? if ( floppsWaypoints.length>26 ) { break; }
         }
     }
 
@@ -4010,7 +4010,7 @@ function extractWaypointsFromListing() {
             // TODO: settings: default layer
             // TODO: settings: autozoom or manual zoom level (?)
             // TODO: settings: open in own tab / same tab
-            // TODO: warning if there are move than 26 issues            
+            // TODO: warning if there are move than 26 (???) issues
         } catch( e ) {
             gclh_error("Error extract waypoints", e); // todo
         }
