@@ -3792,20 +3792,21 @@ function getAdditionalWaypoints() {
                     
                     var subtype = "";
                     var icon = waypoint.icon;
-                    if ( icon == "/images/wpttypes/sm/trailhead.jpg" ) {
+                    if ( icon.match(/trailhead.jpg/g) ) {
                         subtype = "Trailhead";
-                    } else if ( icon == "/images/wpttypes/sm/flag.jpg" ) {
+                    } else if ( icon.match(/flag.jpg/g) ) {
                         subtype = "Final Location";
-                    } else if ( icon == "/images/wpttypes/sm/pkg.jpg" ) {
+                    } else if ( icon.match(/pkg.jpg/g) ) {
                         subtype = "Parking Area";
-                    } else if ( icon == "/images/wpttypes/sm/stage.jpg" ) {
+                    } else if ( icon.match(/stage.jpg/g) ) {
                         subtype = "Physical Stage";
-                    } else if ( icon == "/images/wpttypes/sm/puzzle.jpg" ) {
+                    } else if ( icon.match(/puzzle.jpg/g) ) {
                         subtype = "Virtual Stage";
-                    } else if ( icon == "/images/wpttypes/sm/waypoint.jpg" ) {
+                    } else if ( icon.match(/waypoint.jpg/g) ) {
                         subtype = "Reference Point";
                     } else {
-                        alert("getAdditionalWaypoints(): problem with waypoint "+waypoint.lookup+"/"+waypoint.prefix+": unknown waypoint type ("+name[2]+"/"+icon+")"); // todo
+                        console.log("getAdditionalWaypoints(): problem with waypoint "+waypoint.lookup+"/"+waypoint.prefix);
+                        console.log("    unknown waypoint type ("+icon+")");
                     } 
                     waypoint.subtype = subtype;
                     
