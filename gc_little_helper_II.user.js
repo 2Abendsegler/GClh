@@ -3910,7 +3910,6 @@ function buildFloppsMapLink( waypoints, map ) {
         if ( waypoint.visible == true ) {
             if ( waypoint.type == "waypoint" ) {
                 var id = String.fromCharCode(65+Math.floor(count%26))+Math.floor(count/26+1); // create Flopps Map id: A1-A9 B1-B9 ....
-                console.log(id);
                 var radius = (( waypoint.subtype == "Physical Stage" || waypoint.subtype == "Final Location" ) ? "161" : "");
                 floppsWaypoints.push( floppsMapWaypoint( waypoint, id, radius, waypoint.name ) );
                 count++;
@@ -3962,8 +3961,8 @@ function extractWaypointsFromListing() {
     var waypoints = [];
     waypoints = waypoints.concat(getListingCoordinates());
     waypoints = waypoints.concat(getAdditionalWaypoints());
-    // waypoints = waypoints.concat(/* listing (long)description */ );
-    // waypoints = waypoints.concat(/* from personal node */);
+    // TODO: waypoints = waypoints.concat(/* listing (long)description */ );
+    // TODO: waypoints = waypoints.concat(/* from personal node */);
     console.log(waypoints);
     return waypoints;
 }
@@ -4033,17 +4032,24 @@ function extractWaypointsFromListing() {
                 tbl = $('#ctl00_ContentBody_WaypointList');
             }
 
-            tbl.after('<div class="GClhdropdown"><button class="GClhdropbtn">Show Waypoints on Flopp\'s Map in ...</button><div id="FloppsMapLayers" class="GClhdropdown-content"></div></div>');
-            $('#FloppsMapLayers').append('<div class="openFloppsMap" data-map="OSM">Openstreetmap Mapnik</div>');
-            $('#FloppsMapLayers').append('<div class="openFloppsMap" data-map="OSM/DE">Openstreetmap Germany Style</div>');
-            $('#FloppsMapLayers').append('<div class="openFloppsMap" data-map="OCM">OpenCycleMap</div>');
-            $('#FloppsMapLayers').append('<div class="openFloppsMap" data-map="TOPO">OpenTopMap</div>');
-            $('#FloppsMapLayers').append('<div class="openFloppsMap" data-map="OUTD">Thunderforest Outdoors</div>');
-            $('#FloppsMapLayers').append('<div class="openFloppsMap" data-map="roadmap">Google Maps</div>');
-            $('#FloppsMapLayers').append('<div class="openFloppsMap" data-map="satellite">Google Maps Satellite</div>');
-            $('#FloppsMapLayers').append('<div class="openFloppsMap" data-map="hybrid">Google Maps Hybrid</div>');
-            $('#FloppsMapLayers').append('<div class="openFloppsMap" data-map="terrain">Googles Maps Terrain</div>');
+            tbl.after('<div class="GClhdropdown"><button id="ShowWaypointsOnFloppsMap" class="GClhdropbtn">Show Waypoints on Flopp\'s Map with &#8230;</button><div id="FloppsMapLayers" class="GClhdropdown-content"></div></div>');
+            $('#FloppsMapLayers').append('<div class="openFloppsMap" data-map="OSM">&#8230;&nbsp;Openstreetmap Mapnik</div>');
+            $('#FloppsMapLayers').append('<div class="openFloppsMap" data-map="OSM/DE">&#8230;&nbsp;Openstreetmap Germany Style</div>');
+            $('#FloppsMapLayers').append('<div class="openFloppsMap" data-map="OCM">&#8230;&nbsp;OpenCycleMap</div>');
+            $('#FloppsMapLayers').append('<div class="openFloppsMap" data-map="TOPO">&#8230;&nbsp;OpenTopMap</div>');
+            $('#FloppsMapLayers').append('<div class="openFloppsMap" data-map="OUTD">&#8230;&nbsp;Thunderforest Outdoors</div>');
+            $('#FloppsMapLayers').append('<div class="openFloppsMap" data-map="roadmap">&#8230;&nbsp;Google Maps</div>');
+            $('#FloppsMapLayers').append('<div class="openFloppsMap" data-map="satellite">&#8230;&nbsp;Google Maps Satellite</div>');
+            $('#FloppsMapLayers').append('<div class="openFloppsMap" data-map="hybrid">&#8230;&nbsp;Google Maps Hybrid</div>');
+            $('#FloppsMapLayers').append('<div class="openFloppsMap" data-map="terrain">&#8230;&nbsp;Googles Maps Terrain</div>');
 
+            $('#ShowWaypointsOnFloppsMap').click( function() {
+                var waypoints = extractWaypointsFromListing();
+                var link = buildFloppsMapLink( waypoints, "" );
+                window.open( link ); // todo settings: in_same_tab
+                console.log(link);                
+            });
+            
             $('.openFloppsMap').click( function() {
                 var map = $(this).data('map');
                 var waypoints = extractWaypointsFromListing();
