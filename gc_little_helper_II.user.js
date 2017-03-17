@@ -16,7 +16,7 @@
 // @require          http://cdnjs.cloudflare.com/ajax/libs/dropbox.js/0.10.2/dropbox.min.js
 // @require          https://raw.githubusercontent.com/2Abendsegler/GClh/master/data/gclh_icons.js
 // @description      Some little things to make life easy (on www.geocaching.com).
-// @copyright        Torsten Amshove <torsten@amshove.net>
+// @copyright        Torsten Amshve <torsten@amshove.net>
 // @author           Torsten Amshove; 2Abendsegler
 // @grant            GM_getValue
 // @grant            GM_setValue
@@ -7689,6 +7689,15 @@ var mainGC = function () {
             gclh_error("Lab Gpx Downlad Link hinzufügen", e);
         }
     }
+ // auto check checkboxes on hide report
+	try {
+		if(is_page("hide_report")) {
+			$("#ctl00_ContentBody_chkUnderstand").prop('checked', true);
+			$("#ctl00_ContentBody_chkDisclaimer").prop('checked', true);
+		}
+	} catch (e) {
+        gclh_error("Geocache bearbeiten - automatisch Häkchen setzen", e);
+    }
 
 // Check for Upgrade.
     try {
@@ -11436,6 +11445,10 @@ function is_link(name, url) {
         case "labs":
             if (url.match(/^https?:\/\/labs\.geocaching\.com/)) status = true;
             break;
+        case "hide_report":
+			if (url.match(/^https?:\/\/www\.geocaching\.com\/hide\/report\.aspx/)) return true;
+			else return false;
+			break;
         default:
             gclh_error( "is_link", "is_link( "+name+", ... ): unknown name" );
             break;
