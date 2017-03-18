@@ -42,7 +42,7 @@ For example:<br>
 <br></li>
 <li>
 New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/230">#230</a>] Auto set approvals in hide cache process:<br> 
-Many thanks to <a href="https://www.geocaching.com/profile/?u=king-ton">king-ton</a> for the idea and thedevelopment.<br>
+Many thanks to <a href="https://www.geocaching.com/profile/?u=king-ton">king-ton</a> for the idea and the development.<br>
 <br>
 New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/231">#231</a>] Enable save / continue with F2 key in hide cache process:<br> 
 This includes the complete hide cache process with all of the buttons "Continue", "Continue Anyway", "Save and Preview", "Submit Changes", "Update Attributes", "Create Waypoint" and "Update Waypoint" of the create and the change functionality.<br>
