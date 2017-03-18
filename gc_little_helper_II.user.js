@@ -2316,8 +2316,7 @@ var mainGC = function () {
             $("label[for='"+idOption1+"']").css('color','#ff0000');
             $("label[for='"+idOption2+"']").css('color','#ff0000');
             status = true;
-        }
-        else {
+        } else {
             $("label[for='"+idOption1+"']").css('background-color','#ffffff');
             $("label[for='"+idOption2+"']").css('background-color','#ffffff');
             $("label[for='"+idOption1+"']").css('color','#000000');
@@ -2485,7 +2484,6 @@ var mainGC = function () {
                 $( "#6" ).find("input").each(function( index ) {
                     $(this).prop('checked', true);
                 });
-
 
 
                 function hidePqSection( object,text ) {
