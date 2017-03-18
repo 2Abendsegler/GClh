@@ -68,6 +68,9 @@ Fix: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/227">#227</a>] 
 <li>
 Fix: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/225">#225</a>] Own log statistics is generated on other user profile page (id)<br>
 </li>
+<li>
+Fix: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/239">#239</a>] Log templates show unreadable signs (Vorabkorrektur)<br>
+</li>
 <br>
 </ul>
 (25.03.2017)<br> 
