@@ -524,6 +524,8 @@ var variablesInit = function (c) {
     c.settings_pq_automatically_day = getValue("settings_pq_automatically_day",true);
     c.settings_mail_icon_new_win = getValue("settings_mail_icon_new_win",false);
     c.settings_message_icon_new_win = getValue("settings_message_icon_new_win",false);
+    // Settings: Enable approvals in hide cache process
+    c.settings_hide_cache_approvals = getValue("settings_hide_cache_approvals", true);
 
     // Settings: Custom Bookmarks
     var num = c.bookmarks.length;
@@ -988,6 +990,33 @@ var mainGC = function () {
             } catch (e) {
                 gclh_error("F2 save Bookmark Pocket Query", e);
             }
+        }
+    }
+
+// F2 hide cache process speichern
+    if (settings_submit_log_button && document.location.href.match(/^https?:\/\/www\.geocaching\.com\/hide\//)) {
+        try {
+            var id = "";
+            if (document.getElementById("btnContinue")) id = "btnContinue";
+            else if (document.getElementById("btnSubmit")) id = "btnSubmit";
+            else if (document.getElementById("btnNext")) id = "btnNext";
+            else if (document.getElementById("ctl00_ContentBody_btnSubmit")) id = "ctl00_ContentBody_btnSubmit";
+            else if (document.getElementById("ctl00_ContentBody_Attributes_btnUpdate")) id = "ctl00_ContentBody_Attributes_btnUpdate";
+            else if (document.getElementById("ctl00_ContentBody_WaypointEdit_uxSubmitIt")) id = "ctl00_ContentBody_WaypointEdit_uxSubmitIt";
+            if (id != "") {
+                var but = document.getElementById(id);
+                but.value = document.getElementById(id).value + " (F2)";
+                function keydown(e) {
+                    if (e.keyCode == 113) {
+                        if ( !check_config_page() ) {
+                            document.getElementById(id).click();
+                        }
+                    }
+                }
+                window.addEventListener('keydown', keydown, true);
+            }
+        } catch (e) {
+            gclh_error("F2 hide cache process speichern", e);
         }
     }
 
@@ -2316,8 +2345,7 @@ var mainGC = function () {
             $("label[for='"+idOption1+"']").css('color','#ff0000');
             $("label[for='"+idOption2+"']").css('color','#ff0000');
             status = true;
-        }
-        else {
+        } else {
             $("label[for='"+idOption1+"']").css('background-color','#ffffff');
             $("label[for='"+idOption2+"']").css('background-color','#ffffff');
             $("label[for='"+idOption1+"']").css('color','#000000');
@@ -2485,7 +2513,6 @@ var mainGC = function () {
                 $( "#6" ).find("input").each(function( index ) {
                     $(this).prop('checked', true);
                 });
-
 
 
                 function hidePqSection( object,text ) {
@@ -7689,14 +7716,16 @@ var mainGC = function () {
             gclh_error("Lab Gpx Downlad Link hinzufügen", e);
         }
     }
- // auto check checkboxes on hide report
-	try {
-		if(is_page("hide_report")) {
-			$("#ctl00_ContentBody_chkUnderstand").prop('checked', true);
-			$("#ctl00_ContentBody_chkDisclaimer").prop('checked', true);
-		}
-	} catch (e) {
-        gclh_error("Geocache bearbeiten - automatisch Häkchen setzen", e);
+
+// Auto check checkboxes on hide cache process.
+    try {
+        if (settings_hide_cache_approvals && document.location.href.match(/^https?:\/\/www\.geocaching\.com\/hide\/(report|description)\.aspx/)) {
+            $("#ctl00_ContentBody_cbAgreement").prop('checked', true);
+            $("#ctl00_ContentBody_chkUnderstand").prop('checked', true);
+            $("#ctl00_ContentBody_chkDisclaimer").prop('checked', true);
+        }
+    } catch (e) {
+        gclh_error("Auto check checkboxes on hide cache process", e);
     }
 
 // Check for Upgrade.
@@ -9288,6 +9317,9 @@ var mainGC = function () {
 
             html += "<h4 class='gclh_headline2'>"+prepareHideable.replace("#name#","listing")+"Listing</h4>";
             html += "<div id='gclh_config_listing'>";
+            html += newParameterOn3;
+            html += checkboxy('settings_hide_cache_approvals', 'Auto set approvals in hide cache process') + show_help("This option activates the checkboxes for approval the guidelines and the terms of use agreement in the hide cache process.") + "<br/>";
+            html += newParameterVersionSetzen(0.6) + newParameterOff;
             html += checkboxy('settings_log_inline', 'Log cache from listing (inline)') + show_help("With the inline log you can open a log form inside the listing, without loading a new page.") + "<br/>";
             var content_settings_log_inline_tb = "&nbsp; " + checkboxy('settings_log_inline_tb', 'Show TB list') + show_help("With this option you can select, if the TB list should be shown in inline logs.<br><br>This option requires \"Log cache from listing (inline)\" or \"Log cache from listing for PMO (for basic members)\".") + "<br>";
             html += content_settings_log_inline_tb;
@@ -9367,7 +9399,7 @@ var mainGC = function () {
 
             html += "<h4 class='gclh_headline2'>"+prepareHideable.replace("#name#","logging")+"Logging</h4>";
             html += "<div id='gclh_config_logging'>";
-            html += checkboxy('settings_submit_log_button', 'Submit log, Pocket Query or Bookmark on F2') + show_help("With this option you are able to submit your log by pressing F2 instead of scrolling to the bottom and move the mouse to the button. This feature also works to save Pocket Queries or Bookmarks.") + "<br/>";
+            html += checkboxy('settings_submit_log_button', 'Submit log, Pocket Query, Bookmark or Listing on F2') + show_help("With this option you are able to submit your log by pressing F2 instead of scrolling to the bottom and move the mouse to the button. This feature also works to save Pocket Queries, Bookmarks or Listings.") + "<br/>";
             html += checkboxy('settings_show_bbcode', 'Show smilies') + show_help("This option displays smilies options beside the log form. If you click on a smilie, it is inserted into your log.") + "<br/>";
             html += checkboxy('settings_autovisit', 'Enable \"AutoVisit\" feature for TBs/Coins') + show_help("With this option you are able to select TBs/Coins which should be automatically set to \"visited\" on every log. You can select \"AutoVisit\" for each TB/Coin in the list on the bottom of the log form.") + "<br/>";
             html += checkboxy('settings_replace_log_by_last_log', 'Replace log by last log template') + show_help("If you enable this option, the last log template will replace the whole log. If you disable it, it will be appended to the log.") + "<br/>";
@@ -10344,7 +10376,8 @@ var mainGC = function () {
                 'settings_pq_set_terrain',
                 'settings_pq_automatically_day',
                 'settings_mail_icon_new_win',
-                'settings_message_icon_new_win'
+                'settings_message_icon_new_win',
+                'settings_hide_cache_approvals'
             );
             for (var i = 0; i < checkboxes.length; i++) {
                 if ( document.getElementById(checkboxes[i]) ) {
@@ -11416,7 +11449,7 @@ function is_link(name, url) {
 	var status = false;
     switch (name) {
         case "cache_listing":
-            if (url.match(/^https?:\/\/www\.geocaching\.com\/seek\/cache_details\.aspx/) || url.match(/^https?:\/\/www\.geocaching\.com\/geocache\//) ) status = true;
+            if ((url.match(/^https?:\/\/www\.geocaching\.com\/seek\/cache_details\.aspx/) || url.match(/^https?:\/\/www\.geocaching\.com\/geocache\//) ) && !document.getElementById("cspSubmit") && !document.getElementById("cspGoBack")) status = true;
             break;
         case "profile":
             if (url.match(/^https?:\/\/www\.geocaching\.com\/my(\/default\.aspx)?/) ) status = true;
@@ -11445,10 +11478,6 @@ function is_link(name, url) {
         case "labs":
             if (url.match(/^https?:\/\/labs\.geocaching\.com/)) status = true;
             break;
-        case "hide_report":
-			if (url.match(/^https?:\/\/www\.geocaching\.com\/hide\/report\.aspx/)) return true;
-			else return false;
-			break;
         default:
             gclh_error( "is_link", "is_link( "+name+", ... ): unknown name" );
             break;
