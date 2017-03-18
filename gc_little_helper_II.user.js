@@ -16,7 +16,7 @@
 // @require          http://cdnjs.cloudflare.com/ajax/libs/dropbox.js/0.10.2/dropbox.min.js
 // @require          https://raw.githubusercontent.com/2Abendsegler/GClh/master/data/gclh_icons.js
 // @description      Some little things to make life easy (on www.geocaching.com).
-// @copyright        Torsten Amshve <torsten@amshove.net>
+// @copyright        Torsten Amshove <torsten@amshove.net>
 // @author           Torsten Amshove; 2Abendsegler
 // @grant            GM_getValue
 // @grant            GM_setValue
