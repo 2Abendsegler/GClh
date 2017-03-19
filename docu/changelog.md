@@ -44,7 +44,7 @@ This includes the complete hide cache process with all of the buttons "Continue"
 <img src="../images/v0.6_Screen08.jpg" alt="v0.6_Screen08.jpg"><br>
 <br></li>
 <li>
-New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/226">#226</a>] New Config parameter to open mail/message form in a new window.:<br>
+New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/226">#226</a>] New Config parameter to open mail/message form in a new window:<br>
 Many thanks to <a href="https://www.geocaching.com/profile/?u=Herr%20Ma">Herr Ma</a> for the development.<br>
 <img src="../images/v0.6_Screen06.jpg" alt="v0.6_Screen06.jpg"><br>
 <br></li>
@@ -53,13 +53,13 @@ Fix: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/224">#224</a>] 
 Many thanks to <a href="https://www.geocaching.com/profile/?u=Herr%20Ma">Herr Ma</a> for the fix.<br>
 </li>
 <li>
-Fix: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/227">#227</a>] Build maps linking on gc.map not always possible (Vorabkorrektur)<br>
+Fix: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/227">#227</a>] Build maps linking on gc.map not always possible (Vorabkorrektur).<br>
 </li>
 <li>
-Fix: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/225">#225</a>] Own log statistics is generated on other user profile page (id)<br>
+Fix: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/225">#225</a>] Own log statistics is generated on other user profile page (id).<br>
 </li>
 <li>
-Fix: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/239">#239</a>] Log templates show unreadable signs (Vorabkorrektur)<br>
+Fix: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/239">#239</a>] Log templates show unreadable signs (Vorabkorrektur).<br>
 </li>
 <br>
 </ul>
