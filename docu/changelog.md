@@ -49,8 +49,6 @@ This includes the complete hide cache process with all of the buttons "Continue"
 <br>
 <img src="../images/v0.6_Screen07.jpg" alt="v0.6_Screen07.jpg"><br>
 <br>
-<img src="../images/v0.6_Screen09.jpg" alt="v0.6_Screen09.jpg"><br>
-<br>
 <img src="../images/v0.6_Screen08.jpg" alt="v0.6_Screen08.jpg"><br>
 <br></li>
 <li>
