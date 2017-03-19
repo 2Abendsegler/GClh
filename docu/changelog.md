@@ -33,14 +33,6 @@ Many thanks to <a href="https://www.geocaching.com/profile/?u=CachingFoX">Cachin
 <img src="../images/v0.6_Screen03.jpg" alt="v0.6_Screen03.jpg"><br>
 <br></li>
 <li>
-New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/222">#222</a>] Compact Layout of page 'New Pocket Query':<br>
-Many thanks to <a href="https://www.geocaching.com/profile/?u=CachingFoX">CachingFoX</a> for the idea and the implementation.<br>
-For example:<br>
-<img src="../images/v0.6_Screen04.jpg" alt="v0.6_Screen04.jpg"><br>
-<br>
-<img src="../images/v0.6_Screen05.jpg" alt="v0.6_Screen05.jpg"><br>
-<br></li>
-<li>
 New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/226">#226</a>] New Config parameter to open mail/message form in a new window.:<br>
 Many thanks to <a href="https://www.geocaching.com/profile/?u=Herr%20Ma">Herr Ma</a> for the development.<br>
 <img src="../images/v0.6_Screen06.jpg" alt="v0.6_Screen06.jpg"><br>
