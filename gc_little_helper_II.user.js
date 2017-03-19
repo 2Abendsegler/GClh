@@ -3986,7 +3986,7 @@ function extractWaypointsFromListing() {
             css += ".GClhdropbtn {";
             css += "    background-color: #4CAF50;";
             css += "    color: white;";
-            css += "    padding: 8px;";
+            css += "    padding: 10px;";
             css += "    font-size: 16px;";
             css += "    border: none;";
             css += "    cursor: pointer;";
@@ -4008,7 +4008,7 @@ function extractWaypointsFromListing() {
             css += "/* Links inside the dropdown */";
             css += ".GClhdropdown-content div {";
             css += "    color: black;";
-            css += "    padding: 12px 16px;";
+            css += "    padding: 5px 16px 5px 16px;";
             css += "    text-decoration: none;";
             css += "    display: block;";
             css += "}";
@@ -4032,16 +4032,15 @@ function extractWaypointsFromListing() {
                 tbl = $('#ctl00_ContentBody_WaypointList');
             }
 
-            tbl.after('<div class="GClhdropdown"><button id="ShowWaypointsOnFloppsMap" class="GClhdropbtn">Show Waypoints on Flopp\'s Map with &#8230;</button><div id="FloppsMapLayers" class="GClhdropdown-content"></div></div>');
-            $('#FloppsMapLayers').append('<div class="openFloppsMap" data-map="OSM">&#8230;&nbsp;Openstreetmap Mapnik</div>');
-            $('#FloppsMapLayers').append('<div class="openFloppsMap" data-map="OSM/DE">&#8230;&nbsp;Openstreetmap Germany Style</div>');
-            $('#FloppsMapLayers').append('<div class="openFloppsMap" data-map="OCM">&#8230;&nbsp;OpenCycleMap</div>');
-            $('#FloppsMapLayers').append('<div class="openFloppsMap" data-map="TOPO">&#8230;&nbsp;OpenTopMap</div>');
-            $('#FloppsMapLayers').append('<div class="openFloppsMap" data-map="OUTD">&#8230;&nbsp;Thunderforest Outdoors</div>');
-            $('#FloppsMapLayers').append('<div class="openFloppsMap" data-map="roadmap">&#8230;&nbsp;Google Maps</div>');
-            $('#FloppsMapLayers').append('<div class="openFloppsMap" data-map="satellite">&#8230;&nbsp;Google Maps Satellite</div>');
-            $('#FloppsMapLayers').append('<div class="openFloppsMap" data-map="hybrid">&#8230;&nbsp;Google Maps Hybrid</div>');
-            $('#FloppsMapLayers').append('<div class="openFloppsMap" data-map="terrain">&#8230;&nbsp;Googles Maps Terrain</div>');
+            tbl.after('<div class="GClhdropdown"><button id="ShowWaypointsOnFloppsMap" class="GClhdropbtn">Show waypoints on Flopp\'s Map with &#8230;</button><div id="FloppsMapLayers" class="GClhdropdown-content"></div></div>');
+            $('#FloppsMapLayers').append('<div class="openFloppsMap" data-map="OSM"><b>Openstreetmap</b> - Default layer of Openstreetmap</div>');
+            $('#FloppsMapLayers').append('<div class="openFloppsMap" data-map="OSM/DE"><b>German Style</b> An Openstreetmap based map with german map layout</div>');
+            $('#FloppsMapLayers').append('<div class="openFloppsMap" data-map="OCM"><b>OpenCycleMap</b> - An Openstreetmap based map designed for cyclists.</div>');
+            $('#FloppsMapLayers').append('<div class="openFloppsMap" data-map="TOPO"><b>OpenTopMap</b> - An Openstreetmap based map with contour and hill shadowing. The zoom level is limited to 17.</div>');
+            $('#FloppsMapLayers').append('<div class="openFloppsMap" data-map="roadmap"><b>Google Maps</b> - Use default map layer from Google Maps</div>');
+            $('#FloppsMapLayers').append('<div class="openFloppsMap" data-map="satellite"><b>Google Maps Satellite</b> - Use satellite view of Google Maps</div>');
+            $('#FloppsMapLayers').append('<div class="openFloppsMap" data-map="hybrid"><b>Google Maps Hybrid</b> - Use satellite view of Google Maps including overlays</div>');
+            $('#FloppsMapLayers').append('<div class="openFloppsMap" data-map="terrain"><b>Googles Maps Terrain</b> - A kind of topographical layer with hill shadowing</div>');
 
             $('#ShowWaypointsOnFloppsMap').click( function() {
                 var waypoints = extractWaypointsFromListing();
