@@ -2860,6 +2860,9 @@ var mainGC = function () {
             code += "  var owner = document.getElementById('ctl00_ContentBody_LogBookPanel1_WaypointLink').nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.innerHTML;";
             code += "  var input = document.getElementById('ctl00_ContentBody_LogBookPanel1_uxLogInfo');";
             code += "  var inhalt = document.getElementById(id).innerHTML;";
+            // 2 Zeilen von DieBatzen ausgeliehen, um "<" und ">" richtig darzustellen.
+            code += "  var textarea = document.createElement('textarea');";
+            code += "  var inhalt = $('<textarea>').html(inhalt).val();";
             code += "  inhalt = inhalt.replace(/\\&amp\\;/g,'&');";
             code += "  if(finds){";
             code += "    inhalt = inhalt.replace(/#found_no#/ig, finds);";

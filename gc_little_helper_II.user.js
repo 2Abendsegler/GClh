@@ -522,7 +522,9 @@ var variablesInit = function (c) {
     c.settings_pq_terrain_score = getValue("settings_pq_terrain_score","1");
     c.settings_pq_automatically_day = getValue("settings_pq_automatically_day",true);
     c.settings_mail_icon_new_win = getValue("settings_mail_icon_new_win",false);
-    c.settings_message_icon_new_win = getValue("settings_message_icon_new_win",false);    
+    c.settings_message_icon_new_win = getValue("settings_message_icon_new_win",false);
+    // Settings: Enable approvals in hide cache process
+    c.settings_hide_cache_approvals = getValue("settings_hide_cache_approvals", true);
 
     // Settings: Custom Bookmarks
     var num = c.bookmarks.length;
@@ -987,6 +989,33 @@ var mainGC = function () {
             } catch (e) {
                 gclh_error("F2 save Bookmark Pocket Query", e);
             }
+        }
+    }
+
+// F2 hide cache process speichern
+    if (settings_submit_log_button && document.location.href.match(/^https?:\/\/www\.geocaching\.com\/hide\//)) {
+        try {
+            var id = "";
+            if (document.getElementById("btnContinue")) id = "btnContinue";
+            else if (document.getElementById("btnSubmit")) id = "btnSubmit";
+            else if (document.getElementById("btnNext")) id = "btnNext";
+            else if (document.getElementById("ctl00_ContentBody_btnSubmit")) id = "ctl00_ContentBody_btnSubmit";
+            else if (document.getElementById("ctl00_ContentBody_Attributes_btnUpdate")) id = "ctl00_ContentBody_Attributes_btnUpdate";
+            else if (document.getElementById("ctl00_ContentBody_WaypointEdit_uxSubmitIt")) id = "ctl00_ContentBody_WaypointEdit_uxSubmitIt";
+            if (id != "") {
+                var but = document.getElementById(id);
+                but.value = document.getElementById(id).value + " (F2)";
+                function keydown(e) {
+                    if (e.keyCode == 113) {
+                        if ( !check_config_page() ) {
+                            document.getElementById(id).click();
+                        }
+                    }
+                }
+                window.addEventListener('keydown', keydown, true);
+            }
+        } catch (e) {
+            gclh_error("F2 hide cache process speichern", e);
         }
     }
 
@@ -2315,8 +2344,7 @@ var mainGC = function () {
             $("label[for='"+idOption1+"']").css('color','#ff0000');
             $("label[for='"+idOption2+"']").css('color','#ff0000');
             status = true;
-        }
-        else {
+        } else {
             $("label[for='"+idOption1+"']").css('background-color','#ffffff');
             $("label[for='"+idOption2+"']").css('background-color','#ffffff');
             $("label[for='"+idOption1+"']").css('color','#000000');
@@ -3021,6 +3049,9 @@ var mainGC = function () {
             code += "  var owner = document.getElementById('ctl00_ContentBody_LogBookPanel1_WaypointLink').nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.innerHTML;";
             code += "  var input = document.getElementById('ctl00_ContentBody_LogBookPanel1_uxLogInfo');";
             code += "  var inhalt = document.getElementById(id).innerHTML;";
+            // 2 Zeilen von DieBatzen ausgeliehen, um "<" und ">" richtig darzustellen.
+            code += "  var textarea = document.createElement('textarea');";
+            code += "  var inhalt = $('<textarea>').html(inhalt).val();";
             code += "  inhalt = inhalt.replace(/\\&amp\\;/g,'&');";
             code += "  if(finds){";
             code += "    inhalt = inhalt.replace(/#found_no#/ig, finds);";
@@ -3403,8 +3434,7 @@ var mainGC = function () {
             if ( guid.match(/\#/) ) return;
             // Keine Verarbeitung für Stat Bar.
             if ( b_side.innerHTML.match(/https?:\/\/img\.geocaching\.com\/stats\/img\.aspx/) ) return;
-        }
-        else {
+        } else {
             if ( b_username == "" || b_username == undefined ) return;
         }
 
@@ -3443,7 +3473,7 @@ var mainGC = function () {
             message_img.setAttribute("title", "Send a message to " + username_send);
             message_img.setAttribute("src", global_message_icon);
             message_link.appendChild(message_img);
-            if ( settings_message_icon_new_win ) message_link.setAttribute("target", "_blank");		
+            if ( settings_message_icon_new_win ) message_link.setAttribute("target", "_blank");
             message_link.setAttribute("href", http + "://www.geocaching.com/account/messagecenter?recipientId=" + guid + "&text=" + template);
             b_side.parentNode.insertBefore(message_link, b_side.nextSibling);
             b_side.parentNode.insertBefore(document.createTextNode(" "), b_side.nextSibling);
@@ -3466,8 +3496,7 @@ var mainGC = function () {
                 mail_link.setAttribute("href", http + "://www.geocaching.com/email/?guid=" + guid + "&text=" + template);
                 b_side.parentNode.insertBefore(mail_link, b_side.nextSibling);
                 b_side.parentNode.insertBefore(document.createTextNode(" "), b_side.nextSibling);
-            }
-            else {
+            } else {
                 b_side.appendChild(document.createTextNode(" "));
                 mail_link.setAttribute("href", http + "://www.geocaching.com/email/?u=" + urlencode(b_username) + "&text=" + template);
                 b_side.appendChild(mail_link);
@@ -6272,12 +6301,12 @@ var mainGC = function () {
                 if (settings_vup_hide_avatar && settings_vup_hide_log) vupHideCompleteLog = vupUserString;
             }
             vupHideAvatarString  += ')';
-            
+
             var mailNewWin = "";
             if ( settings_mail_icon_new_win) mailNewWin = 'target="_blank" ';
             var messageNewWin = "";
             if ( settings_message_icon_new_win) messageNewWin = 'target="_blank" ';
-	
+
             var new_tmpl = "";
             new_tmpl +=
                 '    {{' + vupHideCompleteLog  + '}}' +
@@ -7550,6 +7579,17 @@ var mainGC = function () {
         }
     }
 
+// Auto check checkboxes on hide cache process.
+    try {
+        if (settings_hide_cache_approvals && document.location.href.match(/^https?:\/\/www\.geocaching\.com\/hide\/(report|description)\.aspx/)) {
+            $("#ctl00_ContentBody_cbAgreement").prop('checked', true);
+            $("#ctl00_ContentBody_chkUnderstand").prop('checked', true);
+            $("#ctl00_ContentBody_chkDisclaimer").prop('checked', true);
+        }
+    } catch (e) {
+        gclh_error("Auto check checkboxes on hide cache process", e);
+    }
+
 // Check for Upgrade.
     try {
         function checkForUpgrade( manual ) {
@@ -7659,9 +7699,7 @@ var mainGC = function () {
                 s = s.substring(0, s.length - 1);
             }
         }
-
         if (s.substring(s.length - 6, s.length) == "&nbsp;") s = s.substring(0, s.length - 6);
-
         return s;
     }
 
@@ -9084,7 +9122,9 @@ var mainGC = function () {
             html += checkboxy('settings_hide_visits_in_profile', 'Hide TB/Coin visits in your profile') + "<br/>";
             html += checkboxy('settings_show_thumbnails', 'Show thumbnails of images') + show_help("With this option the images are displayed as thumbnails to have a preview. If you hover over a thumbnail, you can see the big one.<br><br>This works in cache and TB logs, in the cache and TB image galleries, in public profile for the avatar and in the profile image gallery.") + "&nbsp; Max size of big image: <input class='gclh_form' size=2 type='text' id='settings_hover_image_max_size' value='" + settings_hover_image_max_size + "'> px <br/>";
             html += "&nbsp; " + checkboxy('settings_imgcaption_on_top', 'Show caption on top') + show_help("This option requires \"Show thumbnails of images\".") + "<br/>";
-            html += checkboxy('settings_show_big_gallery', 'Show bigger images in gallery') + show_help("With this option the images in the galleries of caches, TBs and profiles are displayed bigger and not in 4 columns, but in 2 columns.") + "<br/>";
+            html += checkboxy('settings_show_big_gallery', 'Show bigger images in gallery') + show_help("With this option the images in the galleries of caches, TBs and profiles are displayed bigger and not in 4 columns, but in 2 columns.");
+            var content_geothumbs = "<font class='gclh_small' style='margin-left: 80px; margin-top: -10px; position: absolute;'> (Alternative: <a href='https://benchmarks.org.uk/greasemonkey/geothumbs.php' target='_blank'>Geothumbs</a> " + show_help("A great alternative to the GClh bigger image functionality with \"Show thumbnails of images\" and \"Show bigger images in gallery\", provides the script Geothumbs (Geocaching Thumbnails). <br><br>The script works like GClh with Firefox as Greasemonkey script and with Google Chrome and Opera as Tampermonkey script. <br><br>If you use Geothumbs, you have to uncheck both GClh bigger image functionality.") + ")</font>" + "<br/>";
+            html += content_geothumbs;
             var content_settings_show_mail_in_allmyvips = checkboxy('settings_show_mail_in_allmyvips', 'Show mail link beside user in "All my VIPs" list in your profile') + show_help("With this option there will be an small mail icon beside every username in the list with all your VIPs (All my VIPs) on your profile page. With this icon you get directly to the mail page to mail to this user. <br>(VIP: Very important person)<br><br>This option requires \"Show mail link beside usernames\" and \"Show VIP list\".") + "<br>";
             html += content_settings_show_mail_in_allmyvips;
             html += checkboxy('settings_show_sums_in_watchlist', 'Show number of caches in your watchlist') + show_help("With this option the number of caches and the number of selected caches in the categories \"All\", \"Archived\" and \"Deactivated\", corresponding to the select buttons, are shown in your watchlist at the end of the list.") + "<br/>";
@@ -9138,6 +9178,9 @@ var mainGC = function () {
 
             html += "<h4 class='gclh_headline2'>"+prepareHideable.replace("#name#","listing")+"Listing</h4>";
             html += "<div id='gclh_config_listing'>";
+            html += newParameterOn3;
+            html += checkboxy('settings_hide_cache_approvals', 'Auto set approvals in hide cache process') + show_help("This option activates the checkboxes for approval the guidelines and the terms of use agreement in the hide cache process.") + "<br/>";
+            html += newParameterVersionSetzen(0.6) + newParameterOff;
             html += checkboxy('settings_log_inline', 'Log cache from listing (inline)') + show_help("With the inline log you can open a log form inside the listing, without loading a new page.") + "<br/>";
             var content_settings_log_inline_tb = "&nbsp; " + checkboxy('settings_log_inline_tb', 'Show TB list') + show_help("With this option you can select, if the TB list should be shown in inline logs.<br><br>This option requires \"Log cache from listing (inline)\" or \"Log cache from listing for PMO (for basic members)\".") + "<br>";
             html += content_settings_log_inline_tb;
@@ -9162,16 +9205,16 @@ var mainGC = function () {
             html += "  <option " + (settings_date_format == "MMM/dd/yyyy" ? "selected='selected'" : "") + " value='MMM/dd/yyyy'> Dec/31/2016</option>";
             html += "  <option " + (settings_date_format == "dd MMM yy" ? "selected='selected'" : "") + " value='dd MMM yy'> 31 Dec 16</option>";
             html += "</select>" + show_help("If you have changed the date format on gc.com, you have to change it here to. Instead the day of week may be wrong.") + "<br/>";
-            html += checkboxy('settings_show_mail', 'Show mail link beside usernames') + show_help("With this option there will be an small mail icon beside every username. With this icon you get directly to the mail page to mail to this user. If you click it for example when you are in a listing, the cachename or GC code can be inserted into the mail form about placeholder in the mail / message form template.") + "<br/>";
+            html += checkboxy('settings_show_mail', 'Show mail link beside usernames') + show_help("With this option there will be an small mail icon beside every username. With this icon you get directly to the mail form to mail to this user. If you click it for example when you are in a listing, the cachename or GC code can be inserted into the mail form about placeholder in the mail / message form template.") + "<br/>";
             var content_settings_show_mail_in_viplist = "&nbsp; " + checkboxy('settings_show_mail_in_viplist', 'Show mail link beside user in "VIP-List" in listing') + show_help("With this option there will be an small mail icon beside every username in the VIP lists on the cache listing page. With this icon you get directly to the mail page to mail to this user. <br>(VIP: Very important person)<br><br>This option requires \"Show mail link beside usernames\", \"Show VIP list\" and \"Load logs with GClh\".") + "<br>";
             html += content_settings_show_mail_in_viplist;
             html += "&nbsp; " + content_settings_show_mail_in_allmyvips.replace("settings_show_mail_in_allmyvips", "settings_show_mail_in_allmyvipsX0");
             html += newParameterOn3;
-            html += "&nbsp; " + checkboxy('settings_mail_icon_new_win', 'Open mail form in new window')  + show_help("If you enable this option, the mail form will open in an new window.<br><br>This option requires \"Show mail link beside usernames\".")+ "<br/>";     
+            html += "&nbsp; " + checkboxy('settings_mail_icon_new_win', 'Open mail form in new tab')  + show_help("If you enable this option, the mail form will open in an new tab.<br><br>This option requires \"Show mail link beside usernames\".")+ "<br/>";
             html += newParameterVersionSetzen(0.6) + newParameterOff;
-            html += checkboxy('settings_show_message', 'Show message link beside usernames') + show_help("With this option there will be an small message icon beside every username. With this icon you get directly to the message page to send a message to this user. If you click it for example when you are in a listing, the cachename or GC code can be inserted into the message form about placeholder in the mail / message form template.") + "<br/>";
+            html += checkboxy('settings_show_message', 'Show message link beside usernames') + show_help("With this option there will be an small message icon beside every username. With this icon you get directly to the message form to send a message to this user. If you click it for example when you are in a listing, the cachename or GC code can be inserted into the message form about placeholder in the mail / message form template.") + "<br/>";
             html += newParameterOn3;
-            html += "&nbsp; " + checkboxy('settings_message_icon_new_win', 'Open message form in new window')  + show_help("If you enable this option, the message form will open in an new window.<br><br>This option requires \"Show message link beside usernames\".")+ "<br/>";
+            html += "&nbsp; " + checkboxy('settings_message_icon_new_win', 'Open message form in new tab')  + show_help("If you enable this option, the message form will open in an new tab.<br><br>This option requires \"Show message link beside usernames\".")+ "<br/>";
             html += newParameterVersionSetzen(0.6) + newParameterOff;
             html += checkboxy('settings_show_google_maps', 'Show link to Google Maps') + show_help("This option shows a link at the top of the second map in the listing. With this link you get directly to Google Maps in the area, where the cache is.") + "<br/>";
             html += checkboxy('settings_strike_archived', 'Strike through title of archived/disabled caches') + "<br/>";
@@ -9209,7 +9252,8 @@ var mainGC = function () {
             html += checkboxy('settings_show_thumbnailsX0', 'Show thumbnails of images') + show_help("With this option the images are displayed as thumbnails to have a preview. If you hover over a thumbnail, you can see the big one.<br><br>This works in cache and TB logs, in the cache and TB image galleries, in public profile for the avatar and in the profile image gallery.") + "&nbsp; Max size of big image: <input class='gclh_form' size=2 type='text' id='settings_hover_image_max_sizeX0' value='" + settings_hover_image_max_size + "'> px <br/>";
             html += " &nbsp; &nbsp;" + "Spoiler-Filter: <input class='gclh_form' type='text' id='settings_spoiler_strings' value='" + settings_spoiler_strings + "'> " + show_help("If one of these words is found in the caption of the image, there will be no real thumbnail. It is to prevent seeing spoilers. Words have to be divided by |. If the field is empty, no checking is done. Default is \"spoiler|hinweis|hint\".<br><br>This option requires \"Show thumbnails of images\".") + "<br/>";
             html += "&nbsp; " + checkboxy('settings_imgcaption_on_topX0', 'Show caption on top') + show_help("This option requires \"Show thumbnails of images\".") + "<br/>";
-            html += checkboxy('settings_show_big_galleryX0', 'Show bigger images in gallery') + show_help("With this option the images in the galleries of caches, TBs and profiles are displayed bigger and not in 4 columns, but in 2 columns.") + "<br/>";
+            html += checkboxy('settings_show_big_galleryX0', 'Show bigger images in gallery') + show_help("With this option the images in the galleries of caches, TBs and profiles are displayed bigger and not in 4 columns, but in 2 columns.");
+            html += content_geothumbs;
             html += checkboxy('settings_hide_avatar', 'Hide avatars in listing') + show_help("This option hides the avatars in logs. This prevents loading the hundreds of images. You have to change the option here, because GClh overrides the log-load-logic of gc.com, so the avatar option of gc.com doesn't work with GClh.") + "<br/>";
             html += checkboxy('settings_load_logs_with_gclh', 'Load logs with GClh') + show_help("This option should be enabled. <br><br>You just should disable it, if you have problems with loading the logs. <br><br>If this option is disabled, there are no VIP-, mail-, message- and top icons, no line colors and no mouse activated big images at the logs. Also the VIP lists, hide avatars, log filter and log search won't work.") + "<br/>";
             html += checkboxy('settings_show_real_owner', 'Show real owner name') + show_help("If the option is enabled, GClh will replace the pseudonym a owner took to publish the cache with the real owner name.") + "<br/>";
@@ -9217,7 +9261,7 @@ var mainGC = function () {
 
             html += "<h4 class='gclh_headline2'>"+prepareHideable.replace("#name#","logging")+"Logging</h4>";
             html += "<div id='gclh_config_logging'>";
-            html += checkboxy('settings_submit_log_button', 'Submit log, Pocket Query or Bookmark on F2') + show_help("With this option you are able to submit your log by pressing F2 instead of scrolling to the bottom and move the mouse to the button. This feature also works to save Pocket Queries or Bookmarks.") + "<br/>";
+            html += checkboxy('settings_submit_log_button', 'Submit log, Pocket Query, Bookmark or Listing on F2') + show_help("With this option you are able to submit your log by pressing F2 instead of scrolling to the bottom and move the mouse to the button. This feature also works to save Pocket Queries, Bookmarks or Listings.") + "<br/>";
             html += checkboxy('settings_show_bbcode', 'Show smilies') + show_help("This option displays smilies options beside the log form. If you click on a smilie, it is inserted into your log.") + "<br/>";
             html += checkboxy('settings_autovisit', 'Enable \"AutoVisit\" feature for TBs/Coins') + show_help("With this option you are able to select TBs/Coins which should be automatically set to \"visited\" on every log. You can select \"AutoVisit\" for each TB/Coin in the list on the bottom of the log form.") + "<br/>";
             html += checkboxy('settings_replace_log_by_last_log', 'Replace log by last log template') + show_help("If you enable this option, the last log template will replace the whole log. If you disable it, it will be appended to the log.") + "<br/>";
@@ -9836,8 +9880,8 @@ var mainGC = function () {
             setEventsForDependentParameters( "settings_log_inline_pmo4basic", "settings_log_inline_tb", false );
             setEventsForDependentParameters( "settings_show_mail", "settings_show_mail_in_viplist" );
             setEventsForDependentParameters( "settings_show_mail", "settings_show_mail_in_allmyvips" );
-            setEventsForDependentParameters( "settings_show_mail", "settings_mail_icon_new_win" );            
-            setEventsForDependentParameters( "settings_show_message", "settings_message_icon_new_win" );                        
+            setEventsForDependentParameters( "settings_show_mail", "settings_mail_icon_new_win" );
+            setEventsForDependentParameters( "settings_show_message", "settings_message_icon_new_win" );
             setEventsForDependentParameters( "settings_show_thumbnails", "settings_hover_image_max_size" );
             setEventsForDependentParameters( "settings_show_thumbnails", "settings_spoiler_strings" );
             setEventsForDependentParameters( "settings_show_thumbnails", "settings_imgcaption_on_top" );
@@ -10193,7 +10237,8 @@ var mainGC = function () {
                 'settings_pq_set_terrain',
                 'settings_pq_automatically_day',
                 'settings_mail_icon_new_win',
-                'settings_message_icon_new_win'
+                'settings_message_icon_new_win',
+                'settings_hide_cache_approvals'
             );
             for (var i = 0; i < checkboxes.length; i++) {
                 if ( document.getElementById(checkboxes[i]) ) {
@@ -11265,7 +11310,7 @@ function is_link(name, url) {
 	var status = false;
     switch (name) {
         case "cache_listing":
-            if (url.match(/^https?:\/\/www\.geocaching\.com\/seek\/cache_details\.aspx/) || url.match(/^https?:\/\/www\.geocaching\.com\/geocache\//) ) status = true;
+            if ((url.match(/^https?:\/\/www\.geocaching\.com\/seek\/cache_details\.aspx/) || url.match(/^https?:\/\/www\.geocaching\.com\/geocache\//) ) && !document.getElementById("cspSubmit") && !document.getElementById("cspGoBack")) status = true;
             break;
         case "profile":
             if (url.match(/^https?:\/\/www\.geocaching\.com\/my(\/default\.aspx)?/) ) status = true;
