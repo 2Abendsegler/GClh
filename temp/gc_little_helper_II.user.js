@@ -3604,8 +3604,13 @@ var mainGC = function () {
                     }
                 }
                 setValue("friends_founds_last", day);
+                var last_autoreset = getValue("friends_founds_last_autoreset");
+                if (typeof(last_autoreset) != "undefined") {
+                   setValue("friends_founds_last_reset", last_autoreset);
+                }  
+                setValue("friends_founds_last_autoreset", new Date().getTime());
             }
-// >> hm -- Issue #111
+
             // Klasse fuer die Links anlegen
             var myf = "a.myfriends:hover { " +
                  "  text-decoration:underline;" +
@@ -3626,7 +3631,6 @@ var mainGC = function () {
                 myvips = myvips.replace(/, (?=,)/g, ",null");
                 myvips = JSON.parse(myvips);
             }
-// << hm -- Issue #111
 
             for (var i = 0; i < friends.length; i++) {
                 var friend = friends[i];
@@ -3643,7 +3647,7 @@ var mainGC = function () {
                 }
                 if ((founds - last_founds) > 0) add = " <font color='#00AA00'><b>(+" + (founds - last_founds) + ")</b></font>";
                 setValue("friends_founds_new_" + name.innerHTML, founds);
-// >> hm -- Issue #111
+
                 // wenn neue Founds, dann User und Funddifferenz als Link zu string hinzufuegen (ggf. nur VIPs)
                 if  ((settings_friendlist_summary_viponly && in_array(name.innerHTML, myvips)) || (!settings_friendlist_summary_viponly)) {
                     if ((founds - last_founds) > 0) {
@@ -3657,7 +3661,7 @@ var mainGC = function () {
                         sNewF = sNewF + "<a class='myfriends' href='/seek/nearest.aspx?ul=" + urlencode(name.innerHTML) + "&disable_redirect='>" + sHlp + "</a>";
                     }
                 }
-// << hm -- Issue #111
+
                 if (founds == 0) {
                     friend.getElementsByTagName("dd")[4].innerHTML = founds + "&nbsp;";
                 } else {
@@ -3675,7 +3679,7 @@ var mainGC = function () {
                 }
                 if ((hides - last_hides) > 0) add = " <font color='#00AA00'><b>(+" + (hides - last_hides) + ")</b></font>";
                 setValue("friends_hides_new_" + name.innerHTML, hides);
-// >> hm -- Issue #111
+
                 // wenn neue Hides, dann User und Funddifferenz als Link zu string hinzufuegen (ggf. nur VIPs)
                 if  ((settings_friendlist_summary_viponly && in_array(name.innerHTML, myvips)) || (!settings_friendlist_summary_viponly)) {
                     if ((hides - last_hides) > 0) {
@@ -3689,7 +3693,6 @@ var mainGC = function () {
                         sNewH = sNewH + "<a class='myfriends' href='/seek/nearest.aspx?u=" + urlencode(name.innerHTML) + "&disable_redirect='>" + sHlp + "</a>";
                     }
                 }
-// << hm -- Issue #111
                 if (hides == 0) {
                     friend.getElementsByTagName("dd")[5].innerHTML = hides + "&nbsp;";
                 } else {
@@ -3708,9 +3711,9 @@ var mainGC = function () {
 
             function gclh_reset_counter() {
                 var friends = document.getElementsByClassName("FriendText");
-// >> hm -- Issue #111
-                setValue("friends_founds_last_reset", new Date().getTime());
-// << hm -- Issue #111
+                var resetTime = new Date().getTime();
+                setValue("friends_founds_last_reset", resetTime);
+                if (settings_automatic_friend_reset) setValue("friends_founds_last_autoreset", resetTime);
 
                 for (var i = 0; i < friends.length; i++) {
                     var friend = friends[i];
@@ -3728,7 +3731,7 @@ var mainGC = function () {
                     if (hides == 0) friend.getElementsByTagName("dd")[5].innerHTML = "0&nbsp;";
                     else friend.getElementsByTagName("dd")[5].innerHTML = "<a href='/seek/nearest.aspx?u=" + urlencode(name.innerHTML) + "&disable_redirect='>" + hides + "</a>&nbsp;";
                 }
-// >> hm -- Issue #111
+
                 if (settings_friendlist_summary) {
                     // wenn Reset, dann Differenzen nicht mehr anzeigen...
                     var divFH = document.getElementsByClassName("divFHclass");
@@ -3736,23 +3739,26 @@ var mainGC = function () {
                         var divC = divFH[i];
                         divC.innerHTML = "";
                     }
-                    // und "last check" aktualisieren
+                    // und "last reset" aktualisieren
                     var spanTTs = document.getElementsByClassName("spanTclass");
                     var ld1 = getValue("friends_founds_last_reset", 0);
-                    spanTTs[0].innerHTML = '<br><br>Last check was 0 seconds ago (' + new Date(parseInt(ld1, 10)).toLocaleString() + ')';
+                    spanTTs[0].innerHTML = '<br><br>Last reset was 0 seconds ago (' + new Date(parseInt(ld1, 10)).toLocaleString() + ')';
                 }
-// << hm -- Issue #111
             }
 
-// >> hm -- Issue #111
             if (settings_friendlist_summary) {
-                // "last check" anzeigen
+                // "last reset" anzeigen
                 var spanT = document.createElement("span");
                 var ld = getValue("friends_founds_last_reset", 0);
+                // fix for first call...
+                if (ld == 0) {
+                   ld = new Date().getTime();
+                   setValue("friends_founds_last_reset", ld);
+                }
                 spanT.className = "spanTclass";
                 spanT.style.color  = "gray";
                 spanT.style.fontSize = "smaller";
-                spanT.innerHTML = '<br>Last check was ' + getDateDiffString(new Date().getTime(), ld) + ' ago (' +
+                spanT.innerHTML = '<br>Last reset was ' + getDateDiffString(new Date().getTime(), ld) + ' ago (' +
                     new Date(parseInt(ld, 10)).toLocaleString() + ')';
                 if ((sNewH == "") && (sNewF == "")) spanT.innerHTML = '<br>' + spanT.innerHTML;
                 document.getElementById('ctl00_ContentBody_FindUserPanel1_GetUsers').parentNode.insertBefore(spanT, document.getElementById('ctl00_ContentBody_FindUserPanel1_GetUsers').nextSibling);
@@ -3774,7 +3780,6 @@ var mainGC = function () {
 
                     document.getElementById('ctl00_ContentBody_FindUserPanel1_GetUsers').parentNode.insertBefore(boxF, document.getElementById('ctl00_ContentBody_FindUserPanel1_GetUsers').nextSibling);
                 }
-// << hm -- Issue #111
             }
 
             var button = document.createElement("input");
