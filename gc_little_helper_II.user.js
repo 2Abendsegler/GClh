@@ -3634,11 +3634,8 @@ var mainGC = function () {
     }
 
 
-    // helper function
-    function roundTO(val, decimals)
-    {
-    return Number(Math.round(val+'e'+decimals)+'e-'+decimals);
-    }
+// helper function: trim a decimal value to a given number of digits
+    function roundTO(val, decimals) { return Number(Math.round(val+'e'+decimals)+'e-'+decimals); }
 
 // this function reads the table with the additional waypoints
     function getAdditionalWaypoints() {
@@ -3662,9 +3659,7 @@ var mainGC = function () {
                         waypoint.icon = td_list[2].getElementsByTagName("img")[0].getAttribute("src");
                         waypoint.prefix = td_list[3].textContent.trim();
                         waypoint.lookup = td_list[4].textContent.trim();
-                        // var name = td_list[5].textContent.trim().match(/(.*) \((.+)\)/);
                         waypoint.name = td_list[5].getElementsByTagName("a")[0].textContent
-
 
                         var oDiv = td_list[5];
                         var firstText = "";
@@ -3744,7 +3739,8 @@ var mainGC = function () {
                 waypoint.note = "";
                 waypoint.type = "listing";
                 waypoint.subtype = "changed";
-                // waypoint.link = location.href;
+                waypoint.cachetype = document.getElementById('cacheDetails').getElementsByClassName('cacheImage')[0].getElementsByTagName('img')[0].getAttribute('title');
+                waypoint.link = document.location.href;
                 addWP.push(waypoint);
 
                 waypoint = {};
@@ -3764,7 +3760,9 @@ var mainGC = function () {
             waypoint.note = "";
             waypoint.type = "listing";
             waypoint.subtype = "origin";
-            // waypoint.link = location.href;
+            waypoint.link = document.location.href;
+            waypoint.cachetype = document.getElementById('cacheDetails').getElementsByClassName('cacheImage')[0].getElementsByTagName('img')[0].getAttribute('title');
+
             addWP.push(waypoint);
         } catch(e) {
             gclh_error("getListingCoordinates(): "+e);
@@ -3818,12 +3816,16 @@ var mainGC = function () {
                 if ( waypoint.type == "waypoint" ) {
                     var id = String.fromCharCode(65+Math.floor(count%26))+Math.floor(count/26+1); // create Flopps Map id: A1-A9 B1-B9 ....
                     var radius = (( waypoint.subtype == "Physical Stage" || waypoint.subtype == "Final Location" ) ? "161" : "");
-                    floppsWaypoints.push( floppsMapWaypoint( waypoint, id, radius, waypoint.name ) ); /* TODO: use short names (lookup) for to much waypoints */
+                    floppsWaypoints.push( floppsMapWaypoint( waypoint, id, radius, waypoint.name ) );
                     count++;
                 } else if ( waypoint.type == "listing" && waypoint.subtype == "origin" ) {
-                    // TODO: var radius = (( waypoint.subtype == "Physical Stage" || waypoint.subtype == "Final Location" ) ? "3000" : "161" );
-                    // TODO:  only for Mystery Cache 	3000m radius || but type is not stored in waypoint data
-                    floppsWaypoints.push(floppsMapWaypoint( waypoint, "O", 3000 /* TODO */, waypoint.lookup+'_ORIGIN' ));
+                    var radius = 0;
+                    if ( waypoint.cachetype == "Traditional Cache" ) {
+                        radius = 161;
+                    } else if ( waypoint.cachetype == "Traditional Cache" ) {
+                        radius = 3000;
+                    }
+                    floppsWaypoints.push(floppsMapWaypoint( waypoint, "O", radius, waypoint.lookup+'_ORIGIN' ));
                 } else if ( waypoint.type == "listing" && waypoint.subtype == "changed" ) {
                     floppsWaypoints.push(floppsMapWaypoint( waypoint, "C", 161, waypoint.lookup+'_CHANGED' ));
                 }
@@ -3831,25 +3833,19 @@ var mainGC = function () {
                 Latmin = Math.min( Latmin, waypoint.latitude );
                 Lonmax = Math.max( Lonmax, waypoint.longitude );
                 Lonmin = Math.min( Lonmin, waypoint.longitude );
-
-                // TODO: maximum markers? if ( floppsWaypoints.length>26 ) { break; }
-                // TODO: Request-URI Too Large : he requested URL's length exceeds the capacity limit for this server.
-                // <span style="margin-left: 5px; color: #000; font-size: 90%; background: #fff; border: 1px solid #0800; border-radius: 15px; padding: 0px 3px 0px 3px;">&nbsp;!&nbsp;</span>
             }
         }
 
         var floppsMapWidth = window.innerWidth-280; // minus width of sidebar
         var floppsMapHeigth = window.innerHeight-50; // minus height of header
         var zoom=-1;
-        console.log( "Calculate zoom level for Flopp's Map" + " (width="+floppsMapWidth+"px heigth="+floppsMapHeigth+"px)" );
-        for ( zoom=20; zoom>=0; zoom--) {
+        for ( zoom=23; zoom>=0; zoom--) {
             var tileY_max = lat2tile(Latmin,zoom);
             var tileY_min = lat2tile(Latmax,zoom);
             var tiles_Y = (tileY_max-tileY_min+1); // boundary box heigth in number of tiles
             var tileX_min = long2tile(Lonmin,zoom);
             var tileX_max = long2tile(Lonmax,zoom);
             var tiles_X = (tileX_max-tileX_min+1); // boundary box width in  number of tiles
-            console.log( "  Tiles @ zoom="+zoom+": Xmin="+tileX_min+" Xmas="+tileX_max+" ΔX="+tiles_X+" => "+tiles_X*256+"px | Ymin="+tileY_min+" Ymax="+tileY_max+" ΔY="+tiles_Y+" => "+tiles_Y*256+"px" );
             if ( (tiles_Y*256 < floppsMapHeigth ) && (tiles_X*256 < floppsMapWidth ) ) {
                 break;
             }
@@ -3877,20 +3873,7 @@ var mainGC = function () {
         return encodeURI(url);
     }
 
-
-
-// test case/caches
-//Runde und mehr als 26 waypoints:
-//https://www.geocaching.com/geocache/GC618KK_rad-funf-flusse-radweg?guid=93775b23-613e-47de-bb5c-efc105d626e8
-//Nord-Süd
-//https://www.geocaching.com/geocache/GC1FPN1_munchen-venedig-munich-venice-monaco-venezia
-//West-Ost
-// https://www.geocaching.com/geocache/GC1FPN1_munchen-venedig-munich-venice-monaco-venezia
-//Allgemein
-//https://www.geocaching.com/geocache/GC6K60B_abenteuer-mittelalter-wie-ein-kleiner-ritter
-// https://www.geocaching.com/geocache/GC567MN_hochwassermarken-flood-marks
-// extract waypoints
-    // TODO: https://www.geocaching.com/hide/wptlist.aspx*
+// show button, which open Flopp's Map with all waypoints of a cache
     if ( 1 /* TODO: settings*/ && (
         is_page("cache_listing") ||
         document.location.href.match(/^https?:\/\/www\.geocaching\.com\/geocache\//) ||
@@ -3979,8 +3962,7 @@ var mainGC = function () {
             function openFloppsMap( map ) {
                 var waypoints = extractWaypointsFromListing();
                 var link = buildFloppsMapLink( waypoints, map, false, {} );
-                window.open( link ); // todo settings: in_same_tab
-                console.log(link);
+                window.open( link );
             }
 
             $('#ShowWaypointsOnFloppsMap').click( function() {
@@ -3991,13 +3973,8 @@ var mainGC = function () {
                 var map = $(this).data('map');
                 openFloppsMap(map);
             });
-
-            // TODO: settings: enable/disable feature, default layer
-            // TODO: settings: default layer
-            // TODO: settings: autozoom or manual zoom level (?)
-            // TODO: settings: open in own tab / same tab
         } catch( e ) {
-            gclh_error("Error extract waypoints", e); // todo
+            gclh_error("Error extract waypoints", e);
         }
     }
 
