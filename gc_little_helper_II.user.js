@@ -3836,9 +3836,11 @@ var mainGC = function () {
             }
         }
 
-        var floppsMapWidth = window.innerWidth-280; // minus width of sidebar
-        var floppsMapHeigth = window.innerHeight-50; // minus height of header
+        var browserZoomLevel = window.devicePixelRatio;
+        var floppsMapWidth = Math.round(window.innerWidth*browserZoomLevel)-280; // minus width of sidebar
+        var floppsMapHeigth = Math.round(window.innerHeight*browserZoomLevel)-50; // minus height of header
         var zoom=-1;
+        // console.log( "Calculate zoom level for Flopp's Map" + " (width="+floppsMapWidth+"px heigth="+floppsMapHeigth+"px)" );
         for ( zoom=23; zoom>=0; zoom--) {
             var tileY_max = lat2tile(Latmin,zoom);
             var tileY_min = lat2tile(Latmax,zoom);
@@ -3846,6 +3848,7 @@ var mainGC = function () {
             var tileX_min = long2tile(Lonmin,zoom);
             var tileX_max = long2tile(Lonmax,zoom);
             var tiles_X = (tileX_max-tileX_min+1); // boundary box width in  number of tiles
+            // console.log( "  Tiles @ zoom="+zoom+": Xmin="+tileX_min+" Xmas="+tileX_max+" ΔX="+tiles_X+" => "+tiles_X*256+"px | Ymin="+tileY_min+" Ymax="+tileY_max+" ΔY="+tiles_Y+" => "+tiles_Y*256+"px" );
             if ( (tiles_Y*256 < floppsMapHeigth ) && (tiles_X*256 < floppsMapWidth ) ) {
                 break;
             }
@@ -3878,6 +3881,7 @@ var mainGC = function () {
         is_page("cache_listing") ||
         document.location.href.match(/^https?:\/\/www\.geocaching\.com\/geocache\//) ||
         document.location.href.match(/^https?:\/\/www\.geocaching\.com\/hide\/wptlist.aspx/) ) ) {
+
         try {
             var css = "";
             css += ".GClhdropbtn {";
