@@ -3782,7 +3782,7 @@ function floppsMapWaypoint( waypoint, id, radius, name ) {
 function lat2tile(lat,zoom)  { return (Math.floor((1-Math.log(Math.tan(lat*Math.PI/180) + 1/Math.cos(lat*Math.PI/180))/Math.PI)/2 *Math.pow(2,zoom))); }
 function long2tile(lon,zoom) { return (Math.floor((lon+180)/360*Math.pow(2,zoom))); }
 
-function buildFloppsMapLink( waypoints, map ) {
+function buildFloppsMapLink( waypoints, map, shortnames, status ) {
     var url = "";
     var floppsWaypoints = [];
 
@@ -3798,10 +3798,12 @@ function buildFloppsMapLink( waypoints, map ) {
             if ( waypoint.type == "waypoint" ) {
                 var id = String.fromCharCode(65+Math.floor(count%26))+Math.floor(count/26+1); // create Flopps Map id: A1-A9 B1-B9 ....
                 var radius = (( waypoint.subtype == "Physical Stage" || waypoint.subtype == "Final Location" ) ? "161" : "");
-                floppsWaypoints.push( floppsMapWaypoint( waypoint, id, radius, waypoint.name ) );
+                floppsWaypoints.push( floppsMapWaypoint( waypoint, id, radius, waypoint.name ) ); /* TODO: use short names (lookup) for to much waypoints */
                 count++;
             } else if ( waypoint.type == "listing" && waypoint.subtype == "origin" ) {
-                floppsWaypoints.push(floppsMapWaypoint( waypoint, "O", 3000, waypoint.lookup+'_ORIGIN' ));
+                // TODO: var radius = (( waypoint.subtype == "Physical Stage" || waypoint.subtype == "Final Location" ) ? "3000" : "161" );
+                // TODO:  only for Mystery Cache 	3000m radius || but type is not stored in waypoint data
+                floppsWaypoints.push(floppsMapWaypoint( waypoint, "O", 3000 /* TODO */, waypoint.lookup+'_ORIGIN' ));
             } else if ( waypoint.type == "listing" && waypoint.subtype == "changed" ) {
                 floppsWaypoints.push(floppsMapWaypoint( waypoint, "C", 161, waypoint.lookup+'_CHANGED' ));
             }
@@ -3811,6 +3813,8 @@ function buildFloppsMapLink( waypoints, map ) {
             Lonmin = Math.min( Lonmin, waypoint.longitude );
 
             // TODO: maximum markers? if ( floppsWaypoints.length>26 ) { break; }
+            // TODO: Request-URI Too Large : he requested URL's length exceeds the capacity limit for this server.
+            // <span style="margin-left: 5px; color: #000; font-size: 90%; background: #fff; border: 1px solid #0800; border-radius: 15px; padding: 0px 3px 0px 3px;">&nbsp;!&nbsp;</span>
         }
     }
 
@@ -3832,24 +3836,42 @@ function buildFloppsMapLink( waypoints, map ) {
     }
 
     var url = "";
+    status.limited = false;
+    
     for ( var i=0; i<floppsWaypoints.length; i++) {
+        var nextWaypoint = floppsWaypoints[i];
+        // limited the waypoint part to 2000 (+3) characters 
+        if ( (url.length+nextWaypoint.length+1)>2003 ) {
+            status.limited = true;
+            status.numbers = i;
+            break;
+        }
         url += ( ( i == 0 ) ? '&m=' : '*' );
-        url += floppsWaypoints[i];
+        url += nextWaypoint;
     }
     var center_latitude = ((Latmax+90.0)+(Latmin+90.0))/2-90.0
     var center_longitude = ((Lonmax+180.0)+(Lonmin+180.0))/2-180.0
     var url = 'http://flopp.net/'+'?c='+center_latitude+':'+center_longitude+'&z='+zoom+'&t='+map+url;
 
-    url += '&d=O:C'; // TODO: what happens if there no C or no O and C?
+    url += '&d=O:C';
     return encodeURI(url);
 }
+
+function getLongDescriptionCoordinates() {
+    return [];
+}
+
+function getPersonalNoteCoordinates() {
+    return [];
+}
+
 
 function extractWaypointsFromListing() {
     var waypoints = [];
     waypoints = waypoints.concat(getListingCoordinates());
     waypoints = waypoints.concat(getAdditionalWaypoints());
-    // TODO: waypoints = waypoints.concat(/* listing (long)description */ );
-    // TODO: waypoints = waypoints.concat(/* from personal node */);
+    waypoints = waypoints.concat(getLongDescriptionCoordinates());
+    waypoints = waypoints.concat(getPersonalNoteCoordinates());
     console.log(waypoints);
     return waypoints;
 }
@@ -3869,21 +3891,18 @@ function extractWaypointsFromListing() {
     if ( 1 /* TODO: settings*/ && ( is_page("cache_listing") || (is_page("hide_cache") ) ) ) {
         try {
             var css = "";
-            css += "/* Style The Dropdown Button */";
             css += ".GClhdropbtn {";
             css += "    background-color: #4CAF50;";
             css += "    color: white;";
             css += "    padding: 10px;";
             css += "    font-size: 16px;";
             css += "    border: none;";
-            css += "    cursor: pointer;";
+            css += "    cursor: default;";
             css += "}";
-            css += "/* The container <div> - needed to position the dropdown content */";
             css += ".GClhdropdown {";
             css += "    position: relative;";
             css += "    display: inline-block;";
             css += "}";
-            css += "/* Dropdown Content (Hidden by Default) */";
             css += ".GClhdropdown-content {";
             css += "    display: none;";
             css += "    position: absolute;";
@@ -3892,25 +3911,33 @@ function extractWaypointsFromListing() {
             css += "    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);";
             css += "    z-index: 1;";
             css += "}";
-            css += "/* Links inside the dropdown */";
-            css += ".GClhdropdown-content div {";
+            css += ".GClhdropdown-content-layer {";
             css += "    color: black;";
             css += "    padding: 5px 16px 5px 16px;";
             css += "    text-decoration: none;";
             css += "    display: block;";
             css += "}";
-
-            css += "/* Change color of dropdown links on hover */";
-            css += ".GClhdropdown-content div:hover {background-color: #e1e1e1; cursor: pointer; }";
-
-            css += "/* Show the dropdown menu on hover */";
+            css += ".GClhdropdown-content-info {";
+            css += "    color: black;";
+            css += "    background-color: #ffffa5;";
+            css += "    padding: 5px 16px 5px 16px;";
+            css += "    text-decoration: none;";
+            css += "    display: none;";
+            css += "}";            
+            css += ".GClhdropdown-content-layer:hover {";
+            css += "    background-color: #e1e1e1;";
+            css += "    cursor: pointer;";
+            css += "}";
+            css += ".GClhdropdown-content-info:hover {";
+            css += "    background-color: #ffffa5;";
+            css += "    cursor: default;";
+            css += "}";
             css += ".GClhdropdown:hover .GClhdropdown-content {";
             css += "    display: block;";
             css += "}";
-
-            css += "/* Change the background color of the dropdown button when the dropdown content is shown */";
             css += ".GClhdropdown:hover .GClhdropbtn {";
             css += "    background-color: #3e8e41;";
+            css += "    box-shadow: 0px 0px 16px 0px rgba(0,0,0,0.2);";            
             css += "}";
             appendCssStyle( css );
 
@@ -3919,27 +3946,35 @@ function extractWaypointsFromListing() {
                 tbl = $('#ctl00_ContentBody_WaypointList');
             }
 
-            tbl.after('<div class="GClhdropdown"><button id="ShowWaypointsOnFloppsMap" class="GClhdropbtn">Show waypoints on Flopp\'s Map with &#8230;</button><div id="FloppsMapLayers" class="GClhdropdown-content"></div></div>');
-            $('#FloppsMapLayers').append('<div class="openFloppsMap" data-map="OSM"><b>Openstreetmap</b> - Default layer of Openstreetmap</div>');
-            $('#FloppsMapLayers').append('<div class="openFloppsMap" data-map="OSM/DE"><b>German Style</b> An Openstreetmap based map with german map layout</div>');
-            $('#FloppsMapLayers').append('<div class="openFloppsMap" data-map="OCM"><b>OpenCycleMap</b> - An Openstreetmap based map designed for cyclists.</div>');
-            $('#FloppsMapLayers').append('<div class="openFloppsMap" data-map="TOPO"><b>OpenTopMap</b> - An Openstreetmap based map with contour and hill shadowing. The zoom level is limited to 17.</div>');
-            $('#FloppsMapLayers').append('<div class="openFloppsMap" data-map="roadmap"><b>Google Maps</b> - Use default map layer from Google Maps</div>');
-            $('#FloppsMapLayers').append('<div class="openFloppsMap" data-map="satellite"><b>Google Maps Satellite</b> - Use satellite view of Google Maps</div>');
-            $('#FloppsMapLayers').append('<div class="openFloppsMap" data-map="hybrid"><b>Google Maps Hybrid</b> - Use satellite view of Google Maps including overlays</div>');
-            $('#FloppsMapLayers').append('<div class="openFloppsMap" data-map="terrain"><b>Googles Maps Terrain</b> - A kind of topographical layer with hill shadowing</div>');
-
-            $('#ShowWaypointsOnFloppsMap').click( function() {
-                var waypoints = extractWaypointsFromListing();
-                var link = buildFloppsMapLink( waypoints, "" );
-                window.open( link ); // todo settings: in_same_tab
-                console.log(link);                
-            });
+            tbl.after('<div class="GClhdropdown"><div id="ShowWaypointsOnFloppsMap" class="GClhdropbtn">Show waypoints on Flopp\'s Map with &#8230;</div><div id="FloppsMapLayers" class="GClhdropdown-content"></div></div>');
             
-            $('.openFloppsMap').click( function() {
+            $('#FloppsMapLayers').append('<div id="floppsmap-warning" class="GClhdropdown-content-info"><b>WARNING:</b> There are too many waypoints in the listing. Flopp\'s Map allows only a limited number of waypoints. Not all waypoints are shown.</div>');
+            
+            $('#FloppsMapLayers').append('<div class="GClhdropdown-content-layer" data-map="OSM">Openstreetmap</div>');
+            $('#FloppsMapLayers').append('<div class="GClhdropdown-content-layer" data-map="OSM/DE">German Style</div>');
+            $('#FloppsMapLayers').append('<div class="GClhdropdown-content-layer" data-map="OCM">OpenCycleMap</div>');
+            $('#FloppsMapLayers').append('<div class="GClhdropdown-content-layer" data-map="TOPO">OpenTopMap</div>');
+            $('#FloppsMapLayers').append('<div class="GClhdropdown-content-layer" data-map="roadmap">Google Maps</div>');
+            $('#FloppsMapLayers').append('<div class="GClhdropdown-content-layer" data-map="satellite">Google Maps Satellite</div>');
+            $('#FloppsMapLayers').append('<div class="GClhdropdown-content-layer" data-map="hybrid">Google Maps Hybrid</div>');
+            $('#FloppsMapLayers').append('<div class="GClhdropdown-content-layer" data-map="terrain">Googles Maps Terrain</div>');
+
+            var status = {};
+            var waypoints = extractWaypointsFromListing();
+            var link = buildFloppsMapLink( waypoints, map, false, status );
+            if ( status.limited == true ) {
+                $("#floppsmap-warning").show();
+            } else {
+                $("#floppsmap-warning").hide();
+            }
+            
+            
+            $('#ShowWaypointsOnFloppsMap').click( function() {});
+            
+            $('.GClhdropdown-content-layer').click( function() {
                 var map = $(this).data('map');
                 var waypoints = extractWaypointsFromListing();
-                var link = buildFloppsMapLink( waypoints, map );
+                var link = buildFloppsMapLink( waypoints, map, false, {} );
                 window.open( link ); // todo settings: in_same_tab
                 console.log(link);
             });
