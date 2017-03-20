@@ -3640,7 +3640,7 @@ var mainGC = function () {
     return Number(Math.round(val+'e'+decimals)+'e-'+decimals);
     }
 
-// this function reads the table with the additional waypoints    
+// this function reads the table with the additional waypoints
     function getAdditionalWaypoints() {
         var addWP  = [];
         try {
@@ -3791,11 +3791,11 @@ var mainGC = function () {
         return waypoints;
     }
 
-// function to calculate the tile number from geocoordinates    
+// function to calculate the tile number from geocoordinates
     function lat2tile(lat,zoom)  { return (Math.floor((1-Math.log(Math.tan(lat*Math.PI/180) + 1/Math.cos(lat*Math.PI/180))/Math.PI)/2 *Math.pow(2,zoom))); }
     function long2tile(lon,zoom) { return (Math.floor((lon+180)/360*Math.pow(2,zoom))); }
 
-// function to convert string to the Flopps Map specification    
+// function to convert string to the Flopps Map specification
     function floppsMapWaypoint( waypoint, id, radius, name ) {
         name = name.replace(/[^a-zA-Z0-9_\-]/g,'_'); // A–Z, a–z, 0–9, - und _
         return id+':'+waypoint.latitude+':'+waypoint.longitude+':'+radius+':'+name;
@@ -3857,10 +3857,10 @@ var mainGC = function () {
 
         var url = "";
         status.limited = false;
-        
+
         for ( var i=0; i<floppsWaypoints.length; i++) {
             var nextWaypoint = floppsWaypoints[i];
-            // limited the waypoint part to 2000 (+3) characters 
+            // limited the waypoint part to 2000 (+3) characters
             if ( (url.length+nextWaypoint.length+1)>2003 ) {
                 status.limited = true;
                 status.numbers = i;
@@ -3891,7 +3891,10 @@ var mainGC = function () {
 // https://www.geocaching.com/geocache/GC567MN_hochwassermarken-flood-marks
 // extract waypoints
     // TODO: https://www.geocaching.com/hide/wptlist.aspx*
-    if ( 1 /* TODO: settings*/ && ( is_page("cache_listing") || (is_page("hide_cache") ) ) ) {
+    if ( 1 /* TODO: settings*/ && (
+        is_page("cache_listing") ||
+        document.location.href.match(/^https?:\/\/www\.geocaching\.com\/geocache\//) ||
+        document.location.href.match(/^https?:\/\/www\.geocaching\.com\/hide\/wptlist.aspx/) ) ) {
         try {
             var css = "";
             css += ".GClhdropbtn {";
@@ -3900,7 +3903,7 @@ var mainGC = function () {
             css += "    padding: 10px;";
             css += "    font-size: 16px;";
             css += "    border: none;";
-            css += "    cursor: default;";
+            css += "    cursor: pointer;";
             css += "}";
             css += ".GClhdropdown {";
             css += "    position: relative;";
@@ -3926,7 +3929,7 @@ var mainGC = function () {
             css += "    padding: 5px 16px 5px 16px;";
             css += "    text-decoration: none;";
             css += "    display: none;";
-            css += "}";            
+            css += "}";
             css += ".GClhdropdown-content-layer:hover {";
             css += "    background-color: #e1e1e1;";
             css += "    cursor: pointer;";
@@ -3940,7 +3943,7 @@ var mainGC = function () {
             css += "}";
             css += ".GClhdropdown:hover .GClhdropbtn {";
             css += "    background-color: #3e8e41;";
-            
+
             css += "}";
             appendCssStyle( css );
 
@@ -3948,11 +3951,13 @@ var mainGC = function () {
             if ( tbl.length == 0 ) {
                 tbl = $('#ctl00_ContentBody_WaypointList');
             }
+            tbl = tbl.next("p");
 
-            tbl.after('<div class="GClhdropdown"><div id="ShowWaypointsOnFloppsMap" class="GClhdropbtn">Show waypoints on Flopp\'s Map with &#8230;</div><div id="FloppsMapLayers" class="GClhdropdown-content"></div></div>');
-            
+
+            tbl.append('<div class="GClhdropdown"><div id="ShowWaypointsOnFloppsMap" class="GClhdropbtn">Show waypoints on Flopp\'s Map with &#8230;</div><div id="FloppsMapLayers" class="GClhdropdown-content"></div></div>');
+
             $('#FloppsMapLayers').append('<div id="floppsmap-warning" class="GClhdropdown-content-info"><b>WARNING:</b> There are too many waypoints in the listing. Flopp\'s Map allows only a limited number of waypoints. Not all waypoints are shown.</div>');
-            
+
             $('#FloppsMapLayers').append('<div class="GClhdropdown-content-layer" data-map="OSM">Openstreetmap</div>');
             $('#FloppsMapLayers').append('<div class="GClhdropdown-content-layer" data-map="OSM/DE">German Style</div>');
             $('#FloppsMapLayers').append('<div class="GClhdropdown-content-layer" data-map="OCM">OpenCycleMap</div>');
@@ -3970,18 +3975,18 @@ var mainGC = function () {
             } else {
                 $("#floppsmap-warning").hide();
             }
-            
+
             function openFloppsMap( map ) {
                 var waypoints = extractWaypointsFromListing();
                 var link = buildFloppsMapLink( waypoints, map, false, {} );
                 window.open( link ); // todo settings: in_same_tab
-                console.log(link);                
+                console.log(link);
             }
-            
+
             $('#ShowWaypointsOnFloppsMap').click( function() {
                 openFloppsMap("");
             });
-            
+
             $('.GClhdropdown-content-layer').click( function() {
                 var map = $(this).data('map');
                 openFloppsMap(map);
