@@ -3640,241 +3640,244 @@ var mainGC = function () {
     return Number(Math.round(val+'e'+decimals)+'e-'+decimals);
     }
 
-function getAdditionalWaypoints() {
-    var addWP  = [];
-    try {
-        var tbl = document.getElementById('ctl00_ContentBody_Waypoints');
-        if ( tbl == null ) {
-            tbl = document.getElementById('ctl00_ContentBody_WaypointList');
-        }
-        if(tbl.getElementsByTagName('tbody')) {
-            var tblbdy = tbl.getElementsByTagName('tbody')[0];
-            var tr_list = tblbdy.getElementsByTagName('tr');
-            console.log(tr_list.length);
+// this function reads the table with the additional waypoints    
+    function getAdditionalWaypoints() {
+        var addWP  = [];
+        try {
+            var tbl = document.getElementById('ctl00_ContentBody_Waypoints');
+            if ( tbl == null ) {
+                tbl = document.getElementById('ctl00_ContentBody_WaypointList');
+            }
+            if(tbl.getElementsByTagName('tbody')) {
+                var tblbdy = tbl.getElementsByTagName('tbody')[0];
+                var tr_list = tblbdy.getElementsByTagName('tr');
+                console.log(tr_list.length);
 
-            for (var i=0; i < tr_list.length/2; i++) {
-                var td_list = tr_list[2*i].getElementsByTagName('td');
-                var td_list2nd = tr_list[2*i+1].getElementsByTagName('td');
-                var waypoint = {};
+                for (var i=0; i < tr_list.length/2; i++) {
+                    var td_list = tr_list[2*i].getElementsByTagName('td');
+                    var td_list2nd = tr_list[2*i+1].getElementsByTagName('td');
+                    var waypoint = {};
 
-                if(td_list[3]) {
-                    waypoint.icon = td_list[2].getElementsByTagName("img")[0].getAttribute("src");
-                    waypoint.prefix = td_list[3].textContent.trim();
-                    waypoint.lookup = td_list[4].textContent.trim();
-                    // var name = td_list[5].textContent.trim().match(/(.*) \((.+)\)/);
-                    waypoint.name = td_list[5].getElementsByTagName("a")[0].textContent
+                    if(td_list[3]) {
+                        waypoint.icon = td_list[2].getElementsByTagName("img")[0].getAttribute("src");
+                        waypoint.prefix = td_list[3].textContent.trim();
+                        waypoint.lookup = td_list[4].textContent.trim();
+                        // var name = td_list[5].textContent.trim().match(/(.*) \((.+)\)/);
+                        waypoint.name = td_list[5].getElementsByTagName("a")[0].textContent
 
 
-                    var oDiv = td_list[5];
-                    var firstText = "";
-                    for (var j = 0; j < oDiv.childNodes.length; j++) {
-                        var curNode = oDiv.childNodes[j];
-                        if (curNode.nodeName === "#text") {
-                            firstText += curNode.nodeValue.trim();
+                        var oDiv = td_list[5];
+                        var firstText = "";
+                        for (var j = 0; j < oDiv.childNodes.length; j++) {
+                            var curNode = oDiv.childNodes[j];
+                            if (curNode.nodeName === "#text") {
+                                firstText += curNode.nodeValue.trim();
+                            }
                         }
+                        waypoint.subtype_name = firstText;
+
+                        waypoint.link = td_list[5].getElementsByTagName("a")[0].getAttribute("href");
+
+                        // /images/icons/icon_viewable.jpg
+
+                        var subtype = "";
+                        var icon = waypoint.icon;
+                        if ( icon.match(/trailhead.jpg/g) ) {
+                            subtype = "Trailhead";
+                        } else if ( icon.match(/flag.jpg/g) ) {
+                            subtype = "Final Location";
+                        } else if ( icon.match(/pkg.jpg/g) ) {
+                            subtype = "Parking Area";
+                        } else if ( icon.match(/stage.jpg/g) ) {
+                            subtype = "Physical Stage";
+                        } else if ( icon.match(/puzzle.jpg/g) ) {
+                            subtype = "Virtual Stage";
+                        } else if ( icon.match(/waypoint.jpg/g) ) {
+                            subtype = "Reference Point";
+                        } else {
+                            gclh_error("getAdditionalWaypoints(): problem with waypoint "+waypoint.lookup+"/"+waypoint.prefix);
+                            gclh_error("    unknown waypoint type ("+icon+")");
+                        }
+                        waypoint.subtype = subtype;
+
+                        waypoint.visible = false;
+                        tmp_coords = toDec(td_list[6].textContent.trim());
+                        if(typeof tmp_coords[0] !== 'undefined' && typeof tmp_coords[1] !== 'undefined') {
+                            waypoint.latitude = tmp_coords[0];
+                            waypoint.longitude = tmp_coords[1];
+                            waypoint.visible = true;
+                        }
+                        waypoint.note = td_list2nd[2].textContent.trim();
+                        waypoint.type = "waypoint";
+                        addWP.push(waypoint);
                     }
-                    waypoint.subtype_name = firstText;
-
-                    waypoint.link = td_list[5].getElementsByTagName("a")[0].getAttribute("href");
-
-                    // /images/icons/icon_viewable.jpg
-
-                    var subtype = "";
-                    var icon = waypoint.icon;
-                    if ( icon.match(/trailhead.jpg/g) ) {
-                        subtype = "Trailhead";
-                    } else if ( icon.match(/flag.jpg/g) ) {
-                        subtype = "Final Location";
-                    } else if ( icon.match(/pkg.jpg/g) ) {
-                        subtype = "Parking Area";
-                    } else if ( icon.match(/stage.jpg/g) ) {
-                        subtype = "Physical Stage";
-                    } else if ( icon.match(/puzzle.jpg/g) ) {
-                        subtype = "Virtual Stage";
-                    } else if ( icon.match(/waypoint.jpg/g) ) {
-                        subtype = "Reference Point";
-                    } else {
-                        console.log("getAdditionalWaypoints(): problem with waypoint "+waypoint.lookup+"/"+waypoint.prefix);
-                        console.log("    unknown waypoint type ("+icon+")");
-                    }
-                    waypoint.subtype = subtype;
-
-                    waypoint.visible = false;
-                    tmp_coords = toDec(td_list[6].textContent.trim());
-                    if(typeof tmp_coords[0] !== 'undefined' && typeof tmp_coords[1] !== 'undefined') {
-                        waypoint.latitude = tmp_coords[0];
-                        waypoint.longitude = tmp_coords[1];
-                        waypoint.visible = true;
-                    }
-                    waypoint.note = td_list2nd[2].textContent.trim();
-                    waypoint.type = "waypoint";
-                    addWP.push(waypoint);
                 }
             }
+        } catch(e) {
+            gclh_error("getAdditionalWaypoints(): "+e);
         }
-    } catch(e) {
-        console.log("getAdditionalWaypoints(): "+e);
+        return addWP;
     }
-    return addWP;
-}
 
+// this function reads the table with the additional waypoints
+    function getListingCoordinates() {
+        var addWP  = [];
+        try {
+            var waypoint = {};
+            var gccode = "n/a";
+            var gcname = "n/a";
+            if(document.getElementById('ctl00_ContentBody_CoordInfoLinkControl1_uxCoordInfoCode')) {
+                gccode = document.getElementById('ctl00_ContentBody_CoordInfoLinkControl1_uxCoordInfoCode').textContent;
+            }
+            if(document.getElementById('ctl00_ContentBody_CacheName')) {
+                gcname = document.getElementById('ctl00_ContentBody_CacheName').textContent;
+            }
 
-function getListingCoordinates() {
-    var addWP  = [];
-    try {
-        var waypoint = {};
-        var gccode = "n/a";
-        var gcname = "n/a";
-        if(document.getElementById('ctl00_ContentBody_CoordInfoLinkControl1_uxCoordInfoCode')) {
-            gccode = document.getElementById('ctl00_ContentBody_CoordInfoLinkControl1_uxCoordInfoCode').textContent;
-        }
-        if(document.getElementById('ctl00_ContentBody_CacheName')) {
-            gcname = document.getElementById('ctl00_ContentBody_CacheName').textContent;
-        }
+            if((typeof(unsafeWindow.userDefinedCoords) != 'undefined') && (unsafeWindow.userDefinedCoords.data.isUserDefined==true)) {
+                waypoint = {};
+                waypoint.visible = true;
+                waypoint.latitude = roundTO(unsafeWindow.userDefinedCoords.data.newLatLng[0],6);
+                waypoint.longitude = roundTO(unsafeWindow.userDefinedCoords.data.newLatLng[1],6);
+                waypoint.lookup = gccode;
+                waypoint.prefix = "";
+                waypoint.name = gcname;
+                waypoint.note = "";
+                waypoint.type = "listing";
+                waypoint.subtype = "changed";
+                // waypoint.link = location.href;
+                addWP.push(waypoint);
 
-        if((typeof(unsafeWindow.userDefinedCoords) != 'undefined') && (unsafeWindow.userDefinedCoords.data.isUserDefined==true)) {
-            waypoint = {};
+                waypoint = {};
+                waypoint.latitude = roundTO(unsafeWindow.userDefinedCoords.data.oldLatLng[0],6);
+                waypoint.longitude = roundTO(unsafeWindow.userDefinedCoords.data.oldLatLng[1],6);
+            } else if(document.getElementById('ctl00_ContentBody_uxViewLargerMap')) {
+                var tmp_coords = document.getElementById('ctl00_ContentBody_uxViewLargerMap').getAttribute('href').match(/(-)*(\d{1,3}).(\d{1,6})/g);
+                waypoint.latitude = tmp_coords[0];
+                waypoint.longitude = tmp_coords[1];
+            } else {
+                gclh_error("getListingCoordinates(): warning: listing coordinates are not found.");
+            }
             waypoint.visible = true;
-            waypoint.latitude = roundTO(unsafeWindow.userDefinedCoords.data.newLatLng[0],6);
-            waypoint.longitude = roundTO(unsafeWindow.userDefinedCoords.data.newLatLng[1],6);
             waypoint.lookup = gccode;
             waypoint.prefix = "";
             waypoint.name = gcname;
             waypoint.note = "";
             waypoint.type = "listing";
-            waypoint.subtype = "changed";
+            waypoint.subtype = "origin";
             // waypoint.link = location.href;
             addWP.push(waypoint);
-
-            waypoint = {};
-            waypoint.latitude = roundTO(unsafeWindow.userDefinedCoords.data.oldLatLng[0],6);
-            waypoint.longitude = roundTO(unsafeWindow.userDefinedCoords.data.oldLatLng[1],6);
-        } else if(document.getElementById('ctl00_ContentBody_uxViewLargerMap')) {
-            var tmp_coords = document.getElementById('ctl00_ContentBody_uxViewLargerMap').getAttribute('href').match(/(-)*(\d{1,3}).(\d{1,6})/g);
-            waypoint.latitude = tmp_coords[0];
-            waypoint.longitude = tmp_coords[1];
-        } else {
-            console.log("getListingCoordinates(): warning: listing coordinates are not found.");
+        } catch(e) {
+            gclh_error("getListingCoordinates(): "+e);
         }
-        waypoint.visible = true;
-        waypoint.lookup = gccode;
-        waypoint.prefix = "";
-        waypoint.name = gcname;
-        waypoint.note = "";
-        waypoint.type = "listing";
-        waypoint.subtype = "origin";
-        // waypoint.link = location.href;
-        addWP.push(waypoint);
-    } catch(e) {
-        console.log("getListingCoordinates(): "+e);
+        return addWP;
     }
-    return addWP;
-}
+
+    function getLongDescriptionCoordinates() {
+        return [];
+    }
+
+    function getPersonalNoteCoordinates() {
+        return [];
+    }
 
 
+    function extractWaypointsFromListing() {
+        var waypoints = [];
+        waypoints = waypoints.concat(getListingCoordinates());
+        waypoints = waypoints.concat(getAdditionalWaypoints());
+        waypoints = waypoints.concat(getLongDescriptionCoordinates());
+        waypoints = waypoints.concat(getPersonalNoteCoordinates());
+        console.log(waypoints);
+        return waypoints;
+    }
 
+// function to calculate the tile number from geocoordinates    
+    function lat2tile(lat,zoom)  { return (Math.floor((1-Math.log(Math.tan(lat*Math.PI/180) + 1/Math.cos(lat*Math.PI/180))/Math.PI)/2 *Math.pow(2,zoom))); }
+    function long2tile(lon,zoom) { return (Math.floor((lon+180)/360*Math.pow(2,zoom))); }
 
-function floppsMapWaypoint( waypoint, id, radius, name ) {
-    name = name.replace(/[^a-zA-Z0-9_\-]/g,'_'); // A–Z, a–z, 0–9, - und _
-    return id+':'+waypoint.latitude+':'+waypoint.longitude+':'+radius+':'+name;
-}
+// function to convert string to the Flopps Map specification    
+    function floppsMapWaypoint( waypoint, id, radius, name ) {
+        name = name.replace(/[^a-zA-Z0-9_\-]/g,'_'); // A–Z, a–z, 0–9, - und _
+        return id+':'+waypoint.latitude+':'+waypoint.longitude+':'+radius+':'+name;
+    }
 
-function lat2tile(lat,zoom)  { return (Math.floor((1-Math.log(Math.tan(lat*Math.PI/180) + 1/Math.cos(lat*Math.PI/180))/Math.PI)/2 *Math.pow(2,zoom))); }
-function long2tile(lon,zoom) { return (Math.floor((lon+180)/360*Math.pow(2,zoom))); }
+// creates from a list of waypoints an permanent link to Flopps Map
+    function buildFloppsMapLink( waypoints, map, shortnames, status ) {
+        var url = "";
+        var floppsWaypoints = [];
 
-function buildFloppsMapLink( waypoints, map, shortnames, status ) {
-    var url = "";
-    var floppsWaypoints = [];
+        var Latmax = -90.0;
+        var Latmin = 90.0;
+        var Lonmax = -180.0;
+        var Lonmin = 180.0;
+        var count = 0;
 
-    var Latmax = -90.0;
-    var Latmin = 90.0;
-    var Lonmax = -180.0;
-    var Lonmin = 180.0;
-    var count = 0;
+        for ( var i=0; i<waypoints.length; i++) {
+            var waypoint = waypoints[i];
+            if ( waypoint.visible == true ) {
+                if ( waypoint.type == "waypoint" ) {
+                    var id = String.fromCharCode(65+Math.floor(count%26))+Math.floor(count/26+1); // create Flopps Map id: A1-A9 B1-B9 ....
+                    var radius = (( waypoint.subtype == "Physical Stage" || waypoint.subtype == "Final Location" ) ? "161" : "");
+                    floppsWaypoints.push( floppsMapWaypoint( waypoint, id, radius, waypoint.name ) ); /* TODO: use short names (lookup) for to much waypoints */
+                    count++;
+                } else if ( waypoint.type == "listing" && waypoint.subtype == "origin" ) {
+                    // TODO: var radius = (( waypoint.subtype == "Physical Stage" || waypoint.subtype == "Final Location" ) ? "3000" : "161" );
+                    // TODO:  only for Mystery Cache 	3000m radius || but type is not stored in waypoint data
+                    floppsWaypoints.push(floppsMapWaypoint( waypoint, "O", 3000 /* TODO */, waypoint.lookup+'_ORIGIN' ));
+                } else if ( waypoint.type == "listing" && waypoint.subtype == "changed" ) {
+                    floppsWaypoints.push(floppsMapWaypoint( waypoint, "C", 161, waypoint.lookup+'_CHANGED' ));
+                }
+                Latmax = Math.max( Latmax, waypoint.latitude );
+                Latmin = Math.min( Latmin, waypoint.latitude );
+                Lonmax = Math.max( Lonmax, waypoint.longitude );
+                Lonmin = Math.min( Lonmin, waypoint.longitude );
 
-    for ( var i=0; i<waypoints.length; i++) {
-        var waypoint = waypoints[i];
-        if ( waypoint.visible == true ) {
-            if ( waypoint.type == "waypoint" ) {
-                var id = String.fromCharCode(65+Math.floor(count%26))+Math.floor(count/26+1); // create Flopps Map id: A1-A9 B1-B9 ....
-                var radius = (( waypoint.subtype == "Physical Stage" || waypoint.subtype == "Final Location" ) ? "161" : "");
-                floppsWaypoints.push( floppsMapWaypoint( waypoint, id, radius, waypoint.name ) ); /* TODO: use short names (lookup) for to much waypoints */
-                count++;
-            } else if ( waypoint.type == "listing" && waypoint.subtype == "origin" ) {
-                // TODO: var radius = (( waypoint.subtype == "Physical Stage" || waypoint.subtype == "Final Location" ) ? "3000" : "161" );
-                // TODO:  only for Mystery Cache 	3000m radius || but type is not stored in waypoint data
-                floppsWaypoints.push(floppsMapWaypoint( waypoint, "O", 3000 /* TODO */, waypoint.lookup+'_ORIGIN' ));
-            } else if ( waypoint.type == "listing" && waypoint.subtype == "changed" ) {
-                floppsWaypoints.push(floppsMapWaypoint( waypoint, "C", 161, waypoint.lookup+'_CHANGED' ));
+                // TODO: maximum markers? if ( floppsWaypoints.length>26 ) { break; }
+                // TODO: Request-URI Too Large : he requested URL's length exceeds the capacity limit for this server.
+                // <span style="margin-left: 5px; color: #000; font-size: 90%; background: #fff; border: 1px solid #0800; border-radius: 15px; padding: 0px 3px 0px 3px;">&nbsp;!&nbsp;</span>
             }
-            Latmax = Math.max( Latmax, waypoint.latitude );
-            Latmin = Math.min( Latmin, waypoint.latitude );
-            Lonmax = Math.max( Lonmax, waypoint.longitude );
-            Lonmin = Math.min( Lonmin, waypoint.longitude );
-
-            // TODO: maximum markers? if ( floppsWaypoints.length>26 ) { break; }
-            // TODO: Request-URI Too Large : he requested URL's length exceeds the capacity limit for this server.
-            // <span style="margin-left: 5px; color: #000; font-size: 90%; background: #fff; border: 1px solid #0800; border-radius: 15px; padding: 0px 3px 0px 3px;">&nbsp;!&nbsp;</span>
         }
+
+        var floppsMapWidth = window.innerWidth-280; // minus width of sidebar
+        var floppsMapHeigth = window.innerHeight-50; // minus height of header
+        var zoom=-1;
+        console.log( "Calculate zoom level for Flopp's Map" + " (width="+floppsMapWidth+"px heigth="+floppsMapHeigth+"px)" );
+        for ( zoom=20; zoom>=0; zoom--) {
+            var tileY_max = lat2tile(Latmin,zoom);
+            var tileY_min = lat2tile(Latmax,zoom);
+            var tiles_Y = (tileY_max-tileY_min+1); // boundary box heigth in number of tiles
+            var tileX_min = long2tile(Lonmin,zoom);
+            var tileX_max = long2tile(Lonmax,zoom);
+            var tiles_X = (tileX_max-tileX_min+1); // boundary box width in  number of tiles
+            console.log( "  Tiles @ zoom="+zoom+": Xmin="+tileX_min+" Xmas="+tileX_max+" ΔX="+tiles_X+" => "+tiles_X*256+"px | Ymin="+tileY_min+" Ymax="+tileY_max+" ΔY="+tiles_Y+" => "+tiles_Y*256+"px" );
+            if ( (tiles_Y*256 < floppsMapHeigth ) && (tiles_X*256 < floppsMapWidth ) ) {
+                break;
+            }
+        }
+
+        var url = "";
+        status.limited = false;
+        
+        for ( var i=0; i<floppsWaypoints.length; i++) {
+            var nextWaypoint = floppsWaypoints[i];
+            // limited the waypoint part to 2000 (+3) characters 
+            if ( (url.length+nextWaypoint.length+1)>2003 ) {
+                status.limited = true;
+                status.numbers = i;
+                break;
+            }
+            url += ( ( i == 0 ) ? '&m=' : '*' );
+            url += nextWaypoint;
+        }
+        var center_latitude = ((Latmax+90.0)+(Latmin+90.0))/2-90.0
+        var center_longitude = ((Lonmax+180.0)+(Lonmin+180.0))/2-180.0
+        var url = 'http://flopp.net/'+'?c='+center_latitude+':'+center_longitude+'&z='+zoom+'&t='+map+url;
+
+        url += '&d=O:C';
+        return encodeURI(url);
     }
 
-    var floppsMapWidth = window.innerWidth-280; // minus width of sidebar
-    var floppsMapHeigth = window.innerHeight-50; // minus height of header
-    var zoom=-1;
-    console.log( "Calculate zoom level for Flopp's Map" + " (width="+floppsMapWidth+"px heigth="+floppsMapHeigth+"px)" );
-    for ( zoom=20; zoom>=0; zoom--) {
-        var tileY_max = lat2tile(Latmin,zoom);
-        var tileY_min = lat2tile(Latmax,zoom);
-        var tiles_Y = (tileY_max-tileY_min+1); // boundary box heigth in number of tiles
-        var tileX_min = long2tile(Lonmin,zoom);
-        var tileX_max = long2tile(Lonmax,zoom);
-        var tiles_X = (tileX_max-tileX_min+1); // boundary box width in  number of tiles
-        console.log( "  Tiles @ zoom="+zoom+": Xmin="+tileX_min+" Xmas="+tileX_max+" ΔX="+tiles_X+" => "+tiles_X*256+"px | Ymin="+tileY_min+" Ymax="+tileY_max+" ΔY="+tiles_Y+" => "+tiles_Y*256+"px" );
-        if ( (tiles_Y*256 < floppsMapHeigth ) && (tiles_X*256 < floppsMapWidth ) ) {
-            break;
-        }
-    }
 
-    var url = "";
-    status.limited = false;
-    
-    for ( var i=0; i<floppsWaypoints.length; i++) {
-        var nextWaypoint = floppsWaypoints[i];
-        // limited the waypoint part to 2000 (+3) characters 
-        if ( (url.length+nextWaypoint.length+1)>2003 ) {
-            status.limited = true;
-            status.numbers = i;
-            break;
-        }
-        url += ( ( i == 0 ) ? '&m=' : '*' );
-        url += nextWaypoint;
-    }
-    var center_latitude = ((Latmax+90.0)+(Latmin+90.0))/2-90.0
-    var center_longitude = ((Lonmax+180.0)+(Lonmin+180.0))/2-180.0
-    var url = 'http://flopp.net/'+'?c='+center_latitude+':'+center_longitude+'&z='+zoom+'&t='+map+url;
-
-    url += '&d=O:C';
-    return encodeURI(url);
-}
-
-function getLongDescriptionCoordinates() {
-    return [];
-}
-
-function getPersonalNoteCoordinates() {
-    return [];
-}
-
-
-function extractWaypointsFromListing() {
-    var waypoints = [];
-    waypoints = waypoints.concat(getListingCoordinates());
-    waypoints = waypoints.concat(getAdditionalWaypoints());
-    waypoints = waypoints.concat(getLongDescriptionCoordinates());
-    waypoints = waypoints.concat(getPersonalNoteCoordinates());
-    console.log(waypoints);
-    return waypoints;
-}
 
 // test case/caches
 //Runde und mehr als 26 waypoints:
@@ -3937,7 +3940,7 @@ function extractWaypointsFromListing() {
             css += "}";
             css += ".GClhdropdown:hover .GClhdropbtn {";
             css += "    background-color: #3e8e41;";
-            css += "    box-shadow: 0px 0px 16px 0px rgba(0,0,0,0.2);";            
+            
             css += "}";
             appendCssStyle( css );
 
@@ -3968,22 +3971,26 @@ function extractWaypointsFromListing() {
                 $("#floppsmap-warning").hide();
             }
             
-            
-            $('#ShowWaypointsOnFloppsMap').click( function() {});
-            
-            $('.GClhdropdown-content-layer').click( function() {
-                var map = $(this).data('map');
+            function openFloppsMap( map ) {
                 var waypoints = extractWaypointsFromListing();
                 var link = buildFloppsMapLink( waypoints, map, false, {} );
                 window.open( link ); // todo settings: in_same_tab
-                console.log(link);
+                console.log(link);                
+            }
+            
+            $('#ShowWaypointsOnFloppsMap').click( function() {
+                openFloppsMap("");
+            });
+            
+            $('.GClhdropdown-content-layer').click( function() {
+                var map = $(this).data('map');
+                openFloppsMap(map);
             });
 
             // TODO: settings: enable/disable feature, default layer
             // TODO: settings: default layer
             // TODO: settings: autozoom or manual zoom level (?)
             // TODO: settings: open in own tab / same tab
-            // TODO: warning if there are move than 26 (???) issues
         } catch( e ) {
             gclh_error("Error extract waypoints", e); // todo
         }
