@@ -3822,7 +3822,7 @@ var mainGC = function () {
                     var radius = 0;
                     if ( waypoint.cachetype == "Traditional Cache" ) {
                         radius = 161;
-                    } else if ( waypoint.cachetype == "Traditional Cache" ) {
+                    } else if ( waypoint.cachetype == "Mystery Cache" ) {
                         radius = 3000;
                     }
                     floppsWaypoints.push(floppsMapWaypoint( waypoint, "O", radius, waypoint.lookup+'_ORIGIN' ));
