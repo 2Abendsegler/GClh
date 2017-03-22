@@ -3734,7 +3734,8 @@ var mainGC = function () {
             GM_xmlhttpRequest({
                 method: 'GET',
                 url: "https://maps.googleapis.com/maps/api/elevation/json?sensor=false&locations=" + locations,
-                onload: addElevationToWaypoints
+                onload: addElevationToWaypoints,
+                onerror: function() { gclh_error("Elevation: ERROR: request elevation for waypoints failed!"); }
             });
         } catch(e) {
             gclh_error( "AddElevation: " + e);
