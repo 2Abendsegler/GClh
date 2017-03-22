@@ -18,7 +18,7 @@
 <ul>
 <li>
 New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/226">#226</a>] Make the using of browser Vivaldi possible:<br>
-Please notice the special points in <a href="https://github.com/2Abendsegler/GClh/blob/v0.6_f/docu/tips_installation.md#readme">Tipps für die Installation</a>.<br>
+Please notice the special points in <a href="https://github.com/2Abendsegler/GClh/blob/master/docu/tips_installation.md#readme">Tipps für die Installation</a>.<br>
 <img src="../images/vivaldi_logo_small.png" alt="vivaldi_logo_small.png"><br>
 <br></li>
 <li>
