@@ -3649,6 +3649,24 @@ var mainGC = function () {
                 return tbl;
             }
 
+            function getListingCoordinates( original ) {
+                var waypoint = { latitude : 'undefined', longitude : 'undefined' };
+                if((typeof(unsafeWindow.userDefinedCoords) != 'undefined') && (unsafeWindow.userDefinedCoords.data.isUserDefined==true)) {
+                    if ( (typeof(original) != 'undefined') && original == true ) {
+                        waypoint.latitude = unsafeWindow.userDefinedCoords.data.oldLatLng[0];
+                        waypoint.longitude = unsafeWindow.userDefinedCoords.data.oldLatLng[1];
+                    } else {    
+                        waypoint.latitude = unsafeWindow.userDefinedCoords.data.newLatLng[0];
+                        waypoint.longitude = unsafeWindow.userDefinedCoords.data.newLatLng[1];
+                    }
+                } else {
+                    var tmp_coords = document.getElementById('ctl00_ContentBody_uxViewLargerMap').getAttribute('href').match(/(-)*(\d{1,3}).(\d{1,6})/g);
+                    waypoint.latitude = tmp_coords[0];
+                    waypoint.longitude = tmp_coords[1];
+                }
+                return waypoint;
+            }
+
             function formatElevation( elevation ) {
                 var eleString = (elevation >= 0) ? " +" : " ";                
                 eleString += ((1/*TODO*/)?(Math.round(elevation) + "m"):(Math.round(elevation*3.28084) + "ft"));
@@ -3673,6 +3691,9 @@ var mainGC = function () {
                         }
                         tbl.find("tbody > tr:eq("+(i*2)+") > td:eq(7)").html( heightString );
                     }
+
+                    var index = json.results.length-1;
+                    $("#uxLatLonLink").after('<span title="Elevation">'+formatElevation(json.results[index].elevation)+'</span>');
                 } catch(e) {
                     gclh_error( "addElevationToWaypoints(): "+e);
                 }
@@ -3697,6 +3718,9 @@ var mainGC = function () {
                     locations += (locations.length == 0 ? "" : "|") + "-90.0,-180.0";
                 }
             }
+
+            var waypoint = getListingCoordinates(false);
+            locations += (locations.length == 0 ? "" : "|") + waypoint.latitude+","+waypoint.longitude;
 
             GM_xmlhttpRequest({
                 method: 'GET',
