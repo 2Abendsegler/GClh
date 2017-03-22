@@ -1,4 +1,4 @@
-// ==UserScript==
+﻿// ==UserScript==
 // @name             GC little helper II
 // @namespace        http://www.amshove.net
 //--> $$000 Begin of change
@@ -3630,6 +3630,169 @@ var mainGC = function () {
             upd();
         } catch (e) {
             gclh_error("Improve Message Site", e);
+        }
+    }
+
+    if ( 1 /* TODO: settings*/ && (
+        is_page("cache_listing") ||
+        document.location.href.match(/^https?:\/\/www\.geocaching\.com\/geocache\//) ||
+        document.location.href.match(/^https?:\/\/www\.geocaching\.com\/hide\/wptlist.aspx/) ) ) {
+
+        try {
+            function getWaypointTable() {
+                var tbl = $("#ctl00_ContentBody_Waypoints");
+                if ( tbl.length<=0 ) {
+                    tbl = $("#ctl00_ContentBody_WaypointList");
+                }
+                return tbl;
+            }
+
+            function addElevationToWaypoint( tbl, index ) {
+                if ( tbl.find("tbody > tr").length/2 > index ) {
+                    var row1st = tbl.find("tbody > tr").eq(index*2);
+                    var cellCoordinates = row1st.find("td:eq(6)");
+                    var cellElevation = row1st.find("td:eq(7)");
+                    var tmp_coords = toDec(cellCoordinates.text().trim());
+                    if(typeof tmp_coords[0] !== 'undefined' && typeof tmp_coords[1] !== 'undefined') {
+                        GM_xmlhttpRequest({
+                            method: 'GET',
+                            url: "https://maps.googleapis.com/maps/api/elevation/json?sensor=false&locations=" + tmp_coords[0]+","+tmp_coords[1],
+                            onload: function(responseDetails) {
+                                var height = parseHeight(responseDetails.responseText);
+                                if (height !== false) {
+                                    var t = (height >= 0) ? " +" : " ";
+                                    t += Math.round(height) + "m";
+                                    cellElevation.html( t );
+                                }
+                                addElevationToWaypoint( tbl, index+1 );
+                            }
+                        });
+                    } else {
+                        cellElevation.html( "???" );
+                        addElevationToWaypoint( tbl, index+1 );
+                    }
+
+                } else {
+                    console.log("end of waypoint table")
+                }
+            }
+
+            var tbl = getWaypointTable();
+            tbl.find("thead > tr > th:eq(6)").after('<th scope="col">Elevation</th>'); // added header Elevation after Coordinate
+            var length = tbl.find("tbody > tr").length;
+            var locations ="";
+            for ( var i=0; i<length/2; i++ ) {
+                var row1st = tbl.find("tbody > tr").eq(i*2);
+                var row2nd = tbl.find("tbody > tr:eq("+(i*2+1)+")");
+                var cellNote = row2nd.find("td:eq(2)");
+                var colspan = cellNote.attr('colspan');
+                cellNote.attr('colspan',colspan+1);
+                row1st.find("td:eq(6)").after('<td>???</td>');
+
+
+                var cellCoordinates = row1st.find("td:eq(6)");
+                var tmp_coords = toDec(cellCoordinates.text().trim());
+                if(typeof tmp_coords[0] !== 'undefined' && typeof tmp_coords[1] !== 'undefined') {
+                    locations += (locations.length == 0 ? "" : "|") + tmp_coords[0]+","+tmp_coords[1];
+                } else {
+                    locations += (locations.length == 0 ? "" : "|") + "-90.0,-180.0";
+                }
+            }
+
+            GM_xmlhttpRequest({
+                    method: 'GET',
+                    url: "https://maps.googleapis.com/maps/api/elevation/json?sensor=false&locations=" + locations,
+                    onload: function(responseDetails) {
+
+                        try {
+                            json = JSON.parse(responseDetails.responseText);
+                            var tbl = getWaypointTable();
+                            var length = tbl.find("tbody > tr").length;
+                            for ( var i=0; i<length/2; i++ ) {
+                                if ( json.results[i].location.lat != -90 ) {
+                                    var height = json.results[i].elevation;
+                                    console.log(height);
+                                    var t = (height >= 0) ? " +" : " ";
+                                    t += Math.round(height) + "m";
+                                    tbl.find("tbody > tr:eq("+(i*2)+") > td:eq(7)").html( t );
+                                }
+                            }
+
+                        } catch(e) {
+                            gclh_error( "xxx: "+e);
+                        }
+
+                    }
+                });
+        } catch(e) {
+            gclh_error( "AddElevation: " + e);
+        }
+    }
+
+    if ( 0 /* TODO: settings*/ && (
+        is_page("cache_listing") ||
+        document.location.href.match(/^https?:\/\/www\.geocaching\.com\/geocache\//) ||
+        document.location.href.match(/^https?:\/\/www\.geocaching\.com\/hide\/wptlist.aspx/) ) ) {
+
+        try {
+            function getWaypointTable() {
+                var tbl = $("#ctl00_ContentBody_Waypoints");
+                if ( tbl.length<=0 ) {
+                    tbl = $("#ctl00_ContentBody_WaypointList");
+                }
+                return tbl;
+            }
+
+            function addElevationToWaypoint( tbl, index ) {
+                if ( tbl.find("tbody > tr").length/2 > index ) {
+                    var row1st = tbl.find("tbody > tr").eq(index*2);
+                    var cellCoordinates = row1st.find("td:eq(6)");
+                    var cellElevation = row1st.find("td:eq(7)");
+                    var tmp_coords = toDec(cellCoordinates.text().trim());
+                    if(typeof tmp_coords[0] !== 'undefined' && typeof tmp_coords[1] !== 'undefined') {
+                        GM_xmlhttpRequest({
+                            method: 'GET',
+                            url: "https://maps.googleapis.com/maps/api/elevation/json?sensor=false&locations=" + tmp_coords[0]+","+tmp_coords[1],
+                            onload: function(responseDetails) {
+                                var heightString = "";
+                                var json = JSON.parse(responseDetails.responseText);
+
+                                if (typeof json.results[0].elevation !== "number") {
+                                    heightString = "n/a";
+                                } else {
+                                    var height = json.results[0].elevation; 
+                                    heightString = (height >= 0) ? " +" : " ";
+                                    heightString += Math.round(height) + "m";                                    
+                                }
+                                cellElevation.html( t );
+                                addElevationToWaypoint( tbl, index+1 );
+                            }
+                        });
+                    } else {
+                        cellElevation.html( "???" );
+                        addElevationToWaypoint( tbl, index+1 );
+                    }
+
+                } else {
+                    console.log("end of waypoint table")
+                }
+            }
+
+
+            var tbl = getWaypointTable();
+            tbl.find("thead > tr > th:eq(6)").after('<th scope="col">Elevation</th>'); // added header Elevation after Coordinate
+            var length = tbl.find("tbody > tr").length;
+            for ( var i=0; i<length/2; i++ ) {
+                var row1st = tbl.find("tbody > tr").eq(i*2);
+                var row2nd = tbl.find("tbody > tr:eq("+(i*2+1)+")");
+                var cellNote = row2nd.find("td:eq(2)");
+                var colspan = cellNote.attr('colspan');
+                cellNote.attr('colspan',colspan+1);
+                row1st.find("td:eq(6)").after('<td>...</td>');
+            }
+            addElevationToWaypoint( tbl, 0 );
+        } catch(e) {
+            gclh_error( "AddElevation: " + e);
         }
     }
 
