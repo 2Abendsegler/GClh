@@ -3633,6 +3633,39 @@ var mainGC = function () {
         }
     }
 
+// returns a jQuery object of the waypoint list
+    function getWaypointTable() {
+        var tbl = $("#ctl00_ContentBody_Waypoints");
+        if ( tbl.length<=0 ) {
+            tbl = $("#ctl00_ContentBody_WaypointList");
+        }
+        return tbl;
+    }
+
+// Driving direction for every waypoint (issue #252)
+    if ( 1 /* TODO: settings*/ && (
+        is_page("cache_listing") ||
+        document.location.href.match(/^https?:\/\/www\.geocaching\.com\/geocache\//) ||
+        document.location.href.match(/^https?:\/\/www\.geocaching\.com\/hide\/wptlist.aspx/) ) ) {
+        try {
+            var tbl = getWaypointTable();
+            var length = tbl.find("tbody > tr").length;
+            for ( var i=0; i<length/2; i++ ) {
+                var row1st = tbl.find("tbody > tr").eq(i*2);
+
+                var name = row1st.find("td:eq(5)").text().trim();
+                var icon = row1st.find("td:eq(2) > img").attr('src');
+                var cellCoordinates = row1st.find("td:eq(6)");
+                var tmp_coords = toDec(cellCoordinates.text().trim());
+                if( (1 /*TODO: NOT only parking area*/ || icon.match(/pkg.jpg/g) ) && typeof tmp_coords[0] !== 'undefined' && typeof tmp_coords[1] !== 'undefined') {
+                    var link = $("#ctl00_ContentBody_lnkPrintDirectionsSimple").attr('href').match(/(.*daddr=)/);
+                    row1st.find("td:last").append('<a href="'+link[0]+tmp_coords[0]+","+tmp_coords[1]+" ("+name+')" target="_blank"><img src="/images/icons/16/directions.png"></a>');
+                } 
+            }
+        } catch( e ) {
+            gclh_error( "Driving direction for Waypoints: " + e );
+        }
+    }
 // Default Log Type && Log Signature
     if (document.location.href.match(/^https?:\/\/www\.geocaching\.com\/seek\/log\.aspx\?(id|guid|ID|PLogGuid|wp)\=/) && document.getElementById('ctl00_ContentBody_LogBookPanel1_ddLogType') && $('#ctl00_ContentBody_LogBookPanel1_lbConfirm').length == 0) {
         try {
