@@ -3649,34 +3649,6 @@ var mainGC = function () {
                 return tbl;
             }
 
-            function addElevationToWaypoint( tbl, index ) {
-                if ( tbl.find("tbody > tr").length/2 > index ) {
-                    var row1st = tbl.find("tbody > tr").eq(index*2);
-                    var cellCoordinates = row1st.find("td:eq(6)");
-                    var cellElevation = row1st.find("td:eq(7)");
-                    var tmp_coords = toDec(cellCoordinates.text().trim());
-                    if(typeof tmp_coords[0] !== 'undefined' && typeof tmp_coords[1] !== 'undefined') {
-                        GM_xmlhttpRequest({
-                            method: 'GET',
-                            url: "https://maps.googleapis.com/maps/api/elevation/json?sensor=false&locations=" + tmp_coords[0]+","+tmp_coords[1],
-                            onload: function(responseDetails) {
-                                var height = parseHeight(responseDetails.responseText);
-                                if (height !== false) {
-                                    var t = (height >= 0) ? " +" : " ";
-                                    t += Math.round(height) + "m";
-                                    cellElevation.html( t );
-                                }
-                                addElevationToWaypoint( tbl, index+1 );
-                            }
-                        });
-                    } else {
-                        cellElevation.html( "???" );
-                        addElevationToWaypoint( tbl, index+1 );
-                    }
-
-                }
-            }
-
             var tbl = getWaypointTable();
             tbl.find("thead > tr > th:eq(6)").after('<th scope="col">Elevation</th>'); // added header Elevation after Coordinate
             var length = tbl.find("tbody > tr").length;
