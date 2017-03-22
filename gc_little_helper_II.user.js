@@ -3649,9 +3649,16 @@ var mainGC = function () {
                 return tbl;
             }
 
+            function areListingCoordinatesModified() {
+                if((typeof(unsafeWindow.userDefinedCoords) != 'undefined') && (unsafeWindow.userDefinedCoords.data.isUserDefined==true)) {
+                    return true;
+                }
+                return false;                
+            }
+
             function getListingCoordinates( original ) {
                 var waypoint = { latitude : 'undefined', longitude : 'undefined' };
-                if((typeof(unsafeWindow.userDefinedCoords) != 'undefined') && (unsafeWindow.userDefinedCoords.data.isUserDefined==true)) {
+                if(areListingCoordinatesModified()) {
                     if ( (typeof(original) != 'undefined') && original == true ) {
                         waypoint.latitude = unsafeWindow.userDefinedCoords.data.oldLatLng[0];
                         waypoint.longitude = unsafeWindow.userDefinedCoords.data.oldLatLng[1];
@@ -3668,9 +3675,7 @@ var mainGC = function () {
             }
 
             function formatElevation( elevation ) {
-                var eleString = (elevation >= 0) ? " +" : " ";                
-                eleString += ((1/*TODO*/)?(Math.round(elevation) + "m"):(Math.round(elevation*3.28084) + "ft"));
-                return eleString;
+                return ((elevation>=0)?"+":"")+((1/*TODO*/)?(Math.round(elevation) + "m"):(Math.round(elevation*3.28084) + "ft"));
             }
 
             function addElevationToWaypoints(responseDetails) {
@@ -3680,16 +3685,20 @@ var mainGC = function () {
                     var length = tbl.find("tbody > tr").length;
                     for ( var i=0; i<length/2; i++ ) {
                         var heightString = "";
+                        var title = "Elevation not available!";
                         var json = JSON.parse(responseDetails.responseText);
                         if (typeof json.results[i].elevation !== "number") {
                             heightString = "n/a";
+                            title = "Elevation not available - no answer";
                         } else {
                             heightString = formatElevation(json.results[i].elevation);
+                            title = "Elevation";
                             if ( json.results[i].location.lat == -90 ) {
                                 heightString = "???"; // for waypoints with hidden coordinates
+                                title = "Elevation not available - unknown location";
                             }
                         }
-                        tbl.find("tbody > tr:eq("+(i*2)+") > td:eq(7)").html( heightString );
+                        tbl.find("tbody > tr:eq("+(i*2)+") > td:eq(7)").html('<span title="'+title+'">'+heightString+'</span>'  );
                     }
 
                     var index = json.results.length-1;
