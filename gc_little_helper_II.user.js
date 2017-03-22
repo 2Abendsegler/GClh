@@ -4146,6 +4146,11 @@ var mainGC = function () {
                     }
                 }
                 setValue("friends_founds_last", day);
+                var last_autoreset = getValue("friends_founds_last_autoreset");
+                if (typeof(last_autoreset) != "undefined") {
+                   setValue("friends_founds_last_reset", last_autoreset);
+                }  
+                setValue("friends_founds_last_autoreset", new Date().getTime());
             }
 
             // Klasse fuer die Links anlegen
@@ -4248,7 +4253,9 @@ var mainGC = function () {
 
             function gclh_reset_counter() {
                 var friends = document.getElementsByClassName("FriendText");
-                setValue("friends_founds_last_reset", new Date().getTime());
+                var resetTime = new Date().getTime();
+                setValue("friends_founds_last_reset", resetTime);
+                if (settings_automatic_friend_reset) setValue("friends_founds_last_autoreset", resetTime);
 
                 for (var i = 0; i < friends.length; i++) {
                     var friend = friends[i];
@@ -4274,21 +4281,26 @@ var mainGC = function () {
                         var divC = divFH[i];
                         divC.innerHTML = "";
                     }
-                    // und "last check" aktualisieren
+                    // und "last reset" aktualisieren
                     var spanTTs = document.getElementsByClassName("spanTclass");
                     var ld1 = getValue("friends_founds_last_reset", 0);
-                    spanTTs[0].innerHTML = '<br><br>Last check was 0 seconds ago (' + new Date(parseInt(ld1, 10)).toLocaleString() + ')';
+                    spanTTs[0].innerHTML = '<br><br>Last reset was 0 seconds ago (' + new Date(parseInt(ld1, 10)).toLocaleString() + ')';
                 }
             }
 
             if (settings_friendlist_summary) {
-                // "last check" anzeigen
+                // "last reset" anzeigen
                 var spanT = document.createElement("span");
                 var ld = getValue("friends_founds_last_reset", 0);
+                // fix for first call...
+                if (ld == 0) {
+                   ld = new Date().getTime();
+                   setValue("friends_founds_last_reset", ld);
+                }
                 spanT.className = "spanTclass";
                 spanT.style.color  = "gray";
                 spanT.style.fontSize = "smaller";
-                spanT.innerHTML = '<br>Last check was ' + getDateDiffString(new Date().getTime(), ld) + ' ago (' +
+                spanT.innerHTML = '<br>Last reset was ' + getDateDiffString(new Date().getTime(), ld) + ' ago (' +
                     new Date(parseInt(ld, 10)).toLocaleString() + ')';
                 if ((sNewH == "") && (sNewF == "")) spanT.innerHTML = '<br>' + spanT.innerHTML;
                 document.getElementById('ctl00_ContentBody_FindUserPanel1_GetUsers').parentNode.insertBefore(spanT, document.getElementById('ctl00_ContentBody_FindUserPanel1_GetUsers').nextSibling);

@@ -61,6 +61,10 @@ Fix: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/225">#225</a>] 
 <li>
 Fix: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/239">#239</a>] Log templates show unreadable signs (Vorabkorrektur).<br>
 </li>
+<li>
+Fix: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/238">#238</a>] Friends page "Last check" stuck (Vorabkorrektur). <br>
+Many thanks to <a href="https://www.geocaching.com/profile/?u=Herr%20Ma">Herr Ma</a> for the fix.<br>
+</li>
 <br>
 </ul>
 (25.03.2017)<br> 
