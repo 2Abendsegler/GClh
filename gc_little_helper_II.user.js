@@ -525,6 +525,8 @@ var variablesInit = function (c) {
     c.settings_message_icon_new_win = getValue("settings_message_icon_new_win",false);
     // Settings: Enable approvals in hide cache process
     c.settings_hide_cache_approvals = getValue("settings_hide_cache_approvals", true);
+    c.settings_driving_direction_link = getValue("settings_driving_direction_link",true);
+    c.settings_driving_direction_parking_area = getValue("settings_driving_direction_parking_area",false);
 
     // Settings: Custom Bookmarks
     var num = c.bookmarks.length;
@@ -3643,7 +3645,7 @@ var mainGC = function () {
     }
 
 // Driving direction for every waypoint (issue #252)
-    if ( 1 /* TODO: settings*/ && (
+    if ( settings_driving_direction_link && (
         is_page("cache_listing") ||
         document.location.href.match(/^https?:\/\/www\.geocaching\.com\/geocache\//) ||
         document.location.href.match(/^https?:\/\/www\.geocaching\.com\/hide\/wptlist.aspx/) ) ) {
@@ -3657,10 +3659,10 @@ var mainGC = function () {
                 var icon = row1st.find("td:eq(2) > img").attr('src');
                 var cellCoordinates = row1st.find("td:eq(6)");
                 var tmp_coords = toDec(cellCoordinates.text().trim());
-                if( (1 /*TODO: NOT only parking area*/ || icon.match(/pkg.jpg/g) ) && typeof tmp_coords[0] !== 'undefined' && typeof tmp_coords[1] !== 'undefined') {
+                if( ( !settings_driving_direction_parking_area || icon.match(/pkg.jpg/g) ) && typeof tmp_coords[0] !== 'undefined' && typeof tmp_coords[1] !== 'undefined') {
                     var link = $("#ctl00_ContentBody_lnkPrintDirectionsSimple").attr('href').match(/(.*daddr=)/);
-                    row1st.find("td:last").append('<a href="'+link[0]+tmp_coords[0]+","+tmp_coords[1]+" ("+name+')" target="_blank"><img src="/images/icons/16/directions.png"></a>');
-                } 
+                    row1st.find("td:last").append('<a title="Driving Directions" href="'+link[0]+tmp_coords[0]+","+tmp_coords[1]+" ("+name+')" target="_blank"><img src="/images/icons/16/directions.png"></a>');
+                }
             }
         } catch( e ) {
             gclh_error( "Driving direction for Waypoints: " + e );
@@ -9303,6 +9305,8 @@ var mainGC = function () {
             html += checkboxy('settings_hide_avatar', 'Hide avatars in listing') + show_help("This option hides the avatars in logs. This prevents loading the hundreds of images. You have to change the option here, because GClh overrides the log-load-logic of gc.com, so the avatar option of gc.com doesn't work with GClh.") + "<br/>";
             html += checkboxy('settings_load_logs_with_gclh', 'Load logs with GClh') + show_help("This option should be enabled. <br><br>You just should disable it, if you have problems with loading the logs. <br><br>If this option is disabled, there are no VIP-, mail-, message- and top icons, no line colors and no mouse activated big images at the logs. Also the VIP lists, hide avatars, log filter and log search won't work.") + "<br/>";
             html += checkboxy('settings_show_real_owner', 'Show real owner name') + show_help("If the option is enabled, GClh will replace the pseudonym a owner took to publish the cache with the real owner name.") + "<br/>";
+            html += checkboxy('settings_driving_direction_link', 'Show link to Google driving direction for every waypoint') + show_help("Shows for every waypoint in the waypoint list a link to Google driving directions from home location to coordinates of the waypoint.") + "<br/>";
+            html += "&nbsp; " + checkboxy('settings_driving_direction_parking_area', 'Only for Parking Area waypoints') + show_help("Shows only a link to the Google driving directions for waypoints of type Parking Area.") + "<br/>";
             html += "</div>";
 
             html += "<h4 class='gclh_headline2'>"+prepareHideable.replace("#name#","logging")+"Logging</h4>";
@@ -9950,6 +9954,7 @@ var mainGC = function () {
             setEventsForDependentParameters( "settings_log_statistic", "settings_log_statistic_reload" );
             setEventsForDependentParameters( "settings_log_statistic", "settings_log_statistic_percentage" );
             setEventsForDependentParameters( "settings_friendlist_summary", "settings_friendlist_summary_viponly" );
+            setEventsForDependentParameters( "settings_driving_direction_link", "settings_driving_direction_parking_area" );
 //--> $$065 Begin of insert
 //<-- $$065 End of insert
             // Abhängigkeiten der Linklist Parameter.
@@ -10283,7 +10288,9 @@ var mainGC = function () {
                 'settings_pq_automatically_day',
                 'settings_mail_icon_new_win',
                 'settings_message_icon_new_win',
-                'settings_hide_cache_approvals'
+                'settings_hide_cache_approvals',
+                'settings_driving_direction_link',
+                'settings_driving_direction_parking_area'
             );
             for (var i = 0; i < checkboxes.length; i++) {
                 if ( document.getElementById(checkboxes[i]) ) {
