@@ -3633,7 +3633,7 @@ var mainGC = function () {
         }
     }
 
-// added elevation to every additional waypoint with shown coordinates    
+// added elevation to every additional waypoint with shown coordinates
     if ( 1 /* TODO: settings*/ && (
         is_page("cache_listing") ||
         document.location.href.match(/^https?:\/\/www\.geocaching\.com\/geocache\//) ||
@@ -3654,14 +3654,12 @@ var mainGC = function () {
             var length = tbl.find("tbody > tr").length;
             var locations ="";
             for ( var i=0; i<length/2; i++ ) {
-                var row1st = tbl.find("tbody > tr").eq(i*2);
-                var row2nd = tbl.find("tbody > tr:eq("+(i*2+1)+")");
-                var cellNote = row2nd.find("td:eq(2)");
+                var cellNote = tbl.find("tbody > tr:eq("+(i*2+1)+") > td:eq(2)");
                 var colspan = cellNote.attr('colspan');
                 cellNote.attr('colspan',colspan+1);
+
+                var row1st = tbl.find("tbody > tr").eq(i*2);
                 row1st.find("td:eq(6)").after('<td>???</td>');
-
-
                 var cellCoordinates = row1st.find("td:eq(6)");
                 var tmp_coords = toDec(cellCoordinates.text().trim());
                 if(typeof tmp_coords[0] !== 'undefined' && typeof tmp_coords[1] !== 'undefined') {
@@ -3686,13 +3684,13 @@ var mainGC = function () {
                                 if (typeof json.results[0].elevation !== "number") {
                                     heightString = "n/a";
                                 } else {
-                                    var height = json.results[0].elevation; 
+                                    var height = json.results[0].elevation;
                                     heightString = (height >= 0) ? " +" : " ";
-                                    heightString += Math.round(height) + "m";                                    
+                                    heightString += Math.round(height) + "m";
                                     if ( json.results[i].location.lat == -90 ) {
                                         heightString = "???"; // for waypoints with hidden coordinates
                                     }
-                                }                                
+                                }
                                 tbl.find("tbody > tr:eq("+(i*2)+") > td:eq(7)").html( heightString );
                             }
 
