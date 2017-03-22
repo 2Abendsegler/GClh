@@ -3709,13 +3709,19 @@ var mainGC = function () {
                             var tbl = getWaypointTable();
                             var length = tbl.find("tbody > tr").length;
                             for ( var i=0; i<length/2; i++ ) {
-                                if ( json.results[i].location.lat != -90 ) {
-                                    var height = json.results[i].elevation;
-                                    console.log(height);
-                                    var t = (height >= 0) ? " +" : " ";
-                                    t += Math.round(height) + "m";
-                                    tbl.find("tbody > tr:eq("+(i*2)+") > td:eq(7)").html( t );
-                                }
+                                var heightString = "";
+                                var json = JSON.parse(responseDetails.responseText);
+                                if (typeof json.results[0].elevation !== "number") {
+                                    heightString = "n/a";
+                                } else {
+                                    var height = json.results[0].elevation; 
+                                    heightString = (height >= 0) ? " +" : " ";
+                                    heightString += Math.round(height) + "m";                                    
+                                    if ( json.results[i].location.lat == -90 ) {
+                                        heightString = "???"; // for waypoints with hidden coordinates
+                                    }
+                                }                                
+                                tbl.find("tbody > tr:eq("+(i*2)+") > td:eq(7)").html( heightString );
                             }
 
                         } catch(e) {
