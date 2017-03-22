@@ -3649,6 +3649,35 @@ var mainGC = function () {
                 return tbl;
             }
 
+            function formatElevation( elevation ) {
+                var eleString = (elevation >= 0) ? " +" : " ";                
+                eleString += ((1/*TODO*/)?(Math.round(elevation) + "m"):(Math.round(elevation*3.28084) + "ft"));
+                return eleString;
+            }
+
+            function addElevationToWaypoints(responseDetails) {
+                try {
+                    json = JSON.parse(responseDetails.responseText);
+                    var tbl = getWaypointTable();
+                    var length = tbl.find("tbody > tr").length;
+                    for ( var i=0; i<length/2; i++ ) {
+                        var heightString = "";
+                        var json = JSON.parse(responseDetails.responseText);
+                        if (typeof json.results[i].elevation !== "number") {
+                            heightString = "n/a";
+                        } else {
+                            heightString = formatElevation(json.results[i].elevation);
+                            if ( json.results[i].location.lat == -90 ) {
+                                heightString = "???"; // for waypoints with hidden coordinates
+                            }
+                        }
+                        tbl.find("tbody > tr:eq("+(i*2)+") > td:eq(7)").html( heightString );
+                    }
+                } catch(e) {
+                    gclh_error( "addElevationToWaypoints(): "+e);
+                }
+            }
+
             var tbl = getWaypointTable();
             tbl.find("thead > tr > th:eq(6)").after('<th scope="col">Elevation</th>'); // added header Elevation after Coordinate
             var length = tbl.find("tbody > tr").length;
@@ -3670,36 +3699,10 @@ var mainGC = function () {
             }
 
             GM_xmlhttpRequest({
-                    method: 'GET',
-                    url: "https://maps.googleapis.com/maps/api/elevation/json?sensor=false&locations=" + locations,
-                    onload: function(responseDetails) {
-
-                        try {
-                            json = JSON.parse(responseDetails.responseText);
-                            var tbl = getWaypointTable();
-                            var length = tbl.find("tbody > tr").length;
-                            for ( var i=0; i<length/2; i++ ) {
-                                var heightString = "";
-                                var json = JSON.parse(responseDetails.responseText);
-                                if (typeof json.results[0].elevation !== "number") {
-                                    heightString = "n/a";
-                                } else {
-                                    var height = json.results[0].elevation;
-                                    heightString = (height >= 0) ? " +" : " ";
-                                    heightString += Math.round(height) + "m";
-                                    if ( json.results[i].location.lat == -90 ) {
-                                        heightString = "???"; // for waypoints with hidden coordinates
-                                    }
-                                }
-                                tbl.find("tbody > tr:eq("+(i*2)+") > td:eq(7)").html( heightString );
-                            }
-
-                        } catch(e) {
-                            gclh_error( "xxx: "+e);
-                        }
-
-                    }
-                });
+                method: 'GET',
+                url: "https://maps.googleapis.com/maps/api/elevation/json?sensor=false&locations=" + locations,
+                onload: addElevationToWaypoints
+            });
         } catch(e) {
             gclh_error( "AddElevation: " + e);
         }
