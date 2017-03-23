@@ -525,6 +525,7 @@ var variablesInit = function (c) {
     c.settings_message_icon_new_win = getValue("settings_message_icon_new_win",false);
     // Settings: Enable approvals in hide cache process
     c.settings_hide_cache_approvals = getValue("settings_hide_cache_approvals", true);
+    c.settings_show_elevation_of_waypoints = getValue("settings_show_elevation_of_waypoints", true);
 
     // Settings: Custom Bookmarks
     var num = c.bookmarks.length;
@@ -3633,8 +3634,8 @@ var mainGC = function () {
         }
     }
 
-// added elevation to every additional waypoint with shown coordinates
-    if ( 1 /* TODO: settings*/ && (
+// added elevation to every additional waypoint with shown coordinates (issue #250)
+    if ( settings_show_elevation_of_waypoints && (
         is_page("cache_listing") ||
         document.location.href.match(/^https?:\/\/www\.geocaching\.com\/geocache\//) ||
         document.location.href.match(/^https?:\/\/www\.geocaching\.com\/hide\/wptlist.aspx/) ) ) {
@@ -3653,7 +3654,7 @@ var mainGC = function () {
                 if((typeof(unsafeWindow.userDefinedCoords) != 'undefined') && (unsafeWindow.userDefinedCoords.data.isUserDefined==true)) {
                     return true;
                 }
-                return false;                
+                return false;
             }
 
             function getListingCoordinates( original ) {
@@ -3667,7 +3668,7 @@ var mainGC = function () {
                         waypoint.longitude = unsafeWindow.userDefinedCoords.data.newLatLng[1];
                     }
                 } else {
-                    var tmp_coords = document.getElementById('ctl00_ContentBody_uxViewLargerMap').getAttribute('href').match(/(-)*(\d{1,3}).(\d{1,6})/g);
+                    var tmp_coords = $('#ctl00_ContentBody_uxViewLargerMap').attr('href').match(/(-)*(\d{1,3}).(\d{1,6})/g);
                     waypoint.latitude = tmp_coords[0];
                     waypoint.longitude = tmp_coords[1];
                 }
@@ -3675,59 +3676,81 @@ var mainGC = function () {
             }
 
             function formatElevation( elevation ) {
-                return ((elevation>=0)?"+":"")+((1/*TODO*/)?(Math.round(elevation) + "m"):(Math.round(elevation*3.28084) + "ft"));
+                return ((elevation>=0)?"+":"")+(( 1 /*TODO: measure units*/ )?(Math.round(elevation) + "m"):(Math.round(elevation*3.28084) + "ft"));
             }
 
             function addElevationToWaypoints(responseDetails) {
                 try {
+                    console.log(responseDetails);
                     json = JSON.parse(responseDetails.responseText);
+                    
+                    if ( json.status != "OK" ) {
+                        gclh_error( "addElevationToWaypoints(): not results for elevation. status="+json.status );
+                        gclh_error( "addElevationToWaypoints():    "+json.error_message );
+                    }
+                    
                     var tbl = getWaypointTable();
-                    var length = tbl.find("tbody > tr").length;
-                    for ( var i=0; i<length/2; i++ ) {
-                        var heightString = "";
-                        var title = "Elevation not available!";
-                        var json = JSON.parse(responseDetails.responseText);
-                        if (typeof json.results[i].elevation !== "number") {
-                            heightString = "n/a";
-                            title = "Elevation not available - no answer";
-                        } else {
-                            heightString = formatElevation(json.results[i].elevation);
-                            title = "Elevation";
-                            if ( json.results[i].location.lat == -90 ) {
-                                heightString = "???"; // for waypoints with hidden coordinates
-                                title = "Elevation not available - unknown location";
+                    if ( tbl.length > 0 ) {
+                        var length = tbl.find("tbody > tr").length;
+                        for ( var i=0; i<length/2; i++ ) {
+                            if ( i >= json.results.length-1 ) {
+                                gclh_error("addElevationToWaypoints(): Error: index out of range");
                             }
+                            var heightString = "";
+                            var title = "Elevation not available!";
+                            var json = JSON.parse(responseDetails.responseText);
+                            if (typeof json.results[i].elevation !== "number") {
+                                heightString = "n/a";
+                                title = "Elevation not available - no answer";
+                            } else {
+                                heightString = formatElevation(json.results[i].elevation);
+                                title = "Elevation";
+                                if ( json.results[i].location.lat == -90 ) {
+                                    heightString = "???"; // for waypoints with hidden coordinates
+                                    title = "Elevation not available - unknown location";
+                                }
+                            }
+                            tbl.find("tbody > tr:eq("+(i*2)+") > td:eq(7)").html('<span title="'+title+'">'+heightString+'</span>'  );
                         }
-                        tbl.find("tbody > tr:eq("+(i*2)+") > td:eq(7)").html('<span title="'+title+'">'+heightString+'</span>'  );
                     }
 
                     var index = json.results.length-1;
-                    $("#uxLatLonLink").after('<span title="Elevation">'+formatElevation(json.results[index].elevation)+'</span>');
+                    if ( index >= 0 ) {
+                        console.log(index);
+                        $("#uxLatLonLinkElevation").html(formatElevation(json.results[index].elevation));
+                    } else {
+                        gclh_error("addElevationToWaypoints(): Error: index out of range");
+                    }
                 } catch(e) {
                     gclh_error( "addElevationToWaypoints(): "+e);
                 }
             }
 
+            var locations="";
             var tbl = getWaypointTable();
-            tbl.find("thead > tr > th:eq(6)").after('<th scope="col">Elevation</th>'); // added header Elevation after Coordinate
-            var length = tbl.find("tbody > tr").length;
-            var locations ="";
-            for ( var i=0; i<length/2; i++ ) {
-                var cellNote = tbl.find("tbody > tr:eq("+(i*2+1)+") > td:eq(2)");
-                var colspan = cellNote.attr('colspan');
-                cellNote.attr('colspan',colspan+1);
+            if ( tbl.length > 0 ) {
+                tbl.find("thead > tr > th:eq(6)").after('<th scope="col">Elevation</th>'); // added header Elevation after Coordinate
+                var length = tbl.find("tbody > tr").length;
+                for ( var i=0; i<length/2; i++ ) {
+                    var cellNote = tbl.find("tbody > tr:eq("+(i*2+1)+") > td:eq(2)");
+                    var colspan = cellNote.attr('colspan');
+                    cellNote.attr('colspan',colspan+1);
 
-                var row1st = tbl.find("tbody > tr").eq(i*2);
-                row1st.find("td:eq(6)").after('<td>???</td>');
-                var cellCoordinates = row1st.find("td:eq(6)");
-                var tmp_coords = toDec(cellCoordinates.text().trim());
-                if(typeof tmp_coords[0] !== 'undefined' && typeof tmp_coords[1] !== 'undefined') {
-                    locations += (locations.length == 0 ? "" : "|") + tmp_coords[0]+","+tmp_coords[1];
-                } else {
-                    locations += (locations.length == 0 ? "" : "|") + "-90.0,-180.0";
+                    var row1st = tbl.find("tbody > tr").eq(i*2);
+
+                    var cellCoordinates = row1st.find("td:eq(6)");
+                    var tmp_coords = toDec(cellCoordinates.text().trim());
+                    if(typeof tmp_coords[0] !== 'undefined' && typeof tmp_coords[1] !== 'undefined') {
+                        locations += (locations.length == 0 ? "" : "|") + tmp_coords[0]+","+tmp_coords[1];
+                    } else {
+                        locations += (locations.length == 0 ? "" : "|") + "-90.0,-180.0"; // for waypoints without visible coordinates
+                    }
+
+                    row1st.find("td:eq(6)").after('<td>???</td>');
                 }
             }
-
+            
+            $("#uxLatLonLink").after('<span title="Elevation">&nbsp;&nbsp;&nbsp;Elevation:&nbsp;<span id="uxLatLonLinkElevation">???</span></span>');
             var waypoint = getListingCoordinates(false);
             locations += (locations.length == 0 ? "" : "|") + waypoint.latitude+","+waypoint.longitude;
 
@@ -9378,6 +9401,7 @@ var mainGC = function () {
             html += checkboxy('settings_hide_avatar', 'Hide avatars in listing') + show_help("This option hides the avatars in logs. This prevents loading the hundreds of images. You have to change the option here, because GClh overrides the log-load-logic of gc.com, so the avatar option of gc.com doesn't work with GClh.") + "<br/>";
             html += checkboxy('settings_load_logs_with_gclh', 'Load logs with GClh') + show_help("This option should be enabled. <br><br>You just should disable it, if you have problems with loading the logs. <br><br>If this option is disabled, there are no VIP-, mail-, message- and top icons, no line colors and no mouse activated big images at the logs. Also the VIP lists, hide avatars, log filter and log search won't work.") + "<br/>";
             html += checkboxy('settings_show_real_owner', 'Show real owner name') + show_help("If the option is enabled, GClh will replace the pseudonym a owner took to publish the cache with the real owner name.") + "<br/>";
+            html += checkboxy('settings_show_elevation_of_waypoints', 'Show elevations for waypoints and listing coordinates') + show_help("Shows the elevation of every additional waypoint and the (changed) listing coordinates.") + "<br/>";
             html += "</div>";
 
             html += "<h4 class='gclh_headline2'>"+prepareHideable.replace("#name#","logging")+"Logging</h4>";
@@ -10359,7 +10383,8 @@ var mainGC = function () {
                 'settings_pq_automatically_day',
                 'settings_mail_icon_new_win',
                 'settings_message_icon_new_win',
-                'settings_hide_cache_approvals'
+                'settings_hide_cache_approvals',
+                'settings_show_elevation_of_waypoints'
             );
             for (var i = 0; i < checkboxes.length; i++) {
                 if ( document.getElementById(checkboxes[i]) ) {
