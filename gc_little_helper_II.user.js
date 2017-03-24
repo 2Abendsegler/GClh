@@ -3654,8 +3654,9 @@ var mainGC = function () {
 // returns the listing coordinates as an array. In case of user changed listing coordinates, the changed coords are returned
 //  if the parameter original true, always the original listing coordinates are returned
     function getListingCoordinates( original ) {
-        var waypoint = { latitude : 'undefined', longitude : 'undefined' };
+        var waypoint = undefined;
         if(areListingCoordinatesModified()) {
+            waypoint = { latitude : undefined, longitude : undefined };
             if ( (typeof(original) != 'undefined') && original == true ) {
                 waypoint.latitude = unsafeWindow.userDefinedCoords.data.oldLatLng[0];
                 waypoint.longitude = unsafeWindow.userDefinedCoords.data.oldLatLng[1];
@@ -3664,9 +3665,15 @@ var mainGC = function () {
                 waypoint.longitude = unsafeWindow.userDefinedCoords.data.newLatLng[1];
             }
         } else {
-            var tmp_coords = $('#ctl00_ContentBody_uxViewLargerMap').attr('href').match(/(-)*(\d{1,3}).(\d{1,6})/g);
-            waypoint.latitude = tmp_coords[0];
-            waypoint.longitude = tmp_coords[1];
+            var listingCoords = $('#ctl00_ContentBody_uxViewLargerMap');
+            if ( listingCoords.length > 0 && listingCoords.attr('href').length > 0 ) {
+                var tmp_coords = listingCoords.attr('href').match(/(-)*(\d{1,3}).(\d{1,6})/g); 
+                if ( typeof(tmp_coords[0]) !== undefined && typeof(tmp_coords[1]) !== undefined ) {
+                    waypoint = { latitude : undefined, longitude : undefined };
+                    waypoint.latitude = tmp_coords[0];
+                    waypoint.longitude = tmp_coords[1];
+                }
+            }
         }
         return waypoint;
     }
@@ -3685,19 +3692,15 @@ var mainGC = function () {
             function addElevationToWaypoints(responseDetails) {
                 try {
                     json = JSON.parse(responseDetails.responseText);
-
                     if ( json.status != "OK" ) {
-                        gclh_error( "addElevationToWaypoints(): not results for elevation. status="+json.status );
-                        gclh_error( "addElevationToWaypoints():    "+json.error_message );
+                        gclh_log( "addElevationToWaypoints(): not results for elevation. status="+json.status );
+                        gclh_log( "addElevationToWaypoints():    "+json.error_message );
                     }
 
                     var tbl = getWaypointTable();
                     if ( tbl.length > 0 ) {
                         var length = tbl.find("tbody > tr").length;
                         for ( var i=0; i<length/2; i++ ) {
-                            if ( i >= json.results.length-1 ) {
-                                gclh_error("addElevationToWaypoints(): Error: index out of range");
-                            }
                             var heightString = "";
                             var title = "Elevation not available!";
                             var json = JSON.parse(responseDetails.responseText);
@@ -3717,14 +3720,15 @@ var mainGC = function () {
                     }
 
                     var index = json.results.length-1;
-                    if ( index >= 0 ) {
-                        console.log(index);
-                        $("#uxLatLonLinkElevation").html(formatElevation(json.results[index].elevation));
-                    } else {
-                        gclh_error("addElevationToWaypoints(): Error: index out of range");
+                    if ( $("#uxLatLonLinkElevation").length > 0 ) {
+                        if ( index >= 0 ) {
+                            $("#uxLatLonLinkElevation").html(formatElevation(json.results[index].elevation));
+                        } else {
+                            gclh_log("addElevationToWaypoints(): Error: index out of range");
+                        }
                     }
                 } catch(e) {
-                    gclh_error( "addElevationToWaypoints(): "+e);
+                    gclh_error( "addElevationToWaypoints(): ", e);
                 }
             }
 
@@ -3752,18 +3756,20 @@ var mainGC = function () {
                 }
             }
 
-            $("#uxLatLonLink").after('<span title="Elevation">&nbsp;&nbsp;&nbsp;Elevation:&nbsp;<span id="uxLatLonLinkElevation">???</span></span>');
             var waypoint = getListingCoordinates(false);
-            locations += (locations.length == 0 ? "" : "|") + waypoint.latitude+","+waypoint.longitude;
+            if ( waypoint !== undefined ) {
+                $("#uxLatLonLink").after('<span title="Elevation">&nbsp;&nbsp;&nbsp;Elevation:&nbsp;<span id="uxLatLonLinkElevation">???</span></span>');
+                locations += (locations.length == 0 ? "" : "|") + waypoint.latitude+","+waypoint.longitude;
+            }
 
             GM_xmlhttpRequest({
                 method: 'GET',
                 url: "https://maps.googleapis.com/maps/api/elevation/json?sensor=false&locations=" + locations,
                 onload: addElevationToWaypoints,
-                onerror: function() { gclh_error("Elevation: ERROR: request elevation for waypoints failed!"); }
+                onerror: function() { gclh_log("Elevation: ERROR: request elevation for waypoints failed!"); }
             });
         } catch(e) {
-            gclh_error( "AddElevation: " + e);
+            gclh_error( "AddElevation", e );
         }
     }
 
