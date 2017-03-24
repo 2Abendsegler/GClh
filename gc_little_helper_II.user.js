@@ -526,6 +526,28 @@ var variablesInit = function (c) {
     // Settings: Enable approvals in hide cache process
     c.settings_hide_cache_approvals = getValue("settings_hide_cache_approvals", true);
     c.settings_show_elevation_of_waypoints = getValue("settings_show_elevation_of_waypoints", true);
+    c.settings_distance_units = getValue("settings_distance_units", "");
+
+    if ( settings_distance_units != "Metric" && settings_distance_units != "Imperial" ) {
+         GM_xmlhttpRequest({
+            method: 'GET',
+            url: "https://www.geocaching.com/account/settings/preferences",
+            onload: function(responseDetails) {
+                var t = responseDetails.responseText;
+                var a = t.match(/<input[^>]+name="DistanceUnits"[^>]+>/g);
+                for ( var i = 0; i<a.length; i++ ) {
+                    if ( a[i].match(/checked="checked"/) ) {
+                        var b = a[i].match(/(Metric|Imperial)/);
+                        if ( b.length>0 ) {
+                            console.log("Distance Units set")
+                            setValue( 'settings_distance_units', b[0] );
+                        }
+
+                    }
+                }
+            }
+        });
+    }
 
     // Settings: Custom Bookmarks
     var num = c.bookmarks.length;
@@ -3667,7 +3689,7 @@ var mainGC = function () {
         } else {
             var listingCoords = $('#ctl00_ContentBody_uxViewLargerMap');
             if ( listingCoords.length > 0 && listingCoords.attr('href').length > 0 ) {
-                var tmp_coords = listingCoords.attr('href').match(/(-)*(\d{1,3}).(\d{1,6})/g); 
+                var tmp_coords = listingCoords.attr('href').match(/(-)*(\d{1,3}).(\d{1,6})/g);
                 if ( typeof(tmp_coords[0]) !== undefined && typeof(tmp_coords[1]) !== undefined ) {
                     waypoint = { latitude : undefined, longitude : undefined };
                     waypoint.latitude = tmp_coords[0];
@@ -3686,7 +3708,7 @@ var mainGC = function () {
 
         try {
             function formatElevation( elevation ) {
-                return ((elevation>=0)?"+":"")+(( 1 /*TODO: measure units*/ )?(Math.round(elevation) + "m"):(Math.round(elevation*3.28084) + "ft"));
+                return ((elevation>=0)?"+":"")+(( settings_distance_units != "Imperial" )?(Math.round(elevation) + "m"):(Math.round(elevation*3.28084) + "ft"));
             }
 
             function addElevationToWaypoints(responseDetails) {
@@ -7575,6 +7597,13 @@ var mainGC = function () {
             hinweis.appendChild(document.createTextNode("."));
 
             avatar_head.appendChild(hinweis);
+
+            var units = $("#DistanceUnits:checked").val();
+            if ( units != settings_distance_units ) {
+                setValue( 'settings_distance_units', units );
+                settings_distance_units = units;
+            }
+
         } catch (e) {
             gclh_error("Hide gc.com Avatar-Option", e);
         }
@@ -9410,6 +9439,7 @@ var mainGC = function () {
             html += checkboxy('settings_load_logs_with_gclh', 'Load logs with GClh') + show_help("This option should be enabled. <br><br>You just should disable it, if you have problems with loading the logs. <br><br>If this option is disabled, there are no VIP-, mail-, message- and top icons, no line colors and no mouse activated big images at the logs. Also the VIP lists, hide avatars, log filter and log search won't work.") + "<br/>";
             html += checkboxy('settings_show_real_owner', 'Show real owner name') + show_help("If the option is enabled, GClh will replace the pseudonym a owner took to publish the cache with the real owner name.") + "<br/>";
             html += checkboxy('settings_show_elevation_of_waypoints', 'Show elevations for waypoints and listing coordinates') + show_help("Shows the elevation of every additional waypoint and the (changed) listing coordinates.") + "<br/>";
+            html += "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Measure unit can be set in <a href=\"https://www.geocaching.com/account/settings/preferences\">Preferences</a>";
             html += "</div>";
 
             html += "<h4 class='gclh_headline2'>"+prepareHideable.replace("#name#","logging")+"Logging</h4>";
