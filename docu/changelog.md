@@ -1,3 +1,4 @@
+<a href="#v06" title="GClh II version 0.6 (25.03.2017)">v0.6</a> &nbsp;
 <a href="#v05" title="GClh II version 0.5 (11.03.2017)">v0.5</a> &nbsp;
 <a href="#v041" title="GClh II version 0.4.1 (26.02.2017)">v0.4.1</a> &nbsp; 
 <a href="#v04" title="GClh II version 0.4 (25.02.2017)">v0.4</a> &nbsp; 
@@ -11,6 +12,64 @@
 <a href="#v022" title="GClh II version 0.2.2 (09.01.2017)">v0.2.2</a> &nbsp; 
 <a href="#v021" title="GClh II version 0.2.1 (05.01.2017)">v0.2.1</a> &nbsp; 
 <a href="#v01" title="GClh II version 0.1 (05.01.2017)">v0.1</a> &nbsp; 
+
+---
+## v0.6:
+<ul>
+<li>
+New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/226">#226</a>] Make the using of browser Vivaldi possible:<br>
+Please notice the special points in <a href="https://github.com/2Abendsegler/GClh/blob/master/docu/tips_installation.md#readme">Tipps für die Installation</a>.<br>
+<img src="../images/vivaldi_logo_small.png" alt="vivaldi_logo_small.png"><br>
+<br></li>
+<li>
+New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/199">#199</a>] Default settings for new pocket queries: <br>
+Many thanks to <a href="https://www.geocaching.com/profile/?u=CachingFoX">CachingFoX</a> for the idea and the implementation.<br>
+<img src="../images/v0.6_Screen01.jpg" alt="v0.6_Screen01.jpg"><br>
+<br></li>
+<li>
+New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/200">#200</a>] Warning for mutually exclusive option in pocket queries:<br>
+Many thanks to <a href="https://www.geocaching.com/profile/?u=CachingFoX">CachingFoX</a> for the idea and the development.<br>
+<img src="../images/v0.6_Screen02.jpg" alt="v0.6_Screen02.jpg"><br>
+<br>
+<img src="../images/v0.6_Screen03.jpg" alt="v0.6_Screen03.jpg"><br>
+<br></li>
+<li>
+New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/230">#230</a>] Auto set approvals in hide cache process:<br> 
+Many thanks to <a href="https://www.geocaching.com/profile/?u=king-ton">king-ton</a> for the idea and the development.<br>
+<br>
+New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/231">#231</a>] Enable save / continue with F2 key in hide cache process:<br> 
+This includes the complete hide cache process with all of the buttons "Continue", "Continue Anyway", "Save and Preview", "Submit Changes", "Update Attributes", "Create Waypoint" and "Update Waypoint" of the create and the change functionality.<br>
+<br>
+<img src="../images/v0.6_Screen07.jpg" alt="v0.6_Screen07.jpg"><br>
+<br>
+<img src="../images/v0.6_Screen08.jpg" alt="v0.6_Screen08.jpg"><br>
+<br></li>
+<li>
+New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/226">#226</a>] New Config parameter to open mail/message form in a new window:<br>
+Many thanks to <a href="https://www.geocaching.com/profile/?u=Herr%20Ma">Herr Ma</a> for the development.<br>
+<img src="../images/v0.6_Screen06.jpg" alt="v0.6_Screen06.jpg"><br>
+<br></li>
+<li>
+Fix: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/224">#224</a>] Trim empty lines from mail/message template after replacing placeholders with empty strings.<br>
+Many thanks to <a href="https://www.geocaching.com/profile/?u=Herr%20Ma">Herr Ma</a> for the fix.<br>
+</li>
+<li>
+Fix: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/227">#227</a>] Build maps linking on gc.map not always possible (Vorabkorrektur).<br>
+</li>
+<li>
+Fix: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/225">#225</a>] Own log statistics is generated on other user profile page (id).<br>
+</li>
+<li>
+Fix: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/239">#239</a>] Log templates show unreadable signs (Vorabkorrektur).<br>
+</li>
+<li>
+Fix: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/238">#238</a>] Friends page "Last check" stuck (Vorabkorrektur). <br>
+Many thanks to <a href="https://www.geocaching.com/profile/?u=Herr%20Ma">Herr Ma</a> for the fix.<br>
+</li>
+<br>
+</ul>
+(25.03.2017)<br> 
+<br>
 
 ---
 ## v0.5:
