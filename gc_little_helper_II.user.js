@@ -507,7 +507,7 @@ var variablesInit = function (c) {
     c.settings_search_data = JSON.parse(getValue("settings_search_data", "[]"));
     c.settings_search_enable_user_defined = getValue("settings_search_enable_user_defined",true);
     c.settings_pq_warning = getValue("settings_pq_warning",true);
-    c.settings_pq_set_cachestotal = getValue("settings_pq_set_cachestotal",1000);
+    c.settings_pq_set_cachestotal = getValue("settings_pq_set_cachestotal",true);
     c.settings_pq_cachestotal = getValue("settings_pq_cachestotal",1000);
     c.settings_pq_option_ihaventfound = getValue("settings_pq_option_ihaventfound",true);
     c.settings_pq_option_idontown = getValue("settings_pq_option_idontown",true);
@@ -520,10 +520,9 @@ var variablesInit = function (c) {
     c.settings_pq_difficulty_score = getValue("settings_pq_difficulty_score","1");
     c.settings_pq_terrain = getValue("settings_pq_terrain",">=");
     c.settings_pq_terrain_score = getValue("settings_pq_terrain_score","1");
-    c.settings_pq_automatically_day = getValue("settings_pq_automatically_day",true);
+    c.settings_pq_automatically_day = getValue("settings_pq_automatically_day",false);
     c.settings_mail_icon_new_win = getValue("settings_mail_icon_new_win",false);
     c.settings_message_icon_new_win = getValue("settings_message_icon_new_win",false);
-    // Settings: Enable approvals in hide cache process
     c.settings_hide_cache_approvals = getValue("settings_hide_cache_approvals", true);
     c.settings_show_elevation_of_waypoints = getValue("settings_show_elevation_of_waypoints", true);
     c.settings_distance_units = getValue("settings_distance_units", "");
@@ -764,7 +763,6 @@ var mainGMaps = function () {
 ////////////////////////////////////////////////////////////////////////////
 // Improve Google Maps page.
 var mainOSM = function () {
-
     try {
         // Add link to GC Map on Google Maps page.
         function addGCButton( wait ) {
@@ -2337,7 +2335,8 @@ var mainGC = function () {
         }
     }
 
-// helper function marks two PQ options, which are in rejection
+// Set default value for new pocket queries and handle warning.
+    // Helper function marks two PQ options, which are in rejection
     function markPqOptionsAreInRejection( idOption1, idOption2 ) {
         var status = false;
         if ( $("#"+idOption1).is(':checked') && $("#"+idOption2).is(':checked') ) {
@@ -2355,7 +2354,7 @@ var mainGC = function () {
         return status;
     }
 
-// helper function to find PQ options, which are in rejection
+    // Helper function to find PQ options, which are in rejection
     function verifyPqOptions() {
         var status = false;
 
@@ -2372,7 +2371,7 @@ var mainGC = function () {
         }
     }
 
-// set default value ONLY for new pocket queries
+    // Set default value ONLY for new pocket queries
     if (document.location.href.match(/^https?:\/\/www\.geocaching\.com\/pocket\/gcquery\.aspx/)) {
         try {
             // mark all elements for an easier access
@@ -2436,19 +2435,16 @@ var mainGC = function () {
                 if ( settings_pq_option_filename ) {
                     $("#ctl00_ContentBody_cbIncludePQNameInFileName").prop('checked', true);
                 }
-
                 if ( settings_pq_set_difficulty ) {
                     $("#ctl00_ContentBody_cbDifficulty").prop('checked', true);
                     $("#ctl00_ContentBody_ddDifficulty").val( settings_pq_difficulty );
                     $("#ctl00_ContentBody_ddDifficultyScore").val( settings_pq_difficulty_score );
                 }
-
                 if ( settings_pq_set_terrain ) {
                     $("#ctl00_ContentBody_cbTerrain").prop('checked', true);
                     $("#ctl00_ContentBody_ddTerrain").val( settings_pq_terrain );
                     $("#ctl00_ContentBody_ddTerrainScore").val( settings_pq_terrain_score );
                 }
-
                 if ( settings_pq_automatically_day ) {
                     var servertime = $("#gclhpq_DaysOfGenerate").find("legend").text();
                     if ( servertime.match(/.*Sunday.*/) ) {
@@ -2478,7 +2474,7 @@ var mainGC = function () {
                 verifyPqOptions();
             }
         } catch (e) {
-            gclh_error("pq warning", e);
+            gclh_error("pq set default value and warning", e);
         }
     }
 
@@ -3939,7 +3935,7 @@ var mainGC = function () {
                 var last_autoreset = getValue("friends_founds_last_autoreset");
                 if (typeof(last_autoreset) != "undefined") {
                    setValue("friends_founds_last_reset", last_autoreset);
-                }  
+                }
                 setValue("friends_founds_last_autoreset", new Date().getTime());
             }
 
@@ -9103,6 +9099,10 @@ var mainGC = function () {
             html += newParameterOn1;
             html += checkboxy('settings_search_enable_user_defined', 'Enable user defined Filter Sets for geocache searchs') + show_help("This features enables you to store favourites filter settings in the geocache search and call them quickly.") + "<br/>";
             html += newParameterVersionSetzen(0.4) + newParameterOff;
+            html += newParameterOn3;
+            html += checkboxy('settings_hide_cache_approvals', 'Auto set approvals in hide cache process') + show_help("This option activates the checkboxes for approval the guidelines and the terms of use agreement in the hide cache process.") + "<br/>";
+            html += newParameterVersionSetzen(0.6) + newParameterOff;
+            html += checkboxy('settings_submit_log_button', 'Submit log, Pocket Query, Bookmark or hide cache on F2') + show_help("With this option you are able to submit your log by pressing F2 instead of scrolling to the bottom and move the mouse to the button. <br><br>This feature also works to submit Pocket Queries and Bookmarks. <br><br>And it works on the whole hide cache process with all of the buttons \"Continue\", \"Continue Anyway\", \"Save and Preview\", \"Submit Changes\", \"Update Attributes\", \"Create Waypoint\" and \"Update Waypoint\" of the create and the change functionality.") + "<br/>";
             html += "<br>";
             html += "&nbsp;" + "Show lines in";
             html += "<span style='margin-left: 40px;' >lists</span>" + show_help("Lists are all common lists but not the TB listing and not the cache listing.");
@@ -9338,9 +9338,6 @@ var mainGC = function () {
 
             html += "<h4 class='gclh_headline2'>"+prepareHideable.replace("#name#","listing")+"Listing</h4>";
             html += "<div id='gclh_config_listing'>";
-            html += newParameterOn3;
-            html += checkboxy('settings_hide_cache_approvals', 'Auto set approvals in hide cache process') + show_help("This option activates the checkboxes for approval the guidelines and the terms of use agreement in the hide cache process.") + "<br/>";
-            html += newParameterVersionSetzen(0.6) + newParameterOff;
             html += checkboxy('settings_log_inline', 'Log cache from listing (inline)') + show_help("With the inline log you can open a log form inside the listing, without loading a new page.") + "<br/>";
             var content_settings_log_inline_tb = "&nbsp; " + checkboxy('settings_log_inline_tb', 'Show TB list') + show_help("With this option you can select, if the TB list should be shown in inline logs.<br><br>This option requires \"Log cache from listing (inline)\" or \"Log cache from listing for PMO (for basic members)\".") + "<br>";
             html += content_settings_log_inline_tb;
@@ -9370,11 +9367,11 @@ var mainGC = function () {
             html += content_settings_show_mail_in_viplist;
             html += "&nbsp; " + content_settings_show_mail_in_allmyvips.replace("settings_show_mail_in_allmyvips", "settings_show_mail_in_allmyvipsX0");
             html += newParameterOn3;
-            html += "&nbsp; " + checkboxy('settings_mail_icon_new_win', 'Open mail form in new tab')  + show_help("If you enable this option, the mail form will open in an new tab.<br><br>This option requires \"Show mail link beside usernames\".")+ "<br/>";
+            html += "&nbsp; " + checkboxy('settings_mail_icon_new_win', 'Open mail form in new tab')  + show_help("If you enable this option, the mail form will open in a new tab.<br><br>This option requires \"Show mail link beside usernames\".")+ "<br/>";
             html += newParameterVersionSetzen(0.6) + newParameterOff;
             html += checkboxy('settings_show_message', 'Show message link beside usernames') + show_help("With this option there will be an small message icon beside every username. With this icon you get directly to the message form to send a message to this user. If you click it for example when you are in a listing, the cachename or GC code can be inserted into the message form about placeholder in the mail / message form template.") + "<br/>";
             html += newParameterOn3;
-            html += "&nbsp; " + checkboxy('settings_message_icon_new_win', 'Open message form in new tab')  + show_help("If you enable this option, the message form will open in an new tab.<br><br>This option requires \"Show message link beside usernames\".")+ "<br/>";
+            html += "&nbsp; " + checkboxy('settings_message_icon_new_win', 'Open message form in new tab')  + show_help("If you enable this option, the message form will open in a new tab.<br><br>This option requires \"Show message link beside usernames\".")+ "<br/>";
             html += newParameterVersionSetzen(0.6) + newParameterOff;
             html += checkboxy('settings_show_google_maps', 'Show link to Google Maps') + show_help("This option shows a link at the top of the second map in the listing. With this link you get directly to Google Maps in the area, where the cache is.") + "<br/>";
             html += checkboxy('settings_strike_archived', 'Strike through title of archived/disabled caches') + "<br/>";
@@ -9423,7 +9420,6 @@ var mainGC = function () {
 
             html += "<h4 class='gclh_headline2'>"+prepareHideable.replace("#name#","logging")+"Logging</h4>";
             html += "<div id='gclh_config_logging'>";
-            html += checkboxy('settings_submit_log_button', 'Submit log, Pocket Query, Bookmark or Listing on F2') + show_help("With this option you are able to submit your log by pressing F2 instead of scrolling to the bottom and move the mouse to the button. This feature also works to save Pocket Queries, Bookmarks or Listings.") + "<br/>";
             html += checkboxy('settings_show_bbcode', 'Show smilies') + show_help("This option displays smilies options beside the log form. If you click on a smilie, it is inserted into your log.") + "<br/>";
             html += checkboxy('settings_autovisit', 'Enable \"AutoVisit\" feature for TBs/Coins') + show_help("With this option you are able to select TBs/Coins which should be automatically set to \"visited\" on every log. You can select \"AutoVisit\" for each TB/Coin in the list on the bottom of the log form.") + "<br/>";
             html += checkboxy('settings_replace_log_by_last_log', 'Replace log by last log template') + show_help("If you enable this option, the last log template will replace the whole log. If you disable it, it will be appended to the log.") + "<br/>";
