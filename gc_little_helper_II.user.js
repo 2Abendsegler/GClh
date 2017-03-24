@@ -507,7 +507,7 @@ var variablesInit = function (c) {
     c.settings_search_data = JSON.parse(getValue("settings_search_data", "[]"));
     c.settings_search_enable_user_defined = getValue("settings_search_enable_user_defined",true);
     c.settings_pq_warning = getValue("settings_pq_warning",true);
-    c.settings_pq_set_cachestotal = getValue("settings_pq_set_cachestotal",1000);
+    c.settings_pq_set_cachestotal = getValue("settings_pq_set_cachestotal",true);
     c.settings_pq_cachestotal = getValue("settings_pq_cachestotal",1000);
     c.settings_pq_option_ihaventfound = getValue("settings_pq_option_ihaventfound",true);
     c.settings_pq_option_idontown = getValue("settings_pq_option_idontown",true);
@@ -520,10 +520,9 @@ var variablesInit = function (c) {
     c.settings_pq_difficulty_score = getValue("settings_pq_difficulty_score","1");
     c.settings_pq_terrain = getValue("settings_pq_terrain",">=");
     c.settings_pq_terrain_score = getValue("settings_pq_terrain_score","1");
-    c.settings_pq_automatically_day = getValue("settings_pq_automatically_day",true);
+    c.settings_pq_automatically_day = getValue("settings_pq_automatically_day",false);
     c.settings_mail_icon_new_win = getValue("settings_mail_icon_new_win",false);
     c.settings_message_icon_new_win = getValue("settings_message_icon_new_win",false);
-    // Settings: Enable approvals in hide cache process
     c.settings_hide_cache_approvals = getValue("settings_hide_cache_approvals", true);
     c.settings_driving_direction_link = getValue("settings_driving_direction_link",true);
     c.settings_driving_direction_parking_area = getValue("settings_driving_direction_parking_area",false);
@@ -764,7 +763,6 @@ var mainGMaps = function () {
 ////////////////////////////////////////////////////////////////////////////
 // Improve Google Maps page.
 var mainOSM = function () {
-
     try {
         // Add link to GC Map on Google Maps page.
         function addGCButton( wait ) {
@@ -2337,7 +2335,8 @@ var mainGC = function () {
         }
     }
 
-// helper function marks two PQ options, which are in rejection
+// Set default value for new pocket queries and handle warning.
+    // Helper function marks two PQ options, which are in rejection
     function markPqOptionsAreInRejection( idOption1, idOption2 ) {
         var status = false;
         if ( $("#"+idOption1).is(':checked') && $("#"+idOption2).is(':checked') ) {
@@ -2355,7 +2354,7 @@ var mainGC = function () {
         return status;
     }
 
-// helper function to find PQ options, which are in rejection
+    // Helper function to find PQ options, which are in rejection
     function verifyPqOptions() {
         var status = false;
 
@@ -2372,7 +2371,7 @@ var mainGC = function () {
         }
     }
 
-// set default value ONLY for new pocket queries
+    // Set default value ONLY for new pocket queries
     if (document.location.href.match(/^https?:\/\/www\.geocaching\.com\/pocket\/gcquery\.aspx/)) {
         try {
             // mark all elements for an easier access
@@ -2436,19 +2435,16 @@ var mainGC = function () {
                 if ( settings_pq_option_filename ) {
                     $("#ctl00_ContentBody_cbIncludePQNameInFileName").prop('checked', true);
                 }
-
                 if ( settings_pq_set_difficulty ) {
                     $("#ctl00_ContentBody_cbDifficulty").prop('checked', true);
                     $("#ctl00_ContentBody_ddDifficulty").val( settings_pq_difficulty );
                     $("#ctl00_ContentBody_ddDifficultyScore").val( settings_pq_difficulty_score );
                 }
-
                 if ( settings_pq_set_terrain ) {
                     $("#ctl00_ContentBody_cbTerrain").prop('checked', true);
                     $("#ctl00_ContentBody_ddTerrain").val( settings_pq_terrain );
                     $("#ctl00_ContentBody_ddTerrainScore").val( settings_pq_terrain_score );
                 }
-
                 if ( settings_pq_automatically_day ) {
                     var servertime = $("#gclhpq_DaysOfGenerate").find("legend").text();
                     if ( servertime.match(/.*Sunday.*/) ) {
@@ -2478,7 +2474,7 @@ var mainGC = function () {
                 verifyPqOptions();
             }
         } catch (e) {
-            gclh_error("pq warning", e);
+            gclh_error("pq set default value and warning", e);
         }
     }
 
@@ -3833,7 +3829,7 @@ var mainGC = function () {
                 var last_autoreset = getValue("friends_founds_last_autoreset");
                 if (typeof(last_autoreset) != "undefined") {
                    setValue("friends_founds_last_reset", last_autoreset);
-                }  
+                }
                 setValue("friends_founds_last_autoreset", new Date().getTime());
             }
 
