@@ -528,27 +528,6 @@ var variablesInit = function (c) {
     c.settings_show_elevation_of_waypoints = getValue("settings_show_elevation_of_waypoints", true);
     c.settings_distance_units = getValue("settings_distance_units", "");
 
-    if ( settings_distance_units != "Metric" && settings_distance_units != "Imperial" ) {
-         GM_xmlhttpRequest({
-            method: 'GET',
-            url: "https://www.geocaching.com/account/settings/preferences",
-            onload: function(responseDetails) {
-                var t = responseDetails.responseText;
-                var a = t.match(/<input[^>]+name="DistanceUnits"[^>]+>/g);
-                for ( var i = 0; i<a.length; i++ ) {
-                    if ( a[i].match(/checked="checked"/) ) {
-                        var b = a[i].match(/(Metric|Imperial)/);
-                        if ( b.length>0 ) {
-                            console.log("Distance Units set")
-                            setValue( 'settings_distance_units', b[0] );
-                        }
-
-                    }
-                }
-            }
-        });
-    }
-
     // Settings: Custom Bookmarks
     var num = c.bookmarks.length;
     for (var i = 0; i < c.anzCustom; i++) {
