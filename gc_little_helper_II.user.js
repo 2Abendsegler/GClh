@@ -3635,41 +3635,41 @@ var mainGC = function () {
     }
 
 // returns a jQuery object of the waypoint list in a cache listing or the waypoint list
-function getWaypointTable() {
-    var tbl = $("#ctl00_ContentBody_Waypoints");
-    if ( tbl.length<=0 ) {
-        tbl = $("#ctl00_ContentBody_WaypointList");
+    function getWaypointTable() {
+        var tbl = $("#ctl00_ContentBody_Waypoints");
+        if ( tbl.length<=0 ) {
+            tbl = $("#ctl00_ContentBody_WaypointList");
+        }
+        return tbl;
     }
-    return tbl;
-}
 
 // returns true in case of modified coordinates
-function areListingCoordinatesModified() {
-    if((typeof(unsafeWindow.userDefinedCoords) != 'undefined') && (unsafeWindow.userDefinedCoords.data.isUserDefined==true)) {
-        return true;
+    function areListingCoordinatesModified() {
+        if((typeof(unsafeWindow.userDefinedCoords) != 'undefined') && (unsafeWindow.userDefinedCoords.data.isUserDefined==true)) {
+            return true;
+        }
+        return false;
     }
-    return false;
-}
 
 // returns the listing coordinates as an array. In case of user changed listing coordinates, the changed coords are returned
 //  if the parameter original true, always the original listing coordinates are returned
-function getListingCoordinates( original ) {
-    var waypoint = { latitude : 'undefined', longitude : 'undefined' };
-    if(areListingCoordinatesModified()) {
-        if ( (typeof(original) != 'undefined') && original == true ) {
-            waypoint.latitude = unsafeWindow.userDefinedCoords.data.oldLatLng[0];
-            waypoint.longitude = unsafeWindow.userDefinedCoords.data.oldLatLng[1];
-        } else {    
-            waypoint.latitude = unsafeWindow.userDefinedCoords.data.newLatLng[0];
-            waypoint.longitude = unsafeWindow.userDefinedCoords.data.newLatLng[1];
+    function getListingCoordinates( original ) {
+        var waypoint = { latitude : 'undefined', longitude : 'undefined' };
+        if(areListingCoordinatesModified()) {
+            if ( (typeof(original) != 'undefined') && original == true ) {
+                waypoint.latitude = unsafeWindow.userDefinedCoords.data.oldLatLng[0];
+                waypoint.longitude = unsafeWindow.userDefinedCoords.data.oldLatLng[1];
+            } else {
+                waypoint.latitude = unsafeWindow.userDefinedCoords.data.newLatLng[0];
+                waypoint.longitude = unsafeWindow.userDefinedCoords.data.newLatLng[1];
+            }
+        } else {
+            var tmp_coords = $('#ctl00_ContentBody_uxViewLargerMap').attr('href').match(/(-)*(\d{1,3}).(\d{1,6})/g);
+            waypoint.latitude = tmp_coords[0];
+            waypoint.longitude = tmp_coords[1];
         }
-    } else {
-        var tmp_coords = $('#ctl00_ContentBody_uxViewLargerMap').attr('href').match(/(-)*(\d{1,3}).(\d{1,6})/g);
-        waypoint.latitude = tmp_coords[0];
-        waypoint.longitude = tmp_coords[1];
+        return waypoint;
     }
-    return waypoint;
-}
 
 // added elevation to every additional waypoint with shown coordinates (issue #250)
     if ( settings_show_elevation_of_waypoints && (
@@ -3685,12 +3685,12 @@ function getListingCoordinates( original ) {
             function addElevationToWaypoints(responseDetails) {
                 try {
                     json = JSON.parse(responseDetails.responseText);
-                    
+
                     if ( json.status != "OK" ) {
                         gclh_error( "addElevationToWaypoints(): not results for elevation. status="+json.status );
                         gclh_error( "addElevationToWaypoints():    "+json.error_message );
                     }
-                    
+
                     var tbl = getWaypointTable();
                     if ( tbl.length > 0 ) {
                         var length = tbl.find("tbody > tr").length;
@@ -3751,7 +3751,7 @@ function getListingCoordinates( original ) {
                     row1st.find("td:eq(6)").after('<td>???</td>');
                 }
             }
-            
+
             $("#uxLatLonLink").after('<span title="Elevation">&nbsp;&nbsp;&nbsp;Elevation:&nbsp;<span id="uxLatLonLinkElevation">???</span></span>');
             var waypoint = getListingCoordinates(false);
             locations += (locations.length == 0 ? "" : "|") + waypoint.latitude+","+waypoint.longitude;
