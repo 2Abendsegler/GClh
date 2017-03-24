@@ -3634,6 +3634,43 @@ var mainGC = function () {
         }
     }
 
+// returns a jQuery object of the waypoint list in a cache listing or the waypoint list
+function getWaypointTable() {
+    var tbl = $("#ctl00_ContentBody_Waypoints");
+    if ( tbl.length<=0 ) {
+        tbl = $("#ctl00_ContentBody_WaypointList");
+    }
+    return tbl;
+}
+
+// returns true in case of modified coordinates
+function areListingCoordinatesModified() {
+    if((typeof(unsafeWindow.userDefinedCoords) != 'undefined') && (unsafeWindow.userDefinedCoords.data.isUserDefined==true)) {
+        return true;
+    }
+    return false;
+}
+
+// returns the listing coordinates as an array. In case of user changed listing coordinates, the changed coords are returned
+//  if the parameter original true, always the original listing coordinates are returned
+function getListingCoordinates( original ) {
+    var waypoint = { latitude : 'undefined', longitude : 'undefined' };
+    if(areListingCoordinatesModified()) {
+        if ( (typeof(original) != 'undefined') && original == true ) {
+            waypoint.latitude = unsafeWindow.userDefinedCoords.data.oldLatLng[0];
+            waypoint.longitude = unsafeWindow.userDefinedCoords.data.oldLatLng[1];
+        } else {    
+            waypoint.latitude = unsafeWindow.userDefinedCoords.data.newLatLng[0];
+            waypoint.longitude = unsafeWindow.userDefinedCoords.data.newLatLng[1];
+        }
+    } else {
+        var tmp_coords = $('#ctl00_ContentBody_uxViewLargerMap').attr('href').match(/(-)*(\d{1,3}).(\d{1,6})/g);
+        waypoint.latitude = tmp_coords[0];
+        waypoint.longitude = tmp_coords[1];
+    }
+    return waypoint;
+}
+
 // added elevation to every additional waypoint with shown coordinates (issue #250)
     if ( settings_show_elevation_of_waypoints && (
         is_page("cache_listing") ||
@@ -3641,47 +3678,12 @@ var mainGC = function () {
         document.location.href.match(/^https?:\/\/www\.geocaching\.com\/hide\/wptlist.aspx/) ) ) {
 
         try {
-            // returns a jQuery object of the waypoint list
-            function getWaypointTable() {
-                var tbl = $("#ctl00_ContentBody_Waypoints");
-                if ( tbl.length<=0 ) {
-                    tbl = $("#ctl00_ContentBody_WaypointList");
-                }
-                return tbl;
-            }
-
-            function areListingCoordinatesModified() {
-                if((typeof(unsafeWindow.userDefinedCoords) != 'undefined') && (unsafeWindow.userDefinedCoords.data.isUserDefined==true)) {
-                    return true;
-                }
-                return false;
-            }
-
-            function getListingCoordinates( original ) {
-                var waypoint = { latitude : 'undefined', longitude : 'undefined' };
-                if(areListingCoordinatesModified()) {
-                    if ( (typeof(original) != 'undefined') && original == true ) {
-                        waypoint.latitude = unsafeWindow.userDefinedCoords.data.oldLatLng[0];
-                        waypoint.longitude = unsafeWindow.userDefinedCoords.data.oldLatLng[1];
-                    } else {    
-                        waypoint.latitude = unsafeWindow.userDefinedCoords.data.newLatLng[0];
-                        waypoint.longitude = unsafeWindow.userDefinedCoords.data.newLatLng[1];
-                    }
-                } else {
-                    var tmp_coords = $('#ctl00_ContentBody_uxViewLargerMap').attr('href').match(/(-)*(\d{1,3}).(\d{1,6})/g);
-                    waypoint.latitude = tmp_coords[0];
-                    waypoint.longitude = tmp_coords[1];
-                }
-                return waypoint;
-            }
-
             function formatElevation( elevation ) {
                 return ((elevation>=0)?"+":"")+(( 1 /*TODO: measure units*/ )?(Math.round(elevation) + "m"):(Math.round(elevation*3.28084) + "ft"));
             }
 
             function addElevationToWaypoints(responseDetails) {
                 try {
-                    console.log(responseDetails);
                     json = JSON.parse(responseDetails.responseText);
                     
                     if ( json.status != "OK" ) {
