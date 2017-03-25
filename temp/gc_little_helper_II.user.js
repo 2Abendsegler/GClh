@@ -1,4 +1,4 @@
-// ==UserScript==
+﻿// ==UserScript==
 // @name             GC little helper II
 // @namespace        http://www.amshove.net
 //--> $$000 Begin of change
@@ -2520,7 +2520,9 @@ var mainGC = function () {
 // Name for PocketQuery from Bookmark
     if ((document.location.href.match(/^https?:\/\/www\.geocaching\.com\/pocket\/bmquery\.aspx/)) && document.getElementById("ctl00_ContentBody_lnkListName")) {
         try {
-            document.getElementById('ctl00_ContentBody_tbName').value = document.getElementById("ctl00_ContentBody_lnkListName").innerHTML;
+            if ( document.getElementById('ctl00_ContentBody_tbName').value == "" ) {
+                document.getElementById('ctl00_ContentBody_tbName').value = document.getElementById("ctl00_ContentBody_lnkListName").innerHTML;
+            }
             document.getElementById('ctl00_ContentBody_cbIncludePQNameInFileName').checked = true;
         } catch (e) {
             gclh_error("PQ-Name from Bookmark", e);
