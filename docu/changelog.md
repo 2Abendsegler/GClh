@@ -25,9 +25,14 @@ New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/254">#254</a>] 
 Fix: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/264">#264</a>] VIP list not rendered on a specific cache (Lesopark Dubina). Profile link in listing without any text.<br>
 </li>
 <br>
+<li>
+New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/252">#252</a>] Link to Google Map Driving Direction for every waypoint in the waypoint list (which visible coordinates)
+</li>
+<br>
 </ul>
 (??.04.2017)<br> 
 <br>
+
 
 ---
 ## v0.6:
