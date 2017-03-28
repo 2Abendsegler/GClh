@@ -27,6 +27,9 @@ Fix: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/264">#264</a>] 
 <li>
 Fix: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/250">#250</a>] Show elevation for listing coordinates and waypoints with visible cooordinates.<br>
 </li>
+<li>
+Fix: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/10">#10</a>] Show listing coordinates and additional waypoints on Flopp's Map<br>
+</li>
 <br>
 <li>
 New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/253">#253</a>] Added shortcut links to waypoint list and logs section.<br>
