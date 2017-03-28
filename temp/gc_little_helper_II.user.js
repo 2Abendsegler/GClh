@@ -2520,7 +2520,9 @@ var mainGC = function () {
 // Name for PocketQuery from Bookmark
     if ((document.location.href.match(/^https?:\/\/www\.geocaching\.com\/pocket\/bmquery\.aspx/)) && document.getElementById("ctl00_ContentBody_lnkListName")) {
         try {
-            document.getElementById('ctl00_ContentBody_tbName').value = document.getElementById("ctl00_ContentBody_lnkListName").innerHTML;
+            if ( document.getElementById('ctl00_ContentBody_tbName').value == "" ) {
+                document.getElementById('ctl00_ContentBody_tbName').value = document.getElementById("ctl00_ContentBody_lnkListName").innerHTML;
+            }
             document.getElementById('ctl00_ContentBody_cbIncludePQNameInFileName').checked = true;
         } catch (e) {
             gclh_error("PQ-Name from Bookmark", e);
@@ -5504,7 +5506,7 @@ var mainGC = function () {
                 }
 
                 for (var i = 0; i < links.length; i++) {
-                    if (links[i].href.match(/https?:\/\/www\.geocaching\.com\/profile\/\?guid=/) && links[i].parentNode.className != "logOwnerStats" && !links[i].childNodes[0].src) {
+                    if (links[i].href.match(/https?:\/\/www\.geocaching\.com\/profile\/\?guid=/) && links[i].parentNode.className != "logOwnerStats" && links[i].childNodes[0] && !links[i].childNodes[0].src) {
                         if (links[i].id) links[i].name = links[i].id; // To be able to jump to this location
 
                         var matches = links[i].href.match(/https?:\/\/www\.geocaching\.com\/profile\/\?guid=([a-zA-Z0-9]*)/);
