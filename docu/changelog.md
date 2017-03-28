@@ -24,6 +24,9 @@ New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/254">#254</a>] 
 <li>
 Fix: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/264">#264</a>] VIP list not rendered on a specific cache (Lesopark Dubina). Profile link in listing without any text.<br>
 </li>
+<li>
+Fix: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/10">#10</a>] Show listing coordinates and additional waypoints on Flopp's Map<br>
+</li>
 <br>
 </ul>
 (??.04.2017)<br> 
