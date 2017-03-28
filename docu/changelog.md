@@ -1,3 +1,4 @@
+<a href="#v07" title="GClh II version 0.7 (??.04.2017)">v0.7</a> &nbsp;
 <a href="#v06" title="GClh II version 0.6 (25.03.2017)">v0.6</a> &nbsp;
 <a href="#v05" title="GClh II version 0.5 (11.03.2017)">v0.5</a> &nbsp;
 <a href="#v041" title="GClh II version 0.4.1 (26.02.2017)">v0.4.1</a> &nbsp; 
@@ -14,10 +15,26 @@
 <a href="#v01" title="GClh II version 0.1 (05.01.2017)">v0.1</a> &nbsp; 
 
 ---
+## v0.7:
+<ul>
+<li>
+New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/254">#254</a>] Filter VIP logs in cache listing:<br>
+<img src="../images/v0.7_Screen01.jpg" alt="v0.7_Screen01.jpg"><br>
+<br></li>
+<li>
+Fix: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/264">#264</a>] VIP list not rendered on a specific cache (Lesopark Dubina). Profile link in listing without any text.<br>
+</li>
+<br>
+</ul>
+(??.04.2017)<br> 
+<br>
+
+---
 ## v0.6:
 <ul>
 <li>
 New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/226">#226</a>] Make the using of browser Vivaldi possible:<br>
+Please notice the special points in <a href="https://github.com/2Abendsegler/GClh/blob/master/docu/tips_installation.md#readme">Tipps für die Installation</a>.<br>
 <img src="../images/vivaldi_logo_small.png" alt="vivaldi_logo_small.png"><br>
 <br></li>
 <li>
