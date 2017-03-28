@@ -406,6 +406,8 @@ var variablesInit = function (c) {
     c.settings_hide_cache_approvals = getValue("settings_hide_cache_approvals", true);
     c.settings_driving_direction_link = getValue("settings_driving_direction_link",true);
     c.settings_driving_direction_parking_area = getValue("settings_driving_direction_parking_area",false);
+    c.settings_show_elevation_of_waypoints = getValue("settings_show_elevation_of_waypoints", true);
+    c.settings_distance_units = getValue("settings_distance_units", "");
 
     // Settings: Custom Bookmarks
     var num = c.bookmarks.length;
@@ -3560,6 +3562,138 @@ var mainGC = function () {
             gclh_error( "Driving direction for Waypoints: " + e );
         }
     }
+
+// Default Log Type && Log Signature
+// returns true in case of modified coordinates
+    function areListingCoordinatesModified() {
+        if((typeof(unsafeWindow.userDefinedCoords) != 'undefined') && (unsafeWindow.userDefinedCoords.data.isUserDefined==true)) {
+            return true;
+        }
+        return false;
+    }
+
+// returns the listing coordinates as an array. In case of user changed listing coordinates, the changed coords are returned
+//  if the parameter original true, always the original listing coordinates are returned
+    function getListingCoordinates( original ) {
+        var waypoint = undefined;
+        if(areListingCoordinatesModified()) {
+            waypoint = { latitude : undefined, longitude : undefined };
+            if ( (typeof(original) != 'undefined') && original == true ) {
+                waypoint.latitude = unsafeWindow.userDefinedCoords.data.oldLatLng[0];
+                waypoint.longitude = unsafeWindow.userDefinedCoords.data.oldLatLng[1];
+            } else {
+                waypoint.latitude = unsafeWindow.userDefinedCoords.data.newLatLng[0];
+                waypoint.longitude = unsafeWindow.userDefinedCoords.data.newLatLng[1];
+            }
+        } else {
+            var listingCoords = $('#ctl00_ContentBody_uxViewLargerMap');
+            if ( listingCoords.length > 0 && listingCoords.attr('href').length > 0 ) {
+                var tmp_coords = listingCoords.attr('href').match(/(-)*(\d{1,3}).(\d{1,6})/g);
+                if ( typeof(tmp_coords[0]) !== undefined && typeof(tmp_coords[1]) !== undefined ) {
+                    waypoint = { latitude : undefined, longitude : undefined };
+                    waypoint.latitude = tmp_coords[0];
+                    waypoint.longitude = tmp_coords[1];
+                }
+            }
+        }
+        return waypoint;
+    }
+
+// added elevation to every additional waypoint with shown coordinates (issue #250)
+    if ( settings_show_elevation_of_waypoints && (
+        is_page("cache_listing") ||
+        document.location.href.match(/^https?:\/\/www\.geocaching\.com\/geocache\//) ||
+        document.location.href.match(/^https?:\/\/www\.geocaching\.com\/hide\/wptlist.aspx/) ) ) {
+
+        try {
+            function formatElevation( elevation ) {
+                return ((elevation>=0)?"+":"")+(( settings_distance_units != "Imperial" )?(Math.round(elevation) + "m"):(Math.round(elevation*3.28084) + "ft"));
+            }
+
+            function addElevationToWaypoints(responseDetails) {
+                try {
+                    json = JSON.parse(responseDetails.responseText);
+                    if ( json.status != "OK" ) {
+                        gclh_log( "addElevationToWaypoints(): not results for elevation. status="+json.status );
+                        gclh_log( "addElevationToWaypoints():    "+json.error_message );
+                    }
+
+                    var tbl = getWaypointTable();
+                    if ( tbl.length > 0 ) {
+                        var length = tbl.find("tbody > tr").length;
+                        for ( var i=0; i<length/2; i++ ) {
+                            var heightString = "";
+                            var title = "Elevation not available!";
+                            var json = JSON.parse(responseDetails.responseText);
+                            if (typeof json.results[i].elevation !== "number") {
+                                heightString = "n/a";
+                                title = "Elevation not available - no answer";
+                            } else {
+                                heightString = formatElevation(json.results[i].elevation);
+                                title = "Elevation";
+                                if ( json.results[i].location.lat == -90 ) {
+                                    heightString = "???"; // for waypoints with hidden coordinates
+                                    title = "Elevation not available - unknown location";
+                                }
+                            }
+                            tbl.find("tbody > tr:eq("+(i*2)+") > td:eq(7)").html('<span title="'+title+'">'+heightString+'</span>'  );
+                        }
+                    }
+
+                    var index = json.results.length-1;
+                    if ( $("#uxLatLonLinkElevation").length > 0 ) {
+                        if ( index >= 0 ) {
+                            $("#uxLatLonLinkElevation").html(formatElevation(json.results[index].elevation));
+                        } else {
+                            gclh_log("addElevationToWaypoints(): Error: index out of range");
+                        }
+                    }
+                } catch(e) {
+                    gclh_error( "addElevationToWaypoints(): ", e);
+                }
+            }
+
+            var locations="";
+            var tbl = getWaypointTable();
+            if ( tbl.length > 0 ) {
+                tbl.find("thead > tr > th:eq(6)").after('<th scope="col">Elevation</th>'); // added header Elevation after Coordinate
+                var length = tbl.find("tbody > tr").length;
+                for ( var i=0; i<length/2; i++ ) {
+                    var cellNote = tbl.find("tbody > tr:eq("+(i*2+1)+") > td:eq(2)");
+                    var colspan = cellNote.attr('colspan');
+                    cellNote.attr('colspan',colspan+1);
+
+                    var row1st = tbl.find("tbody > tr").eq(i*2);
+
+                    var cellCoordinates = row1st.find("td:eq(6)");
+                    var tmp_coords = toDec(cellCoordinates.text().trim());
+                    if(typeof tmp_coords[0] !== 'undefined' && typeof tmp_coords[1] !== 'undefined') {
+                        locations += (locations.length == 0 ? "" : "|") + tmp_coords[0]+","+tmp_coords[1];
+                    } else {
+                        locations += (locations.length == 0 ? "" : "|") + "-90.0,-180.0"; // for waypoints without visible coordinates
+                    }
+
+                    row1st.find("td:eq(6)").after('<td>???</td>');
+                }
+            }
+
+            var waypoint = getListingCoordinates(false);
+            if ( waypoint !== undefined ) {
+                $("#uxLatLonLink").after('<span title="Elevation">&nbsp;&nbsp;&nbsp;Elevation:&nbsp;<span id="uxLatLonLinkElevation">???</span></span>');
+                locations += (locations.length == 0 ? "" : "|") + waypoint.latitude+","+waypoint.longitude;
+            }
+
+            GM_xmlhttpRequest({
+                method: 'GET',
+                url: "https://maps.googleapis.com/maps/api/elevation/json?sensor=false&locations=" + locations,
+                onload: addElevationToWaypoints,
+                onerror: function() { gclh_log("Elevation: ERROR: request elevation for waypoints failed!"); }
+            });
+        } catch(e) {
+            gclh_error( "AddElevation", e );
+        }
+    }
+
 // Default Log Type && Log Signature
     if (document.location.href.match(/^https?:\/\/www\.geocaching\.com\/seek\/log\.aspx\?(id|guid|ID|PLogGuid|wp)\=/) && document.getElementById('ctl00_ContentBody_LogBookPanel1_ddLogType') && $('#ctl00_ContentBody_LogBookPanel1_lbConfirm').length == 0) {
         try {
@@ -7366,6 +7500,13 @@ var mainGC = function () {
             hinweis.appendChild(document.createTextNode("."));
 
             avatar_head.appendChild(hinweis);
+
+            var units = $("#DistanceUnits:checked").val();
+            if ( units != settings_distance_units ) {
+                setValue( 'settings_distance_units', units );
+                settings_distance_units = units;
+            }
+
         } catch (e) {
             gclh_error("Hide gc.com Avatar-Option", e);
         }
@@ -9204,6 +9345,9 @@ var mainGC = function () {
             html += checkboxy('settings_show_real_owner', 'Show real owner name') + show_help("If the option is enabled, GClh will replace the pseudonym a owner took to publish the cache with the real owner name.") + "<br/>";
             html += checkboxy('settings_driving_direction_link', 'Show link to Google driving direction for every waypoint') + show_help("Shows for every waypoint in the waypoint list a link to Google driving directions from home location to coordinates of the waypoint.") + "<br/>";
             html += "&nbsp; " + checkboxy('settings_driving_direction_parking_area', 'Only for Parking Area waypoints') + show_help("Shows only a link to the Google driving directions for waypoints of type Parking Area.") + "<br/>";
+            html += "</div>";
+            html += checkboxy('settings_show_elevation_of_waypoints', 'Show elevations for waypoints and listing coordinates') + show_help("Shows the elevation of every additional waypoint and the (changed) listing coordinates.") + "<br/>";
+            html += "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Measure unit can be set in <a href=\"https://www.geocaching.com/account/settings/preferences\">Preferences</a>";
             html += "</div>";
 
             html += "<h4 class='gclh_headline2'>"+prepareHideable.replace("#name#","logging")+"Logging</h4>";
