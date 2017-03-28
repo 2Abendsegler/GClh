@@ -3506,6 +3506,33 @@ var mainGC = function () {
         }
     }
 
+// returns a jQuery object of the waypoint list in a cache listing or the waypoint list
+    function getWaypointTable() {
+        var tbl = $("#ctl00_ContentBody_Waypoints");
+        if ( tbl.length<=0 ) {
+            tbl = $("#ctl00_ContentBody_WaypointList");
+        }
+        return tbl;
+    }
+
+// add link to waypoint list in cache detail navigation (sidebar) (issue #253)
+    if ( is_page("cache_listing") || document.location.href.match(/^https?:\/\/www\.geocaching\.com\/geocache\//) ) {
+        if ( getWaypointTable().length > 0 ) {
+            $(".CacheDetailNavigation:first > ul:first").append('<li><a href="#ctl00_ContentBody_bottomSection">Go to Waypoint List</a></li>');
+        }
+        $("#cache_logs_container").prev("div").attr('id','logs_section');
+        $(".CacheDetailNavigation:first > ul:first").append('<li><a href="#logs_section">Go to Logs</a></li>');
+
+        var css = "";
+        css += '.CacheDetailNavigation a[href*="#ctl00_ContentBody_bottomSection"]{';
+        css += "background-image:url(/images/icons/16/waypoints.png);";
+        css += "}";
+        css += '.CacheDetailNavigation a[href*="#logs_section"]{';
+        css += "background-image:url(/images/icons/16/arrow_r.png);";
+        css += "}";
+        appendCssStyle( css );
+    }
+
 // Default Log Type && Log Signature
     if (document.location.href.match(/^https?:\/\/www\.geocaching\.com\/seek\/log\.aspx\?(id|guid|ID|PLogGuid|wp)\=/) && document.getElementById('ctl00_ContentBody_LogBookPanel1_ddLogType') && $('#ctl00_ContentBody_LogBookPanel1_lbConfirm').length == 0) {
         try {
