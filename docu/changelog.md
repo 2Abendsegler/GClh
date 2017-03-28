@@ -24,6 +24,9 @@ New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/254">#254</a>] 
 <li>
 Fix: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/264">#264</a>] VIP list not rendered on a specific cache (Lesopark Dubina). Profile link in listing without any text.<br>
 </li>
+<li>
+Fix: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/250">#250</a>] Show elevation for listing coordinates and waypoints with visible cooordinates.<br>
+</li>
 <br>
 </ul>
 (??.04.2017)<br> 
