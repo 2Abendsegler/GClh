@@ -28,9 +28,14 @@ Fix: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/264">#264</a>] 
 <li>
 New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/253">#253</a>] Added shortcut links to waypoint list and logs section.<br>
 </li>
+<li>
+New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/252">#252</a>] Link to Google Map Driving Direction for every waypoint in the waypoint list (which visible coordinates)
+</li>
+<br>
 </ul>
 (??.04.2017)<br> 
 <br>
+
 
 ---
 ## v0.6:
