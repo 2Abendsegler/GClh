@@ -3510,7 +3510,6 @@ var mainGC = function () {
             gclh_error("Improve Message Site", e);
         }
     }
-        
 
 // returns a jQuery object of the waypoint list in a cache listing or the waypoint list
     function getWaypointTable() {
@@ -3520,8 +3519,7 @@ var mainGC = function () {
         }
         return tbl;
     }
-         
-    
+
 // add link to waypoint list in cache detail navigation (sidebar) (issue #253)
     if ( is_page("cache_listing") || document.location.href.match(/^https?:\/\/www\.geocaching\.com\/geocache\//) ) {
         if ( getWaypointTable().length > 0 ) {
@@ -3539,19 +3537,18 @@ var mainGC = function () {
         css += "}";
         appendCssStyle( css );
     }
-            
-    
+
 // Driving direction for every waypoint (issue #252)
     if ( settings_driving_direction_link && (
         is_page("cache_listing") ||
         document.location.href.match(/^https?:\/\/www\.geocaching\.com\/geocache\//) ||
         document.location.href.match(/^https?:\/\/www\.geocaching\.com\/hide\/wptlist.aspx/) ) ) {
-           
         try {
-            var tbl = getWaypointTable();           
+            var tbl = getWaypointTable();
             var length = tbl.find("tbody > tr").length;
             for ( var i=0; i<length/2; i++ ) {
                 var row1st = tbl.find("tbody > tr").eq(i*2);
+
                 var name = row1st.find("td:eq(5)").text().trim();
                 var icon = row1st.find("td:eq(2) > img").attr('src');
                 var cellCoordinates = row1st.find("td:eq(6)");
@@ -3566,11 +3563,9 @@ var mainGC = function () {
         }
     }
 
-    
 // helper function: trim a decimal value to a given number of digits
     function roundTO(val, decimals) { return Number(Math.round(val+'e'+decimals)+'e-'+decimals); }
 
-    
 // this function reads the table with the additional waypoints
     function getAdditionalWaypoints() {
         var addWP  = [];
@@ -3582,6 +3577,7 @@ var mainGC = function () {
             if(tbl.getElementsByTagName('tbody')) {
                 var tblbdy = tbl.getElementsByTagName('tbody')[0];
                 var tr_list = tblbdy.getElementsByTagName('tr');
+
                 for (var i=0; i < tr_list.length/2; i++) {
                     var td_list = tr_list[2*i].getElementsByTagName('td');
                     var td_list2nd = tr_list[2*i+1].getElementsByTagName('td');
@@ -3644,7 +3640,6 @@ var mainGC = function () {
         }
         return addWP;
     }
-    
 
 // this function reads the table with the additional waypoints
     function getListingCoordinates() {
@@ -3695,7 +3690,7 @@ var mainGC = function () {
             waypoint.link = document.location.href;
             waypoint.cachetype = document.getElementById('cacheDetails').getElementsByClassName('cacheImage')[0].getElementsByTagName('img')[0].getAttribute('title');
 
-            addWP.push(waypoint);
+            addWP.push(waypoint); // TODO: added only if listing coordinates available
         } catch(e) {
             gclh_error("getListingCoordinates(): " ,e);
         }
@@ -3743,7 +3738,7 @@ var mainGC = function () {
 
         for ( var i=0; i<waypoints.length; i++) {
             var waypoint = waypoints[i];
-            if ( waypoint.visible == true ) {
+            if ( waypoint !== undefined && waypoint.visible == true ) {
                 if ( waypoint.type == "waypoint" ) {
                     var id = String.fromCharCode(65+Math.floor(count%26))+Math.floor(count/26+1); // create Flopps Map id: A1-A9 B1-B9 ....
                     var radius = (( waypoint.subtype == "Physical Stage" || waypoint.subtype == "Final Location" ) ? "161" : "");
@@ -3948,15 +3943,13 @@ var mainGC = function () {
         return waypoint;
     }
 
-    
-    // added elevation to every additional waypoint with shown coordinates (issue #250)
+// added elevation to every additional waypoint with shown coordinates (issue #250)
     if ( settings_show_elevation_of_waypoints && (
         is_page("cache_listing") ||
         document.location.href.match(/^https?:\/\/www\.geocaching\.com\/geocache\//) ||
         document.location.href.match(/^https?:\/\/www\.geocaching\.com\/hide\/wptlist.aspx/) ) ) {
 
         try {
-            
             function formatElevation( elevation ) {
                 return ((elevation>=0)?"+":"")+(( settings_distance_units != "Imperial" )?(Math.round(elevation) + "m"):(Math.round(elevation*3.28084) + "ft"));
             }
