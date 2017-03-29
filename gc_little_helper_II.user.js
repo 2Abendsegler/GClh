@@ -3510,6 +3510,7 @@ var mainGC = function () {
             gclh_error("Improve Message Site", e);
         }
     }
+        
 
 // returns a jQuery object of the waypoint list in a cache listing or the waypoint list
     function getWaypointTable() {
@@ -3519,7 +3520,8 @@ var mainGC = function () {
         }
         return tbl;
     }
-
+         
+    
 // add link to waypoint list in cache detail navigation (sidebar) (issue #253)
     if ( is_page("cache_listing") || document.location.href.match(/^https?:\/\/www\.geocaching\.com\/geocache\//) ) {
         if ( getWaypointTable().length > 0 ) {
@@ -3537,35 +3539,38 @@ var mainGC = function () {
         css += "}";
         appendCssStyle( css );
     }
-
+            
+    
 // Driving direction for every waypoint (issue #252)
     if ( settings_driving_direction_link && (
         is_page("cache_listing") ||
         document.location.href.match(/^https?:\/\/www\.geocaching\.com\/geocache\//) ||
         document.location.href.match(/^https?:\/\/www\.geocaching\.com\/hide\/wptlist.aspx/) ) ) {
+           
         try {
-            var tbl = getWaypointTable();
+            var tbl = getWaypointTable();           
             var length = tbl.find("tbody > tr").length;
             for ( var i=0; i<length/2; i++ ) {
                 var row1st = tbl.find("tbody > tr").eq(i*2);
-
                 var name = row1st.find("td:eq(5)").text().trim();
                 var icon = row1st.find("td:eq(2) > img").attr('src');
                 var cellCoordinates = row1st.find("td:eq(6)");
                 var tmp_coords = toDec(cellCoordinates.text().trim());
                 if( ( !settings_driving_direction_parking_area || icon.match(/pkg.jpg/g) ) && typeof tmp_coords[0] !== 'undefined' && typeof tmp_coords[1] !== 'undefined') {
-                    var link = $("#ctl00_ContentBody_lnkPrintDirectionsSimple").attr('href').match(/(.*daddr=)/);
+                    var link = $("#ctl00_ContentBody_lnkPrintDirectionsSimple").attr('href').match(/(.*daddr=)/); /* TODO: bug in wptlist.aspx ist diese Element nicht vorhanden */
                     row1st.find("td:last").append('<a title="Driving Directions" href="'+link[0]+tmp_coords[0]+","+tmp_coords[1]+" ("+name+')" target="_blank"><img src="/images/icons/16/directions.png"></a>');
                 }
             }
         } catch( e ) {
-            gclh_error( "Driving direction for Waypoints: " + e );
+            gclh_error( "Driving direction for Waypoints: ", e );
         }
     }
 
+    
 // helper function: trim a decimal value to a given number of digits
     function roundTO(val, decimals) { return Number(Math.round(val+'e'+decimals)+'e-'+decimals); }
 
+    
 // this function reads the table with the additional waypoints
     function getAdditionalWaypoints() {
         var addWP  = [];
@@ -3577,8 +3582,6 @@ var mainGC = function () {
             if(tbl.getElementsByTagName('tbody')) {
                 var tblbdy = tbl.getElementsByTagName('tbody')[0];
                 var tr_list = tblbdy.getElementsByTagName('tr');
-                console.log(tr_list.length);
-
                 for (var i=0; i < tr_list.length/2; i++) {
                     var td_list = tr_list[2*i].getElementsByTagName('td');
                     var td_list2nd = tr_list[2*i+1].getElementsByTagName('td');
@@ -3619,8 +3622,7 @@ var mainGC = function () {
                         } else if ( icon.match(/waypoint.jpg/g) ) {
                             subtype = "Reference Point";
                         } else {
-                            gclh_error("getAdditionalWaypoints(): problem with waypoint "+waypoint.lookup+"/"+waypoint.prefix);
-                            gclh_error("    unknown waypoint type ("+icon+")");
+                            gclh_log("ERROR: getAdditionalWaypoints(): problem with waypoint "+waypoint.lookup+"/"+waypoint.prefix+ " - unknown waypoint type ("+icon+")");
                         }
                         waypoint.subtype = subtype;
 
@@ -3638,10 +3640,11 @@ var mainGC = function () {
                 }
             }
         } catch(e) {
-            gclh_error("getAdditionalWaypoints(): "+e);
+            gclh_error("getAdditionalWaypoints(): " ,e);
         }
         return addWP;
     }
+    
 
 // this function reads the table with the additional waypoints
     function getListingCoordinates() {
@@ -3680,7 +3683,7 @@ var mainGC = function () {
                 waypoint.latitude = tmp_coords[0];
                 waypoint.longitude = tmp_coords[1];
             } else {
-                gclh_error("getListingCoordinates(): warning: listing coordinates are not found.");
+                gclh_log("ERROR: getListingCoordinates(): warning: listing coordinates are not found.");
             }
             waypoint.visible = true;
             waypoint.lookup = gccode;
@@ -3694,7 +3697,7 @@ var mainGC = function () {
 
             addWP.push(waypoint);
         } catch(e) {
-            gclh_error("getListingCoordinates(): "+e);
+            gclh_error("getListingCoordinates(): " ,e);
         }
         return addWP;
     }
@@ -3714,7 +3717,6 @@ var mainGC = function () {
         waypoints = waypoints.concat(getAdditionalWaypoints());
         waypoints = waypoints.concat(getLongDescriptionCoordinates());
         waypoints = waypoints.concat(getPersonalNoteCoordinates());
-        console.log(waypoints);
         return waypoints;
     }
 
@@ -3911,9 +3913,6 @@ var mainGC = function () {
         }
     }
 
-
-
-// Default Log Type && Log Signature
 // returns true in case of modified coordinates
     function areListingCoordinatesModified() {
         if((typeof(unsafeWindow.userDefinedCoords) != 'undefined') && (unsafeWindow.userDefinedCoords.data.isUserDefined==true)) {
@@ -3949,13 +3948,15 @@ var mainGC = function () {
         return waypoint;
     }
 
-// added elevation to every additional waypoint with shown coordinates (issue #250)
+    
+    // added elevation to every additional waypoint with shown coordinates (issue #250)
     if ( settings_show_elevation_of_waypoints && (
         is_page("cache_listing") ||
         document.location.href.match(/^https?:\/\/www\.geocaching\.com\/geocache\//) ||
         document.location.href.match(/^https?:\/\/www\.geocaching\.com\/hide\/wptlist.aspx/) ) ) {
 
         try {
+            
             function formatElevation( elevation ) {
                 return ((elevation>=0)?"+":"")+(( settings_distance_units != "Imperial" )?(Math.round(elevation) + "m"):(Math.round(elevation*3.28084) + "ft"));
             }
