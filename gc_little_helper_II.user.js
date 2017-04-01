@@ -3554,8 +3554,9 @@ var mainGC = function () {
                 var cellCoordinates = row1st.find("td:eq(6)");
                 var tmp_coords = toDec(cellCoordinates.text().trim());
                 if( ( !settings_driving_direction_parking_area || icon.match(/pkg.jpg/g) ) && typeof tmp_coords[0] !== 'undefined' && typeof tmp_coords[1] !== 'undefined') {
-                    var link = $("#ctl00_ContentBody_lnkPrintDirectionsSimple").attr('href').match(/(.*daddr=)/); /* TODO: bug in wptlist.aspx ist diese Element nicht vorhanden */
-                    row1st.find("td:last").append('<a title="Driving Directions" href="'+link[0]+tmp_coords[0]+","+tmp_coords[1]+" ("+name+')" target="_blank"><img src="/images/icons/16/directions.png"></a>');
+                    var link = "http://maps.google.com/maps?f=d&hl=en&saddr="+getValue("home_lat", 0)/10000000+","+getValue("home_lng", 0)/10000000+"%20(Home%20Location)&daddr=";
+                    row1st.find("td:last").append('<a title="Driving Directions" href="'+link+tmp_coords[0]+","+tmp_coords[1]+" ("+name+')" target="_blank"><img src="/images/icons/16/directions.png"></a>');
+                    // TODO: check if home_coords defined
                 }
             }
         } catch( e ) {
