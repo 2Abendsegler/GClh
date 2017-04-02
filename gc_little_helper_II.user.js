@@ -3716,9 +3716,11 @@ var mainGC = function () {
         return waypoints;
     }
 
-// function to calculate the tile number from geocoordinates
+// functions to calculate the tile numbers X/Y from latitude/longitude or reverse
     function lat2tile(lat,zoom)  { return (Math.floor((1-Math.log(Math.tan(lat*Math.PI/180) + 1/Math.cos(lat*Math.PI/180))/Math.PI)/2 *Math.pow(2,zoom))); }
     function long2tile(lon,zoom) { return (Math.floor((lon+180)/360*Math.pow(2,zoom))); }
+    function tile2long(x,z) { return (x/Math.pow(2,z)*360-180); }
+    function tile2lat(y,z) { var n=Math.PI-2*Math.PI*y/Math.pow(2,z); return (180/Math.PI*Math.atan(0.5*(Math.exp(n)-Math.exp(-n)))); }
 
 // function to convert string to the Flopps Map specification
     function floppsMapWaypoint( waypoint, id, radius, name ) {
@@ -3767,19 +3769,35 @@ var mainGC = function () {
         var floppsMapWidth = Math.round(window.innerWidth*browserZoomLevel)-280; // minus width of sidebar
         var floppsMapHeigth = Math.round(window.innerHeight*browserZoomLevel)-50; // minus height of header
         var zoom=-1;
-        // console.log( "Calculate zoom level for Flopp's Map" + " (width="+floppsMapWidth+"px heigth="+floppsMapHeigth+"px)" );
+        console.log( "Calculate zoom level for Flopp's Map" + " (width="+floppsMapWidth+"px heigth="+floppsMapHeigth+"px)" );
         for ( zoom=23; zoom>=0; zoom--) {
-            var tileY_max = lat2tile(Latmin,zoom);
-            var tileY_min = lat2tile(Latmax,zoom);
-            var tiles_Y = (tileY_max-tileY_min+1); // boundary box heigth in number of tiles
+            // calculate tile boundary box
+	    var tileY_min = lat2tile(Latmin,zoom);
+            var tileY_max = lat2tile(Latmax,zoom);
+            var tiles_Y = Math.abs(tileY_max-tileY_min+1); // boundary box heigth in number of tiles
             var tileX_min = long2tile(Lonmin,zoom);
             var tileX_max = long2tile(Lonmax,zoom);
-            var tiles_X = (tileX_max-tileX_min+1); // boundary box width in  number of tiles
-            // console.log( "  Tiles @ zoom="+zoom+": Xmin="+tileX_min+" Xmas="+tileX_max+" ΔX="+tiles_X+" => "+tiles_X*256+"px | Ymin="+tileY_min+" Ymax="+tileY_max+" ΔY="+tiles_Y+" => "+tiles_Y*256+"px" );
-            if ( (tiles_Y*256 < floppsMapHeigth ) && (tiles_X*256 < floppsMapWidth ) ) {
+            var tiles_X = Math.abs(tileX_max-tileX_min+1); // boundary box width in  number of tiles
+            console.log( "  Tiles @ zoom="+zoom+": Xmin="+tileX_min+" Xmas="+tileX_max+" ΔX="+tiles_X+" => "+tiles_X*256+"px | Ymin="+tileY_min+" Ymax="+tileY_max+" ΔY="+tiles_Y+" => "+tiles_Y*256+"px" );
+
+            // calculate width and height of boundary rectangle (in pixel)
+            var latDelta = Math.abs(tile2lat(tileX_max+1,zoom)-tile2lat(tileX_min,zoom));
+            var latPixelPerDegree = tiles_X*256/latDelta;
+            var boundaryHeight = latPixelPerDegree*(Latmax-Latmin);
+            console.log("boundaryHeight:  zoom="+zoom+" latDelta="+latDelta+"° * latPixelPerDegree="+latPixelPerDegree+"px/° = "+boundaryHeight+"px");
+
+            var longDelta = Math.abs(tile2long(tileY_max+1,zoom)-tile2long(tileY_min,zoom));
+            var longPixelPerDegree = tiles_Y*256/longDelta;
+            var boundaryWidth = longPixelPerDegree*(Lonmax-Lonmin);
+            console.log("boundaryWidth: zoom="+zoom+" longDelta="+longDelta+"° longPixelPerDegree="+longPixelPerDegree+"px/° ="+boundaryWidth+"px");
+
+            if ( (boundaryHeight < floppsMapHeigth ) && (boundaryWidth < floppsMapWidth ) ) {
                 break;
             }
         }
+
+        // TODO: problems if the zoom level to big
+        // TODO: danksagugng
 
         var url = "";
         status.limited = false;
@@ -8718,7 +8736,7 @@ var mainGC = function () {
         document.getElementById("ctl00_ContentBody_uxLogbookLink").parentNode.style.width = "100%";
         appendCssStyle(".gclh_logCounter {font-size: 10px !important; padding-left: 6px; font-style: italic;}");
     }
-    function showLogCounter() {   
+    function showLogCounter() {
         try {
             var logCounter = new Object();
             logCounter["all"] = 0;
