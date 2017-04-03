@@ -1617,7 +1617,7 @@ var mainGC = function () {
                 }
             }
 
-            // Search field
+            // Search field.
             if (settings_bookmarks_search) {
                 var code = "function gclh_search_logs(){";
                 code += "  var search = document.getElementById('navi_search').value;";
@@ -6455,12 +6455,9 @@ var mainGC = function () {
                                 var logsToAdd = logs.slice(num, num + 10);
                                 addNewLogLines(encodeURIComponent(JSON.stringify(logsToAdd)));
                                 num += logsToAdd.length;
-
-                                //gclh_add_vip_icon();
                                 window.postMessage("gclh_add_vip_icon", "https://www.geocaching.com");
                                 window.postMessage("setLinesColorInCacheListing", "https://www.geocaching.com");
-                            }
-                            else {
+                            } else {
                                 for (var i = 0; i < 10; i++) {
                                     if (logs[num]) {
                                         var newBody = unsafeWindow.$(document.createElement("TBODY"));
@@ -6470,7 +6467,6 @@ var mainGC = function () {
                                     }
                                     num++; // num kommt vom vorherigen laden "aller" logs
                                 }
-
                                 gclh_add_vip_icon();
                                 setLinesColorInCacheListing();
                             }
@@ -6494,11 +6490,9 @@ var mainGC = function () {
                         if (browser === "firefox") {
                             injectPageScript("var unsafeWindow = unsafeWindow||window; " + gclh_dynamic_load.toString() + " var settings_hide_top_button=" + settings_hide_top_button + "; ");
                             injectPageScript("(" + addNewLogLines.toString() + ")(\"" + encodeURIComponent(JSON.stringify(logs)) + "\");");
-
                             window.postMessage("gclh_add_vip_icon", "https://www.geocaching.com");
                             window.postMessage("setLinesColorInCacheListing", "https://www.geocaching.com");
-                        }
-                        else {
+                        } else {
                             for (var i = 0; i < logs.length; i++) {
                                 if (logs[i]) {
                                     var newBody = unsafeWindow.$(document.createElement("TBODY"));
@@ -6507,7 +6501,6 @@ var mainGC = function () {
                                     unsafeWindow.$(document.getElementById("cache_logs_table2") || document.getElementById("cache_logs_table")).append(newBody.children());
                                 }
                             }
-
                             gclh_add_vip_icon();
                             setLinesColorInCacheListing();
                         }
@@ -6558,7 +6551,6 @@ var mainGC = function () {
                         }
                         injectPageScript("var unsafeWindow = unsafeWindow||window; " + gclh_dynamic_load.toString() + " var settings_hide_top_button=" + settings_hide_top_button + "; ");
                         injectPageScript("(" + addNewLogLines.toString() + ")(\"" + encodeURIComponent(JSON.stringify(logsToAdd)) + "\");");
-
                         window.postMessage("gclh_add_vip_icon", "https://www.geocaching.com");
                         window.postMessage("setLinesColorInCacheListing", "https://www.geocaching.com");
                     } else {
@@ -6570,7 +6562,6 @@ var mainGC = function () {
                                 unsafeWindow.$(document.getElementById("cache_logs_table2") || document.getElementById("cache_logs_table")).append(newBody.children());
                             }
                         }
-
                         gclh_add_vip_icon();
                         setLinesColorInCacheListing();
                     }
@@ -6594,7 +6585,6 @@ var mainGC = function () {
                         new_legend.appendChild(link);
                     }
                 }
-
                 if (settings_show_vip_list) {
                     var link = document.createElement("a");
                     link.setAttribute("href", "javascript:void(0);");
@@ -6646,7 +6636,6 @@ var mainGC = function () {
                         }
                         injectPageScript("var unsafeWindow = unsafeWindow||window; " + gclh_dynamic_load.toString() + " var settings_hide_top_button=" + settings_hide_top_button + "; ");
                         injectPageScript("(" + addNewLogLines.toString() + ")(\"" + encodeURIComponent(JSON.stringify(logsToAdd)) + "\");");
-
                         window.postMessage("gclh_add_vip_icon", "https://www.geocaching.com");
                         window.postMessage("setLinesColorInCacheListing", "https://www.geocaching.com");
                     } else {
@@ -6658,7 +6647,6 @@ var mainGC = function () {
                                 unsafeWindow.$(document.getElementById("cache_logs_table2") || document.getElementById("cache_logs_table")).append(newBody.children());
                             }
                         }
-
                         gclh_add_vip_icon();
                         setLinesColorInCacheListing();
                     }
@@ -6739,8 +6727,7 @@ var mainGC = function () {
                     // disable scroll Function on Page
                     if (browser === "chrome" || browser === "firefox") {
                         injectPageScriptFunction(disablePageAutoScroll, "()");
-                    }
-                    else {
+                    } else {
                         disablePageAutoScroll();
                     }
 
@@ -6767,7 +6754,6 @@ var mainGC = function () {
 
                         logs = logs.concat(json.data);
 
-
                         for (var i = 0; i < json.data.length; i++) {
                             var user = json.data[i].UserName;
 
@@ -6789,7 +6775,6 @@ var mainGC = function () {
                                 index++;
                             }
                         }
-
                     }
 
                     // Add Links
@@ -6802,7 +6787,6 @@ var mainGC = function () {
                         injectPageScript("var unsafeWindow = unsafeWindow||window; " + gclh_dynamic_load.toString() + " var settings_hide_top_button=" + settings_hide_top_button + "; ");
                         injectPageScript(addNewLogLines.toString());
                         injectPageScript("(" + addNewLogLines.toString() + ")(\"" + encodeURIComponent(JSON.stringify(logsToAdd)) + "\"); gclh_dynamic_load(JSON.parse(decodeURIComponent(\"" + encodeURIComponent(JSON.stringify(logs)) + "\"))," + num + ");");
-
                         if (settings_show_vip_list) {
                             gclh_build_vip_list();
                             window.postMessage("gclh_add_vip_icon", "https://www.geocaching.com");
@@ -6818,7 +6802,6 @@ var mainGC = function () {
                             }
                         }
                         gclh_dynamic_load(logs, num);
-
                         if (settings_show_vip_list) {
                             gclh_build_vip_list();
                             gclh_add_vip_icon();
@@ -6858,8 +6841,7 @@ var mainGC = function () {
             var count = 1;
             var owner = get_real_owner();
             var parameterStamm = "settings_show_cache_listings_color";
-        }
-        else if ( document.location.href.match(/^https?:\/\/www\.geocaching\.com\/track\/details\.aspx/) ) {
+        } else if ( document.location.href.match(/^https?:\/\/www\.geocaching\.com\/track\/details\.aspx/) ) {
             var lines = $("table.Table").find("tbody").find("tr");
             var count = 2;
             var owner = document.getElementById("ctl00_ContentBody_BugDetails_BugOwner").innerHTML;
@@ -6897,9 +6879,8 @@ var mainGC = function () {
             var lines = $("table.Table").find("tbody").find("tr");
             setLinesColorInZebra( settings_show_common_lists_in_zebra, lines, 2 );
             setLinesColorUser( "settings_show_common_lists_color", "user", lines, 2, "" );
-        }
         // TB Listing: Zeilen in TB Listings in Zebra, für User, für Owner, für Reviewer und für VIP einfärben.
-        else if ( document.location.href.match(/^https?:\/\/www\.geocaching\.com\/track\/details\.aspx\?/) ) {
+        } else if ( document.location.href.match(/^https?:\/\/www\.geocaching\.com\/track\/details\.aspx\?/) ) {
             var lines = $("table.Table").find("tbody").find("tr");
             if ( lines.length > 1 ) {
                 var linesNew = lines.slice(0, -1);
@@ -6907,9 +6888,8 @@ var mainGC = function () {
                 setLinesColorInZebra( settings_show_tb_listings_in_zebra, linesNew, 2 );
                 setLinesColorUser( "settings_show_tb_listings_color", "user,owner,reviewer,vips", linesNew, 2, owner );
             }
-        }
         // Andere Listen: Bei Zeilen in anderen Listen gegebenenfalls Einfärbung für Zebra oder User entfernen.
-        else if ( !is_page("cache_listing") ) {
+        } else if ( !is_page("cache_listing") ) {
             if ( settings_show_common_lists_in_zebra == false ){
                 var lines = $("table").find("tbody").find("tr");
                 var replaceSpec = /(AlternatingRow)(\s*)/g;
