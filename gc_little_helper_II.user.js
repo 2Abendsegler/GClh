@@ -1619,7 +1619,7 @@ var mainGC = function () {
 
             // Search field
             if (settings_bookmarks_search) {
-                var code = "function gclh_search(){";
+                var code = "function gclh_search_logs(){";
                 code += "  var search = document.getElementById('navi_search').value;";
                 code += "  if(search.match(/^GC[A-Z0-9]{1,10}\\b/i) || search.match(/^TB[A-Z0-9]{1,10}\\b/i)) document.location.href = 'http://coord.info/'+search;";
                 code += "  else if(search.match(/^[A-Z0-9]{6}\\b$/i)) document.location.href = 'https://www.geocaching.com/track/details.aspx?tracker='+search;";
@@ -1630,7 +1630,7 @@ var mainGC = function () {
                 script.innerHTML = code;
                 document.getElementsByTagName("body")[0].appendChild(script);
 
-                var searchfield = "<li><input onKeyDown='if(event.keyCode==13) { gclh_search(); return false; }' type='text' size='6' name='navi_search' id='navi_search' style='padding: 1px; font-weight: bold; font-family: sans-serif; border: 2px solid #778555; border-radius: 7px 7px 7px 7px; -moz-border-radius: 7px; -khtml-border-radius: 7px; background-color:#d8cd9d' value='" + settings_bookmarks_search_default + "'></li>";
+                var searchfield = "<li><input onKeyDown='if(event.keyCode==13) { gclh_search_logs(); return false; }' type='text' size='6' name='navi_search' id='navi_search' style='padding: 1px; font-weight: bold; font-family: sans-serif; border: 2px solid #778555; border-radius: 7px 7px 7px 7px; -moz-border-radius: 7px; -khtml-border-radius: 7px; background-color:#d8cd9d' value='" + settings_bookmarks_search_default + "'></li>";
                 if ( is_page("labs") ) $(".Menu").append(searchfield);
                 else $(".Menu, .menu").append(searchfield);
             }
@@ -6483,15 +6483,14 @@ var mainGC = function () {
                 });
             }
 
-            // Load all Logs-Link
-            function gclh_load_all_link(logs) {
+            // Load all logs.
+            function gclh_load_all(logs) {
                 function gclh_load_all_logs() {
                     if (logs) {
                         var tbodys = (document.getElementById("cache_logs_table2") || document.getElementById("cache_logs_table")).getElementsByTagName("tbody");
                         for (var i = 0; i < tbodys.length; i++) {
                             (document.getElementById("cache_logs_table2") || document.getElementById("cache_logs_table")).removeChild(tbodys[i]);
                         }
-
                         if (browser === "firefox") {
                             injectPageScript("var unsafeWindow = unsafeWindow||window; " + gclh_dynamic_load.toString() + " var settings_hide_top_button=" + settings_hide_top_button + "; ");
                             injectPageScript("(" + addNewLogLines.toString() + ")(\"" + encodeURIComponent(JSON.stringify(logs)) + "\");");
@@ -6512,10 +6511,7 @@ var mainGC = function () {
                             gclh_add_vip_icon();
                             setLinesColorInCacheListing();
                         }
-                        // Marker to disable dynamic log-load
-                        var marker = document.createElement("a");
-                        marker.setAttribute("id", "gclh_all_logs_marker");
-                        document.getElementsByTagName("body")[0].appendChild(marker);
+                        setMarkerDisableDynamicLogLoad();
                     }
                 }
 
@@ -6536,12 +6532,17 @@ var mainGC = function () {
                 load_all.addEventListener("click", gclh_load_all_logs, false);
             }
 
-            // Filter Log-Types
-            function gclh_filter_logs(logs) {
+            // Filter logs.
+            function gclh_filter(logs) {
                 function gclh_filter_logs() {
                     if (!this.childNodes[0]) return false;
                     var log_type = this.childNodes[0].title;
                     if (!log_type) return false;
+                    if (log_type != "VIP" && log_type.match(/VIP/)) {
+                        log_type = "VIP";
+                        document.getElementById("ctl00_ContentBody_lblFindCounts").scrollIntoView();
+                        window.scrollBy(0, -30);
+                    }
                     if (!logs) return false;
 
                     var tbodys = (document.getElementById("cache_logs_table2") || document.getElementById("cache_logs_table")).getElementsByTagName("tbody");
@@ -6573,11 +6574,7 @@ var mainGC = function () {
                         gclh_add_vip_icon();
                         setLinesColorInCacheListing();
                     }
-
-                    // Marker to disable dynamic log-load
-                    var marker = document.createElement("a");
-                    marker.setAttribute("id", "gclh_all_logs_marker");
-                    document.getElementsByTagName("body")[0].appendChild(marker);
+                    setMarkerDisableDynamicLogLoad();
                 }
 
                 if (!document.getElementById("ctl00_ContentBody_lblFindCounts").childNodes[0]) return false;
@@ -6597,6 +6594,7 @@ var mainGC = function () {
                         new_legend.appendChild(link);
                     }
                 }
+
                 if (settings_show_vip_list) {
                     var link = document.createElement("a");
                     link.setAttribute("href", "javascript:void(0);");
@@ -6604,16 +6602,30 @@ var mainGC = function () {
                     link.addEventListener("click", gclh_filter_logs, false);
                     var img = document.createElement("img");
                     img.setAttribute("src", global_img_vip_on);
-                    img.setAttribute("title", "VIP");
                     img.setAttribute("style", "padding-bottom: 2px;");
+                    img.setAttribute("title", "VIP");
                     link.appendChild(img);
                     new_legend.appendChild(link);
                 }
                 document.getElementById('ctl00_ContentBody_lblFindCounts').replaceChild(new_legend, legend);
+
+                if (document.getElementById("lnk_gclh_vip_list")) {
+                    var side = document.getElementById("lnk_gclh_vip_list").parentNode;
+                    var link = document.createElement("a");
+                    link.setAttribute("href", "javascript:void(0);");
+                    link.setAttribute("style", "padding-left: 12px;");
+                    link.addEventListener("click", gclh_filter_logs, false);
+                    var img = document.createElement("img");
+                    img.setAttribute("src", global_img_vip_on);
+                    img.setAttribute("title", "Go to VIP logs");
+                    link.appendChild(img);
+                    side.appendChild(link);
+                }
             }
 
-            function gclh_search_logs(logs) {
-                function gclh_search(e) {
+            // Search logs.
+            function gclh_search(logs) {
+                function gclh_search_logs(e) {
                     if (e.keyCode != 13) return false;
                     if (!logs) return false;
                     var search_text = this.value;
@@ -6650,11 +6662,7 @@ var mainGC = function () {
                         gclh_add_vip_icon();
                         setLinesColorInCacheListing();
                     }
-
-                    // Marker to disable dynamic log-load
-                    var marker = document.createElement("a");
-                    marker.setAttribute("id", "gclh_all_logs_marker");
-                    document.getElementsByTagName("body")[0].appendChild(marker);
+                    setMarkerDisableDynamicLogLoad();
                 }
 
                 if (!document.getElementById("ctl00_ContentBody_lblFindCounts").childNodes[0]) return false;
@@ -6665,9 +6673,17 @@ var mainGC = function () {
                 form.style.display = "inline";
                 search.setAttribute("type", "text");
                 search.setAttribute("size", "10");
-                search.addEventListener("keyup", gclh_search, false);
+                search.addEventListener("keyup", gclh_search_logs, false);
                 document.getElementById('ctl00_ContentBody_lblFindCounts').childNodes[0].appendChild(document.createTextNode("Search in logtext: "));
                 document.getElementById('ctl00_ContentBody_lblFindCounts').childNodes[0].appendChild(form);
+            }
+
+            // Marker to disable dynamic log-load.
+            function setMarkerDisableDynamicLogLoad() {
+                var marker = document.createElement("a");
+                marker.setAttribute("id", "gclh_all_logs_marker");
+                document.getElementsByTagName("body")[0].appendChild(marker);
+                $("#pnlLazyLoad").hide();
             }
 
             // Load "num" Logs
@@ -6690,9 +6706,7 @@ var mainGC = function () {
                 }
 
                 function gclh_load_helper(count) {
-
                     var url = http + "://www.geocaching.com/seek/geocache.logbook?tkn=" + userToken + "&idx=" + curIdx + "&num=100&decrypt=false";
-                    //$("#pnlLazyLoad").show();
 
                     GM_xmlhttpRequest({
                         method: "GET",
@@ -6748,7 +6762,6 @@ var mainGC = function () {
                     unsafeWindow.$('#cache_logs_table2').append(tableContent);
                     $(tableContent).find('.log-row').remove();
 
-                    //$("#pnlLazyLoad").hide();
                     for (var z = 1; z <= numPages; z++) {
                         var json = data[z];
 
@@ -6780,9 +6793,9 @@ var mainGC = function () {
                     }
 
                     // Add Links
-                    gclh_load_all_link(logs); // Load all Logs
-                    gclh_filter_logs(logs); // Filter Logs
-                    gclh_search_logs(logs); // Search Field
+                    gclh_load_all(logs);
+                    gclh_filter(logs);
+                    gclh_search(logs);
 
                     if (browser === "firefox") {
                         var logsToAdd = logs.slice(0, num);
