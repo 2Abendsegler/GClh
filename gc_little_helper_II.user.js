@@ -5962,7 +5962,7 @@ var mainGC = function () {
                 headline.setAttribute("class", "WidgetHeader");
                 body.setAttribute("class", "WidgetBody");
                 body.setAttribute("id", "gclh_vip_list");
-                headline.innerHTML = "<img width='16' height='16' title='Very important person List' alt='VIP-List' src='" + http + "://www.geocaching.com/images/icons/icon_attended.gif\'> VIP-List";
+                headline.innerHTML = "<img width='16' height='16' style='margin-bottom: -2px;' title='Very important person List' alt='VIP-List' src='" + http + "://www.geocaching.com/images/icons/icon_attended.gif\'> VIP-List";
                 if ( settings_make_vip_lists_hideable ) {
                     headline.innerHTML = "<img id='lnk_gclh_vip_list' title='' src='' style='cursor: pointer'> " + headline.innerHTML;
                 }
@@ -5984,7 +5984,7 @@ var mainGC = function () {
                     headline2.setAttribute("class", "WidgetHeader");
                     body2.setAttribute("class", "WidgetBody");
                     body2.setAttribute("id", "gclh_vip_list_nofound");
-                    headline2.innerHTML = "<img width='16' height='16' title='Very important person List \"not found\"' alt='VIP-List \"not found\"' src='" + http + "://www.geocaching.com/images/icons/icon_attended.gif'> VIP-List \"not found\"";
+                    headline2.innerHTML = "<img width='16' height='16' style='margin-bottom: -2px;' title='Very important person List \"not found\"' alt='VIP-List \"not found\"' src='" + http + "://www.geocaching.com/images/icons/icon_attended.gif'> VIP-List \"not found\"";
                     if ( settings_make_vip_lists_hideable ) {
                         headline2.innerHTML = "<img id='lnk_gclh_vip_list_nofound' title='' src='' style='cursor: pointer'> " + headline2.innerHTML;
                     }
@@ -7082,8 +7082,8 @@ var mainGC = function () {
                     if (!this.childNodes[0]) return false;
                     var log_type = this.childNodes[0].title;
                     if (!log_type) return false;
-                    if (log_type != "VIP" && log_type.match(/VIP/)) {
-                        log_type = "VIP";
+                    if (log_type.match(/VIP/)) log_type = "VIP";
+                    if (this.name && this.name == "vip_list") {
                         document.getElementById("ctl00_ContentBody_lblFindCounts").scrollIntoView();
                         window.scrollBy(0, -30);
                     }
@@ -7140,11 +7140,11 @@ var mainGC = function () {
                     var link = document.createElement("a");
                     link.setAttribute("href", "javascript:void(0);");
                     link.setAttribute("style", "text-decoration: 'none'; padding-right: 18px;");
+                    link.setAttribute("name", "logs");
                     link.addEventListener("click", gclh_filter_logs, false);
                     var img = document.createElement("img");
-                    img.setAttribute("src", global_img_vip_on);
-                    img.setAttribute("style", "padding-bottom: 2px;");
-                    img.setAttribute("title", "VIP");
+                    img.setAttribute("src", global_logs_vip_icon);
+                    img.setAttribute("title", "VIP logs");
                     link.appendChild(img);
                     new_legend.appendChild(link);
                 }
@@ -7155,10 +7155,12 @@ var mainGC = function () {
                     var link = document.createElement("a");
                     link.setAttribute("href", "javascript:void(0);");
                     link.setAttribute("style", "padding-left: 12px;");
+                    link.setAttribute("name", "vip_list");
                     link.addEventListener("click", gclh_filter_logs, false);
                     var img = document.createElement("img");
-                    img.setAttribute("src", global_img_vip_on);
-                    img.setAttribute("title", "Go to VIP logs");
+                    img.setAttribute("src", global_logs_vip_icon);
+                    img.setAttribute("style", "margin-bottom: -2px;");
+                    img.setAttribute("title", "VIP logs");
                     link.appendChild(img);
                     side.appendChild(link);
                 }

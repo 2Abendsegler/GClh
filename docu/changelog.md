@@ -22,6 +22,11 @@ New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/254">#254</a>] 
 <img src="../images/v0.7_Screen01.jpg" alt="v0.7_Screen01.jpg"><br>
 <br></li>
 <li>
+New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/268">#268</a>] VIP list: Quick link to VIP logs:<br>
+Navigate down to logs area and invoke the VIP filter.<br>
+<img src="../images/v0.7_Screen02.jpg" alt="v0.7_Screen02.jpg"><br>
+<br></li>
+<li>
 Fix: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/264">#264</a>] VIP list not rendered on a specific cache (Lesopark Dubina). Profile link in listing without any text.<br>
 </li>
 <li>
