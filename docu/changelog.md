@@ -31,7 +31,7 @@ Change: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/277">#277</a
 Do not show button "Show log counter" if the logs are filtered or searched.<br>
 </li>
 <li>
-Change: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/279">#279</a>] Implement note in config with using information for log templates:<br>
+Change: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/279">#279</a>] Implement note in Config with using information for log templates:<br>
 Many thanks for implementation.<br>
 </li>
 <li>
