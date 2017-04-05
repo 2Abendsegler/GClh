@@ -2407,7 +2407,9 @@ var mainGC = function () {
 // Show refresh button for PocketQuery Page
     if ((document.location.href.match(/^https?:\/\/www\.geocaching\.com\/pocket/)) && document.getElementById("uxCreateNewPQ")) {
         try {
-            document.getElementById('uxCreateNewPQ').parentNode.parentNode.parentNode.innerHTML += "<p><a href='" + http + "://www.geocaching.com/pocket/default.aspx' title='Refresh Page'>Refresh Page</a></p>";
+            var p = document.createElement("p");
+            p.innerHTML = "<a href='" + http + "://www.geocaching.com/pocket/default.aspx' title='Refresh Page'>Refresh Page</a>";
+            document.getElementById('uxCreateNewPQ').parentNode.parentNode.parentNode.appendChild(p);
         } catch (e) {
             gclh_error("Refresh button on PQ-Page", e);
         }
