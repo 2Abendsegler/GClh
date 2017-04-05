@@ -3643,7 +3643,8 @@ var mainGC = function () {
     }
 
 // this function reads the table with the additional waypoints
-    function getListingCoordinates() {
+// TODO: find a better name and use getListingCoordinates
+    function getListingCoordinatesX() {
         var addWP  = [];
         try {
             var waypoint = {};
@@ -3679,7 +3680,7 @@ var mainGC = function () {
                 waypoint.latitude = tmp_coords[0];
                 waypoint.longitude = tmp_coords[1];
             } else {
-                gclh_log("ERROR: getListingCoordinates(): warning: listing coordinates are not found.");
+                gclh_log("ERROR: getListingCoordinatesX(): warning: listing coordinates are not found.");
             }
             waypoint.visible = true;
             waypoint.lookup = gccode;
@@ -3693,7 +3694,7 @@ var mainGC = function () {
 
             addWP.push(waypoint); // TODO: added only if listing coordinates available
         } catch(e) {
-            gclh_error("getListingCoordinates(): " ,e);
+            gclh_error("getListingCoordinatesX(): " ,e);
         }
         return addWP;
     }
@@ -3709,7 +3710,7 @@ var mainGC = function () {
 
     function extractWaypointsFromListing() {
         var waypoints = [];
-        waypoints = waypoints.concat(getListingCoordinates());
+        waypoints = waypoints.concat(getListingCoordinatesX());
         waypoints = waypoints.concat(getAdditionalWaypoints());
         waypoints = waypoints.concat(getLongDescriptionCoordinates());
         waypoints = waypoints.concat(getPersonalNoteCoordinates());
@@ -3772,7 +3773,7 @@ var mainGC = function () {
         console.log( "Calculate zoom level for Flopp's Map" + " (width="+floppsMapWidth+"px heigth="+floppsMapHeigth+"px)" );
         for ( zoom=23; zoom>=0; zoom--) {
             // calculate tile boundary box
-	    var tileY_min = lat2tile(Latmin,zoom);
+            var tileY_min = lat2tile(Latmin,zoom);
             var tileY_max = lat2tile(Latmax,zoom);
             var tiles_Y = Math.abs(tileY_max-tileY_min+1); // boundary box heigth in number of tiles
             var tileX_min = long2tile(Lonmin,zoom);
@@ -3781,13 +3782,13 @@ var mainGC = function () {
             console.log( "  Tiles @ zoom="+zoom+": Xmin="+tileX_min+" Xmas="+tileX_max+" ΔX="+tiles_X+" => "+tiles_X*256+"px | Ymin="+tileY_min+" Ymax="+tileY_max+" ΔY="+tiles_Y+" => "+tiles_Y*256+"px" );
 
             // calculate width and height of boundary rectangle (in pixel)
-            var latDelta = Math.abs(tile2lat(tileX_max+1,zoom)-tile2lat(tileX_min,zoom));
-            var latPixelPerDegree = tiles_X*256/latDelta;
+            var latDelta = Math.abs(tile2lat(tileY_max+1,zoom)-tile2lat(tileY_min,zoom));
+            var latPixelPerDegree = tiles_Y*256/latDelta;
             var boundaryHeight = latPixelPerDegree*(Latmax-Latmin);
             console.log("boundaryHeight:  zoom="+zoom+" latDelta="+latDelta+"° * latPixelPerDegree="+latPixelPerDegree+"px/° = "+boundaryHeight+"px");
 
-            var longDelta = Math.abs(tile2long(tileY_max+1,zoom)-tile2long(tileY_min,zoom));
-            var longPixelPerDegree = tiles_Y*256/longDelta;
+            var longDelta = Math.abs(tile2long(tileX_max+1,zoom)-tile2long(tileX_min,zoom));
+            var longPixelPerDegree = tiles_X*256/longDelta;
             var boundaryWidth = longPixelPerDegree*(Lonmax-Lonmin);
             console.log("boundaryWidth: zoom="+zoom+" longDelta="+longDelta+"° longPixelPerDegree="+longPixelPerDegree+"px/° ="+boundaryWidth+"px");
 
@@ -3901,6 +3902,7 @@ var mainGC = function () {
 
             var status = {};
             var waypoints = extractWaypointsFromListing();
+            console.log(waypoints);
             var link = buildFloppsMapLink( waypoints, map, false, status );
             if ( status.limited == true ) {
                 $("#floppsmap-warning").show();
