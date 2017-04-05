@@ -6505,6 +6505,7 @@ var mainGC = function () {
                             setLinesColorInCacheListing();
                         }
                         setMarkerDisableDynamicLogLoad();
+                        if (document.getElementById("gclh_show_log_counter")) document.getElementById("gclh_show_log_counter").style.visibility = "";
                     }
                 }
 
@@ -6566,6 +6567,7 @@ var mainGC = function () {
                         setLinesColorInCacheListing();
                     }
                     setMarkerDisableDynamicLogLoad();
+                    if (document.getElementById("gclh_show_log_counter")) document.getElementById("gclh_show_log_counter").style.visibility = "hidden";
                 }
 
                 if (!document.getElementById("ctl00_ContentBody_lblFindCounts").childNodes[0]) return false;
@@ -6653,6 +6655,7 @@ var mainGC = function () {
                         setLinesColorInCacheListing();
                     }
                     setMarkerDisableDynamicLogLoad();
+                    if (document.getElementById("gclh_show_log_counter")) document.getElementById("gclh_show_log_counter").style.visibility = "hidden";
                 }
 
                 if (!document.getElementById("ctl00_ContentBody_lblFindCounts").childNodes[0]) return false;
@@ -8173,7 +8176,7 @@ var mainGC = function () {
         document.getElementById("ctl00_ContentBody_uxLogbookLink").parentNode.style.width = "100%";
         appendCssStyle(".gclh_logCounter {font-size: 10px !important; padding-left: 6px; font-style: italic;}");
     }
-    function showLogCounter() {   
+    function showLogCounter() {
         try {
             var logCounter = new Object();
             logCounter["all"] = 0;
