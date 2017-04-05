@@ -3775,14 +3775,14 @@ var mainGC = function () {
             // calculate tile boundary box
             var tileY_min = lat2tile(Latmin,zoom);
             var tileY_max = lat2tile(Latmax,zoom);
-            var tiles_Y = Math.abs(tileY_max-tileY_min+1); // boundary box heigth in number of tiles
+            var tiles_Y = Math.abs(tileY_min-tileY_max+1); // boundary box heigth in number of tiles
             var tileX_min = long2tile(Lonmin,zoom);
             var tileX_max = long2tile(Lonmax,zoom);
             var tiles_X = Math.abs(tileX_max-tileX_min+1); // boundary box width in  number of tiles
             console.log( "  Tiles @ zoom="+zoom+": Xmin="+tileX_min+" Xmas="+tileX_max+" ΔX="+tiles_X+" => "+tiles_X*256+"px | Ymin="+tileY_min+" Ymax="+tileY_max+" ΔY="+tiles_Y+" => "+tiles_Y*256+"px" );
 
             // calculate width and height of boundary rectangle (in pixel)
-            var latDelta = Math.abs(tile2lat(tileY_max+1,zoom)-tile2lat(tileY_min,zoom));
+            var latDelta = Math.abs(tile2lat(tileY_max,zoom)-tile2lat(tileY_min+1,zoom));
             var latPixelPerDegree = tiles_Y*256/latDelta;
             var boundaryHeight = latPixelPerDegree*(Latmax-Latmin);
             console.log("boundaryHeight:  zoom="+zoom+" latDelta="+latDelta+"° * latPixelPerDegree="+latPixelPerDegree+"px/° = "+boundaryHeight+"px");
