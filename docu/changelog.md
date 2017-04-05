@@ -30,7 +30,19 @@ Navigate down to logs area and invoke the VIP filter.<br>
 New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/264">#264</a>] VIP list not rendered on a specific cache (Lesopark Dubina). Profile link in listing without any text.<br>
 </li>
 <li>
-New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/250">#250</a>] Show elevation for listing coordinates and waypoints with visible cooordinates.<br>
+New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/250">#250</a>] Show elevation for listing coordinates and waypoints with visible cooordinates. Metric and imperial is supported.<br/>
+Settings<br/>
+<img src="../images/v0.7_Screen04.jpg"><br/>
+<br/>
+Elevation for Listing coordinates (metric)<br/>
+<img src="../images/v0.7_Screen05.jpg"><br/>
+<br/>
+Elevation for Listing coordinates (imperial)<br/>
+<img src="../images/v0.7_Screen09.jpg"><br/>
+<br/>
+Elevation for additional waypoints<br/>
+<img src="../images/v0.7_Screen07.jpg"><br/>
+<br/>
 </li>
 <li>
 New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/10">#10</a>] Show listing coordinates and additional waypoints on Flopp's Map<br>
