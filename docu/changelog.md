@@ -29,7 +29,7 @@ Navigate down to logs area and invoke the VIP filter.<br>
 <li>
 Change: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/264">#264</a>] Show button "Show log counter" only if feature is possible:<br>
 Do not show button "Show log counter" if the logs are filtered or searched.<br>
-<br></li>
+</li>
 <li>
 Fix: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/264">#264</a>] VIP list not rendered on a specific cache (Lesopark Dubina). Profile link in listing without any text.<br>
 </li>
