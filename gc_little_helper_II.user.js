@@ -3816,6 +3816,9 @@ var mainGC = function () {
         }
         var center_latitude = ((Latmax+90.0)+(Latmin+90.0))/2-90.0
         var center_longitude = ((Lonmax+180.0)+(Lonmin+180.0))/2-180.0
+
+        var maxZoom = { 'OSM': 18, 'OSM/DE': 18, 'OCM': 17, 'MQ': 17, 'OUTD': 17, 'TOPO': 15, 'roadmap':20, 'terrain':20, 'hybrid': 20 };
+        zoom = Math.min(zoom,maxZoom[map]);
         var url = 'http://flopp.net/'+'?c='+center_latitude+':'+center_longitude+'&z='+zoom+'&t='+map+url;
 
         url += '&d=O:C';
@@ -3903,7 +3906,7 @@ var mainGC = function () {
             var status = {};
             var waypoints = extractWaypointsFromListing();
             console.log(waypoints);
-            var link = buildFloppsMapLink( waypoints, map, false, status );
+            var link = buildFloppsMapLink( waypoints, 'OSM', false, status );
             if ( status.limited == true ) {
                 $("#floppsmap-warning").show();
             } else {

@@ -27,13 +27,14 @@ Navigate down to logs area and invoke the VIP filter.<br>
 <img src="../images/v0.7_Screen02.jpg" alt="v0.7_Screen02.jpg"><br>
 <br></li>
 <li>
-Fix: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/264">#264</a>] VIP list not rendered on a specific cache (Lesopark Dubina). Profile link in listing without any text.<br>
+New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/264">#264</a>] VIP list not rendered on a specific cache (Lesopark Dubina). Profile link in listing without any text.<br>
 </li>
 <li>
-Fix: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/250">#250</a>] Show elevation for listing coordinates and waypoints with visible cooordinates.<br>
+New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/250">#250</a>] Show elevation for listing coordinates and waypoints with visible cooordinates.<br>
 </li>
 <li>
-Fix: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/10">#10</a>] Show listing coordinates and additional waypoints on Flopp's Map<br>
+New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/10">#10</a>] Show listing coordinates and additional waypoints on Flopp's Map<br>
+Special thank to SiMaKiDD - the creator of MAP_BUTTONS script - for the inspiration, permission and support<br/> 
 </li>
 <br>
 <li>
