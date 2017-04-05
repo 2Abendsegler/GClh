@@ -47,13 +47,25 @@ Elevation for additional waypoints<br/>
 <li>
 New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/10">#10</a>] Show listing coordinates and additional waypoints on Flopp's Map<br>
 Special thank to SiMaKiDD - the creator of MAP_BUTTONS script - for the inspiration, permission and support<br/> 
+<img src="../images/v0.7_Screen08.jpg"><br/>
+Different map styles selectable<br/>
+<img src="../images/v0.7_Screen11.jpg"><br/>
+Zoom level is calculate automatically<br/>
+<img src="../images/v0.7_Screen12.jpg"><br/>
+<br/>
 </li>
 <br>
 <li>
 New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/253">#253</a>] Added shortcut links to waypoint list and logs section.<br>
+<img src="../images/v0.7_Screen06.jpg"><br/>
+<br/>
 </li>
 <li>
-New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/252">#252</a>] Link to Google Map Driving Direction for every waypoint in the waypoint list (which visible coordinates)
+New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/252">#252</a>] Link to Google Map Driving Direction for every waypoint in the waypoint list (which visible coordinates)<br/>
+Settings > Listing<br/>
+<img src="../images/v0.7_Screen03.jpg"><br/>
+Additional Waypoint list<br/>
+<img src="../images/v0.7_Screen10.jpg"><br/>
 </li>
 <br>
 </ul>
