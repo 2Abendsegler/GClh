@@ -31,6 +31,10 @@ Change: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/277">#277</a
 Do not show button "Show log counter" if the logs are filtered or searched.<br>
 </li>
 <li>
+Change: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/279">#279</a>] Implement note with using information for log templates in config:
+Many thanks for implementation.<br>
+</li>
+<li>
 Fix: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/264">#264</a>] VIP list not rendered on a specific cache (Lesopark Dubina). Profile link in listing without any text.<br>
 </li>
 <br>
