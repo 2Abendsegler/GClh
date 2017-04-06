@@ -28,6 +28,7 @@ Navigate down to logs area and invoke the VIP filter.<br>
 <br></li>
 <li>
 New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/250">#250</a>] Show elevation for listing coordinates and waypoints with visible cooordinates. Metric and imperial is supported.<br>
+Many thanks to <a href="https://www.geocaching.com/profile/?u=CachingFoX">CachingFoX</a> for the idea and the development.<br>
 <br>
 Settings:<br>
 <img src="../images/v0.7_Screen04.jpg" alt="v0.7_Screen04.jpg"><br>
@@ -44,6 +45,7 @@ Elevation for additional waypoints:<br>
 <li>
 New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/10">#10</a>] Show listing coordinates and additional waypoints on Flopp's Map:<br>
 Special thank to <a href="https://www.geocaching.com/profile/?u=SiMaKiDD">SiMaKiDD</a> - the creator of MAP_BUTTONS script - for the inspiration, permission and support.<br> 
+Many thanks to <a href="https://www.geocaching.com/profile/?u=CachingFoX">CachingFoX</a> for the implementation.<br>
 <img src="../images/v0.7_Screen08.jpg"><br>
 Different map styles selectable<br>
 <img src="../images/v0.7_Screen11.jpg"><br>
