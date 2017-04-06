@@ -71,14 +71,14 @@ Additional Waypoint list:<br>
 <li>
 Change: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/277">#277</a>] Show button "Show log counter" only if feature is possible:<br>
 Do not show button "Show log counter" if the logs are filtered or searched.<br>
-<br></li>
+</li>
 <li>
 Change: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/279">#279</a>] Implement note in Config with using information for log templates:<br>
 Many thanks for implementation.<br>
-<br></li>
+</li>
 <li>
 Fix: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/264">#264</a>] VIP list not rendered on a specific cache (Lesopark Dubina). Profile link in listing without any text.<br>
-<br></li>
+</li>
 <li>
 Fix: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/276">#276</a>] Open list with "Pocket Queries ready to download" not possible, only in chrome.<br>
 </li>
