@@ -27,7 +27,7 @@ Navigate down to logs area and invoke the VIP filter.<br>
 <img src="../images/v0.7_Screen02.jpg" alt="v0.7_Screen02.jpg"><br>
 <br></li>
 <li>
-New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/250">#250</a>] Show elevation for listing coordinates and waypoints with visible cooordinates. Metric and imperial is supported.<br>
+New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/250">#250</a>] Show elevation for listing coordinates and waypoints with visible coordinates. Metric and imperial is supported.<br>
 Many thanks to <a href="https://www.geocaching.com/profile/?u=CachingFoX">CachingFoX</a> for the idea and the development.<br>
 <br>
 Settings:<br>
@@ -46,11 +46,14 @@ Elevation for additional waypoints:<br>
 New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/10">#10</a>] Show listing coordinates and additional waypoints on Flopp's Map:<br>
 Special thank to <a href="https://www.geocaching.com/profile/?u=SiMaKiDD">SiMaKiDD</a> - the creator of MAP_BUTTONS script - for the inspiration, permission and support.<br> 
 Many thanks to <a href="https://www.geocaching.com/profile/?u=CachingFoX">CachingFoX</a> for the implementation.<br>
-<img src="../images/v0.7_Screen08.jpg"><br>
-Different map styles selectable<br>
-<img src="../images/v0.7_Screen11.jpg"><br>
-Zoom level is calculate automatically<br>
-<img src="../images/v0.7_Screen12.jpg"><br>
+<br>
+<img src="../images/v0.7_Screen08.jpg" alt="v0.7_Screen08.jpg"><br>
+<br>
+Different map styles selectable:<br>
+<img src="../images/v0.7_Screen11.jpg" alt="v0.7_Screen11.jpg"><br>
+<br>
+Zoom level is calculate automatically:<br>
+<img src="../images/v0.7_Screen12.jpg" alt="v0.7_Screen12.jpg"><br>
 <br></li>
 <li>
 New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/253">#253</a>] Added shortcut links to waypoint list and logs section.<br>
