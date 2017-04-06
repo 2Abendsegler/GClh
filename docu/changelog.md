@@ -30,7 +30,7 @@ Navigate down to logs area and invoke the VIP filter.<br>
 New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/250">#250</a>] Show elevation for listing coordinates and waypoints with visible coordinates. Metric and imperial is supported.<br>
 Many thanks to <a href="https://www.geocaching.com/profile/?u=CachingFoX">CachingFoX</a> for the idea and the development.<br>
 <br>
-Settings:<br>
+Settings > Listing:<br>
 <img src="../images/v0.7_Screen04.jpg" alt="v0.7_Screen04.jpg"><br>
 <br>
 Elevation for listing coordinates (metric):<br>
@@ -57,17 +57,17 @@ Zoom level is calculate automatically:<br>
 <br></li>
 <li>
 New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/253">#253</a>] Added shortcut links to waypoint list and logs section.<br>
-<img src="../images/v0.7_Screen06.jpg"><br/>
-<br/>
-</li>
+<img src="../images/v0.7_Screen06.jpg" alt="v0.7_Screen06.jpg"><br>
+<br></li>
 <li>
-New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/252">#252</a>] Link to Google Map Driving Direction for every waypoint in the waypoint list (which visible coordinates)<br/>
-Settings > Listing<br/>
-<img src="../images/v0.7_Screen03.jpg"><br/>
-Additional Waypoint list<br/>
-<img src="../images/v0.7_Screen10.jpg"><br/>
-<br/>
-</li>
+New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/252">#252</a>] Link to Google Map Driving Direction for every waypoint in the waypoint list (with visible coordinates)<br>
+<br>
+Settings > Listing:<br>
+<img src="../images/v0.7_Screen03.jpg"><br>
+<br>
+Additional Waypoint list:<br>
+<img src="../images/v0.7_Screen10.jpg"><br>
+<br></li>
 <li>
 Change: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/277">#277</a>] Show button "Show log counter" only if feature is possible:<br>
 Do not show button "Show log counter" if the logs are filtered or searched.<br>
