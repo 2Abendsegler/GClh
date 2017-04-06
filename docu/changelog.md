@@ -38,12 +38,52 @@ Many thanks for implementation.<br>
 Fix: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/264">#264</a>] VIP list not rendered on a specific cache (Lesopark Dubina). Profile link in listing without any text.<br>
 </li>
 <li>
+New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/250">#250</a>] Show elevation for listing coordinates and waypoints with visible cooordinates. Metric and imperial is supported.<br/>
+Settings<br/>
+<img src="../images/v0.7_Screen04.jpg"><br/>
+<br/>
+Elevation for Listing coordinates (metric)<br/>
+<img src="../images/v0.7_Screen05.jpg"><br/>
+<br/>
+Elevation for Listing coordinates (imperial)<br/>
+<img src="../images/v0.7_Screen09.jpg"><br/>
+<br/>
+Elevation for additional waypoints<br/>
+<img src="../images/v0.7_Screen07.jpg"><br/>
+<br/>
+</li>
+<li>
+New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/10">#10</a>] Show listing coordinates and additional waypoints on Flopp's Map<br>
+Special thank to SiMaKiDD - the creator of MAP_BUTTONS script - for the inspiration, permission and support<br/> 
+<img src="../images/v0.7_Screen08.jpg"><br/>
+Different map styles selectable<br/>
+<img src="../images/v0.7_Screen11.jpg"><br/>
+Zoom level is calculate automatically<br/>
+<img src="../images/v0.7_Screen12.jpg"><br/>
+<br/>
+</li>
+<br>
+<li>
+New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/253">#253</a>] Added shortcut links to waypoint list and logs section.<br>
+<img src="../images/v0.7_Screen06.jpg"><br/>
+<br/>
+</li>
+<li>
+New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/252">#252</a>] Link to Google Map Driving Direction for every waypoint in the waypoint list (which visible coordinates)<br/>
+Settings > Listing<br/>
+<img src="../images/v0.7_Screen03.jpg"><br/>
+Additional Waypoint list<br/>
+<img src="../images/v0.7_Screen10.jpg"><br/>
+<br/>
+</li>
+<li>
 Fix: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/276">#276</a>] Open list with "Pocket Queries ready to download" not possible, only in chrome.<br>
 </li>
 <br>
 </ul>
 (08.04.2017)<br> 
 <br>
+
 
 ---
 ## v0.6:
