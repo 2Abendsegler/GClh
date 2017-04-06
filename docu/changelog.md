@@ -40,19 +40,16 @@ Elevation for listing coordinates (imperial):<br>
 <br>
 Elevation for additional waypoints:<br>
 <img src="../images/v0.7_Screen07.jpg" alt="v0.7_Screen07.jpg"><br>
-<br>
-</li>
+<br></li>
 <li>
-New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/10">#10</a>] Show listing coordinates and additional waypoints on Flopp's Map<br>
-Special thank to SiMaKiDD - the creator of MAP_BUTTONS script - for the inspiration, permission and support<br/> 
-<img src="../images/v0.7_Screen08.jpg"><br/>
-Different map styles selectable<br/>
-<img src="../images/v0.7_Screen11.jpg"><br/>
-Zoom level is calculate automatically<br/>
-<img src="../images/v0.7_Screen12.jpg"><br/>
-<br/>
-</li>
-<br>
+New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/10">#10</a>] Show listing coordinates and additional waypoints on Flopp's Map:<br>
+Special thank to <a href="https://www.geocaching.com/profile/?u=SiMaKiDD">SiMaKiDD</a> - the creator of MAP_BUTTONS script - for the inspiration, permission and support.<br> 
+<img src="../images/v0.7_Screen08.jpg"><br>
+Different map styles selectable<br>
+<img src="../images/v0.7_Screen11.jpg"><br>
+Zoom level is calculate automatically<br>
+<img src="../images/v0.7_Screen12.jpg"><br>
+<br></li>
 <li>
 New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/253">#253</a>] Added shortcut links to waypoint list and logs section.<br>
 <img src="../images/v0.7_Screen06.jpg"><br/>
