@@ -60,7 +60,7 @@ New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/253">#253</a>] 
 <img src="../images/v0.7_Screen06.jpg" alt="v0.7_Screen06.jpg"><br>
 <br></li>
 <li>
-New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/252">#252</a>] Link to Google Map Driving Direction for every waypoint in the waypoint list (with visible coordinates)<br>
+New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/252">#252</a>] Link to Google Map Driving Direction for every waypoint in the waypoint list (with visible coordinates):<br>
 <br>
 Settings > Listing:<br>
 <img src="../images/v0.7_Screen03.jpg" alt="v0.7_Screen03.jpg"><br>
