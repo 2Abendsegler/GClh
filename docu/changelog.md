@@ -63,10 +63,10 @@ New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/253">#253</a>] 
 New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/252">#252</a>] Link to Google Map Driving Direction for every waypoint in the waypoint list (with visible coordinates)<br>
 <br>
 Settings > Listing:<br>
-<img src="../images/v0.7_Screen03.jpg"><br>
+<img src="../images/v0.7_Screen03.jpg" alt="v0.7_Screen03.jpg"><br>
 <br>
 Additional Waypoint list:<br>
-<img src="../images/v0.7_Screen10.jpg"><br>
+<img src="../images/v0.7_Screen10.jpg" alt="v0.7_Screen10.jpg"><br>
 <br></li>
 <li>
 Change: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/277">#277</a>] Show button "Show log counter" only if feature is possible:<br>
