@@ -2409,16 +2409,18 @@ var mainGC = function () {
         }
     }
 
-// Show refresh button for PocketQuery Page
+// Show refresh button for PocketQuery Page.
     if ((document.location.href.match(/^https?:\/\/www\.geocaching\.com\/pocket/)) && document.getElementById("uxCreateNewPQ")) {
         try {
-            document.getElementById('uxCreateNewPQ').parentNode.parentNode.parentNode.innerHTML += "<p><a href='" + http + "://www.geocaching.com/pocket/default.aspx' title='Refresh Page'>Refresh Page</a></p>";
+            var p = document.createElement("p");
+            p.innerHTML = "<a href='" + http + "://www.geocaching.com/pocket/default.aspx' title='Refresh Page'>Refresh Page</a>";
+            document.getElementById('uxCreateNewPQ').parentNode.parentNode.parentNode.appendChild(p);
         } catch (e) {
             gclh_error("Refresh button on PQ-Page", e);
         }
     }
 
-// Highlight column of current day on PocketQuery Page
+// Highlight column of current day on PocketQuery Page.
     if ((document.location.href.match(/^https?:\/\/www\.geocaching\.com\/pocket/)) && document.getElementById("ActivePQs")) {
         try {
             var matches = document.getElementById('ActivePQs').childNodes[1].innerHTML.match(/([A-Za-z]*),/);
@@ -7093,6 +7095,8 @@ var mainGC = function () {
                         document.getElementById("ctl00_ContentBody_lblFindCounts").scrollIntoView();
                         window.scrollBy(0, -30);
                     }
+                    if (settings_show_owner_vip_list) var vip_owner = get_real_owner();
+                    else var vip_owner = "#";
                     if (!logs) return false;
 
                     var tbodys = (document.getElementById("cache_logs_table2") || document.getElementById("cache_logs_table")).getElementsByTagName("tbody");
@@ -7102,7 +7106,7 @@ var mainGC = function () {
                     if (browser === "firefox") {
                         var logsToAdd = [];
                         for (var i = 0; i < logs.length; i++) {
-                            if (logs[i] && (logs[i].LogType == log_type || (log_type == "VIP" && in_array(logs[i].UserName, global_vips)))) {
+                            if (logs[i] && (logs[i].LogType == log_type || (log_type == "VIP" && (in_array(logs[i].UserName, global_vips) || logs[i].UserName == vip_owner)))) {
                                 logsToAdd.push(logs[i]);
                             }
                         }
@@ -7112,7 +7116,7 @@ var mainGC = function () {
                         window.postMessage("setLinesColorInCacheListing", "https://www.geocaching.com");
                     } else {
                         for (var i = 0; i < logs.length; i++) {
-                            if (logs[i] && (logs[i].LogType == log_type || (log_type == "VIP" && in_array(logs[i].UserName, global_vips)))) {
+                            if (logs[i] && (logs[i].LogType == log_type || (log_type == "VIP" && (in_array(logs[i].UserName, global_vips) || logs[i].UserName == vip_owner)))) {
                                 var newBody = unsafeWindow.$(document.createElement("TBODY"));
                                 unsafeWindow.$("#tmpl_CacheLogRow_gclh").tmpl(logs[i]).appendTo(newBody);
                                 injectPageScript("$('a.tb_images').fancybox({'type': 'image', 'titlePosition': 'inside'});");
@@ -9686,7 +9690,7 @@ var mainGC = function () {
             }
             html += "</select>" + show_help("With this option you can choose the zoom value to start in the map. \"1\" is the hole world and \"19\" is the maximal enlargement. Default is \"11\". <br><br>This option requires \"Show cache location in overview map\".") + "<br>";
             html += checkboxy('settings_show_vip_list', 'Show VIP list') + show_help("The VIP list is a list, displayed at the right side on a cache listing. You can add any user to your VIP list by clicking the little VIP icon beside the username. If it is green, this person is a VIP. The VIP list only shows VIPs and the logs of VIPs, which already posted a log to this cache. With this option you are able to see which of your VIPs already found this cache. On your profile page there is an overview of all your VIPs.<br>(VIP: Very important person)") + "<br/>";
-            html += "&nbsp; " + checkboxy('settings_show_owner_vip_list', 'Show owner in VIP list')  + show_help("If you enable this option, the owner is a VIP for the cache, so you can see, what happened with the cache (disable, maint, enable, ..). <br>(VIP: Very important person)<br><br>This option requires \"Show VIP list\".")+ "<br/>";
+            html += "&nbsp; " + checkboxy('settings_show_owner_vip_list', 'Show owner in VIP list')  + show_help("If you enable this option, the owner is a VIP for the cache, so you can see, what happened with the cache (disable, maint, enable, ..). Then the owner is shown not only in VIP-list but also in VIP logs.<br>(VIP: Very important person)<br><br>This option requires \"Show VIP list\".")+ "<br/>";
             html += "&nbsp; " + checkboxy('settings_show_long_vip', 'Show long VIP list (one row per log)') + show_help("This is another type of displaying the VIP list. If you disable this option you get the short list - one row per VIP and the logs as icons beside the VIP. If you enable this option, there is a row for every log.<br>(VIP: Very important person)<br><br>This option requires \"Show VIP list\".") + "<br/>";
             html += "&nbsp; " + checkboxy('settings_vip_show_nofound', 'Show a list of VIPs who have not found the cache') + show_help("This option enables an additional VIP list with VIPs who have not found the cache.<br>(VIP: Very important person)<br><br>This option requires \"Show VIP list\".") + "<br>";
             html += "&nbsp; " + checkboxy('settings_make_vip_lists_hideable', 'Make VIP lists in listing hideable') + show_help("With this option you can hide and show the VIP lists \"VIP-List\" and \"VIP-List not found\" in cache listing with one click.<br>(VIP: Very important person)<br><br>This option requires \"Show VIP list\".") + "<br>";

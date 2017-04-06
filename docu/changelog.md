@@ -74,6 +74,10 @@ Settings > Listing<br/>
 <img src="../images/v0.7_Screen03.jpg"><br/>
 Additional Waypoint list<br/>
 <img src="../images/v0.7_Screen10.jpg"><br/>
+<br/>
+</li>
+<li>
+Fix: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/276">#276</a>] Open list with "Pocket Queries ready to download" not possible, only in chrome.<br>
 </li>
 <br>
 </ul>
