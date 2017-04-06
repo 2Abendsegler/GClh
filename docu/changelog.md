@@ -38,7 +38,7 @@ Elevation for listing coordinates (metric):<br>
 Elevation for listing coordinates (imperial):<br>
 <img src="../images/v0.7_Screen09.jpg" alt="v0.7_Screen09.jpg"><br>
 <br>
-Elevation for additional waypoints:<br/>
+Elevation for additional waypoints:<br>
 <img src="../images/v0.7_Screen07.jpg" alt="v0.7_Screen07.jpg"><br>
 <br>
 </li>
