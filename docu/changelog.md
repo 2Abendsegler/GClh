@@ -28,16 +28,16 @@ Navigate down to logs area and invoke the VIP filter.<br>
 <br></li>
 <li>
 New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/250">#250</a>] Show elevation for listing coordinates and waypoints with visible cooordinates. Metric and imperial is supported.<br/>
-Settings<br/>
+Settings:<br/>
 <img src="../images/v0.7_Screen04.jpg" alt="v0.7_Screen04.jpg"><br/>
 <br/>
-Elevation for Listing coordinates (metric)<br/>
+Elevation for listing coordinates (metric):<br/>
 <img src="../images/v0.7_Screen05.jpg" alt="v0.7_Screen05.jpg"><br/>
 <br/>
-Elevation for Listing coordinates (imperial)<br/>
+Elevation for listing coordinates (imperial):<br/>
 <img src="../images/v0.7_Screen09.jpg" alt="v0.7_Screen09.jpg"><br/>
 <br/>
-Elevation for additional waypoints<br/>
+Elevation for additional waypoints:<br/>
 <img src="../images/v0.7_Screen07.jpg" alt="v0.7_Screen07.jpg"><br/>
 <br/>
 </li>
