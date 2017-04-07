@@ -19,11 +19,13 @@
 <ul>
 <li>
 New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/254">#254</a>] Filter VIP logs in cache listing:<br>
+<br>
 <img src="../images/v0.7_Screen01.jpg" alt="v0.7_Screen01.jpg"><br>
 <br></li>
 <li>
 New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/268">#268</a>] VIP list: Quick link to VIP logs:<br>
 Navigate down to logs area and invoke the VIP filter.<br>
+<br>
 <img src="../images/v0.7_Screen02.jpg" alt="v0.7_Screen02.jpg"><br>
 <br></li>
 <li>
