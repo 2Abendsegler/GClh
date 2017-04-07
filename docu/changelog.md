@@ -1,3 +1,4 @@
+<a href="#v07" title="GClh II version 0.7 (??.04.2017)">v0.7</a> &nbsp;
 <a href="#v06" title="GClh II version 0.6 (25.03.2017)">v0.6</a> &nbsp;
 <a href="#v05" title="GClh II version 0.5 (11.03.2017)">v0.5</a> &nbsp;
 <a href="#v041" title="GClh II version 0.4.1 (26.02.2017)">v0.4.1</a> &nbsp; 
@@ -12,6 +13,94 @@
 <a href="#v022" title="GClh II version 0.2.2 (09.01.2017)">v0.2.2</a> &nbsp; 
 <a href="#v021" title="GClh II version 0.2.1 (05.01.2017)">v0.2.1</a> &nbsp; 
 <a href="#v01" title="GClh II version 0.1 (05.01.2017)">v0.1</a> &nbsp; 
+
+---
+## v0.7:
+<ul>
+<li>
+New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/254">#254</a>] Filter VIP logs in cache listing:<br>
+<br>
+<img src="../images/v0.7_Screen01.jpg" alt="v0.7_Screen01.jpg"><br>
+<br></li>
+<li>
+New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/268">#268</a>] VIP list: Quick link to VIP logs:<br>
+Navigate down to logs area and invoke the VIP filter.<br>
+<br>
+<img src="../images/v0.7_Screen02.jpg" alt="v0.7_Screen02.jpg"><br>
+<br></li>
+<li>
+New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/250">#250</a>] Show elevation for listing coordinates and waypoints with visible coordinates. Metric and imperial is supported.<br>
+Many thanks to <a href="https://www.geocaching.com/profile/?u=CachingFoX">CachingFoX</a> for the idea and the development.<br>
+<br>
+Settings > Listing:<br>
+<img src="../images/v0.7_Screen04.jpg" alt="v0.7_Screen04.jpg"><br>
+<br>
+Elevation for listing coordinates (metric):<br>
+<img src="../images/v0.7_Screen05.jpg" alt="v0.7_Screen05.jpg"><br>
+<br>
+Elevation for listing coordinates (imperial):<br>
+<img src="../images/v0.7_Screen09.jpg" alt="v0.7_Screen09.jpg"><br>
+<br>
+Elevation for additional waypoints:<br>
+<img src="../images/v0.7_Screen07.jpg" alt="v0.7_Screen07.jpg"><br>
+<br></li>
+<li>
+New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/10">#10</a>] Show listing coordinates and additional waypoints on Flopp's Map:<br>
+Special thank to <a href="https://www.geocaching.com/profile/?u=SiMaKiDD">SiMaKiDD</a> - the creator of MAP_BUTTONS script - for the inspiration, permission and support.<br> 
+Many thanks to <a href="https://www.geocaching.com/profile/?u=CachingFoX">CachingFoX</a> for the implementation.<br>
+<br>
+<img src="../images/v0.7_Screen08.jpg" alt="v0.7_Screen08.jpg"><br>
+<br>
+Different map styles selectable:<br>
+<img src="../images/v0.7_Screen11.jpg" alt="v0.7_Screen11.jpg"><br>
+<br>
+Zoom level is calculate automatically:<br>
+<img src="../images/v0.7_Screen12.jpg" alt="v0.7_Screen12.jpg"><br>
+<br></li>
+<li>
+New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/253">#253</a>] Added shortcut links to waypoint list and logs section.<br>
+Many thanks to <a href="https://www.geocaching.com/profile/?u=CachingFoX">CachingFoX</a> for the idea and the development.<br>
+<br>
+<img src="../images/v0.7_Screen06.jpg" alt="v0.7_Screen06.jpg"><br>
+<br></li>
+<li>
+New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/252">#252</a>] Link to Google Map Driving Direction for every waypoint in the waypoint list (with visible coordinates):<br>
+Many thanks to <a href="https://www.geocaching.com/profile/?u=CachingFoX">CachingFoX</a> for the idea and the development.<br>
+<br>
+Settings > Listing:<br>
+<img src="../images/v0.7_Screen03.jpg" alt="v0.7_Screen03.jpg"><br>
+<br>
+Additional waypoint list:<br>
+<img src="../images/v0.7_Screen10.jpg" alt="v0.7_Screen10.jpg"><br>
+<br></li>
+<li>
+New: Show placeholder for unavailable/unreachable images: Often helpful in working under company firewals and for example with the current changes at dropbox, that images are no longer displayed by default.<br>
+Many thanks to <a href="https://www.geocaching.com/profile/?u=Herr%20Ma">Herr Ma</a> for the idea and the development.<br>
+<br>
+Placeholder image:<br>
+<img src="../images/v0.7_Screen13.jpg" alt="v0.7_Screen13.jpg"><br>
+<br>
+Settings > Listing:<br>
+<img src="../images/v0.7_Screen14.jpg" alt="v0.7_Screen14.jpg"><br>
+<br></li>
+<li>
+Change: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/277">#277</a>] Show button "Show log counter" only if feature is possible:<br>
+Do not show button "Show log counter" if the logs are filtered or searched.<br>
+</li>
+<li>
+Change: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/279">#279</a>] Implement note in Config with using information for log templates:<br>
+Many thanks for the development.<br>
+</li>
+<li>
+Fix: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/264">#264</a>] VIP list not rendered on a specific cache (Lesopark Dubina). Profile link in listing without any text.<br>
+</li>
+<li>
+Fix: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/276">#276</a>] Open list with "Pocket Queries ready to download" not possible, only in chrome.<br>
+</li>
+<br>
+</ul>
+(08.04.2017)<br> 
+<br>
 
 ---
 ## v0.6:
