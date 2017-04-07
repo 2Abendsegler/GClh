@@ -187,5 +187,9 @@
   "settings_pq_automatically_day": false,
   "settings_mail_icon_new_win": false,
   "settings_message_icon_new_win": false,
-  "settings_hide_cache_approvals": true
+  "settings_hide_cache_approvals": true,
+  "settings_driving_direction_link": true,
+  "settings_driving_direction_parking_area": false,
+  "settings_show_elevation_of_waypoints": true,
+  "settings_img_warning": false
 }

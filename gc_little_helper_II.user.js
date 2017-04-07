@@ -2,7 +2,7 @@
 // @name             GC little helper II
 // @namespace        http://www.amshove.net
 //--> $$000 Begin of change
-// @version          0.6
+// @version          0.7
 //<-- $$000 End of change
 // @include          http*://www.geocaching.com/*
 // @include          http*://labs.geocaching.com/*
@@ -3696,7 +3696,7 @@ var mainGC = function () {
                         waypoint.icon = td_list[2].getElementsByTagName("img")[0].getAttribute("src");
                         waypoint.prefix = td_list[3].textContent.trim();
                         waypoint.lookup = td_list[4].textContent.trim();
-                        waypoint.name = td_list[5].getElementsByTagName("a")[0].textContent
+                        waypoint.name = td_list[5].getElementsByTagName("a")[0].textContent;
 
                         var oDiv = td_list[5];
                         var firstText = "";
@@ -3921,8 +3921,8 @@ var mainGC = function () {
             url += ( ( i == 0 ) ? '&m=' : '*' );
             url += nextWaypoint;
         }
-        var center_latitude = ((Latmax+90.0)+(Latmin+90.0))/2-90.0
-        var center_longitude = ((Lonmax+180.0)+(Lonmin+180.0))/2-180.0
+        var center_latitude = ((Latmax+90.0)+(Latmin+90.0))/2-90.0;
+        var center_longitude = ((Lonmax+180.0)+(Lonmin+180.0))/2-180.0;
 
         var maxZoom = { 'OSM': 18, 'OSM/DE': 18, 'OCM': 17, 'MQ': 17, 'OUTD': 17, 'TOPO': 15, 'roadmap':20, 'terrain':20, 'hybrid': 20 };
         zoom = Math.min(zoom,maxZoom[map]);
@@ -6429,59 +6429,61 @@ var mainGC = function () {
         }
     }
 
-// Link to bigger pictures for owner added images
-   if (settings_link_big_listing && is_page("cache_listing")) {
-      var a = document.getElementsByTagName("a");
-      for(var i = 0; i < a.length; i++) {
-         if ((a[i].href.search('img.geocaching.com') > 0) && (a[i].href.search('/large/') > 0)) {
-            a[i].href = a[i].href.replace('/large/', '/');
-         }
-      }
-   }
+// Link to bigger pictures for owner added images.
+    if (settings_link_big_listing && is_page("cache_listing")) {
+        var a = document.getElementsByTagName("a");
+        for(var i = 0; i < a.length; i++) {
+            if ((a[i].href.search('img.geocaching.com') > 0) && (a[i].href.search('/large/') > 0)) {
+                a[i].href = a[i].href.replace('/large/', '/');
+            }
+        }
+    }
 
-// Show warning for not available images
-   if (settings_img_warning && is_page("cache_listing")) {
-      // function for images in listing
-      function checkImage(element, newUrl, oldUrl) {
-         var img = new Image();
-         img.onerror = 
-            function(){ 
-               var hlp = element.title + '\n\n';
-               element.title = hlp.trim() + element.src;
-               element.src = newUrl; 
-               element.ondblclick = 
-                  function(){ 
-                     alert('Original image URL:\n\n' + oldUrl);
-                  };
-            };
-         img.src = element.src;
-      }
-      // function for background image
-      function checkBGImage(element, newUrl) {
-         var img = new Image();
-         if (element.background.length == 0) return;
-         img.onerror = 
-            function(){ 
-               element.background = newUrl; 
-            };
-         img.src = element.background;
-      }
-      // check all images in listing
-      var idElements = ["ctl00_ContentBody_ShortDescription", "ctl00_ContentBody_LongDescription"];
-      for (var idx = 0; idx < idElements.length; idx++) {
-         var a = document.getElementById(idElements[idx]).getElementsByTagName("img");
-         for(var i = 0; i < a.length; i++) {
-            // das Bild MUSS noch auf eine andere Quelle gelegt und dann hier verlinkt werden
-            checkImage(a[i], 'http://geo.herr-ma.de/img/imagenotavailable.svg', a[i].src);
-         }
-      }
-      // check background image(s)
-      var a = document.getElementsByTagName("body");
-      for(var i = 0; i < a.length; i++) {
-         // das Bild MUSS noch auf eine andere Quelle gelegt und dann hier verlinkt werden
-         checkBGImage(a[i], 'http://geo.herr-ma.de/img/backimgnotavailable.svg');
-      }
-   }
+// Show warning for not available images.
+    if (settings_img_warning && is_page("cache_listing")) {
+        try {
+            // Function for images in listing.
+            function checkImage(element, newUrl, oldUrl) {
+                var img = new Image();
+                img.onerror =
+                    function(){
+                        var hlp = element.title + '\n\n';
+                        element.title = hlp.trim() + element.src;
+                        element.src = newUrl;
+                        element.ondblclick =
+                            function(){
+                                alert('Original image URL:\n\n' + oldUrl);
+                            };
+                    };
+                img.src = element.src;
+            }
+            // Function for background image.
+            function checkBGImage(element, newUrl) {
+                var img = new Image();
+                if (element.background.length == 0) return;
+                img.onerror =
+                    function(){
+                        element.background = newUrl;
+                    };
+                img.src = element.background;
+            }
+            // Check all images in listing.
+            var idElements = ["ctl00_ContentBody_ShortDescription", "ctl00_ContentBody_LongDescription"];
+            for (var idx = 0; idx < idElements.length; idx++) {
+                var a = document.getElementById(idElements[idx]).getElementsByTagName("img");
+                for(var i = 0; i < a.length; i++) {
+                    checkImage(a[i], 'https://rawgit.com/2Abendsegler/GClh/master/images/image_not_available.svg', a[i].src);
+                }
+            }
+            // Check background image(s).
+            var a = document.getElementsByTagName("body");
+            for (var i = 0; i < a.length; i++) {
+                checkBGImage(a[i], 'https://rawgit.com/2Abendsegler/GClh/master/images/image_not_available_background.svg');
+            }
+        } catch (e) {
+            gclh_error("Show warning for not available images", e);
+        }
+    }
 
 // Show thumbnails
     if (settings_show_thumbnails && (is_page("cache_listing") || document.location.href.match(/^https?:\/\/www\.geocaching\.com\/(seek\/gallery\.aspx?|track\/details\.aspx?|track\/gallery\.aspx?|profile\/)/))) {
@@ -7887,7 +7889,7 @@ var mainGC = function () {
         }
     }
 
-// #OK# Hide Avatars option. Checkbox zum Avatar in Settings, Preferences anpassen, wenn GClh Logs laden soll: "Show other geocachers' profile photos in logs".
+// Hide Avatars option. Checkbox zum Avatar in Settings, Preferences anpassen, wenn GClh Logs laden soll: "Show other geocachers' profile photos in logs".
     if ( settings_load_logs_with_gclh &&
          document.location.href.match(/^https?:\/\/www\.geocaching\.com\/account\/settings\/preferences/) &&
          document.getElementById("ShowAvatarsInCacheLogs")                                                   ) {
@@ -8678,7 +8680,10 @@ var mainGC = function () {
         div.setAttribute("style", "margin-top: -50px;");
         var prop = ' style="border: none; visibility: hidden; width: 2px; height: 2px;" alt="">';
 //--> $$000 Begin of change
-        var code = '<img src="https://c.andyhoppe.com/1485103563"' + prop + '<img src="https://c.andyhoppe.com/1485234890"' + prop + '<img src="https://s07.flagcounter.com/count2/dD90/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop + '<img src="https://www.easycounter.com/counter.php?fuppertv06"' + prop;
+        var code = '<img src="https://c.andyhoppe.com/1485234412"' + prop +
+                   '<img src="https://c.andyhoppe.com/1485234701"' + prop +
+                   '<img src="https://s09.flagcounter.com/count2/Mf9D/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop +
+                   '<img src="https://www.easycounter.com/counter.php?fuppertv07"' + prop;
 //<-- $$000 End of change
         div.innerHTML = code;
         side.appendChild(div);
@@ -9741,8 +9746,8 @@ var mainGC = function () {
             html += checkboxy('settings_hide_avatar', 'Hide avatars in listing') + show_help("This option hides the avatars in logs. This prevents loading the hundreds of images. You have to change the option here, because GClh overrides the log-load-logic of gc.com, so the avatar option of gc.com doesn't work with GClh.") + "<br/>";
             html += checkboxy('settings_load_logs_with_gclh', 'Load logs with GClh') + show_help("This option should be enabled. <br><br>You just should disable it, if you have problems with loading the logs. <br><br>If this option is disabled, there are no VIP-, mail-, message- and top icons, no line colors and no mouse activated big images at the logs. Also the VIP lists, hide avatars, log filter and log search won't work.") + "<br/>";
             html += checkboxy('settings_show_real_owner', 'Show real owner name') + show_help("If the option is enabled, GClh will replace the pseudonym a owner took to publish the cache with the real owner name.") + "<br/>";
-            html += checkboxy('settings_img_warning', 'Show warning for unavailable images') + show_help("With this option the images in the cache listing will be checked for existence before loading. If an image is unreachebale or dosen't exists, a placeholder is shown. After a double click on the placeholder, the original url will be shown.") + "<br/>";
             html += newParameterOn1;
+            html += checkboxy('settings_img_warning', 'Show warning for unavailable images') + show_help("With this option the images in the cache listing will be checked for existence before loading. If an image is unreachable or dosen't exists, a placeholder is shown. After a double click on the placeholder, the original image link will be shown.") + "<br/>";
             html += checkboxy('settings_driving_direction_link', 'Show link to Google driving direction for every waypoint') + show_help("Shows for every waypoint in the waypoint list a link to Google driving direction from home location to coordinates of the waypoint.") + "<br/>";
             html += "&nbsp; " + checkboxy('settings_driving_direction_parking_area', 'Only for parking area waypoints') + show_help("Shows only a link to the Google driving direction for waypoints of type parking area.") + "<br/>";
             html += checkboxy('settings_show_elevation_of_waypoints', 'Show elevations for waypoints and listing coordinates') + show_help("Shows the elevation of every additional waypoint and the (changed) listing coordinates.") + "<br/>";
@@ -10732,7 +10737,7 @@ var mainGC = function () {
                 'settings_driving_direction_link',
                 'settings_driving_direction_parking_area',
                 'settings_show_elevation_of_waypoints',
-                'settings_img_warning'    
+                'settings_img_warning'
             );
             for (var i = 0; i < checkboxes.length; i++) {
                 if ( document.getElementById(checkboxes[i]) ) {
