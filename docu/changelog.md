@@ -74,6 +74,12 @@ Additional waypoint list:<br>
 <img src="../images/v0.7_Screen10.jpg" alt="v0.7_Screen10.jpg"><br>
 <br></li>
 <li>
+New: Added shortcut links to waypoint list and logs section.<br>
+Many thanks to <a href="https://www.geocaching.com/profile/?u=Herr%20Ma">Herr Ma</a> for the idea and the development.<br>
+<br>
+<img src="../images/v0.7_Screen13.jpg" alt="v0.7_Screen13.jpg"><br>
+<br></li>
+<li>
 Change: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/277">#277</a>] Show button "Show log counter" only if feature is possible:<br>
 Do not show button "Show log counter" if the logs are filtered or searched.<br>
 </li>
