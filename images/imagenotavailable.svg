@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<svg xmlns="http://www.w3.org/2000/svg" height="200px" width="200px" version="1.0" viewBox="-200 -200 400 400" xml:space="preserve">
+<circle stroke="#AAA" stroke-width="25" r="130" fill="#FFF"/>
+<text style="letter-spacing:1;text-anchor:middle;text-align:center;stroke-opacity:.5;stroke:#000;stroke-width:2;fill:#AAA;font-size:180px;font-family:Bitstream Vera Sans,Liberation Sans, Arial, sans-serif;line-height:125%;writing-mode:lr-tb;" transform="scale(.2)">
+<tspan y="-195" x="4">BACKGROUND</tspan>
+<tspan y="+25" x="4">IMAGE NOT</tspan>
+<tspan y="245" x="4">AVAILABLE</tspan>
+</text>
+
+<text style="letter-spacing:1;text-anchor:middle;text-align:center;stroke-opacity:.5;stroke:#000;stroke-width:2;fill:#AAA;font-size:120px;font-family:Bitstream Vera Sans,Liberation Sans, Arial, sans-serif;line-height:125%;writing-mode:lr-tb;" transform="scale(.2)">
+<tspan y="-450" x="4">GCLH Warning</tspan>
+</text>
+
+</svg>

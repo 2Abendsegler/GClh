@@ -408,6 +408,7 @@ var variablesInit = function (c) {
     c.settings_driving_direction_parking_area = getValue("settings_driving_direction_parking_area",false);
     c.settings_show_elevation_of_waypoints = getValue("settings_show_elevation_of_waypoints", true);
     c.settings_distance_units = getValue("settings_distance_units", "");
+    c.settings_img_warning = getValue("settings_img_warning", false);
 
     // Settings: Custom Bookmarks
     var num = c.bookmarks.length;
@@ -6438,6 +6439,50 @@ var mainGC = function () {
       }
    }
 
+// Show warning for not available images
+   if (settings_img_warning && is_page("cache_listing")) {
+      // function for images in listing
+      function checkImage(element, newUrl, oldUrl) {
+         var img = new Image();
+         img.onerror = 
+            function(){ 
+               var hlp = element.title + '\n\n';
+               element.title = hlp.trim() + element.src;
+               element.src = newUrl; 
+               element.ondblclick = 
+                  function(){ 
+                     alert('Original image URL:\n\n' + oldUrl);
+                  };
+            };
+         img.src = element.src;
+      }
+      // function for background image
+      function checkBGImage(element, newUrl) {
+         var img = new Image();
+         if (element.background.length == 0) return;
+         img.onerror = 
+            function(){ 
+               element.background = newUrl; 
+            };
+         img.src = element.background;
+      }
+      // check all images in listing
+      var idElements = ["ctl00_ContentBody_ShortDescription", "ctl00_ContentBody_LongDescription"];
+      for (var idx = 0; idx < idElements.length; idx++) {
+         var a = document.getElementById(idElements[idx]).getElementsByTagName("img");
+         for(var i = 0; i < a.length; i++) {
+            // das Bild MUSS noch auf eine andere Quelle gelegt und dann hier verlinkt werden
+            checkImage(a[i], 'http://geo.herr-ma.de/img/imagenotavailable.svg', a[i].src);
+         }
+      }
+      // check background image(s)
+      var a = document.getElementsByTagName("body");
+      for(var i = 0; i < a.length; i++) {
+         // das Bild MUSS noch auf eine andere Quelle gelegt und dann hier verlinkt werden
+         checkBGImage(a[i], 'http://geo.herr-ma.de/img/backimgnotavailable.svg');
+      }
+   }
+
 // Show thumbnails
     if (settings_show_thumbnails && (is_page("cache_listing") || document.location.href.match(/^https?:\/\/www\.geocaching\.com\/(seek\/gallery\.aspx?|track\/details\.aspx?|track\/gallery\.aspx?|profile\/)/))) {
         try {
@@ -9696,6 +9741,7 @@ var mainGC = function () {
             html += checkboxy('settings_hide_avatar', 'Hide avatars in listing') + show_help("This option hides the avatars in logs. This prevents loading the hundreds of images. You have to change the option here, because GClh overrides the log-load-logic of gc.com, so the avatar option of gc.com doesn't work with GClh.") + "<br/>";
             html += checkboxy('settings_load_logs_with_gclh', 'Load logs with GClh') + show_help("This option should be enabled. <br><br>You just should disable it, if you have problems with loading the logs. <br><br>If this option is disabled, there are no VIP-, mail-, message- and top icons, no line colors and no mouse activated big images at the logs. Also the VIP lists, hide avatars, log filter and log search won't work.") + "<br/>";
             html += checkboxy('settings_show_real_owner', 'Show real owner name') + show_help("If the option is enabled, GClh will replace the pseudonym a owner took to publish the cache with the real owner name.") + "<br/>";
+            html += checkboxy('settings_img_warning', 'Show warning for unavailable images') + show_help("With this option the images in the cache listing will be checked for existence before loading. If an image is unreachebale or dosen't exists, a placeholder is shown. After a double click on the placeholder, the original url will be shown.") + "<br/>";
             html += newParameterOn1;
             html += checkboxy('settings_driving_direction_link', 'Show link to Google driving direction for every waypoint') + show_help("Shows for every waypoint in the waypoint list a link to Google driving direction from home location to coordinates of the waypoint.") + "<br/>";
             html += "&nbsp; " + checkboxy('settings_driving_direction_parking_area', 'Only for parking area waypoints') + show_help("Shows only a link to the Google driving direction for waypoints of type parking area.") + "<br/>";
@@ -10685,7 +10731,8 @@ var mainGC = function () {
                 'settings_hide_cache_approvals',
                 'settings_driving_direction_link',
                 'settings_driving_direction_parking_area',
-                'settings_show_elevation_of_waypoints'
+                'settings_show_elevation_of_waypoints',
+                'settings_img_warning'    
             );
             for (var i = 0; i < checkboxes.length; i++) {
                 if ( document.getElementById(checkboxes[i]) ) {
