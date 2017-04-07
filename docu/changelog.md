@@ -74,7 +74,8 @@ Additional waypoint list:<br>
 <img src="../images/v0.7_Screen10.jpg" alt="v0.7_Screen10.jpg"><br>
 <br></li>
 <li>
-New: Added shortcut links to waypoint list and logs section.<br>
+New: Show placeholder for unavailable/unreachable images: <br>
+Often helpful in working under company firewals and for example with the current changes at dropbox, that images are no longer displayed by default.<br>
 Many thanks to <a href="https://www.geocaching.com/profile/?u=Herr%20Ma">Herr Ma</a> for the idea and the development.<br>
 <br>
 <img src="../images/v0.7_Screen13.jpg" alt="v0.7_Screen13.jpg"><br>
