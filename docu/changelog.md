@@ -92,7 +92,6 @@ Fix: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/276">#276</a>] 
 (08.04.2017)<br> 
 <br>
 
-
 ---
 ## v0.6:
 <ul>
