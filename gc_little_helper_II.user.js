@@ -3683,6 +3683,8 @@ var mainGC = function () {
             if ( tbl == null ) {
                 tbl = document.getElementById('ctl00_ContentBody_WaypointList');
             }
+            if ( tbl == null ) return;
+
             if (tbl.getElementsByTagName('tbody')) {
                 var tblbdy = tbl.getElementsByTagName('tbody')[0];
                 var tr_list = tblbdy.getElementsByTagName('tr');
@@ -8139,6 +8141,21 @@ var mainGC = function () {
         checkForUpgrade( false );
     } catch (e) {
         gclh_error("Check for updgrade", e);
+    }
+
+// Ostern.
+    if (is_page("cache_listing")) {
+        try {
+            var now = new Date();
+            var year = now.getYear() + 1900;
+            var month = now.getMonth() + 1;
+            var date = now.getDate();
+            if (date >= 16 && date <= 17 && month == 4 && year == 2017) {
+                $(".CacheDetailNavigation:first > ul:first").append('<li><img src="https://raw.githubusercontent.com/2Abendsegler/GClh/master/images/easter_bunny_001.jpg" style="margin-bottom: -35px;" title="Happy Easter"></li>');
+            }
+        } catch (e) {
+            gclh_error("Ostern", e);
+        }
     }
 
 ////////////////////////////////////////////////////////////////////////////
