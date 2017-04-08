@@ -56,12 +56,12 @@ Sprache: Englisch wo nötig, ansonsten auch deutsch.
   * Priorität (Label) setzen, zumindest wenn sie absehbar hoch ist. 
     * Die Kategorie *bug* hat in der Regel mindestens die Priorität *high*.
     * *help wanted* und *question* haben in der Regel nicht mehr als Priorität *middle*.
-  * Handelt es sich um einen Wunsch der User, dann den Tag (Label) *wish* setzen.
-<br>
+  * Handelt es sich um einen Wunsch der User, dann den Tag (Label) *wish* setzen.  
+  
 * **Issue in Arbeit nehmen:**
   * Issue einer Person zuordnen/assignen.
   * Status (Label) *in progress* setzen.  
-<br>
+  
 * **Issue zurück an User geben:**
   * Aktion (Label) *user action* setzen.  
 <br>
