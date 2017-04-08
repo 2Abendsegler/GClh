@@ -57,21 +57,21 @@ Sprache: Englisch wo nötig, ansonsten auch deutsch.
     * Die Kategorie *bug* hat in der Regel mindestens die Priorität *high*.
     * *help wanted* und *question* haben in der Regel nicht mehr als Priorität *middle*.
   * Handelt es sich um einen Wunsch der User, dann den Tag (Label) *wish* setzen.  
-<br>
+  
 * **Issue in Arbeit nehmen:**
   * Issue einer Person zuordnen/assignen.
   * Status (Label) *in progress* setzen.  
-<br>
+  
 * **Issue zurück an User geben:**
   * Aktion (Label) *user action* setzen.  
-<br>
+  
 * **Issue auf erledigt setzen:**
   * Grob beschreiben, zu welchem Ergebnis man gekommen ist. (Beschreibung wird für Changelog verwendet.)
   * Entsprechenden Status (Label) setzen: *fixed*, *completed*, *rejected* ...  
-<br>
+  
 * **Issue schließen:**
   * Sollen Objekte transportiert werden oder soll eine Dokumentation im Changelog erfolgen, dann Issue einem Milestone zuordnen.
-  * Issue auf *close* setzen.
+  * Issue auf *close* setzen.  
 <br>
 <br>
 
