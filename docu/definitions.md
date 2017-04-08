@@ -64,14 +64,14 @@ Sprache: Englisch wo nötig, ansonsten auch deutsch.
   
 * **Issue zurück an User geben:**
   * Aktion (Label) *user action* setzen.  
-<br>
+  
 * **Issue auf erledigt setzen:**
   * Grob beschreiben, zu welchem Ergebnis man gekommen ist. (Beschreibung wird für Changelog verwendet.)
   * Entsprechenden Status (Label) setzen: *fixed*, *completed*, *rejected* ...  
-<br>
+  
 * **Issue schließen:**
   * Sollen Objekte transportiert werden oder soll eine Dokumentation im Changelog erfolgen, dann Issue einem Milestone zuordnen.
-  * Issue auf *close* setzen.
+  * Issue auf *close* setzen.  
 <br>
 <br>
 
