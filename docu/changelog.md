@@ -16,10 +16,10 @@
 <a href="#v01" title="GClh II version 0.1 (05.01.2017)">v0.1</a> &nbsp; 
 
 ---
-## v0.7:
+## v0.7.1:
 <ul>
 <li>
-Fix: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/299">#299</a>] Open list with "Pocket Queries ready to download" not possible, only in chrome.<br>
+Fix: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/299">#299</a>] GClh enhancements on friends list are not available due to changes made by GS.<br>
 </li>
 <br>
 </ul>
