@@ -23,7 +23,7 @@ Fix: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/299">#299</a>] 
 </li>
 <br>
 </ul>
-(14.04.2017)<br> 
+(12.04.2017)<br> 
 <br>
 
 ---
