@@ -1,4 +1,5 @@
-<a href="#v07" title="GClh II version 0.7 (??.04.2017)">v0.7</a> &nbsp;
+<a href="#v071" title="GClh II version 0.7.1 (12.04.2017)">v0.7.1</a> &nbsp;
+<a href="#v07" title="GClh II version 0.7 (08.04.2017)">v0.7</a> &nbsp;
 <a href="#v06" title="GClh II version 0.6 (25.03.2017)">v0.6</a> &nbsp;
 <a href="#v05" title="GClh II version 0.5 (11.03.2017)">v0.5</a> &nbsp;
 <a href="#v041" title="GClh II version 0.4.1 (26.02.2017)">v0.4.1</a> &nbsp; 
@@ -13,6 +14,17 @@
 <a href="#v022" title="GClh II version 0.2.2 (09.01.2017)">v0.2.2</a> &nbsp; 
 <a href="#v021" title="GClh II version 0.2.1 (05.01.2017)">v0.2.1</a> &nbsp; 
 <a href="#v01" title="GClh II version 0.1 (05.01.2017)">v0.1</a> &nbsp; 
+
+---
+## v0.7.1:
+<ul>
+<li>
+Fix: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/299">#299</a>] GClh enhancements on friends list are not available due to changes made by GS.<br>
+</li>
+<br>
+</ul>
+(12.04.2017)<br> 
+<br>
 
 ---
 ## v0.7:
