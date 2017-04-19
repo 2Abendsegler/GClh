@@ -4166,6 +4166,7 @@ var mainGC = function () {
         }
     }
 
+//#299
 // Improve Friendlist.
     if (document.location.href.match(/^https?:\/\/www\.geocaching\.com\/my\/myfriends\.aspx/)) {
         try {
@@ -4271,6 +4272,7 @@ var mainGC = function () {
                         sNewH = sNewH + "<a class='myfriends' href='/seek/nearest.aspx?u=" + urlencode(name.innerHTML) + "&disable_redirect='>" + sHlp + "</a>";
                     }
                 }
+
                 if (hides == 0) {
                     friend.getElementsByTagName("dd")[4].innerHTML = hides + "&nbsp;";
                 } else {
