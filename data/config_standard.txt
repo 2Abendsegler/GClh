@@ -191,5 +191,9 @@
   "settings_driving_direction_link": true,
   "settings_driving_direction_parking_area": false,
   "settings_show_elevation_of_waypoints": true,
-  "settings_img_warning": false
+  "settings_img_warning": false,
+  "settings_remove_banner": false,
+  "settings_remove_banner_to_mylists_new": true,
+  "settings_remove_banner_to_mylists_old": false,
+  "settings_remove_banner_for_garminexpress": true
 }
