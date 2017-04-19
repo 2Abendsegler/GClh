@@ -1,4 +1,4 @@
-﻿// ==UserScript==
+// ==UserScript==
 // @name             GC little helper II
 // @namespace        http://www.amshove.net
 //--> $$000 Begin of change
@@ -18,6 +18,7 @@
 // @description      Some little things to make life easy (on www.geocaching.com).
 // @copyright        Torsten Amshove <torsten@amshove.net>
 // @author           Torsten Amshove; 2Abendsegler
+// @license          GNU General Public License v2.0
 // @grant            GM_getValue
 // @grant            GM_setValue
 // @grant            GM_log
@@ -404,6 +405,10 @@ var variablesInit = function (c) {
     c.settings_driving_direction_parking_area = getValue("settings_driving_direction_parking_area",false);
     c.settings_show_elevation_of_waypoints = getValue("settings_show_elevation_of_waypoints", true);
     c.settings_distance_units = getValue("settings_distance_units", "");
+    c.settings_remove_banner = getValue("settings_remove_banner", false);
+    c.settings_remove_banner_to_mylists_new = getValue("settings_remove_banner_to_mylists_new", true);
+    c.settings_remove_banner_to_mylists_old = getValue("settings_remove_banner_to_mylists_old", false);
+    c.settings_remove_banner_for_garminexpress = getValue("settings_remove_banner_for_garminexpress", true);
     c.settings_img_warning = getValue("settings_img_warning", false);
 
     // Settings: Custom Bookmarks.
@@ -4161,7 +4166,6 @@ var mainGC = function () {
         }
     }
 
-//#299
 // Improve Friendlist.
     if (document.location.href.match(/^https?:\/\/www\.geocaching\.com\/my\/myfriends\.aspx/)) {
         try {
@@ -4217,8 +4221,6 @@ var mainGC = function () {
                 var add = "";
 
                 // Founds.
-//#299
-//                var founds = parseInt(trim(friend.getElementsByTagName("dd")[4].innerHTML).replace(/[,.]*/g, ""));
                 var founds = parseInt(trim(friend.getElementsByTagName("dd")[3].innerHTML).replace(/[,.]*/g, ""));
                 if (isNaN(founds))founds = 0;
                 var last_founds = getValue("friends_founds_" + name.innerHTML);
@@ -4233,30 +4235,21 @@ var mainGC = function () {
                 if  ((settings_friendlist_summary_viponly && in_array(name.innerHTML, myvips)) || (!settings_friendlist_summary_viponly)) {
                     if ((founds - last_founds) > 0) {
                         if (sNewF != "") sNewF = sNewF + ",&nbsp;";
-
                         var sHlp = name.innerHTML + " (";
                         if (founds - last_founds > 0) sHlp = sHlp + "+";
                         else sHlp = Hlp + "-";
                         sHlp = sHlp + (founds - last_founds) + ")";
-
                         sNewF = sNewF + "<a class='myfriends' href='/seek/nearest.aspx?ul=" + urlencode(name.innerHTML) + "&disable_redirect='>" + sHlp + "</a>";
                     }
                 }
-
                 if (founds == 0) {
-//#299
-//                    friend.getElementsByTagName("dd")[4].innerHTML = founds + "&nbsp;";
                     friend.getElementsByTagName("dd")[3].innerHTML = founds + "&nbsp;";
                 } else {
-//#299
-//                    friend.getElementsByTagName("dd")[4].innerHTML = "<a href='/seek/nearest.aspx?ul=" + urlencode(name.innerHTML) + "&disable_redirect='>" + founds + "</a>&nbsp;" + add;
                     friend.getElementsByTagName("dd")[3].innerHTML = "<a href='/seek/nearest.aspx?ul=" + urlencode(name.innerHTML) + "&disable_redirect='>" + founds + "</a>&nbsp;" + add;
                 }
 
                 // Hides.
                 add = "";
-//#299
-//                var hides = parseInt(trim(friend.getElementsByTagName("dd")[5].innerHTML).replace(/[,.]*/g, ""));
                 var hides = parseInt(trim(friend.getElementsByTagName("dd")[4].innerHTML).replace(/[,.]*/g, ""));
                 if (isNaN(hides))hides = 0;
                 var last_hides = getValue("friends_hides_" + name.innerHTML);
@@ -4271,31 +4264,20 @@ var mainGC = function () {
                 if  ((settings_friendlist_summary_viponly && in_array(name.innerHTML, myvips)) || (!settings_friendlist_summary_viponly)) {
                     if ((hides - last_hides) > 0) {
                         if (sNewH != "") sNewH = sNewH + ",&nbsp;";
-
                         var sHlp = name.innerHTML + " (";
                         if (hides - last_hides > 0) sHlp = sHlp + "+";
                         else sHlp = Hlp + "-";
                         sHlp = sHlp + (hides - last_hides) + ")";
-
                         sNewH = sNewH + "<a class='myfriends' href='/seek/nearest.aspx?u=" + urlencode(name.innerHTML) + "&disable_redirect='>" + sHlp + "</a>";
                     }
                 }
-
                 if (hides == 0) {
-//#299
-//                    friend.getElementsByTagName("dd")[5].innerHTML = hides + "&nbsp;";
                     friend.getElementsByTagName("dd")[4].innerHTML = hides + "&nbsp;";
                 } else {
-//#299
-//                    friend.getElementsByTagName("dd")[5].innerHTML = "<a href='/seek/nearest.aspx?u=" + urlencode(name.innerHTML) + "&disable_redirect='>" + hides + "</a>&nbsp;" + add;
                     friend.getElementsByTagName("dd")[4].innerHTML = "<a href='/seek/nearest.aspx?u=" + urlencode(name.innerHTML) + "&disable_redirect='>" + hides + "</a>&nbsp;" + add;
                 }
 
                 // Location.
-//#299 Das not listed reicht eigentlich nicht aus.
-//                var friendlocation = trim(friend.getElementsByTagName("dd")[3].getElementsByTagName("span")[0].innerHTML);
-//                if (friendlocation != "" && friendlocation.length > 3) {
-//                    friend.getElementsByTagName("dd")[3].getElementsByTagName("span")[0].innerHTML = "<a href='http://maps.google.de/?q=" + (friendlocation.replace(/&/g, "")) + "' target='_blank'>" + friendlocation + "</a>";
                 var friendlocation = trim(friend.getElementsByTagName("dd")[2].getElementsByTagName("span")[0].innerHTML);
                 if (friendlocation != "" && friendlocation != "not listed" && friendlocation.length > 3) {
                     friend.getElementsByTagName("dd")[2].getElementsByTagName("span")[0].innerHTML = "<a href='http://maps.google.de/?q=" + (friendlocation.replace(/&/g, "")) + "' target='_blank'>" + friendlocation + "</a>";
@@ -4318,17 +4300,11 @@ var mainGC = function () {
 
                     founds = getValue("friends_founds_new_" + name.innerHTML, 0);
                     setValue("friends_founds_" + name.innerHTML, founds);
-//#299
-//                    if (founds == 0) friend.getElementsByTagName("dd")[4].innerHTML = "0&nbsp;";
-//                    else friend.getElementsByTagName("dd")[4].innerHTML = "<a href='/seek/nearest.aspx?ul=" + urlencode(name.innerHTML) + "&disable_redirect='>" + founds + "</a>";
                     if (founds == 0) friend.getElementsByTagName("dd")[3].innerHTML = "0&nbsp;";
                     else friend.getElementsByTagName("dd")[3].innerHTML = "<a href='/seek/nearest.aspx?ul=" + urlencode(name.innerHTML) + "&disable_redirect='>" + founds + "</a>";
 
                     hides = getValue("friends_hides_new_" + name.innerHTML, 0);
                     setValue("friends_hides_" + name.innerHTML, hides);
-//#299
-//                    if (hides == 0) friend.getElementsByTagName("dd")[5].innerHTML = "0&nbsp;";
-//                    else friend.getElementsByTagName("dd")[5].innerHTML = "<a href='/seek/nearest.aspx?u=" + urlencode(name.innerHTML) + "&disable_redirect='>" + hides + "</a>&nbsp;";
                     if (hides == 0) friend.getElementsByTagName("dd")[4].innerHTML = "0&nbsp;";
                     else friend.getElementsByTagName("dd")[4].innerHTML = "<a href='/seek/nearest.aspx?u=" + urlencode(name.innerHTML) + "&disable_redirect='>" + hides + "</a>&nbsp;";
                 }
@@ -4362,8 +4338,6 @@ var mainGC = function () {
                 spanT.innerHTML = '<br>Last reset was ' + getDateDiffString(new Date().getTime(), ld) + ' ago (' +
                     new Date(parseInt(ld, 10)).toLocaleString() + ')';
                 if ((sNewH == "") && (sNewF == "")) spanT.innerHTML = '<br>' + spanT.innerHTML;
-//#299
-//                document.getElementById('ctl00_ContentBody_FindUserPanel1_GetUsers').parentNode.insertBefore(spanT, document.getElementById('ctl00_ContentBody_FindUserPanel1_GetUsers').nextSibling);
                 document.getElementById('ctl00_ContentBody_btnAddFriend').parentNode.insertBefore(spanT, document.getElementById('ctl00_ContentBody_btnAddFriend').nextSibling);
 
                 // Wenn neue Hides -> anzeigen.
@@ -4371,9 +4345,6 @@ var mainGC = function () {
                     var boxH = document.createElement("div");
                     boxH.innerHTML = "<br><b>New hides by:</b> " + sNewH;
                     boxH.className = 'divFHclass';
-
-//#299
-//                    document.getElementById('ctl00_ContentBody_FindUserPanel1_GetUsers').parentNode.insertBefore(boxH, document.getElementById('ctl00_ContentBody_FindUserPanel1_GetUsers').nextSibling);
                     document.getElementById('ctl00_ContentBody_btnAddFriend').parentNode.insertBefore(boxH, document.getElementById('ctl00_ContentBody_btnAddFriend').nextSibling);
                 }
 
@@ -4382,9 +4353,6 @@ var mainGC = function () {
                     var boxF = document.createElement("div");
                     boxF.innerHTML = "<br><b>New finds by:</b> " + sNewF;
                     boxF.className = 'divFHclass';
-
-//#299
-//                    document.getElementById('ctl00_ContentBody_FindUserPanel1_GetUsers').parentNode.insertBefore(boxF, document.getElementById('ctl00_ContentBody_FindUserPanel1_GetUsers').nextSibling);
                     document.getElementById('ctl00_ContentBody_btnAddFriend').parentNode.insertBefore(boxF, document.getElementById('ctl00_ContentBody_btnAddFriend').nextSibling);
                 }
             }
@@ -4392,12 +4360,8 @@ var mainGC = function () {
             var button = document.createElement("input");
             button.setAttribute("type", "button");
             button.setAttribute("value", "Reset counter");
-//#299 new
             button.setAttribute("style", "height: 35px;");
             button.addEventListener("click", gclh_reset_counter, false);
-
-//#299
-//            document.getElementById('ctl00_ContentBody_FindUserPanel1_GetUsers').parentNode.insertBefore(button, document.getElementById('ctl00_ContentBody_FindUserPanel1_GetUsers').nextSibling);
             document.getElementById('ctl00_ContentBody_btnAddFriend').parentNode.insertBefore(button, document.getElementById('ctl00_ContentBody_btnAddFriend').nextSibling);
         } catch (e) {
             gclh_error("Improve Friendlist", e);
@@ -8054,6 +8018,23 @@ var mainGC = function () {
         gclh_error("Auto check checkboxes on hide cache process", e);
     }
 
+// Banner zu neuen Themen entfernen.
+    if (settings_remove_banner) {
+        try {
+            if (settings_remove_banner_to_mylists_new) {
+                $('#divContentMain').find('div.banner').find('a[href*="/account/lists"]').closest('div.banner').remove();
+            }
+            if (settings_remove_banner_to_mylists_old) {
+                $('#activationAlert').find('div.container').find('a[href*="/my/lists.aspx"]').closest('#activationAlert').remove();
+            }
+            if (settings_remove_banner_for_garminexpress) {
+                $('#Content').find('div.banner').find('#uxSendToGarminBannerLink').closest('div.banner').remove();
+            }
+        } catch (e) {
+            gclh_error("remove banner", e);
+        }
+    }
+
 // Check for Upgrade.
     try {
         function checkForUpgrade( manual ) {
@@ -8109,18 +8090,19 @@ var mainGC = function () {
         gclh_error("Check for updgrade", e);
     }
 
-// Ostern.
+// Special days.
     if (is_page("cache_listing")) {
         try {
             var now = new Date();
             var year = now.getYear() + 1900;
             var month = now.getMonth() + 1;
             var date = now.getDate();
+            // Ostern 2017.
             if (date >= 16 && date <= 17 && month == 4 && year == 2017) {
                 $(".CacheDetailNavigation:first > ul:first").append('<li><img src="https://raw.githubusercontent.com/2Abendsegler/GClh/master/images/easter_bunny_001.jpg" style="margin-bottom: -35px;" title="Happy Easter"></li>');
             }
         } catch (e) {
-            gclh_error("Ostern", e);
+            gclh_error("Special days", e);
         }
     }
 
@@ -9404,6 +9386,11 @@ var mainGC = function () {
             html += newParameterOn3;
             html += checkboxy('settings_hide_cache_approvals', 'Auto set approvals in hide cache process') + show_help("This option activates the checkboxes for approval the guidelines and the terms of use agreement in the hide cache process.") + "<br/>";
             html += newParameterVersionSetzen(0.6) + newParameterOff;
+            html += newParameterOn2;
+            html += checkboxy('settings_remove_banner', 'Remove banner') + "<br/>";
+            html += " &nbsp; " + checkboxy('settings_remove_banner_to_mylists_new', 'to new designed \"My Lists\" page ') + checkboxy('settings_remove_banner_to_mylists_old', 'to old \"My Lists\" page') + "<br/>";
+            html += " &nbsp; " + checkboxy('settings_remove_banner_for_garminexpress', 'for \"Garmin Express\"') + "<br/>";
+            html += newParameterVersionSetzen(0.8) + newParameterOff;
             html += checkboxy('settings_submit_log_button', 'Submit log, Pocket Query, Bookmark or hide cache on F2') + show_help("With this option you are able to submit your log by pressing F2 instead of scrolling to the bottom and move the mouse to the button. <br><br>This feature also works to submit Pocket Queries and Bookmarks. <br><br>And it works on the whole hide cache process with all of the buttons \"Continue\", \"Continue Anyway\", \"Save and Preview\", \"Submit Changes\", \"Update Attributes\", \"Create Waypoint\" and \"Update Waypoint\" of the create and the change functionality.") + "<br/>";
             html += "<br>";
             html += "&nbsp;" + "Show lines in";
@@ -10360,6 +10347,9 @@ var mainGC = function () {
             setEventsForDependentParameters( "settings_log_statistic", "settings_log_statistic_reload" );
             setEventsForDependentParameters( "settings_log_statistic", "settings_log_statistic_percentage" );
             setEventsForDependentParameters( "settings_friendlist_summary", "settings_friendlist_summary_viponly" );
+            setEventsForDependentParameters( "settings_remove_banner", "settings_remove_banner_to_mylists_new" );
+            setEventsForDependentParameters( "settings_remove_banner", "settings_remove_banner_to_mylists_old" );
+            setEventsForDependentParameters( "settings_remove_banner", "settings_remove_banner_for_garminexpress" );
             setEventsForDependentParameters( "settings_driving_direction_link", "settings_driving_direction_parking_area" );
 //--> $$065 Begin of insert
 //<-- $$065 End of insert
@@ -10696,6 +10686,10 @@ var mainGC = function () {
                 'settings_driving_direction_link',
                 'settings_driving_direction_parking_area',
                 'settings_show_elevation_of_waypoints',
+                'settings_remove_banner',
+                'settings_remove_banner_to_mylists_new',
+                'settings_remove_banner_to_mylists_old',
+                'settings_remove_banner_for_garminexpress',
                 'settings_img_warning'
             );
             for (var i = 0; i < checkboxes.length; i++) {
