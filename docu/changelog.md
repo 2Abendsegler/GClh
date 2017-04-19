@@ -20,9 +20,15 @@
 ## v0.8:
 <ul>
 <li>
-New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/254">#254</a>] Filter VIP logs in cache listing:<br>
+New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/311">#311</a>] Hide banners linking Garmin Express, new lists ...:<br>
 <br>
-<img src="../images/v0.7_Screen01.jpg" alt="v0.7_Screen01.jpg"><br>
+<img src="../images/v0.8_Screen20.jpg" alt="v0.8_Screen20.jpg"><br>
+<br>
+<img src="../images/v0.8_Screen21.jpg" alt="v0.8_Screen21.jpg"><br>
+<br>
+<img src="../images/v0.8_Screen22.jpg" alt="v0.8_Screen22.jpg"><br>
+<br>
+<img src="../images/v0.8_Screen23.jpg" alt="v0.8_Screen23.jpg"><br>
 <br></li>
 <br>
 </ul>
