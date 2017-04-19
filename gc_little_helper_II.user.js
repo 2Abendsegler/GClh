@@ -4166,7 +4166,6 @@ var mainGC = function () {
         }
     }
 
-//#299
 // Improve Friendlist.
     if (document.location.href.match(/^https?:\/\/www\.geocaching\.com\/my\/myfriends\.aspx/)) {
         try {
@@ -4284,6 +4283,7 @@ var mainGC = function () {
                 if (friendlocation != "" && friendlocation != "not listed" && friendlocation.length > 3) {
                     friend.getElementsByTagName("dd")[2].getElementsByTagName("span")[0].innerHTML = "<a href='http://maps.google.de/?q=" + (friendlocation.replace(/&/g, "")) + "' target='_blank'>" + friendlocation + "</a>";
                 }
+
                 // Bottom line.
                 friend.getElementsByTagName("p")[0].innerHTML = "<a name='lnk_profilegallery2' href='" + name.href + '#gclhpb#ctl00$ContentBody$ProfilePanel1$lnkGallery' + "'>Gallery</a> | " + friend.getElementsByTagName("p")[0].innerHTML;
             }
