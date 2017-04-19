@@ -20,7 +20,7 @@
 ## v0.8:
 <ul>
 <li>
-New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/311">#311</a>] Hide banner linking "Garmin Express" and new "My Lists":<br>
+New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/311">#311</a>] Hide banner linking "Garmin Express" or new "My Lists" page:<br>
 <br>
 Banner:<br>
 <img src="../images/v0.8_Screen20.jpg" alt="v0.8_Screen20.jpg"><br>
