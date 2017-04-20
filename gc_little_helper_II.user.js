@@ -99,6 +99,7 @@ var constInit = function (c) {
     c.bookmarks_def = new Array(22, 31, 16, 14, 32, 33, 48, "0", 8, 18, 54, 51, 55, 47, 10, 2, 35, 9, 17, 67, 23, 68);
     c.defaultConfigLink = "https://www.geocaching.com/my/default.aspx#GClhShowConfig";
     c.defaultSyncLink = "https://www.geocaching.com/my/default.aspx#GClhShowSync";
+
     // Define bookmarks.
     c.bookmarks = new Array();
     // WICHTIG: Die Reihenfolge darf hier auf keinen Fall geändert werden, weil dadurch eine falsche Zuordnung zu den
@@ -149,7 +150,7 @@ var constInit = function (c) {
         "token": true,
         "dbToken": true
     };
-    // Icons intern aufbauen.
+
     iconsInit();
 
     c.all_map_layers = new Object();     // gc.com Default-Layers
@@ -4166,7 +4167,6 @@ var mainGC = function () {
         }
     }
 
-//#299
 // Improve Friendlist.
     if (document.location.href.match(/^https?:\/\/www\.geocaching\.com\/my\/myfriends\.aspx/)) {
         try {
@@ -4284,6 +4284,7 @@ var mainGC = function () {
                 if (friendlocation != "" && friendlocation != "not listed" && friendlocation.length > 3) {
                     friend.getElementsByTagName("dd")[2].getElementsByTagName("span")[0].innerHTML = "<a href='http://maps.google.de/?q=" + (friendlocation.replace(/&/g, "")) + "' target='_blank'>" + friendlocation + "</a>";
                 }
+
                 // Bottom line.
                 friend.getElementsByTagName("p")[0].innerHTML = "<a name='lnk_profilegallery2' href='" + name.href + '#gclhpb#ctl00$ContentBody$ProfilePanel1$lnkGallery' + "'>Gallery</a> | " + friend.getElementsByTagName("p")[0].innerHTML;
             }
@@ -7355,7 +7356,6 @@ var mainGC = function () {
                 gclh_load_helper(1);
             }
             if (settings_show_all_logs) {
-                // Gegebenenfalls auf nächste gerade Zahl erhöhen, damit Zebra korrekt erzeugt wird.
                 var logsCount = parseInt(settings_show_all_logs_count);
                 if (logsCount == 0) logsCount = 5000;
                 else if (logsCount < 26) logsCount = 26;
@@ -7415,7 +7415,6 @@ var mainGC = function () {
                 + "table.Table tr.QuinaryRow td, .QuinaryRow, table.Table tr td.QuinaryRow { background-color: #" + getValue( "settings_lines_color_reviewer") + " !important; }"
                 + "table.Table tr.SenaryRow td, .SenaryRow, table.Table tr td.SenaryRow { background-color: #" + getValue( "settings_lines_color_vip") + " !important; }";
         appendCssStyle( css );
-
         // Bookmarklisten: Zeilen in Bookmarklisten in Zebra einfärben und die Funde des Users einfärben.
         // Die Bookmarklisten scheinen die einzigen Listen, bei denen das nicht vorgesehen ist.
         if (document.location.href.match(/^https?:\/\/www\.geocaching\.com\/bookmarks\/(view\.aspx\?guid=|bulk\.aspx\?listid=)/)) {
@@ -7442,14 +7441,13 @@ var mainGC = function () {
                 var lines = $("table").find("tbody").find("tr");
                 var replaceSpec = /(TertiaryRow)(\s*)/g;
                 setLinesColorNone( lines, replaceSpec );
-
                 // Wenn der User nicht eingefärbt werden soll, Zebra aber ausgewählt ist, dann muss Zebra leider explizit
                 // gesetzt werden, weil nur ein Wert im Standard gesetzt wurde, hier eben der Wert für User - blöd.
                 if ( settings_show_common_lists_in_zebra ) {
                     if ( document.location.href.match(/^https?:\/\/www\.geocaching\.com\/seek\/nearest\.aspx\?/)          ||      // - Pocket Query oder ähnlich
                          document.location.href.match(/^https?:\/\/www\.geocaching\.com\/my\/recentlyviewedcaches\.aspx/)    ) {  //   oder Recently Viewed,
                         var lines = $("table.Table").find("tbody").find("tr").slice(1);                                           //   dann Überschrift weglassen.
-                        setLinesColorInZebra( settings_show_common_lists_in_zebra, lines, 1 );                                     //   Einzeilig.
+                        setLinesColorInZebra( settings_show_common_lists_in_zebra, lines, 1 );                                    //   Einzeilig.
                     }
                 }
             }
@@ -7494,7 +7492,6 @@ var mainGC = function () {
             gclh_error('Save Homecoords', e);
         }
     }
-    // Save HomeCoords.
     function saveHomeCoords() {
         if (document.getElementById('Query')) {
             var link = document.getElementById('Query');
@@ -7575,7 +7572,7 @@ var mainGC = function () {
                         side.nodeValue += matrix;
                     }
                 }
-                // Nächste mögliche Matrixes farblich kennzeichnen und Search Link und Title setzen.
+                // Nächste mögliche Matrix farblich kennzeichnen und Search Link und Title setzen.
                 if ( own == true && settings_count_own_matrix_show_next == true ) {
                     var from = smallest;
                     var to = smallest - 1 + parseInt(settings_count_own_matrix_show_count_next);
@@ -7831,15 +7828,12 @@ var mainGC = function () {
             var avatar_checkbox = document.getElementById("ShowAvatarsInCacheLogs");
             avatar_checkbox.checked = !settings_hide_avatar;
             avatar_checkbox.disabled = true;
-
             var avatar_head = avatar_checkbox.parentNode;
             avatar_head.style.cursor = "unset";
             avatar_head.style.opacity = "0.5";
-
             var link = document.createElement("a");
             link.setAttribute("href", "/my/default.aspx#GClhShowConfig#a#settings_hide_avatar");
             link.appendChild(document.createTextNode("here"));
-
             var hinweis = document.createElement("span");
             hinweis.setAttribute("class", "label");
             hinweis.appendChild(document.createTextNode("You are using \"" + scriptName + "\" - you have to change this option "));
@@ -7867,7 +7861,6 @@ var mainGC = function () {
             if ( checkTaskAllowed( "GClh Sync", false ) == true ) GM_registerMenuCommand(scriptNameSync, gclh_showSync);
             else GM_registerMenuCommand(scriptNameSync, callSyncDefault);
         }
-
         // GClh Config, Sync und Find Player Aufrufe aus Linklist heraus.
         if ( checkTaskAllowed( "GClh Config", false ) == true ) {
             if ( document.getElementsByName("lnk_gclhconfig")[0] ) {
@@ -7887,7 +7880,6 @@ var mainGC = function () {
                 document.getElementsByName("lnk_findplayer")[0].addEventListener('click', createFindPlayerForm, false);
             }
         }
-
         // GClh Config, Sync und Find Player Aufrufe mit Zusatz #GClhShowConfig bzw. #GClhShowSync bzw. #GClhShowFindPlayer.
         // 2. Schritt derzeit im Link bei Settings, Preferences Avatar, teils in den Links aus der Linklist, teils in GM Menü,
         // mit rechter Maustaste aus Links neben Avatar auf Profile Seite und teils F4 bei Aufruf Config.
@@ -7903,17 +7895,14 @@ var mainGC = function () {
             document.location.href = clearUrlAppendix( document.location.href, true );
             setTimeout(createFindPlayerForm, 5);
         }
-
         // Profile Seite.
         if ( is_page("profile") && document.getElementById('ctl00_ContentBody_WidgetMiniProfile1_memberProfileLink') ) {
-
             // GClh Config und Sync Links neben Avatar im Profile.
             var lnk_config = " | <br><a href='#GClhShowConfig' id='gclh_config_lnk' name='gclh_config_lnk' style='font-size: 0.9em;' title='" + scriptShortNameConfig + " v" + scriptVersion + (settings_f4_call_gclh_config ? " / Key F4":"") + "' >" + scriptShortNameConfig + "</a>";
             var lnk_sync = " | <a href='#GClhShowSync' id='gclh_sync_lnk' name='gclh_sync_lnk' style='font-size: 0.9em;' title='" + scriptShortNameSync + " v" + scriptVersion + (settings_f10_call_gclh_sync ? " / Key F10":"") + "' >" + scriptShortNameSync + "</a>";
             document.getElementById('ctl00_ContentBody_WidgetMiniProfile1_memberProfileLink').parentNode.innerHTML += lnk_config + lnk_sync;
             document.getElementById('gclh_config_lnk').addEventListener('click', gclh_showConfig, false);
             document.getElementById('gclh_sync_lnk').addEventListener('click', gclh_showSync, false);
-
             // Linklist Ablistung rechts im Profile.
             if ( document.getElementsByName("lnk_gclhconfig_profile")[0] ) {
                 document.getElementsByName("lnk_gclhconfig_profile")[0].href = "#GClhShowConfig";
@@ -7928,13 +7917,11 @@ var mainGC = function () {
                 document.getElementsByName("lnk_findplayer_profile")[0].addEventListener('click', createFindPlayerForm, false);
             }
         }
-
         // GClh Config und Sync Aufrufe von anderen Seiten auf die Profile Seite mit Zusatz #GClhShowConfig bzw. #GClhShowSync.
         // Derzeit teils in GM Menü (1. Schritt) verwendet.
         // Chrome cannot handle functions without curly brackets!
         function callConfigDefault() { document.location.href = defaultConfigLink; }
         function callSyncDefault() { document.location.href = defaultSyncLink; }
-
     } catch (e) {
         gclh_error("Aufbau Links zum Aufruf von Config, Sync und Find Player", e);
     }
@@ -7948,17 +7935,14 @@ var mainGC = function () {
     function setSpecialLinks() {
         // Links zu Nearest Lists/Map in Linklist, im Config und in Ablistung der Listlist im Profile setzen.
         if (getValue("home_lat", 0) != 0 && getValue("home_lng") != 0) {
-            // Nearest List.
             var link = http + "://www.geocaching.com/seek/nearest.aspx?lat=" + (getValue("home_lat") / 10000000) + "&lng=" + (getValue("home_lng") / 10000000) + "&dist=25&disable_redirect=";
             if ( document.getElementsByName("lnk_nearestlist")[0] ) document.getElementsByName("lnk_nearestlist")[0].href = link;
             if ( document.getElementsByName("lnk_nearestlist")[1] ) document.getElementsByName("lnk_nearestlist")[1].href = link;
             if ( document.getElementsByName("lnk_nearestlist_profile")[0] ) document.getElementsByName("lnk_nearestlist_profile")[0].href = link;
-            // Nearest Map.
             var link = map_url + "?lat=" + (getValue("home_lat") / 10000000) + "&lng=" + (getValue("home_lng") / 10000000);
             if ( document.getElementsByName("lnk_nearestmap")[0] ) document.getElementsByName("lnk_nearestmap")[0].href = link;
             if ( document.getElementsByName("lnk_nearestmap")[1] ) document.getElementsByName("lnk_nearestmap")[1].href = link;
             if ( document.getElementsByName("lnk_nearestmap_profile")[0] ) document.getElementsByName("lnk_nearestmap_profile")[0].href = link;
-            // Nearest List without Founds.
             var link = http + "://www.geocaching.com/seek/nearest.aspx?lat=" + (getValue("home_lat") / 10000000) + "&lng=" + (getValue("home_lng") / 10000000) + "&dist=25&f=1&disable_redirect=";
             if ( document.getElementsByName("lnk_nearestlist_wo")[0] ) document.getElementsByName("lnk_nearestlist_wo")[0].href = link;
             if ( document.getElementsByName("lnk_nearestlist_wo")[1] ) document.getElementsByName("lnk_nearestlist_wo")[1].href = link;
@@ -7983,14 +7967,12 @@ var mainGC = function () {
                     document.styleSheets[i].cssRules[384].style['background-image'] = "none";
                 }
             }
-
             // Example Path for Site      /Adventures/Details/90ced6d4-0a22-4c19-a491-7ae17d489c60
             // Example Path for Download  /Adventures/DetailsAsGPX/90ced6d4-0a22-4c19-a491-7ae17d489c60
             // Get current Path with GUID and create download Path
             pathName = window.location.pathname;
             pathValues = pathName.split("/");
             downloadPath = "/Adventures/DetailsAsGPX/" + pathValues[3];
-
             // Move existing Leaderboard Button to the left.
             // Create new Button with Download Link.
             $('#leaderboard')
@@ -8023,15 +8005,9 @@ var mainGC = function () {
 // Banner zu neuen Themen entfernen.
     if (settings_remove_banner) {
         try {
-            if (settings_remove_banner_to_mylists_new) {
-                $('#divContentMain').find('div.banner').find('a[href*="/account/lists"]').closest('div.banner').remove();
-            }
-            if (settings_remove_banner_to_mylists_old) {
-                $('#activationAlert').find('div.container').find('a[href*="/my/lists.aspx"]').closest('#activationAlert').remove();
-            }
-            if (settings_remove_banner_for_garminexpress) {
-                $('#Content').find('div.banner').find('#uxSendToGarminBannerLink').closest('div.banner').remove();
-            }
+            if (settings_remove_banner_to_mylists_new) $('#divContentMain').find('div.banner').find('a[href*="/account/lists"]').closest('div.banner').remove();
+            if (settings_remove_banner_to_mylists_old) $('#activationAlert').find('div.container').find('a[href*="/my/lists.aspx"]').closest('#activationAlert').remove();
+            if (settings_remove_banner_for_garminexpress) $('#Content').find('div.banner').find('#uxSendToGarminBannerLink').closest('div.banner').remove();
         } catch (e) {
             gclh_error("remove banner", e);
         }
@@ -8116,7 +8092,7 @@ var mainGC = function () {
         return false;
     }
 
-    function caseInsensitiveSort(a, b) {  // http://www.codingforums.com/showthread.php?t=10477
+    function caseInsensitiveSort(a, b) {
         var ret = 0;
         a = a.toLowerCase();
         b = b.toLowerCase();
@@ -8303,9 +8279,7 @@ var mainGC = function () {
         if (document.getElementById('settings_overlay')) document.getElementById('settings_overlay').style.display = "none";
         if (document.getElementById('sync_settings_overlay')) document.getElementById('sync_settings_overlay').style.display = "none";
         if (document.getElementById('findplayer_overlay')) document.getElementById('findplayer_overlay').style.display = "none";
-        if ( clearUrl != false ) {
-            document.location.href = clearUrlAppendix( document.location.href, false );
-        }
+        if ( clearUrl != false ) document.location.href = clearUrlAppendix( document.location.href, false );
     }
 
 // Function to get the Finds out of the login-Text-Box.
@@ -8440,14 +8414,12 @@ var mainGC = function () {
         if ( parameter["user"] == false ) {
             setLinesColorNone( lines, replaceSpecUser );
         }
-
         // Wenn eine Einfärbung stattfinden soll.
         if ( parameter["user"] == true || parameter["owner"] == true || parameter["reviewer"] == true || parameter["vip"] == true ) {
             for ( var i = 0; i < lines.length; i += linesTogether ) {
                 var newClass = "";
                 var aTags = lines[i].getElementsByTagName("a");
                 var imgTags = lines[i].getElementsByTagName("img");
-
                 // Anhand der guid prüfen, ob eine Einfärbung in diesem Zeilenbereich für User oder Owner notwendig ist.
                 // Verarbeitung für die Seiten: Cache Listing, TB Listing
                 if ( parameter["user"] || parameter["owner"] ) {
@@ -8859,24 +8831,21 @@ var mainGC = function () {
     }
 
     function actionNew( name, page ) {
-        // find latest id
+        // Find latest id.
         var i = settings_search_data.length;
         var id = -1;
         for (var i = 0; i < settings_search_data.length; i++) {
             if ( id < settings_search_data[i].id ) { id = settings_search_data[i].id; }
         }
-        // console.log("next index: " + i + " next id: " + (id+1) );
         settings_search_data[i] = {};
         settings_search_data[i].id = id+1;
         settings_search_data[i].name = name;
         settings_search_data[i].url = page.split("#")[0];
-        // console.log(settings_search_data);
         saveFilterSet();
     }
 
     // Delete
     function actionSearchDelete( id ) {
-        // console.log("actionSearchDelete()");
         var settings_search_data_tmp = [];
         for (var i = 0; i < settings_search_data.length; i++) {
             if ( settings_search_data[i].id != id ) {
@@ -8888,7 +8857,6 @@ var mainGC = function () {
     }
 
     function updateUI() {
-        // console.log("updateUI()");
         if ( $("#searchContextMenu").length == 0 ) {
             var html = "";
             html += '<div id="searchContextMenu" class="pop-modal" style="top: auto; left: auto; width: 100%; position: absolute;">';
@@ -8909,12 +8877,10 @@ var mainGC = function () {
             html += '<label class="add-list-label">Available Filter Sets</label>';
             html += '<ul id="filterlist" class="add-list"></ul>';
 
-            // end of div
             html += '</div>';
             $( "#ctxMenu" ).html(html);
 
             $('#btn-save').click( function() {
-                // console.log("save search");
                 var name = $("#nameSearch").val();
                 if ( name == "" ) {
                     alert("Insert name!");
@@ -8950,7 +8916,6 @@ var mainGC = function () {
         }
 
         var html = "";
-        // console.log(settings_search_data);
         if ( settings_search_data.length ) {
             settings_search_data.sort(function(a, b){ return a.name.toUpperCase()>b.name.toUpperCase(); });
         }
@@ -8974,7 +8939,6 @@ var mainGC = function () {
         // delete
         $('.action-delete').click( function() {
             var id = $(this).data('id');
-            // console.log(id);
             actionSearchDelete( id );
             updateUI();
         });
@@ -9011,49 +8975,46 @@ var mainGC = function () {
 
     if ( settings_search_enable_user_defined && is_page("find_cache") ) {
         try {
-            if ( !( $(".results").length || settings_search_data.length ) ) {
-                // no result list and no user defined filter => do nothing
-                return;
-            }
-            create_config_css_search();
+            if ( !( $(".results").length || settings_search_data.length ) )
+            else {
+                create_config_css_search();
 
-            $( ".filters-toggle" ).append('&nbsp;<button id="filterCtxMenu" class="btn btn-user" type="button">Manage Filter Sets</button>  '); // &#x2630;
-            $( ".filters-toggle" ).append('<div id="ctxMenu" style="display:none;"></div>');
+                $( ".filters-toggle" ).append('&nbsp;<button id="filterCtxMenu" class="btn btn-user" type="button">Manage Filter Sets</button>  '); // &#x2630;
+                $( ".filters-toggle" ).append('<div id="ctxMenu" style="display:none;"></div>');
 
-            $('#filterCtxMenu').click( function() {
-                var element = $('#ctxMenu');
-                if ( element.css('display') == 'none' ){
-                   updateUI();
-                   element.show();
-                   $(this).addClass( 'btn-user-active' );
-                } else {
-                   element.hide();
-                   $(this).removeClass( 'btn-user-active' );
-                }
-            });
+                $('#filterCtxMenu').click( function() {
+                    var element = $('#ctxMenu');
+                    if ( element.css('display') == 'none' ){
+                       updateUI();
+                       element.show();
+                       $(this).addClass( 'btn-user-active' );
+                    } else {
+                       element.hide();
+                       $(this).removeClass( 'btn-user-active' );
+                    }
+                });
 
-            var currentFilter = "";
-            for (var i = 0; i < settings_search_data.length; i++) {
-                if ( settings_search_data[i].url == document.location.href.split("#")[0] ) {
-                    currentFilter = "Current Filter Set: "+settings_search_data[i].name;
-                }
-            }
-            $(".button-group-dynamic").append('<span>'+currentFilter+'</span>');
-
-            // Helper function to close the dialog div if a mouse click outside.
-            $(document).mouseup(function (e) {
-                var container = $('#ctxMenu');
-                if ( container.css('display') != 'none' ){
-                    if (!container.is(e.target) && !($('#filterCtxMenu').is(e.target))  // if the target of the click isn't the container...
-                        && container.has(e.target).length === 0) // ... nor a descendant of the container
-                    {
-                        container.hide();
-                        $('#filterCtxMenu').removeClass( 'btn-user-active' );
-                        // console.log(":-D");
+                var currentFilter = "";
+                for (var i = 0; i < settings_search_data.length; i++) {
+                    if ( settings_search_data[i].url == document.location.href.split("#")[0] ) {
+                        currentFilter = "Current Filter Set: "+settings_search_data[i].name;
                     }
                 }
-                return false;
-            });
+                $(".button-group-dynamic").append('<span>'+currentFilter+'</span>');
+
+                // Helper function to close the dialog div if a mouse click outside.
+                $(document).mouseup(function (e) {
+                    var container = $('#ctxMenu');
+                    if ( container.css('display') != 'none' ){
+                        if (!container.is(e.target) && !($('#filterCtxMenu').is(e.target)) && // if the target of the click isn't the container...
+                            container.has(e.target).length === 0) { // ... nor a descendant of the container
+                            container.hide();
+                            $('#filterCtxMenu').removeClass( 'btn-user-active' );
+                        }
+                    }
+                    return false;
+                });
+            }
         } catch (e) {
             gclh_error("Error in 'User defined search' modifications", e);
         }
@@ -9733,7 +9694,6 @@ var mainGC = function () {
             html += "  <option value=\"7\" " + (settings_default_logtype == "7" ? "selected=\"selected\"" : "") + ">Needs archived</option>";
             html += "  <option value=\"45\" " + (settings_default_logtype == "45" ? "selected=\"selected\"" : "") + ">Needs maintenance</option>";
             html += "</select>" + show_help("If you set this option, the selected value will be selected automatically, if you open a log page.") + "<br>";
-
             html += "&nbsp;" + "Default event log type: <select class='gclh_form' id='settings_default_logtype_event' style='margin-left: 4px;'>";
             html += "  <option value=\"-1\" " + (settings_default_logtype_event == "-1" ? "selected=\"selected\"" : "") + ">- Select type of log -</option>";
             html += "  <option value=\"4\" " + (settings_default_logtype_event == "4" ? "selected=\"selected\"" : "") + ">Write note</option>";
@@ -9741,7 +9701,6 @@ var mainGC = function () {
             html += "  <option value=\"9\" " + (settings_default_logtype_event == "9" ? "selected=\"selected\"" : "") + ">Will attend</option>";
             html += "  <option value=\"10\" " + (settings_default_logtype_event == "10" ? "selected=\"selected\"" : "") + ">Attended</option>";
             html += "</select>" + show_help("If you set this option, the selected value will be selected automatically, if you open a log page of an event.") + "<br>";
-
             html += "&nbsp;" + "Default owner log type: <select class='gclh_form' id='settings_default_logtype_owner'>";
             html += "  <option value=\"-1\" " + (settings_default_logtype_owner == "-1" ? "selected=\"selected\"" : "") + ">- Select type of log -</option>";
             html += "  <option value=\"4\" " + (settings_default_logtype_owner == "4" ? "selected=\"selected\"" : "") + ">Write note</option>";
@@ -9749,7 +9708,6 @@ var mainGC = function () {
             html += "  <option value=\"23\" " + (settings_default_logtype_owner == "23" ? "selected=\"selected\"" : "") + ">Enable listing</option>";
             html += "  <option value=\"18\" " + (settings_default_logtype_owner == "18" ? "selected=\"selected\"" : "") + ">Post reviewer note</option>";
             html += "</select>" + show_help("If you set this option, the selected value will be selected automatically, if you open a log page of one of your own caches.") + "<br>";
-
             html += "&nbsp;" + "Default TB log type: &nbsp; &nbsp; <select class='gclh_form' id='settings_default_tb_logtype' style='margin-left: 4px;'>";
             html += "  <option value=\"-1\" " + (settings_default_tb_logtype == "-1" ? "selected=\"selected\"" : "") + ">- Select type of log -</option>";
             html += "  <option value=\"13\" " + (settings_default_tb_logtype == "13" ? "selected=\"selected\"" : "") + ">Retrieve from ..</option>";
@@ -9867,12 +9825,10 @@ var mainGC = function () {
                     if (typeof(order[i]) == "undefined") continue;
                     if (typeof(order[i]) == "object") continue;
                     if (typeof(bookmarks[order[i]]) == "undefined") continue;
-                    // Wenn custom Bookmark.
                     if (bookmarks[order[i]].custom) {
                         var text = (typeof(bookmarks_orig_title[order[i]]) != "undefined" && bookmarks_orig_title[order[i]] != "" ? bookmarks_orig_title[order[i]] : bookmarks[order[i]]['title']);
                         var textTitle = "Custom" + (order[i] - firstCust);
                         if ( !text.match(/(\S+)/) ) text = textTitle;
-                    // Wenn default Bookmark.
                     } else {
                         var text = bookmarks[order[i]]['title'];
                         var textTitle = (typeof(bookmarks_orig_title[order[i]]) != "undefined" && bookmarks_orig_title[order[i]] != "" ? bookmarks_orig_title[order[i]] : bookmarks[order[i]]['title']);
@@ -9908,7 +9864,6 @@ var mainGC = function () {
             html += "        </thead>";
             // Zwei Spalten mit den möglichen Bookmarks und den gegebenenfalls abweichenden Bezeichnungen:
             html += "        <tbody>";
-
             var cust = 0;
             for (var i = 0; i < bookmarks.length; i++) {
                 var num = bookmarks[i]['number'];
@@ -9916,12 +9871,10 @@ var mainGC = function () {
                 // Erste Spalte mit den möglichen Bookmarks:
                 html += "            <td style='padding: 0px 2px 1px 2px; width: 201px; z-index: 1004;' align='left' class='gclh_LinkListElement' id='gclh_LinkListElement_" + num + "' >";
                 html += "                <img style='height:12px;margin-right:3px; cursor: grab;' title='' src='"+global_grab_it2_icon+"' />";
-                // Wenn custom Bookmark.
                 if (typeof(bookmarks[i]['custom']) != "undefined" && bookmarks[i]['custom'] == true) {
                     html += "            <input style='padding-left: 2px; padding-right: 2px;' class='gclh_form' type='text' title='Custom link' id='settings_custom_bookmark[" + cust + "]' value='" + bookmarks[i]['href'] + "' size='15'> ";
                     html += "            <input type='checkbox' style='margin-left: 1px;' title='Open in new window' " + (bookmarks[i]['target'] == "_blank" ? "checked='checked'" : "" ) + " id='settings_custom_bookmark_target[" + cust + "]'>";
                     cust++;
-                // Wenn default Bookmark.
                 } else {
                     html += "            <a class='gclh_ref' title='Standard link with description' ";
                     for (attr in bookmarks[i]) {
@@ -9939,10 +9892,8 @@ var mainGC = function () {
                 html += "            </td>";
                 // Zweite Spalte mit gegebenenfalls abweichenden Bezeichnungen:
                 html += "            <td align='left' style='padding: 0px 2px 1px 2px;'>";
-                // Wenn custom Bookmark.
                 if (typeof(bookmarks[i]['custom']) != "undefined" && bookmarks[i]['custom'] == true) {
                     html += "                <input style='padding-left: 2px; padding-right: 2px;' class='gclh_form' title='Description for custom link' id='bookmarks_name[" + num + "]' type='text' size='15' value='" + getValue("settings_bookmarks_title[" + num + "]", "") + "'>";
-                // Wenn default Bookmark.
                 } else {
                     html += "                <input style='padding-left: 2px; padding-right: 2px;' class='gclh_form' title='Differing description for standard link' id='bookmarks_name[" + num + "]' type='text' size='15' value='" + getValue("settings_bookmarks_title[" + num + "]", "") + "'>";
                     // Kennzeichnung neuer Parameter in Linklist Bereich.
