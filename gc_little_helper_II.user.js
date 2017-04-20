@@ -8975,7 +8975,8 @@ var mainGC = function () {
 
     if ( settings_search_enable_user_defined && is_page("find_cache") ) {
         try {
-            if ( !( $(".results").length || settings_search_data.length ) ) {
+            if ( !( $(".results").length || settings_search_data.length ) )
+            else {
                 create_config_css_search();
 
                 $( ".filters-toggle" ).append('&nbsp;<button id="filterCtxMenu" class="btn btn-user" type="button">Manage Filter Sets</button>  '); // &#x2630;
