@@ -8975,8 +8975,8 @@ var mainGC = function () {
 
     if ( settings_search_enable_user_defined && is_page("find_cache") ) {
         try {
-            if ( !( $(".results").length || settings_search_data.length ) )
-            else {
+            if ( !( $(".results").length || settings_search_data.length ) ) {
+            } else {
                 create_config_css_search();
 
                 $( ".filters-toggle" ).append('&nbsp;<button id="filterCtxMenu" class="btn btn-user" type="button">Manage Filter Sets</button>  '); // &#x2630;
@@ -9005,9 +9005,9 @@ var mainGC = function () {
                 // Helper function to close the dialog div if a mouse click outside.
                 $(document).mouseup(function (e) {
                     var container = $('#ctxMenu');
-                    if ( container.css('display') != 'none' ){
-                        if (!container.is(e.target) && !($('#filterCtxMenu').is(e.target)) && // if the target of the click isn't the container...
-                            container.has(e.target).length === 0) { // ... nor a descendant of the container
+                    if ( container.css('display') != 'none' ) {
+                        if ( !container.is(e.target) && !($('#filterCtxMenu').is(e.target)) && // if the target of the click isn't the container...
+                            container.has(e.target).length === 0 ) { // ... nor a descendant of the container
                             container.hide();
                             $('#filterCtxMenu').removeClass( 'btn-user-active' );
                         }
