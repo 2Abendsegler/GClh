@@ -4448,6 +4448,22 @@ var mainGC = function () {
             var matches = document.location.href.match(/guid=([a-zA-Z0-9-]*)/);
             var uuid = matches[1];
             box.childNodes[3].innerHTML += "<br><a title=\"Download as kml\" href='" + http + "://www.geocaching.com/kml/bmkml.aspx?bmguid=" + uuid + "'>Download as kml</a><br><a title=\"Show in google maps\" href='http://maps.google.com/?q=https://www.geocaching.com/kml/bmkml.aspx?bmguid=" + uuid + "' target='_blank'>Show in google maps</a>";
+
+//xxxx2
+settings_bm_list_tunen = trues;
+            // Bookmark Liste tunen.
+            if (settings_bm_list_tunen) {
+                var div = document.getElementById('ctl00_ContentBody_QuickAdd');
+                div.children[1].childNodes[1].remove();
+                div.children[1].childNodes[0].remove();
+                div.children[0].remove();
+                div.setAttribute("style", "margin-bottom: 1px; float: left;");
+                document.getElementById('ctl00_ContentBody_btnAddBookmark').setAttribute("style", "margin-top: 1px; margin-left: -1px;");
+                document.getElementById('ctl00_ContentBody_ListInfo_uxListOwner').parentNode.parentNode.children[4].remove();
+                document.getElementById('ctl00_ContentBody_ListInfo_uxListOwner').parentNode.parentNode.children[3].remove();
+                document.getElementById('ctl00_ContentBody_ListInfo_uxListOwner').parentNode.style.marginBottom = "0px";
+            }
+//xxxx2
         } catch (e) {
             gclh_error("Improve Bookmark-List1", e);
         }
