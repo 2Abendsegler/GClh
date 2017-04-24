@@ -4441,17 +4441,20 @@ var mainGC = function () {
         }
     }
 
-// Improve Bookmark-List.
-    if (document.location.href.match(/^https?:\/\/www\.geocaching\.com\/bookmarks\/view\.aspx\?guid=/)) {
-        try {
-            var box = document.getElementById("ctl00_ContentBody_lbHeading").parentNode.parentNode.parentNode;
-            var matches = document.location.href.match(/guid=([a-zA-Z0-9-]*)/);
-            var uuid = matches[1];
-            box.childNodes[3].innerHTML += "<br><a title=\"Download as kml\" href='" + http + "://www.geocaching.com/kml/bmkml.aspx?bmguid=" + uuid + "'>Download as kml</a><br><a title=\"Show in google maps\" href='http://maps.google.com/?q=https://www.geocaching.com/kml/bmkml.aspx?bmguid=" + uuid + "' target='_blank'>Show in google maps</a>";
-
 //xxxx2
-settings_bm_list_tunen = trues;
-            // Bookmark Liste tunen.
+// Improve Bookmark-List.
+    if (document.location.href.match(/^https?:\/\/www\.geocaching\.com\/bookmarks\/(view\.aspx\?guid=|bulk\.aspx\?listid=)/) && document.getElementById('ctl00_ContentBody_QuickAdd')) {
+        try {
+            if (document.location.href.match(/guid=([a-zA-Z0-9-]*)/)) {
+                var matches = document.location.href.match(/guid=([a-zA-Z0-9-]*)/);
+                if (matches && matches[1]) {
+                    var uuidx = matches[1];
+                    var kml = "<a style=\"padding-right: 20px;\" title=\"Download as kml\" href='" + http + "://www.geocaching.com/kml/bmkml.aspx?bmguid=" + uuidx + "'>Download as kml</a>";
+                    var gm = "<a title=\"Show in google maps\" href='http://maps.google.com/?q=https://www.geocaching.com/kml/bmkml.aspx?bmguid=" + uuidx + "' target='_blank'>Show in google maps</a>";
+                }
+            }
+//xxxx2
+settings_bm_list_tunen = true;
             if (settings_bm_list_tunen) {
                 var div = document.getElementById('ctl00_ContentBody_QuickAdd');
                 div.children[1].childNodes[1].remove();
@@ -4462,12 +4465,38 @@ settings_bm_list_tunen = trues;
                 document.getElementById('ctl00_ContentBody_ListInfo_uxListOwner').parentNode.parentNode.children[4].remove();
                 document.getElementById('ctl00_ContentBody_ListInfo_uxListOwner').parentNode.parentNode.children[3].remove();
                 document.getElementById('ctl00_ContentBody_ListInfo_uxListOwner').parentNode.style.marginBottom = "0px";
+                if (uuidx) document.getElementById('ctl00_ContentBody_ListInfo_uxListOwner').parentNode.innerHTML += "<span style='float: right; padding-right: 210px;'>" + kml + gm + "</span>";
+
+                appendCssStyle("table.Table th, table.Table td {border-left: 1px solid #fff; border-right: 1px solid #fff;} tr.BorderTop td {border-top: 1px solid #fff;} table.Table th {border-bottom: 2px solid #fff;} td {vertical-align: baseline !important;} table.Table img {vertical-align: baseline !important; margin-bottom: -3px;} .noBreak {width: -moz-max-content;}");
+                var lines = $('table.Table tbody').find('tr');
+                for (var i = 0; i < lines.length; i += 2) {
+                    if (!lines[i].className.match(/BorderTop/)) lines[i].className += " BorderTop";
+                    lines[i].children[1].childNodes[3].outerHTML = "&nbsp;&nbsp;";
+                    lines[i].children[1].innerHTML = "<div class='noBreak'>" + lines[i].children[1].innerHTML + "</div>";
+// GC Tour Icon kommt erst später, das hier reicht nicht
+//                    lines[i].children[5].innerHTML = "<div class='noBreak'>" + lines[i].children[5].innerHTML + "</div>";
+                    if (lines[i+1].children[1].innerHTML == "") {
+                        while (lines[i+1].children[0]) {
+                            lines[i+1].children[0].remove();
+                        }
+                        for (var j = 0; j < lines[i].children.length; j++) {
+                            if (lines[i].children[j].getAttribute("rowspan") == "2") lines[i].children[j].setAttribute("rowspan", "1");
+                        }
+                    }
+                }
+
+                $('#ctl00_ContentBody_ListInfo_btnDelete').closest('p').append($('#ctl00_ContentBody_btnCreatePocketQuery').remove().get().reverse());
+                document.getElementById('ctl00_ContentBody_uxAboutPanel').remove();
+
+            } else {
+                if (uuidx) document.getElementById("ctl00_ContentBody_lbHeading").parentNode.parentNode.parentNode.childNodes[3].innerHTML += "<br>" + kml + "<br>" + gm;
             }
 //xxxx2
         } catch (e) {
             gclh_error("Improve Bookmark-List1", e);
         }
     }
+
     if (document.location.href.match(/^https?:\/\/www\.geocaching\.com\/bookmarks\/default\.aspx/) || document.location.href.match(/^https?:\/\/www\.geocaching\.com\/my\/lists\.aspx/)) {
         try {
             var links = document.getElementsByTagName("a");
@@ -7433,7 +7462,7 @@ settings_bm_list_tunen = trues;
         appendCssStyle( css );
         // Bookmarklisten: Zeilen in Bookmarklisten in Zebra einfärben und die Funde des Users einfärben.
         // Die Bookmarklisten scheinen die einzigen Listen, bei denen das nicht vorgesehen ist.
-        if (document.location.href.match(/^https?:\/\/www\.geocaching\.com\/bookmarks\/(view\.aspx\?guid=|bulk\.aspx\?listid=)/)) {
+        if (document.location.href.match(/^https?:\/\/www\.geocaching\.com\/bookmarks\/(view\.aspx\?guid=|bulk\.aspx\?listid=)/) && document.getElementById('ctl00_ContentBody_QuickAdd')) {
             var lines = $("table.Table").find("tbody").find("tr");
             setLinesColorInZebra( settings_show_common_lists_in_zebra, lines, 2 );
             setLinesColorUser( "settings_show_common_lists_color", "user", lines, 2, "" );
