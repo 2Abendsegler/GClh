@@ -8499,7 +8499,7 @@ var mainGC = function () {
 // Tabellenzeilen für User und Owner einfärben bzw. Einfärbung entfernen.
     function setLinesColorUser( parameterStamm, tasks, lines, linesTogether, owner ) {
         if ( lines.length == 0 ) return;
-        var user = $('.li-user-info').children().first().text();
+        var user = $('.li-user-info').last().children().first().text();
         if ( owner == undefined ) var owner = "";
         var vips = getValue("vips");
         // try if vips not empty
