@@ -1774,7 +1774,7 @@ var mainGC = function () {
                         if ( ( listen[j].href.match(/geocaching\.com\/bookmarks\/view\.aspx\?guid=/) ) &&
                              ( listen[j].text == "Ignore List" ) &&                                          // Die heißt auch in anderen Sprachen so.
                              ( listen[j+1].href.match(/geocaching\.com\/profile\/\?guid=/) ) &&
-                             ( listen[j+1].text == $('.li-user-info').children().first().text() ) ) {
+                             ( listen[j+1].text == $('.li-user-info').last().children().first().text() ) ) {
                             // Bereich mit den Links "Watch", Ignore" ... besorgen und verarbeiten.
                             var cdnLinksBereich = document.getElementsByClassName("CacheDetailNavigation NoPrint");
                             for (var k = 0; k < cdnLinksBereich.length; k++) {
@@ -2882,7 +2882,7 @@ var mainGC = function () {
             // Get finds to replace #found# variable.
             finds = get_my_finds();
             [ aDate, aTime, aDateTime ] = getDateTime();
-            var me = $('.li-user-info').children().first().text();
+            var me = $('.li-user-info').last().children().first().text();
             [ aGCTBName, aGCTBLink, aGCTBNameLink, aLogDate ] = getGCTBInfo();
 
             gclh_add_insert_fkt("ctl00_ContentBody_LogBookPanel1_uxLogInfo");
@@ -3269,7 +3269,7 @@ var mainGC = function () {
             g_founds = get_my_finds();
             [ g_date, g_time, g_dateTime ] = getDateTime();
             // Aktiven User Namen ermitteln.
-            g_activ_username = $('.li-user-info').children().first().text();
+            g_activ_username = $('.li-user-info').last().children().first().text();
         }
         return [ g_gc, g_tb, g_code, g_name, g_link, g_activ_username, g_founds, g_date, g_time, g_dateTime ];
     }
@@ -4041,7 +4041,7 @@ var mainGC = function () {
                 }
 
                 // Ownername == Username.
-                else if ($('.PostLogList').find('a[href*="https://www.geocaching.com/profile/?guid="]').text().trim() == $('.li-user-info').children().text().trim()) {
+                else if ($('.PostLogList').find('a[href*="https://www.geocaching.com/profile/?guid="]').text().trim() == $('.li-user-info').last().children().text().trim()) {
                     select_val = settings_default_logtype_owner;
                 } else {
                     select_val = settings_default_logtype;
@@ -4085,9 +4085,9 @@ var mainGC = function () {
             window.addEventListener("load", gclh_setFocus, false);
 
             // Replace variable.
-            if ($('.li-user-info').children().length > 0) {
+            if ($('.li-user-info').last().children().length > 0) {
                 var finds = get_my_finds();
-                var me = $('.li-user-info').children().first().text();
+                var me = $('.li-user-info').last().children().first().text();
                 var owner = document.getElementById('ctl00_ContentBody_LogBookPanel1_WaypointLink').nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.innerHTML;
                 document.getElementById('ctl00_ContentBody_LogBookPanel1_uxLogInfo').innerHTML = document.getElementById('ctl00_ContentBody_LogBookPanel1_uxLogInfo').innerHTML.replace(/#found_no#/ig, finds);
                 finds++;
@@ -4137,9 +4137,9 @@ var mainGC = function () {
             window.addEventListener("load", gclh_setFocus, false);
 
             // Replace variable.
-            if ($('.li-user-info').children().length > 0) {
+            if ($('.li-user-info').last().children().length > 0) {
                 var finds = get_my_finds();
-                var me = $('.li-user-info').children().first().text();
+                var me = $('.li-user-info').last().children().first().text();
                 var owner = document.getElementById('ctl00_ContentBody_LogBookPanel1_WaypointLink').nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.innerHTML;
                 document.getElementById('ctl00_ContentBody_LogBookPanel1_uxLogInfo').innerHTML = document.getElementById('ctl00_ContentBody_LogBookPanel1_uxLogInfo').innerHTML.replace(/#found_no#/ig, finds);
                 finds++;
@@ -4238,8 +4238,8 @@ var mainGC = function () {
                     if ((founds - last_founds) > 0) {
                         if (sNewF != "") sNewF = sNewF + ",&nbsp;";
                         var sHlp = name.innerHTML + " (";
-                        if (founds - last_founds > 0) sHlp = sHlp + "+";
-                        else sHlp = Hlp + "-";
+                        if ((founds - last_founds) > 0) sHlp = sHlp + "+";
+                        else sHlp = sHlp + "-";
                         sHlp = sHlp + (founds - last_founds) + ")";
                         sNewF = sNewF + "<a class='myfriends' href='/seek/nearest.aspx?ul=" + urlencode(name.innerHTML) + "&disable_redirect='>" + sHlp + "</a>";
                     }
@@ -4267,8 +4267,8 @@ var mainGC = function () {
                     if ((hides - last_hides) > 0) {
                         if (sNewH != "") sNewH = sNewH + ",&nbsp;";
                         var sHlp = name.innerHTML + " (";
-                        if (hides - last_hides > 0) sHlp = sHlp + "+";
-                        else sHlp = Hlp + "-";
+                        if ((hides - last_hides) > 0) sHlp = sHlp + "+";
+                        else sHlp = sHlp + "-";
                         sHlp = sHlp + (hides - last_hides) + ")";
                         sNewH = sNewH + "<a class='myfriends' href='/seek/nearest.aspx?u=" + urlencode(name.innerHTML) + "&disable_redirect='>" + sHlp + "</a>";
                     }
@@ -4442,7 +4442,6 @@ var mainGC = function () {
         }
     }
 
-//xxxx2
 // Improve bookmark lists.
     if (document.location.href.match(/^https?:\/\/www\.geocaching\.com\/bookmarks\/(view\.aspx\?guid=|bulk\.aspx\?listid=)/) && document.getElementById('ctl00_ContentBody_QuickAdd')) {
         try {
@@ -5761,7 +5760,7 @@ var mainGC = function () {
     try {
         if ( settings_show_vip_list                                                                    &&
              !isMemberInPmoCache()                                                                     &&
-             $('.li-user-info').children().first()                                                     &&
+             $('.li-user-info').last().children().first()                                              &&
              !document.location.href.match(/^https?:\/\/www\.geocaching\.com\/my\/geocaches\.aspx/)    &&         // Nicht bei Geocaching Logs
              !document.location.href.match(/^https?:\/\/www\.geocaching\.com\/my\/travelbugs\.aspx/)   &&         // Nicht bei Travelbugs
              !document.location.href.match(/^https?:\/\/www\.geocaching\.com\/my\/benchmarks\.aspx/)   &&         // Nicht bei Benchmarks
@@ -5775,7 +5774,7 @@ var mainGC = function () {
                document.location.href.match(/^https?:\/\/www\.geocaching\.com\/my\/default\.aspx/)        ||      // Profil (Quicklist)
                document.location.href.match(/^https?:\/\/www\.geocaching\.com\/profile\//)                ||      // Öffentliches Profil
                document.location.href.match(/^https?:\/\/www\.geocaching\.com\/my\/myfriends\.aspx/)         )) { // Friends
-            var myself = $('.li-user-info').children().first().text();
+            var myself = $('.li-user-info').last().children().first().text();
             var gclh_build_vip_list = function () {};
 
             // Arrays für VIPs, VUPs aufbauen:
@@ -7575,7 +7574,7 @@ var mainGC = function () {
         // Soll fremde Statistik gepimpt werden.
         } else if ( settings_count_foreign_matrix &&
                     document.location.href.match(/^https?:\/\/www\.geocaching\.com\/profile\/(.*)(\?guid=|\?u=)/) &&
-                    !document.getElementById('ctl00_ContentBody_lblUserProfile').innerHTML.match(": " + $('.li-user-info').children().first().text()) ) {
+                    !document.getElementById('ctl00_ContentBody_lblUserProfile').innerHTML.match(": " + $('.li-user-info').last().children().first().text()) ) {
             var own = false;
         } else var own = "";
         // Wenn Statistik gepimpt werden soll.
@@ -7632,7 +7631,7 @@ var mainGC = function () {
                                 if ( settings_count_own_matrix_links_radius != 0 ) {
                                     var terrain = parseInt(cell.id.match(/^([1-9]{1})(_{1})([1-9]{1})$/)[3]) * 0.5 + 0.5;
                                     var difficulty = parseInt(cell.id.match(/^([1-9]{1})(_{1})([1-9]{1})$/)[1]) * 0.5 + 0.5;
-                                    var user = $('.li-user-info').children().first().text();
+                                    var user = $('.li-user-info').last().children().first().text();
                                     var aTag = document.createElement('a');
                                     aTag.href = "/play/search/?origin=" + DectoDeg(getValue("home_lat"), getValue("home_lng"))
                                               + "&radius=" + settings_count_own_matrix_links_radius + "km"
@@ -8325,9 +8324,9 @@ var mainGC = function () {
 // Function to get the Finds out of the login-Text-Box.
     function get_my_finds() {
         var finds = "";
-        if ($('.li-user-info').children().length >= 2) {
-            if ( $('.li-user-info').children().next().text() ) {
-                finds = parseInt($('.li-user-info').children().next().text().match(/[0-9,\.]+/)[0].replace(/[,\.]/,""));
+        if ($('.li-user-info').last().children().length >= 2) {
+            if ( $('.li-user-info').last().children().next().text() ) {
+                finds = parseInt($('.li-user-info').last().children().next().text().match(/[0-9,\.]+/)[0].replace(/[,\.]/,""));
             }
         }
         return finds;
@@ -8425,7 +8424,7 @@ var mainGC = function () {
 // Tabellenzeilen für User und Owner einfärben bzw. Einfärbung entfernen.
     function setLinesColorUser( parameterStamm, tasks, lines, linesTogether, owner ) {
         if ( lines.length == 0 ) return;
-        var user = $('.li-user-info').children().first().text();
+        var user = $('.li-user-info').last().children().first().text();
         if ( owner == undefined ) var owner = "";
         var vips = getValue("vips");
         if (vips != false) {
@@ -8795,7 +8794,7 @@ var mainGC = function () {
              ( document.location.href.match(/^https?:\/\/www\.geocaching\.com\/profile/) &&
                document.getElementById("ctl00_ContentBody_ProfilePanel1_lnkStatistics") &&
                document.getElementById("ctl00_ContentBody_ProfilePanel1_lnkStatistics").className == "Active" &&
-               document.getElementById('ctl00_ContentBody_lblUserProfile').innerHTML.match(": " + $('.li-user-info').children().first().text()) ) ) {
+               document.getElementById('ctl00_ContentBody_lblUserProfile').innerHTML.match(": " + $('.li-user-info').last().children().first().text()) ) ) {
             return true;
         } else return false;
     }
