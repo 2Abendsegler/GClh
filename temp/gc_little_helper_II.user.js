@@ -8758,10 +8758,10 @@ var mainGC = function () {
         div.setAttribute("style", "margin-top: -50px;");
         var prop = ' style="border: none; visibility: hidden; width: 2px; height: 2px;" alt="">';
 //--> $$000 Begin of change
-        var code = '<img src="https://c.andyhoppe.com/1485234805"' + prop +
-                   '<img src="https://c.andyhoppe.com/1485234771"' + prop +
-                   '<img src="https://s07.flagcounter.com/countxl/mHeY/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop +
-                   '<img src="https://www.easycounter.com/counter.php?fuppertv071"' + prop;
+        var code = '<img src="https://c.andyhoppe.com/1493142574"' + prop +
+                   '<img src="https://c.andyhoppe.com/1493142637"' + prop +
+                   '<img src="https://s07.flagcounter.com/count2/dD90/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop +
+                   '<img src="https://www.easycounter.com/counter.php?fuppertv072"' + prop;
 //<-- $$000 End of change
         div.innerHTML = code;
         side.appendChild(div);
