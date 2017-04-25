@@ -1,3 +1,4 @@
+<a href="#v072" title="GClh II version 0.7.2 (25.04.2017)">v0.7.2</a> &nbsp;
 <a href="#v071" title="GClh II version 0.7.1 (12.04.2017)">v0.7.1</a> &nbsp;
 <a href="#v07" title="GClh II version 0.7 (08.04.2017)">v0.7</a> &nbsp;
 <a href="#v06" title="GClh II version 0.6 (25.03.2017)">v0.6</a> &nbsp;
@@ -14,6 +15,25 @@
 <a href="#v022" title="GClh II version 0.2.2 (09.01.2017)">v0.2.2</a> &nbsp; 
 <a href="#v021" title="GClh II version 0.2.1 (05.01.2017)">v0.2.1</a> &nbsp; 
 <a href="#v01" title="GClh II version 0.1 (05.01.2017)">v0.1</a> &nbsp; 
+
+---
+## v0.7.2:
+<ul>
+<li>New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/332">#332</a>] Logging fieldnotes old-fashioned: <br>
+<br>
+Settings > Logging:<br> 
+<img src="../images/v0.7.2_Screen01.jpg" alt="v0.7.2_Screen01.jpg"><br>
+<br>
+This option deactivates the logging of fieldnotes by the new log page (looks like a phone app) and activates logging of fieldnotes by the old-fasioned log page. 
+The parameter has to be activated after installation.<br>
+<br>
+</li>
+<li>Fix: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/316">#316</a>] Colors for logs in cache listing (and other things) work not proper by using the script of project gc at once. <br>
+<br>
+</li>
+</ul>
+(25.04.2017)<br> 
+<br>
 
 ---
 ## v0.7.1:
