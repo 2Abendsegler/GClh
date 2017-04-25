@@ -11767,19 +11767,19 @@ var mainGC = function () {
                         settings_sync_last = new Date();
                         settings_sync_hash = hash;
                         setValue("settings_sync_last", settings_sync_last.toString()).done(function(){
-							setValue("settings_sync_hash", settings_sync_hash).done(function(){
-								if (is_page("profile")) {
-									//Reload page
-									if (document.location.href.indexOf("#") == -1 || document.location.href.indexOf("#") == document.location.href.length - 1) {
-										$('html, body').animate({scrollTop: 0}, 0);
-										document.location.reload(true);
-									}
-									else {
-										document.location.replace(document.location.href.slice(0, document.location.href.indexOf("#")));
-									}
-								}
-							});
-						});
+                            setValue("settings_sync_hash", settings_sync_hash).done(function(){
+                                if (is_page("profile")) {
+                                    //Reload page
+                                    if (document.location.href.indexOf("#") == -1 || document.location.href.indexOf("#") == document.location.href.length - 1) {
+                                        $('html, body').animate({scrollTop: 0}, 0);
+                                        document.location.reload(true);
+                                    }
+                                    else {
+                                        document.location.replace(document.location.href.slice(0, document.location.href.indexOf("#")));
+                                    }
+                                }
+                            });
+                        });
                     });
                 }
             });
