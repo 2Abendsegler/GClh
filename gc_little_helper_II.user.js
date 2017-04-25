@@ -411,6 +411,7 @@ var variablesInit = function (c) {
     c.settings_remove_banner_to_mylists_old = getValue("settings_remove_banner_to_mylists_old", false);
     c.settings_remove_banner_for_garminexpress = getValue("settings_remove_banner_for_garminexpress", true);
     c.settings_compact_layout_bm_lists = getValue("settings_compact_layout_bm_lists", false);
+    c.settings_compact_layout_list_of_bm_lists = getValue("settings_compact_layout_list_of_bm_lists", false);
     c.settings_img_warning = getValue("settings_img_warning", false);
 
     // Settings: Custom Bookmarks.
@@ -4443,7 +4444,7 @@ var mainGC = function () {
     }
 
 // Improve bookmark lists.
-    if (document.location.href.match(/^https?:\/\/www\.geocaching\.com\/bookmarks\/(view\.aspx\?guid=|bulk\.aspx\?listid=)/) && document.getElementById('ctl00_ContentBody_QuickAdd')) {
+    if (document.location.href.match(/^https?:\/\/www\.geocaching\.com\/bookmarks\/(view\.aspx\?guid=|bulk\.aspx\?listid=|view\.aspx\?code=)/) && document.getElementById('ctl00_ContentBody_QuickAdd')) {
         try {
             // Prepare links "Download as kml" and "Show in google maps".
             if (document.location.href.match(/guid=([a-zA-Z0-9-]*)/)) {
@@ -4492,12 +4493,51 @@ var mainGC = function () {
 // Improve list of bookmark lists.
     if (document.location.href.match(/^https?:\/\/www\.geocaching\.com\/bookmarks\/default\.aspx/) || document.location.href.match(/^https?:\/\/www\.geocaching\.com\/my\/lists\.aspx/)) {
         try {
-            // Build link "Show in google maps".
-            var links = document.getElementsByTagName("a");
-            for (var i = 0; i < links.length; i++) {
-                if (links[i].title == "Download Google Earth KML") {
-                    var matches = links[i].href.match(/guid=([a-zA-Z0-9-]*)/);
-                    links[i].parentNode.innerHTML += "<br><a title='Show in google maps' href='http://maps.google.com/?q=https://www.geocaching.com/kml/bmkml.aspx?bmguid=" + matches[1] + "' target='_blank'>Show in google maps</a>";
+            // Compact layout for list of bookmark lists.
+            if (settings_compact_layout_list_of_bm_lists) {
+                // Header:
+                appendCssStyle(".ListManagementFavoritesWidget, .ListsManagemntWatchlistWidget {margin: 0 0 1.5em; padding: 0.5em;}");
+                $('#divContentMain div h2').first().remove();
+                $('#divContentMain p.NoBottomSpacing').first().remove();
+                $('#divContentMain div h3').first().closest('div').remove();
+                $('#ctl00_ContentBody_hlCreateNewBookmarkList').closest('p').prop("style", "margin: 0 0 0.5em");
+                // Lines:
+                $('table.Table thead tr')[0].children[1].innerHTML = "Status";
+                $('table.Table thead tr')[0].children[5].innerHTML = "PQ";
+                $('table.Table thead tr')[0].children[6].innerHTML = "KML";
+                var th = document.createElement("th");
+                th.setAttribute("scope", "col");
+                th.appendChild(document.createTextNode("GMaps"));
+                $('table.Table thead tr')[0].append(th);
+                var lines = $('table.Table tbody tr');
+                for (var i = 0; i < lines.length; i++) {
+                    while (lines[i].children[2].childNodes[2]) {
+                        lines[i].children[2].childNodes[2].remove();
+                    }
+                    lines[i].children[4].children[0].innerHTML = '<img src="/images/icons/16/edit.png" style="vertical-align: middle; padding-right: 8px;" alt="Edit">';
+                    lines[i].children[4].children[1].innerHTML = '<img src="/images/icons/16/watch.png" style="vertical-align: middle; padding-right: 8px;" alt="View">';
+                    lines[i].children[4].children[2].innerHTML = '<img src="/images/icons/16/delete.png" style="vertical-align: middle;" alt="Delete">';
+                    lines[i].children[4].childNodes[4].remove();
+                    lines[i].children[4].childNodes[2].remove();
+                    lines[i].children[5].children[0].innerHTML = '<img src="/images/icons/16/bookmark_pq.png" style="vertical-align: middle;" alt="Create PQ">';
+                    lines[i].children[6].children[0].innerHTML = '<img src="/images/icons/16/download.png" style="vertical-align: middle;" alt="Download">';
+                    var td = document.createElement("td");
+                    var matches = lines[i].children[6].children[0].href.match(/guid=([a-zA-Z0-9-]*)/);
+                    if (matches && matches[1]) {
+                        td.innerHTML = "<a title='Show in google maps' href='http://maps.google.com/?q=https://www.geocaching.com/kml/bmkml.aspx?bmguid=" + matches[1] + "' target='_blank'><img src='/images/silk/map_go.png' style='vertical-align: middle;' alt='GMaps'></a>";
+                    }
+                    lines[i].append(td);
+                }
+                // Footer:
+                $('#divContentMain div ul').first().remove();
+            // No compact layout for list of bookmark lists, only build link.
+            } else {
+                var lines = $('table.Table tbody tr');
+                for (var i = 0; i < lines.length; i++) {
+                    var matches = lines[i].children[6].children[0].href.match(/guid=([a-zA-Z0-9-]*)/);
+                    if (matches && matches[1]) {
+                        lines[i].children[6].innerHTML += "<br><a title='Show in google maps' href='http://maps.google.com/?q=https://www.geocaching.com/kml/bmkml.aspx?bmguid=" + matches[1] + "' target='_blank'>Show in google maps</a>";
+                    }
                 }
             }
         } catch (e) {
@@ -7456,7 +7496,7 @@ var mainGC = function () {
         appendCssStyle( css );
         // Bookmarklisten: Zeilen in Bookmarklisten in Zebra einfärben und die Funde des Users einfärben.
         // Die Bookmarklisten scheinen die einzigen Listen, bei denen das nicht vorgesehen ist.
-        if (document.location.href.match(/^https?:\/\/www\.geocaching\.com\/bookmarks\/(view\.aspx\?guid=|bulk\.aspx\?listid=)/) && document.getElementById('ctl00_ContentBody_QuickAdd')) {
+        if (document.location.href.match(/^https?:\/\/www\.geocaching\.com\/bookmarks\/(view\.aspx\?guid=|bulk\.aspx\?listid=|view\.aspx\?code=)/) && document.getElementById('ctl00_ContentBody_QuickAdd')) {
             var lines = $("table.Table").find("tbody").find("tr");
             setLinesColorInZebra( settings_show_common_lists_in_zebra, lines, 2 );
             setLinesColorUser( "settings_show_common_lists_color", "user", lines, 2, "" );
@@ -9452,6 +9492,7 @@ var mainGC = function () {
             html += checkboxy('settings_show_sums_in_bookmark_lists', 'Show number of caches in bookmark lists') + show_help("With this option the number of caches and the number of selected caches in the categories \"All\", \"Found\", \"Archived\" and \"Deactivated\", corresponding to the select buttons, are shown in bookmark lists at the end of the list.") + "<br/>";
             html += newParameterOn2;
             html += checkboxy('settings_compact_layout_bm_lists', 'Show compact layout in bookmark lists') + "<br/>";
+            html += checkboxy('settings_compact_layout_list_of_bm_lists', 'Show compact layout in list of bookmark lists') + "<br/>";
             html += newParameterVersionSetzen(0.8) + newParameterOff;
             html += "</div>";
 
@@ -10683,6 +10724,7 @@ var mainGC = function () {
                 'settings_remove_banner_to_mylists_old',
                 'settings_remove_banner_for_garminexpress',
                 'settings_compact_layout_bm_lists',
+                'settings_compact_layout_list_of_bm_lists',
                 'settings_img_warning'
             );
             for (var i = 0; i < checkboxes.length; i++) {
