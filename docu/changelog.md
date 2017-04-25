@@ -24,8 +24,8 @@
 Settings > Logging:<br> 
 <img src="../images/v0.7.2_Screen01.jpg" alt="v0.7.2_Screen01.jpg"><br>
 <br>
-This option deactivates the logging of fieldnotes by the new log page (looks like a phone app) and activates logging of fieldnotes by the old-fasioned log page. 
-The parameter has to be activated after installation.<br>
+This option deactivates the logging of fieldnotes by the new log page (looks like a phone app) and activates logging of fieldnotes by the old-fashioned log page. 
+The parameter has to be activated in Config after installation.<br>
 <br>
 </li>
 <li>Fix: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/316">#316</a>] Colors for logs in cache listing (and other things) work not proper by using the script of project gc at once. <br>
