@@ -2,7 +2,7 @@
 // @name             GC little helper II
 // @namespace        http://www.amshove.net
 //--> $$000 Begin of change
-// @version          0.7.1
+// @version          0.7.2
 //<-- $$000 End of change
 // @include          http*://www.geocaching.com/*
 // @include          http*://labs.geocaching.com/*
@@ -31,6 +31,9 @@
 
 ////////////////////////////////////////////////////////////////////////////
 // $$000 | Versionierung, bei neuen Versionen beachten.
+////////////////////////////////////////////////////////////////////////////
+// $$001FE Fieldnotes auf alte Verarbeitung umbiegen und nicht über die
+//         neuen Logs gehen. Muß für v0.8 geändert und umplaziert werden.
 ////////////////////////////////////////////////////////////////////////////
 
 var jqueryInit = function (c) {
@@ -409,6 +412,9 @@ var variablesInit = function (c) {
     c.settings_show_elevation_of_waypoints = getValue("settings_show_elevation_of_waypoints", true);
     c.settings_distance_units = getValue("settings_distance_units", "");
     c.settings_img_warning = getValue("settings_img_warning", false);
+//--> $$001FE
+    c.settings_fieldnotes_old_fashioned = getValue("settings_fieldnotes_old_fashioned", false);
+//<-- $$001FE
 
     // Settings: Custom Bookmarks
     var num = c.bookmarks.length;
@@ -729,6 +735,27 @@ var mainGC = function () {
             gclh_error("Run after Redirect", e);
         }
     }
+
+//--> $$001FE
+// Fieldnotes auf alte Verarbeitung umbiegen und nicht über die neuen Logs gehen.
+    if (settings_fieldnotes_old_fashioned && document.location.href.match(/^https?:\/\/www\.geocaching\.com\/my\/fieldnotes\.aspx/)) {
+        try {
+            var aTag = document.getElementsByTagName('a');
+            if (aTag) {
+                for (var i = 0; i < aTag.length; i++) {
+                    if (aTag[i].href.match(/fieldnotes\.aspx\?composeLog=true/i)) {
+                        var matches = aTag[i].href.match(/&draftGuid=(.*)&/i);
+                        if (matches && matches[1]) {
+                            aTag[i].href = "https://www.geocaching.com/seek/log.aspx?PLogGuid=" + matches[1];
+                        }
+                    }
+                }
+            }
+        } catch (e) {
+            gclh_error("fn 2", e);
+        }
+    }
+//<-- $$001FE
 
 // Set language to default language.
     if ( settings_set_default_langu ) {
@@ -9813,6 +9840,11 @@ var mainGC = function () {
             html += checkboxy('settings_replace_log_by_last_log', 'Replace log by last log template') + show_help("If you enable this option, the last log template will replace the whole log. If you disable it, it will be appended to the log.") + "<br/>";
             html += checkboxy('settings_show_log_itX0', 'Show GClh \"Log it\" icon (too for basic members for PMO)') + show_help("The GClh \"Log it\" icon is displayed beside cache titles in nearest lists. If you click it, you will be redirected directly to the log form. <br><br>You can use it too as basic member to log Premium Member Only (PMO) caches.") + "<br/>";
             html += checkboxy('settings_logit_for_basic_in_pmoX0', 'Log PMO caches by standard \"Log It\" icon (for basic members)') + show_help("With this option basic members are able to choose the standard \"Log It\" icon to call the logging screen for premium only caches. The tool tipp blocked not longer this call. You can have the same result by using the right mouse across the \"Log It\" icon and then new tab. <br>The \"Log It\" icon is besides the caches for example in the \"Recently Viewed Caches\" list and in your profile.") + "<br/>";
+//--> $$001FE
+            html += newParameterOn1;
+            html += checkboxy('settings_fieldnotes_old_fashioned', 'Logging fieldnotes old-fashioned') + show_help("This option deactivates the logging of fieldnotes by the new log page (looks like a phone app) and activates logging of fieldnotes by the old-fasioned log page.") + "<br/>";
+            html += newParameterVersionSetzen(0.7) + newParameterOff;
+//<-- $$001FE
             var placeholderDescription = "Possible placeholder:<br>&nbsp; #Found# : Your founds + 1<br>&nbsp; #Found_no# : Your founds<br>&nbsp; #Me# : Your username<br>&nbsp; #Owner# : Username of the owner<br>&nbsp; #Date# : Actual date<br>&nbsp; #Time# : Actual time in format hh:mm<br>&nbsp; #DateTime# : Actual date actual time<br>&nbsp; #GCTBName# : GC or TB name<br>&nbsp; #GCTBLink# : GC or TB link<br>&nbsp; #GCTBNameLink# : GC or TB name as a link<br>&nbsp; #LogDate# : Content of field \"Date Logged\"<br>(Upper and lower case is not required in the placeholder name.)";
             html += "&nbsp;" + "Log templates:" + show_help("Log templates are pre-defined texts like \"!!! I got the FTF !!!\". All your templates are shown beside the log form. You just have to click to a template and it will be placed in your log. <br><br>Also you are able to use placeholder for variables which will be replaced in the log. The smilies option has to be enabled. <br><br>Note: You have to set a title and a text - click to the edit icon beside the template to edit the text.") + " &nbsp; (Possible placeholder:" + show_help_big(placeholderDescription) + ")<br>";
             html += "<font class='gclh_small' style='font-style: italic; margin-left: 240px; margin-top: 25px; width: 320px; position: absolute; z-index: -1;' >Bitte beachte, dass Logtemplates nützlich sind, um automatisiert die Fundzahl, das Funddatum und ähnliches im Log einzutragen, dass aber Cache Owner Menschen sind, die sich über individuelle Logs zu ihrem Cache freuen. Beim Geocachen geht es nicht nur darum, die eigene Statistik zu puschen, sondern auch darum, etwas zu erleben. Bitte nimm dir doch etwas Zeit, den Ownern etwas wiederzugeben, indem du ihnen von Deinen Erlebnissen berichtest und ihnen gute Logs schreibst. Dann wird es auch in Zukunft Cacher geben, die sich gerne die Mühe machen, neue Caches auszulegen. Die Logtemplates sind also nützlich, können aber niemals ein vollständiges Log ersetzen.</font>";
@@ -10788,6 +10820,9 @@ var mainGC = function () {
                 'settings_driving_direction_link',
                 'settings_driving_direction_parking_area',
                 'settings_show_elevation_of_waypoints',
+//--> $$001FE
+                'settings_fieldnotes_old_fashioned',
+//<-- $$001FE
                 'settings_img_warning'
             );
             for (var i = 0; i < checkboxes.length; i++) {
@@ -11732,19 +11767,19 @@ var mainGC = function () {
                         settings_sync_last = new Date();
                         settings_sync_hash = hash;
                         setValue("settings_sync_last", settings_sync_last.toString()).done(function(){
-							setValue("settings_sync_hash", settings_sync_hash).done(function(){
-								if (is_page("profile")) {
-									//Reload page
-									if (document.location.href.indexOf("#") == -1 || document.location.href.indexOf("#") == document.location.href.length - 1) {
-										$('html, body').animate({scrollTop: 0}, 0);
-										document.location.reload(true);
-									}
-									else {
-										document.location.replace(document.location.href.slice(0, document.location.href.indexOf("#")));
-									}
-								}
-							});
-						});
+                            setValue("settings_sync_hash", settings_sync_hash).done(function(){
+                                if (is_page("profile")) {
+                                    //Reload page
+                                    if (document.location.href.indexOf("#") == -1 || document.location.href.indexOf("#") == document.location.href.length - 1) {
+                                        $('html, body').animate({scrollTop: 0}, 0);
+                                        document.location.reload(true);
+                                    }
+                                    else {
+                                        document.location.replace(document.location.href.slice(0, document.location.href.indexOf("#")));
+                                    }
+                                }
+                            });
+                        });
                     });
                 }
             });

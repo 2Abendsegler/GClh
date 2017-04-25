@@ -1,4 +1,4 @@
-<a href="#v08" title="GClh II version 0.8 (??.05.2017)">v0.8</a> &nbsp;
+<a href="#v072" title="GClh II version 0.7.2 (25.04.2017)">v0.7.2</a> &nbsp;
 <a href="#v071" title="GClh II version 0.7.1 (12.04.2017)">v0.7.1</a> &nbsp;
 <a href="#v07" title="GClh II version 0.7 (08.04.2017)">v0.7</a> &nbsp;
 <a href="#v06" title="GClh II version 0.6 (25.03.2017)">v0.6</a> &nbsp;
@@ -17,22 +17,23 @@
 <a href="#v01" title="GClh II version 0.1 (05.01.2017)">v0.1</a> &nbsp; 
 
 ---
-## v0.8:
+## v0.7.2:
 <ul>
-<li>
-New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/311">#311</a>] Hide banner linking "Garmin Express" or new or old "My Lists" page:<br>
+<li>New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/332">#332</a>] Logging fieldnotes old-fashioned: <br>
 <br>
-Banner:<br>
-<img src="../images/v0.8_Screen20.jpg" alt="v0.8_Screen20.jpg"><br>
-<img src="../images/v0.8_Screen21.jpg" alt="v0.8_Screen21.jpg"><br>
-<img src="../images/v0.8_Screen22.jpg" alt="v0.8_Screen22.jpg"><br>
+Settings > Logging:<br> 
+<img src="../images/v0.7.2_Screen01.jpg" alt="v0.7.2_Screen01.jpg"><br>
 <br>
-Settings > Global:<br>
-<img src="../images/v0.8_Screen23.jpg" alt="v0.8_Screen23.jpg"><br>
-<br></li>
+This option deactivates the logging of fieldnotes by the new log page (looks like a phone app) and activates logging of fieldnotes by the old-fashioned log page. 
+The parameter has to be activated in Config after installation.<br>
 <br>
+</li>
+<li>Fix: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/316">#316</a>] Colors for logs in cache listing (and other things) work not proper by using the script of project gc at once. <br>
+<br>
+</li>
 </ul>
-(??.05.2017)<br> 
+(25.04.2017)<br> 
+
 <br>
 
 ---
