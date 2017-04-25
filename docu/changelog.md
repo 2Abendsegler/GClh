@@ -28,10 +28,10 @@ Banner:<br>
 <img src="../images/v0.8_Screen21.jpg" alt="v0.8_Screen21.jpg"><br>
 <img src="../images/v0.8_Screen22.jpg" alt="v0.8_Screen22.jpg"><br>
 <br>
-Settings > Global:<br>
+Settings -> Global:<br>
 <img src="../images/v0.8_Screen23.jpg" alt="v0.8_Screen23.jpg"><br>
-<br></li>
 <br>
+</li>
 </ul>
 (??.05.2017)<br> 
 <br>
