@@ -18,7 +18,6 @@
 // @description      Some little things to make life easy (on www.geocaching.com).
 // @copyright        Torsten Amshove <torsten@amshove.net>
 // @author           Torsten Amshove; 2Abendsegler
-// @license          GNU General Public License v2.0
 // @grant            GM_getValue
 // @grant            GM_setValue
 // @grant            GM_log
@@ -156,7 +155,7 @@ var constInit = function (c) {
         "token": true,
         "dbToken": true
     };
-
+    // Icons intern aufbauen.
     iconsInit();
 
     c.all_map_layers = new Object();     // gc.com Default-Layers
@@ -412,12 +411,6 @@ var variablesInit = function (c) {
     c.settings_driving_direction_parking_area = getValue("settings_driving_direction_parking_area",false);
     c.settings_show_elevation_of_waypoints = getValue("settings_show_elevation_of_waypoints", true);
     c.settings_distance_units = getValue("settings_distance_units", "");
-    c.settings_remove_banner = getValue("settings_remove_banner", false);
-    c.settings_remove_banner_to_mylists_new = getValue("settings_remove_banner_to_mylists_new", true);
-    c.settings_remove_banner_to_mylists_old = getValue("settings_remove_banner_to_mylists_old", false);
-    c.settings_remove_banner_for_garminexpress = getValue("settings_remove_banner_for_garminexpress", true);
-    c.settings_compact_layout_bm_lists = getValue("settings_compact_layout_bm_lists", false);
-    c.settings_compact_layout_list_of_bm_lists = getValue("settings_compact_layout_list_of_bm_lists", false);
     c.settings_img_warning = getValue("settings_img_warning", false);
 //--> $$001FE
     c.settings_fieldnotes_old_fashioned = getValue("settings_fieldnotes_old_fashioned", false);
@@ -4310,21 +4303,30 @@ var mainGC = function () {
                 if  ((settings_friendlist_summary_viponly && in_array(name.innerHTML, myvips)) || (!settings_friendlist_summary_viponly)) {
                     if ((founds - last_founds) > 0) {
                         if (sNewF != "") sNewF = sNewF + ",&nbsp;";
+
                         var sHlp = name.innerHTML + " (";
-                        if ((founds - last_founds) > 0) sHlp = sHlp + "+";
-                        else sHlp = sHlp + "-";
+                        if (founds - last_founds > 0) sHlp = sHlp + "+";
+                        else sHlp = Hlp + "-";
                         sHlp = sHlp + (founds - last_founds) + ")";
+
                         sNewF = sNewF + "<a class='myfriends' href='/seek/nearest.aspx?ul=" + urlencode(name.innerHTML) + "&disable_redirect='>" + sHlp + "</a>";
                     }
                 }
+
                 if (founds == 0) {
+//#299
+//                    friend.getElementsByTagName("dd")[4].innerHTML = founds + "&nbsp;";
                     friend.getElementsByTagName("dd")[3].innerHTML = founds + "&nbsp;";
                 } else {
+//#299
+//                    friend.getElementsByTagName("dd")[4].innerHTML = "<a href='/seek/nearest.aspx?ul=" + urlencode(name.innerHTML) + "&disable_redirect='>" + founds + "</a>&nbsp;" + add;
                     friend.getElementsByTagName("dd")[3].innerHTML = "<a href='/seek/nearest.aspx?ul=" + urlencode(name.innerHTML) + "&disable_redirect='>" + founds + "</a>&nbsp;" + add;
                 }
 
                 //hides
                 add = "";
+//#299
+//                var hides = parseInt(trim(friend.getElementsByTagName("dd")[5].innerHTML).replace(/[,.]*/g, ""));
                 var hides = parseInt(trim(friend.getElementsByTagName("dd")[4].innerHTML).replace(/[,.]*/g, ""));
                 if (isNaN(hides))hides = 0;
                 var last_hides = getValue("friends_hides_" + name.innerHTML);
@@ -4339,17 +4341,23 @@ var mainGC = function () {
                 if  ((settings_friendlist_summary_viponly && in_array(name.innerHTML, myvips)) || (!settings_friendlist_summary_viponly)) {
                     if ((hides - last_hides) > 0) {
                         if (sNewH != "") sNewH = sNewH + ",&nbsp;";
+
                         var sHlp = name.innerHTML + " (";
-                        if ((hides - last_hides) > 0) sHlp = sHlp + "+";
-                        else sHlp = sHlp + "-";
+                        if (hides - last_hides > 0) sHlp = sHlp + "+";
+                        else sHlp = Hlp + "-";
                         sHlp = sHlp + (hides - last_hides) + ")";
+
                         sNewH = sNewH + "<a class='myfriends' href='/seek/nearest.aspx?u=" + urlencode(name.innerHTML) + "&disable_redirect='>" + sHlp + "</a>";
                     }
                 }
 
                 if (hides == 0) {
+//#299
+//                    friend.getElementsByTagName("dd")[5].innerHTML = hides + "&nbsp;";
                     friend.getElementsByTagName("dd")[4].innerHTML = hides + "&nbsp;";
                 } else {
+//#299
+//                    friend.getElementsByTagName("dd")[5].innerHTML = "<a href='/seek/nearest.aspx?u=" + urlencode(name.innerHTML) + "&disable_redirect='>" + hides + "</a>&nbsp;" + add;
                     friend.getElementsByTagName("dd")[4].innerHTML = "<a href='/seek/nearest.aspx?u=" + urlencode(name.innerHTML) + "&disable_redirect='>" + hides + "</a>&nbsp;" + add;
                 }
 
@@ -4381,11 +4389,17 @@ var mainGC = function () {
 
                     founds = getValue("friends_founds_new_" + name.innerHTML, 0);
                     setValue("friends_founds_" + name.innerHTML, founds);
+//#299
+//                    if (founds == 0) friend.getElementsByTagName("dd")[4].innerHTML = "0&nbsp;";
+//                    else friend.getElementsByTagName("dd")[4].innerHTML = "<a href='/seek/nearest.aspx?ul=" + urlencode(name.innerHTML) + "&disable_redirect='>" + founds + "</a>";
                     if (founds == 0) friend.getElementsByTagName("dd")[3].innerHTML = "0&nbsp;";
                     else friend.getElementsByTagName("dd")[3].innerHTML = "<a href='/seek/nearest.aspx?ul=" + urlencode(name.innerHTML) + "&disable_redirect='>" + founds + "</a>";
 
                     hides = getValue("friends_hides_new_" + name.innerHTML, 0);
                     setValue("friends_hides_" + name.innerHTML, hides);
+//#299
+//                    if (hides == 0) friend.getElementsByTagName("dd")[5].innerHTML = "0&nbsp;";
+//                    else friend.getElementsByTagName("dd")[5].innerHTML = "<a href='/seek/nearest.aspx?u=" + urlencode(name.innerHTML) + "&disable_redirect='>" + hides + "</a>&nbsp;";
                     if (hides == 0) friend.getElementsByTagName("dd")[4].innerHTML = "0&nbsp;";
                     else friend.getElementsByTagName("dd")[4].innerHTML = "<a href='/seek/nearest.aspx?u=" + urlencode(name.innerHTML) + "&disable_redirect='>" + hides + "</a>&nbsp;";
                 }
@@ -4419,6 +4433,8 @@ var mainGC = function () {
                 spanT.innerHTML = '<br>Last reset was ' + getDateDiffString(new Date().getTime(), ld) + ' ago (' +
                     new Date(parseInt(ld, 10)).toLocaleString() + ')';
                 if ((sNewH == "") && (sNewF == "")) spanT.innerHTML = '<br>' + spanT.innerHTML;
+//#299
+//                document.getElementById('ctl00_ContentBody_FindUserPanel1_GetUsers').parentNode.insertBefore(spanT, document.getElementById('ctl00_ContentBody_FindUserPanel1_GetUsers').nextSibling);
                 document.getElementById('ctl00_ContentBody_btnAddFriend').parentNode.insertBefore(spanT, document.getElementById('ctl00_ContentBody_btnAddFriend').nextSibling);
 
                 // wenn neue Hides -> anzeigen
@@ -4426,6 +4442,9 @@ var mainGC = function () {
                     var boxH = document.createElement("div");
                     boxH.innerHTML = "<br><b>New hides by:</b> " + sNewH;
                     boxH.className = 'divFHclass';
+
+//#299
+//                    document.getElementById('ctl00_ContentBody_FindUserPanel1_GetUsers').parentNode.insertBefore(boxH, document.getElementById('ctl00_ContentBody_FindUserPanel1_GetUsers').nextSibling);
                     document.getElementById('ctl00_ContentBody_btnAddFriend').parentNode.insertBefore(boxH, document.getElementById('ctl00_ContentBody_btnAddFriend').nextSibling);
                 }
 
@@ -4434,6 +4453,9 @@ var mainGC = function () {
                     var boxF = document.createElement("div");
                     boxF.innerHTML = "<br><b>New finds by:</b> " + sNewF;
                     boxF.className = 'divFHclass';
+
+//#299
+//                    document.getElementById('ctl00_ContentBody_FindUserPanel1_GetUsers').parentNode.insertBefore(boxF, document.getElementById('ctl00_ContentBody_FindUserPanel1_GetUsers').nextSibling);
                     document.getElementById('ctl00_ContentBody_btnAddFriend').parentNode.insertBefore(boxF, document.getElementById('ctl00_ContentBody_btnAddFriend').nextSibling);
                 }
             }
@@ -4441,8 +4463,12 @@ var mainGC = function () {
             var button = document.createElement("input");
             button.setAttribute("type", "button");
             button.setAttribute("value", "Reset counter");
+//#299 new
             button.setAttribute("style", "height: 35px;");
             button.addEventListener("click", gclh_reset_counter, false);
+
+//#299
+//            document.getElementById('ctl00_ContentBody_FindUserPanel1_GetUsers').parentNode.insertBefore(button, document.getElementById('ctl00_ContentBody_FindUserPanel1_GetUsers').nextSibling);
             document.getElementById('ctl00_ContentBody_btnAddFriend').parentNode.insertBefore(button, document.getElementById('ctl00_ContentBody_btnAddFriend').nextSibling);
         } catch (e) {
             gclh_error("Improve Friendlist", e);
@@ -4522,102 +4548,25 @@ var mainGC = function () {
 // Improve Bookmark-List
     if (document.location.href.match(/^https?:\/\/www\.geocaching\.com\/bookmarks\/view\.aspx\?guid=/)) {
         try {
-            // Prepare links "Download as kml" and "Show in google maps".
-            if (document.location.href.match(/guid=([a-zA-Z0-9-]*)/)) {
-                var matches = document.location.href.match(/guid=([a-zA-Z0-9-]*)/);
-                if (matches && matches[1]) {
-                    var uuidx = matches[1];
-                    var kml = "<a style=\"padding-right: 20px;\" title=\"Download as kml\" href='" + http + "://www.geocaching.com/kml/bmkml.aspx?bmguid=" + uuidx + "'>Download as kml</a>";
-                    var gm = "<a title=\"Show in google maps\" href='http://maps.google.com/?q=https://www.geocaching.com/kml/bmkml.aspx?bmguid=" + uuidx + "' target='_blank'>Show in google maps</a>";
-                }
-            }
-            // Compact layout for bookmark lists.
-            if (settings_compact_layout_bm_lists) {
-                // Header:
-                var div = document.getElementById('ctl00_ContentBody_QuickAdd');
-                div.children[1].childNodes[1].remove();
-                div.children[1].childNodes[0].remove();
-                div.children[0].remove();
-                div.setAttribute("style", "margin-bottom: 1px; float: left;");
-                document.getElementById('ctl00_ContentBody_btnAddBookmark').setAttribute("style", "margin-top: 1px; margin-left: -1px;");
-                document.getElementById('ctl00_ContentBody_ListInfo_uxListOwner').parentNode.parentNode.children[4].remove();
-                document.getElementById('ctl00_ContentBody_ListInfo_uxListOwner').parentNode.parentNode.children[3].remove();
-                document.getElementById('ctl00_ContentBody_ListInfo_uxListOwner').parentNode.style.marginBottom = "0px";
-                if (uuidx) document.getElementById('ctl00_ContentBody_ListInfo_uxListOwner').parentNode.innerHTML += "<span style='float: right; padding-right: 210px;'>" + kml + gm + "</span>";
-                // Lines:
-                appendCssStyle("table.Table th, table.Table td {border-left: 1px solid #fff; border-right: 1px solid #fff;} tr.BorderTop td {border-top: 1px solid #fff;} table.Table th {border-bottom: 2px solid #fff;} td {vertical-align: baseline !important;} table.Table img {vertical-align: baseline !important; margin-bottom: -3px;}");
-                var lines = $('table.Table tbody').find('tr');
-                for (var i = 0; i < lines.length; i += 2) {
-                    if (!lines[i].className.match(/BorderTop/)) lines[i].className += " BorderTop";
-                    lines[i].children[1].childNodes[3].outerHTML = "&nbsp;&nbsp;";
-                    lines[i].children[1].style.whiteSpace = "nowrap";
-                    lines[i].children[5].style.whiteSpace = "nowrap";
-                    if (lines[i+1].children[1].innerHTML == "") lines[i+1].style.fontSize = "0px";
-                }
-                // Footer:
-                $('#ctl00_ContentBody_ListInfo_btnDelete').closest('p').append($('#ctl00_ContentBody_btnCreatePocketQuery').remove().get().reverse());
-                document.getElementById('ctl00_ContentBody_uxAboutPanel').remove();
-            // No compact layout for bookmark lists, only build links.
-            } else {
-                if (uuidx) document.getElementById("ctl00_ContentBody_lbHeading").parentNode.parentNode.parentNode.childNodes[3].innerHTML += "<br>" + kml + "<br>" + gm;
-            }
+            var box = document.getElementById("ctl00_ContentBody_lbHeading").parentNode.parentNode.parentNode;
+            var matches = document.location.href.match(/guid=([a-zA-Z0-9-]*)/);
+            var uuid = matches[1];
+            box.childNodes[3].innerHTML += "<br><a title=\"Download as kml\" href='" + http + "://www.geocaching.com/kml/bmkml.aspx?bmguid=" + uuid + "'>Download as kml</a><br><a title=\"Show in google maps\" href='http://maps.google.com/?q=https://www.geocaching.com/kml/bmkml.aspx?bmguid=" + uuid + "' target='_blank'>Show in google maps</a>";
         } catch (e) {
-            gclh_error("Improve bookmark lists", e);
+            gclh_error("Improve Bookmark-List1", e);
         }
     }
-
-// Improve list of bookmark lists.
     if (document.location.href.match(/^https?:\/\/www\.geocaching\.com\/bookmarks\/default\.aspx/) || document.location.href.match(/^https?:\/\/www\.geocaching\.com\/my\/lists\.aspx/)) {
         try {
-            // Compact layout for list of bookmark lists.
-            if (settings_compact_layout_list_of_bm_lists) {
-                // Header:
-                appendCssStyle(".ListManagementFavoritesWidget, .ListsManagemntWatchlistWidget {margin: 0 0 1.5em; padding: 0.5em;}");
-                $('#divContentMain div h2').first().remove();
-                $('#divContentMain p.NoBottomSpacing').first().remove();
-                $('#divContentMain div h3').first().closest('div').remove();
-                $('#ctl00_ContentBody_hlCreateNewBookmarkList').closest('p').prop("style", "margin: 0 0 0.5em");
-                // Lines:
-                $('table.Table thead tr')[0].children[1].innerHTML = "Status";
-                $('table.Table thead tr')[0].children[5].innerHTML = "PQ";
-                $('table.Table thead tr')[0].children[6].innerHTML = "KML";
-                var th = document.createElement("th");
-                th.setAttribute("scope", "col");
-                th.appendChild(document.createTextNode("GMaps"));
-                $('table.Table thead tr')[0].append(th);
-                var lines = $('table.Table tbody tr');
-                for (var i = 0; i < lines.length; i++) {
-                    while (lines[i].children[2].childNodes[2]) {
-                        lines[i].children[2].childNodes[2].remove();
-                    }
-                    lines[i].children[4].children[0].innerHTML = '<img src="/images/icons/16/edit.png" style="vertical-align: middle; padding-right: 8px;" alt="Edit">';
-                    lines[i].children[4].children[1].innerHTML = '<img src="/images/icons/16/watch.png" style="vertical-align: middle; padding-right: 8px;" alt="View">';
-                    lines[i].children[4].children[2].innerHTML = '<img src="/images/icons/16/delete.png" style="vertical-align: middle;" alt="Delete">';
-                    lines[i].children[4].childNodes[4].remove();
-                    lines[i].children[4].childNodes[2].remove();
-                    lines[i].children[5].children[0].innerHTML = '<img src="/images/icons/16/bookmark_pq.png" style="vertical-align: middle;" alt="Create PQ">';
-                    lines[i].children[6].children[0].innerHTML = '<img src="/images/icons/16/download.png" style="vertical-align: middle;" alt="Download">';
-                    var td = document.createElement("td");
-                    var matches = lines[i].children[6].children[0].href.match(/guid=([a-zA-Z0-9-]*)/);
-                    if (matches && matches[1]) {
-                        td.innerHTML = "<a title='Show in google maps' href='http://maps.google.com/?q=https://www.geocaching.com/kml/bmkml.aspx?bmguid=" + matches[1] + "' target='_blank'><img src='/images/silk/map_go.png' style='vertical-align: middle;' alt='GMaps'></a>";
-                    }
-                    lines[i].append(td);
-                }
-                // Footer:
-                $('#divContentMain div ul').first().remove();
-            // No compact layout for list of bookmark lists, only build link.
-            } else {
-                var lines = $('table.Table tbody tr');
-                for (var i = 0; i < lines.length; i++) {
-                    var matches = lines[i].children[6].children[0].href.match(/guid=([a-zA-Z0-9-]*)/);
-                    if (matches && matches[1]) {
-                        lines[i].children[6].innerHTML += "<br><a title='Show in google maps' href='http://maps.google.com/?q=https://www.geocaching.com/kml/bmkml.aspx?bmguid=" + matches[1] + "' target='_blank'>Show in google maps</a>";
-                    }
+            var links = document.getElementsByTagName("a");
+            for (var i = 0; i < links.length; i++) {
+                if (links[i].title == "Download Google Earth KML") {
+                    var matches = links[i].href.match(/guid=([a-zA-Z0-9-]*)/);
+                    links[i].parentNode.innerHTML += "<br><a title='Show in google maps' href='http://maps.google.com/?q=https://www.geocaching.com/kml/bmkml.aspx?bmguid=" + matches[1] + "' target='_blank'>Show in google maps</a>";
                 }
             }
         } catch (e) {
-            gclh_error("Improve list of bookmark lists", e);
+            gclh_error("Improve Bookmark-List2", e);
         }
     }
 
@@ -7534,6 +7483,7 @@ var mainGC = function () {
                 gclh_load_helper(1);
             }
             if (settings_show_all_logs) {
+                // Gegebenenfalls auf nächste gerade Zahl erhöhen, damit Zebra korrekt erzeugt wird.
                 var logsCount = parseInt(settings_show_all_logs_count);
                 if (logsCount == 0) logsCount = 5000;
                 else if (logsCount < 26) logsCount = 26;
@@ -7593,9 +7543,10 @@ var mainGC = function () {
                 + "table.Table tr.QuinaryRow td, .QuinaryRow, table.Table tr td.QuinaryRow { background-color: #" + getValue( "settings_lines_color_reviewer") + " !important; }"
                 + "table.Table tr.SenaryRow td, .SenaryRow, table.Table tr td.SenaryRow { background-color: #" + getValue( "settings_lines_color_vip") + " !important; }";
         appendCssStyle( css );
+
         // Bookmarklisten: Zeilen in Bookmarklisten in Zebra einfärben und die Funde des Users einfärben.
         // Die Bookmarklisten scheinen die einzigen Listen, bei denen das nicht vorgesehen ist.
-        if (document.location.href.match(/^https?:\/\/www\.geocaching\.com\/bookmarks\/(view\.aspx\?guid=|bulk\.aspx\?listid=|view\.aspx\?code=)/) && document.getElementById('ctl00_ContentBody_QuickAdd')) {
+        if (document.location.href.match(/^https?:\/\/www\.geocaching\.com\/bookmarks\/(view\.aspx\?guid=|bulk\.aspx\?listid=)/)) {
             var lines = $("table.Table").find("tbody").find("tr");
             setLinesColorInZebra( settings_show_common_lists_in_zebra, lines, 2 );
             setLinesColorUser( "settings_show_common_lists_color", "user", lines, 2, "" );
@@ -7619,13 +7570,14 @@ var mainGC = function () {
                 var lines = $("table").find("tbody").find("tr");
                 var replaceSpec = /(TertiaryRow)(\s*)/g;
                 setLinesColorNone( lines, replaceSpec );
+
                 // Wenn der User nicht eingefärbt werden soll, Zebra aber ausgewählt ist, dann muss Zebra leider explizit
                 // gesetzt werden, weil nur ein Wert im Standard gesetzt wurde, hier eben der Wert für User - blöd.
                 if ( settings_show_common_lists_in_zebra ) {
                     if ( document.location.href.match(/^https?:\/\/www\.geocaching\.com\/seek\/nearest\.aspx\?/)          ||      // - Pocket Query oder ähnlich
                          document.location.href.match(/^https?:\/\/www\.geocaching\.com\/my\/recentlyviewedcaches\.aspx/)    ) {  //   oder Recently Viewed,
                         var lines = $("table.Table").find("tbody").find("tr").slice(1);                                           //   dann Überschrift weglassen.
-                        setLinesColorInZebra( settings_show_common_lists_in_zebra, lines, 1 );                                    //   Einzeilig.
+                        setLinesColorInZebra( settings_show_common_lists_in_zebra, lines, 1 );                                     //   Einzeilig.
                     }
                 }
             }
@@ -7671,6 +7623,7 @@ var mainGC = function () {
             gclh_error('Save Homecoords', e);
         }
     }
+    // Save HomeCoords.
     function saveHomeCoords() {
         if (document.getElementById('Query')) {
             var link = document.getElementById('Query');
@@ -7751,7 +7704,7 @@ var mainGC = function () {
                         side.nodeValue += matrix;
                     }
                 }
-                // Nächste mögliche Matrix farblich kennzeichnen und Search Link und Title setzen.
+                // Nächste mögliche Matrixes farblich kennzeichnen und Search Link und Title setzen.
                 if ( own == true && settings_count_own_matrix_show_next == true ) {
                     var from = smallest;
                     var to = smallest - 1 + parseInt(settings_count_own_matrix_show_count_next);
@@ -8007,12 +7960,15 @@ var mainGC = function () {
             var avatar_checkbox = document.getElementById("ShowAvatarsInCacheLogs");
             avatar_checkbox.checked = !settings_hide_avatar;
             avatar_checkbox.disabled = true;
+
             var avatar_head = avatar_checkbox.parentNode;
             avatar_head.style.cursor = "unset";
             avatar_head.style.opacity = "0.5";
+
             var link = document.createElement("a");
             link.setAttribute("href", "/my/default.aspx#GClhShowConfig#a#settings_hide_avatar");
             link.appendChild(document.createTextNode("here"));
+
             var hinweis = document.createElement("span");
             hinweis.setAttribute("class", "label");
             hinweis.appendChild(document.createTextNode("You are using \"" + scriptName + "\" - you have to change this option "));
@@ -8040,6 +7996,7 @@ var mainGC = function () {
             if ( checkTaskAllowed( "GClh Sync", false ) == true ) GM_registerMenuCommand(scriptNameSync, gclh_showSync);
             else GM_registerMenuCommand(scriptNameSync, callSyncDefault);
         }
+
         // GClh Config, Sync und Find Player Aufrufe aus Linklist heraus.
         if ( checkTaskAllowed( "GClh Config", false ) == true ) {
             if ( document.getElementsByName("lnk_gclhconfig")[0] ) {
@@ -8059,6 +8016,7 @@ var mainGC = function () {
                 document.getElementsByName("lnk_findplayer")[0].addEventListener('click', createFindPlayerForm, false);
             }
         }
+
         // GClh Config, Sync und Find Player Aufrufe mit Zusatz #GClhShowConfig bzw. #GClhShowSync bzw. #GClhShowFindPlayer.
         // 2. Schritt derzeit im Link bei Settings, Preferences Avatar, teils in den Links aus der Linklist, teils in GM Menü,
         // mit rechter Maustaste aus Links neben Avatar auf Profile Seite und teils F4 bei Aufruf Config.
@@ -8074,14 +8032,17 @@ var mainGC = function () {
             document.location.href = clearUrlAppendix( document.location.href, true );
             setTimeout(createFindPlayerForm, 5);
         }
+
         // Profile Seite.
         if ( is_page("profile") && document.getElementById('ctl00_ContentBody_WidgetMiniProfile1_memberProfileLink') ) {
+
             // GClh Config und Sync Links neben Avatar im Profile.
             var lnk_config = " | <br><a href='#GClhShowConfig' id='gclh_config_lnk' name='gclh_config_lnk' style='font-size: 0.9em;' title='" + scriptShortNameConfig + " v" + scriptVersion + (settings_f4_call_gclh_config ? " / Key F4":"") + "' >" + scriptShortNameConfig + "</a>";
             var lnk_sync = " | <a href='#GClhShowSync' id='gclh_sync_lnk' name='gclh_sync_lnk' style='font-size: 0.9em;' title='" + scriptShortNameSync + " v" + scriptVersion + (settings_f10_call_gclh_sync ? " / Key F10":"") + "' >" + scriptShortNameSync + "</a>";
             document.getElementById('ctl00_ContentBody_WidgetMiniProfile1_memberProfileLink').parentNode.innerHTML += lnk_config + lnk_sync;
             document.getElementById('gclh_config_lnk').addEventListener('click', gclh_showConfig, false);
             document.getElementById('gclh_sync_lnk').addEventListener('click', gclh_showSync, false);
+
             // Linklist Ablistung rechts im Profile.
             if ( document.getElementsByName("lnk_gclhconfig_profile")[0] ) {
                 document.getElementsByName("lnk_gclhconfig_profile")[0].href = "#GClhShowConfig";
@@ -8096,11 +8057,13 @@ var mainGC = function () {
                 document.getElementsByName("lnk_findplayer_profile")[0].addEventListener('click', createFindPlayerForm, false);
             }
         }
+
         // GClh Config und Sync Aufrufe von anderen Seiten auf die Profile Seite mit Zusatz #GClhShowConfig bzw. #GClhShowSync.
         // Derzeit teils in GM Menü (1. Schritt) verwendet.
         // Chrome cannot handle functions without curly brackets!
         function callConfigDefault() { document.location.href = defaultConfigLink; }
         function callSyncDefault() { document.location.href = defaultSyncLink; }
+
     } catch (e) {
         gclh_error("Aufbau Links zum Aufruf von Config, Sync und Find Player", e);
     }
@@ -8114,14 +8077,17 @@ var mainGC = function () {
     function setSpecialLinks() {
         // Links zu Nearest Lists/Map in Linklist, im Config und in Ablistung der Listlist im Profile setzen.
         if (getValue("home_lat", 0) != 0 && getValue("home_lng") != 0) {
+            // Nearest List.
             var link = http + "://www.geocaching.com/seek/nearest.aspx?lat=" + (getValue("home_lat") / 10000000) + "&lng=" + (getValue("home_lng") / 10000000) + "&dist=25&disable_redirect=";
             if ( document.getElementsByName("lnk_nearestlist")[0] ) document.getElementsByName("lnk_nearestlist")[0].href = link;
             if ( document.getElementsByName("lnk_nearestlist")[1] ) document.getElementsByName("lnk_nearestlist")[1].href = link;
             if ( document.getElementsByName("lnk_nearestlist_profile")[0] ) document.getElementsByName("lnk_nearestlist_profile")[0].href = link;
+            // Nearest Map.
             var link = map_url + "?lat=" + (getValue("home_lat") / 10000000) + "&lng=" + (getValue("home_lng") / 10000000);
             if ( document.getElementsByName("lnk_nearestmap")[0] ) document.getElementsByName("lnk_nearestmap")[0].href = link;
             if ( document.getElementsByName("lnk_nearestmap")[1] ) document.getElementsByName("lnk_nearestmap")[1].href = link;
             if ( document.getElementsByName("lnk_nearestmap_profile")[0] ) document.getElementsByName("lnk_nearestmap_profile")[0].href = link;
+            // Nearest List without Founds.
             var link = http + "://www.geocaching.com/seek/nearest.aspx?lat=" + (getValue("home_lat") / 10000000) + "&lng=" + (getValue("home_lng") / 10000000) + "&dist=25&f=1&disable_redirect=";
             if ( document.getElementsByName("lnk_nearestlist_wo")[0] ) document.getElementsByName("lnk_nearestlist_wo")[0].href = link;
             if ( document.getElementsByName("lnk_nearestlist_wo")[1] ) document.getElementsByName("lnk_nearestlist_wo")[1].href = link;
@@ -8146,6 +8112,7 @@ var mainGC = function () {
                     document.styleSheets[i].cssRules[384].style['background-image'] = "none";
                 }
             }
+
             // Example Path for Site      /Adventures/Details/90ced6d4-0a22-4c19-a491-7ae17d489c60
             // Example Path for Download  /Adventures/DetailsAsGPX/90ced6d4-0a22-4c19-a491-7ae17d489c60
             // Get current Path with GUID and create download Path
@@ -8180,17 +8147,6 @@ var mainGC = function () {
         }
     } catch (e) {
         gclh_error("Auto check checkboxes on hide cache process", e);
-    }
-
-// Banner zu neuen Themen entfernen.
-    if (settings_remove_banner) {
-        try {
-            if (settings_remove_banner_to_mylists_new) $('#divContentMain').find('div.banner').find('a[href*="/account/lists"]').closest('div.banner').remove();
-            if (settings_remove_banner_to_mylists_old) $('#activationAlert').find('div.container').find('a[href*="/my/lists.aspx"]').closest('#activationAlert').remove();
-            if (settings_remove_banner_for_garminexpress) $('#Content').find('div.banner').find('#uxSendToGarminBannerLink').closest('div.banner').remove();
-        } catch (e) {
-            gclh_error("remove banner", e);
-        }
     }
 
 // Check for Upgrade.
@@ -8248,19 +8204,18 @@ var mainGC = function () {
         gclh_error("Check for updgrade", e);
     }
 
-// Special days.
+// Ostern.
     if (is_page("cache_listing")) {
         try {
             var now = new Date();
             var year = now.getYear() + 1900;
             var month = now.getMonth() + 1;
             var date = now.getDate();
-            // Ostern 2017.
             if (date >= 16 && date <= 17 && month == 4 && year == 2017) {
                 $(".CacheDetailNavigation:first > ul:first").append('<li><img src="https://raw.githubusercontent.com/2Abendsegler/GClh/master/images/easter_bunny_001.jpg" style="margin-bottom: -35px;" title="Happy Easter"></li>');
             }
         } catch (e) {
-            gclh_error("Special days", e);
+            gclh_error("Ostern", e);
         }
     }
 
@@ -8272,7 +8227,7 @@ var mainGC = function () {
         return false;
     }
 
-    function caseInsensitiveSort(a, b) {
+    function caseInsensitiveSort(a, b) {  // http://www.codingforums.com/showthread.php?t=10477
         var ret = 0;
         a = a.toLowerCase();
         b = b.toLowerCase();
@@ -8462,7 +8417,9 @@ var mainGC = function () {
         if (document.getElementById('settings_overlay')) document.getElementById('settings_overlay').style.display = "none";
         if (document.getElementById('sync_settings_overlay')) document.getElementById('sync_settings_overlay').style.display = "none";
         if (document.getElementById('findplayer_overlay')) document.getElementById('findplayer_overlay').style.display = "none";
-        if ( clearUrl != false ) document.location.href = clearUrlAppendix( document.location.href, false );
+        if ( clearUrl != false ) {
+            document.location.href = clearUrlAppendix( document.location.href, false );
+        }
     }
 
 // Function to get the Finds out of the login-Text-Box
@@ -8599,12 +8556,14 @@ var mainGC = function () {
         if ( parameter["user"] == false ) {
             setLinesColorNone( lines, replaceSpecUser );
         }
+
         // Wenn eine Einfärbung stattfinden soll.
         if ( parameter["user"] == true || parameter["owner"] == true || parameter["reviewer"] == true || parameter["vip"] == true ) {
             for ( var i = 0; i < lines.length; i += linesTogether ) {
                 var newClass = "";
                 var aTags = lines[i].getElementsByTagName("a");
                 var imgTags = lines[i].getElementsByTagName("img");
+
                 // Anhand der guid prüfen, ob eine Einfärbung in diesem Zeilenbereich für User oder Owner notwendig ist.
                 // Verarbeitung für die Seiten: Cache Listing, TB Listing
                 if ( parameter["user"] || parameter["owner"] ) {
@@ -9018,21 +8977,24 @@ var mainGC = function () {
     }
 
     function actionNew( name, page ) {
-        // Find latest id.
+        // find latest id
         var i = settings_search_data.length;
         var id = -1;
         for (var i = 0; i < settings_search_data.length; i++) {
             if ( id < settings_search_data[i].id ) { id = settings_search_data[i].id; }
         }
+        // console.log("next index: " + i + " next id: " + (id+1) );
         settings_search_data[i] = {};
         settings_search_data[i].id = id+1;
         settings_search_data[i].name = name;
         settings_search_data[i].url = page.split("#")[0];
+        // console.log(settings_search_data);
         saveFilterSet();
     }
 
     // Delete
     function actionSearchDelete( id ) {
+        // console.log("actionSearchDelete()");
         var settings_search_data_tmp = [];
         for (var i = 0; i < settings_search_data.length; i++) {
             if ( settings_search_data[i].id != id ) {
@@ -9044,6 +9006,7 @@ var mainGC = function () {
     }
 
     function updateUI() {
+        // console.log("updateUI()");
         if ( $("#searchContextMenu").length == 0 ) {
             var html = "";
             html += '<div id="searchContextMenu" class="pop-modal" style="top: auto; left: auto; width: 100%; position: absolute;">';
@@ -9064,10 +9027,12 @@ var mainGC = function () {
             html += '<label class="add-list-label">Available Filter Sets</label>';
             html += '<ul id="filterlist" class="add-list"></ul>';
 
+            // end of div
             html += '</div>';
             $( "#ctxMenu" ).html(html);
 
             $('#btn-save').click( function() {
+                // console.log("save search");
                 var name = $("#nameSearch").val();
                 if ( name == "" ) {
                     alert("Insert name!");
@@ -9104,6 +9069,7 @@ var mainGC = function () {
         }
 
         var html = "";
+        // console.log(settings_search_data);
         if ( settings_search_data.length ) {
             settings_search_data.sort(function(a, b){ return a.name.toUpperCase()>b.name.toUpperCase(); });
         }
@@ -9127,6 +9093,7 @@ var mainGC = function () {
         // delete
         $('.action-delete').click( function() {
             var id = $(this).data('id');
+            // console.log(id);
             actionSearchDelete( id );
             updateUI();
         });
@@ -9164,31 +9131,33 @@ var mainGC = function () {
     if ( settings_search_enable_user_defined && is_page("find_cache") ) {
         try {
             if ( !( $(".results").length || settings_search_data.length ) ) {
-            } else {
-                create_config_css_search();
+                // no result list and no user defined filter => do nothing
+                return;
+            }
+            create_config_css_search();
 
-                $( ".filters-toggle" ).append('&nbsp;<button id="filterCtxMenu" class="btn btn-user" type="button">Manage Filter Sets</button>  '); // &#x2630;
-                $( ".filters-toggle" ).append('<div id="ctxMenu" style="display:none;"></div>');
+            $( ".filters-toggle" ).append('&nbsp;<button id="filterCtxMenu" class="btn btn-user" type="button">Manage Filter Sets</button>  '); // &#x2630;
+            $( ".filters-toggle" ).append('<div id="ctxMenu" style="display:none;"></div>');
 
-                $('#filterCtxMenu').click( function() {
-                    var element = $('#ctxMenu');
-                    if ( element.css('display') == 'none' ){
-                       updateUI();
-                       element.show();
-                       $(this).addClass( 'btn-user-active' );
-                    } else {
-                       element.hide();
-                       $(this).removeClass( 'btn-user-active' );
-                    }
-                });
-
-                var currentFilter = "";
-                for (var i = 0; i < settings_search_data.length; i++) {
-                    if ( settings_search_data[i].url == document.location.href.split("#")[0] ) {
-                        currentFilter = "Current Filter Set: "+settings_search_data[i].name;
-                    }
+            $('#filterCtxMenu').click( function() {
+                var element = $('#ctxMenu');
+                if ( element.css('display') == 'none' ){
+                   updateUI();
+                   element.show();
+                   $(this).addClass( 'btn-user-active' );
+                } else {
+                   element.hide();
+                   $(this).removeClass( 'btn-user-active' );
                 }
-                $(".button-group-dynamic").append('<span>'+currentFilter+'</span>');
+            });
+
+            var currentFilter = "";
+            for (var i = 0; i < settings_search_data.length; i++) {
+                if ( settings_search_data[i].url == document.location.href.split("#")[0] ) {
+                    currentFilter = "Current Filter Set: "+settings_search_data[i].name;
+                }
+            }
+            $(".button-group-dynamic").append('<span>'+currentFilter+'</span>');
 
             // helper function to close the dialog div if a mouse click outside
             $(document).mouseup(function (e) {
@@ -9541,16 +9510,12 @@ var mainGC = function () {
             html += "&nbsp;" + "Page-Width: <input class='gclh_form' type='text' size='2' id='settings_new_width' value='" + getValue("settings_new_width", 1000) + "'> px" + show_help("With this option you can expand the small layout. The default value of gc.com is 950 px.") + "<br>";
             html += checkboxy('settings_hide_facebook', 'Hide Facebook login') + "<br/>";
             html += checkboxy('settings_hide_socialshare', 'Hide social sharing Facebook and Twitter') + "<br/>";
+            html += checkboxy('settings_show_sums_in_bookmark_lists', 'Show number of caches in bookmark lists') + show_help("With this option the number of caches and the number of selected caches in the categories \"All\", \"Found\", \"Archived\" and \"Deactivated\", corresponding to the select buttons, are shown in bookmark lists at the end of the list.") + "<br/>";
             html += checkboxy('settings_hide_warning_message', 'Hide warning message') + show_help("With this option you can choose the possibility to hide a potential warning message of the masters of gc.com. <br><br>One example is the down time warning message which comes from time to time and is placed unnecessarily a lot of days at the top of pages. You can hide it except for a small line in the top right side of the pages. You can activate the warning message again if your mouse goes to this area. <br><br>If the warning message is deleted of the masters, this small area is deleted too.") + "<br/>";
             html += checkboxy('settings_search_enable_user_defined', 'Enable user defined Filter Sets for geocache searchs') + show_help("This features enables you to store favourites filter settings in the geocache search and call them quickly.") + "<br/>";
             html += newParameterOn3;
             html += checkboxy('settings_hide_cache_approvals', 'Auto set approvals in hide cache process') + show_help("This option activates the checkboxes for approval the guidelines and the terms of use agreement in the hide cache process.") + "<br/>";
             html += newParameterVersionSetzen(0.6) + newParameterOff;
-            html += newParameterOn2;
-            html += checkboxy('settings_remove_banner', 'Remove banner') + "<br/>";
-            html += " &nbsp; " + checkboxy('settings_remove_banner_to_mylists_new', 'to new designed \"My Lists\" page ') + checkboxy('settings_remove_banner_to_mylists_old', 'to old \"My Lists\" page') + "<br/>";
-            html += " &nbsp; " + checkboxy('settings_remove_banner_for_garminexpress', 'for \"Garmin Express\"') + "<br/>";
-            html += newParameterVersionSetzen(0.8) + newParameterOff;
             html += checkboxy('settings_submit_log_button', 'Submit log, Pocket Query, Bookmark or hide cache on F2') + show_help("With this option you are able to submit your log by pressing F2 instead of scrolling to the bottom and move the mouse to the button. <br><br>This feature also works to submit Pocket Queries and Bookmarks. <br><br>And it works on the whole hide cache process with all of the buttons \"Continue\", \"Continue Anyway\", \"Save and Preview\", \"Submit Changes\", \"Update Attributes\", \"Create Waypoint\" and \"Update Waypoint\" of the create and the change functionality.") + "<br/>";
             html += "<br>";
             html += "&nbsp;" + "Show lines in";
@@ -9604,15 +9569,6 @@ var mainGC = function () {
             html += checkboxy('settings_redirect_to_map', 'Redirect cache search lists to map display') + show_help("If you enable this option, you will be automatically redirected from the older cache search lists (nearest lists) to map display.") + "<br/>";
             html += checkboxy('settings_show_log_it', 'Show GClh \"Log it\" icon (too for basic members for PMO)') + show_help("The GClh \"Log it\" icon is displayed beside cache titles in nearest lists. If you click it, you will be redirected directly to the log form. <br><br>You can use it too as basic member to log Premium Member Only (PMO) caches.") + "<br/>";
             html += checkboxy('settings_show_nearestuser_profil_link', 'Show profile link on search for created / found by caches') + show_help("This option adds an link to the user profile when searching for caches created or found by a certain user") + "<br/>";
-            html += "</div>";
-
-            html += "<h4 class='gclh_headline2'>"+prepareHideable.replace("#name#","bm")+"Bookmark list</h4>";
-            html += "<div id='gclh_config_bm'>";
-            html += checkboxy('settings_show_sums_in_bookmark_lists', 'Show number of caches in bookmark lists') + show_help("With this option the number of caches and the number of selected caches in the categories \"All\", \"Found\", \"Archived\" and \"Deactivated\", corresponding to the select buttons, are shown in bookmark lists at the end of the list.") + "<br/>";
-            html += newParameterOn2;
-            html += checkboxy('settings_compact_layout_bm_lists', 'Show compact layout in bookmark lists') + "<br/>";
-            html += checkboxy('settings_compact_layout_list_of_bm_lists', 'Show compact layout in list of bookmark lists') + "<br/>";
-            html += newParameterVersionSetzen(0.8) + newParameterOff;
             html += "</div>";
 
             html += "<h4 class='gclh_headline2'>"+prepareHideable.replace("#name#","pq")+"Pocket Query</h4>";
@@ -9716,16 +9672,22 @@ var mainGC = function () {
             html += checkboxy('settings_add_link_google_maps_on_gc_map', 'Add link to Google Maps on GC Map') + show_help("With this option an icon are placed on the GC Map page to link to the same area in Google Maps.") + "<br/>";
             html += " &nbsp; " + checkboxy('settings_switch_to_google_maps_in_same_tab', 'Switch to Google Maps in same browser tab') + show_help("With this option you can switch from GC Map to Google Maps in the same browser tab.<br><br>This option requires \"Add link to Google Maps on GC Map\".") + "<br/>";
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>Openstreetmap page</b></div>";
+            html += newParameterOn2;
             html += checkboxy('settings_add_link_gc_map_on_osm', 'Add link to GC Map on Openstreetmap') + show_help("With this option an icon are placed on the OpenstreetMap page to link to the same area in GC Map.") + "<br/>";
             html += " &nbsp; " + checkboxy('settings_switch_from_osm_to_gc_map_in_same_tab', 'Switch to GC Map in same browser tab') + show_help("With this option you can switch from Openstreetmap to GC Map in the same browser tab.<br><br>This option requires \"Add link to GC Map on OpenstreetMap\".") + "<br/>";
             html += checkboxy('settings_add_link_osm_on_gc_map', 'Add link to Openstreetmap on GC Map') + show_help("With this option an icon are placed on the GC Map page to link to the same area in Openstreetmap.") + "<br/>";
             html += " &nbsp; " + checkboxy('settings_switch_to_osm_in_same_tab', 'Switch to Openstreetmap in same browser tab') + show_help("With this option you can switch from GC Map to Openstreetmap in the same browser tab.<br><br>This option requires \"Add link to Openstreetmap on GC Map\".") + "<br/>";
+            html += newParameterVersionSetzen(0.5) + newParameterOff;
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>Flopp's Map page</b></div>";
+            html += newParameterOn2;
             html += checkboxy('settings_add_link_flopps_on_gc_map', 'Add link to Flopp\'s Map on GC Map') + show_help("With this option an icon are placed on the GC Map page to link to the same area in Flopp\'s Map.") + "<br/>";
             html += " &nbsp; " + checkboxy('settings_switch_to_flopps_in_same_tab', 'Switch to Flopp\'s Map in same browser tab') + show_help("With this option you can switch from GC Map to Flopp\'s Map in the same browser tab.<br><br>This option requires \"Add link to Flopp\'s Map on GC Map\".") + "<br/>";
+            html += newParameterVersionSetzen(0.5) + newParameterOff;
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>GeoHack page</b></div>";
+            html += newParameterOn2;
             html += checkboxy('settings_add_link_geohack_on_gc_map', 'Add link to GeoHack on GC Map') + show_help("With this option an icon are placed on the GC Map page to link to the same area in GeoHack.") + "<br/>";
             html += " &nbsp; " + checkboxy('settings_switch_to_geohack_in_same_tab', 'Switch to GeoHack in same browser tab') + show_help("With this option you can switch from GC Map to GeoHack in the same browser tab.<br><br>This option requires \"Add link to GeoHack on GC Map\".") + "<br/>";
+            html += newParameterVersionSetzen(0.5) + newParameterOff;
             html += "</div>";
 
             html += "<h4 class='gclh_headline2'>"+prepareHideable.replace("#name#","profile")+"Profile <span style='font-size: 14px'>" + show_help2("This section include your profile pages (\/my\/ and \/profile\/ pages) with for example your founded caches and trackables, your earned souvenirs, your image gallery, your statistic ... <br><br>Also the section include the profile pages of the others.") + "</span></h4>";
@@ -9849,9 +9811,11 @@ var mainGC = function () {
             html += "&nbsp; " + content_settings_show_mail_in_allmyvips.replace("settings_show_mail_in_allmyvips", "settings_show_mail_in_allmyvipsX1");
             html += "&nbsp; " + content_settings_process_vup.replace("settings_process_vup", "settings_process_vupX0");
             html += " &nbsp; &nbsp; " + content_settings_show_vup_friends.replace("settings_show_vup_friends", "settings_show_vup_friendsX0");
+            html += newParameterOn2;
             html += " &nbsp; &nbsp; " + checkboxy('settings_vup_hide_avatar', 'Also hide name, avatar and counter from log') + show_help("With this option you can also hide the cacher name, his avatar and his found counter<br><br>This option requires \"Process VUPs\" and \"Show VIP list\".") + "<br>";
             html += " &nbsp; &nbsp; &nbsp; " + checkboxy('settings_vup_hide_log', 'Hide complete log') + show_help("With this option you can hide the complete log of the cacher.<br><br>This option requires \"Also hide name, avatar and counter from log\", \"Process VUPs\" and \"Show VIP list\".") + "<br>";
             html += checkboxy('settings_link_big_listing', 'Replace image links in cache listing to bigger image') + show_help("With this option the links of owner images in the cache listing points to the bigger, original image.") + "<br/>";
+            html += newParameterVersionSetzen(0.5) + newParameterOff;
             html += checkboxy('settings_show_thumbnailsX0', 'Show thumbnails of images') + show_help("With this option the images are displayed as thumbnails to have a preview. If you hover over a thumbnail, you can see the big one.<br><br>This works in cache and TB logs, in the cache and TB image galleries, in public profile for the avatar and in the profile image gallery.") + "&nbsp; Max size of big image: <input class='gclh_form' size=2 type='text' id='settings_hover_image_max_sizeX0' value='" + settings_hover_image_max_size + "'> px <br/>";
             html += " &nbsp; &nbsp;" + "Spoiler-Filter: <input class='gclh_form' type='text' id='settings_spoiler_strings' value='" + settings_spoiler_strings + "'> " + show_help("If one of these words is found in the caption of the image, there will be no real thumbnail. It is to prevent seeing spoilers. Words have to be divided by |. If the field is empty, no checking is done. Default is \"spoiler|hinweis|hint\".<br><br>This option requires \"Show thumbnails of images\".") + "<br/>";
             html += "&nbsp; " + checkboxy('settings_imgcaption_on_topX0', 'Show caption on top') + show_help("This option requires \"Show thumbnails of images\".") + "<br/>";
@@ -9897,6 +9861,7 @@ var mainGC = function () {
             html += "  <option value=\"7\" " + (settings_default_logtype == "7" ? "selected=\"selected\"" : "") + ">Needs archived</option>";
             html += "  <option value=\"45\" " + (settings_default_logtype == "45" ? "selected=\"selected\"" : "") + ">Needs maintenance</option>";
             html += "</select>" + show_help("If you set this option, the selected value will be selected automatically, if you open a log page.") + "<br>";
+
             html += "&nbsp;" + "Default event log type: <select class='gclh_form' id='settings_default_logtype_event' style='margin-left: 4px;'>";
             html += "  <option value=\"-1\" " + (settings_default_logtype_event == "-1" ? "selected=\"selected\"" : "") + ">- Select type of log -</option>";
             html += "  <option value=\"4\" " + (settings_default_logtype_event == "4" ? "selected=\"selected\"" : "") + ">Write note</option>";
@@ -9904,6 +9869,7 @@ var mainGC = function () {
             html += "  <option value=\"9\" " + (settings_default_logtype_event == "9" ? "selected=\"selected\"" : "") + ">Will attend</option>";
             html += "  <option value=\"10\" " + (settings_default_logtype_event == "10" ? "selected=\"selected\"" : "") + ">Attended</option>";
             html += "</select>" + show_help("If you set this option, the selected value will be selected automatically, if you open a log page of an event.") + "<br>";
+
             html += "&nbsp;" + "Default owner log type: <select class='gclh_form' id='settings_default_logtype_owner'>";
             html += "  <option value=\"-1\" " + (settings_default_logtype_owner == "-1" ? "selected=\"selected\"" : "") + ">- Select type of log -</option>";
             html += "  <option value=\"4\" " + (settings_default_logtype_owner == "4" ? "selected=\"selected\"" : "") + ">Write note</option>";
@@ -9911,6 +9877,7 @@ var mainGC = function () {
             html += "  <option value=\"23\" " + (settings_default_logtype_owner == "23" ? "selected=\"selected\"" : "") + ">Enable listing</option>";
             html += "  <option value=\"18\" " + (settings_default_logtype_owner == "18" ? "selected=\"selected\"" : "") + ">Post reviewer note</option>";
             html += "</select>" + show_help("If you set this option, the selected value will be selected automatically, if you open a log page of one of your own caches.") + "<br>";
+
             html += "&nbsp;" + "Default TB log type: &nbsp; &nbsp; <select class='gclh_form' id='settings_default_tb_logtype' style='margin-left: 4px;'>";
             html += "  <option value=\"-1\" " + (settings_default_tb_logtype == "-1" ? "selected=\"selected\"" : "") + ">- Select type of log -</option>";
             html += "  <option value=\"13\" " + (settings_default_tb_logtype == "13" ? "selected=\"selected\"" : "") + ">Retrieve from ..</option>";
@@ -10029,10 +9996,12 @@ var mainGC = function () {
                     if (typeof(order[i]) == "undefined") continue;
                     if (typeof(order[i]) == "object") continue;
                     if (typeof(bookmarks[order[i]]) == "undefined") continue;
+                    // Wenn custom Bookmark.
                     if (bookmarks[order[i]].custom) {
                         var text = (typeof(bookmarks_orig_title[order[i]]) != "undefined" && bookmarks_orig_title[order[i]] != "" ? bookmarks_orig_title[order[i]] : bookmarks[order[i]]['title']);
                         var textTitle = "Custom" + (order[i] - firstCust);
                         if ( !text.match(/(\S+)/) ) text = textTitle;
+                    // Wenn default Bookmark.
                     } else {
                         var text = bookmarks[order[i]]['title'];
                         var textTitle = (typeof(bookmarks_orig_title[order[i]]) != "undefined" && bookmarks_orig_title[order[i]] != "" ? bookmarks_orig_title[order[i]] : bookmarks[order[i]]['title']);
@@ -10068,6 +10037,7 @@ var mainGC = function () {
             html += "        </thead>";
             // Zwei Spalten mit den möglichen Bookmarks und den gegebenenfalls abweichenden Bezeichnungen:
             html += "        <tbody>";
+
             var cust = 0;
             for (var i = 0; i < bookmarks.length; i++) {
                 var num = bookmarks[i]['number'];
@@ -10075,10 +10045,12 @@ var mainGC = function () {
                 // Erste Spalte mit den möglichen Bookmarks:
                 html += "            <td style='padding: 0px 2px 1px 2px; width: 201px; z-index: 1004;' align='left' class='gclh_LinkListElement' id='gclh_LinkListElement_" + num + "' >";
                 html += "                <img style='height:12px;margin-right:3px; cursor: grab;' title='' src='"+global_grab_it2_icon+"' />";
+                // Wenn custom Bookmark.
                 if (typeof(bookmarks[i]['custom']) != "undefined" && bookmarks[i]['custom'] == true) {
                     html += "            <input style='padding-left: 2px; padding-right: 2px;' class='gclh_form' type='text' title='Custom link' id='settings_custom_bookmark[" + cust + "]' value='" + bookmarks[i]['href'] + "' size='15'> ";
                     html += "            <input type='checkbox' style='margin-left: 1px;' title='Open in new window' " + (bookmarks[i]['target'] == "_blank" ? "checked='checked'" : "" ) + " id='settings_custom_bookmark_target[" + cust + "]'>";
                     cust++;
+                // Wenn default Bookmark.
                 } else {
                     html += "            <a class='gclh_ref' title='Standard link with description' ";
                     for (attr in bookmarks[i]) {
@@ -10096,8 +10068,10 @@ var mainGC = function () {
                 html += "            </td>";
                 // Zweite Spalte mit gegebenenfalls abweichenden Bezeichnungen:
                 html += "            <td align='left' style='padding: 0px 2px 1px 2px;'>";
+                // Wenn custom Bookmark.
                 if (typeof(bookmarks[i]['custom']) != "undefined" && bookmarks[i]['custom'] == true) {
                     html += "                <input style='padding-left: 2px; padding-right: 2px;' class='gclh_form' title='Description for custom link' id='bookmarks_name[" + num + "]' type='text' size='15' value='" + getValue("settings_bookmarks_title[" + num + "]", "") + "'>";
+                // Wenn default Bookmark.
                 } else {
                     html += "                <input style='padding-left: 2px; padding-right: 2px;' class='gclh_form' title='Differing description for standard link' id='bookmarks_name[" + num + "]' type='text' size='15' value='" + getValue("settings_bookmarks_title[" + num + "]", "") + "'>";
                     // Kennzeichnung neuer Parameter in Linklist Bereich.
@@ -10146,7 +10120,6 @@ var mainGC = function () {
                 makeConfigAreaHideable("global");
                 makeConfigAreaHideable("config");
                 makeConfigAreaHideable("nearestlist");
-                makeConfigAreaHideable("bm");
                 makeConfigAreaHideable("pq");
                 makeConfigAreaHideable("maps");
                 makeConfigAreaHideable("profile");
@@ -10509,9 +10482,6 @@ var mainGC = function () {
             setEventsForDependentParameters( "settings_log_statistic", "settings_log_statistic_reload" );
             setEventsForDependentParameters( "settings_log_statistic", "settings_log_statistic_percentage" );
             setEventsForDependentParameters( "settings_friendlist_summary", "settings_friendlist_summary_viponly" );
-            setEventsForDependentParameters( "settings_remove_banner", "settings_remove_banner_to_mylists_new" );
-            setEventsForDependentParameters( "settings_remove_banner", "settings_remove_banner_to_mylists_old" );
-            setEventsForDependentParameters( "settings_remove_banner", "settings_remove_banner_for_garminexpress" );
             setEventsForDependentParameters( "settings_driving_direction_link", "settings_driving_direction_parking_area" );
 //--> $$065 Begin of insert
 //<-- $$065 End of insert
@@ -11392,7 +11362,6 @@ var mainGC = function () {
         setShowHideConfigAll("gclh_config_global", showHide);
         setShowHideConfigAll("gclh_config_config", showHide);
         setShowHideConfigAll("gclh_config_nearestlist", showHide);
-        setShowHideConfigAll("gclh_config_bm", showHide);
         setShowHideConfigAll("gclh_config_pq", showHide);
         setShowHideConfigAll("gclh_config_maps", showHide);
         setShowHideConfigAll("gclh_config_profile", showHide);
