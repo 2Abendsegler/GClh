@@ -2,7 +2,7 @@
 // @name             GC little helper II
 // @namespace        http://www.amshove.net
 //--> $$000 Begin of change
-// @version          0.7.1
+// @version          0.7.2
 //<-- $$000 End of change
 // @include          http*://www.geocaching.com/*
 // @include          http*://labs.geocaching.com/*
@@ -31,6 +31,9 @@
 
 ////////////////////////////////////////////////////////////////////////////
 // $$000 | Versionierung, bei neuen Versionen beachten.
+////////////////////////////////////////////////////////////////////////////
+// $$001FE Fieldnotes auf alte Verarbeitung umbiegen und nicht über die
+//         neuen Logs gehen. Muß für v0.8 geändert und umplaziert werden.
 ////////////////////////////////////////////////////////////////////////////
 
 var jqueryInit = function (c) {
@@ -409,6 +412,9 @@ var variablesInit = function (c) {
     c.settings_show_elevation_of_waypoints = getValue("settings_show_elevation_of_waypoints", true);
     c.settings_distance_units = getValue("settings_distance_units", "");
     c.settings_img_warning = getValue("settings_img_warning", false);
+//--> $$001FE
+    c.settings_fieldnotes_old_fashioned = getValue("settings_fieldnotes_old_fashioned", false);
+//<-- $$001FE
 
     // Settings: Custom Bookmarks
     var num = c.bookmarks.length;
@@ -729,6 +735,27 @@ var mainGC = function () {
             gclh_error("Run after Redirect", e);
         }
     }
+
+//--> $$001FE
+// Fieldnotes auf alte Verarbeitung umbiegen und nicht über die neuen Logs gehen.
+    if (settings_fieldnotes_old_fashioned && document.location.href.match(/^https?:\/\/www\.geocaching\.com\/my\/fieldnotes\.aspx/)) {
+        try {
+            var aTag = document.getElementsByTagName('a');
+            if (aTag) {
+                for (var i = 0; i < aTag.length; i++) {
+                    if (aTag[i].href.match(/fieldnotes\.aspx\?composeLog=true/i)) {
+                        var matches = aTag[i].href.match(/&draftGuid=(.*)&/i);
+                        if (matches && matches[1]) {
+                            aTag[i].href = "https://www.geocaching.com/seek/log.aspx?PLogGuid=" + matches[1];
+                        }
+                    }
+                }
+            }
+        } catch (e) {
+            gclh_error("fn 2", e);
+        }
+    }
+//<-- $$001FE
 
 // Set language to default language.
     if ( settings_set_default_langu ) {
@@ -1782,7 +1809,7 @@ var mainGC = function () {
                         if ( ( listen[j].href.match(/geocaching\.com\/bookmarks\/view\.aspx\?guid=/) ) &&
                              ( listen[j].text == "Ignore List" ) &&                                          // Die heißt auch in anderen Sprachen so.
                              ( listen[j+1].href.match(/geocaching\.com\/profile\/\?guid=/) ) &&
-                             ( listen[j+1].text == $('.li-user-info').children().first().text() ) ) {
+                             ( listen[j+1].text == $('.li-user-info').last().children().first().text() ) ) {
 
                             // Bereich mit den Links "Watch", Ignore" ... besorgen und verarbeiten.
                             var cdnLinksBereich = document.getElementsByClassName("CacheDetailNavigation NoPrint");
@@ -2911,7 +2938,7 @@ var mainGC = function () {
             // Get finds to replace #found# variable
             finds = get_my_finds();
             [ aDate, aTime, aDateTime ] = getDateTime();
-            var me = $('.li-user-info').children().first().text();
+            var me = $('.li-user-info').last().children().first().text();
             [ aGCTBName, aGCTBLink, aGCTBNameLink, aLogDate ] = getGCTBInfo();
 
             gclh_add_insert_fkt("ctl00_ContentBody_LogBookPanel1_uxLogInfo");
@@ -3303,7 +3330,7 @@ var mainGC = function () {
             g_founds = get_my_finds();
             [ g_date, g_time, g_dateTime ] = getDateTime();
             // Aktiven User Namen ermitteln.
-            g_activ_username = $('.li-user-info').children().first().text();
+            g_activ_username = $('.li-user-info').last().children().first().text();
         }
         return [ g_gc, g_tb, g_code, g_name, g_link, g_activ_username, g_founds, g_date, g_time, g_dateTime ];
     }
@@ -4075,7 +4102,7 @@ var mainGC = function () {
                 }
 
                 //Ownername == Username
-                else if ($('.PostLogList').find('a[href*="https://www.geocaching.com/profile/?guid="]').text().trim() == $('.li-user-info').children().text().trim()) {
+                else if ($('.PostLogList').find('a[href*="https://www.geocaching.com/profile/?guid="]').text().trim() == $('.li-user-info').last().children().text().trim()) {
                     select_val = settings_default_logtype_owner;
                 }
                 else {
@@ -4121,9 +4148,9 @@ var mainGC = function () {
             window.addEventListener("load", gclh_setFocus, false);
 
             // Replace variable
-            if ($('.li-user-info').children().length > 0) {
+            if ($('.li-user-info').last().children().length > 0) {
                 var finds = get_my_finds();
-                var me = $('.li-user-info').children().first().text();
+                var me = $('.li-user-info').last().children().first().text();
                 var owner = document.getElementById('ctl00_ContentBody_LogBookPanel1_WaypointLink').nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.innerHTML;
                 document.getElementById('ctl00_ContentBody_LogBookPanel1_uxLogInfo').innerHTML = document.getElementById('ctl00_ContentBody_LogBookPanel1_uxLogInfo').innerHTML.replace(/#found_no#/ig, finds);
                 finds++;
@@ -4173,9 +4200,9 @@ var mainGC = function () {
             window.addEventListener("load", gclh_setFocus, false);
 
             // Replace variable
-            if ($('.li-user-info').children().length > 0) {
+            if ($('.li-user-info').last().children().length > 0) {
                 var finds = get_my_finds();
-                var me = $('.li-user-info').children().first().text();
+                var me = $('.li-user-info').last().children().first().text();
                 var owner = document.getElementById('ctl00_ContentBody_LogBookPanel1_WaypointLink').nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.innerHTML;
                 document.getElementById('ctl00_ContentBody_LogBookPanel1_uxLogInfo').innerHTML = document.getElementById('ctl00_ContentBody_LogBookPanel1_uxLogInfo').innerHTML.replace(/#found_no#/ig, finds);
                 finds++;
@@ -5808,7 +5835,7 @@ var mainGC = function () {
     try {
         if ( settings_show_vip_list                                                                    &&
              !isMemberInPmoCache()                                                                     &&
-             $('.li-user-info').children().first()                                                     &&
+             $('.li-user-info').last().children().first()                                              &&
              !document.location.href.match(/^https?:\/\/www\.geocaching\.com\/my\/geocaches\.aspx/)    &&         // Nicht bei Geocaching Logs
              !document.location.href.match(/^https?:\/\/www\.geocaching\.com\/my\/travelbugs\.aspx/)   &&         // Nicht bei Travelbugs
              !document.location.href.match(/^https?:\/\/www\.geocaching\.com\/my\/benchmarks\.aspx/)   &&         // Nicht bei Benchmarks
@@ -5822,7 +5849,7 @@ var mainGC = function () {
                document.location.href.match(/^https?:\/\/www\.geocaching\.com\/my\/default\.aspx/)        ||      // Profil (Quicklist)
                document.location.href.match(/^https?:\/\/www\.geocaching\.com\/profile\//)                ||      // Öffentliches Profil
                document.location.href.match(/^https?:\/\/www\.geocaching\.com\/my\/myfriends\.aspx/)         )) { // Friends
-            var myself = $('.li-user-info').children().first().text();
+            var myself = $('.li-user-info').last().children().first().text();
             var gclh_build_vip_list = function () {};
 
             // Arrays für VIPs, VUPs aufbauen:
@@ -7640,7 +7667,7 @@ var mainGC = function () {
         // Soll fremde Statistik gepimpt werden.
         } else if ( settings_count_foreign_matrix &&
                     document.location.href.match(/^https?:\/\/www\.geocaching\.com\/profile\/(.*)(\?guid=|\?u=)/) &&
-                    !document.getElementById('ctl00_ContentBody_lblUserProfile').innerHTML.match(": " + $('.li-user-info').children().first().text()) ) {
+                    !document.getElementById('ctl00_ContentBody_lblUserProfile').innerHTML.match(": " + $('.li-user-info').last().children().first().text()) ) {
             var own = false;
         } else var own = "";
         // Wenn Statistik gepimpt werden soll.
@@ -7697,7 +7724,7 @@ var mainGC = function () {
                                 if ( settings_count_own_matrix_links_radius != 0 ) {
                                     var terrain = parseInt(cell.id.match(/^([1-9]{1})(_{1})([1-9]{1})$/)[3]) * 0.5 + 0.5;
                                     var difficulty = parseInt(cell.id.match(/^([1-9]{1})(_{1})([1-9]{1})$/)[1]) * 0.5 + 0.5;
-                                    var user = $('.li-user-info').children().first().text();
+                                    var user = $('.li-user-info').last().children().first().text();
                                     var aTag = document.createElement('a');
                                     aTag.href = "/play/search/?origin=" + DectoDeg(getValue("home_lat"), getValue("home_lng"))
                                               + "&radius=" + settings_count_own_matrix_links_radius + "km"
@@ -8398,9 +8425,9 @@ var mainGC = function () {
 // Function to get the Finds out of the login-Text-Box
     function get_my_finds() {
         var finds = "";
-        if ($('.li-user-info').children().length >= 2) {
-            if ( $('.li-user-info').children().next().text() ) {
-                finds = parseInt($('.li-user-info').children().next().text().match(/[0-9,\.]+/)[0].replace(/[,\.]/,""));
+        if ($('.li-user-info').last().children().length >= 2) {
+            if ( $('.li-user-info').last().children().next().text() ) {
+                finds = parseInt($('.li-user-info').last().children().next().text().match(/[0-9,\.]+/)[0].replace(/[,\.]/,""));
             }
         }
         return finds;
@@ -8499,7 +8526,7 @@ var mainGC = function () {
 // Tabellenzeilen für User und Owner einfärben bzw. Einfärbung entfernen.
     function setLinesColorUser( parameterStamm, tasks, lines, linesTogether, owner ) {
         if ( lines.length == 0 ) return;
-        var user = $('.li-user-info').children().first().text();
+        var user = $('.li-user-info').last().children().first().text();
         if ( owner == undefined ) var owner = "";
         var vips = getValue("vips");
         // try if vips not empty
@@ -8874,7 +8901,7 @@ var mainGC = function () {
              ( document.location.href.match(/^https?:\/\/www\.geocaching\.com\/profile/) &&
                document.getElementById("ctl00_ContentBody_ProfilePanel1_lnkStatistics") &&
                document.getElementById("ctl00_ContentBody_ProfilePanel1_lnkStatistics").className == "Active" &&
-               document.getElementById('ctl00_ContentBody_lblUserProfile').innerHTML.match(": " + $('.li-user-info').children().first().text()) ) ) {
+               document.getElementById('ctl00_ContentBody_lblUserProfile').innerHTML.match(": " + $('.li-user-info').last().children().first().text()) ) ) {
             return true;
         } else return false;
     }
@@ -9813,6 +9840,11 @@ var mainGC = function () {
             html += checkboxy('settings_replace_log_by_last_log', 'Replace log by last log template') + show_help("If you enable this option, the last log template will replace the whole log. If you disable it, it will be appended to the log.") + "<br/>";
             html += checkboxy('settings_show_log_itX0', 'Show GClh \"Log it\" icon (too for basic members for PMO)') + show_help("The GClh \"Log it\" icon is displayed beside cache titles in nearest lists. If you click it, you will be redirected directly to the log form. <br><br>You can use it too as basic member to log Premium Member Only (PMO) caches.") + "<br/>";
             html += checkboxy('settings_logit_for_basic_in_pmoX0', 'Log PMO caches by standard \"Log It\" icon (for basic members)') + show_help("With this option basic members are able to choose the standard \"Log It\" icon to call the logging screen for premium only caches. The tool tipp blocked not longer this call. You can have the same result by using the right mouse across the \"Log It\" icon and then new tab. <br>The \"Log It\" icon is besides the caches for example in the \"Recently Viewed Caches\" list and in your profile.") + "<br/>";
+//--> $$001FE
+            html += newParameterOn1;
+            html += checkboxy('settings_fieldnotes_old_fashioned', 'Logging fieldnotes old-fashioned') + show_help("This option deactivates the logging of fieldnotes by the new log page (looks like a phone app) and activates logging of fieldnotes by the old-fasioned log page.") + "<br/>";
+            html += newParameterVersionSetzen(0.7) + newParameterOff;
+//<-- $$001FE
             var placeholderDescription = "Possible placeholder:<br>&nbsp; #Found# : Your founds + 1<br>&nbsp; #Found_no# : Your founds<br>&nbsp; #Me# : Your username<br>&nbsp; #Owner# : Username of the owner<br>&nbsp; #Date# : Actual date<br>&nbsp; #Time# : Actual time in format hh:mm<br>&nbsp; #DateTime# : Actual date actual time<br>&nbsp; #GCTBName# : GC or TB name<br>&nbsp; #GCTBLink# : GC or TB link<br>&nbsp; #GCTBNameLink# : GC or TB name as a link<br>&nbsp; #LogDate# : Content of field \"Date Logged\"<br>(Upper and lower case is not required in the placeholder name.)";
             html += "&nbsp;" + "Log templates:" + show_help("Log templates are pre-defined texts like \"!!! I got the FTF !!!\". All your templates are shown beside the log form. You just have to click to a template and it will be placed in your log. <br><br>Also you are able to use placeholder for variables which will be replaced in the log. The smilies option has to be enabled. <br><br>Note: You have to set a title and a text - click to the edit icon beside the template to edit the text.") + " &nbsp; (Possible placeholder:" + show_help_big(placeholderDescription) + ")<br>";
             html += "<font class='gclh_small' style='font-style: italic; margin-left: 240px; margin-top: 25px; width: 320px; position: absolute; z-index: -1;' >Bitte beachte, dass Logtemplates nützlich sind, um automatisiert die Fundzahl, das Funddatum und ähnliches im Log einzutragen, dass aber Cache Owner Menschen sind, die sich über individuelle Logs zu ihrem Cache freuen. Beim Geocachen geht es nicht nur darum, die eigene Statistik zu puschen, sondern auch darum, etwas zu erleben. Bitte nimm dir doch etwas Zeit, den Ownern etwas wiederzugeben, indem du ihnen von Deinen Erlebnissen berichtest und ihnen gute Logs schreibst. Dann wird es auch in Zukunft Cacher geben, die sich gerne die Mühe machen, neue Caches auszulegen. Die Logtemplates sind also nützlich, können aber niemals ein vollständiges Log ersetzen.</font>";
@@ -10788,6 +10820,9 @@ var mainGC = function () {
                 'settings_driving_direction_link',
                 'settings_driving_direction_parking_area',
                 'settings_show_elevation_of_waypoints',
+//--> $$001FE
+                'settings_fieldnotes_old_fashioned',
+//<-- $$001FE
                 'settings_img_warning'
             );
             for (var i = 0; i < checkboxes.length; i++) {
