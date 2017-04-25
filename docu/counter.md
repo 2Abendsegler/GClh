@@ -6,7 +6,7 @@
 
 ---
 ### v0.7.1:
-Number of installations between 12.04.2017 and 25.04.2017 (14 days) under GClh II version 0.7.1.<br>
+Number of installations between 12.04.2017 and 25.04.2017 (14 days) under GClh II version 0.7.1 (Easter).<br>
 <ul><li>On different addresses, corresponding Andy Hope: Total 1.125<br></li>
 <li>On different addresses, corresponding Easy Counter: Total 1.121<br></li>
 <li>On different addresses, corresponding Flag Counter: Total 1.038 (loss 87 or 7,78%)<br>
