@@ -1,8 +1,20 @@
-
+<a href="#v071" title="GClh II version 0.7.1 (12.04.2017 - 25.04.2017)">v0.7.1</a> &nbsp; 
 <a href="#v06" title="GClh II version 0.6 (25.03.2017 - 07.04.2017)">v0.6</a> &nbsp; 
 <a href="#v05" title="GClh II version 0.5 (11.03.2017 - 24.03.2017)">v0.5</a> &nbsp; 
 <a href="#v041" title="GClh II version 0.4.1 (25.02.2017 - 10.03.2017)">v0.4.1</a> &nbsp; 
 <a href="#v03" title="GClh II version 0.3 (05.02.2017 - 24.02.2017)">v0.3</a> &nbsp; 
+
+---
+### v0.7.1:
+Number of installations between 12.04.2017 and 25.04.2017 (14 days) under GClh II version 0.7.1.<br>
+<ul><li>On different addresses, corresponding Andy Hope: Total 1.125<br></li>
+<li>On different addresses, corresponding Easy Counter: Total 1.121<br></li>
+<li>On different addresses, corresponding Flag Counter: Total 1.038 (loss 87 or 7,78%)<br>
+<img src="../images/v0.7.1_counter_flag.jpg" alt="v0.7.1_counter_flag.jpg"><br></li>
+<li>All, corresponding Andy Hope: Total 1.367<br></li>
+<li>All, corresponding Easy Counter: Total 1.350<br></li>
+<li>All, corresponding Flag Counter: Total 1.303 (loss 64 or 4,68%)<br></li></ul>
+<br>
 
 ---
 ### v0.6:
