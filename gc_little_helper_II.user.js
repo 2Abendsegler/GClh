@@ -408,6 +408,7 @@ var variablesInit = function (c) {
     c.settings_distance_units = getValue("settings_distance_units", "");
     c.settings_img_warning = getValue("settings_img_warning", false);
     c.settings_fieldnotes_old_fashioned = getValue("settings_fieldnotes_old_fashioned", false);
+    c.settings_my_lists_old_fashioned = getValue("settings_my_lists_old_fashioned", false);
     c.settings_remove_banner = getValue("settings_remove_banner", false);
     c.settings_remove_banner_to_mylists_new = getValue("settings_remove_banner_to_mylists_new", true);
     c.settings_remove_banner_to_mylists_old = getValue("settings_remove_banner_to_mylists_old", false);
@@ -4398,7 +4399,6 @@ var mainGC = function () {
         try {
             var ref_link = document.getElementById("ctl00_ContentBody_uxViewLargerMap");
             var box = ref_link.parentNode;
-
             box.appendChild(document.createElement("br"));
 
             var link = document.createElement("a");
@@ -4413,7 +4413,6 @@ var mainGC = function () {
             var img = document.createElement("img");
             img.setAttribute("src", "/images/silk/map_go.png");
             link.appendChild(img);
-
             link.appendChild(document.createTextNode(" "));
 
             var span = document.createElement("span");
@@ -6418,7 +6417,7 @@ var mainGC = function () {
         }
     }
 
-// Improve "My Profile".
+// Improve my Profile, improve Profile.
     if (document.location.href.match(/^https?:\/\/www\.geocaching\.com\/my/)) {
         try {
             var code = "function hide_box(i){";
@@ -6472,8 +6471,13 @@ var mainGC = function () {
                 }
                 i++;
             }
+
+            // Change link "Lists" on "my" pages from new page ".../account/lists" to old-fashioned page ".../my/lists.aspx".
+            if (settings_my_lists_old_fashioned) {
+                $('#divContentMain').find('p').first().find('a[href*="/account/lists"]').prop("href", "/my/lists.aspx");
+            }
         } catch (e) {
-            gclh_error("Improve MyProfile", e);
+            gclh_error("Improve my Profile", e);
         }
     }
 
@@ -8140,10 +8144,11 @@ var mainGC = function () {
                                         var text = "Version " + new_version + " of script \""+ scriptName + "\" is available.\n" +
                                                    "You are currently using " + currVersion + ".\n\n" +
                                                    "Click OK to upgrade.\n\n" +
-                                                   "(After upgrade, please refresh your page.)\n";
+                                                   "(After upgrade, please refresh your page.)\n" +
+                                                   "(A changelog link can be found in Config menu.)\n";
                                         if (window.confirm(text)) {
                                             btnClose();
-                                            window.open(url, '_blank');
+                                            document.location.href = url;
                                         } else {
                                             time += 7 * 60 * 60 * 1000; // 1+7 Stunden warten, bis zum nächsten Check.
                                             setValue('update_next_check', time.toString());
@@ -9643,6 +9648,9 @@ var mainGC = function () {
             html += checkboxy('settings_show_sums_in_watchlist', 'Show number of caches in your watchlist') + show_help("With this option the number of caches and the number of selected caches in the categories \"All\", \"Archived\" and \"Deactivated\", corresponding to the select buttons, are shown in your watchlist at the end of the list.") + "<br/>";
             html += checkboxy('settings_logit_for_basic_in_pmo', 'Log PMO caches by standard \"Log It\" icon (for basic members)') + show_help("With this option basic members are able to choose the standard \"Log It\" icon to call the logging screen for premium only caches. The tool tipp blocked not longer this call. You can have the same result by using the right mouse across the \"Log It\" icon and then new tab. <br>The \"Log It\" icon is besides the caches for example in the \"Recently Viewed Caches\" list and in your profile.") + "<br/>";
             html += checkboxy('settings_hide_archived_in_owned', 'Hide archived caches in owned list') + "<br/>";
+            html += newParameterOn2;
+            html += checkboxy('settings_my_lists_old_fashioned', 'Change link \"Lists\" to old-fashioned lists page') + show_help("This option changes the link \"Lists\" on \"my\" pages from the new lists page \".../account/lists\" (looks like a phone app) to the old-fashioned lists page \".../my/lists\".") + "<br/>";
+            html += newParameterVersionSetzen(0.8) + newParameterOff;
 
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>Friends</b></div>";
             html += checkboxy('settings_automatic_friend_reset', 'Reset difference counter on friendlist automatically') + show_help("If you enable this option, the difference counter at friendlist will automatically reset if you have seen the difference and if the day changed.") + "<br/>";
@@ -10744,6 +10752,7 @@ var mainGC = function () {
                 'settings_show_elevation_of_waypoints',
                 'settings_img_warning',
                 'settings_fieldnotes_old_fashioned',
+                'settings_my_lists_old_fashioned',
                 'settings_remove_banner',
                 'settings_remove_banner_to_mylists_new',
                 'settings_remove_banner_to_mylists_old',
