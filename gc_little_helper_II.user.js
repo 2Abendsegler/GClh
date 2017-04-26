@@ -9,7 +9,7 @@
 // @include          http*://maps.google.tld/*
 // @include          http*://www.google.tld/maps*
 // @include          http*://www.openstreetmap.org*
-// @exclude          /^https?://www\.geocaching\.com/(login|jobs|brandedpromotions|promotions|blog|seek/sendtogps)/
+// @exclude          /^https?://www\.geocaching\.com/(login|jobs|careers|brandedpromotions|promotions|blog|seek/sendtogps)/
 // @resource jscolor https://raw.githubusercontent.com/2Abendsegler/GClh/master/data/jscolor.js
 // @require          http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js
 // @require          http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js
@@ -6582,8 +6582,8 @@ var mainGC = function () {
                 "  position: relative;" +
                 "}" +
                 "a.gclh_thumb {" +
-				"overflow: visible !important; max-width: none !important;}" +
-				"a.gclh_thumb span {" +
+                "overflow: visible !important; max-width: none !important;}" +
+                "a.gclh_thumb span {" +
                 "  visibility: hidden;" +
                 "  position: absolute;" +
                 "  top:-310px;" +
@@ -6611,12 +6611,12 @@ var mainGC = function () {
 
             if (is_page("cache_listing") && settings_load_logs_with_gclh ) {
                 var newImageTmpl = "<!-- .gclh_vip -->" +
-                    "          <a class='tb_images lnk gclh_thumb' onmouseover='placeToolTip(this);' rel='fb_images_${LogID}' href='" + http + "://img.geocaching.com/cache/log/${FileName}' title='${Descr}'>" +
+                    "          <a class='tb_images lnk gclh_thumb' onmouseover='placeToolTip(this);' rel='fb_images_${LogID}' href='" + http + "://img.geocaching.com/cache/log/${FileName}' title='<span class=&quot;LogImgTitle&quot;>${Name} &nbsp;</span><span class=&quot;LogImgLink&quot;> <a target=&quot;_blank&quot; href=&quot;/seek/log.aspx?LID=${LogID}&amp;IID=${ImageGuid}&quot;>View Log</a></span><br><span class=&quot;LogImgDescription&quot;>${Descr}</span>'>" +
                     "              <img title='${Name}' alt='${Name}' src='" + http + "://img.geocaching.com/cache/log/thumb/${FileName}'/>";
                 if (settings_imgcaption_on_top) {
-                    newImageTmpl += "<span>${Name}<img class='gclh_max' src='" + http + "://img.geocaching.com/cache/log/thumb/large/${FileName}'></span>";
+                    newImageTmpl += "<span title='${Name}'>${Name}<img title='${Descr}' class='gclh_max' src='" + http + "://img.geocaching.com/cache/log/thumb/large/${FileName}'></span>";
                 } else {
-                    newImageTmpl += "<span><img class='gclh_max' src='" + http + "://img.geocaching.com/cache/log/thumb/large/${FileName}'>${Name}</span>";
+                    newImageTmpl += "<span title='${Name}'><img title='${Descr}' class='gclh_max' src='" + http + "://img.geocaching.com/cache/log/thumb/large/${FileName}'>${Name}</span>";
                 }
                 newImageTmpl += "</a>&nbsp;&nbsp;" +
                 "";
@@ -6626,7 +6626,6 @@ var mainGC = function () {
                     "  $.template(\"tmplCacheLogImages\",\"" + newImageTmpl + "\");" +
                     "}" +
                     "gclh_updateTmpl();";
-
                 code += placeToolTip.toString();
 
                 var script = document.createElement("script");
