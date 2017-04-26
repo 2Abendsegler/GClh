@@ -31,6 +31,12 @@ The parameter has to be activated in Config after installation.<br>
 <br>
 </li>
 <li>
+New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/326">#326</a>] File caption missing under maximized image in cache listing:<br>
+Now there are showing not only the image description under the maximized image, but the file caption and the "View Log" button too.<br>
+<img src="../images/v0.8_Screen28.jpg" alt="v0.8_Screen28.jpg"><br>
+<br>
+</li>
+<li>
 New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/311">#311</a>] Hide banner linking "Garmin Express" or new or old "My Lists" page:<br>
 <br>
 Banner:<br>
