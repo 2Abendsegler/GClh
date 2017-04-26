@@ -36,12 +36,10 @@ Now there are showing not only the image description under the maximized image, 
 </li>
 <li>
 New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/311">#311</a>] Hide banner linking "Garmin Express" or new or old "My Lists" page:<br>
-<br>
 Banner:<br>
 <img src="../images/v0.8_Screen20.jpg" alt="v0.8_Screen20.jpg"><br>
 <img src="../images/v0.8_Screen21.jpg" alt="v0.8_Screen21.jpg"><br>
 <img src="../images/v0.8_Screen22.jpg" alt="v0.8_Screen22.jpg"><br>
-<br>
 Settings -> Global:<br>
 <img src="../images/v0.8_Screen23.jpg" alt="v0.8_Screen23.jpg"><br>
 <br>
