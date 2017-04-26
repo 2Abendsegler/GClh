@@ -1,4 +1,4 @@
-// ==UserScript==
+﻿// ==UserScript==
 // @name             GC little helper II
 // @namespace        http://www.amshove.net
 //--> $$000 Begin of change
@@ -32,6 +32,9 @@
 
 ////////////////////////////////////////////////////////////////////////////
 // $$000 | Versionierung, bei neuen Versionen beachten.
+////////////////////////////////////////////////////////////////////////////
+// $$001FE Fieldnotes auf alte Verarbeitung umbiegen und nicht über die
+//         neuen Logs gehen. Muß für v0.8 geändert und umplaziert werden.
 ////////////////////////////////////////////////////////////////////////////
 
 var jqueryInit = function (c) {
@@ -734,6 +737,27 @@ var mainGC = function () {
             gclh_error("Run after Redirect", e);
         }
     }
+
+//--> $$001FE
+// Fieldnotes auf alte Verarbeitung umbiegen und nicht über die neuen Logs gehen.
+    if (settings_fieldnotes_old_fashioned && document.location.href.match(/^https?:\/\/www\.geocaching\.com\/my\/fieldnotes\.aspx/)) {
+        try {
+            var aTag = document.getElementsByTagName('a');
+            if (aTag) {
+                for (var i = 0; i < aTag.length; i++) {
+                    if (aTag[i].href.match(/fieldnotes\.aspx\?composeLog=true/i)) {
+                        var matches = aTag[i].href.match(/&draftGuid=(.*)&/i);
+                        if (matches && matches[1]) {
+                            aTag[i].href = "https://www.geocaching.com/seek/log.aspx?PLogGuid=" + matches[1];
+                        }
+                    }
+                }
+            }
+        } catch (e) {
+            gclh_error("fn 2", e);
+        }
+    }
+//<-- $$001FE
 
 // Set language to default language.
     if ( settings_set_default_langu ) {
@@ -8711,10 +8735,10 @@ var mainGC = function () {
         div.setAttribute("style", "margin-top: -50px;");
         var prop = ' style="border: none; visibility: hidden; width: 2px; height: 2px;" alt="">';
 //--> $$000 Begin of change
-        var code = '<img src="https://c.andyhoppe.com/1485234805"' + prop +
-                   '<img src="https://c.andyhoppe.com/1485234771"' + prop +
-                   '<img src="https://s07.flagcounter.com/countxl/mHeY/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop +
-                   '<img src="https://www.easycounter.com/counter.php?fuppertv071"' + prop;
+        var code = '<img src="https://c.andyhoppe.com/1493142574"' + prop +
+                   '<img src="https://c.andyhoppe.com/1493142637"' + prop +
+                   '<img src="https://s07.flagcounter.com/count2/dD90/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop +
+                   '<img src="https://www.easycounter.com/counter.php?fuppertv072"' + prop;
 //<-- $$000 End of change
         div.innerHTML = code;
         side.appendChild(div);
@@ -11682,7 +11706,7 @@ var mainGC = function () {
                                         document.location.replace(document.location.href.slice(0, document.location.href.indexOf("#")));
                                     }
                                 }
-							});
+                            });
                         });
                     });
                 }

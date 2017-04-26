@@ -199,4 +199,5 @@
   "settings_remove_banner_for_garminexpress": true,
   "settings_compact_layout_bm_lists": false,
   "settings_compact_layout_list_of_bm_lists": false
+  "settings_fieldnotes_old_fashioned": false
 }
