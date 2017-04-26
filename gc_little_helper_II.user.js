@@ -412,9 +412,13 @@ var variablesInit = function (c) {
     c.settings_show_elevation_of_waypoints = getValue("settings_show_elevation_of_waypoints", true);
     c.settings_distance_units = getValue("settings_distance_units", "");
     c.settings_img_warning = getValue("settings_img_warning", false);
-//--> $$001FE
     c.settings_fieldnotes_old_fashioned = getValue("settings_fieldnotes_old_fashioned", false);
-//<-- $$001FE
+    c.settings_remove_banner = getValue("settings_remove_banner", false);
+    c.settings_remove_banner_to_mylists_new = getValue("settings_remove_banner_to_mylists_new", true);
+    c.settings_remove_banner_to_mylists_old = getValue("settings_remove_banner_to_mylists_old", false);
+    c.settings_remove_banner_for_garminexpress = getValue("settings_remove_banner_for_garminexpress", true);
+    c.settings_compact_layout_bm_lists = getValue("settings_compact_layout_bm_lists", false);
+    c.settings_compact_layout_list_of_bm_lists = getValue("settings_compact_layout_list_of_bm_lists", false);
 
     // Settings: Custom Bookmarks
     var num = c.bookmarks.length;
@@ -3439,7 +3443,7 @@ var mainGC = function () {
         }
     }
 
-// Improve EMail-Site
+// Improve Mail-Site.
     if (settings_show_mail && document.location.href.match(/^https?:\/\/www\.geocaching\.com\/email\//) && document.getElementById("ctl00_ContentBody_SendMessagePanel1_tbMessage")) {
         try {
             // Prevent deleting content
@@ -4090,7 +4094,26 @@ var mainGC = function () {
         return waypoint;
     }
 
-// Default Log Type && Log Signature
+// Fieldnotes auf alte Verarbeitung umbiegen und nicht über die neue Log Seite gehen.
+    if (settings_fieldnotes_old_fashioned && document.location.href.match(/^https?:\/\/www\.geocaching\.com\/my\/fieldnotes\.aspx/)) {
+        try {
+            var aTag = document.getElementsByTagName('a');
+            if (aTag) {
+                for (var i = 0; i < aTag.length; i++) {
+                    if (aTag[i].href.match(/fieldnotes\.aspx\?composeLog=true/i)) {
+                        var matches = aTag[i].href.match(/&draftGuid=(.*)&/i);
+                        if (matches && matches[1]) {
+                            aTag[i].href = "https://www.geocaching.com/seek/log.aspx?PLogGuid=" + matches[1];
+                        }
+                    }
+                }
+            }
+        } catch (e) {
+            gclh_error("Fieldnotes auf alte Verarbeitung umbiegen", e);
+        }
+    }
+
+// Default Log Type && Log Signature.
     if (document.location.href.match(/^https?:\/\/www\.geocaching\.com\/seek\/log\.aspx\?(id|guid|ID|PLogGuid|wp)\=/) && document.getElementById('ctl00_ContentBody_LogBookPanel1_ddLogType') && $('#ctl00_ContentBody_LogBookPanel1_lbConfirm').length == 0) {
         try {
             if (!document.location.href.match(/\&LogType\=/) && !document.location.href.match(/PLogGuid/)) {
@@ -9840,11 +9863,9 @@ var mainGC = function () {
             html += checkboxy('settings_replace_log_by_last_log', 'Replace log by last log template') + show_help("If you enable this option, the last log template will replace the whole log. If you disable it, it will be appended to the log.") + "<br/>";
             html += checkboxy('settings_show_log_itX0', 'Show GClh \"Log it\" icon (too for basic members for PMO)') + show_help("The GClh \"Log it\" icon is displayed beside cache titles in nearest lists. If you click it, you will be redirected directly to the log form. <br><br>You can use it too as basic member to log Premium Member Only (PMO) caches.") + "<br/>";
             html += checkboxy('settings_logit_for_basic_in_pmoX0', 'Log PMO caches by standard \"Log It\" icon (for basic members)') + show_help("With this option basic members are able to choose the standard \"Log It\" icon to call the logging screen for premium only caches. The tool tipp blocked not longer this call. You can have the same result by using the right mouse across the \"Log It\" icon and then new tab. <br>The \"Log It\" icon is besides the caches for example in the \"Recently Viewed Caches\" list and in your profile.") + "<br/>";
-//--> $$001FE
             html += newParameterOn1;
-            html += checkboxy('settings_fieldnotes_old_fashioned', 'Logging fieldnotes old-fashioned') + show_help("This option deactivates the logging of fieldnotes by the new log page (looks like a phone app) and activates logging of fieldnotes by the old-fasioned log page.") + "<br/>";
+            html += checkboxy('settings_fieldnotes_old_fashioned', 'Logging fieldnotes old-fashioned') + show_help("This option deactivates the logging of fieldnotes by the new log page (looks like a phone app) and activates logging of fieldnotes by the old-fashioned log page.") + "<br/>";
             html += newParameterVersionSetzen(0.7) + newParameterOff;
-//<-- $$001FE
             var placeholderDescription = "Possible placeholder:<br>&nbsp; #Found# : Your founds + 1<br>&nbsp; #Found_no# : Your founds<br>&nbsp; #Me# : Your username<br>&nbsp; #Owner# : Username of the owner<br>&nbsp; #Date# : Actual date<br>&nbsp; #Time# : Actual time in format hh:mm<br>&nbsp; #DateTime# : Actual date actual time<br>&nbsp; #GCTBName# : GC or TB name<br>&nbsp; #GCTBLink# : GC or TB link<br>&nbsp; #GCTBNameLink# : GC or TB name as a link<br>&nbsp; #LogDate# : Content of field \"Date Logged\"<br>(Upper and lower case is not required in the placeholder name.)";
             html += "&nbsp;" + "Log templates:" + show_help("Log templates are pre-defined texts like \"!!! I got the FTF !!!\". All your templates are shown beside the log form. You just have to click to a template and it will be placed in your log. <br><br>Also you are able to use placeholder for variables which will be replaced in the log. The smilies option has to be enabled. <br><br>Note: You have to set a title and a text - click to the edit icon beside the template to edit the text.") + " &nbsp; (Possible placeholder:" + show_help_big(placeholderDescription) + ")<br>";
             html += "<font class='gclh_small' style='font-style: italic; margin-left: 240px; margin-top: 25px; width: 320px; position: absolute; z-index: -1;' >Bitte beachte, dass Logtemplates nützlich sind, um automatisiert die Fundzahl, das Funddatum und ähnliches im Log einzutragen, dass aber Cache Owner Menschen sind, die sich über individuelle Logs zu ihrem Cache freuen. Beim Geocachen geht es nicht nur darum, die eigene Statistik zu puschen, sondern auch darum, etwas zu erleben. Bitte nimm dir doch etwas Zeit, den Ownern etwas wiederzugeben, indem du ihnen von Deinen Erlebnissen berichtest und ihnen gute Logs schreibst. Dann wird es auch in Zukunft Cacher geben, die sich gerne die Mühe machen, neue Caches auszulegen. Die Logtemplates sind also nützlich, können aber niemals ein vollständiges Log ersetzen.</font>";
@@ -10820,10 +10841,14 @@ var mainGC = function () {
                 'settings_driving_direction_link',
                 'settings_driving_direction_parking_area',
                 'settings_show_elevation_of_waypoints',
-//--> $$001FE
+                'settings_img_warning',
                 'settings_fieldnotes_old_fashioned',
-//<-- $$001FE
-                'settings_img_warning'
+                'settings_remove_banner',
+                'settings_remove_banner_to_mylists_new',
+                'settings_remove_banner_to_mylists_old',
+                'settings_remove_banner_for_garminexpress',
+                'settings_compact_layout_bm_lists',
+                'settings_compact_layout_list_of_bm_lists'
             );
             for (var i = 0; i < checkboxes.length; i++) {
                 if ( document.getElementById(checkboxes[i]) ) {
@@ -11907,7 +11932,7 @@ function is_link(name, url) {
             if (url.match(/^https?:\/\/www\.geocaching\.com\/map/)) status = true;
             break;
         case "find_cache":
-            if (url.match(/^https?:\/\/www\.geocaching\.com\/play\/search/)) status = true;
+            if (url.match(/^https?:\/\/www\.geocaching\.com\/play\/(search|geocache)/)) status = true;
             break;
         case "hide_cache":
             if (url.match(/^https?:\/\/www\.geocaching\.com\/play\/hide/)) status = true;
