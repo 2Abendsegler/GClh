@@ -23,7 +23,6 @@
 <li>
 New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/339">#339</a>] Change link "Lists" on "my" pages from new page <code>.../account/lists</code> to old-fashioned page <code>.../my/lists.aspx</code>:<br>
 <img src="../images/v0.8_Screen26.jpg" alt="v0.8_Screen26.jpg"><br>
-<br>
 Settings -> Profile:<br>
 <img src="../images/v0.8_Screen27.jpg" alt="v0.8_Screen27.jpg"><br>
 The parameter has to be activated in Config after installation.<br>
