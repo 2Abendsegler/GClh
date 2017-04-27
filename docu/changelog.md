@@ -44,6 +44,10 @@ Settings -> Global:<br>
 <img src="../images/v0.8_Screen23.jpg" alt="v0.8_Screen23.jpg"><br>
 <br>
 </li>
+<li>
+New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/312">#312</a>] Display images in user, cache and TB image galleries with maximum possible size.<br>
+<br>
+</li>
 </ul>
 (??.05.2017)<br> 
 <br>
