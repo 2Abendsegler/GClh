@@ -21,15 +21,31 @@
 ## v0.8:
 <ul>
 <li>
-New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/311">#311</a>] Hide banner linking "Garmin Express" or new or old "My Lists" page:<br>
+New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/339">#339</a>] Change link "Lists" on "my" pages from new page <code>.../account/lists</code> to old-fashioned page <code>.../my/lists.aspx</code>:<br>
+<img src="../images/v0.8_Screen26.jpg" alt="v0.8_Screen26.jpg"><br>
+Settings -> Profile:<br>
+<img src="../images/v0.8_Screen27.jpg" alt="v0.8_Screen27.jpg"><br>
+The parameter has to be activated in Config after installation.<br>
 <br>
-Banner:<br>
+</li>
+<li>
+New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/326">#326</a>] File caption missing under maximized image in cache listing:<br>
+Now there are showing not only the image description under the maximized image, but the file caption and the "View Log" button too.<br>
+<img src="../images/v0.8_Screen28.jpg" alt="v0.8_Screen28.jpg"><br>
+<br>
+</li>
+<li>
+New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/311">#311</a>] Hide banner linking "Garmin Express" or new or old "My Lists" page:<br>
+Pages with banner:<br>
 <img src="../images/v0.8_Screen20.jpg" alt="v0.8_Screen20.jpg"><br>
 <img src="../images/v0.8_Screen21.jpg" alt="v0.8_Screen21.jpg"><br>
 <img src="../images/v0.8_Screen22.jpg" alt="v0.8_Screen22.jpg"><br>
-<br>
 Settings -> Global:<br>
 <img src="../images/v0.8_Screen23.jpg" alt="v0.8_Screen23.jpg"><br>
+<br>
+</li>
+<li>
+New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/312">#312</a>] Display images in user, cache and TB image galleries with maximum possible size.<br>
 <br>
 </li>
 </ul>

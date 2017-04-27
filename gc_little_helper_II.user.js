@@ -9,7 +9,7 @@
 // @include          http*://maps.google.tld/*
 // @include          http*://www.google.tld/maps*
 // @include          http*://www.openstreetmap.org*
-// @exclude          /^https?://www\.geocaching\.com/(login|jobs|brandedpromotions|promotions|blog|seek/sendtogps)/
+// @exclude          /^https?://www\.geocaching\.com/(login|jobs|careers|brandedpromotions|promotions|blog|seek/sendtogps)/
 // @resource jscolor https://raw.githubusercontent.com/2Abendsegler/GClh/master/data/jscolor.js
 // @require          http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js
 // @require          http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js
@@ -408,6 +408,7 @@ var variablesInit = function (c) {
     c.settings_distance_units = getValue("settings_distance_units", "");
     c.settings_img_warning = getValue("settings_img_warning", false);
     c.settings_fieldnotes_old_fashioned = getValue("settings_fieldnotes_old_fashioned", false);
+    c.settings_my_lists_old_fashioned = getValue("settings_my_lists_old_fashioned", false);
     c.settings_remove_banner = getValue("settings_remove_banner", false);
     c.settings_remove_banner_to_mylists_new = getValue("settings_remove_banner_to_mylists_new", true);
     c.settings_remove_banner_to_mylists_old = getValue("settings_remove_banner_to_mylists_old", false);
@@ -4398,7 +4399,6 @@ var mainGC = function () {
         try {
             var ref_link = document.getElementById("ctl00_ContentBody_uxViewLargerMap");
             var box = ref_link.parentNode;
-
             box.appendChild(document.createElement("br"));
 
             var link = document.createElement("a");
@@ -4413,7 +4413,6 @@ var mainGC = function () {
             var img = document.createElement("img");
             img.setAttribute("src", "/images/silk/map_go.png");
             link.appendChild(img);
-
             link.appendChild(document.createTextNode(" "));
 
             var span = document.createElement("span");
@@ -6418,7 +6417,7 @@ var mainGC = function () {
         }
     }
 
-// Improve "My Profile".
+// Improve my Profile, improve Profile.
     if (document.location.href.match(/^https?:\/\/www\.geocaching\.com\/my/)) {
         try {
             var code = "function hide_box(i){";
@@ -6472,8 +6471,13 @@ var mainGC = function () {
                 }
                 i++;
             }
+
+            // Change link "Lists" on "my" pages from new page ".../account/lists" to old-fashioned page ".../my/lists.aspx".
+            if (settings_my_lists_old_fashioned) {
+                $('#divContentMain').find('p').first().find('a[href*="/account/lists"]').prop("href", "/my/lists.aspx");
+            }
         } catch (e) {
-            gclh_error("Improve MyProfile", e);
+            gclh_error("Improve my Profile", e);
         }
     }
 
@@ -6559,7 +6563,7 @@ var mainGC = function () {
                 }
             }
 
-            // Um Profile Foto herum Pseudo a Tag aufbauen.
+            // Um Profile Foto herum pseudo a Tag aufbauen.
             var profileFoto = false;
             if ( is_page("publicProfile") && document.getElementById("ctl00_ContentBody_ProfilePanel1_lnkProfile") &&
                  document.getElementById("ctl00_ContentBody_ProfilePanel1_lnkProfile").className == "Active" &&
@@ -6578,8 +6582,8 @@ var mainGC = function () {
                 "  position: relative;" +
                 "}" +
                 "a.gclh_thumb {" +
-				"overflow: visible !important; max-width: none !important;}" +
-				"a.gclh_thumb span {" +
+                "overflow: visible !important; max-width: none !important;}" +
+                "a.gclh_thumb span {" +
                 "  visibility: hidden;" +
                 "  position: absolute;" +
                 "  top:-310px;" +
@@ -6602,17 +6606,17 @@ var mainGC = function () {
                 "  max-height: " + settings_hover_image_max_size + "px;" +
                 "  max-width:  " + settings_hover_image_max_size + "px;" +
                 "}";
-
             GM_addStyle(css);
 
+            // Cache Listing: Logs, nicht die Beschreibung im Listing.
             if (is_page("cache_listing") && settings_load_logs_with_gclh ) {
-                var newImageTmpl = "<!-- .gclh_vip -->" +
-                    "          <a class='tb_images lnk gclh_thumb' onmouseover='placeToolTip(this);' rel='fb_images_${LogID}' href='" + http + "://img.geocaching.com/cache/log/${FileName}' title='${Descr}'>" +
+                var newImageTmpl =
+                    "          <a class='tb_images lnk gclh_thumb' onmouseover='placeToolTip(this);' rel='fb_images_${LogID}' href='" + http + "://img.geocaching.com/cache/log/${FileName}' title='<span class=&quot;LogImgTitle&quot;>${Name} &nbsp;</span><span class=&quot;LogImgLink&quot;> <a target=&quot;_blank&quot; href=&quot;/seek/log.aspx?LID=${LogID}&amp;IID=${ImageGuid}&quot;>View Log</a></span><br><span class=&quot;LogImgDescription&quot;>${Descr}</span>'>" +
                     "              <img title='${Name}' alt='${Name}' src='" + http + "://img.geocaching.com/cache/log/thumb/${FileName}'/>";
                 if (settings_imgcaption_on_top) {
-                    newImageTmpl += "<span>${Name}<img class='gclh_max' src='" + http + "://img.geocaching.com/cache/log/thumb/large/${FileName}'></span>";
+                    newImageTmpl += "<span title='${Name}'>${Name}<img title='${Descr}' class='gclh_max' src='" + http + "://img.geocaching.com/cache/log/thumb/large/${FileName}'></span>";
                 } else {
-                    newImageTmpl += "<span><img class='gclh_max' src='" + http + "://img.geocaching.com/cache/log/thumb/large/${FileName}'>${Name}</span>";
+                    newImageTmpl += "<span title='${Name}'><img title='${Descr}' class='gclh_max' src='" + http + "://img.geocaching.com/cache/log/thumb/large/${FileName}'>${Name}</span>";
                 }
                 newImageTmpl += "</a>&nbsp;&nbsp;" +
                 "";
@@ -6622,7 +6626,6 @@ var mainGC = function () {
                     "  $.template(\"tmplCacheLogImages\",\"" + newImageTmpl + "\");" +
                     "}" +
                     "gclh_updateTmpl();";
-
                 code += placeToolTip.toString();
 
                 var script = document.createElement("script");
@@ -6633,6 +6636,7 @@ var mainGC = function () {
             var regexp = new RegExp(settings_spoiler_strings, "i");
 
             for (var i = 0; i < links.length; i++) {
+                // Cache Listing: Listing Beschreibung, nicht die Logs. (replace coding mit /log/ kann eigentlich dann nicht greifen.)
                 if ( is_page("cache_listing") && links[i].href.match(/^https?:\/\/img\.geocaching\.com\/cache/) ) {
                     var span = document.createElement("span");
                     var thumb = document.createElement("img");
@@ -6675,7 +6679,7 @@ var mainGC = function () {
                     var thumb = links[i].childNodes[1];
                     var span = document.createElement('span');
                     var img = document.createElement('img');
-                    img.src = thumb.src.replace(/thumb\//, "");
+                    img.src = thumb.src.replace(/thumb\//, "/thumb/large/");
                     img.className = "gclh_max";
                     if (settings_imgcaption_on_top) {
                         // Bezeichnung des Bildes.
@@ -6688,6 +6692,7 @@ var mainGC = function () {
                     }
                     links[i].className = links[i].className + " gclh_thumb";
                     links[i].onmouseover = placeToolTip;
+                    links[i].href = links[i].href.replace(/large\//, "");
                     links[i].appendChild(span);
 
                     if ( document.location.href.match(/^https?:\/\/www\.geocaching\.com\/seek\/gallery\.aspx?/) ) {
@@ -6818,7 +6823,7 @@ var mainGC = function () {
         }
     }
 
-// Log-Template definieren.
+// Log-Template (Logtemplate) definieren.
     if ( is_page("cache_listing") ) {
         try {
             global_MailTemplate = urlencode( buildSendTemplate().replace(/#Receiver#/ig, "__Receiver__") );
@@ -6964,7 +6969,7 @@ var mainGC = function () {
         $("#topScroll").attr("id", "_topScroll").hide();
     }
 
-// Overwrite Log-Template and Log-Load-Function.
+// Overwrite Log-Template (Logtemplate) and Log-Load-Function.
     if (settings_load_logs_with_gclh && is_page("cache_listing") && !document.getElementById("ctl00_divNotSignedIn") && document.getElementById('tmpl_CacheLogRow')) {
         try {
             // To Top Link.
@@ -8140,10 +8145,11 @@ var mainGC = function () {
                                         var text = "Version " + new_version + " of script \""+ scriptName + "\" is available.\n" +
                                                    "You are currently using " + currVersion + ".\n\n" +
                                                    "Click OK to upgrade.\n\n" +
-                                                   "(After upgrade, please refresh your page.)\n";
+                                                   "(After upgrade, please refresh your page.)\n" +
+                                                   "(A changelog link can be found in Config menu.)\n";
                                         if (window.confirm(text)) {
                                             btnClose();
-                                            window.open(url, '_blank');
+                                            document.location.href = url;
                                         } else {
                                             time += 7 * 60 * 60 * 1000; // 1+7 Stunden warten, bis zum nächsten Check.
                                             setValue('update_next_check', time.toString());
@@ -9643,6 +9649,9 @@ var mainGC = function () {
             html += checkboxy('settings_show_sums_in_watchlist', 'Show number of caches in your watchlist') + show_help("With this option the number of caches and the number of selected caches in the categories \"All\", \"Archived\" and \"Deactivated\", corresponding to the select buttons, are shown in your watchlist at the end of the list.") + "<br/>";
             html += checkboxy('settings_logit_for_basic_in_pmo', 'Log PMO caches by standard \"Log It\" icon (for basic members)') + show_help("With this option basic members are able to choose the standard \"Log It\" icon to call the logging screen for premium only caches. The tool tipp blocked not longer this call. You can have the same result by using the right mouse across the \"Log It\" icon and then new tab. <br>The \"Log It\" icon is besides the caches for example in the \"Recently Viewed Caches\" list and in your profile.") + "<br/>";
             html += checkboxy('settings_hide_archived_in_owned', 'Hide archived caches in owned list') + "<br/>";
+            html += newParameterOn2;
+            html += checkboxy('settings_my_lists_old_fashioned', 'Change link \"Lists\" to old-fashioned lists page') + show_help("This option changes the link \"Lists\" on \"my\" pages from the new lists page \".../account/lists\" (looks like a phone app) to the old-fashioned lists page \".../my/lists\".") + "<br/>";
+            html += newParameterVersionSetzen(0.8) + newParameterOff;
 
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>Friends</b></div>";
             html += checkboxy('settings_automatic_friend_reset', 'Reset difference counter on friendlist automatically') + show_help("If you enable this option, the difference counter at friendlist will automatically reset if you have seen the difference and if the day changed.") + "<br/>";
@@ -10744,6 +10753,7 @@ var mainGC = function () {
                 'settings_show_elevation_of_waypoints',
                 'settings_img_warning',
                 'settings_fieldnotes_old_fashioned',
+                'settings_my_lists_old_fashioned',
                 'settings_remove_banner',
                 'settings_remove_banner_to_mylists_new',
                 'settings_remove_banner_to_mylists_old',

@@ -193,6 +193,7 @@
   "settings_show_elevation_of_waypoints": true,
   "settings_img_warning": false,
   "settings_fieldnotes_old_fashioned": false,
+  "settings_my_lists_old_fashioned": false,
   "settings_remove_banner": false,
   "settings_remove_banner_to_mylists_new": true,
   "settings_remove_banner_to_mylists_old": false,
