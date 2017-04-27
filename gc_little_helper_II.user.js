@@ -6563,7 +6563,7 @@ var mainGC = function () {
                 }
             }
 
-            // Um Profile Foto herum Pseudo a Tag aufbauen.
+            // Um Profile Foto herum pseudo a Tag aufbauen.
             var profileFoto = false;
             if ( is_page("publicProfile") && document.getElementById("ctl00_ContentBody_ProfilePanel1_lnkProfile") &&
                  document.getElementById("ctl00_ContentBody_ProfilePanel1_lnkProfile").className == "Active" &&
@@ -6606,11 +6606,11 @@ var mainGC = function () {
                 "  max-height: " + settings_hover_image_max_size + "px;" +
                 "  max-width:  " + settings_hover_image_max_size + "px;" +
                 "}";
-
             GM_addStyle(css);
 
+            // Cache Listing: Logs, nicht die Beschreibung im Listing.
             if (is_page("cache_listing") && settings_load_logs_with_gclh ) {
-                var newImageTmpl = "<!-- .gclh_vip -->" +
+                var newImageTmpl =
                     "          <a class='tb_images lnk gclh_thumb' onmouseover='placeToolTip(this);' rel='fb_images_${LogID}' href='" + http + "://img.geocaching.com/cache/log/${FileName}' title='<span class=&quot;LogImgTitle&quot;>${Name} &nbsp;</span><span class=&quot;LogImgLink&quot;> <a target=&quot;_blank&quot; href=&quot;/seek/log.aspx?LID=${LogID}&amp;IID=${ImageGuid}&quot;>View Log</a></span><br><span class=&quot;LogImgDescription&quot;>${Descr}</span>'>" +
                     "              <img title='${Name}' alt='${Name}' src='" + http + "://img.geocaching.com/cache/log/thumb/${FileName}'/>";
                 if (settings_imgcaption_on_top) {
@@ -6636,6 +6636,7 @@ var mainGC = function () {
             var regexp = new RegExp(settings_spoiler_strings, "i");
 
             for (var i = 0; i < links.length; i++) {
+                // Cache Listing: Listing Beschreibung, nicht die Logs. (replace coding mit /log/ kann eigentlich dann nicht greifen.)
                 if ( is_page("cache_listing") && links[i].href.match(/^https?:\/\/img\.geocaching\.com\/cache/) ) {
                     var span = document.createElement("span");
                     var thumb = document.createElement("img");
@@ -6678,7 +6679,7 @@ var mainGC = function () {
                     var thumb = links[i].childNodes[1];
                     var span = document.createElement('span');
                     var img = document.createElement('img');
-                    img.src = thumb.src.replace(/thumb\//, "");
+                    img.src = thumb.src.replace(/thumb\//, "/thumb/large/");
                     img.className = "gclh_max";
                     if (settings_imgcaption_on_top) {
                         // Bezeichnung des Bildes.
@@ -6691,6 +6692,7 @@ var mainGC = function () {
                     }
                     links[i].className = links[i].className + " gclh_thumb";
                     links[i].onmouseover = placeToolTip;
+                    links[i].href = links[i].href.replace(/large\//, "");
                     links[i].appendChild(span);
 
                     if ( document.location.href.match(/^https?:\/\/www\.geocaching\.com\/seek\/gallery\.aspx?/) ) {
@@ -6821,7 +6823,7 @@ var mainGC = function () {
         }
     }
 
-// Log-Template definieren.
+// Log-Template (Logtemplate) definieren.
     if ( is_page("cache_listing") ) {
         try {
             global_MailTemplate = urlencode( buildSendTemplate().replace(/#Receiver#/ig, "__Receiver__") );
@@ -6967,7 +6969,7 @@ var mainGC = function () {
         $("#topScroll").attr("id", "_topScroll").hide();
     }
 
-// Overwrite Log-Template and Log-Load-Function.
+// Overwrite Log-Template (Logtemplate) and Log-Load-Function.
     if (settings_load_logs_with_gclh && is_page("cache_listing") && !document.getElementById("ctl00_divNotSignedIn") && document.getElementById('tmpl_CacheLogRow')) {
         try {
             // To Top Link.
