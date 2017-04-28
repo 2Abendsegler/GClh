@@ -35,6 +35,7 @@ New: &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp
 <img src="../images/v0.8_Screen30.jpg" alt="v0.8_Screen30.jpg"><br>
 Settings -> Listing:<br>
 <img src="../images/v0.8_Screen31.jpg" alt="v0.8_Screen31.jpg"><br>
+With this option you can choose the height of the "Add to list" popup to bookmark a cache from 100 up to 520 pixel. The example has 292 pixel and the default is 205 pixel, similar to the standard.<br>
 <br>
 </li>
 <li>
