@@ -29,6 +29,7 @@ Settings -> Profile:<br>
 <img src="../images/v0.8_Screen27.jpg" alt="v0.8_Screen27.jpg"><br>
 The parameter has to be activated in Config after installation.<br>
 <br>
+<br>
 </li>
 <li>
 New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/184">#184</a>] Compact layout in "Add to list" popup to bookmark a cache:<br>
@@ -37,11 +38,13 @@ Settings -> Listing:<br>
 <img src="../images/v0.8_Screen31.jpg" alt="v0.8_Screen31.jpg"><br>
 With this option you can choose the height of the "Add to list" popup to bookmark a cache from 100 up to 520 pixel. The example has 292 pixel and the default is 205 pixel, similar to the standard.<br>
 <br>
+<br>
 </li>
 <li>
 New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/326">#326</a>] File caption missing under maximized image in cache listing:<br>
 Now there are showing not only the image description under the maximized image, but the file caption and the "View Log" button too.<br>
 <img src="../images/v0.8_Screen28.jpg" alt="v0.8_Screen28.jpg"><br>
+<br>
 <br>
 </li>
 <li>
@@ -50,6 +53,7 @@ Positioning GME toolbox:<br>
 <img src="../images/v0.8_Screen32.jpg" alt="v0.8_Screen32.jpg"> <b>>>></b> <img src="../images/v0.8_Screen33.jpg" alt="v0.8_Screen33.jpg"><br>
 Show GClh button "Hide/Show Header":<br>
 <img src="../images/v0.8_Screen34.jpg" alt="v0.8_Screen34.jpg"> <b>>>></b> <img src="../images/v0.8_Screen35.jpg" alt="v0.8_Screen35.jpg"><br>
+<br>
 <br>
 </li>
 <li>
@@ -60,6 +64,7 @@ Pages with banner:<br>
 <img src="../images/v0.8_Screen22.jpg" alt="v0.8_Screen22.jpg"><br>
 Settings -> Global:<br>
 <img src="../images/v0.8_Screen23.jpg" alt="v0.8_Screen23.jpg"><br>
+<br>
 <br>
 </li>
 <li>
