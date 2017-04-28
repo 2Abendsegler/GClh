@@ -31,9 +31,7 @@ The parameter has to be activated in Config after installation.<br>
 </li>
 <li>
 New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/184">#184</a>] Compact layout in "Add to list" popup to bookmark a cache:<br>
-New: &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Standard:<br>
-<img src="../images/v0.8_Screen29.jpg" alt="v0.8_Screen29.jpg">
-<img src="../images/v0.8_Screen30.jpg" alt="v0.8_Screen30.jpg"><br>
+<img src="../images/v0.8_Screen30.jpg" alt="v0.8_Screen30.jpg"> <b>>>></b> <img src="../images/v0.8_Screen29.jpg" alt="v0.8_Screen29.jpg"><br>
 Settings -> Listing:<br>
 <img src="../images/v0.8_Screen31.jpg" alt="v0.8_Screen31.jpg"><br>
 With this option you can choose the height of the "Add to list" popup to bookmark a cache from 100 up to 520 pixel. The example has 292 pixel and the default is 205 pixel, similar to the standard.<br>
@@ -48,11 +46,9 @@ Now there are showing not only the image description under the maximized image, 
 <li>
 New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/342">#342</a>] Improve relationship between GClh and GME (Geocaching Map Enhancements):<br>
 Positioning GME toolbox:<br>
-<img src="../images/v0.8_Screen32.jpg" alt="v0.8_Screen32.jpg"> <b>>>></b> 
-<img src="../images/v0.8_Screen33.jpg" alt="v0.8_Screen33.jpg"><br>
+<img src="../images/v0.8_Screen32.jpg" alt="v0.8_Screen32.jpg"> <b>>>></b> <img src="../images/v0.8_Screen33.jpg" alt="v0.8_Screen33.jpg"><br>
 Show GClh button "Hide/Show Header":<br>
-<img src="../images/v0.8_Screen34.jpg" alt="v0.8_Screen34.jpg">
-<img src="../images/v0.8_Screen35.jpg" alt="v0.8_Screen35.jpg"><br>
+<img src="../images/v0.8_Screen34.jpg" alt="v0.8_Screen34.jpg"> <b>>>></b> <img src="../images/v0.8_Screen35.jpg" alt="v0.8_Screen35.jpg"><br>
 <br>
 </li>
 <li>
