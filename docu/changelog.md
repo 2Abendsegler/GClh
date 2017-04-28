@@ -21,7 +21,8 @@
 ## v0.8:
 <ul>
 <li>
-New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/339">#339</a>] Change link "Lists" on "my" pages from new page <code>.../account/lists</code> to old-fashioned page <code>.../my/lists.aspx</code>:<br>
+New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/339">#339</a>] Change the link "Lists" on "my" pages from new page to old-fashioned page:<br>
+new page: <code>.../account/lists</code>; old-fashioned page: <code>.../my/lists.aspx</code><br>
 <img src="../images/v0.8_Screen26.jpg" alt="v0.8_Screen26.jpg"><br>
 Settings -> Profile:<br>
 <img src="../images/v0.8_Screen27.jpg" alt="v0.8_Screen27.jpg"><br>
