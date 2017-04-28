@@ -4789,11 +4789,11 @@ var mainGC = function () {
                     link.appendChild(document.createTextNode("Hide/Show Header"));
                     link.href = "#";
                     link.addEventListener("click", hide_map_header, false);
-                    // Link in der Sidebar der Karten komplett anzeigen und auch nicht mehr überblenden.
-                    sidebar.setAttribute("style", "height: 63px !important; margin-top: 6px !important;");
                     // Link in der Sidebar rechts orientieren wegen möglichem GC Tour script.
                     link.setAttribute("style", "float: right; padding-right: 3px;");
                     sidebar.appendChild(link);
+                    // Link in der Sidebar der Karten komplett anzeigen und auch nicht mehr überblenden, auch nicht durch GME.
+                    appendCssStyle("#searchtabs {height: 63px !important; margin-top: 6px !important;} #searchtabs li a {padding: 0.625em 0.5em !important;}");
                 } else {
                     waitCount++;
                     if ( waitCount <= 50 ) {  // 5 Sekunden lang
@@ -5113,8 +5113,8 @@ var mainGC = function () {
                     }
                 );
 
-                // Damit auch mehr als 2 Buttons handlebar sind, also auch beispielsweise noch GC Vote.
-                appendCssStyle(".leaflet-control-layers + .leaflet-control {position: unset; right: unset;} .leaflet-control {clear: unset}");
+                // Damit auch mehr als 2 Buttons handlebar sind, also auch beispielsweise noch GC Vote, und die GME Toolbar trotzdem an richtiger Position ist.
+                appendCssStyle(".leaflet-control-layers + .leaflet-control {position: unset; right: unset;} .leaflet-control {clear: left}");
             }
 
             function attachGeoServiceControl( waitCount ) {
