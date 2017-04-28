@@ -47,7 +47,7 @@ Now there are showing not only the image description under the maximized image, 
 <li>
 New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/342">#342</a>] Improve relationship between GClh and GME (Geocaching Map Enhancements):<br>
 Positioning GME toolbox:<br>
-<img src="../images/v0.8_Screen32.jpg" alt="v0.8_Screen32.jpg"> -> 
+<img src="../images/v0.8_Screen32.jpg" alt="v0.8_Screen32.jpg"> <b>>>></b> 
 <img src="../images/v0.8_Screen33.jpg" alt="v0.8_Screen33.jpg"><br>
 Show GClh button "Hide/Show Header":<br>
 <img src="../images/v0.8_Screen34.jpg" alt="v0.8_Screen34.jpg">
