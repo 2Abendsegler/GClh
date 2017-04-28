@@ -199,5 +199,7 @@
   "settings_remove_banner_to_mylists_old": false,
   "settings_remove_banner_for_garminexpress": true,
   "settings_compact_layout_bm_lists": false,
-  "settings_compact_layout_list_of_bm_lists": false
+  "settings_compact_layout_list_of_bm_lists": false,
+  "settings_improve_add_to_list_height": 200,
+  "settings_improve_add_to_list": true
 }
