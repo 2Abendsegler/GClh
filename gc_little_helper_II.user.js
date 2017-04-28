@@ -415,6 +415,8 @@ var variablesInit = function (c) {
     c.settings_remove_banner_for_garminexpress = getValue("settings_remove_banner_for_garminexpress", true);
     c.settings_compact_layout_bm_lists = getValue("settings_compact_layout_bm_lists", false);
     c.settings_compact_layout_list_of_bm_lists = getValue("settings_compact_layout_list_of_bm_lists", false);
+    c.settings_improve_add_to_list = getValue("settings_improve_add_to_list", true);
+    c.settings_improve_add_to_list_height = getValue("settings_improve_add_to_list_height", 205);
 
     // Settings: Custom Bookmarks.
     var num = c.bookmarks.length;
@@ -2105,6 +2107,23 @@ var mainGC = function () {
             }
         } catch (e) {
             gclh_error("Show other coord-formats print-page", e);
+        }
+    }
+
+// Improve Add to list in cache listing.
+    if (is_page("cache_listing") && settings_improve_add_to_list) {
+        try {
+            var height = ((parseInt(settings_improve_add_to_list_height) < 100) ? parseInt(100) : parseInt(settings_improve_add_to_list_height));
+            var css = ".loading {background: url(/images/loading2.gif) no-repeat center !important;}"
+                    + ".add-list {max-height: " + height + "px !important;}"
+                    + ".add-list li {padding: 4px 0 !important;}"
+                    + ".add-list li button {font-size: 14px !important; margin: 0 !important; height: 18px !important;}"
+                    + ".status {font-size: 14px !important; margin: 0 !important; top: 8px !important; width: unset !important; right: 0px !important;}"
+                    + ".status .loading {top: -6px !important; right: 0px !important; padding: 0 2px !important; background-color: white !important; background: url(/images/loading2.gif) no-repeat center;}"
+                    + ".status.success {right: 2px !important; padding: 0 5px !important; background-color: white !important;}";
+            appendCssStyle(css);
+        } catch (e) {
+            gclh_error("Improve Add to list", e);
         }
     }
 
@@ -4533,6 +4552,8 @@ var mainGC = function () {
                     while (lines[i].children[2].childNodes[2]) {
                         lines[i].children[2].childNodes[2].remove();
                     }
+                    lines[i].children[1].style.whiteSpace = "nowrap";
+                    lines[i].children[4].style.whiteSpace = "nowrap";
                     lines[i].children[4].children[0].innerHTML = '<img src="/images/icons/16/edit.png" style="vertical-align: middle; padding-right: 8px;" alt="Edit">';
                     lines[i].children[4].children[1].innerHTML = '<img src="/images/icons/16/watch.png" style="vertical-align: middle; padding-right: 8px;" alt="View">';
                     lines[i].children[4].children[2].innerHTML = '<img src="/images/icons/16/delete.png" style="vertical-align: middle;" alt="Delete">';
@@ -7356,8 +7377,7 @@ var mainGC = function () {
                             requestCount--;
                             var dataElement = JSON.parse(response.responseText);
                             data[dataElement.pageInfo.idx] = dataElement;
-                            gclh_log("Loading Logs Status: " + response.statusText + " - idx: " + dataElement.pageInfo.idx);
-
+                            // gclh_log("Loading Logs Status: " + response.statusText + " - idx: " + dataElement.pageInfo.idx);
                             if (numPages == 1) {
                                 numPages = data[count].pageInfo.totalPages;
                                 for (curIdx = 2; curIdx <= numPages; curIdx++) {
@@ -9777,6 +9797,14 @@ var mainGC = function () {
             html += checkboxy('settings_show_elevation_of_waypoints', 'Show elevations for waypoints and listing coordinates') + show_help("Shows the elevation of every additional waypoint and the (changed) listing coordinates.") + "<br/>";
             html += " &nbsp; &nbsp;" + "Measure unit can be set in <a href=\"https://www.geocaching.com/account/settings/preferences\">Preferences</a>" + "<br/>";
             html += newParameterVersionSetzen(0.7) + newParameterOff;
+            html += newParameterOn2;
+            html += checkboxy('settings_improve_add_to_list', 'Show compact layout in \"Add to list\" popup to bookmark a cache') + "<br/>";
+            html += " &nbsp; &nbsp;" + "Height of popup: <select class='gclh_form' id='settings_improve_add_to_list_height' >";
+            for (var i = 100; i < 521; i++) {
+                html += "  <option value='" + i + "' " + (settings_improve_add_to_list_height == i ? "selected=\"selected\"" : "") + ">" + i + "</option>";
+            }
+            html += "</select> px" + show_help("With this option you can choose the height of the \"Add to list\" popup to bookmark a cache from 100 up to 520 pixel. The default is 205 pixel, similar to the standard.<br><br>This option requires \"Show compact layout in \"Add to list\" popup to bookmark a cache\".") + "<br>";
+            html += newParameterVersionSetzen(0.8) + newParameterOff;
             html += "</div>";
 
             html += "<h4 class='gclh_headline2'>"+prepareHideable.replace("#name#","logging")+"Logging</h4>";
@@ -10416,6 +10444,7 @@ var mainGC = function () {
             setEventsForDependentParameters( "settings_remove_banner", "settings_remove_banner_to_mylists_old" );
             setEventsForDependentParameters( "settings_remove_banner", "settings_remove_banner_for_garminexpress" );
             setEventsForDependentParameters( "settings_driving_direction_link", "settings_driving_direction_parking_area" );
+            setEventsForDependentParameters( "settings_improve_add_to_list", "settings_improve_add_to_list_height" );
 //--> $$065 Begin of insert
 //<-- $$065 End of insert
             // Abhängigkeiten der Linklist Parameter.
@@ -10574,6 +10603,7 @@ var mainGC = function () {
             setValue("settings_pq_difficulty_score", document.getElementById('settings_pq_difficulty_score').value);
             setValue("settings_pq_terrain", document.getElementById('settings_pq_terrain').value);
             setValue("settings_pq_terrain_score", document.getElementById('settings_pq_terrain_score').value);
+            setValue("settings_improve_add_to_list_height", document.getElementById('settings_improve_add_to_list_height').value);
 //--> $$065 Begin of insert
 //<-- $$065 End of insert
 
@@ -10759,7 +10789,8 @@ var mainGC = function () {
                 'settings_remove_banner_to_mylists_old',
                 'settings_remove_banner_for_garminexpress',
                 'settings_compact_layout_bm_lists',
-                'settings_compact_layout_list_of_bm_lists'
+                'settings_compact_layout_list_of_bm_lists',
+                'settings_improve_add_to_list'
             );
             for (var i = 0; i < checkboxes.length; i++) {
                 if ( document.getElementById(checkboxes[i]) ) {
