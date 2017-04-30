@@ -70,6 +70,7 @@ Settings -> Global:<br>
 <li>
 New: Display images in user, cache and TB image galleries with maximum possible size: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/312">#312</a>]<br>
 <br>
+<br>
 </li>
 <li>
 Tip: Enable old link in cache listing to create bookmark with comment: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/321">#321</a>]<br>
