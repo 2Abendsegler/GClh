@@ -71,6 +71,12 @@ Settings -> Global:<br>
 New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/312">#312</a>] Display images in user, cache and TB image galleries with maximum possible size.<br>
 <br>
 </li>
+<li>
+Tip: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/321">#321</a>] Enable old link in cache listing to create bookmark with comment:<br>
+The functionality, to create a bookmark with comment, is already available in gc.com standard. Please select the button "Add to list" in cache listing not with the left mouse key but with the right mouse key and choose "open link in new tab".<br>
+<img src="../images/v0.8_Screen36.jpg" alt="v0.8_Screen36.jpg"><br>
+<br>
+</li>
 </ul>
 (??.05.2017)<br> 
 <br>
