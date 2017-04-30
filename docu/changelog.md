@@ -75,7 +75,7 @@ New: Display images in user, cache and TB image galleries with maximum possible 
 <li>
 Tip: Enable old link in cache listing to create bookmark with comment: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/321">#321</a>]<br>
 The functionality, to create a bookmark with comment, is already available in gc.com standard. Please select the button "Add to list" in cache listing not with the left mouse key but with the right mouse key and choose "open link in new tab".<br>
-<img src="../images/v0.8_Screen36.jpg" alt="v0.8_Screen36.jpg"><br>
+<img src="../images/v0.8_Screen36.jpg" alt="v0.8_Screen36.jpg"> <b>>>></b> <img src="../images/v0.8_Screen37.jpg" alt="v0.8_Screen37.jpg"><br>
 <br>
 </li>
 </ul>
