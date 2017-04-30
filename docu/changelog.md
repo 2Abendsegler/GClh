@@ -21,7 +21,7 @@
 ## v0.8:
 <ul>
 <li>
-New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/339">#339</a>] Change the link "Lists" on "my" pages from new designed page to old-fashioned page:<br>
+New: Change the link "Lists" on "my" pages from new designed page to old-fashioned page: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/339">#339</a>]<br>
 New designed page: <code>.../account/lists</code><br>
 Old-fashioned page: <code>.../my/lists.aspx</code><br>
 <img src="../images/v0.8_Screen26.jpg" alt="v0.8_Screen26.jpg"><br>
@@ -32,7 +32,7 @@ The parameter has to be activated in Config after installation.<br>
 <br>
 </li>
 <li>
-New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/184">#184</a>] Compact layout in "Add to list" popup to bookmark a cache:<br>
+New: Compact layout in "Add to list" popup to bookmark a cache: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/184">#184</a>]<br>
 <img src="../images/v0.8_Screen30.jpg" alt="v0.8_Screen30.jpg"> <b>>>></b> <img src="../images/v0.8_Screen29.jpg" alt="v0.8_Screen29.jpg"><br>
 Settings -> Listing:<br>
 <img src="../images/v0.8_Screen31.jpg" alt="v0.8_Screen31.jpg"><br>
@@ -41,14 +41,14 @@ With this option you can choose the height of the "Add to list" popup to bookmar
 <br>
 </li>
 <li>
-New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/326">#326</a>] File caption missing under maximized image in cache listing:<br>
+New: File caption missing under maximized image in cache listing: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/326">#326</a>]<br>
 Now there are showing not only the image description under the maximized image, but the file caption and the "View Log" button too.<br>
 <img src="../images/v0.8_Screen28.jpg" alt="v0.8_Screen28.jpg"><br>
 <br>
 <br>
 </li>
 <li>
-New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/342">#342</a>] Improve relationship between GClh and GME (Geocaching Map Enhancements):<br>
+New: Improve relationship between GClh and GME (Geocaching Map Enhancements): [Issue <a href="https://github.com/2Abendsegler/GClh/issues/342">#342</a>]<br>
 Positioning GME toolbox:<br>
 <img src="../images/v0.8_Screen32.jpg" alt="v0.8_Screen32.jpg"> <b>>>></b> <img src="../images/v0.8_Screen33.jpg" alt="v0.8_Screen33.jpg"><br>
 Show GClh button "Hide/Show Header":<br>
@@ -57,7 +57,7 @@ Show GClh button "Hide/Show Header":<br>
 <br>
 </li>
 <li>
-New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/311">#311</a>] Hide banner linking "Garmin Express" or new or old "My Lists" page:<br>
+New: Hide banner linking "Garmin Express" or new or old "My Lists" page: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/311">#311</a>]<br>
 Pages with banner:<br>
 <img src="../images/v0.8_Screen20.jpg" alt="v0.8_Screen20.jpg"><br>
 <img src="../images/v0.8_Screen21.jpg" alt="v0.8_Screen21.jpg"><br>
@@ -68,11 +68,11 @@ Settings -> Global:<br>
 <br>
 </li>
 <li>
-New: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/312">#312</a>] Display images in user, cache and TB image galleries with maximum possible size.<br>
+New: Display images in user, cache and TB image galleries with maximum possible size: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/312">#312</a>]<br>
 <br>
 </li>
 <li>
-Tip: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/321">#321</a>] Enable old link in cache listing to create bookmark with comment:<br>
+Tip: Enable old link in cache listing to create bookmark with comment: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/321">#321</a>]<br>
 The functionality, to create a bookmark with comment, is already available in gc.com standard. Please select the button "Add to list" in cache listing not with the left mouse key but with the right mouse key and choose "open link in new tab".<br>
 <img src="../images/v0.8_Screen36.jpg" alt="v0.8_Screen36.jpg"><br>
 <br>
