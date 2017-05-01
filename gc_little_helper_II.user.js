@@ -4828,21 +4828,20 @@ var mainGC = function () {
             else {
                 for (var i = 0; i < settings_map_layers.length; i++) map_layers[settings_map_layers[i]] = all_map_layers[settings_map_layers[i]];
             }
-
-            function addLayer( waitCount ) {
-                // Prüfen, ob die Layer schon vorhanden sind.
-                if ( $('.leaflet-control-layers-base').find('input.leaflet-control-layers-selector')[0] ) {
-                    injectPageScriptFunction(function (map_layers, map_overlays, settings_map_default_layer, settings_show_hillshadow) {
-                        window["GCLittleHelper_MapLayerHelper"] = function (map_layers, map_overlays, settings_map_default_layer, settings_show_hillshadow) {
-                            if (!window.MapSettings.Map) {
-                                setTimeout(function () {
-                                    window["GCLittleHelper_MapLayerHelper"](map_layers, map_overlays, settings_map_default_layer, settings_show_hillshadow);
-                                }, 10);
-                            } else {
-                                var layerControl = new window.L.Control.Layers();
-                                var layerToAdd = null;
-                                var defaultLayer = null;
-                                var hillshadowLayer = null;
+//xxxx2
+            function addLayerControl() {
+                injectPageScriptFunction(function (map_layers, map_overlays, settings_map_default_layer, settings_show_hillshadow) {
+                    window["GCLittleHelper_MapLayerHelper"] = function (map_layers, map_overlays, settings_map_default_layer, settings_show_hillshadow) {
+                        if (!window.MapSettings.Map) {
+                            setTimeout(function () {
+                                window["GCLittleHelper_MapLayerHelper"](map_layers, map_overlays, settings_map_default_layer, settings_show_hillshadow);
+                            }, 10);
+                        } else {
+                            var layerControl = new window.L.Control.Layers();
+                            var layerToAdd = null;
+                            var defaultLayer = null;
+                            var hillshadowLayer = null;
+                            if ($('.leaflet-control-layers.gclh_dummy').length != 0) {
                                 for (name in map_layers) {
                                     layerToAdd = new L.tileLayer(map_layers[name].tileUrl, map_layers[name]);
                                     layerControl.addBaseLayer(layerToAdd, name);
@@ -4859,36 +4858,94 @@ var mainGC = function () {
                                         hillshadowLayer = layerToAdd;
                                     }
                                 }
-
-                                window.MapSettings.Map.addControl(layerControl);
-                                $(".leaflet-control-layers-base").first().find("input").attr('checked', false);
-                                $(".leaflet-control-layers").first().remove();
-                                for (layerId in window.MapSettings.Map._layers) {
-                                    if (window.MapSettings.Map._layers[layerId]._url !== -1) {
-                                        window.MapSettings.Map.removeLayer(window.MapSettings.Map._layers[layerId]);
-                                        break;
-                                    }
-                                }
-                                window.MapSettings.Map.addLayer(defaultLayer);
-                                if (settings_show_hillshadow) {
-                                    $(".leaflet-control-layers-overlays").find("input").first().click();
-                                }
-
                             }
-                        };
-
-                        window["GCLittleHelper_MapLayerHelper"](map_layers, map_overlays, settings_map_default_layer, settings_show_hillshadow);
-                    }, "(" + JSON.stringify(map_layers) + "," + JSON.stringify(map_overlays) + ",'" + settings_map_default_layer + "'," + settings_show_hillshadow + ")");
-
-                } else {
+                            window.MapSettings.Map.addControl(layerControl);
+                            if ($('.leaflet-control-layers.gclh_dummy').length == 0) {
+                                layerControl._container.className += " gclh_dummy";
+                            } else {
+                                layerControl._container.className += " gclh_layers";
+                            }
+                            for (layerId in window.MapSettings.Map._layers) {
+                                if (window.MapSettings.Map._layers[layerId]._url !== -1) {
+                                    window.MapSettings.Map.removeLayer(window.MapSettings.Map._layers[layerId]);
+                                }
+                            }
+//                            window.MapSettings.Map.addLayer(defaultLayer);
+//                            if (settings_show_hillshadow) {
+//                                $(".leaflet-control-layers-overlays").find("input").first().click();
+//                            }
+//console.log(window.MapSettings.Map);
+                        }
+                    };
+                    window["GCLittleHelper_MapLayerHelper"](map_layers, map_overlays, settings_map_default_layer, settings_show_hillshadow);
+                }, "(" + JSON.stringify(map_layers) + "," + JSON.stringify(map_overlays) + ",'" + settings_map_default_layer + "'," + settings_show_hillshadow + ")");
+            }
+ 
+            if (settings_use_gclh_layercontrol) {
+                function loopLayerControls(waitCount) {
+// ToDos:
+// - Radiobutton für Default selbst setzen und bei anderen entfernen
+// - hillshadow seten                    
+                    if ($('.leaflet-control-layers').length != 0) {
+                        var somethingDone = 0;
+                        if ($('.leaflet-control-layers.gclh_layers:not(".gclh_used")').length != 0) {
+                            somethingDone++;
+                            $('.leaflet-control-layers.gclh_layers:not(".gclh_used")').addClass('gclh_used');
+                            setDefaultsInLayer();
+                        }
+                        if ($('.leaflet-control-layers.gclh_dummy:not(".gclh_used")').length != 0) {
+                            somethingDone++;
+                            $('.leaflet-control-layers.gclh_dummy:not(".gclh_used")').addClass('gclh_used').prop("style", "display: none;");
+                        }
+                        if ($('.leaflet-control-layers:not(".gclh_used")').find('img[title*="GCVote"]').length != 0) {
+                            somethingDone++;
+                            $('.leaflet-control-layers:not(".gclh_used")').find('img[title*="GCVote"]').closest('.leaflet-control-layers').addClass('gclh_used');
+                        }
+                        if ($('#gclh_geoservices_control.leaflet-control-layers:not(".gclh_used")').length != 0) {
+                            somethingDone++;
+                            $('#gclh_geoservices_control.leaflet-control-layers:not(".gclh_used")').addClass('gclh_used');
+                        }
+                        if (somethingDone == 0) {
+                            if ($('.leaflet-control-layers:not(".gclh_used")').length != 0) {
+                                $('.leaflet-control-layers:not(".gclh_used")').addClass('gclh_used').prop("style", "display: none;");
+                                setDefaultsInLayer();
+                            }
+                        }
+                    }
                     waitCount++;
                     if ( waitCount <= 100 ) {  // 5 Sekunden lang
-                        setTimeout( function () { addLayer( waitCount ); }, 50);
+                        setTimeout( function () { loopLayerControls( waitCount ); }, 50);
                     } else return;
                 }
+                addLayerControl();
+                addLayerControl();
+                loopLayerControls(0);
             }
-            if (settings_use_gclh_layercontrol) setTimeout( function () { addLayer( 0 ); }, 1000); // 1 Sekunde warten, um Layercontrol von GC Map Enhancements zu ueberschreiben
-
+            function setDefaultsInLayer() {
+                var defaultLayer = "";
+                for (name in map_layers) {
+                    if (name == settings_map_default_layer) {
+                        defaultLayer = name;
+                    } else if (defaultLayer == "") {
+                        defaultLayer = name;
+                    }
+                }
+                var labels = $('.leaflet-control-layers.gclh_layers .leaflet-control-layers-base').find('label');
+                if (labels) {
+                    for ( var i=0; i<labels.length; i++ ) {
+                        if (labels[i].children[1].innerHTML.match(defaultLayer) && labels[i].children[0].checked != true) {
+console.log(labels[i].children[0].checked);
+                            labels[i].children[0].checked = true;
+                            break;
+                        }
+                    }
+                }
+//                            if (settings_show_hillshadow) {
+//                                $(".leaflet-control-layers-overlays").find("input").first().click();
+//                            }
+            }
+            
+//xxxx2
             // Function called when map is loaded.
             function gclh_map_loaded() {
                 if (settings_map_hide_sidebar) {
