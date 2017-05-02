@@ -803,121 +803,49 @@ var mainGC = function () {
         }
     }
 
-// F2 zum Log abschicken (Cache und TB).
-    if (settings_submit_log_button && (document.location.href.match(/^https?:\/\/www\.geocaching\.com\/seek\/log\.aspx\?(id|guid|ID|wp|LUID|PLogGuid)\=/) || document.location.href.match(/^https?:\/\/www\.geocaching\.com\/track\/log\.aspx\?(id|wid|guid|ID|LUID|PLogGuid)\=/)) && document.getElementById("ctl00_ContentBody_LogBookPanel1_btnSubmitLog")) {
+// F2 key for save.
+    if (settings_submit_log_button) {
         try {
-            var but = document.getElementById("ctl00_ContentBody_LogBookPanel1_btnSubmitLog");
-            but.value = document.getElementById("ctl00_ContentBody_LogBookPanel1_btnSubmitLog").value + " (F2)";
-            function keydown(e) {
-                if (e.keyCode == 113) {
-                    if ( !check_config_page() ) {
-                        document.getElementById("ctl00_ContentBody_LogBookPanel1_btnSubmitLog").click();
-                    }
-                }
+            // Log abschicken (Cache und TB).
+            if (document.location.href.match(/^https?:\/\/www\.geocaching\.com\/(seek|track)\/log\.aspx\?(id|wid|guid|ID|wp|LUID|PLogGuid)\=/)) var id = "ctl00_ContentBody_LogBookPanel1_btnSubmitLog";
+            // PQ speichern | "Bookmark Pocket Query", aus BM PQ erzeugen.
+            if (document.location.href.match(/^https?:\/\/www\.geocaching\.com\/pocket\/(gcquery|bmquery)\.aspx/)) var id = "ctl00_ContentBody_btnSubmit";
+            // "Create a Bookmark" entry, "Edit a Bookmark" entry.
+            if (document.location.href.match(/^https?:\/\/www\.geocaching\.com\/bookmarks\/mark\.aspx/)) var id = "ctl00_ContentBody_Bookmark_btnCreate";
+            // Hide cache process speichern.
+            if (document.location.href.match(/^https?:\/\/www\.geocaching\.com\/hide\//)) {
+                if (document.getElementById("btnContinue")) var id = "btnContinue";
+                else if (document.getElementById("btnSubmit")) var id = "btnSubmit";
+                else if (document.getElementById("btnNext")) var id = "btnNext";
+                else if (document.getElementById("ctl00_ContentBody_btnSubmit")) var id = "ctl00_ContentBody_btnSubmit";
+                else if (document.getElementById("ctl00_ContentBody_Attributes_btnUpdate")) var id = "ctl00_ContentBody_Attributes_btnUpdate";
+                else if (document.getElementById("ctl00_ContentBody_WaypointEdit_uxSubmitIt")) var id = "ctl00_ContentBody_WaypointEdit_uxSubmitIt";
             }
-            window.addEventListener('keydown', keydown, true);
-        } catch (e) {
-            gclh_error("F2 logging", e);
-        }
-    }
 
-// F2 zum PQ speichern.
-    if (settings_submit_log_button && (document.location.href.match(/^https?:\/\/www\.geocaching\.com\/pocket\/gcquery\.aspx/)) && document.getElementById("ctl00_ContentBody_btnSubmit")) {
-        try {
-            var but = document.getElementById("ctl00_ContentBody_btnSubmit");
-            but.value = document.getElementById("ctl00_ContentBody_btnSubmit").value + " (F2)";
-            function keydown(e) {
-                if (e.keyCode == 113) {
-                    if ( !check_config_page() ) {
-                        document.getElementById("ctl00_ContentBody_btnSubmit").click();
-                    }
-                }
-            }
-            window.addEventListener('keydown', keydown, true);
-        } catch (e) {
-            gclh_error("F2 save PQ", e);
-        }
-    }
-
-// F2 Bookmark speichern.
-    if ( settings_submit_log_button ) {
-        // "Create a Bookmark" entry und "Edit a Bookmark" entry.
-        if ( document.location.href.match(/^https?:\/\/www\.geocaching\.com\/bookmarks\/mark\.aspx/) &&
-             document.getElementById("ctl00_ContentBody_Bookmark_btnCreate")                            ) {
-            try {
-                var but = document.getElementById("ctl00_ContentBody_Bookmark_btnCreate");
-                but.value = document.getElementById("ctl00_ContentBody_Bookmark_btnCreate").value + " (F2)";
-                function keydown_bm(e) {
-                    if (e.keyCode == 113) {
-                        if ( !check_config_page() ) {
-                            document.getElementById("ctl00_ContentBody_Bookmark_btnCreate").click();
-                        }
-                    }
-                }
-                window.addEventListener('keydown', keydown_bm, true);
-            } catch (e) {
-                gclh_error("F2 save Bookmark", e);
-            }
-        }
-        // "Bookmark Pocket Query", also aus einer Bookmark eine PQ erzeugen.
-        if ( document.location.href.match(/^https?:\/\/www\.geocaching\.com\/pocket\/bmquery\.aspx/) &&
-             document.getElementById("ctl00_ContentBody_btnSubmit")                            ) {
-            try {
-                var but = document.getElementById("ctl00_ContentBody_btnSubmit");
-                but.value = document.getElementById("ctl00_ContentBody_btnSubmit").value + " (F2)";
-                function keydown_pq(e) {
-                    if (e.keyCode == 113) {
-                        if ( !check_config_page() ) {
-                            document.getElementById("ctl00_ContentBody_btnSubmit").click();
-                        }
-                    }
-                }
-                window.addEventListener('keydown', keydown_pq, true);
-            } catch (e) {
-                gclh_error("F2 save Bookmark Pocket Query", e);
-            }
-        }
-    }
-
-// F2 hide cache process speichern.
-    if (settings_submit_log_button && document.location.href.match(/^https?:\/\/www\.geocaching\.com\/hide\//)) {
-        try {
-            var id = "";
-            if (document.getElementById("btnContinue")) id = "btnContinue";
-            else if (document.getElementById("btnSubmit")) id = "btnSubmit";
-            else if (document.getElementById("btnNext")) id = "btnNext";
-            else if (document.getElementById("ctl00_ContentBody_btnSubmit")) id = "ctl00_ContentBody_btnSubmit";
-            else if (document.getElementById("ctl00_ContentBody_Attributes_btnUpdate")) id = "ctl00_ContentBody_Attributes_btnUpdate";
-            else if (document.getElementById("ctl00_ContentBody_WaypointEdit_uxSubmitIt")) id = "ctl00_ContentBody_WaypointEdit_uxSubmitIt";
-            if (id != "") {
-                var but = document.getElementById(id);
-                but.value = document.getElementById(id).value + " (F2)";
+            if (id && document.getElementById(id)) {
                 function keydown(e) {
-                    if (e.keyCode == 113) {
-                        if ( !check_config_page() ) {
-                            document.getElementById(id).click();
-                        }
+                    if (e.keyCode == 113 && !check_config_page()) {
+                        document.getElementById(id).click();
                     }
                 }
+                document.getElementById(id).value += " (F2)";
                 window.addEventListener('keydown', keydown, true);
             }
         } catch (e) {
-            gclh_error("F2 hide cache process speichern", e);
+            gclh_error("F2 key for save", e);
         }
     }
 
 // Aufruf GClh Config per F4 Taste. Nur auf den erlaubten Seiten und auch nur, wenn man nicht schon im GClh Config ist.
     if ( settings_f4_call_gclh_config ) {
         function keydown(e) {
-            if (e.keyCode == 115) {
-                if ( !check_config_page() ) {
-                    if ( checkTaskAllowed( "GClh Config", false ) == true ) gclh_showConfig();
-                    else document.location.href = defaultConfigLink;
-                }
+            if (e.keyCode == 115 && !check_config_page()) {
+                if (checkTaskAllowed("GClh Config", false) == true ) gclh_showConfig();
+                else document.location.href = defaultConfigLink;
             }
         }
         try {
-            if ( !check_config_page() ) {
+            if (!check_config_page()) {
                 window.addEventListener('keydown', keydown, true);
             }
         } catch (e) {
@@ -928,15 +856,13 @@ var mainGC = function () {
 // Aufruf GClh Sync per F10 Taste. Nur auf den erlaubten Seiten und auch nur, wenn man nicht schon im GClh Sync ist. Nicht im Config Reset Modus.
     if ( settings_f10_call_gclh_sync ) {
         function keydown(e) {
-            if (e.keyCode == 121) {
-                if ( !check_sync_page() && !global_mod_reset ) {
-                    if ( checkTaskAllowed( "GClh Sync", false ) == true ) gclh_showSync();
-                    else document.location.href = defaultSyncLink;
-                }
+            if (e.keyCode == 121 && !check_sync_page() && !global_mod_reset) {
+                if (checkTaskAllowed("GClh Sync", false) == true ) gclh_showSync();
+                else document.location.href = defaultSyncLink;
             }
         }
         try {
-            if ( !check_sync_page() ) {
+            if (!check_sync_page()) {
                 window.addEventListener('keydown', keydown, true);
             }
         } catch (e) {
@@ -4819,6 +4745,7 @@ var mainGC = function () {
         }
     }
 
+//xxxx2 der teil hier sollte eigentlich ganz weit nach oben
 // Add additional Layers to Map & Select Default-Layer, add Hill-Shadow, add Homezone.
     if (document.location.href.match(/^https?:\/\/www\.geocaching\.com\/map\//)) {
         try {
@@ -4829,6 +4756,7 @@ var mainGC = function () {
                 for (var i = 0; i < settings_map_layers.length; i++) map_layers[settings_map_layers[i]] = all_map_layers[settings_map_layers[i]];
             }
 //xxxx2
+/*
             function addLayerControl() {
                 injectPageScriptFunction(function (map_layers, map_overlays, settings_map_default_layer, settings_show_hillshadow) {
                     window["GCLittleHelper_MapLayerHelper"] = function (map_layers, map_overlays, settings_map_default_layer, settings_show_hillshadow) {
@@ -4841,40 +4769,51 @@ var mainGC = function () {
                             var layerToAdd = null;
                             var defaultLayer = null;
                             var hillshadowLayer = null;
-                            if ($('.leaflet-control-layers.gclh_dummy').length != 0) {
+//                            if ($('.leaflet-control-layers.gclh_dummy').length != 0) {
                                 for (name in map_layers) {
                                     layerToAdd = new L.tileLayer(map_layers[name].tileUrl, map_layers[name]);
                                     layerControl.addBaseLayer(layerToAdd, name);
-                                    if (name == settings_map_default_layer) {
-                                        defaultLayer = layerToAdd;
-                                    } else if (defaultLayer == null) {
-                                        defaultLayer = layerToAdd;
-                                    }
+                                    if (name == settings_map_default_layer) defaultLayer = layerToAdd;
+                                    else if (defaultLayer == null) defaultLayer = layerToAdd;
                                 }
                                 for (name in map_overlays) {
                                     layerToAdd = new L.tileLayer(map_overlays[name].tileUrl, map_overlays[name]);
                                     layerControl.addOverlay(layerToAdd, name);
-                                    if (name == "hillshadow") {
-                                        hillshadowLayer = layerToAdd;
-                                    }
+//                                    if (name == "hillshadow") hillshadowLayer = layerToAdd;
                                 }
-                            }
+//                            }
                             window.MapSettings.Map.addControl(layerControl);
-                            if ($('.leaflet-control-layers.gclh_dummy').length == 0) {
-                                layerControl._container.className += " gclh_dummy";
-                            } else {
-                                layerControl._container.className += " gclh_layers";
-                            }
                             for (layerId in window.MapSettings.Map._layers) {
                                 if (window.MapSettings.Map._layers[layerId]._url !== -1) {
                                     window.MapSettings.Map.removeLayer(window.MapSettings.Map._layers[layerId]);
                                 }
                             }
-//                            window.MapSettings.Map.addLayer(defaultLayer);
+                            // Class setzen und merken.
+                            if ($('.leaflet-control-layers.gclh_dummy').length == 0) var setClass = "gclh_dummy";
+                            else var setClass = "gclh_layers";
+                            layerControl._container.className += " " + setClass;
+console.log(setClass);
+                            // Default Layer in Karte anzeigen. (Radios und Checkboxen müssen trotzdem nicht immer korrekt sein, wegen anschließendem gc, GME, GCVote ... .)
+                            if (setClass == "gclh_layers") {
+                                window.MapSettings.Map.addLayer(defaultLayer);
+//                                window.MapSettings.Map.addLayer(hillshadowLayer);
+                            }
 //                            if (settings_show_hillshadow) {
-//                                $(".leaflet-control-layers-overlays").find("input").first().click();
+                            if (setClass == "gclh_layers") {
+console.log("ja1");
+                                if ($('.leaflet-control-layers.'+setClass+' .leaflet-control-layers-overlays').find('label input')[0]) {
+console.log(                        $('.leaflet-control-layers.'+setClass+' .leaflet-control-layers-overlays').find('label input')[0].checked);
+                                }
+                                if ($('.leaflet-control-layers.'+setClass+' .leaflet-control-layers-overlays').find('label input')[0].checked != true) {
+                                    $('.leaflet-control-layers.'+setClass+' .leaflet-control-layers-overlays').find('label input').first().click();
+console.log(                        $('.leaflet-control-layers.'+setClass+' .leaflet-control-layers-overlays').find('label input')[0].checked);
+                                  if ($('.leaflet-control-layers.'+setClass+' .leaflet-control-layers-overlays').find('label input')[0].checked != true) {
+                                      $('.leaflet-control-layers.'+setClass+' .leaflet-control-layers-overlays').find('label input').first().click();
+console.log(                          $('.leaflet-control-layers.'+setClass+' .leaflet-control-layers-overlays').find('label input')[0].checked);
+                                  }
+                                }
+                            }
 //                            }
-//console.log(window.MapSettings.Map);
                         }
                     };
                     window["GCLittleHelper_MapLayerHelper"](map_layers, map_overlays, settings_map_default_layer, settings_show_hillshadow);
@@ -4883,9 +4822,6 @@ var mainGC = function () {
  
             if (settings_use_gclh_layercontrol) {
                 function loopLayerControls(waitCount) {
-// ToDos:
-// - Radiobutton für Default selbst setzen und bei anderen entfernen
-// - hillshadow seten                    
                     if ($('.leaflet-control-layers').length != 0) {
                         var somethingDone = 0;
                         if ($('.leaflet-control-layers.gclh_layers:not(".gclh_used")').length != 0) {
@@ -4913,39 +4849,187 @@ var mainGC = function () {
                         }
                     }
                     waitCount++;
-                    if ( waitCount <= 100 ) {  // 5 Sekunden lang
-                        setTimeout( function () { loopLayerControls( waitCount ); }, 50);
-                    } else return;
+                    if ( waitCount <= 100 ) setTimeout( function () { loopLayerControls( waitCount ); }, 50);
+                    else {
+                        $('.leaflet-control-layers.gclh_dummy').remove();
+                        return;
+                    }
                 }
                 addLayerControl();
                 addLayerControl();
                 loopLayerControls(0);
             }
+            // Default Layer in den Radios und Checkboxen korrekt setzen.
             function setDefaultsInLayer() {
                 var defaultLayer = "";
                 for (name in map_layers) {
-                    if (name == settings_map_default_layer) {
-                        defaultLayer = name;
-                    } else if (defaultLayer == "") {
-                        defaultLayer = name;
-                    }
+                    if (name == settings_map_default_layer) defaultLayer = name;
+                    else if (defaultLayer == "") defaultLayer = name;
                 }
                 var labels = $('.leaflet-control-layers.gclh_layers .leaflet-control-layers-base').find('label');
+                setDefaultsInLayerDoIt(labels, defaultLayer);
+            return;
+                if (settings_show_hillshadow) {
+                    var labels = $('.leaflet-control-layers.gclh_layers .leaflet-control-layers-overlays').find('label');
+                    setDefaultsInLayerDoIt(labels, "Hillshadow");
+                }
+            }
+            function setDefaultsInLayerDoIt(labels, defaultLayer) {
                 if (labels) {
                     for ( var i=0; i<labels.length; i++ ) {
                         if (labels[i].children[1].innerHTML.match(defaultLayer) && labels[i].children[0].checked != true) {
-console.log(labels[i].children[0].checked);
                             labels[i].children[0].checked = true;
                             break;
                         }
                     }
                 }
-//                            if (settings_show_hillshadow) {
-//                                $(".leaflet-control-layers-overlays").find("input").first().click();
-//                            }
             }
-            
 //xxxx2
+*/
+//xxxx2
+            function addLayerControl() {
+                injectPageScriptFunction(function (map_layers, map_overlays, settings_map_default_layer, settings_show_hillshadow) {
+                    window["GCLittleHelper_MapLayerHelper"] = function (map_layers, map_overlays, settings_map_default_layer, settings_show_hillshadow) {
+console.log("######### 0b");
+                        if (!window.MapSettings.Map) {
+                            setTimeout(function () {
+                                window["GCLittleHelper_MapLayerHelper"](map_layers, map_overlays, settings_map_default_layer, settings_show_hillshadow);
+                            }, 10);
+                        } else {
+console.log("######### 1");
+                            var layerControl = new window.L.Control.Layers();
+                            var layerToAdd = null;
+                            var defaultLayer = null;
+                            for (name in map_layers) {
+                                layerToAdd = new L.tileLayer(map_layers[name].tileUrl, map_layers[name]);
+                                layerControl.addBaseLayer(layerToAdd, name);
+                                if (name == settings_map_default_layer) defaultLayer = layerToAdd;
+                                else if (defaultLayer == null) defaultLayer = layerToAdd;
+                            }
+console.log("######### 2");
+                            for (name in map_overlays) {
+                                layerToAdd = new L.tileLayer(map_overlays[name].tileUrl, map_overlays[name]);
+                                layerControl.addOverlay(layerToAdd, name);
+                            }
+console.log("######### 3");
+                            window.MapSettings.Map.addControl(layerControl);
+console.log(layerControl);
+console.log("#");
+console.log(map_layers);
+console.log("#");
+console.log(window.MapSettings.Map);
+console.log("#");
+console.log(window.MapSettings.Map._layers);
+console.log("######### 4");
+// xxxx2 Bei GCVote kommt es immer wieder zu Fehlern. Mal nachsehen, wie dort oder bei GME die Layers aufgemacht werden.
+// ######### 4 ist das letzte das noch angezeigt wird.
+// scheinbar wird in der variablen localStorageCache alles mögliche gehalten und dann wieder aufgebaut. Dort ist dann auch irgendetwas mit GeocacheLayer, was wohl GS ist.
+// localStorageCache kommt wohl von GCVote, wie es aussieht.    
+   //                         for (layerId in window.MapSettings.Map._layers) {
+   //                             if (window.MapSettings.Map._layers[layerId]._url !== -1) {
+   //                                 window.MapSettings.Map.removeLayer(window.MapSettings.Map._layers[layerId]);
+   //                             }
+   //                         }
+console.log("######### 5");
+                            // Class setzen und merken.
+                            var setClass = "gclh_layers";
+                            layerControl._container.className += " " + setClass;
+console.log("######### 6");
+//console.log(setClass);
+//console.log( window.MapSettings.Map);
+                            // Default Layer in Karte anzeigen. (Radios und Checkboxen müssen trotzdem nicht immer korrekt sein, wegen anschließendem gc, GME, GCVote ... .)
+                            window.MapSettings.Map.addLayer(defaultLayer);
+console.log("######### 7");
+                if (settings_show_hillshadow) {
+                            $('.leaflet-control-layers.gclh_layers .leaflet-control-layers-overlays').find('label input').first().click();
+                }
+console.log("######### 8");
+                        }
+                    };
+console.log("######### 0a");
+                    window["GCLittleHelper_MapLayerHelper"](map_layers, map_overlays, settings_map_default_layer, settings_show_hillshadow);
+                }, "(" + JSON.stringify(map_layers) + "," + JSON.stringify(map_overlays) + ",'" + settings_map_default_layer + "'," + settings_show_hillshadow + ")");
+            }
+ 
+            if (settings_use_gclh_layercontrol) {
+                function loopLayerControls(waitCount) {
+                    if ($('.leaflet-control-layers').length != 0) {
+                        var somethingDone = 0;
+                        if ($('.leaflet-control-layers.gclh_layers:not(".gclh_used")').length != 0) {
+                            somethingDone++;
+//xxxx das hier noch besser oben einbauen                            
+                            var side = $('.leaflet-control-layers.gclh_layers:not(".gclh_used")')[0];
+                            var div = document.createElement("div");
+                            div.setAttribute("class", "gclh_dummy gclh_used");
+                            var aTag = document.createElement("a");
+                            aTag.setAttribute("class", "leaflet-control-layers dummy_for_gme gclh_dummy gclh_used");
+                            div.appendChild(aTag);
+                            side.parentNode.insertBefore(div, side);
+                            
+                            $('.leaflet-control-layers.gclh_layers:not(".gclh_used")').addClass('gclh_used');
+                        }
+                        if ($('.leaflet-control-layers:not(".gclh_used")').find('img[title*="GCVote"]').length != 0) {
+                            somethingDone++;
+                            $('.leaflet-control-layers:not(".gclh_used")').find('img[title*="GCVote"]').closest('.leaflet-control-layers').addClass('gclh_used');
+                        }
+                        if ($('#gclh_geoservices_control.leaflet-control-layers:not(".gclh_used")').length != 0) {
+                            somethingDone++;
+                            $('#gclh_geoservices_control.leaflet-control-layers:not(".gclh_used")').addClass('gclh_used');
+                        }
+                        if (somethingDone == 0) {
+                            if ($('.leaflet-control-layers:not(".gclh_used"):not(".gclh_layers")').length != 0) {
+                                somethingDone++;
+//                                $('.leaflet-control-layers:not(".gclh_used"):not(".gclh_layers")').addClass('gclh_used').prop("style", "display: none;");
+                                $('.leaflet-control-layers:not(".gclh_used"):not(".gclh_layers")').remove();
+//                                setDefaultsInLayer();
+                            }
+                        }
+                        if (somethingDone != 0) {
+                                setDefaultsInLayer();
+                        }
+                    }
+                    waitCount++;
+                    if ( waitCount <= 100 ) setTimeout( function () { loopLayerControls( waitCount ); }, 50);
+                    else {
+//                        $('.leaflet-control-layers.gclh_dummy').remove();
+                        return;
+                    }
+                }
+                addLayerControl();
+                loopLayerControls(0);
+            }
+            // Default Layer in den Radios und Checkboxen korrekt setzen.
+            function setDefaultsInLayer() {
+                var defaultLayer = "";
+                for (name in map_layers) {
+                    if (name == settings_map_default_layer) defaultLayer = name;
+                    else if (defaultLayer == "") defaultLayer = name;
+                }
+                var labels = $('.leaflet-control-layers.gclh_layers.gclh_used .leaflet-control-layers-base').find('label');
+                setDefaultsInLayerDoIt(labels, defaultLayer);
+
+
+console.log("##### ja1");
+if ($('.gclh_layers.gclh_used .leaflet-control-layers-overlays').find('label input')[0]) {
+console.log($('.gclh_layers.gclh_used .leaflet-control-layers-overlays').find('label input')[0].checked);
+                if ((settings_show_hillshadow == true && $('.gclh_layers.gclh_used .leaflet-control-layers-overlays').find('label input')[0].checked != true) || 
+                    (settings_show_hillshadow != true && $('.gclh_layers.gclh_used .leaflet-control-layers-overlays').find('label input')[0].checked == true)    ) {
+                    $('.gclh_layers.gclh_used .leaflet-control-layers-overlays').find('label input').first().click();
+console.log("  ##### changed");
+                }
+console.log($('.gclh_layers.gclh_used .leaflet-control-layers-overlays').find('label input')[0].checked);
+}
+            }
+            function setDefaultsInLayerDoIt(labels, defaultLayer) {
+                if (labels) {
+                    for ( var i=0; i<labels.length; i++ ) {
+                        if (labels[i].children[1].innerHTML.match(defaultLayer)) {
+                            labels[i].children[0].click();
+                        }
+                    }
+                }
+            }
+//xxxx2            
             // Function called when map is loaded.
             function gclh_map_loaded() {
                 if (settings_map_hide_sidebar) {
@@ -5177,13 +5261,12 @@ console.log(labels[i].children[0].checked);
             function attachGeoServiceControl( waitCount ) {
                 // Prüfen, ob die Layers schon vorhanden sind, erst dann den Button hinzufügen.
                 if ( $('.leaflet-control-layers-base').find('input.leaflet-control-layers-selector')[0] ) {
-                    // Damit Button nicht ständig den Platz wechselt, um 1 Sekunde verzögern, dann sollte er links von den anderen Buttons stehen.
+                    // Damit Button nicht ständig den Platz wechselt, um 1 Sekunden verzögern, dann sollte er links von den anderen Buttons stehen.
                     setTimeout( initGeoServiceControl, 1000);
                 } else {
                     waitCount++;
-                    if ( waitCount <= 50 ) {  // 10 Sekunden lang
-                        setTimeout( function () { attachGeoServiceControl( waitCount ); }, 200);
-                    } else return;
+                    if ( waitCount <= 50 ) setTimeout( function () { attachGeoServiceControl( waitCount ); }, 100);
+                    else return;
                 }
             }
             attachGeoServiceControl( 0 );
