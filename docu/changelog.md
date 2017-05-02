@@ -78,6 +78,10 @@ The functionality, to create a bookmark with comment, is already available in gc
 <img src="../images/v0.8_Screen36.jpg" alt="v0.8_Screen36.jpg"> <b>>>></b> <img src="../images/v0.8_Screen37.jpg" alt="v0.8_Screen37.jpg"><br>
 <br>
 </li>
+<li>
+Change: Consolidate F2 key functions for better expandability: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/345">#345</a>]<br>
+<br>
+</li>
 </ul>
 (??.05.2017)<br> 
 <br>
