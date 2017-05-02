@@ -80,7 +80,7 @@ The functionality, to create a bookmark with comment, is already available in gc
 <br>
 </li>
 <li>
-Change: Consolidate F2 key functions for better expandability: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/345">#345</a>]<br>
+Change: Consolidate F2 key functions for better expandability. [Issue <a href="https://github.com/2Abendsegler/GClh/issues/345">#345</a>]<br>
 <br>
 <br>
 </li>
