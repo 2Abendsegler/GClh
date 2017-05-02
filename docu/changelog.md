@@ -77,9 +77,11 @@ Tip: Enable old link in cache listing to create bookmark with comment: [Issue <a
 The functionality, to create a bookmark with comment, is already available in gc.com standard. Please select the button "Add to list" in cache listing not with the left mouse key but with the right mouse key and choose "open link in new tab".<br>
 <img src="../images/v0.8_Screen36.jpg" alt="v0.8_Screen36.jpg"> <b>>>></b> <img src="../images/v0.8_Screen37.jpg" alt="v0.8_Screen37.jpg"><br>
 <br>
+<br>
 </li>
 <li>
 Change: Consolidate F2 key functions for better expandability: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/345">#345</a>]<br>
+<br>
 <br>
 </li>
 </ul>
