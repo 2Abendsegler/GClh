@@ -68,7 +68,7 @@ Settings -> Global:<br>
 <br>
 </li>
 <li>
-New: Display images in user, cache and TB image galleries with maximum possible size: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/312">#312</a>]<br>
+New: Display images in user, cache and TB image galleries with maximum possible size. [Issue <a href="https://github.com/2Abendsegler/GClh/issues/312">#312</a>]<br>
 <br>
 <br>
 </li>
