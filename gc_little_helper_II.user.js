@@ -153,25 +153,25 @@ var constInit = function (c) {
 
     iconsInit();
 
-    c.all_map_layers = new Object();     // gc.com Default-Layers
+    c.all_map_layers = new Object();
     c.all_map_layers = {
          "Geocaching" : { tileUrl: "https://maptiles{s}.geocaching.com/tile/{z}/{x}/{y}.png?token={accessToken}",  accessToken: '',  subdomains: ['01', '02', '03', '04', '05', '06', '07', '08'],  minZoom: 0,  maxZoom: 18 }
         ,"OpenStreetMap Default" : { tileUrl: "http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",  attribution: '&copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>' }
         ,"OpenStreetMap German Style" : { tileUrl: "http://{s}.tile.openstreetmap.de/tiles/osmde/{z}/{x}/{y}.png",  attribution: '&copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>' }
         ,"OpenStreetMap Black and White" : { tileUrl: "http://{s}.www.toolserver.org/tiles/bw-mapnik/{z}/{x}/{y}.png",  attribution: '&copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>' }
+        ,"OpenStreetMap Hike and Bike" : { tileUrl: "http://toolserver.org/tiles/hikebike/{z}/{x}/{y}.png",  attribution: 'Map and map data \u00a9 2012 <a href="http://www.openstreetmap.org" target=\'_blank\'>OpenStreetMap</a> and contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>.',  tileSize: 256,  minZoom: 0,  maxZoom: 20 }
         ,"Thunderforest OpenCycleMap" : { tileUrl: "http://{s}.tile.opencyclemap.org/cycle/{z}/{x}/{y}.png",  attribution: '&copy; <a href="http://www.opencyclemap.org">OpenCycleMap</a>, <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>' }
         ,"Thunderforest Transport" : { tileUrl: "http://{s}.tile2.opencyclemap.org/transport/{z}/{x}/{y}.png",  attribution: '&copy; <a href="http://www.opencyclemap.org">OpenCycleMap</a>, <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>' }
         ,"Thunderforest Landscape" : { tileUrl: "http://{s}.tile3.opencyclemap.org/landscape/{z}/{x}/{y}.png",  attribution: '&copy; <a href="http://www.opencyclemap.org">OpenCycleMap</a>, <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>' }
-        ,"Stamen Toner" : { tileUrl: "http://{s}.tile.stamen.com/toner/{z}/{x}/{y}.png",  attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; ' + "Map data {attribution.OpenStreetMap}",  subdomains: "abcd",  minZoom: 0,  maxZoom: 20 }
-        ,"Stamen Terrain" : { tileUrl: "http://{s}.tile.stamen.com/terrain/{z}/{x}/{y}.png",  attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; ' + "Map data {attribution.OpenStreetMap}",  subdomains: "abcd",  minZoom: 4,  maxZoom: 18 }
-        ,"Stamen Watercolor" : { tileUrl: "http://{s}.tile.stamen.com/watercolor/{z}/{x}/{y}.png",  attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; ' + "Map data {attribution.OpenStreetMap}",  subdomains: "abcd",  minZoom: 3,  maxZoom: 16 }
+        ,"Stamen Toner" : { tileUrl: "http://{s}.tile.stamen.com/toner/{z}/{x}/{y}.png",  attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, under <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a>. Data by <a href="http://openstreetmap.org">OpenStreetMap</a>, under <a href="http://www.openstreetmap.org/copyright">ODbL</a>',  subdomains: "abcd",  minZoom: 0,  maxZoom: 20 }
+        ,"Stamen Terrain" : { tileUrl: "http://{s}.tile.stamen.com/terrain/{z}/{x}/{y}.png",  attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, under <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a>. Data by <a href="http://openstreetmap.org">OpenStreetMap</a>, under <a href="http://www.openstreetmap.org/copyright">ODbL</a>',  subdomains: "abcd",  minZoom: 4,  maxZoom: 18 }
+        ,"Stamen Watercolor" : { tileUrl: "http://{s}.tile.stamen.com/watercolor/{z}/{x}/{y}.png",  attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, under <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a>. Data by <a href="http://openstreetmap.org">OpenStreetMap</a>, under <a href="http://creativecommons.org/licenses/by-sa/3.0">CC BY SA</a>',  subdomains: "abcd",  minZoom: 3,  maxZoom: 16 }
         ,"Esri WorldStreetMap" : { tileUrl: "http://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}",  attribution: "Tiles &copy; Esri" }
         ,"Esri DeLorme" : { tileUrl: "http://server.arcgisonline.com/ArcGIS/rest/services/Specialty/DeLorme_World_Base_Map/MapServer/tile/{z}/{y}/{x}",  attribution: "Tiles &copy; Esri &mdash; Copyright: \u00a92012 DeLorme",  maxZoom: 11 }
         ,"Esri WorldTopoMap" : { tileUrl: "http://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}",  attribution: "Tiles &copy; Esri &mdash; Esri, DeLorme, NAVTEQ, TomTom, Intermap, iPC, USGS, FAO, NPS, NRCAN, GeoBase, Kadaster NL, Ordnance Survey, Esri Japan, METI, Esri China (Hong Kong), and the GIS User Community" }
         ,"Esri WorldImagery" : { tileUrl: "http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",  attribution: "Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community" }
         ,"Esri OceanBasemap" : { tileUrl: "http://services.arcgisonline.com/ArcGIS/rest/services/Ocean_Basemap/MapServer/tile/{z}/{y}/{x}",  attribution: "Tiles &copy; Esri &mdash; Sources: GEBCO, NOAA, CHS, OSU, UNH, CSUMB, National Geographic, DeLorme, NAVTEQ, and Esri",  maxZoom: 11 }
         ,"Esri NatGeoWorldMap" : { tileUrl: "http://services.arcgisonline.com/ArcGIS/rest/services/NatGeo_World_Map/MapServer/tile/{z}/{y}/{x}",  attribution: "Tiles &copy; Esri &mdash; National Geographic, Esri, DeLorme, NAVTEQ, UNEP-WCMC, USGS, NASA, ESA, METI, NRCAN, GEBCO, NOAA, iPC" }
-        ,"OpenStreetMap Hike and Bike" : { tileUrl: "http://toolserver.org/tiles/hikebike/{z}/{x}/{y}.png",  attribution: 'Map and map data \u00a9 2012 <a href="http://www.openstreetmap.org" target=\'_blank\'>OpenStreetMap</a> and contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>.',  tileSize: 256,  minZoom: 0,  maxZoom: 20 }
         ,"Google Maps" : { tileUrl: "http://mt.google.com/vt?x={x}&y={y}&z={z}",  attribution: "Google Maps",  tileSize: 256,  minZoom: 0,  maxZoom: 20 }
         ,"Google Maps Satellite" : { tileUrl: "http://mt.google.com/vt?lyrs=s&x={x}&y={y}&z={z}",  attribution: "Google Maps",  tileSize: 256,  minZoom: 3,  maxZoom: 20 }
         ,"Google Maps Hybrid" : { tileUrl: "http://mt0.google.com/vt/lyrs=s,m@110&hl=en&x={x}&y={y}&z={z}",  attribution: "Google Maps",  tileSize: 256,  minZoom: 0,  maxZoom: 20 }
@@ -803,9 +803,10 @@ var mainGC = function () {
         }
     }
 
-// F2 key for save.
-    if (settings_submit_log_button) {
-        try {
+// F2, F4, F10 keys.
+    try {
+        // F2 key.
+        if (settings_submit_log_button) {
             // Log abschicken (Cache und TB).
             if (document.location.href.match(/^https?:\/\/www\.geocaching\.com\/(seek|track)\/log\.aspx\?(id|wid|guid|ID|wp|LUID|PLogGuid)\=/)) var id = "ctl00_ContentBody_LogBookPanel1_btnSubmitLog";
             // PQ speichern | "Bookmark Pocket Query", aus BM PQ erzeugen.
@@ -821,52 +822,155 @@ var mainGC = function () {
                 else if (document.getElementById("ctl00_ContentBody_Attributes_btnUpdate")) var id = "ctl00_ContentBody_Attributes_btnUpdate";
                 else if (document.getElementById("ctl00_ContentBody_WaypointEdit_uxSubmitIt")) var id = "ctl00_ContentBody_WaypointEdit_uxSubmitIt";
             }
-
             if (id && document.getElementById(id)) {
-                function keydown(e) {
+                function keydownF2(e) {
                     if (e.keyCode == 113 && !check_config_page()) {
                         document.getElementById(id).click();
                     }
                 }
                 document.getElementById(id).value += " (F2)";
-                window.addEventListener('keydown', keydown, true);
+                window.addEventListener('keydown', keydownF2, true);
             }
-        } catch (e) {
-            gclh_error("F2 key for save", e);
         }
+        // Aufruf GClh Config per F4 Taste. Nur auf den erlaubten Seiten und auch nur, wenn man nicht schon im GClh Config ist.
+        if ( settings_f4_call_gclh_config && !check_config_page()) {
+            function keydownF4(e) {
+                if (e.keyCode == 115 && !check_config_page()) {
+                    if (checkTaskAllowed("GClh Config", false) == true ) gclh_showConfig();
+                    else document.location.href = defaultConfigLink;
+                }
+            }
+            window.addEventListener('keydown', keydownF4, true);
+        }
+        // Aufruf GClh Sync per F10 Taste. Nur auf den erlaubten Seiten und auch nur, wenn man nicht schon im GClh Sync ist. Nicht im Config Reset Modus.
+        if ( settings_f10_call_gclh_sync && !check_sync_page()) {
+            function keydownF10(e) {
+                if (e.keyCode == 121 && !check_sync_page() && !global_mod_reset) {
+                    if (checkTaskAllowed("GClh Sync", false) == true ) gclh_showSync();
+                    else document.location.href = defaultSyncLink;
+                }
+            }
+            window.addEventListener('keydown', keydownF10, true);
+        }
+    } catch (e) {
+        gclh_error("F2, F4, F10 keys", e);
     }
 
-// Aufruf GClh Config per F4 Taste. Nur auf den erlaubten Seiten und auch nur, wenn man nicht schon im GClh Config ist.
-    if ( settings_f4_call_gclh_config ) {
-        function keydown(e) {
-            if (e.keyCode == 115 && !check_config_page()) {
-                if (checkTaskAllowed("GClh Config", false) == true ) gclh_showConfig();
-                else document.location.href = defaultConfigLink;
-            }
-        }
+// Add layers, control to map and set default layers.
+    if (settings_use_gclh_layercontrol && document.location.href.match(/^https?:\/\/www\.geocaching\.com\/map\//)) {
         try {
-            if (!check_config_page()) {
-                window.addEventListener('keydown', keydown, true);
+            // Auswahl nur bestimmter Layer.
+            var map_layers = new Object();
+            if (settings_map_layers == "" || settings_map_layers.length < 1) map_layers = all_map_layers;
+            else {
+                for (var i = 0; i < settings_map_layers.length; i++) map_layers[settings_map_layers[i]] = all_map_layers[settings_map_layers[i]];
             }
-        } catch (e) {
-            gclh_error("F4 call GClh Config", e);
-        }
-    }
+            // Layer Control aufbauen.
+            function addLayerControl() {
+                injectPageScriptFunction(function (map_layers, map_overlays, settings_map_default_layer, settings_show_hillshadow) {
+                    window["GCLittleHelper_MapLayerHelper"] = function (map_layers, map_overlays, settings_map_default_layer, settings_show_hillshadow) {
+                        if (!window.MapSettings.Map) {
+                            setTimeout(function () {
+                                window["GCLittleHelper_MapLayerHelper"](map_layers, map_overlays, settings_map_default_layer, settings_show_hillshadow);
+                            }, 10);
+                        } else {
+                            var layerControl = new window.L.Control.Layers();
+                            var layerToAdd = null;
+                            var defaultLayer = null;
+                            for (name in map_layers) {
+                                layerToAdd = new L.tileLayer(map_layers[name].tileUrl, map_layers[name]);
+                                layerControl.addBaseLayer(layerToAdd, name);
+                                if (name == settings_map_default_layer) defaultLayer = layerToAdd;
+                                else if (defaultLayer == null) defaultLayer = layerToAdd;
+                            }
+                            for (name in map_overlays) {
+                                layerToAdd = new L.tileLayer(map_overlays[name].tileUrl, map_overlays[name]);
+                                layerControl.addOverlay(layerToAdd, name);
+                            }
+                            window.MapSettings.Map.addControl(layerControl);
+                            layerControl._container.className += " gclh_layers gclh_used";
+                            window.MapSettings.Map.addLayer(defaultLayer);
+                            if (settings_show_hillshadow) {
+                                $('.leaflet-control-layers.gclh_layers .leaflet-control-layers-overlays').find('label input').first().click();
+                            }
 
-// Aufruf GClh Sync per F10 Taste. Nur auf den erlaubten Seiten und auch nur, wenn man nicht schon im GClh Sync ist. Nicht im Config Reset Modus.
-    if ( settings_f10_call_gclh_sync ) {
-        function keydown(e) {
-            if (e.keyCode == 121 && !check_sync_page() && !global_mod_reset) {
-                if (checkTaskAllowed("GClh Sync", false) == true ) gclh_showSync();
-                else document.location.href = defaultSyncLink;
+                            var side = $('.leaflet-control-layers')[0];
+                            var div = document.createElement("div");
+                            div.setAttribute("class", "gclh_dummy gclh_used");
+                            var aTag = document.createElement("a");
+                            aTag.setAttribute("class", "leaflet-control-layers dummy_for_gme gclh_dummy gclh_used");
+                            div.appendChild(aTag);
+                            side.parentNode.insertBefore(div, side);
+
+                            // Defekte Layer entfernen.
+                            // (GCVote verursacht hier gelegentlich einen Abbruch, weil der dort verwendete localStorageCache scheinbar unvollständige Layer belebt.)
+                            try {
+                                for (layerId in window.MapSettings.Map._layers) {
+                                    if (window.MapSettings.Map._layers[layerId]._url !== -1) {
+                                        window.MapSettings.Map.removeLayer(window.MapSettings.Map._layers[layerId]);
+                                    }
+                                }
+                            } catch (e) {};
+                        }
+                    };
+                    window["GCLittleHelper_MapLayerHelper"](map_layers, map_overlays, settings_map_default_layer, settings_show_hillshadow);
+                }, "(" + JSON.stringify(map_layers) + "," + JSON.stringify(map_overlays) + ",'" + settings_map_default_layer + "'," + settings_show_hillshadow + ")");
             }
-        }
-        try {
-            if (!check_sync_page()) {
-                window.addEventListener('keydown', keydown, true);
+            // Layer Defaults setzen.
+            function setDefaultsInLayer() {
+                var defaultLayer = "";
+                for (name in map_layers) {
+                    if (name == settings_map_default_layer) defaultLayer = name;
+                    else if (defaultLayer == "") defaultLayer = name;
+                }
+                var labels = $('.leaflet-control-layers.gclh_layers.gclh_used .leaflet-control-layers-base').find('label');
+                if (labels) {
+                    for (var i=0; i<labels.length; i++) {
+                        if (labels[i].children[1].innerHTML.match(defaultLayer)) {
+                            labels[i].children[0].click();
+                            break;
+                        }
+                    }
+                }
+                var hs = ".gclh_layers.gclh_used .leaflet-control-layers-overlays";
+                if ($(hs).find('label input')[0]) {
+                    if ((settings_show_hillshadow == true && $(hs).find('label input')[0].checked != true) ||
+                        (settings_show_hillshadow != true && $(hs).find('label input')[0].checked == true)    ) {
+                        $(hs).find('label input').first().click();
+                    }
+                }
             }
+            // Layer Controls überwachen.
+            function loopAtLayerControls(waitCount) {
+                if ($('.leaflet-control-layers').length != 0) {
+                    var somethingDone = 0;
+                    if ($('.leaflet-control-layers:not(".gclh_used")').find('img[title*="GCVote"]').length != 0) {
+                        somethingDone++;
+                        $('.leaflet-control-layers:not(".gclh_used")').find('img[title*="GCVote"]').closest('.leaflet-control-layers').addClass('gclh_used');
+                    }
+                    if ($('#gclh_geoservices_control.leaflet-control-layers:not(".gclh_used")').length != 0) {
+                        somethingDone++;
+                        $('#gclh_geoservices_control.leaflet-control-layers:not(".gclh_used")').addClass('gclh_used');
+                    }
+                    if (somethingDone == 0) {
+                        if ($('.leaflet-control-layers:not(".gclh_used"):not(".gclh_layers")').length != 0) {
+                            somethingDone++;
+                            $('.leaflet-control-layers:not(".gclh_used"):not(".gclh_layers")').remove();
+                        }
+                    }
+                    if (somethingDone != 0) {
+                        setDefaultsInLayer();
+                    }
+                }
+                waitCount++;
+                if ( waitCount <= 100 ) setTimeout( function () { loopAtLayerControls( waitCount ); }, 50);
+                else return;
+            }
+
+            addLayerControl();
+            loopAtLayerControls(0);
         } catch (e) {
-            gclh_error("F10 call GClh Sync", e);
+            gclh_error("Add layers, control to map and set default layers:", e);
         }
     }
 
@@ -4745,303 +4849,21 @@ var mainGC = function () {
         }
     }
 
-//xxxx2 der teil hier sollte eigentlich ganz weit nach oben
-// Add additional Layers to Map & Select Default-Layer, add Hill-Shadow, add Homezone.
+// Change map parameter and add Homezone to map.
     if (document.location.href.match(/^https?:\/\/www\.geocaching\.com\/map\//)) {
         try {
-            // Auswahl nur bestimmter Layer.
-            var map_layers = new Object();
-            if (settings_map_layers == "" || settings_map_layers.length < 1) map_layers = all_map_layers;
-            else {
-                for (var i = 0; i < settings_map_layers.length; i++) map_layers[settings_map_layers[i]] = all_map_layers[settings_map_layers[i]];
-            }
-//xxxx2
-/*
-            function addLayerControl() {
-                injectPageScriptFunction(function (map_layers, map_overlays, settings_map_default_layer, settings_show_hillshadow) {
-                    window["GCLittleHelper_MapLayerHelper"] = function (map_layers, map_overlays, settings_map_default_layer, settings_show_hillshadow) {
-                        if (!window.MapSettings.Map) {
-                            setTimeout(function () {
-                                window["GCLittleHelper_MapLayerHelper"](map_layers, map_overlays, settings_map_default_layer, settings_show_hillshadow);
-                            }, 10);
-                        } else {
-                            var layerControl = new window.L.Control.Layers();
-                            var layerToAdd = null;
-                            var defaultLayer = null;
-                            var hillshadowLayer = null;
-//                            if ($('.leaflet-control-layers.gclh_dummy').length != 0) {
-                                for (name in map_layers) {
-                                    layerToAdd = new L.tileLayer(map_layers[name].tileUrl, map_layers[name]);
-                                    layerControl.addBaseLayer(layerToAdd, name);
-                                    if (name == settings_map_default_layer) defaultLayer = layerToAdd;
-                                    else if (defaultLayer == null) defaultLayer = layerToAdd;
-                                }
-                                for (name in map_overlays) {
-                                    layerToAdd = new L.tileLayer(map_overlays[name].tileUrl, map_overlays[name]);
-                                    layerControl.addOverlay(layerToAdd, name);
-//                                    if (name == "hillshadow") hillshadowLayer = layerToAdd;
-                                }
-//                            }
-                            window.MapSettings.Map.addControl(layerControl);
-                            for (layerId in window.MapSettings.Map._layers) {
-                                if (window.MapSettings.Map._layers[layerId]._url !== -1) {
-                                    window.MapSettings.Map.removeLayer(window.MapSettings.Map._layers[layerId]);
-                                }
-                            }
-                            // Class setzen und merken.
-                            if ($('.leaflet-control-layers.gclh_dummy').length == 0) var setClass = "gclh_dummy";
-                            else var setClass = "gclh_layers";
-                            layerControl._container.className += " " + setClass;
-console.log(setClass);
-                            // Default Layer in Karte anzeigen. (Radios und Checkboxen müssen trotzdem nicht immer korrekt sein, wegen anschließendem gc, GME, GCVote ... .)
-                            if (setClass == "gclh_layers") {
-                                window.MapSettings.Map.addLayer(defaultLayer);
-//                                window.MapSettings.Map.addLayer(hillshadowLayer);
-                            }
-//                            if (settings_show_hillshadow) {
-                            if (setClass == "gclh_layers") {
-console.log("ja1");
-                                if ($('.leaflet-control-layers.'+setClass+' .leaflet-control-layers-overlays').find('label input')[0]) {
-console.log(                        $('.leaflet-control-layers.'+setClass+' .leaflet-control-layers-overlays').find('label input')[0].checked);
-                                }
-                                if ($('.leaflet-control-layers.'+setClass+' .leaflet-control-layers-overlays').find('label input')[0].checked != true) {
-                                    $('.leaflet-control-layers.'+setClass+' .leaflet-control-layers-overlays').find('label input').first().click();
-console.log(                        $('.leaflet-control-layers.'+setClass+' .leaflet-control-layers-overlays').find('label input')[0].checked);
-                                  if ($('.leaflet-control-layers.'+setClass+' .leaflet-control-layers-overlays').find('label input')[0].checked != true) {
-                                      $('.leaflet-control-layers.'+setClass+' .leaflet-control-layers-overlays').find('label input').first().click();
-console.log(                          $('.leaflet-control-layers.'+setClass+' .leaflet-control-layers-overlays').find('label input')[0].checked);
-                                  }
-                                }
-                            }
-//                            }
-                        }
-                    };
-                    window["GCLittleHelper_MapLayerHelper"](map_layers, map_overlays, settings_map_default_layer, settings_show_hillshadow);
-                }, "(" + JSON.stringify(map_layers) + "," + JSON.stringify(map_overlays) + ",'" + settings_map_default_layer + "'," + settings_show_hillshadow + ")");
-            }
- 
-            if (settings_use_gclh_layercontrol) {
-                function loopLayerControls(waitCount) {
-                    if ($('.leaflet-control-layers').length != 0) {
-                        var somethingDone = 0;
-                        if ($('.leaflet-control-layers.gclh_layers:not(".gclh_used")').length != 0) {
-                            somethingDone++;
-                            $('.leaflet-control-layers.gclh_layers:not(".gclh_used")').addClass('gclh_used');
-                            setDefaultsInLayer();
-                        }
-                        if ($('.leaflet-control-layers.gclh_dummy:not(".gclh_used")').length != 0) {
-                            somethingDone++;
-                            $('.leaflet-control-layers.gclh_dummy:not(".gclh_used")').addClass('gclh_used').prop("style", "display: none;");
-                        }
-                        if ($('.leaflet-control-layers:not(".gclh_used")').find('img[title*="GCVote"]').length != 0) {
-                            somethingDone++;
-                            $('.leaflet-control-layers:not(".gclh_used")').find('img[title*="GCVote"]').closest('.leaflet-control-layers').addClass('gclh_used');
-                        }
-                        if ($('#gclh_geoservices_control.leaflet-control-layers:not(".gclh_used")').length != 0) {
-                            somethingDone++;
-                            $('#gclh_geoservices_control.leaflet-control-layers:not(".gclh_used")').addClass('gclh_used');
-                        }
-                        if (somethingDone == 0) {
-                            if ($('.leaflet-control-layers:not(".gclh_used")').length != 0) {
-                                $('.leaflet-control-layers:not(".gclh_used")').addClass('gclh_used').prop("style", "display: none;");
-                                setDefaultsInLayer();
-                            }
-                        }
-                    }
-                    waitCount++;
-                    if ( waitCount <= 100 ) setTimeout( function () { loopLayerControls( waitCount ); }, 50);
-                    else {
-                        $('.leaflet-control-layers.gclh_dummy').remove();
-                        return;
-                    }
-                }
-                addLayerControl();
-                addLayerControl();
-                loopLayerControls(0);
-            }
-            // Default Layer in den Radios und Checkboxen korrekt setzen.
-            function setDefaultsInLayer() {
-                var defaultLayer = "";
-                for (name in map_layers) {
-                    if (name == settings_map_default_layer) defaultLayer = name;
-                    else if (defaultLayer == "") defaultLayer = name;
-                }
-                var labels = $('.leaflet-control-layers.gclh_layers .leaflet-control-layers-base').find('label');
-                setDefaultsInLayerDoIt(labels, defaultLayer);
-            return;
-                if (settings_show_hillshadow) {
-                    var labels = $('.leaflet-control-layers.gclh_layers .leaflet-control-layers-overlays').find('label');
-                    setDefaultsInLayerDoIt(labels, "Hillshadow");
-                }
-            }
-            function setDefaultsInLayerDoIt(labels, defaultLayer) {
-                if (labels) {
-                    for ( var i=0; i<labels.length; i++ ) {
-                        if (labels[i].children[1].innerHTML.match(defaultLayer) && labels[i].children[0].checked != true) {
-                            labels[i].children[0].checked = true;
-                            break;
-                        }
-                    }
-                }
-            }
-//xxxx2
-*/
-//xxxx2
-            function addLayerControl() {
-                injectPageScriptFunction(function (map_layers, map_overlays, settings_map_default_layer, settings_show_hillshadow) {
-                    window["GCLittleHelper_MapLayerHelper"] = function (map_layers, map_overlays, settings_map_default_layer, settings_show_hillshadow) {
-console.log("######### 0b");
-                        if (!window.MapSettings.Map) {
-                            setTimeout(function () {
-                                window["GCLittleHelper_MapLayerHelper"](map_layers, map_overlays, settings_map_default_layer, settings_show_hillshadow);
-                            }, 10);
-                        } else {
-console.log("######### 1");
-                            var layerControl = new window.L.Control.Layers();
-                            var layerToAdd = null;
-                            var defaultLayer = null;
-                            for (name in map_layers) {
-                                layerToAdd = new L.tileLayer(map_layers[name].tileUrl, map_layers[name]);
-                                layerControl.addBaseLayer(layerToAdd, name);
-                                if (name == settings_map_default_layer) defaultLayer = layerToAdd;
-                                else if (defaultLayer == null) defaultLayer = layerToAdd;
-                            }
-console.log("######### 2");
-                            for (name in map_overlays) {
-                                layerToAdd = new L.tileLayer(map_overlays[name].tileUrl, map_overlays[name]);
-                                layerControl.addOverlay(layerToAdd, name);
-                            }
-console.log("######### 3");
-                            window.MapSettings.Map.addControl(layerControl);
-console.log(layerControl);
-console.log("#");
-console.log(map_layers);
-console.log("#");
-console.log(window.MapSettings.Map);
-console.log("#");
-console.log(window.MapSettings.Map._layers);
-console.log("######### 4");
-// xxxx2 Bei GCVote kommt es immer wieder zu Fehlern. Mal nachsehen, wie dort oder bei GME die Layers aufgemacht werden.
-// ######### 4 ist das letzte das noch angezeigt wird.
-// scheinbar wird in der variablen localStorageCache alles mögliche gehalten und dann wieder aufgebaut. Dort ist dann auch irgendetwas mit GeocacheLayer, was wohl GS ist.
-// localStorageCache kommt wohl von GCVote, wie es aussieht.    
-   //                         for (layerId in window.MapSettings.Map._layers) {
-   //                             if (window.MapSettings.Map._layers[layerId]._url !== -1) {
-   //                                 window.MapSettings.Map.removeLayer(window.MapSettings.Map._layers[layerId]);
-   //                             }
-   //                         }
-console.log("######### 5");
-                            // Class setzen und merken.
-                            var setClass = "gclh_layers";
-                            layerControl._container.className += " " + setClass;
-console.log("######### 6");
-//console.log(setClass);
-//console.log( window.MapSettings.Map);
-                            // Default Layer in Karte anzeigen. (Radios und Checkboxen müssen trotzdem nicht immer korrekt sein, wegen anschließendem gc, GME, GCVote ... .)
-                            window.MapSettings.Map.addLayer(defaultLayer);
-console.log("######### 7");
-                if (settings_show_hillshadow) {
-                            $('.leaflet-control-layers.gclh_layers .leaflet-control-layers-overlays').find('label input').first().click();
-                }
-console.log("######### 8");
-                        }
-                    };
-console.log("######### 0a");
-                    window["GCLittleHelper_MapLayerHelper"](map_layers, map_overlays, settings_map_default_layer, settings_show_hillshadow);
-                }, "(" + JSON.stringify(map_layers) + "," + JSON.stringify(map_overlays) + ",'" + settings_map_default_layer + "'," + settings_show_hillshadow + ")");
-            }
- 
-            if (settings_use_gclh_layercontrol) {
-                function loopLayerControls(waitCount) {
-                    if ($('.leaflet-control-layers').length != 0) {
-                        var somethingDone = 0;
-                        if ($('.leaflet-control-layers.gclh_layers:not(".gclh_used")').length != 0) {
-                            somethingDone++;
-//xxxx das hier noch besser oben einbauen                            
-                            var side = $('.leaflet-control-layers.gclh_layers:not(".gclh_used")')[0];
-                            var div = document.createElement("div");
-                            div.setAttribute("class", "gclh_dummy gclh_used");
-                            var aTag = document.createElement("a");
-                            aTag.setAttribute("class", "leaflet-control-layers dummy_for_gme gclh_dummy gclh_used");
-                            div.appendChild(aTag);
-                            side.parentNode.insertBefore(div, side);
-                            
-                            $('.leaflet-control-layers.gclh_layers:not(".gclh_used")').addClass('gclh_used');
-                        }
-                        if ($('.leaflet-control-layers:not(".gclh_used")').find('img[title*="GCVote"]').length != 0) {
-                            somethingDone++;
-                            $('.leaflet-control-layers:not(".gclh_used")').find('img[title*="GCVote"]').closest('.leaflet-control-layers').addClass('gclh_used');
-                        }
-                        if ($('#gclh_geoservices_control.leaflet-control-layers:not(".gclh_used")').length != 0) {
-                            somethingDone++;
-                            $('#gclh_geoservices_control.leaflet-control-layers:not(".gclh_used")').addClass('gclh_used');
-                        }
-                        if (somethingDone == 0) {
-                            if ($('.leaflet-control-layers:not(".gclh_used"):not(".gclh_layers")').length != 0) {
-                                somethingDone++;
-//                                $('.leaflet-control-layers:not(".gclh_used"):not(".gclh_layers")').addClass('gclh_used').prop("style", "display: none;");
-                                $('.leaflet-control-layers:not(".gclh_used"):not(".gclh_layers")').remove();
-//                                setDefaultsInLayer();
-                            }
-                        }
-                        if (somethingDone != 0) {
-                                setDefaultsInLayer();
-                        }
-                    }
-                    waitCount++;
-                    if ( waitCount <= 100 ) setTimeout( function () { loopLayerControls( waitCount ); }, 50);
-                    else {
-//                        $('.leaflet-control-layers.gclh_dummy').remove();
-                        return;
-                    }
-                }
-                addLayerControl();
-                loopLayerControls(0);
-            }
-            // Default Layer in den Radios und Checkboxen korrekt setzen.
-            function setDefaultsInLayer() {
-                var defaultLayer = "";
-                for (name in map_layers) {
-                    if (name == settings_map_default_layer) defaultLayer = name;
-                    else if (defaultLayer == "") defaultLayer = name;
-                }
-                var labels = $('.leaflet-control-layers.gclh_layers.gclh_used .leaflet-control-layers-base').find('label');
-                setDefaultsInLayerDoIt(labels, defaultLayer);
-
-
-console.log("##### ja1");
-if ($('.gclh_layers.gclh_used .leaflet-control-layers-overlays').find('label input')[0]) {
-console.log($('.gclh_layers.gclh_used .leaflet-control-layers-overlays').find('label input')[0].checked);
-                if ((settings_show_hillshadow == true && $('.gclh_layers.gclh_used .leaflet-control-layers-overlays').find('label input')[0].checked != true) || 
-                    (settings_show_hillshadow != true && $('.gclh_layers.gclh_used .leaflet-control-layers-overlays').find('label input')[0].checked == true)    ) {
-                    $('.gclh_layers.gclh_used .leaflet-control-layers-overlays').find('label input').first().click();
-console.log("  ##### changed");
-                }
-console.log($('.gclh_layers.gclh_used .leaflet-control-layers-overlays').find('label input')[0].checked);
-}
-            }
-            function setDefaultsInLayerDoIt(labels, defaultLayer) {
-                if (labels) {
-                    for ( var i=0; i<labels.length; i++ ) {
-                        if (labels[i].children[1].innerHTML.match(defaultLayer)) {
-                            labels[i].children[0].click();
-                        }
-                    }
-                }
-            }
-//xxxx2            
-            // Function called when map is loaded.
             function gclh_map_loaded() {
                 if (settings_map_hide_sidebar) {
-                    var links = document.getElementsByTagName("a");
-                    if (document.getElementById("searchtabs").parentNode.style.left != "-355px")
+                    if (document.getElementById("searchtabs").parentNode.style.left != "-355px") {
+                        var links = document.getElementsByTagName("a");
                         for (var i = 0; i < links.length; i++) {
                             if (links[i].className.match(/ToggleSidebar/)) {
                                 links[i].click();
                                 break;
                             }
                         }
-                    function hideSidebarRest( waitCount ) {
+                    }
+                    function hideSidebarRest(waitCount) {
                         if ( document.getElementsByClassName("groundspeak-control-findmylocation")[0] &&
                              document.getElementsByClassName("leaflet-control-scale")[0]              &&
                              document.getElementsByClassName("leaflet-control-zoom")[0]                  ) {
@@ -5053,12 +4875,11 @@ console.log($('.gclh_layers.gclh_used .leaflet-control-layers-overlays').find('l
                             document.getElementsByClassName("leaflet-control-zoom")[0].style.left = styleLeft;
                         } else {
                             waitCount++;
-                            if ( waitCount <= 50 ) {  // 10 Sekunden
-                                setTimeout( function () { hideSidebarRest( waitCount ); }, 200);
-                            } else return;
+                            if ( waitCount <= 50 ) setTimeout( function () { hideSidebarRest(waitCount); }, 200);
+                            else return;
                         }
                     }
-                    hideSidebarRest( 0 );
+                    hideSidebarRest(0);
                 }
 
                 function addHomeZoneMap(unsafeWindow, home_lat, home_lng, settings_homezone_radius, settings_homezone_color, settings_homezone_opacity) {
@@ -5089,7 +4910,7 @@ console.log($('.gclh_layers.gclh_used .leaflet-control-layers-overlays').find('l
                 // Die Circles werden manchmal zu früh aufgebaut, dann blinken sie kurz auf und sind dann auch schon wieder verschwunden.
                 // Das passiert insbesondere beim Kartenaufruf ohne Koordinaten, also beispielsweise aus dem Menü Play. Auf was man warten
                 // soll ist mir nicht klar. Ich nehme Ähnliches wie oben bei hideSidebarRest.
-                function checkForAddHomeZoneMap( waitCount ) {
+                function checkForAddHomeZoneMap(waitCount) {
                     if ( document.getElementsByClassName("groundspeak-control-findmylocation")[0] &&
                          document.getElementsByClassName("leaflet-control-scale")[0]                 ) {
                         // Show Homezone-Circle on Map
@@ -5111,18 +4932,17 @@ console.log($('.gclh_layers.gclh_used .leaflet-control-layers-overlays').find('l
                         }
                     } else {
                         waitCount++;
-                        if ( waitCount <= 50 ) {  // 10 Sekunden
-                            setTimeout( function () { checkForAddHomeZoneMap( waitCount ); }, 200);
-                        } else return;
+                        if ( waitCount <= 25 ) setTimeout( function () { checkForAddHomeZoneMap( waitCount ); }, 200);
+                        else return;
                     }
                 }
-                checkForAddHomeZoneMap( 0 );
+                checkForAddHomeZoneMap(0);
             }
 
             window.addEventListener("load", gclh_map_loaded, false);
             appendCssStyle(".leaflet-control-layers-base {min-width: 200px;}");
         } catch (e) {
-            gclh_error("Add Layers & Homezone to map", e);
+            gclh_error("Change map parameter and add Homezone to map:", e);
         }
     }
 
@@ -9761,8 +9581,7 @@ console.log($('.gclh_layers.gclh_used .leaflet-control-layers-overlays').find('l
             html += " &nbsp; " + checkboxy('settings_map_hide_1858', "<img "+imgStyle+" src='" + imageBaseUrl + "1858.png' title='Wherigo'>") + "<br/>";
 
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>Layers in map</b>" + show_help("Here you can select the map layers which should be added into the layer menu with the map. With this option you can reduce the long list to the layers you really need. If the right list of layers is empty, all will be displayed. If you use other scripts like \"Geocaching Map Enhancements\" GClh will overwrite its layercontrol. With this option you can disable GClh layers to use the layers from gc.com or GME.") + "</div>";
-            html += checkboxy('settings_use_gclh_layercontrol', 'Replace layercontrol by GClh') + show_help("If you use other scripts like \"Geocaching Map Enhancements\" GClh will overwrite its layercontrol. With this option you can disable GClh layers to use the layers from gc.com or GME.") + "<br/>";
-
+            html += checkboxy('settings_use_gclh_layercontrol', 'Replace layers by GClh') + show_help_big("GClh will replace the layers. With this option you can disable this replacement to use the layers from gc or other scripts like GME (Geocaching Map Enhancements). But you can use too the layers of GClh together with the functionality of GME.<br><br>It is important, that GClh run at first, particularly in front of other layer used scripts like GME or GCVote.<br><br>If there are problems with the layers by using GCVote at once, you have to clear the local storage of GCVote. You can do it about your profile. If that does not help, deinstall and install GCVote again. (GCVote use a local storage for its data. This storage can include incomplete layers which influence the layer control.)") + "<br/>";
             html += "<div id='MapLayersConfiguration' style='display: "+(settings_use_gclh_layercontrol?"block":"none")+";'>";
             html += "<table cellspacing='0' cellpadding='0' border='0'><tbody>";
             html += "<tr>";
