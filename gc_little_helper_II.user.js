@@ -566,9 +566,9 @@ var start = function (c) {
 var mainGMaps = function () {
     try {
         // Add link to GC Map on Google Maps page.
-        if ( settings_add_link_gc_map_on_google_maps ) {
-            function addGcButton( waitCount ) {
-                if ( document.getElementById("gbsfw") ) {
+        if (settings_add_link_gc_map_on_google_maps) {
+            function addGcButton(waitCount) {
+                if (document.getElementById("gbsfw")) {
                     var code = "";
                     code += "    function openGcMap(){";
                     code += "        var matches = document.location.href.match(/@(-?[0-9.]*),(-?[0-9.]*),([0-9.]*)z/);";
@@ -588,7 +588,7 @@ var mainGMaps = function () {
                     code += "            } else {";
                     code += "                var url = '" + map_url + "?lat=' + matches[1] + '&lng=' + matches[2] + '&z=' + zoom;";
                     code += "            }";
-                    if ( settings_switch_to_gc_map_in_same_tab ) {
+                    if (settings_switch_to_gc_map_in_same_tab) {
                         code += "        location = url;";
                     } else {
                         code += "        window.open( url );";
@@ -614,17 +614,16 @@ var mainGMaps = function () {
                     side.parentNode.insertBefore(div, side);
                 } else {
                     waitCount++;
-                    if ( waitCount <= 50 ) {  // 10 Sekunden lang
-                        setTimeout( function () { addGcButton( waitCount ); }, 200);
-                    } else return;
+                    if (waitCount <= 50) setTimeout( function () { addGcButton(waitCount); }, 200);
+                    else return;
                 }
             }
-            addGcButton( 0 );
+            addGcButton(0);
         }
 
         // Hide left sidebar on Google Maps.
-        if ( settings_hide_left_sidebar_on_google_maps ) {
-            function hideLeftSidebar( waitCount ) {
+        if (settings_hide_left_sidebar_on_google_maps) {
+            function hideLeftSidebar(waitCount) {
                 if ( document.getElementById("gbsfw") &&  // Nur weil das hier eines der letzten Teile ist, die aufgebaut werden.
                      document.getElementsByClassName("widget-pane-toggle-button")[0] &&
                      document.getElementsByClassName("widget-pane")[0]                  ) {
@@ -633,12 +632,11 @@ var mainGMaps = function () {
                     }
                 } else {
                     waitCount++;
-                    if ( waitCount <= 15 ) {  // 15 Sekunden lang (10 Sekunden hatten bei den Earth Tests nicht immer ausgereicht).
-                        setTimeout( function () { hideLeftSidebar( waitCount ); }, 1000);
-                    } else return;
+                    if (waitCount <= 15) setTimeout( function () { hideLeftSidebar(waitCount); }, 1000);
+                    else return;
                 }
             }
-            hideLeftSidebar( 0 );
+            hideLeftSidebar(0);
         }
     } catch (e) {
         gclh_error("mainGMaps", e);
@@ -963,10 +961,9 @@ var mainGC = function () {
                     }
                 }
                 waitCount++;
-                if ( waitCount <= 100 ) setTimeout( function () { loopAtLayerControls( waitCount ); }, 50);
+                if (waitCount <= 100) setTimeout( function () { loopAtLayerControls(waitCount); }, 50);
                 else return;
             }
-
             addLayerControl();
             loopAtLayerControls(0);
         } catch (e) {
@@ -1155,15 +1152,15 @@ var mainGC = function () {
                 }
 
                 // Bereich links ausrichten in Abhängigkeit davon, ob Logo geändert wird und ob GC Tour im Einsatz ist.
-                if      ( !settings_show_smaller_gc_link && !settings_gc_tour_is_working ) {
-                    style.innerHTML += "#l {margin-left: -11px; margin-top: " + (  2 + logoMarginTop) + "px; fill: #ffffff;} .#m {margin-left: 190px !important;}"; }
-                else if ( !settings_show_smaller_gc_link && settings_gc_tour_is_working ) {
-                    style.innerHTML += "#l {margin-left: -11px; margin-top: " + (-15 + logoMarginTop) + "px; fill: #ffffff;} .#m {margin-left: 190px !important;}"; }
-                else if ( settings_show_smaller_gc_link && !settings_gc_tour_is_working ) {
-                    style.innerHTML += "#l {margin-left: -17px; margin-top: " + (  2 + logoMarginTop) + "px; width: 35px;}   .#m {margin-left:  28px !important;}"; }
-                else if ( settings_show_smaller_gc_link && settings_gc_tour_is_working ) {
-                    style.innerHTML += "#l {margin-left: -17px; margin-top: " + (-15 + logoMarginTop) + "px; width: 35px;}   .#m {margin-left:  28px !important;}"; }
-
+                if        ( !settings_show_smaller_gc_link && !settings_gc_tour_is_working ) {
+                    style.innerHTML += "#l {margin-left: -11px; margin-top: " + (  2 + logoMarginTop) + "px; fill: #ffffff;} .#m {margin-left: 190px !important;}";
+                } else if ( !settings_show_smaller_gc_link && settings_gc_tour_is_working ) {
+                    style.innerHTML += "#l {margin-left: -11px; margin-top: " + (-15 + logoMarginTop) + "px; fill: #ffffff;} .#m {margin-left: 190px !important;}";
+                } else if ( settings_show_smaller_gc_link && !settings_gc_tour_is_working ) {
+                    style.innerHTML += "#l {margin-left: -17px; margin-top: " + (  2 + logoMarginTop) + "px; width: 35px;}   .#m {margin-left:  28px !important;}";
+                } else if ( settings_show_smaller_gc_link && settings_gc_tour_is_working ) {
+                    style.innerHTML += "#l {margin-left: -17px; margin-top: " + (-15 + logoMarginTop) + "px; width: 35px;}   .#m {margin-left:  28px !important;}";
+                }
                 // Bereich rechts ausrichten und zusammenschieben.
                 if (settings_show_smaller_area_top_right) {
                     style.innerHTML +=
@@ -1178,10 +1175,10 @@ var mainGC = function () {
                         // Senkrechter Strich vor Message Icon entfernen.
                         ".profile-panel > li + li::before {border-left: unset}";
                 }
-            }
+
             // Geotours:
             // ----------
-            else if ( is_page("geotours") ) {
+            } else if ( is_page("geotours") ) {
                 // Geocaching Logo ersetzen und verschieben, sofern das gewünscht ist.
                 if ( $('#HDHomeLink').get(0) ) {
                     var side = $('#HDHomeLink').get(0);
@@ -1228,15 +1225,15 @@ var mainGC = function () {
                 }
 
                 // Bereich links ausrichten in Abhängigkeit davon, ob Logo geändert wird und ob GC Tour im Einsatz ist.
-                if      ( !settings_show_smaller_gc_link && !settings_gc_tour_is_working ) {
-                    style.innerHTML += "#l {margin-left: -11px; margin-top: " + (  2 + logoMarginTop) + "px; fill: #ffffff;} .#m {margin-left: 190px !important;}"; }
-                else if ( !settings_show_smaller_gc_link && settings_gc_tour_is_working ) {
-                    style.innerHTML += "#l {margin-left: -11px; margin-top: " + (-15 + logoMarginTop) + "px; fill: #ffffff;} .#m {margin-left: 190px !important;}"; }
-                else if ( settings_show_smaller_gc_link && !settings_gc_tour_is_working ) {
-                    style.innerHTML += "#l {margin-left: -17px; margin-top: " + (  2 + logoMarginTop) + "px; width: 35px;}   .#m {margin-left:  28px !important;}"; }
-                else if ( settings_show_smaller_gc_link && settings_gc_tour_is_working ) {
-                    style.innerHTML += "#l {margin-left: -17px; margin-top: " + (-15 + logoMarginTop) + "px; width: 35px;}   .#m {margin-left:  28px !important;}"; }
-
+                if        ( !settings_show_smaller_gc_link && !settings_gc_tour_is_working ) {
+                    style.innerHTML += "#l {margin-left: -11px; margin-top: " + (  2 + logoMarginTop) + "px; fill: #ffffff;} .#m {margin-left: 190px !important;}";
+                } else if ( !settings_show_smaller_gc_link && settings_gc_tour_is_working ) {
+                    style.innerHTML += "#l {margin-left: -11px; margin-top: " + (-15 + logoMarginTop) + "px; fill: #ffffff;} .#m {margin-left: 190px !important;}";
+                } else if ( settings_show_smaller_gc_link && !settings_gc_tour_is_working ) {
+                    style.innerHTML += "#l {margin-left: -17px; margin-top: " + (  2 + logoMarginTop) + "px; width: 35px;}   .#m {margin-left:  28px !important;}";
+                } else if ( settings_show_smaller_gc_link && settings_gc_tour_is_working ) {
+                    style.innerHTML += "#l {margin-left: -17px; margin-top: " + (-15 + logoMarginTop) + "px; width: 35px;}   .#m {margin-left:  28px !important;}";
+                }
                 // Bereich rechts ausrichten und zusammenschieben.
                 if (settings_show_smaller_area_top_right) {
                     style.innerHTML +=
@@ -1249,10 +1246,10 @@ var mainGC = function () {
                         // Senkrechter Strich vor Message Icon entfernen.
                         ".profile-panel > li + li::before {border-left: unset}";
                 }
-            }
+
             // Labs:
             // ----------
-            else if ( is_page("labs") ) {
+            } else if ( is_page("labs") ) {
                 // Geocaching Logo ersetzen und verschieben, sofern das gewünscht ist.
                 if ( $('.title').children(0).get(0) ) {
                     var side = $('.title').children(0).get(0);
@@ -1293,15 +1290,15 @@ var mainGC = function () {
                 }
 
                 // Bereich links ausrichten in Abhängigkeit davon, ob Logo geändert wird und ob GC Tour im Einsatz ist.
-                if      ( !settings_show_smaller_gc_link && !settings_gc_tour_is_working ) {
-                    style.innerHTML += "#l {margin-left: -11px; margin-top:   2px; fill: #ffffff;} .#m {margin-left: 190px !important;}"; }
-                else if ( !settings_show_smaller_gc_link && settings_gc_tour_is_working ) {
-                    style.innerHTML += "#l {margin-left: -11px; margin-top: -15px; fill: #ffffff;} .#m {margin-left: 190px !important;}"; }
-                else if ( settings_show_smaller_gc_link && !settings_gc_tour_is_working ) {
-                    style.innerHTML += "#l {margin-left: -17px; margin-top:   2px; width: 35px;}   .#m {margin-left:  28px !important;}"; }
-                else if ( settings_show_smaller_gc_link && settings_gc_tour_is_working ) {
-                    style.innerHTML += "#l {margin-left: -17px; margin-top: -15px; width: 35px;}   .#m {margin-left:  28px !important;}"; }
-
+                if        ( !settings_show_smaller_gc_link && !settings_gc_tour_is_working ) {
+                    style.innerHTML += "#l {margin-left: -11px; margin-top:   2px; fill: #ffffff;} .#m {margin-left: 190px !important;}";
+                } else if ( !settings_show_smaller_gc_link && settings_gc_tour_is_working ) {
+                    style.innerHTML += "#l {margin-left: -11px; margin-top: -15px; fill: #ffffff;} .#m {margin-left: 190px !important;}";
+                } else if ( settings_show_smaller_gc_link && !settings_gc_tour_is_working ) {
+                    style.innerHTML += "#l {margin-left: -17px; margin-top:   2px; width: 35px;}   .#m {margin-left:  28px !important;}";
+                } else if ( settings_show_smaller_gc_link && settings_gc_tour_is_working ) {
+                    style.innerHTML += "#l {margin-left: -17px; margin-top: -15px; width: 35px;}   .#m {margin-left:  28px !important;}";
+                }
                 // Bereich rechts ausrichten und zusammenschieben.
                 if (settings_show_smaller_area_top_right) {
                     style.innerHTML +=
@@ -1310,10 +1307,10 @@ var mainGC = function () {
                         // Username auf 115px begrenzen.
                         ".user-avatar {max-width: 115px;}";
                 }
-            }
+
             // Karte:
             // ----------
-            else if ( is_page("map") ) {
+            } else if ( is_page("map") ) {
                 // Geocaching Logo ersetzen und verschieben, sofern das gewünscht ist.
                 if ( $('.MapsLogo').get(0) ) {
                     var side = $('.MapsLogo').get(0);
@@ -1344,15 +1341,15 @@ var mainGC = function () {
                 }
 
                 // Bereich links ausrichten in Abhängigkeit davon, ob Logo geändert wird und ob GC Tour im Einsatz ist.
-                if      ( !settings_show_smaller_gc_link && !settings_gc_tour_is_working ) {
-                    style.innerHTML += "#l {margin-left:  -7px; margin-top:   2px; fill: #ffffff;} .#m {margin-left: 190px !important; margin-top: -13px !important}"; }
-                else if ( !settings_show_smaller_gc_link && settings_gc_tour_is_working ) {
-                    style.innerHTML += "#l {margin-left:  -7px; margin-top: -15px; fill: #ffffff;} .#m {margin-left: 190px !important;}"; }
-                else if ( settings_show_smaller_gc_link && !settings_gc_tour_is_working ) {
-                    style.innerHTML += "#l {margin-left: -13px; margin-top:   2px; width: 35px;}   .#m {margin-left:  28px !important; margin-top: -15px !important}"; }
-                else if ( settings_show_smaller_gc_link && settings_gc_tour_is_working ) {
-                    style.innerHTML += "#l {margin-left: -13px; margin-top: -15px; width: 35px;}   .#m {margin-left:  28px !important;}"; }
-
+                if        ( !settings_show_smaller_gc_link && !settings_gc_tour_is_working ) {
+                    style.innerHTML += "#l {margin-left:  -7px; margin-top:   2px; fill: #ffffff;} .#m {margin-left: 190px !important; margin-top: -13px !important}";
+                } else if ( !settings_show_smaller_gc_link && settings_gc_tour_is_working ) {
+                    style.innerHTML += "#l {margin-left:  -7px; margin-top: -15px; fill: #ffffff;} .#m {margin-left: 190px !important;}";
+                } else if ( settings_show_smaller_gc_link && !settings_gc_tour_is_working ) {
+                    style.innerHTML += "#l {margin-left: -13px; margin-top:   2px; width: 35px;}   .#m {margin-left:  28px !important; margin-top: -15px !important}";
+                } else if ( settings_show_smaller_gc_link && settings_gc_tour_is_working ) {
+                    style.innerHTML += "#l {margin-left: -13px; margin-top: -15px; width: 35px;}   .#m {margin-left:  28px !important;}";
+                }
                 // Bereich rechts ausrichten und zusammenschieben.
                 if (settings_show_smaller_area_top_right) {
                     style.innerHTML +=
@@ -1363,10 +1360,10 @@ var mainGC = function () {
                         // Setting Icon und Message Icon etwas zusammenschieben
                         ".logged-in-user .li-messages, .logged-in-user .li-messages_gclh {padding: 22px 1em 22px 0em;}";    // Message Center Fehler
                 }
-            }
+
             // Altes Seiten Design und restliche Seiten:
             // ----------
-            else {
+            } else {
                 if (settings_remove_logo && settings_show_smaller_gc_link) {
                     document.getElementById('ctl00_ctl23_A1').remove();
                     style.innerHTML += "nav .container {margin-left: -45px !important;}";
@@ -1409,15 +1406,15 @@ var mainGC = function () {
                 }
 
                 // Bereich links ausrichten in Abhängigkeit davon, ob Logo geändert wird und ob GC Tour im Einsatz ist.
-                if      ( !settings_show_smaller_gc_link && !settings_gc_tour_is_working ) {
-                    style.innerHTML += "#l {margin-left: -11px; margin-top:   2px; fill: #ffffff;} .#m {margin-left: 190px !important;}"; }
-                else if ( !settings_show_smaller_gc_link && settings_gc_tour_is_working ) {
-                    style.innerHTML += "#l {margin-left: -11px; margin-top: -15px; fill: #ffffff;} .#m {margin-left: 190px !important;}"; }
-                else if ( settings_show_smaller_gc_link && !settings_gc_tour_is_working ) {
-                    style.innerHTML += "#l {margin-left: -17px; margin-top:   2px; width: 35px;}   .#m {margin-left:  28px !important;}"; }
-                else if ( settings_show_smaller_gc_link && settings_gc_tour_is_working ) {
-                    style.innerHTML += "#l {margin-left: -17px; margin-top: -15px; width: 35px;}   .#m {margin-left:  28px !important;}"; }
-
+                if        ( !settings_show_smaller_gc_link && !settings_gc_tour_is_working ) {
+                    style.innerHTML += "#l {margin-left: -11px; margin-top:   2px; fill: #ffffff;} .#m {margin-left: 190px !important;}";
+                } else if ( !settings_show_smaller_gc_link && settings_gc_tour_is_working ) {
+                    style.innerHTML += "#l {margin-left: -11px; margin-top: -15px; fill: #ffffff;} .#m {margin-left: 190px !important;}";
+                } else if ( settings_show_smaller_gc_link && !settings_gc_tour_is_working ) {
+                    style.innerHTML += "#l {margin-left: -17px; margin-top:   2px; width: 35px;}   .#m {margin-left:  28px !important;}";
+                } else if ( settings_show_smaller_gc_link && settings_gc_tour_is_working ) {
+                    style.innerHTML += "#l {margin-left: -17px; margin-top: -15px; width: 35px;}   .#m {margin-left:  28px !important;}";
+                }
                 // Bereich rechts ausrichten und zusammenschieben.
                 if (settings_show_smaller_area_top_right) {
                     style.innerHTML +=
@@ -1502,7 +1499,6 @@ var mainGC = function () {
             if ( document.location.href.match(/\/\/www\.geocaching\.com\/pocket\/gcquery\.aspx/) ||      // Pocket Query: Einstellungen zur Selektion
                  document.location.href.match(/\/\/www\.geocaching\.com\/pocket\/bmquery\.aspx/)    );   // Pocket Query aus Bockmarkliste: Einstellungen zur Selektion
             else {
-
                 // Weitere Anpassungen auf allen Seiten:
                 css += "#Content .container, #Content .span-24, .span-24 {width: " + new_width + "px;}";
                 css += ".CacheStarLabels.span-6 {width: " + ((new_width - 300 - 190 - 10 - 10) / 2) + "px !important;}";
@@ -1993,7 +1989,7 @@ var mainGC = function () {
 // Show Favourite percentage.
     if (settings_show_fav_percentage && is_page("cache_listing")) {
         try {
-            function gclh_load_score( waitCount ) {
+            function gclh_load_score(waitCount) {
                 unsafeWindow.showFavoriteScore();
 
                 if ( document.getElementsByClassName("favorite-container")[0] &&
@@ -2017,7 +2013,6 @@ var mainGC = function () {
                                     myfavHTML = '&nbsp;<img src="' + http + '://www.geocaching.com/images/icons/prem_user.gif" />';
                                 }
                             }
-
                             // Favoritenbox ändern.
                             fav.getElementsByTagName("span")[0].nextSibling.remove();  // Text Favoriten
                             fav.innerHTML += score[1];
@@ -2033,12 +2028,11 @@ var mainGC = function () {
                     }
                 } else {
                     waitCount++;
-                    if ( waitCount <= 100 ) {  // 10 Sekunden lang
-                        setTimeout( function () { gclh_load_score( waitCount ); }, 100);
-                    } else return;
+                    if (waitCount <= 100) setTimeout( function () { gclh_load_score(waitCount); }, 100);
+                    else return;
                 }
             }
-            gclh_load_score( 0 );
+            gclh_load_score(0);
         } catch (e) {
             gclh_error("Show Favourite percentage", e);
         }
@@ -2182,7 +2176,7 @@ var mainGC = function () {
 // Show the latest logs symbols in cache listings.
     if ( is_page("cache_listing") && settings_show_latest_logs_symbols && settings_load_logs_with_gclh ) {
         try {
-            function showLatestLogsSymbols( waitCount ) {
+            function showLatestLogsSymbols(waitCount) {
                 var logs = $(('#cache_logs_table', '#cache_logs_table2')).find('tbody tr.log-row:not(.display_none)');
                 if ( logs.length > 0 ) {
                     var lateLogs = new Array();
@@ -2238,12 +2232,11 @@ var mainGC = function () {
                     }
                 } else {
                     waitCount++;
-                    if ( waitCount <= 100 ) {  // 50 Sekunden lang (Beispiel: GC4MEGA mit ~ 40 Sekunden)
-                        setTimeout( function () { showLatestLogsSymbols( waitCount ); }, 500);
-                    } else return;
+                    if (waitCount <= 100) setTimeout( function () { showLatestLogsSymbols(waitCount); }, 500);
+                    else return;
                 }
             }
-            showLatestLogsSymbols( 0 );
+            showLatestLogsSymbols(0);
         } catch (e) {
             gclh_error("Show the latest logs symbols", e);
         }
@@ -2881,7 +2874,6 @@ var mainGC = function () {
                 } else {
                     unsafeWindow.dht(document.getElementById("ctl00_ContentBody_lnkDH"));
                 }
-
                 // Remove hint description.
                 var decryptKey = document.getElementById('dk');
                 if (decryptKey) {
@@ -2922,7 +2914,6 @@ var mainGC = function () {
         code += "  }";
         code += "  input.focus();";
         code += "}";
-
         var script = document.createElement("script");
         script.innerHTML = code;
         document.getElementsByTagName("body")[0].appendChild(script);
@@ -3549,7 +3540,6 @@ var mainGC = function () {
         css += "}";
         appendCssStyle( css );
     }
-
     // Returns a jQuery object of the waypoint list in a cache listing or the waypoint list.
     function getWaypointTable() {
         var tbl = $("#ctl00_ContentBody_Waypoints");
@@ -3638,7 +3628,6 @@ var mainGC = function () {
             css += "}";
             css += ".GClhdropdown:hover .GClhdropbtn {";
             css += "    background-color: #3e8e41;";
-
             css += "}";
             appendCssStyle( css );
 
@@ -4109,10 +4098,8 @@ var mainGC = function () {
 
                 if (cache_type.match(/event/i)) {
                     select_val = settings_default_logtype_event;
-                }
-
                 // Ownername == Username.
-                else if ($('.PostLogList').find('a[href*="https://www.geocaching.com/profile/?guid="]').text().trim() == $('.li-user-info').last().children().text().trim()) {
+                } else if ($('.PostLogList').find('a[href*="https://www.geocaching.com/profile/?guid="]').text().trim() == $('.li-user-info').last().children().text().trim()) {
                     select_val = settings_default_logtype_owner;
                 } else {
                     select_val = settings_default_logtype;
@@ -4145,8 +4132,7 @@ var mainGC = function () {
                         input.selectionStart = 0;
                         input.selectionEnd = 0;
                         input.focus();
-                    }
-                    catch (e) {
+                    } catch (e) {
                         // TODO: according to Google this exception occurs if the text field is not visible,
                         // but I have no clue what exactly is wrong here
                     }
@@ -4295,7 +4281,7 @@ var mainGC = function () {
 
                 // Founds.
                 var founds = parseInt(trim(friend.getElementsByTagName("dd")[3].innerHTML).replace(/[,.]*/g, ""));
-                if (isNaN(founds))founds = 0;
+                if (isNaN(founds)) founds = 0;
                 var last_founds = getValue("friends_founds_" + name.innerHTML);
                 if (typeof(last_founds) == "undefined") {
                     last_founds = founds;
@@ -4324,7 +4310,7 @@ var mainGC = function () {
                 // Hides.
                 add = "";
                 var hides = parseInt(trim(friend.getElementsByTagName("dd")[4].innerHTML).replace(/[,.]*/g, ""));
-                if (isNaN(hides))hides = 0;
+                if (isNaN(hides)) hides = 0;
                 var last_hides = getValue("friends_hides_" + name.innerHTML);
                 if (typeof(last_hides) == "undefined") {
                     last_hides = hides;
@@ -4807,12 +4793,10 @@ var mainGC = function () {
 // Hide Map Header.
     if (document.location.href.match(/^https?:\/\/www\.geocaching\.com\/map\//)) {
         try {
-            function checkMapLeaflet( waitCount ) {
-                if ( document.getElementsByClassName("leaflet-container")[0] ) {
+            function checkMapLeaflet(waitCount) {
+                if (document.getElementsByClassName("leaflet-container")[0]) {
                     // Map Header verbergen.
-                    if (settings_hide_map_header) {
-                        hide_map_header();
-                    }
+                    if (settings_hide_map_header) hide_map_header();
                     // Button in Sidebar aufbauen "Hide/Show Header".
                     var sidebar = document.getElementById("searchtabs");
                     var link = document.createElement("a");
@@ -4826,14 +4810,11 @@ var mainGC = function () {
                     appendCssStyle("#searchtabs {height: 63px !important; margin-top: 6px !important;} #searchtabs li a {padding: 0.625em 0.5em !important;}");
                 } else {
                     waitCount++;
-                    if ( waitCount <= 50 ) {  // 5 Sekunden lang
-                        setTimeout( function () { checkMapLeaflet( waitCount ); }, 100);
-                    } else {
-                        return;
-                    }
+                    if (waitCount <= 50) setTimeout( function () { checkMapLeaflet(waitCount); }, 100);
+                    else return;
                 }
             }
-            checkMapLeaflet( 0 );
+            checkMapLeaflet(0);
             setTimeout(function() {
                 $.ajax({
                         type: "POST",
@@ -4875,26 +4856,19 @@ var mainGC = function () {
                             document.getElementsByClassName("leaflet-control-zoom")[0].style.left = styleLeft;
                         } else {
                             waitCount++;
-                            if ( waitCount <= 50 ) setTimeout( function () { hideSidebarRest(waitCount); }, 200);
+                            if (waitCount <= 50) setTimeout( function () { hideSidebarRest(waitCount); }, 200);
                             else return;
                         }
                     }
                     hideSidebarRest(0);
                 }
-
                 function addHomeZoneMap(unsafeWindow, home_lat, home_lng, settings_homezone_radius, settings_homezone_color, settings_homezone_opacity) {
                     settings_homezone_color = settings_homezone_color.replace("##", "#");
-
-                    if (unsafeWindow == "none") {
-                        unsafeWindow = window;
-                    }
-                    if (typeof home_lat == "undefined" || typeof home_lng == "undefined" || home_lat == null || home_lng == null) {
-                        return;
-                    }
+                    if (unsafeWindow == "none") unsafeWindow = window;
+                    if (typeof home_lat == "undefined" || typeof home_lng == "undefined" || home_lat == null || home_lng == null) return;
 
                     var opacity = settings_homezone_opacity / 100;
                     var opacity2 = opacity + 0.1;
-
                     var latlng = new unsafeWindow.L.LatLng((home_lat / 10000000), (home_lng / 10000000));
                     var options = {
                         color: settings_homezone_color,
@@ -4906,7 +4880,6 @@ var mainGC = function () {
                     var circle = new unsafeWindow.L.Circle(latlng, settings_homezone_radius * 1000, options);
                     unsafeWindow.MapSettings.Map.addLayer(circle);
                 }
-
                 // Die Circles werden manchmal zu früh aufgebaut, dann blinken sie kurz auf und sind dann auch schon wieder verschwunden.
                 // Das passiert insbesondere beim Kartenaufruf ohne Koordinaten, also beispielsweise aus dem Menü Play. Auf was man warten
                 // soll ist mir nicht klar. Ich nehme Ähnliches wie oben bei hideSidebarRest.
@@ -4932,13 +4905,12 @@ var mainGC = function () {
                         }
                     } else {
                         waitCount++;
-                        if ( waitCount <= 25 ) setTimeout( function () { checkForAddHomeZoneMap( waitCount ); }, 200);
+                        if (waitCount <= 25) setTimeout( function () { checkForAddHomeZoneMap(waitCount); }, 200);
                         else return;
                     }
                 }
                 checkForAddHomeZoneMap(0);
             }
-
             window.addEventListener("load", gclh_map_loaded, false);
             appendCssStyle(".leaflet-control-layers-base {min-width: 200px;}");
         } catch (e) {
@@ -5078,18 +5050,18 @@ var mainGC = function () {
                 appendCssStyle(".leaflet-control-layers + .leaflet-control {position: unset; right: unset;} .leaflet-control {clear: left}");
             }
 
-            function attachGeoServiceControl( waitCount ) {
+            function attachGeoServiceControl(waitCount) {
                 // Prüfen, ob die Layers schon vorhanden sind, erst dann den Button hinzufügen.
                 if ( $('.leaflet-control-layers-base').find('input.leaflet-control-layers-selector')[0] ) {
                     // Damit Button nicht ständig den Platz wechselt, um 1 Sekunden verzögern, dann sollte er links von den anderen Buttons stehen.
-                    setTimeout( initGeoServiceControl, 1000);
+                    setTimeout(initGeoServiceControl, 1000);
                 } else {
                     waitCount++;
-                    if ( waitCount <= 50 ) setTimeout( function () { attachGeoServiceControl( waitCount ); }, 100);
+                    if (waitCount <= 50) setTimeout( function () { attachGeoServiceControl(waitCount); }, 100);
                     else return;
                 }
             }
-            attachGeoServiceControl( 0 );
+            attachGeoServiceControl(0);
 
         } catch (e) {
             gclh_error("add link google maps on gc map", e);
@@ -5101,21 +5073,17 @@ var mainGC = function () {
         try {
             function hideFoundCaches() {
                 // Kartenfilter bei externen Filtern (beispielsweise aus play/search) nicht verändern.
-                if ( document.location.href.match(/&asq=/) ) return;
+                if (document.location.href.match(/&asq=/)) return;
                 var button = unsafeWindow.document.getElementById("m_myCaches").childNodes[1];
-                if (button) {
-                    button.click();
-                }
+                if (button) button.click();
             }
             if (settings_map_hide_found) {
                 window.addEventListener("load", hideFoundCaches, false);
             }
             function hideHiddenCaches() {
-                if ( document.location.href.match(/&asq=/) ) return;
+                if (document.location.href.match(/&asq=/)) return;
                 var button = unsafeWindow.document.getElementById("m_myCaches").childNodes[3];
-                if (button) {
-                    button.click();
-                }
+                if (button) button.click();
             }
             if (settings_map_hide_hidden) {
                 window.addEventListener("load", hideHiddenCaches, false);
@@ -5154,35 +5122,32 @@ var mainGC = function () {
 // Display Google-Maps warning. Hier wird eine Warnmeldung ausgegeben, wenn Leaflet-Map nicht aktiv ist.
     if (document.location.href.match(/^https?:\/\/www\.geocaching\.com\/map\//)) {
         try {
-            function checkMap( waitCount ) {
+            function checkMap(waitCount) {
                 // Wenn Leaflet-Map aktiv ist dann ist alles ok, aktiv merken.
                 if ( document.getElementsByClassName("leaflet-container")[0] ) {
                     setValue("gclhLeafletMapActive", true);
                     return;
                 }
-                // Wenn die Auswahl zu "Set Map Preferences" gerade angezeigt wird, dann wird keine Leaflet-Map kommen,
+                // Wenn die Auswahl zu "Set Map Preferences" gerade angezeigt wird, dann wird keine Leaflet-Map kommen, deshalb machen wir hier nichts.
                 // deshalb machen wir hier nichts.
-                if ( document.getElementsByClassName("container")[0] ) {
-                    return;
-                }
+                if (document.getElementsByClassName("container")[0]) return;
                 waitCount++;
-                if ( waitCount <= 5 ) {  // 5 Sekunden lang
-                    setTimeout( function () { checkMap( waitCount ); }, 1000);
-                } else {
+                if (waitCount <= 5) setTimeout( function () { checkMap(waitCount); }, 1000);
+                else {
                     // Wenn Leaflet-Map nicht aktiv und die Auswahl zu "Set Map Preferences" auch nicht angezeigt wird,
                     // dann ist wohl Google aktiv. Prüfen, ob zuvor Leaflet-Map aktiv war, der Status sich also geändert
                     // hat, dann Meldung ausgeben und neuen Status "nicht aktiv" merken.
-                    if ( getValue("gclhLeafletMapActive", true) ) {
+                    if (getValue("gclhLeafletMapActive", true)) {
                         var mess = "Please note, that GC little helper only supports\n"
                                  + "the Leaflet-Map. You are using the Google-Map.\n\n"
                                  + "You can change the map in the left sidebar with \n"
                                  + "the button \"Set Map Preferences\".";
-                        alert( mess );
+                        alert(mess);
                         setValue("gclhLeafletMapActive", false);
                     }
                 }
             }
-            checkMap( 0 );
+            checkMap(0);
         } catch (e) {
             gclh_error("Display Google-Maps warning", e);
         }
@@ -5266,8 +5231,7 @@ var mainGC = function () {
                     if (existingNotes[link[0].href + date + type]) {
                         $(existingNotes[link[0].href + date + type]).find('td').css("background-color", "#FE9C9C");
                         $(e).find('td').css("background-color", "#FE9C9C");
-                    }
-                    else {
+                    } else {
                         existingNotes[link[0].href + date + type] = e;
                     }
                 }
@@ -11007,13 +10971,12 @@ var mainGC = function () {
                                     disableDependentParameters( global_dependents[i]["paIdDep"], false );
                                 }
                             }
-                        }
 
                         // Wenn der Parameter nicht markiert ist, dann soll der abhängige Parameter deaktiviert werden. Zuvor muß jedoch gegebenenfalls
                         // geprüft werden, ob alle Parameter zu diesem abhängigen Parameter deaktiviert werden sollen. Nur dann darf der abhängige
                         // Parameter deaktiviert werden. (Beispiel ist abhängiger Parameter Linklistparameter, die von zwei Parametern abhängig sind,
                         // nämlich "settings_bookmarks_on_top" und "settings_bookmarks_show".)
-                        else {
+                        } else {
                             if ( !checkDisabledForDependentParameters( global_dependents[i]["paIdDep"] ) ) {
                                 var deactivate = true;
                                 if ( global_dependents[i]["allActivated"] != true ) {
@@ -11353,7 +11316,7 @@ var mainGC = function () {
         function rcCheckDataLoad(waitCount, name) {
             if (global_rc_data == "" || global_rc_status != 200) {
                 waitCount++;
-                if ( waitCount <= 25 ) setTimeout( function () { rcCheckDataLoad(waitCount, name); }, 200);
+                if (waitCount <= 25) setTimeout( function () { rcCheckDataLoad(waitCount, name); }, 200);
                 else {
                     alert("Can not load file with " + (name == "st" ? "standard configuration data":"script data") + ".\nNothing changed.");
                     if (document.getElementById("rc_doing")) setTimeout( function () { document.getElementById("rc_doing").src = ""; }, 500);
