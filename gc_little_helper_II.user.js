@@ -566,9 +566,9 @@ var start = function (c) {
 var mainGMaps = function () {
     try {
         // Add link to GC Map on Google Maps page.
-        if ( settings_add_link_gc_map_on_google_maps ) {
-            function addGcButton( waitCount ) {
-                if ( document.getElementById("gbsfw") ) {
+        if (settings_add_link_gc_map_on_google_maps) {
+            function addGcButton(waitCount) {
+                if (document.getElementById("gbsfw")) {
                     var code = "";
                     code += "    function openGcMap(){";
                     code += "        var matches = document.location.href.match(/@(-?[0-9.]*),(-?[0-9.]*),([0-9.]*)z/);";
@@ -588,7 +588,7 @@ var mainGMaps = function () {
                     code += "            } else {";
                     code += "                var url = '" + map_url + "?lat=' + matches[1] + '&lng=' + matches[2] + '&z=' + zoom;";
                     code += "            }";
-                    if ( settings_switch_to_gc_map_in_same_tab ) {
+                    if (settings_switch_to_gc_map_in_same_tab) {
                         code += "        location = url;";
                     } else {
                         code += "        window.open( url );";
@@ -614,17 +614,16 @@ var mainGMaps = function () {
                     side.parentNode.insertBefore(div, side);
                 } else {
                     waitCount++;
-                    if ( waitCount <= 50 ) {  // 10 Sekunden lang
-                        setTimeout( function () { addGcButton( waitCount ); }, 200);
-                    } else return;
+                    if (waitCount <= 50) setTimeout( function () { addGcButton(waitCount); }, 200);
+                    else return;
                 }
             }
-            addGcButton( 0 );
+            addGcButton(0);
         }
 
         // Hide left sidebar on Google Maps.
-        if ( settings_hide_left_sidebar_on_google_maps ) {
-            function hideLeftSidebar( waitCount ) {
+        if (settings_hide_left_sidebar_on_google_maps) {
+            function hideLeftSidebar(waitCount) {
                 if ( document.getElementById("gbsfw") &&  // Nur weil das hier eines der letzten Teile ist, die aufgebaut werden.
                      document.getElementsByClassName("widget-pane-toggle-button")[0] &&
                      document.getElementsByClassName("widget-pane")[0]                  ) {
@@ -633,12 +632,11 @@ var mainGMaps = function () {
                     }
                 } else {
                     waitCount++;
-                    if ( waitCount <= 15 ) {  // 15 Sekunden lang (10 Sekunden hatten bei den Earth Tests nicht immer ausgereicht).
-                        setTimeout( function () { hideLeftSidebar( waitCount ); }, 1000);
-                    } else return;
+                    if (waitCount <= 15) setTimeout( function () { hideLeftSidebar(waitCount); }, 1000);
+                    else return;
                 }
             }
-            hideLeftSidebar( 0 );
+            hideLeftSidebar(0);
         }
     } catch (e) {
         gclh_error("mainGMaps", e);
@@ -963,10 +961,9 @@ var mainGC = function () {
                     }
                 }
                 waitCount++;
-                if ( waitCount <= 100 ) setTimeout( function () { loopAtLayerControls( waitCount ); }, 50);
+                if (waitCount <= 100) setTimeout( function () { loopAtLayerControls(waitCount); }, 50);
                 else return;
             }
-
             addLayerControl();
             loopAtLayerControls(0);
         } catch (e) {
@@ -1992,7 +1989,7 @@ var mainGC = function () {
 // Show Favourite percentage.
     if (settings_show_fav_percentage && is_page("cache_listing")) {
         try {
-            function gclh_load_score( waitCount ) {
+            function gclh_load_score(waitCount) {
                 unsafeWindow.showFavoriteScore();
 
                 if ( document.getElementsByClassName("favorite-container")[0] &&
@@ -2016,7 +2013,6 @@ var mainGC = function () {
                                     myfavHTML = '&nbsp;<img src="' + http + '://www.geocaching.com/images/icons/prem_user.gif" />';
                                 }
                             }
-
                             // Favoritenbox ändern.
                             fav.getElementsByTagName("span")[0].nextSibling.remove();  // Text Favoriten
                             fav.innerHTML += score[1];
@@ -2032,12 +2028,11 @@ var mainGC = function () {
                     }
                 } else {
                     waitCount++;
-                    if ( waitCount <= 100 ) {  // 10 Sekunden lang
-                        setTimeout( function () { gclh_load_score( waitCount ); }, 100);
-                    } else return;
+                    if (waitCount <= 100) setTimeout( function () { gclh_load_score(waitCount); }, 100);
+                    else return;
                 }
             }
-            gclh_load_score( 0 );
+            gclh_load_score(0);
         } catch (e) {
             gclh_error("Show Favourite percentage", e);
         }
@@ -2181,7 +2176,7 @@ var mainGC = function () {
 // Show the latest logs symbols in cache listings.
     if ( is_page("cache_listing") && settings_show_latest_logs_symbols && settings_load_logs_with_gclh ) {
         try {
-            function showLatestLogsSymbols( waitCount ) {
+            function showLatestLogsSymbols(waitCount) {
                 var logs = $(('#cache_logs_table', '#cache_logs_table2')).find('tbody tr.log-row:not(.display_none)');
                 if ( logs.length > 0 ) {
                     var lateLogs = new Array();
@@ -2237,12 +2232,11 @@ var mainGC = function () {
                     }
                 } else {
                     waitCount++;
-                    if ( waitCount <= 100 ) {  // 50 Sekunden lang (Beispiel: GC4MEGA mit ~ 40 Sekunden)
-                        setTimeout( function () { showLatestLogsSymbols( waitCount ); }, 500);
-                    } else return;
+                    if (waitCount <= 100) setTimeout( function () { showLatestLogsSymbols(waitCount); }, 500);
+                    else return;
                 }
             }
-            showLatestLogsSymbols( 0 );
+            showLatestLogsSymbols(0);
         } catch (e) {
             gclh_error("Show the latest logs symbols", e);
         }
@@ -11322,7 +11316,7 @@ var mainGC = function () {
         function rcCheckDataLoad(waitCount, name) {
             if (global_rc_data == "" || global_rc_status != 200) {
                 waitCount++;
-                if ( waitCount <= 25 ) setTimeout( function () { rcCheckDataLoad(waitCount, name); }, 200);
+                if (waitCount <= 25) setTimeout( function () { rcCheckDataLoad(waitCount, name); }, 200);
                 else {
                     alert("Can not load file with " + (name == "st" ? "standard configuration data":"script data") + ".\nNothing changed.");
                     if (document.getElementById("rc_doing")) setTimeout( function () { document.getElementById("rc_doing").src = ""; }, 500);
