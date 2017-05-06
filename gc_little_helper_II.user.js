@@ -4090,12 +4090,12 @@ var mainGC = function () {
     }
 
 // Default Log Type && Log Signature.
+    // Cache:
     if (document.location.href.match(/^https?:\/\/www\.geocaching\.com\/seek\/log\.aspx\?(id|guid|ID|PLogGuid|wp)\=/) && document.getElementById('ctl00_ContentBody_LogBookPanel1_ddLogType') && $('#ctl00_ContentBody_LogBookPanel1_lbConfirm').length == 0) {
         try {
             if (!document.location.href.match(/\&LogType\=/) && !document.location.href.match(/PLogGuid/)) {
                 var cache_type = document.getElementById("ctl00_ContentBody_LogBookPanel1_WaypointLink").nextSibling.childNodes[0].title;
                 var select_val = "-1";
-
                 if (cache_type.match(/event/i)) {
                     select_val = settings_default_logtype_event;
                 // Ownername == Username.
@@ -4104,10 +4104,8 @@ var mainGC = function () {
                 } else {
                     select_val = settings_default_logtype;
                 }
-
                 var select = document.getElementById('ctl00_ContentBody_LogBookPanel1_ddLogType');
                 var childs = select.children;
-
                 if (select.value == "-1") {
                     for (var i = 0; i < childs.length; i++) {
                         if (childs[i].value == select_val) {
@@ -4116,98 +4114,61 @@ var mainGC = function () {
                     }
                 }
             }
-
             // Signature.
             if (document.location.href.match(/^https?:\/\/www\.geocaching\.com\/seek\/log\.aspx\?PLogGuid\=/)) {
                 if (settings_log_signature_on_fieldnotes) document.getElementById('ctl00_ContentBody_LogBookPanel1_uxLogInfo').innerHTML += getValue("settings_log_signature", "");
             } else {
                 document.getElementById('ctl00_ContentBody_LogBookPanel1_uxLogInfo').innerHTML += getValue("settings_log_signature", "");
             }
-
-            // Set Cursor to Pos1.
-            function gclh_setFocus() {
-                var input = document.getElementById('ctl00_ContentBody_LogBookPanel1_uxLogInfo');
-                if (input) {
-                    try {
-                        input.selectionStart = 0;
-                        input.selectionEnd = 0;
-                        input.focus();
-                    } catch (e) {
-                        // TODO: according to Google this exception occurs if the text field is not visible,
-                        // but I have no clue what exactly is wrong here
-                    }
-                }
-            }
-
-            window.addEventListener("load", gclh_setFocus, false);
-
-            // Replace variable.
-            if ($('.li-user-info').last().children().length > 0) {
-                var finds = get_my_finds();
-                var me = $('.li-user-info').last().children().first().text();
-                var owner = document.getElementById('ctl00_ContentBody_LogBookPanel1_WaypointLink').nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.innerHTML;
-                document.getElementById('ctl00_ContentBody_LogBookPanel1_uxLogInfo').innerHTML = document.getElementById('ctl00_ContentBody_LogBookPanel1_uxLogInfo').innerHTML.replace(/#found_no#/ig, finds);
-                finds++;
-                document.getElementById('ctl00_ContentBody_LogBookPanel1_uxLogInfo').innerHTML = document.getElementById('ctl00_ContentBody_LogBookPanel1_uxLogInfo').innerHTML.replace(/#found#/ig, finds).replace(/#me#/ig, me).replace(/#owner#/ig, owner);
-                [ aDate, aTime, aDateTime ] = getDateTime();
-                document.getElementById('ctl00_ContentBody_LogBookPanel1_uxLogInfo').innerHTML = document.getElementById('ctl00_ContentBody_LogBookPanel1_uxLogInfo').innerHTML.replace(/#Date#/ig, aDate).replace(/#Time#/ig, aTime).replace(/#DateTime#/ig, aDateTime);
-                [ aGCTBName, aGCTBLink, aGCTBNameLink, aLogDate ] = getGCTBInfo();
-                document.getElementById('ctl00_ContentBody_LogBookPanel1_uxLogInfo').innerHTML = document.getElementById('ctl00_ContentBody_LogBookPanel1_uxLogInfo').innerHTML.replace(/#GCTBName#/ig, aGCTBName).replace(/#GCTBLink#/ig, aGCTBLink).replace(/#GCTBNameLink#/ig, aGCTBNameLink).replace(/#LogDate#/ig, aLogDate);
-            }
+            replacePlaceholder();
         } catch (e) {
             gclh_error("Default Log-Type & Signature (CACHE)", e);
         }
     }
-
-// Default TB Log Type && Log Signature.
+    // TB:
     if (document.location.href.match(/^https?:\/\/www\.geocaching\.com\/track\/log\.aspx/)) {
         try {
             if (settings_default_tb_logtype != "-1" && !document.location.href.match(/\&LogType\=/)) {
                 var select = document.getElementById('ctl00_ContentBody_LogBookPanel1_ddLogType');
                 var childs = select.children;
-
                 for (var i = 0; i < childs.length; i++) {
                     if (childs[i].value == settings_default_tb_logtype) {
                         select.selectedIndex = i;
                     }
                 }
             }
-
             // Signature.
             if (document.getElementById('ctl00_ContentBody_LogBookPanel1_uxLogInfo') && document.getElementById('ctl00_ContentBody_LogBookPanel1_uxLogInfo').innerHTML == "") document.getElementById('ctl00_ContentBody_LogBookPanel1_uxLogInfo').innerHTML = getValue("settings_tb_signature", "");
-
-            // Set Cursor to Pos1.
-            function gclh_setFocus() {
-                var input = document.getElementById('ctl00_ContentBody_LogBookPanel1_uxLogInfo');
-                if (input) {
-                    try {
-                        input.selectionStart = 0;
-                        input.selectionEnd = 0;
-                        input.focus();
-                    } catch (e) {
-                        // TODO: according to Google this exception occurs if the text field is not visible,
-                        // but I have no clue what exactly is wrong here
-                    }
-                }
-            }
-
-            window.addEventListener("load", gclh_setFocus, false);
-
-            // Replace variable.
-            if ($('.li-user-info').last().children().length > 0) {
-                var finds = get_my_finds();
-                var me = $('.li-user-info').last().children().first().text();
-                var owner = document.getElementById('ctl00_ContentBody_LogBookPanel1_WaypointLink').nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.innerHTML;
-                document.getElementById('ctl00_ContentBody_LogBookPanel1_uxLogInfo').innerHTML = document.getElementById('ctl00_ContentBody_LogBookPanel1_uxLogInfo').innerHTML.replace(/#found_no#/ig, finds);
-                finds++;
-                document.getElementById('ctl00_ContentBody_LogBookPanel1_uxLogInfo').innerHTML = document.getElementById('ctl00_ContentBody_LogBookPanel1_uxLogInfo').innerHTML.replace(/#found#/ig, finds).replace(/#me#/ig, me).replace(/#owner#/ig, owner);
-                [ aDate, aTime, aDateTime ] = getDateTime();
-                document.getElementById('ctl00_ContentBody_LogBookPanel1_uxLogInfo').innerHTML = document.getElementById('ctl00_ContentBody_LogBookPanel1_uxLogInfo').innerHTML.replace(/#Date#/ig, aDate).replace(/#Time#/ig, aTime).replace(/#DateTime#/ig, aDateTime);
-                [ aGCTBName, aGCTBLink, aGCTBNameLink, aLogDate ] = getGCTBInfo();
-                document.getElementById('ctl00_ContentBody_LogBookPanel1_uxLogInfo').innerHTML = document.getElementById('ctl00_ContentBody_LogBookPanel1_uxLogInfo').innerHTML.replace(/#GCTBName#/ig, aGCTBName).replace(/#GCTBLink#/ig, aGCTBLink).replace(/#GCTBNameLink#/ig, aGCTBNameLink).replace(/#LogDate#/ig, aLogDate);
-            }
+            replacePlaceholder();
         } catch (e) {
             gclh_error("Default Log-Type und Signature (TB)", e);
+        }
+    }
+    function replacePlaceholder() {
+        // Set Cursor to Pos1.
+        function gclh_setFocus() {
+            var input = document.getElementById('ctl00_ContentBody_LogBookPanel1_uxLogInfo');
+            if (input) {
+                try {
+                    input.selectionStart = 0;
+                    input.selectionEnd = 0;
+                    input.focus();
+                } catch (e) {}
+            }
+        }
+        window.addEventListener("load", gclh_setFocus, false);
+        // Replace variable.
+        if ($('.li-user-info').last().children().length > 0) {
+            var finds = get_my_finds();
+            var me = $('.li-user-info').last().children().first().text();
+            var owner = document.getElementById('ctl00_ContentBody_LogBookPanel1_WaypointLink').nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.innerHTML;
+            document.getElementById('ctl00_ContentBody_LogBookPanel1_uxLogInfo').innerHTML = document.getElementById('ctl00_ContentBody_LogBookPanel1_uxLogInfo').innerHTML.replace(/#found_no#/ig, finds);
+            finds++;
+            document.getElementById('ctl00_ContentBody_LogBookPanel1_uxLogInfo').innerHTML = document.getElementById('ctl00_ContentBody_LogBookPanel1_uxLogInfo').innerHTML.replace(/#found#/ig, finds).replace(/#me#/ig, me).replace(/#owner#/ig, owner);
+            [ aDate, aTime, aDateTime ] = getDateTime();
+            document.getElementById('ctl00_ContentBody_LogBookPanel1_uxLogInfo').innerHTML = document.getElementById('ctl00_ContentBody_LogBookPanel1_uxLogInfo').innerHTML.replace(/#Date#/ig, aDate).replace(/#Time#/ig, aTime).replace(/#DateTime#/ig, aDateTime);
+            [ aGCTBName, aGCTBLink, aGCTBNameLink, aLogDate ] = getGCTBInfo();
+            document.getElementById('ctl00_ContentBody_LogBookPanel1_uxLogInfo').innerHTML = document.getElementById('ctl00_ContentBody_LogBookPanel1_uxLogInfo').innerHTML.replace(/#GCTBName#/ig, aGCTBName).replace(/#GCTBLink#/ig, aGCTBLink).replace(/#GCTBNameLink#/ig, aGCTBNameLink).replace(/#LogDate#/ig, aLogDate);
         }
     }
 
