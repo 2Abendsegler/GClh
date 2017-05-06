@@ -44,7 +44,7 @@ With this option you can choose the height of the "Add to list" popup to bookmar
 New: Show bigger avatar images in cache listing logs while hovering with the mouse: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/349">#349</a>]<br>
 After pressing the button "Show bigger avatars" in cache listing above the logs, a big avatar image is shown, if one hover with the mouse over an avatar image.<br>
 <img src="../images/v0.8_Screen41.jpg" alt="v0.8_Screen41.jpg"><br>
-(But the question remains: What are they doing in the image? :) )<br>
+<i>(But the question remains: What are they doing?) :)</i><br>
 The thumbnail parameter has to be activated.<br>
 Settings -> Listing:<br> 
 <img src="../images/v0.8_Screen40.jpg" alt="v0.8_Screen40.jpg"><br>
