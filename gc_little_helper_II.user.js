@@ -2701,8 +2701,6 @@ var mainGC = function () {
                     para.innerHTML = "&nbsp;";
                     para.style.height = "0";
                     para.className = para.className + ' Clear';
-                    //get more space for links, when spoiler is hidden
-                    document.getElementById('ctl00_ContentBody_uxLogbookLink').parentNode.style.width = "100%";
                 }
             }
         } catch (e) {
@@ -6515,28 +6513,28 @@ var mainGC = function () {
             GM_addStyle(css);
 
             // Cache Listing: Logs, nicht die Beschreibung im Listing.
-            if (is_page("cache_listing") && settings_load_logs_with_gclh ) {
-                var newImageTmpl =
-                    "          <a class='tb_images lnk gclh_thumb' onmouseover='placeToolTip(this);' rel='fb_images_${LogID}' href='" + http + "://img.geocaching.com/cache/log/${FileName}' title='<span class=&quot;LogImgTitle&quot;>${Name} &nbsp;</span><span class=&quot;LogImgLink&quot;> <a target=&quot;_blank&quot; href=&quot;/seek/log.aspx?LID=${LogID}&amp;IID=${ImageGuid}&quot;>View Log</a></span><br><span class=&quot;LogImgDescription&quot;>${Descr}</span>'>" +
-                    "              <img title='${Name}' alt='${Name}' src='" + http + "://img.geocaching.com/cache/log/thumb/${FileName}'/>";
+            if (is_page("cache_listing") && settings_load_logs_with_gclh) {
+                var newImageTmpl =  "<a class='tb_images lnk gclh_thumb' onmouseover='placeToolTip(this);' rel='fb_images_${LogID}' href='" + http + "://img.geocaching.com/cache/log/${FileName}' title='<span class=&quot;LogImgTitle&quot;>${Name} &nbsp;</span><span class=&quot;LogImgLink&quot;> <a target=&quot;_blank&quot; href=&quot;/seek/log.aspx?LID=${LogID}&amp;IID=${ImageGuid}&quot;>View Log</a></span><br><span class=&quot;LogImgDescription&quot;>${Descr}</span>'>"
+                                 +  "  <img title='${Name}' alt='${Name}' src='" + http + "://img.geocaching.com/cache/log/thumb/${FileName}'/>";
                 if (settings_imgcaption_on_top) {
-                    newImageTmpl += "<span title='${Name}'>${Name}<img title='${Descr}' class='gclh_max' src='" + http + "://img.geocaching.com/cache/log/thumb/large/${FileName}'></span>";
+                    newImageTmpl += "  <span title='${Name}'>${Name}<img title='${Descr}' class='gclh_max' src='" + http + "://img.geocaching.com/cache/log/thumb/large/${FileName}'></span>";
                 } else {
-                    newImageTmpl += "<span title='${Name}'><img title='${Descr}' class='gclh_max' src='" + http + "://img.geocaching.com/cache/log/thumb/large/${FileName}'>${Name}</span>";
+                    newImageTmpl += "  <span title='${Name}'><img title='${Descr}' class='gclh_max' src='" + http + "://img.geocaching.com/cache/log/thumb/large/${FileName}'>${Name}</span>";
                 }
-                newImageTmpl += "</a>&nbsp;&nbsp;" +
-                "";
+                newImageTmpl     += "</a>&nbsp;&nbsp;";
 
-                var code = "function gclh_updateTmpl() { " +
-                    "  delete $.template['tmplCacheLogImages'];" +
-                    "  $.template(\"tmplCacheLogImages\",\"" + newImageTmpl + "\");" +
-                    "}" +
-                    "gclh_updateTmpl();";
-                code += placeToolTip.toString();
+                var code = "function gclh_updateTmpl() { "
+                         + "  delete $.template['tmplCacheLogImages'];"
+                         + "  $.template(\"tmplCacheLogImages\",\"" + newImageTmpl + "\");"
+                         + "}"
+                         + "gclh_updateTmpl();"
+                         + placeToolTip.toString();
 
                 var script = document.createElement("script");
                 script.innerHTML = code;
                 document.getElementsByTagName("body")[0].appendChild(script);
+
+                if (!settings_hide_avatar) showLinkBiggerAvatars();
             }
 
             var regexp = new RegExp(settings_spoiler_strings, "i");
@@ -6648,19 +6646,43 @@ var mainGC = function () {
                 // Profile Foto:
                 } else if ( profileFoto && links[i].childNodes[0] && links[i].childNodes[0].tagName == 'IMG' &&
                             links[i].childNodes[0].src.match(/^https?:\/\/img\.geocaching\.com\/user\/avatar/) ) {
-                    var thumb = links[i].childNodes[0];
-                    var img = document.createElement('img');
-                    img.src = thumb.src.replace(/img\.geocaching\.com\/user\/avatar/, "s3.amazonaws.com/gs-geo-images");
-                    img.className = "gclh_max";
-                    var span = document.createElement('span');
-                    span.appendChild(img);
-                    links[i].className += " gclh_thumb";
-                    links[i].onmouseover = placeToolTip;
-                    links[i].appendChild(span);
+                    avatarThumbnail(links[i]);
                 }
             }
         } catch (e) {
             gclh_error("Show Thumbnails", e);
+        }
+    }
+    function avatarThumbnail(link) {
+        var thumb = link.children[0];
+        thumb.setAttribute("style", "margin-bottom: 0px;");
+        var img = document.createElement('img');
+        img.src = thumb.src.replace(/img\.geocaching\.com\/user\/avatar/, "s3.amazonaws.com/gs-geo-images");
+        img.className = "gclh_max";
+        img.setAttribute("style", "display: unset;");
+        var span = document.createElement('span');
+        span.appendChild(img);
+        link.className += " gclh_thumb";
+        link.onmouseover = placeToolTip;
+        link.appendChild(span);
+    }
+    function showLinkBiggerAvatars() {
+        var a = document.createElement("a");
+        a.appendChild(document.createTextNode("Show bigger avatars"));
+        a.setAttribute("href", "javascript:void(0);");
+        a.setAttribute("title", "Show bigger avatar images while hovering with the mouse");
+        a.setAttribute("id", "gclh_show_bigger_avatars");
+        a.setAttribute("style", "float: right;");
+        a.addEventListener("click", showBiggerAvatars, false);
+        document.getElementById("ctl00_ContentBody_uxLogbookLink").parentNode.appendChild(a);
+        document.getElementById("ctl00_ContentBody_uxLogbookLink").parentNode.style.width = "100%";
+    }
+    function showBiggerAvatars() {
+        var links = document.getElementsByClassName("logOwnerAvatar");
+        for (var i = 0; i < links.length; i++) {
+            if (links[i].children[0] && links[i].children[0].children[0] && !links[i].children[0].children[1]) {
+                avatarThumbnail(links[i].children[0]);
+            }
         }
     }
 
@@ -7068,15 +7090,14 @@ var mainGC = function () {
                 load_all.setAttribute("id", "gclh_load_all_logs");
                 document.getElementById("ctl00_ContentBody_uxLogbookLink").parentNode.appendChild(document.createTextNode(" | "));
                 document.getElementById("ctl00_ContentBody_uxLogbookLink").parentNode.appendChild(load_all);
-                showLogCounterLink();
-
+                document.getElementById("ctl00_ContentBody_uxLogbookLink").parentNode.style.width = "100%";
                 document.getElementById("ctl00_ContentBody_uxLogbookLink").parentNode.style.margin = "0";
                 var para = document.getElementById('ctl00_ContentBody_lblFindCounts').nextSibling.nextSibling.nextSibling.nextSibling;
                 if (para && para.nodeName == 'P') {
                     para.className = para.className + ' Clear';
                 }
-
                 load_all.addEventListener("click", gclh_load_all_logs, false);
+                showLogCounterLink();
             }
 
             // Filter logs.
@@ -8723,11 +8744,13 @@ var mainGC = function () {
         a.appendChild(document.createTextNode("Show log counter"));
         a.setAttribute("href", "javascript:void(0);");
         a.setAttribute("title", "Show log counter for log type and total");
-        a.setAttribute("id", "gclh_show_log_counter");
-        a.setAttribute("style", "float: right");
         a.addEventListener("click", showLogCounter, false);
-        document.getElementById("ctl00_ContentBody_uxLogbookLink").parentNode.appendChild(a);
-        document.getElementById("ctl00_ContentBody_uxLogbookLink").parentNode.style.width = "100%";
+        var span = document.createElement("span");
+        span.setAttribute("id", "gclh_show_log_counter");
+        span.setAttribute("style", "float: right; margin-right: 4px;");
+        span.appendChild(a);
+        if (document.getElementById("gclh_show_bigger_avatars")) span.appendChild(document.createTextNode(" |"));
+        document.getElementById("ctl00_ContentBody_uxLogbookLink").parentNode.appendChild(span);
         appendCssStyle(".gclh_logCounter {font-size: 10px !important; padding-left: 6px; font-style: italic;}");
     }
     function showLogCounter() {
@@ -9543,7 +9566,7 @@ var mainGC = function () {
             html += "<div id='gclh_config_profile'>";
             html += checkboxy('settings_bookmarks_show', "Show <a class='gclh_ref' href='#gclh_linklist' id='gclh_linklist_link_2'>Linklist</a> in your profile") + show_help("Show the Linklist at the right side in your profile. You can configure the links in the Linklist at the end of this page.") + "<br/>";
             html += checkboxy('settings_hide_visits_in_profile', 'Hide TB/Coin visits in your profile') + "<br/>";
-            html += checkboxy('settings_show_thumbnails', 'Show thumbnails of images') + show_help("With this option the images are displayed as thumbnails to have a preview. If you hover over a thumbnail, you can see the big one.<br><br>This works in cache and TB logs, in the cache and TB image galleries, in public profile for the avatar and in the profile image gallery.") + "&nbsp; Max size of big image: <input class='gclh_form' size=2 type='text' id='settings_hover_image_max_size' value='" + settings_hover_image_max_size + "'> px <br/>";
+            html += checkboxy('settings_show_thumbnails', 'Show thumbnails of images') + show_help("With this option the images are displayed as thumbnails to have a preview. If you hover over a thumbnail, you can see the big one.<br><br>This works in cache and TB logs, in the cache and TB image galleries, in public profile for the avatar and in the profile image gallery. <br><br>And after pressing button \"Show bigger avatars\" in cache listing, it works too for the avatars in the shown logs.") + "&nbsp; Max size of big image: <input class='gclh_form' size=2 type='text' id='settings_hover_image_max_size' value='" + settings_hover_image_max_size + "'> px <br/>";
             html += "&nbsp; " + checkboxy('settings_imgcaption_on_top', 'Show caption on top') + show_help("This option requires \"Show thumbnails of images\".") + "<br/>";
             html += checkboxy('settings_show_big_gallery', 'Show bigger images in gallery') + show_help("With this option the images in the galleries of caches, TBs and profiles are displayed bigger and not in 4 columns, but in 2 columns.");
             var content_geothumbs = "<font class='gclh_small' style='margin-left: 80px; margin-top: -10px; position: absolute;'> (Alternative: <a href='https://benchmarks.org.uk/greasemonkey/geothumbs.php' target='_blank'>Geothumbs</a> " + show_help("A great alternative to the GClh bigger image functionality with \"Show thumbnails of images\" and \"Show bigger images in gallery\", provides the script Geothumbs (Geocaching Thumbnails). <br><br>The script works like GClh with Firefox as Greasemonkey script and with Google Chrome and Opera as Tampermonkey script. <br><br>If you use Geothumbs, you have to uncheck both GClh bigger image functionality.") + ")</font>" + "<br/>";
@@ -9666,7 +9689,7 @@ var mainGC = function () {
             html += " &nbsp; &nbsp; " + checkboxy('settings_vup_hide_avatar', 'Also hide name, avatar and counter from log') + show_help("With this option you can also hide the cacher name, his avatar and his found counter<br><br>This option requires \"Process VUPs\" and \"Show VIP list\".") + "<br>";
             html += " &nbsp; &nbsp; &nbsp; " + checkboxy('settings_vup_hide_log', 'Hide complete log') + show_help("With this option you can hide the complete log of the cacher.<br><br>This option requires \"Also hide name, avatar and counter from log\", \"Process VUPs\" and \"Show VIP list\".") + "<br>";
             html += checkboxy('settings_link_big_listing', 'Replace image links in cache listing to bigger image') + show_help("With this option the links of owner images in the cache listing points to the bigger, original image.") + "<br/>";
-            html += checkboxy('settings_show_thumbnailsX0', 'Show thumbnails of images') + show_help("With this option the images are displayed as thumbnails to have a preview. If you hover over a thumbnail, you can see the big one.<br><br>This works in cache and TB logs, in the cache and TB image galleries, in public profile for the avatar and in the profile image gallery.") + "&nbsp; Max size of big image: <input class='gclh_form' size=2 type='text' id='settings_hover_image_max_sizeX0' value='" + settings_hover_image_max_size + "'> px <br/>";
+            html += checkboxy('settings_show_thumbnailsX0', 'Show thumbnails of images') + show_help("With this option the images are displayed as thumbnails to have a preview. If you hover over a thumbnail, you can see the big one.<br><br>This works in cache and TB logs, in the cache and TB image galleries, in public profile for the avatar and in the profile image gallery. <br><br>And after pressing button \"Show bigger avatars\" in cache listing, it works too for the avatars in the shown logs.") + "&nbsp; Max size of big image: <input class='gclh_form' size=2 type='text' id='settings_hover_image_max_sizeX0' value='" + settings_hover_image_max_size + "'> px <br/>";
             html += " &nbsp; &nbsp;" + "Spoiler-Filter: <input class='gclh_form' type='text' id='settings_spoiler_strings' value='" + settings_spoiler_strings + "'> " + show_help("If one of these words is found in the caption of the image, there will be no real thumbnail. It is to prevent seeing spoilers. Words have to be divided by |. If the field is empty, no checking is done. Default is \"spoiler|hinweis|hint\".<br><br>This option requires \"Show thumbnails of images\".") + "<br/>";
             html += "&nbsp; " + checkboxy('settings_imgcaption_on_topX0', 'Show caption on top') + show_help("This option requires \"Show thumbnails of images\".") + "<br/>";
             html += checkboxy('settings_show_big_galleryX0', 'Show bigger images in gallery') + show_help("With this option the images in the galleries of caches, TBs and profiles are displayed bigger and not in 4 columns, but in 2 columns.");
