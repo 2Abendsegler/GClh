@@ -21,22 +21,18 @@
 ## v0.8:
 <ul>
 <li>
-New: Change the link "Lists" on "my" pages from new designed page to old-fashioned page: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/339">#339</a>]<br>
-New designed page: <code>.../account/lists</code><br>
-Old-fashioned page: <code>.../my/lists.aspx</code><br>
-<img src="../images/v0.8_Screen26.jpg" alt="v0.8_Screen26.jpg"><br>
-Settings -> Profile:<br>
-<img src="../images/v0.8_Screen27.jpg" alt="v0.8_Screen27.jpg"><br>
-The parameter has to be activated in Config after installation.<br>
-<br>
-<br>
-</li>
-<li>
 New: Compact layout in "Add to list" popup to bookmark a cache: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/184">#184</a>]<br>
 <img src="../images/v0.8_Screen30.jpg" alt="v0.8_Screen30.jpg"> <b>>>></b> <img src="../images/v0.8_Screen29.jpg" alt="v0.8_Screen29.jpg"><br>
 Settings -> Listing:<br>
 <img src="../images/v0.8_Screen31.jpg" alt="v0.8_Screen31.jpg"><br>
 With this option you can choose the height of the "Add to list" popup to bookmark a cache from 100 up to 520 pixel. The example has 292 pixel and the default is 205 pixel, similar to the standard.<br>
+<br>
+<br>
+</li>
+<li>
+Tip: Enable old link in cache listing to create bookmark with comment: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/321">#321</a>]<br>
+The functionality, to create a bookmark with comment, is already available in gc.com standard. Please select the button "Add to list" in cache listing not with the left mouse key but with the right mouse key and choose "open link in new tab".<br>
+<img src="../images/v0.8_Screen36.jpg" alt="v0.8_Screen36.jpg"> <b>>>></b> <img src="../images/v0.8_Screen37.jpg" alt="v0.8_Screen37.jpg"><br>
 <br>
 <br>
 </li>
@@ -91,14 +87,18 @@ The parameters have to be activated in Config after installation.<br>
 <br>
 </li>
 <li>
-New: Display images in user, cache and TB image galleries with maximum possible size. [Issue <a href="https://github.com/2Abendsegler/GClh/issues/312">#312</a>]<br>
+New: Change the link "Lists" on "my" pages from new designed page to old-fashioned page: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/339">#339</a>]<br>
+New designed page: <code>.../account/lists</code><br>
+Old-fashioned page: <code>.../my/lists.aspx</code><br>
+<img src="../images/v0.8_Screen26.jpg" alt="v0.8_Screen26.jpg"><br>
+Settings -> Profile:<br>
+<img src="../images/v0.8_Screen27.jpg" alt="v0.8_Screen27.jpg"><br>
+The parameter has to be activated in Config after installation.<br>
 <br>
 <br>
 </li>
 <li>
-Tip: Enable old link in cache listing to create bookmark with comment: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/321">#321</a>]<br>
-The functionality, to create a bookmark with comment, is already available in gc.com standard. Please select the button "Add to list" in cache listing not with the left mouse key but with the right mouse key and choose "open link in new tab".<br>
-<img src="../images/v0.8_Screen36.jpg" alt="v0.8_Screen36.jpg"> <b>>>></b> <img src="../images/v0.8_Screen37.jpg" alt="v0.8_Screen37.jpg"><br>
+New: Display images in user, cache and TB image galleries with maximum possible size. [Issue <a href="https://github.com/2Abendsegler/GClh/issues/312">#312</a>]<br>
 <br>
 <br>
 </li>
