@@ -72,6 +72,7 @@ Settings -> Map:<br>
 <img src="../images/v0.8_Screen39.jpg" alt="v0.8_Screen39.jpg"><br>
 <img src="../images/v0.8_Screen38.jpg" alt="v0.8_Screen38.jpg"><br>
 GClh now take on the control of all layers, if GClh is to replace the layers. All other layers, for example of GME (Geocaching Map Enhancements), are deactivated. But you can use the other functionality of other scripts, like for example GME, together with GClh at once. With this option you can disable this replacement too, to use the layers from gc or other scripts like GME. This parameter is not new, the importance, however, was expanded.<br>
+<br>
 It is important, that GClh run at first, particularly in front of other layer used scripts like GME or GCVote.<br> 
 (If there are problems with the layers by using GCVote at once, you have to clear the local storage of GCVote. You can do it about your profile. If that does not help, deinstall and install GCVote again. GCVote use a local storage for its data. This storage can include incomplete layers which influence the layer control.)<br>
 <br>
