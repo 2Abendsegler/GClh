@@ -19,9 +19,91 @@
 
 ---
 ## v0.8:
+<b>Cache Listing:</b><br>
 <ul>
 <li>
-New: Change the link "Lists" on "my" pages from new designed page to old-fashioned page: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/339">#339</a>]<br>
+New: <b>Compact layout in "Add to list" popup to bookmark a cache</b>: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/184">#184</a>]<br>
+<br>
+<img src="../images/v0.8_Screen30.jpg" alt="v0.8_Screen30.jpg"> <b>>>></b> <img src="../images/v0.8_Screen29.jpg" alt="v0.8_Screen29.jpg"><br>
+Settings -> Listing:<br>
+<img src="../images/v0.8_Screen31.jpg" alt="v0.8_Screen31.jpg"><br>
+With this option you can choose the height of the "Add to list" popup to bookmark a cache from 100 up to 520 pixel. The example has 292 pixel and the default is 205 pixel, similar to the standard.<br>
+<br>
+<br>
+</li>
+<li>
+Tip: <b>Enable old link in cache listing to create bookmark with comment:</b> [Issue <a href="https://github.com/2Abendsegler/GClh/issues/321">#321</a>]<br>
+<br>
+The functionality, to create a bookmark with comment, is already available in gc.com standard. Please select the button "Add to list" in cache listing not with the left mouse key but with the right mouse key and choose "open link in new tab".<br>
+<img src="../images/v0.8_Screen36.jpg" alt="v0.8_Screen36.jpg"> <b>>>></b> <img src="../images/v0.8_Screen37.jpg" alt="v0.8_Screen37.jpg"><br>
+<br>
+<br>
+</li>
+<li>
+New: <b>Show bigger avatar images in cache listing logs while hovering with the mouse:</b> [Issue <a href="https://github.com/2Abendsegler/GClh/issues/349">#349</a>]<br>
+<br>
+After pressing the button "Show bigger avatars" in cache listing above the logs, a big avatar image is shown, if one hover with the mouse over an avatar image.<br>
+<img src="../images/v0.8_Screen41.jpg" alt="v0.8_Screen41.jpg"><br>
+&nbsp; &nbsp; &nbsp; (<i>But one question remains: What are they doing?</i>)<br>
+Settings -> Listing:<br> 
+<img src="../images/v0.8_Screen40.jpg" alt="v0.8_Screen40.jpg"><br>
+The thumbnails parameter (not new) has to be activated.<br>
+<br>
+<br>
+</li>
+<li>
+New: <b>File caption missing under maximized image in cache listing:</b> [Issue <a href="https://github.com/2Abendsegler/GClh/issues/326">#326</a>]<br>
+<br>
+Now there are showing not only the image description under the maximized image, but the file caption and the "View Log" button too.<br>
+<img src="../images/v0.8_Screen28.jpg" alt="v0.8_Screen28.jpg"><br>
+<br>
+<br>
+</li>
+</ul>
+<b>Map:</b><br><br>
+<ul>
+<li>
+New: <b>Improve relationship between GClh and GME (Geocaching Map Enhancements):</b> [Issue <a href="https://github.com/2Abendsegler/GClh/issues/342">#342</a>]<br>
+<br>
+Positioning GME toolbox:<br>
+<img src="../images/v0.8_Screen32.jpg" alt="v0.8_Screen32.jpg"> <b>>>></b> <img src="../images/v0.8_Screen33.jpg" alt="v0.8_Screen33.jpg"><br>
+Show GClh button "Hide/Show Header":<br>
+<img src="../images/v0.8_Screen34.jpg" alt="v0.8_Screen34.jpg"> <b>>>></b> <img src="../images/v0.8_Screen35.jpg" alt="v0.8_Screen35.jpg"><br>
+<br>
+<br>
+</li>
+<li>
+New: <b>Using map layers of GClh in GME (Geocaching Map Enhancements):</b> [Issue <a href="https://github.com/2Abendsegler/GClh/issues/345">#345</a>]<br>
+<br>
+Settings -> Map:<br>
+<img src="../images/v0.8_Screen39.jpg" alt="v0.8_Screen39.jpg"><br>
+<img src="../images/v0.8_Screen38.jpg" alt="v0.8_Screen38.jpg"><br>
+GClh now take on the control of all layers, if GClh is to replace the layers. All other layers, for example of GME (Geocaching Map Enhancements), are deactivated. But you can use the other functionality of other scripts, like for example GME, together with GClh at once. With this option you can disable this replacement too, to use the layers from gc or other scripts like GME. This parameter is not new, the importance, however, was expanded.<br>
+<br>
+It is important, that GClh run at first, particularly in front of other layer used scripts like GME or GCVote.<br> 
+(If there are problems with the layers by using GCVote at once, you have to clear the local storage of GCVote. You can do it about your profile. If that does not help, deinstall and install GCVote again. GCVote use a local storage for its data. This storage can include incomplete layers which influence the layer control.)<br>
+<br>
+<br>
+</li>
+</ul>
+<b>Others:</b><br><br>
+<ul>
+<li>
+New: <b>Hide banner linking "Garmin Express" or new or old "My Lists" page:</b> [Issue <a href="https://github.com/2Abendsegler/GClh/issues/311">#311</a>]<br>
+<br>
+Pages with banner:<br>
+<img src="../images/v0.8_Screen20.jpg" alt="v0.8_Screen20.jpg"><br>
+<img src="../images/v0.8_Screen21.jpg" alt="v0.8_Screen21.jpg"><br>
+<img src="../images/v0.8_Screen22.jpg" alt="v0.8_Screen22.jpg"><br>
+Settings -> Global:<br>
+<img src="../images/v0.8_Screen23.jpg" alt="v0.8_Screen23.jpg"><br>
+The parameters have to be activated in Config after installation.<br>
+<br>
+<br>
+</li>
+<li>
+New: <b>Change the link "Lists" on "my" pages from new designed page to old-fashioned page:</b> [Issue <a href="https://github.com/2Abendsegler/GClh/issues/339">#339</a>]<br>
+<br>
 New designed page: <code>.../account/lists</code><br>
 Old-fashioned page: <code>.../my/lists.aspx</code><br>
 <img src="../images/v0.8_Screen26.jpg" alt="v0.8_Screen26.jpg"><br>
@@ -32,76 +114,12 @@ The parameter has to be activated in Config after installation.<br>
 <br>
 </li>
 <li>
-New: Compact layout in "Add to list" popup to bookmark a cache: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/184">#184</a>]<br>
-<img src="../images/v0.8_Screen30.jpg" alt="v0.8_Screen30.jpg"> <b>>>></b> <img src="../images/v0.8_Screen29.jpg" alt="v0.8_Screen29.jpg"><br>
-Settings -> Listing:<br>
-<img src="../images/v0.8_Screen31.jpg" alt="v0.8_Screen31.jpg"><br>
-With this option you can choose the height of the "Add to list" popup to bookmark a cache from 100 up to 520 pixel. The example has 292 pixel and the default is 205 pixel, similar to the standard.<br>
+New: <b>Display images in user, cache and TB image galleries with maximum possible size.</b> [Issue <a href="https://github.com/2Abendsegler/GClh/issues/312">#312</a>]<br>
 <br>
 <br>
 </li>
 <li>
-New: Show bigger avatar images in cache listing logs while hovering with the mouse: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/349">#349</a>]<br>
-After pressing the button "Show bigger avatars" in cache listing above the logs, a big avatar image is shown, if one hover with the mouse over an avatar image.<br>
-<img src="../images/v0.8_Screen41.jpg" alt="v0.8_Screen41.jpg"><br>
-&nbsp; &nbsp; &nbsp; (<i>But the question remains: What are they doing?</i>)<br>
-The thumbnails parameter has to be activated.<br>
-Settings -> Listing:<br> 
-<img src="../images/v0.8_Screen40.jpg" alt="v0.8_Screen40.jpg"><br>
-<br>
-<br>
-</li><li>
-New: File caption missing under maximized image in cache listing: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/326">#326</a>]<br>
-Now there are showing not only the image description under the maximized image, but the file caption and the "View Log" button too.<br>
-<img src="../images/v0.8_Screen28.jpg" alt="v0.8_Screen28.jpg"><br>
-<br>
-<br>
-</li>
-<li>
-New: Improve relationship between GClh and GME (Geocaching Map Enhancements): [Issue <a href="https://github.com/2Abendsegler/GClh/issues/342">#342</a>]<br>
-Positioning GME toolbox:<br>
-<img src="../images/v0.8_Screen32.jpg" alt="v0.8_Screen32.jpg"> <b>>>></b> <img src="../images/v0.8_Screen33.jpg" alt="v0.8_Screen33.jpg"><br>
-Show GClh button "Hide/Show Header":<br>
-<img src="../images/v0.8_Screen34.jpg" alt="v0.8_Screen34.jpg"> <b>>>></b> <img src="../images/v0.8_Screen35.jpg" alt="v0.8_Screen35.jpg"><br>
-<br>
-<br>
-</li>
-<li>
-New: Using map layers of GClh in GME: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/345">#345</a>]<br>
-Settings -> Map:<br>
-<img src="../images/v0.8_Screen39.jpg" alt="v0.8_Screen39.jpg"><br>
-<img src="../images/v0.8_Screen38.jpg" alt="v0.8_Screen38.jpg"><br>
-GClh now take on the control of all layers, if GClh is to replace the layers. All other layers, for example of GME (Geocaching Map Enhancements), are deactivated. But you can use the other functionality of other scripts, like for example GME, together with GClh at once. With this option you can disable this replacement too, to use the layers from gc or other scripts like GME. This parameter is not new, the importance, however, was expanded.<br>
-It is important, that GClh run at first, particularly in front of other layer used scripts like GME or GCVote.<br> 
-(If there are problems with the layers by using GCVote at once, you have to clear the local storage of GCVote. You can do it about your profile. If that does not help, deinstall and install GCVote again. GCVote use a local storage for its data. This storage can include incomplete layers which influence the layer control.)<br>
-<br>
-<br>
-</li>
-<li>
-New: Hide banner linking "Garmin Express" or new or old "My Lists" page: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/311">#311</a>]<br>
-Pages with banner:<br>
-<img src="../images/v0.8_Screen20.jpg" alt="v0.8_Screen20.jpg"><br>
-<img src="../images/v0.8_Screen21.jpg" alt="v0.8_Screen21.jpg"><br>
-<img src="../images/v0.8_Screen22.jpg" alt="v0.8_Screen22.jpg"><br>
-Settings -> Global:<br>
-<img src="../images/v0.8_Screen23.jpg" alt="v0.8_Screen23.jpg"><br>
-<br>
-<br>
-</li>
-<li>
-New: Display images in user, cache and TB image galleries with maximum possible size. [Issue <a href="https://github.com/2Abendsegler/GClh/issues/312">#312</a>]<br>
-<br>
-<br>
-</li>
-<li>
-Tip: Enable old link in cache listing to create bookmark with comment: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/321">#321</a>]<br>
-The functionality, to create a bookmark with comment, is already available in gc.com standard. Please select the button "Add to list" in cache listing not with the left mouse key but with the right mouse key and choose "open link in new tab".<br>
-<img src="../images/v0.8_Screen36.jpg" alt="v0.8_Screen36.jpg"> <b>>>></b> <img src="../images/v0.8_Screen37.jpg" alt="v0.8_Screen37.jpg"><br>
-<br>
-<br>
-</li>
-<li>
-Change: Consolidate F2, F4, F10 key functions for better expandability. [Issue <a href="https://github.com/2Abendsegler/GClh/issues/345">#345</a>]<br>
+Change: <b>Consolidate F2, F4, F10 key functions for better expandability.</b> [Issue <a href="https://github.com/2Abendsegler/GClh/issues/345">#345</a>]<br>
 <br>
 <br>
 </li>
