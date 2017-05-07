@@ -22,6 +22,7 @@
 <ul>
 <li>
 New: Compact layout in "Add to list" popup to bookmark a cache: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/184">#184</a>]<br>
+<br>
 <img src="../images/v0.8_Screen30.jpg" alt="v0.8_Screen30.jpg"> <b>>>></b> <img src="../images/v0.8_Screen29.jpg" alt="v0.8_Screen29.jpg"><br>
 Settings -> Listing:<br>
 <img src="../images/v0.8_Screen31.jpg" alt="v0.8_Screen31.jpg"><br>
@@ -31,6 +32,7 @@ With this option you can choose the height of the "Add to list" popup to bookmar
 </li>
 <li>
 Tip: Enable old link in cache listing to create bookmark with comment: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/321">#321</a>]<br>
+<br>
 The functionality, to create a bookmark with comment, is already available in gc.com standard. Please select the button "Add to list" in cache listing not with the left mouse key but with the right mouse key and choose "open link in new tab".<br>
 <img src="../images/v0.8_Screen36.jpg" alt="v0.8_Screen36.jpg"> <b>>>></b> <img src="../images/v0.8_Screen37.jpg" alt="v0.8_Screen37.jpg"><br>
 <br>
@@ -38,6 +40,7 @@ The functionality, to create a bookmark with comment, is already available in gc
 </li>
 <li>
 New: Show bigger avatar images in cache listing logs while hovering with the mouse: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/349">#349</a>]<br>
+<br>
 After pressing the button "Show bigger avatars" in cache listing above the logs, a big avatar image is shown, if one hover with the mouse over an avatar image.<br>
 <img src="../images/v0.8_Screen41.jpg" alt="v0.8_Screen41.jpg"><br>
 &nbsp; &nbsp; &nbsp; (<i>But one question remains: What are they doing?</i>)<br>
@@ -48,6 +51,7 @@ The thumbnails parameter (not new) has to be activated.<br>
 <br>
 </li><li>
 New: File caption missing under maximized image in cache listing: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/326">#326</a>]<br>
+<br>
 Now there are showing not only the image description under the maximized image, but the file caption and the "View Log" button too.<br>
 <img src="../images/v0.8_Screen28.jpg" alt="v0.8_Screen28.jpg"><br>
 <br>
@@ -55,6 +59,7 @@ Now there are showing not only the image description under the maximized image, 
 </li>
 <li>
 New: Improve relationship between GClh and GME (Geocaching Map Enhancements): [Issue <a href="https://github.com/2Abendsegler/GClh/issues/342">#342</a>]<br>
+<br>
 Positioning GME toolbox:<br>
 <img src="../images/v0.8_Screen32.jpg" alt="v0.8_Screen32.jpg"> <b>>>></b> <img src="../images/v0.8_Screen33.jpg" alt="v0.8_Screen33.jpg"><br>
 Show GClh button "Hide/Show Header":<br>
@@ -64,6 +69,7 @@ Show GClh button "Hide/Show Header":<br>
 </li>
 <li>
 New: Using map layers of GClh in GME: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/345">#345</a>]<br>
+<br>
 Settings -> Map:<br>
 <img src="../images/v0.8_Screen39.jpg" alt="v0.8_Screen39.jpg"><br>
 <img src="../images/v0.8_Screen38.jpg" alt="v0.8_Screen38.jpg"><br>
@@ -76,6 +82,7 @@ It is important, that GClh run at first, particularly in front of other layer us
 </li>
 <li>
 New: Hide banner linking "Garmin Express" or new or old "My Lists" page: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/311">#311</a>]<br>
+<br>
 Pages with banner:<br>
 <img src="../images/v0.8_Screen20.jpg" alt="v0.8_Screen20.jpg"><br>
 <img src="../images/v0.8_Screen21.jpg" alt="v0.8_Screen21.jpg"><br>
@@ -88,6 +95,7 @@ The parameters have to be activated in Config after installation.<br>
 </li>
 <li>
 New: Change the link "Lists" on "my" pages from new designed page to old-fashioned page: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/339">#339</a>]<br>
+<br>
 New designed page: <code>.../account/lists</code><br>
 Old-fashioned page: <code>.../my/lists.aspx</code><br>
 <img src="../images/v0.8_Screen26.jpg" alt="v0.8_Screen26.jpg"><br>
