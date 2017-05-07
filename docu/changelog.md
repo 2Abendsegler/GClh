@@ -19,9 +19,10 @@
 
 ---
 ## v0.8:
+### Cache Listing:
 <ul>
 <li>
-New: Compact layout in "Add to list" popup to bookmark a cache: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/184">#184</a>]<br>
+New: <b>Compact layout in "Add to list" popup to bookmark a cache</b>: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/184">#184</a>]<br>
 <br>
 <img src="../images/v0.8_Screen30.jpg" alt="v0.8_Screen30.jpg"> <b>>>></b> <img src="../images/v0.8_Screen29.jpg" alt="v0.8_Screen29.jpg"><br>
 Settings -> Listing:<br>
