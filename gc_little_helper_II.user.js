@@ -2329,10 +2329,8 @@ var settings_compact_layout_list_of_pq = true;
                     oTbl.find('tbody tr:eq(0) td').each(function () {
                         window.$(this).attr("data-item-original-width", (unsafeWindow || window).$(this).width());
                     });
-
                     // Clone the original table.
                     var newTbl = oTbl.clone();
-
                     // Remove table header from original table.
                     oTbl.find('thead tr').remove();
                     // Remove table body from new table.
@@ -2387,18 +2385,13 @@ var settings_compact_layout_list_of_pq = true;
     // Helper function to find PQ options, which are in rejection.
     function verifyPqOptions() {
         var status = false;
-
         status = status | markPqOptionsAreInRejection( "ctl00_ContentBody_cbOptions_0", "ctl00_ContentBody_cbOptions_1" ); // I haven't found / I have found
         status = status | markPqOptionsAreInRejection( "ctl00_ContentBody_cbOptions_2", "ctl00_ContentBody_cbOptions_3" ); // I don't vs. own	I own
         status = status | markPqOptionsAreInRejection( "ctl00_ContentBody_cbOptions_4", "ctl00_ContentBody_cbOptions_5" ); // Are available to all users	vs. Are for members only
         status = status | markPqOptionsAreInRejection( "ctl00_ContentBody_cbOptions_8", "ctl00_ContentBody_cbOptions_9" ); // Found in the last 7 days  vs.	Have not been found
         status = status | markPqOptionsAreInRejection( "ctl00_ContentBody_cbOptions_12", "ctl00_ContentBody_cbOptions_13" ); // Is Disabled  vs.	Is Enabled
-
-        if ( status ) {
-            $("#warning").show();
-        } else {
-            $("#warning").hide();
-        }
+        if ( status ) $("#warning").show();
+        else $("#warning").hide();
     }
 
     // Set default value ONLY for new pocket queries.
@@ -2490,8 +2483,6 @@ var settings_compact_layout_list_of_pq = true;
                         $("#ctl00_ContentBody_cbDays_5").prop('checked', true);
                     } else if ( servertime.match(/.*Saturday.*/) ) {
                         $("#ctl00_ContentBody_cbDays_6").prop('checked', true);
-                    } else {
-                        // do nothing
                     }
                 }
             }
@@ -2621,13 +2612,10 @@ var settings_compact_layout_list_of_pq = true;
     if (settings_hide_disclaimer && is_page("cache_listing")) {
         try {
             var disc = document.getElementsByClassName('Note Disclaimer')[0]; // New Listing design
-            if (disc) {
-                disc.parentNode.removeChild(disc);
-            } else {
+            if (disc) disc.parentNode.removeChild(disc);
+            else {
                 var disc = document.getElementsByClassName('DisclaimerWidget')[0];
-                if (disc) {
-                    disc.parentNode.removeChild(disc);
-                }
+                if (disc) disc.parentNode.removeChild(disc);
             }
         } catch (e) {
             gclh_error("Hide Disclaimer1", e);
@@ -2636,9 +2624,7 @@ var settings_compact_layout_list_of_pq = true;
     if (settings_hide_disclaimer && document.location.href.match(/^https?:\/\/www\.geocaching\.com\/seek\/cdpf\.aspx/)) {
         try {
             var disc = document.getElementsByClassName('TermsWidget no-print')[0];
-            if (disc) {
-                disc.parentNode.removeChild(disc);
-            }
+            if (disc) disc.parentNode.removeChild(disc);
         } catch (e) {
             gclh_error("Hide Disclaimer2", e);
         }
@@ -2669,9 +2655,7 @@ var settings_compact_layout_list_of_pq = true;
                             del = del.parentNode;
                         }
                     }
-                    if (del.parentNode) {
-                        del.parentNode.removeChild(del);
-                    }
+                    if (del.parentNode) del.parentNode.removeChild(del);
                     break;
                 }
             }
@@ -2723,13 +2707,10 @@ var settings_compact_layout_list_of_pq = true;
     if (settings_hide_cache_notes && is_page("cache_listing")) {
         try {
             var disc = document.getElementsByClassName('Note PersonalCacheNote')[0]; // New Listing design
-            if (disc) {
-                disc.parentNode.removeChild(disc);
-            } else {
+            if (disc) disc.parentNode.removeChild(disc);
+            else {
                 var disc = document.getElementsByClassName('NotesWidget')[0];
-                if (disc) {
-                    disc.parentNode.removeChild(disc);
-                }
+                if (disc) disc.parentNode.removeChild(disc);
             }
         } catch (e) {
             gclh_error("Hide Cache Notes (COMPLETE)", e);
@@ -2831,9 +2812,7 @@ var settings_compact_layout_list_of_pq = true;
 
                     // Remove hint description.
                     var decryptKey = document.getElementById('dk');
-                    if (decryptKey) {
-                        decryptKey.parentNode.removeChild(decryptKey);
-                    }
+                    if (decryptKey) decryptKey.parentNode.removeChild(decryptKey);
                 }
             }
         } catch (e) {
@@ -2885,9 +2864,7 @@ var settings_compact_layout_list_of_pq = true;
                 }
                 // Remove hint description.
                 var decryptKey = document.getElementById('dk');
-                if (decryptKey) {
-                    decryptKey.parentNode.removeChild(decryptKey);
-                }
+                if (decryptKey) decryptKey.parentNode.removeChild(decryptKey);
             }
         } catch (e) {
             gclh_error("Decrypt Hint1", e);
