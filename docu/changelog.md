@@ -73,7 +73,7 @@ Show GClh button "Hide/Show Header":<br>
 <br>
 </li>
 <li>
-New: <b>Using map layers of GClh in GME:</b> [Issue <a href="https://github.com/2Abendsegler/GClh/issues/345">#345</a>]<br>
+New: <b>Using map layers of GClh in GME (Geocaching Map Enhancements):</b> [Issue <a href="https://github.com/2Abendsegler/GClh/issues/345">#345</a>]<br>
 <br>
 Settings -> Map:<br>
 <img src="../images/v0.8_Screen39.jpg" alt="v0.8_Screen39.jpg"><br>
