@@ -86,6 +86,7 @@ Pages with banner:<br>
 <img src="../images/v0.8_Screen22.jpg" alt="v0.8_Screen22.jpg"><br>
 Settings -> Global:<br>
 <img src="../images/v0.8_Screen23.jpg" alt="v0.8_Screen23.jpg"><br>
+The parameters have to be activated in Config after installation.<br>
 <br>
 <br>
 </li>
