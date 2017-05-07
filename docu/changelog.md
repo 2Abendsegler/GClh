@@ -86,7 +86,7 @@ It is important, that GClh run at first, particularly in front of other layer us
 <br>
 </li>
 </ul>
-<b>Others:</b><br>
+<b>Others:</b><br><br>
 <ul>
 <li>
 New: <b>Hide banner linking "Garmin Express" or new or old "My Lists" page:</b> [Issue <a href="https://github.com/2Abendsegler/GClh/issues/311">#311</a>]<br>
