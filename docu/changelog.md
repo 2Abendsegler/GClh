@@ -45,9 +45,9 @@ New: Show bigger avatar images in cache listing logs while hovering with the mou
 After pressing the button "Show bigger avatars" in cache listing above the logs, a big avatar image is shown, if one hover with the mouse over an avatar image.<br>
 <img src="../images/v0.8_Screen41.jpg" alt="v0.8_Screen41.jpg"><br>
 &nbsp; &nbsp; &nbsp; (<i>But one question remains: What are they doing?</i>)<br>
-The thumbnails parameter has to be activated.<br>
 Settings -> Listing:<br> 
 <img src="../images/v0.8_Screen40.jpg" alt="v0.8_Screen40.jpg"><br>
+The thumbnails parameter (not new) has to be activated.<br>
 <br>
 <br>
 </li><li>
