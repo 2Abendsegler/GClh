@@ -89,11 +89,15 @@ It is important, that GClh run at first, particularly in front of other layer us
 <b>Bookmark lists:</b><br><br>
 <ul>
 <li>
+<br>
+<br>
 </li>
 </ul>
 <b>Pocket Queries:</b><br><br>
 <ul>
 <li>
+<br>
+<br>
 </li>
 </ul>
 <b>Others:</b><br><br>
