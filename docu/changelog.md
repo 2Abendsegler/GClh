@@ -19,7 +19,7 @@
 
 ---
 ## v0.8:
-### Cache Listing:
+## Cache Listing:
 <ul>
 <li>
 New: <b>Compact layout in "Add to list" popup to bookmark a cache</b>: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/184">#184</a>]<br>
