@@ -1995,7 +1995,6 @@ var mainGC = function () {
                 if ( document.getElementsByClassName("favorite-container")[0] &&
                      document.getElementsByClassName("favorite-score")[0].innerHTML.match("%") &&
                      document.getElementsByClassName("favorite-dropdown")[0]                      ) {
-
                     // Box mit Schleifchen/Herz, Anzahl Favoriten, Text "Favorites" und Drop-Down-Pfeil.
                     var fav = document.getElementsByClassName("favorite-container")[0];
                     if (fav) {
@@ -2050,7 +2049,6 @@ var mainGC = function () {
                     break;
                 }
             }
-
             if (owner_link && real_owner) {
                 var pseudo = owner_link.innerHTML;
                 if (settings_show_real_owner) {
@@ -2241,6 +2239,131 @@ var mainGC = function () {
             gclh_error("Show the latest logs symbols", e);
         }
     }
+
+//xxxx2
+// Improve list of Pocket Queries (list of PQs).
+    if (document.location.href.match(/^https?:\/\/www\.geocaching\.com\/pocket/) && document.getElementById("uxCreateNewPQ")) {
+        try {
+            // Compact layout.
+//xxxx2
+var settings_compact_layout_list_of_pq = true;
+            if (settings_compact_layout_list_of_pq) {
+                function lastGen(elem) {
+                    elem.innerHTML = "Last Generated";
+                    elem.title = "Last Generated (PST)";
+                    elem.style.whiteSpace = "nowrap";
+                }
+                var css = "";
+                // Header:
+                css += ".pq-info-wrapper {margin: 0; padding: 5px 0 0 0; background-color: unset; box-shadow: unset}";
+                css += ".pq-info-wrapper p:last-child {padding: 0;}";
+                css += "#Content .ui-tabs {margin-top: 3.4em;}";
+                css += ".Success {margin: 0;}";
+                for (var i = 0; i <= 2; i++) { $('.pq-info-wrapper')[0].children[0].remove(); }
+                $('#ActivePQs')[0].children[0].setAttribute("style", "margin: -25px 2px 0 0; float: right;");
+                $('#DownloadablePQs')[0].children[0].setAttribute("style", "margin: -25px 2px 0 0; float: right;");
+                // Lines:
+                css += "table {margin-bottom: 0;}";
+                css += "table.Table th, table.Table td {padding: 5px;}";
+                $('#pqRepeater thead tr th').each(function () { this.style.width = "unset"; });
+                lastGen( $('#pqRepeater thead tr')[0].children[12] );
+                lastGen( $('#ctl00_ContentBody_PQListControl1_tblMyFinds tbody tr')[0].children[1] );
+                $('#ctl00_ContentBody_PQListControl1_tblMyFinds tbody tr')[0].children[1].style.width = $('#pqRepeater thead tr')[0].children[12].clientWidth - 12.9 + "px";
+                $('#ctl00_ContentBody_PQListControl1_tblMyFinds tbody tr')[1].children[0].children[1].remove();
+                $('#ctl00_ContentBody_PQListControl1_tblMyFinds tbody tr')[1].children[0].children[0].remove();
+                $('#ctl00_ContentBody_PQListControl1_tblMyFinds tbody tr')[1].children[0].children[0].style.margin = "0";
+                lastGen( $('#uxOfflinePQTable thead tr')[0].children[5] );
+                $('#uxOfflinePQTable tbody tr').each(function () { if (this.children[5]) this.children[5].style.whiteSpace = "nowrap"; });
+                $('#ctl00_ContentBody_PQListControl1_lbFoundGenerated')[0].childNodes[1].remove();
+                // Footer:
+                for (var i = 0; i <= 4; i++) { $('.pq-legend')[0].nextElementSibling.remove(); }
+                $('.pq-legend')[0].remove();
+                appendCssStyle(css);
+            }
+
+            // Show refresh button.
+            var p = document.createElement("p");
+            p.innerHTML = "<a href='" + http + "://www.geocaching.com/pocket/default.aspx' title='Refresh Page'>Refresh Page</a>";
+            document.getElementById('uxCreateNewPQ').parentNode.parentNode.parentNode.appendChild(p);
+
+            // Highlight column of current day.
+            var matches = document.getElementById('ActivePQs').childNodes[1].innerHTML.match(/([A-Za-z]*),/);
+            if (matches) {
+                var highlight = 0;
+                switch (matches[1]) {
+                    case "Sunday"   : highlight = 11; break;
+                    case "Monday"   : highlight = 13; break;
+                    case "Tuesday"  : highlight = 15; break;
+                    case "Wednesday": highlight = 17; break;
+                    case "Thursday" : highlight = 19; break;
+                    case "Friday"   : highlight = 21; break;
+                    case "Saturday" : highlight = 23; break;
+                }
+                if (highlight > 0) {
+                    var trs = document.getElementById("pqRepeater").getElementsByTagName("tr");
+                    for (var i = 0; i < trs.length; i++) {
+                        if (trs[i].className == "TableFooter") break;
+                        if (i == (trs.length - 1)) highlight -= 4;
+                        trs[i].childNodes[highlight].style.backgroundColor = "#E3DDC2";
+                    }
+                }
+            }
+
+            // Fixed header, not in compact layout.
+            if (settings_fixed_pq_header && document.getElementById("pqRepeater") && !settings_compact_layout_list_of_pq) {
+                // Scrolify based on http://stackoverflow.com/questions/673153/html-table-with-fixed-headers.
+                function scrolify(tblAsJQueryObject, height) {
+                    var oTbl = window.$(tblAsJQueryObject);
+                    var oTblDiv = window.$("<div/>");
+                    oTblDiv.css('height', height);
+                    oTblDiv.css('overflow-y', 'auto');
+                    oTblDiv.css("margin-bottom", oTbl.css("margin-bottom"));
+                    oTbl.css("margin-bottom", "0px");
+                    oTbl.wrap(oTblDiv);
+
+                    // Save original width.
+                    oTbl.attr("data-item-original-width", oTbl.width());
+                    oTbl.find('thead tr td').each(function () {
+                        window.$(this).attr("data-item-original-width", (unsafeWindow || window).$(this).width());
+                    });
+                    oTbl.find('tbody tr:eq(0) td').each(function () {
+                        window.$(this).attr("data-item-original-width", (unsafeWindow || window).$(this).width());
+                    });
+
+                    // Clone the original table.
+                    var newTbl = oTbl.clone();
+
+                    // Remove table header from original table.
+                    oTbl.find('thead tr').remove();
+                    // Remove table body from new table.
+                    newTbl.find('tbody tr').remove();
+
+                    oTbl.parent().before(newTbl);
+                    newTbl.wrap("<div/>");
+
+                    // Replace ORIGINAL COLUMN width.
+                    newTbl.width(newTbl.attr('data-item-original-width'));
+                    newTbl.find('thead tr td').each(function () {
+                        window.$(this).width(window.$(this).attr("data-item-original-width"));
+                    });
+                    oTbl.width(oTbl.attr('data-item-original-width'));
+                    oTbl.find('tbody tr:eq(0) td').each(function () {
+                        window.$(this).width(window.$(this).attr("data-item-original-width"));
+                    });
+                }
+                if (browser === "firefox") {
+                    exportFunction(scrolify, unsafeWindow, {defineAs: "scrolify"});
+                    unsafeWindow.scrolify(unsafeWindow.$('#pqRepeater'), 300);
+                } else {
+                    scrolify(unsafeWindow.$('#pqRepeater'), 300);
+                }
+                unsafeWindow.$('#ActivePQs').css("padding-right", "0px");
+            }
+        } catch (e) {
+            gclh_error("Improve list of PQs:", e);
+        }
+    }
+//xxxx2
 
 // Set default value for new pocket queries and handle warning.
     // Helper function marks two PQ options, which are in rejection.
@@ -2434,118 +2557,6 @@ var mainGC = function () {
             document.getElementById('ctl00_ContentBody_cbIncludePQNameInFileName').checked = true;
         } catch (e) {
             gclh_error("PQ-Name from Bookmark", e);
-        }
-    }
-
-// Show refresh button for PocketQuery Page.
-    if ((document.location.href.match(/^https?:\/\/www\.geocaching\.com\/pocket/)) && document.getElementById("uxCreateNewPQ")) {
-        try {
-            var p = document.createElement("p");
-            p.innerHTML = "<a href='" + http + "://www.geocaching.com/pocket/default.aspx' title='Refresh Page'>Refresh Page</a>";
-            document.getElementById('uxCreateNewPQ').parentNode.parentNode.parentNode.appendChild(p);
-        } catch (e) {
-            gclh_error("Refresh button on PQ-Page", e);
-        }
-    }
-
-// Highlight column of current day on PocketQuery Page.
-    if ((document.location.href.match(/^https?:\/\/www\.geocaching\.com\/pocket/)) && document.getElementById("ActivePQs")) {
-        try {
-            var matches = document.getElementById('ActivePQs').childNodes[1].innerHTML.match(/([A-Za-z]*),/);
-            if (matches) {
-                var highlight = 0;
-                switch (matches[1]) {
-                    case "Sunday":
-                        highlight = 11;
-                        break;
-                    case "Monday":
-                        highlight = 13;
-                        break;
-                    case "Tuesday":
-                        highlight = 15;
-                        break;
-                    case "Wednesday":
-                        highlight = 17;
-                        break;
-                    case "Thursday":
-                        highlight = 19;
-                        break;
-                    case "Friday":
-                        highlight = 21;
-                        break;
-                    case "Saturday":
-                        highlight = 23;
-                        break;
-                }
-
-                if (highlight > 0) {
-                    var trs = document.getElementById("pqRepeater").getElementsByTagName("tr");
-
-                    for (var i = 0; i < trs.length; i++) {
-                        if (i == (trs.length - 1)) highlight -= 4;
-                        trs[i].childNodes[highlight].style.backgroundColor = "#E3DDC2";
-                    }
-                }
-            }
-        } catch (e) {
-            gclh_error("Highlight column on PQ-Page", e);
-        }
-    }
-
-// Fixed header for PocketQuery.
-    if (settings_fixed_pq_header && document.location.href.match(/^https?:\/\/www\.geocaching\.com\/pocket/) && document.getElementById("pqRepeater")) {
-        try {
-            // Scrolify based on http://stackoverflow.com/questions/673153/html-table-with-fixed-headers .
-            function scrolify(tblAsJQueryObject, height) {
-                var oTbl = window.$(tblAsJQueryObject);
-                var oTblDiv = window.$("<div/>");
-                oTblDiv.css('height', height);
-                oTblDiv.css('overflow-y', 'auto');
-                oTblDiv.css("margin-bottom", oTbl.css("margin-bottom"));
-                oTbl.css("margin-bottom", "0px");
-                oTbl.wrap(oTblDiv);
-
-                // Save original width.
-                oTbl.attr("data-item-original-width", oTbl.width());
-                oTbl.find('thead tr td').each(function () {
-                    window.$(this).attr("data-item-original-width", (unsafeWindow || window).$(this).width());
-                });
-                oTbl.find('tbody tr:eq(0) td').each(function () {
-                    window.$(this).attr("data-item-original-width", (unsafeWindow || window).$(this).width());
-                });
-
-                // Clone the original table.
-                var newTbl = oTbl.clone();
-
-                // Remove table header from original table.
-                oTbl.find('thead tr').remove();
-                // Remove table body from new table.
-                newTbl.find('tbody tr').remove();
-
-                oTbl.parent().before(newTbl);
-                newTbl.wrap("<div/>");
-
-                // Replace ORIGINAL COLUMN width.
-                newTbl.width(newTbl.attr('data-item-original-width'));
-                newTbl.find('thead tr td').each(function () {
-                    window.$(this).width(window.$(this).attr("data-item-original-width"));
-                });
-                oTbl.width(oTbl.attr('data-item-original-width'));
-                oTbl.find('tbody tr:eq(0) td').each(function () {
-                    window.$(this).width(window.$(this).attr("data-item-original-width"));
-                });
-            }
-
-            if (browser === "firefox") {
-                exportFunction(scrolify, unsafeWindow, {defineAs: "scrolify"});
-                unsafeWindow.scrolify(unsafeWindow.$('#pqRepeater'), 300);
-            } else {
-                scrolify(unsafeWindow.$('#pqRepeater'), 300);
-            }
-
-            unsafeWindow.$('#ActivePQs').css("padding-right", "0px");
-        } catch (e) {
-            gclh_error("Fixed header for PocketQuery", e);
         }
     }
 
