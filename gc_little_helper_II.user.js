@@ -2242,11 +2242,16 @@ var mainGC = function () {
         }
     }
 
+//xxxx2
 // Improve list of pocket queries (list of PQs).
     if (document.location.href.match(/^https?:\/\/www\.geocaching\.com\/pocket/) && document.getElementById("uxCreateNewPQ")) {
         try {
-            // Compact layout.
+            // Refresh button.
+            var refreshButton = document.createElement("p");
+            refreshButton.innerHTML = "<a href='" + http + "://www.geocaching.com/pocket/default.aspx' title='Refresh Page'>Refresh Page</a>";
+
             if (settings_compact_layout_list_of_pqs) {
+                // Compact layout.
                 function lastGen(elem) {
                     elem.innerHTML = "Last Generated";
                     elem.title = "Last Generated (PST)";
@@ -2254,111 +2259,116 @@ var mainGC = function () {
                 }
                 var css = "";
                 // Header:
-                css += ".pq-info-wrapper {margin: 0; padding: 5px 0 0 0; background-color: unset; box-shadow: unset}";
+                css += ".pq-info-wrapper {margin: 0; padding: 10px 0 0 0; background-color: unset; box-shadow: unset}";
                 css += ".pq-info-wrapper p:last-child {padding: 0;}";
                 css += "#Content .ui-tabs {margin-top: 3.4em;}";
                 css += ".Success {margin: 0;}";
+//xxxx2 was mache ich hiermit
+//                css += ".gclh_btn {font-weight: unset !important; color: #584528 !important; border: 1px solid #cab6a3 !important; background-color: #ede5dc !important;}";
+//                css += ".gclh_btn:hover, .gclh_btn:active, .gclh_btn:focus {font-weight: unset !important; color: #584528 !important; border: 1px solid #cab6a3 !important; background-color: #e4d8cb !important;}";
+//                css += ".gclh_btn {padding: .5em 1em !important; margin-right: unset !important; min-width: unset !important;}";
+//                $('#uxCreateNewPQ').addClass(" gclh_btn");  
+//                $('#uxFindCachesAlongaRoute').addClass(" gclh_btn");  
+                var h3 = document.createElement("h3");
+                $('#ctl00_ContentBody_lbHeading')[0].parentNode.parentNode.insertBefore(h3, $('#ctl00_ContentBody_lbHeading')[0].parentNode);
+                $('#divContentMain h3').closest('h3').append($('#ctl00_ContentBody_lbHeading').remove().get().reverse());
+                $('#divContentMain h2')[0].closest('h2').remove();
                 for (var i = 0; i <= 2; i++) { $('.pq-info-wrapper')[0].children[0].remove(); }
-                $('#ActivePQs')[0].children[0].setAttribute("style", "margin: -25px 2px 0 0; float: right;");
-                $('#DownloadablePQs')[0].children[0].setAttribute("style", "margin: -25px 2px 0 0; float: right;");
-                // Lines:
+                $('#ActivePQs, #DownloadablePQs').each(function () { this.children[0].setAttribute("style", "margin: -25px 2px 0 0; float: right;"); });
+                // Table active PQs:
                 css += "table {margin-bottom: 0;}";
-                css += "table.Table th, table.Table td {padding: 5px;}";
+                css += "table.Table th, table.Table td {padding: 5px; border: 1px solid #fff !important;}";
                 $('#pqRepeater thead tr th').each(function () { this.style.width = "unset"; });
                 lastGen( $('#pqRepeater thead tr')[0].children[12] );
+                // Table My Finds:
                 lastGen( $('#ctl00_ContentBody_PQListControl1_tblMyFinds tbody tr')[0].children[1] );
-                $('#ctl00_ContentBody_PQListControl1_tblMyFinds tbody tr')[0].children[1].style.width = $('#pqRepeater thead tr')[0].children[12].clientWidth - 12.9 + "px";
+                $('#ctl00_ContentBody_PQListControl1_tblMyFinds tbody tr')[0].children[1].style.width = $('#pqRepeater thead tr')[0].children[12].clientWidth - 10.9 + "px";
                 $('#ctl00_ContentBody_PQListControl1_tblMyFinds tbody tr')[1].children[0].children[1].remove();
                 $('#ctl00_ContentBody_PQListControl1_tblMyFinds tbody tr')[1].children[0].children[0].remove();
                 $('#ctl00_ContentBody_PQListControl1_tblMyFinds tbody tr')[1].children[0].children[0].style.margin = "0";
+                var sn = $('#ctl00_ContentBody_PQListControl1_btnScheduleNow');
+                if (sn.prop("disabled")) sn[0].parentNode.parentNode.innerHTML = "<a style='opacity: 0.4; cursor: default' title='\"My Finds\" pocket query can only run once every 3 days'>Add to Queue</a>";
+                else sn[0].parentNode.parentNode.innerHTML = "<a href='javascript:__doPostBack(\"ctl00$ContentBody$PQListControl1$btnScheduleNow\",\"\")' title='Add \"My Finds\" pocket query to Queue'>Add to Queue</a>";
+                // Table downloadable PQs:
                 lastGen( $('#uxOfflinePQTable thead tr')[0].children[5] );
                 $('#uxOfflinePQTable tbody tr').each(function () { if (this.children[5]) this.children[5].style.whiteSpace = "nowrap"; });
-                $('#ctl00_ContentBody_PQListControl1_lbFoundGenerated')[0].childNodes[1].remove();
+                $('#ctl00_ContentBody_PQListControl1_lbFoundGenerated')[0].innerHTML = $('#ctl00_ContentBody_PQListControl1_lbFoundGenerated')[0].innerHTML.replace(/\*/, "");
                 // Footer:
                 for (var i = 0; i <= 4; i++) { $('.pq-legend')[0].nextElementSibling.remove(); }
                 $('.pq-legend')[0].remove();
                 appendCssStyle(css);
-            }
+ 
+                // Refresh button.
+                $('.TableFooter').each(function () { this.lastElementChild.innerHTML = refreshButton.innerHTML; });
+            } else {
+                // Refresh button.
+                document.getElementById('uxCreateNewPQ').parentNode.parentNode.parentNode.appendChild(refreshButton);
 
-            // Show refresh button.
-            var p = document.createElement("p");
-            p.innerHTML = "<a href='" + http + "://www.geocaching.com/pocket/default.aspx' title='Refresh Page'>Refresh Page</a>";
-            document.getElementById('uxCreateNewPQ').parentNode.parentNode.parentNode.appendChild(p);
+                // Fixed header.
+                if (settings_fixed_pq_header && document.getElementById("pqRepeater")) {
+                    // Scrolify based on http://stackoverflow.com/questions/673153/html-table-with-fixed-headers.
+                    function scrolify(tblAsJQueryObject, height) {
+                        var oTbl = window.$(tblAsJQueryObject);
+                        var oTblDiv = window.$("<div/>");
+                        oTblDiv.css('height', height);
+                        oTblDiv.css('overflow-y', 'auto');
+                        oTblDiv.css("margin-bottom", oTbl.css("margin-bottom"));
+                        oTbl.css("margin-bottom", "0px");
+                        oTbl.wrap(oTblDiv);
+                        // Save original width.
+                        oTbl.attr("data-item-original-width", oTbl.width());
+                        oTbl.find('thead tr td').each(function () {
+                            window.$(this).attr("data-item-original-width", (unsafeWindow || window).$(this).width());
+                        });
+                        oTbl.find('tbody tr:eq(0) td').each(function () {
+                            window.$(this).attr("data-item-original-width", (unsafeWindow || window).$(this).width());
+                        });
+                        // Clone the original table.
+                        var newTbl = oTbl.clone();
+                        // Remove table header from original table.
+                        oTbl.find('thead tr').remove();
+                        // Remove table body from new table.
+                        newTbl.find('tbody tr').remove();
+                        // Integrate changes.
+                        oTbl.parent().before(newTbl);
+                        newTbl.wrap("<div/>");
+                        // Replace ORIGINAL COLUMN width.
+                        newTbl.width(newTbl.attr('data-item-original-width'));
+                        newTbl.find('thead tr td').each(function () {
+                            window.$(this).width(window.$(this).attr("data-item-original-width"));
+                        });
+                        oTbl.width(oTbl.attr('data-item-original-width'));
+                        oTbl.find('tbody tr:eq(0) td').each(function () {
+                            window.$(this).width(window.$(this).attr("data-item-original-width"));
+                        });
+                    }
+                    if (browser === "firefox") {
+                        exportFunction(scrolify, unsafeWindow, {defineAs: "scrolify"});
+                        unsafeWindow.scrolify(unsafeWindow.$('#pqRepeater'), 300);
+                    } else scrolify(unsafeWindow.$('#pqRepeater'), 300);
+                    unsafeWindow.$('#ActivePQs').css("padding-right", "0px");
+                }            
+            }
 
             // Highlight column of current day.
             var matches = document.getElementById('ActivePQs').childNodes[1].innerHTML.match(/([A-Za-z]*),/);
             if (matches) {
                 var highlight = 0;
                 switch (matches[1]) {
-                    case "Sunday"   : highlight = 11; break;
-                    case "Monday"   : highlight = 13; break;
-                    case "Tuesday"  : highlight = 15; break;
-                    case "Wednesday": highlight = 17; break;
-                    case "Thursday" : highlight = 19; break;
-                    case "Friday"   : highlight = 21; break;
-                    case "Saturday" : highlight = 23; break;
+                    case "Sunday"   : highlight = 5; break;
+                    case "Monday"   : highlight = 6; break;
+                    case "Tuesday"  : highlight = 7; break;
+                    case "Wednesday": highlight = 8; break;
+                    case "Thursday" : highlight = 9; break;
+                    case "Friday"   : highlight = 10; break;
+                    case "Saturday" : highlight = 11; break;
                 }
                 if (highlight > 0) {
-                    var trs = document.getElementById("pqRepeater").getElementsByTagName("tr");
-                    for (var i = 0; i < trs.length; i++) {
-                        if (trs[i].className == "TableFooter") break;
-                        if (i == (trs.length - 1)) highlight -= 4;
-                        trs[i].childNodes[highlight].style.backgroundColor = "#E3DDC2";
-                    }
+                    var trs = $('#pqRepeater tbody tr:not(.TableFooter)');
+                    for (var i = 0; i < trs.length; i++) { trs[i].children[highlight].style.backgroundColor = "#ede5dc"; }
                 }
             }
-
-            // Fixed header, not in compact layout.
-            if (settings_fixed_pq_header && document.getElementById("pqRepeater") && !settings_compact_layout_list_of_pqs) {
-                // Scrolify based on http://stackoverflow.com/questions/673153/html-table-with-fixed-headers.
-                function scrolify(tblAsJQueryObject, height) {
-                    var oTbl = window.$(tblAsJQueryObject);
-                    var oTblDiv = window.$("<div/>");
-                    oTblDiv.css('height', height);
-                    oTblDiv.css('overflow-y', 'auto');
-                    oTblDiv.css("margin-bottom", oTbl.css("margin-bottom"));
-                    oTbl.css("margin-bottom", "0px");
-                    oTbl.wrap(oTblDiv);
-
-                    // Save original width.
-                    oTbl.attr("data-item-original-width", oTbl.width());
-                    oTbl.find('thead tr td').each(function () {
-                        window.$(this).attr("data-item-original-width", (unsafeWindow || window).$(this).width());
-                    });
-                    oTbl.find('tbody tr:eq(0) td').each(function () {
-                        window.$(this).attr("data-item-original-width", (unsafeWindow || window).$(this).width());
-                    });
-                    // Clone the original table.
-                    var newTbl = oTbl.clone();
-                    // Remove table header from original table.
-                    oTbl.find('thead tr').remove();
-                    // Remove table body from new table.
-                    newTbl.find('tbody tr').remove();
-
-                    oTbl.parent().before(newTbl);
-                    newTbl.wrap("<div/>");
-
-                    // Replace ORIGINAL COLUMN width.
-                    newTbl.width(newTbl.attr('data-item-original-width'));
-                    newTbl.find('thead tr td').each(function () {
-                        window.$(this).width(window.$(this).attr("data-item-original-width"));
-                    });
-                    oTbl.width(oTbl.attr('data-item-original-width'));
-                    oTbl.find('tbody tr:eq(0) td').each(function () {
-                        window.$(this).width(window.$(this).attr("data-item-original-width"));
-                    });
-                }
-                if (browser === "firefox") {
-                    exportFunction(scrolify, unsafeWindow, {defineAs: "scrolify"});
-                    unsafeWindow.scrolify(unsafeWindow.$('#pqRepeater'), 300);
-                } else {
-                    scrolify(unsafeWindow.$('#pqRepeater'), 300);
-                }
-                unsafeWindow.$('#ActivePQs').css("padding-right", "0px");
-            }
-        } catch (e) {
-            gclh_error("Improve list of PQs:", e);
-        }
+        } catch (e) { gclh_error("Improve list of PQs:", e); }
     }
 
 //xxxx2
@@ -2371,8 +2381,10 @@ var mainGC = function () {
                 // Header:
                 css += ".InformationWidget {margin: 0;}";
                 css += ".left {margin: 0; padding: 4px 0 4px 5px;}";
+// Bei BM identisch einbauen. 
+// Mit den 4px left muß ich mir noch überlegen, ob das hier und bei bm sinn macht.
                 css += "#ctl00_ContentBody_ResultsPanel > div:nth-child(1) {margin: 0 !important; padding: 4px 0 4px 5px;}"; // GC Tour
-                $('#ctl00_ContentBody_SearchResultText')[0].remove();
+//                $('#ctl00_ContentBody_SearchResultText')[0].remove();
 //                var h3 = document.createElement("h3");
 //                h3.innerHTML = $('#ctl00_ContentBody_LocationPanel1_OriginLabel')[0].childNodes[0].nodeValue;
 //                $('#ctl00_ContentBody_LocationPanel1_OriginLabel')[0].childNodes[0].nodeValue = h3;
