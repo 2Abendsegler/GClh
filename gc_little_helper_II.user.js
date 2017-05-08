@@ -2246,12 +2246,8 @@ var mainGC = function () {
 // Improve list of pocket queries (list of PQs).
     if (document.location.href.match(/^https?:\/\/www\.geocaching\.com\/pocket/) && document.getElementById("uxCreateNewPQ")) {
         try {
-            // Refresh button.
-            var refreshButton = document.createElement("p");
-            refreshButton.innerHTML = "<a href='" + http + "://www.geocaching.com/pocket/default.aspx' title='Refresh Page'>Refresh Page</a>";
-
+            // Compact layout.
             if (settings_compact_layout_list_of_pqs) {
-                // Compact layout.
                 function lastGen(elem) {
                     elem.innerHTML = "Last Generated";
                     elem.title = "Last Generated (PST)";
@@ -2259,16 +2255,13 @@ var mainGC = function () {
                 }
                 var css = "";
                 // Header:
-                css += ".pq-info-wrapper {margin: 0; padding: 10px 0 0 0; background-color: unset; box-shadow: unset}";
+                css += ".pq-info-wrapper {margin: 0; padding: 10px 0 0 0; background-color: unset; box-shadow: unset;}";
                 css += ".pq-info-wrapper p:last-child {padding: 0;}";
                 css += "#Content .ui-tabs {margin-top: 3.4em;}";
-                css += ".Success {margin: 0;}";
-//xxxx2 was mache ich hiermit
-//                css += ".gclh_btn {font-weight: unset !important; color: #584528 !important; border: 1px solid #cab6a3 !important; background-color: #ede5dc !important;}";
-//                css += ".gclh_btn:hover, .gclh_btn:active, .gclh_btn:focus {font-weight: unset !important; color: #584528 !important; border: 1px solid #cab6a3 !important; background-color: #e4d8cb !important;}";
-//                css += ".gclh_btn {padding: .5em 1em !important; margin-right: unset !important; min-width: unset !important;}";
-//                $('#uxCreateNewPQ').addClass(" gclh_btn");  
-//                $('#uxFindCachesAlongaRoute').addClass(" gclh_btn");  
+                css += ".Success {margin: 5px 0 0 0;}";
+                css += "#Tabs {box-shadow: 2px 2px 0 rgba(0,0,0,.2);}";
+                css += ".ui-tabs-active {box-shadow: 2px 0px 0 rgba(0,0,0,.2);}";
+                css += ".ui-tabs .ui-tabs-nav li {margin-right: 4px;}";
                 var h3 = document.createElement("h3");
                 $('#ctl00_ContentBody_lbHeading')[0].parentNode.parentNode.insertBefore(h3, $('#ctl00_ContentBody_lbHeading')[0].parentNode);
                 $('#divContentMain h3').closest('h3').append($('#ctl00_ContentBody_lbHeading').remove().get().reverse());
@@ -2277,12 +2270,12 @@ var mainGC = function () {
                 $('#ActivePQs, #DownloadablePQs').each(function () { this.children[0].setAttribute("style", "margin: -25px 2px 0 0; float: right;"); });
                 // Table active PQs:
                 css += "table {margin-bottom: 0;}";
-                css += "table.Table th, table.Table td {padding: 5px; border: 1px solid #fff !important;}";
+                css += "table.Table, table.Table th, table.Table td {padding: 5px; border: 1px solid #fff !important;}";
                 $('#pqRepeater thead tr th').each(function () { this.style.width = "unset"; });
                 lastGen( $('#pqRepeater thead tr')[0].children[12] );
                 // Table My Finds:
                 lastGen( $('#ctl00_ContentBody_PQListControl1_tblMyFinds tbody tr')[0].children[1] );
-                $('#ctl00_ContentBody_PQListControl1_tblMyFinds tbody tr')[0].children[1].style.width = $('#pqRepeater thead tr')[0].children[12].clientWidth - 10.9 + "px";
+                $('#ctl00_ContentBody_PQListControl1_tblMyFinds tbody tr')[0].children[1].style.width = $('#pqRepeater thead tr')[0].children[12].offsetWidth - 11 + "px";
                 $('#ctl00_ContentBody_PQListControl1_tblMyFinds tbody tr')[1].children[0].children[1].remove();
                 $('#ctl00_ContentBody_PQListControl1_tblMyFinds tbody tr')[1].children[0].children[0].remove();
                 $('#ctl00_ContentBody_PQListControl1_tblMyFinds tbody tr')[1].children[0].children[0].style.margin = "0";
@@ -2297,58 +2290,13 @@ var mainGC = function () {
                 for (var i = 0; i <= 4; i++) { $('.pq-legend')[0].nextElementSibling.remove(); }
                 $('.pq-legend')[0].remove();
                 appendCssStyle(css);
- 
-                // Refresh button.
-                $('.TableFooter').each(function () { this.lastElementChild.innerHTML = refreshButton.innerHTML; });
-            } else {
-                // Refresh button.
-                document.getElementById('uxCreateNewPQ').parentNode.parentNode.parentNode.appendChild(refreshButton);
-
-                // Fixed header.
-                if (settings_fixed_pq_header && document.getElementById("pqRepeater")) {
-                    // Scrolify based on http://stackoverflow.com/questions/673153/html-table-with-fixed-headers.
-                    function scrolify(tblAsJQueryObject, height) {
-                        var oTbl = window.$(tblAsJQueryObject);
-                        var oTblDiv = window.$("<div/>");
-                        oTblDiv.css('height', height);
-                        oTblDiv.css('overflow-y', 'auto');
-                        oTblDiv.css("margin-bottom", oTbl.css("margin-bottom"));
-                        oTbl.css("margin-bottom", "0px");
-                        oTbl.wrap(oTblDiv);
-                        // Save original width.
-                        oTbl.attr("data-item-original-width", oTbl.width());
-                        oTbl.find('thead tr td').each(function () {
-                            window.$(this).attr("data-item-original-width", (unsafeWindow || window).$(this).width());
-                        });
-                        oTbl.find('tbody tr:eq(0) td').each(function () {
-                            window.$(this).attr("data-item-original-width", (unsafeWindow || window).$(this).width());
-                        });
-                        // Clone the original table.
-                        var newTbl = oTbl.clone();
-                        // Remove table header from original table.
-                        oTbl.find('thead tr').remove();
-                        // Remove table body from new table.
-                        newTbl.find('tbody tr').remove();
-                        // Integrate changes.
-                        oTbl.parent().before(newTbl);
-                        newTbl.wrap("<div/>");
-                        // Replace ORIGINAL COLUMN width.
-                        newTbl.width(newTbl.attr('data-item-original-width'));
-                        newTbl.find('thead tr td').each(function () {
-                            window.$(this).width(window.$(this).attr("data-item-original-width"));
-                        });
-                        oTbl.width(oTbl.attr('data-item-original-width'));
-                        oTbl.find('tbody tr:eq(0) td').each(function () {
-                            window.$(this).width(window.$(this).attr("data-item-original-width"));
-                        });
-                    }
-                    if (browser === "firefox") {
-                        exportFunction(scrolify, unsafeWindow, {defineAs: "scrolify"});
-                        unsafeWindow.scrolify(unsafeWindow.$('#pqRepeater'), 300);
-                    } else scrolify(unsafeWindow.$('#pqRepeater'), 300);
-                    unsafeWindow.$('#ActivePQs').css("padding-right", "0px");
-                }            
             }
+
+            // Refresh button.
+            var refreshButton = document.createElement("p");
+            refreshButton.innerHTML = "<a href='" + http + "://www.geocaching.com/pocket/default.aspx' title='Refresh Page'>Refresh Page</a>";
+            if (settings_compact_layout_list_of_pqs) $('.TableFooter').each(function () { this.lastElementChild.innerHTML = refreshButton.innerHTML; });
+            else document.getElementById('uxCreateNewPQ').parentNode.parentNode.parentNode.appendChild(refreshButton);
 
             // Highlight column of current day.
             var matches = document.getElementById('ActivePQs').childNodes[1].innerHTML.match(/([A-Za-z]*),/);
@@ -2368,6 +2316,51 @@ var mainGC = function () {
                     for (var i = 0; i < trs.length; i++) { trs[i].children[highlight].style.backgroundColor = "#ede5dc"; }
                 }
             }
+
+            // Fixed header.
+            if (settings_fixed_pq_header && document.getElementById("pqRepeater") && !settings_compact_layout_list_of_pqs) {
+                // Scrolify based on http://stackoverflow.com/questions/673153/html-table-with-fixed-headers.
+                function scrolify(tblAsJQueryObject, height) {
+                    var oTbl = window.$(tblAsJQueryObject);
+                    var oTblDiv = window.$("<div/>");
+                    oTblDiv.css('height', height);
+                    oTblDiv.css('overflow-y', 'auto');
+                    oTblDiv.css("margin-bottom", oTbl.css("margin-bottom"));
+                    oTbl.css("margin-bottom", "0px");
+                    oTbl.wrap(oTblDiv);
+                    // Save original width.
+                    oTbl.attr("data-item-original-width", oTbl.width());
+                    oTbl.find('thead tr td').each(function () {
+                        window.$(this).attr("data-item-original-width", (unsafeWindow || window).$(this).width());
+                    });
+                    oTbl.find('tbody tr:eq(0) td').each(function () {
+                        window.$(this).attr("data-item-original-width", (unsafeWindow || window).$(this).width());
+                    });
+                    // Clone the original table.
+                    var newTbl = oTbl.clone();
+                    // Remove table header from original table.
+                    oTbl.find('thead tr').remove();
+                    // Remove table body from new table.
+                    newTbl.find('tbody tr').remove();
+                    // Integrate changes.
+                    oTbl.parent().before(newTbl);
+                    newTbl.wrap("<div/>");
+                    // Replace ORIGINAL COLUMN width.
+                    newTbl.width(newTbl.attr('data-item-original-width'));
+                    newTbl.find('thead tr td').each(function () {
+                        window.$(this).width(window.$(this).attr("data-item-original-width"));
+                    });
+                    oTbl.width(oTbl.attr('data-item-original-width'));
+                    oTbl.find('tbody tr:eq(0) td').each(function () {
+                        window.$(this).width(window.$(this).attr("data-item-original-width"));
+                    });
+                }
+                if (browser === "firefox") {
+                    exportFunction(scrolify, unsafeWindow, {defineAs: "scrolify"});
+                    unsafeWindow.scrolify(unsafeWindow.$('#pqRepeater'), 300);
+                } else scrolify(unsafeWindow.$('#pqRepeater'), 300);
+                unsafeWindow.$('#ActivePQs').css("padding-right", "0px");
+            }            
         } catch (e) { gclh_error("Improve list of PQs:", e); }
     }
 
@@ -2405,70 +2398,9 @@ var mainGC = function () {
                     cells[i].innerHTML = cells[i].innerHTML.replace(/<br>/ig," ");
                 }
                 
-                
-//                $('table.SearchResultsTable tbody tr').each(function () { console.log(this.children[7]); });
-
-                
-                
-                
-/*                
-                    if (lines[i].children[1].tagName == "TD" && lines[i].children[1].children[0].childNodes[2].tagName == "BR") {
-//                        lines[i].children[1].children[0].childNodes[1].data += " ";
-//                        lines[i].children[1].children[0].childNodes[2].tagName = "span";
-console.log( lines[i].children[1].children[0].innerHTML);
-                        lines[i].children[1].children[0].innerHTML = lines[i].children[1].children[0].innerHTML.replace(/<br>/ig," ");
-                        if (lines[i].children[1].children[0].innerHTML.match(/<br>/i)) console.log("ja2");
-                        if (lines[i].children[1].children[0].innerHTML.match(/<br>/)) console.log("ja3");
-                        if (lines[i].children[1].children[0].innerHTML.match("<br>")) console.log("ja4");
-//                        lines[i].children[1].children[0].children[1].tagName = "span";
-                    }
-                    if (lines[i].children[5].tagName == "TD" && lines[i].children[5].children[1].tagName == "BR") {
-//                        lines[i].children[5].children[1].remove();
-                    }
-                    if (lines[i].children[5].tagName == "TD" && lines[i].children[5].children[2].tagName == "BR") {
-//                        lines[i].children[5].children[2].remove();
-                    }
-                }              
-*/                
-                //                $('table.SearchResultsTable tbody tr th').each(function () { this.style.whiteSpace = "nowrap"; });
-                
-/*
-                function lastGen(elem) {
-                    elem.innerHTML = "Last Generated";
-                    elem.title = "Last Generated (PST)";
-                    elem.style.whiteSpace = "nowrap";
-                }
-                var css = "";
-                // Header:
-                css += ".pq-info-wrapper {margin: 0; padding: 5px 0 0 0; background-color: unset; box-shadow: unset}";
-                css += ".pq-info-wrapper p:last-child {padding: 0;}";
-                css += "#Content .ui-tabs {margin-top: 3.4em;}";
-                css += ".Success {margin: 0;}";
-                for (var i = 0; i <= 2; i++) { $('.pq-info-wrapper')[0].children[0].remove(); }
-                $('#ActivePQs')[0].children[0].setAttribute("style", "margin: -25px 2px 0 0; float: right;");
-                $('#DownloadablePQs')[0].children[0].setAttribute("style", "margin: -25px 2px 0 0; float: right;");
-                // Lines:
-                css += "table {margin-bottom: 0;}";
-                css += "table.Table th, table.Table td {padding: 5px;}";
-                $('#pqRepeater thead tr th').each(function () { this.style.width = "unset"; });
-                lastGen( $('#pqRepeater thead tr')[0].children[12] );
-                lastGen( $('#ctl00_ContentBody_PQListControl1_tblMyFinds tbody tr')[0].children[1] );
-                $('#ctl00_ContentBody_PQListControl1_tblMyFinds tbody tr')[0].children[1].style.width = $('#pqRepeater thead tr')[0].children[12].clientWidth - 12.9 + "px";
-                $('#ctl00_ContentBody_PQListControl1_tblMyFinds tbody tr')[1].children[0].children[1].remove();
-                $('#ctl00_ContentBody_PQListControl1_tblMyFinds tbody tr')[1].children[0].children[0].remove();
-                $('#ctl00_ContentBody_PQListControl1_tblMyFinds tbody tr')[1].children[0].children[0].style.margin = "0";
-                lastGen( $('#uxOfflinePQTable thead tr')[0].children[5] );
-                $('#uxOfflinePQTable tbody tr').each(function () { if (this.children[5]) this.children[5].style.whiteSpace = "nowrap"; });
-                $('#ctl00_ContentBody_PQListControl1_lbFoundGenerated')[0].childNodes[1].remove();
-                // Footer:
-                for (var i = 0; i <= 4; i++) { $('.pq-legend')[0].nextElementSibling.remove(); }
-                $('.pq-legend')[0].remove();
-*/
                 appendCssStyle(css);
             }
-        } catch (e) {
-            gclh_error("Improve PQs:", e);
-        }
+        } catch (e) { gclh_error("Improve PQs:", e); }
     }
 //xxxx2
 
@@ -9491,14 +9423,14 @@ console.log( lines[i].children[1].children[0].innerHTML);
 
             html += "<h4 class='gclh_headline2'>"+prepareHideable.replace("#name#","pq")+"Pocket query</h4>";
             html += "<div id='gclh_config_pq'>";
-            html += checkboxy('settings_fixed_pq_header', 'Show fixed header in pocket queries') + "<br/>";
+            html += checkboxy('settings_fixed_pq_header', 'Show fixed header in list of pocket queries') + "<br/>";
+            html += newParameterOn2;
+            html += checkboxy('settings_compact_layout_list_of_pqs', 'Show compact layout in list of pocket queries') + "<br/>";
+            html += checkboxy('settings_compact_layout_pqs', 'Show compact layout in pocket queries') + "<br/>";
+            html += newParameterVersionSetzen(0.8) + newParameterOff;
             html += newParameterOn3;
             html += checkboxy('settings_pq_warning', "Get a warning in case of empty pocket queries") + show_help("Show a message if one or more options are in conflict. This helps to avoid empty pocket queries.") + "<br/>";
             html += newParameterVersionSetzen(0.6) + newParameterOff;
-            html += newParameterOn2;
-            html += checkboxy('settings_compact_layout_pqs', 'Show compact layout in pocket queries') + "<br/>";
-            html += checkboxy('settings_compact_layout_list_of_pqs', 'Show compact layout in list of pocket queries') + "<br/>";
-            html += newParameterVersionSetzen(0.8) + newParameterOff;
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>Default values for new pocket query</b></div>";
             html += newParameterOn3;
             html += checkboxy('settings_pq_set_cachestotal', "Set number of caches to ") + "<input class='gclh_form' size=3 type='text' id='settings_pq_cachestotal' value='" + settings_pq_cachestotal + "'>&nbsp;" + show_help("Specifies the default value for total caches.") + "<br/>";
