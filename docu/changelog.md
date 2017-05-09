@@ -102,7 +102,7 @@ New: <b>Compact layout of list of pocket queries:</b> [Issue <a href="https://gi
 <img src="../images/v0.8_Screen43.jpg" alt="v0.8_Screen43.jpg"><br>
 Settings -> Pocket query:<br>
 <img src="../images/v0.8_Screen44.jpg" alt="v0.8_Screen44.jpg"><br>
-The parameters have to be activated in Config after installation.<br>
+The parameter has to be activated in Config after installation.<br>
 <br>
 <br>
 </li>
