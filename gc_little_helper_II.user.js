@@ -2383,65 +2383,153 @@ var mainGC = function () {
                     unsafeWindow.scrolify(unsafeWindow.$('#pqRepeater'), 300);
                 } else scrolify(unsafeWindow.$('#pqRepeater'), 300);
                 unsafeWindow.$('#ActivePQs').css("padding-right", "0px");
-            }            
+            }
         } catch (e) { gclh_error("Improve list of PQs:", e); }
     }
 
 //xxxx2
 // Improve pocket queries.
-    if (document.location.href.match(/^https?:\/\/www\.geocaching\.com\/seek\/nearest\.aspx\?pq=/)) {
+    if (settings_compact_layout_pqs && document.location.href.match(/^https?:\/\/www\.geocaching\.com\/seek\/nearest\.aspx\?pq=/)) {
         try {
             // Compact layout.
-            if (settings_compact_layout_pqs) {
-                var css = "";
-                // Header:
-                css += ".InformationWidget {margin: 0;}";
-                css += ".left {margin: 0; padding: 4px 0;}";
-// Bei BM identisch einbauen. 
-// Mit den 5px left muß ich mir noch überlegen, ob das hier und bei bm sinn macht.
-                css += "#ctl00_ContentBody_ResultsPanel > div:nth-child(1) {margin: 0 !important; padding: 4px 0;}"; // GC Tour
-                $('#ctl00_ContentBody_SearchResultText')[0].parentNode.remove();
-//                $('#ctl00_ContentBody_LocationPanel1_OriginLabel')[0].childNodes[0] = "<span>"+$('#ctl00_ContentBody_LocationPanel1_OriginLabel')[0].childNodes[0]+"</span>";
-//                css = "#ctl00_ContentBody_LocationPanel1_OriginLabel {font-weight: bold; color: #594a42; font-size: 1.5em;}";
-                
-//                $('#ctl00_ContentBody_LocationPanel1_OriginLabel').childNodes[0].font-weight: bold; color: #594a42; font-size: 1.5em;
-//                var h3 = document.createElement("h3");
-//                h3.innerHTML = $('#ctl00_ContentBody_LocationPanel1_OriginLabel')[0].childNodes[0].nodeValue;
-//                $('#ctl00_ContentBody_LocationPanel1_OriginLabel')[0].childNodes[0].nodeValue = h3;
-                // Lines:
-//                css += "img {vertical-align: sub;}";
-                css += ".SearchResultsWptType {width: 24px; height: 24px;}";
-                css += "table.SearchResultsTable tbody tr th img {vertical-align: sub;}";
-                css += "table.SearchResultsTable tbody tr th {white-space: nowrap; padding: 3px; width: unset;}";
-                css += "table.SearchResultsTable tbody tr td:not(.Merge) {white-space: nowrap;}";
-                css += "table.SearchResultsTable tbody tr td {padding: 3px; width: unset !important;}";
-                css += ".SearchResultsTable .IconButton {display: unset; padding: 0;}"; 
-                
-                $('table.SearchResultsTable tbody tr')[0].children[8].children[0].innerHTML = "L.Found";
-                $('table.SearchResultsTable tbody tr')[0].children[8].children[0].title = "Last Found";
-
-                var cells = $('table.SearchResultsTable tbody tr td');
-                for (var i = 0; i < cells.length; i++) {
-                    cells[i].innerHTML = cells[i].innerHTML.replace(/<br>/ig," ");
-                }
-/*
-var fup = $('table.SearchResultsTable tbody tr td');    
-                console.log(fup.length);
-                for (var i = 0; i < fup.length; i++) {
-                    console.log(fup[i].children[5]);
-                }
-*/
-//console.log($('table.SearchResultsTable tbody tr')[1].children[5]);               
-//                $('table.SearchResultsTable tbody tr.data').children[5].lastElementChild.innerHTML = "";
-//                lastElementChild.innerHTML 
-                
-                
-                
-                appendCssStyle(css);
+            var css = "";
+            // Header:
+            css += ".InformationWidget {margin: 0; line-height: 1em;}";
+            css += ".InformationWidget ul#UtilityNav li {padding: 6px 0 0 0;} .InformationWidget ul#UtilityNav li a {padding: 0; border: none; margin: 0 0 0 5px;}";
+            css += ".left {margin: 0; padding: 4px 0;}";
+// nächste zeile Bei BM identisch einbauen.
+            css += "#ctl00_ContentBody_ResultsPanel > div:nth-child(1) {margin: 0 !important; padding: 4px 0;}"; // GC Tour
+            css += "#ctl00_ContentBody_LocationPanel1_OriginLabel span {font-weight: bold; color: #594a42; font-size: 1.5em; margin-right: 10px;}";
+            css += "#ctl00_ContentBody_LocationPanel1_OriginLabel a {margin-right: 5px;}";
+            if ($('#ctl00_ContentBody_SearchResultText').length > 0) $('#ctl00_ContentBody_SearchResultText')[0].parentNode.remove();
+            if ($('#ctl00_ContentBody_LocationPanel1_OriginLabel').length > 0) {
+                var span = document.createElement("span");
+                span.innerHTML = $('#ctl00_ContentBody_LocationPanel1_OriginLabel')[0].childNodes[0].data;
+                $('#ctl00_ContentBody_LocationPanel1_OriginLabel')[0].children[0].parentNode.insertBefore(span, $('#ctl00_ContentBody_LocationPanel1_OriginLabel')[0].children[0]);
+                $('#ctl00_ContentBody_LocationPanel1_OriginLabel')[0].childNodes[0].remove();
             }
+            // Table:
+            function newHeadline(tr0, ch, desc) {
+                var th = document.createElement("th");
+                th.appendChild(document.createTextNode(desc));
+                tr0.children[ch].parentNode.insertBefore(th, tr0.children[ch]);
+            }
+            function newContentline(trDataNew, ch, content, cla, obj) {
+                var td = document.createElement("td");
+                if (obj) td.appendChild(content);
+                else {
+                    td.appendChild(document.createTextNode(content));
+                    td.setAttribute("class", cla);
+                }
+                trDataNew.children[ch].parentNode.insertBefore(td, trDataNew.children[ch]);
+            }
+            css += "table {margin-bottom: 0;} table.Table th, table.Table td {padding: 5px; border: 1px solid #fff; width: unset !important;}";
+            css += "table.Table th, table.Table td:not(.Merge) {white-space: nowrap;}";
+            css += "table.Table tr {line-height: 14px;} table.Table img {vertical-align: sub;} table.Table .IconButton {display: unset; padding: 0;}";
+//            css += "table.Table tr {line-height: 10px;} table.Table img {vertical-align: sub;} table.Table .IconButton {display: unset; padding: 0;}";
+            css += ".SearchResultsWptType {width: 24px; height: 24px;}";
+//      css += ".small {line-height: unset; margin-bottom: unset;} td.Merge .small, a.lnk span {overflow: hidden; text-overflow: ellipsis; display: -moz-box;}";
+      css += ".small {line-height: unset; margin-bottom: unset;} td.Merge .small {overflow: hidden; text-overflow: ellipsis; display: -moz-box;}";
+            
+// css += ".elli {overflow: hidden; text-overflow: ellipsis; display: -moz-box;}"; //max-width: 80px;}";            
+            
+            if ($('table.SearchResultsTable tbody tr')[0] && $('table.SearchResultsTable tbody tr')[0].children.length > 8) {
+                var tr0 = $('table.SearchResultsTable tbody tr')[0];
+                for (var i = 0; i <= 4; i += 2) { tr0.children[6].childNodes[i].data = tr0.children[6].childNodes[i].data.replace(/(\(|\))/g, ""); }
+                tr0.children[6].setAttribute("class", "AlignCenter");
+                tr0.children[8].children[0].title = tr0.children[8].children[0].innerHTML;
+                tr0.children[8].children[0].innerHTML = "L. Found";
+//                var cells = $('table.SearchResultsTable tbody tr td');
+                var cells = $('table.SearchResultsTable tbody tr td:not(.Merge)');
+                for (var i = 0; i < cells.length; i++) { cells[i].innerHTML = cells[i].innerHTML.replace(/<br>/ig," "); }
+/*
+// Wenn die dinge aktiviert sind, dann geht gctour nicht mehr.
+                newHeadline(tr0, 7, "Size");
+                newHeadline(tr0, 5, "Location");
+                newHeadline(tr0, 5, "GC Code");
+                newHeadline(tr0, 5, "Owner");
+*/
+            }
+            if ($('table.SearchResultsTable tbody tr.Data').length > 0) {
+                var trData = $('table.SearchResultsTable tbody tr.Data');
+                for (var i = 0; i < trData.length; i++) {
+                    if (settings_show_log_it) {
+                        var match = trData[i].children[5].children[0].href.match(/^https?:\/\/www\.geocaching\.com\/geocache\/([^_]*)/);
+//                            links[i].href.match(/^https?:\/\/www\.geocaching\.com\/geocache\/([^_]*)/);
+                        if (match && match[1]) {
+                            var link = document.createElement("a");
+                            link.setAttribute("href", http + "://www.geocaching.com/seek/log.aspx?wp=" + match[1]);
+                            link.setAttribute("title", "Log it");
+                            link.setAttribute("class", "IconButton");
+                            link.innerHTML = "<img style='vertical-align: middle;' src='/images/stockholm/16x16/add_comment.gif'>";
+                            trData[i].children[10].appendChild(link);
+                            trData[i].children[10].appendChild(document.createTextNode(" "));
+                        }
+//                        links[i].parentNode.innerHTML = links[i].parentNode.innerHTML.replace("<br>", "<a title='Log it' href='" + http + "://www.geocaching.com/seek/log.aspx?wp=" + match[1] + "'><img src='/images/stockholm/16x16/add_comment.gif'></a><br>");
+                    }
+/*
+                    // New column Size.
+                    trData[i].children[7].childNodes[4].remove(); 
+                    trData[i].children[7].childNodes[2].remove(); 
+                    newContentline(trData[i], 8, trData[i].children[7].children[1], "", true);
+                    trData[i].children[8].children[0].setAttribute("style", "vertical-align: baseline;");
+                    // New columns Location, GC Code, Owner.
+                    var splitter = trData[i].children[5].children[1].childNodes[0].data.split("|");
+                    if (splitter && splitter[0] && splitter[1] && splitter[2]) {
+                        splitter[0] = splitter[0].replace(/^(\s*)(\S*)(\s{1,})/, "").replace(/(\s*)$/, "");
+                        splitter[1] = splitter[1].replace(/^(\s*)/, "").replace(/(\s*)$/, "");
+                        splitter[2] = splitter[2].replace(/^(\s*)/, "").replace(/(\s*)$/, "");
+                    } else {
+                        var splitter = new Array();
+                        splitter[0] = splitter[1] = splitter[2] = "";
+                    }
+                    newContentline(trData[i], 6, splitter[2], "small elli", false);
+                    newContentline(trData[i], 6, splitter[1], "small", false);
+                    newContentline(trData[i], 6, splitter[0], "small elli", false);
+                    trData[i].children[5].children[1].childNodes[0].remove();
+*/
+                }
+            }
+            // Footer:
+// nächste zeile Bei BM identisch einbauen.
+            css += "#ctl00_ContentBody_ResultsPanel > div:nth-child(5) {margin: 0 !important; padding: 4px 0;}"; // GC Tour
+            css += ".span-10 {width: 100% !important;}";
+            if ($('#ctl00_ContentBody_chkHighlightBeginnerCaches').length > 0 && $('#Download').length > 0) {
+                $('#ctl00_ContentBody_chkHighlightBeginnerCaches')[0].parentNode.parentNode.parentNode.insertBefore( $('#Download')[0].parentNode ,$('#ctl00_ContentBody_chkHighlightBeginnerCaches')[0].parentNode.parentNode);
+                $('#Download')[0].parentNode.className = "gclh_last_line";
+                while ($('.gclh_last_line')[0].nextElementSibling) { $('.gclh_last_line')[0].nextElementSibling.remove(); }
+            }
+            if ($('#ctl00_ContentBody_KeyPanel').length > 0) {
+                while ($('#ctl00_ContentBody_KeyPanel')[0].nextElementSibling) { $('#ctl00_ContentBody_KeyPanel')[0].nextElementSibling.remove(); }
+                $('#ctl00_ContentBody_KeyPanel')[0].remove();
+            }
+            appendCssStyle(css);
+            
+
+            
+            
         } catch (e) { gclh_error("Improve PQs:", e); }
     }
 //xxxx2
+
+// Show "Log It"-Button (not in compact layout PQs).
+//xxxx2
+    if (settings_show_log_it && document.location.href.match(/^https?:\/\/www\.geocaching\.com\/seek\/nearest\.aspx\?/) && 
+        !(settings_compact_layout_pqs && document.location.href.match(/nearest\.aspx\?pq=/)) ) {
+        try {
+            var links = document.getElementsByTagName("a");
+            for (var i = 0; i < links.length; i++) {
+                if (links[i].href.match(/^https?:\/\/www\.geocaching\.com\/seek\/cache_details\.aspx\?.*/) && links[i].innerHTML.match(/^<span>/)) {
+                    links[i].parentNode.innerHTML = links[i].parentNode.innerHTML.replace("<br>", "<a title='Log it' href='" + links[i].href.replace("cache_details", "log") + "'><img src='/images/stockholm/16x16/add_comment.gif'></a><br>");
+                } else if (links[i].href.match(/^https?:\/\/www\.geocaching\.com\/geocache\/.*/) && links[i].innerHTML.match(/^<span>/)) {
+                    var match = links[i].href.match(/^https?:\/\/www\.geocaching\.com\/geocache\/([^_]*)/);
+                    links[i].parentNode.innerHTML = links[i].parentNode.innerHTML.replace("<br>", "<a title='Log it' href='" + http + "://www.geocaching.com/seek/log.aspx?wp=" + match[1] + "'><img src='/images/stockholm/16x16/add_comment.gif'></a><br>");
+                }
+            }
+        } catch (e) {
+            gclh_error("Log It Button", e);
+        }
+    }
 
 // Set default value for new pocket queries and handle warning.
     // Helper function marks two PQ options, which are in rejection.
@@ -4482,24 +4570,6 @@ var fup = $('table.SearchResultsTable tbody tr td');
             box.appendChild(link);
         } catch (e) {
             gclh_error("Show google maps link", e);
-        }
-    }
-
-// Show "Log It"-Button.
-//xxxx2
-    if (settings_show_log_it && document.location.href.match(/^https?:\/\/www\.geocaching\.com\/seek\/nearest\.aspx\?/)) {
-        try {
-            var links = document.getElementsByTagName("a");
-            for (var i = 0; i < links.length; i++) {
-                if (links[i].href.match(/^https?:\/\/www\.geocaching\.com\/seek\/cache_details\.aspx\?.*/) && links[i].innerHTML.match(/^<span>/)) {
-                    links[i].parentNode.innerHTML = links[i].parentNode.innerHTML.replace("<br>", "<a title='Log it' href='" + links[i].href.replace("cache_details", "log") + "'><img src='/images/stockholm/16x16/add_comment.gif'></a><br>");
-                } else if (links[i].href.match(/^https?:\/\/www\.geocaching\.com\/geocache\/.*/) && links[i].innerHTML.match(/^<span>/)) {
-                    var match = links[i].href.match(/^https?:\/\/www\.geocaching\.com\/geocache\/([^_]*)/);
-                    links[i].parentNode.innerHTML = links[i].parentNode.innerHTML.replace("<br>", "<a title='Log it' href='" + http + "://www.geocaching.com/seek/log.aspx?wp=" + match[1] + "'><img src='/images/stockholm/16x16/add_comment.gif'></a><br>");
-                }
-            }
-        } catch (e) {
-            gclh_error("Log It Button", e);
         }
     }
 
