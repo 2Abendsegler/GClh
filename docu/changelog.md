@@ -93,9 +93,16 @@ It is important, that GClh run at first, particularly in front of other layer us
 <br>
 </li>
 </ul>
-<b>Pocket Queries:</b><br><br>
+<b>Pocket queries:</b><br><br>
 <ul>
 <li>
+New: <b>Compact layout of list of pocket queries:</b> [Issue <a href="https://github.com/2Abendsegler/GClh/issues/295">#295</a>]<br>
+<br>
+<img src="../images/v0.8_Screen42.jpg" alt="v0.8_Screen42.jpg"><br>
+<img src="../images/v0.8_Screen43.jpg" alt="v0.8_Screen43.jpg"><br>
+Settings -> Pocket query:<br>
+<img src="../images/v0.8_Screen44.jpg" alt="v0.8_Screen44.jpg"><br>
+The parameters have to be activated in Config after installation.<br>
 <br>
 <br>
 </li>
