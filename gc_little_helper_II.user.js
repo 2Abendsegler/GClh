@@ -2242,53 +2242,76 @@ var mainGC = function () {
         }
     }
 
-//xxxx2
 // Improve list of pocket queries (list of PQs).
     if (document.location.href.match(/^https?:\/\/www\.geocaching\.com\/pocket/) && document.getElementById("uxCreateNewPQ")) {
         try {
             // Compact layout.
             if (settings_compact_layout_list_of_pqs) {
                 function lastGen(elem) {
+                    elem.title = trim(elem.innerHTML);
                     elem.innerHTML = "Last Generated";
-                    elem.title = "Last Generated (PST)";
                     elem.style.whiteSpace = "nowrap";
                 }
                 var css = "";
                 // Header:
-                css += ".pq-info-wrapper {margin: 0; padding: 10px 0 0 0; background-color: unset; box-shadow: unset;}";
-                css += ".pq-info-wrapper p:last-child {padding: 0;}";
+                css += ".pq-info-wrapper {margin: 0; padding: 10px 0 0 0; background-color: unset; box-shadow: unset;} .pq-info-wrapper p:last-child {padding: 0;}";
                 css += "#Content .ui-tabs {margin-top: 3.4em;}";
                 css += ".Success {margin: 5px 0 0 0;}";
                 css += "#Tabs {box-shadow: 2px 2px 0 rgba(0,0,0,.2);}";
-                css += ".ui-tabs-active {box-shadow: 2px 0px 0 rgba(0,0,0,.2);}";
-                css += ".ui-tabs .ui-tabs-nav li {margin-right: 4px;}";
-                var h3 = document.createElement("h3");
-                $('#ctl00_ContentBody_lbHeading')[0].parentNode.parentNode.insertBefore(h3, $('#ctl00_ContentBody_lbHeading')[0].parentNode);
-                $('#divContentMain h3').closest('h3').append($('#ctl00_ContentBody_lbHeading').remove().get().reverse());
-                $('#divContentMain h2')[0].closest('h2').remove();
-                for (var i = 0; i <= 2; i++) { $('.pq-info-wrapper')[0].children[0].remove(); }
+                css += ".ui-tabs-active {box-shadow: 2px 0px 0 rgba(0,0,0,.2);} .ui-tabs .ui-tabs-nav li {margin-right: 4px;}";
+                if ($('#ctl00_ContentBody_lbHeading').length > 0 && $('#divContentMain h2').length > 0) {
+                    var h3 = document.createElement("h3");
+                    $('#ctl00_ContentBody_lbHeading')[0].parentNode.parentNode.insertBefore(h3, $('#ctl00_ContentBody_lbHeading')[0].parentNode);
+                    $('#divContentMain h3').closest('h3').append($('#ctl00_ContentBody_lbHeading').remove().get().reverse());
+                    $('#divContentMain h2')[0].closest('h2').remove();
+                }
+                if ($('.pq-info-wrapper')[0] && $('.pq-info-wrapper')[0].children.length > 2) {
+                    for (var i = 0; i <= 2; i++) { $('.pq-info-wrapper')[0].children[0].remove(); }
+                }
                 $('#ActivePQs, #DownloadablePQs').each(function () { this.children[0].setAttribute("style", "margin: -25px 2px 0 0; float: right;"); });
                 // Table active PQs:
-                css += "table {margin-bottom: 0;}";
-                css += "table.Table, table.Table th, table.Table td {padding: 5px; border: 1px solid #fff !important;}";
-                $('#pqRepeater thead tr th').each(function () { this.style.width = "unset"; });
-                lastGen( $('#pqRepeater thead tr')[0].children[12] );
+                css += "table {margin-bottom: 0;} table.Table, table.Table th, table.Table td {padding: 5px; border: 1px solid #fff;}";
+                css += "table.Table tr {line-height: 16px;} table.Table th img, table.Table td img {vertical-align: sub;}";
+                if ($('#pqRepeater thead tr').length > 0 && $('#pqRepeater thead tr')[0].children.length > 12) {
+                    lastGen( $('#pqRepeater thead tr')[0].children[12] );
+                    $('#pqRepeater thead tr th').each(function () { this.style.width = "unset"; });
+                }
+                if ($('#pqRepeater tbody tr').length > 0 && $('#pqRepeater tbody tr')[0] && $('#pqRepeater tbody tr')[0].children.length > 0) {
+                    for (var i = 0; i < $('#pqRepeater tbody tr').length; i++) {
+                        if ($('#pqRepeater tbody tr')[i].className == "TableFooter") break;
+                        for (var j = 0; j < $('#pqRepeater tbody tr')[0].children.length; j++) {
+                            if (j != 3) $('#pqRepeater tbody tr')[i].children[j].style.whiteSpace = "nowrap";
+                        }
+                    }
+                }
                 // Table My Finds:
-                lastGen( $('#ctl00_ContentBody_PQListControl1_tblMyFinds tbody tr')[0].children[1] );
-                $('#ctl00_ContentBody_PQListControl1_tblMyFinds tbody tr')[0].children[1].style.width = $('#pqRepeater thead tr')[0].children[12].offsetWidth - 11 + "px";
-                $('#ctl00_ContentBody_PQListControl1_tblMyFinds tbody tr')[1].children[0].children[1].remove();
-                $('#ctl00_ContentBody_PQListControl1_tblMyFinds tbody tr')[1].children[0].children[0].remove();
-                $('#ctl00_ContentBody_PQListControl1_tblMyFinds tbody tr')[1].children[0].children[0].style.margin = "0";
-                var sn = $('#ctl00_ContentBody_PQListControl1_btnScheduleNow');
-                if (sn.prop("disabled")) sn[0].parentNode.parentNode.innerHTML = "<a style='opacity: 0.4; cursor: default' title='\"My Finds\" pocket query can only run once every 3 days'>Add to Queue</a>";
-                else sn[0].parentNode.parentNode.innerHTML = "<a href='javascript:__doPostBack(\"ctl00$ContentBody$PQListControl1$btnScheduleNow\",\"\")' title='Add \"My Finds\" pocket query to Queue'>Add to Queue</a>";
-                // Table downloadable PQs:
-                lastGen( $('#uxOfflinePQTable thead tr')[0].children[5] );
-                $('#uxOfflinePQTable tbody tr').each(function () { if (this.children[5]) this.children[5].style.whiteSpace = "nowrap"; });
-                $('#ctl00_ContentBody_PQListControl1_lbFoundGenerated')[0].innerHTML = $('#ctl00_ContentBody_PQListControl1_lbFoundGenerated')[0].innerHTML.replace(/\*/, "");
+                css += "#ctl00_ContentBody_PQListControl1_tblMyFinds tbody tr th {border: unset;}";
+                if ($('#ctl00_ContentBody_PQListControl1_tblMyFinds tbody tr').length > 1 && $('#pqRepeater thead tr')[0].children.length > 12) {
+                    lastGen( $('#ctl00_ContentBody_PQListControl1_tblMyFinds tbody tr')[0].children[1] );
+                    var wo = ( $('#pqRepeater thead tr')[0].children[12].clientWidth / $('#pqRepeater thead tr')[0].clientWidth * 100) + 0.96;
+                    $('#ctl00_ContentBody_PQListControl1_tblMyFinds tbody tr')[0].children[1].style.width = wo + "%";
+                    $('#ctl00_ContentBody_PQListControl1_tblMyFinds tbody tr')[1].children[0].children[1].remove();
+                    $('#ctl00_ContentBody_PQListControl1_tblMyFinds tbody tr')[1].children[0].children[0].remove();
+                    $('#ctl00_ContentBody_PQListControl1_tblMyFinds tbody tr')[1].children[0].children[0].style.margin = "0";
+                }
+                if ($('#ctl00_ContentBody_PQListControl1_btnScheduleNow').length > 0) {
+                    if ($('#ctl00_ContentBody_PQListControl1_btnScheduleNow').prop("disabled")) {
+                        $('#ctl00_ContentBody_PQListControl1_btnScheduleNow')[0].parentNode.parentNode.innerHTML = "<a style='opacity: 0.4; cursor: default' title='\"My Finds\" pocket query can only run once every 3 days'>Add to Queue</a>";
+                    } else {
+                        $('#ctl00_ContentBody_PQListControl1_btnScheduleNow')[0].parentNode.parentNode.innerHTML = "<a href='javascript:__doPostBack(\"ctl00$ContentBody$PQListControl1$btnScheduleNow\",\"\")' title='Add \"My Finds\" pocket query to Queue'>Add to Queue</a>";
+                    }
+                }
+                // Table downloadable PQs (additional):
+                if ($('#uxOfflinePQTable thead tr').length > 0) lastGen( $('#uxOfflinePQTable thead tr')[0].children[5] );
+                if ($('#uxOfflinePQTable tbody tr').length > 0) $('#uxOfflinePQTable tbody tr').each(function () { if (this.children[5]) this.children[5].style.whiteSpace = "nowrap"; });
+                if ($('#ctl00_ContentBody_PQListControl1_lbFoundGenerated').length > 0) {
+                    $('#ctl00_ContentBody_PQListControl1_lbFoundGenerated')[0].innerHTML = $('#ctl00_ContentBody_PQListControl1_lbFoundGenerated')[0].innerHTML.replace(/\*/, "");
+                }
                 // Footer:
-                for (var i = 0; i <= 4; i++) { $('.pq-legend')[0].nextElementSibling.remove(); }
-                $('.pq-legend')[0].remove();
+                if ($('.pq-legend').length > 0) {
+                    for (var i = 0; i <= 4; i++) { $('.pq-legend')[0].nextElementSibling.remove(); }
+                    $('.pq-legend')[0].remove();
+                }
                 appendCssStyle(css);
             }
 
@@ -2373,11 +2396,15 @@ var mainGC = function () {
                 var css = "";
                 // Header:
                 css += ".InformationWidget {margin: 0;}";
-                css += ".left {margin: 0; padding: 4px 0 4px 5px;}";
+                css += ".left {margin: 0; padding: 4px 0;}";
 // Bei BM identisch einbauen. 
-// Mit den 4px left muß ich mir noch überlegen, ob das hier und bei bm sinn macht.
-                css += "#ctl00_ContentBody_ResultsPanel > div:nth-child(1) {margin: 0 !important; padding: 4px 0 4px 5px;}"; // GC Tour
-//                $('#ctl00_ContentBody_SearchResultText')[0].remove();
+// Mit den 5px left muß ich mir noch überlegen, ob das hier und bei bm sinn macht.
+                css += "#ctl00_ContentBody_ResultsPanel > div:nth-child(1) {margin: 0 !important; padding: 4px 0;}"; // GC Tour
+                $('#ctl00_ContentBody_SearchResultText')[0].parentNode.remove();
+//                $('#ctl00_ContentBody_LocationPanel1_OriginLabel')[0].childNodes[0] = "<span>"+$('#ctl00_ContentBody_LocationPanel1_OriginLabel')[0].childNodes[0]+"</span>";
+//                css = "#ctl00_ContentBody_LocationPanel1_OriginLabel {font-weight: bold; color: #594a42; font-size: 1.5em;}";
+                
+//                $('#ctl00_ContentBody_LocationPanel1_OriginLabel').childNodes[0].font-weight: bold; color: #594a42; font-size: 1.5em;
 //                var h3 = document.createElement("h3");
 //                h3.innerHTML = $('#ctl00_ContentBody_LocationPanel1_OriginLabel')[0].childNodes[0].nodeValue;
 //                $('#ctl00_ContentBody_LocationPanel1_OriginLabel')[0].childNodes[0].nodeValue = h3;
@@ -2392,11 +2419,23 @@ var mainGC = function () {
                 
                 $('table.SearchResultsTable tbody tr')[0].children[8].children[0].innerHTML = "L.Found";
                 $('table.SearchResultsTable tbody tr')[0].children[8].children[0].title = "Last Found";
-                
+
                 var cells = $('table.SearchResultsTable tbody tr td');
                 for (var i = 0; i < cells.length; i++) {
                     cells[i].innerHTML = cells[i].innerHTML.replace(/<br>/ig," ");
                 }
+/*
+var fup = $('table.SearchResultsTable tbody tr td');    
+                console.log(fup.length);
+                for (var i = 0; i < fup.length; i++) {
+                    console.log(fup[i].children[5]);
+                }
+*/
+//console.log($('table.SearchResultsTable tbody tr')[1].children[5]);               
+//                $('table.SearchResultsTable tbody tr.data').children[5].lastElementChild.innerHTML = "";
+//                lastElementChild.innerHTML 
+                
+                
                 
                 appendCssStyle(css);
             }
@@ -4484,57 +4523,7 @@ var mainGC = function () {
         }
     }
 
-// Improve bookmark lists.
-    if (document.location.href.match(/^https?:\/\/www\.geocaching\.com\/bookmarks\/(view\.aspx\?guid=|bulk\.aspx\?listid=|view\.aspx\?code=)/) && document.getElementById('ctl00_ContentBody_ListInfo_cboItemsPerPage')) {
-        try {
-            // Prepare links "Download as kml" and "Show in google maps".
-            if (document.location.href.match(/guid=([a-zA-Z0-9-]*)/)) {
-                var matches = document.location.href.match(/guid=([a-zA-Z0-9-]*)/);
-                if (matches && matches[1]) {
-                    var uuidx = matches[1];
-                    var kml = "<a style=\"padding-right: 20px;\" title=\"Download as kml\" href='" + http + "://www.geocaching.com/kml/bmkml.aspx?bmguid=" + uuidx + "'>Download as kml</a>";
-                    var gm = "<a title=\"Show in google maps\" href='http://maps.google.com/?q=https://www.geocaching.com/kml/bmkml.aspx?bmguid=" + uuidx + "' target='_blank'>Show in google maps</a>";
-                }
-            }
-            // Compact layout for bookmark lists.
-            if (settings_compact_layout_bm_lists) {
-                // Header:
-                if (document.getElementById('ctl00_ContentBody_QuickAdd')) {
-                    var div = document.getElementById('ctl00_ContentBody_QuickAdd');
-                    div.children[1].childNodes[1].remove();
-                    div.children[1].childNodes[0].remove();
-                    div.children[0].remove();
-                    div.setAttribute("style", "margin-bottom: 1px; float: left;");
-                }
-                if (document.getElementById('ctl00_ContentBody_btnAddBookmark')) document.getElementById('ctl00_ContentBody_btnAddBookmark').setAttribute("style", "margin-top: 1px; margin-left: -1px;");
-                if (document.getElementById('ctl00_ContentBody_ListInfo_uxListOwner')) {
-                    document.getElementById('ctl00_ContentBody_ListInfo_uxListOwner').parentNode.parentNode.children[4].remove();
-                    document.getElementById('ctl00_ContentBody_ListInfo_uxListOwner').parentNode.parentNode.children[3].remove();
-                    document.getElementById('ctl00_ContentBody_ListInfo_uxListOwner').parentNode.style.marginBottom = "0px";
-                    if (uuidx) document.getElementById('ctl00_ContentBody_ListInfo_uxListOwner').parentNode.innerHTML += "<span style='float: right; padding-right: 210px;'>" + kml + gm + "</span>";
-                }
-                // Lines:
-                var lines = $('table.Table tbody').find('tr');
-                for (var i = 0; i < lines.length; i += 2) {
-                    if (!lines[i].className.match(/BorderTop/)) lines[i].className += " BorderTop";
-                    lines[i].children[1].childNodes[3].outerHTML = "&nbsp;&nbsp;";
-                    lines[i].children[1].style.whiteSpace = "nowrap";
-                    if (lines[i].children[5]) lines[i].children[5].style.whiteSpace = "nowrap";
-                    if (lines[i+1].children[1].innerHTML == "") lines[i+1].style.fontSize = "0px";
-                }
-                appendCssStyle("table.Table th, table.Table td {border-left: 1px solid #fff; border-right: 1px solid #fff;} tr.BorderTop td {border-top: 1px solid #fff;} table.Table th {border-bottom: 2px solid #fff;} td {vertical-align: baseline !important;} table.Table img {vertical-align: baseline !important; margin-bottom: -3px;}");
-                // Footer:
-                $('#ctl00_ContentBody_ListInfo_btnDownload').closest('p').append($('#ctl00_ContentBody_btnCreatePocketQuery').remove().get().reverse());
-                if (document.getElementById('ctl00_ContentBody_uxAboutPanel')) document.getElementById('ctl00_ContentBody_uxAboutPanel').remove();
-            // No compact layout for bookmark lists, only build links.
-            } else {
-                if (uuidx) document.getElementById("ctl00_ContentBody_lbHeading").parentNode.parentNode.parentNode.childNodes[3].innerHTML += "<br>" + kml + "<br>" + gm;
-            }
-        } catch (e) {
-            gclh_error("Improve bookmark lists", e);
-        }
-    }
-
+//xxxx2
 // Improve list of bookmark lists.
     if (document.location.href.match(/^https?:\/\/www\.geocaching\.com\/bookmarks\/default\.aspx/) || document.location.href.match(/^https?:\/\/www\.geocaching\.com\/my\/lists\.aspx/)) {
         try {
@@ -4589,6 +4578,57 @@ var mainGC = function () {
             }
         } catch (e) {
             gclh_error("Improve list of bookmark lists", e);
+        }
+    }
+
+// Improve bookmark lists.
+    if (document.location.href.match(/^https?:\/\/www\.geocaching\.com\/bookmarks\/(view\.aspx\?guid=|bulk\.aspx\?listid=|view\.aspx\?code=)/) && document.getElementById('ctl00_ContentBody_ListInfo_cboItemsPerPage')) {
+        try {
+            // Prepare links "Download as kml" and "Show in google maps".
+            if (document.location.href.match(/guid=([a-zA-Z0-9-]*)/)) {
+                var matches = document.location.href.match(/guid=([a-zA-Z0-9-]*)/);
+                if (matches && matches[1]) {
+                    var uuidx = matches[1];
+                    var kml = "<a style=\"padding-right: 20px;\" title=\"Download as kml\" href='" + http + "://www.geocaching.com/kml/bmkml.aspx?bmguid=" + uuidx + "'>Download as kml</a>";
+                    var gm = "<a title=\"Show in google maps\" href='http://maps.google.com/?q=https://www.geocaching.com/kml/bmkml.aspx?bmguid=" + uuidx + "' target='_blank'>Show in google maps</a>";
+                }
+            }
+            // Compact layout for bookmark lists.
+            if (settings_compact_layout_bm_lists) {
+                // Header:
+                if (document.getElementById('ctl00_ContentBody_QuickAdd')) {
+                    var div = document.getElementById('ctl00_ContentBody_QuickAdd');
+                    div.children[1].childNodes[1].remove();
+                    div.children[1].childNodes[0].remove();
+                    div.children[0].remove();
+                    div.setAttribute("style", "margin-bottom: 1px; float: left;");
+                }
+                if (document.getElementById('ctl00_ContentBody_btnAddBookmark')) document.getElementById('ctl00_ContentBody_btnAddBookmark').setAttribute("style", "margin-top: 1px; margin-left: -1px;");
+                if (document.getElementById('ctl00_ContentBody_ListInfo_uxListOwner')) {
+                    document.getElementById('ctl00_ContentBody_ListInfo_uxListOwner').parentNode.parentNode.children[4].remove();
+                    document.getElementById('ctl00_ContentBody_ListInfo_uxListOwner').parentNode.parentNode.children[3].remove();
+                    document.getElementById('ctl00_ContentBody_ListInfo_uxListOwner').parentNode.style.marginBottom = "0px";
+                    if (uuidx) document.getElementById('ctl00_ContentBody_ListInfo_uxListOwner').parentNode.innerHTML += "<span style='float: right; padding-right: 210px;'>" + kml + gm + "</span>";
+                }
+                // Lines:
+                var lines = $('table.Table tbody').find('tr');
+                for (var i = 0; i < lines.length; i += 2) {
+                    if (!lines[i].className.match(/BorderTop/)) lines[i].className += " BorderTop";
+                    lines[i].children[1].childNodes[3].outerHTML = "&nbsp;&nbsp;";
+                    lines[i].children[1].style.whiteSpace = "nowrap";
+                    if (lines[i].children[5]) lines[i].children[5].style.whiteSpace = "nowrap";
+                    if (lines[i+1].children[1].innerHTML == "") lines[i+1].style.fontSize = "0px";
+                }
+                appendCssStyle("table.Table th, table.Table td {border-left: 1px solid #fff; border-right: 1px solid #fff;} tr.BorderTop td {border-top: 1px solid #fff;} table.Table th {border-bottom: 2px solid #fff;} td {vertical-align: baseline !important;} table.Table img {vertical-align: baseline !important; margin-bottom: -3px;}");
+                // Footer:
+                $('#ctl00_ContentBody_ListInfo_btnDownload').closest('p').append($('#ctl00_ContentBody_btnCreatePocketQuery').remove().get().reverse());
+                if (document.getElementById('ctl00_ContentBody_uxAboutPanel')) document.getElementById('ctl00_ContentBody_uxAboutPanel').remove();
+            // No compact layout for bookmark lists, only build links.
+            } else {
+                if (uuidx) document.getElementById("ctl00_ContentBody_lbHeading").parentNode.parentNode.parentNode.childNodes[3].innerHTML += "<br>" + kml + "<br>" + gm;
+            }
+        } catch (e) {
+            gclh_error("Improve bookmark lists", e);
         }
     }
 
