@@ -86,14 +86,14 @@ It is important, that GClh run at first, particularly in front of other layer us
 <br>
 </li>
 </ul>
-<b>Bookmark lists:</b><br><br>
+<b>Bookmark list:</b><br><br>
 <ul>
 <li>
 <br>
 <br>
 </li>
 </ul>
-<b>Pocket queries:</b><br><br>
+<b>Pocket query:</b><br><br>
 <ul>
 <li>
 New: <b>Compact layout of list of pocket queries:</b> [Issue <a href="https://github.com/2Abendsegler/GClh/issues/295">#295</a>]<br>
