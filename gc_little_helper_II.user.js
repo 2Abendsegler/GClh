@@ -2255,10 +2255,8 @@ var mainGC = function () {
                 var css = "";
                 // Header:
                 css += ".pq-info-wrapper {margin: 0; padding: 10px 0 0 0; background-color: unset; box-shadow: unset;} .pq-info-wrapper p:last-child {padding: 0;}";
-                css += "#Content .ui-tabs {margin-top: 3.4em;}";
-                css += ".Success {margin: 5px 0 0 0;}";
-                css += "#Tabs {box-shadow: 2px 2px 0 rgba(0,0,0,.2);}";
-                css += ".ui-tabs-active {box-shadow: 2px 0px 0 rgba(0,0,0,.2);} .ui-tabs .ui-tabs-nav li {margin-right: 4px;}";
+                css += "#Content .ui-tabs {margin-top: 3.4em;} .ui-tabs-active {box-shadow: 2px 0px 0 rgba(0,0,0,.2);} .ui-tabs .ui-tabs-nav li {margin-right: 4px;}";
+                css += ".Success {margin: 5px 0 0 0;} #Tabs {box-shadow: 2px 2px 0 rgba(0,0,0,.2);}";
                 if ($('#ctl00_ContentBody_lbHeading').length > 0 && $('#divContentMain h2').length > 0) {
                     var h3 = document.createElement("h3");
                     $('#ctl00_ContentBody_lbHeading')[0].parentNode.parentNode.insertBefore(h3, $('#ctl00_ContentBody_lbHeading')[0].parentNode);
@@ -2424,66 +2422,52 @@ var mainGC = function () {
                 $('#ctl00_ContentBody_LocationPanel1_OriginLabel')[0].childNodes[0].remove();
             }
             // Table:
-            function newHeadline(tr0, ch, desc) {
+            css += "table {margin-bottom: 0;} table.Table th, table.Table td {padding: 5px; border: 1px solid #fff; width: unset !important;}";
+            css += "table.Table th, table.Table td:not(.Merge) {white-space: nowrap;} table.Table td.Merge {padding: 3px 5px;}";
+            css += "table.Table tr {line-height: 14px;} table.Table img {vertical-align: sub;} table.Table .IconButton {display: unset; padding: 0;}";
+            css += ".SearchResultsWptType {width: 24px; height: 24px;} .small {line-height: unset; margin-bottom: unset;}";
+            css += ".gclh_empty {overflow: hidden; max-width: 9px;} .gclh_hide {overflow: hidden; text-overflow: ellipsis; display: -moz-box;}";
+//  td.small.elli {overflow: hidden; text-overflow: ellipsis; max-width: 80px;}
+            function newHeadcell(tr0, ch, desc) {
                 var th = document.createElement("th");
                 th.appendChild(document.createTextNode(desc));
                 tr0.children[ch].parentNode.insertBefore(th, tr0.children[ch]);
             }
-            function newContentline(trDataNew, ch, content, cla, obj) {
-                var td = document.createElement("td");
-                if (obj) td.appendChild(content);
-                else {
-                    td.appendChild(document.createTextNode(content));
-                    td.setAttribute("class", cla);
-                }
-                trDataNew.children[ch].parentNode.insertBefore(td, trDataNew.children[ch]);
-            }
-            css += "table {margin-bottom: 0;} table.Table th, table.Table td {padding: 5px; border: 1px solid #fff; width: unset !important;}";
-            css += "table.Table th, table.Table td:not(.Merge) {white-space: nowrap;}";
-            css += "table.Table tr {line-height: 14px;} table.Table img {vertical-align: sub;} table.Table .IconButton {display: unset; padding: 0;}";
-            css += ".SearchResultsWptType {width: 24px; height: 24px;}";
-            css += ".small {line-height: unset; margin-bottom: unset;} td.small.elli {overflow: hidden; text-overflow: ellipsis; max-width: 80px;}";
             if ($('table.SearchResultsTable tbody tr')[0] && $('table.SearchResultsTable tbody tr')[0].children.length > 8) {
                 var tr0 = $('table.SearchResultsTable tbody tr')[0];
-                newHeadline(tr0, 9, "Y. Found");
+                newHeadcell(tr0, 9, "Y. Found");
                 tr0.children[9].title = "Your Found";
+                tr0.children[9].setAttribute("class", "gclh_empty");
                 tr0.children[8].children[0].title = tr0.children[8].children[0].innerHTML;
                 tr0.children[8].children[0].innerHTML = "L. Found";
-                newHeadline(tr0, 7, "Size");
+                newHeadcell(tr0, 7, "Size");
                 tr0.children[7].setAttribute("class", "AlignCenter");
                 for (var i = 0; i <= 4; i += 2) { tr0.children[6].childNodes[i].data = tr0.children[6].childNodes[i].data.replace(/(\(|\))/g, ""); }
                 tr0.children[6].setAttribute("class", "AlignCenter");
-//                newHeadline(tr0, 5, "Location");
-                newHeadline(tr0, 5, "Owner");
-                newHeadline(tr0, 5, "Code");
+            }
+            function newContentcell(trDataNew, chil, content, clas, obj) {
+                var td = document.createElement("td");
+                if (obj) td.appendChild(content);
+                else td.appendChild(document.createTextNode(content));
+                td.setAttribute("class", clas);
+                trDataNew.children[chil].parentNode.insertBefore(td, trDataNew.children[chil]);
             }
             if ($('table.SearchResultsTable tbody tr.Data').length > 0) {
-                $('table.SearchResultsTable tbody tr.Data td').each(function () { this.innerHTML = this.innerHTML.replace(/<br>/ig," "); });
+                $('table.SearchResultsTable tbody tr.Data td:not(.Merge)').each(function () { this.innerHTML = this.innerHTML.replace(/<br>/ig," "); });
                 var trData = $('table.SearchResultsTable tbody tr.Data');
                 for (var i = 0; i < trData.length; i++) {
-                    // New column Your Found.
+                    // Last Found and new column Your Found.
                     if (trData[i].children[9].children[0].children[0] && trData[i].children[9].children[0].children[0].id.match("_uxUserLogDate")) {
-                        newContentline(trData[i], 10, trData[i].children[9].children[0].children[0], "", true);
-                    } else newContentline(trData[i], 10, "", "", false);
-                    trData[i].children[10].setAttribute("class", "small");
-                    // New column Size.
+                        newContentcell(trData[i], 10, trData[i].children[9].children[0].children[0], "small", true);
+                    } else newContentcell(trData[i], 10, "", "small", false);
+                    // D / T and new column Size.
                     trData[i].children[7].childNodes[4].remove(); 
                     trData[i].children[7].childNodes[2].remove(); 
-                    newContentline(trData[i], 8, trData[i].children[7].children[1], "", true);
-                    trData[i].children[8].children[0].setAttribute("style", "vertical-align: baseline;");
-                    // New columns GC Code, Owner.
-                    splitter = trData[i].children[5].children[(settings_show_log_it ? 2:1)].childNodes[0].data.split("|");
-                    if (splitter && splitter[0] && splitter[1] && splitter[2]) {
-                        splitter[0] = splitter[0].replace(/^(\s*)(\S*)(\s{1,})/, "").replace(/(\s*)$/, "");
-                        splitter[1] = splitter[1].replace(/^(\s*)/, "").replace(/(\s*)$/, "");
-                        splitter[2] = splitter[2].replace(/^(\s*)/, "").replace(/(\s*)$/, "");
-                    } else {
-                        var splitter = new Array();
-                        splitter[0] = splitter[1] = splitter[2] = "";
-                    }
-                    newContentline(trData[i], 6, splitter[0], "small elli", false);
-                    newContentline(trData[i], 6, splitter[1], "small", false);
-                    trData[i].children[5].children[(settings_show_log_it ? 2:1)].childNodes[0].remove();
+                    newContentcell(trData[i], 8, trData[i].children[7].children[1], "", true);
+                    trData[i].children[8].children[0].setAttribute("style", "vertical-align: bottom;");
+                    // Description.
+                    trData[i].children[5].children[(settings_show_log_it ? 3:2)].setAttribute("class", "small gclh_hide");
+                    trData[i].children[5].children[(settings_show_log_it ? 3:2)].title = trData[i].children[5].children[(settings_show_log_it ? 3:2)].innerHTML.replace(/(\s{2,})/g, " ").replace(/^\s/, "");
                 }
             }
             // Footer:
@@ -8067,11 +8051,9 @@ var mainGC = function () {
         }
     }
 
-// Add Download Link to Labs cache Pages.
+// Add download link to Labs cache pages.
     if (document.location.href.match(/^https?:\/\/labs\.geocaching\.com\/Adventures\/Details\/(\w|\-)*/)) {
         try {
-            // Removing -> background-image: -moz-linear-gradient(left center , rgba(157, 178, 81, 0) 0%, #9db251 100%);
-            // This gets a clearer view, if more than one Navigation Button is Displayed.
             for(var i=0 ; i < document.styleSheets.length ; i++){
                 if (document.styleSheets[i].href && document.styleSheets[i].href.match(/^https?:\/\/labs\.geocaching\.com\/Content\/css\/main\?[v]\=\w*/)) {
                     document.styleSheets[i].cssRules[384].style['background-image'] = "none";
@@ -8083,8 +8065,7 @@ var mainGC = function () {
             pathName = window.location.pathname;
             pathValues = pathName.split("/");
             downloadPath = "/Adventures/DetailsAsGPX/" + pathValues[3];
-            // Move existing Leaderboard Button to the left.
-            // Create new Button with Download Link.
+            // Move existing Leaderboard Button to the left and create new Button with Download Link.
             $('#leaderboard')
                 .css({
                     "margin-right" : "0px",
@@ -8096,9 +8077,7 @@ var mainGC = function () {
                 .append(
                     '<a id="dl_link" class="link-leaderboard" href="' + downloadPath + '" style="padding-left: 9px;">Download‌ as‌ GPX‌ File</a>'
                 );
-        } catch (e) {
-            gclh_error("Lab Gpx Downlad Link hinzufügen", e);
-        }
+        } catch (e) { gclh_error("Add download link to Labs cache pages:", e); }
     }
 
 // Auto check checkboxes on hide cache process.
