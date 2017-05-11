@@ -102,8 +102,7 @@ List of pocket queries: Active<br>
 <img src="../images/v0.8_Screen42.jpg" alt="v0.8_Screen42.jpg"><br>
 List of pocket queries: Ready for donwload<br>
 <img src="../images/v0.8_Screen43.jpg" alt="v0.8_Screen43.jpg"><br>
-Pocket queries:<br>
-It should be useable from a page width of about 1.000 pixel.<br>
+Pocket queries: It should be useable from a page width of about 1.000 pixel.<br>
 <img src="../images/v0.8_Screen45.jpg" alt="v0.8_Screen45.jpg"><br>
 Settings -> Pocket query:<br>
 <img src="../images/v0.8_Screen44.jpg" alt="v0.8_Screen44.jpg"><br>
