@@ -89,6 +89,15 @@ It is important, that GClh run at first, particularly in front of other layer us
 <b>Bookmark list:</b><br><br>
 <ul>
 <li>
+New: <b>Compact layout of list of bookmark lists and compact layout of bookmark lists:</b> [Issue <a href="https://github.com/2Abendsegler/GClh/issues/295">#295</a>]<br>
+<br>
+List of bookmark lists:<br>
+<img src="../images/v0.8_Screen24.jpg" alt="v0.8_Screen24.jpg"><br>
+Bookmark lists:<br>
+<img src="../images/v0.8_Screen25.jpg" alt="v0.8_Screen25.jpg"><br>
+Settings -> Bookmark list:<br>
+<img src="../images/v0.8_Screen46.jpg" alt="v0.8_Screen46.jpg"><br>
+The parameters have to be activated in Config after installation.<br>
 <br>
 <br>
 </li>
