@@ -2237,9 +2237,7 @@ var mainGC = function () {
                 }
             }
             showLatestLogsSymbols(0);
-        } catch (e) {
-            gclh_error("Show the latest logs symbols:", e);
-        }
+        } catch (e) { gclh_error("Show the latest logs symbols:", e); }
     }
 
 // Improve list of pocket queries (list of PQs).
@@ -2400,25 +2398,31 @@ var mainGC = function () {
         } catch (e) { gclh_error("Show Log It button:", e); }
     }
 
-//xxxx2
 // Improve pocket queries.
+// (xxxx) Nach abschließenden Test, könnte das compact layout für alle nearest lists verwendet werden.
     if (settings_compact_layout_pqs && document.location.href.match(/^https?:\/\/www\.geocaching\.com\/seek\/nearest\.aspx\?pq=/)) {
         try {
             // Compact layout.
             var css = "";
             // Header:
-            css += ".InformationWidget {margin: 0; line-height: 1em;}";
             css += ".InformationWidget ul#UtilityNav li {padding: 6px 0 0 0;} .InformationWidget ul#UtilityNav li a {padding: 0; border: none; margin: 0 0 0 5px;}";
-            css += ".left {margin: 0; padding: 4px 0;}";
-// nächste zeile Bei BM identisch einbauen.
-            css += "#ctl00_ContentBody_ResultsPanel > div:nth-child(1) {margin: 0 !important; padding: 4px 0;}"; // GC Tour
-            css += "#ctl00_ContentBody_LocationPanel1_OriginLabel span {font-weight: bold; color: #594a42; font-size: 1.5em; margin-right: 10px;}";
+            css += ".InformationWidget {margin: 0; line-height: 1em;} .left {margin: 0; padding: 4px 0;}";
+            css += "#ctl00_ContentBody_LocationPanel1_OriginLabel span {font-weight: bold; color: #594a42; font-size: 1em; margin-right: 10px;}";
             css += "#ctl00_ContentBody_LocationPanel1_OriginLabel a {margin-right: 5px;}";
-            if ($('#ctl00_ContentBody_SearchResultText').length > 0) $('#ctl00_ContentBody_SearchResultText')[0].parentNode.remove();
+            css += "#ctl00_ContentBody_ResultsPanel > div:nth-child(1) {margin: 0 !important; padding: 4px 0;}"; // GC Tour
+            if ($('#ctl00_ContentBody_SearchResultText').length > 0 && $('#divContentMain h2').length > 0) {
+                var h3 = document.createElement("h3");
+                h3.setAttribute("style", "padding-bottom: 8px");
+                $('#ctl00_ContentBody_SearchResultText')[0].parentNode.parentNode.insertBefore(h3, $('#ctl00_ContentBody_SearchResultText')[0].parentNode);
+                $('#divContentMain h3').closest('h3').append($('#ctl00_ContentBody_SearchResultText').remove().get().reverse());
+                $('#divContentMain h2')[0].closest('h2').remove();
+            }
             if ($('#ctl00_ContentBody_LocationPanel1_OriginLabel').length > 0) {
                 var span = document.createElement("span");
                 span.innerHTML = $('#ctl00_ContentBody_LocationPanel1_OriginLabel')[0].childNodes[0].data;
-                $('#ctl00_ContentBody_LocationPanel1_OriginLabel')[0].children[0].parentNode.insertBefore(span, $('#ctl00_ContentBody_LocationPanel1_OriginLabel')[0].children[0]);
+                if ($('#ctl00_ContentBody_LocationPanel1_OriginLabel')[0].children.length > 0) {
+                    $('#ctl00_ContentBody_LocationPanel1_OriginLabel')[0].children[0].parentNode.insertBefore(span, $('#ctl00_ContentBody_LocationPanel1_OriginLabel')[0].children[0]);
+                } else $('#ctl00_ContentBody_LocationPanel1_OriginLabel')[0].appendChild(span);
                 $('#ctl00_ContentBody_LocationPanel1_OriginLabel')[0].childNodes[0].remove();
             }
             // Table:
@@ -2427,7 +2431,6 @@ var mainGC = function () {
             css += "table.Table tr {line-height: 14px;} table.Table img {vertical-align: sub;} table.Table .IconButton {display: unset; padding: 0;}";
             css += ".SearchResultsWptType {width: 24px; height: 24px;} .small {line-height: unset; margin-bottom: unset;}";
             css += ".gclh_empty {overflow: hidden; max-width: 9px;} .gclh_hide {overflow: hidden; text-overflow: ellipsis; display: -moz-box;}";
-//  td.small.elli {overflow: hidden; text-overflow: ellipsis; max-width: 80px;}
             function newHeadcell(tr0, ch, desc) {
                 var th = document.createElement("th");
                 th.appendChild(document.createTextNode(desc));
@@ -2460,7 +2463,7 @@ var mainGC = function () {
                     if (trData[i].children[9].children[0].children[0] && trData[i].children[9].children[0].children[0].id.match("_uxUserLogDate")) {
                         newContentcell(trData[i], 10, trData[i].children[9].children[0].children[0], "small", true);
                     } else newContentcell(trData[i], 10, "", "small", false);
-                    // D / T and new column Size.
+                    // D/T and new column Size.
                     trData[i].children[7].childNodes[4].remove(); 
                     trData[i].children[7].childNodes[2].remove(); 
                     newContentcell(trData[i], 8, trData[i].children[7].children[1], "", true);
@@ -2471,11 +2474,11 @@ var mainGC = function () {
                 }
             }
             // Footer:
-// nächste zeile Bei BM identisch einbauen.
             css += "#ctl00_ContentBody_ResultsPanel > div:nth-child(5) {margin: 0 !important; padding: 4px 0;}"; // GC Tour
             css += ".span-10 {width: 100% !important;}";
-            if ($('#ctl00_ContentBody_chkHighlightBeginnerCaches').length > 0 && $('#Download').length > 0) {
-                $('#ctl00_ContentBody_chkHighlightBeginnerCaches')[0].parentNode.parentNode.parentNode.insertBefore( $('#Download')[0].parentNode ,$('#ctl00_ContentBody_chkHighlightBeginnerCaches')[0].parentNode.parentNode);
+            if ($('#ctl00_ContentBody_chkHighlightBeginnerCaches').length > 0 && $('#Download').length > 0 && $('#chkAll').length > 0) {
+                $('#ctl00_ContentBody_chkHighlightBeginnerCaches')[0].parentNode.parentNode.parentNode.insertBefore( $('#chkAll')[0].parentNode, $('#ctl00_ContentBody_chkHighlightBeginnerCaches')[0].parentNode.parentNode);
+                $('#chkAll')[0].parentNode.appendChild($('#Download')[0]);
                 $('#Download')[0].parentNode.className = "gclh_last_line";
                 while ($('.gclh_last_line')[0].nextElementSibling) { $('.gclh_last_line')[0].nextElementSibling.remove(); }
             }
@@ -2486,7 +2489,6 @@ var mainGC = function () {
             appendCssStyle(css);
         } catch (e) { gclh_error("Improve PQs:", e); }
     }
-//xxxx2
 
 // Set default value for new pocket queries and handle warning.
     // Helper function marks two PQ options, which are in rejection.
@@ -4550,19 +4552,21 @@ var mainGC = function () {
         }
     }
 
-//xxxx2
 // Improve list of bookmark lists.
     if (document.location.href.match(/^https?:\/\/www\.geocaching\.com\/bookmarks\/default\.aspx/) || document.location.href.match(/^https?:\/\/www\.geocaching\.com\/my\/lists\.aspx/)) {
         try {
-            // Compact layout for list of bookmark lists.
+            // Compact layout.
             if (settings_compact_layout_list_of_bm_lists) {
+                var css = "";
                 // Header:
-                appendCssStyle(".ListManagementFavoritesWidget, .ListsManagemntWatchlistWidget {margin: 0 0 1.5em; padding: 0.5em;}");
+                css += ".ListManagementFavoritesWidget, .ListsManagemntWatchlistWidget {margin: 0 0 1.5em; padding: 0.5em;}";
                 $('#divContentMain div h2').first().remove();
                 $('#divContentMain p.NoBottomSpacing').first().remove();
                 $('#divContentMain div h3').first().closest('div').remove();
                 $('#ctl00_ContentBody_hlCreateNewBookmarkList').closest('p').prop("style", "margin: 0 0 0.5em");
-                // Lines:
+                // Table:
+                css += "table.Table tr {line-height: 16px;} table.Table th, table.Table td {border: 1px solid #fff;}";
+                css += "table.Table td, table.Table td a {vertical-align: top !important;} table.Table td img {vertical-align: top !important; padding-right: 8px;}";
                 $('table.Table thead tr')[0].children[1].innerHTML = "Status";
                 $('table.Table thead tr')[0].children[5].innerHTML = "PQ";
                 $('table.Table thead tr')[0].children[6].innerHTML = "KML";
@@ -4572,18 +4576,16 @@ var mainGC = function () {
                 $('table.Table thead tr')[0].append(th);
                 var lines = $('table.Table tbody tr');
                 for (var i = 0; i < lines.length; i++) {
-                    while (lines[i].children[2].childNodes[2]) {
-                        lines[i].children[2].childNodes[2].remove();
-                    }
+                    while (lines[i].children[2].childNodes[2]) { lines[i].children[2].childNodes[2].remove(); }
                     lines[i].children[1].style.whiteSpace = "nowrap";
                     lines[i].children[4].style.whiteSpace = "nowrap";
-                    lines[i].children[4].children[0].innerHTML = '<img src="/images/icons/16/edit.png" style="vertical-align: middle; padding-right: 8px;" alt="Edit">';
-                    lines[i].children[4].children[1].innerHTML = '<img src="/images/icons/16/watch.png" style="vertical-align: middle; padding-right: 8px;" alt="View">';
-                    lines[i].children[4].children[2].innerHTML = '<img src="/images/icons/16/delete.png" style="vertical-align: middle;" alt="Delete">';
+                    lines[i].children[4].children[0].innerHTML = '<img src="/images/icons/16/edit.png" alt="Edit">';
+                    lines[i].children[4].children[1].innerHTML = '<img src="/images/icons/16/watch.png" alt="View">';
+                    lines[i].children[4].children[2].innerHTML = '<img src="/images/icons/16/delete.png" alt="Delete">';
                     lines[i].children[4].childNodes[4].remove();
                     lines[i].children[4].childNodes[2].remove();
-                    lines[i].children[5].children[0].innerHTML = '<img src="/images/icons/16/bookmark_pq.png" style="vertical-align: middle;" alt="Create PQ">';
-                    lines[i].children[6].children[0].innerHTML = '<img src="/images/icons/16/download.png" style="vertical-align: middle;" alt="Download">';
+                    lines[i].children[5].children[0].innerHTML = '<img src="/images/icons/16/bookmark_pq.png" alt="Create PQ">';
+                    lines[i].children[6].children[0].innerHTML = '<img src="/images/icons/16/download.png" alt="Download">';
                     var td = document.createElement("td");
                     var matches = lines[i].children[6].children[0].href.match(/guid=([a-zA-Z0-9-]*)/);
                     if (matches && matches[1]) {
@@ -4593,7 +4595,8 @@ var mainGC = function () {
                 }
                 // Footer:
                 $('#divContentMain div ul').first().remove();
-            // No compact layout for list of bookmark lists, only build link.
+                appendCssStyle(css);
+            // No compact layout, only build link.
             } else {
                 var lines = $('table.Table tbody tr');
                 for (var i = 0; i < lines.length; i++) {
@@ -4603,9 +4606,7 @@ var mainGC = function () {
                     }
                 }
             }
-        } catch (e) {
-            gclh_error("Improve list of bookmark lists", e);
-        }
+        } catch (e) { gclh_error("Improve list of bookmark lists", e); }
     }
 
 // Improve bookmark lists.
@@ -4620,43 +4621,52 @@ var mainGC = function () {
                     var gm = "<a title=\"Show in google maps\" href='http://maps.google.com/?q=https://www.geocaching.com/kml/bmkml.aspx?bmguid=" + uuidx + "' target='_blank'>Show in google maps</a>";
                 }
             }
-            // Compact layout for bookmark lists.
+            // Compact layout.
             if (settings_compact_layout_bm_lists) {
+                var css = "";
                 // Header:
-                if (document.getElementById('ctl00_ContentBody_QuickAdd')) {
-                    var div = document.getElementById('ctl00_ContentBody_QuickAdd');
-                    div.children[1].childNodes[1].remove();
-                    div.children[1].childNodes[0].remove();
-                    div.children[0].remove();
-                    div.setAttribute("style", "margin-bottom: 1px; float: left;");
+                css += "#ctl00_ContentBody_lbHeading a {font-weight: normal; font-size: 13px; margin-left: 10px;} ";
+                css += "#divContentMain div.span-20.last {margin-top: -18px;}";
+                css += "#ctl00_ContentBody_QuickAdd {margin-bottom: 1px; float: left;} #ctl00_ContentBody_btnAddBookmark {margin-top: 1px; margin-left: -1px;}";
+                css += "#ctl00_ContentBody_ListInfo_uxAbuseReport > div:nth-child(1) {margin: 0 !important; padding: 4px 0;}"; // GC Tour
+                if ($('#ctl00_ContentBody_lbHeading').length > 0 && $('#divContentMain h2').length > 0) {
+                    var h3 = document.createElement("h3");
+                    $('#ctl00_ContentBody_lbHeading')[0].parentNode.parentNode.insertBefore(h3, $('#ctl00_ContentBody_lbHeading')[0].parentNode);
+                    $('#divContentMain h3').closest('h3').append($('#ctl00_ContentBody_lbHeading').remove().get().reverse());
+                    $('#divContentMain h2')[0].closest('h2').remove();
                 }
-                if (document.getElementById('ctl00_ContentBody_btnAddBookmark')) document.getElementById('ctl00_ContentBody_btnAddBookmark').setAttribute("style", "margin-top: 1px; margin-left: -1px;");
-                if (document.getElementById('ctl00_ContentBody_ListInfo_uxListOwner')) {
-                    document.getElementById('ctl00_ContentBody_ListInfo_uxListOwner').parentNode.parentNode.children[4].remove();
-                    document.getElementById('ctl00_ContentBody_ListInfo_uxListOwner').parentNode.parentNode.children[3].remove();
-                    document.getElementById('ctl00_ContentBody_ListInfo_uxListOwner').parentNode.style.marginBottom = "0px";
-                    if (uuidx) document.getElementById('ctl00_ContentBody_ListInfo_uxListOwner').parentNode.innerHTML += "<span style='float: right; padding-right: 210px;'>" + kml + gm + "</span>";
+                if ($('#ctl00_ContentBody_QuickAdd').length > 0) {
+                    $('#ctl00_ContentBody_QuickAdd')[0].children[1].childNodes[1].remove();
+                    $('#ctl00_ContentBody_QuickAdd')[0].children[1].childNodes[0].remove();
+                    $('#ctl00_ContentBody_QuickAdd')[0].children[0].remove();
                 }
-                // Lines:
+                if ($('#ctl00_ContentBody_ListInfo_uxListOwner').length > 0) {
+                    $('#ctl00_ContentBody_ListInfo_uxListOwner')[0].parentNode.parentNode.children[4].remove();
+                    $('#ctl00_ContentBody_ListInfo_uxListOwner')[0].parentNode.parentNode.children[3].remove();
+                    $('#ctl00_ContentBody_ListInfo_uxListOwner')[0].parentNode.style.marginBottom = "0px";
+                    if (uuidx) $('#ctl00_ContentBody_ListInfo_uxListOwner')[0].parentNode.innerHTML += "<span style='float: right; padding-right: 210px;'>" + kml + gm + "</span>";
+                }
+                // Table:
+                css += "table.Table tr {line-height: 16px;}";
+                css += "table.Table th, table.Table td {border-left: 1px solid #fff; border-right: 1px solid #fff;} tr.BorderTop td {border-top: 1px solid #fff;}";
+                css += "table.Table th {border-bottom: 2px solid #fff;} table.Table td, table.Table td img, table.Table td a {vertical-align: top !important;}";
                 var lines = $('table.Table tbody').find('tr');
                 for (var i = 0; i < lines.length; i += 2) {
                     if (!lines[i].className.match(/BorderTop/)) lines[i].className += " BorderTop";
                     lines[i].children[1].childNodes[3].outerHTML = "&nbsp;&nbsp;";
                     lines[i].children[1].style.whiteSpace = "nowrap";
                     if (lines[i].children[5]) lines[i].children[5].style.whiteSpace = "nowrap";
-                    if (lines[i+1].children[1].innerHTML == "") lines[i+1].style.fontSize = "0px";
+                    if (lines[i+1].children[1].innerHTML == "") lines[i+1].style.visibility = "collapse";
                 }
-                appendCssStyle("table.Table th, table.Table td {border-left: 1px solid #fff; border-right: 1px solid #fff;} tr.BorderTop td {border-top: 1px solid #fff;} table.Table th {border-bottom: 2px solid #fff;} td {vertical-align: baseline !important;} table.Table img {vertical-align: baseline !important; margin-bottom: -3px;}");
                 // Footer:
                 $('#ctl00_ContentBody_ListInfo_btnDownload').closest('p').append($('#ctl00_ContentBody_btnCreatePocketQuery').remove().get().reverse());
-                if (document.getElementById('ctl00_ContentBody_uxAboutPanel')) document.getElementById('ctl00_ContentBody_uxAboutPanel').remove();
-            // No compact layout for bookmark lists, only build links.
+                if ($('#ctl00_ContentBody_uxAboutPanel')) $('#ctl00_ContentBody_uxAboutPanel')[0].remove();
+                appendCssStyle(css);
+            // No compact layout, only build links.
             } else {
-                if (uuidx) document.getElementById("ctl00_ContentBody_lbHeading").parentNode.parentNode.parentNode.childNodes[3].innerHTML += "<br>" + kml + "<br>" + gm;
+                if (uuidx) $('#ctl00_ContentBody_lbHeading')[0].parentNode.parentNode.parentNode.childNodes[3].innerHTML += "<br>" + kml + "<br>" + gm;
             }
-        } catch (e) {
-            gclh_error("Improve bookmark lists", e);
-        }
+        } catch (e) { gclh_error("Improve bookmark lists", e); }
     }
 
 // Add buttons to bookmark lists and watchlist to select caches.
@@ -4729,9 +4739,7 @@ var mainGC = function () {
                 checkboxes.prop('checked', false);
                 sumsChangeAllFields();
             }
-        } catch (e) {
-            gclh_error("Add buttons to bookmark list and watchlist", e);
-        }
+        } catch (e) { gclh_error("Add buttons to bookmark list and watchlist", e); }
     }
     // Funktionen für die Ermittlung und Ausgabe der Anzahl Caches und der Anzahl der selektierten Caches in Bookmark Listen, Watchlist ...
     // Summenfelder für Anzahl Caches definieren und Configparameter setzen.
@@ -4825,16 +4833,16 @@ var mainGC = function () {
         else  sums["chAll"]--;
         var cbId = checkbox.id;
         if ( $('#'+cbId).closest('tr').find('img[src*="found"]').length > 0 ) {
-                if ( checkbox.checked ) sums["chFound"]++;
-                else  sums["chFound"]--;
+            if ( checkbox.checked ) sums["chFound"]++;
+            else sums["chFound"]--;
         }
         if ( $('#'+cbId).closest('tr').find('span.Strike.OldWarning,span.Strike.Warning').length > 0 ) {
-                if ( checkbox.checked ) sums["chArchived"]++;
-                else  sums["chArchived"]--;
+            if ( checkbox.checked ) sums["chArchived"]++;
+            else sums["chArchived"]--;
         }
         if ( $('#'+cbId).closest('tr').find('span.Strike:not(.OldWarning,.Warning)').length > 0 ) {
-                if ( checkbox.checked ) sums["chDeactivated"]++;
-                else  sums["chDeactivated"]--;
+            if ( checkbox.checked ) sums["chDeactivated"]++;
+            else sums["chDeactivated"]--;
         }
         sumsChangeAllFields();
     }
@@ -4883,9 +4891,7 @@ var mainGC = function () {
                         all_map_layers["Geocaching"].accessToken = r.access_token;
                     });
             }, 0);
-        } catch (e) {
-            gclh_error("Hide Map Header", e);
-        }
+        } catch (e) { gclh_error("Hide Map Header", e); }
     }
 
 // Change map parameter and add Homezone to map.
