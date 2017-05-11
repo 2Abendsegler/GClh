@@ -1,5 +1,5 @@
 <a href="#v08" title="GClh II version 0.8 (??.05.2017)">v0.8</a> &nbsp;
-<a href="#v072" title="GClh II version 0.7.2 (25.04.2017)">v0.7.2</a> 
+<a href="#v072" title="GClh II version 0.7.2 (25.04.2017)">v0.7.2</a> &nbsp;
 <a href="#v071" title="GClh II version 0.7.1 (12.04.2017)">v0.7.1</a> &nbsp;
 <a href="#v07" title="GClh II version 0.7 (08.04.2017)">v0.7</a> &nbsp;
 <a href="#v06" title="GClh II version 0.6 (25.03.2017)">v0.6</a> &nbsp;
@@ -82,6 +82,40 @@ GClh now take on the control of all layers, if GClh is to replace the layers. Al
 <br>
 It is important, that GClh run at first, particularly in front of other layer used scripts like GME or GCVote.<br> 
 (If there are problems with the layers by using GCVote at once, you have to clear the local storage of GCVote. You can do it about your profile. If that does not help, deinstall and install GCVote again. GCVote use a local storage for its data. This storage can include incomplete layers which influence the layer control.)<br>
+<br>
+<br>
+</li>
+</ul>
+<b>Bookmark list:</b><br><br>
+<ul>
+<li>
+New: <b>Compact layout of list of bookmark lists and compact layout of bookmark lists:</b> [Issue <a href="https://github.com/2Abendsegler/GClh/issues/295">#295</a>]<br>
+<br>
+List of bookmark lists:<br>
+<img src="../images/v0.8_Screen24.jpg" alt="v0.8_Screen24.jpg"><br>
+Bookmark lists:<br>
+<img src="../images/v0.8_Screen25.jpg" alt="v0.8_Screen25.jpg"><br>
+Settings -> Bookmark list:<br>
+<img src="../images/v0.8_Screen46.jpg" alt="v0.8_Screen46.jpg"><br>
+The parameters have to be activated in Config after installation.<br>
+<br>
+<br>
+</li>
+</ul>
+<b>Pocket query:</b><br><br>
+<ul>
+<li>
+New: <b>Compact layout of list of pocket queries and compact layout of pocket queries:</b> [Issue <a href="https://github.com/2Abendsegler/GClh/issues/295">#295</a>]<br>
+<br>
+List of active pocket queries:<br>
+<img src="../images/v0.8_Screen42.jpg" alt="v0.8_Screen42.jpg"><br>
+List of pocket queries ready for download<br>
+<img src="../images/v0.8_Screen43.jpg" alt="v0.8_Screen43.jpg"><br>
+Pocket queries: This compact layout should be useable from a page width of about 1.000 pixel.<br>
+<img src="../images/v0.8_Screen45.jpg" alt="v0.8_Screen45.jpg"><br>
+Settings -> Pocket query:<br>
+<img src="../images/v0.8_Screen44.jpg" alt="v0.8_Screen44.jpg"><br>
+The parameters have to be activated in Config after installation.<br>
 <br>
 <br>
 </li>
