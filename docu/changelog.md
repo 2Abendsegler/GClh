@@ -96,13 +96,13 @@ It is important, that GClh run at first, particularly in front of other layer us
 <b>Pocket query:</b><br><br>
 <ul>
 <li>
-New: <b>Compact layout of list of pocket queries and compact layout of pocket queries:</b> [Issue <a href="https://github.com/2Abendsegler/GClh/issues/295">#295</a>]<br>
+New: <b>Compact layout of your list of pocket queries and compact layout of your pocket queries:</b> [Issue <a href="https://github.com/2Abendsegler/GClh/issues/295">#295</a>]<br>
 <br>
-List of pocket queries: Active<br>
+Your list of pocket queries: Active<br>
 <img src="../images/v0.8_Screen42.jpg" alt="v0.8_Screen42.jpg"><br>
-List of pocket queries: Ready for download<br>
+Your list of pocket queries: Ready for download<br>
 <img src="../images/v0.8_Screen43.jpg" alt="v0.8_Screen43.jpg"><br>
-Pocket queries: It should be useable from a page width of about 1.000 pixel.<br>
+Your pocket queries: This compact layout should be useable from a page width of about 1.000 pixel.<br>
 <img src="../images/v0.8_Screen45.jpg" alt="v0.8_Screen45.jpg"><br>
 Settings -> Pocket query:<br>
 <img src="../images/v0.8_Screen44.jpg" alt="v0.8_Screen44.jpg"><br>
