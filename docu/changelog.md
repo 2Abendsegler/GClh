@@ -96,7 +96,7 @@ It is important, that GClh run at first, particularly in front of other layer us
 <b>Pocket query:</b><br><br>
 <ul>
 <li>
-New: <b>Compact layout of pocket queries and of list of pocket queries:</b> [Issue <a href="https://github.com/2Abendsegler/GClh/issues/295">#295</a>]<br>
+New: <b>Compact layout of list of pocket queries and compact layout of pocket queries:</b> [Issue <a href="https://github.com/2Abendsegler/GClh/issues/295">#295</a>]<br>
 <br>
 List of pocket queries: Active<br>
 <img src="../images/v0.8_Screen42.jpg" alt="v0.8_Screen42.jpg"><br>
