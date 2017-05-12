@@ -8333,7 +8333,7 @@ var mainGC = function () {
             var url = "https://github.com/2Abendsegler/GClh/blob/master/docu/changelog.md#v" + scriptVersion.replace(/\./g, "");
             var text = scriptName + " version " + scriptVersion + " was successfully installed.\n\n"
                      + "Do you want to open the changelog in a new tab,\n"
-                     + "to have a quick look at the changes?\n";
+                     + "to have a quick look at changes and new features?\n";
             if (window.confirm(text)) window.open(url, '_blank');
         }, 1000);
     }
