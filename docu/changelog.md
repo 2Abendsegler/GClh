@@ -60,7 +60,7 @@ Now there are showing not only the image description under the maximized image, 
 <br>
 </li>
 </ul>
-<b>Map:</b><br><br>
+### Map:
 <ul>
 <li>
 New: <b>Improve relationship between GClh and GME (Geocaching Map Enhancements):</b> [Issue <a href="https://github.com/2Abendsegler/GClh/issues/342">#342</a>]<br>
@@ -86,7 +86,7 @@ It is important, that GClh run at first, particularly in front of other layer us
 <br>
 </li>
 </ul>
-<b>Bookmark list:</b><br><br>
+### Bookmark list:
 <ul>
 <li>
 New: <b>Compact layout of list of bookmark lists and compact layout of bookmark lists:</b> [Issue <a href="https://github.com/2Abendsegler/GClh/issues/295">#295</a>]<br>
