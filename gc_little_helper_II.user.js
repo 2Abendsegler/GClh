@@ -588,7 +588,7 @@ var mainGMaps = function () {
                     code += "            } else {";
                     code += "                var url = '" + map_url + "?lat=' + matches[1] + '&lng=' + matches[2] + '&z=' + zoom;";
                     code += "            }";
-                    if (settings_switch_to_gc_map_in_same_tab) { 
+                    if (settings_switch_to_gc_map_in_same_tab) {
                         code += "        location = url;";
                     } else {
                         code += "        window.open( url );";
@@ -2365,8 +2365,8 @@ var mainGC = function () {
                         newContentcell(trData[i], 10, trData[i].children[9].children[0].children[0], "small", true);
                     } else newContentcell(trData[i], 10, "", "small", false);
                     // D/T and new column Size.
-                    trData[i].children[7].childNodes[4].remove(); 
-                    trData[i].children[7].childNodes[2].remove(); 
+                    trData[i].children[7].childNodes[4].remove();
+                    trData[i].children[7].childNodes[2].remove();
                     newContentcell(trData[i], 8, trData[i].children[7].children[1], "", true);
                     trData[i].children[8].children[0].setAttribute("style", "vertical-align: bottom;");
                     // Description.
