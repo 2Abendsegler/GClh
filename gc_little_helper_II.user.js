@@ -4559,6 +4559,7 @@ var mainGC = function () {
                     if (!lines[i].className.match(/BorderTop/)) lines[i].className += " BorderTop";
                     lines[i].children[1].childNodes[3].outerHTML = "&nbsp;&nbsp;";
                     lines[i].children[1].style.whiteSpace = "nowrap";
+                    if (lines[i].children[5]) lines[i].children[5].style.whiteSpace = "nowrap";
                     if (lines[i+1].children[1].innerHTML == "") lines[i+1].style.display = "table-column";
                 }
                 // Footer:
