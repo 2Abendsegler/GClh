@@ -62,9 +62,7 @@ Now there are showing not only the image description under the maximized image, 
 <br>
 </li>
 </ul>
-
 ### Map:
-
 <ul>
 <li>
 New: <b>Improve relationship between GClh and GME (Geocaching Map Enhancements):</b> [Issue <a href="https://github.com/2Abendsegler/GClh/issues/342">#342</a>]<br>
@@ -90,9 +88,7 @@ It is important, that GClh run at first, particularly in front of other layer us
 <br>
 </li>
 </ul>
-
 ### Bookmark list:
-
 <ul>
 <li>
 New: <b>Compact layout of list of bookmark lists and compact layout of bookmark lists:</b> [Issue <a href="https://github.com/2Abendsegler/GClh/issues/295">#295</a>]<br>
@@ -108,9 +104,7 @@ The parameters have to be activated in Config after installation.<br>
 <br>
 </li>
 </ul>
-
 ### Pocket query:
-
 <ul>
 <li>
 New: <b>Compact layout of list of pocket queries and compact layout of pocket queries:</b> [Issue <a href="https://github.com/2Abendsegler/GClh/issues/295">#295</a>]<br>
@@ -128,9 +122,7 @@ The parameters have to be activated in Config after installation.<br>
 <br>
 </li>
 </ul>
-
 ### Others:
-
 <ul>
 <li>
 New: <b>Hide banner linking "Garmin Express" or new or old "My Lists" page:</b> [Issue <a href="https://github.com/2Abendsegler/GClh/issues/311">#311</a>]<br>
