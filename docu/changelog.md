@@ -160,11 +160,9 @@ The parameter has to be activated in Config after installation.<br>
 <li>
 New: <b>Display images in user, cache and TB image galleries with maximum possible size.</b> [Issue <a href="https://github.com/2Abendsegler/GClh/issues/312">#312</a>]<br>
 <br>
-<br>
 </li>
 <li>
 Change: <b>Consolidate F2, F4, F10 key functions for better expandability.</b> [Issue <a href="https://github.com/2Abendsegler/GClh/issues/345">#345</a>]<br>
-<br>
 <br>
 </li>
 <li>
