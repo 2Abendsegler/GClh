@@ -102,9 +102,8 @@ var constInit = function (c) {
 
     // Define bookmarks.
     c.bookmarks = new Array();
-    // WICHTIG: Die Reihenfolge darf hier auf keinen Fall geändert werden, weil dadurch eine falsche Zuordnung zu den
-    //          gespeicherten Userdaten erfolgen würde! Weiter unten gibt es noch einen Bereich mit Bookmarks, die quasi
-    //          noch hinten dran gehängt werden.
+    // WICHTIG: Die Reihenfolge darf hier auf keinen Fall geändert werden, weil dadurch eine falsche Zuordnung zu den gespeicherten Userdaten erfolgen würde!
+    //          Weiter unten gibt es noch einen Bereich mit Bookmarks, die quasi noch hinten dran gehängt werden.
     bookmark("Watchlist", "https://www.geocaching.com/my/watchlist.aspx", c.bookmarks);
     bookmark("Logs Geocaches", "https://www.geocaching.com/my/geocaches.aspx", c.bookmarks);
     bookmark("Own Geocaches", "https://www.geocaching.com/my/owned.aspx", c.bookmarks);
@@ -424,23 +423,17 @@ var variablesInit = function (c) {
     var num = c.bookmarks.length;
     for (var i = 0; i < c.anzCustom; i++) {
         c.bookmarks[num] = Object();
-        if (getValue("settings_custom_bookmark[" + i + "]", "") != "") {
-            c.bookmarks[num]['href'] = getValue("settings_custom_bookmark[" + i + "]");
-        } else {
-            c.bookmarks[num]['href'] = "#";
-        }
-        if (getValue("settings_bookmarks_title[" + num + "]", "") != "") {
-            c.bookmarks[num]['title'] = getValue("settings_bookmarks_title[" + num + "]");
-        } else {
+        if (getValue("settings_custom_bookmark[" + i + "]", "") != "") c.bookmarks[num]['href'] = getValue("settings_custom_bookmark[" + i + "]");
+        else c.bookmarks[num]['href'] = "#";
+        if (getValue("settings_bookmarks_title[" + num + "]", "") != "") c.bookmarks[num]['title'] = getValue("settings_bookmarks_title[" + num + "]");
+        else {
             c.bookmarks[num]['title'] = "Custom" + i;
             setValue("settings_bookmarks_title[" + num + "]", bookmarks[num]['title']);
         }
         if (getValue("settings_custom_bookmark_target[" + i + "]", "") != "") {
             c.bookmarks[num]['target'] = getValue("settings_custom_bookmark_target[" + i + "]");
             c.bookmarks[num]['rel'] = "external";
-        } else {
-            c.bookmarks[num]['target'] = "";
-        }
+        } else c.bookmarks[num]['target'] = "";
         c.bookmarks[num]['custom'] = true;
         num++;
     }
@@ -488,18 +481,14 @@ var variablesInit = function (c) {
             c.userData = $('#aspnetForm script:not([src])').filter(function () {
                 return this.innerHTML.indexOf("ccConversions") != -1;
             }).html();
-
             if (c.userData !== null) {
                 if (typeof c.userData !== "undefined") {
                     c.userData = c.userData.replace('{ID: ', '{"ID": ');
-
                     var regex = /([a-zA-Z0-9öÖäÄüÜß]+)([ ]?=[ ]?)(((({.+})(;)))|(((\[.+\])(;)))|(((".+")(;)))|((('.+')(;)))|(([^'"{\[].+)(;)))/g;
-
                     var match;
                     while (match = regex.exec(userData)) {
                         if (match[1] == "eventCacheData") continue;   // Workaround fuer event-Listings (da ist ne Funktion in dem Script-Element)
                         var data = (match[6] || match[10] || match[14] || match[18] || match[21]).trim();
-
                         if (data.charAt(0) == '"' || data.charAt(0) == "'") {
                             data = data.slice(1, data.length - 1);
                         }
@@ -512,7 +501,6 @@ var variablesInit = function (c) {
                         }
                         c.chromeUserData[match[1].replace('"', '').replace("'", "").trim()] = data;
                     }
-
                     if (c.chromeUserData["userInfo"]) {
                         c.userInfo = chromeUserData["userInfo"];
                     }
@@ -529,7 +517,6 @@ var variablesInit = function (c) {
             }
         }
     } catch (e) { gclh_error("Error parsing userdata from page:", e); }
-
     variablesInitDeref.resolve();
     return variablesInitDeref.promise();
 };
@@ -792,7 +779,9 @@ var mainGC = function () {
             }
             if (id && document.getElementById(id)) {
                 function keydownF2(e) {
-                    if (e.keyCode == 113 && !check_config_page()) document.getElementById(id).click();
+                    if (e.keyCode == 113 && noSpecialKey(e) && !check_config_page()) {
+                        document.getElementById(id).click();
+                    }
                 }
                 document.getElementById(id).value += " (F2)";
                 window.addEventListener('keydown', keydownF2, true);
@@ -801,7 +790,7 @@ var mainGC = function () {
         // Aufruf GClh Config per F4 Taste. Nur auf den erlaubten Seiten und auch nur, wenn man nicht schon im GClh Config ist.
         if ( settings_f4_call_gclh_config && !check_config_page()) {
             function keydownF4(e) {
-                if (e.keyCode == 115 && !check_config_page()) {
+                if (e.keyCode == 115 && noSpecialKey(e) && !check_config_page()) {
                     if (checkTaskAllowed("GClh Config", false) == true ) gclh_showConfig();
                     else document.location.href = defaultConfigLink;
                 }
@@ -811,7 +800,7 @@ var mainGC = function () {
         // Aufruf GClh Sync per F10 Taste. Nur auf den erlaubten Seiten und auch nur, wenn man nicht schon im GClh Sync ist. Nicht im Config Reset Modus.
         if ( settings_f10_call_gclh_sync && !check_sync_page()) {
             function keydownF10(e) {
-                if (e.keyCode == 121 && !check_sync_page() && !global_mod_reset) {
+                if (e.keyCode == 121 && noSpecialKey(e) && !check_sync_page() && !global_mod_reset) {
                     if (checkTaskAllowed("GClh Sync", false) == true ) gclh_showSync();
                     else document.location.href = defaultSyncLink;
                 }
@@ -1610,7 +1599,7 @@ var mainGC = function () {
                 script.innerHTML = code;
                 document.getElementsByTagName("body")[0].appendChild(script);
 
-                var searchfield = "<li><input onKeyDown='if(event.keyCode==13) { gclh_search_logs(); return false; }' type='text' size='6' name='navi_search' id='navi_search' style='padding: 1px; font-weight: bold; font-family: sans-serif; border: 2px solid #778555; border-radius: 7px 7px 7px 7px; -moz-border-radius: 7px; -khtml-border-radius: 7px; background-color:#d8cd9d' value='" + settings_bookmarks_search_default + "'></li>";
+                var searchfield = "<li><input onKeyDown='if(event.keyCode==13 && event.ctrlKey == false && event.altKey == false && event.shiftKey == false) { gclh_search_logs(); return false; }' type='text' size='6' name='navi_search' id='navi_search' style='padding: 1px; font-weight: bold; font-family: sans-serif; border: 2px solid #778555; border-radius: 7px 7px 7px 7px; -moz-border-radius: 7px; -khtml-border-radius: 7px; background-color:#d8cd9d' value='" + settings_bookmarks_search_default + "'></li>";
                 if ( is_page("labs") ) $(".Menu").append(searchfield);
                 else $(".Menu, .menu").append(searchfield);
             }
@@ -6968,7 +6957,7 @@ var mainGC = function () {
             // Search logs.
             function gclh_search(logs) {
                 function gclh_search_logs(e) {
-                    if (e.keyCode != 13) return false;
+                    if (e.keyCode != 13  || noSpecialKey(e) == false) return false;
                     if (!logs) return false;
                     var search_text = this.value;
                     if (!search_text) return false;
@@ -8340,6 +8329,13 @@ var mainGC = function () {
         side.appendChild(div);
         setValue("declared_version", scriptVersion);
         setTimeout(function() { $("#gclh_simu").remove(); }, 4000);
+        setTimeout(function() {
+            var url = "https://github.com/2Abendsegler/GClh/blob/master/docu/changelog.md#v" + scriptVersion.replace(/\./g, "");
+            var text = scriptName + " version " + scriptVersion + " was successfully installed.\n\n"
+                     + "Do you want to open the changelog in a new tab,\n"
+                     + "to have a quick look at the changes?\n";
+            if (window.confirm(text)) window.open(url, '_blank');
+        }, 1000);
     }
 
 // Migrationsaufgaben erledigen für eine neue Version.
@@ -8477,6 +8473,12 @@ var mainGC = function () {
                document.getElementById('ctl00_ContentBody_lblUserProfile').innerHTML.match(": " + $('.li-user-info').last().children().first().text()) ) ) {
             return true;
         } else return false;
+    }
+
+// Consideration of special keys ctrl, alt and shift on keyboard input.
+    function noSpecialKey(e) {
+        if ( e.ctrlKey != false || e.altKey != false || e.shiftKey != false ) return false;
+        else return true;
     }
 
 ////////////////////////////////////////////////////////////////////////////
@@ -10087,7 +10089,7 @@ var mainGC = function () {
         function keydown(e) {
             if ( check_config_page() ) {
                 if ( document.getElementById("settings_f2_save_gclh_config").checked && !global_mod_reset ) {
-                    if (e.keyCode == 113) document.getElementById("btn_save").click();
+                    if (e.keyCode == 113 && noSpecialKey(e)) document.getElementById("btn_save").click();
                 }
             }
         }
