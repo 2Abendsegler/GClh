@@ -60,7 +60,9 @@ Now there are showing not only the image description under the maximized image, 
 <br>
 </li>
 </ul>
+
 ### Map:
+
 <ul>
 <li>
 New: <b>Improve relationship between GClh and GME (Geocaching Map Enhancements):</b> [Issue <a href="https://github.com/2Abendsegler/GClh/issues/342">#342</a>]<br>
