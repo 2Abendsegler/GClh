@@ -162,6 +162,10 @@ New: <b>Display images in user, cache and TB image galleries with maximum possib
 <br>
 </li>
 <li>
+New: <b>Message after successful installation with the possibility to open the changelog in a new tab.</b> [Issue <a href="https://github.com/2Abendsegler/GClh/issues/356">#356</a>]<br>
+<br>
+</li>
+<li>
 Change: <b>Consolidate F2, F4, F10 key functions for better expandability.</b> [Issue <a href="https://github.com/2Abendsegler/GClh/issues/345">#345</a>]<br>
 <br>
 </li>
