@@ -19,7 +19,9 @@
 
 ---
 ## v0.8:
+
 ### Cache listing:
+
 <ul>
 <li>
 New: <b>Compact layout in "Add to list" popup to bookmark a cache</b>: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/184">#184</a>]<br>
@@ -88,7 +90,9 @@ It is important, that GClh run at first, particularly in front of other layer us
 <br>
 </li>
 </ul>
+
 ### Bookmark list:
+
 <ul>
 <li>
 New: <b>Compact layout of list of bookmark lists and compact layout of bookmark lists:</b> [Issue <a href="https://github.com/2Abendsegler/GClh/issues/295">#295</a>]<br>
@@ -104,7 +108,9 @@ The parameters have to be activated in Config after installation.<br>
 <br>
 </li>
 </ul>
-<b>Pocket query:</b><br><br>
+
+### Pocket query:
+
 <ul>
 <li>
 New: <b>Compact layout of list of pocket queries and compact layout of pocket queries:</b> [Issue <a href="https://github.com/2Abendsegler/GClh/issues/295">#295</a>]<br>
@@ -122,7 +128,9 @@ The parameters have to be activated in Config after installation.<br>
 <br>
 </li>
 </ul>
-<b>Others:</b><br><br>
+
+### Others:
+
 <ul>
 <li>
 New: <b>Hide banner linking "Garmin Express" or new or old "My Lists" page:</b> [Issue <a href="https://github.com/2Abendsegler/GClh/issues/311">#311</a>]<br>
