@@ -4626,7 +4626,6 @@ var mainGC = function () {
                 var css = "";
                 // Header:
                 css += "#ctl00_ContentBody_lbHeading a {font-weight: normal; font-size: 13px; margin-left: 10px;} ";
-                css += "#divContentMain div.span-20.last {margin-top: -18px;}";
                 css += "#ctl00_ContentBody_QuickAdd {margin-bottom: 1px; float: left;} #ctl00_ContentBody_btnAddBookmark {margin-top: 1px; margin-left: -1px;}";
                 css += "#ctl00_ContentBody_ListInfo_uxAbuseReport > div:nth-child(1) {margin: 0 !important; padding: 4px 0;}"; // GC Tour
                 if ($('#ctl00_ContentBody_lbHeading').length > 0 && $('#divContentMain h2').length > 0) {
@@ -4636,15 +4635,19 @@ var mainGC = function () {
                     $('#divContentMain h2')[0].closest('h2').remove();
                 }
                 if ($('#ctl00_ContentBody_QuickAdd').length > 0) {
+                    css += "#divContentMain div.span-20.last {margin-top: -18px;}";
                     $('#ctl00_ContentBody_QuickAdd')[0].children[1].childNodes[1].remove();
                     $('#ctl00_ContentBody_QuickAdd')[0].children[1].childNodes[0].remove();
                     $('#ctl00_ContentBody_QuickAdd')[0].children[0].remove();
                 }
                 if ($('#ctl00_ContentBody_ListInfo_uxListOwner').length > 0) {
-                    $('#ctl00_ContentBody_ListInfo_uxListOwner')[0].parentNode.parentNode.children[4].remove();
-                    $('#ctl00_ContentBody_ListInfo_uxListOwner')[0].parentNode.parentNode.children[3].remove();
-                    $('#ctl00_ContentBody_ListInfo_uxListOwner')[0].parentNode.style.marginBottom = "0px";
-                    if (uuidx) $('#ctl00_ContentBody_ListInfo_uxListOwner')[0].parentNode.innerHTML += "<span style='float: right; padding-right: 210px;'>" + kml + gm + "</span>";
+                    var LO = $('#ctl00_ContentBody_ListInfo_uxListOwner')[0].parentNode;
+                    if (LO.nextElementSibling.nextElementSibling.innerHTML == "") LO.nextElementSibling.nextElementSibling.remove();
+                    else LO.nextElementSibling.nextElementSibling.style.marginBottom = "0";
+                    if (LO.nextElementSibling.innerHTML == "") LO.nextElementSibling.remove();
+                    else LO.nextElementSibling.style.marginBottom = "0";
+                    LO.style.marginBottom = "0";
+                    if (uuidx) LO.innerHTML += "<span style='float: right; padding-right: 210px;'>" + kml + gm + "</span>";
                 }
                 // Table:
                 css += "table.Table tr {line-height: 16px;}";
@@ -4655,8 +4658,7 @@ var mainGC = function () {
                     if (!lines[i].className.match(/BorderTop/)) lines[i].className += " BorderTop";
                     lines[i].children[1].childNodes[3].outerHTML = "&nbsp;&nbsp;";
                     lines[i].children[1].style.whiteSpace = "nowrap";
-                    if (lines[i].children[5]) lines[i].children[5].style.whiteSpace = "nowrap";
-                    if (lines[i+1].children[1].innerHTML == "") lines[i+1].style.visibility = "collapse";
+                    if (lines[i+1].children[1].innerHTML == "") lines[i+1].style.display = "table-column";
                 }
                 // Footer:
                 $('#ctl00_ContentBody_ListInfo_btnDownload').closest('p').append($('#ctl00_ContentBody_btnCreatePocketQuery').remove().get().reverse());
@@ -9516,8 +9518,8 @@ var mainGC = function () {
             html += "<div id='gclh_config_bm'>";
             html += checkboxy('settings_show_sums_in_bookmark_lists', 'Show number of caches in bookmark lists') + show_help("With this option the number of caches and the number of selected caches in the categories \"All\", \"Found\", \"Archived\" and \"Deactivated\", corresponding to the select buttons, are shown in bookmark lists at the end of the list.") + "<br/>";
             html += newParameterOn2;
-            html += checkboxy('settings_compact_layout_bm_lists', 'Show compact layout in bookmark lists') + "<br/>";
             html += checkboxy('settings_compact_layout_list_of_bm_lists', 'Show compact layout in list of bookmark lists') + "<br/>";
+            html += checkboxy('settings_compact_layout_bm_lists', 'Show compact layout in bookmark lists') + "<br/>";
             html += newParameterVersionSetzen(0.8) + newParameterOff;
             html += "</div>";
 
