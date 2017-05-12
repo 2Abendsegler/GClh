@@ -167,6 +167,11 @@ Change: <b>Consolidate F2, F4, F10 key functions for better expandability.</b> [
 <br>
 <br>
 </li>
+<li>
+Fix: <b>Consideration of special keys ctrl, alt and shift on keyboard input.</b> [Issue <a href="https://github.com/2Abendsegler/GClh/issues/355">#355</a>]<br>
+<br>
+<br>
+</li>
 </ul>
 (??.05.2017)<br> 
 <br>
