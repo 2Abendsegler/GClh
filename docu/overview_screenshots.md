@@ -63,6 +63,5 @@
 <img src="../images/screenshot_config07.jpg" title="Configuration Listing" alt="config07"><br>
 <img src="../images/screenshot_config08.jpg" title="Configuration Logging" alt="config08"><br>
 <img src="../images/screenshot_config09.jpg" title="Configuration Linklist / Navigation" alt="config09"><br>
-<br>
 
 ### ...
