@@ -1,20 +1,20 @@
 ## Screenshots of the Geocaching pages when using the *GC little helper II*
-
+<br>
 (Extensions by the *GC little helper II* are marked.)
-
+<br>
 ### Cache Listing:
 <img src="../images/screenshot_listing01.jpg" title="Listing head" alt="listing01"><br>
 <img src="../images/screenshot_listing02.jpg" title="Listing VIP lists" alt="listing02"><br>
 <img src="../images/screenshot_listing03.jpg" title="Listing logs" alt="listing03"><br>
-
-
+<br>
+<br>
 ### Navigationmenu:
 <img src="../images/screenshot_menue01.jpg" title="Navigationmenu different variants" alt="menue01"><br>
 <img src="../images/screenshot_menue02.jpg" title="Navigationmenu different variants" alt="menue02"><br>
 <img src="../images/screenshot_menue03.jpg" title="Navigationmenu different variants" alt="menue03"><br>
 <img src="../images/screenshot_menue04.jpg" title="Navigationmenu different variants" alt="menue04"><br>
 <img src="../images/screenshot_menue05.jpg" title="Navigationmenu different variants" alt="menue05"><br>
-
+<br>
 ### Profile:
 <img src="../images/screenshot_profile01.jpg" title="Profile" alt="profile01"><br>
 <img src="../images/screenshot_profile02.jpg" title="Profile" alt="profile02"><br>
