@@ -37,20 +37,20 @@
 <br>
 
 ### Friends:
-<img src="../images/screenshot_friendslist01.jpg" title="Friends" alt="friendslist01"><br>
+<img src="../images/screenshot_friendslist01.jpg" title="Friends with New finds and New hides" alt="friendslist01"><br>
 <br>
 
 ### Watchlist:
 <img src="../images/screenshot_watchlist01.jpg" title="Watchlist" alt="watchlist01"><br>
 <br>
 
-### Search Cache:
-<img src="../images/screenshot_searchlist01.jpg" title="Search Cache" alt="searchlist01"><br>
+### Find Caches:
+<img src="../images/screenshot_searchlist01.jpg" title="Find Caches with Filter Sets" alt="searchlist01"><br>
 <br>
 
 ### Statistic:
-<img src="../images/screenshot_statistic02.jpg" title="Logs" alt="statistic01"><br>
-<img src="../images/screenshot_statistic01.jpg" title="Matrix" alt="statistic01"><br>
+<img src="../images/screenshot_statistic02.jpg" title="Statistic Logs" alt="statistic01"><br>
+<img src="../images/screenshot_statistic01.jpg" title="Statistic Matrix" alt="statistic01"><br>
 <br>
 
 ### Configuration of the GC little helper:
