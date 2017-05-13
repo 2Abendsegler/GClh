@@ -19,7 +19,7 @@
 <img src="../images/screenshot_profile02.jpg" title="Profile" alt="profile02"><br>
 
 ### Map:
-<img src="../images/screenshot_karte01.jpg" title="Map" alt="karte01"><br>
+<img src="../images/screenshot_map01.jpg" title="Map" alt="map01"><br>
 
 ### Watchlist:
 <img src="../images/screenshot_watchlist01.jpg" title="Watchlist" alt="watchlist01"><br>
