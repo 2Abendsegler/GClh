@@ -4,7 +4,7 @@
 
 ### Cache Listing:
 <img src="../images/screenshot_listing01.jpg" title="Cache Listing" alt="listing01"><br>
-<img src="../images/screenshot_listing02.jpg" title="Cache Listing VIP lists" alt="listing02"><br>
+<img src="../images/screenshot_listing02.jpg" title="Cache Listing VIP Lists" alt="listing02"><br>
 <img src="../images/screenshot_listing03.jpg" title="Cache Listing Logs" alt="listing03"><br>
 <br>
 
@@ -26,14 +26,14 @@
 <br>
 
 ### Pocket Query:
-<img src="../images/screenshot_pocketquery01.jpg" title="Active Pocket Queries" alt="pocketquery01"><br>
-<img src="../images/screenshot_pocketquery02.jpg" title="Pocket Queries Ready for Download" alt="pocketquery02"><br>
-<img src="../images/screenshot_pocketquery03.jpg" title="Pocket Query" alt="pocketquery03"><br>
+<img src="../images/screenshot_pocketquery01.jpg" title="Active Pocket Queries (Compact Layout)" alt="pocketquery01"><br>
+<img src="../images/screenshot_pocketquery02.jpg" title="Pocket Queries Ready for Download (Compact Layout)" alt="pocketquery02"><br>
+<img src="../images/screenshot_pocketquery03.jpg" title="Pocket Query (Compact Layout)" alt="pocketquery03"><br>
 <br>
 
 ### Bookmark List:
-<img src="../images/screenshot_bookmarklist01.jpg" title="Bookmark Lists" alt="bookmarklist01"><br>
-<img src="../images/screenshot_bookmarklist02.jpg" title="Bookmark List" alt="bookmarklist02"><br>
+<img src="../images/screenshot_bookmarklist01.jpg" title="Bookmark Lists (Compact Layout)" alt="bookmarklist01"><br>
+<img src="../images/screenshot_bookmarklist02.jpg" title="Bookmark List (Compact Layout)" alt="bookmarklist02"><br>
 <br>
 
 ### Friends:
