@@ -54,15 +54,15 @@
 <br>
 
 ### Configuration of the GC little helper:
-<img src="../images/screenshot_config01.jpg" title="Configuration global parameter" alt="config01"><br>
-<img src="../images/screenshot_config02.jpg" title="Configuration homezone map" alt="config02"><br>
-<img src="../images/screenshot_config03.jpg" title="Configuration Linklist" alt="config03"><br>
-<img src="../images/screenshot_config04.jpg" title="Configuration listing" alt="config04"><br>
-<img src="../images/screenshot_config05.jpg" title="Configuration listing" alt="config05"><br>
-<img src="../images/screenshot_config06.jpg" title="Configuration listing" alt="config06"><br>
-<img src="../images/screenshot_config07.jpg" title="Configuration listing" alt="config07"><br>
-<img src="../images/screenshot_config08.jpg" title="Configuration listing" alt="config08"><br>
-<img src="../images/screenshot_config09.jpg" title="Configuration listing" alt="config09"><br>
+<img src="../images/screenshot_config01.jpg" title="Configuration Global" alt="config01"><br>
+<img src="../images/screenshot_config02.jpg" title="Configuration Pocket query and Bookmark list" alt="config02"><br>
+<img src="../images/screenshot_config03.jpg" title="Configuration Homezone and Map" alt="config03"><br>
+<img src="../images/screenshot_config04.jpg" title="Configuration Map Layer and other Maps" alt="config04"><br>
+<img src="../images/screenshot_config05.jpg" title="Configuration Profile" alt="config05"><br>
+<img src="../images/screenshot_config06.jpg" title="Configuration Listing" alt="config06"><br>
+<img src="../images/screenshot_config07.jpg" title="Configuration Listing" alt="config07"><br>
+<img src="../images/screenshot_config08.jpg" title="Configuration Logging" alt="config08"><br>
+<img src="../images/screenshot_config09.jpg" title="Configuration Linklist / Navigation" alt="config09"><br>
 <br>
 
 ### ...
