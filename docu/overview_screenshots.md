@@ -3,9 +3,9 @@
 (Extensions by the *GC little helper II* are marked.)
 
 ### Cache Listing:
-<img src="../images/screenshot_listing01.jpg" title="Listing head" alt="listing01"><br>
-<img src="../images/screenshot_listing02.jpg" title="Listing VIP lists" alt="listing02"><br>
-<img src="../images/screenshot_listing03.jpg" title="Listing logs" alt="listing03"><br>
+<img src="../images/screenshot_listing01.jpg" title="Cache Listing" alt="listing01"><br>
+<img src="../images/screenshot_listing02.jpg" title="Cache Listing VIP lists" alt="listing02"><br>
+<img src="../images/screenshot_listing03.jpg" title="Cache Listing Logs" alt="listing03"><br>
 <br>
 
 ### Navigationmenu:
@@ -18,7 +18,7 @@
 
 ### Profile:
 <img src="../images/screenshot_profile01.jpg" title="Profile" alt="profile01"><br>
-<img src="../images/screenshot_profile02.jpg" title="Profile" alt="profile02"><br>
+<img src="../images/screenshot_profile02.jpg" title="Profile VIPs and VUPs" alt="profile02"><br>
 <br>
 
 ### Map:
@@ -36,16 +36,16 @@
 <img src="../images/screenshot_bookmarklist02.jpg" title="Bookmark List" alt="bookmarklist02"><br>
 <br>
 
-### Friends List:
-<img src="../images/screenshot_friendslist01.jpg" title="Your Friends" alt="friendslist01"><br>
+### Friends:
+<img src="../images/screenshot_friendslist01.jpg" title="Friends" alt="friendslist01"><br>
 <br>
 
 ### Watchlist:
 <img src="../images/screenshot_watchlist01.jpg" title="Watchlist" alt="watchlist01"><br>
 <br>
 
-### Serach List:
-<img src="../images/screenshot_searchlist01.jpg" title="Search List" alt="searchlist01"><br>
+### Search Cache:
+<img src="../images/screenshot_searchlist01.jpg" title="Search Cache" alt="searchlist01"><br>
 <br>
 
 ### Statistic:
