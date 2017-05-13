@@ -36,6 +36,9 @@
 ### Watchlist:
 <img src="../images/screenshot_watchlist01.jpg" title="Watchlist" alt="watchlist01"><br>
 
+### Serach List:
+<img src="../images/screenshot_searchlist01.jpg" title="Search List" alt="searchlist01"><br>
+
 ### Statistic:
 <img src="../images/screenshot_statistic02.jpg" title="Logs" alt="statistic01"><br>
 <img src="../images/screenshot_statistic01.jpg" title="Matrix" alt="statistic01"><br>
@@ -45,5 +48,10 @@
 <img src="../images/screenshot_config02.jpg" title="Configuration homezone map" alt="config02"><br>
 <img src="../images/screenshot_config03.jpg" title="Configuration Linklist" alt="config03"><br>
 <img src="../images/screenshot_config04.jpg" title="Configuration listing" alt="config04"><br>
+<img src="../images/screenshot_config05.jpg" title="Configuration listing" alt="config05"><br>
+<img src="../images/screenshot_config06.jpg" title="Configuration listing" alt="config06"><br>
+<img src="../images/screenshot_config07.jpg" title="Configuration listing" alt="config07"><br>
+<img src="../images/screenshot_config08.jpg" title="Configuration listing" alt="config08"><br>
+<img src="../images/screenshot_config09.jpg" title="Configuration listing" alt="config09"><br>
 
 ### ...
