@@ -9,7 +9,7 @@
 // @include          http*://maps.google.tld/*
 // @include          http*://www.google.tld/maps*
 // @include          http*://www.openstreetmap.org*
-// @exclude          /^https?://www\.geocaching\.com/(login|jobs|careers|brandedpromotions|promotions|blog|seek/sendtogps)/
+// @exclude          /^https?://www\.geocaching\.com/(login|jobs|careers|brandedpromotions|promotions|blog|help|seek/sendtogps)/
 // @resource jscolor https://raw.githubusercontent.com/2Abendsegler/GClh/master/data/jscolor.js
 // @require          http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js
 // @require          http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js
@@ -18,6 +18,7 @@
 // @description      Some little things to make life easy (on www.geocaching.com).
 // @copyright        Torsten Amshove <torsten@amshove.net>
 // @author           Torsten Amshove; 2Abendsegler
+// @icon             https://raw.githubusercontent.com/2Abendsegler/GClh/master/images/gclh_logo_small.png
 // @license          GNU General Public License v2.0
 // @grant            GM_getValue
 // @grant            GM_setValue
@@ -1901,7 +1902,7 @@ var mainGC = function () {
         } catch (e) { gclh_error("Aplly search field in navigation:", e); }
     }
 
-// Show favourite percentage.
+// Show favorite percentage.
     if (settings_show_fav_percentage && is_page("cache_listing")) {
         try {
             function gclh_load_score(waitCount) {
@@ -1944,7 +1945,7 @@ var mainGC = function () {
                 }
             }
             gclh_load_score(0);
-        } catch (e) { gclh_error("Show favourite percentage:", e); }
+        } catch (e) { gclh_error("Show favorite percentage:", e); }
     }
 
 // Show real owner.
@@ -2289,7 +2290,7 @@ var mainGC = function () {
     }
 
 // Improve pocket queries.
-// (xxxx) Nach abschließenden Test, könnte das compact layout für alle nearest lists verwendet werden.
+// (xxxx) Das compact layout könnte vermutlich für alle nearest lists verwendet werden. Abschließend testen. 
     if (settings_compact_layout_pqs && document.location.href.match(/^https?:\/\/www\.geocaching\.com\/seek\/nearest\.aspx\?pq=/)) {
         try {
             // Compact layout.
@@ -2346,7 +2347,9 @@ var mainGC = function () {
                 trDataNew.children[chil].parentNode.insertBefore(td, trDataNew.children[chil]);
             }
             if ($('table.SearchResultsTable tbody tr.Data').length > 0) {
-                $('table.SearchResultsTable tbody tr.Data td:not(.Merge)').each(function () { this.innerHTML = this.innerHTML.replace(/<br>/ig," "); });
+                $('table.SearchResultsTable tbody tr.Data td:not(.Merge)').each(function () { 
+                    if (this.innerHTML.match(/<br>/i)) this.innerHTML = this.innerHTML.replace(/<br>/ig," ");
+                });
                 var trData = $('table.SearchResultsTable tbody tr.Data');
                 for (var i = 0; i < trData.length; i++) {
                     // Last Found and new column Your Found.
@@ -3608,7 +3611,7 @@ var mainGC = function () {
 
     // This function reads the table with the additional waypoints.
     function getAdditionalWaypoints() {
-        var addWP  = [];
+        var addWP = [];
         try {
             var tbl = document.getElementById('ctl00_ContentBody_Waypoints');
             if ( tbl == null ) {
@@ -5185,15 +5188,6 @@ var mainGC = function () {
         } catch (e) { gclh_error("Hide archived at own caches:", e); }
     }
 
-// Hide TBs/Coins in profile.
-    if (settings_hide_visits_in_profile && document.location.href.match(/^https?:\/\/www\.geocaching\.com\/my\//)) {
-        try {
-            $(".Table.WordWrap tr").filter(function (index) {
-                return $(this).find("img[src$='logtypes/75.png']").length !== 0;
-            }).remove();
-        } catch (e) { gclh_error("Hide TBs/Coins in profile:", e); }
-    }
-
 // Post log from listing (inline).
     try {
         // iframe aufbauen und verbergen.
@@ -5374,6 +5368,7 @@ var mainGC = function () {
         } catch (e) { gclh_error("Append '&visitcount=1' to all geochecker.com links:", e); }
     }
 
+/*
 // Show amount of different coins in public profile.
     if (document.location.href.match(/^https?:\/\/www\.geocaching\.com\/profile\//) && document.getElementById('ctl00_ContentBody_ProfilePanel1_lnkCollectibles') && document.getElementById('ctl00_ContentBody_ProfilePanel1_lnkCollectibles').className == "Active") {
         try {
@@ -5462,8 +5457,138 @@ var mainGC = function () {
             if ( document.getElementById("ctl00_ContentBody_ProfilePanel1_dlCollectiblesOwned") ) gclh_coin_stats("ctl00_ContentBody_ProfilePanel1_dlCollectiblesOwned");
         } catch (e) { gclh_error("Show Coin-Sums:", e); }
     }
+*/
 
 //--> $$065 Begin of insert
+// Show amount of different coins in public profile.
+    if (document.location.href.match(/^https?:\/\/www\.geocaching\.com\/profile\//) && document.getElementById('ctl00_ContentBody_ProfilePanel1_lnkCollectibles') && document.getElementById('ctl00_ContentBody_ProfilePanel1_lnkCollectibles').className == "Active") {
+        try {
+            function gclh_coin_stats(table_id) {
+//xxxx3
+
+// Also:
+// 1. Summensätze aufbauen
+// 2. TRs removen und intern halten
+//                var trs = $('#'+table_id).find('table.Table:first tbody').children().remove(); 
+// 3. Zuordnung analysieren und in trs class setzen
+// 4. Summen in Summensätzen fortschreiben, schon jetzt, falls das nett aussieht 
+// 5. trs am Ende der Analyse unter die neuen Summensätze donnern.
+                
+/*  Das geht
+                var count1 = 0;
+                var count2 = 0;
+                var fup = $('#'+table_id).find('table.Table:first tbody').children().each(function () { 
+                    if (this.children[1] && this.children[1].innerHTML.match(/german/i)){
+                        // diese Teile würde man dann später insgesamt je Name moven
+                        // Und man kann jetzt bereits den Summensatz anlegen, das ist dann wohl ein table, oder zumindest könnte man ihn aufbauen intern
+                        this.setAttribute("class", "fup");
+                        count1 += parseInt(this.children[2].innerHTML, 10);
+                        count2++;
+                    } 
+                });   
+*/
+/*  Das geht
+                var count1 = 0;
+                var count2 = 0;
+                var fup = $('#'+table_id).find('table.Table:first tbody tr').children().each(function () { 
+                    if (this.innerHTML.match(/german/i)){
+                        this.setAttribute("class", "fup");
+                        count1 += parseInt(this.parentNode.childNodes[5].innerHTML, 10);
+                        count2++;
+                    } 
+                });   
+                //find('a[href*="/profile/?guid="]').text();
+                //childNodes().match(/travel bug/i);//  childNodes[5];//find('tr td:eq(1)'); //children().;//find('td').[1];//.children[1];//.childNodes[0].data.match(/travel bug/i).closest('tr');
+console.log( fup.length );
+console.log( fup );
+console.log( count1 );
+console.log( count2 );
+return;
+*/
+                var table = document.getElementById(table_id).getElementsByTagName("table");
+                table = table[0];
+                var rows = table.getElementsByTagName("tbody")[0].getElementsByTagName("tr");
+                var sums = new Object();
+                sums["tbs"] = 0;
+                sums["coins"] = 0;
+                sums["patches"] = 0;
+                sums["signal"] = 0;
+                sums["unknown"] = 0;
+                var diff = new Object();
+                diff["tbs"] = 0;
+                diff["coins"] = 0;
+                diff["patches"] = 0;
+                diff["signal"] = 0;
+                diff["unknown"] = 0;
+
+                for (var i = 0; i < (rows.length - 1); i++) {
+                    if (rows[i].innerHTML.match(/travel bug/i)) {
+                        diff["tbs"]++;
+                        sums["tbs"] += parseInt(rows[i].childNodes[5].innerHTML, 10);
+                    } else if (rows[i].innerHTML.match(/geocoin/i)) {
+                        diff["coins"]++;
+                        sums["coins"] += parseInt(rows[i].childNodes[5].innerHTML, 10);
+                    } else if (rows[i].innerHTML.match(/geopatch/i)) {
+                        diff["patches"]++;
+                        sums["patches"] += parseInt(rows[i].childNodes[5].innerHTML, 10);
+                    } else if (rows[i].innerHTML.match(/signal/i)) {
+                        diff["signal"]++;
+                        sums["signal"] += parseInt(rows[i].childNodes[5].innerHTML, 10);
+                    } else {
+                        diff["unknown"]++;
+                        sums["unknown"] += parseInt(rows[i].childNodes[5].innerHTML, 10);
+                    }
+                }
+
+                var tfoot = table.getElementsByTagName("tfoot")[0];
+                var tr = document.createElement("tr");
+                var td = document.createElement("td");
+                var new_table = "";
+                td.colSpan = 3;
+
+                new_table += "<table>";
+                new_table += "  <tr>";
+                new_table += "    <td></td>";
+                new_table += "    <td><b>Sum</b></td>";
+                new_table += "    <td><b>Different</b></td>";
+                new_table += "  </tr>";
+                new_table += "  <tr>";
+                new_table += "    <td><b>Travel Bugs:</b></td>";
+                new_table += "    <td style='text-align: center;'>" + sums["tbs"] + "</td>";
+                new_table += "    <td style='text-align: center;'>" + diff["tbs"] + "</td>";
+                new_table += "  </tr>";
+                new_table += "  <tr>";
+                new_table += "    <td><b>Geocoins:</b></td>";
+                new_table += "    <td style='text-align: center;'>" + sums["coins"] + "</td>";
+                new_table += "    <td style='text-align: center;'>" + diff["coins"] + "</td>";
+                new_table += "  </tr>";
+                new_table += "  <tr>";
+                new_table += "    <td><b>Geopatches:</b></td>";
+                new_table += "    <td style='text-align: center;'>" + sums["patches"] + "</td>";
+                new_table += "    <td style='text-align: center;'>" + diff["patches"] + "</td>";
+                new_table += "  </tr>";
+                new_table += "  <tr>";
+                new_table += "    <td><b>Signal Tags:</b></td>";
+                new_table += "    <td style='text-align: center;'>" + sums["signal"] + "</td>";
+                new_table += "    <td style='text-align: center;'>" + diff["signal"] + "</td>";
+                new_table += "  </tr>";
+                if (sums["unknown"] > 0 || diff["unknown"] > 0) {
+                    new_table += "  <tr>";
+                    new_table += "    <td><b>Unknown:</b></td>";
+                    new_table += "    <td style='text-align: center;'>" + sums["unknown"] + "</td>";
+                    new_table += "    <td style='text-align: center;'>" + diff["unknown"] + "</td>";
+                    new_table += "  </tr>";
+                    new_table += "</table>";
+                }
+                td.innerHTML = new_table;
+                tr.appendChild(td);
+                tfoot.appendChild(tr);
+            }
+
+            if ( document.getElementById("ctl00_ContentBody_ProfilePanel1_dlCollectibles") ) gclh_coin_stats("ctl00_ContentBody_ProfilePanel1_dlCollectibles");
+//            if ( document.getElementById("ctl00_ContentBody_ProfilePanel1_dlCollectiblesOwned") ) gclh_coin_stats("ctl00_ContentBody_ProfilePanel1_dlCollectiblesOwned");
+        } catch (e) { gclh_error("Show Coin-Sums:", e); }
+    }
 //<-- $$065 End of insert
 
 // Auto-Visit.
@@ -6108,6 +6233,7 @@ var mainGC = function () {
 // Improve my profile, improve profile.
     if (document.location.href.match(/^https?:\/\/www\.geocaching\.com\/my/)) {
         try {
+            // Show/Hide einbauen in rechter Spalte.
             var code = "function hide_box(i){";
             code += "  if(document.getElementById('box_'+i).style.display == 'none'){";
             code += "    document.getElementById('box_'+i).style.display = 'block';";
@@ -6119,12 +6245,10 @@ var mainGC = function () {
             code += "    document.getElementById('lnk_'+i).title = 'show';";
             code += "  }";
             code += "}";
-
             var script = document.createElement("script");
             script.innerHTML = code;
             if ( document.getElementsByTagName("body")[0] ) document.getElementsByTagName("body")[0].appendChild(script);
             var boxes = document.getElementsByClassName("WidgetHeader");
-
             function saveStates() {
                 // Wenn Linklist angezeigt wird, dann mit Speicherindex "i" von Linklist beginnen, er ist 0. Ansonsten mit 1 beginnen.
                 if ( settings_bookmarks_show ) var i = 0;
@@ -6157,9 +6281,25 @@ var mainGC = function () {
                 }
                 i++;
             }
+            
             // Change link "Lists" on "my" pages from new page ".../account/lists" to old-fashioned page ".../my/lists.aspx".
             if (settings_my_lists_old_fashioned) {
                 $('#divContentMain').find('p').first().find('a[href*="/account/lists"]').prop("href", "/my/lists.aspx");
+            }
+            
+            // Hide TBs/Coins in profile.
+            if (settings_hide_visits_in_profile) {
+                $(".Table.WordWrap tr").filter(function (index) {
+                    return $(this).find("img[src$='logtypes/75.png']").length !== 0;
+                }).remove();
+            }
+
+            // Remove fixed column width in profiles last 30 days logs for fewer linebreaks.
+            if ($('.Table.WordWrap tr').length > 0) {
+                $('.Table.WordWrap')[0].setAttribute("style", "table-layout: unset;");
+                $('.Table.WordWrap tr td').each(function () { 
+                    this.setAttribute("style", "width: unset;" + (in_array(this.cellIndex, [0,1,4]) ? " white-space: nowrap;" : ""));
+                });
             }
         } catch (e) { gclh_error("Improve my profile:", e); }
     }
@@ -6311,7 +6451,7 @@ var mainGC = function () {
                 script.innerHTML = code;
                 document.getElementsByTagName("body")[0].appendChild(script);
 
-                if (!settings_hide_avatar) showLinkBiggerAvatars();
+                if (!settings_hide_avatar) showBiggerAvatarsLink();
             }
 
             var regexp = new RegExp(settings_spoiler_strings, "i");
@@ -6441,24 +6581,20 @@ var mainGC = function () {
         link.onmouseover = placeToolTip;
         link.appendChild(span);
     }
-    function showLinkBiggerAvatars() {
-        var a = document.createElement("a");
-        a.appendChild(document.createTextNode("Show bigger avatars"));
-        a.setAttribute("href", "javascript:void(0);");
-        a.setAttribute("title", "Show bigger avatar images while hovering with the mouse");
-        a.setAttribute("id", "gclh_show_bigger_avatars");
-        a.setAttribute("style", "float: right;");
-        a.addEventListener("click", showBiggerAvatars, false);
-        document.getElementById("ctl00_ContentBody_uxLogbookLink").parentNode.appendChild(a);
-        document.getElementById("ctl00_ContentBody_uxLogbookLink").parentNode.style.width = "100%";
+    function showBiggerAvatarsLink() {
+        addRightLinksOverLogs(showBiggerAvatars, "gclh_show_bigger_avatars", "Show bigger avatars", "Show bigger avatar images while hovering with the mouse");
     }
     function showBiggerAvatars() {
-        var links = document.getElementsByClassName("logOwnerAvatar");
-        for (var i = 0; i < links.length; i++) {
-            if (links[i].children[0] && links[i].children[0].children[0] && !links[i].children[0].children[1]) {
-                avatarThumbnail(links[i].children[0]);
+        try {
+            $('#gclh_show_bigger_avatars').addClass("working");
+            var links = document.getElementsByClassName("logOwnerAvatar");
+            for (var i = 0; i < links.length; i++) {
+                if (links[i].children[0] && links[i].children[0].children[0] && !links[i].children[0].children[1]) {
+                    avatarThumbnail(links[i].children[0]);
+                }
             }
-        }
+            setTimeout(function() { $('#gclh_show_bigger_avatars').removeClass("working"); }, 750);
+        } catch (e) { gclh_error("showBiggerAvatars:", e); }
     }
 
 // Show gallery images in 2 instead of 4 cols.
@@ -8331,9 +8467,9 @@ var mainGC = function () {
         setTimeout(function() { $("#gclh_simu").remove(); }, 4000);
         setTimeout(function() {
             var url = "https://github.com/2Abendsegler/GClh/blob/master/docu/changelog.md#v" + scriptVersion.replace(/\./g, "");
-            var text = scriptName + " version " + scriptVersion + " was successfully installed.\n\n"
-                     + "Do you want to open the changelog in a new tab,\n"
-                     + "to have a quick look at changes and new features?\n";
+            var text = "New version " + scriptVersion + " of  \"" + scriptName + "\"  was successfully installed.\n\n"
+                     + "Do you want to open the changelog in a new tab, to have a quick\n"
+                     + "look at changes and new features?\n";
             if (window.confirm(text)) window.open(url, '_blank');
         }, 1000);
     }
@@ -8422,23 +8558,14 @@ var mainGC = function () {
         }
     }
 
-// Show Log Counter.
+// Show log counter.
     function showLogCounterLink() {
-        var a = document.createElement("a");
-        a.appendChild(document.createTextNode("Show log counter"));
-        a.setAttribute("href", "javascript:void(0);");
-        a.setAttribute("title", "Show log counter for log type and total");
-        a.addEventListener("click", showLogCounter, false);
-        var span = document.createElement("span");
-        span.setAttribute("id", "gclh_show_log_counter");
-        span.setAttribute("style", "float: right; margin-right: 4px;");
-        span.appendChild(a);
-        if (document.getElementById("gclh_show_bigger_avatars")) span.appendChild(document.createTextNode(" |"));
-        document.getElementById("ctl00_ContentBody_uxLogbookLink").parentNode.appendChild(span);
+        addRightLinksOverLogs(showLogCounter, "gclh_show_log_counter", "Show log counter", "Show log counter for log type and total");
         appendCssStyle(".gclh_logCounter {font-size: 10px !important; padding-left: 6px; font-style: italic;}");
     }
     function showLogCounter() {
         try {
+            $('#gclh_show_log_counter').addClass("working");
             var logCounter = new Object();
             logCounter["all"] = 0;
             var logTypes = document.getElementsByClassName("LogTotals")[0].getElementsByTagName("a");
@@ -8461,7 +8588,31 @@ var mainGC = function () {
                     }
                 }
             }
+            setTimeout(function() { $('#gclh_show_log_counter').removeClass("working"); }, 750);
         } catch (e) { gclh_error("showLogCounter:", e); }
+    }
+
+// Add right links over logs in cache listing.
+    function addRightLinksOverLogs(func, id, txt, title) {
+        var img = document.createElement("img");
+        img.setAttribute("src", "/images/loading2.gif");
+        var a = document.createElement("a");
+        a.appendChild(document.createTextNode(txt));
+        a.setAttribute("title", title);
+        a.setAttribute("href", "javascript:void(0);");
+        a.addEventListener("click", func, false);
+        var span = document.createElement("span");
+        span.setAttribute("id", id);
+        span.setAttribute("class", "gclh_rlol");
+        span.appendChild(img);
+        span.appendChild(a);
+        if ($('.gclh_rlol').length == 0) {
+            var css = ".gclh_rlol {float: right; margin-right: 4px;} .gclh_rlol img {position: absolute; margin-top: 2px; visibility: hidden;}"
+                    + ".gclh_rlol.working a {opacity: 0.3;} .gclh_rlol.working img {visibility: initial;}";
+            appendCssStyle(css);
+            $('#ctl00_ContentBody_uxLogbookLink')[0].parentNode.style.width = "100%";
+        } else span.appendChild(document.createTextNode(" |"));
+        $('#ctl00_ContentBody_uxLogbookLink')[0].parentNode.appendChild(span);
     }
 
 // Prüfen, ob die Seite die eigene Statistik ist.
