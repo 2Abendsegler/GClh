@@ -166,7 +166,7 @@ New: <b>Message after successful installation with the possibility to open the c
 <br>
 </li>
 <li>
-New: <b>Remove fixed column width in profile last 30 days logs for fewer linebreaks.</b> [Issue <a href="https://github.com/2Abendsegler/GClh/issues/360">#360</a>]<br>
+New: <b>Remove fixed column width in profiles last 30 days logs for fewer linebreaks.</b> [Issue <a href="https://github.com/2Abendsegler/GClh/issues/360">#360</a>]<br>
 <br>
 </li>
 <li>
