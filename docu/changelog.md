@@ -144,6 +144,11 @@ Settings -> Profile -> Statistic:<br>
 <br>
 <br>
 </li>
+<li>
+New: <b>Remove fixed column width in profiles last 30 days logs for fewer linebreaks.</b> [Issue <a href="https://github.com/2Abendsegler/GClh/issues/360">#360</a>]<br>
+<br>
+<br>
+</li>
 
 ### Others:
 
@@ -179,10 +184,6 @@ New: <b>Display images in user, cache and TB image galleries with maximum possib
 </li>
 <li>
 New: <b>Message after successful installation with the possibility to open the changelog in a new tab.</b> [Issue <a href="https://github.com/2Abendsegler/GClh/issues/356">#356</a>]<br>
-<br>
-</li>
-<li>
-New: <b>Remove fixed column width in profiles last 30 days logs for fewer linebreaks.</b> [Issue <a href="https://github.com/2Abendsegler/GClh/issues/360">#360</a>]<br>
 <br>
 </li>
 <li>
