@@ -149,6 +149,7 @@ New: <b>Remove fixed column width in profiles last 30 days logs for fewer linebr
 <br>
 <br>
 </li>
+</ul>
 
 ### Others:
 
