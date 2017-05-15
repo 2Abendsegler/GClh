@@ -129,6 +129,22 @@ The parameters have to be activated in Config after installation.<br>
 </li>
 </ul>
 
+### Profile:
+
+<ul>
+<li>
+New: <b>Show links to found caches for every country on statistic maps page:</b> [Issue <a href="https://github.com/2Abendsegler/GClh/issues/363">#363</a>]<br>
+<br>
+Statistic maps page:<br>
+<img src="../images/v0.8_Screen48.jpg" alt="v0.8_Screen48.jpg"><br>
+List of found caches:<br>
+<img src="../images/v0.8_Screen49.jpg" alt="v0.8_Screen49.jpg"><br>
+Settings -> Profile -> Statistic:<br>
+<img src="../images/v0.8_Screen47.jpg" alt="v0.8_Screen47.jpg"><br>
+<br>
+<br>
+</li>
+
 ### Others:
 
 <ul>
