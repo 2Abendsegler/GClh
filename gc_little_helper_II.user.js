@@ -14,11 +14,11 @@
 // @require          http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js
 // @require          http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js
 // @require          http://cdnjs.cloudflare.com/ajax/libs/dropbox.js/0.10.2/dropbox.min.js
-// @require          https://raw.githubusercontent.com/2Abendsegler/GClh/master/data/gclh_icons.js
+// @require          https://raw.githubusercontent.com/2Abendsegler/GClh/master/data/gclh_defi.js
 // @description      Some little things to make life easy (on www.geocaching.com).
 // @copyright        Torsten Amshove <torsten@amshove.net>
 // @author           Torsten Amshove; 2Abendsegler
-// @icon             https://raw.githubusercontent.com/2Abendsegler/GClh/master/images/gclh_logo_small.png
+// @icon             https://raw.githubusercontent.com/2Abendsegler/GClh/master/images/gclh_logo.png
 // @license          GNU General Public License v2.0
 // @grant            GM_getValue
 // @grant            GM_setValue
@@ -142,47 +142,16 @@ var constInit = function (c) {
     profileSpecialBookmark("Nearest List (w/o Founds)", "https://www.geocaching.com/seek/nearest.aspx?#gclhpb#errhomecoord", "lnk_nearestlist_wo", c.bookmarks);
     profileSpecialBookmark("Own Trackables", "https://www.geocaching.com/track/search.aspx?#gclhpb#errowntrackables", "lnk_my_trackables", c.bookmarks);
 
-    c.langus =      new Array("Català", "Čeština", "Dansk", "Deutsch", "English", "Ελληνικά", "Eesti", "Español", "Français", "Italiano", "日本語", "한국어", "Latviešu", "Lëtzebuergesch", "Magyar", "Nederlands", "Norsk, Bokmål", "Polski", "Português", "Română", "Русский", "Slovenščina", "Suomi", "Svenska");
-    c.langus_code = new Array("ca",     "cs",      "da",    "de",      "en",      "el",       "et",    "es",      "fr",       "it",       "ja",     "ko",    "lv",       "lb",             "hu",     "nl",         "nb",            "pl",     "pt",        "ro",     "ru",      "sl",          "fi",    "sv"     );
-    c.langus_flag_url = "https://raw.githubusercontent.com/2Abendsegler/GClh/master/images/flag_##.png";
-
     c.gclhConfigKeysIgnoreForBackup = {
         "token": true,
         "dbToken": true
     };
 
-    iconsInit();
-
-    c.all_map_layers = new Object();
-    c.all_map_layers = {
-         "Geocaching" : { tileUrl: "https://maptiles{s}.geocaching.com/tile/{z}/{x}/{y}.png?token={accessToken}",  accessToken: '',  subdomains: ['01', '02', '03', '04', '05', '06', '07', '08'],  minZoom: 0,  maxZoom: 18 }
-        ,"OpenStreetMap Default" : { tileUrl: "http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",  attribution: '&copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>' }
-        ,"OpenStreetMap German Style" : { tileUrl: "http://{s}.tile.openstreetmap.de/tiles/osmde/{z}/{x}/{y}.png",  attribution: '&copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>' }
-        ,"OpenStreetMap Black and White" : { tileUrl: "http://{s}.www.toolserver.org/tiles/bw-mapnik/{z}/{x}/{y}.png",  attribution: '&copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>' }
-        ,"OpenStreetMap Hike and Bike" : { tileUrl: "http://toolserver.org/tiles/hikebike/{z}/{x}/{y}.png",  attribution: 'Map and map data \u00a9 2012 <a href="http://www.openstreetmap.org" target=\'_blank\'>OpenStreetMap</a> and contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>.',  tileSize: 256,  minZoom: 0,  maxZoom: 20 }
-        ,"Thunderforest OpenCycleMap" : { tileUrl: "http://{s}.tile.opencyclemap.org/cycle/{z}/{x}/{y}.png",  attribution: '&copy; <a href="http://www.opencyclemap.org">OpenCycleMap</a>, <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>' }
-        ,"Thunderforest Transport" : { tileUrl: "http://{s}.tile2.opencyclemap.org/transport/{z}/{x}/{y}.png",  attribution: '&copy; <a href="http://www.opencyclemap.org">OpenCycleMap</a>, <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>' }
-        ,"Thunderforest Landscape" : { tileUrl: "http://{s}.tile3.opencyclemap.org/landscape/{z}/{x}/{y}.png",  attribution: '&copy; <a href="http://www.opencyclemap.org">OpenCycleMap</a>, <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>' }
-        ,"Stamen Toner" : { tileUrl: "http://{s}.tile.stamen.com/toner/{z}/{x}/{y}.png",  attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, under <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a>. Data by <a href="http://openstreetmap.org">OpenStreetMap</a>, under <a href="http://www.openstreetmap.org/copyright">ODbL</a>',  subdomains: "abcd",  minZoom: 0,  maxZoom: 20 }
-        ,"Stamen Terrain" : { tileUrl: "http://{s}.tile.stamen.com/terrain/{z}/{x}/{y}.png",  attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, under <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a>. Data by <a href="http://openstreetmap.org">OpenStreetMap</a>, under <a href="http://www.openstreetmap.org/copyright">ODbL</a>',  subdomains: "abcd",  minZoom: 4,  maxZoom: 18 }
-        ,"Stamen Watercolor" : { tileUrl: "http://{s}.tile.stamen.com/watercolor/{z}/{x}/{y}.png",  attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, under <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a>. Data by <a href="http://openstreetmap.org">OpenStreetMap</a>, under <a href="http://creativecommons.org/licenses/by-sa/3.0">CC BY SA</a>',  subdomains: "abcd",  minZoom: 3,  maxZoom: 16 }
-        ,"Esri WorldStreetMap" : { tileUrl: "http://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}",  attribution: "Tiles &copy; Esri" }
-        ,"Esri DeLorme" : { tileUrl: "http://server.arcgisonline.com/ArcGIS/rest/services/Specialty/DeLorme_World_Base_Map/MapServer/tile/{z}/{y}/{x}",  attribution: "Tiles &copy; Esri &mdash; Copyright: \u00a92012 DeLorme",  maxZoom: 11 }
-        ,"Esri WorldTopoMap" : { tileUrl: "http://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}",  attribution: "Tiles &copy; Esri &mdash; Esri, DeLorme, NAVTEQ, TomTom, Intermap, iPC, USGS, FAO, NPS, NRCAN, GeoBase, Kadaster NL, Ordnance Survey, Esri Japan, METI, Esri China (Hong Kong), and the GIS User Community" }
-        ,"Esri WorldImagery" : { tileUrl: "http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",  attribution: "Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community" }
-        ,"Esri OceanBasemap" : { tileUrl: "http://services.arcgisonline.com/ArcGIS/rest/services/Ocean_Basemap/MapServer/tile/{z}/{y}/{x}",  attribution: "Tiles &copy; Esri &mdash; Sources: GEBCO, NOAA, CHS, OSU, UNH, CSUMB, National Geographic, DeLorme, NAVTEQ, and Esri",  maxZoom: 11 }
-        ,"Esri NatGeoWorldMap" : { tileUrl: "http://services.arcgisonline.com/ArcGIS/rest/services/NatGeo_World_Map/MapServer/tile/{z}/{y}/{x}",  attribution: "Tiles &copy; Esri &mdash; National Geographic, Esri, DeLorme, NAVTEQ, UNEP-WCMC, USGS, NASA, ESA, METI, NRCAN, GEBCO, NOAA, iPC" }
-        ,"Google Maps" : { tileUrl: "http://mt.google.com/vt?x={x}&y={y}&z={z}",  attribution: "Google Maps",  tileSize: 256,  minZoom: 0,  maxZoom: 20 }
-        ,"Google Maps Satellite" : { tileUrl: "http://mt.google.com/vt?lyrs=s&x={x}&y={y}&z={z}",  attribution: "Google Maps",  tileSize: 256,  minZoom: 3,  maxZoom: 20 }
-        ,"Google Maps Hybrid" : { tileUrl: "http://mt0.google.com/vt/lyrs=s,m@110&hl=en&x={x}&y={y}&z={z}",  attribution: "Google Maps",  tileSize: 256,  minZoom: 0,  maxZoom: 20 }
-    };
-
-    c.map_overlays = new Object();
-    c.map_overlays = {
-         "Hillshadow" : { tileUrl: "http://{s}.tiles.wmflabs.org/hillshading/{z}/{x}/{y}.png",  attribution: 'hillshadow \u00a9 <a href="http://tiles.wmflabs.org/" target=\'_blank\'>tiles.wmflabs.org</a>',  tileSize: 256,  minZoom: 0,  maxZoom: 17 }
-        ,"Public Transport Lines" : { tileUrl: "http://openptmap.org/tiles/{z}/{x}/{y}.png",  attribution: 'Public Transport Lines\u00a9 <a href="http://openptmap.org/" target=\'_blank\'>OpenPTMap</a>',  tileSize: 256,  minZoom: 0,  maxZoom: 17 }
-    };
-
+    iconsInit(c);
+    langInit(c);
+    layersInit(c);
+    country_idInit(c);
+    
     constInitDeref.resolve();
     return constInitDeref.promise();
 };
@@ -418,6 +387,7 @@ var variablesInit = function (c) {
     c.settings_compact_layout_pqs = getValue("settings_compact_layout_pqs", false);
     c.settings_compact_layout_list_of_pqs = getValue("settings_compact_layout_list_of_pqs", false);
     c.settings_improve_add_to_list = getValue("settings_improve_add_to_list", true);
+    c.settings_map_links_statistic = getValue("settings_map_links_statistic", true);
     c.settings_improve_add_to_list_height = getValue("settings_improve_add_to_list_height", 205);
 
     // Settings: Custom Bookmarks.
@@ -518,6 +488,7 @@ var variablesInit = function (c) {
             }
         }
     } catch (e) { gclh_error("Error parsing userdata from page:", e); }
+
     variablesInitDeref.resolve();
     return variablesInitDeref.promise();
 };
@@ -5464,12 +5435,51 @@ var mainGC = function () {
     if (document.location.href.match(/^https?:\/\/www\.geocaching\.com\/profile\//) && document.getElementById('ctl00_ContentBody_ProfilePanel1_lnkCollectibles') && document.getElementById('ctl00_ContentBody_ProfilePanel1_lnkCollectibles').className == "Active") {
         try {
             function gclh_coin_stats(table_id) {
-//xxxx3
+//xxxx2
+                
+                var trs = $('#'+table_id).find('table.Table:first tbody').children().remove(); 
+                
+                var tbgrs = new Array();
+                buildTbGr("Travel Bugs", /(travel bug)/);
+                buildTbGr("Geocoins", /(geocoin)/);
+                buildTbGr("Geopatchs", /(geopatch)/);
+                buildTbGr("Signals", /(signal)/);
+                buildTbGr("Unknown", "");
+                function buildTbGr(name, search) {
+                    var tbgr = new Object();
+                    tbgr.name = name;
+                    tbgr.ident = name.replace(/(\s|\W)/g,"_");
+                    tbgr.search = search;
+                    tbgrs[tbgrs.length] = tbgr;
+                }
+                
+                for (var i = 0; i < tbgrs.length; i++) {
+                    prepareTable(tbgrs[i]);
+                }
+                function prepareTable(tbgr) {
+                        var html = '';
+                        html += '<td colspan="3" style="padding: 0px;">';
+                        html += '    <table class="Table gclh_table ' + tbgr.ident + '">';
+                        html += '        <thead><tr>';
+                        html += '                <th id="' + tbgr.ident + '" scope="col"></th>';
+                        html += '                <th  scope="col">' + tbgr.name + '</th>';
+                        html += '                <th class="AlignRight" scope="col">0</th>';
+                        html += '        </tr></thead>';
+                        html += '        <tbody style="display: none;"></tbody>';
+                        html += '    </table>';
+                        html += '</td>';
+                        var tr = document.createElement("tr");
+                        tr.innerHTML = html;
+                        $('#'+table_id).find('table.Table:first tbody')[0].appendChild(tr);
+                }
+                var css = "";
+                css += ".gclh_table thead {background-color: #ede5dc;}";
+                css += ".gclh_table th {background-color: unset !important; padding: 0;}";
+                appendCssStyle(css);
 
 // Also:
 // 1. Summensätze aufbauen
 // 2. TRs removen und intern halten
-//                var trs = $('#'+table_id).find('table.Table:first tbody').children().remove(); 
 // 3. Zuordnung analysieren und in trs class setzen
 // 4. Summen in Summensätzen fortschreiben, schon jetzt, falls das nett aussieht 
 // 5. trs am Ende der Analyse unter die neuen Summensätze donnern.
@@ -5505,6 +5515,8 @@ console.log( count1 );
 console.log( count2 );
 return;
 */
+                
+/*                
                 var table = document.getElementById(table_id).getElementsByTagName("table");
                 table = table[0];
                 var rows = table.getElementsByTagName("tbody")[0].getElementsByTagName("tr");
@@ -5583,6 +5595,7 @@ return;
                 td.innerHTML = new_table;
                 tr.appendChild(td);
                 tfoot.appendChild(tr);
+*/
             }
 
             if ( document.getElementById("ctl00_ContentBody_ProfilePanel1_dlCollectibles") ) gclh_coin_stats("ctl00_ContentBody_ProfilePanel1_dlCollectibles");
@@ -7533,8 +7546,7 @@ return;
         try {
             getLogStatistic( "cache", "https://www.geocaching.com/my/logs.aspx?s=1" );
             getLogStatistic( "track", "https://www.geocaching.com/my/logs.aspx?s=2" );
-        } catch (e) { gclh_error("Improve own log statistic:", e);
-        }
+        } catch (e) { gclh_error("Improve own log statistic:", e); }
     }
     function getLogStatistic( type, url, manual ) {
         var logsName = (type == "cache" ? "Cache":"Trackable") + " logs";
@@ -7700,6 +7712,29 @@ return;
         }
     }
 
+// Improve own statistic map page with links to caches for every country.
+    if (settings_map_links_statistic && isOwnStatisticsPage()) {
+        try {
+            var countries = $('#StatsFlagLists table.Table tr');
+            if (countries) {
+                for (var i = 0; i < countries.length ; i++) {
+                    var name = countries[i].children[0].childNodes[1].textContent;
+                    if (name) {
+                        var country = $.grep(country_id, function(e){ return e.n == name; });
+                        if (country && country[0]) {
+                            var a = document.createElement("a");
+                            a.setAttribute("title", "Show caches you have found in " + country[0]["n"]);
+                            a.setAttribute("href", "/play/search?ot=4&c=" + country[0]["id"] + "&f=1&sort=FoundDate&asc=True#myListsLink");
+                            a.innerHTML = countries[i].children[0].innerHTML;
+                            countries[i].children[0].innerHTML = "";
+                            countries[i].children[0].appendChild(a); 
+                        }
+                    }
+                }
+            }
+        } catch (e) { gclh_error("Improve own statistic map page:", e); }
+    }
+        
 // Add mailto-link to profilpage.
     if ((isLocation("/profile/?guid=") || isLocation("/profile/default.aspx?guid=") || isLocation("/profile/?u=") || isLocation("/profile/default.aspx?u=") || isLocation("/profile/?id=") || isLocation("/profile/default.aspx?id=")) && document.getElementById('ctl00_ContentBody_ProfilePanel1_lnkEmailUser')) {
         try {
@@ -7850,7 +7885,7 @@ return;
 // Add download link to Labs cache pages.
     if (document.location.href.match(/^https?:\/\/labs\.geocaching\.com\/Adventures\/Details\/(\w|\-)*/)) {
         try {
-            for(var i=0 ; i < document.styleSheets.length ; i++){
+            for (var i=0 ; i < document.styleSheets.length ; i++){
                 if (document.styleSheets[i].href && document.styleSheets[i].href.match(/^https?:\/\/labs\.geocaching\.com\/Content\/css\/main\?[v]\=\w*/)) {
                     document.styleSheets[i].cssRules[384].style['background-image'] = "none";
                 }
@@ -9451,6 +9486,9 @@ return;
                 html += "  <option value='" + i + "' " + (settings_log_statistic_reload == i ? "selected=\"selected\"" : "") + ">" + i + "</option>";
             }
             html += "</select> hours" + show_help("Choose no hours, if you want to load/reload only manual.") + "<br/>";
+            html += newParameterOn2;
+            html += checkboxy('settings_map_links_statistic', 'Show links to found caches for every country on statistic map') + show_help("With this option, you can improve your own statistic maps page for you with links to caches you have found for every country.") + "<br/>";
+            html += newParameterVersionSetzen(0.8) + newParameterOff;
             html += "</div>";
 
             html += "<h4 class='gclh_headline2'>"+prepareHideable.replace("#name#","listing")+"Listing</h4>";
@@ -10507,6 +10545,7 @@ return;
                 'settings_compact_layout_list_of_bm_lists',
                 'settings_compact_layout_pqs',
                 'settings_compact_layout_list_of_pqs',
+                'settings_map_links_statistic',
                 'settings_improve_add_to_list'
             );
             for (var i = 0; i < checkboxes.length; i++) {
