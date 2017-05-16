@@ -97,7 +97,7 @@ var constInit = function (c) {
     c.scriptShortNameSync = "GClh Sync II";
     c.anzCustom = 10;
     c.anzTemplates = 10;
-    c.bookmarks_def = new Array(22, 31, 16, 14, 32, 33, 48, "0", 8, 18, 54, 51, 55, 47, 10, 2, 35, 9, 17, 67, 23, 68);
+    c.bookmarks_def = new Array(22, 31, 69, 14, 32, 33, 48, "0", 8, 18, 54, 51, 55, 47, 10, 2, 35, 9, 17, 67, 23, 68);
     c.defaultConfigLink = "https://www.geocaching.com/my/default.aspx#GClhShowConfig";
     c.defaultSyncLink = "https://www.geocaching.com/my/default.aspx#GClhShowSync";
 
@@ -386,9 +386,9 @@ var variablesInit = function (c) {
     c.settings_compact_layout_list_of_bm_lists = getValue("settings_compact_layout_list_of_bm_lists", false);
     c.settings_compact_layout_pqs = getValue("settings_compact_layout_pqs", false);
     c.settings_compact_layout_list_of_pqs = getValue("settings_compact_layout_list_of_pqs", false);
-    c.settings_improve_add_to_list = getValue("settings_improve_add_to_list", true);
     c.settings_map_links_statistic = getValue("settings_map_links_statistic", true);
     c.settings_improve_add_to_list_height = getValue("settings_improve_add_to_list_height", 205);
+    c.settings_improve_add_to_list = getValue("settings_improve_add_to_list", true);
 
     // Settings: Custom Bookmarks.
     var num = c.bookmarks.length;
@@ -432,6 +432,7 @@ var variablesInit = function (c) {
     profileSpecialBookmark(scriptShortNameSync, defaultSyncLink, "lnk_gclhsync", c.bookmarks);
     externalBookmark("Forum Geoclub", "http://geoclub.de/forum/index.php", c.bookmarks);
     externalBookmark("Changelog", "https://github.com/2Abendsegler/GClh/blob/master/docu/changelog.md#readme", c.bookmarks);
+    bookmark("Lists", "https://www.geocaching.com/my/lists.aspx", c.bookmarks);
     // Settings: Remove GC Menu from Navigation.
     c.remove_navi_learn = getValue("remove_navi_learn", false);
     c.remove_navi_play = getValue("remove_navi_play", false);
@@ -2354,7 +2355,7 @@ var mainGC = function () {
         } catch (e) { gclh_error("Improve PQs:", e); }
     }
 
-// Set default value for new pocket queries and handle warning.
+// Pocket query mark elements, set default value for new one, set warning message.
     // Helper function marks two PQ options, which are in rejection.
     function markPqOptionsAreInRejection( idOption1, idOption2 ) {
         var status = false;
@@ -2385,7 +2386,7 @@ var mainGC = function () {
         else $("#warning").hide();
     }
 
-    // Set default value ONLY for new pocket queries.
+    // Pocket query mark elements, set default value for new one, set warning message.
     if (document.location.href.match(/^https?:\/\/www\.geocaching\.com\/pocket\/gcquery\.aspx/)) {
         try {
             // Mark all elements for an easier access.
@@ -2475,7 +2476,7 @@ var mainGC = function () {
                 }
                 verifyPqOptions();
             }
-        } catch (e) { gclh_error("PQ set default value and warning:", e); }
+        } catch (e) { gclh_error("Pocket query mark, set defaults, set warning:", e); }
     }
 
 // Map on create pocket query page.
@@ -8502,7 +8503,7 @@ return;
         setTimeout(function() { $("#gclh_simu").remove(); }, 4000);
         setTimeout(function() {
             var url = "https://github.com/2Abendsegler/GClh/blob/master/docu/changelog.md#v" + scriptVersion.replace(/\./g, "");
-            var text = "New version " + scriptVersion + " of  \"" + scriptName + "\"  was successfully installed.\n\n"
+            var text = "Version " + scriptVersion + " of  \"" + scriptName + "\"  was successfully installed.\n\n"
                      + "Do you want to open the changelog in a new tab, to have a quick\n"
                      + "look at changes and new features?\n";
             if (window.confirm(text)) window.open(url, '_blank');
@@ -9799,9 +9800,9 @@ return;
                     var outTitle = (typeof(bookmarks_orig_title[num]) != "undefined" && bookmarks_orig_title[num] != "" ? bookmarks_orig_title[num] : bookmarks[i]['title']);
                     html += "            >" + outTitle + "</a>";
                     // Kennzeichnung neuer Parameter in Linklist Bereich.
-                    // if ( num >= 67 && num <= 67 ) {
-                    //     html +=          newParameterLL?;
-                    // }
+                    if ( num >= 69 && num <= 69 ) {
+                        html +=          newParameterLL2;
+                    }
                 }
                 html += "            </td>";
                 // Zweite Spalte mit gegebenenfalls abweichenden Bezeichnungen:
@@ -9811,9 +9812,9 @@ return;
                 } else {
                     html += "                <input style='padding-left: 2px; padding-right: 2px;' class='gclh_form' title='Differing description for standard link' id='bookmarks_name[" + num + "]' type='text' size='15' value='" + getValue("settings_bookmarks_title[" + num + "]", "") + "'>";
                     // Kennzeichnung neuer Parameter in Linklist Bereich.
-                    // if ( num >= 67 && num <= 67 ) {
-                    //     html +=              newParameterLLVersionSetzen(?);
-                    // }
+                    if ( num >= 69 && num <= 69 ) {
+                        html +=              newParameterLLVersionSetzen(0.8);
+                    }
                 }
                 html += "            </td>";
                 html += "        </tr>";
