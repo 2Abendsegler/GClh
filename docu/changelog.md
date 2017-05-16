@@ -145,6 +145,26 @@ Settings -> Profile -> Statistic:<br>
 <br>
 </li>
 <li>
+New: <b>Change the link "Lists" on "my" pages from new designed page to old-fashioned page:</b> [Issue <a href="https://github.com/2Abendsegler/GClh/issues/339">#339</a>]<br>
+<br>
+New designed page: <code>.../account/lists</code><br>
+Old-fashioned page: <code>.../my/lists.aspx</code><br>
+<img src="../images/v0.8_Screen26.jpg" alt="v0.8_Screen26.jpg"><br>
+Settings -> Profile:<br>
+<img src="../images/v0.8_Screen27.jpg" alt="v0.8_Screen27.jpg"><br>
+The parameter has to be activated in Config after installation.<br>
+<br>
+<br>
+</li>
+<li>
+New: <b>New entry "Lists" in Linklist with linking to "my lists" old-fashioned.</b> [Issue <a href="https://github.com/2Abendsegler/GClh/issues/339">#339</a>]<br>
+<br>
+Settings -> Linklist:<br>
+<img src="../images/v0.8_Screen50.jpg" alt="v0.8_Screen50.jpg"><br>
+<br>
+<br>
+</li>
+<li>
 New: <b>Remove fixed column width in profiles last 30 days logs for fewer linebreaks.</b> [Issue <a href="https://github.com/2Abendsegler/GClh/issues/360">#360</a>]<br>
 <br>
 <br>
@@ -164,26 +184,6 @@ Pages with banner:<br>
 Settings -> Global:<br>
 <img src="../images/v0.8_Screen23.jpg" alt="v0.8_Screen23.jpg"><br>
 The parameters have to be activated in Config after installation.<br>
-<br>
-<br>
-</li>
-<li>
-New: <b>Change the link "Lists" on "my" pages from new designed page to old-fashioned page:</b> [Issue <a href="https://github.com/2Abendsegler/GClh/issues/339">#339</a>]<br>
-<br>
-New designed page: <code>.../account/lists</code><br>
-Old-fashioned page: <code>.../my/lists.aspx</code><br>
-<img src="../images/v0.8_Screen26.jpg" alt="v0.8_Screen26.jpg"><br>
-Settings -> Profile:<br>
-<img src="../images/v0.8_Screen27.jpg" alt="v0.8_Screen27.jpg"><br>
-The parameter has to be activated in Config after installation.<br>
-<br>
-<br>
-</li>
-<li>
-New: <b>New entry "Lists" in Linklist with linking to "my lists" old-fashioned.</b> [Issue <a href="https://github.com/2Abendsegler/GClh/issues/339">#339</a>]<br>
-<br>
-Settings -> Linklist:<br>
-<img src="../images/v0.8_Screen50.jpg" alt="v0.8_Screen50.jpg"><br>
 <br>
 <br>
 </li>
