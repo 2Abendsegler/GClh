@@ -180,15 +180,19 @@ The parameter has to be activated in Config after installation.<br>
 <br>
 </li>
 <li>
+New: <b>New entry "Lists" in Linklist with linking to "my lists" old-fashioned.</b> [Issue <a href="https://github.com/2Abendsegler/GClh/issues/339">#339</a>]<br>
+<br>
+Settings -> Linklist:<br>
+<img src="../images/v0.8_Screen50.jpg" alt="v0.8_Screen50.jpg"><br>
+<br>
+<br>
+</li>
+<li>
 New: <b>Display images in user, cache and TB image galleries with maximum possible size.</b> [Issue <a href="https://github.com/2Abendsegler/GClh/issues/312">#312</a>]<br>
 <br>
 </li>
 <li>
 New: <b>Message after successful installation with the possibility to open the changelog in a new tab.</b> [Issue <a href="https://github.com/2Abendsegler/GClh/issues/356">#356</a>]<br>
-<br>
-</li>
-<li>
-New: <b>New entry "Lists" in Linklist with linking to "my lists" old-fashioned.</b><br>
 <br>
 </li>
 <li>
