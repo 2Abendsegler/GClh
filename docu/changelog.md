@@ -188,6 +188,10 @@ New: <b>Message after successful installation with the possibility to open the c
 <br>
 </li>
 <li>
+New: <b>New entry "Lists" in Linklist with linking to "my lists" old-fashioned.</b><br>
+<br>
+</li>
+<li>
 Change: <b>Consolidate F2, F4, F10 key functions for better expandability.</b> [Issue <a href="https://github.com/2Abendsegler/GClh/issues/345">#345</a>]<br>
 <br>
 </li>
