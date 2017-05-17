@@ -9,15 +9,16 @@
 // @include          http*://maps.google.tld/*
 // @include          http*://www.google.tld/maps*
 // @include          http*://www.openstreetmap.org*
-// @exclude          /^https?://www\.geocaching\.com/(login|jobs|careers|brandedpromotions|promotions|blog|seek/sendtogps)/
+// @exclude          /^https?://www\.geocaching\.com/(login|jobs|careers|brandedpromotions|promotions|blog|help|seek/sendtogps)/
 // @resource jscolor https://raw.githubusercontent.com/2Abendsegler/GClh/master/data/jscolor.js
 // @require          http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js
 // @require          http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js
 // @require          http://cdnjs.cloudflare.com/ajax/libs/dropbox.js/0.10.2/dropbox.min.js
-// @require          https://raw.githubusercontent.com/2Abendsegler/GClh/master/data/gclh_icons.js
+// @require          https://raw.githubusercontent.com/2Abendsegler/GClh/master/data/gclh_defi.js
 // @description      Some little things to make life easy (on www.geocaching.com).
 // @copyright        Torsten Amshove <torsten@amshove.net>
 // @author           Torsten Amshove; 2Abendsegler
+// @icon             https://raw.githubusercontent.com/2Abendsegler/GClh/master/images/gclh_logo.png
 // @license          GNU General Public License v2.0
 // @grant            GM_getValue
 // @grant            GM_setValue
@@ -96,7 +97,7 @@ var constInit = function (c) {
     c.scriptShortNameSync = "GClh Sync II";
     c.anzCustom = 10;
     c.anzTemplates = 10;
-    c.bookmarks_def = new Array(22, 31, 16, 14, 32, 33, 48, "0", 8, 18, 54, 51, 55, 47, 10, 2, 35, 9, 17, 67, 23, 68);
+    c.bookmarks_def = new Array(22, 31, 69, 14, 32, 33, 48, "0", 8, 18, 54, 51, 55, 47, 10, 2, 35, 9, 17, 67, 23, 68);
     c.defaultConfigLink = "https://www.geocaching.com/my/default.aspx#GClhShowConfig";
     c.defaultSyncLink = "https://www.geocaching.com/my/default.aspx#GClhShowSync";
 
@@ -141,47 +142,16 @@ var constInit = function (c) {
     profileSpecialBookmark("Nearest List (w/o Founds)", "https://www.geocaching.com/seek/nearest.aspx?#gclhpb#errhomecoord", "lnk_nearestlist_wo", c.bookmarks);
     profileSpecialBookmark("Own Trackables", "https://www.geocaching.com/track/search.aspx?#gclhpb#errowntrackables", "lnk_my_trackables", c.bookmarks);
 
-    c.langus =      new Array("Català", "Čeština", "Dansk", "Deutsch", "English", "Ελληνικά", "Eesti", "Español", "Français", "Italiano", "日本語", "한국어", "Latviešu", "Lëtzebuergesch", "Magyar", "Nederlands", "Norsk, Bokmål", "Polski", "Português", "Română", "Русский", "Slovenščina", "Suomi", "Svenska");
-    c.langus_code = new Array("ca",     "cs",      "da",    "de",      "en",      "el",       "et",    "es",      "fr",       "it",       "ja",     "ko",    "lv",       "lb",             "hu",     "nl",         "nb",            "pl",     "pt",        "ro",     "ru",      "sl",          "fi",    "sv"     );
-    c.langus_flag_url = "https://raw.githubusercontent.com/2Abendsegler/GClh/master/images/flag_##.png";
-
     c.gclhConfigKeysIgnoreForBackup = {
         "token": true,
         "dbToken": true
     };
 
-    iconsInit();
-
-    c.all_map_layers = new Object();
-    c.all_map_layers = {
-         "Geocaching" : { tileUrl: "https://maptiles{s}.geocaching.com/tile/{z}/{x}/{y}.png?token={accessToken}",  accessToken: '',  subdomains: ['01', '02', '03', '04', '05', '06', '07', '08'],  minZoom: 0,  maxZoom: 18 }
-        ,"OpenStreetMap Default" : { tileUrl: "http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",  attribution: '&copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>' }
-        ,"OpenStreetMap German Style" : { tileUrl: "http://{s}.tile.openstreetmap.de/tiles/osmde/{z}/{x}/{y}.png",  attribution: '&copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>' }
-        ,"OpenStreetMap Black and White" : { tileUrl: "http://{s}.www.toolserver.org/tiles/bw-mapnik/{z}/{x}/{y}.png",  attribution: '&copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>' }
-        ,"OpenStreetMap Hike and Bike" : { tileUrl: "http://toolserver.org/tiles/hikebike/{z}/{x}/{y}.png",  attribution: 'Map and map data \u00a9 2012 <a href="http://www.openstreetmap.org" target=\'_blank\'>OpenStreetMap</a> and contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>.',  tileSize: 256,  minZoom: 0,  maxZoom: 20 }
-        ,"Thunderforest OpenCycleMap" : { tileUrl: "http://{s}.tile.opencyclemap.org/cycle/{z}/{x}/{y}.png",  attribution: '&copy; <a href="http://www.opencyclemap.org">OpenCycleMap</a>, <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>' }
-        ,"Thunderforest Transport" : { tileUrl: "http://{s}.tile2.opencyclemap.org/transport/{z}/{x}/{y}.png",  attribution: '&copy; <a href="http://www.opencyclemap.org">OpenCycleMap</a>, <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>' }
-        ,"Thunderforest Landscape" : { tileUrl: "http://{s}.tile3.opencyclemap.org/landscape/{z}/{x}/{y}.png",  attribution: '&copy; <a href="http://www.opencyclemap.org">OpenCycleMap</a>, <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>' }
-        ,"Stamen Toner" : { tileUrl: "http://{s}.tile.stamen.com/toner/{z}/{x}/{y}.png",  attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, under <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a>. Data by <a href="http://openstreetmap.org">OpenStreetMap</a>, under <a href="http://www.openstreetmap.org/copyright">ODbL</a>',  subdomains: "abcd",  minZoom: 0,  maxZoom: 20 }
-        ,"Stamen Terrain" : { tileUrl: "http://{s}.tile.stamen.com/terrain/{z}/{x}/{y}.png",  attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, under <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a>. Data by <a href="http://openstreetmap.org">OpenStreetMap</a>, under <a href="http://www.openstreetmap.org/copyright">ODbL</a>',  subdomains: "abcd",  minZoom: 4,  maxZoom: 18 }
-        ,"Stamen Watercolor" : { tileUrl: "http://{s}.tile.stamen.com/watercolor/{z}/{x}/{y}.png",  attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, under <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a>. Data by <a href="http://openstreetmap.org">OpenStreetMap</a>, under <a href="http://creativecommons.org/licenses/by-sa/3.0">CC BY SA</a>',  subdomains: "abcd",  minZoom: 3,  maxZoom: 16 }
-        ,"Esri WorldStreetMap" : { tileUrl: "http://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}",  attribution: "Tiles &copy; Esri" }
-        ,"Esri DeLorme" : { tileUrl: "http://server.arcgisonline.com/ArcGIS/rest/services/Specialty/DeLorme_World_Base_Map/MapServer/tile/{z}/{y}/{x}",  attribution: "Tiles &copy; Esri &mdash; Copyright: \u00a92012 DeLorme",  maxZoom: 11 }
-        ,"Esri WorldTopoMap" : { tileUrl: "http://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}",  attribution: "Tiles &copy; Esri &mdash; Esri, DeLorme, NAVTEQ, TomTom, Intermap, iPC, USGS, FAO, NPS, NRCAN, GeoBase, Kadaster NL, Ordnance Survey, Esri Japan, METI, Esri China (Hong Kong), and the GIS User Community" }
-        ,"Esri WorldImagery" : { tileUrl: "http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",  attribution: "Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community" }
-        ,"Esri OceanBasemap" : { tileUrl: "http://services.arcgisonline.com/ArcGIS/rest/services/Ocean_Basemap/MapServer/tile/{z}/{y}/{x}",  attribution: "Tiles &copy; Esri &mdash; Sources: GEBCO, NOAA, CHS, OSU, UNH, CSUMB, National Geographic, DeLorme, NAVTEQ, and Esri",  maxZoom: 11 }
-        ,"Esri NatGeoWorldMap" : { tileUrl: "http://services.arcgisonline.com/ArcGIS/rest/services/NatGeo_World_Map/MapServer/tile/{z}/{y}/{x}",  attribution: "Tiles &copy; Esri &mdash; National Geographic, Esri, DeLorme, NAVTEQ, UNEP-WCMC, USGS, NASA, ESA, METI, NRCAN, GEBCO, NOAA, iPC" }
-        ,"Google Maps" : { tileUrl: "http://mt.google.com/vt?x={x}&y={y}&z={z}",  attribution: "Google Maps",  tileSize: 256,  minZoom: 0,  maxZoom: 20 }
-        ,"Google Maps Satellite" : { tileUrl: "http://mt.google.com/vt?lyrs=s&x={x}&y={y}&z={z}",  attribution: "Google Maps",  tileSize: 256,  minZoom: 3,  maxZoom: 20 }
-        ,"Google Maps Hybrid" : { tileUrl: "http://mt0.google.com/vt/lyrs=s,m@110&hl=en&x={x}&y={y}&z={z}",  attribution: "Google Maps",  tileSize: 256,  minZoom: 0,  maxZoom: 20 }
-    };
-
-    c.map_overlays = new Object();
-    c.map_overlays = {
-         "Hillshadow" : { tileUrl: "http://{s}.tiles.wmflabs.org/hillshading/{z}/{x}/{y}.png",  attribution: 'hillshadow \u00a9 <a href="http://tiles.wmflabs.org/" target=\'_blank\'>tiles.wmflabs.org</a>',  tileSize: 256,  minZoom: 0,  maxZoom: 17 }
-        ,"Public Transport Lines" : { tileUrl: "http://openptmap.org/tiles/{z}/{x}/{y}.png",  attribution: 'Public Transport Lines\u00a9 <a href="http://openptmap.org/" target=\'_blank\'>OpenPTMap</a>',  tileSize: 256,  minZoom: 0,  maxZoom: 17 }
-    };
-
+    iconsInit(c);
+    langInit(c);
+    layersInit(c);
+    country_idInit(c);
+    
     constInitDeref.resolve();
     return constInitDeref.promise();
 };
@@ -416,8 +386,9 @@ var variablesInit = function (c) {
     c.settings_compact_layout_list_of_bm_lists = getValue("settings_compact_layout_list_of_bm_lists", false);
     c.settings_compact_layout_pqs = getValue("settings_compact_layout_pqs", false);
     c.settings_compact_layout_list_of_pqs = getValue("settings_compact_layout_list_of_pqs", false);
-    c.settings_improve_add_to_list = getValue("settings_improve_add_to_list", true);
+    c.settings_map_links_statistic = getValue("settings_map_links_statistic", true);
     c.settings_improve_add_to_list_height = getValue("settings_improve_add_to_list_height", 205);
+    c.settings_improve_add_to_list = getValue("settings_improve_add_to_list", true);
 
     // Settings: Custom Bookmarks.
     var num = c.bookmarks.length;
@@ -461,6 +432,7 @@ var variablesInit = function (c) {
     profileSpecialBookmark(scriptShortNameSync, defaultSyncLink, "lnk_gclhsync", c.bookmarks);
     externalBookmark("Forum Geoclub", "http://geoclub.de/forum/index.php", c.bookmarks);
     externalBookmark("Changelog", "https://github.com/2Abendsegler/GClh/blob/master/docu/changelog.md#readme", c.bookmarks);
+    bookmark("Lists", "https://www.geocaching.com/my/lists.aspx", c.bookmarks);
     // Settings: Remove GC Menu from Navigation.
     c.remove_navi_learn = getValue("remove_navi_learn", false);
     c.remove_navi_play = getValue("remove_navi_play", false);
@@ -517,6 +489,7 @@ var variablesInit = function (c) {
             }
         }
     } catch (e) { gclh_error("Error parsing userdata from page:", e); }
+
     variablesInitDeref.resolve();
     return variablesInitDeref.promise();
 };
@@ -730,13 +703,11 @@ var mainGC = function () {
         } catch (e) { gclh_error("Faster loading profile trackables:", e); }
     }
 
-// Migration: Installationszähler. Aktuelle TB Rules laden. Migrationsaufgaben erledigen.
+// Migration: Installationszähler. Migrationsaufgaben erledigen.
     var declaredVersion = getValue("declared_version");
     if ( declaredVersion != scriptVersion ) {
         try {
             instCount(declaredVersion);
-//--> $$065 Begin of insert
-//<-- $$065 End of insert
             migrationTasks();
         } catch (e) { gclh_error("Migration:", e); }
     }
@@ -1901,7 +1872,7 @@ var mainGC = function () {
         } catch (e) { gclh_error("Aplly search field in navigation:", e); }
     }
 
-// Show favourite percentage.
+// Show favorite percentage.
     if (settings_show_fav_percentage && is_page("cache_listing")) {
         try {
             function gclh_load_score(waitCount) {
@@ -1944,7 +1915,7 @@ var mainGC = function () {
                 }
             }
             gclh_load_score(0);
-        } catch (e) { gclh_error("Show favourite percentage:", e); }
+        } catch (e) { gclh_error("Show favorite percentage:", e); }
     }
 
 // Show real owner.
@@ -2145,6 +2116,7 @@ var mainGC = function () {
                 css += ".pq-info-wrapper {margin: 0; padding: 10px 0 0 0; background-color: unset; box-shadow: unset;} .pq-info-wrapper p:last-child {padding: 0;}";
                 css += "#Content .ui-tabs {margin-top: 3.4em;} .ui-tabs-active {box-shadow: 2px 0px 0 rgba(0,0,0,.2);} .ui-tabs .ui-tabs-nav li {margin-right: 4px;}";
                 css += ".Success {margin: 5px 0 0 0;} #Tabs {box-shadow: 2px 2px 0 rgba(0,0,0,.2);}";
+                css += ".BreadcrumbWidget p {margin-top: 0;}";
                 if ($('#ctl00_ContentBody_lbHeading').length > 0 && $('#divContentMain h2').length > 0) {
                     var h3 = document.createElement("h3");
                     $('#ctl00_ContentBody_lbHeading')[0].parentNode.parentNode.insertBefore(h3, $('#ctl00_ContentBody_lbHeading')[0].parentNode);
@@ -2289,7 +2261,7 @@ var mainGC = function () {
     }
 
 // Improve pocket queries.
-// (xxxx) Nach abschließenden Test, könnte das compact layout für alle nearest lists verwendet werden.
+// (xxxx) Das compact layout könnte vermutlich für alle nearest lists verwendet werden. Abschließend testen. 
     if (settings_compact_layout_pqs && document.location.href.match(/^https?:\/\/www\.geocaching\.com\/seek\/nearest\.aspx\?pq=/)) {
         try {
             // Compact layout.
@@ -2346,7 +2318,9 @@ var mainGC = function () {
                 trDataNew.children[chil].parentNode.insertBefore(td, trDataNew.children[chil]);
             }
             if ($('table.SearchResultsTable tbody tr.Data').length > 0) {
-                $('table.SearchResultsTable tbody tr.Data td:not(.Merge)').each(function () { this.innerHTML = this.innerHTML.replace(/<br>/ig," "); });
+                $('table.SearchResultsTable tbody tr.Data td:not(.Merge)').each(function () { 
+                    if (this.innerHTML.match(/<br>/i)) this.innerHTML = this.innerHTML.replace(/<br>/ig," ");
+                });
                 var trData = $('table.SearchResultsTable tbody tr.Data');
                 for (var i = 0; i < trData.length; i++) {
                     // Last Found and new column Your Found.
@@ -2380,7 +2354,7 @@ var mainGC = function () {
         } catch (e) { gclh_error("Improve PQs:", e); }
     }
 
-// Set default value for new pocket queries and handle warning.
+// Pocket query mark elements, set default value for new one, set warning message.
     // Helper function marks two PQ options, which are in rejection.
     function markPqOptionsAreInRejection( idOption1, idOption2 ) {
         var status = false;
@@ -2411,7 +2385,7 @@ var mainGC = function () {
         else $("#warning").hide();
     }
 
-    // Set default value ONLY for new pocket queries.
+    // Pocket query mark elements, set default value for new one, set warning message.
     if (document.location.href.match(/^https?:\/\/www\.geocaching\.com\/pocket\/gcquery\.aspx/)) {
         try {
             // Mark all elements for an easier access.
@@ -2501,7 +2475,7 @@ var mainGC = function () {
                 }
                 verifyPqOptions();
             }
-        } catch (e) { gclh_error("PQ set default value and warning:", e); }
+        } catch (e) { gclh_error("Pocket query mark, set defaults, set warning:", e); }
     }
 
 // Map on create pocket query page.
@@ -3608,7 +3582,7 @@ var mainGC = function () {
 
     // This function reads the table with the additional waypoints.
     function getAdditionalWaypoints() {
-        var addWP  = [];
+        var addWP = [];
         try {
             var tbl = document.getElementById('ctl00_ContentBody_Waypoints');
             if ( tbl == null ) {
@@ -4345,6 +4319,7 @@ var mainGC = function () {
                 var css = "";
                 // Header:
                 css += ".ListManagementFavoritesWidget, .ListsManagemntWatchlistWidget {margin: 0 0 1.5em; padding: 0.5em;}";
+                css += ".BreadcrumbWidget p {margin-top: 0;} .span-20.last p:nth-child(1) {margin-bottom: 0}";
                 $('#divContentMain div h2').first().remove();
                 $('#divContentMain p.NoBottomSpacing').first().remove();
                 $('#divContentMain div h3').first().closest('div').remove();
@@ -4355,10 +4330,6 @@ var mainGC = function () {
                 $('table.Table thead tr')[0].children[1].innerHTML = "Status";
                 $('table.Table thead tr')[0].children[5].innerHTML = "PQ";
                 $('table.Table thead tr')[0].children[6].innerHTML = "KML";
-                var th = document.createElement("th");
-                th.setAttribute("scope", "col");
-                th.appendChild(document.createTextNode("GMaps"));
-                $('table.Table thead tr')[0].append(th);
                 var lines = $('table.Table tbody tr');
                 for (var i = 0; i < lines.length; i++) {
                     while (lines[i].children[2].childNodes[2]) { lines[i].children[2].childNodes[2].remove(); }
@@ -4371,25 +4342,10 @@ var mainGC = function () {
                     lines[i].children[4].childNodes[2].remove();
                     lines[i].children[5].children[0].innerHTML = '<img src="/images/icons/16/bookmark_pq.png" alt="Create PQ">';
                     lines[i].children[6].children[0].innerHTML = '<img src="/images/icons/16/download.png" alt="Download">';
-                    var td = document.createElement("td");
-                    var matches = lines[i].children[6].children[0].href.match(/guid=([a-zA-Z0-9-]*)/);
-                    if (matches && matches[1]) {
-                        td.innerHTML = "<a title='Show in google maps' href='http://maps.google.com/?q=https://www.geocaching.com/kml/bmkml.aspx?bmguid=" + matches[1] + "' target='_blank'><img src='/images/silk/map_go.png' style='vertical-align: middle;' alt='GMaps'></a>";
-                    }
-                    lines[i].append(td);
                 }
                 // Footer:
                 $('#divContentMain div ul').first().remove();
                 appendCssStyle(css);
-            // No compact layout, only build link.
-            } else {
-                var lines = $('table.Table tbody tr');
-                for (var i = 0; i < lines.length; i++) {
-                    var matches = lines[i].children[6].children[0].href.match(/guid=([a-zA-Z0-9-]*)/);
-                    if (matches && matches[1]) {
-                        lines[i].children[6].innerHTML += "<br><a title='Show in google maps' href='http://maps.google.com/?q=https://www.geocaching.com/kml/bmkml.aspx?bmguid=" + matches[1] + "' target='_blank'>Show in google maps</a>";
-                    }
-                }
             }
         } catch (e) { gclh_error("Improve list of bookmark lists:", e); }
     }
@@ -4402,8 +4358,7 @@ var mainGC = function () {
                 var matches = document.location.href.match(/guid=([a-zA-Z0-9-]*)/);
                 if (matches && matches[1]) {
                     var uuidx = matches[1];
-                    var kml = "<a style=\"padding-right: 20px;\" title=\"Download as kml\" href='" + http + "://www.geocaching.com/kml/bmkml.aspx?bmguid=" + uuidx + "'>Download as kml</a>";
-                    var gm = "<a title=\"Show in google maps\" href='http://maps.google.com/?q=https://www.geocaching.com/kml/bmkml.aspx?bmguid=" + uuidx + "' target='_blank'>Show in google maps</a>";
+                    var kml = "<a style=\"padding-right: 20px;\" title=\"Download Google Earth kml\" href='" + http + "://www.geocaching.com/kml/bmkml.aspx?bmguid=" + uuidx + "'>Download as kml</a>";
                 }
             }
             // Compact layout.
@@ -4432,7 +4387,7 @@ var mainGC = function () {
                     if (LO.nextElementSibling.innerHTML == "") LO.nextElementSibling.remove();
                     else LO.nextElementSibling.style.marginBottom = "0";
                     LO.style.marginBottom = "0";
-                    if (uuidx) LO.innerHTML += "<span style='float: right; padding-right: 210px;'>" + kml + gm + "</span>";
+                    if (uuidx) LO.innerHTML += "<span style='float: right; padding-right: 210px;'>" + kml + "</span>";
                 }
                 // Table:
                 css += "table.Table tr {line-height: 16px;}";
@@ -4452,7 +4407,7 @@ var mainGC = function () {
                 appendCssStyle(css);
             // No compact layout, only build links.
             } else {
-                if (uuidx) $('#ctl00_ContentBody_lbHeading')[0].parentNode.parentNode.parentNode.childNodes[3].innerHTML += "<br>" + kml + "<br>" + gm;
+                if (uuidx) $('#ctl00_ContentBody_lbHeading')[0].parentNode.parentNode.parentNode.childNodes[3].innerHTML += "<br>" + kml;
             }
         } catch (e) { gclh_error("Improve bookmark lists:", e); }
     }
@@ -5185,15 +5140,6 @@ var mainGC = function () {
         } catch (e) { gclh_error("Hide archived at own caches:", e); }
     }
 
-// Hide TBs/Coins in profile.
-    if (settings_hide_visits_in_profile && document.location.href.match(/^https?:\/\/www\.geocaching\.com\/my\//)) {
-        try {
-            $(".Table.WordWrap tr").filter(function (index) {
-                return $(this).find("img[src$='logtypes/75.png']").length !== 0;
-            }).remove();
-        } catch (e) { gclh_error("Hide TBs/Coins in profile:", e); }
-    }
-
 // Post log from listing (inline).
     try {
         // iframe aufbauen und verbergen.
@@ -5462,9 +5408,6 @@ var mainGC = function () {
             if ( document.getElementById("ctl00_ContentBody_ProfilePanel1_dlCollectiblesOwned") ) gclh_coin_stats("ctl00_ContentBody_ProfilePanel1_dlCollectiblesOwned");
         } catch (e) { gclh_error("Show Coin-Sums:", e); }
     }
-
-//--> $$065 Begin of insert
-//<-- $$065 End of insert
 
 // Auto-Visit.
     if (settings_autovisit && document.location.href.match(/^https?:\/\/www\.geocaching\.com\/seek\/log\.aspx/) && !document.location.href.match(/^https?:\/\/www\.geocaching\.com\/seek\/log\.aspx\?LUID=/) && !document.getElementById('ctl00_ContentBody_LogBookPanel1_CoordInfoLinkControl1_uxCoordInfoCode')) {
@@ -6108,6 +6051,7 @@ var mainGC = function () {
 // Improve my profile, improve profile.
     if (document.location.href.match(/^https?:\/\/www\.geocaching\.com\/my/)) {
         try {
+            // Show/Hide einbauen in rechter Spalte.
             var code = "function hide_box(i){";
             code += "  if(document.getElementById('box_'+i).style.display == 'none'){";
             code += "    document.getElementById('box_'+i).style.display = 'block';";
@@ -6119,12 +6063,10 @@ var mainGC = function () {
             code += "    document.getElementById('lnk_'+i).title = 'show';";
             code += "  }";
             code += "}";
-
             var script = document.createElement("script");
             script.innerHTML = code;
             if ( document.getElementsByTagName("body")[0] ) document.getElementsByTagName("body")[0].appendChild(script);
             var boxes = document.getElementsByClassName("WidgetHeader");
-
             function saveStates() {
                 // Wenn Linklist angezeigt wird, dann mit Speicherindex "i" von Linklist beginnen, er ist 0. Ansonsten mit 1 beginnen.
                 if ( settings_bookmarks_show ) var i = 0;
@@ -6157,9 +6099,25 @@ var mainGC = function () {
                 }
                 i++;
             }
+            
             // Change link "Lists" on "my" pages from new page ".../account/lists" to old-fashioned page ".../my/lists.aspx".
             if (settings_my_lists_old_fashioned) {
                 $('#divContentMain').find('p').first().find('a[href*="/account/lists"]').prop("href", "/my/lists.aspx");
+            }
+            
+            // Hide TBs/Coins in profile.
+            if (settings_hide_visits_in_profile) {
+                $(".Table.WordWrap tr").filter(function (index) {
+                    return $(this).find("img[src$='logtypes/75.png']").length !== 0;
+                }).remove();
+            }
+
+            // Remove fixed column width in profiles last 30 days logs for fewer linebreaks.
+            if ($('.Table.WordWrap tr').length > 0) {
+                $('.Table.WordWrap')[0].setAttribute("style", "table-layout: unset;");
+                $('.Table.WordWrap tr td').each(function () { 
+                    this.setAttribute("style", "width: unset;" + (in_array(this.cellIndex, [0,1,4]) ? " white-space: nowrap;" : ""));
+                });
             }
         } catch (e) { gclh_error("Improve my profile:", e); }
     }
@@ -6311,7 +6269,7 @@ var mainGC = function () {
                 script.innerHTML = code;
                 document.getElementsByTagName("body")[0].appendChild(script);
 
-                if (!settings_hide_avatar) showLinkBiggerAvatars();
+                if (!settings_hide_avatar) showBiggerAvatarsLink();
             }
 
             var regexp = new RegExp(settings_spoiler_strings, "i");
@@ -6441,24 +6399,22 @@ var mainGC = function () {
         link.onmouseover = placeToolTip;
         link.appendChild(span);
     }
-    function showLinkBiggerAvatars() {
-        var a = document.createElement("a");
-        a.appendChild(document.createTextNode("Show bigger avatars"));
-        a.setAttribute("href", "javascript:void(0);");
-        a.setAttribute("title", "Show bigger avatar images while hovering with the mouse");
-        a.setAttribute("id", "gclh_show_bigger_avatars");
-        a.setAttribute("style", "float: right;");
-        a.addEventListener("click", showBiggerAvatars, false);
-        document.getElementById("ctl00_ContentBody_uxLogbookLink").parentNode.appendChild(a);
-        document.getElementById("ctl00_ContentBody_uxLogbookLink").parentNode.style.width = "100%";
+    function showBiggerAvatarsLink() {
+        addLinksOverLogs(showBiggerAvatars, "gclh_show_bigger_avatars", true, "Show bigger avatars", "Show bigger avatar images while hovering with the mouse");
     }
     function showBiggerAvatars() {
-        var links = document.getElementsByClassName("logOwnerAvatar");
-        for (var i = 0; i < links.length; i++) {
-            if (links[i].children[0] && links[i].children[0].children[0] && !links[i].children[0].children[1]) {
-                avatarThumbnail(links[i].children[0]);
-            }
-        }
+        try {
+            $('#gclh_show_bigger_avatars').addClass("working");
+            setTimeout(function() {
+                var links = document.getElementsByClassName("logOwnerAvatar");
+                for (var i = 0; i < links.length; i++) {
+                    if (links[i].children[0] && links[i].children[0].children[0] && !links[i].children[0].children[1]) {
+                        avatarThumbnail(links[i].children[0]);
+                    }
+                }
+                $('#gclh_show_bigger_avatars').removeClass("working");
+            }, 100);
+        } catch (e) { gclh_error("showBiggerAvatars:", e); }
     }
 
 // Show gallery images in 2 instead of 4 cols.
@@ -6820,44 +6776,39 @@ var mainGC = function () {
             // Load all logs.
             function gclh_load_all(logs) {
                 function gclh_load_all_logs() {
-                    if (logs) {
-                        var tbodys = (document.getElementById("cache_logs_table2") || document.getElementById("cache_logs_table")).getElementsByTagName("tbody");
-                        for (var i = 0; i < tbodys.length; i++) {
-                            (document.getElementById("cache_logs_table2") || document.getElementById("cache_logs_table")).removeChild(tbodys[i]);
-                        }
-                        if (browser === "firefox") {
-                            injectPageScript("var unsafeWindow = unsafeWindow||window; " + gclh_dynamic_load.toString() + " var settings_hide_top_button=" + settings_hide_top_button + "; ");
-                            injectPageScript("(" + addNewLogLines.toString() + ")(\"" + encodeURIComponent(JSON.stringify(logs)) + "\");");
-                            window.postMessage("gclh_add_vip_icon", "https://www.geocaching.com");
-                            window.postMessage("setLinesColorInCacheListing", "https://www.geocaching.com");
-                        } else {
-                            for (var i = 0; i < logs.length; i++) {
-                                if (logs[i]) {
-                                    var newBody = unsafeWindow.$(document.createElement("TBODY"));
-                                    unsafeWindow.$("#tmpl_CacheLogRow_gclh").tmpl(logs[i]).appendTo(newBody);
-                                    injectPageScript("$('a.tb_images').fancybox({'type': 'image', 'titlePosition': 'inside'});");
-                                    unsafeWindow.$(document.getElementById("cache_logs_table2") || document.getElementById("cache_logs_table")).append(newBody.children());
-                                }
+                    $('#gclh_load_all_logs').addClass("working");
+                    setTimeout(function() {
+                        if (logs) {
+                            var tbodys = (document.getElementById("cache_logs_table2") || document.getElementById("cache_logs_table")).getElementsByTagName("tbody");
+                            for (var i = 0; i < tbodys.length; i++) {
+                                (document.getElementById("cache_logs_table2") || document.getElementById("cache_logs_table")).removeChild(tbodys[i]);
                             }
-                            gclh_add_vip_icon();
-                            setLinesColorInCacheListing();
+                            if (browser === "firefox") {
+                                injectPageScript("var unsafeWindow = unsafeWindow||window; " + gclh_dynamic_load.toString() + " var settings_hide_top_button=" + settings_hide_top_button + "; ");
+                                injectPageScript("(" + addNewLogLines.toString() + ")(\"" + encodeURIComponent(JSON.stringify(logs)) + "\");");
+                                window.postMessage("gclh_add_vip_icon", "https://www.geocaching.com");
+                                window.postMessage("setLinesColorInCacheListing", "https://www.geocaching.com");
+                            } else {
+                                for (var i = 0; i < logs.length; i++) {
+                                    if (logs[i]) {
+                                        var newBody = unsafeWindow.$(document.createElement("TBODY"));
+                                        unsafeWindow.$("#tmpl_CacheLogRow_gclh").tmpl(logs[i]).appendTo(newBody);
+                                        injectPageScript("$('a.tb_images').fancybox({'type': 'image', 'titlePosition': 'inside'});");
+                                        unsafeWindow.$(document.getElementById("cache_logs_table2") || document.getElementById("cache_logs_table")).append(newBody.children());
+                                    }
+                                }
+                                gclh_add_vip_icon();
+                                setLinesColorInCacheListing();
+                            }
+                            setMarkerDisableDynamicLogLoad();
+                            if (document.getElementById("gclh_show_log_counter")) document.getElementById("gclh_show_log_counter").style.visibility = "";
                         }
-                        setMarkerDisableDynamicLogLoad();
-                        if (document.getElementById("gclh_show_log_counter")) document.getElementById("gclh_show_log_counter").style.visibility = "";
-                    }
+                        $('#gclh_load_all_logs').removeClass("working");
+                    }, 100);
                 }
-
-                var load_all = document.createElement("a");
-                load_all.appendChild(document.createTextNode("Show all logs"));
-                load_all.setAttribute("href", "javascript:void(0);");
-                load_all.setAttribute("id", "gclh_load_all_logs");
-                document.getElementById("ctl00_ContentBody_uxLogbookLink").parentNode.appendChild(document.createTextNode(" | "));
-                document.getElementById("ctl00_ContentBody_uxLogbookLink").parentNode.appendChild(load_all);
-                document.getElementById("ctl00_ContentBody_uxLogbookLink").parentNode.style.width = "100%";
-                document.getElementById("ctl00_ContentBody_uxLogbookLink").parentNode.style.margin = "0";
                 var para = document.getElementById('ctl00_ContentBody_lblFindCounts').nextSibling.nextSibling.nextSibling.nextSibling;
                 if (para && para.nodeName == 'P') para.className = para.className + ' Clear';
-                load_all.addEventListener("click", gclh_load_all_logs, false);
+                addLinksOverLogs(gclh_load_all_logs, "gclh_load_all_logs", false, "Show all logs", "");
                 showLogCounterLink();
             }
 
@@ -7397,8 +7348,7 @@ var mainGC = function () {
         try {
             getLogStatistic( "cache", "https://www.geocaching.com/my/logs.aspx?s=1" );
             getLogStatistic( "track", "https://www.geocaching.com/my/logs.aspx?s=2" );
-        } catch (e) { gclh_error("Improve own log statistic:", e);
-        }
+        } catch (e) { gclh_error("Improve own log statistic:", e); }
     }
     function getLogStatistic( type, url, manual ) {
         var logsName = (type == "cache" ? "Cache":"Trackable") + " logs";
@@ -7564,6 +7514,29 @@ var mainGC = function () {
         }
     }
 
+// Improve own statistic map page with links to caches for every country.
+    if (settings_map_links_statistic && isOwnStatisticsPage()) {
+        try {
+            var countries = $('#StatsFlagLists table.Table tr');
+            if (countries) {
+                for (var i = 0; i < countries.length ; i++) {
+                    var name = countries[i].children[0].childNodes[1].textContent;
+                    if (name) {
+                        var country = $.grep(country_id, function(e){ return e.n == name; });
+                        if (country && country[0]) {
+                            var a = document.createElement("a");
+                            a.setAttribute("title", "Show caches you have found in " + country[0]["n"]);
+                            a.setAttribute("href", "/play/search?ot=4&c=" + country[0]["id"] + "&f=1&sort=FoundDate&asc=True#myListsLink");
+                            a.innerHTML = countries[i].children[0].innerHTML;
+                            countries[i].children[0].innerHTML = "";
+                            countries[i].children[0].appendChild(a); 
+                        }
+                    }
+                }
+            }
+        } catch (e) { gclh_error("Improve own statistic map page:", e); }
+    }
+        
 // Add mailto-link to profilpage.
     if ((isLocation("/profile/?guid=") || isLocation("/profile/default.aspx?guid=") || isLocation("/profile/?u=") || isLocation("/profile/default.aspx?u=") || isLocation("/profile/?id=") || isLocation("/profile/default.aspx?id=")) && document.getElementById('ctl00_ContentBody_ProfilePanel1_lnkEmailUser')) {
         try {
@@ -7610,7 +7583,7 @@ var mainGC = function () {
         } catch (e) { gclh_error("Hide gc.com Avatar-Option:", e); }
     }
 
-// Aufbau Links zum Aufruf von Config, Sync und Find Player.
+// Aufbau Links zum Aufruf von Config, Sync und Find Player. Und Changelog im Profile.
     try {
         // GClh Config und Sync bei Greasemonkey ins Menu eintragen.
         if (this.GM_registerMenuCommand) {
@@ -7658,7 +7631,8 @@ var mainGC = function () {
             // GClh Config und Sync Links neben Avatar im Profile.
             var lnk_config = " | <br><a href='#GClhShowConfig' id='gclh_config_lnk' name='gclh_config_lnk' style='font-size: 0.9em;' title='" + scriptShortNameConfig + " v" + scriptVersion + (settings_f4_call_gclh_config ? " / Key F4":"") + "' >" + scriptShortNameConfig + "</a>";
             var lnk_sync = " | <a href='#GClhShowSync' id='gclh_sync_lnk' name='gclh_sync_lnk' style='font-size: 0.9em;' title='" + scriptShortNameSync + " v" + scriptVersion + (settings_f10_call_gclh_sync ? " / Key F10":"") + "' >" + scriptShortNameSync + "</a>";
-            document.getElementById('ctl00_ContentBody_WidgetMiniProfile1_memberProfileLink').parentNode.innerHTML += lnk_config + lnk_sync;
+            var lnk_changelog = " | <a href='https://github.com/2Abendsegler/GClh/blob/master/docu/changelog.md#readme' style='font-size: 0.9em;' title='Documentation of changes and new features in GClh II on GitHub'>Changelog</a>";
+            document.getElementById('ctl00_ContentBody_WidgetMiniProfile1_memberProfileLink').parentNode.innerHTML += lnk_config + lnk_sync + lnk_changelog;
             document.getElementById('gclh_config_lnk').addEventListener('click', gclh_showConfig, false);
             document.getElementById('gclh_sync_lnk').addEventListener('click', gclh_showSync, false);
             // Linklist Ablistung rechts im Profile.
@@ -7714,7 +7688,7 @@ var mainGC = function () {
 // Add download link to Labs cache pages.
     if (document.location.href.match(/^https?:\/\/labs\.geocaching\.com\/Adventures\/Details\/(\w|\-)*/)) {
         try {
-            for(var i=0 ; i < document.styleSheets.length ; i++){
+            for (var i=0 ; i < document.styleSheets.length ; i++){
                 if (document.styleSheets[i].href && document.styleSheets[i].href.match(/^https?:\/\/labs\.geocaching\.com\/Content\/css\/main\?[v]\=\w*/)) {
                     document.styleSheets[i].cssRules[384].style['background-image'] = "none";
                 }
@@ -7786,8 +7760,7 @@ var mainGC = function () {
                                         var text = "Version " + new_version + " of script \""+ scriptName + "\" is available.\n" +
                                                    "You are currently using " + currVersion + ".\n\n" +
                                                    "Click OK to upgrade.\n\n" +
-                                                   "(After upgrade, please refresh your page.)\n" +
-                                                   "(A changelog link can be found in Config menu.)\n";
+                                                   "(After upgrade, please refresh your page.)";
                                         if (window.confirm(text)) {
                                             btnClose();
                                             document.location.href = url;
@@ -8331,9 +8304,9 @@ var mainGC = function () {
         setTimeout(function() { $("#gclh_simu").remove(); }, 4000);
         setTimeout(function() {
             var url = "https://github.com/2Abendsegler/GClh/blob/master/docu/changelog.md#v" + scriptVersion.replace(/\./g, "");
-            var text = scriptName + " version " + scriptVersion + " was successfully installed.\n\n"
-                     + "Do you want to open the changelog in a new tab,\n"
-                     + "to have a quick look at changes and new features?\n";
+            var text = "Version " + scriptVersion + " of  \"" + scriptName + "\"  was successfully installed.\n\n"
+                     + "Do you want to open the changelog in a new tab, to have a quick\n"
+                     + "look at changes and new features?\n";
             if (window.confirm(text)) window.open(url, '_blank');
         }, 1000);
     }
@@ -8422,46 +8395,68 @@ var mainGC = function () {
         }
     }
 
-// Show Log Counter.
+// Show log counter.
     function showLogCounterLink() {
-        var a = document.createElement("a");
-        a.appendChild(document.createTextNode("Show log counter"));
-        a.setAttribute("href", "javascript:void(0);");
-        a.setAttribute("title", "Show log counter for log type and total");
-        a.addEventListener("click", showLogCounter, false);
-        var span = document.createElement("span");
-        span.setAttribute("id", "gclh_show_log_counter");
-        span.setAttribute("style", "float: right; margin-right: 4px;");
-        span.appendChild(a);
-        if (document.getElementById("gclh_show_bigger_avatars")) span.appendChild(document.createTextNode(" |"));
-        document.getElementById("ctl00_ContentBody_uxLogbookLink").parentNode.appendChild(span);
+        addLinksOverLogs(showLogCounter, "gclh_show_log_counter", true, "Show log counter", "Show log counter for log type and total");
         appendCssStyle(".gclh_logCounter {font-size: 10px !important; padding-left: 6px; font-style: italic;}");
     }
     function showLogCounter() {
         try {
-            var logCounter = new Object();
-            logCounter["all"] = 0;
-            var logTypes = document.getElementsByClassName("LogTotals")[0].getElementsByTagName("a");
-            for (var i = 0; i < logTypes.length; i++) {
-                var matches = logTypes[i].innerHTML.replace(/(,|\.)/g, "").match(/>(\s*)(\d+)/);
-                if (matches && matches[2]) {
-                    logCounter[logTypes[i].childNodes[0].title] = parseInt(matches[2]);
-                    logCounter["all"] += parseInt(matches[2]);
-                }
-            }
-            if (logCounter["all"] != 0) {
-                var logs = $('#cache_logs_table2').find('tbody tr td').find('.LogType');
-                for (var i = 0; i < logs.length; i++) {
-                    var log = logs[i];
-                    if (log && log.children[1] && log.children[0].children[0].title && logCounter[log.children[0].children[0].title]) {
-                        var logTyp = log.children[0].children[0].title;
-                        log.children[1].innerHTML = " Log " + logCounter[logTyp] + " / Total Log " + logCounter["all"];
-                        logCounter[logTyp]--;
-                        logCounter["all"]--;
+            $('#gclh_show_log_counter').addClass("working");
+            setTimeout(function() {
+                var logCounter = new Object();
+                logCounter["all"] = 0;
+                var logTypes = document.getElementsByClassName("LogTotals")[0].getElementsByTagName("a");
+                for (var i = 0; i < logTypes.length; i++) {
+                    var matches = logTypes[i].innerHTML.replace(/(,|\.)/g, "").match(/>(\s*)(\d+)/);
+                    if (matches && matches[2]) {
+                        logCounter[logTypes[i].childNodes[0].title] = parseInt(matches[2]);
+                        logCounter["all"] += parseInt(matches[2]);
                     }
                 }
-            }
+                if (logCounter["all"] != 0) {
+                    var logs = $('#cache_logs_table2').find('tbody tr td').find('.LogType');
+                    for (var i = 0; i < logs.length; i++) {
+                        var log = logs[i];
+                        if (log && log.children[1] && log.children[0].children[0].title && logCounter[log.children[0].children[0].title]) {
+                            var logTyp = log.children[0].children[0].title;
+                            log.children[1].innerHTML = " Log " + logCounter[logTyp] + " / Total Log " + logCounter["all"];
+                            logCounter[logTyp]--;
+                            logCounter["all"]--;
+                        }
+                    }
+                }
+                $('#gclh_show_log_counter').removeClass("working");
+            }, 100);
         } catch (e) { gclh_error("showLogCounter:", e); }
+    }
+
+// Add links over logs in cache listing.
+    function addLinksOverLogs(func, id, right, txt, title) {
+        var a = document.createElement("a");
+        a.appendChild(document.createTextNode(txt));
+        a.setAttribute("title", title);
+        a.setAttribute("href", "javascript:void(0);");
+        a.addEventListener("click", func, false);
+        var span = document.createElement("span");
+        span.setAttribute("id", id);
+        if (right) span.setAttribute("class", "gclh_rlol");
+        else span.setAttribute("class", "gclh_llol");
+        if ($('.gclh_llol').length == 0 && $('.gclh_rlol').length == 0) {
+            appendCssStyle( ".gclh_llol {margin-right: 4px;} .gclh_rlol {float: right; margin-right: 4px;} .gclh_llol.working a, .gclh_rlol.working a {opacity: 0.3;}" );
+            $('#ctl00_ContentBody_uxLogbookLink')[0].parentNode.style.width = "100%";
+            $('#ctl00_ContentBody_uxLogbookLink')[0].parentNode.style.margin = "0";
+        }
+        if (right == false) {
+            span.appendChild(document.createTextNode(" | "));
+            span.appendChild(a);
+        } else if (right && $('.gclh_rlol').length != 0) {
+            span.appendChild(a);
+            span.appendChild(document.createTextNode(" | "));
+        } else {
+            span.appendChild(a);
+        }
+        $('#ctl00_ContentBody_uxLogbookLink')[0].parentNode.appendChild(span);
     }
 
 // Prüfen, ob die Seite die eigene Statistik ist.
@@ -9004,12 +8999,12 @@ var mainGC = function () {
             html += "<div class='gclh_content'>";
             html += "<div id='gclh_config_content1'>";
             html += "&nbsp;" + "<font style='float: right; font-size: 11px; ' >";
-            html += "<a href='http://geoclub.de/forum/viewforum.php?f=117' title='Help, is available on the Geoclub forum' target='_blank'>Help</a> | ";
-            html += "<a href='https://github.com/2Abendsegler/GClh/issues?q=is:issue is:open sort:created-desc' title='Open issues, on GitHub' target='_blank'>Open issues</a> | ";
-            html += "<a href='https://github.com/2Abendsegler/GClh/issues?q=is:issue is:open label:\"tag: wish\" sort:created-desc' title='Open wishes, on GitHub' target='_blank'>Open wishes</a> | ";
-            html += "<a href='https://github.com/2Abendsegler/GClh/blob/master/docu/changelog.md#readme' title='Changelog, on GitHub' target='_blank'>Changelog</a> | ";
-            html += "<a id='check_for_upgrade' href='#' style='cursor: pointer' title='Check for upgrade script'>Check for upgrade</a> | ";
-            html += "<a href='https://github.com/2Abendsegler/GClh/tree/master' title='GitHub' target='_blank'>GitHub</a> | ";
+            html += "<a href='http://geoclub.de/forum/viewforum.php?f=117' title='Help is available on the Geoclub forum' target='_blank'>Help</a> | ";
+            html += "<a href='https://github.com/2Abendsegler/GClh/issues?q=is:issue is:open sort:created-desc' title='Show open issues on GitHub' target='_blank'>Open issues</a> | ";
+            html += "<a href='https://github.com/2Abendsegler/GClh/issues?q=is:issue is:open label:\"tag: wish\" sort:created-desc' title='Show open wishes on GitHub' target='_blank'>Open wishes</a> | ";
+            html += "<a href='https://github.com/2Abendsegler/GClh/blob/master/docu/changelog.md#readme' title='Documentation of changes and new features in GClh II on GitHub' target='_blank'>Changelog</a> | ";
+            html += "<a id='check_for_upgrade' href='#' style='cursor: pointer' title='Check for upgrade GClh II'>Check for upgrade</a> | ";
+            html += "<a href='https://github.com/2Abendsegler/GClh/tree/master' title='Development plattform and issue system of GClh II' target='_blank'>GitHub</a> | ";
             html += "<a id='rc_link' href='#' style='cursor: pointer' title='Reset some configuration data'>Reset</a></font>";
             html += "</div>";
 
@@ -9270,8 +9265,6 @@ var mainGC = function () {
 
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>Trackables</b></div>";
             html += checkboxy('settings_faster_profile_trackables', 'Load trackables faster without images') + show_help("With this option, you can stop the load on the trackable pages after the necessary datas are loaded. You disclaim of the lengthy load of the images of the trackables. This procedure is much faster as load all datas, because every image is loaded separate and not in a bigger bundle like it is for the non image data.") + "<br/>";
-//--> $$065 Begin of insert
-//<-- $$065 End of insert
 
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>Statistic</b></div>";
             html += checkboxy('settings_count_own_matrix', 'Calculate your cache matrix') + show_help("With this option the count of found difficulty and terrain combinations and the count of complete matrixes are calculated and shown above the cache matrix on your statistic page.") + "<br/>";
@@ -9300,6 +9293,9 @@ var mainGC = function () {
                 html += "  <option value='" + i + "' " + (settings_log_statistic_reload == i ? "selected=\"selected\"" : "") + ">" + i + "</option>";
             }
             html += "</select> hours" + show_help("Choose no hours, if you want to load/reload only manual.") + "<br/>";
+            html += newParameterOn2;
+            html += checkboxy('settings_map_links_statistic', 'Show links to found caches for every country on statistic map') + show_help("With this option, you can improve your own statistic maps page for you with links to caches you have found for every country.") + "<br/>";
+            html += newParameterVersionSetzen(0.8) + newParameterOff;
             html += "</div>";
 
             html += "<h4 class='gclh_headline2'>"+prepareHideable.replace("#name#","listing")+"Listing</h4>";
@@ -9610,9 +9606,9 @@ var mainGC = function () {
                     var outTitle = (typeof(bookmarks_orig_title[num]) != "undefined" && bookmarks_orig_title[num] != "" ? bookmarks_orig_title[num] : bookmarks[i]['title']);
                     html += "            >" + outTitle + "</a>";
                     // Kennzeichnung neuer Parameter in Linklist Bereich.
-                    // if ( num >= 67 && num <= 67 ) {
-                    //     html +=          newParameterLL?;
-                    // }
+                    if ( num >= 69 && num <= 69 ) {
+                        html +=          newParameterLL2;
+                    }
                 }
                 html += "            </td>";
                 // Zweite Spalte mit gegebenenfalls abweichenden Bezeichnungen:
@@ -9622,9 +9618,9 @@ var mainGC = function () {
                 } else {
                     html += "                <input style='padding-left: 2px; padding-right: 2px;' class='gclh_form' title='Differing description for standard link' id='bookmarks_name[" + num + "]' type='text' size='15' value='" + getValue("settings_bookmarks_title[" + num + "]", "") + "'>";
                     // Kennzeichnung neuer Parameter in Linklist Bereich.
-                    // if ( num >= 67 && num <= 67 ) {
-                    //     html +=              newParameterLLVersionSetzen(?);
-                    // }
+                    if ( num >= 69 && num <= 69 ) {
+                        html +=              newParameterLLVersionSetzen(0.8);
+                    }
                 }
                 html += "            </td>";
                 html += "        </tr>";
@@ -9911,8 +9907,6 @@ var mainGC = function () {
             document.getElementById('restore_settings_font_color_menu_submenu').addEventListener("click", restoreField, false);
             document.getElementById('restore_settings_font_color_menu_submenuX0').addEventListener("click", restoreField, false);
             document.getElementById('restore_settings_count_own_matrix_show_color_next').addEventListener("click", restoreField, false);
-//--> $$065 Begin of insert
-//<-- $$065 End of insert
             document.getElementById('settings_process_vup').addEventListener("click", alert_settings_process_vup, false);
             document.getElementById('settings_process_vupX0').addEventListener("click", alert_settings_process_vup, false);
 
@@ -10023,8 +10017,6 @@ var mainGC = function () {
             setEventsForDependentParameters( "settings_remove_banner", "settings_remove_banner_for_garminexpress" );
             setEventsForDependentParameters( "settings_driving_direction_link", "settings_driving_direction_parking_area" );
             setEventsForDependentParameters( "settings_improve_add_to_list", "settings_improve_add_to_list_height" );
-//--> $$065 Begin of insert
-//<-- $$065 End of insert
             // Abhängigkeiten der Linklist Parameter.
             for (var i = 0; i < 100; i++) {
                 // 2. Spalte: Links für die Custom Bookmarks.
@@ -10168,8 +10160,6 @@ var mainGC = function () {
             setValue("settings_pq_terrain", document.getElementById('settings_pq_terrain').value);
             setValue("settings_pq_terrain_score", document.getElementById('settings_pq_terrain_score').value);
             setValue("settings_improve_add_to_list_height", document.getElementById('settings_improve_add_to_list_height').value);
-//--> $$065 Begin of insert
-//<-- $$065 End of insert
 
             // Map Layers in vorgegebener Reihenfolge übernehmen.
             var new_map_layers_available = document.getElementById('settings_maplayers_available');
@@ -10267,8 +10257,6 @@ var mainGC = function () {
                 'settings_hide_colored_versions',
                 'settings_make_config_main_areas_hideable',
                 'settings_faster_profile_trackables',
-//--> $$065 Begin of insert
-//<-- $$065 End of insert
                 'settings_show_google_maps',
                 'settings_show_log_it',
                 'settings_show_nearestuser_profil_link',
@@ -10356,6 +10344,7 @@ var mainGC = function () {
                 'settings_compact_layout_list_of_bm_lists',
                 'settings_compact_layout_pqs',
                 'settings_compact_layout_list_of_pqs',
+                'settings_map_links_statistic',
                 'settings_improve_add_to_list'
             );
             for (var i = 0; i < checkboxes.length; i++) {
@@ -11019,9 +11008,6 @@ var mainGC = function () {
         window.location.reload(false);
     }
 
-//--> $$065 Begin of insert
-//<-- $$065 End of insert
-
 ////////////////////////////////////////////////////////////////////////////
 // Sync
 ////////////////////////////////////////////////////////////////////////////
@@ -11285,9 +11271,6 @@ function profileSpecialBookmark(title, href, name, bookmarkArray) {
     bm['name'] = name;
 }
 
-//--> $$065 Begin of insert
-//<-- $$065 End of insert
-
 // Check if the current document location matches the given path.
 function isLocation(path) {
     path = path.toLowerCase();
@@ -11363,11 +11346,12 @@ function is_link(name, url) {
         case "hide_cache":
             if (url.match(/^https?:\/\/www\.geocaching\.com\/play\/hide/)) status = true;
             break;
-        case "settings":
-            if (url.match(/^https?:\/\/www\.geocaching\.com\/account\/(settings|lists)/)) status = true;
-            break;
         case "messagecenter":
             if (url.match(/^https?:\/\/www\.geocaching\.com\/account\/messagecenter/)) status = true;
+            break;
+        case "settings":
+            // settings, lists, dashboard
+            if (url.match(/^https?:\/\/www\.geocaching\.com\/account/)) status = true;
             break;
         case "geotours":
             if (url.match(/^https?:\/\/www\.geocaching\.com\/play\/geotours/)) status = true;
