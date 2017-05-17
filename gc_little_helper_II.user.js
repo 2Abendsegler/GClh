@@ -151,7 +151,7 @@ var constInit = function (c) {
     langInit(c);
     layersInit(c);
     country_idInit(c);
-    
+
     constInitDeref.resolve();
     return constInitDeref.promise();
 };
@@ -637,13 +637,15 @@ var mainOSM = function () {
 ////////////////////////////////////////////////////////////////////////////
 var mainGC = function () {
 
-// Die neuen Seiten von GS aus der Verarbeitung nehmen.
+// Die neuen Seiten von GS aus der Verarbeitung nehmen. Geht aber nicht immer, schon wegen internen Aufrufen, siehe Öffentliches Profile About.
+    var t = Date.now();
+    console.log("GClh: " + t + " | " + window.location);
     if ( ( document.location.href.match(/^https?:\/\/www\.geocaching\.com\/account\//) && !document.location.href.match(/account\/(settings|lists)/) ) ||
          ( document.location.href.match(/^https?:\/\/www\.geocaching\.com\/p\//) )     ) {
         console.log("GClh: Unknown page, do nothing");
         return;
     }
-    
+
 // Run after redirect.
     if (typeof(unsafeWindow.__doPostBack) == "function") {
         try {
@@ -2268,7 +2270,7 @@ var mainGC = function () {
     }
 
 // Improve pocket queries.
-// (xxxx) Das compact layout könnte vermutlich für alle nearest lists verwendet werden. Abschließend testen. 
+// (xxxx) Das compact layout könnte vermutlich für alle nearest lists verwendet werden. Abschließend testen.
     if (settings_compact_layout_pqs && document.location.href.match(/^https?:\/\/www\.geocaching\.com\/seek\/nearest\.aspx\?pq=/)) {
         try {
             // Compact layout.
@@ -2325,7 +2327,7 @@ var mainGC = function () {
                 trDataNew.children[chil].parentNode.insertBefore(td, trDataNew.children[chil]);
             }
             if ($('table.SearchResultsTable tbody tr.Data').length > 0) {
-                $('table.SearchResultsTable tbody tr.Data td:not(.Merge)').each(function () { 
+                $('table.SearchResultsTable tbody tr.Data td:not(.Merge)').each(function () {
                     if (this.innerHTML.match(/<br>/i)) this.innerHTML = this.innerHTML.replace(/<br>/ig," ");
                 });
                 var trData = $('table.SearchResultsTable tbody tr.Data');
@@ -6106,12 +6108,12 @@ var mainGC = function () {
                 }
                 i++;
             }
-            
+
             // Change link "Lists" on "my" pages from new page ".../account/lists" to old-fashioned page ".../my/lists.aspx".
             if (settings_my_lists_old_fashioned) {
                 $('#divContentMain').find('p').first().find('a[href*="/account/lists"]').prop("href", "/my/lists.aspx");
             }
-            
+
             if ($('#ctl00_ContentBody_WidgetMiniProfile1_LoggedInPanel').length > 0) {
                 // Hide TBs/Coins in profile.
                 if (settings_hide_visits_in_profile) {
@@ -6123,7 +6125,7 @@ var mainGC = function () {
                 // Remove fixed column width in profiles last 30 days logs for fewer linebreaks.
                 if ($('.Table.WordWrap tr').length > 0) {
                     $('.Table.WordWrap')[0].setAttribute("style", "table-layout: unset;");
-                    $('.Table.WordWrap tr td').each(function () { 
+                    $('.Table.WordWrap tr td').each(function () {
                         this.setAttribute("style", "width: unset;" + (in_array(this.cellIndex, [0,1,4]) ? " white-space: nowrap;" : ""));
                     });
                 }
@@ -7538,14 +7540,14 @@ var mainGC = function () {
                             a.setAttribute("href", "/play/search?ot=4&c=" + country[0]["id"] + "&f=1&sort=FoundDate&asc=True#myListsLink");
                             a.innerHTML = countries[i].children[0].innerHTML;
                             countries[i].children[0].innerHTML = "";
-                            countries[i].children[0].appendChild(a); 
+                            countries[i].children[0].appendChild(a);
                         }
                     }
                 }
             }
         } catch (e) { gclh_error("Improve own statistic map page:", e); }
     }
-        
+
 // Add mailto-link to profilpage.
     if ((isLocation("/profile/?guid=") || isLocation("/profile/default.aspx?guid=") || isLocation("/profile/?u=") || isLocation("/profile/default.aspx?u=") || isLocation("/profile/?id=") || isLocation("/profile/default.aspx?id=")) && document.getElementById('ctl00_ContentBody_ProfilePanel1_lnkEmailUser')) {
         try {
