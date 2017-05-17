@@ -676,6 +676,26 @@ var mainGC = function () {
         } catch (e) { gclh_error("Run after redirect", e); }
     }
 
+//xxxx4
+/*
+            GM_xmlhttpRequest({
+                method: 'GET',
+                url: "https://www.geocaching.com/kml/bmkml.aspx?bmguid=624af344-6446-43f3-b43e-95017fa42bee",
+                onload:  function (response) {
+                console.log(response.status);
+                console.log(response.responseText);
+                console.log(response);
+                }
+            });
+       
+    
+    
+    
+    
+    
+*/    
+//xxxx4
+
 // Set language to default language.
     if ( settings_set_default_langu ) {
         try {
@@ -6596,18 +6616,20 @@ return;
         link.appendChild(span);
     }
     function showBiggerAvatarsLink() {
-        addRightLinksOverLogs(showBiggerAvatars, "gclh_show_bigger_avatars", "Show bigger avatars", "Show bigger avatar images while hovering with the mouse");
+        addLinksOverLogs(showBiggerAvatars, "gclh_show_bigger_avatars", true, "Show bigger avatars", "Show bigger avatar images while hovering with the mouse");
     }
     function showBiggerAvatars() {
         try {
             $('#gclh_show_bigger_avatars').addClass("working");
-            var links = document.getElementsByClassName("logOwnerAvatar");
-            for (var i = 0; i < links.length; i++) {
-                if (links[i].children[0] && links[i].children[0].children[0] && !links[i].children[0].children[1]) {
-                    avatarThumbnail(links[i].children[0]);
+            setTimeout(function() {
+                var links = document.getElementsByClassName("logOwnerAvatar");
+                for (var i = 0; i < links.length; i++) {
+                    if (links[i].children[0] && links[i].children[0].children[0] && !links[i].children[0].children[1]) {
+                        avatarThumbnail(links[i].children[0]);
+                    }
                 }
-            }
-            setTimeout(function() { $('#gclh_show_bigger_avatars').removeClass("working"); }, 750);
+                $('#gclh_show_bigger_avatars').removeClass("working");
+            }, 100);
         } catch (e) { gclh_error("showBiggerAvatars:", e); }
     }
 
@@ -6970,44 +6992,39 @@ return;
             // Load all logs.
             function gclh_load_all(logs) {
                 function gclh_load_all_logs() {
-                    if (logs) {
-                        var tbodys = (document.getElementById("cache_logs_table2") || document.getElementById("cache_logs_table")).getElementsByTagName("tbody");
-                        for (var i = 0; i < tbodys.length; i++) {
-                            (document.getElementById("cache_logs_table2") || document.getElementById("cache_logs_table")).removeChild(tbodys[i]);
-                        }
-                        if (browser === "firefox") {
-                            injectPageScript("var unsafeWindow = unsafeWindow||window; " + gclh_dynamic_load.toString() + " var settings_hide_top_button=" + settings_hide_top_button + "; ");
-                            injectPageScript("(" + addNewLogLines.toString() + ")(\"" + encodeURIComponent(JSON.stringify(logs)) + "\");");
-                            window.postMessage("gclh_add_vip_icon", "https://www.geocaching.com");
-                            window.postMessage("setLinesColorInCacheListing", "https://www.geocaching.com");
-                        } else {
-                            for (var i = 0; i < logs.length; i++) {
-                                if (logs[i]) {
-                                    var newBody = unsafeWindow.$(document.createElement("TBODY"));
-                                    unsafeWindow.$("#tmpl_CacheLogRow_gclh").tmpl(logs[i]).appendTo(newBody);
-                                    injectPageScript("$('a.tb_images').fancybox({'type': 'image', 'titlePosition': 'inside'});");
-                                    unsafeWindow.$(document.getElementById("cache_logs_table2") || document.getElementById("cache_logs_table")).append(newBody.children());
-                                }
+                    $('#gclh_load_all_logs').addClass("working");
+                    setTimeout(function() {
+                        if (logs) {
+                            var tbodys = (document.getElementById("cache_logs_table2") || document.getElementById("cache_logs_table")).getElementsByTagName("tbody");
+                            for (var i = 0; i < tbodys.length; i++) {
+                                (document.getElementById("cache_logs_table2") || document.getElementById("cache_logs_table")).removeChild(tbodys[i]);
                             }
-                            gclh_add_vip_icon();
-                            setLinesColorInCacheListing();
+                            if (browser === "firefox") {
+                                injectPageScript("var unsafeWindow = unsafeWindow||window; " + gclh_dynamic_load.toString() + " var settings_hide_top_button=" + settings_hide_top_button + "; ");
+                                injectPageScript("(" + addNewLogLines.toString() + ")(\"" + encodeURIComponent(JSON.stringify(logs)) + "\");");
+                                window.postMessage("gclh_add_vip_icon", "https://www.geocaching.com");
+                                window.postMessage("setLinesColorInCacheListing", "https://www.geocaching.com");
+                            } else {
+                                for (var i = 0; i < logs.length; i++) {
+                                    if (logs[i]) {
+                                        var newBody = unsafeWindow.$(document.createElement("TBODY"));
+                                        unsafeWindow.$("#tmpl_CacheLogRow_gclh").tmpl(logs[i]).appendTo(newBody);
+                                        injectPageScript("$('a.tb_images').fancybox({'type': 'image', 'titlePosition': 'inside'});");
+                                        unsafeWindow.$(document.getElementById("cache_logs_table2") || document.getElementById("cache_logs_table")).append(newBody.children());
+                                    }
+                                }
+                                gclh_add_vip_icon();
+                                setLinesColorInCacheListing();
+                            }
+                            setMarkerDisableDynamicLogLoad();
+                            if (document.getElementById("gclh_show_log_counter")) document.getElementById("gclh_show_log_counter").style.visibility = "";
                         }
-                        setMarkerDisableDynamicLogLoad();
-                        if (document.getElementById("gclh_show_log_counter")) document.getElementById("gclh_show_log_counter").style.visibility = "";
-                    }
+                        $('#gclh_load_all_logs').removeClass("working");
+                    }, 100);
                 }
-
-                var load_all = document.createElement("a");
-                load_all.appendChild(document.createTextNode("Show all logs"));
-                load_all.setAttribute("href", "javascript:void(0);");
-                load_all.setAttribute("id", "gclh_load_all_logs");
-                document.getElementById("ctl00_ContentBody_uxLogbookLink").parentNode.appendChild(document.createTextNode(" | "));
-                document.getElementById("ctl00_ContentBody_uxLogbookLink").parentNode.appendChild(load_all);
-                document.getElementById("ctl00_ContentBody_uxLogbookLink").parentNode.style.width = "100%";
-                document.getElementById("ctl00_ContentBody_uxLogbookLink").parentNode.style.margin = "0";
                 var para = document.getElementById('ctl00_ContentBody_lblFindCounts').nextSibling.nextSibling.nextSibling.nextSibling;
                 if (para && para.nodeName == 'P') para.className = para.className + ' Clear';
-                load_all.addEventListener("click", gclh_load_all_logs, false);
+                addLinksOverLogs(gclh_load_all_logs, "gclh_load_all_logs", false, "Show all logs", "");
                 showLogCounterLink();
             }
 
@@ -8596,42 +8613,42 @@ return;
 
 // Show log counter.
     function showLogCounterLink() {
-        addRightLinksOverLogs(showLogCounter, "gclh_show_log_counter", "Show log counter", "Show log counter for log type and total");
+        addLinksOverLogs(showLogCounter, "gclh_show_log_counter", true, "Show log counter", "Show log counter for log type and total");
         appendCssStyle(".gclh_logCounter {font-size: 10px !important; padding-left: 6px; font-style: italic;}");
     }
     function showLogCounter() {
         try {
             $('#gclh_show_log_counter').addClass("working");
-            var logCounter = new Object();
-            logCounter["all"] = 0;
-            var logTypes = document.getElementsByClassName("LogTotals")[0].getElementsByTagName("a");
-            for (var i = 0; i < logTypes.length; i++) {
-                var matches = logTypes[i].innerHTML.replace(/(,|\.)/g, "").match(/>(\s*)(\d+)/);
-                if (matches && matches[2]) {
-                    logCounter[logTypes[i].childNodes[0].title] = parseInt(matches[2]);
-                    logCounter["all"] += parseInt(matches[2]);
-                }
-            }
-            if (logCounter["all"] != 0) {
-                var logs = $('#cache_logs_table2').find('tbody tr td').find('.LogType');
-                for (var i = 0; i < logs.length; i++) {
-                    var log = logs[i];
-                    if (log && log.children[1] && log.children[0].children[0].title && logCounter[log.children[0].children[0].title]) {
-                        var logTyp = log.children[0].children[0].title;
-                        log.children[1].innerHTML = " Log " + logCounter[logTyp] + " / Total Log " + logCounter["all"];
-                        logCounter[logTyp]--;
-                        logCounter["all"]--;
+            setTimeout(function() {
+                var logCounter = new Object();
+                logCounter["all"] = 0;
+                var logTypes = document.getElementsByClassName("LogTotals")[0].getElementsByTagName("a");
+                for (var i = 0; i < logTypes.length; i++) {
+                    var matches = logTypes[i].innerHTML.replace(/(,|\.)/g, "").match(/>(\s*)(\d+)/);
+                    if (matches && matches[2]) {
+                        logCounter[logTypes[i].childNodes[0].title] = parseInt(matches[2]);
+                        logCounter["all"] += parseInt(matches[2]);
                     }
                 }
-            }
-            setTimeout(function() { $('#gclh_show_log_counter').removeClass("working"); }, 750);
+                if (logCounter["all"] != 0) {
+                    var logs = $('#cache_logs_table2').find('tbody tr td').find('.LogType');
+                    for (var i = 0; i < logs.length; i++) {
+                        var log = logs[i];
+                        if (log && log.children[1] && log.children[0].children[0].title && logCounter[log.children[0].children[0].title]) {
+                            var logTyp = log.children[0].children[0].title;
+                            log.children[1].innerHTML = " Log " + logCounter[logTyp] + " / Total Log " + logCounter["all"];
+                            logCounter[logTyp]--;
+                            logCounter["all"]--;
+                        }
+                    }
+                }
+                $('#gclh_show_log_counter').removeClass("working");
+            }, 100);
         } catch (e) { gclh_error("showLogCounter:", e); }
     }
 
-// Add right links over logs in cache listing.
-    function addRightLinksOverLogs(func, id, txt, title) {
-        var img = document.createElement("img");
-        img.setAttribute("src", "/images/loading2.gif");
+// Add links over logs in cache listing.
+    function addLinksOverLogs(func, id, right, txt, title) {
         var a = document.createElement("a");
         a.appendChild(document.createTextNode(txt));
         a.setAttribute("title", title);
@@ -8639,15 +8656,22 @@ return;
         a.addEventListener("click", func, false);
         var span = document.createElement("span");
         span.setAttribute("id", id);
-        span.setAttribute("class", "gclh_rlol");
-        span.appendChild(img);
-        span.appendChild(a);
-        if ($('.gclh_rlol').length == 0) {
-            var css = ".gclh_rlol {float: right; margin-right: 4px;} .gclh_rlol img {position: absolute; margin-top: 2px; visibility: hidden;}"
-                    + ".gclh_rlol.working a {opacity: 0.3;} .gclh_rlol.working img {visibility: initial;}";
-            appendCssStyle(css);
+        if (right) span.setAttribute("class", "gclh_rlol");
+        else span.setAttribute("class", "gclh_llol");
+        if ($('.gclh_llol').length == 0 && $('.gclh_rlol').length == 0) {
+            appendCssStyle( ".gclh_llol {margin-right: 4px;} .gclh_rlol {float: right; margin-right: 4px;} .gclh_llol.working a, .gclh_rlol.working a {opacity: 0.3;}" );
             $('#ctl00_ContentBody_uxLogbookLink')[0].parentNode.style.width = "100%";
-        } else span.appendChild(document.createTextNode(" |"));
+            $('#ctl00_ContentBody_uxLogbookLink')[0].parentNode.style.margin = "0";
+        }
+        if (right == false) {
+            span.appendChild(document.createTextNode(" | "));
+            span.appendChild(a);
+        } else if (right && $('.gclh_rlol').length != 0) {
+            span.appendChild(a);
+            span.appendChild(document.createTextNode(" | "));
+        } else {
+            span.appendChild(a);
+        }
         $('#ctl00_ContentBody_uxLogbookLink')[0].parentNode.appendChild(span);
     }
 
@@ -11554,11 +11578,12 @@ function is_link(name, url) {
         case "hide_cache":
             if (url.match(/^https?:\/\/www\.geocaching\.com\/play\/hide/)) status = true;
             break;
-        case "settings":
-            if (url.match(/^https?:\/\/www\.geocaching\.com\/account\/(settings|lists)/)) status = true;
-            break;
         case "messagecenter":
             if (url.match(/^https?:\/\/www\.geocaching\.com\/account\/messagecenter/)) status = true;
+            break;
+        case "settings":
+            // settings, lists, dashboard
+            if (url.match(/^https?:\/\/www\.geocaching\.com\/account/)) status = true;
             break;
         case "geotours":
             if (url.match(/^https?:\/\/www\.geocaching\.com\/play\/geotours/)) status = true;
