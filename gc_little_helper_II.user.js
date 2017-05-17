@@ -637,6 +637,13 @@ var mainOSM = function () {
 ////////////////////////////////////////////////////////////////////////////
 var mainGC = function () {
 
+// Die neuen Seiten von GS aus der Verarbeitung nehmen.
+    if ( ( document.location.href.match(/^https?:\/\/www\.geocaching\.com\/account\//) && !document.location.href.match(/account\/(settings|lists)/) ) ||
+         ( document.location.href.match(/^https?:\/\/www\.geocaching\.com\/p\//) )     ) {
+        console.log("GClh: Unknown page, do nothing");
+        return;
+    }
+    
 // Run after redirect.
     if (typeof(unsafeWindow.__doPostBack) == "function") {
         try {
@@ -6105,19 +6112,21 @@ var mainGC = function () {
                 $('#divContentMain').find('p').first().find('a[href*="/account/lists"]').prop("href", "/my/lists.aspx");
             }
             
-            // Hide TBs/Coins in profile.
-            if (settings_hide_visits_in_profile) {
-                $(".Table.WordWrap tr").filter(function (index) {
-                    return $(this).find("img[src$='logtypes/75.png']").length !== 0;
-                }).remove();
-            }
+            if ($('#ctl00_ContentBody_WidgetMiniProfile1_LoggedInPanel').length > 0) {
+                // Hide TBs/Coins in profile.
+                if (settings_hide_visits_in_profile) {
+                    $(".Table.WordWrap tr").filter(function (index) {
+                        return $(this).find("img[src$='logtypes/75.png']").length !== 0;
+                    }).remove();
+                }
 
-            // Remove fixed column width in profiles last 30 days logs for fewer linebreaks.
-            if ($('.Table.WordWrap tr').length > 0) {
-                $('.Table.WordWrap')[0].setAttribute("style", "table-layout: unset;");
-                $('.Table.WordWrap tr td').each(function () { 
-                    this.setAttribute("style", "width: unset;" + (in_array(this.cellIndex, [0,1,4]) ? " white-space: nowrap;" : ""));
-                });
+                // Remove fixed column width in profiles last 30 days logs for fewer linebreaks.
+                if ($('.Table.WordWrap tr').length > 0) {
+                    $('.Table.WordWrap')[0].setAttribute("style", "table-layout: unset;");
+                    $('.Table.WordWrap tr td').each(function () { 
+                        this.setAttribute("style", "width: unset;" + (in_array(this.cellIndex, [0,1,4]) ? " white-space: nowrap;" : ""));
+                    });
+                }
             }
         } catch (e) { gclh_error("Improve my profile:", e); }
     }
@@ -11346,12 +11355,11 @@ function is_link(name, url) {
         case "hide_cache":
             if (url.match(/^https?:\/\/www\.geocaching\.com\/play\/hide/)) status = true;
             break;
+        case "settings":
+            if (url.match(/^https?:\/\/www\.geocaching\.com\/account\/(settings|lists)/)) status = true;
+            break;
         case "messagecenter":
             if (url.match(/^https?:\/\/www\.geocaching\.com\/account\/messagecenter/)) status = true;
-            break;
-        case "settings":
-            // settings, lists, dashboard
-            if (url.match(/^https?:\/\/www\.geocaching\.com\/account/)) status = true;
             break;
         case "geotours":
             if (url.match(/^https?:\/\/www\.geocaching\.com\/play\/geotours/)) status = true;
