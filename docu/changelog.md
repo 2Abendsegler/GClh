@@ -196,6 +196,12 @@ New: <b>Message after successful installation with the possibility to open the c
 <br>
 </li>
 <li>
+Change: <b>Try to implement another direct way to link KML files to google maps:</b> [Issue <a href="https://github.com/2Abendsegler/GClh/issues/183">#183</a>]<br>
+It is only possible to load KML files to google maps if one is logged in to own google account. The URL of this is specially. There seems to be no direct way to link KML files from gc.com to to the specially google account url. <br>
+The useable way to load KML files to google maps is the download from gc.com and the upload to the own google account. The additional functionality of GClh was removed.<br>
+<br>
+</li>
+<li>
 Change: <b>Consolidate F2, F4, F10 key functions for better expandability.</b> [Issue <a href="https://github.com/2Abendsegler/GClh/issues/345">#345</a>]<br>
 <br>
 </li>
