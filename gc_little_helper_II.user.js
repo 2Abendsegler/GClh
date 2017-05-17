@@ -676,26 +676,6 @@ var mainGC = function () {
         } catch (e) { gclh_error("Run after redirect", e); }
     }
 
-//xxxx4
-/*
-            GM_xmlhttpRequest({
-                method: 'GET',
-                url: "https://www.geocaching.com/kml/bmkml.aspx?bmguid=624af344-6446-43f3-b43e-95017fa42bee",
-                onload:  function (response) {
-                console.log(response.status);
-                console.log(response.responseText);
-                console.log(response);
-                }
-            });
-       
-    
-    
-    
-    
-    
-*/    
-//xxxx4
-
 // Set language to default language.
     if ( settings_set_default_langu ) {
         try {
@@ -723,13 +703,11 @@ var mainGC = function () {
         } catch (e) { gclh_error("Faster loading profile trackables:", e); }
     }
 
-// Migration: Installationszähler. Aktuelle TB Rules laden. Migrationsaufgaben erledigen.
+// Migration: Installationszähler. Migrationsaufgaben erledigen.
     var declaredVersion = getValue("declared_version");
     if ( declaredVersion != scriptVersion ) {
         try {
             instCount(declaredVersion);
-//--> $$065 Begin of insert
-//<-- $$065 End of insert
             migrationTasks();
         } catch (e) { gclh_error("Migration:", e); }
     }
@@ -2138,6 +2116,7 @@ var mainGC = function () {
                 css += ".pq-info-wrapper {margin: 0; padding: 10px 0 0 0; background-color: unset; box-shadow: unset;} .pq-info-wrapper p:last-child {padding: 0;}";
                 css += "#Content .ui-tabs {margin-top: 3.4em;} .ui-tabs-active {box-shadow: 2px 0px 0 rgba(0,0,0,.2);} .ui-tabs .ui-tabs-nav li {margin-right: 4px;}";
                 css += ".Success {margin: 5px 0 0 0;} #Tabs {box-shadow: 2px 2px 0 rgba(0,0,0,.2);}";
+                css += ".BreadcrumbWidget p {margin-top: 0;}";
                 if ($('#ctl00_ContentBody_lbHeading').length > 0 && $('#divContentMain h2').length > 0) {
                     var h3 = document.createElement("h3");
                     $('#ctl00_ContentBody_lbHeading')[0].parentNode.parentNode.insertBefore(h3, $('#ctl00_ContentBody_lbHeading')[0].parentNode);
@@ -4340,6 +4319,7 @@ var mainGC = function () {
                 var css = "";
                 // Header:
                 css += ".ListManagementFavoritesWidget, .ListsManagemntWatchlistWidget {margin: 0 0 1.5em; padding: 0.5em;}";
+                css += ".BreadcrumbWidget p {margin-top: 0;} .span-20.last p:nth-child(1) {margin-bottom: 0}";
                 $('#divContentMain div h2').first().remove();
                 $('#divContentMain p.NoBottomSpacing').first().remove();
                 $('#divContentMain div h3').first().closest('div').remove();
@@ -4350,10 +4330,6 @@ var mainGC = function () {
                 $('table.Table thead tr')[0].children[1].innerHTML = "Status";
                 $('table.Table thead tr')[0].children[5].innerHTML = "PQ";
                 $('table.Table thead tr')[0].children[6].innerHTML = "KML";
-                var th = document.createElement("th");
-                th.setAttribute("scope", "col");
-                th.appendChild(document.createTextNode("GMaps"));
-                $('table.Table thead tr')[0].append(th);
                 var lines = $('table.Table tbody tr');
                 for (var i = 0; i < lines.length; i++) {
                     while (lines[i].children[2].childNodes[2]) { lines[i].children[2].childNodes[2].remove(); }
@@ -4366,25 +4342,10 @@ var mainGC = function () {
                     lines[i].children[4].childNodes[2].remove();
                     lines[i].children[5].children[0].innerHTML = '<img src="/images/icons/16/bookmark_pq.png" alt="Create PQ">';
                     lines[i].children[6].children[0].innerHTML = '<img src="/images/icons/16/download.png" alt="Download">';
-                    var td = document.createElement("td");
-                    var matches = lines[i].children[6].children[0].href.match(/guid=([a-zA-Z0-9-]*)/);
-                    if (matches && matches[1]) {
-                        td.innerHTML = "<a title='Show in google maps' href='http://maps.google.com/?q=https://www.geocaching.com/kml/bmkml.aspx?bmguid=" + matches[1] + "' target='_blank'><img src='/images/silk/map_go.png' style='vertical-align: middle;' alt='GMaps'></a>";
-                    }
-                    lines[i].append(td);
                 }
                 // Footer:
                 $('#divContentMain div ul').first().remove();
                 appendCssStyle(css);
-            // No compact layout, only build link.
-            } else {
-                var lines = $('table.Table tbody tr');
-                for (var i = 0; i < lines.length; i++) {
-                    var matches = lines[i].children[6].children[0].href.match(/guid=([a-zA-Z0-9-]*)/);
-                    if (matches && matches[1]) {
-                        lines[i].children[6].innerHTML += "<br><a title='Show in google maps' href='http://maps.google.com/?q=https://www.geocaching.com/kml/bmkml.aspx?bmguid=" + matches[1] + "' target='_blank'>Show in google maps</a>";
-                    }
-                }
             }
         } catch (e) { gclh_error("Improve list of bookmark lists:", e); }
     }
@@ -4397,8 +4358,7 @@ var mainGC = function () {
                 var matches = document.location.href.match(/guid=([a-zA-Z0-9-]*)/);
                 if (matches && matches[1]) {
                     var uuidx = matches[1];
-                    var kml = "<a style=\"padding-right: 20px;\" title=\"Download as kml\" href='" + http + "://www.geocaching.com/kml/bmkml.aspx?bmguid=" + uuidx + "'>Download as kml</a>";
-                    var gm = "<a title=\"Show in google maps\" href='http://maps.google.com/?q=https://www.geocaching.com/kml/bmkml.aspx?bmguid=" + uuidx + "' target='_blank'>Show in google maps</a>";
+                    var kml = "<a style=\"padding-right: 20px;\" title=\"Download Google Earth kml\" href='" + http + "://www.geocaching.com/kml/bmkml.aspx?bmguid=" + uuidx + "'>Download as kml</a>";
                 }
             }
             // Compact layout.
@@ -4427,7 +4387,7 @@ var mainGC = function () {
                     if (LO.nextElementSibling.innerHTML == "") LO.nextElementSibling.remove();
                     else LO.nextElementSibling.style.marginBottom = "0";
                     LO.style.marginBottom = "0";
-                    if (uuidx) LO.innerHTML += "<span style='float: right; padding-right: 210px;'>" + kml + gm + "</span>";
+                    if (uuidx) LO.innerHTML += "<span style='float: right; padding-right: 210px;'>" + kml + "</span>";
                 }
                 // Table:
                 css += "table.Table tr {line-height: 16px;}";
@@ -4447,7 +4407,7 @@ var mainGC = function () {
                 appendCssStyle(css);
             // No compact layout, only build links.
             } else {
-                if (uuidx) $('#ctl00_ContentBody_lbHeading')[0].parentNode.parentNode.parentNode.childNodes[3].innerHTML += "<br>" + kml + "<br>" + gm;
+                if (uuidx) $('#ctl00_ContentBody_lbHeading')[0].parentNode.parentNode.parentNode.childNodes[3].innerHTML += "<br>" + kml;
             }
         } catch (e) { gclh_error("Improve bookmark lists:", e); }
     }
@@ -5360,7 +5320,6 @@ var mainGC = function () {
         } catch (e) { gclh_error("Append '&visitcount=1' to all geochecker.com links:", e); }
     }
 
-/*
 // Show amount of different coins in public profile.
     if (document.location.href.match(/^https?:\/\/www\.geocaching\.com\/profile\//) && document.getElementById('ctl00_ContentBody_ProfilePanel1_lnkCollectibles') && document.getElementById('ctl00_ContentBody_ProfilePanel1_lnkCollectibles').className == "Active") {
         try {
@@ -5449,181 +5408,6 @@ var mainGC = function () {
             if ( document.getElementById("ctl00_ContentBody_ProfilePanel1_dlCollectiblesOwned") ) gclh_coin_stats("ctl00_ContentBody_ProfilePanel1_dlCollectiblesOwned");
         } catch (e) { gclh_error("Show Coin-Sums:", e); }
     }
-*/
-
-//--> $$065 Begin of insert
-// Show amount of different coins in public profile.
-    if (document.location.href.match(/^https?:\/\/www\.geocaching\.com\/profile\//) && document.getElementById('ctl00_ContentBody_ProfilePanel1_lnkCollectibles') && document.getElementById('ctl00_ContentBody_ProfilePanel1_lnkCollectibles').className == "Active") {
-        try {
-            function gclh_coin_stats(table_id) {
-//xxxx2
-                
-                var trs = $('#'+table_id).find('table.Table:first tbody').children().remove(); 
-                
-                var tbgrs = new Array();
-                buildTbGr("Travel Bugs", /(travel bug)/);
-                buildTbGr("Geocoins", /(geocoin)/);
-                buildTbGr("Geopatchs", /(geopatch)/);
-                buildTbGr("Signals", /(signal)/);
-                buildTbGr("Unknown", "");
-                function buildTbGr(name, search) {
-                    var tbgr = new Object();
-                    tbgr.name = name;
-                    tbgr.ident = name.replace(/(\s|\W)/g,"_");
-                    tbgr.search = search;
-                    tbgrs[tbgrs.length] = tbgr;
-                }
-                
-                for (var i = 0; i < tbgrs.length; i++) {
-                    prepareTable(tbgrs[i]);
-                }
-                function prepareTable(tbgr) {
-                        var html = '';
-                        html += '<td colspan="3" style="padding: 0px;">';
-                        html += '    <table class="Table gclh_table ' + tbgr.ident + '">';
-                        html += '        <thead><tr>';
-                        html += '                <th id="' + tbgr.ident + '" scope="col"></th>';
-                        html += '                <th  scope="col">' + tbgr.name + '</th>';
-                        html += '                <th class="AlignRight" scope="col">0</th>';
-                        html += '        </tr></thead>';
-                        html += '        <tbody style="display: none;"></tbody>';
-                        html += '    </table>';
-                        html += '</td>';
-                        var tr = document.createElement("tr");
-                        tr.innerHTML = html;
-                        $('#'+table_id).find('table.Table:first tbody')[0].appendChild(tr);
-                }
-                var css = "";
-                css += ".gclh_table thead {background-color: #ede5dc;}";
-                css += ".gclh_table th {background-color: unset !important; padding: 0;}";
-                appendCssStyle(css);
-
-// Also:
-// 1. Summensätze aufbauen
-// 2. TRs removen und intern halten
-// 3. Zuordnung analysieren und in trs class setzen
-// 4. Summen in Summensätzen fortschreiben, schon jetzt, falls das nett aussieht 
-// 5. trs am Ende der Analyse unter die neuen Summensätze donnern.
-                
-/*  Das geht
-                var count1 = 0;
-                var count2 = 0;
-                var fup = $('#'+table_id).find('table.Table:first tbody').children().each(function () { 
-                    if (this.children[1] && this.children[1].innerHTML.match(/german/i)){
-                        // diese Teile würde man dann später insgesamt je Name moven
-                        // Und man kann jetzt bereits den Summensatz anlegen, das ist dann wohl ein table, oder zumindest könnte man ihn aufbauen intern
-                        this.setAttribute("class", "fup");
-                        count1 += parseInt(this.children[2].innerHTML, 10);
-                        count2++;
-                    } 
-                });   
-*/
-/*  Das geht
-                var count1 = 0;
-                var count2 = 0;
-                var fup = $('#'+table_id).find('table.Table:first tbody tr').children().each(function () { 
-                    if (this.innerHTML.match(/german/i)){
-                        this.setAttribute("class", "fup");
-                        count1 += parseInt(this.parentNode.childNodes[5].innerHTML, 10);
-                        count2++;
-                    } 
-                });   
-                //find('a[href*="/profile/?guid="]').text();
-                //childNodes().match(/travel bug/i);//  childNodes[5];//find('tr td:eq(1)'); //children().;//find('td').[1];//.children[1];//.childNodes[0].data.match(/travel bug/i).closest('tr');
-console.log( fup.length );
-console.log( fup );
-console.log( count1 );
-console.log( count2 );
-return;
-*/
-                
-/*                
-                var table = document.getElementById(table_id).getElementsByTagName("table");
-                table = table[0];
-                var rows = table.getElementsByTagName("tbody")[0].getElementsByTagName("tr");
-                var sums = new Object();
-                sums["tbs"] = 0;
-                sums["coins"] = 0;
-                sums["patches"] = 0;
-                sums["signal"] = 0;
-                sums["unknown"] = 0;
-                var diff = new Object();
-                diff["tbs"] = 0;
-                diff["coins"] = 0;
-                diff["patches"] = 0;
-                diff["signal"] = 0;
-                diff["unknown"] = 0;
-
-                for (var i = 0; i < (rows.length - 1); i++) {
-                    if (rows[i].innerHTML.match(/travel bug/i)) {
-                        diff["tbs"]++;
-                        sums["tbs"] += parseInt(rows[i].childNodes[5].innerHTML, 10);
-                    } else if (rows[i].innerHTML.match(/geocoin/i)) {
-                        diff["coins"]++;
-                        sums["coins"] += parseInt(rows[i].childNodes[5].innerHTML, 10);
-                    } else if (rows[i].innerHTML.match(/geopatch/i)) {
-                        diff["patches"]++;
-                        sums["patches"] += parseInt(rows[i].childNodes[5].innerHTML, 10);
-                    } else if (rows[i].innerHTML.match(/signal/i)) {
-                        diff["signal"]++;
-                        sums["signal"] += parseInt(rows[i].childNodes[5].innerHTML, 10);
-                    } else {
-                        diff["unknown"]++;
-                        sums["unknown"] += parseInt(rows[i].childNodes[5].innerHTML, 10);
-                    }
-                }
-
-                var tfoot = table.getElementsByTagName("tfoot")[0];
-                var tr = document.createElement("tr");
-                var td = document.createElement("td");
-                var new_table = "";
-                td.colSpan = 3;
-
-                new_table += "<table>";
-                new_table += "  <tr>";
-                new_table += "    <td></td>";
-                new_table += "    <td><b>Sum</b></td>";
-                new_table += "    <td><b>Different</b></td>";
-                new_table += "  </tr>";
-                new_table += "  <tr>";
-                new_table += "    <td><b>Travel Bugs:</b></td>";
-                new_table += "    <td style='text-align: center;'>" + sums["tbs"] + "</td>";
-                new_table += "    <td style='text-align: center;'>" + diff["tbs"] + "</td>";
-                new_table += "  </tr>";
-                new_table += "  <tr>";
-                new_table += "    <td><b>Geocoins:</b></td>";
-                new_table += "    <td style='text-align: center;'>" + sums["coins"] + "</td>";
-                new_table += "    <td style='text-align: center;'>" + diff["coins"] + "</td>";
-                new_table += "  </tr>";
-                new_table += "  <tr>";
-                new_table += "    <td><b>Geopatches:</b></td>";
-                new_table += "    <td style='text-align: center;'>" + sums["patches"] + "</td>";
-                new_table += "    <td style='text-align: center;'>" + diff["patches"] + "</td>";
-                new_table += "  </tr>";
-                new_table += "  <tr>";
-                new_table += "    <td><b>Signal Tags:</b></td>";
-                new_table += "    <td style='text-align: center;'>" + sums["signal"] + "</td>";
-                new_table += "    <td style='text-align: center;'>" + diff["signal"] + "</td>";
-                new_table += "  </tr>";
-                if (sums["unknown"] > 0 || diff["unknown"] > 0) {
-                    new_table += "  <tr>";
-                    new_table += "    <td><b>Unknown:</b></td>";
-                    new_table += "    <td style='text-align: center;'>" + sums["unknown"] + "</td>";
-                    new_table += "    <td style='text-align: center;'>" + diff["unknown"] + "</td>";
-                    new_table += "  </tr>";
-                    new_table += "</table>";
-                }
-                td.innerHTML = new_table;
-                tr.appendChild(td);
-                tfoot.appendChild(tr);
-*/
-            }
-
-            if ( document.getElementById("ctl00_ContentBody_ProfilePanel1_dlCollectibles") ) gclh_coin_stats("ctl00_ContentBody_ProfilePanel1_dlCollectibles");
-//            if ( document.getElementById("ctl00_ContentBody_ProfilePanel1_dlCollectiblesOwned") ) gclh_coin_stats("ctl00_ContentBody_ProfilePanel1_dlCollectiblesOwned");
-        } catch (e) { gclh_error("Show Coin-Sums:", e); }
-    }
-//<-- $$065 End of insert
 
 // Auto-Visit.
     if (settings_autovisit && document.location.href.match(/^https?:\/\/www\.geocaching\.com\/seek\/log\.aspx/) && !document.location.href.match(/^https?:\/\/www\.geocaching\.com\/seek\/log\.aspx\?LUID=/) && !document.getElementById('ctl00_ContentBody_LogBookPanel1_CoordInfoLinkControl1_uxCoordInfoCode')) {
@@ -9481,8 +9265,6 @@ return;
 
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>Trackables</b></div>";
             html += checkboxy('settings_faster_profile_trackables', 'Load trackables faster without images') + show_help("With this option, you can stop the load on the trackable pages after the necessary datas are loaded. You disclaim of the lengthy load of the images of the trackables. This procedure is much faster as load all datas, because every image is loaded separate and not in a bigger bundle like it is for the non image data.") + "<br/>";
-//--> $$065 Begin of insert
-//<-- $$065 End of insert
 
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>Statistic</b></div>";
             html += checkboxy('settings_count_own_matrix', 'Calculate your cache matrix') + show_help("With this option the count of found difficulty and terrain combinations and the count of complete matrixes are calculated and shown above the cache matrix on your statistic page.") + "<br/>";
@@ -10125,8 +9907,6 @@ return;
             document.getElementById('restore_settings_font_color_menu_submenu').addEventListener("click", restoreField, false);
             document.getElementById('restore_settings_font_color_menu_submenuX0').addEventListener("click", restoreField, false);
             document.getElementById('restore_settings_count_own_matrix_show_color_next').addEventListener("click", restoreField, false);
-//--> $$065 Begin of insert
-//<-- $$065 End of insert
             document.getElementById('settings_process_vup').addEventListener("click", alert_settings_process_vup, false);
             document.getElementById('settings_process_vupX0').addEventListener("click", alert_settings_process_vup, false);
 
@@ -10237,8 +10017,6 @@ return;
             setEventsForDependentParameters( "settings_remove_banner", "settings_remove_banner_for_garminexpress" );
             setEventsForDependentParameters( "settings_driving_direction_link", "settings_driving_direction_parking_area" );
             setEventsForDependentParameters( "settings_improve_add_to_list", "settings_improve_add_to_list_height" );
-//--> $$065 Begin of insert
-//<-- $$065 End of insert
             // Abhängigkeiten der Linklist Parameter.
             for (var i = 0; i < 100; i++) {
                 // 2. Spalte: Links für die Custom Bookmarks.
@@ -10382,8 +10160,6 @@ return;
             setValue("settings_pq_terrain", document.getElementById('settings_pq_terrain').value);
             setValue("settings_pq_terrain_score", document.getElementById('settings_pq_terrain_score').value);
             setValue("settings_improve_add_to_list_height", document.getElementById('settings_improve_add_to_list_height').value);
-//--> $$065 Begin of insert
-//<-- $$065 End of insert
 
             // Map Layers in vorgegebener Reihenfolge übernehmen.
             var new_map_layers_available = document.getElementById('settings_maplayers_available');
@@ -10481,8 +10257,6 @@ return;
                 'settings_hide_colored_versions',
                 'settings_make_config_main_areas_hideable',
                 'settings_faster_profile_trackables',
-//--> $$065 Begin of insert
-//<-- $$065 End of insert
                 'settings_show_google_maps',
                 'settings_show_log_it',
                 'settings_show_nearestuser_profil_link',
@@ -11234,9 +11008,6 @@ return;
         window.location.reload(false);
     }
 
-//--> $$065 Begin of insert
-//<-- $$065 End of insert
-
 ////////////////////////////////////////////////////////////////////////////
 // Sync
 ////////////////////////////////////////////////////////////////////////////
@@ -11499,9 +11270,6 @@ function profileSpecialBookmark(title, href, name, bookmarkArray) {
     var bm = bookmark(title, href, bookmarkArray);
     bm['name'] = name;
 }
-
-//--> $$065 Begin of insert
-//<-- $$065 End of insert
 
 // Check if the current document location matches the given path.
 function isLocation(path) {
