@@ -2,7 +2,7 @@
 // @name             GC little helper II
 // @namespace        http://www.amshove.net
 //--> $$000 Begin of change
-// @version          0.7.2
+// @version          0.8
 //<-- $$000 End of change
 // @include          http*://www.geocaching.com/*
 // @include          http*://labs.geocaching.com/*
@@ -3456,17 +3456,15 @@ var mainGC = function () {
         return tbl;
     }
 
-// (xxxx) Driving direction for every waypoint (issue #252).
+// Driving direction for every waypoint (issue #252).
     if ( settings_driving_direction_link && (
-        is_page("cache_listing") ||
-        document.location.href.match(/^https?:\/\/www\.geocaching\.com\/hide\/wptlist.aspx/) ) ) {
+        is_page("cache_listing") || document.location.href.match(/^https?:\/\/www\.geocaching\.com\/hide\/wptlist.aspx/) ) ) {
 
         try {
             var tbl = getWaypointTable();
             var length = tbl.find("tbody > tr").length;
             for ( var i=0; i<length/2; i++ ) {
                 var row1st = tbl.find("tbody > tr").eq(i*2);
-
                 var name = row1st.find("td:eq(5)").text().trim();
                 var icon = row1st.find("td:eq(2) > img").attr('src');
                 var cellCoordinates = row1st.find("td:eq(6)");
@@ -3474,27 +3472,17 @@ var mainGC = function () {
                 if ( ( !settings_driving_direction_parking_area || icon.match(/pkg.jpg/g) ) && typeof tmp_coords[0] !== 'undefined' && typeof tmp_coords[1] !== 'undefined') {
                     var link = "http://maps.google.com/maps?f=d&hl=en&saddr="+getValue("home_lat", 0)/10000000+","+getValue("home_lng", 0)/10000000+"%20(Home%20Location)&daddr=";
                     row1st.find("td:last").append('<a title="Driving Directions" href="'+link+tmp_coords[0]+","+tmp_coords[1]+" ("+name+')" target="_blank"><img src="/images/icons/16/directions.png"></a>');
-                    // TODO: check if home_coords defined
                 }
             }
-        } catch( e ) {
-            gclh_error( "Driving direction for Waypoints: ", e );
-        }
+        } catch( e ) { gclh_error( "Driving direction for Waypoints: ", e ); }
     }
 
-// (xxxx) Show button, which open Flopp's Map with all waypoints of a cache and open Flopp's Map.
-// TODO: settings
-    if ( is_page("cache_listing") ||
-        document.location.href.match(/^https?:\/\/www\.geocaching\.com\/hide\/wptlist.aspx/) ) {
+// Show button, which open Flopp's Map with all waypoints of a cache and open Flopp's Map.
+    if ( is_page("cache_listing") || document.location.href.match(/^https?:\/\/www\.geocaching\.com\/hide\/wptlist.aspx/) ) {
 
         try {
             var css = "";
             css += ".GClhdropbtn {";
-            css += "    background-color: #4CAF50;";
-            css += "    color: white;";
-            css += "    padding: 10px;";
-            css += "    font-size: 16px;";
-            css += "    border: none;";
             css += "    cursor: pointer;";
             css += "}";
             css += ".GClhdropdown {";
@@ -3533,9 +3521,6 @@ var mainGC = function () {
             css += ".GClhdropdown:hover .GClhdropdown-content {";
             css += "    display: block;";
             css += "}";
-            css += ".GClhdropdown:hover .GClhdropbtn {";
-            css += "    background-color: #3e8e41;";
-            css += "}";
             appendCssStyle( css );
 
             var tbl = $('#ctl00_ContentBody_Waypoints');
@@ -3544,7 +3529,7 @@ var mainGC = function () {
             }
             tbl = tbl.next("p");
 
-            tbl.append('<div class="GClhdropdown"><div id="ShowWaypointsOnFloppsMap" class="GClhdropbtn">Show waypoints on Flopp\'s Map with &#8230;</div><div id="FloppsMapLayers" class="GClhdropdown-content"></div></div>');
+            tbl.append('<div class="GClhdropdown"><div id="ShowWaypointsOnFloppsMap" class="GClhdropbtn"><a>Show waypoints on Flopp\'s Map with &#8230;</a></div><div id="FloppsMapLayers" class="GClhdropdown-content"></div></div>');
 
             $('#FloppsMapLayers').append('<div id="floppsmap-warning" class="GClhdropdown-content-info"><b>WARNING:</b> There are too many waypoints in the listing. Flopp\'s Map allows only a limited number of waypoints. Not all waypoints are shown.</div>');
 
@@ -3559,31 +3544,23 @@ var mainGC = function () {
 
             var status = {};
             var waypoints = extractWaypointsFromListing();
-            // console.log(waypoints);
             var link = buildFloppsMapLink( waypoints, 'OSM', false, status );
-            if ( status.limited == true ) {
-                $("#floppsmap-warning").show();
-            } else {
-                $("#floppsmap-warning").hide();
-            }
+            if ( status.limited == true ) $("#floppsmap-warning").show();
+            else $("#floppsmap-warning").hide();
 
             function openFloppsMap( map ) {
                 var waypoints = extractWaypointsFromListing();
                 var link = buildFloppsMapLink( waypoints, map, false, {} );
                 window.open( link );
             }
-
             $('#ShowWaypointsOnFloppsMap').click( function() {
                 openFloppsMap("");
             });
-
             $('.GClhdropdown-content-layer').click( function() {
                 var map = $(this).data('map');
                 openFloppsMap(map);
             });
-        } catch( e ) {
-            gclh_error("Show button Flopp's Map and open Flopp's Map", e);
-        }
+        } catch( e ) { gclh_error("Show button Flopp's Map and open Flopp's Map", e); }
     }
 
     // Helper function: trim a decimal value to a given number of digits.
@@ -3623,10 +3600,7 @@ var mainGC = function () {
                             }
                         }
                         waypoint.subtype_name = firstText;
-
                         waypoint.link = td_list[5].getElementsByTagName("a")[0].getAttribute("href");
-
-                        // /images/icons/icon_viewable.jpg
 
                         var subtype = "";
                         var icon = waypoint.icon;
@@ -3660,14 +3634,11 @@ var mainGC = function () {
                     }
                 }
             }
-        } catch(e) {
-            gclh_error("getAdditionalWaypoints(): " ,e);
-        }
+        } catch(e) { gclh_error("getAdditionalWaypoints(): " ,e); }
         return addWP;
     }
 
     // This function reads the table with the additional waypoints.
-    // TODO: Find a better name and use getListingCoordinates.
     function getListingCoordinatesX() {
         var addWP  = [];
         try {
@@ -3716,10 +3687,8 @@ var mainGC = function () {
             waypoint.link = document.location.href;
             waypoint.cachetype = document.getElementById('cacheDetails').getElementsByClassName('cacheImage')[0].getElementsByTagName('img')[0].getAttribute('title');
 
-            addWP.push(waypoint); // TODO: added only if listing coordinates available
-        } catch(e) {
-            gclh_error("getListingCoordinatesX(): " ,e);
-        }
+            addWP.push(waypoint);
+        } catch(e) { gclh_error("getListingCoordinatesX(): " ,e); }
         return addWP;
     }
 
@@ -3793,7 +3762,6 @@ var mainGC = function () {
         var floppsMapWidth = Math.round(window.innerWidth*browserZoomLevel)-280; // minus width of sidebar
         var floppsMapHeigth = Math.round(window.innerHeight*browserZoomLevel)-50; // minus height of header
         var zoom=-1;
-        // console.log( "Calculate zoom level for Flopp's Map" + " (width="+floppsMapWidth+"px heigth="+floppsMapHeigth+"px)" );
         for ( zoom=23; zoom>=0; zoom--) {
             // Calculate tile boundary box.
             var tileY_min = lat2tile(Latmin,zoom);
@@ -3802,26 +3770,20 @@ var mainGC = function () {
             var tileX_min = long2tile(Lonmin,zoom);
             var tileX_max = long2tile(Lonmax,zoom);
             var tiles_X = Math.abs(tileX_max-tileX_min+1); // boundary box width in  number of tiles
-            // console.log( "  Tiles @ zoom="+zoom+": Xmin="+tileX_min+" Xmas="+tileX_max+" ΔX="+tiles_X+" => "+tiles_X*256+"px | Ymin="+tileY_min+" Ymax="+tileY_max+" ΔY="+tiles_Y+" => "+tiles_Y*256+"px" );
 
             // Calculate width and height of boundary rectangle (in pixel).
             var latDelta = Math.abs(tile2lat(tileY_max,zoom)-tile2lat(tileY_min+1,zoom));
             var latPixelPerDegree = tiles_Y*256/latDelta;
             var boundaryHeight = latPixelPerDegree*(Latmax-Latmin);
-            // console.log("boundaryHeight:  zoom="+zoom+" latDelta="+latDelta+"° * latPixelPerDegree="+latPixelPerDegree+"px/° = "+boundaryHeight+"px");
 
             var longDelta = Math.abs(tile2long(tileX_max+1,zoom)-tile2long(tileX_min,zoom));
             var longPixelPerDegree = tiles_X*256/longDelta;
             var boundaryWidth = longPixelPerDegree*(Lonmax-Lonmin);
-            // console.log("boundaryWidth: zoom="+zoom+" longDelta="+longDelta+"° longPixelPerDegree="+longPixelPerDegree+"px/° ="+boundaryWidth+"px");
 
             if ( (boundaryHeight < floppsMapHeigth ) && (boundaryWidth < floppsMapWidth ) ) {
                 break;
             }
         }
-
-        // TODO: problems if the zoom level to big
-        // TODO: danksagugng
 
         var url = "";
         status.limited = false;
@@ -3848,7 +3810,7 @@ var mainGC = function () {
         return encodeURI(url);
     }
 
-// (xxxx) Added elevation to every additional waypoint with shown coordinates (issue #250).
+// Added elevation to every additional waypoint with shown coordinates (issue #250).
     if ( settings_show_elevation_of_waypoints && (
         is_page("cache_listing") ||
         document.location.href.match(/^https?:\/\/www\.geocaching\.com\/hide\/wptlist.aspx/) ) ) {
@@ -3937,9 +3899,7 @@ var mainGC = function () {
                 onload: addElevationToWaypoints,
                 onerror: function() { gclh_log("Elevation: ERROR: request elevation for waypoints failed!"); }
             });
-        } catch(e) {
-            gclh_error( "AddElevation", e );
-        }
+        } catch(e) { gclh_error( "AddElevation", e ); }
     }
 
     // Returns true in case of modified coordinates.
@@ -8304,10 +8264,9 @@ var mainGC = function () {
         div.setAttribute("style", "margin-top: -50px;");
         var prop = ' style="border: none; visibility: hidden; width: 2px; height: 2px;" alt="">';
 //--> $$000 Begin of change
-        var code = '<img src="https://c.andyhoppe.com/1485234805"' + prop +
-                   '<img src="https://c.andyhoppe.com/1485234771"' + prop +
-                   '<img src="https://s07.flagcounter.com/countxl/mHeY/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop +
-                   '<img src="https://www.easycounter.com/counter.php?fuppertv071"' + prop;
+        var code = '<img src="https://c.andyhoppe.com/1485103563"' + prop +
+                   '<img src="https://c.andyhoppe.com/1485234890"' + prop +
+                   '<img src="https://s09.flagcounter.com/count2/Mf9D/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
 //<-- $$000 End of change
         div.innerHTML = code;
         side.appendChild(div);
