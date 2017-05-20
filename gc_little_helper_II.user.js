@@ -431,7 +431,7 @@ var variablesInit = function (c) {
     bookmark("View Geocache Map", "https://www.geocaching.com/map/", c.bookmarks);
     profileSpecialBookmark(scriptShortNameSync, defaultSyncLink, "lnk_gclhsync", c.bookmarks);
     externalBookmark("Forum Geoclub", "http://geoclub.de/forum/index.php", c.bookmarks);
-    externalBookmark("Changelog", "https://github.com/2Abendsegler/GClh/blob/master/docu/changelog.md#readme", c.bookmarks);
+    externalBookmark("Changelog", "https://github.com/2Abendsegler/GClh/blob/master/docu/changelog.md", c.bookmarks);
     bookmark("Lists", "https://www.geocaching.com/my/lists.aspx", c.bookmarks);
     // Settings: Remove GC Menu from Navigation.
     c.remove_navi_learn = getValue("remove_navi_learn", false);
@@ -7602,7 +7602,7 @@ var mainGC = function () {
             // GClh Config und Sync Links neben Avatar im Profile.
             var lnk_config = " | <br><a href='#GClhShowConfig' id='gclh_config_lnk' name='gclh_config_lnk' style='font-size: 0.9em;' title='" + scriptShortNameConfig + " v" + scriptVersion + (settings_f4_call_gclh_config ? " / Key F4":"") + "' >" + scriptShortNameConfig + "</a>";
             var lnk_sync = " | <a href='#GClhShowSync' id='gclh_sync_lnk' name='gclh_sync_lnk' style='font-size: 0.9em;' title='" + scriptShortNameSync + " v" + scriptVersion + (settings_f10_call_gclh_sync ? " / Key F10":"") + "' >" + scriptShortNameSync + "</a>";
-            var lnk_changelog = " | <a href='https://github.com/2Abendsegler/GClh/blob/master/docu/changelog.md#readme' style='font-size: 0.9em;' title='Documentation of changes and new features in GClh II on GitHub'>Changelog</a>";
+            var lnk_changelog = " | <a href='https://github.com/2Abendsegler/GClh/blob/master/docu/changelog.md' style='font-size: 0.9em;' title='Documentation of changes and new features in GClh II on GitHub'>Changelog</a>";
             document.getElementById('ctl00_ContentBody_WidgetMiniProfile1_memberProfileLink').parentNode.innerHTML += lnk_config + lnk_sync + lnk_changelog;
             document.getElementById('gclh_config_lnk').addEventListener('click', gclh_showConfig, false);
             document.getElementById('gclh_sync_lnk').addEventListener('click', gclh_showSync, false);
@@ -8273,7 +8273,7 @@ var mainGC = function () {
         setValue("declared_version", scriptVersion);
         setTimeout(function() { $("#gclh_simu").remove(); }, 4000);
         setTimeout(function() {
-            var url = "https://github.com/2Abendsegler/GClh/blob/master/docu/changelog.md#v" + scriptVersion.replace(/\./g, "");
+            var url = "https://github.com/2Abendsegler/GClh/blob/master/docu/changelog.md";
             var text = "Version " + scriptVersion + " of  \"" + scriptName + "\"  was successfully installed.\n\n"
                      + "Do you want to open the changelog in a new tab, to have a quick\n"
                      + "look at changes and new features?\n";
@@ -8972,7 +8972,7 @@ var mainGC = function () {
             html += "<a href='http://geoclub.de/forum/viewforum.php?f=117' title='Help is available on the Geoclub forum' target='_blank'>Help</a> | ";
             html += "<a href='https://github.com/2Abendsegler/GClh/issues?q=is:issue is:open sort:created-desc' title='Show open issues on GitHub' target='_blank'>Open issues</a> | ";
             html += "<a href='https://github.com/2Abendsegler/GClh/issues?q=is:issue is:open label:\"tag: wish\" sort:created-desc' title='Show open wishes on GitHub' target='_blank'>Open wishes</a> | ";
-            html += "<a href='https://github.com/2Abendsegler/GClh/blob/master/docu/changelog.md#readme' title='Documentation of changes and new features in GClh II on GitHub' target='_blank'>Changelog</a> | ";
+            html += "<a href='https://github.com/2Abendsegler/GClh/blob/master/docu/changelog.md' title='Documentation of changes and new features in GClh II on GitHub' target='_blank'>Changelog</a> | ";
             html += "<a id='check_for_upgrade' href='#' style='cursor: pointer' title='Check for upgrade GClh II'>Check for upgrade</a> | ";
             html += "<a href='https://github.com/2Abendsegler/GClh/tree/master' title='Development plattform and issue system of GClh II' target='_blank'>GitHub</a> | ";
             html += "<a id='rc_link' href='#' style='cursor: pointer' title='Reset some configuration data'>Reset</a></font>";
