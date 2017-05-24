@@ -382,6 +382,7 @@ var variablesInit = function (c) {
     c.settings_remove_banner_to_mylists_new = getValue("settings_remove_banner_to_mylists_new", true);
     c.settings_remove_banner_to_mylists_old = getValue("settings_remove_banner_to_mylists_old", false);
     c.settings_remove_banner_for_garminexpress = getValue("settings_remove_banner_for_garminexpress", true);
+    c.settings_remove_banner_blue = getValue("settings_remove_banner_blue", false);
     c.settings_compact_layout_bm_lists = getValue("settings_compact_layout_bm_lists", false);
     c.settings_compact_layout_list_of_bm_lists = getValue("settings_compact_layout_list_of_bm_lists", false);
     c.settings_compact_layout_pqs = getValue("settings_compact_layout_pqs", false);
@@ -1969,7 +1970,7 @@ var mainGC = function () {
 // Show other coord-formats in listing.
     if (is_page("cache_listing") && document.getElementById('uxLatLon')) {
         try {
-            var box = document.getElementById('ctl00_ContentBody_LocationSubPanel'); //.childNodes[0];
+            var box = document.getElementById('ctl00_ContentBody_LocationSubPanel');
             box.innerHTML = box.innerHTML.replace("<br>", "");
             var coords = document.getElementById('uxLatLon').innerHTML;
             var dec = toDec(coords);
@@ -7700,6 +7701,10 @@ var mainGC = function () {
             if (settings_remove_banner_to_mylists_new) $('#divContentMain').find('div.banner').find('a[href*="/account/lists"]').closest('div.banner').remove();
             if (settings_remove_banner_to_mylists_old) $('#activationAlert').find('div.container').find('a[href*="/my/lists.aspx"]').closest('#activationAlert').remove();
             if (settings_remove_banner_for_garminexpress) $('#Content').find('div.banner').find('#uxSendToGarminBannerLink').closest('div.banner').remove();
+            if (settings_remove_banner_blue && $('div.banner').length == 1 && $('div.banner').find('div.wrapper a.btn').length == 1) {
+                var styles = window.getComputedStyle($('div.banner')[0]); 
+                if (styles.backgroundColor == "rgb(70, 135, 223)") $('div.banner').remove();
+            }
         } catch (e) { gclh_error("Remove banner:", e); }
     }
 
@@ -9025,6 +9030,7 @@ var mainGC = function () {
             html += checkboxy('settings_remove_banner', 'Remove banner') + "<br/>";
             html += " &nbsp; " + checkboxy('settings_remove_banner_to_mylists_new', 'to new designed \"My Lists\" page ') + checkboxy('settings_remove_banner_to_mylists_old', 'to old \"My Lists\" page') + "<br/>";
             html += " &nbsp; " + checkboxy('settings_remove_banner_for_garminexpress', 'for \"Garmin Express\"') + "<br/>";
+            html += " &nbsp; " + checkboxy('settings_remove_banner_blue', 'Try to remove all blue banner to new pages') + "<br/>";
             html += newParameterVersionSetzen(0.8) + newParameterOff;
             html += checkboxy('settings_submit_log_button', 'Submit log, Pocket Query, Bookmark or hide cache on F2') + show_help("With this option you are able to submit your log by pressing F2 instead of scrolling to the bottom and move the mouse to the button. <br><br>This feature also works to submit Pocket Queries and Bookmarks. <br><br>And it works on the whole hide cache process with all of the buttons \"Continue\", \"Continue Anyway\", \"Save and Preview\", \"Submit Changes\", \"Update Attributes\", \"Create Waypoint\" and \"Update Waypoint\" of the create and the change functionality.") + "<br/>";
             html += "<br>";
@@ -9985,6 +9991,7 @@ var mainGC = function () {
             setEventsForDependentParameters( "settings_remove_banner", "settings_remove_banner_to_mylists_new" );
             setEventsForDependentParameters( "settings_remove_banner", "settings_remove_banner_to_mylists_old" );
             setEventsForDependentParameters( "settings_remove_banner", "settings_remove_banner_for_garminexpress" );
+            setEventsForDependentParameters( "settings_remove_banner", "settings_remove_banner_blue" );
             setEventsForDependentParameters( "settings_driving_direction_link", "settings_driving_direction_parking_area" );
             setEventsForDependentParameters( "settings_improve_add_to_list", "settings_improve_add_to_list_height" );
             // Abhängigkeiten der Linklist Parameter.
@@ -10310,6 +10317,7 @@ var mainGC = function () {
                 'settings_remove_banner_to_mylists_new',
                 'settings_remove_banner_to_mylists_old',
                 'settings_remove_banner_for_garminexpress',
+                'settings_remove_banner_blue',
                 'settings_compact_layout_bm_lists',
                 'settings_compact_layout_list_of_bm_lists',
                 'settings_compact_layout_pqs',
