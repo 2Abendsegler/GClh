@@ -640,7 +640,7 @@ var mainGC = function () {
 // Die neuen Seiten von GS aus der Verarbeitung nehmen. Geht aber nicht immer, schon wegen internen Aufrufen, siehe Öffentliches Profile About.
     var t = Date.now();
     console.log("GClh: " + t + " | " + window.location);
-    if ( ( document.location.href.match(/^https?:\/\/www\.geocaching\.com\/account\//) && !document.location.href.match(/account\/(settings|lists)/) ) ||
+    if ( ( document.location.href.match(/^https?:\/\/www\.geocaching\.com\/account\//) && !document.location.href.match(/account\/(settings|lists|messagecenter)/) ) ||
          ( document.location.href.match(/^https?:\/\/www\.geocaching\.com\/p\//) )     ) {
         console.log("GClh: Unknown page, do nothing");
         return;
