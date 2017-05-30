@@ -22,18 +22,18 @@
 ## v0.8.1:
 <ul>
 <li>
-New: Try to remove all blue banner to the new designed pages.<br>
+New: <b>Try to remove all blue banner to the new designed pages:</b><br>
 Settings -> Global:<br>
 <img src="../images/v0.8.1_Screen01.jpg" alt="v0.8.1_Screen01.jpg"><br>
 The parameter has to be activated.<br>
 <br>
 </li>
 <li>
-Fix: Page Message Center was declared misleadingly as new designed page, so GClh didn't do anything on the site.<br>
+Fix: <b>Page Message Center was declared misleadingly as new designed page, so GClh didn't do anything on the site.</b><br>
 <br>
 </li>
 <li>
-Fix: Button "Add Bookmark" not always selectable in compact bookmark list.<br>
+Fix: <b>Button "Add Bookmark" not always selectable in compact bookmark list.</b><br>
 <br>
 </li>
 </ul>
