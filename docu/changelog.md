@@ -26,9 +26,11 @@ New: Try to remove all blue banner to the new designed pages.<br>
 Settings -> Global:<br>
 <img src="../images/v0.8.1_Screen01.jpg" alt="v0.8.1_Screen01.jpg"><br>
 The parameter has to be activated.<br>
+<br>
 </li>
 <li>
 Fix: Page Message Center was declared misleadingly as new designed page, so GClh didn't do anything on the site.<br>
+<br>
 </li>
 <li>
 Fix: Button "Add Bookmark" not always selectable in compact bookmark list.<br>
