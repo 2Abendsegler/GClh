@@ -29,7 +29,7 @@ The parameter has to be activated.<br>
 <br>
 </li>
 <li>
-Fix: <b>Page Message Center was declared misleadingly as new designed page, so GClh didn't do anything on the site.</b><br>
+Fix: <b>Page Message Center was declared misleadingly as new designed page, so GClh didn't do anything on this site.</b><br>
 <br>
 </li>
 <li>
