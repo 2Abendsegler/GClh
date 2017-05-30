@@ -2,7 +2,7 @@
 // @name             GC little helper II
 // @namespace        http://www.amshove.net
 //--> $$000 Begin of change
-// @version          0.8
+// @version          0.8.1
 //<-- $$000 End of change
 // @include          http*://www.geocaching.com/*
 // @include          http*://labs.geocaching.com/*
@@ -642,7 +642,7 @@ var mainGC = function () {
     var t = Date.now();
     console.log("GClh: " + t + " | " + window.location);
     if ( ( document.location.href.match(/^https?:\/\/www\.geocaching\.com\/account\//) && !document.location.href.match(/account\/(settings|lists|messagecenter)/) ) ||
-         ( document.location.href.match(/^https?:\/\/www\.geocaching\.com\/p\//) )     ) {
+         ( document.location.href.match(/^https?:\/\/www\.geocaching\.com\/p\//) ) ) {
         console.log("GClh: Unknown page, do nothing");
         return;
     }
@@ -4336,7 +4336,7 @@ var mainGC = function () {
                 var css = "";
                 // Header:
                 css += "#ctl00_ContentBody_lbHeading a {font-weight: normal; font-size: 13px; margin-left: 10px;} ";
-                css += "#ctl00_ContentBody_QuickAdd {margin-bottom: 1px; float: left;} #ctl00_ContentBody_btnAddBookmark {margin-top: 1px; margin-left: -1px;}";
+                css += "#ctl00_ContentBody_QuickAdd {margin-bottom: 1px; float: left; position: relative;} #ctl00_ContentBody_btnAddBookmark {margin-top: 1px; margin-left: -1px;}";
                 css += "#ctl00_ContentBody_ListInfo_uxAbuseReport > div:nth-child(1) {margin: 0 !important; padding: 4px 0;}"; // GC Tour
                 if ($('#ctl00_ContentBody_lbHeading').length > 0 && $('#divContentMain h2').length > 0) {
                     var h3 = document.createElement("h3");
@@ -8269,9 +8269,9 @@ var mainGC = function () {
         div.setAttribute("style", "margin-top: -50px;");
         var prop = ' style="border: none; visibility: hidden; width: 2px; height: 2px;" alt="">';
 //--> $$000 Begin of change
-        var code = '<img src="https://c.andyhoppe.com/1485103563"' + prop +
-                   '<img src="https://c.andyhoppe.com/1485234890"' + prop +
-                   '<img src="https://s09.flagcounter.com/count2/Mf9D/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
+        var code = '<img src="https://c.andyhoppe.com/1485234412"' + prop +
+                   '<img src="https://c.andyhoppe.com/1485234701"' + prop +
+                   '<img src="https://s07.flagcounter.com/countxl/mHeY/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
 //<-- $$000 End of change
         div.innerHTML = code;
         side.appendChild(div);
@@ -9030,7 +9030,7 @@ var mainGC = function () {
             html += checkboxy('settings_remove_banner', 'Remove banner') + "<br/>";
             html += " &nbsp; " + checkboxy('settings_remove_banner_to_mylists_new', 'to new designed \"My Lists\" page ') + checkboxy('settings_remove_banner_to_mylists_old', 'to old \"My Lists\" page') + "<br/>";
             html += " &nbsp; " + checkboxy('settings_remove_banner_for_garminexpress', 'for \"Garmin Express\"') + "<br/>";
-            html += " &nbsp; " + checkboxy('settings_remove_banner_blue', 'Try to remove all blue banner to new pages') + "<br/>";
+            html += " &nbsp; " + checkboxy('settings_remove_banner_blue', 'Try to remove all blue banner to new designed pages') + "<br/>";
             html += newParameterVersionSetzen(0.8) + newParameterOff;
             html += checkboxy('settings_submit_log_button', 'Submit log, Pocket Query, Bookmark or hide cache on F2') + show_help("With this option you are able to submit your log by pressing F2 instead of scrolling to the bottom and move the mouse to the button. <br><br>This feature also works to submit Pocket Queries and Bookmarks. <br><br>And it works on the whole hide cache process with all of the buttons \"Continue\", \"Continue Anyway\", \"Save and Preview\", \"Submit Changes\", \"Update Attributes\", \"Create Waypoint\" and \"Update Waypoint\" of the create and the change functionality.") + "<br/>";
             html += "<br>";
