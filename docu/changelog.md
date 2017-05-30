@@ -1,3 +1,4 @@
+<a href="#v081" title="GClh II version 0.8.1 (30.05.2017)">v0.8.1</a> &nbsp;
 <a href="#v08" title="GClh II version 0.8 (20.05.2017)">v0.8</a> &nbsp;
 <a href="#v072" title="GClh II version 0.7.2 (25.04.2017)">v0.7.2</a> &nbsp;
 <a href="#v071" title="GClh II version 0.7.1 (12.04.2017)">v0.7.1</a> &nbsp;
@@ -16,6 +17,28 @@
 <a href="#v022" title="GClh II version 0.2.2 (09.01.2017)">v0.2.2</a> &nbsp; 
 <a href="#v021" title="GClh II version 0.2.1 (05.01.2017)">v0.2.1</a> &nbsp; 
 <a href="#v01" title="GClh II version 0.1 (05.01.2017)">v0.1</a> &nbsp; 
+
+---
+## v0.8.1:
+<ul>
+<li>
+New: <b>Try to remove all blue banner to the new designed pages:</b><br>
+Settings -> Global:<br>
+<img src="../images/v0.8.1_Screen01.jpg" alt="v0.8.1_Screen01.jpg"><br>
+The parameter has to be activated.<br>
+<br>
+</li>
+<li>
+Fix: <b>Page Message Center was declared misleadingly as new designed page, so GClh didn't do anything on this site.</b><br>
+<br>
+</li>
+<li>
+Fix: <b>Button "Add Bookmark" not always selectable in compact bookmark list.</b><br>
+<br>
+</li>
+</ul>
+(30.05.2017)<br> 
+<br>
 
 ---
 ## v0.8:
