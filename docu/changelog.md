@@ -1,4 +1,4 @@
-<a href="#v081" title="GClh II version 0.8.1 (03.06.2017)">v0.8.1</a> &nbsp;
+<a href="#v081" title="GClh II version 0.8.1 (30.05.2017)">v0.8.1</a> &nbsp;
 <a href="#v08" title="GClh II version 0.8 (20.05.2017)">v0.8</a> &nbsp;
 <a href="#v072" title="GClh II version 0.7.2 (25.04.2017)">v0.7.2</a> &nbsp;
 <a href="#v071" title="GClh II version 0.7.1 (12.04.2017)">v0.7.1</a> &nbsp;
@@ -37,7 +37,7 @@ Fix: <b>Button "Add Bookmark" not always selectable in compact bookmark list.</b
 <br>
 </li>
 </ul>
-(03.06.2017)<br> 
+(30.05.2017)<br> 
 <br>
 
 ---
