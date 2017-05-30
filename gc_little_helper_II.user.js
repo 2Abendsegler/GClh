@@ -4336,7 +4336,7 @@ var mainGC = function () {
                 var css = "";
                 // Header:
                 css += "#ctl00_ContentBody_lbHeading a {font-weight: normal; font-size: 13px; margin-left: 10px;} ";
-                css += "#ctl00_ContentBody_QuickAdd {margin-bottom: 1px; float: left;} #ctl00_ContentBody_btnAddBookmark {margin-top: 1px; margin-left: -1px;}";
+                css += "#ctl00_ContentBody_QuickAdd {margin-bottom: 1px; float: left; position: relative;} #ctl00_ContentBody_btnAddBookmark {margin-top: 1px; margin-left: -1px;}";
                 css += "#ctl00_ContentBody_ListInfo_uxAbuseReport > div:nth-child(1) {margin: 0 !important; padding: 4px 0;}"; // GC Tour
                 if ($('#ctl00_ContentBody_lbHeading').length > 0 && $('#divContentMain h2').length > 0) {
                     var h3 = document.createElement("h3");
