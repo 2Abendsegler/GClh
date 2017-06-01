@@ -5999,9 +5999,9 @@ var mainGC = function () {
 // Wenn nicht alle eigenen Logs geladen werden, weil beispielsweise das Laden der Seite über den Browser gestoppt wurde, dann
 // angeben wieviele Logs geladen wurden und das Datum des letzten geladenen Logs angeben.
     if ( document.location.href.match(/^https?:\/\/www\.geocaching\.com\/my\/logs\.aspx?/) ) {
-        if ( document.getElementById("divContentMain") && document.getElementById("divContentMain").children[2] && document.getElementsByTagName("tr")[0] ) {
+        if ( document.getElementById("divContentMain") && document.getElementById("divContentMain").children[4] && document.getElementsByTagName("tr")[0] ) {
             try {
-                var result = document.getElementById("divContentMain").children[2];
+                var result = document.getElementById("divContentMain").children[4];
                 var count = result.innerHTML.match(/\s+(\d+)\s+/);
                 if ( count ) {
                     var loaded = document.getElementsByTagName("tr").length;

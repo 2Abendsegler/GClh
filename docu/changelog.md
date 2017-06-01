@@ -1,3 +1,4 @@
+<a href="#v082" title="GClh II version 0.8.2 (??.06.2017)">v0.8.2</a> &nbsp;
 <a href="#v081" title="GClh II version 0.8.1 (30.05.2017)">v0.8.1</a> &nbsp;
 <a href="#v08" title="GClh II version 0.8 (20.05.2017)">v0.8</a> &nbsp;
 <a href="#v072" title="GClh II version 0.7.2 (25.04.2017)">v0.7.2</a> &nbsp;
@@ -17,6 +18,18 @@
 <a href="#v022" title="GClh II version 0.2.2 (09.01.2017)">v0.2.2</a> &nbsp; 
 <a href="#v021" title="GClh II version 0.2.1 (05.01.2017)">v0.2.1</a> &nbsp; 
 <a href="#v01" title="GClh II version 0.1 (05.01.2017)">v0.1</a> &nbsp; 
+
+---
+## v0.8.2:
+<ul>
+<li>
+Fix: <b>Show log entries: When page loading was stopped manually about browser, the number of logs and the date of the last log are no longer displayed, due to changes made by GS</b>: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/381">#381</a>]<br>
+<img src="../images/v0.2.1_Screen02.jpg" alt="v0.2.1_Screen02"><br>
+<br>
+</li>
+</ul>
+(??.06.2017)<br> 
+<br>
 
 ---
 ## v0.8.1:
