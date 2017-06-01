@@ -23,7 +23,7 @@
 ## v0.8.2:
 <ul>
 <li>
-Fix: <b>Show log entries: When page loading was stopped manually about browser, the number of logs and the date of the last log are no longer displayed, due to changes made by GS</b>: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/184">#184</a>]<br>
+Fix: <b>Show log entries: When page loading was stopped manually about browser, the number of logs and the date of the last log are no longer displayed, due to changes made by GS</b>: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/381">#381</a>]<br>
 <img src="../images/v0.2.1_Screen02.jpg" alt="v0.2.1_Screen02"><br>
 <br>
 </li>
