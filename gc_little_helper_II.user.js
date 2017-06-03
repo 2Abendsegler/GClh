@@ -101,10 +101,9 @@ var constInit = function (c) {
     c.defaultConfigLink = "https://www.geocaching.com/my/default.aspx#GClhShowConfig";
     c.defaultSyncLink = "https://www.geocaching.com/my/default.aspx#GClhShowSync";
 
-    // Define bookmarks.
+    // Define bookmarks:
     c.bookmarks = new Array();
     // WICHTIG: Die Reihenfolge darf hier auf keinen Fall geändert werden, weil dadurch eine falsche Zuordnung zu den gespeicherten Userdaten erfolgen würde!
-    //          Weiter unten gibt es noch einen Bereich mit Bookmarks, die quasi noch hinten dran gehängt werden.
     bookmark("Watchlist", "https://www.geocaching.com/my/watchlist.aspx", c.bookmarks);
     bookmark("Logs Geocaches", "https://www.geocaching.com/my/geocaches.aspx", c.bookmarks);
     bookmark("Own Geocaches", "https://www.geocaching.com/my/owned.aspx", c.bookmarks);
@@ -141,6 +140,57 @@ var constInit = function (c) {
     profileSpecialBookmark("Nearest Map", "https://www.geocaching.com/seek/nearest.aspx?#gclhpb#errhomecoord", "lnk_nearestmap", c.bookmarks);
     profileSpecialBookmark("Nearest List (w/o Founds)", "https://www.geocaching.com/seek/nearest.aspx?#gclhpb#errhomecoord", "lnk_nearestlist_wo", c.bookmarks);
     profileSpecialBookmark("Own Trackables", "https://www.geocaching.com/track/search.aspx?#gclhpb#errowntrackables", "lnk_my_trackables", c.bookmarks);
+    // Custom Bookmarks.
+    var num = c.bookmarks.length;
+    for (var i = 0; i < c.anzCustom; i++) {
+        c.bookmarks[num] = Object();
+        if (getValue("settings_custom_bookmark[" + i + "]", "") != "") c.bookmarks[num]['href'] = getValue("settings_custom_bookmark[" + i + "]");
+        else c.bookmarks[num]['href'] = "#";
+        if (getValue("settings_bookmarks_title[" + num + "]", "") != "") c.bookmarks[num]['title'] = getValue("settings_bookmarks_title[" + num + "]");
+        else {
+            c.bookmarks[num]['title'] = "Custom" + i;
+            setValue("settings_bookmarks_title[" + num + "]", bookmarks[num]['title']);
+        }
+        if (getValue("settings_custom_bookmark_target[" + i + "]", "") != "") {
+            c.bookmarks[num]['target'] = getValue("settings_custom_bookmark_target[" + i + "]");
+            c.bookmarks[num]['rel'] = "external";
+        } else c.bookmarks[num]['target'] = "";
+        c.bookmarks[num]['custom'] = true;
+        num++;
+    }
+    // More Bookmarks.
+    profileSpecialBookmark("Public Profile Souvenirs", "https://www.geocaching.com/profile/default.aspx?#gclhpb#ctl00$ContentBody$ProfilePanel1$lnkSouvenirs", "lnk_profilesouvenirs", c.bookmarks);
+    bookmark("Statistics", "https://www.geocaching.com/my/statistics.aspx", c.bookmarks);
+    bookmark("Field Notes", "https://www.geocaching.com/my/fieldnotes.aspx", c.bookmarks);
+    profileSpecialBookmark("Public Profile Statistics", "https://www.geocaching.com/profile/default.aspx?#gclhpb#ctl00$ContentBody$ProfilePanel1$lnkStatistics", "lnk_profilestatistics", c.bookmarks);
+    bookmark("Geocaches RecViewed", "https://www.geocaching.com/my/recentlyviewedcaches.aspx", c.bookmarks);
+    bookmark("Search TB", "https://www.geocaching.com/track/travelbug.aspx", c.bookmarks);
+    bookmark("Search Geocoin", "https://www.geocaching.com/track/geocoin.aspx", c.bookmarks);
+    externalBookmark("Geocaches Labs", "https://labs.geocaching.com/", c.bookmarks);
+    bookmark("Search GC", "https://www.geocaching.com/play/search/", c.bookmarks);
+    bookmark("Geocache Hide", "https://www.geocaching.com/play/hide/", c.bookmarks);
+    bookmark("Message Center", "https://www.geocaching.com/account/messagecenter", c.bookmarks);
+    bookmark("Search GC (old)", "https://www.geocaching.com/seek/", c.bookmarks);
+    bookmark("Glossary of Terms", "https://www.geocaching.com/about/glossary.aspx", c.bookmarks);
+    bookmark("Event Calendar", "https://www.geocaching.com/calendar/", c.bookmarks);
+    bookmark("Geocache Adoption", "https://www.geocaching.com/adopt/", c.bookmarks);
+    externalBookmark("Flopps Karte", "http://flopp-caching.de/", c.bookmarks);
+    externalBookmark("Geokrety", "http://geokrety.org/", c.bookmarks);
+    externalBookmark("Project Geocaching", "http://project-gc.com/", c.bookmarks);
+    bookmark("Search TB adv.", "https://www.geocaching.com/track/search.aspx", c.bookmarks);
+    bookmark("View Geocache Map", "https://www.geocaching.com/map/", c.bookmarks);
+    profileSpecialBookmark(scriptShortNameSync, defaultSyncLink, "lnk_gclhsync", c.bookmarks);
+    externalBookmark("Forum Geoclub", "http://geoclub.de/forum/index.php", c.bookmarks);
+    externalBookmark("Changelog", "https://github.com/2Abendsegler/GClh/blob/master/docu/changelog.md#readme", c.bookmarks);
+    bookmark("Lists", "https://www.geocaching.com/my/lists.aspx", c.bookmarks);
+    // Custom Bookmark-title.
+    c.bookmarks_orig_title = new Array();
+    for (var i = 0; i < c.bookmarks.length; i++) {
+        if (getValue("settings_bookmarks_title[" + i + "]", "") != "") {
+            c.bookmarks_orig_title[i] = c.bookmarks[i]['title'];
+            c.bookmarks[i]['title'] = getValue("settings_bookmarks_title[" + i + "]");
+        }
+    }
 
     c.gclhConfigKeysIgnoreForBackup = {
         "token": true,
@@ -292,9 +342,7 @@ var variablesInit = function (c) {
     c.settings_default_logtype_owner = getValue("settings_default_logtype_owner", c.settings_default_logtype);
     c.settings_default_tb_logtype = getValue("settings_default_tb_logtype", "-1");
     c.settings_bookmarks_list = JSON.parse(getValue("settings_bookmarks_list", JSON.stringify(c.bookmarks_def)).replace(/, (?=,)/g, ",null"));
-    if (c.settings_bookmarks_list.length == 0) {
-        c.settings_bookmarks_list = c.bookmarks_def;
-    }
+    if (c.settings_bookmarks_list.length == 0) c.settings_bookmarks_list = c.bookmarks_def;
     c.settings_sync_last = new Date(getValue("settings_sync_last", "Thu Jan 01 1970 01:00:00 GMT+0100 (Mitteleuropäische Zeit)"));
     c.settings_sync_hash = getValue("settings_sync_hash", "");
     c.settings_sync_time = getValue("settings_sync_time", 36000000);  // 10 Stunden
@@ -387,66 +435,14 @@ var variablesInit = function (c) {
     c.settings_compact_layout_list_of_bm_lists = getValue("settings_compact_layout_list_of_bm_lists", false);
     c.settings_compact_layout_pqs = getValue("settings_compact_layout_pqs", false);
     c.settings_compact_layout_list_of_pqs = getValue("settings_compact_layout_list_of_pqs", false);
+    c.settings_compact_layout_nearest = getValue("settings_compact_layout_nearest", false);
     c.settings_map_links_statistic = getValue("settings_map_links_statistic", true);
     c.settings_improve_add_to_list_height = getValue("settings_improve_add_to_list_height", 205);
     c.settings_improve_add_to_list = getValue("settings_improve_add_to_list", true);
-
-    // Settings: Custom Bookmarks.
-    var num = c.bookmarks.length;
-    for (var i = 0; i < c.anzCustom; i++) {
-        c.bookmarks[num] = Object();
-        if (getValue("settings_custom_bookmark[" + i + "]", "") != "") c.bookmarks[num]['href'] = getValue("settings_custom_bookmark[" + i + "]");
-        else c.bookmarks[num]['href'] = "#";
-        if (getValue("settings_bookmarks_title[" + num + "]", "") != "") c.bookmarks[num]['title'] = getValue("settings_bookmarks_title[" + num + "]");
-        else {
-            c.bookmarks[num]['title'] = "Custom" + i;
-            setValue("settings_bookmarks_title[" + num + "]", bookmarks[num]['title']);
-        }
-        if (getValue("settings_custom_bookmark_target[" + i + "]", "") != "") {
-            c.bookmarks[num]['target'] = getValue("settings_custom_bookmark_target[" + i + "]");
-            c.bookmarks[num]['rel'] = "external";
-        } else c.bookmarks[num]['target'] = "";
-        c.bookmarks[num]['custom'] = true;
-        num++;
-    }
-    // Some more Bookmarks.
-    profileSpecialBookmark("Public Profile Souvenirs", "https://www.geocaching.com/profile/default.aspx?#gclhpb#ctl00$ContentBody$ProfilePanel1$lnkSouvenirs", "lnk_profilesouvenirs", c.bookmarks);
-    bookmark("Statistics", "https://www.geocaching.com/my/statistics.aspx", c.bookmarks);
-    bookmark("Field Notes", "https://www.geocaching.com/my/fieldnotes.aspx", c.bookmarks);
-    profileSpecialBookmark("Public Profile Statistics", "https://www.geocaching.com/profile/default.aspx?#gclhpb#ctl00$ContentBody$ProfilePanel1$lnkStatistics", "lnk_profilestatistics", c.bookmarks);
-    bookmark("Geocaches RecViewed", "https://www.geocaching.com/my/recentlyviewedcaches.aspx", c.bookmarks);
-    bookmark("Search TB", "https://www.geocaching.com/track/travelbug.aspx", c.bookmarks);
-    bookmark("Search Geocoin", "https://www.geocaching.com/track/geocoin.aspx", c.bookmarks);
-    externalBookmark("Geocaches Labs", "https://labs.geocaching.com/", c.bookmarks);
-    bookmark("Search GC", "https://www.geocaching.com/play/search/", c.bookmarks);
-    bookmark("Geocache Hide", "https://www.geocaching.com/play/hide/", c.bookmarks);
-    bookmark("Message Center", "https://www.geocaching.com/account/messagecenter", c.bookmarks);
-    bookmark("Search GC (old)", "https://www.geocaching.com/seek/", c.bookmarks);
-    bookmark("Glossary of Terms", "https://www.geocaching.com/about/glossary.aspx", c.bookmarks);
-    bookmark("Event Calendar", "https://www.geocaching.com/calendar/", c.bookmarks);
-    bookmark("Geocache Adoption", "https://www.geocaching.com/adopt/", c.bookmarks);
-    externalBookmark("Flopps Karte", "http://flopp-caching.de/", c.bookmarks);
-    externalBookmark("Geokrety", "http://geokrety.org/", c.bookmarks);
-    externalBookmark("Project Geocaching", "http://project-gc.com/", c.bookmarks);
-    bookmark("Search TB adv.", "https://www.geocaching.com/track/search.aspx", c.bookmarks);
-    bookmark("View Geocache Map", "https://www.geocaching.com/map/", c.bookmarks);
-    profileSpecialBookmark(scriptShortNameSync, defaultSyncLink, "lnk_gclhsync", c.bookmarks);
-    externalBookmark("Forum Geoclub", "http://geoclub.de/forum/index.php", c.bookmarks);
-    externalBookmark("Changelog", "https://github.com/2Abendsegler/GClh/blob/master/docu/changelog.md#readme", c.bookmarks);
-    bookmark("Lists", "https://www.geocaching.com/my/lists.aspx", c.bookmarks);
-    // Settings: Remove GC Menu from Navigation.
     c.remove_navi_learn = getValue("remove_navi_learn", false);
     c.remove_navi_play = getValue("remove_navi_play", false);
     c.remove_navi_community = getValue("remove_navi_community", false);
     c.remove_navi_shop = getValue("remove_navi_shop", false);
-    // Settings: Custom Bookmark-title.
-    c.bookmarks_orig_title = new Array();
-    for (var i = 0; i < c.bookmarks.length; i++) {
-        if (getValue("settings_bookmarks_title[" + i + "]", "") != "") {
-            c.bookmarks_orig_title[i] = c.bookmarks[i]['title']; // Needed for configuration
-            c.bookmarks[i]['title'] = getValue("settings_bookmarks_title[" + i + "]");
-        }
-    }
 
     try {
         if (c.userToken === null) {
@@ -460,7 +456,7 @@ var variablesInit = function (c) {
                     var regex = /([a-zA-Z0-9öÖäÄüÜß]+)([ ]?=[ ]?)(((({.+})(;)))|(((\[.+\])(;)))|(((".+")(;)))|((('.+')(;)))|(([^'"{\[].+)(;)))/g;
                     var match;
                     while (match = regex.exec(userData)) {
-                        if (match[1] == "eventCacheData") continue;   // Workaround fuer event-Listings (da ist ne Funktion in dem Script-Element)
+                        if (match[1] == "eventCacheData") continue;
                         var data = (match[6] || match[10] || match[14] || match[18] || match[21]).trim();
                         if (data.charAt(0) == '"' || data.charAt(0) == "'") {
                             data = data.slice(1, data.length - 1);
@@ -2271,8 +2267,8 @@ var mainGC = function () {
     }
 
 // Improve pocket queries.
-// (xxxx) Das compact layout könnte vermutlich für alle nearest lists verwendet werden. Abschließend testen.
-    if (settings_compact_layout_pqs && document.location.href.match(/^https?:\/\/www\.geocaching\.com\/seek\/nearest\.aspx\?pq=/)) {
+    if ((settings_compact_layout_pqs && document.location.href.match(/^https?:\/\/www\.geocaching\.com\/seek\/nearest\.aspx\?pq=/)) ||
+        (settings_compact_layout_nearest && document.location.href.match(/^https?:\/\/www\.geocaching\.com\/seek\/nearest\.aspx\?/) && !document.location.href.match(/aspx\?pq=/)) ){
         try {
             // Compact layout.
             var css = "";
@@ -2314,7 +2310,7 @@ var mainGC = function () {
                 tr0.children[9].title = "Your Found";
                 tr0.children[9].setAttribute("class", "gclh_empty");
                 tr0.children[8].children[0].title = tr0.children[8].children[0].innerHTML;
-                tr0.children[8].children[0].innerHTML = "L. Found";
+                tr0.children[8].children[0].innerHTML = "Found";
                 newHeadcell(tr0, 7, "Size");
                 tr0.children[7].setAttribute("class", "AlignCenter");
                 for (var i = 0; i <= 4; i += 2) { tr0.children[6].childNodes[i].data = tr0.children[6].childNodes[i].data.replace(/(\(|\))/g, ""); }
@@ -2336,6 +2332,8 @@ var mainGC = function () {
                     // Last Found and new column Your Found.
                     if (trData[i].children[9].children[0].children[0] && trData[i].children[9].children[0].children[0].id.match("_uxUserLogDate")) {
                         newContentcell(trData[i], 10, trData[i].children[9].children[0].children[0], "small", true);
+                    } else if (trData[i].children[9].children[0].children[1] && trData[i].children[9].children[0].children[1].id.match("_uxUserLogDate")) {
+                        newContentcell(trData[i], 10, trData[i].children[9].children[0].children[1], "small", true);
                     } else newContentcell(trData[i], 10, "", "small", false);
                     // D/T and new column Size.
                     trData[i].children[7].childNodes[4].remove();
@@ -9085,6 +9083,9 @@ var mainGC = function () {
             html += checkboxy('settings_redirect_to_map', 'Redirect cache search lists to map display') + show_help("If you enable this option, you will be automatically redirected from the older cache search lists (nearest lists) to map display.") + "<br/>";
             html += checkboxy('settings_show_log_it', 'Show GClh \"Log it\" icon (too for basic members for PMO)') + show_help("The GClh \"Log it\" icon is displayed beside cache titles in nearest lists. If you click it, you will be redirected directly to the log form. <br><br>You can use it too as basic member to log Premium Member Only (PMO) caches.") + "<br/>";
             html += checkboxy('settings_show_nearestuser_profil_link', 'Show profile link on search for created / found by caches') + show_help("This option adds an link to the user profile when searching for caches created or found by a certain user") + "<br/>";
+            html += newParameterOn2;
+            html += checkboxy('settings_compact_layout_nearest', 'Show compact layout in all nearest lists (without PQ)') + show_help("For pocket querries, please go to the section \"Pocket query\", there is a special parameter.") + "<br>";
+            html += newParameterVersionSetzen(0.8) + newParameterOff;
             html += "</div>";
 
             html += "<h4 class='gclh_headline2'>"+prepareHideable.replace("#name#","pq")+"Pocket query</h4>";
@@ -10322,6 +10323,7 @@ var mainGC = function () {
                 'settings_compact_layout_list_of_bm_lists',
                 'settings_compact_layout_pqs',
                 'settings_compact_layout_list_of_pqs',
+                'settings_compact_layout_nearest',
                 'settings_map_links_statistic',
                 'settings_improve_add_to_list'
             );
