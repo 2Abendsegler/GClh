@@ -23,8 +23,18 @@
 ## v0.8.2:
 <ul>
 <li>
+New: <b>Compact layout of nearest lists</b> (like it is already available for pocket querries, a spezial nearest list): [Issue <a href="https://github.com/2Abendsegler/GClh/issues/295">#295</a>]<br>
+(The compact layout is showing here together with script GCTour.)<br>
+<img src="../images/v0.8.2_Screen01.jpg" alt="v0.8.2_Screen01.jpg"><br>
+Settings -> Nearest list:<br>
+<img src="../images/v0.8.2_Screen02.jpg" alt="v0.8.2_Screen02.jpg"><br>
+The parameter has to be activated in Config after installation.<br>
+<br>
+<br>
+</li>
+<li>
 Fix: <b>Show log entries: When page loading was stopped manually about browser, the number of logs and the date of the last log are no longer displayed, due to changes made by GS</b>: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/381">#381</a>]<br>
-<img src="../images/v0.2.1_Screen02.jpg" alt="v0.2.1_Screen02"><br>
+<img src="../images/v0.2.1_Screen02.jpg" alt="v0.2.1_Screen02.jpg"><br>
 <br>
 </li>
 </ul>
