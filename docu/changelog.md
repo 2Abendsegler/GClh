@@ -24,8 +24,8 @@
 <ul>
 <li>
 New: <b>Compact layout of nearest lists</b>: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/295">#295</a>]<br>
-(The feature is already available since version 0.8 for pocket querries, a special nearest list. At this point, not all of the nearest lists were tested enough, so this is now the delivering of the rest.)<br>
-(The compact layout is showing here together with script GCTour.)<br>
+(<i>The feature is already available since version 0.8 for pocket querries, a special nearest list. At this point, not all of the nearest lists were tested enough, so this is now the delivering of the rest.</i>)<br>
+(<i>The compact layout is showing here together with script GCTour.</i>)<br>
 <img src="../images/v0.8.2_Screen01.jpg" alt="v0.8.2_Screen01.jpg"><br>
 Settings -> Nearest list:<br>
 <img src="../images/v0.8.2_Screen02.jpg" alt="v0.8.2_Screen02.jpg"><br>
