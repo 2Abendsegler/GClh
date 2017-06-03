@@ -31,7 +31,6 @@ Settings -> Nearest list:<br>
 <img src="../images/v0.8.2_Screen02.jpg" alt="v0.8.2_Screen02.jpg"><br>
 The parameter has to be activated in Config after installation.<br>
 <br>
-<br>
 </li>
 <li>
 Fix: <b>Show log entries: When page loading was stopped manually about browser, the number of logs and the date of the last log are no longer displayed, due to changes made by GS</b>: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/381">#381</a>]<br>
