@@ -446,7 +446,6 @@ var variablesInit = function (c) {
 
     try {
         if (c.userToken === null) {
-            // Get Userdata from site context and add them to the extension context.
             c.userData = $('#aspnetForm script:not([src])').filter(function () {
                 return this.innerHTML.indexOf("ccConversions") != -1;
             }).html();
@@ -470,18 +469,10 @@ var variablesInit = function (c) {
                         }
                         c.chromeUserData[match[1].replace('"', '').replace("'", "").trim()] = data;
                     }
-                    if (c.chromeUserData["userInfo"]) {
-                        c.userInfo = chromeUserData["userInfo"];
-                    }
-                    if (c.chromeUserData["isLoggedIn"]) {
-                        c.isLoggedIn = chromeUserData["isLoggedIn"];
-                    }
-                    if (c.chromeUserData["userDefinedCoords"]) {
-                        c.userDefinedCoords = c.chromeUserData["userDefinedCoords"];
-                    }
-                    if (c.chromeUserData["userToken"]) {
-                        c.userToken = c.chromeUserData["userToken"];
-                    }
+                    if (c.chromeUserData["userInfo"]) c.userInfo = chromeUserData["userInfo"];
+                    if (c.chromeUserData["isLoggedIn"]) c.isLoggedIn = chromeUserData["isLoggedIn"];
+                    if (c.chromeUserData["userDefinedCoords"]) c.userDefinedCoords = c.chromeUserData["userDefinedCoords"];
+                    if (c.chromeUserData["userToken"]) c.userToken = c.chromeUserData["userToken"];
                 }
             }
         }
@@ -728,9 +719,7 @@ var mainGC = function () {
 // Last Log-Text speichern fuer TB-Log-Template.
     if (document.location.href.match(/^https?:\/\/www\.geocaching\.com\/seek\/log\.aspx/) && document.getElementById("ctl00_ContentBody_LogBookPanel1_btnSubmitLog")) {
         try {
-            function send_log(e) {
-                setValue("last_logtext", document.getElementById('ctl00_ContentBody_LogBookPanel1_uxLogInfo').value);
-            }
+            function send_log(e) { setValue("last_logtext", document.getElementById('ctl00_ContentBody_LogBookPanel1_uxLogInfo').value); }
             document.getElementById("ctl00_ContentBody_LogBookPanel1_btnSubmitLog").addEventListener('click', send_log, true);
         } catch (e) { gclh_error("Last Log-Text speichern:", e); }
     }
@@ -2020,6 +2009,7 @@ var mainGC = function () {
                     + ".status .loading {top: -6px !important; right: 0px !important; padding: 0 2px !important; background-color: white !important; background: url(/images/loading2.gif) no-repeat center;}"
                     + ".status.success {right: 2px !important; padding: 0 5px !important; background-color: white !important;}";
             appendCssStyle(css);
+            document.getElementsByClassName("btn-add-to-list")[0].addEventListener("click", function () { window.scroll(0, 0); });
         } catch (e) { gclh_error("Improve Add to list:", e); }
     }
 
@@ -3438,7 +3428,6 @@ var mainGC = function () {
         }
         $("#cache_logs_container").prev("div").attr('id','logs_section');
         $(".CacheDetailNavigation:first > ul:first").append('<li><a href="#logs_section">Go to logs</a></li>');
-
         var css = "";
         css += '.CacheDetailNavigation a[href*="#ctl00_ContentBody_bottomSection"]{';
         css += "background-image:url(/images/icons/16/waypoints.png);";
@@ -3448,7 +3437,6 @@ var mainGC = function () {
         css += "}";
         appendCssStyle( css );
     }
-    // Returns a jQuery object of the waypoint list in a cache listing or the waypoint list.
     function getWaypointTable() {
         var tbl = $("#ctl00_ContentBody_Waypoints");
         if ( tbl.length<=0 ) tbl = $("#ctl00_ContentBody_WaypointList");
@@ -3456,9 +3444,7 @@ var mainGC = function () {
     }
 
 // Driving direction for every waypoint (issue #252).
-    if ( settings_driving_direction_link && (
-        is_page("cache_listing") || document.location.href.match(/^https?:\/\/www\.geocaching\.com\/hide\/wptlist.aspx/) ) ) {
-
+    if (settings_driving_direction_link && (is_page("cache_listing") || document.location.href.match(/^https?:\/\/www\.geocaching\.com\/hide\/wptlist.aspx/))) {
         try {
             var tbl = getWaypointTable();
             var length = tbl.find("tbody > tr").length;
@@ -3477,8 +3463,7 @@ var mainGC = function () {
     }
 
 // Show button, which open Flopp's Map with all waypoints of a cache and open Flopp's Map.
-    if ( is_page("cache_listing") || document.location.href.match(/^https?:\/\/www\.geocaching\.com\/hide\/wptlist.aspx/) ) {
-
+    if (is_page("cache_listing") || document.location.href.match(/^https?:\/\/www\.geocaching\.com\/hide\/wptlist.aspx/)) {
         try {
             var css = "";
             css += ".GClhdropbtn {";
@@ -3523,11 +3508,8 @@ var mainGC = function () {
             appendCssStyle( css );
 
             var tbl = $('#ctl00_ContentBody_Waypoints');
-            if ( tbl.length == 0 ) {
-                tbl = $('#ctl00_ContentBody_WaypointList');
-            }
+            if ( tbl.length == 0 ) tbl = $('#ctl00_ContentBody_WaypointList');
             tbl = tbl.next("p");
-
             tbl.append('<div class="GClhdropdown"><div id="ShowWaypointsOnFloppsMap" class="GClhdropbtn"><a>Show waypoints on Flopp\'s Map with &#8230;</a></div><div id="FloppsMapLayers" class="GClhdropdown-content"></div></div>');
 
             $('#FloppsMapLayers').append('<div id="floppsmap-warning" class="GClhdropdown-content-info"><b>WARNING:</b> There are too many waypoints in the listing. Flopp\'s Map allows only a limited number of waypoints. Not all waypoints are shown.</div>');
@@ -3570,9 +3552,7 @@ var mainGC = function () {
         var addWP = [];
         try {
             var tbl = document.getElementById('ctl00_ContentBody_Waypoints');
-            if ( tbl == null ) {
-                tbl = document.getElementById('ctl00_ContentBody_WaypointList');
-            }
+            if ( tbl == null ) tbl = document.getElementById('ctl00_ContentBody_WaypointList');
             if ( tbl == null ) return;
 
             if (tbl.getElementsByTagName('tbody')) {
@@ -3594,30 +3574,20 @@ var mainGC = function () {
                         var firstText = "";
                         for (var j = 0; j < oDiv.childNodes.length; j++) {
                             var curNode = oDiv.childNodes[j];
-                            if (curNode.nodeName === "#text") {
-                                firstText += curNode.nodeValue.trim();
-                            }
+                            if (curNode.nodeName === "#text") firstText += curNode.nodeValue.trim();
                         }
                         waypoint.subtype_name = firstText;
                         waypoint.link = td_list[5].getElementsByTagName("a")[0].getAttribute("href");
 
                         var subtype = "";
                         var icon = waypoint.icon;
-                        if ( icon.match(/trailhead.jpg/g) ) {
-                            subtype = "Trailhead";
-                        } else if ( icon.match(/flag.jpg/g) ) {
-                            subtype = "Final Location";
-                        } else if ( icon.match(/pkg.jpg/g) ) {
-                            subtype = "Parking Area";
-                        } else if ( icon.match(/stage.jpg/g) ) {
-                            subtype = "Physical Stage";
-                        } else if ( icon.match(/puzzle.jpg/g) ) {
-                            subtype = "Virtual Stage";
-                        } else if ( icon.match(/waypoint.jpg/g) ) {
-                            subtype = "Reference Point";
-                        } else {
-                            gclh_log("ERROR: getAdditionalWaypoints(): problem with waypoint "+waypoint.lookup+"/"+waypoint.prefix+ " - unknown waypoint type ("+icon+")");
-                        }
+                        if (icon.match(/trailhead.jpg/g)) subtype = "Trailhead";
+                        else if (icon.match(/flag.jpg/g)) subtype = "Final Location";
+                        else if (icon.match(/pkg.jpg/g)) subtype = "Parking Area";
+                        else if (icon.match(/stage.jpg/g)) subtype = "Physical Stage";
+                        else if (icon.match(/puzzle.jpg/g)) subtype = "Virtual Stage";
+                        else if (icon.match(/waypoint.jpg/g)) subtype = "Reference Point";
+                        else gclh_log("ERROR: getAdditionalWaypoints(): problem with waypoint "+waypoint.lookup+"/"+waypoint.prefix+ " - unknown waypoint type ("+icon+")");
                         waypoint.subtype = subtype;
 
                         waypoint.visible = false;
@@ -3650,7 +3620,6 @@ var mainGC = function () {
             if (document.getElementById('ctl00_ContentBody_CacheName')) {
                 gcname = document.getElementById('ctl00_ContentBody_CacheName').textContent;
             }
-
             if ((typeof(unsafeWindow.userDefinedCoords) != 'undefined') && (unsafeWindow.userDefinedCoords.data.isUserDefined==true)) {
                 waypoint = {};
                 waypoint.visible = true;
@@ -3665,7 +3634,6 @@ var mainGC = function () {
                 waypoint.cachetype = document.getElementById('cacheDetails').getElementsByClassName('cacheImage')[0].getElementsByTagName('img')[0].getAttribute('title');
                 waypoint.link = document.location.href;
                 addWP.push(waypoint);
-
                 waypoint = {};
                 waypoint.latitude = roundTO(unsafeWindow.userDefinedCoords.data.oldLatLng[0],6);
                 waypoint.longitude = roundTO(unsafeWindow.userDefinedCoords.data.oldLatLng[1],6);
@@ -3673,9 +3641,7 @@ var mainGC = function () {
                 var tmp_coords = document.getElementById('ctl00_ContentBody_uxViewLargerMap').getAttribute('href').match(/(-)*(\d{1,3}).(\d{1,6})/g);
                 waypoint.latitude = tmp_coords[0];
                 waypoint.longitude = tmp_coords[1];
-            } else {
-                gclh_log("ERROR: getListingCoordinatesX(): warning: listing coordinates are not found.");
-            }
+            } else gclh_log("ERROR: getListingCoordinatesX(): warning: listing coordinates are not found.");
             waypoint.visible = true;
             waypoint.lookup = gccode;
             waypoint.prefix = "";
@@ -3685,19 +3651,14 @@ var mainGC = function () {
             waypoint.subtype = "origin";
             waypoint.link = document.location.href;
             waypoint.cachetype = document.getElementById('cacheDetails').getElementsByClassName('cacheImage')[0].getElementsByTagName('img')[0].getAttribute('title');
-
             addWP.push(waypoint);
         } catch(e) { gclh_error("getListingCoordinatesX(): " ,e); }
         return addWP;
     }
 
-    function getLongDescriptionCoordinates() {
-        return [];
-    }
+    function getLongDescriptionCoordinates() { return []; }
 
-    function getPersonalNoteCoordinates() {
-        return [];
-    }
+    function getPersonalNoteCoordinates() { return []; }
 
     function extractWaypointsFromListing() {
         var waypoints = [];
@@ -3724,7 +3685,6 @@ var mainGC = function () {
     function buildFloppsMapLink( waypoints, map, shortnames, status ) {
         var url = "";
         var floppsWaypoints = [];
-
         var Latmax = -90.0;
         var Latmin = 90.0;
         var Lonmax = -180.0;
@@ -3741,11 +3701,8 @@ var mainGC = function () {
                     count++;
                 } else if ( waypoint.type == "listing" && waypoint.subtype == "origin" ) {
                     var radius = 0;
-                    if ( waypoint.cachetype == "Traditional Cache" ) {
-                        radius = 161;
-                    } else if ( waypoint.cachetype == "Mystery Cache" ) {
-                        radius = 3000;
-                    }
+                    if ( waypoint.cachetype == "Traditional Cache" ) radius = 161;
+                    else if ( waypoint.cachetype == "Mystery Cache" ) radius = 3000;
                     floppsWaypoints.push(floppsMapWaypoint( waypoint, "O", radius, waypoint.lookup+'_ORIGIN' ));
                 } else if ( waypoint.type == "listing" && waypoint.subtype == "changed" ) {
                     floppsWaypoints.push(floppsMapWaypoint( waypoint, "C", 161, waypoint.lookup+'_CHANGED' ));
@@ -3769,19 +3726,14 @@ var mainGC = function () {
             var tileX_min = long2tile(Lonmin,zoom);
             var tileX_max = long2tile(Lonmax,zoom);
             var tiles_X = Math.abs(tileX_max-tileX_min+1); // boundary box width in  number of tiles
-
             // Calculate width and height of boundary rectangle (in pixel).
             var latDelta = Math.abs(tile2lat(tileY_max,zoom)-tile2lat(tileY_min+1,zoom));
             var latPixelPerDegree = tiles_Y*256/latDelta;
             var boundaryHeight = latPixelPerDegree*(Latmax-Latmin);
-
             var longDelta = Math.abs(tile2long(tileX_max+1,zoom)-tile2long(tileX_min,zoom));
             var longPixelPerDegree = tiles_X*256/longDelta;
             var boundaryWidth = longPixelPerDegree*(Lonmax-Lonmin);
-
-            if ( (boundaryHeight < floppsMapHeigth ) && (boundaryWidth < floppsMapWidth ) ) {
-                break;
-            }
+            if ( (boundaryHeight < floppsMapHeigth ) && (boundaryWidth < floppsMapWidth ) ) break;
         }
 
         var url = "";
@@ -3800,25 +3752,19 @@ var mainGC = function () {
         }
         var center_latitude = ((Latmax+90.0)+(Latmin+90.0))/2-90.0;
         var center_longitude = ((Lonmax+180.0)+(Lonmin+180.0))/2-180.0;
-
         var maxZoom = { 'OSM': 18, 'OSM/DE': 18, 'OCM': 17, 'MQ': 17, 'OUTD': 17, 'TOPO': 15, 'roadmap':20, 'terrain':20, 'hybrid': 20 };
         zoom = Math.min(zoom,maxZoom[map]);
         var url = 'http://flopp.net/'+'?c='+center_latitude+':'+center_longitude+'&z='+zoom+'&t='+map+url;
-
         url += '&d=O:C';
         return encodeURI(url);
     }
 
 // Added elevation to every additional waypoint with shown coordinates (issue #250).
-    if ( settings_show_elevation_of_waypoints && (
-        is_page("cache_listing") ||
-        document.location.href.match(/^https?:\/\/www\.geocaching\.com\/hide\/wptlist.aspx/) ) ) {
-
+    if (settings_show_elevation_of_waypoints && (is_page("cache_listing") || document.location.href.match(/^https?:\/\/www\.geocaching\.com\/hide\/wptlist.aspx/))) {
         try {
             function formatElevation( elevation ) {
                 return ((elevation>=0)?"+":"")+(( settings_distance_units != "Imperial" )?(Math.round(elevation) + "m"):(Math.round(elevation*3.28084) + "ft"));
             }
-
             function addElevationToWaypoints(responseDetails) {
                 try {
                     json = JSON.parse(responseDetails.responseText);
@@ -3826,7 +3772,6 @@ var mainGC = function () {
                         gclh_log( "addElevationToWaypoints(): not results for elevation. status="+json.status );
                         gclh_log( "addElevationToWaypoints():    "+json.error_message );
                     }
-
                     var tbl = getWaypointTable();
                     if ( tbl.length > 0 ) {
                         var length = tbl.find("tbody > tr").length;
@@ -3848,32 +3793,23 @@ var mainGC = function () {
                             tbl.find("tbody > tr:eq("+(i*2)+") > td:eq(7)").html('<span title="'+title+'">'+heightString+'</span>'  );
                         }
                     }
-
                     var index = json.results.length-1;
                     if ( $("#uxLatLonLinkElevation").length > 0 ) {
-                        if ( index >= 0 ) {
-                            $("#uxLatLonLinkElevation").html(formatElevation(json.results[index].elevation));
-                        } else {
-                            gclh_log("addElevationToWaypoints(): Error: index out of range");
-                        }
+                        if ( index >= 0 ) $("#uxLatLonLinkElevation").html(formatElevation(json.results[index].elevation));
+                        else gclh_log("addElevationToWaypoints(): Error: index out of range");
                     }
-                } catch(e) {
-                    gclh_error( "addElevationToWaypoints(): ", e);
-                }
+                } catch(e) { gclh_error( "addElevationToWaypoints(): ", e); }
             }
-
             var locations="";
             var tbl = getWaypointTable();
             if ( tbl.length > 0 ) {
-                tbl.find("thead > tr > th:eq(6)").after('<th scope="col">Elevation</th>'); // added header Elevation after Coordinate
+                tbl.find("thead > tr > th:eq(6)").after('<th scope="col">Elevation</th>');
                 var length = tbl.find("tbody > tr").length;
                 for ( var i=0; i<length/2; i++ ) {
                     var cellNote = tbl.find("tbody > tr:eq("+(i*2+1)+") > td:eq(2)");
                     var colspan = cellNote.attr('colspan');
                     cellNote.attr('colspan',colspan+1);
-
                     var row1st = tbl.find("tbody > tr").eq(i*2);
-
                     var cellCoordinates = row1st.find("td:eq(6)");
                     var tmp_coords = toDec(cellCoordinates.text().trim());
                     if (typeof tmp_coords[0] !== 'undefined' && typeof tmp_coords[1] !== 'undefined') {
@@ -3881,11 +3817,9 @@ var mainGC = function () {
                     } else {
                         locations += (locations.length == 0 ? "" : "|") + "-90.0,-180.0"; // for waypoints without visible coordinates
                     }
-
                     row1st.find("td:eq(6)").after('<td>???</td>');
                 }
             }
-
             var waypoint = getListingCoordinates(false);
             if ( waypoint !== undefined ) {
                 $("#uxLatLonLink").after('<span title="Elevation">&nbsp;&nbsp;&nbsp;Elevation:&nbsp;<span id="uxLatLonLinkElevation">???</span></span>');
