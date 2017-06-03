@@ -33,6 +33,10 @@ The parameter has to be activated in Config after installation.<br>
 <br>
 </li>
 <li>
+Change: <b>Before showing "Add to list" popup, scroll up, otherwise the popup could be not completely visible</b>: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/384">#384</a>]<br>
+<br>
+</li>
+<li>
 Fix: <b>Show log entries: When page loading was stopped manually about browser, the number of logs and the date of the last log are no longer displayed, due to changes made by GS</b>: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/381">#381</a>]<br>
 <img src="../images/v0.2.1_Screen02.jpg" alt="v0.2.1_Screen02.jpg"><br>
 <br>
