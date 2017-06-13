@@ -9,11 +9,11 @@
 ---
 ### v0.8.1:
 Number of installations between 30.05.2017 and 13.06.2017 (14 days) under GClh II version 0.8.1.<br>
-<ul><li>On different addresses, corresponding Andy Hope: 1.314<br></li>
-<li>On different addresses, corresponding Flag Counter: 1.224 (loss 90 or 6,85%)<br>
+<ul><li>On different addresses, corresponding Andy Hope: Total 1.314<br></li>
+<li>On different addresses, corresponding Flag Counter: Total 1.224 (loss 90 or 6,85%)<br>
 <img src="../images/v0.8.1_counter_flag.jpg" alt="v0.8.1_counter_flag.jpg"><br></li>
-<li>All, corresponding Andy Hope: 1.429<br></li>
-<li>All, corresponding Flag Counter: 1.369 (loss 60 or 4,20%)<br></li></ul>
+<li>All, corresponding Andy Hope: Total 1.429<br></li>
+<li>All, corresponding Flag Counter: Total 1.369 (loss 60 or 4,20%)<br></li></ul>
 <br>
 
 ---
