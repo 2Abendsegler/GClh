@@ -1,4 +1,4 @@
-<a href="#v082" title="GClh II version 0.8.2 (??.06.2017)">v0.8.2</a> &nbsp;
+<a href="#v082" title="GClh II version 0.8.2 (19.06.2017)">v0.8.2</a> &nbsp;
 <a href="#v081" title="GClh II version 0.8.1 (30.05.2017)">v0.8.1</a> &nbsp;
 <a href="#v08" title="GClh II version 0.8 (20.05.2017)">v0.8</a> &nbsp;
 <a href="#v072" title="GClh II version 0.7.2 (25.04.2017)">v0.7.2</a> &nbsp;
@@ -42,7 +42,7 @@ Fix: <b>Show log entries: When page loading was stopped manually about browser, 
 <br>
 </li>
 </ul>
-(??.06.2017)<br> 
+(19.06.2017)<br> 
 <br>
 
 ---
