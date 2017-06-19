@@ -33,7 +33,7 @@ The parameter has to be activated in Config after installation.<br>
 <br>
 </li>
 <li>
-Change: <b>Before showing "Add to list" popup in cache listing, scroll up, otherwise the popup could be not completely visible</b>: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/384">#384</a>]<br>
+Fix: <b>Before showing "Add to list" popup in cache listing, scroll up, otherwise the popup could be not completely visible</b>: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/384">#384</a>]<br>
 <br>
 </li>
 <li>
