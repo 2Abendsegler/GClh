@@ -1,3 +1,4 @@
+<a href="#v082" title="GClh II version 0.8.2 (19.06.2017)">v0.8.2</a> &nbsp;
 <a href="#v081" title="GClh II version 0.8.1 (30.05.2017)">v0.8.1</a> &nbsp;
 <a href="#v08" title="GClh II version 0.8 (20.05.2017)">v0.8</a> &nbsp;
 <a href="#v072" title="GClh II version 0.7.2 (25.04.2017)">v0.7.2</a> &nbsp;
@@ -17,6 +18,32 @@
 <a href="#v022" title="GClh II version 0.2.2 (09.01.2017)">v0.2.2</a> &nbsp; 
 <a href="#v021" title="GClh II version 0.2.1 (05.01.2017)">v0.2.1</a> &nbsp; 
 <a href="#v01" title="GClh II version 0.1 (05.01.2017)">v0.1</a> &nbsp; 
+
+---
+## v0.8.2:
+<ul>
+<li>
+New: <b>Compact layout of nearest lists</b>: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/295">#295</a>]<br>
+(<i>The feature is already available since version 0.8 for pocket querries, a special nearest list. At this point, not all of the nearest lists were tested enough, so this is now the delivering of the rest.</i>)<br>
+(<i>The compact layout is showing here together with script GCTour.</i>)<br>
+<img src="../images/v0.8.2_Screen01.jpg" alt="v0.8.2_Screen01.jpg"><br>
+Settings -> Nearest list:<br>
+<img src="../images/v0.8.2_Screen02.jpg" alt="v0.8.2_Screen02.jpg"><br>
+The parameter has to be activated in Config after installation.<br>
+<br>
+</li>
+<li>
+Fix: <b>Before showing "Add to list" popup in cache listing, scroll up, otherwise the popup could be not completely visible</b>: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/384">#384</a>]<br>
+<br>
+</li>
+<li>
+Fix: <b>Show log entries: When page loading was stopped manually about browser, the number of logs and the date of the last log are no longer displayed, due to changes made by GS</b>: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/381">#381</a>]<br>
+<img src="../images/v0.2.1_Screen02.jpg" alt="v0.2.1_Screen02.jpg"><br>
+<br>
+</li>
+</ul>
+(19.06.2017)<br> 
+<br>
 
 ---
 ## v0.8.1:
