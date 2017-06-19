@@ -1,4 +1,4 @@
-<a href="#v082" title="GClh II version 0.8.2 (??.06.2017)">v0.8.2</a> &nbsp;
+<a href="#v082" title="GClh II version 0.8.2 (19.06.2017)">v0.8.2</a> &nbsp;
 <a href="#v081" title="GClh II version 0.8.1 (30.05.2017)">v0.8.1</a> &nbsp;
 <a href="#v08" title="GClh II version 0.8 (20.05.2017)">v0.8</a> &nbsp;
 <a href="#v072" title="GClh II version 0.7.2 (25.04.2017)">v0.7.2</a> &nbsp;
@@ -33,7 +33,7 @@ The parameter has to be activated in Config after installation.<br>
 <br>
 </li>
 <li>
-Change: <b>Before showing "Add to list" popup in cache listing, scroll up, otherwise the popup could be not completely visible</b>: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/384">#384</a>]<br>
+Fix: <b>Before showing "Add to list" popup in cache listing, scroll up, otherwise the popup could be not completely visible</b>: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/384">#384</a>]<br>
 <br>
 </li>
 <li>
@@ -42,7 +42,7 @@ Fix: <b>Show log entries: When page loading was stopped manually about browser, 
 <br>
 </li>
 </ul>
-(??.06.2017)<br> 
+(19.06.2017)<br> 
 <br>
 
 ---
