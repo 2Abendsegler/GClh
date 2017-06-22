@@ -2,7 +2,7 @@
 // @name             GC little helper II
 // @namespace        http://www.amshove.net
 //--> $$000 Begin of change
-// @version          0.8.2
+// @version          0.8.3
 //<-- $$000 End of change
 // @include          http*://www.geocaching.com/*
 // @include          http*://labs.geocaching.com/*
@@ -7635,7 +7635,7 @@ var mainGC = function () {
             if (settings_remove_banner_for_garminexpress) $('#Content').find('div.banner').find('#uxSendToGarminBannerLink').closest('div.banner').remove();
             if (settings_remove_banner_blue && $('div.banner').length == 1 && $('div.banner').find('div.wrapper a.btn').length == 1) {
                 var styles = window.getComputedStyle($('div.banner')[0]); 
-                if (styles.backgroundColor == "rgb(70, 135, 223)") $('div.banner').remove();
+                if (styles.backgroundColor == "rgb(70, 135, 223)" || styles.backgroundColor == "rgb(61, 118, 197)") $('div.banner').remove();
             }
         } catch (e) { gclh_error("Remove banner:", e); }
     }
@@ -8201,9 +8201,9 @@ var mainGC = function () {
         div.setAttribute("style", "margin-top: -50px;");
         var prop = ' style="border: none; visibility: hidden; width: 2px; height: 2px;" alt="">';
 //--> $$000 Begin of change
-        var code = '<img src="https://c.andyhoppe.com/1485234805"' + prop +
-                   '<img src="https://c.andyhoppe.com/1485234771"' + prop +
-                   '<img src="https://s07.flagcounter.com/count2/dD90/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
+        var code = '<img src="https://c.andyhoppe.com/1493142574"' + prop +
+                   '<img src="https://c.andyhoppe.com/1493142637"' + prop +
+                   '<img src="https://s09.flagcounter.com/count2/Mf9D/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
 //<-- $$000 End of change
         div.innerHTML = code;
         side.appendChild(div);
