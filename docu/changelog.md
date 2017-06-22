@@ -1,3 +1,4 @@
+<a href="#v083" title="GClh II version 0.8.3 (22.06.2017)">v0.8.3</a> &nbsp;
 <a href="#v082" title="GClh II version 0.8.2 (19.06.2017)">v0.8.2</a> &nbsp;
 <a href="#v081" title="GClh II version 0.8.1 (30.05.2017)">v0.8.1</a> &nbsp;
 <a href="#v08" title="GClh II version 0.8 (20.05.2017)">v0.8</a> &nbsp;
@@ -18,6 +19,17 @@
 <a href="#v022" title="GClh II version 0.2.2 (09.01.2017)">v0.2.2</a> &nbsp; 
 <a href="#v021" title="GClh II version 0.2.1 (05.01.2017)">v0.2.1</a> &nbsp; 
 <a href="#v01" title="GClh II version 0.1 (05.01.2017)">v0.1</a> &nbsp; 
+
+---
+## v0.8.3:
+<ul>
+<li>
+Fix: <b>Removing of blue banner don't work due to changes made by GS.</b><br>
+<br>
+</li>
+</ul>
+(22.06.2017)<br> 
+<br>
 
 ---
 ## v0.8.2:
