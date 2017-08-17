@@ -29,16 +29,16 @@ Fix: <b>New header construction for new designed pages, due to changes made by G
 <br>
 </li>
 <li>
-Fix: <b>Show log entries: When page loading was stopped manually about browser, the number of logs and the date of the last log are no longer displayed, due to changes made by GS.</b><br>
-<br>
-</li>
-<li>
 Fix: <b>User defined Filter Sets for geocache searchs are no longer running correct</b>: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/359">#359</a>]<br> 
 <br>
 </li>
 <li>
 Fix: <b>No longer block of content of profile</b>: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/393">#393</a>]<br> 
 Many thanks to <a href="https://www.geocaching.com/profile/?u=Jipem">Jipem</a> for the solution.<br>
+<br>
+</li>
+<li>
+Fix: <b>Show log entries: When page loading was stopped manually about browser, the number of logs and the date of the last log are no longer displayed, due to changes made by GS.</b><br>
 <br>
 </li>
 </ul>
