@@ -2,14 +2,14 @@
 // @name             GC little helper II
 // @namespace        http://www.amshove.net
 //--> $$000 Begin of change
-// @version          0.8.3
+// @version          0.8.4
 //<-- $$000 End of change
 // @include          http*://www.geocaching.com/*
 // @include          http*://labs.geocaching.com/*
 // @include          http*://maps.google.tld/*
 // @include          http*://www.google.tld/maps*
 // @include          http*://www.openstreetmap.org*
-// @exclude          /^https?://www\.geocaching\.com/(login|jobs|careers|brandedpromotions|promotions|blog|help|seek/sendtogps)/
+// @exclude          /^https?://www\.geocaching\.com/(login|jobs|careers|brandedpromotions|promotions|blog|help|seek/sendtogps|profile/profilecontent)/
 // @resource jscolor https://raw.githubusercontent.com/2Abendsegler/GClh/master/data/jscolor.js
 // @require          http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js
 // @require          http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js
@@ -625,12 +625,12 @@ var mainOSM = function () {
 ////////////////////////////////////////////////////////////////////////////
 var mainGC = function () {
 
-// Die neuen Seiten von GS aus der Verarbeitung nehmen. Geht aber nicht immer, schon wegen internen Aufrufen, siehe Öffentliches Profile About.
-    var t = Date.now();
-    console.log("GClh: " + t + " | " + window.location);
+// Die neuen Seiten von GS aus der Verarbeitung nehmen.
+    // var t = Date.now();
+    // console.log("GClh: " + t + " | " + window.location);
     if ( ( document.location.href.match(/^https?:\/\/www\.geocaching\.com\/account\//) && !document.location.href.match(/account\/(settings|lists|messagecenter)/) ) ||
          ( document.location.href.match(/^https?:\/\/www\.geocaching\.com\/p\//) ) ) {
-        console.log("GClh: Unknown page, do nothing");
+        // console.log("GClh: Unknown page, do nothing");
         return;
     }
 
@@ -774,6 +774,13 @@ var mainGC = function () {
             window.addEventListener('keydown', keydownF10, true);
         }
     } catch (e) { gclh_error("F2, F4, F10 keys:", e); }
+
+// Set global data.
+    if ( is_page("settings") || is_page("messagecenter") || is_page("find_cache") || is_page("hide_cache") || is_page("geotours") ) {
+        if (document.getElementsByClassName("li-user-info")[0] && document.getElementsByClassName("li-user-info")[0].children[1]) {
+            var global_me = document.getElementsByClassName("li-user-info")[0].children[1].innerHTML;
+        }
+    } else var global_me = $('.li-user-info').last().children().first().text();
 
 // Add layers, control to map and set default layers.
     if (settings_use_gclh_layercontrol && document.location.href.match(/^https?:\/\/www\.geocaching\.com\/map\//)) {
@@ -952,24 +959,9 @@ var mainGC = function () {
             // Member Upgrade Button entfernen. (Er wurde bei den Abstandsberechnungen vergessen, nun muß er auf jedenfall dran glauben.)
             $('.li-upgrade').remove();
             $('.li-membership').remove();
-
-            // Beschriftung "Messages" des Message Center Icons entfernen, Title "Message Center" setzen, Strich entfernen.
-            if (settings_show_smaller_area_top_right) {
-                if (settings_remove_message_in_header) {
-                    $('.messagecenterheaderwidget').remove();
-                } else {
-                    $('.messagecenterheaderwidget').find(".link-text").remove();                 // Altes Seiten Design
-                    $('.messagecenterheaderwidget').find(".link-text-msg-center").remove();      // Account Settings, Message Center (neues Seiten Design)
-                    $('.messagecenterheaderwidget').find(".msg-center-link-text").remove();      // Cache suchen, Cache verstecken (neues Seiten Design)
-                    var mess_head = document.getElementsByClassName("messagecenterheaderwidget li-messages");
-                    for (var mh = 0; mh < mess_head.length; mh++) {
-                        mess_head[mh].setAttribute("title", "Message Center");
-                        if ( mess_head[mh].children[0].className !== "message-center-icon" ) {
-                            mess_head[mh].children[0].remove();
-                        }
-                    }
-                }
-            }
+            // Icons im Menü entfernen.
+            $('.charcoal').remove();
+            $('.li-attention').removeClass('li-attention').addClass('li-attention_gclh');
 
             // Global verwendete Attribute zur Darstellung der Objekte im Header setzen.
             style.innerHTML +=
@@ -988,13 +980,12 @@ var mainGC = function () {
                 "ul.#sm, ul.#sm li {font-size: 16px !important;}" +
                 // Schriftgröße im Untermenü einstellen.
                 "ul.#sm li a {font-size: " + font_size_submenu + "px !important;}" +
-                // Abstände im Untermenü einstellen.
-                "ul.#sm li a {margin: " + distance_submenu + "px 1em !important; padding: 0 0.5em !important;}" +
+                "ul.#sm li a {font-size: " + font_size_submenu + "px !important;}" +
                 // Menühöhe einstellen, ansonsten verschiebt sich alles bei anderen Schriftgrößen.
                 ".#m {height: 35px !important;}" +
                 // Ein Verschieben des Submenüs unterbinden.
                 ".#sm {margin-left: 0 !important}";
-
+            
             // Vertikales Menu grundsätzlich ausrichten.
             if ( settings_bookmarks_top_menu ) {
                 // Menüzeilenhöhe auf 16 stellen.
@@ -1010,9 +1001,31 @@ var mainGC = function () {
                 else if ( settings_menu_number_of_lines == 3 ) style.innerHTML += "ul.#m li a {padding-top: 1px !important; padding-bottom: 1px !important;}";
             }
 
-            // Account Settings, Message Center, Cache suchen oder Cache verstecken (neues Seiten Design):
+            // Message Center Icon entfernen.
+            if (settings_show_smaller_area_top_right && settings_remove_message_in_header) $('.messagecenterheaderwidget').remove();
+
+            if ( is_page("settings") || is_page("messagecenter") || is_page("find_cache") || is_page("hide_cache") || is_page("geotours") ) {
+                // Abstände im Untermenü einstellen.
+                style.innerHTML += "ul.#sm li a {margin: " + (distance_submenu / 2) + "px 1em !important; padding: 0 0.5em !important;} .#sm a {line-height: unset;} .#m a {overflow: initial}";
+            } else {
+                // Abstände im Untermenü einstellen.
+                style.innerHTML += "ul.#sm li a {margin: " + distance_submenu + "px 1em !important; padding: 0 0.5em !important;}";
+                // Beschriftung "Messages" des Message Center Icons entfernen, Title "Message Center" setzen, Strich entfernen.
+                if (settings_show_smaller_area_top_right && !settings_remove_message_in_header) {
+                    $('.messagecenterheaderwidget').find(".link-text").remove();
+                    var mess_head = document.getElementsByClassName("messagecenterheaderwidget li-messages");
+                    for (var mh = 0; mh < mess_head.length; mh++) {
+                        mess_head[mh].setAttribute("title", "Message Center");
+                        if ( mess_head[mh].children[0].className !== "message-center-icon" ) {
+                            mess_head[mh].children[0].remove();
+                        }
+                    }
+                }
+            }
+
+            // Account Settings, Message Center, Cache suchen, Cache verstecken, Geotours (neues Seiten Design):
             // ----------
-            if ( is_page("settings") || is_page("messagecenter") || is_page("find_cache") || is_page("hide_cache") ) {
+            if ( is_page("settings") || is_page("messagecenter") || is_page("find_cache") || is_page("hide_cache") || is_page("geotours") ) {
                 // Geocaching Logos ersetzen und verschieben, sofern das gewünscht ist.
                 for (var i = 0; i < 2; i++) {
                     if ( $('.wrapper').find(".logo").get(i) ) {
@@ -1023,6 +1036,7 @@ var mainGC = function () {
 
                 // Weitere Attribute für neues Seiten Design zur Darstellung der Objekte im Header setzen.
                 style.innerHTML +=
+                    "#l {flex: unset; overflow: unset;} #newgclogo {width: 30px !important;} nav .wrapper {max-width: unset;}" +
                     // Menüweite setzen.
                     ".#m {width: " + new_width_menu + "px !important;}" +
                     "nav .wrapper {padding-right: " + new_padding_right + "px !important;}" +
@@ -1031,143 +1045,46 @@ var mainGC = function () {
                     // Rest.
                     "nav .wrapper {border-bottom: unset; margin: unset;}";
 
-                // Hauptbereich nach oben schieben.
-                if ( is_page("find_cache") || is_page("hide_cache") ) {
-                    // Wenn Menu rechts ausgerichtet ist.
-                    if ( settings_menu_float_right ) style.innerHTML += ".main {margin-top: -76px;} .reveal-modal.search-filters {margin-top: -10px;}";
-                    else style.innerHTML += ".main {margin-top: -73px;} .reveal-modal.search-filters {margin-top: -10px;}";
-                } else style.innerHTML += ".main {margin-top: -64px;}";
                 // Platzieren des neuen Logos verursacht Fehler in der Plazierung des Videos. Folgendes korrigiert das quasi.
                 if ( is_page("hide_cache") ) style.innerHTML += ".video iframe {width: 90%;}";
 
                 // Vertikales Menu weiter ausrichten.
                 if ( settings_bookmarks_top_menu ) {
-                    // Header nach oben schieben.
-                    style.innerHTML += "nav .wrapper {top: -69px;} .profile-panel {top: -16px !important}";
+                    style.innerHTML += "ul.#sm {margin-top: 0px; margin-left: 32px !important;} .submenu::after {left: 4px; width: 26px;}";
+                    // Menü nicht flex ausgeben.
+                    if ( settings_menu_float_right ) {
+                        style.innerHTML += ".#m {display: block;} ul.#m > li {top: 0px;}";
+                    }
                     // Menu und Searchfield ausrichten in Abhängigkeit von der Schriftgröße.
                     style.innerHTML += "ul.#m > li {margin-top: " + ( 3 + ( 16 - font_size_menu ) / 2 ) + "px;}";
                     // Logoverschiebung weiter unten.
                     var logoMarginTop = 0;
-                // Horizontales Menu weiter ausrichten.
-                } else {
-                    // Ausrichtung Submenu.
-                    if ( is_page("find_cache") || is_page("hide_cache") ) style.innerHTML += "ul.#sm {top: 26px;}";
-                    if ( is_page("settings") || is_page("messagecenter") ) style.innerHTML += "ul.#sm {top: 22px;}";
-                    // Ausrichtung Header und Logoverschiebung weiter unten in Abhängigkeit von den Anzahl Zeilen.
-                    if        ( settings_menu_number_of_lines == 1 ) {
-                        style.innerHTML += "nav .wrapper {top: -66px;} .profile-panel {top: -19px !important}";
-                        var logoMarginTop = -3;
-                    } else if ( settings_menu_number_of_lines == 2 ) {
-                        style.innerHTML += "nav .wrapper {top: -78px;} .profile-panel {top:  -7px !important}";
-                        var logoMarginTop = 9;
-                    } else if ( settings_menu_number_of_lines == 3 ) {
-                        style.innerHTML += "nav .wrapper {top: -84px;} .profile-panel {top:  -1px !important}";
-                        var logoMarginTop = 15;
-                    }
                 }
 
                 // Bereich links ausrichten in Abhängigkeit davon, ob Logo geändert wird und ob GC Tour im Einsatz ist.
-                if        ( !settings_show_smaller_gc_link && !settings_gc_tour_is_working ) {
-                    style.innerHTML += "#l {margin-left: -11px; margin-top: " + (  2 + logoMarginTop) + "px; fill: #ffffff;} .#m {margin-left: 190px !important;}";
-                } else if ( !settings_show_smaller_gc_link && settings_gc_tour_is_working ) {
-                    style.innerHTML += "#l {margin-left: -11px; margin-top: " + (-15 + logoMarginTop) + "px; fill: #ffffff;} .#m {margin-left: 190px !important;}";
-                } else if ( settings_show_smaller_gc_link && !settings_gc_tour_is_working ) {
-                    style.innerHTML += "#l {margin-left: -17px; margin-top: " + (  2 + logoMarginTop) + "px; width: 35px;}   .#m {margin-left:  28px !important;}";
-                } else if ( settings_show_smaller_gc_link && settings_gc_tour_is_working ) {
-                    style.innerHTML += "#l {margin-left: -17px; margin-top: " + (-15 + logoMarginTop) + "px; width: 35px;}   .#m {margin-left:  28px !important;}";
-                }
-                // Bereich rechts ausrichten und zusammenschieben.
-                if (settings_show_smaller_area_top_right) {
-                    style.innerHTML +=
-                        // Rechten Bereich anpassen, damit er so aussieht wie auf den anderen Seiten.
-                        ".profile-panel {margin-right: -2em}" +
-                        // User und Setting Icon etwas zusammenschieben
-                        ".profile-panel .li-user-toggle {margin-left: 0.5em;}" +
-                        // Setting Icon und Message Icon etwas zusammenschieben und Username auf 115px begrenzen.
-                        ".profile-panel .li-messages, .profile-panel .li-messages_gclh {padding: 22px 0em 22px 1em;}" +     // Message Center Fehler
-                        ".profile-panel > li {padding-right: 0; padding-left: 6px; padding-top: 12px;}" +
-                        ".profile-panel .user-avatar ~ span {max-width: 115px;}" +
-                        // Senkrechter Strich vor Message Icon entfernen.
-                        ".profile-panel > li + li::before {border-left: unset}";
-                }
-
-            // Geotours:
-            // ----------
-            } else if ( is_page("geotours") ) {
-                // Geocaching Logo ersetzen und verschieben, sofern das gewünscht ist.
-                if ( $('#HDHomeLink').get(0) ) {
-                    var side = $('#HDHomeLink').get(0);
-                    changeGcLogo(side);
-                }
-
-                // Weitere Attribute für neues Seiten Design zur Darstellung der Objekte im Header setzen.
-                style.innerHTML +=
-                    // Menüweite setzen.
-                    "nav .container {width: " + ( new_width_menu + new_width_menu_cut_old ) + "px !important;}" +
-                    "header, nav, footer {min-width: " + (new_width + 40) + "px !important;}" +
-                    "header .container, nav .container {max-width: unset;}" +
-                    // Keine Linie.
-                    "nav .container {border-bottom: unset; margin: unset;}" +
-                    // Content etwas zurechtrücken.
-                    "#Content .container, .span-24 {margin-top: -1em !important; margin-bottom: 1em !important; padding: 0;}";
-
-                // Vertikales Menu weiter ausrichten.
-                if ( settings_bookmarks_top_menu ) {
-                    // Header nach oben schieben.
-                    style.innerHTML += "nav .container {margin-top: -69px !important;}";
-                    // Menu und Searchfield ausrichten in Abhängigkeit von der Schriftgröße.
-                    style.innerHTML += "ul.#m > li {margin-top: " + ( 3 + ( 16 - font_size_menu ) / 2 ) + "px;}";
-                    // Logoverschiebung weiter unten.
-                    var logoMarginTop = 0;
-                    // Wenn links ausgerichtet, dann float zurücksetzen, weil das leichte Verschiebungen verursacht.
-                    if ( settings_menu_float_right == false ) style.innerHTML += ".#m > li {float: unset}";
-                // Horizontales Menu weiter ausrichten.
-                } else {
-                    // Ausrichtung Submenu.
-                    style.innerHTML += "ul.#sm {top: 25px;}";
-                    // Ausrichtung Header und Logoverschiebung weiter unten in Abhängigkeit von den Anzahl Zeilen.
-                    style.innerHTML += ".#m > li {float: unset}";
-                    if        ( settings_menu_number_of_lines == 1 ) {
-                        style.innerHTML += "nav .container {margin-top: -66px;}";
-                        var logoMarginTop = -3;
-                    } else if ( settings_menu_number_of_lines == 2 ) {
-                        style.innerHTML += "nav .container {margin-top: -78px;}";
-                        var logoMarginTop = 9;
-                    } else if ( settings_menu_number_of_lines == 3 ) {
-                        style.innerHTML += "nav .container {margin-top: -83px;}";
-                        var logoMarginTop = 14;
+                    if        ( !settings_show_smaller_gc_link && !settings_gc_tour_is_working ) {
+                        style.innerHTML += "#l {margin-left: -32px; margin-top: " + (  0 + logoMarginTop) + "px; fill: #ffffff;} .#m {margin-left: 6px !important;}";
+                    } else if ( !settings_show_smaller_gc_link && settings_gc_tour_is_working ) {
+                        style.innerHTML += "#l {margin-left: -32px; margin-top: " + (-47 + logoMarginTop) + "px; fill: #ffffff;} .#m {margin-left: 6px !important;}";
+                    } else if ( settings_show_smaller_gc_link && !settings_gc_tour_is_working ) {
+                        style.innerHTML += "#l {margin-left: -32px; margin-top: " + (  6 + logoMarginTop) + "px; width: 30px;}   .#m {margin-left: 6px !important;}";
+                    } else if ( settings_show_smaller_gc_link && settings_gc_tour_is_working ) {
+                        style.innerHTML += "#l {margin-left: -32px; margin-top: " + (-41 + logoMarginTop) + "px; width: 30px;}   .#m {margin-left: 6px !important;}";
                     }
-                }
-
-                // Bereich links ausrichten in Abhängigkeit davon, ob Logo geändert wird und ob GC Tour im Einsatz ist.
-                if        ( !settings_show_smaller_gc_link && !settings_gc_tour_is_working ) {
-                    style.innerHTML += "#l {margin-left: -11px; margin-top: " + (  2 + logoMarginTop) + "px; fill: #ffffff;} .#m {margin-left: 190px !important;}";
-                } else if ( !settings_show_smaller_gc_link && settings_gc_tour_is_working ) {
-                    style.innerHTML += "#l {margin-left: -11px; margin-top: " + (-15 + logoMarginTop) + "px; fill: #ffffff;} .#m {margin-left: 190px !important;}";
-                } else if ( settings_show_smaller_gc_link && !settings_gc_tour_is_working ) {
-                    style.innerHTML += "#l {margin-left: -17px; margin-top: " + (  2 + logoMarginTop) + "px; width: 35px;}   .#m {margin-left:  28px !important;}";
-                } else if ( settings_show_smaller_gc_link && settings_gc_tour_is_working ) {
-                    style.innerHTML += "#l {margin-left: -17px; margin-top: " + (-15 + logoMarginTop) + "px; width: 35px;}   .#m {margin-left:  28px !important;}";
-                }
+                
                 // Bereich rechts ausrichten und zusammenschieben.
                 if (settings_show_smaller_area_top_right) {
-                    style.innerHTML +=
-                        // User und Setting Icon etwas zusammenschieben
-                        ".profile-panel .li-user-toggle {margin-left: 0.5em; padding: 0.43em 0.6em;}" +
-                        // Setting Icon und Message Icon etwas zusammenschieben und Username auf 115px begrenzen.
-                        ".profile-panel .li-messages, .profile-panel .li-messages_gclh {padding: 22px 0em 22px 1em;}" +     // Message Center Fehler
-                        ".profile-panel > li {padding-right: 0; padding-left: 6px; padding-top: 12px;}" +
-                        ".profile-panel .user-avatar ~ span {max-width: 115px;}" +
-                        // Senkrechter Strich vor Message Icon entfernen.
-                        ".profile-panel > li + li::before {border-left: unset}";
-                }
+                     style.innerHTML +=
+                         ".profile-panel {margin-right: -15.25em}" +
+                         ".profile-panel .user-avatar ~ span {max-width: 115px;}";
+                 }
 
             // Labs:
             // ----------
             } else if ( is_page("labs") ) {
                 // Geocaching Logo ersetzen und verschieben, sofern das gewünscht ist.
-                if ( $('.title').children(0).get(0) ) {
-                    var side = $('.title').children(0).get(0);
+                if ( $('.logo').get(0) ) {
+                    var side = $('.logo').get(0);
                     changeGcLogo(side);
                 }
 
@@ -1191,17 +1108,12 @@ var mainGC = function () {
                 if ( settings_bookmarks_on_top ) style.innerHTML += ".profile-panel {margin: -66px 50px 0 0;}";
                 else style.innerHTML += ".profile-panel {margin: 0px 50px 0 0;}";
                 // Wenn Menu rechts ausgerichtet ist.
-                if ( settings_menu_float_right ) style.innerHTML += "ul.Menu {left: 14px;}";
+                if ( settings_menu_float_right ) style.innerHTML += "ul.#m {left: 14px;}";
 
                 // Vertikales Menu weiter ausrichten.
                 if ( settings_bookmarks_top_menu ) {
                     // Menu und Searchfield ausrichten in Abhängigkeit von der Schriftgröße.
                     style.innerHTML += "ul.#m > li {margin-top: " + ( 3 + ( 16 - font_size_menu ) / 2 ) + "px;}";
-                // Horizontales Menu weiter ausrichten in Abhängigkeit von den Anzahl Zeilen.
-                } else {
-                    if      ( settings_menu_number_of_lines == 1 ) style.innerHTML += "ul.#m {top: 3px;}";
-                    else if ( settings_menu_number_of_lines == 2 ) style.innerHTML += "ul.#m {top: -8px;}";
-                    else if ( settings_menu_number_of_lines == 3 ) style.innerHTML += "ul.#m {top: -13px; padding-left: 10px !important;}";
                 }
 
                 // Bereich links ausrichten in Abhängigkeit davon, ob Logo geändert wird und ob GC Tour im Einsatz ist.
@@ -1237,7 +1149,6 @@ var mainGC = function () {
                     // Menüweite setzen und Submenu korrigieren.
                     ".#m {width: " + new_width_menu + "px !important;}" +
                     "header.row {min-width: " + (new_width + 57) + "px !important;}" +
-                    ".#m {margin-left: 28px; left: 14px; top: -24px;}" +
                     ".#sm {margin-top: -6px !important;}" +
                     // Rechten Bereich anpassen, damit er so aussieht wie auf den anderen Seiten.
                     ".ProfileWidget {margin-right: -1em}" +
@@ -1248,23 +1159,19 @@ var mainGC = function () {
                 if ( settings_bookmarks_top_menu ) {
                     // Menu und Searchfield ausrichten in Abhängigkeit von der Schriftgröße.
                     style.innerHTML += "ul.#m > li {margin-top: " + ( 3 + ( 16 - font_size_menu ) / 2 ) + "px;}";
-                // Horizontales Menu weiter ausrichten in Abhängigkeit von den Anzahl Zeilen.
-                } else {
-                    if      ( settings_menu_number_of_lines == 1 ) style.innerHTML += "ul.#m {top: -20px;}";
-                    else if ( settings_menu_number_of_lines == 2 ) style.innerHTML += "ul.#m {top: -31px;}";
-                    else if ( settings_menu_number_of_lines == 3 ) style.innerHTML += "ul.#m {top: -36px;}"; // padding-left: 10px !important;}";
                 }
 
                 // Bereich links ausrichten in Abhängigkeit davon, ob Logo geändert wird und ob GC Tour im Einsatz ist.
                 if        ( !settings_show_smaller_gc_link && !settings_gc_tour_is_working ) {
-                    style.innerHTML += "#l {margin-left:  -7px; margin-top:   2px; fill: #ffffff;} .#m {margin-left: 190px !important; margin-top: -13px !important}";
+                    style.innerHTML += "#l {margin-left:  -7px; margin-top:   2px; fill: #ffffff;} .#m {margin-left: 190px !important; margin-top: -36px !important}";
                 } else if ( !settings_show_smaller_gc_link && settings_gc_tour_is_working ) {
-                    style.innerHTML += "#l {margin-left:  -7px; margin-top: -15px; fill: #ffffff;} .#m {margin-left: 190px !important;}";
+                    style.innerHTML += "#l {margin-left:  -7px; margin-top: -15px; fill: #ffffff;} .#m {margin-left: 190px !important; margin-top: -20px !important}";
                 } else if ( settings_show_smaller_gc_link && !settings_gc_tour_is_working ) {
-                    style.innerHTML += "#l {margin-left: -13px; margin-top:   2px; width: 35px;}   .#m {margin-left:  28px !important; margin-top: -15px !important}";
+                    style.innerHTML += "#l {margin-left: -13px; margin-top:   2px; width: 35px;}   .#m {margin-left:  28px !important; margin-top: -38px !important}";
                 } else if ( settings_show_smaller_gc_link && settings_gc_tour_is_working ) {
-                    style.innerHTML += "#l {margin-left: -13px; margin-top: -15px; width: 35px;}   .#m {margin-left:  28px !important;}";
+                    style.innerHTML += "#l {margin-left: -13px; margin-top: -15px; width: 35px;}   .#m {margin-left:  28px !important; margin-top: -22px !important}";
                 }
+
                 // Bereich rechts ausrichten und zusammenschieben.
                 if (settings_show_smaller_area_top_right) {
                     style.innerHTML +=
@@ -1309,6 +1216,7 @@ var mainGC = function () {
                     "nav .container {float: left; margin-left: -2px; margin-top: -4px;}" +
                     ".container {min-width: unset;}";
 
+                
                 // Vertikales Menu weiter ausrichten.
                 if ( settings_bookmarks_top_menu ) {
                     // Menu und Searchfield ausrichten in Abhängigkeit von der Schriftgröße.
@@ -1344,25 +1252,20 @@ var mainGC = function () {
 
             // Alle Seiten: Platzhalter umsetzen:
             // ----------
-            // Bei Account Settings und Message Center werden menu, submenu und logo so geschrieben.
-            if ( is_page("settings") || is_page("messagecenter") ) {
+            // Bei Account Settings, Message Center, Cache suchen, Cache verstecken und Geotours werden menu, submenu und logo so geschrieben.
+            if ( is_page("settings") || is_page("messagecenter") || is_page("find_cache") || is_page("hide_cache") || is_page("geotours") ) {
                 style_tmp.innerHTML = style.innerHTML.replace(/#m/gi, "menu"); style.innerHTML = style_tmp.innerHTML;
                 style_tmp.innerHTML = style.innerHTML.replace(/#sm/gi, "submenu"); style.innerHTML = style_tmp.innerHTML;
                 style_tmp.innerHTML = style.innerHTML.replace(/#l/gi, "nav .logo"); style.innerHTML = style_tmp.innerHTML;
-            // Bei Cache suchen, Cache verstecken und Geotours werden menu, submenu und logo so geschrieben.
-            } else if ( is_page("find_cache") || is_page("hide_cache") || is_page("geotours") ) {
-                style_tmp.innerHTML = style.innerHTML.replace(/#m/gi, "menu"); style.innerHTML = style_tmp.innerHTML;
-                style_tmp.innerHTML = style.innerHTML.replace(/#sm/gi, "submenu"); style.innerHTML = style_tmp.innerHTML;
-                style_tmp.innerHTML = style.innerHTML.replace(/#l/gi, "nav .logo"); style.innerHTML = style_tmp.innerHTML;
-            // Bei Labs werden Menu, SubMenu und title (logo) so geschrieben.
+            // Bei Labs werden Menu, submenu und title (logo) so geschrieben.
             } else if ( is_page("labs") ) {
                 style_tmp.innerHTML = style.innerHTML.replace(/#m/gi, "Menu"); style.innerHTML = style_tmp.innerHTML;
-                style_tmp.innerHTML = style.innerHTML.replace(/#sm/gi, "SubMenu"); style.innerHTML = style_tmp.innerHTML;
+                style_tmp.innerHTML = style.innerHTML.replace(/#sm/gi, "submenu"); style.innerHTML = style_tmp.innerHTML;
                 style_tmp.innerHTML = style.innerHTML.replace(/#l/gi, ".title"); style.innerHTML = style_tmp.innerHTML;
-            // In Karte werden Menu, SubMenu und MapsLogo so geschrieben.
+            // In Karte werden Menu, submenu und MapsLogo so geschrieben.
             } else if ( is_page("map") ) {
                 style_tmp.innerHTML = style.innerHTML.replace(/#m/gi, "Menu"); style.innerHTML = style_tmp.innerHTML;
-                style_tmp.innerHTML = style.innerHTML.replace(/#sm/gi, "SubMenu"); style.innerHTML = style_tmp.innerHTML;
+                style_tmp.innerHTML = style.innerHTML.replace(/#sm/gi, "submenu"); style.innerHTML = style_tmp.innerHTML;
                 style_tmp.innerHTML = style.innerHTML.replace(/#l/gi, ".MapsLogo"); style.innerHTML = style_tmp.innerHTML;
             // Im alten Seiten Design werden Menu, SubMenu und Logo so geschrieben.
             } else {
@@ -1504,7 +1407,7 @@ var mainGC = function () {
 
             if ( settings_bookmarks_top_menu || settings_change_header_layout == false ) {   // Navi vertikal
                 headline.setAttribute("href", "#");
-                headline.setAttribute("class", "Dropdown");
+                headline.setAttribute("class", "Dropdown dropdown");
                 headline.setAttribute("accesskey", "7");
                 headline.innerHTML = "Linklist";
                 menu.appendChild(headline);
@@ -1628,24 +1531,24 @@ var mainGC = function () {
     // CSS für Menu aus coreCSS aufbauen.
     function buildCoreCss(){
         var css = "";
-        css += "ul.Menu,ul.SubMenu {padding:0; list-style:none;}";
-        css += "ul.Menu li,ul.SubMenu li {padding:0;}";
+        css += "ul.Menu,ul.submenu {padding:0; list-style:none;}";
+        css += "ul.Menu li,ul.submenu li {padding:0;}";
         css += "ul.Menu {margin-left:210px; position:relative; z-index:100}";
         css += "ul.Menu li {zoom:1;}";
         css += "ul.Menu>li {display:inline-block; margin-left:1.5em; margin-right:.25em; padding:0;}";
         css += "ul.Menu>li>a:hover,ul.Menu>li>a:focus {color:#93b516;}";
         css += "ul.Menu li a {cursor:pointer; display:block; margin:0; padding:.25em .75em;}";
-        css += "ul.SubMenu {background:#fefcf1; border:2px solid #82aa13; border-radius:3px; margin-top:.25em; padding-top:1em; padding-bottom:1em;}";
-        css += "ul .SubMenu::after {background:url(https://www.geocaching.com/images/tlnMasters/dropdown-triangle@2x.png) no-repeat 50% 50%; background-size:contain; content:''; height:10px; position:absolute; top:-11px; left:-2px; width:28px;}";
-        css += "ul.SubMenu li {font-size:.85em; margin:0; white-space:nowrap;}";
-        css += "ul.SubMenu li a:hover,ul.SubMenu li a:focus {background-color:#e3dfc9; border-radius:3px;}";
+        css += "ul.submenu {background:#fefcf1; border:2px solid #82aa13; border-radius:3px; margin-top:.25em; padding-top:1em; padding-bottom:1em;}";
+        css += "ul .submenu::after {background:url(https://www.geocaching.com/images/tlnMasters/dropdown-triangle@2x.png) no-repeat 50% 50%; background-size:contain; content:''; height:10px; position:absolute; top:-11px; left:-2px; width:28px;}";
+        css += "ul.submenu li {font-size:.85em; margin:0; white-space:nowrap;}";
+        css += "ul.submenu li a:hover,ul.submenu li a:focus {background-color:#e3dfc9; border-radius:3px;}";
         css += "ul.Menu li.hover {position:relative;}";
-        css += "ul.Menu li.hover .SubMenu {display:block;}";
+        css += "ul.Menu li.hover .submenu {display:block;}";
         css += "ul.Menu ul {display:none; position:absolute; top:100%; left:0;}";
-        css += ".SubMenu.menu-mobile {display:none;}";
+        css += ".submenu.menu-mobile {display:none;}";
         css += "ul.Menu ul li {float:none;}";
         css += ".Menu li a,.Menu li a:link,.Menu li a:visited {color:#2d4f15; text-decoration:none;}";
-        css += ".SubMenu li a,.SubMenu li a:link,.SubMenu li a:visited {color:#5f452a;}";
+        css += ".submenu li a,.submenu li a:link,.submenu li a:visited {color:#5f452a;}";
         return css;
     }
 
@@ -1701,7 +1604,7 @@ var mainGC = function () {
                         if ( ( listen[j].href.match(/geocaching\.com\/bookmarks\/view\.aspx\?guid=/) ) &&
                              ( listen[j].text == "Ignore List" ) &&   // Die heißt auch in anderen Sprachen so.
                              ( listen[j+1].href.match(/geocaching\.com\/profile\/\?guid=/) ) &&
-                             ( listen[j+1].text == $('.li-user-info').last().children().first().text() ) ) {
+                             ( listen[j+1].text == global_me ) ) {
                             // Bereich mit den Links "Watch", Ignore" ... besorgen und verarbeiten.
                             var cdnLinksBereich = document.getElementsByClassName("CacheDetailNavigation NoPrint");
                             for (var k = 0; k < cdnLinksBereich.length; k++) {
@@ -2840,7 +2743,7 @@ var mainGC = function () {
         try {
             finds = get_my_finds();
             [ aDate, aTime, aDateTime ] = getDateTime();
-            var me = $('.li-user-info').last().children().first().text();
+            var me = global_me;
             [ aGCTBName, aGCTBLink, aGCTBNameLink, aLogDate ] = getGCTBInfo();
 
             gclh_add_insert_fkt("ctl00_ContentBody_LogBookPanel1_uxLogInfo");
@@ -3217,7 +3120,7 @@ var mainGC = function () {
             g_founds = get_my_finds();
             [ g_date, g_time, g_dateTime ] = getDateTime();
             // Aktiven User Namen ermitteln.
-            g_activ_username = $('.li-user-info').last().children().first().text();
+            g_activ_username = global_me;
         }
         return [ g_gc, g_tb, g_code, g_name, g_link, g_activ_username, g_founds, g_date, g_time, g_dateTime ];
     }
@@ -3365,23 +3268,9 @@ var mainGC = function () {
     }
 
 // Improve Message Site.
-// - Problematisch ist hier der verzögerte Aufbau der Seite. Das Textarea, zur Aufnahme des Message Inhaltes, wird erst später auf der
-//   Seite aufgebaut, so dass das Seiten Load Event schon längst erledigt ist. Nach 3 bis 6 Sekunden wird der Inhalt der Message offenbar
-//   auch gelöscht und es muß erneut ein Update durchgeführt werden. Das Ganze geht mit Feld value wie auch mit innerHTML. Im Moment werden
-//   10 Sekunden lang Updates durchgeführt, sofern das Feld leer ist. Das behindert den User nicht, es sei denn es ist wieder leer.
-// - Im Title des Message Center Icon oben rechts werden nach Ablauf der function Daten wie folgt hinterlegt:
-//   Werte in zehntel Sekunden, 20 bedeutet also 2,0 Sekunden, 3 bedeutet 0,3 Sekunden. Die Zeiten sind nur in etwa verläßlich, wenn eine
-//   einzige Zeitmessung stattfindet. Wird diese Verarbeitung in mehreren Tabs quasi gleichzeitig ausgeführt, dann teilen sich scheinbar
-//   alle die Zeiten, sodass dann als Zeitmessung nur entsprechende Teiler der Zeit angegeben werden.
-//   ( Textarea erstmals gefunden / Feld value erstmals gefüllt / Updates auf das Feld weil leer getrennt durch Komma )
-//   ( 20                         / 21                          / 20,33,                                              )
-// - Zeitweise und nur bei bestimmten Usern hört der grüne Loader nicht mehr auf zu dudeln. Das hat nichts mit den hiesigen Dingen zu tun.
-//   Am Besten den GClh abschalten und ohne nochmal versuchen - gleiches Verhalten. Womöglich haben diese User bisher noch nicht mit dem
-//   Message Center gearbeitet. Versucht man es fünf Minuten später nochmal identisch, dann funktioniert es.
     if ( settings_show_message && is_page("messagecenter") && document.location.href.match(/&text=(.*)/) ) {
         try {
             var val = "";
-            // Grab message template from URL.
             var matches = document.location.href.match(/&text=(.*)/);
             val = decodeURIComponent(matches[1]);
 
@@ -3397,9 +3286,6 @@ var mainGC = function () {
                 function tryUpdate() {
                     repeatCounter++;
                     if ( repeatCounter > 100 ) {
-                        checkafter += " ( " + firstUpd + " / " + firstUpdDone + " / " + allUpds + " )";
-                        document.getElementsByClassName("message-center-icon")[1].setAttribute("title", checkafter);
-                        document.getElementsByClassName("messagecenterheaderwidget")[1].setAttribute("title", checkafter);
                         clearInterval(rep);
                     } else {
                         if ( document.getElementsByClassName("draft-textarea")[0] ) {
@@ -3895,7 +3781,7 @@ var mainGC = function () {
                 if (cache_type.match(/event/i)) {
                     select_val = settings_default_logtype_event;
                 // Ownername == Username.
-                } else if ($('.PostLogList').find('a[href*="https://www.geocaching.com/profile/?guid="]').text().trim() == $('.li-user-info').last().children().text().trim()) {
+                } else if ($('.PostLogList').find('a[href*="https://www.geocaching.com/profile/?guid="]').text().trim() == global_me.trim()) {
                     select_val = settings_default_logtype_owner;
                 } else select_val = settings_default_logtype;
                 var select = document.getElementById('ctl00_ContentBody_LogBookPanel1_ddLogType');
@@ -3942,18 +3828,16 @@ var mainGC = function () {
         }
         window.addEventListener("load", gclh_setFocus, false);
         // Replace variable.
-        if ($('.li-user-info').last().children().length > 0) {
-            var finds = get_my_finds();
-            var me = $('.li-user-info').last().children().first().text();
-            var owner = document.getElementById('ctl00_ContentBody_LogBookPanel1_WaypointLink').nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.innerHTML;
-            document.getElementById('ctl00_ContentBody_LogBookPanel1_uxLogInfo').innerHTML = document.getElementById('ctl00_ContentBody_LogBookPanel1_uxLogInfo').innerHTML.replace(/#found_no#/ig, finds);
-            finds++;
-            document.getElementById('ctl00_ContentBody_LogBookPanel1_uxLogInfo').innerHTML = document.getElementById('ctl00_ContentBody_LogBookPanel1_uxLogInfo').innerHTML.replace(/#found#/ig, finds).replace(/#me#/ig, me).replace(/#owner#/ig, owner);
-            [ aDate, aTime, aDateTime ] = getDateTime();
-            document.getElementById('ctl00_ContentBody_LogBookPanel1_uxLogInfo').innerHTML = document.getElementById('ctl00_ContentBody_LogBookPanel1_uxLogInfo').innerHTML.replace(/#Date#/ig, aDate).replace(/#Time#/ig, aTime).replace(/#DateTime#/ig, aDateTime);
-            [ aGCTBName, aGCTBLink, aGCTBNameLink, aLogDate ] = getGCTBInfo();
-            document.getElementById('ctl00_ContentBody_LogBookPanel1_uxLogInfo').innerHTML = document.getElementById('ctl00_ContentBody_LogBookPanel1_uxLogInfo').innerHTML.replace(/#GCTBName#/ig, aGCTBName).replace(/#GCTBLink#/ig, aGCTBLink).replace(/#GCTBNameLink#/ig, aGCTBNameLink).replace(/#LogDate#/ig, aLogDate);
-        }
+        var finds = get_my_finds();
+        var me = global_me;
+        var owner = document.getElementById('ctl00_ContentBody_LogBookPanel1_WaypointLink').nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.innerHTML;
+        document.getElementById('ctl00_ContentBody_LogBookPanel1_uxLogInfo').innerHTML = document.getElementById('ctl00_ContentBody_LogBookPanel1_uxLogInfo').innerHTML.replace(/#found_no#/ig, finds);
+        finds++;
+        document.getElementById('ctl00_ContentBody_LogBookPanel1_uxLogInfo').innerHTML = document.getElementById('ctl00_ContentBody_LogBookPanel1_uxLogInfo').innerHTML.replace(/#found#/ig, finds).replace(/#me#/ig, me).replace(/#owner#/ig, owner);
+        [ aDate, aTime, aDateTime ] = getDateTime();
+        document.getElementById('ctl00_ContentBody_LogBookPanel1_uxLogInfo').innerHTML = document.getElementById('ctl00_ContentBody_LogBookPanel1_uxLogInfo').innerHTML.replace(/#Date#/ig, aDate).replace(/#Time#/ig, aTime).replace(/#DateTime#/ig, aDateTime);
+        [ aGCTBName, aGCTBLink, aGCTBNameLink, aLogDate ] = getGCTBInfo();
+        document.getElementById('ctl00_ContentBody_LogBookPanel1_uxLogInfo').innerHTML = document.getElementById('ctl00_ContentBody_LogBookPanel1_uxLogInfo').innerHTML.replace(/#GCTBName#/ig, aGCTBName).replace(/#GCTBLink#/ig, aGCTBLink).replace(/#GCTBNameLink#/ig, aGCTBNameLink).replace(/#LogDate#/ig, aLogDate);
     }
 
 // Show Coin-series in TB-Listing.
@@ -5380,7 +5264,7 @@ var mainGC = function () {
     try {
         if ( settings_show_vip_list                                                                    &&
              !isMemberInPmoCache()                                                                     &&
-             $('.li-user-info').last().children().first()                                              &&
+             global_me                                                                                 &&
              !document.location.href.match(/^https?:\/\/www\.geocaching\.com\/my\/geocaches\.aspx/)    &&         // Nicht bei Geocaching Logs
              !document.location.href.match(/^https?:\/\/www\.geocaching\.com\/my\/travelbugs\.aspx/)   &&         // Nicht bei Travelbugs
              !document.location.href.match(/^https?:\/\/www\.geocaching\.com\/my\/benchmarks\.aspx/)   &&         // Nicht bei Benchmarks
@@ -5394,7 +5278,7 @@ var mainGC = function () {
                document.location.href.match(/^https?:\/\/www\.geocaching\.com\/my\/default\.aspx/)        ||      // Profil (Quicklist)
                document.location.href.match(/^https?:\/\/www\.geocaching\.com\/profile\//)                ||      // Öffentliches Profil
                document.location.href.match(/^https?:\/\/www\.geocaching\.com\/my\/myfriends\.aspx/)         )) { // Friends
-            var myself = $('.li-user-info').last().children().first().text();
+            var myself = global_me;
             var gclh_build_vip_list = function () {};
 
             // Arrays für VIPs, VUPs aufbauen:
@@ -5931,9 +5815,9 @@ var mainGC = function () {
 // Wenn nicht alle eigenen Logs geladen werden, weil beispielsweise das Laden der Seite über den Browser gestoppt wurde, dann
 // angeben wieviele Logs geladen wurden und das Datum des letzten geladenen Logs angeben.
     if ( document.location.href.match(/^https?:\/\/www\.geocaching\.com\/my\/logs\.aspx?/) ) {
-        if ( document.getElementById("divContentMain") && document.getElementById("divContentMain").children[4] && document.getElementsByTagName("tr")[0] ) {
+        if ( document.getElementById("divContentMain") && document.getElementById("divContentMain").children[2] && document.getElementsByTagName("tr")[0] ) {
             try {
-                var result = document.getElementById("divContentMain").children[4];
+                var result = document.getElementById("divContentMain").children[2];
                 var count = result.innerHTML.match(/\s+(\d+)\s+/);
                 if ( count ) {
                     var loaded = document.getElementsByTagName("tr").length;
@@ -7158,7 +7042,7 @@ var mainGC = function () {
         // Soll fremde Statistik gepimpt werden.
         } else if ( settings_count_foreign_matrix &&
                     document.location.href.match(/^https?:\/\/www\.geocaching\.com\/profile\/(.*)(\?guid=|\?u=)/) &&
-                    !document.getElementById('ctl00_ContentBody_lblUserProfile').innerHTML.match(": " + $('.li-user-info').last().children().first().text()) ) {
+                    !document.getElementById('ctl00_ContentBody_lblUserProfile').innerHTML.match(": " + global_me) ) {
             var own = false;
         } else var own = "";
         // Wenn Statistik gepimpt werden soll.
@@ -7214,7 +7098,7 @@ var mainGC = function () {
                                 if ( settings_count_own_matrix_links_radius != 0 ) {
                                     var terrain = parseInt(cell.id.match(/^([1-9]{1})(_{1})([1-9]{1})$/)[3]) * 0.5 + 0.5;
                                     var difficulty = parseInt(cell.id.match(/^([1-9]{1})(_{1})([1-9]{1})$/)[1]) * 0.5 + 0.5;
-                                    var user = $('.li-user-info').last().children().first().text();
+                                    var user = global_me;
                                     var aTag = document.createElement('a');
                                     aTag.href = "/play/search/?origin=" + DectoDeg(getValue("home_lat"), getValue("home_lng"))
                                               + "&radius=" + settings_count_own_matrix_links_radius + "km"
@@ -7635,7 +7519,7 @@ var mainGC = function () {
             if (settings_remove_banner_for_garminexpress) $('#Content').find('div.banner').find('#uxSendToGarminBannerLink').closest('div.banner').remove();
             if (settings_remove_banner_blue && $('div.banner').length == 1 && $('div.banner').find('div.wrapper a.btn').length == 1) {
                 var styles = window.getComputedStyle($('div.banner')[0]); 
-                if (styles.backgroundColor == "rgb(70, 135, 223)" || styles.backgroundColor == "rgb(61, 118, 197)") $('div.banner').remove();
+                if (styles && ( styles.backgroundColor == "rgb(70, 135, 223)" || styles.backgroundColor == "rgb(61, 118, 197)") ) $('div.banner').remove();
             }
         } catch (e) { gclh_error("Remove banner:", e); }
     }
@@ -7888,10 +7772,8 @@ var mainGC = function () {
 // Function to get the Finds out of the login-Text-Box.
     function get_my_finds() {
         var finds = "";
-        if ($('.li-user-info').last().children().length >= 2) {
-            if ( $('.li-user-info').last().children().next().text() ) {
-                finds = parseInt($('.li-user-info').last().children().next().text().match(/[0-9,\.]+/)[0].replace(/[,\.]/,""));
-            }
+        if ( $('.cache-count').text() ) {
+            finds = parseInt($('.cache-count').text().match(/[0-9,\.]+/)[0].replace(/[,\.]/,""));
         }
         return finds;
     }
@@ -7983,7 +7865,7 @@ var mainGC = function () {
 // Tabellenzeilen für User und Owner einfärben bzw. Einfärbung entfernen.
     function setLinesColorUser( parameterStamm, tasks, lines, linesTogether, owner ) {
         if ( lines.length == 0 ) return;
-        var user = $('.li-user-info').last().children().first().text();
+        var user = global_me;
         if ( owner == undefined ) var owner = "";
         var vips = getValue("vips");
         if (vips != false) {
@@ -8201,9 +8083,9 @@ var mainGC = function () {
         div.setAttribute("style", "margin-top: -50px;");
         var prop = ' style="border: none; visibility: hidden; width: 2px; height: 2px;" alt="">';
 //--> $$000 Begin of change
-        var code = '<img src="https://c.andyhoppe.com/1493142574"' + prop +
-                   '<img src="https://c.andyhoppe.com/1493142637"' + prop +
-                   '<img src="https://s09.flagcounter.com/count2/Mf9D/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
+        var code = '<img src="https://c.andyhoppe.com/1485103563"' + prop +
+                   '<img src="https://c.andyhoppe.com/1485234890"' + prop +
+                   '<img src="https://s07.flagcounter.com/countxl/mHeY/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
 //<-- $$000 End of change
         div.innerHTML = code;
         side.appendChild(div);
@@ -8372,7 +8254,7 @@ var mainGC = function () {
              ( document.location.href.match(/^https?:\/\/www\.geocaching\.com\/profile/) &&
                document.getElementById("ctl00_ContentBody_ProfilePanel1_lnkStatistics") &&
                document.getElementById("ctl00_ContentBody_ProfilePanel1_lnkStatistics").className == "Active" &&
-               document.getElementById('ctl00_ContentBody_lblUserProfile').innerHTML.match(": " + $('.li-user-info').last().children().first().text()) ) ) {
+               document.getElementById('ctl00_ContentBody_lblUserProfile').innerHTML.match(": " + global_me) ) ) {
             return true;
         } else return false;
     }
@@ -8390,20 +8272,23 @@ var mainGC = function () {
         var css = document.createElement("style");
         var html = "";
         html += ".btn-context {";
-        html += "   border: 0;    height: 40px;    margin-top: -4px;    text-indent: -9999px;    width: 30px;    margin-left: -8px; margin-right: 10px;";
+        html += "   border: 0; height: 40px; margin-top: -4px; text-indent: -9999px; width: 30px; margin-left: -8px; margin-right: 10px;";
         html += "}";
         html += ".btn-user {";
         html += "   background-color: transparent;";
         html += "   background-image: none;";
+        html += "   border: 2px solid #00b265;";
+        html += "   border-color: #fff;";
+        html += "   border-radius: 4px;";
         html += "   clear: both;";
         html += "   color: #fff;";
-        html += "   font-size: .85em;";
-        html += "   margin-bottom: 1.75em;";
-        html += "   margin-top: 1.75em;";
-        html += "   padding-left: 3em;";
-        html += "   padding-right: 3em;  ";
-        html += "   border: 2px solid #ffffff;";
-        html += "   border-radius: 0;";
+        html += "   font-size: 16px;";
+        html += "   margin-bottom: 0;";
+        html += "   margin-top: 20px;";
+        html += "   padding: .45em 24px;";
+        html += "}";
+        html += ".filters-toggle {";
+        html += "   display: block;";
         html += "}";
         html += ".btn-user-active, .btn-user:hover, .btn-user:active {";
         html += "   background-color: #00b265;";
@@ -8432,7 +8317,6 @@ var mainGC = function () {
         }
     }
 
-    // SaveSas
     function actionRename( id, name ) {
         for (var i = 0; i < settings_search_data.length; i++) {
             if ( settings_search_data[i].id == id ) {
@@ -8447,6 +8331,7 @@ var mainGC = function () {
         for (var i = 0; i < settings_search_data.length; i++) {
             if ( settings_search_data[i].id == id ) {
                 settings_search_data[i].url = page.split("#")[0];
+                settings_search_data[i].url = settings_search_data[i].url.replace(/&MfsId=(\d+)/, "") + "&MfsId=" + settings_search_data[i].id;
                 saveFilterSet();
                 break;
             }
@@ -8464,10 +8349,10 @@ var mainGC = function () {
         settings_search_data[i].id = id+1;
         settings_search_data[i].name = name;
         settings_search_data[i].url = page.split("#")[0];
+        settings_search_data[i].url = settings_search_data[i].url.replace(/&MfsId=(\d+)/, "") + "&MfsId=" + settings_search_data[i].id;
         saveFilterSet();
     }
 
-    // Delete
     function actionSearchDelete( id ) {
         var settings_search_data_tmp = [];
         for (var i = 0; i < settings_search_data.length; i++) {
@@ -8516,14 +8401,13 @@ var mainGC = function () {
                 hideCtxMenu();
             });
 
-            // rename
             $('#btn-rename').click( function() {
                 var id = $(this).data('id');
                 var name = $("#filter-name-rename").val();
                 actionRename( id, name );
                 updateUI();
             });
-            // update
+
             $('#btn-update').click( function() {
                 var id = $(this).data('id');
                 var update = (document.location.href.indexOf("?")>=0?true:false);
@@ -8549,23 +8433,20 @@ var mainGC = function () {
             var t = (settings_search_data[i].url == document.location.href.split("#")[0])?true:false;
             html += '<button type="button" class="btn-item-action action-open" '+id+'>'+(t?'<b>':'')+settings_search_data[i].name+(t?'</b>':'')+'</button>';
             html += '<div type="button" title="Remove Filter Set" class="status btn-iconsvg action-delete" '+id+'><svg class="icon icon-svg-button" role="presentation"><use xlink:href="/account/Content/ui-icons/sprites/global.svg#icon-delete"></use></svg></div>';
-            html += '<div type="button" title="Change Filter Set" class="status btn-iconsvg action-rename" '+id+'><svg class="icon icon-svg-button" role="presentation"><use xlink:href="/account/Content/ui-icons/sprites/global.svg#icon-more"></use></svg></div>';
+            html += '<div type="button" title="Change Filter Set" style="right: 50px;" class="status btn-iconsvg action-rename" '+id+'><svg class="icon icon-svg-button" role="presentation"><use xlink:href="/account/Content/ui-icons/sprites/global.svg#icon-more"></use></svg></div>';
             html += '</li>';
         }
         $( "#filterlist" ).html(html);
 
-        // save
         $('.action-open').click( function() {
             var id = $(this).data('id');
             actionOpen( id );
         });
-        // delete
         $('.action-delete').click( function() {
             var id = $(this).data('id');
             actionSearchDelete( id );
             updateUI();
         });
-        // rename
         $('.action-rename').click( function() {
             var id = $(this).data('id');
             $('#filter-new').hide();
@@ -8599,7 +8480,7 @@ var mainGC = function () {
             } else {
                 create_config_css_search();
 
-                $( ".filters-toggle" ).append('&nbsp;<button id="filterCtxMenu" class="btn btn-user" type="button">Manage Filter Sets</button>  '); // &#x2630;
+                $( ".filters-toggle" ).append('&nbsp;<button id="filterCtxMenu" class="btn btn-user" type="button">Manage Filter Sets</button>  ');
                 $( ".filters-toggle" ).append('<div id="ctxMenu" style="display:none;"></div>');
 
                 $('#filterCtxMenu').click( function() {
@@ -9188,7 +9069,7 @@ var mainGC = function () {
             html += "</select> matrixes in color <input class='gclh_form color' type='text' size=5 id='settings_count_own_matrix_show_color_next' style='margin-left: 0px;' value='" + getValue("settings_count_own_matrix_show_color_next", "5151FB") + "'>";
             html += "<img src=" + global_restore_icon + " id='restore_settings_count_own_matrix_show_color_next' title='back to default' style='width: 12px; cursor: pointer;'>" + show_help("With this option you can choose the count and the color of highlighted next possible complete matrixes in your cache matrix on your statistic page.<br><br>This option requires \"Mark D/T combinations for your next possible cache matrix\".") + "<br>";
             html += " &nbsp; &nbsp;" + "Generate cache search links with radius <select class='gclh_form' id='settings_count_own_matrix_links_radius' >";
-            for ( var i = 0; i < 201; i++ ) {
+            for ( var i = 0; i < 501; i++ ) {
                 html += "  <option value='" + i + "' " + (settings_count_own_matrix_links_radius == i ? "selected=\"selected\"" : "") + ">" + i + "</option>";
             }
             html += "</select> km" + show_help("With this option cache search links with the inserted radius in km are generated for the highlighted difficulty and terrain combinations. With a radius of 0 km there are no links generated. The default radius is 25 km.<br><br>This option requires \"Mark D/T combinations for your next possible cache matrix\".") + "<br>";
@@ -11255,7 +11136,7 @@ function is_link(name, url) {
             if (url.match(/^https?:\/\/www\.geocaching\.com\/map/)) status = true;
             break;
         case "find_cache":
-            if (url.match(/^https?:\/\/www\.geocaching\.com\/play\/(search|geocache)/)) status = true;
+            if (url.match(/^https?:\/\/www\.geocaching\.com\/play\/(search|geocache|friendleague)/)) status = true;
             break;
         case "hide_cache":
             if (url.match(/^https?:\/\/www\.geocaching\.com\/play\/hide/)) status = true;
