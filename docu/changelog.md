@@ -25,7 +25,7 @@
 ## v0.8.4:
 <ul>
 <li>
-Fix: <b>New header construction for new designed pages, due to changes made by GS.</b><br>
+Fix: <b>New page header construction, due to changes made by GS.</b><br>
 <br>
 </li>
 <li>
