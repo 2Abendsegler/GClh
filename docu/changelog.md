@@ -1,3 +1,4 @@
+<a href="#v085" title="GClh II version 0.8.5 (23.08.2017)">v0.8.5</a> &nbsp;
 <a href="#v084" title="GClh II version 0.8.4 (18.08.2017)">v0.8.4</a> &nbsp;
 <a href="#v083" title="GClh II version 0.8.3 (22.06.2017)">v0.8.3</a> &nbsp;
 <a href="#v082" title="GClh II version 0.8.2 (19.06.2017)">v0.8.2</a> &nbsp;
@@ -20,6 +21,21 @@
 <a href="#v022" title="GClh II version 0.2.2 (09.01.2017)">v0.2.2</a> &nbsp; 
 <a href="#v021" title="GClh II version 0.2.1 (05.01.2017)">v0.2.1</a> &nbsp; 
 <a href="#v01" title="GClh II version 0.1 (05.01.2017)">v0.1</a> &nbsp; 
+
+---
+## v0.8.5:
+<ul>
+<li>
+Fix: <b>New page header construction, due to changes again made by GS.</b><br>
+<br>
+</li>
+<li>
+Fix: <b>#me# in templates does not work & changing templaes does not work</b>: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/399">#399</a>]<br> 
+<br>
+</li>
+</ul>
+(23.08.2017)<br> 
+<br>
 
 ---
 ## v0.8.4:
