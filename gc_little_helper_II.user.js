@@ -2,7 +2,7 @@
 // @name             GC little helper II
 // @namespace        http://www.amshove.net
 //--> $$000 Begin of change
-// @version          0.8.4
+// @version          0.8.5
 //<-- $$000 End of change
 // @include          http*://www.geocaching.com/*
 // @include          http*://labs.geocaching.com/*
@@ -776,11 +776,9 @@ var mainGC = function () {
     } catch (e) { gclh_error("F2, F4, F10 keys:", e); }
 
 // Set global data.
-    if ( is_page("settings") || is_page("messagecenter") || is_page("find_cache") || is_page("hide_cache") || is_page("geotours") ) {
-        if (document.getElementsByClassName("li-user-info")[0] && document.getElementsByClassName("li-user-info")[0].children[1]) {
-            var global_me = document.getElementsByClassName("li-user-info")[0].children[1].innerHTML;
-        }
-    } else var global_me = $('.li-user-info').last().children().first().text();
+    if (document.getElementsByClassName("li-user-info")[0] && document.getElementsByClassName("li-user-info")[0].children[1]) {
+        var global_me = document.getElementsByClassName("li-user-info")[0].children[1].innerHTML;
+    }
 
 // Add layers, control to map and set default layers.
     if (settings_use_gclh_layercontrol && document.location.href.match(/^https?:\/\/www\.geocaching\.com\/map\//)) {
@@ -968,6 +966,8 @@ var mainGC = function () {
                 // Schriftfarbe im Menü setzen. Bei Auswahl in weiss.
                 ".#m li a, .#m li a:link, .#m li a:visited, .#m li {color: #" + font_color + " !important;}" +
                 ".#m li a:hover, .#m li a:focus {color: #FFFFFF !important; outline: unset !important;}" +
+                // Menü nicht flex ausgeben.
+                ".#m {display: unset}" +
                 // Schriftfarbe im Untermenü setzen.
                 ".#sm li a:visited {color: #" + font_color + " !important;}" +
                 // Schriftgröße im Menü auf 16 stellen.
@@ -981,17 +981,21 @@ var mainGC = function () {
                 // Schriftgröße im Untermenü einstellen.
                 "ul.#sm li a {font-size: " + font_size_submenu + "px !important;}" +
                 "ul.#sm li a {font-size: " + font_size_submenu + "px !important;}" +
+                // Abstände im Untermenü einstellen.
+                "ul.#sm li a {margin: " + (distance_submenu / 2) + "px 1em !important; padding: 0 0.5em !important;} .#sm a {line-height: unset;} .#m a {overflow: initial}" +
                 // Menühöhe einstellen, ansonsten verschiebt sich alles bei anderen Schriftgrößen.
                 ".#m {height: 35px !important;}" +
                 // Ein Verschieben des Submenüs unterbinden.
                 ".#sm {margin-left: 0 !important}";
-            
+
             // Vertikales Menu grundsätzlich ausrichten.
             if ( settings_bookmarks_top_menu ) {
                 // Menüzeilenhöhe auf 16 stellen.
                 style.innerHTML += "ul.#m {line-height: 16px;}";
                 // Zwischen Menüname und Submenü keine Lücke lassen, sonst klappt das nicht mit dem einfachen Aufklappen.
                 style.innerHTML += ".#m li a, .#m li a:link, .#m li a:visited {margin-bottom: 10px;} ul.#sm {margin-top: -6px;}";
+                // Vertikales Menu: Menu und Searchfield ausrichten in Abhängigkeit von der Schriftgröße.
+                style.innerHTML += "ul.#m > li {margin-top: " + ( 3 + ( 16 - font_size_menu ) / 2 ) + "px;}";
             // Horizontales Menu grundsätzlich ausrichten.
             } else {
                 // Menüzeilenhöhe auf 16 stellen.
@@ -1004,90 +1008,52 @@ var mainGC = function () {
             // Message Center Icon entfernen.
             if (settings_show_smaller_area_top_right && settings_remove_message_in_header) $('.messagecenterheaderwidget').remove();
 
-            if ( is_page("settings") || is_page("messagecenter") || is_page("find_cache") || is_page("hide_cache") || is_page("geotours") ) {
-                // Abstände im Untermenü einstellen.
-                style.innerHTML += "ul.#sm li a {margin: " + (distance_submenu / 2) + "px 1em !important; padding: 0 0.5em !important;} .#sm a {line-height: unset;} .#m a {overflow: initial}";
-            } else {
-                // Abstände im Untermenü einstellen.
-                style.innerHTML += "ul.#sm li a {margin: " + distance_submenu + "px 1em !important; padding: 0 0.5em !important;}";
-                // Beschriftung "Messages" des Message Center Icons entfernen, Title "Message Center" setzen, Strich entfernen.
-                if (settings_show_smaller_area_top_right && !settings_remove_message_in_header) {
-                    $('.messagecenterheaderwidget').find(".link-text").remove();
-                    var mess_head = document.getElementsByClassName("messagecenterheaderwidget li-messages");
-                    for (var mh = 0; mh < mess_head.length; mh++) {
-                        mess_head[mh].setAttribute("title", "Message Center");
-                        if ( mess_head[mh].children[0].className !== "message-center-icon" ) {
-                            mess_head[mh].children[0].remove();
-                        }
-                    }
-                }
+            // Username auf 115px begrenzen.
+            if (settings_show_smaller_area_top_right) style.innerHTML += ".user-name, .username {max-width: 115px !important;}";
+
+            // Geocaching Logo ersetzen und verschieben, sofern das gewünscht ist.
+            if ( $('.logo').get(0) ) {
+                var side = $('.logo').get(0);
+                changeGcLogo(side);
             }
 
+            if ( !is_page("labs") ) {
+                style.innerHTML +=
+                    "#l {flex: unset; overflow: unset; margin-left: -32px}" +
+                    "#newgclogo {width: 30px !important;}" +
+                    ".#m {width: " + new_width_menu + "px !important; margin-left: 6px !important;}" +
+                    "nav .wrapper {min-width: " + (new_width + 40) + "px !important; max-width: unset;}";
+                // Bereich links ausrichten in Abhängigkeit davon, ob Logo geändert wird und ob GC Tour im Einsatz ist.
+                if        ( !settings_show_smaller_gc_link && !settings_gc_tour_is_working ) {
+                    style.innerHTML += "#l {margin-top:   0px; fill: #ffffff;}";
+                } else if ( !settings_show_smaller_gc_link && settings_gc_tour_is_working ) {
+                    style.innerHTML += "#l {margin-top: -47px; fill: #ffffff;}";
+                } else if ( settings_show_smaller_gc_link && !settings_gc_tour_is_working ) {
+                    style.innerHTML += "#l {margin-top:   6px; width: 30px;}";
+                } else if ( settings_show_smaller_gc_link && settings_gc_tour_is_working ) {
+                    style.innerHTML += "#l {margin-top: -41px; width: 30px;}";
+                }
+            }
+            
             // Account Settings, Message Center, Cache suchen, Cache verstecken, Geotours (neues Seiten Design):
             // ----------
             if ( is_page("settings") || is_page("messagecenter") || is_page("find_cache") || is_page("hide_cache") || is_page("geotours") ) {
-                // Geocaching Logos ersetzen und verschieben, sofern das gewünscht ist.
-                for (var i = 0; i < 2; i++) {
-                    if ( $('.wrapper').find(".logo").get(i) ) {
-                        var side = $('.wrapper').find(".logo").get(i);
-                        changeGcLogo(side);
-                    }
-                }
-
                 // Weitere Attribute für neues Seiten Design zur Darstellung der Objekte im Header setzen.
-                style.innerHTML +=
-                    "#l {flex: unset; overflow: unset;} #newgclogo {width: 30px !important;} nav .wrapper {max-width: unset;}" +
-                    // Menüweite setzen.
-                    ".#m {width: " + new_width_menu + "px !important;}" +
-                    "nav .wrapper {padding-right: " + new_padding_right + "px !important;}" +
-                    "header, nav, footer {min-width: " + (new_width + 40) + "px !important;}" +
-                    "nav .wrapper {max-width: unset; width: unset;}" +
-                    // Rest.
-                    "nav .wrapper {border-bottom: unset; margin: unset;}";
-
+                style.innerHTML += "nav .wrapper {padding-right: " + new_padding_right + "px !important; width: unset;}";
                 // Platzieren des neuen Logos verursacht Fehler in der Plazierung des Videos. Folgendes korrigiert das quasi.
                 if ( is_page("hide_cache") ) style.innerHTML += ".video iframe {width: 90%;}";
-
                 // Vertikales Menu weiter ausrichten.
                 if ( settings_bookmarks_top_menu ) {
                     style.innerHTML += "ul.#sm {margin-top: 0px; margin-left: 32px !important;} .submenu::after {left: 4px; width: 26px;}";
                     // Menü nicht flex ausgeben.
-                    if ( settings_menu_float_right ) {
-                        style.innerHTML += ".#m {display: block;} ul.#m > li {top: 0px;}";
-                    }
-                    // Menu und Searchfield ausrichten in Abhängigkeit von der Schriftgröße.
-                    style.innerHTML += "ul.#m > li {margin-top: " + ( 3 + ( 16 - font_size_menu ) / 2 ) + "px;}";
-                    // Logoverschiebung weiter unten.
-                    var logoMarginTop = 0;
+                    if ( settings_menu_float_right ) style.innerHTML += ".#m {display: block;} ul.#m > li {top: 0px;}";
                 }
-
-                // Bereich links ausrichten in Abhängigkeit davon, ob Logo geändert wird und ob GC Tour im Einsatz ist.
-                    if        ( !settings_show_smaller_gc_link && !settings_gc_tour_is_working ) {
-                        style.innerHTML += "#l {margin-left: -32px; margin-top: " + (  0 + logoMarginTop) + "px; fill: #ffffff;} .#m {margin-left: 6px !important;}";
-                    } else if ( !settings_show_smaller_gc_link && settings_gc_tour_is_working ) {
-                        style.innerHTML += "#l {margin-left: -32px; margin-top: " + (-47 + logoMarginTop) + "px; fill: #ffffff;} .#m {margin-left: 6px !important;}";
-                    } else if ( settings_show_smaller_gc_link && !settings_gc_tour_is_working ) {
-                        style.innerHTML += "#l {margin-left: -32px; margin-top: " + (  6 + logoMarginTop) + "px; width: 30px;}   .#m {margin-left: 6px !important;}";
-                    } else if ( settings_show_smaller_gc_link && settings_gc_tour_is_working ) {
-                        style.innerHTML += "#l {margin-left: -32px; margin-top: " + (-41 + logoMarginTop) + "px; width: 30px;}   .#m {margin-left: 6px !important;}";
-                    }
-                
-                // Bereich rechts ausrichten und zusammenschieben.
-                if (settings_show_smaller_area_top_right) {
-                     style.innerHTML +=
-                         ".profile-panel {margin-right: -15.25em}" +
-                         ".profile-panel .user-avatar ~ span {max-width: 115px;}";
-                 }
+                // Bereich rechts ausrichten.
+                if (settings_show_smaller_area_top_right) style.innerHTML += ".profile-panel {margin-right: -15.25em}";
 
             // Labs:
             // ----------
             } else if ( is_page("labs") ) {
-                // Geocaching Logo ersetzen und verschieben, sofern das gewünscht ist.
-                if ( $('.logo').get(0) ) {
-                    var side = $('.logo').get(0);
-                    changeGcLogo(side);
-                }
-
                 // Weitere Attribute für neues Seiten Design zur Darstellung der Objekte im Header setzen.
                 style.innerHTML +=
                     // Menüweite setzen und Submenu korrigieren.
@@ -1107,14 +1073,14 @@ var mainGC = function () {
                 // Profile Panel platzieren in Abhängigkeit von Linklist.
                 if ( settings_bookmarks_on_top ) style.innerHTML += ".profile-panel {margin: -66px 50px 0 0;}";
                 else style.innerHTML += ".profile-panel {margin: 0px 50px 0 0;}";
+
+                if ( settings_bookmarks_top_menu ) {
+                    style.innerHTML += "ul.#sm {margin-top: -6px !important; margin-left: 0px !important;} .#m {height: unset !important;}";
+                    style.innerHTML += "ul.#m > li {margin-top: 20px !important}";
+                }
+
                 // Wenn Menu rechts ausgerichtet ist.
                 if ( settings_menu_float_right ) style.innerHTML += "ul.#m {left: 14px;}";
-
-                // Vertikales Menu weiter ausrichten.
-                if ( settings_bookmarks_top_menu ) {
-                    // Menu und Searchfield ausrichten in Abhängigkeit von der Schriftgröße.
-                    style.innerHTML += "ul.#m > li {margin-top: " + ( 3 + ( 16 - font_size_menu ) / 2 ) + "px;}";
-                }
 
                 // Bereich links ausrichten in Abhängigkeit davon, ob Logo geändert wird und ob GC Tour im Einsatz ist.
                 if        ( !settings_show_smaller_gc_link && !settings_gc_tour_is_working ) {
@@ -1130,148 +1096,60 @@ var mainGC = function () {
                 if (settings_show_smaller_area_top_right) {
                     style.innerHTML +=
                         // User und Setting Icon etwas zusammenschieben
-                        ".profile-panel .li-user-toggle {margin-left: 0.5em; padding: 0.43em 0.6em;}" +
-                        // Username auf 115px begrenzen.
-                        ".user-avatar {max-width: 115px;}";
+                        ".profile-panel .li-user-toggle {margin-left: 0.5em; padding: 0.43em 0.6em;}";
                 }
 
             // Karte:
             // ----------
             } else if ( is_page("map") ) {
-                // Geocaching Logo ersetzen und verschieben, sofern das gewünscht ist.
-                if ( $('.MapsLogo').get(0) ) {
-                    var side = $('.MapsLogo').get(0);
-                    changeGcLogo(side);
-                }
-
-                // Weitere Attribute für Karte zur Darstellung der Objekte im Header setzen.
-                style.innerHTML +=
-                    // Menüweite setzen und Submenu korrigieren.
-                    ".#m {width: " + new_width_menu + "px !important;}" +
-                    "header.row {min-width: " + (new_width + 57) + "px !important;}" +
-                    ".#sm {margin-top: -6px !important;}" +
-                    // Rechten Bereich anpassen, damit er so aussieht wie auf den anderen Seiten.
-                    ".ProfileWidget {margin-right: -1em}" +
-                    // Searchfield ausrichten.
-                    "input {margin-top: 0px}";
-
                 // Vertikales Menu weiter ausrichten.
                 if ( settings_bookmarks_top_menu ) {
-                    // Menu und Searchfield ausrichten in Abhängigkeit von der Schriftgröße.
-                    style.innerHTML += "ul.#m > li {margin-top: " + ( 3 + ( 16 - font_size_menu ) / 2 ) + "px;}";
-                }
-
-                // Bereich links ausrichten in Abhängigkeit davon, ob Logo geändert wird und ob GC Tour im Einsatz ist.
-                if        ( !settings_show_smaller_gc_link && !settings_gc_tour_is_working ) {
-                    style.innerHTML += "#l {margin-left:  -7px; margin-top:   2px; fill: #ffffff;} .#m {margin-left: 190px !important; margin-top: -36px !important}";
-                } else if ( !settings_show_smaller_gc_link && settings_gc_tour_is_working ) {
-                    style.innerHTML += "#l {margin-left:  -7px; margin-top: -15px; fill: #ffffff;} .#m {margin-left: 190px !important; margin-top: -20px !important}";
-                } else if ( settings_show_smaller_gc_link && !settings_gc_tour_is_working ) {
-                    style.innerHTML += "#l {margin-left: -13px; margin-top:   2px; width: 35px;}   .#m {margin-left:  28px !important; margin-top: -38px !important}";
-                } else if ( settings_show_smaller_gc_link && settings_gc_tour_is_working ) {
-                    style.innerHTML += "#l {margin-left: -13px; margin-top: -15px; width: 35px;}   .#m {margin-left:  28px !important; margin-top: -22px !important}";
-                }
-
-                // Bereich rechts ausrichten und zusammenschieben.
-                if (settings_show_smaller_area_top_right) {
-                    style.innerHTML +=
-                        // User und Setting Icon etwas zusammenschieben und Username auf 115px begrenzen.
-                        ".logged-in-user .li-user-toggle {margin-left: 0.5em; padding: 0.43em 0.6em;}" +
-                        "header .logged-in-user > li {padding-left: 6px; padding-right: 13px;}" +
-                        ".SignedInProfileLink .li-user-info span:first-child {max-width: 115px;}" +
-                        // Setting Icon und Message Icon etwas zusammenschieben
-                        ".logged-in-user .li-messages, .logged-in-user .li-messages_gclh {padding: 22px 1em 22px 0em;}";    // Message Center Fehler
+                    style.innerHTML += "ul.#sm {margin-top: -6px !important; margin-left: 0px !important;} .#m {height: unset !important;}";
+                    if ( settings_menu_float_right ) style.innerHTML += ".Dropdown {margin-top: 8px !important}";
                 }
 
             // Altes Seiten Design und restliche Seiten:
             // ----------
             } else {
                 if (settings_remove_logo && settings_show_smaller_gc_link) {
-                    document.getElementById('ctl00_ctl23_A1').remove();
-                    style.innerHTML += "nav .container {margin-left: -45px !important;}";
-                } else {
-                    // Geocaching Logo ersetzen und verschieben, sofern das gewünscht ist.
-                    if (document.getElementById('ctl00_ctl23_A1')) {
-                        var side = document.getElementById('ctl00_ctl23_A1');
-                        changeGcLogo(side);
+                    document.getElementById('ctl00_ctl23_HDHomeLink').remove();
+                }
+                if (settings_fixed_header_layout) {
+                    style.innerHTML += "nav .wrapper {width: " + new_width + "px !important; padding-left: 50px; padding-right: 30px; min-width: unset}";
+                    if (settings_remove_logo && settings_show_smaller_gc_link) {
+                        style.innerHTML += ".#m {margin-left: -50px !important;}";
                     }
                 }
 
-                // Aufbau Menü im Header mit move Navigation (nicht mehr move Navigation Container).
-                // Menü in den Header verschieben.
-                $('#ctl00_siteHeader').find(".container").prepend($('#Navigation').remove().get().reverse());
-
-                // Weitere Attribute für altes Seiten Design zur Darstellung der Objekte im Header setzen.
-                if (settings_fixed_header_layout) {
-                    style.innerHTML += "nav .container {width: " + ( new_width - 450 ) + "px !important;} header .container {width: " + new_width + "px;} header .ProfileWidget {margin-right: 10px;}";
-                } else {
-                    // Menüweite setzen.
-                    style.innerHTML += "nav .container {width: " + ( new_width_menu + new_width_menu_cut_old ) + "px !important;}";
-                }
-                style.innerHTML +=
-                    // Rechts und links keinen Platz im Header verlieren.
-                    "header {padding: 0;}" +
-                    // Menü Container nicht begrenzen, keine Linie, Schrift zentrieren und nach links ausrichten.
-                    "nav .container {border-bottom: 0;}" +
-                    "nav .container {float: left; margin-left: -2px; margin-top: -4px;}" +
-                    ".container {min-width: unset;}";
-
-                
                 // Vertikales Menu weiter ausrichten.
                 if ( settings_bookmarks_top_menu ) {
-                    // Menu und Searchfield ausrichten in Abhängigkeit von der Schriftgröße.
-                    style.innerHTML += "ul.#m {top: " + ( 3 + ( 16 - font_size_menu ) / 2 ) + "px;}";
+                    style.innerHTML += "ul.#sm {margin-top: 15px; margin-left: 32px !important;} .submenu::after {left: 4px; width: 26px;}";
+                    if ( settings_menu_float_right ) style.innerHTML += "ul.#m > li {margin-top: 8px !important}";
                 // Horizontales Menu weiter ausrichten in Abhängigkeit von der Anzahl Zeilen.
                 } else {
                     if      ( settings_menu_number_of_lines == 1 ) style.innerHTML += "ul.#m {top:   4px !important;}";
                     else if ( settings_menu_number_of_lines == 2 ) style.innerHTML += "ul.#m {top:  -8px !important;}";
                     else if ( settings_menu_number_of_lines == 3 ) style.innerHTML += "ul.#m {top: -13px !important;}";
                 }
-
-                // Bereich links ausrichten in Abhängigkeit davon, ob Logo geändert wird und ob GC Tour im Einsatz ist.
-                if        ( !settings_show_smaller_gc_link && !settings_gc_tour_is_working ) {
-                    style.innerHTML += "#l {margin-left: -11px; margin-top:   2px; fill: #ffffff;} .#m {margin-left: 190px !important;}";
-                } else if ( !settings_show_smaller_gc_link && settings_gc_tour_is_working ) {
-                    style.innerHTML += "#l {margin-left: -11px; margin-top: -15px; fill: #ffffff;} .#m {margin-left: 190px !important;}";
-                } else if ( settings_show_smaller_gc_link && !settings_gc_tour_is_working ) {
-                    style.innerHTML += "#l {margin-left: -17px; margin-top:   2px; width: 35px;}   .#m {margin-left:  28px !important;}";
-                } else if ( settings_show_smaller_gc_link && settings_gc_tour_is_working ) {
-                    style.innerHTML += "#l {margin-left: -17px; margin-top: -15px; width: 35px;}   .#m {margin-left:  28px !important;}";
-                }
-                // Bereich rechts ausrichten und zusammenschieben.
-                if (settings_show_smaller_area_top_right) {
-                    style.innerHTML +=
-                        // User und Setting Icon etwas zusammenschieben und Username auf 115px begrenzen.
-                        ".logged-in-user .li-user-toggle {margin-left: 0.5em; padding: 0.43em 0.6em;}" +
-                        "header .logged-in-user > li {padding-left: 6px; padding-right: 13px;}" +
-                        ".SignedInProfileLink .li-user-info span:first-child {max-width: 115px;}" +
-                        // Setting Icon und Message Icon etwas zusammenschieben
-                        ".logged-in-user .li-messages, .logged-in-user .li-messages_gclh {padding: 22px 1em 22px 0em;}";    // Message Center Fehler
-                }
             }
 
             // Alle Seiten: Platzhalter umsetzen:
             // ----------
-            // Bei Account Settings, Message Center, Cache suchen, Cache verstecken und Geotours werden menu, submenu und logo so geschrieben.
-            if ( is_page("settings") || is_page("messagecenter") || is_page("find_cache") || is_page("hide_cache") || is_page("geotours") ) {
-                style_tmp.innerHTML = style.innerHTML.replace(/#m/gi, "menu"); style.innerHTML = style_tmp.innerHTML;
-                style_tmp.innerHTML = style.innerHTML.replace(/#sm/gi, "submenu"); style.innerHTML = style_tmp.innerHTML;
-                style_tmp.innerHTML = style.innerHTML.replace(/#l/gi, "nav .logo"); style.innerHTML = style_tmp.innerHTML;
             // Bei Labs werden Menu, submenu und title (logo) so geschrieben.
-            } else if ( is_page("labs") ) {
+            if ( is_page("labs") ) {
                 style_tmp.innerHTML = style.innerHTML.replace(/#m/gi, "Menu"); style.innerHTML = style_tmp.innerHTML;
                 style_tmp.innerHTML = style.innerHTML.replace(/#sm/gi, "submenu"); style.innerHTML = style_tmp.innerHTML;
                 style_tmp.innerHTML = style.innerHTML.replace(/#l/gi, ".title"); style.innerHTML = style_tmp.innerHTML;
-            // In Karte werden Menu, submenu und MapsLogo so geschrieben.
+            // In Karte werden Menu, submenu und logo so geschrieben.
             } else if ( is_page("map") ) {
                 style_tmp.innerHTML = style.innerHTML.replace(/#m/gi, "Menu"); style.innerHTML = style_tmp.innerHTML;
                 style_tmp.innerHTML = style.innerHTML.replace(/#sm/gi, "submenu"); style.innerHTML = style_tmp.innerHTML;
-                style_tmp.innerHTML = style.innerHTML.replace(/#l/gi, ".MapsLogo"); style.innerHTML = style_tmp.innerHTML;
-            // Im alten Seiten Design werden Menu, SubMenu und Logo so geschrieben.
+                style_tmp.innerHTML = style.innerHTML.replace(/#l/gi, "nav .logo"); style.innerHTML = style_tmp.innerHTML;
+            // Ansonsten wird menu, submenu und logo so geschrieben.
             } else {
-                style_tmp.innerHTML = style.innerHTML.replace(/#m/gi, "Menu"); style.innerHTML = style_tmp.innerHTML;
-                style_tmp.innerHTML = style.innerHTML.replace(/#sm/gi, "SubMenu"); style.innerHTML = style_tmp.innerHTML;
-                style_tmp.innerHTML = style.innerHTML.replace(/#l/gi, "nav .Logo"); style.innerHTML = style_tmp.innerHTML;
+                style_tmp.innerHTML = style.innerHTML.replace(/#m/gi, "menu"); style.innerHTML = style_tmp.innerHTML;
+                style_tmp.innerHTML = style.innerHTML.replace(/#sm/gi, "submenu"); style.innerHTML = style_tmp.innerHTML;
+                style_tmp.innerHTML = style.innerHTML.replace(/#l/gi, "nav .logo"); style.innerHTML = style_tmp.innerHTML;
             }
             head.appendChild(style);
         }
@@ -1388,10 +1266,10 @@ var mainGC = function () {
                 }
             // Bei Karten gibt es kein Menu, Menu aufbauen. Nur wenn Change Header Layout aktiviert ist.
             } else if ( is_page("map") && settings_change_header_layout ) {
-                if ( $('.ProfileWidget')[0] ) {
+                if ( $('.profile-panel')[0] ) {
                     var mainMenu = document.createElement("ul");
                     mainMenu.setAttribute("class", "Menu");
-                    $('.ProfileWidget')[0].parentNode.insertBefore(mainMenu, $('.ProfileWidget')[0]);
+                    $('.profile-panel')[0].parentNode.insertBefore(mainMenu, $('.profile-panel')[0]);
                     css = buildCoreCss();
                     appendCssStyle( css );
                 }
@@ -7792,13 +7670,13 @@ var mainGC = function () {
 
 // Versteckt den Header in der Map-Ansicht.
     function hide_map_header() {
-        var header = document.getElementsByTagName("header");
+        var header = document.getElementsByTagName("nav");
         if (header[0].style.display != "none") {
             header[0].style.display = "none";
             document.getElementById("Content").style.top = 0;
         } else {
             header[0].style.display = "block";
-            document.getElementById("Content").style.top = "63px";
+            document.getElementById("Content").style.top = "80px";
         }
     }
 
