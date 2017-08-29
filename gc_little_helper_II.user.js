@@ -5889,6 +5889,9 @@ var mainGC = function () {
                 "a.gclh_thumb {" +
                 "overflow: visible !important; max-width: none !important;}" +
                 "a.gclh_thumb span {" +
+// -> xxxx2 Fix: Name and border deformation of images in logs, due to changes made by GS.
+                "  white-space: unset !important;" +
+// <- xxxx2
                 "  visibility: hidden;" +
                 "  position: absolute;" +
                 "  top:-310px;" +
