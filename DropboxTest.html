@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="favicon.ico">
+
+    <title>Dropboxtest</title>
+
+    <script src="https://unpkg.com/dropbox/dist/Dropbox-sdk.min.js"></script>
+  </head>
+
+  <body>
+
+  	<h2 id="results"></h2>
+
+    <script type="text/javascript">
+	
+		
+		var dbx = new Dropbox({ accessToken: "-6oyRhMqzcgAAAAAAAB9CWzlk0AduEKrdKgPN-csfZILD0Cml_iUkGx9l0PIy2jy" });
+
+		var data = {};
+        var value = null;
+        data['TEST1'] = 'Blub';
+        data['TEST2'] = 'BlubBlub';
+
+
+		dbx.filesUpload({path: '/GCLittleHelperSettings.json', contents: JSON.stringify(data, undefined, 2)})
+	        .then(function(response) {
+	          var results = document.getElementById('results');
+	          results.appendChild(document.createTextNode('File uploaded!'));
+	          console.log(response);
+	        })
+	        .catch(function(error) {
+	          console.error(error);
+	        });
+
+	</script>
+  </body>
+</html>
