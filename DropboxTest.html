@@ -11,34 +11,120 @@
 
     <title>Dropboxtest</title>
 
-    <script src="https://unpkg.com/dropbox/dist/Dropbox-sdk.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dropbox.js/2.5.2/Dropbox-sdk.min.js"></script>
+    <script type="text/javascript">
+    (function(window){
+    window.utils = {
+      parseQueryString: function(str) {
+        var ret = Object.create(null);
+
+        if (typeof str !== 'string') {
+          return ret;
+        }
+
+        str = str.trim().replace(/^(\?|#|&)/, '');
+
+        if (!str) {
+          return ret;
+        }
+
+        str.split('&').forEach(function (param) {
+          var parts = param.replace(/\+/g, ' ').split('=');
+          // Firefox (pre 40) decodes `%3D` to `=`
+          // https://github.com/sindresorhus/query-string/pull/37
+          var key = parts.shift();
+          var val = parts.length > 0 ? parts.join('=') : undefined;
+
+          key = decodeURIComponent(key);
+
+          // missing `=` should be `null`:
+          // http://w3.org/TR/2012/WD-url-20120524/#collect-url-parameters
+          val = val === undefined ? null : decodeURIComponent(val);
+
+          if (ret[key] === undefined) {
+            ret[key] = val;
+          } else if (Array.isArray(ret[key])) {
+            ret[key].push(val);
+          } else {
+            ret[key] = [ret[key], val];
+          }
+        });
+
+        return ret;
+      }
+    };
+  })(window);
+   
+  </script>
   </head>
 
   <body>
 
-  	<h2 id="results"></h2>
+    <ul id="results"></ul>
+
+    <a href="" id="authlink" class="button">Authenticate</a>
 
     <script type="text/javascript">
-	
-		
-		var dbx = new Dropbox({ accessToken: "-6oyRhMqzcgAAAAAAAB9CWzlk0AduEKrdKgPN-csfZILD0Cml_iUkGx9l0PIy2jy" });
+  
+    var APP_ID = 'zp4u1zuvtzgin6g';
 
-		var data = {};
-        var value = null;
-        data['TEST1'] = 'Blub';
-        data['TEST2'] = 'BlubBlub';
+    // Parses the url and gets the access token if it is in the urls hash
+    function getAccessTokenFromUrl() {
+     return utils.parseQueryString(window.location.hash).access_token;
+    }
 
+    // If the user was just redirected from authenticating, the urls hash will
+    // contain the access token.
+    function isAuthenticated() {
+      var token = '-6oyRhMqzcgAAAAAAAB9Fcc_zQDabDsYRxs4b4Cs_JpySPyd8xxG6vleOy3BxAUd';
+      token = false;
+      if(!token){
+        token = getAccessTokenFromUrl();
+      }
+      return token;
+    }
 
-		dbx.filesUpload({path: '/GCLittleHelperSettings.json', contents: JSON.stringify(data, undefined, 2)})
-	        .then(function(response) {
-	          var results = document.getElementById('results');
-	          results.appendChild(document.createTextNode('File uploaded!'));
-	          console.log(response);
-	        })
-	        .catch(function(error) {
-	          console.error(error);
-	        });
+    // Render a list of items to #files
+    function renderItems(items) {
+      var filesContainer = document.getElementById('results');
+      
+      var li = document.createElement('li');
+      li.innerHTML = 'Auth erfolgreich. Liste alle Elemente im Hauptordner von GClh in Ihrer Dropbox:';
+      filesContainer.appendChild(li);
 
-	</script>
+      if(items.length == 0){
+        var li = document.createElement('li');
+        li.innerHTML = 'Keine Dateien im Hauptordner vorhanden.';
+        filesContainer.appendChild(li);
+      }else{
+        items.forEach(function(item) {
+          var li = document.createElement('li');
+          li.innerHTML = item.name;
+          filesContainer.appendChild(li);
+        });
+      }
+    }
+
+    var token = isAuthenticated();
+
+    if (token) {
+      // Create an instance of Dropbox with the access token and use it to
+      // fetch and render the files in the users root directory.
+      var dbx = new Dropbox({ accessToken: token });
+      dbx.filesListFolder({path: ''})
+        .then(function(response) {
+          renderItems(response.entries);
+        })
+        .catch(function(error) {
+          console.error(error);
+        });
+    }else{
+      // Set the login anchors href using dbx.getAuthenticationUrl()
+      var dbx = new Dropbox({ clientId: APP_ID });
+      var authUrl = dbx.getAuthenticationUrl('http://localhost/DropboxTest.html');
+      document.getElementById('authlink').href = authUrl;
+    }
+    
+  </script>
   </body>
 </html>
