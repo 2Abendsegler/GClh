@@ -4529,6 +4529,7 @@ var mainGC = function () {
     }
 
 // Hide found/hidden Caches on Map.
+// Add Buttons for hiding/showing all Caches 
     if (document.location.href.match(/^https?:\/\/www\.geocaching\.com\/map\//) && !document.location.href.match(/^https?:\/\/www\.geocaching\.com\/map\/default.aspx\?pq/)) { // Nicht bei PQ-Anzeige
         try {
             function hideFoundCaches() {
@@ -4543,6 +4544,65 @@ var mainGC = function () {
                 var button = unsafeWindow.document.getElementById("m_myCaches").childNodes[3];
                 if (button) button.click();
             }
+ 
+            function getAllCachetypeButtons(){ 
+                return [ 
+                    'Legend2', 'Legend9',  
+                    'Legend3',  
+                    'Legend6', 'Legend13', 'Legend453', 'Legend7005', 'Legend1304', 
+                    'Legend137', 'Legend4', 'Legend11', 
+                    'Legend8', 'Legend5', 'Legend1858' 
+                ]; 
+            } 
+ 
+            function hideAllCacheTypes(){ 
+                 
+                var cacheTypes = getAllCachetypeButtons(); 
+                cacheTypes.forEach(hideCacheType); 
+            } 
+ 
+            function hideCacheType(item){ 
+                if(document.getElementById(item).className.indexOf('ct_untoggled') === -1){ 
+                    document.getElementById(item).click(); 
+                } 
+            } 
+ 
+            function showCacheType(item){ 
+                if(document.getElementById(item).className.indexOf('ct_untoggled') !== -1){ 
+                    document.getElementById(item).click(); 
+                } 
+            } 
+ 
+            function showAllCacheTypes(){ 
+                 
+                var cacheTypes = getAllCachetypeButtons(); 
+                cacheTypes.forEach(showCacheType); 
+            } 
+ 
+            var ul = document.getElementById("m_myCaches"); 
+            var li = document.createElement("li"); 
+ 
+            var a = document.createElement('a'); 
+            a.appendChild(document.createTextNode("Hide all Caches")); 
+            a.title = "Hide all Caches"; 
+            a.href = "#"; 
+            li.appendChild(a); 
+            ul.appendChild(li); 
+            li.onclick = function() {  
+                hideAllCacheTypes(); 
+            }; 
+ 
+            li = document.createElement("li"); 
+            a = document.createElement('a'); 
+            a.appendChild(document.createTextNode("Show all Caches")); 
+            a.title = "Show all Caches"; 
+            a.href = "#"; 
+            li.appendChild(a); 
+            ul.appendChild(li); 
+            li.onclick = function() {  
+                showAllCacheTypes(); 
+            }; 
+ 
             if (settings_map_hide_hidden) window.addEventListener("load", hideHiddenCaches, false);
             // Apply Cache Type Filter.
             function hideCacheTypes() {
