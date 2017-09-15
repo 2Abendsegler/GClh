@@ -1,3 +1,4 @@
+<a href="#v086" title="GClh II version 0.8.6 (17.09.2017)">v0.8.6</a> &nbsp;
 <a href="#v085" title="GClh II version 0.8.5 (23.08.2017)">v0.8.5</a> &nbsp;
 <a href="#v084" title="GClh II version 0.8.4 (18.08.2017)">v0.8.4</a> &nbsp;
 <a href="#v083" title="GClh II version 0.8.3 (22.06.2017)">v0.8.3</a> &nbsp;
@@ -21,6 +22,21 @@
 <a href="#v022" title="GClh II version 0.2.2 (09.01.2017)">v0.2.2</a> &nbsp; 
 <a href="#v021" title="GClh II version 0.2.1 (05.01.2017)">v0.2.1</a> &nbsp; 
 <a href="#v01" title="GClh II version 0.1 (05.01.2017)">v0.1</a> &nbsp; 
+
+---
+## v0.8.6:
+<ul>
+<li>
+Fix: <b>Save PQ of routes with Key F2 too.</b><br>
+<br>
+</li>
+<li>
+Fix: <b>Name and border deformation of images in logs, due to changes made by GS.<br> 
+<br>
+</li>
+</ul>
+(17.09.2017)<br> 
+<br>
 
 ---
 ## v0.8.5:
