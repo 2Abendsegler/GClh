@@ -37,7 +37,7 @@ New: <b>Save PQ of routes with Key F2 too.</b><br>
 <br>
 </li>
 <li>
-Fix: <b>Linklist is behind Menue in Map Mode, due to changes made by GS.</b>: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/405">#405</a>]<br>
+Fix: <b>Linklist is behind Menue in Map Mode, due to changes made by GS</b>: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/405">#405</a>]<br>
 Many thanks to <a href="https://www.geocaching.com/profile/?u=Ruko2010">Ruko2010</a> for the fixing.<br>
 <br>
 </li>
