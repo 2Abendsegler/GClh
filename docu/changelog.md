@@ -1,3 +1,4 @@
+<a href="#v086" title="GClh II version 0.8.6 (17.09.2017)">v0.8.6</a> &nbsp;
 <a href="#v085" title="GClh II version 0.8.5 (23.08.2017)">v0.8.5</a> &nbsp;
 <a href="#v084" title="GClh II version 0.8.4 (18.08.2017)">v0.8.4</a> &nbsp;
 <a href="#v083" title="GClh II version 0.8.3 (22.06.2017)">v0.8.3</a> &nbsp;
@@ -21,6 +22,31 @@
 <a href="#v022" title="GClh II version 0.2.2 (09.01.2017)">v0.2.2</a> &nbsp; 
 <a href="#v021" title="GClh II version 0.2.1 (05.01.2017)">v0.2.1</a> &nbsp; 
 <a href="#v01" title="GClh II version 0.1 (05.01.2017)">v0.1</a> &nbsp; 
+
+---
+## v0.8.6:
+<ul>
+<li>
+New: <b>Added Buttons for Show/Hide all Caches on the Map.</b><br>
+Many thanks to <a href="https://www.geocaching.com/profile/?u=Ruko2010">Ruko2010</a> for idea and implementation.<br>
+<br>
+</li>
+<li>
+New: <b>Save PQ of routes with Key F2 too.</b><br>
+<br>
+</li>
+<li>
+Fix: <b>Linklist is behind Menue in Map Mode, due to changes made by GS.</b>: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/405">#405</a>]<br>
+Many thanks to <a href="https://www.geocaching.com/profile/?u=Ruko2010">Ruko2010</a> for the fixing.<br>
+<br>
+</li>
+<li>
+Fix: <b>Name and border deformation of images in logs, due to changes made by GS.<br> 
+<br>
+</li>
+</ul>
+(17.09.2017)<br> 
+<br>
 
 ---
 ## v0.8.5:

@@ -2,7 +2,7 @@
 // @name             GC little helper II
 // @namespace        http://www.amshove.net
 //--> $$000 Begin of change
-// @version          0.8.5
+// @version          0.8.6
 //<-- $$000 End of change
 // @include          http*://www.geocaching.com/*
 // @include          http*://labs.geocaching.com/*
@@ -730,8 +730,8 @@ var mainGC = function () {
         if (settings_submit_log_button) {
             // Log abschicken (Cache und TB).
             if (document.location.href.match(/^https?:\/\/www\.geocaching\.com\/(seek|track)\/log\.aspx\?(id|wid|guid|ID|wp|LUID|PLogGuid)\=/)) var id = "ctl00_ContentBody_LogBookPanel1_btnSubmitLog";
-            // PQ speichern | "Bookmark Pocket Query", aus BM PQ erzeugen.
-            if (document.location.href.match(/^https?:\/\/www\.geocaching\.com\/pocket\/(gcquery|bmquery)\.aspx/)) var id = "ctl00_ContentBody_btnSubmit";
+            // PQ speichern | "Bookmark Pocket Query", aus BM PQ erzeugen | PQ zu Routen.
+            if (document.location.href.match(/^https?:\/\/www\.geocaching\.com\/pocket\/(gcquery|bmquery|urquery)\.aspx/)) var id = "ctl00_ContentBody_btnSubmit";
             // "Create a Bookmark" entry, "Edit a Bookmark" entry.
             if (document.location.href.match(/^https?:\/\/www\.geocaching\.com\/bookmarks\/mark\.aspx/)) var id = "ctl00_ContentBody_Bookmark_btnCreate";
             // Hide cache process speichern.
@@ -5949,6 +5949,7 @@ var mainGC = function () {
                 "a.gclh_thumb {" +
                 "overflow: visible !important; max-width: none !important;}" +
                 "a.gclh_thumb span {" +
+                "  white-space: unset !important;" +
                 "  visibility: hidden;" +
                 "  position: absolute;" +
                 "  top:-310px;" +
