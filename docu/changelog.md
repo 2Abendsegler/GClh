@@ -42,6 +42,9 @@ Many thanks to <a href="https://www.geocaching.com/profile/?u=Ruko2010">Ruko2010
 <br>
 </li>
 <li>
+Fix: <b>Improve saving homekoordinates automatically and manual with different types of minute apostrophes ' and ′</b>: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/406">#406</a>]<br>
+<br>
+</li><li>
 Fix: <b>Name and border deformation of images in logs, due to changes made by GS.<br> 
 <br>
 </li>
