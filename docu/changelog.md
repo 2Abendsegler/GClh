@@ -28,7 +28,8 @@
 <ul>
 <li>
 New: <b>Added Buttons for Show/Hide all Caches on the Map.</b><br>
-Many thanks to <a href="https://www.geocaching.com/profile/?u=Ruko2010">Ruko2010</a> for idea and implementation.<br>
+<img src="../images/v0.8.6_Screen01.jpg" alt="v0.8.6_Screen01.jpg"><br>
+Many thanks to <a href="https://www.geocaching.com/profile/?u=Ruko2010">Ruko2010</a> for the implementation.<br>
 <br>
 </li>
 <li>
