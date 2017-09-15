@@ -27,7 +27,7 @@
 ## v0.8.6:
 <ul>
 <li>
-New: <b>Added Buttons for Show/Hide all Caches on the Map.</b>: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/408">#408</a>]<br>
+New: <b>Added Buttons for Show/Hide all Caches on the Map.</b><br>
 Many thanks to <a href="https://www.geocaching.com/profile/?u=Ruko2010">Ruko2010</a> for idea and implementation.<br>
 <br>
 </li>
