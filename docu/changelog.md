@@ -27,8 +27,9 @@
 ## v0.8.6:
 <ul>
 <li>
-New: <b>Added Buttons for Show/Hide all Caches on the Map.</b><br>
-Many thanks to <a href="https://www.geocaching.com/profile/?u=Ruko2010">Ruko2010</a> for idea and implementation.<br>
+New: <b>Added Buttons for Show Hide all Caches on the Map</b>: [Issue (Pull request) <a href="https://github.com/2Abendsegler/GClh/pull/408">#408</a>]<br>
+<img src="../images/v0.8.6_Screen01.jpg" alt="v0.8.6_Screen01.jpg"><br>
+Many thanks to <a href="https://www.geocaching.com/profile/?u=Ruko2010">Ruko2010</a> for the implementation.<br>
 <br>
 </li>
 <li>
@@ -36,16 +37,21 @@ New: <b>Save PQ of routes with Key F2 too.</b><br>
 <br>
 </li>
 <li>
-Fix: <b>Linklist is behind Menue in Map Mode, due to changes made by GS.</b>: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/405">#405</a>]<br>
+Fix: <b>Linklist is behind Menue in Map Mode, due to changes made by GS</b>: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/405">#405</a>]<br>
 Many thanks to <a href="https://www.geocaching.com/profile/?u=Ruko2010">Ruko2010</a> for the fixing.<br>
 <br>
 </li>
 <li>
-Fix: <b>Name and border deformation of images in logs, due to changes made by GS.<br> 
+Fix: <b>Improve saving homecoordinates automatically and manual with different types of minute apostrophes</b>: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/406">#406</a>]<br>
+<br>
+</li>
+<li>
+Fix: <b>Name and border deformation of images in logs, due to changes made by GS.</b><br> 
 <br>
 </li>
 </ul>
 (17.09.2017)<br> 
+(Advance notice: Dropbox synchronisation is coming again. <a href="https://www.geocaching.com/profile/?u=Ruko2010">Ruko2010</a> is working on it. :) )<br>
 <br>
 
 ---

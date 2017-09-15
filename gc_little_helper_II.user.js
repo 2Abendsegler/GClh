@@ -646,7 +646,8 @@ var mainGC = function () {
                              + "Do you want to go to the special area and let GClh save \n"
                              + "your home coordinates automatically?\n\n"
                              + "GClh will save it automatically. You have nothing to do at the\n"
-                             + "following page \"Home Location\", except, to choose your link again.";
+                             + "following page \"Home Location\", except, to choose your link again.\n"
+                             + "(But, please wait until page \"Home Location\" is loading complete.)";
                     if ( window.confirm(mess) ) document.location.href = http + "://www.geocaching.com/account/settings/homelocation";
                     else document.location.href = document.location.href.replace("?#"+splitter[1]+"#"+splitter[2]+"#", "");
                 // uid, own trackables in GClh übernehmen.
@@ -655,7 +656,8 @@ var mainGC = function () {
                              + "your trackables. Do you want to go to your profile and \n"
                              + "let GClh save the identification (uid) automatically?\n\n"
                              + "GClh will save it automatically. You have nothing to do at the\n"
-                             + "following page \"Your Profile\", except, to choose your link again.";
+                             + "following page \"Your Profile\", except, to choose your link again.\n"
+                             + "(But, please wait until page \"Your Profile\" is loading complete.)";
                     if ( window.confirm(mess) ) document.location.href = http + "://www.geocaching.com/my/default.aspx";
                     else  document.location.href = document.location.href.replace("?#"+splitter[1]+"#"+splitter[2], "");
                 // Postbacks.
@@ -7596,7 +7598,7 @@ var mainGC = function () {
             dec2 = Math.round(dec2 * 10000000) / 10000000;
             return new Array(dec1, dec2);
         } else {
-            match = coords.match(/(N|S) ([0-9]+)°? ([0-9]+)\.([0-9]+) (E|W) ([0-9]+)°? ([0-9]+)\.([0-9]+)/);
+            match = coords.match(/(N|S) ([0-9]+)°? ([0-9]+)\.([0-9]+)′?'? (E|W) ([0-9]+)°? ([0-9]+)\.([0-9]+)/);
             if (match) {
                 var dec1 = parseInt(match[2], 10) + (parseFloat(match[3] + "." + match[4]) / 60);
                 if (match[1] == "S") dec1 = dec1 * -1;
