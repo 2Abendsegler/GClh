@@ -4579,11 +4579,11 @@ var mainGC = function () {
                 cacheTypes.forEach(showCacheType); 
             } 
  
-            var ul = document.getElementById("m_myCaches"); 
+            var ul = document.getElementById("m_cacheTypes"); 
             var li = document.createElement("li"); 
  
             var a = document.createElement('a'); 
-            a.appendChild(document.createTextNode("Hide all Caches")); 
+            a.appendChild(document.createTextNode("Hide all Cachetypes")); 
             a.title = "Hide all Caches"; 
             a.href = "#"; 
             li.appendChild(a); 
@@ -4594,7 +4594,7 @@ var mainGC = function () {
  
             li = document.createElement("li"); 
             a = document.createElement('a'); 
-            a.appendChild(document.createTextNode("Show all Caches")); 
+            a.appendChild(document.createTextNode("Show all Cachetypes")); 
             a.title = "Show all Caches"; 
             a.href = "#"; 
             li.appendChild(a); 
