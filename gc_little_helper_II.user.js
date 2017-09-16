@@ -13,7 +13,7 @@
 // @resource jscolor https://raw.githubusercontent.com/2Abendsegler/GClh/master/data/jscolor.js
 // @require          http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js
 // @require          http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js
-// @require          http://cdnjs.cloudflare.com/ajax/libs/dropbox.js/0.10.2/dropbox.min.js
+// @require          https://cdnjs.cloudflare.com/ajax/libs/dropbox.js/2.5.2/Dropbox-sdk.min.js
 // @require          https://raw.githubusercontent.com/2Abendsegler/GClh/master/data/gclh_defi.js
 // @description      Some little things to make life easy (on www.geocaching.com).
 // @copyright        Torsten Amshove <torsten@amshove.net>
@@ -619,6 +619,51 @@ var mainOSM = function () {
         addGCButton(0);
     } catch (e) { gclh_error("mainOSM:", e); }
 };
+
+////////////////////////////////////////////////////////////////////////////
+// Dropbox Helper Function
+////////////////////////////////////////////////////////////////////////////
+(function(window){
+    window.utils = {
+      parseQueryString: function(str) {
+        var ret = Object.create(null);
+
+        if (typeof str !== 'string') {
+          return ret;
+        }
+
+        str = str.trim().replace(/^(\?|#|&)/, '');
+
+        if (!str) {
+          return ret;
+        }
+
+        str.split('&').forEach(function (param) {
+          var parts = param.replace(/\+/g, ' ').split('=');
+          // Firefox (pre 40) decodes `%3D` to `=`
+          // https://github.com/sindresorhus/query-string/pull/37
+          var key = parts.shift();
+          var val = parts.length > 0 ? parts.join('=') : undefined;
+
+          key = decodeURIComponent(key);
+
+          // missing `=` should be `null`:
+          // http://w3.org/TR/2012/WD-url-20120524/#collect-url-parameters
+          val = val === undefined ? null : decodeURIComponent(val);
+
+          if (ret[key] === undefined) {
+            ret[key] = val;
+          } else if (Array.isArray(ret[key])) {
+            ret[key].push(val);
+          } else {
+            ret[key] = [ret[key], val];
+          }
+        });
+
+        return ret;
+      }
+    };
+  })(window);
 
 ////////////////////////////////////////////////////////////////////////////
 // Helper
@@ -10768,71 +10813,111 @@ var mainGC = function () {
         });
     }
 
-    var gclh_sync_DB_Client = null;
+    var dropbox_client = null;
 
-    function gclh_sync_DB_CheckAndCreateClient(userToken) {
-        var deferred = $.Deferred();
-        if (gclh_sync_DB_Client != null && gclh_sync_DB_Client.isAuthenticated()) {
-            deferred.resolve();
-            return deferred.promise();
+// Save dropbox auth token if one is passed (from Dropbox)
+    var DB_token = utils.parseQueryString(window.location.hash).access_token;
+    if(DB_token){
+        // gerade von DB zurück, also Show config
+        setValue('settings_DB_auth_token', DB_token);
+        document.getElementById('gclh_sync_lnk').click();
+    }
+// END Save dropbox auth token if one is passed (from Dropbox)
+
+    function gclh_sync_DB_CheckAndCreateClient() {
+        var APP_ID = 'zp4u1zuvtzgin6g';
+        token = getValue('settings_DB_auth_token', DB_token);
+
+        if (token) {
+          // Create an instance of Dropbox with the access token and use it to
+          dropbox_client = new Dropbox({ accessToken: token });
+        }else{
+          // Set the login anchors href using dropbox_client.getAuthenticationUrl()
+          dropbox_client = new Dropbox({ clientId: APP_ID });
+          document.getElementById('authlink').href = dropbox_client.getAuthenticationUrl('https://www.geocaching.com/my/default.aspx');
         }
-        $('#syncDBLoader').show();
-        setValue("dbToken", "");
-        gclh_sync_DB_Client = null;
-        if (document.getElementById('btn_DBSave') && document.getElementById('btn_DBLoad')) {
-            document.getElementById('btn_DBSave').disabled = true;
-            document.getElementById('btn_DBLoad').disabled = true;
-        }
-        var client = new Dropbox.Client({key: "b992jnfyidj32v3", sandbox: true, token: userToken});
-        client.authDriver(new Dropbox.AuthDriver.Popup({
-            rememberUser: true,
-            receiverUrl: "https://www.geocaching.com/my/default.aspx"
-        }));
-        client.authenticate(function (error, client) {
-            $('#syncDBLoader').hide();
-            if (error || !client.isAuthenticated()) {
-                alert("Error connecting to dropbox");
-                return;
-            }
-            gclh_sync_DB_Client = client;
-            if (document.getElementById('btn_DBSave') && document.getElementById('btn_DBLoad')) {
-                document.getElementById('btn_DBSave').disabled = false;
-                document.getElementById('btn_DBLoad').disabled = false;
-            }
-            deferred.resolve();
-        });
-        return deferred.promise();
     }
 
     function gclh_sync_DBSave() {
+        
         var deferred = $.Deferred();
-        gclh_sync_DB_CheckAndCreateClient().done(function(){
-            $('#syncDBLoader').show();
-            gclh_sync_DB_Client.writeFile("GCLittleHelperSettings.json", sync_getConfigData(), {}, function () {
+        if(dropbox_client == null){
+            gclh_sync_DB_CheckAndCreateClient();
+        }
+        $('#syncDBLoader').show();
+        dropbox_client.filesUpload({
+            path: "/GCLittleHelperSettings.json", 
+            contents: sync_getConfigData(), 
+            mode: 'overwrite',
+            autorename: false,
+            mute: false
+        })
+            .then(function(response) {
                 $('#syncDBLoader').hide();
                 deferred.resolve();
+                console.log(response);
+            })
+            .catch(function(error) {
+              console.error(error);
             });
-        }).fail(function(){deferred.reject();});
         return deferred.promise();
     }
 
     function gclh_sync_DBLoad() {
         var deferred = $.Deferred();
-        gclh_sync_DB_CheckAndCreateClient().done(function(){
-            $('#syncDBLoader').show();
-            gclh_sync_DB_Client.readFile("GCLittleHelperSettings.json", {}, function (error, data) {
-                if (data != null && data != "") {
-                    sync_setConfigData(data);
+        
+        if(dropbox_client == null){
+            gclh_sync_DB_CheckAndCreateClient();
+        }
+
+        $('#syncDBLoader').show();
+        
+        dropbox_client.filesDownload({path: '/GCLittleHelperSettings.json'})
+            .then(function (data) {
+                var blob = data.fileBlob;
+                var reader = new FileReader()
+                reader.addEventListener("loadend", function () {
                     $('#syncDBLoader').hide();
+                    sync_setConfigData(reader.result);
                     deferred.resolve();
-                }
+                })
+                reader.readAsText(blob);
+            }).catch(function (error) {
+                console.error(error);
+                deferred.reject();
             });
-        }).fail(function(){deferred.reject();});
+
+
+            // .then(function (response) {
+                
+            //     console.log(response);
+            //     console.log(response.fileBlob);
+
+
+            //     // var blob = response.fileBlob;
+            //     // var reader = new FileReader();
+            //     // reader.addEventListener("loadend", function() {
+            //     //     $('#syncDBLoader').hide();
+            //     //     deferred.resolve();
+            //     //     console.log(reader.result); // will print out file contentre
+            //     // });
+                
+            // })
+            // .catch(function (error) {
+            //     deferred.reject();
+            // });
         return deferred.promise();
     }
 
     function gclh_sync_DBHash() {
         var deferred = $.Deferred();
+        
+        if(dropbox_client == null){
+            gclh_sync_DB_CheckAndCreateClient();
+        }
+
+        
+
         gclh_sync_DB_CheckAndCreateClient().done(function(){
             $('#syncDBLoader').show();
             gclh_sync_DB_Client.stat("GCLittleHelperSettings.json", {}, function (error, data) {
@@ -10866,9 +10951,10 @@ var mainGC = function () {
             html += "<h3 id='syncDBLabel' style='cursor: pointer;'>DropBox <font class='gclh_small'>(Click to hide/show)<span style='color: #d14f4f;'> (Not yet fully supported)</span></font></h3>";
             html += "<div style='display:none;' id='syncDB' >";
             html += "<img style='display:none;height: 40px;' id='syncDBLoader' src='"+global_syncDBLoader_icon+"'>";
+            html += "<a href='#' class='gclh_form' style='display:none;' id='authlink' class='button'>Authenticate</a>";
             html += "<br>";
-            html += "<input class='gclh_form' type='button' value='save to DropBox' id='btn_DBSave' style='cursor: pointer;' disabled> ";
-            html += "<input class='gclh_form' type='button' value='load from DropBox' id='btn_DBLoad' style='cursor: pointer;' disabled>";
+            html += "<input class='gclh_form' type='button' value='save to DropBox' id='btn_DBSave' style='cursor: pointer;'>";
+            html += "<input class='gclh_form' type='button' value='load from DropBox' id='btn_DBLoad' style='cursor: pointer;'>";
             html += "</div>";
             html += "<br>";
             html += "<h3 id='syncManualLabel' style='cursor: pointer;'>Manual <font class='gclh_small'>(Click to hide/show)</font></h3>";
@@ -10931,6 +11017,9 @@ var mainGC = function () {
             $('#syncDBLabel').click(function () {
                 $('#syncDB').toggle();
                 gclh_sync_DB_CheckAndCreateClient();
+                if(dropbox_client == null){
+                    $('#authlink').toggle();
+                }
             });
             $('#syncManualLabel').click(function () {
                 $('#syncManual').toggle();
