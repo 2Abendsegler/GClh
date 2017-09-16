@@ -27,7 +27,7 @@
 ## v0.8.6:
 <ul>
 <li>
-New: <b>Added Buttons for Show Hide all Caches on the Map</b>: [Issue (Pull request) <a href="https://github.com/2Abendsegler/GClh/pull/408">#408</a>]<br>
+New: <b>Added Buttons for Show Hide all Cachetypes on the Map</b>: [Issue (Pull request) <a href="https://github.com/2Abendsegler/GClh/pull/408">#408</a>]<br>
 <img src="../images/v0.8.6_Screen01.jpg" alt="v0.8.6_Screen01.jpg"><br>
 Many thanks to <a href="https://www.geocaching.com/profile/?u=Ruko2010">Ruko2010</a> for the implementation.<br>
 <br>
