@@ -2,7 +2,7 @@
 // @name             GC little helper II
 // @namespace        http://www.amshove.net
 //--> $$000 Begin of change
-// @version          0.8.5
+// @version          0.8.6
 //<-- $$000 End of change
 // @include          http*://www.geocaching.com/*
 // @include          http*://labs.geocaching.com/*
@@ -646,7 +646,8 @@ var mainGC = function () {
                              + "Do you want to go to the special area and let GClh save \n"
                              + "your home coordinates automatically?\n\n"
                              + "GClh will save it automatically. You have nothing to do at the\n"
-                             + "following page \"Home Location\", except, to choose your link again.";
+                             + "following page \"Home Location\", except, to choose your link again.\n"
+                             + "(But, please wait until page \"Home Location\" is loading complete.)";
                     if ( window.confirm(mess) ) document.location.href = http + "://www.geocaching.com/account/settings/homelocation";
                     else document.location.href = document.location.href.replace("?#"+splitter[1]+"#"+splitter[2]+"#", "");
                 // uid, own trackables in GClh übernehmen.
@@ -655,7 +656,8 @@ var mainGC = function () {
                              + "your trackables. Do you want to go to your profile and \n"
                              + "let GClh save the identification (uid) automatically?\n\n"
                              + "GClh will save it automatically. You have nothing to do at the\n"
-                             + "following page \"Your Profile\", except, to choose your link again.";
+                             + "following page \"Your Profile\", except, to choose your link again.\n"
+                             + "(But, please wait until page \"Your Profile\" is loading complete.)";
                     if ( window.confirm(mess) ) document.location.href = http + "://www.geocaching.com/my/default.aspx";
                     else  document.location.href = document.location.href.replace("?#"+splitter[1]+"#"+splitter[2], "");
                 // Postbacks.
@@ -730,8 +732,8 @@ var mainGC = function () {
         if (settings_submit_log_button) {
             // Log abschicken (Cache und TB).
             if (document.location.href.match(/^https?:\/\/www\.geocaching\.com\/(seek|track)\/log\.aspx\?(id|wid|guid|ID|wp|LUID|PLogGuid)\=/)) var id = "ctl00_ContentBody_LogBookPanel1_btnSubmitLog";
-            // PQ speichern | "Bookmark Pocket Query", aus BM PQ erzeugen.
-            if (document.location.href.match(/^https?:\/\/www\.geocaching\.com\/pocket\/(gcquery|bmquery)\.aspx/)) var id = "ctl00_ContentBody_btnSubmit";
+            // PQ speichern | "Bookmark Pocket Query", aus BM PQ erzeugen | PQ zu Routen.
+            if (document.location.href.match(/^https?:\/\/www\.geocaching\.com\/pocket\/(gcquery|bmquery|urquery)\.aspx/)) var id = "ctl00_ContentBody_btnSubmit";
             // "Create a Bookmark" entry, "Edit a Bookmark" entry.
             if (document.location.href.match(/^https?:\/\/www\.geocaching\.com\/bookmarks\/mark\.aspx/)) var id = "ctl00_ContentBody_Bookmark_btnCreate";
             // Hide cache process speichern.
@@ -1034,7 +1036,7 @@ var mainGC = function () {
                     style.innerHTML += "#l {margin-top: -41px; width: 30px;}";
                 }
             }
-            
+
             // Account Settings, Message Center, Cache suchen, Cache verstecken, Geotours (neues Seiten Design):
             // ----------
             if ( is_page("settings") || is_page("messagecenter") || is_page("find_cache") || is_page("hide_cache") || is_page("geotours") ) {
@@ -4529,7 +4531,7 @@ var mainGC = function () {
     }
 
 // Hide found/hidden Caches on Map.
-// Add Buttons for hiding/showing all Caches 
+// Add Buttons for hiding/showing all Caches
     if (document.location.href.match(/^https?:\/\/www\.geocaching\.com\/map\//) && !document.location.href.match(/^https?:\/\/www\.geocaching\.com\/map\/default.aspx\?pq/)) { // Nicht bei PQ-Anzeige
         try {
             function hideFoundCaches() {
@@ -4544,65 +4546,63 @@ var mainGC = function () {
                 var button = unsafeWindow.document.getElementById("m_myCaches").childNodes[3];
                 if (button) button.click();
             }
- 
-            function getAllCachetypeButtons(){ 
-                return [ 
-                    'Legend2', 'Legend9',  
-                    'Legend3',  
-                    'Legend6', 'Legend13', 'Legend453', 'Legend7005', 'Legend1304', 
-                    'Legend137', 'Legend4', 'Legend11', 
-                    'Legend8', 'Legend5', 'Legend1858' 
-                ]; 
-            } 
- 
-            function hideAllCacheTypes(){ 
-                 
-                var cacheTypes = getAllCachetypeButtons(); 
-                cacheTypes.forEach(hideCacheType); 
-            } 
- 
-            function hideCacheType(item){ 
-                if(document.getElementById(item).className.indexOf('ct_untoggled') === -1){ 
-                    document.getElementById(item).click(); 
-                } 
-            } 
- 
-            function showCacheType(item){ 
-                if(document.getElementById(item).className.indexOf('ct_untoggled') !== -1){ 
-                    document.getElementById(item).click(); 
-                } 
-            } 
- 
-            function showAllCacheTypes(){ 
-                 
-                var cacheTypes = getAllCachetypeButtons(); 
-                cacheTypes.forEach(showCacheType); 
-            } 
- 
-            var ul = document.getElementById("m_cacheTypes"); 
-            var li = document.createElement("li"); 
- 
-            var a = document.createElement('a'); 
-            a.appendChild(document.createTextNode("Hide all Cachetypes")); 
-            a.title = "Hide all Caches"; 
-            a.href = "#"; 
-            li.appendChild(a); 
-            ul.appendChild(li); 
-            li.onclick = function() {  
-                hideAllCacheTypes(); 
-            }; 
- 
-            li = document.createElement("li"); 
-            a = document.createElement('a'); 
-            a.appendChild(document.createTextNode("Show all Cachetypes")); 
-            a.title = "Show all Caches"; 
-            a.href = "#"; 
-            li.appendChild(a); 
-            ul.appendChild(li); 
-            li.onclick = function() {  
-                showAllCacheTypes(); 
-            }; 
- 
+
+            function getAllCachetypeButtons(){
+                return [
+                    'Legend2', 'Legend9',
+                    'Legend3',
+                    'Legend6', 'Legend13', 'Legend453', 'Legend7005', 'Legend1304',
+                    'Legend137', 'Legend4', 'Legend11',
+                    'Legend8', 'Legend5', 'Legend1858'
+                ];
+            }
+
+            function hideAllCacheTypes(){
+                var cacheTypes = getAllCachetypeButtons();
+                cacheTypes.forEach(hideCacheType);
+            }
+
+            function hideCacheType(item){
+                if(document.getElementById(item).className.indexOf('ct_untoggled') === -1){
+                    document.getElementById(item).click();
+                }
+            }
+
+            function showCacheType(item){
+                if(document.getElementById(item).className.indexOf('ct_untoggled') !== -1){
+                    document.getElementById(item).click();
+                }
+            }
+
+            function showAllCacheTypes(){
+                var cacheTypes = getAllCachetypeButtons();
+                cacheTypes.forEach(showCacheType);
+            }
+
+            var ul = document.getElementById("m_cacheTypes");
+            var li = document.createElement("li");
+
+            var a = document.createElement('a');
+            a.appendChild(document.createTextNode("Hide all Cachetypes"));
+            a.title = "Hide all Caches";
+            a.href = "#";
+            li.appendChild(a);
+            ul.appendChild(li);
+            li.onclick = function() {
+                hideAllCacheTypes();
+            };
+
+            li = document.createElement("li");
+            a = document.createElement('a');
+            a.appendChild(document.createTextNode("Show all Cachetypes"));
+            a.title = "Show all Caches";
+            a.href = "#";
+            li.appendChild(a);
+            ul.appendChild(li);
+            li.onclick = function() {
+                showAllCacheTypes();
+            };
+
             if (settings_map_hide_hidden) window.addEventListener("load", hideHiddenCaches, false);
             // Apply Cache Type Filter.
             function hideCacheTypes() {
@@ -5949,6 +5949,7 @@ var mainGC = function () {
                 "a.gclh_thumb {" +
                 "overflow: visible !important; max-width: none !important;}" +
                 "a.gclh_thumb span {" +
+                "  white-space: unset !important;" +
                 "  visibility: hidden;" +
                 "  position: absolute;" +
                 "  top:-310px;" +
@@ -7595,7 +7596,7 @@ var mainGC = function () {
             dec2 = Math.round(dec2 * 10000000) / 10000000;
             return new Array(dec1, dec2);
         } else {
-            match = coords.match(/(N|S) ([0-9]+)°? ([0-9]+)\.([0-9]+) (E|W) ([0-9]+)°? ([0-9]+)\.([0-9]+)/);
+            match = coords.match(/(N|S) ([0-9]+)°? ([0-9]+)\.([0-9]+)′?'? (E|W) ([0-9]+)°? ([0-9]+)\.([0-9]+)/);
             if (match) {
                 var dec1 = parseInt(match[2], 10) + (parseFloat(match[3] + "." + match[4]) / 60);
                 if (match[1] == "S") dec1 = dec1 * -1;
