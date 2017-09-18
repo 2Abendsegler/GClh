@@ -10830,13 +10830,28 @@ var mainGC = function () {
         token = getValue('settings_DB_auth_token', DB_token);
 
         if (token) {
-          // Create an instance of Dropbox with the access token and use it to
+          // Try to create an instance and test it with the current token
           dropbox_client = new Dropbox({ accessToken: token });
+          dropbox_client.usersGetCurrentAccount()
+            .then(function(data) {
+                // Client was successful created
+                return dropbox_client;
+            })
+            .catch(function(error) {
+              console.error(error);
+              // Some error accourd, maybe a wrong auth key, or in the meantime, the app was
+              // deleted from the DB-Account, so we have to reauth
+              dropbox_client = null;
+            });
         }else{
-          // Set the login anchors href using dropbox_client.getAuthenticationUrl()
-          dropbox_client = new Dropbox({ clientId: APP_ID });
-          document.getElementById('authlink').href = dropbox_client.getAuthenticationUrl('https://www.geocaching.com/my/default.aspx');
+            // No token was givven, to try to auth laten in this function
+            dropbox_client = null;
         }
+
+        // If client could not created, try to get a new Auth token
+        // Set the login anchors href using dropbox_client.getAuthenticationUrl()
+        dropbox_auth_client = new Dropbox({ clientId: APP_ID });
+        document.getElementById('authlink').href = dropbox_auth_client.getAuthenticationUrl('https://www.geocaching.com/my/default.aspx');
     }
 
     function gclh_sync_DBSave() {
@@ -10866,10 +10881,8 @@ var mainGC = function () {
 
     function gclh_sync_DBLoad() {
         var deferred = $.Deferred();
-        
-        if(dropbox_client == null){
-            gclh_sync_DB_CheckAndCreateClient();
-        }
+
+        gclh_sync_DB_CheckAndCreateClient();
 
         $('#syncDBLoader').show();
         
@@ -10887,37 +10900,13 @@ var mainGC = function () {
                 console.error(error);
                 deferred.reject();
             });
-
-
-            // .then(function (response) {
-                
-            //     console.log(response);
-            //     console.log(response.fileBlob);
-
-
-            //     // var blob = response.fileBlob;
-            //     // var reader = new FileReader();
-            //     // reader.addEventListener("loadend", function() {
-            //     //     $('#syncDBLoader').hide();
-            //     //     deferred.resolve();
-            //     //     console.log(reader.result); // will print out file contentre
-            //     // });
-                
-            // })
-            // .catch(function (error) {
-            //     deferred.reject();
-            // });
         return deferred.promise();
     }
 
     function gclh_sync_DBHash() {
         var deferred = $.Deferred();
         
-        if(dropbox_client == null){
-            gclh_sync_DB_CheckAndCreateClient();
-        }
-
-        
+        gclh_sync_DB_CheckAndCreateClient();
 
         gclh_sync_DB_CheckAndCreateClient().done(function(){
             $('#syncDBLoader').show();
