@@ -10822,44 +10822,76 @@ var mainGC = function () {
         // gerade von DB zurück, also Show config
         setValue('settings_DB_auth_token', DB_token);
         document.getElementById('gclh_sync_lnk').click();
+        document.getElementById('syncDBLabel').click();
+    }else{
+        // Maybe the user denies Access (this is mostly an unwanted click), so show him, that he
+        // has refused to give us access to his dropbox and that he can re-auth if he want to
+        error = utils.parseQueryString(window.location.hash).error_description
+        if(error){
+            alert('We received the following error from dropbox: "' + error + '" If you think this is a mistake, you can try to re-authenticate in the sync menue of GClh.');
+        }
     }
 // END Save dropbox auth token if one is passed (from Dropbox)
 
     function gclh_sync_DB_CheckAndCreateClient() {
-        var APP_ID = 'zp4u1zuvtzgin6g';
-        token = getValue('settings_DB_auth_token', DB_token);
+        
+        var deferred = $.Deferred();
+        token = getValue('settings_DB_auth_token');
 
         if (token) {
           // Try to create an instance and test it with the current token
           dropbox_client = new Dropbox({ accessToken: token });
+          
           dropbox_client.usersGetCurrentAccount()
-            .then(function(data) {
-                // Client was successful created
-                return dropbox_client;
+            .then(function(response) {
+              deferred.resolve();
             })
             .catch(function(error) {
-              console.error(error);
-              // Some error accourd, maybe a wrong auth key, or in the meantime, the app was
-              // deleted from the DB-Account, so we have to reauth
-              dropbox_client = null;
+              deferred.reject();
             });
+
         }else{
             // No token was givven, to try to auth laten in this function
             dropbox_client = null;
+            deferred.reject();
         }
 
-        // If client could not created, try to get a new Auth token
-        // Set the login anchors href using dropbox_client.getAuthenticationUrl()
-        dropbox_auth_client = new Dropbox({ clientId: APP_ID });
-        document.getElementById('authlink').href = dropbox_auth_client.getAuthenticationUrl('https://www.geocaching.com/my/default.aspx');
+        return deferred.promise();
+    }
+
+    function gclh_sync_DB_showAuthLink(){
+
+      var APP_ID = 'zp4u1zuvtzgin6g';
+      // If client could not created, try to get a new Auth token
+      // Set the login anchors href using dropbox_client.getAuthenticationUrl()
+      dropbox_auth_client = new Dropbox({ clientId: APP_ID });
+      authlink = document.getElementById('authlink');
+      authlink.href = dropbox_auth_client.getAuthenticationUrl(window.location.protocol + '//' + window.location.hostname + window.location.pathname);
+      
+      $(authlink).show();
+      
+      $('#btn_DBSave').hide();
+      $('#btn_DBLoad').hide();
+
+      $('#syncDBLoader').hide();
+    }
+
+
+    function gclh_sync_DB_showSaveLoadLinks(){
+
+      $('#btn_DBSave').show();
+      $('#btn_DBLoad').show();
+
+      $('#syncDBLoader').hide();
+      $('#authlink').hide();
     }
 
     function gclh_sync_DBSave() {
         
         var deferred = $.Deferred();
-        if(dropbox_client == null){
-            gclh_sync_DB_CheckAndCreateClient();
-        }
+        
+        gclh_sync_DB_CheckAndCreateClient();
+        
         $('#syncDBLoader').show();
         dropbox_client.filesUpload({
             path: "/GCLittleHelperSettings.json", 
@@ -10871,7 +10903,6 @@ var mainGC = function () {
             .then(function(response) {
                 $('#syncDBLoader').hide();
                 deferred.resolve();
-                console.log(response);
             })
             .catch(function(error) {
               console.error(error);
@@ -10905,8 +10936,6 @@ var mainGC = function () {
 
     function gclh_sync_DBHash() {
         var deferred = $.Deferred();
-        
-        gclh_sync_DB_CheckAndCreateClient();
 
         gclh_sync_DB_CheckAndCreateClient().done(function(){
             $('#syncDBLoader').show();
@@ -10938,13 +10967,13 @@ var mainGC = function () {
             var html = "";
             html += "<h3 class='gclh_headline'>" + scriptNameSync + " <font class='gclh_small'>v" + scriptVersion + "</font></h3>";
             html += "<div class='gclh_content'>";
-            html += "<h3 id='syncDBLabel' style='cursor: pointer;'>DropBox <font class='gclh_small'>(Click to hide/show)<span style='color: #d14f4f;'> (Not yet fully supported)</span></font></h3>";
+            html += "<h3 id='syncDBLabel' style='cursor: pointer;'>DropBox <font class='gclh_small'>(Click to hide/show)</font></h3>";
             html += "<div style='display:none;' id='syncDB' >";
-            html += "<img style='display:none;height: 40px;' id='syncDBLoader' src='"+global_syncDBLoader_icon+"'>";
+            html += "<div id='syncDBLoader'><img style='height: 40px;' src='"+global_syncDBLoader_icon+"'> Loading...</div>";
             html += "<a href='#' class='gclh_form' style='display:none;' id='authlink' class='button'>Authenticate</a>";
             html += "<br>";
-            html += "<input class='gclh_form' type='button' value='save to DropBox' id='btn_DBSave' style='cursor: pointer;'>";
-            html += "<input class='gclh_form' type='button' value='load from DropBox' id='btn_DBLoad' style='cursor: pointer;'>";
+            html += "<input class='gclh_form' type='button' value='save to DropBox' id='btn_DBSave' style='cursor: pointer; display:none;'>";
+            html += "<input class='gclh_form' type='button' value='load from DropBox' id='btn_DBLoad' style='cursor: pointer; display:none;'>";
             html += "</div>";
             html += "<br>";
             html += "<h3 id='syncManualLabel' style='cursor: pointer;'>Manual <font class='gclh_small'>(Click to hide/show)</font></h3>";
@@ -11006,10 +11035,15 @@ var mainGC = function () {
 
             $('#syncDBLabel').click(function () {
                 $('#syncDB').toggle();
-                gclh_sync_DB_CheckAndCreateClient();
-                if(dropbox_client == null){
-                    $('#authlink').toggle();
-                }
+                gclh_sync_DB_CheckAndCreateClient()
+                  .done(function(){
+                    // Means the connection to Dropbox stands, so we can make calls
+                    gclh_sync_DB_showSaveLoadLinks();
+                  })
+                  .fail(function(){
+                    // Means something went wrong or the Dropbox is not authenticated, so we display the Auth Link.
+                    gclh_sync_DB_showAuthLink();
+                  });
             });
             $('#syncManualLabel').click(function () {
                 $('#syncManual').toggle();
