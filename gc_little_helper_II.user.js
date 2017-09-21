@@ -10890,7 +10890,14 @@ var mainGC = function () {
         
         var deferred = $.Deferred();
         
-        gclh_sync_DB_CheckAndCreateClient();
+        gclh_sync_DB_CheckAndCreateClient()
+            .fail(function(){
+                // Should not be reached, because we checked the client earlier
+                alert('Something went wrong. Please reload the page and try again.');
+                deferred.reject();
+                $('#syncDBLoader').hide();
+                return deferred.promise();
+            });
         
         $('#syncDBLoader').show();
         dropbox_client.filesUpload({
@@ -10901,19 +10908,26 @@ var mainGC = function () {
             mute: false
         })
             .then(function(response) {
-                $('#syncDBLoader').hide();
                 deferred.resolve();
             })
             .catch(function(error) {
               console.error(error);
+              deferred.reject();
             });
+        $('#syncDBLoader').hide();
         return deferred.promise();
     }
 
     function gclh_sync_DBLoad() {
         var deferred = $.Deferred();
 
-        gclh_sync_DB_CheckAndCreateClient();
+        gclh_sync_DB_CheckAndCreateClient()
+            .fail(function(){
+                // Should not be reached, because we checked the client earlier
+                alert('Something went wrong. Please reload the page and try again.');
+                deferred.reject();
+                return deferred.promise();
+            });
 
         $('#syncDBLoader').show();
         
@@ -10922,7 +10936,6 @@ var mainGC = function () {
                 var blob = data.fileBlob;
                 var reader = new FileReader()
                 reader.addEventListener("loadend", function () {
-                    $('#syncDBLoader').hide();
                     sync_setConfigData(reader.result);
                     deferred.resolve();
                 })
@@ -10931,6 +10944,7 @@ var mainGC = function () {
                 console.error(error);
                 deferred.reject();
             });
+        $('#syncDBLoader').hide();
         return deferred.promise();
     }
 
