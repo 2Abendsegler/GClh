@@ -10165,9 +10165,18 @@ var mainGC = function () {
 
             setValueSet(settings).done(function () {
                 if (type === "upload") {
-                    gclh_sync_DBSave().done(function () {
-                        window.location.reload(false);
-                    });
+                    gclh_sync_DB_CheckAndCreateClient()
+                        .done(function(){
+                            // Means the connection to Dropbox stands, so we can make calls
+                             gclh_sync_DBSave().done(function () {
+                                window.location.reload(false);
+                            });
+                        })
+                        .fail(function(){
+                            // Means something went wrong or the Dropbox is not authenticated, so we display the Auth Link.
+                            alert('GClh is not authorized to use your Dropbox. Please go to the Sync Page and authenticate your Dropbox first.');
+                            window.location.reload(false);
+                        });
                 } else window.location.reload(false);
             });
             if ( getValue("settings_show_save_message") ) {
