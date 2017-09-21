@@ -10168,13 +10168,13 @@ var mainGC = function () {
                     gclh_sync_DB_CheckAndCreateClient()
                         .done(function(){
                             // Means the connection to Dropbox stands, so we can make calls
-                             gclh_sync_DBSave().done(function () {
+                            gclh_sync_DBSave().done(function () {
                                 window.location.reload(false);
                             });
                         })
                         .fail(function(){
                             // Means something went wrong or the Dropbox is not authenticated, so we display the Auth Link.
-                            alert('GClh is not authorized to use your Dropbox. Please go to the Sync Page and authenticate your Dropbox first.');
+                            alert('GClh is not authorized to use your Dropbox. Please go to the Sync Page and authenticate your Dropbox first. Nevertheless your config is saved localy.');
                             window.location.reload(false);
                         });
                 } else window.location.reload(false);
