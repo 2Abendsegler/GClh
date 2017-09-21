@@ -77,7 +77,8 @@
     // contain the access token.
     function isAuthenticated() {
       var token = '-6oyRhMqzcgAAAAAAAB9Fcc_zQDabDsYRxs4b4Cs_JpySPyd8xxG6vleOy3BxAUd';
-      token = false;
+      // token = false;
+      // token = 'asd';
       if(!token){
         token = getAccessTokenFromUrl();
       }
@@ -111,12 +112,18 @@
       // Create an instance of Dropbox with the access token and use it to
       // fetch and render the files in the users root directory.
       var dbx = new Dropbox({ accessToken: token });
-      dbx.filesListFolder({path: ''})
+      var filesContainer = document.getElementById('results');
+      var li = document.createElement('li');
+      dbx.usersGetCurrentAccount()
         .then(function(response) {
-          renderItems(response.entries);
+          console.error(response);
+          li.innerHTML = response.account_id + ' / ' + response.is_paired;
+          filesContainer.appendChild(li);
         })
         .catch(function(error) {
           console.error(error);
+          li.innerHTML = error.error;
+          filesContainer.appendChild(li);
         });
     }else{
       // Set the login anchors href using dbx.getAuthenticationUrl()
