@@ -140,11 +140,38 @@
         return deferred.promise();
     }
 
+    function get_DB_hash(){
+      var deferred = $.Deferred();
+      
+      dropbox_client.filesGetMetadata({
+          "path": "/GCLittleHelperSettings.json",
+          "include_media_info": false,
+          "include_deleted": false,
+          "include_has_explicit_shared_members": false
+      })
+      .then(function(response) {
+        console.log('filesGetMetadata response:');
+        console.log(response);
+        for (var prop in response) {
+            console.log(prop + " = " + response[prop]);
+        }
+        deferred.resolve();
+      })
+      .catch(function(error) {
+        console.log('filesGetMetadata error:' + error.error);
+        console.error(error);
+        deferred.reject();
+      });
+
+      return deferred.promise();
+    }
+
 
     gclh_sync_DB_CheckAndCreateClient()
       .done(function(){
         // Means the connection to Dropbox stands, so we can make calls
         gclh_sync_DB_showSaveLoadLinks();
+        get_DB_hash();
       })
       .fail(function(){
         // Means something went wrong or the Dropbox is not authenticated, so we display the Auth Link.
