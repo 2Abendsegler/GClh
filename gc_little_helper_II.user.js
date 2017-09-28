@@ -1,4 +1,4 @@
-//TEST
+//TEST2
 
 // ==UserScript==
 // @name             GC little helper II
