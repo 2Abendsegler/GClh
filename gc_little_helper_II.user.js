@@ -10771,8 +10771,6 @@ var mainGC = function () {
 
     var gclh_sync_DB_Client = null;
 
-    // Testcommit
-
     function gclh_sync_DB_CheckAndCreateClient(userToken) {
         var deferred = $.Deferred();
         if (gclh_sync_DB_Client != null && gclh_sync_DB_Client.isAuthenticated()) {
