@@ -13,7 +13,7 @@
 // @resource jscolor https://raw.githubusercontent.com/2Abendsegler/GClh/master/data/jscolor.js
 // @require          http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js
 // @require          http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js
-// @require          http://cdnjs.cloudflare.com/ajax/libs/dropbox.js/0.10.2/dropbox.min.js
+// @require          https://cdnjs.cloudflare.com/ajax/libs/dropbox.js/2.5.2/Dropbox-sdk.min.js
 // @require          https://raw.githubusercontent.com/2Abendsegler/GClh/master/data/gclh_defi.js
 // @description      Some little things to make life easy (on www.geocaching.com).
 // @copyright        Torsten Amshove <torsten@amshove.net>
@@ -619,6 +619,51 @@ var mainOSM = function () {
         addGCButton(0);
     } catch (e) { gclh_error("mainOSM:", e); }
 };
+
+////////////////////////////////////////////////////////////////////////////
+// Dropbox Helper Function
+////////////////////////////////////////////////////////////////////////////
+(function(window){
+    window.utils = {
+      parseQueryString: function(str) {
+        var ret = Object.create(null);
+
+        if (typeof str !== 'string') {
+          return ret;
+        }
+
+        str = str.trim().replace(/^(\?|#|&)/, '');
+
+        if (!str) {
+          return ret;
+        }
+
+        str.split('&').forEach(function (param) {
+          var parts = param.replace(/\+/g, ' ').split('=');
+          // Firefox (pre 40) decodes `%3D` to `=`
+          // https://github.com/sindresorhus/query-string/pull/37
+          var key = parts.shift();
+          var val = parts.length > 0 ? parts.join('=') : undefined;
+
+          key = decodeURIComponent(key);
+
+          // missing `=` should be `null`:
+          // http://w3.org/TR/2012/WD-url-20120524/#collect-url-parameters
+          val = val === undefined ? null : decodeURIComponent(val);
+
+          if (ret[key] === undefined) {
+            ret[key] = val;
+          } else if (Array.isArray(ret[key])) {
+            ret[key].push(val);
+          } else {
+            ret[key] = [ret[key], val];
+          }
+        });
+
+        return ret;
+      }
+    };
+  })(window);
 
 ////////////////////////////////////////////////////////////////////////////
 // Helper
@@ -10120,9 +10165,18 @@ var mainGC = function () {
 
             setValueSet(settings).done(function () {
                 if (type === "upload") {
-                    gclh_sync_DBSave().done(function () {
-                        window.location.reload(false);
-                    });
+                    gclh_sync_DB_CheckAndCreateClient()
+                        .done(function(){
+                            // Means the connection to Dropbox stands, so we can make calls
+                            gclh_sync_DBSave().done(function () {
+                                window.location.reload(false);
+                            });
+                        })
+                        .fail(function(){
+                            // Means something went wrong or the Dropbox is not authenticated, so we display the Auth Link.
+                            alert('GClh is not authorized to use your Dropbox. Please go to the Sync Page and authenticate your Dropbox first. Nevertheless your config is saved localy.');
+                            window.location.reload(false);
+                        });
                 } else window.location.reload(false);
             });
             if ( getValue("settings_show_save_message") ) {
@@ -10769,79 +10823,198 @@ var mainGC = function () {
         });
     }
 
-    var gclh_sync_DB_Client = null;
+    var dropbox_client = null;
+    var dropbox_save_path = '/GCLittleHelperSettings.json';
 
-    function gclh_sync_DB_CheckAndCreateClient(userToken) {
-        var deferred = $.Deferred();
-        if (gclh_sync_DB_Client != null && gclh_sync_DB_Client.isAuthenticated()) {
-            deferred.resolve();
-            return deferred.promise();
+// Save dropbox auth token if one is passed (from Dropbox)
+    var DB_token = utils.parseQueryString(window.location.hash).access_token;
+    if(DB_token){
+        // gerade von DB zurück, also Show config
+        setValue('settings_DB_auth_token', DB_token);
+        document.getElementById('gclh_sync_lnk').click();
+        document.getElementById('syncDBLabel').click();
+    }else{
+        // Maybe the user denies Access (this is mostly an unwanted click), so show him, that he
+        // has refused to give us access to his dropbox and that he can re-auth if he want to
+        error = utils.parseQueryString(window.location.hash).error_description
+        if(error){
+            alert('We received the following error from dropbox: "' + error + '" If you think this is a mistake, you can try to re-authenticate in the sync menue of GClh.');
         }
-        $('#syncDBLoader').show();
-        setValue("dbToken", "");
-        gclh_sync_DB_Client = null;
-        if (document.getElementById('btn_DBSave') && document.getElementById('btn_DBLoad')) {
-            document.getElementById('btn_DBSave').disabled = true;
-            document.getElementById('btn_DBLoad').disabled = true;
-        }
-        var client = new Dropbox.Client({key: "b992jnfyidj32v3", sandbox: true, token: userToken});
-        client.authDriver(new Dropbox.AuthDriver.Popup({
-            rememberUser: true,
-            receiverUrl: "https://www.geocaching.com/my/default.aspx"
-        }));
-        client.authenticate(function (error, client) {
-            $('#syncDBLoader').hide();
-            if (error || !client.isAuthenticated()) {
-                alert("Error connecting to dropbox");
-                return;
-            }
-            gclh_sync_DB_Client = client;
-            if (document.getElementById('btn_DBSave') && document.getElementById('btn_DBLoad')) {
-                document.getElementById('btn_DBSave').disabled = false;
-                document.getElementById('btn_DBLoad').disabled = false;
-            }
-            deferred.resolve();
-        });
-        return deferred.promise();
     }
+// END Save dropbox auth token if one is passed (from Dropbox)
 
-    function gclh_sync_DBSave() {
+    /*
+    * Created the Dropbox Client with the given auth token from config.
+    */
+    function gclh_sync_DB_CheckAndCreateClient() {
+        
         var deferred = $.Deferred();
-        gclh_sync_DB_CheckAndCreateClient().done(function(){
-            $('#syncDBLoader').show();
-            gclh_sync_DB_Client.writeFile("GCLittleHelperSettings.json", sync_getConfigData(), {}, function () {
-                $('#syncDBLoader').hide();
-                deferred.resolve();
+        token = getValue('settings_DB_auth_token');
+
+        if (token) {
+          // Try to create an instance and test it with the current token
+          dropbox_client = new Dropbox({ accessToken: token });
+          
+          dropbox_client.usersGetCurrentAccount()
+            .then(function(response) {
+              deferred.resolve();
+            })
+            .catch(function(error) {
+              deferred.reject();
             });
-        }).fail(function(){deferred.reject();});
+
+        }else{
+            // No token was givven, user has to (re)auth GClh for dropbox
+            dropbox_client = null;
+            deferred.reject();
+        }
+
         return deferred.promise();
     }
 
+    /*
+    * If the Dropbox Client could not be instantiated (because of wrong token, App deleted or not
+    * authenticated at all), this will show the Auth link.
+    */
+    function gclh_sync_DB_showAuthLink(){
+
+      var APP_ID = 'zp4u1zuvtzgin6g';
+      // If client could not created, try to get a new Auth token
+      // Set the login anchors href using dropbox_client.getAuthenticationUrl()
+      dropbox_auth_client = new Dropbox({ clientId: APP_ID });
+      authlink = document.getElementById('authlink');
+      authlink.href = dropbox_auth_client.getAuthenticationUrl(window.location.protocol + '//' + window.location.hostname + window.location.pathname);
+      
+      $(authlink).show();
+      
+      $('#btn_DBSave').hide();
+      $('#btn_DBLoad').hide();
+
+      $('#syncDBLoader').hide();
+    }
+
+
+    /*
+    * If the Dropbox Client is instantiated and the connection stands, this funciton
+    * shows the load and save buttons
+    */
+    function gclh_sync_DB_showSaveLoadLinks(){
+
+      $('#btn_DBSave').show();
+      $('#btn_DBLoad').show();
+
+      $('#syncDBLoader').hide();
+      $('#authlink').hide();
+    }
+
+    /*
+    * Saves the current config to dropbox.
+    */
+    function gclh_sync_DBSave() {
+        
+        var deferred = $.Deferred();
+        
+        gclh_sync_DB_CheckAndCreateClient()
+            .fail(function(){
+                // Should not be reached, because we checked the client earlier
+                alert('Something went wrong. Please reload the page and try again.');
+                deferred.reject();
+                $('#syncDBLoader').hide();
+                return deferred.promise();
+            });
+        
+        $('#syncDBLoader').show();
+
+        dropbox_client.filesUpload({
+            path: dropbox_save_path, 
+            contents: sync_getConfigData(), 
+            mode: 'overwrite',
+            autorename: false,
+            mute: false
+        })
+            .then(function(response) {
+                deferred.resolve();
+                $('#syncDBLoader').hide();
+            })
+            .catch(function(error) {
+              console.error('gclh_sync_DBSave: Error while uploading config file:');
+              console.error(error);
+              deferred.reject();
+              $('#syncDBLoader').hide();
+            });
+        return deferred.promise();
+    }
+
+    /*
+    * Loads the config from dropbox and replaces the current configuration with it^
+    */
     function gclh_sync_DBLoad() {
         var deferred = $.Deferred();
-        gclh_sync_DB_CheckAndCreateClient().done(function(){
-            $('#syncDBLoader').show();
-            gclh_sync_DB_Client.readFile("GCLittleHelperSettings.json", {}, function (error, data) {
-                if (data != null && data != "") {
-                    sync_setConfigData(data);
-                    $('#syncDBLoader').hide();
-                    deferred.resolve();
-                }
+
+        gclh_sync_DB_CheckAndCreateClient()
+            .fail(function(){
+                // Should not be reached, because we checked the client earlier
+                alert('Something went wrong. Please reload the page and try again.');
+                deferred.reject();
+                return deferred.promise();
             });
-        }).fail(function(){deferred.reject();});
+
+        $('#syncDBLoader').show();
+        
+        dropbox_client.filesDownload({path: dropbox_save_path})
+            .then(function (data) {
+                var blob = data.fileBlob;
+                var reader = new FileReader()
+                reader.addEventListener("loadend", function () {
+                    sync_setConfigData(reader.result);
+                    deferred.resolve();
+                })
+                reader.readAsText(blob);
+                $('#syncDBLoader').hide();
+            }).catch(function (error) {
+                console.error('gclh_sync_DBLoad: Error while downloading config file:');
+                console.error(error);
+                deferred.reject();
+                $('#syncDBLoader').hide();
+            });
         return deferred.promise();
     }
 
+    /*
+    * Gets the hash of the saved config, so we can determine if we have to apply the config loaded
+    * from dropbox via autosync
+    */
     function gclh_sync_DBHash() {
+        
         var deferred = $.Deferred();
-        gclh_sync_DB_CheckAndCreateClient().done(function(){
-            $('#syncDBLoader').show();
-            gclh_sync_DB_Client.stat("GCLittleHelperSettings.json", {}, function (error, data) {
-                if (data != null && data != "") {
-                    deferred.resolve(data.versionTag);
-                }
+
+        gclh_sync_DB_CheckAndCreateClient()
+            .fail(function(){
+                deferred.reject('Dropbox client is not initiated.');
+                return deferred.promise();
             });
-        }).fail(function(){deferred.reject();});;
+
+        dropbox_client.filesGetMetadata({
+          "path": dropbox_save_path,
+          "include_media_info": false,
+          "include_deleted": false,
+          "include_has_explicit_shared_members": false
+        })
+        .then(function(response) {
+            console.log('content_hash:' + response.content_hash);
+            if (response != null && response != "") {
+                deferred.resolve(response.content_hash);
+            }else{
+                deferred.reject('Error: response had no file or file was empty.');
+            }
+            
+        })
+        .catch(function(error) {
+            console.log('gclh_sync_DBHash: Error while getting hash for config file:');
+            console.log(error);
+            deferred.reject(error);
+        });
+
         return deferred.promise();
     }
 
@@ -10864,12 +11037,13 @@ var mainGC = function () {
             var html = "";
             html += "<h3 class='gclh_headline'>" + scriptNameSync + " <font class='gclh_small'>v" + scriptVersion + "</font></h3>";
             html += "<div class='gclh_content'>";
-            html += "<h3 id='syncDBLabel' style='cursor: pointer;'>DropBox <font class='gclh_small'>(Click to hide/show)<span style='color: #d14f4f;'> (Not yet fully supported)</span></font></h3>";
+            html += "<h3 id='syncDBLabel' style='cursor: pointer;'>DropBox <font class='gclh_small'>(Click to hide/show)</font></h3>";
             html += "<div style='display:none;' id='syncDB' >";
-            html += "<img style='display:none;height: 40px;' id='syncDBLoader' src='"+global_syncDBLoader_icon+"'>";
+            html += "<div id='syncDBLoader'><img style='height: 40px;' src='"+global_syncDBLoader_icon+"'> Working...</div>";
+            html += "<a href='#' class='gclh_form' style='display:none;' id='authlink' class='button'>Authenticate</a>";
             html += "<br>";
-            html += "<input class='gclh_form' type='button' value='save to DropBox' id='btn_DBSave' style='cursor: pointer;' disabled> ";
-            html += "<input class='gclh_form' type='button' value='load from DropBox' id='btn_DBLoad' style='cursor: pointer;' disabled>";
+            html += "<input class='gclh_form' type='button' value='save to DropBox' id='btn_DBSave' style='cursor: pointer; display:none;'>";
+            html += "<input class='gclh_form' type='button' value='load from DropBox' id='btn_DBLoad' style='cursor: pointer; display:none;'>";
             html += "</div>";
             html += "<br>";
             html += "<h3 id='syncManualLabel' style='cursor: pointer;'>Manual <font class='gclh_small'>(Click to hide/show)</font></h3>";
@@ -10931,7 +11105,15 @@ var mainGC = function () {
 
             $('#syncDBLabel').click(function () {
                 $('#syncDB').toggle();
-                gclh_sync_DB_CheckAndCreateClient();
+                gclh_sync_DB_CheckAndCreateClient()
+                  .done(function(){
+                    // Means the connection to Dropbox stands, so we can make calls
+                    gclh_sync_DB_showSaveLoadLinks();
+                  })
+                  .fail(function(){
+                    // Means something went wrong or the Dropbox is not authenticated, so we display the Auth Link.
+                    gclh_sync_DB_showAuthLink();
+                  });
             });
             $('#syncManualLabel').click(function () {
                 $('#syncManual').toggle();
@@ -10941,33 +11123,33 @@ var mainGC = function () {
         document.getElementById("sync_settings_overlay").click();
     } // <-- gclh_showSync
 
-    if ( (settings_sync_autoImport && (settings_sync_last.toString() === "Invalid Date" || (new Date() - settings_sync_last) > settings_sync_time)) ){
-        if (document.URL.indexOf("#access_token") != -1) {
-            $("body").hide();
-            Dropbox.AuthDriver.Popup.oauthReceiver();
-        }
-
-        if (settings_sync_autoImport && (settings_sync_last.toString() === "Invalid Date" || (new Date() - settings_sync_last) > settings_sync_time) && document.URL.indexOf("#access_token") === -1) {
-            gclh_sync_DBHash().done(function (hash) {
-                if (hash != settings_sync_hash) {
-                    gclh_sync_DBLoad().done(function () {
-                        settings_sync_last = new Date();
-                        settings_sync_hash = hash;
-                        setValue("settings_sync_last", settings_sync_last.toString()).done(function(){
-                            setValue("settings_sync_hash", settings_sync_hash).done(function(){
-                                if (is_page("profile")) {
-                                    // Reload page
-                                    if (document.location.href.indexOf("#") == -1 || document.location.href.indexOf("#") == document.location.href.length - 1) {
-                                        $('html, body').animate({scrollTop: 0}, 0);
-                                        document.location.reload(true);
-                                    } else document.location.replace(document.location.href.slice(0, document.location.href.indexOf("#")));
-                                }
-							});
-                        });
+    if (settings_sync_autoImport && (settings_sync_last.toString() === "Invalid Date" || (new Date() - settings_sync_last) > settings_sync_time) && document.URL.indexOf("#access_token") === -1) {
+        gclh_sync_DBHash().done(function (hash) {
+            if (hash != settings_sync_hash) {
+                gclh_sync_DBLoad().done(function () {
+                    settings_sync_last = new Date();
+                    settings_sync_hash = hash;
+                    setValue("settings_sync_last", settings_sync_last.toString()).done(function(){
+                        setValue("settings_sync_hash", settings_sync_hash).done(function(){
+                            if (is_page("profile")) {
+                                // Reload page
+                                if (document.location.href.indexOf("#") == -1 || document.location.href.indexOf("#") == document.location.href.length - 1) {
+                                    $('html, body').animate({scrollTop: 0}, 0);
+                                    document.location.reload(true);
+                                } else document.location.replace(document.location.href.slice(0, document.location.href.indexOf("#")));
+                            }
+						});
                     });
-                }
-            });
-        }
+                });
+            }else{
+                // Hashes are equal so nothing has changed. We do not need to update
+                // console.log('Hashes equal, no need to sync.');
+            }
+        })
+        .fail(function(error){
+            console.log('Autosync: Hash function was not successful:');
+            console.log(error);
+        });
     } // Sync
 }; // end of mainGC
 
