@@ -10824,6 +10824,7 @@ var mainGC = function () {
     }
 
     var dropbox_client = null;
+    var dropbox_save_path = '/GCLittleHelperSettings.json';
 
 // Save dropbox auth token if one is passed (from Dropbox)
     var DB_token = utils.parseQueryString(window.location.hash).access_token;
@@ -10909,8 +10910,9 @@ var mainGC = function () {
             });
         
         $('#syncDBLoader').show();
+
         dropbox_client.filesUpload({
-            path: "/GCLittleHelperSettings.json", 
+            path: dropbox_save_path, 
             contents: sync_getConfigData(), 
             mode: 'overwrite',
             autorename: false,
@@ -10918,12 +10920,13 @@ var mainGC = function () {
         })
             .then(function(response) {
                 deferred.resolve();
+                $('#syncDBLoader').hide();
             })
             .catch(function(error) {
               console.error(error);
               deferred.reject();
+              $('#syncDBLoader').hide();
             });
-        $('#syncDBLoader').hide();
         return deferred.promise();
     }
 
@@ -10940,7 +10943,7 @@ var mainGC = function () {
 
         $('#syncDBLoader').show();
         
-        dropbox_client.filesDownload({path: '/GCLittleHelperSettings.json'})
+        dropbox_client.filesDownload({path: dropbox_save_path})
             .then(function (data) {
                 var blob = data.fileBlob;
                 var reader = new FileReader()
@@ -10949,26 +10952,61 @@ var mainGC = function () {
                     deferred.resolve();
                 })
                 reader.readAsText(blob);
+                $('#syncDBLoader').hide();
             }).catch(function (error) {
                 console.error(error);
                 deferred.reject();
+                $('#syncDBLoader').hide();
             });
-        $('#syncDBLoader').hide();
         return deferred.promise();
     }
 
     function gclh_sync_DBHash() {
+        
         var deferred = $.Deferred();
 
-        gclh_sync_DB_CheckAndCreateClient().done(function(){
-            $('#syncDBLoader').show();
-            gclh_sync_DB_Client.stat("GCLittleHelperSettings.json", {}, function (error, data) {
-                if (data != null && data != "") {
-                    deferred.resolve(data.versionTag);
-                }
+        gclh_sync_DB_CheckAndCreateClient()
+            .fail(function(){
+                console.log('gclh_sync_DBHash FAIl');
+                deferred.reject('Dropbox client is not initiated.');
+                return deferred.promise();
             });
-        }).fail(function(){deferred.reject();});;
+
+        dropbox_client.filesGetMetadata({
+          "path": dropbox_save_path,
+          "include_media_info": false,
+          "include_deleted": false,
+          "include_has_explicit_shared_members": false
+        })
+        .then(function(response) {
+            console.log('content_hash:' + response.content_hash);
+            if (response != null && response != "") {
+                deferred.resolve(response.content_hash);
+            }else{
+                deferred.reject('Error: response had no file or file was empty.');
+            }
+            
+        })
+        .catch(function(error) {
+            console.log('filesGetMetadata error:' + error.error);
+            deferred.reject(error);
+        });
+
         return deferred.promise();
+
+
+
+        // var deferred = $.Deferred();
+
+        // gclh_sync_DB_CheckAndCreateClient().done(function(){
+        //     $('#syncDBLoader').show();
+        //     gclh_sync_DB_Client.stat("GCLittleHelperSettings.json", {}, function (error, data) {
+        //         if (data != null && data != "") {
+        //             deferred.resolve(data.versionTag);
+        //         }
+        //     });
+        // }).fail(function(){deferred.reject();});;
+        // return deferred.promise();
     }
 
     function gclh_showSync() {
@@ -10992,7 +11030,7 @@ var mainGC = function () {
             html += "<div class='gclh_content'>";
             html += "<h3 id='syncDBLabel' style='cursor: pointer;'>DropBox <font class='gclh_small'>(Click to hide/show)</font></h3>";
             html += "<div style='display:none;' id='syncDB' >";
-            html += "<div id='syncDBLoader'><img style='height: 40px;' src='"+global_syncDBLoader_icon+"'> Loading...</div>";
+            html += "<div id='syncDBLoader'><img style='height: 40px;' src='"+global_syncDBLoader_icon+"'> Working...</div>";
             html += "<a href='#' class='gclh_form' style='display:none;' id='authlink' class='button'>Authenticate</a>";
             html += "<br>";
             html += "<input class='gclh_form' type='button' value='save to DropBox' id='btn_DBSave' style='cursor: pointer; display:none;'>";
@@ -11076,33 +11114,43 @@ var mainGC = function () {
         document.getElementById("sync_settings_overlay").click();
     } // <-- gclh_showSync
 
-    if ( (settings_sync_autoImport && (settings_sync_last.toString() === "Invalid Date" || (new Date() - settings_sync_last) > settings_sync_time)) ){
-        if (document.URL.indexOf("#access_token") != -1) {
-            $("body").hide();
-            Dropbox.AuthDriver.Popup.oauthReceiver();
-        }
-
-        if (settings_sync_autoImport && (settings_sync_last.toString() === "Invalid Date" || (new Date() - settings_sync_last) > settings_sync_time) && document.URL.indexOf("#access_token") === -1) {
-            gclh_sync_DBHash().done(function (hash) {
-                if (hash != settings_sync_hash) {
-                    gclh_sync_DBLoad().done(function () {
-                        settings_sync_last = new Date();
-                        settings_sync_hash = hash;
-                        setValue("settings_sync_last", settings_sync_last.toString()).done(function(){
-                            setValue("settings_sync_hash", settings_sync_hash).done(function(){
-                                if (is_page("profile")) {
-                                    // Reload page
-                                    if (document.location.href.indexOf("#") == -1 || document.location.href.indexOf("#") == document.location.href.length - 1) {
-                                        $('html, body').animate({scrollTop: 0}, 0);
-                                        document.location.reload(true);
-                                    } else document.location.replace(document.location.href.slice(0, document.location.href.indexOf("#")));
-                                }
-							});
-                        });
+    console.log('settings_sync_autoImport:' + settings_sync_autoImport);
+    console.log('settings_sync_last:' + settings_sync_last.toString());
+    console.log('settings_sync_time:' + settings_sync_time);
+    console.log('document.URL:' + document.URL);
+    if (settings_sync_autoImport && (settings_sync_last.toString() === "Invalid Date" || (new Date() - settings_sync_last) > settings_sync_time) && document.URL.indexOf("#access_token") === -1) {
+        console.log('Auto Sync!');
+        gclh_sync_DBHash().done(function (hash) {
+            console.log('gclh_sync_DBHash done');
+            console.log(hash);
+            console.log(settings_sync_hash);
+            if (hash != settings_sync_hash) {
+                console.log('if (hash != settings_sync_hash) {');
+                gclh_sync_DBLoad().done(function () {
+                    console.log('done');
+                    settings_sync_last = new Date();
+                    settings_sync_hash = hash;
+                    setValue("settings_sync_last", settings_sync_last.toString()).done(function(){
+                        setValue("settings_sync_hash", settings_sync_hash).done(function(){
+                            if (is_page("profile")) {
+                                // Reload page
+                                if (document.location.href.indexOf("#") == -1 || document.location.href.indexOf("#") == document.location.href.length - 1) {
+                                    $('html, body').animate({scrollTop: 0}, 0);
+                                    document.location.reload(true);
+                                } else document.location.replace(document.location.href.slice(0, document.location.href.indexOf("#")));
+                            }
+						});
                     });
-                }
-            });
-        }
+                });
+            }else{
+                // Hashes are equal so nothing has changed. We do not need to update
+                console.log('Hashes equal, no need to sync.');
+            }
+        })
+        .fail(function(error){
+            console.log('Autosync: Hash function was not successful:');
+            console.log(error);
+        });
     } // Sync
 }; // end of mainGC
 
