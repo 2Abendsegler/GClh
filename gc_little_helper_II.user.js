@@ -10843,6 +10843,9 @@ var mainGC = function () {
     }
 // END Save dropbox auth token if one is passed (from Dropbox)
 
+    /*
+    * Created the Dropbox Client with the given auth token from config.
+    */
     function gclh_sync_DB_CheckAndCreateClient() {
         
         var deferred = $.Deferred();
@@ -10861,7 +10864,7 @@ var mainGC = function () {
             });
 
         }else{
-            // No token was givven, to try to auth laten in this function
+            // No token was givven, user has to (re)auth GClh for dropbox
             dropbox_client = null;
             deferred.reject();
         }
@@ -10869,6 +10872,10 @@ var mainGC = function () {
         return deferred.promise();
     }
 
+    /*
+    * If the Dropbox Client could not be instantiated (because of wrong token, App deleted or not
+    * authenticated at all), this will show the Auth link.
+    */
     function gclh_sync_DB_showAuthLink(){
 
       var APP_ID = 'zp4u1zuvtzgin6g';
@@ -10887,6 +10894,10 @@ var mainGC = function () {
     }
 
 
+    /*
+    * If the Dropbox Client is instantiated and the connection stands, this funciton
+    * shows the load and save buttons
+    */
     function gclh_sync_DB_showSaveLoadLinks(){
 
       $('#btn_DBSave').show();
@@ -10896,6 +10907,9 @@ var mainGC = function () {
       $('#authlink').hide();
     }
 
+    /*
+    * Saves the current config to dropbox.
+    */
     function gclh_sync_DBSave() {
         
         var deferred = $.Deferred();
@@ -10930,6 +10944,9 @@ var mainGC = function () {
         return deferred.promise();
     }
 
+    /*
+    * Loads the config from dropbox and replaces the current configuration with it^
+    */
     function gclh_sync_DBLoad() {
         var deferred = $.Deferred();
 
@@ -10961,6 +10978,10 @@ var mainGC = function () {
         return deferred.promise();
     }
 
+    /*
+    * Gets the hash of the saved config, so we can determine if we have to apply the config loaded
+    * from dropbox via autosync
+    */
     function gclh_sync_DBHash() {
         
         var deferred = $.Deferred();
