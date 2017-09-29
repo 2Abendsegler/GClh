@@ -193,8 +193,7 @@ var constInit = function (c) {
     }
 
     c.gclhConfigKeysIgnoreForBackup = {
-        "token": true,
-        "dbToken": true
+        "token": true
     };
 
     iconsInit(c);
@@ -8783,7 +8782,7 @@ var mainGC = function () {
             html += "<div id='gclh_config_content2'>";
             html += "<div id='rc_area' class='gclh_rc_area'>";
             html += "<input type='radio' name='rc' checked='checked' id='rc_standard' class='gclh_rc'><label for='rc_standard'>Reset to standard configuration</label>" + show_help_rc("This option should help you to come back to an efficient configuration set, after some experimental or other motivated changes. This option load a reasonable standard configuration and overwrite your configuration data in parts. <br><br>The following data are not overwrited: Home-coords; homezone and multi homezone; date format; log templates; cache log, TB log and other signatures; friends data; links in Linklist and differing description and custom links. <br>Dynamic data, like for example autovisits for named trackables, are not overwrited too.<br><br>After reset, choose button \"close\" and go to Config to skim over the set of data.") + "<br/>";
-            html += "<input type='radio' name='rc' id='rc_temp' class='gclh_rc'><label for='rc_temp'>Reset dynamic and unused data</label>" + show_help_rc("This option reorganize the configuration set. Unused parameters of older script versions are deleted. And all the dynamic data, especially the autovisit settings for every TB, are deleted too.<br><br>After reset, choose button \"close\".") + "<br><br>";
+            html += "<input type='radio' name='rc' id='rc_temp' class='gclh_rc'><label for='rc_temp'>Reset dynamic and unused data</label>" + show_help_rc("This option reorganize the configuration set. Unused parameters of older script versions are deleted. And all the dynamic data, especially the autovisit settings for every TB and the DropBox token, are deleted too.<br><br>After reset, choose button \"close\".") + "<br><br>";
             html += "<input type='radio' name='rc' id='rc_homecoords' class='gclh_rc'><label for='rc_homecoords'>Reset your own home-coords</label>" + show_help_rc("This option could help you with problems around your home-coords, like for example with your main homezone, with nearest lists or with your home-coords itself. Your home-coords are not deleted at gc.com, but only in GClh. <br><br>After reset, you have to go to the account settings page of gc.com to the area \"Home Location\", so that GClh can save your home-coords again automatically. You have only to go to this page, you have nothing to do at this page, GClh save your home-coords automatically. <br>Or you enter your home-coords manually in GClh. <br><br>At last, choose button \"close\".");
             html += "<font class='gclh_small'> (After reset, go to <a href='https://www.geocaching.com/account/settings/homelocation' target='_blank'>Home Location</a> )</font>" + "<br/>";
             html += "<input type='radio' name='rc' id='rc_uid' class='gclh_rc'><label for='rc_uid'>Reset your own id for your trackables</label>" + show_help_rc("This option could help you with problems with your own trackables lists, which based on an special id, the uid. The uid are not deleted at gc.com, but only in GClh. <br><br>After reset, you have to go to your profile page of gc.com, so that GClh can save your uid again automatically. You have only to go to this page, you have nothing to do at this page, GClh save the uid automatically. <br><br>At last, choose button \"close\".");
@@ -10760,7 +10759,7 @@ var mainGC = function () {
         for (key in CONFIG) {
             var kkey = key.split("[");
             var kkey = kkey[0];
-            if (kkey.match(/^(vips|dbToken|token|uid)$/) ||
+            if (kkey.match(/^(vips|token|uid)$/) ||
                 kkey.match(/^(show_box|friends_founds_|friends_hides_)/) ||
                 kkey.match(/^gclh_(.*)(_logs_get_last|_logs_count)$/)       ) {
                 config_tmp[key] = CONFIG[key];
@@ -10826,7 +10825,7 @@ var mainGC = function () {
     var dropbox_client = null;
     var dropbox_save_path = '/GCLittleHelperSettings.json';
 
-// Save dropbox auth token if one is passed (from Dropbox)
+    // Save dropbox auth token if one is passed (from Dropbox)
     var DB_token = utils.parseQueryString(window.location.hash).access_token;
     if(DB_token){
         // gerade von DB zurück, also Show config
@@ -10841,27 +10840,23 @@ var mainGC = function () {
             alert('We received the following error from dropbox: "' + error + '" If you think this is a mistake, you can try to re-authenticate in the sync menue of GClh.');
         }
     }
-// END Save dropbox auth token if one is passed (from Dropbox)
 
-    /*
-    * Created the Dropbox Client with the given auth token from config.
-    */
+    // Created the Dropbox Client with the given auth token from config.
     function gclh_sync_DB_CheckAndCreateClient() {
-        
         var deferred = $.Deferred();
         token = getValue('settings_DB_auth_token');
 
         if (token) {
-          // Try to create an instance and test it with the current token
-          dropbox_client = new Dropbox({ accessToken: token });
-          
-          dropbox_client.usersGetCurrentAccount()
-            .then(function(response) {
-              deferred.resolve();
-            })
-            .catch(function(error) {
-              deferred.reject();
-            });
+            // Try to create an instance and test it with the current token
+            dropbox_client = new Dropbox({ accessToken: token });
+
+            dropbox_client.usersGetCurrentAccount()
+                .then(function(response) {
+                    deferred.resolve();
+                })
+                .catch(function(error) {
+                    deferred.reject();
+                });
 
         }else{
             // No token was givven, user has to (re)auth GClh for dropbox
@@ -10872,48 +10867,37 @@ var mainGC = function () {
         return deferred.promise();
     }
 
-    /*
-    * If the Dropbox Client could not be instantiated (because of wrong token, App deleted or not
-    * authenticated at all), this will show the Auth link.
-    */
+    // If the Dropbox Client could not be instantiated (because of wrong token, App deleted or not authenticated at all), this will show the Auth link.
     function gclh_sync_DB_showAuthLink(){
+        var APP_ID = 'zp4u1zuvtzgin6g';
+        // If client could not created, try to get a new Auth token
+        // Set the login anchors href using dropbox_client.getAuthenticationUrl()
+        dropbox_auth_client = new Dropbox({ clientId: APP_ID });
+        authlink = document.getElementById('authlink');
+        authlink.href = dropbox_auth_client.getAuthenticationUrl(window.location.protocol + '//' + window.location.hostname + window.location.pathname);
 
-      var APP_ID = 'zp4u1zuvtzgin6g';
-      // If client could not created, try to get a new Auth token
-      // Set the login anchors href using dropbox_client.getAuthenticationUrl()
-      dropbox_auth_client = new Dropbox({ clientId: APP_ID });
-      authlink = document.getElementById('authlink');
-      authlink.href = dropbox_auth_client.getAuthenticationUrl(window.location.protocol + '//' + window.location.hostname + window.location.pathname);
-      
-      $(authlink).show();
-      
-      $('#btn_DBSave').hide();
-      $('#btn_DBLoad').hide();
+        $(authlink).show();
 
-      $('#syncDBLoader').hide();
+        $('#btn_DBSave').hide();
+        $('#btn_DBLoad').hide();
+
+        $('#syncDBLoader').hide();
     }
 
 
-    /*
-    * If the Dropbox Client is instantiated and the connection stands, this funciton
-    * shows the load and save buttons
-    */
+    // If the Dropbox Client is instantiated and the connection stands, this funciton shows the load and save buttons
     function gclh_sync_DB_showSaveLoadLinks(){
+        $('#btn_DBSave').show();
+        $('#btn_DBLoad').show();
 
-      $('#btn_DBSave').show();
-      $('#btn_DBLoad').show();
-
-      $('#syncDBLoader').hide();
-      $('#authlink').hide();
+        $('#syncDBLoader').hide();
+        $('#authlink').hide();
     }
 
-    /*
-    * Saves the current config to dropbox.
-    */
+    // Saves the current config to dropbox.
     function gclh_sync_DBSave() {
-        
         var deferred = $.Deferred();
-        
+
         gclh_sync_DB_CheckAndCreateClient()
             .fail(function(){
                 // Should not be reached, because we checked the client earlier
@@ -10926,8 +10910,8 @@ var mainGC = function () {
         $('#syncDBLoader').show();
 
         dropbox_client.filesUpload({
-            path: dropbox_save_path, 
-            contents: sync_getConfigData(), 
+            path: dropbox_save_path,
+            contents: sync_getConfigData(),
             mode: 'overwrite',
             autorename: false,
             mute: false
@@ -10937,17 +10921,15 @@ var mainGC = function () {
                 $('#syncDBLoader').hide();
             })
             .catch(function(error) {
-              console.error('gclh_sync_DBSave: Error while uploading config file:');
-              console.error(error);
-              deferred.reject();
-              $('#syncDBLoader').hide();
+                console.error('gclh_sync_DBSave: Error while uploading config file:');
+                console.error(error);
+                deferred.reject();
+                $('#syncDBLoader').hide();
             });
         return deferred.promise();
     }
 
-    /*
-    * Loads the config from dropbox and replaces the current configuration with it^
-    */
+    // Loads the config from dropbox and replaces the current configuration with it.
     function gclh_sync_DBLoad() {
         var deferred = $.Deferred();
 
@@ -10960,7 +10942,7 @@ var mainGC = function () {
             });
 
         $('#syncDBLoader').show();
-        
+
         dropbox_client.filesDownload({path: dropbox_save_path})
             .then(function (data) {
                 var blob = data.fileBlob;
@@ -10980,12 +10962,8 @@ var mainGC = function () {
         return deferred.promise();
     }
 
-    /*
-    * Gets the hash of the saved config, so we can determine if we have to apply the config loaded
-    * from dropbox via autosync
-    */
+    // Gets the hash of the saved config, so we can determine if we have to apply the config loaded from dropbox via autosync.
     function gclh_sync_DBHash() {
-        
         var deferred = $.Deferred();
 
         gclh_sync_DB_CheckAndCreateClient()
@@ -10995,10 +10973,10 @@ var mainGC = function () {
             });
 
         dropbox_client.filesGetMetadata({
-          "path": dropbox_save_path,
-          "include_media_info": false,
-          "include_deleted": false,
-          "include_has_explicit_shared_members": false
+            "path": dropbox_save_path,
+            "include_media_info": false,
+            "include_deleted": false,
+            "include_has_explicit_shared_members": false
         })
         .then(function(response) {
             console.log('content_hash:' + response.content_hash);
@@ -11007,7 +10985,6 @@ var mainGC = function () {
             }else{
                 deferred.reject('Error: response had no file or file was empty.');
             }
-            
         })
         .catch(function(error) {
             console.log('gclh_sync_DBHash: Error while getting hash for config file:');
@@ -11035,22 +11012,18 @@ var mainGC = function () {
             div.setAttribute("id", "sync_settings_overlay");
             div.setAttribute("class", "settings_overlay");
             var html = "";
-            html += "<h3 class='gclh_headline'>" + scriptNameSync + " <font class='gclh_small'>v" + scriptVersion + "</font></h3>";
+            html += "<h3 class='gclh_headline' title='Some little things to make life easy (on www.geocaching.com).' >" + scriptNameSync + " <font class='gclh_small'>v" + scriptVersion + "</font></h3>";
             html += "<div class='gclh_content'>";
-            html += "<h3 id='syncDBLabel' style='cursor: pointer;'>DropBox <font class='gclh_small'>(Click to hide/show)</font></h3>";
+            html += "<h4 class='gclh_headline2' id='syncDBLabel' style='cursor: pointer;'>DropBox <font class='gclh_small'>(click to hide/show)</font></h4>";
             html += "<div style='display:none;' id='syncDB' >";
-            html += "<div id='syncDBLoader'><img style='height: 40px;' src='"+global_syncDBLoader_icon+"'> Working...</div>";
-            html += "<a href='#' class='gclh_form' style='display:none;' id='authlink' class='button'>Authenticate</a>";
-            html += "<br>";
-            html += "<input class='gclh_form' type='button' value='save to DropBox' id='btn_DBSave' style='cursor: pointer; display:none;'>";
+            html += "<div id='syncDBLoader'><img style='height: 40px;' src='"+global_syncDBLoader_icon+"'> working...</div>";
+            html += "<a href='#' class='gclh_form' style='display:none;' id='authlink' class='button'>authenticate</a>";
+            html += "<input class='gclh_form' type='button' value='save to DropBox' id='btn_DBSave' style='cursor: pointer; display:none;'> ";
             html += "<input class='gclh_form' type='button' value='load from DropBox' id='btn_DBLoad' style='cursor: pointer; display:none;'>";
             html += "</div>";
-            html += "<br>";
-            html += "<h3 id='syncManualLabel' style='cursor: pointer;'>Manual <font class='gclh_small'>(Click to hide/show)</font></h3>";
-            html += "<div style='display:none;'  id='syncManual' >";
-            html += "<pre class='gclh_form' style='width: 550px; height: 300px; overflow: auto;' type='text' value='' id='configData' size='20' contenteditable='true'></pre>";
-            html += "<br>";
-            html += "<br>";
+            html += "<h4 class='gclh_headline2' id='syncManualLabel' style='cursor: pointer;'>Manual <font class='gclh_small'>(click to hide/show)</font></h4>";
+            html += "<div style='display:none;' id='syncManual' >";
+            html += "<pre class='gclh_form' style='width: 550px; height: 300px; overflow: auto; margin-top: 0; margin-bottom: 6px' type='text' value='' id='configData' size='28' contenteditable='true'></pre>";
             html += "<input class='gclh_form' type='button' value='export' id='btn_ExportConfig' style='cursor: pointer;'> ";
             html += "<input class='gclh_form' type='button' value='import' id='btn_ImportConfig' style='cursor: pointer;'>";
             html += "</div>";
