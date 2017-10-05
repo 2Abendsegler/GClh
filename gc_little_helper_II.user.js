@@ -3364,47 +3364,6 @@ var mainGC = function () {
     // Show button, which open BRouter with all waypoints of a cache and open BRouter.
     if (is_page("cache_listing") || document.location.href.match(/^https?:\/\/www\.geocaching\.com\/hide\/wptlist.aspx/)) {
         try {
-            var css = "";
-            css += ".GClhdropbtn {";
-            css += "    cursor: pointer;";
-            css += "}";
-            css += ".GClhdropdown {";
-            css += "    position: relative;";
-            css += "    display: inline-block;";
-            css += "}";
-            css += ".GClhdropdown-content {";
-            css += "    display: none;";
-            css += "    position: absolute;";
-            css += "    background-color: #f9f9f9;";
-            css += "    min-width: 160px;";
-            css += "    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);";
-            css += "    z-index: 1;";
-            css += "}";
-            css += ".GClhdropdown-content-layer {";
-            css += "    color: black;";
-            css += "    padding: 5px 16px 5px 16px;";
-            css += "    text-decoration: none;";
-            css += "    display: block;";
-            css += "}";
-            css += ".GClhdropdown-content-info {";
-            css += "    color: black;";
-            css += "    background-color: #ffffa5;";
-            css += "    padding: 5px 16px 5px 16px;";
-            css += "    text-decoration: none;";
-            css += "    display: none;";
-            css += "}";
-            css += ".GClhdropdown-content-layer:hover {";
-            css += "    background-color: #e1e1e1;";
-            css += "    cursor: pointer;";
-            css += "}";
-            css += ".GClhdropdown-content-info:hover {";
-            css += "    background-color: #ffffa5;";
-            css += "    cursor: default;";
-            css += "}";
-            css += ".GClhdropdown:hover .GClhdropdown-content {";
-            css += "    display: block;";
-            css += "}";
-            appendCssStyle( css );
 
             var tbl = $('#ctl00_ContentBody_Waypoints');
             if ( tbl.length == 0 ) tbl = $('#ctl00_ContentBody_WaypointList');
