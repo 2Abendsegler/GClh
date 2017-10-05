@@ -3354,6 +3354,84 @@ var mainGC = function () {
         } catch( e ) { gclh_error("Show button Flopp's Map and open Flopp's Map", e); }
     }
 
+    // Show button, which open BRouter with all waypoints of a cache and open BRouter.
+    if (is_page("cache_listing") || document.location.href.match(/^https?:\/\/www\.geocaching\.com\/hide\/wptlist.aspx/)) {
+        try {
+            var css = "";
+            css += ".GClhdropbtn {";
+            css += "    cursor: pointer;";
+            css += "}";
+            css += ".GClhdropdown {";
+            css += "    position: relative;";
+            css += "    display: inline-block;";
+            css += "}";
+            css += ".GClhdropdown-content {";
+            css += "    display: none;";
+            css += "    position: absolute;";
+            css += "    background-color: #f9f9f9;";
+            css += "    min-width: 160px;";
+            css += "    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);";
+            css += "    z-index: 1;";
+            css += "}";
+            css += ".GClhdropdown-content-layer {";
+            css += "    color: black;";
+            css += "    padding: 5px 16px 5px 16px;";
+            css += "    text-decoration: none;";
+            css += "    display: block;";
+            css += "}";
+            css += ".GClhdropdown-content-info {";
+            css += "    color: black;";
+            css += "    background-color: #ffffa5;";
+            css += "    padding: 5px 16px 5px 16px;";
+            css += "    text-decoration: none;";
+            css += "    display: none;";
+            css += "}";
+            css += ".GClhdropdown-content-layer:hover {";
+            css += "    background-color: #e1e1e1;";
+            css += "    cursor: pointer;";
+            css += "}";
+            css += ".GClhdropdown-content-info:hover {";
+            css += "    background-color: #ffffa5;";
+            css += "    cursor: default;";
+            css += "}";
+            css += ".GClhdropdown:hover .GClhdropdown-content {";
+            css += "    display: block;";
+            css += "}";
+            appendCssStyle( css );
+
+            var tbl = $('#ctl00_ContentBody_Waypoints');
+            if ( tbl.length == 0 ) tbl = $('#ctl00_ContentBody_WaypointList');
+            tbl = tbl.next("p");
+            tbl.append('<p>');
+            tbl.append('<div class="GClhdropdown"><div id="ShowWaypointsOnBrouter" class="GClhdropbtn"><a>Calculate routing on BRouter with &#8230;</a></div><div id="BrouterMapLayers" class="GClhdropdown-content"></div></div>');
+			tbl.append('</p>');
+			
+            $('#BrouterMapLayers').append('<div class="GClhdropdown-content-layer" data-map="OpenStreetMap">OpenStreetMap</div>');
+            $('#BrouterMapLayers').append('<div class="GClhdropdown-content-layer" data-map="OpenStreetMap.de">OpenStreetMap.de</div>');
+            $('#BrouterMapLayers').append('<div class="GClhdropdown-content-layer" data-map="OpenTopoMap">OpenTopoMap</div>');
+            $('#BrouterMapLayers').append('<div class="GClhdropdown-content-layer" data-map="OpenCycleMap (Thunderf.)">OpenCycleMap</div>');
+            $('#BrouterMapLayers').append('<div class="GClhdropdown-content-layer" data-map="Outdoors (Thunderforest)">Outdoors</div>');
+            $('#BrouterMapLayers').append('<div class="GClhdropdown-content-layer" data-map="Esri World Imagery">Esri World Imagery</div>');
+            
+            var status = {};
+            var waypoints = extractWaypointsFromListing();
+            var link = buildBrouterMapLink( waypoints, 'OpenStreetMap', false, status );
+            
+            function openBrouter( map ) {
+                var waypoints = extractWaypointsFromListing();
+                var link = buildBrouterMapLink( waypoints, map, false, {} );
+                window.open( link );
+            }
+            $('#ShowWaypointsOnBrouter').click( function() {
+                openBrouter("");
+            });
+            $('.GClhdropdown-content-layer').click( function() {
+                var map = $(this).data('map');
+                openBrouter(map);
+            });
+        } catch( e ) { gclh_error("Show button BRouter and open BRouter", e); }
+    }
+
     // Helper function: trim a decimal value to a given number of digits.
     function roundTO(val, decimals) { return Number(Math.round(val+'e'+decimals)+'e-'+decimals); }
 
@@ -3566,6 +3644,72 @@ var mainGC = function () {
         zoom = Math.min(zoom,maxZoom[map]);
         var url = 'http://flopp.net/'+'?c='+center_latitude+':'+center_longitude+'&z='+zoom+'&t='+map+url;
         url += '&d=O:C';
+        return encodeURI(url);
+    }
+
+    // Function to convert string to the Brouter specification.
+    function brouterMapWaypoint( waypoint ) {
+        return waypoint.longitude+','+waypoint.latitude;
+    }
+    
+	function buildBrouterMapLink( waypoints, map, shortnames, status ) {
+        var url = "";
+        var brouterWaypoints = [];
+        var Latmax = -90.0;
+        var Latmin = 90.0;
+        var Lonmax = -180.0;
+        var Lonmin = 180.0;
+        var count = 0;
+
+        for ( var i=0; i<waypoints.length; i++) {
+            var waypoint = waypoints[i];
+            if ( waypoint !== undefined && waypoint.visible == true ) {
+				if ( waypoint.type == "listing" || waypoint.type == "waypoint" ) {
+                    brouterWaypoints.push( brouterMapWaypoint( waypoint ) );
+                    count++;
+                }
+                Latmax = Math.max( Latmax, waypoint.latitude );
+                Latmin = Math.min( Latmin, waypoint.latitude );
+                Lonmax = Math.max( Lonmax, waypoint.longitude );
+                Lonmin = Math.min( Lonmin, waypoint.longitude );
+            }
+        }
+
+        var browserZoomLevel = window.devicePixelRatio;
+        var brouterMapWidth = Math.round(window.innerWidth*browserZoomLevel);
+        var brouterMapHeigth = Math.round(window.innerHeight*browserZoomLevel);
+        var zoom=-1;
+        for ( zoom=23; zoom>=0; zoom--) {
+            // Calculate tile boundary box.
+            var tileY_min = lat2tile(Latmin,zoom);
+            var tileY_max = lat2tile(Latmax,zoom);
+            var tiles_Y = Math.abs(tileY_min-tileY_max+1); // boundary box heigth in number of tiles
+            var tileX_min = long2tile(Lonmin,zoom);
+            var tileX_max = long2tile(Lonmax,zoom);
+            var tiles_X = Math.abs(tileX_max-tileX_min+1); // boundary box width in  number of tiles
+            // Calculate width and height of boundary rectangle (in pixel).
+            var latDelta = Math.abs(tile2lat(tileY_max,zoom)-tile2lat(tileY_min+1,zoom));
+            var latPixelPerDegree = tiles_Y*256/latDelta;
+            var boundaryHeight = latPixelPerDegree*(Latmax-Latmin);
+            var longDelta = Math.abs(tile2long(tileX_max+1,zoom)-tile2long(tileX_min,zoom));
+            var longPixelPerDegree = tiles_X*256/longDelta;
+            var boundaryWidth = longPixelPerDegree*(Lonmax-Lonmin);
+            if ( (boundaryHeight < brouterMapHeigth ) && (boundaryWidth < brouterMapWidth ) ) break;
+        }
+
+        var url = "";
+        status.limited = false;
+
+        for ( var i=0; i<brouterWaypoints.length; i++) {
+            var nextWaypoint = brouterWaypoints[i];
+            url += ( ( i == 0 ) ? '&lonlats=' : '|' );
+            url += nextWaypoint;
+        }
+        var center_latitude = ((Latmax+90.0)+(Latmin+90.0))/2-90.0;
+        var center_longitude = ((Lonmax+180.0)+(Lonmin+180.0))/2-180.0;
+        var maxZoom = { 'OpenStreetMap': 18, 'OpenStreetMap.de': 17, 'OpenTopoMap': 17, 'OpenCycleMap (Thunderf.)': 18, 'Outdoors (Thunderforest)': 18, 'Esri World Imagery': 18 };
+        zoom = Math.min(zoom,maxZoom[map]) - 1;
+        var url = 'http://brouter.de/brouter-web/#zoom='+zoom+'&lat='+center_latitude+'&lon='+center_longitude+'&layer='+map+url+'&nogos=&profile=trekking&alternativeidx=0&format=geojson';
         return encodeURI(url);
     }
 
