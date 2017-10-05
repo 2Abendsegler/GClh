@@ -3319,8 +3319,15 @@ var mainGC = function () {
 
             var tbl = $('#ctl00_ContentBody_Waypoints');
             if ( tbl.length == 0 ) tbl = $('#ctl00_ContentBody_WaypointList');
-            tbl = tbl.next("p");
-            tbl.append('<div class="GClhdropdown"><div id="ShowWaypointsOnFloppsMap" class="GClhdropbtn"><a>Show waypoints on Flopp\'s Map with &#8230;</a></div><div id="FloppsMapLayers" class="GClhdropdown-content"></div></div>');
+
+            if(tbl.length == 0){
+                // We have no additional waypoint, so put the flopps links before the cache hints
+                tbl = $('#ctl00_ContentBody_hints');
+                tbl.before('<p><div class="GClhdropdown"><div id="ShowWaypointsOnFloppsMap" class="GClhdropbtn"><a>Show waypoints on Flopp\'s Map with &#8230;</a></div><div id="FloppsMapLayers" class="GClhdropdown-content"></div></div></p>');
+            }else{
+                tbl = tbl.next("p");
+                tbl.append('<div class="GClhdropdown"><div id="ShowWaypointsOnFloppsMap" class="GClhdropbtn"><a>Show waypoints on Flopp\'s Map with &#8230;</a></div><div id="FloppsMapLayers" class="GClhdropdown-content"></div></div>');
+            }
 
             $('#FloppsMapLayers').append('<div id="floppsmap-warning" class="GClhdropdown-content-info"><b>WARNING:</b> There are too many waypoints in the listing. Flopp\'s Map allows only a limited number of waypoints. Not all waypoints are shown.</div>');
 
@@ -3495,7 +3502,7 @@ var mainGC = function () {
         return addWP;
     }
 
-    // This function reads the table with the additional waypoints.
+    // This function reads the posted coordinates from the listing
     function getListingCoordinatesX() {
         var addWP  = [];
         try {
