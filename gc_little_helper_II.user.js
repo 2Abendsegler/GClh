@@ -3365,6 +3365,20 @@ var mainGC = function () {
     if (is_page("cache_listing") || document.location.href.match(/^https?:\/\/www\.geocaching\.com\/hide\/wptlist.aspx/)) {
         try {
 
+            var css = ""; 
+            css += ".BRouter-content-layer {"; 
+            css += "    color: black;"; 
+            css += "    padding: 5px 16px 5px 16px;"; 
+            css += "    text-decoration: none;"; 
+            css += "    display: block;"; 
+            css += "}";
+            css += ".BRouter-content-layer:hover {"; 
+            css += "    background-color: #e1e1e1;"; 
+            css += "    cursor: pointer;"; 
+            css += "}";
+            appendCssStyle( css ); 
+
+
             var tbl = $('#ctl00_ContentBody_Waypoints');
             if ( tbl.length == 0 ) tbl = $('#ctl00_ContentBody_WaypointList');
             tbl = tbl.next("p");
