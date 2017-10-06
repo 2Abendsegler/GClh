@@ -3372,12 +3372,12 @@ var mainGC = function () {
             tbl.append('<div class="GClhdropdown"><div id="ShowWaypointsOnBrouter" class="GClhdropbtn"><a>Calculate routing on BRouter with &#8230;</a></div><div id="BrouterMapLayers" class="GClhdropdown-content"></div></div>');
 			tbl.append('</p>');
 			
-            $('#BrouterMapLayers').append('<div class="GClhdropdown-content-layer" data-map="OpenStreetMap">OpenStreetMap</div>');
-            $('#BrouterMapLayers').append('<div class="GClhdropdown-content-layer" data-map="OpenStreetMap.de">OpenStreetMap.de</div>');
-            $('#BrouterMapLayers').append('<div class="GClhdropdown-content-layer" data-map="OpenTopoMap">OpenTopoMap</div>');
-            $('#BrouterMapLayers').append('<div class="GClhdropdown-content-layer" data-map="OpenCycleMap (Thunderf.)">OpenCycleMap</div>');
-            $('#BrouterMapLayers').append('<div class="GClhdropdown-content-layer" data-map="Outdoors (Thunderforest)">Outdoors</div>');
-            $('#BrouterMapLayers').append('<div class="GClhdropdown-content-layer" data-map="Esri World Imagery">Esri World Imagery</div>');
+            $('#BrouterMapLayers').append('<div class="BRouter-content-layer" data-map="OpenStreetMap">OpenStreetMap</div>');
+            $('#BrouterMapLayers').append('<div class="BRouter-content-layer" data-map="OpenStreetMap.de">OpenStreetMap.de</div>');
+            $('#BrouterMapLayers').append('<div class="BRouter-content-layer" data-map="OpenTopoMap">OpenTopoMap</div>');
+            $('#BrouterMapLayers').append('<div class="BRouter-content-layer" data-map="OpenCycleMap (Thunderf.)">OpenCycleMap</div>');
+            $('#BrouterMapLayers').append('<div class="BRouter-content-layer" data-map="Outdoors (Thunderforest)">Outdoors</div>');
+            $('#BrouterMapLayers').append('<div class="BRouter-content-layer" data-map="Esri World Imagery">Esri World Imagery</div>');
             
             var status = {};
             var waypoints = extractWaypointsFromListing();
@@ -3391,7 +3391,7 @@ var mainGC = function () {
             $('#ShowWaypointsOnBrouter').click( function() {
                 openBrouter("");
             });
-            $('.GClhdropdown-content-layer').click( function() {
+            $('.BRouter-content-layer').click( function() {
                 var map = $(this).data('map');
                 openBrouter(map);
             });
