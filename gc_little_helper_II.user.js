@@ -3352,7 +3352,7 @@ var mainGC = function () {
             if ( tbl.length == 0 ) tbl = $('#ctl00_ContentBody_WaypointList');
 
             if(tbl.length == 0){
-                // We have no additional waypoint, so the flops map will not be displayed
+                // We have no additional waypoints, so the flops map link will not be displayed in the listing
             }else{
                 tbl = tbl.next("p");
                 tbl.append('<div class="GClhdropdown"><div id="ShowWaypointsOnFloppsMap" class="GClhdropbtn"><a>Show waypoints on Flopp\'s Map with &#8230;</a></div><div id="FloppsMapLayers" class="GClhdropdown-content"></div></div>');
@@ -3436,7 +3436,7 @@ var mainGC = function () {
             if ( tbl.length == 0 ) tbl = $('#ctl00_ContentBody_WaypointList');
             
             if(tbl.length == 0){
-                // We have no additional waypoint, so the brouter link will not be displayed
+                // We have no additional waypoints, so the brouter link will not be displayed in the listing
             }else{
 
                 tbl = tbl.next("p");
