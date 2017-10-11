@@ -3272,48 +3272,51 @@ var mainGC = function () {
         } catch( e ) { gclh_error( "Driving direction for Waypoints: ", e ); }
     }
 
+    var css = "";
+    css += ".GClhdropbtn {";
+    css += "    cursor: pointer;";
+    css += "}";
+    css += ".GClhdropdown {";
+    css += "    position: relative;";
+    css += "    display: inline-block;";
+    css += "}";
+    css += ".GClhdropdown-content {";
+    css += "    display: none;";
+    css += "    position: absolute;";
+    css += "    background-color: #f9f9f9;";
+    css += "    min-width: 160px;";
+    css += "    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);";
+    css += "    z-index: 1;";
+    css += "}";
+    css += ".GClhdropdown-content-info {";
+    css += "    color: black;";
+    css += "    background-color: #ffffa5;";
+    css += "    padding: 5px 16px 5px 16px;";
+    css += "    text-decoration: none;";
+    css += "    display: none;";
+    css += "}";
+    css += ".GClhdropdown-content-info:hover {";
+    css += "    background-color: #ffffa5;";
+    css += "    cursor: default;";
+    css += "}";
+    css += ".GClhdropdown:hover .GClhdropdown-content {";
+    css += "    display: block;";
+    css += "}";
+    appendCssStyle( css );
+
 // Show button, which open Flopp's Map with all waypoints of a cache and open Flopp's Map.
     if (is_page("cache_listing") || document.location.href.match(/^https?:\/\/www\.geocaching\.com\/hide\/wptlist.aspx/)) {
         try {
             var css = "";
-            css += ".GClhdropbtn {";
-            css += "    cursor: pointer;";
-            css += "}";
-            css += ".GClhdropdown {";
-            css += "    position: relative;";
-            css += "    display: inline-block;";
-            css += "}";
-            css += ".GClhdropdown-content {";
-            css += "    display: none;";
-            css += "    position: absolute;";
-            css += "    background-color: #f9f9f9;";
-            css += "    min-width: 160px;";
-            css += "    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);";
-            css += "    z-index: 1;";
-            css += "}";
-            css += ".GClhdropdown-content-layer {";
+            css += ".FloppsMap-content-layer {";
             css += "    color: black;";
             css += "    padding: 5px 16px 5px 16px;";
             css += "    text-decoration: none;";
             css += "    display: block;";
             css += "}";
-            css += ".GClhdropdown-content-info {";
-            css += "    color: black;";
-            css += "    background-color: #ffffa5;";
-            css += "    padding: 5px 16px 5px 16px;";
-            css += "    text-decoration: none;";
-            css += "    display: none;";
-            css += "}";
-            css += ".GClhdropdown-content-layer:hover {";
+            css += ".FloppsMap-content-layer:hover {";
             css += "    background-color: #e1e1e1;";
             css += "    cursor: pointer;";
-            css += "}";
-            css += ".GClhdropdown-content-info:hover {";
-            css += "    background-color: #ffffa5;";
-            css += "    cursor: default;";
-            css += "}";
-            css += ".GClhdropdown:hover .GClhdropdown-content {";
-            css += "    display: block;";
             css += "}";
             css += "#ShowWaypointsOnFloppsMap_linklist{";
             css += "    background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAAlwSFlzAAALEwAACxMBAJqcGAAAAVlpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IlhNUCBDb3JlIDUuNC4wIj4KICAgPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4KICAgICAgPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIKICAgICAgICAgICAgeG1sbnM6dGlmZj0iaHR0cDovL25zLmFkb2JlLmNvbS90aWZmLzEuMC8iPgogICAgICAgICA8dGlmZjpPcmllbnRhdGlvbj4xPC90aWZmOk9yaWVudGF0aW9uPgogICAgICA8L3JkZjpEZXNjcmlwdGlvbj4KICAgPC9yZGY6UkRGPgo8L3g6eG1wbWV0YT4KTMInWQAAAtVJREFUOBFdUktME1EUPW9+bYehsaV8SpGQCLgA/GAwRpdYFi7c1R0xMSHilsSFrli5YWX8xY2JLljY6MKFC01sQoyJCzBGS1QqMUGD0mIplOlnZt7zvinFhDPzZubd985995w7LJVKGcV8cbQar13hbUKDABy3Bk94UOhidMlbCAFV1fyhbDI3uB54FGmPLGnldJl5F7xLG+dLUyWzDB0qfooVYuD/oE8fCtCnHIVuG+h5FisT94NmwdKrwWosHyuhiC0HvKSnR56jz+r1Tw+oAaqGI6QHkfmRwXTuqnOkY1hHEDHJ1WqoMaq0GnJ1uNzCjiiJ051j6LV6fBm7ju0fbuohLBvLQBUIUVLJkVxNrpI8hTMBR/EYOJi9R3qzmsHEUhLHzHOow4HlGYCpsTy2EBNhEgT4CRpi5bQBxsg1QjQUxfX4DXQY7aiKGp78SdNW4vnL0qT9BP73/kNhfnKMdp/Eqe5RP87J1cK7Im6vLcEMkIQ97FXQOLEZlC2T+JL/ioVfbxHWW+EIF59LWVCTUBMOrTY4+xLktJmGk+sSuUIO0++ngDBNPBpkga53+X40ZTcSMKqPDiUf/e6riurnMnWTLAeOB8awwTfJuoqocEco0iPJITQSCGiuymnZFdQF4XJ6U6Mcj0qlvbIDO6zOK8ylqEsCqELi+AkcOHVUlGq43ALX9AybJXD34z0c1hPep+2sKsteQ94rK1W1TbTKn8qI2q2QHMnVrJQl6n/r812vDkXbI2FVqyvq/Z47FzFAdgl4Ea0XRa2s9q/Eecf3yAtucE8tKp5aY/OSK7UqqaEhrSU7YG5DCRlw2daEe/n3RP7Wt/512MLGYC6BxMvYzc5M6+M6NBEGr+wOrdjpbJY0HcRTqJOYbEmeTc4Mzo2IgblhMX5mfEbGQGsHt/tu+8FZ+rubiENNXU1phWThmgydeB17sPBw1V1cX5TNbGBWOgn8A8n0Lvks2/jiAAAAAElFTkSuQmCC)";
