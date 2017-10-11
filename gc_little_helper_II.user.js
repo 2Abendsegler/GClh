@@ -442,6 +442,8 @@ var variablesInit = function (c) {
     c.remove_navi_play = getValue("remove_navi_play", false);
     c.remove_navi_community = getValue("remove_navi_community", false);
     c.remove_navi_shop = getValue("remove_navi_shop", false);
+    c.settings_show_flopps_link = getValue("settings_show_flopps_link", true);
+    c.settings_show_brouter_link = getValue("settings_show_brouter_link", true);
 
     try {
         if (c.userToken === null) {
@@ -3305,7 +3307,7 @@ var mainGC = function () {
     appendCssStyle( css );
 
 // Show button, which open Flopp's Map with all waypoints of a cache and open Flopp's Map.
-    if (is_page("cache_listing") || document.location.href.match(/^https?:\/\/www\.geocaching\.com\/hide\/wptlist.aspx/)) {
+    if (settings_show_flopps_link && is_page("cache_listing") || document.location.href.match(/^https?:\/\/www\.geocaching\.com\/hide\/wptlist.aspx/)) {
         try {
             var css = "";
             css += ".FloppsMap-content-layer {";
@@ -3391,7 +3393,7 @@ var mainGC = function () {
     }
 
     // Show button, which open BRouter with all waypoints of a cache and open BRouter.
-    if (is_page("cache_listing") || document.location.href.match(/^https?:\/\/www\.geocaching\.com\/hide\/wptlist.aspx/)) {
+    if (settings_show_brouter_link && is_page("cache_listing") || document.location.href.match(/^https?:\/\/www\.geocaching\.com\/hide\/wptlist.aspx/)) {
         try {
 
             var css = ""; 
@@ -9344,6 +9346,8 @@ var mainGC = function () {
             }
             html += "</select> px" + show_help("With this option you can choose the height of the \"Add to list\" popup to bookmark a cache from 100 up to 520 pixel. The default is 205 pixel, similar to the standard.<br><br>This option requires \"Show compact layout in \"Add to list\" popup to bookmark a cache\".") + "<br>";
             html += newParameterVersionSetzen(0.8) + newParameterOff;
+            html += checkboxy('settings_show_flopps_link', 'Show Flopp\'s Map Links in Sidebar and under the Additional Waypoints') + show_help("If there are no additional Waypoints only the link in the Sidebar is shown.") + "<br/>";
+            html += checkboxy('settings_show_brouter_link', 'Show Link to BRouter in Sidebar and under the Additional Waypoints') + show_help("If there are no additional Waypoints only the link in the Sidebar is shown.") + "<br/>";
             html += "</div>";
 
             html += "<h4 class='gclh_headline2'>"+prepareHideable.replace("#name#","logging")+"Logging</h4>";
@@ -10305,7 +10309,9 @@ var mainGC = function () {
                 'settings_compact_layout_list_of_pqs',
                 'settings_compact_layout_nearest',
                 'settings_map_links_statistic',
-                'settings_improve_add_to_list'
+                'settings_improve_add_to_list',
+                'settings_show_flopps_link',
+                'settings_show_brouter_link'
             );
             for (var i = 0; i < checkboxes.length; i++) {
                 if ( document.getElementById(checkboxes[i]) ) {
