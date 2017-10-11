@@ -3331,14 +3331,14 @@ var mainGC = function () {
 
             $('#FloppsMapLayers_linklist').append('<div class="GClhdropdown-content-info floppsmap-warning"><b>WARNING:</b> There are too many waypoints in the listing. Flopp\'s Map allows only a limited number of waypoints. Not all waypoints are shown.</div>');
 
-            $('#FloppsMapLayers_linklist').append('<div class="GClhdropdown-content-layer" data-map="OSM">Openstreetmap</div>');
-            $('#FloppsMapLayers_linklist').append('<div class="GClhdropdown-content-layer" data-map="OSM/DE">German Style</div>');
-            $('#FloppsMapLayers_linklist').append('<div class="GClhdropdown-content-layer" data-map="OCM">OpenCycleMap</div>');
-            $('#FloppsMapLayers_linklist').append('<div class="GClhdropdown-content-layer" data-map="TOPO">OpenTopMap</div>');
-            $('#FloppsMapLayers_linklist').append('<div class="GClhdropdown-content-layer" data-map="roadmap">Google Maps</div>');
-            $('#FloppsMapLayers_linklist').append('<div class="GClhdropdown-content-layer" data-map="satellite">Google Maps Satellite</div>');
-            $('#FloppsMapLayers_linklist').append('<div class="GClhdropdown-content-layer" data-map="hybrid">Google Maps Hybrid</div>');
-            $('#FloppsMapLayers_linklist').append('<div class="GClhdropdown-content-layer" data-map="terrain">Google Maps Terrain</div>');
+            $('#FloppsMapLayers_linklist').append('<div class="FloppsMap-content-layer" data-map="OSM">Openstreetmap</div>');
+            $('#FloppsMapLayers_linklist').append('<div class="FloppsMap-content-layer" data-map="OSM/DE">German Style</div>');
+            $('#FloppsMapLayers_linklist').append('<div class="FloppsMap-content-layer" data-map="OCM">OpenCycleMap</div>');
+            $('#FloppsMapLayers_linklist').append('<div class="FloppsMap-content-layer" data-map="TOPO">OpenTopMap</div>');
+            $('#FloppsMapLayers_linklist').append('<div class="FloppsMap-content-layer" data-map="roadmap">Google Maps</div>');
+            $('#FloppsMapLayers_linklist').append('<div class="FloppsMap-content-layer" data-map="satellite">Google Maps Satellite</div>');
+            $('#FloppsMapLayers_linklist').append('<div class="FloppsMap-content-layer" data-map="hybrid">Google Maps Hybrid</div>');
+            $('#FloppsMapLayers_linklist').append('<div class="FloppsMap-content-layer" data-map="terrain">Google Maps Terrain</div>');
 
             $('#ShowWaypointsOnFloppsMap_linklist').click( function() {
                     openFloppsMap("");
@@ -3355,21 +3355,21 @@ var mainGC = function () {
 
                 $('#FloppsMapLayers').append('<div class="GClhdropdown-content-info floppsmap-warning"><b>WARNING:</b> There are too many waypoints in the listing. Flopp\'s Map allows only a limited number of waypoints. Not all waypoints are shown.</div>');
 
-                $('#FloppsMapLayers').append('<div class="GClhdropdown-content-layer" data-map="OSM">Openstreetmap</div>');
-                $('#FloppsMapLayers').append('<div class="GClhdropdown-content-layer" data-map="OSM/DE">German Style</div>');
-                $('#FloppsMapLayers').append('<div class="GClhdropdown-content-layer" data-map="OCM">OpenCycleMap</div>');
-                $('#FloppsMapLayers').append('<div class="GClhdropdown-content-layer" data-map="TOPO">OpenTopMap</div>');
-                $('#FloppsMapLayers').append('<div class="GClhdropdown-content-layer" data-map="roadmap">Google Maps</div>');
-                $('#FloppsMapLayers').append('<div class="GClhdropdown-content-layer" data-map="satellite">Google Maps Satellite</div>');
-                $('#FloppsMapLayers').append('<div class="GClhdropdown-content-layer" data-map="hybrid">Google Maps Hybrid</div>');
-                $('#FloppsMapLayers').append('<div class="GClhdropdown-content-layer" data-map="terrain">Google Maps Terrain</div>');
+                $('#FloppsMapLayers').append('<div class="FloppsMap-content-layer" data-map="OSM">Openstreetmap</div>');
+                $('#FloppsMapLayers').append('<div class="FloppsMap-content-layer" data-map="OSM/DE">German Style</div>');
+                $('#FloppsMapLayers').append('<div class="FloppsMap-content-layer" data-map="OCM">OpenCycleMap</div>');
+                $('#FloppsMapLayers').append('<div class="FloppsMap-content-layer" data-map="TOPO">OpenTopMap</div>');
+                $('#FloppsMapLayers').append('<div class="FloppsMap-content-layer" data-map="roadmap">Google Maps</div>');
+                $('#FloppsMapLayers').append('<div class="FloppsMap-content-layer" data-map="satellite">Google Maps Satellite</div>');
+                $('#FloppsMapLayers').append('<div class="FloppsMap-content-layer" data-map="hybrid">Google Maps Hybrid</div>');
+                $('#FloppsMapLayers').append('<div class="FloppsMap-content-layer" data-map="terrain">Google Maps Terrain</div>');
                 
                 $('#ShowWaypointsOnFloppsMap').click( function() {
                     openFloppsMap("");
                 });
             }
 
-            $('.GClhdropdown-content-layer').click( function() {
+            $('.FloppsMap-content-layer').click( function() {
                 var map = $(this).data('map');
                 openFloppsMap(map);
             });
