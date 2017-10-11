@@ -3274,37 +3274,39 @@ var mainGC = function () {
         } catch( e ) { gclh_error( "Driving direction for Waypoints: ", e ); }
     }
 
-    var css = "";
-    css += ".GClhdropbtn {";
-    css += "    cursor: pointer;";
-    css += "}";
-    css += ".GClhdropdown {";
-    css += "    position: relative;";
-    css += "    display: inline-block;";
-    css += "}";
-    css += ".GClhdropdown-content {";
-    css += "    display: none;";
-    css += "    position: absolute;";
-    css += "    background-color: #f9f9f9;";
-    css += "    min-width: 160px;";
-    css += "    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);";
-    css += "    z-index: 1;";
-    css += "}";
-    css += ".GClhdropdown-content-info {";
-    css += "    color: black;";
-    css += "    background-color: #ffffa5;";
-    css += "    padding: 5px 16px 5px 16px;";
-    css += "    text-decoration: none;";
-    css += "    display: none;";
-    css += "}";
-    css += ".GClhdropdown-content-info:hover {";
-    css += "    background-color: #ffffa5;";
-    css += "    cursor: default;";
-    css += "}";
-    css += ".GClhdropdown:hover .GClhdropdown-content {";
-    css += "    display: block;";
-    css += "}";
-    appendCssStyle( css );
+    if(settings_show_brouter_link || settings_show_flopps_link){
+        var css = "";
+        css += ".GClhdropbtn {";
+        css += "    cursor: pointer;";
+        css += "}";
+        css += ".GClhdropdown {";
+        css += "    position: relative;";
+        css += "    display: inline-block;";
+        css += "}";
+        css += ".GClhdropdown-content {";
+        css += "    display: none;";
+        css += "    position: absolute;";
+        css += "    background-color: #f9f9f9;";
+        css += "    min-width: 160px;";
+        css += "    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);";
+        css += "    z-index: 1;";
+        css += "}";
+        css += ".GClhdropdown-content-info {";
+        css += "    color: black;";
+        css += "    background-color: #ffffa5;";
+        css += "    padding: 5px 16px 5px 16px;";
+        css += "    text-decoration: none;";
+        css += "    display: none;";
+        css += "}";
+        css += ".GClhdropdown-content-info:hover {";
+        css += "    background-color: #ffffa5;";
+        css += "    cursor: default;";
+        css += "}";
+        css += ".GClhdropdown:hover .GClhdropdown-content {";
+        css += "    display: block;";
+        css += "}";
+        appendCssStyle( css );
+    }
 
 // Show button, which open Flopp's Map with all waypoints of a cache and open Flopp's Map.
     if (settings_show_flopps_link && is_page("cache_listing") || document.location.href.match(/^https?:\/\/www\.geocaching\.com\/hide\/wptlist.aspx/)) {
