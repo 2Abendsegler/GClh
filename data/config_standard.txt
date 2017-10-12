@@ -206,5 +206,7 @@
   "settings_compact_layout_list_of_pqs": false,
   "settings_map_links_statistic": true,
   "settings_improve_add_to_list_height": 205,
-  "settings_improve_add_to_list": true
+  "settings_improve_add_to_list": true,
+  "settings_show_flopps_link": true,
+  "settings_show_brouter_link": true
 }
