@@ -3274,6 +3274,7 @@ var mainGC = function () {
         } catch( e ) { gclh_error( "Driving direction for Waypoints: ", e ); }
     }
 
+// CSS for BRouter and Flopp's Map Buttons.
     if(settings_show_brouter_link || settings_show_flopps_link){
         var css = "";
         css += ".GClhdropbtn {";
@@ -3345,7 +3346,7 @@ var mainGC = function () {
             $('#FloppsMapLayers_linklist').append('<div class="FloppsMap-content-layer" data-map="terrain">Google Maps Terrain</div>');
 
             $('#ShowWaypointsOnFloppsMap_linklist').click( function() {
-                    openFloppsMap("");
+                openFloppsMap("");
             });
 
             var tbl = $('#ctl00_ContentBody_Waypoints');
@@ -3429,7 +3430,7 @@ var mainGC = function () {
             $('#BrouterMapLayers_linklist').append('<div class="BRouter-content-layer" data-map="Esri World Imagery">Esri World Imagery</div>');
 
             $('#ShowWaypointsOnBRouter_linklist').click( function() {
-                    openBrouter("");
+                openBrouter("");
             });
 
             var tbl = $('#ctl00_ContentBody_Waypoints');
