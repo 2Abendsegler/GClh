@@ -442,6 +442,8 @@ var variablesInit = function (c) {
     c.remove_navi_play = getValue("remove_navi_play", false);
     c.remove_navi_community = getValue("remove_navi_community", false);
     c.remove_navi_shop = getValue("remove_navi_shop", false);
+    c.settings_show_flopps_link = getValue("settings_show_flopps_link", true);
+    c.settings_show_brouter_link = getValue("settings_show_brouter_link", true);
 
     try {
         if (c.userToken === null) {
@@ -3272,170 +3274,201 @@ var mainGC = function () {
         } catch( e ) { gclh_error( "Driving direction for Waypoints: ", e ); }
     }
 
+// CSS for BRouter and Flopp's Map Buttons.
+    if(settings_show_brouter_link || settings_show_flopps_link){
+        var css = "";
+        css += ".GClhdropbtn {";
+        css += "    cursor: pointer;";
+        css += "}";
+        css += ".GClhdropdown {";
+        css += "    position: relative;";
+        css += "    display: inline-block;";
+        css += "}";
+        css += ".GClhdropdown-content {";
+        css += "    display: none;";
+        css += "    position: absolute;";
+        css += "    background-color: #f9f9f9;";
+        css += "    min-width: 170px;";
+        css += "    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);";
+        css += "    z-index: 1;";
+        css += "}";
+        css += ".GClhdropdown-content-info {";
+        css += "    color: black;";
+        css += "    background-color: #ffffa5;";
+        css += "    padding: 5px 16px 5px 16px;";
+        css += "    text-decoration: none;";
+        css += "    display: none;";
+        css += "}";
+        css += ".GClhdropdown-content-info:hover {";
+        css += "    background-color: #ffffa5;";
+        css += "    cursor: default;";
+        css += "}";
+        css += ".GClhdropdown:hover .GClhdropdown-content {";
+        css += "    display: block;";
+        css += "}";
+        appendCssStyle( css );
+    }
+
 // Show button, which open Flopp's Map with all waypoints of a cache and open Flopp's Map.
-    if (is_page("cache_listing") || document.location.href.match(/^https?:\/\/www\.geocaching\.com\/hide\/wptlist.aspx/)) {
+    if (settings_show_flopps_link && is_page("cache_listing") || document.location.href.match(/^https?:\/\/www\.geocaching\.com\/hide\/wptlist.aspx/)) {
         try {
             var css = "";
-            css += ".GClhdropbtn {";
-            css += "    cursor: pointer;";
-            css += "}";
-            css += ".GClhdropdown {";
-            css += "    position: relative;";
-            css += "    display: inline-block;";
-            css += "}";
-            css += ".GClhdropdown-content {";
-            css += "    display: none;";
-            css += "    position: absolute;";
-            css += "    background-color: #f9f9f9;";
-            css += "    min-width: 160px;";
-            css += "    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);";
-            css += "    z-index: 1;";
-            css += "}";
-            css += ".GClhdropdown-content-layer {";
+            css += ".FloppsMap-content-layer {";
             css += "    color: black;";
             css += "    padding: 5px 16px 5px 16px;";
             css += "    text-decoration: none;";
             css += "    display: block;";
             css += "}";
-            css += ".GClhdropdown-content-info {";
-            css += "    color: black;";
-            css += "    background-color: #ffffa5;";
-            css += "    padding: 5px 16px 5px 16px;";
-            css += "    text-decoration: none;";
-            css += "    display: none;";
-            css += "}";
-            css += ".GClhdropdown-content-layer:hover {";
+            css += ".FloppsMap-content-layer:hover {";
             css += "    background-color: #e1e1e1;";
             css += "    cursor: pointer;";
             css += "}";
-            css += ".GClhdropdown-content-info:hover {";
-            css += "    background-color: #ffffa5;";
-            css += "    cursor: default;";
+            css += "#ShowWaypointsOnFloppsMap_linklist{";
+            css += "    background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAAlwSFlzAAALEwAACxMBAJqcGAAAAVlpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IlhNUCBDb3JlIDUuNC4wIj4KICAgPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4KICAgICAgPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIKICAgICAgICAgICAgeG1sbnM6dGlmZj0iaHR0cDovL25zLmFkb2JlLmNvbS90aWZmLzEuMC8iPgogICAgICAgICA8dGlmZjpPcmllbnRhdGlvbj4xPC90aWZmOk9yaWVudGF0aW9uPgogICAgICA8L3JkZjpEZXNjcmlwdGlvbj4KICAgPC9yZGY6UkRGPgo8L3g6eG1wbWV0YT4KTMInWQAAAtVJREFUOBFdUktME1EUPW9+bYehsaV8SpGQCLgA/GAwRpdYFi7c1R0xMSHilsSFrli5YWX8xY2JLljY6MKFC01sQoyJCzBGS1QqMUGD0mIplOlnZt7zvinFhDPzZubd985995w7LJVKGcV8cbQar13hbUKDABy3Bk94UOhidMlbCAFV1fyhbDI3uB54FGmPLGnldJl5F7xLG+dLUyWzDB0qfooVYuD/oE8fCtCnHIVuG+h5FisT94NmwdKrwWosHyuhiC0HvKSnR56jz+r1Tw+oAaqGI6QHkfmRwXTuqnOkY1hHEDHJ1WqoMaq0GnJ1uNzCjiiJ051j6LV6fBm7ju0fbuohLBvLQBUIUVLJkVxNrpI8hTMBR/EYOJi9R3qzmsHEUhLHzHOow4HlGYCpsTy2EBNhEgT4CRpi5bQBxsg1QjQUxfX4DXQY7aiKGp78SdNW4vnL0qT9BP73/kNhfnKMdp/Eqe5RP87J1cK7Im6vLcEMkIQ97FXQOLEZlC2T+JL/ioVfbxHWW+EIF59LWVCTUBMOrTY4+xLktJmGk+sSuUIO0++ngDBNPBpkga53+X40ZTcSMKqPDiUf/e6riurnMnWTLAeOB8awwTfJuoqocEco0iPJITQSCGiuymnZFdQF4XJ6U6Mcj0qlvbIDO6zOK8ylqEsCqELi+AkcOHVUlGq43ALX9AybJXD34z0c1hPep+2sKsteQ94rK1W1TbTKn8qI2q2QHMnVrJQl6n/r812vDkXbI2FVqyvq/Z47FzFAdgl4Ea0XRa2s9q/Eecf3yAtucE8tKp5aY/OSK7UqqaEhrSU7YG5DCRlw2daEe/n3RP7Wt/512MLGYC6BxMvYzc5M6+M6NBEGr+wOrdjpbJY0HcRTqJOYbEmeTc4Mzo2IgblhMX5mfEbGQGsHt/tu+8FZ+rubiENNXU1phWThmgydeB17sPBw1V1cX5TNbGBWOgn8A8n0Lvks2/jiAAAAAElFTkSuQmCC)";
             css += "}";
-            css += ".GClhdropdown:hover .GClhdropdown-content {";
-            css += "    display: block;";
-            css += "}";
+
             appendCssStyle( css );
+
+            // Append the Flopps map to the right, top Linklist
+            var linklist_for_flopps = $('a[href^="/seek/gallery.aspx"]').parent().parent();
+
+            linklist_for_flopps.append('<li><div class="GClhdropdown"><a id="ShowWaypointsOnFloppsMap_linklist" class="GClhdropbtn">Show on Flopp\'s Map</a><div id="FloppsMapLayers_linklist" class="GClhdropdown-content"></div></div></li>');
+
+            $('#FloppsMapLayers_linklist').append('<div class="GClhdropdown-content-info floppsmap-warning"><b>WARNING:</b> There are too many waypoints in the listing. Flopp\'s Map allows only a limited number of waypoints. Not all waypoints are shown.</div>');
+
+            $('#FloppsMapLayers_linklist').append('<div class="FloppsMap-content-layer" data-map="OSM">Openstreetmap</div>');
+            $('#FloppsMapLayers_linklist').append('<div class="FloppsMap-content-layer" data-map="OSM/DE">German Style</div>');
+            $('#FloppsMapLayers_linklist').append('<div class="FloppsMap-content-layer" data-map="OCM">OpenCycleMap</div>');
+            $('#FloppsMapLayers_linklist').append('<div class="FloppsMap-content-layer" data-map="TOPO">OpenTopMap</div>');
+            $('#FloppsMapLayers_linklist').append('<div class="FloppsMap-content-layer" data-map="roadmap">Google Maps</div>');
+            $('#FloppsMapLayers_linklist').append('<div class="FloppsMap-content-layer" data-map="satellite">Google Maps Satellite</div>');
+            $('#FloppsMapLayers_linklist').append('<div class="FloppsMap-content-layer" data-map="hybrid">Google Maps Hybrid</div>');
+            $('#FloppsMapLayers_linklist').append('<div class="FloppsMap-content-layer" data-map="terrain">Google Maps Terrain</div>');
+
+            $('#ShowWaypointsOnFloppsMap_linklist').click( function() {
+                openFloppsMap("");
+            });
 
             var tbl = $('#ctl00_ContentBody_Waypoints');
             if ( tbl.length == 0 ) tbl = $('#ctl00_ContentBody_WaypointList');
 
             if(tbl.length == 0){
-                // We have no additional waypoint, so put the flopps links before the cache hints
-                tbl = $('#ctl00_ContentBody_hints');
-                tbl.before('<p><div class="GClhdropdown"><div id="ShowWaypointsOnFloppsMap" class="GClhdropbtn"><a>Show waypoints on Flopp\'s Map with &#8230;</a></div><div id="FloppsMapLayers" class="GClhdropdown-content"></div></div></p>');
+                // We have no additional waypoints, so the flops map link will not be displayed in the listing
             }else{
                 tbl = tbl.next("p");
                 tbl.append('<div class="GClhdropdown"><div id="ShowWaypointsOnFloppsMap" class="GClhdropbtn"><a>Show waypoints on Flopp\'s Map with &#8230;</a></div><div id="FloppsMapLayers" class="GClhdropdown-content"></div></div>');
+
+                $('#FloppsMapLayers').append('<div class="GClhdropdown-content-info floppsmap-warning"><b>WARNING:</b> There are too many waypoints in the listing. Flopp\'s Map allows only a limited number of waypoints. Not all waypoints are shown.</div>');
+
+                $('#FloppsMapLayers').append('<div class="FloppsMap-content-layer" data-map="OSM">Openstreetmap</div>');
+                $('#FloppsMapLayers').append('<div class="FloppsMap-content-layer" data-map="OSM/DE">German Style</div>');
+                $('#FloppsMapLayers').append('<div class="FloppsMap-content-layer" data-map="OCM">OpenCycleMap</div>');
+                $('#FloppsMapLayers').append('<div class="FloppsMap-content-layer" data-map="TOPO">OpenTopMap</div>');
+                $('#FloppsMapLayers').append('<div class="FloppsMap-content-layer" data-map="roadmap">Google Maps</div>');
+                $('#FloppsMapLayers').append('<div class="FloppsMap-content-layer" data-map="satellite">Google Maps Satellite</div>');
+                $('#FloppsMapLayers').append('<div class="FloppsMap-content-layer" data-map="hybrid">Google Maps Hybrid</div>');
+                $('#FloppsMapLayers').append('<div class="FloppsMap-content-layer" data-map="terrain">Google Maps Terrain</div>');
+
+                $('#ShowWaypointsOnFloppsMap').click( function() {
+                    openFloppsMap("");
+                });
             }
 
-            $('#FloppsMapLayers').append('<div id="floppsmap-warning" class="GClhdropdown-content-info"><b>WARNING:</b> There are too many waypoints in the listing. Flopp\'s Map allows only a limited number of waypoints. Not all waypoints are shown.</div>');
-
-            $('#FloppsMapLayers').append('<div class="GClhdropdown-content-layer" data-map="OSM">Openstreetmap</div>');
-            $('#FloppsMapLayers').append('<div class="GClhdropdown-content-layer" data-map="OSM/DE">German Style</div>');
-            $('#FloppsMapLayers').append('<div class="GClhdropdown-content-layer" data-map="OCM">OpenCycleMap</div>');
-            $('#FloppsMapLayers').append('<div class="GClhdropdown-content-layer" data-map="TOPO">OpenTopMap</div>');
-            $('#FloppsMapLayers').append('<div class="GClhdropdown-content-layer" data-map="roadmap">Google Maps</div>');
-            $('#FloppsMapLayers').append('<div class="GClhdropdown-content-layer" data-map="satellite">Google Maps Satellite</div>');
-            $('#FloppsMapLayers').append('<div class="GClhdropdown-content-layer" data-map="hybrid">Google Maps Hybrid</div>');
-            $('#FloppsMapLayers').append('<div class="GClhdropdown-content-layer" data-map="terrain">Google Maps Terrain</div>');
+            $('.FloppsMap-content-layer').click( function() {
+                var map = $(this).data('map');
+                openFloppsMap(map);
+            });
 
             var status = {};
             var waypoints = extractWaypointsFromListing();
             var link = buildFloppsMapLink( waypoints, 'OSM', false, status );
-            if ( status.limited == true ) $("#floppsmap-warning").show();
-            else $("#floppsmap-warning").hide();
 
             function openFloppsMap( map ) {
                 var waypoints = extractWaypointsFromListing();
                 var link = buildFloppsMapLink( waypoints, map, false, {} );
                 window.open( link );
             }
-            $('#ShowWaypointsOnFloppsMap').click( function() {
-                openFloppsMap("");
-            });
-            $('.GClhdropdown-content-layer').click( function() {
-                var map = $(this).data('map');
-                openFloppsMap(map);
-            });
+
+            if ( status.limited == true ) $(".floppsmap-warning").show();
+            else $(".floppsmap-warning").hide();
+
         } catch( e ) { gclh_error("Show button Flopp's Map and open Flopp's Map", e); }
     }
 
     // Show button, which open BRouter with all waypoints of a cache and open BRouter.
-    if (is_page("cache_listing") || document.location.href.match(/^https?:\/\/www\.geocaching\.com\/hide\/wptlist.aspx/)) {
+    if (settings_show_brouter_link && is_page("cache_listing") || document.location.href.match(/^https?:\/\/www\.geocaching\.com\/hide\/wptlist.aspx/)) {
         try {
+
             var css = "";
-            css += ".GClhdropbtn {";
-            css += "    cursor: pointer;";
-            css += "}";
-            css += ".GClhdropdown {";
-            css += "    position: relative;";
-            css += "    display: inline-block;";
-            css += "}";
-            css += ".GClhdropdown-content {";
-            css += "    display: none;";
-            css += "    position: absolute;";
-            css += "    background-color: #f9f9f9;";
-            css += "    min-width: 160px;";
-            css += "    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);";
-            css += "    z-index: 1;";
-            css += "}";
-            css += ".GClhdropdown-content-layer {";
+            css += ".BRouter-content-layer {";
             css += "    color: black;";
             css += "    padding: 5px 16px 5px 16px;";
             css += "    text-decoration: none;";
             css += "    display: block;";
             css += "}";
-            css += ".GClhdropdown-content-info {";
-            css += "    color: black;";
-            css += "    background-color: #ffffa5;";
-            css += "    padding: 5px 16px 5px 16px;";
-            css += "    text-decoration: none;";
-            css += "    display: none;";
-            css += "}";
-            css += ".GClhdropdown-content-layer:hover {";
+            css += ".BRouter-content-layer:hover {";
             css += "    background-color: #e1e1e1;";
             css += "    cursor: pointer;";
             css += "}";
-            css += ".GClhdropdown-content-info:hover {";
-            css += "    background-color: #ffffa5;";
-            css += "    cursor: default;";
-            css += "}";
-            css += ".GClhdropdown:hover .GClhdropdown-content {";
-            css += "    display: block;";
+            css += "#ShowWaypointsOnBRouter_linklist{";
+            css += "    background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAQCAYAAAAiYZ4HAAABG2lUWHRYTUw6Y29tLmFkb2JlLnhtcAAAAAAAPD94cGFja2V0IGJlZ2luPSLvu78iIGlkPSJXNU0wTXBDZWhpSHpyZVN6TlRjemtjOWQiPz4KPHg6eG1wbWV0YSB4bWxuczp4PSJhZG9iZTpuczptZXRhLyIgeDp4bXB0az0iWE1QIENvcmUgNS41LjAiPgogPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4KICA8cmRmOkRlc2NyaXB0aW9uIHJkZjphYm91dD0iIi8+CiA8L3JkZjpSREY+CjwveDp4bXBtZXRhPgo8P3hwYWNrZXQgZW5kPSJyIj8+Gkqr6gAAAYJpQ0NQc1JHQiBJRUM2MTk2Ni0yLjEAACiRdZHLS0JBFIc/tSjUKMhFixYS1SIseoDUJkgJCyLEDLLa6M1H4ONyrxLSNmgrFERtei3qL6ht0DoIiiKIoF3rojYVt3NTUCLPcOZ885s5h5kzYA2nlYzeMAiZbF4LBXzuhciiu+kZOw5cQF9U0dWJYHCGuvZxh8WMN/1mrfrn/jXHSlxXwNIsPK6oWl54SnhmLa+avC3sUlLRFeFTYY8mFxS+NfVYmV9MTpb5y2QtHPKDtU3YnazhWA0rKS0jLC+nO5MuKJX7mC9xxrPzcxK7xDvRCRHAh5tpJvHjZYgxmb30M8yArKiTP/ibP0tOchWZVYporJIkRR6PqAWpHpeYED0uI03R7P/fvuqJkeFydacPGp8M460Hmrbgu2QYn4eG8X0Etke4yFbzcwcw+i56qap170PrBpxdVrXYDpxvQseDGtWiv5JN3JpIwOsJtESg/RrsS+WeVfY5vofwunzVFezuQa+cb13+ASNEZ8doe9nfAAAACXBIWXMAAC4jAAAuIwF4pT92AAACFklEQVQokW2Qy0tUYRjGf993vjnjbcaRcS7ljGZmOWlKnMmOmG0qGqTLRggkpDa1yHZB/0TgOohoE7TpsrE2SXbDTcpAkFFJNYkjORmmjqPneE4bZxqlZ/Xxvc/D+z4/QZn6+/tbuhvDD3Y7Kwm5kfesCU8uGVDne0Yevit6RPFhmmbLhZ7OiWtyJqS2fldslzsZyz3b5O9rHRl9CyCLgeSh9pFh72xIE5D+4/JVC1CjBJfiHvH6l/2k6JMAhmGIvXXV+zR7nafzGzhnrpLuHmQ6doSARyAKq0Hnxgm9fIMQW2f8tly6zF5M02TW1sorOgAKYHJy0unrNmao9SRSEYf7N6+ggrsYUFkcF/JaxZK89dze1mHq+9yrbONhu16XDAXXGeQbur3OxKKFLxR6nBqfDpd3GLIi8eHbGUuxQ+/zknta8+X8i9E35RsS/qHr+lRlFDvSXDJnCw4r8Tb0cxdxlpfiqfFpIQFEta9GCBEtHOjikdpTCoz9tPjQOwBCIDStAghLwzA8WjBcD6CiMZ4tK/BWYTmQ80WYr2sov7BdAgm9tb3E70dthM+NSV7mLHLJkyWn9Pmx5zJHJWDoHUagONA7ktzNKb5sekm3HS8FtEgDdjZjSqBVxZr3/5so0pbOp85TOKJEHRWNsbm4cFAJb2WVkLJpG8tjp/mobScs/XW4hbUGYRjGmBaNZ3fy/5/ctVX/X+/aoP1H+pyRAAAAAElFTkSuQmCC)";
             css += "}";
             appendCssStyle( css );
 
+            // Append the Brouter map to the right, top Linklist
+            var linklist_for_brouter = $('a[href^="/seek/gallery.aspx"]').parent().parent();
+
+            linklist_for_brouter.append('<li><div class="GClhdropdown"><a id="ShowWaypointsOnBRouter_linklist" class="GClhdropbtn">Calc. routing on BRouter</a><div id="BrouterMapLayers_linklist" class="GClhdropdown-content"></div></div></li>');
+
+            $('#BrouterMapLayers_linklist').append('<div class="BRouter-content-layer" data-map="OpenStreetMap">OpenStreetMap</div>');
+            $('#BrouterMapLayers_linklist').append('<div class="BRouter-content-layer" data-map="OpenStreetMap.de">OpenStreetMap.de</div>');
+            $('#BrouterMapLayers_linklist').append('<div class="BRouter-content-layer" data-map="OpenTopoMap">OpenTopoMap</div>');
+            $('#BrouterMapLayers_linklist').append('<div class="BRouter-content-layer" data-map="OpenCycleMap (Thunderf.)">OpenCycleMap</div>');
+            $('#BrouterMapLayers_linklist').append('<div class="BRouter-content-layer" data-map="Outdoors (Thunderforest)">Outdoors</div>');
+            $('#BrouterMapLayers_linklist').append('<div class="BRouter-content-layer" data-map="Esri World Imagery">Esri World Imagery</div>');
+
+            $('#ShowWaypointsOnBRouter_linklist').click( function() {
+                openBrouter("OpenStreetMap");
+            });
+
             var tbl = $('#ctl00_ContentBody_Waypoints');
             if ( tbl.length == 0 ) tbl = $('#ctl00_ContentBody_WaypointList');
-            tbl = tbl.next("p");
-            tbl.append('<p>');
-            tbl.append('<div class="GClhdropdown"><div id="ShowWaypointsOnBrouter" class="GClhdropbtn"><a>Calculate routing on BRouter with &#8230;</a></div><div id="BrouterMapLayers" class="GClhdropdown-content"></div></div>');
-			tbl.append('</p>');
-			
-            $('#BrouterMapLayers').append('<div class="GClhdropdown-content-layer" data-map="OpenStreetMap">OpenStreetMap</div>');
-            $('#BrouterMapLayers').append('<div class="GClhdropdown-content-layer" data-map="OpenStreetMap.de">OpenStreetMap.de</div>');
-            $('#BrouterMapLayers').append('<div class="GClhdropdown-content-layer" data-map="OpenTopoMap">OpenTopoMap</div>');
-            $('#BrouterMapLayers').append('<div class="GClhdropdown-content-layer" data-map="OpenCycleMap (Thunderf.)">OpenCycleMap</div>');
-            $('#BrouterMapLayers').append('<div class="GClhdropdown-content-layer" data-map="Outdoors (Thunderforest)">Outdoors</div>');
-            $('#BrouterMapLayers').append('<div class="GClhdropdown-content-layer" data-map="Esri World Imagery">Esri World Imagery</div>');
-            
-            var status = {};
-            var waypoints = extractWaypointsFromListing();
-            var link = buildBrouterMapLink( waypoints, 'OpenStreetMap', false, status );
-            
+
+            if(tbl.length == 0){
+                // We have no additional waypoints, so the brouter link will not be displayed in the listing
+            }else{
+
+                tbl = tbl.next("p");
+                tbl.append('<p>');
+                tbl.append('<div class="GClhdropdown"><div id="ShowWaypointsOnBrouter" class="GClhdropbtn"><a>Calculate routing on BRouter with &#8230;</a></div><div id="BrouterMapLayers" class="GClhdropdown-content"></div></div>');
+    			tbl.append('</p>');
+
+                $('#BrouterMapLayers').append('<div class="BRouter-content-layer" data-map="OpenStreetMap">OpenStreetMap</div>');
+                $('#BrouterMapLayers').append('<div class="BRouter-content-layer" data-map="OpenStreetMap.de">OpenStreetMap.de</div>');
+                $('#BrouterMapLayers').append('<div class="BRouter-content-layer" data-map="OpenTopoMap">OpenTopoMap</div>');
+                $('#BrouterMapLayers').append('<div class="BRouter-content-layer" data-map="OpenCycleMap (Thunderf.)">OpenCycleMap</div>');
+                $('#BrouterMapLayers').append('<div class="BRouter-content-layer" data-map="Outdoors (Thunderforest)">Outdoors</div>');
+                $('#BrouterMapLayers').append('<div class="BRouter-content-layer" data-map="Esri World Imagery">Esri World Imagery</div>');
+
+                var status = {};
+                var waypoints = extractWaypointsFromListing();
+                var link = buildBrouterMapLink( waypoints, 'OpenStreetMap', false, status );
+
+                $('#ShowWaypointsOnBrouter').click( function() {
+                    openBrouter("OpenStreetMap");
+                });
+            }
+
+            $('.BRouter-content-layer').click( function() {
+                var map = $(this).data('map');
+                openBrouter(map);
+            });
+
             function openBrouter( map ) {
                 var waypoints = extractWaypointsFromListing();
                 var link = buildBrouterMapLink( waypoints, map, false, {} );
                 window.open( link );
             }
-            $('#ShowWaypointsOnBrouter').click( function() {
-                openBrouter("");
-            });
-            $('.GClhdropdown-content-layer').click( function() {
-                var map = $(this).data('map');
-                openBrouter(map);
-            });
         } catch( e ) { gclh_error("Show button BRouter and open BRouter", e); }
     }
 
@@ -8754,6 +8787,7 @@ var mainGC = function () {
     }
     function show_help(text) { return " <a class='gclh_info'><b>?</b><span class='gclh_span'>" + text + "</span></a>"; }
     function show_help2(text) { return " <a class='gclh_info gclh_info2'><b>?</b><span class='gclh_span'>" + text + "</span></a>"; }
+    function show_help3(text) { return " <a class='gclh_info gclh_info3'><b>?</b><span class='gclh_span'>" + text + "</span></a>"; }
     function show_help_big(text) { return " <a class='gclh_info gclh_info_big'><b>?</b><span class='gclh_span'>" + text + "</span></a>"; }
     function show_help_rc(text) { return " <a class='gclh_info gclh_info_rc'><b>?</b><span class='gclh_span'>" + text + "</span></a>"; }
 
@@ -8836,6 +8870,9 @@ var mainGC = function () {
         html += "}";
         html += "a.gclh_info2:hover span {";
         html += "  left: -100px !important;";
+        html += "}";
+        html += "a.gclh_info3:hover span {";
+        html += "  left: -200px !important;";
         html += "}";
         html += "a.gclh_info_big:hover span {";
         html += "  width: 350px !important;";
@@ -9054,12 +9091,12 @@ var mainGC = function () {
             html += checkboxy('settings_pq_option_idontown', "Enable option '<i>I don't own</i>' by default") + show_help("This activates the option '<i>I don't own</i>' by default.") + "<br/>";
             html += checkboxy('settings_pq_option_ignorelist', "Enable option '<i>Are not on my ignore list</i>' by default") + show_help("This activates the option '<i>Are not on my ignore list</i>' by default.") + "<br/>";
             html += checkboxy('settings_pq_option_isenabled', "Enable option '<i>Is Enabled</i>' by default") + show_help("This activates the option '<i>Is Enabled</i>' by default.") + "<br/>";
-            html += checkboxy('settings_pq_option_filename', "Enable option '<i>Include PQ name in download file name</i>' by default") + show_help("This activates the option '<i>Include pocket query name in download file name</i>' by default.") + "<br/>";
+            html += checkboxy('settings_pq_option_filename', "Enable option '<i>Include PQ name in download file name</i>' by default") + show_help3("This activates the option '<i>Include pocket query name in download file name</i>' by default.") + "<br/>";
             html += checkboxy('settings_pq_set_difficulty', "Set difficulity ");
             html += gclh_createSelectOptionCode( "settings_pq_difficulty", dt_display, settings_pq_difficulty );
             html += '&nbsp;';
             html += gclh_createSelectOptionCode( "settings_pq_difficulty_score", dt_score, settings_pq_difficulty_score );
-            html += " by default" + show_help("Specifies the default settings for difficulty score.") + "<br/>";
+            html += " by default" + show_help3("Specifies the default settings for difficulty score.") + "<br/>";
             html += checkboxy('settings_pq_set_terrain', "Set terrain ");
             html += gclh_createSelectOptionCode( "settings_pq_terrain", dt_display, settings_pq_terrain );
             html += '&nbsp;';
@@ -9312,6 +9349,8 @@ var mainGC = function () {
                 html += "  <option value='" + i + "' " + (settings_improve_add_to_list_height == i ? "selected=\"selected\"" : "") + ">" + i + "</option>";
             }
             html += "</select> px" + show_help("With this option you can choose the height of the \"Add to list\" popup to bookmark a cache from 100 up to 520 pixel. The default is 205 pixel, similar to the standard.<br><br>This option requires \"Show compact layout in \"Add to list\" popup to bookmark a cache\".") + "<br>";
+            html += checkboxy('settings_show_flopps_link', 'Show Flopp\'s Map Links in Sidebar and under the Additional Waypoints') + show_help3("If there are no additional Waypoints only the link in the Sidebar is shown.") + "<br/>";
+            html += checkboxy('settings_show_brouter_link', 'Show Link to BRouter in Sidebar and under the Additional Waypoints') + show_help3("If there are no additional Waypoints only the link in the Sidebar is shown.") + "<br/>";
             html += newParameterVersionSetzen(0.8) + newParameterOff;
             html += "</div>";
 
@@ -10274,7 +10313,9 @@ var mainGC = function () {
                 'settings_compact_layout_list_of_pqs',
                 'settings_compact_layout_nearest',
                 'settings_map_links_statistic',
-                'settings_improve_add_to_list'
+                'settings_improve_add_to_list',
+                'settings_show_flopps_link',
+                'settings_show_brouter_link'
             );
             for (var i = 0; i < checkboxes.length; i++) {
                 if ( document.getElementById(checkboxes[i]) ) {
