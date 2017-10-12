@@ -1083,9 +1083,9 @@ var mainGC = function () {
                 }
             }
 
-            // Account Settings, Message Center, Cache suchen, Cache verstecken, Geotours (neues Seiten Design):
+            // Account Settings, Message Center, Cache suchen, Cache verstecken, Geotours (neues Seiten Design) und Karten:
             // ----------
-            if ( is_page("settings") || is_page("messagecenter") || is_page("find_cache") || is_page("hide_cache") || is_page("geotours") ) {
+            if ( is_page("settings") || is_page("messagecenter") || is_page("find_cache") || is_page("hide_cache") || is_page("geotours") || is_page("map") ) {
                 // Weitere Attribute für neues Seiten Design zur Darstellung der Objekte im Header setzen.
                 style.innerHTML += "nav .wrapper {padding-right: " + new_padding_right + "px !important; width: unset;}";
                 // Platzieren des neuen Logos verursacht Fehler in der Plazierung des Videos. Folgendes korrigiert das quasi.
@@ -1095,6 +1095,9 @@ var mainGC = function () {
                     style.innerHTML += "ul.#sm {margin-top: 0px; margin-left: 32px !important;} .submenu::after {left: 4px; width: 26px;}";
                     // Menü nicht flex ausgeben.
                     if ( settings_menu_float_right ) style.innerHTML += ".#m {display: block;} ul.#m > li {top: 0px;}";
+                    // Menü in der Karte ausrichten.
+                    if ( is_page("map") && !settings_menu_float_right) style.innerHTML += ".#m {height: unset !important;}";
+                    if ( is_page("map") && settings_menu_float_right) style.innerHTML += "#navi_search {margin: 0 !important;}";
                 }
                 // Bereich rechts ausrichten.
                 if (settings_show_smaller_area_top_right) style.innerHTML += ".profile-panel {margin-right: -15.25em}";
@@ -1147,15 +1150,6 @@ var mainGC = function () {
                         ".profile-panel .li-user-toggle {margin-left: 0.5em; padding: 0.43em 0.6em;}";
                 }
 
-            // Karte:
-            // ----------
-            } else if ( is_page("map") ) {
-                // Vertikales Menu weiter ausrichten.
-                if ( settings_bookmarks_top_menu ) {
-                    style.innerHTML += "ul.#sm {margin-top: -6px !important; margin-left: 0px !important;} .#m {height: unset !important;}";
-                    if ( settings_menu_float_right ) style.innerHTML += ".Dropdown {margin-top: 8px !important}";
-                }
-
             // Altes Seiten Design und restliche Seiten:
             // ----------
             } else {
@@ -1188,11 +1182,6 @@ var mainGC = function () {
                 style_tmp.innerHTML = style.innerHTML.replace(/#m/gi, "Menu"); style.innerHTML = style_tmp.innerHTML;
                 style_tmp.innerHTML = style.innerHTML.replace(/#sm/gi, "submenu"); style.innerHTML = style_tmp.innerHTML;
                 style_tmp.innerHTML = style.innerHTML.replace(/#l/gi, ".title"); style.innerHTML = style_tmp.innerHTML;
-            // In Karte werden Menu, submenu und logo so geschrieben.
-            } else if ( is_page("map") ) {
-                style_tmp.innerHTML = style.innerHTML.replace(/#m/gi, "Menu"); style.innerHTML = style_tmp.innerHTML;
-                style_tmp.innerHTML = style.innerHTML.replace(/#sm/gi, "submenu"); style.innerHTML = style_tmp.innerHTML;
-                style_tmp.innerHTML = style.innerHTML.replace(/#l/gi, "nav .logo"); style.innerHTML = style_tmp.innerHTML;
             // Ansonsten wird menu, submenu und logo so geschrieben.
             } else {
                 style_tmp.innerHTML = style.innerHTML.replace(/#m/gi, "menu"); style.innerHTML = style_tmp.innerHTML;
@@ -1305,15 +1294,6 @@ var mainGC = function () {
         if ( settings_bookmarks_on_top ) {
             // Bei Labs Caches gibt es kein Menu, Menu aufbauen. Nur wenn Change Header Layout aktiviert ist.
             if ( is_page("labs") && settings_change_header_layout ) {
-                if ( $('.profile-panel')[0] ) {
-                    var mainMenu = document.createElement("ul");
-                    mainMenu.setAttribute("class", "Menu");
-                    $('.profile-panel')[0].parentNode.insertBefore(mainMenu, $('.profile-panel')[0]);
-                    css = buildCoreCss();
-                    appendCssStyle( css );
-                }
-            // Bei Karten gibt es kein Menu, Menu aufbauen. Nur wenn Change Header Layout aktiviert ist.
-            } else if ( is_page("map") && settings_change_header_layout ) {
                 if ( $('.profile-panel')[0] ) {
                     var mainMenu = document.createElement("ul");
                     mainMenu.setAttribute("class", "Menu");
