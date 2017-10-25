@@ -38,7 +38,7 @@ After installation, the GClh sync (F10 key) can be used to synchronize the GClh 
 <img src="../images/v0.8.7_Screen02.jpg" alt="v0.8.7_Screen02.jpg"><br>
 <img src="../images/v0.8.7_Screen03.jpg" alt="v0.8.7_Screen03.jpg"><br>
 <br>
-Many thanks to <a href="https://www.geocaching.com/profile/?u=Ruko2010">Ruko2010</a> for the great implementation.
+Many thanks to <a href="https://www.geocaching.com/profile/?u=Ruko2010">Ruko2010</a> for the great implementation.<br>
 </li>
 <li>
 New: <b>Link to BRouter</b>: [Issue <a href="https://github.com/2Abendsegler/GClh/pull/425">#425</a>]<br>
@@ -48,7 +48,16 @@ For example BRouter for the Cache <a href="https://coord.info/GC6128Z">GC6128Z -
 A further link is behind the Additional Waypoints.<br>
 <img src="../images/v0.8.7_Screen04.jpg" alt="v0.8.7_Screen05.jpg"><br>
 <br>
-Many thanks to <a href="https://www.geocaching.com/profile/?u=RadlerAndi">RadlerAndi</a> for the great implementation.
+Many thanks to <a href="https://www.geocaching.com/profile/?u=RadlerAndi">RadlerAndi</a> for the great implementation.<br>
+</li>
+<li>
+New: <b>Build Flopp's Map link too in navi area top right. Provide config parameter for new links in navi area</b>: [Issue <a href="https://github.com/2Abendsegler/GClh/pull/294">#294</a>]<br>
+(Fix: No link to Flopp's Map if there no additional waypoints: [Issue <a href="https://github.com/2Abendsegler/GClh/pull/297">#297</a>])<br>
+<br>
+Many thanks to <a href="https://www.geocaching.com/profile/?u=Ruko2010">Ruko2010</a> for the great implementation.<br>
+</li>
+<li>
+Fix: <b>New established GS menus on map page deform the dropdowns, the linklist and the search field</b>: [Issue <a href="https://github.com/2Abendsegler/GClh/pull/430">#430</a>]<br>
 </li>
 </ul>
 (25.10.2017)<br> 
