@@ -31,32 +31,32 @@
 New: <b>The new DropBox API for synchronizing the configuration data of GClh is implemented.</b><br>
 (Fix: <b>[EDGE] Tampermonkey - problems (Dropbox)</b>: [Issue <a href="https://github.com/2Abendsegler/GClh/pull/85">#85</a>])<br>
 (Fix: <b>[FF] cannot save to Dropbox</b>: [Issue <a href="https://github.com/2Abendsegler/GClh/pull/113">#113</a>])<br>
+Many thanks to <a href="https://www.geocaching.com/profile/?u=Ruko2010">Ruko2010</a> for the great implementation.<br>
 <br>
 After installation, the GClh sync (F10 key) can be used to synchronize the GClh configuration data into the own DropBox account. Authentication stores a "token" so authentication must be performed only once. The "token" can be deleted again within the framework of the GClh Config functionality "Reset / Reset dynamic and unused data", so that one can change the DropBox account.<br>
 <img src="../images/v0.8.7_Screen01.jpg" alt="v0.8.7_Screen01.jpg"><br>
 <img src="../images/v0.8.7_Screen02.jpg" alt="v0.8.7_Screen02.jpg"><br>
 <img src="../images/v0.8.7_Screen03.jpg" alt="v0.8.7_Screen03.jpg"><br>
-Many thanks to <a href="https://www.geocaching.com/profile/?u=Ruko2010">Ruko2010</a> for the great implementation.<br>
 <br>
 </li>
 <li>
 New: <b>Link to BRouter</b>: [Issue <a href="https://github.com/2Abendsegler/GClh/pull/425">#425</a>]<br>
+Many thanks to <a href="https://www.geocaching.com/profile/?u=RadlerAndi">RadlerAndi</a> for the great implementation.<br>
 <br>
 For example BRouter for the Cache <a href="https://coord.info/GC6128Z">Deutschlandtour Ost-West (GC6128Z)</a>:<br>
 <img src="../images/v0.8.7_Screen04.jpg" alt="v0.8.7_Screen04.jpg"><br>
 A further link is behind the Additional Waypoints.<br>
 <img src="../images/v0.8.7_Screen05.jpg" alt="v0.8.7_Screen05.jpg"><br>
-Many thanks to <a href="https://www.geocaching.com/profile/?u=RadlerAndi">RadlerAndi</a> for the great implementation.<br>
 <br>
 </li>
 <li>
 New: <b>Build Flopp's Map link too in navi area top right. Provide config parameter for new links in navi area</b>: [Issue <a href="https://github.com/2Abendsegler/GClh/pull/294">#294</a>]<br>
 (Fix: <b>No link to Flopp's Map if there no additional waypoints</b>: [Issue <a href="https://github.com/2Abendsegler/GClh/pull/297">#297</a>])<br>
+Many thanks to <a href="https://www.geocaching.com/profile/?u=Ruko2010">Ruko2010</a> for the great implementation.<br>
 <br>
 <img src="../images/v0.8.7_Screen06.jpg" alt="v0.8.7_Screen06.jpg"><br>
 Settings -> Linklist:<br>
 <img src="../images/v0.8.7_Screen07.jpg" alt="v0.8.7_Screen07.jpg"><br>
-Many thanks to <a href="https://www.geocaching.com/profile/?u=Ruko2010">Ruko2010</a> for the great implementation.<br>
 <br>
 </li>
 <li>
