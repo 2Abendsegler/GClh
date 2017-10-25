@@ -1,3 +1,4 @@
+<a href="#v087" title="GClh II version 0.8.7 (25.10.2017)">v0.8.7</a> &nbsp;
 <a href="#v086" title="GClh II version 0.8.6 (17.09.2017)">v0.8.6</a> &nbsp;
 <a href="#v085" title="GClh II version 0.8.5 (23.08.2017)">v0.8.5</a> &nbsp;
 <a href="#v084" title="GClh II version 0.8.4 (18.08.2017)">v0.8.4</a> &nbsp;
@@ -22,6 +23,38 @@
 <a href="#v022" title="GClh II version 0.2.2 (09.01.2017)">v0.2.2</a> &nbsp; 
 <a href="#v021" title="GClh II version 0.2.1 (05.01.2017)">v0.2.1</a> &nbsp; 
 <a href="#v01" title="GClh II version 0.1 (05.01.2017)">v0.1</a> &nbsp; 
+
+---
+## v0.8.7:
+<ul>
+<li>
+New: <b>[EDGE] Tampermonkey - problems (Dropbox)</b>: [Issue <a href="https://github.com/2Abendsegler/GClh/pull/85">#85</a>]<br>
+
+<img src="../images/v0.8.6_Screen01.jpg" alt="v0.8.6_Screen01.jpg"><br>
+Many thanks to <a href="https://www.geocaching.com/profile/?u=Ruko2010">Ruko2010</a> for the implementation.<br>
+<br>
+</li>
+<li>
+New: <b>Save PQ of routes with Key F2 too.</b><br>
+<br>
+</li>
+<li>
+Fix: <b>Linklist is behind Menue in Map Mode, due to changes made by GS</b>: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/405">#405</a>]<br>
+Many thanks to <a href="https://www.geocaching.com/profile/?u=Ruko2010">Ruko2010</a> for the fixing.<br>
+<br>
+</li>
+<li>
+Fix: <b>Improve saving homecoordinates automatically and manual with different types of minute apostrophes</b>: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/406">#406</a>]<br>
+<br>
+</li>
+<li>
+Fix: <b>Name and border deformation of images in logs, due to changes made by GS.</b><br> 
+<br>
+</li>
+</ul>
+(17.09.2017)<br> 
+(Advance notice: Dropbox synchronisation is coming again. <a href="https://www.geocaching.com/profile/?u=Ruko2010">Ruko2010</a> is working on it. :) )<br>
+<br>
 
 ---
 ## v0.8.6:
