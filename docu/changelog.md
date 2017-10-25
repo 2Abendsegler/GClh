@@ -43,6 +43,7 @@ Many thanks to <a href="https://www.geocaching.com/profile/?u=Ruko2010">Ruko2010
 </li>
 <li>
 New: <b>Link to BRouter</b>: [Issue <a href="https://github.com/2Abendsegler/GClh/pull/425">#425</a>]<br>
+<br>
 For example BRouter for the Cache <a href="https://coord.info/GC6128Z">Deutschlandtour Ost-West (GC6128Z)</a><br>
 <br>
 <img src="../images/v0.8.7_Screen04.jpg" alt="v0.8.7_Screen04.jpg"><br>
