@@ -2,7 +2,7 @@
 // @name             GC little helper II
 // @namespace        http://www.amshove.net
 //--> $$000 Begin of change
-// @version          0.8.7
+// @version          0.8.8
 //<-- $$000 End of change
 // @include          http*://www.geocaching.com/*
 // @include          http*://labs.geocaching.com/*
@@ -3398,7 +3398,7 @@ var mainGC = function () {
             // Append the Brouter map to the right, top Linklist
             var linklist_for_brouter = $('a[href^="/seek/gallery.aspx"]').parent().parent();
 
-            linklist_for_brouter.append('<li><div class="GClhdropdown"><a id="ShowWaypointsOnBRouter_linklist" class="GClhdropbtn">Show Route on BRrouter</a><div id="BrouterMapLayers_linklist" class="GClhdropdown-content"></div></div></li>');
+            linklist_for_brouter.append('<li><div class="GClhdropdown"><a id="ShowWaypointsOnBRouter_linklist" class="GClhdropbtn">Show Route on BRouter</a><div id="BrouterMapLayers_linklist" class="GClhdropdown-content"></div></div></li>');
 
             $('#BrouterMapLayers_linklist').append('<div class="BRouter-content-layer" data-map="OpenStreetMap">OpenStreetMap</div>');
             $('#BrouterMapLayers_linklist').append('<div class="BRouter-content-layer" data-map="OpenStreetMap.de">OpenStreetMap.de</div>');
@@ -3420,7 +3420,7 @@ var mainGC = function () {
 
                 tbl = tbl.next("p");
                 tbl.append('<p>');
-                tbl.append('<div class="GClhdropdown"><div id="ShowWaypointsOnBrouter" class="GClhdropbtn"><a>Show Route on BRrouter with &#8230;</a></div><div id="BrouterMapLayers" class="GClhdropdown-content"></div></div>');
+                tbl.append('<div class="GClhdropdown"><div id="ShowWaypointsOnBrouter" class="GClhdropbtn"><a>Show Route on BRouter with &#8230;</a></div><div id="BrouterMapLayers" class="GClhdropdown-content"></div></div>');
     			tbl.append('</p>');
 
                 $('#BrouterMapLayers').append('<div class="BRouter-content-layer" data-map="OpenStreetMap">OpenStreetMap</div>');
