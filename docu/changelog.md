@@ -28,32 +28,24 @@
 ## v0.8.7:
 <ul>
 <li>
-New: <b>[EDGE] Tampermonkey - problems (Dropbox)</b>: [Issue <a href="https://github.com/2Abendsegler/GClh/pull/85">#85</a>]<br>
-
-<img src="../images/v0.8.6_Screen01.jpg" alt="v0.8.6_Screen01.jpg"><br>
-Many thanks to <a href="https://www.geocaching.com/profile/?u=Ruko2010">Ruko2010</a> for the implementation.<br>
+New: <b>The new DropBox API for synchronizing the configuration data of GClh is implemented.</b><br>
+(Fix: [EDGE] Tampermonkey - problems (Dropbox): [Issue <a href="https://github.com/2Abendsegler/GClh/pull/85">#85</a>])<br>
+(Fix: [FF] cannot save to Dropbox: [Issue <a href="https://github.com/2Abendsegler/GClh/pull/113">#113</a>])<br>
 <br>
+After installation, the GClh sync (F10 key) can be used to synchronize the GClh configuration data into the own DropBox account. Authentication stores a "token" so authentication must be performed only once. The "token" can be deleted again within the framework of the GClh Config functionality "Reset / Reset dynamic and unused data", so that one can change the DropBox account.<br>
+<br>
+<img src="../images/v0.8.7_Screen01.jpg" alt="v0.8.7_Screen01.jpg"><br>
+<img src="../images/v0.8.7_Screen02.jpg" alt="v0.8.7_Screen02.jpg"><br>
+<img src="../images/v0.8.7_Screen03.jpg" alt="v0.8.7_Screen03.jpg"><br>
+<br>
+Many thanks to <a href="https://www.geocaching.com/profile/?u=Ruko2010">Ruko2010</a> for the great implementation.
 </li>
 <li>
 New: <b>Save PQ of routes with Key F2 too.</b><br>
 <br>
 </li>
-<li>
-Fix: <b>Linklist is behind Menue in Map Mode, due to changes made by GS</b>: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/405">#405</a>]<br>
-Many thanks to <a href="https://www.geocaching.com/profile/?u=Ruko2010">Ruko2010</a> for the fixing.<br>
-<br>
-</li>
-<li>
-Fix: <b>Improve saving homecoordinates automatically and manual with different types of minute apostrophes</b>: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/406">#406</a>]<br>
-<br>
-</li>
-<li>
-Fix: <b>Name and border deformation of images in logs, due to changes made by GS.</b><br> 
-<br>
-</li>
 </ul>
-(17.09.2017)<br> 
-(Advance notice: Dropbox synchronisation is coming again. <a href="https://www.geocaching.com/profile/?u=Ruko2010">Ruko2010</a> is working on it. :) )<br>
+(25.10.2017)<br> 
 <br>
 
 ---
