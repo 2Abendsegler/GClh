@@ -1,3 +1,4 @@
+<a href="#v087" title="GClh II version 0.8.7 (25.10.2017)">v0.8.7</a> &nbsp;
 <a href="#v086" title="GClh II version 0.8.6 (17.09.2017)">v0.8.6</a> &nbsp;
 <a href="#v085" title="GClh II version 0.8.5 (23.08.2017)">v0.8.5</a> &nbsp;
 <a href="#v084" title="GClh II version 0.8.4 (18.08.2017)">v0.8.4</a> &nbsp;
@@ -22,6 +23,51 @@
 <a href="#v022" title="GClh II version 0.2.2 (09.01.2017)">v0.2.2</a> &nbsp; 
 <a href="#v021" title="GClh II version 0.2.1 (05.01.2017)">v0.2.1</a> &nbsp; 
 <a href="#v01" title="GClh II version 0.1 (05.01.2017)">v0.1</a> &nbsp; 
+
+---
+## v0.8.7:
+<ul>
+<li>
+New: <b>The new DropBox API for synchronizing the configuration data of GClh is implemented.</b><br>
+(Fix: <b>[EDGE] Tampermonkey - problems (Dropbox)</b>: [Issue <a href="https://github.com/2Abendsegler/GClh/pull/85">#85</a>])<br>
+(Fix: <b>[FF] cannot save to Dropbox</b>: [Issue <a href="https://github.com/2Abendsegler/GClh/pull/113">#113</a>])<br>
+<br>
+Many thanks to <a href="https://www.geocaching.com/profile/?u=Ruko2010">Ruko2010</a> for the great implementation.<br>
+<br>
+After installation, the GClh sync (F10 key) can be used to synchronize the GClh configuration data into the own DropBox account. Authentication stores a "token" so authentication must be performed only once. The "token" can be deleted again within the framework of the GClh Config functionality "Reset / Reset dynamic and unused data", so that one can change the DropBox account.<br>
+<img src="../images/v0.8.7_Screen01.jpg" alt="v0.8.7_Screen01.jpg"><br>
+<img src="../images/v0.8.7_Screen02.jpg" alt="v0.8.7_Screen02.jpg"><br>
+<img src="../images/v0.8.7_Screen03.jpg" alt="v0.8.7_Screen03.jpg"><br>
+<br>
+</li>
+<li>
+New: <b>Link to BRouter</b>: [Issue <a href="https://github.com/2Abendsegler/GClh/pull/425">#425</a>]<br>
+<br>
+Many thanks to <a href="https://www.geocaching.com/profile/?u=RadlerAndi">RadlerAndi</a> for the great implementation.<br>
+<br>
+For example BRouter for the Cache <a href="https://coord.info/GC6128Z">Deutschlandtour Ost-West (GC6128Z)</a>:<br>
+<img src="../images/v0.8.7_Screen04.jpg" alt="v0.8.7_Screen04.jpg"><br>
+A further link is behind the Additional Waypoints.<br>
+<img src="../images/v0.8.7_Screen05.jpg" alt="v0.8.7_Screen05.jpg"><br>
+<br>
+</li>
+<li>
+New: <b>Build Flopp's Map link too in navi area top right. Provide config parameter for new links in navi area</b>: [Issue <a href="https://github.com/2Abendsegler/GClh/pull/294">#294</a>]<br>
+(Fix: <b>No link to Flopp's Map if there no additional waypoints</b>: [Issue <a href="https://github.com/2Abendsegler/GClh/pull/297">#297</a>])<br>
+<br>
+Many thanks to <a href="https://www.geocaching.com/profile/?u=Ruko2010">Ruko2010</a> for the great implementation.<br>
+<br>
+<img src="../images/v0.8.7_Screen06.jpg" alt="v0.8.7_Screen06.jpg"><br>
+Settings -> Linklist:<br>
+<img src="../images/v0.8.7_Screen07.jpg" alt="v0.8.7_Screen07.jpg"><br>
+<br>
+</li>
+<li>
+Fix: <b>New established GS menus on map page deform the dropdowns, the linklist and the search field</b>: [Issue <a href="https://github.com/2Abendsegler/GClh/pull/430">#430</a>]<br>
+</li>
+</ul>
+(25.10.2017)<br> 
+<br>
 
 ---
 ## v0.8.6:

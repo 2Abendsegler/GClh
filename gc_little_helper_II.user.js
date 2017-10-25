@@ -2,7 +2,7 @@
 // @name             GC little helper II
 // @namespace        http://www.amshove.net
 //--> $$000 Begin of change
-// @version          0.8.6
+// @version          0.8.7
 //<-- $$000 End of change
 // @include          http*://www.geocaching.com/*
 // @include          http*://labs.geocaching.com/*
@@ -13,7 +13,7 @@
 // @resource jscolor https://raw.githubusercontent.com/2Abendsegler/GClh/master/data/jscolor.js
 // @require          http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js
 // @require          http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js
-// @require          http://cdnjs.cloudflare.com/ajax/libs/dropbox.js/0.10.2/dropbox.min.js
+// @require          https://cdnjs.cloudflare.com/ajax/libs/dropbox.js/2.5.2/Dropbox-sdk.min.js
 // @require          https://raw.githubusercontent.com/2Abendsegler/GClh/master/data/gclh_defi.js
 // @description      Some little things to make life easy (on www.geocaching.com).
 // @copyright        Torsten Amshove <torsten@amshove.net>
@@ -193,8 +193,7 @@ var constInit = function (c) {
     }
 
     c.gclhConfigKeysIgnoreForBackup = {
-        "token": true,
-        "dbToken": true
+        "token": true
     };
 
     iconsInit(c);
@@ -443,6 +442,8 @@ var variablesInit = function (c) {
     c.remove_navi_play = getValue("remove_navi_play", false);
     c.remove_navi_community = getValue("remove_navi_community", false);
     c.remove_navi_shop = getValue("remove_navi_shop", false);
+    c.settings_show_flopps_link = getValue("settings_show_flopps_link", true);
+    c.settings_show_brouter_link = getValue("settings_show_brouter_link", true);
 
     try {
         if (c.userToken === null) {
@@ -619,6 +620,51 @@ var mainOSM = function () {
         addGCButton(0);
     } catch (e) { gclh_error("mainOSM:", e); }
 };
+
+////////////////////////////////////////////////////////////////////////////
+// Dropbox Helper Function
+////////////////////////////////////////////////////////////////////////////
+(function(window){
+    window.utils = {
+      parseQueryString: function(str) {
+        var ret = Object.create(null);
+
+        if (typeof str !== 'string') {
+          return ret;
+        }
+
+        str = str.trim().replace(/^(\?|#|&)/, '');
+
+        if (!str) {
+          return ret;
+        }
+
+        str.split('&').forEach(function (param) {
+          var parts = param.replace(/\+/g, ' ').split('=');
+          // Firefox (pre 40) decodes `%3D` to `=`
+          // https://github.com/sindresorhus/query-string/pull/37
+          var key = parts.shift();
+          var val = parts.length > 0 ? parts.join('=') : undefined;
+
+          key = decodeURIComponent(key);
+
+          // missing `=` should be `null`:
+          // http://w3.org/TR/2012/WD-url-20120524/#collect-url-parameters
+          val = val === undefined ? null : decodeURIComponent(val);
+
+          if (ret[key] === undefined) {
+            ret[key] = val;
+          } else if (Array.isArray(ret[key])) {
+            ret[key].push(val);
+          } else {
+            ret[key] = [ret[key], val];
+          }
+        });
+
+        return ret;
+      }
+    };
+  })(window);
 
 ////////////////////////////////////////////////////////////////////////////
 // Helper
@@ -1037,9 +1083,9 @@ var mainGC = function () {
                 }
             }
 
-            // Account Settings, Message Center, Cache suchen, Cache verstecken, Geotours (neues Seiten Design):
+            // Account Settings, Message Center, Cache suchen, Cache verstecken, Geotours (neues Seiten Design) und Karten:
             // ----------
-            if ( is_page("settings") || is_page("messagecenter") || is_page("find_cache") || is_page("hide_cache") || is_page("geotours") ) {
+            if ( is_page("settings") || is_page("messagecenter") || is_page("find_cache") || is_page("hide_cache") || is_page("geotours") || is_page("map") ) {
                 // Weitere Attribute für neues Seiten Design zur Darstellung der Objekte im Header setzen.
                 style.innerHTML += "nav .wrapper {padding-right: " + new_padding_right + "px !important; width: unset;}";
                 // Platzieren des neuen Logos verursacht Fehler in der Plazierung des Videos. Folgendes korrigiert das quasi.
@@ -1049,6 +1095,9 @@ var mainGC = function () {
                     style.innerHTML += "ul.#sm {margin-top: 0px; margin-left: 32px !important;} .submenu::after {left: 4px; width: 26px;}";
                     // Menü nicht flex ausgeben.
                     if ( settings_menu_float_right ) style.innerHTML += ".#m {display: block;} ul.#m > li {top: 0px;}";
+                    // Menü in der Karte ausrichten.
+                    if ( is_page("map") && !settings_menu_float_right) style.innerHTML += ".#m {height: unset !important;}";
+                    if ( is_page("map") && settings_menu_float_right) style.innerHTML += "#navi_search {margin: 0 !important;}";
                 }
                 // Bereich rechts ausrichten.
                 if (settings_show_smaller_area_top_right) style.innerHTML += ".profile-panel {margin-right: -15.25em}";
@@ -1101,15 +1150,6 @@ var mainGC = function () {
                         ".profile-panel .li-user-toggle {margin-left: 0.5em; padding: 0.43em 0.6em;}";
                 }
 
-            // Karte:
-            // ----------
-            } else if ( is_page("map") ) {
-                // Vertikales Menu weiter ausrichten.
-                if ( settings_bookmarks_top_menu ) {
-                    style.innerHTML += "ul.#sm {margin-top: -6px !important; margin-left: 0px !important;} .#m {height: unset !important;}";
-                    if ( settings_menu_float_right ) style.innerHTML += ".Dropdown {margin-top: 8px !important}";
-                }
-
             // Altes Seiten Design und restliche Seiten:
             // ----------
             } else {
@@ -1142,11 +1182,6 @@ var mainGC = function () {
                 style_tmp.innerHTML = style.innerHTML.replace(/#m/gi, "Menu"); style.innerHTML = style_tmp.innerHTML;
                 style_tmp.innerHTML = style.innerHTML.replace(/#sm/gi, "submenu"); style.innerHTML = style_tmp.innerHTML;
                 style_tmp.innerHTML = style.innerHTML.replace(/#l/gi, ".title"); style.innerHTML = style_tmp.innerHTML;
-            // In Karte werden Menu, submenu und logo so geschrieben.
-            } else if ( is_page("map") ) {
-                style_tmp.innerHTML = style.innerHTML.replace(/#m/gi, "Menu"); style.innerHTML = style_tmp.innerHTML;
-                style_tmp.innerHTML = style.innerHTML.replace(/#sm/gi, "submenu"); style.innerHTML = style_tmp.innerHTML;
-                style_tmp.innerHTML = style.innerHTML.replace(/#l/gi, "nav .logo"); style.innerHTML = style_tmp.innerHTML;
             // Ansonsten wird menu, submenu und logo so geschrieben.
             } else {
                 style_tmp.innerHTML = style.innerHTML.replace(/#m/gi, "menu"); style.innerHTML = style_tmp.innerHTML;
@@ -1259,15 +1294,6 @@ var mainGC = function () {
         if ( settings_bookmarks_on_top ) {
             // Bei Labs Caches gibt es kein Menu, Menu aufbauen. Nur wenn Change Header Layout aktiviert ist.
             if ( is_page("labs") && settings_change_header_layout ) {
-                if ( $('.profile-panel')[0] ) {
-                    var mainMenu = document.createElement("ul");
-                    mainMenu.setAttribute("class", "Menu");
-                    $('.profile-panel')[0].parentNode.insertBefore(mainMenu, $('.profile-panel')[0]);
-                    css = buildCoreCss();
-                    appendCssStyle( css );
-                }
-            // Bei Karten gibt es kein Menu, Menu aufbauen. Nur wenn Change Header Layout aktiviert ist.
-            } else if ( is_page("map") && settings_change_header_layout ) {
                 if ( $('.profile-panel')[0] ) {
                     var mainMenu = document.createElement("ul");
                     mainMenu.setAttribute("class", "Menu");
@@ -3228,86 +3254,202 @@ var mainGC = function () {
         } catch( e ) { gclh_error( "Driving direction for Waypoints: ", e ); }
     }
 
+// CSS for BRouter and Flopp's Map Buttons.
+    if(settings_show_brouter_link || settings_show_flopps_link){
+        var css = "";
+        css += ".GClhdropbtn {";
+        css += "    cursor: pointer;";
+        css += "}";
+        css += ".GClhdropdown {";
+        css += "    position: relative;";
+        css += "    display: inline-block;";
+        css += "}";
+        css += ".GClhdropdown-content {";
+        css += "    display: none;";
+        css += "    position: absolute;";
+        css += "    background-color: #f9f9f9;";
+        css += "    min-width: 170px;";
+        css += "    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);";
+        css += "    z-index: 1;";
+        css += "}";
+        css += ".GClhdropdown-content-info {";
+        css += "    color: black;";
+        css += "    background-color: #ffffa5;";
+        css += "    padding: 5px 16px 5px 16px;";
+        css += "    text-decoration: none;";
+        css += "    display: none;";
+        css += "}";
+        css += ".GClhdropdown-content-info:hover {";
+        css += "    background-color: #ffffa5;";
+        css += "    cursor: default;";
+        css += "}";
+        css += ".GClhdropdown:hover .GClhdropdown-content {";
+        css += "    display: block;";
+        css += "}";
+        appendCssStyle( css );
+    }
+
 // Show button, which open Flopp's Map with all waypoints of a cache and open Flopp's Map.
-    if (is_page("cache_listing") || document.location.href.match(/^https?:\/\/www\.geocaching\.com\/hide\/wptlist.aspx/)) {
+    if (settings_show_flopps_link && is_page("cache_listing") || document.location.href.match(/^https?:\/\/www\.geocaching\.com\/hide\/wptlist.aspx/)) {
         try {
             var css = "";
-            css += ".GClhdropbtn {";
-            css += "    cursor: pointer;";
-            css += "}";
-            css += ".GClhdropdown {";
-            css += "    position: relative;";
-            css += "    display: inline-block;";
-            css += "}";
-            css += ".GClhdropdown-content {";
-            css += "    display: none;";
-            css += "    position: absolute;";
-            css += "    background-color: #f9f9f9;";
-            css += "    min-width: 160px;";
-            css += "    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);";
-            css += "    z-index: 1;";
-            css += "}";
-            css += ".GClhdropdown-content-layer {";
+            css += ".FloppsMap-content-layer {";
             css += "    color: black;";
             css += "    padding: 5px 16px 5px 16px;";
             css += "    text-decoration: none;";
             css += "    display: block;";
             css += "}";
-            css += ".GClhdropdown-content-info {";
-            css += "    color: black;";
-            css += "    background-color: #ffffa5;";
-            css += "    padding: 5px 16px 5px 16px;";
-            css += "    text-decoration: none;";
-            css += "    display: none;";
-            css += "}";
-            css += ".GClhdropdown-content-layer:hover {";
+            css += ".FloppsMap-content-layer:hover {";
             css += "    background-color: #e1e1e1;";
             css += "    cursor: pointer;";
             css += "}";
-            css += ".GClhdropdown-content-info:hover {";
-            css += "    background-color: #ffffa5;";
-            css += "    cursor: default;";
+            css += "#ShowWaypointsOnFloppsMap_linklist{";
+            css += "    background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAAlwSFlzAAALEwAACxMBAJqcGAAAAVlpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IlhNUCBDb3JlIDUuNC4wIj4KICAgPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4KICAgICAgPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIKICAgICAgICAgICAgeG1sbnM6dGlmZj0iaHR0cDovL25zLmFkb2JlLmNvbS90aWZmLzEuMC8iPgogICAgICAgICA8dGlmZjpPcmllbnRhdGlvbj4xPC90aWZmOk9yaWVudGF0aW9uPgogICAgICA8L3JkZjpEZXNjcmlwdGlvbj4KICAgPC9yZGY6UkRGPgo8L3g6eG1wbWV0YT4KTMInWQAAAtVJREFUOBFdUktME1EUPW9+bYehsaV8SpGQCLgA/GAwRpdYFi7c1R0xMSHilsSFrli5YWX8xY2JLljY6MKFC01sQoyJCzBGS1QqMUGD0mIplOlnZt7zvinFhDPzZubd985995w7LJVKGcV8cbQar13hbUKDABy3Bk94UOhidMlbCAFV1fyhbDI3uB54FGmPLGnldJl5F7xLG+dLUyWzDB0qfooVYuD/oE8fCtCnHIVuG+h5FisT94NmwdKrwWosHyuhiC0HvKSnR56jz+r1Tw+oAaqGI6QHkfmRwXTuqnOkY1hHEDHJ1WqoMaq0GnJ1uNzCjiiJ051j6LV6fBm7ju0fbuohLBvLQBUIUVLJkVxNrpI8hTMBR/EYOJi9R3qzmsHEUhLHzHOow4HlGYCpsTy2EBNhEgT4CRpi5bQBxsg1QjQUxfX4DXQY7aiKGp78SdNW4vnL0qT9BP73/kNhfnKMdp/Eqe5RP87J1cK7Im6vLcEMkIQ97FXQOLEZlC2T+JL/ioVfbxHWW+EIF59LWVCTUBMOrTY4+xLktJmGk+sSuUIO0++ngDBNPBpkga53+X40ZTcSMKqPDiUf/e6riurnMnWTLAeOB8awwTfJuoqocEco0iPJITQSCGiuymnZFdQF4XJ6U6Mcj0qlvbIDO6zOK8ylqEsCqELi+AkcOHVUlGq43ALX9AybJXD34z0c1hPep+2sKsteQ94rK1W1TbTKn8qI2q2QHMnVrJQl6n/r812vDkXbI2FVqyvq/Z47FzFAdgl4Ea0XRa2s9q/Eecf3yAtucE8tKp5aY/OSK7UqqaEhrSU7YG5DCRlw2daEe/n3RP7Wt/512MLGYC6BxMvYzc5M6+M6NBEGr+wOrdjpbJY0HcRTqJOYbEmeTc4Mzo2IgblhMX5mfEbGQGsHt/tu+8FZ+rubiENNXU1phWThmgydeB17sPBw1V1cX5TNbGBWOgn8A8n0Lvks2/jiAAAAAElFTkSuQmCC)";
             css += "}";
-            css += ".GClhdropdown:hover .GClhdropdown-content {";
-            css += "    display: block;";
-            css += "}";
+
             appendCssStyle( css );
+
+            // Append the Flopps map to the right, top Linklist
+            var linklist_for_flopps = $('a[href^="/seek/gallery.aspx"]').parent().parent();
+
+            linklist_for_flopps.append('<li><div class="GClhdropdown"><a id="ShowWaypointsOnFloppsMap_linklist" class="GClhdropbtn">Show on Flopp\'s Map</a><div id="FloppsMapLayers_linklist" class="GClhdropdown-content"></div></div></li>');
+
+            $('#FloppsMapLayers_linklist').append('<div class="GClhdropdown-content-info floppsmap-warning"><b>WARNING:</b> There are too many waypoints in the listing. Flopp\'s Map allows only a limited number of waypoints. Not all waypoints are shown.</div>');
+
+            $('#FloppsMapLayers_linklist').append('<div class="FloppsMap-content-layer" data-map="OSM">Openstreetmap</div>');
+            $('#FloppsMapLayers_linklist').append('<div class="FloppsMap-content-layer" data-map="OSM/DE">German Style</div>');
+            $('#FloppsMapLayers_linklist').append('<div class="FloppsMap-content-layer" data-map="OCM">OpenCycleMap</div>');
+            $('#FloppsMapLayers_linklist').append('<div class="FloppsMap-content-layer" data-map="TOPO">OpenTopMap</div>');
+            $('#FloppsMapLayers_linklist').append('<div class="FloppsMap-content-layer" data-map="roadmap">Google Maps</div>');
+            $('#FloppsMapLayers_linklist').append('<div class="FloppsMap-content-layer" data-map="satellite">Google Maps Satellite</div>');
+            $('#FloppsMapLayers_linklist').append('<div class="FloppsMap-content-layer" data-map="hybrid">Google Maps Hybrid</div>');
+            $('#FloppsMapLayers_linklist').append('<div class="FloppsMap-content-layer" data-map="terrain">Google Maps Terrain</div>');
+
+            $('#ShowWaypointsOnFloppsMap_linklist').click( function() {
+                openFloppsMap("");
+            });
 
             var tbl = $('#ctl00_ContentBody_Waypoints');
             if ( tbl.length == 0 ) tbl = $('#ctl00_ContentBody_WaypointList');
-            tbl = tbl.next("p");
-            tbl.append('<div class="GClhdropdown"><div id="ShowWaypointsOnFloppsMap" class="GClhdropbtn"><a>Show waypoints on Flopp\'s Map with &#8230;</a></div><div id="FloppsMapLayers" class="GClhdropdown-content"></div></div>');
 
-            $('#FloppsMapLayers').append('<div id="floppsmap-warning" class="GClhdropdown-content-info"><b>WARNING:</b> There are too many waypoints in the listing. Flopp\'s Map allows only a limited number of waypoints. Not all waypoints are shown.</div>');
+            if(tbl.length == 0){
+                // We have no additional waypoints, so the flops map link will not be displayed in the listing
+            }else{
+                tbl = tbl.next("p");
+                tbl.append('<div class="GClhdropdown"><div id="ShowWaypointsOnFloppsMap" class="GClhdropbtn"><a>Show waypoints on Flopp\'s Map with &#8230;</a></div><div id="FloppsMapLayers" class="GClhdropdown-content"></div></div>');
 
-            $('#FloppsMapLayers').append('<div class="GClhdropdown-content-layer" data-map="OSM">Openstreetmap</div>');
-            $('#FloppsMapLayers').append('<div class="GClhdropdown-content-layer" data-map="OSM/DE">German Style</div>');
-            $('#FloppsMapLayers').append('<div class="GClhdropdown-content-layer" data-map="OCM">OpenCycleMap</div>');
-            $('#FloppsMapLayers').append('<div class="GClhdropdown-content-layer" data-map="TOPO">OpenTopMap</div>');
-            $('#FloppsMapLayers').append('<div class="GClhdropdown-content-layer" data-map="roadmap">Google Maps</div>');
-            $('#FloppsMapLayers').append('<div class="GClhdropdown-content-layer" data-map="satellite">Google Maps Satellite</div>');
-            $('#FloppsMapLayers').append('<div class="GClhdropdown-content-layer" data-map="hybrid">Google Maps Hybrid</div>');
-            $('#FloppsMapLayers').append('<div class="GClhdropdown-content-layer" data-map="terrain">Google Maps Terrain</div>');
+                $('#FloppsMapLayers').append('<div class="GClhdropdown-content-info floppsmap-warning"><b>WARNING:</b> There are too many waypoints in the listing. Flopp\'s Map allows only a limited number of waypoints. Not all waypoints are shown.</div>');
+
+                $('#FloppsMapLayers').append('<div class="FloppsMap-content-layer" data-map="OSM">Openstreetmap</div>');
+                $('#FloppsMapLayers').append('<div class="FloppsMap-content-layer" data-map="OSM/DE">German Style</div>');
+                $('#FloppsMapLayers').append('<div class="FloppsMap-content-layer" data-map="OCM">OpenCycleMap</div>');
+                $('#FloppsMapLayers').append('<div class="FloppsMap-content-layer" data-map="TOPO">OpenTopMap</div>');
+                $('#FloppsMapLayers').append('<div class="FloppsMap-content-layer" data-map="roadmap">Google Maps</div>');
+                $('#FloppsMapLayers').append('<div class="FloppsMap-content-layer" data-map="satellite">Google Maps Satellite</div>');
+                $('#FloppsMapLayers').append('<div class="FloppsMap-content-layer" data-map="hybrid">Google Maps Hybrid</div>');
+                $('#FloppsMapLayers').append('<div class="FloppsMap-content-layer" data-map="terrain">Google Maps Terrain</div>');
+
+                $('#ShowWaypointsOnFloppsMap').click( function() {
+                    openFloppsMap("");
+                });
+            }
+
+            $('.FloppsMap-content-layer').click( function() {
+                var map = $(this).data('map');
+                openFloppsMap(map);
+            });
 
             var status = {};
             var waypoints = extractWaypointsFromListing();
             var link = buildFloppsMapLink( waypoints, 'OSM', false, status );
-            if ( status.limited == true ) $("#floppsmap-warning").show();
-            else $("#floppsmap-warning").hide();
 
             function openFloppsMap( map ) {
                 var waypoints = extractWaypointsFromListing();
                 var link = buildFloppsMapLink( waypoints, map, false, {} );
                 window.open( link );
             }
-            $('#ShowWaypointsOnFloppsMap').click( function() {
-                openFloppsMap("");
-            });
-            $('.GClhdropdown-content-layer').click( function() {
-                var map = $(this).data('map');
-                openFloppsMap(map);
-            });
+
+            if ( status.limited == true ) $(".floppsmap-warning").show();
+            else $(".floppsmap-warning").hide();
+
         } catch( e ) { gclh_error("Show button Flopp's Map and open Flopp's Map", e); }
+    }
+
+    // Show button, which open BRouter with all waypoints of a cache and open BRouter.
+    if (settings_show_brouter_link && is_page("cache_listing") || document.location.href.match(/^https?:\/\/www\.geocaching\.com\/hide\/wptlist.aspx/)) {
+        try {
+
+            var css = "";
+            css += ".BRouter-content-layer {";
+            css += "    color: black;";
+            css += "    padding: 5px 16px 5px 16px;";
+            css += "    text-decoration: none;";
+            css += "    display: block;";
+            css += "}";
+            css += ".BRouter-content-layer:hover {";
+            css += "    background-color: #e1e1e1;";
+            css += "    cursor: pointer;";
+            css += "}";
+            css += "#ShowWaypointsOnBRouter_linklist{";
+            css += "    background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAQCAYAAAAiYZ4HAAABG2lUWHRYTUw6Y29tLmFkb2JlLnhtcAAAAAAAPD94cGFja2V0IGJlZ2luPSLvu78iIGlkPSJXNU0wTXBDZWhpSHpyZVN6TlRjemtjOWQiPz4KPHg6eG1wbWV0YSB4bWxuczp4PSJhZG9iZTpuczptZXRhLyIgeDp4bXB0az0iWE1QIENvcmUgNS41LjAiPgogPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4KICA8cmRmOkRlc2NyaXB0aW9uIHJkZjphYm91dD0iIi8+CiA8L3JkZjpSREY+CjwveDp4bXBtZXRhPgo8P3hwYWNrZXQgZW5kPSJyIj8+Gkqr6gAAAYJpQ0NQc1JHQiBJRUM2MTk2Ni0yLjEAACiRdZHLS0JBFIc/tSjUKMhFixYS1SIseoDUJkgJCyLEDLLa6M1H4ONyrxLSNmgrFERtei3qL6ht0DoIiiKIoF3rojYVt3NTUCLPcOZ885s5h5kzYA2nlYzeMAiZbF4LBXzuhciiu+kZOw5cQF9U0dWJYHCGuvZxh8WMN/1mrfrn/jXHSlxXwNIsPK6oWl54SnhmLa+avC3sUlLRFeFTYY8mFxS+NfVYmV9MTpb5y2QtHPKDtU3YnazhWA0rKS0jLC+nO5MuKJX7mC9xxrPzcxK7xDvRCRHAh5tpJvHjZYgxmb30M8yArKiTP/ibP0tOchWZVYporJIkRR6PqAWpHpeYED0uI03R7P/fvuqJkeFydacPGp8M460Hmrbgu2QYn4eG8X0Etke4yFbzcwcw+i56qap170PrBpxdVrXYDpxvQseDGtWiv5JN3JpIwOsJtESg/RrsS+WeVfY5vofwunzVFezuQa+cb13+ASNEZ8doe9nfAAAACXBIWXMAAC4jAAAuIwF4pT92AAACFklEQVQokW2Qy0tUYRjGf993vjnjbcaRcS7ljGZmOWlKnMmOmG0qGqTLRggkpDa1yHZB/0TgOohoE7TpsrE2SXbDTcpAkFFJNYkjORmmjqPneE4bZxqlZ/Xxvc/D+z4/QZn6+/tbuhvDD3Y7Kwm5kfesCU8uGVDne0Yevit6RPFhmmbLhZ7OiWtyJqS2fldslzsZyz3b5O9rHRl9CyCLgeSh9pFh72xIE5D+4/JVC1CjBJfiHvH6l/2k6JMAhmGIvXXV+zR7nafzGzhnrpLuHmQ6doSARyAKq0Hnxgm9fIMQW2f8tly6zF5M02TW1sorOgAKYHJy0unrNmao9SRSEYf7N6+ggrsYUFkcF/JaxZK89dze1mHq+9yrbONhu16XDAXXGeQbur3OxKKFLxR6nBqfDpd3GLIi8eHbGUuxQ+/zknta8+X8i9E35RsS/qHr+lRlFDvSXDJnCw4r8Tb0cxdxlpfiqfFpIQFEta9GCBEtHOjikdpTCoz9tPjQOwBCIDStAghLwzA8WjBcD6CiMZ4tK/BWYTmQ80WYr2sov7BdAgm9tb3E70dthM+NSV7mLHLJkyWn9Pmx5zJHJWDoHUagONA7ktzNKb5sekm3HS8FtEgDdjZjSqBVxZr3/5so0pbOp85TOKJEHRWNsbm4cFAJb2WVkLJpG8tjp/mobScs/XW4hbUGYRjGmBaNZ3fy/5/ctVX/X+/aoP1H+pyRAAAAAElFTkSuQmCC)";
+            css += "}";
+            appendCssStyle( css );
+
+            // Append the Brouter map to the right, top Linklist
+            var linklist_for_brouter = $('a[href^="/seek/gallery.aspx"]').parent().parent();
+
+            linklist_for_brouter.append('<li><div class="GClhdropdown"><a id="ShowWaypointsOnBRouter_linklist" class="GClhdropbtn">Show Route on BRrouter</a><div id="BrouterMapLayers_linklist" class="GClhdropdown-content"></div></div></li>');
+
+            $('#BrouterMapLayers_linklist').append('<div class="BRouter-content-layer" data-map="OpenStreetMap">OpenStreetMap</div>');
+            $('#BrouterMapLayers_linklist').append('<div class="BRouter-content-layer" data-map="OpenStreetMap.de">OpenStreetMap.de</div>');
+            $('#BrouterMapLayers_linklist').append('<div class="BRouter-content-layer" data-map="OpenTopoMap">OpenTopoMap</div>');
+            $('#BrouterMapLayers_linklist').append('<div class="BRouter-content-layer" data-map="OpenCycleMap (Thunderf.)">OpenCycleMap</div>');
+            $('#BrouterMapLayers_linklist').append('<div class="BRouter-content-layer" data-map="Outdoors (Thunderforest)">Outdoors</div>');
+            $('#BrouterMapLayers_linklist').append('<div class="BRouter-content-layer" data-map="Esri World Imagery">Esri World Imagery</div>');
+
+            $('#ShowWaypointsOnBRouter_linklist').click( function() {
+                openBrouter("OpenStreetMap");
+            });
+
+            var tbl = $('#ctl00_ContentBody_Waypoints');
+            if ( tbl.length == 0 ) tbl = $('#ctl00_ContentBody_WaypointList');
+
+            if(tbl.length == 0){
+                // We have no additional waypoints, so the brouter link will not be displayed in the listing
+            }else{
+
+                tbl = tbl.next("p");
+                tbl.append('<p>');
+                tbl.append('<div class="GClhdropdown"><div id="ShowWaypointsOnBrouter" class="GClhdropbtn"><a>Show Route on BRrouter with &#8230;</a></div><div id="BrouterMapLayers" class="GClhdropdown-content"></div></div>');
+    			tbl.append('</p>');
+
+                $('#BrouterMapLayers').append('<div class="BRouter-content-layer" data-map="OpenStreetMap">OpenStreetMap</div>');
+                $('#BrouterMapLayers').append('<div class="BRouter-content-layer" data-map="OpenStreetMap.de">OpenStreetMap.de</div>');
+                $('#BrouterMapLayers').append('<div class="BRouter-content-layer" data-map="OpenTopoMap">OpenTopoMap</div>');
+                $('#BrouterMapLayers').append('<div class="BRouter-content-layer" data-map="OpenCycleMap (Thunderf.)">OpenCycleMap</div>');
+                $('#BrouterMapLayers').append('<div class="BRouter-content-layer" data-map="Outdoors (Thunderforest)">Outdoors</div>');
+                $('#BrouterMapLayers').append('<div class="BRouter-content-layer" data-map="Esri World Imagery">Esri World Imagery</div>');
+
+                var status = {};
+                var waypoints = extractWaypointsFromListing();
+                var link = buildBrouterMapLink( waypoints, 'OpenStreetMap', false, status );
+
+                $('#ShowWaypointsOnBrouter').click( function() {
+                    openBrouter("OpenStreetMap");
+                });
+            }
+
+            $('.BRouter-content-layer').click( function() {
+                var map = $(this).data('map');
+                openBrouter(map);
+            });
+
+            function openBrouter( map ) {
+                var waypoints = extractWaypointsFromListing();
+                var link = buildBrouterMapLink( waypoints, map, false, {} );
+                window.open( link );
+            }
+        } catch( e ) { gclh_error("Show button BRouter and open BRouter", e); }
     }
 
     // Helper function: trim a decimal value to a given number of digits.
@@ -3373,7 +3515,7 @@ var mainGC = function () {
         return addWP;
     }
 
-    // This function reads the table with the additional waypoints.
+    // This function reads the posted coordinates from the listing
     function getListingCoordinatesX() {
         var addWP  = [];
         try {
@@ -3522,6 +3664,72 @@ var mainGC = function () {
         zoom = Math.min(zoom,maxZoom[map]);
         var url = 'http://flopp.net/'+'?c='+center_latitude+':'+center_longitude+'&z='+zoom+'&t='+map+url;
         url += '&d=O:C';
+        return encodeURI(url);
+    }
+
+    // Function to convert string to the Brouter specification.
+    function brouterMapWaypoint( waypoint ) {
+        return waypoint.longitude+','+waypoint.latitude;
+    }
+    
+	function buildBrouterMapLink( waypoints, map, shortnames, status ) {
+        var url = "";
+        var brouterWaypoints = [];
+        var Latmax = -90.0;
+        var Latmin = 90.0;
+        var Lonmax = -180.0;
+        var Lonmin = 180.0;
+        var count = 0;
+
+        for ( var i=0; i<waypoints.length; i++) {
+            var waypoint = waypoints[i];
+            if ( waypoint !== undefined && waypoint.visible == true ) {
+				if ( waypoint.type == "listing" || waypoint.type == "waypoint" ) {
+                    brouterWaypoints.push( brouterMapWaypoint( waypoint ) );
+                    count++;
+                }
+                Latmax = Math.max( Latmax, waypoint.latitude );
+                Latmin = Math.min( Latmin, waypoint.latitude );
+                Lonmax = Math.max( Lonmax, waypoint.longitude );
+                Lonmin = Math.min( Lonmin, waypoint.longitude );
+            }
+        }
+
+        var browserZoomLevel = window.devicePixelRatio;
+        var brouterMapWidth = Math.round(window.innerWidth*browserZoomLevel);
+        var brouterMapHeigth = Math.round(window.innerHeight*browserZoomLevel);
+        var zoom=-1;
+        for ( zoom=23; zoom>=0; zoom--) {
+            // Calculate tile boundary box.
+            var tileY_min = lat2tile(Latmin,zoom);
+            var tileY_max = lat2tile(Latmax,zoom);
+            var tiles_Y = Math.abs(tileY_min-tileY_max+1); // boundary box heigth in number of tiles
+            var tileX_min = long2tile(Lonmin,zoom);
+            var tileX_max = long2tile(Lonmax,zoom);
+            var tiles_X = Math.abs(tileX_max-tileX_min+1); // boundary box width in  number of tiles
+            // Calculate width and height of boundary rectangle (in pixel).
+            var latDelta = Math.abs(tile2lat(tileY_max,zoom)-tile2lat(tileY_min+1,zoom));
+            var latPixelPerDegree = tiles_Y*256/latDelta;
+            var boundaryHeight = latPixelPerDegree*(Latmax-Latmin);
+            var longDelta = Math.abs(tile2long(tileX_max+1,zoom)-tile2long(tileX_min,zoom));
+            var longPixelPerDegree = tiles_X*256/longDelta;
+            var boundaryWidth = longPixelPerDegree*(Lonmax-Lonmin);
+            if ( (boundaryHeight < brouterMapHeigth ) && (boundaryWidth < brouterMapWidth ) ) break;
+        }
+
+        var url = "";
+        status.limited = false;
+
+        for ( var i=0; i<brouterWaypoints.length; i++) {
+            var nextWaypoint = brouterWaypoints[i];
+            url += ( ( i == 0 ) ? '&lonlats=' : '|' );
+            url += nextWaypoint;
+        }
+        var center_latitude = ((Latmax+90.0)+(Latmin+90.0))/2-90.0;
+        var center_longitude = ((Lonmax+180.0)+(Lonmin+180.0))/2-180.0;
+        var maxZoom = { 'OpenStreetMap': 18, 'OpenStreetMap.de': 17, 'OpenTopoMap': 17, 'OpenCycleMap (Thunderf.)': 18, 'Outdoors (Thunderforest)': 18, 'Esri World Imagery': 18 };
+        zoom = Math.min(zoom,maxZoom[map]) - 1;
+        var url = 'http://brouter.de/brouter-web/#zoom='+zoom+'&lat='+center_latitude+'&lon='+center_longitude+'&layer='+map+url+'&nogos=&profile=trekking&alternativeidx=0&format=geojson';
         return encodeURI(url);
     }
 
@@ -8559,6 +8767,7 @@ var mainGC = function () {
     }
     function show_help(text) { return " <a class='gclh_info'><b>?</b><span class='gclh_span'>" + text + "</span></a>"; }
     function show_help2(text) { return " <a class='gclh_info gclh_info2'><b>?</b><span class='gclh_span'>" + text + "</span></a>"; }
+    function show_help3(text) { return " <a class='gclh_info gclh_info3'><b>?</b><span class='gclh_span'>" + text + "</span></a>"; }
     function show_help_big(text) { return " <a class='gclh_info gclh_info_big'><b>?</b><span class='gclh_span'>" + text + "</span></a>"; }
     function show_help_rc(text) { return " <a class='gclh_info gclh_info_rc'><b>?</b><span class='gclh_span'>" + text + "</span></a>"; }
 
@@ -8641,6 +8850,9 @@ var mainGC = function () {
         html += "}";
         html += "a.gclh_info2:hover span {";
         html += "  left: -100px !important;";
+        html += "}";
+        html += "a.gclh_info3:hover span {";
+        html += "  left: -200px !important;";
         html += "}";
         html += "a.gclh_info_big:hover span {";
         html += "  width: 350px !important;";
@@ -8738,7 +8950,7 @@ var mainGC = function () {
             html += "<div id='gclh_config_content2'>";
             html += "<div id='rc_area' class='gclh_rc_area'>";
             html += "<input type='radio' name='rc' checked='checked' id='rc_standard' class='gclh_rc'><label for='rc_standard'>Reset to standard configuration</label>" + show_help_rc("This option should help you to come back to an efficient configuration set, after some experimental or other motivated changes. This option load a reasonable standard configuration and overwrite your configuration data in parts. <br><br>The following data are not overwrited: Home-coords; homezone and multi homezone; date format; log templates; cache log, TB log and other signatures; friends data; links in Linklist and differing description and custom links. <br>Dynamic data, like for example autovisits for named trackables, are not overwrited too.<br><br>After reset, choose button \"close\" and go to Config to skim over the set of data.") + "<br/>";
-            html += "<input type='radio' name='rc' id='rc_temp' class='gclh_rc'><label for='rc_temp'>Reset dynamic and unused data</label>" + show_help_rc("This option reorganize the configuration set. Unused parameters of older script versions are deleted. And all the dynamic data, especially the autovisit settings for every TB, are deleted too.<br><br>After reset, choose button \"close\".") + "<br><br>";
+            html += "<input type='radio' name='rc' id='rc_temp' class='gclh_rc'><label for='rc_temp'>Reset dynamic and unused data</label>" + show_help_rc("This option reorganize the configuration set. Unused parameters of older script versions are deleted. And all the dynamic data, especially the autovisit settings for every TB and the DropBox token, are deleted too.<br><br>After reset, choose button \"close\".") + "<br><br>";
             html += "<input type='radio' name='rc' id='rc_homecoords' class='gclh_rc'><label for='rc_homecoords'>Reset your own home-coords</label>" + show_help_rc("This option could help you with problems around your home-coords, like for example with your main homezone, with nearest lists or with your home-coords itself. Your home-coords are not deleted at gc.com, but only in GClh. <br><br>After reset, you have to go to the account settings page of gc.com to the area \"Home Location\", so that GClh can save your home-coords again automatically. You have only to go to this page, you have nothing to do at this page, GClh save your home-coords automatically. <br>Or you enter your home-coords manually in GClh. <br><br>At last, choose button \"close\".");
             html += "<font class='gclh_small'> (After reset, go to <a href='https://www.geocaching.com/account/settings/homelocation' target='_blank'>Home Location</a> )</font>" + "<br/>";
             html += "<input type='radio' name='rc' id='rc_uid' class='gclh_rc'><label for='rc_uid'>Reset your own id for your trackables</label>" + show_help_rc("This option could help you with problems with your own trackables lists, which based on an special id, the uid. The uid are not deleted at gc.com, but only in GClh. <br><br>After reset, you have to go to your profile page of gc.com, so that GClh can save your uid again automatically. You have only to go to this page, you have nothing to do at this page, GClh save the uid automatically. <br><br>At last, choose button \"close\".");
@@ -8859,12 +9071,12 @@ var mainGC = function () {
             html += checkboxy('settings_pq_option_idontown', "Enable option '<i>I don't own</i>' by default") + show_help("This activates the option '<i>I don't own</i>' by default.") + "<br/>";
             html += checkboxy('settings_pq_option_ignorelist', "Enable option '<i>Are not on my ignore list</i>' by default") + show_help("This activates the option '<i>Are not on my ignore list</i>' by default.") + "<br/>";
             html += checkboxy('settings_pq_option_isenabled', "Enable option '<i>Is Enabled</i>' by default") + show_help("This activates the option '<i>Is Enabled</i>' by default.") + "<br/>";
-            html += checkboxy('settings_pq_option_filename', "Enable option '<i>Include PQ name in download file name</i>' by default") + show_help("This activates the option '<i>Include pocket query name in download file name</i>' by default.") + "<br/>";
+            html += checkboxy('settings_pq_option_filename', "Enable option '<i>Include PQ name in download file name</i>' by default") + show_help3("This activates the option '<i>Include pocket query name in download file name</i>' by default.") + "<br/>";
             html += checkboxy('settings_pq_set_difficulty', "Set difficulity ");
             html += gclh_createSelectOptionCode( "settings_pq_difficulty", dt_display, settings_pq_difficulty );
             html += '&nbsp;';
             html += gclh_createSelectOptionCode( "settings_pq_difficulty_score", dt_score, settings_pq_difficulty_score );
-            html += " by default" + show_help("Specifies the default settings for difficulty score.") + "<br/>";
+            html += " by default" + show_help3("Specifies the default settings for difficulty score.") + "<br/>";
             html += checkboxy('settings_pq_set_terrain', "Set terrain ");
             html += gclh_createSelectOptionCode( "settings_pq_terrain", dt_display, settings_pq_terrain );
             html += '&nbsp;';
@@ -9117,6 +9329,8 @@ var mainGC = function () {
                 html += "  <option value='" + i + "' " + (settings_improve_add_to_list_height == i ? "selected=\"selected\"" : "") + ">" + i + "</option>";
             }
             html += "</select> px" + show_help("With this option you can choose the height of the \"Add to list\" popup to bookmark a cache from 100 up to 520 pixel. The default is 205 pixel, similar to the standard.<br><br>This option requires \"Show compact layout in \"Add to list\" popup to bookmark a cache\".") + "<br>";
+            html += checkboxy('settings_show_flopps_link', 'Show Flopp\'s Map Links in Sidebar and under the Additional Waypoints') + show_help3("If there are no additional Waypoints only the link in the Sidebar is shown.") + "<br/>";
+            html += checkboxy('settings_show_brouter_link', 'Show Link to BRouter in Sidebar and under the Additional Waypoints') + show_help3("If there are no additional Waypoints only the link in the Sidebar is shown.") + "<br/>";
             html += newParameterVersionSetzen(0.8) + newParameterOff;
             html += "</div>";
 
@@ -10079,7 +10293,9 @@ var mainGC = function () {
                 'settings_compact_layout_list_of_pqs',
                 'settings_compact_layout_nearest',
                 'settings_map_links_statistic',
-                'settings_improve_add_to_list'
+                'settings_improve_add_to_list',
+                'settings_show_flopps_link',
+                'settings_show_brouter_link'
             );
             for (var i = 0; i < checkboxes.length; i++) {
                 if ( document.getElementById(checkboxes[i]) ) {
@@ -10120,9 +10336,18 @@ var mainGC = function () {
 
             setValueSet(settings).done(function () {
                 if (type === "upload") {
-                    gclh_sync_DBSave().done(function () {
-                        window.location.reload(false);
-                    });
+                    gclh_sync_DB_CheckAndCreateClient()
+                        .done(function(){
+                            // Means the connection to Dropbox stands, so we can make calls
+                            gclh_sync_DBSave().done(function () {
+                                window.location.reload(false);
+                            });
+                        })
+                        .fail(function(){
+                            // Means something went wrong or the Dropbox is not authenticated, so we display the Auth Link.
+                            alert('GClh is not authorized to use your Dropbox. Please go to the Sync Page and authenticate your Dropbox first. Nevertheless your config is saved localy.');
+                            window.location.reload(false);
+                        });
                 } else window.location.reload(false);
             });
             if ( getValue("settings_show_save_message") ) {
@@ -10706,7 +10931,7 @@ var mainGC = function () {
         for (key in CONFIG) {
             var kkey = key.split("[");
             var kkey = kkey[0];
-            if (kkey.match(/^(vips|dbToken|token|uid)$/) ||
+            if (kkey.match(/^(vips|token|uid)$/) ||
                 kkey.match(/^(show_box|friends_founds_|friends_hides_)/) ||
                 kkey.match(/^gclh_(.*)(_logs_get_last|_logs_count)$/)       ) {
                 config_tmp[key] = CONFIG[key];
@@ -10769,79 +10994,176 @@ var mainGC = function () {
         });
     }
 
-    var gclh_sync_DB_Client = null;
+    var dropbox_client = null;
+    var dropbox_save_path = '/GCLittleHelperSettings.json';
 
-    function gclh_sync_DB_CheckAndCreateClient(userToken) {
+    // Save dropbox auth token if one is passed (from Dropbox)
+    var DB_token = utils.parseQueryString(window.location.hash).access_token;
+    if(DB_token){
+        // gerade von DB zurück, also Show config
+        setValue('settings_DB_auth_token', DB_token);
+        document.getElementById('gclh_sync_lnk').click();
+        document.getElementById('syncDBLabel').click();
+    }else{
+        // Maybe the user denies Access (this is mostly an unwanted click), so show him, that he
+        // has refused to give us access to his dropbox and that he can re-auth if he want to
+        error = utils.parseQueryString(window.location.hash).error_description
+        if(error){
+            alert('We received the following error from dropbox: "' + error + '" If you think this is a mistake, you can try to re-authenticate in the sync menue of GClh.');
+        }
+    }
+
+    // Created the Dropbox Client with the given auth token from config.
+    function gclh_sync_DB_CheckAndCreateClient() {
         var deferred = $.Deferred();
-        if (gclh_sync_DB_Client != null && gclh_sync_DB_Client.isAuthenticated()) {
-            deferred.resolve();
-            return deferred.promise();
+        token = getValue('settings_DB_auth_token');
+
+        if (token) {
+            // Try to create an instance and test it with the current token
+            dropbox_client = new Dropbox({ accessToken: token });
+
+            dropbox_client.usersGetCurrentAccount()
+                .then(function(response) {
+                    deferred.resolve();
+                })
+                .catch(function(error) {
+                    deferred.reject();
+                });
+
+        }else{
+            // No token was givven, user has to (re)auth GClh for dropbox
+            dropbox_client = null;
+            deferred.reject();
         }
-        $('#syncDBLoader').show();
-        setValue("dbToken", "");
-        gclh_sync_DB_Client = null;
-        if (document.getElementById('btn_DBSave') && document.getElementById('btn_DBLoad')) {
-            document.getElementById('btn_DBSave').disabled = true;
-            document.getElementById('btn_DBLoad').disabled = true;
-        }
-        var client = new Dropbox.Client({key: "b992jnfyidj32v3", sandbox: true, token: userToken});
-        client.authDriver(new Dropbox.AuthDriver.Popup({
-            rememberUser: true,
-            receiverUrl: "https://www.geocaching.com/my/default.aspx"
-        }));
-        client.authenticate(function (error, client) {
-            $('#syncDBLoader').hide();
-            if (error || !client.isAuthenticated()) {
-                alert("Error connecting to dropbox");
-                return;
-            }
-            gclh_sync_DB_Client = client;
-            if (document.getElementById('btn_DBSave') && document.getElementById('btn_DBLoad')) {
-                document.getElementById('btn_DBSave').disabled = false;
-                document.getElementById('btn_DBLoad').disabled = false;
-            }
-            deferred.resolve();
-        });
+
         return deferred.promise();
     }
 
+    // If the Dropbox Client could not be instantiated (because of wrong token, App deleted or not authenticated at all), this will show the Auth link.
+    function gclh_sync_DB_showAuthLink(){
+        var APP_ID = 'zp4u1zuvtzgin6g';
+        // If client could not created, try to get a new Auth token
+        // Set the login anchors href using dropbox_client.getAuthenticationUrl()
+        dropbox_auth_client = new Dropbox({ clientId: APP_ID });
+        authlink = document.getElementById('authlink');
+        authlink.href = dropbox_auth_client.getAuthenticationUrl(window.location.protocol + '//' + window.location.hostname + window.location.pathname);
+
+        $(authlink).show();
+
+        $('#btn_DBSave').hide();
+        $('#btn_DBLoad').hide();
+
+        $('#syncDBLoader').hide();
+    }
+
+
+    // If the Dropbox Client is instantiated and the connection stands, this funciton shows the load and save buttons
+    function gclh_sync_DB_showSaveLoadLinks(){
+        $('#btn_DBSave').show();
+        $('#btn_DBLoad').show();
+
+        $('#syncDBLoader').hide();
+        $('#authlink').hide();
+    }
+
+    // Saves the current config to dropbox.
     function gclh_sync_DBSave() {
         var deferred = $.Deferred();
-        gclh_sync_DB_CheckAndCreateClient().done(function(){
-            $('#syncDBLoader').show();
-            gclh_sync_DB_Client.writeFile("GCLittleHelperSettings.json", sync_getConfigData(), {}, function () {
+
+        gclh_sync_DB_CheckAndCreateClient()
+            .fail(function(){
+                // Should not be reached, because we checked the client earlier
+                alert('Something went wrong. Please reload the page and try again.');
+                deferred.reject();
                 $('#syncDBLoader').hide();
-                deferred.resolve();
+                return deferred.promise();
             });
-        }).fail(function(){deferred.reject();});
+        
+        $('#syncDBLoader').show();
+
+        dropbox_client.filesUpload({
+            path: dropbox_save_path,
+            contents: sync_getConfigData(),
+            mode: 'overwrite',
+            autorename: false,
+            mute: false
+        })
+            .then(function(response) {
+                deferred.resolve();
+                $('#syncDBLoader').hide();
+            })
+            .catch(function(error) {
+                console.error('gclh_sync_DBSave: Error while uploading config file:');
+                console.error(error);
+                deferred.reject();
+                $('#syncDBLoader').hide();
+            });
         return deferred.promise();
     }
 
+    // Loads the config from dropbox and replaces the current configuration with it.
     function gclh_sync_DBLoad() {
         var deferred = $.Deferred();
-        gclh_sync_DB_CheckAndCreateClient().done(function(){
-            $('#syncDBLoader').show();
-            gclh_sync_DB_Client.readFile("GCLittleHelperSettings.json", {}, function (error, data) {
-                if (data != null && data != "") {
-                    sync_setConfigData(data);
-                    $('#syncDBLoader').hide();
-                    deferred.resolve();
-                }
+
+        gclh_sync_DB_CheckAndCreateClient()
+            .fail(function(){
+                // Should not be reached, because we checked the client earlier
+                alert('Something went wrong. Please reload the page and try again.');
+                deferred.reject();
+                return deferred.promise();
             });
-        }).fail(function(){deferred.reject();});
+
+        $('#syncDBLoader').show();
+
+        dropbox_client.filesDownload({path: dropbox_save_path})
+            .then(function (data) {
+                var blob = data.fileBlob;
+                var reader = new FileReader()
+                reader.addEventListener("loadend", function () {
+                    sync_setConfigData(reader.result);
+                    deferred.resolve();
+                })
+                reader.readAsText(blob);
+                $('#syncDBLoader').hide();
+            }).catch(function (error) {
+                console.error('gclh_sync_DBLoad: Error while downloading config file:');
+                console.error(error);
+                deferred.reject();
+                $('#syncDBLoader').hide();
+            });
         return deferred.promise();
     }
 
+    // Gets the hash of the saved config, so we can determine if we have to apply the config loaded from dropbox via autosync.
     function gclh_sync_DBHash() {
         var deferred = $.Deferred();
-        gclh_sync_DB_CheckAndCreateClient().done(function(){
-            $('#syncDBLoader').show();
-            gclh_sync_DB_Client.stat("GCLittleHelperSettings.json", {}, function (error, data) {
-                if (data != null && data != "") {
-                    deferred.resolve(data.versionTag);
-                }
+
+        gclh_sync_DB_CheckAndCreateClient()
+            .fail(function(){
+                deferred.reject('Dropbox client is not initiated.');
+                return deferred.promise();
             });
-        }).fail(function(){deferred.reject();});;
+
+        dropbox_client.filesGetMetadata({
+            "path": dropbox_save_path,
+            "include_media_info": false,
+            "include_deleted": false,
+            "include_has_explicit_shared_members": false
+        })
+        .then(function(response) {
+            console.log('content_hash:' + response.content_hash);
+            if (response != null && response != "") {
+                deferred.resolve(response.content_hash);
+            }else{
+                deferred.reject('Error: response had no file or file was empty.');
+            }
+        })
+        .catch(function(error) {
+            console.log('gclh_sync_DBHash: Error while getting hash for config file:');
+            console.log(error);
+            deferred.reject(error);
+        });
+
         return deferred.promise();
     }
 
@@ -10862,21 +11184,18 @@ var mainGC = function () {
             div.setAttribute("id", "sync_settings_overlay");
             div.setAttribute("class", "settings_overlay");
             var html = "";
-            html += "<h3 class='gclh_headline'>" + scriptNameSync + " <font class='gclh_small'>v" + scriptVersion + "</font></h3>";
+            html += "<h3 class='gclh_headline' title='Some little things to make life easy (on www.geocaching.com).' >" + scriptNameSync + " <font class='gclh_small'>v" + scriptVersion + "</font></h3>";
             html += "<div class='gclh_content'>";
-            html += "<h3 id='syncDBLabel' style='cursor: pointer;'>DropBox <font class='gclh_small'>(Click to hide/show)<span style='color: #d14f4f;'> (Not yet fully supported)</span></font></h3>";
+            html += "<h4 class='gclh_headline2' id='syncDBLabel' style='cursor: pointer;'>DropBox <font class='gclh_small'>(click to hide/show)</font></h4>";
             html += "<div style='display:none;' id='syncDB' >";
-            html += "<img style='display:none;height: 40px;' id='syncDBLoader' src='"+global_syncDBLoader_icon+"'>";
-            html += "<br>";
-            html += "<input class='gclh_form' type='button' value='save to DropBox' id='btn_DBSave' style='cursor: pointer;' disabled> ";
-            html += "<input class='gclh_form' type='button' value='load from DropBox' id='btn_DBLoad' style='cursor: pointer;' disabled>";
+            html += "<div id='syncDBLoader'><img style='height: 40px;' src='"+global_syncDBLoader_icon+"'> working...</div>";
+            html += "<a href='#' class='gclh_form' style='display:none;' id='authlink' class='button'>authenticate</a>";
+            html += "<input class='gclh_form' type='button' value='save to DropBox' id='btn_DBSave' style='cursor: pointer; display:none;'> ";
+            html += "<input class='gclh_form' type='button' value='load from DropBox' id='btn_DBLoad' style='cursor: pointer; display:none;'>";
             html += "</div>";
-            html += "<br>";
-            html += "<h3 id='syncManualLabel' style='cursor: pointer;'>Manual <font class='gclh_small'>(Click to hide/show)</font></h3>";
-            html += "<div style='display:none;'  id='syncManual' >";
-            html += "<pre class='gclh_form' style='width: 550px; height: 300px; overflow: auto;' type='text' value='' id='configData' size='20' contenteditable='true'></pre>";
-            html += "<br>";
-            html += "<br>";
+            html += "<h4 class='gclh_headline2' id='syncManualLabel' style='cursor: pointer;'>Manual <font class='gclh_small'>(click to hide/show)</font></h4>";
+            html += "<div style='display:none;' id='syncManual' >";
+            html += "<pre class='gclh_form' style='width: 550px; height: 300px; overflow: auto; margin-top: 0; margin-bottom: 6px' type='text' value='' id='configData' size='28' contenteditable='true'></pre>";
             html += "<input class='gclh_form' type='button' value='export' id='btn_ExportConfig' style='cursor: pointer;'> ";
             html += "<input class='gclh_form' type='button' value='import' id='btn_ImportConfig' style='cursor: pointer;'>";
             html += "</div>";
@@ -10931,7 +11250,15 @@ var mainGC = function () {
 
             $('#syncDBLabel').click(function () {
                 $('#syncDB').toggle();
-                gclh_sync_DB_CheckAndCreateClient();
+                gclh_sync_DB_CheckAndCreateClient()
+                  .done(function(){
+                    // Means the connection to Dropbox stands, so we can make calls
+                    gclh_sync_DB_showSaveLoadLinks();
+                  })
+                  .fail(function(){
+                    // Means something went wrong or the Dropbox is not authenticated, so we display the Auth Link.
+                    gclh_sync_DB_showAuthLink();
+                  });
             });
             $('#syncManualLabel').click(function () {
                 $('#syncManual').toggle();
@@ -10941,33 +11268,33 @@ var mainGC = function () {
         document.getElementById("sync_settings_overlay").click();
     } // <-- gclh_showSync
 
-    if ( (settings_sync_autoImport && (settings_sync_last.toString() === "Invalid Date" || (new Date() - settings_sync_last) > settings_sync_time)) ){
-        if (document.URL.indexOf("#access_token") != -1) {
-            $("body").hide();
-            Dropbox.AuthDriver.Popup.oauthReceiver();
-        }
-
-        if (settings_sync_autoImport && (settings_sync_last.toString() === "Invalid Date" || (new Date() - settings_sync_last) > settings_sync_time) && document.URL.indexOf("#access_token") === -1) {
-            gclh_sync_DBHash().done(function (hash) {
-                if (hash != settings_sync_hash) {
-                    gclh_sync_DBLoad().done(function () {
-                        settings_sync_last = new Date();
-                        settings_sync_hash = hash;
-                        setValue("settings_sync_last", settings_sync_last.toString()).done(function(){
-                            setValue("settings_sync_hash", settings_sync_hash).done(function(){
-                                if (is_page("profile")) {
-                                    // Reload page
-                                    if (document.location.href.indexOf("#") == -1 || document.location.href.indexOf("#") == document.location.href.length - 1) {
-                                        $('html, body').animate({scrollTop: 0}, 0);
-                                        document.location.reload(true);
-                                    } else document.location.replace(document.location.href.slice(0, document.location.href.indexOf("#")));
-                                }
-							});
-                        });
+    if (settings_sync_autoImport && (settings_sync_last.toString() === "Invalid Date" || (new Date() - settings_sync_last) > settings_sync_time) && document.URL.indexOf("#access_token") === -1) {
+        gclh_sync_DBHash().done(function (hash) {
+            if (hash != settings_sync_hash) {
+                gclh_sync_DBLoad().done(function () {
+                    settings_sync_last = new Date();
+                    settings_sync_hash = hash;
+                    setValue("settings_sync_last", settings_sync_last.toString()).done(function(){
+                        setValue("settings_sync_hash", settings_sync_hash).done(function(){
+                            if (is_page("profile")) {
+                                // Reload page
+                                if (document.location.href.indexOf("#") == -1 || document.location.href.indexOf("#") == document.location.href.length - 1) {
+                                    $('html, body').animate({scrollTop: 0}, 0);
+                                    document.location.reload(true);
+                                } else document.location.replace(document.location.href.slice(0, document.location.href.indexOf("#")));
+                            }
+						});
                     });
-                }
-            });
-        }
+                });
+            }else{
+                // Hashes are equal so nothing has changed. We do not need to update
+                // console.log('Hashes equal, no need to sync.');
+            }
+        })
+        .fail(function(error){
+            console.log('Autosync: Hash function was not successful:');
+            console.log(error);
+        });
     } // Sync
 }; // end of mainGC
 
