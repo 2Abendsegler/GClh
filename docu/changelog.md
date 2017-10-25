@@ -60,6 +60,9 @@ New: <b>Build Flopp's Map link too in navi area top right. Provide config parame
 <br>
 <img src="../images/v0.8.7_Screen06.jpg" alt="v0.8.7_Screen06.jpg"><br>
 <br>
+Settings -> Nearest list:
+<img src="../images/v0.8.7_Screen07.jpg" alt="v0.8.7_Screen07.jpg"><br>
+<br>
 Many thanks to <a href="https://www.geocaching.com/profile/?u=Ruko2010">Ruko2010</a> for the great implementation.<br>
 <br>
 </li>
