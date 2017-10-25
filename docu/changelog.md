@@ -41,8 +41,14 @@ After installation, the GClh sync (F10 key) can be used to synchronize the GClh 
 Many thanks to <a href="https://www.geocaching.com/profile/?u=Ruko2010">Ruko2010</a> for the great implementation.
 </li>
 <li>
-New: <b>Save PQ of routes with Key F2 too.</b><br>
+New: <b>Link to BRouter</b>: [Issue <a href="https://github.com/2Abendsegler/GClh/pull/425">#425</a>]<br>
+For example BRouter for the Cache <a href="https://coord.info/GC6128Z">GC6128Z - Deutschlandtour Ost-West</a><br>
 <br>
+<img src="../images/v0.8.7_Screen04.jpg" alt="v0.8.7_Screen04.jpg"><br>
+A further link is behind the Additional Waypoints.<br>
+<img src="../images/v0.8.7_Screen04.jpg" alt="v0.8.7_Screen05.jpg"><br>
+<br>
+Many thanks to <a href="https://www.geocaching.com/profile/?u=RadlerAndi">RadlerAndi</a> for the great implementation.
 </li>
 </ul>
 (25.10.2017)<br> 
