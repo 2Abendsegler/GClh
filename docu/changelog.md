@@ -29,7 +29,7 @@
 ## v0.8.8:
 <ul>
 <li>
-Fix: <b>Link to BRouter.</b><br> 
+Fix: <b>Link to BRouter</b>: [Issue <a href="https://github.com/2Abendsegler/GClh/pull/425">#425</a>]<br>
 </li>
 </ul>
 (25.10.2017)<br> 
