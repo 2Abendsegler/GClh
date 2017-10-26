@@ -39,7 +39,7 @@ Fix: <b>Automatically save HomeCoords does not work</b>: [Issue <a href="https:/
 Fix: <b>Without home coordinates driving direction link in Additional Waypoints doesn't work proper</b>: [Issue <a href="https://github.com/2Abendsegler/GClh/pull/322">#322</a>]<br>
 </li>
 </ul>
-(25.10.2017)<br> 
+(??.10.2017)<br> 
 <br>
 
 ---
