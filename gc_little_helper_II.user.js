@@ -10935,7 +10935,8 @@ var mainGC = function () {
                 kkey.match(/^(show_box|friends_founds_|friends_hides_)/) ||
                 kkey.match(/^gclh_(.*)(_logs_get_last|_logs_count)$/)       ) {
                 config_tmp[key] = CONFIG[key];
-            } else if (kkey.match(/autovisit_(\d+)/)) {
+            } else if (kkey.match(/autovisit_(\d+)/) ||
+                       kkey.match(/^(settings_DB_auth_token)$/) ) {
                 changed = true;
                 document.getElementById('rc_configData').innerText += "delete: " + key + ": " + CONFIG[key] + "\n";
             } else if (data.match(kkey)) {
