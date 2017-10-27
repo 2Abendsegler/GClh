@@ -626,45 +626,41 @@ var mainOSM = function () {
 ////////////////////////////////////////////////////////////////////////////
 (function(window){
     window.utils = {
-      parseQueryString: function(str) {
-        var ret = Object.create(null);
+        parseQueryString: function(str) {
+            var ret = Object.create(null);
 
-        if (typeof str !== 'string') {
-          return ret;
+            if (typeof str !== 'string') return ret;
+
+            str = str.trim().replace(/^(\?|#|&)/, '');
+
+            if (!str) return ret;
+
+            str.split('&').forEach(function (param) {
+                var parts = param.replace(/\+/g, ' ').split('=');
+                // Firefox (pre 40) decodes `%3D` to `=`
+                // https://github.com/sindresorhus/query-string/pull/37
+                var key = parts.shift();
+                var val = parts.length > 0 ? parts.join('=') : undefined;
+
+                key = decodeURIComponent(key);
+
+                // missing `=` should be `null`:
+                // http://w3.org/TR/2012/WD-url-20120524/#collect-url-parameters
+                val = val === undefined ? null : decodeURIComponent(val);
+
+                if (ret[key] === undefined) {
+                    ret[key] = val;
+                } else if (Array.isArray(ret[key])) {
+                    ret[key].push(val);
+                } else {
+                    ret[key] = [ret[key], val];
+                }
+            });
+
+            return ret;
         }
-
-        str = str.trim().replace(/^(\?|#|&)/, '');
-
-        if (!str) {
-          return ret;
-        }
-
-        str.split('&').forEach(function (param) {
-          var parts = param.replace(/\+/g, ' ').split('=');
-          // Firefox (pre 40) decodes `%3D` to `=`
-          // https://github.com/sindresorhus/query-string/pull/37
-          var key = parts.shift();
-          var val = parts.length > 0 ? parts.join('=') : undefined;
-
-          key = decodeURIComponent(key);
-
-          // missing `=` should be `null`:
-          // http://w3.org/TR/2012/WD-url-20120524/#collect-url-parameters
-          val = val === undefined ? null : decodeURIComponent(val);
-
-          if (ret[key] === undefined) {
-            ret[key] = val;
-          } else if (Array.isArray(ret[key])) {
-            ret[key].push(val);
-          } else {
-            ret[key] = [ret[key], val];
-          }
-        });
-
-        return ret;
-      }
     };
-  })(window);
+})(window);
 
 ////////////////////////////////////////////////////////////////////////////
 // Helper
@@ -3247,8 +3243,13 @@ var mainGC = function () {
                 var cellCoordinates = row1st.find("td:eq(6)");
                 var tmp_coords = toDec(cellCoordinates.text().trim());
                 if ( ( !settings_driving_direction_parking_area || icon.match(/pkg.jpg/g) ) && typeof tmp_coords[0] !== 'undefined' && typeof tmp_coords[1] !== 'undefined') {
-                    var link = "http://maps.google.com/maps?f=d&hl=en&saddr="+getValue("home_lat", 0)/10000000+","+getValue("home_lng", 0)/10000000+"%20(Home%20Location)&daddr=";
-                    row1st.find("td:last").append('<a title="Driving Directions" href="'+link+tmp_coords[0]+","+tmp_coords[1]+" ("+name+')" target="_blank"><img src="/images/icons/16/directions.png"></a>');
+                    if (getValue("home_lat", 0) != 0 && getValue("home_lng") != 0) {
+                        var link = "http://maps.google.com/maps?f=d&hl=en&saddr="+getValue("home_lat", 0)/10000000+","+getValue("home_lng", 0)/10000000+"%20(Home%20Location)&daddr=";
+                        row1st.find("td:last").append('<a title="Driving Directions" href="'+link+tmp_coords[0]+","+tmp_coords[1]+" ("+name+')" target="_blank"><img src="/images/icons/16/directions.png"></a>');
+                    } else {
+                        var link = document.location + "X#gclhpb#errhomecoord";
+                        row1st.find("td:last").append('<a title="Driving Directions" href="'+link+'"><img src="/images/icons/16/directions.png"></a>');
+                    }
                 }
             }
         } catch( e ) { gclh_error( "Driving direction for Waypoints: ", e ); }
@@ -7148,21 +7149,27 @@ var mainGC = function () {
 // Save HomeCoords.
     if (document.location.href.match(/^https?:\/\/www\.geocaching\.com\/account\/settings\/homelocation/)) {
         try {
-            saveHomeCoords();
-            document.getElementById('Query').addEventListener('change', saveHomeCoords, false);
+            function saveHomeCoordsWait(waitCount) {
+                if (document.getElementById('Query')) {
+                    saveHomeCoords();
+                    document.getElementById('Query').addEventListener('change', saveHomeCoords, false);
+                } else {
+                    waitCount++;
+                    if (waitCount <= 20) setTimeout( function () { saveHomeCoordsWait(waitCount); }, 100);
+                }
+            }
+            saveHomeCoordsWait(0);
         } catch (e) { gclh_error('Save Homecoords:', e); }
     }
     function saveHomeCoords() {
-        if (document.getElementById('Query')) {
-            var link = document.getElementById('Query');
-            if (link) {
-                var match = link.value.match(/((N|S) ([0-9]+)° ([0-9]+)\.([0-9]+)′ (E|W) ([0-9]+)° ([0-9]+)\.([0-9]+)′)/);
-                if (match && match[1]) {
-                    match[1] = match[1].replace(/′/g, '');
-                    var latlng = toDec(match[1]);
-                    if (getValue('home_lat', 0) != parseInt(latlng[0] * 10000000)) setValue('home_lat', parseInt(latlng[0] * 10000000));
-                    if (getValue('home_lng', 0) != parseInt(latlng[1] * 10000000)) setValue('home_lng', parseInt(latlng[1] * 10000000));
-                }
+        var link = document.getElementById('Query');
+        if (link) {
+            var match = link.value.match(/((N|S) ([0-9]+)° ([0-9]+)\.([0-9]+)′ (E|W) ([0-9]+)° ([0-9]+)\.([0-9]+)′)/);
+            if (match && match[1]) {
+                match[1] = match[1].replace(/′/g, '');
+                var latlng = toDec(match[1]);
+                if (getValue('home_lat', 0) != parseInt(latlng[0] * 10000000)) setValue('home_lat', parseInt(latlng[0] * 10000000));
+                if (getValue('home_lng', 0) != parseInt(latlng[1] * 10000000)) setValue('home_lng', parseInt(latlng[1] * 10000000));
             }
         }
     }
@@ -10935,7 +10942,8 @@ var mainGC = function () {
                 kkey.match(/^(show_box|friends_founds_|friends_hides_)/) ||
                 kkey.match(/^gclh_(.*)(_logs_get_last|_logs_count)$/)       ) {
                 config_tmp[key] = CONFIG[key];
-            } else if (kkey.match(/autovisit_(\d+)/)) {
+            } else if (kkey.match(/autovisit_(\d+)/) ||
+                       kkey.match(/^(settings_DB_auth_token)$/) ) {
                 changed = true;
                 document.getElementById('rc_configData').innerText += "delete: " + key + ": " + CONFIG[key] + "\n";
             } else if (data.match(kkey)) {
