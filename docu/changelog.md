@@ -30,7 +30,10 @@
 ## v0.8.9:
 <ul>
 <li>
-Fix: <b>Restore DropBox Token does not work</b>: [Issue <a href="https://github.com/2Abendsegler/GClh/pull/441">#441</a>]<br>
+Fix: <b>Coloring user (with special characters) in listing does not work</b>: [Issue <a href="https://github.com/2Abendsegler/GClh/pull/444">#444</a>]<br>
+</li>
+<li>
+Fix: <b>Reset DropBox Token does not work</b>: [Issue <a href="https://github.com/2Abendsegler/GClh/pull/441">#441</a>]<br>
 </li>
 <li>
 Fix: <b>Automatically save HomeCoords does not work</b>: [Issue <a href="https://github.com/2Abendsegler/GClh/pull/438">#438</a>]<br>

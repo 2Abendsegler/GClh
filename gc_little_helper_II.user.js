@@ -821,7 +821,7 @@ var mainGC = function () {
 
 // Set global data.
     if (document.getElementsByClassName("li-user-info")[0] && document.getElementsByClassName("li-user-info")[0].children[1]) {
-        var global_me = document.getElementsByClassName("li-user-info")[0].children[1].innerHTML;
+        var global_me = decode_innerHTML(document.getElementsByClassName("li-user-info")[0].children[1]);
     }
 
 // Add layers, control to map and set default layers.
