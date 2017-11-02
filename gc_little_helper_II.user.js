@@ -3645,7 +3645,7 @@ var mainGC = function () {
         return waypoint.longitude+','+waypoint.latitude;
     }
 
-	function buildBrouterMapLink( waypoints, map, shortnames, status ) {
+    function buildBrouterMapLink( waypoints, map, shortnames, status ) {
         var url = "";
         var brouterWaypoints = [];
         var Latmax = -90.0;
@@ -3657,7 +3657,7 @@ var mainGC = function () {
         for ( var i=0; i<waypoints.length; i++) {
             var waypoint = waypoints[i];
             if ( waypoint !== undefined && waypoint.visible == true ) {
-				if ( waypoint.type == "listing" || waypoint.type == "waypoint" ) {
+                if ( waypoint.type == "listing" || waypoint.type == "waypoint" ) {
                     brouterWaypoints.push( brouterMapWaypoint( waypoint ) );
                     count++;
                 }
