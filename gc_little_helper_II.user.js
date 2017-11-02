@@ -11054,7 +11054,7 @@ var mainGC = function () {
         // Set the login anchors href using dropbox_client.getAuthenticationUrl()
         dropbox_auth_client = new Dropbox({ clientId: APP_ID });
         authlink = document.getElementById('authlink');
-        authlink.href = dropbox_auth_client.getAuthenticationUrl(window.location.protocol + '//' + window.location.hostname + window.location.pathname);
+        authlink.href = dropbox_auth_client.getAuthenticationUrl('https://www.geocaching.com/my/default.aspx');
 
         $(authlink).show();
 
