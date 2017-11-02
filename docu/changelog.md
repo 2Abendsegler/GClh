@@ -32,6 +32,13 @@
 <li>
 New: <b>Make Tampermonkey possible in Firefox</b>: [Issue <a href="https://github.com/2Abendsegler/GClh/pull/451">#451</a>]<br>
 <br>
+<b>FIREFOX USER, BITTE BEACHTEN:</b>
+<br>
+  
+* Der GClh ist mit Script-Manager Greasemonkey ab Firefox Version 57 nicht mehr lauffähig. Vermutlich werden wir auch keine entsprechenden Anpassungen am GClh vornehmen, die den weiteren Betrieb unter Greasemonkey ermöglichen, obwohl es möglich ist und Greasemonkey zumindest bisher einen merklichen Performancevorteil brachte. Um den GClh weiter zu nutzen, muß deshalb spätestens mit Firefox Version 57 auf den Script-Manager Tampermonkey umgestellt werden. Die Firefox Version 57 ist wohl für Mitte November geplant.<br>
+* Violentmonkey und andere Script-Manager unterstützen wir nicht.<br>
+* Tipps zur Installation des Script-Managers Tampermonkey unter Firefox und Tipps zum Kopieren der GClh Konfiguration von Script-Manager Greasemonkey nach Tampermonkey gibt es [hier](https://github.com/2Abendsegler/GClh/blob/master/docu/tips_installation.md#readme).
+<br>
 </li>
 <li>
 New: <b>Added Error Output to Dropbox Client Creation (DropBox Error 400)</b>: [Issue <a href="https://github.com/2Abendsegler/GClh/pull/450">#450</a>]<br>
