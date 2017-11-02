@@ -1,4 +1,4 @@
-<a href="#v089" title="GClh II version 0.8.9 (??.10.2017)">v0.8.9</a> &nbsp;
+<a href="#v089" title="GClh II version 0.8.9 (03.11.2017)">v0.8.9</a> &nbsp;
 <a href="#v088" title="GClh II version 0.8.8 (25.10.2017)">v0.8.8</a> &nbsp;
 <a href="#v087" title="GClh II version 0.8.7 (25.10.2017)">v0.8.7</a> &nbsp;
 <a href="#v086" title="GClh II version 0.8.6 (17.09.2017)">v0.8.6</a> &nbsp;
@@ -30,19 +30,32 @@
 ## v0.8.9:
 <ul>
 <li>
+New: <b>Make Tampermonkey possible in Firefox</b>: [Issue <a href="https://github.com/2Abendsegler/GClh/pull/451">#451</a>]<br>
+<br>
+</li>
+<li>
+New: <b>Added Error Output to Dropbox Client Creation (DropBox Error 400)</b>: [Issue <a href="https://github.com/2Abendsegler/GClh/pull/450">#450</a>]<br>
+Many thanks to <a href="https://www.geocaching.com/profile/?u=Ruko2010">Ruko2010</a> for the implementation.<br>
+<br>
+</li>
+<li>
+Fix: <b>DropBox Authentificate does not work with all of the gc pages (DropBox Error 400)</b>: [Issue <a href="https://github.com/2Abendsegler/GClh/pull/447">#447</a>]<br>
+Many thanks to <a href="https://www.geocaching.com/profile/?u=Ruko2010">Ruko2010</a> for the fix.<br>
+</li>
+<li>
 Fix: <b>Coloring user (with special characters) in listing does not work</b>: [Issue <a href="https://github.com/2Abendsegler/GClh/pull/444">#444</a>]<br>
 </li>
 <li>
 Fix: <b>Reset DropBox Token does not work</b>: [Issue <a href="https://github.com/2Abendsegler/GClh/pull/441">#441</a>]<br>
 </li>
 <li>
-Fix: <b>Automatically save HomeCoords does not work</b>: [Issue <a href="https://github.com/2Abendsegler/GClh/pull/438">#438</a>]<br>
-</li>
-<li>
 Fix: <b>Without home coordinates driving direction link in Additional Waypoints doesn't work proper</b>: [Issue <a href="https://github.com/2Abendsegler/GClh/pull/322">#322</a>]<br>
 </li>
+<li>
+Fix: <b>Automatically save HomeCoords does not work</b>: [Issue <a href="https://github.com/2Abendsegler/GClh/pull/438">#438</a>]<br>
+</li>
 </ul>
-(??.10.2017)<br> 
+(03.11.2017)<br> 
 <br>
 
 ---
