@@ -23,4 +23,5 @@
 * Installiere den Script-Manager [Tampermonkey](https://chrome.google.com/webstore/detail/tampermonkey/dhdgffkkebhmkfjojejmpbldmpobfkfo) als Add-On in Vivaldi über den Chrome Web Store. 
 * Installiere das Script [GC little helper II](https://github.com/2Abendsegler/GClh/raw/master/gc_little_helper_II.user.js) unter dem Script-Manager Tampermonkey.
 * Doppeltbelegung der Tasten F4 und F2:  
-Die Taste F4 zum Aufrufen des GClh Config und die Taste F2 zum Speichern im GClh Config bzw. zum Speichern eines Logs, einer Bookmark, einer Pocket Query ... , sind standardmäßig aktiviert. Sie können im GClh Config im Bereich GClh Config / Sync bzw. im Bereich Logging geändert werden. Im Browser Vivaldi sind diese Tasten auch standardmäßig belegt. Sie können in Vivaldi über Einstellungen / Tastatur geändert werden. Die Tastenbelegung im GClh oder in Vivaldi muß geändert werden.
+Die Taste F4 zum Aufrufen des GClh Config und die Taste F2 zum Speichern im GClh Config bzw. zum Speichern eines Logs, einer Bookmark, einer Pocket Query ... , sind standardmäßig aktiviert. Sie können im GClh Config im Bereich GClh Config / Sync bzw. im Bereich Logging geändert werden. Im Browser Vivaldi sind diese Tasten auch standardmäßig belegt. Sie können in Vivaldi über Einstellungen / Tastatur geändert werden. 
+Die Tastenbelegung im GClh oder in Vivaldi muß geändert werden.
