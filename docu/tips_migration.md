@@ -1,4 +1,4 @@
-## Tipps für die Migration vom "GC little helper" zum "GC little helper II"
+## Tipps für die Migration vom "GC little helper" zum "GC little helper II" bzw. von einem Script-Manager zu einem anderen
 <br>
 
 ### 1. Nach der Installation ist auf den Geocaching Seiten alles durcheinander: <a id="1"></a>
@@ -13,7 +13,7 @@ Den "GC little helper Config II" gibt es im <a href="http://www.geocaching.com/m
 Anstatt mit der Startkonfiguration des "GC little helper II" zu beginnen, kann man die Konfiguration des "GC little helper" exportieren und im "GC little helper II" importieren.<br>
 <ul>
 <li>Aktiviert im Greasemonkey Menü den "GC little helper" und deaktiviert den "GC little helper II".</li>
-<li>Geht ins <a href="http://www.geocaching.com/my/">eigene Profil</a> und wählt im Greasemonkey Menü unter Benutzerscript-Befehle den "little helper config sync" aus, wählt dort "Manual" und den Button "Export". Im Fenster dann mit rechter Maustaste "Alles markieren" und anschließend mit rechter Maustaste "kopieren" und dann Button "close". </li>
+<li>Geht ins <a href="http://www.geocaching.com/my/">eigene Profil</a> und wählt neben dem Avatar den "GClh Sync" aus, wählt dann "Manual" und den Button "export". Im Fenster dann mit rechter Maustaste "Alles markieren" und anschließend mit rechter Maustaste "kopieren" und dann Button "close". </li>
 <li>Aktiviert nun im Greasemonkey Menü den "GC little helper II" und deaktiviert den "GC little helper".</li>
 <li><a href="http://www.geocaching.com/my/">Eigenes Profil</a> neu laden.</li>
 <li>Wählt im eigenen Profil neben dem Avatar den "GClh Sync II" aus und wählt "Manual". Im Fenster dann mit rechter Maustaste "Einfügen" und anschließend den Button "import" wählen.</li>
@@ -35,3 +35,14 @@ Sollte irgendetwas schiefgehen oder möchte man mit der Startkonfiguration des "
 Nun befindet man sich im Firefox Profil.</li>
 <li>Im Ordner "*gm_scripts*" befinden sich dann beispielsweise die "*.db*" Dateien.</li>
 </ul></li>
+<br>
+
+### 5. Konfiguration des "GC little helper II" von Greasemonkey nach Tampermonkey kopieren:<a id="5"></a>
+<ul>
+<li>Aktiviert Greasemonkey und deaktiviert Tampermonkey.</li>
+<li>Geht ins <a href="http://www.geocaching.com/my/">eigene Profil</a> und wählt neben dem Avatar den "GClh Sync II" aus, wählt dann "Manual" und den Button "export". Im Fenster dann mit rechter Maustaste "Alles markieren" und anschließend mit rechter Maustaste "kopieren" und dann Button "close". </li>
+<li>Deaktiviert nun Greasemonkey und aktiviert Tampermonkey.</li>
+<li><a href="http://www.geocaching.com/my/">Eigenes Profil</a> neu laden.</li>
+<li>Wählt im eigenen Profil neben dem Avatar den "GClh Sync II" aus und wählt dann "Manual". Im Fenster dann mit rechter Maustaste "Einfügen" und anschließend den Button "import" wählen.</li>
+</ul>
+
