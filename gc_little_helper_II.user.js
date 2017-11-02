@@ -8222,6 +8222,13 @@ var mainGC = function () {
             var text = "Version " + scriptVersion + " of  \"" + scriptName + "\"  was successfully installed.\n\n"
                      + "Do you want to open the changelog in a new tab, to have a quick\n"
                      + "look at changes and new features?\n";
+//--> $$000 Begin of change
+            if (browser === "firefox" && isTM === false) {
+               var text = "Version " + scriptVersion + " of  \"" + scriptName + "\"  was successfully installed.\n\n"
+                        + "DEAR FIREFOX USER, PLEASE CHECK THE CHANGELOG!\n\n"
+                        + "Do you want to open the changelog in a new tab?\n";
+            }
+//<-- $$000 End of change
             if (window.confirm(text)) window.open(url, '_blank');
         }, 1000);
     }
