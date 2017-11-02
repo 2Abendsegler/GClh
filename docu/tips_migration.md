@@ -1,7 +1,7 @@
-## Tipps für die Migration vom "GC little helper" zum "GC little helper II" bzw. von einem Script-Manager zu einem anderen
+## Tipps für die Migration
 <br>
 
-### 1. Nach der Installation ist auf den Geocaching Seiten alles durcheinander: <a id="1"></a>
+### 1. Nach der Installation ist auf den Geocaching Seiten alles durcheinander oder doppelt: <a id="1"></a>
 Es darf immer nur ein Script zum "GC little helper" aktiviert sein, ansonsten gibt es ein großes Durcheinander auf den Geocaching Seiten. Im Greasemonkey Menü kann man prüfen, welche Scripte gerade aktiv sind.<br>
 <br>
 
@@ -34,15 +34,22 @@ Sollte irgendetwas schiefgehen oder möchte man mit der Startkonfiguration des "
 <li>Bei "Allgemeinen Informationen / Profilordner" den Button "Ordner anzeigen" wählen.<br>
 Nun befindet man sich im Firefox Profil.</li>
 <li>Im Ordner "*gm_scripts*" befinden sich dann beispielsweise die "*.db*" Dateien.</li>
-</ul></li>
+</ul>
+</li>
+</ul>
 <br>
 
-### 5. Konfiguration des "GC little helper II" von Greasemonkey nach Tampermonkey kopieren:<a id="5"></a>
-<ul>
-<li>Aktiviert Greasemonkey und deaktiviert Tampermonkey.</li>
-<li>Geht ins <a href="http://www.geocaching.com/my/">eigene Profil</a> und wählt neben dem Avatar den "GClh Sync II" aus, wählt dann "Manual" und den Button "export". Im Fenster dann mit rechter Maustaste "Alles markieren" und anschließend mit rechter Maustaste "kopieren" und dann Button "close". </li>
-<li>Deaktiviert nun Greasemonkey und aktiviert Tampermonkey.</li>
-<li><a href="http://www.geocaching.com/my/">Eigenes Profil</a> neu laden.</li>
-<li>Wählt im eigenen Profil neben dem Avatar den "GClh Sync II" aus und wählt dann "Manual". Im Fenster dann mit rechter Maustaste "Einfügen" und anschließend den Button "import" wählen.</li>
-</ul>
+### 5. Wie kann man den "GC little helper Sync II" aufrufen:<a id="5"></a>
+Den "GC little helper Sync II" gibt es im <a href="http://www.geocaching.com/my/">eigenen Profil</a> neben dem Avatar, im Greasemonkey Menü unter Benutzerscript-Befehle oder per F10 Taste auf den Geocaching Seiten.<br>
+<br>
 
+
+### 6. Konfiguration des "GC little helper II" in Mozilla Firefox von Script-Manager Greasemonkey nach Script-Manager Tampermonkey kopieren:<a id="6"></a>
+<ul>
+<li>Aktiviert Script-Manager Greasemonkey und deaktiviert Script-Manager Tampermonkey.</li>
+<li>Geht ins <a href="http://www.geocaching.com/my/">eigene Profil</a> und wählt neben dem Avatar den "GClh Sync II" aus oder wählt alternativ folgenden <a href="https://www.geocaching.com/geocache/GC40_geocache#GClhShowSync">Link</a>.</li>
+<li>Wählt dann "Manual" und den Button "export". Im Fenster dann mit rechter Maustaste "Alles markieren" und anschließend mit rechter Maustaste "kopieren" und dann Button "close".</li>
+<li>Deaktiviert Script-Manager Greasemonkey und aktiviert Script-Manager Tampermonkey.</li>
+<li>Geht ins <a href="http://www.geocaching.com/my/">eigene Profil</a> und wählt neben dem Avatar den "GClh Sync II" aus oder wählt alternativ folgenden <a href="https://www.geocaching.com/geocache/GC40_geocache#GClhShowSync">Link</a>.</li>
+<li>Wählt dann "Manual". Im Fenster dann mit rechter Maustaste "Einfügen" und anschließend den Button "import" wählen.</li>
+</ul>
