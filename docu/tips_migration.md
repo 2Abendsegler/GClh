@@ -40,7 +40,7 @@ Nun befindet man sich im Firefox Profil.</li>
 <br>
 
 ### 5. Wie kann man den "GC little helper Sync II" aufrufen:<a id="5"></a>
-Den "GC little helper Sync II" gibt es im <a href="http://www.geocaching.com/my/">eigenen Profil</a> neben dem Avatar, im Greasemonkey Menü unter Benutzerscript-Befehle oder per F10 Taste auf den Geocaching Seiten.<br>
+Den "GC little helper Sync II" gibt es im <a href="http://www.geocaching.com/my/">eigenen Profil</a> neben dem Avatar, im Greasemonkey Menü unter Benutzerscript-Befehle oder per F10 Taste auf den Geocaching Seiten. Falls gar nichts mehr geht, könnte noch folgender <a href="https://www.geocaching.com/geocache/GC40#GClhShowSync">Link</a> funktionieren.<br>
 <br>
 
 
