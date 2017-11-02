@@ -11035,6 +11035,8 @@ var mainGC = function () {
                     deferred.resolve();
                 })
                 .catch(function(error) {
+                    console.error('gclh_sync_DB_CheckAndCreateClient: Error while creating Dropbox Client:');
+                    console.error(error);
                     deferred.reject();
                 });
 
