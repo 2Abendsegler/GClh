@@ -31,6 +31,7 @@
 <ul>
 <li>
 New: <b>Make Tampermonkey possible in Firefox</b>: [Issue <a href="https://github.com/2Abendsegler/GClh/pull/451">#451</a>]<br>
+<br>
 </li>
 <li>
 New: <b>Added Error Output to Dropbox Client Creation (DropBox Error 400)</b>: [Issue <a href="https://github.com/2Abendsegler/GClh/pull/450">#450</a>]<br>
