@@ -2,7 +2,7 @@
 // @name             GC little helper II
 // @namespace        http://www.amshove.net
 //--> $$000 Begin of change
-// @version          0.8.8
+// @version          0.8.9
 //<-- $$000 End of change
 // @include          http*://www.geocaching.com/*
 // @include          http*://labs.geocaching.com/*
@@ -60,29 +60,14 @@ var quitOnAdFrames = function (c) {
 var browserInit = function (c) {
     var browserInitDeref = new jQuery.Deferred();
     c.CONFIG = {};
-    c.browser = "firefox";
-
-    if (typeof(chrome) != "undefined") {
-        c.browser = "chrome";
-        c.GM_setValue("browser", browser);
-        c.CONFIG = JSON.parse(GM_getValue("CONFIG", '{}'));
-        browserInitDeref.resolve();
-    } else if (browser === "firefox") {
-        // Check for Scriptish bug in Fennec browser (http://www.geoclub.de/viewtopic.php?f=117&t=62130&p=983614#p983614).
-        c.GM_setValue("browser", browser);
-        var test_browser = c.GM_getValue("browser");
-        if (!test_browser) {
-            var GM_getValue_Orig = c.GM_getValue;
-            c.GM_getValue = function (key, def) {
-                return GM_getValue_Orig("scriptvals.GClittlehelper@httpwww.amshove.net." + key, def);
-            };
-        }
-        c.CONFIG = JSON.parse(GM_getValue("CONFIG", '{}'));
-        browserInitDeref.resolve();
-    } else {
-        c.CONFIG = JSON.parse(GM_getValue("CONFIG", '{}'));
-        browserInitDeref.resolve();
-    }
+    // Browser ermitteln. Opera ... ist auch chrome.
+    c.browser = (typeof(chrome) !== "undefined") ? "chrome" : "firefox";
+    c.GM_setValue("browser", browser);
+    c.CONFIG = JSON.parse(GM_getValue("CONFIG", '{}'));
+    // Ist Tampermonkey der Scriptmanager.
+    c.isTM = (typeof GM_info != "undefined" && typeof GM_info.scriptHandler != "undefined" && GM_info.scriptHandler == "Tampermonkey") ? true : false;
+    c.GM_setValue("isTampermonkey", isTM);
+    browserInitDeref.resolve();
     return browserInitDeref.promise();
 };
 
@@ -626,45 +611,41 @@ var mainOSM = function () {
 ////////////////////////////////////////////////////////////////////////////
 (function(window){
     window.utils = {
-      parseQueryString: function(str) {
-        var ret = Object.create(null);
+        parseQueryString: function(str) {
+            var ret = Object.create(null);
 
-        if (typeof str !== 'string') {
-          return ret;
+            if (typeof str !== 'string') return ret;
+
+            str = str.trim().replace(/^(\?|#|&)/, '');
+
+            if (!str) return ret;
+
+            str.split('&').forEach(function (param) {
+                var parts = param.replace(/\+/g, ' ').split('=');
+                // Firefox (pre 40) decodes `%3D` to `=`
+                // https://github.com/sindresorhus/query-string/pull/37
+                var key = parts.shift();
+                var val = parts.length > 0 ? parts.join('=') : undefined;
+
+                key = decodeURIComponent(key);
+
+                // missing `=` should be `null`:
+                // http://w3.org/TR/2012/WD-url-20120524/#collect-url-parameters
+                val = val === undefined ? null : decodeURIComponent(val);
+
+                if (ret[key] === undefined) {
+                    ret[key] = val;
+                } else if (Array.isArray(ret[key])) {
+                    ret[key].push(val);
+                } else {
+                    ret[key] = [ret[key], val];
+                }
+            });
+
+            return ret;
         }
-
-        str = str.trim().replace(/^(\?|#|&)/, '');
-
-        if (!str) {
-          return ret;
-        }
-
-        str.split('&').forEach(function (param) {
-          var parts = param.replace(/\+/g, ' ').split('=');
-          // Firefox (pre 40) decodes `%3D` to `=`
-          // https://github.com/sindresorhus/query-string/pull/37
-          var key = parts.shift();
-          var val = parts.length > 0 ? parts.join('=') : undefined;
-
-          key = decodeURIComponent(key);
-
-          // missing `=` should be `null`:
-          // http://w3.org/TR/2012/WD-url-20120524/#collect-url-parameters
-          val = val === undefined ? null : decodeURIComponent(val);
-
-          if (ret[key] === undefined) {
-            ret[key] = val;
-          } else if (Array.isArray(ret[key])) {
-            ret[key].push(val);
-          } else {
-            ret[key] = [ret[key], val];
-          }
-        });
-
-        return ret;
-      }
     };
-  })(window);
+})(window);
 
 ////////////////////////////////////////////////////////////////////////////
 // Helper
@@ -675,7 +656,8 @@ var mainGC = function () {
     // var t = Date.now();
     // console.log("GClh: " + t + " | " + window.location);
     if ( ( document.location.href.match(/^https?:\/\/www\.geocaching\.com\/account\//) && !document.location.href.match(/account\/(settings|lists|messagecenter)/) ) ||
-         ( document.location.href.match(/^https?:\/\/www\.geocaching\.com\/p\//) ) ) {
+         ( document.location.href.match(/^https?:\/\/www\.geocaching\.com\/p\//) ) ||
+         ( document.location.href.match(/^https?:\/\/www\.geocaching\.com\/track\/$/) ) ) {
         // console.log("GClh: Unknown page, do nothing");
         return;
     }
@@ -825,7 +807,7 @@ var mainGC = function () {
 
 // Set global data.
     if (document.getElementsByClassName("li-user-info")[0] && document.getElementsByClassName("li-user-info")[0].children[1]) {
-        var global_me = document.getElementsByClassName("li-user-info")[0].children[1].innerHTML;
+        var global_me = decode_innerHTML(document.getElementsByClassName("li-user-info")[0].children[1]);
     }
 
 // Add layers, control to map and set default layers.
@@ -1166,6 +1148,8 @@ var mainGC = function () {
                 // Vertikales Menu weiter ausrichten.
                 if ( settings_bookmarks_top_menu ) {
                     style.innerHTML += "ul.#sm {margin-top: 15px; margin-left: 32px !important;} .submenu::after {left: 4px; width: 26px;}";
+                    // Zwischen Menüname und Submenü keine Lücke lassen, sonst klappt das nicht mit dem einfachen Aufklappen.
+                    style.innerHTML += ".#m > li .dropdown {padding-bottom: 14px !important;}";
                     if ( settings_menu_float_right ) style.innerHTML += "ul.#m > li {margin-top: 8px !important}";
                 // Horizontales Menu weiter ausrichten in Abhängigkeit von der Anzahl Zeilen.
                 } else {
@@ -1379,20 +1363,8 @@ var mainGC = function () {
                 else $(".Menu, .menu").append(searchfield);
             }
 
-            // Chrome menu hover fix.
-            if (browser == "chrome") {
-                injectPageScriptFunction(function () {
-                    $('ul.Menu, ul.menu').children().hover(function () {
-                            $(this).addClass('hover');
-                            $('ul:first', this).css('visibility', 'visible');
-                        },
-                        function () {
-                            $(this).removeClass('hover');
-                            $('ul:first', this).css('visibility', 'hidden');
-                        }
-                    );
-                 }, "()");
-            }
+            // Für Tampermonkey menu hover aufbauen.
+            if (isTM === true) buildHover();
 
             if ( settings_menu_show_separator ) {
                 if ( settings_bookmarks_top_menu || settings_change_header_layout == false );   // Navi vertikal
@@ -2041,10 +2013,7 @@ var mainGC = function () {
                         window.$(this).width(window.$(this).attr("data-item-original-width"));
                     });
                 }
-                if (browser === "firefox") {
-                    exportFunction(scrolify, unsafeWindow, {defineAs: "scrolify"});
-                    unsafeWindow.scrolify(unsafeWindow.$('#pqRepeater'), 300);
-                } else scrolify(unsafeWindow.$('#pqRepeater'), 300);
+                scrolify(unsafeWindow.$('#pqRepeater'), 300);
                 unsafeWindow.$('#ActivePQs').css("padding-right", "0px");
             }
         } catch (e) { gclh_error("Improve list of PQs:", e); }
@@ -3247,8 +3216,13 @@ var mainGC = function () {
                 var cellCoordinates = row1st.find("td:eq(6)");
                 var tmp_coords = toDec(cellCoordinates.text().trim());
                 if ( ( !settings_driving_direction_parking_area || icon.match(/pkg.jpg/g) ) && typeof tmp_coords[0] !== 'undefined' && typeof tmp_coords[1] !== 'undefined') {
-                    var link = "http://maps.google.com/maps?f=d&hl=en&saddr="+getValue("home_lat", 0)/10000000+","+getValue("home_lng", 0)/10000000+"%20(Home%20Location)&daddr=";
-                    row1st.find("td:last").append('<a title="Driving Directions" href="'+link+tmp_coords[0]+","+tmp_coords[1]+" ("+name+')" target="_blank"><img src="/images/icons/16/directions.png"></a>');
+                    if (getValue("home_lat", 0) != 0 && getValue("home_lng") != 0) {
+                        var link = "http://maps.google.com/maps?f=d&hl=en&saddr="+getValue("home_lat", 0)/10000000+","+getValue("home_lng", 0)/10000000+"%20(Home%20Location)&daddr=";
+                        row1st.find("td:last").append('<a title="Driving Directions" href="'+link+tmp_coords[0]+","+tmp_coords[1]+" ("+name+')" target="_blank"><img src="/images/icons/16/directions.png"></a>');
+                    } else {
+                        var link = document.location + "X#gclhpb#errhomecoord";
+                        row1st.find("td:last").append('<a title="Driving Directions" href="'+link+'"><img src="/images/icons/16/directions.png"></a>');
+                    }
                 }
             }
         } catch( e ) { gclh_error( "Driving direction for Waypoints: ", e ); }
@@ -3671,8 +3645,8 @@ var mainGC = function () {
     function brouterMapWaypoint( waypoint ) {
         return waypoint.longitude+','+waypoint.latitude;
     }
-    
-	function buildBrouterMapLink( waypoints, map, shortnames, status ) {
+
+    function buildBrouterMapLink( waypoints, map, shortnames, status ) {
         var url = "";
         var brouterWaypoints = [];
         var Latmax = -90.0;
@@ -3684,7 +3658,7 @@ var mainGC = function () {
         for ( var i=0; i<waypoints.length; i++) {
             var waypoint = waypoints[i];
             if ( waypoint !== undefined && waypoint.visible == true ) {
-				if ( waypoint.type == "listing" || waypoint.type == "waypoint" ) {
+                if ( waypoint.type == "listing" || waypoint.type == "waypoint" ) {
                     brouterWaypoints.push( brouterMapWaypoint( waypoint ) );
                     count++;
                 }
@@ -6590,7 +6564,7 @@ var mainGC = function () {
             var tbody = (document.getElementById("cache_logs_table2") || document.getElementById("cache_logs_table")).getElementsByTagName("tbody");
             if (tbody.length > 0) {
                 tbody = tbody[0];
-                if (tbody.children.length > 0 && browser != "chrome") {
+                if (tbody.children.length > 0 && isTM === false) {
                     var initialLogData = chromeUserData.initalLogs || unsafeWindow.initalLogs || initalLogs;
                     var inclAvatars = chromeUserData.includeAvatars || unsafeWindow.includeAvatars || includeAvatars;
                     var newInitalLogs = $("#tmpl_CacheLogRow").tmpl(initialLogData.data, {
@@ -6612,7 +6586,7 @@ var mainGC = function () {
 
             (document.getElementById("cache_logs_table2") || document.getElementById("cache_logs_table")).addEventListener('DOMNodeInserted', loadListener);
 
-            if (browser === "firefox") {
+            if (isTM === false) {
                 window.addEventListener("message", function (ev) {
                     if (ev.origin !== "https://www.geocaching.com" && ev.origin !== "https://www.geocaching.com") return;
                     if (ev.data === "gclh_add_vip_icon") gclh_add_vip_icon();
@@ -6667,6 +6641,7 @@ var mainGC = function () {
                 var gclh_currentPageIdx = 1, gclh_totalPages = 1;
                 var logInitialLoaded = false;
                 var browser = (typeof(chrome) !== "undefined") ? "chrome" : "firefox";
+                var isTM = (typeof GM_info != "undefined" && typeof GM_info.scriptHandler != "undefined" && GM_info.scriptHandler == "Tampermonkey") ? true : false;
 
                 unsafeWindow.$(window).endlessScroll({
                     fireOnce: true,
@@ -6680,8 +6655,7 @@ var mainGC = function () {
                         if (!isBusy && !document.getElementById("gclh_all_logs_marker")) {
                             isBusy = true;
                             $("#pnlLazyLoad").show();
-
-                            if (browser === "firefox") {
+                            if (isTM === false) {
                                 var logsToAdd = logs.slice(num, num + 10);
                                 addNewLogLines(encodeURIComponent(JSON.stringify(logsToAdd)));
                                 num += logsToAdd.length;
@@ -6718,7 +6692,7 @@ var mainGC = function () {
                             for (var i = 0; i < tbodys.length; i++) {
                                 (document.getElementById("cache_logs_table2") || document.getElementById("cache_logs_table")).removeChild(tbodys[i]);
                             }
-                            if (browser === "firefox") {
+                            if (isTM === false) {
                                 injectPageScript("var unsafeWindow = unsafeWindow||window; " + gclh_dynamic_load.toString() + " var settings_hide_top_button=" + settings_hide_top_button + "; ");
                                 injectPageScript("(" + addNewLogLines.toString() + ")(\"" + encodeURIComponent(JSON.stringify(logs)) + "\");");
                                 window.postMessage("gclh_add_vip_icon", "https://www.geocaching.com");
@@ -6766,7 +6740,7 @@ var mainGC = function () {
                     for (var i = 0; i < tbodys.length; i++) {
                         (document.getElementById("cache_logs_table2") || document.getElementById("cache_logs_table")).removeChild(tbodys[i]);
                     }
-                    if (browser === "firefox") {
+                    if (isTM === false) {
                         var logsToAdd = [];
                         for (var i = 0; i < logs.length; i++) {
                             if (logs[i] && (logs[i].LogType == log_type || (log_type == "VIP" && (in_array(logs[i].UserName, global_vips) || logs[i].UserName == vip_owner)))) {
@@ -6853,7 +6827,7 @@ var mainGC = function () {
                     for (var i = 0; i < tbodys.length; i++) {
                         (document.getElementById("cache_logs_table2") || document.getElementById("cache_logs_table")).removeChild(tbodys[i]);
                     }
-                    if (browser === "firefox") {
+                    if (isTM === false) {
                         var logsToAdd = [];
                         for (var i = 0; i < logs.length; i++) {
                             if (logs[i] && (logs[i].UserName.match(regexp) || logs[i].LogText.match(regexp))) {
@@ -6951,8 +6925,7 @@ var mainGC = function () {
                     } else {
                         disablePageAutoScroll();
                     }
-
-                    if (browser !== "firefox") {
+                    if (isTM === true) {
                         (document.getElementById("cache_logs_table2") || document.getElementById("cache_logs_table")).removeEventListener('DOMNodeInserted', loadListener);
                     }
 
@@ -7000,7 +6973,7 @@ var mainGC = function () {
                     gclh_filter(logs);
                     gclh_search(logs);
 
-                    if (browser === "firefox") {
+                    if (isTM === false) {
                         var logsToAdd = logs.slice(0, num);
                         injectPageScript("var unsafeWindow = unsafeWindow||window; " + gclh_dynamic_load.toString() + " var settings_hide_top_button=" + settings_hide_top_button + "; ");
                         injectPageScript(addNewLogLines.toString());
@@ -7148,21 +7121,27 @@ var mainGC = function () {
 // Save HomeCoords.
     if (document.location.href.match(/^https?:\/\/www\.geocaching\.com\/account\/settings\/homelocation/)) {
         try {
-            saveHomeCoords();
-            document.getElementById('Query').addEventListener('change', saveHomeCoords, false);
+            function saveHomeCoordsWait(waitCount) {
+                if (document.getElementById('Query')) {
+                    saveHomeCoords();
+                    document.getElementById('Query').addEventListener('change', saveHomeCoords, false);
+                } else {
+                    waitCount++;
+                    if (waitCount <= 20) setTimeout( function () { saveHomeCoordsWait(waitCount); }, 100);
+                }
+            }
+            saveHomeCoordsWait(0);
         } catch (e) { gclh_error('Save Homecoords:', e); }
     }
     function saveHomeCoords() {
-        if (document.getElementById('Query')) {
-            var link = document.getElementById('Query');
-            if (link) {
-                var match = link.value.match(/((N|S) ([0-9]+)° ([0-9]+)\.([0-9]+)′ (E|W) ([0-9]+)° ([0-9]+)\.([0-9]+)′)/);
-                if (match && match[1]) {
-                    match[1] = match[1].replace(/′/g, '');
-                    var latlng = toDec(match[1]);
-                    if (getValue('home_lat', 0) != parseInt(latlng[0] * 10000000)) setValue('home_lat', parseInt(latlng[0] * 10000000));
-                    if (getValue('home_lng', 0) != parseInt(latlng[1] * 10000000)) setValue('home_lng', parseInt(latlng[1] * 10000000));
-                }
+        var link = document.getElementById('Query');
+        if (link) {
+            var match = link.value.match(/((N|S) ([0-9]+)° ([0-9]+)\.([0-9]+)′ (E|W) ([0-9]+)° ([0-9]+)\.([0-9]+)′)/);
+            if (match && match[1]) {
+                match[1] = match[1].replace(/′/g, '');
+                var latlng = toDec(match[1]);
+                if (getValue('home_lat', 0) != parseInt(latlng[0] * 10000000)) setValue('home_lat', parseInt(latlng[0] * 10000000));
+                if (getValue('home_lng', 0) != parseInt(latlng[1] * 10000000)) setValue('home_lng', parseInt(latlng[1] * 10000000));
             }
         }
     }
@@ -7665,7 +7644,7 @@ var mainGC = function () {
             if (settings_remove_banner_to_mylists_old) $('#activationAlert').find('div.container').find('a[href*="/my/lists.aspx"]').closest('#activationAlert').remove();
             if (settings_remove_banner_for_garminexpress) $('#Content').find('div.banner').find('#uxSendToGarminBannerLink').closest('div.banner').remove();
             if (settings_remove_banner_blue && $('div.banner').length == 1 && $('div.banner').find('div.wrapper a.btn').length == 1) {
-                var styles = window.getComputedStyle($('div.banner')[0]); 
+                var styles = window.getComputedStyle($('div.banner')[0]);
                 if (styles && ( styles.backgroundColor == "rgb(70, 135, 223)" || styles.backgroundColor == "rgb(61, 118, 197)") ) $('div.banner').remove();
             }
         } catch (e) { gclh_error("Remove banner:", e); }
@@ -8232,7 +8211,7 @@ var mainGC = function () {
 //--> $$000 Begin of change
         var code = '<img src="https://c.andyhoppe.com/1485103563"' + prop +
                    '<img src="https://c.andyhoppe.com/1485234890"' + prop +
-                   '<img src="https://s07.flagcounter.com/countxl/mHeY/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
+                   '<img src="https://s09.flagcounter.com/count2/Mf9D/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
 //<-- $$000 End of change
         div.innerHTML = code;
         side.appendChild(div);
@@ -8243,6 +8222,13 @@ var mainGC = function () {
             var text = "Version " + scriptVersion + " of  \"" + scriptName + "\"  was successfully installed.\n\n"
                      + "Do you want to open the changelog in a new tab, to have a quick\n"
                      + "look at changes and new features?\n";
+//--> $$000 Begin of change
+            if (browser === "firefox" && isTM === false) {
+               var text = "Version " + scriptVersion + " of  \"" + scriptName + "\"  was successfully installed.\n\n"
+                        + "DEAR FIREFOX USER, PLEASE CHECK THE CHANGELOG!\n\n"
+                        + "Do you want to open the changelog in a new tab?\n";
+            }
+//<-- $$000 End of change
             if (window.confirm(text)) window.open(url, '_blank');
         }, 1000);
     }
@@ -10935,7 +10921,8 @@ var mainGC = function () {
                 kkey.match(/^(show_box|friends_founds_|friends_hides_)/) ||
                 kkey.match(/^gclh_(.*)(_logs_get_last|_logs_count)$/)       ) {
                 config_tmp[key] = CONFIG[key];
-            } else if (kkey.match(/autovisit_(\d+)/)) {
+            } else if (kkey.match(/autovisit_(\d+)/) ||
+                       kkey.match(/^(settings_DB_auth_token)$/) ) {
                 changed = true;
                 document.getElementById('rc_configData').innerText += "delete: " + key + ": " + CONFIG[key] + "\n";
             } else if (data.match(kkey)) {
@@ -11027,6 +11014,8 @@ var mainGC = function () {
                     deferred.resolve();
                 })
                 .catch(function(error) {
+                    console.error('gclh_sync_DB_CheckAndCreateClient: Error while creating Dropbox Client:');
+                    console.error(error);
                     deferred.reject();
                 });
 
@@ -11046,7 +11035,7 @@ var mainGC = function () {
         // Set the login anchors href using dropbox_client.getAuthenticationUrl()
         dropbox_auth_client = new Dropbox({ clientId: APP_ID });
         authlink = document.getElementById('authlink');
-        authlink.href = dropbox_auth_client.getAuthenticationUrl(window.location.protocol + '//' + window.location.hostname + window.location.pathname);
+        authlink.href = dropbox_auth_client.getAuthenticationUrl('https://www.geocaching.com/my/default.aspx');
 
         $(authlink).show();
 
@@ -11078,7 +11067,7 @@ var mainGC = function () {
                 $('#syncDBLoader').hide();
                 return deferred.promise();
             });
-        
+
         $('#syncDBLoader').show();
 
         dropbox_client.filesUpload({

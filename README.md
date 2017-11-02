@@ -7,7 +7,9 @@
 <br>
 Der *GC little helper II* ist ein Tool zur Verbesserung und Erweiterung der Geocaching Seiten auf www.geocaching.com. Alle Funktionen können flexibel über einen Konfigurator eingestellt werden. Das Tool ist in englisch. 
 
-Das Tool ist in Javascript entwickelt und läuft unter Mozilla Firefox als Greasemonkey Script und unter Google Chrome, Opera, Microsoft Edge und Vivaldi als Tampermonkey Script. Es ist kostenlos und für jeden zugänglich.
+Es ist kostenlos und ohne Werbung. 
+
+Das Tool ist in Javascript entwickelt und läuft mit Script-Manager Greasemonkey oder Tampermonkey unter Mozilla Firefox und mit Script-Manager Tampermonkey unter Google Chrome, Opera, Microsoft Edge und Vivaldi.
 
 [Hier](https://github.com/2Abendsegler/GClh/blob/master/docu/overview_screenshots.md#readme) gibt es einige ausgesuchte Screenshots von den Geocaching Seiten bei Verwendung des *GC little helper II*. 
 
