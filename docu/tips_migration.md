@@ -47,9 +47,9 @@ Den "GC little helper Sync II" gibt es im <a href="http://www.geocaching.com/my/
 ### 6. Konfiguration des "GC little helper II" in Firefox von Greasemonkey nach Tampermonkey kopieren:<a id="6"></a>
 <ul>
 <li>Aktiviert Script-Manager Greasemonkey und deaktiviert Script-Manager Tampermonkey.</li>
-<li>Geht ins <a href="http://www.geocaching.com/my/">eigene Profil</a> und wählt neben dem Avatar den "GClh Sync II" aus oder wählt alternativ folgenden <a href="https://www.geocaching.com/geocache/GC40_geocache#GClhShowSync">Link</a>.</li>
+<li>Geht ins <a href="http://www.geocaching.com/my/">eigene Profil</a> und wählt neben dem Avatar den "GClh Sync II" aus oder wählt alternativ folgenden <a href="https://www.geocaching.com/geocache/GC40#GClhShowSync">Link</a>.</li>
 <li>Wählt dann "Manual" und den Button "export". Im Fenster dann mit rechter Maustaste "Alles markieren" und anschließend mit rechter Maustaste "kopieren" und dann Button "close".</li>
 <li>Deaktiviert Script-Manager Greasemonkey und aktiviert Script-Manager Tampermonkey.</li>
-<li>Geht ins <a href="http://www.geocaching.com/my/">eigene Profil</a> und wählt neben dem Avatar den "GClh Sync II" aus oder wählt alternativ folgenden <a href="https://www.geocaching.com/geocache/GC40_geocache#GClhShowSync">Link</a>.</li>
+<li>Geht ins <a href="http://www.geocaching.com/my/">eigene Profil</a> und wählt neben dem Avatar den "GClh Sync II" aus oder wählt alternativ folgenden <a href="https://www.geocaching.com/geocache/GC40#GClhShowSync">Link</a>.</li>
 <li>Wählt dann "Manual". Im Fenster dann mit rechter Maustaste "Einfügen" und anschließend den Button "import" wählen.</li>
 </ul>
