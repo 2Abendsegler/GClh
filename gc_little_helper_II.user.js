@@ -656,7 +656,8 @@ var mainGC = function () {
     // var t = Date.now();
     // console.log("GClh: " + t + " | " + window.location);
     if ( ( document.location.href.match(/^https?:\/\/www\.geocaching\.com\/account\//) && !document.location.href.match(/account\/(settings|lists|messagecenter)/) ) ||
-         ( document.location.href.match(/^https?:\/\/www\.geocaching\.com\/p\//) ) ) {
+         ( document.location.href.match(/^https?:\/\/www\.geocaching\.com\/p\//) ) ||
+         ( document.location.href.match(/^https?:\/\/www\.geocaching\.com\/track\/$/) ) ) {
         // console.log("GClh: Unknown page, do nothing");
         return;
     }
