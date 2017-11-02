@@ -35,6 +35,7 @@ New: <b>Make Tampermonkey possible in Firefox</b>: [Issue <a href="https://githu
 <li>
 New: <b>Added Error Output to Dropbox Client Creation (DropBox Error 400)</b>: [Issue <a href="https://github.com/2Abendsegler/GClh/pull/450">#450</a>]<br>
 Many thanks to <a href="https://www.geocaching.com/profile/?u=Ruko2010">Ruko2010</a> for the implementation.<br>
+<br>
 </li>
 <li>
 Fix: <b>DropBox Authentificate does not work with all of the gc pages (DropBox Error 400)</b>: [Issue <a href="https://github.com/2Abendsegler/GClh/pull/447">#447</a>]<br>
