@@ -44,7 +44,7 @@ Den "GC little helper Sync II" gibt es im <a href="http://www.geocaching.com/my/
 <br>
 
 
-### 6. Konfiguration des "GC little helper II" in Mozilla Firefox von Script-Manager Greasemonkey nach Script-Manager Tampermonkey kopieren:<a id="6"></a>
+### 6. Konfiguration des "GC little helper II" in Firefox von Greasemonkey nach Tampermonkey kopieren:<a id="6"></a>
 <ul>
 <li>Aktiviert Script-Manager Greasemonkey und deaktiviert Script-Manager Tampermonkey.</li>
 <li>Geht ins <a href="http://www.geocaching.com/my/">eigene Profil</a> und wählt neben dem Avatar den "GClh Sync II" aus oder wählt alternativ folgenden <a href="https://www.geocaching.com/geocache/GC40_geocache#GClhShowSync">Link</a>.</li>
