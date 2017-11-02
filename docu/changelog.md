@@ -31,6 +31,7 @@
 <ul>
 <li>
 New: <b>Make Tampermonkey possible in Firefox</b>: [Issue <a href="https://github.com/2Abendsegler/GClh/pull/451">#451</a>]<br>
+<br>
 <b>Firefox User, bitte beachten:</b>
 <br>
   
