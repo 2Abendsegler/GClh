@@ -613,11 +613,8 @@ var mainOSM = function () {
     window.utils = {
         parseQueryString: function(str) {
             var ret = Object.create(null);
-
             if (typeof str !== 'string') return ret;
-
             str = str.trim().replace(/^(\?|#|&)/, '');
-
             if (!str) return ret;
 
             str.split('&').forEach(function (param) {
@@ -1037,10 +1034,8 @@ var mainGC = function () {
 
             // Message Center Icon entfernen.
             if (settings_show_smaller_area_top_right && settings_remove_message_in_header) $('.messagecenterheaderwidget').remove();
-
             // Username auf 115px begrenzen.
             if (settings_show_smaller_area_top_right) style.innerHTML += ".user-name, .username {max-width: 115px !important;}";
-
             // Geocaching Logo ersetzen und verschieben, sofern das gewünscht ist.
             if ( $('.logo').get(0) ) {
                 var side = $('.logo').get(0);
@@ -10969,7 +10964,7 @@ var mainGC = function () {
         return JSON.stringify(data, undefined, 2);
     }
 
-    function sync_setConfigData(data){
+    function sync_setConfigData(data) {
         var parsedData = JSON.parse(data);
         var settings = {};
         for(key in parsedData){
@@ -10984,23 +10979,23 @@ var mainGC = function () {
     var dropbox_client = null;
     var dropbox_save_path = '/GCLittleHelperSettings.json';
 
-    // Save dropbox auth token if one is passed (from Dropbox)
+// Save dropbox auth token if one is passed (from Dropbox).
     var DB_token = utils.parseQueryString(window.location.hash).access_token;
-    if(DB_token){
-        // gerade von DB zurück, also Show config
+    if (DB_token) {
+        // gerade von DB zurück, also Show config.
         setValue('settings_DB_auth_token', DB_token);
         document.getElementById('gclh_sync_lnk').click();
         document.getElementById('syncDBLabel').click();
-    }else{
+    } else {
         // Maybe the user denies Access (this is mostly an unwanted click), so show him, that he
-        // has refused to give us access to his dropbox and that he can re-auth if he want to
-        error = utils.parseQueryString(window.location.hash).error_description
-        if(error){
+        // has refused to give us access to his dropbox and that he can re-auth if he want to.
+        error = utils.parseQueryString(window.location.hash).error_description;
+        if (error) {
             alert('We received the following error from dropbox: "' + error + '" If you think this is a mistake, you can try to re-authenticate in the sync menue of GClh.');
         }
     }
 
-    // Created the Dropbox Client with the given auth token from config.
+// Created the Dropbox Client with the given auth token from config.
     function gclh_sync_DB_CheckAndCreateClient() {
         var deferred = $.Deferred();
         token = getValue('settings_DB_auth_token');
@@ -11018,8 +11013,7 @@ var mainGC = function () {
                     console.error(error);
                     deferred.reject();
                 });
-
-        }else{
+        } else {
             // No token was givven, user has to (re)auth GClh for dropbox
             dropbox_client = null;
             deferred.reject();
@@ -11028,8 +11022,8 @@ var mainGC = function () {
         return deferred.promise();
     }
 
-    // If the Dropbox Client could not be instantiated (because of wrong token, App deleted or not authenticated at all), this will show the Auth link.
-    function gclh_sync_DB_showAuthLink(){
+// If the Dropbox Client could not be instantiated (because of wrong token, App deleted or not authenticated at all), this will show the Auth link.
+    function gclh_sync_DB_showAuthLink() {
         var APP_ID = 'zp4u1zuvtzgin6g';
         // If client could not created, try to get a new Auth token
         // Set the login anchors href using dropbox_client.getAuthenticationUrl()
@@ -11038,24 +11032,20 @@ var mainGC = function () {
         authlink.href = dropbox_auth_client.getAuthenticationUrl('https://www.geocaching.com/my/default.aspx');
 
         $(authlink).show();
-
         $('#btn_DBSave').hide();
         $('#btn_DBLoad').hide();
-
         $('#syncDBLoader').hide();
     }
 
-
-    // If the Dropbox Client is instantiated and the connection stands, this funciton shows the load and save buttons
-    function gclh_sync_DB_showSaveLoadLinks(){
+// If the Dropbox Client is instantiated and the connection stands, this funciton shows the load and save buttons.
+    function gclh_sync_DB_showSaveLoadLinks() {
         $('#btn_DBSave').show();
         $('#btn_DBLoad').show();
-
         $('#syncDBLoader').hide();
         $('#authlink').hide();
     }
 
-    // Saves the current config to dropbox.
+// Saves the current config to dropbox.
     function gclh_sync_DBSave() {
         var deferred = $.Deferred();
 
@@ -11090,7 +11080,7 @@ var mainGC = function () {
         return deferred.promise();
     }
 
-    // Loads the config from dropbox and replaces the current configuration with it.
+// Loads the config from dropbox and replaces the current configuration with it.
     function gclh_sync_DBLoad() {
         var deferred = $.Deferred();
 
@@ -11107,11 +11097,11 @@ var mainGC = function () {
         dropbox_client.filesDownload({path: dropbox_save_path})
             .then(function (data) {
                 var blob = data.fileBlob;
-                var reader = new FileReader()
+                var reader = new FileReader();
                 reader.addEventListener("loadend", function () {
                     sync_setConfigData(reader.result);
                     deferred.resolve();
-                })
+                });
                 reader.readAsText(blob);
                 $('#syncDBLoader').hide();
             }).catch(function (error) {
@@ -11123,7 +11113,7 @@ var mainGC = function () {
         return deferred.promise();
     }
 
-    // Gets the hash of the saved config, so we can determine if we have to apply the config loaded from dropbox via autosync.
+// Gets the hash of the saved config, so we can determine if we have to apply the config loaded from dropbox via autosync.
     function gclh_sync_DBHash() {
         var deferred = $.Deferred();
 
