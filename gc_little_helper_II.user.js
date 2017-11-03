@@ -10994,7 +10994,7 @@ var mainGC = function () {
     }else{
         // Maybe the user denies Access (this is mostly an unwanted click), so show him, that he
         // has refused to give us access to his dropbox and that he can re-auth if he want to
-        error = utils.parseQueryString(window.location.hash).error_description
+        error = utils.parseQueryString(window.location.hash).error_description;
         if(error){
             alert('We received the following error from dropbox: "' + error + '" If you think this is a mistake, you can try to re-authenticate in the sync menue of GClh.');
         }
@@ -11107,11 +11107,11 @@ var mainGC = function () {
         dropbox_client.filesDownload({path: dropbox_save_path})
             .then(function (data) {
                 var blob = data.fileBlob;
-                var reader = new FileReader()
+                var reader = new FileReader();
                 reader.addEventListener("loadend", function () {
                     sync_setConfigData(reader.result);
                     deferred.resolve();
-                })
+                });
                 reader.readAsText(blob);
                 $('#syncDBLoader').hide();
             }).catch(function (error) {
