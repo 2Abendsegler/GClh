@@ -1,3 +1,4 @@
+<a href="#v0810" title="GClh II version 0.8.10 (??.??.2017)">v0.8.10</a> &nbsp;
 <a href="#v089" title="GClh II version 0.8.9 (03.11.2017)">v0.8.9</a> &nbsp;
 <a href="#v088" title="GClh II version 0.8.8 (25.10.2017)">v0.8.8</a> &nbsp;
 <a href="#v087" title="GClh II version 0.8.7 (25.10.2017)">v0.8.7</a> &nbsp;
@@ -25,6 +26,19 @@
 <a href="#v022" title="GClh II version 0.2.2 (09.01.2017)">v0.2.2</a> &nbsp; 
 <a href="#v021" title="GClh II version 0.2.1 (05.01.2017)">v0.2.1</a> &nbsp; 
 <a href="#v01" title="GClh II version 0.1 (05.01.2017)">v0.1</a> &nbsp; 
+
+---
+## v0.8.10:
+<ul>
+<li>
+Fix: <b>Different colors for menu and dropdown lists.</b>: [Issue <a href="https://github.com/2Abendsegler/GClh/pull/460">#460</a>]<br>
+<img src="../images/v0.8.10_Screen01.jpg" alt="v0.8.10_Screen01.jpg"><br>
+Settings -> Linklist / Navigation:<br>
+<img src="../images/v0.8.10_Screen02.jpg" alt="v0.8.10_Screen02.jpg"><br>
+</li>
+</ul>
+(??.??.2017)<br> 
+<br>
 
 ---
 ## v0.8.9:
