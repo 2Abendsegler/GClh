@@ -235,6 +235,8 @@ var variablesInit = function (c) {
     c.settings_distance_menu = getValue("settings_distance_menu", 8);
     c.settings_distance_submenu = getValue("settings_distance_submenu", 8);
     c.settings_font_color_menu_submenu = getValue("settings_font_color_menu_submenu", "93B516");
+    c.settings_font_color_menu = getValue("settings_font_color_menu", getValue("settings_font_color_menu_submenu", "93B516"));
+    c.settings_font_color_submenu = getValue("settings_font_color_submenu", getValue("settings_font_color_menu_submenu", "93B516"));
     c.settings_menu_number_of_lines = getValue("settings_menu_number_of_lines", 1);
     c.settings_menu_show_separator = getValue("settings_menu_show_separator", false);
     c.settings_menu_float_right = getValue("settings_menu_float_right", false);
@@ -950,8 +952,10 @@ var mainGC = function () {
             else distance_submenu = ( distance_submenu );                                           // ( ... / 2 )
 
             // Font-Color in Menüs und Untermenüs.
-            var font_color = settings_font_color_menu_submenu;
-            if ( font_color == "" ) { font_color = "93B516"; };
+            var font_color_menu = settings_font_color_menu;
+            if ( font_color_menu == "" ) font_color_menu = "93B516";
+            var font_color_submenu = settings_font_color_submenu;
+            if ( font_color_submenu == "" ) font_color_submenu = "93B516";
 
             // Menüweite berechnen.
             var new_width = 950;
@@ -991,12 +995,12 @@ var mainGC = function () {
             // Global verwendete Attribute zur Darstellung der Objekte im Header setzen.
             style.innerHTML +=
                 // Schriftfarbe im Menü setzen. Bei Auswahl in weiss.
-                ".#m li a, .#m li a:link, .#m li a:visited, .#m li {color: #" + font_color + " !important;}" +
+                ".#m li a, .#m li a:link, .#m li a:visited, .#m li {color: #" + font_color_menu + " !important;}" +
                 ".#m li a:hover, .#m li a:focus {color: #FFFFFF !important; outline: unset !important;}" +
                 // Menü nicht flex ausgeben.
                 ".#m {display: unset}" +
                 // Schriftfarbe im Untermenü setzen.
-                ".#sm li a:visited {color: #" + font_color + " !important;}" +
+                ".#sm li a, .#sm li a:link, .#sm li a:visited, .#sm li {color: #" + font_color_submenu + " !important;}" +
                 // Schriftgröße im Menü auf 16 stellen.
                 ".#m {font-size: 16px !important;}" +
                 // Schriftgröße im Menü einstellen.
@@ -9389,8 +9393,8 @@ var mainGC = function () {
             html += "<input type='radio' " + (settings_bookmarks_top_menu ? "checked='checked'" : "" ) + " name='top_menu' id='settings_bookmarks_top_menu' style='margin-top: 9px;'> Show Linklist at menu as drop-down list" + show_help("With this option your Linklist will be shown at the navigation menu as a drop-down list beside the others.<br><br>This option requires \"Change header layout\".") + "<br>";
             html += "<div id='box_top_menu_v' style='margin-left: 21px; margin-bottom: 2px; height: 141px;' >";
             html += checkboxy('settings_menu_float_right', 'Arrange the menu right') + show_help("With this option you can arrange the navigation menu with the Linklist and the other drop-down lists in the right direction. The default is an orientation in the left direction.<br><br>This option requires \"Change header layout\" and \"Show Linklist on top\".") + "<br/>";
-            html += "&nbsp;" + "Font color: <input class='gclh_form color' type='text' size=5 id='settings_font_color_menu_submenu' value='" + getValue("settings_font_color_menu_submenu", "93B516") + "'>";
-            html += "<img src=" + global_restore_icon + " id='restore_settings_font_color_menu_submenu' title='back to default' style='width: 12px; cursor: pointer;'>" + show_help("With this option you can choose the font color at the navigation menu and the drop-down lists. The default font color is 93B516 (lime green).<br><br>This option requires \"Change header layout\".") + "<br>";
+            html += "&nbsp;" + "Font color at menu: <input class='gclh_form color' type='text' size=5 id='settings_font_color_menu' value='" + getValue("settings_font_color_menu", "93B516") + "'>";
+            html += "<img src=" + global_restore_icon + " id='restore_settings_font_color_menu' title='back to default' style='width: 12px; cursor: pointer;'>" + show_help("With this option you can choose the font color at the navigation menu. The default font color is 93B516 (lime green).<br><br>This option requires \"Change header layout\".") + "<br>";
             html += "&nbsp;" + "Font size at menu: <select class='gclh_form' id='settings_font_size_menu' style='margin-left: 116px;'>";
             for ( var i = 6; i < 17; i++ ) {
                 html += "  <option value='" + i + "' " + (settings_font_size_menu == i ? "selected=\"selected\"" : "") + ">" + i + "</option>";
@@ -9401,6 +9405,8 @@ var mainGC = function () {
                 html += "  <option value='" + i + "' " + (settings_distance_menu == i ? "selected=\"selected\"" : "") + ">" + i + "</option>";
             }
             html += "</select> px" + show_help("With this option you can choose the distance between the navigation menu entries in horizontal direction in pixel. <br><br>This option requires \"Change header layout\".") + "<br>";
+            html += "&nbsp;" + "Font color at drop-down lists: <input class='gclh_form color' type='text' size=5 id='settings_font_color_submenu' value='" + getValue("settings_font_color_submenu", "93B516") + "'>";
+            html += "<img src=" + global_restore_icon + " id='restore_settings_font_color_submenu' title='back to default' style='width: 12px; cursor: pointer;'>" + show_help("With this option you can choose the font color at the drop-down lists. The default font color is 93B516 (lime green).<br><br>This option requires \"Change header layout\".") + "<br>";
             html += "&nbsp;" + "Font size at drop-down lists: <select class='gclh_form' id='settings_font_size_submenu' style='margin-left: 44px;'>";
             for ( var i = 6; i < 17; i++ ) {
                 html += "  <option value='" + i + "' " + (settings_font_size_submenu == i ? "selected=\"selected\"" : "") + ">" + i + "</option>";
@@ -9414,9 +9420,9 @@ var mainGC = function () {
             html += "</div>";
 
             html += "<input type='radio' " + (settings_bookmarks_top_menu ? "" : "checked='checked'" ) + " name='top_menu' id='settings_bookmarks_top_menu_h'> Show Linklist in horizontal direction" + show_help("If you enable this option, the links in your Linklist will be shown direct on the top of the page - side by side.<br><br>This option requires \"Change header layout\" and \"Show Linklist on top\".") + "<br>";
-            html += "<div id='box_top_menu_h' style='margin-left: 21px; height: 138px;' >";
-            html += "&nbsp;" + "Font color: <input class='gclh_form color' type='text' size=5 id='settings_font_color_menu_submenuX0' value='" + getValue("settings_font_color_menu_submenu", "93B516") + "'>";
-            html += "<img src=" + global_restore_icon + " id='restore_settings_font_color_menu_submenuX0' title='back to default' style='width: 12px; cursor: pointer;'>" + show_help("With this option you can choose the font color at the links. The default font color is 93B516 (lime green).<br><br>This option requires \"Change header layout\" and \"Show Linklist on top\".") + "<br>";
+            html += "<div id='box_top_menu_h' style='margin-left: 21px; height: 188px;' >";
+            html += "&nbsp;" + "Font color at menu: <input class='gclh_form color' type='text' size=5 id='settings_font_color_menuX0' value='" + getValue("settings_font_color_menu", "93B516") + "'>";
+            html += "<img src=" + global_restore_icon + " id='restore_settings_font_color_menuX0' title='back to default' style='width: 12px; cursor: pointer;'>" + show_help("With this option you can choose the font color at the links. The default font color is 93B516 (lime green).<br><br>This option requires \"Change header layout\" and \"Show Linklist on top\".") + "<br>";
             html += "&nbsp;" + "Font size at the links: <select class='gclh_form' id='settings_font_size_menuX0' style='margin-left: 43px;'>";
             for ( var i = 6; i < 17; i++ ) {
                 html += "  <option value='" + i + "' " + (settings_font_size_menu == i ? "selected=\"selected\"" : "") + ">" + i + "</option>";
@@ -9433,6 +9439,8 @@ var mainGC = function () {
             html += "  <option value=\"3\" " + (settings_menu_number_of_lines == "3" ? "selected=\"selected\"" : "") + ">3</option>";
             html += "</select>" + show_help("With this option you can choose the number of lines which are necessary to include all the links of the Linklist in the header of the page.<br><br>This option requires \"Change header layout\" and \"Show Linklist on top\".") + "<br>";
             html += "<input type='checkbox' " + (getValue('settings_menu_show_separator') ? "checked='checked'" : "" ) + " id='settings_menu_show_separator'> Show separator between the links" + show_help("This option requires \"Change header layout\" and \"Show Linklist on top\".") + "<br>";
+            html += "&nbsp;" + "Font color at gc.com drop-down lists: <input class='gclh_form color' type='text' size=5 id='settings_font_color_submenuX0' value='" + getValue("settings_font_color_submenu", "93B516") + "'>";
+            html += "<img src=" + global_restore_icon + " id='restore_settings_font_color_submenuX0' title='back to default' style='width: 12px; cursor: pointer;'>" + show_help("With this option you can choose the font color at the gc.com drop-down lists. The default font color is 93B516 (lime green).<br><br>This option requires \"Change header layout\" and \"Show Linklist on top\".") + "<br>";
             html += "&nbsp;" + "Font size at gc.com drop-down lists: <select class='gclh_form' id='settings_font_size_submenuX0' style='margin-left: 44px;'>";
             for ( var i = 6; i < 17; i++ ) {
                 html += "  <option value='" + i + "' " + (settings_font_size_submenu == i ? "selected=\"selected\"" : "") + ">" + i + "</option>";
@@ -9830,8 +9838,10 @@ var mainGC = function () {
             document.getElementById('restore_settings_lines_color_owner').addEventListener("click", restoreField, false);
             document.getElementById('restore_settings_lines_color_reviewer').addEventListener("click", restoreField, false);
             document.getElementById('restore_settings_lines_color_vip').addEventListener("click", restoreField, false);
-            document.getElementById('restore_settings_font_color_menu_submenu').addEventListener("click", restoreField, false);
-            document.getElementById('restore_settings_font_color_menu_submenuX0').addEventListener("click", restoreField, false);
+            document.getElementById('restore_settings_font_color_menu').addEventListener("click", restoreField, false);
+            document.getElementById('restore_settings_font_color_menuX0').addEventListener("click", restoreField, false);
+            document.getElementById('restore_settings_font_color_submenu').addEventListener("click", restoreField, false);
+            document.getElementById('restore_settings_font_color_submenuX0').addEventListener("click", restoreField, false);
             document.getElementById('restore_settings_count_own_matrix_show_color_next').addEventListener("click", restoreField, false);
             document.getElementById('settings_process_vup').addEventListener("click", alert_settings_process_vup, false);
             document.getElementById('settings_process_vupX0').addEventListener("click", alert_settings_process_vup, false);
@@ -9844,8 +9854,10 @@ var mainGC = function () {
             setEventsForDoubleParameters( "settings_process_vup", "click" );
             setEventsForDoubleParameters( "settings_show_vup_friends", "click" );
             setEventsForDoubleParameters( "settings_log_inline_tb", "click" );
-            setEventsForDoubleParameters( "settings_font_color_menu_submenu", "input" );
-            setEventsForDoubleParameters( "settings_font_color_menu_submenu", "change" );
+            setEventsForDoubleParameters( "settings_font_color_menu", "input" );
+            setEventsForDoubleParameters( "settings_font_color_menu", "change" );
+            setEventsForDoubleParameters( "settings_font_color_submenu", "input" );
+            setEventsForDoubleParameters( "settings_font_color_submenu", "change" );
             setEventsForDoubleParameters( "settings_font_size_menu", "input" );
             setEventsForDoubleParameters( "settings_distance_menu", "input" );
             setEventsForDoubleParameters( "settings_font_size_submenu", "input" );
@@ -9869,8 +9881,10 @@ var mainGC = function () {
             setEventsForDependentParameters( "settings_show_smaller_area_top_right", "settings_remove_message_in_header" );
             setEventsForDependentParameters( "settings_change_header_layout", "settings_gc_tour_is_working" );
             setEventsForDependentParameters( "settings_change_header_layout", "settings_fixed_header_layout" );
-            setEventsForDependentParameters( "settings_change_header_layout", "settings_font_color_menu_submenu" );
-            setEventsForDependentParameters( "settings_change_header_layout", "restore_settings_font_color_menu_submenu" );
+            setEventsForDependentParameters( "settings_change_header_layout", "settings_font_color_menu" );
+            setEventsForDependentParameters( "settings_change_header_layout", "restore_settings_font_color_menu" );
+            setEventsForDependentParameters( "settings_change_header_layout", "settings_font_color_submenu" );
+            setEventsForDependentParameters( "settings_change_header_layout", "restore_settings_font_color_submenu" );
             setEventsForDependentParameters( "settings_change_header_layout", "settings_bookmarks_top_menu" );
             setEventsForDependentParameters( "settings_change_header_layout", "settings_bookmarks_top_menu_h" );
             setEventsForDependentParameters( "settings_change_header_layout", "settings_menu_float_right" );
@@ -10066,7 +10080,8 @@ var mainGC = function () {
             setValue("settings_font_size_submenu", document.getElementById('settings_font_size_submenu').value);
             setValue("settings_distance_menu", document.getElementById('settings_distance_menu').value);
             setValue("settings_distance_submenu", document.getElementById('settings_distance_submenu').value);
-            setValue("settings_font_color_menu_submenu", document.getElementById('settings_font_color_menu_submenu').value);
+            setValue("settings_font_color_menu", document.getElementById('settings_font_color_menu').value);
+            setValue("settings_font_color_submenu", document.getElementById('settings_font_color_submenu').value);
             setValue("settings_menu_number_of_lines", document.getElementById('settings_menu_number_of_lines').value);
             setValue("settings_lines_color_zebra", document.getElementById('settings_lines_color_zebra').value);
             setValue("settings_lines_color_user", document.getElementById('settings_lines_color_user').value);
@@ -10356,7 +10371,7 @@ var mainGC = function () {
         }
         if ( document.getElementById('settings_bookmarks_top_menu').checked ) {
             if ( document.getElementById('box_top_menu_v').style.display != "block" ) {
-                $("#box_top_menu_v").animate({height: "141px"}, time);
+                $("#box_top_menu_v").animate({height: "164px"}, time);
                 document.getElementById('box_top_menu_v').style.display = "block";
                 setTimeout(function() {
                     $("#box_top_menu_h").animate({height: "0px"}, time);
@@ -10368,7 +10383,7 @@ var mainGC = function () {
         }
         if ( document.getElementById('settings_bookmarks_top_menu_h').checked ) {
             if ( document.getElementById('box_top_menu_h').style.display != "block" ) {
-                $("#box_top_menu_h").animate({height: "165px"}, time);
+                $("#box_top_menu_h").animate({height: "188px"}, time);
                 document.getElementById('box_top_menu_h').style.display = "block";
                 setTimeout(function() {
                     $("#box_top_menu_v").animate({height: "0px"}, time);
@@ -10638,32 +10653,25 @@ var mainGC = function () {
         var fieldId = this.id.replace(/restore_/, "");
         var field = document.getElementById( fieldId );
         if ( this.id.match(/_color/) ) {
+            field.value = "93B516"; 
+            field.style.color = "black";
             switch (fieldId) {
-                case "settings_lines_color_zebra": field.value = "EBECED"; field.style.color = "black"; break;
-                case "settings_lines_color_user": field.value = "C2E0C3"; field.style.color = "black";  break;
-                case "settings_lines_color_owner": field.value = "E0E0C3"; field.style.color = "black";  break;
-                case "settings_lines_color_reviewer": field.value = "EAD0C3"; field.style.color = "black";  break;
-                case "settings_lines_color_vip": field.value = "F0F0A0"; field.style.color = "black";  break;
-                case "settings_font_color_menu_submenu":
-                    field.value = "93B516";
-                    field.style.color = "black";
-                    if ( document.getElementById("restore_settings_font_color_menu_submenuX0") &&
-                         document.getElementById("settings_font_color_menu_submenuX0").value != field.value ) {
-                        document.getElementById("restore_settings_font_color_menu_submenuX0").click();
-                    }
-                    break;
-                case "settings_font_color_menu_submenuX0":
-                    field.value = "93B516";
-                    field.style.color = "black";
-                    if ( document.getElementById("restore_settings_font_color_menu_submenu") &&
-                         document.getElementById("settings_font_color_menu_submenu").value != field.value ) {
-                        document.getElementById("restore_settings_font_color_menu_submenu").click();
-                    }
-                    break;
+                case "settings_lines_color_zebra": field.value = "EBECED"; break;
+                case "settings_lines_color_user": field.value = "C2E0C3"; break;
+                case "settings_lines_color_owner": field.value = "E0E0C3"; break;
+                case "settings_lines_color_reviewer": field.value = "EAD0C3"; break;
+                case "settings_lines_color_vip": field.value = "F0F0A0"; break;
+                case "settings_font_color_menu": restoreColor("settings_font_color_menuX0", "restore_settings_font_color_menuX0", field.value); break;
+                case "settings_font_color_menuX0": restoreColor("settings_font_color_menu", "restore_settings_font_color_menu", field.value); break;
+                case "settings_font_color_submenu": restoreColor("settings_font_color_submenuX0", "restore_settings_font_color_submenuX0", field.value); break;
+                case "settings_font_color_submenuX0": restoreColor("settings_font_color_submenu", "restore_settings_font_color_submenu", field.value); break;
                 case "settings_count_own_matrix_show_color_next": field.value = "5151FB"; field.style.color = "white"; break;
             }
             field.style.backgroundColor = "#" + field.value;
         }
+    }
+    function restoreColor(p, r, v) {
+        if ( document.getElementById(r) && document.getElementById(p).value != v ) document.getElementById(r).click();
     }
 
 // Bezeichnung Save Button setzen (save bzw. save (F2)).
