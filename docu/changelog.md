@@ -31,11 +31,13 @@
 ## v0.8.10:
 <ul>
 <li>
-Fix: <b>Different colors for menu and dropdown lists.</b>: [Issue <a href="https://github.com/2Abendsegler/GClh/pull/460">#460</a>]<br>
+New: <b>Different colors for menu and dropdown lists</b>: [Issue <a href="https://github.com/2Abendsegler/GClh/pull/460">#460</a>]<br>
 <img src="../images/v0.8.10_Screen01.jpg" alt="v0.8.10_Screen01.jpg"><br>
 Settings -> Linklist / Navigation:<br>
 <img src="../images/v0.8.10_Screen02.jpg" alt="v0.8.10_Screen02.jpg"><br>
+<br>
 </li>
+Fix: <b>Direct jump to profile tabs "Geocaches", "Gallery", "Souvenirs" ... do not work under Tampermonkey</b>: [Issue <a href="https://github.com/2Abendsegler/GClh/pull/463">#463</a>]<br>
 </ul>
 (??.??.2017)<br> 
 <br>
