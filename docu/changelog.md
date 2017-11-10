@@ -40,7 +40,10 @@ Settings -> Linklist / Navigation:<br>
 <li>
 Fix: <b>Direct jump to profile tabs "Geocaches", "Gallery", "Souvenirs" ... do not work under Tampermonkey</b>: [Issue <a href="https://github.com/2Abendsegler/GClh/pull/463">#463</a>]<br>
 </li>
-</ul>
+<li>
+Fix: <b>Linklist: Global GS feedback page is not longer available</b>: [Issue <a href="https://github.com/2Abendsegler/GClh/pull/464">#464</a>]<br>
+</li>
+</ul> 
 (??.??.2017)<br> 
 <br>
 
