@@ -37,7 +37,9 @@ Settings -> Linklist / Navigation:<br>
 <img src="../images/v0.8.10_Screen02.jpg" alt="v0.8.10_Screen02.jpg"><br>
 <br>
 </li>
+<li>
 Fix: <b>Direct jump to profile tabs "Geocaches", "Gallery", "Souvenirs" ... do not work under Tampermonkey</b>: [Issue <a href="https://github.com/2Abendsegler/GClh/pull/463">#463</a>]<br>
+</li>
 </ul>
 (??.??.2017)<br> 
 <br>
