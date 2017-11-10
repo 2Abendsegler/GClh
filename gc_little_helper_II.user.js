@@ -116,10 +116,10 @@ var constInit = function (c) {
     externalBookmark("Blog Groundspeak", "https://www.geocaching.com/blog/", c.bookmarks);
     bookmark("Feedback Groundspeak", "https://www.geocaching.com/feedback/", c.bookmarks);
     externalBookmark("Geoclub", "http://www.geoclub.de/", c.bookmarks);
-    profileSpecialBookmark("Public Profile Geocaches", "https://www.geocaching.com/profile/default.aspx?#gclhpb#ctl00$ContentBody$ProfilePanel1$lnkUserStats", "lnk_profilegeocaches", c.bookmarks);
-    profileSpecialBookmark("Public Profile Trackables", "https://www.geocaching.com/profile/default.aspx?#gclhpb#ctl00$ContentBody$ProfilePanel1$lnkCollectibles", "lnk_profiletrackables", c.bookmarks);
-    profileSpecialBookmark("Public Profile Gallery", "https://www.geocaching.com/profile/default.aspx?#gclhpb#ctl00$ContentBody$ProfilePanel1$lnkGallery", "lnk_profilegallery", c.bookmarks);
-    profileSpecialBookmark("Public Profile Lists", "https://www.geocaching.com/profile/default.aspx?#gclhpb#ctl00$ContentBody$ProfilePanel1$lnkLists", "lnk_profilebookmarks", c.bookmarks);
+    profileSpecialBookmark("Public Profile Geocaches", "https://www.geocaching.com/profile/default.aspx?#gclhpb#ctl00_ContentBody_ProfilePanel1_lnkUserStats", "lnk_profilegeocaches", c.bookmarks);
+    profileSpecialBookmark("Public Profile Trackables", "https://www.geocaching.com/profile/default.aspx?#gclhpb#ctl00_ContentBody_ProfilePanel1_lnkCollectibles", "lnk_profiletrackables", c.bookmarks);
+    profileSpecialBookmark("Public Profile Gallery", "https://www.geocaching.com/profile/default.aspx?#gclhpb#ctl00_ContentBody_ProfilePanel1_lnkGallery", "lnk_profilegallery", c.bookmarks);
+    profileSpecialBookmark("Public Profile Lists", "https://www.geocaching.com/profile/default.aspx?#gclhpb#ctl00_ContentBody_ProfilePanel1_lnkLists", "lnk_profilebookmarks", c.bookmarks);
     bookmark("Profile", "https://www.geocaching.com/my/", c.bookmarks);
     profileSpecialBookmark("Nearest List", "https://www.geocaching.com/seek/nearest.aspx?#gclhpb#errhomecoord", "lnk_nearestlist", c.bookmarks);
     profileSpecialBookmark("Nearest Map", "https://www.geocaching.com/seek/nearest.aspx?#gclhpb#errhomecoord", "lnk_nearestmap", c.bookmarks);
@@ -144,10 +144,10 @@ var constInit = function (c) {
         num++;
     }
     // More Bookmarks.
-    profileSpecialBookmark("Public Profile Souvenirs", "https://www.geocaching.com/profile/default.aspx?#gclhpb#ctl00$ContentBody$ProfilePanel1$lnkSouvenirs", "lnk_profilesouvenirs", c.bookmarks);
+    profileSpecialBookmark("Public Profile Souvenirs", "https://www.geocaching.com/profile/default.aspx?#gclhpb#ctl00_ContentBody_ProfilePanel1_lnkSouvenirs", "lnk_profilesouvenirs", c.bookmarks);
     bookmark("Statistics", "https://www.geocaching.com/my/statistics.aspx", c.bookmarks);
     bookmark("Field Notes", "https://www.geocaching.com/my/fieldnotes.aspx", c.bookmarks);
-    profileSpecialBookmark("Public Profile Statistics", "https://www.geocaching.com/profile/default.aspx?#gclhpb#ctl00$ContentBody$ProfilePanel1$lnkStatistics", "lnk_profilestatistics", c.bookmarks);
+    profileSpecialBookmark("Public Profile Statistics", "https://www.geocaching.com/profile/default.aspx?#gclhpb#ctl00_ContentBody_ProfilePanel1_lnkStatistics", "lnk_profilestatistics", c.bookmarks);
     bookmark("Geocaches RecViewed", "https://www.geocaching.com/my/recentlyviewedcaches.aspx", c.bookmarks);
     bookmark("Search TB", "https://www.geocaching.com/track/travelbug.aspx", c.bookmarks);
     bookmark("Search Geocoin", "https://www.geocaching.com/track/geocoin.aspx", c.bookmarks);
@@ -692,11 +692,11 @@ var mainGC = function () {
                     if ( document.location.href.match(/^https?:\/\/www\.geocaching\.com\/profile/) ) {
                         $('html').css("background-color", "white");
                         $('#divContentSide').css("height", "1000px");
-                        $('#ProfileTabs').remove();
+                        $('#ProfileTabs').css("display", "none");
                         $('footer').remove();
                     }
                     document.location.href = "";
-                    unsafeWindow.__doPostBack(postbackValue, "");
+                    document.getElementById(postbackValue).click();
                 }
             }
         } catch (e) { gclh_error("Run after redirect", e); }
@@ -1285,6 +1285,13 @@ var mainGC = function () {
                     appendCssStyle( css );
                 }
             }
+//->xxxx
+            // Auch wenn Header nicht geändert werden soll, zwischen Menüname und Submenü keine Lücke lassen, sonst klappt das nicht mit dem einfachen Aufklappen.
+            //???? bei den alten seiten funktioniert das nicht, weiß noch nicht was ich da machen soll.
+            if (!settings_change_header_layout) {
+                appendCssStyle(".menu > li .dropdown, .Menu > li .dropdown {margin-top: 30px; margin-bottom: 30px;} ul.submenu, ul.SubMenu {margin-top: 0px;}");
+            }
+//<-xxxx
         }
 
         if (settings_bookmarks_on_top && (document.getElementsByClassName("Menu").length > 0 || document.getElementsByClassName("menu").length > 0)){
@@ -1321,11 +1328,13 @@ var mainGC = function () {
                 }
                 nav_list.appendChild(menu);
 
-                // Bei Labs Caches hover aufbauen.
-                // Und auf den Seiten Suchen, Verstecken, Geotours, Account Setting, Message Center und in Karten wird die Linklist ohne Event aufgebaut, hover aufbauen.
-                if ( is_page("labs") || is_page("find_cache") || is_page("hide_cache") || is_page("geotours") || is_page("settings") || is_page("messagecenter") || is_page("map")) {
-                    buildHover();
-                }
+//->xxxx
+//                // Bei Labs Caches hover aufbauen.
+//                // Und auf den Seiten Suchen, Verstecken, Geotours, Account Setting, Message Center und in Karten wird die Linklist ohne Event aufgebaut, hover aufbauen.
+//                if ( is_page("labs") || is_page("find_cache") || is_page("hide_cache") || is_page("geotours") || is_page("settings") || is_page("messagecenter") || is_page("map")) {
+//                buildHover();
+//                }
+//<-xxxx
 
             } else {                             // Navi horizontal
                 for (var i = 0; i < settings_bookmarks_list.length; i++) {
@@ -1362,9 +1371,11 @@ var mainGC = function () {
                 else $(".Menu, .menu").append(searchfield);
             }
 
-            // Für Tampermonkey menu hover aufbauen.
-            if (isTM === true) buildHover();
-
+//->xxxx
+            // Hover für alle Dropdown Listen aufbauen.
+            buildHover();
+//<-xxxx
+  
             if ( settings_menu_show_separator ) {
                 if ( settings_bookmarks_top_menu || settings_change_header_layout == false );   // Navi vertikal
                 else {                                                                          // Navi horizontal
@@ -10653,7 +10664,7 @@ var mainGC = function () {
         var fieldId = this.id.replace(/restore_/, "");
         var field = document.getElementById( fieldId );
         if ( this.id.match(/_color/) ) {
-            field.value = "93B516"; 
+            field.value = "93B516";
             field.style.color = "black";
             switch (fieldId) {
                 case "settings_lines_color_zebra": field.value = "EBECED"; break;
