@@ -114,7 +114,7 @@ var constInit = function (c) {
     profileSpecialBookmark(c.scriptShortNameConfig, "https://www.geocaching.com/my/default.aspx#GClhShowConfig", "lnk_gclhconfig", c.bookmarks);
     externalBookmark("Forum Groundspeak", "http://forums.groundspeak.com/", c.bookmarks);
     externalBookmark("Blog Groundspeak", "https://www.geocaching.com/blog/", c.bookmarks);
-    bookmark("Feedback Groundspeak", "https://www.geocaching.com/feedback/", c.bookmarks);
+    bookmark("(empty)", "#", c.bookmarks);
     externalBookmark("Geoclub", "http://www.geoclub.de/", c.bookmarks);
     profileSpecialBookmark("Public Profile Geocaches", "https://www.geocaching.com/profile/default.aspx?#gclhpb#ctl00_ContentBody_ProfilePanel1_lnkUserStats", "lnk_profilegeocaches", c.bookmarks);
     profileSpecialBookmark("Public Profile Trackables", "https://www.geocaching.com/profile/default.aspx?#gclhpb#ctl00_ContentBody_ProfilePanel1_lnkCollectibles", "lnk_profiletrackables", c.bookmarks);
@@ -656,6 +656,7 @@ var mainGC = function () {
     // console.log("GClh: " + t + " | " + window.location);
     if ( ( document.location.href.match(/^https?:\/\/www\.geocaching\.com\/account\//) && !document.location.href.match(/account\/(settings|lists|messagecenter)/) ) ||
          ( document.location.href.match(/^https?:\/\/www\.geocaching\.com\/p\//) ) ||
+         ( document.location.href.match(/^https?:\/\/www\.geocaching\.com\/play\/friendleague/) ) ||
          ( document.location.href.match(/^https?:\/\/www\.geocaching\.com\/track\/$/) ) ) {
         // console.log("GClh: Unknown page, do nothing");
         return;
@@ -1285,13 +1286,23 @@ var mainGC = function () {
                     appendCssStyle( css );
                 }
             }
-//->xxxx
             // Auch wenn Header nicht geändert werden soll, zwischen Menüname und Submenü keine Lücke lassen, sonst klappt das nicht mit dem einfachen Aufklappen.
-            //???? bei den alten seiten funktioniert das nicht, weiß noch nicht was ich da machen soll.
             if (!settings_change_header_layout) {
-                appendCssStyle(".menu > li .dropdown, .Menu > li .dropdown {margin-top: 30px; margin-bottom: 30px;} ul.submenu, ul.SubMenu {margin-top: 0px;}");
+                if (is_page("map")) {
+                    appendCssStyle(".menu > li, .Menu > li  {height: 100%; margin-top: 4.1em;} .submenu, .SubMenu {margin-top: 1.9em;}");
+                } else if (is_page("find_cache")) {
+                    appendCssStyle(".menu > li, .Menu > li  {height: 100%; margin-top: 4.4em;} .submenu, .SubMenu {margin-top: 2.1em;}");
+                } else if (is_page("hide_cache") || is_page("geotours")) {
+                    appendCssStyle(".menu > li, .Menu > li  {height: 100%; margin-top: 4.2em;} .submenu, .SubMenu {margin-top: 2.0em;}");
+                } else {
+                    appendCssStyle(".menu > li, .Menu > li  {height: 100%; margin-top: 4.1em;} .submenu, .SubMenu {margin-top: 2.0em;}");
+                } 
+//                if ( is_page("labs") || is_page("find_cache") || is_page("geotours") || is_page("settings") || is_page("messagecenter")) {
+//                    appendCssStyle(".menu > li, .Menu > li  {height: 100%; margin-top: 4.2em;} .submenu, .SubMenu {margin-top: 2em;}");
+//                } else {
+//                    appendCssStyle(".menu > li {height: 100%; margin-top: 3.7em;}");
+//                }
             }
-//<-xxxx
         }
 
         if (settings_bookmarks_on_top && (document.getElementsByClassName("Menu").length > 0 || document.getElementsByClassName("menu").length > 0)){
@@ -1328,14 +1339,6 @@ var mainGC = function () {
                 }
                 nav_list.appendChild(menu);
 
-//->xxxx
-//                // Bei Labs Caches hover aufbauen.
-//                // Und auf den Seiten Suchen, Verstecken, Geotours, Account Setting, Message Center und in Karten wird die Linklist ohne Event aufgebaut, hover aufbauen.
-//                if ( is_page("labs") || is_page("find_cache") || is_page("hide_cache") || is_page("geotours") || is_page("settings") || is_page("messagecenter") || is_page("map")) {
-//                buildHover();
-//                }
-//<-xxxx
-
             } else {                             // Navi horizontal
                 for (var i = 0; i < settings_bookmarks_list.length; i++) {
                     var x = settings_bookmarks_list[i];
@@ -1371,10 +1374,8 @@ var mainGC = function () {
                 else $(".Menu, .menu").append(searchfield);
             }
 
-//->xxxx
             // Hover für alle Dropdown Listen aufbauen.
             buildHover();
-//<-xxxx
   
             if ( settings_menu_show_separator ) {
                 if ( settings_bookmarks_top_menu || settings_change_header_layout == false );   // Navi vertikal
