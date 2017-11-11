@@ -29,9 +29,18 @@
 
 ---
 ## v0.8.10:
-<ul>
-<i>If you find a bug, please let us know about it, so we can fix it. You can open a <a href="https://github.com/2Abendsegler/GClh/issues">new issue</a> or you can report it in the <a href="http://geoclub.de/forum/viewforum.php?f=117">geoclub forum</a>. If you are not ready to report a bug, you do not have to complain about bugs that will not be fixed for a long time.</i><br>
+
+<b>FIREFOX USER, BITTE BEACHTEN:</b>
 <br>
+  
+* Der GClh ist mit Script-Manager Greasemonkey ab Firefox Version 57 nicht mehr lauffähig. Vermutlich werden wir auch keine entsprechenden Anpassungen am GClh vornehmen, die den weiteren Betrieb unter Greasemonkey ermöglichen, obwohl es möglich wäre und Greasemonkey zumindest bisher einen merklichen Performancevorteil brachte. Um den GClh weiter zu nutzen, muß deshalb spätestens mit Firefox Version 57 auf den Script-Manager Tampermonkey umgestellt werden. Die Firefox Version 57 ist wohl für Mitte November geplant.<br>
+* Violentmonkey und andere Script-Manager unterstützen wir nicht.<br>
+* Tipps zur Installation des Script-Managers Tampermonkey unter Firefox und Tipps zum Kopieren der GClh Konfiguration von Script-Manager Greasemonkey nach Tampermonkey gibt es [hier](https://github.com/2Abendsegler/GClh/blob/master/docu/tips_installation.md#readme).
+<br>
+<b>Report a bug:</b>
+If you find a bug, please let us know about it, so we can fix it. You can open a <a href="https://github.com/2Abendsegler/GClh/issues">new issue</a> or you can report it in the <a href="http://geoclub.de/forum/viewforum.php?f=117">geoclub forum</a>. If you are not ready to report a bug, you do not have to complain about bugs that will not be fixed for a long time.</i>
+<br>
+<ul>
 <li>
 New: <b>Different colors for menu and dropdown lists</b>: [Issue <a href="https://github.com/2Abendsegler/GClh/pull/460">#460</a>]<br>
 <img src="../images/v0.8.10_Screen01.jpg" alt="v0.8.10_Screen01.jpg"><br>
