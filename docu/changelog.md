@@ -37,6 +37,7 @@
 * Violentmonkey und andere Script-Manager unterstützen wir nicht.<br>
 * Tipps zur Installation des Script-Managers Tampermonkey unter Firefox und Tipps zum Kopieren der GClh Konfiguration von Script-Manager Greasemonkey nach Tampermonkey gibt es [hier](https://github.com/2Abendsegler/GClh/blob/master/docu/tips_installation.md#readme).
 <br>
+
 <b>REPORT A BUG:</b>
 <br>
 
