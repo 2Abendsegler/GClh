@@ -1289,19 +1289,14 @@ var mainGC = function () {
             // Auch wenn Header nicht geändert werden soll, zwischen Menüname und Submenü keine Lücke lassen, sonst klappt das nicht mit dem einfachen Aufklappen.
             if (!settings_change_header_layout) {
                 if (is_page("map")) {
-                    appendCssStyle(".menu > li, .Menu > li  {height: 100%; margin-top: 4.1em;} .submenu, .SubMenu {margin-top: 1.9em;}");
+                    appendCssStyle(".menu > li, .Menu > li  {height: 100%; padding-top: 2.0em;} .submenu, .SubMenu {margin-top: 1.9em;}");
                 } else if (is_page("find_cache")) {
-                    appendCssStyle(".menu > li, .Menu > li  {height: 100%; margin-top: 4.4em;} .submenu, .SubMenu {margin-top: 2.1em;}");
+                    appendCssStyle(".menu > li, .Menu > li  {height: 100%; padding-top: 2.2em;} .submenu, .SubMenu {margin-top: 2.1em;}");
                 } else if (is_page("hide_cache") || is_page("geotours")) {
-                    appendCssStyle(".menu > li, .Menu > li  {height: 100%; margin-top: 4.2em;} .submenu, .SubMenu {margin-top: 2.0em;}");
+                    appendCssStyle(".menu > li, .Menu > li  {height: 100%; padding-top: 2.1em;} .submenu, .SubMenu {margin-top: 2.0em;}");
                 } else {
-                    appendCssStyle(".menu > li, .Menu > li  {height: 100%; margin-top: 4.1em;} .submenu, .SubMenu {margin-top: 2.0em;}");
-                } 
-//                if ( is_page("labs") || is_page("find_cache") || is_page("geotours") || is_page("settings") || is_page("messagecenter")) {
-//                    appendCssStyle(".menu > li, .Menu > li  {height: 100%; margin-top: 4.2em;} .submenu, .SubMenu {margin-top: 2em;}");
-//                } else {
-//                    appendCssStyle(".menu > li {height: 100%; margin-top: 3.7em;}");
-//                }
+                    appendCssStyle(".menu > li, .Menu > li  {height: 100%; padding-top: 2.0em;} .submenu, .SubMenu {margin-top: 2.0em;}");
+                }
             }
         }
 
