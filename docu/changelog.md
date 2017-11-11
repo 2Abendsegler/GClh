@@ -38,7 +38,11 @@
 * Tipps zur Installation des Script-Managers Tampermonkey unter Firefox und Tipps zum Kopieren der GClh Konfiguration von Script-Manager Greasemonkey nach Tampermonkey gibt es [hier](https://github.com/2Abendsegler/GClh/blob/master/docu/tips_installation.md#readme).
 <br>
 <b>Report a bug:</b>
-If you find a bug, please let us know about it, so we can fix it. You can open a <a href="https://github.com/2Abendsegler/GClh/issues">new issue</a> or you can report it in the <a href="http://geoclub.de/forum/viewforum.php?f=117">geoclub forum</a>. If you are not ready to report a bug, you do not have to complain about bugs that will not be fixed for a long time.</i>
+<br>
+
+* If you find a bug, please let us know about it, so we can fix it. You can open a <a href="https://github.com/2Abendsegler/GClh/issues">new issue</a> or you can report it in the <a href="http://geoclub.de/forum/viewforum.php?f=117">geoclub forum</a>. 
+* If you are not ready to report a bug, you do not have to complain about bugs that will not be fixed for a long time.<br>
+<br>
 <br>
 <ul>
 <li>
