@@ -30,7 +30,7 @@
 ---
 ## v0.8.10:
 <ul>
-<i>If you find an error, please let us know about it, so we can fix it. You can open a <a href="https://github.com/2Abendsegler/GClh/issues">new issue</a> or you can report it in the <a href="http://geoclub.de/forum/viewforum.php?f=117">geoclub forum</a>. If you are not ready to report an error, you do not have to complain about errors that were not fixed.</i> ;)<br>
+<i>If you find an error, please let us know about it, so we can fix it. You can open a <a href="https://github.com/2Abendsegler/GClh/issues">new issue</a> or you can report it in the <a href="http://geoclub.de/forum/viewforum.php?f=117">geoclub forum</a>. If you are not ready to report an error, you do not have to complain about errors that were not fixed.</i><br>
 <br>
 <li>
 New: <b>Different colors for menu and dropdown lists</b>: [Issue <a href="https://github.com/2Abendsegler/GClh/pull/460">#460</a>]<br>
