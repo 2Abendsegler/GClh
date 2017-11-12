@@ -3132,7 +3132,7 @@ var mainGC = function () {
         $(".CacheDetailNavigation:first > ul:first").append('<li><a href="#logs_section">Go to logs</a></li>');
         var css = "";
         css += '.CacheDetailNavigation a[href*="#ctl00_ContentBody_bottomSection"]{background-image:url(/images/icons/16/waypoints.png);}';
-        css += '.CacheDetailNavigation a[href*="#logs_section"]{background-image:url(" + global_logs_icon + ");}';
+        css += '.CacheDetailNavigation a[href*="#logs_section"]{background-image:url(' + global_logs_icon + ');}';
         appendCssStyle( css );
     }
     function getWaypointTable() {
