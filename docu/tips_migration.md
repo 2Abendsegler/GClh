@@ -1,3 +1,5 @@
+<a href="#6de" title=""><img src="../images/flag_de.png"></a> &nbsp;<a href="#6en" title=""><img src="../images/flag_en.png"></a>
+
 ## Tipps für die Migration
 <br>
 
@@ -44,7 +46,7 @@ Den "GC little helper Sync II" gibt es im <a href="http://www.geocaching.com/my/
 <br>
 <br>
 
-<a href="#6de" title=""><img src="../images/flag_de.png"></a> &nbsp;<a href="#6en" title=""><img src="../images/flag_en.png"></a>
+
 <br>
 ### 6.<a id="6de"></a> Konfiguration des "GC little helper II" in Firefox von Greasemonkey nach Tampermonkey kopieren:
 Die Konfiguration sollte unbedingt vor den Upgrades auf Firefox 57 und Greasemonkey 4 kopiert werden, weil nicht sichergestellt ist, dass die dazu notwendige Funktionalität des GClhs mit diesen Upgrades noch funktioniert.   
