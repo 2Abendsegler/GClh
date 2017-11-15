@@ -1,4 +1,4 @@
-<a href="#6de" title=""><img src="../images/flag_de.png"></a> &nbsp;<a href="#6en" title=""><img src="../images/flag_en.png"></a>
+<a href="#de" title=""><img src="../images/flag_de.png"></a> &nbsp;<a href="#en" title=""><img src="../images/flag_en.png"></a>
 
 ---
 ## <a id="de"></a>Tipps für die Migration
@@ -59,7 +59,7 @@ Die Konfiguration sollte unbedingt vor den Upgrades auf Firefox 57 und Greasemon
 <br>
 
 ---
-## <a id="en"></a>Tipps for migration
+## <a id="en"></a>Tips for migration
 <br>
 
 ### <a id="6en"></a>6. Copy configuration of "GC little helper II" in Firefox from Greasemonkey to Tampermonkey:
