@@ -1,4 +1,4 @@
-<a href="#v0810" title="GClh II version 0.8.10 (??.??.2017)">v0.8.10</a> &nbsp;
+<a href="#v0810" title="GClh II version 0.8.10 (15.11.2017)">v0.8.10</a> &nbsp;
 <a href="#v089" title="GClh II version 0.8.9 (03.11.2017)">v0.8.9</a> &nbsp;
 <a href="#v088" title="GClh II version 0.8.8 (25.10.2017)">v0.8.8</a> &nbsp;
 <a href="#v087" title="GClh II version 0.8.7 (25.10.2017)">v0.8.7</a> &nbsp;
@@ -33,9 +33,9 @@
 <b>FIREFOX USER, BITTE BEACHTEN:</b>
 <br>
   
-* Der GClh ist mit Script-Manager Greasemonkey ab Firefox Version 57 nicht mehr lauffähig. Um den GClh weiter zu nutzen, muß deshalb spätestens mit Firefox Version 57 auf den Script-Manager Tampermonkey umgestellt werden. Die Firefox Version 57 ist wohl für Mitte November geplant.<br>
-* Violentmonkey und andere Script-Manager unterstützen wir nicht.<br>
-* Tipps zur Installation des Script-Managers Tampermonkey unter Firefox und Tipps zum Kopieren der GClh Konfiguration von Script-Manager Greasemonkey nach Tampermonkey gibt es [hier](https://github.com/2Abendsegler/GClh/blob/master/docu/tips_installation.md#readme).
+* The GClh is no longer executable with script manager Greasemonkey from Firefox version 57. In order to continue using the GClh, it is therefore necessary to switch to the script manager Tampermonkey.<br>
+* We do not support Violentmonkey and other script managers.<br>
+* Tips for installing the script manager Tampermonkey under Firefox and tips for copying the GClh configuration from script manager Greasemonkey to Tampermonkey are available [here](https://github.com/2Abendsegler/GClh/blob/master/docu/tips_installation.md#readme).
 <br>
 
 <b>REPORT A BUG:</b>
@@ -66,7 +66,7 @@ Fix: <b>Linklist: Global GS feedback page is not longer available, due to change
 Fix: <b>With deactivated parameter "Change header layout" menu dropdown lists do not stay, due to changes made by GS</b>: [Issue <a href="https://github.com/2Abendsegler/GClh/pull/462">#462</a>]<br>
 </li>
 </ul> 
-(??.??.2017)<br> 
+(15.11.2017)<br> 
 <br>
 
 ---
