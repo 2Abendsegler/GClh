@@ -30,12 +30,13 @@
 ---
 ## v0.8.10:
 
-<b>FIREFOX USER, BITTE BEACHTEN:</b>
+<b>FIREFOX USER, PLEASE NOTE:</b>
 <br>
   
 * The GClh is no longer executable with script manager Greasemonkey from Firefox version 57. In order to continue using the GClh, it is therefore necessary to switch to the script manager Tampermonkey.<br>
 * We do not support Violentmonkey and other script managers.<br>
 * Tips for installing the script manager Tampermonkey under Firefox and tips for copying the GClh configuration from script manager Greasemonkey to Tampermonkey are available [here](https://github.com/2Abendsegler/GClh/blob/master/docu/tips_installation.md#readme).
+* If you have installed Firefox version 57 in front of 
 <br>
 
 <b>REPORT A BUG:</b>
