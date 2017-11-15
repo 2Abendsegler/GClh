@@ -54,3 +54,14 @@ Die Konfiguration sollte unbedingt vor den Upgrades auf Firefox 57 und Greasemon
 <li>Geht ins <a href="http://www.geocaching.com/my/">eigene Profil</a> und wählt neben dem Avatar den "GClh Sync II" aus oder wählt alternativ folgenden <a href="https://www.geocaching.com/geocache/GC40#GClhShowSync">Link</a>.</li>
 <li>Wählt dann "Manual". Im Fenster dann mit rechter Maustaste "Einfügen" und anschließend den Button "import" wählen.</li>
 </ul>
+
+### 6. Copy configuration of "GC little helper II" in Firefox from Greasemonkey to Tampermonkey:
+The configuration should necessarily be copied before upgrading to Firefox 57 and Greasemonkey 4, because it is not certain that the necessary functionality of the GClh will still work with these upgrades.   
+<ul>
+<li>Enable script manager Greasemonkey and disable script manager Tampermonkey.</li>
+<li>Go into <a href="http://www.geocaching.com/my/">your own profile</a> and select next to the avatar the "GClh Sync II" or select alternatively the following <a href="https://www.geocaching.com/geocache/GC40#GClhShowSync">link</a>.</li>
+<li>Then select "Manual" and the button "export". In the window then with the right mouse button "mark all" and then with right mouse button "copy" and then button "close".</li>
+<li>Disable script manager Greasemonkey and enable script manager Tampermonkey.</li>
+<li>Go into <a href="http://www.geocaching.com/my/">your own profile</a> and select next to the avatar the "GClh Sync II" or select alternatively the following <a href="https://www.geocaching.com/geocache/GC40#GClhShowSync">link</a>.</li>
+<li>Then select "Manual". In the window then right-click "paste" and then select the button "import".</li>
+</ul>
