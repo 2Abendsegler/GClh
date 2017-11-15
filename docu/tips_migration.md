@@ -47,7 +47,7 @@ Den "GC little helper Sync II" gibt es im <a href="http://www.geocaching.com/my/
 <br>
 
 ### <a id="6de"></a>6. Konfiguration des "GC little helper II" in Firefox von Greasemonkey nach Tampermonkey kopieren:
-Die Konfiguration sollte unbedingt vor den Upgrades auf Firefox 57 und Greasemonkey 4 kopiert werden, weil nicht sichergestellt ist, dass die dazu notwendige Funktionalität des GClhs mit diesen Upgrades noch funktioniert.   
+Die Konfiguration muß unbedingt vor den Upgrades auf Firefox 57 und Greasemonkey 4 kopiert werden, weil die dazu notwendige Funktionalität des GClhs mit diesen Upgrades nicht mehr funktioniert. Falls die Konfiguration nicht vorher kopiert wurde, ihr sie aber benötigt, dann meldet euch bitte per <a href="https://www.geocaching.com/email/?guid=7bb977ac-bc8d-45d9-ac63-99564937357a">Mail</a>.
 <ul>
 <li>Aktiviert Script-Manager Greasemonkey und deaktiviert Script-Manager Tampermonkey.</li>
 <li>Geht ins <a href="http://www.geocaching.com/my/">eigene Profil</a> und wählt neben dem Avatar den "GClh Sync II" aus oder wählt alternativ folgenden <a href="https://www.geocaching.com/geocache/GC40#GClhShowSync">Link</a>.</li>
@@ -63,7 +63,7 @@ Die Konfiguration sollte unbedingt vor den Upgrades auf Firefox 57 und Greasemon
 <br>
 
 ### <a id="6en"></a>6. Copy configuration of "GC little helper II" in Firefox from Greasemonkey to Tampermonkey:
-The configuration should necessarily be copied before upgrading to Firefox 57 and Greasemonkey 4, because it is not certain that the necessary functionality of the GClh will still work with these upgrades.   
+The configuration must necessarily be copied before upgrading to Firefox 57 and Greasemonkey 4, because the necessary functionality of the GClh will no longer work with these upgrades. If the configuration has not been copied before, but you need it, then please call via <a href="https://www.geocaching.com/email/?guid=7bb977ac-bc8d-45d9-ac63-99564937357a">mail</a>.
 <ul>
 <li>Enable script manager Greasemonkey and disable script manager Tampermonkey.</li>
 <li>Go into <a href="http://www.geocaching.com/my/">your own profile</a> and select next to the avatar the "GClh Sync II" or select alternatively the following <a href="https://www.geocaching.com/geocache/GC40#GClhShowSync">link</a>.</li>
