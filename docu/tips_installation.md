@@ -1,12 +1,12 @@
-<a href="#user-content-de" title=""><img src="../images/flag_de.png"></a>
 
 ---
 ## Tipps für die Installation des *GC little helper II* <a id="user-content-de"></a>  
 
 ### Mozilla Firefox: <span> &nbsp; &nbsp; &nbsp; &nbsp; </span> <img src="/images/mozilla_firefox_logo_small.png" title="Mozilla Firefox" alt="Mozilla Firefox">
-* Installiere den Script-Manager [Greasemonkey](https://addons.mozilla.org/de/firefox/addon/greasemonkey/) oder [Tampermonkey](https://addons.mozilla.org/de/firefox/addon/tampermonkey/) als Add-On in Firefox. 
-* Installiere das Script [GC little helper II](https://github.com/2Abendsegler/GClh/raw/master/gc_little_helper_II.user.js) unter dem Script-Manager Greasemonkey bzw. Tampermonkey.
-* Konfiguration kopieren zwischen Script-Manager Greasemonkey und Tampermonkey siehe [Tipps für die Migration - 6.](https://github.com/2Abendsegler/GClh/blob/master/docu/tips_migration.md#6)
+* Installiere den Script-Manager [Tampermonkey](https://addons.mozilla.org/de/firefox/addon/tampermonkey/) als Add-On in Firefox. 
+* Installiere das Script [GC little helper II](https://github.com/2Abendsegler/GClh/raw/master/gc_little_helper_II.user.js) unter dem Script-Manager Tampermonkey.
+* Konfiguration kopieren zwischen Script-Manager Greasemonkey und Tampermonkey siehe [Tipps für die Migration - 6.](https://github.com/2Abendsegler/GClh/blob/master/docu/tips_migration.md#6de)
+(Copy configuration between script manager Greasemonkey and Tampermonkey see [Tips for migration - 6.](https://github.com/2Abendsegler/GClh/blob/master/docu/tips_migration.md#6en))
 
 ### Google Chrome: <span> &nbsp; &nbsp; &nbsp; </span> <img src="/images/google_chrome_logo_small.png" title="Google Chrom" alt="Google Chrom"> 
 * Installiere den Script-Manager [Tampermonkey](https://chrome.google.com/webstore/detail/tampermonkey/dhdgffkkebhmkfjojejmpbldmpobfkfo) als Add-On in Chrome. 

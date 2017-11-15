@@ -1,3 +1,4 @@
+<a href="#v0810" title="GClh II version 0.8.10 (15.11.2017)">v0.8.10</a> &nbsp;
 <a href="#v089" title="GClh II version 0.8.9 (03.11.2017)">v0.8.9</a> &nbsp;
 <a href="#v088" title="GClh II version 0.8.8 (25.10.2017)">v0.8.8</a> &nbsp;
 <a href="#v087" title="GClh II version 0.8.7 (25.10.2017)">v0.8.7</a> &nbsp;
@@ -25,6 +26,50 @@
 <a href="#v022" title="GClh II version 0.2.2 (09.01.2017)">v0.2.2</a> &nbsp; 
 <a href="#v021" title="GClh II version 0.2.1 (05.01.2017)">v0.2.1</a> &nbsp; 
 <a href="#v01" title="GClh II version 0.1 (05.01.2017)">v0.1</a> &nbsp; 
+
+---
+## v0.8.10:
+
+<b>FIREFOX USER, PLEASE NOTE:</b>
+<br>
+  
+* The GClh is no longer executable with script manager Greasemonkey from Firefox version 57. In order to continue using the GClh, it is therefore necessary to switch to the script manager Tampermonkey.<br>
+* We do not support Violentmonkey and other script managers.<br>
+* Tips for installing the script manager Tampermonkey under Firefox and tips for copying the GClh configuration from script manager Greasemonkey to Tampermonkey are available [here](https://github.com/2Abendsegler/GClh/blob/master/docu/tips_installation.md#readme).<br>
+
+(If you have installed Firefox version 57 in front of copying the GClh configuration from script manager Greasemonkey to Tampermonkey and you want to save the configuration, please let me know via [eMail](https://www.geocaching.com/email/?guid=7bb977ac-bc8d-45d9-ac63-99564937357a).)<br>
+<br>
+
+<b>REPORT A BUG:</b>
+<br>
+
+* If you find a bug, please let us know about it, so we can fix it. You can open a <a href="https://github.com/2Abendsegler/GClh/issues">new issue</a> or you can report it in the <a href="http://geoclub.de/forum/viewforum.php?f=117">geoclub forum</a>.<br>
+* If you are not ready to report a bug, you do not have to complain about bugs that will not be fixed for a long time.<br>
+<br>
+
+<b>CHANGES:</b>
+<br>
+
+<ul>
+<li>
+New: <b>Different colors for menu and dropdown lists</b>: [Issue <a href="https://github.com/2Abendsegler/GClh/pull/460">#460</a>]<br>
+<img src="../images/v0.8.10_Screen01.jpg" alt="v0.8.10_Screen01.jpg"><br>
+Settings -> Linklist / Navigation:<br>
+<img src="../images/v0.8.10_Screen02.jpg" alt="v0.8.10_Screen02.jpg"><br>
+<br>
+</li>
+<li>
+Fix: <b>Direct jump to profile tabs "Geocaches", "Gallery", "Souvenirs" ... do not work under Tampermonkey</b>: [Issue <a href="https://github.com/2Abendsegler/GClh/pull/463">#463</a>]<br>
+</li>
+<li>
+Fix: <b>Linklist: Global GS feedback page is not longer available, due to changes made by GS</b>: [Issue <a href="https://github.com/2Abendsegler/GClh/pull/464">#464</a>]<br>
+</li>
+<li>
+Fix: <b>With deactivated parameter "Change header layout" menu dropdown lists do not stay, due to changes made by GS</b>: [Issue <a href="https://github.com/2Abendsegler/GClh/pull/462">#462</a>]<br>
+</li>
+</ul> 
+(15.11.2017)<br> 
+<br>
 
 ---
 ## v0.8.9:
