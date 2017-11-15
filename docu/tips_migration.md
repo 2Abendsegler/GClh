@@ -42,9 +42,9 @@ Nun befindet man sich im Firefox Profil.</li>
 ### 5. Wie kann man den "GC little helper Sync II" aufrufen:<a id="5"></a>
 Den "GC little helper Sync II" gibt es im <a href="http://www.geocaching.com/my/">eigenen Profil</a> neben dem Avatar, im Greasemonkey Menü unter Benutzerscript-Befehle oder per F10 Taste auf den Geocaching Seiten. Falls gar nichts mehr geht, könnte noch folgender <a href="https://www.geocaching.com/geocache/GC40#GClhShowSync">Link</a> funktionieren.<br>
 <br>
+<br>
 
-
-<a href="#6de" title=""><img src="../images/flag_de.png"></a>  <a href="#6en" title=""><img src="../images/flag_en.png"></a>
+<a href="#6de" title=""><img src="../images/flag_de.png"></a> &nbsp;<a href="#6en" title=""><img src="../images/flag_en.png"></a>
 <br>
 ### 6.<a id="6de"></a> Konfiguration des "GC little helper II" in Firefox von Greasemonkey nach Tampermonkey kopieren:
 Die Konfiguration sollte unbedingt vor den Upgrades auf Firefox 57 und Greasemonkey 4 kopiert werden, weil nicht sichergestellt ist, dass die dazu notwendige Funktionalität des GClhs mit diesen Upgrades noch funktioniert.   
