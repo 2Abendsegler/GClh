@@ -1,4 +1,3 @@
-<a href="#user-content-de" title=""><img src="../images/flag_de.png"></a>
 
 ---
 ## Tipps für die Installation des *GC little helper II* <a id="user-content-de"></a>  
