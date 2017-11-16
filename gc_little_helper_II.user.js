@@ -34,16 +34,17 @@
 // $$000 | Versionierung, bei neuen Versionen beachten.
 ////////////////////////////////////////////////////////////////////////////
 
-var jqueryInit = function (c) {
-    if (typeof c.$ === "undefined") {
-        c.$ = c.$ || unsafeWindow.$ || window.$ || null;
+var checkRunningOnce = function (c) {
+    if ( document.getElementsByTagName('head')[0] ) {
+        if ( document.getElementById('GClh_II_running') ) {
+            alert('The script "GC little helper II" is already running.\nPlease make sure that it runs only once.');
+        } else {
+            var head = document.getElementsByTagName('head')[0];
+            var meta = document.createElement('meta');
+            meta.id = "GClh_II_running";
+            head.appendChild(meta);
+        }
     }
-    if (typeof c.jQuery === "undefined") {
-        c.jQuery = c.jQuery || unsafeWindow.jQuery || window.jQuery || null;
-    }
-    var jqueryInitDeref = new jQuery.Deferred();
-    jqueryInitDeref.resolve();
-    return jqueryInitDeref.promise();
 };
 
 var quitOnAdFrames = function (c) {
@@ -54,6 +55,18 @@ var quitOnAdFrames = function (c) {
         quitOnAdFramesDeref.reject();
     }
     return quitOnAdFramesDeref.promise();
+};
+
+var jqueryInit = function (c) {
+    if (typeof c.$ === "undefined") {
+        c.$ = c.$ || unsafeWindow.$ || window.$ || null;
+    }
+    if (typeof c.jQuery === "undefined") {
+        c.jQuery = c.jQuery || unsafeWindow.jQuery || window.jQuery || null;
+    }
+    var jqueryInitDeref = new jQuery.Deferred();
+    jqueryInitDeref.resolve();
+    return jqueryInitDeref.promise();
 };
 
 var browserInit = function (c) {
@@ -464,6 +477,7 @@ var variablesInit = function (c) {
 };
 
 var start = function (c) {
+    checkRunningOnce();
     quitOnAdFrames()
         .then(function () { return jqueryInit(c); })
         .then(function () { return browserInit(c); })
