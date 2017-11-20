@@ -16,7 +16,7 @@
 // @require          https://cdnjs.cloudflare.com/ajax/libs/dropbox.js/2.5.2/Dropbox-sdk.min.js
 // @require          https://raw.githubusercontent.com/2Abendsegler/GClh/master/data/gclh_defi.js
 // @description      Some little things to make life easy (on www.geocaching.com).
-// @copyright        Torsten Amshove <torsten@amshove.net>
+// @copyright        2010-2016 Torsten Amshove, 2017 2Abendsegler
 // @author           Torsten Amshove; 2Abendsegler
 // @icon             https://raw.githubusercontent.com/2Abendsegler/GClh/master/images/gclh_logo.png
 // @license          GNU General Public License v2.0
@@ -34,16 +34,17 @@
 // $$000 | Versionierung, bei neuen Versionen beachten.
 ////////////////////////////////////////////////////////////////////////////
 
-var jqueryInit = function (c) {
-    if (typeof c.$ === "undefined") {
-        c.$ = c.$ || unsafeWindow.$ || window.$ || null;
+var checkRunningOnce = function (c) {
+    if ( document.getElementsByTagName('head')[0] ) {
+        if ( document.getElementById('GClh_II_running') ) {
+            alert('The script "GC little helper II" is already running.\nPlease make sure that it runs only once.');
+        } else {
+            var head = document.getElementsByTagName('head')[0];
+            var meta = document.createElement('meta');
+            meta.id = "GClh_II_running";
+            head.appendChild(meta);
+        }
     }
-    if (typeof c.jQuery === "undefined") {
-        c.jQuery = c.jQuery || unsafeWindow.jQuery || window.jQuery || null;
-    }
-    var jqueryInitDeref = new jQuery.Deferred();
-    jqueryInitDeref.resolve();
-    return jqueryInitDeref.promise();
 };
 
 var quitOnAdFrames = function (c) {
@@ -54,6 +55,18 @@ var quitOnAdFrames = function (c) {
         quitOnAdFramesDeref.reject();
     }
     return quitOnAdFramesDeref.promise();
+};
+
+var jqueryInit = function (c) {
+    if (typeof c.$ === "undefined") {
+        c.$ = c.$ || unsafeWindow.$ || window.$ || null;
+    }
+    if (typeof c.jQuery === "undefined") {
+        c.jQuery = c.jQuery || unsafeWindow.jQuery || window.jQuery || null;
+    }
+    var jqueryInitDeref = new jQuery.Deferred();
+    jqueryInitDeref.resolve();
+    return jqueryInitDeref.promise();
 };
 
 var browserInit = function (c) {
@@ -268,6 +281,7 @@ var variablesInit = function (c) {
     c.settings_vup_hide_avatar = getValue("settings_vup_hide_avatar", false);
     c.settings_vup_hide_log = getValue("settings_vup_hide_log", false);
     c.settings_f2_save_gclh_config = getValue("settings_f2_save_gclh_config", true);
+    c.settings_esc_close_gclh_config = getValue("settings_esc_close_gclh_config", true);
     c.settings_f4_call_gclh_config = getValue("settings_f4_call_gclh_config", true);
     c.settings_f10_call_gclh_sync = getValue("settings_f10_call_gclh_sync", true);
     c.settings_show_sums_in_bookmark_lists = getValue("settings_show_sums_in_bookmark_lists", true);
@@ -464,6 +478,7 @@ var variablesInit = function (c) {
 };
 
 var start = function (c) {
+    checkRunningOnce();
     quitOnAdFrames()
         .then(function () { return jqueryInit(c); })
         .then(function () { return browserInit(c); })
@@ -594,7 +609,7 @@ var mainOSM = function () {
 };
 
 ////////////////////////////////////////////////////////////////////////////
-// Dropbox Helper Function
+// Dropbox Helper
 ////////////////////////////////////////////////////////////////////////////
 (function(window){
     window.utils = {
@@ -632,18 +647,15 @@ var mainOSM = function () {
 })(window);
 
 ////////////////////////////////////////////////////////////////////////////
-// Helper
+// Helper Main
 ////////////////////////////////////////////////////////////////////////////
 var mainGC = function () {
 
-// Die neuen Seiten von GS aus der Verarbeitung nehmen.
-    // var t = Date.now();
-    // console.log("GClh: " + t + " | " + window.location);
-    if ( ( document.location.href.match(/^https?:\/\/www\.geocaching\.com\/account\//) && !document.location.href.match(/account\/(settings|lists|messagecenter)/) ) ||
+// Die neuen Seiten von GS, die wir noch nicht bearbeiten können, aus der Verarbeitung nehmen.
+    if ( ( document.location.href.match(/^https?:\/\/www\.geocaching\.com\/account\//) && !document.location.href.match(/account\/(settings|lists|messagecenter|dashboard)/) ) ||
          ( document.location.href.match(/^https?:\/\/www\.geocaching\.com\/p\//) ) ||
          ( document.location.href.match(/^https?:\/\/www\.geocaching\.com\/play\/friendleague/) ) ||
          ( document.location.href.match(/^https?:\/\/www\.geocaching\.com\/track\/$/) ) ) {
-        // console.log("GClh: Unknown page, do nothing");
         return;
     }
 
@@ -809,9 +821,7 @@ var mainGC = function () {
                 injectPageScriptFunction(function (map_layers, map_overlays, settings_map_default_layer, settings_show_hillshadow) {
                     window["GCLittleHelper_MapLayerHelper"] = function (map_layers, map_overlays, settings_map_default_layer, settings_show_hillshadow) {
                         if (!window.MapSettings.Map) {
-                            setTimeout(function () {
-                                window["GCLittleHelper_MapLayerHelper"](map_layers, map_overlays, settings_map_default_layer, settings_show_hillshadow);
-                            }, 10);
+                            setTimeout(function () { window["GCLittleHelper_MapLayerHelper"](map_layers, map_overlays, settings_map_default_layer, settings_show_hillshadow); }, 10);
                         } else {
                             var layerControl = new window.L.Control.Layers();
                             var layerToAdd = null;
@@ -1050,9 +1060,9 @@ var mainGC = function () {
                 }
             }
 
-            // Account Settings, Message Center, Cache suchen, Cache verstecken, Geotours (neues Seiten Design) und Karten:
+            // Account Settings, Message Center, Cache suchen, Cache verstecken, Geotours (neues Seiten Design), Karten und account/dashboard (new1):
             // ----------
-            if ( is_page("settings") || is_page("messagecenter") || is_page("find_cache") || is_page("hide_cache") || is_page("geotours") || is_page("map") ) {
+            if ( is_page("settings") || is_page("messagecenter") || is_page("find_cache") || is_page("hide_cache") || is_page("geotours") || is_page("map") || is_page("new1") ) {
                 // Weitere Attribute für neues Seiten Design zur Darstellung der Objekte im Header setzen.
                 style.innerHTML += "nav .wrapper {padding-right: " + new_padding_right + "px !important; width: unset;}";
                 // Platzieren des neuen Logos verursacht Fehler in der Plazierung des Videos. Folgendes korrigiert das quasi.
@@ -1176,8 +1186,8 @@ var mainGC = function () {
 // New Width (Die Menüweite wird bei Change Header Layout gesetzt.).
     new_width:
     try {
-        // Im neuen Seiten Design, bei Geotours, bei Labs Caches und bei Karten hier keine Anpassungen vornehmen.
-        if ( is_page("messagecenter") || is_page("settings") || is_page("hide_cache") || is_page("find_cache") || is_page("geotours") || is_page("labs") || is_page("map") ) break new_width;
+        // Im neuen Seiten Design, bei Geotours, bei Labs Caches, bei Karten und bei account/dashboard (new1) hier keine Anpassungen vornehmen.
+        if ( is_page("messagecenter") || is_page("settings") || is_page("hide_cache") || is_page("find_cache") || is_page("geotours") || is_page("labs") || is_page("map") || is_page("new1") ) break new_width;
 
         if (getValue("settings_new_width") > 0) {
             var new_width = parseInt( getValue("settings_new_width") );
@@ -1272,7 +1282,7 @@ var mainGC = function () {
                     appendCssStyle(".menu > li, .Menu > li  {height: 100%; padding-top: 2.0em;} .submenu, .SubMenu {margin-top: 1.9em;}");
                 } else if (is_page("find_cache")) {
                     appendCssStyle(".menu > li, .Menu > li  {height: 100%; padding-top: 2.2em;} .submenu, .SubMenu {margin-top: 2.1em;}");
-                } else if (is_page("hide_cache") || is_page("geotours")) {
+                } else if (is_page("hide_cache") || is_page("geotours") || is_page("new1")) {
                     appendCssStyle(".menu > li, .Menu > li  {height: 100%; padding-top: 2.1em;} .submenu, .SubMenu {margin-top: 2.0em;}");
                 } else {
                     appendCssStyle(".menu > li, .Menu > li  {height: 100%; padding-top: 2.0em;} .submenu, .SubMenu {margin-top: 2.0em;}");
@@ -5326,6 +5336,7 @@ var mainGC = function () {
                document.location.href.match(/^https?:\/\/www\.geocaching\.com\/my\/inventory\.aspx/)      ||      // TB Inventar
                document.location.href.match(/^https?:\/\/www\.geocaching\.com\/my/)                       ||      // Profil
                document.location.href.match(/^https?:\/\/www\.geocaching\.com\/my\/default\.aspx/)        ||      // Profil (Quicklist)
+               document.location.href.match(/^https?:\/\/www\.geocaching\.com\/account\/dashboard/)       ||      // Dashboard
                document.location.href.match(/^https?:\/\/www\.geocaching\.com\/profile\//)                ||      // Öffentliches Profil
                document.location.href.match(/^https?:\/\/www\.geocaching\.com\/my\/myfriends\.aspx/)         )) { // Friends
             var myself = global_me;
@@ -5765,6 +5776,55 @@ var mainGC = function () {
                     fill_box_vipvup(global_vips, "vip");
                     if (settings_process_vup) fill_box_vipvup(global_vups, "vup");
                 };
+
+            // Dashboard:
+            // ----------
+            } else if (document.location.href.match(/^https?:\/\/www\.geocaching\.com\/account\/dashboard/) && $('nav.sidebar-links').length > 1) {
+                function build_box_vipvup(desc) {
+                    var headline = document.createElement("h3");
+                    headline.setAttribute("class", "link-header header_vipvup");
+                    headline.setAttribute("id", "header_" + desc);
+                    headline.appendChild(document.createTextNode("All my " + desc.toUpperCase() + "s"));
+                    var box = document.createElement("ul");
+                    box.setAttribute("class", "link-block box_vipvup");
+                    box.setAttribute("id", "box_" + desc);
+                    $('nav.sidebar-links')[1].appendChild(headline);
+                    $('nav.sidebar-links')[1].appendChild(box);
+                }
+                function fill_box_vipvup(ary, desc) {
+                    var box = document.getElementById("box_" + desc);
+                    if (!box) return false;
+                    box.innerHTML = "";
+                    for (var i = 0; i < ary.length; i++) {
+                        var user = ary[i];
+                        var li = document.createElement("li");
+                        var profile = document.createElement("a");
+                        profile.setAttribute("href", http + "://www.geocaching.com/profile/?u=" + urlencode(user));
+                        profile.innerHTML = user;
+                        li.appendChild(profile);
+                        // Build VIP, VUP Icon.
+                        link = gclh_build_vipvup(user, ary, desc);
+                        li.appendChild(link);
+                        box.appendChild(li);
+                        if ( settings_show_mail_in_allmyvips && settings_show_mail && settings_show_vip_list ) buildSendIcons( li, user, "per u" );
+                    }
+                }
+                build_box_vipvup("vip");
+                fill_box_vipvup(global_vips, "vip");
+                if (settings_process_vup) {
+                    build_box_vipvup("vup");
+                    fill_box_vipvup(global_vups, "vup");
+                }
+                // Verarbeitung wird durch gclh_add... und gclh_del... angestoßen. Dadurch werden beide Listen hier neu aufgebaut.
+                gclh_build_vip_list = function () {
+                    fill_box_vipvup(global_vips, "vip");
+                    if (settings_process_vup) fill_box_vipvup(global_vups, "vup");
+                };
+                var css = "";
+                css += ".header_vipvup {padding: 12px 20px;}";
+                css += ".box_vipvup a {padding: 0 4px 0 0; font-size: 14px; color: #3d76c5;}";
+                css += ".box_vipvup a:hover {text-decoration: underline; color: #3d76c5;}";
+                appendCssStyle( css );
 
             // Friends list:
             // -------------
@@ -7448,13 +7508,16 @@ var mainGC = function () {
             document.location.href = clearUrlAppendix( document.location.href, true );
             setTimeout(createFindPlayerForm, 5);
         }
-        // Profile Seite.
-        if ( is_page("profile") && document.getElementById('ctl00_ContentBody_WidgetMiniProfile1_memberProfileLink') ) {
-            // GClh Config und Sync Links neben Avatar im Profile.
-            var lnk_config = " | <br><a href='#GClhShowConfig' id='gclh_config_lnk' name='gclh_config_lnk' style='font-size: 0.9em;' title='" + scriptShortNameConfig + " v" + scriptVersion + (settings_f4_call_gclh_config ? " / Key F4":"") + "' >" + scriptShortNameConfig + "</a>";
-            var lnk_sync = " | <a href='#GClhShowSync' id='gclh_sync_lnk' name='gclh_sync_lnk' style='font-size: 0.9em;' title='" + scriptShortNameSync + " v" + scriptVersion + (settings_f10_call_gclh_sync ? " / Key F10":"") + "' >" + scriptShortNameSync + "</a>";
-            var lnk_changelog = " | <a href='https://github.com/2Abendsegler/GClh/blob/master/docu/changelog.md#readme' style='font-size: 0.9em;' title='Documentation of changes and new features in GClh II on GitHub'>Changelog</a>";
-            document.getElementById('ctl00_ContentBody_WidgetMiniProfile1_memberProfileLink').parentNode.innerHTML += lnk_config + lnk_sync + lnk_changelog;
+        // Profile, Dashboard Seite.
+        if ( (is_page('profile') && document.getElementById('ctl00_ContentBody_WidgetMiniProfile1_memberProfileLink')) ||
+             (is_page('new1') && document.getElementById('DashboardSidebar') && document.getElementsByClassName('bio-meta')) ) {
+            // Config, Sync und Changelog Links beim Avatar im Profile, Dashboard.
+            var lnk_config = "<a href='#GClhShowConfig' id='gclh_config_lnk' name='gclh_config_lnk' title='" + scriptShortNameConfig + " v" + scriptVersion + (settings_f4_call_gclh_config ? " / Key F4":"") + "' >" + scriptShortNameConfig + "</a>";
+            var lnk_sync = " | <a href='#GClhShowSync' id='gclh_sync_lnk' name='gclh_sync_lnk' title='" + scriptShortNameSync + " v" + scriptVersion + (settings_f10_call_gclh_sync ? " / Key F10":"") + "' >" + scriptShortNameSync + "</a>";
+            var lnk_changelog = " | <a href='https://github.com/2Abendsegler/GClh/blob/master/docu/changelog.md#readme' title='Documentation of changes and new features in GClh II on GitHub'>Changelog</a>";
+            if (is_page('profile')) document.getElementById('ctl00_ContentBody_WidgetMiniProfile1_memberProfileLink').parentNode.innerHTML += " | <br>" + lnk_config + lnk_sync + lnk_changelog;
+            else document.getElementsByClassName('bio-meta')[0].innerHTML += lnk_config + lnk_sync + lnk_changelog;
+            $('.bio-meta').css('font-size', '12px');
             document.getElementById('gclh_config_lnk').addEventListener('click', gclh_showConfig, false);
             document.getElementById('gclh_sync_lnk').addEventListener('click', gclh_showSync, false);
             // Linklist Ablistung rechts im Profile.
@@ -7624,7 +7687,7 @@ var mainGC = function () {
     }
 
 ////////////////////////////////////////////////////////////////////////////
-// Functions Helper (fun1)
+// Helper Functions
 ////////////////////////////////////////////////////////////////////////////
     function in_array(search, arr) {
         for (var i = 0; i < arr.length; i++) if (arr[i] == search) return true;
@@ -7805,9 +7868,7 @@ var mainGC = function () {
 // Function to get the Finds out of the login-Text-Box.
     function get_my_finds() {
         var finds = "";
-        if ( $('.cache-count').text() ) {
-            finds = parseInt($('.cache-count').text().match(/[0-9,\.]+/)[0].replace(/[,\.]/,""));
-        }
+        if ( $('.cache-count').text() ) finds = parseInt($('.cache-count').text().match(/[0-9,\.]+/)[0].replace(/[,\.]/,""));
         return finds;
     }
 
@@ -8078,7 +8139,7 @@ var mainGC = function () {
         if ( ( document.location.href.match(/^https?:\/\/www\.wherigo\.com/)    ||
                document.location.href.match(/^https?:\/\/www\.waymarking\.com/) ||
                isMemberInPmoCache()                                                ) ||
-             ( task != "Find Player" &&
+             ( task != "Find Player" && !document.location.href.match(/^https?:\/\/www\.geocaching\.com\/account\/dashboard/) &&
                ( document.location.href.match(/^https?:\/\/www\.geocaching\.com\/(map|play|account)\//) ||
                  document.location.href.match(/^https?:\/\/labs\.geocaching\.com/)                         ) ) ) {
             if ( doAlert != false ) {
@@ -8406,23 +8467,19 @@ var mainGC = function () {
         if ( $("#searchContextMenu").length == 0 ) {
             var html = "";
             html += '<div id="searchContextMenu" class="pop-modal" style="top: auto; left: auto; width: 100%; position: absolute;">';
-
             html += '<div id="filter-new" class="add-menu" style="display: none;"><label for="newListName">Save current Filter Set</label>';
             html += '<div class="input-control active">';
             html += '<input id="nameSearch" name="newListName" maxlength="150" placeholder="New Name" type="text">';
             html += '<div class="add-list-status"><button id= "btn-save" class="add-list-submit" type="button" style="display: inline-block;">Save</button></div></div>';
             html += '</div>';
-
             html += '<div id="filter-edit" class="add-menu" style="display: none;"><label for="newListName">Edit Filter Set <i><span id="filterName"></span></i></label>';
             html += '<div class="input-control active">';
             html += '<input id="filter-name-rename" name="newListName" maxlength="150" placeholder="New Name" type="text">';
             html += '<div class="add-list-status"><button id= "btn-rename" class="add-list-submit" type="button" style="display: inline-block;">Rename</button></div>';
             html += '<div id="div-btn-update" class="add-list-status"><button id="btn-update" class="add-list-submit" type="button" style="display: inline-block;">Update</button></div>';
             html += '</div></div>';
-
             html += '<label class="add-list-label">Available Filter Sets</label>';
             html += '<ul id="filterlist" class="add-list"></ul>';
-
             html += '</div>';
             $( "#ctxMenu" ).html(html);
 
@@ -8456,9 +8513,7 @@ var mainGC = function () {
             });
         }
         $("#filter-edit").hide();
-        if ( $(".results").length != 0 ) {
-            $("#filter-new").show();
-        }
+        if ( $(".results").length != 0 ) $("#filter-new").show();
 
         var html = "";
         if ( settings_search_data.length ) {
@@ -8517,10 +8572,8 @@ var mainGC = function () {
             if ( !( $(".results").length || settings_search_data.length ) ) {
             } else {
                 create_config_css_search();
-
                 $( ".filters-toggle" ).append('&nbsp;<button id="filterCtxMenu" class="btn btn-user" type="button">Manage Filter Sets</button>  ');
                 $( ".filters-toggle" ).append('<div id="ctxMenu" style="display:none;"></div>');
-
                 $('#filterCtxMenu').click( function() {
                     var element = $('#ctxMenu');
                     if ( element.css('display') == 'none' ){
@@ -8618,12 +8671,12 @@ var mainGC = function () {
             html += "<input class='gclh_form' type='hidden' name='__VIEWSTATE' value=''>";
             if ( is_page("settings") || is_page("map") || is_page("labs") ) {
                 html += "<input style='width: 171px; height: 20px;' class='gclh_form' id='findplayer_field' class=\"Text\" type=\"text\" maxlength=\"100\" name=\"ctl00$ContentBody$FindUserPanel1$txtUsername\"/>";
-            } else if ( is_page("messagecenter") || is_page("find_cache") || is_page("hide_cache") || is_page("geotours") ) {
+            } else if ( is_page("messagecenter") || is_page("find_cache") || is_page("hide_cache") || is_page("geotours") || is_page("new1") ) {
                 html += "<input style='width: 175px; height: 24px;' class='gclh_form' id='findplayer_field' class=\"Text\" type=\"text\" maxlength=\"100\" name=\"ctl00$ContentBody$FindUserPanel1$txtUsername\"/>";
             } else {
                 html += "<input style='height: 20px;' class='gclh_form' id='findplayer_field' class=\"Text\" type=\"text\" maxlength=\"100\" name=\"ctl00$ContentBody$FindUserPanel1$txtUsername\"/>";
             }
-            if ( is_page("messagecenter") || is_page("find_cache") || is_page("hide_cache") || is_page("geotours") || is_page("map") || is_page("labs") ) {
+            if ( is_page("messagecenter") || is_page("find_cache") || is_page("hide_cache") || is_page("geotours") || is_page("map") || is_page("labs") || is_page("new1") ) {
                 html += " <input style='cursor: pointer; height: 24px;' class='gclh_form' type=\"submit\" value=\"Go\" name=\"ctl00$ContentBody$FindUserPanel1$GetUsers\"/>";
                 html += " <input style='cursor: pointer; height: 24px;' class='gclh_form' id='btn_close1' type='button' value='close'>";
             } else {
@@ -8648,7 +8701,7 @@ var mainGC = function () {
     }
 
 ////////////////////////////////////////////////////////////////////////////
-// Config
+// Config Main
 ////////////////////////////////////////////////////////////////////////////
     function checkboxy(setting_id, label) {
         // Hier werden auch gegebenenfalls "Clone" von Parametern verarbeitet. (Siehe Erläuterung weiter unten bei "setEventsForDoubleParameters".)
@@ -8667,53 +8720,105 @@ var mainGC = function () {
         var html = "";
         html += ".settings_overlay {";
         html += "  background-color: #d8cd9d; ";
-        html += "  width:600px;";
+        html += "  width: 600px;";
         html += "  border: 2px solid #778555; ";
         html += "  overflow: auto; ";
-        html += "  padding:10px; ";
+        html += "  padding: 10px; ";
         html += "  position: absolute; ";
-        html += "  left:30%; ";
-        html += "  top:10px; ";
-        html += "  z-index:1001; ";
-        html += "  -moz-border-radius:30px; ";
-        html += "  -khtml-border-radius:30px; ";
+        html += "  left: 30%; ";
+        html += "  top: 10px; ";
+        html += "  z-index: 1001; ";
         html += "  border-radius: 30px;";
+        html += "  box-sizing: unset;";
         html += "}";
         html += ".gclh_headline {";
         html += "  height: 21px; ";
-        html += "  margin:5px; ";
-        html += "  background-color: #778555; ";
+        html += "  margin: 5px; ";
+        html += "  background-color: #778555;";
         html += "  color: #FFFFFF;";
-        html += "  -moz-border-radius:30px; ";
-        html += "  -khtml-border-radius:30px; ";
         html += "  border-radius: 30px;";
         html += "  text-align: center;";
+        html += "  line-height: 1;";
+        html += "  font-size: 19.5px;";
         html += "}";
-        html += ".gclh_headline2 {margin: 12px 5px 5px -2px;}";
+        html += ".gclh_headline2 {";
+        html += "  margin: 12px 5px 5px -2px;";
+        html += "  font-size: 1.2em;";
+        html += "}";
         html += ".gclh_content {";
         html += "  padding: 2px 10px 10px 10px;";
         html += "  font-family: Verdana;";
         html += "  font-size: 14px;";
+        html += "  line-height: 1.5;";
+        html += "}";
+        html += ".gclh_content input, .gclh_content input:focus, .gclh_content input:active, .gclh_content textarea, .gclh_content select, .gclh_content button, .gclh_content pre {";
+        html += "  display: inline;";
+        html += "  width: unset;";
+        html += "  border: 2px solid #778555;";
+        html += "  border-radius: 7px;";
+        html += "  box-shadow: none;";
+        html += "  background: unset;";
+        html += "  background-color: #d8cd9d;";
+        html += "  background-image: none;";
+        html += "  margin: 0;";
+        html += "}";
+        html += ".gclh_content input, .gclh_content textarea, .gclh_content button, .gclh_content pre {";
+        html += "  padding: 1px 5px;";
+        html += "}";
+        html += ".gclh_content input, .gclh_content textarea, .gclh_content button, .gclh_content select {";
+        html += "  color: rgb(0, 0, 0) !important;";
+        html += "}";
+        html += ".gclh_content input[type='checkbox'], .gclh_content input:focus[type='checkbox'], .gclh_content input:active[type='checkbox'], .gclh_content input[type='radio'], .gclh_content input:focus[type='radio'], .gclh_content input:active[type='radio'] {";
+        html += "  margin-left: 4px;";
+        html += "  margin-right: 4px;";
+        html += "}";
+        html += ".gclh_content button, .gclh_content input[type='button'] {";
+        html += "  cursor: pointer;";
+        html += "}";
+        html += ".gclh_content textarea, .gclh_content pre {";
+        html += "  resize: vertical;";
+        html += "}";
+        html += ".gclh_content select {";
+        html += "  -moz-appearance: button;";
+        html += "  -webkit-appearance: menulist-button;"; // Chrome
+        html += "  cursor: default;";
+        html += "  padding: 0;";
+        html += "}";
+        html += ".gclh_content label {";
+        html += "  display: inline;";
+        html += "  font-size: 14px;";
+        html += "  text-transform: unset;";
+        html += "}";
+        html += ".gclh_content a {";
+        html += "  text-decoration: none;";
+        html += "  color: #3d76c5;";
+        html += "}";
+        html += ".gclh_content a:hover, .gclh_content a:active, .gclh_content a:focus {";
+        html += "  text-decoration: underline;";
+        html += "  color: #3d76c5;";
+        html += "}";
+        html += ".gclh_content .wrapper {margin: 0 0;}";
+        html += ".gclh_content td {";
+        html += "  padding: 0px 0px 0px 5px;";
+        html += "}";
+        html += ".gclh_content table, .gclh_content thead, .gclh_content tbody, .gclh_content tr, .gclh_content td {";
+        html += "  box-sizing: unset;";
         html += "}";
         html += ".gclh_form {";
-        html += "  background-color: #d8cd9d;";
-        html += "  border: 2px solid #778555;";
-        html += "  -moz-border-radius: 7px;";
-        html += "  -khtml-border-radius: 7px;";
-        html += "  border-radius: 7px;";
-        html += "  padding-left: 5px;";
-        html += "  padding-right: 5px;";
+        html += "  font-size: 14px !important;";
+        html += "  font-family: Verdana !important;";
+        html += "  line-height: 18px !important;";
         html += "}";
         html += ".gclh_ref {";
-        html += "  color: #000000;";
-        html += "  text-decoration: none;";
+        html += "  color: #000000 !important;";
+        html += "  text-decoration: none !important;";
         html += "  border-bottom: dotted 1px black;";
         html += "}";
         html += ".gclh_small {";
         html += "  font-size: 10px;";
         html += "}";
         html += "a.gclh_info {";
-        html += "  color: #000000;";
+        html += "  color: #000000 !important;";
         html += "  text-decoration: none;";
         html += "  cursor: help;";
         html += "}";
@@ -8763,29 +8868,18 @@ var mainGC = function () {
         html += "  left: -245px !important;";
         html += "}";
         html += ".gclh_rc_area {";
-        html += "  width: 540px;";
-        html += "  background-color: #d8cd9d;";
-        html += "  border: 1px solid #778555;";
-        html += "  padding: 20px;";
         html += "  z-index: 1001;";
-        html += "  -moz-border-radius: 30px;";
-        html += "  -khtml-border-radius: 30px;";
+        html += "  border: 1px solid #778555;";
         html += "  border-radius: 30px;";
+        html += "  padding: 20px;";
         html += "  margin-top: 15px;";
         html += "}";
         html += ".gclh_rc_area_button {";
         html += "  margin-left: 185px;";
         html += "}";
         html += ".gclh_rc_form {";
-        html += "  background-color: #d8cd9d;";
-        html += "  border: 2px solid #778555;";
-        html += "  -moz-border-radius: 7px;";
-        html += "  -khtml-border-radius: 7px;";
-        html += "  border-radius: 7px;";
-        html += "  padding-left: 5px;";
-        html += "  padding-right: 5px;";
-        html += "  margin-left: 15px;";
-        html += "  cursor: pointer;";
+        html += "  margin-bottom: 15px !important;";
+        html += "  margin-left: 15px !important;";
         html += "}";
         css.innerHTML = html;
         document.getElementsByTagName('body')[0].appendChild(css);
@@ -8831,7 +8925,6 @@ var mainGC = function () {
             html += "&nbsp;" + "<font style='float: right; font-size: 11px; ' >";
             html += "<a href='http://geoclub.de/forum/viewforum.php?f=117' title='Help is available on the Geoclub forum' target='_blank'>Help</a> | ";
             html += "<a href='https://github.com/2Abendsegler/GClh/issues?q=is:issue is:open sort:created-desc' title='Show open issues on GitHub' target='_blank'>Open issues</a> | ";
-            html += "<a href='https://github.com/2Abendsegler/GClh/issues?q=is:issue is:open label:\"tag: wish\" sort:created-desc' title='Show open wishes on GitHub' target='_blank'>Open wishes</a> | ";
             html += "<a href='https://github.com/2Abendsegler/GClh/blob/master/docu/changelog.md#readme' title='Documentation of changes and new features in GClh II on GitHub' target='_blank'>Changelog</a> | ";
             html += "<a id='check_for_upgrade' href='#' style='cursor: pointer' title='Check for upgrade GClh II'>Check for upgrade</a> | ";
             html += "<a href='https://github.com/2Abendsegler/GClh/tree/master' title='Development plattform and issue system of GClh II' target='_blank'>GitHub</a> | ";
@@ -8849,7 +8942,7 @@ var mainGC = function () {
             html += "<div class='gclh_rc_area_button'>";
             html += "<img id='rc_doing' src='' title='' alt='' style='margin-top: 4px; margin-left: -25px; position: absolute;' /><input class='gclh_rc_form' type='button' value='reset' id='rc_reset_button'> <input style='cursor: pointer;' class='gclh_rc_form' type='button' value='close' id='rc_close_button'>";
             html += "</div>";
-            html += "<pre class='gclh_form' style='width: 525px; height: 220px; overflow: auto; margin-bottom: 0px; font-size: 12px;' type='text' value='' id='rc_configData' contenteditable='true'></pre>";
+            html += "<pre class='gclh_form' style='display: block; height: 220px; overflow: auto; margin-bottom: 0px; font-size: 12px;' type='text' value='' id='rc_configData' contenteditable='true'></pre>";
             html += "</div>";
             html += "</div>";
 
@@ -8857,7 +8950,7 @@ var mainGC = function () {
             html += "<br>";
             html += "<h4 class='gclh_headline2'>"+prepareHideable.replace("#name#","global")+"Global</h4>";
             html += "<div id='gclh_config_global'>";
-            html += "&nbsp;" + "Home-Coords: <input class='gclh_form' type='text' size='21' id='settings_home_lat_lng' value='" + DectoDeg(getValue("home_lat"), getValue("home_lng")) + "'>" + show_help("The Home-Coords are filled automatically if you update your Home-Coords on gc.com. If it doesn\'t work you can insert them here. These coords are used for some special links (nearest list, nearest map, ..) and for the homezone circle on the map.") + "<br>";
+            html += "<label for='settings_home_lat_lng'>&nbsp;Home-Coords: </label><input class='gclh_form' type='text' size='25' id='settings_home_lat_lng' value='" + DectoDeg(getValue("home_lat"), getValue("home_lng")) + "'>" + show_help("The Home-Coords are filled automatically if you update your Home-Coords on gc.com. If it doesn\'t work you can insert them here. These coords are used for some special links (nearest list, nearest map, ..) and for the homezone circle on the map.") + "<br>";
             html += checkboxy('settings_set_default_langu', 'Set default language ');
             html += "<select class='gclh_form' id='settings_default_langu'>";
             for ( var i = 0; i < langus.length; i++ ){
@@ -8927,6 +9020,9 @@ var mainGC = function () {
             html += "<div id='gclh_config_config'>";
             html += checkboxy('settings_f4_call_gclh_config', 'Call GClh Config on F4') + show_help("With this option you are able to call the GClh Config page (this page) by pressing F4.") + "<br/>";
             html += checkboxy('settings_f2_save_gclh_config', 'Save GClh Config on F2') + show_help("With this option you are able to save the GClh Config page (this page) by pressing F2 instead of scrolling to the bottom and choose the save button.") + "<br/>";
+            html += newParameterOn2;
+            html += checkboxy('settings_esc_close_gclh_config', 'Close GClh Config on ESC') + show_help("With this option you are able to close the GClh Config page (this page) by pressing ESC instead of scrolling to the bottom and choose the close button.") + "<br/>";
+            html += newParameterVersionSetzen(0.8) + newParameterOff;
             html += checkboxy('settings_f10_call_gclh_sync', 'Call GClh Sync on F10') + show_help("With this option you are able to call the GClh Sync page by pressing F10.") + "<br/>";
             html += checkboxy('settings_sync_autoImport', 'Auto apply DB Sync') + show_help("If you enable this option, settings from dropbox will be applied automatically about GClh Sync every 10 hours.") + "<br/>";
             html += checkboxy('settings_show_save_message', 'Show info message if GClh data are saved') + show_help("With this option an info message is displayed if the GClh Config data are saved respectively if the GClh Sync data are imported.") + "<br/>";
@@ -8963,16 +9059,8 @@ var mainGC = function () {
             html += checkboxy('settings_pq_option_ignorelist', "Enable option '<i>Are not on my ignore list</i>' by default") + show_help("This activates the option '<i>Are not on my ignore list</i>' by default.") + "<br/>";
             html += checkboxy('settings_pq_option_isenabled', "Enable option '<i>Is Enabled</i>' by default") + show_help("This activates the option '<i>Is Enabled</i>' by default.") + "<br/>";
             html += checkboxy('settings_pq_option_filename', "Enable option '<i>Include PQ name in download file name</i>' by default") + show_help3("This activates the option '<i>Include pocket query name in download file name</i>' by default.") + "<br/>";
-            html += checkboxy('settings_pq_set_difficulty', "Set difficulity ");
-            html += gclh_createSelectOptionCode( "settings_pq_difficulty", dt_display, settings_pq_difficulty );
-            html += '&nbsp;';
-            html += gclh_createSelectOptionCode( "settings_pq_difficulty_score", dt_score, settings_pq_difficulty_score );
-            html += " by default" + show_help3("Specifies the default settings for difficulty score.") + "<br/>";
-            html += checkboxy('settings_pq_set_terrain', "Set terrain ");
-            html += gclh_createSelectOptionCode( "settings_pq_terrain", dt_display, settings_pq_terrain );
-            html += '&nbsp;';
-            html += gclh_createSelectOptionCode( "settings_pq_terrain_score", dt_score, settings_pq_terrain_score );
-            html += " by default" + show_help("Specifies the default settings for terrain score.") + "<br/>";
+            html += checkboxy('settings_pq_set_difficulty', "Set difficulity ") + gclh_createSelectOptionCode( "settings_pq_difficulty", dt_display, settings_pq_difficulty ) + '&nbsp;' + gclh_createSelectOptionCode( "settings_pq_difficulty_score", dt_score, settings_pq_difficulty_score ) + " by default" + show_help3("Specifies the default settings for difficulty score.") + "<br/>";
+            html += checkboxy('settings_pq_set_terrain', "Set terrain ") + gclh_createSelectOptionCode( "settings_pq_terrain", dt_display, settings_pq_terrain ) + '&nbsp;' + gclh_createSelectOptionCode( "settings_pq_terrain_score", dt_score, settings_pq_terrain_score ) + " by default" + show_help("Specifies the default settings for terrain score.") + "<br/>";
             html += checkboxy('settings_pq_automatically_day', "Generate pocket query today") + show_help("Use the server time to set the week day for creation.") + "<br/>";
             html += newParameterVersionSetzen(0.6) + newParameterOff;
             html += "</div>";
@@ -8993,13 +9081,13 @@ var mainGC = function () {
             html += "&nbsp; " + "- Color: <input class='gclh_form color' type='text' size='5' id='settings_homezone_color' value='" + settings_homezone_color + "' style='margin-left: 15px'>" + show_help("Here you can change the color of your Homezone circle.") + "<br>";
             html += "&nbsp; " + "- Opacity: <input class='gclh_form' type='text' size='1' id='settings_homezone_opacity' value='" + settings_homezone_opacity + "'> %" + show_help("Here you can change the opacity of your Homezone circle.") + "<br>";
             //Multi-Homezone
-            html += "<div class='multi_homezone_settings' style='width: 60%;'><b>Multi Homezone</b>";
+            html += "<div class='multi_homezone_settings' style='width: 80%;'><b>Multi Homezone</b>";
             var multi_hz_el = "<div class='multi_homezone_element'>";
-            multi_hz_el += "- Coords: <input class='gclh_form coords' type='text' size='21' value='" + DectoDeg(getValue("home_lat"), getValue("home_lng")) + " 'style='margin-left: 1px;'>" + "<br>";
+            multi_hz_el += "- Coords: <input class='gclh_form coords' type='text' size='25' value='" + DectoDeg(getValue("home_lat"), getValue("home_lng")) + " 'style='margin-left: 1px;'>" + "<br>";
             multi_hz_el += "- Radius: <input class='gclh_form radius' type='text' size='1' value='1' style='margin-left: 5px;'> km" + show_help("This option draws a circle of X kilometers around your home coordinates on the map.") + "<br>";
             multi_hz_el += "- Color: <input class='gclh_form color' type='text' size='5' value='#0000FF' style='margin-left: 15px;'>" + show_help("Here you can change the color of your Homezone circle.") + "<br>";
             multi_hz_el += "- Opacity: <input class='gclh_form opacity' type='text' size='1' value='10'> %" + show_help("Here you can change the opacity of your Homezone circle.") + "<br>";
-            multi_hz_el += "<button class='remove' type='button' style='cursor: pointer; border: 2px solid #778555; border-radius: 7px;'>remove</button>";
+            multi_hz_el += "<button class='gclh_form remove' type='button'>remove</button>";
             multi_hz_el += "</div>";
             for (var i in settings_multi_homezone) {
                 var hzel = settings_multi_homezone[i];
@@ -9010,7 +9098,7 @@ var mainGC = function () {
                 newHzEl.find('.opacity').attr('value', hzel.opacity);
                 html += newHzEl.html();
             }
-            html += "<div class='wrapper'></div><button type='button' class='addentry' style='cursor: pointer; border: 2px solid #778555; border-radius: 7px;'>create further Homezone</button></div>";
+            html += "<div class='wrapper'></div><button type='button' class='gclh_form addentry'>create further Homezone</button></div>";
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>Hide Map Elements</b></div>";
             html += checkboxy('settings_map_hide_sidebar', 'Hide sidebar by default') + show_help("If you want to hide the sidebar on the map, just select this option.") + "<br/>";
             html += checkboxy('settings_hide_map_header', 'Hide header by default') + show_help("If you want to hide the header of the map, just select this option.") + "<br/>";
@@ -9047,7 +9135,7 @@ var mainGC = function () {
             html += "</tr>";
             html += "<tr><td colspan='3'>Default layer: <code><span id='settings_mapdefault_layer'>" + (settings_map_default_layer ? settings_map_default_layer:"<i>not available</i>") +"</span></code>";
             html += "&nbsp;" + show_help("Here you can select the map source you want to use as default in the map. Select a layer from the right list 'Shown layers' and push the button 'Set Default Layer'.");
-            html += "<span style='float: right; margin-top: 0px;' ><input style='padding-left: 2px; padding-right: 2px; cursor: pointer;' class='gclh_form' type='button' value='Set Default Layer' id='btn_set_default_layer'></span><br/><span style='margin-left: -4px'></span>";
+            html += "<span style='float: right; margin-top: 0px;' ><input class='gclh_form' type='button' value='Set Default Layer' id='btn_set_default_layer'></span><br/><span style='margin-left: -4px'></span>";
             html += checkboxy('settings_show_hillshadow', 'Show Hillshadow by default') + show_help("If you want 3D-like-Shadow to be displayed by default, activate this function. Option \"Replace layercontrol by GClh\" must be enabled.") + "<br/>";
             html += "</td></tr>";
             html += "</tbody></table></div>";
@@ -9241,7 +9329,7 @@ var mainGC = function () {
             for (var i = 0; i < anzTemplates; i++) {
                 html += "&nbsp;" + "<input class='gclh_form' type='text' size='15' id='settings_log_template_name[" + i + "]' value='" + getValue('settings_log_template_name[' + i + ']', '') + "'> ";
                 html += "<a onClick=\"if(document.getElementById(\'settings_log_template_div[" + i + "]\').style.display == \'\') document.getElementById(\'settings_log_template_div[" + i + "]\').style.display = \'none\'; else document.getElementById(\'settings_log_template_div[" + i + "]\').style.display = \'\'; return false;\" href='#'><img src='" + http + "://www.geocaching.com/images/stockholm/16x16/page_white_edit.gif' border='0'></a><br>";
-                html += "<div id='settings_log_template_div[" + i + "]' style='display: none;'>&nbsp;&nbsp;&nbsp;&nbsp;<textarea class='gclh_form' rows='6' cols='30' id='settings_log_template[" + i + "]'>&zwnj;" + getValue("settings_log_template[" + i + "]", "") + "</textarea></div>";
+                html += "<div id='settings_log_template_div[" + i + "]' style='display: none;'>&nbsp;&nbsp;&nbsp;&nbsp;<textarea class='gclh_form' rows='4' cols='54' id='settings_log_template[" + i + "]'>&zwnj;" + getValue("settings_log_template[" + i + "]", "") + "</textarea></div>";
             }
             html += "&nbsp;" + "Default log type: &nbsp; &nbsp; &nbsp; &nbsp; <select class='gclh_form' id='settings_default_logtype' style='margin-left: 8px;'>";
             html += "  <option value=\"-1\" " + (settings_default_logtype == "-1" ? "selected=\"selected\"" : "") + ">- Select type of log -</option>";
@@ -9273,17 +9361,17 @@ var mainGC = function () {
             html += "  <option value=\"48\" " + (settings_default_tb_logtype == "48" ? "selected=\"selected\"" : "") + ">Discovered it</option>";
             html += "</select>" + show_help("If you set this option, the selected value will be selected automatically, if you open a log page.") + "<br>";
             html += "&nbsp;" + "Cache log signature:" + show_help("The signature will automatically be inserted into your logs. <br><br>Also you are able to use placeholder for variables which will be replaced in the log.") + " &nbsp; (Possible placeholder:" + show_help_big(placeholderDescription) + ")<br>";
-            html += "&nbsp;" + "<textarea class='gclh_form' rows='8' cols='40' id='settings_log_signature'>&zwnj;" + getValue("settings_log_signature", "") + "</textarea><br>";
+            html += "&nbsp;" + "<textarea class='gclh_form' rows='3' cols='56' id='settings_log_signature'>&zwnj;" + getValue("settings_log_signature", "") + "</textarea><br>";
             html += checkboxy('settings_log_signature_on_fieldnotes', 'Add log signature on Field Notes logs') + show_help('If this option is disabled, the log signature will not be used by logs out of Field Notes - you can use it, if you already have an signature in your Field Notes.') + "<br>";
             html += "&nbsp;" + "TB log signature:" + show_help("The signature will automatically be inserted into your TB logs. <br><br>Also you are able to use placeholder for variables which will be replaced in the log.") + " &nbsp; (Possible placeholder:" + show_help_big(placeholderDescription) + ")<br>";
-            html += "&nbsp;" + "<textarea class='gclh_form' rows='8' cols='40' id='settings_tb_signature'>&zwnj;" + getValue("settings_tb_signature", "") + "</textarea><br>";
+            html += "&nbsp;" + "<textarea class='gclh_form' rows='3' cols='56' id='settings_tb_signature'>&zwnj;" + getValue("settings_tb_signature", "") + "</textarea><br>";
             html += "</div>";
 
             html += "<h4 class='gclh_headline2'>"+prepareHideable.replace("#name#","mail")+"Mail / Message form</h4>";
             html += "<div id='gclh_config_mail'>";
             var placeholderDescriptionMail = "Possible placeholder Mail / Message form:<br>&nbsp; #Found# : Your founds + 1<br>&nbsp; #Found_no# : Your founds<br>&nbsp; #Me# : Your username<br>&nbsp; #Receiver# : Username of the receiver<br>&nbsp; #Date# : Actual date<br>&nbsp; #Time# : Actual time in format hh:mm<br>&nbsp; #DateTime# : Actual date actual time<br>&nbsp; #GCTBName# : GC or TB name<br>&nbsp; #GCTBCode# : GC or TB code in brackets<br>&nbsp; #GCTBLink# : GC or TB link in brackets<br>(Upper and lower case is not required in the placeholder name.)";
             html += "&nbsp;" + "Template:&nbsp;" + show_help2("The template will automatically be inserted into your mails and messages. <br><br>Also you are able to use placeholder for variables which will be replaced in the mail and in the message.") + " &nbsp; (Possible placeholder:" + show_help_big(placeholderDescriptionMail) + ")<br>";
-            html += "&nbsp;" + "<textarea class='gclh_form' rows='8' cols='40' id='settings_mail_signature'>&zwnj;" + getValue("settings_mail_signature", "") + "</textarea><br>";
+            html += "&nbsp;" + "<textarea class='gclh_form' rows='7' cols='56' id='settings_mail_signature'>&zwnj;" + getValue("settings_mail_signature", "") + "</textarea><br>";
             html += "</div>";
 
             html += "<h4 class='gclh_headline2'><a name='gclh_linklist'></a>"+prepareHideable.replace("#name#","linklist")+"Linklist / Navigation <span style='font-size: 14px'>" + show_help("In this section you can configure your personal Linklist which is shown on the top of the page and/or in your profile. You can activate it on top of this configuration page respectively in the \"Profile / Statistic\" section.") + "</span></h4>";
@@ -9371,15 +9459,15 @@ var mainGC = function () {
             }
             html += "<div style='float:right; width:197px;margin-left:10px;' div>";
             // Überschrift, rechte Spalte:
-            html += "    <p style='margin-top:5px;margin-bottom:3px;font-family: Verdana;font-size: 14px;font-style: normal;font-weight: bold;'>Linklist" + show_help("In this column you can organize your Linklist. With the left button you can grab and move an element forwards or backwards. With the right button you can delete an element from the Linklist. You delete the element only from the Linklist, in the left columns the element is preserved.<br><br>The Linklist requires \"Show Linklist on top\" or \"Show Linklist in profile\".") + "</p>";
-            html += "    <table class='gclh_form' style='width:100%; margin-top: -1px;'>";
+            html += "    <p style='margin-top: 0px; margin-bottom: 0px; font-family: Verdana;font-size: 14px;font-style: normal;font-weight: bold;'>Linklist" + show_help("In this column you can organize your Linklist. With the left button you can grab and move an element forwards or backwards. With the right button you can delete an element from the Linklist. You delete the element only from the Linklist, in the left columns the element is preserved.<br><br>The Linklist requires \"Show Linklist on top\" or \"Show Linklist in profile\".") + "</p>";
+            html += "    <table class='gclh_form' style='width:100%; border: 2px solid #778555; border-radius: 7px; border-collapse: inherit;'>";
             // Ausgewählte Bookmarks für die Linklist, rechte Spalte:
             html += "        <tbody id='gclh_LinkListTop'>";
             var order = JSON.parse(getValue("settings_bookmarks_list", "[]").replace(/, (?=,)/g, ",null"));
             // Platzhalter, falls noch keine Bookmarks für die Linklist ausgewählt wurden.
             if (order.length == 0) {
                 html += "        <tr style='height: 25px;' class='gclh_LinkListPlaceHolder'>";
-                html += "            <td style='padding: 0px;' >Drop here...</td>";
+                html += "            <td>Drop here...</td>";
                 html += "        </tr>";
             } else {
                 for (var i = 0; i < order.length; i++) {
@@ -9396,11 +9484,11 @@ var mainGC = function () {
                     }
                     var textName = textTitle;
                     html += "    <tr style='height: 25px;' class='gclh_LinkListInlist' id='gclh_LinkListTop_" + order[i] + "' name='" + textName + "' title='" + textTitle + "'>";
-                    html += "        <td style='padding: 0px; vertical-align: top; text-overflow: ellipsis; max-width: 166px; overflow: hidden; white-space: nowrap;'>";
+                    html += "        <td style='vertical-align: top; text-overflow: ellipsis; max-width: 166px; overflow: hidden; white-space: nowrap;'>";
                     html += "            <img style='height: 12px; margin-right: 3px; cursor: grab;' title='Grab it' src='" + global_grab_it_icon + "'/>";
                     html +=              text;
                     html += "        </td>";
-                    html += "        <td style='padding: 0px;'>";
+                    html += "        <td>";
                     html += "            <img style='height: 20px; margin-left: 0px; vertical-align: top; cursor: pointer;' title ='Delete it' class='gclh_LinkListDelIcon' src='" + global_del_it_icon + "'/>";
                     html += "        </td>";
                     html += "    </tr>";
@@ -9430,10 +9518,10 @@ var mainGC = function () {
                 var num = bookmarks[i]['number'];
                 html += "        <tr>";
                 // Erste Spalte mit den möglichen Bookmarks:
-                html += "            <td style='padding: 0px 2px 1px 2px; width: 201px; z-index: 1004;' align='left' class='gclh_LinkListElement' id='gclh_LinkListElement_" + num + "' >";
-                html += "                <img style='height:12px;margin-right:3px; cursor: grab;' title='' src='"+global_grab_it2_icon+"' />";
+                html += "            <td style='width: 202px; z-index: 1004;' align='left' class='gclh_LinkListElement' id='gclh_LinkListElement_" + num + "' >";
+                html += "                <img style='height: 12px; margin-right: 3px; cursor: grab;' title='' src='"+global_grab_it2_icon+"' />";
                 if (typeof(bookmarks[i]['custom']) != "undefined" && bookmarks[i]['custom'] == true) {
-                    html += "            <input style='padding-left: 2px; padding-right: 2px;' class='gclh_form' type='text' title='Custom link' id='settings_custom_bookmark[" + cust + "]' value='" + bookmarks[i]['href'] + "' size='15'> ";
+                    html += "            <input style='padding-left: 2px !important; padding-right: 2px !important;' class='gclh_form' type='text' title='Custom link' id='settings_custom_bookmark[" + cust + "]' value='" + bookmarks[i]['href'] + "' size='15'> ";
                     html += "            <input type='checkbox' style='margin-left: 1px;' title='Open in new window' " + (bookmarks[i]['target'] == "_blank" ? "checked='checked'" : "" ) + " id='settings_custom_bookmark_target[" + cust + "]'>";
                     cust++;
                 } else {
@@ -9454,9 +9542,9 @@ var mainGC = function () {
                 // Zweite Spalte mit gegebenenfalls abweichenden Bezeichnungen:
                 html += "            <td align='left' style='padding: 0px 2px 1px 2px;'>";
                 if (typeof(bookmarks[i]['custom']) != "undefined" && bookmarks[i]['custom'] == true) {
-                    html += "                <input style='padding-left: 2px; padding-right: 2px;' class='gclh_form' title='Description for custom link' id='bookmarks_name[" + num + "]' type='text' size='15' value='" + getValue("settings_bookmarks_title[" + num + "]", "") + "'>";
+                    html += "                <input style='padding-left: 2px !important; padding-right: 2px !important;' class='gclh_form' title='Description for custom link' id='bookmarks_name[" + num + "]' type='text' size='15' value='" + getValue("settings_bookmarks_title[" + num + "]", "") + "'>";
                 } else {
-                    html += "                <input style='padding-left: 2px; padding-right: 2px;' class='gclh_form' title='Differing description for standard link' id='bookmarks_name[" + num + "]' type='text' size='15' value='" + getValue("settings_bookmarks_title[" + num + "]", "") + "'>";
+                    html += "                <input style='padding-left: 2px !important; padding-right: 2px !important;' class='gclh_form' title='Differing description for standard link' id='bookmarks_name[" + num + "]' type='text' size='15' value='" + getValue("settings_bookmarks_title[" + num + "]", "") + "'>";
                     // Kennzeichnung neuer Parameter in Linklist Bereich.
                     if ( num >= 69 && num <= 69 ) {
                         html +=              newParameterLLVersionSetzen(0.8);
@@ -9472,8 +9560,9 @@ var mainGC = function () {
             html += "<br>";
             html += "";
             html += "<br>";
-            html += "&nbsp;" + "<input style='padding-left: 2px; padding-right: 2px; cursor: pointer;' class='gclh_form' type='button' value='" + setValueInSaveButton() + "' id='btn_save'> <input style='padding-left: 2px; padding-right: 2px; cursor: pointer;' class='gclh_form' type='button' value='save&upload' id='btn_saveAndUpload'> <input class='gclh_form' type='button' value='close' id='btn_close2' style='cursor: pointer;'>";
-            html += "<div width='400px' align='right' class='gclh_small' style='float: right; margin-top: -5px;'>GC little helper, Copyright © 2010 <a href='http://www.amshove.net/' target='_blank'>Torsten Amshove</a></div>";
+            html += "<br>";
+            html += "&nbsp;" + "<input class='gclh_form' type='button' value='" + setValueInSaveButton() + "' id='btn_save'> <input class='gclh_form' type='button' value='save & upload' id='btn_saveAndUpload'> <input class='gclh_form' type='button' value='" + setValueInCloseButton() + "' id='btn_close2'>";
+            html += "<div width='450px' align='right' class='gclh_small' style='float: right; margin-top: -5px;'>Copyright © <a href='http://www.amshove.net/' target='_blank'>Torsten Amshove</a>, <a href='https://www.geocaching.com/profile/?u=2Abendsegler' target='_blank'>2Abendsegler</a></div>";
             html += "<div width='400px' align='right' class='gclh_small' style='float: right; margin-top: -15px;'>License: <a href='https://github.com/2Abendsegler/GClh/blob/master/docu/license.md#readme' target='_blank' title='GNU General Public License Version 2'>GPLv2</a>, Warranty: <a href='https://github.com/2Abendsegler/GClh/blob/master/docu/warranty.md#readme' target='_blank' title='GC little helper comes with ABSOLUTELY NO WARRANTY'>NO</a></div>";
             html += "</div>";
             html += "</div>";
@@ -9590,11 +9679,11 @@ var mainGC = function () {
                     var textName = textTitle;
                     // Bookmark in Linklist aufbauen.
                     var htmlRight = "";
-                    htmlRight += "   <td style='padding: 0px; vertical-align: top; text-overflow: ellipsis; max-width: 166px; overflow: hidden; white-space: nowrap;'>";
+                    htmlRight += "   <td style='vertical-align: top; text-overflow: ellipsis; max-width: 166px; overflow: hidden; white-space: nowrap;'>";
                     htmlRight += "       <img style='height: 12px; margin-right: 3px; cursor: grab;' title ='Grab it' src='"+global_grab_it_icon+"' />";
                     htmlRight +=         text;
                     htmlRight += "   </td>";
-                    htmlRight += "   <td style='padding: 0px;'>";
+                    htmlRight += "   <td>";
                     htmlRight += "       <img class='gclh_LinkListDelIcon' style='height: 20px; margin-left: 0px; vertical-align: top; cursor: pointer;' title ='Delete it' src='" + global_del_it_icon + "' />";
                     htmlRight += "   </td>";
                     var row = $("<tr style='height: 25px;' class='gclh_LinkListInlist' id='gclh_LinkListTop_" + index + "' name='" + textName + "' title='" + textTitle + "'></tr>").html(htmlRight);
@@ -9893,10 +9982,9 @@ var mainGC = function () {
             // Anfangsbesetzung herstellen bei den Abhängigkeiten.
             setStartForDependentParameters();
 
-            // Die Checkbox settings_f2_save_gclh, die regelt, ob ein Save aus der GClh Config Seite per
-            // F2 Taste durchgeführt werden darf, mit Event versehen, um beim Anwählen der Checkbox die
-            // Bezeichnung im Save Button dynamisch anzupassen.
+            // Save, Close Buttons dynamisch mit F2 bzw. ESC Beschriftung versehen.
             document.getElementById('settings_f2_save_gclh_config').addEventListener("click", setValueInSaveButton, false);
+            document.getElementById('settings_esc_close_gclh_config').addEventListener("click", setValueInCloseButton, false);
 
             // Positionierung innerhalb des GClh Config bei Aufrufen.
             if (document.location.href.match(/#a#/i)) {
@@ -9923,12 +10011,15 @@ var mainGC = function () {
         // Fokusierung auf Verarbeitung, damit Menüs einklappen.
         document.getElementById("settings_overlay").click();
 
-        // Bei Taste F2 ein Save im GClh Config durchführen wie per "save" Button.
+        // Bei Taste F2 ein Save und bei Taste ESC ein Close im GClh Config durchführen wie per Button.
         if ( check_config_page() ) window.addEventListener('keydown', keydown, true);
         function keydown(e) {
             if ( check_config_page() ) {
                 if ( document.getElementById("settings_f2_save_gclh_config").checked && !global_mod_reset ) {
                     if (e.keyCode == 113 && noSpecialKey(e)) document.getElementById("btn_save").click();
+                }
+                if ( document.getElementById("settings_esc_close_gclh_config").checked && !global_mod_reset ) {
+                    if (e.keyCode == 27 && noSpecialKey(e)) document.getElementById("btn_close2").click();
                 }
             }
         }
@@ -10072,6 +10163,7 @@ var mainGC = function () {
                 'settings_vup_hide_avatar',
                 'settings_vup_hide_log',
                 'settings_f2_save_gclh_config',
+                'settings_esc_close_gclh_config',
                 'settings_f4_call_gclh_config',
                 'settings_f10_call_gclh_sync',
                 'settings_show_sums_in_bookmark_lists',
@@ -10247,7 +10339,7 @@ var mainGC = function () {
                         })
                         .fail(function(){
                             // Means something went wrong or the Dropbox is not authenticated, so we display the Auth Link.
-                            alert('GClh is not authorized to use your Dropbox. Please go to the Sync Page and authenticate your Dropbox first. Nevertheless your config is saved localy.');
+                            alert('GClh is not authorized to use your Dropbox. Please go to the Sync Page and \nauthenticate your Dropbox first. Nevertheless your config is saved localy.');
                             window.location.reload(false);
                         });
                 } else window.location.reload(false);
@@ -10260,7 +10352,7 @@ var mainGC = function () {
     }
 
 ////////////////////////////////////////////////////////////////////////////
-// Functions Config (fun2)
+// Config Functions
 ////////////////////////////////////////////////////////////////////////////
 // Radio Buttons zur Linklist verarbeiten.
     function handleRadioTopMenu( first ) {
@@ -10281,9 +10373,7 @@ var mainGC = function () {
                 document.getElementById('box_top_menu_v').style.display = "block";
                 setTimeout(function() {
                     $("#box_top_menu_h").animate({height: "0px"}, time);
-                    setTimeout(function() {
-                        document.getElementById('box_top_menu_h').style.display = "none";
-                    }, timeShort);
+                    setTimeout(function() { document.getElementById('box_top_menu_h').style.display = "none"; }, timeShort);
                 }, time);
             }
         }
@@ -10293,9 +10383,7 @@ var mainGC = function () {
                 document.getElementById('box_top_menu_h').style.display = "block";
                 setTimeout(function() {
                     $("#box_top_menu_v").animate({height: "0px"}, time);
-                    setTimeout(function() {
-                        document.getElementById('box_top_menu_v').style.display = "none";
-                    }, timeShort);
+                    setTimeout(function() { document.getElementById('box_top_menu_v').style.display = "none"; }, timeShort);
                 }, time);
             }
         }
@@ -10576,21 +10664,34 @@ var mainGC = function () {
             field.style.backgroundColor = "#" + field.value;
         }
     }
-    function restoreColor(p, r, v) { 
+    function restoreColor(p, r, v) {
         if ( document.getElementById(r) && document.getElementById(p).value != v ) document.getElementById(r).click();
     }
 
-// Bezeichnung Save Button setzen (save bzw. save (F2)).
+// Bezeichnung Save Button setzen.
     function setValueInSaveButton() {
         var wert = "save";
-        // Nach dem Aufbau der GClh Config Seite.
+        // Nach dem Aufbau von Config.
         if ( document.getElementById("settings_f2_save_gclh_config") ) {
-            if ( document.getElementById("settings_f2_save_gclh_config").checked ) wert = "save (F2)";
+            if ( document.getElementById("settings_f2_save_gclh_config").checked ) wert += " (F2)";
             document.getElementById('btn_save').setAttribute("value", wert);
-            return;
-        // Vor dem Aufbau der GClh Config Seite.
+        // Vor dem Aufbau von Config.
         } else {
-            if ( settings_f2_save_gclh_config ) wert = "save (F2)";
+            if ( settings_f2_save_gclh_config ) wert += " (F2)";
+            return wert;
+        }
+    }
+
+// Bezeichnung Close Button setzen.
+    function setValueInCloseButton() {
+        var wert = "close";
+        // Nach dem Aufbau von Config.
+        if ( document.getElementById("settings_esc_close_gclh_config") ) {
+            if ( document.getElementById("settings_esc_close_gclh_config").checked ) wert += " (ESC)";
+            document.getElementById('btn_close2').setAttribute("value", wert);
+        // Vor dem Aufbau von Config.
+        } else {
+            if ( settings_esc_close_gclh_config ) wert += " (ESC)";
             return wert;
         }
     }
@@ -10600,8 +10701,9 @@ var mainGC = function () {
         if ( document.getElementById('save_overlay') ) {
         } else {
             var html = "";
-            html += "#save_overlay {background-color: #d8cd9d; width:560px; margin-left: 20px; border: 2px solid #778555; overflow: auto; padding:10px; position: absolute; left:30%; top:70px; z-index:1004; border-radius: 10px; }";
-            html += ".gclh_form {background-color: #d8cd9d; border: 2px solid #778555; padding-left: 5px; padding-right: 5px; }";
+            html += "#save_overlay {background-color: #d8cd9d; width:560px; margin-left: 20px; border: 2px solid #778555; overflow: auto; padding:10px; position: absolute; left:30%; top:70px; z-index:1004; border-radius: 10px;}";
+            html += ".gclh_form {background-color: #d8cd9d; border: 2px solid #778555; padding-left: 5px; padding-right: 5px;}";
+            html += "h3 {margin: 0;}";
             var form_side = document.getElementsByTagName('body')[0];
             var form_style = document.createElement("style");
             form_style.appendChild(document.createTextNode(html));
@@ -10725,7 +10827,9 @@ var mainGC = function () {
         setValue("show_box_"+stamm, (whatToDo == "show" ? false : true));
     }
 
-// Reset Config functions.
+////////////////////////////////////////////////////////////////////////////
+// Config Reset Functions
+////////////////////////////////////////////////////////////////////////////
     function rcPrepare() {
         global_mod_reset = true;
         if (document.getElementById('settings_overlay')) document.getElementById('settings_overlay').style.overflow = "hidden";
@@ -10831,7 +10935,7 @@ var mainGC = function () {
                 kkey.match(/^gclh_(.*)(_logs_get_last|_logs_count)$/)       ) {
                 config_tmp[key] = CONFIG[key];
             } else if (kkey.match(/autovisit_(\d+)/) ||
-                       kkey.match(/^(settings_DB_auth_token)$/) ) {
+                       kkey.match(/^(settings_DB_auth_token|new_version|class)$/) ) {
                 changed = true;
                 document.getElementById('rc_configData').innerText += "delete: " + key + ": " + CONFIG[key] + "\n";
             } else if (data.match(kkey)) {
@@ -10864,7 +10968,7 @@ var mainGC = function () {
     }
 
 ////////////////////////////////////////////////////////////////////////////
-// Sync (fun3)
+// Sync Main
 ////////////////////////////////////////////////////////////////////////////
     function sync_getConfigData() {
         var data = {};
@@ -10882,9 +10986,7 @@ var mainGC = function () {
         var parsedData = JSON.parse(data);
         var settings = {};
         for(key in parsedData){
-            if (!gclhConfigKeysIgnoreForBackup[key]) {
-                settings[key] = parsedData[key];
-            }
+            if (!gclhConfigKeysIgnoreForBackup[key]) settings[key] = parsedData[key];
         }
         setValueSet(settings).done(function (){
         });
@@ -10904,9 +11006,7 @@ var mainGC = function () {
         // Maybe the user denies Access (this is mostly an unwanted click), so show him, that he
         // has refused to give us access to his dropbox and that he can re-auth if he want to.
         error = utils.parseQueryString(window.location.hash).error_description;
-        if (error) {
-            alert('We received the following error from dropbox: "' + error + '" If you think this is a mistake, you can try to re-authenticate in the sync menue of GClh.');
-        }
+        if (error) alert('We received the following error from dropbox: "' + error + '" If you think this is a mistake, you can try to re-authenticate in the sync menue of GClh.');
     }
 
 // Created the Dropbox Client with the given auth token from config.
@@ -10932,7 +11032,6 @@ var mainGC = function () {
             dropbox_client = null;
             deferred.reject();
         }
-
         return deferred.promise();
     }
 
@@ -11056,7 +11155,6 @@ var mainGC = function () {
             console.log(error);
             deferred.reject(error);
         });
-
         return deferred.promise();
     }
 
@@ -11079,22 +11177,25 @@ var mainGC = function () {
             var html = "";
             html += "<h3 class='gclh_headline' title='Some little things to make life easy (on www.geocaching.com).' >" + scriptNameSync + " <font class='gclh_small'>v" + scriptVersion + "</font></h3>";
             html += "<div class='gclh_content'>";
-            html += "<h4 class='gclh_headline2' id='syncDBLabel' style='cursor: pointer;'>DropBox <font class='gclh_small'>(click to hide/show)</font></h4>";
+//--> $$000 Begin of change
+//            html += "<h4 class='gclh_headline2' id='syncDBLabel' style='cursor: pointer;'>DropBox <font class='gclh_small'>(click to hide/show)</font></h4>";
+            html += "<h4 class='gclh_headline2' id='syncDBLabel' style='cursor: pointer;'>DropBox <font class='gclh_small'>(click to hide/show) </font><font class='gclh_small' style='color: #d43f3f; font-weight: normal;'>(New authentications are not possible, we work on it.)</font></h4>";
+//<-- $$000 End of change
             html += "<div style='display:none;' id='syncDB' >";
             html += "<div id='syncDBLoader'><img style='height: 40px;' src='"+global_syncDBLoader_icon+"'> working...</div>";
-            html += "<a href='#' class='gclh_form' style='display:none;' id='authlink' class='button'>authenticate</a>";
-            html += "<input class='gclh_form' type='button' value='save to DropBox' id='btn_DBSave' style='cursor: pointer; display:none;'> ";
-            html += "<input class='gclh_form' type='button' value='load from DropBox' id='btn_DBLoad' style='cursor: pointer; display:none;'>";
+            html += "<a href='#' class='gclh_form' style='display: none;' id='authlink' class='button'>authenticate</a>";
+            html += "<input class='gclh_form' type='button' value='save to DropBox' id='btn_DBSave' style='display: none;'> ";
+            html += "<input class='gclh_form' type='button' value='load from DropBox' id='btn_DBLoad' style='display: none;'>";
             html += "</div>";
             html += "<h4 class='gclh_headline2' id='syncManualLabel' style='cursor: pointer;'>Manual <font class='gclh_small'>(click to hide/show)</font></h4>";
             html += "<div style='display:none;' id='syncManual' >";
-            html += "<pre class='gclh_form' style='width: 550px; height: 300px; overflow: auto; margin-top: 0; margin-bottom: 6px' type='text' value='' id='configData' size='28' contenteditable='true'></pre>";
-            html += "<input class='gclh_form' type='button' value='export' id='btn_ExportConfig' style='cursor: pointer;'> ";
-            html += "<input class='gclh_form' type='button' value='import' id='btn_ImportConfig' style='cursor: pointer;'>";
+            html += "<pre class='gclh_form' style='display: block; width: 550px; height: 300px; overflow: auto; margin-top: 0; margin-bottom: 6px !important' type='text' value='' id='configData' size='28' contenteditable='true'></pre>";
+            html += "<input class='gclh_form' type='button' value='export' id='btn_ExportConfig'> ";
+            html += "<input class='gclh_form' type='button' value='import' id='btn_ImportConfig'>";
             html += "</div>";
             html += "<br>";
             html += "<br>";
-            html += "<input class='gclh_form' type='button' value='close' id='btn_close3' style='cursor: pointer;'>";
+            html += "<input class='gclh_form' type='button' value='close' id='btn_close3'>";
             html += "</div>";
             div.innerHTML = html;
 
@@ -11181,7 +11282,6 @@ var mainGC = function () {
                 });
             } else {
                 // Hashes are equal so nothing has changed. We do not need to update
-                // console.log('Hashes equal, no need to sync.');
             }
         })
         .fail(function(error){
@@ -11192,7 +11292,7 @@ var mainGC = function () {
 }; // end of mainGC
 
 ////////////////////////////////////////////////////////////////////////////
-// Functions global (fun4)
+// Global Functions
 ////////////////////////////////////////////////////////////////////////////
 // Create a bookmark to a page in the geocaching.com name space.
 function bookmark(title, href, bookmarkArray) {
@@ -11218,8 +11318,6 @@ function profileBookmark(title, id, bookmarkArray) {
 }
 
 // Doppelte Linkbestückung mit "href" hier direkt und mit "name" für spätere Eventzuordnung.
-// Derzeitige Nutzung nur für Aufruf GClh Config: 1. für "href" Link zu Seite "My Profile" von anderer Seite, per Link GClh Config
-// in Linklist heraus und 2. für Event Verarbeitung auf Seite "My Profile" per Link GClh Config in Linklist heraus.
 function profileSpecialBookmark(title, href, name, bookmarkArray) {
     var bm = bookmark(title, href, bookmarkArray);
     bm['name'] = name;
@@ -11312,12 +11410,13 @@ function is_link(name, url) {
         case "labs":
             if (url.match(/^https?:\/\/labs\.geocaching\.com/)) status = true;
             break;
+        case "new1":
+            if (url.match(/^https?:\/\/www\.geocaching\.com\/account\/dashboard/)) status = true;
+            break;
         default:
             gclh_error( "is_link", "is_link( "+name+", ... ): unknown name" );
             break;
     }
-    // debugging output
-    // status ? (gclh_log( "is_link( "+name+", "+url+"): " + status )) : false;
     return status;
 }
 
