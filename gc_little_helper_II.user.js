@@ -29,16 +29,14 @@
 // @grant            GM_getResourceText
 // @grant            GM_info
 // ==/UserScript==
-
 ////////////////////////////////////////////////////////////////////////////
 // $$000 | Versionierung, bei neuen Versionen beachten.
 ////////////////////////////////////////////////////////////////////////////
 
 var checkRunningOnce = function (c) {
     if ( document.getElementsByTagName('head')[0] ) {
-        if ( document.getElementById('GClh_II_running') ) {
-            alert('The script "GC little helper II" is already running.\nPlease make sure that it runs only once.');
-        } else {
+        if ( document.getElementById('GClh_II_running') ) alert('The script "GC little helper II" is already running.\nPlease make sure that it runs only once.');
+        else {
             var head = document.getElementsByTagName('head')[0];
             var meta = document.createElement('meta');
             meta.id = "GClh_II_running";
@@ -49,21 +47,14 @@ var checkRunningOnce = function (c) {
 
 var quitOnAdFrames = function (c) {
     var quitOnAdFramesDeref = new jQuery.Deferred();
-    if (window.name.substring(0, 18) !== 'google_ads_iframe_') {
-        quitOnAdFramesDeref.resolve();
-    } else {
-        quitOnAdFramesDeref.reject();
-    }
+    if (window.name.substring(0, 18) !== 'google_ads_iframe_') quitOnAdFramesDeref.resolve();
+    else quitOnAdFramesDeref.reject();
     return quitOnAdFramesDeref.promise();
 };
 
 var jqueryInit = function (c) {
-    if (typeof c.$ === "undefined") {
-        c.$ = c.$ || unsafeWindow.$ || window.$ || null;
-    }
-    if (typeof c.jQuery === "undefined") {
-        c.jQuery = c.jQuery || unsafeWindow.jQuery || window.jQuery || null;
-    }
+    if (typeof c.$ === "undefined") c.$ = c.$ || unsafeWindow.$ || window.$ || null;
+    if (typeof c.jQuery === "undefined") c.jQuery = c.jQuery || unsafeWindow.jQuery || window.jQuery || null;
     var jqueryInitDeref = new jQuery.Deferred();
     jqueryInitDeref.resolve();
     return jqueryInitDeref.promise();
@@ -97,7 +88,6 @@ var constInit = function (c) {
     c.bookmarks_def = new Array(22, 31, 69, 14, 32, 33, 48, "0", 8, 18, 54, 51, 55, 47, 10, 2, 35, 9, 17, 67, 23, 68);
     c.defaultConfigLink = "https://www.geocaching.com/my/default.aspx#GClhShowConfig";
     c.defaultSyncLink = "https://www.geocaching.com/my/default.aspx#GClhShowSync";
-
     // Define bookmarks:
     c.bookmarks = new Array();
     // WICHTIG: Die Reihenfolge darf hier auf keinen Fall geändert werden, weil dadurch eine falsche Zuordnung zu den gespeicherten Userdaten erfolgen würde!
@@ -189,10 +179,7 @@ var constInit = function (c) {
         }
     }
 
-    c.gclhConfigKeysIgnoreForBackup = {
-        "token": true
-    };
-
+    c.gclhConfigKeysIgnoreForBackup = { "token": true };
     iconsInit(c);
     langInit(c);
     layersInit(c);
@@ -556,7 +543,6 @@ var mainGMaps = function () {
             }
             addGcButton(0);
         }
-
         // Hide left sidebar on Google Maps.
         if (settings_hide_left_sidebar_on_google_maps) {
             function hideLeftSidebar(waitCount) {
@@ -589,7 +575,6 @@ var mainOSM = function () {
                 if ( settings_add_link_gc_map_on_osm  ) {
                     var code = '<div class="control-gc leaflet-control"><a class="control-button" href="#" data-original-title="Geocaching.com" style="outline: medium none;"><span class="icon" title="Geocaching Map" style="margin: 5px; display: inline-block; vertical-align: middle; height: 32px; width: 32px; background-image: url(\''+global_gc_icon_sw+'\'); background-size: 25px 25px;  background-position: center; background-repeat: no-repeat;"></span></a></div>';
                     $(".control-share").after(code);
-
                     $(".control-gc").click( function () {
                         var matches = document.location.href.match(/=([0-9]+)\/(-?[0-9.]*)\/(-?[0-9.]*)/);
                         if (matches != null) {
@@ -632,15 +617,10 @@ var mainOSM = function () {
                 // http://w3.org/TR/2012/WD-url-20120524/#collect-url-parameters
                 val = val === undefined ? null : decodeURIComponent(val);
 
-                if (ret[key] === undefined) {
-                    ret[key] = val;
-                } else if (Array.isArray(ret[key])) {
-                    ret[key].push(val);
-                } else {
-                    ret[key] = [ret[key], val];
-                }
+                if (ret[key] === undefined) ret[key] = val;
+                else if (Array.isArray(ret[key])) ret[key].push(val);
+                else ret[key] = [ret[key], val];
             });
-
             return ret;
         }
     };
@@ -653,9 +633,7 @@ var mainGC = function () {
 
 // Die neuen Seiten von GS, die wir noch nicht bearbeiten können, aus der Verarbeitung nehmen.
     if ( ( document.location.href.match(/^https?:\/\/www\.geocaching\.com\/account\//) && !document.location.href.match(/account\/(settings|lists|messagecenter|dashboard)/) ) ||
-         ( document.location.href.match(/^https?:\/\/www\.geocaching\.com\/p\//) ) ||
-         ( document.location.href.match(/^https?:\/\/www\.geocaching\.com\/play\/friendleague/) ) ||
-         ( document.location.href.match(/^https?:\/\/www\.geocaching\.com\/track\/$/) ) ) {
+         ( document.location.href.match(/^https?:\/\/www\.geocaching\.com\/(p\/|play\/friendleague|track\/$)/) ) ) {
         return;
     }
 
@@ -772,9 +750,7 @@ var mainGC = function () {
             }
             if (id && document.getElementById(id)) {
                 function keydownF2(e) {
-                    if (e.keyCode == 113 && noSpecialKey(e) && !check_config_page()) {
-                        document.getElementById(id).click();
-                    }
+                    if (e.keyCode == 113 && noSpecialKey(e) && !check_config_page()) document.getElementById(id).click();
                 }
                 document.getElementById(id).value += " (F2)";
                 window.addEventListener('keydown', keydownF2, true);
@@ -958,9 +934,7 @@ var mainGC = function () {
             var new_width_menu = 950;
             var new_width_menu_cut_old = 0;
             var new_padding_right = 0;
-            if ( getValue("settings_new_width") > 0) {
-                new_width = parseInt( getValue("settings_new_width") );
-            }
+            if ( getValue("settings_new_width") > 0) new_width = parseInt( getValue("settings_new_width") );
             if (settings_show_smaller_area_top_right) {
                 new_padding_right = 261 - 14;
                 if (settings_show_smaller_gc_link) {
@@ -1293,7 +1267,6 @@ var mainGC = function () {
         if (settings_bookmarks_on_top && (document.getElementsByClassName("Menu").length > 0 || document.getElementsByClassName("menu").length > 0)){
             if (document.getElementsByClassName("Menu").length > 0) var nav_list = document.getElementsByClassName("Menu")[0];
             else var nav_list = document.getElementsByClassName("menu")[0];
-
             var menu = document.createElement("li");
             var headline = document.createElement("a");
 
@@ -1303,11 +1276,9 @@ var mainGC = function () {
                 headline.setAttribute("accesskey", "7");
                 headline.innerHTML = "Linklist";
                 menu.appendChild(headline);
-
                 var submenu = document.createElement("ul");
                 $(submenu).addClass("SubMenu").addClass("submenu");
                 menu.appendChild(submenu);
-
                 for (var i = 0; i < settings_bookmarks_list.length; i++) {
                     var x = settings_bookmarks_list[i];
                     if (typeof(x) == "undefined" || x == "" || typeof(x) == "object") continue;
@@ -1355,7 +1326,7 @@ var mainGC = function () {
 
             // Hover für alle Dropdown Listen aufbauen.
             buildHover();
-  
+
             if ( settings_menu_show_separator ) {
                 if ( settings_bookmarks_top_menu || settings_change_header_layout == false );   // Navi vertikal
                 else {                                                                          // Navi horizontal
@@ -1424,7 +1395,6 @@ var mainGC = function () {
     if (settings_bookmarks_show && document.location.href.match(/^https?:\/\/www\.geocaching\.com\/my\//) && document.getElementById("ctl00_ContentBody_WidgetMiniProfile1_LoggedInPanel")) {
         try {
             var side = document.getElementById("ctl00_ContentBody_WidgetMiniProfile1_LoggedInPanel");
-
             var div0 = document.createElement("div");
             div0.setAttribute("class", "YourProfileWidget");
             div0.setAttribute("style", "margin-left: -1px; margin-right: -1px;");     // Wegen doppeltem Border 1px
@@ -1434,7 +1404,6 @@ var mainGC = function () {
             var div = document.createElement("div");
             div.setAttribute("class", "WidgetBody");
             var ul = document.createElement("ul");
-
             for (var i = 0; i < settings_bookmarks_list.length; i++) {
                 var x = settings_bookmarks_list[i];
                 if (typeof(x) == "undefined" || x == "" || typeof(x) == "object") continue;
@@ -2760,23 +2729,8 @@ var mainGC = function () {
                 var spanelem = document.getElementById("ctl00_ContentBody_mcd2");
                 var datetxt = spanelem.innerHTML.substr(spanelem.innerHTML.indexOf(":") + 2).replace(/^\s+|\s+$/g, '');
                 var month_names = new Object();
-                month_names["Jan"] = 1;
-                month_names["Feb"] = 2;
-                month_names["Mrz"] = 3;
-                month_names["Mar"] = 3;
-                month_names["Apr"] = 4;
-                month_names["May"] = 5;
-                month_names["Jun"] = 6;
-                month_names["Jul"] = 7;
-                month_names["Aug"] = 8;
-                month_names["Sep"] = 9;
-                month_names["Oct"] = 10;
-                month_names["Nov"] = 11;
-                month_names["Dec"] = 12;
-                // settings_date_format:
-                var day = 0;
-                var month = 0;
-                var year = 0;
+                month_names["Jan"] = 1; month_names["Feb"] = 2; month_names["Mrz"] = 3; month_names["Mar"] = 3; month_names["Apr"] = 4; month_names["May"] = 5; month_names["Jun"] = 6; month_names["Jul"] = 7; month_names["Aug"] = 8; month_names["Sep"] = 9; month_names["Oct"] = 10; month_names["Nov"] = 11; month_names["Dec"] = 12;
+                var day = 0; var month = 0; var year = 0;
                 switch (settings_date_format) {
                     case "yyyy-MM-dd":
                         var match = datetxt.match(/([0-9]{4})-([0-9]{2})-([0-9]{2})/);
@@ -2811,18 +2765,11 @@ var mainGC = function () {
                         if (match) { day = match[1]; month = month_names[match[2]]; year = parseInt(match[3]) + 2000; }
                         break;
                 }
-
                 if (month != 0) month--;
                 var d = new Date(year, month, day);
                 if (d != "Invalid Date" && !(day == 0 && month == 0 && year == 0)) {
                     var weekday = new Array(7);
-                    weekday[0] = "Sunday";
-                    weekday[1] = "Monday";
-                    weekday[2] = "Tuesday";
-                    weekday[3] = "Wednesday";
-                    weekday[4] = "Thursday";
-                    weekday[5] = "Friday";
-                    weekday[6] = "Saturday";
+                    weekday[0] = "Sunday"; weekday[1] = "Monday"; weekday[2] = "Tuesday"; weekday[3] = "Wednesday"; weekday[4] = "Thursday"; weekday[5] = "Friday"; weekday[6] = "Saturday";
                     var text = " (" + weekday[d.getDay()] + ") ";
                 } else var text = " (date format mismatch - see settings) ";
                 var text_elem = document.createTextNode(text);
