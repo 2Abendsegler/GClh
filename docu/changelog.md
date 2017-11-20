@@ -48,7 +48,6 @@ Settings -> GClh Config / Sync:<br>
 </li>
 <li>
 New: <b>Check if GClh runs only once</b>: [Issue <a href="https://github.com/2Abendsegler/GClh/pull/476">#476</a>]<br>
-<br>
 </li>
 </ul>
 (??.11.2017)<br> 
