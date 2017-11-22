@@ -14,7 +14,7 @@
 // @require          http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js
 // @require          http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js
 // @require          https://cdnjs.cloudflare.com/ajax/libs/dropbox.js/2.5.2/Dropbox-sdk.min.js
-//xxxx
+//xxxxxxxxxxxx
 // @require          https://raw.githubusercontent.com/2Abendsegler/GClh/v0.8.11/data/gclh_defi.js
 // @description      Some little things to make life easy (on www.geocaching.com).
 // @copyright        2010-2016 Torsten Amshove, 2017 2Abendsegler
@@ -3128,7 +3128,7 @@ var mainGC = function () {
             css += "    background-color: #e1e1e1;";
             css += "    cursor: pointer;}";
             css += "#ShowWaypointsOnFloppsMap_linklist{";
-            css += "    background-image: url(" + global_flopps_map + ")}";
+            css += "    background-image: url(" + global_flopps_map_icon + ")}";
             appendCssStyle( css );
 
             // Append the Flopps map to the right, top Linklist
@@ -3211,7 +3211,7 @@ var mainGC = function () {
             css += "    cursor: pointer;";
             css += "}";
             css += "#ShowWaypointsOnBRouter_linklist{";
-            css += "    background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAQCAYAAAAiYZ4HAAABG2lUWHRYTUw6Y29tLmFkb2JlLnhtcAAAAAAAPD94cGFja2V0IGJlZ2luPSLvu78iIGlkPSJXNU0wTXBDZWhpSHpyZVN6TlRjemtjOWQiPz4KPHg6eG1wbWV0YSB4bWxuczp4PSJhZG9iZTpuczptZXRhLyIgeDp4bXB0az0iWE1QIENvcmUgNS41LjAiPgogPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4KICA8cmRmOkRlc2NyaXB0aW9uIHJkZjphYm91dD0iIi8+CiA8L3JkZjpSREY+CjwveDp4bXBtZXRhPgo8P3hwYWNrZXQgZW5kPSJyIj8+Gkqr6gAAAYJpQ0NQc1JHQiBJRUM2MTk2Ni0yLjEAACiRdZHLS0JBFIc/tSjUKMhFixYS1SIseoDUJkgJCyLEDLLa6M1H4ONyrxLSNmgrFERtei3qL6ht0DoIiiKIoF3rojYVt3NTUCLPcOZ885s5h5kzYA2nlYzeMAiZbF4LBXzuhciiu+kZOw5cQF9U0dWJYHCGuvZxh8WMN/1mrfrn/jXHSlxXwNIsPK6oWl54SnhmLa+avC3sUlLRFeFTYY8mFxS+NfVYmV9MTpb5y2QtHPKDtU3YnazhWA0rKS0jLC+nO5MuKJX7mC9xxrPzcxK7xDvRCRHAh5tpJvHjZYgxmb30M8yArKiTP/ibP0tOchWZVYporJIkRR6PqAWpHpeYED0uI03R7P/fvuqJkeFydacPGp8M460Hmrbgu2QYn4eG8X0Etke4yFbzcwcw+i56qap170PrBpxdVrXYDpxvQseDGtWiv5JN3JpIwOsJtESg/RrsS+WeVfY5vofwunzVFezuQa+cb13+ASNEZ8doe9nfAAAACXBIWXMAAC4jAAAuIwF4pT92AAACFklEQVQokW2Qy0tUYRjGf993vjnjbcaRcS7ljGZmOWlKnMmOmG0qGqTLRggkpDa1yHZB/0TgOohoE7TpsrE2SXbDTcpAkFFJNYkjORmmjqPneE4bZxqlZ/Xxvc/D+z4/QZn6+/tbuhvDD3Y7Kwm5kfesCU8uGVDne0Yevit6RPFhmmbLhZ7OiWtyJqS2fldslzsZyz3b5O9rHRl9CyCLgeSh9pFh72xIE5D+4/JVC1CjBJfiHvH6l/2k6JMAhmGIvXXV+zR7nafzGzhnrpLuHmQ6doSARyAKq0Hnxgm9fIMQW2f8tly6zF5M02TW1sorOgAKYHJy0unrNmao9SRSEYf7N6+ggrsYUFkcF/JaxZK89dze1mHq+9yrbONhu16XDAXXGeQbur3OxKKFLxR6nBqfDpd3GLIi8eHbGUuxQ+/zknta8+X8i9E35RsS/qHr+lRlFDvSXDJnCw4r8Tb0cxdxlpfiqfFpIQFEta9GCBEtHOjikdpTCoz9tPjQOwBCIDStAghLwzA8WjBcD6CiMZ4tK/BWYTmQ80WYr2sov7BdAgm9tb3E70dthM+NSV7mLHLJkyWn9Pmx5zJHJWDoHUagONA7ktzNKb5sekm3HS8FtEgDdjZjSqBVxZr3/5so0pbOp85TOKJEHRWNsbm4cFAJb2WVkLJpG8tjp/mobScs/XW4hbUGYRjGmBaNZ3fy/5/ctVX/X+/aoP1H+pyRAAAAAElFTkSuQmCC)";
+            css += "    background-image: url(" + global_brouter_icon + ")}";
             css += "}";
             appendCssStyle( css );
 
