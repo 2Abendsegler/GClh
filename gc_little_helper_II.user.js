@@ -3212,7 +3212,6 @@ var mainGC = function () {
             css += "}";
             css += "#ShowWaypointsOnBRouter_linklist{";
             css += "    background-image: url(" + global_brouter_icon + ")}";
-            css += "}";
             appendCssStyle( css );
 
             // Append the Brouter map to the right, top Linklist
