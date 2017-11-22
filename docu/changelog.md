@@ -37,7 +37,7 @@ GClh header processing with Linklist.<br>
 Build links to GClh Config, GClh Sync and Changelog.<br>
 <img src="../images/v0.8.11_Screen01.jpg" alt="v0.8.11_Screen01.jpg"><br>
 Build VIPs and VUPs.<br>
-<img src="../images/v0.8.11_Screen02.jpg" alt="v0.8.11_Screen02.jpg"><br>
+<img src="../images/v0.8.11_Screen02.png" alt="v0.8.11_Screen02.png"><br>
 <br>
 </li>
 <li>
