@@ -8456,8 +8456,8 @@ var mainGC = function () {
             var id = 'data-id="'+settings_search_data[i].id+'"';
             var t = (settings_search_data[i].url == document.location.href.split("#")[0])?true:false;
             html += '<button type="button" class="btn-item-action action-open" '+id+'>'+(t?'<b>':'')+settings_search_data[i].name+(t?'</b>':'')+'</button>';
-            html += '<div type="button" title="Remove Filter Set" class="status btn-iconsvg action-delete" '+id+'><svg class="icon icon-svg-button" role="presentation"><use xlink:href="/account/Content/ui-icons/sprites/global.svg#icon-delete"></use></svg></div>';
-            html += '<div type="button" title="Change Filter Set" style="right: 50px;" class="status btn-iconsvg action-rename" '+id+'><svg class="icon icon-svg-button" role="presentation"><use xlink:href="/account/Content/ui-icons/sprites/global.svg#icon-more"></use></svg></div>';
+            html += '<div type="button" title="Remove Filter Set" class="status btn-iconsvg action-delete" '+id+'><svg class="icon icon-svg-button" role="presentation"><use xlink:href="/account/app/ui-icons/sprites/global.svg#icon-delete"></use></svg></div>';
+            html += '<div type="button" title="Change Filter Set" style="right: 50px;" class="status btn-iconsvg action-rename" '+id+'><svg class="icon icon-svg-button" role="presentation"><use xlink:href="/account/app/ui-icons/sprites/global.svg#icon-more"></use></svg></div>';
             html += '</li>';
         }
         $( "#filterlist" ).html(html);
