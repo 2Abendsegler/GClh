@@ -485,7 +485,6 @@ var start = function (c) {
 ////////////////////////////////////////////////////////////////////////////
 // Google Maps
 ////////////////////////////////////////////////////////////////////////////
-// Improve Google Maps page.
 var mainGMaps = function () {
     try {
         // Add link to GC Map on Google Maps page.
@@ -566,7 +565,6 @@ var mainGMaps = function () {
 ////////////////////////////////////////////////////////////////////////////
 // Openstreetmap
 ////////////////////////////////////////////////////////////////////////////
-// Improve Openstreetmap.
 var mainOSM = function () {
     try {
         // Add link to GC Map on Openstreetmap.
@@ -903,10 +901,7 @@ var mainGC = function () {
 
             // Alle Seiten: Grundeinstellungen:
             // ----------
-            var head = document.getElementsByTagName('head')[0];
-            var style = document.createElement('style');
-            var style_tmp = document.createElement('style');
-            style.type = 'text/css';
+            var css = "";
 
             // Font-Size für Menüs bzw. Font-Size für Untermenüs in Pixel.
             var font_size_menu = parseInt(settings_font_size_menu);
@@ -963,7 +958,7 @@ var mainGC = function () {
             $('.li-attention').removeClass('li-attention').addClass('li-attention_gclh');
 
             // Global verwendete Attribute zur Darstellung der Objekte im Header setzen.
-            style.innerHTML +=
+            css +=
                 // Schriftfarbe im Menü setzen. Bei Auswahl in weiss.
                 ".#m li a, .#m li a:link, .#m li a:visited, .#m li {color: #" + font_color_menu + " !important;}" +
                 ".#m li a:hover, .#m li a:focus {color: #FFFFFF !important; outline: unset !important;}" +
@@ -992,24 +987,24 @@ var mainGC = function () {
             // Vertikales Menu grundsätzlich ausrichten.
             if ( settings_bookmarks_top_menu ) {
                 // Menüzeilenhöhe auf 16 stellen.
-                style.innerHTML += "ul.#m {line-height: 16px;}";
+                css += "ul.#m {line-height: 16px;}";
                 // Zwischen Menüname und Submenü keine Lücke lassen, sonst klappt das nicht mit dem einfachen Aufklappen.
-                style.innerHTML += ".#m li a, .#m li a:link, .#m li a:visited {margin-bottom: 10px;} ul.#sm {margin-top: -6px;}";
+                css += ".#m li a, .#m li a:link, .#m li a:visited {margin-bottom: 10px;} ul.#sm {margin-top: -6px;}";
                 // Vertikales Menu: Menu und Searchfield ausrichten in Abhängigkeit von der Schriftgröße.
-                style.innerHTML += "ul.#m > li {margin-top: " + ( 3 + ( 16 - font_size_menu ) / 2 ) + "px;}";
+                css += "ul.#m > li {margin-top: " + ( 3 + ( 16 - font_size_menu ) / 2 ) + "px;}";
             // Horizontales Menu grundsätzlich ausrichten.
             } else {
                 // Menüzeilenhöhe auf 16 stellen.
-                style.innerHTML += "ul.#m {line-height: 16px !important;}";
+                css += "ul.#m {line-height: 16px !important;}";
                 // Zeilenabstand setzen in Abhängigkeit von der Anzahl Zeilen.
-                if      ( settings_menu_number_of_lines == 2 ) style.innerHTML += "ul.#m li a {padding-top: 4px !important; padding-bottom: 4px !important;}";
-                else if ( settings_menu_number_of_lines == 3 ) style.innerHTML += "ul.#m li a {padding-top: 1px !important; padding-bottom: 1px !important;}";
+                if      ( settings_menu_number_of_lines == 2 ) css += "ul.#m li a {padding-top: 4px !important; padding-bottom: 4px !important;}";
+                else if ( settings_menu_number_of_lines == 3 ) css += "ul.#m li a {padding-top: 1px !important; padding-bottom: 1px !important;}";
             }
 
             // Message Center Icon entfernen.
             if (settings_show_smaller_area_top_right && settings_remove_message_in_header) $('.messagecenterheaderwidget').remove();
             // Username auf 115px begrenzen.
-            if (settings_show_smaller_area_top_right) style.innerHTML += ".user-name, .username {max-width: 115px !important;}";
+            if (settings_show_smaller_area_top_right) css += ".user-name, .username {max-width: 115px !important;}";
             // Geocaching Logo ersetzen und verschieben, sofern das gewünscht ist.
             if ( $('.logo').get(0) ) {
                 var side = $('.logo').get(0);
@@ -1017,47 +1012,42 @@ var mainGC = function () {
             }
 
             if ( !is_page("labs") ) {
-                style.innerHTML +=
+                css +=
                     "#l {flex: unset; overflow: unset; margin-left: -32px}" +
                     "#newgclogo {width: 30px !important;}" +
                     ".#m {width: " + new_width_menu + "px !important; margin-left: 6px !important;}" +
                     "nav .wrapper {min-width: " + (new_width + 40) + "px !important; max-width: unset;}";
                 // Bereich links ausrichten in Abhängigkeit davon, ob Logo geändert wird und ob GC Tour im Einsatz ist.
-                if        ( !settings_show_smaller_gc_link && !settings_gc_tour_is_working ) {
-                    style.innerHTML += "#l {margin-top:   0px; fill: #ffffff;}";
-                } else if ( !settings_show_smaller_gc_link && settings_gc_tour_is_working ) {
-                    style.innerHTML += "#l {margin-top: -47px; fill: #ffffff;}";
-                } else if ( settings_show_smaller_gc_link && !settings_gc_tour_is_working ) {
-                    style.innerHTML += "#l {margin-top:   6px; width: 30px;}";
-                } else if ( settings_show_smaller_gc_link && settings_gc_tour_is_working ) {
-                    style.innerHTML += "#l {margin-top: -41px; width: 30px;}";
-                }
+                if      ( !settings_show_smaller_gc_link && !settings_gc_tour_is_working ) css += "#l {margin-top:   0px; fill: #ffffff;}";
+                else if ( !settings_show_smaller_gc_link && settings_gc_tour_is_working  ) css += "#l {margin-top: -47px; fill: #ffffff;}";
+                else if ( settings_show_smaller_gc_link  && !settings_gc_tour_is_working ) css += "#l {margin-top:   6px; width: 30px;}";
+                else if ( settings_show_smaller_gc_link  && settings_gc_tour_is_working  ) css += "#l {margin-top: -41px; width: 30px;}";
             }
 
             // Account Settings, Message Center, Cache suchen, Cache verstecken, Geotours (neues Seiten Design), Karten und account/dashboard (new1):
             // ----------
             if ( is_page("settings") || is_page("messagecenter") || is_page("find_cache") || is_page("hide_cache") || is_page("geotours") || is_page("map") || is_page("new1") ) {
                 // Weitere Attribute für neues Seiten Design zur Darstellung der Objekte im Header setzen.
-                style.innerHTML += "nav .wrapper {padding-right: " + new_padding_right + "px !important; width: unset;}";
+                css += "nav .wrapper {padding-right: " + new_padding_right + "px !important; width: unset;}";
                 // Platzieren des neuen Logos verursacht Fehler in der Plazierung des Videos. Folgendes korrigiert das quasi.
-                if ( is_page("hide_cache") ) style.innerHTML += ".video iframe {width: 90%;}";
+                if ( is_page("hide_cache") ) css += ".video iframe {width: 90%;}";
                 // Vertikales Menu weiter ausrichten.
                 if ( settings_bookmarks_top_menu ) {
-                    style.innerHTML += "ul.#sm {margin-top: 0px; margin-left: 32px !important;} .submenu::after {left: 4px; width: 26px;}";
+                    css += "ul.#sm {margin-top: 0px; margin-left: 32px !important;} .submenu::after {left: 4px; width: 26px;}";
                     // Menü nicht flex ausgeben.
-                    if ( settings_menu_float_right ) style.innerHTML += ".#m {display: block;} ul.#m > li {top: 0px;}";
+                    if ( settings_menu_float_right ) css += ".#m {display: block;} ul.#m > li {top: 0px;}";
                     // Menü in der Karte ausrichten.
-                    if ( is_page("map") && !settings_menu_float_right) style.innerHTML += ".#m {height: unset !important;}";
-                    if ( is_page("map") && settings_menu_float_right) style.innerHTML += "#navi_search {margin: 0 !important;}";
+                    if ( is_page("map") && !settings_menu_float_right) css += ".#m {height: unset !important;}";
+                    if ( is_page("map") && settings_menu_float_right) css += "#navi_search {margin: 0 !important;}";
                 }
                 // Bereich rechts ausrichten.
-                if (settings_show_smaller_area_top_right) style.innerHTML += ".profile-panel {margin-right: -15.25em}";
+                if (settings_show_smaller_area_top_right) css += ".profile-panel {margin-right: -15.25em}";
 
             // Labs:
             // ----------
             } else if ( is_page("labs") ) {
                 // Weitere Attribute für neues Seiten Design zur Darstellung der Objekte im Header setzen.
-                style.innerHTML +=
+                css +=
                     // Menüweite setzen und Submenu korrigieren.
                     ".#m {width: " + new_width_menu + "px !important;}" +
                     ".#sm {margin-top: -6px !important;}" +
@@ -1073,32 +1063,26 @@ var mainGC = function () {
                     // Spalt zwischen Header und Content lassen wie bei find und hide.
                     ".events-map, .breadcrumb {top: 2px;}";
                 // Profile Panel platzieren in Abhängigkeit von Linklist.
-                if ( settings_bookmarks_on_top ) style.innerHTML += ".profile-panel {margin: -66px 50px 0 0;}";
-                else style.innerHTML += ".profile-panel {margin: 0px 50px 0 0;}";
+                if ( settings_bookmarks_on_top ) css += ".profile-panel {margin: -66px 50px 0 0;}";
+                else css += ".profile-panel {margin: 0px 50px 0 0;}";
 
                 if ( settings_bookmarks_top_menu ) {
-                    style.innerHTML += "ul.#sm {margin-top: -6px !important; margin-left: 0px !important;} .#m {height: unset !important;}";
-                    style.innerHTML += "ul.#m > li {margin-top: 20px !important}";
+                    css += "ul.#sm {margin-top: -6px !important; margin-left: 0px !important;} .#m {height: unset !important;}";
+                    css += "ul.#m > li {margin-top: 20px !important}";
                 }
 
                 // Wenn Menu rechts ausgerichtet ist.
-                if ( settings_menu_float_right ) style.innerHTML += "ul.#m {left: 14px;}";
+                if ( settings_menu_float_right ) css += "ul.#m {left: 14px;}";
 
                 // Bereich links ausrichten in Abhängigkeit davon, ob Logo geändert wird und ob GC Tour im Einsatz ist.
-                if        ( !settings_show_smaller_gc_link && !settings_gc_tour_is_working ) {
-                    style.innerHTML += "#l {margin-left: -11px; margin-top:   2px; fill: #ffffff;} .#m {margin-left: 190px !important;}";
-                } else if ( !settings_show_smaller_gc_link && settings_gc_tour_is_working ) {
-                    style.innerHTML += "#l {margin-left: -11px; margin-top: -15px; fill: #ffffff;} .#m {margin-left: 190px !important;}";
-                } else if ( settings_show_smaller_gc_link && !settings_gc_tour_is_working ) {
-                    style.innerHTML += "#l {margin-left: -17px; margin-top:   2px; width: 35px;}   .#m {margin-left:  28px !important;}";
-                } else if ( settings_show_smaller_gc_link && settings_gc_tour_is_working ) {
-                    style.innerHTML += "#l {margin-left: -17px; margin-top: -15px; width: 35px;}   .#m {margin-left:  28px !important;}";
-                }
+                if      ( !settings_show_smaller_gc_link && !settings_gc_tour_is_working ) css += "#l {margin-left: -11px; margin-top:   2px; fill: #ffffff;} .#m {margin-left: 190px !important;}";
+                else if ( !settings_show_smaller_gc_link && settings_gc_tour_is_working  ) css += "#l {margin-left: -11px; margin-top: -15px; fill: #ffffff;} .#m {margin-left: 190px !important;}";
+                else if ( settings_show_smaller_gc_link  && !settings_gc_tour_is_working ) css += "#l {margin-left: -17px; margin-top:   2px; width: 35px;}   .#m {margin-left:  28px !important;}";
+                else if ( settings_show_smaller_gc_link  && settings_gc_tour_is_working  ) css += "#l {margin-left: -17px; margin-top: -15px; width: 35px;}   .#m {margin-left:  28px !important;}";
                 // Bereich rechts ausrichten und zusammenschieben.
                 if (settings_show_smaller_area_top_right) {
-                    style.innerHTML +=
-                        // User und Setting Icon etwas zusammenschieben
-                        ".profile-panel .li-user-toggle {margin-left: 0.5em; padding: 0.43em 0.6em;}";
+                    // User und Setting Icon etwas zusammenschieben
+                    css += ".profile-panel .li-user-toggle {margin-left: 0.5em; padding: 0.43em 0.6em;}";
                 }
 
             // Altes Seiten Design und restliche Seiten:
@@ -1106,37 +1090,28 @@ var mainGC = function () {
             } else {
                 if (settings_remove_logo && settings_show_smaller_gc_link) document.getElementById('ctl00_ctl23_HDHomeLink').remove();
                 if (settings_fixed_header_layout) {
-                    style.innerHTML += "nav .wrapper {width: " + new_width + "px !important; padding-left: 50px; padding-right: 30px; min-width: unset}";
-                    if (settings_remove_logo && settings_show_smaller_gc_link) style.innerHTML += ".#m {margin-left: -50px !important;}";
+                    css += "nav .wrapper {width: " + new_width + "px !important; padding-left: 50px; padding-right: 30px; min-width: unset}";
+                    if (settings_remove_logo && settings_show_smaller_gc_link) css += ".#m {margin-left: -50px !important;}";
                 }
                 // Vertikales Menu weiter ausrichten.
                 if ( settings_bookmarks_top_menu ) {
-                    style.innerHTML += "ul.#sm {margin-top: 15px; margin-left: 32px !important;} .submenu::after {left: 4px; width: 26px;}";
+                    css += "ul.#sm {margin-top: 15px; margin-left: 32px !important;} .submenu::after {left: 4px; width: 26px;}";
                     // Zwischen Menüname und Submenü keine Lücke lassen, sonst klappt das nicht mit dem einfachen Aufklappen.
-                    style.innerHTML += ".#m > li .dropdown {padding-bottom: 14px !important;}";
-                    if ( settings_menu_float_right ) style.innerHTML += "ul.#m > li {margin-top: 8px !important}";
+                    css += ".#m > li .dropdown {padding-bottom: 14px !important;}";
+                    if ( settings_menu_float_right ) css += "ul.#m > li {margin-top: 8px !important}";
                 // Horizontales Menu weiter ausrichten in Abhängigkeit von der Anzahl Zeilen.
                 } else {
-                    if      ( settings_menu_number_of_lines == 1 ) style.innerHTML += "ul.#m {top:   4px !important;}";
-                    else if ( settings_menu_number_of_lines == 2 ) style.innerHTML += "ul.#m {top:  -8px !important;}";
-                    else if ( settings_menu_number_of_lines == 3 ) style.innerHTML += "ul.#m {top: -13px !important;}";
+                    if      ( settings_menu_number_of_lines == 1 ) css += "ul.#m {top:   4px !important;}";
+                    else if ( settings_menu_number_of_lines == 2 ) css += "ul.#m {top:  -8px !important;}";
+                    else if ( settings_menu_number_of_lines == 3 ) css += "ul.#m {top: -13px !important;}";
                 }
             }
 
             // Alle Seiten: Platzhalter umsetzen:
             // ----------
-            // Bei Labs werden Menu, submenu und title (logo) so geschrieben.
-            if ( is_page("labs") ) {
-                style_tmp.innerHTML = style.innerHTML.replace(/#m/gi, "Menu"); style.innerHTML = style_tmp.innerHTML;
-                style_tmp.innerHTML = style.innerHTML.replace(/#sm/gi, "submenu"); style.innerHTML = style_tmp.innerHTML;
-                style_tmp.innerHTML = style.innerHTML.replace(/#l/gi, ".title"); style.innerHTML = style_tmp.innerHTML;
-            // Ansonsten wird menu, submenu und logo so geschrieben.
-            } else {
-                style_tmp.innerHTML = style.innerHTML.replace(/#m/gi, "menu"); style.innerHTML = style_tmp.innerHTML;
-                style_tmp.innerHTML = style.innerHTML.replace(/#sm/gi, "submenu"); style.innerHTML = style_tmp.innerHTML;
-                style_tmp.innerHTML = style.innerHTML.replace(/#l/gi, "nav .logo"); style.innerHTML = style_tmp.innerHTML;
-            }
-            head.appendChild(style);
+            if ( is_page("labs") ) css = css.replace(/#m/gi, "Menu").replace(/#sm/gi, "submenu").replace(/#l/gi, ".title");
+            else                   css = css.replace(/#m/gi, "menu").replace(/#sm/gi, "submenu").replace(/#l/gi, "nav .logo");
+            appendCssStyle( css );
         }
     } catch (e) { gclh_error("Change header layout:", e); }
     // GC Logo ändern.
@@ -1450,11 +1425,8 @@ var mainGC = function () {
                                     // Wenn es sich um "Ignore" Link handelt, dann die Linkbezeichnung in Stop Ignoring ändern und das Icon ersetzen.
                                     if (cdnLinks[m].href.match(/\/bookmarks\/ignore\.aspx\?guid/)) {
                                         cdnLinks[m].innerHTML = "Stop Ignoring";
-                                        var head = document.getElementsByTagName('head')[0];
-                                        var style = document.createElement('style');
-                                        style.type = 'text/css';
-                                        style.innerHTML = '.CacheDetailNavigation a[href*="ignore.aspx"]{ background-image: url(' + global_stop_ignore_icon + '); }';
-                                        head.appendChild(style);
+                                        var css = '.CacheDetailNavigation a[href*="ignore.aspx"]{ background-image: url(' + global_stop_ignore_icon + '); }';
+                                        appendCssStyle(css);
                                     }
                                 }
                             }
@@ -1745,7 +1717,7 @@ var mainGC = function () {
                     + ".add-list li button {font-size: 14px !important; margin: 0 !important; height: 18px !important;}"
                     + ".status {font-size: 14px !important; margin: 0 !important; top: 8px !important; width: unset !important; right: 0px !important;}"
                     + ".status .loading {top: -6px !important; right: 0px !important; padding: 0 2px !important; background-color: white !important; background: url(/images/loading2.gif) no-repeat center;}"
-                    + ".status.success {right: 2px !important; padding: 0 5px !important; background-color: white !important;}";
+                    + ".status.success, .success-message {right: 2px !important; padding: 0 5px !important; background-color: white !important; color: #E0B70A !important;}";
             appendCssStyle(css);
             document.getElementsByClassName("btn-add-to-list")[0].addEventListener("click", function () { window.scroll(0, 0); });
         } catch (e) { gclh_error("Improve Add to list:", e); }
@@ -5729,14 +5701,15 @@ var mainGC = function () {
             } else if (document.location.href.match(/^https?:\/\/www\.geocaching\.com\/account\/dashboard/) && $('nav.sidebar-links').length > 1) {
                 function build_box_vipvup(desc) {
                     var headline = document.createElement("h3");
-                    headline.setAttribute("class", "link-header header_vipvup");
-                    headline.setAttribute("id", "header_" + desc);
-                    headline.appendChild(document.createTextNode("All my " + desc.toUpperCase() + "s"));
+                    headline.setAttribute("class", (getValue("show_box_dashboard_" + desc, true) == true ? "link-header head_vv isShow" : "link-header head_vv isHide" ));
+                    headline.setAttribute("id", "head_" + desc);
+                    headline.innerHTML = "All my " + desc.toUpperCase() + "s <svg><use xlink:href='/account/app/ui-icons/sprites/global.svg#icon-expand-svg-fill'></use></svg>";
+                    $("nav.sidebar-links")[1].appendChild(headline);
+                    document.getElementById("head_" + desc).addEventListener("click", showHideBoxDashboard, false);
                     var box = document.createElement("ul");
-                    box.setAttribute("class", "link-block box_vipvup");
+                    box.setAttribute("class", (getValue("show_box_dashboard_" + desc, true) == true ? "link-block box_vv isShow" : "link-block box_vv isHide" ));
                     box.setAttribute("id", "box_" + desc);
-                    $('nav.sidebar-links')[1].appendChild(headline);
-                    $('nav.sidebar-links')[1].appendChild(box);
+                    $("nav.sidebar-links")[1].appendChild(box);
                 }
                 function fill_box_vipvup(ary, desc) {
                     var box = document.getElementById("box_" + desc);
@@ -5768,10 +5741,14 @@ var mainGC = function () {
                     if (settings_process_vup) fill_box_vipvup(global_vups, "vup");
                 };
                 var css = "";
-                css += ".header_vipvup {padding: 12px 20px;}";
-                css += ".box_vipvup a {padding: 0 4px 0 0; font-size: 14px; color: #3d76c5;}";
-                css += ".box_vipvup a:hover {text-decoration: underline; color: #3d76c5;}";
-                appendCssStyle( css );
+                css += ".head_vv {padding: 12px 20px !important; cursor: pointer; border-top: 1px solid #e4e4e4;}";
+                css += ".head_vv svg {height: 22px; width: 22px; fill: #777; float: right; padding-right: 1px; margin-top: -2px; transition: all .3s ease;}";
+                css += ".head_vv.isHide svg {transform: rotate(90deg);}";
+                css += ".box_vv {padding-top: 0px; border-bottom: unset; display: block;}";
+                css += ".box_vv a {padding: 0 4px 0 0; font-size: 14px; color: #3d76c5;}";
+                css += ".box_vv a:hover {text-decoration: underline; color: #3d76c5;}";
+                css += ".box_vv.isHide {display: none}";
+                appendCssStyle(css);
 
             // Friends list:
             // -------------
@@ -5852,7 +5829,7 @@ var mainGC = function () {
                 }
             }
         }
-    } catch (e) { gclh_error("VIP:", e); }
+    } catch (e) { gclh_error("VIP VUP:", e); }
 
 // Improve inventory list in cache listing.
     if ( is_page("cache_listing") ) {
@@ -7844,12 +7821,14 @@ var mainGC = function () {
     }
 
 // CSS Style hinzufügen.
-    function appendCssStyle( css ) {
-        var head = document.getElementsByTagName('head')[0];
+    function appendCssStyle(css, name) {
+        var tagname = 'head';
+        if (name) tagname = name;
+        var tag = document.getElementsByTagName(tagname)[0];
         var style = document.createElement('style');
-        style.innerHTML = css;
+        style.innerHTML = 'GClhII{} ' + css;
         style.type = 'text/css';
-        head.appendChild(style);
+        tag.appendChild(style);
     }
 
 // HTML dekodieren, also beispielsweise: "&amp;" in "&" (Beispiel: User "Rajko & Dominik".)
@@ -8232,6 +8211,21 @@ var mainGC = function () {
         }
     }
 
+// Show, Hide Boxen auf Dashboard.
+    function showHideBoxDashboard() {
+        var desc = this.id.replace("head_", "");
+        if (!document.getElementById("box_" + desc)) return;
+        if ($('#' + this.id + '.isHide')[0]) {
+            this.className = this.className.replace("isHide", "isShow");
+            document.getElementById("box_" + desc).className = document.getElementById("box_" + desc).className.replace("isHide", "isShow");
+            setValue("show_box_dashboard_" + desc, true);
+        } else {
+            this.className = this.className.replace("isShow", "isHide");
+            document.getElementById("box_" + desc).className = document.getElementById("box_" + desc).className.replace("isShow", "isHide");
+            setValue("show_box_dashboard_" + desc, false);
+        }
+    }
+
 // Show log counter.
     function showLogCounterLink() {
         addLinksOverLogs(showLogCounter, "gclh_show_log_counter", true, "Show log counter", "Show log counter for log type and total");
@@ -8317,7 +8311,6 @@ var mainGC = function () {
 // User defined searchs
 ////////////////////////////////////////////////////////////////////////////
     function create_config_css_search() {
-        var css = document.createElement("style");
         var html = "";
         html += ".btn-context {";
         html += "   border: 0; height: 40px; margin-top: -4px; text-indent: -9999px; width: 30px; margin-left: -8px; margin-right: 10px;";
@@ -8348,8 +8341,8 @@ var mainGC = function () {
         html += "    height: 22px;";
         html += "    margin-right: 3px;";
         html += "}       ";
-        css.innerHTML = html;
-        document.getElementsByTagName('body')[0].appendChild(css);
+        appendCssStyle(html);
+        appendCssStyle(html, "body");
     }
 
     function saveFilterSet() { setValue("settings_search_data", JSON.stringify(settings_search_data)); }
@@ -8402,9 +8395,7 @@ var mainGC = function () {
     function actionSearchDelete( id ) {
         var settings_search_data_tmp = [];
         for (var i = 0; i < settings_search_data.length; i++) {
-            if ( settings_search_data[i].id != id ) {
-                settings_search_data_tmp[settings_search_data_tmp.length] = settings_search_data[i];
-            }
+            if ( settings_search_data[i].id != id ) settings_search_data_tmp[settings_search_data_tmp.length] = settings_search_data[i];
         }
         settings_search_data = settings_search_data_tmp;
         saveFilterSet();
@@ -8415,19 +8406,12 @@ var mainGC = function () {
             var html = "";
             html += '<div id="searchContextMenu" class="pop-modal" style="top: auto; left: auto; width: 100%; position: absolute;">';
             html += '<div id="filter-new" class="add-menu" style="display: none;"><label for="newListName">Save current Filter Set</label>';
-            html += '<div class="input-control active">';
-            html += '<input id="nameSearch" name="newListName" maxlength="150" placeholder="New Name" type="text">';
-            html += '<div class="add-list-status"><button id= "btn-save" class="add-list-submit" type="button" style="display: inline-block;">Save</button></div></div>';
-            html += '</div>';
+            html += '<div class="input-control active"><input id="nameSearch" name="newListName" maxlength="150" placeholder="New Name" type="text">';
+            html += '<div class="add-list-status"><button id="btn-save" class="add-list-submit" type="button" style="display: inline-block;">Save</button></div></div></div>';
             html += '<div id="filter-edit" class="add-menu" style="display: none;"><label for="newListName">Edit Filter Set <i><span id="filterName"></span></i></label>';
-            html += '<div class="input-control active">';
-            html += '<input id="filter-name-rename" name="newListName" maxlength="150" placeholder="New Name" type="text">';
+            html += '<div class="input-control active"><input id="filter-name-rename" name="newListName" maxlength="150" placeholder="New Name" type="text">';
             html += '<div class="add-list-status"><button id= "btn-rename" class="add-list-submit" type="button" style="display: inline-block;">Rename</button></div>';
-            html += '<div id="div-btn-update" class="add-list-status"><button id="btn-update" class="add-list-submit" type="button" style="display: inline-block;">Update</button></div>';
-            html += '</div></div>';
-            html += '<label class="add-list-label">Available Filter Sets</label>';
-            html += '<ul id="filterlist" class="add-list"></ul>';
-            html += '</div>';
+            html += '<div id="div-btn-update" class="add-list-status"><button id="btn-update" class="add-list-submit" type="button" style="display: inline-block;">Update</button></div></div></div><label class="add-list-label">Available Filter Sets</label><ul id="filterlist" class="add-list"></ul></div>';
             $( "#ctxMenu" ).html(html);
 
             $('#btn-save').click( function() {
@@ -8663,7 +8647,6 @@ var mainGC = function () {
     function show_help_rc(text) { return " <a class='gclh_info gclh_info_rc'><b>?</b><span class='gclh_span'>" + text + "</span></a>"; }
 
     function create_config_css() {
-        var css = document.createElement("style");
         var html = "";
         html += ".settings_overlay {";
         html += "  background-color: #d8cd9d; ";
@@ -8828,8 +8811,7 @@ var mainGC = function () {
         html += "  margin-bottom: 15px !important;";
         html += "  margin-left: 15px !important;";
         html += "}";
-        css.innerHTML = html;
-        document.getElementsByTagName('body')[0].appendChild(css);
+        appendCssStyle(html, "body");
     }
 
     var dt_display = [ ["greater than or equal to",">="], ["equal to","="], ["less than or equal to","<="] ];
@@ -9754,9 +9736,7 @@ var mainGC = function () {
             // Rest:
             // -----
             function gclh_show_linklist() {
-                if ( document.getElementById('lnk_gclh_config_linklist').title == "show" ) {
-                    document.getElementById('lnk_gclh_config_linklist').click();
-                }
+                if ( document.getElementById('lnk_gclh_config_linklist').title == "show" ) document.getElementById('lnk_gclh_config_linklist').click();
             }
 
             document.getElementById('check_for_upgrade').addEventListener("click", function () { checkForUpgrade( true ); }, false);
@@ -9989,6 +9969,7 @@ var mainGC = function () {
             }
             setValue("settings_bookmarks_search_default", document.getElementById('settings_bookmarks_search_default').value);
             setValue("settings_show_all_logs_count", document.getElementById('settings_show_all_logs_count').value);
+
             //Homezone
             setValue("settings_homezone_radius", document.getElementById('settings_homezone_radius').value);
             setValue("settings_homezone_color", document.getElementById('settings_homezone_color').value);
@@ -10239,9 +10220,7 @@ var mainGC = function () {
                 'settings_show_brouter_link'
             );
             for (var i = 0; i < checkboxes.length; i++) {
-                if ( document.getElementById(checkboxes[i]) ) {
-                    setValue(checkboxes[i], document.getElementById(checkboxes[i]).checked);
-                }
+                if ( document.getElementById(checkboxes[i]) ) setValue(checkboxes[i], document.getElementById(checkboxes[i]).checked);
             }
 
             // Save Log-Templates.
@@ -10617,29 +10596,29 @@ var mainGC = function () {
 
 // Bezeichnung Save Button setzen.
     function setValueInSaveButton() {
-        var wert = "save";
+        var content = "save";
         // Nach dem Aufbau von Config.
         if ( document.getElementById("settings_f2_save_gclh_config") ) {
-            if ( document.getElementById("settings_f2_save_gclh_config").checked ) wert += " (F2)";
-            document.getElementById('btn_save').setAttribute("value", wert);
+            if ( document.getElementById("settings_f2_save_gclh_config").checked ) content += " (F2)";
+            document.getElementById('btn_save').setAttribute("value", content);
         // Vor dem Aufbau von Config.
         } else {
-            if ( settings_f2_save_gclh_config ) wert += " (F2)";
-            return wert;
+            if ( settings_f2_save_gclh_config ) content += " (F2)";
+            return content;
         }
     }
 
 // Bezeichnung Close Button setzen.
     function setValueInCloseButton() {
-        var wert = "close";
+        var content = "close";
         // Nach dem Aufbau von Config.
         if ( document.getElementById("settings_esc_close_gclh_config") ) {
-            if ( document.getElementById("settings_esc_close_gclh_config").checked ) wert += " (ESC)";
-            document.getElementById('btn_close2').setAttribute("value", wert);
+            if ( document.getElementById("settings_esc_close_gclh_config").checked ) content += " (ESC)";
+            document.getElementById('btn_close2').setAttribute("value", content);
         // Vor dem Aufbau von Config.
         } else {
-            if ( settings_esc_close_gclh_config ) wert += " (ESC)";
-            return wert;
+            if ( settings_esc_close_gclh_config ) content += " (ESC)";
+            return content;
         }
     }
 
@@ -10718,11 +10697,9 @@ var mainGC = function () {
         var cust = 0;
         for (var i = 0; i < bookmarks.length; i++) {
             bookmarks[i]['number'] = i;
-            // Wenn custom Bookmark.
             if (typeof(bookmarks[i]['custom']) != "undefined" && bookmarks[i]['custom'] == true) {
                 bookmarks[i]['sortTitle'] = cust;
                 cust++;
-            // Wenn default Bookmark.
             } else {
                 bookmarks[i]['sortTitle'] = (typeof(bookmarks_orig_title[i]) != "undefined" && bookmarks_orig_title[i] != "" ? bookmarks_orig_title[i] : bookmarks[i]['title']);
                 bookmarks[i]['sortTitle'] = bookmarks[i]['sortTitle'].toLowerCase().replace(/ä/g,"a").replace(/ö/g,"o").replace(/ü/g,"u").replace(/ß/g,"s");
@@ -10748,7 +10725,6 @@ var mainGC = function () {
 // Show or hide all the areas in config with one click to a plus, minus icon with the right mouse.
     function showHideConfigAll(id_lnk) {
         showHide = showHideBoxCL(id_lnk, false);
-        // Alle anderen Boxen identisch aufbauen.
         setShowHideConfigAll("gclh_config_global", showHide);
         setShowHideConfigAll("gclh_config_config", showHide);
         setShowHideConfigAll("gclh_config_nearestlist", showHide);
@@ -11249,21 +11225,18 @@ function bookmark(title, href, bookmarkArray) {
     bm['title'] = title;
     return bm;
 }
-
 // Create a bookmark to an external site.
 function externalBookmark(title, href, bookmarkArray) {
     var bm = bookmark(title, href, bookmarkArray);
     bm['rel'] = "external";
     bm['target'] = "_blank";
 }
-
 // Create a bookmark to a profile sub site.
 function profileBookmark(title, id, bookmarkArray) {
     var bm = bookmark(title, "#", bookmarkArray);
     bm['id'] = id;
     bm['name'] = id;
 }
-
 // Doppelte Linkbestückung mit "href" hier direkt und mit "name" für spätere Eventzuordnung.
 function profileSpecialBookmark(title, href, name, bookmarkArray) {
     var bm = bookmark(title, href, bookmarkArray);
