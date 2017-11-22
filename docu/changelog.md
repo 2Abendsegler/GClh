@@ -49,7 +49,11 @@ Settings -> GClh Config / Sync:<br>
 <li>
 New: <b>Check if GClh runs only once</b>: [Issue <a href="https://github.com/2Abendsegler/GClh/pull/476">#476</a>]<br>
 </li>
+<br>
 </ul>
+<li>
+Fix: <b>Buttons on search caches page in Manage Filter Sets functionality are not available again, due to changes made by GS</b>: [Issue <a href="https://github.com/2Abendsegler/GClh/pull/481">#481</a>]<br>
+</li>
 (??.11.2017)<br> 
 <br>
 
