@@ -2,7 +2,7 @@
 // @name             GC little helper II
 // @namespace        http://www.amshove.net
 //--> $$000 Begin of change
-// @version          0.8.10
+// @version          0.8.11
 //<-- $$000 End of change
 // @include          http*://www.geocaching.com/*
 // @include          http*://labs.geocaching.com/*
@@ -14,8 +14,7 @@
 // @require          http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js
 // @require          http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js
 // @require          https://cdnjs.cloudflare.com/ajax/libs/dropbox.js/2.5.2/Dropbox-sdk.min.js
-//xxxxxxxxxxxx
-// @require          https://raw.githubusercontent.com/2Abendsegler/GClh/v0.8.11/data/gclh_defi.js
+// @require          https://raw.githubusercontent.com/2Abendsegler/GClh/master/data/gclh_defi.js
 // @description      Some little things to make life easy (on www.geocaching.com).
 // @copyright        2010-2016 Torsten Amshove, 2017 2Abendsegler
 // @author           Torsten Amshove; 2Abendsegler
@@ -5582,8 +5581,6 @@ var mainGC = function () {
                             list_nofound.appendChild(document.createElement("br"));
                         }
                     }
-//xxxx
-                    appendMetaId("vip_lists_are_generated");
                 };
                 gclh_build_vip_list();
 
@@ -7541,36 +7538,37 @@ var mainGC = function () {
             if (date >= 16 && date <= 17 && month == 4 && year == 2017) {
                 $(".CacheDetailNavigation:first > ul:first").append('<li><img src="https://raw.githubusercontent.com/2Abendsegler/GClh/master/images/easter_bunny_001.jpg" style="margin-bottom: -35px;" title="Happy Easter"></li>');
             }
-//xxxx
             // Weihnachten 2017.
-/*
-                date = date - 21.
-                console.log(date);
-//                var match = date.match(/^(1|2)$/);
-                if (date == 1) console.log("match");
-                console.log("ende");
-In VIP List bei <div class="WidgetBody" id="gclh_vip_list" folgendes setzen:
-line-height: 32px;
-
-Und bei den Nikoläusen:
-vertical-align: bottom;
-
-Nikolaustag
-6. Dezember
-
-"#gclh_vip_list {line-height: 32px;}";
-*/
             if (month == 12 && year == 2017) {
-                function checkVipLists(waitCount) {
-                    if (document.getElementById("vip_lists_are_generated")) {
-
-                    } else {
-                        waitCount++;
-                        if (waitCount <= 40) setTimeout( function () { checkVipLists(waitCount); }, 500);
-                        else return;
-                    }
+                var max = 0;
+                var kerze = 0;
+                if (date == 2 || date == 3) { max = 32; kerze = 1; }
+                else if (date == 5 || date == 6) { max = 32; }
+                else if (date == 9 || date == 10) { max = 24; kerze = 2; }
+                else if (date == 16 || date == 17) { max = 16; kerze = 3; }
+                else if (date == 24 || date == 25 || date == 26) { max = 8; kerze = 4; }
+                if (kerze > 0) {
                 }
-                checkVipLists(0);
+                if (max > 0) {
+                    function checkChristmasData(waitCount) {
+                        if ($('#gclh_vip_list span').length > 0 && $('#gclh_vip_list .StatusIcon').length == 0) {
+                            setTimeout( function () {
+                                var icons = $('#gclh_latest_logs,#gclh_vip_list').find('img[src*="/images/logtypes/2.png"]');
+                                for (var i = 0; i < icons.length; i += 2) {
+                                    var num = random(max, 1);
+                                    if (num > 0 && num < 9) {
+                                        icons[i].src = "https://raw.githubusercontent.com/2Abendsegler/GClh/master/images/nicolaus_head_0" + num + ".png";
+                                    }
+                                }
+                            }, 500);
+                        } else {
+                            waitCount++;
+                            if (waitCount <= 40) setTimeout( function () { checkChristmasData(waitCount); }, 500);
+                            else return;
+                        }
+                    }
+                    checkChristmasData(0);
+                }
             }
         } catch (e) { gclh_error("Special days:", e); }
     }
@@ -7579,7 +7577,7 @@ Nikolaustag
 // Helper Functions
 ////////////////////////////////////////////////////////////////////////////
     function in_array(search, arr) {
-        for (var i = 0; i < arr.length; i++) if (arr[i] == search) return true;
+        for (var i = 0; i < arr.length; i++) { if (arr[i] == search) return true; }
         return false;
     }
 
@@ -11022,10 +11020,8 @@ Nikolaustag
             var html = "";
             html += "<h3 class='gclh_headline' title='Some little things to make life easy (on www.geocaching.com).' >" + scriptNameSync + " <font class='gclh_small'>v" + scriptVersion + "</font></h3>";
             html += "<div class='gclh_content'>";
-//--> $$000 Begin of change
-//            html += "<h4 class='gclh_headline2' id='syncDBLabel' style='cursor: pointer;'>DropBox <font class='gclh_small'>(click to hide/show)</font></h4>";
-            html += "<h4 class='gclh_headline2' id='syncDBLabel' style='cursor: pointer;'>DropBox <font class='gclh_small'>(click to hide/show) </font><font class='gclh_small' style='color: #d43f3f; font-weight: normal;'>(New authentications are not possible, we work on it.)</font></h4>";
-//<-- $$000 End of change
+            html += "<h4 class='gclh_headline2' id='syncDBLabel' style='cursor: pointer;'>DropBox <font class='gclh_small'>(click to hide/show)</font></h4>";
+//            html += "<h4 class='gclh_headline2' id='syncDBLabel' style='cursor: pointer;'>DropBox <font class='gclh_small'>(click to hide/show) </font><font class='gclh_small' style='color: #d43f3f; font-weight: normal;'>(New authentications are not possible, we work on it.)</font></h4>";
             html += "<div style='display:none;' id='syncDB' >";
             html += "<div id='syncDBLoader'><img style='height: 40px;' src='"+global_syncDBLoader_icon+"'> working...</div>";
             html += "<a href='#' class='gclh_form' style='display: none;' id='authlink' class='button'>authenticate</a>";
@@ -11189,6 +11185,9 @@ function gclh_error(modul, err) {
     if (typeof(GM_log) != "undefined") GM_log(txt);
 }
 
+// Zufallszahl zwischen max und min.
+function random(max, min) { return Math.floor(Math.random() * (max - min + 1)) + min; }
+
 function setValue(name, value) {
     var defer = $.Deferred();
     CONFIG[name] = value;
@@ -11274,7 +11273,6 @@ function injectPageScript(scriptContent) {
     pageHead.appendChild(script);
 }
 
-//xxxx
 // Meta Info hinzufügen.
 function appendMetaId(id) {
     var head = document.getElementsByTagName('head')[0];
