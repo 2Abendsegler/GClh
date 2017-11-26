@@ -1,3 +1,4 @@
+<a href="#v0811" title="GClh II version 0.8.11 (26.11.2017)">v0.8.11</a> &nbsp;
 <a href="#v0810" title="GClh II version 0.8.10 (15.11.2017)">v0.8.10</a> &nbsp;
 <a href="#v089" title="GClh II version 0.8.9 (03.11.2017)">v0.8.9</a> &nbsp;
 <a href="#v088" title="GClh II version 0.8.8 (25.10.2017)">v0.8.8</a> &nbsp;
@@ -26,6 +27,35 @@
 <a href="#v022" title="GClh II version 0.2.2 (09.01.2017)">v0.2.2</a> &nbsp; 
 <a href="#v021" title="GClh II version 0.2.1 (05.01.2017)">v0.2.1</a> &nbsp; 
 <a href="#v01" title="GClh II version 0.1 (05.01.2017)">v0.1</a> &nbsp; 
+
+---
+## v0.8.11:
+<ul>
+<li>
+New: <b>Process new dashboard page with GClh</b>: [Issue <a href="https://github.com/2Abendsegler/GClh/pull/477">#477</a>]<br>
+GClh header processing with Linklist.<br>
+Build links to GClh Config, GClh Sync and Changelog.<br>
+<img src="../images/v0.8.11_Screen01.jpg" alt="v0.8.11_Screen01.jpg"><br>
+Build hideable VIPs and VUPs lists.<br>
+<img src="../images/v0.8.11_Screen02.png" alt="v0.8.11_Screen02.png"><br>
+<br>
+</li>
+<li>
+New: <b>Close GClh Config with key ESC</b>: [Issue <a href="https://github.com/2Abendsegler/GClh/pull/478">#478</a>]<br>
+Settings -> GClh Config / Sync:<br>
+<img src="../images/v0.8.11_Screen03.jpg" alt="v0.8.11_Screen03.jpg"><br>
+<br>
+</li>
+<li>
+New: <b>Check if GClh runs only once</b>: [Issue <a href="https://github.com/2Abendsegler/GClh/pull/476">#476</a>]<br>
+</li>
+<br>
+<li>
+Fix: <b>Buttons on search caches page in Manage Filter Sets functionality are not available again, due to changes made by GS</b>: [Issue <a href="https://github.com/2Abendsegler/GClh/pull/481">#481</a>]<br>
+</li>
+</ul>
+(26.11.2017)<br> 
+<br>
 
 ---
 ## v0.8.10:
