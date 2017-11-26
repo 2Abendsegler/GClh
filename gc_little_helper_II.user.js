@@ -1287,7 +1287,7 @@ var mainGC = function () {
                 var script = document.createElement("script");
                 script.innerHTML = code;
                 document.getElementsByTagName("body")[0].appendChild(script);
-                var searchfield = "<li><input onKeyDown='if(event.keyCode==13 && event.ctrlKey == false && event.altKey == false && event.shiftKey == false) { gclh_search_logs(); return false; }' type='text' size='6' name='navi_search' id='navi_search' style='padding: 1px; font-weight: bold; font-family: sans-serif; border: 2px solid #778555; border-radius: 7px 7px 7px 7px; -moz-border-radius: 7px; -khtml-border-radius: 7px; background-color:#d8cd9d' value='" + settings_bookmarks_search_default + "'></li>";
+                var searchfield = "<li><input onKeyDown='if(event.keyCode==13 && event.ctrlKey == false && event.altKey == false && event.shiftKey == false) { gclh_search_logs(); return false; }' type='text' size='6' name='navi_search' id='navi_search' style='padding: 1px; font-weight: bold; font-family: sans-serif; border: 2px solid #778555; border-radius: 7px 7px 7px 7px; background-color:#d8cd9d' value='" + settings_bookmarks_search_default + "'></li>";
                 if ( is_page("labs") ) $(".Menu").append(searchfield);
                 else $(".Menu, .menu").append(searchfield);
             }
@@ -7556,9 +7556,7 @@ var mainGC = function () {
                                 var icons = $('#gclh_latest_logs,#gclh_vip_list').find('img[src*="/images/logtypes/2.png"]');
                                 for (var i = 0; i < icons.length; i += 2) {
                                     var num = random(max, 1);
-                                    if (num > 0 && num < 9) {
-                                        icons[i].src = "https://raw.githubusercontent.com/2Abendsegler/GClh/master/images/nicolaus_head_0" + num + ".png";
-                                    }
+                                    if (num > 0 && num < 9) icons[i].src = "https://raw.githubusercontent.com/2Abendsegler/GClh/master/images/nicolaus_head_0" + num + ".png";
                                 }
                             }, 500);
                         } else {
@@ -8143,8 +8141,7 @@ var mainGC = function () {
             if ( document.getElementsByClassName(id_box) ) var box = $('.' + id_box);
         }
         if ( lnk && box ) {
-            if ( ( show_box == true && first == true )   ||
-                 ( show_box == false && first == false )    ) {
+            if ( (show_box == true && first == true) || (show_box == false && first == false) ) {
                 setShowHide( lnk, "hide", is_config );
                 box.show();
                 var showHide = "hide";
@@ -8531,16 +8528,11 @@ var mainGC = function () {
             html += "  left:30%; ";
             html += "  top:60px; ";
             html += "  z-index:1001; ";
-            html += "  -moz-border-radius:30px; ";
-            html += "  -khtml-border-radius:30px; ";
             html += "  border-radius: 30px;";
-            html += "  overflow: auto;";
-            html += "}";
+            html += "  overflow: auto;}";
             html += ".gclh_form {";
             html += "  background-color: #d8cd9d !important;";
             html += "  border: 2px solid #778555 !important;";
-            html += "  -moz-border-radius: 7px;";
-            html += "  -khtml-border-radius: 7px;";
             html += "  border-radius: 7px !important;";
             html += "  padding-left: 5px !important;";
             html += "  padding-right: 5px !important;";
@@ -8552,8 +8544,7 @@ var mainGC = function () {
             html += "  padding-top: 0px !important;";
             html += "  padding-bottom: 0px !important;";
             html += "  box-shadow: unset !important;";
-            html += "  display: unset;";
-            html += "}";
+            html += "  display: unset;}";
             var form_side = document.getElementsByTagName('body')[0];
             var form_style = document.createElement("style");
             form_style.appendChild(document.createTextNode(html));
@@ -8959,16 +8950,13 @@ var mainGC = function () {
             var imageBaseUrl = http + "://www.geocaching.com/map/images/mapicons/";
             html += " &nbsp; " + checkboxy('settings_map_hide_2', "<img "+imgStyle+" src='" + imageBaseUrl + "2.png' title='Traditional'>") + "<br/>";
             html += " &nbsp; " + checkboxy('settings_map_hide_3', "<img "+imgStyle+" src='"  + imageBaseUrl + "3.png' title='Multi-Cache'>") + "<br/>";
-
             html += " &nbsp; " + checkboxy('settings_map_hide_6', "<img "+imgStyle+" src='" + imageBaseUrl + "6.png' title='Event'>");
             html += " &nbsp; " + checkboxy('settings_map_hide_13', "<img "+imgStyle+" src='" + imageBaseUrl + "13.png' title='Cache In Trash Out'>");
             html += " &nbsp; " + checkboxy('settings_map_hide_453', "<img "+imgStyle+" src='" + imageBaseUrl + "453.png' title='Mega-Event'>");
             html += " &nbsp; " + checkboxy('settings_map_hide_7005', "<img "+imgStyle+" src='" + imageBaseUrl + "7005.png' title='Giga-Event'>") + "<br/>";
-
             html += " &nbsp; " + checkboxy('settings_map_hide_137', "<img "+imgStyle+" src='" + imageBaseUrl + "137.png' title='EarthCache'>");
             html += " &nbsp; " + checkboxy('settings_map_hide_4', "<img "+imgStyle+" src='" + imageBaseUrl + "4.png' title='Virtual'>");
             html += " &nbsp; " + checkboxy('settings_map_hide_11', "<img "+imgStyle+" src='" + imageBaseUrl + "11.png' title='Webcam'>") + "<br/>";
-
             html += " &nbsp; " + checkboxy('settings_map_hide_8', "<img "+imgStyle+" src='" + imageBaseUrl + "8.png' title='Mystery'>");
             html += " &nbsp; " + checkboxy('settings_map_hide_5', "<img "+imgStyle+" src='" + imageBaseUrl + "5.png' title='Letterbox'>");
             html += " &nbsp; " + checkboxy('settings_map_hide_1858', "<img "+imgStyle+" src='" + imageBaseUrl + "1858.png' title='Wherigo'>") + "<br/>";
@@ -9229,8 +9217,7 @@ var mainGC = function () {
             html += "<input type='checkbox' " + (getValue('remove_navi_learn') ? "checked='checked'" : "" ) + " id='remove_navi_learn'> Learn<br>";
             html += "<input type='checkbox' " + (getValue('remove_navi_play') ? "checked='checked'" : "" ) + " id='remove_navi_play'> Play<br>";
             html += "<input type='checkbox' " + (getValue('remove_navi_community') ? "checked='checked'" : "" ) + " id='remove_navi_community'> Community<br>";
-            html += "<input type='checkbox' " + (getValue('remove_navi_shop') ? "checked='checked'" : "" ) + " id='remove_navi_shop'> Shop<br>";
-            html += "<br>";
+            html += "<input type='checkbox' " + (getValue('remove_navi_shop') ? "checked='checked'" : "" ) + " id='remove_navi_shop'> Shop<br><br>";
             html += "<input type='checkbox' " + (settings_bookmarks_search ? "checked='checked'" : "" ) + " id='settings_bookmarks_search'> Show searchfield - Default value: <input class='gclh_form' type='text' id='settings_bookmarks_search_default' value='" + settings_bookmarks_search_default + "' size='4'>" + show_help("If you enable this option, there will be a searchfield on the top of the page beside the links. In this field you can search for GCIDs, TBIDs, tracking numbers, coordinates, ... - also you can define a default value if you want (like GC...).<br><br>This option requires \"Show Linklist on top\".") + "<br>";
 
             html += "<input type='radio' " + (settings_bookmarks_top_menu ? "checked='checked'" : "" ) + " name='top_menu' id='settings_bookmarks_top_menu' style='margin-top: 9px;'> Show Linklist at menu as drop-down list" + show_help("With this option your Linklist will be shown at the navigation menu as a drop-down list beside the others.<br><br>This option requires \"Change header layout\".") + "<br>";
@@ -9406,10 +9393,7 @@ var mainGC = function () {
             html += "    </table>";
             html += "</div>";
 
-            html += "<br>";
-            html += "";
-            html += "<br>";
-            html += "<br>";
+            html += "<br><br><br>";
             html += "&nbsp;" + "<input class='gclh_form' type='button' value='" + setValueInSaveButton() + "' id='btn_save'> <input class='gclh_form' type='button' value='save & upload' id='btn_saveAndUpload'> <input class='gclh_form' type='button' value='" + setValueInCloseButton() + "' id='btn_close2'>";
             html += "<div width='450px' align='right' class='gclh_small' style='float: right; margin-top: -5px;'>Copyright © <a href='http://www.amshove.net/' target='_blank'>Torsten Amshove</a>, <a href='https://www.geocaching.com/profile/?u=2Abendsegler' target='_blank'>2Abendsegler</a></div>";
             html += "<div width='400px' align='right' class='gclh_small' style='float: right; margin-top: -15px;'>License: <a href='https://github.com/2Abendsegler/GClh/blob/master/docu/license.md#readme' target='_blank' title='GNU General Public License Version 2'>GPLv2</a>, Warranty: <a href='https://github.com/2Abendsegler/GClh/blob/master/docu/warranty.md#readme' target='_blank' title='GC little helper comes with ABSOLUTELY NO WARRANTY'>NO</a></div>";
@@ -9665,7 +9649,6 @@ var mainGC = function () {
             document.getElementById('rc_close_button').addEventListener("click", rcClose, false);
             document.getElementById('gclh_linklist_link_1').addEventListener("click", gclh_show_linklist, false);
             document.getElementById('gclh_linklist_link_2').addEventListener("click", gclh_show_linklist, false);
-
             document.getElementById('btn_close2').addEventListener("click", btnClose, false);
             document.getElementById('btn_save').addEventListener("click", function () { btnSave("normal"); }, false);
             document.getElementById('btn_saveAndUpload').addEventListener("click", function () { btnSave("upload"); }, false);
@@ -9673,7 +9656,6 @@ var mainGC = function () {
             document.getElementById('settings_bookmarks_top_menu').addEventListener("click", handleRadioTopMenu, false);
             document.getElementById('settings_bookmarks_top_menu_h').addEventListener("click", handleRadioTopMenu, false);
             handleRadioTopMenu( true );
-
             document.getElementById('settings_load_logs_with_gclh').addEventListener("click", alert_settings_load_logs_with_gclh, false);
             document.getElementById('restore_settings_lines_color_zebra').addEventListener("click", restoreField, false);
             document.getElementById('restore_settings_lines_color_user').addEventListener("click", restoreField, false);
@@ -11188,6 +11170,7 @@ function gclh_error(modul, err) {
 // Zufallszahl zwischen max und min.
 function random(max, min) { return Math.floor(Math.random() * (max - min + 1)) + min; }
 
+// Set Get Values.
 function setValue(name, value) {
     var defer = $.Deferred();
     CONFIG[name] = value;
@@ -11195,7 +11178,6 @@ function setValue(name, value) {
     defer.resolve();
     return defer.promise();
 }
-
 function setValueSet(data) {
     var defer = $.Deferred();
 	var data2Store = {};
@@ -11207,7 +11189,6 @@ function setValueSet(data) {
     defer.resolve();
     return defer.promise();
 }
-
 function getValue(name, defaultValue) {
     if (CONFIG[name] === undefined) { // Zum Migrieren aus dem alten Speicherformat
         CONFIG[name] = GM_getValue(name, defaultValue);
@@ -11260,7 +11241,6 @@ function is_link(name, url) {
     }
     return status;
 }
-
 // Wrapper fuer die aktuelle Seite (siehe is_link).
 function is_page(name) { return is_link(name, document.location.href); }
 
@@ -11272,6 +11252,7 @@ function injectPageScript(scriptContent) {
     var pageHead = document.getElementsByTagName("head")[0];
     pageHead.appendChild(script);
 }
+function injectPageScriptFunction(funct, functCall) { injectPageScript("(" + funct.toString() + ")" + functCall + ";"); }
 
 // Meta Info hinzufügen.
 function appendMetaId(id) {
@@ -11280,8 +11261,6 @@ function appendMetaId(id) {
     meta.id = id;
     head.appendChild(meta);
 }
-
-function injectPageScriptFunction(funct, functCall) { injectPageScript("(" + funct.toString() + ")" + functCall + ";"); }
 
 // Funktionen fuer die Zeitdifferenzen.
 function adjustPlural(singularWord, timesNumber) { return singularWord + ((Math.abs(timesNumber) != 1) ? "s" : ""); }
