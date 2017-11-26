@@ -1,4 +1,4 @@
-<a href="#v0811" title="GClh II version 0.8.11 (??.11.2017)">v0.8.11</a> &nbsp;
+<a href="#v0811" title="GClh II version 0.8.11 (26.11.2017)">v0.8.11</a> &nbsp;
 <a href="#v0810" title="GClh II version 0.8.10 (15.11.2017)">v0.8.10</a> &nbsp;
 <a href="#v089" title="GClh II version 0.8.9 (03.11.2017)">v0.8.9</a> &nbsp;
 <a href="#v088" title="GClh II version 0.8.8 (25.10.2017)">v0.8.8</a> &nbsp;
@@ -54,7 +54,7 @@ New: <b>Check if GClh runs only once</b>: [Issue <a href="https://github.com/2Ab
 Fix: <b>Buttons on search caches page in Manage Filter Sets functionality are not available again, due to changes made by GS</b>: [Issue <a href="https://github.com/2Abendsegler/GClh/pull/481">#481</a>]<br>
 </li>
 </ul>
-(??.11.2017)<br> 
+(26.11.2017)<br> 
 <br>
 
 ---
