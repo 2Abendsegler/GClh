@@ -172,7 +172,8 @@ var constInit = function (c) {
         }
     }
 
-    c.gclhConfigKeysIgnoreForBackup = { "token": true };
+    c.gclhConfigKeysIgnoreForBackup = {"token": true, "declared_version": true};
+
     iconsInit(c);
     langInit(c);
     layersInit(c);
