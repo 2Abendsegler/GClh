@@ -172,7 +172,7 @@ var constInit = function (c) {
         }
     }
 
-    c.gclhConfigKeysIgnoreForBackup = {"token": true, "declared_version": true};
+    c.gclhConfigKeysIgnoreForBackup = {"declared_version": true, "migration_task_01": true, "update_next_check": true};
 
     iconsInit(c);
     langInit(c);
@@ -957,7 +957,9 @@ var mainGC = function () {
                 ".#m li a, .#m li a:link, .#m li a:visited, .#m li {color: #" + font_color_menu + " !important;}" +
                 ".#m li a:hover, .#m li a:focus {color: #FFFFFF !important; outline: unset !important;}" +
                 // Menü nicht flex ausgeben.
-                ".#m {display: unset}" +
+                ".#m {display: unset;}" +
+                // Submenü im Vordergrund.
+                ".#sm {z-index: 1001;}" +
                 // Schriftfarbe im Untermenü setzen.
                 ".#sm li a, .#sm li a:link, .#sm li a:visited, .#sm li {color: #" + font_color_submenu + " !important;}" +
                 // Schriftgröße im Menü auf 16 stellen.
@@ -7486,8 +7488,6 @@ var mainGC = function () {
 
             if ( next_check < time || manual == true ) {
                 var url = "https://raw.githubusercontent.com/2Abendsegler/GClh/master/gc_little_helper_II.user.js";
-                var token = getValue("token", "");
-                if (token == "") setValue("token", "" + Math.random());
                 time += 1 * 60 * 60 * 1000; // 1 Stunde warten, bis zum nächsten Check.
                 setValue('update_next_check', time.toString());
 
@@ -8699,7 +8699,7 @@ var mainGC = function () {
         html += "  font-weight: normal;";
         html += "  border: 1px solid #000000;";
         html += "  background-color: #d8cd9d;}";
-        html += "a.gclh_info2:hover span {left: -100px !important;}";
+        html += "a.gclh_info2:hover span {left: -80px !important;}";
         html += "a.gclh_info3:hover span {";
         html += "  left: -200px !important;}";
         html += "a.gclh_info_big:hover span {width: 350px !important;}";
@@ -8775,7 +8775,7 @@ var mainGC = function () {
             html += "<div id='gclh_config_content2'>";
             html += "<div id='rc_area' class='gclh_rc_area'>";
             html += "<input type='radio' name='rc' checked='checked' id='rc_standard' class='gclh_rc'><label for='rc_standard'>Reset to standard configuration</label>" + show_help_rc("This option should help you to come back to an efficient configuration set, after some experimental or other motivated changes. This option load a reasonable standard configuration and overwrite your configuration data in parts. <br><br>The following data are not overwrited: Home-coords; homezone and multi homezone; date format; log templates; cache log, TB log and other signatures; friends data; links in Linklist and differing description and custom links. <br>Dynamic data, like for example autovisits for named trackables, are not overwrited too.<br><br>After reset, choose button \"close\" and go to Config to skim over the set of data.") + "<br/>";
-            html += "<input type='radio' name='rc' id='rc_temp' class='gclh_rc'><label for='rc_temp'>Reset dynamic and unused data</label>" + show_help_rc("This option reorganize the configuration set. Unused parameters of older script versions are deleted. And all the dynamic data, especially the autovisit settings for every TB and the DropBox token, are deleted too.<br><br>After reset, choose button \"close\".") + "<br><br>";
+            html += "<input type='radio' name='rc' id='rc_temp' class='gclh_rc'><label for='rc_temp'>Reset dynamic and unused data</label>" + show_help_rc("This option reorganize the configuration set. Unused parameters of older script versions are deleted. And the dynamic data like the autovisit settings for every TB, the seen friends data of founds and hides and the DropBox token are deleted too. Especially the VIPs, VUPs and Linklist settings are not deleted of course.<br><br>After reset, choose button \"close\".") + "<br><br>";
             html += "<input type='radio' name='rc' id='rc_homecoords' class='gclh_rc'><label for='rc_homecoords'>Reset your own home-coords</label>" + show_help_rc("This option could help you with problems around your home-coords, like for example with your main homezone, with nearest lists or with your home-coords itself. Your home-coords are not deleted at gc.com, but only in GClh. <br><br>After reset, you have to go to the account settings page of gc.com to the area \"Home Location\", so that GClh can save your home-coords again automatically. You have only to go to this page, you have nothing to do at this page, GClh save your home-coords automatically. <br>Or you enter your home-coords manually in GClh. <br><br>At last, choose button \"close\".");
             html += "<font class='gclh_small'> (After reset, go to <a href='https://www.geocaching.com/account/settings/homelocation' target='_blank'>Home Location</a> )</font>" + "<br/>";
             html += "<input type='radio' name='rc' id='rc_uid' class='gclh_rc'><label for='rc_uid'>Reset your own id for your trackables</label>" + show_help_rc("This option could help you with problems with your own trackables lists, which based on an special id, the uid. The uid are not deleted at gc.com, but only in GClh. <br><br>After reset, you have to go to your profile page of gc.com, so that GClh can save your uid again automatically. You have only to go to this page, you have nothing to do at this page, GClh save the uid automatically. <br><br>At last, choose button \"close\".");
@@ -8822,39 +8822,39 @@ var mainGC = function () {
             html += " &nbsp; " + checkboxy('settings_remove_banner_blue', 'Try to remove all blue banner to new designed pages') + "<br/>";
             html += newParameterVersionSetzen(0.8) + newParameterOff;
             html += checkboxy('settings_submit_log_button', 'Submit log, Pocket Query, Bookmark or hide cache on F2') + show_help("With this option you are able to submit your log by pressing F2 instead of scrolling to the bottom and move the mouse to the button. <br><br>This feature also works to submit Pocket Queries and Bookmarks. <br><br>And it works on the whole hide cache process with all of the buttons \"Continue\", \"Continue Anyway\", \"Save and Preview\", \"Submit Changes\", \"Update Attributes\", \"Create Waypoint\" and \"Update Waypoint\" of the create and the change functionality.") + "<br/>";
-            html += "<br>";
-            html += "&nbsp;" + "Show lines in";
-            html += "<span style='margin-left: 40px;' >lists</span>" + show_help("Lists are all common lists but not the TB listing and not the cache listing.");
-            html += "<span style='margin-left: 30px;' >cache listings</span>";
-            html += "<span style='margin-left: 32px;' >TB listings</span>";
-            html += "<span style='margin-left: 30px;' >in color</span>" + "<br>";
-            html += "&nbsp;" + "- for zebra:" + show_help2("With this options you can color every second line in the specified lists in the specified \"alternating\" color.");
-            html += "<input type='checkbox' style='margin-left:  37px;' " + (getValue('settings_show_common_lists_in_zebra') ? "checked='checked'" : "" ) + " id='settings_show_common_lists_in_zebra'></span>";
-            html += "<input type='checkbox' style='margin-left:  56px;' " + (getValue('settings_show_cache_listings_in_zebra') ? "checked='checked'" : "" ) + " id='settings_show_cache_listings_in_zebra'></span>" + show_help("This option requires \"Load logs with GClh\".");
-            html += "<input type='checkbox' style='margin-left:  95px;' " + (getValue('settings_show_tb_listings_in_zebra') ? "checked='checked'" : "" ) + " id='settings_show_tb_listings_in_zebra'></span>";
-            html += "<input class='gclh_form color' type='text' style='margin-left: 86px;' size=5 id='settings_lines_color_zebra' value='" + getValue("settings_lines_color_zebra", "EBECED") + "'>";
-            html += "<img src=" + global_restore_icon + " id='restore_settings_lines_color_zebra' title='back to default' style='width: 12px; cursor: pointer;'>" + "<br>";
-            html += "&nbsp;" + "- for you:" + show_help2("With this options you can color your logs respectively your founds in the specified lists in the specified color.");
-            html += "<input type='checkbox' style='margin-left:  50px;' " + (getValue('settings_show_common_lists_color_user') ? "checked='checked'" : "" ) + " id='settings_show_common_lists_color_user'></span>";
-            html += "<input type='checkbox' style='margin-left:  56px;' " + (getValue('settings_show_cache_listings_color_user') ? "checked='checked'" : "" ) + " id='settings_show_cache_listings_color_user'></span>" + show_help("This option requires \"Load logs with GClh\".");
-            html += "<input type='checkbox' style='margin-left:  95px;' " + (getValue('settings_show_tb_listings_color_user') ? "checked='checked'" : "" ) + " id='settings_show_tb_listings_color_user'></span>";
-            html += "<input class='gclh_form color' type='text' style='margin-left: 86px;' size=5 id='settings_lines_color_user' value='" + getValue("settings_lines_color_user", "C2E0C3") + "'>";
-            html += "<img src=" + global_restore_icon + " id='restore_settings_lines_color_user' title='back to default' style='width: 12px; cursor: pointer;'>" + "<br>";
-            html += "&nbsp;" + "- for owners:";
-            html += "<input type='checkbox' style='margin-left: 111px;' " + (getValue('settings_show_cache_listings_color_owner') ? "checked='checked'" : "" ) + " id='settings_show_cache_listings_color_owner'></span>" + show_help("This option requires \"Load logs with GClh\".");
-            html += "<input type='checkbox' style='margin-left:  95px;' " + (getValue('settings_show_tb_listings_color_owner') ? "checked='checked'" : "" ) + " id='settings_show_tb_listings_color_owner'></span>";
-            html += "<input class='gclh_form color' type='text' style='margin-left: 86px;' size=5 id='settings_lines_color_owner' value='" + getValue("settings_lines_color_owner", "E0E0C3") + "'>";
-            html += "<img src=" + global_restore_icon + " id='restore_settings_lines_color_owner' title='back to default' style='width: 12px; cursor: pointer;'>" + "<br>";
-            html += "&nbsp;" + "- for reviewers:";
-            html += "<input type='checkbox' style='margin-left:  96px;' " + (getValue('settings_show_cache_listings_color_reviewer') ? "checked='checked'" : "" ) + " id='settings_show_cache_listings_color_reviewer'></span>" + show_help("This option requires \"Load logs with GClh\".");
-            html += "<input type='checkbox' style='margin-left:  95px;' " + (getValue('settings_show_tb_listings_color_reviewer') ? "checked='checked'" : "" ) + " id='settings_show_tb_listings_color_reviewer'></span>";
-            html += "<input class='gclh_form color' type='text' style='margin-left: 86px;' size=5 id='settings_lines_color_reviewer' value='" + getValue("settings_lines_color_reviewer", "EAD0C3") + "'>";
-            html += "<img src=" + global_restore_icon + " id='restore_settings_lines_color_reviewer' title='back to default' style='width: 12px; cursor: pointer;'>" + "<br>";
-            html += "&nbsp;" + "- for VIPs:";
-            html += "<input type='checkbox' style='margin-left: 131px;' " + (getValue('settings_show_cache_listings_color_vip') ? "checked='checked'" : "" ) + " id='settings_show_cache_listings_color_vip'></span>" + show_help("This option requires \"Load logs with GClh\" and \"Show VIP list\".");
-            html += "<input type='checkbox' style='margin-left:  95px;' " + (getValue('settings_show_tb_listings_color_vip') ? "checked='checked'" : "" ) + " id='settings_show_tb_listings_color_vip'></span>" + show_help("This option requires \"Show VIP list\".");
-            html += "<input class='gclh_form color' type='text' style='margin-left: 72px;' size=5 id='settings_lines_color_vip' value='" + getValue("settings_lines_color_vip", "F0F0A0") + "'>";
-            html += "<img src=" + global_restore_icon + " id='restore_settings_lines_color_vip' title='back to default' style='width: 12px; cursor: pointer;'>" + "<br>";
+            html += "<table style='width: 550px; text-align: left; margin-top: 9px;'>";
+            html += "  <thead>";
+            html += "    <tr><th><span>Show lines in</span></th>";
+            html += "      <th><span>lists </span>" + show_help("Lists are all common lists but not the TB listing and not the cache listing.") + "</th>";
+            html += "      <th><span>cache listings</span></th>";
+            html += "      <th><span>TB listings</span></th>";
+            html += "      <th><span>in color</span></th></tr>";
+            html += "  </thead>";
+            html += "  <tbody>";
+            html += "    <tr><td><span>for zebra:</span>" + show_help2("With this options you can color every second line in the specified lists in the specified \"alternating\" color.") + "</td>";
+            html += "      <td><input type='checkbox'" + (getValue('settings_show_common_lists_in_zebra') ? "checked='checked'" : "" ) + " id='settings_show_common_lists_in_zebra'></td>";
+            html += "      <td><input type='checkbox'" + (getValue('settings_show_cache_listings_in_zebra') ? "checked='checked'" : "" ) + " id='settings_show_cache_listings_in_zebra'>" + show_help("This option requires \"Load logs with GClh\".") + "</td>";
+            html += "      <td><input type='checkbox'" + (getValue('settings_show_tb_listings_in_zebra') ? "checked='checked'" : "" ) + " id='settings_show_tb_listings_in_zebra'></td>";
+            html += "      <td><input class='gclh_form color' type='text' size=5 id='settings_lines_color_zebra' value='" + getValue("settings_lines_color_zebra", "EBECED") + "'><img src=" + global_restore_icon + " id='restore_settings_lines_color_zebra' title='back to default' style='width: 12px; cursor: pointer;'></td></tr>";
+            html += "    <tr><td><span>for you:</span>" + show_help2("With this options you can color every second line in the specified lists in the specified \"alternating\" color.") + "</td>";
+            html += "      <td><input type='checkbox'" + (getValue('settings_show_common_lists_color_user') ? "checked='checked'" : "" ) + " id='settings_show_common_lists_color_user'></td>";
+            html += "      <td><input type='checkbox'" + (getValue('settings_show_cache_listings_color_user') ? "checked='checked'" : "" ) + " id='settings_show_cache_listings_color_user'>" + show_help("This option requires \"Load logs with GClh\".") + "</td>";
+            html += "      <td><input type='checkbox'" + (getValue('settings_show_tb_listings_color_user') ? "checked='checked'" : "" ) + " id='settings_show_tb_listings_color_user'></td>";
+            html += "      <td><input class='gclh_form color' type='text' size=5 id='settings_lines_color_user' value='" + getValue("settings_lines_color_user", "C2E0C3") + "'><img src=" + global_restore_icon + " id='restore_settings_lines_color_user' title='back to default' style='width: 12px; cursor: pointer;'></td></tr>";
+            html += "    <tr><td><span>for owners:</span></td><td></td>";
+            html += "      <td><input type='checkbox'" + (getValue('settings_show_cache_listings_color_owner') ? "checked='checked'" : "" ) + " id='settings_show_cache_listings_color_owner'>" + show_help("This option requires \"Load logs with GClh\".") + "</td>";
+            html += "      <td><input type='checkbox'" + (getValue('settings_show_tb_listings_color_owner') ? "checked='checked'" : "" ) + " id='settings_show_tb_listings_color_owner'></td>";
+            html += "      <td><input class='gclh_form color' type='text' size=5 id='settings_lines_color_owner' value='" + getValue("settings_lines_color_owner", "E0E0C3") + "'><img src=" + global_restore_icon + " id='restore_settings_lines_color_owner' title='back to default' style='width: 12px; cursor: pointer;'></td></tr>";
+            html += "    <tr><td><span>for reviewers:</span></td><td></td>";
+            html += "      <td><input type='checkbox'" + (getValue('settings_show_cache_listings_color_reviewer') ? "checked='checked'" : "" ) + " id='settings_show_cache_listings_color_reviewer'>" + show_help("This option requires \"Load logs with GClh\".") + "</td>";
+            html += "      <td><input type='checkbox'" + (getValue('settings_show_tb_listings_color_reviewer') ? "checked='checked'" : "" ) + " id='settings_show_tb_listings_color_reviewer'></td>";
+            html += "      <td><input class='gclh_form color' type='text' size=5 id='settings_lines_color_reviewer' value='" + getValue("settings_lines_color_reviewer", "EAD0C3") + "'><img src=" + global_restore_icon + " id='restore_settings_lines_color_reviewer' title='back to default' style='width: 12px; cursor: pointer;'></td></tr>";
+            html += "    <tr><td><span>for VIPs:</span></td><td></td>";
+            html += "      <td><input type='checkbox'" + (getValue('settings_show_cache_listings_color_vip') ? "checked='checked'" : "" ) + " id='settings_show_cache_listings_color_vip'>" + show_help("This option requires \"Load logs with GClh\".") + "</td>";
+            html += "      <td><input type='checkbox'" + (getValue('settings_show_tb_listings_color_vip') ? "checked='checked'" : "" ) + " id='settings_show_tb_listings_color_vip'></td>";
+            html += "      <td><input class='gclh_form color' type='text' size=5 id='settings_lines_color_vip' value='" + getValue("settings_lines_color_vip", "F0F0A0") + "'><img src=" + global_restore_icon + " id='restore_settings_lines_color_vip' title='back to default' style='width: 12px; cursor: pointer;'></td></tr>";
+            html += "  </tbody>";
+            html += "</table>";
             html += "</div>";
 
             html += "<h4 class='gclh_headline2' title='this page'>"+prepareHideable.replace("#name#","config")+"GClh Config / Sync</h4>";
@@ -9003,7 +9003,7 @@ var mainGC = function () {
             html += checkboxy('settings_show_thumbnails', 'Show thumbnails of images') + show_help("With this option the images are displayed as thumbnails to have a preview. If you hover over a thumbnail, you can see the big one.<br><br>This works in cache and TB logs, in the cache and TB image galleries, in public profile for the avatar and in the profile image gallery. <br><br>And after pressing button \"Show bigger avatars\" in cache listing, it works too for the avatars in the shown logs.") + "&nbsp; Max size of big image: <input class='gclh_form' size=2 type='text' id='settings_hover_image_max_size' value='" + settings_hover_image_max_size + "'> px <br/>";
             html += "&nbsp; " + checkboxy('settings_imgcaption_on_top', 'Show caption on top') + show_help("This option requires \"Show thumbnails of images\".") + "<br/>";
             html += checkboxy('settings_show_big_gallery', 'Show bigger images in gallery') + show_help("With this option the images in the galleries of caches, TBs and profiles are displayed bigger and not in 4 columns, but in 2 columns.");
-            var content_geothumbs = "<font class='gclh_small' style='margin-left: 80px; margin-top: -10px; position: absolute;'> (Alternative: <a href='https://benchmarks.org.uk/greasemonkey/geothumbs.php' target='_blank'>Geothumbs</a> " + show_help("A great alternative to the GClh bigger image functionality with \"Show thumbnails of images\" and \"Show bigger images in gallery\", provides the script Geothumbs (Geocaching Thumbnails). <br><br>The script works like GClh with Firefox as Greasemonkey script and with Google Chrome and Opera as Tampermonkey script. <br><br>If you use Geothumbs, you have to uncheck both GClh bigger image functionality.") + ")</font>" + "<br/>";
+            var content_geothumbs = "<font class='gclh_small' style='margin-left: 80px; margin-top: -10px; position: absolute;'> (Alternative: <a href='http://benchmarks.org.uk/greasemonkey/geothumbs.php' target='_blank'>Geothumbs</a> " + show_help("A great alternative to the GClh bigger image functionality with \"Show thumbnails of images\" and \"Show bigger images in gallery\", provides the script Geothumbs (Geocaching Thumbnails). <br><br>The script works like GClh with Firefox, Google Chrome and Opera as Tampermonkey script. <br><br>If you use Geothumbs, you have to uncheck both GClh bigger image functionality \"Show thumbnails of images\" and \"Show bigger images in gallery\".") + ")</font>" + "<br/>";
             html += content_geothumbs;
             var content_settings_show_mail_in_allmyvips = checkboxy('settings_show_mail_in_allmyvips', 'Show mail link beside user in "All my VIPs" list in your profile') + show_help("With this option there will be an small mail icon beside every username in the list with all your VIPs (All my VIPs) on your profile page. With this icon you get directly to the mail page to mail to this user. <br>(VIP: Very important person)<br><br>This option requires \"Show mail link beside usernames\" and \"Show VIP list\".") + "<br>";
             html += content_settings_show_mail_in_allmyvips;
@@ -9208,7 +9208,7 @@ var mainGC = function () {
             html += "<h4 class='gclh_headline2'>"+prepareHideable.replace("#name#","mail")+"Mail / Message form</h4>";
             html += "<div id='gclh_config_mail'>";
             var placeholderDescriptionMail = "Possible placeholder Mail / Message form:<br>&nbsp; #Found# : Your founds + 1<br>&nbsp; #Found_no# : Your founds<br>&nbsp; #Me# : Your username<br>&nbsp; #Receiver# : Username of the receiver<br>&nbsp; #Date# : Actual date<br>&nbsp; #Time# : Actual time in format hh:mm<br>&nbsp; #DateTime# : Actual date actual time<br>&nbsp; #GCTBName# : GC or TB name<br>&nbsp; #GCTBCode# : GC or TB code in brackets<br>&nbsp; #GCTBLink# : GC or TB link in brackets<br>(Upper and lower case is not required in the placeholder name.)";
-            html += "&nbsp;" + "Template:&nbsp;" + show_help2("The template will automatically be inserted into your mails and messages. <br><br>Also you are able to use placeholder for variables which will be replaced in the mail and in the message.") + " &nbsp; (Possible placeholder:" + show_help_big(placeholderDescriptionMail) + ")<br>";
+            html += "&nbsp;" + "Template:" + show_help2("The template will automatically be inserted into your mails and messages. <br><br>Also you are able to use placeholder for variables which will be replaced in the mail and in the message.") + " &nbsp; (Possible placeholder:" + show_help_big(placeholderDescriptionMail) + ")<br>";
             html += "&nbsp;" + "<textarea class='gclh_form' rows='7' cols='56' id='settings_mail_signature'>&zwnj;" + getValue("settings_mail_signature", "") + "</textarea><br>";
             html += "</div>";
 
@@ -10756,12 +10756,12 @@ var mainGC = function () {
         for (key in CONFIG) {
             var kkey = key.split("[");
             var kkey = kkey[0];
-            if (kkey.match(/^(vips|token|uid)$/) ||
-                kkey.match(/^(show_box|friends_founds_|friends_hides_)/) ||
-                kkey.match(/^gclh_(.*)(_logs_get_last|_logs_count)$/)       ) {
+            if (kkey.match(/^(show_box)/) ||
+                kkey.match(/^gclh_(.*)(_logs_get_last|_logs_count)$/)) {
                 config_tmp[key] = CONFIG[key];
             } else if (kkey.match(/autovisit_(\d+)/) ||
-                       kkey.match(/^(settings_DB_auth_token|new_version|class)$/) ) {
+                       kkey.match(/^(friends_founds_|friends_hides_)/) ||
+                       kkey.match(/^(settings_DB_auth_token|new_version|class|token)$/) ) {
                 changed = true;
                 document.getElementById('rc_configData').innerText += "delete: " + key + ": " + CONFIG[key] + "\n";
             } else if (data.match(kkey)) {
