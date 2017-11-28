@@ -8950,7 +8950,7 @@ var mainGC = function () {
             html += "  <tfoot>";
             html += "      <tr><td colspan='5'><button type='button' class='gclh_form addentry'>create Homezone circle</button></td></tr>";
             html += "  </tfoot>";
-            html += "</table></div></div>";
+            html += "</table></div>";
 
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>Hide Map Elements</b></div>";
             html += checkboxy('settings_map_hide_sidebar', 'Hide sidebar by default') + show_help("If you want to hide the sidebar on the map, just select this option.") + "<br/>";
