@@ -78,7 +78,7 @@ var constInit = function (c) {
     c.scriptShortNameSync = "GClh Sync II";
     c.anzCustom = 10;
     c.anzTemplates = 10;
-    c.bookmarks_def = new Array(22, 31, 69, 14, 32, 33, 48, "0", 8, 18, 54, 51, 55, 47, 10, 2, 35, 9, 17, 67, 23, 68);
+    c.bookmarks_def = new Array(22, 31, 69, 14, 16, 32, 33, 48, "0", 8, 18, 54, 51, 55, 47, 10, 2, 35, 9, 17, 67, 23, 66, 68);
     c.defaultConfigLink = "https://www.geocaching.com/my/default.aspx#GClhShowConfig";
     c.defaultSyncLink = "https://www.geocaching.com/my/default.aspx#GClhShowSync";
     // Define bookmarks:
@@ -158,11 +158,13 @@ var constInit = function (c) {
     externalBookmark("Geokrety", "http://geokrety.org/", c.bookmarks);
     externalBookmark("Project Geocaching", "http://project-gc.com/", c.bookmarks);
     bookmark("Search TB adv.", "https://www.geocaching.com/track/search.aspx", c.bookmarks);
-    bookmark("View Geocache Map", "https://www.geocaching.com/map/", c.bookmarks);
+    bookmark("Map", "https://www.geocaching.com/map/", c.bookmarks);
     profileSpecialBookmark(scriptShortNameSync, defaultSyncLink, "lnk_gclhsync", c.bookmarks);
     externalBookmark("Forum Geoclub", "http://geoclub.de/forum/index.php", c.bookmarks);
-    externalBookmark("Changelog", "https://github.com/2Abendsegler/GClh/blob/master/docu/changelog.md#readme", c.bookmarks);
+    externalBookmark("Changelog GClh II", "https://github.com/2Abendsegler/GClh/blob/master/docu/changelog.md#readme", c.bookmarks);
     bookmark("Lists", "https://www.geocaching.com/my/lists.aspx", c.bookmarks);
+    bookmark("Souvenirs", "https://www.geocaching.com/my/souvenirs.aspx", c.bookmarks);
+    bookmark("Friend League", "https://www.geocaching.com/play/friendleague", c.bookmarks);
     // Custom Bookmark-title.
     c.bookmarks_orig_title = new Array();
     for (var i = 0; i < c.bookmarks.length; i++) {
@@ -713,7 +715,7 @@ var mainGC = function () {
         }
     }
 
-// Last Log-Text speichern fuer TB-Log-Template.
+// Last Log-Text speichern für TB-Log-Template.
     if (document.location.href.match(/^https?:\/\/www\.geocaching\.com\/seek\/log\.aspx/) && document.getElementById("ctl00_ContentBody_LogBookPanel1_btnSubmitLog")) {
         try {
             function send_log(e) { setValue("last_logtext", document.getElementById('ctl00_ContentBody_LogBookPanel1_uxLogInfo').value); }
@@ -4151,14 +4153,7 @@ var mainGC = function () {
     // Summenfelder für Anzahl Caches definieren und Configparameter setzen.
     function sumsCreateFields( configParameter ) {
         var sums = new Object();
-        sums["All"] = 0;
-        sums["chAll"] = 0;
-        sums["Found"] = 0;
-        sums["chFound"] = 0;
-        sums["Archived"] = 0;
-        sums["chArchived"] = 0;
-        sums["Deactivated"] = 0;
-        sums["chDeactivated"] = 0;
+        sums["All"] = sums["chAll"] = sums["Found"] = sums["chFound"] = sums["Archived"] = sums["chArchived"] = sums["Deactivated"] = sums["chDeactivated"] = 0;
         sums["configParameter"] = configParameter;
       return sums;
     }
@@ -4218,10 +4213,7 @@ var mainGC = function () {
     // Anzahl markierte Caches für Selektion None ermitteln und setzen.
     function sumsCountChecked_SelectionNone() {
         if ( sums["configParameter"] == false ) return;
-        sums["chAll"] = 0;
-        sums["chFound"] = 0;
-        sums["chArchived"] = 0;
-        sums["chDeactivated"] = 0;
+        sums["chAll"] = sums["chFound"] = sums["chArchived"] = sums["chDeactivated"] = 0;
         sumsChangeAllFields();
     }
     // Anzahl markierte Caches für Selektion Invert ermitteln und setzen.
@@ -5048,17 +5040,9 @@ var mainGC = function () {
                 table = table[0];
                 var rows = table.getElementsByTagName("tbody")[0].getElementsByTagName("tr");
                 var sums = new Object();
-                sums["tbs"] = 0;
-                sums["coins"] = 0;
-                sums["patches"] = 0;
-                sums["signal"] = 0;
-                sums["unknown"] = 0;
+                sums["tbs"] = sums["coins"] = sums["patches"] = sums["signal"] = sums["unknown"] = 0;
                 var diff = new Object();
-                diff["tbs"] = 0;
-                diff["coins"] = 0;
-                diff["patches"] = 0;
-                diff["signal"] = 0;
-                diff["unknown"] = 0;
+                diff["tbs"] = diff["coins"] = diff["patches"] = diff["signal"] = diff["unknown"] = 0;
 
                 for (var i = 0; i < (rows.length - 1); i++) {
                     if (rows[i].innerHTML.match(/travel bug/i)) {
@@ -7966,26 +7950,26 @@ var mainGC = function () {
     }
 
 // Neue Parameter im GClh Config hervorheben und Info setzen, zu welcher Version ein Parameter dazugekommen ist.
-//--> $$000 Begin of change                                                 | Hier, v0.8 done
-    newParameterOn1 = "<div  style='background-color: rgba(240, 223, 198, 0.6); width: 100%; height: 100%; padding: 2px 0px 2px 2px; margin-left: -2px;'>";
-    newParameterOn2 = "<div  style='background-color: rgba(240, 223, 198, 1.0); width: 100%; height: 100%; padding: 2px 0px 2px 2px; margin-left: -2px;'>";
-    newParameterOn3 = "<div  style='background-color: rgba(240, 223, 198, 0.3); width: 100%; height: 100%; padding: 2px 0px 2px 2px; margin-left: -2px;'>";
-    newParameterLL1 = '<span style="background-color: rgba(240, 223, 198, 0.6); float: right; padding-top: 25px; width: 100%; margin: -22px 2px 0px 0px;"></span>';
-    newParameterLL2 = '<span style="background-color: rgba(240, 223, 198, 1.0); float: right; padding-top: 25px; width: 100%; margin: -22px 2px 0px 0px;"></span>';
-    newParameterLL3 = '<span style="background-color: rgba(240, 223, 198, 0.3); float: right; padding-top: 25px; width: 100%; margin: -22px 2px 0px 0px;"></span>';
+//--> $$000 Begin of change                                                 | Hier, v0.9 done
+    newParameterOn1 = "<div  style='background-color: rgba(240, 223, 198, 0.3); width: 100%; height: 100%; padding: 2px 0px 2px 2px; margin-left: -2px;'>";
+    newParameterOn2 = "<div  style='background-color: rgba(240, 223, 198, 0.6); width: 100%; height: 100%; padding: 2px 0px 2px 2px; margin-left: -2px;'>";
+    newParameterOn3 = "<div  style='background-color: rgba(240, 223, 198, 1.0); width: 100%; height: 100%; padding: 2px 0px 2px 2px; margin-left: -2px;'>";
+    newParameterLL1 = '<span style="background-color: rgba(240, 223, 198, 0.3); float: right; padding-top: 25px; width: 100%; margin: -22px 2px 0px 0px;"></span>';
+    newParameterLL2 = '<span style="background-color: rgba(240, 223, 198, 0.6); float: right; padding-top: 25px; width: 100%; margin: -22px 2px 0px 0px;"></span>';
+    newParameterLL3 = '<span style="background-color: rgba(240, 223, 198, 1.0); float: right; padding-top: 25px; width: 100%; margin: -22px 2px 0px 0px;"></span>';
 //<-- $$000 End of change
     function newParameterVersionSetzen(version) {
         var newParameterVers = "<span style='font-size: 70%; font-style: italic; float: right; margin-top: -14px; margin-right: 4px;' ";
-        if ( version != "" ) { newParameterVers += "title='Implemented with version " + version + "'>" + version + "</span>"; }
-        else { newParameterVers += "></span>"; }
+        if ( version != "" ) newParameterVers += "title='Implemented with version " + version + "'>" + version + "</span>";
+        else newParameterVers += "></span>";
         if ( settings_hide_colored_versions ) newParameterVers = "";
         return newParameterVers;
     }
     newParameterOff = "</div>";
     function newParameterLLVersionSetzen(version) {
         var newParameterVers = '<span style="font-size: 70%; font-style: italic; margin-top: 10px; margin-left: -192px; position: absolute; cursor: default;"';
-        if ( version != "" ) { newParameterVers += 'title="Implemented with version ' + version + '">' + version + '</span>'; }
-        else { newParameterVers += '></span>'; }
+        if ( version != "" ) newParameterVers += 'title="Implemented with version ' + version + '">' + version + '</span>';
+        else newParameterVers += '></span>';
         if ( settings_hide_colored_versions ) newParameterVers = "";
         return newParameterVers;
     }
@@ -8812,9 +8796,7 @@ var mainGC = function () {
             html += checkboxy('settings_hide_socialshare', 'Hide social sharing Facebook and Twitter') + "<br/>";
             html += checkboxy('settings_hide_warning_message', 'Hide warning message') + show_help("With this option you can choose the possibility to hide a potential warning message of the masters of gc.com. <br><br>One example is the down time warning message which comes from time to time and is placed unnecessarily a lot of days at the top of pages. You can hide it except for a small line in the top right side of the pages. You can activate the warning message again if your mouse goes to this area. <br><br>If the warning message is deleted of the masters, this small area is deleted too.") + "<br/>";
             html += checkboxy('settings_search_enable_user_defined', 'Enable user defined Filter Sets for geocache searchs') + show_help("This features enables you to store favourites filter settings in the geocache search and call them quickly.") + "<br/>";
-            html += newParameterOn3;
             html += checkboxy('settings_hide_cache_approvals', 'Auto set approvals in hide cache process') + show_help("This option activates the checkboxes for approval the guidelines and the terms of use agreement in the hide cache process.") + "<br/>";
-            html += newParameterVersionSetzen(0.6) + newParameterOff;
             html += newParameterOn2;
             html += checkboxy('settings_remove_banner', 'Remove banner') + "<br/>";
             html += " &nbsp; " + checkboxy('settings_remove_banner_to_mylists_new', 'to new designed \"My Lists\" page ') + checkboxy('settings_remove_banner_to_mylists_old', 'to old \"My Lists\" page') + "<br/>";
@@ -8889,11 +8871,8 @@ var mainGC = function () {
             html += checkboxy('settings_compact_layout_list_of_pqs', 'Show compact layout in list of pocket queries') + "<br/>";
             html += checkboxy('settings_compact_layout_pqs', 'Show compact layout in pocket queries') + "<br/>";
             html += newParameterVersionSetzen(0.8) + newParameterOff;
-            html += newParameterOn3;
             html += checkboxy('settings_pq_warning', "Get a warning in case of empty pocket queries") + show_help("Show a message if one or more options are in conflict. This helps to avoid empty pocket queries.") + "<br/>";
-            html += newParameterVersionSetzen(0.6) + newParameterOff;
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>Default values for new pocket query</b></div>";
-            html += newParameterOn3;
             html += checkboxy('settings_pq_set_cachestotal', "Set number of caches to ") + "<input class='gclh_form' size=3 type='text' id='settings_pq_cachestotal' value='" + settings_pq_cachestotal + "'>&nbsp;" + show_help("Specifies the default value for total caches.") + "<br/>";
             html += checkboxy('settings_pq_option_ihaventfound', "Enable option '<i>I haven't found</i>' by default") + show_help("This activates the option '<i>I haven't found</i>' by default.") + "<br/>";
             html += checkboxy('settings_pq_option_idontown', "Enable option '<i>I don't own</i>' by default") + show_help("This activates the option '<i>I don't own</i>' by default.") + "<br/>";
@@ -8903,7 +8882,6 @@ var mainGC = function () {
             html += checkboxy('settings_pq_set_difficulty', "Set difficulity ") + gclh_createSelectOptionCode( "settings_pq_difficulty", dt_display, settings_pq_difficulty ) + '&nbsp;' + gclh_createSelectOptionCode( "settings_pq_difficulty_score", dt_score, settings_pq_difficulty_score ) + " by default" + show_help3("Specifies the default settings for difficulty score.") + "<br/>";
             html += checkboxy('settings_pq_set_terrain', "Set terrain ") + gclh_createSelectOptionCode( "settings_pq_terrain", dt_display, settings_pq_terrain ) + '&nbsp;' + gclh_createSelectOptionCode( "settings_pq_terrain_score", dt_score, settings_pq_terrain_score ) + " by default" + show_help("Specifies the default settings for terrain score.") + "<br/>";
             html += checkboxy('settings_pq_automatically_day', "Generate pocket query today") + show_help("Use the server time to set the week day for creation.") + "<br/>";
-            html += newParameterVersionSetzen(0.6) + newParameterOff;
             html += "</div>";
 
             html += "<h4 class='gclh_headline2'>"+prepareHideable.replace("#name#","bm")+"Bookmark list</h4>";
@@ -9088,13 +9066,9 @@ var mainGC = function () {
             var content_settings_show_mail_in_viplist = "&nbsp; " + checkboxy('settings_show_mail_in_viplist', 'Show mail link beside user in "VIP-List" in listing') + show_help("With this option there will be an small mail icon beside every username in the VIP lists on the cache listing page. With this icon you get directly to the mail page to mail to this user. <br>(VIP: Very important person)<br><br>This option requires \"Show mail link beside usernames\", \"Show VIP list\" and \"Load logs with GClh\".") + "<br>";
             html += content_settings_show_mail_in_viplist;
             html += "&nbsp; " + content_settings_show_mail_in_allmyvips.replace("settings_show_mail_in_allmyvips", "settings_show_mail_in_allmyvipsX0");
-            html += newParameterOn3;
             html += "&nbsp; " + checkboxy('settings_mail_icon_new_win', 'Open mail form in new tab')  + show_help("If you enable this option, the mail form will open in a new tab.<br><br>This option requires \"Show mail link beside usernames\".")+ "<br/>";
-            html += newParameterVersionSetzen(0.6) + newParameterOff;
             html += checkboxy('settings_show_message', 'Show message link beside usernames') + show_help("With this option there will be an small message icon beside every username. With this icon you get directly to the message form to send a message to this user. If you click it for example when you are in a listing, the cachename or GC code can be inserted into the message form about placeholder in the mail / message form template.") + "<br/>";
-            html += newParameterOn3;
             html += "&nbsp; " + checkboxy('settings_message_icon_new_win', 'Open message form in new tab')  + show_help("If you enable this option, the message form will open in a new tab.<br><br>This option requires \"Show message link beside usernames\".")+ "<br/>";
-            html += newParameterVersionSetzen(0.6) + newParameterOff;
             html += checkboxy('settings_show_google_maps', 'Show link to Google Maps') + show_help("This option shows a link at the top of the second map in the listing. With this link you get directly to Google Maps in the area, where the cache is.") + "<br/>";
             html += checkboxy('settings_strike_archived', 'Strike through title of archived/disabled caches') + "<br/>";
             html += "&nbsp;" + "Highlight user changed coords with " + checkboxy('settings_highlight_usercoords', 'red textcolor ') + checkboxy('settings_highlight_usercoords_bb', 'underline ') + checkboxy('settings_highlight_usercoords_it', 'italic') + "<br/>";
@@ -9370,10 +9344,9 @@ var mainGC = function () {
                     }
                     var outTitle = (typeof(bookmarks_orig_title[num]) != "undefined" && bookmarks_orig_title[num] != "" ? bookmarks_orig_title[num] : bookmarks[i]['title']);
                     html += "            >" + outTitle + "</a>";
-                    // Kennzeichnung neuer Parameter in Linklist Bereich.
-                    if ( num >= 69 && num <= 69 ) {
-                        html +=          newParameterLL2;
-                    }
+                    // Kennzeichnung neuer Parameter im Linklist Bereich.
+                    if ( num >= 69 && num <= 69 ) html += newParameterLL2;
+                    if ( num >= 70 && num <= 71 ) html += newParameterLL3;
                 }
                 html += "            </td>";
                 // Zweite Spalte mit gegebenenfalls abweichenden Bezeichnungen:
@@ -9382,10 +9355,9 @@ var mainGC = function () {
                     html += "                <input style='padding-left: 2px !important; padding-right: 2px !important;' class='gclh_form' title='Description for custom link' id='bookmarks_name[" + num + "]' type='text' size='15' value='" + getValue("settings_bookmarks_title[" + num + "]", "") + "'>";
                 } else {
                     html += "                <input style='padding-left: 2px !important; padding-right: 2px !important;' class='gclh_form' title='Differing description for standard link' id='bookmarks_name[" + num + "]' type='text' size='15' value='" + getValue("settings_bookmarks_title[" + num + "]", "") + "'>";
-                    // Kennzeichnung neuer Parameter in Linklist Bereich.
-                    if ( num >= 69 && num <= 69 ) {
-                        html +=              newParameterLLVersionSetzen(0.8);
-                    }
+                    // Kennzeichnung neuer Parameter im Linklist Bereich.
+                    if ( num >= 69 && num <= 69 ) html += newParameterLLVersionSetzen(0.8);
+                    if ( num >= 70 && num <= 71 ) html += newParameterLLVersionSetzen(0.9);
                 }
                 html += "            </td>";
                 html += "        </tr>";
