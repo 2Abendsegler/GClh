@@ -8664,7 +8664,8 @@ var mainGC = function () {
         html += "a.gclh_info {";
         html += "  color: #000000 !important;";
         html += "  text-decoration: none;";
-        html += "  cursor: help;}";
+        html += "  cursor: help;";
+        html += "  white-space: normal;}";
         html += "a.gclh_info:hover {position: relative;}";
         html += "a.gclh_info span {";
         html += "  visibility: hidden;";
@@ -8687,13 +8688,22 @@ var mainGC = function () {
         html += "a.gclh_info3:hover span {";
         html += "  left: -200px !important;}";
         html += "a.gclh_info_big:hover span {width: 350px !important;}";
-        html += ".multi_homezone_settings {";
-        html += "  width: 50%;";
-        html += "  padding: 10px 0;";
-        html += "  margin: 10px 0 10px 10px;";
-        html += "  border: 1px solid #CFC0B8;";
-        html += "  border-width: 1px 0;}";
-        html += ".multi_homezone_element {margin-bottom: 10px;}";
+        html += "table.multi_homezone_settings {";
+        html += "  margin-left: 10px;";
+        html += "  margin-bottom: 5px;";
+        html += "  width: 550px;";
+        html += "  text-align: left;";
+        html += "  vertical-align: baseline;";
+        html += "  white-space: nowrap;}";
+        html += ".multi_homezone_settings .remove {";
+        html += "  height: 20px;";
+        html += "  margin-left: 0px;";
+        html += "  vertical-align: top;";
+        html += "  cursor: pointer;}";
+        html += ".multi_homezone_settings .disabled {";
+        html += "  cursor: unset !important;";
+        html += "  opacity: 0.5;}";
+        html += ".multi_homezone_settings .addentry {margin-top: 5px;}";
         html += "a.gclh_info_rc:hover span {";
         html += "  width: 500px !important;";
         html += "  left: -245px !important;}";
@@ -8758,9 +8768,9 @@ var mainGC = function () {
 
             html += "<div id='gclh_config_content2'>";
             html += "<div id='rc_area' class='gclh_rc_area'>";
-            html += "<input type='radio' name='rc' checked='checked' id='rc_standard' class='gclh_rc'><label for='rc_standard'>Reset to standard configuration</label>" + show_help_rc("This option should help you to come back to an efficient configuration set, after some experimental or other motivated changes. This option load a reasonable standard configuration and overwrite your configuration data in parts. <br><br>The following data are not overwrited: Home-coords; homezone and multi homezone; date format; log templates; cache log, TB log and other signatures; friends data; links in Linklist and differing description and custom links. <br>Dynamic data, like for example autovisits for named trackables, are not overwrited too.<br><br>After reset, choose button \"close\" and go to Config to skim over the set of data.") + "<br/>";
+            html += "<input type='radio' name='rc' checked='checked' id='rc_standard' class='gclh_rc'><label for='rc_standard'>Reset to standard configuration</label>" + show_help_rc("This option should help you to come back to an efficient configuration set, after some experimental or other motivated changes. This option load a reasonable standard configuration and overwrite your configuration data in parts. <br><br>The following data are not overwrited: Home-coords; Homezone circle and multi Homezone circles; date format; log templates; cache log, TB log and other signatures; friends data; links in Linklist and differing description and custom links. <br>Dynamic data, like for example autovisits for named trackables, are not overwrited too.<br><br>After reset, choose button \"close\" and go to Config to skim over the set of data.") + "<br/>";
             html += "<input type='radio' name='rc' id='rc_temp' class='gclh_rc'><label for='rc_temp'>Reset dynamic and unused data</label>" + show_help_rc("This option reorganize the configuration set. Unused parameters of older script versions are deleted. And the dynamic data like the autovisit settings for every TB, the seen friends data of founds and hides and the DropBox token are deleted too. Especially the VIPs, VUPs and Linklist settings are not deleted of course.<br><br>After reset, choose button \"close\".") + "<br><br>";
-            html += "<input type='radio' name='rc' id='rc_homecoords' class='gclh_rc'><label for='rc_homecoords'>Reset your own home-coords</label>" + show_help_rc("This option could help you with problems around your home-coords, like for example with your main homezone, with nearest lists or with your home-coords itself. Your home-coords are not deleted at gc.com, but only in GClh. <br><br>After reset, you have to go to the account settings page of gc.com to the area \"Home Location\", so that GClh can save your home-coords again automatically. You have only to go to this page, you have nothing to do at this page, GClh save your home-coords automatically. <br>Or you enter your home-coords manually in GClh. <br><br>At last, choose button \"close\".");
+            html += "<input type='radio' name='rc' id='rc_homecoords' class='gclh_rc'><label for='rc_homecoords'>Reset your own home-coords</label>" + show_help_rc("This option could help you with problems around your home-coords, like for example with your main Homezone, with nearest lists or with your Home-coords itself. Your home-coords are not deleted at gc.com, but only in GClh. <br><br>After reset, you have to go to the account settings page of gc.com to the area \"Home Location\", so that GClh can save your home-coords again automatically. You have only to go to this page, you have nothing to do at this page, GClh save your home-coords automatically. <br>Or you enter your home-coords manually in GClh. <br><br>At last, choose button \"close\".");
             html += "<font class='gclh_small'> (After reset, go to <a href='https://www.geocaching.com/account/settings/homelocation' target='_blank'>Home Location</a> )</font>" + "<br/>";
             html += "<input type='radio' name='rc' id='rc_uid' class='gclh_rc'><label for='rc_uid'>Reset your own id for your trackables</label>" + show_help_rc("This option could help you with problems with your own trackables lists, which based on an special id, the uid. The uid are not deleted at gc.com, but only in GClh. <br><br>After reset, you have to go to your profile page of gc.com, so that GClh can save your uid again automatically. You have only to go to this page, you have nothing to do at this page, GClh save the uid automatically. <br><br>At last, choose button \"close\".");
             html += "<font class='gclh_small'> (After reset, go to <a href='https://www.geocaching.com/my/' target='_blank'>Your Profile</a> )</font>" + "<br><br>";
@@ -8775,7 +8785,7 @@ var mainGC = function () {
             html += "<br>";
             html += "<h4 class='gclh_headline2'>"+prepareHideable.replace("#name#","global")+"Global</h4>";
             html += "<div id='gclh_config_global'>";
-            html += "<label for='settings_home_lat_lng'>&nbsp;Home-Coords: </label><input class='gclh_form' type='text' size='25' id='settings_home_lat_lng' value='" + DectoDeg(getValue("home_lat"), getValue("home_lng")) + "'>" + show_help("The Home-Coords are filled automatically if you update your Home-Coords on gc.com. If it doesn\'t work you can insert them here. These coords are used for some special links (nearest list, nearest map, ..) and for the homezone circle on the map.") + "<br>";
+            html += "<label for='settings_home_lat_lng'>&nbsp;Home-Coords: </label><input class='gclh_form' type='text' size='25' id='settings_home_lat_lng' value='" + DectoDeg(getValue("home_lat"), getValue("home_lng")) + "'>" + show_help("The Home-Coords are filled automatically if you update your Home-Coords on gc.com. If it doesn\'t work you can insert them here. These coords are used for some special links (nearest list, nearest map, ..) and for the main Homezone circle on the map.") + "<br>";
             html += checkboxy('settings_set_default_langu', 'Set default language ');
             html += "<select class='gclh_form' id='settings_default_langu'>";
             for ( var i = 0; i < langus.length; i++ ){
@@ -8895,29 +8905,53 @@ var mainGC = function () {
 
             html += "<h4 class='gclh_headline2'>"+prepareHideable.replace("#name#","maps")+"Maps</h4>";
             html += "<div id='gclh_config_maps'>";
-            html += checkboxy('settings_show_homezone', 'Show Homezone') + "<br>";
-            html += "&nbsp; " + "- Radius: <input class='gclh_form' type='text' size='1' id='settings_homezone_radius' value='" + settings_homezone_radius + "' style='margin-left: 5px;'> km" + show_help("This option draws a circle of X kilometers around your home coordinates on the map.") + "<br>";
-            html += "&nbsp; " + "- Color: <input class='gclh_form color' type='text' size='5' id='settings_homezone_color' value='" + settings_homezone_color + "' style='margin-left: 15px'>" + show_help("Here you can change the color of your Homezone circle.") + "<br>";
-            html += "&nbsp; " + "- Opacity: <input class='gclh_form' type='text' size='1' id='settings_homezone_opacity' value='" + settings_homezone_opacity + "'> %" + show_help("Here you can change the opacity of your Homezone circle.") + "<br>";
-            //Multi-Homezone
-            html += "<div class='multi_homezone_settings' style='width: 80%;'><b>Multi Homezone</b>";
-            var multi_hz_el = "<div class='multi_homezone_element'>";
-            multi_hz_el += "- Coords: <input class='gclh_form coords' type='text' size='25' value='" + DectoDeg(getValue("home_lat"), getValue("home_lng")) + " 'style='margin-left: 1px;'>" + "<br>";
-            multi_hz_el += "- Radius: <input class='gclh_form radius' type='text' size='1' value='1' style='margin-left: 5px;'> km" + show_help("This option draws a circle of X kilometers around your home coordinates on the map.") + "<br>";
-            multi_hz_el += "- Color: <input class='gclh_form color' type='text' size='5' value='#0000FF' style='margin-left: 15px;'>" + show_help("Here you can change the color of your Homezone circle.") + "<br>";
-            multi_hz_el += "- Opacity: <input class='gclh_form opacity' type='text' size='1' value='10'> %" + show_help("Here you can change the opacity of your Homezone circle.") + "<br>";
-            multi_hz_el += "<button class='gclh_form remove' type='button'>remove</button>";
-            multi_hz_el += "</div>";
+            html += "<div style='margin-left: 5px'><b>Homezone circels</b></div>";
+            html += checkboxy('settings_show_homezone', 'Show Homezone circles') + show_help("This option allows to draw Homezone circles around coordinates on the map.") + "<br>";
+            html += "<div id='ShowHomezoneCircles' style='display: " + (settings_show_homezone ? "block":"none") + ";'>";
+            html += "<table class='multi_homezone_settings'>";
+            html += "  <thead><tr>";
+            html += "      <th><span>Radius</span>" + show_help2("Here you can specify the radius in kilometers of your Homezone circles.") + "</th>";
+            html += "      <th><span>Color</span>" + show_help("Here you can specify the color of your Homezone circles.<br>Default is \"0000FF\".") + "</th>";
+            html += "      <th><span>Opacity</span>" + show_help("Here you can specify the opacity in percent of your Homezone circles.<br>Default is \"10\".") + "</th>";
+            html += "      <th><span>Coordinates</span>" + show_help("Here you can specify the coordinates of the midpoint of your Homezone circles.") + "</th>";
+            html += "      <th><span></span></th>";
+            html += "  </tr></thead>";
+            html += "  <tbody>";
+            // Template.
+            var hztp = " <tr class='multi_homezone_element'>";
+            hztp += "      <td><input class='gclh_form radius' type='text' size='1' value='" + settings_homezone_radius + "'><span> km</span></td>";
+            hztp += "      <td><input class='gclh_form color' type='text' size='5' value='" + settings_homezone_color + "'></td>";
+            hztp += "      <td><input class='gclh_form opacity' type='text' size='1' value='" + settings_homezone_opacity + "'><span> %</span></td>";
+            hztp += "      <td><input class='gclh_form coords' type='text' size='25' value='" + DectoDeg(getValue("home_lat"), getValue("home_lng")) + "'></td>";
+            hztp += "      <td><img title ='Delete Homezone circle' class='remove' src='" + global_del_it_icon + "'/></td></tr>";
+            // Homezone circle.
+            var newHzEl = $('<tr>').append($(hztp));
+            newHzEl.find('tr').attr('class', 'homezone_element');
+            newHzEl.find('.radius').attr('id', 'settings_homezone_radius');
+            newHzEl.find('.color').attr('id', 'settings_homezone_color');
+            newHzEl.find('.opacity').attr('id', 'settings_homezone_opacity');
+            newHzEl.find('.coords').attr('disabled', '');
+            newHzEl.find('.coords').attr('class', 'gclh_form coords disabled');
+            newHzEl.find('.remove').attr('title', '');
+            newHzEl.find('.remove').attr('disabled', '');
+            newHzEl.find('.remove').attr('class', 'remove disabled');
+            html += newHzEl.html();
+            // Multi Homezone circles.
             for (var i in settings_multi_homezone) {
                 var hzel = settings_multi_homezone[i];
-                var newHzEl = $('<div>').append($(multi_hz_el));
-                newHzEl.find('.coords').attr('value', DectoDeg(hzel.lat, hzel.lng));
+                var newHzEl = $('<tr>').append($(hztp));
                 newHzEl.find('.radius').attr('value', hzel.radius);
                 newHzEl.find('.color').attr('value', hzel.color);
                 newHzEl.find('.opacity').attr('value', hzel.opacity);
+                newHzEl.find('.coords').attr('value', DectoDeg(hzel.lat, hzel.lng));
                 html += newHzEl.html();
             }
-            html += "<div class='wrapper'></div><button type='button' class='gclh_form addentry'>create further Homezone</button></div>";
+            html += "  </tbody>";
+            html += "  <tfoot>";
+            html += "      <tr><td colspan='5'><button type='button' class='gclh_form addentry'>create Homezone circle</button></td></tr>";
+            html += "  </tfoot>";
+            html += "</table></div></div>";
+
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>Hide Map Elements</b></div>";
             html += checkboxy('settings_map_hide_sidebar', 'Hide sidebar by default') + show_help("If you want to hide the sidebar on the map, just select this option.") + "<br/>";
             html += checkboxy('settings_hide_map_header', 'Hide header by default') + show_help("If you want to hide the header of the map, just select this option.") + "<br/>";
@@ -8942,7 +8976,7 @@ var mainGC = function () {
 
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>Layers in map</b>" + show_help("Here you can select the map layers which should be added into the layer menu with the map. With this option you can reduce the long list to the layers you really need. If the right list of layers is empty, all will be displayed. If you use other scripts like \"Geocaching Map Enhancements\" GClh will overwrite its layercontrol. With this option you can disable GClh layers to use the layers from gc.com or GME.") + "</div>";
             html += checkboxy('settings_use_gclh_layercontrol', 'Replace layers by GClh') + show_help_big("GClh will replace the layers. With this option you can disable this replacement to use the layers from gc or other scripts like GME (Geocaching Map Enhancements). But you can use too the layers of GClh together with the functionality of GME.<br><br>It is important, that GClh run at first, particularly in front of other layer used scripts like GME or GCVote.<br><br>If there are problems with the layers by using GCVote at once, you have to clear the local storage of GCVote. You can do it about your profile. If that does not help, deinstall and install GCVote again. (GCVote use a local storage for its data. This storage can include incomplete layers which influence the layer control.)") + "<br/>";
-            html += "<div id='MapLayersConfiguration' style='display: "+(settings_use_gclh_layercontrol?"block":"none")+";'>";
+            html += "<div id='MapLayersConfiguration' style='display: " + (settings_use_gclh_layercontrol ? "block":"none") + ";'>";
             html += "<table cellspacing='0' cellpadding='0' border='0'><tbody>";
             html += "<tr>";
             html += "<td><select class='gclh_form' style='width: 250px;' id='settings_maplayers_unavailable' multiple='single' size='7'></select></td>";
@@ -9561,7 +9595,7 @@ var mainGC = function () {
                     }
                 }
             }
-
+            // Show/Hide Einstellungen zu Layers in Map.
             $("#settings_use_gclh_layercontrol").click(function () {
                 $("#MapLayersConfiguration").toggle();
             });
@@ -9581,13 +9615,12 @@ var mainGC = function () {
                     $(this).closest('.multi_homezone_element').remove();
                 });
             }
-
             // Initialize remove listener for present elements.
             gclh_init_multi_homecoord_remove_listener($('.multi_homezone_settings'));
             // Initialize add listener for multi homecoord entries.
             $('.multi_homezone_settings .addentry').click(function () {
-                var $newEl = $(multi_hz_el);
-                $('.multi_homezone_settings .wrapper').append($newEl);
+                var $newEl = $(hztp);
+                $('.multi_homezone_settings tbody').append($newEl);
                 // Initialize remove listener for new element.
                 gclh_init_multi_homecoord_remove_listener($newEl);
                 // Reinit jscolor.
@@ -9608,6 +9641,10 @@ var mainGC = function () {
                     script.innerHTML = 'new jscolor.init();';
                     document.getElementsByTagName("body")[0].appendChild(script);
                 }
+            });
+            // Show/Hide Einstellungen zu Homezone circels.
+            $("#settings_show_homezone").click(function () {
+                $("#ShowHomezoneCircles").toggle();
             });
 
             // Rest:
@@ -9845,11 +9882,11 @@ var mainGC = function () {
             setValue("settings_bookmarks_search_default", document.getElementById('settings_bookmarks_search_default').value);
             setValue("settings_show_all_logs_count", document.getElementById('settings_show_all_logs_count').value);
 
-            //Homezone
+            // Homezone circle.
             setValue("settings_homezone_radius", document.getElementById('settings_homezone_radius').value);
             setValue("settings_homezone_color", document.getElementById('settings_homezone_color').value);
             if (document.getElementById('settings_homezone_opacity').value <= 100 && document.getElementById('settings_homezone_opacity').value >= 0) setValue("settings_homezone_opacity", document.getElementById('settings_homezone_opacity').value);
-            //Multi-Homezone
+            // Multi Homezone circles.
             var settings_multi_homezone = {};
             var $hzelements = $('.multi_homezone_element');
             for (var i = 0; i < $hzelements.length; i++) {
@@ -10976,7 +11013,6 @@ var mainGC = function () {
             html += "<h3 class='gclh_headline' title='Some little things to make life easy (on www.geocaching.com).' >" + scriptNameSync + " <font class='gclh_small'>v" + scriptVersion + "</font></h3>";
             html += "<div class='gclh_content'>";
             html += "<h4 class='gclh_headline2' id='syncDBLabel' style='cursor: pointer;'>DropBox <font class='gclh_small'>(click to hide/show)</font></h4>";
-//            html += "<h4 class='gclh_headline2' id='syncDBLabel' style='cursor: pointer;'>DropBox <font class='gclh_small'>(click to hide/show) </font><font class='gclh_small' style='color: #d43f3f; font-weight: normal;'>(New authentications are not possible, we work on it.)</font></h4>";
             html += "<div style='display:none;' id='syncDB' >";
             html += "<div id='syncDBLoader'><img style='height: 40px;' src='"+global_syncDBLoader_icon+"'> working...</div>";
             html += "<a href='#' class='gclh_form' style='display: none;' id='authlink' class='button'>authenticate</a>";
