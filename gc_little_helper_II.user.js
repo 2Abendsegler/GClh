@@ -81,6 +81,7 @@ var constInit = function (c) {
     c.bookmarks_def = new Array(22, 31, 69, 14, 16, 32, 33, 48, "0", 8, 18, 54, 51, 55, 47, 10, 2, 35, 9, 17, 67, 23, 66, 68);
     c.defaultConfigLink = "https://www.geocaching.com/my/default.aspx#GClhShowConfig";
     c.defaultSyncLink = "https://www.geocaching.com/my/default.aspx#GClhShowSync";
+    c.defaultFindPlayerLink = "https://www.geocaching.com/my/default.aspx#GClhShowFindPlayer";
     // Define bookmarks:
     c.bookmarks = new Array();
     // WICHTIG: Die Reihenfolge darf hier auf keinen Fall geändert werden, weil dadurch eine falsche Zuordnung zu den gespeicherten Userdaten erfolgen würde!
@@ -102,7 +103,7 @@ var constInit = function (c) {
     bookmark("Pocket Queries Saved", "https://www.geocaching.com/pocket/default.aspx#DownloadablePQs", c.bookmarks);
     bookmark("Bookmarks", "https://www.geocaching.com/bookmarks/default.aspx", c.bookmarks);
     bookmark("Notifications", "https://www.geocaching.com/notify/default.aspx", c.bookmarks);
-    profileSpecialBookmark("Find Player", "#GClhShowFindPlayer", "lnk_findplayer", c.bookmarks);
+    profileSpecialBookmark("Find Player", defaultFindPlayerLink, "lnk_findplayer", c.bookmarks);
     bookmark("E-Mail", "https://www.geocaching.com/email/default.aspx", c.bookmarks);
     bookmark("Statbar", "https://www.geocaching.com/my/statbar.aspx", c.bookmarks);
     bookmark("Guidelines", "https://www.geocaching.com/about/guidelines.aspx", c.bookmarks);
@@ -625,12 +626,6 @@ var mainOSM = function () {
 ////////////////////////////////////////////////////////////////////////////
 var mainGC = function () {
 
-// Die neuen Seiten von GS, die wir noch nicht bearbeiten können, aus der Verarbeitung nehmen.
-    if ( ( document.location.href.match(/^https?:\/\/www\.geocaching\.com\/account\//) && !document.location.href.match(/account\/(settings|lists|messagecenter|dashboard)/) ) ||
-         ( document.location.href.match(/^https?:\/\/www\.geocaching\.com\/(p\/|play\/friendleague|track\/$)/) ) ) {
-        return;
-    }
-
 // Run after redirect.
     if (typeof(unsafeWindow.__doPostBack) == "function") {
         try {
@@ -1022,9 +1017,9 @@ var mainGC = function () {
                 else if ( settings_show_smaller_gc_link  && settings_gc_tour_is_working  ) css += "#l {margin-top: -41px; width: 30px;}";
             }
 
-            // Account Settings, Message Center, Cache suchen, Cache verstecken, Geotours (neues Seiten Design), Karten und account/dashboard (new1):
+            // Account Settings, Message Center, Cache suchen, Cache verstecken, Geotours (neues Seiten Design), Karten, account/dashboard und track:
             // ----------
-            if ( is_page("settings") || is_page("messagecenter") || is_page("find_cache") || is_page("hide_cache") || is_page("geotours") || is_page("map") || is_page("new1") ) {
+            if ( is_page("settings") || is_page("messagecenter") || is_page("find_cache") || is_page("hide_cache") || is_page("geotours") || is_page("map") || is_page("dashboard") || is_page("track") ) {
                 // Weitere Attribute für neues Seiten Design zur Darstellung der Objekte im Header setzen.
                 css += "nav .wrapper {padding-right: " + new_padding_right + "px !important; width: unset;}";
                 // Platzieren des neuen Logos verursacht Fehler in der Plazierung des Videos. Folgendes korrigiert das quasi.
@@ -1133,8 +1128,8 @@ var mainGC = function () {
 // New Width (Die Menüweite wird bei Change Header Layout gesetzt.).
     new_width:
     try {
-        // Im neuen Seiten Design, bei Geotours, bei Labs Caches, bei Karten und bei account/dashboard (new1) hier keine Anpassungen vornehmen.
-        if ( is_page("messagecenter") || is_page("settings") || is_page("hide_cache") || is_page("find_cache") || is_page("geotours") || is_page("labs") || is_page("map") || is_page("new1") ) break new_width;
+        // Im neuen Seiten Design, bei Geotours, bei Labs Caches, bei Karten, bei account/dashboard und bei track hier keine Anpassungen vornehmen.
+        if ( is_page("messagecenter") || is_page("settings") || is_page("hide_cache") || is_page("find_cache") || is_page("geotours") || is_page("labs") || is_page("map") || is_page("dashboard") || is_page("track") ) break new_width;
 
         if (getValue("settings_new_width") > 0) {
             var new_width = parseInt( getValue("settings_new_width") );
@@ -1145,8 +1140,8 @@ var mainGC = function () {
             css += "header .container, nav .container {max-width: unset;}";
 
             // Bei folgenden Seiten keine weiteren Anpassungen vornehmen.
-            if ( document.location.href.match(/\/\/www\.geocaching\.com\/pocket\/gcquery\.aspx/) ||      // Pocket Query: Einstellungen zur Selektion
-                 document.location.href.match(/\/\/www\.geocaching\.com\/pocket\/bmquery\.aspx/)    );   // Pocket Query aus Bockmarkliste: Einstellungen zur Selektion
+            if ( document.location.href.match(/\/\/www\.geocaching\.com\/pocket\/gcquery\.aspx/) ||    // Pocket Query: Einstellungen zur Selektion
+                 document.location.href.match(/\/\/www\.geocaching\.com\/pocket\/bmquery\.aspx/)    ); // Pocket Query aus Bockmarkliste: Einstellungen zur Selektion
             else {
                 // Weitere Anpassungen auf allen Seiten:
                 css += "#Content .container, #Content .span-24, .span-24 {width: " + new_width + "px;}";
@@ -1227,9 +1222,7 @@ var mainGC = function () {
             if (!settings_change_header_layout) {
                 if (is_page("map")) {
                     appendCssStyle(".menu > li, .Menu > li  {height: 100%; padding-top: 2.0em;} .submenu, .SubMenu {margin-top: 1.9em;}");
-                } else if (is_page("find_cache")) {
-                    appendCssStyle(".menu > li, .Menu > li  {height: 100%; padding-top: 2.2em;} .submenu, .SubMenu {margin-top: 2.1em;}");
-                } else if (is_page("hide_cache") || is_page("geotours") || is_page("new1")) {
+                } else if (is_page("find_cache") || is_page("hide_cache") || is_page("geotours") || is_page("dashboard") || is_page("track")) {
                     appendCssStyle(".menu > li, .Menu > li  {height: 100%; padding-top: 2.1em;} .submenu, .SubMenu {margin-top: 2.0em;}");
                 } else {
                     appendCssStyle(".menu > li, .Menu > li  {height: 100%; padding-top: 2.0em;} .submenu, .SubMenu {margin-top: 2.0em;}");
@@ -7352,7 +7345,7 @@ var mainGC = function () {
         }
         // Profile, Dashboard Seite.
         if ( (is_page('profile') && document.getElementById('ctl00_ContentBody_WidgetMiniProfile1_memberProfileLink')) ||
-             (is_page('new1') && document.getElementById('DashboardSidebar') && document.getElementsByClassName('bio-meta')) ) {
+             (is_page('dashboard') && document.getElementById('DashboardSidebar') && document.getElementsByClassName('bio-meta')) ) {
             // Config, Sync und Changelog Links beim Avatar im Profile, Dashboard.
             var lnk_config = "<a href='#GClhShowConfig' id='gclh_config_lnk' name='gclh_config_lnk' title='" + scriptShortNameConfig + " v" + scriptVersion + (settings_f4_call_gclh_config ? " / Key F4":"") + "' >" + scriptShortNameConfig + "</a>";
             var lnk_sync = " | <a href='#GClhShowSync' id='gclh_sync_lnk' name='gclh_sync_lnk' title='" + scriptShortNameSync + " v" + scriptVersion + (settings_f10_call_gclh_sync ? " / Key F10":"") + "' >" + scriptShortNameSync + "</a>";
@@ -7376,11 +7369,6 @@ var mainGC = function () {
                 document.getElementsByName("lnk_findplayer_profile")[0].addEventListener('click', createFindPlayerForm, false);
             }
         }
-        // GClh Config und Sync Aufrufe von anderen Seiten auf die Profile Seite mit Zusatz #GClhShowConfig bzw. #GClhShowSync.
-        // Derzeit teils in GM Menü (1. Schritt) verwendet.
-        // Chrome cannot handle functions without curly brackets!
-        function callConfigDefault() { document.location.href = defaultConfigLink; }
-        function callSyncDefault() { document.location.href = defaultSyncLink; }
     } catch (e) { gclh_error("Aufbau Links zum Aufruf von Config, Sync und Find Player:", e); }
 
 // Special Links aus Linklist versorgen.
@@ -8008,12 +7996,11 @@ var mainGC = function () {
 
 // Prüfen, ob die spezielle Verarbeitung auf der aktuellen Seite erlaubt ist. Spezielle Verarbeitungen sind derzeit: GClh Config, GClh Config Sync, Find Player.
     function checkTaskAllowed( task, doAlert ) {
-        if ( ( document.location.href.match(/^https?:\/\/www\.wherigo\.com/)    ||
+        if ( ( document.location.href.match(/^https?:\/\/www\.wherigo\.com/) ||
                document.location.href.match(/^https?:\/\/www\.waymarking\.com/) ||
-               isMemberInPmoCache()                                                ) ||
-             ( task != "Find Player" && !document.location.href.match(/^https?:\/\/www\.geocaching\.com\/account\/dashboard/) &&
-               ( document.location.href.match(/^https?:\/\/www\.geocaching\.com\/(map|play|account)\//) ||
-                 document.location.href.match(/^https?:\/\/labs\.geocaching\.com/)                         ) ) ) {
+               document.location.href.match(/^https?:\/\/labs\.geocaching\.com/) ||
+               isMemberInPmoCache() ) ||
+             ( task != "Find Player" &&  document.location.href.match(/^https?:\/\/www\.geocaching\.com\/map\//) ) ) {
             if ( doAlert != false ) {
                 var mess = "This GC little helper functionality is not available at this page.\n\n"
                          + "Please go to the \"My profile\" page, there is anyway all of these \n"
@@ -8542,12 +8529,12 @@ var mainGC = function () {
             html += "<input class='gclh_form' type='hidden' name='__VIEWSTATE' value=''>";
             if ( is_page("settings") || is_page("map") || is_page("labs") ) {
                 html += "<input style='width: 171px; height: 20px;' class='gclh_form' id='findplayer_field' class=\"Text\" type=\"text\" maxlength=\"100\" name=\"ctl00$ContentBody$FindUserPanel1$txtUsername\"/>";
-            } else if ( is_page("messagecenter") || is_page("find_cache") || is_page("hide_cache") || is_page("geotours") || is_page("new1") ) {
+            } else if ( is_page("messagecenter") || is_page("find_cache") || is_page("hide_cache") || is_page("geotours") || is_page("dashboard") || is_page("track") ) {
                 html += "<input style='width: 175px; height: 24px;' class='gclh_form' id='findplayer_field' class=\"Text\" type=\"text\" maxlength=\"100\" name=\"ctl00$ContentBody$FindUserPanel1$txtUsername\"/>";
             } else {
                 html += "<input style='height: 20px;' class='gclh_form' id='findplayer_field' class=\"Text\" type=\"text\" maxlength=\"100\" name=\"ctl00$ContentBody$FindUserPanel1$txtUsername\"/>";
             }
-            if ( is_page("messagecenter") || is_page("find_cache") || is_page("hide_cache") || is_page("geotours") || is_page("map") || is_page("labs") || is_page("new1") ) {
+            if ( is_page("messagecenter") || is_page("find_cache") || is_page("hide_cache") || is_page("geotours") || is_page("map") || is_page("labs") || is_page("dashboard") || is_page("track") ) {
                 html += " <input style='cursor: pointer; height: 24px;' class='gclh_form' type=\"submit\" value=\"Go\" name=\"ctl00$ContentBody$FindUserPanel1$GetUsers\"/>";
                 html += " <input style='cursor: pointer; height: 24px;' class='gclh_form' id='btn_close1' type='button' value='close'>";
             } else {
@@ -8632,6 +8619,14 @@ var mainGC = function () {
         html += ".gclh_content input[type='checkbox'], .gclh_content input:focus[type='checkbox'], .gclh_content input:active[type='checkbox'], .gclh_content input[type='radio'], .gclh_content input:focus[type='radio'], .gclh_content input:active[type='radio'] {";
         html += "  margin-left: 4px;";
         html += "  margin-right: 4px;}";
+        html += ".gclh_content input[type='checkbox'] {";
+        html += "  opacity: 1;";
+        html += "  position: unset;";
+        html += "  height: unset;}";
+        html += ".gclh_content span::before {display: none !important;}";
+        html += ".gclh_content input[type='text'][disabled] {";
+        html += "  background: unset;";
+        html += "  border-color: unset;}";
         html += ".gclh_content button, .gclh_content input[type='button'] {cursor: pointer;}";
         html += ".gclh_content textarea, .gclh_content pre {resize: vertical;}";
         html += ".gclh_content select {";
@@ -8649,9 +8644,14 @@ var mainGC = function () {
         html += ".gclh_content a:hover, .gclh_content a:active, .gclh_content a:focus {";
         html += "  text-decoration: underline;";
         html += "  color: #3d76c5;}";
-        html += ".gclh_content .wrapper {margin: 0 0;}";
-        html += ".gclh_content td {padding: 0px 0px 0px 5px;}";
-        html += ".gclh_content table, .gclh_content thead, .gclh_content tbody, .gclh_content tr, .gclh_content td {box-sizing: unset;}";
+        html += ".gclh_content table {";
+        html += "  margin-bottom: 0px;";
+        html += "  font-size: 14px;}";
+        html += ".gclh_content th {font-weight: bold;}";
+        html += ".gclh_content td, .gclh_content th {";
+        html += "  padding: 0px 0px 0px 5px;";
+        html += "  vertical-align: middle;}";
+        html += ".gclh_content table, .gclh_content thead, .gclh_content tbody, .gclh_content tr, .gclh_content td, .gclh_content th {box-sizing: unset;}";
         html += ".gclh_form {";
         html += "  font-size: 14px !important;";
         html += "  font-family: Verdana !important;";
@@ -8688,9 +8688,8 @@ var mainGC = function () {
         html += "a.gclh_info3:hover span {";
         html += "  left: -200px !important;}";
         html += "a.gclh_info_big:hover span {width: 350px !important;}";
-        html += "table {margin-bottom: 0px;}";
         html += "table.multi_homezone_settings {";
-        html += "  margin: -5px 0 5px 10px;;";
+        html += "  margin: -2px 0 5px 10px;;";
         html += "  width: 550px;";
         html += "  text-align: left;";
         html += "  vertical-align: baseline;";
@@ -9283,7 +9282,7 @@ var mainGC = function () {
             html += "  <option value=\"2\" " + (settings_menu_number_of_lines == "2" ? "selected=\"selected\"" : "") + ">2</option>";
             html += "  <option value=\"3\" " + (settings_menu_number_of_lines == "3" ? "selected=\"selected\"" : "") + ">3</option>";
             html += "</select>" + show_help("With this option you can choose the number of lines which are necessary to include all the links of the Linklist in the header of the page.<br><br>This option requires \"Change header layout\" and \"Show Linklist on top\".") + "<br>";
-            html += "<input type='checkbox' " + (getValue('settings_menu_show_separator') ? "checked='checked'" : "" ) + " id='settings_menu_show_separator'> Show separator between the links" + show_help("This option requires \"Change header layout\" and \"Show Linklist on top\".") + "<br>";
+            html += "<input type='checkbox' " + (getValue('settings_menu_show_separator') ? "checked='checked'" : "" ) + " id='settings_menu_show_separator'>Show separator between the links" + show_help("This option requires \"Change header layout\" and \"Show Linklist on top\".") + "<br>";
             html += "&nbsp;" + "Font color at gc.com drop-down lists: <input class='gclh_form color' type='text' size=5 id='settings_font_color_submenuX0' value='" + getValue("settings_font_color_submenu", "93B516") + "'>";
             html += "<img src=" + global_restore_icon + " id='restore_settings_font_color_submenuX0' title='back to default' style='width: 12px; cursor: pointer;'>" + show_help("With this option you can choose the font color at the gc.com drop-down lists. The default font color is 93B516 (lime green).<br><br>This option requires \"Change header layout\" and \"Show Linklist on top\".") + "<br>";
             html += "&nbsp;" + "Font size at gc.com drop-down lists: <select class='gclh_form' id='settings_font_size_submenuX0'>";
@@ -9408,7 +9407,7 @@ var mainGC = function () {
 
             html += "<br><br><br>";
             html += "&nbsp;" + "<input class='gclh_form' type='button' value='" + setValueInSaveButton() + "' id='btn_save'> <input class='gclh_form' type='button' value='save & upload' id='btn_saveAndUpload'> <input class='gclh_form' type='button' value='" + setValueInCloseButton() + "' id='btn_close2'>";
-            html += "<div width='450px' align='right' class='gclh_small' style='float: right; margin-top: -5px;'>Copyright © <a href='http://www.amshove.net/' target='_blank'>Torsten Amshove</a>, <a href='https://www.geocaching.com/profile/?u=2Abendsegler' target='_blank'>2Abendsegler</a></div>";
+            html += "<div width='450px' align='right' class='gclh_small' style='float: right; margin-top: -5px;'>Copyright © <a href='https://www.geocaching.com/profile/?u=Torsten-' target='_blank'>Torsten Amshove</a>, <a href='https://www.geocaching.com/profile/?u=2Abendsegler' target='_blank'>2Abendsegler</a></div>";
             html += "<div width='400px' align='right' class='gclh_small' style='float: right; margin-top: -15px;'>License: <a href='https://github.com/2Abendsegler/GClh/blob/master/docu/license.md#readme' target='_blank' title='GNU General Public License Version 2'>GPLv2</a>, Warranty: <a href='https://github.com/2Abendsegler/GClh/blob/master/docu/warranty.md#readme' target='_blank' title='GC little helper comes with ABSOLUTELY NO WARRANTY'>NO</a></div>";
             html += "</div>";
             html += "</div>";
@@ -11224,31 +11223,34 @@ function is_link(name, url) {
             if (url.match(/^https?:\/\/www\.geocaching\.com\/my(\/default\.aspx)?/) ) status = true;
             break;
         case "publicProfile":
-            if (url.match(/^https?:\/\/www\.geocaching\.com\/profile/)) status = true;
+            if (url.match(/^https?:\/\/www\.geocaching\.com\/(profile|p)/)) status = true;
             break;
         case "map":
             if (url.match(/^https?:\/\/www\.geocaching\.com\/map/)) status = true;
             break;
         case "find_cache":
-            if (url.match(/^https?:\/\/www\.geocaching\.com\/play\/(search|geocache|friendleague)/)) status = true;
+            if (url.match(/^https?:\/\/www\.geocaching\.com\/play\/(search|geocache)/)) status = true;
             break;
         case "hide_cache":
-            if (url.match(/^https?:\/\/www\.geocaching\.com\/play\/hide/)) status = true;
-            break;
-        case "settings":
-            if (url.match(/^https?:\/\/www\.geocaching\.com\/account\/(settings|lists)/)) status = true;
-            break;
-        case "messagecenter":
-            if (url.match(/^https?:\/\/www\.geocaching\.com\/account\/messagecenter/)) status = true;
+            if (url.match(/^https?:\/\/www\.geocaching\.com\/play\/(hide|friendleague)/)) status = true;
             break;
         case "geotours":
             if (url.match(/^https?:\/\/www\.geocaching\.com\/play\/geotours/)) status = true;
             break;
+        case "settings":
+            if (url.match(/^https?:\/\/www\.geocaching\.com\/account\/(settings|lists|drafts)/)) status = true;
+            break;
+        case "messagecenter":
+            if (url.match(/^https?:\/\/www\.geocaching\.com\/account\/messagecenter/)) status = true;
+            break;
+        case "dashboard":
+            if (url.match(/^https?:\/\/www\.geocaching\.com\/account\/dashboard/)) status = true;
+            break;
+        case "track":
+            if (url.match(/^https?:\/\/www\.geocaching\.com\/track\/($|#$)/)) status = true;
+            break;
         case "labs":
             if (url.match(/^https?:\/\/labs\.geocaching\.com/)) status = true;
-            break;
-        case "new1":
-            if (url.match(/^https?:\/\/www\.geocaching\.com\/account\/dashboard/)) status = true;
             break;
         default:
             gclh_error( "is_link", "is_link( "+name+", ... ): unknown name" );
