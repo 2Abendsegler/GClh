@@ -1357,6 +1357,8 @@ var mainGC = function () {
         return css;
     }
 
+//xxxx hier auch ändern und zusammenlegen mit Dashboard
+// vielleicht sollte man Linklist und All Links of Linklist machen. auf Profile macht das wegen der nummerierung probleme
 // Linklist in profile.
     if (settings_bookmarks_show && document.location.href.match(/^https?:\/\/www\.geocaching\.com\/my\//) && document.getElementById("ctl00_ContentBody_WidgetMiniProfile1_LoggedInPanel")) {
         try {
@@ -1390,6 +1392,49 @@ var mainGC = function () {
             div0.appendChild(div);
             side.appendChild(div0);
         } catch (e) { gclh_error("Linklist in profile:", e); }
+    }
+
+// Aufbereitungen für Dashboard.
+    if (document.location.href.match(/^https?:\/\/www\.geocaching\.com\/account\/dashboard/)) {
+        var css = "";
+        css += ".link-header.gclh {padding: 12px 20px !important; cursor: pointer; border-top: 1px solid #e4e4e4;}";
+        css += ".link-header.gclh svg {height: 22px; width: 24px; fill: #777; float: right; padding-right: 1px; margin-top: -2px; transition: all .3s ease;}";
+        css += ".link-header.gclh.isHide svg {transform: rotate(90deg);}";
+        css += ".link-block.gclh {padding-top: 0px; border-bottom: unset; display: block;}";
+        css += "#box_vip.link-block.gclh a, #box_vup.link-block.gclh a, #box_linklist.link-block.gclh a {padding: 0 4px 0 0; font-size: 14px;}";
+        css += ".link-block.gclh.isHide {display: none}";
+        appendCssStyle(css);
+    }
+
+// All Linklist Links in dashboard.
+    if (settings_bookmarks_show && document.location.href.match(/^https?:\/\/www\.geocaching\.com\/account\/dashboard/)) {
+        try {
+            // Kopie der Bookmarks aufbauen (zweimal sortieren macht Probleme) und sortieren.
+            var bm_tmp = new Array();
+            for (var i = 0; i < bookmarks.length; i++) {
+                bm_tmp[i] = new Object();
+                for (attr in bookmarks[i]) { bm_tmp[i][attr] = bookmarks[i][attr]; }
+            }
+            sortBookmarksByDescription(true, bm_tmp);
+            // Header und Links aufbauen.
+            build_box_dashboard("linklist", "All Linklist links");
+            var box = document.getElementById("box_linklist");
+            if (!box) return false;
+            box.innerHTML = "";
+            for (var i = 0; i < bm_tmp.length; i++) {
+                if (bm_tmp[i]['origTitle'] == "(empty)" || bm_tmp[i]['href'] == "" || bm_tmp[i]['href'] == "#" ) continue;
+                var a = document.createElement("a");
+                for (attr in bm_tmp[i]) {
+                    if (attr == "custom" || attr == "title" || attr == "origTitle") continue;
+                    if (attr == "name" || attr == "id") a.setAttribute(attr, bm_tmp[i][attr]+"_profile");
+                    else a.setAttribute(attr, bm_tmp[i][attr]);
+                }
+                a.appendChild(document.createTextNode(bm_tmp[i]['origTitle']));
+                var li = document.createElement("li");
+                li.appendChild(a);
+                box.appendChild(li);
+            }
+        } catch (e) { gclh_error("Linklist in dashboard:", e); }
     }
 
 // Stop ignoring: Bezeichnung des Ignore Links durch Stop Ignoring ersetzen, wenn der Cache bereits auf der Ignore Liste steht.
@@ -5620,16 +5665,7 @@ var mainGC = function () {
             // ----------
             } else if (document.location.href.match(/^https?:\/\/www\.geocaching\.com\/account\/dashboard/) && $('nav.sidebar-links').length > 1) {
                 function build_box_vipvup(desc) {
-                    var headline = document.createElement("h3");
-                    headline.setAttribute("class", (getValue("show_box_dashboard_" + desc, true) == true ? "link-header head_vv isShow" : "link-header head_vv isHide" ));
-                    headline.setAttribute("id", "head_" + desc);
-                    headline.innerHTML = "All my " + desc.toUpperCase() + "s <svg><use xlink:href='/account/app/ui-icons/sprites/global.svg#icon-expand-svg-fill'></use></svg>";
-                    $("nav.sidebar-links")[1].appendChild(headline);
-                    document.getElementById("head_" + desc).addEventListener("click", showHideBoxDashboard, false);
-                    var box = document.createElement("ul");
-                    box.setAttribute("class", (getValue("show_box_dashboard_" + desc, true) == true ? "link-block box_vv isShow" : "link-block box_vv isHide" ));
-                    box.setAttribute("id", "box_" + desc);
-                    $("nav.sidebar-links")[1].appendChild(box);
+                    build_box_dashboard(desc, "All my " + desc.toUpperCase() + "s");
                 }
                 function fill_box_vipvup(ary, desc) {
                     var box = document.getElementById("box_" + desc);
@@ -5660,15 +5696,6 @@ var mainGC = function () {
                     fill_box_vipvup(global_vips, "vip");
                     if (settings_process_vup) fill_box_vipvup(global_vups, "vup");
                 };
-                var css = "";
-                css += ".head_vv {padding: 12px 20px !important; cursor: pointer; border-top: 1px solid #e4e4e4;}";
-                css += ".head_vv svg {height: 22px; width: 24px; fill: #777; float: right; padding-right: 1px; margin-top: -2px; transition: all .3s ease;}";
-                css += ".head_vv.isHide svg {transform: rotate(90deg);}";
-                css += ".box_vv {padding-top: 0px; border-bottom: unset; display: block;}";
-                css += ".box_vv a {padding: 0 4px 0 0; font-size: 14px; color: #3d76c5;}";
-                css += ".box_vv a:hover {text-decoration: underline; color: #3d76c5;}";
-                css += ".box_vv.isHide {display: none}";
-                appendCssStyle(css);
 
             // Friends list:
             // -------------
@@ -8143,19 +8170,28 @@ var mainGC = function () {
         }
     }
 
-// Show, Hide Boxen auf Dashboard.
+// Build box link-header on dashboard.
+    function build_box_dashboard(ident, name) {
+        if (!$("nav.sidebar-links")[1]) return;
+        var headline = document.createElement("h3");
+        headline.setAttribute("class", (getValue("show_box_dashboard_" + ident, true) == true ? "link-header gclh" : "link-header gclh isHide" ));
+        headline.setAttribute("id", "head_" + ident);
+        if (name) headline.innerHTML = name + " <svg><use xlink:href='/account/app/ui-icons/sprites/global.svg#icon-expand-svg-fill'></use></svg>";
+        headline.addEventListener("click", showHideBoxDashboard, false);
+        $("nav.sidebar-links")[1].appendChild(headline);
+        var box = document.createElement("ul");
+        box.setAttribute("class", (getValue("show_box_dashboard_" + ident, true) == true ? "link-block gclh" : "link-block gclh isHide" ));
+        box.setAttribute("id", "box_" + ident);
+        $("nav.sidebar-links")[1].appendChild(box);
+    }
+
+// Show, Hide box on dashboard.
     function showHideBoxDashboard() {
-        var desc = this.id.replace("head_", "");
-        if (!document.getElementById("box_" + desc)) return;
-        if ($('#' + this.id + '.isHide')[0]) {
-            this.className = this.className.replace("isHide", "isShow");
-            document.getElementById("box_" + desc).className = document.getElementById("box_" + desc).className.replace("isHide", "isShow");
-            setValue("show_box_dashboard_" + desc, true);
-        } else {
-            this.className = this.className.replace("isShow", "isHide");
-            document.getElementById("box_" + desc).className = document.getElementById("box_" + desc).className.replace("isShow", "isHide");
-            setValue("show_box_dashboard_" + desc, false);
-        }
+        if (!this.nextSibling) return;
+        var ident = this.id.replace("head_", "");
+        ( this.className.match("isHide") ? setValue("show_box_dashboard_" + ident, true) : setValue("show_box_dashboard_" + ident, false) );
+        ( this.className.match("isHide") ? $(this.nextSibling).removeClass("isHide") : $(this.nextSibling).addClass("isHide") );
+        ( this.className.match("isHide") ? $(this).removeClass("isHide") : $(this).addClass("isHide") );
     }
 
 // Show log counter.
@@ -9351,7 +9387,7 @@ var mainGC = function () {
             // Linklist/Bookmarks: Die beiden linken Spalten mit den möglichen Bookmarks und den gegebenenfalls abweichenden Bezeichnungen und Seitenbuttons.
             // -------------------
             // Bookmarks nach der Bezeichnung sortieren, falls gewünscht.
-            sortBookmarksByDescription();
+            sortBookmarksByDescription(settings_sort_default_bookmarks, bookmarks);
 
             html += "    <table>";
             // Überschrift.
@@ -10565,6 +10601,7 @@ var mainGC = function () {
     }
 
 // Änderungen an abweichenden Bezeichnungen in Spalte 2, in Value in Spalte 3 updaten.
+//xxxx Fehler bei eingabe im Textfeld der custom links
     function updateByInputDescription() {
         // Ids ermitteln für die linke und die rechte Spalte.
         var idColLeft = this.id.replace("bookmarks_name[", "gclh_LinkListElement_").replace("]", "");
@@ -10609,22 +10646,23 @@ var mainGC = function () {
     }
 
 // Sort Linklist.
-    function sortBookmarksByDescription() {
+    function sortBookmarksByDescription(sort, bm) {
         // Bookmarks für eine Sortierung aufbereiten. Wird immer benötigt, auch wenn nicht sortiert wird.
         var cust = 0;
-        for (var i = 0; i < bookmarks.length; i++) {
-            bookmarks[i]['number'] = i;
-            if (typeof(bookmarks[i]['custom']) != "undefined" && bookmarks[i]['custom'] == true) {
-                bookmarks[i]['sortTitle'] = cust;
+        for (var i = 0; i < bm.length; i++) {
+            bm[i]['number'] = i;
+            if (typeof(bm[i]['custom']) != "undefined" && bm[i]['custom'] == true) {
+                bm[i]['origTitle'] = "Custom" + cust + ": " + bm[i]['title'];
+                bm[i]['sortTitle'] = cust;
                 cust++;
             } else {
-                bookmarks[i]['sortTitle'] = (typeof(bookmarks_orig_title[i]) != "undefined" && bookmarks_orig_title[i] != "" ? bookmarks_orig_title[i] : bookmarks[i]['title']);
-                bookmarks[i]['sortTitle'] = bookmarks[i]['sortTitle'].toLowerCase().replace(/ä/g,"a").replace(/ö/g,"o").replace(/ü/g,"u").replace(/ß/g,"s");
+                bm[i]['origTitle'] = bm[i]['sortTitle'] = (typeof(bookmarks_orig_title[i]) != "undefined" && bookmarks_orig_title[i] != "" ? bookmarks_orig_title[i] : bm[i]['title']);
+                bm[i]['sortTitle'] = bm[i]['sortTitle'].toLowerCase().replace(/ä/g,"a").replace(/ö/g,"o").replace(/ü/g,"u").replace(/ß/g,"s");
             }
         }
         // Bookmarks nach sortTitle sortieren, falls gewünscht.
-        if ( settings_sort_default_bookmarks ) {
-            bookmarks.sort(function(a, b){
+        if (sort) {
+            bm.sort(function(a, b){
                 if ( (typeof(a.custom) != "undefined" && a.custom == true) && !(typeof(b.custom) != "undefined" && b.custom == true) ) {
                     // Custom Bookmark a nach hinten transportieren, also  a > b.
                     return 1;
@@ -10637,6 +10675,7 @@ var mainGC = function () {
                 return 0;
             });
         }
+        return bm;
     }
 
 // Show or hide all the areas in config with one click to a plus, minus icon with the right mouse.
