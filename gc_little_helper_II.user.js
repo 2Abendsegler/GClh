@@ -654,7 +654,7 @@ var mainGC = function () {
                     else  document.location.href = document.location.href.replace("?#"+splitter[1]+"#"+splitter[2], "");
                 // Postbacks.
                 } else {
-                    if ( document.location.href.match(/^https?:\/\/www\.geocaching\.com\/profile/) ) {
+                    if (is_page("publicProfile")) {
                         $('html').css("background-color", "white");
                         $('#divContentSide').css("height", "1000px");
                         $('#ProfileTabs').css("display", "none");
@@ -684,10 +684,8 @@ var mainGC = function () {
     }
 
 // Faster loading profile trackables without images.
-    if ( settings_faster_profile_trackables &&
-         document.location.href.match(/^https?:\/\/www\.geocaching\.com\/profile/) &&
-         document.getElementById("ctl00_ContentBody_ProfilePanel1_lnkCollectibles") &&
-         document.getElementById("ctl00_ContentBody_ProfilePanel1_lnkCollectibles").className == "Active" ) {
+    if ( settings_faster_profile_trackables && is_page("publicProfile") &&
+         document.getElementById("ctl00_ContentBody_ProfilePanel1_lnkCollectibles") && document.getElementById("ctl00_ContentBody_ProfilePanel1_lnkCollectibles").className == "Active" ) {
         try {
             window.stop();
             $('table.Table').find('tbody tr td a img').each( function () { this.src = "/images/icons/16/watch.png"; this.title = ""; this.style.paddingLeft = "15px"; } );
@@ -1161,20 +1159,16 @@ var mainGC = function () {
                 css += ".UserSuppliedContent {max-width: unset;}";
 
                 // Besonderheiten:
-                if (!is_page("cache_listing") ) {
-                    css += ".UserSuppliedContent {width: " + (new_width - 200) + "px;}";
-                }
-                if (is_page("cache_listing") ) {
-                    css += ".span-9 {width: " + (new_width - 300 - 270 - 13 - 13 - 10) + "px !important;}";
-                } else if ( document.location.href.match(/\/my\/statistics\.aspx/) ||
-                            ( document.location.href.match(/\/\/www\.geocaching\.com\/profile\//) &&
-                              document.getElementById("ctl00_ContentBody_ProfilePanel1_lnkStatistics") &&
-                              document.getElementById("ctl00_ContentBody_ProfilePanel1_lnkStatistics").className == "Active" ) ) {
+                if (!is_page("cache_listing")) css += ".UserSuppliedContent {width: " + (new_width - 200) + "px;}";
+                if (is_page("publicProfile")) css += ".container .profile-panel {width: " + (new_width - 160) + "px;}";
+                if (is_page("cache_listing")) css += ".span-9 {width: " + (new_width - 300 - 270 - 13 - 13 - 10) + "px !important;}";
+                else if ( document.location.href.match(/\/my\/statistics\.aspx/) ||
+                          ( is_page("publicProfile") &&
+                            document.getElementById("ctl00_ContentBody_ProfilePanel1_lnkStatistics") && document.getElementById("ctl00_ContentBody_ProfilePanel1_lnkStatistics").className == "Active" ) ) {
                     css += ".span-9 {width: " + ((new_width - 280) / 2) + "px !important; margin-right: 30px;} .last {margin-right: 0px;}";
                     css += ".StatsTable {width: " + (new_width - 250) + "px !important;}";
-                } else if ( document.location.href.match(/\/\/www\.geocaching\.com\/profile\//) ) {
-                    if ( document.getElementById("ctl00_ContentBody_ProfilePanel1_lnkCollectibles") &&
-                         document.getElementById("ctl00_ContentBody_ProfilePanel1_lnkCollectibles").className == "Active" ) {
+                } else if (is_page("publicProfile")) {
+                    if ( document.getElementById("ctl00_ContentBody_ProfilePanel1_lnkCollectibles") && document.getElementById("ctl00_ContentBody_ProfilePanel1_lnkCollectibles").className == "Active" ) {
                         css += ".span-9 {width: " + ((new_width - 220) / 2) + "px !important;} .prepend-1 {padding-left: 10px;}";
                     } else {
                         css += ".span-9 {width: " + ((new_width - 250) / 2) + "px !important;}";
@@ -1358,40 +1352,40 @@ var mainGC = function () {
     }
 
 // Linklist on profile.
-    if (settings_bookmarks_show && document.location.href.match(/^https?:\/\/www\.geocaching\.com\/my\//) && document.getElementById("ctl00_ContentBody_WidgetMiniProfile1_LoggedInPanel")) {
+    if (settings_bookmarks_show && is_page("profile") && document.getElementById("ctl00_ContentBody_WidgetMiniProfile1_LoggedInPanel")) {
         try {
             var side = document.getElementById("ctl00_ContentBody_WidgetMiniProfile1_LoggedInPanel");
             var div0 = document.createElement("div");
             div0.setAttribute("class", "YourProfileWidget");
             div0.setAttribute("style", "margin-left: -1px; margin-right: -1px;"); // Wegen doppeltem Border 1px
-            var header = document.createElement("h3");
-            header.setAttribute("class", "WidgetHeader");
-            header.appendChild(document.createTextNode(" Linklist"));
+            var head = document.createElement("h3");
+            head.setAttribute("class", "WidgetHeader");
+            head.appendChild(document.createTextNode(" Linklist"));
             var div = document.createElement("div");
             div.setAttribute("class", "WidgetBody");
             var ul = document.createElement("ul");
             buildBoxElementsLinklist(ul);
             div.appendChild(ul);
-            div0.appendChild(header);
+            div0.appendChild(head);
             div0.appendChild(div);
             side.appendChild(div0);
         } catch (e) { gclh_error("Linklist on profile:", e); }
     }
 
 // Linklist and All Links on dashboard.
-    if (settings_bookmarks_show && document.location.href.match(/^https?:\/\/www\.geocaching\.com\/account\/dashboard/)) {
+    if (settings_bookmarks_show && is_page("dashboard")) {
         try {
             buildDashboardCss();
             // Linklist.
             buildBoxDashboard("linklist", "Linklist");
-            var box = document.getElementById("box_linklist");
+            var box = document.getElementsByName("box_linklist")[0];
             box.innerHTML = "";
             buildBoxElementsLinklist(box);
             // All Links.
             bm_tmp = buildCopyOfBookmarks();
             sortBookmarksByDescription(true, bm_tmp);
             buildBoxDashboard("links", "All Links");
-            var box = document.getElementById("box_links");
+            var box = document.getElementsByName("box_links")[0];
             box.innerHTML = "";
             buildBoxElementsLinks(box, bm_tmp);
         } catch (e) { gclh_error("Linklist and All Links on dashboard:", e); }
@@ -2759,14 +2753,14 @@ var mainGC = function () {
         if ( ( settings_show_mail || settings_show_message ) ) {
             // Öffentliches Profil:
             if ( is_page("publicProfile") ) {
-                if ( document.getElementById("ctl00_ContentBody_ProfilePanel1_lnkEmailUser") ) {
+                if (document.getElementById("ctl00_ContentBody_ProfilePanel1_lnkEmailUser") || document.getElementById("ctl00_ProfileHead_ProfileHeader_lnkSendEmailByWesite")) {
                     // guid ermitteln.
-                    var guid = document.getElementById("ctl00_ContentBody_ProfilePanel1_lnkEmailUser").href.match(/https?:\/\/www\.geocaching\.com\/email\/\?guid=(.*)/);
+                    var guid = (document.getElementById("ctl00_ContentBody_ProfilePanel1_lnkEmailUser") || document.getElementById("ctl00_ProfileHead_ProfileHeader_lnkSendEmailByWesite")).href.match(/https?:\/\/www\.geocaching\.com\/email\/\?guid=(.*)/);
                     guid = guid[1];
                     // User und Side ermitteln.
-                    if ( document.getElementById("ctl00_ContentBody_ProfilePanel1_lblMemberName") ) {
-                        var username = decode_innerHTML(document.getElementById("ctl00_ContentBody_ProfilePanel1_lblMemberName"));
-                        var side = document.getElementById("ctl00_ContentBody_ProfilePanel1_lblMemberName");
+                    if (document.getElementById("ctl00_ContentBody_ProfilePanel1_lblMemberName") || document.getElementById("ctl00_ProfileHead_ProfileHeader_lblMemberName")) {
+                        var username = decode_innerHTML(document.getElementById("ctl00_ContentBody_ProfilePanel1_lblMemberName") || document.getElementById("ctl00_ProfileHead_ProfileHeader_lblMemberName"));
+                        var side = (document.getElementById("ctl00_ContentBody_ProfilePanel1_lblMemberName") || document.getElementById("ctl00_ProfileHead_ProfileHeader_lblStatusText"));
                     }
                     // Message und Mail Icon aufbauen mit guid.
                     buildSendIcons( side, username, "per guid" );
@@ -2777,11 +2771,8 @@ var mainGC = function () {
                 var links = document.getElementsByTagName('a');
                 for (var i = 0; i < links.length; i++) {
                     if ( links[i].href.match(/https?:\/\/www\.geocaching\.com\/profile\/\?guid=/) ) {
-                        // Avatare werden auch mal mit guid versehen, hier sollen aber keine Icons erzeugt werden.
-                        // Z.B. Avatar mit guid bei "Users Who Favorited This Cache".
-                        if ( links[i].children[0] && ( links[i].children[0].tagName == "IMG" || links[i].children[0].tagName == "img" ) ) {
-                            continue;
-                        }
+                        // Avatare werden auch mal mit guid versehen, hier sollen aber keine Icons erzeugt werden. Z.B. bei "Users Who Favorited This Cache".
+                        if ( links[i].children[0] && ( links[i].children[0].tagName == "IMG" || links[i].children[0].tagName == "img" ) ) continue;
                         // guid ermitteln.
                         var guid = links[i].href.match(/https?:\/\/www\.geocaching\.com\/profile\/\?guid=(.*)/);
                         guid = guid[1];
@@ -4669,17 +4660,13 @@ var mainGC = function () {
                         }
                     }
                 }
-
                 var tr = document.createElement("tr");
-
                 var td = document.createElement("td");
                 td.style.backgroundColor = "#DFE1D2";
                 tr.appendChild(td);
-
                 var td = document.createElement("td");
                 td.style.backgroundColor = "#DFE1D2";
                 tr.appendChild(td);
-
                 var td = document.createElement("td");
                 for (src in stats) {
                     var img = document.createElement("img");
@@ -4689,12 +4676,10 @@ var mainGC = function () {
                 }
                 td.style.backgroundColor = "#DFE1D2";
                 tr.appendChild(td);
-
                 var td = document.createElement("td");
                 td.appendChild(document.createTextNode("Sum: " + count));
                 td.style.backgroundColor = "#DFE1D2";
                 tr.appendChild(td);
-
                 table.appendChild(tr);
             }
         } catch (e) { gclh_error("Count Fav-Points:", e); }
@@ -5031,7 +5016,7 @@ var mainGC = function () {
     }
 
 // Show amount of different coins in public profile.
-    if (document.location.href.match(/^https?:\/\/www\.geocaching\.com\/profile\//) && document.getElementById('ctl00_ContentBody_ProfilePanel1_lnkCollectibles') && document.getElementById('ctl00_ContentBody_ProfilePanel1_lnkCollectibles').className == "Active") {
+    if (is_page("publicProfile") && document.getElementById('ctl00_ContentBody_ProfilePanel1_lnkCollectibles') && document.getElementById('ctl00_ContentBody_ProfilePanel1_lnkCollectibles').className == "Active") {
         try {
             function gclh_coin_stats(table_id) {
                 var table = document.getElementById(table_id).getElementsByTagName("table");
@@ -5186,6 +5171,7 @@ var mainGC = function () {
              !document.location.href.match(/^https?:\/\/www\.geocaching\.com\/my\/benchmarks\.aspx/)   &&         // Nicht bei Benchmarks
              !document.location.href.match(/^https?:\/\/www\.geocaching\.com\/my\/favorites\.aspx/)    &&         // Nicht bei Eigene Favoriten, weil hier auch gegebenenfalls das Pseudonym steht
              ( is_page("cache_listing")                                                                   ||      // Cache Listing
+               is_page("publicProfile")                                                                   ||      // Öffentliches Profil
                document.location.href.match(/^https?:\/\/www\.geocaching\.com\/track\/details\.aspx/)     ||      // TB Listing
                document.location.href.match(/^https?:\/\/www\.geocaching\.com\/(seek|track)\/log\.aspx/)  ||      // Post, Edit, View Cache-Logs und TB-Logs
                document.location.href.match(/^https?:\/\/www\.geocaching\.com\/email\/\?guid=/)           ||      // Mail schreiben
@@ -5193,7 +5179,7 @@ var mainGC = function () {
                document.location.href.match(/^https?:\/\/www\.geocaching\.com\/my/)                       ||      // Profil
                document.location.href.match(/^https?:\/\/www\.geocaching\.com\/my\/default\.aspx/)        ||      // Profil (Quicklist)
                document.location.href.match(/^https?:\/\/www\.geocaching\.com\/account\/dashboard/)       ||      // Dashboard
-               document.location.href.match(/^https?:\/\/www\.geocaching\.com\/profile\//)                ||      // Öffentliches Profil
+//               document.location.href.match(/^https?:\/\/www\.geocaching\.com\/profile\//)                ||      // Öffentliches Profil
                document.location.href.match(/^https?:\/\/www\.geocaching\.com\/my\/myfriends\.aspx/)         )) { // Friends
             var myself = global_me;
             var gclh_build_vip_list = function () {};
@@ -5628,7 +5614,7 @@ var mainGC = function () {
                     buildBoxDashboard(desc, "All my " + desc.toUpperCase() + "s");
                 }
                 function fill_box_vipvup(ary, desc) {
-                    var box = document.getElementById("box_" + desc);
+                    var box = document.getElementsByName("box_" + desc)[0];
                     if (!box) return false;
                     box.innerHTML = "";
                     for (var i = 0; i < ary.length; i++) {
@@ -5719,20 +5705,22 @@ var mainGC = function () {
 
             // Public Profile:
             // ---------------
-            } else if (document.location.href.match(/^https?:\/\/www\.geocaching\.com\/profile\//) && document.getElementById("ctl00_ContentBody_ProfilePanel1_lblMemberName")) {
-                gclh_build_vip_list = function () {}; // There is no list to show, but ths function will be called from gclh_del_vip/gclh_add_vip
-                var user = document.getElementById("ctl00_ContentBody_ProfilePanel1_lblMemberName").innerHTML.replace(/&amp;/, '&');
+           } else if (is_page("publicProfile") && (document.getElementById("ctl00_ContentBody_ProfilePanel1_lblMemberName") || document.getElementById("ctl00_ProfileHead_ProfileHeader_lblMemberName"))) {
+                gclh_build_vip_list = function () {}; // There is no list to show, but this function will be called from gclh_del_vip/gclh_add_vip
+                var user = (document.getElementById("ctl00_ContentBody_ProfilePanel1_lblMemberName") || document.getElementById("ctl00_ProfileHead_ProfileHeader_lblMemberName")).innerHTML.replace(/&amp;/, '&');
+                var side = (document.getElementById("ctl00_ContentBody_ProfilePanel1_lblMemberName") || document.getElementById("ctl00_ProfileHead_ProfileHeader_lblStatusText"));
                 // Build VIP Icon.
                 link = gclh_build_vipvup(user, global_vips, "vip");
-                link.children[0].setAttribute("style", "margin-left: 0px; margin-right: 0px");
-                document.getElementById("ctl00_ContentBody_ProfilePanel1_lblMemberName").appendChild(document.createTextNode(" "));
-                document.getElementById("ctl00_ContentBody_ProfilePanel1_lblMemberName").appendChild(link);
+                link.children[0].style.marginLeft = (document.getElementById("ctl00_ContentBody_ProfilePanel1_lblMemberName") ? "0" : "14px");
+                link.children[0].style.marginRight = "0";
+                side.appendChild(document.createTextNode(" "));
+                side.appendChild(link);
                 // Build VUP Icon.
                 if (settings_process_vup && user != global_activ_username) {
                     link = gclh_build_vipvup(user, global_vups, "vup");
                     link.children[0].setAttribute("style", "margin-left: 0px; margin-right: 0px");
-                    document.getElementById("ctl00_ContentBody_ProfilePanel1_lblMemberName").appendChild(document.createTextNode(" "));
-                    document.getElementById("ctl00_ContentBody_ProfilePanel1_lblMemberName").appendChild(link);
+                    side.appendChild(document.createTextNode(" "));
+                    side.appendChild(link);
                 }
             }
         }
@@ -5774,7 +5762,7 @@ var mainGC = function () {
     }
 
 // Improve my profile, improve profile.
-    if (document.location.href.match(/^https?:\/\/www\.geocaching\.com\/my/)) {
+    if (is_page("profile")) {
         try {
             // Show/Hide einbauen in rechter Spalte.
             var code = "function hide_box(i){";
@@ -5849,6 +5837,28 @@ var mainGC = function () {
         } catch (e) { gclh_error("Improve my profile:", e); }
     }
 
+//xxxx
+// Improve dashboard.
+    if (is_page("dashboard")) {
+        try {
+            // Show/Hide einbauen in linker Spalte.
+            var list = $('.sidebar-links .link-header:not(.gclh), .sidebar-links .link-block:not(.gclh)');
+            var ident = 0;
+            for (var i = 0; i < list.length; i=i+2) {
+                ident++;
+                $(list[i]).addClass(getValue("show_box_dashboard_" + ident, true) == true ? "gclh" : "gclh isHide" );
+                $(list[i+1]).addClass(getValue("show_box_dashboard_" + ident, true) == true ? "" : "isHide" );
+                list[i].setAttribute("name", "head_" + ident);
+                list[i].innerHTML += "<svg><use xlink:href='/account/app/ui-icons/sprites/global.svg#icon-expand-svg-fill'></use></svg>";
+                list[i].addEventListener("click", showHideBoxDashboard, false);
+            }
+
+//                 // Hide TBs/Coins in profile.
+//                if (settings_hide_visits_in_profile) {
+
+        } catch (e) { gclh_error("Improve dashboard:", e); }
+    }
+
 // Link to bigger pictures for owner added images.
     if (settings_link_big_listing && is_page("cache_listing")) {
         var a = document.getElementsByTagName("a");
@@ -5904,7 +5914,7 @@ var mainGC = function () {
     }
 
 // Show thumbnails.
-    if (settings_show_thumbnails && (is_page("cache_listing") || document.location.href.match(/^https?:\/\/www\.geocaching\.com\/(seek\/gallery\.aspx?|track\/details\.aspx?|track\/gallery\.aspx?|profile\/)/))) {
+    if (settings_show_thumbnails && (is_page("cache_listing") || is_page("publicProfile") || document.location.href.match(/^https?:\/\/www\.geocaching\.com\/(seek\/gallery\.aspx?|track\/details\.aspx?|track\/gallery\.aspx?)/))) {
         try {
             // my: Großes Bild; at: Kleines Bild; Man gibt an, wo sich die beiden berühren. Es scheint so, dass zuerst horizontal und
             // anschließend vertikal benannt werden muss. "top left" erzeugt dem entsprechend nur den default, also center. Das legt
@@ -5928,45 +5938,52 @@ var mainGC = function () {
                     });
                 }
             }
+
             // Um Profile Foto herum pseudo a Tag aufbauen.
             var profileFoto = false;
-            if ( is_page("publicProfile") && document.getElementById("ctl00_ContentBody_ProfilePanel1_lnkProfile") &&
-                 document.getElementById("ctl00_ContentBody_ProfilePanel1_lnkProfile").className == "Active" &&
-                 document.getElementById("ctl00_ContentBody_ProfilePanel1_uxProfilePhoto") ) {
+            if ( is_page("publicProfile") &&
+                 ( ( document.getElementById("ctl00_ContentBody_ProfilePanel1_lnkProfile") &&
+                     document.getElementById("ctl00_ContentBody_ProfilePanel1_lnkProfile").className == "Active" &&
+                     document.getElementById("ctl00_ContentBody_ProfilePanel1_uxProfilePhoto") ) ||
+                   ( document.getElementById("ctl00_ProfileHead_ProfileHeader_uxProfilePhoto") )    ) ) {
                 var profileFoto = true;
-                var image = document.getElementById("ctl00_ContentBody_ProfilePanel1_uxProfilePhoto");
+                var image = (document.getElementById("ctl00_ContentBody_ProfilePanel1_uxProfilePhoto") || document.getElementById("ctl00_ProfileHead_ProfileHeader_uxProfilePhoto"));
                 var aPseudo = document.createElement("a");
                 aPseudo.appendChild(image.cloneNode(true));
                 image.parentNode.replaceChild(aPseudo, image);
             }
             var links = document.getElementsByTagName("a");
-            var css =
-                "a.gclh_thumb:hover {" +
-                "  text-decoration:underline;" +
-                "  position: relative;}" +
-                "a.gclh_thumb {" +
-                "  overflow: visible !important; max-width: none !important;}" +
-                "a.gclh_thumb span {" +
-                "  white-space: unset !important;" +
-                "  visibility: hidden;" +
-                "  position: absolute;" +
-                "  top:-310px;" +
-                "  left:0px;" +
-                "  padding: 2px;" +
-                "  text-decoration:none;" +
-                "  text-align:left;" +
-                "  vertical-align:top;}" +
-                "a.gclh_thumb:hover span { " +
-                "  visibility: visible;" +
-                "  z-index: 100;" +
-                "  border: 1px solid #8c9e65;" +
-                "  background-color:#dfe1d2;" +
-                "  text-decoration: none !important;}" +
-                "a.gclh_thumb:hover img {margin-bottom: -4px;}" +
-                "a.gclh_thumb img {margin-bottom: -4px;}" +
-                ".gclh_max {" +
-                "  max-height: " + settings_hover_image_max_size + "px;" +
-                "  max-width:  " + settings_hover_image_max_size + "px;}";
+            var css = "";
+            css += "a.gclh_thumb:hover {" +
+                   "  text-decoration:underline;" +
+                   "  position: relative;}" +
+                   "a.gclh_thumb {" +
+                   "  overflow: visible !important;" +
+                   "  max-width: none !important;}" +
+                   "a.gclh_thumb span {" +
+                   "  white-space: unset !important;" +
+                   "  visibility: hidden;" +
+                   "  position: absolute;" +
+                   "  top:-310px;" +
+                   "  left:0px;" +
+                   "  padding: 2px;" +
+                   "  text-decoration:none;" +
+                   "  text-align:left;" +
+                   "  vertical-align:top;}" +
+                   "a.gclh_thumb:hover span { " +
+                   "  visibility: visible;" +
+                   "  z-index: 100;" +
+                   "  border: 1px solid #8c9e65;" +
+                   "  background-color:#dfe1d2;" +
+                   "  text-decoration: none !important;}" +
+                   "a.gclh_thumb:hover img {margin-bottom: -4px;}" +
+                   "a.gclh_thumb img {margin-bottom: -4px;}" +
+                   ".gclh_max {" +
+                   "  max-height: " + settings_hover_image_max_size + "px;" +
+                   "  max-width:  " + settings_hover_image_max_size + "px;}" +
+                   // Neue Profilseite.
+                   ".hax-profile img {width: unset !important;}" +
+                   ".profile-panel a.gclh_thumb:hover {position: unset !important;}";
             appendCssStyle(css);
 
             // Cache Listing: Logs, nicht die Beschreibung im Listing.
@@ -6028,7 +6045,7 @@ var mainGC = function () {
                     }
 
                 // Bilder Gallery Cache, TB und Profil:
-                } else if ( document.location.href.match(/^https?:\/\/www\.geocaching\.com\/(seek\/gallery\.aspx?|track\/gallery\.aspx?|profile\/)/) &&
+                } else if ( ( is_page("publicProfile") || document.location.href.match(/^https?:\/\/www\.geocaching\.com\/(seek\/gallery\.aspx?|track\/gallery\.aspx?)/) ) &&
                             links[i].href.match(/^https?:\/\/img\.geocaching\.com\/(cache|track)\//) && links[i].childNodes[1] && links[i].childNodes[1].tagName == 'IMG' ) {
                     global_imageGallery = true;
                     var thumb = links[i].childNodes[1];
@@ -6095,7 +6112,8 @@ var mainGC = function () {
 
                 // Profile Foto:
                 } else if ( profileFoto && links[i].childNodes[0] && links[i].childNodes[0].tagName == 'IMG' &&
-                            links[i].childNodes[0].src.match(/^https?:\/\/img\.geocaching\.com\/user\/avatar/) ) {
+                            ( links[i].childNodes[0].src.match(/^https?:\/\/img\.geocaching\.com\/user\/avatar/) ||
+                              links[i].childNodes[0].src.match(/^https?:\/\/img\.geocaching\.com\/user\/display/)   ) ) {
                     avatarThumbnail(links[i]);
                 }
             }
@@ -6105,7 +6123,7 @@ var mainGC = function () {
         var thumb = link.children[0];
         thumb.setAttribute("style", "margin-bottom: 0px;");
         var img = document.createElement('img');
-        img.src = thumb.src.replace(/img\.geocaching\.com\/user\/avatar/, "s3.amazonaws.com/gs-geo-images");
+        img.src = thumb.src.replace(/img\.geocaching\.com\/user\/avatar/, "s3.amazonaws.com/gs-geo-images").replace(/img\.geocaching\.com\/user\/display/, "s3.amazonaws.com/gs-geo-images");;
         img.className = "gclh_max";
         img.setAttribute("style", "display: unset;");
         var span = document.createElement('span');
@@ -6132,6 +6150,7 @@ var mainGC = function () {
         } catch (e) { gclh_error("showBiggerAvatars:", e); }
     }
 
+//xxxx
 // Show gallery images in 2 instead of 4 cols.
     if (settings_show_big_gallery && document.location.href.match(/^https?:\/\/www\.geocaching\.com\/(seek\/gallery\.aspx?|track\/gallery\.aspx?|profile\/)/)) {
         try {
@@ -6169,6 +6188,7 @@ var mainGC = function () {
                 }
                 document.getElementById("ctl00_ContentBody_GalleryItems_DataListGallery").removeChild(document.getElementById("ctl00_ContentBody_GalleryItems_DataListGallery").firstChild);
                 document.getElementById("ctl00_ContentBody_GalleryItems_DataListGallery").appendChild(tbody);
+//xxxx2
             } else if (document.location.href.match(/^https?:\/\/www\.geocaching\.com\/profile\//) && tds.length > 1 && document.getElementById("ctl00_ContentBody_ProfilePanel1_UserGallery_DataListGallery")) {
                 var tbody = document.createElement("tbody");
                 var tr = document.createElement("tr");
@@ -6963,8 +6983,7 @@ var mainGC = function () {
         if ( ( settings_count_own_matrix || settings_count_own_matrix_show_next ) && isOwnStatisticsPage() ) {
             var own = true;
         // Soll fremde Statistik gepimpt werden.
-        } else if ( settings_count_foreign_matrix &&
-                    document.location.href.match(/^https?:\/\/www\.geocaching\.com\/profile\/(.*)(\?guid=|\?u=)/) &&
+        } else if ( settings_count_foreign_matrix && is_page("publicProfile") &&
                     !document.getElementById('ctl00_ContentBody_lblUserProfile').innerHTML.match(": " + global_me) ) {
             var own = false;
         } else var own = "";
@@ -7332,14 +7351,14 @@ var mainGC = function () {
         }
         // Profile, Dashboard Seite.
         if ( (is_page('profile') && document.getElementById('ctl00_ContentBody_WidgetMiniProfile1_memberProfileLink')) ||
-             (is_page('dashboard') && document.getElementById('DashboardSidebar') && document.getElementsByClassName('bio-meta')) ) {
+             (is_page('dashboard') && document.getElementsByClassName('bio-meta')) ) {
             // Config, Sync und Changelog Links beim Avatar im Profile, Dashboard.
             var lnk_config = "<a href='#GClhShowConfig' id='gclh_config_lnk' name='gclh_config_lnk' title='" + scriptShortNameConfig + " v" + scriptVersion + (settings_f4_call_gclh_config ? " / Key F4":"") + "' >" + scriptShortNameConfig + "</a>";
             var lnk_sync = " | <a href='#GClhShowSync' id='gclh_sync_lnk' name='gclh_sync_lnk' title='" + scriptShortNameSync + " v" + scriptVersion + (settings_f10_call_gclh_sync ? " / Key F10":"") + "' >" + scriptShortNameSync + "</a>";
             var lnk_changelog = " | <a href='https://github.com/2Abendsegler/GClh/blob/master/docu/changelog.md#readme' title='Documentation of changes and new features in GClh II on GitHub'>Changelog</a>";
             if (is_page('profile')) document.getElementById('ctl00_ContentBody_WidgetMiniProfile1_memberProfileLink').parentNode.innerHTML += " | <br>" + lnk_config + lnk_sync + lnk_changelog;
             else document.getElementsByClassName('bio-meta')[0].innerHTML += lnk_config + lnk_sync + lnk_changelog;
-            $('.bio-meta').css('font-size', '12px');
+            appendCssStyle(".bio-meta {font-size: 12px;} .bio-meta a:hover {color: #02874d;}");
             document.getElementById('gclh_config_lnk').addEventListener('click', gclh_showConfig, false);
             document.getElementById('gclh_sync_lnk').addEventListener('click', gclh_showSync, false);
             // Linklist Ablistung rechts im Profile.
@@ -8137,22 +8156,21 @@ var mainGC = function () {
         css += ".link-header.gclh svg {height: 22px; width: 24px; fill: #777; float: right; padding-right: 1px; margin-top: -2px; transition: all .3s ease;}";
         css += ".link-header.gclh.isHide svg {transform: rotate(90deg);}";
         css += ".link-block.gclh {padding-top: 0px; border-bottom: unset; display: block;}";
-        css += ".link-block.gclh a:hover {text-decoration: underline; color: #02874d;}";
-        css += ".link-block.gclh a {padding: 0 4px 0 0; font-size: 14px; color: #3d76c5;}";
-        css += ".link-block.gclh.isHide {display: none}";
+        css += ".link-block.gclh a:hover {text-decoration: underline; color: #02874d;} .link-block.gclh a {padding: 0 4px 0 0; font-size: 14px; color: #3d76c5;}";
+        css += ".link-block.isHide {display: none} .link-block {border-bottom: unset;}";
         appendCssStyle(css);
     }
     function buildBoxDashboard(ident, name) {
         if (!$("nav.sidebar-links")[1]) return;
-        var headline = document.createElement("h3");
-        headline.setAttribute("class", (getValue("show_box_dashboard_" + ident, true) == true ? "link-header gclh" : "link-header gclh isHide" ));
-        headline.setAttribute("id", "head_" + ident);
-        if (name) headline.innerHTML = name + " <svg><use xlink:href='/account/app/ui-icons/sprites/global.svg#icon-expand-svg-fill'></use></svg>";
-        headline.addEventListener("click", showHideBoxDashboard, false);
-        $("nav.sidebar-links")[1].appendChild(headline);
+        var head = document.createElement("h3");
+        head.setAttribute("class", (getValue("show_box_dashboard_" + ident, true) == true ? "link-header gclh" : "link-header gclh isHide" ));
+        head.setAttribute("name", "head_" + ident);
+        if (name) head.innerHTML = name + " <svg><use xlink:href='/account/app/ui-icons/sprites/global.svg#icon-expand-svg-fill'></use></svg>";
+        head.addEventListener("click", showHideBoxDashboard, false);
+        $("nav.sidebar-links")[1].appendChild(head);
         var box = document.createElement("ul");
         box.setAttribute("class", (getValue("show_box_dashboard_" + ident, true) == true ? "link-block gclh" : "link-block gclh isHide" ));
-        box.setAttribute("id", "box_" + ident);
+        box.setAttribute("name", "box_" + ident);
         $("nav.sidebar-links")[1].appendChild(box);
     }
     function buildCopyOfBookmarks() {
@@ -8197,10 +8215,10 @@ var mainGC = function () {
 
 // Show, Hide box on dashboard.
     function showHideBoxDashboard() {
-        if (!this.nextSibling) return;
-        var ident = this.id.replace("head_", "");
+        if (!$(this.nextElementSibling)) return;
+        var ident = this.getAttribute("name").replace("head_", "");
         ( this.className.match("isHide") ? setValue("show_box_dashboard_" + ident, true) : setValue("show_box_dashboard_" + ident, false) );
-        ( this.className.match("isHide") ? $(this.nextSibling).removeClass("isHide") : $(this.nextSibling).addClass("isHide") );
+        ( this.className.match("isHide") ? $(this.nextElementSibling).removeClass("isHide") : $(this.nextElementSibling).addClass("isHide") );
         ( this.className.match("isHide") ? $(this).removeClass("isHide") : $(this).addClass("isHide") );
     }
 
@@ -8271,7 +8289,7 @@ var mainGC = function () {
 // Prüfen, ob die Seite die eigene Statistik ist.
     function isOwnStatisticsPage(){
         if ( ( document.location.href.match(/^https?:\/\/www\.geocaching\.com\/my\/statistics\.aspx/)            ) ||
-             ( document.location.href.match(/^https?:\/\/www\.geocaching\.com\/profile/) &&
+             ( is_page("publicProfile" ) &&
                document.getElementById("ctl00_ContentBody_ProfilePanel1_lnkStatistics") &&
                document.getElementById("ctl00_ContentBody_ProfilePanel1_lnkStatistics").className == "Active" &&
                document.getElementById('ctl00_ContentBody_lblUserProfile').innerHTML.match(": " + global_me) ) ) {
