@@ -1357,84 +1357,44 @@ var mainGC = function () {
         return css;
     }
 
-//xxxx hier auch ändern und zusammenlegen mit Dashboard
-// vielleicht sollte man Linklist und All Links of Linklist machen. auf Profile macht das wegen der nummerierung probleme
-// Linklist in profile.
+// Linklist on profile.
     if (settings_bookmarks_show && document.location.href.match(/^https?:\/\/www\.geocaching\.com\/my\//) && document.getElementById("ctl00_ContentBody_WidgetMiniProfile1_LoggedInPanel")) {
         try {
             var side = document.getElementById("ctl00_ContentBody_WidgetMiniProfile1_LoggedInPanel");
             var div0 = document.createElement("div");
             div0.setAttribute("class", "YourProfileWidget");
-            div0.setAttribute("style", "margin-left: -1px; margin-right: -1px;");     // Wegen doppeltem Border 1px
+            div0.setAttribute("style", "margin-left: -1px; margin-right: -1px;"); // Wegen doppeltem Border 1px
             var header = document.createElement("h3");
             header.setAttribute("class", "WidgetHeader");
             header.appendChild(document.createTextNode(" Linklist"));
             var div = document.createElement("div");
             div.setAttribute("class", "WidgetBody");
             var ul = document.createElement("ul");
-            for (var i = 0; i < settings_bookmarks_list.length; i++) {
-                var x = settings_bookmarks_list[i];
-                if (typeof(x) == "undefined" || x == "" || typeof(x) == "object") continue;
-                var a = document.createElement("a");
-                for (attr in bookmarks[x]) {
-                    if (attr != "custom" && attr != "title") {
-                        if (attr == "name" || attr == "id")  a.setAttribute(attr, bookmarks[x][attr]+"_profile");
-                        else a.setAttribute(attr, bookmarks[x][attr]);
-                    }
-                }
-                a.appendChild(document.createTextNode(bookmarks[x]['title']));
-                var li = document.createElement("li");
-                li.appendChild(a);
-                ul.appendChild(li);
-            }
+            buildBoxElementsLinklist(ul);
             div.appendChild(ul);
             div0.appendChild(header);
             div0.appendChild(div);
             side.appendChild(div0);
-        } catch (e) { gclh_error("Linklist in profile:", e); }
+        } catch (e) { gclh_error("Linklist on profile:", e); }
     }
 
-// Aufbereitungen für Dashboard.
-    if (document.location.href.match(/^https?:\/\/www\.geocaching\.com\/account\/dashboard/)) {
-        var css = "";
-        css += ".link-header.gclh {padding: 12px 20px !important; cursor: pointer; border-top: 1px solid #e4e4e4;}";
-        css += ".link-header.gclh svg {height: 22px; width: 24px; fill: #777; float: right; padding-right: 1px; margin-top: -2px; transition: all .3s ease;}";
-        css += ".link-header.gclh.isHide svg {transform: rotate(90deg);}";
-        css += ".link-block.gclh {padding-top: 0px; border-bottom: unset; display: block;}";
-        css += "#box_vip.link-block.gclh a, #box_vup.link-block.gclh a, #box_linklist.link-block.gclh a {padding: 0 4px 0 0; font-size: 14px;}";
-        css += ".link-block.gclh.isHide {display: none}";
-        appendCssStyle(css);
-    }
-
-// All Linklist Links in dashboard.
+// Linklist and All Links on dashboard.
     if (settings_bookmarks_show && document.location.href.match(/^https?:\/\/www\.geocaching\.com\/account\/dashboard/)) {
         try {
-            // Kopie der Bookmarks aufbauen (zweimal sortieren macht Probleme) und sortieren.
-            var bm_tmp = new Array();
-            for (var i = 0; i < bookmarks.length; i++) {
-                bm_tmp[i] = new Object();
-                for (attr in bookmarks[i]) { bm_tmp[i][attr] = bookmarks[i][attr]; }
-            }
-            sortBookmarksByDescription(true, bm_tmp);
-            // Header und Links aufbauen.
-            build_box_dashboard("linklist", "All Linklist links");
+            buildDashboardCss();
+            // Linklist.
+            buildBoxDashboard("linklist", "Linklist");
             var box = document.getElementById("box_linklist");
-            if (!box) return false;
             box.innerHTML = "";
-            for (var i = 0; i < bm_tmp.length; i++) {
-                if (bm_tmp[i]['origTitle'] == "(empty)" || bm_tmp[i]['href'] == "" || bm_tmp[i]['href'] == "#" ) continue;
-                var a = document.createElement("a");
-                for (attr in bm_tmp[i]) {
-                    if (attr == "custom" || attr == "title" || attr == "origTitle") continue;
-                    if (attr == "name" || attr == "id") a.setAttribute(attr, bm_tmp[i][attr]+"_profile");
-                    else a.setAttribute(attr, bm_tmp[i][attr]);
-                }
-                a.appendChild(document.createTextNode(bm_tmp[i]['origTitle']));
-                var li = document.createElement("li");
-                li.appendChild(a);
-                box.appendChild(li);
-            }
-        } catch (e) { gclh_error("Linklist in dashboard:", e); }
+            buildBoxElementsLinklist(box);
+            // All Links.
+            bm_tmp = buildCopyOfBookmarks();
+            sortBookmarksByDescription(true, bm_tmp);
+            buildBoxDashboard("links", "All Links");
+            var box = document.getElementById("box_links");
+            box.innerHTML = "";
+            buildBoxElementsLinks(box, bm_tmp);
+        } catch (e) { gclh_error("Linklist and All Links on dashboard:", e); }
     }
 
 // Stop ignoring: Bezeichnung des Ignore Links durch Stop Ignoring ersetzen, wenn der Cache bereits auf der Ignore Liste steht.
@@ -5665,7 +5625,7 @@ var mainGC = function () {
             // ----------
             } else if (document.location.href.match(/^https?:\/\/www\.geocaching\.com\/account\/dashboard/) && $('nav.sidebar-links').length > 1) {
                 function build_box_vipvup(desc) {
-                    build_box_dashboard(desc, "All my " + desc.toUpperCase() + "s");
+                    buildBoxDashboard(desc, "All my " + desc.toUpperCase() + "s");
                 }
                 function fill_box_vipvup(ary, desc) {
                     var box = document.getElementById("box_" + desc);
@@ -8170,8 +8130,19 @@ var mainGC = function () {
         }
     }
 
-// Build box link-header on dashboard.
-    function build_box_dashboard(ident, name) {
+// Build box for VIPS, VUPS and All Links on dashboard and box for Linklist on dashboard and profile.
+    function buildDashboardCss() {
+        var css = "";
+        css += ".link-header.gclh {padding: 12px 20px !important; cursor: pointer; border-top: 1px solid #e4e4e4;}";
+        css += ".link-header.gclh svg {height: 22px; width: 24px; fill: #777; float: right; padding-right: 1px; margin-top: -2px; transition: all .3s ease;}";
+        css += ".link-header.gclh.isHide svg {transform: rotate(90deg);}";
+        css += ".link-block.gclh {padding-top: 0px; border-bottom: unset; display: block;}";
+        css += ".link-block.gclh a:hover {text-decoration: underline; color: #02874d;}";
+        css += ".link-block.gclh a {padding: 0 4px 0 0; font-size: 14px; color: #3d76c5;}";
+        css += ".link-block.gclh.isHide {display: none}";
+        appendCssStyle(css);
+    }
+    function buildBoxDashboard(ident, name) {
         if (!$("nav.sidebar-links")[1]) return;
         var headline = document.createElement("h3");
         headline.setAttribute("class", (getValue("show_box_dashboard_" + ident, true) == true ? "link-header gclh" : "link-header gclh isHide" ));
@@ -8183,6 +8154,45 @@ var mainGC = function () {
         box.setAttribute("class", (getValue("show_box_dashboard_" + ident, true) == true ? "link-block gclh" : "link-block gclh isHide" ));
         box.setAttribute("id", "box_" + ident);
         $("nav.sidebar-links")[1].appendChild(box);
+    }
+    function buildCopyOfBookmarks() {
+        var bm_tmp = new Array();
+        for (var i = 0; i < bookmarks.length; i++) {
+            bm_tmp[i] = new Object();
+            for (attr in bookmarks[i]) { bm_tmp[i][attr] = bookmarks[i][attr]; }
+        }
+        return bm_tmp;
+    }
+    function buildBoxElementsLinklist(box) {
+        for (var i = 0; i < settings_bookmarks_list.length; i++) {
+            var x = settings_bookmarks_list[i];
+            if (typeof(x) == "undefined" || x == "" || typeof(x) == "object") continue;
+            var a = document.createElement("a");
+            for (attr in bookmarks[x]) {
+                if (attr == "custom" || attr == "title") continue;
+                if (attr == "name" || attr == "id") a.setAttribute(attr, bookmarks[x][attr]+"_profile");
+                else a.setAttribute(attr, bookmarks[x][attr]);
+            }
+            a.appendChild(document.createTextNode(bookmarks[x]['title']));
+            var li = document.createElement("li");
+            li.appendChild(a);
+            box.appendChild(li);
+        }
+    }
+    function buildBoxElementsLinks(box, bm_tmp) {
+        for (var i = 0; i < bm_tmp.length; i++) {
+            if (bm_tmp[i]['origTitle'] == "(empty)" || bm_tmp[i]['href'] == "" || bm_tmp[i]['href'] == "#" ) continue;
+            var a = document.createElement("a");
+            for (attr in bm_tmp[i]) {
+                if (attr == "custom" || attr == "title" || attr == "origTitle") continue;
+                if (attr == "name" || attr == "id") a.setAttribute(attr, bm_tmp[i][attr]+"_profile");
+                else a.setAttribute(attr, bm_tmp[i][attr]);
+            }
+            a.appendChild(document.createTextNode(bm_tmp[i]['origTitle']));
+            var li = document.createElement("li");
+            li.appendChild(a);
+            box.appendChild(li);
+        }
     }
 
 // Show, Hide box on dashboard.
