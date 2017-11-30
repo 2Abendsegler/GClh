@@ -3018,14 +3018,11 @@ var mainGC = function () {
                     repeatCounter++;
                     if ( repeatCounter > 100 ) clearInterval(rep);
                     else {
-                        if ( document.getElementsByClassName("draft-textarea")[0] ) {
-                            if ( document.getElementsByClassName("draft-textarea")[0].value == "" ) {
+                        if ( document.getElementsByTagName("textarea")[0] ) {
+                            if ( document.getElementsByTagName("textarea")[0].value == "" ) {
                                 if ( firstUpd == "" ) firstUpd = repeatCounter;
                                 allUpds += repeatCounter + ",";
-                                document.getElementsByClassName("draft-textarea")[0].value = val;
-                                if ( document.getElementsByClassName("draft-textarea autosize")[0] ) {
-                                    document.getElementsByClassName("draft-textarea autosize")[0].setAttribute("style", "max-height: 200px; height: 180px;");
-                                }
+                                document.getElementsByTagName("textarea")[0].value = val;
                             } else {
                                 if ( firstUpdDone == "" ) firstUpdDone = repeatCounter;
                             }
@@ -5015,6 +5012,7 @@ var mainGC = function () {
         } catch (e) { gclh_error("Append '&visitcount=1' to all geochecker.com links:", e); }
     }
 
+//xxxx4
 // Show amount of different coins in public profile.
     if (is_page("publicProfile") && document.getElementById('ctl00_ContentBody_ProfilePanel1_lnkCollectibles') && document.getElementById('ctl00_ContentBody_ProfilePanel1_lnkCollectibles').className == "Active") {
         try {
@@ -5179,7 +5177,6 @@ var mainGC = function () {
                document.location.href.match(/^https?:\/\/www\.geocaching\.com\/my/)                       ||      // Profil
                document.location.href.match(/^https?:\/\/www\.geocaching\.com\/my\/default\.aspx/)        ||      // Profil (Quicklist)
                document.location.href.match(/^https?:\/\/www\.geocaching\.com\/account\/dashboard/)       ||      // Dashboard
-//               document.location.href.match(/^https?:\/\/www\.geocaching\.com\/profile\//)                ||      // Öffentliches Profil
                document.location.href.match(/^https?:\/\/www\.geocaching\.com\/my\/myfriends\.aspx/)         )) { // Friends
             var myself = global_me;
             var gclh_build_vip_list = function () {};
@@ -5683,8 +5680,7 @@ var mainGC = function () {
 
                 for (var i = 0; i < links.length; i++) {
                     if (links[i].href.match(/https?:\/\/www\.geocaching\.com\/profile\/\?guid=/)) {
-                        // Wenn es sich hier um den User "In the hands of ..." im TB Listing handelt, dann nicht weitermachen, weil der
-                        // Username nicht wirklich bekannt ist.
+                        // Wenn es hier um User "In the hands of ..." im TB Listing geht, dann nicht weitermachen weil Username nicht wirklich bekannt ist.
                         if ( links[i].id == "ctl00_ContentBody_BugDetails_BugLocation" ) continue;
                         var matches = links[i].href.match(/https?:\/\/www\.geocaching\.com\/profile\/\?guid=([a-zA-Z0-9]*)/);
                         var user = decode_innerHTML(links[i]);
@@ -5923,8 +5919,6 @@ var mainGC = function () {
             // links angeordnet sind und, rechts also ein großer Bereich leer ist, kann mit einem rechten Rand für die Bildberührung
             // nicht gearbeitet werden.
             // Änderungen bei "collision" haben keine einschlägigen Verbesserungen gebracht hinsichtlich der Erreichbarkeit aller Bilder.
-            // - my: "left bottom", at: "left bottom-10",: Könnte auch noch nutzbar sein.
-            // - my: "left bottom-15", at: "left-50 bottom",: Geht wohl auch, zuckt aber mehr.
             function placeToolTip(element, stop) {
                 $('a.gclh_thumb:hover span').position({
                     my: "center bottom",
@@ -5952,6 +5946,7 @@ var mainGC = function () {
                 aPseudo.appendChild(image.cloneNode(true));
                 image.parentNode.replaceChild(aPseudo, image);
             }
+
             var links = document.getElementsByTagName("a");
             var css = "";
             css += "a.gclh_thumb:hover {" +
@@ -6007,6 +6002,7 @@ var mainGC = function () {
                 document.getElementsByTagName("body")[0].appendChild(script);
                 if (!settings_hide_avatar) showBiggerAvatarsLink();
             }
+
             var regexp = new RegExp(settings_spoiler_strings, "i");
             for (var i = 0; i < links.length; i++) {
                 // Cache Listing: Listing Beschreibung, nicht die Logs. (replace coding mit /log/ kann eigentlich dann nicht greifen.)
@@ -6150,10 +6146,10 @@ var mainGC = function () {
         } catch (e) { gclh_error("showBiggerAvatars:", e); }
     }
 
-//xxxx
 // Show gallery images in 2 instead of 4 cols.
-    if (settings_show_big_gallery && document.location.href.match(/^https?:\/\/www\.geocaching\.com\/(seek\/gallery\.aspx?|track\/gallery\.aspx?|profile\/)/)) {
+    if (settings_show_big_gallery && (is_page("publicProfile") || document.location.href.match(/^https?:\/\/www\.geocaching\.com\/(seek\/gallery\.aspx?|track\/gallery\.aspx?)/))) {
         try {
+            appendCssStyle("table.GalleryTable .imageLink {max-width: unset}");
             var links = document.getElementsByTagName("a");
             var tds = new Array();
             // Make images bigger.
@@ -6167,7 +6163,8 @@ var mainGC = function () {
                 }
             }
             // Change from 4 Cols to 2.
-            if (document.location.href.match(/^https?:\/\/www\.geocaching\.com\/(seek\/gallery\.aspx?|track\/gallery\.aspx?)/) && tds.length > 1 && document.getElementById("ctl00_ContentBody_GalleryItems_DataListGallery")) {
+            if ( (document.location.href.match(/^https?:\/\/www\.geocaching\.com\/(seek\/gallery\.aspx?|track\/gallery\.aspx?)/) && tds.length > 1 && document.getElementById("ctl00_ContentBody_GalleryItems_DataListGallery")) ||
+                 (is_page("publicProfile") && tds.length > 1 && document.getElementById("ctl00_ContentBody_ProfilePanel1_UserGallery_DataListGallery")) ) {
                 var tbody = document.createElement("tbody");
                 var tr = document.createElement("tr");
                 var x = 0;
@@ -6186,30 +6183,10 @@ var mainGC = function () {
                     tr.appendChild(document.createElement("td"));
                     tbody.appendChild(tr);
                 }
-                document.getElementById("ctl00_ContentBody_GalleryItems_DataListGallery").removeChild(document.getElementById("ctl00_ContentBody_GalleryItems_DataListGallery").firstChild);
-                document.getElementById("ctl00_ContentBody_GalleryItems_DataListGallery").appendChild(tbody);
-//xxxx2
-            } else if (document.location.href.match(/^https?:\/\/www\.geocaching\.com\/profile\//) && tds.length > 1 && document.getElementById("ctl00_ContentBody_ProfilePanel1_UserGallery_DataListGallery")) {
-                var tbody = document.createElement("tbody");
-                var tr = document.createElement("tr");
-                var x = 0;
-                for (var i = 0; i < tds.length; i++) {
-                    if (x == 0) {
-                        tr.appendChild(tds[i]);
-                        x++;
-                    } else {
-                        tr.appendChild(tds[i]);
-                        tbody.appendChild(tr);
-                        tr = document.createElement("tr");
-                        x = 0;
-                    }
-                }
-                if (x != 0) { //einzelnes Bild uebrig
-                    tr.appendChild(document.createElement("td"));
-                    tbody.appendChild(tr);
-                }
-                document.getElementById("ctl00_ContentBody_ProfilePanel1_UserGallery_DataListGallery").removeChild(document.getElementById("ctl00_ContentBody_ProfilePanel1_UserGallery_DataListGallery").firstChild);
-                document.getElementById("ctl00_ContentBody_ProfilePanel1_UserGallery_DataListGallery").appendChild(tbody);
+                if (is_page("publicProfile")) var dataListId = "ctl00_ContentBody_ProfilePanel1_UserGallery_DataListGallery";
+                else var dataListId = "ctl00_ContentBody_GalleryItems_DataListGallery";
+                document.getElementById(dataListId).removeChild(document.getElementById(dataListId).firstChild);
+                document.getElementById(dataListId).appendChild(tbody);
             }
         } catch (e) { gclh_error("Show gallery images in 2 instead of 4 cols:", e); }
     }
@@ -8147,6 +8124,7 @@ var mainGC = function () {
             if ( is_config == true ) row.src = global_minus_config2;
             else row.src = http + "://www.geocaching.com/images/minus.gif";
         }
+        if ( is_config == true ) row.title += "\n(all with right mouse)";
     }
 
 // Build box for VIPS, VUPS and All Links on dashboard and box for Linklist on dashboard and profile.
@@ -10629,7 +10607,6 @@ var mainGC = function () {
     }
 
 // Änderungen an abweichenden Bezeichnungen in Spalte 2, in Value in Spalte 3 updaten.
-//xxxx Fehler bei eingabe im Textfeld der custom links
     function updateByInputDescription() {
         // Ids ermitteln für die linke und die rechte Spalte.
         var idColLeft = this.id.replace("bookmarks_name[", "gclh_LinkListElement_").replace("]", "");
@@ -10643,7 +10620,7 @@ var mainGC = function () {
             } else var description = document.getElementById(idColLeft).children[1].innerHTML;
         }
         // Änderung an abweichender Bezeichnung in Spalte 2 in Value in Spalte 3 updaten.
-        if ( document.getElementById(idColRight).children[0].childNodes[2] ) {
+        if ( document.getElementById(idColRight) && document.getElementById(idColRight).children[0].childNodes[2] ) {
             document.getElementById(idColRight).children[0].childNodes[2].nodeValue = description;
         }
     }
@@ -10727,7 +10704,7 @@ var mainGC = function () {
         }
     }
     function setShowHideConfigAll( stamm, whatToDo ) {
-        document.getElementById("lnk_"+stamm).title = (whatToDo == "show" ? "show" : "hide");
+        document.getElementById("lnk_"+stamm).title = (whatToDo == "show" ? "show\n(all with right mouse)" : "hide\n(all with right mouse)");
         document.getElementById("lnk_"+stamm).src = (whatToDo == "show" ? global_plus_config2 : global_minus_config2);
         if (whatToDo == "show") $('#'+stamm).hide();
         else $('#'+stamm).show();
