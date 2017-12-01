@@ -4665,7 +4665,8 @@ var mainGC = function () {
         try{
             appendCssStyle('#map_canvas{ height: 500px;} ');
 
-            var scriptText = "map.invalidateSize(); map.scrollWheelZoom.enable();";
+            var scriptText = "map.invalidateSize(); map.scrollWheelZoom.enable(); $('#map_canvas').resizable({handles: 'n,w,s,e', minHeight: 300, maxHeight: 700, stop: function( event, ui ) {map.invalidateSize();}});";
+
             var tb_map_enhancement_script = document.createElement("script");
             tb_map_enhancement_script.type = "text/javascript";
             tb_map_enhancement_script.textContent = scriptText;
