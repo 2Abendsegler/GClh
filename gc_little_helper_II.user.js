@@ -3896,7 +3896,7 @@ var mainGC = function () {
                 var urluser = document.location.href.match(/(ul|u)=(.*)/);
                 urluser = urldecode( urluser[2].replace(/&([A-Za-z0-9]+)=(.*)/, "") );
                 urluser = urluser.replace(/&disable_redirect=/, "");
-                urluser = urluser.replace(/#(.*)/, "");
+                if (!urluser.match(/^#/)) urluser = urluser.replace(/#(.*)/, "");
                 var linkelement = document.createElement("a");
                 linkelement.href = "/profile/?u=" + urluser;
                 linkelement.innerHTML = urluser;
@@ -5105,9 +5105,11 @@ var mainGC = function () {
                document.location.href.match(/^https?:\/\/www\.geocaching\.com\/my/)                           ||      // Profil
                document.location.href.match(/^https?:\/\/www\.geocaching\.com\/my\/default\.aspx/)            ||      // Profil (Quicklist)
                document.location.href.match(/^https?:\/\/www\.geocaching\.com\/account\/dashboard/)           ||      // Dashboard
-//<-xxxx1
-               document.location.href.match(/^https?:\/\/www\.geocaching\.com\/seek\/nearest\.aspx\?(u|ul)=/) ||      // Nearest Lists mit User (wurde weiter oben in Link umgewandelt)
+               document.location.href.match(/^https?:\/\/www\.geocaching\.com\/seek\/nearest\.aspx\?(u|ul)=/) ||      // Nearest Lists mit User
 //->xxxx1
+               document.location.href.match(/^https?:\/\/www\.geocaching\.com\/bookmarks\/view\.aspx\?guid=/) ||      // Bookmarks
+               document.location.href.match(/^https?:\/\/www\.geocaching\.com\/play\/friendleague/)           ||      // Friend League
+//<-xxxx1
                document.location.href.match(/^https?:\/\/www\.geocaching\.com\/my\/myfriends\.aspx/)             )) { // Friends
             var myself = global_me;
             var gclh_build_vip_list = function () {};
@@ -5602,13 +5604,13 @@ var mainGC = function () {
 
             // TB Listing. Post, Edit, View Cache-Logs und TB-Logs. Mail schreiben.
             // ---------------
-            } else if ( document.location.href.match(/^https?:\/\/www\.geocaching\.com\/track\/details\.aspx/)     ||
-                        document.location.href.match(/^https?:\/\/www\.geocaching\.com\/(seek|track)\/log\.aspx/)  ||
-                        document.location.href.match(/^https?:\/\/www\.geocaching\.com\/email\/\?guid=/)           ||
-                        document.location.href.match(/^https?:\/\/www\.geocaching\.com\/my\/inventory\.aspx/)         ) {
+            } else if ( document.location.href.match(/^https?:\/\/www\.geocaching\.com\/track\/details\.aspx/) ||
+                        document.location.href.match(/^https?:\/\/www\.geocaching\.com\/(seek|track)\/log\.aspx/) ||
+                        document.location.href.match(/^https?:\/\/www\.geocaching\.com\/email\/\?guid=/) ||
+                        document.location.href.match(/^https?:\/\/www\.geocaching\.com\/bookmarks\/view\.aspx\?guid=/) ||
+                        document.location.href.match(/^https?:\/\/www\.geocaching\.com\/my\/inventory\.aspx/) ) {
                 gclh_build_vip_list = function () {}; // There is no list to show, but this function will be called from gclh_del_vip/gclh_add_vip
                 var links = document.getElementsByTagName('a');
-
                 for (var i = 0; i < links.length; i++) {
                     if (links[i].href.match(/https?:\/\/www\.geocaching\.com\/profile\/\?guid=/)) {
                         // Wenn es hier um User "In the hands of ..." im TB Listing geht, dann nicht weitermachen weil Username nicht wirklich bekannt ist.
@@ -5633,7 +5635,7 @@ var mainGC = function () {
             // Public Profile:
             // ---------------
             } else if (is_page("publicProfile") && (document.getElementById("ctl00_ContentBody_ProfilePanel1_lblMemberName") || document.getElementById("ctl00_ProfileHead_ProfileHeader_lblMemberName"))) {
-                gclh_build_vip_list = function () {}; // There is no list to show, but this function will be called from gclh_del_vip/gclh_add_vip
+                gclh_build_vip_list = function () {};
                 var user = (document.getElementById("ctl00_ContentBody_ProfilePanel1_lblMemberName") || document.getElementById("ctl00_ProfileHead_ProfileHeader_lblMemberName")).innerHTML.replace(/&amp;/, '&');
                 var side = (document.getElementById("ctl00_ContentBody_ProfilePanel1_lblMemberName") || document.getElementById("ctl00_ProfileHead_ProfileHeader_lblStatusText"));
                 // Build VIP Icon.
@@ -5651,31 +5653,73 @@ var mainGC = function () {
                 }
 
 //->xxxx1
-// Prüfen ob decodierung notwendig ist bei usern mit sonderzeichen
             // Nearest lists:
             // ---------------
             } else if (document.location.href.match(/^https?:\/\/www\.geocaching\.com\/seek\/nearest\.aspx\?(u|ul)=/)) {
+//                gclh_build_vip_list = function () {};
                 var id = "ctl00_ContentBody_LocationPanel1_OriginLabel";
                 if (document.getElementById(id) && document.getElementById(id).children[1]) {
+                    appendCssStyle("#"+id+" a img {margin-right: -5px;}");
                     var side = document.getElementById(id);
                     var user = document.getElementById(id).children[1].href.match(/https?:\/\/www\.geocaching\.com\/profile\/\?u=(.*)/);
-                    if (side && user && user[1] && user[1] != "") {
-                        appendCssStyle("#"+id+" a img {margin-right: -5px; vertical-align: bottom;}");
-                        // Build VIP Icon.
-                        link = gclh_build_vipvup(user[1], global_vips, "vip");
-                        side.appendChild(document.createTextNode(" "));
-                        side.appendChild(link);
-                        // Build VUP Icon.
-                        if (settings_process_vup && user[1] != global_activ_username) {
-                            link = gclh_build_vipvup(user[1], global_vups, "vup");
-                            side.appendChild(document.createTextNode(" "));
-                            side.appendChild(link);
+                    gclh_build_vipvupmail(side, user[1]);
+                }
+
+//xxxx1
+// Probleme:
+// - User You erhält auch alle Buttons, deshalb muss der User wohl doch aus Link weiter unten entnommen werden.
+// - Beim Click auf einen Button wird auf der darüberliegende Click für die ganze Zeile ausgelöst und die Detaills klappen auf.
+//   Wenn man unterhalb vom profile-info ein weiteres Element aufmacht in das die Buttons kommen, dann könnte man diesem Element
+//   auch ein Click Event verpassen. Um die Buttons dort reinzuhängen könnte man vielleicht mit ... .last arbeiten.
+// - Prüfen ob das Pseudo gclh_build_vip_list = function () {}; überhaupt benötigt wird, das stammt noch von vor dem Umbau der vips.
+            // Friend League:
+            // ---------------
+            } else if (document.location.href.match(/^https?:\/\/www\.geocaching\.com\/play\/friendleague/)) {
+//                gclh_build_vip_list = function () {};
+                function checkLeagueAvailable(waitCount) {
+                    if ($('table.leaderboard-table tbody.leaderboard-item').length > 0) {
+                        var css = ".leaderboard-item td.user-col {padding-right: 20px;}" +
+                                  ".leaderboard-item .profile-info a {display: table-cell; vertical-align: middle;}" +
+                                  ".leaderboard-item .profile-info a img {margin-right: 5px;}";
+                        appendCssStyle(css);
+                        var links = $('table.leaderboard-table tbody.leaderboard-item .summary .profile-info');
+                        for (var i = 0; i < links.length; i++) {
+                            var ch = links[i].childNodes;
+                            for (var j = 0; j < ch.length; j++) {
+                                if (ch[j].className && ch[j].className.match("username")) {
+//                                    var span = document.createElement("span");
+//                                    span.setAttribute("class", "gclh_profile-info");
+//                                    // Hier nur klicken, damit das Aufklappen wieder zurückgenommen wird.
+//                                    span.addEventListener("click", function () {}, false);
+//                                    ch[j].appendChild(span);
+                                    user = decode_innerHTML(ch[j]);
+                                    gclh_build_vipvupmail(links[i], user);
+                                    break;
+                                }
+                            }
                         }
-                        // Mail Icon.
-                        buildSendIcons(side, user[1], "per u");
+                    } else {
+                        waitCount++;
+                        if (waitCount <= 50) setTimeout( function () { checkLeagueAvailable(waitCount); }, 200);
                     }
                 }
-//<-xxxx1
+                checkLeagueAvailable(0);
+            }
+//xxxx Vielleicht weiter nach oben schieben zu den anderen functions.
+            // Build VIP, VUP und Mail Icon.
+            function gclh_build_vipvupmail(side, user) {
+                if (side && user && user != "") {
+                    link = gclh_build_vipvup(user, global_vips, "vip");
+                    side.appendChild(document.createTextNode(" "));
+                    side.appendChild(link);
+                    if (settings_process_vup && user != global_activ_username) {
+                        link = gclh_build_vipvup(user, global_vups, "vup");
+                        side.appendChild(document.createTextNode(" "));
+                        side.appendChild(link);
+                    }
+                    buildSendIcons(side, user, "per u");
+                }
+
             }
         }
     } catch (e) { gclh_error("VIP VUP:", e); }
@@ -6787,6 +6831,7 @@ var mainGC = function () {
             var owner = document.getElementById("ctl00_ContentBody_BugDetails_BugOwner").innerHTML;
             var parameterStamm = "settings_show_tb_listings_color";
         }
+        if (!lines) return;
         var linesNew = new Array();
         for (var i = 0; i < lines.length; i++) {
             var aTags = lines[i].getElementsByTagName("a");
@@ -7502,6 +7547,7 @@ var mainGC = function () {
         return ret;
     }
 
+// Enkodieren in url und dekodieren aus url.
     function urlencode(s) {
         s = s.replace(/&amp;/g, "&");
         s = encodeURIComponent(s);  // Kodiert alle außer den folgenden Zeichen: A bis Z und a bis z und - _ . ! ~ * ' ( )
@@ -7512,13 +7558,21 @@ var mainGC = function () {
         // GC.com codiert - _ . ! * ( ) selbst nicht, daher wird dies hier auch nicht extra behandel
         return s;
     }
-
     function urldecode(s) {
         s = s.replace(/\+/g, " ");
         s = s.replace(/%7e/g, "~");
         s = s.replace(/%27/g, "'");
         s = decodeURIComponent(s);
         return s;
+    }
+
+// HTML dekodieren, also beispielsweise: "&amp;" in "&" (Beispiel: User "Rajko & Dominik".)
+    function decode_innerHTML(variable_mit_innerHTML) {
+        var elem = document.createElement('textarea');
+        elem.innerHTML = variable_mit_innerHTML.innerHTML;
+        variable_decode = elem.value;
+        variable_new = variable_decode.trim();
+        return variable_new;
     }
 
     function html_to_str(s) {
@@ -7704,15 +7758,6 @@ var mainGC = function () {
         style.innerHTML = 'GClhII{} ' + css;
         style.type = 'text/css';
         tag.appendChild(style);
-    }
-
-// HTML dekodieren, also beispielsweise: "&amp;" in "&" (Beispiel: User "Rajko & Dominik".)
-    function decode_innerHTML(variable_mit_innerHTML) {
-        var elem = document.createElement('textarea');
-        elem.innerHTML = variable_mit_innerHTML.innerHTML;
-        variable_decode = elem.value;
-        variable_new = variable_decode.trim();
-        return variable_new;
     }
 
 // Zu lange Zeilen "kürzen", damit nicht umgebrochen wird.
