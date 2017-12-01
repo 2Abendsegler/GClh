@@ -4660,6 +4660,20 @@ var mainGC = function () {
         } catch (e) { gclh_error("Display Google-Maps warning:", e); }
     }
 
+// Leaflet Map für Trackables vergrößern und Zoom per Mausrad zulassen
+    if (document.location.href.match(/^https?:\/\/www\.geocaching\.com\/track\/map/)) {
+        try{
+            appendCssStyle('#map_canvas{ height: 500px;} ');
+
+            var scriptText = "map.invalidateSize(); map.scrollWheelZoom.enable();";
+            var tb_map_enhancement_script = document.createElement("script");
+            tb_map_enhancement_script.type = "text/javascript";
+            tb_map_enhancement_script.textContent = scriptText;
+            document.documentElement.appendChild(tb_map_enhancement_script);
+            tb_map_enhancement_script.parentNode.removeChild(tb_map_enhancement_script);
+        } catch (e) { gclh_error("tb_map_enhancement:", e); }
+    }
+
 // Count Fav-points.
     if (document.location.href.match(/^https?:\/\/www\.geocaching\.com\/my\/favorites\.aspx/)) {
         try {
