@@ -31,7 +31,6 @@
   "settings_menu_show_separator": false,
   "settings_menu_float_right": false,
   "settings_gc_tour_is_working": false,
-  "settings_show_smaller_area_top_right": true,
   "settings_show_smaller_gc_link": true,
   "settings_show_message": true,
   "settings_show_remove_ignoring_link": true,
