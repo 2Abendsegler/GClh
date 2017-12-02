@@ -9,7 +9,7 @@ Es darf immer nur ein Script zum "GC little helper" aktiviert sein, ansonsten gi
 <br>
 
 ### <a id="2"></a>2. Wie kann man den "GC little helper Config II" aufrufen:
-Einen Link zum "GC little helper Config II" gibt es im <a href="http://www.geocaching.com/my/">eigenen Profil/Dashboard</a> beim Avatar. Außerdem kann man ihn von allen Geocaching Seiten aus mit der Taste F4 Taste aufrufen, sofern diese Funktion nicht deaktiviert wurde. <br>
+Einen Link zum "GC little helper Config II" gibt es im <a href="http://www.geocaching.com/my/">eigenen Profil/Dashboard</a> beim Avatar. Außerdem kann man ihn von allen Geocaching Seiten aus mit der Taste F4 Taste aufrufen, sofern man diese Funktion nicht deaktiviert hat. <br>
 <br>
 
 ### <a id="3"></a>3. Konfiguration des "GC little helper" im "GC little helper II" zur Verfügung stellen:
