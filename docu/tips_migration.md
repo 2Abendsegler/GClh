@@ -27,7 +27,7 @@ Sollte irgendetwas schiefgehen oder möchte man mit der Startkonfiguration des "
 ### <a id="4"></a>4. Wie kann man die eigenen Systemdaten ermitteln:
 <ul>
 <li>Ermittlung Betriebssystem: Programm "msinfo32.exe" im Startmenü ausführen.</li>
-<li>Ermittlung Tampermonkey Version: Im Tampermonkey Menü "Übersicht" wählen. Die Version finden man dann oben links.</li>
+<li>Ermittlung Tampermonkey Version: Im Tampermonkey Menü "Übersicht" wählen. Die Version finden man oben links.</li>
 <li>Ermittlung Firefox Version: Menü "Hilfe / Über Firefox".</li>
 </ul>
 <br>
