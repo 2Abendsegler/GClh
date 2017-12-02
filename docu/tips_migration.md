@@ -21,7 +21,7 @@ Anstatt mit der Startkonfiguration des "GC little helper II" zu beginnen, kann m
 <li><a href="http://www.geocaching.com/my/">Eigenes Profil/Dashboard</a> neu laden.</li>
 <li>Wählt im eigenen Profil beim Avatar den "GClh Sync II" aus und wählt "Manual". Im Fenster dann mit rechter Maustaste "Einfügen" und anschließend den Button "import" wählen.</li>
 </ul>
-Sollte irgendetwas schiefgehen oder möchte man mit der Startkonfiguration des "GC little helper II" neu beginnen, kann man im Tampermonkey Menü die "Übersicht" wählen, dann auf "GC little helper II" klicken und anschließend oben den Reiter "Speicher" auswählen. Hier dann alles mit der Maus markieren und entfernen bis auf die beiden Klammern "{" und "}" und anschließend "Speichern" wählen. Beim nächsten Start einer Geocaching Seite wird dann die Startkonfiguration geladen. <br>
+Sollte irgendetwas schiefgehen oder möchte man mit der Startkonfiguration des "GC little helper II" neu beginnen, kann man im Tampermonkey Menü die "Übersicht" wählen, dann auf "GC little helper II" klicken und anschließend oben den Reiter "Speicher" auswählen. Hier dann alles mit der Maus markieren und entfernen bis auf die beiden Klammern "{" und "}" und anschließend "Speichern" wählen. Beim nächsten Start einer Geocaching Seite wird dann die Startkonfiguration geladen. Es wird dann auch eine Meldung ausgegeben dass Version ... of  GC little helper II installiert wurde, weil in der Konfiguration auch eben diese Version hinterlegt war. Dieser Meldung muß keine Beachtung geschenkt werden.<br>
 <br>
 
 ### <a id="4"></a>4. Wie kann man die eigenen Systemdaten ermitteln:
