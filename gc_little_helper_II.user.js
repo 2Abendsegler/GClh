@@ -4586,9 +4586,11 @@ var mainGC = function () {
 // Leaflet Map für Trackables vergrößern und Zoom per Mausrad zulassen
     if (document.location.href.match(/^https?:\/\/www\.geocaching\.com\/track\/map/)) {
         try{
+            
+            $('#map_canvas').append('<div class="ui-resizable-handle ui-resizable-s" id="sgrip" style="width: 20px; height: 6px;background-color: #FFFFFF;border: 1px solid black; bottom: -1px; left: 50%;"></div>');
             appendCssStyle('#map_canvas{ height: 500px;} ');
 
-            var scriptText = "map.invalidateSize(); map.scrollWheelZoom.enable(); $('#map_canvas').resizable({handles: 'n,w,s,e', minHeight: 300, maxHeight: 700, stop: function( event, ui ) {map.invalidateSize();}});";
+            var scriptText = "map.invalidateSize(); map.scrollWheelZoom.enable(); $('#map_canvas').resizable({handles: {'s': '#sgrip'}, minHeight: 300, maxHeight: 700, stop: function( event, ui ) {map.invalidateSize();}});";
 
             var tb_map_enhancement_script = document.createElement("script");
             tb_map_enhancement_script.type = "text/javascript";
