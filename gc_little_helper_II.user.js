@@ -4533,8 +4533,8 @@ var mainGC = function () {
     if (document.location.href.match(/^https?:\/\/www\.geocaching\.com\/track\/map/)) {
         try{
 
-            $('#map_canvas').append('<div class="ui-resizable-handle ui-resizable-s" id="sgrip" style="width: 24px;height: 4px;background-color: transparent;border-top: 1px solid black;border-bottom: 1px solid black;bottom: 0px;left: 98%;transform: rotate(-45deg);"></div>');
-            appendCssStyle('#map_canvas{ height: 500px;} .leaflet-bottom.leaflet-right {margin-right: 20px;}');
+            $('#map_canvas').append('<div class="ui-resizable-handle ui-resizable-s" id="sgrip" style="width: 20px; height: 5px; background-color: #FFFFFF; border: 1px solid black; bottom: -1px; left: 50%; border-radius: 4px 4px 0 0;"></div>');
+            appendCssStyle('#map_canvas{ height: 500px;} ');
 
             var scriptText = "map.invalidateSize(); map.scrollWheelZoom.enable(); $('#map_canvas').resizable({handles: {'s': '#sgrip'}, minHeight: 300, maxHeight: 700, stop: function( event, ui ) {map.invalidateSize();}});";
 
