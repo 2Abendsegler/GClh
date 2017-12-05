@@ -427,6 +427,7 @@ var variablesInit = function (c) {
     c.remove_navi_shop = getValue("remove_navi_shop", false);
     c.settings_show_flopps_link = getValue("settings_show_flopps_link", true);
     c.settings_show_brouter_link = getValue("settings_show_brouter_link", true);
+    c.settings_show_default_links = getValue("settings_show_default_links", true);
 
     try {
         if (c.userToken === null) {
@@ -1334,21 +1335,25 @@ var mainGC = function () {
     }
 
 // Linklist and Default Links on dashboard.
-    if (settings_bookmarks_show && is_page("dashboard")) {
+    if (is_page("dashboard")) {
         try {
             buildDashboardCss();
-            // Linklist.
-            buildBoxDashboard("linklist", "Linklist", "Linklist");
-            var box = document.getElementsByName("box_linklist")[0];
-            box.innerHTML = "";
-            buildBoxElementsLinklist(box);
+            if (settings_bookmarks_show) {
+                // Linklist.
+                buildBoxDashboard("linklist", "Linklist", "Linklist");
+                var box = document.getElementsByName("box_linklist")[0];
+                box.innerHTML = "";
+                buildBoxElementsLinklist(box);
+            }
             // Default Links.
-            bm_tmp = buildCopyOfBookmarks();
-            sortBookmarksByDescription(true, bm_tmp);
-            buildBoxDashboard("links", "Default Links", "Default Links for the Linklist");
-            var box = document.getElementsByName("box_links")[0];
-            box.innerHTML = "";
-            buildBoxElementsLinks(box, bm_tmp);
+            if (settings_show_default_links) {
+                bm_tmp = buildCopyOfBookmarks();
+                sortBookmarksByDescription(true, bm_tmp);
+                buildBoxDashboard("links", "Default Links", "Default Links for the Linklist");
+                var box = document.getElementsByName("box_links")[0];
+                box.innerHTML = "";
+                buildBoxElementsLinks(box, bm_tmp);
+            }
         } catch (e) { gclh_error("Linklist and Default Links on dashboard:", e); }
     }
 
@@ -1530,7 +1535,7 @@ var mainGC = function () {
     }
 
 // Show favorite percentage.
-    if (settings_show_fav_percentage && is_page("cache_listing")) {
+    if (settings_show_fav_percentage && is_page("cache_listing") && document.getElementById("uxFavContainerLink")) {
         try {
             function gclh_load_score(waitCount) {
                 unsafeWindow.showFavoriteScore();
@@ -1655,7 +1660,7 @@ var mainGC = function () {
     }
 
 // Improve Add to list in cache listing.
-    if (is_page("cache_listing") && settings_improve_add_to_list) {
+    if (is_page("cache_listing") && settings_improve_add_to_list && document.getElementsByClassName("btn-add-to-list")[0]) {
         try {
             var height = ((parseInt(settings_improve_add_to_list_height) < 100) ? parseInt(100) : parseInt(settings_improve_add_to_list_height));
             var css = ".loading {background: url(/images/loading2.gif) no-repeat center !important;}"
@@ -2980,7 +2985,7 @@ var mainGC = function () {
                     }
                 }
             }
-        } catch( e ) { gclh_error( "Driving direction for Waypoints: ", e ); }
+        } catch( e ) { gclh_error( "Driving direction for Waypoints:", e ); }
     }
 
 // CSS for BRouter and Flopp's Map Buttons.
@@ -3224,7 +3229,7 @@ var mainGC = function () {
                     }
                 }
             }
-        } catch(e) { gclh_error("getAdditionalWaypoints(): " ,e); }
+        } catch(e) { gclh_error("getAdditionalWaypoints():", e); }
         return addWP;
     }
 
@@ -3232,6 +3237,7 @@ var mainGC = function () {
     function getListingCoordinatesX() {
         var addWP  = [];
         try {
+            if (!document.getElementById('cacheDetails')) return;
             var waypoint = {};
             var gccode = "n/a";
             var gcname = "n/a";
@@ -3273,7 +3279,7 @@ var mainGC = function () {
             waypoint.link = document.location.href;
             waypoint.cachetype = document.getElementById('cacheDetails').getElementsByClassName('cacheImage')[0].getElementsByTagName('img')[0].getAttribute('title');
             addWP.push(waypoint);
-        } catch(e) { gclh_error("getListingCoordinatesX(): " ,e); }
+        } catch(e) { gclh_error("getListingCoordinatesX():", e); }
         return addWP;
     }
 
@@ -3483,7 +3489,7 @@ var mainGC = function () {
                         if ( index >= 0 ) $("#uxLatLonLinkElevation").html(formatElevation(json.results[index].elevation));
                         else gclh_log("addElevationToWaypoints(): Error: index out of range");
                     }
-                } catch(e) { gclh_error( "addElevationToWaypoints(): ", e); }
+                } catch(e) { gclh_error( "addElevationToWaypoints():", e); }
             }
             var locations="";
             var tbl = getWaypointTable();
@@ -5863,7 +5869,7 @@ var mainGC = function () {
     }
 
 // Show thumbnails.
-    if (settings_show_thumbnails && (is_page("cache_listing") || is_page("publicProfile") || document.location.href.match(/^https?:\/\/www\.geocaching\.com\/(seek\/gallery\.aspx?|track\/details\.aspx?|track\/gallery\.aspx?)/))) {
+    if (settings_show_thumbnails && ((is_page("cache_listing") && document.getElementById("uxFavContainerLink")) || is_page("publicProfile") || document.location.href.match(/^https?:\/\/www\.geocaching\.com\/(seek\/gallery\.aspx?|track\/details\.aspx?|track\/gallery\.aspx?)/))) {
         try {
             // my: Großes Bild; at: Kleines Bild; Man gibt an, wo sich die beiden berühren. Es scheint so, dass zuerst horizontal und
             // anschließend vertikal benannt werden muss. "top left" erzeugt dem entsprechend nur den default, also center. Das legt
@@ -7743,7 +7749,6 @@ var mainGC = function () {
         }
     }
 
-//xxxx1
 // Tabellenzeilen für User und Owner einfärben bzw. Einfärbung entfernen.
     function setLinesColorUser( parameterStamm, tasks, lines, linesTogether, owner ) {
         if ( lines.length == 0 ) return;
@@ -8184,6 +8189,7 @@ var mainGC = function () {
 
 // Add links over logs in cache listing.
     function addLinksOverLogs(func, id, right, txt, title) {
+        if (!$('#ctl00_ContentBody_uxLogbookLink')[0]) return;
         var a = document.createElement("a");
         a.appendChild(document.createTextNode(txt));
         a.setAttribute("title", title);
@@ -8997,19 +9003,20 @@ var mainGC = function () {
             html += " &nbsp; " + checkboxy('settings_switch_to_geohack_in_same_tab', 'Switch to GeoHack in same browser tab') + show_help("With this option you can switch from GC Map to GeoHack in the same browser tab.<br><br>This option requires \"Add link to GeoHack on GC Map\".") + "<br>";
             html += "</div>";
 
-            html += "<h4 class='gclh_headline2'>"+prepareHideable.replace("#name#","profile")+"Public Profile / Dashboard <span style='font-size: 14px'>" + show_help("This section include your public profile pages with for example your founded caches and trackables, your earned souvenirs, your image gallery, your statistic ... . Also including are your dashboard page and other of your own pages like for example your friends page or your own cache page.<br><br>Also the section include the public profile pages of the others.") + "</span></h4>";
+            html += "<h4 class='gclh_headline2'>"+prepareHideable.replace("#name#","profile")+"Public Profile / Dashboard <span style='font-size: 14px'>" + show_help("This section include your public profile pages with for example your founded caches and trackables, your earned souvenirs, your image gallery, your statistic ... . Also including are your dashboard page and other of your own pages like for example your friends page, your watchlist and your own cache page.<br><br>Also the section include the public profile pages of the others.") + "</span></h4>";
             html += "<div id='gclh_config_profile'>";
             html += checkboxy('settings_bookmarks_show', "Show <a class='gclh_ref' href='#gclh_linklist' title='Link to topic \"Linklist / Navigation\"' id='gclh_linklist_link_2'>Linklist</a> in your dashboard") + show_help("Show the Linklist at the sidebar in your dashboard. You can configure the links in the Linklist at the end of this configuration page.") + "<br>";
+            html += checkboxy('settings_show_default_links', 'Show all default links in your dashboard') + show_help("Show all the default links for the Linklist sorted at the sidebar in your dashboard (only new dashboard).") + "<br>";
             html += checkboxy('settings_hide_visits_in_profile', 'Hide TB/Coin visits in your dashboard') + "<br>";
-            html += checkboxy('settings_show_thumbnails', 'Show thumbnails of images') + show_help("With this option the images are displayed as thumbnails to have a preview. If you hover over a thumbnail, you can see the big one.<br><br>This works in cache and TB logs, in the cache and TB image galleries, in public profile for the avatar and in the profile image gallery. <br><br>And after pressing button \"Show bigger avatars\" in cache listing, it works too for the avatars in the shown logs.") + "&nbsp; Max size of big image: <input class='gclh_form' size=2 type='text' id='settings_hover_image_max_size' value='" + settings_hover_image_max_size + "'> px <br>";
+            html += checkboxy('settings_show_thumbnails', 'Show thumbnails of images') + show_help("With this option the images are displayed as thumbnails to have a preview. If you hover with your mouse over a thumbnail, you can see the big one.<br><br>This works in cache and TB logs, in the cache and TB image galleries, in public profile for the avatar and for the image gallery.<br><br>And after pressing button \"Show bigger avatars\" in cache listing, it works too for the avatars in the shown logs.") + "&nbsp; Max size of big image: <input class='gclh_form' size=2 type='text' id='settings_hover_image_max_size' value='" + settings_hover_image_max_size + "'> px <br>";
             html += "&nbsp; " + checkboxy('settings_imgcaption_on_top', 'Show caption on top') + show_help("This option requires \"Show thumbnails of images\".") + "<br>";
             html += checkboxy('settings_show_big_gallery', 'Show bigger images in gallery') + show_help("With this option the images in the galleries of caches, TBs and public profiles are displayed bigger and not in 4 columns, but in 2 columns.");
             var content_geothumbs = "<font class='gclh_small' style='margin-left: 80px; margin-top: -10px; position: absolute;'> (Alternative: <a href='http://benchmarks.org.uk/greasemonkey/geothumbs.php' target='_blank'>Geothumbs</a> " + show_help("A great alternative to the GClh bigger image functionality with \"Show thumbnails of images\" and \"Show bigger images in gallery\", provides the script Geothumbs (Geocaching Thumbnails). <br><br>The script works like GClh with Firefox, Google Chrome and Opera as Tampermonkey script. <br><br>If you use Geothumbs, you have to uncheck both GClh bigger image functionality \"Show thumbnails of images\" and \"Show bigger images in gallery\".") + ")</font>" + "<br>";
             html += content_geothumbs;
-            var content_settings_show_mail_in_allmyvips = checkboxy('settings_show_mail_in_allmyvips', 'Show mail link beside user in "All my VIPs" list in your dashboard') + show_help3("With this option there will be an small mail icon beside every username in the list with all your VIPs (All my VIPs) on your dashboard page. With this icon you get directly to the mail page to mail to this user. <br>(VIP: Very important person)<br><br>This option requires \"Show mail link beside usernames\" and \"Show VIP list\".") + "<br>";
+            var content_settings_show_mail_in_allmyvips = checkboxy('settings_show_mail_in_allmyvips', 'Show mail link beside user in "All my VIPs/VUPs" list in your dashboard') + show_help3("With this option there will be an small mail icon beside every username in the list with all your VIPs (All my VIPs) on your dashboard page. With this icon you get directly to the mail page to mail to this user.<br>(VIP: Very important person)<br><br>If VUP processing is activated, this also applies to your VUPs (All my VUPs).<br>(VUP: Very unimportant person)<br><br>This option requires \"Show mail link beside user\" and \"Show VIP list\".") + "<br>";
             html += content_settings_show_mail_in_allmyvips;
             html += checkboxy('settings_show_sums_in_watchlist', 'Show number of caches in your watchlist') + show_help("With this option the number of caches and the number of selected caches in the categories \"All\", \"Archived\" and \"Deactivated\", corresponding to the select buttons, are shown in your watchlist at the end of the list.") + "<br>";
-            html += checkboxy('settings_logit_for_basic_in_pmo', 'Log PMO caches by standard \"Log It\" icon (for basic members)') + show_help("With this option basic members are able to choose the standard \"Log It\" icon to call the logging screen for premium only caches. The tool tipp blocked not longer this call. You can have the same result by using the right mouse across the \"Log It\" icon and then new tab. <br>The \"Log It\" icon is besides the caches for example in the \"Recently Viewed Caches\" list and in your dashboard.") + "<br>";
+            html += checkboxy('settings_logit_for_basic_in_pmo', 'Log PMO caches by standard \"Log It\" icon (for basic members)') + show_help3("With this option basic members are able to choose the standard \"Log It\" icon to call the logging screen for premium member only caches (PMO). The tool tipp blocked not longer this call. You can have the same result by using the right mouse across the \"Log It\" icon and then new tab. <br>The \"Log It\" icon is besides the caches for example in the \"Recently Viewed Caches\" list and next to the caches in your dashboard.") + "<br>";
             html += checkboxy('settings_hide_archived_in_owned', 'Hide archived caches in owned list') + "<br>";
             html += newParameterOn2;
             html += checkboxy('settings_my_lists_old_fashioned', 'Change link \"Lists\" to old-fashioned lists page') + show_help("This option changes the link \"Lists\" on \"my\" pages from the new lists page \".../account/lists\" (looks like a phone app) to the old-fashioned lists page \".../my/lists\".") + "<br>";
@@ -9064,7 +9071,7 @@ var mainGC = function () {
             html += checkboxy('settings_log_inline', 'Log cache from listing (inline)') + show_help("With the inline log you can open a log form inside the listing, without loading a new page.") + "<br>";
             var content_settings_log_inline_tb = "&nbsp; " + checkboxy('settings_log_inline_tb', 'Show TB list') + show_help("With this option you can select, if the TB list should be shown in inline logs.<br><br>This option requires \"Log cache from listing (inline)\" or \"Log cache from listing for PMO (for basic members)\".") + "<br>";
             html += content_settings_log_inline_tb;
-            html += checkboxy('settings_log_inline_pmo4basic', 'Log cache from listing for PMO (for basic members)') + show_help("With this option you can select, if inline logs should appear for Premium-Member-Only caches althought you are a basic member (logging of PMO caches by basic members is allowed by Groundspeak).") + "<br>";
+            html += checkboxy('settings_log_inline_pmo4basic', 'Log cache from listing for PMO (for basic members)') + show_help("With this option you can select, if inline logs should appear for Premium Member Only (PMO) caches althought you are a basic member.") + "<br>";
             html += content_settings_log_inline_tb.replace("settings_log_inline_tb", "settings_log_inline_tbX0");
             html += checkboxy('settings_hide_empty_cache_notes', 'Hide cache notes if empty') + show_help("This is a premium feature - you can hide the personal cache notes if they are empty. There will be a link to show them to add a note.") + "<br>";
             html += checkboxy('settings_hide_cache_notes', 'Hide cache notes completely') + show_help("This is a premium feature - you can hide the personal cache notes completely, if you don't want to use them.") + "<br>";
@@ -10108,7 +10115,8 @@ var mainGC = function () {
                 'settings_map_links_statistic',
                 'settings_improve_add_to_list',
                 'settings_show_flopps_link',
-                'settings_show_brouter_link'
+                'settings_show_brouter_link',
+                'settings_show_default_links'
             );
             for (var i = 0; i < checkboxes.length; i++) {
                 if ( document.getElementById(checkboxes[i]) ) setValue(checkboxes[i], document.getElementById(checkboxes[i]).checked);
