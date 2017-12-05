@@ -168,6 +168,8 @@ var constInit = function (c) {
     bookmark("Lists", "https://www.geocaching.com/my/lists.aspx", c.bookmarks);
     bookmark("Souvenirs", "https://www.geocaching.com/my/souvenirs.aspx", c.bookmarks);
     bookmark("Friend League", "https://www.geocaching.com/play/friendleague", c.bookmarks);
+    bookmark("Trackables", "https://www.geocaching.com/track/", c.bookmarks);
+    bookmark("GeoTours", "https://www.geocaching.com/play/geotours", c.bookmarks);
     // Custom Bookmark-title.
     c.bookmarks_orig_title = new Array();
     for (var i = 0; i < c.bookmarks.length; i++) {
@@ -420,7 +422,6 @@ var variablesInit = function (c) {
     c.settings_map_links_statistic = getValue("settings_map_links_statistic", true);
     c.settings_improve_add_to_list_height = getValue("settings_improve_add_to_list_height", 205);
     c.settings_improve_add_to_list = getValue("settings_improve_add_to_list", true);
-    c.remove_navi_learn = getValue("remove_navi_learn", false);
     c.remove_navi_play = getValue("remove_navi_play", false);
     c.remove_navi_community = getValue("remove_navi_community", false);
     c.remove_navi_shop = getValue("remove_navi_shop", false);
@@ -558,7 +559,7 @@ var mainOSM = function () {
         function addGCButton(waitCount) {
             if ( document.location.href.match(/^(http|https):\/\/www\.openstreetmap\.org\/(.*)#map=/ ) && $(".control-key").length ) {
                 if ( settings_add_link_gc_map_on_osm  ) {
-                    var code = '<div class="control-gc leaflet-control"><a class="control-button" href="#" data-original-title="Geocaching.com" style="outline: medium none;"><span class="icon" title="Geocaching Map" style="margin: 5px; display: inline-block; vertical-align: middle; height: 32px; width: 32px; background-image: url(\''+global_gc_icon_sw+'\'); background-size: 25px 25px;  background-position: center; background-repeat: no-repeat;"></span></a></div>';
+                    var code = '<div class="control-gc leaflet-control"><a class="control-button" href="#" data-original-title="geocaching.com" style="outline: medium none;"><span class="icon" title="Geocaching Map" style="margin: 5px; display: inline-block; vertical-align: middle; height: 32px; width: 32px; background-image: url(\''+global_gc_icon_sw+'\'); background-size: 25px 25px;  background-position: center; background-repeat: no-repeat;"></span></a></div>';
                     $(".control-share").after(code);
                     $(".control-gc").click( function () {
                         var matches = document.location.href.match(/=([0-9]+)\/(-?[0-9.]*)\/(-?[0-9.]*)/);
@@ -1140,7 +1141,7 @@ var mainGC = function () {
         }
     } catch (e) { gclh_error("New width:", e); }
 
-// Remove gc.com links in Navigation.
+// Remove GC links in Navigation.
     try {
         if ( document.getElementsByClassName("Menu").length > 0 ) {
             var liste = document.getElementsByClassName("Menu")[0];
@@ -1151,13 +1152,12 @@ var mainGC = function () {
         }
         if ( links ) {
             for (var i = 0; i < (links.length -1); i++) {
-                if      ( links[i].className.match(/dropdown/i) && links[i].href.match(/\/guide\/$/)            && getValue('remove_navi_learn'))     liste.removeChild(links[i].parentNode);
-                else if ( links[i].className.match(/dropdown/i) && links[i].href.match(/\/play\/search/)        && getValue('remove_navi_play'))      liste.removeChild(links[i].parentNode);
+                if      ( links[i].className.match(/dropdown/i) && links[i].href.match(/\/play\/search/)        && getValue('remove_navi_play'))      liste.removeChild(links[i].parentNode);
                 else if ( links[i].className.match(/dropdown/i) && links[i].href.match(/\/forums\/$/)           && getValue('remove_navi_community')) liste.removeChild(links[i].parentNode);
                 else if ( links[i].className.match(/dropdown/i) && links[i].href.match(/shop\.geocaching\.com/) && getValue('remove_navi_shop'))      liste.removeChild(links[i].parentNode);
             }
         }
-    } catch (e) { gclh_error("Remove gc.com links:", e); }
+    } catch (e) { gclh_error("Remove GC links:", e); }
 
 // Bookmarks on top.
     try {
@@ -2571,7 +2571,7 @@ var mainGC = function () {
 
             function limitLogText(limitField) {
                 changed = true; // Logtext hat sich geaendert - Warnung beim Seite verlassen
-                // Aus gc.com Funktion "checkLogInfoLength".
+                // Aus GC Funktion "checkLogInfoLength".
                 var editor = $('#ctl00_ContentBody_LogBookPanel1_uxLogInfo');
                 var limitNum = parseInt($('#ctl00_ContentBody_LogBookPanel1_uxLogInfo').attr("CKEMaxLength"));
                 var length = editor.val().replace(/\n/g, "\r\n").length;
@@ -7234,7 +7234,7 @@ var mainGC = function () {
                 setValue( 'settings_distance_units', units );
                 settings_distance_units = units;
             }
-        } catch (e) { gclh_error("Hide gc.com Avatar-Option:", e); }
+        } catch (e) { gclh_error("Hide GC Avatar-Option:", e); }
     }
 
 // Aufbau Links zum Aufruf von Config, Sync und Find Player. Und Changelog im Profile.
@@ -7496,7 +7496,7 @@ var mainGC = function () {
         s = s.replace(/'/g, "%27");
         s = s.replace(/%26amp%3b/g, "%26");
         s = s.replace(/ /g, "+");
-        // GC.com codiert - _ . ! * ( ) selbst nicht, daher wird dies hier auch nicht extra behandel
+        // GC codiert - _ . ! * ( ) selbst nicht, daher wird dies hier auch nicht extra behandel
         return s;
     }
     function urldecode(s) {
@@ -8764,9 +8764,9 @@ var mainGC = function () {
             html += "<div id='rc_area' class='gclh_rc_area'>";
             html += "<input type='radio' name='rc' checked='checked' id='rc_standard' class='gclh_rc'><label for='rc_standard'>Reset to standard configuration</label>" + show_help_rc("This option should help you to come back to an efficient configuration set, after some experimental or other motivated changes. This option load a reasonable standard configuration and overwrite your configuration data in parts. <br><br>The following data are not overwrited: Home-coords; Homezone circle and multi Homezone circles; date format; log templates; cache log, TB log and other signatures; friends data; links in Linklist and differing description and custom links. <br>Dynamic data, like for example autovisits for named trackables, are not overwrited too.<br><br>After reset, choose button \"close\" and go to Config to skim over the set of data.") + "<br>";
             html += "<input type='radio' name='rc' id='rc_temp' class='gclh_rc'><label for='rc_temp'>Reset dynamic and unused data</label>" + show_help_rc("This option reorganize the configuration set. Unused parameters of older script versions are deleted. And the dynamic data like the autovisit settings for every TB, the seen friends data of founds and hides and the DropBox token are deleted too. Especially the VIPs, VUPs and Linklist settings are not deleted of course.<br><br>After reset, choose button \"close\".") + "<br><br>";
-            html += "<input type='radio' name='rc' id='rc_homecoords' class='gclh_rc'><label for='rc_homecoords'>Reset your own home-coords</label>" + show_help_rc("This option could help you with problems around your home-coords, like for example with your main Homezone, with nearest lists or with your Home-coords itself. Your home-coords are not deleted at gc.com, but only in GClh. <br><br>After reset, you have to go to the account settings page of gc.com to the area \"Home Location\", so that GClh can save your home-coords again automatically. You have only to go to this page, you have nothing to do at this page, GClh save your home-coords automatically. <br>Or you enter your home-coords manually in GClh. <br><br>At last, choose button \"close\".");
+            html += "<input type='radio' name='rc' id='rc_homecoords' class='gclh_rc'><label for='rc_homecoords'>Reset your own home-coords</label>" + show_help_rc("This option could help you with problems around your home-coords, like for example with your main Homezone, with nearest lists or with your Home-coords itself. Your home-coords are not deleted at GC, but only in GClh. <br><br>After reset, you have to go to the account settings page of GC to the area \"Home Location\", so that GClh can save your home-coords again automatically. You have only to go to this page, you have nothing to do at this page, GClh save your home-coords automatically. <br>Or you enter your home-coords manually in GClh. <br><br>At last, choose button \"close\".");
             html += "<font class='gclh_small'> (After reset, go to <a href='https://www.geocaching.com/account/settings/homelocation' target='_blank'>Home Location</a> )</font>" + "<br>";
-            html += "<input type='radio' name='rc' id='rc_uid' class='gclh_rc'><label for='rc_uid'>Reset your own id for your trackables</label>" + show_help_rc("This option could help you with problems with your own trackables lists, which based on an special id, the uid. The uid are not deleted at gc.com, but only in GClh. <br><br>After reset, you have to go to your dashboard, so that GClh can save your uid again automatically. You have only to go to this page, you have nothing to do at this page, GClh save the uid automatically. <br><br>At last, choose button \"close\".");
+            html += "<input type='radio' name='rc' id='rc_uid' class='gclh_rc'><label for='rc_uid'>Reset your own id for your trackables</label>" + show_help_rc("This option could help you with problems with your own trackables lists, which based on an special id, the uid. The uid are not deleted at GC, but only in GClh. <br><br>After reset, you have to go to your dashboard, so that GClh can save your uid again automatically. You have only to go to this page, you have nothing to do at this page, GClh save the uid automatically. <br><br>At last, choose button \"close\".");
             html += "<font class='gclh_small'> (After reset, go to <a href='https://www.geocaching.com/my/' target='_blank'>Dashboard</a> )</font>" + "<br><br>";
             html += "<div class='gclh_rc_area_button'>";
             html += "<img id='rc_doing' src='' title='' alt='' style='margin-top: 4px; margin-left: -25px; position: absolute;' /><input class='gclh_rc_form' type='button' value='reset' id='rc_reset_button'> <input style='cursor: pointer;' class='gclh_rc_form' type='button' value='close' id='rc_close_button'>";
@@ -8779,24 +8779,24 @@ var mainGC = function () {
             html += "<br>";
             html += "<h4 class='gclh_headline2'>"+prepareHideable.replace("#name#","global")+"Global</h4>";
             html += "<div id='gclh_config_global'>";
-            html += "<label for='settings_home_lat_lng'>&nbsp;Home-Coords: </label><input class='gclh_form' type='text' size='25' id='settings_home_lat_lng' value='" + DectoDeg(getValue("home_lat"), getValue("home_lng")) + "'>" + show_help("The Home-Coords are filled automatically if you update your Home-Coords on geocaching page. If it doesn\'t work you can insert them here. These coords are used for some special links (nearest list, nearest map, ...) and for the main Homezone circle on the map.") + "<br>";
+            html += "<label for='settings_home_lat_lng'>&nbsp;Home-Coords: </label><input class='gclh_form' type='text' size='25' id='settings_home_lat_lng' value='" + DectoDeg(getValue("home_lat"), getValue("home_lng")) + "'>" + show_help("The Home-Coords are filled automatically if you update your Home-Coords on GC page. If it doesn\'t work you can insert them here. These coords are used for some special links (nearest list, nearest map, ...) and for the main Homezone circle on the map.") + "<br>";
             html += checkboxy('settings_set_default_langu', 'Set default language ');
             html += "<select class='gclh_form' id='settings_default_langu'>";
             for ( var i = 0; i < langus.length; i++ ){
                 html += "  <option value='" + langus[i] + "' " + (settings_default_langu == langus[i] ? "selected='selected'" : "") + "> " + langus[i] + "</option>";
             }
-            html += "</select>" + show_help("Here you can change the default language to set on geocaching pages, in the case, apps changed the language.<br><br>In distant, very very distant future is planned to make the GClh multilingual. Until that is realized, the GClh is only in english.") + "<br>";
-            html += checkboxy('settings_change_header_layout', "Change header layout") + show_help("This option redesines the header layout on geocaching pages to save some vertical space.") + "<br>";
-            html += " &nbsp; " + checkboxy('settings_show_smaller_gc_link', 'Show smaller geocaching logo top left') + show_help("With this option you can choose a smaller display of the geocaching logo top left on geocaching pages.<br><br>" + t_reqChl) + "<br>";
-            html += " &nbsp; &nbsp; " + checkboxy('settings_remove_logo', 'Remove geocaching logo top left') + show_help_big("With this option you can remove the geocaching logo top left on geocaching pages.<br><br>This feature is not fully integrated in the diverse possibilities of the header layout and the navigation menus.<br><br>This option require \"Change header layout\" and \"Show smaller geocaching logo top left\".") + "<br>";
-            html += " &nbsp; " + checkboxy('settings_remove_message_in_header', 'Remove message center icon top right') + show_help_big("With this option you can remove the message center icon top right on geocaching pages. You will not be informed longer about new messages.<br><br>" + t_reqChl) + "<br>";
-            html += " &nbsp; " + checkboxy('settings_gc_tour_is_working', 'Reserve a place for GC Tour icon') + show_help("If the script GC Tour is running, you can reserve a place top left on geocaching pages for the GC Tour icon.<br><br>" + t_reqChl) + "<br>";
-            html += " &nbsp; " + checkboxy('settings_fixed_header_layout', 'Arrange header layout on content') + show_help_big("With this option you can arrange the header width on the width of the content of geocaching pages. This is an easy feature with some restrictions, like for example the available place, especially for horizontal navigation menues.<br><br>This feature is available on geocaching pages in the oldest design like for example cache and TB listings, bookmarks, pocket queries, nearest lists, old dashboards (profiles), statistics, watchlists and drafts, to name just a few. <br><br>On map page and on pages in the newer and newest design it is not available, partly because the content on these pages are not yet in an accurate width, like the newer search cache page or the message center page. Also this feature is not fully integrated in the diverse possibilities of the header layout and the navigation menus. But we hope the friends of this specific header design can deal with it.<br><br>" + t_reqChl) + "<br>";
-			html += checkboxy('settings_bookmarks_on_top', "Show <a class='gclh_ref' href='#gclh_linklist' title='Link to topic \"Linklist / Navigation\"' id='gclh_linklist_link_1'>Linklist</a> on top") + show_help("Show the Linklist on the top on geocaching pages, beside the other links. You can configure the links in the Linklist at the end of this configuration page.<br><br>Some of the features of the Linklist on top, like for example the font size or the distance between drop-down links, requires \"Change header layout\". Details you can see at the end of this configuration page by the features of the Linklist.") + "<br>";
+            html += "</select>" + show_help("Here you can change the default language to set on GC pages, in the case, apps changed the language.<br><br>In distant, very very distant future is planned to make the GClh multilingual. Until that is realized, the GClh is only in english.") + "<br>";
+            html += checkboxy('settings_change_header_layout', "Change header layout") + show_help("This option redesines the header layout on GC pages to save some vertical space.") + "<br>";
+            html += " &nbsp; " + checkboxy('settings_show_smaller_gc_link', 'Show smaller GC logo top left') + show_help("With this option you can choose a smaller display of the GC logo top left on GC pages.<br><br>" + t_reqChl) + "<br>";
+            html += " &nbsp; &nbsp; " + checkboxy('settings_remove_logo', 'Remove GC logo top left') + show_help_big("With this option you can remove the GC logo top left on GC pages.<br><br>This feature is not fully integrated in the diverse possibilities of the header layout and the navigation menus.<br><br>This option require \"Change header layout\" and \"Show smaller GC logo top left\".") + "<br>";
+            html += " &nbsp; " + checkboxy('settings_remove_message_in_header', 'Remove message center icon top right') + show_help_big("With this option you can remove the message center icon top right on GC pages. You will not be informed longer about new messages.<br><br>" + t_reqChl) + "<br>";
+            html += " &nbsp; " + checkboxy('settings_gc_tour_is_working', 'Reserve a place for GC Tour icon') + show_help("If the script GC Tour is running, you can reserve a place top left on GC pages for the GC Tour icon.<br><br>" + t_reqChl) + "<br>";
+            html += " &nbsp; " + checkboxy('settings_fixed_header_layout', 'Arrange header layout on content') + show_help_big("With this option you can arrange the header width on the width of the content of GC pages. This is an easy feature with some restrictions, like for example the available place, especially for horizontal navigation menues.<br><br>This feature is available on GC pages in the oldest design like for example cache and TB listings, bookmarks, pocket queries, nearest lists, old dashboards (profiles), statistics, watchlists and drafts, to name just a few. <br><br>On map page and on pages in the newer and newest design it is not available, partly because the content on these pages are not yet in an accurate width, like the newer search cache page or the message center page. Also this feature is not fully integrated in the diverse possibilities of the header layout and the navigation menus. But we hope the friends of this specific header design can deal with it.<br><br>" + t_reqChl) + "<br>";
+			html += checkboxy('settings_bookmarks_on_top', "Show <a class='gclh_ref' href='#gclh_linklist' title='Link to topic \"Linklist / Navigation\"' id='gclh_linklist_link_1'>Linklist</a> on top") + show_help("Show the Linklist on the top of GC pages, beside the other links. You can configure the links in the Linklist at the end of this configuration page.<br><br>Some of the features of the Linklist on top, like for example the font size or the distance between drop-down links, requires \"Change header layout\". Details you can see at the end of this configuration page by the features of the Linklist.") + "<br>";
             html += checkboxy('settings_hide_advert_link', 'Hide link to advertisement instructions') + "<br>";
-            html += "&nbsp;" + "Page-Width: <input class='gclh_form' type='text' size='2' id='settings_new_width' value='" + getValue("settings_new_width", 1000) + "'> px" + show_help("With this option you can expand the small layout on geocaching pages. The default value on geocaching pages is 950 px.") + "<br>";
+            html += "&nbsp;" + "Page-Width: <input class='gclh_form' type='text' size='2' id='settings_new_width' value='" + getValue("settings_new_width", 1000) + "'> px" + show_help("With this option you can expand the small layout on GC pages. The default value on GC pages is 950 px.") + "<br>";
             html += checkboxy('settings_hide_facebook', 'Hide Facebook login') + "<br>";
-            html += checkboxy('settings_hide_warning_message', 'Hide warning message') + show_help("With this option you can choose the possibility to hide a potential warning message of the masters of the geocaching pages.<br><br>One example is the down time warning message which comes from time to time and is placed unnecessarily a lot of days at the top of pages. You can hide it except for a small line in the top right side of the pages. You can activate the warning message again if your mouse goes to this area.<br><br>If the warning message is deleted of the masters, this small area is deleted too.") + "<br>";
+            html += checkboxy('settings_hide_warning_message', 'Hide warning message') + show_help("With this option you can choose the possibility to hide a potential warning message of the masters of the GC pages.<br><br>One example is the down time warning message which comes from time to time and is placed unnecessarily a lot of days at the top of pages. You can hide it except for a small line in the top right side of the pages. You can activate the warning message again if your mouse goes to this area.<br><br>If the warning message is deleted of the masters, this small area is deleted too.") + "<br>";
             html += checkboxy('settings_search_enable_user_defined', 'Enable user defined Filter Sets for geocache searchs') + show_help("This features enables you to store favourites filter settings in the geocache search and call them quickly.") + "<br>";
             html += checkboxy('settings_hide_cache_approvals', 'Auto set approvals in hide cache process') + show_help("This option activates the checkboxes for approval the guidelines and the terms of use agreement in the hide cache process.") + "<br>";
             html += newParameterOn2;
@@ -8842,7 +8842,7 @@ var mainGC = function () {
 
             html += "<h4 class='gclh_headline2' title='this page'>"+prepareHideable.replace("#name#","config")+"GClh Config / Sync</h4>";
             html += "<div id='gclh_config_config'>";
-            html += checkboxy('settings_f4_call_gclh_config', 'Call GClh Config on F4') + show_help("With this option you are able to call the GClh Config page (this page) by pressing key F4 from all geocaching sites.") + "<br>";
+            html += checkboxy('settings_f4_call_gclh_config', 'Call GClh Config on F4') + show_help("With this option you are able to call the GClh Config page (this page) by pressing key F4 from all GC sites.") + "<br>";
             html += checkboxy('settings_f2_save_gclh_config', 'Save GClh Config on F2') + show_help("With this option you are able to save the GClh Config page (this page) by pressing key F2 instead of scrolling to the bottom and choose the save button.") + "<br>";
             html += newParameterOn2;
             html += checkboxy('settings_esc_close_gclh_config', 'Close GClh Config on ESC') + show_help("With this option you are able to close the GClh Config page (this page) by pressing ESC.") + "<br>";
@@ -8903,7 +8903,7 @@ var mainGC = function () {
             html += "  <thead><tr>";
             html += "      <th><span>Radius</span>" + show_help2("Here you can specify the radius in kilometers of your Homezone circles.") + "</th>";
             html += "      <th><span>Color</span>" + show_help("Here you can specify the color of your Homezone circles.<br>Default is \"0000FF\".") + "</th>";
-            html += "      <th><span>Opacity</span>" + show_help("Here you can specify the opacity in percent of your Homezone circles.<br>Default is \"10\".") + "</th>";
+            html += "      <th><span>Opacity</span>" + show_help("Here you can specify the opacity in percent of your Homezone circles. Higher number, darker.<br>Default is \"10\".") + "</th>";
             html += "      <th><span>Coordinates</span>" + show_help("Here you can specify the coordinates of the midpoint of your Homezone circles.") + "</th>";
             html += "      <th><span></span></th>";
             html += "  </tr></thead>";
@@ -8963,8 +8963,8 @@ var mainGC = function () {
             html += " &nbsp; " + checkboxy('settings_map_hide_5', "<img "+imgStyle+" src='" + imageBaseUrl + "5.png' title='Letterbox'>");
             html += " &nbsp; " + checkboxy('settings_map_hide_1858', "<img "+imgStyle+" src='" + imageBaseUrl + "1858.png' title='Wherigo'>") + "<br>";
 
-            html += "<div style='margin-top: 9px; margin-left: 5px'><b>Layers in map</b>" + show_help("Here you can select the map layers which should be added into the layer menu with the map. With this option you can reduce the long list to the layers you really need. If the right list of layers is empty, all will be displayed. If you use other scripts like \"Geocaching Map Enhancements\" GClh will overwrite its layercontrol. With this option you can disable GClh layers to use the layers from geocaching or GME.") + "</div>";
-            html += checkboxy('settings_use_gclh_layercontrol', 'Replace layers by GClh') + show_help_big("GClh will replace the layers. With this option you can disable this replacement to use the layers from geocaching or other scripts like GME (Geocaching Map Enhancements). But you can use too the layers of GClh together with the functionality of GME.<br><br>It is important, that GClh run at first, particularly in front of other layer used scripts like GME or GCVote.<br><br>If there are problems with the layers by using GCVote at once, you have to clear the local storage of GCVote. You can do it about your dashboard. If that does not help, deinstall and install GCVote again. (GCVote use a local storage for its data. This storage can include incomplete layers which influence the layer control.)") + "<br>";
+            html += "<div style='margin-top: 9px; margin-left: 5px'><b>Layers in map</b>" + show_help("Here you can select the map layers which should be added into the layer menu with the map. With this option you can reduce the long list to the layers you really need. If the right list of layers is empty, all will be displayed. If you use other scripts like \"Geocaching Map Enhancements\" GClh will overwrite its layercontrol. With this option you can disable GClh layers to use the layers from GC or GME.") + "</div>";
+            html += checkboxy('settings_use_gclh_layercontrol', 'Replace layers by GClh') + show_help_big("GClh will replace the layers. With this option you can disable this replacement to use the layers from GC or other scripts like GME (Geocaching Map Enhancements). But you can use too the layers of GClh together with the functionality of GME.<br><br>It is important, that GClh run at first, particularly in front of other layer used scripts like GME or GCVote.<br><br>If there are problems with the layers by using GCVote at once, you have to clear the local storage of GCVote. You can do it about your dashboard. If that does not help, deinstall and install GCVote again. (GCVote use a local storage for its data. This storage can include incomplete layers which influence the layer control.)") + "<br>";
             html += "<div id='MapLayersConfiguration' style='display: " + (settings_use_gclh_layercontrol ? "block":"none") + ";'>";
             html += "<table cellspacing='0' cellpadding='0' border='0'><tbody>";
             html += "<tr>";
@@ -8973,7 +8973,7 @@ var mainGC = function () {
             html += "<td><select class='gclh_form' style='width: 250px;' id='settings_maplayers_available' multiple='single' size='7'></select></td>";
             html += "</tr>";
             html += "<tr><td colspan='3'>Default layer: <code><span id='settings_mapdefault_layer'>" + (settings_map_default_layer ? settings_map_default_layer:"<i>not available</i>") +"</span></code>";
-            html += "&nbsp;" + show_help("Here you can select the map source you want to use as default in the map. Select a layer from the right list and push the button \"Set Default Layer\".");
+            html += "&nbsp;" + show_help("Here you can select the map source you want to use as default in the map. Mark a layer from the right list and push the button \"Set Default Layer\".");
             html += "<span style='float: right; margin-top: 0px;' ><input class='gclh_form' type='button' value='Set Default Layer' id='btn_set_default_layer'></span><br><span style='margin-left: -4px'></span>";
             html += checkboxy('settings_show_hillshadow', 'Show Hillshadow by default') + show_help("If you want 3D-like-Shadow to be displayed by default, activate this function.") + "<br>";
             html += "</td></tr>";
@@ -9084,7 +9084,7 @@ var mainGC = function () {
             html += "  <option " + (settings_date_format == "dd/MMM/yyyy" ? "selected='selected'" : "") + " value='dd/MMM/yyyy'> 31/Dec/2016</option>";
             html += "  <option " + (settings_date_format == "MMM/dd/yyyy" ? "selected='selected'" : "") + " value='MMM/dd/yyyy'> Dec/31/2016</option>";
             html += "  <option " + (settings_date_format == "dd MMM yy" ? "selected='selected'" : "") + " value='dd MMM yy'> 31 Dec 16</option>";
-            html += "</select>" + show_help("If you have changed the date format on gc.com, you have to change it here to. Instead the day of week may be wrong.") + "<br>";
+            html += "</select>" + show_help("If you have changed the date format on GC, you have to change it here to. Instead the day of week may be wrong.") + "<br>";
             html += checkboxy('settings_show_mail', 'Show mail link beside usernames') + show_help("With this option there will be an small mail icon beside every username. With this icon you get directly to the mail form to mail to this user. If you click it for example when you are in a listing, the cachename or GC code can be inserted into the mail form about placeholder in the mail / message form template.") + "<br>";
             var content_settings_show_mail_in_viplist = "&nbsp; " + checkboxy('settings_show_mail_in_viplist', 'Show mail link beside user in "VIP-List" in listing') + show_help("With this option there will be an small mail icon beside every username in the VIP lists on the cache listing page. With this icon you get directly to the mail page to mail to this user. <br>(VIP: Very important person)<br><br>This option requires \"Show mail link beside usernames\", \"Show VIP list\" and \"Load logs with GClh\".") + "<br>";
             html += content_settings_show_mail_in_viplist;
@@ -9103,7 +9103,7 @@ var mainGC = function () {
             }
             html += "</select> latest logs symbols at the top" + show_help("With this option, the choosen count of the latest logs symbols is shown at the top of the cache listing.<br><br>" + t_reqLlwG) + "<br>";
             html += checkboxy('settings_show_remove_ignoring_link', 'Show \"Stop Ignoring\", if cache is already ignored') + show_help("This option replace the \"Ignore\" link description with the \"Stop Ignoring\" link description in the cache listing, if the cache is already ignored.") + "<br>";
-            html += checkboxy('settings_map_overview_build', 'Show cache location in overview map') + show_help("With this option there will be an additional map top right in the cache listing as an overview of the cache location. This was available in the gc.com standard earlier.") + "<br>";
+            html += checkboxy('settings_map_overview_build', 'Show cache location in overview map') + show_help("With this option there will be an additional map top right in the cache listing as an overview of the cache location. This was available on GC pages earlier.") + "<br>";
             html += " &nbsp; &nbsp;" + "Map zoom value: <select class='gclh_form' id='settings_map_overview_zoom'>";
             for ( var i = 1; i < 20; i++ ){
                 html += "  <option value='" + i + "' " + (settings_map_overview_zoom == i ? "selected=\"selected\"" : "") + ">" + i + "</option>";
@@ -9126,7 +9126,7 @@ var mainGC = function () {
             html += "&nbsp; " + checkboxy('settings_imgcaption_on_topX0', 'Show caption on top') + show_help("This option requires \"Show thumbnails of images\".") + "<br>";
             html += checkboxy('settings_show_big_galleryX0', 'Show bigger images in gallery') + show_help("With this option the images in the galleries of caches, TBs and profiles are displayed bigger and not in 4 columns, but in 2 columns.");
             html += content_geothumbs;
-            html += checkboxy('settings_hide_avatar', 'Hide avatars in listing') + show_help("This option hides the avatars in logs. This prevents loading the hundreds of images. You have to change the option here, because GClh overrides the log-load-logic of gc.com, so the avatar option of gc.com doesn't work with GClh.") + "<br>";
+            html += checkboxy('settings_hide_avatar', 'Hide avatars in listing') + show_help("This option hides the avatars in logs. This prevents loading the hundreds of images. You have to change the option here, because GClh overrides the log-load-logic of GC, so the avatar option of GC doesn't work with GClh.") + "<br>";
             html += checkboxy('settings_load_logs_with_gclh', 'Load logs with GClh') + show_help("This option should be enabled. <br><br>You just should disable it, if you have problems with loading the logs. <br><br>If this option is disabled, there are no VIP-, mail-, message- and top icons, no line colors and no mouse activated big images at the logs. Also the VIP lists, hide avatars, log filter and log search won't work.") + "<br>";
             html += checkboxy('settings_show_real_owner', 'Show real owner name') + show_help("If the option is enabled, GClh will replace the pseudonym a owner took to publish the cache with the real owner name.") + "<br>";
             html += newParameterOn1;
@@ -9217,12 +9217,11 @@ var mainGC = function () {
 
             html += "<h4 class='gclh_headline2'><a name='gclh_linklist'></a>"+prepareHideable.replace("#name#","linklist")+"Linklist / Navigation <span style='font-size: 14px'>" + show_help("In this section you can configure your personal Linklist which is shown on the top of the page and/or in your dashboard. You can activate it in the \"Global\" section respectively in the \"Public Profile / Dashboard\" section.") + "</span></h4>";
             html += "<div id='gclh_config_linklist'>";
-            html += "&nbsp;" + "Remove from Navigation:" + show_help("Here you can select, which of the original gc.com links should be removed to make room for your Linklist.") + "<br>";
-            html += "<input type='checkbox' " + (getValue('remove_navi_learn') ? "checked='checked'" : "" ) + " id='remove_navi_learn'>Learn<br>";
+            html += "&nbsp;" + "Remove from Navigation:" + show_help("Here you can select, which of the original GC links should be removed.") + "<br>";
             html += "<input type='checkbox' " + (getValue('remove_navi_play') ? "checked='checked'" : "" ) + " id='remove_navi_play'>Play<br>";
             html += "<input type='checkbox' " + (getValue('remove_navi_community') ? "checked='checked'" : "" ) + " id='remove_navi_community'>Community<br>";
             html += "<input type='checkbox' " + (getValue('remove_navi_shop') ? "checked='checked'" : "" ) + " id='remove_navi_shop'>Shop<br><br>";
-            html += "<input type='checkbox' " + (settings_bookmarks_search ? "checked='checked'" : "" ) + " id='settings_bookmarks_search'>Show searchfield - Default value: <input class='gclh_form' type='text' id='settings_bookmarks_search_default' value='" + settings_bookmarks_search_default + "' size='4'>" + show_help("If you enable this option, there will be a searchfield on the top of the page beside the links. In this field you can search for GCIDs, TBIDs, tracking numbers, coordinates, ... - also you can define a default value if you want (like GC...).<br><br>This option requires \"Show Linklist on top\".") + "<br>";
+            html += "<input type='checkbox' " + (settings_bookmarks_search ? "checked='checked'" : "" ) + " id='settings_bookmarks_search'>Show searchfield - Default value: <input class='gclh_form' type='text' id='settings_bookmarks_search_default' value='" + settings_bookmarks_search_default + "' size='4'>" + show_help("If you enable this option, there will be a searchfield on the top of the page beside the links. In this field you can search for GC Ids, TB Ids, tracking numbers, coordinates, ... - also you can define a default value if you want (like GC ...).<br><br>This option requires \"Show Linklist on top\".") + "<br>";
 
             html += "<input type='radio' " + (settings_bookmarks_top_menu ? "checked='checked'" : "" ) + " name='top_menu' id='settings_bookmarks_top_menu' style='margin-top: 9px;'>Show Linklist at menu as drop-down list" + show_help("With this option your Linklist will be shown at the navigation menu as a drop-down list beside the others.<br><br>" + t_reqChl) + "<br>";
             html += "<div id='box_top_menu_v' style='margin-left: 16px; margin-bottom: 2px; height: 141px;' >";
@@ -9273,18 +9272,18 @@ var mainGC = function () {
             html += "  <option value=\"3\" " + (settings_menu_number_of_lines == "3" ? "selected=\"selected\"" : "") + ">3</option>";
             html += "</select>" + show_help("With this option you can choose the number of lines which are necessary to include all the links of the Linklist in the header of the page.<br><br>" + t_reqChlSLoT) + "<br>";
             html += "<input type='checkbox' " + (getValue('settings_menu_show_separator') ? "checked='checked'" : "" ) + " id='settings_menu_show_separator'>Show separator between the links" + show_help(t_reqChlSLoT) + "<br>";
-            html += "&nbsp;" + "Font color at gc.com drop-down lists: <input class='gclh_form color' type='text' size=5 id='settings_font_color_submenuX0' value='" + getValue("settings_font_color_submenu", "93B516") + "'>";
-            html += "<img src=" + global_restore_icon + " id='restore_settings_font_color_submenuX0' title='back to default' style='width: 12px; cursor: pointer;'>" + show_help("With this option you can choose the font color at the gc.com drop-down lists. The default font color is 93B516 (lime green).<br><br>" + t_reqChlSLoT) + "<br>";
-            html += "&nbsp;" + "Font size at gc.com drop-down lists: <select class='gclh_form' id='settings_font_size_submenuX0'>";
+            html += "&nbsp;" + "Font color at GC drop-down lists: <input class='gclh_form color' type='text' size=5 id='settings_font_color_submenuX0' value='" + getValue("settings_font_color_submenu", "93B516") + "'>";
+            html += "<img src=" + global_restore_icon + " id='restore_settings_font_color_submenuX0' title='back to default' style='width: 12px; cursor: pointer;'>" + show_help("With this option you can choose the font color at the GC drop-down lists. The default font color is 93B516 (lime green).<br><br>" + t_reqChlSLoT) + "<br>";
+            html += "&nbsp;" + "Font size at GC drop-down lists: <select class='gclh_form' id='settings_font_size_submenuX0'>";
             for ( var i = 6; i < 17; i++ ) {
                 html += "  <option value='" + i + "' " + (settings_font_size_submenu == i ? "selected=\"selected\"" : "") + ">" + i + "</option>";
             }
-            html += "</select> px" + show_help("With this option you can only choose the font size at the remaining gc.com drop-down lists in pixel. The default font size is 13 pixel.<br><br>" + t_reqChlSLoT) + "<br>";
-            html += "&nbsp;" + "Distance between gc.com drop-down links: <select class='gclh_form' id='settings_distance_submenuX0'>";
+            html += "</select> px" + show_help("With this option you can only choose the font size at the remaining GC drop-down lists in pixel. The default font size is 13 pixel.<br><br>" + t_reqChlSLoT) + "<br>";
+            html += "&nbsp;" + "Distance between GC drop-down links: <select class='gclh_form' id='settings_distance_submenuX0'>";
             for ( var i = 0; i < 33; i++ ) {
                 html += "  <option value='" + i + "' " + (settings_distance_submenu == i ? "selected=\"selected\"" : "") + ">" + i + "</option>";
             }
-            html += "</select> px" + show_help("With this option you can only choose the distance between the remaining gc.com drop-down links in vertical direction in pixel. <br><br>" + t_reqChlSLoT) + "<br>";
+            html += "</select> px" + show_help("With this option you can only choose the distance between the remaining GC drop-down links in vertical direction in pixel. <br><br>" + t_reqChlSLoT) + "<br>";
             html += "</div>";
             html += "<br>";
 
@@ -9369,7 +9368,7 @@ var mainGC = function () {
                     html += ">" + outTitle + "</a>";
                     // Kennzeichnung neuer Parameter im Linklist Bereich.
                     if ( num >= 69 && num <= 69 ) html += newParameterLL2;
-                    if ( num >= 70 && num <= 71 ) html += newParameterLL3;
+                    if ( num >= 70 && num <= 73 ) html += newParameterLL3;
                 }
                 html += "  </td>";
                 // Zweite Spalte mit gegebenenfalls abweichenden Bezeichnungen:
@@ -9380,7 +9379,7 @@ var mainGC = function () {
                     html += "<input style='padding-left: 2px !important; padding-right: 2px !important;' class='gclh_form' title='Differing description for standard link' id='bookmarks_name[" + num + "]' type='text' size='15' value='" + getValue("settings_bookmarks_title[" + num + "]", "") + "'>";
                     // Kennzeichnung neuer Parameter im Linklist Bereich.
                     if ( num >= 69 && num <= 69 ) html += newParameterLLVersionSetzen(0.8);
-                    if ( num >= 70 && num <= 71 ) html += newParameterLLVersionSetzen(0.9);
+                    if ( num >= 70 && num <= 73 ) html += newParameterLLVersionSetzen(0.9);
                 }
                 html += "  </td></tr>";
             }
@@ -10025,7 +10024,6 @@ var mainGC = function () {
                 'settings_show_nearestuser_profil_link',
                 'settings_show_homezone',
                 'settings_show_hillshadow',
-                'remove_navi_learn',
                 'remove_navi_play',
                 'remove_navi_community',
                 'remove_navi_shop',
@@ -11109,7 +11107,7 @@ var mainGC = function () {
 ////////////////////////////////////////////////////////////////////////////
 // Global Functions
 ////////////////////////////////////////////////////////////////////////////
-// Create a bookmark to a page in the geocaching.com name space.
+// Create a bookmark to a GC page.
 function bookmark(title, href, bookmarkArray) {
     var bm = new Object();
     bookmarkArray[bookmarkArray.length] = bm;
