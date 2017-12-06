@@ -2390,23 +2390,27 @@ var mainGC = function () {
         } catch (e) { gclh_error("Hide Hint:", e); }
     }
 
-// Show disabled/archived caches with strikeout in title.
-    if (settings_strike_archived && is_page("cache_listing")) {
+// Disabled and archived ...
+    if (is_page("cache_listing")) {
         try {
-            var warnings = $('ul.OldWarning > li');
-            if (warnings[0]) {
-                var cacheTitle = document.getElementById('ctl00_ContentBody_CacheName');
-                if (cacheTitle) {
-                    var parent = cacheTitle.parentNode;
-                    if (parent) {
-                        parent.removeChild(cacheTitle);
-                        var strike = document.createElement('strike');
-                        parent.appendChild(strike);
-                        strike.appendChild(cacheTitle);
-                    }
-                }
+            // Rename the link to image gallery.
+            if (document.getElementById("ctl00_ContentBody_uxGalleryImagesLink")) {
+                document.getElementById("ctl00_ContentBody_uxGalleryImagesLink").innerHTML = document.getElementById("ctl00_ContentBody_uxGalleryImagesLink").innerHTML.replace("View the ", "");
             }
-        } catch (e) { gclh_error("Strike Archived:", e); }
+            // Archived in red.
+            if (document.getElementById('ctl00_ContentBody_archivedMessage') && document.getElementById('ctl00_ContentBody_CacheName')) {
+                document.getElementById("ctl00_ContentBody_CacheName").style.color = '#8C0B0B';
+            }
+            // Archived and disabled strike through.
+            if (settings_strike_archived && document.getElementById('ctl00_ContentBody_CacheName') &&
+                (document.getElementById('ctl00_ContentBody_archivedMessage') || document.getElementById('ctl00_ContentBody_disabledMessage'))) {
+                document.getElementById("ctl00_ContentBody_CacheName").style.textDecoration = 'line-through';
+            }
+            // Link more verbessern.
+            if (document.getElementsByClassName('more-cache-logs-link')[0] && document.getElementsByClassName('more-cache-logs-link')[0].href) {
+                document.getElementsByClassName('more-cache-logs-link')[0].href = "#cache_logs_container";
+            }
+        } catch (e) { gclh_error("Disabled and archived:", e); }
     }
 
 // Highlight Usercoords.
@@ -2875,20 +2879,6 @@ var mainGC = function () {
         return template;
     }
 
-// Switch title-color to red, if cache is archived & rename the gallery-link to prevent destroying the layout on to many images ("view the " wegnehmen).
-    if (is_page("cache_listing")) {
-        try {
-            if (document.getElementById("ctl00_ContentBody_uxGalleryImagesLink")) document.getElementById("ctl00_ContentBody_uxGalleryImagesLink").innerHTML = document.getElementById("ctl00_ContentBody_uxGalleryImagesLink").innerHTML.replace("View the ", "");
-            var warnings = $('ul.OldWarning > li');
-            for (var i = 0; i < warnings.length; i++) {
-                if (warnings[i].innerHTML.match(/(archived|archiviert)/)) {
-                    if (document.getElementById("ctl00_ContentBody_CacheName")) document.getElementById("ctl00_ContentBody_CacheName").parentNode.style.color = '#8C0B0B';
-                    break;
-                }
-            }
-        } catch (e) { gclh_error("Switch title-color:", e); }
-    }
-
 // Improve Mail.
     if (settings_show_mail && document.location.href.match(/^https?:\/\/www\.geocaching\.com\/email\//) && document.getElementById("ctl00_ContentBody_SendMessagePanel1_tbMessage")) {
         try {
@@ -2946,7 +2936,7 @@ var mainGC = function () {
         } catch (e) { gclh_error("Improve Message:", e); }
     }
 
-// Add link to waypoint list and cache logs in cache detail navigation (sidebar) (issue #253).
+// Add link to waypoint list and cache logs in cache detail navigation (sidebar).
     if ( is_page("cache_listing") ) {
         if ( getWaypointTable().length > 0 ) {
             $(".CacheDetailNavigation:first > ul:first").append('<li><a href="#ctl00_ContentBody_bottomSection">Go to Waypoint list</a></li>');
@@ -2964,23 +2954,23 @@ var mainGC = function () {
         return tbl;
     }
 
-// Driving direction for every waypoint (issue #252).
+// Driving direction for every waypoint.
     if (settings_driving_direction_link && (is_page("cache_listing") || document.location.href.match(/^https?:\/\/www\.geocaching\.com\/hide\/wptlist.aspx/))) {
         try {
             var tbl = getWaypointTable();
             var length = tbl.find("tbody > tr").length;
             for ( var i=0; i<length/2; i++ ) {
                 var row1st = tbl.find("tbody > tr").eq(i*2);
-                var name = row1st.find("td:eq(5)").text().trim();
-                var icon = row1st.find("td:eq(2) > img").attr('src');
-                var cellCoordinates = row1st.find("td:eq(6)");
+                var name = row1st.find("td:eq(4)").text().trim();
+                var icon = row1st.find("td:eq(1) > img").attr('src');
+                var cellCoordinates = row1st.find("td:eq(5)");
                 var tmp_coords = toDec(cellCoordinates.text().trim());
                 if ( ( !settings_driving_direction_parking_area || icon.match(/pkg.jpg/g) ) && typeof tmp_coords[0] !== 'undefined' && typeof tmp_coords[1] !== 'undefined') {
                     if (getValue("home_lat", 0) != 0 && getValue("home_lng") != 0) {
                         var link = "http://maps.google.com/maps?f=d&hl=en&saddr="+getValue("home_lat", 0)/10000000+","+getValue("home_lng", 0)/10000000+"%20(Home%20Location)&daddr=";
                         row1st.find("td:last").append('<a title="Driving Directions" href="'+link+tmp_coords[0]+","+tmp_coords[1]+" ("+name+')" target="_blank"><img src="/images/icons/16/directions.png"></a>');
                     } else {
-                        var link = document.location + "X#gclhpb#errhomecoord";
+                        var link = document.location + "#gclhpb#errhomecoord";
                         row1st.find("td:last").append('<a title="Driving Directions" href="'+link+'"><img src="/images/icons/16/directions.png"></a>');
                     }
                 }
@@ -3060,7 +3050,9 @@ var mainGC = function () {
                 // We have no additional waypoints, so the flops map link will not be displayed in the listing
             } else {
                 tbl = tbl.next("p");
-                tbl.append('<div class="GClhdropdown"><div id="ShowWaypointsOnFloppsMap" class="GClhdropbtn"><a>Show waypoints on Flopp\'s Map with &#8230;</a></div><div id="FloppsMapLayers" class="GClhdropdown-content"></div></div>');
+                if (document.getElementById('ctl00_ContentBody_Waypoints_uxShowHiddenCoordinates')) var newlines = "<br><p></p>";
+                else var newlines = "";
+                tbl.append(newlines+'<div class="GClhdropdown"><div id="ShowWaypointsOnFloppsMap" class="GClhdropbtn"><a>Show waypoints on Flopp\'s Map with &#8230;</a></div><div id="FloppsMapLayers" class="GClhdropdown-content"></div></div>');
 
                 $('#FloppsMapLayers').append('<div class="GClhdropdown-content-info floppsmap-warning"><b>WARNING:</b> There are too many waypoints in the listing. Flopp\'s Map allows only a limited number of waypoints. Not all waypoints are shown.</div>');
 
@@ -3191,19 +3183,19 @@ var mainGC = function () {
                     var waypoint = {};
 
                     if (td_list[3]) {
-                        waypoint.icon = td_list[2].getElementsByTagName("img")[0].getAttribute("src");
-                        waypoint.prefix = td_list[3].textContent.trim();
-                        waypoint.lookup = td_list[4].textContent.trim();
-                        waypoint.name = td_list[5].getElementsByTagName("a")[0].textContent;
+                        waypoint.icon = td_list[1].getElementsByTagName("img")[0].getAttribute("src");
+                        waypoint.prefix = td_list[2].textContent.trim();
+                        waypoint.lookup = td_list[3].textContent.trim();
+                        waypoint.name = td_list[4].getElementsByTagName("a")[0].textContent;
 
-                        var oDiv = td_list[5];
+                        var oDiv = td_list[4];
                         var firstText = "";
                         for (var j = 0; j < oDiv.childNodes.length; j++) {
                             var curNode = oDiv.childNodes[j];
                             if (curNode.nodeName === "#text") firstText += curNode.nodeValue.trim();
                         }
                         waypoint.subtype_name = firstText;
-                        waypoint.link = td_list[5].getElementsByTagName("a")[0].getAttribute("href");
+                        waypoint.link = td_list[4].getElementsByTagName("a")[0].getAttribute("href");
 
                         var subtype = "";
                         var icon = waypoint.icon;
@@ -3217,7 +3209,7 @@ var mainGC = function () {
                         waypoint.subtype = subtype;
 
                         waypoint.visible = false;
-                        tmp_coords = toDec(td_list[6].textContent.trim());
+                        tmp_coords = toDec(td_list[5].textContent.trim());
                         if (typeof tmp_coords[0] !== 'undefined' && typeof tmp_coords[1] !== 'undefined') {
                             waypoint.latitude = tmp_coords[0];
                             waypoint.longitude = tmp_coords[1];
@@ -3283,16 +3275,10 @@ var mainGC = function () {
         return addWP;
     }
 
-    function getLongDescriptionCoordinates() { return []; }
-
-    function getPersonalNoteCoordinates() { return []; }
-
     function extractWaypointsFromListing() {
         var waypoints = [];
         waypoints = waypoints.concat(getListingCoordinatesX());
         waypoints = waypoints.concat(getAdditionalWaypoints());
-        waypoints = waypoints.concat(getLongDescriptionCoordinates());
-        waypoints = waypoints.concat(getPersonalNoteCoordinates());
         return waypoints;
     }
 
@@ -3450,7 +3436,7 @@ var mainGC = function () {
         return encodeURI(url);
     }
 
-// Added elevation to every additional waypoint with shown coordinates (issue #250).
+// Added elevation to every additional waypoint with shown coordinates.
     if (settings_show_elevation_of_waypoints && (is_page("cache_listing") || document.location.href.match(/^https?:\/\/www\.geocaching\.com\/hide\/wptlist.aspx/))) {
         try {
             function formatElevation( elevation ) {
@@ -3481,7 +3467,7 @@ var mainGC = function () {
                                     title = "Elevation not available - unknown location";
                                 }
                             }
-                            tbl.find("tbody > tr:eq("+(i*2)+") > td:eq(7)").html('<span title="'+title+'">'+heightString+'</span>'  );
+                            tbl.find("tbody > tr:eq("+(i*2)+") > td:eq(6)").html('<span title="'+title+'">'+heightString+'</span>'  );
                         }
                     }
                     var index = json.results.length-1;
@@ -3494,21 +3480,21 @@ var mainGC = function () {
             var locations="";
             var tbl = getWaypointTable();
             if ( tbl.length > 0 ) {
-                tbl.find("thead > tr > th:eq(6)").after('<th scope="col">Elevation</th>');
+                tbl.find("thead > tr > th:eq(5)").after('<th scope="col">Elevation</th>');
                 var length = tbl.find("tbody > tr").length;
                 for ( var i=0; i<length/2; i++ ) {
-                    var cellNote = tbl.find("tbody > tr:eq("+(i*2+1)+") > td:eq(2)");
+                    var cellNote = tbl.find("tbody > tr:eq("+(i*2+1)+") > td:eq(1)");
                     var colspan = cellNote.attr('colspan');
                     cellNote.attr('colspan',colspan+1);
                     var row1st = tbl.find("tbody > tr").eq(i*2);
-                    var cellCoordinates = row1st.find("td:eq(6)");
+                    var cellCoordinates = row1st.find("td:eq(5)");
                     var tmp_coords = toDec(cellCoordinates.text().trim());
                     if (typeof tmp_coords[0] !== 'undefined' && typeof tmp_coords[1] !== 'undefined') {
                         locations += (locations.length == 0 ? "" : "|") + tmp_coords[0]+","+tmp_coords[1];
                     } else {
                         locations += (locations.length == 0 ? "" : "|") + "-90.0,-180.0"; // for waypoints without visible coordinates
                     }
-                    row1st.find("td:eq(6)").after('<td>???</td>');
+                    row1st.find("td:eq(5)").after('<td>???</td>');
                 }
             }
             var waypoint = getListingCoordinates(false);
@@ -3528,9 +3514,7 @@ var mainGC = function () {
 
     // Returns true in case of modified coordinates.
     function areListingCoordinatesModified() {
-        if ((typeof(unsafeWindow.userDefinedCoords) != 'undefined') && (unsafeWindow.userDefinedCoords.data.isUserDefined==true)) {
-            return true;
-        }
+        if ((typeof(unsafeWindow.userDefinedCoords) != 'undefined') && (unsafeWindow.userDefinedCoords.data.isUserDefined==true)) return true;
         return false;
     }
 
@@ -9013,9 +8997,11 @@ var mainGC = function () {
             html += checkboxy('settings_bookmarks_show', "Show <a class='gclh_ref' href='#gclh_linklist' title='Link to topic \"Linklist / Navigation\"' id='gclh_linklist_link_2'>Linklist</a> in your dashboard") + show_help("Show the Linklist at the sidebar in your dashboard. You can configure the links in the Linklist at the end of this configuration page.") + "<br>";
             html += checkboxy('settings_show_default_links', 'Show all default links in your dashboard') + show_help("Show all the default links for the Linklist sorted at the sidebar in your dashboard (only new dashboard).") + "<br>";
             html += checkboxy('settings_hide_visits_in_profile', 'Hide TB/Coin visits in your dashboard') + "<br>";
-            html += checkboxy('settings_show_thumbnails', 'Show thumbnails of images') + show_help("With this option the images are displayed as thumbnails to have a preview. If you hover with your mouse over a thumbnail, you can see the big one.<br><br>This works in cache and TB logs, in the cache and TB image galleries, in public profile for the avatar and for the image gallery.<br><br>And after pressing button \"Show bigger avatars\" in cache listing, it works too for the avatars in the shown logs.") + "&nbsp; Max size of big image: <input class='gclh_form' size=2 type='text' id='settings_hover_image_max_size' value='" + settings_hover_image_max_size + "'> px <br>";
+            var content_settings_show_thumbnails = checkboxy('settings_show_thumbnails', 'Show thumbnails of images') + show_help("With this option the images are displayed as thumbnails to have a preview. If you hover with your mouse over a thumbnail, you can see the big one.<br><br>This works in cache and TB logs, in the cache and TB image galleries, in public profile for the avatar and in the profile image gallery. <br><br>And after pressing button \"Show bigger avatars\" in cache listing, it works too for the avatars in the shown logs.") + "&nbsp; Max size of big image: <input class='gclh_form' size=2 type='text' id='settings_hover_image_max_size' value='" + settings_hover_image_max_size + "'> px <br>";
+            html += content_settings_show_thumbnails;
             html += "&nbsp; " + checkboxy('settings_imgcaption_on_top', 'Show caption on top') + show_help("This option requires \"Show thumbnails of images\".") + "<br>";
-            html += checkboxy('settings_show_big_gallery', 'Show bigger images in gallery') + show_help("With this option the images in the galleries of caches, TBs and public profiles are displayed bigger and not in 4 columns, but in 2 columns.");
+            var content_settings_show_big_gallery = checkboxy('settings_show_big_gallery', 'Show bigger images in gallery') + show_help("With this option the images in the galleries of caches, TBs and public profiles are displayed bigger and not in 4 columns, but in 2 columns.");
+            html += content_settings_show_big_gallery;
             var content_geothumbs = "<font class='gclh_small' style='margin-left: 80px; margin-top: -10px; position: absolute;'> (Alternative: <a href='http://benchmarks.org.uk/greasemonkey/geothumbs.php' target='_blank'>Geothumbs</a> " + show_help("A great alternative to the GClh bigger image functionality with \"Show thumbnails of images\" and \"Show bigger images in gallery\", provides the script Geothumbs (Geocaching Thumbnails). <br><br>The script works like GClh with Firefox, Google Chrome and Opera as Tampermonkey script. <br><br>If you use Geothumbs, you have to uncheck both GClh bigger image functionality \"Show thumbnails of images\" and \"Show bigger images in gallery\".") + ")</font>" + "<br>";
             html += content_geothumbs;
             var content_settings_show_mail_in_allmyvips = checkboxy('settings_show_mail_in_allmyvips', 'Show mail link beside user in "All my VIPs/VUPs" list in your dashboard') + show_help3("With this option there will be an small mail icon beside every user in the list with all your VIPs (All my VIPs) on your dashboard page. With this icon you get directly to the mail page to mail to this user.<br>(VIP: Very important person)<br><br>If VUP processing is activated, this also applies to your VUPs (All my VUPs).<br>(VUP: Very unimportant person)<br><br>This option requires \"Show mail link beside user\" and \"Show VIP list\".") + "<br>";
@@ -9122,21 +9108,21 @@ var mainGC = function () {
             }
             html += "</select>" + show_help("With this option you can choose the zoom value to start in the map. \"1\" is the hole world and \"19\" is the maximal enlargement. Default is \"11\". <br><br>This option requires \"Show cache location in overview map\".") + "<br>";
             html += checkboxy('settings_show_vip_list', 'Show VIP list') + show_help("The VIP list is a list, displayed at the right side on a cache listing. You can add any user to your VIP list by clicking the little VIP icon beside the user. If it is green, this person is a VIP. The VIP list only shows VIPs and the logs of VIPs, which already posted a log to this cache. With this option you are able to see which of your VIPs already found this cache. On your dashboard page there is an overview of all your VIPs.<br>(VIP: Very important person)") + "<br>";
-            html += "&nbsp; " + checkboxy('settings_show_owner_vip_list', 'Show owner in VIP list')  + show_help("If you enable this option, the owner is a VIP for the cache, so you can see, what happened with the cache (disable, maint, enable, ..). Then the owner is shown not only in VIP-list but also in VIP logs.<br>(VIP: Very important person)<br><br>" + t_reqSVl)+ "<br>";
-            html += "&nbsp; " + checkboxy('settings_show_long_vip', 'Show long VIP list (one row per log)') + show_help("This is another type of displaying the VIP list. If you disable this option you get the short list - one row per VIP and the logs as icons beside the VIP. If you enable this option, there is a row for every log.<br>(VIP: Very important person)<br><br>" + t_reqSVl) + "<br>";
+            html += "&nbsp; " + checkboxy('settings_show_owner_vip_list', 'Show owner in VIP list')  + show_help("If you enable this option, the owner is a VIP for the cache, so you can see, what happened with the cache (disable, maint, enable, ...). Then the owner is shown not only in VIP-list but also in VIP logs.<br>(VIP: Very important person)<br><br>" + t_reqSVl)+ "<br>";
+            html += "&nbsp; " + checkboxy('settings_show_long_vip', 'Show long VIP list (one row per log)') + show_help("This is another type of displaying the VIP list. If you disable this option you get the short list, one row per VIP and the logs as icons beside the VIP. If you enable this option, there is a row for every log.<br>(VIP: Very important person)<br><br>" + t_reqSVl) + "<br>";
             html += "&nbsp; " + checkboxy('settings_vip_show_nofound', 'Show a list of VIPs who have not found the cache') + show_help("This option enables an additional VIP list with VIPs who have not found the cache.<br>(VIP: Very important person)<br><br>" + t_reqSVl) + "<br>";
             html += "&nbsp; " + checkboxy('settings_make_vip_lists_hideable', 'Make VIP lists in listing hideable') + show_help("With this option you can hide and show the VIP lists \"VIP-List\" and \"VIP-List not found\" in cache listing with one click.<br>(VIP: Very important person)<br><br>" + t_reqSVl) + "<br>";
-            html += content_settings_show_mail_in_viplist.replace("settings_show_mail_in_viplist", "settings_show_mail_in_viplistX0");
-            html += "&nbsp; " + content_settings_show_mail_in_allmyvips.replace("settings_show_mail_in_allmyvips", "settings_show_mail_in_allmyvipsX1");
-            html += "&nbsp; " + content_settings_process_vup.replace("settings_process_vup", "settings_process_vupX0");
-            html += " &nbsp; &nbsp; " + content_settings_show_vup_friends.replace("settings_show_vup_friends", "settings_show_vup_friendsX0");
-            html += " &nbsp; &nbsp; " + checkboxy('settings_vup_hide_avatar', 'Also hide name, avatar and counter from log') + show_help("With this option you can also hide the cacher name, his avatar and his found counter<br><br>This option requires \"Process VUPs\" and \"Show VIP list\".") + "<br>";
+            html += content_settings_show_mail_in_viplist.replace("in_viplist", "in_viplistX0");
+            html += "&nbsp; " + content_settings_show_mail_in_allmyvips.replace("in_allmyvips", "in_allmyvipsX1");
+            html += "&nbsp; " + content_settings_process_vup.replace("process_vup", "process_vupX0");
+            html += " &nbsp; &nbsp; " + content_settings_show_vup_friends.replace("vup_friends", "vup_friendsX0");
+            html += " &nbsp; &nbsp; " + checkboxy('settings_vup_hide_avatar', 'Also hide name, avatar and counter from log') + show_help("With this option you can also hide the cacher name, his avatar and his found counter in listing.<br><br>This option requires \"Process VUPs\" and \"Show VIP list\".") + "<br>";
             html += " &nbsp; &nbsp; &nbsp; " + checkboxy('settings_vup_hide_log', 'Hide complete log') + show_help("With this option you can hide the complete log of the cacher.<br><br>This option requires \"Also hide name, avatar and counter from log\", \"Process VUPs\" and \"Show VIP list\".") + "<br>";
             html += checkboxy('settings_link_big_listing', 'Replace image links in cache listing to bigger image') + show_help("With this option the links of owner images in the cache listing points to the bigger, original image.") + "<br>";
-            html += checkboxy('settings_show_thumbnailsX0', 'Show thumbnails of images') + show_help("With this option the images are displayed as thumbnails to have a preview. If you hover over a thumbnail, you can see the big one.<br><br>This works in cache and TB logs, in the cache and TB image galleries, in public profile for the avatar and in the profile image gallery. <br><br>And after pressing button \"Show bigger avatars\" in cache listing, it works too for the avatars in the shown logs.") + "&nbsp; Max size of big image: <input class='gclh_form' size=2 type='text' id='settings_hover_image_max_sizeX0' value='" + settings_hover_image_max_size + "'> px <br>";
+            html += content_settings_show_thumbnails.replace("show_thumbnails", "show_thumbnailsX0").replace("max_size", "max_sizeX0");
             html += " &nbsp; &nbsp;" + "Spoiler-Filter: <input class='gclh_form' type='text' id='settings_spoiler_strings' value='" + settings_spoiler_strings + "'> " + show_help("If one of these words is found in the caption of the image, there will be no real thumbnail. It is to prevent seeing spoilers. Words have to be divided by |. If the field is empty, no checking is done. Default is \"spoiler|hinweis|hint\".<br><br>This option requires \"Show thumbnails of images\".") + "<br>";
             html += "&nbsp; " + checkboxy('settings_imgcaption_on_topX0', 'Show caption on top') + show_help("This option requires \"Show thumbnails of images\".") + "<br>";
-            html += checkboxy('settings_show_big_galleryX0', 'Show bigger images in gallery') + show_help("With this option the images in the galleries of caches, TBs and profiles are displayed bigger and not in 4 columns, but in 2 columns.");
+            html += content_settings_show_big_gallery.replace("big_gallery", "big_galleryX0");
             html += content_geothumbs;
             html += checkboxy('settings_hide_avatar', 'Hide avatars in listing') + show_help("This option hides the avatars in logs. This prevents loading the hundreds of images. You have to change the option here, because GClh overrides the log-load-logic of GC, so the avatar option of GC doesn't work with GClh.") + "<br>";
             html += checkboxy('settings_load_logs_with_gclh', 'Load logs with GClh') + show_help("This option should be enabled. <br><br>You just should disable it, if you have problems with loading the logs. <br><br>If this option is disabled, there are no VIP-, mail-, message- and top icons, no line colors and no mouse activated big images at the logs. Also the VIP lists, hide avatars, log filter and log search won't work.") + "<br>";
@@ -9149,14 +9135,14 @@ var mainGC = function () {
             html += " &nbsp; &nbsp;" + "Measure unit can be set in <a href=\"https://www.geocaching.com/account/settings/preferences\">Preferences</a>" + "<br>";
             html += newParameterVersionSetzen(0.7) + newParameterOff;
             html += newParameterOn2;
-            html += checkboxy('settings_improve_add_to_list', 'Show compact layout in \"Add to list\" popup to bookmark a cache') + "<br>";
+            html += checkboxy('settings_improve_add_to_list', 'Show compact layout in \"Add to list\" popup to bookmark a cache') + prem + "<br>";
             html += " &nbsp; &nbsp;" + "Height of popup: <select class='gclh_form' id='settings_improve_add_to_list_height' >";
             for (var i = 100; i < 521; i++) {
                 html += "  <option value='" + i + "' " + (settings_improve_add_to_list_height == i ? "selected=\"selected\"" : "") + ">" + i + "</option>";
             }
-            html += "</select> px" + show_help("With this option you can choose the height of the \"Add to list\" popup to bookmark a cache from 100 up to 520 pixel. The default is 205 pixel, similar to the standard.<br><br>This option requires \"Show compact layout in \"Add to list\" popup to bookmark a cache\".") + "<br>";
-            html += checkboxy('settings_show_flopps_link', 'Show Flopp\'s Map Links in Sidebar and under the Additional Waypoints') + show_help3("If there are no additional Waypoints only the link in the Sidebar is shown.") + "<br>";
-            html += checkboxy('settings_show_brouter_link', 'Show Link to BRouter in Sidebar and under the Additional Waypoints') + show_help3("If there are no additional Waypoints only the link in the Sidebar is shown.") + "<br>";
+            html += "</select> px" + show_help("With this option you can choose the height of the \"Add to list\" popup to bookmark a cache from 100 up to 520 pixel. The default is 205 pixel, similar to the standard.<br><br>This option requires \"Show compact layout in \"Add to list\" popup to bookmark a cache\".") + prem + "<br>";
+            html += checkboxy('settings_show_flopps_link', 'Show Flopp\'s Map links in sidebar and under the Additional Waypoints') + show_help3("If there are no additional waypoints only the link in the sidebar is shown.") + "<br>";
+            html += checkboxy('settings_show_brouter_link', 'Show BRouter links in sidebar and under the Additional Waypoints') + show_help3("If there are no additional waypoints only the link in the sidebar is shown.") + "<br>";
             html += newParameterVersionSetzen(0.8) + newParameterOff;
             html += "</div>";
 
