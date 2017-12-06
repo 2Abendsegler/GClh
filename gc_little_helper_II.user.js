@@ -2442,24 +2442,56 @@ var mainGC = function () {
         } catch (e) { gclh_error("Decrypt cdpf Hint2:", e); }
     }
 
-// BBCode helper function.
-    function gclh_add_insert_fkt(id) {
-        var code = "function gclh_insert(aTag,eTag){"; // http://aktuell.de.selfhtml.org/artikel/javascript/bbcode/
-        code += "  var input = document.getElementById('" + id + "');";
+// Show Smilies und Log Templates old log site.
+    if ((document.location.href.match(/^https?:\/\/www\.geocaching\.com\/seek\/log\.aspx\?(id|guid|ID|wp|LUID|PLogGuid)\=/) || document.location.href.match(/^https?:\/\/www\.geocaching\.com\/track\/log\.aspx\?(id|wid|guid|ID|LUID|PLogGuid)\=/)) &&
+        document.getElementById('litDescrCharCount') && document.getElementById('ctl00_ContentBody_LogBookPanel1_WaypointLink') && document.getElementById('ctl00_ContentBody_LogBookPanel1_uxLogInfo') && document.getElementById('uxDateVisited')) {
+        try {
+            [ aGCTBName, aGCTBLink, aGCTBNameLink, aLogDate ] = getGCTBInfo();
+            var aOwner = decode_innerHTML(document.getElementById('ctl00_ContentBody_LogBookPanel1_WaypointLink').nextSibling.nextSibling.nextSibling.nextSibling.nextSibling);
+            insert_smilie_fkt("ctl00_ContentBody_LogBookPanel1_uxLogInfo");
+            insert_tpl_fkt();
+            var liste = "";
+            if (settings_show_bbcode) build_smilies();
+            build_tpls();
+            var box = document.getElementById('litDescrCharCount');
+            box.innerHTML = liste;
+        } catch (e) { gclh_error("Smilies and Log Templates old log page:", e); }
+    }
+//xxxx
+// Show Smilies und Log Templates new log site.
+    if (document.location.href.match(/^https?:\/\/www\.geocaching\.com\/play\/geocache\/gc\w+\/log/) &&
+        document.getElementsByClassName('muted')[0] && document.getElementById('LogDate') && document.getElementById('logContent') && document.getElementById('LogText')) {
+        try {
+            [ aGCTBName, aGCTBLink, aGCTBNameLink, aLogDate ] = getGCTBInfo(true);
+            var aOwner = decode_innerHTML(document.getElementsByClassName('muted')[0].children[1]);
+            insert_smilie_fkt("LogText");
+            insert_tpl_fkt(true);
+            var liste = "";
+            if (settings_show_bbcode) build_smilies(true);
+            build_tpls(true);
+            var box = document.createElement("div");
+            box.innerHTML = liste;
+            side = document.getElementById('logContent');
+            side.insertBefore(box, side.childNodes[0]);
+            var css = "";
+            css += ".flatpickr-wrapper {left: 240px; float: unset !important;}";
+            css += "#gclh_log_tpls {position: relative; float: right; bottom: 8px; margin-right: -1px; width: unset; border: 1px solid #9b9b9b; box-shadow: none; height: 40px; padding-top: 5px;}";
+            css += "select:hover, select:focus, select:active {background-image: url(/play/app/ui-icons/icons/global/caret-down-hover.svg);}";
+            appendCssStyle(css);
+        } catch (e) { gclh_error("Smilies and Log Templates new log page:", e); }
+    }
+    // Script für insert Smilie by click.
+    function insert_smilie_fkt(id) {
+        var code = "function gclh_insert_smilie(aTag,eTag){";
+        code += "  var input = document.getElementById('"+id+"');";
         code += "  if(typeof input.selectionStart != 'undefined'){";
         code += "    var start = input.selectionStart;";
         code += "    var end = input.selectionEnd;";
         code += "    var insText = input.value.substring(start, end);";
         code += "    input.value = input.value.substr(0, start) + aTag + insText + eTag + input.value.substr(end);";
-        code += "    /* Anpassen der Cursorposition */";
-        code += "    var pos;";
-        code += "    if (insText.length == 0) {";
-        code += "      pos = start + aTag.length;";
-        code += "    } else {";
-        code += "      pos = start + aTag.length + insText.length + eTag.length;";
-        code += "    }";
-        code += "    input.selectionStart = pos;";
-        code += "    input.selectionEnd = pos;";
+        code += "    if (insText.length == 0) var pos = start + aTag.length;";
+        code += "    else var pos = start + aTag.length + insText.length + eTag.length;";
+        code += "    input.selectionStart = input.selectionEnd = pos;";
         code += "  }";
         code += "  input.focus();";
         code += "}";
@@ -2467,110 +2499,121 @@ var mainGC = function () {
         script.innerHTML = code;
         document.getElementsByTagName("body")[0].appendChild(script);
     }
-
-// Show Smilies and BBCode --- http://www.cachewiki.de/wiki/Formatierung.
-    if (settings_show_bbcode && (document.location.href.match(/^https?:\/\/www\.geocaching\.com\/seek\/log\.aspx\?(id|guid|ID|wp|LUID|PLogGuid)\=/) || document.location.href.match(/^https?:\/\/www\.geocaching\.com\/track\/log\.aspx\?(id|wid|guid|ID|LUID|PLogGuid)\=/)) && document.getElementById('litDescrCharCount')) {
-        try {
-            finds = get_my_finds();
-            [ aDate, aTime, aDateTime ] = getDateTime();
-            var me = global_me;
-            [ aGCTBName, aGCTBLink, aGCTBNameLink, aLogDate ] = getGCTBInfo();
-
-            gclh_add_insert_fkt("ctl00_ContentBody_LogBookPanel1_uxLogInfo");
-
-            var code = "function gclh_insert_from_div(id){";
-            code += "  var finds = '" + finds + "';";
-            code += "  var aDate = '" + aDate + "';";
-            code += "  var aTime = '" + aTime + "';";
-            code += "  var aDateTime = '" + aDateTime + "';";
-            code += "  var me = '" + me + "';";
-            code += "  var aGCTBName = '" + aGCTBName + "';";
-            code += "  var aGCTBLink = '" + aGCTBLink + "';";
-            code += "  var aGCTBNameLink = '" + aGCTBNameLink + "';";
-            code += "  if ( document.getElementById('uxDateVisited') ) { var aLogDate = document.getElementById('uxDateVisited').value; }";
-            code += "  var settings_replace_log_by_last_log = " + settings_replace_log_by_last_log + ";";
-            code += "  var owner = document.getElementById('ctl00_ContentBody_LogBookPanel1_WaypointLink').nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.innerHTML;";
+    // Script für insert Log Template by click.
+    function insert_tpl_fkt(newLogPage) {
+        finds = get_my_finds();
+        [ aDate, aTime, aDateTime ] = getDateTime();
+        var me = global_me;
+        var code = "function gclh_insert_tpl(id){";
+        if (newLogPage) {
+            code += "  document.getElementById('gclh_log_tpls').value = -1;";
+            code += "  var aLogDate = document.getElementById('LogDate').value;";
+            code += "  var input = document.getElementById('LogText');";
+        } else {
+            code += "  var aLogDate = document.getElementById('uxDateVisited').value;";
             code += "  var input = document.getElementById('ctl00_ContentBody_LogBookPanel1_uxLogInfo');";
-            code += "  var inhalt = document.getElementById(id).innerHTML;";
-            // 2 Zeilen von DieBatzen ausgeliehen, um "<" und ">" richtig darzustellen.
-            code += "  var textarea = document.createElement('textarea');";
-            code += "  var inhalt = $('<textarea>').html(inhalt).val();";
-            code += "  inhalt = inhalt.replace(/\\&amp\\;/g,'&');";
-            code += "  if(finds){";
-            code += "    inhalt = inhalt.replace(/#found_no#/ig, finds);";
-            code += "    finds++;";
-            code += "    inhalt = inhalt.replace(/#found#/ig, finds);";
-            code += "  }";
-            code += "  if(aDate){inhalt = inhalt.replace(/#Date#/ig, aDate);}";
-            code += "  if(aTime){inhalt = inhalt.replace(/#Time#/ig, aTime);}";
-            code += "  if(aDateTime){inhalt = inhalt.replace(/#DateTime#/ig, aDateTime);}";
-            code += "  if(me){inhalt = inhalt.replace(/#me#/ig, me);}";
-            code += "  if(aGCTBName){inhalt = inhalt.replace(/#GCTBName#/ig, aGCTBName);}";
-            code += "  if(aGCTBLink){inhalt = inhalt.replace(/#GCTBLink#/ig, aGCTBLink);}";
-            code += "  if(aGCTBNameLink){inhalt = inhalt.replace(/#GCTBNameLink#/ig, aGCTBNameLink);}";
-            code += "  if(aLogDate){inhalt = inhalt.replace(/#LogDate#/ig, aLogDate);}";
-            code += "  if(owner){inhalt = inhalt.replace(/#owner#/ig, owner);}";
-            code += "  if(id.match(/last_log/) && settings_replace_log_by_last_log){";
-            code += "    input.value = inhalt;";
-            code += "  }else{";
-            code += "    if(typeof input.selectionStart != 'undefined' && inhalt){";
-            code += "      var start = input.selectionStart;";
-            code += "      var end = input.selectionEnd;";
-            code += "      var insText = input.value.substring(start, end);";
-            code += "      input.value = input.value.substr(0, start) + inhalt + input.value.substr(end);";
-            code += "      /* Anpassen der Cursorposition */";
-            code += "      var pos;";
-            code += "      pos = start + inhalt.length;";
-            code += "      input.selectionStart = pos;";
-            code += "      input.selectionEnd = pos;";
-            code += "    }";
-            code += "  }";
-            code += "  input.focus();";
-            code += "}";
-
-            var script = document.createElement("script");
-            script.innerHTML = code;
-            document.getElementsByTagName("body")[0].appendChild(script);
-
-            var box = document.getElementById('litDescrCharCount');
-            var liste = "<br><p style='margin: 5px;'>";
-            liste += "<a href='#' onClick='gclh_insert(\"[:)]\",\"\"); return false;'><img src='" + http + "://www.geocaching.com/images/icons/icon_smile.gif' border='0'></a>&nbsp;&nbsp;";
-            liste += "<a href='#' onClick='gclh_insert(\"[:D]\",\"\"); return false;'><img src='" + http + "://www.geocaching.com/images/icons/icon_smile_big.gif' border='0'></a>&nbsp;&nbsp;";
-            liste += "<a href='#' onClick='gclh_insert(\"[8D]\",\"\"); return false;'><img src='" + http + "://www.geocaching.com/images/icons/icon_smile_cool.gif' border='0'></a>&nbsp;&nbsp;";
-            liste += "<a href='#' onClick='gclh_insert(\"[:I]\",\"\"); return false;'><img src='" + http + "://www.geocaching.com/images/icons/icon_smile_blush.gif' border='0'></a>&nbsp;&nbsp;";
-            liste += "<a href='#' onClick='gclh_insert(\"[:P]\",\"\"); return false;'><img src='" + http + "://www.geocaching.com/images/icons/icon_smile_tongue.gif' border='0'></a>";
-            liste += "</p><p style='margin: 5px;'>";
-            liste += "<a href='#' onClick='gclh_insert(\"[}:)]\",\"\"); return false;'><img src='" + http + "://www.geocaching.com/images/icons/icon_smile_evil.gif' border='0'></a>&nbsp;&nbsp;";
-            liste += "<a href='#' onClick='gclh_insert(\"[;)]\",\"\"); return false;'><img src='" + http + "://www.geocaching.com/images/icons/icon_smile_wink.gif' border='0'></a>&nbsp;&nbsp;";
-            liste += "<a href='#' onClick='gclh_insert(\"[:o)]\",\"\"); return false;'><img src='" + http + "://www.geocaching.com/images/icons/icon_smile_clown.gif' border='0'></a>&nbsp;&nbsp;";
-            liste += "<a href='#' onClick='gclh_insert(\"[B)]\",\"\"); return false;'><img src='" + http + "://www.geocaching.com/images/icons/icon_smile_blackeye.gif' border='0'></a>&nbsp;&nbsp;";
-            liste += "<a href='#' onClick='gclh_insert(\"[8]\",\"\"); return false;'><img src='" + http + "://www.geocaching.com/images/icons/icon_smile_8ball.gif' border='0'></a>";
-            liste += "</p><p style='margin: 5px;'>";
-            liste += "<a href='#' onClick='gclh_insert(\"[:(]\",\"\"); return false;'><img src='" + http + "://www.geocaching.com/images/icons/icon_smile_sad.gif' border='0'></a>&nbsp;&nbsp;";
-            liste += "<a href='#' onClick='gclh_insert(\"[8)]\",\"\"); return false;'><img src='" + http + "://www.geocaching.com/images/icons/icon_smile_shy.gif' border='0'></a>&nbsp;&nbsp;";
-            liste += "<a href='#' onClick='gclh_insert(\"[:O]\",\"\"); return false;'><img src='" + http + "://www.geocaching.com/images/icons/icon_smile_shock.gif' border='0'></a>&nbsp;&nbsp;";
-            liste += "<a href='#' onClick='gclh_insert(\"[:(!]\",\"\"); return false;'><img src='" + http + "://www.geocaching.com/images/icons/icon_smile_angry.gif' border='0'></a>&nbsp;&nbsp;";
-            liste += "<a href='#' onClick='gclh_insert(\"[xx(]\",\"\"); return false;'><img src='" + http + "://www.geocaching.com/images/icons/icon_smile_dead.gif' border='0'></a>";
-            liste += "</p><p style='margin: 5px;'>";
-            liste += "<a href='#' onClick='gclh_insert(\"[|)]\",\"\"); return false;'><img src='" + http + "://www.geocaching.com/images/icons/icon_smile_sleepy.gif' border='0'></a>&nbsp;&nbsp;";
-            liste += "<a href='#' onClick='gclh_insert(\"[:X]\",\"\"); return false;'><img src='" + http + "://www.geocaching.com/images/icons/icon_smile_kisses.gif' border='0'></a>&nbsp;&nbsp;";
-            liste += "<a href='#' onClick='gclh_insert(\"[^]\",\"\"); return false;'><img src='" + http + "://www.geocaching.com/images/icons/icon_smile_approve.gif' border='0'></a>&nbsp;&nbsp;";
-            liste += "<a href='#' onClick='gclh_insert(\"[V]\",\"\"); return false;'><img src='" + http + "://www.geocaching.com/images/icons/icon_smile_dissapprove.gif' border='0'></a>&nbsp;&nbsp;";
-            liste += "<a href='#' onClick='gclh_insert(\"[?]\",\"\"); return false;'><img src='" + http + "://www.geocaching.com/images/icons/icon_smile_question.gif' border='0'></a>";
-            liste += "</p><br>";
-            liste += "Templates:<br>";
-            for (var i = 0; i < anzTemplates; i++) {
-                if (getValue("settings_log_template_name[" + i + "]", "") != "") {
-                    liste += "<div id='gclh_template[" + i + "]' style='display: none;'>" + getValue("settings_log_template[" + i + "]", "") + "</div>";
-                    liste += "<a href='#' onClick='gclh_insert_from_div(\"gclh_template[" + i + "]\"); return false;' style='color: #000000; text-decoration: none; font-weight: normal;'> - " + getValue("settings_log_template_name[" + i + "]", "") + "</a><br>";
-                }
+        }
+        code += "  var finds = '" + finds + "';";
+        code += "  var aDate = '" + aDate + "';";
+        code += "  var aTime = '" + aTime + "';";
+        code += "  var aDateTime = '" + aDateTime + "';";
+        code += "  var me = '" + me + "';";
+        code += "  var aGCTBName = '" + aGCTBName + "';";
+        code += "  var aGCTBLink = '" + aGCTBLink + "';";
+        code += "  var aGCTBNameLink = '" + aGCTBNameLink + "';";
+        code += "  var settings_replace_log_by_last_log = " + settings_replace_log_by_last_log + ";";
+        code += "  var owner = '" + aOwner + "';";
+        code += "  var inhalt = document.getElementById(id).innerHTML;";
+        // 2 Zeilen von DieBatzen ausgeliehen, um "<" und ">" richtig darzustellen.
+        // code += "  var textarea = document.createElement('textarea');";
+        // code += "  var inhalt = $('<textarea>').html(inhalt).val();";
+        code += "  inhalt = inhalt.replace(/\\&amp\\;/g,'&');";
+        code += "  if (finds) {";
+        code += "    inhalt = inhalt.replace(/#found_no#/ig, finds);";
+        code += "    finds++;";
+        code += "    inhalt = inhalt.replace(/#found#/ig, finds);";
+        code += "  }";
+        code += "  if (aDate) inhalt = inhalt.replace(/#Date#/ig, aDate);";
+        code += "  if (aTime) inhalt = inhalt.replace(/#Time#/ig, aTime);";
+        code += "  if (aDateTime) inhalt = inhalt.replace(/#DateTime#/ig, aDateTime);";
+        code += "  if (me) inhalt = inhalt.replace(/#me#/ig, me);";
+        code += "  if (aGCTBName) inhalt = inhalt.replace(/#GCTBName#/ig, aGCTBName);";
+        code += "  if (aGCTBLink) inhalt = inhalt.replace(/#GCTBLink#/ig, aGCTBLink);";
+        code += "  if (aGCTBNameLink) inhalt = inhalt.replace(/#GCTBNameLink#/ig, aGCTBNameLink);";
+        code += "  if (aLogDate) inhalt = inhalt.replace(/#LogDate#/ig, aLogDate);";
+        code += "  if (owner) inhalt = inhalt.replace(/#owner#/ig, owner);";
+        code += "  if (id.match(/last_logtext/) && settings_replace_log_by_last_log) {";
+        code += "    input.value = inhalt;";
+        code += "  }else{";
+        code += "    if (typeof input.selectionStart != 'undefined' && inhalt) {";
+        code += "      var start = input.selectionStart;";
+        code += "      var end = input.selectionEnd;";
+        code += "      var insText = input.value.substring(start, end);";
+        code += "      input.value = input.value.substr(0, start) + inhalt + input.value.substr(end);";
+        code += "      var pos = start + inhalt.length;";
+        code += "      input.selectionStart = input.selectionEnd = pos;";
+        code += "    }";
+        code += "  }";
+        code += "  input.focus();";
+        code += "}";
+        var script = document.createElement("script");
+        script.innerHTML = code;
+        document.getElementsByTagName("body")[0].appendChild(script);
+    }
+    // Smilies aufbauen.
+    function build_smilies(newLogPage) {
+        var o = "<p style='margin: 5px;'>";
+        if (newLogPage) liste += "<p style='float: right; margin-top: -60px; margin-right: -8px;'>";
+        else liste += "<br>" + o;
+        bs("[:)]", "");
+        bs("[:D]", "_big");
+        bs("[8D]", "_cool");
+        bs("[:I]", "_blush");
+        bs("[:P]", "_tongue");
+        if (!newLogPage) liste += "</p>" + o;
+        bs("[}:)]", "_evil");
+        bs("[;)]", "_wink");
+        bs("[:o)]", "_clown");
+        bs("[B)]", "_blackeye");
+        bs("[8]", "_8ball");
+        if (newLogPage) liste += "<p style='float: right; margin-top: -40px; margin-right: -8px;'>";
+        else liste += "</p>" + o;
+        bs("[:(]", "_sad");
+        bs("[8)]", "_shy");
+        bs("[:O]", "_shock");
+        bs("[:(!]", "_angry");
+        bs("[xx(]", "_dead");
+        if (!newLogPage) liste += "</p>" + o;
+        bs("[|)]", "_sleepy");
+        bs("[:X]", "_kisses");
+        bs("[^]", "_approve");
+        bs("[V]", "_dissapprove");
+        bs("[?]", "_question");
+        liste += "</p>";
+        function bs(s, n) {liste += "<a href='#' onClick='gclh_insert_smilie(\"" + s + "\",\"\"); return false;'" + (newLogPage ? "style='margin: -2px;'" : "") + "><img src='/images/icons/icon_smile" + n + ".gif' title='" + s + " " + n.replace("_", "") + "' border='0'></a>&nbsp;&nbsp;";}
+    }
+    // Log Templates aufbauen.
+    function build_tpls(newLogPage) {
+        var texts = ""; var logicOld = ""; var logicNew = "";
+        for (var i = 0; i < anzTemplates; i++) {
+            if (getValue("settings_log_template_name["+i+"]", "") != "") {
+                texts += "<div id='gclh_template["+i+"]' style='display: none;'>" + getValue("settings_log_template["+i+"]", "") + "</div>";
+                logicOld += "<a href='#' onClick='gclh_insert_tpl(\"gclh_template["+i+"]\"); return false;' style='color: #000000; text-decoration: none; font-weight: normal;'> - " + getValue("settings_log_template_name["+i+"]", "") + "</a><br>";
+                logicNew += "<option value='"+i+"' onClick='gclh_insert_tpl(\"gclh_template["+i+"]\"); return false;' style='color: #4a4a4a;'>" + getValue("settings_log_template_name["+i+"]", "") + "</option>";
             }
-            if (getValue("last_logtext", "") != "") {
-                liste += "<div id='gclh_template[last_log]' style='display: none;'>" + getValue("last_logtext", "") + "</div>";
-                liste += "<a href='#' onClick='gclh_insert_from_div(\"gclh_template[last_log]\"); return false;' style='color: #000000; text-decoration: none; font-weight: normal;'> - [Last Cache-Log]</a><br>";
-            }
-            box.innerHTML = liste;
-        } catch (e) { gclh_error("Show Smilies and BBCode:", e); }
+        }
+        if (getValue("last_logtext", "") != "") {
+            texts += "<div id='gclh_template[last_log]' style='display: none;'>" + getValue("last_logtext", "") + "</div>";
+            logicOld += "<a href='#' onClick='gclh_insert_tpl(\"gclh_template[last_log]\"); return false;' style='color: #000000; text-decoration: none; font-weight: normal;'> - [Last Cache-Log]</a><br>";
+            logicNew += "<option value='last_logtext' onClick='gclh_insert_tpl(\"gclh_template[last_log]\"); return false;' style='color: #4a4a4a;'>[Last Cache-Log]</option>";
+        }
+        if (newLogPage) {
+            liste += texts;
+            liste += "<select id='gclh_log_tpls' class='gclh_form' style='color: #9b9b9b;'>";
+            liste += "<option value='-1' selected='selected'" + "style='display: none; visibility: hidden;'>- Log Templates -</option>";
+            liste += logicNew;
+            liste += "</select>";
+        } else liste += "<br><p style='margin: 0;'>Templates:</p>" + texts + logicOld;
     }
 
 // Maxlength of logtext and unsaved warning.
@@ -8005,15 +8048,25 @@ var mainGC = function () {
     }
 
 // GC/TB Name, GC/TB Link, GC/TB Name Link und vorläufiges LogDate ermitteln.
-    function getGCTBInfo() {
+    function getGCTBInfo(newLogPage) {
         var GCTBName = ""; var GCTBLink = ""; var GCTBNameLink = ""; var LogDate = "";
-        if ( document.getElementById("ctl00_ContentBody_LogBookPanel1_WaypointLink").nextSibling.nextSibling ) {
-            var GCTBName = document.getElementById("ctl00_ContentBody_LogBookPanel1_WaypointLink").nextSibling.nextSibling.nextSibling.innerHTML;
-            GCTBName = GCTBName.replace(/'/g,"");
-            var GCTBLink = document.getElementById("ctl00_ContentBody_LogBookPanel1_WaypointLink").href;
-            var GCTBNameLink = "[" + GCTBName + "](" + GCTBLink + ")";
+        if (newLogPage) {
+            if (document.getElementById('LogDate')) var LogDate = document.getElementById('LogDate').value;
+            if (document.getElementsByClassName("muted")[0] && document.getElementsByClassName("muted")[0].children[0]) {
+                var GCTBName = document.getElementsByClassName("muted")[0].children[0].innerHTML;
+                GCTBName = GCTBName.replace(/'/g,"");
+                var GCTBLink = document.getElementsByClassName("muted")[0].children[0].href;
+                var GCTBNameLink = "[" + GCTBName + "](" + GCTBLink + ")";
+            }
+        } else {
+            if (document.getElementById('uxDateVisited')) var LogDate = document.getElementById('uxDateVisited').value;
+            if (document.getElementById("ctl00_ContentBody_LogBookPanel1_WaypointLink").nextSibling.nextSibling) {
+                var GCTBName = document.getElementById("ctl00_ContentBody_LogBookPanel1_WaypointLink").nextSibling.nextSibling.nextSibling.innerHTML;
+                GCTBName = GCTBName.replace(/'/g,"");
+                var GCTBLink = document.getElementById("ctl00_ContentBody_LogBookPanel1_WaypointLink").href;
+                var GCTBNameLink = "[" + GCTBName + "](" + GCTBLink + ")";
+            }
         }
-        if ( document.getElementById('uxDateVisited') ) var LogDate = document.getElementById('uxDateVisited').value;
         return [ GCTBName, GCTBLink, GCTBNameLink, LogDate ];
     }
 
@@ -9149,15 +9202,15 @@ var mainGC = function () {
             html += "<h4 class='gclh_headline2'>"+prepareHideable.replace("#name#","logging")+"Logging</h4>";
             html += "<div id='gclh_config_logging'>";
             html += checkboxy('settings_show_bbcode', 'Show smilies') + show_help("This option displays smilies options beside the log form. If you click on a smilie, it is inserted into your log.") + "<br>";
-            html += checkboxy('settings_autovisit', 'Enable \"AutoVisit\" feature for TBs/Coins') + show_help("With this option you are able to select TBs/Coins which should be automatically set to \"visited\" on every log. You can select \"AutoVisit\" for each TB/Coin in the list on the bottom of the log form.") + "<br>";
+            html += checkboxy('settings_autovisit', 'Enable \"AutoVisit\" feature for Trackables') + show_help("With this option you are able to select Trackables which should be automatically set to \"visited\" on every log. You can select \"AutoVisit\" for each Trackables in the list on the bottom of the log form.") + "<br>";
             html += checkboxy('settings_replace_log_by_last_log', 'Replace log by last log template') + show_help("If you enable this option, the last log template will replace the whole log. If you disable it, it will be appended to the log.") + "<br>";
             html += checkboxy('settings_show_log_itX0', 'Show GClh \"Log it\" icon (too for basic members for PMO)') + show_help("The GClh \"Log it\" icon is displayed beside cache titles in nearest lists. If you click it, you will be redirected directly to the log form. <br><br>You can use it too as basic member to log Premium Member Only (PMO) caches.") + "<br>";
             html += checkboxy('settings_logit_for_basic_in_pmoX0', 'Log PMO caches by standard \"Log It\" icon (for basic members)') + show_help("With this option basic members are able to choose the standard \"Log It\" icon to call the logging screen for Premium Member Only (PMO) caches. The tool tipp blocked not longer this call. You can have the same result by using the right mouse across the \"Log It\" icon and then new tab. <br>The \"Log It\" icon is besides the caches for example in the \"Recently Viewed Caches\" list and in your dashboard.") + "<br>";
             html += newParameterOn1;
-            html += checkboxy('settings_fieldnotes_old_fashioned', 'Logging drafts old-fashioned') + show_help("This option deactivates the logging of drafts by the new log page (looks like a phone app) and activates logging of drafts by the old-fashioned log page.") + "<br>";
+            html += checkboxy('settings_fieldnotes_old_fashioned', 'Logging drafts old-fashioned') + show_help("This option deactivates on old drafts page the logging of drafts by the new log page (looks like a phone app) and activates logging of drafts by the old-fashioned log page.") + "<br>";
             html += newParameterVersionSetzen(0.7) + newParameterOff;
             var placeholderDescription = "Possible placeholder:<br>&nbsp; #Found# : Your founds + 1<br>&nbsp; #Found_no# : Your founds<br>&nbsp; #Me# : Your username<br>&nbsp; #Owner# : Username of the owner<br>&nbsp; #Date# : Actual date<br>&nbsp; #Time# : Actual time in format hh:mm<br>&nbsp; #DateTime# : Actual date actual time<br>&nbsp; #GCTBName# : GC or TB name<br>&nbsp; #GCTBLink# : GC or TB link<br>&nbsp; #GCTBNameLink# : GC or TB name as a link<br>&nbsp; #LogDate# : Content of field \"Date Logged\"<br>(Upper and lower case is not required in the placeholder name.)";
-            html += "&nbsp;" + "Log templates:" + show_help("Log templates are pre-defined texts like \"!!! I got the FTF !!!\". All your templates are shown beside the log form. You just have to click to a template and it will be placed in your log. <br><br>Also you are able to use placeholder for variables which will be replaced in the log. The smilies option has to be enabled. <br><br>Note: You have to set a title and a text - click to the edit icon beside the template to edit the text.") + " &nbsp; (Possible placeholder:" + show_help_big(placeholderDescription) + ")<br>";
+            html += "&nbsp;" + "Log templates:" + show_help("Log templates are pre-defined texts like \"!!! I got the FTF !!!\". All your templates are shown beside the log form. You just have to click to a template and it will be placed in your log. <br><br>Also you are able to use placeholder for variables which will be replaced in the log. The smilies option has to be enabled. <br><br>Note: You have to set a title and a text. Click to the edit icon beside the template to edit the text.") + " &nbsp; (Possible placeholder:" + show_help_big(placeholderDescription) + ")<br>";
             html += "<font class='gclh_small' style='font-style: italic; margin-left: 240px; margin-top: 25px; width: 320px; position: absolute; z-index: -1;' >Bitte beachte, dass Logtemplates nützlich sind, um automatisiert die Fundzahl, das Funddatum und ähnliches im Log einzutragen, dass aber Cache Owner Menschen sind, die sich über individuelle Logs zu ihrem Cache freuen. Beim Geocachen geht es nicht nur darum, die eigene Statistik zu puschen, sondern auch darum, etwas zu erleben. Bitte nimm dir doch etwas Zeit, den Ownern etwas wiederzugeben, indem du ihnen von Deinen Erlebnissen berichtest und ihnen gute Logs schreibst. Dann wird es auch in Zukunft Cacher geben, die sich gerne die Mühe machen, neue Caches auszulegen. Die Logtemplates sind also nützlich, können aber niemals ein vollständiges Log ersetzen.</font>";
             for (var i = 0; i < anzTemplates; i++) {
                 html += "&nbsp;" + "<input class='gclh_form' type='text' size='15' id='settings_log_template_name[" + i + "]' value='" + getValue('settings_log_template_name[' + i + ']', '') + "'> ";
@@ -9203,7 +9256,7 @@ var mainGC = function () {
             html += "&nbsp;" + "<textarea class='gclh_form' rows='3' cols='56' id='settings_log_signature'>&zwnj;" + getValue("settings_log_signature", "") + "</textarea><br>";
             html += checkboxy('settings_log_signature_on_fieldnotes', 'Add log signature on drafts logs') + show_help('If this option is disabled, the log signature will not be used by logs out of drafts - you can use it, if you already have an signature in your drafts.') + "<br>";
             html += "&nbsp;" + "TB log signature:" + show_help("The signature will automatically be inserted into your TB logs. <br><br>Also you are able to use placeholder for variables which will be replaced in the log.") + " &nbsp; (Possible placeholder:" + show_help_big(placeholderDescription) + ")<br>";
-            html += "&nbsp;" + "<textarea class='gclh_form' rows='3' cols='56' id='settings_tb_signature'>&zwnj;" + getValue("settings_tb_signature", "") + "</textarea><br>";
+            html += "&nbsp;" + "<textarea class='gclh_form' rows='3' cols='56' id='settings_tb_signature' style='margin-top: 2px;'>&zwnj;" + getValue("settings_tb_signature", "") + "</textarea><br>";
             html += "</div>";
 
             html += "<h4 class='gclh_headline2'>"+prepareHideable.replace("#name#","mail")+"Mail / Message form</h4>";
@@ -9219,7 +9272,7 @@ var mainGC = function () {
             html += "<input type='checkbox' " + (getValue('remove_navi_play') ? "checked='checked'" : "" ) + " id='remove_navi_play'>Play<br>";
             html += "<input type='checkbox' " + (getValue('remove_navi_community') ? "checked='checked'" : "" ) + " id='remove_navi_community'>Community<br>";
             html += "<input type='checkbox' " + (getValue('remove_navi_shop') ? "checked='checked'" : "" ) + " id='remove_navi_shop'>Shop<br><br>";
-            html += "<input type='checkbox' " + (settings_bookmarks_search ? "checked='checked'" : "" ) + " id='settings_bookmarks_search'>Show searchfield - Default value: <input class='gclh_form' type='text' id='settings_bookmarks_search_default' value='" + settings_bookmarks_search_default + "' size='4'>" + show_help("If you enable this option, there will be a searchfield on the top of the page beside the links. In this field you can search for GC Ids, TB Ids, tracking numbers, coordinates, ... - also you can define a default value if you want (like GC ...).<br><br>This option requires \"Show Linklist on top\".") + "<br>";
+            html += "<input type='checkbox' " + (settings_bookmarks_search ? "checked='checked'" : "" ) + " id='settings_bookmarks_search'>Show searchfield - Default value: <input class='gclh_form' type='text' id='settings_bookmarks_search_default' value='" + settings_bookmarks_search_default + "' size='4'>" + show_help("If you enable this option, there will be a searchfield on the top of the page beside the links. In this field you can search for GC Ids, TB Ids, tracking numbers, coordinates, ... . Also you can define a default value if you want (like GC ...).<br><br>This option requires \"Show Linklist on top\".") + "<br>";
 
             html += "<input type='radio' " + (settings_bookmarks_top_menu ? "checked='checked'" : "" ) + " name='top_menu' id='settings_bookmarks_top_menu' style='margin-top: 9px;'>Show Linklist at menu as drop-down list" + show_help("With this option your Linklist will be shown at the navigation menu as a drop-down list beside the others.<br><br>" + t_reqChl) + "<br>";
             html += "<div id='box_top_menu_v' style='margin-left: 16px; margin-bottom: 2px; height: 141px;' >";
