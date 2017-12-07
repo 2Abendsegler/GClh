@@ -113,7 +113,7 @@ var constInit = function (c) {
     profileSpecialBookmark(c.scriptShortNameConfig, "https://www.geocaching.com/my/default.aspx#GClhShowConfig", "lnk_gclhconfig", c.bookmarks);
     externalBookmark("Forum Groundspeak", "http://forums.groundspeak.com/", c.bookmarks);
     externalBookmark("Blog Groundspeak", "https://www.geocaching.com/blog/", c.bookmarks);
-    bookmark("(empty)", "#", c.bookmarks);
+    bookmark("Favorites", "https://www.geocaching.com/my/favorites.aspx", c.bookmarks);
     externalBookmark("Geoclub", "http://www.geoclub.de/", c.bookmarks);
     profileSpecialBookmark("Public Profile Geocaches", "https://www.geocaching.com/profile/default.aspx?#gclhpb#ctl00_ContentBody_ProfilePanel1_lnkUserStats", "lnk_profilegeocaches", c.bookmarks);
     profileSpecialBookmark("Public Profile Trackables", "https://www.geocaching.com/profile/default.aspx?#gclhpb#ctl00_ContentBody_ProfilePanel1_lnkCollectibles", "lnk_profiletrackables", c.bookmarks);
@@ -545,7 +545,7 @@ var mainGMaps = function () {
                     if ( !document.getElementsByClassName("widget-pane")[0].className.match("widget-pane-collapsed") ) {
                         document.getElementsByClassName("widget-pane-toggle-button")[0].click();
                     }
-                } else {waitCount++; if (waitCount <= 15) setTimeout(function(){ hideLeftSidebar(waitCount);}, 1000);}
+                } else {waitCount++; if (waitCount <= 15) setTimeout(function(){hideLeftSidebar(waitCount);}, 1000);}
             }
             hideLeftSidebar(0);
         }
@@ -572,7 +572,7 @@ var mainOSM = function () {
                         } else alert('This map has no geographical coordinates in its link. Just zoom or drag the map, afterwards this will work fine.');
                     });
                 }
-            } else {waitCount++; if (waitCount <= 50) setTimeout(function(){ addGCButton(waitCount);}, 1000);}
+            } else {waitCount++; if (waitCount <= 50) setTimeout(function(){addGCButton(waitCount);}, 1000);}
         }
         addGCButton(0);
     } catch (e) { gclh_error("mainOSM:", e); }
@@ -732,6 +732,20 @@ var mainGC = function () {
                 document.getElementById(id).value += " (F2)";
                 window.addEventListener('keydown', keydownF2, true);
             }
+            // Log abschicken, neue Cache Log Seite.
+            if (document.location.href.match(/^https?:\/\/www\.geocaching\.com\/play\/geocache\/gc\w+\/log/)) {
+                function checkNewLogPage(waitCount) {
+                    if (document.getElementsByClassName("btn-submit")[0] && document.getElementsByClassName("btn-submit")[0].children[0]) {
+                        document.getElementsByClassName("btn-submit")[0].children[0].innerHTML += " (F2)";
+                    } else {waitCount++; if (waitCount <= 20) setTimeout(function(){checkNewLogPage(waitCount);}, 100);}
+                }
+                checkNewLogPage(0);
+                var id = "submitLog";
+                function keydownF2_2(e) {
+                    if (e.keyCode == 113 && noSpecialKey(e) && !check_config_page()) document.getElementById(id).children[0].children[0].click();
+                }
+                window.addEventListener('keydown', keydownF2_2, true);
+            }
         }
         // Aufruf GClh Config per F4 Taste. Nur auf den erlaubten Seiten und auch nur, wenn man nicht schon im GClh Config ist.
         if ( settings_f4_call_gclh_config && !check_config_page()) {
@@ -861,7 +875,7 @@ var mainGC = function () {
                     if (somethingDone != 0) setDefaultsInLayer();
                 }
                 waitCount++;
-                if (waitCount <= 100) setTimeout(function(){ loopAtLayerControls(waitCount);}, 50);
+                if (waitCount <= 100) setTimeout(function(){loopAtLayerControls(waitCount);}, 50);
                 else return;
             }
             addLayerControl();
@@ -1571,7 +1585,7 @@ var mainGC = function () {
                             }
                         }
                     }
-                } else {waitCount++; if (waitCount <= 100) setTimeout(function(){ gclh_load_score(waitCount);}, 100);}
+                } else {waitCount++; if (waitCount <= 100) setTimeout(function(){gclh_load_score(waitCount);}, 100);}
             }
             gclh_load_score(0);
         } catch (e) { gclh_error("Show favorite percentage:", e); }
@@ -2427,7 +2441,7 @@ var mainGC = function () {
     if (settings_decrypt_hint && !settings_hide_hint && is_page("cache_listing")) {
         try {
             if (document.getElementById('ctl00_ContentBody_EncryptionKey')) {
-                if (browser == "chrome") injectPageScript("(function(){ dht(); })()");
+                if (browser == "chrome") injectPageScript("(function(){dht(); })()");
                 else unsafeWindow.dht(document.getElementById("ctl00_ContentBody_lnkDH"));
                 // Remove hint description.
                 var decryptKey = document.getElementById('dk');
@@ -2457,7 +2471,6 @@ var mainGC = function () {
             box.innerHTML = liste;
         } catch (e) { gclh_error("Smilies and Log Templates old log page:", e); }
     }
-//xxxx
 // Show Smilies und Log Templates new log site.
     if (document.location.href.match(/^https?:\/\/www\.geocaching\.com\/play\/geocache\/gc\w+\/log/) &&
         document.getElementsByClassName('muted')[0] && document.getElementById('LogDate') && document.getElementById('logContent') && document.getElementById('LogText')) {
@@ -2542,7 +2555,7 @@ var mainGC = function () {
         code += "  if (aGCTBNameLink) inhalt = inhalt.replace(/#GCTBNameLink#/ig, aGCTBNameLink);";
         code += "  if (aLogDate) inhalt = inhalt.replace(/#LogDate#/ig, aLogDate);";
         code += "  if (owner) inhalt = inhalt.replace(/#owner#/ig, owner);";
-        code += "  if (id.match(/last_logtext/) && settings_replace_log_by_last_log) {";
+        code += "  if (id.match(/last_log/) && settings_replace_log_by_last_log) {";
         code += "    input.value = inhalt;";
         code += "  }else{";
         code += "    if (typeof input.selectionStart != 'undefined' && inhalt) {";
@@ -2744,8 +2757,30 @@ var mainGC = function () {
                         var username = decode_innerHTML(document.getElementById("ctl00_ContentBody_ProfilePanel1_lblMemberName") || document.getElementById("ctl00_ProfileHead_ProfileHeader_lblMemberName"));
                         var side = (document.getElementById("ctl00_ContentBody_ProfilePanel1_lblMemberName") || document.getElementById("ctl00_ProfileHead_ProfileHeader_lblStatusText"));
                     }
-                    buildSendIcons( side, username, "per guid" );
+                    buildSendIcons(side, username, "per guid");
                 }
+
+            // Post Cache Log neue Seite:
+            } else if (document.location.href.match(/^https?:\/\/www\.geocaching\.com\/play\/geocache\/gc\w+\/log/)) {
+                if (document.getElementsByClassName("muted")[0] && document.getElementsByClassName("muted")[0].children[1]) {
+                    var idLink = document.getElementsByClassName("muted")[0].children[1].href;
+                    if (idLink && idLink != "") {
+                        GM_xmlhttpRequest({
+                            method: "GET",
+                            url: idLink,
+                            onload: function (response) {
+                                if (response.statusText == "OK") {
+                                    [username, guid] = getUserGuidFromProfile(response.responseText);
+                                    if (username && guid) {
+                                        var side = document.getElementsByClassName('muted')[0].children[1];
+                                        buildSendIcons(side, username, "per guid", guid);
+                                    }
+                                }
+                            }
+                        });
+                    }
+                }
+
             // Restliche Seiten:
             } else {
                 var links = document.getElementsByTagName('a');
@@ -2756,7 +2791,7 @@ var mainGC = function () {
                         var guid = links[i].href.match(/https?:\/\/www\.geocaching\.com\/profile\/\?guid=(.*)/);
                         guid = guid[1];
                         var username = decode_innerHTML(links[i]);
-                        buildSendIcons( links[i], username, "per guid" );
+                        buildSendIcons(links[i], username, "per guid");
                     }
                 }
             }
@@ -2764,16 +2799,8 @@ var mainGC = function () {
     } catch (e) { gclh_error("Show mail and message icon:", e); }
     // Cache, TB, Aktiv User Infos ermitteln.
     function getGcTbUserInfo() {
-        var g_gc = false;
-        var g_tb = false;
-        var g_code = "";
-        var g_name = "";
-        var g_link = "";
-        var g_founds = "";
-        var g_date = "";
-        var g_time = "";
-        var g_dateTime = "";
-        var g_activ_username = "";
+        var g_gc = false; var g_tb = false;
+        var g_code = ""; var g_name = ""; var g_link = ""; var g_founds = ""; var g_date = ""; var g_time = ""; var g_dateTime = ""; var g_activ_username = "";
 
         if ( ( settings_show_mail || settings_show_message ) ) {
             // Im Cache Listing: Cache Name und Cache Code ermitteln.
@@ -2834,8 +2861,10 @@ var mainGC = function () {
         return [ g_gc, g_tb, g_code, g_name, g_link, g_activ_username, g_founds, g_date, g_time, g_dateTime ];
     }
     // Message Icon und Mail Icon aufbauen.
-    function buildSendIcons( b_side, b_username, b_art ) {
+    function buildSendIcons( b_side, b_username, b_art, guidSpecial ) {
         if ( b_art == "per guid" ) {
+            // guid aus besonderen Proceduren wie beispielsweise Post Cache Log neue Seite.
+            if (guidSpecial) guid = guidSpecial;
             // guid prüfen.
             if ( guid == "" || guid == undefined ) return;
             if ( guid.match(/\#/) ) return;
@@ -3605,22 +3634,32 @@ var mainGC = function () {
 
 // Default Log Type and Log Signature.
     // Cache:
-    if (document.location.href.match(/^https?:\/\/www\.geocaching\.com\/seek\/log\.aspx\?(id|guid|ID|PLogGuid|wp)\=/) && document.getElementById('ctl00_ContentBody_LogBookPanel1_ddLogType') && $('#ctl00_ContentBody_LogBookPanel1_lbConfirm').length == 0) {
+    if ((document.location.href.match(/^https?:\/\/www\.geocaching\.com\/seek\/log\.aspx\?(id|guid|ID|PLogGuid|wp)\=/) && document.getElementById('ctl00_ContentBody_LogBookPanel1_ddLogType') && $('#ctl00_ContentBody_LogBookPanel1_lbConfirm').length == 0)) {
+//        (document.location.href.match(/^https?:\/\/www\.geocaching\.com\/play\/geocache\/gc\w+\/log/))) {
         try {
+//xxxx1
+            // Default Log Type.
             if (!document.location.href.match(/\&LogType\=/) && !document.location.href.match(/PLogGuid/)) {
-                var cache_type = document.getElementById("ctl00_ContentBody_LogBookPanel1_WaypointLink").nextSibling.childNodes[0].title;
-                var select_val = "-1";
-                if (cache_type.match(/event/i)) {
-                    select_val = settings_default_logtype_event;
-                // Ownername == Username.
-                } else if ($('.PostLogList').find('a[href*="https://www.geocaching.com/profile/?guid="]').text().trim() == global_me.trim()) {
-                    select_val = settings_default_logtype_owner;
-                } else select_val = settings_default_logtype;
+// im neuen log gibt es die voreinstellung geocache. die wird dann irgendwann vielleicht geändert. Mal wieder Dreck.
+// "log-type-option" gibt es auch noch nicht
+//                var cacheType = ((document.getElementById("ctl00_ContentBody_LogBookPanel1_WaypointLink") && document.getElementById("ctl00_ContentBody_LogBookPanel1_WaypointLink").nextSibling.childNodes[0].title) || (document.getElementsByClassName("log-type-option")[0] && document.getElementsByClassName("log-type-option")[0].childNodes[2].innerHTML));
+                var cacheType = document.getElementById("ctl00_ContentBody_LogBookPanel1_WaypointLink").nextSibling.childNodes[0].title;
+                var logTypeValue = "-1";
+                if (cacheType.match(/event/i)) logTypeValue = settings_default_logtype_event;
+                else if ($('.PostLogList').find('a[href*="https://www.geocaching.com/profile/?guid="]').text().trim() == global_me.trim()) logTypeValue = settings_default_logtype_owner;
+                else logTypeValue = settings_default_logtype;
+//console.log(cacheType);
+//console.log(logTypeValue);
                 var select = document.getElementById('ctl00_ContentBody_LogBookPanel1_ddLogType');
-                var childs = select.children;
                 if (select.value == "-1") {
-                    for (var i = 0; i < childs.length; i++) {
-                        if (childs[i].value == select_val) select.selectedIndex = i;
+                    for (var i = 0; i < select.children.length; i++) {
+                        if (select.children[i].value == logTypeValue) {
+                            select.selectedIndex = i;
+//                            // Manchmal sind die autovisits schon falsch abgearbeitet bevor der Logtype hier gesetzt wird. Deshalb autovisits nochmal anstoßen.
+//                            document.getElementById("ctl00_ContentBody_LogBookPanel1_ddLogType").addEventListener("click", processAllAutovisits(true), false);
+//                            document.getElementById("ctl00_ContentBody_LogBookPanel1_ddLogType").click();
+                            break;
+                        }
                     }
                 }
             }
@@ -3634,6 +3673,7 @@ var mainGC = function () {
     // TB:
     if (document.location.href.match(/^https?:\/\/www\.geocaching\.com\/track\/log\.aspx/)&& document.getElementById('ctl00_ContentBody_LogBookPanel1_ddLogType')) {
         try {
+            // Default Log Type.
             if (settings_default_tb_logtype != "-1" && !document.location.href.match(/\&LogType\=/)) {
                 var select = document.getElementById('ctl00_ContentBody_LogBookPanel1_ddLogType');
                 var childs = select.children;
@@ -5019,66 +5059,52 @@ var mainGC = function () {
     }
 
 // Auto-Visit.
+//xxxx1
     if (settings_autovisit && document.location.href.match(/^https?:\/\/www\.geocaching\.com\/seek\/log\.aspx/) && !document.location.href.match(/^https?:\/\/www\.geocaching\.com\/seek\/log\.aspx\?LUID=/) && !document.getElementById('ctl00_ContentBody_LogBookPanel1_CoordInfoLinkControl1_uxCoordInfoCode')) {
         try {
-            function gclh_autovisit_save() {
-                var match = this.value.match(/([0-9]*)/);
-                if (!this.checked) setValue("autovisit_" + match[1], false);
-                else setValue("autovisit_" + match[1], true);
-            }
-            // Add new option.
+            // Add new Autovisit option.
             var selects = document.getElementsByTagName("select");
             for (var i = 0; i < selects.length; i++) {
                 if (selects[i].id.match(/ctl00_ContentBody_LogBookPanel1_uxTrackables_repTravelBugs_ctl[0-9]*_ddlAction/)) {
-                    var val = selects[i].childNodes[1].value;
+                    var autovisitId = selects[i].childNodes[1].value;
                     var autovisit = document.createElement("input");
                     autovisit.setAttribute("type", "checkbox");
                     autovisit.setAttribute("id", selects[i].id + "_auto");
-                    autovisit.setAttribute("value", val);
-                    if (getValue("autovisit_" + val, false)) {
-                        autovisit.setAttribute("checked", "checked");
-                        selects[i].selectedIndex = 2;
-                    }
-                    autovisit.addEventListener("click", gclh_autovisit_save, false);
+                    autovisit.setAttribute("value", autovisitId);
+                    autovisit.addEventListener("click", setAutovisit, false);
                     selects[i].parentNode.appendChild(autovisit);
                     selects[i].parentNode.appendChild(document.createTextNode(" AutoVisit"));
                 }
             }
-            // Select AutoVisit.
-            function gclh_autovisit() {
-                var logtype = document.getElementById("ctl00_ContentBody_LogBookPanel1_ddLogType").value;
-                if (logtype == 2 || logtype == 10 || logtype == 11) {
-                    var selects = document.getElementsByTagName("select");
-                    for (var i = 0; i < selects.length; i++) {
-                        if (selects[i].id.match(/ctl00_ContentBody_LogBookPanel1_uxTrackables_repTravelBugs_ctl[0-9]*_ddlAction/)) {
-                            var val = selects[i].childNodes[1].value;
-                            if (getValue("autovisit_" + val, false)) {
-                                var logoptions = selects[i].getElementsByTagName("option");
-                                for (var k = 0; k < logoptions.length; k++) {
-                                    if (logoptions[k].value == val + "_Visited") {
-                                        selects[i].selectedIndex = k;
-                                        break;
-                                    }
-                                }
-                                document.getElementById("ctl00_ContentBody_LogBookPanel1_uxTrackables_hdnSelectedActions").value += val + "_Visited,";
-                            }
-                        }
-                    }
+            // Set Autovisit. Change Visit.
+            function setAutovisit() {
+                var match = this.value.match(/([0-9]*)/);
+                if (this.checked) {
+                    setValue("autovisit_" + match[1], true);
+                    if (this.parentNode.children[0].selectedIndex != 1) this.parentNode.children[0].selectedIndex = 2;
                 } else {
-                    var selects = document.getElementsByTagName("select");
-                    for (var i = 0; i < selects.length; i++) {
-                        if (selects[i].id.match(/ctl00_ContentBody_LogBookPanel1_uxTrackables_repTravelBugs_ctl[0-9]*_ddlAction/) && selects[i].value.match(/_Visited/)) {
-                            selects[i].selectedIndex = 0;
-                        }
-                    }
-                }
-                if (unsafeWindow.setSelectedActions) {
-                    unsafeWindow.setSelectedActions();
+                    setValue("autovisit_" + match[1], false);
+                    if (this.parentNode.children[0].selectedIndex != 1) this.parentNode.children[0].selectedIndex = 0;
                 }
             }
+            // Process all Autovisits. Change Visit.
+            function processAllAutovisits(start) {
+                var logtype = document.getElementById("ctl00_ContentBody_LogBookPanel1_ddLogType").value;
+                var selects = document.getElementsByTagName("select");
+                for (var i = 0; i < selects.length; i++) {
+                    if (selects[i].id.match(/ctl00_ContentBody_LogBookPanel1_uxTrackables_repTravelBugs_ctl[0-9]*_ddlAction/)) {
+                        var autovisitId = selects[i].childNodes[1].value;
+                        if (start) selects[i].nextElementSibling.checked = getValue("autovisit_" + autovisitId, false);
+                        if (( (start && getValue("autovisit_" + autovisitId, false)) || (!start && selects[i].nextElementSibling.checked) ) && (logtype == 2 || logtype == 10 || logtype == 11)) {
+                            if (selects[i].selectedIndex != 1) selects[i].selectedIndex = 2;
+                        } else if (selects[i].selectedIndex != 1) selects[i].selectedIndex = 0;
+                    }
+                }
+                if (unsafeWindow.setSelectedActions) unsafeWindow.setSelectedActions();
+            }
             if (document.getElementById("ctl00_ContentBody_LogBookPanel1_ddLogType")) {
-                window.addEventListener("load", gclh_autovisit, false);
-                document.getElementById("ctl00_ContentBody_LogBookPanel1_ddLogType").addEventListener("click", gclh_autovisit, false);
+                window.addEventListener("load", function(){processAllAutovisits(true);}, false);
+                document.getElementById("ctl00_ContentBody_LogBookPanel1_ddLogType").addEventListener("click", processAllAutovisits, false);
             }
         } catch (e) { gclh_error("Autovisit:", e); }
     }
@@ -5088,14 +5114,15 @@ var mainGC = function () {
         if ( settings_show_vip_list                                                                    &&
              !isMemberInPmoCache()                                                                     &&
              global_me                                                                                 &&
-             !document.location.href.match(/^https?:\/\/www\.geocaching\.com\/my\/geocaches\.aspx/)    &&             // Nicht bei Geocaching Logs
-             !document.location.href.match(/^https?:\/\/www\.geocaching\.com\/my\/travelbugs\.aspx/)   &&             // Nicht bei Travelbugs
-             !document.location.href.match(/^https?:\/\/www\.geocaching\.com\/my\/benchmarks\.aspx/)   &&             // Nicht bei Benchmarks
+             !document.location.href.match(/^https?:\/\/www\.geocaching\.com\/my\/geocaches\.aspx/)    &&             // Nicht bei eigenen Cache Logs
+             !document.location.href.match(/^https?:\/\/www\.geocaching\.com\/my\/travelbugs\.aspx/)   &&             // Nicht bei eigenen Travelbug Logs
+             !document.location.href.match(/^https?:\/\/www\.geocaching\.com\/my\/benchmarks\.aspx/)   &&             // Nicht bei eigenen Benchmark Logs
              !document.location.href.match(/^https?:\/\/www\.geocaching\.com\/my\/favorites\.aspx/)    &&             // Nicht bei Eigene Favoriten, weil hier auch gegebenenfalls das Pseudonym steht
              ( is_page("cache_listing")                                                                       ||      // Cache Listing
                is_page("publicProfile")                                                                       ||      // Öffentliches Profil
                document.location.href.match(/^https?:\/\/www\.geocaching\.com\/track\/details\.aspx/)         ||      // TB Listing
                document.location.href.match(/^https?:\/\/www\.geocaching\.com\/(seek|track)\/log\.aspx/)      ||      // Post, Edit, View Cache-Logs und TB-Logs
+               document.location.href.match(/^https?:\/\/www\.geocaching\.com\/play\/geocache\/gc\w+\/log/)   ||      // Post, Cache-Logs neue Seite
                document.location.href.match(/^https?:\/\/www\.geocaching\.com\/email\/\?guid=/)               ||      // Mail schreiben
                document.location.href.match(/^https?:\/\/www\.geocaching\.com\/my\/inventory\.aspx/)          ||      // TB Inventar
                document.location.href.match(/^https?:\/\/www\.geocaching\.com\/my/)                           ||      // Profil
@@ -5109,7 +5136,7 @@ var mainGC = function () {
             var gclh_build_vip_list = function () {};
 
             // Arrays für VIPs, VUPs aufbauen:
-            // ---------------
+            // ----------
             var global_vips = getValue("vips", false);
             if (!global_vips) global_vips = new Array();
             else {
@@ -5126,7 +5153,7 @@ var mainGC = function () {
             } else global_vups = new Array();
 
             // Add to VIPs, VUPs:
-            // ---------------
+            // ----------
             function gclh_add_vip() {
                 [global_vips, global_vups] = gclh_add_vipvup(this.name, global_vips, "vip", global_vups, "vup");
                 gclh_build_vip_list();
@@ -5164,7 +5191,7 @@ var mainGC = function () {
             }
 
             // Del from VIPs, VUPs:
-            // ---------------
+            // ----------
             function gclh_del_vip() {
                 global_vips = gclh_del_vipvup(this.name, global_vips, "vip");
                 gclh_build_vip_list();
@@ -5208,7 +5235,7 @@ var mainGC = function () {
             }
 
             // Build VIP, VUP Icons:
-            // ---------------
+            // ----------
             function gclh_build_vipvup(user, ary, desc, link) {
                 if (link == undefined) {
                     var link = document.createElement("a");
@@ -5233,7 +5260,7 @@ var mainGC = function () {
             }
 
             // Build VIP, VUP, Mail Icons.
-            // ---------------
+            // ----------
             function gclh_build_vipvupmail(side, user) {
                 if (side && user && user != "") {
                     link = gclh_build_vipvup(user, global_vips, "vip");
@@ -5249,7 +5276,7 @@ var mainGC = function () {
             }
 
             // Listing:
-            // --------
+            // ----------
             if (is_page("cache_listing")) {
                 var all_users = new Array();
                 var log_infos = new Object();
@@ -5496,7 +5523,7 @@ var mainGC = function () {
                 gclh_build_vip_list();
 
             // Old Dashboard (Profile):
-            // --------
+            // ----------
             } else if (document.location.href.match(/^https?:\/\/www\.geocaching\.com\/my\//) && document.getElementById("ctl00_ContentBody_uxBanManWidget")) {
                 function build_box_vipvup(desc) {
                     var widget = document.createElement("div");
@@ -5548,7 +5575,7 @@ var mainGC = function () {
                     if (settings_process_vup) fill_box_vipvup(global_vups, "vup");
                 };
 
-            // Dashboard:
+            // New Dashboard:
             // ----------
             } else if (document.location.href.match(/^https?:\/\/www\.geocaching\.com\/account\/dashboard/) && $('nav.sidebar-links').length > 1) {
                 function build_box_vipvup(desc) {
@@ -5585,7 +5612,7 @@ var mainGC = function () {
                 };
 
             // Friends list:
-            // -------------
+            // ----------
             } else if (document.location.href.match(/^https?:\/\/www\.geocaching\.com\/my\/myfriends\.aspx/)) {
                 gclh_build_vip_list = function () {
                     // Delete VIP, VUP Icons. Sie werden bei einer Deaktivierung bzw. Aktivierung immer neu aufgebaut. Dadurch wird verhindert, dass
@@ -5614,7 +5641,7 @@ var mainGC = function () {
                 gclh_build_vip_list();
 
             // TB Listing. Post, Edit, View Cache-Logs und TB-Logs. Mail schreiben.
-            // ---------------
+            // ----------
             } else if ( document.location.href.match(/^https?:\/\/www\.geocaching\.com\/track\/details\.aspx/) ||
                         document.location.href.match(/^https?:\/\/www\.geocaching\.com\/(seek|track)\/log\.aspx/) ||
                         document.location.href.match(/^https?:\/\/www\.geocaching\.com\/email\/\?guid=/) ||
@@ -5644,8 +5671,35 @@ var mainGC = function () {
                     }
                 }
 
+            // Post Cache Log neue Seite:
+            // ----------
+            } else if (document.location.href.match(/^https?:\/\/www\.geocaching\.com\/play\/geocache\/gc\w+\/log/) &&
+                       document.getElementsByClassName("muted")[0] && document.getElementsByClassName("muted")[0].children[1]) {
+                var idLink = document.getElementsByClassName("muted")[0].children[1].href;
+                if (idLink && idLink != "") {
+                    GM_xmlhttpRequest({
+                        method: "GET",
+                        url: idLink,
+                        onload: function (response) {
+                            if (response.statusText == "OK") {
+                                [user, guid] = getUserGuidFromProfile(response.responseText);
+                                if (user) {
+                                    appendCssStyle(".gclh_vip {margin-left: 8px; margin-right: 4px;}");
+                                    var side = document.getElementsByClassName('muted')[0].children[1];
+                                    link = gclh_build_vipvup(user, global_vips, "vip");
+                                    side.appendChild(link);
+                                    if (settings_process_vup && user != global_activ_username) {
+                                        link = gclh_build_vipvup(user, global_vups, "vup");
+                                        side.appendChild(link);
+                                    }
+                                }
+                            }
+                        }
+                    });
+                }
+
             // Public Profile:
-            // ---------------
+            // ----------
             } else if (is_page("publicProfile") && (document.getElementById("ctl00_ContentBody_ProfilePanel1_lblMemberName") || document.getElementById("ctl00_ProfileHead_ProfileHeader_lblMemberName"))) {
                 var user = (document.getElementById("ctl00_ContentBody_ProfilePanel1_lblMemberName") || document.getElementById("ctl00_ProfileHead_ProfileHeader_lblMemberName")).innerHTML.replace(/&amp;/, '&');
                 var side = (document.getElementById("ctl00_ContentBody_ProfilePanel1_lblMemberName") || document.getElementById("ctl00_ProfileHead_ProfileHeader_lblStatusText"));
@@ -5664,7 +5718,7 @@ var mainGC = function () {
                 }
 
             // Nearest lists:
-            // ---------------
+            // ----------
             } else if (document.location.href.match(/^https?:\/\/www\.geocaching\.com\/seek\/nearest\.aspx\?(u|ul)=/)) {
                 var id = "ctl00_ContentBody_LocationPanel1_OriginLabel";
                 if (document.getElementById(id) && document.getElementById(id).children[1]) {
@@ -5676,7 +5730,7 @@ var mainGC = function () {
                 }
 
             // Friend League:
-            // ---------------
+            // ----------
             } else if (document.location.href.match(/^https?:\/\/www\.geocaching\.com\/play\/friendleague/)) {
                 // Click im Knoten mit Class summary klappt Details auf/zu. Beim Click auf Buttons verhindern durch temporäre Änderung dieser Class.
                 function doNotChangeDetailsByClick() {
@@ -8270,6 +8324,20 @@ var mainGC = function () {
         else return true;
     }
 
+// User und guid aus gelesenem alten oder neuem Public Profile ermitteln.
+    function getUserGuidFromProfile(respText) {
+        var user = respText.match(/id=\"ctl00_ContentBody_ProfilePanel1_lblMemberName\">(.*?)<\/span>/);
+        if (!user || !user[1]) var user = respText.match(/id=\"ctl00_ProfileHead_ProfileHeader_lblMemberName\">(.*?)<\/span>/);
+        var guid = respText.match(/href="\/email\/default\.aspx\?guid=(.*?)&/);
+        if (user && user[1] && guid && guid[1]) {
+            var span = document.createElement('span');
+            span.innerHTML = user[1];
+            var username = decode_innerHTML(span);
+            guid = guid[1];
+            return [username, guid];
+        }
+    }
+
 ////////////////////////////////////////////////////////////////////////////
 // User defined searchs Main
 ////////////////////////////////////////////////////////////////////////////
@@ -9418,8 +9486,8 @@ var mainGC = function () {
                     var outTitle = (typeof(bookmarks_orig_title[num]) != "undefined" && bookmarks_orig_title[num] != "" ? bookmarks_orig_title[num] : bookmarks[i]['title']);
                     html += ">" + outTitle + "</a>";
                     // Kennzeichnung neuer Parameter im Linklist Bereich.
-                    if ( num >= 69 && num <= 69 ) html += newParameterLL2;
-                    if ( num >= 70 && num <= 73 ) html += newParameterLL3;
+                    if (num >= 69 && num <= 69) html += newParameterLL2;
+                    if (num >= 70 && num <= 73 || num == 25) html += newParameterLL3;
                 }
                 html += "  </td>";
                 // Zweite Spalte mit gegebenenfalls abweichenden Bezeichnungen:
@@ -9429,8 +9497,8 @@ var mainGC = function () {
                 } else {
                     html += "<input style='padding-left: 2px !important; padding-right: 2px !important;' class='gclh_form' title='Differing description for standard link' id='bookmarks_name[" + num + "]' type='text' size='15' value='" + getValue("settings_bookmarks_title[" + num + "]", "") + "'>";
                     // Kennzeichnung neuer Parameter im Linklist Bereich.
-                    if ( num >= 69 && num <= 69 ) html += newParameterLLVersionSetzen(0.8);
-                    if ( num >= 70 && num <= 73 ) html += newParameterLLVersionSetzen(0.9);
+                    if (num >= 69 && num <= 69) html += newParameterLLVersionSetzen(0.8);
+                    if (num >= 70 && num <= 73 || num == 25) html += newParameterLLVersionSetzen(0.9);
                 }
                 html += "  </td></tr>";
             }
@@ -11251,7 +11319,7 @@ function is_link(name, url) {
             if (url.match(/^https?:\/\/www\.geocaching\.com\/my(\/default\.aspx)?/) ) status = true;
             break;
         case "publicProfile":
-            if (url.match(/^https?:\/\/www\.geocaching\.com\/(profile|p)/)) status = true;
+            if (url.match(/^https?:\/\/www\.geocaching\.com\/(profile|p\/)/)) status = true;
             break;
         case "map":
             if (url.match(/^https?:\/\/www\.geocaching\.com\/map/)) status = true;
