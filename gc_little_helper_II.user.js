@@ -221,6 +221,7 @@ var variablesInit = function (c) {
     c.settings_redirect_to_map = getValue("settings_redirect_to_map", false);
     c.settings_new_width = getValue("settings_new_width", 1000);
     c.settings_hide_facebook = getValue("settings_hide_facebook", true);
+    c.settings_hide_socialshare = getValue("settings_hide_socialshare", true);
     c.settings_hide_disclaimer = getValue("settings_hide_disclaimer", true);
     c.settings_hide_cache_notes = getValue("settings_hide_cache_notes", false);
     c.settings_hide_empty_cache_notes = getValue("settings_hide_empty_cache_notes", true);
@@ -719,6 +720,7 @@ var mainGC = function () {
             // Hide cache process speichern.
             if (document.location.href.match(/^https?:\/\/www\.geocaching\.com\/hide\//)) {
                 if (document.getElementById("btnContinue")) var id = "btnContinue";
+                else if (document.getElementById("ctl00_ContentBody_btnSaveAndPreview")) var id = "ctl00_ContentBody_btnSaveAndPreview";
                 else if (document.getElementById("btnSubmit")) var id = "btnSubmit";
                 else if (document.getElementById("btnNext")) var id = "btnNext";
                 else if (document.getElementById("ctl00_ContentBody_btnSubmit")) var id = "ctl00_ContentBody_btnSubmit";
@@ -2200,13 +2202,22 @@ var mainGC = function () {
     }
 
 // Hide Facebook.
-    if (settings_hide_facebook && document.location.href.match(/^https?:\/\/www\.geocaching\.com\/(play|account\/register|login|account\/login)/)) {
+    if (settings_hide_facebook && document.location.href.match(/^https?:\/\/www\.geocaching\.com\/(play|account\/register|login|account\/login)/) ||
+        document.location.href.match(/^https?:\/\/www\.geocaching\.com\/seek\/log\.aspx?(.*)/)) {
         try {
             if (document.getElementsByClassName('btn btn-facebook')[0]) document.getElementsByClassName('btn btn-facebook')[0].style.display = "none";
             if (document.getElementsByClassName('divider-flex')[0]) document.getElementsByClassName('divider-flex')[0].style.display = "none";
             if (document.getElementsByClassName('divider')[0]) document.getElementsByClassName('divider')[0].style.display = "none";
             if (document.getElementsByClassName('disclaimer')[0]) document.getElementsByClassName('disclaimer')[0].style.display = "none";
         } catch (e) { gclh_error("Hide Facebook:", e); }
+    }
+
+// Hide Socialshare.
+    if (settings_hide_socialshare && document.location.href.match(/^https?:\/\/www\.geocaching\.com\/seek\/log\.aspx?(.*)/)) {
+        try {
+            if (document.getElementById('sharing_container')) document.getElementById('sharing_container').style.display = "none";
+            if (document.getElementById('uxSocialSharing')) document.getElementById('uxSocialSharing').style.display = "none";
+        } catch (e) { gclh_error("Hide Socialshare:", e); }
     }
 
 // Activate fancybox for pictures in the description.
@@ -6453,6 +6464,7 @@ var mainGC = function () {
     if (settings_hide_top_button) $("#topScroll").attr("id", "_topScroll").hide();
 
 // Overwrite Log-Template (Logtemplate) and Log-Load-Function.
+    overwrite_log_template:
     if (settings_load_logs_with_gclh && is_page("cache_listing") && !document.getElementById("ctl00_divNotSignedIn") && document.getElementById('tmpl_CacheLogRow')) {
         try {
             // To Top Link.
@@ -6482,6 +6494,9 @@ var mainGC = function () {
             }
 
             // Reinit initalLogs.
+            if ((!document.getElementById("cache_logs_table") && !document.getElementById("cache_logs_table2")) ||
+                (!document.getElementById("cache_logs_table").getElementsByTagName("tbody") && !document.getElementById("cache_logs_table2").getElementsByTagName("tbody")) ||
+                (document.getElementById("cache_logs_table").getElementsByTagName("tbody").length == 0 && document.getElementById("cache_logs_table2").getElementsByTagName("tbody").length == 0)) break overwrite_log_template;
             var tbody = (document.getElementById("cache_logs_table2") || document.getElementById("cache_logs_table")).getElementsByTagName("tbody");
             if (tbody.length > 0) {
                 tbody = tbody[0];
@@ -7526,14 +7541,15 @@ var mainGC = function () {
         } catch (e) { gclh_error("Add download link to Labs cache pages:", e); }
     }
 
-// Auto check checkboxes on hide cache process.
+// Auto check checkbox on hide cache process.
     try {
-        if (settings_hide_cache_approvals && document.location.href.match(/^https?:\/\/www\.geocaching\.com\/hide\/(report|description)\.aspx/)) {
+        if (settings_hide_cache_approvals && document.location.href.match(/^https?:\/\/www\.geocaching\.com\/hide\/(report|description|edit)\.aspx/)) {
             $("#ctl00_ContentBody_cbAgreement").prop('checked', true);
             $("#ctl00_ContentBody_chkUnderstand").prop('checked', true);
             $("#ctl00_ContentBody_chkDisclaimer").prop('checked', true);
+            $("#ctl00_ContentBody_chkAgree").prop('checked', true);
         }
-    } catch (e) { gclh_error("Auto check checkboxes on hide cache process:", e); }
+    } catch (e) { gclh_error("Auto check checkbox on hide cache process:", e); }
 
 // Banner zu neuen Themen entfernen.
     if (settings_remove_banner) {
@@ -8790,9 +8806,7 @@ var mainGC = function () {
         html += "  position: unset;";
         html += "  height: unset;}";
         html += ".gclh_content span::before {display: none !important;}";
-        html += ".gclh_content input[type='text'][disabled] {";
-        html += "  background: unset;";
-        html += "  border-color: unset;}";
+        html += ".gclh_content input[type='text'][disabled] {background: unset;}";
         html += ".gclh_content button, .gclh_content input[type='button'] {";
         html += "  cursor: pointer;";
         html += "  box-shadow: 1px 1px 3px 0px rgb(119, 133, 85);}";
@@ -8906,6 +8920,7 @@ var mainGC = function () {
     var t_reqSVl = "This option requires \"Show VIP list\".";
     var t_reqMDTc = "This option requires \"Mark D/T combinations for your next possible cache matrix\".";
     var t_reqChlSLoT = "This option requires \"Change header layout\" and \"Show Linklist on top\".";
+    var t_reqSLoT = "This option requires \"Show Linklist on top\".";
     var prem = " <img class='gclh_prem' title='The underlying feature of GC is a Premium feature.' src='" + global_premium_icon + "'> ";
     var dt_display = [ ["greater than or equal to",">="], ["equal to","="], ["less than or equal to","<="] ];
     var dt_score = [ ["1","1"], ["1.5","1.5"], ["2","2"], ["2.5","2.5"], ["3","3"], ["3.5","3.5"], ["4","4"], ["4.5","4.5"], ["5","5"] ];
@@ -8990,9 +9005,10 @@ var mainGC = function () {
             html += checkboxy('settings_hide_advert_link', 'Hide link to advertisement instructions') + "<br>";
             html += "&nbsp;" + "Page-Width: <input class='gclh_form' type='text' size='2' id='settings_new_width' value='" + getValue("settings_new_width", 1000) + "'> px" + show_help("With this option you can expand the small layout on GC pages. The default value on GC pages is 950 px.") + "<br>";
             html += checkboxy('settings_hide_facebook', 'Hide Facebook login') + "<br>";
+            html += checkboxy('settings_hide_socialshare', 'Hide social sharing Facebook and Twitter') + "<br/>";
             html += checkboxy('settings_hide_warning_message', 'Hide warning message') + show_help("With this option you can choose the possibility to hide a potential warning message of the masters of the GC pages.<br><br>One example is the down time warning message which comes from time to time and is placed unnecessarily a lot of days at the top of pages. You can hide it except for a small line in the top right side of the pages. You can activate the warning message again if your mouse goes to this area.<br><br>If the warning message is deleted of the masters, this small area is deleted too.") + "<br>";
             html += checkboxy('settings_search_enable_user_defined', 'Enable user defined Filter Sets for geocache searchs') + show_help("This features enables you to store favourites filter settings in the geocache search and call them quickly.") + prem + "<br>";
-            html += checkboxy('settings_hide_cache_approvals', 'Auto set approvals in hide cache process') + show_help("This option activates the checkboxes for approval the guidelines and the terms of use agreement in the hide cache process.") + "<br>";
+            html += checkboxy('settings_hide_cache_approvals', 'Auto set approval in hide cache process') + show_help("This option activates the checkbox for approval the \"terms of use agreement\" and the \"geocache hiding guidelines\" in the hide cache process.") + "<br>";
             html += newParameterOn2;
             html += checkboxy('settings_remove_banner', 'Remove banner') + "<br>";
             html += " &nbsp; " + checkboxy('settings_remove_banner_for_garminexpress', 'for \"Garmin Express\"') + "<br>";
@@ -9414,13 +9430,13 @@ var mainGC = function () {
 
             html += "<h4 class='gclh_headline2'><a name='gclh_linklist'></a>"+prepareHideable.replace("#name#","linklist")+"Linklist / Navigation <span style='font-size: 14px'>" + show_help("In this section you can configure your personal Linklist which is shown on the top of the page and/or in your dashboard. You can activate it in the \"Global\" section respectively in the \"Public Profile / Dashboard\" section.") + "</span></h4>";
             html += "<div id='gclh_config_linklist'>";
-            html += "&nbsp;" + "Remove from Navigation:" + show_help("Here you can select, which of the original GC links should be removed.") + "<br>";
+            html += "&nbsp;" + "Remove from Navigation:" + show_help("Here you can select, which of the original GC drop-down lists should be removed.") + "<br>";
             html += "<input type='checkbox' " + (getValue('remove_navi_play') ? "checked='checked'" : "" ) + " id='remove_navi_play'>Play<br>";
             html += "<input type='checkbox' " + (getValue('remove_navi_community') ? "checked='checked'" : "" ) + " id='remove_navi_community'>Community<br>";
             html += "<input type='checkbox' " + (getValue('remove_navi_shop') ? "checked='checked'" : "" ) + " id='remove_navi_shop'>Shop<br><br>";
-            html += "<input type='checkbox' " + (settings_bookmarks_search ? "checked='checked'" : "" ) + " id='settings_bookmarks_search'>Show searchfield - Default value: <input class='gclh_form' type='text' id='settings_bookmarks_search_default' value='" + settings_bookmarks_search_default + "' size='4'>" + show_help("If you enable this option, there will be a searchfield on the top of the page beside the links. In this field you can search for GC Ids, TB Ids, tracking numbers, coordinates, ... . Also you can define a default value if you want (like GC ...).<br><br>This option requires \"Show Linklist on top\".") + "<br>";
+            html += "<input type='checkbox' " + (settings_bookmarks_search ? "checked='checked'" : "" ) + " id='settings_bookmarks_search'>Show searchfield - Default value: <input class='gclh_form' type='text' id='settings_bookmarks_search_default' value='" + settings_bookmarks_search_default + "' size='4'>" + show_help("If you enable this option, there will be a searchfield on the top of the page. In this field you can search for GC Ids, TB Ids, tracking numbers, coordinates, ... . Also you can define a default value if you want (like GC ...).<br><br>" + t_reqSLoT) + "<br>";
 
-            html += "<input type='radio' " + (settings_bookmarks_top_menu ? "checked='checked'" : "" ) + " name='top_menu' id='settings_bookmarks_top_menu' style='margin-top: 9px;'>Show Linklist at menu as drop-down list" + show_help("With this option your Linklist will be shown at the navigation menu as a drop-down list beside the others.<br><br>" + t_reqChl) + "<br>";
+            html += "<input type='radio' " + (settings_bookmarks_top_menu ? "checked='checked'" : "" ) + " name='top_menu' id='settings_bookmarks_top_menu' style='margin-top: 9px;'>Show Linklist at menu as drop-down list" + show_help("With this option your Linklist will be shown at the navigation menu as a drop-down list beside the others.") + "<br>";
             html += "<div id='box_top_menu_v' style='margin-left: 16px; margin-bottom: 2px; height: 141px;' >";
             html += checkboxy('settings_menu_float_right', 'Arrange the menu right') + show_help("With this option you can arrange the navigation menu with the Linklist and the other drop-down lists in the right direction. The default is an orientation in the left direction.<br><br>" + t_reqChlSLoT) + "<br>";
             html += "&nbsp;" + "Font color at menu: <input class='gclh_form color' type='text' size=5 id='settings_font_color_menu' value='" + getValue("settings_font_color_menu", "93B516") + "'>";
@@ -9449,7 +9465,7 @@ var mainGC = function () {
             html += "</select> px" + show_help("With this option you can choose the distance between the drop-down links in vertical direction in pixel.<br><br>" + t_reqChl) + "<br>";
             html += "</div>";
 
-            html += "<input type='radio' " + (settings_bookmarks_top_menu ? "" : "checked='checked'" ) + " name='top_menu' id='settings_bookmarks_top_menu_h'>Show Linklist in horizontal direction" + show_help("If you enable this option, the links in your Linklist will be shown direct on the top of the page - side by side.<br><br>" + t_reqChlSLoT) + "<br>";
+            html += "<input type='radio' " + (settings_bookmarks_top_menu ? "" : "checked='checked'" ) + " name='top_menu' id='settings_bookmarks_top_menu_h'>Show Linklist in horizontal direction" + show_help("If you enable this option, the links in your Linklist will be shown direct on the top of the page, side by side.<br><br>" + t_reqChlSLoT) + "<br>";
             html += "<div id='box_top_menu_h' style='margin-left: 16px; height: 188px;' >";
             html += "&nbsp;" + "Font color at menu: <input class='gclh_form color' type='text' size=5 id='settings_font_color_menuX0' value='" + getValue("settings_font_color_menu", "93B516") + "'>";
             html += "<img src=" + global_restore_icon + " id='restore_settings_font_color_menuX0' title='back to default' style='width: 12px; cursor: pointer;'>" + show_help("With this option you can choose the font color at the links. The default font color is 93B516 (lime green).<br><br>" + t_reqChlSLoT) + "<br>";
@@ -9902,7 +9918,6 @@ var mainGC = function () {
             setEventsForDependentParameters( "settings_change_header_layout", "restore_settings_font_color_menu" );
             setEventsForDependentParameters( "settings_change_header_layout", "settings_font_color_submenu" );
             setEventsForDependentParameters( "settings_change_header_layout", "restore_settings_font_color_submenu" );
-            setEventsForDependentParameters( "settings_change_header_layout", "settings_bookmarks_top_menu" );
             setEventsForDependentParameters( "settings_change_header_layout", "settings_bookmarks_top_menu_h" );
             setEventsForDependentParameters( "settings_change_header_layout", "settings_menu_float_right" );
             setEventsForDependentParameters( "settings_change_header_layout", "settings_font_size_menu" );
@@ -9925,6 +9940,8 @@ var mainGC = function () {
             setEventsForDependentParameters( "settings_load_logs_with_gclh", "settings_show_cache_listings_color_vip" );
             setEventsForDependentParameters( "settings_show_vip_list", "settings_show_cache_listings_color_vip" );
             setEventsForDependentParameters( "settings_show_vip_list", "settings_show_tb_listings_color_vip" );
+            setEventsForDependentParameters( "settings_show_vip_list", "settings_lines_color_vip" );
+            setEventsForDependentParameters( "settings_show_vip_list", "restore_settings_lines_color_vip" );
             setEventsForDependentParameters( "settings_show_vip_list", "settings_show_owner_vip_list" );
             setEventsForDependentParameters( "settings_show_vip_list", "settings_show_long_vip" );
             setEventsForDependentParameters( "settings_show_vip_list", "settings_vip_show_nofound" );
@@ -9973,6 +9990,17 @@ var mainGC = function () {
             setEventsForDependentParameters( "settings_remove_banner", "settings_remove_banner_blue" );
             setEventsForDependentParameters( "settings_driving_direction_link", "settings_driving_direction_parking_area" );
             setEventsForDependentParameters( "settings_improve_add_to_list", "settings_improve_add_to_list_height" );
+            setEventsForDependentParameters( "settings_set_default_langu", "settings_default_langu" );
+            setEventsForDependentParameters( "settings_pq_set_cachestotal", "settings_pq_cachestotal" );
+            setEventsForDependentParameters( "settings_pq_set_difficulty", "settings_pq_difficulty" );
+            setEventsForDependentParameters( "settings_pq_set_difficulty", "settings_pq_difficulty_score" );
+            setEventsForDependentParameters( "settings_pq_set_terrain", "settings_pq_terrain" );
+            setEventsForDependentParameters( "settings_pq_set_terrain", "settings_pq_terrain_score" );
+            setEventsForDependentParameters( "settings_show_all_logs", "settings_show_all_logs_count" );
+            setEventsForDependentParameters( "settings_show_eventday", "settings_date_format" );
+            setEventsForDependentParameters( "settings_strike_archived", "settings_highlight_usercoords" );
+            setEventsForDependentParameters( "settings_strike_archived", "settings_highlight_usercoords_bb" );
+            setEventsForDependentParameters( "settings_strike_archived", "settings_highlight_usercoords_it" );
             // Abhängigkeiten der Linklist Parameter.
             for (var i = 0; i < 100; i++) {
                 // 2. Spalte: Links für die Custom Bookmarks.
@@ -10141,13 +10169,14 @@ var mainGC = function () {
                 'settings_log_inline_tb',
                 'settings_bookmarks_show',
                 'settings_bookmarks_on_top',
-				'settings_change_header_layout',
+                'settings_change_header_layout',
                 'settings_fixed_header_layout',
                 'settings_remove_logo',
                 'settings_remove_message_in_header',
                 'settings_bookmarks_search',
                 'settings_redirect_to_map',
                 'settings_hide_facebook',
+                'settings_hide_socialshare',
                 'settings_hide_disclaimer',
                 'settings_hide_cache_notes',
                 'settings_hide_empty_cache_notes',
@@ -10600,23 +10629,23 @@ var mainGC = function () {
         if ( elem$.hasClass("ui-droppable") ) {
             elem$.droppable( "option", "disabled", set );
             elem$.sortable( "option", "disabled", set );
+            if ( set == true ) elem.parentNode.style.opacity = "0.5";
+            else elem.parentNode.style.opacity = "1";
         } else if ( elem$.hasClass("ui-draggable") ) {
             elem$.draggable( "option", "disabled", set );
+            if ( set == true ) elem.parentNode.style.opacity = "0.5";
+            else elem.parentNode.style.opacity = "1";
         } else {
             elem.disabled = set;
-            if ( id.match(/_color_/) ) {
-                if ( set == true ) elem.style.opacity = "0.5";
-                else elem.style.opacity = "1";
-            }
+            if ( set == true ) elem.style.opacity = "0.5";
+            else elem.style.opacity = "1";
             // Alle möglichen Clone zum abhängigen Parameter suchen und ebenfalls verarbeiten.
             for (var j = 0; j < 10; j++) {
                 var paIdDepX = id + "X" + j;
                 if ( document.getElementById( paIdDepX ) ) {
                     document.getElementById( paIdDepX ).disabled = set;
-                    if ( id.match(/_color_/) ) {
-                        if ( set == true ) document.getElementById( paIdDepX ).style.opacity = "0.5";
-                        else document.getElementById( paIdDepX ).style.opacity = "1";
-                    }
+                    if ( set == true ) document.getElementById( paIdDepX ).style.opacity = "0.5";
+                    else document.getElementById( paIdDepX ).style.opacity = "1";
                 } else break;
             }
         }
