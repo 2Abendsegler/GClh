@@ -932,6 +932,8 @@ var mainGC = function () {
             // Member Upgrade Button entfernen. (Er wurde bei den Abstandsberechnungen vergessen, nun muß er auf jedenfall dran glauben.)
             $('.li-upgrade').remove();
             if ($('.li-membership')[0]) $('.li-membership')[0].remove();
+            // Im neuen Dashboard die Upgrade Erinnerung entfernen.
+            $('.sidebar-upsell').remove();
             // Icons im Menü entfernen.
             $('.charcoal').remove();
             $('.li-attention').removeClass('li-attention').addClass('li-attention_gclh');
