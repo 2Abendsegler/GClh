@@ -883,12 +883,12 @@ var mainGC = function() {
             // Alle Seiten: Grundeinstellungen:
             // ----------
             var css = "";
-            // Font-Size für Menüs bzw. Font-Size für Untermenüs in Pixel.
+            // Font-Size für Menüs, Font-Size für Untermenüs in Pixel.
             var font_size_menu = parseInt(settings_font_size_menu);
             if ((font_size_menu == 0) || (font_size_menu < 0) || (font_size_menu > 16)) font_size_menu = 15;
             var font_size_submenu = parseInt(settings_font_size_submenu);
             if ((font_size_submenu == 0) || (font_size_submenu < 0) || (font_size_submenu > 16)) font_size_submenu = 13;
-            // Abstand zwischen Menüs bzw. Abstand zwischen Untermenüs in Pixel.
+            // Abstand zwischen Menüs, Abstand zwischen Untermenüs in Pixel.
             var distance_menu = parseInt(settings_distance_menu);
             if ((distance_menu < 0) || (distance_menu > 99)) distance_menu = (50 / 2);
             else distance_menu = (distance_menu / 2);
@@ -896,7 +896,7 @@ var mainGC = function() {
             var distance_submenu = parseInt(settings_distance_submenu);
             if ((distance_submenu < 0) || (distance_submenu > 32)) distance_submenu = (8);  // (8/2)
             else distance_submenu = (distance_submenu);  // (.../2)
-            // Font-Color in Menüs und Untermenüs.
+            // Font-Color in Menüs, Untermenüs.
             var font_color_menu = settings_font_color_menu;
             if (font_color_menu == "") font_color_menu = "93B516";
             var font_color_submenu = settings_font_color_submenu;
@@ -918,63 +918,60 @@ var mainGC = function() {
             // Member Upgrade Button entfernen.
             $('.li-upgrade').remove();
             if ($('.li-membership')[0]) $('.li-membership')[0].remove();
-            // Im neuen Dashboard die Upgrade Erinnerung entfernen.
+            // Im neuen Dashboard Upgrade Erinnerung entfernen.
             $('.sidebar-upsell').remove();
-            // Icons im Menü entfernen.
+            // Icons aus Play Menü entfernen.
             $('.charcoal').remove();
             $('.li-attention').removeClass('li-attention').addClass('li-attention_gclh');
-            // Global verwendete Attribute zur Darstellung der Objekte im Header setzen.
             css +=
-                // Schriftfarbe im Menü setzen. Bei Auswahl in weiss.
+                // Schriftfarbe Menü.
                 ".#m li a, .#m li a:link, .#m li a:visited, .#m li {color: #" + font_color_menu + " !important;}" +
                 ".#m li a:hover, .#m li a:focus {color: #FFFFFF !important; outline: unset !important;}" +
-                // Menü nicht flex ausgeben.
+                // Menü nicht flex.
                 ".#m {display: unset;}" +
                 // Submenü im Vordergrund.
                 ".#sm {z-index: 1001;}" +
-                // Schriftfarbe im Untermenü setzen.
+                // Schriftfarbe Untermenü.
                 ".#sm li a, .#sm li a:link, .#sm li a:visited, .#sm li {color: #" + font_color_submenu + " !important;}" +
-                // Schriftgröße im Menü auf 16 stellen.
+                // Schriftgröße Menü.
                 ".#m {font-size: 16px !important;}" +
-                // Schriftgröße im Menü einstellen.
                 ".#m li, .#m li a, .#m li input {font-size: " + font_size_menu + "px !important;}" +
-                // Abstände im Menü einstellen.
+                // Abstände Menü.
                 "ul.#m > li {margin-left: " + distance_menu + "px !important; margin-right: " + distance_menu + "px !important;} ul.#m li a {padding: .25em .25em .25em 0 !important;}" +
-                // Schriftgröße im Untermenü auf 16 stellen.
+                // Schriftgröße Untermenü.
                 "ul.#sm, ul.#sm li {font-size: 16px !important;}" +
-                // Schriftgröße im Untermenü einstellen.
                 "ul.#sm li a {font-size: " + font_size_submenu + "px !important;}" +
                 "ul.#sm li a {font-size: " + font_size_submenu + "px !important;}" +
-                // Abstände im Untermenü einstellen.
+                // Abstände Untermenü.
                 "ul.#sm li a {margin: " + (distance_submenu / 2) + "px 1em !important; padding: 0 0.5em !important;} .#sm a {line-height: unset;} .#m a {overflow: initial}" +
-                // Menühöhe einstellen, ansonsten verschiebt sich alles bei anderen Schriftgrößen.
+                // Menühöhe.
                 ".#m {height: 35px !important;}" +
-                // Ein Verschieben des Submenüs unterbinden.
+                // Verschieben Submenüs unterbinden.
                 ".#sm {margin-left: 0 !important}";
-            // Vertikales Menu grundsätzlich ausrichten.
+            // Vertikales Menü ausrichten.
             if (settings_bookmarks_top_menu) {
-                // Menüzeilenhöhe auf 16 stellen.
+                // Menüzeilenhöhe.
                 css += "ul.#m {line-height: 16px;}";
-                // Zwischen Menüname und Submenü keine Lücke lassen, sonst klappt das nicht mit dem einfachen Aufklappen.
+                // Zwischen Menüname und Submenü keine Lücke lassen, sonst klappts nicht mit einfachem Aufklappen.
                 css += ".#m li a, .#m li a:link, .#m li a:visited {margin-bottom: 10px;} ul.#sm {margin-top: -6px;}";
-                // Vertikales Menu: Menu und Searchfield ausrichten in Abhängigkeit von der Schriftgröße.
+                // Menü, Searchfield ausrichten in Abhängigkeit von Schriftgröße.
                 css += "ul.#m > li {margin-top: " + (3 + (16 - font_size_menu) / 2) + "px;}";
-            // Horizontales Menu grundsätzlich ausrichten.
+            // Horizontales Menü ausrichten.
             } else {
-                // Menüzeilenhöhe auf 16 stellen.
+                // Menüzeilenhöhe.
                 css += "ul.#m {line-height: 16px !important;}";
-                // Zeilenabstand setzen in Abhängigkeit von der Anzahl Zeilen.
+                // Zeilenabstand in Abhängigkeit von Anzahl Zeilen.
                 if      (settings_menu_number_of_lines == 2) css += "ul.#m li a {padding-top: 4px !important; padding-bottom: 4px !important;}";
                 else if (settings_menu_number_of_lines == 3) css += "ul.#m li a {padding-top: 1px !important; padding-bottom: 1px !important;}";
             }
             // Message Center Icon entfernen.
             if (settings_remove_message_in_header) $('.messagecenterheaderwidget').remove();
-            // Geocaching Logo ersetzen und verschieben oder entfernen, sofern das gewünscht ist.
-            if ($('.logo').get(0)) {
-                var side = $('.logo').get(0);
+            // Geocaching Logo ersetzen, verschieben oder entfernen.
+            if ($('.logo')[0]) {
+                var side = $('.logo')[0];
                 changeGcLogo(side);
             }
-            // Weitere Einstellungen, aber nicht für Labs.
+            // Nicht für Labs.
             if (!is_page("labs")) {
                 css +=
                     "#l {flex: unset; overflow: unset; margin-left: -32px}" +
@@ -987,28 +984,29 @@ var mainGC = function() {
                 else if (settings_show_smaller_gc_link  && !settings_gc_tour_is_working) css += "#l {margin-top:   6px; width: 30px;}";
                 else if (settings_show_smaller_gc_link  && settings_gc_tour_is_working)  css += "#l {margin-top: -41px; width: 30px;}";
             }
-            // Account Settings, Message Center, Cache suchen, Cache verstecken, Geotours (neues Seiten Design), Karten, account/dashboard und track:
+            // Account Settings, Message Center, Cache suchen, Cache verstecken, Geotours, Karten, account/dashboard und track:
             // ----------
             if (is_page("settings") || is_page("messagecenter") || is_page("find_cache") || is_page("hide_cache") || is_page("geotours") || is_page("map") || is_page("dashboard") || is_page("track")) {
                 css += "nav .wrapper {padding-right: " + new_padding_right + "px !important; width: unset;}";
-                // Platzieren des neuen Logos verursacht Fehler in der Plazierung des Videos. Folgendes korrigiert das quasi.
+                // Fehler bei Plazierung Videos verursacht durch neues Logo korrigieren.
                 if (is_page("hide_cache")) css += ".video iframe {width: 90%;}";
-                // Vertikales Menu weiter ausrichten.
+                // Vertikales Menü ausrichten.
                 if (settings_bookmarks_top_menu) {
                     css += "ul.#sm {margin-top: 0px; margin-left: 32px !important;} .submenu::after {left: 4px; width: 26px;}";
-                    // Menü nicht flex ausgeben.
+                    // Menü nicht flex.
                     if (settings_menu_float_right) css += ".#m {display: block;} ul.#m > li {top: 0px;}";
-                    // Menü in der Karte ausrichten.
+                    // Menü in Karte ausrichten.
                     if (is_page("map") && !settings_menu_float_right) css += ".#m {height: unset !important;}";
                     if (is_page("map") && settings_menu_float_right) css += "#navi_search {margin: 0 !important;}";
                 }
                 // Bereich rechts ausrichten.
                 css += ".profile-panel {margin-right: -15.25em}";
+
             // Labs:
             // ----------
             } else if (is_page("labs")) {
                 css +=
-                    // Menüweite setzen und Submenu korrigieren.
+                    // Menüweite setzen, Submenu korrigieren.
                     ".#m {width: " + new_width_menu + "px !important;}" +
                     ".#sm {margin-top: -6px !important;}" +
                     // Rest.
@@ -1018,9 +1016,9 @@ var mainGC = function() {
                     ".title {margin: 18px 0 0 3px !important;}" +
                     ".title img {max-height: unset !important}" +
                     "#newgclogo {margin-left: -6px !important;}" +
-                    // Das ist das "menu" bei den Settings.
+                    // Das ist "menu" bei Settings.
                     ".menu {right: 54px !important;}" +
-                    // Spalt zwischen Header und Content lassen wie bei find und hide.
+                    // Spalt zwischen Header und Content belassen bei find und hide.
                     ".events-map, .breadcrumb {top: 2px;}";
                 // Profile Panel platzieren in Abhängigkeit von Linklist.
                 if (settings_bookmarks_on_top) css += ".profile-panel {margin: -66px 50px 0 0;}";
@@ -1030,7 +1028,7 @@ var mainGC = function() {
                     css += "ul.#sm {margin-top: -6px !important; margin-left: 0px !important;} .#m {height: unset !important;}";
                     css += "ul.#m > li {margin-top: 20px !important}";
                 }
-                // Wenn Menu rechts ausgerichtet ist.
+                // Wenn Menü rechts ausgerichtet.
                 if (settings_menu_float_right) css += "ul.#m {left: 14px;}";
                 // Bereich links ausrichten in Abhängigkeit davon, ob Logo geändert wird und ob GC Tour im Einsatz ist.
                 if      (!settings_show_smaller_gc_link && !settings_gc_tour_is_working) css += "#l {margin-left: -11px; margin-top:   2px; fill: #ffffff;} .#m {margin-left: 190px !important;}";
@@ -1039,20 +1037,21 @@ var mainGC = function() {
                 else if (settings_show_smaller_gc_link  && settings_gc_tour_is_working)  css += "#l {margin-left: -17px; margin-top: -15px; width: 35px;}   .#m {margin-left:  28px !important;}";
                 // Bereich rechts ausrichten und zusammenschieben.
                 css += ".profile-panel .li-user-toggle {margin-left: 0.5em; padding: 0.43em 0.6em;}";
+
             // Altes Seiten Design und restliche Seiten:
             // ----------
             } else {
                 if (settings_fixed_header_layout) {
                     css += "nav .wrapper {width: " + new_width + "px !important; padding-left: 50px; padding-right: 30px; min-width: unset}";
-                    if (settings_remove_logo && settings_show_smaller_gc_link) css += ".#m {margin-left: -50px !important;}";
+                    if (settings_remove_logo && settings_show_smaller_gc_link) css += ".#m {margin-left: -28px !important;}";
                 }
-                // Vertikales Menu weiter ausrichten.
+                // Vertikales Menü  ausrichten.
                 if (settings_bookmarks_top_menu) {
                     css += "ul.#sm {margin-top: 15px; margin-left: 32px !important;} .submenu::after {left: 4px; width: 26px;}";
                     // Zwischen Menüname und Submenü keine Lücke lassen, sonst klappt das nicht mit dem einfachen Aufklappen.
                     css += ".#m > li .dropdown {padding-bottom: 14px !important;}";
                     if (settings_menu_float_right) css += "ul.#m > li {margin-top: 8px !important}";
-                // Horizontales Menu weiter ausrichten in Abhängigkeit von der Anzahl Zeilen.
+                // Horizontales Menü ausrichten in Abhängigkeit von Anzahl Zeilen.
                 } else {
                     if      (settings_menu_number_of_lines == 1) css += "ul.#m {top:   4px !important;}";
                     else if (settings_menu_number_of_lines == 2) css += "ul.#m {top:  -8px !important;}";
@@ -1066,7 +1065,7 @@ var mainGC = function() {
             appendCssStyle(css);
         }
     } catch(e) {gclh_error("Change header layout:",e);}
-
+    // GC Logo.
     function changeGcLogo(side) {
         if (settings_show_smaller_gc_link && side && side.children[0]) {
             side.children[0].remove();
@@ -1084,10 +1083,10 @@ var mainGC = function() {
         }
     }
 
-// New Width (Die Menüweite wird bei Change Header Layout gesetzt.).
+// New Width. (Menüweite wird bei Change Header Layout gesetzt.)
     new_width:
     try {
-        // Im neuen Seiten Design, bei Geotours, bei Labs Caches, bei Karten, bei account/dashboard und bei track hier keine Anpassungen vornehmen.
+        // Keine Anpassungen vornehmen.
         if (is_page("messagecenter") || is_page("settings") || is_page("hide_cache") || is_page("find_cache") || is_page("geotours") || is_page("labs") || is_page("map") || is_page("dashboard") || is_page("track")) break new_width;
 
         if (getValue("settings_new_width") > 0) {
@@ -1096,7 +1095,7 @@ var mainGC = function() {
             // Header- und Fußbereich:
             css += "header, nav, footer {min-width: " + (new_width + 40) + "px !important;}";
             css += "header .container, nav .container {max-width: unset;}";
-            // Bei folgenden Seiten keine weiteren Anpassungen vornehmen.
+            // Keine weiteren Anpassungen vornehmen.
             if (document.location.href.match(/\/\/www\.geocaching\.com\/pocket\/gcquery\.aspx/) ||  // Pocket Query: Einstellungen zur Selektion
                  document.location.href.match(/\/\/www\.geocaching\.com\/pocket\/bmquery\.aspx/));  // Pocket Query aus Bockmarkliste: Einstellungen zur Selektion
             else {
@@ -1136,28 +1135,22 @@ var mainGC = function() {
         }
     } catch(e) {gclh_error("New width:",e);}
 
-// Remove GC links in Navigation.
+// Remove GC Menüs.
     try {
-        if (document.getElementsByClassName("Menu").length > 0) {
-            var liste = document.getElementsByClassName("Menu")[0];
-            var links = $('ul.Menu a');
-        } else if (document.getElementsByClassName("menu").length > 0) {
-            var liste = document.getElementsByClassName("menu")[0];
-            var links = $('ul.menu a');
-        }
-        if (links) {
-            for (var i = 0; i < (links.length -1); i++) {
-                if      (links[i].className.match(/dropdown/i) && links[i].href.match(/\/play\/search/)        && getValue('remove_navi_play'))      liste.removeChild(links[i].parentNode);
-                else if (links[i].className.match(/dropdown/i) && links[i].href.match(/\/forums\/$/)           && getValue('remove_navi_community')) liste.removeChild(links[i].parentNode);
-                else if (links[i].className.match(/dropdown/i) && links[i].href.match(/shop\.geocaching\.com/) && getValue('remove_navi_shop'))      liste.removeChild(links[i].parentNode);
+        var m = $('ul.(Menu|menu) li a.dropdown');
+        for (var i = 0; i < m.length; i++) {
+            if ((m[i].href.match(/\/play\/search/) && getValue('remove_navi_play')) ||
+                (m[i].href.match(/\/forums\/$/) && getValue('remove_navi_community')) ||
+                (m[i].href.match(/shop\.geocaching\.com/) && getValue('remove_navi_shop'))) {
+                m[i].parentNode.remove();
             }
         }
-    } catch(e) {gclh_error("Remove GC links:",e);}
+    } catch(e) {gclh_error("Remove GC Menüs:",e);}
 
-// Bookmarks on top.
+// Linklist on top.
     try {
         if (settings_bookmarks_on_top) {
-            // Bei Labs Caches gibt es kein Menu, Menu aufbauen. Nur wenn Change Header Layout aktiviert ist.
+            // Labs hat kein Menü, aufbauen.
             if (is_page("labs") && settings_change_header_layout) {
                 if ($('.profile-panel')[0]) {
                     var mainMenu = document.createElement("ul");
@@ -1167,7 +1160,7 @@ var mainGC = function() {
                     appendCssStyle(css);
                 }
             }
-            // Auch wenn Header nicht geändert werden soll, zwischen Menüname und Submenü keine Lücke lassen, sonst klappt das nicht mit dem einfachen Aufklappen.
+            // Auch ohne Change Header Layout zwischen Menüname und Submenü keine Lücke lassen, sonst klappts nicht mit einfachem Aufklappen.
             if (!settings_change_header_layout) {
                 if (is_page("map")) {
                     appendCssStyle(".menu > li, .Menu > li {height: 100%; padding-top: 2.0em;} .submenu, .SubMenu {margin-top: 1.9em;}");
@@ -1234,7 +1227,7 @@ var mainGC = function() {
                 if (is_page("labs")) $(".Menu").append(searchfield);
                 else $(".Menu, .menu").append(searchfield);
             }
-            // Hover für alle Dropdown Listen aufbauen.
+            // Hover für alle Dropdowns aufbauen.
             buildHover();
 
             if (settings_menu_show_separator) {
@@ -1262,7 +1255,7 @@ var mainGC = function() {
             }
         }
     } catch(e) {gclh_error("Linklist on top",e);}
-    // Hover aufbauen im Menü. (Das muss ganz hinten in der Verarbeitung aufgebaut werden.)
+    // Hover aufbauen. Muss nach Menüaufbau erfolgen.
     function buildHover() {
         $('ul.Menu, ul.menu').children().hover(function() {
                 $(this).addClass('hover');
@@ -1276,7 +1269,7 @@ var mainGC = function() {
             }
         );
     }
-    // CSS für Menu aus coreCSS aufbauen.
+    // CSS für Menüs aus coreCSS aufbauen.
     function buildCoreCss(){
         var css = "";
         css += "ul.Menu,ul.submenu {padding:0; list-style:none;}";
@@ -1322,7 +1315,7 @@ var mainGC = function() {
         } catch(e) {gclh_error("Linklist on old dashboard:",e);}
     }
 
-// Linklist and Default Links on dashboard.
+// Linklist, Default Links on dashboard.
     if (is_page("dashboard")) {
         try {
             buildDashboardCss();
@@ -1340,31 +1333,31 @@ var mainGC = function() {
                 box.innerHTML = "";
                 buildBoxElementsLinks(box, bm_tmp);
             }
-        } catch(e) {gclh_error("Linklist and Default Links on dashboard:",e);}
+        } catch(e) {gclh_error("Linklist, Default Links on dashboard:",e);}
     }
 
 // Stop ignoring.
     if (is_page("cache_listing") && settings_show_remove_ignoring_link) {
-        // Bookmark Listen Bereiche besorgen.
+        // Bookmark Listen Bereiche.
         if (document.getElementsByClassName("BookmarkList").length > 0) {
             try {
                 var listenBereiche = document.getElementsByClassName("BookmarkList");
                 for (var i = 0; i < listenBereiche.length; i++) {
-                    // Bookmark Listen besorgen, in denen der Cache gelistet ist.
+                    // Bookmark Listen, in denen der Cache gelistet ist.
                     var listen = listenBereiche[i].getElementsByTagName("a");
                     for (var j = 0; (j+1) < listen.length; j++) {
-                        // Wenn es sich um Ignore Bookmark Liste des Users handelt.
+                        // Ignore Bookmark Liste des Users. (Heißt auch in anderen Sprachen so.)
                         if ((listen[j].href.match(/geocaching\.com\/bookmarks\/view\.aspx\?guid=/)) &&
-                             (listen[j].text == "Ignore List") &&  // Die heißt auch in anderen Sprachen so.
+                             (listen[j].text == "Ignore List") &&
                              (listen[j+1].href.match(/geocaching\.com\/profile\/\?guid=/)) &&
                              (listen[j+1].text == global_me)) {
-                            // Bereich mit den Links "Watch", Ignore" ... besorgen.
+                            // Navigations Details links "Watch", Ignore" ... .
                             var cdnLinksBereich = document.getElementsByClassName("CacheDetailNavigation NoPrint");
                             for (var k = 0; k < cdnLinksBereich.length; k++) {
-                                // Liste der Links "Watch", Ignore" ... besorgen.
+                                // Liste der Links "Watch", Ignore" ... .
                                 var cdnLinks = cdnLinksBereich[k].getElementsByTagName("a");
                                 for (var m = 0; m < cdnLinks.length; m++) {
-                                    // Wenn es sich um "Ignore" Link handelt, dann die Linkbezeichnung in Stop Ignoring ändern und das Icon ersetzen.
+                                    // Bei "Ignore" Link Linkbezeichnung in Stop Ignoring ändern und Icon ersetzen.
                                     if (cdnLinks[m].href.match(/\/bookmarks\/ignore\.aspx\?guid/)) {
                                         cdnLinks[m].innerHTML = "Stop Ignoring";
                                         var css = '.CacheDetailNavigation a[href*="ignore.aspx"]{background-image: url(' + global_stop_ignore_icon + ');}';
@@ -1387,7 +1380,7 @@ var mainGC = function() {
                 if (content == getValue("warningMessageContent")) {
                     warnMessagePrepareMouseEvents();
                 } else {
-                    // Button in der Warnmeldung aufbauen, um Meldung das erste Mal zu verbergen.
+                    // Button in Warnmeldung aufbauen, um Meldung erstes Mal zu verbergen.
                     var div = document.createElement("div");
                     div.setAttribute("class", "GoAwayWarningMessage");
                     div.setAttribute("title", "Go away message");
@@ -1399,7 +1392,7 @@ var mainGC = function() {
             } catch(e) {gclh_error("Hide warning message:",e);}
         }
     }
-    // Warnmeldung verbergen und Inhalt sichern (mit allem Gedöhns), damit wir beim nächsten mal sofort verbergen können.
+    // Warnmeldung verbergen und Inhalt sichern.
     function warnMessageHideAndSave() {
         $('.WarningMessage').fadeOut(1000, "linear");
         var content = '"' + $('.WarningMessage')[0].innerHTML + '"';
@@ -1407,29 +1400,28 @@ var mainGC = function() {
         $('.GoAwayWarningMessage')[0].style.display = "none";
         warnMessagePrepareMouseEvents();
     }
-    // Mouse Events vorbereiten für Warnmeldung temporär anzuzeigen und zu verbergen.
+    // Mouse Events vorbereiten für show/hide Warnmeldung.
     function warnMessagePrepareMouseEvents() {
-        // Balken im rechten Headerbereich zur erneuten Aktivierung der Warnmeldung.
+        // Balken im rechten Headerbereich zur Aktivierung der Warnmeldung.
         var divShow = document.createElement("div");
         divShow.setAttribute("class", "ShowWarningMessage");
         divShow.setAttribute("style", "z-index: 1004; float: right; right: 0px; width: 6px; background-color: rgb(224, 183, 10); height: 65px; position: absolute;");
         $('.WarningMessage')[0].parentNode.insertBefore(divShow, $('.WarningMessage')[0]);
-        // Bereich für die Aufnahme des Mouseout Events, um die Warnmeldung wieder zu verbergen. Das ist notwendig, weil die eigentliche Warnmeldung
-        // nicht durchgängig vorhanden ist (padding) und nicht klar ist, wie eine Warnmelung morgen aussieht.
+        // Bereich für Mouseout Event, um Warnmeldung zu verbergen. Notwendig, weil eigentliche Warnmeldung nicht durchgängig da und zukünftiges Aussehen unklar.
         var divHide = document.createElement("div");
         divHide.setAttribute("class", "HideWarningMessage");
         divHide.setAttribute("style", "z-index: 1004; height: 110px; position: absolute; right: 0px; left: 0px;");
         $('.WarningMessage')[0].parentNode.insertBefore(divHide, $('.WarningMessage')[0]);
         warnMessageMouseOut();
     }
-    // Warnmeldung temporär anzeigen.
+    // Show Warnmeldung.
     function warnMessageMouseOver() {
         $('.ShowWarningMessage')[0].style.display = "none";
         $('.WarningMessage')[0].style.display = "";
         $('.HideWarningMessage')[0].style.display = "";
         $('.HideWarningMessage')[0].addEventListener("mouseout", warnMessageMouseOut, false);
     }
-    // Warnmeldung wieder verbergen.
+    // Hide Warnmeldung.
     function warnMessageMouseOut() {
         $('.WarningMessage')[0].style.display = "none";
         $('.HideWarningMessage')[0].style.display = "none";
@@ -1487,14 +1479,14 @@ var mainGC = function() {
                 + 'markers=icon:http://www.geocaching.com/images/wpttypes/pins/' + gc_type + '.png' + '|' + coords[0] + ',' + coords[1] + ')';
         return [url, zoom_value];
     }
-    // Hineinzoomen.
+    // Reinzoomen.
     function mapZoomIn() {
         if (document.getElementById("gclh_map_static_values")) {
             var map = document.getElementById("gclh_map_static_values");
             [map.style.backgroundImage, map.value] = buildMapValues(parseInt(map.value) + 1);
         }
     }
-    // Herauszoomen.
+    // Rauszoomen.
     function mapZoomOut() {
         if (document.getElementById("gclh_map_static_values")) {
             var map = document.getElementById("gclh_map_static_values");
@@ -1502,16 +1494,17 @@ var mainGC = function() {
         }
     }
 
-// Aplly search field in navigation.
+// Eingaben im Search Field verarbeiten. Intern wird parametrisierte alte Advanced Search Seite aufgerufen.
     if (document.location.href.match(/^https?:\/\/www\.geocaching\.com\/seek\/nearest\.aspx\?navi_search=/)) {
         try {
+        console.log("ja1");
             var matches = document.location.href.match(/\?navi_search=(.*)/);
             if (matches) {
                 document.getElementById("ctl00_ContentBody_LocationPanel1_OriginText").value = urldecode(matches[1]).replace(/%20/g, " ");
                 function click_search() {document.getElementById("ctl00_ContentBody_LocationPanel1_btnLocale").click();}
                 window.addEventListener("load", click_search, false);
             }
-        } catch(e) {gclh_error("Aplly search field in navigation:",e);}
+        } catch(e) {gclh_error("Eingaben im Search Field verarbeiten:",e);}
     }
 
 // Show favorite percentage.
@@ -1522,13 +1515,13 @@ var mainGC = function() {
                 if (document.getElementsByClassName("favorite-container")[0] &&
                      document.getElementsByClassName("favorite-score")[0].innerHTML.match("%") &&
                      document.getElementsByClassName("favorite-dropdown")[0]) {
-                    // Box mit Schleifchen/Herz, Anzahl Favoriten, Text "Favorites" und Drop-Down-Pfeil.
+                    // Box mit Schleifchen, Anzahl Favoriten, Text "Favorites", Drop-Down-Pfeil.
                     var fav = document.getElementsByClassName("favorite-container")[0];
                     if (fav) {
-                        // Prozentzahl und Text.
+                        // Prozentzahl, Text.
                         var score = document.getElementsByClassName("favorite-score")[0].innerHTML.match(/(.*%)\.*/);
                         if (score && score[1]) {
-                            // Eigener Favoritenpunkt. Ist class hideMe vorhanden, dann wurde kein Favoritenpunkt vergeben. Ist sie nicht vorhanden, dann wurde einer vergeben.
+                            // Eigener Favoritenpunkt. Class hideMe -> kein Favoritenpunkt. Keine class hideMe -> Favoritenpunkt.
                             var myfav = document.getElementById("pnlFavoriteCache");
                             var myfavHTML = "";
                             if (myfav) {
@@ -1593,7 +1586,7 @@ var mainGC = function() {
         } catch(e) {gclh_error("Highlight related web page link:",e);}
     }
 
-// Show other coord-formats in listing.
+// Show other coord formats in listing.
     if (is_page("cache_listing") && document.getElementById('uxLatLon')) {
         try {
             var box = document.getElementById('ctl00_ContentBody_LocationSubPanel');
@@ -1610,10 +1603,10 @@ var mainGC = function() {
             var dms = DegtoDMS(coords);
             box.innerHTML += " - DMS: " + dms;
             box.innerHTML = "<font style='font-size: 10px;'>" + box.innerHTML + "</font><br>";
-        } catch(e) {gclh_error("Show other coord-formats",e);}
+        } catch(e) {gclh_error("Show other coord formats in listing",e);}
     }
 
-// Show other coord-formats on print-page.
+// Show other coord formats on print page.
     if (document.location.href.match(/^https?:\/\/www\.geocaching\.com\/seek\/cdpf\.aspx/)) {
         try {
             var box = document.getElementsByClassName("UTM Meta")[0];
@@ -1634,7 +1627,7 @@ var mainGC = function() {
                     box.innerHTML += "<br>DMS: " + dms;
                 }
             }
-        } catch(e) {gclh_error("Show other coord-formats on print-page:",e);}
+        } catch(e) {gclh_error("Show other coord formats on print page:",e);}
     }
 
 // Improve Add to list in cache listing.
@@ -1653,7 +1646,7 @@ var mainGC = function() {
         } catch(e) {gclh_error("Improve Add to list:",e);}
     }
 
-// Show Map-It button at cache listing.
+// Button Map this Location at cache listing.
     if (is_page("cache_listing") && document.getElementById('uxLatLon')) {
         try {
             var coords = toDec(document.getElementById("uxLatLon").innerHTML);
@@ -1667,10 +1660,10 @@ var mainGC = function() {
             small.appendChild(document.createTextNode(" - "));
             small.appendChild(a);
             link.appendChild(small);
-        } catch(e) {gclh_error("Map It button:",e);}
+        } catch(e) {gclh_error("Button Map this Location at cache listing:",e);}
     }
 
-// Show the latest logs symbols in cache listings.
+// Show the latest logs symbols.
     if (is_page("cache_listing") && settings_show_latest_logs_symbols && settings_load_logs_with_gclh) {
         try {
             function showLatestLogsSymbols(waitCount) {
@@ -1979,35 +1972,6 @@ var mainGC = function() {
     }
 
 // Pocket query mark elements, set default value for new one, set warning message.
-    // Helper function marks two PQ options, which are in rejection.
-    function markPqOptionsAreInRejection(idOption1, idOption2) {
-        var status = false;
-        if ($("#"+idOption1).is(':checked') && $("#"+idOption2).is(':checked')) {
-            $("label[for='"+idOption1+"']").css('background-color','#ffff00');
-            $("label[for='"+idOption2+"']").css('background-color','#ffff00');
-            $("label[for='"+idOption1+"']").css('color','#ff0000');
-            $("label[for='"+idOption2+"']").css('color','#ff0000');
-            status = true;
-        } else {
-            $("label[for='"+idOption1+"']").css('background-color','#ffffff');
-            $("label[for='"+idOption2+"']").css('background-color','#ffffff');
-            $("label[for='"+idOption1+"']").css('color','#000000');
-            $("label[for='"+idOption2+"']").css('color','#000000');
-        }
-        return status;
-    }
-    // Helper function to find PQ options, which are in rejection.
-    function verifyPqOptions() {
-        var status = false;
-        status = status | markPqOptionsAreInRejection("ctl00_ContentBody_cbOptions_0", "ctl00_ContentBody_cbOptions_1");  // I haven't found / I have found
-        status = status | markPqOptionsAreInRejection("ctl00_ContentBody_cbOptions_2", "ctl00_ContentBody_cbOptions_3");  // I don't vs. own I own
-        status = status | markPqOptionsAreInRejection("ctl00_ContentBody_cbOptions_4", "ctl00_ContentBody_cbOptions_5");  // Are available to all users vs. Are for members only
-        status = status | markPqOptionsAreInRejection("ctl00_ContentBody_cbOptions_8", "ctl00_ContentBody_cbOptions_9");  // Found in the last 7 days vs. Have not been found
-        status = status | markPqOptionsAreInRejection("ctl00_ContentBody_cbOptions_12", "ctl00_ContentBody_cbOptions_13");  // Is Disabled vs. is Enabled
-        if (status) $("#warning").show();
-        else $("#warning").hide();
-    }
-    // Pocket query mark elements, set default value for new one, set warning message.
     if (document.location.href.match(/^https?:\/\/www\.geocaching\.com\/pocket\/gcquery\.aspx/)) {
         try {
             // Mark all elements for an easier access.
@@ -2098,6 +2062,34 @@ var mainGC = function() {
             }
         } catch(e) {gclh_error("Pocket query mark, set defaults, set warning:",e);}
     }
+    // Marks two PQ options, which are in rejection.
+    function markPqOptionsAreInRejection(idOption1, idOption2) {
+        var status = false;
+        if ($("#"+idOption1).is(':checked') && $("#"+idOption2).is(':checked')) {
+            $("label[for='"+idOption1+"']").css('background-color','#ffff00');
+            $("label[for='"+idOption2+"']").css('background-color','#ffff00');
+            $("label[for='"+idOption1+"']").css('color','#ff0000');
+            $("label[for='"+idOption2+"']").css('color','#ff0000');
+            status = true;
+        } else {
+            $("label[for='"+idOption1+"']").css('background-color','#ffffff');
+            $("label[for='"+idOption2+"']").css('background-color','#ffffff');
+            $("label[for='"+idOption1+"']").css('color','#000000');
+            $("label[for='"+idOption2+"']").css('color','#000000');
+        }
+        return status;
+    }
+    // Find PQ options, which are in rejection.
+    function verifyPqOptions() {
+        var status = false;
+        status = status | markPqOptionsAreInRejection("ctl00_ContentBody_cbOptions_0", "ctl00_ContentBody_cbOptions_1");  // I haven't found / I have found
+        status = status | markPqOptionsAreInRejection("ctl00_ContentBody_cbOptions_2", "ctl00_ContentBody_cbOptions_3");  // I don't vs. own I own
+        status = status | markPqOptionsAreInRejection("ctl00_ContentBody_cbOptions_4", "ctl00_ContentBody_cbOptions_5");  // Are available to all users vs. Are for members only
+        status = status | markPqOptionsAreInRejection("ctl00_ContentBody_cbOptions_8", "ctl00_ContentBody_cbOptions_9");  // Found in the last 7 days vs. Have not been found
+        status = status | markPqOptionsAreInRejection("ctl00_ContentBody_cbOptions_12", "ctl00_ContentBody_cbOptions_13");  // Is Disabled vs. is Enabled
+        if (status) $("#warning").show();
+        else $("#warning").hide();
+    }
 
 // Map on create pocket query page.
     if (document.location.href.match(/^https?:\/\/www\.geocaching\.com\/pocket\/gcquery\.aspx/)) {
@@ -2180,138 +2172,91 @@ var mainGC = function() {
         if (is_page("cache_listing") && typeof unsafeWindow.$.fancybox != "undefined") unsafeWindow.$('a[rel="lightbox"]').fancybox();
     } catch(e) {gclh_error("Activate fancybox:",e);}
 
-// Hide Disclaimer.
-    if (settings_hide_disclaimer && is_page("cache_listing")) {
+//#OK# Hide disclaimer on cache listing and print page.
+    if (settings_hide_disclaimer && (is_page("cache_listing") || document.location.href.match(/^https?:\/\/www\.geocaching\.com\/seek\/cdpf\.aspx/))) {
         try {
-            var disc = document.getElementsByClassName('Note Disclaimer')[0];
-            if (disc) disc.parentNode.removeChild(disc);
-            else {
-                var disc = document.getElementsByClassName('DisclaimerWidget')[0];
-                if (disc) disc.parentNode.removeChild(disc);
-            }
-        } catch(e) {gclh_error("Hide Disclaimer1:",e);}
-    }
-    if (settings_hide_disclaimer && document.location.href.match(/^https?:\/\/www\.geocaching\.com\/seek\/cdpf\.aspx/)) {
-        try {
-            var disc = document.getElementsByClassName('TermsWidget no-print')[0];
-            if (disc) disc.parentNode.removeChild(disc);
-        } catch(e) {gclh_error("Hide Disclaimer2:",e);}
+            var d = (document.getElementsByClassName('Note Disclaimer')[0] || document.getElementsByClassName('DisclaimerWidget')[0] || document.getElementsByClassName('TermsWidget no-print')[0]);
+            if (d) d.remove();
+        } catch(e) {gclh_error("Hide disclaimer:",e);}
     }
 
-// Hide on print-page.
+//#OK# Hide side rights on print page.
     if (document.location.href.match(/^https?:\/\/www\.geocaching\.com\/seek\/cdpf\.aspx/)) {
         try {
             document.getElementById("pnlDisplay").removeChild(document.getElementById("Footer"));
-        } catch(e) {gclh_error("Hide on print-page:",e);}
+        } catch(e) {gclh_error("Hide side rights on print page:",e);}
     }
 
-// Remove paragraph containing the link to the advertisement instructions.
+//#OK# Remove advertisement link.
     if (settings_hide_advert_link) {
         try {
-            var links = document.getElementsByTagName('a');
-            for (var i = 0; i < links.length; i++) {
-                if (links[i].href.indexOf('advertising.aspx') > 0) {
-                    var del = links[i];
-                    if (is_page("messagecenter") || document.location.href.match(/^https:\/\/www\.geocaching\.com\/account\/lists/)) {
-                        while (del.parentNode != null && (del.parentNode.nodeName != 'ASIDE')) {del = del.parentNode;}
-                    } else {
-                        while (del.parentNode != null && (del.parentNode.nodeName != 'P')) {del = del.parentNode;}
-                    }
-                    if (del.parentNode) del.parentNode.removeChild(del);
-                    break;
-                }
-            }
-        } catch(e) {gclh_error("Hide Advert-Link:",e);}
+            $('a[href*="advertising.aspx"]').remove();
+        } catch(e) {gclh_error("Hide advertisement link:",e);}
     }
 
-// Improve calendar-Link in Events.
+//#OK# Improve calendar link in events. (Im Google Link den Cache Link von &location nach &details verschieben.)
     if (is_page("cache_listing") && document.getElementById("calLinks")) {
         try {
-            function calendar_link() {
-                var div = document.getElementById("calLinks");
-                var links = div.getElementsByTagName("a");
-                for (var i = 0; i < links.length; i++) {
-                    if (links[i].title == "Google") {
-                        var link = links[i].href.split("&");
-                        var new_link = link[0] + "&" + link[1] + "&" + link[2];
-                        var loc = link[4].split("(");
-                        new_link += "&" + loc[0].substr(0, loc[0].length - 3) + "&details=" + loc[1].substr(0, loc[1].length - 1) + "&" + link[5];
-                        links[i].href = new_link;
-                    }
+            function impCalLink(waitCount) {
+                if ($('#calLinks').find('a[title*="Google"]')[0]) {
+                    var calL = $('#calLinks').find('a[title*="Google"]')[0];
+                    if (calL && calL.href) calL.href = calL.href.replace(/&det(.*)&loc/, "&loc").replace(/%20\(http/, "&details=http").replace(/\)&spr/, "&spr");
                 }
+                waitCount++;
+                if (impCalLink <= 20) setTimeout(function(){impCalLink(waitCount);}, 100);
             }
-            window.addEventListener("load", calendar_link, false);
-        } catch(e) {gclh_error("Improve calendar-link",e);}
+            impCalLink(0);
+        } catch(e) {gclh_error("Improve calendar link",e);}
     }
 
-// Hide "Warning! Spoilers may be included in the descriptions or links.".
+//#OK# Hide spoilerwarning above the logs.
     if (settings_hide_spoilerwarning && is_page("cache_listing")) {
         try {
-            var findCounts = document.getElementById('ctl00_ContentBody_lblFindCounts');
-            if (findCounts) {
-                var para = findCounts.nextSibling.nextSibling.nextSibling.nextSibling;
-                if (para && para.nodeName == 'P') {
-                    para.innerHTML = "&nbsp;";
-                    para.style.height = "0";
-                    para.className = para.className + ' Clear';
-                }
+            var sp = $('a[href*="glossary.aspx#spoiler"]')[0].closest('p');
+            if (sp) {
+                sp.innerHTML = "&nbsp;";
+                sp.style.height = "0";
+                sp.className += " Clear";
             }
         } catch(e) {gclh_error("Hide spoilerwarning:",e);}
     }
 
-// Hide Cache Notes (COMPLETE).
-    if (settings_hide_cache_notes && is_page("cache_listing")) {
+//#OK# Hide complete and Show/Hide Cache Note.
+    if (is_page("cache_listing")) {
         try {
-            var disc = document.getElementsByClassName('Note PersonalCacheNote')[0];
-            if (disc) disc.parentNode.removeChild(disc);
-            else {
-                var disc = document.getElementsByClassName('NotesWidget')[0];
-                if (disc) disc.parentNode.removeChild(disc);
-            }
-        } catch(e) {gclh_error("Hide Cache Notes (COMPLETE):",e);}
-    }
-
-// Hide/Show Cache Notes.
-    if (settings_hide_empty_cache_notes && !settings_hide_cache_notes && is_page("cache_listing")) {
-        try {
-            var box = document.getElementsByClassName('Note PersonalCacheNote')[0];
-            if (!box) box = document.getElementsByClassName('NotesWidget')[0];
-            if (box) {
-                var description = decode_innerHTML(box.getElementsByTagName("strong")[0]);
-                var description = description.replace(":", "");
+            var note = ($('.Note.PersonalCacheNote')[0] || $('.NotesWidget')[0]);
+            if (settings_hide_cache_notes && note) note.remove();
+            if (settings_hide_empty_cache_notes && !settings_hide_cache_notes && note) {
+                var desc = decode_innerHTML(note.getElementsByTagName("strong")[0]).replace(":", "");
+                var noteText = $('#cache_note')[0].innerHTML;
+                var link = document.createElement("font");
+                link.setAttribute("style", "font-size: 12px;");
+                link.innerHTML = "<a id='gclh_hide_note' href='javascript:void(0);' onClick='gclhHideNote();'>Hide "+desc+"</a>";
+                note.setAttribute("id", "gclh_note");
+                note.parentNode.insertBefore(link, note);
+                if (noteText != null && (noteText == "" || noteText == "Click to enter a note" || noteText == "Klicken zum Eingeben einer Notiz" || noteText == "Pro vložení poznámky klikni sem")) {
+                    note.style.display = "none";
+                    if ($('#gclh_hide_note')[0]) $('#gclh_hide_note')[0].innerHTML = 'Show '+desc;
+                }
                 var code =
-                    "function hide_notes() {" +
-                    "  if(document.getElementById('box_notes').style.display == 'none') {" +
-                    "    document.getElementById('box_notes').style.display = 'block';" +
-                    "    if (document.getElementById('show_hide_personal_cache_notes')) {" +
-                    "      document.getElementById('show_hide_personal_cache_notes').innerHTML = 'Hide " + description + "'" +
+                    "function gclhHideNote() {" +
+                    "  if(document.getElementById('gclh_note').style.display == 'none') {" +
+                    "    document.getElementById('gclh_note').style.display = 'block';" +
+                    "    if (document.getElementById('gclh_hide_note')) {" +
+                    "      document.getElementById('gclh_hide_note').innerHTML = 'Hide "+desc+"'" +
                     "    }" +
                     "  } else {" +
-                    "    document.getElementById('box_notes').style.display = 'none';" +
-                    "    if (document.getElementById('show_hide_personal_cache_notes')) {" +
-                    "      document.getElementById('show_hide_personal_cache_notes').innerHTML = 'Show " + description + "'" +
+                    "    document.getElementById('gclh_note').style.display = 'none';" +
+                    "    if (document.getElementById('gclh_hide_note')) {" +
+                    "      document.getElementById('gclh_hide_note').innerHTML = 'Show "+desc+"'" +
                     "    }" +
                     "  }" +
                     "}";
                 var script = document.createElement("script");
                 script.innerHTML = code;
                 document.getElementsByTagName("body")[0].appendChild(script);
-                box.setAttribute("id", "box_notes");
-                var link = document.createElement("font");
-                link.innerHTML = "<a id='show_hide_personal_cache_notes' href='javascript:void(0);' onClick='hide_notes();'>Hide " + description + "</a>";
-                link.setAttribute("style", "font-size: 12px;");
-                box.parentNode.insertBefore(link, box);
-                var notes = document.getElementsByClassName('Note PersonalCacheNote')[0];
-                if (!notes) notes = document.getElementsByClassName('NotesWidget')[0];
-                var notesText = document.getElementById("cache_note").innerHTML;
-                if (notesText != null && (notesText == "" || notesText == "Click to enter a note" || notesText == "Klicken zum Eingeben einer Notiz")) {
-                    notes.style.display = "none";
-                    if (document.getElementById('show_hide_personal_cache_notes')) {
-                        document.getElementById('show_hide_personal_cache_notes').innerHTML = 'Show ' + description;
-                    }
-                }
             }
-        } catch(e) {gclh_error("Hide Cache Notes:",e);}
+        } catch(e) {gclh_error("Hide complete and Show/Hide Cache Note:",e);}
     }
 
 // Hide Hint.
@@ -2364,6 +2309,24 @@ var mainGC = function() {
         } catch(e) {gclh_error("Hide Hint:",e);}
     }
 
+// Decrypt Hint.
+    if (settings_decrypt_hint && !settings_hide_hint && is_page("cache_listing")) {
+        try {
+            if (document.getElementById('ctl00_ContentBody_EncryptionKey')) {
+                if (browser == "chrome") injectPageScript("(function(){dht();})()");
+                else unsafeWindow.dht(document.getElementById("ctl00_ContentBody_lnkDH"));
+                var decryptKey = document.getElementById('dk');
+                if (decryptKey) decryptKey.parentNode.removeChild(decryptKey);
+            }
+        } catch(e) {gclh_error("Decrypt Hint:",e);}
+    }
+    if (settings_decrypt_hint && document.location.href.match(/^https?:\/\/www\.geocaching\.com\/seek\/cdpf\.aspx/)) {
+        try {
+            if (document.getElementById('uxDecryptedHint')) document.getElementById('uxDecryptedHint').style.display = 'none';
+            if (document.getElementById('uxEncryptedHint')) document.getElementById('uxEncryptedHint').style.display = '';
+        } catch(e) {gclh_error("Decrypt cdpf Hint:",e);}
+    }
+
 // Disabled and archived ...
     if (is_page("cache_listing")) {
         try {
@@ -2395,24 +2358,6 @@ var mainGC = function() {
                     + (settings_highlight_usercoords_it ? "font-style: italic;}" : "font-style: unset;}");
             appendCssStyle(css);
         } catch(e) {gclh_error("Highlight Usercoords:",e);}
-    }
-
-// Decrypt Hint.
-    if (settings_decrypt_hint && !settings_hide_hint && is_page("cache_listing")) {
-        try {
-            if (document.getElementById('ctl00_ContentBody_EncryptionKey')) {
-                if (browser == "chrome") injectPageScript("(function(){dht();})()");
-                else unsafeWindow.dht(document.getElementById("ctl00_ContentBody_lnkDH"));
-                var decryptKey = document.getElementById('dk');
-                if (decryptKey) decryptKey.parentNode.removeChild(decryptKey);
-            }
-        } catch(e) {gclh_error("Decrypt Hint:",e);}
-    }
-    if (settings_decrypt_hint && document.location.href.match(/^https?:\/\/www\.geocaching\.com\/seek\/cdpf\.aspx/)) {
-        try {
-            if (document.getElementById('uxDecryptedHint')) document.getElementById('uxDecryptedHint').style.display = 'none';
-            if (document.getElementById('uxEncryptedHint')) document.getElementById('uxEncryptedHint').style.display = '';
-        } catch(e) {gclh_error("Decrypt cdpf Hint:",e);}
     }
 
 // Show Smilies und Log Templates old log site.
@@ -8702,7 +8647,7 @@ var mainGC = function() {
         return html;
     }
 
-// Configuration Menu.
+// Configuration Menü.
     function gclh_showConfig() {
         btnClose(false);
         if (checkTaskAllowed("GClh Config", true) == false) return;
@@ -10171,7 +10116,7 @@ var mainGC = function() {
             var time = 500;
             var timeShort = 450;
         }
-        // Wenn Linklist nicht on top angezeigt werden soll, dann muss unbedingt vertikales Menu aktiv sein, falls nicht vertikales Menu setzen.
+        // Wenn Linklist nicht on top angezeigt werden soll, dann muss unbedingt vertikales Menü aktiv sein, falls nicht vertikales Menü setzen.
         if (!document.getElementById("settings_bookmarks_on_top").checked && !document.getElementById("settings_bookmarks_top_menu").checked) {
             document.getElementById("settings_bookmarks_top_menu").click();
         }
