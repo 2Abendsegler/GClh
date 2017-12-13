@@ -210,5 +210,6 @@
   "settings_show_brouter_link": true,
   "settings_font_color_menu": "93B516",
   "settings_font_color_submenu": "93B516",
-  "settings_esc_close_gclh_config": true
+  "settings_esc_close_gclh_config": true,
+  "settings_show_default_links": true
 }
