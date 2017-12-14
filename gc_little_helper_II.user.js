@@ -5818,6 +5818,41 @@ var mainGC = function () {
         }
     }
 
+
+// Improve Bookmarks page
+if(document.location.href.match(/^https?:\/\/www\.geocaching\.com\/bookmarks\/view\.aspx\?code/)){
+    
+    var code =
+        "function updateCorrectedCoordinatesForBookmarkPage(){" +
+        " var firstrun = true;" +
+        " if($('#divContentMain > div.span-20.last > table.Table.NoBottomSpacing > thead > tr > th:nth-child(5)').html() == 'corrected'){firstrun = false;}" +
+        " if(firstrun) $('#divContentMain > div.span-20.last > table.Table.NoBottomSpacing > thead > tr > th:nth-child(4)').after('<th>corrected</th>');" +
+        " $('#divContentMain table.Table.NoBottomSpacing > tbody > tr').each(function() {" +
+        "     td = $(this).find('td:nth-child(4)');" +
+        "     gccode = td.find('a').html();" +
+        "     if(!gccode){" +
+        "         if(firstrun) $(this).append('<td>&nbsp;</td>');" +
+        "     }else{" +
+        "         if(firstrun) td.after('<td id=\"cc_' + gccode + '\" class=\"cc_cell\">&nbsp;</td>');" +
+        "         $.get('https://www.geocaching.com/geocache/' + gccode, null, function(text){" +
+        "             gc_code = $(text).find('#ctl00_ContentBody_CoordInfoLinkControl1_uxCoordInfoCode').html();" +
+        "             if(text.includes('\"isUserDefined\":true,\"newLatLng\"')){" +
+        "                 $('#cc_' + gc_code).html('<img alt=\"corrected_coords\" src=\"data:image/png;base64,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\">');" +
+        "             }" +
+        "         });" +
+        "     }" +
+        " });" +
+        "}";
+
+    var script = document.createElement("script");
+    script.innerHTML = code;
+    document.getElementsByTagName("body")[0].appendChild(script);
+    
+    var $button = '<p style="margin-top:5px;"><input type="button" name="getcorrectedcoords" value="Show Caches with corrected Coordinates" class="Button" onClick="updateCorrectedCoordinatesForBookmarkPage()"></p>';
+    $('#ctl00_ContentBody_QuickAdd').append($button);
+    appendCssStyle('.cc_cell{text-align:center !important}');
+}
+
 // Show warning for not available images.
     if (settings_img_warning && is_page("cache_listing")) {
         try {
