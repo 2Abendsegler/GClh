@@ -3970,6 +3970,43 @@ var mainGC = function () {
         } catch (e) { gclh_error("Improve bookmark lists:", e); }
     }
 
+// Improve Bookmarks view page
+if(document.location.href.match(/^https?:\/\/www\.geocaching\.com\/bookmarks\/view\.aspx\?code/)){
+    
+    injectPageScript(function updateCorrectedCoordinatesForBookmarkPage(){
+        var firstrun = true;
+        if($('#divContentMain > div.span-20.last > table.Table.NoBottomSpacing > thead > tr > th:nth-child(5)').html() == 'corrected'){
+            firstrun = false;
+        }
+        if(firstrun){
+            $('#divContentMain > div.span-20.last > table.Table.NoBottomSpacing > thead > tr > th:nth-child(4)').after('<th>corrected</th>');
+        }
+        $('#divContentMain table.Table.NoBottomSpacing > tbody > tr').each(function() {
+            td = $(this).find('td:nth-child(4)');
+            gccode = td.find('a').html();
+            if(!gccode){
+                if(firstrun){
+                    $(this).append('<td>&nbsp;</td>');
+                }
+            }else{
+                if(firstrun){
+                    td.after('<td id="cc_' + gccode + '" class="cc_cell">&nbsp;</td>');
+                }
+                $.get('https://www.geocaching.com/geocache/' + gccode, null, function(text){
+                    gc_code = $(text).find('#ctl00_ContentBody_CoordInfoLinkControl1_uxCoordInfoCode').html();
+                    if(text.includes('"isUserDefined":true,"newLatLng"')){
+                        $('#cc_' + gc_code).html('<img alt="corrected_coords" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAAlwSFlzAAALEwAACxMBAJqcGAAAAVlpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IlhNUCBDb3JlIDUuNC4wIj4KICAgPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4KICAgICAgPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIKICAgICAgICAgICAgeG1sbnM6dGlmZj0iaHR0cDovL25zLmFkb2JlLmNvbS90aWZmLzEuMC8iPgogICAgICAgICA8dGlmZjpPcmllbnRhdGlvbj4xPC90aWZmOk9yaWVudGF0aW9uPgogICAgICA8L3JkZjpEZXNjcmlwdGlvbj4KICAgPC9yZGY6UkRGPgo8L3g6eG1wbWV0YT4KTMInWQAAAyBJREFUOBE9U01oVFcU/s59d+a9melMk5mkigZbBaF0WWLEkqCLUnBbiO2qP2oHo0ULpd24ya6guBFR8kODi26aVReli0I3g6i0USRE2lpohGrVJONMxsnMe+/ee3rua9N7ebzLuff7vnu+cw9BxuS3k8HisUXr12efnn+LHZ+Q5RjAr/oYA6sE+pkVf31lx1c3fGwbQ5MsYFq0dZ7JhU8fXlVandTFHGxsYRPjzyLIawRhANMzcKmbi/9aOzM7Opt6EvIH6lzPhX8P/RTVCuO9jS25CTsJK1FWfl+GUyCnSKmwWgi2mt3G0M7w7WmaTrID+Se1ucJw0YP7clhilJNP2MkLUIAgsODcmnuumuvP+6WhlybWnyRznpnOPT4/TpFqmL5xDBZEBvJ7kjsjB40XvIUylfBR5RgavVt8J7nPA8WKsj0zoR34w7zkKARWwDlRy6AGNgN3uYcQeXw6+DH2RXsxqAZoKV4x4otKY/OBBvHYf2ZJzgy5JvKkUaMBtLiDEhXwefUU9oQj6CQdfNf+AVoFymPYuTHxhnaLs/Ij6nOCevl9HI0O4679HYNUxhfV0/+C4w5mNq6jYe94Ukp9hYhGtNQcWmusi/I7+XEcrozDsLDLPFgcxUi4C+14E7PN67jHv2G3GkYq+1KRzCTFjEeSLCpU4l+SZSy3V6Alhfeq7+K1aA82BXytuYBlfoBXqIoEqfeIlbjlHD9WZNxtlffWKdenGBdfzOBee9kXAa24jSvNeazwHxgSTzxYjPZbzj8stu52cOCTQ89Y00mphhQ/EPWAbsZLqJoKvu/+iLv8K3ZQ7X8wyyBFxMYRt9IzGd3Ugy/ny3srJ7pr3b5yUjWRWXOtrPZFimBkeuUMTBQXh0tRZ3Vz4dr+C8ezl2gvtqY6q+1GqVaK2HtDSHeqmi1Q6KQjnKhYwaeijEKtGHUethvr3/x5yudC2111BEf06/dHL+uyngoHC7DGwhnfEvK2tUIgpsXNPkwnubrxxqWzi0I6zdNCKWObxK/rNz97k14OjlNOHVKKdvmYtNYjl9pbdiNdmJ+4vORj25h/AImmeXAFriL0AAAAAElFTkSuQmCC">');
+                    }
+                });
+            }
+        });
+    });
+    
+    var $button = '<p style="margin-top:5px;"><input type="button" name="getcorrectedcoords" value="Show Caches with corrected Coordinates" class="Button" onClick="updateCorrectedCoordinatesForBookmarkPage()"></p>';
+    $('#ctl00_ContentBody_QuickAdd').append($button);
+    appendCssStyle('.cc_cell{text-align:center !important}');
+}
+
 // Add buttons to bookmark lists and watchlist to select caches.
     var current_page;
     if (document.location.href.match(/^https?:\/\/www\.geocaching\.com\/bookmarks/) &&
@@ -5817,6 +5854,7 @@ var mainGC = function () {
             }
         }
     }
+
 
 // Show warning for not available images.
     if (settings_img_warning && is_page("cache_listing")) {
