@@ -2,7 +2,7 @@
 // @name             GC little helper II
 // @namespace        http://www.amshove.net
 //--> $$000 Begin of change
-// @version          0.8.12
+// @version          0.8.11
 //<-- $$000 End of change
 // @include          http*://www.geocaching.com/*
 // @include          http*://labs.geocaching.com/*
@@ -3322,12 +3322,14 @@ var mainGC = function() {
 // Improve bookmark lists.
     if (document.location.href.match(/^https?:\/\/www\.geocaching\.com\/bookmarks\/(view\.aspx\?guid=|bulk\.aspx\?listid=|view\.aspx\?code=)/) && document.getElementById('ctl00_ContentBody_ListInfo_cboItemsPerPage')) {
         try {
+            // Prepare link corrected coords.
+            var corrCoords = '<a id="gclh_linkCorrCoords" href="javascript:void(0);" title="Mark Caches with Corrected Coordinates">Mark Corr. Coords</a>';
             // Prepare link "Download as kml".
             if (document.location.href.match(/guid=([a-zA-Z0-9-]*)/)) {
                 var matches = document.location.href.match(/guid=([a-zA-Z0-9-]*)/);
                 if (matches && matches[1]) {
                     var uuidx = matches[1];
-                    var kml = "<a style=\"padding-right: 20px;\" title=\"Download Google Earth kml\" href='" + http + "://www.geocaching.com/kml/bmkml.aspx?bmguid=" + uuidx + "'>Download as kml</a>";
+                    var kml = "<a title=\"Download Google Earth kml\" href='" + http + "://www.geocaching.com/kml/bmkml.aspx?bmguid=" + uuidx + "'>Download as kml</a>";
                 }
             }
             // Compact layout.
@@ -3356,7 +3358,7 @@ var mainGC = function() {
                     if (LO.nextElementSibling.innerHTML == "") LO.nextElementSibling.remove();
                     else LO.nextElementSibling.style.marginBottom = "0";
                     LO.style.marginBottom = "0";
-                    if (uuidx) LO.innerHTML += "<span style='float: right; padding-right: 210px;'>" + kml + "</span>";
+                    LO.innerHTML += "<span style='float: right; padding-right: 210px;'>" + (uuidx ? kml+" | " : "") + corrCoords + "</span>";
                 }
                 // Table:
                 css += "table.Table tr {line-height: 16px;}";
@@ -3376,46 +3378,35 @@ var mainGC = function() {
                 appendCssStyle(css);
             // No compact layout, only build links.
             } else {
-                if (uuidx) $('#ctl00_ContentBody_lbHeading')[0].parentNode.parentNode.parentNode.childNodes[3].innerHTML += "<br>" + kml;
+                $('#ctl00_ContentBody_lbHeading')[0].parentNode.parentNode.parentNode.childNodes[3].innerHTML += "<br>" + (uuidx ? kml+"<br>" : "") + corrCoords;
             }
-//xxxx1
-            // Caches mit korrigierten Koordinaten markieren.
-//// Improve Bookmarks view page
-//if(document.location.href.match(/^https?:\/\/www\.geocaching\.com\/bookmarks\/view\.aspx\?code/)){
-            injectPageScript(function updateCorrectedCoordinatesForBookmarkPage(){
-                var firstrun = true;
-                if($('#divContentMain > div.span-20.last > table.Table.NoBottomSpacing > thead > tr > th:nth-child(5)').html() == 'corrected'){
-                    firstrun = false;
-                }
-                if(firstrun){
-                    $('#divContentMain > div.span-20.last > table.Table.NoBottomSpacing > thead > tr > th:nth-child(4)').after('<th>corrected</th>');
-                }
-                $('#divContentMain table.Table.NoBottomSpacing > tbody > tr').each(function() {
-                    td = $(this).find('td:nth-child(4)');
-                    gccode = td.find('a').html();
-                    if(!gccode){
-                        if(firstrun){
-                            $(this).append('<td>&nbsp;</td>');
-                        }
-                    }else{
-                        if(firstrun){
-                            td.after('<td id="cc_' + gccode + '" class="cc_cell">&nbsp;</td>');
-                        }
-                        $.get('https://www.geocaching.com/geocache/' + gccode, null, function(text){
-                            gc_code = $(text).find('#ctl00_ContentBody_CoordInfoLinkControl1_uxCoordInfoCode').html();
-                            if(text.includes('"isUserDefined":true,"newLatLng"')){
-                                $('#cc_' + gc_code).html('<img alt="corrected_coords" src="'+global_green_tick+'">');
-                            }
-                        });
-                    }
-                });
-            });
-
-            var $button = '<p style="margin-top:5px;"><input type="button" name="getcorrectedcoords" value="Show Caches with corrected Coordinates" class="Button" onClick="updateCorrectedCoordinatesForBookmarkPage()"></p>';
-            $('#ctl00_ContentBody_QuickAdd').append($button);
-            appendCssStyle('.cc_cell{text-align:center !important}');
-//        }
+            // Event, css corrected coords.
+            $('#gclh_linkCorrCoords')[0].addEventListener("click", markCorrCoordForBm, false);
+            appendCssStyle('.cc_cell {text-align: center !important} .working {opacity: 0.3;}');
         } catch(e) {gclh_error("Improve bookmark lists:",e);}
+    }
+    // Mark caches with corrected coords.
+    function markCorrCoordForBm() {
+        var anzLines = $('table.Table tbody tr').length / 2;
+        $('table.Table tbody tr').each(function() {
+            $('#gclh_linkCorrCoords').addClass('working');
+            if ($(this).find('td:nth-child(4) a')[0]) {
+                var gccode = $(this).find('td:nth-child(4) a')[0].innerHTML;
+                if (!$('#gclh_colCorrCoords')[0]) $(this).find('td:nth-child(5)').after('<td id="cc_'+gccode+'" class="cc_cell"></td>');
+                else $('#cc_'+gccode)[0].innerHTML = "";
+            } else {
+                if (!$('#gclh_colCorrCoords')[0]) $(this).find('td:nth-child(2)').after('<td></td>');
+                return;
+            }
+            $.get('https://www.geocaching.com/geocache/'+gccode, null, function(text){
+                var corr_gccode = $(text).find('#ctl00_ContentBody_CoordInfoLinkControl1_uxCoordInfoCode')[0].innerHTML;
+                if (text.includes('"isUserDefined":true,"newLatLng"')) $('#cc_'+corr_gccode)[0].innerHTML = '<img title="Corrected Coordinates" alt="Corr. Coords" src="'+global_green_tick+'">';
+                else $('#cc_'+corr_gccode)[0].innerHTML = '<img style="opacity: 0.8;" title="No Corrected Coordinates" alt="No Corr. Coords" src="'+global_red_tick+'">';
+                anzLines--;
+                if (anzLines == 0) $('#gclh_linkCorrCoords').removeClass('working');
+            });
+        });
+        if (!$('#gclh_colCorrCoords')[0]) $('table.Table thead tr th:nth-child(5)').after('<th id="gclh_colCorrCoords" style="width: 90px;"><span title="Caches with Corrected Coordinates">Corr. Coords</span></th>');
     }
 
 // Add buttons to bookmark lists and watchlist to select caches.
@@ -6504,8 +6495,7 @@ var mainGC = function() {
         appendCssStyle(css);
     }
 
-//xxxx
-// Show amount of different coins in public profile.
+//???? Show amount of different coins in public profile.
     if (is_page("publicProfile") && document.getElementById('ctl00_ContentBody_ProfilePanel1_lnkCollectibles') && document.getElementById('ctl00_ContentBody_ProfilePanel1_lnkCollectibles').className == "Active") {
         try {
             function gclh_coin_stats(table_id) {
