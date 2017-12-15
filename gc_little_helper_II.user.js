@@ -3382,14 +3382,15 @@ var mainGC = function() {
             }
             // Event, css corrected coords.
             $('#gclh_linkCorrCoords')[0].addEventListener("click", markCorrCoordForBm, false);
-            appendCssStyle('.cc_cell {text-align: center !important} .working {opacity: 0.3;}');
+            appendCssStyle('.cc_cell {text-align: center !important} .working {opacity: 0.3; cursor: default;}');
         } catch(e) {gclh_error("Improve bookmark lists:",e);}
     }
     // Mark caches with corrected coords.
     function markCorrCoordForBm() {
+        if ($('#gclh_linkCorrCoords')[0].className == "working") return;
+        $('#gclh_linkCorrCoords').addClass('working');
         var anzLines = $('table.Table tbody tr').length / 2;
         $('table.Table tbody tr').each(function() {
-            $('#gclh_linkCorrCoords').addClass('working');
             if ($(this).find('td:nth-child(4) a')[0]) {
                 var gccode = $(this).find('td:nth-child(4) a')[0].innerHTML;
                 if (!$('#gclh_colCorrCoords')[0]) $(this).find('td:nth-child(5)').after('<td id="cc_'+gccode+'" class="cc_cell"></td>');
