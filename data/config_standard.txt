@@ -212,5 +212,6 @@
   "settings_font_color_submenu": "93B516",
   "settings_esc_close_gclh_config": true,
   "settings_show_default_links": true,
-  "settings_bm_changed_and_go": true
+  "settings_bm_changed_and_go": true,
+  "settings_show_tb_inv": true
 }
