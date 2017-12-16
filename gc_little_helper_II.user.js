@@ -2377,6 +2377,10 @@ var mainGC = function() {
             box.innerHTML = liste;
             side = $('#logContent')[0];
             side.insertBefore(box, side.childNodes[0]);
+            // --> Chrom Workaround
+            // Chrome kann kein onClick auf einem option Element. Workaround über ein Click Event auf select und dann Zuordnung über selectedIndex.
+            if (browser == "chrome") $('#gclh_log_tpls')[0].addEventListener("click", gclh_insert_tpl, false);
+            // <-- Chrom Workaround
             var css = "";
             css += ".flatpickr-wrapper {left: 244px; float: unset !important;}";
             css += "#gclh_log_tpls {position: relative; float: right; bottom: 8px; margin-right: -1px; width: unset; border: 1px solid #9b9b9b; box-shadow: none; height: 40px; padding-top: 5px;}";
@@ -2408,6 +2412,12 @@ var mainGC = function() {
         var me = global_me;
         var code = "function gclh_insert_tpl(id){";
         if (newLogPage) {
+            // --> Chrom Workaround
+            code += "  if (id && id.path) {";
+            code += "    if (this.selectedIndex <= 0) return;";
+            code += "    else var id = 'gclh_template['+this.children[this.selectedIndex].value+']';";
+            code += "  }";
+            // <-- Chrom Workaround
             code += "  document.getElementById('gclh_log_tpls').value = -1;";
             code += "  var aLogDate = document.getElementById('LogDate').value;";
             code += "  var input = document.getElementById('LogText');";
@@ -2441,7 +2451,7 @@ var mainGC = function() {
         code += "  if (aGCTBNameLink) inhalt = inhalt.replace(/#GCTBNameLink#/ig, aGCTBNameLink);";
         code += "  if (aLogDate) inhalt = inhalt.replace(/#LogDate#/ig, aLogDate);";
         code += "  if (owner) inhalt = inhalt.replace(/#owner#/ig, owner);";
-        code += "  if (id.match(/last_log/) && settings_replace_log_by_last_log) {";
+        code += "  if (id.match(/last_logtext/) && settings_replace_log_by_last_log) {";
         code += "    input.value = inhalt;";
         code += "  }else{";
         code += "    if (typeof input.selectionStart != 'undefined' && inhalt) {";
@@ -2500,9 +2510,9 @@ var mainGC = function() {
             }
         }
         if (getValue("last_logtext", "") != "") {
-            texts += "<div id='gclh_template[last_log]' style='display: none;'>" + getValue("last_logtext", "") + "</div>";
-            logicOld += "<a href='#' onClick='gclh_insert_tpl(\"gclh_template[last_log]\"); return false;' style='color: #000000; text-decoration: none; font-weight: normal;'> - [Last Cache-Log]</a><br>";
-            logicNew += "<option value='last_logtext' onClick='gclh_insert_tpl(\"gclh_template[last_log]\"); return false;' style='color: #4a4a4a;'>[Last Cache-Log]</option>";
+            texts += "<div id='gclh_template[last_logtext]' style='display: none;'>" + getValue("last_logtext", "") + "</div>";
+            logicOld += "<a href='#' onClick='gclh_insert_tpl(\"gclh_template[last_logtext]\"); return false;' style='color: #000000; text-decoration: none; font-weight: normal;'> - [Last Cache-Log]</a><br>";
+            logicNew += "<option value='last_logtext' onClick='gclh_insert_tpl(\"gclh_template[last_logtext]\"); return false;' style='color: #4a4a4a;'>[Last Cache-Log]</option>";
         }
         if (newLogPage) {
             liste += texts;
@@ -6011,7 +6021,7 @@ var mainGC = function() {
     }
 
 // Hide found/hidden Caches on Map. Add Buttons for hiding/showing all Caches.
-    if (document.location.href.match(/^https?:\/\/www\.geocaching\.com\/map\//) && !$('#form1')[0] &&  // Nicht bei Screen Map Preferences.
+    if (document.location.href.match(/^https?:\/\/www\.geocaching\.com\/map\//) && !$('#uxGoogleMapsSelect')[0] &&  // Nicht bei Screen Map Preferences.
         !document.location.href.match(/^https?:\/\/www\.geocaching\.com\/map\/default.aspx\?pq/)) {  // Nicht bei PQ-Anzeige.
         try {
             function hideFoundCaches() {
@@ -8080,7 +8090,7 @@ var mainGC = function() {
 // Ist Seite eigene Statistik?
     function isOwnStatisticsPage(){
         if ((document.location.href.match(/^https?:\/\/www\.geocaching\.com\/my\/statistics\.aspx/)) ||
-            (is_page("publicProfile") && $('#ctl00_ContentBody_lblUserProfile')[0].innerHTML.match(": " + global_me) &&
+            (is_page("publicProfile") && $('#ctl00_ContentBody_lblUserProfile')[0].innerHTML.match(global_me) &&
              $('#ctl00_ContentBody_ProfilePanel1_lnkStatistics')[0] && $('#ctl00_ContentBody_ProfilePanel1_lnkStatistics')[0].className == "Active")) {
             return true;
         } else return false;
