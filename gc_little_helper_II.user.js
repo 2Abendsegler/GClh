@@ -431,6 +431,7 @@ var variablesInit = function(c) {
     c.settings_show_brouter_link = getValue("settings_show_brouter_link", true);
     c.settings_show_default_links = getValue("settings_show_default_links", true);
     c.settings_bm_changed_and_go = getValue("settings_bm_changed_and_go", true);
+    c.settings_show_tb_inv = getValue("settings_show_tb_inv", true);
 
     try {
         if (c.userToken === null) {
@@ -3987,6 +3988,44 @@ var mainGC = function() {
                 list[i].setAttribute("name", "head_" + ident);
                 list[i].innerHTML += "<svg><use xlink:href='/account/app/ui-icons/sprites/global.svg#icon-expand-svg-fill'></use></svg>";
                 list[i].addEventListener("click", showHideBoxDashboard, false);
+            }
+            // Show trackables inventory.
+            if (settings_show_tb_inv) {
+                var side = $('.sidebar-links').last().find('ul.link-block li a[href*="/my/inventory.aspx"]').closest('li');
+                GM_xmlhttpRequest({
+                    method: "GET",
+                    url: "https://www.geocaching.com/my/inventory.aspx",
+                    onload: function(response) {
+                        if (response.responseText) {
+                            var anzTbs = 0;
+                            var li = document.createElement('li');
+                            var ul = document.createElement('ul');
+                            ul.setAttribute('class', 'gclh');
+                            $(response.responseText).find('table.Table tbody tr').each(function() {
+                                anzTbs++;
+                                if (anzTbs <= 10) {
+                                    var link = $(this).find('a.lnk')[0].href;
+                                    var src = $(this).find('.lnk img')[0].src;
+                                    var name = $(this).find('.lnk span')[0].innerHTML;
+                                    var html = '<li><a href="'+link+'" title="'+name+'" target="_blank" rel="noopener noreferrer"><img src="'+src+'" width="16" height="16"><span>'+name+'</span></a></li>';
+                                    ul.innerHTML += html;
+                                } else {
+                                    var html = '<li><a href="/my/inventory.aspx" style="margin-left: 34px;" target="_blank" rel="noopener noreferrer"><span>... more</span></a></li>';
+                                    ul.innerHTML += html;
+                                    return;
+                                }
+                            });
+                            if (anzTbs != 0) {
+                                li.append(ul);
+                                side[0].parentNode.insertBefore(li, side[0].nextSibling);
+                            }
+                        }
+                     }
+                 });
+                 var css = '';
+                 css += ".link-block .gclh a {font-size: 14px; margin-left: 16px;} .link-block .gclh span:hover {text-decoration: underline; color: #02874d;}";
+                 css += ".link-block .gclh span {overflow: hidden; vertical-align: top; white-space: nowrap; text-overflow: ellipsis; display: inline-block; margin-left: 2px; max-width: 220px;}";
+                 appendCssStyle(css);
             }
         } catch(e) {gclh_error("Improve dashboard:",e);}
     }
@@ -7906,7 +7945,7 @@ var mainGC = function() {
         css += ".link-header.gclh svg {height: 22px; width: 24px; fill: #777; float: right; padding-right: 1px; margin-top: -2px; transition: all .3s ease;}";
         css += ".link-header.gclh.isHide svg {transform: rotate(90deg);}";
         css += ".link-block.gclh {padding-top: 0px; border-bottom: unset; display: block;}";
-        css += ".link-block.gclh a:hover {text-decoration: underline; color: #02874d;} .link-block.gclh a {padding: 0 4px 0 0; font-size: 14px; color: #3d76c5;}";
+        css += ".link-block.gclh a:hover {text-decoration: underline; color: #02874d;} .link-block.gclh a {padding: 0 4px 0 0; font-size: 14px;}";
         css += ".link-block.isHide {display: none} .link-block {border-bottom: unset;}";
         appendCssStyle(css);
     }
@@ -8873,8 +8912,10 @@ var mainGC = function() {
             html += " &nbsp; " + content_settings_show_vup_friends;
 
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>Trackables</b></div>";
-            html += checkboxy('settings_faster_profile_trackables', 'Load trackables faster without images') + show_help("With this option, you can stop the load on the trackable pages after the necessary datas are loaded. You disclaim of the lengthy load of the images of the trackables. This procedure is much faster as load all datas, because every image is loaded separate and not in a bigger bundle like it is for the non image data.") + "<br>";
-
+            html += checkboxy('settings_faster_profile_trackables', 'Load trackables faster without images') + show_help("With this option you can stop the load on the trackable pages after the necessary datas are loaded. You disclaim of the lengthy load of the images of the trackables. This procedure is much faster as load all datas, because every image is loaded separate and not in a bigger bundle like it is for the non image data.") + "<br>";
+            html += newParameterOn3;
+            html += checkboxy('settings_show_tb_inv', 'Show trackables inventory on your dashboard') + show_help("With this option a maximum of ten trackables of your trackables inventory is shown on your new dashboard. (On old dashboard it is GC standard to show it.)") + "<br>";
+            html += newParameterVersionSetzen(0.9) + newParameterOff;
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>Statistic</b>" + prem + "</div>";
             html += checkboxy('settings_count_own_matrix', 'Calculate your cache matrix') + show_help("With this option the count of found difficulty and terrain combinations and the count of complete matrixes are calculated and shown above the cache matrix on your statistic page.") + "<br>";
             html += checkboxy('settings_count_foreign_matrix', 'Calculate other users cache matrix') + show_help("With this option the count of found difficulty and terrain combinations and the count of complete matrixes are calculated and shown above the cache matrix on other users statistic page.") + "<br>";
@@ -9969,7 +10010,8 @@ var mainGC = function() {
                 'settings_show_flopps_link',
                 'settings_show_brouter_link',
                 'settings_show_default_links',
-                'settings_bm_changed_and_go'
+                'settings_bm_changed_and_go',
+                'settings_show_tb_inv'
             );
             for (var i = 0; i < checkboxes.length; i++) {
                 if (document.getElementById(checkboxes[i])) setValue(checkboxes[i], document.getElementById(checkboxes[i]).checked);
