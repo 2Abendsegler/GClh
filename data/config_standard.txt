@@ -12,6 +12,7 @@
   "settings_redirect_to_map": false,
   "settings_new_width": "1000",
   "settings_hide_facebook": true,
+  "settings_hide_socialshare": true,
   "settings_hide_disclaimer": true,
   "settings_hide_cache_notes": false,
   "settings_hide_empty_cache_notes": true,
@@ -209,5 +210,8 @@
   "settings_show_brouter_link": true,
   "settings_font_color_menu": "93B516",
   "settings_font_color_submenu": "93B516",
-  "settings_esc_close_gclh_config": true
+  "settings_esc_close_gclh_config": true,
+  "settings_show_default_links": true,
+  "settings_bm_changed_and_go": true,
+  "settings_show_tb_inv": true
 }
