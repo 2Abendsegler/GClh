@@ -36,10 +36,10 @@
 New: GClh header processing with Linklist for all the new designed pages.<br>
 </li>
 <li>
-New: Porting all functionality from the "old" pages to the new designed pages (except Drafts, My Lists).<br>
+New: Porting all functionality from the "old" pages to the new designed pages (except Drafts and My Lists, especially the latter side is just too ugly).<br>
 </li>
 <li>
-New: Revision of the GClh Config and Sync so that they can be displayed on all pages (except the map).<br>
+New: Revision of the GClh Config and Sync so that they can be displayed on all pages (except the map because of no scrolling functionality).<br>
 </li>
 <li>
 New: Faster processing of GClh especially on cache listing page.<br>
