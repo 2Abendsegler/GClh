@@ -68,9 +68,14 @@ Settings -> Bookmark list:<br>
 <img src="../images/v0.9_Screen01.jpg" alt="v0.9_Screen01.jpg"><br>
 </li>
 <li>
-New: The Trackables maps are now bigger, you can zoom in and zoom out by mouse wheel and you can change the size of the map via a slider below left with the mouse:<br>
+New: The Trackables maps are now bigger, you can zoom in and zoom out by mouse wheel and you can change the size of the map via a slider below left with the mouse: [Issue <a href="https://github.com/2Abendsegler/GClh/pull/492">#492</a>]<br>
 <img src="../images/v0.9_Screen03.jpg" alt="v0.9_Screen03.jpg"><br>
 Many thanks to <a href="https://www.geocaching.com/profile/?u=Ruko2010">Ruko2010</a> for this great implementation.<br>
+</li>
+<li>
+New: With a new button in Bookmark lists, you can determine which caches have corrected coordinates. This detail can be helpful by planning of cache tours: [Issue <a href="https://github.com/2Abendsegler/GClh/pull/504">#504</a>]<br>
+<img src="../images/v0.9_Screen04.jpg" alt="v0.9_Screen04.jpg"><br>
+Many thanks to <a href="https://www.geocaching.com/profile/?u=Ruko2010">Ruko2010</a> for the idea and the nice implementation.<br>
 </li>
 </ul>
 (19.12.2017)<br> 
