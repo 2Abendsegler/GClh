@@ -5,8 +5,8 @@
 ### Mozilla Firefox: <span> &nbsp; &nbsp; &nbsp; &nbsp; </span> <img src="/images/mozilla_firefox_logo_small.png" title="Mozilla Firefox" alt="Mozilla Firefox">
 * Installiere den Script-Manager [Tampermonkey](https://addons.mozilla.org/de/firefox/addon/tampermonkey/) als Add-On in Firefox. 
 * Installiere das Script [GC little helper II](https://github.com/2Abendsegler/GClh/raw/master/gc_little_helper_II.user.js) unter dem Script-Manager Tampermonkey.
-* Konfiguration kopieren zwischen Script-Manager Greasemonkey und Tampermonkey siehe [Tipps für die Migration - 6.](https://github.com/2Abendsegler/GClh/blob/master/docu/tips_migration.md#6de)
-(Copy configuration between script manager Greasemonkey and Tampermonkey see [Tips for migration - 6.](https://github.com/2Abendsegler/GClh/blob/master/docu/tips_migration.md#6en))
+* Der GC little helper II ist ab Firefox Version 57 unter dem Script-Manager Greasemonkey 4 nicht mehr lauffähig. Bitte den Script-Manager Tampermonkey installieren. Um die Konfiguration des GC little helper II vom Script-Manager Greasemonkey nach Tampermonkey zu übernehmen siehe [Tipps für die Migration - 6.](https://github.com/2Abendsegler/GClh/blob/master/docu/tips_migration.md#6de).
+* (The GC little helper II can not run from Firefox version 57 with script manager Greasemonkey 4. Please install the script manager Tampermonkey. To take over the configuration of GC little helper II of script manager Greasemonkey to Tampermonkey see [Tips for migration - 6.](https://github.com/2Abendsegler/GClh/blob/master/docu/tips_migration.md#6en))
 
 ### Google Chrome: <span> &nbsp; &nbsp; &nbsp; </span> <img src="/images/google_chrome_logo_small.png" title="Google Chrom" alt="Google Chrom"> 
 * Installiere den Script-Manager [Tampermonkey](https://chrome.google.com/webstore/detail/tampermonkey/dhdgffkkebhmkfjojejmpbldmpobfkfo) als Add-On in Chrome. 
