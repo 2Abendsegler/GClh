@@ -36,7 +36,22 @@
 New: GClh header processing with Linklist for all the new designed pages.<br>
 </li>
 <li>
-New: Porting all functionality from the "old" pages to the new designed pages (except Drafts and My Lists, especially the latter side is just too ugly).<br>
+New: Porting all functionality from the "old" pages to the new designed pages (except Drafts and My Lists, especially the latter side is just too ugly):<br>
+(<i>Please note that depending on your user behavior, you may come to the old page, then select the new page there.</i>)<br>
+<a href="https://www.geocaching.com/account/dashboard">Dashboard</a>:<br>
+<img src="../images/v0.9_Screen12.jpg" alt="v0.9_Screen12.jpg"><br>
+<a href="https://www.geocaching.com/p/default.aspx">Logging</a>, 
+<img src="../images/v0.9_Screen13.jpg" alt="v0.9_Screen13.jpg"><br>
+<img src="../images/v0.9_Screen14.jpg" alt="v0.9_Screen14.jpg"><br>
+<a href="https://www.geocaching.com/p/default.aspx">Public Profile</a>, 
+<img src="../images/v0.9_Screen15.jpg" alt="v0.9_Screen15.jpg"><br>
+<img src="../images/v0.9_Screen16.jpg" alt="v0.9_Screen16.jpg"><br>
+<img src="../images/v0.9_Screen17.jpg" alt="v0.9_Screen17.jpg"><br>
+<img src="../images/v0.9_Screen18.jpg" alt="v0.9_Screen18.jpg"><br>
+<img src="../images/v0.9_Screen19.jpg" alt="v0.9_Screen19.jpg"><br>
+<img src="../images/v0.9_Screen20.jpg" alt="v0.9_Screen20.jpg"><br>
+<img src="../images/v0.9_Screen21.jpg" alt="v0.9_Screen21.jpg"><br>
+<img src="../images/v0.9_Screen22.jpg" alt="v0.9_Screen22.jpg"><br>
 </li>
 <li>
 New: Revision of the GClh Config and Sync so that they can be displayed on all pages (except the map because of no scrolling functionality).<br>
@@ -75,7 +90,7 @@ Many thanks to <a href="https://www.geocaching.com/profile/?u=Ruko2010">Ruko2010
 <li>
 New: With a new button in Bookmark lists, you can determine which caches have corrected coordinates. This detail can be helpful by planning of cache tours: [Issue <a href="https://github.com/2Abendsegler/GClh/pull/504">#504</a>]<br>
 <img src="../images/v0.9_Screen04.jpg" alt="v0.9_Screen04.jpg"><br>
-  (<i>Bookmark list in compact layout together with script GC Tour</i>)<br>
+(<i>Bookmark list in compact layout together with script GC Tour</i>)<br>
 Many thanks to <a href="https://www.geocaching.com/profile/?u=Ruko2010">Ruko2010</a> for the idea and the nice implementation.<br>
 </li>
 <li>
@@ -97,7 +112,14 @@ Settings -> Public Profile / Dashboard:<br>
 <img src="../images/v0.9_Screen09.jpg" alt="v0.9_Screen09.jpg"><br>
 Settings -> Global:<br>
 <img src="../images/v0.9_Screen10.jpg" alt="v0.9_Screen10.jpg"><br>
-  (<i>This setting is not really new, only the Recently Viewed Caches list is here new.</i>)
+(<i>This setting is not really new, only the Recently Viewed Caches list is here new.</i>)
+</li>
+<li>
+New: The new designed pages and the extensions:<br>
+
+<img src="../images/v0.9_Screen07.jpg" alt="v0.9_Screen07.jpg"><br>
+Settings -> Public Profile / Dashboard:<br>
+<img src="../images/v0.9_Screen08.jpg" alt="v0.9_Screen08.jpg"><br>
 </li>
 </ul>
 (19.12.2017)<br> 
