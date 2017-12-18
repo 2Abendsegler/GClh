@@ -2,12 +2,10 @@
 
 ---
 ## <a id="de"></a>Tipps für die Installation des *GC little helper II*
-<br>
 
-### <a id="firefox_de"></a>Mozilla Firefox: <span> &nbsp; &nbsp; &nbsp; &nbsp; </span> <img src="/images/mozilla_firefox_logo_small.png" title="Mozilla Firefox" alt="Mozilla Firefox"><br>
+### <a id="firefox_de"></a>Mozilla Firefox: <span> &nbsp; &nbsp; &nbsp; &nbsp; </span> <img src="/images/mozilla_firefox_logo_small.png" title="Mozilla Firefox" alt="Mozilla Firefox">
 * Installiere den Script-Manager [Tampermonkey](https://addons.mozilla.org/de/firefox/addon/tampermonkey/) als Add-On in Firefox.<br>
-* Installiere das Script [GC little helper II](https://github.com/2Abendsegler/GClh/raw/master/gc_little_helper_II.user.js) unter dem Script-Manager Tampermonkey.<br>
-<br>
+* Installiere das Script [GC little helper II](https://github.com/2Abendsegler/GClh/raw/master/gc_little_helper_II.user.js) unter dem Script-Manager Tampermonkey.<br><br>
 * Der GC little helper II ist ab Firefox Version 57 unter dem Script-Manager Greasemonkey 4 nicht mehr lauffähig. Deshalb bitte den Script-Manager [Tampermonkey](https://addons.mozilla.org/de/firefox/addon/tampermonkey/) installieren. Um die Konfiguration des GC little helper II vom Script-Manager Greasemonkey nach Tampermonkey zu übernehmen siehe [Tipps für die Migration - 6.](https://github.com/2Abendsegler/GClh/blob/master/docu/tips_migration.md#6de)<br>
 <br>
 
