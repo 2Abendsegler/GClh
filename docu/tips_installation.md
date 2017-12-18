@@ -31,7 +31,25 @@ Im Browser Vivaldi sind diese Tasten auch standardmäßig aktiviert. Sie können
 ## <a id="en"></a>Tips for the installation of *GC little helper II*
 
 ### <a id="firefox_en"></a>Mozilla Firefox: <span> &nbsp; &nbsp; &nbsp; &nbsp; </span> <img src="/images/mozilla_firefox_logo_small.png" title="Mozilla Firefox" alt="Mozilla Firefox"><br>
-* Install the script manager [Tampermonkey](https://addons.mozilla.org/en-US/firefox/addon/tampermonkey/) as add on in Firefox.<br> 
+* Install the script manager [Tampermonkey](https://addons.mozilla.org/en-US/firefox/addon/tampermonkey/) as Add-on in Firefox.<br> 
 * Install the script [GC little helper II](https://github.com/2Abendsegler/GClh/raw/master/gc_little_helper_II.user.js) under the script manager Tampermonkey.<br><br>
 * GC little helper II can not run from Firefox version 57 with script manager Greasemonkey 4. Therefore please install the script manager [Tampermonkey](https://addons.mozilla.org/en-US/firefox/addon/tampermonkey/). To take over the configuration of GC little helper II of script manager Greasemonkey to Tampermonkey see [Tips for migration - 6.](https://github.com/2Abendsegler/GClh/blob/master/docu/tips_migration.md#6en)<br>
 
+### <a id="chrome_de"></a>Google Chrome: <span> &nbsp; &nbsp; &nbsp; </span> <img src="/images/google_chrome_logo_small.png" title="Google Chrom" alt="Google Chrom">
+* Install the script manager [Tampermonkey](https://chrome.google.com/webstore/detail/tampermonkey/dhdgffkkebhmkfjojejmpbldmpobfkfo) as Add-on in Chrome.<br>
+* Install the script [GC little helper II](https://github.com/2Abendsegler/GClh/raw/master/gc_little_helper_II.user.js) under the script manager Tampermonkey.<br>
+
+### <a id="opera_de"></a>Opera: <span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span> <img src="/images/opera_logo_small.png" title="Opera" alt="Opera">
+* Install the script manager [Tampermonkey](https://addons.opera.com/de/extensions/details/tampermonkey-beta) as Add-on in Opera.<br>
+* Install the script [GC little helper II](https://github.com/2Abendsegler/GClh/raw/master/gc_little_helper_II.user.js) under the script manager Tampermonkey.<br>
+
+### <a id="edge_de"></a>Microsoft Edge: <span> &nbsp; &nbsp; &nbsp; &nbsp; </span> <img src="/images/microsoft_edge_logo_small.png" title="Microsoft Edge" alt="Microsoft Edge">
+* Install the script manager [Tampermonkey](https://www.microsoft.com/en-us/store/p/tampermonkey/9nblggh5162s) as Add-on in Edge.<br>
+* Install the script [GC little helper II](https://github.com/2Abendsegler/GClh/raw/master/gc_little_helper_II.user.js) under the script manager Tampermonkey.<br>
+
+### <a id="vivaldi_de"></a>Vivaldi: <span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span> <img src="/images/vivaldi_logo_small.png" title="Vivaldi" alt="Vivaldi">
+* Install the script manager [Tampermonkey](https://chrome.google.com/webstore/detail/tampermonkey/dhdgffkkebhmkfjojejmpbldmpobfkfo) as Add-on in Vivaldi from the Chrome Web Store.<br>
+* Install the script [GC little helper II](https://github.com/2Abendsegler/GClh/raw/master/gc_little_helper_II.user.js) under the script manager Tampermonkey.<br><br>
+* Double occupancy of the keys F4 and F2 by GClh and Vivaldi:<br>
+The key F4 for calling the GClh Config and the key F2 for saving from GClh Config respectively for saving of a log, a Bookmark, a Pocket Query ... , are enabled by default. They can be changed in GClh Config in the GClh Config / Sync area or in the Logging area.<br>
+In Vivaldi browser, these keys are also enabled by default. They can be changed in Vivaldi via settings / keyboard.<br>
