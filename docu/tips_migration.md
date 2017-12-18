@@ -1,7 +1,7 @@
 <a href="#de" title=""><img src="../images/flag_de.png"></a> &nbsp;<a href="#en" title=""><img src="../images/flag_en.png"></a>
 
 ---
-## <a id="de"></a>Tipps für die Migration
+## <a id="de "></a>Tipps für die Migration
 <br>
 
 ###  <a id="1de"></a>1. Nach der Installation ist auf den Geocaching Seiten alles durcheinander oder doppelt:
