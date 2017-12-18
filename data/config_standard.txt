@@ -24,7 +24,7 @@
   "settings_show_mail": true,
   "settings_font_size_menu": "15",
   "settings_font_size_submenu": "13",
-  "settings_distance_menu": "8",
+  "settings_distance_menu": "16",
   "settings_distance_submenu": "8",
   "settings_font_color_menu_submenu": "93B516",
   "settings_menu_number_of_lines": "1",
