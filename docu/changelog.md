@@ -81,14 +81,23 @@ Many thanks to <a href="https://www.geocaching.com/profile/?u=Ruko2010">Ruko2010
 <li>
 New: Show Trackable Inventory in new dashboard. (In the old dashboard it is GC standard.):<br>
 <img src="../images/v0.9_Screen05.jpg" alt="v0.9_Screen05.jpg"><br>
-Settings -> Public Profile / Dashboard - Trackables:
+Settings -> Public Profile / Dashboard - Trackables:<br>
 <img src="../images/v0.9_Screen06.jpg" alt="v0.9_Screen06.jpg"><br>
 </li>
 <li>
 New: Show all default links for the Linklist in new dashboard:<br>
 <img src="../images/v0.9_Screen07.jpg" alt="v0.9_Screen07.jpg"><br>
-Settings -> Public Profile / Dashboard:
+Settings -> Public Profile / Dashboard:<br>
 <img src="../images/v0.9_Screen08.jpg" alt="v0.9_Screen08.jpg"><br>
+</li>
+<li>
+New: Compact layout for Recently Viewed Caches list and show GClh Icon "Log it" too on this list:<br>
+<img src="../images/v0.9_Screen11.jpg" alt="v0.9_Screen11.jpg"><br>
+Settings -> Public Profile / Dashboard:<br>
+<img src="../images/v0.9_Screen09.jpg" alt="v0.9_Screen09.jpg"><br>
+Settings -> Global:<br>
+<img src="../images/v0.9_Screen10.jpg" alt="v0.9_Screen10.jpg"><br>
+  (<i>This setting is not really new, only the Recently Viewed Caches list is here new.</i>)
 </li>
 </ul>
 (19.12.2017)<br> 
