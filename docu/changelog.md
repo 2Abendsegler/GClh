@@ -58,13 +58,19 @@ New: The whole Funktionality is tested on Firefox and Chrome with premium and wi
 New: The VIP, VUP and Mail Icons are now additionally available for the owner on foreign Bookmark lists and on Nearest lists for users found and hidden caches.<br>
 </li>
 <li>
-New: Too in listings with event caches, the GClh image processing is now available. The images are displayed as thumbnails for a preview and if you hover with the mouse over a thumbnail you can see the big one.<br>
+New: Too in listings with event caches, the GClh image processing is now available. The images are displayed as thumbnails for a preview and if you hover with the mouse over a thumbnail you can see the big one. The corresponding Config settings are already longer available for all the other caches.<br>
+Settings -> Listing:<br>
+<img src="../images/v0.9_Screen02.jpg" alt="v0.9_Screen02.jpg"><br>
 </li>
 <li>
-New: After a bookmark change you can go back to bookmark list automatically:<br>
+New: After a bookmark change you can go back to bookmark list automatically. The confirmation page of this change will skip:<br>
+Settings -> Bookmark list:<br>
 <img src="../images/v0.9_Screen01.jpg" alt="v0.9_Screen01.jpg"><br>
 </li>
 <li>
+New: The Trackables maps are now bigger, you can zoom in and zoom out by mouse wheel and you can change the size of the map via a slider below left with the mouse:<br>
+<img src="../images/v0.9_Screen03.jpg" alt="v0.9_Screen03.jpg"><br>
+Many thanks to <a href="https://www.geocaching.com/profile/?u=Ruko2010">Ruko2010</a> for this great implementation.<br>
 </li>
 </ul>
 (19.12.2017)<br> 
