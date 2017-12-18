@@ -34,7 +34,7 @@
 <ul>
 <li>
 New: GClh header processing with Linklist for all the new designed pages.<br>
-<br>
+
 </li>
 <li>
 New: Porting all functionality from the "old" pages to the new designed pages (except Drafts and My Lists, especially the latter side is just too ugly):<br>
