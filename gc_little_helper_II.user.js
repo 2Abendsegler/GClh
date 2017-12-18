@@ -2065,7 +2065,7 @@ var mainGC = function() {
         } catch(e) {gclh_error("Hide spoilerwarning:",e);}
     }
 
-//?? Hide warning message.
+// Hide warning message.
     if (settings_hide_warning_message) {
         if ($('.WarningMessage')[0]) {
             try {
@@ -4985,7 +4985,7 @@ var mainGC = function() {
                 }
                 var para = document.getElementById('ctl00_ContentBody_lblFindCounts').nextSibling.nextSibling.nextSibling.nextSibling;
                 if (para && para.nodeName == 'P') para.className = para.className + ' Clear';
-                addLinksOverLogs(gclh_load_all_logs, "gclh_load_all_logs", false, "Show all logs", "");
+                addButtonOverLogs(gclh_load_all_logs, "gclh_load_all_logs", false, "Show all logs", "");
                 showLogCounterLink();
             }
 
@@ -5568,7 +5568,7 @@ var mainGC = function() {
         link.appendChild(span);
     }
     function showBiggerAvatarsLink() {
-        addLinksOverLogs(showBiggerAvatars, "gclh_show_bigger_avatars", true, "Show bigger avatars", "Show bigger avatar images while hovering with the mouse");
+        addButtonOverLogs(showBiggerAvatars, "gclh_show_bigger_avatars", true, "Show bigger avatars", "Show bigger avatar images while hovering with the mouse");
     }
     function showBiggerAvatars() {
         try {
@@ -6479,7 +6479,7 @@ var mainGC = function() {
         appendCssStyle(css);
     }
 
-//???? Show amount of different coins in public profile.
+// Show amount of different coins in public profile.
     if (is_page("publicProfile") && document.getElementById('ctl00_ContentBody_ProfilePanel1_lnkCollectibles') && document.getElementById('ctl00_ContentBody_ProfilePanel1_lnkCollectibles').className == "Active") {
         try {
             function gclh_coin_stats(table_id) {
@@ -6640,7 +6640,7 @@ var mainGC = function() {
         } catch(e) {gclh_error("Edit and Image Links to own caches in profile:",e);}
     }
 
-//???? Hide archived at own caches.
+// Hide archived at own caches.
     if (settings_hide_archived_in_owned && document.location.href.match(/\.com\/my\/owned\.aspx/)) {
         try {
             var links = document.getElementsByTagName("a");
@@ -7923,7 +7923,7 @@ var mainGC = function() {
 
 // Show log counter.
     function showLogCounterLink() {
-        addLinksOverLogs(showLogCounter, "gclh_show_log_counter", true, "Show log counter", "Show log counter for log type and total");
+        addButtonOverLogs(showLogCounter, "gclh_show_log_counter", true, "Show log counter", "Show log counter for log type and total");
         appendCssStyle(".gclh_logCounter {font-size: 10px !important; padding-left: 6px; font-style: italic;}");
     }
     function showLogCounter() {
@@ -7957,33 +7957,21 @@ var mainGC = function() {
         } catch(e) {gclh_error("showLogCounter:",e);}
     }
 
-// Add links over logs in cache listing.
-    function addLinksOverLogs(func, id, right, txt, title) {
+// Add button over logs in cache listing.
+    function addButtonOverLogs(func, id, right, txt, title) {
         if (!$('#ctl00_ContentBody_uxLogbookLink')[0]) return;
-        var a = document.createElement("a");
-        a.appendChild(document.createTextNode(txt));
-        a.setAttribute("title", title);
-        a.setAttribute("href", "javascript:void(0);");
-        a.addEventListener("click", func, false);
         var span = document.createElement("span");
-        span.setAttribute("id", id);
-        if (right) span.setAttribute("class", "gclh_rlol");
-        else span.setAttribute("class", "gclh_llol");
+        span.id = id;
+        span.innerHTML = '<input type="button" href="javascript:void(0);" title="'+title+'" value="'+txt+'">';
+        span.addEventListener("click", func, false);
+        if (right) span.className = "gclh_rlol";
+        else span.className = "gclh_llol";
         if ($('.gclh_llol').length == 0 && $('.gclh_rlol').length == 0) {
-            appendCssStyle(".gclh_llol {margin-right: 4px;} .gclh_rlol {float: right; margin-right: 4px;} .gclh_llol.working a, .gclh_rlol.working a {opacity: 0.3;}");
+            appendCssStyle(".gclh_llol {margin-right: 4px;} .gclh_rlol {float: right; margin-right: 4px;} .gclh_llol.working input, .gclh_rlol.working input {opacity: 0.3;}");
             $('#ctl00_ContentBody_uxLogbookLink')[0].parentNode.style.width = "100%";
             $('#ctl00_ContentBody_uxLogbookLink')[0].parentNode.style.margin = "0";
         }
-        if (right == false) {
-            span.appendChild(document.createTextNode(" | "));
-            span.appendChild(a);
-        } else if (right && $('.gclh_rlol').length != 0) {
-            span.appendChild(a);
-            span.appendChild(document.createTextNode(" | "));
-        } else {
-            span.appendChild(a);
-        }
-        $('#ctl00_ContentBody_uxLogbookLink')[0].parentNode.appendChild(span);
+        $('#ctl00_ContentBody_uxLogbookLink')[0].parentNode.append(span);
     }
 
 // Ist Seite eigene Statistik?
