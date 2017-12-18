@@ -95,7 +95,7 @@ var constInit = function(c) {
     c.scriptShortNameSync = "GClh Sync II";
     c.anzCustom = 10;
     c.anzTemplates = 10;
-    c.bookmarks_def = new Array(22, 31, 69, 14, 16, 32, 33, 48, "0", 8, 18, 54, 51, 55, 47, 10, 2, 35, 9, 17, 67, 23, 66, 68);
+    c.bookmarks_def = new Array(31, 69, 14, 16, 32, 33, 48, "0", 8, 18, 54, 51, 55, 47, 10, 2, 35, 9, 17, 67, 23, 22, 66, 68);
     c.defaultConfigLink = "https://www.geocaching.com/my/default.aspx#GClhShowConfig";
     c.defaultSyncLink = "https://www.geocaching.com/my/default.aspx#GClhShowSync";
     c.defaultFindPlayerLink = "https://www.geocaching.com/my/default.aspx#GClhShowFindPlayer";
@@ -220,7 +220,7 @@ var variablesInit = function(c) {
     c.global_rc_data = "";
     c.global_rc_status = "";
     c.settings_submit_log_button = getValue("settings_submit_log_button", true);
-    c.settings_log_inline = getValue("settings_log_inline", true);
+    c.settings_log_inline = getValue("settings_log_inline", false);
     c.settings_log_inline_tb = getValue("settings_log_inline_tb", false);
     c.settings_log_inline_pmo4basic = getValue("settings_log_inline_pmo4basic", true);
     c.settings_bookmarks_show = getValue("settings_bookmarks_show", true);
@@ -245,9 +245,9 @@ var variablesInit = function(c) {
     c.settings_visitCount_geocheckerCom = getValue("settings_visitCount_geocheckerCom", true);
     c.settings_show_bbcode = getValue("settings_show_bbcode", true);
     c.settings_show_mail = getValue("settings_show_mail", true);
-    c.settings_font_size_menu = getValue("settings_font_size_menu", 15);
-    c.settings_font_size_submenu = getValue("settings_font_size_submenu", 13);
-    c.settings_distance_menu = getValue("settings_distance_menu", 8);
+    c.settings_font_size_menu = getValue("settings_font_size_menu", 16);
+    c.settings_font_size_submenu = getValue("settings_font_size_submenu", 15);
+    c.settings_distance_menu = getValue("settings_distance_menu", 16);
     c.settings_distance_submenu = getValue("settings_distance_submenu", 8);
     c.settings_font_color_menu_submenu = getValue("settings_font_color_menu_submenu", "93B516");
     c.settings_font_color_menu = getValue("settings_font_color_menu", getValue("settings_font_color_menu_submenu", "93B516"));
@@ -278,7 +278,7 @@ var variablesInit = function(c) {
     c.settings_lines_color_vip = getValue("settings_lines_color_vip", "F0F0A0");
     c.settings_show_mail_in_allmyvips = getValue("settings_show_mail_in_allmyvips", true);
     c.settings_show_mail_in_viplist = getValue("settings_show_mail_in_viplist", true);
-    c.settings_process_vup = getValue("settings_process_vup", false);
+    c.settings_process_vup = getValue("settings_process_vup", true);
     c.settings_show_vup_friends = getValue("settings_show_vup_friends", false);
     c.settings_vup_hide_avatar = getValue("settings_vup_hide_avatar", false);
     c.settings_vup_hide_log = getValue("settings_vup_hide_log", false);
@@ -386,7 +386,7 @@ var variablesInit = function(c) {
     c.settings_map_add_layer = getValue("settings_map_add_layer", true);
     c.settings_map_default_layer = getValue("settings_map_default_layer", "OpenStreetMap Default");
     c.settings_hide_map_header = getValue("settings_hide_map_header", false);
-    c.settings_spoiler_strings = getValue("settings_spoiler_strings", "spoiler|hinweis|hint");
+    c.settings_spoiler_strings = getValue("settings_spoiler_strings", "spoiler|hinweis");
     c.settings_replace_log_by_last_log = getValue("settings_replace_log_by_last_log", false);
     c.settings_hide_top_button = getValue("settings_hide_top_button", false);
     c.settings_show_real_owner = getValue("settings_show_real_owner", false);
@@ -428,7 +428,7 @@ var variablesInit = function(c) {
     c.settings_fieldnotes_old_fashioned = getValue("settings_fieldnotes_old_fashioned", false);
     c.settings_my_lists_old_fashioned = getValue("settings_my_lists_old_fashioned", false);
     c.settings_remove_banner = getValue("settings_remove_banner", false);
-    c.settings_remove_banner_for_garminexpress = getValue("settings_remove_banner_for_garminexpress", true);
+    c.settings_remove_banner_for_garminexpress = getValue("settings_remove_banner_for_garminexpress", false);
     c.settings_remove_banner_blue = getValue("settings_remove_banner_blue", false);
     c.settings_compact_layout_bm_lists = getValue("settings_compact_layout_bm_lists", true);
     c.settings_compact_layout_list_of_bm_lists = getValue("settings_compact_layout_list_of_bm_lists", true);
@@ -571,33 +571,6 @@ var mainOSM = function() {
         addGCButton(0);
     } catch(e) {gclh_error("mainOSM:",e);}
 };
-
-//////////////////////////////
-// Dropbox Helper
-//////////////////////////////
-(function(window){
-    window.utils = {
-        parseQueryString: function(str) {
-            var ret = Object.create(null);
-            if (typeof str !== 'string') return ret;
-            str = str.trim().replace(/^(\?|#|&)/, '');
-            if (!str) return ret;
-            str.split('&').forEach(function(param) {
-                var parts = param.replace(/\+/g, ' ').split('=');
-                // Firefox (pre 40) decodes `%3D` to `=` (https://github.com/sindresorhus/query-string/pull/37)
-                var key = parts.shift();
-                var val = parts.length > 0 ? parts.join('=') : undefined;
-                key = decodeURIComponent(key);
-                // missing `=` should be `null`: (http://w3.org/TR/2012/WD-url-20120524/#collect-url-parameters)
-                val = val === undefined ? null : decodeURIComponent(val);
-                if (ret[key] === undefined) ret[key] = val;
-                else if (Array.isArray(ret[key])) ret[key].push(val);
-                else ret[key] = [ret[key], val];
-            });
-            return ret;
-        }
-    };
-})(window);
 
 //////////////////////////////
 // GClh Main
@@ -770,9 +743,9 @@ var mainGC = function() {
             var css = "";
             // Font-Size für Menüs, Font-Size für Untermenüs in Pixel.
             var font_size_menu = parseInt(settings_font_size_menu);
-            if ((font_size_menu == 0) || (font_size_menu < 0) || (font_size_menu > 16)) font_size_menu = 15;
+            if ((font_size_menu == 0) || (font_size_menu < 0) || (font_size_menu > 16)) font_size_menu = 16;
             var font_size_submenu = parseInt(settings_font_size_submenu);
-            if ((font_size_submenu == 0) || (font_size_submenu < 0) || (font_size_submenu > 16)) font_size_submenu = 13;
+            if ((font_size_submenu == 0) || (font_size_submenu < 0) || (font_size_submenu > 16)) font_size_submenu = 15;
             // Abstand zwischen Menüs, Abstand zwischen Untermenüs in Pixel.
             var distance_menu = parseInt(settings_distance_menu);
             if ((distance_menu < 0) || (distance_menu > 99)) distance_menu = (50 / 2);
@@ -8540,8 +8513,8 @@ var mainGC = function() {
 
             html += "<div id='gclh_config_content2'>";
             html += "<div id='rc_area' class='gclh_rc_area'>";
-            html += "<input type='radio' name='rc' checked='checked' id='rc_standard' class='gclh_rc'><label for='rc_standard'>Reset to standard configuration</label>" + show_help_rc("This option should help you to come back to an efficient configuration set, after some experimental or other motivated changes. This option load a reasonable standard configuration and overwrite your configuration data in parts. <br><br>The following data are not overwrited: Home-coords; Homezone circle and multi Homezone circles; date format; log templates; cache log, TB log and other signatures; friends data; links in Linklist and differing description and custom links. <br>Dynamic data, like for example autovisits for named trackables, are not overwrited too.<br><br>After reset, choose button \"close\" and go to Config to skim over the set of data.") + "<br>";
-            html += "<input type='radio' name='rc' id='rc_temp' class='gclh_rc'><label for='rc_temp'>Reset dynamic and unused data</label>" + show_help_rc("This option reorganize the configuration set. Unused parameters of older script versions are deleted. And the dynamic data like the autovisit settings for every TB, the seen friends data of founds and hides and the DropBox token are deleted too. Especially the VIPs, VUPs and Linklist settings are not deleted of course.<br><br>After reset, choose button \"close\".") + "<br><br>";
+            html += "<input type='radio' name='rc' id='rc_standard' class='gclh_rc'><label for='rc_standard'>Reset to standard configuration</label>" + show_help_rc("This option should help you to come back to an efficient configuration set, after some experimental or other motivated changes. This option load a reasonable standard configuration and overwrite your configuration data in parts. <br><br>The following data are not overwrited: Home-coords; Homezone circle and multi Homezone circles; date format; log templates; cache log, TB log and other signatures; friends data; links in Linklist and differing description and custom links. <br>Dynamic data, like for example autovisits for named trackables, are not overwrited too.<br><br>After reset, choose button \"close\" and go to Config to skim over the set of data.") + "<br>";
+            html += "<input type='radio' name='rc' checked='checked' id='rc_temp' class='gclh_rc'><label for='rc_temp'>Reset dynamic and unused data</label>" + show_help_rc("This option reorganize the configuration set. Unused parameters of older script versions are deleted. And the dynamic data like the autovisit settings for every TB, the seen friends data of founds and hides and the DropBox token are deleted too. Especially the VIPs, VUPs and Linklist settings are not deleted of course.<br><br>After reset, choose button \"close\".") + "<br><br>";
             html += "<input type='radio' name='rc' id='rc_homecoords' class='gclh_rc'><label for='rc_homecoords'>Reset your own home-coords</label>" + show_help_rc("This option could help you with problems around your home-coords, like for example with your main Homezone, with nearest lists or with your Home-coords itself. Your home-coords are not deleted at GC, but only in GClh. <br><br>After reset, you have to go to the account settings page of GC to the area \"Home Location\", so that GClh can save your home-coords again automatically. You have only to go to this page, you have nothing to do at this page, GClh save your home-coords automatically. <br>Or you enter your home-coords manually in GClh. <br><br>At last, choose button \"close\".");
             html += "<font class='gclh_small'> (After reset, go to <a href='https://www.geocaching.com/account/settings/homelocation' target='_blank'>Home Location</a> )</font>" + "<br>";
             html += "<input type='radio' name='rc' id='rc_uid' class='gclh_rc'><label for='rc_uid'>Reset your own id for your trackables</label>" + show_help_rc("This option could help you with problems with your own trackables lists, which based on an special id, the uid. The uid are not deleted at GC, but only in GClh. <br><br>After reset, you have to go to your dashboard, so that GClh can save your uid again automatically. You have only to go to this page, you have nothing to do at this page, GClh save the uid automatically. <br><br>At last, choose button \"close\".");
@@ -8584,7 +8557,8 @@ var mainGC = function() {
             html += " &nbsp; " + checkboxy('settings_remove_banner_blue', 'Try to remove all blue banner to new designed pages') + "<br>";
             html += newParameterVersionSetzen(0.8) + newParameterOff;
             html += newParameterOn3;
-            html += checkboxy('settings_show_log_it', 'Show GClh \"Log it\" icon on Nearest lists, PQs, Recently Viewed Cache list') + show_help3("The GClh \"Log it\" icon is displayed beside cache titles in nearest lists, pocket queries and the recently viewed cache list. If you click it, you will be redirected directly to the log form. <br><br>You can use it too as basic member to log Premium Member Only (PMO) caches.") + "<br>";
+            var content_settings_show_log_it = checkboxy('settings_show_log_it', 'Show GClh \"Log it\" icon on Nearest lists, PQs, Recently Viewed Cache list') + show_help3("The GClh \"Log it\" icon is displayed beside cache titles in nearest lists, pocket queries and the recently viewed cache list. If you click it, you will be redirected directly to the log form. <br><br>You can use it too as basic member to log Premium Member Only (PMO) caches.") + "<br>";
+            html += content_settings_show_log_it;
             html += newParameterVersionSetzen(0.9) + newParameterOff;
             html += checkboxy('settings_submit_log_button', 'Submit log, Pocket Query, Bookmark or hide cache on F2') + show_help("With this option you are able to submit your log by pressing key F2 instead of scrolling to the bottom and move the mouse to the button. <br><br>This feature also works to submit Pocket Queries and Bookmarks. <br><br>And it works on the whole hide cache process with all of the buttons \"Continue\", \"Continue Anyway\", \"Save and Preview\", \"Submit Changes\", \"Update Attributes\", \"Create Waypoint\" and \"Update Waypoint\" of the create and the change functionality.") + "<br>";
             html += "<table style='width: 550px; text-align: left; margin-top: 9px;'>";
@@ -8947,7 +8921,7 @@ var mainGC = function() {
             html += checkboxy('settings_show_bbcode', 'Show smilies') + show_help("This option displays smilies options beside the log form. If you click on a smilie, it is inserted into your log.") + "<br>";
             html += checkboxy('settings_autovisit', 'Enable \"AutoVisit\" feature for trackables') + show_help("With this option you are able to select trackables which should be automatically set from \"No action\" to \"Visited\" on every log, if the logtype is \"Found It\", \"Webcam Photo Taken\" or \"Attended\". For other logtypes trackables are automatically set from \"Visited\" to \"No action\". You can select \"AutoVisit\" for each trackable in the list on the bottom of the log form.") + "<br>";
             html += checkboxy('settings_replace_log_by_last_log', 'Replace log by last log template') + show_help("If you enable this option, the last log template will replace the whole log. If you disable it, it will be appended to the log.") + "<br>";
-            html += checkboxy('settings_show_log_itX0', 'Show GClh \"Log it\" icon (too for basic members for PMO)') + show_help("The GClh \"Log it\" icon is displayed beside cache titles in nearest lists. If you click it, you will be redirected directly to the log form. <br><br>You can use it too as basic member to log Premium Member Only (PMO) caches.") + "<br>";
+            html += content_settings_show_log_it.replace("show_log_it", "show_log_itX0");
             html += checkboxy('settings_logit_for_basic_in_pmoX0', 'Log PMO caches by standard \"Log It\" icon (for basic members)') + show_help("With this option basic members are able to choose the standard \"Log It\" icon to call the logging screen for Premium Member Only (PMO) caches. The tool tipp blocked not longer this call. You can have the same result by using the right mouse across the \"Log It\" icon and then new tab. <br>The \"Log It\" icon is besides the caches for example in the \"Recently Viewed Caches\" list and in your dashboard.") + "<br>";
             html += newParameterOn1;
             html += checkboxy('settings_fieldnotes_old_fashioned', 'Logging drafts old-fashioned') + show_help("This option deactivates on old drafts page the logging of drafts by the new log page and activates logging of drafts by the old-fashioned log page.") + "<br>";
@@ -9027,7 +9001,7 @@ var mainGC = function() {
             for (var i = 6; i < 17; i++) {
                 html += "  <option value='" + i + "' " + (settings_font_size_menu == i ? "selected=\"selected\"" : "") + ">" + i + "</option>";
             }
-            html += "</select> px" + show_help("With this option you can choose the font size at the navigation menu in pixel. The default font size is 15 pixel.<br><br>" + t_reqChl) + "<br>";
+            html += "</select> px" + show_help("With this option you can choose the font size at the navigation menu in pixel. The default font size is 16 pixel.<br><br>" + t_reqChl) + "<br>";
             html += "&nbsp;" + "Distance between menu entries: <select class='gclh_form' id='settings_distance_menu'>";
             for (var i = 0; i < 100; i++) {
                 html += "  <option value='" + i + "' " + (settings_distance_menu == i ? "selected=\"selected\"" : "") + ">" + i + "</option>";
@@ -9039,7 +9013,7 @@ var mainGC = function() {
             for (var i = 6; i < 17; i++) {
                 html += "  <option value='" + i + "' " + (settings_font_size_submenu == i ? "selected=\"selected\"" : "") + ">" + i + "</option>";
             }
-            html += "</select> px" + show_help("With this option you can choose the font size at the drop-down lists in pixel. The default font size is 13 pixel.<br><br>" + t_reqChl) + "<br>";
+            html += "</select> px" + show_help("With this option you can choose the font size at the drop-down lists in pixel. The default font size is 15 pixel.<br><br>" + t_reqChl) + "<br>";
             html += "&nbsp;" + "Distance between drop-down links: <select class='gclh_form' id='settings_distance_submenu'>";
             for (var i = 0; i < 33; i++) {
                 html += "  <option value='" + i + "' " + (settings_distance_submenu == i ? "selected=\"selected\"" : "") + ">" + i + "</option>";
@@ -9055,7 +9029,7 @@ var mainGC = function() {
             for (var i = 6; i < 17; i++) {
                 html += "  <option value='" + i + "' " + (settings_font_size_menu == i ? "selected=\"selected\"" : "") + ">" + i + "</option>";
             }
-            html += "</select> px" + show_help("With this option you can choose the font size at the links in pixel. The default font size is 15 pixel.<br><br>" + t_reqChlSLoT) + "<br>";
+            html += "</select> px" + show_help("With this option you can choose the font size at the links in pixel. The default font size is 16 pixel.<br><br>" + t_reqChlSLoT) + "<br>";
             html += "&nbsp;" + "Distance between the links: <select class='gclh_form' id='settings_distance_menuX0'>";
             for (var i = 0; i < 100; i++) {
                 html += "  <option value='" + i + "' " + (settings_distance_menu == i ? "selected=\"selected\"" : "") + ">" + i + "</option>";
@@ -9073,7 +9047,7 @@ var mainGC = function() {
             for (var i = 6; i < 17; i++) {
                 html += "  <option value='" + i + "' " + (settings_font_size_submenu == i ? "selected=\"selected\"" : "") + ">" + i + "</option>";
             }
-            html += "</select> px" + show_help("With this option you can only choose the font size at the remaining GC drop-down lists in pixel. The default font size is 13 pixel.<br><br>" + t_reqChlSLoT) + "<br>";
+            html += "</select> px" + show_help("With this option you can only choose the font size at the remaining GC drop-down lists in pixel. The default font size is 15 pixel.<br><br>" + t_reqChlSLoT) + "<br>";
             html += "&nbsp;" + "Distance between GC drop-down links: <select class='gclh_form' id='settings_distance_submenuX0'>";
             for (var i = 0; i < 33; i++) {
                 html += "  <option value='" + i + "' " + (settings_distance_submenu == i ? "selected=\"selected\"" : "") + ">" + i + "</option>";
@@ -10602,6 +10576,31 @@ var mainGC = function() {
 
     var dropbox_client = null;
     var dropbox_save_path = '/GCLittleHelperSettings.json';
+
+// Dropbox auth token bereitstellen.
+    (function(window){
+        window.utils = {
+            parseQueryString: function(str) {
+                var ret = Object.create(null);
+                if (typeof str !== 'string') return ret;
+                str = str.trim().replace(/^(\?|#|&)/, '');
+                if (!str) return ret;
+                str.split('&').forEach(function(param) {
+                    var parts = param.replace(/\+/g, ' ').split('=');
+                    // Firefox (pre 40) decodes `%3D` to `=` (https://github.com/sindresorhus/query-string/pull/37)
+                    var key = parts.shift();
+                    var val = parts.length > 0 ? parts.join('=') : undefined;
+                    key = decodeURIComponent(key);
+                    // missing `=` should be `null`: (http://w3.org/TR/2012/WD-url-20120524/#collect-url-parameters)
+                    val = val === undefined ? null : decodeURIComponent(val);
+                    if (ret[key] === undefined) ret[key] = val;
+                    else if (Array.isArray(ret[key])) ret[key].push(val);
+                    else ret[key] = [ret[key], val];
+                });
+                return ret;
+            }
+        };
+    })(window);
 
 // Save dropbox auth token if one is passed (from Dropbox).
     var DB_token = utils.parseQueryString(window.location.hash).access_token;
