@@ -34,43 +34,40 @@
 <ul>
 <li>
 New: <b>GClh header processing with Linklist for all the new designed pages.</b><br>
+</li>
+<li>
 New: <b>Porting all functionality from the "old" pages to the new designed pages (except Drafts, My Lists).</b><br>
+</li>
+<li>
 New: <b>Revision of the GClh Config and Sync so that they can be displayed on all pages (except the map).</b><br>
+</li>
+<li>
 New: <b>Faster processing of GClh especially on cache listing page.</b><br>
-New: <b>The whole Funktionality is tested on Firefox and Chrome with premium and with basic member in english and on Firefox with premium member in german for the new developments.</b><br>
+</li>
+<li>
 New: <b>Added @connect statements to avoid Tampermonkey warnings because of data request data from Google Maps Elevation and Github.</b>: [Issue <a href="https://github.com/2Abendsegler/GClh/pull/495">#495</a>]<br>
 Many thanks to <a href="https://www.geocaching.com/profile/?u=Bananeweizen">Bananeweizen</a> for this note.<br>
+</li>
+<li>
+New: <b>Some new default links for the Linklist were added in GClh Config.</b><br>
+</li>
+<li>
+New: <b>The whole Funktionality is tested on Firefox and Chrome with premium and with basic member in english and on Firefox with premium member in german for the new developments.</b><br>
+</li>
+<li>
+New: <b>The VIP, VUP and Mail Icons are now additionally available for the owner on foreign Bookmark lists and on Nearest lists for users found and hidden caches.</b><br>
+</li>
+<li>
+New: <b>Too in listings with event caches, the GClh image processing is now available. The images are displayed as thumbnails for a preview and if you hover with the mouse over a thumbnail you can see the big one.</b><br>
+</li>
+<li>
+New: <b>After a bookmark change you can go back to bookmark list automatically.</b>:<br>
+<img src="../images/v0.9_Screen01.jpg" alt="v0.9_Screen01.jpg"><br>
 </li>
 <li>
 </li>
 </ul>
 (19.12.2017)<br> 
-<br>
-  
-  
-New: <b>Process new dashboard page with GClh</b>: [Issue <a href="https://github.com/2Abendsegler/GClh/pull/477">#477</a>]<br>
-GClh header processing with Linklist.<br>
-Build links to GClh Config, GClh Sync and Changelog.<br>
-<img src="../images/v0.8.11_Screen01.jpg" alt="v0.8.11_Screen01.jpg"><br>
-Build hideable VIPs and VUPs lists.<br>
-<img src="../images/v0.8.11_Screen02.png" alt="v0.8.11_Screen02.png"><br>
-<br>
-</li>
-<li>
-New: <b>Close GClh Config with key ESC</b>: [Issue <a href="https://github.com/2Abendsegler/GClh/pull/478">#478</a>]<br>
-Settings -> GClh Config / Sync:<br>
-<img src="../images/v0.8.11_Screen03.jpg" alt="v0.8.11_Screen03.jpg"><br>
-<br>
-</li>
-<li>
-New: <b>Check if GClh runs only once</b>: [Issue <a href="https://github.com/2Abendsegler/GClh/pull/476">#476</a>]<br>
-</li>
-<br>
-<li>
-Fix: <b>Buttons on search caches page in Manage Filter Sets functionality are not available again, due to changes made by GS</b>: [Issue <a href="https://github.com/2Abendsegler/GClh/pull/481">#481</a>]<br>
-</li>
-</ul>
-(26.11.2017)<br> 
 <br>
 
 ---
