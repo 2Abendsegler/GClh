@@ -37,6 +37,7 @@ Einen Link zum "GC little helper Sync II" gibt es im <a href="http://www.geocach
 <br>
 
 ### <a id="6de"></a>6. Konfiguration des "GC little helper II" in Firefox von Greasemonkey nach Tampermonkey kopieren:
+Der GC little helper II ist ab Firefox Version 57 unter dem Script-Manager Greasemonkey 4 nicht mehr lauffähig. Deshalb bitte den Script-Manager [Tampermonkey](https://addons.mozilla.org/de/firefox/addon/tampermonkey/) installieren.<br>
 Die Konfiguration muß unbedingt vor den Upgrades auf Firefox 57 und Greasemonkey 4 kopiert werden, weil die dazu notwendige Funktionalität des GClhs mit diesen Upgrades nicht mehr funktioniert.
 <ul>
 <li>Aktiviert Script-Manager Greasemonkey und deaktiviert Script-Manager Tampermonkey.</li>
@@ -53,6 +54,7 @@ Die Konfiguration muß unbedingt vor den Upgrades auf Firefox 57 und Greasemonke
 <br>
 
 ### <a id="6en"></a>6. Copy configuration of "GC little helper II" in Firefox from Greasemonkey to Tampermonkey:
+The GC little helper II can not run from Firefox version 57 with script manager Greasemonkey 4. Therefore please install the script manager [Tampermonkey](https://addons.mozilla.org/en-US/firefox/addon/tampermonkey/).<br>
 The configuration must necessarily be copied before upgrading to Firefox 57 and Greasemonkey 4, because the necessary functionality of the GClh will no longer work with these upgrades.
 <ul>
 <li>Enable script manager Greasemonkey and disable script manager Tampermonkey.</li>
