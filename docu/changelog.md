@@ -40,10 +40,10 @@ New: Porting all functionality from the "old" pages to the new designed pages (e
 (<i>Please note that depending on your user behavior, you may come to the old page, then select the new page there.</i>)<br>
 <a href="https://www.geocaching.com/account/dashboard">Dashboard</a>:<br>
 <img src="../images/v0.9_Screen12.jpg" alt="v0.9_Screen12.jpg"><br>
-<a href="https://www.geocaching.com/p/default.aspx">Logging</a>, 
+<a href="https://www.geocaching.com/p/default.aspx">Logging</a>:<br>
 <img src="../images/v0.9_Screen13.jpg" alt="v0.9_Screen13.jpg"><br>
 <img src="../images/v0.9_Screen14.jpg" alt="v0.9_Screen14.jpg"><br>
-<a href="https://www.geocaching.com/p/default.aspx">Public Profile</a>, 
+<a href="https://www.geocaching.com/p/default.aspx">Public Profile</a>:<br> 
 <img src="../images/v0.9_Screen15.jpg" alt="v0.9_Screen15.jpg"><br>
 <img src="../images/v0.9_Screen16.jpg" alt="v0.9_Screen16.jpg"><br>
 <img src="../images/v0.9_Screen17.jpg" alt="v0.9_Screen17.jpg"><br>
@@ -52,6 +52,8 @@ New: Porting all functionality from the "old" pages to the new designed pages (e
 <img src="../images/v0.9_Screen20.jpg" alt="v0.9_Screen20.jpg"><br>
 <img src="../images/v0.9_Screen21.jpg" alt="v0.9_Screen21.jpg"><br>
 <img src="../images/v0.9_Screen22.jpg" alt="v0.9_Screen22.jpg"><br>
+<a href="https://www.geocaching.com/play/friendleague">Friend League</a>:<br> 
+<img src="../images/v0.9_Screen23.jpg" alt="v0.9_Screen23.jpg"><br>
 </li>
 <li>
 New: Revision of the GClh Config and Sync so that they can be displayed on all pages (except the map because of no scrolling functionality).<br>
