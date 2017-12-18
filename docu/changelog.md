@@ -41,9 +41,11 @@ New: Porting all functionality from the "old" pages to the new designed pages (e
 (<i>Please note that depending on your user behavior, you may come to the old page, then select the new page there.</i>)<br>
 <a href="https://www.geocaching.com/account/dashboard">Dashboard</a>:<br>
 <img src="../images/v0.9_Screen12.jpg" alt="v0.9_Screen12.jpg"><br>
+<br>
 <a href="https://www.geocaching.com/p/default.aspx">Logging</a>:<br>
 <img src="../images/v0.9_Screen13.jpg" alt="v0.9_Screen13.jpg"><br>
 <img src="../images/v0.9_Screen14.jpg" alt="v0.9_Screen14.jpg"><br>
+<br>
 <a href="https://www.geocaching.com/p/default.aspx">Public Profile</a>:<br> 
 <img src="../images/v0.9_Screen15.jpg" alt="v0.9_Screen15.jpg"><br>
 <img src="../images/v0.9_Screen16.jpg" alt="v0.9_Screen16.jpg"><br>
@@ -53,6 +55,7 @@ New: Porting all functionality from the "old" pages to the new designed pages (e
 <img src="../images/v0.9_Screen20.jpg" alt="v0.9_Screen20.jpg"><br>
 <img src="../images/v0.9_Screen21.jpg" alt="v0.9_Screen21.jpg"><br>
 <img src="../images/v0.9_Screen22.jpg" alt="v0.9_Screen22.jpg"><br>
+<br>
 <a href="https://www.geocaching.com/play/friendleague">Friend League</a>:<br> 
 <img src="../images/v0.9_Screen23.jpg" alt="v0.9_Screen23.jpg"><br>
 <br>
@@ -125,10 +128,10 @@ Settings -> Public Profile / Dashboard:<br>
 Settings -> Global:<br>
 <img src="../images/v0.9_Screen10.jpg" alt="v0.9_Screen10.jpg"><br>
 (<i>This setting is not really new, only the Recently Viewed Caches list is here new.</i>)
+<br>
 </li>
 <li>
 Fix: The whole Funktionality is tested on Firefox and Chrome with premium and with basic member in english and on Firefox with premium member in german only for the new developments. All bugs are fixed.<br>
-<br>
 </li>
 </ul>
 (19.12.2017)<br> 
