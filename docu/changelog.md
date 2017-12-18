@@ -127,7 +127,7 @@ Settings -> Public Profile / Dashboard:<br>
 <img src="../images/v0.9_Screen09.jpg" alt="v0.9_Screen09.jpg"><br>
 Settings -> Global:<br>
 <img src="../images/v0.9_Screen10.jpg" alt="v0.9_Screen10.jpg"><br>
-(<i>This setting is not really new, only the Recently Viewed Caches list is here new.</i>)
+(<i>This setting is not really new, only the Recently Viewed Caches list is here new.</i>)<br>
 <br>
 </li>
 <li>
