@@ -6696,14 +6696,13 @@ var mainGC = function() {
         } catch(e) {gclh_error("Hide side rights on print page:",e);}
     }
 
-//???? Edit and Image Links to own caches in profile.
-    if (document.location.href.match(/^https?:\/\/www\.geocaching\.com\/my\/(default\.aspx|owned\.aspx)$/) || document.location.href.match(/^https?:\/\/www\.geocaching\.com\/my\/$/)) {
+// Edit and Image Links to own caches in profile.
+    if (document.location.href.match(/^https?:\/\/www\.geocaching\.com\/my\/owned\.aspx$/)) {
         try {
             var links = document.getElementsByTagName("a");
             for (var i = 0; i < links.length; i++) {
                 if (links[i].href.match(/\/seek\/cache_details\.aspx\?/)) {
-                    var headline = links[i].parentNode.parentNode.parentNode.childNodes[1].innerHTML;
-                    if (headline) {
+                    if (!$(links[i]).find('img').length) {
                         var match = links[i].href.match(/\/seek\/cache_details\.aspx\?guid=(.*)/);
                         if (match[1]) {
                             links[i].parentNode.innerHTML += " <a href='/hide/report.aspx?guid=" + match[1] + "'><img src='/images/stockholm/16x16/page_white_edit.gif'></a>";
