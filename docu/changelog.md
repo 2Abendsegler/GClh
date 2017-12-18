@@ -33,35 +33,35 @@
 ## v0.9:
 <ul>
 <li>
-New: <b>GClh header processing with Linklist for all the new designed pages.</b><br>
+New: GClh header processing with Linklist for all the new designed pages.<br>
 </li>
 <li>
-New: <b>Porting all functionality from the "old" pages to the new designed pages (except Drafts, My Lists).</b><br>
+New: Porting all functionality from the "old" pages to the new designed pages (except Drafts, My Lists).<br>
 </li>
 <li>
-New: <b>Revision of the GClh Config and Sync so that they can be displayed on all pages (except the map).</b><br>
+New: Revision of the GClh Config and Sync so that they can be displayed on all pages (except the map).<br>
 </li>
 <li>
-New: <b>Faster processing of GClh especially on cache listing page.</b><br>
+New: Faster processing of GClh especially on cache listing page.<br>
 </li>
 <li>
-New: <b>Added @connect statements to avoid Tampermonkey warnings because of data request data from Google Maps Elevation and Github.</b>: [Issue <a href="https://github.com/2Abendsegler/GClh/pull/495">#495</a>]<br>
+New: Added @connect statements to avoid Tampermonkey warnings because of data request data from Google Maps Elevation and Github: [Issue <a href="https://github.com/2Abendsegler/GClh/pull/495">#495</a>]<br>
 Many thanks to <a href="https://www.geocaching.com/profile/?u=Bananeweizen">Bananeweizen</a> for this note.<br>
 </li>
 <li>
-New: <b>Some new default links for the Linklist were added in GClh Config.</b><br>
+New: Some new default links for the Linklist were added in GClh Config.<br>
 </li>
 <li>
-New: <b>The whole Funktionality is tested on Firefox and Chrome with premium and with basic member in english and on Firefox with premium member in german for the new developments.</b><br>
+New: The whole Funktionality is tested on Firefox and Chrome with premium and with basic member in english and on Firefox with premium member in german for the new developments.<br>
 </li>
 <li>
-New: <b>The VIP, VUP and Mail Icons are now additionally available for the owner on foreign Bookmark lists and on Nearest lists for users found and hidden caches.</b><br>
+New: The VIP, VUP and Mail Icons are now additionally available for the owner on foreign Bookmark lists and on Nearest lists for users found and hidden caches.<br>
 </li>
 <li>
-New: <b>Too in listings with event caches, the GClh image processing is now available. The images are displayed as thumbnails for a preview and if you hover with the mouse over a thumbnail you can see the big one.</b><br>
+New: Too in listings with event caches, the GClh image processing is now available. The images are displayed as thumbnails for a preview and if you hover with the mouse over a thumbnail you can see the big one.<br>
 </li>
 <li>
-New: <b>After a bookmark change you can go back to bookmark list automatically.</b>:<br>
+New: After a bookmark change you can go back to bookmark list automatically:<br>
 <img src="../images/v0.9_Screen01.jpg" alt="v0.9_Screen01.jpg"><br>
 </li>
 <li>
