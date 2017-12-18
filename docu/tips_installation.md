@@ -26,6 +26,7 @@
 * Doppeltbelegung der Tasten F4 und F2 durch GClh und Vivaldi:<br>
 Die Taste F4 zum Aufrufen des GClh Config und die Taste F2 zum Speichern im GClh Config bzw. zum Speichern eines Logs, einer Bookmark, einer Pocket Query ... , sind standardmäßig aktiviert. Sie können im GClh Config im Bereich GClh Config / Sync bzw. im Bereich Logging geändert werden. <br>
 Im Browser Vivaldi sind diese Tasten auch standardmäßig aktiviert. Sie können in Vivaldi über Einstellungen / Tastatur geändert werden.<br>
+<br>
 
 ---
 ## <a id="en"></a>Tips for the installation of *GC little helper II*
@@ -40,7 +41,7 @@ Im Browser Vivaldi sind diese Tasten auch standardmäßig aktiviert. Sie können
 * Install the script [GC little helper II](https://github.com/2Abendsegler/GClh/raw/master/gc_little_helper_II.user.js) under the script manager Tampermonkey.<br>
 
 ### <a id="opera_de"></a>Opera: <span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span> <img src="/images/opera_logo_small.png" title="Opera" alt="Opera">
-* Install the script manager [Tampermonkey](https://addons.opera.com/de/extensions/details/tampermonkey-beta) as Add-on in Opera.<br>
+* Install the script manager [Tampermonkey](https://addons.opera.com/en/extensions/details/tampermonkey-beta) as Add-on in Opera.<br>
 * Install the script [GC little helper II](https://github.com/2Abendsegler/GClh/raw/master/gc_little_helper_II.user.js) under the script manager Tampermonkey.<br>
 
 ### <a id="edge_de"></a>Microsoft Edge: <span> &nbsp; &nbsp; &nbsp; &nbsp; </span> <img src="/images/microsoft_edge_logo_small.png" title="Microsoft Edge" alt="Microsoft Edge">
