@@ -62,7 +62,7 @@ New: Revision of the GClh Config and Sync so that they can be displayed on all p
 New: Faster processing of GClh especially on cache listing page.<br>
 </li>
 <li>
-New: Added @connect statements to avoid Tampermonkey warnings because of data request data from Google Maps Elevation and Github: [Issue <a href="https://github.com/2Abendsegler/GClh/pull/495">#495</a>]<br>
+New: Added @connect statements to avoid Tampermonkey warnings because of data request from Google Maps Elevation and Github: [Issue <a href="https://github.com/2Abendsegler/GClh/pull/495">#495</a>]<br>
 Many thanks to <a href="https://www.geocaching.com/profile/?u=Bananeweizen">Bananeweizen</a> for this note.<br>
 </li>
 <li>
@@ -80,20 +80,20 @@ Settings -> Listing:<br>
 <img src="../images/v0.9_Screen02.jpg" alt="v0.9_Screen02.jpg"><br>
 </li>
 <li>
-New: After a bookmark change you can go back to bookmark list automatically. The confirmation page of this change will skip:<br>
+New: After a change of a bookmark you can go back to bookmark list automatically. The confirmation page of this change is skip:<br>
 Settings -> Bookmark list:<br>
 <img src="../images/v0.9_Screen01.jpg" alt="v0.9_Screen01.jpg"><br>
 </li>
 <li>
 New: The Trackables maps are now bigger, you can zoom in and zoom out by mouse wheel and you can change the size of the map via a slider below left with the mouse: [Issue <a href="https://github.com/2Abendsegler/GClh/pull/492">#492</a>]<br>
-<img src="../images/v0.9_Screen03.jpg" alt="v0.9_Screen03.jpg"><br>
 Many thanks to <a href="https://www.geocaching.com/profile/?u=Ruko2010">Ruko2010</a> for this great implementation.<br>
+<img src="../images/v0.9_Screen03.jpg" alt="v0.9_Screen03.jpg"><br>
 </li>
 <li>
 New: With a new button in Bookmark lists, you can determine which caches have corrected coordinates. This detail can be helpful by planning of cache tours: [Issue <a href="https://github.com/2Abendsegler/GClh/pull/504">#504</a>]<br>
+Many thanks to <a href="https://www.geocaching.com/profile/?u=Ruko2010">Ruko2010</a> for the idea and the nice implementation.<br>
 <img src="../images/v0.9_Screen04.jpg" alt="v0.9_Screen04.jpg"><br>
 (<i>Bookmark list in compact layout together with script GC Tour</i>)<br>
-Many thanks to <a href="https://www.geocaching.com/profile/?u=Ruko2010">Ruko2010</a> for the idea and the nice implementation.<br>
 </li>
 <li>
 New: Show Trackable Inventory in new dashboard. (In the old dashboard it is GC standard.):<br>
