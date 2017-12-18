@@ -75,7 +75,20 @@ Many thanks to <a href="https://www.geocaching.com/profile/?u=Ruko2010">Ruko2010
 <li>
 New: With a new button in Bookmark lists, you can determine which caches have corrected coordinates. This detail can be helpful by planning of cache tours: [Issue <a href="https://github.com/2Abendsegler/GClh/pull/504">#504</a>]<br>
 <img src="../images/v0.9_Screen04.jpg" alt="v0.9_Screen04.jpg"><br>
+  (<i>Bookmark list in compact layout together with script GC Tour</i>)<br>
 Many thanks to <a href="https://www.geocaching.com/profile/?u=Ruko2010">Ruko2010</a> for the idea and the nice implementation.<br>
+</li>
+<li>
+New: Show Trackable Inventory in new dashboard. (In the old dashboard it is GC standard.):<br>
+<img src="../images/v0.9_Screen05.jpg" alt="v0.9_Screen05.jpg"><br>
+Settings -> Public Profile / Dashboard - Trackables:
+<img src="../images/v0.9_Screen06.jpg" alt="v0.9_Screen06.jpg"><br>
+</li>
+<li>
+New: Show all default links for the Linklist in new dashboard:<br>
+<img src="../images/v0.9_Screen07.jpg" alt="v0.9_Screen07.jpg"><br>
+Settings -> Public Profile / Dashboard:
+<img src="../images/v0.9_Screen08.jpg" alt="v0.9_Screen08.jpg"><br>
 </li>
 </ul>
 (19.12.2017)<br> 
