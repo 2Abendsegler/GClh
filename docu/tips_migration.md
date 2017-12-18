@@ -4,15 +4,15 @@
 ## <a id="de"></a>Tipps für die Migration
 <br>
 
-###  <a id="1"></a>1. Nach der Installation ist auf den Geocaching Seiten alles durcheinander oder doppelt:
+###  <a id="1de"></a>1. Nach der Installation ist auf den Geocaching Seiten alles durcheinander oder doppelt:
 Es darf immer nur ein Script zum "GC little helper" aktiviert sein, ansonsten gibt es ein großes Durcheinander auf den Geocaching Seiten. Im Tampermonkey Menü kann man prüfen, welche Scripte gerade aktiv sind.<br>
 <br>
 
-### <a id="2"></a>2. Wie kann man den "GC little helper Config II" aufrufen:
+### <a id="2de"></a>2. Wie kann man den "GC little helper Config II" aufrufen:
 Einen Link zum "GC little helper Config II" gibt es im <a href="http://www.geocaching.com/my/">eigenen Dashboard</a> beim Avatar. Außerdem kann man ihn von allen Geocaching Seiten aus mit der Taste F4 aufrufen, sofern man diese Funktion nicht deaktiviert hat. <br>
 <br>
 
-### <a id="3"></a>3. Konfiguration des "GC little helper" im "GC little helper II" zur Verfügung stellen:
+### <a id="3de"></a>3. Konfiguration des "GC little helper" im "GC little helper II" zur Verfügung stellen:
 Anstatt mit der Startkonfiguration des "GC little helper II" zu beginnen, kann man die Konfiguration des "GC little helper" exportieren und im "GC little helper II" importieren.<br>
 <ul>
 <li>Aktiviert im Tampermonkey Menü den "GC little helper" und deaktiviert den "GC little helper II".</li>
@@ -24,7 +24,7 @@ Anstatt mit der Startkonfiguration des "GC little helper II" zu beginnen, kann m
 Sollte irgendetwas schiefgehen oder möchte man mit der Startkonfiguration des "GC little helper II" neu beginnen, kann man im Tampermonkey Menü die "Übersicht" wählen, dann auf "GC little helper II" klicken und anschließend oben den Reiter "Speicher" auswählen. Hier dann alles mit der Maus markieren und entfernen bis auf die beiden Klammern "{" und "}" und anschließend "Speichern" wählen. Beim nächsten Start einer Geocaching Seite wird dann die Startkonfiguration geladen. Es wird dann auch eine Meldung ausgegeben dass Version ... of  GC little helper II installiert wurde, weil in der Konfiguration auch eben diese Version hinterlegt war. Dieser Meldung muß keine Beachtung geschenkt werden.<br>
 <br>
 
-### <a id="4"></a>4. Wie kann man die eigenen Systemdaten ermitteln:
+### <a id="4de"></a>4. Wie kann man die eigenen Systemdaten ermitteln:
 <ul>
 <li>Ermittlung Betriebssystem: Programm "msinfo32.exe" im Startmenü ausführen.</li>
 <li>Ermittlung Tampermonkey Version: Im Tampermonkey Menü "Übersicht" wählen. Die Version finden man oben links.</li>
@@ -32,7 +32,7 @@ Sollte irgendetwas schiefgehen oder möchte man mit der Startkonfiguration des "
 </ul>
 <br>
 
-### <a id="5"></a>5. Wie kann man den "GC little helper Sync II" aufrufen:
+### <a id="5de"></a>5. Wie kann man den "GC little helper Sync II" aufrufen:
 Einen Link zum "GC little helper Sync II" gibt es im <a href="http://www.geocaching.com/my/">eigenen Dashboard</a> beim Avatar. Außerdem kann man ihn von allen Geocaching Seiten aus mit der Taste F10 aufrufen, sofern man diese Funktion nicht deaktiviert hat. <br>
 <br>
 
