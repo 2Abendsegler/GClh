@@ -2,6 +2,7 @@
 
 ---
 ## <a id="de"></a>Tipps für die Migration
+<br>
 
 ###  <a id="1"></a>1. Nach der Installation ist auf den Geocaching Seiten alles durcheinander oder doppelt:
 Es darf immer nur ein Script zum "GC little helper" aktiviert sein, ansonsten gibt es ein großes Durcheinander auf den Geocaching Seiten. Im Tampermonkey Menü kann man prüfen, welche Scripte gerade aktiv sind.<br>
@@ -51,6 +52,7 @@ Die Konfiguration muß unbedingt vor den Upgrades auf Firefox 57 und Greasemonke
 
 ---
 ## <a id="en"></a>Tips for migration
+<br>
 
 ### <a id="6en"></a>6. Copy configuration of "GC little helper II" in Firefox from Greasemonkey to Tampermonkey:
 The GC little helper II can not run from Firefox version 57 with script manager Greasemonkey 4. Therefore please install the script manager [Tampermonkey](https://addons.mozilla.org/en-US/firefox/addon/tampermonkey/).<br>
