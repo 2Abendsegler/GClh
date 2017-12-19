@@ -46,7 +46,7 @@ New: Porting all functionality from the "old" pages to the new designed pages (e
 <img src="../images/v0.9_Screen13.jpg" alt="v0.9_Screen13.jpg"><br>
 <img src="../images/v0.9_Screen14.jpg" alt="v0.9_Screen14.jpg"><br>
 <br>
-<a href="https://www.geocaching.com/p/default.aspx">Public Profile</a>:<br> 
+<a href="https://www.geocaching.com/p/default.aspx?u=2Abendsegler">Public Profile</a>:<br> 
 <img src="../images/v0.9_Screen15.jpg" alt="v0.9_Screen15.jpg"><br>
 <a href="https://www.geocaching.com/p/default.aspx?u=2Abendsegler&tab=trackables">Public Profile / Trackables</a>:<br> 
 <img src="../images/v0.9_Screen16.jpg" alt="v0.9_Screen16.jpg"><br>
