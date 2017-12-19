@@ -48,11 +48,11 @@ New: Porting all functionality from the "old" pages to the new designed pages (e
 <br>
 <a href="https://www.geocaching.com/p/default.aspx?u=2Abendsegler">Public Profile</a>:<br> 
 <img src="../images/v0.9_Screen15.jpg" alt="v0.9_Screen15.jpg"><br>
-<a href="https://www.geocaching.com/p/default.aspx?u=2Abendsegler&tab=trackables">Public Profile / Trackables</a>:<br> 
+<a href="https://www.geocaching.com/p/default.aspx?u=2Abendsegler&tab=trackables#profilepanel">Public Profile / Trackables</a>:<br> 
 <img src="../images/v0.9_Screen16.jpg" alt="v0.9_Screen16.jpg"><br>
-<a href="https://www.geocaching.com/p/default.aspx?u=2Abendsegler&tab=gallery">Public Profile / Gallery</a>:<br> 
+<a href="https://www.geocaching.com/p/default.aspx?u=2Abendsegler&tab=gallery#profilepanel">Public Profile / Gallery</a>:<br> 
 <img src="../images/v0.9_Screen17.jpg" alt="v0.9_Screen17.jpg"><br>
-<a href="https://www.geocaching.com/p/default.aspx?u=2Abendsegler&tab=stats">Public Profile / Statistik</a>:<br> 
+<a href="https://www.geocaching.com/p/default.aspx?u=2Abendsegler&tab=stats#profilepanel">Public Profile / Statistik</a>:<br> 
 <img src="../images/v0.9_Screen20.jpg" alt="v0.9_Screen20.jpg"><br>
 <img src="../images/v0.9_Screen21.jpg" alt="v0.9_Screen21.jpg"><br>
 <img src="../images/v0.9_Screen22.jpg" alt="v0.9_Screen22.jpg"><br>
