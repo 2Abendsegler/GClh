@@ -1,3 +1,4 @@
+<a href="#v09" title="GClh II version 0.9 (19.12.2017)">v0.9</a> &nbsp;
 <a href="#v0811" title="GClh II version 0.8.11 (26.11.2017)">v0.8.11</a> &nbsp;
 <a href="#v0810" title="GClh II version 0.8.10 (15.11.2017)">v0.8.10</a> &nbsp;
 <a href="#v089" title="GClh II version 0.8.9 (03.11.2017)">v0.8.9</a> &nbsp;
@@ -27,6 +28,118 @@
 <a href="#v022" title="GClh II version 0.2.2 (09.01.2017)">v0.2.2</a> &nbsp; 
 <a href="#v021" title="GClh II version 0.2.1 (05.01.2017)">v0.2.1</a> &nbsp; 
 <a href="#v01" title="GClh II version 0.1 (05.01.2017)">v0.1</a> &nbsp; 
+
+---
+## v0.9:
+<ul>
+<li>
+New: GClh header processing with Linklist for all the new designed pages.<br>
+<br>
+</li>
+<li>
+New: Porting all functionality from the "old" pages to the new designed pages (except Drafts and My Lists, especially the latter side is just too ugly):<br>
+(<i>Please note that depending on your user behavior, you may come to the old page, then select the new page there.</i>)<br>
+<a href="https://www.geocaching.com/account/dashboard">Dashboard</a>:<br>
+<img src="../images/v0.9_Screen12.jpg" alt="v0.9_Screen12.jpg"><br>
+<br>
+<a href="https://www.geocaching.com/play/geocache/gc1efpw/log">Logging</a>:<br>
+<img src="../images/v0.9_Screen13.jpg" alt="v0.9_Screen13.jpg"><br>
+<img src="../images/v0.9_Screen14.jpg" alt="v0.9_Screen14.jpg"><br>
+<br>
+<a href="https://www.geocaching.com/p/default.aspx?u=2Abendsegler">Public Profile</a>:<br> 
+<img src="../images/v0.9_Screen15.jpg" alt="v0.9_Screen15.jpg"><br>
+<a href="https://www.geocaching.com/p/default.aspx?u=2Abendsegler&tab=trackables#profilepanel">Public Profile / Trackables</a>:<br> 
+<img src="../images/v0.9_Screen16.jpg" alt="v0.9_Screen16.jpg"><br>
+<a href="https://www.geocaching.com/p/default.aspx?u=2Abendsegler&tab=gallery#profilepanel">Public Profile / Gallery</a>:<br> 
+<img src="../images/v0.9_Screen17.jpg" alt="v0.9_Screen17.jpg"><br>
+<a href="https://www.geocaching.com/p/default.aspx?tab=stats#profilepanel">Public Profile / Statistik</a>:<br> 
+<img src="../images/v0.9_Screen20.jpg" alt="v0.9_Screen20.jpg"><br>
+<img src="../images/v0.9_Screen21.jpg" alt="v0.9_Screen21.jpg"><br>
+<img src="../images/v0.9_Screen22.jpg" alt="v0.9_Screen22.jpg"><br>
+<br>
+<a href="https://www.geocaching.com/play/friendleague">Friend League</a>:<br> 
+<img src="../images/v0.9_Screen23.jpg" alt="v0.9_Screen23.jpg"><br>
+<br>
+</li>
+<li>
+New: Revision of the GClh Config and Sync so that they can be displayed on all pages (except the map because of no scrolling functionality).<br>
+<br>
+</li>
+<li>
+New: Faster processing of GClh especially on cache listing page.<br>
+<br>
+</li>
+<li>
+New: Added @connect statements to avoid Tampermonkey warnings because of data request from Google Maps Elevation and Github: [Issue <a href="https://github.com/2Abendsegler/GClh/pull/495">#495</a>]<br>
+Many thanks to <a href="https://www.geocaching.com/profile/?u=Bananeweizen">Bananeweizen</a> for this note.<br>
+<br>
+</li>
+<li>
+New: Some new default links for the Linklist were added in GClh Config.<br>
+<img src="../images/v0.9_Screen18.jpg" alt="v0.9_Screen18.jpg"><br>
+<br>
+</li>
+<li>
+New: The VIP, VUP, Mail and Message Icons are now additionally available for the owner on foreign Bookmark lists and on Nearest lists for users found and hidden caches.<br>
+<img src="../images/v0.9_Screen19.jpg" alt="v0.9_Screen19.jpg"><br>
+<img src="../images/v0.9_Screen24.jpg" alt="v0.9_Screen24.jpg"><br>
+<br>
+</li>
+<li>
+New: Too in listings with event caches, the GClh image processing is now available. The images are displayed as thumbnails for a preview and if you hover with the mouse over a thumbnail you can see the big one. The corresponding Config settings are already longer available for all the other caches.<br>
+Settings -> Listing:<br>
+<img src="../images/v0.9_Screen02.jpg" alt="v0.9_Screen02.jpg"><br>
+<br>
+</li>
+<li>
+New: After a change of a bookmark you can go back to bookmark list automatically. The confirmation page of this change is skip:<br>
+Settings -> Bookmark list:<br>
+<img src="../images/v0.9_Screen01.jpg" alt="v0.9_Screen01.jpg"><br>
+<br>
+</li>
+<li>
+New: The Trackables maps are now bigger, you can zoom in and zoom out by mouse wheel and you can change the size of the map via a slider below left with the mouse: [Issue <a href="https://github.com/2Abendsegler/GClh/pull/492">#492</a>]<br>
+Many thanks to <a href="https://www.geocaching.com/profile/?u=Ruko2010">Ruko2010</a> for this great implementation.<br>
+<img src="../images/v0.9_Screen03.jpg" alt="v0.9_Screen03.jpg"><br>
+<br>
+</li>
+<li>
+New: With a new button in Bookmark lists, you can determine which caches have corrected coordinates. This detail can be helpful by planning of cache tours: [Issue <a href="https://github.com/2Abendsegler/GClh/pull/504">#504</a>]<br>
+Many thanks to <a href="https://www.geocaching.com/profile/?u=Ruko2010">Ruko2010</a> for the idea and the nice implementation.<br>
+<img src="../images/v0.9_Screen04.jpg" alt="v0.9_Screen04.jpg"><br>
+(<i>Bookmark list in compact layout together with script GC Tour</i>)<br>
+<br>
+</li>
+<li>
+New: Show Trackable Inventory in new dashboard. (In the old dashboard it is GC standard.):<br>
+<img src="../images/v0.9_Screen05.jpg" alt="v0.9_Screen05.jpg"><br>
+Settings -> Public Profile / Dashboard - Trackables:<br>
+<img src="../images/v0.9_Screen06.jpg" alt="v0.9_Screen06.jpg"><br>
+<br>
+</li>
+<li>
+New: Show all default links for the Linklist in new dashboard:<br>
+<img src="../images/v0.9_Screen07.jpg" alt="v0.9_Screen07.jpg"><br>
+Settings -> Public Profile / Dashboard:<br>
+<img src="../images/v0.9_Screen08.jpg" alt="v0.9_Screen08.jpg"><br>
+<br>
+</li>
+<li>
+New: Compact layout for Recently Viewed Caches list and show GClh Icon "Log it" too on this list:<br>
+<img src="../images/v0.9_Screen11.jpg" alt="v0.9_Screen11.jpg"><br>
+Settings -> Public Profile / Dashboard:<br>
+<img src="../images/v0.9_Screen09.jpg" alt="v0.9_Screen09.jpg"><br>
+Settings -> Global:<br>
+<img src="../images/v0.9_Screen10.jpg" alt="v0.9_Screen10.jpg"><br>
+(<i>This setting is not really new, only the Recently Viewed Caches list is here new.</i>)<br>
+<br>
+</li>
+<li>
+Fix: The whole Funktionality is tested on Firefox and Chrome with premium and with basic member in english and on Firefox with premium member in german only for the new developments. All bugs are fixed.<br>
+</li>
+</ul>
+(19.12.2017)<br> 
+<br>
 
 ---
 ## v0.8.11:
