@@ -3243,7 +3243,7 @@ var mainGC = function() {
     if (document.location.href.match(/\.com\/bookmarks\/(view\.aspx\?guid=|bulk\.aspx\?listid=|view\.aspx\?code=)/) && document.getElementById('ctl00_ContentBody_ListInfo_cboItemsPerPage')) {
         try {
             // Prepare link corrected coords.
-            var corrCoords = '<input type="button" id="gclh_linkCorrCoords" href="javascript:void(0);" title="Mark Caches with Corrected Coordinates" value="Mark Caches with Corr. Coords">';
+            if ($('#ctl00_ContentBody_btnAddBookmark')[0]) var corrCoords = '<input type="button" id="gclh_linkCorrCoords" href="javascript:void(0);" title="Mark Caches with Corrected Coordinates" value="Mark Caches with Corr. Coords">';
             // Prepare link "Download as kml".
             if (document.location.href.match(/guid=([a-zA-Z0-9-]*)/)) {
                 var matches = document.location.href.match(/guid=([a-zA-Z0-9-]*)/);
@@ -3278,7 +3278,7 @@ var mainGC = function() {
                     if (LO.nextElementSibling.innerHTML == "") LO.nextElementSibling.remove();
                     else LO.nextElementSibling.style.marginBottom = "0";
                     LO.style.marginBottom = "0";
-                    LO.innerHTML += "<span style='float: right; padding-right: 195px; margin-top: -7px;'>" + (uuidx ? kml+"&nbsp;&nbsp;" : "") + corrCoords + "</span>";
+                    LO.innerHTML += "<span style='float: right; padding-right: 195px; margin-top: -7px;'>" + (uuidx ? kml : "") + (corrCoords ? "&nbsp;&nbsp;"+corrCoords : "") + "</span>";
                 }
                 // Table:
                 css += "table.Table tr {line-height: 16px;}";
@@ -3298,10 +3298,10 @@ var mainGC = function() {
                 appendCssStyle(css);
             // No compact layout, only build links.
             } else {
-                $('#ctl00_ContentBody_lbHeading')[0].parentNode.parentNode.parentNode.childNodes[3].innerHTML += "<br>" + (uuidx ? kml+"<br>" : "") + corrCoords;
+                $('#ctl00_ContentBody_lbHeading')[0].parentNode.parentNode.parentNode.childNodes[3].innerHTML += (uuidx ? "<br>"+kml : "") + (corrCoords ? "<br>"+corrCoords : "");
             }
             // Event, css corrected coords.
-            $('#gclh_linkCorrCoords')[0].addEventListener("click", markCorrCoordForBm, false);
+            if ($('#gclh_linkCorrCoords')[0]) $('#gclh_linkCorrCoords')[0].addEventListener("click", markCorrCoordForBm, false);
             appendCssStyle('.cc_cell {text-align: center !important} .working {opacity: 0.3; cursor: default;}');
         } catch(e) {gclh_error("Improve bookmark lists:",e);}
     }
