@@ -52,7 +52,7 @@ New: Porting all functionality from the "old" pages to the new designed pages (e
 <img src="../images/v0.9_Screen16.jpg" alt="v0.9_Screen16.jpg"><br>
 <a href="https://www.geocaching.com/p/default.aspx?u=2Abendsegler&tab=gallery#profilepanel">Public Profile / Gallery</a>:<br> 
 <img src="../images/v0.9_Screen17.jpg" alt="v0.9_Screen17.jpg"><br>
-<a href="https://www.geocaching.com/p/default.aspx?u=2Abendsegler&tab=stats#profilepanel">Public Profile / Statistik</a>:<br> 
+<a href="https://www.geocaching.com/p/default.aspx?tab=stats#profilepanel">Public Profile / Statistik</a>:<br> 
 <img src="../images/v0.9_Screen20.jpg" alt="v0.9_Screen20.jpg"><br>
 <img src="../images/v0.9_Screen21.jpg" alt="v0.9_Screen21.jpg"><br>
 <img src="../images/v0.9_Screen22.jpg" alt="v0.9_Screen22.jpg"><br>
