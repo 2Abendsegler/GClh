@@ -3892,6 +3892,21 @@ var mainGC = function() {
 // Improve dashboard.
     if (is_page("dashboard")) {
         try {
+	    //Map and Search button in left menu
+	    //----------------------------------------------------	
+	    var nav = document.querySelector('.sidebar-links');
+	    var ul = nav.querySelector('ul');
+	    //
+	    var newmapbtn = document.createElement('li');
+	    newmapbtn.classList.add("action-link");		
+	    newmapbtn.innerHTML = '<a href="https://www.geocaching.com/map/" target="_blank"><svg  class="icon" height="36" width="36"><use xlink:href="/account/app/ui-icons/sprites/global.svg#icon-map-no-border"></use></svg>Map</a>';
+	    ul.insertBefore(newmapbtn, ul.childNodes[0]);  //add MAP
+	    //
+	    var newsearchbtn = document.createElement('li');
+	    newsearchbtn.classList.add ("action-link");
+	    newsearchbtn.innerHTML = '<a href="https://www.geocaching.com/play/search" target="_blank"><svg  class="icon icon-svg-fill charcoal" height="36" width="36" style="margin-left:3px; margin-right:19px; margin-top:5px; margin-bottom:5px; width:26px !important;height:auto !important;"><use xlink:href="/account/app/ui-icons/sprites/global.svg#icon-spyglass-svg-fill"></use></svg>Search</a>';
+	    ul.insertBefore(newsearchbtn, ul.childNodes[0]);  //add SEARCH
+	    //-----------------------------------------------------	
             // Show/Hide einbauen in linker Spalte.
             var list = $('.sidebar-links .link-header:not(.gclh), .sidebar-links .link-block:not(.gclh)');
             var ident = 0;
