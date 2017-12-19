@@ -42,7 +42,7 @@ New: Porting all functionality from the "old" pages to the new designed pages (e
 <a href="https://www.geocaching.com/account/dashboard">Dashboard</a>:<br>
 <img src="../images/v0.9_Screen12.jpg" alt="v0.9_Screen12.jpg"><br>
 <br>
-<a href="https://www.geocaching.com/p/default.aspx">Logging</a>:<br>
+<a href="https://www.geocaching.com/play/geocache/gc1efpw/log">Logging</a>:<br>
 <img src="../images/v0.9_Screen13.jpg" alt="v0.9_Screen13.jpg"><br>
 <img src="../images/v0.9_Screen14.jpg" alt="v0.9_Screen14.jpg"><br>
 <br>
