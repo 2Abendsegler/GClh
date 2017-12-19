@@ -2,7 +2,7 @@
 // @name             GC little helper II
 // @namespace        http://www.amshove.net
 //--> $$000
-// @version          0.8.11
+// @version          0.9
 //<-- $$000
 // @include          http*://www.geocaching.com/*
 // @include          http*://maps.google.tld/*
@@ -13,8 +13,7 @@
 // @require          http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js
 // @require          http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js
 // @require          https://cdnjs.cloudflare.com/ajax/libs/dropbox.js/2.5.2/Dropbox-sdk.min.js
-//XXXX
-// @require          https://raw.githubusercontent.com/2Abendsegler/GClh/v0.9/data/gclh_defi.js
+// @require          https://raw.githubusercontent.com/2Abendsegler/GClh/master/data/gclh_defi.js
 // @connect          maps.googleapis.com
 // @connect          raw.githubusercontent.com
 // @description      Some little things to make life easy (on www.geocaching.com).
@@ -3244,7 +3243,7 @@ var mainGC = function() {
     if (document.location.href.match(/\.com\/bookmarks\/(view\.aspx\?guid=|bulk\.aspx\?listid=|view\.aspx\?code=)/) && document.getElementById('ctl00_ContentBody_ListInfo_cboItemsPerPage')) {
         try {
             // Prepare link corrected coords.
-            var corrCoords = '<input type="button" id="gclh_linkCorrCoords" href="javascript:void(0);" title="Mark Caches with Corrected Coordinates" value="Mark Caches with Corr. Coords">';
+            if ($('#ctl00_ContentBody_btnAddBookmark')[0]) var corrCoords = '<input type="button" id="gclh_linkCorrCoords" href="javascript:void(0);" title="Mark Caches with Corrected Coordinates" value="Mark Caches with Corr. Coords">';
             // Prepare link "Download as kml".
             if (document.location.href.match(/guid=([a-zA-Z0-9-]*)/)) {
                 var matches = document.location.href.match(/guid=([a-zA-Z0-9-]*)/);
@@ -3279,7 +3278,7 @@ var mainGC = function() {
                     if (LO.nextElementSibling.innerHTML == "") LO.nextElementSibling.remove();
                     else LO.nextElementSibling.style.marginBottom = "0";
                     LO.style.marginBottom = "0";
-                    LO.innerHTML += "<span style='float: right; padding-right: 195px; margin-top: -7px;'>" + (uuidx ? kml+"&nbsp;&nbsp;" : "") + corrCoords + "</span>";
+                    LO.innerHTML += "<span style='float: right; padding-right: 195px; margin-top: -7px;'>" + (uuidx ? kml : "") + (corrCoords ? "&nbsp;&nbsp;"+corrCoords : "") + "</span>";
                 }
                 // Table:
                 css += "table.Table tr {line-height: 16px;}";
@@ -3299,10 +3298,10 @@ var mainGC = function() {
                 appendCssStyle(css);
             // No compact layout, only build links.
             } else {
-                $('#ctl00_ContentBody_lbHeading')[0].parentNode.parentNode.parentNode.childNodes[3].innerHTML += "<br>" + (uuidx ? kml+"<br>" : "") + corrCoords;
+                $('#ctl00_ContentBody_lbHeading')[0].parentNode.parentNode.parentNode.childNodes[3].innerHTML += (uuidx ? "<br>"+kml : "") + (corrCoords ? "<br>"+corrCoords : "");
             }
             // Event, css corrected coords.
-            $('#gclh_linkCorrCoords')[0].addEventListener("click", markCorrCoordForBm, false);
+            if ($('#gclh_linkCorrCoords')[0]) $('#gclh_linkCorrCoords')[0].addEventListener("click", markCorrCoordForBm, false);
             appendCssStyle('.cc_cell {text-align: center !important} .working {opacity: 0.3; cursor: default;}');
         } catch(e) {gclh_error("Improve bookmark lists:",e);}
     }
@@ -4002,7 +4001,7 @@ var mainGC = function() {
              document.location.href.match(/\.com\/my\/default\.aspx/)            ||      // Profil (Quicklist)
              document.location.href.match(/\.com\/account\/dashboard/)           ||      // Dashboard
              document.location.href.match(/\.com\/seek\/nearest\.aspx\?(u|ul)=/) ||      // Nearest Lists mit User
-             document.location.href.match(/\.com\/bookmarks\/view\.aspx\?guid=/) ||      // Bookmarks
+             document.location.href.match(/\.com\/bookmarks\/(view|bulk)/)       ||      // Bookmark Lists
              document.location.href.match(/\.com\/play\/friendleague/)           ||      // Friend League
              document.location.href.match(/\.com\/my\/myfriends\.aspx/)             )) { // Friends
             var myself = global_me;
@@ -4511,12 +4510,12 @@ var mainGC = function() {
                 };
                 gclh_build_vip_list();
 
-            // TB Listing. Post, Edit, View Cache und TB Logs. Mail schreiben. (Nicht post cache log new page.)
+            // TB Listing. Post, Edit, View Cache und TB Logs. Mail schreiben, Bookmark lists, Trackable Inventory. (Nicht post cache log new page.)
             // ----------
             } else if (document.location.href.match(/\.com\/track\/details\.aspx/) ||
                        document.location.href.match(/\.com\/(seek|track)\/log\.aspx/) ||
                        document.location.href.match(/\.com\/email\/\?guid=/) ||
-                       document.location.href.match(/\.com\/bookmarks\/view\.aspx\?guid=/) ||
+                       document.location.href.match(/\.com\/bookmarks\/(view\.aspx\?guid=|bulk\.aspx\?listid=|view\.aspx\?code=)/) ||
                        document.location.href.match(/\.com\/my\/inventory\.aspx/)) {
                 var links = $('a[href*="/profile/?guid="]');
                 for (var i = 0; i < links.length; i++) {
@@ -7582,7 +7581,7 @@ var mainGC = function() {
 //--> $$000
         var code = '<img src="https://c.andyhoppe.com/1485103563"' + prop +
                    '<img src="https://c.andyhoppe.com/1485234890"' + prop +
-                   '<img src="https://s09.flagcounter.com/count2/Mf9D/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
+                   '<img src="https://s07.flagcounter.com/countxl/mHeY/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
 //<-- $$000
         div.innerHTML = code;
         side.appendChild(div);
@@ -7596,7 +7595,7 @@ var mainGC = function() {
 //--> $$000
             if (browser === "firefox" && isTM === false) {
                var text = "Version " + scriptVersion + " of  \"" + scriptName + "\"  was successfully installed.\n\n"
-                        + "DEAR FIREFOX USER, PLEASE CHECK THE CHANGELOG TO VERSION 0.8.10!\n\n"
+                        + "DEAR FIREFOX USER, PLEASE CHECK THE CHANGELOG TO VERSION 0.8.10 AND HIGHER!\n\n"
                         + "Do you want to open the changelog in a new tab?\n";
             }
 //<-- $$000
