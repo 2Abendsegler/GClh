@@ -80,7 +80,7 @@ New: Some new default links for the Linklist were added in GClh Config.<br>
 <br>
 </li>
 <li>
-New: The VIP, VUP and Mail Icons are now additionally available for the owner on foreign Bookmark lists and on Nearest lists for users found and hidden caches.<br>
+New: The VIP, VUP, Mail and Message Icons are now additionally available for the owner on foreign Bookmark lists and on Nearest lists for users found and hidden caches.<br>
 <img src="../images/v0.9_Screen19.jpg" alt="v0.9_Screen19.jpg"><br>
 <img src="../images/v0.9_Screen24.jpg" alt="v0.9_Screen24.jpg"><br>
 <br>
