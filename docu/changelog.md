@@ -48,10 +48,11 @@ New: Porting all functionality from the "old" pages to the new designed pages (e
 <br>
 <a href="https://www.geocaching.com/p/default.aspx">Public Profile</a>:<br> 
 <img src="../images/v0.9_Screen15.jpg" alt="v0.9_Screen15.jpg"><br>
+<a href="https://www.geocaching.com/p/default.aspx?u=2Abendsegler&tab=trackables">Public Profile / Trackables</a>:<br> 
 <img src="../images/v0.9_Screen16.jpg" alt="v0.9_Screen16.jpg"><br>
+<a href="https://www.geocaching.com/p/default.aspx?u=2Abendsegler&tab=gallery">Public Profile / Gallery</a>:<br> 
 <img src="../images/v0.9_Screen17.jpg" alt="v0.9_Screen17.jpg"><br>
-<img src="../images/v0.9_Screen18.jpg" alt="v0.9_Screen18.jpg"><br>
-<img src="../images/v0.9_Screen19.jpg" alt="v0.9_Screen19.jpg"><br>
+<a href="https://www.geocaching.com/p/default.aspx?u=2Abendsegler&tab=stats">Public Profile / Statistik</a>:<br> 
 <img src="../images/v0.9_Screen20.jpg" alt="v0.9_Screen20.jpg"><br>
 <img src="../images/v0.9_Screen21.jpg" alt="v0.9_Screen21.jpg"><br>
 <img src="../images/v0.9_Screen22.jpg" alt="v0.9_Screen22.jpg"><br>
@@ -75,10 +76,13 @@ Many thanks to <a href="https://www.geocaching.com/profile/?u=Bananeweizen">Bana
 </li>
 <li>
 New: Some new default links for the Linklist were added in GClh Config.<br>
+<img src="../images/v0.9_Screen18.jpg" alt="v0.9_Screen18.jpg"><br>
 <br>
 </li>
 <li>
 New: The VIP, VUP and Mail Icons are now additionally available for the owner on foreign Bookmark lists and on Nearest lists for users found and hidden caches.<br>
+<img src="../images/v0.9_Screen19.jpg" alt="v0.9_Screen19.jpg"><br>
+<img src="../images/v0.9_Screen24.jpg" alt="v0.9_Screen24.jpg"><br>
 <br>
 </li>
 <li>
