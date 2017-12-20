@@ -448,6 +448,7 @@ var variablesInit = function(c) {
     c.settings_show_tb_inv = getValue("settings_show_tb_inv", true);
     c.settings_but_search_map = getValue("settings_but_search_map", true);
     c.settings_but_search_map_new_tab = getValue("settings_but_search_map_new_tab", false);
+    c.settings_show_pseudo_as_owner = getValue("settings_show_pseudo_as_owner", true);
 
     try {
         if (c.userToken === null) {
@@ -2264,7 +2265,6 @@ var mainGC = function() {
         $('.muted')[0] && $('#LogDate')[0] && $('#logContent')[0] && $('#LogText')[0]) {
         try {
             var [aGCTBName, aGCTBLink, aGCTBNameLink, aLogDate] = getGCTBInfo(true);
-//xxxx1 New Log Page: Der Owner sollte parallel zur Signatur auch nicht gesetzt werden, weil es sich gegebenenfalls um das Pseudonym handelt und nicht um den Owner.
             var aOwner = decode_innerHTML($('.muted')[0].children[1]);
             insert_smilie_fkt("LogText");
             insert_tpl_fkt(true);
@@ -2332,7 +2332,6 @@ var mainGC = function() {
         code += "  var aGCTBLink = '" + aGCTBLink + "';";
         code += "  var aGCTBNameLink = '" + aGCTBNameLink + "';";
         code += "  var settings_replace_log_by_last_log = " + settings_replace_log_by_last_log + ";";
-//xxxx1 New Log Page: Der Owner sollte parallel zur Signatur auch nicht gesetzt werden, weil es sich gegebenenfalls um das Pseudonym handelt und nicht um den Owner.
         code += "  var owner = '" + aOwner + "';";
         code += "  var inhalt = document.getElementById(id).innerHTML;";
         code += "  inhalt = inhalt.replace(/\\&amp\\;/g,'&');";
@@ -2349,8 +2348,9 @@ var mainGC = function() {
         code += "  if (aGCTBLink) inhalt = inhalt.replace(/#GCTBLink#/ig, aGCTBLink);";
         code += "  if (aGCTBNameLink) inhalt = inhalt.replace(/#GCTBNameLink#/ig, aGCTBNameLink);";
         code += "  if (aLogDate) inhalt = inhalt.replace(/#LogDate#/ig, aLogDate);";
-//xxxx1 New Log Page: Der Owner sollte parallel zur Signatur auch nicht gesetzt werden, weil es sich gegebenenfalls um das Pseudonym handelt und nicht um den Owner.
-        code += "  if (owner) inhalt = inhalt.replace(/#owner#/ig, owner);";
+        if (!newLogPage || settings_show_pseudo_as_owner) {
+            code += "  if (owner) inhalt = inhalt.replace(/#owner#/ig, owner);";
+        }
         code += "  if (id.match(/last_logtext/) && settings_replace_log_by_last_log) {";
         code += "    input.value = inhalt;";
         code += "  }else{";
@@ -2648,10 +2648,11 @@ var mainGC = function() {
         window.addEventListener("load", gclh_setFocus, false);
         var finds = get_my_finds();
         var me = global_me;
-        if (!newLogPage) var owner = document.getElementById('ctl00_ContentBody_LogBookPanel1_WaypointLink').nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.innerHTML;
+        if (newLogPage) var owner = $('.muted')[0].children[1].innerHTML;
+        else var owner = document.getElementById('ctl00_ContentBody_LogBookPanel1_WaypointLink').nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.innerHTML;
         document.getElementById(id).innerHTML = document.getElementById(id).innerHTML.replace(/#found_no#/ig, finds);
         finds++;
-        if (!newLogPage) document.getElementById(id).innerHTML = document.getElementById(id).innerHTML.replace(/#owner#/ig, owner);
+        if (!newLogPage || settings_show_pseudo_as_owner) document.getElementById(id).innerHTML = document.getElementById(id).innerHTML.replace(/#owner#/ig, owner);
         document.getElementById(id).innerHTML = document.getElementById(id).innerHTML.replace(/#found#/ig, finds).replace(/#me#/ig, me);
         var [aDate, aTime, aDateTime] = getDateTime();
         document.getElementById(id).innerHTML = document.getElementById(id).innerHTML.replace(/#Date#/ig, aDate).replace(/#Time#/ig, aTime).replace(/#DateTime#/ig, aDateTime);
@@ -8946,6 +8947,9 @@ var mainGC = function() {
             html += newParameterOn1;
             html += checkboxy('settings_fieldnotes_old_fashioned', 'Logging drafts old-fashioned') + show_help("This option deactivates on old drafts page the logging of drafts by the new log page and activates logging of drafts by the old-fashioned log page.") + "<br>";
             html += newParameterVersionSetzen(0.7) + newParameterOff;
+            html += newParameterOn3;
+            html += checkboxy('settings_show_pseudo_as_owner', 'Take also owner pseudonym to replace placeholder owner') + show_help("If you enable this option, the placeholder for the owner is replaced possibly by the pseudonym of the owner if the real owner is not known.<br><br>On the new designed log page there is shown as owner of the cache not the real owner but possibly the pseudonym of the owner for the cache as it is shown in the cache listing under \"A cache by\". The real owner is not available in this cases.") + "<br>";
+            html += newParameterVersionSetzen(0.9) + newParameterOff;
             var placeholderDescription = "Possible placeholder:<br>&nbsp; #Found# : Your founds + 1<br>&nbsp; #Found_no# : Your founds<br>&nbsp; #Me# : Your username<br>&nbsp; #Owner# : Username of the owner<br>&nbsp; #Date# : Actual date<br>&nbsp; #Time# : Actual time in format hh:mm<br>&nbsp; #DateTime# : Actual date actual time<br>&nbsp; #GCTBName# : GC or TB name<br>&nbsp; #GCTBLink# : GC or TB link<br>&nbsp; #GCTBNameLink# : GC or TB name as a link<br>&nbsp; #LogDate# : Content of field \"Date Logged\"<br>(Upper and lower case is not required in the placeholder name.)";
             html += "&nbsp;" + "Log templates:" + show_help("Log templates are pre-defined texts like \"!!! I got the FTF !!!\". All your templates are shown beside the log form. You just have to click to a template and it will be placed in your log. <br><br>Also you are able to use placeholder for variables which will be replaced in the log. The smilies option has to be enabled. <br><br>Note: You have to set a title and a text. Click to the edit icon beside the template to edit the text.") + " &nbsp; (Possible placeholder:" + show_help_big(placeholderDescription) + ")<br>";
             html += "<font class='gclh_small' style='font-style: italic; margin-left: 240px; margin-top: 25px; width: 320px; position: absolute; z-index: -1;' >Bitte beachte, dass Logtemplates nützlich sind, um automatisiert die Fundzahl, das Funddatum und ähnliches im Log einzutragen, dass aber Cache Owner Menschen sind, die sich über individuelle Logs zu ihrem Cache freuen. Beim Geocachen geht es nicht nur darum, die eigene Statistik zu puschen, sondern auch darum, etwas zu erleben. Bitte nimm dir doch etwas Zeit, den Ownern etwas wiederzugeben, indem du ihnen von Deinen Erlebnissen berichtest und ihnen gute Logs schreibst. Dann wird es auch in Zukunft Cacher geben, die sich gerne die Mühe machen, neue Caches auszulegen. Die Logtemplates sind also nützlich, können aber niemals ein vollständiges Log ersetzen.</font>";
@@ -9907,7 +9911,8 @@ var mainGC = function() {
                 'settings_bm_changed_and_go',
                 'settings_show_tb_inv',
                 'settings_but_search_map',
-                'settings_but_search_map_new_tab'
+                'settings_but_search_map_new_tab',
+                'settings_show_pseudo_as_owner'
             );
             for (var i = 0; i < checkboxes.length; i++) {
                 if (document.getElementById(checkboxes[i])) setValue(checkboxes[i], document.getElementById(checkboxes[i]).checked);
