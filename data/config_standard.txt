@@ -213,5 +213,6 @@
   "settings_bm_changed_and_go": true,
   "settings_show_tb_inv": true,
   "settings_but_search_map": true,
-  "settings_but_search_map_new_tab": false
+  "settings_but_search_map_new_tab": false,
+  "settings_show_pseudo_as_owner": true
 }
