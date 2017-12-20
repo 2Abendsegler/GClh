@@ -446,6 +446,8 @@ var variablesInit = function(c) {
     c.settings_show_default_links = getValue("settings_show_default_links", true);
     c.settings_bm_changed_and_go = getValue("settings_bm_changed_and_go", true);
     c.settings_show_tb_inv = getValue("settings_show_tb_inv", true);
+    c.settings_but_search_map = getValue("settings_but_search_map", true);
+    c.settings_but_search_map_new_tab = getValue("settings_but_search_map_new_tab", false);
 
     try {
         if (c.userToken === null) {
@@ -2262,6 +2264,7 @@ var mainGC = function() {
         $('.muted')[0] && $('#LogDate')[0] && $('#logContent')[0] && $('#LogText')[0]) {
         try {
             var [aGCTBName, aGCTBLink, aGCTBNameLink, aLogDate] = getGCTBInfo(true);
+//xxxx1 New Log Page: Der Owner sollte parallel zur Signatur auch nicht gesetzt werden, weil es sich gegebenenfalls um das Pseudonym handelt und nicht um den Owner.
             var aOwner = decode_innerHTML($('.muted')[0].children[1]);
             insert_smilie_fkt("LogText");
             insert_tpl_fkt(true);
@@ -2329,6 +2332,7 @@ var mainGC = function() {
         code += "  var aGCTBLink = '" + aGCTBLink + "';";
         code += "  var aGCTBNameLink = '" + aGCTBNameLink + "';";
         code += "  var settings_replace_log_by_last_log = " + settings_replace_log_by_last_log + ";";
+//xxxx1 New Log Page: Der Owner sollte parallel zur Signatur auch nicht gesetzt werden, weil es sich gegebenenfalls um das Pseudonym handelt und nicht um den Owner.
         code += "  var owner = '" + aOwner + "';";
         code += "  var inhalt = document.getElementById(id).innerHTML;";
         code += "  inhalt = inhalt.replace(/\\&amp\\;/g,'&');";
@@ -2345,6 +2349,7 @@ var mainGC = function() {
         code += "  if (aGCTBLink) inhalt = inhalt.replace(/#GCTBLink#/ig, aGCTBLink);";
         code += "  if (aGCTBNameLink) inhalt = inhalt.replace(/#GCTBNameLink#/ig, aGCTBNameLink);";
         code += "  if (aLogDate) inhalt = inhalt.replace(/#LogDate#/ig, aLogDate);";
+//xxxx1 New Log Page: Der Owner sollte parallel zur Signatur auch nicht gesetzt werden, weil es sich gegebenenfalls um das Pseudonym handelt und nicht um den Owner.
         code += "  if (owner) inhalt = inhalt.replace(/#owner#/ig, owner);";
         code += "  if (id.match(/last_logtext/) && settings_replace_log_by_last_log) {";
         code += "    input.value = inhalt;";
@@ -3892,21 +3897,21 @@ var mainGC = function() {
 // Improve dashboard.
     if (is_page("dashboard")) {
         try {
-	    //Map and Search button in left menu
-	    //----------------------------------------------------	
-	    var nav = document.querySelector('.sidebar-links');
-	    var ul = nav.querySelector('ul');
-	    //
-	    var newmapbtn = document.createElement('li');
-	    newmapbtn.classList.add("action-link");		
-	    newmapbtn.innerHTML = '<a href="https://www.geocaching.com/map/" target="_blank"><svg  class="icon" height="36" width="36"><use xlink:href="/account/app/ui-icons/sprites/global.svg#icon-map-no-border"></use></svg>Map</a>';
-	    ul.insertBefore(newmapbtn, ul.childNodes[0]);  //add MAP
-	    //
-	    var newsearchbtn = document.createElement('li');
-	    newsearchbtn.classList.add ("action-link");
-	    newsearchbtn.innerHTML = '<a href="https://www.geocaching.com/play/search" target="_blank"><svg  class="icon icon-svg-fill charcoal" height="36" width="36" style="margin-left:3px; margin-right:19px; margin-top:5px; margin-bottom:5px; width:26px !important;height:auto !important;"><use xlink:href="/account/app/ui-icons/sprites/global.svg#icon-spyglass-svg-fill"></use></svg>Search</a>';
-	    ul.insertBefore(newsearchbtn, ul.childNodes[0]);  //add SEARCH
-	    //-----------------------------------------------------	
+            // Map and Search button in left sidebar.
+            if (settings_but_search_map) {
+                var target = (settings_but_search_map_new_tab ? "_blank" : "");
+                var nav = document.querySelector('.sidebar-links');
+                var ul = nav.querySelector('ul');
+                var newmapbtn = document.createElement('li');
+                newmapbtn.classList.add("action-link");
+                newmapbtn.innerHTML = '<a class="gclh_svg_fill" href="/map/" target="'+target+'"><svg class="icon" height="36" width="36"><use xlink:href="/account/app/ui-icons/sprites/global.svg#icon-map-no-border"></use></svg>Map</a>';
+                ul.insertBefore(newmapbtn, ul.childNodes[0]);
+                var newsearchbtn = document.createElement('li');
+                newsearchbtn.classList.add ("action-link");
+                newsearchbtn.innerHTML = '<a class="gclh_svg_fill" href="/play/search" target="'+target+'"><svg class="icon" height="36" width="36" style="margin-left:3px; margin-right:19px; margin-top:5px; margin-bottom:5px; width:26px !important;height:auto !important;"><use xlink:href="/account/app/ui-icons/sprites/global.svg#icon-spyglass-svg-fill"></use></svg>Search</a>';
+                ul.insertBefore(newsearchbtn, ul.childNodes[0]);
+                appendCssStyle("a.gclh_svg_fill {fill: #4a4a4a;} a.gclh_svg_fill:hover {fill: #02874d;}");
+            }
             // Show/Hide einbauen in linker Spalte.
             var list = $('.sidebar-links .link-header:not(.gclh), .sidebar-links .link-block:not(.gclh)');
             var ident = 0;
@@ -8792,6 +8797,8 @@ var mainGC = function() {
             html += newParameterVersionSetzen(0.8) + newParameterOff;
             html += newParameterOn3;
             html += checkboxy('settings_compact_layout_recviewed', 'Show compact layout in your Recently Viewed Cache list') + "<br>";
+            html += checkboxy('settings_but_search_map', 'Show buttons Search and Map in dashboard') + show_help(t_newDB) + "<br>";
+            html += " &nbsp; " + checkboxy('settings_but_search_map_new_tab', 'Open links in new tab') + show_help(t_newDB) + "<br>";
             html += newParameterVersionSetzen(0.9) + newParameterOff;
 
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>Friends</b></div>";
@@ -9560,6 +9567,7 @@ var mainGC = function() {
             setEventsForDependentParameters("settings_strike_archived", "settings_highlight_usercoords");
             setEventsForDependentParameters("settings_strike_archived", "settings_highlight_usercoords_bb");
             setEventsForDependentParameters("settings_strike_archived", "settings_highlight_usercoords_it");
+            setEventsForDependentParameters("settings_but_search_map", "settings_but_search_map_new_tab");
             // Abhängigkeiten der Linklist Parameter.
             for (var i = 0; i < 100; i++) {
                 // 2. Spalte: Links für Custom BMs.
@@ -9897,7 +9905,9 @@ var mainGC = function() {
                 'settings_show_brouter_link',
                 'settings_show_default_links',
                 'settings_bm_changed_and_go',
-                'settings_show_tb_inv'
+                'settings_show_tb_inv',
+                'settings_but_search_map',
+                'settings_but_search_map_new_tab'
             );
             for (var i = 0; i < checkboxes.length; i++) {
                 if (document.getElementById(checkboxes[i])) setValue(checkboxes[i], document.getElementById(checkboxes[i]).checked);
