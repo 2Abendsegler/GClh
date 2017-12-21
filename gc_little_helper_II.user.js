@@ -3898,6 +3898,12 @@ var mainGC = function() {
 // Improve dashboard.
     if (is_page("dashboard")) {
         try {
+            // Improve new dashboard css (little bit narrower elements)
+            var css = "";
+            css += ".action-link a {padding:5px 20px !important;}";
+            css += ".bio-background {height:90px !important;}";
+            css += ".activity-item {padding:5px 15px 5px 15px !important;}";
+            appendCssStyle(css);
             // Map and Search button in left sidebar.
             if (settings_but_search_map) {
                 var target = (settings_but_search_map_new_tab ? "_blank" : "");
