@@ -4979,6 +4979,7 @@ var mainGC = function() {
                 var para = document.getElementById('ctl00_ContentBody_lblFindCounts').nextSibling.nextSibling.nextSibling.nextSibling;
                 if (para && para.nodeName == 'P') para.className = para.className + ' Clear';
                 addButtonOverLogs(gclh_load_all_logs, "gclh_load_all_logs", false, "Show all logs", "");
+                if (!settings_hide_avatar && !isMemberInPmoCache() && settings_show_thumbnails) showBiggerAvatarsLink();
                 showLogCounterLink();
             }
 
@@ -5432,7 +5433,6 @@ var mainGC = function() {
                 var script = document.createElement("script");
                 script.innerHTML = code;
                 document.getElementsByTagName("body")[0].appendChild(script);
-                if (!settings_hide_avatar) showBiggerAvatarsLink();
             }
 
             var regexp = new RegExp(settings_spoiler_strings, "i");
@@ -8989,7 +8989,7 @@ var mainGC = function() {
             html += "&nbsp;" + "TB log signature:" + show_help("The signature will automatically be inserted into your TB logs. <br><br>Also you are able to use placeholder for variables which will be replaced in the log.") + " &nbsp; (Possible placeholder:" + show_help_big(placeholderDescription) + ")<br>";
             html += "&nbsp;" + "<textarea class='gclh_form' rows='3' cols='56' id='settings_tb_signature' style='margin-top: 2px;'>&zwnj;" + getValue("settings_tb_signature", "") + "</textarea><br>";
 
-            html += "<div style='margin-top: 9px; margin-left: 5px'><b>Old log page only</b></div>";
+            html += "<div style='margin-top: 9px; margin-left: 5px'><b>Old logging page only</b></div>";
             var t_logTyp = "If you set this option, the selected value will be set automatically, if you open a log page.";
             html += "<table><tbody>";
             html += "  <tr><td>Default log type:</td>";
@@ -9205,7 +9205,7 @@ var mainGC = function() {
             html += "</table>";
             html += "</div>";
 
-            html += "<br><br><br>";
+            html += "<br><br>";
             html += "&nbsp;" + "<input class='gclh_form' type='button' value='" + setValueInSaveButton() + "' id='btn_save'> <input class='gclh_form' type='button' value='save & upload' id='btn_saveAndUpload'> <input class='gclh_form' type='button' value='" + setValueInCloseButton() + "' id='btn_close2'>";
             html += "<div width='450px' align='right' class='gclh_small' style='float: right; margin-top: -5px;'>Copyright © <a href='https://www.geocaching.com/profile/?u=Torsten-' target='_blank'>Torsten Amshove</a>, <a href='https://www.geocaching.com/profile/?u=2Abendsegler' target='_blank'>2Abendsegler</a></div>";
             html += "<div width='400px' align='right' class='gclh_small' style='float: right; margin-top: -15px;'>License: <a href='https://github.com/2Abendsegler/GClh/blob/master/docu/license.md#readme' target='_blank' title='GNU General Public License Version 2'>GPLv2</a>, Warranty: <a href='https://github.com/2Abendsegler/GClh/blob/master/docu/warranty.md#readme' target='_blank' title='GC little helper comes with ABSOLUTELY NO WARRANTY'>NO</a></div>";
