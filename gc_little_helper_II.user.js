@@ -1852,8 +1852,8 @@ var mainGC = function() {
         if ((settings_show_mail || settings_show_message)) {
             // Public Profile:
             if (is_page("publicProfile")) {
-                if ($('#ctl00_ContentBody_ProfilePanel1_lnkEmailUser')[0] || $('#ctl00_ProfileHead_ProfileHeader_lnkSendEmailByWesite')[0]) {
-                    var guid = ($('#ctl00_ContentBody_ProfilePanel1_lnkEmailUser')[0] || $('#ctl00_ProfileHead_ProfileHeader_lnkSendEmailByWesite')[0]).href.match(/https?:\/\/www\.geocaching\.com\/email\/\?guid=(.*)/);
+                if ($('#lnkSendMessage')[0] || $('#ctl00_ProfileHead_ProfileHeader_lnkSendMessage')[0]) {
+                    var guid = ($('#lnkSendMessage')[0] || $('#ctl00_ProfileHead_ProfileHeader_lnkSendMessage')[0]).href.match(/https?:\/\/www\.geocaching\.com\/account\/messagecenter\?recipientId=(.*)/);
                     guid = guid[1];
                     if ($('#ctl00_ContentBody_ProfilePanel1_lblMemberName')[0] || $('#ctl00_ProfileHead_ProfileHeader_lblMemberName')[0]) {
                         var username = decode_innerHTML($('#ctl00_ContentBody_ProfilePanel1_lblMemberName')[0] || $('#ctl00_ProfileHead_ProfileHeader_lblMemberName')[0]);
