@@ -1688,7 +1688,7 @@ var mainGC = function() {
     }
 
 // CSS for BRouter and Flopp's Map Buttons.
-    if (settings_show_flopps_link || settings_show_brouter_link) {
+    if ((settings_show_brouter_link || settings_show_flopps_link) && (is_page("cache_listing") || document.location.href.match(/\.com\/hide\/wptlist.aspx/))) {
         var css = "";
         css += ".GClhdropbtn {";
         css += "  cursor: pointer;}";
@@ -2718,7 +2718,7 @@ var mainGC = function() {
     }
 
 // Improve Mail.
-    if (settings_show_mail && document.location.href.match(/\.com\/email\//) && document.getElementById("ctl00_ContentBody_SendMessagePanel1_tbMessage")) {
+    if (settings_show_mail && document.location.href.match(/\.com\/email\//) && $('#ctl00_ContentBody_SendMessagePanel1_tbMessage')[0]) {
         try {
             // Prevent deleting content.
             injectPageScriptFunction(function(){
@@ -2730,45 +2730,44 @@ var mainGC = function() {
                 };
             },"()");
             // Set focus.
-            document.getElementById("ctl00_ContentBody_SendMessagePanel1_tbMessage").setAttribute("onfocus", "");
+            $('#ctl00_ContentBody_SendMessagePanel1_tbMessage')[0].setAttribute("onfocus", "");
             // Default settings.
-            document.getElementById("ctl00_ContentBody_SendMessagePanel1_chkSendAddress").checked = getValue("email_sendaddress", "checked");
-            document.getElementById("ctl00_ContentBody_SendMessagePanel1_chkEmailCopy").checked = getValue("email_mailcopy", "checked");
-            function chgDefaultSendaddress() {
-                setValue("email_sendaddress", document.getElementById("ctl00_ContentBody_SendMessagePanel1_chkSendAddress").checked);
-            }
-            function chgDefaultMailcopy() {
-                setValue("email_mailcopy", document.getElementById("ctl00_ContentBody_SendMessagePanel1_chkEmailCopy").checked);
-            }
-            document.getElementById('ctl00_ContentBody_SendMessagePanel1_chkSendAddress').addEventListener("click", chgDefaultSendaddress, false);
-            document.getElementById('ctl00_ContentBody_SendMessagePanel1_chkEmailCopy').addEventListener("click", chgDefaultMailcopy, false);
+            $('#ctl00_ContentBody_SendMessagePanel1_chkSendAddress')[0].checked = getValue("email_sendaddress", "checked");
+            $('#ctl00_ContentBody_SendMessagePanel1_chkEmailCopy')[0].checked = getValue("email_mailcopy", "checked");
+            function chgDefaultSendaddress() {setValue("email_sendaddress", $('#ctl00_ContentBody_SendMessagePanel1_chkSendAddress')[0].checked);}
+            function chgDefaultMailcopy() {setValue("email_mailcopy", $('#ctl00_ContentBody_SendMessagePanel1_chkEmailCopy')[0].checked);}
+            $('#ctl00_ContentBody_SendMessagePanel1_chkSendAddress')[0].addEventListener("click", chgDefaultSendaddress, false);
+            $('#ctl00_ContentBody_SendMessagePanel1_chkEmailCopy')[0].addEventListener("click", chgDefaultMailcopy, false);
             // Grab mail template from URL.
             var matches = document.location.href.match(/&text=(.*)/);
-            if (matches) {
-                document.getElementById("ctl00_ContentBody_SendMessagePanel1_tbMessage").innerHTML = decodeURIComponent(matches[1]);
+            if (matches && matches[1]) {
+                $('#ctl00_ContentBody_SendMessagePanel1_tbMessage')[0].innerHTML = decodeURIComponent(matches[1]);
             // Build mail template.
             } else {
-                template = buildSendTemplate().replace(/#Receiver#/ig, "");
-                document.getElementById("ctl00_ContentBody_SendMessagePanel1_tbMessage").innerHTML = template;
+                template = buildSendTemplate().replace(/#Receiver#/ig, $('#ctl00_ContentBody_SendMessagePanel1_lblEmailInfo')[0].children[0].innerHTML);
+                $('#ctl00_ContentBody_SendMessagePanel1_tbMessage')[0].innerHTML = template;
             }
         } catch(e) {gclh_error("Improve Mail:",e);}
     }
 
 // Improve Message.
-    if (settings_show_message && is_page("messagecenter") && document.location.href.match(/&text=(.*)/)) {
+    if (settings_show_message && is_page("messagecenter")) {
         try {
             var val = "";
             var matches = document.location.href.match(/&text=(.*)/);
-            if (matches && matches[1]) {
-                var val = decodeURIComponent(matches[1]);
-                updateMessage(0);
-            }
+            if (matches && matches[1]) val = decodeURIComponent(matches[1]);
+            updateMessage(0);
             function updateMessage(waitCount) {
-                if (document.getElementsByTagName("textarea")[0] && document.getElementsByTagName("textarea")[0].value == "") {
-                    document.getElementsByTagName("textarea")[0].value = val;
+                if ($('textarea')[0] && $('textarea')[0].value == "" && $('#cpMsgLogHead .h5')[0].innerHTML != "") {
+                    if (val == "") {
+                        var rec = decode_innerHTML($('#cpMsgLogHead .h5')[0]);
+                        rec = rec.replace(/^(\s*)/,'').replace(/(\s*)$/,'');
+                        val = buildSendTemplate().replace(/#Receiver#/ig, rec);
+                    }
+                    $('textarea')[0].value = val;
                 }
                 waitCount++;
-                if (waitCount <= 100) setTimeout(function(){updateMessage(waitCount);}, 100);
+                if (waitCount <= 600) setTimeout(function(){updateMessage(waitCount);}, 100);
             }
         } catch(e) {gclh_error("Improve Message:",e);}
     }
@@ -4016,7 +4015,7 @@ var mainGC = function() {
              document.location.href.match(/\.com\/track\/details\.aspx/)         ||      // TB Listing
              document.location.href.match(/\.com\/(seek|track)\/log\.aspx/)      ||      // Post, Edit, View Cache und TB Logs
              document.location.href.match(/\.com\/play\/geocache\/gc\w+\/log/)   ||      // Post Cache Logs neue Seite
-             document.location.href.match(/\.com\/email\/\?guid=/)               ||      // Mail schreiben
+             document.location.href.match(/\.com\/email\//)                      ||      // Mail schreiben
              document.location.href.match(/\.com\/my\/inventory\.aspx/)          ||      // TB Inventar
              document.location.href.match(/\.com\/my/)                           ||      // Profil
              document.location.href.match(/\.com\/my\/default\.aspx/)            ||      // Profil (Quicklist)
@@ -4535,7 +4534,7 @@ var mainGC = function() {
             // ----------
             } else if (document.location.href.match(/\.com\/track\/details\.aspx/) ||
                        document.location.href.match(/\.com\/(seek|track)\/log\.aspx/) ||
-                       document.location.href.match(/\.com\/email\/\?guid=/) ||
+                       document.location.href.match(/\.com\/email\//) ||
                        document.location.href.match(/\.com\/bookmarks\/(view\.aspx\?guid=|bulk\.aspx\?listid=|view\.aspx\?code=)/) ||
                        document.location.href.match(/\.com\/my\/inventory\.aspx/)) {
                 var links = $('a[href*="/profile/?guid="]');
