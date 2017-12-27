@@ -10667,17 +10667,22 @@ var mainGC = function() {
 
 // Save dropbox auth token if one is passed (from Dropbox).
     var DB_token = utils.parseQueryString(window.location.hash).access_token;
-    if (DB_token) {
-        // gerade von DB zurück, also Show config.
-        setValue('settings_DB_auth_token', DB_token);
-        document.getElementById('gclh_sync_lnk').click();
-        document.getElementById('syncDBLabel').click();
-    } else {
-        // Maybe the user denies Access (this is mostly an unwanted click), so show him, that he
-        // has refused to give us access to his dropbox and that he can re-auth if he want to.
-        error = utils.parseQueryString(window.location.hash).error_description;
-        if (error) alert('We received the following error from dropbox: "' + error + '" If you think this is a mistake, you can try to re-authenticate in the sync menue of GClh.');
-    }
+	var AppId = utils.parseQueryString(window.location.search).AppId;
+	
+	// Von Dropbox zurück, schaue ob das Token von uns angefordert wurde
+	if (AppId == 'GClh') {
+		if (DB_token) {
+			// gerade von DB zurück, also Show config.
+			setValue('settings_DB_auth_token', DB_token);
+			document.getElementById('gclh_sync_lnk').click();
+			document.getElementById('syncDBLabel').click();
+		} else {
+			// Maybe the user denies Access (this is mostly an unwanted click), so show him, that he
+			// has refused to give us access to his dropbox and that he can re-auth if he want to.
+			error = utils.parseQueryString(window.location.hash).error_description;
+			if (error) alert('We received the following error from dropbox: "' + error + '" If you think this is a mistake, you can try to re-authenticate in the sync menue of GClh.');
+		}
+	}
 
 // Created the Dropbox Client with the given auth token from config.
     function gclh_sync_DB_CheckAndCreateClient() {
@@ -10711,7 +10716,8 @@ var mainGC = function() {
         // If client could not created, try to get a new Auth token. Set the login anchors href using dropbox_client.getAuthenticationUrl()
         dropbox_auth_client = new Dropbox({clientId: APP_ID});
         authlink = document.getElementById('authlink');
-        authlink.href = dropbox_auth_client.getAuthenticationUrl('https://www.geocaching.com/my/default.aspx');
+		// Dropbox URL + AppId - Redirect URl bei Dropbox muss geändert werden auf https://www.geocaching.com/my/default.aspx?AppId=GClh
+        authlink.href = dropbox_auth_client.getAuthenticationUrl('https://www.geocaching.com/my/default.aspx?AppId=GClh');
 
         $(authlink).show();
         $('#btn_DBSave').hide();
