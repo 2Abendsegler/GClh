@@ -1688,7 +1688,7 @@ var mainGC = function() {
     }
 
 // CSS for BRouter and Flopp's Map Buttons.
-    if (settings_show_flopps_link || settings_show_brouter_link) {
+    if ((settings_show_brouter_link || settings_show_flopps_link) && (is_page("cache_listing") || document.location.href.match(/\.com\/hide\/wptlist.aspx/))) {
         var css = "";
         css += ".GClhdropbtn {";
         css += "  cursor: pointer;}";
@@ -2718,7 +2718,7 @@ var mainGC = function() {
     }
 
 // Improve Mail.
-    if (settings_show_mail && document.location.href.match(/\.com\/email\//) && document.getElementById("ctl00_ContentBody_SendMessagePanel1_tbMessage")) {
+    if (settings_show_mail && document.location.href.match(/\.com\/email\//) && $('#ctl00_ContentBody_SendMessagePanel1_tbMessage')[0]) {
         try {
             // Prevent deleting content.
             injectPageScriptFunction(function(){
@@ -2730,45 +2730,44 @@ var mainGC = function() {
                 };
             },"()");
             // Set focus.
-            document.getElementById("ctl00_ContentBody_SendMessagePanel1_tbMessage").setAttribute("onfocus", "");
+            $('#ctl00_ContentBody_SendMessagePanel1_tbMessage')[0].setAttribute("onfocus", "");
             // Default settings.
-            document.getElementById("ctl00_ContentBody_SendMessagePanel1_chkSendAddress").checked = getValue("email_sendaddress", "checked");
-            document.getElementById("ctl00_ContentBody_SendMessagePanel1_chkEmailCopy").checked = getValue("email_mailcopy", "checked");
-            function chgDefaultSendaddress() {
-                setValue("email_sendaddress", document.getElementById("ctl00_ContentBody_SendMessagePanel1_chkSendAddress").checked);
-            }
-            function chgDefaultMailcopy() {
-                setValue("email_mailcopy", document.getElementById("ctl00_ContentBody_SendMessagePanel1_chkEmailCopy").checked);
-            }
-            document.getElementById('ctl00_ContentBody_SendMessagePanel1_chkSendAddress').addEventListener("click", chgDefaultSendaddress, false);
-            document.getElementById('ctl00_ContentBody_SendMessagePanel1_chkEmailCopy').addEventListener("click", chgDefaultMailcopy, false);
+            $('#ctl00_ContentBody_SendMessagePanel1_chkSendAddress')[0].checked = getValue("email_sendaddress", "checked");
+            $('#ctl00_ContentBody_SendMessagePanel1_chkEmailCopy')[0].checked = getValue("email_mailcopy", "checked");
+            function chgDefaultSendaddress() {setValue("email_sendaddress", $('#ctl00_ContentBody_SendMessagePanel1_chkSendAddress')[0].checked);}
+            function chgDefaultMailcopy() {setValue("email_mailcopy", $('#ctl00_ContentBody_SendMessagePanel1_chkEmailCopy')[0].checked);}
+            $('#ctl00_ContentBody_SendMessagePanel1_chkSendAddress')[0].addEventListener("click", chgDefaultSendaddress, false);
+            $('#ctl00_ContentBody_SendMessagePanel1_chkEmailCopy')[0].addEventListener("click", chgDefaultMailcopy, false);
             // Grab mail template from URL.
             var matches = document.location.href.match(/&text=(.*)/);
-            if (matches) {
-                document.getElementById("ctl00_ContentBody_SendMessagePanel1_tbMessage").innerHTML = decodeURIComponent(matches[1]);
+            if (matches && matches[1]) {
+                $('#ctl00_ContentBody_SendMessagePanel1_tbMessage')[0].innerHTML = decodeURIComponent(matches[1]);
             // Build mail template.
             } else {
-                template = buildSendTemplate().replace(/#Receiver#/ig, "");
-                document.getElementById("ctl00_ContentBody_SendMessagePanel1_tbMessage").innerHTML = template;
+                template = buildSendTemplate().replace(/#Receiver#/ig, $('#ctl00_ContentBody_SendMessagePanel1_lblEmailInfo')[0].children[0].innerHTML);
+                $('#ctl00_ContentBody_SendMessagePanel1_tbMessage')[0].innerHTML = template;
             }
         } catch(e) {gclh_error("Improve Mail:",e);}
     }
 
 // Improve Message.
-    if (settings_show_message && is_page("messagecenter") && document.location.href.match(/&text=(.*)/)) {
+    if (settings_show_message && is_page("messagecenter")) {
         try {
             var val = "";
             var matches = document.location.href.match(/&text=(.*)/);
-            if (matches && matches[1]) {
-                var val = decodeURIComponent(matches[1]);
-                updateMessage(0);
-            }
+            if (matches && matches[1]) val = decodeURIComponent(matches[1]);
+            updateMessage(0);
             function updateMessage(waitCount) {
-                if (document.getElementsByTagName("textarea")[0] && document.getElementsByTagName("textarea")[0].value == "") {
-                    document.getElementsByTagName("textarea")[0].value = val;
+                if ($('textarea')[0] && $('textarea')[0].value == "" && $('#cpMsgLogHead .h5')[0].innerHTML != "") {
+                    if (val == "") {
+                        var rec = decode_innerHTML($('#cpMsgLogHead .h5')[0]);
+                        rec = rec.replace(/^(\s*)/,'').replace(/(\s*)$/,'');
+                        val = buildSendTemplate().replace(/#Receiver#/ig, rec);
+                    }
+                    $('textarea')[0].value = val;
                 }
                 waitCount++;
-                if (waitCount <= 100) setTimeout(function(){updateMessage(waitCount);}, 100);
+                if (waitCount <= 600) setTimeout(function(){updateMessage(waitCount);}, 100);
             }
         } catch(e) {gclh_error("Improve Message:",e);}
     }
@@ -4022,7 +4021,7 @@ var mainGC = function() {
              document.location.href.match(/\.com\/track\/details\.aspx/)         ||      // TB Listing
              document.location.href.match(/\.com\/(seek|track)\/log\.aspx/)      ||      // Post, Edit, View Cache und TB Logs
              document.location.href.match(/\.com\/play\/geocache\/gc\w+\/log/)   ||      // Post Cache Logs neue Seite
-             document.location.href.match(/\.com\/email\/\?guid=/)               ||      // Mail schreiben
+             document.location.href.match(/\.com\/email\//)                      ||      // Mail schreiben
              document.location.href.match(/\.com\/my\/inventory\.aspx/)          ||      // TB Inventar
              document.location.href.match(/\.com\/my/)                           ||      // Profil
              document.location.href.match(/\.com\/my\/default\.aspx/)            ||      // Profil (Quicklist)
@@ -4541,7 +4540,7 @@ var mainGC = function() {
             // ----------
             } else if (document.location.href.match(/\.com\/track\/details\.aspx/) ||
                        document.location.href.match(/\.com\/(seek|track)\/log\.aspx/) ||
-                       document.location.href.match(/\.com\/email\/\?guid=/) ||
+                       document.location.href.match(/\.com\/email\//) ||
                        document.location.href.match(/\.com\/bookmarks\/(view\.aspx\?guid=|bulk\.aspx\?listid=|view\.aspx\?code=)/) ||
                        document.location.href.match(/\.com\/my\/inventory\.aspx/)) {
                 var links = $('a[href*="/profile/?guid="]');
@@ -4985,6 +4984,7 @@ var mainGC = function() {
                 var para = document.getElementById('ctl00_ContentBody_lblFindCounts').nextSibling.nextSibling.nextSibling.nextSibling;
                 if (para && para.nodeName == 'P') para.className = para.className + ' Clear';
                 addButtonOverLogs(gclh_load_all_logs, "gclh_load_all_logs", false, "Show all logs", "");
+                if (!settings_hide_avatar && !isMemberInPmoCache() && settings_show_thumbnails) showBiggerAvatarsLink();
                 showLogCounterLink();
             }
 
@@ -5438,7 +5438,6 @@ var mainGC = function() {
                 var script = document.createElement("script");
                 script.innerHTML = code;
                 document.getElementsByTagName("body")[0].appendChild(script);
-                if (!settings_hide_avatar) showBiggerAvatarsLink();
             }
 
             var regexp = new RegExp(settings_spoiler_strings, "i");
@@ -7853,8 +7852,8 @@ var mainGC = function() {
     function buildDashboardCss() {
         var css = "";
         css += ".link-header.gclh {padding: 12px 20px !important; cursor: pointer; border-top: 1px solid #e4e4e4;}";
-        css += ".link-header.gclh svg {height: 22px; width: 24px; fill: #777; float: right; padding-right: 1px; margin-top: -2px; transition: all .3s ease;}";
-        css += ".link-header.gclh.isHide svg {transform: rotate(90deg);}";
+        css += ".link-header.gclh svg {height: 22px; width: 22px; fill: #777; float: right; padding-right: 1px; margin-top: -2px; transition: all .3s ease;}";
+        css += ".link-header.gclh.isHide svg {transform: rotate(180deg);}";
         css += ".link-block.gclh {padding-top: 0px; border-bottom: unset; display: block;}";
         css += ".link-block.gclh a:hover {text-decoration: underline; color: #02874d;} .link-block.gclh a {padding: 0 4px 0 0; font-size: 14px;}";
         css += ".link-block.isHide {display: none} .link-block {border-bottom: unset;}";
@@ -8995,7 +8994,7 @@ var mainGC = function() {
             html += "&nbsp;" + "TB log signature:" + show_help("The signature will automatically be inserted into your TB logs. <br><br>Also you are able to use placeholder for variables which will be replaced in the log.") + " &nbsp; (Possible placeholder:" + show_help_big(placeholderDescription) + ")<br>";
             html += "&nbsp;" + "<textarea class='gclh_form' rows='3' cols='56' id='settings_tb_signature' style='margin-top: 2px;'>&zwnj;" + getValue("settings_tb_signature", "") + "</textarea><br>";
 
-            html += "<div style='margin-top: 9px; margin-left: 5px'><b>Old log page only</b></div>";
+            html += "<div style='margin-top: 9px; margin-left: 5px'><b>Old logging page only</b></div>";
             var t_logTyp = "If you set this option, the selected value will be set automatically, if you open a log page.";
             html += "<table><tbody>";
             html += "  <tr><td>Default log type:</td>";
@@ -9211,7 +9210,7 @@ var mainGC = function() {
             html += "</table>";
             html += "</div>";
 
-            html += "<br><br><br>";
+            html += "<br><br>";
             html += "&nbsp;" + "<input class='gclh_form' type='button' value='" + setValueInSaveButton() + "' id='btn_save'> <input class='gclh_form' type='button' value='save & upload' id='btn_saveAndUpload'> <input class='gclh_form' type='button' value='" + setValueInCloseButton() + "' id='btn_close2'>";
             html += "<div width='450px' align='right' class='gclh_small' style='float: right; margin-top: -5px;'>Copyright © <a href='https://www.geocaching.com/profile/?u=Torsten-' target='_blank'>Torsten Amshove</a>, <a href='https://www.geocaching.com/profile/?u=2Abendsegler' target='_blank'>2Abendsegler</a></div>";
             html += "<div width='400px' align='right' class='gclh_small' style='float: right; margin-top: -15px;'>License: <a href='https://github.com/2Abendsegler/GClh/blob/master/docu/license.md#readme' target='_blank' title='GNU General Public License Version 2'>GPLv2</a>, Warranty: <a href='https://github.com/2Abendsegler/GClh/blob/master/docu/warranty.md#readme' target='_blank' title='GC little helper comes with ABSOLUTELY NO WARRANTY'>NO</a></div>";
@@ -10674,17 +10673,22 @@ var mainGC = function() {
 
 // Save dropbox auth token if one is passed (from Dropbox).
     var DB_token = utils.parseQueryString(window.location.hash).access_token;
-    if (DB_token) {
-        // gerade von DB zurück, also Show config.
-        setValue('settings_DB_auth_token', DB_token);
-        document.getElementById('gclh_sync_lnk').click();
-        document.getElementById('syncDBLabel').click();
-    } else {
-        // Maybe the user denies Access (this is mostly an unwanted click), so show him, that he
-        // has refused to give us access to his dropbox and that he can re-auth if he want to.
-        error = utils.parseQueryString(window.location.hash).error_description;
-        if (error) alert('We received the following error from dropbox: "' + error + '" If you think this is a mistake, you can try to re-authenticate in the sync menue of GClh.');
-    }
+	var AppId = utils.parseQueryString(window.location.search).AppId;
+	
+	// Von Dropbox zurück, schaue ob das Token von uns angefordert wurde
+	if (AppId == 'GClh') {
+		if (DB_token) {
+			// gerade von DB zurück, also Show config.
+			setValue('settings_DB_auth_token', DB_token);
+			document.getElementById('gclh_sync_lnk').click();
+			document.getElementById('syncDBLabel').click();
+		} else {
+			// Maybe the user denies Access (this is mostly an unwanted click), so show him, that he
+			// has refused to give us access to his dropbox and that he can re-auth if he want to.
+			error = utils.parseQueryString(window.location.hash).error_description;
+			if (error) alert('We received the following error from dropbox: "' + error + '" If you think this is a mistake, you can try to re-authenticate in the sync menue of GClh.');
+		}
+	}
 
 // Created the Dropbox Client with the given auth token from config.
     function gclh_sync_DB_CheckAndCreateClient() {
@@ -10718,7 +10722,8 @@ var mainGC = function() {
         // If client could not created, try to get a new Auth token. Set the login anchors href using dropbox_client.getAuthenticationUrl()
         dropbox_auth_client = new Dropbox({clientId: APP_ID});
         authlink = document.getElementById('authlink');
-        authlink.href = dropbox_auth_client.getAuthenticationUrl('https://www.geocaching.com/my/default.aspx');
+		// Dropbox URL + AppId - Redirect URl bei Dropbox muss geändert werden auf https://www.geocaching.com/my/default.aspx?AppId=GClh
+        authlink.href = dropbox_auth_client.getAuthenticationUrl('https://www.geocaching.com/my/default.aspx?AppId=GClh');
 
         $(authlink).show();
         $('#btn_DBSave').hide();
