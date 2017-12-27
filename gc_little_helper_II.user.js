@@ -3902,6 +3902,10 @@ var mainGC = function() {
             css += ".action-link a {padding:5px 20px !important;}";
             css += ".bio-background {height:90px !important;}";
             css += ".activity-item {padding:5px 15px 5px 15px !important;}";
+            css += ".activity-tray {padding:5px 40px 5px 40px !important;}";
+            css += ".panel-header {padding: 5px 15px !important;}";
+            css += ".sidebar-links .link-header {padding:6px 5px 6px 20px !important;}";
+            css += ".alert {padding:6px 16px !important; color:blue;}"
             appendCssStyle(css);
             // Map and Search button in left sidebar.
             if (settings_but_search_map) {
