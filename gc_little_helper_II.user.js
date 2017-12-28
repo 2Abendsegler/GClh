@@ -455,6 +455,7 @@ var variablesInit = function(c) {
     c.settings_show_all_logs_but = getValue("settings_show_all_logs_but", true);
     c.settings_show_log_counter_but = getValue("settings_show_log_counter_but", true);
     c.settings_show_bigger_avatars_but = getValue("settings_show_bigger_avatars_but", true);
+    c.settings_hide_feedback_icon = getValue("settings_hide_feedback_icon", false);
 
     try {
         if (c.userToken === null) {
@@ -1259,7 +1260,7 @@ var mainGC = function() {
                             img.title = img.alt = "";
                             var log_text = document.createElement("span");
                             log_text.title = "";
-                            log_text.innerHTML = "<img src='" + lateLogs[i]['src'] + "'> <b>" + lateLogs[i]['user'] + " - " + lateLogs[i]['date'] + "</b><br/>";
+                            log_text.innerHTML = "<img src='" + lateLogs[i]['src'] + "'> <b>" + lateLogs[i]['user'] + " - " + lateLogs[i]['date'] + "</b><br>";
                             a.appendChild(img);
                             for (var j = 0; j < lateLogs[i]['log'].length; j++) {
                                 if (j == 0 && !gcLogs) continue;
@@ -2940,8 +2941,8 @@ var mainGC = function() {
     else if (settings_compact_layout_recviewed && document.location.href.match(/\.com\/my\/recentlyviewedcaches\.aspx/)) var x0list = "r";
     if (x0list) {
         try {
-            // Compact layout:
             var css = "";
+            // Compact layout:
             // Header.
             css += ".InformationWidget ul#UtilityNav li {padding: 6px 0 0 0;} .InformationWidget ul#UtilityNav li a {padding: 0; border: none; margin: 0 0 0 5px;}";
             css += ".InformationWidget {margin: 0; line-height: 1em;} .left {margin: 0; padding: 4px 0;}";
@@ -3045,12 +3046,12 @@ var mainGC = function() {
             // Favorites percentage:
             if ((settings_fav_proz_pqs && x0list == "p") || (settings_fav_proz_nearest && x0list == "n") || (settings_fav_proz_recviewed && x0list == "r")) {
                 var url = (x0list == "r" ? "recentlyviewedcaches.aspx/FavoriteScore" : "nearest.aspx/FavoriteScore");
-                css += "span.favorite-rank, .favPerc {font-size: .85em;}";
+                css += "span.favorite-rank, .gclh_favPerc {font-size: .85em; float: right;}";
                 $('#ctl00_ContentBody_dlResults_ctl00_uxSort_Favorites, #ctl00_ContentBody_RecentlyViewedCachesList1_dlDetailResults_ctl00_uxSort_Favorites').closest('th').after('<th class="AlignCenter" title="Favorites percentage">%</th>');
                 $('a.favoriteTotal').each(function() {
                     var fav = $(this);
                     fav[0].children[0].title = "Favorites";
-                    fav.closest('td').after('<td class="AlignRight favPerc" title="Favorites percentage"></td>');
+                    fav.closest('td').after('<td class="AlignRight gclh_favPerc" title="Favorites percentage"></td>');
                     $.ajax({
                         url: url,
                         type: 'POST',
@@ -3926,6 +3927,7 @@ var mainGC = function() {
 // Improve dashboard.
     if (is_page("dashboard")) {
         try {
+            var css = '';
             // Map and Search button in left sidebar.
             if (settings_but_search_map) {
                 var target = (settings_but_search_map_new_tab ? "_blank" : "");
@@ -3939,7 +3941,7 @@ var mainGC = function() {
                 newsearchbtn.classList.add ("action-link");
                 newsearchbtn.innerHTML = '<a class="gclh_svg_fill" href="/play/search" target="'+target+'"><svg class="icon" height="36" width="36" style="margin-left:3px; margin-right:19px; margin-top:5px; margin-bottom:5px; width:26px !important;height:auto !important;"><use xlink:href="/account/app/ui-icons/sprites/global.svg#icon-spyglass-svg-fill"></use></svg>Search</a>';
                 ul.insertBefore(newsearchbtn, ul.childNodes[0]);
-                appendCssStyle("a.gclh_svg_fill {fill: #4a4a4a;} a.gclh_svg_fill:hover {fill: #02874d;}");
+                css += "a.gclh_svg_fill {fill: #4a4a4a;} a.gclh_svg_fill:hover {fill: #02874d;}";
             }
             // Show/Hide einbauen in linker Spalte.
             var list = $('.sidebar-links .link-header:not(.gclh), .sidebar-links .link-block:not(.gclh)');
@@ -3985,13 +3987,13 @@ var mainGC = function() {
                         }
                      }
                  });
-                 var css = '';
                  css += ".link-block .gclh a {font-size: 14px; margin-left: 16px;} .link-block .gclh span:hover {text-decoration: underline; color: #02874d;}";
                  css += ".link-block .gclh span {overflow: hidden; vertical-align: top; white-space: nowrap; text-overflow: ellipsis; display: inline-block; margin-left: 2px; max-width: 220px;}";
-                 appendCssStyle(css);
             }
             // Change link "Your lists" from ".../account/lists" to ".../my/lists.aspx".
             if (settings_my_lists_old_fashioned) $('#DashboardSidebar ul li a[href*="/account/lists"]').prop("href", "/my/lists.aspx");
+            // CSS for all.
+            appendCssStyle(css);
         } catch(e) {gclh_error("Improve dashboard:",e);}
     }
 
@@ -4334,7 +4336,7 @@ var mainGC = function() {
                                 else link = gclh_build_vipvup(user, global_vips, "vip");
                                 // Log-Date and Link.
                                 var log_text = document.createElement("span");
-                                log_text.innerHTML = "<img src='" + log_infos_long[i]["icon"] + "'> <b>" + user + " - " + log_infos_long[i]["date"] + "</b><br/>" + log_infos_long[i]["log"];
+                                log_text.innerHTML = "<img src='" + log_infos_long[i]["icon"] + "'> <b>" + user + " - " + log_infos_long[i]["date"] + "</b><br>" + log_infos_long[i]["log"];
                                 var log_img = document.createElement("img");
                                 var log_link = document.createElement("a");
                                 log_link.setAttribute("href", "#" + log_infos_long[i]["id"]);
@@ -4386,7 +4388,7 @@ var mainGC = function() {
                                     if (log_infos[user][x]["icon"].match(/\/(2|10)\.png$/)) users_found.push(user);  // Für not found liste.
                                     var image = document.createElement("img");
                                     var log_text = document.createElement("span");
-                                    log_text.innerHTML = "<img src='" + log_infos[user][x]["icon"] + "'> <b>" + user + " - " + log_infos[user][x]["date"] + "</b><br/>" + log_infos[user][x]["log"];
+                                    log_text.innerHTML = "<img src='" + log_infos[user][x]["icon"] + "'> <b>" + user + " - " + log_infos[user][x]["date"] + "</b><br>" + log_infos[user][x]["log"];
                                     image.setAttribute("src", log_infos[user][x]["icon"]);
                                     image.setAttribute("border", "0");
                                     if (log_infos[user][x]["date"]) {
@@ -5346,11 +5348,11 @@ var mainGC = function() {
                 // Wenn User nicht eingefärbt werden soll, Zebra aber ausgewählt ist, dann muss Zebra explizit gesetzt werden, weil nur ein Wert im Standard
                 // gesetzt wurde, hier eben Wert für User.
                 if (settings_show_common_lists_in_zebra) {
-                    if (document.location.href.match(/\.com\/seek\/nearest\.aspx\?/) ||           
+                    if (document.location.href.match(/\.com\/seek\/nearest\.aspx\?/) ||
                         document.location.href.match(/\.com\/my\/recentlyviewedcaches\.aspx/)) {
                         // Überschrift weglassen, eizeilig.
-                        var lines = $("table.Table").find("tbody").find("tr").slice(1);           
-                        setLinesColorInZebra(settings_show_common_lists_in_zebra, lines, 1);     
+                        var lines = $("table.Table").find("tbody").find("tr").slice(1);
+                        setLinesColorInZebra(settings_show_common_lists_in_zebra, lines, 1);
                     }
                 }
             }
@@ -6598,6 +6600,17 @@ var mainGC = function() {
         try {
             document.getElementById("pnlDisplay").removeChild(document.getElementById("Footer"));
         } catch(e) {gclh_error("Hide side rights on print page:",e);}
+    }
+
+// Hide feedback icon.
+    if (settings_hide_feedback_icon) {
+        try {
+            function hideFbIcon(waitCount) {
+                if ($('#_hj_feedback_container')[0]) $('#_hj_feedback_container')[0].style.display = "none";
+                else {waitCount++; if (waitCount <= 50) setTimeout(function(){hideFbIcon(waitCount);}, 100);}
+            }
+            hideFbIcon(0);
+        } catch(e) {gclh_error("Hide feedback icon:",e);}
     }
 
 // Edit and Image Links to own caches in profile.
@@ -8560,7 +8573,10 @@ var mainGC = function() {
             html += checkboxy('settings_hide_advert_link', 'Hide link to advertisement instructions') + "<br>";
             html += "&nbsp;" + "Page width: <input class='gclh_form' type='text' size='2' id='settings_new_width' value='" + getValue("settings_new_width", 1000) + "'> px" + show_help("With this option you can expand the small layout on GC pages. The default value on GC pages is 950 pixel.") + "<br>";
             html += checkboxy('settings_hide_facebook', 'Hide Facebook login') + "<br>";
-            html += checkboxy('settings_hide_socialshare', 'Hide social sharing Facebook and Twitter') + "<br/>";
+            html += checkboxy('settings_hide_socialshare', 'Hide social sharing Facebook and Twitter') + "<br>";
+            html += newParameterOn3;
+            html += checkboxy('settings_hide_feedback_icon', 'Hide green feedback icon') + "<br>";
+            html += newParameterVersionSetzen(0.9) + newParameterOff;
             html += checkboxy('settings_hide_warning_message', 'Hide warning message') + show_help_big("With this option you can choose the possibility to hide a potential warning message of the masters of the GC pages.<br><br>One example is the down time warning message which comes from time to time and is placed unnecessarily a lot of days at the top of pages. You can hide it except for a small line in the top right side of the pages. You can activate the warning message again if your mouse goes to this area.<br><br>If the warning message is deleted of the masters, this small area is deleted too.") + "<br>";
             html += newParameterOn2;
             html += checkboxy('settings_remove_banner', 'Remove banner') + "<br>";
@@ -9948,7 +9964,8 @@ var mainGC = function() {
                 'settings_fav_proz_recviewed',
                 'settings_show_all_logs_but',
                 'settings_show_log_counter_but',
-                'settings_show_bigger_avatars_but'
+                'settings_show_bigger_avatars_but',
+                'settings_hide_feedback_icon'
             );
             for (var i = 0; i < checkboxes.length; i++) {
                 if (document.getElementById(checkboxes[i])) setValue(checkboxes[i], document.getElementById(checkboxes[i]).checked);

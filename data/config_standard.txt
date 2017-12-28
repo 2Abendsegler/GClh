@@ -220,5 +220,6 @@
   "settings_fav_proz_recviewed": true,
   "settings_show_all_logs_but": true,
   "settings_show_log_counter_but": true,
-  "settings_show_bigger_avatars_but": true
+  "settings_show_bigger_avatars_but": true,
+  "settings_hide_feedback_icon": false
 }
