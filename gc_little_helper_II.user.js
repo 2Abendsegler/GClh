@@ -449,6 +449,12 @@ var variablesInit = function(c) {
     c.settings_but_search_map = getValue("settings_but_search_map", true);
     c.settings_but_search_map_new_tab = getValue("settings_but_search_map_new_tab", false);
     c.settings_show_pseudo_as_owner = getValue("settings_show_pseudo_as_owner", true);
+    c.settings_fav_proz_pqs = getValue("settings_fav_proz_pqs", true);
+    c.settings_fav_proz_nearest = getValue("settings_fav_proz_nearest", true);
+    c.settings_fav_proz_recviewed = getValue("settings_fav_proz_recviewed", true);
+    c.settings_show_all_logs_but = getValue("settings_show_all_logs_but", true);
+    c.settings_show_log_counter_but = getValue("settings_show_log_counter_but", true);
+    c.settings_show_bigger_avatars_but = getValue("settings_show_bigger_avatars_but", true);
 
     try {
         if (c.userToken === null) {
@@ -2928,13 +2934,15 @@ var mainGC = function() {
         } catch(e) {gclh_error("Show Log It button:",e);}
     }
 
-// Improve pocket queries, nearest lists, recently viewed. Compact layout.
-    if ((settings_compact_layout_pqs && document.location.href.match(/\.com\/seek\/nearest\.aspx\?pq=/)) ||
-        (settings_compact_layout_nearest && document.location.href.match(/\.com\/seek\/nearest\.aspx\?/) && !document.location.href.match(/aspx\?pq=/)) ||
-        (settings_compact_layout_recviewed && document.location.href.match(/\.com\/my\/recentlyviewedcaches\.aspx/))) {
+// Improve pocket queries, nearest lists, recently viewed. Compact layout, favorites percentage.
+    if (settings_compact_layout_pqs && document.location.href.match(/\.com\/seek\/nearest\.aspx\?pq=/)) var x0list = "p";
+    else if (settings_compact_layout_nearest && document.location.href.match(/\.com\/seek\/nearest\.aspx\?/)) var x0list = "n";
+    else if (settings_compact_layout_recviewed && document.location.href.match(/\.com\/my\/recentlyviewedcaches\.aspx/)) var x0list = "r";
+    if (x0list) {
         try {
+            // Compact layout:
             var css = "";
-            // Header:
+            // Header.
             css += ".InformationWidget ul#UtilityNav li {padding: 6px 0 0 0;} .InformationWidget ul#UtilityNav li a {padding: 0; border: none; margin: 0 0 0 5px;}";
             css += ".InformationWidget {margin: 0; line-height: 1em;} .left {margin: 0; padding: 4px 0;}";
             css += "#ctl00_ContentBody_LocationPanel1_OriginLabel span {font-weight: bold; color: #594a42; font-size: 1em; margin-right: 10px;}";
@@ -2962,7 +2970,7 @@ var mainGC = function() {
                 } else $('#ctl00_ContentBody_LocationPanel1_OriginLabel')[0].appendChild(span);
                 $('#ctl00_ContentBody_LocationPanel1_OriginLabel')[0].childNodes[0].remove();
             }
-            // Table:
+            // Table.
             css += "table {margin-bottom: 0;} table.Table th, table.Table td {padding: 5px; border: 1px solid #fff; width: unset !important;}";
             css += "table.Table th, table.Table td:not(.Merge) {white-space: nowrap;} table.Table td.Merge {padding: 3px 5px;}";
             css += "table.Table tr {line-height: 14px;} table.Table img {vertical-align: sub;} table.Table .IconButton {display: unset; padding: 0;}";
@@ -3021,7 +3029,7 @@ var mainGC = function() {
                     trData[i].children[5].children[(settings_show_log_it ? 3:2)].title = trData[i].children[5].children[(settings_show_log_it ? 3:2)].innerHTML.replace(/(\s{2,})/g, " ").replace(/^\s/, "");
                 }
             }
-            // Footer:
+            // Footer.
             css += "#ctl00_ContentBody_ResultsPanel > div:nth-child(5) {margin: 0 !important; padding: 4px 0;}";  // GC Tour
             css += ".span-10 {width: 100% !important;}";
             if ($('#ctl00_ContentBody_chkHighlightBeginnerCaches').length > 0 && $('#Download').length > 0 && $('#chkAll').length > 0) {
@@ -3034,8 +3042,29 @@ var mainGC = function() {
                 while ($('#ctl00_ContentBody_KeyPanel')[0].nextElementSibling) {$('#ctl00_ContentBody_KeyPanel')[0].nextElementSibling.remove();}
                 $('#ctl00_ContentBody_KeyPanel')[0].remove();
             }
+            // Favorites percentage:
+            if ((settings_fav_proz_pqs && x0list == "p") || (settings_fav_proz_nearest && x0list == "n") || (settings_fav_proz_recviewed && x0list == "r")) {
+                var url = (x0list == "r" ? "recentlyviewedcaches.aspx/FavoriteScore" : "nearest.aspx/FavoriteScore");
+                css += "span.favorite-rank, .favPerc {font-size: .85em;}";
+                $('#ctl00_ContentBody_dlResults_ctl00_uxSort_Favorites, #ctl00_ContentBody_RecentlyViewedCachesList1_dlDetailResults_ctl00_uxSort_Favorites').closest('th').after('<th class="AlignCenter" title="Favorites percentage">%</th>');
+                $('a.favoriteTotal').each(function() {
+                    var fav = $(this);
+                    fav[0].children[0].title = "Favorites";
+                    fav.closest('td').after('<td class="AlignRight favPerc" title="Favorites percentage"></td>');
+                    $.ajax({
+                        url: url,
+                        type: 'POST',
+                        contentType: "application/json; charset=utf-8",
+                        data: JSON.stringify({ dto: { data: fav.data("id"), ut: 2, p: $(fav.children().get(0)).html() } }),
+                        dataType: 'json',
+                        success: function (result) {
+                            fav[0].closest('td').nextElementSibling.innerHTML = (result.d.score ? (result.d.score > 100 ? 100 : result.d.score) : 0);
+                        }
+                    })
+                });
+            }
             appendCssStyle(css);
-        } catch(e) {gclh_error("Improve PQs:",e);}
+        } catch(e) {gclh_error("Improve PQs ... :",e);}
     }
 
 // Pocket query mark elements, set default value for new one, set warning message.
@@ -3247,7 +3276,7 @@ var mainGC = function() {
 // Improve bookmark lists.
     if (document.location.href.match(/\.com\/bookmarks\/(view\.aspx\?guid=|bulk\.aspx\?listid=|view\.aspx\?code=)/) && document.getElementById('ctl00_ContentBody_ListInfo_cboItemsPerPage')) {
         try {
-            // Prepare link corrected coords.
+            // Prepare button corrected coords.
             if ($('#ctl00_ContentBody_btnAddBookmark')[0]) var corrCoords = '<input type="button" id="gclh_linkCorrCoords" href="javascript:void(0);" title="Mark Caches with Corrected Coordinates" value="Mark Caches with Corr. Coords">';
             // Prepare link "Download as kml".
             if (document.location.href.match(/guid=([a-zA-Z0-9-]*)/)) {
@@ -4796,19 +4825,17 @@ var mainGC = function() {
             a.setAttribute("href", "#");
             a.setAttribute("name", "gclh_top");
             document.getElementsByTagName("body")[0].insertBefore(a, document.getElementsByTagName("body")[0].childNodes[0]);
-
             var new_tmpl_block = document.createElement("script");
             new_tmpl_block.type = "text/x-jquery-tmpl";
             new_tmpl_block.innerHTML = new_tmpl;
             new_tmpl_block.setAttribute("id", "tmpl_CacheLogRow_gclh");
             document.getElementsByTagName("body")[0].appendChild(new_tmpl_block);
 
-            // Override the standart templates (for pre-LogLoad use).
+            // Override standard templates.
             document.getElementById('tmpl_CacheLogRow').innerHTML = new_tmpl;
             var elem = unsafeWindow.$('#tmpl_CacheLogRow')[0];
             unsafeWindow.$.removeData(elem, "tmpl");
             unsafeWindow.$("#tmpl_CacheLogRow").template("tmplCacheLogRow");
-
             if (browser === "chrome" || browser === "firefox") {
                 injectPageScriptFunction(function() {
                     var elem = window.$('#tmpl_CacheLogRow')[0];
@@ -4838,21 +4865,17 @@ var mainGC = function() {
                     setLinesColorInCacheListing();
                 }
             }
-
             function loadListener(e) {
                 gclh_add_vip_icon();
                 setLinesColorInCacheListing();
             }
-
             (document.getElementById("cache_logs_table2") || document.getElementById("cache_logs_table")).addEventListener('DOMNodeInserted', loadListener);
-
             if (isTM === false) {
                 window.addEventListener("message", function(ev) {
                     if (ev.origin !== "https://www.geocaching.com" && ev.origin !== "https://www.geocaching.com") return;
                     if (ev.data === "gclh_add_vip_icon") gclh_add_vip_icon();
                     if (ev.data === "setLinesColorInCacheListing") setLinesColorInCacheListing();
                 });
-
                 function addNewLogLines(escapedLogLines) {
                     var unsafeWindow = unsafeWindow || window;
                     var logs = JSON.parse(decodeURIComponent(escapedLogLines));
@@ -4862,7 +4885,6 @@ var mainGC = function() {
                     $('a.tb_images').fancybox({'type': 'image', 'titlePosition': 'inside'});
                 }
             }
-
             function disablePageAutoScroll() {
                 var unsafeWindow = (typeof(unsafeWindow) == "undefined" ? window : unsafeWindow);
                 unsafeWindow.currentPageIdx = 2;
@@ -4895,20 +4917,19 @@ var mainGC = function() {
                 }
             }
 
-            // Rebuild function - but with full control.
+            // Dynamic load with full control.
             function gclh_dynamic_load(logs, num) {
                 var isBusy = false;
                 var gclh_currentPageIdx = 1, gclh_totalPages = 1;
                 var logInitialLoaded = false;
                 var browser = (typeof(chrome) !== "undefined") ? "chrome" : "firefox";
                 var isTM = (typeof GM_info != "undefined" && typeof GM_info.scriptHandler != "undefined" && GM_info.scriptHandler == "Tampermonkey") ? true : false;
-
                 unsafeWindow.$(window).endlessScroll({
                     fireOnce: true,
                     fireDelay: 500,
                     bottomPixels: (($(document).height() - $("#cache_logs_container").offset().top) + 50),
                     ceaseFire: function() {
-                        // Stop the scrolling if the last page is reached.
+                        // Stop scrolling if last page reached.
                         return (gclh_totalPages < gclh_currentPageIdx);
                     },
                     callback: function() {
@@ -4977,9 +4998,9 @@ var mainGC = function() {
                 }
                 var para = document.getElementById('ctl00_ContentBody_lblFindCounts').nextSibling.nextSibling.nextSibling.nextSibling;
                 if (para && para.nodeName == 'P') para.className = para.className + ' Clear';
-                addButtonOverLogs(gclh_load_all_logs, "gclh_load_all_logs", false, "Show all logs", "");
-                if (!settings_hide_avatar && !isMemberInPmoCache() && settings_show_thumbnails) showBiggerAvatarsLink();
-                showLogCounterLink();
+                if (settings_show_all_logs_but) addButtonOverLogs(gclh_load_all_logs, "gclh_load_all_logs", false, "Show all logs", "");
+                if (settings_show_bigger_avatars_but && !settings_hide_avatar && !isMemberInPmoCache() && settings_show_thumbnails) showBiggerAvatarsLink();
+                if (settings_show_log_counter_but) showLogCounterLink();
             }
 
             // Filter logs.
@@ -4996,7 +5017,6 @@ var mainGC = function() {
                     if (settings_show_owner_vip_list) var vip_owner = get_real_owner();
                     else var vip_owner = "#";
                     if (!logs) return false;
-
                     var tbodys = (document.getElementById("cache_logs_table2") || document.getElementById("cache_logs_table")).getElementsByTagName("tbody");
                     for (var i = 0; i < tbodys.length; i++) {
                         (document.getElementById("cache_logs_table2") || document.getElementById("cache_logs_table")).removeChild(tbodys[i]);
@@ -5027,12 +5047,10 @@ var mainGC = function() {
                     setMarkerDisableDynamicLogLoad();
                     if (document.getElementById("gclh_show_log_counter")) document.getElementById("gclh_show_log_counter").style.visibility = "hidden";
                 }
-
                 if (!document.getElementById("ctl00_ContentBody_lblFindCounts").childNodes[0]) return false;
                 var legend = document.getElementById("ctl00_ContentBody_lblFindCounts").childNodes[0];
                 var new_legend = document.createElement("p");
                 new_legend.className = "LogTotals";
-
                 for (var i = 0; i < legend.childNodes.length; i++) {
                     if (legend.childNodes[i].tagName == "IMG") {
                         var link = document.createElement("a");
@@ -5058,7 +5076,6 @@ var mainGC = function() {
                     new_legend.appendChild(link);
                 }
                 document.getElementById('ctl00_ContentBody_lblFindCounts').replaceChild(new_legend, legend);
-
                 if (document.getElementById("lnk_gclh_vip_list")) {
                     var side = document.getElementById("lnk_gclh_vip_list").parentNode;
                     var link = document.createElement("a");
@@ -5113,7 +5130,6 @@ var mainGC = function() {
                     setMarkerDisableDynamicLogLoad();
                     if (document.getElementById("gclh_show_log_counter")) document.getElementById("gclh_show_log_counter").style.visibility = "hidden";
                 }
-
                 if (!document.getElementById("ctl00_ContentBody_lblFindCounts").childNodes[0]) return false;
                 var form = document.createElement("form");
                 var search = document.createElement("input");
@@ -5127,7 +5143,7 @@ var mainGC = function() {
                 document.getElementById('ctl00_ContentBody_lblFindCounts').childNodes[0].appendChild(form);
             }
 
-            // Marker to disable dynamic log-load.
+            // Marker to disable dynamic log load.
             function setMarkerDisableDynamicLogLoad() {
                 var marker = document.createElement("a");
                 marker.setAttribute("id", "gclh_all_logs_marker");
@@ -5152,6 +5168,7 @@ var mainGC = function() {
                     span_loading.innerHTML = '<img src="/images/loading2.gif" class="StatusIcon" alt="Loading" />Loading Cache Logs...';
                     document.getElementById("gclh_vip_list_nofound").appendChild(span_loading);
                 }
+
                 function gclh_load_helper(count) {
                     var url = http + "://www.geocaching.com/seek/geocache.logbook?tkn=" + userToken + "&idx=" + curIdx + "&num=100&decrypt=false";
                     GM_xmlhttpRequest({
@@ -5161,7 +5178,6 @@ var mainGC = function() {
                             requestCount--;
                             var dataElement = JSON.parse(response.responseText);
                             data[dataElement.pageInfo.idx] = dataElement;
-                            // gclh_log("Loading Logs Status: " + response.statusText + " - idx: " + dataElement.pageInfo.idx);
                             if (numPages == 1) {
                                 numPages = data[count].pageInfo.totalPages;
                                 for (curIdx = 2; curIdx <= numPages; curIdx++) {
@@ -5186,12 +5202,10 @@ var mainGC = function() {
                         var shownLogs = tbodys[0].children.length;
                         if (shownLogs > 0 && num < shownLogs) num = shownLogs;
                     }
-
                     var tableContent = unsafeWindow.$("#cache_logs_table").after('<table id="cache_logs_table2" class="LogsTable NoBottomSpacing"> </table>').hide().children().remove();
                     unsafeWindow.$(tableContent).find('tbody').children().remove();
                     unsafeWindow.$('#cache_logs_table2').append(tableContent);
                     $(tableContent).find('.log-row').remove();
-
                     for (var z = 1; z <= numPages; z++) {
                         var json = data[z];
                         logs = logs.concat(json.data);
@@ -5259,7 +5273,7 @@ var mainGC = function() {
             } else gclh_load_logs(30);
         } catch(e) {gclh_error("Replace Log-Loading function:",e);}
     }
-    // Zeilen in Cache Listings in Zebra und für User, für Owner, für Reviewer und für VIP einfärben.
+    // Zeilen in Cache Listings in Zebra und für User, Owner, Reviewer und VIP einfärben.
     function setLinesColorInCacheListing() {
         if (is_page("cache_listing")) {
             // ('find("tr")' reicht hier nicht wegen der Bilder.)
@@ -5296,22 +5310,20 @@ var mainGC = function() {
         if (linesNew.length > 0) setLinesColorUser(parameterStamm, "user,owner,reviewer,vips", linesNew, count, owner);
     }
 
-// Farben für Zeilen in gewöhnlichen Listen und im TB Listing setzen. Im Cache Listing wird nur css benötigt.
+// Farben für Zeilen in gewöhnlichen Listen und TB Listing setzen. Im Cache Listing wird nur css benötigt.
     try {
-        // Hintergrund der Tabellenzeilen/Listzeilen einheitlich einfärben.
         var css = "table.Table tr.AlternatingRow td, .AlternatingRow, table.Table tr td.AlternatingRow {background-color: #" + getValue("settings_lines_color_zebra") + " !important;}"
                 + "table.Table tr.TertiaryRow td, .TertiaryRow, table.Table tr td.TertiaryRow {background-color: #" + getValue("settings_lines_color_user") + " !important;}"
                 + "table.Table tr.QuaternaryRow td, .QuaternaryRow, table.Table tr td.QuaternaryRow {background-color: #" + getValue("settings_lines_color_owner") + " !important;}"
                 + "table.Table tr.QuinaryRow td, .QuinaryRow, table.Table tr td.QuinaryRow {background-color: #" + getValue("settings_lines_color_reviewer") + " !important;}"
                 + "table.Table tr.SenaryRow td, .SenaryRow, table.Table tr td.SenaryRow {background-color: #" + getValue("settings_lines_color_vip") + " !important;}";
         appendCssStyle(css);
-        // Bookmarklisten: Zeilen in Bookmarklisten in Zebra einfärben und die Funde des Users einfärben.
-        // Die Bookmarklisten scheinen die einzigen Listen, bei denen das nicht vorgesehen ist.
+        // BMlisten: Zeilen in Zebra und Funde User einfärben. BMlisten scheinen einzige Listen, bei denen das nicht vorgesehen ist.
         if (document.location.href.match(/\.com\/bookmarks\/(view\.aspx\?guid=|bulk\.aspx\?listid=|view\.aspx\?code=)/) && document.getElementById('ctl00_ContentBody_ListInfo_cboItemsPerPage')) {
             var lines = $("table.Table").find("tbody").find("tr");
             setLinesColorInZebra(settings_show_common_lists_in_zebra, lines, 2);
             setLinesColorUser("settings_show_common_lists_color", "user", lines, 2, "", true);
-        // TB Listing: Zeilen in TB Listings in Zebra, für User, für Owner, für Reviewer und für VIP einfärben.
+        // TB Listing: Zeilen in Zebra, für User, Owner, Reviewer und VIP einfärben.
         } else if (document.location.href.match(/\.com\/track\/details\.aspx\?/)) {
             var lines = $("table.Table").find("tbody").find("tr");
             if (lines.length > 1) {
@@ -5320,7 +5332,7 @@ var mainGC = function() {
                 setLinesColorInZebra(settings_show_tb_listings_in_zebra, linesNew, 2);
                 setLinesColorUser("settings_show_tb_listings_color", "user,owner,reviewer,vips", linesNew, 2, owner);
             }
-        // Andere Listen: Bei Zeilen in anderen Listen gegebenenfalls Einfärbung für Zebra oder User entfernen.
+        // Andere Listen: In Zeilen gegebenenfalls Einfärbung für Zebra oder User entfernen.
         } else if (!is_page("cache_listing")) {
             if (settings_show_common_lists_in_zebra == false){
                 var lines = $("table").find("tbody").find("tr");
@@ -5331,13 +5343,14 @@ var mainGC = function() {
                 var lines = $("table").find("tbody").find("tr");
                 var replaceSpec = /(TertiaryRow)(\s*)/g;
                 setLinesColorNone(lines, replaceSpec);
-                // Wenn der User nicht eingefärbt werden soll, Zebra aber ausgewählt ist, dann muss Zebra leider explizit
-                // gesetzt werden, weil nur ein Wert im Standard gesetzt wurde, hier eben der Wert für User - blöd.
+                // Wenn User nicht eingefärbt werden soll, Zebra aber ausgewählt ist, dann muss Zebra explizit gesetzt werden, weil nur ein Wert im Standard
+                // gesetzt wurde, hier eben Wert für User.
                 if (settings_show_common_lists_in_zebra) {
-                    if (document.location.href.match(/\.com\/seek\/nearest\.aspx\?/) ||           // - Pocket Query, Nearest
-                        document.location.href.match(/\.com\/my\/recentlyviewedcaches\.aspx/)) {  //   oder Recently Viewed,
-                        var lines = $("table.Table").find("tbody").find("tr").slice(1);           //   dann Überschrift weglassen.
-                        setLinesColorInZebra(settings_show_common_lists_in_zebra, lines, 1);      //   Einzeilig.
+                    if (document.location.href.match(/\.com\/seek\/nearest\.aspx\?/) ||           
+                        document.location.href.match(/\.com\/my\/recentlyviewedcaches\.aspx/)) {
+                        // Überschrift weglassen, eizeilig.
+                        var lines = $("table.Table").find("tbody").find("tr").slice(1);           
+                        setLinesColorInZebra(settings_show_common_lists_in_zebra, lines, 1);     
                     }
                 }
             }
@@ -5347,13 +5360,7 @@ var mainGC = function() {
 // Show thumbnails.
     if (settings_show_thumbnails && ((is_page("cache_listing") && !isMemberInPmoCache()) || is_page("publicProfile") || document.location.href.match(/\.com\/(seek\/gallery\.aspx?|track\/details\.aspx?|track\/gallery\.aspx?)/))) {
         try {
-            // my: Großes Bild; at: Kleines Bild; Man gibt an, wo sich die beiden berühren. Es scheint so, dass zuerst horizontal und
-            // anschließend vertikal benannt werden muss. "top left" erzeugt dem entsprechend nur den default, also center. Das legt
-            // zumindest die Ausrichtung aus den Tests nahe. Ein Arbeiten mit plus oder minus an zwei Stellen oder an einer in Verbindung
-            // mit einem center führen zu Randerweiterungen und Verschiebung der Bildnamen. Da die kleinen Bilder im zugehörigen Bereich
-            // links angeordnet sind und, rechts also ein großer Bereich leer ist, kann mit einem rechten Rand für die Bildberührung
-            // nicht gearbeitet werden.
-            // Änderungen bei "collision" haben keine einschlägigen Verbesserungen gebracht hinsichtlich der Erreichbarkeit aller Bilder.
+            // my: Großes Bild; at: Kleines Bild; Man gibt an, wo sich beide berühren. Es scheint so, dass zuerst horizontal und dann vertikal benannt werden muss.
             function placeToolTip(element, stop) {
                 $('a.gclh_thumb:hover span').position({
                     my: "center bottom",
@@ -5732,18 +5739,16 @@ var mainGC = function() {
         try {
             function checkMapLeaflet(waitCount) {
                 if (document.getElementsByClassName("leaflet-container")[0]) {
-                    // Map Header verbergen.
                     if (settings_hide_map_header) hide_map_header();
-                    // Button in Sidebar aufbauen "Hide/Show Header".
                     var sidebar = document.getElementById("searchtabs");
                     var link = document.createElement("a");
                     link.appendChild(document.createTextNode("Hide/Show Header"));
                     link.href = "#";
                     link.addEventListener("click", hide_map_header, false);
-                    // Link in der Sidebar rechts orientieren wegen möglichem GC Tour script.
+                    // Link in Sidebar rechts orientieren wegen möglichem GC Tour script.
                     link.setAttribute("style", "float: right; padding-right: 3px;");
                     sidebar.appendChild(link);
-                    // Link in der Sidebar der Karten komplett anzeigen und auch nicht mehr überblenden, auch nicht durch GME.
+                    // Link in Sidebar komplett anzeigen und auch nicht mehr überblenden, auch nicht durch GME.
                     appendCssStyle("#searchtabs {height: 63px !important; margin-top: 6px !important;} #searchtabs li a {padding: 0.625em 0.5em !important;}");
                 } else {waitCount++; if (waitCount <= 50) setTimeout(function(){checkMapLeaflet(waitCount);}, 100);}
             }
@@ -5777,7 +5782,7 @@ var mainGC = function() {
                     }
                     function hideSidebarRest(waitCount) {
                         if ($('.groundspeak-control-findmylocation')[0] && $('.leaflet-control-scale')[0] && $('.leaflet-control-zoom')[0]) {
-                            // Wenn externe Kartenfilter vorhanden sind, dann gibt es keinen Balken zur Sidebar.
+                            // Wenn externe Kartenfilter vorhanden, dann gibt es keinen Balken zur Sidebar.
                             if (document.location.href.match(/&asq=/)) var styleLeft = "15px";
                             else var styleLeft = "30px";
                             $('.groundspeak-control-findmylocation')[0].style.left = styleLeft;
@@ -5804,15 +5809,13 @@ var mainGC = function() {
                     var circle = new unsafeWindow.L.Circle(latlng, settings_homezone_radius * 1000, options);
                     unsafeWindow.MapSettings.Map.addLayer(circle);
                 }
-                // Die Circles erst aufbauen wenn die Karte fertig ist, sonst verschwinden sie wieder.
+                // Die Circles erst aufbauen wenn Karte fertig ist.
                 function checkForAddHomeZoneMap(waitCount) {
                     if ($('.groundspeak-control-findmylocation')[0] && $('.leaflet-control-scale')[0]) {
-                        // Show Homezone-Circle on Map
                         if (settings_show_homezone) {
                             if (browser === "chrome" || browser === "firefox") {
                                 injectPageScriptFunction(addHomeZoneMap, "('" + "none" + "', " + getValue("home_lat") + ", " + getValue("home_lng") + ", " + settings_homezone_radius + ", '#" + settings_homezone_color + "', " + settings_homezone_opacity + ")");
                             } else addHomeZoneMap(unsafeWindow, getValue("home_lat"), getValue("home_lng"), settings_homezone_radius, "#" + settings_homezone_color, settings_homezone_opacity);
-                            // Show Multi-Homezone-Circle on Map
                             for (var i in settings_multi_homezone) {
                                 var curHz = settings_multi_homezone[i];
                                 if (browser === "chrome" || browser === "firefox") {
@@ -5932,11 +5935,11 @@ var mainGC = function() {
                         $("#gclh_google_button").show();
                     }
                 );
-                // Damit auch mehr als 2 Buttons handlebar sind.
+                // Damit auch mehr als 2 Buttons handlebar.
                 appendCssStyle(".leaflet-control-layers + .leaflet-control {position: unset; right: unset;} .leaflet-control {clear: left}");
             }
             function attachGeoServiceControl(waitCount) {
-                // Prüfen, ob die Layers schon vorhanden sind, erst dann den Button hinzufügen.
+                // Prüfen, ob Layers schon vorhanden sind, erst dann den Button hinzufügen.
                 if ($('.leaflet-control-layers-base').find('input.leaflet-control-layers-selector')[0]) {
                     // Damit Button nicht ständig den Platz wechselt, um 1 Sekunden verzögern.
                     setTimeout(initGeoServiceControl, 1000);
@@ -6068,14 +6071,11 @@ var mainGC = function() {
 
 // Improve cache matrix on statistics page and public profile page and handle cache search links in list or map.
     try {
-        // Soll eigene Statistik gepimpt werden.
         if ((settings_count_own_matrix || settings_count_own_matrix_show_next) && isOwnStatisticsPage()) {
             var own = true;
-        // Soll fremde Statistik gepimpt werden.
         } else if (settings_count_foreign_matrix && is_page("publicProfile") && $('#ctl00_ContentBody_lblUserProfile')[0] && !$('#ctl00_ContentBody_lblUserProfile')[0].innerHTML.match(": " + global_me)) {
             var own = false;
         } else var own = "";
-        // Wenn Statistik gepimpt werden soll.
         if (own !== "") {
             // Matrix ermitteln.
             if (document.getElementById('ctl00_ContentBody_StatsDifficultyTerrainControl1_uxDifficultyTerrainTable')) {
@@ -6551,57 +6551,46 @@ var mainGC = function() {
         } catch(e) {gclh_error("Show Coin Series:",e);}
     }
 
-// Count Fav-points.
-    if (document.location.href.match(/\.com\/my\/favorites\.aspx/)) {
+// Count favorite points.
+    if (document.location.href.match(/\.com\/my\/favorites\.aspx/) && $('table.Table tbody tr')[0]) {
         try {
-            var table = $('.Table.BottomSpacing')[0];
-            if (table) {
-                var imgs = table.getElementsByTagName("img");
-                var stats = new Object();
-                var count = 0;
-                if (imgs) {
-                    for (var i = 0; i < imgs.length; i++) {
-                        // Mail, Message und VIP Icons beim Zählen nicht beachten.
-                        if (imgs[i].title.match(/Send a m/) || imgs[i].title.match(/VIP/)) continue;
-                        if (imgs[i].src) {
-                            if (!stats[imgs[i].src]) stats[imgs[i].src] = 0;
-                            stats[imgs[i].src]++;
-                            count++;
-                        }
-                    }
-                }
-                var tr = document.createElement("tr");
-                var td = document.createElement("td");
-                td.style.backgroundColor = "#DFE1D2";
-                tr.appendChild(td);
-                var td = document.createElement("td");
-                td.style.backgroundColor = "#DFE1D2";
-                tr.appendChild(td);
-                var td = document.createElement("td");
-                for (src in stats) {
-                    var img = document.createElement("img");
-                    img.src = src;
-                    td.appendChild(img);
-                    td.appendChild(document.createTextNode(" " + stats[src] + "  "));
-                }
-                td.style.backgroundColor = "#DFE1D2";
-                tr.appendChild(td);
-                var td = document.createElement("td");
-                td.appendChild(document.createTextNode("Sum: " + count));
-                td.style.backgroundColor = "#DFE1D2";
-                tr.appendChild(td);
-                table.appendChild(tr);
-            }
+            buildFavSum();
         } catch(e) {gclh_error("Count Fav-Points:",e);}
     }
-
-// Sum up all FP and BM entries on public profile pages.
-    if (is_page("publicProfile")) {
+// Sum up FP and BM entries, count favorite points.
+    if (is_page("publicProfile") && $('#ctl00_ContentBody_ProfilePanel1_lnkLists.Active')[0] && $('table.Table tbody tr')[0]) {
         try {
             $('#ctl00_ContentBody_ProfilePanel1_pnlBookmarks h3').each(function(i, e) {
                 $(e).text($(e).text() + ' (' + $(e).next().find('tbody tr').length + ')');
             });
-        } catch(e) {gclh_error("Sum up all FP and BM entries on public profile pages:",e);}
+            buildFavSum(true);
+        } catch(e) {gclh_error("Sum up FP and BM entries, count favorite points in public profile:",e);}
+    }
+    function buildFavSum(pp) {
+        function buildSL(tag) {
+            var tr = document.createElement('tr');
+            var t = '<'+tag+' style="background-color: #DFE1D2; font-weight: normal; font-size: 1em;">';
+            if (pp) var html = t+'</'+tag+'>'+t;
+            else var html = t+'</'+tag+'>'+t+'</'+tag+'>'+t;
+            for (src in stats) {html += ' <img src="'+src+'"> '+stats[src];}
+            html += '<span style="float: right">Sum: '+count+'</'+tag+'>'+t+'</'+tag+'>';
+            tr.innerHTML = html;
+            return tr;
+        }
+        var imgs = $('table.Table tbody').first().find('tr a:not([href*="mail"],[href*="message"])').find('img');
+        var stats = new Object();
+        var count = 0;
+        for (var i = 0; i < imgs.length; i++) {
+            if (imgs[i].src) {
+                if (!stats[imgs[i].src]) stats[imgs[i].src] = 0;
+                stats[imgs[i].src]++;
+                count++;
+            }
+        }
+        tr = buildSL("td", pp);
+        $('table.Table tbody')[0].append(tr);
+        tr = buildSL("th",pp);
+        $('table.Table thead')[0].append(tr);
     }
 
 // Hide side rights on print page.
@@ -6668,7 +6657,7 @@ var mainGC = function() {
 // Show warning for not available images.
     if (settings_img_warning && is_page("cache_listing")) {
         try {
-            // Function for images in listing.
+            // Images in listing.
             function checkImage(element, newUrl, oldUrl) {
                 var img = new Image();
                 img.onerror =
@@ -6683,7 +6672,7 @@ var mainGC = function() {
                     };
                 img.src = element.src;
             }
-            // Function for background image.
+            // Background image.
             function checkBGImage(element, newUrl) {
                 var img = new Image();
                 if (element.background.length == 0) return;
@@ -6693,7 +6682,7 @@ var mainGC = function() {
                     };
                 img.src = element.background;
             }
-            // Check all images in listing.
+            // Check images in listing.
             var idElements = ["ctl00_ContentBody_ShortDescription", "ctl00_ContentBody_LongDescription"];
             for (var idx = 0; idx < idElements.length; idx++) {
                 var a = document.getElementById(idElements[idx]).getElementsByTagName("img");
@@ -6701,7 +6690,7 @@ var mainGC = function() {
                     checkImage(a[i], 'https://rawgit.com/2Abendsegler/GClh/master/images/image_not_available.svg', a[i].src);
                 }
             }
-            // Check background image(s).
+            // Check background image.
             var a = document.getElementsByTagName("body");
             for (var i = 0; i < a.length; i++) {
                 checkBGImage(a[i], 'https://rawgit.com/2Abendsegler/GClh/master/images/image_not_available_background.svg');
@@ -6747,7 +6736,7 @@ var mainGC = function() {
         } catch(e) {gclh_error("Save uid:",e);}
     }
 
-// Add mailto-link to profilpage.
+// Add mailto link to profilpage.
     if (is_page("publicProfile") && $('#ctl00_ContentBody_ProfilePanel1_lnkEmailUser')[0]) {
         try {
             var link = $('#ctl00_ContentBody_ProfilePanel1_lnkEmailUser')[0];
@@ -7847,7 +7836,7 @@ var mainGC = function() {
         var css = "";
         css += ".link-header.gclh {padding: 12px 20px !important; cursor: pointer; border-top: 1px solid #e4e4e4;}";
         css += ".link-header.gclh svg {height: 22px; width: 22px; fill: #777; float: right; padding-right: 1px; margin-top: -2px; transition: all .3s ease; transform-origin: 50% 50%;}";
-        css += ".link-header.gclh.isHide svg {transform: rotate(90deg);}";
+        css += ".link-header.gclh.isHide svg {transform: rotate(180deg);}";
         css += ".link-block.gclh {padding-top: 0px; border-bottom: unset; display: block;}";
         css += ".link-block.gclh a:hover {text-decoration: underline; color: #02874d;} .link-block.gclh a {padding: 0 4px 0 0; font-size: 14px;}";
         css += ".link-block.isHide {display: none} .link-block {border-bottom: unset;}";
@@ -8637,6 +8626,9 @@ var mainGC = function() {
             html += newParameterOn2;
             html += checkboxy('settings_compact_layout_nearest', 'Show compact layout in all nearest lists (without PQ)') + show_help("For pocket queries, please go to the section \"Pocket query\", there is a special parameter for pocket queries.") + "<br>";
             html += newParameterVersionSetzen(0.8) + newParameterOff;
+            html += newParameterOn3;
+            html += " &nbsp; " + checkboxy('settings_fav_proz_nearest', 'Show favorites percentage') + "<br>";
+            html += newParameterVersionSetzen(0.9) + newParameterOff;
             html += "</div>";
 
             html += "<h4 class='gclh_headline2'>"+prepareHideable.replace("#name#","pq")+"Pocket query" + prem + "</h4>";
@@ -8649,6 +8641,9 @@ var mainGC = function() {
             html += checkboxy('settings_compact_layout_list_of_pqs', 'Show compact layout in list of pocket queries') + "<br>";
             html += checkboxy('settings_compact_layout_pqs', 'Show compact layout in pocket queries') + "<br>";
             html += newParameterVersionSetzen(0.8) + newParameterOff;
+            html += newParameterOn3;
+            html += " &nbsp; " + checkboxy('settings_fav_proz_pqs', 'Show favorites percentage') + "<br>";
+            html += newParameterVersionSetzen(0.9) + newParameterOff;
             html += checkboxy('settings_pq_warning', "Get a warning in case of empty pocket queries") + show_help("Show a message if one or more options are in conflict. This helps to avoid empty pocket queries.") + "<br>";
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>Default values for new pocket query</b></div>";
             html += checkboxy('settings_pq_set_cachestotal', "Set number of caches to ") + "<input class='gclh_form' size=3 type='text' id='settings_pq_cachestotal' value='" + settings_pq_cachestotal + "'><br>";
@@ -8680,6 +8675,7 @@ var mainGC = function() {
             html += newParameterOn3;
             html += content_settings_show_log_it.replace("show_log_it","show_log_itX1");
             html += checkboxy('settings_compact_layout_recviewed', 'Show compact layout in your recently viewed caches list') + "<br>";
+            html += " &nbsp; " + checkboxy('settings_fav_proz_recviewed', 'Show favorites percentage') + "<br>";
             html += newParameterVersionSetzen(0.9) + newParameterOff;
             html += "</div>";
 
@@ -8958,6 +8954,11 @@ var mainGC = function() {
             html += checkboxy('settings_show_flopps_link', 'Show Flopp\'s Map links in sidebar and under the "Additional Waypoints"') + show_help3("If there are no additional waypoints only the link in the sidebar is shown.") + "<br>";
             html += checkboxy('settings_show_brouter_link', 'Show BRouter links in sidebar and under the "Additional Waypoints"') + show_help3("If there are no additional waypoints only the link in the sidebar is shown.") + "<br>";
             html += newParameterVersionSetzen(0.8) + newParameterOff;
+            html += newParameterOn3;
+            html += checkboxy('settings_show_all_logs_but', 'Show button \"Show all logs\" above the logs') + "<br>";
+            html += checkboxy('settings_show_log_counter_but', 'Show button \"Show log counter\" above the logs') + "<br>";
+            html += checkboxy('settings_show_bigger_avatars_but', 'Show button \"Show bigger avatars\" above the logs') + "<br>";
+            html += newParameterVersionSetzen(0.9) + newParameterOff;
             html += "</div>";
 
             html += "<h4 class='gclh_headline2'>"+prepareHideable.replace("#name#","logging")+"Logging</h4>";
@@ -9598,6 +9599,9 @@ var mainGC = function() {
             setEventsForDependentParameters("settings_strike_archived", "settings_highlight_usercoords_bb");
             setEventsForDependentParameters("settings_strike_archived", "settings_highlight_usercoords_it");
             setEventsForDependentParameters("settings_but_search_map", "settings_but_search_map_new_tab");
+            setEventsForDependentParameters("settings_compact_layout_nearest", "settings_fav_proz_nearest");
+            setEventsForDependentParameters("settings_compact_layout_pqs", "settings_fav_proz_pqs");
+            setEventsForDependentParameters("settings_compact_layout_recviewed", "settings_fav_proz_recviewed");
             // Abhängigkeiten der Linklist Parameter.
             for (var i = 0; i < 100; i++) {
                 // 2. Spalte: Links für Custom BMs.
@@ -9938,7 +9942,13 @@ var mainGC = function() {
                 'settings_show_tb_inv',
                 'settings_but_search_map',
                 'settings_but_search_map_new_tab',
-                'settings_show_pseudo_as_owner'
+                'settings_show_pseudo_as_owner',
+                'settings_fav_proz_nearest',
+                'settings_fav_proz_pqs',
+                'settings_fav_proz_recviewed',
+                'settings_show_all_logs_but',
+                'settings_show_log_counter_but',
+                'settings_show_bigger_avatars_but'
             );
             for (var i = 0; i < checkboxes.length; i++) {
                 if (document.getElementById(checkboxes[i])) setValue(checkboxes[i], document.getElementById(checkboxes[i]).checked);
@@ -10698,7 +10708,7 @@ var mainGC = function() {
                     deferred.reject();
                 });
         } else {
-            // No token was givven, user has to (re)auth GClh for dropbox
+            // No token was given, user has to (re)auth GClh for dropbox
             dropbox_client = null;
             deferred.reject();
         }
