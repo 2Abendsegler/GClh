@@ -10725,7 +10725,7 @@ var mainGC = function() {
         // If client could not created, try to get a new Auth token. Set the login anchors href using dropbox_client.getAuthenticationUrl()
         dropbox_auth_client = new Dropbox({clientId: APP_ID});
         authlink = document.getElementById('authlink');
-		// Dropbox redirect URL and AppId.
+        // Dropbox redirect URL and AppId.
         authlink.href = dropbox_auth_client.getAuthenticationUrl('https://www.geocaching.com/account/settings/profile?AppId=GClh');
         $(authlink).show();
         $('#btn_DBSave').hide();
