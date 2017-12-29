@@ -326,7 +326,6 @@ var variablesInit = function(c) {
     c.settings_make_config_main_areas_hideable = getValue("settings_make_config_main_areas_hideable", true);
     c.settings_faster_profile_trackables = getValue("settings_faster_profile_trackables", false);
     c.settings_show_eventday = getValue("settings_show_eventday", true);
-    c.settings_date_format = getValue("settings_date_format", "yyyy-MM-dd");
     c.settings_show_google_maps = getValue("settings_show_google_maps", true);
     c.settings_show_log_it = getValue("settings_show_log_it", true);
     c.settings_show_nearestuser_profil_link = getValue("settings_show_nearestuser_profil_link", true);
@@ -989,9 +988,8 @@ var mainGC = function() {
                 }
             }
         }
-        if (settings_bookmarks_on_top && (document.getElementsByClassName("Menu").length > 0 || document.getElementsByClassName("menu").length > 0)){
-            if (document.getElementsByClassName("Menu").length > 0) var nav_list = document.getElementsByClassName("Menu")[0];
-            else var nav_list = document.getElementsByClassName("menu")[0];
+        if (settings_bookmarks_on_top && $('.Menu, .menu').length > 0) {
+            var nav_list = $('.Menu, .menu')[0];
             var menu = document.createElement("li");
             var headline = document.createElement("a");
             if (settings_bookmarks_top_menu || settings_change_header_layout == false) {  // Navi vertikal
@@ -1119,81 +1117,34 @@ var mainGC = function() {
     }
 
 // Show eventday beside date.
-    if (settings_show_eventday && is_page("cache_listing") && $('#cacheDetails')[0] && $('#cacheDetails').find('img')[0] && $('#cacheDetails').find('img')[0].src.match(/.*\/images\/WptTypes\/(6|453|13|7005).gif/)) {  // Event, MegaEvent, Cito, GigaEvent
-        if (document.getElementById('cacheDetails').getElementsByTagName("span")) {
-            try {
-                var spanelem = document.getElementById("ctl00_ContentBody_mcd2");
-                var datetxt = spanelem.innerHTML.substr(spanelem.innerHTML.indexOf(":") + 2).replace(/^\s+|\s+$/g, '');
-                var month_names = new Object();
-                month_names["Jan"] = 1; month_names["Feb"] = 2; month_names["Mrz"] = 3; month_names["Mar"] = 3; month_names["Apr"] = 4; month_names["May"] = 5; month_names["Jun"] = 6; month_names["Jul"] = 7; month_names["Aug"] = 8; month_names["Sep"] = 9; month_names["Oct"] = 10; month_names["Nov"] = 11; month_names["Dec"] = 12;
-                var day = 0; var month = 0; var year = 0;
-                switch (settings_date_format) {
-                    case "yyyy-MM-dd":
-                        var match = datetxt.match(/([0-9]{4})-([0-9]{2})-([0-9]{2})/);
-                        if (match) {day = match[3]; month = match[2]; year = match[1];}
-                        break;
-                    case "yyyy/MM/dd":
-                        var match = datetxt.match(/([0-9]{4})\/([0-9]{2})\/([0-9]{2})/);
-                        if (match) {day = match[3]; month = match[2]; year = match[1];}
-                        break;
-                    case "MM/dd/yyyy":
-                        var match = datetxt.match(/([0-9]{2})\/([0-9]{2})\/([0-9]{4})/);
-                        if (match) {day = match[2]; month = match[1]; year = match[3];}
-                        break;
-                    case "dd/MM/yyyy":
-                        var match = datetxt.match(/([0-9]{2})\/([0-9]{2})\/([0-9]{4})/);
-                        if (match) {day = match[1]; month = match[2]; year = match[3];}
-                        break;
-                    case "dd.MM.yyyy":
-                        var match = datetxt.match(/([0-9]{1,2})\.([0-9]{1,2})\.([0-9]{4})/);
-                        if (match) {day = match[1]; month = match[2]; year = match[3];}
-                        break;
-                    case "dd/MMM/yyyy":
-                        var match = datetxt.match(/([0-9]{2})\/([A-Za-z]{3})\/([0-9]{4})/);
-                        if (match) {day = match[1]; month = month_names[match[2]]; year = match[3];}
-                        break;
-                    case "MMM/dd/yyyy":
-                        var match = datetxt.match(/([A-Za-z]{3})\/([0-9]{2})\/([0-9]{4})/);
-                        if (match) {day = match[2]; month = month_names[match[1]]; year = match[3];}
-                        break;
-                    case "dd MMM yy":
-                        var match = datetxt.match(/([0-9]{2}) ([A-Za-z]{3}) ([0-9]{2})/);
-                        if (match) {day = match[1]; month = month_names[match[2]]; year = parseInt(match[3]) + 2000;}
-                        break;
-                }
-                if (month != 0) month--;
-                var d = new Date(year, month, day);
-                if (d != "Invalid Date" && !(day == 0 && month == 0 && year == 0)) {
-                    var weekday = new Array(7);
-                    weekday[0] = "Sunday"; weekday[1] = "Monday"; weekday[2] = "Tuesday"; weekday[3] = "Wednesday"; weekday[4] = "Thursday"; weekday[5] = "Friday"; weekday[6] = "Saturday";
-                    var text = " (" + weekday[d.getDay()] + ") ";
-                } else var text = " (date format mismatch - see settings) ";
-                var text_elem = document.createTextNode(text);
-                spanelem.insertBefore(text_elem, spanelem.childNodes[1]);
-            } catch(e) {gclh_error("Show eventday beside date:",e);}
-        }
+    if (settings_show_eventday && is_page("cache_listing") && $('#cacheDetails img')[0] && $('#cacheDetails img')[0].src.match(/\/images\/WptTypes\/(6|453|13|7005).gif/)) {  // Event, MegaEvent, Cito, GigaEvent
+        try {
+            var match = $('meta[name="og:description"]')[0].content.match(/([0-9]{2})\/([0-9]{2})\/([0-9]{4})/);
+            var date = new Date(match[3], match[1]-1, match[2]);
+            if (date != "Invalid Date") {
+                var weekday = new Array(7);
+                weekday[0] = "Sunday"; weekday[1] = "Monday"; weekday[2] = "Tuesday"; weekday[3] = "Wednesday"; weekday[4] = "Thursday"; weekday[5] = "Friday"; weekday[6] = "Saturday";
+                var name = " (" + weekday[date.getDay()] + ") ";
+                var elem = document.createTextNode(name);
+                var side = $('#ctl00_ContentBody_mcd2')[0];
+                side.insertBefore(elem, side.childNodes[1]);
+            }
+        } catch(e) {gclh_error("Show eventday beside date:",e);}
     }
 
 // Show real owner.
     if (is_page("cache_listing") && $('#ctl00_ContentBody_mcd1')) {
         try {
             var real_owner = get_real_owner();
-            var owner_link = false;
-            var links = $('#ctl00_ContentBody_mcd1').find('a');
-            for (var i = 0; i < links.length; i++) {
-                if (links[i].href.match(/\/profile\/\?guid\=/)) {
-                    owner_link = links[i];
-                    break;
-                }
-            }
-            if (owner_link && real_owner) {
-                var pseudo = owner_link.innerHTML;
+            var link_owner = $('#ctl00_ContentBody_mcd1 a[href*="/profile/?guid="]')[0];
+            if (link_owner && real_owner) {
+                var pseudo = link_owner.innerHTML;
                 if (settings_show_real_owner) {
-                    owner_link.innerHTML = real_owner;
-                    owner_link.title = pseudo;
+                    link_owner.innerHTML = real_owner;
+                    link_owner.title = pseudo;
                 } else {
-                    owner_link.innerHTML = pseudo;
-                    owner_link.title = real_owner;
+                    link_owner.innerHTML = pseudo;
+                    link_owner.title = real_owner;
                 }
             }
         } catch(e) {gclh_error("Show real owner:",e);}
@@ -1231,17 +1182,17 @@ var mainGC = function() {
                     for (var i = 0; i < logs.length; i++) {
                         if (settings_show_latest_logs_symbols_count == i) break;
                         var lateLog = new Object();
-                        lateLog['user'] = $(logs[i]).find('.logOwnerProfileName').find('a[href*="/profile/?guid="]').text();
-                        lateLog['id'] = $(logs[i]).find('.logOwnerProfileName').find('a[href*="/profile/?guid="]').attr('id');
-                        lateLog['src'] = $(logs[i]).find('.LogType').find('img[src*="/images/logtypes/"]').attr('src');
-                        lateLog['type'] = $(logs[i]).find('.LogType').find('img[src*="/images/logtypes/"]').attr('title');
+                        lateLog['user'] = $(logs[i]).find('.logOwnerProfileName a[href*="/profile/?guid="]').text();
+                        lateLog['id'] = $(logs[i]).find('.logOwnerProfileName a[href*="/profile/?guid="]').attr('id');
+                        lateLog['src'] = $(logs[i]).find('.LogType img[src*="/images/logtypes/"]').attr('src');
+                        lateLog['type'] = $(logs[i]).find('.LogType img[src*="/images/logtypes/"]').attr('title');
                         lateLog['date'] = $(logs[i]).find('.LogDate').text();
                         if (gcLogs) lateLog['log'] = $(logs[i]).find('.LogText').children().clone();
                         else lateLog['log'] = $(logs[i]).find('.LogContent').children().clone();
                         lateLogs[i] = lateLog;
                     }
-                    if (lateLogs.length > 0 && document.getElementById("ctl00_ContentBody_mcd1").parentNode) {
-                        var side = document.getElementById("ctl00_ContentBody_mcd1").parentNode;
+                    if (lateLogs.length > 0 && $('#ctl00_ContentBody_mcd1')[0].parentNode) {
+                        var side = $('#ctl00_ContentBody_mcd1')[0].parentNode;
                         side.style.display = "initial";
                         var div = document.createElement("div");
                         var divTitle = "";
@@ -1307,30 +1258,21 @@ var mainGC = function() {
             function gclh_load_score(waitCount) {
                 unsafeWindow.showFavoriteScore();
                 if ($('.favorite-container')[0] && $('.favorite-score')[0].innerHTML.match("%") && $('.favorite-dropdown')[0]) {
-                    // Box mit Schleifchen, Anzahl Favoriten, Text "Favorites", Drop-Down-Pfeil.
                     var fav = $('.favorite-container')[0];
-                    if (fav) {
-                        // Prozentzahl, Text.
-                        var score = $('.favorite-score')[0].innerHTML.match(/(.*%)\.*/);
-                        if (score && score[1]) {
-                            // Eigener Favoritenpunkt. Class hideMe -> kein Favoritenpunkt. Keine class hideMe -> Favoritenpunkt.
-                            var myfav = $('#pnlFavoriteCache')[0];
-                            var myfavHTML = "";
-                            if (myfav) {
-                                if (myfav.className.match("hideMe")) myfavHTML = '&nbsp;<img src="' + http + '://www.geocaching.com/images/icons/reg_user.gif" />';
-                                else myfavHTML = '&nbsp;<img src="' + http + '://www.geocaching.com/images/icons/prem_user.gif" />';
-                            }
-                            // Favoritenbox ändern.
-                            fav.getElementsByTagName("span")[0].nextSibling.remove();  // Text Favoriten
-                            fav.innerHTML += score[1] + myfavHTML;
-                            // Dropdown anpassen.
-                            if ($('.favorite-dropdown')[0]) {
-                                var dd = $('.favorite-dropdown')[0];
-                                dd.style.borderTop = "1px solid #f0edeb";
-                                dd.style.borderTopLeftRadius = "5px";
-                                dd.style.minWidth = "190px";
-                            }
+                    var score = $('.favorite-score')[0].innerHTML.match(/(.*%)\.*/);
+                    if (score && score[1]) {
+                        // Eigener Favoritenpunkt. Class hideMe -> kein Favoritenpunkt. Keine class hideMe -> Favoritenpunkt.
+                        var myfav = $('#pnlFavoriteCache')[0];
+                        if (myfav) {
+                            if (myfav.className.match("hideMe")) var myfavHTML = '&nbsp;<img src="/images/icons/reg_user.gif" />';
+                            else var myfavHTML = '&nbsp;<img src="/images/icons/prem_user.gif" />';
                         }
+                        fav.getElementsByTagName('span')[0].nextSibling.remove();
+                        fav.innerHTML += score[1] + myfavHTML;
+                        var dd = $('.favorite-dropdown')[0];
+                        dd.style.borderTop = "1px solid #f0edeb";
+                        dd.style.borderTopLeftRadius = "5px";
+                        dd.style.minWidth = "190px";
                     }
                 } else {waitCount++; if (waitCount <= 100) setTimeout(function(){gclh_load_score(waitCount);}, 100);}
             }
@@ -1348,27 +1290,16 @@ var mainGC = function() {
         } catch(e) {gclh_error("Highlight usercoords:",e);}
     }
 
-// Show other coord formats in listing.
-    if (is_page("cache_listing") && document.getElementById('uxLatLon')) {
+// Show other coord formats listing, print page.
+    if (is_page("cache_listing") && $('#uxLatLon')[0]) {
         try {
-            var box = document.getElementById('ctl00_ContentBody_LocationSubPanel');
+            var box = $('#ctl00_ContentBody_LocationSubPanel')[0];
             box.innerHTML = box.innerHTML.replace("<br>", "");
-            var coords = document.getElementById('uxLatLon').innerHTML;
-            var dec = toDec(coords);
-            var lat = dec[0];
-            var lng = dec[1];
-            if (lat < 0) lat = "S " + (lat * -1);
-            else lat = "N " + lat;
-            if (lng < 0) lng = "W " + (lng * -1);
-            else lng = "E " + lng;
-            box.innerHTML += " - Dec: " + lat + " " + lng;
-            var dms = DegtoDMS(coords);
-            box.innerHTML += " - DMS: " + dms;
+            var coords = $('#uxLatLon')[0].innerHTML;
+            otherFormats(" - ");
             box.innerHTML = "<font style='font-size: 10px;'>" + box.innerHTML + "</font><br>";
-        } catch(e) {gclh_error("Show other coord formats in listing",e);}
+        } catch(e) {gclh_error("Show other coord formats listing:",e);}
     }
-
-// Show other coord formats on print page.
     if (document.location.href.match(/\.com\/seek\/cdpf\.aspx/)) {
         try {
             var box = document.getElementsByClassName("UTM Meta")[0];
@@ -1377,36 +1308,34 @@ var mainGC = function() {
                 var match = coords.innerHTML.match(/((N|S) [0-9][0-9]. [0-9][0-9]\.[0-9][0-9][0-9] (E|W) [0-9][0-9][0-9]. [0-9][0-9]\.[0-9][0-9][0-9])/);
                 if (match && match[1]) {
                     coords = match[1];
-                    var dec = toDec(coords);
-                    var lat = dec[0];
-                    var lng = dec[1];
-                    if (lat < 0) lat = "S " + (lat * -1);
-                    else lat = "N " + lat;
-                    if (lng < 0) lng = "W " + (lng * -1);
-                    else lng = "E " + lng;
-                    box.innerHTML += "<br>Dec: " + lat + " " + lng;
-                    var dms = DegtoDMS(coords);
-                    box.innerHTML += "<br>DMS: " + dms;
+                    otherFormats("<br>");
                 }
             }
-        } catch(e) {gclh_error("Show other coord formats on print page:",e);}
+        } catch(e) {gclh_error("Show other coord formats print page:",e);}
+    }
+    function otherFormats(trenn) {
+        var dec = toDec(coords);
+        var lat = dec[0];
+        var lng = dec[1];
+        if (lat < 0) lat = "S "+(lat * -1);
+        else lat = "N "+lat;
+        if (lng < 0) lng = "W "+(lng * -1);
+        else lng = "E "+lng;
+        box.innerHTML += trenn+"Dec: "+lat+" "+lng;
+        var dms = DegtoDMS(coords);
+        box.innerHTML += trenn+"DMS: "+dms;
     }
 
-// Button Map this Location at cache listing.
+// Map this Location.
     if (is_page("cache_listing") && $('#uxLatLon')[0]) {
         try {
             var coords = toDec($('#uxLatLon')[0].innerHTML);
-            var link;
-            if (document.getElementById("uxLatLonLink") != null) link = $('#uxLatLonLink')[0].parentNode;
-            else link = $('#uxLatLon')[0].parentNode;
-            var a = document.createElement("a");
+            if ($('#uxLatLonLink')[0] != null) var link = $('#uxLatLonLink')[0].parentNode;
+            else var link = $('#uxLatLon')[0].parentNode;
             var small = document.createElement("small");
-            a.setAttribute("href", map_url + "?ll=" + coords[0] + "," + coords[1]);
-            a.appendChild(document.createTextNode("Map this Location"));
-            small.appendChild(document.createTextNode(" - "));
-            small.appendChild(a);
-            link.appendChild(small);
-        } catch(e) {gclh_error("Button Map this Location at cache listing:",e);}
+            small.innerHTML = '<a href="'+map_url+'?ll='+coords[0]+','+coords[1]+'">Map this Location</a>';
+            link.append(small);
+        } catch(e) {gclh_error("Map this Location:",e);}
     }
 
 // Stop ignoring.
@@ -2646,7 +2575,7 @@ var mainGC = function() {
                         var value = $('<textarea>').html(document.getElementById('LogText').innerHTML).val();
                         document.getElementById('LogText').value += value;
                     }
-                } else {waitCount++; if (waitCount <= 400) setTimeout(function(){checkLogType(waitCount);}, 25);}
+                } else {waitCount++; if (waitCount <= 100) setTimeout(function(){checkLogType(waitCount);}, 100);}
             }
         } catch(e) {gclh_error("Signature New Log Page(CACHE):",e);}
     }
@@ -6973,6 +6902,8 @@ var mainGC = function() {
 
 // Enkodieren in url und dekodieren aus url.
     function urlencode(s) {
+//xxxx
+//        s = s.replace(/\+/g, "%2b");
         s = s.replace(/&amp;/g, "&");
         s = encodeURIComponent(s);  // Alles außer: A bis Z, a bis z und - _ . ! ~ * ' ( )
         s = s.replace(/~/g, "%7e");
@@ -6983,6 +6914,8 @@ var mainGC = function() {
     }
     function urldecode(s) {
         s = s.replace(/\+/g, " ");
+//xxxx
+//        s = s.replace(/%252b/ig, "+");
         s = s.replace(/%7e/g, "~");
         s = s.replace(/%27/g, "'");
         s = decodeURIComponent(s);
@@ -8843,16 +8776,7 @@ var mainGC = function() {
             html += checkboxy('settings_hide_hint', 'Hide hints behind a link') + show_help("This option hides the hints behind a link. You have to click it to display the hints (already decrypted). This option remove also the description of the decryption.") + "<br>";
             html += checkboxy('settings_decrypt_hint', 'Decrypt hints') + show_help("This option decrypt the hints on cache listing and print page and remove also the description of the decryption.") + "<br>";
             html += checkboxy('settings_visitCount_geocheckerCom', 'Show statistic on geochecker.com pages') + show_help("This option adds '&visitCount=1' to all geochecker.com links. This will show some statistics on geochecker.com page like the count of page visits and the count of right and wrong attempts.") + "<br>";
-            html += checkboxy('settings_show_eventday', 'Show weekday of an event') + show_help("With this option the day of the week will be displayed next to the evemt date.") + " Date format: <select class='gclh_form' id='settings_date_format'>";
-            html += "  <option " + (settings_date_format == "yyyy-MM-dd" ? "selected='selected'" : "") + " value='yyyy-MM-dd'> 2016-12-31</option>";
-            html += "  <option " + (settings_date_format == "yyyy/MM/dd" ? "selected='selected'" : "") + " value='yyyy/MM/dd'> 2016/12/31</option>";
-            html += "  <option " + (settings_date_format == "MM/dd/yyyy" ? "selected='selected'" : "") + " value='MM/dd/yyyy'> 12/31/2016</option>";
-            html += "  <option " + (settings_date_format == "dd/MM/yyyy" ? "selected='selected'" : "") + " value='dd/MM/yyyy'> 31/12/2016</option>";
-            html += "  <option " + (settings_date_format == "dd.MM.yyyy" ? "selected='selected'" : "") + " value='dd.MM.yyyy'> 31.12.2016</option>";
-            html += "  <option " + (settings_date_format == "dd/MMM/yyyy" ? "selected='selected'" : "") + " value='dd/MMM/yyyy'> 31/Dec/2016</option>";
-            html += "  <option " + (settings_date_format == "MMM/dd/yyyy" ? "selected='selected'" : "") + " value='MMM/dd/yyyy'> Dec/31/2016</option>";
-            html += "  <option " + (settings_date_format == "dd MMM yy" ? "selected='selected'" : "") + " value='dd MMM yy'> 31 Dec 16</option>";
-            html += "</select>" + show_help("If you have changed the date format on GC, you have to change it here to. Instead the day of week may be wrong.") + "<br>";
+            html += checkboxy('settings_show_eventday', 'Show weekday of an event') + show_help("With this option the day of the week will be displayed next to the event date.") + "<br>";
             html += checkboxy('settings_show_mail', 'Show mail link beside user') + show_help("With this option there will be an small mail icon beside every user. With this icon you get directly to the mail form to mail to this user. If you click it for example when you are in a listing, the cachename or GC code can be inserted into the mail form about placeholder in the mail / message form template.") + "<br>";
             var content_settings_show_mail_in_viplist = "&nbsp; " + checkboxy('settings_show_mail_in_viplist', 'Show mail link beside user in "VIP-List" in listing') + show_help("With this option there will be an small mail icon beside every user in the VIP lists on the cache listing page. With this icon you get directly to the mail page to mail to this user. <br>(VIP: Very important person)<br><br>This option requires \"Show mail link beside user\", \"Show VIP list\" and \"Load logs with GClh\".") + "<br>";
             html += content_settings_show_mail_in_viplist;
@@ -9550,7 +9474,6 @@ var mainGC = function() {
             setEventsForDependentParameters("settings_pq_set_terrain", "settings_pq_terrain");
             setEventsForDependentParameters("settings_pq_set_terrain", "settings_pq_terrain_score");
             setEventsForDependentParameters("settings_show_all_logs", "settings_show_all_logs_count");
-            setEventsForDependentParameters("settings_show_eventday", "settings_date_format");
             setEventsForDependentParameters("settings_strike_archived", "settings_highlight_usercoords");
             setEventsForDependentParameters("settings_strike_archived", "settings_highlight_usercoords_bb");
             setEventsForDependentParameters("settings_strike_archived", "settings_highlight_usercoords_it");
@@ -9666,7 +9589,6 @@ var mainGC = function() {
             setValue("settings_multi_homezone", JSON.stringify(settings_multi_homezone));
 
             setValue("settings_new_width", document.getElementById('settings_new_width').value);
-            setValue("settings_date_format", document.getElementById('settings_date_format').value);
             setValue("settings_default_logtype", document.getElementById('settings_default_logtype').value);
             setValue("settings_default_logtype_event", document.getElementById('settings_default_logtype_event').value);
             setValue("settings_default_logtype_owner", document.getElementById('settings_default_logtype_owner').value);
