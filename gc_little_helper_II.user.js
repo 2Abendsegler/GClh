@@ -98,6 +98,7 @@ var constInit = function(c) {
     c.defaultConfigLink = "https://www.geocaching.com/my/default.aspx#GClhShowConfig";
     c.defaultSyncLink = "https://www.geocaching.com/my/default.aspx#GClhShowSync";
     c.defaultFindPlayerLink = "https://www.geocaching.com/my/default.aspx#GClhShowFindPlayer";
+    c.urlChangelog = "https://github.com/2Abendsegler/GClh/blob/master/docu/changelog.md#readme";
     // Define bookmarks:
     c.bookmarks = new Array();
     // WICHTIG: Die Reihenfolge darf hier auf keinen Fall geändert werden, weil dadurch eine falsche Zuordnung zu den gespeicherten Userdaten erfolgen würde!
@@ -178,7 +179,7 @@ var constInit = function(c) {
     bookmark("Map", "https://www.geocaching.com/map/", c.bookmarks);
     profileSpecialBookmark(scriptShortNameSync, defaultSyncLink, "lnk_gclhsync", c.bookmarks);
     externalBookmark("Forum Geoclub", "http://geoclub.de/forum/index.php", c.bookmarks);
-    externalBookmark("Changelog GClh II", "https://github.com/2Abendsegler/GClh/blob/master/docu/changelog.md#readme", c.bookmarks);
+    externalBookmark("Changelog GClh II", urlChangelog, c.bookmarks);
     bookmark("Lists", "https://www.geocaching.com/my/lists.aspx", c.bookmarks);
     bookmark("Souvenirs", "https://www.geocaching.com/my/souvenirs.aspx", c.bookmarks);
     bookmark("Friend League", "https://www.geocaching.com/play/friendleague", c.bookmarks);
@@ -706,7 +707,7 @@ var mainGC = function() {
                     if ($('.btn-submit')[0] && $('.btn-submit')[0].children[0]) {
                         $('.btn-submit')[0].children[0].innerHTML += " (F2)";
                         window.addEventListener('keydown', keydownF2_2, true);
-                    } else {waitCount++; if (waitCount <= 20) setTimeout(function(){checkNewLogPage(waitCount);}, 100);}
+                    } else {waitCount++; if (waitCount <= 20) setTimeout(function() {checkNewLogPage(waitCount);}, 100);}
                 }
                 checkNewLogPage(0);
                 function keydownF2_2(e) {
@@ -2645,7 +2646,7 @@ var mainGC = function() {
                         var value = $('<textarea>').html(document.getElementById('LogText').innerHTML).val();
                         document.getElementById('LogText').value += value;
                     }
-                } else {waitCount++; if (waitCount <= 100) setTimeout(function(){checkLogType(waitCount);}, 100);}
+                } else {waitCount++; if (waitCount <= 400) setTimeout(function(){checkLogType(waitCount);}, 25);}
             }
         } catch(e) {gclh_error("Signature New Log Page(CACHE):",e);}
     }
@@ -2936,10 +2937,10 @@ var mainGC = function() {
     }
 
 // Improve pocket queries, nearest lists, recently viewed. Compact layout, favorites percentage.
-    if (settings_compact_layout_pqs && document.location.href.match(/\.com\/seek\/nearest\.aspx\?pq=/)) var x0list = "p";
-    else if (settings_compact_layout_nearest && document.location.href.match(/\.com\/seek\/nearest\.aspx\?/)) var x0list = "n";
-    else if (settings_compact_layout_recviewed && document.location.href.match(/\.com\/my\/recentlyviewedcaches\.aspx/)) var x0list = "r";
-    if (x0list) {
+    if (settings_compact_layout_pqs && document.location.href.match(/\.com\/seek\/nearest\.aspx\?pq=/)) var li0 = "p";
+    else if (settings_compact_layout_nearest && document.location.href.match(/\.com\/seek\/nearest\.aspx\?/)) var li0 = "n";
+    else if (settings_compact_layout_recviewed && document.location.href.match(/\.com\/my\/recentlyviewedcaches\.aspx/)) var li0 = "r";
+    if (li0) {
         try {
             var css = "";
             // Compact layout:
@@ -3044,8 +3045,8 @@ var mainGC = function() {
                 $('#ctl00_ContentBody_KeyPanel')[0].remove();
             }
             // Favorites percentage:
-            if ((settings_fav_proz_pqs && x0list == "p") || (settings_fav_proz_nearest && x0list == "n") || (settings_fav_proz_recviewed && x0list == "r")) {
-                var url = (x0list == "r" ? "recentlyviewedcaches.aspx/FavoriteScore" : "nearest.aspx/FavoriteScore");
+            if ((settings_fav_proz_pqs && li0 == "p") || (settings_fav_proz_nearest && li0 == "n") || (settings_fav_proz_recviewed && li0 == "r")) {
+                var url = (li0 == "r" ? "recentlyviewedcaches.aspx/FavoriteScore" : "nearest.aspx/FavoriteScore");
                 css += "span.favorite-rank, .gclh_favPerc {font-size: .85em; float: right;}";
                 $('#ctl00_ContentBody_dlResults_ctl00_uxSort_Favorites, #ctl00_ContentBody_RecentlyViewedCachesList1_dlDetailResults_ctl00_uxSort_Favorites').closest('th').after('<th class="AlignCenter" title="Favorites percentage">%</th>');
                 $('a.favoriteTotal').each(function() {
@@ -6784,7 +6785,7 @@ var mainGC = function() {
             // Config, Sync und Changelog Links beim Avatar in Profile, Dashboard.
             var lnk_config = "<a href='#GClhShowConfig' id='gclh_config_lnk' name='gclh_config_lnk' title='" + scriptShortNameConfig + " v" + scriptVersion + (settings_f4_call_gclh_config ? " / Key F4":"") + "' >" + scriptShortNameConfig + "</a>";
             var lnk_sync = " | <a href='#GClhShowSync' id='gclh_sync_lnk' name='gclh_sync_lnk' title='" + scriptShortNameSync + " v" + scriptVersion + (settings_f10_call_gclh_sync ? " / Key F10":"") + "' >" + scriptShortNameSync + "</a>";
-            var lnk_changelog = " | <a href='https://github.com/2Abendsegler/GClh/blob/master/docu/changelog.md#readme' title='Documentation of changes and new features in GClh II on GitHub'>Changelog</a>";
+            var lnk_changelog = " | <a href='"+urlChangelog+"' title='Documentation of changes and new features in GClh II on GitHub'>Changelog</a>";
             if (is_page('profile')) $('#ctl00_ContentBody_WidgetMiniProfile1_memberProfileLink')[0].parentNode.innerHTML += " | <br>" + lnk_config + lnk_sync + lnk_changelog;
             else $('.bio-meta')[0].innerHTML += lnk_config + lnk_sync + lnk_changelog;
             appendCssStyle(".bio-meta {font-size: 12px;} .bio-meta a:hover {color: #02874d;}");
@@ -6973,7 +6974,7 @@ var mainGC = function() {
 // Enkodieren in url und dekodieren aus url.
     function urlencode(s) {
         s = s.replace(/&amp;/g, "&");
-        s = encodeURIComponent(s);  // Kodiert alle außer folgende Zeichen: A bis Z und a bis z und - _ . ! ~ * ' ( )
+        s = encodeURIComponent(s);  // Alles außer: A bis Z, a bis z und - _ . ! ~ * ' ( )
         s = s.replace(/~/g, "%7e");
         s = s.replace(/'/g, "%27");
         s = s.replace(/%26amp%3b/g, "%26");
@@ -6989,12 +6990,12 @@ var mainGC = function() {
     }
 
 // HTML dekodieren, zB: "&amp;" in "&" (zB: User "Rajko & Dominik".)
-    function decode_innerHTML(variable_mit_innerHTML) {
+    function decode_innerHTML(v_mit_innerHTML) {
         var elem = document.createElement('textarea');
-        elem.innerHTML = variable_mit_innerHTML.innerHTML;
-        variable_decode = elem.value;
-        variable_new = variable_decode.trim();
-        return variable_new;
+        elem.innerHTML = v_mit_innerHTML.innerHTML;
+        v_decode = elem.value;
+        v_new = v_decode.trim();
+        return v_new;
     }
     function html_to_str(s) {
         s = s.replace(/\&amp;/g, "&");
@@ -7128,10 +7129,10 @@ var mainGC = function() {
             rcClose();
             return;
         }
-        if (document.getElementById('bg_shadow')) document.getElementById('bg_shadow').style.display = "none";
-        if (document.getElementById('settings_overlay')) document.getElementById('settings_overlay').style.display = "none";
-        if (document.getElementById('sync_settings_overlay')) document.getElementById('sync_settings_overlay').style.display = "none";
-        if (document.getElementById('findplayer_overlay')) document.getElementById('findplayer_overlay').style.display = "none";
+        if ($('#bg_shadow')[0]) $('#bg_shadow')[0].style.display = "none";
+        if ($('#settings_overlay')[0]) $('#settings_overlay')[0].style.display = "none";
+        if ($('#sync_settings_overlay')[0]) $('#sync_settings_overlay')[0].style.display = "none";
+        if ($('#findplayer_overlay')[0]) $('#findplayer_overlay')[0].style.display = "none";
         if (clearUrl != false) document.location.href = clearUrlAppendix(document.location.href, false);
     }
 
@@ -7144,8 +7145,8 @@ var mainGC = function() {
 
 // Sucht Original Usernamen des Owners aus Listing.
     function get_real_owner() {
-        if (document.getElementById("ctl00_ContentBody_bottomSection")) {
-            var links = document.getElementById("ctl00_ContentBody_bottomSection").getElementsByTagName("a");
+        if ($('#ctl00_ContentBody_bottomSection')) {
+            var links = $('#ctl00_ContentBody_bottomSection').find('a[href*="/seek/nearest.aspx?u="]');
             for (var i = 0; i < links.length; i++) {
                 var match = links[i].href.match(/\/seek\/nearest\.aspx\?u\=(.*)$/);
                 if (match) return urldecode(match[1]);
@@ -7154,23 +7155,21 @@ var mainGC = function() {
         } else return false;
     }
 
-// Versteckt Header in Map-Ansicht.
+// Hide header in map.
     function hide_map_header() {
-        var header = document.getElementsByTagName("nav");
-        if (header[0].style.display != "none") {
-            header[0].style.display = "none";
-            document.getElementById("Content").style.top = 0;
+        if ($('nav')[0].style.display != "none") {
+            $('nav')[0].style.display = "none";
+            $('#Content')[0].style.top = 0;
         } else {
-            header[0].style.display = "block";
-            document.getElementById("Content").style.top = "80px";
+            $('nav')[0].style.display = "block";
+            $('#Content')[0].style.top = "80px";
         }
     }
 
 // CSS Style hinzufügen.
     function appendCssStyle(css, name) {
-        var tagname = 'head';
-        if (name) tagname = name;
-        var tag = document.getElementsByTagName(tagname)[0];
+        if (name) var tag = $(name)[0];
+        else var tag = $('head')[0];
         var style = document.createElement('style');
         style.innerHTML = 'GClhII{} ' + css;
         style.type = 'text/css';
@@ -7284,10 +7283,10 @@ var mainGC = function() {
             message_img.setAttribute("src", global_message_icon);
             message_link.appendChild(message_img);
             if (settings_message_icon_new_win) message_link.setAttribute("target", "_blank");
-            message_link.setAttribute("href", http + "://www.geocaching.com/account/messagecenter?recipientId=" + guid + "&text=" + template);
+            message_link.setAttribute("href", "/account/messagecenter?recipientId=" + guid + "&text=" + template);
             b_side.parentNode.insertBefore(message_link, b_side.nextSibling);
             b_side.parentNode.insertBefore(document.createTextNode(" "), b_side.nextSibling);
-            // "Message this owner" und das Icon entfernen, falls es da ist.
+            // "Message this owner" und Icon entfernen.
             $('#ctl00_ContentBody_mcd1').find(".message__owner").remove();  // Cache Listing
             $('.BugDetailsList').find(".message__owner").remove();  // TB Listing
         }
@@ -7301,12 +7300,12 @@ var mainGC = function() {
             mail_link.appendChild(mail_img);
             if (settings_mail_icon_new_win) mail_link.setAttribute("target", "_blank");
             if (b_art == "per guid") {
-                mail_link.setAttribute("href", http + "://www.geocaching.com/email/?guid=" + guid + "&text=" + template);
+                mail_link.setAttribute("href", "/email/?guid=" + guid + "&text=" + template);
                 b_side.parentNode.insertBefore(mail_link, b_side.nextSibling);
                 b_side.parentNode.insertBefore(document.createTextNode(" "), b_side.nextSibling);
             } else {
                 b_side.appendChild(document.createTextNode(" "));
-                mail_link.setAttribute("href", http + "://www.geocaching.com/email/?u=" + urlencode(b_username) + "&text=" + template);
+                mail_link.setAttribute("href", "/email/?u=" + urlencode(b_username) + "&text=" + template);
                 b_side.appendChild(mail_link);
                 b_side.appendChild(document.createTextNode(" "));
             }
@@ -7382,7 +7381,7 @@ var mainGC = function() {
         if (tasks.match("vip")) parameter["vip"] = getValue(parameterStamm + "_vip");
         else parameter["vip"] = "";
 
-        // Wenn Einfärbung für User nicht stattfinden soll, dann entfernen.
+        // Wenn Einfärbung für User nicht stattfinden soll, entfernen.
         if (parameter["user"] == false) setLinesColorNone(lines, replaceSpecUser);
         // Wenn Einfärbung stattfinden soll.
         if (parameter["user"] == true || parameter["owner"] == true || parameter["reviewer"] == true || parameter["vip"] == true) {
@@ -7420,7 +7419,7 @@ var mainGC = function() {
                         }
                     }
                 }
-                // Cache, TB Listing. Anhand titles zum VIP Icon und guid der VIP prüfen, ob Einfärbung fürVIP notwendig ist. VIP kann sich während Seitendarstellung ändern.
+                // Cache, TB Listing. Anhand titles zum VIP Icon und guid der VIP prüfen, ob Einfärbung für VIP notwendig ist. VIP kann sich während Seitendarstellung ändern.
                 if (newClass == "" && parameter["vip"] && vips) {
                     // Farbe für VIP zurücksetzen.
                     for (var j = 0; j < linesTogether; j++) {
@@ -7502,17 +7501,17 @@ var mainGC = function() {
         var shadow = document.createElement("div");
         shadow.setAttribute("id", "bg_shadow");
         shadow.setAttribute("style", "z-index:1000; width: 100%; height: 100%; background-color: #000000; position:fixed; top: 0; left: 0; opacity: 0.5; filter: alpha(opacity=50);");
-        document.getElementsByTagName('body')[0].appendChild(shadow);
-        document.getElementById('bg_shadow').addEventListener("click", btnClose, false);
+        $('body')[0].appendChild(shadow);
+        $('#bg_shadow')[0].addEventListener("click", btnClose, false);
     }
 
-// Ist GClh Config aktiv?
+// Ist Config aktiv?
     function check_config_page() {
         var config_page = false;
         if ($('#bg_shadow')[0] && $('#bg_shadow')[0].style.display == "" && $('#settings_overlay')[0] && $('#settings_overlay')[0].style.display == "") config_page = true;
         return config_page;
     }
-// Ist GClh Sync aktiv?
+// Ist Sync aktiv?
     function check_sync_page() {
         var sync_page = false;
         if ($('#bg_shadow')[0] && $('#bg_shadow')[0].style.display == "" && $('#sync_settings_overlay')[0] && $('#sync_settings_overlay')[0].style.display == "") sync_page = true;
@@ -7537,7 +7536,7 @@ var mainGC = function() {
         return true;
     }
 
-// Zusatz in  url, eingeleitet durch "#", zurücksetzen bis auf "#".
+// Zusatz in url, eingeleitet durch "#", zurücksetzen bis auf "#".
     function clearUrlAppendix(url, onlyTheFirst) {
         var urlSplit = url.split('#');
         var newUrl = "";
@@ -7548,7 +7547,7 @@ var mainGC = function() {
 
 // Ist Basic Member in PMO Cache?
     function isMemberInPmoCache() {
-        if (is_page("cache_listing") && document.getElementsByClassName("pmo-banner")[0] && document.getElementsByClassName("pmo-upsell")[0]) return true;
+        if (is_page("cache_listing") && $('.pmo-banner')[0] && $('.pmo-upsell')[0]) return true;
         else return false;
     }
 
@@ -7562,6 +7561,7 @@ var mainGC = function() {
 //--> $$000
         var code = '<img src="https://c.andyhoppe.com/1485103563"' + prop +
                    '<img src="https://c.andyhoppe.com/1485234890"' + prop +
+                   '<img src="https://www.worldflagcounter.com/dy9"' + prop +
                    '<img src="https://s07.flagcounter.com/countxl/mHeY/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
 //<-- $$000
         div.innerHTML = code;
@@ -7569,7 +7569,7 @@ var mainGC = function() {
         setValue("declared_version", scriptVersion);
         setTimeout(function() {$("#gclh_simu").remove();}, 4000);
         setTimeout(function() {
-            var url = "https://github.com/2Abendsegler/GClh/blob/master/docu/changelog.md#readme";
+            var url = urlChangelog;
             var text = "Version " + scriptVersion + " of  \"" + scriptName + "\"  was successfully installed.\n\n"
                      + "Do you want to open the changelog in a new tab, to have a quick\n"
                      + "look at changes and new features?\n";
@@ -8079,14 +8079,12 @@ var mainGC = function() {
                 }
                 hideCtxMenu();
             });
-
             $('#btn-rename').click(function() {
                 var id = $(this).data('id');
                 var name = $("#filter-name-rename").val();
                 actionRename(id, name);
                 updateUI();
             });
-
             $('#btn-update').click(function() {
                 var id = $(this).data('id');
                 var update = (document.location.href.indexOf("?")>=0?true:false);
@@ -8098,12 +8096,10 @@ var mainGC = function() {
         }
         $("#filter-edit").hide();
         if ($(".results").length != 0) $("#filter-new").show();
-
         var html = "";
         if (settings_search_data.length) {
             settings_search_data.sort(function(a, b){return a.name.toUpperCase()>b.name.toUpperCase();});
         }
-
         for (var i = 0; i < settings_search_data.length; i++) {
             html += '<li data-id="'+settings_search_data[i].id+'">';
             var id = 'data-id="'+settings_search_data[i].id+'"';
@@ -8114,7 +8110,6 @@ var mainGC = function() {
             html += '</li>';
         }
         $("#filterlist").html(html);
-
         $('.action-open').click(function() {
             var id = $(this).data('id');
             actionOpen(id);
@@ -8166,7 +8161,6 @@ var mainGC = function() {
                        $(this).removeClass('btn-user-active');
                     }
                 });
-
                 var currentFilter = "";
                 for (var i = 0; i < settings_search_data.length; i++) {
                     if (settings_search_data[i].url == document.location.href.split("#")[0]) {
@@ -8174,7 +8168,6 @@ var mainGC = function() {
                     }
                 }
                 $(".button-group-dynamic").append('<span>'+currentFilter+'</span>');
-
                 // Close the dialog div if a mouse click outside.
                 $(document).mouseup(function(e) {
                     var container = $('#ctxMenu');
@@ -8198,14 +8191,11 @@ var mainGC = function() {
     function createFindPlayerForm() {
         btnClose();
         if (checkTaskAllowed("Find Player", true) == false) return;
-
-        if (document.getElementById('bg_shadow')) {
-            if (document.getElementById('bg_shadow').style.display == "none") document.getElementById('bg_shadow').style.display = "";
+        if ($('#bg_shadow')[0]) {
+            if ($('#bg_shadow')[0].style.display == "none") $('#bg_shadow')[0].style.display = "";
         } else buildBgShadow();
-
-        if (document.getElementById('findplayer_overlay') && document.getElementById('findplayer_overlay').style.display == "none") {
-            document.getElementById('findplayer_overlay').style.display = "";
-        } else {
+        if ($('#findplayer_overlay')[0] &&$('#findplayer_overlay')[0].style.display == "none") $('#findplayer_overlay')[0].style.display = "";
+        else {
             var html = "";
             html += "#findplayer_overlay {";
             html += "  background-color: #d8cd9d;";
@@ -8234,11 +8224,7 @@ var mainGC = function() {
             html += "  padding-bottom: 0px !important;";
             html += "  box-shadow: unset !important;";
             html += "  display: unset;}";
-            var form_side = document.getElementsByTagName('body')[0];
-            var form_style = document.createElement("style");
-            form_style.appendChild(document.createTextNode(html));
-            form_side.appendChild(form_style);
-
+            appendCssStyle(html, "body");
             // Overlay erstellen
             var html = "";
             html += "<h3 style='margin:5px; font-weight: bold; font-size: 19.5px; line-height: 1; color: #594a42;'>Find Player</h3>";
@@ -8248,19 +8234,17 @@ var mainGC = function() {
             html += " <input style='cursor: pointer;' class='gclh_form' type=\"submit\" value=\"go\" name=\"ctl00$ContentBody$FindUserPanel1$GetUsers\"/>";
             html += " <input style='cursor: pointer;' class='gclh_form' id='btn_close1' type='button' value='close'>";
             html += "</form>";
-            var form_div = document.createElement("div");
-            form_div.setAttribute("id", "findplayer_overlay");
-            form_div.setAttribute("align", "center");
-            form_div.innerHTML = html;
-            form_div.appendChild(document.createTextNode(""));
-            form_side.appendChild(form_div);
-            document.getElementById("findplayer_field").focus();
-            document.getElementById('btn_close1').addEventListener("click", btnClose, false);
+            var side = $('body')[0];
+            var div = document.createElement("div");
+            div.setAttribute("id", "findplayer_overlay");
+            div.setAttribute("align", "center");
+            div.innerHTML = html;
+            div.appendChild(document.createTextNode(""));
+            side.appendChild(div);
+            $('#btn_close1')[0].addEventListener("click", btnClose, false);
         }
-        // Fokusierung auf Verarbeitung, damit Menüs einklappen.
-        document.getElementById("findplayer_overlay").click();
-        // Stell den Cursor ins Feld.
-        document.getElementById("findplayer_field").focus();
+        if ($('.hover.open')[0]) $('.hover.open')[0].className = "";
+        $('#findplayer_field')[0].focus();
     }
 
 //////////////////////////////
@@ -8468,18 +8452,14 @@ var mainGC = function() {
         btnClose(false);
         if (checkTaskAllowed("GClh Config", true) == false) return;
         window.scroll(0, 0);
-
-        if (document.getElementById('bg_shadow')) {
-            if (document.getElementById('bg_shadow').style.display == "none") document.getElementById('bg_shadow').style.display = "";
+        if ($('#bg_shadow')[0]) {
+            if ($('#bg_shadow')[0].style.display == "none") $('#bg_shadow')[0].style.display = "";
         } else buildBgShadow();
-        // Hauptbereiche im Config gegebenenfalls hideable machen.
         if (settings_make_config_main_areas_hideable && !document.location.href.match(/#a#/i)) {
             var prepareHideable = "<img id='lnk_gclh_config_#name#' title='' src='' style='cursor: pointer'> ";
         } else var prepareHideable = "";
-
-        if (document.getElementById('settings_overlay') && document.getElementById('settings_overlay').style.display == "none") {
-            document.getElementById('settings_overlay').style.display = "";
-        } else {
+        if ($('#settings_overlay')[0] && $('#settings_overlay')[0].style.display == "none") $('#settings_overlay')[0].style.display = "";
+        else {
             create_config_css();
             var div = document.createElement("div");
             div.setAttribute("id", "settings_overlay");
@@ -8491,7 +8471,7 @@ var mainGC = function() {
             html += "&nbsp;" + "<font style='float: right; font-size: 11px; ' >";
             html += "<a href='http://geoclub.de/forum/viewforum.php?f=117' title='Help is available on the Geoclub forum' target='_blank'>Help</a> | ";
             html += "<a href='https://github.com/2Abendsegler/GClh/issues?q=is:issue is:open sort:created-desc' title='Show open issues on GitHub' target='_blank'>Open issues</a> | ";
-            html += "<a href='https://github.com/2Abendsegler/GClh/blob/master/docu/changelog.md#readme' title='Documentation of changes and new features in GClh II on GitHub' target='_blank'>Changelog</a> | ";
+            html += "<a href='"+urlChangelog+"' title='Documentation of changes and new features in GClh II on GitHub' target='_blank'>Changelog</a> | ";
             html += "<a id='check_for_upgrade' href='#' style='cursor: pointer' title='Check for upgrade GClh II'>Check for upgrade</a> | ";
             html += "<a href='https://github.com/2Abendsegler/GClh/tree/master' title='Development plattform and issue system of GClh II' target='_blank'>GitHub</a> | ";
             html += "<a id='rc_link' href='#' style='cursor: pointer' title='Reset some configuration data'>Reset</a></font>";
@@ -9190,7 +9170,7 @@ var mainGC = function() {
             // Config Content: Aufbauen, Reset Area verbergen, Special Links Nearest List/Map, Own Trackables versorgen.
             // ---------------
             div.innerHTML = html;
-            document.getElementsByTagName('body')[0].appendChild(div);
+            $('body')[0].appendChild(div);
             $('#gclh_config_content2').hide();
             $('#settings_show_homezone,#settings_use_gclh_layercontrol,#settings_bookmarks_top_menu,#settings_bookmarks_top_menu_h').addClass('shadowBig');
             setSpecialLinks();
@@ -9632,9 +9612,7 @@ var mainGC = function() {
                 }
             }
         }
-
-        // Fokusierung auf Verarbeitung, damit Menüs einklappen.
-        document.getElementById("settings_overlay").click();
+        if ($('.hover.open')[0]) $('.hover.open')[0].className = "";
 
         // Bei F2 Save, bei ESC Close im Config durchführen.
         if (check_config_page()) window.addEventListener('keydown', keydown, true);
@@ -10874,7 +10852,7 @@ var mainGC = function() {
                 $('#syncManual').toggle();
             });
         }
-        document.getElementById("sync_settings_overlay").click();
+        if ($('.hover.open')[0]) $('.hover.open')[0].className = "";
     }
 
 // Auto import.
