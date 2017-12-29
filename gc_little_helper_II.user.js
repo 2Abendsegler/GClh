@@ -17,7 +17,7 @@
 // @connect          maps.googleapis.com
 // @connect          raw.githubusercontent.com
 // @description      Some little things to make life easy (on www.geocaching.com).
-// @copyright        2010-2016 Torsten Amshove, 2017 2Abendsegler
+// @copyright        2010-2016 Torsten Amshove, 2017-2018 2Abendsegler
 // @author           Torsten Amshove; 2Abendsegler
 // @icon             https://raw.githubusercontent.com/2Abendsegler/GClh/master/images/gclh_logo.png
 // @license          GNU General Public License v2.0
@@ -9965,13 +9965,11 @@ var mainGC = function() {
                 if (type === "upload") {
                     gclh_sync_DB_CheckAndCreateClient()
                         .done(function(){
-                            // Means the connection to Dropbox stands, so we can make calls.
                             gclh_sync_DBSave().done(function() {
                                 window.location.reload(false);
                             });
                         })
                         .fail(function(){
-                            // Means something went wrong or the Dropbox is not authenticated, so we display the Auth Link.
                             alert('GClh is not authorized to use your Dropbox. Please go to the Sync page and \nauthenticate your Dropbox first. Nevertheless your config is saved localy.');
                             window.location.reload(false);
                         });
@@ -10290,58 +10288,48 @@ var mainGC = function() {
         }
     }
     function restoreColor(p, r, v) {
-        if (document.getElementById(r) && document.getElementById(p).value != v) document.getElementById(r).click();
+        if ($('#'+r)[0] && $('#'+p)[0].value != v) $('#'+r)[0].click();
     }
 
-// Bezeichnung Save Button setzen.
+// Bezeichnung Save, Close Button setzen.
     function setValueInSaveButton() {
-        var content = "save";
-        // Nach Aufbau Config.
-        if (document.getElementById("settings_f2_save_gclh_config")) {
-            if (document.getElementById("settings_f2_save_gclh_config").checked) content += " (F2)";
-            document.getElementById('btn_save').setAttribute("value", content);
-        // Vor Aufbau Config.
-        } else {
-            if (settings_f2_save_gclh_config) content += " (F2)";
-            return content;
-        }
+        var cont = setValueInButton("save", "(F2)", "settings_f2_save_gclh_config", "btn_save");
+        return cont;
     }
-// Bezeichnung Close Button setzen.
     function setValueInCloseButton() {
-        var content = "close";
-        // Nach Aufbau Config.
-        if (document.getElementById("settings_esc_close_gclh_config")) {
-            if (document.getElementById("settings_esc_close_gclh_config").checked) content += " (ESC)";
-            document.getElementById('btn_close2').setAttribute("value", content);
-        // Vor Aufbau Config.
-        } else {
-            if (settings_esc_close_gclh_config) content += " (ESC)";
-            return content;
+        var cont = setValueInButton("close", "(ESC)", "settings_esc_close_gclh_config", "btn_close2");
+        return cont;
+    }
+    function setValueInButton(cont, fKey, para, butt) {
+        if ($('#'+para)[0]) {  // Nach Aufbau Config.
+            if ($('#'+para)[0].checked) cont += " "+fKey;
+            $('#'+butt)[0].setAttribute("value", cont);
+        } else {  // Vor Aufbau Config.
+            if (getValue(para,"")) cont += " "+fKey;
+            return cont;
         }
     }
 
-// Info ausgeben, dass gespeichert wurde.
+// Info gespeichert ausgeben.
     function showSaveForm() {
         if (document.getElementById('save_overlay')) {
         } else {
-            var html = "";
-            html += "#save_overlay {background-color: #d8cd9d; width:560px; margin-left: 20px; border: 2px solid #778555; overflow: auto; padding:10px; position: absolute; left:30%; top:70px; z-index:1004; border-radius: 10px;}";
-            html += ".gclh_form {background-color: #d8cd9d; border: 2px solid #778555; padding-left: 5px; padding-right: 5px;}";
-            html += "h3 {margin: 0;}";
-            var form_side = document.getElementsByTagName('body')[0];
-            var form_style = document.createElement("style");
-            form_style.appendChild(document.createTextNode(html));
-            form_side.appendChild(form_style);
-            html = "<h3 id='save_overlay_h3'></h3>";
-            var form_div = document.createElement("div");
-            form_div.setAttribute("id", "save_overlay");
-            form_div.setAttribute("align", "center");
-            form_div.innerHTML = html;
-            form_div.appendChild(document.createTextNode(""));
-            form_side.appendChild(form_div);
+            var css = "";
+            css += "#save_overlay {background-color: #d8cd9d; width:560px; margin-left: 20px; border: 2px solid #778555; overflow: auto; padding:10px; position: absolute; left:30%; top:70px; z-index:1004; border-radius: 10px;}";
+            css += ".gclh_form {background-color: #d8cd9d; border: 2px solid #778555; padding-left: 5px; padding-right: 5px;}";
+            css += "h3 {margin: 0;}";
+            appendCssStyle(css);
+            var side = $('body')[0];
+            var html = "<h3 id='save_overlay_h3'></h3>";
+            var div = document.createElement("div");
+            div.setAttribute("id", "save_overlay");
+            div.setAttribute("align", "center");
+            div.innerHTML = html;
+            div.appendChild(document.createTextNode(""));
+            side.appendChild(div);
         }
-        document.getElementById("save_overlay_h3").innerHTML = "save...";
-        document.getElementById('save_overlay').style.display = "";
+        $('#save_overlay_h3')[0].innerHTML = "save...";
+        $('#save_overlay')[0].style.display = "";
     }
 
 // Änderungen an abweichenden Bezeichnungen in Spalte 2, in Value in Spalte 3 updaten.
@@ -10602,6 +10590,7 @@ var mainGC = function() {
 //////////////////////////////
 // Sync Main
 //////////////////////////////
+// Get/Set Config Data.
     function sync_getConfigData() {
         var data = {};
         var value = null;
@@ -10613,7 +10602,6 @@ var mainGC = function() {
         }
         return JSON.stringify(data, undefined, 2);
     }
-
     function sync_setConfigData(data) {
         var parsedData = JSON.parse(data);
         var settings = {};
@@ -10674,11 +10662,9 @@ var mainGC = function() {
     function gclh_sync_DB_CheckAndCreateClient() {
         var deferred = $.Deferred();
         token = getValue('settings_DB_auth_token');
-
         if (token) {
             // Try to create an instance and test it with the current token
             dropbox_client = new Dropbox({accessToken: token});
-
             dropbox_client.usersGetCurrentAccount()
                 .then(function(response) {
                     deferred.resolve();
@@ -10721,7 +10707,6 @@ var mainGC = function() {
 // Saves the current config to dropbox.
     function gclh_sync_DBSave() {
         var deferred = $.Deferred();
-
         gclh_sync_DB_CheckAndCreateClient()
             .fail(function(){
                 // Should not be reached, because we checked the client earlier
@@ -10730,16 +10715,14 @@ var mainGC = function() {
                 $('#syncDBLoader').hide();
                 return deferred.promise();
             });
-
         $('#syncDBLoader').show();
-
         dropbox_client.filesUpload({
             path: dropbox_save_path,
             contents: sync_getConfigData(),
             mode: 'overwrite',
             autorename: false,
             mute: false
-        })
+            })
             .then(function(response) {
                 deferred.resolve();
                 $('#syncDBLoader').hide();
@@ -10756,7 +10739,6 @@ var mainGC = function() {
 // Loads the config from dropbox and replaces the current configuration with it.
     function gclh_sync_DBLoad() {
         var deferred = $.Deferred();
-
         gclh_sync_DB_CheckAndCreateClient()
             .fail(function(){
                 // Should not be reached, because we checked the client earlier
@@ -10764,9 +10746,7 @@ var mainGC = function() {
                 deferred.reject();
                 return deferred.promise();
             });
-
         $('#syncDBLoader').show();
-
         dropbox_client.filesDownload({path: dropbox_save_path})
             .then(function(data) {
                 var blob = data.fileBlob;
@@ -10777,7 +10757,8 @@ var mainGC = function() {
                 });
                 reader.readAsText(blob);
                 $('#syncDBLoader').hide();
-            }).catch(function(error) {
+            })
+            .catch(function(error) {
                 console.error('gclh_sync_DBLoad: Error while downloading config file:');
                 console.error(error);
                 deferred.reject();
@@ -10789,48 +10770,48 @@ var mainGC = function() {
 // Gets the hash of the saved config, so we can determine if we have to apply the config loaded from dropbox via autosync.
     function gclh_sync_DBHash() {
         var deferred = $.Deferred();
-
         gclh_sync_DB_CheckAndCreateClient()
             .fail(function(){
                 deferred.reject('Dropbox client is not initiated.');
                 return deferred.promise();
             });
-
         dropbox_client.filesGetMetadata({
             "path": dropbox_save_path,
             "include_media_info": false,
             "include_deleted": false,
             "include_has_explicit_shared_members": false
-        })
-        .then(function(response) {
-            console.log('content_hash:' + response.content_hash);
-            if (response != null && response != "") {
-                deferred.resolve(response.content_hash);
-            }else{
-                deferred.reject('Error: response had no file or file was empty.');
-            }
-        })
-        .catch(function(error) {
-            console.log('gclh_sync_DBHash: Error while getting hash for config file:');
-            console.log(error);
-            deferred.reject(error);
-        });
+            })
+            .then(function(response) {
+                console.log('content_hash:' + response.content_hash);
+                if (response != null && response != "") deferred.resolve(response.content_hash);
+                else deferred.reject('Error: response had no file or file was empty.');
+            })
+            .catch(function(error) {
+                console.log('gclh_sync_DBHash: Error while getting hash for config file:');
+                console.log(error);
+                deferred.reject(error);
+            });
         return deferred.promise();
     }
 
+// Reload page.
+    function reloadPage() {
+        if (document.location.href.indexOf("#") == -1 || document.location.href.indexOf("#") == document.location.href.length - 1) {
+            $('html, body').animate({scrollTop: 0}, 0);
+            document.location.reload(true);
+        } else document.location.replace(document.location.href.slice(0, document.location.href.indexOf("#")));
+    }
+
+// Sync anzeigen.
     function gclh_showSync() {
         btnClose();
         scroll(0, 0);
-
-        if (document.getElementById('bg_shadow')) {
-            if (document.getElementById('bg_shadow').style.display == "none") document.getElementById('bg_shadow').style.display = "";
+        if ($('#bg_shadow')[0]) {
+            if ($('#bg_shadow')[0].style.display == "none") $('#bg_shadow')[0].style.display = "";
         } else buildBgShadow();
-
-        if (document.getElementById('sync_settings_overlay') && document.getElementById('sync_settings_overlay').style.display == "none") {
-            document.getElementById('sync_settings_overlay').style.display = "";
-        } else {
+        if ($('#sync_settings_overlay')[0] && $('#sync_settings_overlay')[0].style.display == "none") $('#sync_settings_overlay')[0].style.display = "";
+        else {
             create_config_css();
-
             var div = document.createElement("div");
             div.setAttribute("id", "sync_settings_overlay");
             div.setAttribute("class", "settings_overlay");
@@ -10850,19 +10831,18 @@ var mainGC = function() {
             html += "<input class='gclh_form' type='button' value='export' id='btn_ExportConfig'> ";
             html += "<input class='gclh_form' type='button' value='import' id='btn_ImportConfig'>";
             html += "</div>";
-            html += "<br>";
-            html += "<br>";
+            html += "<br><br>";
             html += "<input class='gclh_form' type='button' value='close' id='btn_close3'>";
             html += "</div>";
             div.innerHTML = html;
 
-            document.getElementsByTagName('body')[0].appendChild(div);
-            document.getElementById('btn_close3').addEventListener("click", btnClose, false);
-            document.getElementById('btn_ExportConfig').addEventListener("click", function() {
-                document.getElementById('configData').innerText = sync_getConfigData();
+            $('body')[0].appendChild(div);
+            $('#btn_close3')[0].addEventListener("click", btnClose, false);
+            $('#btn_ExportConfig')[0].addEventListener("click", function() {
+                $('#configData')[0].innerText = sync_getConfigData();
             }, false);
-            document.getElementById('btn_ImportConfig').addEventListener("click", function() {
-                var data = document.getElementById('configData').innerText;
+            $('#btn_ImportConfig')[0].addEventListener("click", function() {
+                var data = $('#configData')[0].innerText;
                 if (data == null || data == "" || data == " ") {
                     alert("No data");
                     return;
@@ -10870,83 +10850,56 @@ var mainGC = function() {
                 try {
                     sync_setConfigData(data);
                     window.scroll(0, 0);
-                    $("#sync_settings_overlay").fadeOut(400);
+                    $('#sync_settings_overlay').fadeOut(400);
                     if (settings_show_save_message) {
                         showSaveForm();
-                        document.getElementById("save_overlay_h3").innerHTML = "imported";
+                        $('#save_overlay_h3')[0].innerHTML = "imported";
                     }
-                    // Reload page
-                    if (document.location.href.indexOf("#") == -1 || document.location.href.indexOf("#") == document.location.href.length - 1) {
-                        $('html, body').animate({scrollTop: 0}, 0);
-                        document.location.reload(true);
-                    } else document.location.replace(document.location.href.slice(0, document.location.href.indexOf("#")));
-                } catch(e) {
-                    alert("Invalid format");
-                }
+                    reloadPage();
+                } catch(e) {alert("Invalid format");}
             }, false);
-
-            document.getElementById('btn_DBSave').addEventListener("click", function() {
+            $('#btn_DBSave')[0].addEventListener("click", function() {
                 gclh_sync_DBSave();
             }, false);
-
-            document.getElementById('btn_DBLoad').addEventListener("click", function() {
-                gclh_sync_DBLoad().done(function() {
-                    // Reload page
-                    if (document.location.href.indexOf("#") == -1 || document.location.href.indexOf("#") == document.location.href.length - 1) {
-                        $('html, body').animate({scrollTop: 0}, 0);
-                        document.location.reload(true);
-                    } else document.location.replace(document.location.href.slice(0, document.location.href.indexOf("#")));
-                });
+            $('#btn_DBLoad')[0].addEventListener("click", function() {
+                gclh_sync_DBLoad().done(function() {reloadPage();});
             }, false);
-
             $('#syncDBLabel').click(function() {
                 $('#syncDB').toggle();
                 gclh_sync_DB_CheckAndCreateClient()
-                  .done(function(){
-                    // Means the connection to Dropbox stands, so we can make calls
-                    gclh_sync_DB_showSaveLoadLinks();
-                  })
-                  .fail(function(){
-                    // Means something went wrong or the Dropbox is not authenticated, so we display the Auth Link.
-                    gclh_sync_DB_showAuthLink();
-                  });
+                    .done(function() {gclh_sync_DB_showSaveLoadLinks();})
+                    .fail(function() {gclh_sync_DB_showAuthLink();});
             });
             $('#syncManualLabel').click(function() {
                 $('#syncManual').toggle();
             });
         }
-        // Fokusierung auf Verarbeitung, damit Menüs einklappen.
         document.getElementById("sync_settings_overlay").click();
-    } // <-- gclh_showSync
+    }
 
+// Auto import.
     if (settings_sync_autoImport && (settings_sync_last.toString() === "Invalid Date" || (new Date() - settings_sync_last) > settings_sync_time) && document.URL.indexOf("#access_token") === -1) {
-        gclh_sync_DBHash().done(function(hash) {
-            if (hash != settings_sync_hash) {
-                gclh_sync_DBLoad().done(function() {
-                    settings_sync_last = new Date();
-                    settings_sync_hash = hash;
-                    setValue("settings_sync_last", settings_sync_last.toString()).done(function(){
-                        setValue("settings_sync_hash", settings_sync_hash).done(function(){
-                            if (is_page("profile")) {
-                                // Reload page
-                                if (document.location.href.indexOf("#") == -1 || document.location.href.indexOf("#") == document.location.href.length - 1) {
-                                    $('html, body').animate({scrollTop: 0}, 0);
-                                    document.location.reload(true);
-                                } else document.location.replace(document.location.href.slice(0, document.location.href.indexOf("#")));
-                            }
-						});
+        gclh_sync_DBHash()
+            .done(function(hash) {
+                if (hash != settings_sync_hash) {
+                    gclh_sync_DBLoad().done(function() {
+                        settings_sync_last = new Date();
+                        settings_sync_hash = hash;
+                        setValue("settings_sync_last", settings_sync_last.toString()).done(function() {
+                            setValue("settings_sync_hash", settings_sync_hash).done(function() {
+                                if (is_page("profile")) reloadPage();
+    						});
+                        });
                     });
-                });
-            } else {
-                // Hashes are equal so nothing has changed. We do not need to update
-            }
-        })
-        .fail(function(error){
-            console.log('Autosync: Hash function was not successful:');
-            console.log(error);
-        });
-    }  // Sync
-};  // end of mainGC
+                }
+            })
+            .fail(function(error) {
+                console.log('Autosync: Hash function was not successful:');
+                console.log(error);
+            });
+    }
+
+};  // End of mainGC.
 
 //////////////////////////////
 // Global Functions
@@ -11102,25 +11055,21 @@ function appendMetaId(id) {
     head.appendChild(meta);
 }
 
-// Zeitdifferenzen.
-function adjustPlural(singularWord, timesNumber) {return singularWord + ((Math.abs(timesNumber) != 1) ? "s" : "");}
-
 // Calculates difference between two dates and returns it as a "humanized" string (borrowed from http://userscripts.org/scripts/show/36353).
+function adjustPlural(singularWord, timesNumber) {return singularWord + ((Math.abs(timesNumber) != 1) ? "s" : "");}
 function getDateDiffString(dateNew, dateOld) {
     var dateDiff = new Date(dateNew - dateOld);
     dateDiff.setUTCFullYear(dateDiff.getUTCFullYear() - 1970);
     var strDateDiff = "", timeunitValue = 0;
-    var timeunitsHash = {year: "getUTCFullYear", month: "getUTCMonth", day: "getUTCDate",
-                         hour: "getUTCHours", minute: "getUTCMinutes", second: "getUTCSeconds", millisecond: "getUTCMilliseconds"};
+    var timeunitsHash = {year: "getUTCFullYear", month: "getUTCMonth", day: "getUTCDate", hour: "getUTCHours", minute: "getUTCMinutes", second: "getUTCSeconds", millisecond: "getUTCMilliseconds"};
     for (var timeunitName in timeunitsHash) {
         timeunitValue = dateDiff[timeunitsHash[timeunitName]]() - ((timeunitName == "day") ? 1 : 0);
         if (timeunitValue !== 0) {
             if ((timeunitName == "millisecond") && (strDateDiff.length !== 0)) continue;  // Milliseconds won't be added unless difference is less than 1 second.
-            strDateDiff += ((strDateDiff.length === 0) ? "" : ", ") +  // Adds comma as separator if another time unit has already been added.
-                            timeunitValue + " " + adjustPlural(timeunitName, timeunitValue);
+            strDateDiff += ((strDateDiff.length === 0) ? "" : ", ") + timeunitValue + " " + adjustPlural(timeunitName, timeunitValue);
         }
     }
-    // Replaces last comma with "and" to humanize the string
+    // Replaces last comma with "and" to humanize the string.
     strDateDiff = strDateDiff.replace(/,([^,]*)$/, " and$1");
     return strDateDiff;
 }
