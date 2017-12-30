@@ -8489,6 +8489,15 @@ var mainGC = function() {
             html += checkboxy('settings_pq_automatically_day', "Generate pocket query today") + show_help("Use the server time to set the week day for creation.") + "<br>";
             html += "</div>";
 
+            html += "<h4 class='gclh_headline2'>"+prepareHideable.replace("#name#","recview")+"Recently viewed caches list" + "</h4>";
+            html += "<div id='gclh_config_recview' class='gclh_block'>";
+            html += newParameterOn3;
+            html += content_settings_show_log_it.replace("show_log_it","show_log_itX1");
+            html += checkboxy('settings_compact_layout_recviewed', 'Show compact layout in your recently viewed caches list') + "<br>";
+            html += " &nbsp; " + checkboxy('settings_fav_proz_recviewed', 'Show favorites percentage') + "<br>";
+            html += newParameterVersionSetzen(0.9) + newParameterOff;
+            html += "</div>";
+
             html += "<h4 class='gclh_headline2'>"+prepareHideable.replace("#name#","bm")+"Bookmark list" + prem + "</h4>";
             html += "<div id='gclh_config_bm' class='gclh_block'>";
             html += checkboxy('settings_show_sums_in_bookmark_lists', 'Show number of caches in bookmark lists') + show_help("With this option the number of caches and the number of selected caches in the categories \"All\", \"Found\", \"Archived\" and \"Deactivated\", corresponding to the select buttons, are shown in bookmark lists at the end of the list.") + "<br>";
@@ -8499,15 +8508,6 @@ var mainGC = function() {
             html += newParameterVersionSetzen(0.8) + newParameterOff;
             html += newParameterOn3;
             html += checkboxy('settings_bm_changed_and_go', 'After bookmark change go to bookmark list automatically') + show_help("With this option you can switch to the bookmark list automatically after a change of a bookmark. The confirmation page of this change will skip.") + "<br>";
-            html += newParameterVersionSetzen(0.9) + newParameterOff;
-            html += "</div>";
-
-            html += "<h4 class='gclh_headline2'>"+prepareHideable.replace("#name#","recview")+"Recently viewed caches list" + "</h4>";
-            html += "<div id='gclh_config_recview' class='gclh_block'>";
-            html += newParameterOn3;
-            html += content_settings_show_log_it.replace("show_log_it","show_log_itX1");
-            html += checkboxy('settings_compact_layout_recviewed', 'Show compact layout in your recently viewed caches list') + "<br>";
-            html += " &nbsp; " + checkboxy('settings_fav_proz_recviewed', 'Show favorites percentage') + "<br>";
             html += newParameterVersionSetzen(0.9) + newParameterOff;
             html += "</div>";
 
