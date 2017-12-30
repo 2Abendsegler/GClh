@@ -650,10 +650,10 @@ var mainGC = function() {
     }
 
 // Faster loading trackables without images.
-    if (settings_faster_profile_trackables && is_page("publicProfile") && $('#ctl00_ContentBody_ProfilePanel1_lnkCollectibles')[0] && $('#ctl00_ContentBody_ProfilePanel1_lnkCollectibles')[0].className == "Active") {
+    if (settings_faster_profile_trackables && is_page("publicProfile") && $('#ctl00_ContentBody_ProfilePanel1_lnkCollectibles.Active')[0]) {
         try {
             window.stop();
-            $('table.Table').find('tbody tr td a img').each(function() {this.src = "/images/icons/16/watch.png"; this.title = ""; this.style.paddingLeft = "15px";});
+            $('table.Table tbody tr td a img').each(function() {this.src = "/images/icons/16/watch.png"; this.title = ""; this.style.paddingLeft = "15px";});
         } catch(e) {gclh_error("Faster loading trackables without images:",e);}
     }
 
@@ -945,12 +945,11 @@ var mainGC = function() {
                 if (!is_page("cache_listing")) css += ".UserSuppliedContent {width: " + (new_width - 200) + "px;}";
                 if (is_page("publicProfile")) css += ".container .profile-panel {width: " + (new_width - 160) + "px;}";
                 if (is_page("cache_listing")) css += ".span-9 {width: " + (new_width - 300 - 270 - 13 - 13 - 10) + "px !important;}";
-                else if (document.location.href.match(/\.com\/my\/statistics\.aspx/) ||
-                         (is_page("publicProfile") && $('#ctl00_ContentBody_ProfilePanel1_lnkStatistics')[0] && $('#ctl00_ContentBody_ProfilePanel1_lnkStatistics')[0].className == "Active")) {
+                else if (document.location.href.match(/\.com\/my\/statistics\.aspx/) || (is_page("publicProfile") && $('#ctl00_ContentBody_ProfilePanel1_lnkStatistics.Active')[0])) {
                     css += ".span-9 {width: " + ((new_width - 280) / 2) + "px !important; margin-right: 30px;} .last {margin-right: 0px;}";
                     css += ".StatsTable {width: " + (new_width - 250) + "px !important;}";
                 } else if (is_page("publicProfile")) {
-                    if ($('#ctl00_ContentBody_ProfilePanel1_lnkCollectibles')[0] && $('#ctl00_ContentBody_ProfilePanel1_lnkCollectibles')[0].className == "Active") {
+                    if ($('#ctl00_ContentBody_ProfilePanel1_lnkCollectibles.Active')[0]) {
                         css += ".span-9 {width: " + ((new_width - 220) / 2) + "px !important;} .prepend-1 {padding-left: 10px;}";
                     } else {
                         css += ".span-9 {width: " + ((new_width - 250) / 2) + "px !important;}";
@@ -1762,9 +1761,9 @@ var mainGC = function() {
                 if ($('#lnkSendMessage')[0] || $('#ctl00_ProfileHead_ProfileHeader_lnkSendMessage')[0]) {
                     var guid = ($('#lnkSendMessage')[0] || $('#ctl00_ProfileHead_ProfileHeader_lnkSendMessage')[0]).href.match(/https?:\/\/www\.geocaching\.com\/account\/messagecenter\?recipientId=(.*)/);
                     guid = guid[1];
-                    if ($('#ctl00_ContentBody_ProfilePanel1_lblMemberName')[0] || $('#ctl00_ProfileHead_ProfileHeader_lblMemberName')[0]) {
-                        var username = decode_innerHTML($('#ctl00_ContentBody_ProfilePanel1_lblMemberName')[0] || $('#ctl00_ProfileHead_ProfileHeader_lblMemberName')[0]);
-                        var side = ($('#ctl00_ContentBody_ProfilePanel1_lblMemberName')[0] || $('#ctl00_ProfileHead_ProfileHeader_lblStatusText')[0]);
+                    if ($('#ctl00_ContentBody_ProfilePanel1_lblMemberName, #ctl00_ProfileHead_ProfileHeader_lblMemberName')[0]) {
+                        var username = decode_innerHTML($('#ctl00_ContentBody_ProfilePanel1_lblMemberName, #ctl00_ProfileHead_ProfileHeader_lblMemberName')[0]);
+                        var side = $('#ctl00_ContentBody_ProfilePanel1_lblMemberName, #ctl00_ProfileHead_ProfileHeader_lblStatusText')[0];
                     }
                     buildSendIcons(side, username, "per guid");
                 }
@@ -4477,12 +4476,12 @@ var mainGC = function() {
 
             // Public Profile:
             // ----------
-            } else if (is_page("publicProfile") && (document.getElementById("ctl00_ContentBody_ProfilePanel1_lblMemberName") || document.getElementById("ctl00_ProfileHead_ProfileHeader_lblMemberName"))) {
-                var user = (document.getElementById("ctl00_ContentBody_ProfilePanel1_lblMemberName") || document.getElementById("ctl00_ProfileHead_ProfileHeader_lblMemberName")).innerHTML.replace(/&amp;/, '&');
-                var side = (document.getElementById("ctl00_ContentBody_ProfilePanel1_lblMemberName") || document.getElementById("ctl00_ProfileHead_ProfileHeader_lblStatusText"));
+            } else if (is_page("publicProfile") && $('#ctl00_ContentBody_ProfilePanel1_lblMemberName, #ctl00_ProfileHead_ProfileHeader_lblMemberName')[0]) {
+                var user = $('#ctl00_ContentBody_ProfilePanel1_lblMemberName, #ctl00_ProfileHead_ProfileHeader_lblMemberName')[0].innerHTML.replace(/&amp;/, '&');
+                var side = $('#ctl00_ContentBody_ProfilePanel1_lblMemberName, #ctl00_ProfileHead_ProfileHeader_lblStatusText')[0];
                 // Build VIP Icon.
                 link = gclh_build_vipvup(user, global_vips, "vip");
-                link.children[0].style.marginLeft = (document.getElementById("ctl00_ContentBody_ProfilePanel1_lblMemberName") ? "0" : "14px");
+                link.children[0].style.marginLeft = ($('#ctl00_ContentBody_ProfilePanel1_lblMemberName')[0] ? "0" : "14px");
                 link.children[0].style.marginRight = "0";
                 side.appendChild(document.createTextNode(" "));
                 side.appendChild(link);
@@ -5237,12 +5236,9 @@ var mainGC = function() {
 
             // Um Profile Foto herum pseudo a Tag aufbauen. Nur altes Profile.
             var profileFoto = false;
-            if (is_page("publicProfile") &&
-                document.getElementById("ctl00_ContentBody_ProfilePanel1_lnkProfile") &&
-                document.getElementById("ctl00_ContentBody_ProfilePanel1_lnkProfile").className == "Active" &&
-                document.getElementById("ctl00_ContentBody_ProfilePanel1_uxProfilePhoto")) {
+            if (is_page("publicProfile") && $('#ctl00_ContentBody_ProfilePanel1_lnkProfile.Active')[0] && $('#ctl00_ContentBody_ProfilePanel1_uxProfilePhoto')[0]) {
                 var profileFoto = true;
-                var image = (document.getElementById("ctl00_ContentBody_ProfilePanel1_uxProfilePhoto") || document.getElementById("ctl00_ProfileHead_ProfileHeader_uxProfilePhoto"));
+                var image = $('#ctl00_ContentBody_ProfilePanel1_uxProfilePhoto, #ctl00_ProfileHead_ProfileHeader_uxProfilePhoto')[0];
                 var aPseudo = document.createElement("a");
                 aPseudo.appendChild(image.cloneNode(true));
                 image.parentNode.replaceChild(aPseudo, image);
@@ -5461,8 +5457,8 @@ var mainGC = function() {
                 }
             }
             // Change from 4 Cols to 2.
-            if ((document.location.href.match(/\.com\/(seek\/gallery\.aspx?|track\/gallery\.aspx?)/) && tds.length > 1 && document.getElementById("ctl00_ContentBody_GalleryItems_DataListGallery")) ||
-                 (is_page("publicProfile") && tds.length > 1 && document.getElementById("ctl00_ContentBody_ProfilePanel1_UserGallery_DataListGallery"))) {
+            if ((document.location.href.match(/\.com\/(seek\/gallery\.aspx?|track\/gallery\.aspx?)/) && tds.length > 1 && $('#ctl00_ContentBody_GalleryItems_DataListGallery')[0]) ||
+                 (is_page("publicProfile") && tds.length > 1 && $('#ctl00_ContentBody_ProfilePanel1_UserGallery_DataListGallery')[0])) {
                 var tbody = document.createElement("tbody");
                 var tr = document.createElement("tr");
                 var x = 0;
@@ -5598,9 +5594,9 @@ var mainGC = function() {
     if (document.location.href.match(/\.com\/map\//)) {
         try {
             function checkMapLeaflet(waitCount) {
-                if (document.getElementsByClassName("leaflet-container")[0]) {
+                if ($('.leaflet-container')[0]) {
                     if (settings_hide_map_header) hide_map_header();
-                    var sidebar = document.getElementById("searchtabs");
+                    var sidebar = $('#searchtabs')[0];
                     var link = document.createElement("a");
                     link.appendChild(document.createTextNode("Hide/Show Header"));
                     link.href = "#";
@@ -6087,8 +6083,8 @@ var mainGC = function() {
         }
     }
     function outputLogStatisticHeaderFooter(type, logsName, logsId, url) {
-        if (($('#ctl00_ContentBody_StatsChronologyControl1_YearlyBreakdown')[0] || $('#ctl00_ContentBody_ProfilePanel1_StatsChronologyControl1_YearlyBreakdown')[0])) {
-            var side = ($('#ctl00_ContentBody_StatsChronologyControl1_YearlyBreakdown')[0] || $('#ctl00_ContentBody_ProfilePanel1_StatsChronologyControl1_YearlyBreakdown')[0]);
+        if ($('#ctl00_ContentBody_StatsChronologyControl1_YearlyBreakdown, #ctl00_ContentBody_ProfilePanel1_StatsChronologyControl1_YearlyBreakdown')[0]) {
+            var side = $('#ctl00_ContentBody_StatsChronologyControl1_YearlyBreakdown, #ctl00_ContentBody_ProfilePanel1_StatsChronologyControl1_YearlyBreakdown')[0];
         }
         if (side) {
             var div = document.createElement("div");
@@ -6332,12 +6328,11 @@ var mainGC = function() {
     }
 
 // Show amount of different coins in public profile.
-    if (is_page("publicProfile") && document.getElementById('ctl00_ContentBody_ProfilePanel1_lnkCollectibles') && document.getElementById('ctl00_ContentBody_ProfilePanel1_lnkCollectibles').className == "Active") {
+    if (is_page("publicProfile") && $('#ctl00_ContentBody_ProfilePanel1_lnkCollectibles.Active')[0]) {
         try {
             function gclh_coin_stats(table_id) {
-                var table = document.getElementById(table_id).getElementsByTagName("table");
-                table = table[0];
-                var rows = table.getElementsByTagName("tbody")[0].getElementsByTagName("tr");
+                var table = $('#'+table_id+' table');
+                var rows = table.find('tbody').first().find('tr');
                 var sums = new Object();
                 sums["tbs"] = sums["coins"] = sums["patches"] = sums["signal"] = sums["unknown"] = 0;
                 var diff = new Object();
@@ -6360,7 +6355,7 @@ var mainGC = function() {
                         sums["unknown"] += parseInt(rows[i].childNodes[5].innerHTML, 10);
                     }
                 }
-                var tfoot = table.getElementsByTagName("tfoot")[0];
+                var tfoot = table.find('tfoot')[0];
                 var tr = document.createElement("tr");
                 var td = document.createElement("td");
                 var new_table = "";
@@ -6391,8 +6386,8 @@ var mainGC = function() {
                 tr.appendChild(td);
                 tfoot.appendChild(tr);
             }
-            if (document.getElementById("ctl00_ContentBody_ProfilePanel1_dlCollectibles")) gclh_coin_stats("ctl00_ContentBody_ProfilePanel1_dlCollectibles");
-            if (document.getElementById("ctl00_ContentBody_ProfilePanel1_dlCollectiblesOwned")) gclh_coin_stats("ctl00_ContentBody_ProfilePanel1_dlCollectiblesOwned");
+            if ($('#ctl00_ContentBody_ProfilePanel1_dlCollectibles')[0]) gclh_coin_stats("ctl00_ContentBody_ProfilePanel1_dlCollectibles");
+            if ($('#ctl00_ContentBody_ProfilePanel1_dlCollectiblesOwned')[0]) gclh_coin_stats("ctl00_ContentBody_ProfilePanel1_dlCollectiblesOwned");
         } catch(e) {gclh_error("Show Coin-Sums:",e);}
     }
 
@@ -7787,7 +7782,7 @@ var mainGC = function() {
             setTimeout(function() {
                 var logCounter = new Object();
                 logCounter["all"] = 0;
-                var logTypes = document.getElementsByClassName("LogTotals")[0].getElementsByTagName("a");
+                var logTypes = $('.LogTotals a');
                 for (var i = 0; i < logTypes.length; i++) {
                     var matches = logTypes[i].innerHTML.replace(/(,|\.)/g, "").match(/>(\s*)(\d+)/);
                     if (matches && matches[2]) {
@@ -7832,8 +7827,7 @@ var mainGC = function() {
 // Ist Seite eigene Statistik?
     function isOwnStatisticsPage(){
         if ((document.location.href.match(/\.com\/my\/statistics\.aspx/)) ||
-            (is_page("publicProfile") && $('#ctl00_ContentBody_lblUserProfile')[0].innerHTML.match(global_me) &&
-             $('#ctl00_ContentBody_ProfilePanel1_lnkStatistics')[0] && $('#ctl00_ContentBody_ProfilePanel1_lnkStatistics')[0].className == "Active")) {
+            (is_page("publicProfile") && $('#ctl00_ContentBody_lblUserProfile')[0].innerHTML.match(global_me) && $('#ctl00_ContentBody_ProfilePanel1_lnkStatistics.Active')[0])) {
             return true;
         } else return false;
     }
