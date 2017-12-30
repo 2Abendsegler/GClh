@@ -1088,15 +1088,11 @@ var mainGC = function() {
 // Disabled and archived ...
     if (is_page("cache_listing")) {
         try {
-            // Rename the link to image gallery.
             if ($('#ctl00_ContentBody_uxGalleryImagesLink')[0]) $('#ctl00_ContentBody_uxGalleryImagesLink')[0].innerHTML = $('#ctl00_ContentBody_uxGalleryImagesLink')[0].innerHTML.replace("View the ", "");
-            // Archived in red.
             if ($('#ctl00_ContentBody_archivedMessage')[0] && $('#ctl00_ContentBody_CacheName')[0]) $('#ctl00_ContentBody_CacheName')[0].style.color = '#8C0B0B';
-            // Archived, disabled strike through.
             if (settings_strike_archived && $('#ctl00_ContentBody_CacheName')[0] && ($('#ctl00_ContentBody_archivedMessage')[0] || $('#ctl00_ContentBody_disabledMessage')[0])) {
                 $('#ctl00_ContentBody_CacheName')[0].style.textDecoration = 'line-through';
             }
-            // Link more verbessern.
             if ($('.more-cache-logs-link')[0] && $('.more-cache-logs-link')[0].href) $('.more-cache-logs-link')[0].href = "#logs_section";
         } catch(e) {gclh_error("Disabled and archived:",e);}
     }
@@ -1139,13 +1135,8 @@ var mainGC = function() {
             var link_owner = $('#ctl00_ContentBody_mcd1 a[href*="/profile/?guid="]')[0];
             if (link_owner && real_owner) {
                 var pseudo = link_owner.innerHTML;
-                if (settings_show_real_owner) {
-                    link_owner.innerHTML = real_owner;
-                    link_owner.title = pseudo;
-                } else {
-                    link_owner.innerHTML = pseudo;
-                    link_owner.title = real_owner;
-                }
+                link_owner.innerHTML = (settings_show_real_owner ? real_owner : pseudo);
+                link_owner.title = (settings_show_real_owner ? pseudo : real_owner);
             }
         } catch(e) {gclh_error("Show real owner:",e);}
     }
@@ -1263,9 +1254,10 @@ var mainGC = function() {
                     if (score && score[1]) {
                         // Eigener Favoritenpunkt. Class hideMe -> kein Favoritenpunkt. Keine class hideMe -> Favoritenpunkt.
                         var myfav = $('#pnlFavoriteCache')[0];
+                        var myfavHTML = "";
                         if (myfav) {
-                            if (myfav.className.match("hideMe")) var myfavHTML = '&nbsp;<img src="/images/icons/reg_user.gif" />';
-                            else var myfavHTML = '&nbsp;<img src="/images/icons/prem_user.gif" />';
+                            if (myfav.className.match("hideMe")) myfavHTML = '&nbsp;<img src="/images/icons/reg_user.gif" />';
+                            else myfavHTML = '&nbsp;<img src="/images/icons/prem_user.gif" />';
                         }
                         fav.getElementsByTagName('span')[0].nextSibling.remove();
                         fav.innerHTML += score[1] + myfavHTML;
@@ -1340,38 +1332,16 @@ var mainGC = function() {
 
 // Stop ignoring.
     if (is_page("cache_listing") && settings_show_remove_ignoring_link) {
-        // Bookmark Listen Bereiche.
-        if (document.getElementsByClassName("BookmarkList").length > 0) {
-            try {
-                var listenBereiche = document.getElementsByClassName("BookmarkList");
-                for (var i = 0; i < listenBereiche.length; i++) {
-                    // Bookmark Listen, in denen der Cache gelistet ist.
-                    var listen = listenBereiche[i].getElementsByTagName("a");
-                    for (var j = 0; (j+1) < listen.length; j++) {
-                        // Ignore Bookmark Liste des Users. (Heißt auch in anderen Sprachen so.)
-                        if ((listen[j].href.match(/geocaching\.com\/bookmarks\/view\.aspx\?guid=/)) &&
-                             (listen[j].text == "Ignore List") &&
-                             (listen[j+1].href.match(/geocaching\.com\/profile\/\?guid=/)) &&
-                             (listen[j+1].text == global_me)) {
-                            // Navigations Details links "Watch", Ignore" ... .
-                            var cdnLinksBereich = document.getElementsByClassName("CacheDetailNavigation NoPrint");
-                            for (var k = 0; k < cdnLinksBereich.length; k++) {
-                                // Liste der Links "Watch", Ignore" ... .
-                                var cdnLinks = cdnLinksBereich[k].getElementsByTagName("a");
-                                for (var m = 0; m < cdnLinks.length; m++) {
-                                    // Bei "Ignore" Link Linkbezeichnung in Stop Ignoring ändern und Icon ersetzen.
-                                    if (cdnLinks[m].href.match(/\/bookmarks\/ignore\.aspx\?guid/)) {
-                                        cdnLinks[m].innerHTML = "Stop Ignoring";
-                                        var css = '.CacheDetailNavigation a[href*="ignore.aspx"]{background-image: url(' + global_stop_ignore_icon + ');}';
-                                        appendCssStyle(css);
-                                    }
-                                }
-                            }
-                        }
-                    }
+        try {
+            var bmLs = $('.BookmarkList').last().find('li a[href*="/bookmarks/view.aspx?guid="], li a[href*="/profile/?guid="]');
+            for (var i=0; (i+1) < bmLs.length; i=i+2) {
+                if (bmLs[i].innerHTML.match(/^Ignore List$/) && bmLs[i+1] && bmLs[i+1].innerHTML == global_me) {
+                    $('#ctl00_ContentBody_GeoNav_uxIgnoreBtn a')[0].innerHTML = "Stop Ignoring";
+                    $('#ctl00_ContentBody_GeoNav_uxIgnoreBtn a')[0].style.backgroundImage = "url("+global_stop_ignore_icon+")";
+                    break;
                 }
-            } catch(e) {gclh_error("Stop ignoring:",e);}
-        }
+            }
+        } catch(e) {gclh_error("Stop ignoring:",e);}
     }
 
 // Improve Add to list in cache listing.
@@ -1390,7 +1360,7 @@ var mainGC = function() {
         } catch(e) {gclh_error("Improve Add to list:",e);}
     }
 
-// Add link to waypoint list and cache logs in cache detail navigation (sidebar).
+// Add link to waypoint list and cache logs to right sidebar.
     if (is_page("cache_listing") && $("#cache_logs_container")[0]) {
         try {
             if (getWaypointTable().length > 0) {
@@ -1405,14 +1375,14 @@ var mainGC = function() {
         } catch(e) {gclh_error("Add link to waypoint list and cache logs:",e);}
     }
 
-// Show button, which open Flopp's Map with all waypoints of a cache and open Flopp's Map.
+// Show links which open Flopp's Map with all waypoints of a cache.
     if (settings_show_flopps_link && is_page("cache_listing") || document.location.href.match(/\.com\/hide\/wptlist.aspx/)) {
         try {
-            // Append Flopps map link to the right, top navigation.
+            // Add Flopps map link to the right sidebar.
             var linklist_for_flopps = $('.CacheDetailNavigation ul').first();
             linklist_for_flopps.append('<li><div class="GClhdropdown"><a id="ShowWaypointsOnFloppsMap_linklist" class="GClhdropbtn">Show on Flopp\'s Map</a><div id="FloppsMapLayers_linklist" class="GClhdropdown-content"></div></div></li>');
             buildFloppsMapLayers("FloppsMapLayers_linklist", "ShowWaypointsOnFloppsMap_linklist");
-            // Append Flopps map link under waypoints.
+            // Add Flopps map link under waypoints.
             var tbl = getWaypointTable();
             if (tbl.length > 0) {
                 tbl = tbl.next("p");
@@ -1429,7 +1399,7 @@ var mainGC = function() {
                 var map = $(this).data('map');
                 openFloppsMap(map);
             });
-        } catch(e) {gclh_error("Show button Flopp's Map and open Flopp's Map:",e);}
+        } catch(e) {gclh_error("Show Flopp's Map links:",e);}
     }
     // Flopp's Map link.
     function buildFloppsMapLayers(id, openId) {
@@ -1450,12 +1420,12 @@ var mainGC = function() {
         var link = buildFloppsMapLink(waypoints, map, false, {});
         window.open(link);
     }
-    // Convert string to the Flopp's Map specification.
+    // Convert string to Flopp's Map specification.
     function floppsMapWaypoint(waypoint, id, radius, name) {
         name = name.replace(/[^a-zA-Z0-9_\-]/g,'_');  // A–Z, a–z, 0–9, - und _
         return id+':'+waypoint.latitude+':'+waypoint.longitude+':'+radius+':'+name;
     }
-    // Creates from a list of waypoints an permanent link to Flopps Map.
+    // Creates permanent link to Flopp's Map.
     function buildFloppsMapLink(waypoints, map, shortnames, status) {
         var url = "";
         var floppsWaypoints = [];
@@ -1529,14 +1499,14 @@ var mainGC = function() {
         return encodeURI(url);
     }
 
-// Show button, which open BRouter with all waypoints of a cache and open BRouter.
+// Show links which open BRouter with all waypoints of a cache.
     if (settings_show_brouter_link && is_page("cache_listing") || document.location.href.match(/\.com\/hide\/wptlist.aspx/)) {
         try {
-            // Append BRouter map link to the right, top navigation.
+            // Add BRouter map link to the right sidebar.
             var linklist_for_brouter = $('.CacheDetailNavigation ul').first();
             linklist_for_brouter.append('<li><div class="GClhdropdown"><a id="ShowWaypointsOnBRouter_linklist" class="GClhdropbtn">Show Route on BRouter</a><div id="BRouterMapLayers_linklist" class="GClhdropdown-content"></div></div></li>');
             buildBRouterMapLayers("BRouterMapLayers_linklist", "ShowWaypointsOnBRouter_linklist");
-            // Append BRouter map link under waypoints.
+            // Add BRouter map link under waypoints.
             var tbl = getWaypointTable();
             if (tbl.length > 0) {
                 tbl = tbl.next("p");
@@ -1565,9 +1535,9 @@ var mainGC = function() {
         var link = buildBRouterMapLink(waypoints, map, false);
         window.open(link);
     }
-    // Convert string to the BRouter specification.
+    // Convert string to BRouter specification.
     function brouterMapWaypoint(waypoint) {return waypoint.longitude+','+waypoint.latitude;}
-    // Build BRouter Link.
+    // Build BRouter link.
     function buildBRouterMapLink(waypoints, map, shortnames) {
         var url = "";
         var brouterWaypoints = [];
@@ -1624,7 +1594,7 @@ var mainGC = function() {
         return encodeURI(url);
     }
 
-// CSS for BRouter and Flopp's Map Buttons.
+// CSS for BRouter and Flopp's Map links.
     if ((settings_show_brouter_link || settings_show_flopps_link) && (is_page("cache_listing") || document.location.href.match(/\.com\/hide\/wptlist.aspx/))) {
         var css = "";
         css += ".GClhdropbtn {";
@@ -1854,7 +1824,7 @@ var mainGC = function() {
 // Activate fancybox for pictures in the description.
     if (is_page("cache_listing")) {
         try {
-            if (typeof unsafeWindow.$.fancybox != "undefined") unsafeWindow.$('a[rel="lightbox"]').fancybox();
+            if (typeof unsafeWindow.$.fancybox != "undefined") unsafeWindow.$('.CachePageImages a[rel="lightbox"]').fancybox();
         } catch(e) {gclh_error("Activate fancybox:",e);}
     }
 
@@ -1947,7 +1917,7 @@ var mainGC = function() {
             var link = document.createElement("a");
             link.setAttribute("class", "lnk");
             link.setAttribute("target", "_blank");
-            link.setAttribute("title", "Show area at Google Maps");
+            link.setAttribute("title", "Show area on Google Maps");
             var matches = ref_link.href.match(/\?lat=(-?[0-9.]*)&lng=(-?[0-9.]*)/);
             var latlng = matches[1] + "," + matches[2];
             // &ll sorgt für Zentrierung der Seite beim Marker auch wenn linke Sidebar aufklappt. Zoom 18 setzen, weil GC Map eigentlich nicht mehr kann.
@@ -1966,8 +1936,8 @@ var mainGC = function() {
 // Hide spoilerwarning above the logs.
     if (settings_hide_spoilerwarning && is_page("cache_listing")) {
         try {
-            if ($('a[href*="glossary.aspx#spoiler"]')[0]) {
-                var sp = $('a[href*="glossary.aspx#spoiler"]')[0].closest('p');
+            if ($('.InformationWidget .NoBottomSpacing a[href*="/glossary.aspx#spoiler"]')[0]) {
+                var sp = $('.InformationWidget .NoBottomSpacing a[href*="/glossary.aspx#spoiler"]')[0].closest('p');
                 if (sp) {
                     sp.innerHTML = "&nbsp;";
                     sp.style.height = "0";
@@ -2133,7 +2103,7 @@ var mainGC = function() {
             function getElevations(counter) {
                 if (counter > 10) return;
                 else if (counter == 0) var wait = 0;
-                else var wait = 250;
+                else var wait = 500;
                 setTimeout(function() {
                     GM_xmlhttpRequest({
                         method: 'GET',
@@ -3692,7 +3662,7 @@ var mainGC = function() {
 // Drafts auf alte Log Seite umbiegen.
     if (settings_fieldnotes_old_fashioned && document.location.href.match(/\.com\/my\/fieldnotes\.aspx/)) {
         try {
-            var link = $('a[href*="fieldnotes.aspx?composeLog=true"]');
+            var link = $('table.Table tbody td a[href*="fieldnotes.aspx?composeLog=true"]');
             for (var i = 0; i < link.length; i++) {
                 var matches = link[i].href.match(/&draftGuid=(.*)&/i);
                 if (matches && matches[1]) link[i].href = "https://www.geocaching.com/seek/log.aspx?PLogGuid=" + matches[1];
@@ -3908,18 +3878,16 @@ var mainGC = function() {
     }
 
 // Show Profile-Link on display of Caches found or created by user. (Muß vor VIP laufen.)
-    if (settings_show_nearestuser_profil_link && document.location.href.match(/\.com\/seek\/nearest\.aspx/) && document.location.href.match(/(ul|u)=/)) {
-        if (document.getElementById("ctl00_ContentBody_LocationPanel1_OriginLabel")) {
-            try {
-                var urluser = getUrlUser();
-                var linkelement = document.createElement("a");
-                linkelement.href = "/profile/?u=" + urluser;
-                linkelement.innerHTML = urluser;
-                var textelement = document.getElementById("ctl00_ContentBody_LocationPanel1_OriginLabel");
-                textelement.innerHTML = textelement.innerHTML.replace(/: (.*)/, ": ");
-                textelement.appendChild(linkelement);
-            } catch(e) {gclh_error("Show Profile Link",e);}
-        }
+    if (settings_show_nearestuser_profil_link && document.location.href.match(/\.com\/seek\/nearest\.aspx/) && document.location.href.match(/(ul|u)=/) && $('#ctl00_ContentBody_LocationPanel1_OriginLabel')[0]) {
+        try {
+            var user = getUrlUser();
+            var link = document.createElement("a");
+            link.href = "/profile/?u="+urlencode(user);
+            link.innerHTML = user;
+            var text = $('#ctl00_ContentBody_LocationPanel1_OriginLabel')[0];
+            text.innerHTML = text.innerHTML.replace(/: (.*)/, ": ");
+            text.appendChild(link);
+        } catch(e) {gclh_error("Show Profile Link",e);}
     }
 
 // VIP. VUP.
@@ -6902,8 +6870,6 @@ var mainGC = function() {
 
 // Enkodieren in url und dekodieren aus url.
     function urlencode(s) {
-//xxxx
-//        s = s.replace(/\+/g, "%2b");
         s = s.replace(/&amp;/g, "&");
         s = encodeURIComponent(s);  // Alles außer: A bis Z, a bis z und - _ . ! ~ * ' ( )
         s = s.replace(/~/g, "%7e");
@@ -6914,8 +6880,7 @@ var mainGC = function() {
     }
     function urldecode(s) {
         s = s.replace(/\+/g, " ");
-//xxxx
-//        s = s.replace(/%252b/ig, "+");
+        s = s.replace(/%252b/ig, "+");
         s = s.replace(/%7e/g, "~");
         s = s.replace(/%27/g, "'");
         s = decodeURIComponent(s);
@@ -7701,7 +7666,7 @@ var mainGC = function() {
                 waypoint.note = "";
                 waypoint.type = "listing";
                 waypoint.subtype = "changed";
-                waypoint.cachetype = document.getElementById('cacheDetails').getElementsByClassName('cacheImage')[0].getElementsByTagName('img')[0].getAttribute('title');
+                waypoint.cachetype = $('#cacheDetails .cacheImage img')[0].getAttribute('title');
                 waypoint.link = document.location.href;
                 addWP.push(waypoint);
                 waypoint = {};
@@ -7720,7 +7685,7 @@ var mainGC = function() {
             waypoint.type = "listing";
             waypoint.subtype = "origin";
             waypoint.link = document.location.href;
-            waypoint.cachetype = document.getElementById('cacheDetails').getElementsByClassName('cacheImage')[0].getElementsByTagName('img')[0].getAttribute('title');
+            waypoint.cachetype = $('#cacheDetails .cacheImage img')[0].getAttribute('title');
             addWP.push(waypoint);
             return addWP;
         } catch(e) {gclh_error("Reads the posted coordinates from the listing:",e);}
