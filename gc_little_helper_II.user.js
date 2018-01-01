@@ -3901,6 +3901,7 @@ var mainGC = function() {
             var css = "";
             css += ".action-link a {padding:5px 20px !important;}";
             css += ".bio-background {height:90px !important;}";
+            css += ".bio-meta {padding:16px 0px !important;}";
             css += ".activity-item {padding:5px 15px 5px 15px !important;}";
             css += ".activity-tray {padding:5px 40px 5px 40px !important;}";
             css += ".panel-header {padding: 5px 15px !important;}";
