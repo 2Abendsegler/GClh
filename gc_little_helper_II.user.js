@@ -13,6 +13,7 @@
 // @require          http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js
 // @require          http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js
 // @require          https://cdnjs.cloudflare.com/ajax/libs/dropbox.js/2.5.2/Dropbox-sdk.min.js
+// @require          https://cdnjs.cloudflare.com/ajax/libs/showdown/1.8.6/showdown.min.js
 // @require          https://raw.githubusercontent.com/2Abendsegler/GClh/master/data/gclh_defi.js
 // @connect          maps.googleapis.com
 // @connect          raw.githubusercontent.com
@@ -2317,6 +2318,87 @@ var mainGC = function() {
             liste += logicNew;
             liste += "</select>";
         } else liste += "<br><p style='margin: 0;'>Templates:</p>" + texts + logicOld;
+    }
+// Vorschau für Log
+    if (document.location.href.match(/\.com\/play\/geocache\/gc\w+\/log/)){
+        try{
+
+            function convert_smilies(input){
+
+                var smilies = { 
+                    "[:)]": "",
+                    "[:D]": "_big",
+                    "[8D]": "_cool",
+                    "[:I]": "_blush",
+                    "[:P]": "_tongue",
+                    "[}:)]": "_evil",
+                    "[;)]": "_wink",
+                    "[:o)]": "_clown",
+                    "[B)]": "_blackeye",
+                    "[8]": "_8ball",
+                    "[:(]": "_sad",
+                    "[8)]": "_shy",
+                    "[:O]": "_shock",
+                    "[:(!]": "_angry",
+                    "[xx(]": "_dead",
+                    "[|)]": "_sleepy",
+                    "[:X]": "_kisses",
+                    "[^]": "_approve",
+                    "[V]": "_dissapprove",
+                    "[?]": "_question"
+                }
+
+                var key;
+                for (key in smilies) {
+                   input = input.replace(RegExp(RegExp.quote(key),"g"), "<img src='/images/icons/icon_smile" + smilies[key] + ".gif' border='0'>");
+                }
+
+                return input;
+            }
+
+            function build_log_preview(){
+                var text = $('#logContent > textarea').val();
+                if (text == ''){
+                    text = 'Start typing to see the preview...';
+                }else{
+                    text = converter.makeHtml(text);
+                    text = convert_smilies(text);
+                }
+                $('#log-preview-content > div').html(text);
+            }
+            
+            var converter = new showdown.Converter();
+            RegExp.quote = function(str) {
+                 return str.replace(/([.?*+^$[\]\\(){}|-])/g, "\\$1");
+             };
+
+            var log_preview_wrapper = '<section class="region trackables-wrapper" id="log-previewPanel">' + 
+                                        '<div>' +
+                                            '<button type="button" id="log-preview-button" class="btn btn-handle handle-open" data-open="false">Logvorschau' +
+                                                '<svg height="24" width="24" class="icon icon-svg-fill sea">' +
+                                                    '<use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="/play/app/ui-icons/sprites/global.svg#icon-expand-svg-fill"></use>' +
+                                                '</svg>' +
+                                            '</button>' +
+                                            '<div class="inventory-panel markdown-output" style="display: block;" id="log-preview-content">' +
+                                                '<div class="inventory-content">' +
+                                                'Start typing to see the preview...</div>' +
+                                            '</div>' +
+                                        '</div>' +
+                                    '</section>';
+
+            $('#trackablesPanel').before(log_preview_wrapper);
+
+            $('#log-preview-button').click(function(){
+                $('#log-preview-content').toggle();
+                $('#log-previewPanel button').toggleClass('handle-open');
+            });
+
+            appendCssStyle('.markdown-output ul, .markdown-output ol {padding-left: 20px;}');
+
+            $('#logContent').delegate( 'textarea', 'keyup paste', function(){
+                build_log_preview();
+            });
+        } catch(e) {gclh_error("Logpage Log Preview:",e);}
     }
 
 // Maxlength of logtext and unsaved warning.
