@@ -3900,6 +3900,7 @@ var mainGC = function() {
             // Improve new dashboard css (little bit narrower elements)
             var css = "";
             css += ".action-link a {padding:5px 20px !important;}";
+            css += ".bio-username {color:#02874D; font-size:1.3em !important; word-break: break-all;}";
             css += ".bio-background {height:90px !important;}";
             css += ".bio-meta {padding:16px 0px !important;}";
             css += ".activity-item {padding:5px 15px 5px 15px !important;}";
