@@ -8397,7 +8397,7 @@ var mainGC = function() {
             html += " &nbsp; " + checkboxy('settings_fixed_header_layout', 'Arrange header layout on content') + show_help_big("With this option you can arrange the header width on the width of the content of GC pages. This is an easy feature with some restrictions, like for example the available place, especially for horizontal navigation menues.<br><br>This feature is available on GC pages in the oldest design like for example cache and TB listings, bookmarks, pocket queries, nearest lists, old dashboards (profiles), statistics, watchlists and drafts, to name just a few. <br><br>On map page and on pages in the newer and newest design it is not available, partly because the content on these pages are not yet in an accurate width, like the newer search cache page or the message center page. Also this feature is not fully integrated in the diverse possibilities of the header layout and the navigation menus. But we hope the friends of this specific header design can deal with it.<br><br>" + t_reqChl) + "<br>";
 			html += checkboxy('settings_bookmarks_on_top', "Show <a class='gclh_ref' href='#gclh_linklist' title='Link to topic \"Linklist / Navigation\"' id='gclh_linklist_link_1'>Linklist</a> on top") + show_help_big("Show the Linklist on the top of GC pages, beside the other links. You can configure the links in the Linklist at the end of this configuration page.<br><br>Some of the features of the Linklist on top, like for example the font size or the distance between drop-down links, requires \"Change header layout\". Details you can see at the end of this configuration page by the features of the Linklist.") + "<br>";
             html += checkboxy('settings_hide_advert_link', 'Hide link to advertisement instructions') + "<br>";
-            html += "&nbsp;" + "Page width: <input class='gclh_form' type='text' size='3' id='settings_new_width' value='" + getValue("settings_new_width", 1000) + "'> px" + show_help("With this option you can expand the small layout on GC pages. The default value on GC pages is 950 pixel.") + "<br>";
+            html += "&nbsp;" + "Page width: <input class='gclh_form' type='text' size='4' id='settings_new_width' value='" + getValue("settings_new_width", 1000) + "'> px" + show_help("With this option you can expand the small layout on GC pages. The default value on GC pages is 950 pixel.") + "<br>";
             html += checkboxy('settings_hide_facebook', 'Hide Facebook login') + "<br>";
             html += checkboxy('settings_hide_socialshare', 'Hide social sharing Facebook and Twitter') + "<br>";
             html += newParameterOn3;
@@ -8488,7 +8488,7 @@ var mainGC = function() {
             html += newParameterVersionSetzen(0.9) + newParameterOff;
             html += checkboxy('settings_pq_warning', "Get a warning in case of empty pocket queries") + show_help("Show a message if one or more options are in conflict. This helps to avoid empty pocket queries.") + "<br>";
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>Default values for new pocket query</b></div>";
-            html += checkboxy('settings_pq_set_cachestotal', "Set number of caches to ") + "<input class='gclh_form' size=3 type='text' id='settings_pq_cachestotal' value='" + settings_pq_cachestotal + "'><br>";
+            html += checkboxy('settings_pq_set_cachestotal', "Set number of caches to ") + "<input class='gclh_form' size=4 type='text' id='settings_pq_cachestotal' value='" + settings_pq_cachestotal + "'><br>";
             html += checkboxy('settings_pq_option_ihaventfound', "Enable option \"I haven't found\"") + "<br>";
             html += checkboxy('settings_pq_option_idontown', "Enable option \"I don't own\"") + "<br>";
             html += checkboxy('settings_pq_option_ignorelist', "Enable option \"Are not on my ignore list\"") + "<br>";
@@ -9512,7 +9512,7 @@ var mainGC = function() {
 
             // Homezone circle.
             setValue("settings_homezone_radius", document.getElementById('settings_homezone_radius').value);
-            setValue("settings_homezone_color", document.getElementById('settings_homezone_color').value);
+            setValue("settings_homezone_color", document.getElementById('settings_homezone_color').value.replace("#",""));
             if (document.getElementById('settings_homezone_opacity').value <= 100 && document.getElementById('settings_homezone_opacity').value >= 0) setValue("settings_homezone_opacity", document.getElementById('settings_homezone_opacity').value);
             // Multi Homezone circles.
             var settings_multi_homezone = {};
@@ -9524,7 +9524,7 @@ var mainGC = function() {
                 settings_multi_homezone[i].lat = parseInt(latlng[0] * 10000000);
                 settings_multi_homezone[i].lng = parseInt(latlng[1] * 10000000);
                 settings_multi_homezone[i].radius = $curEl.find('.radius:eq(0)').val();
-                settings_multi_homezone[i].color = $curEl.find('.color:eq(0)').val();
+                settings_multi_homezone[i].color = $curEl.find('.color:eq(0)').val().replace("#","");
                 settings_multi_homezone[i].opacity = $curEl.find('.opacity:eq(0)').val();
             }
             setValue("settings_multi_homezone", JSON.stringify(settings_multi_homezone));
@@ -9544,17 +9544,17 @@ var mainGC = function() {
             setValue("settings_font_size_submenu", document.getElementById('settings_font_size_submenu').value);
             setValue("settings_distance_menu", document.getElementById('settings_distance_menu').value);
             setValue("settings_distance_submenu", document.getElementById('settings_distance_submenu').value);
-            setValue("settings_font_color_menu", document.getElementById('settings_font_color_menu').value);
-            setValue("settings_font_color_submenu", document.getElementById('settings_font_color_submenu').value);
+            setValue("settings_font_color_menu", document.getElementById('settings_font_color_menu').value.replace("#",""));
+            setValue("settings_font_color_submenu", document.getElementById('settings_font_color_submenu').value.replace("#",""));
             setValue("settings_menu_number_of_lines", document.getElementById('settings_menu_number_of_lines').value);
-            setValue("settings_lines_color_zebra", document.getElementById('settings_lines_color_zebra').value);
-            setValue("settings_lines_color_user", document.getElementById('settings_lines_color_user').value);
-            setValue("settings_lines_color_owner", document.getElementById('settings_lines_color_owner').value);
-            setValue("settings_lines_color_reviewer", document.getElementById('settings_lines_color_reviewer').value);
-            setValue("settings_lines_color_vip", document.getElementById('settings_lines_color_vip').value);
+            setValue("settings_lines_color_zebra", document.getElementById('settings_lines_color_zebra').value.replace("#",""));
+            setValue("settings_lines_color_user", document.getElementById('settings_lines_color_user').value.replace("#",""));
+            setValue("settings_lines_color_owner", document.getElementById('settings_lines_color_owner').value.replace("#",""));
+            setValue("settings_lines_color_reviewer", document.getElementById('settings_lines_color_reviewer').value.replace("#",""));
+            setValue("settings_lines_color_vip", document.getElementById('settings_lines_color_vip').value.replace("#",""));
             setValue("settings_map_overview_zoom", document.getElementById('settings_map_overview_zoom').value);
             setValue("settings_count_own_matrix_show_count_next", document.getElementById('settings_count_own_matrix_show_count_next').value);
-            setValue("settings_count_own_matrix_show_color_next", document.getElementById('settings_count_own_matrix_show_color_next').value);
+            setValue("settings_count_own_matrix_show_color_next", document.getElementById('settings_count_own_matrix_show_color_next').value.replace("#",""));
             setValue("settings_count_own_matrix_links_radius", document.getElementById('settings_count_own_matrix_links_radius').value);
             setValue("settings_count_own_matrix_links", document.getElementById('settings_count_own_matrix_links').value);
             setValue("settings_show_latest_logs_symbols_count", document.getElementById('settings_show_latest_logs_symbols_count').value);
