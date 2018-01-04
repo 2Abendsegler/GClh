@@ -462,7 +462,7 @@ var variablesInit = function(c) {
     c.settings_show_log_counter_but = getValue("settings_show_log_counter_but", true);
     c.settings_show_bigger_avatars_but = getValue("settings_show_bigger_avatars_but", true);
     c.settings_hide_feedback_icon = getValue("settings_hide_feedback_icon", false);
-    c.settings_compact_layout_new_dashboard = getValue("settings_compact_layout_new_dashboard", true);
+    c.settings_compact_layout_new_dashboard = getValue("settings_compact_layout_new_dashboard", false);
 
     try {
         if (c.userToken === null) {
@@ -5164,21 +5164,17 @@ var mainGC = function() {
     if (is_page("dashboard")) {
         try {
             var css = '';
-            // Improve new dashboard css (little bit narrower elements)
+            // Compact layout (little bit narrower elements).
             if (settings_compact_layout_new_dashboard) {
-                var css = "";
-                css += ".action-link a {padding:5px 20px !important;}";
-                css += ".bio-username {color:#02874D; font-size:1.3em !important; word-break: break-all;}";
-                css += ".bio-background {height:90px !important;}";
-                css += ".bio-meta {padding:16px 0px !important;}";
-                css += ".activity-item {padding:5px 15px 5px 15px !important;}";
-                css += ".activity-tray {padding:5px 40px 5px 40px !important;}";
-                css += ".panel-header {padding: 5px 15px !important;}";
-                css += ".sidebar-links .link-header {padding:6px 5px 6px 20px !important;}";
-                css += ".alert {padding:6px 16px !important; color:blue;}"
-                appendCssStyle(css);
+                css += ".action-link a {padding: 5px 20px;}";
+                css += ".bio-username {color: #02874D; font-size: 1.3em !important; word-break: break-all;}";
+                css += ".bio-background {height: 90px !important;}";
+                css += ".bio-meta {padding: 16px 0px !important;}";
+                css += ".activity-item, .panel-header {padding: 5px 15px;}";
+                css += ".activity-tray {padding: 5px 40px;}";
+                css += ".sidebar-links .link-header {padding: 6px 5px 6px 20px !important;}";
+                css += ".alert {padding: 6px 16px !important; color: blue;}"
             }
-            css = '';
             // Map and Search button in left sidebar.
             if (settings_but_search_map) {
                 var target = (settings_but_search_map_new_tab ? "_blank" : "");
@@ -8721,7 +8717,7 @@ var mainGC = function() {
             html += checkboxy('settings_show_tb_inv', 'Show trackables inventory on your dashboard') + show_help("With this option a maximum of ten trackables of your trackables inventory is shown on your new dashboard. (On old dashboard it is GC standard to show it.)") + "<br>";
             html += checkboxy('settings_but_search_map', 'Show buttons "Search" and "Map" on your dashboard') + "<br>";
             html += " &nbsp; " + checkboxy('settings_but_search_map_new_tab', 'Open links in new tab') + "<br>";
-            html += checkboxy('settings_compact_layout_new_dashboard', 'Show compact layout in dashboard') + "<br>";
+            html += checkboxy('settings_compact_layout_new_dashboard', 'Show compact layout on your dashboard') + "<br>";
             html += newParameterVersionSetzen(0.9) + newParameterOff;
 
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>Old dashboard only</b></div>";
