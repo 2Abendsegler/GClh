@@ -342,7 +342,7 @@ var variablesInit = function(c) {
     c.settings_multi_homezone = JSON.parse(getValue("settings_multi_homezone", "{}"));
     c.settings_show_hillshadow = getValue("settings_show_hillshadow", false);
     c.settings_map_layers = getValue("settings_map_layers", "").split("###");
-    c.map_url = "/map/default.aspx";
+    c.map_url = "https://www.geocaching.com/map/default.aspx";
     c.settings_default_logtype = getValue("settings_default_logtype", "-1");
     c.settings_default_logtype_event = getValue("settings_default_logtype_event", c.settings_default_logtype);
     c.settings_default_logtype_owner = getValue("settings_default_logtype_owner", c.settings_default_logtype);
@@ -1763,7 +1763,7 @@ var mainGC = function() {
                 if ($('.muted')[0] && $('.muted')[0].children[1]) {
                     var id = $('.muted')[0].children[1].href.match(/^https?:\/\/www\.geocaching\.com\/profile\/\?id=(\d+)/);
                     if (id && id[1]) {
-                        var idLink = "https://www.geocaching.com/p/default.aspx?id=" + id[1] + "&tab=geocaches";
+                        var idLink = "/p/default.aspx?id=" + id[1] + "&tab=geocaches";
                         GM_xmlhttpRequest({
                             method: "GET",
                             url: idLink,
@@ -4324,7 +4324,7 @@ var mainGC = function() {
             } else if (document.location.href.match(/\.com\/play\/geocache\/gc\w+\/log/) && $('.muted')[0] && $('.muted')[0].children[1]) {
                 var id = $('.muted')[0].children[1].href.match(/^https?:\/\/www\.geocaching\.com\/profile\/\?id=(\d+)/);
                 if (id && id[1]) {
-                    var idLink = "https://www.geocaching.com/p/default.aspx?id=" + id[1] + "&tab=geocaches";
+                    var idLink = "/p/default.aspx?id=" + id[1] + "&tab=geocaches";
                     GM_xmlhttpRequest({
                         method: "GET",
                         url: idLink,
@@ -5194,7 +5194,7 @@ var mainGC = function() {
                 var side = $('.sidebar-links').last().find('ul.link-block li a[href*="/my/inventory.aspx"]').closest('li');
                 GM_xmlhttpRequest({
                     method: "GET",
-                    url: "https://www.geocaching.com/my/inventory.aspx",
+                    url: "/my/inventory.aspx",
                     onload: function(response) {
                         if (response.responseText) {
                             var anzTbs = 0;
@@ -6032,8 +6032,8 @@ var mainGC = function() {
 // Improve own statistics page and own profile page with own log statistic.
     if (settings_log_statistic && isOwnStatisticsPage()) {
         try {
-            getLogSt("cache", "https://www.geocaching.com/my/logs.aspx?s=1");
-            getLogSt("track", "https://www.geocaching.com/my/logs.aspx?s=2");
+            getLogSt("cache", "/my/logs.aspx?s=1");
+            getLogSt("track", "/my/logs.aspx?s=2");
         } catch(e) {gclh_error("Improve own log statistic:",e);}
     }
     function getLogSt(type, url, manual) {
