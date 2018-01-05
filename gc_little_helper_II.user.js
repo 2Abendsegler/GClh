@@ -790,30 +790,29 @@ var mainGC = function() {
                 // Menü nicht flex.
                 ".#m {display: unset;}" +
                 // Submenü im Vordergrund.
-                ".#sm {z-index: 1001;}" +
+                ".#m .#sm {z-index: 1001;}" +
                 // Schriftfarbe Untermenü.
-                ".#sm li a, .#sm li a:link, .#sm li a:visited, .#sm li {color: #" + font_color_submenu + " !important;}" +
+                ".#m .#sm li a, .#m .#sm li a:link, .#m .#sm li a:visited, .#m .#sm li {color: #" + font_color_submenu + " !important;}" +
                 // Schriftgröße Menü.
                 ".#m {font-size: 16px !important;}" +
                 ".#m li, .#m li a, .#m li input {font-size: " + font_size_menu + "px !important;}" +
                 // Abstände Menü.
                 "ul.#m > li {margin-left: " + distance_menu + "px !important; margin-right: " + distance_menu + "px !important;} ul.#m li a {padding: .25em .25em .25em 0 !important;}" +
                 // Schriftgröße Untermenü.
-                "ul.#sm, ul.#sm li {font-size: 16px !important;}" +
-                "ul.#sm li a {font-size: " + font_size_submenu + "px !important;}" +
-                "ul.#sm li a {font-size: " + font_size_submenu + "px !important;}" +
+                ".#m ul.#sm, .#m ul.#sm li {font-size: 16px !important;}" +
+                ".#m ul.#sm li a {font-size: " + font_size_submenu + "px !important;}" +
                 // Abstände Untermenü.
-                "ul.#sm li a {margin: " + (distance_submenu / 2) + "px 1em !important; padding: 0 0.5em !important;} .#sm a {line-height: unset;} .#m a {overflow: initial}" +
+                ".#m ul.#sm li a {margin: " + (distance_submenu / 2) + "px 1em !important; padding: 0 0.5em !important;} .#m .#sm a {line-height: unset;} .#m a {overflow: initial}" +
                 // Menühöhe.
                 ".#m {height: 35px !important;}" +
                 // Verschieben Submenüs unterbinden.
-                ".#sm {margin-left: 0 !important}";
+                ".#m .#sm {margin-left: 0 !important}";
             // Vertikales Menü ausrichten.
             if (settings_bookmarks_top_menu) {
                 // Menüzeilenhöhe.
                 css += "ul.#m {line-height: 16px;}";
                 // Zwischen Menüname und Submenü keine Lücke lassen, sonst klappts nicht mit einfachem Aufklappen.
-                css += ".#m li a, .#m li a:link, .#m li a:visited {margin-bottom: 10px;} ul.#sm {margin-top: -6px;}";
+                css += ".#m li a, .#m li a:link, .#m li a:visited {margin-bottom: 10px;} .#m ul.#sm {margin-top: -6px;}";
                 // Menü, Searchfield ausrichten in Abhängigkeit von Schriftgröße.
                 css += "ul.#m > li {margin-top: " + (3 + (16 - font_size_menu) / 2) + "px;}";
             // Horizontales Menü ausrichten.
@@ -849,7 +848,7 @@ var mainGC = function() {
                 if (is_page("hide_cache")) css += ".video iframe {width: 90%;}";
                 // Vertikales Menü ausrichten.
                 if (settings_bookmarks_top_menu) {
-                    css += "ul.#sm {margin-top: 0px; margin-left: 32px !important;} .submenu::after {left: 4px; width: 26px;}";
+                    css += ".#m ul.#sm {margin-top: 0px; margin-left: 32px !important;} .#m .submenu::after {left: 4px; width: 26px;}";
                     // Menü nicht flex.
                     if (settings_menu_float_right) css += ".#m {display: block;} ul.#m > li {top: 0px;}";
                     // Menü in Karte ausrichten.
@@ -868,7 +867,7 @@ var mainGC = function() {
                 }
                 // Vertikales Menü  ausrichten.
                 if (settings_bookmarks_top_menu) {
-                    css += "ul.#sm {margin-top: 15px; margin-left: 32px !important;} .submenu::after {left: 4px; width: 26px;}";
+                    css += ".#m ul.#sm {margin-top: 15px; margin-left: 32px !important;} .#m .submenu::after {left: 4px; width: 26px;}";
                     // Zwischen Menüname und Submenü keine Lücke lassen, sonst klappt das nicht mit dem einfachen Aufklappen.
                     css += ".#m > li .dropdown {padding-bottom: 14px !important;}";
                     if (settings_menu_float_right) css += "ul.#m > li {margin-top: 8px !important}";
@@ -2325,7 +2324,7 @@ var mainGC = function() {
 
             function convert_smilies(input){
 
-                var smilies = { 
+                var smilies = {
                     "[:)]": "",
                     "[:D]": "_big",
                     "[8D]": "_cool",
@@ -2366,13 +2365,13 @@ var mainGC = function() {
                 }
                 $('#log-preview-content > div').html(text);
             }
-            
+
             var converter = new showdown.Converter();
             RegExp.quote = function(str) {
                  return str.replace(/([.?*+^$[\]\\(){}|-])/g, "\\$1");
              };
 
-            var log_preview_wrapper = '<section class="region trackables-wrapper" id="log-previewPanel">' + 
+            var log_preview_wrapper = '<section class="region trackables-wrapper" id="log-previewPanel">' +
                                         '<div>' +
                                             '<button type="button" id="log-preview-button" class="btn btn-handle handle-open" data-open="false">Logvorschau' +
                                                 '<svg height="24" width="24" class="icon icon-svg-fill sea">' +
@@ -5167,7 +5166,7 @@ var mainGC = function() {
             if (settings_compact_layout_new_dashboard) {
                 css += ".action-link a {padding: 5px 20px;}";
                 css += ".bio-username {color: #02874D; font-size: 1.3em !important; word-break: break-all;}";
-                css += ".bio-background {height: 90px !important; background-size: 100% 140% !important;}";
+                css += ".bio-background {height: 90px !important;}";
                 css += ".bio-meta {padding: 16px 0px !important;}";
                 css += ".activity-item, .panel-header {padding: 5px 15px;}";
                 css += ".activity-tray {padding: 5px 40px;}";
