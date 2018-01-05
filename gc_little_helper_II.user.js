@@ -5166,7 +5166,7 @@ var mainGC = function() {
             if (settings_compact_layout_new_dashboard) {
                 css += ".action-link a {padding: 5px 20px;}";
                 css += ".bio-username {color: #02874D; font-size: 1.3em !important; word-break: break-all;}";
-                css += ".bio-background {height: 90px !important;}";
+                css += ".bio-background {height: 90px !important; background-size: 100% 140% !important;}";
                 css += ".bio-meta {padding: 16px 0px !important;}";
                 css += ".activity-item, .panel-header {padding: 5px 15px;}";
                 css += ".activity-tray {padding: 5px 40px;}";
