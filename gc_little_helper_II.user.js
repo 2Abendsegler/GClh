@@ -220,7 +220,6 @@ var variablesInit = function(c) {
     c.userToken = c.userToken || window.userToken || null;
     c.http = "http";
     if (document.location.href.toLowerCase().indexOf("https") === 0) c.http = "https";
-    c.global_imageGallery = false;
     c.global_dependents = new Array();
     c.global_mod_reset = false;
     c.global_rc_data = "";
@@ -342,7 +341,7 @@ var variablesInit = function(c) {
     c.settings_multi_homezone = JSON.parse(getValue("settings_multi_homezone", "{}"));
     c.settings_show_hillshadow = getValue("settings_show_hillshadow", false);
     c.settings_map_layers = getValue("settings_map_layers", "").split("###");
-    c.map_url = "/map/default.aspx";
+    c.map_url = "https://www.geocaching.com/map/default.aspx";
     c.settings_default_logtype = getValue("settings_default_logtype", "-1");
     c.settings_default_logtype_event = getValue("settings_default_logtype_event", c.settings_default_logtype);
     c.settings_default_logtype_owner = getValue("settings_default_logtype_owner", c.settings_default_logtype);
@@ -462,6 +461,7 @@ var variablesInit = function(c) {
     c.settings_show_log_counter_but = getValue("settings_show_log_counter_but", true);
     c.settings_show_bigger_avatars_but = getValue("settings_show_bigger_avatars_but", true);
     c.settings_hide_feedback_icon = getValue("settings_hide_feedback_icon", false);
+    c.settings_compact_layout_new_dashboard = getValue("settings_compact_layout_new_dashboard", false);
 
     try {
         if (c.userToken === null) {
@@ -790,30 +790,29 @@ var mainGC = function() {
                 // Menü nicht flex.
                 ".#m {display: unset;}" +
                 // Submenü im Vordergrund.
-                ".#sm {z-index: 1001;}" +
+                ".#m .#sm {z-index: 1001;}" +
                 // Schriftfarbe Untermenü.
-                ".#sm li a, .#sm li a:link, .#sm li a:visited, .#sm li {color: #" + font_color_submenu + " !important;}" +
+                ".#m .#sm li a, .#m .#sm li a:link, .#m .#sm li a:visited, .#m .#sm li {color: #" + font_color_submenu + " !important;}" +
                 // Schriftgröße Menü.
                 ".#m {font-size: 16px !important;}" +
                 ".#m li, .#m li a, .#m li input {font-size: " + font_size_menu + "px !important;}" +
                 // Abstände Menü.
                 "ul.#m > li {margin-left: " + distance_menu + "px !important; margin-right: " + distance_menu + "px !important;} ul.#m li a {padding: .25em .25em .25em 0 !important;}" +
                 // Schriftgröße Untermenü.
-                "ul.#sm, ul.#sm li {font-size: 16px !important;}" +
-                "ul.#sm li a {font-size: " + font_size_submenu + "px !important;}" +
-                "ul.#sm li a {font-size: " + font_size_submenu + "px !important;}" +
+                ".#m ul.#sm, .#m ul.#sm li {font-size: 16px !important;}" +
+                ".#m ul.#sm li a {font-size: " + font_size_submenu + "px !important;}" +
                 // Abstände Untermenü.
-                "ul.#sm li a {margin: " + (distance_submenu / 2) + "px 1em !important; padding: 0 0.5em !important;} .#sm a {line-height: unset;} .#m a {overflow: initial}" +
+                ".#m ul.#sm li a {margin: " + (distance_submenu / 2) + "px 1em !important; padding: 0 0.5em !important;} .#m .#sm a {line-height: unset;} .#m a {overflow: initial}" +
                 // Menühöhe.
                 ".#m {height: 35px !important;}" +
                 // Verschieben Submenüs unterbinden.
-                ".#sm {margin-left: 0 !important}";
+                ".#m .#sm {margin-left: 0 !important}";
             // Vertikales Menü ausrichten.
             if (settings_bookmarks_top_menu) {
                 // Menüzeilenhöhe.
                 css += "ul.#m {line-height: 16px;}";
                 // Zwischen Menüname und Submenü keine Lücke lassen, sonst klappts nicht mit einfachem Aufklappen.
-                css += ".#m li a, .#m li a:link, .#m li a:visited {margin-bottom: 10px;} ul.#sm {margin-top: -6px;}";
+                css += ".#m li a, .#m li a:link, .#m li a:visited {margin-bottom: 10px;} .#m ul.#sm {margin-top: -6px;}";
                 // Menü, Searchfield ausrichten in Abhängigkeit von Schriftgröße.
                 css += "ul.#m > li {margin-top: " + (3 + (16 - font_size_menu) / 2) + "px;}";
             // Horizontales Menü ausrichten.
@@ -849,7 +848,7 @@ var mainGC = function() {
                 if (is_page("hide_cache")) css += ".video iframe {width: 90%;}";
                 // Vertikales Menü ausrichten.
                 if (settings_bookmarks_top_menu) {
-                    css += "ul.#sm {margin-top: 0px; margin-left: 32px !important;} .submenu::after {left: 4px; width: 26px;}";
+                    css += ".#m ul.#sm {margin-top: 0px; margin-left: 32px !important;} .#m .submenu::after {left: 4px; width: 26px;}";
                     // Menü nicht flex.
                     if (settings_menu_float_right) css += ".#m {display: block;} ul.#m > li {top: 0px;}";
                     // Menü in Karte ausrichten.
@@ -868,7 +867,7 @@ var mainGC = function() {
                 }
                 // Vertikales Menü  ausrichten.
                 if (settings_bookmarks_top_menu) {
-                    css += "ul.#sm {margin-top: 15px; margin-left: 32px !important;} .submenu::after {left: 4px; width: 26px;}";
+                    css += ".#m ul.#sm {margin-top: 15px; margin-left: 32px !important;} .#m .submenu::after {left: 4px; width: 26px;}";
                     // Zwischen Menüname und Submenü keine Lücke lassen, sonst klappt das nicht mit dem einfachen Aufklappen.
                     css += ".#m > li .dropdown {padding-bottom: 14px !important;}";
                     if (settings_menu_float_right) css += "ul.#m > li {margin-top: 8px !important}";
@@ -1763,7 +1762,7 @@ var mainGC = function() {
                 if ($('.muted')[0] && $('.muted')[0].children[1]) {
                     var id = $('.muted')[0].children[1].href.match(/^https?:\/\/www\.geocaching\.com\/profile\/\?id=(\d+)/);
                     if (id && id[1]) {
-                        var idLink = "https://www.geocaching.com/p/default.aspx?id=" + id[1] + "&tab=geocaches";
+                        var idLink = "/p/default.aspx?id=" + id[1] + "&tab=geocaches";
                         GM_xmlhttpRequest({
                             method: "GET",
                             url: idLink,
@@ -2325,7 +2324,7 @@ var mainGC = function() {
 
             function convert_smilies(input){
 
-                var smilies = { 
+                var smilies = {
                     "[:)]": "",
                     "[:D]": "_big",
                     "[8D]": "_cool",
@@ -2366,13 +2365,13 @@ var mainGC = function() {
                 }
                 $('#log-preview-content > div').html(text);
             }
-            
+
             var converter = new showdown.Converter();
             RegExp.quote = function(str) {
                  return str.replace(/([.?*+^$[\]\\(){}|-])/g, "\\$1");
              };
 
-            var log_preview_wrapper = '<section class="region trackables-wrapper" id="log-previewPanel">' + 
+            var log_preview_wrapper = '<section class="region trackables-wrapper" id="log-previewPanel">' +
                                         '<div>' +
                                             '<button type="button" id="log-preview-button" class="btn btn-handle handle-open" data-open="false">Logvorschau' +
                                                 '<svg height="24" width="24" class="icon icon-svg-fill sea">' +
@@ -4324,7 +4323,7 @@ var mainGC = function() {
             } else if (document.location.href.match(/\.com\/play\/geocache\/gc\w+\/log/) && $('.muted')[0] && $('.muted')[0].children[1]) {
                 var id = $('.muted')[0].children[1].href.match(/^https?:\/\/www\.geocaching\.com\/profile\/\?id=(\d+)/);
                 if (id && id[1]) {
-                    var idLink = "https://www.geocaching.com/p/default.aspx?id=" + id[1] + "&tab=geocaches";
+                    var idLink = "/p/default.aspx?id=" + id[1] + "&tab=geocaches";
                     GM_xmlhttpRequest({
                         method: "GET",
                         url: idLink,
@@ -5163,6 +5162,17 @@ var mainGC = function() {
     if (is_page("dashboard")) {
         try {
             var css = '';
+            // Compact layout (little bit narrower elements).
+            if (settings_compact_layout_new_dashboard) {
+                css += ".action-link a {padding: 5px 20px;}";
+                css += ".bio-username {color: #02874D; font-size: 1.3em !important; word-break: break-all;}";
+                css += ".bio-background {height: 90px !important; background-size: 100% 140% !important;}";
+                css += ".bio-meta {padding: 16px 0px !important;}";
+                css += ".activity-item, .panel-header {padding: 5px 15px;}";
+                css += ".activity-tray {padding: 5px 40px;}";
+                css += ".sidebar-links .link-header {padding: 6px 5px 6px 20px !important;}";
+                css += ".alert {padding: 6px 16px !important; color: blue;}"
+            }
             // Map and Search button in left sidebar.
             if (settings_but_search_map) {
                 var target = (settings_but_search_map_new_tab ? "_blank" : "");
@@ -5194,7 +5204,7 @@ var mainGC = function() {
                 var side = $('.sidebar-links').last().find('ul.link-block li a[href*="/my/inventory.aspx"]').closest('li');
                 GM_xmlhttpRequest({
                     method: "GET",
-                    url: "https://www.geocaching.com/my/inventory.aspx",
+                    url: "/my/inventory.aspx",
                     onload: function(response) {
                         if (response.responseText) {
                             var anzTbs = 0;
@@ -5232,7 +5242,7 @@ var mainGC = function() {
     }
 
 // Show thumbnails.
-    if (settings_show_thumbnails && ((is_page("cache_listing") && !isMemberInPmoCache()) || is_page("publicProfile") || document.location.href.match(/\.com\/(seek\/gallery\.aspx?|track\/details\.aspx?|track\/gallery\.aspx?)/))) {
+    if (settings_show_thumbnails) {
         try {
             // my: Großes Bild; at: Kleines Bild; Man gibt an, wo sich beide berühren. Es scheint so, dass zuerst horizontal und dann vertikal benannt werden muss.
             function placeToolTip(element, stop) {
@@ -5248,183 +5258,119 @@ var mainGC = function() {
                     });
                 }
             }
+            function buildThumb(href, title, showName, topSp) {
+                var hrefLarge = (href.match(/\/large\//) ? href : href.replace(/\/cache\//,"/cache/large/"));
+                links[i].classList.add("gclh_thumb");
+                links[i].href = hrefLarge.replace(/\/large\//,"/");
+                links[i].onmouseover = placeToolTip;
+                var html = '<img src="'+hrefLarge.replace(/\/large\//,"/thumb/")+'" title="'+title+'">';
+                if (showName) html += '<br>'+title;
+                html += '<span>#top#<img class="gclh_max" src="'+hrefLarge.replace(/\/large\//,"/thumb/large/")+'">#bot#</span>';
+                if (settings_imgcaption_on_top) html = html.replace("#top#",title).replace("#bot#","");
+                else html = html.replace("#top#","").replace("#bot#",title);
+                links[i].innerHTML = html;
+                if (topSp && settings_spoiler_strings != "" && title.match(regexp)) {
+                    var div = document.createElement("div");
+                    div.innerHTML = "Spoiler warning";
+                    div.setAttribute("style", "transform: rotate(-30grad); width: 130px; position: relative; top: "+topSp+"; left: -5px; font-size: 11px; line-height: 0;");
+                    links[i].childNodes[0].src = urlImages+"gclh_logo.png";
+                    links[i].childNodes[0].style.opacity = "0.05";
+                    if (showName) links[i].childNodes[3].remove();
+                    else links[i].childNodes[1].remove();
+                    links[i].parentNode.appendChild(div);
+                }
+            }
+            var regexp = new RegExp(settings_spoiler_strings, "i");
+            var css = "";
 
-            // Um Profile Foto herum pseudo a Tag aufbauen. Nur altes Profile.
-            var profileFoto = false;
-            if (is_page("publicProfile") && $('#ctl00_ContentBody_ProfilePanel1_lnkProfile.Active')[0] && $('#ctl00_ContentBody_ProfilePanel1_uxProfilePhoto')[0]) {
-                var profileFoto = true;
-                var image = $('#ctl00_ContentBody_ProfilePanel1_uxProfilePhoto, #ctl00_ProfileHead_ProfileHeader_uxProfilePhoto')[0];
+            // Cache Listing.
+            if (is_page("cache_listing") && !isMemberInPmoCache()) {
+                // Logs.
+                if (settings_load_logs_with_gclh) {
+                    var newImTpl = "<a class='tb_images lnk gclh_thumb' onmouseover='placeToolTip(this);' rel='fb_images_${LogID}' href='"+http+"://img.geocaching.com/cache/log/${FileName}' title='<span class=&quot;LogImgTitle&quot;>${Name} &nbsp;</span><span class=&quot;LogImgLink&quot;> <a target=&quot;_blank&quot; href=&quot;/seek/log.aspx?LID=${LogID}&amp;IID=${ImageGuid}&quot;>View Log</a></span><br><span class=&quot;LogImgDescription&quot;>${Descr}</span>'>"
+                                 + "<img title='${Name}' alt='${Name}' src='"+http+"://img.geocaching.com/cache/log/thumb/${FileName}'/> "
+                                 + "<span title=''>#top#<img title='${Descr}' class='gclh_max' src='"+http+"://img.geocaching.com/cache/log/thumb/large/${FileName}'>#bot#</span></a>";
+                    if (settings_imgcaption_on_top) newImTpl = newImTpl.replace('#top#', '${Name}').replace('#bot#', '');
+                    else  newImTpl = newImTpl.replace('#top#', '').replace('#bot#', '${Name}');
+                    var code = "function gclh_updateTmpl() {"
+                             + "  delete $.template['tmplCacheLogImages'];"
+                             + "  $.template(\"tmplCacheLogImages\",\""+newImTpl+"\");"
+                             + "}"
+                             + "gclh_updateTmpl();"
+                             + placeToolTip.toString();
+                    insertScript(code, "body");
+                }
+                // Listing.
+                css += ".CachePageImages li {margin-bottom: 12px; background: unset; padding-left: 0px;}";
+                var links = $('.UserSuppliedContent, .CachePageImages').find('a[href*="img.geocaching.com/cache/"]');;
+                for (var i = 0; i < links.length; i++) {
+                    buildThumb(links[i].href, links[i].innerHTML, true, "-70px");
+                }
+
+            // Public Profile Avatar.
+            } else if (is_page("publicProfile") && $('#ctl00_ContentBody_ProfilePanel1_uxProfilePhoto')[0]) {
+                var image = $('#ctl00_ContentBody_ProfilePanel1_uxProfilePhoto')[0];
                 var aPseudo = document.createElement("a");
                 aPseudo.appendChild(image.cloneNode(true));
                 image.parentNode.replaceChild(aPseudo, image);
+                var link = $('#ctl00_ContentBody_ProfilePanel1_uxProfilePhoto').closest('a')[0];
+                avatarThumbnail(link);
+
+            // Galerien Public Profile, Cache, TB.
+            } else if ((is_page("publicProfile") && $('#ctl00_ContentBody_ProfilePanel1_lnkGallery.Active')[0]) ||
+                       document.location.href.match(/\.com\/(seek\/gallery\.aspx?|track\/gallery\.aspx?)/)) {
+                var links = $('.Table.GalleryTable').find('a[href*="img.geocaching.com/track/"], a[href*="img.geocaching.com/cache/"]');
+                for (var i = 0; i < links.length; i++) {
+                    buildThumb(links[i].href, links[i].nextElementSibling.innerHTML, false, (document.location.href.match(/\.com\/seek\/gallery\.aspx?/) ? "-90px" : false));
+                }
+
+            // TB Listing.
+            } else if (document.location.href.match(/\.com\/track\/details\.aspx?/)) {
+                css += "a.gclh_thumb img {margin-bottom: unset !important; margin-right: unset;}";
+                var links = $('.imagelist, table.Table .log_images').find('a[href*="img.geocaching.com/track/"]');
+                for (var i = 0; i < links.length; i++) {
+                    buildThumb(links[i].href, links[i].children[0].alt, (links[i].href.match(/log/) ? false : true), false);
+                }
             }
 
-            var links = document.getElementsByTagName("a");
-
-            var css = "";
-            css += "a.gclh_thumb:hover {" +
-                   "  text-decoration:underline;" +
-                   "  position: relative;}" +
-                   "a.gclh_thumb {" +
-                   "  overflow: visible !important;" +
-                   "  max-width: none !important;}" +
-                   "a.gclh_thumb span {" +
-                   "  white-space: unset !important;" +
-                   "  visibility: hidden;" +
-                   "  position: absolute;" +
-                   "  top:-310px;" +
-                   "  left:0px;" +
-                   "  padding: 2px;" +
-                   "  text-decoration:none;" +
-                   "  text-align:left;" +
-                   "  vertical-align:top;}" +
-                   "a.gclh_thumb:hover span {" +
-                   "  visibility: visible;" +
-                   "  z-index: 100;" +
-                   "  border: 1px solid #8c9e65;" +
-                   "  background-color:#dfe1d2;" +
-                   "  text-decoration: none !important;}" +
-                   "a.gclh_thumb:hover img {margin-bottom: -4px;}" +
-                   "a.gclh_thumb img {margin-bottom: -4px;}" +
-                   ".gclh_max {" +
-                   "  max-height: " + settings_hover_image_max_size + "px;" +
-                   "  max-width:  " + settings_hover_image_max_size + "px;}";
+            css +=
+                "a.gclh_thumb:hover {" +
+                "  position: relative;}" +
+                "a.gclh_thumb {" +
+                "  overflow: visible !important;" +
+                "  max-width: none !important;}" +
+                "a.gclh_thumb span {" +
+                "  white-space: unset !important;" +
+                "  visibility: hidden;" +
+                "  position: absolute;" +
+                "  top: -310px;" +
+                "  left: 0px;" +
+                "  padding: 2px;" +
+                "  text-decoration: none;" +
+                "  text-align: left;" +
+                "  vertical-align: top;}" +
+                "a.gclh_thumb:hover span {" +
+                "  visibility: visible;" +
+                "  z-index: 100;" +
+                "  border: 1px solid #8c9e65;" +
+                "  background-color: #dfe1d2;" +
+                "  text-decoration: none !important;}" +
+                "a.gclh_thumb:hover img {margin-bottom: -4px;}" +
+                "a.gclh_thumb img {" +
+                "  margin-bottom: -4px;" +
+                "  height: 75px;}" +
+                ".gclh_max {" +
+                "  height: unset !important;" +
+                "  vertical-align: unset !important;" +
+                "  margin-right: 0 !important;" +
+                "  max-height: " + settings_hover_image_max_size + "px;" +
+                "  max-width:  " + settings_hover_image_max_size + "px;}";
             appendCssStyle(css);
-
-            // Cache Listing: Logs, nicht die Beschreibung im Listing.
-            if (is_page("cache_listing") && settings_load_logs_with_gclh) {
-                var newImageTmpl =  "<a class='tb_images lnk gclh_thumb' onmouseover='placeToolTip(this);' rel='fb_images_${LogID}' href='" + http + "://img.geocaching.com/cache/log/${FileName}' title='<span class=&quot;LogImgTitle&quot;>${Name} &nbsp;</span><span class=&quot;LogImgLink&quot;> <a target=&quot;_blank&quot; href=&quot;/seek/log.aspx?LID=${LogID}&amp;IID=${ImageGuid}&quot;>View Log</a></span><br><span class=&quot;LogImgDescription&quot;>${Descr}</span>'>"
-                                 +  "  <img title='${Name}' alt='${Name}' src='" + http + "://img.geocaching.com/cache/log/thumb/${FileName}'/>";
-                if (settings_imgcaption_on_top) {
-                    newImageTmpl += "  <span title='${Name}'>${Name}<img title='${Descr}' class='gclh_max' src='" + http + "://img.geocaching.com/cache/log/thumb/large/${FileName}'></span>";
-                } else {
-                    newImageTmpl += "  <span title='${Name}'><img title='${Descr}' class='gclh_max' src='" + http + "://img.geocaching.com/cache/log/thumb/large/${FileName}'>${Name}</span>";
-                }
-                newImageTmpl     += "</a>&nbsp;&nbsp;";
-                var code = "function gclh_updateTmpl() {"
-                         + "  delete $.template['tmplCacheLogImages'];"
-                         + "  $.template(\"tmplCacheLogImages\",\"" + newImageTmpl + "\");"
-                         + "}"
-                         + "gclh_updateTmpl();"
-                         + placeToolTip.toString();
-                insertScript(code, "body");
-            }
-
-            var regexp = new RegExp(settings_spoiler_strings, "i");
-            for (var i = 0; i < links.length; i++) {
-                // Cache Listing: Listing Beschreibung, nicht die Logs.
-                if (is_page("cache_listing") && links[i].href.match(/^https?:\/\/img\.geocaching\.com\/cache/)) {
-                    var span = document.createElement("span");
-                    var thumb = document.createElement("img");
-                    var thumb_link = links[i].href;
-                    if (thumb_link.match(/cache\/log/)) {
-                        thumb_link = thumb_link.replace(/cache\/log/, "cache/log/thumb");
-                    } else {
-                        thumb.style.height = "100px";
-                        thumb.style.border = "1px solid black";
-                    }
-                    thumb.src = thumb_link;
-                    thumb.title = links[i].innerHTML;
-                    thumb.alt = links[i].innerHTML;
-                    links[i].className = links[i].className + " gclh_thumb";
-                    links[i].onmouseover = placeToolTip;
-                    var big_img = document.createElement("img");
-                    big_img.src = links[i].href;
-                    big_img.className = "gclh_max";
-                    span.appendChild(big_img);
-                    var name = links[i].innerHTML;
-                    links[i].innerHTML = "";
-                    links[i].appendChild(thumb);
-                    links[i].innerHTML += "<br>" + name;
-                    links[i].appendChild(span);
-                    if (settings_spoiler_strings != "" && links[i].innerHTML.match(regexp)) {  // Spoiler String
-                        var div = document.createElement("div");
-                        div.innerHTML = "Spoiler warning";
-                        div.setAttribute("style", "transform: rotate(-30grad); width: 130px; position: relative; top: -90px; left: -5px; font-size: 15px;");
-                        links[i].childNodes[0].src = urlImages+"gclh_logo.png";
-                        links[i].childNodes[0].style.opacity = "0.05";
-                        links[i].childNodes[3].remove();
-                        links[i].parentNode.appendChild(div);
-                    }
-
-                // Bilder Gallery Cache, TB und Public Profil:
-                } else if ((is_page("publicProfile") || document.location.href.match(/\.com\/(seek\/gallery\.aspx?|track\/gallery\.aspx?)/)) &&
-                            links[i].href.match(/^https?:\/\/img\.geocaching\.com\/(cache|track)\//) && links[i].childNodes[1] && links[i].childNodes[1].tagName == 'IMG') {
-                    global_imageGallery = true;
-                    var thumb = links[i].childNodes[1];
-                    var span = document.createElement('span');
-                    var img = document.createElement('img');
-                    img.src = thumb.src.replace(/thumb\//, "/thumb/large/");
-                    img.className = "gclh_max";
-                    if (settings_imgcaption_on_top) {
-                        // Bezeichnung des Bildes.
-                        span.appendChild(document.createTextNode(thumb.parentNode.parentNode.childNodes[5].innerHTML));
-                        span.appendChild(img);
-                    } else {
-                        span.appendChild(img);
-                        // Bezeichnung des Bildes.
-                        span.appendChild(document.createTextNode(thumb.parentNode.parentNode.childNodes[5].innerHTML));
-                    }
-                    links[i].className = links[i].className + " gclh_thumb";
-                    links[i].onmouseover = placeToolTip;
-                    links[i].href = links[i].href.replace(/large\//, "");
-                    links[i].appendChild(span);
-                    if (document.location.href.match(/\.com\/seek\/gallery\.aspx?/)) {
-                        if (settings_spoiler_strings != "" && links[i].dataset.title && links[i].dataset.title.match(regexp)) {  // Spoiler String
-                            var div = document.createElement("div");
-                            div.innerHTML = "Spoiler warning";
-                            div.setAttribute("style", "transform: rotate(-30grad); width: 130px; position: relative; top: -110px; left: -5px; font-size: 15px;");
-                            links[i].childNodes[1].src = urlImages+"gclh_logo.png";
-                            links[i].childNodes[1].style.opacity = "0.05";
-                            links[i].childNodes[1].style.height = "100px";
-                            links[i].childNodes[2].remove();
-                            links[i].parentNode.appendChild(div);
-                        }
-                    }
-
-                // Bilder im TB Listing:
-                } else if (document.location.href.match(/\.com\/track\/details\.aspx?/) &&
-                           links[i].href.match(/^https?:\/\/img\.geocaching\.com\/track/)) {
-                    // Bestehendes a tag (track/log/large) um class und Event ergänzen.
-                    links[i].className = links[i].className + " gclh_thumb";
-                    links[i].onmouseover = placeToolTip;
-                    // Bestehendes img tag (track/log/thumb) um title ergänzen und Bezeichnung für Bild merken.
-                    var imgDesc = "";
-                    var imgTag = links[i].getElementsByTagName("img");
-                    for (var j = 0; j < imgTag.length; j++) {
-                        imgTag[j].title = imgTag[j].alt;
-                        imgDesc = imgTag[j].alt;
-                        break;
-                    }
-                    // Neues img tag mit großem Bild aufbauen.
-                    var big_img = document.createElement("img");
-                    big_img.className = "gclh_max";
-                    big_img.src = links[i].href.replace(/track\/log\/large/, "track/log/thumb/large/");
-                    big_img.setAttribute("style", "margin-right: unset; margin-bottom: unset;");
-                    // Neues span tag mit neuem img tag mit großem Bild aufbauen.
-                    var span = document.createElement("span");
-                    if (settings_imgcaption_on_top) {
-                        span.appendChild(document.createTextNode(imgDesc));
-                        span.appendChild(big_img);
-                    } else {
-                        span.appendChild(big_img);
-                        span.appendChild(document.createTextNode(imgDesc));
-                    }
-                    // Neues img und neues span einbauen.
-                    links[i].appendChild(span);
-
-                // Profile Foto:
-                } else if (profileFoto && links[i].childNodes[0] && links[i].childNodes[0].tagName == 'IMG' &&
-                           (links[i].childNodes[0].src.match(/^https?:\/\/img\.geocaching\.com\/user\/avatar/) ||
-                            links[i].childNodes[0].src.match(/^https?:\/\/img\.geocaching\.com\/user\/display/))) {
-                    avatarThumbnail(links[i]);
-                }
-            }
         } catch(e) {gclh_error("Show Thumbnails:",e);}
     }
     function avatarThumbnail(link) {
         var thumb = link.children[0];
-        thumb.setAttribute("style", "margin-bottom: 0px;");
+        thumb.setAttribute("style", "margin-bottom: 0px; height: unset;");
         var img = document.createElement('img');
         img.src = thumb.src.replace(/img\.geocaching\.com\/user\/avatar/, "s3.amazonaws.com/gs-geo-images").replace(/img\.geocaching\.com\/user\/display/, "s3.amazonaws.com/gs-geo-images");;
         img.className = "gclh_max";
@@ -6032,8 +5978,8 @@ var mainGC = function() {
 // Improve own statistics page and own profile page with own log statistic.
     if (settings_log_statistic && isOwnStatisticsPage()) {
         try {
-            getLogSt("cache", "https://www.geocaching.com/my/logs.aspx?s=1");
-            getLogSt("track", "https://www.geocaching.com/my/logs.aspx?s=2");
+            getLogSt("cache", "/my/logs.aspx?s=1");
+            getLogSt("track", "/my/logs.aspx?s=2");
         } catch(e) {gclh_error("Improve own log statistic:",e);}
     }
     function getLogSt(type, url, manual) {
@@ -8705,6 +8651,7 @@ var mainGC = function() {
             html += checkboxy('settings_show_tb_inv', 'Show trackables inventory on your dashboard') + show_help("With this option a maximum of ten trackables of your trackables inventory is shown on your new dashboard. (On old dashboard it is GC standard to show it.)") + "<br>";
             html += checkboxy('settings_but_search_map', 'Show buttons "Search" and "Map" on your dashboard') + "<br>";
             html += " &nbsp; " + checkboxy('settings_but_search_map_new_tab', 'Open links in new tab') + "<br>";
+            html += checkboxy('settings_compact_layout_new_dashboard', 'Show compact layout on your dashboard') + "<br>";
             html += newParameterVersionSetzen(0.9) + newParameterOff;
 
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>Old dashboard only</b></div>";
@@ -9766,7 +9713,8 @@ var mainGC = function() {
                 'settings_show_all_logs_but',
                 'settings_show_log_counter_but',
                 'settings_show_bigger_avatars_but',
-                'settings_hide_feedback_icon'
+                'settings_hide_feedback_icon',
+                'settings_compact_layout_new_dashboard'
             );
             for (var i = 0; i < checkboxes.length; i++) {
                 if (document.getElementById(checkboxes[i])) setValue(checkboxes[i], document.getElementById(checkboxes[i]).checked);
