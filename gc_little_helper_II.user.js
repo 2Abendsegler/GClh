@@ -2323,19 +2323,21 @@ var mainGC = function() {
     if (document.location.href.match(/\.com\/play\/geocache\/gc\w+\/log/)){
         try{
 
-                var log_preview_wrapper = '<section class="region trackables-wrapper" id="log-previewPanel">' + 
-                                            '<div>' +
-                                                '<button type="button" id="log-preview-button" class="btn btn-handle handle-open" data-open="false">Logvorschau' +
-                                                    '<svg height="24" width="24" class="icon icon-svg-fill sea">' +
-                                                        '<use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="/play/app/ui-icons/sprites/global.svg#icon-expand-svg-fill"></use>' +
-                                                    '</svg>' +
-                                                '</button>' +
-                                                '<div class="inventory-panel" style="display: block;" id="log-preview-content">' +
-                                                    '<div class="inventory-content mdd_preview markdown-output">' +
-                                                    'Start typing to see the preview...</div>' +
-                                                '</div>' +
-                                            '</div>' +
-                                        '</section>';
+                var log_preview_wrapper = 
+                    '<section class="region trackables-wrapper" id="log-previewPanel">' + 
+                        '<div>' +
+                            '<button type="button" id="log-preview-button" class="btn btn-handle handle-open" data-open="false">Logvorschau' +
+                                '<svg height="24" width="24" class="icon icon-svg-fill sea">' +
+                                    '<use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="/play/app/ui-icons/sprites/global.svg#icon-expand-svg-fill"></use>' +
+                                '</svg>' +
+                            '</button>' +
+                            '<div class="inventory-panel" style="display: block;" id="log-preview-content">' +
+                                '<div class="inventory-content mdd_preview markdown-output">' +
+                                'Start typing to see the preview...</div>' +
+                            '</div>' +
+                        '</div>' +
+                    '</section>';
+                    
                 // Add divs for Markdown Editor
                 $('textarea.log-text').before('<div class="mdd_toolbar"></div>');
                 $('textarea.log-text').after('<div class="mdd_resizer">');
