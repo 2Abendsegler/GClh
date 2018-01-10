@@ -7,7 +7,7 @@
 
 ####  <a id="3de"></a>3. changelog.md für neue Version erzeugen.
 
-####  <a id="4de"></a>4. Temporäres Coding im Coding entfernen.
+####  <a id="4de"></a>4. Temporäres Coding entfernen.
 
 ####  <a id="5de"></a>5. $$ im Coding prüfen und gegebenenfalls ändern.
 
@@ -35,11 +35,12 @@ Maßnahme: Counter zurücksetzen.<br>
 Counter: https://s07.flagcounter.com/countxl/mHeY ...<br>
 Info: http://info.flagcounter.com/mHeY<br>
 Passwort: 99737</li>
-<li>Flagcounter 2, zuletzt v0.9.1<br>
+<li>Flagcounter 2:<br>
 Counter: https://s09.flagcounter.com/count2/Mf9D ...<br>
 Info: http://info.flagcounter.com/Mf9D<br>
 Passwort: 99473</li></ul>
-<li>Zählt alle Installationen: Kein Reset möglich, also immer neuen Counter erzeugen. v0.9.1<br>
+<li>Zählt alle Installationen:<br>
+Kein Reset möglich, also immer neuen Counter erzeugen.<br>
 Counter: https://www.worldflagcounter.com/dCV<br>
 Info: https://www.worldflagcounter.com/details/dCV</li></ul></li>
 <li>$$003<br>
