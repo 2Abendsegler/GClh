@@ -9,7 +9,7 @@
 
 ####  <a id="4de"></a>4. Temporäres Coding im Coding entfernen.
 
-####  <a id="5de"></a>5. $$ im Coding prüfen und gegebenenfalls ändern:
+####  <a id="5de"></a>5. $$ im Coding prüfen und gegebenenfalls ändern.
 
 <ul><li>$$000<br>
 Version setzen.</li>
@@ -18,26 +18,30 @@ Bei neuer Hauptversion Opacity überall um eine Zeile weiter nach unten reichen 
 Das jeweils für ...On1 bis 3 und ...LL1 bis 3.</li>
 <li>$$002<br>
 Wenn für neue Version neue Counter Auswertung erfolgen soll, müssen die Counter bearbeitet werden.<br>
-<ul><li>Zählt alle Installationen: Counter zurücksetzen.<br>
+<ul><li>Zählt alle Installationen:<br>
+Maßnahme: Counter zurücksetzen.<br>
 Counter: http://c.andyhoppe.com/1485103563<br>
 Info: http://c.andyhoppe.com/1485103563?output=static#InstallAlle<br>
 Passwort: eifra</li>
-<li>Zählt Installation je Adresse nur einmal: Counter zurücksetzen.<br>
+<li>Zählt Installation je Adresse nur einmal:<br>
+Maßnahme: Counter zurücksetzen.<br>
 Counter: http://c.andyhoppe.com/1485234890<br>
 Info: http://c.andyhoppe.com/1485234890?output=static#InstallEinmal<br>
 Passwort: eifra</li>
-<li>Zählt Installation je Adresse nur einmal innerhalb von 8 Stunden: Reset setzt 8 Stunden nicht zurück, deshalb im Wechsel austauschen.<br>
-Flagcounter 1, zuletzt v0.9<br>
+<li>Zählt Installation je Adresse nur einmal innerhalb von 8 Stunden: <br>
+Reset setzt 8 Stunden nicht zurück, deshalb Flagcounter 1 und 2 abwechselnd verwenden.<br>
+Maßnahme: Counter zurücksetzen.<br>
+<ul><li>Flagcounter 1:<br>
 Counter: https://s07.flagcounter.com/countxl/mHeY ...<br>
 Info: http://info.flagcounter.com/mHeY<br>
-Passwort: 99737<br>
-Flagcounter 2, zuletzt v0.9.1<br>
+Passwort: 99737</li>
+<li>Flagcounter 2, zuletzt v0.9.1<br>
 Counter: https://s09.flagcounter.com/count2/Mf9D ...<br>
 Info: http://info.flagcounter.com/Mf9D<br>
-Passwort: 99473</li>
+Passwort: 99473</li></ul>
 <li>Zählt alle Installationen: Kein Reset möglich, also immer neuen Counter erzeugen. v0.9.1<br>
 Counter: https://www.worldflagcounter.com/dCV<br>
-Info: https://www.worldflagcounter.com/details/dCV</li></ul></li><br>
+Info: https://www.worldflagcounter.com/details/dCV</li></ul></li>
 <li>$$003<br>
 Temporärer Austausch der Vollzugsmeldung mit Hinweis auf Notwendigkeit von Tampermonkey. Kann irgendwann raus.</li>
 <li>$$004<br>
@@ -45,24 +49,22 @@ Beachten, dass neue Config Parameter sehr wahrscheinlich in der Standardkonfigur
 https://raw.githubusercontent.com/2Abendsegler/GClh/master/data/config_standard.txt</li>
 <li>$$005 Beachten, dass neue Config Parameter vielleicht eine neue Ausnahmeregeln hervorrufen, die in function rcConfigDataNotInUseDel aufgenommen werden muß.</li></ul>
 
-####  <a id="6de"></a>6. Auf GitHub lokales Backup collector erzeugen.
+####  <a id="6de"></a>6. Über GitHub lokales Backup von branch collector erzeugen.
 
-####  <a id="7de"></a>7. Auf Master transportieren.
+####  <a id="7de"></a>7. Auf branch master transportieren.
 Es kann einige Minuten dauern, bis die neue Version auf dem RAW Link angekommen ist.
 
-####  <a id="8de"></a>8. Forumsbeitrag für neue Version:
+####  <a id="8de"></a>8. Forumsbeitrag für neue Version.
 
 Bisher in folgenden Foren:
 <ul><li>Geoclub: http://geoclub.de/forum/viewforum.php?f=117</li>
 <li>Groundspeak Forum: https://forums.geocaching.com/GC/index.php?/topic/343005-gc-little-helper-ii/</li>
 <li>Swissgeocacheforum: http://www.swissgeocacheforum.ch/forum/topic/12872-gc-little-helper-ii/</li></ul>
 
-GC little helper II (v0.9)
-
-Die neue Version 0.9 zum GC little helper II steht [url=https://github.com/2Abendsegler/GClh/raw/master/gc_little_helper_II.user.js]hier[/url] zur Verfügung. Sie kommt auch per automatischem Update. 
+`Die neue Version 0.9.1 zum GC little helper II steht [url=https://github.com/2Abendsegler/GClh/raw/master/gc_little_helper_II.user.js]hier[/url] zur Verfügung. Sie kommt auch per automatischem Update. 
 
 Details zu den Anpassungen gibt es wie immer im [url=https://github.com/2Abendsegler/GClh/blob/master/docu/changelog.md#readme]Changelog[/url].
 
-Liebe Grüße
+Liebe Grüße`
 
 
