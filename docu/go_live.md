@@ -59,10 +59,10 @@ Bisher in folgenden Foren:
 <li>Groundspeak Forum: https://forums.geocaching.com/GC/index.php?/topic/343005-gc-little-helper-ii/</li>
 <li>Swissgeocacheforum: http://www.swissgeocacheforum.ch/forum/topic/12872-gc-little-helper-ii/</li></ul>
 
-`Die neue Version 0.9.1 zum GC little helper II steht [url=https://github.com/2Abendsegler/GClh/raw/master/gc_little_helper_II.user.js]hier[/url] zur Verfügung. Sie kommt auch per automatischem Update. 
+```Die neue Version 0.9.1 zum GC little helper II steht [url=https://github.com/2Abendsegler/GClh/raw/master/gc_little_helper_II.user.js]hier[/url] zur Verfügung. Sie kommt auch per automatischem Update. 
 
 Details zu den Anpassungen gibt es wie immer im [url=https://github.com/2Abendsegler/GClh/blob/master/docu/changelog.md#readme]Changelog[/url].
 
-Liebe Grüße`
+Liebe Grüße```
 
 
