@@ -20,10 +20,12 @@ Das jeweils für ...On1 bis 3 und ...LL1 bis 3.</li>
 Wenn für neue Version neue Counter Auswertung erfolgen soll, müssen die Counter bearbeitet werden.<br>
 <ul><li>Zählt alle Installationen: Counter zurücksetzen.<br>
 Counter: http://c.andyhoppe.com/1485103563<br>
-Info: http://c.andyhoppe.com/1485103563?output=static#InstallAlle</li>
+Info: http://c.andyhoppe.com/1485103563?output=static#InstallAlle<br>
+Passwort: eifra</li>
 <li>Zählt Installation je Adresse nur einmal: Counter zurücksetzen.<br>
 Counter: http://c.andyhoppe.com/1485234890<br>
 Info: http://c.andyhoppe.com/1485234890?output=static#InstallEinmal<br>
+Passwort: eifra</li>
 <li>Zählt Installation je Adresse nur einmal innerhalb von 8 Stunden: Reset setzt 8 Stunden nicht zurück, deshalb im Wechsel austauschen.<br>
 Flagcounter 1, zuletzt v0.9<br>
 Counter: https://s07.flagcounter.com/countxl/mHeY ...<br>
