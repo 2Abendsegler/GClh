@@ -2,7 +2,7 @@
 // @name             GC little helper II
 // @namespace        http://www.amshove.net
 //--> $$000
-// @version          0.9
+// @version          0.9.1
 //<-- $$000
 // @include          http*://www.geocaching.com/*
 // @include          http*://maps.google.tld/*
@@ -2319,56 +2319,51 @@ var mainGC = function() {
             liste += "</select>";
         } else liste += "<br><p style='margin: 0;'>Templates:</p>" + texts + logicOld;
     }
-// Vorschau für Log
-    if (document.location.href.match(/\.com\/play\/geocache\/gc\w+\/log/)){
-        try{
-
-                var log_preview_wrapper = 
-                    '<section class="region trackables-wrapper" id="log-previewPanel">' + 
-                        '<div>' +
-                            '<button type="button" id="log-preview-button" class="btn btn-handle handle-open" data-open="false">Logvorschau' +
-                                '<svg height="24" width="24" class="icon icon-svg-fill sea">' +
-                                    '<use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="/play/app/ui-icons/sprites/global.svg#icon-expand-svg-fill"></use>' +
-                                '</svg>' +
-                            '</button>' +
-                            '<div class="inventory-panel" style="display: block;" id="log-preview-content">' +
-                                '<div class="inventory-content mdd_preview markdown-output">' +
-                                'Start typing to see the preview...</div>' +
-                            '</div>' +
+// Vorschau für Log, Log preview.
+    if (document.location.href.match(/\.com\/play\/geocache\/gc\w+\/log/)) {
+        try {
+            var log_preview_wrapper = 
+                '<section class="region trackables-wrapper" id="log-previewPanel">' + 
+                    '<div>' +
+                        '<button type="button" id="log-preview-button" class="btn btn-handle handle-open" data-open="false">Log Preview' +
+                            '<svg height="24" width="24" class="icon icon-svg-fill sea">' +
+                                '<use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="/play/app/ui-icons/sprites/global.svg#icon-expand-svg-fill"></use>' +
+                            '</svg>' +
+                        '</button>' +
+                        '<div class="inventory-panel" style="display: block;" id="log-preview-content">' +
+                            '<div class="inventory-content mdd_preview markdown-output"></div>' +
                         '</div>' +
-                    '</section>';
+                    '</div>' +
+                '</section>';
                     
-                // Add divs for Markdown Editor
-                $('textarea.log-text').before('<div class="mdd_toolbar"></div>');
-                $('textarea.log-text').after('<div class="mdd_resizer">');
-                $('#trackablesPanel').before(log_preview_wrapper);
+            // Add divs for Markdown Editor
+            $('textarea.log-text').before('<div class="mdd_toolbar"></div>');
+            $('textarea.log-text').after('<div class="mdd_resizer">');
+            $('#trackablesPanel').before(log_preview_wrapper);
 
+            var $mdEditor = $("textarea.log-text").MarkdownDeep({
+                SafeMode :true,
+                AllowInlineImages: false,
+                ExtraMode: false,
+                RequireHeaderClosingTag: true,
+                disableShortCutKeys: true, 
+                DisabledBlockTypes: [
+                    BLOCKTYPE_CONST.h4,
+                    BLOCKTYPE_CONST.h5,
+                    BLOCKTYPE_CONST.h6
+                ],
+                help_location: "/guide/markdown.aspx",
+                active_modal_class: "modal-open",
+                active_modal_selector: "html",
+                additionalPreviewFilter: SmileyConvert()
+            });
 
-                var $mdEditor = $("textarea.log-text").MarkdownDeep({
-                    SafeMode :true,
-                    AllowInlineImages: false,
-                    ExtraMode: false,
-                    RequireHeaderClosingTag: true,
-                    disableShortCutKeys: true, 
-                    DisabledBlockTypes: [
-                        BLOCKTYPE_CONST.h4,
-                        BLOCKTYPE_CONST.h5,
-                        BLOCKTYPE_CONST.h6
-                    ],
-                    help_location: "/guide/markdown.aspx",
-                    active_modal_class: "modal-open",
-                    active_modal_selector: "html",
-                    additionalPreviewFilter: SmileyConvert()
-                });
+            $('#log-preview-button').click(function(){
+                $('#log-preview-content').toggle();
+                $('#log-previewPanel button').toggleClass('handle-open');
+            });
 
-                $('#log-preview-button').click(function(){
-                    $('#log-preview-content').toggle();
-                    $('#log-previewPanel button').toggleClass('handle-open');
-                });
-
-                appendCssStyle('.markdown-output span.WaypointLog{color:#4a4a4a;display:block;font-weight:bold;margin-bottom:2em}.markdown-output{font-size:1.08em;line-height:1.375em;overflow:hidden;word-wrap:break-word}.markdown-output h1{color:#4a4a4a;font-size:1.285em;font-weight:bold;line-height:1.375em;margin:0}.markdown-output h2{color:#4a4a4a;font-size:1.285em;font-weight:normal;line-height:1.375em;margin:0}.markdown-output h3{color:#00b265;font-size:1.285em;font-weight:normal;line-height:1.375em;margin:0;text-transform:uppercase}.markdown-output hr{background:#d8d8d8;height:2px;margin:1.45em 0}.markdown-output p{color:#4a4a4a;margin:0 0 1.5em}.markdown-output li{list-style:inherit}.markdown-output ul{list-style-type:disc}.markdown-output ol{list-style-type:decimal}.markdown-output ul,.markdown-output ol{color:#4a4a4a;margin:0 1.5em 1.5em .75em;padding-left:1.5em}.markdown-output li ul{list-style-type:none;margin-left:0;margin-bottom:0;padding-left:0}.markdown-output li ul li::before{background-color:#e0b70a;border-radius:50%;content:"";display:inline-block;height:5px;margin-right:.75em;margin-top:-1px;width:5px;vertical-align:middle}.markdown-output li ol{margin-left:0;margin-bottom:0}.markdown-output blockquote{background:none;font-style:normal;margin:1.5em .75em;padding:0}.markdown-output blockquote p{color:#00b265;font-weight:bold}.markdown-output blockquote p::before{content:\'“\'}.markdown-output blockquote p::after{content:\'”\'}.markdown-output a,#bd .markdown-output a{color:#006cff;text-decoration:none}.markdown-output a:hover,.markdown-output a:focus{border-bottom:1px solid #006cff;color:#006cff}.markdown-output .AlignRight a{color:#00447c}.markdown-output .AlignRight a:visited{color:#00a0b0}.markdown-output .AlignRight a:hover,.markdown-output .AlignRight a:focus{border-bottom:none;color:#6c8e10}.markdown-output~.AlternatingRow,table .markdown-output~tr.AlternatingRow td{background:#fff}.markdown-output.BorderBottom td{border-bottom-color:#9b9b9b}.markdown-output.BorderBottom:last-child td{border-bottom:none}.markdown-output>td:last-child{padding-bottom:2.5em}');
-            
-
+            appendCssStyle('.markdown-output span.WaypointLog{color:#4a4a4a;display:block;font-weight:bold;margin-bottom:2em}.markdown-output{font-size:1.08em;line-height:1.375em;overflow:hidden;word-wrap:break-word}.markdown-output h1{color:#4a4a4a;font-size:1.285em;font-weight:bold;line-height:1.375em;margin:0}.markdown-output h2{color:#4a4a4a;font-size:1.285em;font-weight:normal;line-height:1.375em;margin:0}.markdown-output h3{color:#00b265;font-size:1.285em;font-weight:normal;line-height:1.375em;margin:0;text-transform:uppercase}.markdown-output hr{background:#d8d8d8;height:2px;margin:1.45em 0}.markdown-output p{color:#4a4a4a;margin:0 0 1.5em}.markdown-output li{list-style:inherit}.markdown-output ul{list-style-type:disc}.markdown-output ol{list-style-type:decimal}.markdown-output ul,.markdown-output ol{color:#4a4a4a;margin:0 1.5em 1.5em .75em;padding-left:1.5em}.markdown-output li ul{list-style-type:none;margin-left:0;margin-bottom:0;padding-left:0}.markdown-output li ul li::before{background-color:#e0b70a;border-radius:50%;content:"";display:inline-block;height:5px;margin-right:.75em;margin-top:-1px;width:5px;vertical-align:middle}.markdown-output li ol{margin-left:0;margin-bottom:0}.markdown-output blockquote{background:none;font-style:normal;margin:1.5em .75em;padding:0}.markdown-output blockquote p{color:#00b265;font-weight:bold}.markdown-output blockquote p::before{content:\'“\'}.markdown-output blockquote p::after{content:\'”\'}.markdown-output a,#bd .markdown-output a{color:#006cff;text-decoration:none}.markdown-output a:hover,.markdown-output a:focus{border-bottom:1px solid #006cff;color:#006cff}.markdown-output .AlignRight a{color:#00447c}.markdown-output .AlignRight a:visited{color:#00a0b0}.markdown-output .AlignRight a:hover,.markdown-output .AlignRight a:focus{border-bottom:none;color:#6c8e10}.markdown-output~.AlternatingRow,table .markdown-output~tr.AlternatingRow td{background:#fff}.markdown-output.BorderBottom td{border-bottom-color:#9b9b9b}.markdown-output.BorderBottom:last-child td{border-bottom:none}.markdown-output>td:last-child{padding-bottom:2.5em}');
         } catch(e) {gclh_error("Logpage Log Preview:",e);}
     }
 
@@ -2469,65 +2464,6 @@ var mainGC = function() {
             function getTbsO() {return $('#tblTravelBugs tbody tr td select').closest('td');}
             function getTbO(tb) {return [$(tb).find('td a')[0].innerHTML, $(tb).find('td select option')[0].value];}
         } catch(e) {gclh_error("Autovisit Old:",e);}
-    }
-
-// Autovisit new log page.
-    if (settings_autovisit && document.location.href.match(/\.com\/play\/geocache\/gc\w+\/log/)) {
-        try {
-            checkTbList(0);
-            function checkTbList(waitCount) {
-                var tbs = getTbs();
-                if (tbs.length > 0) {
-                    for (var i = 0; i < tbs.length; i++) {
-                        var [tbC, tbN] = getTb(tbs[i]);
-                        if (!tbC || !tbN) continue;
-                        var auto = document.createElement("div");
-                        auto.className = "radio-toggle-group gclh_auto";
-                        auto.addEventListener("click", setAuto, false);
-                        var c = "<label><input name='gclh_"+tbN+"' type='radio'><span class='label'>No action</span></label>";
-                        auto.innerHTML = c + c.replace("No action","AutoVisit");
-                        tbs[i].appendChild(auto);
-                    }
-                    $('.selectric-input')[0].addEventListener('blur', buildAutos, false);
-                    buildAutos(true);
-                    appendCssStyle(".radio-toggle-group {margin-top: -24px;} .gclh_auto {margin-top: -29px; float: right;}");
-                } else {waitCount++; if (waitCount <= 100) setTimeout(function(){checkTbList(waitCount);}, 100);}
-            }
-            function buildAutos(start) {
-                var type = getType();
-                var tbs = getTbs();
-                for (var i = 0; i < tbs.length; i++) {
-                    var [tbC, tbN] = getTb(tbs[i]);
-                    setAuto(tbC, tbN, type, start, true);
-                }
-            }
-            function setAuto(tbC, tbN, type, start, allTbs) {
-                if (!type) var type = getType();
-                if (!tbC || !tbN) var [tbC, tbN] = getTb(this.parentNode);
-                var actions = document.getElementsByName("actions-"+tbN);
-                var autos = document.getElementsByName("gclh_"+tbN);
-                if (!type || !tbC || !tbN || actions.length < 2 || autos.length != 2) return;
-                if (start) {
-                    if (getValue("autovisit_"+tbC, false)) autos[1].checked = true;
-                    else autos[0].checked = true;
-                }
-                if (!actions[2] || actions[2].checked != true) {
-                    if (autos[1].checked == true) {
-                        if (type == 2 || type == 10 || type == 11) actions[1].checked = "true";
-                        else actions[0].checked = "true";
-                    } else {
-                        if (allTbs != true && (type == 2 || type == 10 || type == 11)) actions[0].checked = "true";
-                    }
-                }
-                setValue("autovisit_"+tbC, (autos[0].checked ? false:true));
-            }
-            function getType() {
-                var type = $('.selectric .icon')[0].innerHTML.match(/svg#icon-(\d+?)">/);
-                if (type || type[1]) return type[1];
-            }
-            function getTbs() {return $('ul.trackables-list li .details').closest('li');}
-            function getTb(tb) {return [$(tb).find('.details .stats')[0].lastElementChild.innerHTML, $(tb).find('.actions input')[0].name.replace("actions-","")];}
-        } catch(e) {gclh_error("Autovisit New:",e);}
     }
 
 // Default Log Type and Log Signature Old Log Page.
@@ -7377,8 +7313,8 @@ var mainGC = function() {
 //--> $$002
         var code = '<img src="https://c.andyhoppe.com/1485103563"' + prop +
                    '<img src="https://c.andyhoppe.com/1485234890"' + prop +
-                   '<img src="https://www.worldflagcounter.com/dy9"' + prop +
-                   '<img src="https://s07.flagcounter.com/countxl/mHeY/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
+                   '<img src="https://www.worldflagcounter.com/dCV"' + prop +
+                   '<img src="https://s09.flagcounter.com/count2/Mf9D/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
 //<-- $$002
         div.innerHTML = code;
         side.appendChild(div);
@@ -8723,7 +8659,6 @@ var mainGC = function() {
             html += "<h4 class='gclh_headline2'>"+prepareHideable.replace("#name#","logging")+"Logging</h4>";
             html += "<div id='gclh_config_logging' class='gclh_block'>";
             html += checkboxy('settings_show_bbcode', 'Show smilies') + show_help("This option displays smilies options beside the log form. If you click on a smilie, it is inserted into your log.") + "<br>";
-            html += checkboxy('settings_autovisit', 'Enable \"AutoVisit\" feature for trackables') + show_help("With this option you are able to select trackables which should be automatically set from \"No action\" to \"Visited\" on every log, if the logtype is \"Found It\", \"Webcam Photo Taken\" or \"Attended\". For other logtypes trackables are automatically set from \"Visited\" to \"No action\". You can select \"AutoVisit\" for each trackable in the list on the bottom of the log form.") + "<br>";
             html += checkboxy('settings_replace_log_by_last_log', 'Replace log by last log template') + show_help("If you enable this option, the last log template will replace the whole log. If you disable it, it will be appended to the log.") + "<br>";
             html += content_settings_show_log_it.replace("show_log_it", "show_log_itX2");
             html += content_settings_logit_for_basic_in_pmo.replace("basic_in_pmo","basic_in_pmoX0");
@@ -8749,6 +8684,7 @@ var mainGC = function() {
 
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>Old logging page only</b></div>";
             html += content_settings_submit_log_button.replace("log_button","log_buttonX2");
+            html += checkboxy('settings_autovisit', 'Enable \"AutoVisit\" feature for trackables') + show_help("With this option you are able to select trackables which should be automatically set from \"No action\" to \"Visited\" on every log, if the logtype is \"Found It\", \"Webcam Photo Taken\" or \"Attended\". For other logtypes trackables are automatically set from \"Visited\" to \"No action\". You can select \"AutoVisit\" for each trackable in the list on the bottom of the log form.") + "<br>";
             html += "<table><tbody>";
             html += "  <tr><td>Default log type:</td>";
             html += "    <td><select class='gclh_form' id='settings_default_logtype'>";
