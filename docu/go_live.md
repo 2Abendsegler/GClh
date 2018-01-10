@@ -21,7 +21,7 @@ Wenn für neue Version neue Counter Auswertung erfolgen soll, müssen die Counte
 X vor dem Counter Link verhindert das Auswählen.<br>
 <ul><li>Zählt alle Installationen:<br>
 Maßnahme: <a href="http://www.andyhoppe.com/counter/counter-konfiguration.htm">Counter zurücksetzen</a> (eifra)<br>
-Counter: Xhttp://c.andyhoppe.com/1485103563<br>
+Counter: X ```http://c.andyhoppe.com/1485103563 ```<br>
 Auswertung: http://c.andyhoppe.com/1485103563?output=static#InstallAlle<br>
 <li>Zählt Installation je Adresse nur einmal:<br>
 Maßnahme: <a href="http://www.andyhoppe.com/counter/counter-konfiguration.htm">Counter zurücksetzen</a> (eifra)<br>
@@ -59,10 +59,10 @@ Bisher in folgenden Foren:
 <li>Groundspeak Forum: https://forums.geocaching.com/GC/index.php?/topic/343005-gc-little-helper-ii/</li>
 <li>Swissgeocacheforum: http://www.swissgeocacheforum.ch/forum/topic/12872-gc-little-helper-ii/</li></ul>
 
-```Die neue Version 0.9.1 zum GC little helper II steht [url=https://github.com/2Abendsegler/GClh/raw/master/gc_little_helper_II.user.js]hier[/url] zur Verfügung. Sie kommt auch per automatischem Update. 
+Vorschlag Posting:
+Die neue Version 0.9.1 zum GC little helper II steht [url=https://github.com/2Abendsegler/GClh/raw/master/gc_little_helper_II.user.js]hier[/url] zur Verfügung. Sie kommt auch per automatischem Update. 
 
 Details zu den Anpassungen gibt es wie immer im [url=https://github.com/2Abendsegler/GClh/blob/master/docu/changelog.md#readme]Changelog[/url].
 
 Liebe Grüße
-
 
