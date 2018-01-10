@@ -7316,14 +7316,14 @@ var mainGC = function() {
 // Neue Parameter im GClh Config hervorheben und Versions Info setzen.
     var d = "<div  style='background-color: rgba(240, 223, 198, #); width: 100%; height: 100%; padding: 2px 0px 2px 2px; margin-left: -2px;'>";
     var s = "<span style='background-color: rgba(240, 223, 198, #); float: right; padding-top: 25px; width: 100%; margin: -22px 2px 0px 0px;'></span>";
-//--> $$000                             | Hier, v0.9 done
+//--> $$001
     newParameterOn1 = d.replace("#", "0.3");
     newParameterOn2 = d.replace("#", "0.6");
     newParameterOn3 = d.replace("#", "1.0");
     newParameterLL1 = s.replace("#", "0.3");
     newParameterLL2 = s.replace("#", "0.6");
     newParameterLL3 = s.replace("#", "1.0");
-//<-- $$000
+//<-- $$001
     function newParameterVersionSetzen(version) {
         var newParameterVers = "<span style='font-size: 70%; font-style: italic; float: right; margin-top: -14px; margin-right: 4px;' ";
         if (version != "") newParameterVers += "title='Implemented with version " + version + "'>" + version + "</span>";
@@ -7395,12 +7395,12 @@ var mainGC = function() {
         div.id = "gclh_simu";
         div.setAttribute("style", "margin-top: -50px;");
         var prop = ' style="border: none; visibility: hidden; width: 2px; height: 2px;" alt="">';
-//--> $$000
+//--> $$002
         var code = '<img src="https://c.andyhoppe.com/1485103563"' + prop +
                    '<img src="https://c.andyhoppe.com/1485234890"' + prop +
                    '<img src="https://www.worldflagcounter.com/dy9"' + prop +
                    '<img src="https://s07.flagcounter.com/countxl/mHeY/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
-//<-- $$000
+//<-- $$002
         div.innerHTML = code;
         side.appendChild(div);
         setValue("declared_version", scriptVersion);
@@ -7410,13 +7410,13 @@ var mainGC = function() {
             var text = "Version " + scriptVersion + " of  \"" + scriptName + "\"  was successfully installed.\n\n"
                      + "Do you want to open the changelog in a new tab, to have a quick\n"
                      + "look at changes and new features?\n";
-//--> $$000
+//--> $$003
             if (browser === "firefox" && isTM === false) {
                var text = "Version " + scriptVersion + " of  \"" + scriptName + "\"  was successfully installed.\n\n"
                         + "DEAR FIREFOX USER, PLEASE CHECK THE CHANGELOG TO VERSION 0.8.10 AND HIGHER!\n\n"
                         + "Do you want to open the changelog in a new tab?\n";
             }
-//<-- $$000
+//<-- $$003
             if (window.confirm(text)) window.open(url, '_blank');
         }, 1000);
     }
@@ -10261,10 +10261,9 @@ var mainGC = function() {
                 rcConfigDataDel(keysDel);
             }
             if (document.getElementById("rc_standard").checked) {
-//--> $$000
-                // Neue Parameter in Datei aufnehmen?
+//--> $$004
                 rcGetData(urlConfigSt, "st");
-//<-- $$000
+//<-- $$004
             }
             if (document.getElementById("rc_temp").checked) {
                 rcGetData(urlScript, "js");
@@ -10327,17 +10326,16 @@ var mainGC = function() {
         rcConfigUpdate(changed);
     }
     function rcConfigDataNotInUseDel(data) {
-//--> $$000
-        // Benötigen neue Parameter Ausnahmeregel?
-//<-- $$000
         var config_tmp = {};
         var changed = false;
         for (key in CONFIG) {
             var kkey = key.split("[");
             var kkey = kkey[0];
+//--> $$005
             if (kkey.match(/^(show_box)/) ||
                 kkey.match(/^gclh_(.*)(_logs_get_last|_logs_count)$/)) {
                 config_tmp[key] = CONFIG[key];
+//<-- $$005
             } else if (kkey.match(/autovisit_(\d+)/) ||
                        kkey.match(/^(friends_founds_|friends_hides_)/) ||
                        kkey.match(/^(settings_DB_auth_token|new_version|class|token)$/)) {
