@@ -40,7 +40,7 @@ Many thanks to <a href="https://www.geocaching.com/profile/?u=Ruko2010">Ruko2010
 <br>
 </li>
 <li>
-New: In GClh Config there are some new chapters and some regroupings. It should be now much easier to find things: [Issue <a href="https://github.com/2Abendsegler/GClh/pull/547">#547</a>]<br>
+New: In GClh Config there are some new chapters and some regroupings. It should be much easier to find things: [Issue <a href="https://github.com/2Abendsegler/GClh/pull/547">#547</a>]<br>
 <img src="../images/v0.9.1_Screen01.jpg" alt="v0.9.1_Screen01.jpg"><br>
 <br>
 </li>
@@ -63,7 +63,7 @@ Settings -> Nearest lists, Pocket querry and Recently viewed cache list:<br>
 New: Show compact layout on new dashboard: [Issue <a href="https://github.com/2Abendsegler/GClh/pull/523">#523</a>]<br>
 Many thanks to <a href="https://www.geocaching.com/profile/?u=DrakMrak">DrakMrak</a>.<br>
 <img src="../images/v0.9.1_Screen09.png" alt="v0.9.1_Screen09.png"><br>
-Settings -> Nearest lists, Pocket querry and Recently viewed cache list:<br>
+Settings -> Dashboard:<br>
 <img src="../images/v0.9.1_Screen10.jpg" alt="v0.9.1_Screen10.jpg"><br>
 <br>
 </li>
@@ -81,7 +81,7 @@ Settings -> Global:<br>
 <br>
 </li>
 <li>
-New: Take also owner pseudonym to replace placeholder owner: [Issue <a href="https://github.com/2Abendsegler/GClh/pull/531">#531</a>]<br>
+New: Take also owner pseudonym to replace placeholder owner: [Issue <a href="https://github.com/2Abendsegler/GClh/pull/526">#526</a>]<br>
 Settings -> Logging:<br>
 <img src="../images/v0.9.1_Screen11.jpg" alt="v0.9.1_Screen11.jpg"><br>
 <br>
