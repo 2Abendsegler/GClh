@@ -2,16 +2,12 @@
 ## <a id="de"></a>Go live Dokumentation:
 
 ####  <a id="1de"></a>1. Prüfen ob alle Issues gemäß Milestones enthalten sind.
-<br>
 
 ####  <a id="2de"></a>2. Alle Änderungen in branch collector transportieren und testen.
-<br>
 
 ####  <a id="3de"></a>3. Changelog.md für neue Version erzeugen
-<br>
 
 ####  <a id="4de"></a>4. Temporäres Coding xxxx und console.log im Coding entfernen.
-<br>
 
 ####  <a id="5de"></a>5. $$ im Coding prüfen und gegebenenfalls ändern:
 
