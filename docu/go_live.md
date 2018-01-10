@@ -20,24 +20,24 @@ Das jeweils für ...On1 bis 3 und ...LL1 bis 3.</li>
 Wenn für neue Version neue Counter Auswertung erfolgen soll, müssen die Counter bearbeitet werden.<br>
 <ul><li>Zählt alle Installationen:<br>
 Maßnahme: <a href="http://www.andyhoppe.com/counter/counter-konfiguration.htm">Counter zurücksetzen</a> (eifra)<br>
-Counter: <span>``http://c.andyhoppe.com/1485103563``</span><br>
+Counter: Xhttp://c.andyhoppe.com/1485103563<br>
 Auswertung: http://c.andyhoppe.com/1485103563?output=static#InstallAlle<br>
 <li>Zählt Installation je Adresse nur einmal:<br>
 Maßnahme: <a href="http://www.andyhoppe.com/counter/counter-konfiguration.htm">Counter zurücksetzen</a> (eifra)<br>
-Counter: ``http://c.andyhoppe.com/1485234890``<br>
+Counter: Xhttp://c.andyhoppe.com/1485234890<br>
 Auswertung: http://c.andyhoppe.com/1485234890?output=static#InstallEinmal<br>
 <li>Zählt Installation je Adresse nur einmal innerhalb von 8 Stunden: <br>
 Reset setzt 8 Stunden nicht zurück, deshalb Flagcounter 1 und 2 abwechselnd verwenden.<br>
 Maßnahme: Counter zurücksetzen über Auswertung.<br>
 <ul><li>Flagcounter 1:<br>
-Counter: _https://s07.flagcounter.com/countxl/mHeY ...<br>
+Counter: Xhttps://s07.flagcounter.com/countxl/mHeY ...<br>
 Auswertung: http://info.flagcounter.com/mHeY (99737)<br>
 <li>Flagcounter 2:<br>
-Counter: _https://s09.flagcounter.com/count2/Mf9D ...<br>
+Counter: Xhttps://s09.flagcounter.com/count2/Mf9D ...<br>
 Auswertung: http://info.flagcounter.com/Mf9D (99473)</li></ul>
 <li>Zählt alle Installationen:<br>
 Kein Reset möglich, also immer neuen Counter erzeugen.<br>
-Counter: _https://www.worldflagcounter.com/dCV<br>
+Counter: Xwww.worldflagcounter.com/dCV<br>
 Auswertung: https://www.worldflagcounter.com/details/dCV</li></ul>
 <li>$$003<br>
 Temporärer Austausch der Vollzugsmeldung mit Hinweis auf Notwendigkeit von Tampermonkey. Kann irgendwann raus.</li>
