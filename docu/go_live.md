@@ -63,6 +63,6 @@ Bisher in folgenden Foren:
 
 Details zu den Anpassungen gibt es wie immer im [url=https://github.com/2Abendsegler/GClh/blob/master/docu/changelog.md#readme]Changelog[/url].
 
-Liebe Grüße```
+Liebe Grüße
 
 
