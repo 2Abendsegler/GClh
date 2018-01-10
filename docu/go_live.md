@@ -38,7 +38,7 @@ Auswertung: http://info.flagcounter.com/Mf9D (99473)</li></ul>
 <li>Zählt alle Installationen:<br>
 Kein Reset möglich, also immer neuen Counter erzeugen.<br>
 Counter: xhttps://www.worldflagcounter.com/dCV<br>
-Auswertung: https://www.worldflagcounter.com/details/dCV</li>
+Auswertung: https://www.worldflagcounter.com/details/dCV</li></ul>
 <li>$$003<br>
 Temporärer Austausch der Vollzugsmeldung mit Hinweis auf Notwendigkeit von Tampermonkey. Kann irgendwann raus.</li>
 <li>$$004<br>
