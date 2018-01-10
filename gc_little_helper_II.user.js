@@ -13,8 +13,9 @@
 // @require          http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js
 // @require          http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js
 // @require          https://cdnjs.cloudflare.com/ajax/libs/dropbox.js/2.5.2/Dropbox-sdk.min.js
-// @require          https://cdnjs.cloudflare.com/ajax/libs/showdown/1.8.6/showdown.min.js
 // @require          https://raw.githubusercontent.com/2Abendsegler/GClh/master/data/gclh_defi.js
+// @require          https://www.geocaching.com/scripts/MarkdownDeepLib.min.js
+// @require          https://www.geocaching.com/scripts/SmileyConverter.js
 // @connect          maps.googleapis.com
 // @connect          raw.githubusercontent.com
 // @description      Some little things to make life easy (on www.geocaching.com).
@@ -2322,81 +2323,52 @@ var mainGC = function() {
     if (document.location.href.match(/\.com\/play\/geocache\/gc\w+\/log/)){
         try{
 
-            function convert_smilies(input){
+                var log_preview_wrapper = 
+                    '<section class="region trackables-wrapper" id="log-previewPanel">' + 
+                        '<div>' +
+                            '<button type="button" id="log-preview-button" class="btn btn-handle handle-open" data-open="false">Logvorschau' +
+                                '<svg height="24" width="24" class="icon icon-svg-fill sea">' +
+                                    '<use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="/play/app/ui-icons/sprites/global.svg#icon-expand-svg-fill"></use>' +
+                                '</svg>' +
+                            '</button>' +
+                            '<div class="inventory-panel" style="display: block;" id="log-preview-content">' +
+                                '<div class="inventory-content mdd_preview markdown-output">' +
+                                'Start typing to see the preview...</div>' +
+                            '</div>' +
+                        '</div>' +
+                    '</section>';
+                    
+                // Add divs for Markdown Editor
+                $('textarea.log-text').before('<div class="mdd_toolbar"></div>');
+                $('textarea.log-text').after('<div class="mdd_resizer">');
+                $('#trackablesPanel').before(log_preview_wrapper);
 
-                var smilies = {
-                    "[:)]": "",
-                    "[:D]": "_big",
-                    "[8D]": "_cool",
-                    "[:I]": "_blush",
-                    "[:P]": "_tongue",
-                    "[}:)]": "_evil",
-                    "[;)]": "_wink",
-                    "[:o)]": "_clown",
-                    "[B)]": "_blackeye",
-                    "[8]": "_8ball",
-                    "[:(]": "_sad",
-                    "[8)]": "_shy",
-                    "[:O]": "_shock",
-                    "[:(!]": "_angry",
-                    "[xx(]": "_dead",
-                    "[|)]": "_sleepy",
-                    "[:X]": "_kisses",
-                    "[^]": "_approve",
-                    "[V]": "_dissapprove",
-                    "[?]": "_question"
-                }
 
-                var key;
-                for (key in smilies) {
-                   input = input.replace(RegExp(RegExp.quote(key),"g"), "<img src='/images/icons/icon_smile" + smilies[key] + ".gif' border='0'>");
-                }
+                var $mdEditor = $("textarea.log-text").MarkdownDeep({
+                    SafeMode :true,
+                    AllowInlineImages: false,
+                    ExtraMode: false,
+                    RequireHeaderClosingTag: true,
+                    disableShortCutKeys: true, 
+                    DisabledBlockTypes: [
+                        BLOCKTYPE_CONST.h4,
+                        BLOCKTYPE_CONST.h5,
+                        BLOCKTYPE_CONST.h6
+                    ],
+                    help_location: "/guide/markdown.aspx",
+                    active_modal_class: "modal-open",
+                    active_modal_selector: "html",
+                    additionalPreviewFilter: SmileyConvert()
+                });
 
-                return input;
-            }
+                $('#log-preview-button').click(function(){
+                    $('#log-preview-content').toggle();
+                    $('#log-previewPanel button').toggleClass('handle-open');
+                });
 
-            function build_log_preview(){
-                var text = $('#logContent > textarea').val();
-                if (text == ''){
-                    text = 'Start typing to see the preview...';
-                }else{
-                    text = converter.makeHtml(text);
-                    text = convert_smilies(text);
-                }
-                $('#log-preview-content > div').html(text);
-            }
+                appendCssStyle('.markdown-output span.WaypointLog{color:#4a4a4a;display:block;font-weight:bold;margin-bottom:2em}.markdown-output{font-size:1.08em;line-height:1.375em;overflow:hidden;word-wrap:break-word}.markdown-output h1{color:#4a4a4a;font-size:1.285em;font-weight:bold;line-height:1.375em;margin:0}.markdown-output h2{color:#4a4a4a;font-size:1.285em;font-weight:normal;line-height:1.375em;margin:0}.markdown-output h3{color:#00b265;font-size:1.285em;font-weight:normal;line-height:1.375em;margin:0;text-transform:uppercase}.markdown-output hr{background:#d8d8d8;height:2px;margin:1.45em 0}.markdown-output p{color:#4a4a4a;margin:0 0 1.5em}.markdown-output li{list-style:inherit}.markdown-output ul{list-style-type:disc}.markdown-output ol{list-style-type:decimal}.markdown-output ul,.markdown-output ol{color:#4a4a4a;margin:0 1.5em 1.5em .75em;padding-left:1.5em}.markdown-output li ul{list-style-type:none;margin-left:0;margin-bottom:0;padding-left:0}.markdown-output li ul li::before{background-color:#e0b70a;border-radius:50%;content:"";display:inline-block;height:5px;margin-right:.75em;margin-top:-1px;width:5px;vertical-align:middle}.markdown-output li ol{margin-left:0;margin-bottom:0}.markdown-output blockquote{background:none;font-style:normal;margin:1.5em .75em;padding:0}.markdown-output blockquote p{color:#00b265;font-weight:bold}.markdown-output blockquote p::before{content:\'“\'}.markdown-output blockquote p::after{content:\'”\'}.markdown-output a,#bd .markdown-output a{color:#006cff;text-decoration:none}.markdown-output a:hover,.markdown-output a:focus{border-bottom:1px solid #006cff;color:#006cff}.markdown-output .AlignRight a{color:#00447c}.markdown-output .AlignRight a:visited{color:#00a0b0}.markdown-output .AlignRight a:hover,.markdown-output .AlignRight a:focus{border-bottom:none;color:#6c8e10}.markdown-output~.AlternatingRow,table .markdown-output~tr.AlternatingRow td{background:#fff}.markdown-output.BorderBottom td{border-bottom-color:#9b9b9b}.markdown-output.BorderBottom:last-child td{border-bottom:none}.markdown-output>td:last-child{padding-bottom:2.5em}');
+            
 
-            var converter = new showdown.Converter();
-            RegExp.quote = function(str) {
-                 return str.replace(/([.?*+^$[\]\\(){}|-])/g, "\\$1");
-             };
-
-            var log_preview_wrapper = '<section class="region trackables-wrapper" id="log-previewPanel">' +
-                                        '<div>' +
-                                            '<button type="button" id="log-preview-button" class="btn btn-handle handle-open" data-open="false">Logvorschau' +
-                                                '<svg height="24" width="24" class="icon icon-svg-fill sea">' +
-                                                    '<use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="/play/app/ui-icons/sprites/global.svg#icon-expand-svg-fill"></use>' +
-                                                '</svg>' +
-                                            '</button>' +
-                                            '<div class="inventory-panel markdown-output" style="display: block;" id="log-preview-content">' +
-                                                '<div class="inventory-content">' +
-                                                'Start typing to see the preview...</div>' +
-                                            '</div>' +
-                                        '</div>' +
-                                    '</section>';
-
-            $('#trackablesPanel').before(log_preview_wrapper);
-
-            $('#log-preview-button').click(function(){
-                $('#log-preview-content').toggle();
-                $('#log-previewPanel button').toggleClass('handle-open');
-            });
-
-            appendCssStyle('.markdown-output ul, .markdown-output ol {padding-left: 20px;}');
-
-            $('#logContent').delegate( 'textarea', 'keyup paste', function(){
-                build_log_preview();
-            });
         } catch(e) {gclh_error("Logpage Log Preview:",e);}
     }
 
@@ -3729,6 +3701,13 @@ var mainGC = function() {
                 buildBoxElementsLinks(box, bm_tmp);
             }
         } catch(e) {gclh_error("Linklist, Default Links on new dashboard:",e);}
+    }
+
+// Enlarge Picture in Feed on Dashboard
+    if (is_page("dashboard")) {
+        try {
+            // alert($('#ActivityFeed .activity-modal-container .modal-content img').attr('src'));
+        } catch(e) {gclh_error("Enlarge Picture in Feed on Dashboard:",e);}
     }
 
 // Loggen über Standard "Log It" Icons zu PMO Caches für Basic Members.
