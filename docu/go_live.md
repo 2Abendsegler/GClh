@@ -18,6 +18,7 @@ Bei neuer Hauptversion Opacity überall um eine Zeile weiter nach unten reichen 
 Das jeweils für ...On1 bis 3 und ...LL1 bis 3.</li>
 <li>$$002<br>
 Wenn für neue Version neue Counter Auswertung erfolgen soll, müssen die Counter bearbeitet werden.<br>
+X vor dem Counter Link verhindert das Auswählen.<br>
 <ul><li>Zählt alle Installationen:<br>
 Maßnahme: <a href="http://www.andyhoppe.com/counter/counter-konfiguration.htm">Counter zurücksetzen</a> (eifra)<br>
 Counter: Xhttp://c.andyhoppe.com/1485103563<br>
