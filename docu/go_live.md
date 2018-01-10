@@ -20,7 +20,7 @@ Das jeweils für ...On1 bis 3 und ...LL1 bis 3.</li>
 Wenn für neue Version neue Counter Auswertung erfolgen soll, müssen die Counter bearbeitet werden.<br>
 <ul><li>Zählt alle Installationen:<br>
 Maßnahme: <a href="http://www.andyhoppe.com/counter/counter-konfiguration.htm">Counter zurücksetzen</a> (eifra)<br>
-Counter: _http://c.andyhoppe.com/1485103563<br>
+Counter: <a title="http://c.andyhoppe.com/1485103563">ab</a><br>
 Auswertung: http://c.andyhoppe.com/1485103563?output=static#InstallAlle<br>
 <li>Zählt Installation je Adresse nur einmal:<br>
 Maßnahme: <a href="http://www.andyhoppe.com/counter/counter-konfiguration.htm">Counter zurücksetzen</a> (eifra)<br>
