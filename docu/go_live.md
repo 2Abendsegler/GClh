@@ -19,30 +19,26 @@ Das jeweils für ...On1 bis 3 und ...LL1 bis 3.</li>
 <li>$$002<br>
 Wenn für neue Version neue Counter Auswertung erfolgen soll, müssen die Counter bearbeitet werden.<br>
 <ul><li>Zählt alle Installationen:<br>
-Maßnahme: Counter zurücksetzen.<br>
-Counter: http://c.andyhoppe.com/1485103563<br>
-Info: http://c.andyhoppe.com/1485103563?output=static#InstallAlle<br>
-Passwort: eifra</li>
+Maßnahme: <a href="http://www.andyhoppe.com/counter/counter-konfiguration.htm">Counter zurücksetzen (eifra)</a><br>
+Counter: xhttp://c.andyhoppe.com/1485103563<br>
+Auswertung: http://c.andyhoppe.com/1485103563?output=static#InstallAlle<br>
 <li>Zählt Installation je Adresse nur einmal:<br>
-Maßnahme: Counter zurücksetzen.<br>
-Counter: http://c.andyhoppe.com/1485234890<br>
-Info: http://c.andyhoppe.com/1485234890?output=static#InstallEinmal<br>
-Passwort: eifra</li>
+Maßnahme: <a href="http://www.andyhoppe.com/counter/counter-konfiguration.htm">Counter zurücksetzen (eifra)</a><br>
+Counter: xhttp://c.andyhoppe.com/1485234890<br>
+Auswertung: http://c.andyhoppe.com/1485234890?output=static#InstallEinmal<br>
 <li>Zählt Installation je Adresse nur einmal innerhalb von 8 Stunden: <br>
 Reset setzt 8 Stunden nicht zurück, deshalb Flagcounter 1 und 2 abwechselnd verwenden.<br>
-Maßnahme: Counter zurücksetzen.<br>
+Maßnahme: Counter zurücksetzen über Auswertung.<br>
 <ul><li>Flagcounter 1:<br>
-Counter: https://s07.flagcounter.com/countxl/mHeY ...<br>
-Info: http://info.flagcounter.com/mHeY<br>
-Passwort: 99737</li>
+Counter: xhttps://s07.flagcounter.com/countxl/mHeY ...<br>
+Auswertung: http://info.flagcounter.com/mHeY (99737)<br>
 <li>Flagcounter 2:<br>
-Counter: https://s09.flagcounter.com/count2/Mf9D ...<br>
-Info: http://info.flagcounter.com/Mf9D<br>
-Passwort: 99473</li></ul>
+Counter: xhttps://s09.flagcounter.com/count2/Mf9D ...<br>
+Auswertung: http://info.flagcounter.com/Mf9D (99473)<br>
 <li>Zählt alle Installationen:<br>
 Kein Reset möglich, also immer neuen Counter erzeugen.<br>
-Counter: https://www.worldflagcounter.com/dCV<br>
-Info: https://www.worldflagcounter.com/details/dCV</li></ul></li>
+Counter: xhttps://www.worldflagcounter.com/dCV<br>
+Auswertung: https://www.worldflagcounter.com/details/dCV</li></ul></li>
 <li>$$003<br>
 Temporärer Austausch der Vollzugsmeldung mit Hinweis auf Notwendigkeit von Tampermonkey. Kann irgendwann raus.</li>
 <li>$$004<br>
