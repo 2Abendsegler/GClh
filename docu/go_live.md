@@ -3,13 +3,18 @@
 
 ###  <a id="1de"></a>1. Prüfen ob alle Issues gemäß Milestones enthalten sind.
 <br>
-###  <a id="2de"></a>2. Alle Änderungen in branch collector testen.
+
+###  <a id="2de"></a>2. Alle Änderungen in branch collector transportieren und testen.
 <br>
-###  <a id="3de"></a>3. Changelog.MD für neue Version erzeugen
+
+###  <a id="3de"></a>3. Changelog.md für neue Version erzeugen
 <br>
-###  <a id="4de"></a>4. Temporäres Coding xxxx, Temporäres geprüftes Coding #OK# und console.log im Coding entfernen. Zeilen bei neuem Coding zusammenstreichen.
+
+###  <a id="4de"></a>4. Temporäres Coding xxxx und console.log im Coding entfernen.
 <br>
+
 ###  <a id="5de"></a>5. $$ im Coding prüfen und gegebenenfalls ändern:
+
 <ul><li>$$000 Versionierung.</li>
 <li>$$001 Bei neuer Hauptversion Opacity überall um eine Zeile weiter nach unten reichen und letzte nach oben. Das jeweils für ...On1 bis 3 und ...LL1 bis 3.</li>
 <li>$$002 Wenn für neue Version neue Counter Auswertung erfolgen soll, müssen die Counter zurückgesetzt werden. Die Flagcounter müssen ausgetauscht werden.
@@ -36,12 +41,16 @@ Info: https://www.worldflagcounter.com/details/dCV</li></ul></li>
 https://raw.githubusercontent.com/2Abendsegler/GClh/master/data/config_standard.txt</li>
 <li>$$005 Beachten, dass neue Config Parameter vielleicht eine neue Ausnahmeregeln hervorrufen, die in function rcConfigDataNotInUseDel aufgenommen werden muß.</li></ul>
 <br>
+
 ###  <a id="6de"></a>6. Auf GitHub lokales Backup collector erzeugen.
 <br>
+
 ###  <a id="7de"></a>7. Auf Master transportieren.
 Es kann einige Minuten dauern, bis die neue Version auf dem RAW Link angekommen ist.
 <br>
+
 ###  <a id="8de"></a>8. Forumsbeitrag für neue Version:
+
 Bisher in folgenden Foren:
 - Geoclub: http://geoclub.de/forum/viewforum.php?f=117
 - Groundspeak Forum: https://forums.geocaching.com/GC/index.php?/topic/343005-gc-little-helper-ii/
