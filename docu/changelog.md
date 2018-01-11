@@ -68,8 +68,7 @@ Settings -> Dashboard:<br>
 <br>
 </li>
 <li>
-New: Build Config parameter for the buttons "Show all logs", "Show log counter" and "Show bigger avatars" above the logs. 
-This is a special tribute to the loud weeping cachers (Pienzers).<br>
+New: Build Config parameter for the buttons "Show all logs", "Show log counter" and "Show bigger avatars" above the logs in cache listing. This is a special tribute to the loud weeping cachers (Pienzers).<br>
 Settings -> Listing:<br>
 <img src="../images/v0.9.1_Screen03.jpg" alt="v0.9.1_Screen03.jpg"><br>
 <br>
