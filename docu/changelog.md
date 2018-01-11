@@ -90,9 +90,9 @@ Settings -> Logging:<br>
 </li>
 <li>
 New: Improve mail and message page: [Issue <a href="https://github.com/2Abendsegler/GClh/pull/531">#531</a>]<br>
-<ul><li>Set message Template also if no GClh icon was choosen.</li>
-<li>Replace #Receiver# in mail/message Template also if no GClh icon was choosen.</li>
-<li>Set VIP and VUP icon also on default mail page.</li></ul
+- Set message Template also if no GClh icon was choosen.<br>
+- Replace #Receiver# in mail/message Template also if no GClh icon was choosen.<br>
+- Set VIP and VUP icon also on default mail page.<br>
 <br>
 </li>
 <li>
