@@ -84,19 +84,21 @@ Settings -> Global:<br>
 </li>
 <li>
 New: Take also owner pseudonym to replace placeholder owner on new logging page: [Issue <a href="https://github.com/2Abendsegler/GClh/pull/526">#526</a>]<br>
+<img src="../images/v0.9.1_Screen15.jpg" alt="v0.9.1_Screen15.jpg"><br>
 Settings -> Logging:<br>
 <img src="../images/v0.9.1_Screen11.jpg" alt="v0.9.1_Screen11.jpg"><br>
 <br>
 </li>
 <li>
 New: Improve mail and message page: [Issue <a href="https://github.com/2Abendsegler/GClh/pull/531">#531</a>]<br>
-- Set message Template also if no GClh icon was choosen.<br>
-- Replace #Receiver# in mail/message Template also if no GClh icon was choosen.<br>
+- Set message template also if no GClh icon was choosen.<br>
+- Replace #receiver# in mail/message template also if no GClh icon was choosen.<br>
 - Set VIP and VUP icon also on default mail page.<br>
 <br>
 </li>
 <li>
 New: Count favorite points also on public profile lists.<br>
+<img src="../images/v0.9.1_Screen13.jpg" alt="v0.9.1_Screen13.jpg"><br>
 <br>
 </li>
 <li>
