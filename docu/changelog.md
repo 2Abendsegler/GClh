@@ -98,7 +98,7 @@ New: Improve mail and message page: [Issue <a href="https://github.com/2Abendseg
 </li>
 <li>
 New: Count favorite points also on public profile lists.<br>
-<img src="../images/v0.9.1_Screen13.jpg" alt="v0.9.1_Screen13.jpg"><br>
+<img src="../images/v0.9.1_Screen14.jpg" alt="v0.9.1_Screen14.jpg"><br>
 <br>
 </li>
 <li>
