@@ -69,6 +69,12 @@ Settings -> Dashboard:<br>
 <br>
 </li>
 <li>
+New: Hide longtext in bookmarks on bookmark list: [Issue <a href="https://github.com/2Abendsegler/GClh/pull/565">#565</a>]<br>
+(Only available in compact layout.)<br>
+<img src="../images/v0.9.1_Screen16.jpg" alt="v0.9.1_Screen16.jpg"><br>
+<br>
+</li>
+<li>
 New: Build Config parameter for the buttons "Show all logs", "Show log counter" and "Show bigger avatars" above the logs in cache listing. This is a special tribute to the loud weeping cachers (Pienzers).<br>
 <img src="../images/v0.9.1_Screen12.jpg" alt="v0.9.1_Screen12.jpg"><br>
 Settings -> Listing:<br>
