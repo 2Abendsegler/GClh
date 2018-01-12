@@ -3124,6 +3124,8 @@ var mainGC = function() {
             }
             // Compact layout.
             if (settings_compact_layout_bm_lists) {
+                // Prepare button hide longtext.
+                if ($('#ctl00_ContentBody_btnAddBookmark')[0]) var hideLt = '<input type="button" id="gclh_hideLtBm" href="javascript:void(0);" title="Show/hide Longtext in Bookmark" value="Hide Text">';
                 // Header:
                 css += "#ctl00_ContentBody_lbHeading a {font-weight: normal; font-size: 13px; margin-left: 10px;}";
                 css += "#ctl00_ContentBody_QuickAdd {margin-bottom: 1px; float: left; position: relative;} #ctl00_ContentBody_btnAddBookmark {margin-top: 1px; margin-left: -1px;}";
@@ -3135,7 +3137,7 @@ var mainGC = function() {
                     $('#divContentMain h2')[0].closest('h2').remove();
                 }
                 if ($('#ctl00_ContentBody_QuickAdd').length > 0) {
-                    css += "#divContentMain div.span-20.last {margin-top: -18px;}";
+                    css += "#divContentMain div.span-20.last {margin-top: -18px;} input.Text {width: 61% !important;}";
                     $('#ctl00_ContentBody_QuickAdd')[0].children[1].childNodes[1].remove();
                     $('#ctl00_ContentBody_QuickAdd')[0].children[1].childNodes[0].remove();
                     $('#ctl00_ContentBody_QuickAdd')[0].children[0].remove();
@@ -3147,7 +3149,7 @@ var mainGC = function() {
                     if (LO.nextElementSibling.innerHTML == "") LO.nextElementSibling.remove();
                     else LO.nextElementSibling.style.marginBottom = "0";
                     LO.style.marginBottom = "0";
-                    LO.innerHTML += "<span style='float: right; padding-right: 195px; margin-top: -7px;'>" + (uuidx ? kml : "") + (corrCoords ? "&nbsp;&nbsp;"+corrCoords : "") + "</span>";
+                    LO.innerHTML += "<span style='float: right; padding-right: 195px; margin-top: -7px;'>" + (uuidx ? kml+"&nbsp;" : "") + (corrCoords ? "&nbsp;"+corrCoords : "") + (hideLt ? "&nbsp;"+hideLt : "") + "</span>";
                 }
                 // Table:
                 css += "table.Table tr {line-height: 16px;}";
@@ -3164,6 +3166,9 @@ var mainGC = function() {
                 // Footer:
                 $('#ctl00_ContentBody_ListInfo_btnDownload').closest('p').append($('#ctl00_ContentBody_btnCreatePocketQuery').remove().get().reverse());
                 if ($('#ctl00_ContentBody_uxAboutPanel')) $('#ctl00_ContentBody_uxAboutPanel')[0].remove();
+                // Event, css hide longtext.
+                if ($('#gclh_hideLtBm')[0]) $('#gclh_hideLtBm')[0].addEventListener("click", hideLtBm, false);
+                css += ".gclh_hideBm {display: table-column;} .working {opacity: 0.3; cursor: default;}";
             // No compact layout, only build links.
             } else {
                 $('#ctl00_ContentBody_lbHeading')[0].parentNode.parentNode.parentNode.childNodes[3].innerHTML += (uuidx ? "<br>"+kml : "") + (corrCoords ? "<br>"+corrCoords : "");
@@ -3197,6 +3202,20 @@ var mainGC = function() {
             });
         });
         if (!$('#gclh_colCorrCoords')[0]) $('table.Table thead tr th:nth-child(5)').after('<th id="gclh_colCorrCoords" style="width: 90px;"><span title="Caches with Corrected Coordinates">Corr. Coords</span></th>');
+    }
+    // Show, hide Longtext.
+    function hideLtBm() {
+        if ($('#gclh_hideLtBm.working')[0]) return;
+        $('#gclh_hideLtBm').addClass('working');
+        setTimeout(function() {
+            $('table.Table tbody tr[id$="_dataRow2"]').each(function() {
+                if (!$('#gclh_hideLtBm.gclh_firstDone')[0] && !this.style.display) $(this).addClass('gclh_showHideBm');
+                if (this.className.match("gclh_showHideBm")) this.classList.toggle('gclh_hideBm');
+            });
+            if (!$('#gclh_hideLtBm.gclh_firstDone')[0]) $('#gclh_hideLtBm').addClass('gclh_firstDone');
+            $('#gclh_hideLtBm')[0].value = ($('.gclh_hideBm')[0] ? "Show Text" : "Hide Text");
+            $('#gclh_hideLtBm').removeClass('working');
+        }, 200);
     }
 
 // Add buttons to bookmark lists and watchlist to select caches.
@@ -3637,13 +3656,6 @@ var mainGC = function() {
                 buildBoxElementsLinks(box, bm_tmp);
             }
         } catch(e) {gclh_error("Linklist, Default Links on new dashboard:",e);}
-    }
-
-// Enlarge Picture in Feed on Dashboard
-    if (is_page("dashboard")) {
-        try {
-            // alert($('#ActivityFeed .activity-modal-container .modal-content img').attr('src'));
-        } catch(e) {gclh_error("Enlarge Picture in Feed on Dashboard:",e);}
     }
 
 // Loggen über Standard "Log It" Icons zu PMO Caches für Basic Members.
