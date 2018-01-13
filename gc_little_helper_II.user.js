@@ -5297,7 +5297,7 @@ var mainGC = function() {
     }
     function avatarThumbnail(link) {
         var thumb = link.children[0];
-        thumb.setAttribute("style", "margin-bottom: 0px; height: unset;");
+        thumb.setAttribute("style", "margin-bottom: 0px; height: 48px;");
         var img = document.createElement('img');
         img.src = thumb.src.replace(/img\.geocaching\.com\/user\/avatar/, "s3.amazonaws.com/gs-geo-images").replace(/img\.geocaching\.com\/user\/display/, "s3.amazonaws.com/gs-geo-images");;
         img.className = "gclh_max";
