@@ -3137,7 +3137,7 @@ var mainGC = function() {
                     $('#divContentMain h2')[0].closest('h2').remove();
                 }
                 if ($('#ctl00_ContentBody_QuickAdd').length > 0) {
-                    css += "#divContentMain div.span-20.last {margin-top: -18px;} input.Text {width: 61% !important;}";
+                    css += "#divContentMain div.span-20.last {margin-top: -18px;} input.Text {width: 61.5% !important;}";
                     $('#ctl00_ContentBody_QuickAdd')[0].children[1].childNodes[1].remove();
                     $('#ctl00_ContentBody_QuickAdd')[0].children[1].childNodes[0].remove();
                     $('#ctl00_ContentBody_QuickAdd')[0].children[0].remove();
