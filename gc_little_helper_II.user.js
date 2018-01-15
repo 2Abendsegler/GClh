@@ -2140,18 +2140,25 @@ var mainGC = function() {
         }
         return waypoint;
     }
-    
+
  // Add select date into calendar
-    
+
     function onChangeCalendarSelect(event) {
 
         const selectedYear = $("#selectYearEl").val();
         const selectedMonth = $("#selectMonthEl").val();
 
+        const ONE_DAY = 1000 * 60 * 60 * 24;
+        const GC_ERA_MS = new Date(2000, 0, 2).getTime();
+
+        const selectedDate = new Date(selectedYear, selectedMonth, 1);
+        const difference_ms = Math.abs(selectedDate.getTime() - GC_ERA_MS);
+        const daysFromGCEra = Math.round(difference_ms/ONE_DAY) + 1;
+
         // "__doPostBack" is function from GC.COM
-        __doPostBack('ctl00$ContentBody$MyCalendar', 'V'+daysFromGCEra(new Date(selectedYear, selectedMonth, 1)));
+        __doPostBack('ctl00$ContentBody$MyCalendar', 'V'+daysFromGCEra);
     }
-    
+
     function appendOptionalEl(selectEl, value, text, isSelected) {
 
         const optEl = document.createElement("OPTION");
@@ -2167,31 +2174,9 @@ var mainGC = function() {
         selectEl.appendChild(optEl);
     }
 
-    function daysFromGCEra(date) {
-
-        const ONE_DAY = 1000 * 60 * 60 * 24;
-        const GC_ERA_MS = new Date(2000, 0, 2).getTime();
-
-        const difference_ms = Math.abs(date.getTime() - GC_ERA_MS);
-        return Math.round(difference_ms/ONE_DAY) + 1;
-    }
-
-    function getElementsByXPath(xpath, parent) {
-        const results = [];
-        if(document.evaluate) { // Not implemented in IE }:-[
-            const query = document.evaluate(xpath, parent || document, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null);
-            for (var i=0, length=query.snapshotLength; i<length; ++i) {
-                results.push(query.snapshotItem(i));
-            }
-        } else {
-            console.log("Userscript in IE, it's impossible - not working, sorry");
-        }
-        return results;
-    }
-    
     if ((is_page("geocaches") && settings_select_geocaches_calendar) || (is_page("travelbugs") && settings_select_trackables_calendar)) {
         try {
-        
+
         	const selectYearEl = document.createElement("SELECT");
             selectYearEl.id = 'selectYearEl';
             selectYearEl.onchange = onChangeCalendarSelect;
@@ -2200,33 +2185,30 @@ var mainGC = function() {
             selectMonthEl.id = 'selectMonthEl';
             selectMonthEl.onchange = onChangeCalendarSelect;
 
-            var CURRENT_YEAR;
-            var CURRENT_MONTH;
-            
-            const calendarHeaderElements = getElementsByXPath("tbody/tr[1]/td/table/tbody/tr/td[2]", document.getElementById("ctl00_ContentBody_MyCalendar"));
+            var calendarHeaderElements = $("#ctl00_ContentBody_MyCalendar").find("tbody tr:first td table tbody tr td:nth-child(2)");
             if( calendarHeaderElements.length > 0 ) {
-                var selectedCalendar = calendarHeaderElements[0].innerText.split(" ");
-                CURRENT_YEAR = selectedCalendar[0];
-                CURRENT_MONTH = selectedCalendar[1];
+                var selectedCalendar = calendarHeaderElements.text().split(" ");
+                var CURRENT_YEAR = selectedCalendar[0];
+                var CURRENT_MONTH = selectedCalendar[1];
 
-                calendarHeaderElements[0].innerHTML = "";
-                calendarHeaderElements[0].appendChild(selectYearEl);
-                calendarHeaderElements[0].appendChild(selectMonthEl);
+                calendarHeaderElements.empty(); // Clean header content
+                calendarHeaderElements.append(selectYearEl);
+                calendarHeaderElements.append(selectMonthEl);
 
 	            const LAST_YEAR = new Date().getFullYear();
 	            for(var year = 2000; year <= LAST_YEAR; year++) {
 	                appendOptionalEl(selectYearEl, year, year, (year == CURRENT_YEAR));
 	            }
-	
+
 	            for(var month = 0; month < 12; month++) {
 	                var objDate = new Date();
 	                objDate.setMonth(month);
-	                var locale = "en-us"; // may be load from user settings, but if you change, must determinate witch month is selected
+	                var locale = "en-us"; // TODO load from user settings, but if you change, must determinate witch month is selected
 	                var monthText = objDate.toLocaleString(locale, { month: "long" });
 	                appendOptionalEl(selectMonthEl, month, monthText, (monthText == CURRENT_MONTH));
 	            }
             }
-            
+
         } catch(e) {gclh_error("Add select date into calendar: ",e);}
     }
 
@@ -2413,8 +2395,8 @@ var mainGC = function() {
 // Vorschau für Log, Log preview.
     if (document.location.href.match(/\.com\/play\/geocache\/gc\w+\/log/)) {
         try {
-            var log_preview_wrapper = 
-                '<section class="region trackables-wrapper" id="log-previewPanel">' + 
+            var log_preview_wrapper =
+                '<section class="region trackables-wrapper" id="log-previewPanel">' +
                     '<div>' +
                         '<button type="button" id="log-preview-button" class="btn btn-handle handle-open" data-open="false">Log Preview' +
                             '<svg height="24" width="24" class="icon icon-svg-fill sea">' +
@@ -2426,7 +2408,7 @@ var mainGC = function() {
                         '</div>' +
                     '</div>' +
                 '</section>';
-                    
+
             // Add divs for Markdown Editor
             $('textarea.log-text').before('<div class="mdd_toolbar"></div>');
             $('textarea.log-text').after('<div class="mdd_resizer">');
@@ -2437,7 +2419,7 @@ var mainGC = function() {
                 AllowInlineImages: false,
                 ExtraMode: false,
                 RequireHeaderClosingTag: true,
-                disableShortCutKeys: true, 
+                disableShortCutKeys: true,
                 DisabledBlockTypes: [
                     BLOCKTYPE_CONST.h4,
                     BLOCKTYPE_CONST.h5,
@@ -9525,7 +9507,7 @@ var mainGC = function() {
             setValue("settings_pq_terrain_score", document.getElementById('settings_pq_terrain_score').value);
             setValue("settings_improve_add_to_list_height", document.getElementById('settings_improve_add_to_list_height').value);
             setValue("settings_select_trackables_calendar", document.getElementById('settings_select_trackables_calendar').value);
-            setValue("settings_select_geocaches_calendar", document.getElementById('settings_select_geocaches_calendar').value);            
+            setValue("settings_select_geocaches_calendar", document.getElementById('settings_select_geocaches_calendar').value);
 
             // Map Layers in vorgegebener Reihenfolge übernehmen.
             var new_map_layers_available = document.getElementById('settings_maplayers_available');
@@ -10880,3 +10862,4 @@ function getDateDiffString(dateNew, dateOld) {
 
 
 start(this);
+
