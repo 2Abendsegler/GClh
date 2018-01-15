@@ -463,6 +463,8 @@ var variablesInit = function(c) {
     c.settings_show_bigger_avatars_but = getValue("settings_show_bigger_avatars_but", true);
     c.settings_hide_feedback_icon = getValue("settings_hide_feedback_icon", false);
     c.settings_compact_layout_new_dashboard = getValue("settings_compact_layout_new_dashboard", false);
+    c.settings_select_trackables_calendar = getValue("settings_select_trackables_calendar", true);
+    c.settings_select_geocaches_calendar = getValue("settings_select_geocaches_calendar", true);
 
     try {
         if (c.userToken === null) {
@@ -2137,6 +2139,95 @@ var mainGC = function() {
             }
         }
         return waypoint;
+    }
+    
+ // Add select date into calendar
+    
+    function onChangeCalendarSelect(event) {
+
+        const selectedYear = $("#selectYearEl").val();
+        const selectedMonth = $("#selectMonthEl").val();
+
+        // "__doPostBack" is function from GC.COM
+        __doPostBack('ctl00$ContentBody$MyCalendar', 'V'+daysFromGCEra(new Date(selectedYear, selectedMonth, 1)));
+    }
+    
+    function appendOptionalEl(selectEl, value, text, isSelected) {
+
+        const optEl = document.createElement("OPTION");
+        optEl.setAttribute("value", value);
+
+        if( isSelected ) {
+            optEl.setAttribute("selected", "selected");
+        }
+
+        const textNode = document.createTextNode(text);
+        optEl.appendChild(textNode);
+
+        selectEl.appendChild(optEl);
+    }
+
+    function daysFromGCEra(date) {
+
+        const ONE_DAY = 1000 * 60 * 60 * 24;
+        const GC_ERA_MS = new Date(2000, 0, 2).getTime();
+
+        const difference_ms = Math.abs(date.getTime() - GC_ERA_MS);
+        return Math.round(difference_ms/ONE_DAY) + 1;
+    }
+
+    function getElementsByXPath(xpath, parent) {
+        const results = [];
+        if(document.evaluate) { // Not implemented in IE }:-[
+            const query = document.evaluate(xpath, parent || document, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null);
+            for (var i=0, length=query.snapshotLength; i<length; ++i) {
+                results.push(query.snapshotItem(i));
+            }
+        } else {
+            console.log("Userscript in IE, it's impossible - not working, sorry");
+        }
+        return results;
+    }
+    
+    if ((is_page("geocaches") && settings_select_geocaches_calendar) || (is_page("travelbugs") && settings_select_trackables_calendar)) {
+        try {
+        
+        	const selectYearEl = document.createElement("SELECT");
+            selectYearEl.id = 'selectYearEl';
+            selectYearEl.onchange = onChangeCalendarSelect;
+
+            const selectMonthEl = document.createElement("SELECT");
+            selectMonthEl.id = 'selectMonthEl';
+            selectMonthEl.onchange = onChangeCalendarSelect;
+
+            var CURRENT_YEAR;
+            var CURRENT_MONTH;
+            
+            const calendarHeaderElements = getElementsByXPath("tbody/tr[1]/td/table/tbody/tr/td[2]", document.getElementById("ctl00_ContentBody_MyCalendar"));
+            if( calendarHeaderElements.length > 0 ) {
+                var selectedCalendar = calendarHeaderElements[0].innerText.split(" ");
+                CURRENT_YEAR = selectedCalendar[0];
+                CURRENT_MONTH = selectedCalendar[1];
+
+                calendarHeaderElements[0].innerHTML = "";
+                calendarHeaderElements[0].appendChild(selectYearEl);
+                calendarHeaderElements[0].appendChild(selectMonthEl);
+
+	            const LAST_YEAR = new Date().getFullYear();
+	            for(var year = 2000; year <= LAST_YEAR; year++) {
+	                appendOptionalEl(selectYearEl, year, year, (year == CURRENT_YEAR));
+	            }
+	
+	            for(var month = 0; month < 12; month++) {
+	                var objDate = new Date();
+	                objDate.setMonth(month);
+	                var locale = "en-us"; // may be load from user settings, but if you change, must determinate witch month is selected
+	                var monthText = objDate.toLocaleString(locale, { month: "long" });
+	                appendOptionalEl(selectMonthEl, month, monthText, (monthText == CURRENT_MONTH));
+	            }
+            }
+            
+        } catch(e) {gclh_error("Add select date into calendar: ",e);}
     }
 
 // Hide greenToTopButton.
@@ -8270,6 +8361,9 @@ var mainGC = function() {
             html += " &nbsp; " + checkboxy('settings_remove_banner_for_garminexpress', 'for \"Garmin Express\"') + "<br>";
             html += " &nbsp; " + checkboxy('settings_remove_banner_blue', 'Try to remove all blue banner to new designed pages') + "<br>";
             html += newParameterVersionSetzen(0.8) + newParameterOff;
+            html += newParameterOn3;
+            html += checkboxy('settings_select_geocaches_calendar', 'Select date in geocaches calendar') + show_help("Allows to switch year and month in the geocaches calendar.") + "<br>";
+            html += newParameterVersionSetzen(0.9) + newParameterOff;
             html += "<table style='width: 550px; text-align: left; margin-top: 9px;'>";
             html += "  <thead>";
             html += "    <tr><th><span>Show lines in</span></th>";
@@ -8511,7 +8605,9 @@ var mainGC = function() {
             html += "<div id='gclh_config_profile' class='gclh_block'>";
             html += "<div style='margin-left: 5px'><b>Trackables</b></div>";
             html += checkboxy('settings_faster_profile_trackables', 'Load trackables faster without images') + show_help("With this option you can stop the load on the trackable pages after the necessary datas are loaded. You disclaim of the lengthy load of the images of the trackables. This procedure is much faster as load all datas, because every image is loaded separate and not in a bigger bundle like it is for the non image data.") + "<br>";
-
+            html += newParameterOn3;
+            html += checkboxy('settings_select_trackables_calendar', 'Select date in trackables calendar') + show_help("Allows to switch year and month in the trackables calendar.") + "<br>";
+            html += newParameterVersionSetzen(0.9) + newParameterOff;
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>Gallery</b></div>";
             var content_settings_show_thumbnails = checkboxy('settings_show_thumbnails', 'Show thumbnails of images') + show_help_big("With this option the images are displayed as thumbnails to have a preview. If you hover with your mouse over a thumbnail, you can see the big one.<br><br>This works in cache and TB logs, in the cache and TB image galleries, in public profile for the avatar and in the profile image gallery. <br><br>And after pressing button \"Show bigger avatars\" in cache listing, it works too for the avatars in the shown logs.") + "&nbsp; Max size of big image: <input class='gclh_form' size=3 type='text' id='settings_hover_image_max_size' value='" + settings_hover_image_max_size + "'> px <br>";
             html += content_settings_show_thumbnails;
@@ -9428,6 +9524,8 @@ var mainGC = function() {
             setValue("settings_pq_terrain", document.getElementById('settings_pq_terrain').value);
             setValue("settings_pq_terrain_score", document.getElementById('settings_pq_terrain_score').value);
             setValue("settings_improve_add_to_list_height", document.getElementById('settings_improve_add_to_list_height').value);
+            setValue("settings_select_trackables_calendar", document.getElementById('settings_select_trackables_calendar').value);
+            setValue("settings_select_geocaches_calendar", document.getElementById('settings_select_geocaches_calendar').value);            
 
             // Map Layers in vorgegebener Reihenfolge übernehmen.
             var new_map_layers_available = document.getElementById('settings_maplayers_available');
@@ -9629,7 +9727,9 @@ var mainGC = function() {
                 'settings_show_log_counter_but',
                 'settings_show_bigger_avatars_but',
                 'settings_hide_feedback_icon',
-                'settings_compact_layout_new_dashboard'
+                'settings_compact_layout_new_dashboard',
+                'settings_select_trackables_calendar',
+                'settings_select_geocaches_calendar'
             );
             for (var i = 0; i < checkboxes.length; i++) {
                 if (document.getElementById(checkboxes[i])) setValue(checkboxes[i], document.getElementById(checkboxes[i]).checked);
@@ -10686,6 +10786,12 @@ function getValue(name, defaultValue) {
 function is_link(name, url) {
 	var status = false;
     switch (name) {
+	    case "geocaches":
+	        if (url.match(/\.com\/my\/geocaches\.aspx/)) status = true;
+	        break;
+	    case "travelbugs":
+	        if (url.match(/\.com\/my\/travelbugs\.aspx/)) status = true;
+	        break;
         case "cache_listing":
             if (url.match(/\.com\/(seek\/cache_details\.aspx|geocache\/)/) && !document.getElementById("cspSubmit") && !document.getElementById("cspGoBack")) status = true;
             break;
@@ -10770,5 +10876,7 @@ function getDateDiffString(dateNew, dateOld) {
     strDateDiff = strDateDiff.replace(/,([^,]*)$/, " and$1");
     return strDateDiff;
 }
+
+
 
 start(this);
