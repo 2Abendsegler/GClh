@@ -211,5 +211,16 @@
   "settings_esc_close_gclh_config": true,
   "settings_show_default_links": true,
   "settings_bm_changed_and_go": true,
-  "settings_show_tb_inv": true
+  "settings_show_tb_inv": true,
+  "settings_but_search_map": true,
+  "settings_but_search_map_new_tab": false,
+  "settings_show_pseudo_as_owner": true,
+  "settings_fav_proz_pqs": true,
+  "settings_fav_proz_nearest": true,
+  "settings_fav_proz_recviewed": true,
+  "settings_show_all_logs_but": true,
+  "settings_show_log_counter_but": true,
+  "settings_show_bigger_avatars_but": true,
+  "settings_hide_feedback_icon": false,
+  "settings_compact_layout_new_dashboard": false
 }
