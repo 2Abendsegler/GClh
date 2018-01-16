@@ -6428,7 +6428,7 @@ var mainGC = function() {
         selectEl.appendChild(optEl);
     }
 
-    if (is_page("geocaches") || is_page("travelbugs")) {
+    if (document.location.href.match(/\.com\/my\/geocaches\.aspx/) || document.location.href.match(/\.com\/my\/travelbugs\.aspx/)) {
         try {
 
             const selectYearEl = document.createElement("SELECT");
@@ -10756,12 +10756,6 @@ function getValue(name, defaultValue) {
 function is_link(name, url) {
     var status = false;
     switch (name) {
-        case "geocaches":
-            if (url.match(/\.com\/my\/geocaches\.aspx/)) status = true;
-            break;
-        case "travelbugs":
-            if (url.match(/\.com\/my\/travelbugs\.aspx/)) status = true;
-            break;
         case "cache_listing":
             if (url.match(/\.com\/(seek\/cache_details\.aspx|geocache\/)/) && !document.getElementById("cspSubmit") && !document.getElementById("cspGoBack")) status = true;
             break;
