@@ -1,4 +1,4 @@
-<a href="#v091" title="GClh II version 0.9.1 (11.01.2018)">v0.9.1</a> &nbsp;
+<a href="#v091" title="GClh II version 0.9.1 (16.01.2018)">v0.9.1</a> &nbsp;
 <a href="#v09" title="GClh II version 0.9 (19.12.2017)">v0.9</a> &nbsp;
 <a href="#v0811" title="GClh II version 0.8.11 (26.11.2017)">v0.8.11</a> &nbsp;
 <a href="#v0810" title="GClh II version 0.8.10 (15.11.2017)">v0.8.10</a> &nbsp;
@@ -40,7 +40,8 @@ Many thanks to <a href="https://www.geocaching.com/profile/?u=Ruko2010">Ruko2010
 <br>
 </li>
 <li>
-New: In GClh Config there are some new chapters and some regroupings. It should be much easier to find things: [Issue <a href="https://github.com/2Abendsegler/GClh/pull/547">#547</a>]<br>
+New: In GClh Config there are some new chapters and some regroupings: [Issue <a href="https://github.com/2Abendsegler/GClh/pull/547">#547</a>]<br>
+It should be now much easier to find things.<br>
 <img src="../images/v0.9.1_Screen01.jpg" alt="v0.9.1_Screen01.jpg"><br>
 <br>
 </li>
@@ -55,7 +56,7 @@ Settings -> Nearest lists, Pocket querry and Recently viewed cache list:<br>
 New: Search and Map buttons on new dashboard.<br>
 Many thanks to <a href="https://www.geocaching.com/profile/?u=DrakMrak">DrakMrak</a> for the nice implementation.<br>
 <img src="../images/v0.9.1_Screen07.jpg" alt="v0.9.1_Screen07.jpg"><br>
-Settings -> Nearest lists, Pocket querry and Recently viewed cache list:<br>
+Settings -> Dashboard:<br>
 <img src="../images/v0.9.1_Screen06.jpg" alt="v0.9.1_Screen06.jpg"><br>
 <br>
 </li>
@@ -68,33 +69,42 @@ Settings -> Dashboard:<br>
 <br>
 </li>
 <li>
-New: Build Config parameter for the buttons "Show all logs", "Show log counter" and "Show bigger avatars" above the logs. 
-This is a special tribute to the loud weeping cachers (Pienzers).<br>
+New: Hide longtext in bookmarks on bookmark list: [Issue <a href="https://github.com/2Abendsegler/GClh/pull/565">#565</a>]<br>
+(Only available in compact layout.)<br>
+<img src="../images/v0.9.1_Screen16.jpg" alt="v0.9.1_Screen16.jpg"><br>
+<br>
+</li>
+<li>
+New: Build Config parameter for the buttons "Show all logs", "Show log counter" and "Show bigger avatars" above the logs in cache listing. This is a special tribute to the loud weeping cachers (Pienzers).<br>
+<img src="../images/v0.9.1_Screen12.jpg" alt="v0.9.1_Screen12.jpg"><br>
 Settings -> Listing:<br>
 <img src="../images/v0.9.1_Screen03.jpg" alt="v0.9.1_Screen03.jpg"><br>
 <br>
 </li>
 <li>
 New: Hide green feedback icon.<br>
+<img src="../images/v0.9.1_Screen13.jpg" alt="v0.9.1_Screen13.jpg"><br>
 Settings -> Global:<br>
 <img src="../images/v0.9.1_Screen06.jpg" alt="v0.9.1_Screen06.jpg"><br>
 <br>
 </li>
 <li>
-New: Take also owner pseudonym to replace placeholder owner: [Issue <a href="https://github.com/2Abendsegler/GClh/pull/526">#526</a>]<br>
+New: Take also owner pseudonym to replace placeholder owner on new logging page: [Issue <a href="https://github.com/2Abendsegler/GClh/pull/526">#526</a>]<br>
+<img src="../images/v0.9.1_Screen15.jpg" alt="v0.9.1_Screen15.jpg"><br>
 Settings -> Logging:<br>
 <img src="../images/v0.9.1_Screen11.jpg" alt="v0.9.1_Screen11.jpg"><br>
 <br>
 </li>
 <li>
 New: Improve mail and message page: [Issue <a href="https://github.com/2Abendsegler/GClh/pull/531">#531</a>]<br>
-Set message Template also if no GClh icon was choosen.<br>
-Replace #Receiver# in mail/message Template also if no GClh icon was choosen.<br>
-Set VIP and VUP icon also on default mail page.<br>
+- Set message template also if no GClh icon was choosen.<br>
+- Replace #receiver# in mail/message template also if no GClh icon was choosen.<br>
+- Set VIP and VUP icon also on default mail page.<br>
 <br>
 </li>
 <li>
 New: Count favorite points also on public profile lists.<br>
+<img src="../images/v0.9.1_Screen14.jpg" alt="v0.9.1_Screen14.jpg"><br>
 <br>
 </li>
 <li>
@@ -116,7 +126,7 @@ Fix: Remove Autovisit functionality new log page. GC does not recognize settings
 <br>
 </li>
 </ul>
-(11.01.2018)<br> 
+(16.01.2018)<br> 
 <br>
 
 ---
