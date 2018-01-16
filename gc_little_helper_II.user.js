@@ -463,8 +463,6 @@ var variablesInit = function(c) {
     c.settings_show_bigger_avatars_but = getValue("settings_show_bigger_avatars_but", true);
     c.settings_hide_feedback_icon = getValue("settings_hide_feedback_icon", false);
     c.settings_compact_layout_new_dashboard = getValue("settings_compact_layout_new_dashboard", false);
-    c.settings_select_trackables_calendar = getValue("settings_select_trackables_calendar", true);
-    c.settings_select_geocaches_calendar = getValue("settings_select_geocaches_calendar", true);
 
     try {
         if (c.userToken === null) {
@@ -2174,7 +2172,7 @@ var mainGC = function() {
         selectEl.appendChild(optEl);
     }
 
-    if ((is_page("geocaches") && settings_select_geocaches_calendar) || (is_page("travelbugs") && settings_select_trackables_calendar)) {
+    if (is_page("geocaches") || is_page("travelbugs")) {
         try {
 
             const selectYearEl = document.createElement("SELECT");
@@ -8343,9 +8341,6 @@ var mainGC = function() {
             html += " &nbsp; " + checkboxy('settings_remove_banner_for_garminexpress', 'for \"Garmin Express\"') + "<br>";
             html += " &nbsp; " + checkboxy('settings_remove_banner_blue', 'Try to remove all blue banner to new designed pages') + "<br>";
             html += newParameterVersionSetzen(0.8) + newParameterOff;
-            html += newParameterOn3;
-            html += checkboxy('settings_select_geocaches_calendar', 'Select date in geocaches calendar') + show_help("Allows to switch year and month in the geocaches calendar.") + "<br>";
-            html += newParameterVersionSetzen(0.9) + newParameterOff;
             html += "<table style='width: 550px; text-align: left; margin-top: 9px;'>";
             html += "  <thead>";
             html += "    <tr><th><span>Show lines in</span></th>";
@@ -8587,9 +8582,6 @@ var mainGC = function() {
             html += "<div id='gclh_config_profile' class='gclh_block'>";
             html += "<div style='margin-left: 5px'><b>Trackables</b></div>";
             html += checkboxy('settings_faster_profile_trackables', 'Load trackables faster without images') + show_help("With this option you can stop the load on the trackable pages after the necessary datas are loaded. You disclaim of the lengthy load of the images of the trackables. This procedure is much faster as load all datas, because every image is loaded separate and not in a bigger bundle like it is for the non image data.") + "<br>";
-            html += newParameterOn3;
-            html += checkboxy('settings_select_trackables_calendar', 'Select date in trackables calendar') + show_help("Allows to switch year and month in the trackables calendar.") + "<br>";
-            html += newParameterVersionSetzen(0.9) + newParameterOff;
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>Gallery</b></div>";
             var content_settings_show_thumbnails = checkboxy('settings_show_thumbnails', 'Show thumbnails of images') + show_help_big("With this option the images are displayed as thumbnails to have a preview. If you hover with your mouse over a thumbnail, you can see the big one.<br><br>This works in cache and TB logs, in the cache and TB image galleries, in public profile for the avatar and in the profile image gallery. <br><br>And after pressing button \"Show bigger avatars\" in cache listing, it works too for the avatars in the shown logs.") + "&nbsp; Max size of big image: <input class='gclh_form' size=3 type='text' id='settings_hover_image_max_size' value='" + settings_hover_image_max_size + "'> px <br>";
             html += content_settings_show_thumbnails;
@@ -9506,8 +9498,6 @@ var mainGC = function() {
             setValue("settings_pq_terrain", document.getElementById('settings_pq_terrain').value);
             setValue("settings_pq_terrain_score", document.getElementById('settings_pq_terrain_score').value);
             setValue("settings_improve_add_to_list_height", document.getElementById('settings_improve_add_to_list_height').value);
-            setValue("settings_select_trackables_calendar", document.getElementById('settings_select_trackables_calendar').value);
-            setValue("settings_select_geocaches_calendar", document.getElementById('settings_select_geocaches_calendar').value);
 
             // Map Layers in vorgegebener Reihenfolge übernehmen.
             var new_map_layers_available = document.getElementById('settings_maplayers_available');
@@ -9709,9 +9699,7 @@ var mainGC = function() {
                 'settings_show_log_counter_but',
                 'settings_show_bigger_avatars_but',
                 'settings_hide_feedback_icon',
-                'settings_compact_layout_new_dashboard',
-                'settings_select_trackables_calendar',
-                'settings_select_geocaches_calendar'
+                'settings_compact_layout_new_dashboard'
             );
             for (var i = 0; i < checkboxes.length; i++) {
                 if (document.getElementById(checkboxes[i])) setValue(checkboxes[i], document.getElementById(checkboxes[i]).checked);
