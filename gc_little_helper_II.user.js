@@ -2322,8 +2322,8 @@ var mainGC = function() {
 // Vorschau für Log, Log preview.
     if (document.location.href.match(/\.com\/play\/geocache\/gc\w+\/log/)) {
         try {
-            var log_preview_wrapper = 
-                '<section class="region trackables-wrapper" id="log-previewPanel">' + 
+            var log_preview_wrapper =
+                '<section class="region trackables-wrapper" id="log-previewPanel">' +
                     '<div>' +
                         '<button type="button" id="log-preview-button" class="btn btn-handle handle-open" data-open="false">Log Preview' +
                             '<svg height="24" width="24" class="icon icon-svg-fill sea">' +
@@ -2335,7 +2335,7 @@ var mainGC = function() {
                         '</div>' +
                     '</div>' +
                 '</section>';
-                    
+
             // Add divs for Markdown Editor
             $('textarea.log-text').before('<div class="mdd_toolbar"></div>');
             $('textarea.log-text').after('<div class="mdd_resizer">');
@@ -2346,7 +2346,7 @@ var mainGC = function() {
                 AllowInlineImages: false,
                 ExtraMode: false,
                 RequireHeaderClosingTag: true,
-                disableShortCutKeys: true, 
+                disableShortCutKeys: true,
                 DisabledBlockTypes: [
                     BLOCKTYPE_CONST.h4,
                     BLOCKTYPE_CONST.h5,
