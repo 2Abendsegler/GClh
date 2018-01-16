@@ -2139,77 +2139,6 @@ var mainGC = function() {
         return waypoint;
     }
 
- // Add select date into calendar
-
-    function onChangeCalendarSelect(event) {
-
-        const selectedYear = $("#selectYearEl").val();
-        const selectedMonth = $("#selectMonthEl").val();
-
-        const ONE_DAY = 1000 * 60 * 60 * 24;
-        const GC_ERA_MS = new Date(2000, 0, 2).getTime();
-
-        const selectedDate = new Date(selectedYear, selectedMonth, 1);
-        const difference_ms = Math.abs(selectedDate.getTime() - GC_ERA_MS);
-        const daysFromGCEra = Math.round(difference_ms/ONE_DAY) + 1;
-
-        // "__doPostBack" is function from GC.COM
-        __doPostBack('ctl00$ContentBody$MyCalendar', 'V'+daysFromGCEra);
-    }
-
-    function appendOptionalEl(selectEl, value, text, isSelected) {
-
-        const optEl = document.createElement("OPTION");
-        optEl.setAttribute("value", value);
-
-        if( isSelected ) {
-            optEl.setAttribute("selected", "selected");
-        }
-
-        const textNode = document.createTextNode(text);
-        optEl.appendChild(textNode);
-
-        selectEl.appendChild(optEl);
-    }
-
-    if (is_page("geocaches") || is_page("travelbugs")) {
-        try {
-
-            const selectYearEl = document.createElement("SELECT");
-            selectYearEl.id = 'selectYearEl';
-            selectYearEl.onchange = onChangeCalendarSelect;
-
-            const selectMonthEl = document.createElement("SELECT");
-            selectMonthEl.id = 'selectMonthEl';
-            selectMonthEl.onchange = onChangeCalendarSelect;
-
-            var calendarHeaderElements = $("#ctl00_ContentBody_MyCalendar").find("tbody tr:first td table tbody tr td:nth-child(2)");
-            if( calendarHeaderElements.length > 0 ) {
-                var selectedCalendar = calendarHeaderElements.text().split(" ");
-                var CURRENT_YEAR = selectedCalendar[0];
-                var CURRENT_MONTH = selectedCalendar[1];
-
-                calendarHeaderElements.empty(); // Clean header content
-                calendarHeaderElements.append(selectYearEl);
-                calendarHeaderElements.append(selectMonthEl);
-
-                const LAST_YEAR = new Date().getFullYear();
-                for(var year = 2000; year <= LAST_YEAR; year++) {
-                    appendOptionalEl(selectYearEl, year, year, (year == CURRENT_YEAR));
-                }
-
-                for(var month = 0; month < 12; month++) {
-                    var objDate = new Date();
-                    objDate.setMonth(month);
-                    var locale = "en-us"; // TODO load from user settings, but if you change, must determinate witch month is selected
-                    var monthText = objDate.toLocaleString(locale, { month: "long" });
-                    appendOptionalEl(selectMonthEl, month, monthText, (monthText == CURRENT_MONTH));
-                }
-            }
-
-        } catch(e) {gclh_error("Add select date into calendar: ",e);}
-    }
-
 // Hide greenToTopButton.
     if (settings_hide_top_button) $("#topScroll").attr("id", "_topScroll").hide();
 
@@ -6464,6 +6393,77 @@ var mainGC = function() {
                 }
             } catch(e) {gclh_error("Stopped logs loading:",e);}
         }
+    }
+
+// Add select date into calendar
+
+    function onChangeCalendarSelect(event) {
+
+        const selectedYear = $("#selectYearEl").val();
+        const selectedMonth = $("#selectMonthEl").val();
+
+        const ONE_DAY = 1000 * 60 * 60 * 24;
+        const GC_ERA_MS = new Date(2000, 0, 2).getTime();
+
+        const selectedDate = new Date(selectedYear, selectedMonth, 1);
+        const difference_ms = Math.abs(selectedDate.getTime() - GC_ERA_MS);
+        const daysFromGCEra = Math.round(difference_ms/ONE_DAY) + 1;
+
+        // "__doPostBack" is function from GC.COM
+        __doPostBack('ctl00$ContentBody$MyCalendar', 'V'+daysFromGCEra);
+    }
+
+    function appendOptionalEl(selectEl, value, text, isSelected) {
+
+        const optEl = document.createElement("OPTION");
+        optEl.setAttribute("value", value);
+
+        if( isSelected ) {
+            optEl.setAttribute("selected", "selected");
+        }
+
+        const textNode = document.createTextNode(text);
+        optEl.appendChild(textNode);
+
+        selectEl.appendChild(optEl);
+    }
+
+    if (is_page("geocaches") || is_page("travelbugs")) {
+        try {
+
+            const selectYearEl = document.createElement("SELECT");
+            selectYearEl.id = 'selectYearEl';
+            selectYearEl.onchange = onChangeCalendarSelect;
+
+            const selectMonthEl = document.createElement("SELECT");
+            selectMonthEl.id = 'selectMonthEl';
+            selectMonthEl.onchange = onChangeCalendarSelect;
+
+            var calendarHeaderElements = $("#ctl00_ContentBody_MyCalendar").find("tbody tr:first td table tbody tr td:nth-child(2)");
+            if( calendarHeaderElements.length > 0 ) {
+                var selectedCalendar = calendarHeaderElements.text().split(" ");
+                var CURRENT_YEAR = selectedCalendar[0];
+                var CURRENT_MONTH = selectedCalendar[1];
+
+                calendarHeaderElements.empty(); // Clean header content
+                calendarHeaderElements.append(selectYearEl);
+                calendarHeaderElements.append(selectMonthEl);
+
+                const LAST_YEAR = new Date().getFullYear();
+                for(var year = 2000; year <= LAST_YEAR; year++) {
+                    appendOptionalEl(selectYearEl, year, year, (year == CURRENT_YEAR));
+                }
+
+                for(var month = 0; month < 12; month++) {
+                    var objDate = new Date();
+                    objDate.setMonth(month);
+                    var locale = "en-us"; // maybe load from user settings, but if you change, must determinate witch month is selected
+                    var monthText = objDate.toLocaleString(locale, { month: "long" });
+                    appendOptionalEl(selectMonthEl, month, monthText, (monthText == CURRENT_MONTH));
+                }
+            }
+
+        } catch(e) {gclh_error("Add select date into calendar: ",e);}
     }
 
 // Show warning for not available images.
