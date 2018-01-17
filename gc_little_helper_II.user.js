@@ -6407,75 +6407,56 @@ var mainGC = function() {
         }
     }
 
-// Add select date into calendar
-
+// Add selectable month and year in calendar of cache and trackable logs.
     function onChangeCalendarSelect(event) {
-
         const selectedYear = $("#selectYearEl").val();
         const selectedMonth = $("#selectMonthEl").val();
-
         const ONE_DAY = 1000 * 60 * 60 * 24;
         const GC_ERA_MS = new Date(2000, 0, 2).getTime();
-
         const selectedDate = new Date(selectedYear, selectedMonth, 1);
         const difference_ms = Math.abs(selectedDate.getTime() - GC_ERA_MS);
         const daysFromGCEra = Math.round(difference_ms/ONE_DAY) + 1;
-
-        // "__doPostBack" is function from GC.COM
         __doPostBack('ctl00$ContentBody$MyCalendar', 'V'+daysFromGCEra);
     }
-
     function appendOptionalEl(selectEl, value, text, isSelected) {
-
-        const optEl = document.createElement("OPTION");
+        const optEl = document.createElement("option");
         optEl.setAttribute("value", value);
-
-        if( isSelected ) {
-            optEl.setAttribute("selected", "selected");
-        }
-
+        if (isSelected) optEl.setAttribute("selected", "selected");
         const textNode = document.createTextNode(text);
         optEl.appendChild(textNode);
-
         selectEl.appendChild(optEl);
     }
-
     if (document.location.href.match(/\.com\/my\/geocaches\.aspx/) || document.location.href.match(/\.com\/my\/travelbugs\.aspx/)) {
         try {
-
-            const selectYearEl = document.createElement("SELECT");
+            const selectYearEl = document.createElement("select");
             selectYearEl.id = 'selectYearEl';
             selectYearEl.onchange = onChangeCalendarSelect;
-
-            const selectMonthEl = document.createElement("SELECT");
+            const selectMonthEl = document.createElement("select");
             selectMonthEl.id = 'selectMonthEl';
             selectMonthEl.onchange = onChangeCalendarSelect;
-
             var calendarHeaderElements = $("#ctl00_ContentBody_MyCalendar").find("tbody tr:first td table tbody tr td:nth-child(2)");
-            if( calendarHeaderElements.length > 0 ) {
+            if (calendarHeaderElements.length > 0) {
                 var selectedCalendar = calendarHeaderElements.text().split(" ");
                 var CURRENT_YEAR = selectedCalendar[0];
                 var CURRENT_MONTH = selectedCalendar[1];
-
-                calendarHeaderElements.empty(); // Clean header content
+                calendarHeaderElements.empty();
                 calendarHeaderElements.append(selectYearEl);
+                calendarHeaderElements.append(document.createTextNode(" "));
                 calendarHeaderElements.append(selectMonthEl);
-
                 const LAST_YEAR = new Date().getFullYear();
                 for(var year = 2000; year <= LAST_YEAR; year++) {
                     appendOptionalEl(selectYearEl, year, year, (year == CURRENT_YEAR));
                 }
-
                 for(var month = 0; month < 12; month++) {
                     var objDate = new Date();
                     objDate.setMonth(month);
-                    var locale = "en-us"; // maybe load from user settings, but if you change, must determinate witch month is selected
+                    var locale = "en-us";
                     var monthText = objDate.toLocaleString(locale, { month: "long" });
                     appendOptionalEl(selectMonthEl, month, monthText, (monthText == CURRENT_MONTH));
                 }
             }
-
-        } catch(e) {gclh_error("Add select date into calendar: ",e);}
+            appendCssStyle('select {color: #594a42;}');
+        } catch(e) {gclh_error("Add selectable month and year in calendar:",e);}
     }
 
 // Show warning for not available images.
@@ -8594,6 +8575,7 @@ var mainGC = function() {
             html += "<div id='gclh_config_profile' class='gclh_block'>";
             html += "<div style='margin-left: 5px'><b>Trackables</b></div>";
             html += checkboxy('settings_faster_profile_trackables', 'Load trackables faster without images') + show_help("With this option you can stop the load on the trackable pages after the necessary datas are loaded. You disclaim of the lengthy load of the images of the trackables. This procedure is much faster as load all datas, because every image is loaded separate and not in a bigger bundle like it is for the non image data.") + "<br>";
+
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>Gallery</b></div>";
             var content_settings_show_thumbnails = checkboxy('settings_show_thumbnails', 'Show thumbnails of images') + show_help_big("With this option the images are displayed as thumbnails to have a preview. If you hover with your mouse over a thumbnail, you can see the big one.<br><br>This works in cache and TB logs, in the cache and TB image galleries, in public profile for the avatar and in the profile image gallery. <br><br>And after pressing button \"Show bigger avatars\" in cache listing, it works too for the avatars in the shown logs.") + "&nbsp; Max size of big image: <input class='gclh_form' size=3 type='text' id='settings_hover_image_max_size' value='" + settings_hover_image_max_size + "'> px <br>";
             html += content_settings_show_thumbnails;
