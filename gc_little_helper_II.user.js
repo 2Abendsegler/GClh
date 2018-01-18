@@ -3070,7 +3070,7 @@ var mainGC = function() {
     }
 
 // Improve list of bookmark lists.
-    if (document.location.href.match(/\.com\/(bookmarks\/default|my\/lists)\.aspx/) && $('table.Table')[0]) {
+    if (document.location.href.match(/\.com\/(bookmarks\/default|my\/lists)\.aspx/) && !document.location.href.match(/&WptTypeID=/) && $('table.Table')[0]) {
         try {
             var css = "";
             // Compact layout.
