@@ -2514,7 +2514,7 @@ var mainGC = function() {
             checkLogType(0);
             function checkLogType(waitCount) {
                 if ((!document.location.href.match(/log\?d\=/) && $('.selectric')[0]) ||  // Kein Draft
-                    (document.location.href.match(/log\?d\=/) && document.getElementById('LogText').value != "")) {  // Draft
+                    (document.location.href.match(/log\?d\=/) && document.getElementById('LogText').value != "" && settings_log_signature_on_fieldnotes)) {  // Draft
                     document.getElementById('LogText').innerHTML = getValue("settings_log_signature", "");
                     replacePlaceholder(true);
                     if (document.location.href.match(/log\?d\=/)) {
