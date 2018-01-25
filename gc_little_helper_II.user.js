@@ -3137,10 +3137,9 @@ var mainGC = function() {
                     $('#divContentMain h2')[0].closest('h2').remove();
                 }
                 if ($('#ctl00_ContentBody_QuickAdd').length > 0) {
-                    css += "#divContentMain div.span-20.last {margin-top: -18px;} input.Text {width: 61% !important;}";
-                    $('#ctl00_ContentBody_QuickAdd')[0].children[1].childNodes[1].remove();
-                    $('#ctl00_ContentBody_QuickAdd')[0].children[1].childNodes[0].remove();
-                    $('#ctl00_ContentBody_QuickAdd')[0].children[0].remove();
+                    css += "#divContentMain div.span-20.last {margin-top: -18px;}";
+                    $('#ctl00_ContentBody_QuickAdd')[0].children[0].childNodes[1].remove();
+                    $('#ctl00_ContentBody_QuickAdd')[0].children[0].childNodes[0].remove();
                 }
                 if ($('#ctl00_ContentBody_ListInfo_uxListOwner').length > 0) {
                     var LO = $('#ctl00_ContentBody_ListInfo_uxListOwner')[0].parentNode;
@@ -3165,7 +3164,6 @@ var mainGC = function() {
                 }
                 // Footer:
                 $('#ctl00_ContentBody_ListInfo_btnDownload').closest('p').append($('#ctl00_ContentBody_btnCreatePocketQuery').remove().get().reverse());
-                if ($('#ctl00_ContentBody_uxAboutPanel')) $('#ctl00_ContentBody_uxAboutPanel')[0].remove();
                 // Event, css hide longtext.
                 if ($('#gclh_hideLtBm')[0]) $('#gclh_hideLtBm')[0].addEventListener("click", hideLtBm, false);
                 css += ".gclh_hideBm {display: table-column;} .working {opacity: 0.3; cursor: default;}";
