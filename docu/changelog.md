@@ -57,7 +57,7 @@ New: Search and Map buttons on new dashboard.<br>
 Many thanks to <a href="https://www.geocaching.com/profile/?u=DrakMrak">DrakMrak</a> for the nice implementation.<br>
 <img src="../images/v0.9.1_Screen07.jpg" alt="v0.9.1_Screen07.jpg"><br>
 Settings -> Dashboard:<br>
-<img src="../images/v0.9.1_Screen06.jpg" alt="v0.9.1_Screen06.jpg"><br>
+<img src="../images/v0.9.1_Screen08.jpg" alt="v0.9.1_Screen08.jpg"><br>
 <br>
 </li>
 <li>

@@ -2514,7 +2514,7 @@ var mainGC = function() {
             checkLogType(0);
             function checkLogType(waitCount) {
                 if ((!document.location.href.match(/log\?d\=/) && $('.selectric')[0]) ||  // Kein Draft
-                    (document.location.href.match(/log\?d\=/) && document.getElementById('LogText').value != "")) {  // Draft
+                    (document.location.href.match(/log\?d\=/) && document.getElementById('LogText').value != "" && settings_log_signature_on_fieldnotes)) {  // Draft
                     document.getElementById('LogText').innerHTML = getValue("settings_log_signature", "");
                     replacePlaceholder(true);
                     if (document.location.href.match(/log\?d\=/)) {
@@ -3070,7 +3070,7 @@ var mainGC = function() {
     }
 
 // Improve list of bookmark lists.
-    if (document.location.href.match(/\.com\/(bookmarks\/default|my\/lists)\.aspx/) && $('table.Table')[0]) {
+    if (document.location.href.match(/\.com\/(bookmarks\/default|my\/lists)\.aspx/) && !document.location.href.match(/&WptTypeID=/) && $('table.Table')[0]) {
         try {
             var css = "";
             // Compact layout.
@@ -3137,10 +3137,9 @@ var mainGC = function() {
                     $('#divContentMain h2')[0].closest('h2').remove();
                 }
                 if ($('#ctl00_ContentBody_QuickAdd').length > 0) {
-                    css += "#divContentMain div.span-20.last {margin-top: -18px;} input.Text {width: 61% !important;}";
-                    $('#ctl00_ContentBody_QuickAdd')[0].children[1].childNodes[1].remove();
-                    $('#ctl00_ContentBody_QuickAdd')[0].children[1].childNodes[0].remove();
-                    $('#ctl00_ContentBody_QuickAdd')[0].children[0].remove();
+                    css += "#divContentMain div.span-20.last {margin-top: -18px;}";
+                    $('#ctl00_ContentBody_QuickAdd')[0].children[0].childNodes[1].remove();
+                    $('#ctl00_ContentBody_QuickAdd')[0].children[0].childNodes[0].remove();
                 }
                 if ($('#ctl00_ContentBody_ListInfo_uxListOwner').length > 0) {
                     var LO = $('#ctl00_ContentBody_ListInfo_uxListOwner')[0].parentNode;
@@ -3165,7 +3164,6 @@ var mainGC = function() {
                 }
                 // Footer:
                 $('#ctl00_ContentBody_ListInfo_btnDownload').closest('p').append($('#ctl00_ContentBody_btnCreatePocketQuery').remove().get().reverse());
-                if ($('#ctl00_ContentBody_uxAboutPanel')) $('#ctl00_ContentBody_uxAboutPanel')[0].remove();
                 // Event, css hide longtext.
                 if ($('#gclh_hideLtBm')[0]) $('#gclh_hideLtBm')[0].addEventListener("click", hideLtBm, false);
                 css += ".gclh_hideBm {display: table-column;} .working {opacity: 0.3; cursor: default;}";
@@ -6407,6 +6405,58 @@ var mainGC = function() {
         }
     }
 
+// Add selectable month and year in calendar of cache and trackable logs.
+    function onChangeCalendarSelect(event) {
+        const selectedYear = $("#selectYearEl").val();
+        const selectedMonth = $("#selectMonthEl").val();
+        const ONE_DAY = 1000 * 60 * 60 * 24;
+        const GC_ERA_MS = new Date(2000, 0, 2).getTime();
+        const selectedDate = new Date(selectedYear, selectedMonth, 1);
+        const difference_ms = Math.abs(selectedDate.getTime() - GC_ERA_MS);
+        const daysFromGCEra = Math.round(difference_ms/ONE_DAY) + 1;
+        __doPostBack('ctl00$ContentBody$MyCalendar', 'V'+daysFromGCEra);
+    }
+    function appendOptionalEl(selectEl, value, text, isSelected) {
+        const optEl = document.createElement("option");
+        optEl.setAttribute("value", value);
+        if (isSelected) optEl.setAttribute("selected", "selected");
+        const textNode = document.createTextNode(text);
+        optEl.appendChild(textNode);
+        selectEl.appendChild(optEl);
+    }
+    if (document.location.href.match(/\.com\/my\/geocaches\.aspx/) || document.location.href.match(/\.com\/my\/travelbugs\.aspx/)) {
+        try {
+            const selectYearEl = document.createElement("select");
+            selectYearEl.id = 'selectYearEl';
+            selectYearEl.onchange = onChangeCalendarSelect;
+            const selectMonthEl = document.createElement("select");
+            selectMonthEl.id = 'selectMonthEl';
+            selectMonthEl.onchange = onChangeCalendarSelect;
+            var calendarHeaderElements = $("#ctl00_ContentBody_MyCalendar").find("tbody tr:first td table tbody tr td:nth-child(2)");
+            if (calendarHeaderElements.length > 0) {
+                var selectedCalendar = calendarHeaderElements.text().split(" ");
+                var CURRENT_YEAR = selectedCalendar[0];
+                var CURRENT_MONTH = selectedCalendar[1];
+                calendarHeaderElements.empty();
+                calendarHeaderElements.append(selectYearEl);
+                calendarHeaderElements.append(document.createTextNode(" "));
+                calendarHeaderElements.append(selectMonthEl);
+                const LAST_YEAR = new Date().getFullYear();
+                for(var year = 2000; year <= LAST_YEAR; year++) {
+                    appendOptionalEl(selectYearEl, year, year, (year == CURRENT_YEAR));
+                }
+                for(var month = 0; month < 12; month++) {
+                    var objDate = new Date();
+                    objDate.setMonth(month);
+                    var locale = "en-us";
+                    var monthText = objDate.toLocaleString(locale, { month: "long" });
+                    appendOptionalEl(selectMonthEl, month, monthText, (monthText == CURRENT_MONTH));
+                }
+            }
+            appendCssStyle('select {color: #594a42;}');
+        } catch(e) {gclh_error("Add selectable month and year in calendar:",e);}
+    }
+
 // Show warning for not available images.
     if (settings_img_warning && is_page("cache_listing")) {
         try {
@@ -7325,7 +7375,7 @@ var mainGC = function() {
 //--> $$002
         var code = '<img src="https://c.andyhoppe.com/1485103563"' + prop +
                    '<img src="https://c.andyhoppe.com/1485234890"' + prop +
-                   '<img src="https://www.worldflagcounter.com/dCV"' + prop +
+                   '<img src="https://www.worldflagcounter.com/dE1"' + prop +
                    '<img src="https://s09.flagcounter.com/count2/Mf9D/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
 //<-- $$002
         div.innerHTML = code;
@@ -8268,7 +8318,7 @@ var mainGC = function() {
             html += " &nbsp; " + checkboxy('settings_remove_message_in_header', 'Remove message center icon top right') + show_help_big("With this option you can remove the message center icon top right on GC pages. You will not be informed longer about new messages.<br><br>" + t_reqChl) + "<br>";
             html += " &nbsp; " + checkboxy('settings_gc_tour_is_working', 'Reserve a place for GC Tour icon') + show_help("If the script GC Tour is running, you can reserve a place top left on GC pages for the GC Tour icon.<br><br>" + t_reqChl) + "<br>";
             html += " &nbsp; " + checkboxy('settings_fixed_header_layout', 'Arrange header layout on content') + show_help_big("With this option you can arrange the header width on the width of the content of GC pages. This is an easy feature with some restrictions, like for example the available place, especially for horizontal navigation menues.<br><br>This feature is available on GC pages in the oldest design like for example cache and TB listings, bookmarks, pocket queries, nearest lists, old dashboards (profiles), statistics, watchlists and drafts, to name just a few. <br><br>On map page and on pages in the newer and newest design it is not available, partly because the content on these pages are not yet in an accurate width, like the newer search cache page or the message center page. Also this feature is not fully integrated in the diverse possibilities of the header layout and the navigation menus. But we hope the friends of this specific header design can deal with it.<br><br>" + t_reqChl) + "<br>";
-			html += checkboxy('settings_bookmarks_on_top', "Show <a class='gclh_ref' href='#gclh_linklist' title='Link to topic \"Linklist / Navigation\"' id='gclh_linklist_link_1'>Linklist</a> on top") + show_help_big("Show the Linklist on the top of GC pages, beside the other links. You can configure the links in the Linklist at the end of this configuration page.<br><br>Some of the features of the Linklist on top, like for example the font size or the distance between drop-down links, requires \"Change header layout\". Details you can see at the end of this configuration page by the features of the Linklist.") + "<br>";
+            html += checkboxy('settings_bookmarks_on_top', "Show <a class='gclh_ref' href='#gclh_linklist' title='Link to topic \"Linklist / Navigation\"' id='gclh_linklist_link_1'>Linklist</a> on top") + show_help_big("Show the Linklist on the top of GC pages, beside the other links. You can configure the links in the Linklist at the end of this configuration page.<br><br>Some of the features of the Linklist on top, like for example the font size or the distance between drop-down links, requires \"Change header layout\". Details you can see at the end of this configuration page by the features of the Linklist.") + "<br>";
             html += checkboxy('settings_hide_advert_link', 'Hide link to advertisement instructions') + "<br>";
             html += "&nbsp;" + "Page width: <input class='gclh_form' type='text' size='4' id='settings_new_width' value='" + getValue("settings_new_width", 1000) + "'> px" + show_help("With this option you can expand the small layout on GC pages. The default value on GC pages is 950 pixel.") + "<br>";
             html += checkboxy('settings_hide_facebook', 'Hide Facebook login') + "<br>";
@@ -8674,9 +8724,6 @@ var mainGC = function() {
             html += checkboxy('settings_replace_log_by_last_log', 'Replace log by last log template') + show_help("If you enable this option, the last log template will replace the whole log. If you disable it, it will be appended to the log.") + "<br>";
             html += content_settings_show_log_it.replace("show_log_it", "show_log_itX2");
             html += content_settings_logit_for_basic_in_pmo.replace("basic_in_pmo","basic_in_pmoX0");
-            html += newParameterOn1;
-            html += checkboxy('settings_fieldnotes_old_fashioned', 'Logging drafts old-fashioned') + show_help("This option deactivates on old drafts page the logging of drafts by the new log page and activates logging of drafts by the old-fashioned log page.") + "<br>";
-            html += newParameterVersionSetzen(0.7) + newParameterOff;
             html += newParameterOn3;
             html += checkboxy('settings_show_pseudo_as_owner', 'Take also owner pseudonym to replace placeholder owner') + show_help("If you enable this option, the placeholder for the owner is replaced possibly by the pseudonym of the owner if the real owner is not known.<br><br>On the new designed log page there is shown as owner of the cache not the real owner but possibly the pseudonym of the owner for the cache as it is shown in the cache listing under \"A cache by\". The real owner is not available in this cases.") + "<br>";
             html += newParameterVersionSetzen(0.9) + newParameterOff;
@@ -8697,6 +8744,9 @@ var mainGC = function() {
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>Old logging page only</b></div>";
             html += content_settings_submit_log_button.replace("log_button","log_buttonX2");
             html += checkboxy('settings_autovisit', 'Enable \"AutoVisit\" feature for trackables') + show_help("With this option you are able to select trackables which should be automatically set from \"No action\" to \"Visited\" on every log, if the logtype is \"Found It\", \"Webcam Photo Taken\" or \"Attended\". For other logtypes trackables are automatically set from \"Visited\" to \"No action\". You can select \"AutoVisit\" for each trackable in the list on the bottom of the log form.") + "<br>";
+            html += newParameterOn1;
+            html += checkboxy('settings_fieldnotes_old_fashioned', 'Logging drafts old-fashioned') + show_help("This option deactivates on old drafts page the logging of drafts by the new log page and activates logging of drafts by the old-fashioned log page.") + "<br>";
+            html += newParameterVersionSetzen(0.7) + newParameterOff;
             html += "<table><tbody>";
             html += "  <tr><td>Default log type:</td>";
             html += "    <td><select class='gclh_form' id='settings_default_logtype'>";
@@ -10597,7 +10647,7 @@ var mainGC = function() {
                         setValue("settings_sync_last", settings_sync_last.toString()).done(function() {
                             setValue("settings_sync_hash", settings_sync_hash).done(function() {
                                 if (is_page("profile")) reloadPage();
-    						});
+                            });
                         });
                     });
                 }
@@ -10676,7 +10726,7 @@ function setValue(name, value) {
 }
 function setValueSet(data) {
     var defer = $.Deferred();
-	var data2Store = {};
+    var data2Store = {};
     for (key in data) {
         CONFIG[key] = data[key];
         data2Store[key] = data[key];
@@ -10696,7 +10746,7 @@ function getValue(name, defaultValue) {
 
 // Auf welcher Seite bin ich?
 function is_link(name, url) {
-	var status = false;
+    var status = false;
     switch (name) {
         case "cache_listing":
             if (url.match(/\.com\/(seek\/cache_details\.aspx|geocache\/)/) && !document.getElementById("cspSubmit") && !document.getElementById("cspGoBack")) status = true;
