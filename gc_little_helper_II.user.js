@@ -57,9 +57,14 @@ var checkRunningOnce = function(c) {
 };
 
 var quitOnAdFrames = function(c) {
-    var quitOnAdFramesDeref = new jQuery.Deferred();
-    if (window.name.substring(0, 18) !== 'google_ads_iframe_') quitOnAdFramesDeref.resolve();
-    else quitOnAdFramesDeref.reject();
+    try {
+      var quitOnAdFramesDeref = new jQuery.Deferred();
+      if (window.name.substring(0, 18) !== 'google_ads_iframe_') quitOnAdFramesDeref.resolve();
+      else quitOnAdFramesDeref.reject();
+		}
+		catch(err) {
+			quitOnAdFramesDeref.resolve();
+		}
     return quitOnAdFramesDeref.promise();
 };
 
