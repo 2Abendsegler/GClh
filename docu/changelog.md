@@ -1,3 +1,4 @@
+<a href="#v092" title="GClh II version 0.9.2 (08.02.2018)">v0.9.2</a> &nbsp;
 <a href="#v091" title="GClh II version 0.9.1 (16.01.2018)">v0.9.1</a> &nbsp;
 <a href="#v09" title="GClh II version 0.9 (19.12.2017)">v0.9</a> &nbsp;
 <a href="#v0811" title="GClh II version 0.8.11 (26.11.2017)">v0.8.11</a> &nbsp;
@@ -29,6 +30,30 @@
 <a href="#v022" title="GClh II version 0.2.2 (09.01.2017)">v0.2.2</a> &nbsp; 
 <a href="#v021" title="GClh II version 0.2.1 (05.01.2017)">v0.2.1</a> &nbsp; 
 <a href="#v01" title="GClh II version 0.1 (05.01.2017)">v0.1</a> &nbsp; 
+
+---
+## v0.9.2:
+<ul>
+	<li>
+		Fix: [Edge] After Tampermonkey update to 4.5.5648 GClh is not running anymore: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/583">#583</a>]<br>
+		Many thanks to <a href="https://www.geocaching.com/profile/?u=DrakMrak">DrakMrak</a> for the fix.
+	</li>
+	<li>
+		Fix: Compact layout of bookmark lists is no longer displayed correctly, due to changes made by GS on 24.01.: [Issue <a href="https://github.com/2Abendsegler/GClh/pull/580">#580</a>]<br>
+	</li>
+	<li>
+		Fix: On new log page signature is set also if parameter "Add log signature on drafts logs" is deactivated: [Issue <a href="https://github.com/2Abendsegler/GClh/pull/576">#576</a>]<br>
+	</li>
+	<li>
+		Fix: In the list of Bookmark lists from a cache compact layout should not run.  [Issue <a href="https://github.com/2Abendsegler/GClh/issues/574">#574</a>]<br>
+	</li>
+	<li>
+		New: Add selectable month and year in calendar of <a href="https://www.geocaching.com/my/geocaches.aspx">cache logs</a> and <a href="https://www.geocaching.com/my/travelbugs.aspx">trackable logs</a>: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/572">#572</a>]<br>
+		Many thanks to <a href="https://www.geocaching.com/profile/?u=Dratenik">Dratenik</a> for the idea and the implementation.<br>
+		<img src="../images/v0.9.2_Screen01.jpg" alt="v0.9.2_Screen01.jpg"><br>
+	</li>
+</ul>
+(08.02.2018)<br> 
 
 ---
 ## v0.9.1:
