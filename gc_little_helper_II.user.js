@@ -57,14 +57,14 @@ var checkRunningOnce = function(c) {
 };
 
 var quitOnAdFrames = function(c) {
-    try {
-      var quitOnAdFramesDeref = new jQuery.Deferred();
-      if (window.name.substring(0, 18) !== 'google_ads_iframe_') quitOnAdFramesDeref.resolve();
-      else quitOnAdFramesDeref.reject();
-		}
-		catch(err) {
-			quitOnAdFramesDeref.resolve();
-		}
+    var quitOnAdFramesDeref = new jQuery.Deferred();
+    if(window.name) {
+        if (window.name.substring(0, 18) !== 'google_ads_iframe_') quitOnAdFramesDeref.resolve();
+        else quitOnAdFramesDeref.reject();
+    }
+    else {
+        quitOnAdFramesDeref.resolve();
+    }
     return quitOnAdFramesDeref.promise();
 };
 
