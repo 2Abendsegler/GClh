@@ -19,8 +19,8 @@
 // @connect          maps.googleapis.com
 // @connect          raw.githubusercontent.com
 // @description      Some little things to make life easy (on www.geocaching.com).
-// @copyright        2010-2016 Torsten Amshove, 2017-2018 2Abendsegler
-// @author           Torsten Amshove; 2Abendsegler
+// @copyright        2010-2016 Torsten Amshove, 2017-2018 2Abendsegler, 2018 Ruko2010
+// @author           Torsten Amshove; 2Abendsegler; Ruko2010
 // @icon             https://raw.githubusercontent.com/2Abendsegler/GClh/master/images/gclh_logo.png
 // @license          GNU General Public License v2.0
 // @grant            GM_getValue
@@ -8959,7 +8959,7 @@ var mainGC = function() {
 
             html += "<br><br>";
             html += "&nbsp;" + "<input class='gclh_form' type='button' value='" + setValueInSaveButton() + "' id='btn_save'> <input class='gclh_form' type='button' value='save & upload' id='btn_saveAndUpload'> <input class='gclh_form' type='button' value='" + setValueInCloseButton() + "' id='btn_close2'>";
-            html += "<div width='450px' align='right' class='gclh_small' style='float: right; margin-top: -5px;'>Copyright © <a href='/profile/?u=Torsten-' target='_blank'>Torsten Amshove</a>, <a href='/profile/?u=2Abendsegler' target='_blank'>2Abendsegler</a></div>";
+            html += "<div width='450px' align='right' class='gclh_small' style='float: right; margin-top: -5px;'>Copyright © <a href='/profile/?u=Torsten-' target='_blank'>Torsten Amshove</a>, <a href='/profile/?u=2Abendsegler' target='_blank'>2Abendsegler</a>, <a href='/profile/?u=Ruko2010' target='_blank'>Ruko2010</a></div>";
             html += "<div width='400px' align='right' class='gclh_small' style='float: right; margin-top: -15px;'>License: <a href='"+urlDocu+"license.md#readme' target='_blank' title='GNU General Public License Version 2'>GPLv2</a>, Warranty: <a href='"+urlDocu+"warranty.md#readme' target='_blank' title='GC little helper comes with ABSOLUTELY NO WARRANTY'>NO</a></div>";
             html += "</div></div>";
 
