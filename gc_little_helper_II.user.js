@@ -1080,6 +1080,44 @@ var mainGC = function() {
         );
     }
 
+// Show draft indicator in header
+    try{
+        $.get('https://www.geocaching.com/account/dashboard', null, function(text){
+            
+            // Look for drafts in old layout
+            draft_list = $(text).find('#uxDraftLogs span');
+            if(draft_list != null){
+                drafts = draft_list[0];
+            }else{
+                drafts = false;
+            }
+
+            if(!drafts){
+                // if not found, Look for drafts in new layout
+                draft_list = $(text).find("nav a[href='/my/fieldnotes.aspx']");
+                if(draft_list != null){
+                    drafts = draft_list[0];
+                }else{
+                    drafts = false;
+                }
+            }
+
+            if(drafts){
+                draft_count = parseInt(drafts.innerHTML.match(/\d+/));
+                if(Number.isInteger(draft_count) && draft_count > 0){
+                    // we found drafts, so show them in the header
+                    appendCssStyle('.draft-indicator{ background-color: #e0b70a;font-weight:bold;position: absolute;padding: 0 5px;border-radius: 15px;top: -7px;left: -7px; } .draft-indicator a{width: auto !important; font-size: 14px;}');
+                    $('.user-avatar').prepend('<span class="draft-indicator"><a href="/my/fieldnotes.aspx" title="Go to Drafts">' + draft_count + '</a></span>');
+                }else{
+                    // No drafts found 
+                }
+            }else{
+                // Non of the content was found
+                // This should not happen, only if GC changes something
+            }
+        });
+    }catch(e) {gclh_error("Show draft indicator in header:",e);}
+
 // Disabled and archived ...
     if (is_page("cache_listing")) {
         try {
