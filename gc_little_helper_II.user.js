@@ -8835,6 +8835,7 @@ var mainGC = function() {
 
             html += "<h4 class='gclh_headline2'><a name='gclh_linklist'></a>"+prepareHideable.replace("#name#","linklist")+"Linklist / Navigation <span style='font-size: 14px'>" + show_help("In this section you can configure your personal Linklist which is shown on the top of the page and/or on your dashboard. You can activate it in the \"Global\" or \"Dashboard\" section.") + "</span></h4>";
             html += "<div id='gclh_config_linklist' class='gclh_block'>";
+            html += newParameterOn3;
             html += checkboxy('settings_show_draft_indicator', 'Show draft incdicator') + "<br>";
             html += newParameterVersionSetzen(0.9) + newParameterOff;
             html += "&nbsp;" + "Remove from navigation:" + show_help("Here you can select, which of the original GC drop-down lists should be removed.") + "<br>";
