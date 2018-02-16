@@ -468,6 +468,7 @@ var variablesInit = function(c) {
     c.settings_show_bigger_avatars_but = getValue("settings_show_bigger_avatars_but", true);
     c.settings_hide_feedback_icon = getValue("settings_hide_feedback_icon", false);
     c.settings_compact_layout_new_dashboard = getValue("settings_compact_layout_new_dashboard", false);
+    c.settings_show_draft_indicator = getValue("settings_show_draft_indicator", false);
 
     try {
         if (c.userToken === null) {
@@ -1078,6 +1079,46 @@ var mainGC = function() {
                 $('ul:first', this).css('visibility', 'hidden');
             }
         );
+    }
+
+// Show draft indicator in header
+    if(settings_show_draft_indicator){
+        try{
+            $.get('https://www.geocaching.com/account/dashboard', null, function(text){
+                
+                // Look for drafts in old layout
+                draft_list = $(text).find('#uxDraftLogs span');
+                if(draft_list != null){
+                    drafts = draft_list[0];
+                }else{
+                    drafts = false;
+                }
+
+                if(!drafts){
+                    // if not found, Look for drafts in new layout
+                    draft_list = $(text).find("nav a[href='/my/fieldnotes.aspx']");
+                    if(draft_list != null){
+                        drafts = draft_list[0];
+                    }else{
+                        drafts = false;
+                    }
+                }
+
+                if(drafts){
+                    draft_count = parseInt(drafts.innerHTML.match(/\d+/));
+                    if(Number.isInteger(draft_count) && draft_count > 0){
+                        // we found drafts, so show them in the header
+                        appendCssStyle('.draft-indicator{ background-color: #e0b70a;font-weight:bold;position: absolute;padding: 0 5px;border-radius: 15px;top: -7px;left: -7px; } .draft-indicator a{width: auto !important; font-size: 14px;min-width: 10px; display: block; text-align: center;}');
+                        $('.user-avatar').prepend('<span class="draft-indicator"><a href="/my/fieldnotes.aspx" title="Go to Drafts">' + draft_count + '</a></span>');
+                    }else{
+                        // No drafts found 
+                    }
+                }else{
+                    // Non of the content was found
+                    // This should not happen, only if GC changes something
+                }
+            });
+        }catch(e) {gclh_error("Show draft indicator in header:",e);}
     }
 
 // Disabled and archived ...
@@ -4697,8 +4738,8 @@ var mainGC = function() {
                             if (logs[i] && (logs[i].LogType == log_type || (log_type == "VIP" && (in_array(logs[i].UserName, global_vips) || logs[i].UserName == vip_owner)))) {
                                 var newBody = unsafeWindow.$(document.createElement("TBODY"));
                                 unsafeWindow.$("#tmpl_CacheLogRow_gclh").tmpl(logs[i]).appendTo(newBody);
-                                injectPageScript("$('a.tb_images').fancybox({'type': 'image', 'titlePosition': 'inside'});");
                                 unsafeWindow.$(document.getElementById("cache_logs_table2") || document.getElementById("cache_logs_table")).append(newBody.children());
+                                injectPageScript("$('a.tb_images').fancybox({'type': 'image', 'titlePosition': 'inside'});");
                             }
                         }
                         gclh_add_vip_icon();
@@ -8794,6 +8835,9 @@ var mainGC = function() {
 
             html += "<h4 class='gclh_headline2'><a name='gclh_linklist'></a>"+prepareHideable.replace("#name#","linklist")+"Linklist / Navigation <span style='font-size: 14px'>" + show_help("In this section you can configure your personal Linklist which is shown on the top of the page and/or on your dashboard. You can activate it in the \"Global\" or \"Dashboard\" section.") + "</span></h4>";
             html += "<div id='gclh_config_linklist' class='gclh_block'>";
+            html += newParameterOn3;
+            html += checkboxy('settings_show_draft_indicator', 'Show draft incdicator') + "<br>";
+            html += newParameterVersionSetzen(0.9) + newParameterOff;
             html += "&nbsp;" + "Remove from navigation:" + show_help("Here you can select, which of the original GC drop-down lists should be removed.") + "<br>";
             html += "<input type='checkbox' " + (getValue('remove_navi_play') ? "checked='checked'" : "" ) + " id='remove_navi_play'>Play<br>";
             html += "<input type='checkbox' " + (getValue('remove_navi_community') ? "checked='checked'" : "" ) + " id='remove_navi_community'>Community<br>";
@@ -9696,7 +9740,8 @@ var mainGC = function() {
                 'settings_show_log_counter_but',
                 'settings_show_bigger_avatars_but',
                 'settings_hide_feedback_icon',
-                'settings_compact_layout_new_dashboard'
+                'settings_compact_layout_new_dashboard',
+                'settings_show_draft_indicator'
             );
             for (var i = 0; i < checkboxes.length; i++) {
                 if (document.getElementById(checkboxes[i])) setValue(checkboxes[i], document.getElementById(checkboxes[i]).checked);
