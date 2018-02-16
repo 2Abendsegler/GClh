@@ -32,6 +32,21 @@
 <a href="#v01" title="GClh II version 0.1 (05.01.2017)">v0.1</a> &nbsp; 
 
 ---
+## v0.9.3:
+<ul>
+	<li>
+		New: Added Draft Indicator to User Avatar in the menue. it shows the number of drafts you have. You can click on the number and jump directly to the drafts page. [Issue <a href="https://github.com/2Abendsegler/GClh/issues/589">#589</a>]<br>
+		<img src="../images/v0.9.3_Screen01.jpg" alt="v0.9.3_Screen01.jpg"><br>
+		You have to switch this option on in the GClh Config.<br>
+		<img src="../images/v0.9.3_Screen02.jpg" alt="v0.9.3_Screen02.jpg"><br>
+	</li>
+	<li>
+		Fix: Images in filtered out logs load as a new page instead of showing a "fancybox" on the same page [Issue <a href="https://github.com/2Abendsegler/GClh/pull/591">#591</a>]<br>
+	</li>
+</ul>
+(??.??.2018)<br>
+
+---
 ## v0.9.2:
 <ul>
 	<li>
