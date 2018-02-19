@@ -10708,6 +10708,34 @@ var mainGC = function() {
             });
     }
 
+
+    // $('.leaflet-popup-pane')[0].addEventListener('DOMSubtreeModified', function () {
+    //   updatePanel($('#gmCacheInfo .code').html());
+    // });
+
+    // var last_gc_code_in_popup = '';
+
+    // function updatePanel(gccode) {
+        
+    //     alert(gccode);
+
+
+    //     // The code is ran multiple time when a new popup is generated. So we only run it once for a new GCCode
+    //     if(gccode == null) return;
+    //     if(gccode == last_gc_code_in_popup) return;
+    //     last_gc_code_in_popup = gccode;
+
+    //     // alert(gccode);
+
+    //     // TODO: Code funktioniert nicht, wenn das Popup über erneuten klick auf den Link geschlossen wird.
+
+    //     $('.leaflet-popup-close-button').click(function(){
+    //         last_gc_code_in_popup = '';
+    //     });
+
+    //     $('#gmCacheInfo .map-item').append('<div class="links Clear">' + gccode + '</div>');
+    // }
+
 };  // End of mainGC.
 
 //////////////////////////////
