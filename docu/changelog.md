@@ -46,6 +46,9 @@
 	<li>
 		New: GClh is now runable under the Browser Safari [Issue <a href="https://github.com/2Abendsegler/GClh/pull/582">#582</a>]. You can find tips for the installation [<a href="https://github.com/2Abendsegler/GClh/blob/master/docu/tips_installation.md">here</a>]. If you find any issues please report them [<a href="https://github.com/2Abendsegler/GClh/issues">here</a>].<br>
 	</li>
+	<li>
+		Fix: Logcount was not replaced correctly in logtemplate (#Found#), when language was set to france on geocaching.com [Issue <a href="https://github.com/2Abendsegler/GClh/pull/596">#596</a>]<br>
+	</li>
 </ul>
 (??.??.2018)<br>
 

@@ -7009,7 +7009,7 @@ var mainGC = function() {
 // Get Finds out of login text box.
     function get_my_finds() {
         var finds = "";
-        if ($('.cache-count').text()) finds = parseInt($('.cache-count').text().match(/[0-9,\.]+/)[0].replace(/[,\.]/,""));
+        if ($('.cache-count').text()) finds = parseInt($('.cache-count').text().replace(/\s/g,'').match(/[0-9,\.]+/)[0].replace(/[,\.]/,""));
         return finds;
     }
 
