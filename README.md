@@ -1,11 +1,19 @@
 <a href="#user-content-de" title=""><img src="/images/flag_de.png"></a>
 
 ---
-# GC little helper II <a id="user-content-de"></a><span><img align="right" src="/images/safari_logo_small.png" title="Safari" alt="Safari" />&nbsp;<img align="right" src="/images/vivaldi_logo_small.png" title="Vivaldi" alt="Vivaldi" />&nbsp;<img align="right" src="/images/microsoft_edge_logo_small.png" title="Microsoft Edge" alt="Microsoft Edge" />&nbsp;<img align="right" src="/images/opera_logo_small.png" title="Opera" alt="Opera" />&nbsp;<img align="right" src="/images/google_chrome_logo_small.png" title="Google Chrom" alt="Google Chrom" />&nbsp;<img align="right" src="/images/mozilla_firefox_logo_small.png" title="Mozilla Firefox" alt="Mozilla Firefox" /></span>
-*Some little things to make life easy (on www.geocaching.com).* <span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span> [Tipps für die Installation](https://github.com/2Abendsegler/GClh/blob/master/docu/tips_installation.md#readme)<br>
-<span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span> [Tipps für die Entwickler](https://github.com/2Abendsegler/GClh/blob/master/docu/definitions.md#readme)<br>
-<br>
-Der *GC little helper II* ist ein Tool zur Verbesserung und Erweiterung der Geocaching Seiten auf www.geocaching.com. Alle Funktionen können flexibel über einen Konfigurator eingestellt werden. Das Tool ist in englisch. 
+# GC little helper II <a id="user-content-de"></a>
+*Ein paar Kleinigkeiten um das Leben auf www.geocaching.com einfacher zu machen* 
+
+## Unterstützte Browsers
+<img src="/images/mozilla_firefox_logo_small.png" title="Mozilla Firefox" alt="Mozilla Firefox" />&nbsp;
+<img src="/images/google_chrome_logo_small.png" title="Google Chrom" alt="Google Chrom" />&nbsp;
+<img src="/images/opera_logo_small.png" title="Opera" alt="Opera" />&nbsp;
+<img src="/images/microsoft_edge_logo_small.png" title="Microsoft Edge" alt="Microsoft Edge" />&nbsp;
+<img src="/images/vivaldi_logo_small.png" title="Vivaldi" alt="Vivaldi" />&nbsp;
+<img src="/images/safari_logo_small.png" title="Safari" alt="Safari" />
+
+## Unser Ziel
+Der *GC little helper II* ist ein Tool zur Verbesserung und Erweiterung der Geocaching Seiten auf www.geocaching.com. Alle Funktionen können flexibel über ein Konfigurationsmenü eingestellt werden. Das Tool ist in englisch. 
 
 Es ist kostenlos und ohne Werbung. 
 
@@ -19,4 +27,6 @@ Dazu gibt es auf hiesiger Plattform ein [Ticketsystem](https://github.com/2Abend
 
 Alle Geocacher und Interessierte sind herzlich eingeladen, am Support und der Weiterentwicklung des Tools mitzuwirken.  
 
-Informationen zu Coding Konventionen, Branches, Issues, Änderungsdokumentation und hilfreichen Links, gibt es [hier](https://github.com/2Abendsegler/GClh/blob/master/docu/definitions.md#readme).  
+Informationen zu Coding Konventionen, Branches, Issues, Änderungsdokumentation und hilfreichen Links, gibt es in den [Tipps für Entwickler](https://github.com/2Abendsegler/GClh/blob/master/docu/definitions.md#readme).
+
+Wer Hilfe bei der Installation benötigt, wird [hier](https://github.com/2Abendsegler/GClh/blob/master/docu/tips_installation.md#readme) fündig.
