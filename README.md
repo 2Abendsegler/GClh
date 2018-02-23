@@ -21,7 +21,7 @@ If you need any help with the installation, you can have a look at our [Installa
 
 Is free of charge and without any advertising.
 
-The tool is developed in Javascript and can be used with the script manager Tampermonkey under Firefox, Google Chrome, Opera, Microsoft Edge, Vivaldi und Safari.
+The tool is developed in Javascript and can be used with the script manager Tampermonkey under Firefox, Google Chrome, Safari, Opera, Microsoft Edge und Vivaldi.
 
 [Here](https://github.com/2Abendsegler/GClh/blob/master/docu/overview_screenshots.md#readme) are some screenshots of www.geocaching.com with *GC little helper II* activated.
 
@@ -55,7 +55,7 @@ Der *GC little helper II* ist ein Tool zur Verbesserung und Erweiterung der Geoc
 
 Es ist kostenlos und ohne Werbung. 
 
-Das Tool ist in Javascript entwickelt und läuft mit Script-Manager Tampermonkey unter Mozilla Firefox, Google Chrome, Opera, Microsoft Edge, Vivaldi und Safari.
+Das Tool ist in Javascript entwickelt und läuft mit Script-Manager Tampermonkey unter Mozilla Firefox, Google Chrome, Safari, Opera, Microsoft Edge, Vivaldi.
 
 [Hier](https://github.com/2Abendsegler/GClh/blob/master/docu/overview_screenshots.md#readme) gibt es einige ausgesuchte Screenshots von den Geocaching Seiten bei Verwendung des *GC little helper II*. 
 
