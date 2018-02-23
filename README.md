@@ -37,7 +37,7 @@ Informations on code conventions, branches, issues and other helpful links can b
 
 ---
 # GC little helper II <a id="user-content-de"></a>
-*Ein paar Kleinigkeiten um das Leben auf www.geocaching.com einfacher zu machen* 
+*Ein paar Kleinigkeiten um das Leben auf www.geocaching.com einfacher zu machen.* 
 
 ## Unterstützte Browsers
 <img src="/images/mozilla_firefox_logo_small.png" title="Mozilla Firefox" alt="Mozilla Firefox" />&nbsp;
