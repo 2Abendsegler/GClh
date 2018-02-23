@@ -14,7 +14,7 @@
 <img src="/images/vivaldi_logo_small.png" title="Vivaldi" alt="Vivaldi" />
 
 ## How to install
-If you need any help with the installation, you can have a look [here](https://github.com/2Abendsegler/GClh/blob/master/docu/tips_installation.md#readme)
+If you need any help with the installation, you can have a look at our [Installationtipps](https://github.com/2Abendsegler/GClh/blob/master/docu/tips_installation.md#readme)
 
 ## Our Goal
 *GC little helper II* is a tool to enhance and extend the functionality on www.geocaching.com. All functions can be configured in a configuration menue. It uses english as language.
@@ -48,7 +48,7 @@ Informations on code conventions, branches, issues and other helpful links can b
 <img src="/images/vivaldi_logo_small.png" title="Vivaldi" alt="Vivaldi" />
 
 ## Installationshinweise
-Wer Hilfe bei der Installation benötigt, wird [hier](https://github.com/2Abendsegler/GClh/blob/master/docu/tips_installation.md#readme) fündig.
+Wer Hilfe bei der Installation benötigt, wird in den [Tipps zur Installation](https://github.com/2Abendsegler/GClh/blob/master/docu/tips_installation.md#readme) fündig.
 
 ## Unser Ziel
 Der *GC little helper II* ist ein Tool zur Verbesserung und Erweiterung der Geocaching Seiten auf www.geocaching.com. Alle Funktionen können flexibel über ein Konfigurationsmenü eingestellt werden. Das Tool ist in englisch. 
