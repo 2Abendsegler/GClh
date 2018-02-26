@@ -615,6 +615,21 @@ var mainOSM = function() {
 //////////////////////////////
 var mainGC = function() {
 
+// Hide Facebook.
+    if (settings_hide_facebook && (document.location.href.match(/\.com\/(play|account\/register|login|account\/login|seek\/log\.aspx?(.*))/))) {
+        try {
+            if ($('.btn.btn-facebook')[0]) $('.btn.btn-facebook')[0].style.display = "none";
+            if ($('.divider-flex')[0]) $('.divider-flex')[0].style.display = "none";
+            if ($('.divider')[0]) $('.divider')[0].style.display = "none";
+            if ($('.disclaimer')[0]) $('.disclaimer')[0].style.display = "none";
+            if ($('.login-with-facebook')[0]) $('.login-with-facebook')[0].style.display = "none";
+            if ($('.horizontal-rule')[0]) $('.horizontal-rule')[0].style.display = "none";
+        } catch(e) {gclh_error("Hide Facebook:",e);}
+    }
+
+// Wenn nicht angeloggt, dann aussteigen.
+   if (!$('.li-user-info')[0]) return;
+
 // Run after redirect.
     if (typeof(unsafeWindow.__doPostBack) == "function") {
         try {
@@ -1101,7 +1116,7 @@ var mainGC = function() {
     if(settings_show_draft_indicator){
         try{
             $.get('https://www.geocaching.com/account/dashboard', null, function(text){
-                
+
                 // Look for drafts in old layout
                 draft_list = $(text).find('#uxDraftLogs span');
                 if(draft_list != null){
@@ -1127,7 +1142,7 @@ var mainGC = function() {
                         appendCssStyle('.draft-indicator{ background-color: #e0b70a;font-weight:bold;position: absolute;padding: 0 5px;border-radius: 15px;top: -7px;left: -7px; } .draft-indicator a{width: auto !important; font-size: 14px;min-width: 10px; display: block; text-align: center;}');
                         $('.user-avatar').prepend('<span class="draft-indicator"><a href="/my/fieldnotes.aspx" title="Go to Drafts">' + draft_count + '</a></span>');
                     }else{
-                        // No drafts found 
+                        // No drafts found
                     }
                 }else{
                     // Non of the content was found
@@ -2637,10 +2652,10 @@ var mainGC = function() {
     }
     if (settings_hide_socialshare && document.location.href.match(/\.com\/play\/friendleague/)) {
         try {
-            if ($('.btn-facebook-share')[0]) {
-                $('.btn-facebook-share')[0].parentNode.style.display = "none";
-                $('.btn-facebook-share')[0].parentNode.previousElementSibling.style.display = "none";
-                if ($('.btn-primary')[0]) $('.btn-primary')[0].parentNode.style.marginBottom = "0";
+            if ($('.btn.btn-facebook')[0]) {
+                $('.btn.btn-facebook')[0].parentNode.style.display = "none";
+                $('.btn.btn-facebook')[0].parentNode.previousElementSibling.style.display = "none";
+                if ($('.share-button-group')[0]) $('.share-button-group')[0].style.marginBottom = "0";
             }
         } catch(e) {gclh_error("Hide socialshare2:",e);}
     }
@@ -8840,7 +8855,7 @@ var mainGC = function() {
             html += "<h4 class='gclh_headline2'><a name='gclh_linklist'></a>"+prepareHideable.replace("#name#","linklist")+"Linklist / Navigation <span style='font-size: 14px'>" + show_help("In this section you can configure your personal Linklist which is shown on the top of the page and/or on your dashboard. You can activate it in the \"Global\" or \"Dashboard\" section.") + "</span></h4>";
             html += "<div id='gclh_config_linklist' class='gclh_block'>";
             html += newParameterOn3;
-            html += checkboxy('settings_show_draft_indicator', 'Show draft incdicator') + "<br>";
+            html += checkboxy('settings_show_draft_indicator', 'Show draft indicator') + "<br>";
             html += newParameterVersionSetzen(0.9) + newParameterOff;
             html += "&nbsp;" + "Remove from navigation:" + show_help("Here you can select, which of the original GC drop-down lists should be removed.") + "<br>";
             html += "<input type='checkbox' " + (getValue('remove_navi_play') ? "checked='checked'" : "" ) + " id='remove_navi_play'>Play<br>";
