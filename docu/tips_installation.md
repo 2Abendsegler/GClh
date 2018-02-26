@@ -1,36 +1,4 @@
-<a href="#de" title=""><img src="../images/flag_de.png"></a> &nbsp;<a href="#en" title=""><img src="../images/flag_en.png"></a>
-
----
-## <a id="de"></a>Tipps für die Installation des *GC little helper II*
-
-### <a id="firefox_de"></a>Mozilla Firefox: <span> &nbsp; &nbsp; &nbsp; &nbsp; </span> <img src="/images/mozilla_firefox_logo_small.png" title="Mozilla Firefox" alt="Mozilla Firefox">
-* Installiere den Script-Manager [Tampermonkey](https://addons.mozilla.org/de/firefox/addon/tampermonkey/) als Add-On in Firefox.<br>
-* Installiere das Script [GC little helper II](https://github.com/2Abendsegler/GClh/raw/master/gc_little_helper_II.user.js) unter dem Script-Manager Tampermonkey.<br><br>
-* Der GC little helper II ist ab Firefox Version 57 unter dem Script-Manager Greasemonkey 4 nicht mehr lauffähig. Deshalb bitte den Script-Manager [Tampermonkey](https://addons.mozilla.org/de/firefox/addon/tampermonkey/) installieren. Um die Konfiguration des GC little helper II vom Script-Manager Greasemonkey nach Tampermonkey zu übernehmen siehe [Tipps für die Migration - 6.](https://github.com/2Abendsegler/GClh/blob/master/docu/tips_migration.md#6de)<br>
-
-### <a id="chrome_de"></a>Google Chrome: <span> &nbsp; &nbsp; &nbsp; </span> <img src="/images/google_chrome_logo_small.png" title="Google Chrom" alt="Google Chrom">
-* Installiere den Script-Manager [Tampermonkey](https://chrome.google.com/webstore/detail/tampermonkey/dhdgffkkebhmkfjojejmpbldmpobfkfo) als Add-On in Chrome.<br>
-* Installiere das Script [GC little helper II](https://github.com/2Abendsegler/GClh/raw/master/gc_little_helper_II.user.js) unter dem Script-Manager Tampermonkey.<br>
-
-### <a id="opera_de"></a>Opera: <span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span> <img src="/images/opera_logo_small.png" title="Opera" alt="Opera">
-* Installiere den Script-Manager [Tampermonkey](https://addons.opera.com/de/extensions/details/tampermonkey-beta) als Add-On in Opera.<br>
-* Installiere das Script [GC little helper II](https://github.com/2Abendsegler/GClh/raw/master/gc_little_helper_II.user.js) unter dem Script-Manager Tampermonkey.<br>
-
-### <a id="edge_de"></a>Microsoft Edge: <span> &nbsp; &nbsp; &nbsp; &nbsp; </span> <img src="/images/microsoft_edge_logo_small.png" title="Microsoft Edge" alt="Microsoft Edge">
-* Installiere den Script-Manager [Tampermonkey](https://www.microsoft.com/en-us/store/p/tampermonkey/9nblggh5162s) als Add-On in Edge.<br>
-* Installiere das Script [GC little helper II](https://github.com/2Abendsegler/GClh/raw/master/gc_little_helper_II.user.js) unter dem Script-Manager Tampermonkey.<br>
-
-### <a id="vivaldi_de"></a>Vivaldi: <span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span> <img src="/images/vivaldi_logo_small.png" title="Vivaldi" alt="Vivaldi">
-* Installiere den Script-Manager [Tampermonkey](https://chrome.google.com/webstore/detail/tampermonkey/dhdgffkkebhmkfjojejmpbldmpobfkfo) als Add-On in Vivaldi über den Chrome Web Store.<br>
-* Installiere das Script [GC little helper II](https://github.com/2Abendsegler/GClh/raw/master/gc_little_helper_II.user.js) unter dem Script-Manager Tampermonkey.<br><br>
-* Doppeltbelegung der Tasten F4 und F2 durch GClh und Vivaldi:<br>
-Die Taste F4 zum Aufrufen des GClh Config und die Taste F2 zum Speichern im GClh Config bzw. zum Speichern eines Logs, einer Bookmark, einer Pocket Query ... , sind standardmäßig aktiviert. Sie können im GClh Config im Bereich GClh Config / Sync bzw. im Bereich Logging geändert werden. <br>
-Im Browser Vivaldi sind diese Tasten auch standardmäßig aktiviert. Sie können in Vivaldi über Einstellungen / Tastatur geändert werden.<br>
-
-### <a id="safari_de"></a>Safari: <span> &nbsp; &nbsp; &nbsp; &nbsp; </span> <img src="/images/safari_logo_small.png" title="Safari" alt="Safari">
-* Installiere den Script-Manager [Tampermonkey](https://safari.tampermonkey.net/tampermonkey.safariextz) als Add-On in Edge.<br>
-* Installiere das Script [GC little helper II](https://github.com/2Abendsegler/GClh/raw/master/gc_little_helper_II.user.js) unter dem Script-Manager Tampermonkey.<br>
-<br>
+<a href="#en" title=""><img src="../images/flag_en.png"></a> &nbsp;<a href="#de" title=""><img src="../images/flag_de.png"></a>
 
 ---
 ## <a id="en"></a>Tips for the installation of *GC little helper II*
@@ -62,4 +30,36 @@ In Vivaldi browser, these keys are also enabled by default. They can be changed 
 ### <a id="safari_de"></a>Safari: <span> &nbsp; &nbsp; &nbsp; &nbsp; </span> <img src="/images/safari_logo_small.png" title="Safari" alt="Safari">
 * Install the script manager [Tampermonkey](https://safari.tampermonkey.net/tampermonkey.safariextz) as Add-On in Edge.<br>
 * Install the script [GC little helper II](https://github.com/2Abendsegler/GClh/raw/master/gc_little_helper_II.user.js) under the script manager Tampermonkey.<br>
+<br>
+
+---
+## <a id="de"></a>Tipps für die Installation des *GC little helper II*
+
+### <a id="firefox_de"></a>Mozilla Firefox: <span> &nbsp; &nbsp; &nbsp; &nbsp; </span> <img src="/images/mozilla_firefox_logo_small.png" title="Mozilla Firefox" alt="Mozilla Firefox">
+* Installiere den Script-Manager [Tampermonkey](https://addons.mozilla.org/de/firefox/addon/tampermonkey/) als Add-On in Firefox.<br>
+* Installiere das Script [GC little helper II](https://github.com/2Abendsegler/GClh/raw/master/gc_little_helper_II.user.js) unter dem Script-Manager Tampermonkey.<br><br>
+* Der GC little helper II ist ab Firefox Version 57 unter dem Script-Manager Greasemonkey 4 nicht mehr lauffähig. Deshalb bitte den Script-Manager [Tampermonkey](https://addons.mozilla.org/de/firefox/addon/tampermonkey/) installieren. Um die Konfiguration des GC little helper II vom Script-Manager Greasemonkey nach Tampermonkey zu übernehmen siehe [Tipps für die Migration - 6.](https://github.com/2Abendsegler/GClh/blob/master/docu/tips_migration.md#6de)<br>
+
+### <a id="chrome_de"></a>Google Chrome: <span> &nbsp; &nbsp; &nbsp; </span> <img src="/images/google_chrome_logo_small.png" title="Google Chrom" alt="Google Chrom">
+* Installiere den Script-Manager [Tampermonkey](https://chrome.google.com/webstore/detail/tampermonkey/dhdgffkkebhmkfjojejmpbldmpobfkfo) als Add-On in Chrome.<br>
+* Installiere das Script [GC little helper II](https://github.com/2Abendsegler/GClh/raw/master/gc_little_helper_II.user.js) unter dem Script-Manager Tampermonkey.<br>
+
+### <a id="opera_de"></a>Opera: <span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span> <img src="/images/opera_logo_small.png" title="Opera" alt="Opera">
+* Installiere den Script-Manager [Tampermonkey](https://addons.opera.com/de/extensions/details/tampermonkey-beta) als Add-On in Opera.<br>
+* Installiere das Script [GC little helper II](https://github.com/2Abendsegler/GClh/raw/master/gc_little_helper_II.user.js) unter dem Script-Manager Tampermonkey.<br>
+
+### <a id="edge_de"></a>Microsoft Edge: <span> &nbsp; &nbsp; &nbsp; &nbsp; </span> <img src="/images/microsoft_edge_logo_small.png" title="Microsoft Edge" alt="Microsoft Edge">
+* Installiere den Script-Manager [Tampermonkey](https://www.microsoft.com/en-us/store/p/tampermonkey/9nblggh5162s) als Add-On in Edge.<br>
+* Installiere das Script [GC little helper II](https://github.com/2Abendsegler/GClh/raw/master/gc_little_helper_II.user.js) unter dem Script-Manager Tampermonkey.<br>
+
+### <a id="vivaldi_de"></a>Vivaldi: <span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span> <img src="/images/vivaldi_logo_small.png" title="Vivaldi" alt="Vivaldi">
+* Installiere den Script-Manager [Tampermonkey](https://chrome.google.com/webstore/detail/tampermonkey/dhdgffkkebhmkfjojejmpbldmpobfkfo) als Add-On in Vivaldi über den Chrome Web Store.<br>
+* Installiere das Script [GC little helper II](https://github.com/2Abendsegler/GClh/raw/master/gc_little_helper_II.user.js) unter dem Script-Manager Tampermonkey.<br><br>
+* Doppeltbelegung der Tasten F4 und F2 durch GClh und Vivaldi:<br>
+Die Taste F4 zum Aufrufen des GClh Config und die Taste F2 zum Speichern im GClh Config bzw. zum Speichern eines Logs, einer Bookmark, einer Pocket Query ... , sind standardmäßig aktiviert. Sie können im GClh Config im Bereich GClh Config / Sync bzw. im Bereich Logging geändert werden. <br>
+Im Browser Vivaldi sind diese Tasten auch standardmäßig aktiviert. Sie können in Vivaldi über Einstellungen / Tastatur geändert werden.<br>
+
+### <a id="safari_de"></a>Safari: <span> &nbsp; &nbsp; &nbsp; &nbsp; </span> <img src="/images/safari_logo_small.png" title="Safari" alt="Safari">
+* Installiere den Script-Manager [Tampermonkey](https://safari.tampermonkey.net/tampermonkey.safariextz) als Add-On in Edge.<br>
+* Installiere das Script [GC little helper II](https://github.com/2Abendsegler/GClh/raw/master/gc_little_helper_II.user.js) unter dem Script-Manager Tampermonkey.<br>
 <br>
