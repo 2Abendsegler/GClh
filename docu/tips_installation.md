@@ -13,7 +13,7 @@
 * Install the script [GC little helper II](https://github.com/2Abendsegler/GClh/raw/master/gc_little_helper_II.user.js) under the script manager Tampermonkey.<br>
 
 ### <a id="safari_de"></a>Safari: <span> &nbsp; &nbsp; &nbsp; &nbsp; </span> <img src="/images/safari_logo_small.png" title="Safari" alt="Safari">
-* Install the script manager [Tampermonkey](https://safari.tampermonkey.net/tampermonkey.safariextz) as Add-On in Edge.<br>
+* Install the script manager [Tampermonkey](https://safari.tampermonkey.net/tampermonkey.safariextz) as Add-On in Safari.<br>
 * Install the script [GC little helper II](https://github.com/2Abendsegler/GClh/raw/master/gc_little_helper_II.user.js) under the script manager Tampermonkey.<br>
 
 ### <a id="opera_de"></a>Opera: <span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span> <img src="/images/opera_logo_small.png" title="Opera" alt="Opera">
@@ -45,7 +45,7 @@ In Vivaldi browser, these keys are also enabled by default. They can be changed 
 * Installiere das Script [GC little helper II](https://github.com/2Abendsegler/GClh/raw/master/gc_little_helper_II.user.js) unter dem Script-Manager Tampermonkey.<br>
 
 ### <a id="safari_de"></a>Safari: <span> &nbsp; &nbsp; &nbsp; &nbsp; </span> <img src="/images/safari_logo_small.png" title="Safari" alt="Safari">
-* Installiere den Script-Manager [Tampermonkey](https://safari.tampermonkey.net/tampermonkey.safariextz) als Add-On in Edge.<br>
+* Installiere den Script-Manager [Tampermonkey](https://safari.tampermonkey.net/tampermonkey.safariextz) als Add-On in Safari.<br>
 * Installiere das Script [GC little helper II](https://github.com/2Abendsegler/GClh/raw/master/gc_little_helper_II.user.js) unter dem Script-Manager Tampermonkey.<br>
 
 ### <a id="opera_de"></a>Opera: <span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span> <img src="/images/opera_logo_small.png" title="Opera" alt="Opera">
