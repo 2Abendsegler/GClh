@@ -1,7 +1,7 @@
 <a href="#en" title=""><img src="../images/flag_en.png"></a> &nbsp;<a href="#de" title=""><img src="../images/flag_de.png"></a>
 
 ---
-## <a id="en"></a>Tips for the installation of *GC little helper II*
+# Tips for the installation of *GC little helper II* <a id="en"></a>
 
 ### <a id="firefox_en"></a>Mozilla Firefox: <span> &nbsp; &nbsp; &nbsp; &nbsp; </span> <img src="/images/mozilla_firefox_logo_small.png" title="Mozilla Firefox" alt="Mozilla Firefox"><br>
 * Install the script manager [Tampermonkey](https://addons.mozilla.org/en-US/firefox/addon/tampermonkey/) as Add-on in Firefox.<br> 
@@ -33,7 +33,7 @@ In Vivaldi browser, these keys are also enabled by default. They can be changed 
 <br>
 
 ---
-## <a id="de"></a>Tipps für die Installation des *GC little helper II*
+# Tipps für die Installation des *GC little helper II* <a id="de"></a>
 
 ### <a id="firefox_de"></a>Mozilla Firefox: <span> &nbsp; &nbsp; &nbsp; &nbsp; </span> <img src="/images/mozilla_firefox_logo_small.png" title="Mozilla Firefox" alt="Mozilla Firefox">
 * Installiere den Script-Manager [Tampermonkey](https://addons.mozilla.org/de/firefox/addon/tampermonkey/) als Add-On in Firefox.<br>
