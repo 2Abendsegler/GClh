@@ -45,6 +45,7 @@
 	</li>
 	<li>
 		New: Duplicated the Trackable Header (where you can mark all Trackables as visited / dropped) to the bottom of the Trackable List [Issue <a href="https://github.com/2Abendsegler/GClh/pull/600">#600</a>].<br>
+		<img src="../images/v0.9.3_Screen03.png" alt="v0.9.3_Screen03.png"><br>
 	</li>
 	<li>
 		Fix: Images in filtered out logs load as a new page instead of showing a "fancybox" on the same page [Issue <a href="https://github.com/2Abendsegler/GClh/pull/591">#591</a>]<br>
