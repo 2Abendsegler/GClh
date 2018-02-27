@@ -506,22 +506,6 @@ var variablesInit = function(c) {
 // Google Maps
 //////////////////////////////
 var mainGMaps = function() {
-
-// Hide Facebook.
-    if (settings_hide_facebook && (document.location.href.match(/\.com\/(play|account\/register|login|account\/login|seek\/log\.aspx?(.*))/))) {
-        try {
-            if ($('.btn.btn-facebook')[0]) $('.btn.btn-facebook')[0].style.display = "none";
-            if ($('.divider-flex')[0]) $('.divider-flex')[0].style.display = "none";
-            if ($('.divider')[0]) $('.divider')[0].style.display = "none";
-            if ($('.disclaimer')[0]) $('.disclaimer')[0].style.display = "none";
-            if ($('.login-with-facebook')[0]) $('.login-with-facebook')[0].style.display = "none";
-            if ($('.horizontal-rule')[0]) $('.horizontal-rule')[0].style.display = "none";
-        } catch(e) {gclh_error("Hide Facebook:",e);}
-    }
-
-// Wenn nicht angeloggt, dann aussteigen.
-    if (!$('.li-user-info')[0]) return;
-
     try {
         // Add link to GC Map on Google Maps page.
         if (settings_add_link_gc_map_on_google_maps) {
