@@ -57,6 +57,10 @@
 		Fix: If user is not logged in and visiting a cache page (premium caches) directly, he has no chance to sign in [Issue <a href="https://github.com/2Abendsegler/GClh/pull/594">#594</a>]<br>
 		Thanks to 2Abendsegler for the Fix.
 	</li>
+<li>
+Fix: On Friend League page social sharing Twitter do not hide due to changes made by GS: [Issue <a href="https://github.com/2Abendsegler/GClh/pull/601">#601</a>]<br>
+<br>
+</li>
 </ul>
 (??.??.2018)<br>
 
