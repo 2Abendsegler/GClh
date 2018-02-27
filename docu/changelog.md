@@ -49,6 +49,10 @@
 	<li>
 		Fix: Logcount was not replaced correctly in logtemplate (#Found#), when language was set to france on geocaching.com [Issue <a href="https://github.com/2Abendsegler/GClh/pull/596">#596</a>]<br>
 	</li>
+	<li>
+Fix: On Friend League page social sharing Twitter do not hide due to changes made by GS: [Issue <a href="https://github.com/2Abendsegler/GClh/pull/601">#601</a>]<br>
+<br>
+</li>
 </ul>
 (??.??.2018)<br>
 
