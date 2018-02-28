@@ -468,7 +468,7 @@ var variablesInit = function(c) {
     c.settings_show_bigger_avatars_but = getValue("settings_show_bigger_avatars_but", true);
     c.settings_hide_feedback_icon = getValue("settings_hide_feedback_icon", false);
     c.settings_compact_layout_new_dashboard = getValue("settings_compact_layout_new_dashboard", false);
-    c.settings_show_draft_indicator = getValue("settings_show_draft_indicator", false);
+    c.settings_show_draft_indicator = getValue("settings_show_draft_indicator", true);
 
     try {
         if (c.userToken === null) {
