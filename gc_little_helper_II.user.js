@@ -5168,11 +5168,11 @@ var mainGC = function() {
                 var ul = nav.querySelector('ul');
                 var newmapbtn = document.createElement('li');
                 newmapbtn.classList.add("action-link");
-                newmapbtn.innerHTML = '<a class="gclh_svg_fill" href="/map/" target="'+target+'"><svg class="icon" height="36" width="36"><use xlink:href="/account/app/ui-icons/sprites/global.svg#icon-map-no-border"></use></svg>Map</a>';
+                newmapbtn.innerHTML = '<a class="gclh_svg_fill" href="/map/" target="'+target+'"><svg class="icon"><use xlink:href="/account/app/ui-icons/sprites/global.svg#icon-map-no-border"></use></svg>Map</a>';
                 ul.insertBefore(newmapbtn, ul.childNodes[0]);
                 var newsearchbtn = document.createElement('li');
                 newsearchbtn.classList.add ("action-link");
-                newsearchbtn.innerHTML = '<a class="gclh_svg_fill" href="/play/search" target="'+target+'"><svg class="icon" height="36" width="36" style="margin-left:3px; margin-right:19px; margin-top:5px; margin-bottom:5px; width:26px !important;height:auto !important;"><use xlink:href="/account/app/ui-icons/sprites/global.svg#icon-spyglass-svg-fill"></use></svg>Search</a>';
+                newsearchbtn.innerHTML = '<a class="gclh_svg_fill" href="/play/search" target="'+target+'"><svg class="icon" style="margin-left: -1px; margin-right: 9px; width: 24px;"><use xlink:href="/account/app/ui-icons/sprites/global.svg#icon-spyglass-svg-fill"></use></svg>Search</a>';
                 ul.insertBefore(newsearchbtn, ul.childNodes[0]);
                 css += "a.gclh_svg_fill {fill: #4a4a4a;} a.gclh_svg_fill:hover {fill: #02874d;}";
             }
