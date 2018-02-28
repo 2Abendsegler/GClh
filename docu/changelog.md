@@ -48,6 +48,9 @@
 		<img src="../images/v0.9.3_Screen03.png" alt="v0.9.3_Screen03.png"><br>
 	</li>
 	<li>
+		Improvement: Updated Layout of Readme and Installation Tips. Added english to Readme [Issue <a href="https://github.com/2Abendsegler/GClh/pull/599">#599</a>]<br>
+	</li>
+	<li>
 		Fix: Images in filtered out logs load as a new page instead of showing a "fancybox" on the same page [Issue <a href="https://github.com/2Abendsegler/GClh/pull/591">#591</a>]<br>
 	</li>
 	<li>
@@ -62,7 +65,7 @@ Fix: On Friend League page social sharing Twitter do not hide due to changes mad
 <br>
 </li>
 </ul>
-(??.??.2018)<br>
+(28.02.2018)<br>
 
 ---
 ## v0.9.2:
