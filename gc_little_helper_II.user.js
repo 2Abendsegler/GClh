@@ -5862,6 +5862,61 @@ var mainGC = function() {
         } catch(e) {gclh_error("Display Google-Maps warning:",e);}
     }
 
+// Display more informations on map popup for a cache
+    if (document.location.href.match(/\.com\/map\//)) {
+        try {
+            
+            $('.leaflet-popup-pane')[0].addEventListener('DOMSubtreeModified', function () {
+              updatePanel($('#gmCacheInfo .code').html());
+            });
+
+            var last_gc_code_in_popup = '';
+            var popup_count = 0;
+
+            function updatePanel(gccode) {
+            
+                // Box not fully loaded
+                if(gccode == null) return;
+
+                // Information already added, so don't run it again
+                if($('#popup_additional_info').length) return;
+
+                // Add Loading image 
+                $('#gmCacheInfo .map-item').append('<div id="popup_additional_info" class="links Clear"><img src="' + urlImages + 'ajax-loader.gif" /> Loading additional Data...</div>');
+
+                $.get('https://www.geocaching.com/geocache/'+gccode, null, function(text){
+                    
+                    console.log(text);
+
+                    var all_logs = $(text).find('.LogTotals')[0].innerHTML;
+
+                    // var total_finds = all_logs.substr(all_logs.indexOf('Found it')); 
+                    start = all_logs.indexOf('>',all_logs.indexOf('Found it')) + 1;
+                    end = all_logs.indexOf('&nbsp',start);
+                    total_finds = parseInt(all_logs.substr(start, end-start));
+                    fav_points = $('.favorite-points-count')[0].innerHTML;
+
+                    var place = $(text).find('#ctl00_ContentBody_Location')[0].innerHTML;
+                    var new_text = 'Logs: ' + all_logs + '<br>';
+                    new_text += 'Place: ' + place + '<br>';
+
+                    if(fav_points > 0){
+                        fav_percent = Math.round(total_finds / fav_points) + '%';
+                    }else{
+                        fav_percent = '-';
+                    }
+                    new_text += 'Favorite Percent: ' + fav_percent;
+                    // new_text += 'Total Finds: ' + total_finds + '<br>';
+
+                    $('#popup_additional_info').html(new_text);
+
+                });
+            }
+
+
+        } catch(e) {gclh_error("enhance cache popup",e);}
+    }
+
 // Leaflet Map für Trackables vergrößern und Zoom per Mausrad zulassen.
     if (document.location.href.match(/\.com\/track\/map/)) {
         try{
@@ -10724,34 +10779,6 @@ var mainGC = function() {
                 console.log(error);
             });
     }
-
-
-    // $('.leaflet-popup-pane')[0].addEventListener('DOMSubtreeModified', function () {
-    //   updatePanel($('#gmCacheInfo .code').html());
-    // });
-
-    // var last_gc_code_in_popup = '';
-
-    // function updatePanel(gccode) {
-        
-    //     alert(gccode);
-
-
-    //     // The code is ran multiple time when a new popup is generated. So we only run it once for a new GCCode
-    //     if(gccode == null) return;
-    //     if(gccode == last_gc_code_in_popup) return;
-    //     last_gc_code_in_popup = gccode;
-
-    //     // alert(gccode);
-
-    //     // TODO: Code funktioniert nicht, wenn das Popup über erneuten klick auf den Link geschlossen wird.
-
-    //     $('.leaflet-popup-close-button').click(function(){
-    //         last_gc_code_in_popup = '';
-    //     });
-
-    //     $('#gmCacheInfo .map-item').append('<div class="links Clear">' + gccode + '</div>');
-    // }
 
 };  // End of mainGC.
 
