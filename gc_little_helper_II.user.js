@@ -2,7 +2,7 @@
 // @name             GC little helper II
 // @namespace        http://www.amshove.net
 //--> $$000
-// @version          0.9.2
+// @version          0.9.3
 //<-- $$000
 // @include          http*://www.geocaching.com/*
 // @include          http*://maps.google.tld/*
@@ -468,7 +468,7 @@ var variablesInit = function(c) {
     c.settings_show_bigger_avatars_but = getValue("settings_show_bigger_avatars_but", true);
     c.settings_hide_feedback_icon = getValue("settings_hide_feedback_icon", false);
     c.settings_compact_layout_new_dashboard = getValue("settings_compact_layout_new_dashboard", false);
-    c.settings_show_draft_indicator = getValue("settings_show_draft_indicator", false);
+    c.settings_show_draft_indicator = getValue("settings_show_draft_indicator", true);
 
     try {
         if (c.userToken === null) {
@@ -598,6 +598,21 @@ var mainOSM = function() {
 // GClh Main
 //////////////////////////////
 var mainGC = function() {
+
+// Hide Facebook.
+    if (settings_hide_facebook && (document.location.href.match(/\.com\/(play|account\/register|login|account\/login|seek\/log\.aspx?(.*))/))) {
+        try {
+            if ($('.btn.btn-facebook')[0]) $('.btn.btn-facebook')[0].style.display = "none";
+            if ($('.divider-flex')[0]) $('.divider-flex')[0].style.display = "none";
+            if ($('.divider')[0]) $('.divider')[0].style.display = "none";
+            if ($('.disclaimer')[0]) $('.disclaimer')[0].style.display = "none";
+            if ($('.login-with-facebook')[0]) $('.login-with-facebook')[0].style.display = "none";
+            if ($('.horizontal-rule')[0]) $('.horizontal-rule')[0].style.display = "none";
+        } catch(e) {gclh_error("Hide Facebook:",e);}
+    }
+
+// Wenn nicht angeloggt, dann aussteigen.
+   if (!$('.li-user-info')[0]) return;
 
 // Run after redirect.
     if (typeof(unsafeWindow.__doPostBack) == "function") {
@@ -1085,7 +1100,7 @@ var mainGC = function() {
     if(settings_show_draft_indicator){
         try{
             $.get('https://www.geocaching.com/account/dashboard', null, function(text){
-                
+
                 // Look for drafts in old layout
                 draft_list = $(text).find('#uxDraftLogs span');
                 if(draft_list != null){
@@ -1111,7 +1126,7 @@ var mainGC = function() {
                         appendCssStyle('.draft-indicator{ background-color: #e0b70a;font-weight:bold;position: absolute;padding: 0 5px;border-radius: 15px;top: -7px;left: -7px; } .draft-indicator a{width: auto !important; font-size: 14px;min-width: 10px; display: block; text-align: center;}');
                         $('.user-avatar').prepend('<span class="draft-indicator"><a href="/my/fieldnotes.aspx" title="Go to Drafts">' + draft_count + '</a></span>');
                     }else{
-                        // No drafts found 
+                        // No drafts found
                     }
                 }else{
                     // Non of the content was found
@@ -2412,6 +2427,20 @@ var mainGC = function() {
             appendCssStyle('.markdown-output span.WaypointLog{color:#4a4a4a;display:block;font-weight:bold;margin-bottom:2em}.markdown-output{font-size:1.08em;line-height:1.375em;overflow:hidden;word-wrap:break-word}.markdown-output h1{color:#4a4a4a;font-size:1.285em;font-weight:bold;line-height:1.375em;margin:0}.markdown-output h2{color:#4a4a4a;font-size:1.285em;font-weight:normal;line-height:1.375em;margin:0}.markdown-output h3{color:#00b265;font-size:1.285em;font-weight:normal;line-height:1.375em;margin:0;text-transform:uppercase}.markdown-output hr{background:#d8d8d8;height:2px;margin:1.45em 0}.markdown-output p{color:#4a4a4a;margin:0 0 1.5em}.markdown-output li{list-style:inherit}.markdown-output ul{list-style-type:disc}.markdown-output ol{list-style-type:decimal}.markdown-output ul,.markdown-output ol{color:#4a4a4a;margin:0 1.5em 1.5em .75em;padding-left:1.5em}.markdown-output li ul{list-style-type:none;margin-left:0;margin-bottom:0;padding-left:0}.markdown-output li ul li::before{background-color:#e0b70a;border-radius:50%;content:"";display:inline-block;height:5px;margin-right:.75em;margin-top:-1px;width:5px;vertical-align:middle}.markdown-output li ol{margin-left:0;margin-bottom:0}.markdown-output blockquote{background:none;font-style:normal;margin:1.5em .75em;padding:0}.markdown-output blockquote p{color:#00b265;font-weight:bold}.markdown-output blockquote p::before{content:\'“\'}.markdown-output blockquote p::after{content:\'”\'}.markdown-output a,#bd .markdown-output a{color:#006cff;text-decoration:none}.markdown-output a:hover,.markdown-output a:focus{border-bottom:1px solid #006cff;color:#006cff}.markdown-output .AlignRight a{color:#00447c}.markdown-output .AlignRight a:visited{color:#00a0b0}.markdown-output .AlignRight a:hover,.markdown-output .AlignRight a:focus{border-bottom:none;color:#6c8e10}.markdown-output~.AlternatingRow,table .markdown-output~tr.AlternatingRow td{background:#fff}.markdown-output.BorderBottom td{border-bottom-color:#9b9b9b}.markdown-output.BorderBottom:last-child td{border-bottom:none}.markdown-output>td:last-child{padding-bottom:2.5em}');
         } catch(e) {gclh_error("Logpage Log Preview:",e);}
     }
+// Replicate TB-Header to bottom
+    if (document.location.href.match(/\.com\/play\/geocache\/gc\w+\/log/)) {
+        try {
+            
+            var checkExistTBHeader = setInterval(function() {
+               if ($('#tbHeader .trackables-header').length) {
+                  $(".trackables-list").append('<li id="cloned_tb_header"></li>');
+                  $("#tbHeader").clone().insertAfter("#cloned_tb_header");
+                  clearInterval(checkExistTBHeader);
+               }
+            }, 500); // check every 500ms
+
+        } catch(e) {gclh_error("Logpage Replicate TB-Header",e);}
+    }
 
 // Maxlength of logtext and unsaved warning.
     if ((document.location.href.match(/\.com\/seek\/log\.aspx\?(id|guid|ID|wp|LUID|PLogGuid)\=/) ||
@@ -2612,18 +2641,6 @@ var mainGC = function() {
         } catch(e) {gclh_error("Last Log-Text speichern:",e);}
     }
 
-// Hide Facebook.
-    if (settings_hide_facebook && (document.location.href.match(/\.com\/(play|account\/register|login|account\/login|seek\/log\.aspx?(.*))/))) {
-        try {
-            if ($('.btn.btn-facebook')[0]) $('.btn.btn-facebook')[0].style.display = "none";
-            if ($('.divider-flex')[0]) $('.divider-flex')[0].style.display = "none";
-            if ($('.divider')[0]) $('.divider')[0].style.display = "none";
-            if ($('.disclaimer')[0]) $('.disclaimer')[0].style.display = "none";
-            if ($('.login-with-facebook')[0]) $('.login-with-facebook')[0].style.display = "none";
-            if ($('.horizontal-rule')[0]) $('.horizontal-rule')[0].style.display = "none";
-        } catch(e) {gclh_error("Hide Facebook:",e);}
-    }
-
 // Hide socialshare.
     if (settings_hide_socialshare && document.location.href.match(/\.com\/seek\/log\.aspx?(.*)/)) {
         try {
@@ -2633,10 +2650,10 @@ var mainGC = function() {
     }
     if (settings_hide_socialshare && document.location.href.match(/\.com\/play\/friendleague/)) {
         try {
-            if ($('.btn-facebook-share')[0]) {
-                $('.btn-facebook-share')[0].parentNode.style.display = "none";
-                $('.btn-facebook-share')[0].parentNode.previousElementSibling.style.display = "none";
-                if ($('.btn-primary')[0]) $('.btn-primary')[0].parentNode.style.marginBottom = "0";
+            if ($('.btn.btn-facebook')[0]) {
+                $('.btn.btn-facebook')[0].parentNode.style.display = "none";
+                $('.btn.btn-facebook')[0].parentNode.previousElementSibling.style.display = "none";
+                if ($('.share-button-group')[0]) $('.share-button-group')[0].style.marginBottom = "0";
             }
         } catch(e) {gclh_error("Hide socialshare2:",e);}
     }
@@ -5151,11 +5168,11 @@ var mainGC = function() {
                 var ul = nav.querySelector('ul');
                 var newmapbtn = document.createElement('li');
                 newmapbtn.classList.add("action-link");
-                newmapbtn.innerHTML = '<a class="gclh_svg_fill" href="/map/" target="'+target+'"><svg class="icon" height="36" width="36"><use xlink:href="/account/app/ui-icons/sprites/global.svg#icon-map-no-border"></use></svg>Map</a>';
+                newmapbtn.innerHTML = '<a class="gclh_svg_fill" href="/map/" target="'+target+'"><svg class="icon"><use xlink:href="/account/app/ui-icons/sprites/global.svg#icon-map-no-border"></use></svg>Map</a>';
                 ul.insertBefore(newmapbtn, ul.childNodes[0]);
                 var newsearchbtn = document.createElement('li');
                 newsearchbtn.classList.add ("action-link");
-                newsearchbtn.innerHTML = '<a class="gclh_svg_fill" href="/play/search" target="'+target+'"><svg class="icon" height="36" width="36" style="margin-left:3px; margin-right:19px; margin-top:5px; margin-bottom:5px; width:26px !important;height:auto !important;"><use xlink:href="/account/app/ui-icons/sprites/global.svg#icon-spyglass-svg-fill"></use></svg>Search</a>';
+                newsearchbtn.innerHTML = '<a class="gclh_svg_fill" href="/play/search" target="'+target+'"><svg class="icon" style="margin-left: -1px; margin-right: 9px; width: 24px;"><use xlink:href="/account/app/ui-icons/sprites/global.svg#icon-spyglass-svg-fill"></use></svg>Search</a>';
                 ul.insertBefore(newsearchbtn, ul.childNodes[0]);
                 css += "a.gclh_svg_fill {fill: #4a4a4a;} a.gclh_svg_fill:hover {fill: #02874d;}";
             }
@@ -7009,7 +7026,7 @@ var mainGC = function() {
 // Get Finds out of login text box.
     function get_my_finds() {
         var finds = "";
-        if ($('.cache-count').text()) finds = parseInt($('.cache-count').text().match(/[0-9,\.]+/)[0].replace(/[,\.]/,""));
+        if ($('.cache-count').text()) finds = parseInt($('.cache-count').text().replace(/\s/g,'').match(/[0-9,\.]+/)[0].replace(/[,\.]/,""));
         return finds;
     }
 
@@ -8836,7 +8853,7 @@ var mainGC = function() {
             html += "<h4 class='gclh_headline2'><a name='gclh_linklist'></a>"+prepareHideable.replace("#name#","linklist")+"Linklist / Navigation <span style='font-size: 14px'>" + show_help("In this section you can configure your personal Linklist which is shown on the top of the page and/or on your dashboard. You can activate it in the \"Global\" or \"Dashboard\" section.") + "</span></h4>";
             html += "<div id='gclh_config_linklist' class='gclh_block'>";
             html += newParameterOn3;
-            html += checkboxy('settings_show_draft_indicator', 'Show draft incdicator') + "<br>";
+            html += checkboxy('settings_show_draft_indicator', 'Show draft indicator') + "<br>";
             html += newParameterVersionSetzen(0.9) + newParameterOff;
             html += "&nbsp;" + "Remove from navigation:" + show_help("Here you can select, which of the original GC drop-down lists should be removed.") + "<br>";
             html += "<input type='checkbox' " + (getValue('remove_navi_play') ? "checked='checked'" : "" ) + " id='remove_navi_play'>Play<br>";
