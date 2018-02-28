@@ -41,7 +41,7 @@
 		<img src="../images/v0.9.3_Screen02.jpg" alt="v0.9.3_Screen02.jpg"><br>
 	</li>
 	<li>
-		New: GClh is now runable under the Browser Safari [Issue <a href="https://github.com/2Abendsegler/GClh/pull/582">#582</a>]. You can find tips for the installation [<a href="https://github.com/2Abendsegler/GClh/blob/master/docu/tips_installation.md">here</a>]. If you find any issues please report them [<a href="https://github.com/2Abendsegler/GClh/issues">here</a>].<br>
+		<img src="../images/safari_logo_small.png" title="Safari" alt="Safari" />&nbsp; New: GClh is now runable under the Browser Safari [Issue <a href="https://github.com/2Abendsegler/GClh/pull/582">#582</a>]. You can find tips for the installation [<a href="https://github.com/2Abendsegler/GClh/blob/master/docu/tips_installation.md">here</a>]. If you find any issues please report them [<a href="https://github.com/2Abendsegler/GClh/issues">here</a>].<br>
 	</li>
 	<li>
 		New: Duplicated the Trackable Header (where you can mark all Trackables as visited / dropped) to the bottom of the Trackable List [Issue <a href="https://github.com/2Abendsegler/GClh/pull/600">#600</a>].<br>
