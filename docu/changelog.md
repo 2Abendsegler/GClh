@@ -1,3 +1,4 @@
+<a href="#v093" title="GClh II version 0.9.3 (28.02.2018)">v0.9.3</a> &nbsp;
 <a href="#v092" title="GClh II version 0.9.2 (08.02.2018)">v0.9.2</a> &nbsp;
 <a href="#v091" title="GClh II version 0.9.1 (16.01.2018)">v0.9.1</a> &nbsp;
 <a href="#v09" title="GClh II version 0.9 (19.12.2017)">v0.9</a> &nbsp;
@@ -55,21 +56,22 @@
 		Thanks to <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a> for the Fix.<br>
 	</li>
 	<li>
+		Fix: If user is not logged in and visiting a cache page (premium caches) directly, he has no chance to sign in [Issue <a href="https://github.com/2Abendsegler/GClh/pull/594">#594</a>]<br>
+		Thanks to <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a> for the Fix.
+	</li>
+	<li>
+		Fix: On Friend League page social sharing Twitter do not hide due to changes made by GS: [Issue <a href="https://github.com/2Abendsegler/GClh/pull/601">#601</a>]<br>
+		Thanks to <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a> for the Fix.
+	</li>
+	<li>
 		Fix: Images in filtered out logs load as a new page instead of showing a "fancybox" on the same page [Issue <a href="https://github.com/2Abendsegler/GClh/pull/591">#591</a>]<br>
 	</li>
 	<li>
 		Fix: Logcount was not replaced correctly in logtemplate (#Found#), when language was set to france on geocaching.com [Issue <a href="https://github.com/2Abendsegler/GClh/pull/596">#596</a>]<br>
 	</li>
-	<li>
-		Fix: If user is not logged in and visiting a cache page (premium caches) directly, he has no chance to sign in [Issue <a href="https://github.com/2Abendsegler/GClh/pull/594">#594</a>]<br>
-		Thanks to 2Abendsegler for the Fix.
-	</li>
-<li>
-Fix: On Friend League page social sharing Twitter do not hide due to changes made by GS: [Issue <a href="https://github.com/2Abendsegler/GClh/pull/601">#601</a>]<br>
-<br>
-</li>
 </ul>
 (28.02.2018)<br>
+released by <a href="https://www.geocaching.com/profile/?u=Ruko2010">Ruko2010</a><br>
 
 ---
 ## v0.9.2:
