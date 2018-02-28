@@ -51,6 +51,10 @@
 		Improvement: Updated Layout of Readme and Installation Tips. Added english to Readme [Issue <a href="https://github.com/2Abendsegler/GClh/pull/599">#599</a>]<br>
 	</li>
 	<li>
+		Fix: On new dashboard search button is moved due to changes made by GS: [Issue <a href="https://github.com/2Abendsegler/GClh/pull/607">#607</a>]<br>
+		Thanks to <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a> for the Fix.<br>
+	</li>
+	<li>
 		Fix: Images in filtered out logs load as a new page instead of showing a "fancybox" on the same page [Issue <a href="https://github.com/2Abendsegler/GClh/pull/591">#591</a>]<br>
 	</li>
 	<li>
