@@ -5870,25 +5870,51 @@ var mainGC = function() {
               updatePanel($('#gmCacheInfo .code').html());
             });
 
-            var last_gc_code_in_popup = '';
-            var popup_count = 0;
-
             function updatePanel(gccode) {
             
                 // Box not fully loaded
                 if(gccode == null) return;
 
+                console.log('Leng:' + $('#popup_additional_info').length);
+
                 // Information already added, so don't run it again
                 if($('#popup_additional_info').length) return;
+
+                alert('Stop');
+
+                // Setup Click Events for prev/newx Buttons
+                if($('.map-item .prev-item')[0]) $('.map-item .prev-item')[0].addEventListener('click', function () {
+                    $(this).unbind( "click" );
+                    console.log('prev');
+                    $('#popup_additional_info').remove();
+                    console.log('Leng2:' + $('#popup_additional_info').length);
+                    console.log($('#gmCacheInfo .code').html());
+                    // updatePanel($('#gmCacheInfo .code').html());
+                });
+
+                if($('.map-item .next-item')[0]) $('.map-item .next-item')[0].addEventListener('click', function () {
+                    $(this).unbind( "click" );
+                    console.log('next');
+                    $('#popup_additional_info').remove();
+                    console.log('Leng2:' + $('#popup_additional_info').length);
+                    console.log($('#gmCacheInfo .code').html());
+                    // updatePanel($('#gmCacheInfo .code').html());
+                });
+
+                // New box is shown, so we reload our informations
 
                 // Add Loading image 
                 $('#gmCacheInfo .map-item').append('<div id="popup_additional_info" class="links Clear"><img src="' + urlImages + 'ajax-loader.gif" /> Loading additional Data...</div>');
 
+                console.log('Go for it');
+
                 $.get('https://www.geocaching.com/geocache/'+gccode, null, function(text){
                     
-                    console.log(text);
+                    console.log('text abgerufen');
 
                     var all_logs = $(text).find('.LogTotals')[0].innerHTML;
+                    // var tbs = $(text).find('#ctl00_ContentBody_lnkTravelBugs')[0].innerHTML;
+                    var tbs = 'Mal schauen was wir da machen.';
 
                     // var total_finds = all_logs.substr(all_logs.indexOf('Found it')); 
                     start = all_logs.indexOf('>',all_logs.indexOf('Found it')) + 1;
@@ -5905,12 +5931,22 @@ var mainGC = function() {
                     }else{
                         fav_percent = '-';
                     }
-                    new_text += 'Favorite Percent: ' + fav_percent;
+                    new_text += 'Favorite Percent: ' + fav_percent + '<br>';
+                    new_text += 'Tbs: ' + tbs + '<br>';
                     // new_text += 'Total Finds: ' + total_finds + '<br>';
 
                     $('#popup_additional_info').html(new_text);
 
                 });
+
+                // Improve Original Box Content
+                side = $('#gmCacheInfo .map-item dl dd a');
+                guid = side.attr('href').substring(15,36+15);
+                username = side.text();
+
+                console.log('buildSendIcons');
+
+                buildSendIcons(side[0], username, "per guid", guid);
             }
 
 
