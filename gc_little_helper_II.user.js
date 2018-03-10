@@ -5865,90 +5865,75 @@ var mainGC = function() {
 // Display more informations on map popup for a cache
     if (document.location.href.match(/\.com\/map\//)) {
         try {
-            
-            $('.leaflet-popup-pane')[0].addEventListener('DOMSubtreeModified', function () {
-              updatePanel($('#gmCacheInfo .code').html());
+
+            // select the target node
+            var target = document.querySelector('.leaflet-popup-pane');
+             
+            // create an observer instance
+            var observer = new MutationObserver(function(mutations) {
+                mutations.forEach(function(mutation) {
+                    gccode = $('#gmCacheInfo .code').html();
+                    if(gccode == null) return;
+
+                    // New Popup. This can contain more than one cache (if 2 or more are close together)
+                    // so we have to load informations for all caches.
+                    $('#gmCacheInfo .map-item').each(function () {
+                        gccode = $(this).find('.code').html();
+
+                        // Add Loading image 
+                        $(this).append('<div id="popup_additional_info_' + gccode +'" class="links Clear"><img src="' + urlImages + 'ajax-loader.gif" /> Loading additional Data...</div>');
+
+                        $.get('https://www.geocaching.com/geocache/'+gccode, null, function(text){
+
+                            var local_gc_code = $(text).find('#ctl00_ContentBody_CoordInfoLinkControl1_uxCoordInfoCode').html();
+
+                            var all_logs = $(text).find('.LogTotals')[0].innerHTML;
+                            var tbs = 'Nothing found';
+                            // var tb_elements = $(text).find('.CacheDetailNavigationWidget').has('#ctl00_ContentBody_uxTravelBugList_uxInventoryLabel');
+                            $(text).find('.CacheDetailNavigationWidget').each(function(){
+                                tb_text = $(this).html();
+                                if(tb_text.indexOf('ctl00_ContentBody_uxTravelBugList_uxInventoryLabel') !== -1){
+                                    // There are two Container with .CacheDetailNavigationWidget so we are only processing the
+                                    // one that contains the TB informations
+                                    tbs = (tb_text.match(/<li>/g)||[]).length;
+                                }
+                            });
+                            var start = all_logs.indexOf('>',all_logs.indexOf('Found it')) + 1;
+                            var end = all_logs.indexOf('&nbsp',start);
+                            var total_finds = parseInt(all_logs.substr(start, end-start));
+                            var fav_points = $('.favorite-points-count')[0].innerHTML;
+
+                            var place = $(text).find('#ctl00_ContentBody_Location')[0].innerHTML;
+                            var new_text = 'Logs: ' + all_logs + '<br>';
+                            new_text += 'Place: ' + place + '<br>';
+
+                            if(fav_points > 0){
+                                fav_percent = Math.round(total_finds / fav_points) + '%';
+                            }else{
+                                fav_percent = '-';
+                            }
+                            new_text += 'Favorite Percent: ' + fav_percent + '<br>';
+                            new_text += 'Trackables: ' + tbs + '<br>';
+
+                            $('#popup_additional_info_' + local_gc_code).html(new_text);
+
+                        });
+
+                        // Improve Original Box Content
+                        side = $(this).find('dl dd a');
+                        guid = side.attr('href').substring(15,36+15);
+                        username = side.text();
+
+                        buildSendIcons(side[0], username, "per guid", guid);
+                    });
+                });
             });
-
-            function updatePanel(gccode) {
-            
-                // Box not fully loaded
-                if(gccode == null) return;
-
-                console.log('Leng:' + $('#popup_additional_info').length);
-
-                // Information already added, so don't run it again
-                if($('#popup_additional_info').length) return;
-
-                alert('Stop');
-
-                // Setup Click Events for prev/newx Buttons
-                if($('.map-item .prev-item')[0]) $('.map-item .prev-item')[0].addEventListener('click', function () {
-                    $(this).unbind( "click" );
-                    console.log('prev');
-                    $('#popup_additional_info').remove();
-                    console.log('Leng2:' + $('#popup_additional_info').length);
-                    console.log($('#gmCacheInfo .code').html());
-                    // updatePanel($('#gmCacheInfo .code').html());
-                });
-
-                if($('.map-item .next-item')[0]) $('.map-item .next-item')[0].addEventListener('click', function () {
-                    $(this).unbind( "click" );
-                    console.log('next');
-                    $('#popup_additional_info').remove();
-                    console.log('Leng2:' + $('#popup_additional_info').length);
-                    console.log($('#gmCacheInfo .code').html());
-                    // updatePanel($('#gmCacheInfo .code').html());
-                });
-
-                // New box is shown, so we reload our informations
-
-                // Add Loading image 
-                $('#gmCacheInfo .map-item').append('<div id="popup_additional_info" class="links Clear"><img src="' + urlImages + 'ajax-loader.gif" /> Loading additional Data...</div>');
-
-                console.log('Go for it');
-
-                $.get('https://www.geocaching.com/geocache/'+gccode, null, function(text){
-                    
-                    console.log('text abgerufen');
-
-                    var all_logs = $(text).find('.LogTotals')[0].innerHTML;
-                    // var tbs = $(text).find('#ctl00_ContentBody_lnkTravelBugs')[0].innerHTML;
-                    var tbs = 'Mal schauen was wir da machen.';
-
-                    // var total_finds = all_logs.substr(all_logs.indexOf('Found it')); 
-                    start = all_logs.indexOf('>',all_logs.indexOf('Found it')) + 1;
-                    end = all_logs.indexOf('&nbsp',start);
-                    total_finds = parseInt(all_logs.substr(start, end-start));
-                    fav_points = $('.favorite-points-count')[0].innerHTML;
-
-                    var place = $(text).find('#ctl00_ContentBody_Location')[0].innerHTML;
-                    var new_text = 'Logs: ' + all_logs + '<br>';
-                    new_text += 'Place: ' + place + '<br>';
-
-                    if(fav_points > 0){
-                        fav_percent = Math.round(total_finds / fav_points) + '%';
-                    }else{
-                        fav_percent = '-';
-                    }
-                    new_text += 'Favorite Percent: ' + fav_percent + '<br>';
-                    new_text += 'Tbs: ' + tbs + '<br>';
-                    // new_text += 'Total Finds: ' + total_finds + '<br>';
-
-                    $('#popup_additional_info').html(new_text);
-
-                });
-
-                // Improve Original Box Content
-                side = $('#gmCacheInfo .map-item dl dd a');
-                guid = side.attr('href').substring(15,36+15);
-                username = side.text();
-
-                console.log('buildSendIcons');
-
-                buildSendIcons(side[0], username, "per guid", guid);
-            }
-
+             
+            // configuration of the observer:
+            var config = { attributes: true, childList: true, characterData: true }
+             
+            // pass in the target node, as well as the observer options
+            observer.observe(target, config);
 
         } catch(e) {gclh_error("enhance cache popup",e);}
     }
