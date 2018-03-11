@@ -5887,6 +5887,69 @@ var mainGC = function() {
 
                             var local_gc_code = $(text).find('#ctl00_ContentBody_CoordInfoLinkControl1_uxCoordInfoCode').html();
 
+
+                            initalLogs_from_cachepage = text.substr(text.indexOf('initalLogs = {"status')+13, text.indexOf('} };') - text.indexOf('initalLogs = {"status') - 10);
+                            // console.log(initalLogs_from_cachepage);
+                            var initalLogs = JSON.parse(initalLogs_from_cachepage);
+                            // console.log(initalLogs);
+
+                            var last_logs = document.createElement("div");
+                            var last_logs_to_show = 7;
+                            
+
+                            var lateLogs = new Array();
+                            for (var i = 0; i < initalLogs['data'].length; i++) {
+                                if (last_logs_to_show == i) break;
+                                var lateLog = new Object();
+                                lateLog['user'] = initalLogs['data'][i].UserName;
+                                lateLog['src']  = '/images/logtypes/' + initalLogs['data'][i].LogTypeImage;
+                                lateLog['type'] = initalLogs['data'][i].LogType;
+                                lateLog['date'] = initalLogs['data'][i].Created;
+                                lateLog['log']  = initalLogs['data'][i].LogText;
+                                lateLogs[i]     = lateLog;
+                            }
+                            if (lateLogs.length > 0) {
+                                var div = document.createElement("div");
+                                var divTitle = "";
+                                div.id = "gclh_latest_logs";
+                                div.setAttribute("style", "padding-right: 0; padding-top: 2px;");
+                                div.appendChild(document.createTextNode("Latest logs:"));
+                                for (var i = 0; i < lateLogs.length; i++) {
+                                    var div_log_wrapper = document.createElement("div");
+                                    div_log_wrapper.className = "gclh_latest_log";
+                                    var img = document.createElement("img");
+                                    img.src = lateLogs[i]['src'];
+                                    img.setAttribute("style", "padding-left: 2px; vertical-align: bottom; float:left;");
+                                    var log_text = document.createElement("span");
+                                    log_text.title = "";
+                                    log_text.innerHTML = "<img src='" + lateLogs[i]['src'] + "'> <b>" + lateLogs[i]['user'] + " - " + lateLogs[i]['date'] + "</b><br>" + lateLogs[i]['log'];
+                                    // log_text.appendChild(document.createTextNode());
+                                    console.log(log_text);
+                                    div_log_wrapper.appendChild(img);
+                                    div_log_wrapper.appendChild(log_text);
+                                    div.appendChild(div_log_wrapper);
+                                    // divTitle += (divTitle == "" ? "" : "\n" ) + lateLogs[i]['type'] + " - " + lateLogs[i]['date'] + " - " + lateLogs[i]['user'];
+                                }
+                                div.title = divTitle;
+                                last_logs.appendChild(div);
+                                var css = "div.gclh_latest_log:hover {position: relative;}"
+                                        + "div.gclh_latest_log span {display: none; position: absolute; left: -500px; width: 500px; padding: 5px; text-decoration:none; text-align:left; vertical-align:top; color: #000000;}"
+                                        + "div.gclh_latest_log:hover span {font-size: 13px; display: block; top: 16px; border: 1px solid #8c9e65; background-color:#dfe1d2; z-index:10000;}";
+                                appendCssStyle(css);
+                            }
+
+
+
+
+
+
+
+
+
+
+
+                            
+
                             var all_logs = $(text).find('.LogTotals')[0].innerHTML;
                             var tbs = 'Nothing found';
                             // var tb_elements = $(text).find('.CacheDetailNavigationWidget').has('#ctl00_ContentBody_uxTravelBugList_uxInventoryLabel');
@@ -5905,6 +5968,7 @@ var mainGC = function() {
 
                             var place = $(text).find('#ctl00_ContentBody_Location')[0].innerHTML;
                             var new_text = 'Logs: ' + all_logs + '<br>';
+                            new_text += $(last_logs).prop('outerHTML');
                             new_text += 'Place: ' + place + '<br>';
 
                             if(fav_points > 0){
