@@ -5885,18 +5885,15 @@ var mainGC = function() {
 
                         $.get('https://www.geocaching.com/geocache/'+gccode, null, function(text){
 
+                            // We need to retriev the gc_code from the loaded page, because in the 
+                            // meantime the global varioable gc_code could (and will be ;-)) changed
                             var local_gc_code = $(text).find('#ctl00_ContentBody_CoordInfoLinkControl1_uxCoordInfoCode').html();
-
-
-                            initalLogs_from_cachepage = text.substr(text.indexOf('initalLogs = {"status')+13, text.indexOf('} };') - text.indexOf('initalLogs = {"status') - 10);
-                            // console.log(initalLogs_from_cachepage);
-                            var initalLogs = JSON.parse(initalLogs_from_cachepage);
-                            // console.log(initalLogs);
-
-                            var last_logs = document.createElement("div");
-                            var last_logs_to_show = 7;
                             
-
+                            // get the last logs
+                            initalLogs_from_cachepage = text.substr(text.indexOf('initalLogs = {"status')+13, text.indexOf('} };') - text.indexOf('initalLogs = {"status') - 10);
+                            var initalLogs = JSON.parse(initalLogs_from_cachepage);
+                            var last_logs = document.createElement("div");
+                            var last_logs_to_show = 5;
                             var lateLogs = new Array();
                             for (var i = 0; i < initalLogs['data'].length; i++) {
                                 if (last_logs_to_show == i) break;
@@ -5912,7 +5909,7 @@ var mainGC = function() {
                                 var div = document.createElement("div");
                                 var divTitle = "";
                                 div.id = "gclh_latest_logs";
-                                div.setAttribute("style", "padding-right: 0; padding-top: 2px;");
+                                div.setAttribute("style", "padding-right: 0; padding-top: 5px; padding-bottom: 5px; display: flex;");
                                 div.appendChild(document.createTextNode("Latest logs:"));
                                 for (var i = 0; i < lateLogs.length; i++) {
                                     var div_log_wrapper = document.createElement("div");
@@ -5923,61 +5920,56 @@ var mainGC = function() {
                                     var log_text = document.createElement("span");
                                     log_text.title = "";
                                     log_text.innerHTML = "<img src='" + lateLogs[i]['src'] + "'> <b>" + lateLogs[i]['user'] + " - " + lateLogs[i]['date'] + "</b><br>" + lateLogs[i]['log'];
-                                    // log_text.appendChild(document.createTextNode());
-                                    console.log(log_text);
                                     div_log_wrapper.appendChild(img);
                                     div_log_wrapper.appendChild(log_text);
                                     div.appendChild(div_log_wrapper);
-                                    // divTitle += (divTitle == "" ? "" : "\n" ) + lateLogs[i]['type'] + " - " + lateLogs[i]['date'] + " - " + lateLogs[i]['user'];
                                 }
                                 div.title = divTitle;
                                 last_logs.appendChild(div);
                                 var css = "div.gclh_latest_log:hover {position: relative;}"
-                                        + "div.gclh_latest_log span {display: none; position: absolute; left: -500px; width: 500px; padding: 5px; text-decoration:none; text-align:left; vertical-align:top; color: #000000;}"
+                                        + "div.gclh_latest_log span {display: none; position: absolute; left: -50px; width: 500px; padding: 5px; text-decoration:none; text-align:left; vertical-align:top; color: #000000;}"
                                         + "div.gclh_latest_log:hover span {font-size: 13px; display: block; top: 16px; border: 1px solid #8c9e65; background-color:#dfe1d2; z-index:10000;}";
                                 appendCssStyle(css);
                             }
-
-
-
-
-
-
-
-
-
-
-
                             
-
+                            // get all type of logs and their count
                             var all_logs = $(text).find('.LogTotals')[0].innerHTML;
-                            var tbs = 'Nothing found';
+                            all_logs = all_logs.replace(/&nbsp;/g, " ");
+                            
+                            // get the number of trackables in the cache
+                            var trachables = 0;
                             // var tb_elements = $(text).find('.CacheDetailNavigationWidget').has('#ctl00_ContentBody_uxTravelBugList_uxInventoryLabel');
                             $(text).find('.CacheDetailNavigationWidget').each(function(){
                                 tb_text = $(this).html();
                                 if(tb_text.indexOf('ctl00_ContentBody_uxTravelBugList_uxInventoryLabel') !== -1){
                                     // There are two Container with .CacheDetailNavigationWidget so we are only processing the
                                     // one that contains the TB informations
-                                    tbs = (tb_text.match(/<li>/g)||[]).length;
+                                    trachables = (tb_text.match(/<li>/g)||[]).length;
                                 }
                             });
+
+                            // get the total number of finds
                             var start = all_logs.indexOf('>',all_logs.indexOf('Found it')) + 1;
                             var end = all_logs.indexOf('&nbsp',start);
                             var total_finds = parseInt(all_logs.substr(start, end-start));
+                            
+                            // get the number of favorite points
                             var fav_points = $('.favorite-points-count')[0].innerHTML;
-
-                            var place = $(text).find('#ctl00_ContentBody_Location')[0].innerHTML;
-                            var new_text = 'Logs: ' + all_logs + '<br>';
-                            new_text += $(last_logs).prop('outerHTML');
-                            new_text += 'Place: ' + place + '<br>';
-
-                            if(fav_points > 0){
+                             if(fav_points > 0){
                                 fav_percent = Math.round(total_finds / fav_points) + '%';
                             }else{
                                 fav_percent = '-';
                             }
-                            new_text += 'Favorite Percent: ' + fav_percent + '<br>';
-                            new_text += 'Trackables: ' + tbs + '<br>';
+
+                            // get the place, where the cache was placed
+                            var place = $(text).find('#ctl00_ContentBody_Location')[0].innerHTML;
+                            
+                            // Put all together
+                            var new_text = 'Logs: ' + all_logs + '<br>';
+                            new_text += $(last_logs).prop('outerHTML');
+                            new_text += 'Place: ' + place + ' | ';
+                            new_text += 'Favorite Percent: ' + fav_percent + ' | ';
+                            new_text += 'Trackables: ' + trachables + '<br>';
 
                             $('#popup_additional_info_' + local_gc_code).html(new_text);
 
