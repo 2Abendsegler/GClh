@@ -5935,7 +5935,6 @@ var mainGC = function() {
                             
                             // get all type of logs and their count
                             var all_logs = $(text).find('.LogTotals')[0].innerHTML;
-                            all_logs = all_logs.replace(/&nbsp;/g, " ");
                             
                             // get the number of trackables in the cache
                             var trachables = 0;
@@ -5956,8 +5955,8 @@ var mainGC = function() {
                             
                             // get the number of favorite points
                             var fav_points = $('.favorite-points-count')[0].innerHTML;
-                             if(fav_points > 0){
-                                fav_percent = Math.round(total_finds / fav_points) + '%';
+                            if(fav_points > 0){
+                                fav_percent = Math.round((100 * fav_points) / total_finds) + '%';
                             }else{
                                 fav_percent = '-';
                             }
@@ -5966,7 +5965,7 @@ var mainGC = function() {
                             var place = $(text).find('#ctl00_ContentBody_Location')[0].innerHTML;
                             
                             // Put all together
-                            var new_text = 'Logs: ' + all_logs + '<br>';
+                            var new_text = 'Logs: ' + all_logs.replace(/&nbsp;/g, " ") + '<br>';
                             new_text += $(last_logs).prop('outerHTML');
                             new_text += 'Place: ' + place + ' | ';
                             new_text += 'Favorite Percent: ' + fav_percent + ' | ';
