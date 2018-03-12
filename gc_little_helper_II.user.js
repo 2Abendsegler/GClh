@@ -5954,11 +5954,10 @@ var mainGC = function() {
                             var total_finds = parseInt(all_logs.substr(start, end-start));
                             
                             // get the number of favorite points
-                            var fav_points = $('.favorite-points-count')[0].innerHTML;
+                            var fav_points = $(text).find('.favorite-value').html();
+                            var fav_percent = '-';
                             if(fav_points > 0){
                                 fav_percent = Math.round((100 * fav_points) / total_finds) + '%';
-                            }else{
-                                fav_percent = '-';
                             }
 
                             // get the place, where the cache was placed
