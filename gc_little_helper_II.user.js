@@ -3765,6 +3765,7 @@ var mainGC = function() {
              document.location.href.match(/\.com\/email\//)                      ||      // Mail schreiben
              document.location.href.match(/\.com\/my\/inventory\.aspx/)          ||      // TB Inventar
              document.location.href.match(/\.com\/my/)                           ||      // Profil
+             document.location.href.match(/\.com\/map/)                          ||      // Map (For enhanced Popup Informations)
              document.location.href.match(/\.com\/my\/default\.aspx/)            ||      // Profil (Quicklist)
              document.location.href.match(/\.com\/account\/dashboard/)           ||      // Dashboard
              document.location.href.match(/\.com\/seek\/nearest\.aspx\?(u|ul)=/) ||      // Nearest Lists mit User
@@ -5981,6 +5982,20 @@ var mainGC = function() {
                         username = side.text();
 
                         buildSendIcons(side[0], username, "per guid", guid);
+
+                        var link = gclh_build_vipvup(username, global_vips, "vip");
+                        link.children[0].style.marginLeft = "5px";
+                        link.children[0].style.marginRight = "2px";
+                        side[0].appendChild(document.createTextNode(" "));
+                        side[0].appendChild(link);
+                        // Build VUP Icon.
+                        if (settings_process_vup && username != global_activ_username) {
+                            link = gclh_build_vipvup(username, global_vups, "vup");
+                            link.children[0].setAttribute("style", "margin-left: 0px; margin-right: 0px");
+                            side[0].appendChild(document.createTextNode(" "));
+                            side[0].appendChild(link);
+                        }
+
                     });
                 });
             });
