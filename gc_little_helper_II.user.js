@@ -5871,7 +5871,8 @@ var mainGC = function() {
             var target = document.querySelector('.leaflet-popup-pane');
 
             var css = "div.popup_additional_info .loading_container{display: flex; min-height:59px; justify-content: center; align-items: center;}"
-                    + "div.popup_additional_info .loading_container img{margin-right:5px;}";
+                    + "div.popup_additional_info .loading_container img{margin-right:5px;}"
+                    + "div.popup_additional_info span.favi_points svg, div.popup_additional_info span.tackables svg{position: relative;top: 4px;}";
             appendCssStyle(css);
              
             // create an observer instance
@@ -5898,7 +5899,7 @@ var mainGC = function() {
                             initalLogs_from_cachepage = text.substr(text.indexOf('initalLogs = {"status')+13, text.indexOf('} };') - text.indexOf('initalLogs = {"status') - 10);
                             var initalLogs = JSON.parse(initalLogs_from_cachepage);
                             var last_logs = document.createElement("div");
-                            var last_logs_to_show = 5;
+                            var last_logs_to_show = 50;
                             var lateLogs = new Array();
                             for (var i = 0; i < initalLogs['data'].length; i++) {
                                 if (last_logs_to_show == i) break;
@@ -5971,8 +5972,8 @@ var mainGC = function() {
                             var new_text = 'Logs: ' + all_logs.replace(/&nbsp;/g, " ") + '<br>';
                             new_text += $(last_logs).prop('outerHTML');
                             new_text += 'Place: ' + place + ' | ';
-                            new_text += 'Favorite Percent: ' + fav_percent + ' | ';
-                            new_text += 'Trackables: ' + trachables + '<br>';
+                            new_text += '<span class="favi_points"><svg height="16" width="16"><image xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="/images/icons/fave_fill_16.svg" src="/images/icons/fave_fill_16.png" width="16" height="16" alt="Favorite points"></image></svg> ' + fav_percent + '</span> | ';
+                            new_text += '<span class="tackables"><svg height="16" width="16" class="icon-sm"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="/account/app/ui-icons/sprites/global.svg#icon-travelbug-default"></use></svg></span> ' + trachables + '<br>';
 
                             $('#popup_additional_info_' + local_gc_code).html(new_text);
 
