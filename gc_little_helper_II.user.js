@@ -5869,6 +5869,10 @@ var mainGC = function() {
 
             // select the target node
             var target = document.querySelector('.leaflet-popup-pane');
+
+            var css = "div.popup_additional_info .loading_container{display: flex; min-height:59px; justify-content: center; align-items: center;}"
+                    + "div.popup_additional_info .loading_container img{margin-right:5px;}";
+            appendCssStyle(css);
              
             // create an observer instance
             var observer = new MutationObserver(function(mutations) {
@@ -5882,7 +5886,7 @@ var mainGC = function() {
                         gccode = $(this).find('.code').html();
 
                         // Add Loading image 
-                        $(this).append('<div id="popup_additional_info_' + gccode +'" class="links Clear"><img src="' + urlImages + 'ajax-loader.gif" /> Loading additional Data...</div>');
+                        $(this).append('<div id="popup_additional_info_' + gccode +'" class="links Clear popup_additional_info"><div class="loading_container"><img src="' + urlImages + 'ajax-loader.gif" />Loading additional Data...</div></div>');
 
                         $.get('https://www.geocaching.com/geocache/'+gccode, null, function(text){
 
