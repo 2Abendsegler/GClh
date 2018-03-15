@@ -5872,7 +5872,7 @@ var mainGC = function() {
             // select the target node
             var target = document.querySelector('.leaflet-popup-pane');
 
-            var css = "div.popup_additional_info .loading_container{display: flex; min-height:59px; justify-content: center; align-items: center;}"
+            var css = "div.popup_additional_info .loading_container{display: flex; min-height:68px; justify-content: center; align-items: center;}"
                     + "div.popup_additional_info .loading_container img{margin-right:5px;}"
                     + "div.popup_additional_info span.favi_points svg, div.popup_additional_info span.tackables svg{position: relative;top: 4px;}";
             appendCssStyle(css);
@@ -5915,10 +5915,16 @@ var mainGC = function() {
                             }
                             if (lateLogs.length > 0) {
                                 var div = document.createElement("div");
-                                var divTitle = "";
                                 div.id = "gclh_latest_logs";
                                 div.setAttribute("style", "padding-right: 0; padding-top: 5px; padding-bottom: 5px; display: flex;");
-                                div.appendChild(document.createTextNode("Latest logs:"));
+                                    
+                                var span = document.createElement("span");
+                                span.setAttribute("style", "white-space: nowrap; margin-right: 5px; margin-top: 5px;");
+                                span.appendChild(document.createTextNode('Latest logs:'));
+                                div.appendChild(span);
+                                var inner_div = document.createElement("div");
+                                inner_div.setAttribute("style", "display: flex; flex-wrap: wrap;");
+                                div.appendChild(inner_div);
                                 for (var i = 0; i < lateLogs.length; i++) {
                                     var div_log_wrapper = document.createElement("div");
                                     div_log_wrapper.className = "gclh_latest_log";
@@ -5930,11 +5936,11 @@ var mainGC = function() {
                                     log_text.innerHTML = "<img src='" + lateLogs[i]['src'] + "'> <b>" + lateLogs[i]['user'] + " - " + lateLogs[i]['date'] + "</b><br>" + lateLogs[i]['log'];
                                     div_log_wrapper.appendChild(img);
                                     div_log_wrapper.appendChild(log_text);
-                                    div.appendChild(div_log_wrapper);
+                                    inner_div.appendChild(div_log_wrapper);
                                 }
-                                div.title = divTitle;
                                 last_logs.appendChild(div);
-                                var css = "div.gclh_latest_log:hover {position: relative;}"
+                                var css = "div.gclh_latest_log {margin-top:5px;}"
+                                        + "div.gclh_latest_log:hover {position: relative;}"
                                         + "div.gclh_latest_log span {display: none; position: absolute; left: 0px; width: 500px; padding: 5px; text-decoration:none; text-align:left; vertical-align:top; color: #000000;}"
                                         + "div.gclh_latest_log:hover span {font-size: 13px; display: block; top: 16px; border: 1px solid #8c9e65; background-color:#dfe1d2; z-index:10000;}";
                                 appendCssStyle(css);
@@ -5958,20 +5964,31 @@ var mainGC = function() {
                             // get the total number of finds
                             var start = all_logs.indexOf('>',all_logs.indexOf('Found it')) + 1;
                             var end = all_logs.indexOf('&nbsp',start);
-                            var total_finds = parseInt(all_logs.substr(start, end-start));
-                            
+
+                            var total_finds_for_favi = all_logs.substr(start, end-start);
+                            console.log(total_finds_for_favi);
+                            total_finds_for_favi = total_finds_for_favi.replace('.','');
+                            console.log(total_finds_for_favi);
+                            total_finds_for_favi = total_finds_for_favi.replace(',','');
+                            console.log(total_finds_for_favi);
+
+                            total_finds_for_favi = parseInt(total_finds_for_favi);
+
                             // get the number of favorite points
                             var fav_points = $(text).find('.favorite-value').html();
+                            fav_points = fav_points.replace('.','');
+                            fav_points = fav_points.replace(',','');
+                            fav_points = parseInt(fav_points);
                             var fav_percent = '-';
                             if(fav_points > 0){
-                                fav_percent = Math.round((100 * fav_points) / total_finds) + '%';
+                                fav_percent = Math.round((100 * fav_points) / total_finds_for_favi) + '%';
                             }
 
                             // get the place, where the cache was placed
                             var place = $(text).find('#ctl00_ContentBody_Location')[0].innerHTML;
                             
                             // Put all together
-                            var new_text = 'Logs: ' + all_logs.replace(/&nbsp;/g, " ") + '<br>';
+                            var new_text = '<span style="margin-right: 5px;">Logs:</span>' + all_logs.replace(/&nbsp;/g, " ") + '<br>';
                             new_text += $(last_logs).prop('outerHTML');
                             new_text += 'Place: ' + place + ' | ';
                             new_text += '<span class="favi_points"><svg height="16" width="16"><image xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="/images/icons/fave_fill_16.svg" src="/images/icons/fave_fill_16.png" width="16" height="16" alt="Favorite points"></image></svg> ' + fav_percent + '</span> | ';
