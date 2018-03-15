@@ -469,6 +469,8 @@ var variablesInit = function(c) {
     c.settings_hide_feedback_icon = getValue("settings_hide_feedback_icon", false);
     c.settings_compact_layout_new_dashboard = getValue("settings_compact_layout_new_dashboard", false);
     c.settings_show_draft_indicator = getValue("settings_show_draft_indicator", true);
+    c.settings_show_enhanced_map_popup = getValue("settings_show_enhanced_map_popup", true);
+    c.settings_show_latest_logs_symbols_count_map = getValue("settings_show_latest_logs_symbols_count_map", 10);
 
     try {
         if (c.userToken === null) {
@@ -5864,7 +5866,7 @@ var mainGC = function() {
     }
 
 // Display more informations on map popup for a cache
-    if (document.location.href.match(/\.com\/map\//)) {
+    if (document.location.href.match(/\.com\/map\//) && settings_show_enhanced_map_popup) {
         try {
 
             // select the target node
@@ -5899,7 +5901,7 @@ var mainGC = function() {
                             initalLogs_from_cachepage = text.substr(text.indexOf('initalLogs = {"status')+13, text.indexOf('} };') - text.indexOf('initalLogs = {"status') - 10);
                             var initalLogs = JSON.parse(initalLogs_from_cachepage);
                             var last_logs = document.createElement("div");
-                            var last_logs_to_show = 50;
+                            var last_logs_to_show = settings_show_latest_logs_symbols_count_map;
                             var lateLogs = new Array();
                             for (var i = 0; i < initalLogs['data'].length; i++) {
                                 if (last_logs_to_show == i) break;
@@ -8780,6 +8782,16 @@ var mainGC = function() {
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>GeoHack page</b></div>";
             html += checkboxy('settings_add_link_geohack_on_gc_map', 'Add link to GeoHack on GC Map') + show_help("With this option an icon are placed on the GC Map page to link to the same area in GeoHack.") + "<br>";
             html += " &nbsp; " + checkboxy('settings_switch_to_geohack_in_same_tab', 'Switch to GeoHack in same browser tab') + "<br>";
+            
+            html += newParameterOn3;
+            html += "<div style='margin-top: 9px; margin-left: 5px'><b>Enhanced Map Popup</b></div>";
+            html += checkboxy('settings_show_enhanced_map_popup', 'Enable enhanced map popup') + show_help("With this option there will be more informations on the map popup for a cache, like latest logs or trackable count.") + "<br>";
+            html += " &nbsp; Show the <select class='gclh_form' id='settings_show_latest_logs_symbols_count_map'>";
+            for (var i = 1; i <= 25; i++) {
+                html += "  <option value='" + i + "' " + (settings_show_latest_logs_symbols_count_map == i ? "selected=\"selected\"" : "") + ">" + i + "</option>";
+            }
+            html += "</select> latest logs symbols at the top" + show_help("With this option, the choosen count of the latest logs symbols is shown at the map popup for a cache.") + "<br>";
+            html += newParameterVersionSetzen(0.9) + newParameterOff;
             html += "</div>";
 
             html += "<h4 class='gclh_headline2'>"+prepareHideable.replace("#name#","profile")+"Public profile</h4>";
@@ -9706,6 +9718,7 @@ var mainGC = function() {
             setValue("settings_pq_terrain", document.getElementById('settings_pq_terrain').value);
             setValue("settings_pq_terrain_score", document.getElementById('settings_pq_terrain_score').value);
             setValue("settings_improve_add_to_list_height", document.getElementById('settings_improve_add_to_list_height').value);
+            setValue("settings_show_latest_logs_symbols_count_map", document.getElementById('settings_show_latest_logs_symbols_count_map').value);
 
             // Map Layers in vorgegebener Reihenfolge übernehmen.
             var new_map_layers_available = document.getElementById('settings_maplayers_available');
@@ -9908,7 +9921,8 @@ var mainGC = function() {
                 'settings_show_bigger_avatars_but',
                 'settings_hide_feedback_icon',
                 'settings_compact_layout_new_dashboard',
-                'settings_show_draft_indicator'
+                'settings_show_draft_indicator',
+                'settings_show_enhanced_map_popup'
             );
             for (var i = 0; i < checkboxes.length; i++) {
                 if (document.getElementById(checkboxes[i])) setValue(checkboxes[i], document.getElementById(checkboxes[i]).checked);
