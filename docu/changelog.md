@@ -40,11 +40,11 @@
 		New: Enhanced the map popup for a cache. [Issue <a href="https://github.com/2Abendsegler/GClh/issues/554">#554</a>]<br />
 		Additional Informations displayed:
 		<ul>
-			<li>- Number of differnt log types</li>
-			<li>- Latest logs (configurable from 1 to 25)</li>
-			<li>- Cache place (state and country)</li>
-			<li>- Favorite Percentage</li>
-			<li>- Number of Trackables in Cache</li>
+			<li>Number of differnt log types</li>
+			<li>Latest logs (configurable from 1 to 25)</li>
+			<li>Cache place (state and country)</li>
+			<li>Favorite Percentage</li>
+			<li>Number of Trackables in Cache</li>
 		</ul> 
 		<br>
 		<img src="../images/v0.9.4_Screen01.gif" alt="v0.9.4_Screen01.gif"><br>
