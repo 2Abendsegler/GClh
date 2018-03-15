@@ -1126,7 +1126,7 @@ var mainGC = function() {
                     if(Number.isInteger(draft_count) && draft_count > 0){
                         // we found drafts, so show them in the header
                         appendCssStyle('.draft-indicator{ background-color: #e0b70a;font-weight:bold;position: absolute;padding: 0 5px;border-radius: 15px;top: -7px;left: -7px; } .draft-indicator a{width: auto !important; font-size: 14px;min-width: 10px; display: block; text-align: center;}');
-                        $('.user-avatar').prepend('<span class="draft-indicator"><a href="/my/fieldnotes.aspx" title="Go to Drafts">' + draft_count + '</a></span>');
+                        $('.li-user-info .user-avatar').prepend('<span class="draft-indicator"><a href="/my/fieldnotes.aspx" title="Go to Drafts">' + draft_count + '</a></span>');
                     }else{
                         // No drafts found
                     }
