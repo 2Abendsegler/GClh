@@ -469,6 +469,8 @@ var variablesInit = function(c) {
     c.settings_hide_feedback_icon = getValue("settings_hide_feedback_icon", false);
     c.settings_compact_layout_new_dashboard = getValue("settings_compact_layout_new_dashboard", false);
     c.settings_show_draft_indicator = getValue("settings_show_draft_indicator", true);
+    c.settings_show_enhanced_map_popup = getValue("settings_show_enhanced_map_popup", true);
+    c.settings_show_latest_logs_symbols_count_map = getValue("settings_show_latest_logs_symbols_count_map", 10);
 
     try {
         if (c.userToken === null) {
@@ -1124,7 +1126,7 @@ var mainGC = function() {
                     if(Number.isInteger(draft_count) && draft_count > 0){
                         // we found drafts, so show them in the header
                         appendCssStyle('.draft-indicator{ background-color: #e0b70a;font-weight:bold;position: absolute;padding: 0 5px;border-radius: 15px;top: -7px;left: -7px; } .draft-indicator a{width: auto !important; font-size: 14px;min-width: 10px; display: block; text-align: center;}');
-                        $('.user-avatar').prepend('<span class="draft-indicator"><a href="/my/fieldnotes.aspx" title="Go to Drafts">' + draft_count + '</a></span>');
+                        $('.li-user-info .user-avatar').prepend('<span class="draft-indicator"><a href="/my/fieldnotes.aspx" title="Go to Drafts">' + draft_count + '</a></span>');
                     }else{
                         // No drafts found
                     }
@@ -3765,6 +3767,7 @@ var mainGC = function() {
              document.location.href.match(/\.com\/email\//)                      ||      // Mail schreiben
              document.location.href.match(/\.com\/my\/inventory\.aspx/)          ||      // TB Inventar
              document.location.href.match(/\.com\/my/)                           ||      // Profil
+             document.location.href.match(/\.com\/map/)                          ||      // Map (For enhanced Popup Informations)
              document.location.href.match(/\.com\/my\/default\.aspx/)            ||      // Profil (Quicklist)
              document.location.href.match(/\.com\/account\/dashboard/)           ||      // Dashboard
              document.location.href.match(/\.com\/seek\/nearest\.aspx\?(u|ul)=/) ||      // Nearest Lists mit User
@@ -5860,6 +5863,172 @@ var mainGC = function() {
             }
             checkMap(0);
         } catch(e) {gclh_error("Display Google-Maps warning:",e);}
+    }
+
+// Display more informations on map popup for a cache
+    if (document.location.href.match(/\.com\/map\//) && settings_show_enhanced_map_popup) {
+        try {
+
+            // select the target node
+            var target = document.querySelector('.leaflet-popup-pane');
+
+            var css = "div.popup_additional_info .loading_container{display: flex; min-height:68px; justify-content: center; align-items: center;}"
+                    + "div.popup_additional_info .loading_container img{margin-right:5px;}"
+                    + "div.popup_additional_info span.favi_points svg, div.popup_additional_info span.tackables svg{position: relative;top: 4px;}";
+            appendCssStyle(css);
+             
+            // create an observer instance
+            var observer = new MutationObserver(function(mutations) {
+                mutations.forEach(function(mutation) {
+                    gccode = $('#gmCacheInfo .code').html();
+                    if(gccode == null) return;
+
+                    // New Popup. This can contain more than one cache (if 2 or more are close together)
+                    // so we have to load informations for all caches.
+                    $('#gmCacheInfo .map-item').each(function () {
+                        gccode = $(this).find('.code').html();
+
+                        // Add Loading image 
+                        $(this).append('<div id="popup_additional_info_' + gccode +'" class="links Clear popup_additional_info"><div class="loading_container"><img src="' + urlImages + 'ajax-loader.gif" />Loading additional Data...</div></div>');
+
+                        $.get('https://www.geocaching.com/geocache/'+gccode, null, function(text){
+
+                            // We need to retriev the gc_code from the loaded page, because in the 
+                            // meantime the global varioable gc_code could (and will be ;-)) changed
+                            var local_gc_code = $(text).find('#ctl00_ContentBody_CoordInfoLinkControl1_uxCoordInfoCode').html();
+                            
+                            // get the last logs
+                            initalLogs_from_cachepage = text.substr(text.indexOf('initalLogs = {"status')+13, text.indexOf('} };') - text.indexOf('initalLogs = {"status') - 10);
+                            var initalLogs = JSON.parse(initalLogs_from_cachepage);
+                            var last_logs = document.createElement("div");
+                            var last_logs_to_show = settings_show_latest_logs_symbols_count_map;
+                            var lateLogs = new Array();
+                            for (var i = 0; i < initalLogs['data'].length; i++) {
+                                if (last_logs_to_show == i) break;
+                                var lateLog = new Object();
+                                lateLog['user'] = initalLogs['data'][i].UserName;
+                                lateLog['src']  = '/images/logtypes/' + initalLogs['data'][i].LogTypeImage;
+                                lateLog['type'] = initalLogs['data'][i].LogType;
+                                lateLog['date'] = initalLogs['data'][i].Created;
+                                lateLog['log']  = initalLogs['data'][i].LogText;
+                                lateLogs[i]     = lateLog;
+                            }
+                            if (lateLogs.length > 0) {
+                                var div = document.createElement("div");
+                                div.id = "gclh_latest_logs";
+                                div.setAttribute("style", "padding-right: 0; padding-top: 5px; padding-bottom: 5px; display: flex;");
+                                    
+                                var span = document.createElement("span");
+                                span.setAttribute("style", "white-space: nowrap; margin-right: 5px; margin-top: 5px;");
+                                span.appendChild(document.createTextNode('Latest logs:'));
+                                div.appendChild(span);
+                                var inner_div = document.createElement("div");
+                                inner_div.setAttribute("style", "display: flex; flex-wrap: wrap;");
+                                div.appendChild(inner_div);
+                                for (var i = 0; i < lateLogs.length; i++) {
+                                    var div_log_wrapper = document.createElement("div");
+                                    div_log_wrapper.className = "gclh_latest_log";
+                                    var img = document.createElement("img");
+                                    img.src = lateLogs[i]['src'];
+                                    img.setAttribute("style", "padding-left: 2px; vertical-align: bottom; float:left;");
+                                    var log_text = document.createElement("span");
+                                    log_text.title = "";
+                                    log_text.innerHTML = "<img src='" + lateLogs[i]['src'] + "'> <b>" + lateLogs[i]['user'] + " - " + lateLogs[i]['date'] + "</b><br>" + lateLogs[i]['log'];
+                                    div_log_wrapper.appendChild(img);
+                                    div_log_wrapper.appendChild(log_text);
+                                    inner_div.appendChild(div_log_wrapper);
+                                }
+                                last_logs.appendChild(div);
+                                var css = "div.gclh_latest_log {margin-top:5px;}"
+                                        + "div.gclh_latest_log:hover {position: relative;}"
+                                        + "div.gclh_latest_log span {display: none; position: absolute; left: 0px; width: 500px; padding: 5px; text-decoration:none; text-align:left; vertical-align:top; color: #000000;}"
+                                        + "div.gclh_latest_log:hover span {font-size: 13px; display: block; top: 16px; border: 1px solid #8c9e65; background-color:#dfe1d2; z-index:10000;}";
+                                appendCssStyle(css);
+                            }
+                            
+                            // get all type of logs and their count
+                            var all_logs = $(text).find('.LogTotals')[0].innerHTML;
+                            
+                            // get the number of trackables in the cache
+                            var trachables = 0;
+                            // var tb_elements = $(text).find('.CacheDetailNavigationWidget').has('#ctl00_ContentBody_uxTravelBugList_uxInventoryLabel');
+                            $(text).find('.CacheDetailNavigationWidget').each(function(){
+                                tb_text = $(this).html();
+                                if(tb_text.indexOf('ctl00_ContentBody_uxTravelBugList_uxInventoryLabel') !== -1){
+                                    // There are two Container with .CacheDetailNavigationWidget so we are only processing the
+                                    // one that contains the TB informations
+                                    trachables = (tb_text.match(/<li>/g)||[]).length;
+                                }
+                            });
+
+                            // get the total number of finds
+                            var start = all_logs.indexOf('>',all_logs.indexOf('Found it')) + 1;
+                            var end = all_logs.indexOf('&nbsp',start);
+
+                            var total_finds_for_favi = all_logs.substr(start, end-start);
+                            console.log(total_finds_for_favi);
+                            total_finds_for_favi = total_finds_for_favi.replace('.','');
+                            console.log(total_finds_for_favi);
+                            total_finds_for_favi = total_finds_for_favi.replace(',','');
+                            console.log(total_finds_for_favi);
+
+                            total_finds_for_favi = parseInt(total_finds_for_favi);
+
+                            // get the number of favorite points
+                            var fav_points = $(text).find('.favorite-value').html();
+                            fav_points = fav_points.replace('.','');
+                            fav_points = fav_points.replace(',','');
+                            fav_points = parseInt(fav_points);
+                            var fav_percent = '-';
+                            if(fav_points > 0){
+                                fav_percent = Math.round((100 * fav_points) / total_finds_for_favi) + '%';
+                            }
+
+                            // get the place, where the cache was placed
+                            var place = $(text).find('#ctl00_ContentBody_Location')[0].innerHTML;
+                            
+                            // Put all together
+                            var new_text = '<span style="margin-right: 5px;">Logs:</span>' + all_logs.replace(/&nbsp;/g, " ") + '<br>';
+                            new_text += $(last_logs).prop('outerHTML');
+                            new_text += 'Place: ' + place + ' | ';
+                            new_text += '<span class="favi_points"><svg height="16" width="16"><image xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="/images/icons/fave_fill_16.svg" src="/images/icons/fave_fill_16.png" width="16" height="16" alt="Favorite points"></image></svg> ' + fav_percent + '</span> | ';
+                            new_text += '<span class="tackables"><svg height="16" width="16" class="icon-sm"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="/account/app/ui-icons/sprites/global.svg#icon-travelbug-default"></use></svg></span> ' + trachables + '<br>';
+
+                            $('#popup_additional_info_' + local_gc_code).html(new_text);
+
+                        });
+
+                        // Improve Original Box Content
+                        side = $(this).find('dl dd a');
+                        guid = side.attr('href').substring(15,36+15);
+                        username = side.text();
+
+                        buildSendIcons(side[0], username, "per guid", guid);
+
+                        var link = gclh_build_vipvup(username, global_vips, "vip");
+                        link.children[0].style.marginLeft = "5px";
+                        link.children[0].style.marginRight = "2px";
+                        side[0].appendChild(document.createTextNode(" "));
+                        side[0].appendChild(link);
+                        // Build VUP Icon.
+                        if (settings_process_vup && username != global_activ_username) {
+                            link = gclh_build_vipvup(username, global_vups, "vup");
+                            link.children[0].setAttribute("style", "margin-left: 0px; margin-right: 0px");
+                            side[0].appendChild(document.createTextNode(" "));
+                            side[0].appendChild(link);
+                        }
+
+                    });
+                });
+            });
+             
+            // configuration of the observer:
+            var config = { attributes: true, childList: true, characterData: true }
+             
+            // pass in the target node, as well as the observer options
+            observer.observe(target, config);
+
+        } catch(e) {gclh_error("enhance cache popup",e);}
     }
 
 // Leaflet Map für Trackables vergrößern und Zoom per Mausrad zulassen.
@@ -8630,6 +8799,16 @@ var mainGC = function() {
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>GeoHack page</b></div>";
             html += checkboxy('settings_add_link_geohack_on_gc_map', 'Add link to GeoHack on GC Map') + show_help("With this option an icon are placed on the GC Map page to link to the same area in GeoHack.") + "<br>";
             html += " &nbsp; " + checkboxy('settings_switch_to_geohack_in_same_tab', 'Switch to GeoHack in same browser tab') + "<br>";
+            
+            html += newParameterOn3;
+            html += "<div style='margin-top: 9px; margin-left: 5px'><b>Enhanced Map Popup</b></div>";
+            html += checkboxy('settings_show_enhanced_map_popup', 'Enable enhanced map popup') + show_help("With this option there will be more informations on the map popup for a cache, like latest logs or trackable count.") + "<br>";
+            html += " &nbsp; Show the <select class='gclh_form' id='settings_show_latest_logs_symbols_count_map'>";
+            for (var i = 1; i <= 25; i++) {
+                html += "  <option value='" + i + "' " + (settings_show_latest_logs_symbols_count_map == i ? "selected=\"selected\"" : "") + ">" + i + "</option>";
+            }
+            html += "</select> latest logs symbols at the top" + show_help("With this option, the choosen count of the latest logs symbols is shown at the map popup for a cache.") + "<br>";
+            html += newParameterVersionSetzen(0.9) + newParameterOff;
             html += "</div>";
 
             html += "<h4 class='gclh_headline2'>"+prepareHideable.replace("#name#","profile")+"Public profile</h4>";
@@ -9556,6 +9735,7 @@ var mainGC = function() {
             setValue("settings_pq_terrain", document.getElementById('settings_pq_terrain').value);
             setValue("settings_pq_terrain_score", document.getElementById('settings_pq_terrain_score').value);
             setValue("settings_improve_add_to_list_height", document.getElementById('settings_improve_add_to_list_height').value);
+            setValue("settings_show_latest_logs_symbols_count_map", document.getElementById('settings_show_latest_logs_symbols_count_map').value);
 
             // Map Layers in vorgegebener Reihenfolge übernehmen.
             var new_map_layers_available = document.getElementById('settings_maplayers_available');
@@ -9758,7 +9938,8 @@ var mainGC = function() {
                 'settings_show_bigger_avatars_but',
                 'settings_hide_feedback_icon',
                 'settings_compact_layout_new_dashboard',
-                'settings_show_draft_indicator'
+                'settings_show_draft_indicator',
+                'settings_show_enhanced_map_popup'
             );
             for (var i = 0; i < checkboxes.length; i++) {
                 if (document.getElementById(checkboxes[i])) setValue(checkboxes[i], document.getElementById(checkboxes[i]).checked);

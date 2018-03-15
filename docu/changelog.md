@@ -1,3 +1,4 @@
+<a href="#v094" title="GClh II version 0.9.4 (??.??.2018)">v0.9.4</a> &nbsp;
 <a href="#v093" title="GClh II version 0.9.3 (28.02.2018)">v0.9.3</a> &nbsp;
 <a href="#v092" title="GClh II version 0.9.2 (08.02.2018)">v0.9.2</a> &nbsp;
 <a href="#v091" title="GClh II version 0.9.1 (16.01.2018)">v0.9.1</a> &nbsp;
@@ -31,6 +32,32 @@
 <a href="#v022" title="GClh II version 0.2.2 (09.01.2017)">v0.2.2</a> &nbsp; 
 <a href="#v021" title="GClh II version 0.2.1 (05.01.2017)">v0.2.1</a> &nbsp; 
 <a href="#v01" title="GClh II version 0.1 (05.01.2017)">v0.1</a> &nbsp; 
+
+---
+## v0.9.4:
+<ul>
+	<li>
+		New: Enhanced the map popup for a cache. [Issue <a href="https://github.com/2Abendsegler/GClh/issues/554">#554</a>]<br />
+		Additional Informations displayed:
+		<ul>
+			<li>Number of differnt log types</li>
+			<li>Latest logs (configurable from 1 to 25)</li>
+			<li>Cache place (state and country)</li>
+			<li>Favorite Percentage</li>
+			<li>Number of Trackables in Cache</li>
+		</ul> 
+		<br>
+		<img src="../images/v0.9.4_Screen01.gif" alt="v0.9.4_Screen01.gif"><br>
+		<img src="../images/v0.9.4_Screen02.png" alt="v0.9.4_Screen02.png"><br>
+	</li>
+	<li>
+		Fix: Draft count is also displayed at project GC button: [Issue <a href="https://github.com/2Abendsegler/GClh/pull/611">#611</a>]<br>
+		Thanks to <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a> for the Fix.<br>
+	</li>
+</ul>
+(??.??.2018)<br>
+released by <a href="https://www.geocaching.com/profile/?u=Ruko2010">Ruko2010</a><br>
+
 
 ---
 ## v0.9.3:
