@@ -5966,11 +5966,8 @@ var mainGC = function() {
                             var end = all_logs.indexOf('&nbsp',start);
 
                             var total_finds_for_favi = all_logs.substr(start, end-start);
-                            console.log(total_finds_for_favi);
                             total_finds_for_favi = total_finds_for_favi.replace('.','');
-                            console.log(total_finds_for_favi);
                             total_finds_for_favi = total_finds_for_favi.replace(',','');
-                            console.log(total_finds_for_favi);
 
                             total_finds_for_favi = parseInt(total_finds_for_favi);
 
