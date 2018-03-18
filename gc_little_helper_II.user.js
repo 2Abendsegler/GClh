@@ -3678,6 +3678,83 @@ var mainGC = function() {
         } catch(e) {gclh_error("Improve drafts old page:",e);}
     }
 
+// Improve drafts new page.
+    if ( settings_modify_new_drafts_page && is_page("drafts") ) {
+        try {
+            var css = "";
+            css += '.gclh-draft-graphics {';
+            css += '    top: 0px;';
+            css += '    left: 0px;';
+            css += '    position: relative;';
+            css += '}';
+            css += '.gclh-draft-icon {';
+            css += '    width: 48px;';
+            css += '    height: 48px;';
+            css += '    left: 0px;';
+            css += '    position: relative;';
+            css += '    top: 0px;';
+            css += '}';
+            css += '.gclh-draft-badge {';
+            css += '    width: 24px;';
+            css += '    height: 24px;';
+            css += '    left: -3px;';
+            css += '    position: absolute;';
+            css += '    top: -3px;';
+            css += '    z-index: 2;';
+            css += '}';
+            appendCssStyle(css);
+
+            var template = "";
+            template = '';
+            template += '<span class="draft-icon">';
+            template += '    <a href="https://coords.info/{{geocache.referenceCode}}">';
+            template += '       <div class="gclh-draft-graphics">';
+            template += '           <svg class="gclh-draft-icon">';
+            template += '               <use xlink:href="/account/app/ui-icons/sprites/cache-types.svg#icon-{{geocache.geocacheType.id}}{{#if disabled}}-disabled{{/if}}"></use>';
+            template += '           </svg>';
+            template += '           <svg class="gclh-draft-badge">';
+            template += '               <use xlink:href="https://www.geocaching.com/account/app/ui-icons/sprites/log-types.svg#icon-{{logType}}"></use>';
+            template += '           </svg>';
+            template += '       </div>';
+            template += '   </a>';
+            template += '</span>';
+            template += '<div class="draft-content">';
+            template += '    <dl class="meta">';
+            template += '        {{#if geocache.state.isArchived}}';
+            template += '        <dt class="state">';
+            template += '            {{ localize "archivedLabel" }}';
+            template += '        </dt>';
+            template += '        <dd></dd>';
+            template += '        {{else}}';
+            template += '            {{#if geocache.state.isAvailable}}';
+            template += '            {{else}}';
+            template += '            <dt class="state">';
+            template += '                {{ localize "disabledLabel" }}';
+            template += '            </dt>';
+            template += '            <dd></dd>';
+            template += '            {{/if}}';
+            template += '        {{/if}}';
+            template += '        <dt>{{cacheLogType logType}}:</dt><dd><span class="date">{{happyDates logDate}}</span> <span class="timestamp">{{timestamp}}</span></dd>';
+            template += '    </dl>';
+            template += '    <a href="https://coords.info/{{geocache.referenceCode}}">';
+            template += '        <h2 class="title">{{geocache.name}}</h2>';
+            template += '    </a>';
+            template += '    <a href="/account/drafts/home/compose?gc={{geocache.referenceCode}}&d={{referenceCode}}&dGuid={{guid}}&lt={{logTypeId}}">';
+            template += '        <p>{{notePreview}}</p>';
+            template += '    </a>';
+            template += '</div>';
+            template += '<div class="draft-actions">';
+            template += '    <button type="button" class="btn-icon js-delete" title="Delete">';
+            template += '        <svg class="icon" height="24" width="24">';
+            template += '            <use xlink:href="/account/app/ui-icons/sprites/global.svg#icon-delete"></use>';
+            template += '        </svg>';
+            template += '        <span class="visuallyhidden">{{ localize "deleteOne" }}</span>';
+            template += '    </button>';
+            template += '</div>';
+            $("#draftItem").html(template);
+        } catch(e) {gclh_error("New drafts page:",e);}
+    }
+
 // Linklist on old dashboard.
     if (settings_bookmarks_show && is_page("profile") && $('#ctl00_ContentBody_WidgetMiniProfile1_LoggedInPanel')[0]) {
         try {
@@ -8693,6 +8770,9 @@ var mainGC = function() {
             html += checkboxy('settings_search_enable_user_defined', 'Enable user defined filter sets for geocache searchs') + show_help("This features enables you to store favourites filter settings in the geocache search and call them quickly.") + prem + "<br>";
             html += checkboxy('settings_show_sums_in_watchlist', 'Show number of caches in your watchlist') + show_help("With this option the number of caches and the number of selected caches in the categories \"All\", \"Archived\" and \"Deactivated\", corresponding to the select buttons, are shown in your watchlist at the end of the list.") + "<br>";
             html += checkboxy('settings_hide_archived_in_owned', 'Hide archived caches in owned list') + "<br>";
+            html += newParameterOn3;
+            html += checkboxy('settings_modify_new_drafts_page', 'Modify draft items on the new drafts page') + show_help("Change the linkage of each draft. The title of the geocache now links to the geocaching listing and the cache icon, too (2nd line). The pen icon and the preview note links to the log composing page (3rd line). Add the log type as overlay icon onto the cache icon.") + "<br>";
+            html += newParameterVersionSetzen(0.9) + newParameterOff;
             html += "</div>";
 
             html += "<h4 class='gclh_headline2'>"+prepareHideable.replace("#name#","maps")+"Map</h4>";
@@ -9936,8 +10016,8 @@ var mainGC = function() {
                 'settings_hide_feedback_icon',
                 'settings_compact_layout_new_dashboard',
                 'settings_show_draft_indicator',
-                'settings_show_enhanced_map_popup'
-            );
+                'settings_show_enhanced_map_popup',
+                'settings_modify_new_drafts_page'            );
             for (var i = 0; i < checkboxes.length; i++) {
                 if (document.getElementById(checkboxes[i])) setValue(checkboxes[i], document.getElementById(checkboxes[i]).checked);
             }
@@ -11013,6 +11093,9 @@ function is_link(name, url) {
             break;
         case "geotours":
             if (url.match(/\.com\/play\/geotours/)) status = true;
+            break;
+        case "drafts":
+            if (url.match(/\.com\/account\/drafts/)) status = true;
             break;
         case "settings":
             if (url.match(/\.com\/account\/(settings|lists|drafts)/)) status = true;
