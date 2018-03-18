@@ -471,7 +471,8 @@ var variablesInit = function(c) {
     c.settings_show_draft_indicator = getValue("settings_show_draft_indicator", true);
     c.settings_show_enhanced_map_popup = getValue("settings_show_enhanced_map_popup", true);
     c.settings_show_latest_logs_symbols_count_map = getValue("settings_show_latest_logs_symbols_count_map", 10);
-
+    c.settings_modify_new_drafts_page = getValue("settings_modify_new_drafts_page", true);
+    
     try {
         if (c.userToken === null) {
             c.userData = $('#aspnetForm script:not([src])').filter(function() {
@@ -10017,7 +10018,9 @@ var mainGC = function() {
                 'settings_compact_layout_new_dashboard',
                 'settings_show_draft_indicator',
                 'settings_show_enhanced_map_popup',
-                'settings_modify_new_drafts_page'            );
+                'settings_modify_new_drafts_page'
+            );
+            
             for (var i = 0; i < checkboxes.length; i++) {
                 if (document.getElementById(checkboxes[i])) setValue(checkboxes[i], document.getElementById(checkboxes[i]).checked);
             }
