@@ -8804,7 +8804,7 @@ var mainGC = function() {
             for (var i = 1; i <= 25; i++) {
                 html += "  <option value='" + i + "' " + (settings_show_latest_logs_symbols_count_map == i ? "selected=\"selected\"" : "") + ">" + i + "</option>";
             }
-            html += "</select> latest logs symbols at the top" + show_help("With this option, the choosen count of the latest logs symbols is shown at the map popup for a cache.") + "<br>";
+            html += "</select> latest log symbols" + show_help("With this option, the choosen count of the latest logs symbols is shown at the map popup for a cache.") + "<br>";
             html += newParameterVersionSetzen(0.9) + newParameterOff;
             html += "</div>";
 
