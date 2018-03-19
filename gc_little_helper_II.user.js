@@ -3739,7 +3739,7 @@ var mainGC = function() {
             template += '           <dt>{{cacheLogType logType}}:</dt><dd><span class="date">{{happyDates logDate}}</span> <span class="timestamp">{{timestamp}}</span></dd>';
             template += '       </dl>';
             template += '       <h2 class="title">{{geocache.name}}</h2>';
-            template += '       <p>{{notePreview}}</p>';            
+            template += '       <p>{{notePreview}}</p>';
             template += '   </a>';
             template += '</div>';
             template += '<div class="draft-actions">';
@@ -3753,10 +3753,7 @@ var mainGC = function() {
             template += '            <use xlink:href="/account/app/ui-icons/sprites/global.svg#icon-delete"></use>';
             template += '        </svg>';
             template += '        <span class="visuallyhidden">{{ localize "deleteOne" }}</span>';
-            template += '    </button>';            
-            
-            
-            
+            template += '    </button>';
             template += '</div>';
             $("#draftItem").html(template);
         } catch(e) {gclh_error("New drafts page:",e);}
