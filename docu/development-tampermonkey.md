@@ -6,7 +6,7 @@ Tampermonkey verwaltet Userskripte und deren Resourcen intern und legt diese nic
 
 Dieser Artikel beschreibt, wie man das GC little helper Userskript außerhalb vom Tampermonkey als lokale Kopie ablegen und bearbeiten kann. Dies erleichtert die Entwicklung, ermöglicht den Einsatz einen Editor nach Wahl und die Verwendung eines Versionskontrollsystems.
 
-Dieser Artikel bezieht sich auf den Einsatz von Tampermonkey im Firefox Browser. 
+Dieser Artikel bezieht sich auf den Einsatz von Tampermonkey im Mozilla Firefox oder Google Chrome Browser. 
 
 ## Schritt-für-Schritt Anleitung
 Im weiteren Verlauf wird davon ausgegangen, dass eine lokale Kopie von GClh und dessen Resourcen besteht, z.B. ein geklontes Git Repository.
@@ -35,11 +35,11 @@ Ans Ende des Headers des Stubs muss ein Verweis auf die lokale Kopie von GCLh ei
 // @require          file:///C://GClh-dev/gc_little_helper_II.user.js
 ```
 ### Schritt 5: Header Update
-Sollte sich in der lokale Kopie der Header ändern, muss dies auch im Stub nachgezogen werden.
+Sollte sich in der lokale Kopie der Header ändern, muss dies auch im Stub nachgezogen werden. **Achtung:** Der Header des Stubs muss aktuell zum Header der lokalen Kopie gehalten werden!
 
 ## Einschränkungen und Probleme
 *Muss noch ausgefühlt werden*
-- Verhalten beim (automatischen) Update prüfen
+- Update Info Popup wird immer angezeigt. Versionnummer auch im Stub anpassen
 - ...
 
 
