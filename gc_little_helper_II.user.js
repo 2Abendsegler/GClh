@@ -3743,9 +3743,9 @@ var mainGC = function() {
             template += '   </a>';
             template += '</div>';
             template += '<div class="draft-actions">';
-            template += '    <button type="button" class="btn-icon" title="Open Listing" onclick="window.open(\'https://coords.info/{{geocache.referenceCode}}\');">';
-            template += '        <svg class="icon" height="24" width="24">';
-            template += '            <use xlink:href="/account/app/ui-icons/sprites/global.svg#icon-arrow-right-circle"></use>';
+            template += '    <button type="button" class="btn-icon" title="Open Listing" onclick="window.open(\'https://coords.info/{{geocache.referenceCode}}\');" style="padding-right:6px;">';
+            template += '        <svg class="xicon" height="22" width="22" style="transform: rotate(135deg); ">';
+            template += '            <use xlink:href="/account/app/ui-icons/sprites/global.svg#icon-back-svg-fill"></use>';
             template += '        </svg>';
             template += '    </button>';
             template += '    <button type="button" class="btn-icon js-delete" title="Delete">';
