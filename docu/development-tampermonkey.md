@@ -34,8 +34,20 @@ Ans Ende des Headers des Stubs muss ein Verweis auf die lokale Kopie von GCLh ei
 ```
 // @require          file:///C://GClh-dev/gc_little_helper_II.user.js
 ```
+
 ### Schritt 5: Header Update
 Sollte sich in der lokale Kopie der Header ändern, muss dies auch im Stub nachgezogen werden. **Achtung:** Der Header des Stubs muss aktuell zum Header der lokalen Kopie gehalten werden!
+
+## Externe Resourcen lokal laden
+Möchte man externe Resourcen lokal bearbeiten müssen entsprechende Verweise im Stub angepasst werden
+
+```
+// @require          https://raw.githubusercontent.com/2Abendsegler/GClh/master/data/gclh_defi.js
+```
+
+```
+// @require          file:///C:/projects/gclh/GClh/data/gclh_defi.js
+```
 
 ## Einschränkungen und Probleme
 *Muss noch ausgefühlt werden*
