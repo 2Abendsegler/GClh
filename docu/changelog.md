@@ -54,20 +54,6 @@
 		Fix: Draft count is also displayed at project GC button: [Issue <a href="https://github.com/2Abendsegler/GClh/pull/611">#611</a>]<br>
 		Thanks to <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a> for the Fix.<br>
 	</li>
-	<li>
-		Improvement: Modify draft items on the new drafts page. [Issue <a href="https://github.com/2Abendsegler/GClh/issues/620">#620</a>]<br />
-		<ul>
-			<li>Show log type as an overlay icon on top of the cache type icon</li>
-			<li>Add link to cache type icon</li>
-			<li>Change link from cache title. Now links to cache listing</li>
-			<li>Third line links to log compose page</li>
-		</ul>
-		<br/>
-		<img src="../images/Screen-#620-a.png" alt="Screen-#620-a.png"><br>
-		<img src="../images/Screen-#620-b.png" alt="Screen-#620-b.png"><br>
-		The feature is on by default. Can be switched on/off in GClh settings under *Others*:
-		<img src="../images/Screen-#620-c.png" alt="Screen-#620-c.png"><br>
-	</li>
 </ul>
 (??.??.2018)<br>
 released by <a href="https://www.geocaching.com/profile/?u=Ruko2010">Ruko2010</a><br>
