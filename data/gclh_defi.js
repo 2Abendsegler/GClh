@@ -62,6 +62,14 @@ function layersInit(c) {
     };
 }
 
+function elevationServicesDataInit(c) {
+    c.elevationServicesData = [
+        { "function": undefined, 'name': 'no' },
+        { "url" : "https://maps.googleapis.com/maps/api/elevation/json?sensor=false&locations={locations}", "function": undefined, 'name': 'Google Elevation' },
+        { "url" : "https://api.open-elevation.com/api/v1/lookup?locations={locations}", "function": undefined, 'name': 'Open-Elevation' }
+    ];
+}
+
 function country_idInit(c) {
     c.country_id = [
         {"n":"Afghanistan","id":"12"},

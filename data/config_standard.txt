@@ -189,6 +189,8 @@
   "settings_driving_direction_link": true,
   "settings_driving_direction_parking_area": false,
   "settings_show_elevation_of_waypoints": true,
+  "settings_primary_elevation_service": 1,
+  "settings_secondary_elevation_service": 2,
   "settings_img_warning": false,
   "settings_fieldnotes_old_fashioned": false,
   "settings_my_lists_old_fashioned": false,
