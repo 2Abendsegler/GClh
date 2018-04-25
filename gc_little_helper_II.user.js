@@ -7104,6 +7104,65 @@ var mainGC = function() {
         checkForUpgrade(false);
     } catch(e) {gclh_error("Check for upgrade:",e);}
 
+// Souvenirs
+    if ( is_page("souvenirs") || is_page("publicProfile") ) {
+        try {
+            
+            SouvenirsDashboard = $(".ProfileSouvenirsList");
+            if ( SouvenirsDashboard.length ) { 
+            
+                var css = ".gclhSouvenirSortButton {";
+                css += "color: #02874D;";
+                css += "border: 2px solid #02874D;";
+                css += "font-size: 150%;";
+                css += "}";
+                appendCssStyle(css);
+                
+                SouvenirsDashboard.before('<div id="gclhSouvenirsSortButtons" class="btn-group" style="justify-content: left;"></div><p></p>');
+                $("#gclhSouvenirsSortButtons").append('<div style="width: 155px; padding: 10px;">                  <a href="#" id="actionSouvenirsSortAcquiredDateNewestTop" class="btn gclhSouvenirSortButton" style="color: #02874D;">Newest first</a></div>');
+                $("#gclhSouvenirsSortButtons").append('<div style="width: 155px; padding: 10px; margin-left:12px;"><a href="#" id="actionSouvenirsSortAcquiredDateOldestTop" class="btn gclhSouvenirSortButton" style="color: #02874D;">Oldest first</a></div>');
+                $("#gclhSouvenirsSortButtons").append('<div style="width: 155px; padding: 10px; margin-left:12px;"><a href="#" id="actionSouvenirsSortAcquiredTitleAtoZ" class="btn gclhSouvenirSortButton" style="color: #02874D;">Title A-Z</a></div>');
+                $("#gclhSouvenirsSortButtons").append('<div style="width: 155px; padding: 10px; margin-left:12px;"><a href="#" id="actionSouvenirsSortAcquiredTitleZtoA" class="btn gclhSouvenirSortButton" style="color: #02874D;">Title Z-A</a></div>');
+                
+                function getSouvenirAcquiredDate( souvenirDiv ) { return $(souvenirDiv).text().match( /20[0-9][0-9]-[01][0-9]-[0123][0-9]/g )[0]; }
+                
+                function AcquiredDateNewestFirst(a, b) {
+                    var ada = getSouvenirAcquiredDate(a);
+                    var adb = getSouvenirAcquiredDate(b);
+                    return Date.parse(ada) < Date.parse(adb) ? 1 : -1;
+                }
+                function AcquiredDateOldestFirst(a, b) {
+                    var ada = getSouvenirAcquiredDate(a);
+                    var adb = getSouvenirAcquiredDate(b);
+                    return Date.parse(ada) < Date.parse(adb) ? -1 : 1;
+                }
+                function TitleAtoZ(a, b) {
+                    var aT = $(a).children('a').attr('title');
+                    var bT = $(b).children('a').attr('title');
+                    return aT < bT ? -1 : 1;
+                }
+                function TitleZtoA(a, b) {
+                    var aT = $(a).children('a').attr('title');
+                    var bT = $(b).children('a').attr('title');
+                    return aT < bT ? 1 : -1;
+                }
+                
+                function ReorderSouvenirs( orderfunction ) {
+                    SouvenirsDashboard = $(".ProfileSouvenirsList");
+                    Souvenirs = SouvenirsDashboard.children('div');
+                    Souvenirs.detach().sort(orderfunction);
+                    SouvenirsDashboard.append(Souvenirs);
+                }
+                
+                $("#actionSouvenirsSortAcquiredDateNewestTop").click( function() { ReorderSouvenirs(AcquiredDateNewestFirst) } );
+                $("#actionSouvenirsSortAcquiredDateOldestTop").click( function() { ReorderSouvenirs(AcquiredDateOldestFirst) } );
+                $("#actionSouvenirsSortAcquiredTitleAtoZ").click( function() { ReorderSouvenirs(TitleAtoZ) } );
+                $("#actionSouvenirsSortAcquiredTitleZtoA").click( function() { ReorderSouvenirs(TitleZtoA) } );
+                
+            }
+        } catch(e) {gclh_error("Souvenirs:",e);}
+    }
+    
 // Special days.
     if (is_page("cache_listing")) {
         try {
@@ -11185,6 +11244,9 @@ function is_link(name, url) {
             break;
         case "track":
             if (url.match(/\.com\/track\/($|#$)/)) status = true;
+            break;
+        case "souvenirs": /* only dashboard TODO public profile page */
+            if (url.match(/\.com\/my\/souvenirs\.aspx/)) status = true;
             break;
         default:
             gclh_error("is_link", "is_link("+name+", ... ): unknown name");
