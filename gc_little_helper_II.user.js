@@ -7139,12 +7139,12 @@ var mainGC = function() {
                 function TitleAtoZ(a, b) {
                     var aT = $(a).children('a').attr('title');
                     var bT = $(b).children('a').attr('title');
-                    return aT < bT ? -1 : 1;
+                    return aT.localeCompare(bT);
                 }
                 function TitleZtoA(a, b) {
                     var aT = $(a).children('a').attr('title');
                     var bT = $(b).children('a').attr('title');
-                    return aT < bT ? 1 : -1;
+                    return bT.localeCompare(aT);
                 }
                 
                 function ReorderSouvenirs( orderfunction ) {
