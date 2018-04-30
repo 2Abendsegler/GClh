@@ -7118,33 +7118,82 @@ var mainGC = function() {
                 css += "}";
                 appendCssStyle(css);
                 
+                function dateFormatConversion(format) {
+                    return format.replace(/yy/g,'y').replace(/M/g,'m').replace(/mmm/,'M');
+                    /* GS dateformat to jqui datepicker dateformat:
+                        https://www.geocaching.com/account/settings/preferences#SelectedDateFormat
+                        http://api.jqueryui.com/datepicker/#utility-parseDate
+                    GS --> jqui: d-->d,dd-->dd,M-->m,MM-->mm,MMM-->M,yy-->y,yyyy-->yy
+                    "d. M. yyyy" 	: "d. m. yy",	3. 1. 2017
+                    "d.M.yyyy" 		: "d.m.yy",    	3.1.2017
+                    "d.MM.yyyy" 	: "d.mm.yy",    3.01.2017
+                    "d/M/yy" 		: "d/m/y",     	3/1/17
+                    "d/M/yyyy" 		: "d/m/yy",    	3/1/2017
+                    "d/MM/yyyy" 	: "d/mm/yy",    3/01/2017
+                    "dd MMM yy" 	: "dd M y",     03 Jan 17
+                    "dd.MM.yy" 		: "dd.mm.y",    03.01.17
+                    "dd.MM.yyyy" 	: "dd.mm.yy",   03.01.2017
+                    "dd.MM.yyyy." 	: "dd.mm.yy.",  03.01.2017.
+                    "dd.MMM.yyyy" 	: "dd.M.yy",    03.Jan.2017
+                    "dd/MM/yy" 		: "dd/mm/y",    03/01/17
+                    "dd/MM/yyyy" 	: "dd/mm/yy",   03/01/2017
+                    "dd/MMM/yyyy" 	: "dd/M/yy",    03/Jan/2017
+                    "dd-MM-yy" 		: "dd-mm-y",    03-01-17
+                    "dd-MM-yyyy" 	: "dd-mm-yy",   03-01-2017
+                    "d-M-yyyy" 		: "d-m-yy",    	3-1-2017
+                    "M/d/yyyy" 		: "m/d/yy",    	1/3/2017
+                    "MM/dd/yyyy" 	: "mm/dd/yy",   01/03/2017
+                    "MMM/dd/yyyy" 	: "M/dd/yy",    Jan/03/2017
+                    "yyyy.MM.dd."	: "yy.mm.dd.",  2017.01.03.
+                    "yyyy/MM/dd" 	: "yy/mm/dd",   2017/01/03
+                    "yyyy-MM-dd" 	: "yy-mm-dd"    2017-01-03 */
+                }
+
                 SouvenirsDashboard.before('<div id="gclhSouvenirsSortButtons" class="btn-group" style="justify-content: left;"></div><p></p>');
-                $("#gclhSouvenirsSortButtons").append('<div style="width: 155px; padding: 10px;">                  <a href="#" id="actionSouvenirsSortAcquiredDateNewestTop" class="btn gclhSouvenirSortButton" style="color: #02874D;">Newest first</a></div>');
-                $("#gclhSouvenirsSortButtons").append('<div style="width: 155px; padding: 10px; margin-left:12px;"><a href="#" id="actionSouvenirsSortAcquiredDateOldestTop" class="btn gclhSouvenirSortButton" style="color: #02874D;">Oldest first</a></div>');
+                $("#gclhSouvenirsSortButtons").append('<div style="width: 155px; padding: 10px;">                  <a href="#" id="actionSouvenirsSortAcquiredDateNewestTop" class="btn gclhSouvenirSortButton" style="display: none; color: #02874D;">Newest first</a></div>');
+                $("#gclhSouvenirsSortButtons").append('<div style="width: 155px; padding: 10px; margin-left:12px;"><a href="#" id="actionSouvenirsSortAcquiredDateOldestTop" class="btn gclhSouvenirSortButton" style="display: none; color: #02874D;">Oldest first</a></div>');
                 $("#gclhSouvenirsSortButtons").append('<div style="width: 155px; padding: 10px; margin-left:12px;"><a href="#" id="actionSouvenirsSortAcquiredTitleAtoZ" class="btn gclhSouvenirSortButton" style="color: #02874D;">Title A-Z</a></div>');
                 $("#gclhSouvenirsSortButtons").append('<div style="width: 155px; padding: 10px; margin-left:12px;"><a href="#" id="actionSouvenirsSortAcquiredTitleZtoA" class="btn gclhSouvenirSortButton" style="color: #02874D;">Title Z-A</a></div>');
+
+                var jqui_date_format = "";
+
+                var accessTokenPromise = $.get('/account/settings/preferences');
+                accessTokenPromise.done(function (response) {
+                    response_div = document.createElement('div');
+                    response_div.innerHTML = response;
+                    date_format = $('select#SelectedDateFormat option:selected', response_div).val(); // 
+                    jqui_date_format = dateFormatConversion(date_format);
+                    $('#actionSouvenirsSortAcquiredDateNewestTop').show();
+                    $('#actionSouvenirsSortAcquiredDateOldestTop').show();
+                });
+
                 
-                function getSouvenirAcquiredDate( souvenirDiv ) { return $(souvenirDiv).text().match( /20[0-9][0-9]-[01][0-9]-[0123][0-9]/g )[0]; }
+                function getSouvenirAcquiredDate( souvenirDiv ) { return $(souvenirDiv).text().match( /Acquired on (.*)/ )[1]; }
                 
                 function AcquiredDateNewestFirst(a, b) {
                     var ada = getSouvenirAcquiredDate(a);
                     var adb = getSouvenirAcquiredDate(b);
-                    return Date.parse(ada) < Date.parse(adb) ? 1 : -1;
+                    date1 = $.datepicker.parseDate(jqui_date_format, ada);
+                    date2 = $.datepicker.parseDate(jqui_date_format, adb);
+                    return date1 < date2 ? 1 : -1;
                 }
                 function AcquiredDateOldestFirst(a, b) {
                     var ada = getSouvenirAcquiredDate(a);
                     var adb = getSouvenirAcquiredDate(b);
-                    return Date.parse(ada) < Date.parse(adb) ? -1 : 1;
+                    date1 = $.datepicker.parseDate(jqui_date_format, ada);
+                    date2 = $.datepicker.parseDate(jqui_date_format, adb);
+                    return date1 < date2 ? -1 : 1;                    
+                    // return Date.parse(ada) < Date.parse(adb) ? -1 : 1;
                 }
                 function TitleAtoZ(a, b) {
                     var aT = $(a).children('a').attr('title');
                     var bT = $(b).children('a').attr('title');
-                    return aT < bT ? -1 : 1;
+                    return aT.localeCompare(bT);
                 }
                 function TitleZtoA(a, b) {
                     var aT = $(a).children('a').attr('title');
                     var bT = $(b).children('a').attr('title');
-                    return aT < bT ? 1 : -1;
+                    return bT.localeCompare(aT);
                 }
                 
                 function ReorderSouvenirs( orderfunction ) {
