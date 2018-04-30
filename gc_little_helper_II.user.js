@@ -5973,9 +5973,15 @@ var mainGC = function() {
 
                             // get the number of favorite points
                             var fav_points = $(text).find('.favorite-value').html();
-                            fav_points = fav_points.replace('.','');
-                            fav_points = fav_points.replace(',','');
-                            fav_points = parseInt(fav_points);
+                            if(fav_points == null){
+                                // couldn't get Number of Favorits. This happens with event caches for example
+                                fav_points = 0;
+                            }else{
+                                fav_points = fav_points.replace('.','');
+                                fav_points = fav_points.replace(',','');
+                                fav_points = parseInt(fav_points);
+                            }
+                            
                             var fav_percent = '-';
                             if(fav_points > 0){
                                 fav_percent = Math.round((100 * fav_points) / total_finds_for_favi) + '%';
