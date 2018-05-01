@@ -7181,6 +7181,9 @@ var mainGC = function() {
                     var adb = getSouvenirAcquiredDate(b);
                     date1 = $.datepicker.parseDate(jqui_date_format, ada);
                     date2 = $.datepicker.parseDate(jqui_date_format, adb);
+
+                    if(date1.getTime() == date2.getTime()) return TitleAtoZ(a, b);
+
                     return date1 < date2 ? 1 : -1;
                 }
                 function AcquiredDateOldestFirst(a, b) {
@@ -7188,6 +7191,9 @@ var mainGC = function() {
                     var adb = getSouvenirAcquiredDate(b);
                     date1 = $.datepicker.parseDate(jqui_date_format, ada);
                     date2 = $.datepicker.parseDate(jqui_date_format, adb);
+
+                    if(date1.getTime() == date2.getTime()) return TitleZtoA(a, b);
+
                     return date1 < date2 ? -1 : 1;                    
                     // return Date.parse(ada) < Date.parse(adb) ? -1 : 1;
                 }
