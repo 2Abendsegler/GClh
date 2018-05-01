@@ -5293,7 +5293,7 @@ var mainGC = function() {
                 }
                 // Listing.
                 css += ".CachePageImages li {margin-bottom: 12px; background: unset; padding-left: 0px;}";
-                var links = $('.UserSuppliedContent, .CachePageImages').find('a[href*="img.geocaching.com/cache/"]');;
+                var links = $('.CachePageImages').find('a[href*="img.geocaching.com/cache/"]');
                 for (var i = 0; i < links.length; i++) {
                     buildThumb(links[i].href, links[i].innerHTML, true, "-70px");
                 }
