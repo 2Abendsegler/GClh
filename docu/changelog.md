@@ -37,10 +37,10 @@
 ## v0.9.4:
 <ul>
 	<li>
-		New: Enhanced the map popup for a cache. [Issue <a href="https://github.com/2Abendsegler/GClh/issues/554">#554</a>]<br />
+		<strong>New:</strong> Enhanced the map popup for a cache. [Issue <a href="https://github.com/2Abendsegler/GClh/issues/554">#554</a>, <a href="https://github.com/2Abendsegler/GClh/issues/623">#623</a>]<br />
 		Additional Informations displayed:
 		<ul>
-			<li>Number of differnt log types</li>
+			<li>Number of different log types</li>
 			<li>Latest logs (configurable from 1 to 25)</li>
 			<li>Cache place (state and country)</li>
 			<li>Favorite Percentage</li>
@@ -51,8 +51,47 @@
 		<img src="../images/v0.9.4_Screen02.png" alt="v0.9.4_Screen02.png"><br>
 	</li>
 	<li>
-		Fix: Draft count is also displayed at project GC button: [Issue <a href="https://github.com/2Abendsegler/GClh/pull/611">#611</a>]<br>
+		<strong>New:</strong> Sorting of Souvenirs. [Issue <a href="https://github.com/2Abendsegler/GClh/issues/624">#624</a>]<br />
+		Available sorting methods:
+		<ul>
+			<li>Sort by Date, latest first</li>
+			<li>Sort by Date, oldest first</li>
+			<li>Sort by Title A to Z</li>
+			<li>Sort by Title Z to A</li>
+		</ul> 
+		<br>
+		<img src="../images/v0.9.4_Screen03.gif" alt="v0.9.4_Screen03.gif"><br>
+		Thanks to <a href="https://www.geocaching.com/profile/?u=CachingFoX">CachingFoX</a> for the idea and the implementation.<br>
+	</li>
+	<li>
+		<strong>New:</strong> You can now choose between Google Elevation Service and Open Elevation Service for Elevation-Data. [Issue <a href="https://github.com/2Abendsegler/GClh/issues/621">#621</a>]<br />
+		You can choose the order of the services. The secound method will be used as Fall-Back if the first encounters an error or the data is missing.
+		<br>
+		<img src="../images/v0.9.4_Screen04.png" alt="v0.9.4_Screen04.png"><br>
+		Thanks to <a href="https://www.geocaching.com/profile/?u=CachingFoX">CachingFoX</a> for the idea and the implementation.<br>
+	</li>
+	<li>
+		<strong>New:</strong> Improvements of the new Draft-Page. [Issue <a href="https://github.com/2Abendsegler/GClh/issues/620">#620</a>]<br />
+		<ul>
+			<li>the Logtype (e.g. "Found-it", "Write-Note", etc.) is now displayed as Icon next to the cacheicon</li>
+			<li>new link icon on the right to go directly to the cache listing (instead if the "new-log-page"</li>
+		</ul>
+		<br>
+		<img src="../images/v0.9.4_Screen05.png" alt="v0.9.4_Screen05.png"><br>
+		<img src="../images/v0.9.4_Screen06.png" alt="v0.9.4_Screen06.png"><br>
+		Thanks to <a href="https://www.geocaching.com/profile/?u=CachingFoX">CachingFoX</a> for the idea and the implementation.<br>
+	</li>
+	<li>
+		<strong>New:</strong> We now have a Documentation, how you can develop Userscripts like GClh easily with Tampermonkey and Github. [Issue <a href="https://github.com/2Abendsegler/GClh/issues/619">#619</a>]<br />
+		You can find it here: <a href="https://github.com/2Abendsegler/GClh/blob/master/docu/development-tampermonkey.md">Development with Tampermonkey</a><br>
+		Thanks to <a href="https://www.geocaching.com/profile/?u=CachingFoX">CachingFoX</a> for the idea and the implementation.<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> Draft count is also displayed at project GC button: [Issue <a href="https://github.com/2Abendsegler/GClh/pull/611">#611</a>]<br>
 		Thanks to <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a> for the Fix.<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> Images in the Listing were replaced by thumbnails: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/625">#625</a>]<br>
 	</li>
 </ul>
 (??.??.2018)<br>
