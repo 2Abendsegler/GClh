@@ -1,4 +1,4 @@
-<a href="#v094" title="GClh II version 0.9.4 (??.??.2018)">v0.9.4</a> &nbsp;
+<a href="#v094" title="GClh II version 0.9.4 (02.05.2018)">v0.9.4</a> &nbsp;
 <a href="#v093" title="GClh II version 0.9.3 (28.02.2018)">v0.9.3</a> &nbsp;
 <a href="#v092" title="GClh II version 0.9.2 (08.02.2018)">v0.9.2</a> &nbsp;
 <a href="#v091" title="GClh II version 0.9.1 (16.01.2018)">v0.9.1</a> &nbsp;
@@ -74,7 +74,8 @@
 		<strong>New:</strong> Improvements of the new Draft-Page. [Issue <a href="https://github.com/2Abendsegler/GClh/issues/620">#620</a>]<br />
 		<ul>
 			<li>the Logtype (e.g. "Found-it", "Write-Note", etc.) is now displayed as Icon next to the cacheicon</li>
-			<li>new link icon on the right to go directly to the cache listing (instead if the "new-log-page"</li>
+			<li>new link icon on the right to go directly to the cache listing (instead if the "new-log-page")</li>
+			<li>Cache Icon is also linked to the cache listing</li>
 		</ul>
 		<br>
 		<img src="../images/v0.9.4_Screen05.png" alt="v0.9.4_Screen05.png"><br>
@@ -94,7 +95,7 @@
 		<strong>Fix:</strong> Images in the Listing were replaced by thumbnails: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/625">#625</a>]<br>
 	</li>
 </ul>
-(??.??.2018)<br>
+(02.05.2018)<br>
 released by <a href="https://www.geocaching.com/profile/?u=Ruko2010">Ruko2010</a><br>
 
 
