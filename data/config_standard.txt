@@ -189,6 +189,8 @@
   "settings_driving_direction_link": true,
   "settings_driving_direction_parking_area": false,
   "settings_show_elevation_of_waypoints": true,
+  "settings_primary_elevation_service": 1,
+  "settings_secondary_elevation_service": 2,
   "settings_img_warning": false,
   "settings_fieldnotes_old_fashioned": false,
   "settings_my_lists_old_fashioned": false,
@@ -223,5 +225,7 @@
   "settings_show_bigger_avatars_but": true,
   "settings_hide_feedback_icon": false,
   "settings_compact_layout_new_dashboard": false,
-  "settings_show_draft_indicator": true
+  "settings_show_draft_indicator": true,
+  "settings_show_latest_logs_symbols_count_map": "10",
+  "settings_show_enhanced_map_popup": true
 }

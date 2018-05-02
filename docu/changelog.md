@@ -1,3 +1,4 @@
+<a href="#v094" title="GClh II version 0.9.4 (02.05.2018)">v0.9.4</a> &nbsp;
 <a href="#v093" title="GClh II version 0.9.3 (28.02.2018)">v0.9.3</a> &nbsp;
 <a href="#v092" title="GClh II version 0.9.2 (08.02.2018)">v0.9.2</a> &nbsp;
 <a href="#v091" title="GClh II version 0.9.1 (16.01.2018)">v0.9.1</a> &nbsp;
@@ -31,6 +32,72 @@
 <a href="#v022" title="GClh II version 0.2.2 (09.01.2017)">v0.2.2</a> &nbsp; 
 <a href="#v021" title="GClh II version 0.2.1 (05.01.2017)">v0.2.1</a> &nbsp; 
 <a href="#v01" title="GClh II version 0.1 (05.01.2017)">v0.1</a> &nbsp; 
+
+---
+## v0.9.4:
+<ul>
+	<li>
+		<strong>New:</strong> Enhanced the map popup for a cache. [Issue <a href="https://github.com/2Abendsegler/GClh/issues/554">#554</a>, <a href="https://github.com/2Abendsegler/GClh/issues/623">#623</a>]<br />
+		Additional Informations displayed:
+		<ul>
+			<li>Number of different log types</li>
+			<li>Latest logs (configurable from 1 to 25)</li>
+			<li>Cache place (state and country)</li>
+			<li>Favorite Percentage</li>
+			<li>Number of Trackables in Cache</li>
+		</ul> 
+		<br>
+		<img src="../images/v0.9.4_Screen01.gif" alt="v0.9.4_Screen01.gif"><br>
+		<img src="../images/v0.9.4_Screen02.png" alt="v0.9.4_Screen02.png"><br>
+	</li>
+	<li>
+		<strong>New:</strong> Sorting of Souvenirs. [Issue <a href="https://github.com/2Abendsegler/GClh/issues/624">#624</a>]<br />
+		Available sorting methods:
+		<ul>
+			<li>Sort by Date, latest first</li>
+			<li>Sort by Date, oldest first</li>
+			<li>Sort by Title A to Z</li>
+			<li>Sort by Title Z to A</li>
+		</ul> 
+		<br>
+		<img src="../images/v0.9.4_Screen03.gif" alt="v0.9.4_Screen03.gif"><br>
+		Thanks to <a href="https://www.geocaching.com/profile/?u=CachingFoX">CachingFoX</a> for the idea and the implementation.<br>
+	</li>
+	<li>
+		<strong>New:</strong> You can now choose between Google Elevation Service and Open Elevation Service for Elevation-Data. [Issue <a href="https://github.com/2Abendsegler/GClh/issues/621">#621</a>]<br />
+		You can choose the order of the services. The secound method will be used as Fall-Back if the first encounters an error or the data is missing.
+		<br>
+		<img src="../images/v0.9.4_Screen04.png" alt="v0.9.4_Screen04.png"><br>
+		Thanks to <a href="https://www.geocaching.com/profile/?u=CachingFoX">CachingFoX</a> for the idea and the implementation.<br>
+	</li>
+	<li>
+		<strong>New:</strong> Improvements of the new Draft-Page. [Issue <a href="https://github.com/2Abendsegler/GClh/issues/620">#620</a>]<br />
+		<ul>
+			<li>the Logtype (e.g. "Found-it", "Write-Note", etc.) is now displayed as Icon next to the cacheicon</li>
+			<li>new link icon on the right to go directly to the cache listing (instead if the "new-log-page")</li>
+			<li>Cache Icon is also linked to the cache listing</li>
+		</ul>
+		<br>
+		<img src="../images/v0.9.4_Screen05.png" alt="v0.9.4_Screen05.png"><br>
+		<img src="../images/v0.9.4_Screen06.png" alt="v0.9.4_Screen06.png"><br>
+		Thanks to <a href="https://www.geocaching.com/profile/?u=CachingFoX">CachingFoX</a> for the idea and the implementation.<br>
+	</li>
+	<li>
+		<strong>New:</strong> We now have a Documentation, how you can develop Userscripts like GClh easily with Tampermonkey and Github. [Issue <a href="https://github.com/2Abendsegler/GClh/issues/619">#619</a>]<br />
+		You can find it here: <a href="https://github.com/2Abendsegler/GClh/blob/master/docu/development-tampermonkey.md">Development with Tampermonkey</a><br>
+		Thanks to <a href="https://www.geocaching.com/profile/?u=CachingFoX">CachingFoX</a> for the idea and the implementation.<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> Draft count is also displayed at project GC button: [Issue <a href="https://github.com/2Abendsegler/GClh/pull/611">#611</a>]<br>
+		Thanks to <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a> for the Fix.<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> Images in the Listing were replaced by thumbnails: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/625">#625</a>]<br>
+	</li>
+</ul>
+(02.05.2018)<br>
+released by <a href="https://www.geocaching.com/profile/?u=Ruko2010">Ruko2010</a><br>
+
 
 ---
 ## v0.9.3:
