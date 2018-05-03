@@ -476,7 +476,7 @@ var variablesInit = function(c) {
     c.settings_show_enhanced_map_popup = getValue("settings_show_enhanced_map_popup", true);
     c.settings_show_latest_logs_symbols_count_map = getValue("settings_show_latest_logs_symbols_count_map", 10);
     c.settings_modify_new_drafts_page = getValue("settings_modify_new_drafts_page", true);
-    
+
     try {
         if (c.userToken === null) {
             c.userData = $('#aspnetForm script:not([src])').filter(function() {
@@ -2092,32 +2092,24 @@ var mainGC = function() {
             function formatElevation(elevation) {
                 return ((elevation>=0)?"+":"")+((settings_distance_units != "Imperial")?(Math.round(elevation) + "m"):(Math.round(elevation*3.28084) + "ft"));
             }
-
             elevationServicesData[1]['function'] = addElevationToWaypoints_GoogleElevation;
             elevationServicesData[2]['function'] = addElevationToWaypoints_OpenElevation;
-    
+
             function addElevationToWaypoints_GoogleElevation(responseDetails) {
                 try {
                     context = responseDetails.context;
                     json = JSON.parse(responseDetails.responseText);
-                    
                     if ( json.status != "OK") {
                         var mess = "\naddElevationToWaypoints_GoogleElevation():\n- Get elevations: retries: "+context.retries+"\n- json-status: "+json.status+"\n- json.error_message: "+json.error_message;
-                        gclh_log(mess);         
+                        gclh_log(mess);
                         getElevations(context.retries+1,context.locations);
                         return;
                     }
-                    
                     var elevations = [];
-                    
                     for (var i=0; i<json.results.length; i++) {
-                        if (json.results[i].location.lat != -90) {
-                            elevations.push( json.results[i].elevation );
-                        } else {
-                            elevations.push( undefined );
-                        }
+                        if (json.results[i].location.lat != -90) elevations.push( json.results[i].elevation );
+                        else elevations.push( undefined );
                     }
-                    
                     addElevationToWaypoints(elevations,context)
                 } catch(e) {gclh_error("addElevationToWaypoints_GoogleElevation():",e);}
             }
@@ -2126,30 +2118,26 @@ var mainGC = function() {
                 try {
                     context = responseDetails.context;
                     json = JSON.parse(responseDetails.responseText);
-                    
                     var elevations = [];
                     for (var i=0; i<json.results.length; i++) {
                         elevations.push( json.results[i].elevation );
-                    }                    
-                    
+                    }
                     addElevationToWaypoints(elevations,context)
-                } catch(e) {gclh_error("addElevationToWaypoints_OpenElevation():",e);}                
+                } catch(e) {gclh_error("addElevationToWaypoints_OpenElevation():",e);}
             }
 
             function addElevationToWaypoints(elevations,context) {
-                try {                    
+                try {
                     var text = "";
                     for (var i=0; i<elevations.length; i++) {
                         text = "n/a";
-                        if (elevations[i] != undefined) {
-                            text = formatElevation(elevations[i]);
-                        }
+                        if (elevations[i] != undefined) text = formatElevation(elevations[i]);
                         $("#elevation-waypoint-"+i).html(text);
                         $("#elevation-waypoint-"+i).attr('title','Elevation data from '+context.serviceName);
                     }
                 } catch(e) {gclh_error("addElevationToWaypoints():",e);}
             }
-            
+
             function getLocations() {
                 try {
                     var locations=[];
@@ -2164,7 +2152,6 @@ var mainGC = function() {
                             var row1st = tbl.find("tbody > tr").eq(i*2);
                             var cellCoordinates = row1st.find("td:eq(5)");
                             var tmp_coords = toDec(cellCoordinates.text().trim());
-                            
                             row1st.find("td:eq(5)").after('<td><span class="waypoint-elevation" id="elevation-waypoint-'+(locations.length)+'" ></span></td>');
                             if (typeof tmp_coords[0] !== 'undefined' && typeof tmp_coords[1] !== 'undefined') {
                                 locations.push(tmp_coords[0]+","+tmp_coords[1]);
@@ -2177,11 +2164,11 @@ var mainGC = function() {
                     if (waypoint !== undefined) {
                         $("#uxLatLonLink").after('<span title="Elevation">&nbsp;&nbsp;&nbsp;Elevation:&nbsp;<span class="waypoint-elevation"  id="elevation-waypoint-'+(locations.length)+'" ></span></span>');
                         locations.push( waypoint.latitude+","+waypoint.longitude );
-                    }   
+                    }
                     return locations;
                 } catch(e) {gclh_error("getLocations():",e);}
             }
-           
+
             var elevationServices = [];
             if ( settings_primary_elevation_service > 0 ) {
                 elevationServices.push(elevationServicesData[settings_primary_elevation_service]);
@@ -2189,27 +2176,23 @@ var mainGC = function() {
             if ( settings_secondary_elevation_service > 0 ) {
                 elevationServices.push(elevationServicesData[settings_secondary_elevation_service]);
             }
-            
+
             function getElevations(serviceIndex,locations) {
-                
                 if (serviceIndex >= elevationServices.length || elevationServices<0 ) {
-                    $('.waypoint-elevation').each(function (index, value) { 
+                    $('.waypoint-elevation').each(function (index, value) {
                         $(this).html('<span title="Fail to load elevation data">???</span>');
                     });
                     return;
                 }
-
-                $('.waypoint-elevation').each(function (index, value) { 
+                $('.waypoint-elevation').each(function (index, value) {
                     $(this).html('<img src="' + urlImages + 'ajax-loader.gif" title="Load elevation data for the waypoint from '+elevationServices[serviceIndex]['name']+'."/>');
                 });
-
                 var context = {
                     retries : serviceIndex,
                     serviceName : elevationServices[serviceIndex]['name'],
                     locations : locations
                 }
                 var locationsstring = locations.join('|');
-                
                 GM_xmlhttpRequest({
                     method: 'GET',
                     url: elevationServices[serviceIndex].url.replace('{locations}',locationsstring),
@@ -2217,12 +2200,10 @@ var mainGC = function() {
                     onload: elevationServices[serviceIndex]['function'],
                     onerror: function() {gclh_log("Elevation: ERROR: request elevation for waypoints failed!");}
                 });
-
             }
 
             var locations = getLocations();
             getElevations(0,locations);
-
         } catch(e) {gclh_error("AddElevation",e);}
     }
     // Returns true in case of modified coordinates.
@@ -2487,7 +2468,6 @@ var mainGC = function() {
 // Replicate TB-Header to bottom
     if (document.location.href.match(/\.com\/play\/geocache\/gc\w+\/log/)) {
         try {
-            
             var checkExistTBHeader = setInterval(function() {
                if ($('#tbHeader .trackables-header').length) {
                   $(".trackables-list").append('<li id="cloned_tb_header"></li>');
@@ -2495,7 +2475,6 @@ var mainGC = function() {
                   clearInterval(checkExistTBHeader);
                }
             }, 500); // check every 500ms
-
         } catch(e) {gclh_error("Logpage Replicate TB-Header",e);}
     }
 
@@ -6011,7 +5990,7 @@ var mainGC = function() {
                     + "div.popup_additional_info .loading_container img{margin-right:5px;}"
                     + "div.popup_additional_info span.favi_points svg, div.popup_additional_info span.tackables svg{position: relative;top: 4px;}";
             appendCssStyle(css);
-             
+
             // create an observer instance
             var observer = new MutationObserver(function(mutations) {
                 mutations.forEach(function(mutation) {
@@ -6023,15 +6002,15 @@ var mainGC = function() {
                     $('#gmCacheInfo .map-item').each(function () {
                         gccode = $(this).find('.code').html();
 
-                        // Add Loading image 
+                        // Add Loading image
                         $(this).append('<div id="popup_additional_info_' + gccode +'" class="links Clear popup_additional_info"><div class="loading_container"><img src="' + urlImages + 'ajax-loader.gif" />Loading additional Data...</div></div>');
 
                         $.get('https://www.geocaching.com/geocache/'+gccode, null, function(text){
 
-                            // We need to retriev the gc_code from the loaded page, because in the 
+                            // We need to retriev the gc_code from the loaded page, because in the
                             // meantime the global varioable gc_code could (and will be ;-)) changed
                             var local_gc_code = $(text).find('#ctl00_ContentBody_CoordInfoLinkControl1_uxCoordInfoCode').html();
-                            
+
                             // get the last logs
                             initalLogs_from_cachepage = text.substr(text.indexOf('initalLogs = {"status')+13, text.indexOf('} };') - text.indexOf('initalLogs = {"status') - 10);
                             var initalLogs = JSON.parse(initalLogs_from_cachepage);
@@ -6052,7 +6031,7 @@ var mainGC = function() {
                                 var div = document.createElement("div");
                                 div.id = "gclh_latest_logs";
                                 div.setAttribute("style", "padding-right: 0; padding-top: 5px; padding-bottom: 5px; display: flex;");
-                                    
+
                                 var span = document.createElement("span");
                                 span.setAttribute("style", "white-space: nowrap; margin-right: 5px; margin-top: 5px;");
                                 span.appendChild(document.createTextNode('Latest logs:'));
@@ -6080,10 +6059,10 @@ var mainGC = function() {
                                         + "div.gclh_latest_log:hover span {font-size: 13px; display: block; top: 16px; border: 1px solid #8c9e65; background-color:#dfe1d2; z-index:10000;}";
                                 appendCssStyle(css);
                             }
-                            
+
                             // get all type of logs and their count
                             var all_logs = $(text).find('.LogTotals')[0].innerHTML;
-                            
+
                             // get the number of trackables in the cache
                             var trachables = 0;
                             // var tb_elements = $(text).find('.CacheDetailNavigationWidget').has('#ctl00_ContentBody_uxTravelBugList_uxInventoryLabel');
@@ -6116,7 +6095,7 @@ var mainGC = function() {
                                 fav_points = fav_points.replace(',','');
                                 fav_points = parseInt(fav_points);
                             }
-                            
+
                             var fav_percent = '-';
                             if(fav_points > 0){
                                 fav_percent = Math.round((100 * fav_points) / total_finds_for_favi) + '%';
@@ -6124,7 +6103,7 @@ var mainGC = function() {
 
                             // get the place, where the cache was placed
                             var place = $(text).find('#ctl00_ContentBody_Location')[0].innerHTML;
-                            
+
                             // Put all together
                             var new_text = '<span style="margin-right: 5px;">Logs:</span>' + all_logs.replace(/&nbsp;/g, " ") + '<br>';
                             new_text += $(last_logs).prop('outerHTML');
@@ -6159,10 +6138,10 @@ var mainGC = function() {
                     });
                 });
             });
-             
+
             // configuration of the observer:
             var config = { attributes: true, childList: true, characterData: true }
-             
+
             // pass in the target node, as well as the observer options
             observer.observe(target, config);
 
@@ -7113,56 +7092,51 @@ var mainGC = function() {
 // Souvenirs
     if ( is_page("souvenirs") || is_page("publicProfile") ) {
         try {
-            
             SouvenirsDashboard = $(".ProfileSouvenirsList");
-            if ( SouvenirsDashboard.length ) { 
-            
+            if ( SouvenirsDashboard.length ) {
                 var css = ".gclhSouvenirSortButton {";
                 css += "color: #02874D;";
                 css += "border: 2px solid #02874D;";
                 css += "font-size: 150%;";
                 css += "}";
                 appendCssStyle(css);
-                
+
                 function dateFormatConversion(format) {
                     return format.replace(/yy/g,'y').replace(/M/g,'m').replace(/mmm/,'M');
                     /* GS dateformat to jqui datepicker dateformat:
                         https://www.geocaching.com/account/settings/preferences#SelectedDateFormat
                         http://api.jqueryui.com/datepicker/#utility-parseDate
                     GS --> jqui: d-->d,dd-->dd,M-->m,MM-->mm,MMM-->M,yy-->y,yyyy-->yy
-                    "d. M. yyyy" 	: "d. m. yy",	3. 1. 2017
-                    "d.M.yyyy" 		: "d.m.yy",    	3.1.2017
-                    "d.MM.yyyy" 	: "d.mm.yy",    3.01.2017
-                    "d/M/yy" 		: "d/m/y",     	3/1/17
-                    "d/M/yyyy" 		: "d/m/yy",    	3/1/2017
-                    "d/MM/yyyy" 	: "d/mm/yy",    3/01/2017
-                    "dd MMM yy" 	: "dd M y",     03 Jan 17
-                    "dd.MM.yy" 		: "dd.mm.y",    03.01.17
-                    "dd.MM.yyyy" 	: "dd.mm.yy",   03.01.2017
-                    "dd.MM.yyyy." 	: "dd.mm.yy.",  03.01.2017.
-                    "dd.MMM.yyyy" 	: "dd.M.yy",    03.Jan.2017
-                    "dd/MM/yy" 		: "dd/mm/y",    03/01/17
-                    "dd/MM/yyyy" 	: "dd/mm/yy",   03/01/2017
-                    "dd/MMM/yyyy" 	: "dd/M/yy",    03/Jan/2017
-                    "dd-MM-yy" 		: "dd-mm-y",    03-01-17
-                    "dd-MM-yyyy" 	: "dd-mm-yy",   03-01-2017
-                    "d-M-yyyy" 		: "d-m-yy",    	3-1-2017
-                    "M/d/yyyy" 		: "m/d/yy",    	1/3/2017
-                    "MM/dd/yyyy" 	: "mm/dd/yy",   01/03/2017
-                    "MMM/dd/yyyy" 	: "M/dd/yy",    Jan/03/2017
-                    "yyyy.MM.dd."	: "yy.mm.dd.",  2017.01.03.
-                    "yyyy/MM/dd" 	: "yy/mm/dd",   2017/01/03
-                    "yyyy-MM-dd" 	: "yy-mm-dd"    2017-01-03 */
+                    "d. M. yyyy"  : "d. m. yy",	3. 1. 2017
+                    "d.M.yyyy"    : "d.m.yy",    	3.1.2017
+                    "d.MM.yyyy"   : "d.mm.yy",    3.01.2017
+                    "d/M/yy"      : "d/m/y",     	3/1/17
+                    "d/M/yyyy"    : "d/m/yy",    	3/1/2017
+                    "d/MM/yyyy"   : "d/mm/yy",    3/01/2017
+                    "dd MMM yy"   : "dd M y",     03 Jan 17
+                    "dd.MM.yy" 	  : "dd.mm.y",    03.01.17
+                    "dd.MM.yyyy"  : "dd.mm.yy",   03.01.2017
+                    "dd.MM.yyyy." : "dd.mm.yy.",  03.01.2017.
+                    "dd.MMM.yyyy" : "dd.M.yy",    03.Jan.2017
+                    "dd/MM/yy" 	  : "dd/mm/y",    03/01/17
+                    "dd/MM/yyyy"  : "dd/mm/yy",   03/01/2017
+                    "dd/MMM/yyyy" : "dd/M/yy",    03/Jan/2017
+                    "dd-MM-yy"    : "dd-mm-y",    03-01-17
+                    "dd-MM-yyyy"  : "dd-mm-yy",   03-01-2017
+                    "d-M-yyyy" 	  : "d-m-yy",    	3-1-2017
+                    "M/d/yyyy" 	  : "m/d/yy",    	1/3/2017
+                    "MM/dd/yyyy"  : "mm/dd/yy",   01/03/2017
+                    "MMM/dd/yyyy" : "M/dd/yy",    Jan/03/2017
+                    "yyyy.MM.dd." : "yy.mm.dd.",  2017.01.03.
+                    "yyyy/MM/dd"  : "yy/mm/dd",   2017/01/03
+                    "yyyy-MM-dd"  : "yy-mm-dd"    2017-01-03 */
                 }
-
                 SouvenirsDashboard.before('<div id="gclhSouvenirsSortButtons" class="btn-group" style="justify-content: left;"></div><p></p>');
                 $("#gclhSouvenirsSortButtons").append('<div style="width: 155px; padding: 10px;">                  <a href="#" id="actionSouvenirsSortAcquiredDateNewestTop" class="btn gclhSouvenirSortButton" style="display: none; color: #02874D;">Newest first</a></div>');
                 $("#gclhSouvenirsSortButtons").append('<div style="width: 155px; padding: 10px; margin-left:12px;"><a href="#" id="actionSouvenirsSortAcquiredDateOldestTop" class="btn gclhSouvenirSortButton" style="display: none; color: #02874D;">Oldest first</a></div>');
                 $("#gclhSouvenirsSortButtons").append('<div style="width: 155px; padding: 10px; margin-left:12px;"><a href="#" id="actionSouvenirsSortAcquiredTitleAtoZ" class="btn gclhSouvenirSortButton" style="color: #02874D;">Title A-Z</a></div>');
                 $("#gclhSouvenirsSortButtons").append('<div style="width: 155px; padding: 10px; margin-left:12px;"><a href="#" id="actionSouvenirsSortAcquiredTitleZtoA" class="btn gclhSouvenirSortButton" style="color: #02874D;">Title Z-A</a></div>');
-
                 var jqui_date_format = "";
-
                 var accessTokenPromise = $.get('/account/settings/preferences');
                 accessTokenPromise.done(function (response) {
                     response_div = document.createElement('div');
@@ -7172,18 +7146,15 @@ var mainGC = function() {
                     $('#actionSouvenirsSortAcquiredDateNewestTop').show();
                     $('#actionSouvenirsSortAcquiredDateOldestTop').show();
                 });
-
-                
+               
                 function getSouvenirAcquiredDate( souvenirDiv ) { return $(souvenirDiv).text().match( /Acquired on (.*)/ )[1]; }
-                
+               
                 function AcquiredDateNewestFirst(a, b) {
                     var ada = getSouvenirAcquiredDate(a);
                     var adb = getSouvenirAcquiredDate(b);
                     date1 = $.datepicker.parseDate(jqui_date_format, ada);
                     date2 = $.datepicker.parseDate(jqui_date_format, adb);
-
                     if(date1.getTime() == date2.getTime()) return TitleAtoZ(a, b);
-
                     return date1 < date2 ? 1 : -1;
                 }
                 function AcquiredDateOldestFirst(a, b) {
@@ -7191,10 +7162,8 @@ var mainGC = function() {
                     var adb = getSouvenirAcquiredDate(b);
                     date1 = $.datepicker.parseDate(jqui_date_format, ada);
                     date2 = $.datepicker.parseDate(jqui_date_format, adb);
-
                     if(date1.getTime() == date2.getTime()) return TitleZtoA(a, b);
-
-                    return date1 < date2 ? -1 : 1;                    
+                    return date1 < date2 ? -1 : 1;
                     // return Date.parse(ada) < Date.parse(adb) ? -1 : 1;
                 }
                 function TitleAtoZ(a, b) {
@@ -7207,23 +7176,20 @@ var mainGC = function() {
                     var bT = $(b).children('a').attr('title');
                     return bT.localeCompare(aT);
                 }
-                
                 function ReorderSouvenirs( orderfunction ) {
                     SouvenirsDashboard = $(".ProfileSouvenirsList");
                     Souvenirs = SouvenirsDashboard.children('div');
                     Souvenirs.detach().sort(orderfunction);
                     SouvenirsDashboard.append(Souvenirs);
                 }
-                
                 $("#actionSouvenirsSortAcquiredDateNewestTop").click( function() { ReorderSouvenirs(AcquiredDateNewestFirst) } );
                 $("#actionSouvenirsSortAcquiredDateOldestTop").click( function() { ReorderSouvenirs(AcquiredDateOldestFirst) } );
                 $("#actionSouvenirsSortAcquiredTitleAtoZ").click( function() { ReorderSouvenirs(TitleAtoZ) } );
                 $("#actionSouvenirsSortAcquiredTitleZtoA").click( function() { ReorderSouvenirs(TitleZtoA) } );
-                
             }
         } catch(e) {gclh_error("Souvenirs:",e);}
     }
-    
+
 // Special days.
     if (is_page("cache_listing")) {
         try {
@@ -9054,7 +9020,6 @@ var mainGC = function() {
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>GeoHack page</b></div>";
             html += checkboxy('settings_add_link_geohack_on_gc_map', 'Add link to GeoHack on GC Map') + show_help("With this option an icon are placed on the GC Map page to link to the same area in GeoHack.") + "<br>";
             html += " &nbsp; " + checkboxy('settings_switch_to_geohack_in_same_tab', 'Switch to GeoHack in same browser tab') + "<br>";
-            
             html += newParameterOn3;
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>Enhanced Map Popup</b></div>";
             html += checkboxy('settings_show_enhanced_map_popup', 'Enable enhanced map popup') + show_help("With this option there will be more informations on the map popup for a cache, like latest logs or trackable count.") + "<br>";
@@ -9070,7 +9035,6 @@ var mainGC = function() {
             html += "<div id='gclh_config_profile' class='gclh_block'>";
             html += "<div style='margin-left: 5px'><b>Trackables</b></div>";
             html += checkboxy('settings_faster_profile_trackables', 'Load trackables faster without images') + show_help("With this option you can stop the load on the trackable pages after the necessary datas are loaded. You disclaim of the lengthy load of the images of the trackables. This procedure is much faster as load all datas, because every image is loaded separate and not in a bigger bundle like it is for the non image data.") + "<br>";
-
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>Gallery</b></div>";
             var content_settings_show_thumbnails = checkboxy('settings_show_thumbnails', 'Show thumbnails of images') + show_help_big("With this option the images are displayed as thumbnails to have a preview. If you hover with your mouse over a thumbnail, you can see the big one.<br><br>This works in cache and TB logs, in the cache and TB image galleries, in public profile for the avatar and in the profile image gallery. <br><br>And after pressing button \"Show bigger avatars\" in cache listing, it works too for the avatars in the shown logs.") + "&nbsp; Max size of big image: <input class='gclh_form' size=3 type='text' id='settings_hover_image_max_size' value='" + settings_hover_image_max_size + "'> px <br>";
             html += content_settings_show_thumbnails;
@@ -9078,7 +9042,6 @@ var mainGC = function() {
             var content_geothumbs = "<font class='gclh_small' style='margin-left: 130px; margin-top: 4px; position: absolute;'> (Alternative: <a href='http://benchmarks.org.uk/greasemonkey/geothumbs.php' target='_blank'>Geothumbs</a> " + show_help("A great alternative to the GClh bigger image functionality with \"Show thumbnails of images\" and \"Show bigger images in gallery\", provides the script Geothumbs (Geocaching Thumbnails). <br><br>The script works like GClh with Firefox, Google Chrome and Opera as Tampermonkey script. <br><br>If you use Geothumbs, you have to uncheck both GClh bigger image functionality \"Show thumbnails of images\" and \"Show bigger images in gallery\".") + ")</font>" + "<br>";
             html += content_geothumbs;
             html += checkboxy('settings_show_big_gallery', 'Show bigger images in gallery') + show_help("With this option the images in the galleries of caches, TBs and public profiles are displayed bigger and not in 4 columns, but in 2 columns.");
-
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>Statistic</b>" + prem + "</div>";
             html += checkboxy('settings_count_own_matrix', 'Calculate your cache matrix') + show_help("With this option the count of found difficulty and terrain combinations and the count of complete matrixes are calculated and shown above the cache matrix on your statistic page.") + "<br>";
             html += checkboxy('settings_count_foreign_matrix', 'Calculate other users cache matrix') + show_help("With this option the count of found difficulty and terrain combinations and the count of complete matrixes are calculated and shown above the cache matrix on other users statistic page.") + "<br>";
@@ -9199,17 +9162,16 @@ var mainGC = function() {
             html += " &nbsp; &nbsp;" + "Measure unit can be set in <a href=\"/account/settings/preferences\">Preferences</a>" + "<br>";
             html += newParameterVersionSetzen(0.7) + newParameterOff;
             html += newParameterOn3;
-            html += "&nbsp;&nbsp;&nbsp;" + "First service: <select class='gclh_form' id='settings_secondary_elevation_service' >";
+            html += "&nbsp;&nbsp;&nbsp;" + "First service: <select class='gclh_form' id='settings_primary_elevation_service' >";
             for (var i = 1; i < elevationServicesData.length; i++) {
                 html += "  <option value='"+i+"' " + (settings_primary_elevation_service == i ? "selected=\"selected\"" : "") + ">"+elevationServicesData[i]['name']+"</option>";
             }
-            html += "</select>";            
+            html += "</select>";
             html += "&nbsp;&nbsp;" + "Second service: <select class='gclh_form' id='settings_secondary_elevation_service' >";
             for (var i = 0; i < elevationServicesData.length; i++) {
                 html += "  <option value='"+i+"' " + (settings_secondary_elevation_service == i ? "selected=\"selected\"" : "") + ">"+elevationServicesData[i]['name']+"</option>";
             }
             html += "</select><br>";
-            
             html += newParameterVersionSetzen(0.9) + newParameterOff;
             html += newParameterOn2;
             html += checkboxy('settings_improve_add_to_list', 'Show compact layout in \"Add to list\" popup to bookmark a cache') + prem + "<br>";
@@ -10214,7 +10176,7 @@ var mainGC = function() {
                 'settings_show_enhanced_map_popup',
                 'settings_modify_new_drafts_page'
             );
-            
+
             for (var i = 0; i < checkboxes.length; i++) {
                 if (document.getElementById(checkboxes[i])) setValue(checkboxes[i], document.getElementById(checkboxes[i]).checked);
             }
