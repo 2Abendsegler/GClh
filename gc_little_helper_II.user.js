@@ -7107,24 +7107,24 @@ var mainGC = function() {
                         https://www.geocaching.com/account/settings/preferences#SelectedDateFormat
                         http://api.jqueryui.com/datepicker/#utility-parseDate
                     GS --> jqui: d-->d,dd-->dd,M-->m,MM-->mm,MMM-->M,yy-->y,yyyy-->yy
-                    "d. M. yyyy"  : "d. m. yy",	3. 1. 2017
-                    "d.M.yyyy"    : "d.m.yy",    	3.1.2017
+                    "d. M. yyyy"  : "d. m. yy",   3. 1. 2017
+                    "d.M.yyyy"    : "d.m.yy",     3.1.2017
                     "d.MM.yyyy"   : "d.mm.yy",    3.01.2017
-                    "d/M/yy"      : "d/m/y",     	3/1/17
-                    "d/M/yyyy"    : "d/m/yy",    	3/1/2017
+                    "d/M/yy"      : "d/m/y",      3/1/17
+                    "d/M/yyyy"    : "d/m/yy",     3/1/2017
                     "d/MM/yyyy"   : "d/mm/yy",    3/01/2017
                     "dd MMM yy"   : "dd M y",     03 Jan 17
-                    "dd.MM.yy" 	  : "dd.mm.y",    03.01.17
+                    "dd.MM.yy"    : "dd.mm.y",    03.01.17
                     "dd.MM.yyyy"  : "dd.mm.yy",   03.01.2017
                     "dd.MM.yyyy." : "dd.mm.yy.",  03.01.2017.
                     "dd.MMM.yyyy" : "dd.M.yy",    03.Jan.2017
-                    "dd/MM/yy" 	  : "dd/mm/y",    03/01/17
+                    "dd/MM/yy"    : "dd/mm/y",    03/01/17
                     "dd/MM/yyyy"  : "dd/mm/yy",   03/01/2017
                     "dd/MMM/yyyy" : "dd/M/yy",    03/Jan/2017
                     "dd-MM-yy"    : "dd-mm-y",    03-01-17
                     "dd-MM-yyyy"  : "dd-mm-yy",   03-01-2017
-                    "d-M-yyyy" 	  : "d-m-yy",    	3-1-2017
-                    "M/d/yyyy" 	  : "m/d/yy",    	1/3/2017
+                    "d-M-yyyy"    : "d-m-yy",     3-1-2017
+                    "M/d/yyyy"    : "m/d/yy",     1/3/2017
                     "MM/dd/yyyy"  : "mm/dd/yy",   01/03/2017
                     "MMM/dd/yyyy" : "M/dd/yy",    Jan/03/2017
                     "yyyy.MM.dd." : "yy.mm.dd.",  2017.01.03.
