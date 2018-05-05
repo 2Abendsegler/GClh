@@ -1,7 +1,9 @@
 <a href="#en" title=""><img src="../images/flag_en.png"></a> &nbsp;<a href="#de" title=""><img src="../images/flag_de.png"></a>
 
+# FAQ
+
 ---
-# What can I do if the Warning is displayed "GClh is running more than once" <a id="en"></a>
+## What can I do if the Warning is displayed "GClh is running more than once" <a id="en"></a>
 Geocaching Little Helper is only working correctly, if it is just running once at a time. Because of that the script 
 itself checks if it is the only GClh running.<br>
 If this warning is displayed, it is mostly true. So you can check some points:
@@ -20,7 +22,7 @@ If you still get the warning, please leave a bugreport <a href="//github.com/2Ab
 <br>
 
 ---
-# Was kann ich tun wenn die Warnung angezeigt wird, dass GClh mehr als einmal läuft <a id="de"></a>
+## Was kann ich tun wenn die Warnung angezeigt wird, dass GClh mehr als einmal läuft <a id="de"></a>
 
 Geocaching Little Helper funktioniert nur richtig, wenn es nur einmal im Browser ausgeführt wird. Deshalb prüft das 
 Script selbst, ob dies der Fall ist.<br>
