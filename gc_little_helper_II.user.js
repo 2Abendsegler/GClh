@@ -52,8 +52,11 @@ var start = function(c) {
 
 var checkRunningOnce = function(c) {
     if (document.getElementsByTagName('head')[0]) {
-        if (document.getElementById('GClh_II_running')) alert('The script "GC little helper II" is already running.\nPlease make sure that it runs only once.');
-        else appendMetaId("GClh_II_running");
+        if (document.getElementById('GClh_II_running')){
+            var text = 'The script "GC little helper II" is already running.\nPlease make sure that it runs only once.\nDo you want to see tips on how this could happen and what is probably the cause?';
+            var url  = 'https://github.com/2Abendsegler/GClh/blob/master/docu/help_run_once.md';
+            if (window.confirm(text)) window.open(url, '_blank');
+        }else appendMetaId("GClh_II_running");
     }
 };
 
