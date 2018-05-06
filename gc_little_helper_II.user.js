@@ -7353,6 +7353,7 @@ var mainGC = function() {
     }
 // Change coordinates from Dec to Deg.
     function DectoDeg(lat, lng) {
+        var n = "000";
         lat = lat / 10000000;
         var pre = "";
         if (lat > 0) pre = "N";
@@ -7367,11 +7368,8 @@ var mainGC = function() {
         tmp2 = Math.round(tmp2 * 10000) / 10000;
         tmp2 = String(tmp2);
         if (tmp2.length == 0) tmp2 = tmp2 + "0.000";
-        else if (tmp2.length == 1) tmp2 = tmp2 + ".000";
-        else if (tmp2.length == 2) tmp2 = tmp2 + ".000";
-        else if (tmp2.length == 3) tmp2 = tmp2 + "000";
-        else if (tmp2.length == 4) tmp2 = tmp2 + "00";
-        else if (tmp2.length == 5) tmp2 = tmp2 + "0";
+        else if (tmp2.indexOf(".") == -1) tmp2 = tmp2 + ".000";
+        else if (tmp2.indexOf(".") != -1) tmp2 = tmp2 + n.slice(tmp2.length - tmp2.indexOf(".") - 1);
         var new_lat = pre + " " + tmp1 + "° " + tmp2;
         lng = lng / 10000000;
         var pre = "";
@@ -7388,11 +7386,8 @@ var mainGC = function() {
         tmp2 = Math.round(tmp2 * 10000) / 10000;
         tmp2 = String(tmp2);
         if (tmp2.length == 0) tmp2 = tmp2 + "0.000";
-        else if (tmp2.length == 1) tmp2 = tmp2 + ".000";
-        else if (tmp2.length == 2) tmp2 = tmp2 + ".000";
-        else if (tmp2.length == 3) tmp2 = tmp2 + "000";
-        else if (tmp2.length == 4) tmp2 = tmp2 + "00";
-        else if (tmp2.length == 5) tmp2 = tmp2 + "0";
+        else if (tmp2.indexOf(".") == -1) tmp2 = tmp2 + ".000";
+        else if (tmp2.indexOf(".") != -1) tmp2 = tmp2 + n.slice(tmp2.length - tmp2.indexOf(".") - 1);
         var new_lng = pre + " " + tmp1 + "° " + tmp2;
         return new_lat + " " + new_lng;
     }
