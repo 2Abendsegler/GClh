@@ -39,16 +39,16 @@
 ## v0.9.6:
 <ul>
 	<li>
-		<strong>New:</strong> After a change of a bookmark list you can go back to bookmark list automatically. The confirmation page of this change is skip: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/#648">#648</a><br>
-		Settings -> Bookmark list:
+		<strong>New:</strong> After a change of a bookmark list you can go back to bookmark list automatically. The confirmation page of this change is skip: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/#648">#648</a>]<br>
+		Settings -> Bookmark list:<br>
 		<img src="../images/v0.9.6_Screen02.jpg" alt="v0.9.6_Screen02.jpg"><br>
 		Thanks to <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a> for the implementation.<br>
 	</li>
 	<br>
 	<li>
-		<strong>New:</strong> Save bookmark list with Key F2 too: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/#648">#648</a><br>
+		<strong>New:</strong> Save bookmark list with Key F2 too: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/#648">#648</a>]<br>
 		<img src="../images/v0.9.6_Screen01.jpg" alt="v0.9.6_Screen01.jpg"><br>
-		Thanks to <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a> for the 	
+		Thanks to <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a> for the implementation.<br>	
 	</li>
 	<br>
 	<li>
