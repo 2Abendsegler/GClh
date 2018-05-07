@@ -460,6 +460,7 @@ var variablesInit = function(c) {
     c.settings_show_brouter_link = getValue("settings_show_brouter_link", true);
     c.settings_show_default_links = getValue("settings_show_default_links", true);
     c.settings_bm_changed_and_go = getValue("settings_bm_changed_and_go", true);
+    c.settings_bml_changed_and_go = getValue("settings_bml_changed_and_go", true);
     c.settings_show_tb_inv = getValue("settings_show_tb_inv", true);
     c.settings_but_search_map = getValue("settings_but_search_map", true);
     c.settings_but_search_map_new_tab = getValue("settings_but_search_map_new_tab", false);
@@ -662,8 +663,8 @@ var mainGC = function() {
         } catch(e) {gclh_error("Run after redirect",e);}
     }
 
-// After change of a bookmark go automatically from confirmation screen to to bookmark list.
-   if (settings_bm_changed_and_go && document.location.href.match(/\.com\/bookmarks\/mark\.aspx\?(guid=|ID=)/) && $('#divContentMain')[0] && $('p.Success a[href*="/bookmarks/view.aspx?guid="]')[0]) {
+// After change of a bookmark respectively a bookmark list go automatically from confirmation screen to bookmark list.
+   if (((settings_bm_changed_and_go && document.location.href.match(/\.com\/bookmarks\/mark\.aspx\?(guid=|ID=)/)) || (settings_bml_changed_and_go && document.location.href.match(/\.com\/bookmarks\/edit\.aspx/))) && $('#divContentMain')[0] && $('p.Success a[href*="/bookmarks/view.aspx?guid="]')[0]) {
        $('#divContentMain').css("visibility", "hidden");
        document.location.href = $('p.Success a')[0].href;
    }
@@ -718,6 +719,8 @@ var mainGC = function() {
             if (document.location.href.match(/\.com\/pocket\/(gcquery|bmquery|urquery)\.aspx/)) var id = "ctl00_ContentBody_btnSubmit";
             // "Create a Bookmark" entry, "Edit a Bookmark" entry.
             if (document.location.href.match(/\.com\/bookmarks\/mark\.aspx/)) var id = "ctl00_ContentBody_Bookmark_btnCreate";
+            // "Create New Bookmark List", Edit a Bookmark list.
+            if (document.location.href.match(/\.com\/bookmarks\/edit\.aspx/)) var id = "ctl00_ContentBody_BookmarkListEditControl1_btnSubmit";
             // Hide cache process speichern.
             if (document.location.href.match(/\.com\/hide\//)) {
                 if ($('#btnContinue')[0]) var id = "btnContinue";
@@ -8885,7 +8888,8 @@ var mainGC = function() {
             html += checkboxy('settings_compact_layout_bm_lists', 'Show compact layout in bookmark lists') + "<br>";
             html += newParameterVersionSetzen(0.8) + newParameterOff;
             html += newParameterOn3;
-            html += checkboxy('settings_bm_changed_and_go', 'After bookmark change go to bookmark list automatically') + show_help("With this option you can switch to the bookmark list automatically after a change of a bookmark. The confirmation page of this change will skip.") + "<br>";
+            html += checkboxy('settings_bm_changed_and_go', 'After change of bookmark go to bookmark list automatically') + show_help3("With this option you can switch to the bookmark list automatically after a change of a bookmark. The confirmation page of this change will skip.") + "<br>";
+            html += checkboxy('settings_bml_changed_and_go', 'After change of bookmark list go to bookmark list automatically') + show_help3("With this option you can switch to the bookmark list automatically after a change of the bookmark list. The confirmation page of this change will skip.") + "<br>";
             html += newParameterVersionSetzen(0.9) + newParameterOff;
             html += "</div>";
 
@@ -9018,7 +9022,7 @@ var mainGC = function() {
             html += newParameterOn3;
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>Enhanced Map Popup</b></div>";
             html += checkboxy('settings_show_enhanced_map_popup', 'Enable enhanced map popup') + show_help("With this option there will be more informations on the map popup for a cache, like latest logs or trackable count.") + "<br>";
-            html += " &nbsp; Show the <select class='gclh_form' id='settings_show_latest_logs_symbols_count_map'>";
+            html += " &nbsp; &nbsp;" + "Show the <select class='gclh_form' id='settings_show_latest_logs_symbols_count_map'>";
             for (var i = 1; i <= 25; i++) {
                 html += "  <option value='" + i + "' " + (settings_show_latest_logs_symbols_count_map == i ? "selected=\"selected\"" : "") + ">" + i + "</option>";
             }
@@ -10155,6 +10159,7 @@ var mainGC = function() {
                 'settings_show_brouter_link',
                 'settings_show_default_links',
                 'settings_bm_changed_and_go',
+                'settings_bml_changed_and_go',
                 'settings_show_tb_inv',
                 'settings_but_search_map',
                 'settings_but_search_map_new_tab',
