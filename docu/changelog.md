@@ -44,29 +44,25 @@
 		<img src="../images/v0.9.6_Screen01.jpg" alt="v0.9.6_Screen01.jpg"><br>
 		Thanks to <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a> for the implementation.<br>
 	</li>
-	<br>
 	<li>
 		<strong>New:</strong> Save bookmark list with Key F2 too: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/#648">#648</a>]<br>
 		Thanks to <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a> for the implementation.<br>	
 	</li>
-	<br>
 	<li>
 		<strong>Improvement:</strong> Reorganization buttons in bookmark lists so it runs to with 900 pixel: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/#650">#650</a>]<br>
-		Thanks to <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a> for the implementation.<br>	
+		Thanks to <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a> for the change.<br>	
 	</li>
-	<br>
 	<li>
 		<strong>Improvement:</strong> Change souvenirs sort buttons to standard: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/#649">#649</a>]<br>
-		Thanks to <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a> for the implementation.<br>	
+		Thanks to <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a> for the change.<br>	
 	</li>
-	<br>
 	<li>
 		<strong>Fix:</strong> Misrepresentation of coordinates if only one digit before the minutes comma: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/640">#640</a>]<br>
-		Thanks to <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a> for the Fix.<br>
+		Thanks to <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a> for the fix.<br>
 	</li>
 	<li>
 		<strong>Fix:</strong> Error on old drafts page if no drafts available: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/639">#639</a>]<br>
-		Thanks to <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a> for the Fix.<br>
+		Thanks to <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a> for the fix.<br>
 	</li>
 </ul>
 (??.??.2018)<br>
