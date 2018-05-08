@@ -3214,20 +3214,8 @@ var mainGC = function() {
     if (document.location.href.match(/\.com\/bookmarks\/(view\.aspx\?guid=|bulk\.aspx\?listid=|view\.aspx\?code=)/) && document.getElementById('ctl00_ContentBody_ListInfo_cboItemsPerPage')) {
         try {
             var css = "";
-            // Prepare button corrected coords.
-            if ($('#ctl00_ContentBody_btnAddBookmark')[0]) var corrCoords = '<input type="button" id="gclh_linkCorrCoords" href="javascript:void(0);" title="Mark Caches with Corrected Coordinates" value="Mark Caches with Corr. Coords">';
-            // Prepare link "Download as kml".
-            if (document.location.href.match(/guid=([a-zA-Z0-9-]*)/)) {
-                var matches = document.location.href.match(/guid=([a-zA-Z0-9-]*)/);
-                if (matches && matches[1]) {
-                    var uuidx = matches[1];
-                    var kml = "<a title=\"Download Google Earth kml\" href='/kml/bmkml.aspx?bmguid=" + uuidx + "' style='vertical-align: bottom;'>Download as kml</a>";
-                }
-            }
             // Compact layout.
             if (settings_compact_layout_bm_lists) {
-                // Prepare button hide longtext.
-                if ($('#ctl00_ContentBody_btnAddBookmark')[0]) var hideLt = '<input type="button" id="gclh_hideLtBm" href="javascript:void(0);" title="Show/hide Longtext in Bookmark" value="Hide Text">';
                 // Header:
                 css += "#ctl00_ContentBody_lbHeading a {font-weight: normal; font-size: 13px; margin-left: 10px;}";
                 css += "#ctl00_ContentBody_QuickAdd {margin-bottom: 1px; float: left; position: relative;} #ctl00_ContentBody_btnAddBookmark {margin-top: 1px; margin-left: -1px;}";
@@ -3250,7 +3238,6 @@ var mainGC = function() {
                     if (LO.nextElementSibling.innerHTML == "") LO.nextElementSibling.remove();
                     else LO.nextElementSibling.style.marginBottom = "0";
                     LO.style.marginBottom = "0";
-                    LO.innerHTML += "<span style='float: right; padding-right: 195px; margin-top: -7px;'>" + (uuidx ? kml+"&nbsp;" : "") + (corrCoords ? "&nbsp;"+corrCoords : "") + (hideLt ? "&nbsp;"+hideLt : "") + "</span>";
                 }
                 // Table:
                 css += "table.Table tr {line-height: 16px;}";
@@ -3266,16 +3253,32 @@ var mainGC = function() {
                 }
                 // Footer:
                 $('#ctl00_ContentBody_ListInfo_btnDownload').closest('p').append($('#ctl00_ContentBody_btnCreatePocketQuery').remove().get().reverse());
-                // Event, css hide longtext.
-                if ($('#gclh_hideLtBm')[0]) $('#gclh_hideLtBm')[0].addEventListener("click", hideLtBm, false);
-                css += ".gclh_hideBm {display: table-column;} .working {opacity: 0.3; cursor: default;}";
-            // No compact layout, only build links.
-            } else {
-                $('#ctl00_ContentBody_lbHeading')[0].parentNode.parentNode.parentNode.childNodes[3].innerHTML += (uuidx ? "<br>"+kml : "") + (corrCoords ? "<br>"+corrCoords : "");
             }
-            // Event, css corrected coords.
-            if ($('#gclh_linkCorrCoords')[0]) $('#gclh_linkCorrCoords')[0].addEventListener("click", markCorrCoordForBm, false);
-            css += ".cc_cell {text-align: center !important} .working {opacity: 0.3; cursor: default;}";
+            // Build buttons "Mark Caches with Corr. Coords" and "Hide Text" right beside button "Copy List".
+            if ($('#ctl00_ContentBody_ListInfo_btnCopyList')[0]) {
+                var defBt = 'class="gclh_bt" type="button"';
+                var span = document.createElement("span");
+                span.innerHTML += '<input id="gclh_linkCorrCoords" title="Mark Caches with Corrected Coordinates" value="Mark Caches with Corr. Coords"'+defBt+'>';
+                span.innerHTML += '<input id="gclh_hideLtBm" title="Show/hide Longtext in Bookmark" value="Hide Text"'+defBt+'>';
+                $('#ctl00_ContentBody_ListInfo_btnCopyList')[0].parentNode.insertBefore(span, $('#ctl00_ContentBody_ListInfo_btnCopyList')[0].nextSibling);
+                css += ".cc_cell {text-align: center !important}";
+                css += ".gclh_hideBm {display: table-column;}";
+                css += ".gclh_bt {margin-left: 4px;} .working {opacity: 0.3; cursor: default;}";
+                $('#gclh_linkCorrCoords')[0].addEventListener("click", markCorrCoordForBm, false);
+                $('#gclh_hideLtBm')[0].addEventListener("click", hideLtBm, false);
+            }
+            // Build button "Download as kml" right beside button "Download .LOC".
+            if ($('#ctl00_ContentBody_ListInfo_btnDownload')[0]) {
+                if (document.location.href.match(/guid=([a-zA-Z0-9-]*)/)) {
+                    var matches = document.location.href.match(/guid=([a-zA-Z0-9-]*)/);
+                    if (matches && matches[1]) {
+                        var uuidx = matches[1];
+                        var span = document.createElement("span");
+                        span.innerHTML += '<input id="gclh_kml" title="Download Google Earth kml" value="Download as kml" onClick="document.location.href=\'https://www.geocaching.com/kml/bmkml.aspx?bmguid='+uuidx+'\';" class="gclh_bt" type="button">';
+                        $('#ctl00_ContentBody_ListInfo_btnDownload')[0].parentNode.insertBefore(span, $('#ctl00_ContentBody_ListInfo_btnDownload')[0].nextSibling);
+                    }
+                }
+            }
             appendCssStyle(css);
         } catch(e) {gclh_error("Improve bookmark lists:",e);}
     }
@@ -3647,7 +3650,7 @@ var mainGC = function() {
     }
 
 // Improve drafts old page.
-    if (document.location.href.match(/\.com\/my\/fieldnotes\.aspx/)&& $('table.Table tbody')[0]) {
+    if (document.location.href.match(/\.com\/my\/fieldnotes\.aspx/) && $('table.Table tbody')[0]) {
         try {
             // Mark duplicate drafts.
             var existingNotes = {};
@@ -7045,6 +7048,68 @@ var mainGC = function() {
         } catch(e) {gclh_error("Auto check checkbox on hide cache process:",e);}
     }
 
+// Improve Souvenirs
+    if ( is_page("souvenirs") || is_page("publicProfile") ) {
+        try {
+            SouvenirsDashboard = $(".ProfileSouvenirsList");
+            if (SouvenirsDashboard.length) {
+                SouvenirsDashboard.before('<div id="gclhSouvenirsSortButtons"></div><p></p>');
+                $("#gclhSouvenirsSortButtons").append('<input id="actionSouvenirsSortAcquiredDateNewestTop" title="Sort newest first" value="Newest first" type="button" href="javascript:void(0);" style="opacity: 0.5; margin-right: 4px" disabled="true">');
+                $("#gclhSouvenirsSortButtons").append('<input id="actionSouvenirsSortAcquiredDateOldestTop" title="Sort oldest first" value="Oldest first" type="button" href="javascript:void(0);" style="opacity: 0.5; margin-right: 4px" disabled="true">');
+                $("#gclhSouvenirsSortButtons").append('<input id="actionSouvenirsSortAcquiredTitleAtoZ" title="Sort title A-Z" value="Title A-Z" type="button" href="javascript:void(0);" style="margin-right: 4px">');
+                $("#gclhSouvenirsSortButtons").append('<input id="actionSouvenirsSortAcquiredTitleZtoA" title="Sort title Z-A" value="Title Z-A" type="button" href="javascript:void(0);">');
+                var jqui_date_format = "";
+                var accessTokenPromise = $.get('/account/settings/preferences');
+                accessTokenPromise.done(function (response) {
+                    response_div = document.createElement('div');
+                    response_div.innerHTML = response;
+                    date_format = $('select#SelectedDateFormat option:selected', response_div).val();
+                    jqui_date_format = dateFormatConversion(date_format);
+                    $('#actionSouvenirsSortAcquiredDateNewestTop')[0].disabled = $('#actionSouvenirsSortAcquiredDateOldestTop')[0].disabled = "";
+                    $('#actionSouvenirsSortAcquiredDateNewestTop')[0].style.opacity = $('#actionSouvenirsSortAcquiredDateOldestTop')[0].style.opacity = "1";
+                });
+                function dateFormatConversion(format) {return format.replace(/yy/g,'y').replace(/M/g,'m').replace(/mmm/,'M');}
+                function getSouvenirAcquiredDate(souvenirDiv) {return $(souvenirDiv).text().match( /Acquired on (.*)/ )[1];}
+                function AcquiredDateNewestFirst(a, b) {
+                    var ada = getSouvenirAcquiredDate(a);
+                    var adb = getSouvenirAcquiredDate(b);
+                    date1 = $.datepicker.parseDate(jqui_date_format, ada);
+                    date2 = $.datepicker.parseDate(jqui_date_format, adb);
+                    if(date1.getTime() == date2.getTime()) return TitleAtoZ(a, b);
+                    return date1 < date2 ? 1 : -1;
+                }
+                function AcquiredDateOldestFirst(a, b) {
+                    var ada = getSouvenirAcquiredDate(a);
+                    var adb = getSouvenirAcquiredDate(b);
+                    date1 = $.datepicker.parseDate(jqui_date_format, ada);
+                    date2 = $.datepicker.parseDate(jqui_date_format, adb);
+                    if(date1.getTime() == date2.getTime()) return TitleZtoA(a, b);
+                    return date1 < date2 ? -1 : 1;
+                }
+                function TitleAtoZ(a, b) {
+                    var aT = $(a).children('a').attr('title');
+                    var bT = $(b).children('a').attr('title');
+                    return aT.localeCompare(bT);
+                }
+                function TitleZtoA(a, b) {
+                    var aT = $(a).children('a').attr('title');
+                    var bT = $(b).children('a').attr('title');
+                    return bT.localeCompare(aT);
+                }
+                function ReorderSouvenirs(orderfunction) {
+                    SouvenirsDashboard = $(".ProfileSouvenirsList");
+                    Souvenirs = SouvenirsDashboard.children('div');
+                    Souvenirs.detach().sort(orderfunction);
+                    SouvenirsDashboard.append(Souvenirs);
+                }
+                $("#actionSouvenirsSortAcquiredDateNewestTop").click(function() {ReorderSouvenirs(AcquiredDateNewestFirst)});
+                $("#actionSouvenirsSortAcquiredDateOldestTop").click(function() {ReorderSouvenirs(AcquiredDateOldestFirst)});
+                $("#actionSouvenirsSortAcquiredTitleAtoZ").click(function() {ReorderSouvenirs(TitleAtoZ)});
+                $("#actionSouvenirsSortAcquiredTitleZtoA").click(function() {ReorderSouvenirs(TitleZtoA)});
+            }
+        } catch(e) {gclh_error("Improve Souvenirs:",e);}
+    }
+
 // Check for upgrade.
     try {
         function checkForUpgrade(manual) {
@@ -7091,107 +7156,6 @@ var mainGC = function() {
         }
         checkForUpgrade(false);
     } catch(e) {gclh_error("Check for upgrade:",e);}
-
-// Souvenirs
-    if ( is_page("souvenirs") || is_page("publicProfile") ) {
-        try {
-            SouvenirsDashboard = $(".ProfileSouvenirsList");
-            if ( SouvenirsDashboard.length ) {
-                var css = ".gclhSouvenirSortButton {";
-                css += "color: #02874D;";
-                css += "border: 2px solid #02874D;";
-                css += "font-size: 150%;";
-                css += "}";
-                appendCssStyle(css);
-
-                function dateFormatConversion(format) {
-                    return format.replace(/yy/g,'y').replace(/M/g,'m').replace(/mmm/,'M');
-                    /* GS dateformat to jqui datepicker dateformat:
-                        https://www.geocaching.com/account/settings/preferences#SelectedDateFormat
-                        http://api.jqueryui.com/datepicker/#utility-parseDate
-                    GS --> jqui: d-->d,dd-->dd,M-->m,MM-->mm,MMM-->M,yy-->y,yyyy-->yy
-                    "d. M. yyyy"  : "d. m. yy",   3. 1. 2017
-                    "d.M.yyyy"    : "d.m.yy",     3.1.2017
-                    "d.MM.yyyy"   : "d.mm.yy",    3.01.2017
-                    "d/M/yy"      : "d/m/y",      3/1/17
-                    "d/M/yyyy"    : "d/m/yy",     3/1/2017
-                    "d/MM/yyyy"   : "d/mm/yy",    3/01/2017
-                    "dd MMM yy"   : "dd M y",     03 Jan 17
-                    "dd.MM.yy"    : "dd.mm.y",    03.01.17
-                    "dd.MM.yyyy"  : "dd.mm.yy",   03.01.2017
-                    "dd.MM.yyyy." : "dd.mm.yy.",  03.01.2017.
-                    "dd.MMM.yyyy" : "dd.M.yy",    03.Jan.2017
-                    "dd/MM/yy"    : "dd/mm/y",    03/01/17
-                    "dd/MM/yyyy"  : "dd/mm/yy",   03/01/2017
-                    "dd/MMM/yyyy" : "dd/M/yy",    03/Jan/2017
-                    "dd-MM-yy"    : "dd-mm-y",    03-01-17
-                    "dd-MM-yyyy"  : "dd-mm-yy",   03-01-2017
-                    "d-M-yyyy"    : "d-m-yy",     3-1-2017
-                    "M/d/yyyy"    : "m/d/yy",     1/3/2017
-                    "MM/dd/yyyy"  : "mm/dd/yy",   01/03/2017
-                    "MMM/dd/yyyy" : "M/dd/yy",    Jan/03/2017
-                    "yyyy.MM.dd." : "yy.mm.dd.",  2017.01.03.
-                    "yyyy/MM/dd"  : "yy/mm/dd",   2017/01/03
-                    "yyyy-MM-dd"  : "yy-mm-dd"    2017-01-03 */
-                }
-                SouvenirsDashboard.before('<div id="gclhSouvenirsSortButtons" class="btn-group" style="justify-content: left;"></div><p></p>');
-                $("#gclhSouvenirsSortButtons").append('<div style="width: 155px; padding: 10px;">                  <a href="#" id="actionSouvenirsSortAcquiredDateNewestTop" class="btn gclhSouvenirSortButton" style="display: none; color: #02874D;">Newest first</a></div>');
-                $("#gclhSouvenirsSortButtons").append('<div style="width: 155px; padding: 10px; margin-left:12px;"><a href="#" id="actionSouvenirsSortAcquiredDateOldestTop" class="btn gclhSouvenirSortButton" style="display: none; color: #02874D;">Oldest first</a></div>');
-                $("#gclhSouvenirsSortButtons").append('<div style="width: 155px; padding: 10px; margin-left:12px;"><a href="#" id="actionSouvenirsSortAcquiredTitleAtoZ" class="btn gclhSouvenirSortButton" style="color: #02874D;">Title A-Z</a></div>');
-                $("#gclhSouvenirsSortButtons").append('<div style="width: 155px; padding: 10px; margin-left:12px;"><a href="#" id="actionSouvenirsSortAcquiredTitleZtoA" class="btn gclhSouvenirSortButton" style="color: #02874D;">Title Z-A</a></div>');
-                var jqui_date_format = "";
-                var accessTokenPromise = $.get('/account/settings/preferences');
-                accessTokenPromise.done(function (response) {
-                    response_div = document.createElement('div');
-                    response_div.innerHTML = response;
-                    date_format = $('select#SelectedDateFormat option:selected', response_div).val(); // 
-                    jqui_date_format = dateFormatConversion(date_format);
-                    $('#actionSouvenirsSortAcquiredDateNewestTop').show();
-                    $('#actionSouvenirsSortAcquiredDateOldestTop').show();
-                });
-               
-                function getSouvenirAcquiredDate( souvenirDiv ) { return $(souvenirDiv).text().match( /Acquired on (.*)/ )[1]; }
-               
-                function AcquiredDateNewestFirst(a, b) {
-                    var ada = getSouvenirAcquiredDate(a);
-                    var adb = getSouvenirAcquiredDate(b);
-                    date1 = $.datepicker.parseDate(jqui_date_format, ada);
-                    date2 = $.datepicker.parseDate(jqui_date_format, adb);
-                    if(date1.getTime() == date2.getTime()) return TitleAtoZ(a, b);
-                    return date1 < date2 ? 1 : -1;
-                }
-                function AcquiredDateOldestFirst(a, b) {
-                    var ada = getSouvenirAcquiredDate(a);
-                    var adb = getSouvenirAcquiredDate(b);
-                    date1 = $.datepicker.parseDate(jqui_date_format, ada);
-                    date2 = $.datepicker.parseDate(jqui_date_format, adb);
-                    if(date1.getTime() == date2.getTime()) return TitleZtoA(a, b);
-                    return date1 < date2 ? -1 : 1;
-                    // return Date.parse(ada) < Date.parse(adb) ? -1 : 1;
-                }
-                function TitleAtoZ(a, b) {
-                    var aT = $(a).children('a').attr('title');
-                    var bT = $(b).children('a').attr('title');
-                    return aT.localeCompare(bT);
-                }
-                function TitleZtoA(a, b) {
-                    var aT = $(a).children('a').attr('title');
-                    var bT = $(b).children('a').attr('title');
-                    return bT.localeCompare(aT);
-                }
-                function ReorderSouvenirs( orderfunction ) {
-                    SouvenirsDashboard = $(".ProfileSouvenirsList");
-                    Souvenirs = SouvenirsDashboard.children('div');
-                    Souvenirs.detach().sort(orderfunction);
-                    SouvenirsDashboard.append(Souvenirs);
-                }
-                $("#actionSouvenirsSortAcquiredDateNewestTop").click( function() { ReorderSouvenirs(AcquiredDateNewestFirst) } );
-                $("#actionSouvenirsSortAcquiredDateOldestTop").click( function() { ReorderSouvenirs(AcquiredDateOldestFirst) } );
-                $("#actionSouvenirsSortAcquiredTitleAtoZ").click( function() { ReorderSouvenirs(TitleAtoZ) } );
-                $("#actionSouvenirsSortAcquiredTitleZtoA").click( function() { ReorderSouvenirs(TitleZtoA) } );
-            }
-        } catch(e) {gclh_error("Souvenirs:",e);}
-    }
 
 // Special days.
     if (is_page("cache_listing")) {
