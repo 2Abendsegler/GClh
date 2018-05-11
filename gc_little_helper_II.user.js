@@ -968,7 +968,7 @@ var mainGC = function() {
                 // Besonderheiten:
                 if (!is_page("cache_listing")) css += ".UserSuppliedContent {width: " + (new_width - 200) + "px;}";
                 if (is_page("publicProfile")) css += ".container .profile-panel {width: " + (new_width - 160) + "px;}";
-                if (is_page("cache_listing")) css += ".span-9 {width: " + (new_width - 300 - 270 - 13 - 13 - 10) + "px !important;}";
+                if (is_page("cache_listing")) css += ".span-9 {width: " + (new_width - 300 - 270 - 13 - 13 - 10 - 6) + "px !important;}";
                 else if (document.location.href.match(/\.com\/my\/statistics\.aspx/) || (is_page("publicProfile") && $('#ctl00_ContentBody_ProfilePanel1_lnkStatistics.Active')[0])) {
                     css += ".span-9 {width: " + ((new_width - 280) / 2) + "px !important; margin-right: 30px;} .last {margin-right: 0px;}";
                     css += ".StatsTable {width: " + (new_width - 250) + "px !important;}";
@@ -1965,7 +1965,7 @@ var mainGC = function() {
         try {
             // Trackable Namen kürzen, damit nicht umgebrochen wird, und Title setzen.
             var inventory = $('#ctl00_ContentBody_uxTravelBugList_uxInventoryLabel').closest('.CacheDetailNavigationWidget').find('.WidgetBody span');
-            for (var i = 0; i < inventory.length; i++) {noBreakInLine(inventory[i], 203, inventory[i].innerHTML);}
+            for (var i = 0; i < inventory.length; i++) {noBreakInLine(inventory[i], 201, inventory[i].innerHTML);}
         } catch(e) {gclh_error("Improve inventory list:",e);}
     }
 
