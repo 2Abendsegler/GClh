@@ -68,6 +68,10 @@
 		<strong>Fix:</strong> Copyright in GClh Config is too long, it is partly demolished: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/643">#643</a>]<br>
 		Thanks to <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a> for the fix.<br>
 	</li>
+	<li>
+		<strong>Fix:</strong> Additional linebreaks in cache listing due to changes made by GS: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/652">#652</a>]<br>
+		Thanks to <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a> for the fix.<br>
+	</li>
 </ul>
 (??.??.2018)<br>
 released by <a href="https://www.geocaching.com/profile/?u=Ruko2010">Ruko2010</a><br>
