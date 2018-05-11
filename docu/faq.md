@@ -2,11 +2,13 @@
 
 | <img src="../images/flag_en.png">  | <img src="../images/flag_de.png"> |
 | ------------- | ------------- |
-| <a href="#1-en">1.What can I do if the Warning is displayed "GClh is running more than once"?</a>| <a href="#1-de">1. Was kann ich tun wenn die Warnung angezeigt wird, dass GClh mehr als einmal läuft?</a>|
+| <a href="#1-en">1. What can I do if the Warning is displayed "GClh is running more than once"?</a>| <a href="#1-de">1. Was kann ich tun wenn die Warnung angezeigt wird, dass GClh mehr als einmal läuft?</a>|
 
 ---
 <img src="../images/flag_en.png">
-## <a id="1-en"></a> 1.What can I do if the Warning is displayed "GClh is running more than once"
+<a id="1-en"></a>
+
+## 1. What can I do if the Warning is displayed "GClh is running more than once"
 *GC little helper II* is only working correctly, if it's just running once at a time. Because of that, the script 
 itself checks if it's the only GClh running.<br>
 If this warning is displayed, it is mostly true. So you can check some points:
@@ -27,7 +29,9 @@ will try to assist you.
 
 ---
 <img src="../images/flag_de.png">
-##<a id="1-de"></a>Was kann ich tun wenn die Warnung angezeigt wird, dass GClh mehr als einmal läuft
+<a id="1-de"></a>
+
+## 1. Was kann ich tun wenn die Warnung angezeigt wird, dass GClh mehr als einmal läuft
 
 *GC little helper II* funktioniert nur richtig, wenn es nur einmal im Browser ausgeführt wird. Deshalb prüft das 
 Script selbst, ob dies der Fall ist.<br>
