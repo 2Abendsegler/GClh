@@ -1,9 +1,16 @@
-<a href="#en" title=""><img src="../images/flag_en.png"></a> &nbsp;<a href="#de" title=""><img src="../images/flag_de.png"></a>
+
+| <img src="../images/flag_en.png">  | <img src="../images/flag_de.png"> |
+| ------------- | ------------- |
+| <a href="#1-en">1.What can I do if the Warning is displayed "GClh is running more than once"?</a>| <a href="#1-de">1. Was kann ich tun wenn die Warnung angezeigt wird, dass GClh mehr als einmal läuft?</a>|
+
+
+
+<a href="#en" title=""></a> &nbsp;<a href="#de" title=""></a>
 
 # FAQ
 
 ---
-## What can I do if the Warning is displayed "GClh is running more than once" <a id="en"></a>
+## What can I do if the Warning is displayed "GClh is running more than once" <a id="1-en"></a>
 *GC little helper II* is only working correctly, if it's just running once at a time. Because of that, the script 
 itself checks if it's the only GClh running.<br>
 If this warning is displayed, it is mostly true. So you can check some points:
