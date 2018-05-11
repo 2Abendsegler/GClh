@@ -4,14 +4,14 @@
 
 ---
 ## What can I do if the Warning is displayed "GClh is running more than once" <a id="en"></a>
-*Geocaching Little Helper* is only working correctly, if it's just running once at a time. Because of that, the script 
+*GC little helper II* is only working correctly, if it's just running once at a time. Because of that, the script 
 itself checks if it's the only GClh running.<br>
 If this warning is displayed, it is mostly true. So you can check some points:
 <ol>
 	<li>
 		Please check if you have more than one Scriptmanger (i.e. Tampermonkey and Greasemonkey) installed. Maybe GClh 
 		is installed in both of the Scriptmanager. In this case you just have to uninstall GClh in one of this 
-		Scriptmanagers. Since we only support Tampermonkey, you should install it in Greasemonkey.
+		Scriptmanagers. Since we only support Tampermonkey, you should uninstall it in Greasemonkey.
 	</li>
 	<li>
 		Maybe GClh is installed more than once in your Scriptmanger. You can check this for example in Tampermonkey 
@@ -25,7 +25,7 @@ will try to assist you.
 ---
 ## Was kann ich tun wenn die Warnung angezeigt wird, dass GClh mehr als einmal läuft <a id="de"></a>
 
-*Geocaching Little Helper* funktioniert nur richtig, wenn es nur einmal im Browser ausgeführt wird. Deshalb prüft das 
+*GC little helper II* funktioniert nur richtig, wenn es nur einmal im Browser ausgeführt wird. Deshalb prüft das 
 Script selbst, ob dies der Fall ist.<br>
 Wenn die Meldung angezeigt wird, dass GClh mehr als einmal läuft, dann ist das auch meist der Fall. Daher sollten 
 folgende Sachen geprüft werden:
