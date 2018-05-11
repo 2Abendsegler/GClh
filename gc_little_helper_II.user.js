@@ -6011,6 +6011,12 @@ var mainGC = function() {
                             // meantime the global varioable gc_code could (and will be ;-)) changed
                             var local_gc_code = $(text).find('#ctl00_ContentBody_CoordInfoLinkControl1_uxCoordInfoCode').html();
 
+                            var premium_only = false;
+                            if($(text).find('p.Warning.NoBottomSpacing').html() != null){
+                                console.log($(text).find('p.Warning.NoBottomSpacing').html());
+                                premium_only = true;
+                            }
+
                             // get the last logs
                             initalLogs_from_cachepage = text.substr(text.indexOf('initalLogs = {"status')+13, text.indexOf('} };') - text.indexOf('initalLogs = {"status') - 10);
                             var initalLogs = JSON.parse(initalLogs_from_cachepage);
@@ -6107,8 +6113,15 @@ var mainGC = function() {
                             // Put all together
                             var new_text = '<span style="margin-right: 5px;">Logs:</span>' + all_logs.replace(/&nbsp;/g, " ") + '<br>';
                             new_text += $(last_logs).prop('outerHTML');
-                            new_text += 'Place: ' + place + ' | ';
+                            new_text += place + ' | ';
                             new_text += '<span class="favi_points"><svg height="16" width="16"><image xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="/images/icons/fave_fill_16.svg" src="/images/icons/fave_fill_16.png" width="16" height="16" alt="Favorite points"></image></svg> ' + fav_percent + '</span> | ';
+
+                            if(premium_only){
+                                var css = "span.premium_only img {margin-right:0px;}";
+                                appendCssStyle(css);
+                                new_text += ' <span class="premium_only"><img src="/images/icons/16/premium_only.png" width="16" height="16" alt="Premium Only Cache" /></span> | ';
+                            }
+
                             new_text += '<span class="tackables"><svg height="16" width="16" class="icon-sm"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="/account/app/ui-icons/sprites/global.svg#icon-travelbug-default"></use></svg></span> ' + trachables + '<br>';
 
                             $('#popup_additional_info_' + local_gc_code).html(new_text);
