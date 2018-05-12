@@ -2785,6 +2785,7 @@ var mainGC = function() {
                     for (var i = 0; i <= 2; i++) {$('.pq-info-wrapper')[0].children[0].remove();}
                 }
                 $('#ActivePQs, #DownloadablePQs').each(function() {this.children[0].setAttribute("style", "margin: -25px 2px 0 0; float: right;");});
+                if ($('#uxFindCachesAlongaRoute.btn.btn-secondary').length > 0) $('#uxFindCachesAlongaRoute')[0].className = "btn btn-primary";
                 // Table active PQs:
                 css += "table {margin-bottom: 0;} table.Table, table.Table th, table.Table td {padding: 5px; border: 1px solid #fff;}";
                 css += "table.Table tr {line-height: 16px;} table.Table th img, table.Table td img {vertical-align: sub;}";
