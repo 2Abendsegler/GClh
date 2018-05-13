@@ -2647,7 +2647,7 @@ var mainGC = function() {
         window.addEventListener("load", gclh_setFocus, false);
         var finds = get_my_finds();
         var me = global_me;
-        if (newLogPage) var owner = $('.muted')[0].children[1].innerHTML;
+        if (newLogPage) var owner = $('.muted')[0].children[1].childNodes[0].textContent;
         else var owner = document.getElementById('ctl00_ContentBody_LogBookPanel1_WaypointLink').nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.innerHTML;
         document.getElementById(id).innerHTML = document.getElementById(id).innerHTML.replace(/#found_no#/ig, finds);
         finds++;
