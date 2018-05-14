@@ -1,3 +1,4 @@
+<a href="#v096" title="GClh II version 0.9.6 (14.05.2018)">v0.9.6</a> &nbsp;
 <a href="#v095" title="GClh II version 0.9.5 (03.05.2018)">v0.9.5</a> &nbsp;
 <a href="#v094" title="GClh II version 0.9.4 (02.05.2018)">v0.9.4</a> &nbsp;
 <a href="#v093" title="GClh II version 0.9.3 (28.02.2018)">v0.9.3</a> &nbsp;
@@ -33,6 +34,58 @@
 <a href="#v022" title="GClh II version 0.2.2 (09.01.2017)">v0.2.2</a> &nbsp; 
 <a href="#v021" title="GClh II version 0.2.1 (05.01.2017)">v0.2.1</a> &nbsp; 
 <a href="#v01" title="GClh II version 0.1 (05.01.2017)">v0.1</a> &nbsp; 
+
+---
+## v0.9.6:
+<ul>
+	<li>
+		<strong>New:</strong> After a change of a bookmark list you can go back to bookmark list automatically. The confirmation page of this change is skip: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/#648">#648</a>]<br>
+		Settings -> Bookmark list:<br>
+		<img src="../images/v0.9.6_Screen01.jpg" alt="v0.9.6_Screen01.jpg"><br>
+	</li>
+	<li>
+		<strong>New:</strong> Save bookmark list with Key F2 too: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/#648">#648</a>]<br>
+		<img src="../images/v0.9.6_Screen04.jpg" alt="v0.9.6_Screen04.jpg"><br>
+	</li>
+	<li>
+		<strong>Improvement:</strong> Show Premium Only-Info in MapPopup: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/#651">#651</a>]<br>
+		<img src="../images/v0.9.6_Screen02.jpg" alt="v0.9.6_Screen02.jpg"><br>
+		Thanks to <a href="https://www.geocaching.com/profile/?u=Ruko2010">Ruko2010</a> for the change.<br>	
+	</li>
+	<li>
+		<strong>Improvement:</strong> Enhance message "GC Little Helper II is already running" with link to new document FAQ: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/#637">#637</a>, <a href="https://github.com/2Abendsegler/GClh/issues/#644">#644</a>]<br>
+		<img src="../images/v0.9.6_Screen05.jpg" alt="v0.9.6_Screen05.jpg"><br>
+		<img src="../images/v0.9.6_Screen03.jpg" alt="v0.9.6_Screen03.jpg"><br>
+		Thanks to <a href="https://www.geocaching.com/profile/?u=Ruko2010">Ruko2010</a> for the change.<br>	
+	</li>
+	<li>
+		<strong>Improvement:</strong> Reorganization buttons in bookmark lists so it runs to with 900 pixel: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/#650">#650</a>]<br>
+		<img src="../images/v0.9.6_Screen06.jpg" alt="v0.9.6_Screen06.jpg"><br>
+	</li>
+	<li>
+		<strong>Improvement:</strong> Change souvenirs sort buttons to standard: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/#649">#649</a>]<br>
+		<img src="../images/v0.9.6_Screen07.jpg" alt="v0.9.6_Screen07.jpg"><br>
+	</li>
+	<li>
+		<strong>Fix:</strong> Misrepresentation of coordinates if only one digit before the minutes comma: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/640">#640</a>]<br>
+	<li>
+		<strong>Fix:</strong> Error on old drafts page if no drafts available: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/639">#639</a>]<br>
+	<li>
+		<strong>Fix:</strong> Copyright in GClh Config is too long, it is partly demolished: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/643">#643</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> Additional linebreaks in cache listing due to changes made by GS: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/652">#652</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> No button for "Find Caches Along a Route" in list of pocket queries due to changes made by GS: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/654">#654</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> Wrong owner identification on new log page if draft log was empty: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/655">#655</a>]<br>
+	</li>
+</ul>
+(14.05.2018)<br>
+released by <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a><br>
+<br>
 
 ---
 ## v0.9.5:
