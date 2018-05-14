@@ -2,7 +2,7 @@
 // @name             GC little helper II
 // @namespace        http://www.amshove.net
 //--> $$000
-// @version          0.9.5
+// @version          0.9.6
 //<-- $$000
 // @include          http*://www.geocaching.com/*
 // @include          http*://maps.google.tld/*
@@ -2113,10 +2113,10 @@ var mainGC = function() {
                     }
                     var elevations = [];
                     for (var i=0; i<json.results.length; i++) {
-                        if (json.results[i].location.lat != -90) elevations.push( json.results[i].elevation );
-                        else elevations.push( undefined );
+                        if (json.results[i].location.lat != -90) elevations.push(json.results[i].elevation);
+                        else elevations.push(undefined);
                     }
-                    addElevationToWaypoints(elevations,context)
+                    addElevationToWaypoints(elevations,context);
                 } catch(e) {gclh_error("addElevationToWaypoints_GoogleElevation():",e);}
             }
 
@@ -2128,7 +2128,7 @@ var mainGC = function() {
                     for (var i=0; i<json.results.length; i++) {
                         elevations.push( json.results[i].elevation );
                     }
-                    addElevationToWaypoints(elevations,context)
+                    addElevationToWaypoints(elevations,context);
                 } catch(e) {gclh_error("addElevationToWaypoints_OpenElevation():",e);}
             }
 
@@ -2197,7 +2197,7 @@ var mainGC = function() {
                     retries : serviceIndex,
                     serviceName : elevationServices[serviceIndex]['name'],
                     locations : locations
-                }
+                };
                 var locationsstring = locations.join('|');
                 GM_xmlhttpRequest({
                     method: 'GET',
@@ -3045,7 +3045,7 @@ var mainGC = function() {
                         success: function (result) {
                             fav[0].closest('td').nextElementSibling.innerHTML = (result.d.score ? (result.d.score > 100 ? 100 : result.d.score) : 0);
                         }
-                    })
+                    });
                 });
             }
             appendCssStyle(css);
@@ -5286,7 +5286,7 @@ var mainGC = function() {
                 css += ".activity-item, .panel-header {padding: 5px 15px;}";
                 css += ".activity-tray {padding: 5px 40px;}";
                 css += ".sidebar-links .link-header {padding: 6px 5px 6px 20px !important;}";
-                css += ".alert {padding: 6px 16px !important; color: blue;}"
+                css += ".alert {padding: 6px 16px !important; color: blue;}";
             }
             // Map and Search button in left sidebar.
             if (settings_but_search_map) {
@@ -6163,7 +6163,7 @@ var mainGC = function() {
             });
 
             // configuration of the observer:
-            var config = { attributes: true, childList: true, characterData: true }
+            var config = { attributes: true, childList: true, characterData: true };
 
             // pass in the target node, as well as the observer options
             observer.observe(target, config);
@@ -7119,10 +7119,10 @@ var mainGC = function() {
                     Souvenirs.detach().sort(orderfunction);
                     SouvenirsDashboard.append(Souvenirs);
                 }
-                $("#actionSouvenirsSortAcquiredDateNewestTop").click(function() {ReorderSouvenirs(AcquiredDateNewestFirst)});
-                $("#actionSouvenirsSortAcquiredDateOldestTop").click(function() {ReorderSouvenirs(AcquiredDateOldestFirst)});
-                $("#actionSouvenirsSortAcquiredTitleAtoZ").click(function() {ReorderSouvenirs(TitleAtoZ)});
-                $("#actionSouvenirsSortAcquiredTitleZtoA").click(function() {ReorderSouvenirs(TitleZtoA)});
+                $("#actionSouvenirsSortAcquiredDateNewestTop").click(function() {ReorderSouvenirs(AcquiredDateNewestFirst);});
+                $("#actionSouvenirsSortAcquiredDateOldestTop").click(function() {ReorderSouvenirs(AcquiredDateOldestFirst);});
+                $("#actionSouvenirsSortAcquiredTitleAtoZ").click(function() {ReorderSouvenirs(TitleAtoZ);});
+                $("#actionSouvenirsSortAcquiredTitleZtoA").click(function() {ReorderSouvenirs(TitleZtoA);});
             }
         } catch(e) {gclh_error("Improve Souvenirs:",e);}
     }
@@ -7804,8 +7804,8 @@ var mainGC = function() {
 //--> $$002
         var code = '<img src="https://c.andyhoppe.com/1485103563"' + prop +
                    '<img src="https://c.andyhoppe.com/1485234890"' + prop +
-                   '<img src="https://www.worldflagcounter.com/dN1"' + prop +
-                   '<img src="https://s07.flagcounter.com/countxl/mHeY/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
+                   '<img src="https://www.worldflagcounter.com/ekq"' + prop +
+                   '<img src="https://s07.flagcounter.com/countxl/Mf9D/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
 //<-- $$002
         div.innerHTML = code;
         side.appendChild(div);
@@ -8827,7 +8827,7 @@ var mainGC = function() {
 
             html += "<h4 class='gclh_headline2'>"+prepareHideable.replace("#name#","pq")+"Pocket query" + prem + "</h4>";
             html += "<div id='gclh_config_pq' class='gclh_block'>";
-            html += checkboxy('settings_fixed_pq_header', 'Show fixed header in list of pocket queries') + show_help("With this option the header in list of pocket queries is fixed and the list of pocket queries can be scrolled.<br><br>This option evolute its effect not with the compact layout in list of pocket queries.") + "<br>"
+            html += checkboxy('settings_fixed_pq_header', 'Show fixed header in list of pocket queries') + show_help("With this option the header in list of pocket queries is fixed and the list of pocket queries can be scrolled.<br><br>This option evolute its effect not with the compact layout in list of pocket queries.") + "<br>";
             html += content_settings_show_log_it.replace("show_log_it","show_log_itX0");
             var content_settings_submit_log_button = checkboxy('settings_submit_log_button', 'Submit log, pocket query, bookmark or hide cache on F2') + show_help("With this option you are able to submit your log by pressing key F2 instead of scrolling to the bottom and move the mouse to the button. <br><br>This feature also works to submit pocket queries and bookmarks. <br><br>And it works on the whole hide cache process with all of the buttons of the create and the change functionality.") + "<br>";
             html += content_settings_submit_log_button;
