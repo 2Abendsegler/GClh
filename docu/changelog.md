@@ -45,6 +45,7 @@
 	</li>
 	<li>
 		<strong>New:</strong> Save bookmark list with Key F2 too: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/#648">#648</a>]<br>
+		<img src="../images/v0.9.6_Screen04.jpg" alt="v0.9.6_Screen04.jpg"><br>
 	</li>
 	<li>
 		<strong>Improvement:</strong> Show Premium Only-Info in MapPopup: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/#651">#651</a>]<br>
@@ -53,13 +54,17 @@
 	</li>
 	<li>
 		<strong>Improvement:</strong> Enhance message "GC Little Helper II is already running" with link to new FAQs document: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/#637">#637</a>, <a href="https://github.com/2Abendsegler/GClh/issues/#644">#644</a>]<br>
+		<img src="../images/v0.9.6_Screen05.jpg" alt="v0.9.6_Screen05.jpg"><br>
+		<img src="../images/v0.9.6_Screen03.jpg" alt="v0.9.6_Screen03.jpg"><br>
 		Thanks to <a href="https://www.geocaching.com/profile/?u=Ruko2010">Ruko2010</a> for the change.<br>	
 	</li>
 	<li>
 		<strong>Improvement:</strong> Reorganization buttons in bookmark lists so it runs to with 900 pixel: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/#650">#650</a>]<br>
+		<img src="../images/v0.9.6_Screen06.jpg" alt="v0.9.6_Screen06.jpg"><br>
 	</li>
 	<li>
 		<strong>Improvement:</strong> Change souvenirs sort buttons to standard: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/#649">#649</a>]<br>
+		<img src="../images/v0.9.6_Screen07.jpg" alt="v0.9.6_Screen07.jpg"><br>
 	</li>
 	<li>
 		<strong>Fix:</strong> Misrepresentation of coordinates if only one digit before the minutes comma: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/640">#640</a>]<br>
