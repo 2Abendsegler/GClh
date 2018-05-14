@@ -77,7 +77,7 @@
 		<strong>Fix:</strong> Additional linebreaks in cache listing due to changes made by GS: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/652">#652</a>]<br>
 	</li>
 	<li>
-		<strong>Fix:</strong> No button for "Find Caches Along a Route" in pocket query lists due to changes made by GS: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/654">#654</a>]<br>
+		<strong>Fix:</strong> No button for "Find Caches Along a Route" in list of pocket queries due to changes made by GS: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/654">#654</a>]<br>
 	</li>
 	<li>
 		<strong>Fix:</strong> Wrong owner identification on new log page if draft log was empty: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/655">#655</a>]<br>
