@@ -20,7 +20,7 @@
 // @connect          raw.githubusercontent.com
 // @connect          api.open-elevation.com
 // @description      Some little things to make life easy (on www.geocaching.com).
-// @copyright        2010-2016 Torsten Amshove, 2017-2018 2Abendsegler, 2018 Ruko2010
+// @copyright        2010-2016 Torsten Amshove, 2016-2018 2Abendsegler, 2017-2018 Ruko2010
 // @author           Torsten Amshove; 2Abendsegler; Ruko2010
 // @icon             https://raw.githubusercontent.com/2Abendsegler/GClh/master/images/gclh_logo.png
 // @license          GNU General Public License v2.0
@@ -460,6 +460,7 @@ var variablesInit = function(c) {
     c.settings_show_brouter_link = getValue("settings_show_brouter_link", true);
     c.settings_show_default_links = getValue("settings_show_default_links", true);
     c.settings_bm_changed_and_go = getValue("settings_bm_changed_and_go", true);
+    c.settings_bml_changed_and_go = getValue("settings_bml_changed_and_go", true);
     c.settings_show_tb_inv = getValue("settings_show_tb_inv", true);
     c.settings_but_search_map = getValue("settings_but_search_map", true);
     c.settings_but_search_map_new_tab = getValue("settings_but_search_map_new_tab", false);
@@ -662,8 +663,8 @@ var mainGC = function() {
         } catch(e) {gclh_error("Run after redirect",e);}
     }
 
-// After change of a bookmark go automatically from confirmation screen to to bookmark list.
-   if (settings_bm_changed_and_go && document.location.href.match(/\.com\/bookmarks\/mark\.aspx\?(guid=|ID=)/) && $('#divContentMain')[0] && $('p.Success a[href*="/bookmarks/view.aspx?guid="]')[0]) {
+// After change of a bookmark respectively a bookmark list go automatically from confirmation screen to bookmark list.
+   if (((settings_bm_changed_and_go && document.location.href.match(/\.com\/bookmarks\/mark\.aspx\?(guid=|ID=)/)) || (settings_bml_changed_and_go && document.location.href.match(/\.com\/bookmarks\/edit\.aspx/))) && $('#divContentMain')[0] && $('p.Success a[href*="/bookmarks/view.aspx?guid="]')[0]) {
        $('#divContentMain').css("visibility", "hidden");
        document.location.href = $('p.Success a')[0].href;
    }
@@ -718,6 +719,8 @@ var mainGC = function() {
             if (document.location.href.match(/\.com\/pocket\/(gcquery|bmquery|urquery)\.aspx/)) var id = "ctl00_ContentBody_btnSubmit";
             // "Create a Bookmark" entry, "Edit a Bookmark" entry.
             if (document.location.href.match(/\.com\/bookmarks\/mark\.aspx/)) var id = "ctl00_ContentBody_Bookmark_btnCreate";
+            // "Create New Bookmark List", Edit a Bookmark list.
+            if (document.location.href.match(/\.com\/bookmarks\/edit\.aspx/)) var id = "ctl00_ContentBody_BookmarkListEditControl1_btnSubmit";
             // Hide cache process speichern.
             if (document.location.href.match(/\.com\/hide\//)) {
                 if ($('#btnContinue')[0]) var id = "btnContinue";
@@ -965,7 +968,7 @@ var mainGC = function() {
                 // Besonderheiten:
                 if (!is_page("cache_listing")) css += ".UserSuppliedContent {width: " + (new_width - 200) + "px;}";
                 if (is_page("publicProfile")) css += ".container .profile-panel {width: " + (new_width - 160) + "px;}";
-                if (is_page("cache_listing")) css += ".span-9 {width: " + (new_width - 300 - 270 - 13 - 13 - 10) + "px !important;}";
+                if (is_page("cache_listing")) css += ".span-9 {width: " + (new_width - 300 - 270 - 13 - 13 - 10 - 6) + "px !important;}";
                 else if (document.location.href.match(/\.com\/my\/statistics\.aspx/) || (is_page("publicProfile") && $('#ctl00_ContentBody_ProfilePanel1_lnkStatistics.Active')[0])) {
                     css += ".span-9 {width: " + ((new_width - 280) / 2) + "px !important; margin-right: 30px;} .last {margin-right: 0px;}";
                     css += ".StatsTable {width: " + (new_width - 250) + "px !important;}";
@@ -1962,7 +1965,7 @@ var mainGC = function() {
         try {
             // Trackable Namen kürzen, damit nicht umgebrochen wird, und Title setzen.
             var inventory = $('#ctl00_ContentBody_uxTravelBugList_uxInventoryLabel').closest('.CacheDetailNavigationWidget').find('.WidgetBody span');
-            for (var i = 0; i < inventory.length; i++) {noBreakInLine(inventory[i], 203, inventory[i].innerHTML);}
+            for (var i = 0; i < inventory.length; i++) {noBreakInLine(inventory[i], 201, inventory[i].innerHTML);}
         } catch(e) {gclh_error("Improve inventory list:",e);}
     }
 
@@ -2644,7 +2647,7 @@ var mainGC = function() {
         window.addEventListener("load", gclh_setFocus, false);
         var finds = get_my_finds();
         var me = global_me;
-        if (newLogPage) var owner = $('.muted')[0].children[1].innerHTML;
+        if (newLogPage) var owner = $('.muted')[0].children[1].childNodes[0].textContent;
         else var owner = document.getElementById('ctl00_ContentBody_LogBookPanel1_WaypointLink').nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.innerHTML;
         document.getElementById(id).innerHTML = document.getElementById(id).innerHTML.replace(/#found_no#/ig, finds);
         finds++;
@@ -2782,6 +2785,7 @@ var mainGC = function() {
                     for (var i = 0; i <= 2; i++) {$('.pq-info-wrapper')[0].children[0].remove();}
                 }
                 $('#ActivePQs, #DownloadablePQs').each(function() {this.children[0].setAttribute("style", "margin: -25px 2px 0 0; float: right;");});
+                if ($('#uxFindCachesAlongaRoute.btn.btn-secondary').length > 0) $('#uxFindCachesAlongaRoute')[0].className = "btn btn-primary";
                 // Table active PQs:
                 css += "table {margin-bottom: 0;} table.Table, table.Table th, table.Table td {padding: 5px; border: 1px solid #fff;}";
                 css += "table.Table tr {line-height: 16px;} table.Table th img, table.Table td img {vertical-align: sub;}";
@@ -3211,20 +3215,8 @@ var mainGC = function() {
     if (document.location.href.match(/\.com\/bookmarks\/(view\.aspx\?guid=|bulk\.aspx\?listid=|view\.aspx\?code=)/) && document.getElementById('ctl00_ContentBody_ListInfo_cboItemsPerPage')) {
         try {
             var css = "";
-            // Prepare button corrected coords.
-            if ($('#ctl00_ContentBody_btnAddBookmark')[0]) var corrCoords = '<input type="button" id="gclh_linkCorrCoords" href="javascript:void(0);" title="Mark Caches with Corrected Coordinates" value="Mark Caches with Corr. Coords">';
-            // Prepare link "Download as kml".
-            if (document.location.href.match(/guid=([a-zA-Z0-9-]*)/)) {
-                var matches = document.location.href.match(/guid=([a-zA-Z0-9-]*)/);
-                if (matches && matches[1]) {
-                    var uuidx = matches[1];
-                    var kml = "<a title=\"Download Google Earth kml\" href='/kml/bmkml.aspx?bmguid=" + uuidx + "' style='vertical-align: bottom;'>Download as kml</a>";
-                }
-            }
             // Compact layout.
             if (settings_compact_layout_bm_lists) {
-                // Prepare button hide longtext.
-                if ($('#ctl00_ContentBody_btnAddBookmark')[0]) var hideLt = '<input type="button" id="gclh_hideLtBm" href="javascript:void(0);" title="Show/hide Longtext in Bookmark" value="Hide Text">';
                 // Header:
                 css += "#ctl00_ContentBody_lbHeading a {font-weight: normal; font-size: 13px; margin-left: 10px;}";
                 css += "#ctl00_ContentBody_QuickAdd {margin-bottom: 1px; float: left; position: relative;} #ctl00_ContentBody_btnAddBookmark {margin-top: 1px; margin-left: -1px;}";
@@ -3247,7 +3239,6 @@ var mainGC = function() {
                     if (LO.nextElementSibling.innerHTML == "") LO.nextElementSibling.remove();
                     else LO.nextElementSibling.style.marginBottom = "0";
                     LO.style.marginBottom = "0";
-                    LO.innerHTML += "<span style='float: right; padding-right: 195px; margin-top: -7px;'>" + (uuidx ? kml+"&nbsp;" : "") + (corrCoords ? "&nbsp;"+corrCoords : "") + (hideLt ? "&nbsp;"+hideLt : "") + "</span>";
                 }
                 // Table:
                 css += "table.Table tr {line-height: 16px;}";
@@ -3263,16 +3254,32 @@ var mainGC = function() {
                 }
                 // Footer:
                 $('#ctl00_ContentBody_ListInfo_btnDownload').closest('p').append($('#ctl00_ContentBody_btnCreatePocketQuery').remove().get().reverse());
-                // Event, css hide longtext.
-                if ($('#gclh_hideLtBm')[0]) $('#gclh_hideLtBm')[0].addEventListener("click", hideLtBm, false);
-                css += ".gclh_hideBm {display: table-column;} .working {opacity: 0.3; cursor: default;}";
-            // No compact layout, only build links.
-            } else {
-                $('#ctl00_ContentBody_lbHeading')[0].parentNode.parentNode.parentNode.childNodes[3].innerHTML += (uuidx ? "<br>"+kml : "") + (corrCoords ? "<br>"+corrCoords : "");
             }
-            // Event, css corrected coords.
-            if ($('#gclh_linkCorrCoords')[0]) $('#gclh_linkCorrCoords')[0].addEventListener("click", markCorrCoordForBm, false);
-            css += ".cc_cell {text-align: center !important} .working {opacity: 0.3; cursor: default;}";
+            // Build buttons "Mark Caches with Corr. Coords" and "Hide Text" right beside button "Copy List".
+            if ($('#ctl00_ContentBody_ListInfo_btnCopyList')[0]) {
+                var defBt = 'class="gclh_bt" type="button"';
+                var span = document.createElement("span");
+                span.innerHTML += '<input id="gclh_linkCorrCoords" title="Mark Caches with Corrected Coordinates" value="Mark Caches with Corr. Coords"'+defBt+'>';
+                span.innerHTML += '<input id="gclh_hideLtBm" title="Show/hide Longtext in Bookmark" value="Hide Text"'+defBt+'>';
+                $('#ctl00_ContentBody_ListInfo_btnCopyList')[0].parentNode.insertBefore(span, $('#ctl00_ContentBody_ListInfo_btnCopyList')[0].nextSibling);
+                css += ".cc_cell {text-align: center !important}";
+                css += ".gclh_hideBm {display: table-column;}";
+                css += ".gclh_bt {margin-left: 4px;} .working {opacity: 0.3; cursor: default;}";
+                $('#gclh_linkCorrCoords')[0].addEventListener("click", markCorrCoordForBm, false);
+                $('#gclh_hideLtBm')[0].addEventListener("click", hideLtBm, false);
+            }
+            // Build button "Download as kml" right beside button "Download .LOC".
+            if ($('#ctl00_ContentBody_ListInfo_btnDownload')[0]) {
+                if (document.location.href.match(/guid=([a-zA-Z0-9-]*)/)) {
+                    var matches = document.location.href.match(/guid=([a-zA-Z0-9-]*)/);
+                    if (matches && matches[1]) {
+                        var uuidx = matches[1];
+                        var span = document.createElement("span");
+                        span.innerHTML += '<input id="gclh_kml" title="Download Google Earth kml" value="Download as kml" onClick="document.location.href=\'https://www.geocaching.com/kml/bmkml.aspx?bmguid='+uuidx+'\';" class="gclh_bt" type="button">';
+                        $('#ctl00_ContentBody_ListInfo_btnDownload')[0].parentNode.insertBefore(span, $('#ctl00_ContentBody_ListInfo_btnDownload')[0].nextSibling);
+                    }
+                }
+            }
             appendCssStyle(css);
         } catch(e) {gclh_error("Improve bookmark lists:",e);}
     }
@@ -3644,7 +3651,7 @@ var mainGC = function() {
     }
 
 // Improve drafts old page.
-    if (document.location.href.match(/\.com\/my\/fieldnotes\.aspx/)) {
+    if (document.location.href.match(/\.com\/my\/fieldnotes\.aspx/) && $('table.Table tbody')[0]) {
         try {
             // Mark duplicate drafts.
             var existingNotes = {};
@@ -7055,6 +7062,68 @@ var mainGC = function() {
         } catch(e) {gclh_error("Auto check checkbox on hide cache process:",e);}
     }
 
+// Improve Souvenirs
+    if ( is_page("souvenirs") || is_page("publicProfile") ) {
+        try {
+            SouvenirsDashboard = $(".ProfileSouvenirsList");
+            if (SouvenirsDashboard.length) {
+                SouvenirsDashboard.before('<div id="gclhSouvenirsSortButtons"></div><p></p>');
+                $("#gclhSouvenirsSortButtons").append('<input id="actionSouvenirsSortAcquiredDateNewestTop" title="Sort newest first" value="Newest first" type="button" href="javascript:void(0);" style="opacity: 0.5; margin-right: 4px" disabled="true">');
+                $("#gclhSouvenirsSortButtons").append('<input id="actionSouvenirsSortAcquiredDateOldestTop" title="Sort oldest first" value="Oldest first" type="button" href="javascript:void(0);" style="opacity: 0.5; margin-right: 4px" disabled="true">');
+                $("#gclhSouvenirsSortButtons").append('<input id="actionSouvenirsSortAcquiredTitleAtoZ" title="Sort title A-Z" value="Title A-Z" type="button" href="javascript:void(0);" style="margin-right: 4px">');
+                $("#gclhSouvenirsSortButtons").append('<input id="actionSouvenirsSortAcquiredTitleZtoA" title="Sort title Z-A" value="Title Z-A" type="button" href="javascript:void(0);">');
+                var jqui_date_format = "";
+                var accessTokenPromise = $.get('/account/settings/preferences');
+                accessTokenPromise.done(function (response) {
+                    response_div = document.createElement('div');
+                    response_div.innerHTML = response;
+                    date_format = $('select#SelectedDateFormat option:selected', response_div).val();
+                    jqui_date_format = dateFormatConversion(date_format);
+                    $('#actionSouvenirsSortAcquiredDateNewestTop')[0].disabled = $('#actionSouvenirsSortAcquiredDateOldestTop')[0].disabled = "";
+                    $('#actionSouvenirsSortAcquiredDateNewestTop')[0].style.opacity = $('#actionSouvenirsSortAcquiredDateOldestTop')[0].style.opacity = "1";
+                });
+                function dateFormatConversion(format) {return format.replace(/yy/g,'y').replace(/M/g,'m').replace(/mmm/,'M');}
+                function getSouvenirAcquiredDate(souvenirDiv) {return $(souvenirDiv).text().match( /Acquired on (.*)/ )[1];}
+                function AcquiredDateNewestFirst(a, b) {
+                    var ada = getSouvenirAcquiredDate(a);
+                    var adb = getSouvenirAcquiredDate(b);
+                    date1 = $.datepicker.parseDate(jqui_date_format, ada);
+                    date2 = $.datepicker.parseDate(jqui_date_format, adb);
+                    if(date1.getTime() == date2.getTime()) return TitleAtoZ(a, b);
+                    return date1 < date2 ? 1 : -1;
+                }
+                function AcquiredDateOldestFirst(a, b) {
+                    var ada = getSouvenirAcquiredDate(a);
+                    var adb = getSouvenirAcquiredDate(b);
+                    date1 = $.datepicker.parseDate(jqui_date_format, ada);
+                    date2 = $.datepicker.parseDate(jqui_date_format, adb);
+                    if(date1.getTime() == date2.getTime()) return TitleZtoA(a, b);
+                    return date1 < date2 ? -1 : 1;
+                }
+                function TitleAtoZ(a, b) {
+                    var aT = $(a).children('a').attr('title');
+                    var bT = $(b).children('a').attr('title');
+                    return aT.localeCompare(bT);
+                }
+                function TitleZtoA(a, b) {
+                    var aT = $(a).children('a').attr('title');
+                    var bT = $(b).children('a').attr('title');
+                    return bT.localeCompare(aT);
+                }
+                function ReorderSouvenirs(orderfunction) {
+                    SouvenirsDashboard = $(".ProfileSouvenirsList");
+                    Souvenirs = SouvenirsDashboard.children('div');
+                    Souvenirs.detach().sort(orderfunction);
+                    SouvenirsDashboard.append(Souvenirs);
+                }
+                $("#actionSouvenirsSortAcquiredDateNewestTop").click(function() {ReorderSouvenirs(AcquiredDateNewestFirst)});
+                $("#actionSouvenirsSortAcquiredDateOldestTop").click(function() {ReorderSouvenirs(AcquiredDateOldestFirst)});
+                $("#actionSouvenirsSortAcquiredTitleAtoZ").click(function() {ReorderSouvenirs(TitleAtoZ)});
+                $("#actionSouvenirsSortAcquiredTitleZtoA").click(function() {ReorderSouvenirs(TitleZtoA)});
+            }
+        } catch(e) {gclh_error("Improve Souvenirs:",e);}
+    }
+
 // Check for upgrade.
     try {
         function checkForUpgrade(manual) {
@@ -7101,107 +7170,6 @@ var mainGC = function() {
         }
         checkForUpgrade(false);
     } catch(e) {gclh_error("Check for upgrade:",e);}
-
-// Souvenirs
-    if ( is_page("souvenirs") || is_page("publicProfile") ) {
-        try {
-            SouvenirsDashboard = $(".ProfileSouvenirsList");
-            if ( SouvenirsDashboard.length ) {
-                var css = ".gclhSouvenirSortButton {";
-                css += "color: #02874D;";
-                css += "border: 2px solid #02874D;";
-                css += "font-size: 150%;";
-                css += "}";
-                appendCssStyle(css);
-
-                function dateFormatConversion(format) {
-                    return format.replace(/yy/g,'y').replace(/M/g,'m').replace(/mmm/,'M');
-                    /* GS dateformat to jqui datepicker dateformat:
-                        https://www.geocaching.com/account/settings/preferences#SelectedDateFormat
-                        http://api.jqueryui.com/datepicker/#utility-parseDate
-                    GS --> jqui: d-->d,dd-->dd,M-->m,MM-->mm,MMM-->M,yy-->y,yyyy-->yy
-                    "d. M. yyyy"  : "d. m. yy",   3. 1. 2017
-                    "d.M.yyyy"    : "d.m.yy",     3.1.2017
-                    "d.MM.yyyy"   : "d.mm.yy",    3.01.2017
-                    "d/M/yy"      : "d/m/y",      3/1/17
-                    "d/M/yyyy"    : "d/m/yy",     3/1/2017
-                    "d/MM/yyyy"   : "d/mm/yy",    3/01/2017
-                    "dd MMM yy"   : "dd M y",     03 Jan 17
-                    "dd.MM.yy"    : "dd.mm.y",    03.01.17
-                    "dd.MM.yyyy"  : "dd.mm.yy",   03.01.2017
-                    "dd.MM.yyyy." : "dd.mm.yy.",  03.01.2017.
-                    "dd.MMM.yyyy" : "dd.M.yy",    03.Jan.2017
-                    "dd/MM/yy"    : "dd/mm/y",    03/01/17
-                    "dd/MM/yyyy"  : "dd/mm/yy",   03/01/2017
-                    "dd/MMM/yyyy" : "dd/M/yy",    03/Jan/2017
-                    "dd-MM-yy"    : "dd-mm-y",    03-01-17
-                    "dd-MM-yyyy"  : "dd-mm-yy",   03-01-2017
-                    "d-M-yyyy"    : "d-m-yy",     3-1-2017
-                    "M/d/yyyy"    : "m/d/yy",     1/3/2017
-                    "MM/dd/yyyy"  : "mm/dd/yy",   01/03/2017
-                    "MMM/dd/yyyy" : "M/dd/yy",    Jan/03/2017
-                    "yyyy.MM.dd." : "yy.mm.dd.",  2017.01.03.
-                    "yyyy/MM/dd"  : "yy/mm/dd",   2017/01/03
-                    "yyyy-MM-dd"  : "yy-mm-dd"    2017-01-03 */
-                }
-                SouvenirsDashboard.before('<div id="gclhSouvenirsSortButtons" class="btn-group" style="justify-content: left;"></div><p></p>');
-                $("#gclhSouvenirsSortButtons").append('<div style="width: 155px; padding: 10px;">                  <a href="#" id="actionSouvenirsSortAcquiredDateNewestTop" class="btn gclhSouvenirSortButton" style="display: none; color: #02874D;">Newest first</a></div>');
-                $("#gclhSouvenirsSortButtons").append('<div style="width: 155px; padding: 10px; margin-left:12px;"><a href="#" id="actionSouvenirsSortAcquiredDateOldestTop" class="btn gclhSouvenirSortButton" style="display: none; color: #02874D;">Oldest first</a></div>');
-                $("#gclhSouvenirsSortButtons").append('<div style="width: 155px; padding: 10px; margin-left:12px;"><a href="#" id="actionSouvenirsSortAcquiredTitleAtoZ" class="btn gclhSouvenirSortButton" style="color: #02874D;">Title A-Z</a></div>');
-                $("#gclhSouvenirsSortButtons").append('<div style="width: 155px; padding: 10px; margin-left:12px;"><a href="#" id="actionSouvenirsSortAcquiredTitleZtoA" class="btn gclhSouvenirSortButton" style="color: #02874D;">Title Z-A</a></div>');
-                var jqui_date_format = "";
-                var accessTokenPromise = $.get('/account/settings/preferences');
-                accessTokenPromise.done(function (response) {
-                    response_div = document.createElement('div');
-                    response_div.innerHTML = response;
-                    date_format = $('select#SelectedDateFormat option:selected', response_div).val(); // 
-                    jqui_date_format = dateFormatConversion(date_format);
-                    $('#actionSouvenirsSortAcquiredDateNewestTop').show();
-                    $('#actionSouvenirsSortAcquiredDateOldestTop').show();
-                });
-               
-                function getSouvenirAcquiredDate( souvenirDiv ) { return $(souvenirDiv).text().match( /Acquired on (.*)/ )[1]; }
-               
-                function AcquiredDateNewestFirst(a, b) {
-                    var ada = getSouvenirAcquiredDate(a);
-                    var adb = getSouvenirAcquiredDate(b);
-                    date1 = $.datepicker.parseDate(jqui_date_format, ada);
-                    date2 = $.datepicker.parseDate(jqui_date_format, adb);
-                    if(date1.getTime() == date2.getTime()) return TitleAtoZ(a, b);
-                    return date1 < date2 ? 1 : -1;
-                }
-                function AcquiredDateOldestFirst(a, b) {
-                    var ada = getSouvenirAcquiredDate(a);
-                    var adb = getSouvenirAcquiredDate(b);
-                    date1 = $.datepicker.parseDate(jqui_date_format, ada);
-                    date2 = $.datepicker.parseDate(jqui_date_format, adb);
-                    if(date1.getTime() == date2.getTime()) return TitleZtoA(a, b);
-                    return date1 < date2 ? -1 : 1;
-                    // return Date.parse(ada) < Date.parse(adb) ? -1 : 1;
-                }
-                function TitleAtoZ(a, b) {
-                    var aT = $(a).children('a').attr('title');
-                    var bT = $(b).children('a').attr('title');
-                    return aT.localeCompare(bT);
-                }
-                function TitleZtoA(a, b) {
-                    var aT = $(a).children('a').attr('title');
-                    var bT = $(b).children('a').attr('title');
-                    return bT.localeCompare(aT);
-                }
-                function ReorderSouvenirs( orderfunction ) {
-                    SouvenirsDashboard = $(".ProfileSouvenirsList");
-                    Souvenirs = SouvenirsDashboard.children('div');
-                    Souvenirs.detach().sort(orderfunction);
-                    SouvenirsDashboard.append(Souvenirs);
-                }
-                $("#actionSouvenirsSortAcquiredDateNewestTop").click( function() { ReorderSouvenirs(AcquiredDateNewestFirst) } );
-                $("#actionSouvenirsSortAcquiredDateOldestTop").click( function() { ReorderSouvenirs(AcquiredDateOldestFirst) } );
-                $("#actionSouvenirsSortAcquiredTitleAtoZ").click( function() { ReorderSouvenirs(TitleAtoZ) } );
-                $("#actionSouvenirsSortAcquiredTitleZtoA").click( function() { ReorderSouvenirs(TitleZtoA) } );
-            }
-        } catch(e) {gclh_error("Souvenirs:",e);}
-    }
 
 // Special days.
     if (is_page("cache_listing")) {
@@ -7366,6 +7334,7 @@ var mainGC = function() {
     }
 // Change coordinates from Dec to Deg.
     function DectoDeg(lat, lng) {
+        var n = "000";
         lat = lat / 10000000;
         var pre = "";
         if (lat > 0) pre = "N";
@@ -7380,11 +7349,8 @@ var mainGC = function() {
         tmp2 = Math.round(tmp2 * 10000) / 10000;
         tmp2 = String(tmp2);
         if (tmp2.length == 0) tmp2 = tmp2 + "0.000";
-        else if (tmp2.length == 1) tmp2 = tmp2 + ".000";
-        else if (tmp2.length == 2) tmp2 = tmp2 + ".000";
-        else if (tmp2.length == 3) tmp2 = tmp2 + "000";
-        else if (tmp2.length == 4) tmp2 = tmp2 + "00";
-        else if (tmp2.length == 5) tmp2 = tmp2 + "0";
+        else if (tmp2.indexOf(".") == -1) tmp2 = tmp2 + ".000";
+        else if (tmp2.indexOf(".") != -1) tmp2 = tmp2 + n.slice(tmp2.length - tmp2.indexOf(".") - 1);
         var new_lat = pre + " " + tmp1 + "° " + tmp2;
         lng = lng / 10000000;
         var pre = "";
@@ -7401,11 +7367,8 @@ var mainGC = function() {
         tmp2 = Math.round(tmp2 * 10000) / 10000;
         tmp2 = String(tmp2);
         if (tmp2.length == 0) tmp2 = tmp2 + "0.000";
-        else if (tmp2.length == 1) tmp2 = tmp2 + ".000";
-        else if (tmp2.length == 2) tmp2 = tmp2 + ".000";
-        else if (tmp2.length == 3) tmp2 = tmp2 + "000";
-        else if (tmp2.length == 4) tmp2 = tmp2 + "00";
-        else if (tmp2.length == 5) tmp2 = tmp2 + "0";
+        else if (tmp2.indexOf(".") == -1) tmp2 = tmp2 + ".000";
+        else if (tmp2.indexOf(".") != -1) tmp2 = tmp2 + n.slice(tmp2.length - tmp2.indexOf(".") - 1);
         var new_lng = pre + " " + tmp1 + "° " + tmp2;
         return new_lat + " " + new_lng;
     }
@@ -8903,7 +8866,8 @@ var mainGC = function() {
             html += checkboxy('settings_compact_layout_bm_lists', 'Show compact layout in bookmark lists') + "<br>";
             html += newParameterVersionSetzen(0.8) + newParameterOff;
             html += newParameterOn3;
-            html += checkboxy('settings_bm_changed_and_go', 'After bookmark change go to bookmark list automatically') + show_help("With this option you can switch to the bookmark list automatically after a change of a bookmark. The confirmation page of this change will skip.") + "<br>";
+            html += checkboxy('settings_bm_changed_and_go', 'After change of bookmark go to bookmark list automatically') + show_help3("With this option you can switch to the bookmark list automatically after a change of a bookmark. The confirmation page of this change will skip.") + "<br>";
+            html += checkboxy('settings_bml_changed_and_go', 'After change of bookmark list go to bookmark list automatically') + show_help3("With this option you can switch to the bookmark list automatically after a change of the bookmark list. The confirmation page of this change will skip.") + "<br>";
             html += newParameterVersionSetzen(0.9) + newParameterOff;
             html += "</div>";
 
@@ -9036,7 +9000,7 @@ var mainGC = function() {
             html += newParameterOn3;
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>Enhanced Map Popup</b></div>";
             html += checkboxy('settings_show_enhanced_map_popup', 'Enable enhanced map popup') + show_help("With this option there will be more informations on the map popup for a cache, like latest logs or trackable count.") + "<br>";
-            html += " &nbsp; Show the <select class='gclh_form' id='settings_show_latest_logs_symbols_count_map'>";
+            html += " &nbsp; &nbsp;" + "Show the <select class='gclh_form' id='settings_show_latest_logs_symbols_count_map'>";
             for (var i = 1; i <= 25; i++) {
                 html += "  <option value='" + i + "' " + (settings_show_latest_logs_symbols_count_map == i ? "selected=\"selected\"" : "") + ">" + i + "</option>";
             }
@@ -9447,8 +9411,9 @@ var mainGC = function() {
 
             html += "<br><br>";
             html += "&nbsp;" + "<input class='gclh_form' type='button' value='" + setValueInSaveButton() + "' id='btn_save'> <input class='gclh_form' type='button' value='save & upload' id='btn_saveAndUpload'> <input class='gclh_form' type='button' value='" + setValueInCloseButton() + "' id='btn_close2'>";
-            html += "<div width='450px' align='right' class='gclh_small' style='float: right; margin-top: -5px;'>Copyright © <a href='/profile/?u=Torsten-' target='_blank'>T.Amshove</a>,<a href='/profile/?u=2Abendsegler' target='_blank'>2Abendsegler</a>,<a href='/profile/?u=Ruko2010' target='_blank'>Ruko2010</a></div>";
-            html += "<div width='400px' align='right' class='gclh_small' style='float: right; margin-top: -15px;'>License: <a href='"+urlDocu+"license.md#readme' target='_blank' title='GNU General Public License Version 2'>GPLv2</a>, Warranty: <a href='"+urlDocu+"warranty.md#readme' target='_blank' title='GC little helper comes with ABSOLUTELY NO WARRANTY'>NO</a></div>";
+            html += "<br><div width='400px' align='right' class='gclh_small' style='float: right;'>License: <a href='"+urlDocu+"license.md#readme' target='_blank' title='GNU General Public License Version 2'>GPLv2</a>, Warranty: <a href='"+urlDocu+"warranty.md#readme' target='_blank' title='GC little helper comes with ABSOLUTELY NO WARRANTY'>NO</a></div>";
+            var end = (new Date()).getFullYear();
+            html += "<div width='600px' align='right' class='gclh_small' style='float: right;'>Copyright © 2010-2016 <a href='/profile/?u=Torsten-' target='_blank'>Torsten Amshove</a>, 2016-"+end+" <a href='/profile/?u=2Abendsegler' target='_blank'>2Abendsegler</a>, 2017-"+end+" <a href='/profile/?u=Ruko2010' target='_blank'>Ruko2010</a></div><br>";
             html += "</div></div>";
 
             // Config Content: Aufbauen, Reset Area verbergen, Special Links Nearest List/Map, Own Trackables versorgen.
@@ -10173,6 +10138,7 @@ var mainGC = function() {
                 'settings_show_brouter_link',
                 'settings_show_default_links',
                 'settings_bm_changed_and_go',
+                'settings_bml_changed_and_go',
                 'settings_show_tb_inv',
                 'settings_but_search_map',
                 'settings_but_search_map_new_tab',
