@@ -53,7 +53,7 @@
 		Thanks to <a href="https://www.geocaching.com/profile/?u=Ruko2010">Ruko2010</a> for the change.<br>	
 	</li>
 	<li>
-		<strong>Improvement:</strong> Enhance message "GC Little Helper II is already running" with link to new FAQs document: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/#637">#637</a>, <a href="https://github.com/2Abendsegler/GClh/issues/#644">#644</a>]<br>
+		<strong>Improvement:</strong> Enhance message "GC Little Helper II is already running" with link to new document FAQs: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/#637">#637</a>, <a href="https://github.com/2Abendsegler/GClh/issues/#644">#644</a>]<br>
 		<img src="../images/v0.9.6_Screen05.jpg" alt="v0.9.6_Screen05.jpg"><br>
 		<img src="../images/v0.9.6_Screen03.jpg" alt="v0.9.6_Screen03.jpg"><br>
 		Thanks to <a href="https://www.geocaching.com/profile/?u=Ruko2010">Ruko2010</a> for the change.<br>	
