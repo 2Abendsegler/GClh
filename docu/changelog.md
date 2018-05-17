@@ -1,3 +1,4 @@
+<a href="#v097" title="GClh II version 0.9.7 (??.0?.2018)">v0.9.7</a> &nbsp;
 <a href="#v096" title="GClh II version 0.9.6 (14.05.2018)">v0.9.6</a> &nbsp;
 <a href="#v095" title="GClh II version 0.9.5 (03.05.2018)">v0.9.5</a> &nbsp;
 <a href="#v094" title="GClh II version 0.9.4 (02.05.2018)">v0.9.4</a> &nbsp;
@@ -34,6 +35,17 @@
 <a href="#v022" title="GClh II version 0.2.2 (09.01.2017)">v0.2.2</a> &nbsp; 
 <a href="#v021" title="GClh II version 0.2.1 (05.01.2017)">v0.2.1</a> &nbsp; 
 <a href="#v01" title="GClh II version 0.1 (05.01.2017)">v0.1</a> &nbsp; 
+
+---
+## v0.9.7:
+<ul>
+	<li>
+		<strong>Fix:</strong> Set black as text color in search field: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/662">#662</a>]<br>
+	</li>
+</ul>
+(??.0?.2018)<br>
+released by <a href="https://www.geocaching.com/profile/?u=Ruko2010">Ruko2010</a><br>
+<br>
 
 ---
 ## v0.9.6:
