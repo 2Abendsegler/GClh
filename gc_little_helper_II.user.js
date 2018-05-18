@@ -6147,17 +6147,14 @@ var mainGC = function() {
 
                         var link = gclh_build_vipvup(username, global_vips, "vip");
                         link.children[0].style.marginLeft = "5px";
-                        link.children[0].style.marginRight = "2px";
-                        side[0].appendChild(document.createTextNode(" "));
+                        link.children[0].style.marginRight = "3px";
                         side[0].appendChild(link);
                         // Build VUP Icon.
                         if (settings_process_vup && username != global_activ_username) {
                             link = gclh_build_vipvup(username, global_vups, "vup");
                             link.children[0].setAttribute("style", "margin-left: 0px; margin-right: 0px");
-                            side[0].appendChild(document.createTextNode(" "));
                             side[0].appendChild(link);
                         }
-
                     });
                 });
             });
