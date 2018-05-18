@@ -40,8 +40,12 @@
 ## v0.9.7:
 <ul>
 	<li>
-		<strong>Fix:</strong> Set black as text color in search field: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/662">#662</a>]<br>
+		<strong>Improvement:</strong> Reduce line breaks in owner line on enhanced map popup: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/#668">#668</a>]<br>
 		Thanks to <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a> for the change.<br>	
+	</li>
+	<li>
+		<strong>Fix:</strong> Set black as text color in search field: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/#662">#662</a>]<br>
+		Thanks to <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a> for the fix.<br>	
 	</li>
 </ul>
 (??.0?.2018)<br>
