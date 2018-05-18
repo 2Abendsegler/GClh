@@ -6014,6 +6014,7 @@ var mainGC = function() {
                     // so we have to load informations for all caches.
                     $('#gmCacheInfo .map-item').each(function () {
                         gccode = $(this).find('.code').html();
+                        $(this).find('dl dt')[0].innerHTML = $(this).find('dl dt')[0].innerHTML.replace(/Created by:/,"by:").replace(/Erstellt von:/,"von:");
 
                         // Add Loading image
                         $(this).append('<div id="popup_additional_info_' + gccode +'" class="links Clear popup_additional_info"><div class="loading_container"><img src="' + urlImages + 'ajax-loader.gif" />Loading additional Data...</div></div>');
@@ -6146,17 +6147,14 @@ var mainGC = function() {
 
                         var link = gclh_build_vipvup(username, global_vips, "vip");
                         link.children[0].style.marginLeft = "5px";
-                        link.children[0].style.marginRight = "2px";
-                        side[0].appendChild(document.createTextNode(" "));
+                        link.children[0].style.marginRight = "3px";
                         side[0].appendChild(link);
                         // Build VUP Icon.
                         if (settings_process_vup && username != global_activ_username) {
                             link = gclh_build_vipvup(username, global_vups, "vup");
                             link.children[0].setAttribute("style", "margin-left: 0px; margin-right: 0px");
-                            side[0].appendChild(document.createTextNode(" "));
                             side[0].appendChild(link);
                         }
-
                     });
                 });
             });
