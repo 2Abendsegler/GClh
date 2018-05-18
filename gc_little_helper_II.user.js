@@ -822,8 +822,6 @@ var mainGC = function() {
                 // Schriftfarbe Menü.
                 ".#m li a, .#m li a:link, .#m li a:visited, .#m li {color: #" + font_color_menu + " !important;}" +
                 ".#m li a:hover, .#m li a:focus {color: #FFFFFF !important; outline: unset !important;}" +
-                // Schriftfarbe Search Field.
-                "#navi_search {color: #4a4a4a};" +
                 // Menü nicht flex.
                 ".#m {display: unset;}" +
                 // Submenü im Vordergrund.
@@ -6014,6 +6012,7 @@ var mainGC = function() {
                     // so we have to load informations for all caches.
                     $('#gmCacheInfo .map-item').each(function () {
                         gccode = $(this).find('.code').html();
+                        $(this).find('dl dt')[0].innerHTML = $(this).find('dl dt')[0].innerHTML.replace(/Created by:/,"by:").replace(/Erstellt von:/,"von:");
 
                         // Add Loading image
                         $(this).append('<div id="popup_additional_info_' + gccode +'" class="links Clear popup_additional_info"><div class="loading_container"><img src="' + urlImages + 'ajax-loader.gif" />Loading additional Data...</div></div>');
