@@ -5282,7 +5282,7 @@ var mainGC = function() {
             var css = '';
             // Compact layout (little bit narrower elements).
             if (settings_compact_layout_new_dashboard) {
-                css += ".action-link a {padding: 5px 20px;}";
+                css += ".action-link a {padding: 5px 20px; height: 29.2px !important;}";
                 css += ".bio-username {color: #02874D; font-size: 1.3em !important; word-break: break-all;}";
                 css += ".bio-background {height: 90px !important; background-size: 100% 140% !important;}";
                 css += ".bio-meta {padding: 16px 0px !important;}";
@@ -5302,9 +5302,9 @@ var mainGC = function() {
                 ul.insertBefore(newmapbtn, ul.childNodes[0]);
                 var newsearchbtn = document.createElement('li');
                 newsearchbtn.classList.add ("action-link");
-                newsearchbtn.innerHTML = '<a class="gclh_svg_fill" href="/play/search" target="'+target+'"><svg class="icon" style="margin-left: -1px; margin-right: 9px; width: 24px;"><use xlink:href="/account/app/ui-icons/sprites/global.svg#icon-spyglass-svg-fill"></use></svg>Search</a>';
+                newsearchbtn.innerHTML = '<a class="gclh_svg_fill" href="/play/search" target="'+target+'"><svg class="icon"><use xlink:href="/account/app/ui-icons/sprites/global.svg#icon-spyglass-svg-fill"></use></svg>Search</a>';
                 ul.insertBefore(newsearchbtn, ul.childNodes[0]);
-                css += "a.gclh_svg_fill {fill: #4a4a4a;} a.gclh_svg_fill:hover {fill: #02874d;}";
+                css += ".action-link a {height: 43.6px;} a.gclh_svg_fill {fill: #4a4a4a;} a.gclh_svg_fill:hover {fill: #02874d;}";
             }
             // Show/Hide einbauen in linker Spalte.
             var list = $('.sidebar-links .link-header:not(.gclh), .sidebar-links .link-block:not(.gclh)');
