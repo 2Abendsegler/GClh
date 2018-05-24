@@ -53,7 +53,7 @@ var start = function(c) {
 var checkRunningOnce = function(c) {
     if (document.getElementsByTagName('head')[0]) {
         if (document.getElementById('GClh_II_running')){
-            var text = 'The script "GC little helper II" is already running.\nPlease make sure that it runs only once.\n\nDo you want to see tips on how this could happen \nand what you can do about it?';
+            var text = 'The script "GC little helper II" is already running.\nPlease make sure that it runs only once.\n\nDo you want to see tips on how this could happen \nand what you can do against it?';
             var url  = 'https://github.com/2Abendsegler/GClh/blob/master/docu/faq.md';
             if (window.confirm(text)) window.open(url, '_blank');
         }else appendMetaId("GClh_II_running");
@@ -3218,9 +3218,10 @@ var mainGC = function() {
     }
 
 // Improve bookmark lists.
-    if (document.location.href.match(/\.com\/bookmarks\/(view\.aspx\?guid=|bulk\.aspx\?listid=|view\.aspx\?code=)/) && document.getElementById('ctl00_ContentBody_ListInfo_cboItemsPerPage')) {
+    if (document.location.href.match(/\.com\/bookmarks\/(view\.aspx\?guid=|bulk\.aspx\?listid=|view\.aspx\?code=)/)) {
         try {
             var css = "";
+            css += ".working {opacity: 0.3; cursor: default;}";
             // Compact layout.
             if (settings_compact_layout_bm_lists) {
                 // Header:
@@ -3246,23 +3247,33 @@ var mainGC = function() {
                     else LO.nextElementSibling.style.marginBottom = "0";
                     LO.style.marginBottom = "0";
                 }
-                // Table:
-                css += "table.Table tr {line-height: 16px;}";
-                css += "table.Table th, table.Table td {border-left: 1px solid #fff; border-right: 1px solid #fff;} tr.BorderTop td {border-top: 1px solid #fff;}";
-                css += "table.Table th {border-bottom: 2px solid #fff;} table.Table td, table.Table td img, table.Table td a {vertical-align: top !important;}";
-                var lines = $('table.Table tbody').find('tr');
-                for (var i = 0; i < lines.length; i += 2) {
-                    if (!lines[i].className.match(/BorderTop/)) lines[i].className += " BorderTop";
-                    lines[i].children[1].childNodes[3].outerHTML = "&nbsp;&nbsp;";
-                    lines[i].children[1].style.whiteSpace = "nowrap";
-                    if (lines[i].children[5]) lines[i].children[5].style.whiteSpace = "nowrap";
-                    if (lines[i+1].children[1].innerHTML == "") lines[i+1].style.display = "table-column";
+                if ($('#ctl00_ContentBody_ListInfo_cboItemsPerPage')[0]) {
+                    // Table:
+                    css += "table.Table tr {line-height: 16px;}";
+                    css += "table.Table th, table.Table td {border-left: 1px solid #fff; border-right: 1px solid #fff;} tr.BorderTop td {border-top: 1px solid #fff;}";
+                    css += "table.Table th {border-bottom: 2px solid #fff;} table.Table td, table.Table td img, table.Table td a {vertical-align: top !important;}";
+                    var lines = $('table.Table tbody').find('tr');
+                    for (var i = 0; i < lines.length; i += 2) {
+                        if (!lines[i].className.match(/BorderTop/)) lines[i].className += " BorderTop";
+                        lines[i].children[1].childNodes[3].outerHTML = "&nbsp;&nbsp;";
+                        lines[i].children[1].style.whiteSpace = "nowrap";
+                        if (lines[i].children[5]) lines[i].children[5].style.whiteSpace = "nowrap";
+                        if (lines[i+1].children[1].innerHTML == "") lines[i+1].style.display = "table-column";
+                    }
+                    // Footer:
+                    $('#ctl00_ContentBody_ListInfo_btnDownload').closest('p').append($('#ctl00_ContentBody_btnCreatePocketQuery').remove().get().reverse());
                 }
-                // Footer:
-                $('#ctl00_ContentBody_ListInfo_btnDownload').closest('p').append($('#ctl00_ContentBody_btnCreatePocketQuery').remove().get().reverse());
+            }
+            // Build link "Map List" right above.
+            if ($('#ctl00_ContentBody_btnAddBookmark')[0] && $('#ctl00_ContentBody_ListInfo_cboItemsPerPage')[0]) {
+                var span = document.createElement("span");
+                span.innerHTML += '<a id="gclh_map" title="Map link not determined" class="gclh_link working" href="javascript:void(0);">Map List</a>';
+                $('#ctl00_ContentBody_btnAddBookmark')[0].parentNode.insertBefore(span, $('#ctl00_ContentBody_btnAddBookmark')[0].previousSibling.previousSibling);
+                css += ".gclh_link {margin-left: 4px;}";
+                if ($('#ctl00_ContentBody_lbHeading')[0].childNodes[0]) getBMLAct($('#ctl00_ContentBody_lbHeading')[0].childNodes[0].data.replace(/(\s+)$/,''));
             }
             // Build buttons "Mark Caches with Corr. Coords" and "Hide Text" right beside button "Copy List".
-            if ($('#ctl00_ContentBody_ListInfo_btnCopyList')[0]) {
+            if ($('#ctl00_ContentBody_ListInfo_btnCopyList')[0] && $('#ctl00_ContentBody_ListInfo_cboItemsPerPage')[0]) {
                 var defBt = 'class="gclh_bt" type="button"';
                 var span = document.createElement("span");
                 span.innerHTML += '<input id="gclh_linkCorrCoords" title="Mark Caches with Corrected Coordinates" value="Mark Caches with Corr. Coords"'+defBt+'>';
@@ -3270,12 +3281,12 @@ var mainGC = function() {
                 $('#ctl00_ContentBody_ListInfo_btnCopyList')[0].parentNode.insertBefore(span, $('#ctl00_ContentBody_ListInfo_btnCopyList')[0].nextSibling);
                 css += ".cc_cell {text-align: center !important}";
                 css += ".gclh_hideBm {display: table-column;}";
-                css += ".gclh_bt {margin-left: 4px;} .working {opacity: 0.3; cursor: default;}";
+                css += ".gclh_bt {margin-left: 4px;}";
                 $('#gclh_linkCorrCoords')[0].addEventListener("click", markCorrCoordForBm, false);
                 $('#gclh_hideLtBm')[0].addEventListener("click", hideLtBm, false);
             }
             // Build button "Download as kml" right beside button "Download .LOC".
-            if ($('#ctl00_ContentBody_ListInfo_btnDownload')[0]) {
+            if ($('#ctl00_ContentBody_ListInfo_btnDownload')[0] && $('#ctl00_ContentBody_ListInfo_cboItemsPerPage')[0]) {
                 if (document.location.href.match(/guid=([a-zA-Z0-9-]*)/)) {
                     var matches = document.location.href.match(/guid=([a-zA-Z0-9-]*)/);
                     if (matches && matches[1]) {
@@ -3288,6 +3299,41 @@ var mainGC = function() {
             }
             appendCssStyle(css);
         } catch(e) {gclh_error("Improve bookmark lists:",e);}
+    }
+    // Daten der aktuellen BML ermitteln.
+    function getBMLAct(name) {
+        GM_xmlhttpRequest({
+            method: 'GET',
+            url: 'https://www.geocaching.com/account/oauth/token',
+            onload: function (result) {
+                if (result.status >= 200 && result.status < 300) {
+                    var response = JSON.parse(result.responseText);
+                    GM_xmlhttpRequest({
+                        method: 'GET',
+                        url: 'https://www.geocaching.com/api/proxy/web/v1/lists/?type=bm&take=1000',
+                        headers: {'Authorization': response.token_type + ' ' + response.access_token, 'Content-Type': 'application/json;charset=utf-8'},
+                        onload: function (result) {
+                            if (result.status >= 200 && result.status < 300) {
+                                var BML = JSON.parse(result.responseText);
+                                var BMLAct = {};
+                                var c = 0;
+                                for (i = 0; i < BML["total"]; i++) {
+                                    if (BML["data"][i].name == name) {
+                                        BMLAct = BML["data"][i];
+                                        c++;
+                                    }
+                                }
+                                if (BMLAct && c == 1 && $('#gclh_map')[0]) {
+                                    $('#gclh_map')[0].href = BMLAct.mapLink;
+                                    $('#gclh_map')[0].title = 'Map List';
+                                    $('#gclh_map').removeClass('working');
+                                }
+                            }
+                        },
+                    });
+                }
+            },
+        });
     }
     // Mark caches with corrected coords.
     function markCorrCoordForBm() {
@@ -5282,7 +5328,7 @@ var mainGC = function() {
             var css = '';
             // Compact layout (little bit narrower elements).
             if (settings_compact_layout_new_dashboard) {
-                css += ".action-link a {padding: 5px 20px; height: 29.2px !important;}";
+                css += ".action-link a {padding: 5px 20px;}";
                 css += ".bio-username {color: #02874D; font-size: 1.3em !important; word-break: break-all;}";
                 css += ".bio-background {height: 90px !important; background-size: 100% 140% !important;}";
                 css += ".bio-meta {padding: 16px 0px !important;}";
@@ -5302,9 +5348,9 @@ var mainGC = function() {
                 ul.insertBefore(newmapbtn, ul.childNodes[0]);
                 var newsearchbtn = document.createElement('li');
                 newsearchbtn.classList.add ("action-link");
-                newsearchbtn.innerHTML = '<a class="gclh_svg_fill" href="/play/search" target="'+target+'"><svg class="icon"><use xlink:href="/account/app/ui-icons/sprites/global.svg#icon-spyglass-svg-fill"></use></svg>Search</a>';
+                newsearchbtn.innerHTML = '<a class="gclh_svg_fill" href="/play/search" target="'+target+'"><svg class="icon" style="margin-left: -1px; margin-right: 9px; width: 24px;"><use xlink:href="/account/app/ui-icons/sprites/global.svg#icon-spyglass-svg-fill"></use></svg>Search</a>';
                 ul.insertBefore(newsearchbtn, ul.childNodes[0]);
-                css += ".action-link a {height: 43.6px;} a.gclh_svg_fill {fill: #4a4a4a;} a.gclh_svg_fill:hover {fill: #02874d;}";
+                css += "a.gclh_svg_fill {fill: #4a4a4a;} a.gclh_svg_fill:hover {fill: #02874d;}";
             }
             // Show/Hide einbauen in linker Spalte.
             var list = $('.sidebar-links .link-header:not(.gclh), .sidebar-links .link-block:not(.gclh)');
@@ -7065,19 +7111,13 @@ var mainGC = function() {
 // Improve Souvenirs
     if ( is_page("souvenirs") || is_page("publicProfile") ) {
         try {
-            var SouvenirsDashboard = $(".ProfileSouvenirsList");
+            SouvenirsDashboard = $(".ProfileSouvenirsList");
             if (SouvenirsDashboard.length) {
                 SouvenirsDashboard.before('<div id="gclhSouvenirsSortButtons"></div><p></p>');
                 $("#gclhSouvenirsSortButtons").append('<input id="actionSouvenirsSortAcquiredDateNewestTop" title="Sort newest first" value="Newest first" type="button" href="javascript:void(0);" style="opacity: 0.5; margin-right: 4px" disabled="true">');
                 $("#gclhSouvenirsSortButtons").append('<input id="actionSouvenirsSortAcquiredDateOldestTop" title="Sort oldest first" value="Oldest first" type="button" href="javascript:void(0);" style="opacity: 0.5; margin-right: 4px" disabled="true">');
                 $("#gclhSouvenirsSortButtons").append('<input id="actionSouvenirsSortAcquiredTitleAtoZ" title="Sort title A-Z" value="Title A-Z" type="button" href="javascript:void(0);" style="margin-right: 4px">');
                 $("#gclhSouvenirsSortButtons").append('<input id="actionSouvenirsSortAcquiredTitleZtoA" title="Sort title Z-A" value="Title Z-A" type="button" href="javascript:void(0);">');
-                
-                var Souvenirs = SouvenirsDashboard.children('div');
-                var htmlFragment = "&nbsp;<span title='Number of souvenirs'>("+Souvenirs.length+")</span>";
-                $("#divContentMain > h2").append(htmlFragment); // private probfile
-                $("#ctl00_ContentBody_ProfilePanel1_pnlSouvenirs > h3").append(htmlFragment); // new public profile
-                
                 var jqui_date_format = "";
                 var accessTokenPromise = $.get('/account/settings/preferences');
                 accessTokenPromise.done(function (response) {
@@ -8904,7 +8944,7 @@ var mainGC = function() {
 
             html += "<h4 class='gclh_headline2'>"+prepareHideable.replace("#name#","maps")+"Map</h4>";
             html += "<div id='gclh_config_maps' class='gclh_block'>";
-            html += "<div style='margin-left: 5px'><b>Homezone circles</b></div>";
+            html += "<div style='margin-left: 5px'><b>Homezone circels</b></div>";
             html += checkboxy('settings_show_homezone', 'Show Homezone circles') + show_help("This option allows to draw Homezone circles around coordinates on the map.") + "<br>";
             html += "<div id='ShowHomezoneCircles' style='display: " + (settings_show_homezone ? "block":"none") + ";'>";
             html += "<table class='multi_homezone_settings'>";
