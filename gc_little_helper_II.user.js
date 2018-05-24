@@ -53,7 +53,7 @@ var start = function(c) {
 var checkRunningOnce = function(c) {
     if (document.getElementsByTagName('head')[0]) {
         if (document.getElementById('GClh_II_running')){
-            var text = 'The script "GC little helper II" is already running.\nPlease make sure that it runs only once.\n\nDo you want to see tips on how this could happen \nand what you can do about it?';
+            var text = 'The script "GC little helper II" is already running.\nPlease make sure that it runs only once.\n\nDo you want to see tips on how this could happen \nand what you can do against it?';
             var url  = 'https://github.com/2Abendsegler/GClh/blob/master/docu/faq.md';
             if (window.confirm(text)) window.open(url, '_blank');
         }else appendMetaId("GClh_II_running");
@@ -8224,20 +8224,16 @@ var mainGC = function() {
         html += ".btn-user {";
         html += "  background-color: transparent;";
         html += "  background-image: none;";
-        html += "  border: 2px solid #00b265;";
         html += "  border-color: #fff;";
-        html += "  border-radius: 4px;";
+        html += "  border-radius: 3px;";
         html += "  clear: both;";
         html += "  color: #fff;";
-        html += "  font-size: 16px;";
-        html += "  margin-bottom: 0;";
-        html += "  margin-top: 20px;";
-        html += "  padding: .45em 24px;}";
+        html += "  margin-top: 0px;}";
         html += ".filters-toggle {";
-        html += "  display: block;}";
+        html += "  display: inline-flex;}";
         html += ".btn-user-active, .btn-user:hover, .btn-user:active {";
         html += "  background-color: #00b265;";
-        html += "  border: 2px solid #00b265;}";
+        html += "  border-color: #00b265;}";
         html += ".btn-iconsvg svg {";
         html += "  width: 22px;";
         html += "  height: 22px;";
@@ -8904,7 +8900,7 @@ var mainGC = function() {
 
             html += "<h4 class='gclh_headline2'>"+prepareHideable.replace("#name#","maps")+"Map</h4>";
             html += "<div id='gclh_config_maps' class='gclh_block'>";
-            html += "<div style='margin-left: 5px'><b>Homezone circles</b></div>";
+            html += "<div style='margin-left: 5px'><b>Homezone circels</b></div>";
             html += checkboxy('settings_show_homezone', 'Show Homezone circles') + show_help("This option allows to draw Homezone circles around coordinates on the map.") + "<br>";
             html += "<div id='ShowHomezoneCircles' style='display: " + (settings_show_homezone ? "block":"none") + ";'>";
             html += "<table class='multi_homezone_settings'>";
