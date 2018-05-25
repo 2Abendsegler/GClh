@@ -42,8 +42,8 @@
 	<li>
 		<strong>New:</strong> Link to map on bookmark list page: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/#680">#680</a>]<br>
 		<img src="../images/v0.9.7_Screen01.jpg" alt="v0.9.7_Screen01.jpg"><br>
-		(Here with compact layout.)
-		Thanks to <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a> for the implementation. Thanks to <a href="https://www.geocaching.com/profile/?u=Die Batzen">Die Batzen</a> for the inspiration.<br>
+		(Here with compact layout.)<br>
+		Thanks to <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a> for the implementation and thanks to <a href="https://www.geocaching.com/profile/?u=Die Batzen">Die Batzen</a> for the inspiration.<br>
 	</li>
 	<li>
 		<strong>Improvement:</strong> Reduce line breaks in owner line on enhanced map popup: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/#668">#668</a>]<br>
