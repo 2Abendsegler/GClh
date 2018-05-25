@@ -65,6 +65,11 @@
 		<strong>Fix:</strong> Demolished buttons on search page due to changes made by GS: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/#666">#666</a>]<br>
 		Thanks to <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a> for the fix.<br>
 	</li>
+	<li>
+		<strong>Fix:</strong> Wrong percentage of favorites in enhanced map popup: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/676">#676</a>]<br>
+		Thanks to <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a> for the fix.<br>
+	</li>
+	<li>
 </ul>
 (??.0?.2018)<br>
 released by <a href="https://www.geocaching.com/profile/?u=Ruko2010">Ruko2010</a><br>
