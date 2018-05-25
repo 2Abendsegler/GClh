@@ -3261,6 +3261,14 @@ var mainGC = function() {
                 // Footer:
                 $('#ctl00_ContentBody_ListInfo_btnDownload').closest('p').append($('#ctl00_ContentBody_btnCreatePocketQuery').remove().get().reverse());
             }
+            // Build link "Map List" right above.
+            if ($('#ctl00_ContentBody_btnAddBookmark')[0] && $('#ctl00_ContentBody_ListInfo_cboItemsPerPage')[0]) {
+                var span = document.createElement("span");
+                span.innerHTML += '<a id="gclh_map" title="Map link not determined" class="gclh_link working" href="javascript:void(0);">Map List</a>';
+                $('#ctl00_ContentBody_btnAddBookmark')[0].parentNode.insertBefore(span, $('#ctl00_ContentBody_btnAddBookmark')[0].previousSibling.previousSibling);
+                css += ".gclh_link {margin-left: 4px;}";
+                if ($('#ctl00_ContentBody_lbHeading')[0].childNodes[0]) getBMLAct($('#ctl00_ContentBody_lbHeading')[0].childNodes[0].data.replace(/(\s+)$/,''));
+            }
             // Build buttons "Mark Caches with Corr. Coords" and "Hide Text" right beside button "Copy List".
             if ($('#ctl00_ContentBody_ListInfo_btnCopyList')[0]) {
                 var defBt = 'class="gclh_bt" type="button"';
@@ -3288,6 +3296,41 @@ var mainGC = function() {
             }
             appendCssStyle(css);
         } catch(e) {gclh_error("Improve bookmark lists:",e);}
+    }
+    // Daten der aktuellen BML ermitteln.
+    function getBMLAct(name) {
+        GM_xmlhttpRequest({
+            method: 'GET',
+            url: 'https://www.geocaching.com/account/oauth/token',
+            onload: function (result) {
+                if (result.status >= 200 && result.status < 300) {
+                    var response = JSON.parse(result.responseText);
+                    GM_xmlhttpRequest({
+                        method: 'GET',
+                        url: 'https://www.geocaching.com/api/proxy/web/v1/lists/?type=bm&take=1000',
+                        headers: {'Authorization': response.token_type + ' ' + response.access_token, 'Content-Type': 'application/json;charset=utf-8'},
+                        onload: function (result) {
+                            if (result.status >= 200 && result.status < 300) {
+                                var BML = JSON.parse(result.responseText);
+                                var BMLAct = {};
+                                var c = 0;
+                                for (i = 0; i < BML["total"]; i++) {
+                                    if (BML["data"][i].name == name) {
+                                        BMLAct = BML["data"][i];
+                                        c++;
+                                    }
+                                }
+                                if (BMLAct && c == 1 && $('#gclh_map')[0]) {
+                                    $('#gclh_map')[0].href = BMLAct.mapLink;
+                                    $('#gclh_map')[0].title = 'Map List';
+                                    $('#gclh_map').removeClass('working');
+                                }
+                            }
+                        },
+                    });
+                }
+            },
+        });
     }
     // Mark caches with corrected coords.
     function markCorrCoordForBm() {
