@@ -47,6 +47,7 @@
 	</li>
 	<li>
 		<strong>Improvement:</strong> Reduce line breaks in owner line on enhanced map popup: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/668">#668</a>]<br>
+		<img src="../images/v0.9.7_Screen04.jpg" alt="v0.9.7_Screen04.jpg"> <img src="../images/v0.9.7_Screen05.jpg" alt="v0.9.7_Screen05.jpg"><br>
 		Thanks to <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a> for the change.<br>
 	</li>
 	<li>
