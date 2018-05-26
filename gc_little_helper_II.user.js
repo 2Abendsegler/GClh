@@ -3197,10 +3197,17 @@ var mainGC = function() {
                 $('table.Table thead tr')[0].children[1].innerHTML = "Status";
                 $('table.Table thead tr')[0].children[5].innerHTML = "PQ";
                 $('table.Table thead tr')[0].children[6].innerHTML = "KML";
+                var span = document.createElement("span");
+                span.innerHTML += '<input id="gclh_hideTextBm" title="Show/hide Text in column Description" value="Hide Text" class="gclh_bt gclh_desc" type="button">';
+                $('table.Table thead tr th:nth-child(4)')[0].append(span);
+                css += ".gclh_hideBm {display: none;}";
+                css += ".gclh_bt {margin-left: 4px;} .working {opacity: 0.3; cursor: default;}";
+                $('#gclh_hideTextBm')[0].addEventListener("click", hideTextBm, false);
                 var lines = $('table.Table tbody tr');
                 for (var i = 0; i < lines.length; i++) {
                     while (lines[i].children[2].childNodes[2]) {lines[i].children[2].childNodes[2].remove();}
                     lines[i].children[1].style.whiteSpace = "nowrap";
+                    lines[i].children[3].innerHTML = '<span>' + lines[i].children[3].innerHTML + '</span>';
                     lines[i].children[4].style.whiteSpace = "nowrap";
                     lines[i].children[4].children[0].innerHTML = '<img src="/images/icons/16/edit.png" alt="Edit">';
                     lines[i].children[4].children[1].innerHTML = '<img src="/images/icons/16/watch.png" alt="View">';
@@ -3271,16 +3278,15 @@ var mainGC = function() {
             }
             // Build buttons "Mark Caches with Corr. Coords" and "Hide Text" right beside button "Copy List".
             if ($('#ctl00_ContentBody_ListInfo_btnCopyList')[0]) {
-                var defBt = 'class="gclh_bt" type="button"';
                 var span = document.createElement("span");
-                span.innerHTML += '<input id="gclh_linkCorrCoords" title="Mark Caches with Corrected Coordinates" value="Mark Caches with Corr. Coords"'+defBt+'>';
-                span.innerHTML += '<input id="gclh_hideLtBm" title="Show/hide Longtext in Bookmark" value="Hide Text"'+defBt+'>';
+                span.innerHTML += '<input id="gclh_linkCorrCoords" title="Mark Caches with Corrected Coordinates" value="Mark Caches with Corr. Coords" class="gclh_bt" type="button">';
+                span.innerHTML += '<input id="gclh_hideTextBm" title="Show/hide Longtext in Bookmark" value="Hide Text" class="gclh_bt gclh_lt" type="button">';
                 $('#ctl00_ContentBody_ListInfo_btnCopyList')[0].parentNode.insertBefore(span, $('#ctl00_ContentBody_ListInfo_btnCopyList')[0].nextSibling);
                 css += ".cc_cell {text-align: center !important}";
                 css += ".gclh_hideBm {display: table-column;}";
                 css += ".gclh_bt {margin-left: 4px;} .working {opacity: 0.3; cursor: default;}";
                 $('#gclh_linkCorrCoords')[0].addEventListener("click", markCorrCoordForBm, false);
-                $('#gclh_hideLtBm')[0].addEventListener("click", hideLtBm, false);
+                $('#gclh_hideTextBm')[0].addEventListener("click", hideTextBm, false);
             }
             // Build button "Download as kml" right beside button "Download .LOC".
             if ($('#ctl00_ContentBody_ListInfo_btnDownload')[0]) {
@@ -3356,18 +3362,22 @@ var mainGC = function() {
         });
         if (!$('#gclh_colCorrCoords')[0]) $('table.Table thead tr th:nth-child(5)').after('<th id="gclh_colCorrCoords" style="width: 90px;"><span title="Caches with Corrected Coordinates">Corr. Coords</span></th>');
     }
-    // Show, hide Longtext.
-    function hideLtBm() {
-        if ($('#gclh_hideLtBm.working')[0]) return;
-        $('#gclh_hideLtBm').addClass('working');
+    // Show, hide Longtext/Description.
+    function hideTextBm() {
+        if ($('#gclh_hideTextBm.working')[0]) return;
+        $('#gclh_hideTextBm').addClass('working');
         setTimeout(function() {
-            $('table.Table tbody tr[id$="_dataRow2"]').each(function() {
-                if (!$('#gclh_hideLtBm.gclh_firstDone')[0] && !this.style.display) $(this).addClass('gclh_showHideBm');
-                if (this.className.match("gclh_showHideBm")) this.classList.toggle('gclh_hideBm');
-            });
-            if (!$('#gclh_hideLtBm.gclh_firstDone')[0]) $('#gclh_hideLtBm').addClass('gclh_firstDone');
-            $('#gclh_hideLtBm')[0].value = ($('.gclh_hideBm')[0] ? "Show Text" : "Hide Text");
-            $('#gclh_hideLtBm').removeClass('working');
+            if ($('#gclh_hideTextBm.gclh_lt')[0]) var qual = 'table.Table tbody tr[id$="_dataRow2"]';
+            else if ($('#gclh_hideTextBm.gclh_desc')[0]) var qual = 'table.Table tbody tr td:nth-child(4) span';
+            if (qual) {
+                $(qual).each(function() {
+                    if (!$('#gclh_hideTextBm.gclh_firstDone')[0] && !this.style.display) $(this).addClass('gclh_showHideBm');
+                    if (this.className.match("gclh_showHideBm")) this.classList.toggle('gclh_hideBm');
+                });
+                if (!$('#gclh_hideTextBm.gclh_firstDone')[0]) $('#gclh_hideTextBm').addClass('gclh_firstDone');
+                $('#gclh_hideTextBm')[0].value = ($('.gclh_hideBm')[0] ? "Show Text" : "Hide Text");
+                $('#gclh_hideTextBm').removeClass('working');
+            }
         }, 200);
     }
 
