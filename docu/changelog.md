@@ -44,17 +44,20 @@
 		<img src="../images/v0.9.7_Screen01.jpg" alt="v0.9.7_Screen01.jpg"><br>
 		(Image is with compact layout.)<br>
 		Thanks to <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a> for the implementation and thanks to <a href="https://www.geocaching.com/profile/?u=Die Batzen">Die Batzen</a> for the inspiration.<br>
+		<br>
 	</li>
 	<li>
 		<strong>New:</strong> Show/hide text in column Description in <a href="https://www.geocaching.com/my/lists.aspx">list of bookmark lists</a>: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/686">#686</a>]<br>
 		Only available in <a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_compact_layout_list_of_bm_lists">compact layout in list of bookmark lists</a>.<br>
 		<img src="../images/v0.9.7_Screen02.jpg" alt="v0.9.7_Screen02.jpg"><br>
-		<img src="../images/v0.9.7_Screen02.jpg" alt="v0.9.7_Screen02.jpg"><br>
+		<img src="../images/v0.9.7_Screen03.jpg" alt="v0.9.7_Screen03.jpg"><br>
 		Thanks to <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a> for the implementation.<br>
+		<br>
 	</li>
 	<li>
 		<strong>Improvement:</strong> Reduce line breaks in owner line on enhanced map popup: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/#668">#668</a>]<br>
 		Thanks to <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a> for the change.<br>
+		<br>
 	</li>
 	<li>
 		<strong>Fix:</strong> Grammar and Typo<br>
