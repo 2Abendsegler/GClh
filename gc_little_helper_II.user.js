@@ -1309,6 +1309,22 @@ var mainGC = function() {
         } catch(e) {gclh_error("Show the latest logs symbols:",e);}
     }
 
+// Copy GC Code to clipboard.
+    if (is_page('cache_listing') && $('.CoordInfoLink')[0] && $('#ctl00_ContentBody_CoordInfoLinkControl1_uxCoordInfoCode')[0]) {
+        try {
+            var span = document.createElement('span');
+            span.innerHTML = '<a href="javascript:void(0);" class="gclh_ctoc"><img src="'+global_copy_icon+'" title="Copy GC Code to clipboard" style="vertical-align: text-top;"></a>';
+            $('.CoordInfoLink')[0].parentNode.insertBefore(span, $('.CoordInfoLink')[0]);
+            $('.gclh_ctoc')[0].addEventListener("click", function() {document.execCommand('copy');}, false);
+            document.addEventListener('copy', function(e){
+                $('.gclh_ctoc')[0].style.opacity = '0.3';
+                setTimeout(function() { $('.gclh_ctoc')[0].style.opacity = 'unset'; }, 200);
+                e.clipboardData.setData('text/plain', $('#ctl00_ContentBody_CoordInfoLinkControl1_uxCoordInfoCode')[0].innerHTML);
+                e.preventDefault();
+            });
+        } catch(e) {gclh_error("Copy GC Code to clipboard:",e);}
+    }
+
 // Show favorite percentage.
     if (settings_show_fav_percentage && is_page("cache_listing") && $('#uxFavContainerLink')[0]) {
         try {
@@ -6497,7 +6513,7 @@ var mainGC = function() {
 // Improve own statistic map page with links to caches for every country.
     if (settings_map_links_statistic && isOwnStatisticsPage()) {
         try {
-            var countries = $('#stats_tabs-maps .StatisticsWrapper:first-of-type #StatsFlagLists table.Table tr');
+            var countries = $('#StatsFlagLists table.Table tr');
             for (var i = 0; i < countries.length; i++) {
                 var name = countries[i].children[0].childNodes[1].textContent;
                 if (name) {
