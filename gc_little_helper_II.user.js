@@ -6497,7 +6497,7 @@ var mainGC = function() {
 // Improve own statistic map page with links to caches for every country.
     if (settings_map_links_statistic && isOwnStatisticsPage()) {
         try {
-            var countries = $('#StatsFlagLists table.Table tr');
+            var countries = $('#stats_tabs-maps .StatisticsWrapper:first-of-type #StatsFlagLists table.Table tr');
             for (var i = 0; i < countries.length; i++) {
                 var name = countries[i].children[0].childNodes[1].textContent;
                 if (name) {
