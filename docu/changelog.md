@@ -40,13 +40,14 @@
 ## v0.9.7:
 <ul>
 	<li>
-		<strong>New:</strong> Link to map on bookmark list page: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/#680">#680</a>]<br>
+		<strong>New:</strong> Link to map on bookmark list page: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/680">#680</a>]<br>
 		<img src="../images/v0.9.7_Screen01.jpg" alt="v0.9.7_Screen01.jpg"><br>
-		(Image is with compact layout.)<br>
+		(Picture is in compact layout.)<br>
 		Thanks to <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a> for the implementation and thanks to <a href="https://www.geocaching.com/profile/?u=Die Batzen">Die Batzen</a> for the inspiration.<br>
 	</li>
 	<li>
-		<strong>Improvement:</strong> Reduce line breaks in owner line on enhanced map popup: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/#668">#668</a>]<br>
+		<strong>Improvement:</strong> Reduce line breaks in owner line on enhanced map popup: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/668">#668</a>]<br>
+		<img src="../images/v0.9.7_Screen04.jpg" alt="v0.9.7_Screen04.jpg"> <img src="../images/v0.9.7_Screen05.jpg" alt="v0.9.7_Screen05.jpg"><br>
 		Thanks to <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a> for the change.<br>
 	</li>
 	<li>
@@ -54,15 +55,15 @@
 		Thanks to <a href="https://www.geocaching.com/profile/?u=Bananeweizen">Bananeweizen</a> for the fix.<br>
 	</li>
 	<li>
-		<strong>Fix:</strong> Set black as text color in search field: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/#662">#662</a>]<br>
+		<strong>Fix:</strong> Set black as text color in search field: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/662">#662</a>]<br>
 		Thanks to <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a> for the fix.<br>
 	</li>
 	<li>
-		<strong>Fix:</strong> Demolished search and map buttons on new dashboard page due to changes made by GS: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/#674">#674</a>]<br>
+		<strong>Fix:</strong> Demolished search and map buttons on new dashboard page due to changes made by GS: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/674">#674</a>]<br>
 		Thanks to <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a> for the fix.<br>
 	</li>
 	<li>
-		<strong>Fix:</strong> Demolished buttons on search page due to changes made by GS: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/#666">#666</a>]<br>
+		<strong>Fix:</strong> Demolished buttons on search page due to changes made by GS: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/666">#666</a>]<br>
 		Thanks to <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a> for the fix.<br>
 	</li>
 </ul>
@@ -74,31 +75,31 @@ released by <a href="https://www.geocaching.com/profile/?u=Ruko2010">Ruko2010</a
 ## v0.9.6:
 <ul>
 	<li>
-		<strong>New:</strong> After a change of a bookmark list you can go back to bookmark list automatically. The confirmation page of this change is skip: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/#648">#648</a>]<br>
+		<strong>New:</strong> After a change of a bookmark list you can go back to bookmark list automatically. The confirmation page of this change is skip: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/648">#648</a>]<br>
 		Settings -> Bookmark list:<br>
 		<img src="../images/v0.9.6_Screen01.jpg" alt="v0.9.6_Screen01.jpg"><br>
 	</li>
 	<li>
-		<strong>New:</strong> Save bookmark list with Key F2 too: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/#648">#648</a>]<br>
+		<strong>New:</strong> Save bookmark list with Key F2 too: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/648">#648</a>]<br>
 		<img src="../images/v0.9.6_Screen04.jpg" alt="v0.9.6_Screen04.jpg"><br>
 	</li>
 	<li>
-		<strong>Improvement:</strong> Show Premium Only-Info in MapPopup: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/#651">#651</a>]<br>
+		<strong>Improvement:</strong> Show Premium Only-Info in MapPopup: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/651">#651</a>]<br>
 		<img src="../images/v0.9.6_Screen02.jpg" alt="v0.9.6_Screen02.jpg"><br>
 		Thanks to <a href="https://www.geocaching.com/profile/?u=Ruko2010">Ruko2010</a> for the change.<br>	
 	</li>
 	<li>
-		<strong>Improvement:</strong> Enhance message "GC Little Helper II is already running" with link to new document FAQ: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/#637">#637</a>, <a href="https://github.com/2Abendsegler/GClh/issues/#644">#644</a>]<br>
+		<strong>Improvement:</strong> Enhance message "GC Little Helper II is already running" with link to new document FAQ: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/637">#637</a>, <a href="https://github.com/2Abendsegler/GClh/issues/644">#644</a>]<br>
 		<img src="../images/v0.9.6_Screen05.jpg" alt="v0.9.6_Screen05.jpg"><br>
 		<img src="../images/v0.9.6_Screen03.jpg" alt="v0.9.6_Screen03.jpg"><br>
 		Thanks to <a href="https://www.geocaching.com/profile/?u=Ruko2010">Ruko2010</a> for the change.<br>	
 	</li>
 	<li>
-		<strong>Improvement:</strong> Reorganization buttons in bookmark lists so it runs to with 900 pixel: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/#650">#650</a>]<br>
+		<strong>Improvement:</strong> Reorganization buttons in bookmark lists so it runs to with 900 pixel: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/650">#650</a>]<br>
 		<img src="../images/v0.9.6_Screen06.jpg" alt="v0.9.6_Screen06.jpg"><br>
 	</li>
 	<li>
-		<strong>Improvement:</strong> Change souvenirs sort buttons to standard: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/#649">#649</a>]<br>
+		<strong>Improvement:</strong> Change souvenirs sort buttons to standard: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/649">#649</a>]<br>
 		<img src="../images/v0.9.6_Screen07.jpg" alt="v0.9.6_Screen07.jpg"><br>
 	</li>
 	<li>
