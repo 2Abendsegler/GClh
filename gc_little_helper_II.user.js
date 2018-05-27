@@ -6081,7 +6081,6 @@ var mainGC = function() {
 
                             var premium_only = false;
                             if($(text).find('p.Warning.NoBottomSpacing').html() != null){
-                                console.log($(text).find('p.Warning.NoBottomSpacing').html());
                                 premium_only = true;
                             }
 
@@ -6149,16 +6148,6 @@ var mainGC = function() {
                                 }
                             });
 
-                            // get the total number of finds
-                            var start = all_logs.indexOf('>',all_logs.indexOf('Found it')) + 1;
-                            var end = all_logs.indexOf('&nbsp',start);
-
-                            var total_finds_for_favi = all_logs.substr(start, end-start);
-                            total_finds_for_favi = total_finds_for_favi.replace('.','');
-                            total_finds_for_favi = total_finds_for_favi.replace(',','');
-
-                            total_finds_for_favi = parseInt(total_finds_for_favi);
-
                             // get the number of favorite points
                             var fav_points = $(text).find('.favorite-value').html();
                             if(fav_points == null){
@@ -6169,11 +6158,8 @@ var mainGC = function() {
                                 fav_points = fav_points.replace(',','');
                                 fav_points = parseInt(fav_points);
                             }
-
-                            var fav_percent = '-';
-                            if(fav_points > 0){
-                                fav_percent = Math.round((100 * fav_points) / total_finds_for_favi) + '%';
-                            }
+                            // Set dummy favorite score.
+                            var fav_percent = ' ';
 
                             // get the place, where the cache was placed
                             var place = $(text).find('#ctl00_ContentBody_Location')[0].innerHTML;
@@ -6190,6 +6176,12 @@ var mainGC = function() {
                             }
                             new_text += '<span class="tackables" title="Number of trackables"><svg height="16" width="16" class="icon-sm"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="/account/app/ui-icons/sprites/global.svg#icon-travelbug-default"></use></svg> ' + trachables + '</span><br>';
                             $('#popup_additional_info_' + local_gc_code).html(new_text);
+
+                            // Get favorite score.
+                            var from = text.indexOf('userToken', text.indexOf('CDATA')) + 13;
+                            var length = text.indexOf("';", from) - from;
+                            var userToken = text.substr(from, length);
+                            getFavScore(local_gc_code, userToken);
                         });
 
                         // Improve Original Box Content
@@ -6220,6 +6212,21 @@ var mainGC = function() {
             observer.observe(target, config);
 
         } catch(e) {gclh_error("enhance cache popup",e);}
+    }
+    // Get favorite score.
+    function getFavScore(gccode, userToken) {
+       $.ajax({
+           type: "POST",
+           cache: false,
+           url: '/datastore/favorites.svc/score?u=' + userToken,
+           success: function (scoreResult) {
+               var score = 0;
+               if (scoreResult) score = scoreResult;
+               if (score > 100) score = 100;
+               var id = '#popup_additional_info_' + gccode + ' .favi_points';
+               if ($(id)[0] && $(id)[0].childNodes[1]) $(id)[0].childNodes[1].data = " "+score+"%";
+           }
+       });
     }
 
 // Leaflet Map für Trackables vergrößern und Zoom per Mausrad zulassen.

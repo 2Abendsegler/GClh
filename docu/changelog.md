@@ -61,7 +61,7 @@
 		<br>
 	</li>
 	<li>
-		<strong>Fix:</strong> Grammar and Typo<br>
+		<strong>Fix:</strong> Grammar and Typo.<br>
 		Thanks to <a href="https://www.geocaching.com/profile/?u=Bananeweizen">Bananeweizen</a> for the fix.<br>
 	</li>
 	<li>
@@ -78,6 +78,10 @@
 	</li>
 	<li>
 		<strong>Fix:</strong> More than one loading area and VIP button on enhanced map popup: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/667">#667</a>]<br>
+		Thanks to <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a> for the fix.<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> Wrong percentage of favorites in enhanced map popup: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/676">#676</a>]<br>
 		Thanks to <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a> for the fix.<br>
 	</li>
 </ul>
