@@ -130,7 +130,7 @@ function country_idInit(c) {
         {"n":"Cuba","id":"238"},
         {"n":"Curacao","id":"54"},
         {"n":"Cyprus","id":"55"},
-        {"n":"Czech Republic","id":"56"},
+        {"n":"Czechia","id":"56"},
         {"n":"Democratic Republic of the Congo","id":"257"},
         {"n":"Denmark","id":"57"},
         {"n":"Djibouti","id":"58"},
