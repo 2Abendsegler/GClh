@@ -2098,7 +2098,7 @@ var mainGC = function() {
     if (settings_show_elevation_of_waypoints && is_page("cache_listing") && !isMemberInPmoCache()) {
         try {
             function formatElevation(elevation) {
-                return ((elevation>=0)?"+":"")+((settings_distance_units != "Imperial")?(Math.round(elevation) + "m"):(Math.round(elevation*3.28084) + "ft"));
+                return ((elevation>0)?"+":"")+((settings_distance_units != "Imperial")?(Math.round(elevation) + "m"):(Math.round(elevation*3.28084) + "ft"));
             }
             elevationServicesData[1]['function'] = addElevationToWaypoints_GoogleElevation;
             elevationServicesData[2]['function'] = addElevationToWaypoints_OpenElevation;
