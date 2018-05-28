@@ -1312,15 +1312,25 @@ var mainGC = function() {
 // Copy GC Code to clipboard.
     if (is_page('cache_listing') && $('.CoordInfoLink')[0] && $('#ctl00_ContentBody_CoordInfoLinkControl1_uxCoordInfoCode')[0]) {
         try {
+            var ctoc = false;
             var span = document.createElement('span');
-            span.innerHTML = '<a href="javascript:void(0);" class="gclh_ctoc"><img src="'+global_copy_icon+'" title="Copy GC Code to clipboard" style="vertical-align: text-top;"></a>';
+            span.innerHTML = '<a href="javascript:void(0);" id="gclh_ctoc"><img src="'+global_copy_icon+'" title="Copy GC Code to clipboard" style="vertical-align: text-top;"></a>';
             $('.CoordInfoLink')[0].parentNode.insertBefore(span, $('.CoordInfoLink')[0]);
-            $('.gclh_ctoc')[0].addEventListener("click", function() {document.execCommand('copy');}, false);
+            $('#gclh_ctoc')[0].addEventListener('click', function() {
+                // Tastenkombination Strg+c ausführen für eigene Verarbeitung.
+                ctoc = true;
+                document.execCommand('copy');
+            }, false);
             document.addEventListener('copy', function(e){
-                $('.gclh_ctoc')[0].style.opacity = '0.3';
-                setTimeout(function() { $('.gclh_ctoc')[0].style.opacity = 'unset'; }, 200);
-                e.clipboardData.setData('text/plain', $('#ctl00_ContentBody_CoordInfoLinkControl1_uxCoordInfoCode')[0].innerHTML);
+                // Normale Tastenkombination Strg+c für markierter Bereich hier nicht verarbeiten. Nur eigene Tastenkombination Strg+c hier verarbeiten.
+                if (!ctoc) return;
+                // Gegebenenfalls markierter Bereich wird hier nicht beachtet.
                 e.preventDefault();
+                // GC Code wird hier verarbeitet.
+                e.clipboardData.setData('text/plain', $('#ctl00_ContentBody_CoordInfoLinkControl1_uxCoordInfoCode')[0].innerHTML);
+                $('#gclh_ctoc')[0].style.opacity = '0.3';
+                setTimeout(function() { $('#gclh_ctoc')[0].style.opacity = 'unset'; }, 200);
+                ctoc = false;
             });
         } catch(e) {gclh_error("Copy GC Code to clipboard:",e);}
     }
@@ -6513,7 +6523,7 @@ var mainGC = function() {
 // Improve own statistic map page with links to caches for every country.
     if (settings_map_links_statistic && isOwnStatisticsPage()) {
         try {
-            var countries = $('#StatsFlagLists table.Table tr');
+            var countries = $('#stats_tabs-maps .StatisticsWrapper:first-of-type #StatsFlagLists table.Table tr');
             for (var i = 0; i < countries.length; i++) {
                 var name = countries[i].children[0].childNodes[1].textContent;
                 if (name) {
