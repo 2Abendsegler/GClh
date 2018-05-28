@@ -2831,6 +2831,12 @@ var mainGC = function() {
                         }
                     }
                 }
+                $('#pqRepeater tbody').find('img[src*="/images/icons/16/checkbox_"]').closest('a').each(function() {
+                    this.name = this.href;
+                    this.href = "javascript:void(0);";
+                    this.addEventListener("click", markDayPQ, false);
+                    this.children[0].title = "";
+                });
                 // Table My Finds:
                 css += "#ctl00_ContentBody_PQListControl1_tblMyFinds tbody tr th {border: unset;}";
                 if ($('#ctl00_ContentBody_PQListControl1_tblMyFinds tbody tr').length > 1 && $('#pqRepeater thead tr')[0].children.length > 12) {
@@ -2931,6 +2937,36 @@ var mainGC = function() {
             }
             appendCssStyle(css);
         } catch(e) {gclh_error("Improve list of PQs:",e);}
+    }
+    function markDayPQ() { (this.name.match(/&opt=0/) ? processMarkDayPQ(this, "1", "off") : processMarkDayPQ(this, "0", "on")); }
+    function processMarkDayPQ(box, name, src) {
+        if (box.children[0].src.match("loader")) return;
+        box.children[0].src = urlImages + 'ajax-loader.gif';
+        GM_xmlhttpRequest({
+            method: 'GET',
+            url: 'https://www.geocaching.com/account/oauth/token',
+            onload: function (result) {
+                if (result.status >= 200 && result.status < 300) {
+                    var response = JSON.parse(result.responseText);
+                    GM_xmlhttpRequest({
+                        method: 'GET',
+                        url: box.name,
+                        headers: {'Authorization': response.access_token, 'Content-Type': 'application/json;charset=utf-8'},
+                        onload: function (result) {
+                            if (result.status >= 200 && result.status < 300) {
+                                if ($(result.responseText).find('#ActivePQs .Warning')[0]) {
+                                    box.children[0].src = global_red_tick;
+                                    box.children[0].title = "Sorry, 10 Pocket Queries per day reached";
+                                } else {
+                                    box.name = box.name.replace(/&opt=(\d{1})/, "&opt="+name);
+                                    box.children[0].src = "/images/icons/16/checkbox_"+src+".png";
+                                }
+                            }
+                        },
+                    });
+                }
+            },
+        });
     }
 
 // Show Log It button.
