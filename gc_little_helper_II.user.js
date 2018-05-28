@@ -2,7 +2,7 @@
 // @name             GC little helper II
 // @namespace        http://www.amshove.net
 //--> $$000
-// @version          0.9.6
+// @version          0.9.7
 //<-- $$000
 // @include          http*://www.geocaching.com/*
 // @include          http*://maps.google.tld/*
@@ -1307,6 +1307,32 @@ var mainGC = function() {
             }
             showLatestLogsSymbols(0);
         } catch(e) {gclh_error("Show the latest logs symbols:",e);}
+    }
+
+// Copy GC Code to clipboard.
+    if (is_page('cache_listing') && $('.CoordInfoLink')[0] && $('#ctl00_ContentBody_CoordInfoLinkControl1_uxCoordInfoCode')[0]) {
+        try {
+            var ctoc = false;
+            var span = document.createElement('span');
+            span.innerHTML = '<a href="javascript:void(0);" id="gclh_ctoc"><img src="'+global_copy_icon+'" title="Copy GC Code to clipboard" style="vertical-align: text-top;"></a>';
+            $('.CoordInfoLink')[0].parentNode.insertBefore(span, $('.CoordInfoLink')[0]);
+            $('#gclh_ctoc')[0].addEventListener('click', function() {
+                // Tastenkombination Strg+c ausführen für eigene Verarbeitung.
+                ctoc = true;
+                document.execCommand('copy');
+            }, false);
+            document.addEventListener('copy', function(e){
+                // Normale Tastenkombination Strg+c für markierter Bereich hier nicht verarbeiten. Nur eigene Tastenkombination Strg+c hier verarbeiten.
+                if (!ctoc) return;
+                // Gegebenenfalls markierter Bereich wird hier nicht beachtet.
+                e.preventDefault();
+                // GC Code wird hier verarbeitet.
+                e.clipboardData.setData('text/plain', $('#ctl00_ContentBody_CoordInfoLinkControl1_uxCoordInfoCode')[0].innerHTML);
+                $('#gclh_ctoc')[0].style.opacity = '0.3';
+                setTimeout(function() { $('#gclh_ctoc')[0].style.opacity = 'unset'; }, 200);
+                ctoc = false;
+            });
+        } catch(e) {gclh_error("Copy GC Code to clipboard:",e);}
     }
 
 // Show favorite percentage.

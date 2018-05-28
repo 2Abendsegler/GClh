@@ -1,4 +1,4 @@
-<a href="#v097" title="GClh II version 0.9.7 (??.0?.2018)">v0.9.7</a> &nbsp;
+<a href="#v097" title="GClh II version 0.9.7 (28.02.2018)">v0.9.7</a> &nbsp;
 <a href="#v096" title="GClh II version 0.9.6 (14.05.2018)">v0.9.6</a> &nbsp;
 <a href="#v095" title="GClh II version 0.9.5 (03.05.2018)">v0.9.5</a> &nbsp;
 <a href="#v094" title="GClh II version 0.9.4 (02.05.2018)">v0.9.4</a> &nbsp;
@@ -40,10 +40,20 @@
 ## v0.9.7:
 <ul>
 	<li>
+		<strong>New:</strong> Show number of acquired souvenirs: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/672">#672</a>]<br>
+		<img src="../images/v0.9.7_Screen07.jpg" alt="v0.9.7_Screen07.jpg"><br>
+		Thanks to <a href="https://www.geocaching.com/profile/?u=CachingFoX">CachingFoX</a> for the implementation.<br>
+		<br>
+	</li>
+	<li>
 		<strong>New:</strong> Link to map on bookmark list page: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/680">#680</a>]<br>
 		<img src="../images/v0.9.7_Screen01.jpg" alt="v0.9.7_Screen01.jpg"><br>
 		(Picture is in compact layout.)<br>
-		Thanks to <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a> for the implementation and thanks to <a href="https://www.geocaching.com/profile/?u=Die Batzen">Die Batzen</a> for the inspiration.<br>
+		<br>
+	</li>
+	<li>
+		<strong>New:</strong> Button to copy GC Code in cache listing to clipboard: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/695">#695</a>]<br>
+		<img src="../images/v0.9.7_Screen06.jpg" alt="v0.9.7_Screen06.jpg"><br>
 		<br>
 	</li>
 	<li>
@@ -51,14 +61,29 @@
 		Only available with activated setting <a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_compact_layout_list_of_bm_lists">show compact layout in list of bookmark lists</a>.<br>
 		<img src="../images/v0.9.7_Screen02.jpg" alt="v0.9.7_Screen02.jpg"><br>
 		<img src="../images/v0.9.7_Screen03.jpg" alt="v0.9.7_Screen03.jpg"><br>
-		Thanks to <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a> for the implementation.<br>
 		<br>
 	</li>
 	<li>
 		<strong>Improvement:</strong> Reduce line breaks in owner line on enhanced map popup: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/668">#668</a>]<br>
 		<img src="../images/v0.9.7_Screen04.jpg" alt="v0.9.7_Screen04.jpg"> <img src="../images/v0.9.7_Screen05.jpg" alt="v0.9.7_Screen05.jpg"><br>
-		Thanks to <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a> for the change.<br>
 		<br>
+	</li>
+	<li>
+		<strong>Improvement:</strong> Update FAQs: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/664">#664</a>]<br>
+		Thanks to <a href="https://www.geocaching.com/profile/?u=Ruko2010">Ruko2010</a> for the update.<br>
+		<br>
+	</li>
+	<li>
+		<strong>Fix:</strong>Wrong links to found caches if there are equal names for a country and a region (statistics/map): [Issue <a href="https://github.com/2Abendsegler/GClh/issues/693">#693</a>]<br>
+		Thanks to <a href="https://www.geocaching.com/profile/?u=Ruko2010">Ruko2010</a> for the fix.<br>
+	</li>
+	<li>
+		<strong>Fix:</strong>Link to found caches in Czechia is missing (statistics/map): [Issue <a href="https://github.com/2Abendsegler/GClh/issues/691">#691</a>]<br>
+		Thanks to <a href="https://www.geocaching.com/profile/?u=CachingFoX">CachingFoX</a> for the fix.<br>
+	</li>
+	<li>
+		<strong>Fix:</strong>Elevation value 0m is shown with a plus sign: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/671">#671</a>]<br>
+		Thanks to <a href="https://www.geocaching.com/profile/?u=CachingFoX">CachingFoX</a> for the fix.<br>
 	</li>
 	<li>
 		<strong>Fix:</strong> Grammar and Typo.<br>
@@ -66,30 +91,22 @@
 	</li>
 	<li>
 		<strong>Fix:</strong> Set black as text color in search field: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/662">#662</a>]<br>
-		Thanks to <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a> for the fix.<br>
 	</li>
 	<li>
 		<strong>Fix:</strong> Demolished search and map buttons on new dashboard page due to changes made by GS: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/674">#674</a>]<br>
-		Thanks to <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a> for the fix.<br>
 	</li>
 	<li>
 		<strong>Fix:</strong> Demolished buttons on search page due to changes made by GS: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/666">#666</a>]<br>
-		Thanks to <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a> for the fix.<br>
 	</li>
 	<li>
 		<strong>Fix:</strong> More than one loading area and VIP button on enhanced map popup: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/667">#667</a>]<br>
-		Thanks to <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a> for the fix.<br>
 	</li>
 	<li>
 		<strong>Fix:</strong> Wrong percentage of favorites in enhanced map popup: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/676">#676</a>]<br>
-		Thanks to <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a> for the fix.<br>
-	</li>
-	<li>
-		<strong>Fix:</strong>Wrong Links in Statistics (Map): [Issue <a href="https://github.com/2Abendsegler/GClh/issues/693">#693</a>]<br>
 	</li>
 </ul>
-(??.0?.2018)<br>
-released by <a href="https://www.geocaching.com/profile/?u=Ruko2010">Ruko2010</a><br>
+(28.05.2018)<br>
+released by <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a><br>
 <br>
 
 ---
