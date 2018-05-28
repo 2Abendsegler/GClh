@@ -60,6 +60,7 @@
 	<li>
 		<strong>Improvement:</strong> Reduce line breaks in owner line on enhanced map popup: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/668">#668</a>]<br>
 		<img src="../images/v0.9.7_Screen04.jpg" alt="v0.9.7_Screen04.jpg"> <img src="../images/v0.9.7_Screen05.jpg" alt="v0.9.7_Screen05.jpg"><br>
+		<br>
 	</li>
 	<li>
 		<strong>Fix:</strong>Wrong Links in Statistics (Map): [Issue <a href="https://github.com/2Abendsegler/GClh/issues/693">#693</a>]<br>
