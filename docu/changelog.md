@@ -74,15 +74,15 @@
 		<br>
 	</li>
 	<li>
-		<strong>Fix:</strong>Wrong links to found caches if there are equal names for a country and a region (statistics/map): [Issue <a href="https://github.com/2Abendsegler/GClh/issues/693">#693</a>]<br>
+		<strong>Fix:</strong> Wrong links to found caches if there are equal names for a country and a region (statistics/map): [Issue <a href="https://github.com/2Abendsegler/GClh/issues/693">#693</a>]<br>
 		Thanks to <a href="https://www.geocaching.com/profile/?u=Ruko2010">Ruko2010</a> for the fix.<br>
 	</li>
 	<li>
-		<strong>Fix:</strong>Link to found caches in Czechia is missing (statistics/map): [Issue <a href="https://github.com/2Abendsegler/GClh/issues/691">#691</a>]<br>
+		<strong>Fix:</strong> Link to found caches in Czechia is missing (statistics/map): [Issue <a href="https://github.com/2Abendsegler/GClh/issues/691">#691</a>]<br>
 		Thanks to <a href="https://www.geocaching.com/profile/?u=CachingFoX">CachingFoX</a> for the fix.<br>
 	</li>
 	<li>
-		<strong>Fix:</strong>Elevation value 0m is shown with a plus sign: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/671">#671</a>]<br>
+		<strong>Fix:</strong> Elevation value 0m is shown with a plus sign: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/671">#671</a>]<br>
 		Thanks to <a href="https://www.geocaching.com/profile/?u=CachingFoX">CachingFoX</a> for the fix.<br>
 	</li>
 	<li>
