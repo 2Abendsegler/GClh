@@ -67,3 +67,4 @@ Details zu den Anpassungen gibt es wie immer im [url=https://github.com/2Abendse
 
 Liebe Grüße
 
+Ps.: Mehr informationen gibt es in der Ursprünglichen Issue: https://github.com/2Abendsegler/GClh/issues/564
