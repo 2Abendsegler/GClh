@@ -42,7 +42,7 @@
 ## v0.9.8:
 <ul>
 	<li>
-		<strong>New:</strong> Mark more than one Pocket Query for generating without refreshing page for each in <a href="https://www.geocaching.com/my/lists.aspx">list of Pocket Queries</a>: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/702">#702</a>]<br>
+		<strong>New:</strong> Mark more than one Pocket Query for generating without refreshing page for each. (Page: <a href="https://www.geocaching.com/pocket/default.aspx">List of Pocket Queries</a>): [Issue <a href="https://github.com/2Abendsegler/GClh/issues/702">#702</a>]<br>
 		Only available with activated setting <a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_compact_layout_list_of_pqs">Show compact layout in list of pocket queries</a>.<br>
 		<img src="../images/v0.9.8_Screen01.gif" alt="v0.9.7_Screen01.gif"><br>
 		<br>
