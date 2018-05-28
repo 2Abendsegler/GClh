@@ -40,6 +40,12 @@
 ## v0.9.7:
 <ul>
 	<li>
+		<strong>New:</strong> Show number of acquired souvenirs: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/672">#672</a>]<br>
+		<img src="../images/v0.9.7_Screen07.jpg" alt="v0.9.7_Screen07.jpg"><br>
+		Thanks to <a href="https://www.geocaching.com/profile/?u=CachingFoX">CachingFoX</a> for the implementation.<br>
+		<br>
+	</li>
+	<li>
 		<strong>New:</strong> Link to map on bookmark list page: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/680">#680</a>]<br>
 		<img src="../images/v0.9.7_Screen01.jpg" alt="v0.9.7_Screen01.jpg"><br>
 		(Picture is in compact layout.)<br>
@@ -55,11 +61,6 @@
 		Only available with activated setting <a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_compact_layout_list_of_bm_lists">show compact layout in list of bookmark lists</a>.<br>
 		<img src="../images/v0.9.7_Screen02.jpg" alt="v0.9.7_Screen02.jpg"><br>
 		<img src="../images/v0.9.7_Screen03.jpg" alt="v0.9.7_Screen03.jpg"><br>
-		<br>
-	</li>
-	<li>
-		<strong>New:</strong> Show number of acquired souvenirs: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/672">#672</a>]<br>
-		Thanks to <a href="https://www.geocaching.com/profile/?u=CachingFoX">CachingFoX</a> for the implementation.<br>
 		<br>
 	</li>
 	<li>
