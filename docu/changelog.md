@@ -1,4 +1,4 @@
-<a href="#v097" title="GClh II version 0.9.7 (??.0?.2018)">v0.9.7</a> &nbsp;
+<a href="#v097" title="GClh II version 0.9.7 (28.02.2018)">v0.9.7</a> &nbsp;
 <a href="#v096" title="GClh II version 0.9.6 (14.05.2018)">v0.9.6</a> &nbsp;
 <a href="#v095" title="GClh II version 0.9.5 (03.05.2018)">v0.9.5</a> &nbsp;
 <a href="#v094" title="GClh II version 0.9.4 (02.05.2018)">v0.9.4</a> &nbsp;
@@ -79,10 +79,11 @@
 	<li>
 		<strong>Fix:</strong>Link to found caches in Czechia is missing (statistics/map): [Issue <a href="https://github.com/2Abendsegler/GClh/issues/691">#691</a>]<br>
 		Thanks to <a href="https://www.geocaching.com/profile/?u=CachingFoX">CachingFoX</a> for the fix.<br>
-	<li>
+	</li>
 	<li>
 		<strong>Fix:</strong>Elevation value 0m is shown with a plus sign: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/671">#671</a>]<br>
 		Thanks to <a href="https://www.geocaching.com/profile/?u=CachingFoX">CachingFoX</a> for the fix.<br>
+	</li>
 	<li>
 		<strong>Fix:</strong> Grammar and Typo.<br>
 		Thanks to <a href="https://www.geocaching.com/profile/?u=Bananeweizen">Bananeweizen</a> for the fix.<br>
