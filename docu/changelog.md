@@ -58,14 +58,31 @@
 		<br>
 	</li>
 	<li>
+		<strong>New:</strong> Show number of acquired souvenirs: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/672">#672</a>]<br>
+		Thanks to <a href="https://www.geocaching.com/profile/?u=CachingFoX">CachingFoX</a> for the implementation.<br>
+		<br>
+	</li>
+	<li>
 		<strong>Improvement:</strong> Reduce line breaks in owner line on enhanced map popup: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/668">#668</a>]<br>
 		<img src="../images/v0.9.7_Screen04.jpg" alt="v0.9.7_Screen04.jpg"> <img src="../images/v0.9.7_Screen05.jpg" alt="v0.9.7_Screen05.jpg"><br>
 		<br>
 	</li>
 	<li>
-		<strong>Fix:</strong>Wrong Links in Statistics (Map): [Issue <a href="https://github.com/2Abendsegler/GClh/issues/693">#693</a>]<br>
-		Thanks to <a href="https://www.geocaching.com/profile/?u=CachingFoX">CachingFoX</a> for the fix.<br>
+		<strong>Improvement:</strong> Update FAQs: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/664">#664</a>]<br>
+		Thanks to <a href="https://www.geocaching.com/profile/?u=Ruko2010">Ruko2010</a> for the update.<br>
+		<br>
 	</li>
+	<li>
+		<strong>Fix:</strong>Wrong links to found caches if there are equal names for a country and a region (statistics/map): [Issue <a href="https://github.com/2Abendsegler/GClh/issues/693">#693</a>]<br>
+		Thanks to <a href="https://www.geocaching.com/profile/?u=Ruko2010">Ruko2010</a> for the fix.<br>
+	</li>
+	<li>
+		<strong>Fix:</strong>Link to found caches in Czechia is missing (statistics/map): [Issue <a href="https://github.com/2Abendsegler/GClh/issues/691">#691</a>]<br>
+		Thanks to <a href="https://www.geocaching.com/profile/?u=CachingFoX">CachingFoX</a> for the fix.<br>
+	<li>
+	<li>
+		<strong>Fix:</strong>Elevation value 0m is shown with a plus sign: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/671">#671</a>]<br>
+		Thanks to <a href="https://www.geocaching.com/profile/?u=CachingFoX">CachingFoX</a> for the fix.<br>
 	<li>
 		<strong>Fix:</strong> Grammar and Typo.<br>
 		Thanks to <a href="https://www.geocaching.com/profile/?u=Bananeweizen">Bananeweizen</a> for the fix.<br>
