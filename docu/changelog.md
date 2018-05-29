@@ -48,6 +48,11 @@
 		<img src="../images/v0.9.8_Screen02.gif" alt="v0.9.7_Screen02.gif"><br>
 		<br>
 	</li>
+  <li>
+		<strong>Improvement:</strong> Show number of active Pocket Queries on page <a href="https://www.geocaching.com/pocket/default.aspx">Your Pocket Queries</a>: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/705">#705</a>]<br>
+		<img src="../images/v0.9.8_Screen01.jpg" alt="v0.9.8_Screen01.jpg"><br>
+		<br>
+	</li>
 </ul>
 (??.??.2018)<br>
 released by <a href="https://www.geocaching.com/profile/?u=Ruko2010">Ruko2010</a><br>
