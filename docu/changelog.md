@@ -46,11 +46,13 @@
 		Only available with activated setting <a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_compact_layout_list_of_pqs">Show compact layout in list of pocket queries</a>.<br>
 		Page <a href="https://www.geocaching.com/pocket/default.aspx">List of Pocket Queries</a>.<br>
 		<img src="../images/v0.9.8_Screen02.gif" alt="v0.9.7_Screen02.gif"><br>
+		Thanks to <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a> for the implementation.<br>
 		<br>
 	</li>
   <li>
 		<strong>Improvement:</strong> Show number of active Pocket Queries on page <a href="https://www.geocaching.com/pocket/default.aspx">Your Pocket Queries</a>: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/705">#705</a>]<br>
 		<img src="../images/v0.9.8_Screen01.jpg" alt="v0.9.8_Screen01.jpg"><br>
+		Thanks to <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a> for the change.<br>
 		<br>
 	</li>
 </ul>
