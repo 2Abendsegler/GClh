@@ -2833,9 +2833,27 @@ var mainGC = function() {
                 }
                 $('#pqRepeater tbody').find('img[src*="/images/icons/16/checkbox_"]').closest('a').each(function() {
                     this.name = this.href;
-                    this.href = "javascript:void(0);";
-                    this.addEventListener("click", markDayPQ, false);
-                    this.children[0].title = "";
+                    this.href = 'javascript:void(0);';
+                    this.children[0].title = '';
+                    this.addEventListener('click', function() {
+                        var img = '/images/icons/16/checkbox_off.png';
+                        var cb = this;
+                        if (cb.children[0].src.match('loader')) return;
+                        if (cb.children[0].src == global_red_tick) { cb.children[0].src = img; return; }
+                        cb.children[0].src = urlImages + 'ajax-loader.gif';
+                        var schedulePQ = $.get(cb.name);
+                        schedulePQ.done(function (result) {
+                            if ($(result).find('#ActivePQs .Warning')[0]) {
+                                cb.children[0].src = global_red_tick;
+                                cb.children[0].title = 'Sorry, 10 Pocket Queries per day reached';
+                            } else {
+                                var counter = $('#pqRepeater tbody tr.TableFooter')[0].children[cb.parentNode.cellIndex-2];
+                                (cb.name.match('&opt=0') ? counter.innerHTML-- : counter.innerHTML++);
+                                cb.children[0].src = (cb.name.match('&opt=0') ? img : img.replace('_off', '_on'));
+                                cb.name = (cb.name.match('&opt=0') ? cb.name.replace('&opt=0', '&opt=1') : cb.name.replace('&opt=1', '&opt=0'));
+                            }
+                        }, false);
+                    });
                 });
                 // Table My Finds:
                 css += "#ctl00_ContentBody_PQListControl1_tblMyFinds tbody tr th {border: unset;}";
@@ -2939,36 +2957,6 @@ var mainGC = function() {
             }
             appendCssStyle(css);
         } catch(e) {gclh_error("Improve list of PQs:",e);}
-    }
-    function markDayPQ() { (this.name.match(/&opt=0/) ? processMarkDayPQ(this, "1", "off") : processMarkDayPQ(this, "0", "on")); }
-    function processMarkDayPQ(box, name, src) {
-        if (box.children[0].src.match("loader")) return;
-        box.children[0].src = urlImages + 'ajax-loader.gif';
-        GM_xmlhttpRequest({
-            method: 'GET',
-            url: 'https://www.geocaching.com/account/oauth/token',
-            onload: function (result) {
-                if (result.status >= 200 && result.status < 300) {
-                    var response = JSON.parse(result.responseText);
-                    GM_xmlhttpRequest({
-                        method: 'GET',
-                        url: box.name,
-                        headers: {'Authorization': response.access_token, 'Content-Type': 'application/json;charset=utf-8'},
-                        onload: function (result) {
-                            if (result.status >= 200 && result.status < 300) {
-                                if ($(result.responseText).find('#ActivePQs .Warning')[0]) {
-                                    box.children[0].src = global_red_tick;
-                                    box.children[0].title = "Sorry, 10 Pocket Queries per day reached";
-                                } else {
-                                    box.name = box.name.replace(/&opt=(\d{1})/, "&opt="+name);
-                                    box.children[0].src = "/images/icons/16/checkbox_"+src+".png";
-                                }
-                            }
-                        },
-                    });
-                }
-            },
-        });
     }
 
 // Show Log It button.
