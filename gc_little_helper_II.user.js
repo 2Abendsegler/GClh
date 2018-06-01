@@ -2887,7 +2887,7 @@ var mainGC = function() {
             // "Find cache along a route" als Button.
             if ($('#uxFindCachesAlongaRoute.btn.btn-secondary').length > 0) $('#uxFindCachesAlongaRoute')[0].className = "btn btn-primary";
             // Number of Active Pocket Queries.
-            $('#ui-id-1').append("&nbsp;<span title='Number of Active Pocket Queries'>("+$('#pqRepeater tbody tr:not(.TableFooter)').length+")</span>");
+            if ($('#ui-id-1')[0]) $('#ui-id-1').append("&nbsp;<span title='Number of Active Pocket Queries'>("+$('#pqRepeater tbody tr:not(.TableFooter)').length+")</span>");
             // Refresh button.
             var refreshButton = document.createElement("p");
             refreshButton.innerHTML = "<a href='/pocket/default.aspx' title='Refresh Page'>Refresh Page</a>";
@@ -3272,6 +3272,8 @@ var mainGC = function() {
                 // Footer:
                 $('#divContentMain div ul').first().remove();
             }
+            // Number of BMLs.
+            if ($('.span-10 h3')[0]) $('.span-10 h3')[0].innerHTML += "&nbsp;<span title='Number of Bookmark Lists of the maximum allowed 100'>("+$('table.Table tbody tr').length+"/100)</span>";
             appendCssStyle(css);
         } catch(e) {gclh_error("Improve list of bookmark lists:",e);}
     }

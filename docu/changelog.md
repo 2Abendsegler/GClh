@@ -49,9 +49,13 @@
 		Thanks to <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a> for the implementation.<br>
 		<br>
 	</li>
-  <li>
+	<li>
 		<strong>Improvement:</strong> Show number of active Pocket Queries on page <a href="https://www.geocaching.com/pocket/default.aspx">Your Pocket Queries</a>: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/705">#705</a>]<br>
-		<img src="../images/v0.9.8_Screen01.jpg" alt="v0.9.8_Screen01.jpg"><br>
+		Thanks to <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a> for the change.<br>
+		<br>
+	</li>
+	<li>
+		<strong>Improvement:</strong> Show number of Bookmark Lists above on old page <a href="https://www.geocaching.com/my/lists.aspx">List of Bookmark Lists</a>: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/711">#711</a>]<br>
 		Thanks to <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a> for the change.<br>
 		<br>
 	</li>
