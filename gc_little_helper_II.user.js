@@ -11344,7 +11344,7 @@ function is_link(name, url) {
             if (url.match(/\.com\/play\/(search|geocache)/)) status = true;
             break;
         case "hide_cache":
-            if (url.match(/\.com\/play\/(hide|friendleague)/)) status = true;
+            if (url.match(/\.com\/play\/(hide|friendleague|souvenircampaign)/)) status = true;
             break;
         case "geotours":
             if (url.match(/\.com\/play\/geotours/)) status = true;
