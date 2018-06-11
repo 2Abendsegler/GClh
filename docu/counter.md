@@ -1,3 +1,4 @@
+<a href="#v097" title="GClh II version 0.9.7 (28.05.2018 - 10.06.2018)">v0.9.7</a> &nbsp; 
 <a href="#v083" title="GClh II version 0.8.3 (22.06.2017 - 06.07.2017)">v0.8.3</a> &nbsp; 
 <a href="#v081" title="GClh II version 0.8.1 (30.05.2017 - 13.06.2017)">v0.8.1</a> &nbsp; 
 <a href="#v072" title="GClh II version 0.7.2 (26.04.2017 - 09.05.2017)">v0.7.2</a> &nbsp; 
@@ -6,6 +7,18 @@
 <a href="#v05" title="GClh II version 0.5 (11.03.2017 - 24.03.2017)">v0.5</a> &nbsp; 
 <a href="#v041" title="GClh II version 0.4.1 (25.02.2017 - 10.03.2017)">v0.4.1</a> &nbsp; 
 <a href="#v03" title="GClh II version 0.3 (05.02.2017 - 24.02.2017)">v0.3</a> &nbsp; 
+
+---
+### v0.9.7:
+Number of installations between 28.05.2018 and 10.06.2018 (14 days) under GClh II version 0.9.7.<br>
+<ul><li>On different addresses, corresponding World Flag Counter: Total 2.068<br></li>
+<li>On different addresses, corresponding Andy Hope: Total 1.796<br></li>
+<li>On different addresses, corresponding Flag Counter: Total 1.606<br>
+<img src="../images/v0.9.7_counter_flag.jpg" alt="v0.9.7_counter_flag.jpg"><br></li>
+<li>All, corresponding World Flag Counter: Total 2.481<br></li>
+<li>All, corresponding Andy Hope: Total 1.954<br></li>
+<li>All, corresponding Flag Counter: Total 1.802<br></li></ul>
+<br>
 
 ---
 ### v0.8.3:
