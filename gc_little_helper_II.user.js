@@ -6075,10 +6075,71 @@ var mainGC = function() {
     if (document.location.href.match(/\.com\/map\//) && settings_show_enhanced_map_popup) {
         try {
 
+
+            var template = '';
+                template += '<div class="map-item map-item-row-{{=$itemNumber!}}" style="display:{{=$ctx.hideItem($view)}};">';
+                template += '    <div class="code">{{=gc}}</div>';
+                template += '    <h4>';
+                template += '        <img src="/map/images/mapicons/{{=type.value}}.png">';
+                template += '        <a target="_blank" href="/seek/cache_details.aspx?wp={{=gc}}" data-event-category="data" data-event-label="View Geocache Details">{{= $ctx.formatCacheName(name, available, archived)!}}</a>';
+                template += '    </h4>';
+                template += '    <dl>';
+                template += '        <dt>Created by:</dt>';
+                template += '        <dd><a target="_blank" href="/profile/?guid={{=owner.value}}" data-event-category="data" data-event-label="View Owner Profile">{{=owner.text}}</a></dd>';
+                template += '        <dt>Difficulty:</dt>';
+                template += '        <dd><img alt="{{=difficulty.text}} out of 5" title="{{=difficulty.text}} out of 5" src="../images/stars/stars{{=difficulty.value}}.gif"></dd>';
+                template += '        <dt>Cache Size:</dt>';
+                template += '        <dd><img title="Size: {{=container.text}}" alt="#" src="../images/icons/container/{{=container.value}}"></dd>';
+                template += '    </dl>';
+                template += '    <dl>';
+                template += '        <dt>Date Hidden:</dt>';
+                template += '        <dd>{{=hidden}}</dd>';
+                template += '        <dt>Terrain:</dt>';
+                template += '        <dd><img alt="{{=terrain.text}} out of 5" title="{{=terrain.text}} out of 5" src="../images/stars/stars{{=terrain.value}}.gif"></dd>';
+                template += '        <dt>Favorite Points:</dt>';
+                template += '        <dd>';
+                template += '            <svg height="16" width="16">';
+                template += '               <image xlink:href="/images/icons/fave_fill_16.svg" src="/images/icons/fave_fill_16.png" width="16" height="16" alt="Favorite points" />';
+                template += '            </svg>';
+                template += '            <span class="favorite-points-count">{{=fp!}}</span>';
+                template += '        </dd>';
+                template += '    </dl>';
+                template += '    <div class="links Clear">';
+                template += '    {{#if $ctx.userIsLoggedIn() }}';
+                template += '        <a class="lnk btn-add-to-list" data-gcRefCode="{{=gc}}" href="/bookmarks/mark.aspx?guid={{=g}}&WptTypeID={{=type.value}}" target="_blank">';
+                template += '            <img src="/images/icons/16/bookmark_list.png"><span>Add to list</span>';
+                template += '        </a>';
+                template += '        {{#if $ctx.userCorrectSubscriberLevel(subrOnly) }}';
+                template += '                <a class="lnk send2gps" href="#" data-guid="{{=g}}" onclick="return send2gps(this);" data-event-category="data" data-event-label="Send to Garmin" data-event-action="Call to Action">';
+                template += '                    <img src="/images/icons/16/send_to_gps.png" ><span>Send to GPS</span>';
+                template += '                </a>';
+                template += '        {{else}}';
+                template += '                <span disabled="disabled"><img src="/images/icons/16/send_to_gps.png"> Send to GPS</span>';
+                template += '        {{/if}}';
+                template += '        <a class="lnk" href="/seek/log.aspx?guid={{=g}}" target="_blank" data-event-category="data" data-event-label="Log Geocache">';
+                template += '            <img src="/images/icons/16/write_log.png"><span>Log Visit</span>';
+                template += '        </a>';
+                template += '    {{else}}';
+                template += '        {{=$ctx.upsellText()!}}';
+                template += '    {{/if}}';
+                template += '    </div>';
+                template += '    <div class="links Clear">';
+                template += '        {{=$itemNumber!}} of {{=$ctx.totalRecords($view)}} nearby results &middot;';
+                template += '        {{#if $ctx.isFirst($view)}} &lt; Prev {{#else}} <a href="#" class="prev-item" data-next-id="{{=$itemNumber!}}">&lt; Prev</a> {{/if}} |';
+                template += '        {{#if $ctx.isLast($view)}} Next &gt; {{else}} <a href="#" class="next-item" data-next-id="{{=$ctx.nextID($view)}}">Next &gt;</a> {{/if}}';
+                template += '    </div>';
+                template += '    <div class="popup_additional_info">';
+                template += '    </div>';
+                template += '</div>';
+
+                $("#cacheDetailsTemplate").html(template);
+
+
             // select the target node
             var target = document.querySelector('.leaflet-popup-pane');
 
-            var css = "div.popup_additional_info .loading_container{display: flex; min-height:68px; justify-content: center; align-items: center;}"
+            var css = "div.popup_additional_info .loading_container{display: flex; justify-content: center; align-items: center;}"
+                    + "div.popup_additional_info {min-height:80px;}"
                     + "div.popup_additional_info .loading_container img{margin-right:5px;}"
                     + "div.popup_additional_info span.favi_points svg, div.popup_additional_info span.tackables svg{position: relative;top: 4px;}";
             appendCssStyle(css);
@@ -6097,7 +6158,7 @@ var mainGC = function() {
                         $(this).find('dl dt')[0].innerHTML = $(this).find('dl dt')[0].innerHTML.replace(/Created by:/,"by:").replace(/Erstellt von:/,"von:");
 
                         // Add Loading image
-                        $(this).append('<div id="popup_additional_info_' + gccode +'" class="links Clear popup_additional_info"><div class="loading_container"><img src="' + urlImages + 'ajax-loader.gif" />Loading additional Data...</div></div>');
+                        $(this).find('.popup_additional_info').html('<div id="popup_additional_info_' + gccode +'" class="links Clear popup_additional_info"><div class="loading_container"><img src="' + urlImages + 'ajax-loader.gif" />Loading additional Data...</div></div>');
 
                         $.get('https://www.geocaching.com/geocache/'+gccode, null, function(text){
 
