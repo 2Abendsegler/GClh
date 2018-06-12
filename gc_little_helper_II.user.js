@@ -6128,7 +6128,7 @@ var mainGC = function() {
                 template += '        {{#if $ctx.isFirst($view)}} &lt; Prev {{#else}} <a href="#" class="prev-item" data-next-id="{{=$itemNumber!}}">&lt; Prev</a> {{/if}} |';
                 template += '        {{#if $ctx.isLast($view)}} Next &gt; {{else}} <a href="#" class="next-item" data-next-id="{{=$ctx.nextID($view)}}">Next &gt;</a> {{/if}}';
                 template += '    </div>';
-                template += '    <div class="popup_additional_info">';
+                template += '    <div class="Clear popup_additional_info">';
                 template += '    </div>';
                 template += '</div>';
 
@@ -6138,8 +6138,8 @@ var mainGC = function() {
             // select the target node
             var target = document.querySelector('.leaflet-popup-pane');
 
-            var css = "div.popup_additional_info .loading_container{display: flex; justify-content: center; align-items: center;}"
-                    + "div.popup_additional_info {min-height:80px;}"
+            var css = "div.popup_additional_info {min-height:68px;}"
+                    + "div.popup_additional_info .loading_container{display: flex; justify-content: center; align-items: center;}"
                     + "div.popup_additional_info .loading_container img{margin-right:5px;}"
                     + "div.popup_additional_info span.favi_points svg, div.popup_additional_info span.tackables svg{position: relative;top: 4px;}";
             appendCssStyle(css);
