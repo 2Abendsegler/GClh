@@ -1,4 +1,4 @@
-<img src="../images/flag_de.png"> # GC little helper II — Entwicklung mit Tampermonkey
+# <img src="../images/flag_de.png"> GC little helper II — Entwicklung mit Tampermonkey
 
 ## Abstrakt
 
@@ -62,7 +62,7 @@ Möchte man externe Resourcen lokal bearbeiten müssen entsprechende Verweise im
 
 
 
-<img src="../images/flag_en.png"> # GC little helper II — Development with Tampermonkey
+# <img src="../images/flag_en.png"> GC little helper II — Development with Tampermonkey
 
 ## Abstract
 
