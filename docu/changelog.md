@@ -1,4 +1,5 @@
-<a href="#v097" title="GClh II version 0.9.7 (28.02.2018)">v0.9.7</a> &nbsp;
+<a href="#v098" title="GClh II version 0.9.8 (??.??.2018)">v0.9.8</a> &nbsp;
+<a href="#v097" title="GClh II version 0.9.7 (28.05.2018)">v0.9.7</a> &nbsp;
 <a href="#v096" title="GClh II version 0.9.6 (14.05.2018)">v0.9.6</a> &nbsp;
 <a href="#v095" title="GClh II version 0.9.5 (03.05.2018)">v0.9.5</a> &nbsp;
 <a href="#v094" title="GClh II version 0.9.4 (02.05.2018)">v0.9.4</a> &nbsp;
@@ -35,6 +36,40 @@
 <a href="#v022" title="GClh II version 0.2.2 (09.01.2017)">v0.2.2</a> &nbsp; 
 <a href="#v021" title="GClh II version 0.2.1 (05.01.2017)">v0.2.1</a> &nbsp; 
 <a href="#v01" title="GClh II version 0.1 (05.01.2017)">v0.1</a> &nbsp; 
+
+
+---
+## v0.9.8:
+<ul>
+	<li>
+		<strong>New:</strong> Mark more than one Pocket Query for generating without refreshing page for each: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/702">#702</a>]<br>
+		Only available with activated setting <a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_compact_layout_list_of_pqs">Show compact layout in list of pocket queries</a>.<br>
+		Page <a href="https://www.geocaching.com/pocket/default.aspx">List of Pocket Queries</a>.<br>
+		<img src="../images/v0.9.8_Screen02.gif" alt="v0.9.7_Screen02.gif"><br>
+		Thanks to <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a> for the implementation.<br>
+		<br>
+	</li>
+	<li>
+		<strong>Improvement:</strong> Show number of active Pocket Queries on page <a href="https://www.geocaching.com/pocket/default.aspx">Your Pocket Queries</a>: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/705">#705</a>]<br>
+		Thanks to <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a> for the change.<br>
+		<br>
+	</li>
+	<li>
+		<strong>Improvement:</strong> Show number of Bookmark Lists above on old page <a href="https://www.geocaching.com/my/lists.aspx">List of Bookmark Lists</a>: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/711">#711</a>]<br>
+		Thanks to <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a> for the change.<br>
+		<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> Navigation menu not reachable on new page Hidden Creatures: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/713">#713</a>]<br>
+		Thanks to <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a> for the fix.<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> Push the map further down when the map popup is displayed: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/646">#646</a>]<br>
+	</li>
+</ul>
+(??.??.2018)<br>
+released by <a href="https://www.geocaching.com/profile/?u=Ruko2010">Ruko2010</a><br>
+<br>
 
 ---
 ## v0.9.7:

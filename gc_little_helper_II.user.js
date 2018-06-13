@@ -2831,6 +2831,30 @@ var mainGC = function() {
                         }
                     }
                 }
+                $('#pqRepeater tbody').find('img[src*="/images/icons/16/checkbox_"]').closest('a').each(function() {
+                    this.name = this.href;
+                    this.href = 'javascript:void(0);';
+                    this.children[0].title = '';
+                    this.addEventListener('click', function() {
+                        var img = '/images/icons/16/checkbox_off.png';
+                        var cb = this;
+                        if (cb.children[0].src.match('loader')) return;
+                        if (cb.children[0].src == global_red_tick) { cb.children[0].src = img; return; }
+                        cb.children[0].src = urlImages + 'ajax-loader.gif';
+                        var schedulePQ = $.get(cb.name);
+                        schedulePQ.done(function (result) {
+                            if ($(result).find('#ActivePQs .Warning')[0]) {
+                                cb.children[0].src = global_red_tick;
+                                cb.children[0].title = 'Sorry, 10 Pocket Queries per day reached';
+                            } else {
+                                var counter = $('#pqRepeater tbody tr.TableFooter')[0].children[cb.parentNode.cellIndex-2];
+                                (cb.name.match('&opt=0') ? counter.innerHTML-- : counter.innerHTML++);
+                                cb.children[0].src = (cb.name.match('&opt=0') ? img : img.replace('_off', '_on'));
+                                cb.name = (cb.name.match('&opt=0') ? cb.name.replace('&opt=0', '&opt=1') : cb.name.replace('&opt=1', '&opt=0'));
+                            }
+                        }, false);
+                    });
+                });
                 // Table My Finds:
                 css += "#ctl00_ContentBody_PQListControl1_tblMyFinds tbody tr th {border: unset;}";
                 if ($('#ctl00_ContentBody_PQListControl1_tblMyFinds tbody tr').length > 1 && $('#pqRepeater thead tr')[0].children.length > 12) {
@@ -2862,6 +2886,8 @@ var mainGC = function() {
             }
             // "Find cache along a route" als Button.
             if ($('#uxFindCachesAlongaRoute.btn.btn-secondary').length > 0) $('#uxFindCachesAlongaRoute')[0].className = "btn btn-primary";
+            // Number of Active Pocket Queries.
+            if ($('#ui-id-1')[0]) $('#ui-id-1').append("&nbsp;<span title='Number of Active Pocket Queries'>("+$('#pqRepeater tbody tr:not(.TableFooter)').length+")</span>");
             // Refresh button.
             var refreshButton = document.createElement("p");
             refreshButton.innerHTML = "<a href='/pocket/default.aspx' title='Refresh Page'>Refresh Page</a>";
@@ -3246,6 +3272,8 @@ var mainGC = function() {
                 // Footer:
                 $('#divContentMain div ul').first().remove();
             }
+            // Number of BMLs.
+            if ($('.span-10 h3')[0]) $('.span-10 h3')[0].innerHTML += "&nbsp;<span title='Number of Bookmark Lists of the maximum allowed 100'>("+$('table.Table tbody tr').length+"/100)</span>";
             appendCssStyle(css);
         } catch(e) {gclh_error("Improve list of bookmark lists:",e);}
     }
@@ -6138,10 +6166,11 @@ var mainGC = function() {
             // select the target node
             var target = document.querySelector('.leaflet-popup-pane');
 
-            var css = "div.popup_additional_info {min-height:68px;}"
+            var css = "div.popup_additional_info {min-height: 70px;}"
                     + "div.popup_additional_info .loading_container{display: flex; justify-content: center; align-items: center;}"
                     + "div.popup_additional_info .loading_container img{margin-right:5px;}"
                     + "div.popup_additional_info span.favi_points svg, div.popup_additional_info span.tackables svg{position: relative;top: 4px;}";
+            css += ".leaflet-popup-content-wrapper, .leaflet-popup-close-button {margin: 16px 3px 0px 13px;}"
             appendCssStyle(css);
 
             // create an observer instance
@@ -7220,12 +7249,12 @@ var mainGC = function() {
                 $("#gclhSouvenirsSortButtons").append('<input id="actionSouvenirsSortAcquiredDateOldestTop" title="Sort oldest first" value="Oldest first" type="button" href="javascript:void(0);" style="opacity: 0.5; margin-right: 4px" disabled="true">');
                 $("#gclhSouvenirsSortButtons").append('<input id="actionSouvenirsSortAcquiredTitleAtoZ" title="Sort title A-Z" value="Title A-Z" type="button" href="javascript:void(0);" style="margin-right: 4px">');
                 $("#gclhSouvenirsSortButtons").append('<input id="actionSouvenirsSortAcquiredTitleZtoA" title="Sort title Z-A" value="Title Z-A" type="button" href="javascript:void(0);">');
-                
+
                 var Souvenirs = SouvenirsDashboard.children('div');
                 var htmlFragment = "&nbsp;<span title='Number of souvenirs'>("+Souvenirs.length+")</span>";
                 $("#divContentMain > h2").append(htmlFragment); // private probfile
                 $("#ctl00_ContentBody_ProfilePanel1_pnlSouvenirs > h3").append(htmlFragment); // new public profile
-                
+
                 var jqui_date_format = "";
                 var accessTokenPromise = $.get('/account/settings/preferences');
                 accessTokenPromise.done(function (response) {
@@ -11377,7 +11406,7 @@ function is_link(name, url) {
             if (url.match(/\.com\/play\/(search|geocache)/)) status = true;
             break;
         case "hide_cache":
-            if (url.match(/\.com\/play\/(hide|friendleague)/)) status = true;
+            if (url.match(/\.com\/play\/(hide|friendleague|souvenircampaign)/)) status = true;
             break;
         case "geotours":
             if (url.match(/\.com\/play\/geotours/)) status = true;
