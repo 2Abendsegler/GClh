@@ -2933,6 +2933,12 @@ var mainGC = function() {
         } catch(e) {gclh_error("Improve list of PQs:",e);}
     }
 
+    if (document.location.href.match(/\.com\/pocket\/gcquery\.aspx/)){
+        try{
+            $('#Content .container').prepend('<textarea rows="4" cols="50"></textarea><br><button type="button" onClick="alert(\'los gehts\')">Start</button>');
+        } catch(e) {gclh_error("Create Automated PQs from project-gc PQ splitter:",e);}
+    }
+
 // Show Log It button.
     if (settings_show_log_it && document.location.href.match(/\.com\/(seek\/nearest\.aspx\?|my\/recentlyviewedcaches\.aspx)/)) {
         try {
