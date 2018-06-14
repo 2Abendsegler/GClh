@@ -5560,9 +5560,11 @@ var mainGC = function() {
 
             css +=
                 "a.gclh_thumb:hover {" +
+                "  white-space: unset;" +
                 "  position: relative;}" +
                 "a.gclh_thumb {" +
                 "  overflow: visible !important;" +
+                "  display: unset !important;" +
                 "  max-width: none !important;}" +
                 "a.gclh_thumb span {" +
                 "  white-space: unset !important;" +
