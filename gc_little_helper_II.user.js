@@ -2154,7 +2154,8 @@ var mainGC = function() {
                     json = JSON.parse(responseDetails.responseText);
                     var elevations = [];
                     for (var i=0; i<json.results.length; i++) {
-                        elevations.push( json.results[i].elevation );
+                        if (json.results[i].latitude != -90) elevations.push(json.results[i].elevation);
+                        else elevations.push(undefined);                                              
                     }
                     addElevationToWaypoints(elevations,context);
                 } catch(e) {gclh_error("addElevationToWaypoints_OpenElevation():",e);}
