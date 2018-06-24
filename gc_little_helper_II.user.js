@@ -217,6 +217,7 @@ var constInit = function(c) {
     layersInit(c);
     elevationServicesDataInit(c);
     country_idInit(c);
+    states_idInit(c);
 
     constInitDeref.resolve();
     return constInitDeref.promise();
@@ -2154,7 +2155,8 @@ var mainGC = function() {
                     json = JSON.parse(responseDetails.responseText);
                     var elevations = [];
                     for (var i=0; i<json.results.length; i++) {
-                        elevations.push( json.results[i].elevation );
+                        if (json.results[i].latitude != -90) elevations.push(json.results[i].elevation);
+                        else elevations.push(undefined);                                              
                     }
                     addElevationToWaypoints(elevations,context);
                 } catch(e) {gclh_error("addElevationToWaypoints_OpenElevation():",e);}
@@ -6613,24 +6615,63 @@ var mainGC = function() {
     }
 
 // Improve own statistic map page with links to caches for every country.
-    if (settings_map_links_statistic && isOwnStatisticsPage()) {
+    if (settings_map_links_statistic && isOwnStatisticsPage() ) {
+        
         try {
-            var countries = $('#stats_tabs-maps .StatisticsWrapper:first-of-type #StatsFlagLists table.Table tr');
-            for (var i = 0; i < countries.length; i++) {
-                var name = countries[i].children[0].childNodes[1].textContent;
-                if (name) {
-                    var country = $.grep(country_id, function(e){return e.n == name;});
-                    if (country && country[0]) {
-                        var a = document.createElement("a");
-                        a.setAttribute("title", "Show caches you have found in " + country[0]["n"]);
-                        a.setAttribute("href", "/play/search?ot=4&c=" + country[0]["id"] + "&f=1&sort=FoundDate&asc=True#myListsLink");
-                        a.innerHTML = countries[i].children[0].innerHTML;
-                        countries[i].children[0].innerHTML = "";
-                        countries[i].children[0].appendChild(a);
+            var countriesList = $('#stats_tabs-maps .StatisticsWrapper');
+            for (var j = 0; j < countriesList.length; j++) {
+                var indecator = $(countriesList[j]).find('#StatsFlagLists p span');
+                var tableItems = $(countriesList[j]).find('#StatsFlagLists table.Table tr');
+                            
+                for (var i = 0; i < tableItems.length; i++) {
+                    var name = tableItems[i].children[0].childNodes[1].textContent;    
+                    if (name) {
+                        var parameter = undefined;
+                        var item = undefined;
+                                                
+                        var countries = $.grep(country_id, function(e){return e.n == name;});
+                        var states = $.grep(states_id, function(e){return e.n == name;});
+                        
+                        /* ambiguous matches of state (or country) name are not handled. Known cases:
+                            Distrito Federal - Mexiko: Distrito Federal (state) / Brazil: Distrito Federal (state)
+                            Limburg	- Belgium: Limburg (state) / Netherlands: Limburg (state)
+                        */                          
+                        if        (  (countries && countries[0]) && !(states && states[0]) ) {
+                            parameter = "c";
+                            item = countries;
+                        } else if ( !(countries && countries[0]) &&  (states && states[0]) ) {
+                            parameter = "r";
+                            item = states;
+                        /* case: country/state */
+                        } else if (  (countries && countries[0]) &&  (states && states[0]) ) {
+                            /* Known case: Georgia - United States/Georgia (state) and Georgia (country) */
+                            if ( indecator[0].getAttribute("id") == "ctl00_ContentBody_ProfilePanel1_USMapControl1_uxTotalCount") {
+                                parameter = "r";
+                                item = states;
+                            } else {    
+                                /* Main rule: country first
+                                 Known case: Luxembourg - Luxembourg (country) / Belgium: Luxembourg (state) */ 
+                                parameter = "c";
+                                item = countries;
+                            }
+                        } else {
+                            // do nothing
+                            gclh_log("Improve own statistic map page: country and state name not found");
+                            continue;
+                        }
+                        
+                        if (item && item[0]) {
+                            var a = document.createElement("a");
+                            a.setAttribute("title", "Show caches you have found in " + item[0]["n"]);
+                            a.setAttribute("href", "/play/search?ot=4&"+parameter+"=" + item[0]["id"] + "&f=1&sort=FoundDate&asc=True#myListsLink");
+                            a.innerHTML = tableItems[i].children[0].innerHTML;
+                            tableItems[i].children[0].innerHTML = "";
+                            tableItems[i].children[0].appendChild(a);
+                        }
                     }
                 }
             }
-        } catch(e) {gclh_error("Improve own statistic map page:",e);}
+        } catch(e) {gclh_error("Improve own statistic map page:",e);}        
     }
 
 // Post log from listing (inline).
