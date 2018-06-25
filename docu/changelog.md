@@ -60,6 +60,13 @@
 		<br>
 	</li>
 	<li>
+		<strong>Improvement:</strong> Translate <a href="https://github.com/2Abendsegler/GClh/blob/master/docu/development-tampermonkey.md">Development with Tampermonkey</a> to English: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/630">#630</a>]<br>
+	</li>
+	<li>
+		<strong>Improvement:</strong> Show links to found caches for every country/state on statistic maps page (improve of #363): [Issue <a href="https://github.com/2Abendsegler/GClh/issues/725">#725</a>]<br>
+		Thanks to <a href="https://www.geocaching.com/profile/?u=CachingFoX">CachingFoX</a> for the implementation.<br>
+	</li>
+	<li>
 		<strong>Fix:</strong> Navigation menu not reachable on new page Hidden Creatures: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/713">#713</a>]<br>
 		Thanks to <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a> for the fix.<br>
 	</li>
@@ -70,8 +77,16 @@
 		<strong>Fix:</strong> Damaged name and position of log images due to changes made by GS: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/719">#719</a>]<br>
 		Thanks to <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a> for the fix.<br>
 	</li>
+	<li>
+		<strong>Fix:</strong> Elevation of waypoints with hidden coordinates are shown as +0m: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/670">#670</a>]<br>
+		Thanks to <a href="https://www.geocaching.com/profile/?u=CachingFoX">CachingFoX</a> for the fix.<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> Updating names of countries: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/722">#722</a>]<br>
+		Thanks to <a href="https://www.geocaching.com/profile/?u=CachingFoX">CachingFoX</a> for the fix.<br>
+	</li>
 </ul>
-(??.??.2018)<br>
+(25.06.2018)<br>
 released by <a href="https://www.geocaching.com/profile/?u=Ruko2010">Ruko2010</a><br>
 <br>
 
