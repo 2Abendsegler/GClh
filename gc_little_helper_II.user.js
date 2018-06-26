@@ -2662,6 +2662,7 @@ var mainGC = function() {
             function checkLogType(waitCount) {
                 if ((!document.location.href.match(/log\?d\=/) && $('.selectric')[0]) ||  // Kein Draft
                     (document.location.href.match(/log\?d\=/) && document.getElementById('LogText').value != "" && settings_log_signature_on_fieldnotes)) {  // Draft
+                    var initial_cursor_position = document.getElementById('LogText').selectionEnd;
                     document.getElementById('LogText').innerHTML = getValue("settings_log_signature", "");
                     replacePlaceholder(true);
                     if (document.location.href.match(/log\?d\=/)) {
@@ -2670,6 +2671,7 @@ var mainGC = function() {
                         var value = $('<textarea>').html(document.getElementById('LogText').innerHTML).val();
                         document.getElementById('LogText').value += value;
                     }
+                    document.getElementById('LogText').selectionEnd = initial_cursor_position;
                 } else {waitCount++; if (waitCount <= 100) setTimeout(function(){checkLogType(waitCount);}, 100);}
             }
         } catch(e) {gclh_error("Signature New Log Page(CACHE):",e);}
