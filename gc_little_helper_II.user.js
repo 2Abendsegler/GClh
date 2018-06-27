@@ -2935,7 +2935,23 @@ var mainGC = function() {
 
     if (document.location.href.match(/\.com\/pocket\/gcquery\.aspx/)){
         try{
-            $('#Content .container').prepend('<textarea rows="4" cols="50"></textarea><br><button type="button" onClick="alert(\'los gehts\')">Start</button>');
+
+            function saveTAtoSession(){
+
+                var value = document.getElementById('automated_pq').value;
+                alert(value);
+                window.sessionStorage.setItem('automated_pq', value);
+            }
+
+            alert(window.sessionStorage.getItem('automated_pq'));
+
+            var button = document.createElement("input");
+            button.setAttribute("type", "button");
+            button.setAttribute("value", "Start");
+            button.setAttribute("style", "height: 35px;");
+            button.addEventListener("click", saveTAtoSession, false);
+            $('#Content .container').prepend(button);
+            $('#Content .container').prepend('<textarea rows="4" cols="50" id="automated_pq"></textarea><br>');
         } catch(e) {gclh_error("Create Automated PQs from project-gc PQ splitter:",e);}
     }
 
