@@ -45,6 +45,9 @@
 	<li>
 		<strong>Fix:</strong> Move Cursor to Starting Position after insertion of Signature in New Log/Draft Page: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/729">#729</a>]<br>
 	</li>
+	<li>
+		<strong>Fix:</strong> On Friendleague VIP/VUP List ist not generated correctly for Names with Special Chars in it: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/732">#732</a>]<br>
+	</li>
 </ul>
 (??.??.2018)<br>
 released by <a href="https://www.geocaching.com/profile/?u=Ruko2010">Ruko2010</a><br>
