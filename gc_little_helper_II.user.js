@@ -4628,7 +4628,7 @@ var mainGC = function() {
                             side[i].appendChild(span);
                             var last = side[i].children.length - 1;
                             var user = links[i].href.match(/https?:\/\/www\.geocaching\.com\/profile\/\?u=(.*)/);
-                            gclh_build_vipvupmail(side[i].children[last], user[1]);
+                            gclh_build_vipvupmail(side[i].children[last], decodeURIComponent(user[1]));
                         }
                     } else {waitCount++; if (waitCount <= 50) setTimeout(function(){checkLeagueAvailable(waitCount);}, 200);}
                 }
