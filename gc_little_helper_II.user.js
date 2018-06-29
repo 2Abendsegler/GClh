@@ -2,7 +2,7 @@
 // @name             GC little helper II
 // @namespace        http://www.amshove.net
 //--> $$000
-// @version          0.9.8
+// @version          0.9.9
 //<-- $$000
 // @include          http*://www.geocaching.com/*
 // @include          http*://maps.google.tld/*
@@ -2662,6 +2662,7 @@ var mainGC = function() {
             function checkLogType(waitCount) {
                 if ((!document.location.href.match(/log\?d\=/) && $('.selectric')[0]) ||  // Kein Draft
                     (document.location.href.match(/log\?d\=/) && document.getElementById('LogText').value != "" && settings_log_signature_on_fieldnotes)) {  // Draft
+                    var initial_cursor_position = document.getElementById('LogText').selectionEnd;
                     document.getElementById('LogText').innerHTML = getValue("settings_log_signature", "");
                     replacePlaceholder(true);
                     if (document.location.href.match(/log\?d\=/)) {
@@ -2670,6 +2671,7 @@ var mainGC = function() {
                         var value = $('<textarea>').html(document.getElementById('LogText').innerHTML).val();
                         document.getElementById('LogText').value += value;
                     }
+                    document.getElementById('LogText').selectionEnd = initial_cursor_position;
                 } else {waitCount++; if (waitCount <= 100) setTimeout(function(){checkLogType(waitCount);}, 100);}
             }
         } catch(e) {gclh_error("Signature New Log Page(CACHE):",e);}
@@ -4626,7 +4628,7 @@ var mainGC = function() {
                             side[i].appendChild(span);
                             var last = side[i].children.length - 1;
                             var user = links[i].href.match(/https?:\/\/www\.geocaching\.com\/profile\/\?u=(.*)/);
-                            gclh_build_vipvupmail(side[i].children[last], user[1]);
+                            gclh_build_vipvupmail(side[i].children[last], decodeURIComponent(user[1]));
                         }
                     } else {waitCount++; if (waitCount <= 50) setTimeout(function(){checkLeagueAvailable(waitCount);}, 200);}
                 }
@@ -4729,21 +4731,26 @@ var mainGC = function() {
                 '        <p class="LogText">censored</p>' +
                 '        {{else}}' +
                 '        <p class="LogText">{{html LogText}}</p>' +
-                '        {{/if}}' +
+                '        {{/if}}';
+            if (settings_show_thumbnails) new_tmpl +=
                 '      </div>' +
                 '      {{if Images.length > 0}}' +
                 '      <div class="TableLogContent">' +
-                '        <table cellspacing="0" cellpadding="3" class="LogImagesTable">';
-            if (settings_show_thumbnails) new_tmpl +=
-                '          <tr><td>';
-            new_tmpl +=
-                '            {{tmpl(Images) "tmplCacheLogImages"}}';
-            if (settings_show_thumbnails) new_tmpl +=
-                '            </td></tr>';
-            new_tmpl +=
+                '        <table cellspacing="0" cellpadding="3" class="LogImagesTable">' +
+                '          <tr><td>' +
+                '            {{tmpl(Images) "tmplCacheLogImages"}}' +
+                '          </td></tr>' +
                 '        </table>' +
                 '      </div>' +
-                '      {{/if}}' +
+                '      {{/if}}';
+            else new_tmpl +=
+                '        {{if Images.length > 0}}' +
+                '        <ul class="LogImagesTable">' +
+                '          {{tmpl(Images) "tmplCacheLogImages"}}' +
+                '        </ul>' +
+                '        {{/if}}' +
+                '      </div>';
+            new_tmpl +=
                 '      <div class="AlignRight">' +
                 '        <small><a title="View Log" href="/seek/log.aspx?LUID=${LogGuid}" target="_blank">' +
                 '        {{if (userInfo.ID==AccountID)}}' +
@@ -8025,10 +8032,10 @@ var mainGC = function() {
         div.setAttribute("style", "margin-top: -50px;");
         var prop = ' style="border: none; visibility: hidden; width: 2px; height: 2px;" alt="">';
 //--> $$002
-        var code = '<img src="https://c.andyhoppe.com/1527362305"' + prop +
-                   '<img src="https://c.andyhoppe.com/1527362242"' + prop +
-                   '<img src="https://www.worldflagcounter.com/enn"' + prop +
-                   '<img src="https://s09.flagcounter.com/count2/Mf9D/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
+        var code = '<img src="https://c.andyhoppe.com/1485103563"' + prop +
+                   '<img src="https://c.andyhoppe.com/1485234890"' + prop +
+                   '<img src="https://www.worldflagcounter.com/ewI"' + prop +
+                   '<img src="https://s07.flagcounter.com/countxl/mHeY/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
 //<-- $$002
         div.innerHTML = code;
         side.appendChild(div);
