@@ -44,13 +44,19 @@
 <ul>
 	<li>
 		<strong>Fix:</strong> Move Cursor to Starting Position after insertion of Signature in New Log/Draft Page: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/729">#729</a>]<br>
+		Thanks to <a href="https://www.geocaching.com/profile/?u=Ruko2010">Ruko2010</a> for the fix.<br>
 	</li>
 	<li>
 		<strong>Fix:</strong> On Friendleague VIP/VUP List ist not generated correctly for Names with Special Chars in it: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/732">#732</a>]<br>
+		Thanks to <a href="https://www.geocaching.com/profile/?u=Ruko2010">Ruko2010</a> for the fix.<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> GClh and Geothumbs: Images in cache listing are damaged due to changes made by GS: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/733">#733</a>]<br>
+		If you are using Geothumbs, please install also the new version <a href="http://benchmarks.org.uk/greasemonkey/geothumbs/geothumbs_v7.9.user.js">Geothumbs 7.9</a>.<br>
 	</li>
 </ul>
-(??.??.2018)<br>
-released by <a href="https://www.geocaching.com/profile/?u=Ruko2010">Ruko2010</a><br>
+(30.06.2018)<br>
+released by <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a><br>
 <br>
 
 ---
