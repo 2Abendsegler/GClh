@@ -4615,6 +4615,33 @@ var mainGC = function() {
                         if (s) s.className = "summary";
                     }, 100);
                 }
+
+                function addVIPVUPLinksToReloadedFriends(){
+                    var old_usercount = $('#LeaderboardTable leaderboard-table tbody').length();
+                    alert(old_usercount);
+                    checkLeagueAvailableFromMoreButton(0,);
+                }
+
+                function checkLeagueAvailableFromMoreButton(waitCount,oldcount) {
+                    
+                    if ($('table.leaderboard-table tbody.leaderboard-item').length > 0) {
+                        var side = $('table.leaderboard-table tbody.leaderboard-item .summary .profile-info');
+                        var links = $('table.leaderboard-table tbody.leaderboard-item .details .profile-link');
+                        if (!side || !links || side.length != links.length) return;
+                        appendCssStyle(".leaderboard-item .profile-info a {display: table-cell;} .leaderboard-item .profile-info a img {margin-right: 5px;}");
+                        for (var i = 0; i < links.length; i++) {
+                            var span = document.createElement('span');
+                            span.setAttribute("style", "min-width: 80px; padding-right: 20px; display: table-cell; vertical-align: middle;");
+                            span.addEventListener("click", doNotChangeDetailsByClick, false);
+                            side[i].appendChild(span);
+                            var last = side[i].children.length - 1;
+                            var user = links[i].href.match(/https?:\/\/www\.geocaching\.com\/profile\/\?u=(.*)/);
+                            gclh_build_vipvupmail(side[i].children[last], decodeURIComponent(user[1]));
+                        }
+
+                    } else {waitCount++; if (waitCount <= 50) setTimeout(function(){checkLeagueAvailableFromMoreButton(waitCount);}, 200);}
+                }
+
                 function checkLeagueAvailable(waitCount) {
                     if ($('table.leaderboard-table tbody.leaderboard-item').length > 0) {
                         var side = $('table.leaderboard-table tbody.leaderboard-item .summary .profile-info');
@@ -4630,6 +4657,11 @@ var mainGC = function() {
                             var user = links[i].href.match(/https?:\/\/www\.geocaching\.com\/profile\/\?u=(.*)/);
                             gclh_build_vipvupmail(side[i].children[last], decodeURIComponent(user[1]));
                         }
+                        // $('#LeaderboardFooter button.load-more').bind("click", checkLeagueAvailable(0), false);
+
+                        var LeaderboardFooter = document.getElementById('LeaderboardFooter');
+                        LeaderboardFooter.getElementsByTagName("button")[0].addEventListener("click", addVIPVUPLinksToReloadedFriends, false);
+
                     } else {waitCount++; if (waitCount <= 50) setTimeout(function(){checkLeagueAvailable(waitCount);}, 200);}
                 }
                 checkLeagueAvailable(0);
