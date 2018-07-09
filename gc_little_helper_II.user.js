@@ -7,6 +7,7 @@
 // @include          http*://www.geocaching.com/*
 // @include          http*://maps.google.tld/*
 // @include          http*://www.google.tld/maps*
+// @include          http*://project-gc.com/Tools/PQSplit*
 // @include          http*://www.openstreetmap.org*
 // @exclude          /^https?://www\.geocaching\.com/(login|jobs|careers|brandedpromotions|promotions|blog|help|seek/sendtogps|profile/profilecontent)/
 // @resource jscolor https://raw.githubusercontent.com/2Abendsegler/GClh/master/data/jscolor.js
@@ -46,6 +47,8 @@ var start = function(c) {
                 mainOSM();
             } else if (document.location.href.match(/^https?:\/\/www\.geocaching\.com/)) {
                 mainGC();
+            }else if (document.location.href.match(/^https?:\/\/project-gc\.com\/Tools\/PQSplit/)) {
+                mainPGC();
             }
         });
 };
@@ -577,6 +580,28 @@ var mainGMaps = function() {
             hideLeftSidebar(0);
         }
     } catch(e) {gclh_error("mainGMaps:",e);}
+};
+//////////////////////////////
+// Project GC
+//////////////////////////////
+var mainPGC = function() {
+    try {
+
+        if($('.row table').length > 0){
+            
+            // Only one of the Multiselcts has a value. Either the Country or the Region
+
+            if($('#multi_countryselect').val() != null){
+                alert('Contry');
+            }else if($('#multi_countryregionselect').val() != null){
+                alert('Region');
+            }else{
+                alert('Nothing');
+            }
+
+            $('.row table').append('<tfoot><tr><td colspan="5"><button>Create PQs on GC</button</td></tr></tfoot>')
+        }
+    } catch(e) {gclh_error("mainPGC:",e);}
 };
 
 //////////////////////////////
