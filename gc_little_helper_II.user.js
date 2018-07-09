@@ -587,19 +587,143 @@ var mainGMaps = function() {
 var mainPGC = function() {
     try {
 
+        function getMonthNumber(lang, input){
+            if(lang = 'DE'){
+                if(input == 'Januar') return 1;
+                if(input == 'Februar') return 2;
+                if(input == 'März') return 3;
+                if(input == 'April') return 4;
+                if(input == 'Mai') return 5;
+                if(input == 'Juni') return 6;
+                if(input == 'Juli') return 7;
+                if(input == 'August') return 8;
+                if(input == 'September') return 9;
+                if(input == 'Oktober') return 10;
+                if(input == 'November') return 11;
+                if(input == 'Dezember') return 12;
+            }
+
+            if(lang = 'EN'){
+                if(input == 'January') return 1;
+                if(input == 'February') return 2;
+                if(input == 'March') return 3;
+                if(input == 'April') return 4;
+                if(input == 'May') return 5;
+                if(input == 'June') return 6;
+                if(input == 'July') return 7;
+                if(input == 'August') return 8;
+                if(input == 'September') return 9;
+                if(input == 'October') return 10;
+                if(input == 'November') return 11;
+                if(input == 'December') return 12;
+            }
+
+            return false;
+        }
+
         if($('.row table').length > 0){
             
             // Only one of the Multiselcts has a value. Either the Country or the Region
 
             if($('#multi_countryselect').val() != null){
-                alert('Contry');
+                console.log('Contry');
+                name = $('#multi_countryselect').val();
+                type = "county";
             }else if($('#multi_countryregionselect').val() != null){
-                alert('Region');
+                console.log('Region');
+                name = $('#multi_countryregionselect').val();
+                type = "region";
             }else{
-                alert('Nothing');
+                console.log('Nothing');
             }
 
-            $('.row table').append('<tfoot><tr><td colspan="5"><button>Create PQs on GC</button</td></tr></tfoot>')
+            $('.row table').each(function(){
+                var tfoot = document.createElement('tfoot');
+                var tr = document.createElement('tr');
+                var td = document.createElement('td');
+                var button = document.createElement('button');
+                var t = document.createTextNode("Create PQ(s) on GC");  
+                button.appendChild(t);
+
+                var input = document.createElement('input');
+                var input = document.createElement("input");
+                input.setAttribute("type", "text");
+                input.setAttribute("value", "PQName");
+                input.setAttribute("id", "test98546787686");
+                
+                button.addEventListener("click", function(){
+                    var current_table = $(this).closest('table');
+                    var counter = 0;
+                    var language;
+                    var data = new Array();
+                    $(current_table).find('tr').each(function(){
+                        counter++;
+                        console.log($(this));
+                        if(counter == 1){
+                            // first tr, determine Language
+                            var lang_text = $(this).children().eq(1).text();
+                            if(lang_text == 'Startdatum'){
+                                language = 'DE';
+                            }else if(lang_text == 'Start date'){
+                                language = 'EN';
+                            }else{
+                                // Lang not supported
+                                alert('Language not supported. Please switch to German or English to use this funktion');
+                                language = 'NONE';
+                            }
+                        }else{
+                            // Other tr, here is the Data we need
+                            if($(this).children().eq(1).text() != ""){
+                                
+                                var start = $(this).children().eq(1).text();
+                                var start_array = start.split('/');
+
+                                var start_month = getMonthNumber(language,start_array[0]);
+                                var start_day   = parseInt(start_array[1]);
+                                var start_year  = parseInt(start_array[2]);
+
+                                var end = $(this).children().eq(2).text();
+                                if(end.indexOf("/") != -1){
+                                    var end_array = end.split('/');
+                                    var end_month = getMonthNumber(language,end_array[0]);
+                                    var end_day   = parseInt(end_array[1]);
+                                    var end_year  = parseInt(end_array[2]);
+                                }else{
+                                    var end_month = "";
+                                    var end_day   = "";
+                                    var end_year  = "";
+                                }
+                                
+
+                                var row = {
+                                    name: $('#test98546787686').val()+(counter-1),
+                                    type: type,
+                                    selection: name,
+                                    start_month: start_month, 
+                                    start_day: start_day, 
+                                    start_year: start_year,
+
+                                    end_month: end_month, 
+                                    end_day: end_day, 
+                                    end_year: end_year
+                                    
+                                };
+                                data.push(row);
+                            }
+                        }
+                    });
+
+                    console.log(language);
+                    console.log(data);
+                }, false);
+
+                td.appendChild(input);
+                td.appendChild(button);
+                td.colSpan = "5";
+                tr.appendChild(td);
+                tfoot.appendChild(tr);
+                $(this).append(tfoot); 
+            });
         }
     } catch(e) {gclh_error("mainPGC:",e);}
 };
