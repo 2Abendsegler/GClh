@@ -637,7 +637,7 @@ var mainPGC = function() {
                 console.log('Nothing');
             }
 
-            $('.row table').each(function(){
+            $('.row table').each(function(table_index){
                 var tfoot = document.createElement('tfoot');
                 var tr = document.createElement('tr');
                 var td = document.createElement('td');
@@ -649,7 +649,7 @@ var mainPGC = function() {
                 var input = document.createElement("input");
                 input.setAttribute("type", "text");
                 input.setAttribute("value", "PQName");
-                input.setAttribute("id", "test98546787686");
+                input.setAttribute("id", "pq_name_"+table_index);
                 
                 button.addEventListener("click", function(){
                     var current_table = $(this).closest('table');
@@ -694,21 +694,25 @@ var mainPGC = function() {
                                     var end_year  = "";
                                 }
                                 
+                                var param = 
+                                    {
+                                        n: $("#pq_name_"+table_index).val()+"_"+(counter-1),
+                                        t: type,
+                                        s: name,
+                                        sm: start_month, 
+                                        sd: start_day, 
+                                        sy: start_year,
 
-                                var row = {
-                                    name: $('#test98546787686').val()+(counter-1),
-                                    type: type,
-                                    selection: name,
-                                    start_month: start_month, 
-                                    start_day: start_day, 
-                                    start_year: start_year,
+                                        em: end_month, 
+                                        ed: end_day, 
+                                        ey: end_year
+                                        
+                                    };
+                                console.log('Open New Window: '+'PQ_'+(counter-1));
+                                window.open("https://www.geocaching.com/pocket/gcquery.aspx?"+$.param( param ),'PQ_'+(counter-1),'PopUp','PQ_'+(counter-1),'scrollbars=1,menubar=0,resizable=1,width=850,height=500');
 
-                                    end_month: end_month, 
-                                    end_day: end_day, 
-                                    end_year: end_year
-                                    
-                                };
-                                data.push(row);
+                                // Only one for now...
+                                // return;
                             }
                         }
                     });
@@ -3085,22 +3089,32 @@ var mainGC = function() {
     if (document.location.href.match(/\.com\/pocket\/gcquery\.aspx/)){
         try{
 
-            function saveTAtoSession(){
-
-                var value = document.getElementById('automated_pq').value;
-                alert(value);
-                window.sessionStorage.setItem('automated_pq', value);
+            function findGetParameter(parameterName) {
+                var result = null,
+                    tmp = [];
+                var items = location.search.substr(1).split("&");
+                for (var index = 0; index < items.length; index++) {
+                    tmp = items[index].split("=");
+                    if (tmp[0] === parameterName) result = decodeURIComponent(tmp[1]);
+                }
+                return result;
             }
 
-            alert(window.sessionStorage.getItem('automated_pq'));
+            // setTimeout(function(){
+            //     window.close();
+            // },3000);
 
-            var button = document.createElement("input");
-            button.setAttribute("type", "button");
-            button.setAttribute("value", "Start");
-            button.setAttribute("style", "height: 35px;");
-            button.addEventListener("click", saveTAtoSession, false);
-            $('#Content .container').prepend(button);
-            $('#Content .container').prepend('<textarea rows="4" cols="50" id="automated_pq"></textarea><br>');
+            // alert(findGetParameter('n'));
+            // alert(findGetParameter('t'));
+            // alert(findGetParameter('s'));
+            // alert(findGetParameter('sm'));
+            // alert(findGetParameter('sd'));
+            // alert(findGetParameter('sy'));
+            // alert(findGetParameter('em'));
+            // alert(findGetParameter('ed'));
+            // alert(findGetParameter('ey'));
+
+            
         } catch(e) {gclh_error("Create Automated PQs from project-gc PQ splitter:",e);}
     }
 
