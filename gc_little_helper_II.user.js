@@ -672,7 +672,8 @@ var mainPGC = function() {
                                 language = 'NONE';
                             }
                         }else{
-                            // Other tr, here is the Data we need
+                            // Other td, here is the Data we need
+                            // Only process if the first column has Data in it
                             if($(this).children().eq(1).text() != ""){
                                 
                                 var start = $(this).children().eq(1).text();
@@ -708,11 +709,19 @@ var mainPGC = function() {
                                         ey: end_year
                                         
                                     };
+
+                                /* TODO:
+                                    - Check ob URL länger als 2000 Zeichen. Wenn ja => Alert, dass es nicht geht
+                                    - check of filter gesetzt sind
+                                    - URL aufruf evenutell über einen Timeout aller 10 Querys (um GC nicht zu überlasten) (vielleicht 5-10 Sekunden Pause?)
+                                    - Nachricht wenn alles fertig ist
+                                */
+
                                 console.log('Open New Window: '+'PQ_'+(counter-1));
                                 window.open("https://www.geocaching.com/pocket/gcquery.aspx?"+$.param( param ),'PQ_'+(counter-1),'PopUp','PQ_'+(counter-1),'scrollbars=1,menubar=0,resizable=1,width=850,height=500');
 
                                 // Only one for now...
-                                // return;
+                                return;
                             }
                         }
                     });
