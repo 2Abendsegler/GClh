@@ -4616,20 +4616,19 @@ var mainGC = function() {
                     }, 100);
                 }
 
-                function addVIPVUPLinksToReloadedFriends(){
-                    var old_usercount = $('#LeaderboardTable leaderboard-table tbody').length();
-                    alert(old_usercount);
-                    checkLeagueAvailableFromMoreButton(0,);
-                }
-
-                function checkLeagueAvailableFromMoreButton(waitCount,oldcount) {
+                function addVIPVUPLinksToReloadedFriends(table_length, maxwaittime){
+                    var leaderboard_table = document.getElementById('LeaderboardTable').getElementsByTagName("table")[0];
+                    var new_table_length = $(leaderboard_table).children().length;
                     
-                    if ($('table.leaderboard-table tbody.leaderboard-item').length > 0) {
+                    if(new_table_length > table_length){
                         var side = $('table.leaderboard-table tbody.leaderboard-item .summary .profile-info');
                         var links = $('table.leaderboard-table tbody.leaderboard-item .details .profile-link');
                         if (!side || !links || side.length != links.length) return;
-                        appendCssStyle(".leaderboard-item .profile-info a {display: table-cell;} .leaderboard-item .profile-info a img {margin-right: 5px;}");
                         for (var i = 0; i < links.length; i++) {
+                            if($(side[i]).find('img.gclh_vip').html() != null){
+                                // already has VIP/VUP Icons
+                                continue;
+                            }
                             var span = document.createElement('span');
                             span.setAttribute("style", "min-width: 80px; padding-right: 20px; display: table-cell; vertical-align: middle;");
                             span.addEventListener("click", doNotChangeDetailsByClick, false);
@@ -4639,7 +4638,24 @@ var mainGC = function() {
                             gclh_build_vipvupmail(side[i].children[last], decodeURIComponent(user[1]));
                         }
 
-                    } else {waitCount++; if (waitCount <= 50) setTimeout(function(){checkLeagueAvailableFromMoreButton(waitCount);}, 200);}
+                        table_length = $(leaderboard_table).children().length;
+
+                        var LeaderboardFooter = document.getElementById('LeaderboardFooter');
+                        var button = LeaderboardFooter.getElementsByTagName("button")[0];
+
+                        if(button){
+                            button.addEventListener("click", function(){
+                                addVIPVUPLinksToReloadedFriends(table_length, 10000);
+                            }, false);
+                        }
+
+                    }else{
+                        if(maxwaittime > 0){
+                            setTimeout(function(){addVIPVUPLinksToReloadedFriends(table_length,maxwaittime-200);}, 200);
+                        }else{
+                            console.error("Could not add VIP/VUP Links to newly loaded friendleague members. Maximum wait time exeeded.");
+                        }
+                    }
                 }
 
                 function checkLeagueAvailable(waitCount) {
@@ -4657,10 +4673,19 @@ var mainGC = function() {
                             var user = links[i].href.match(/https?:\/\/www\.geocaching\.com\/profile\/\?u=(.*)/);
                             gclh_build_vipvupmail(side[i].children[last], decodeURIComponent(user[1]));
                         }
-                        // $('#LeaderboardFooter button.load-more').bind("click", checkLeagueAvailable(0), false);
+
+                        var leaderboard_table = document.getElementById('LeaderboardTable').getElementsByTagName("table")[0];
+
+                        var table_length = $(leaderboard_table).children().length;
 
                         var LeaderboardFooter = document.getElementById('LeaderboardFooter');
-                        LeaderboardFooter.getElementsByTagName("button")[0].addEventListener("click", addVIPVUPLinksToReloadedFriends, false);
+                        var button = LeaderboardFooter.getElementsByTagName("button")[0];
+
+                        if(button){
+                            button.addEventListener("click", function(){
+                                addVIPVUPLinksToReloadedFriends(table_length, 10000);
+                            }, false);
+                        }
 
                     } else {waitCount++; if (waitCount <= 50) setTimeout(function(){checkLeagueAvailable(waitCount);}, 200);}
                 }
