@@ -6106,8 +6106,16 @@ var mainGC = function() {
 
             var template = $("#cacheDetailsTemplate").html().trim();
 
+            // {{=gc}} will be replaced by the GC-Code, so the div is unique
+            var new_template = '';
+                new_template += '<div id="popup_additional_info_{{=gc}}" class="links Clear popup_additional_info">';
+                new_template += '    <div class="loading_container">';
+                new_template += '        <img src="' + urlImages + 'ajax-loader.gif" />Loading additional Data...';
+                new_template += '    </div>';
+                new_template += '</div>';
+
             var pos = template.lastIndexOf('</div>');
-            template = template.substring(0,pos) + '<div id="popup_additional_info_{{=gc}}" class="links Clear popup_additional_info"><div class="loading_container"><img src="' + urlImages + 'ajax-loader.gif" />Loading additional Data...</div></div>' + '</div>';
+            template = template.substring(0,pos) + new_template + '</div>';
 
             $("#cacheDetailsTemplate").html(template);
 
