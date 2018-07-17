@@ -6104,11 +6104,12 @@ var mainGC = function() {
         try {
 
 
-            var template = '';
-                template += ' <div class="Clear popup_additional_info">';
-                template += ' </div>';
+            var template = $("#cacheDetailsTemplate").html().trim();
 
-                $("#cacheDetailsTemplate").append(template);
+            var pos = template.lastIndexOf('</div>');
+            template = template.substring(0,pos) + '<div id="popup_additional_info_{{=gc}}" class="links Clear popup_additional_info"><div class="loading_container"><img src="' + urlImages + 'ajax-loader.gif" />Loading additional Data...</div></div>' + '</div>';
+
+            $("#cacheDetailsTemplate").html(template);
 
 
             // select the target node
@@ -6129,13 +6130,14 @@ var mainGC = function() {
 
                     // New Popup. This can contain more than one cache (if 2 or more are close together)
                     // so we have to load informations for all caches.
-                    $('#gmCacheInfo').each(function () {
+                    $('#gmCacheInfo .map-item').each(function () {
                         gccode = $(this).find('.code').html();
-                        if ($('#popup_additional_info_' + gccode)[0]) return;
+                        
+                        if ($('#already_loading_' + gccode)[0]) return;
                         $(this).find('dl dt')[0].innerHTML = $(this).find('dl dt')[0].innerHTML.replace(/Created by:/,"by:").replace(/Erstellt von:/,"von:");
 
-                        // Add Loading image
-                        $(this).find('.popup_additional_info').html('<div id="popup_additional_info_' + gccode +'" class="links Clear popup_additional_info"><div class="loading_container"><img src="' + urlImages + 'ajax-loader.gif" />Loading additional Data...</div></div>');
+                        // Add hidden Div, so we can know, that we are already loading data
+                        $(this).find('#popup_additional_info_' + gccode).append('<div id="already_loading_' + gccode +'"></div>'); 
 
                         $.get('https://www.geocaching.com/geocache/'+gccode, null, function(text){
 
