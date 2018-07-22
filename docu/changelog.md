@@ -1,4 +1,5 @@
-<a href="#v099" title="GClh II version 0.9.9 (??.??.2018)">v0.9.9</a> &nbsp;
+<a href="#v0910" title="GClh II version 0.9.10 (??.??.2018)">v0.9.10</a> &nbsp;
+<a href="#v099" title="GClh II version 0.9.9 (30.06.2018)">v0.9.9</a> &nbsp;
 <a href="#v098" title="GClh II version 0.9.8 (25.06.2018)">v0.9.8</a> &nbsp;
 <a href="#v097" title="GClh II version 0.9.7 (28.05.2018)">v0.9.7</a> &nbsp;
 <a href="#v096" title="GClh II version 0.9.6 (14.05.2018)">v0.9.6</a> &nbsp;
@@ -38,6 +39,21 @@
 <a href="#v021" title="GClh II version 0.2.1 (05.01.2017)">v0.2.1</a> &nbsp; 
 <a href="#v01" title="GClh II version 0.1 (05.01.2017)">v0.1</a> &nbsp; 
 
+
+---
+## v0.9.10:
+<ul>
+	<li>
+		<strong>Fix:</strong> Updating names of countries [Issue <a href="https://github.com/2Abendsegler/GClh/issues/722">#722</a>]<br>
+		Thanks to <a href="https://www.geocaching.com/profile/?u=CachingFoX">CachingFoX</a> for the fix.<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> Friendleague: After click on "see more" reloaded friends have no VIP/VUP Icons [Issue <a href="https://github.com/2Abendsegler/GClh/issues/734">#734</a>]<br>
+	</li>
+</ul>
+(??.??.2018)<br>
+released by <a href="https://www.geocaching.com/profile/?u=Ruko2010">Ruko2010</a><br>
+<br>
 
 ---
 ## v0.9.9:
