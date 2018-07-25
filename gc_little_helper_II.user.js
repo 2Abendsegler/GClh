@@ -626,29 +626,52 @@ var mainPGC = function() {
             
             // Only one of the Multiselcts has a value. Either the Country or the Region
 
+            //Check if other Filters are set!
+
+            var error_text = '';
+
+            if($('#inputlist li').length > 1){
+                error_text = "More than one filter was set! You can not use this function. Please remove all filters except country/region.";
+            }
+
             if($('#multi_countryselect').val() != null){
-                console.log('Contry');
                 name = $('#multi_countryselect').val();
                 type = "county";
             }else if($('#multi_countryregionselect').val() != null){
-                console.log('Region');
                 name = $('#multi_countryregionselect').val();
                 type = "region";
             }else{
-                console.log('Nothing');
+                error_text = 'No Country/Region selected.';
             }
 
             $('.row table').each(function(table_index){
                 var tfoot = document.createElement('tfoot');
                 var tr = document.createElement('tr');
                 var td = document.createElement('td');
+                td.colSpan = "5";
+
+                var heading = document.createElement("h4");
+                heading.appendChild(document.createTextNode("Create PQ(s) on GC"));
 
                 var info_text = document.createElement("span");
+                info_text.appendChild(heading);
+
+                // Check if we need to add the function, or if we have an error before
+                if(error_text != ''){
+                    info_text.appendChild(document.createTextNode(error_text));
+                    td.appendChild(info_text);
+                    tr.appendChild(td);
+                    tfoot.appendChild(tr);
+                    $(this).append(tfoot); 
+                    return;
+                }
+
+
                 info_text.appendChild(document.createTextNode("This function will only work, if you don't set any other filter except country OR region!"));
                 info_text.appendChild(document.createElement("br"));
 
                 var button = document.createElement('button');
-                var t = document.createTextNode("Create PQ(s) on GC");  
+                var t = document.createTextNode("Create PQ(s)");  
                 button.appendChild(t);
 
                 var input = document.createElement('input');
@@ -722,7 +745,6 @@ var mainPGC = function() {
                                     };
 
                                 /* TODO:
-                                    - check of filter gesetzt sind
                                     - URL aufruf evenutell über einen Timeout aller 10 Querys (um GC nicht zu überlasten) (vielleicht 5-10 Sekunden Pause?)
                                     - Nachricht wenn alles fertig ist
                                 */
@@ -743,15 +765,12 @@ var mainPGC = function() {
                         }
                     });
 
-                    console.log(language);
-                    console.log(data);
                 }, false);
 
                 
                 td.appendChild(info_text);
                 td.appendChild(input);
                 td.appendChild(button);
-                td.colSpan = "5";
                 tr.appendChild(td);
                 tfoot.appendChild(tr);
                 $(this).append(tfoot); 
