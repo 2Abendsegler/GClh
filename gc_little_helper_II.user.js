@@ -697,6 +697,7 @@ var mainPGC = function() {
                                 
                                 var param = 
                                     {
+                                        PQSplit: 1,
                                         n: $("#pq_name_"+table_index).val()+"_"+(counter-1),
                                         t: type,
                                         s: name,
@@ -721,7 +722,7 @@ var mainPGC = function() {
                                 window.open("https://www.geocaching.com/pocket/gcquery.aspx?"+$.param( param ),'PQ_'+(counter-1),'PopUp','PQ_'+(counter-1),'scrollbars=1,menubar=0,resizable=1,width=850,height=500');
 
                                 // Only one for now...
-                                return;
+                                return false;
                             }
                         }
                     });
@@ -3095,6 +3096,7 @@ var mainGC = function() {
         } catch(e) {gclh_error("Improve list of PQs:",e);}
     }
 
+    // Try to find values from Project-GC PQSplit
     if (document.location.href.match(/\.com\/pocket\/gcquery\.aspx/)){
         try{
 
@@ -3107,6 +3109,25 @@ var mainGC = function() {
                     if (tmp[0] === parameterName) result = decodeURIComponent(tmp[1]);
                 }
                 return result;
+            }
+
+            if(findGetParameter('PQSplit')){
+                // Yes we come from PQSplitter
+                $('#ctl00_ContentBody_tbName').val(findGetParameter('n'));
+
+                var type = findGetParameter('t');
+                var cr_name = findGetParameter('n');
+                switch (type) {
+                    case "region":
+                        alert(cr_name);
+                        // $('#ctl00_ContentBody_lbStates')
+                        break;
+                    case "county":
+                        throw new Error('country not implemented yet: ' + cr_name);
+                        break;
+                   default:
+                        throw new Error('unknown Type: ' + type);
+                }
             }
 
             // setTimeout(function(){
