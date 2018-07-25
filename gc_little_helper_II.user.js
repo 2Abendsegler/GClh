@@ -744,11 +744,6 @@ var mainPGC = function() {
                                         
                                     };
 
-                                /* TODO:
-                                    - URL aufruf evenutell über einen Timeout aller 10 Querys (um GC nicht zu überlasten) (vielleicht 5-10 Sekunden Pause?)
-                                    - Nachricht wenn alles fertig ist
-                                */
-
                                 var new_url = "https://www.geocaching.com/pocket/gcquery.aspx?"+$.param( param );
 
                                 if(new_url.length > 2000){
@@ -3261,7 +3256,8 @@ var mainGC = function() {
                 $('#ctl00_ContentBody_DateTimeEnd_Day option[value=' + day + ']').attr('selected', true);
                 $('#ctl00_ContentBody_DateTimeEnd_Year option[value=' + year + ']').attr('selected', true);
 
-                // document.getElementById('ctl00_ContentBody_btnSubmit').click();
+                // All values are set, submit the form
+                document.getElementById('ctl00_ContentBody_btnSubmit').click();
                 
             }
 
