@@ -2,7 +2,7 @@
 // @name             GC little helper II
 // @namespace        http://www.amshove.net
 //--> $$000
-// @version          0.9.7
+// @version          0.9.9
 //<-- $$000
 // @include          http*://www.geocaching.com/*
 // @include          http*://maps.google.tld/*
@@ -220,6 +220,7 @@ var constInit = function(c) {
     layersInit(c);
     elevationServicesDataInit(c);
     country_idInit(c);
+    states_idInit(c);
 
     constInitDeref.resolve();
     return constInitDeref.promise();
@@ -2317,7 +2318,8 @@ var mainGC = function() {
                     json = JSON.parse(responseDetails.responseText);
                     var elevations = [];
                     for (var i=0; i<json.results.length; i++) {
-                        elevations.push( json.results[i].elevation );
+                        if (json.results[i].latitude != -90) elevations.push(json.results[i].elevation);
+                        else elevations.push(undefined);                                              
                     }
                     addElevationToWaypoints(elevations,context);
                 } catch(e) {gclh_error("addElevationToWaypoints_OpenElevation():",e);}
@@ -2823,6 +2825,7 @@ var mainGC = function() {
             function checkLogType(waitCount) {
                 if ((!document.location.href.match(/log\?d\=/) && $('.selectric')[0]) ||  // Kein Draft
                     (document.location.href.match(/log\?d\=/) && document.getElementById('LogText').value != "" && settings_log_signature_on_fieldnotes)) {  // Draft
+                    var initial_cursor_position = document.getElementById('LogText').selectionEnd;
                     document.getElementById('LogText').innerHTML = getValue("settings_log_signature", "");
                     replacePlaceholder(true);
                     if (document.location.href.match(/log\?d\=/)) {
@@ -2831,6 +2834,7 @@ var mainGC = function() {
                         var value = $('<textarea>').html(document.getElementById('LogText').innerHTML).val();
                         document.getElementById('LogText').value += value;
                     }
+                    document.getElementById('LogText').selectionEnd = initial_cursor_position;
                 } else {waitCount++; if (waitCount <= 100) setTimeout(function(){checkLogType(waitCount);}, 100);}
             }
         } catch(e) {gclh_error("Signature New Log Page(CACHE):",e);}
@@ -2994,6 +2998,30 @@ var mainGC = function() {
                         }
                     }
                 }
+                $('#pqRepeater tbody').find('img[src*="/images/icons/16/checkbox_"]').closest('a').each(function() {
+                    this.name = this.href;
+                    this.href = 'javascript:void(0);';
+                    this.children[0].title = '';
+                    this.addEventListener('click', function() {
+                        var img = '/images/icons/16/checkbox_off.png';
+                        var cb = this;
+                        if (cb.children[0].src.match('loader')) return;
+                        if (cb.children[0].src == global_red_tick) { cb.children[0].src = img; return; }
+                        cb.children[0].src = urlImages + 'ajax-loader.gif';
+                        var schedulePQ = $.get(cb.name);
+                        schedulePQ.done(function (result) {
+                            if ($(result).find('#ActivePQs .Warning')[0]) {
+                                cb.children[0].src = global_red_tick;
+                                cb.children[0].title = 'Sorry, 10 Pocket Queries per day reached';
+                            } else {
+                                var counter = $('#pqRepeater tbody tr.TableFooter')[0].children[cb.parentNode.cellIndex-2];
+                                (cb.name.match('&opt=0') ? counter.innerHTML-- : counter.innerHTML++);
+                                cb.children[0].src = (cb.name.match('&opt=0') ? img : img.replace('_off', '_on'));
+                                cb.name = (cb.name.match('&opt=0') ? cb.name.replace('&opt=0', '&opt=1') : cb.name.replace('&opt=1', '&opt=0'));
+                            }
+                        }, false);
+                    });
+                });
                 // Table My Finds:
                 css += "#ctl00_ContentBody_PQListControl1_tblMyFinds tbody tr th {border: unset;}";
                 if ($('#ctl00_ContentBody_PQListControl1_tblMyFinds tbody tr').length > 1 && $('#pqRepeater thead tr')[0].children.length > 12) {
@@ -3025,6 +3053,8 @@ var mainGC = function() {
             }
             // "Find cache along a route" als Button.
             if ($('#uxFindCachesAlongaRoute.btn.btn-secondary').length > 0) $('#uxFindCachesAlongaRoute')[0].className = "btn btn-primary";
+            // Number of Active Pocket Queries.
+            if ($('#ui-id-1')[0]) $('#ui-id-1').append("&nbsp;<span title='Number of Active Pocket Queries'>("+$('#pqRepeater tbody tr:not(.TableFooter)').length+")</span>");
             // Refresh button.
             var refreshButton = document.createElement("p");
             refreshButton.innerHTML = "<a href='/pocket/default.aspx' title='Refresh Page'>Refresh Page</a>";
@@ -3461,6 +3491,8 @@ var mainGC = function() {
                 // Footer:
                 $('#divContentMain div ul').first().remove();
             }
+            // Number of BMLs.
+            if ($('.span-10 h3')[0]) $('.span-10 h3')[0].innerHTML += "&nbsp;<span title='Number of Bookmark Lists of the maximum allowed 100'>("+$('table.Table tbody tr').length+"/100)</span>";
             appendCssStyle(css);
         } catch(e) {gclh_error("Improve list of bookmark lists:",e);}
     }
@@ -4811,7 +4843,7 @@ var mainGC = function() {
                             side[i].appendChild(span);
                             var last = side[i].children.length - 1;
                             var user = links[i].href.match(/https?:\/\/www\.geocaching\.com\/profile\/\?u=(.*)/);
-                            gclh_build_vipvupmail(side[i].children[last], user[1]);
+                            gclh_build_vipvupmail(side[i].children[last], decodeURIComponent(user[1]));
                         }
                     } else {waitCount++; if (waitCount <= 50) setTimeout(function(){checkLeagueAvailable(waitCount);}, 200);}
                 }
@@ -4914,21 +4946,26 @@ var mainGC = function() {
                 '        <p class="LogText">censored</p>' +
                 '        {{else}}' +
                 '        <p class="LogText">{{html LogText}}</p>' +
-                '        {{/if}}' +
+                '        {{/if}}';
+            if (settings_show_thumbnails) new_tmpl +=
                 '      </div>' +
                 '      {{if Images.length > 0}}' +
                 '      <div class="TableLogContent">' +
-                '        <table cellspacing="0" cellpadding="3" class="LogImagesTable">';
-            if (settings_show_thumbnails) new_tmpl +=
-                '          <tr><td>';
-            new_tmpl +=
-                '            {{tmpl(Images) "tmplCacheLogImages"}}';
-            if (settings_show_thumbnails) new_tmpl +=
-                '            </td></tr>';
-            new_tmpl +=
+                '        <table cellspacing="0" cellpadding="3" class="LogImagesTable">' +
+                '          <tr><td>' +
+                '            {{tmpl(Images) "tmplCacheLogImages"}}' +
+                '          </td></tr>' +
                 '        </table>' +
                 '      </div>' +
-                '      {{/if}}' +
+                '      {{/if}}';
+            else new_tmpl +=
+                '        {{if Images.length > 0}}' +
+                '        <ul class="LogImagesTable">' +
+                '          {{tmpl(Images) "tmplCacheLogImages"}}' +
+                '        </ul>' +
+                '        {{/if}}' +
+                '      </div>';
+            new_tmpl +=
                 '      <div class="AlignRight">' +
                 '        <small><a title="View Log" href="/seek/log.aspx?LUID=${LogGuid}" target="_blank">' +
                 '        {{if (userInfo.ID==AccountID)}}' +
@@ -5747,9 +5784,11 @@ var mainGC = function() {
 
             css +=
                 "a.gclh_thumb:hover {" +
+                "  white-space: unset;" +
                 "  position: relative;}" +
                 "a.gclh_thumb {" +
                 "  overflow: visible !important;" +
+                "  display: unset !important;" +
                 "  max-width: none !important;}" +
                 "a.gclh_thumb span {" +
                 "  white-space: unset !important;" +
@@ -6290,12 +6329,74 @@ var mainGC = function() {
     if (document.location.href.match(/\.com\/map\//) && settings_show_enhanced_map_popup) {
         try {
 
+
+            var template = '';
+                template += '<div class="map-item map-item-row-{{=$itemNumber!}}" style="display:{{=$ctx.hideItem($view)}};">';
+                template += '    <div class="code">{{=gc}}</div>';
+                template += '    <h4>';
+                template += '        <img src="/map/images/mapicons/{{=type.value}}.png">';
+                template += '        <a target="_blank" href="/seek/cache_details.aspx?wp={{=gc}}" data-event-category="data" data-event-label="View Geocache Details">{{= $ctx.formatCacheName(name, available, archived)!}}</a>';
+                template += '    </h4>';
+                template += '    <dl>';
+                template += '        <dt>Created by:</dt>';
+                template += '        <dd><a target="_blank" href="/profile/?guid={{=owner.value}}" data-event-category="data" data-event-label="View Owner Profile">{{=owner.text}}</a></dd>';
+                template += '        <dt>Difficulty:</dt>';
+                template += '        <dd><img alt="{{=difficulty.text}} out of 5" title="{{=difficulty.text}} out of 5" src="../images/stars/stars{{=difficulty.value}}.gif"></dd>';
+                template += '        <dt>Cache Size:</dt>';
+                template += '        <dd><img title="Size: {{=container.text}}" alt="#" src="../images/icons/container/{{=container.value}}"></dd>';
+                template += '    </dl>';
+                template += '    <dl>';
+                template += '        <dt>Date Hidden:</dt>';
+                template += '        <dd>{{=hidden}}</dd>';
+                template += '        <dt>Terrain:</dt>';
+                template += '        <dd><img alt="{{=terrain.text}} out of 5" title="{{=terrain.text}} out of 5" src="../images/stars/stars{{=terrain.value}}.gif"></dd>';
+                template += '        <dt>Favorite Points:</dt>';
+                template += '        <dd>';
+                template += '            <svg height="16" width="16">';
+                template += '               <image xlink:href="/images/icons/fave_fill_16.svg" src="/images/icons/fave_fill_16.png" width="16" height="16" alt="Favorite points" />';
+                template += '            </svg>';
+                template += '            <span class="favorite-points-count">{{=fp!}}</span>';
+                template += '        </dd>';
+                template += '    </dl>';
+                template += '    <div class="links Clear">';
+                template += '    {{#if $ctx.userIsLoggedIn() }}';
+                template += '        <a class="lnk btn-add-to-list" data-gcRefCode="{{=gc}}" href="/bookmarks/mark.aspx?guid={{=g}}&WptTypeID={{=type.value}}" target="_blank">';
+                template += '            <img src="/images/icons/16/bookmark_list.png"><span>Add to list</span>';
+                template += '        </a>';
+                template += '        {{#if $ctx.userCorrectSubscriberLevel(subrOnly) }}';
+                template += '                <a class="lnk send2gps" href="#" data-guid="{{=g}}" onclick="return send2gps(this);" data-event-category="data" data-event-label="Send to Garmin" data-event-action="Call to Action">';
+                template += '                    <img src="/images/icons/16/send_to_gps.png" ><span>Send to GPS</span>';
+                template += '                </a>';
+                template += '        {{else}}';
+                template += '                <span disabled="disabled"><img src="/images/icons/16/send_to_gps.png"> Send to GPS</span>';
+                template += '        {{/if}}';
+                template += '        <a class="lnk" href="/seek/log.aspx?guid={{=g}}" target="_blank" data-event-category="data" data-event-label="Log Geocache">';
+                template += '            <img src="/images/icons/16/write_log.png"><span>Log Visit</span>';
+                template += '        </a>';
+                template += '    {{else}}';
+                template += '        {{=$ctx.upsellText()!}}';
+                template += '    {{/if}}';
+                template += '    </div>';
+                template += '    <div class="links Clear">';
+                template += '        {{=$itemNumber!}} of {{=$ctx.totalRecords($view)}} nearby results &middot;';
+                template += '        {{#if $ctx.isFirst($view)}} &lt; Prev {{#else}} <a href="#" class="prev-item" data-next-id="{{=$itemNumber!}}">&lt; Prev</a> {{/if}} |';
+                template += '        {{#if $ctx.isLast($view)}} Next &gt; {{else}} <a href="#" class="next-item" data-next-id="{{=$ctx.nextID($view)}}">Next &gt;</a> {{/if}}';
+                template += '    </div>';
+                template += '    <div class="Clear popup_additional_info">';
+                template += '    </div>';
+                template += '</div>';
+
+                $("#cacheDetailsTemplate").html(template);
+
+
             // select the target node
             var target = document.querySelector('.leaflet-popup-pane');
 
-            var css = "div.popup_additional_info .loading_container{display: flex; min-height:68px; justify-content: center; align-items: center;}"
+            var css = "div.popup_additional_info {min-height: 70px;}"
+                    + "div.popup_additional_info .loading_container{display: flex; justify-content: center; align-items: center;}"
                     + "div.popup_additional_info .loading_container img{margin-right:5px;}"
                     + "div.popup_additional_info span.favi_points svg, div.popup_additional_info span.tackables svg{position: relative;top: 4px;}";
+            css += ".leaflet-popup-content-wrapper, .leaflet-popup-close-button {margin: 16px 3px 0px 13px;}"
             appendCssStyle(css);
 
             // create an observer instance
@@ -6312,7 +6413,7 @@ var mainGC = function() {
                         $(this).find('dl dt')[0].innerHTML = $(this).find('dl dt')[0].innerHTML.replace(/Created by:/,"by:").replace(/Erstellt von:/,"von:");
 
                         // Add Loading image
-                        $(this).append('<div id="popup_additional_info_' + gccode +'" class="links Clear popup_additional_info"><div class="loading_container"><img src="' + urlImages + 'ajax-loader.gif" />Loading additional Data...</div></div>');
+                        $(this).find('.popup_additional_info').html('<div id="popup_additional_info_' + gccode +'" class="links Clear popup_additional_info"><div class="loading_container"><img src="' + urlImages + 'ajax-loader.gif" />Loading additional Data...</div></div>');
 
                         $.get('https://www.geocaching.com/geocache/'+gccode, null, function(text){
 
@@ -6736,24 +6837,63 @@ var mainGC = function() {
     }
 
 // Improve own statistic map page with links to caches for every country.
-    if (settings_map_links_statistic && isOwnStatisticsPage()) {
+    if (settings_map_links_statistic && isOwnStatisticsPage() ) {
+        
         try {
-            var countries = $('#stats_tabs-maps .StatisticsWrapper:first-of-type #StatsFlagLists table.Table tr');
-            for (var i = 0; i < countries.length; i++) {
-                var name = countries[i].children[0].childNodes[1].textContent;
-                if (name) {
-                    var country = $.grep(country_id, function(e){return e.n == name;});
-                    if (country && country[0]) {
-                        var a = document.createElement("a");
-                        a.setAttribute("title", "Show caches you have found in " + country[0]["n"]);
-                        a.setAttribute("href", "/play/search?ot=4&c=" + country[0]["id"] + "&f=1&sort=FoundDate&asc=True#myListsLink");
-                        a.innerHTML = countries[i].children[0].innerHTML;
-                        countries[i].children[0].innerHTML = "";
-                        countries[i].children[0].appendChild(a);
+            var countriesList = $('#stats_tabs-maps .StatisticsWrapper');
+            for (var j = 0; j < countriesList.length; j++) {
+                var indecator = $(countriesList[j]).find('#StatsFlagLists p span');
+                var tableItems = $(countriesList[j]).find('#StatsFlagLists table.Table tr');
+                            
+                for (var i = 0; i < tableItems.length; i++) {
+                    var name = tableItems[i].children[0].childNodes[1].textContent;    
+                    if (name) {
+                        var parameter = undefined;
+                        var item = undefined;
+                                                
+                        var countries = $.grep(country_id, function(e){return e.n == name;});
+                        var states = $.grep(states_id, function(e){return e.n == name;});
+                        
+                        /* ambiguous matches of state (or country) name are not handled. Known cases:
+                            Distrito Federal - Mexiko: Distrito Federal (state) / Brazil: Distrito Federal (state)
+                            Limburg	- Belgium: Limburg (state) / Netherlands: Limburg (state)
+                        */                          
+                        if        (  (countries && countries[0]) && !(states && states[0]) ) {
+                            parameter = "c";
+                            item = countries;
+                        } else if ( !(countries && countries[0]) &&  (states && states[0]) ) {
+                            parameter = "r";
+                            item = states;
+                        /* case: country/state */
+                        } else if (  (countries && countries[0]) &&  (states && states[0]) ) {
+                            /* Known case: Georgia - United States/Georgia (state) and Georgia (country) */
+                            if ( indecator[0].getAttribute("id") == "ctl00_ContentBody_ProfilePanel1_USMapControl1_uxTotalCount") {
+                                parameter = "r";
+                                item = states;
+                            } else {    
+                                /* Main rule: country first
+                                 Known case: Luxembourg - Luxembourg (country) / Belgium: Luxembourg (state) */ 
+                                parameter = "c";
+                                item = countries;
+                            }
+                        } else {
+                            // do nothing
+                            gclh_log("Improve own statistic map page: country and state name not found");
+                            continue;
+                        }
+                        
+                        if (item && item[0]) {
+                            var a = document.createElement("a");
+                            a.setAttribute("title", "Show caches you have found in " + item[0]["n"]);
+                            a.setAttribute("href", "/play/search?ot=4&"+parameter+"=" + item[0]["id"] + "&f=1&sort=FoundDate&asc=True#myListsLink");
+                            a.innerHTML = tableItems[i].children[0].innerHTML;
+                            tableItems[i].children[0].innerHTML = "";
+                            tableItems[i].children[0].appendChild(a);
+                        }
                     }
                 }
             }
-        } catch(e) {gclh_error("Improve own statistic map page:",e);}
+        } catch(e) {gclh_error("Improve own statistic map page:",e);}        
     }
 
 // Post log from listing (inline).
@@ -7374,12 +7514,12 @@ var mainGC = function() {
                 $("#gclhSouvenirsSortButtons").append('<input id="actionSouvenirsSortAcquiredDateOldestTop" title="Sort oldest first" value="Oldest first" type="button" href="javascript:void(0);" style="opacity: 0.5; margin-right: 4px" disabled="true">');
                 $("#gclhSouvenirsSortButtons").append('<input id="actionSouvenirsSortAcquiredTitleAtoZ" title="Sort title A-Z" value="Title A-Z" type="button" href="javascript:void(0);" style="margin-right: 4px">');
                 $("#gclhSouvenirsSortButtons").append('<input id="actionSouvenirsSortAcquiredTitleZtoA" title="Sort title Z-A" value="Title Z-A" type="button" href="javascript:void(0);">');
-                
+
                 var Souvenirs = SouvenirsDashboard.children('div');
                 var htmlFragment = "&nbsp;<span title='Number of souvenirs'>("+Souvenirs.length+")</span>";
                 $("#divContentMain > h2").append(htmlFragment); // private probfile
                 $("#ctl00_ContentBody_ProfilePanel1_pnlSouvenirs > h3").append(htmlFragment); // new public profile
-                
+
                 var jqui_date_format = "";
                 var accessTokenPromise = $.get('/account/settings/preferences');
                 accessTokenPromise.done(function (response) {
@@ -8107,10 +8247,10 @@ var mainGC = function() {
         div.setAttribute("style", "margin-top: -50px;");
         var prop = ' style="border: none; visibility: hidden; width: 2px; height: 2px;" alt="">';
 //--> $$002
-        var code = '<img src="https://c.andyhoppe.com/1527362305"' + prop +
-                   '<img src="https://c.andyhoppe.com/1527362242"' + prop +
-                   '<img src="https://www.worldflagcounter.com/enn"' + prop +
-                   '<img src="https://s09.flagcounter.com/count2/Mf9D/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
+        var code = '<img src="https://c.andyhoppe.com/1485103563"' + prop +
+                   '<img src="https://c.andyhoppe.com/1485234890"' + prop +
+                   '<img src="https://www.worldflagcounter.com/ewI"' + prop +
+                   '<img src="https://s07.flagcounter.com/countxl/mHeY/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
 //<-- $$002
         div.innerHTML = code;
         side.appendChild(div);
@@ -11531,7 +11671,7 @@ function is_link(name, url) {
             if (url.match(/\.com\/play\/(search|geocache)/)) status = true;
             break;
         case "hide_cache":
-            if (url.match(/\.com\/play\/(hide|friendleague)/)) status = true;
+            if (url.match(/\.com\/play\/(hide|friendleague|souvenircampaign)/)) status = true;
             break;
         case "geotours":
             if (url.match(/\.com\/play\/geotours/)) status = true;

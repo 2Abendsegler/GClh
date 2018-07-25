@@ -1,4 +1,6 @@
-<a href="#v097" title="GClh II version 0.9.7 (28.02.2018)">v0.9.7</a> &nbsp;
+<a href="#v099" title="GClh II version 0.9.9 (??.??.2018)">v0.9.9</a> &nbsp;
+<a href="#v098" title="GClh II version 0.9.8 (25.06.2018)">v0.9.8</a> &nbsp;
+<a href="#v097" title="GClh II version 0.9.7 (28.05.2018)">v0.9.7</a> &nbsp;
 <a href="#v096" title="GClh II version 0.9.6 (14.05.2018)">v0.9.6</a> &nbsp;
 <a href="#v095" title="GClh II version 0.9.5 (03.05.2018)">v0.9.5</a> &nbsp;
 <a href="#v094" title="GClh II version 0.9.4 (02.05.2018)">v0.9.4</a> &nbsp;
@@ -35,6 +37,77 @@
 <a href="#v022" title="GClh II version 0.2.2 (09.01.2017)">v0.2.2</a> &nbsp; 
 <a href="#v021" title="GClh II version 0.2.1 (05.01.2017)">v0.2.1</a> &nbsp; 
 <a href="#v01" title="GClh II version 0.1 (05.01.2017)">v0.1</a> &nbsp; 
+
+
+---
+## v0.9.9:
+<ul>
+	<li>
+		<strong>Fix:</strong> Move Cursor to Starting Position after insertion of Signature in New Log/Draft Page: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/729">#729</a>]<br>
+		Thanks to <a href="https://www.geocaching.com/profile/?u=Ruko2010">Ruko2010</a> for the fix.<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> On Friendleague VIP/VUP List ist not generated correctly for Names with Special Chars in it: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/732">#732</a>]<br>
+		Thanks to <a href="https://www.geocaching.com/profile/?u=Ruko2010">Ruko2010</a> for the fix.<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> GClh and Geothumbs: Images in cache listing are damaged due to changes made by GS: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/733">#733</a>]<br>
+		If you are using Geothumbs, please install also the new version <a href="http://benchmarks.org.uk/greasemonkey/geothumbs/geothumbs_v7.9.user.js">Geothumbs 7.9</a>.<br>
+	</li>
+</ul>
+(30.06.2018)<br>
+released by <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a><br>
+<br>
+
+---
+## v0.9.8:
+<ul>
+	<li>
+		<strong>New:</strong> Mark more than one Pocket Query for generating without refreshing page for each: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/702">#702</a>]<br>
+		Only available with activated setting <a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_compact_layout_list_of_pqs">Show compact layout in list of pocket queries</a>.<br>
+		Page <a href="https://www.geocaching.com/pocket/default.aspx">List of Pocket Queries</a>.<br>
+		<img src="../images/v0.9.8_Screen02.gif" alt="v0.9.7_Screen02.gif"><br>
+		Thanks to <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a> for the implementation.<br>
+		<br>
+	</li>
+	<li>
+		<strong>Improvement:</strong> Show number of active Pocket Queries on page <a href="https://www.geocaching.com/pocket/default.aspx">Your Pocket Queries</a>: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/705">#705</a>]<br>
+		Thanks to <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a> for the change.<br>
+	</li>
+	<li>
+		<strong>Improvement:</strong> Show number of Bookmark Lists above on old page <a href="https://www.geocaching.com/my/lists.aspx">List of Bookmark Lists</a>: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/711">#711</a>]<br>
+		Thanks to <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a> for the change.<br>
+	</li>
+	<li>
+		<strong>Improvement:</strong> Translate <a href="https://github.com/2Abendsegler/GClh/blob/master/docu/development-tampermonkey.md">Development with Tampermonkey</a> to English: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/630">#630</a>]<br>
+	</li>
+	<li>
+		<strong>Improvement:</strong> Show links to found caches for every country/state on statistic maps page (improve of #363): [Issue <a href="https://github.com/2Abendsegler/GClh/issues/725">#725</a>]<br>
+		Thanks to <a href="https://www.geocaching.com/profile/?u=CachingFoX">CachingFoX</a> for the implementation.<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> Navigation menu not reachable on new page Hidden Creatures: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/713">#713</a>]<br>
+		Thanks to <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a> for the fix.<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> Push the map further down when the map popup is displayed: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/646">#646</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> Damaged name and position of log images due to changes made by GS: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/719">#719</a>]<br>
+		Thanks to <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a> for the fix.<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> Elevation of waypoints with hidden coordinates are shown as +0m: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/670">#670</a>]<br>
+		Thanks to <a href="https://www.geocaching.com/profile/?u=CachingFoX">CachingFoX</a> for the fix.<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> Updating names of countries: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/722">#722</a>]<br>
+		Thanks to <a href="https://www.geocaching.com/profile/?u=CachingFoX">CachingFoX</a> for the fix.<br>
+	</li>
+</ul>
+(25.06.2018)<br>
+released by <a href="https://www.geocaching.com/profile/?u=Ruko2010">Ruko2010</a><br>
+<br>
 
 ---
 ## v0.9.7:
