@@ -642,6 +642,11 @@ var mainPGC = function() {
                 var tfoot = document.createElement('tfoot');
                 var tr = document.createElement('tr');
                 var td = document.createElement('td');
+
+                var info_text = document.createElement("span");
+                info_text.appendChild(document.createTextNode("This function will only work, if you don't set any other filter except country OR region!"));
+                info_text.appendChild(document.createElement("br"));
+
                 var button = document.createElement('button');
                 var t = document.createTextNode("Create PQ(s) on GC");  
                 button.appendChild(t);
@@ -695,6 +700,9 @@ var mainPGC = function() {
                                     var end_day   = "";
                                     var end_year  = "";
                                 }
+
+                                var cache_count = 1000;
+                                if(table_index == 1) cache_count = 500;
                                 
                                 var param = 
                                     {
@@ -702,6 +710,7 @@ var mainPGC = function() {
                                         n: $("#pq_name_"+table_index).val()+"_"+(counter-1),
                                         t: type,
                                         s: name,
+                                        c: cache_count,
                                         sm: start_month, 
                                         sd: start_day, 
                                         sy: start_year,
@@ -713,17 +722,23 @@ var mainPGC = function() {
                                     };
 
                                 /* TODO:
-                                    - Check ob URL länger als 2000 Zeichen. Wenn ja => Alert, dass es nicht geht
                                     - check of filter gesetzt sind
                                     - URL aufruf evenutell über einen Timeout aller 10 Querys (um GC nicht zu überlasten) (vielleicht 5-10 Sekunden Pause?)
                                     - Nachricht wenn alles fertig ist
                                 */
 
-                                console.log('Open New Window: '+'PQ_'+(counter-1));
-                                window.open("https://www.geocaching.com/pocket/gcquery.aspx?"+$.param( param ),'PQ_'+(counter-1),'PopUp','PQ_'+(counter-1),'scrollbars=1,menubar=0,resizable=1,width=850,height=500');
+                                var new_url = "https://www.geocaching.com/pocket/gcquery.aspx?"+$.param( param );
+
+                                if(new_url.length > 2000){
+                                    alert("The URL is too long! Please use fewer countries/regions or you can't use this funciton. Some of the PQs could already be created!");
+                                    return false;
+                                }else{
+                                    console.log('Open New Window: '+'PQ_'+(counter-1));
+                                    window.open(new_url,'PQ_'+(counter-1),'PopUp','PQ_'+(counter-1),'scrollbars=1,menubar=0,resizable=1,width=850,height=500');
+                                }
 
                                 // Only one for now...
-                                return false;
+                                // return false;
                             }
                         }
                     });
@@ -732,6 +747,8 @@ var mainPGC = function() {
                     console.log(data);
                 }, false);
 
+                
+                td.appendChild(info_text);
                 td.appendChild(input);
                 td.appendChild(button);
                 td.colSpan = "5";
@@ -3143,21 +3160,84 @@ var mainGC = function() {
 
             if(findGetParameter('PQSplit')){
                 // Yes we come from PQSplitter
+                    
+                //Test if we already saved the PQ. If yes => close the window
+                if($( "#divContentMain p.Success" ).length){
+
+                    setTimeout(function(){
+                        window.close();
+                    },1000);
+                    return true;
+                }
+
+
                 $('#ctl00_ContentBody_tbName').val(findGetParameter('n'));
+                $('#ctl00_ContentBody_tbResults').val(findGetParameter('c'));
 
                 var type = findGetParameter('t');
-                var cr_name = findGetParameter('n');
+                var cr_name = findGetParameter('s');
                 switch (type) {
                     case "region":
-                        alert(cr_name);
-                        // $('#ctl00_ContentBody_lbStates')
+                        cr_name = cr_name.split(",");
+                        if(cr_name.length >= 1){
+                            for (var i = 0; i < cr_name.length; i++) {
+                                var region = cr_name[i].substr(cr_name[i].indexOf('|')+1);
+                                
+                                var state = $.grep(states_id, function(e){return e.n == region;});
+
+                                // TODO: Test ob es das objekt nummer 0 überhaupt gibt!
+
+                                $('#ctl00_ContentBody_rbStates').attr('checked', true);
+                                $('#ctl00_ContentBody_lbStates option[value=' + state[0].id + ']').attr('selected', true);
+                            }
+                        }else{
+                            alert('No Region Name found.');
+                            throw Error('No Region Name found.');
+                        }
                         break;
+
                     case "county":
-                        throw new Error('country not implemented yet: ' + cr_name);
+                        cr_name = cr_name.split(",");
+                        if(cr_name.length >= 1){
+                            for (var i = 0; i < cr_name.length; i++) {
+                                var country = $.grep(country_id, function(e){return e.n == cr_name[i];});
+
+                                // TODO: Test ob es das objekt nummer 0 überhaupt gibt!
+
+                                $('#ctl00_ContentBody_rbStates').attr('checked', true);
+                                $('#ctl00_ContentBody_lbStates option[value=' + country[0].id + ']').attr('selected', true);
+                            }
+                        }else{
+                            alert('No Country Name found.');
+                            throw Error('No Country Name found.');
+                        }
                         break;
                    default:
                         throw new Error('unknown Type: ' + type);
                 }
+
+                $('#ctl00_ContentBody_rbPlacedBetween').attr('checked', true);
+
+                $('#ctl00_ContentBody_DateTimeBegin_Month option[value=' + findGetParameter('sm') + ']').attr('selected', true);
+                $('#ctl00_ContentBody_DateTimeBegin_Day option[value=' + findGetParameter('sd') + ']').attr('selected', true);
+                $('#ctl00_ContentBody_DateTimeBegin_Year option[value=' + findGetParameter('sy') + ']').attr('selected', true);
+
+                if((findGetParameter('em') != '') && (findGetParameter('ed') != '') && (findGetParameter('ey') != '')){
+                   var month = findGetParameter('em');
+                   var day = findGetParameter('ed');
+                   var year = findGetParameter('ey');
+                }else{
+                    var month = 12;
+                    var day = 31;
+                    var year = (new Date()).getFullYear()+1;
+                }
+
+                $('#ctl00_ContentBody_DateTimeEnd_Month option[value=' + month + ']').attr('selected', true);
+                $('#ctl00_ContentBody_DateTimeEnd_Day option[value=' + day + ']').attr('selected', true);
+                $('#ctl00_ContentBody_DateTimeEnd_Year option[value=' + year + ']').attr('selected', true);
+
+                // document.getElementById('ctl00_ContentBody_btnSubmit').click();
+                
             }
 
             // setTimeout(function(){
