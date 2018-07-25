@@ -3185,7 +3185,10 @@ var mainGC = function() {
                                 
                                 var state = $.grep(states_id, function(e){return e.n == region;});
 
-                                // TODO: Test ob es das objekt nummer 0 überhaupt gibt!
+                                if(state.length == 0){
+                                    alert('No corresponding Region Name not found for Region: ' + region);
+                                    throw Error('No corresponding Region Name not found for Region: ' + region);
+                                }
 
                                 $('#ctl00_ContentBody_rbStates').attr('checked', true);
                                 $('#ctl00_ContentBody_lbStates option[value=' + state[0].id + ']').attr('selected', true);
@@ -3202,7 +3205,10 @@ var mainGC = function() {
                             for (var i = 0; i < cr_name.length; i++) {
                                 var country = $.grep(country_id, function(e){return e.n == cr_name[i];});
 
-                                // TODO: Test ob es das objekt nummer 0 überhaupt gibt!
+                                if(country.length == 0){
+                                    alert('No corresponding Country Name not found for Country: ' + cr_name[i]);
+                                    throw Error('No corresponding Country Name not found for Country: ' + cr_name[i]);
+                                }
 
                                 $('#ctl00_ContentBody_rbStates').attr('checked', true);
                                 $('#ctl00_ContentBody_lbStates option[value=' + country[0].id + ']').attr('selected', true);
