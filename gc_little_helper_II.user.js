@@ -751,7 +751,8 @@ var mainPGC = function() {
                                     return false;
                                 }else{
                                     console.log('Open New Window: '+'PQ_'+(counter-1));
-                                    window.open(new_url,'PQ_'+(counter-1),'PopUp','PQ_'+(counter-1),'scrollbars=1,menubar=0,resizable=1,width=850,height=500');
+                                    // window.open(new_url,'PQ_'+(counter-1),'PopUp','PQ_'+(counter-1),'scrollbars=1,menubar=0,resizable=1,width=200,height=300');
+                                    window.open(new_url,'PQ_'+(counter-1),'scrollbars=1,menubar=0,resizable=1,width=500,height=500,left='+((counter-1)*40));
                                 }
 
                                 // Only one for now...
