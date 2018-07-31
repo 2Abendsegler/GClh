@@ -636,7 +636,7 @@ var mainPGC = function() {
 
             if($('#multi_countryselect').val() != null){
                 name = $('#multi_countryselect').val();
-                type = "county";
+                type = "country";
             }else if($('#multi_countryregionselect').val() != null){
                 name = $('#multi_countryregionselect').val();
                 type = "region";
@@ -3193,9 +3193,13 @@ var mainGC = function() {
                 var cr_name = findGetParameter('s');
                 switch (type) {
                     case "region":
-                        cr_name = cr_name.split(",");
+                        // Modifiction for Countries with "," in the name. There is a "+" after the ","
+                        cr_name = cr_name.split(/,(?!\+)/);
+                        
                         if(cr_name.length >= 1){
                             for (var i = 0; i < cr_name.length; i++) {
+                                cr_name[i] = cr_name[i].replace(/\+/g, " ");
+
                                 var region = cr_name[i].substr(cr_name[i].indexOf('|')+1);
                                 
                                 var state = $.grep(states_id, function(e){return e.n == region;});
@@ -3214,10 +3218,16 @@ var mainGC = function() {
                         }
                         break;
 
-                    case "county":
-                        cr_name = cr_name.split(",");
+                    case "country":
+                        console.log(cr_name);
+                        // Modifiction for Countries with "," in the name. There is a "+" after the ","
+                        cr_name = cr_name.split(/,(?!\+)/);
+
+                        console.log(cr_name);
                         if(cr_name.length >= 1){
                             for (var i = 0; i < cr_name.length; i++) {
+                                cr_name[i] = cr_name[i].replace(/\+/g, " ");
+
                                 var country = $.grep(country_id, function(e){return e.n == cr_name[i];});
 
                                 if(country.length == 0){
@@ -3225,8 +3235,8 @@ var mainGC = function() {
                                     throw Error('No corresponding Country Name not found for Country: ' + cr_name[i]);
                                 }
 
-                                $('#ctl00_ContentBody_rbStates').attr('checked', true);
-                                $('#ctl00_ContentBody_lbStates option[value=' + country[0].id + ']').attr('selected', true);
+                                $('#ctl00_ContentBody_rbCountries').attr('checked', true);
+                                $('#ctl00_ContentBody_lbCountries option[value=' + country[0].id + ']').attr('selected', true);
                             }
                         }else{
                             alert('No Country Name found.');
@@ -3234,6 +3244,7 @@ var mainGC = function() {
                         }
                         break;
                    default:
+                        alert('Unknown Type. Please contact an admin of GClh.');
                         throw new Error('unknown Type: ' + type);
                 }
 
