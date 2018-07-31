@@ -587,6 +587,16 @@ var mainGMaps = function() {
 //////////////////////////////
 var mainPGC = function() {
     try {
+        // CSS Style hinzufügen.
+        function appendCssStyle(css, name) {
+            if (css == "") return;
+            if (name) var tag = $(name)[0];
+            else var tag = $('head')[0];
+            var style = document.createElement('style');
+            style.innerHTML = 'GClhII{} ' + css;
+            style.type = 'text/css';
+            tag.appendChild(style);
+        }
 
         function getMonthNumber(lang, input){
             if(lang = 'DE'){
@@ -624,6 +634,15 @@ var mainPGC = function() {
 
         if($('.row table').length > 0){
             
+
+            // Add some CSS
+            var css = "";
+                css += "tfoot{";
+                css += "    background-color: #d4edda;";
+                css += "}";
+
+            appendCssStyle(css);
+
             // Only one of the Multiselcts has a value. Either the Country or the Region
 
             //Check if other Filters are set!
@@ -651,7 +670,7 @@ var mainPGC = function() {
                 td.colSpan = "5";
 
                 var heading = document.createElement("h4");
-                heading.appendChild(document.createTextNode("Create PQ(s) on GC"));
+                heading.appendChild(document.createTextNode("Create PQ(s) on geocaching.com"));
 
                 var info_text = document.createElement("span");
                 info_text.appendChild(heading);
