@@ -1,4 +1,6 @@
-<a href="#v098" title="GClh II version 0.9.8 (??.??.2018)">v0.9.8</a> &nbsp;
+<a href="#v0910" title="GClh II version 0.9.10 (??.??.2018)">v0.9.10</a> &nbsp;
+<a href="#v099" title="GClh II version 0.9.9 (30.06.2018)">v0.9.9</a> &nbsp;
+<a href="#v098" title="GClh II version 0.9.8 (25.06.2018)">v0.9.8</a> &nbsp;
 <a href="#v097" title="GClh II version 0.9.7 (28.05.2018)">v0.9.7</a> &nbsp;
 <a href="#v096" title="GClh II version 0.9.6 (14.05.2018)">v0.9.6</a> &nbsp;
 <a href="#v095" title="GClh II version 0.9.5 (03.05.2018)">v0.9.5</a> &nbsp;
@@ -39,6 +41,44 @@
 
 
 ---
+## v0.9.10:
+<ul>
+	<li>
+		<strong>Fix:</strong> Updating names of countries [Issue <a href="https://github.com/2Abendsegler/GClh/issues/722">#722</a>]<br>
+		Thanks to <a href="https://www.geocaching.com/profile/?u=CachingFoX">CachingFoX</a> for the fix.<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> Friendleague: After click on "see more" reloaded friends have no VIP/VUP Icons [Issue <a href="https://github.com/2Abendsegler/GClh/issues/734">#734</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> MapPopup-Data was not loaded [Issue <a href="https://github.com/2Abendsegler/GClh/issues/747">#747</a>]<br>
+	</li>
+</ul>
+(??.??.2018)<br>
+released by <a href="https://www.geocaching.com/profile/?u=Ruko2010">Ruko2010</a><br>
+<br>
+
+---
+## v0.9.9:
+<ul>
+	<li>
+		<strong>Fix:</strong> Move Cursor to Starting Position after insertion of Signature in New Log/Draft Page: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/729">#729</a>]<br>
+		Thanks to <a href="https://www.geocaching.com/profile/?u=Ruko2010">Ruko2010</a> for the fix.<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> On Friendleague VIP/VUP List ist not generated correctly for Names with Special Chars in it: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/732">#732</a>]<br>
+		Thanks to <a href="https://www.geocaching.com/profile/?u=Ruko2010">Ruko2010</a> for the fix.<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> GClh and Geothumbs: Images in cache listing are damaged due to changes made by GS: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/733">#733</a>]<br>
+		If you are using Geothumbs, please install also the new version <a href="http://benchmarks.org.uk/greasemonkey/geothumbs/geothumbs_v7.9.user.js">Geothumbs 7.9</a>.<br>
+	</li>
+</ul>
+(30.06.2018)<br>
+released by <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a><br>
+<br>
+
+---
 ## v0.9.8:
 <ul>
 	<li>
@@ -52,12 +92,17 @@
 	<li>
 		<strong>Improvement:</strong> Show number of active Pocket Queries on page <a href="https://www.geocaching.com/pocket/default.aspx">Your Pocket Queries</a>: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/705">#705</a>]<br>
 		Thanks to <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a> for the change.<br>
-		<br>
 	</li>
 	<li>
 		<strong>Improvement:</strong> Show number of Bookmark Lists above on old page <a href="https://www.geocaching.com/my/lists.aspx">List of Bookmark Lists</a>: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/711">#711</a>]<br>
 		Thanks to <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a> for the change.<br>
-		<br>
+	</li>
+	<li>
+		<strong>Improvement:</strong> Translate <a href="https://github.com/2Abendsegler/GClh/blob/master/docu/development-tampermonkey.md">Development with Tampermonkey</a> to English: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/630">#630</a>]<br>
+	</li>
+	<li>
+		<strong>Improvement:</strong> Show links to found caches for every country/state on statistic maps page (improve of #363): [Issue <a href="https://github.com/2Abendsegler/GClh/issues/725">#725</a>]<br>
+		Thanks to <a href="https://www.geocaching.com/profile/?u=CachingFoX">CachingFoX</a> for the implementation.<br>
 	</li>
 	<li>
 		<strong>Fix:</strong> Navigation menu not reachable on new page Hidden Creatures: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/713">#713</a>]<br>
@@ -66,8 +111,20 @@
 	<li>
 		<strong>Fix:</strong> Push the map further down when the map popup is displayed: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/646">#646</a>]<br>
 	</li>
+	<li>
+		<strong>Fix:</strong> Damaged name and position of log images due to changes made by GS: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/719">#719</a>]<br>
+		Thanks to <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a> for the fix.<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> Elevation of waypoints with hidden coordinates are shown as +0m: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/670">#670</a>]<br>
+		Thanks to <a href="https://www.geocaching.com/profile/?u=CachingFoX">CachingFoX</a> for the fix.<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> Updating names of countries: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/722">#722</a>]<br>
+		Thanks to <a href="https://www.geocaching.com/profile/?u=CachingFoX">CachingFoX</a> for the fix.<br>
+	</li>
 </ul>
-(??.??.2018)<br>
+(25.06.2018)<br>
 released by <a href="https://www.geocaching.com/profile/?u=Ruko2010">Ruko2010</a><br>
 <br>
 

@@ -2,7 +2,7 @@
 // @name             GC little helper II
 // @namespace        http://www.amshove.net
 //--> $$000
-// @version          0.9.7
+// @version          0.9.9
 //<-- $$000
 // @include          http*://www.geocaching.com/*
 // @include          http*://maps.google.tld/*
@@ -217,6 +217,7 @@ var constInit = function(c) {
     layersInit(c);
     elevationServicesDataInit(c);
     country_idInit(c);
+    states_idInit(c);
 
     constInitDeref.resolve();
     return constInitDeref.promise();
@@ -584,11 +585,12 @@ var mainGMaps = function() {
 //////////////////////////////
 var mainOSM = function() {
     try {
+        
         // Add link to GC Map on Openstreetmap.
         function addGCButton(waitCount) {
             if (document.location.href.match(/^https?:\/\/www\.openstreetmap\.org\/(.*)#map=/) && $(".control-key").length) {
                 if (settings_add_link_gc_map_on_osm) {
-                    var code = '<div class="control-gc leaflet-control"><a class="control-button" href="#" data-original-title="geocaching.com" style="outline: medium none;"><span class="icon" title="Geocaching Map" style="margin: 5px; display: inline-block; vertical-align: middle; height: 32px; width: 32px; background-image: url(\''+global_gc_icon_sw+'\'); background-size: 25px 25px;  background-position: center; background-repeat: no-repeat;"></span></a></div>';
+                    var code = '<div class="control-gc leaflet-control"><a class="control-button" href="#" data-original-title="Go to GC Map"><img src="'+OSM_sidebar_gc_icon+'" width="40px" height="40px"></a></div>';
                     $(".control-share").after(code);
                     $(".control-gc").click(function() {
                         var matches = document.location.href.match(/=([0-9]+)\/(-?[0-9.]*)\/(-?[0-9.]*)/);
@@ -597,8 +599,9 @@ var mainOSM = function() {
                             if (settings_switch_from_osm_to_gc_map_in_same_tab) location = url;
                             else window.open(url);
                         } else alert('This map has no geographical coordinates in its link. Just zoom or drag the map, afterwards this will work fine.');
-                    });
+                    });                    
                 }
+                
             } else {waitCount++; if (waitCount <= 50) setTimeout(function(){addGCButton(waitCount);}, 1000);}
         }
         addGCButton(0);
@@ -2154,7 +2157,8 @@ var mainGC = function() {
                     json = JSON.parse(responseDetails.responseText);
                     var elevations = [];
                     for (var i=0; i<json.results.length; i++) {
-                        elevations.push( json.results[i].elevation );
+                        if (json.results[i].latitude != -90) elevations.push(json.results[i].elevation);
+                        else elevations.push(undefined);                                              
                     }
                     addElevationToWaypoints(elevations,context);
                 } catch(e) {gclh_error("addElevationToWaypoints_OpenElevation():",e);}
@@ -2660,6 +2664,7 @@ var mainGC = function() {
             function checkLogType(waitCount) {
                 if ((!document.location.href.match(/log\?d\=/) && $('.selectric')[0]) ||  // Kein Draft
                     (document.location.href.match(/log\?d\=/) && document.getElementById('LogText').value != "" && settings_log_signature_on_fieldnotes)) {  // Draft
+                    var initial_cursor_position = document.getElementById('LogText').selectionEnd;
                     document.getElementById('LogText').innerHTML = getValue("settings_log_signature", "");
                     replacePlaceholder(true);
                     if (document.location.href.match(/log\?d\=/)) {
@@ -2668,6 +2673,7 @@ var mainGC = function() {
                         var value = $('<textarea>').html(document.getElementById('LogText').innerHTML).val();
                         document.getElementById('LogText').value += value;
                     }
+                    document.getElementById('LogText').selectionEnd = initial_cursor_position;
                 } else {waitCount++; if (waitCount <= 100) setTimeout(function(){checkLogType(waitCount);}, 100);}
             }
         } catch(e) {gclh_error("Signature New Log Page(CACHE):",e);}
@@ -4611,6 +4617,49 @@ var mainGC = function() {
                         if (s) s.className = "summary";
                     }, 100);
                 }
+
+                function addVIPVUPLinksToReloadedFriends(table_length, maxwaittime){
+                    var leaderboard_table = document.getElementById('LeaderboardTable').getElementsByTagName("table")[0];
+                    var new_table_length = $(leaderboard_table).children().length;
+                    
+                    if(new_table_length > table_length){
+                        var side = $('table.leaderboard-table tbody.leaderboard-item .summary .profile-info');
+                        var links = $('table.leaderboard-table tbody.leaderboard-item .details .profile-link');
+                        if (!side || !links || side.length != links.length) return;
+                        for (var i = 0; i < links.length; i++) {
+                            if($(side[i]).find('img.gclh_vip').html() != null){
+                                // already has VIP/VUP Icons
+                                continue;
+                            }
+                            var span = document.createElement('span');
+                            span.setAttribute("style", "min-width: 80px; padding-right: 20px; display: table-cell; vertical-align: middle;");
+                            span.addEventListener("click", doNotChangeDetailsByClick, false);
+                            side[i].appendChild(span);
+                            var last = side[i].children.length - 1;
+                            var user = links[i].href.match(/https?:\/\/www\.geocaching\.com\/profile\/\?u=(.*)/);
+                            gclh_build_vipvupmail(side[i].children[last], decodeURIComponent(user[1]));
+                        }
+
+                        table_length = $(leaderboard_table).children().length;
+
+                        var LeaderboardFooter = document.getElementById('LeaderboardFooter');
+                        var button = LeaderboardFooter.getElementsByTagName("button")[0];
+
+                        if(button){
+                            button.addEventListener("click", function(){
+                                addVIPVUPLinksToReloadedFriends(table_length, 10000);
+                            }, false);
+                        }
+
+                    }else{
+                        if(maxwaittime > 0){
+                            setTimeout(function(){addVIPVUPLinksToReloadedFriends(table_length,maxwaittime-200);}, 200);
+                        }else{
+                            console.error("Could not add VIP/VUP Links to newly loaded friendleague members. Maximum wait time exeeded.");
+                        }
+                    }
+                }
+
                 function checkLeagueAvailable(waitCount) {
                     if ($('table.leaderboard-table tbody.leaderboard-item').length > 0) {
                         var side = $('table.leaderboard-table tbody.leaderboard-item .summary .profile-info');
@@ -4624,8 +4673,22 @@ var mainGC = function() {
                             side[i].appendChild(span);
                             var last = side[i].children.length - 1;
                             var user = links[i].href.match(/https?:\/\/www\.geocaching\.com\/profile\/\?u=(.*)/);
-                            gclh_build_vipvupmail(side[i].children[last], user[1]);
+                            gclh_build_vipvupmail(side[i].children[last], decodeURIComponent(user[1]));
                         }
+
+                        var leaderboard_table = document.getElementById('LeaderboardTable').getElementsByTagName("table")[0];
+
+                        var table_length = $(leaderboard_table).children().length;
+
+                        var LeaderboardFooter = document.getElementById('LeaderboardFooter');
+                        var button = LeaderboardFooter.getElementsByTagName("button")[0];
+
+                        if(button){
+                            button.addEventListener("click", function(){
+                                addVIPVUPLinksToReloadedFriends(table_length, 10000);
+                            }, false);
+                        }
+
                     } else {waitCount++; if (waitCount <= 50) setTimeout(function(){checkLeagueAvailable(waitCount);}, 200);}
                 }
                 checkLeagueAvailable(0);
@@ -4727,21 +4790,26 @@ var mainGC = function() {
                 '        <p class="LogText">censored</p>' +
                 '        {{else}}' +
                 '        <p class="LogText">{{html LogText}}</p>' +
-                '        {{/if}}' +
+                '        {{/if}}';
+            if (settings_show_thumbnails) new_tmpl +=
                 '      </div>' +
                 '      {{if Images.length > 0}}' +
                 '      <div class="TableLogContent">' +
-                '        <table cellspacing="0" cellpadding="3" class="LogImagesTable">';
-            if (settings_show_thumbnails) new_tmpl +=
-                '          <tr><td>';
-            new_tmpl +=
-                '            {{tmpl(Images) "tmplCacheLogImages"}}';
-            if (settings_show_thumbnails) new_tmpl +=
-                '            </td></tr>';
-            new_tmpl +=
+                '        <table cellspacing="0" cellpadding="3" class="LogImagesTable">' +
+                '          <tr><td>' +
+                '            {{tmpl(Images) "tmplCacheLogImages"}}' +
+                '          </td></tr>' +
                 '        </table>' +
                 '      </div>' +
-                '      {{/if}}' +
+                '      {{/if}}';
+            else new_tmpl +=
+                '        {{if Images.length > 0}}' +
+                '        <ul class="LogImagesTable">' +
+                '          {{tmpl(Images) "tmplCacheLogImages"}}' +
+                '        </ul>' +
+                '        {{/if}}' +
+                '      </div>';
+            new_tmpl +=
                 '      <div class="AlignRight">' +
                 '        <small><a title="View Log" href="/seek/log.aspx?LUID=${LogGuid}" target="_blank">' +
                 '        {{if (userInfo.ID==AccountID)}}' +
@@ -5560,9 +5628,11 @@ var mainGC = function() {
 
             css +=
                 "a.gclh_thumb:hover {" +
+                "  white-space: unset;" +
                 "  position: relative;}" +
                 "a.gclh_thumb {" +
                 "  overflow: visible !important;" +
+                "  display: unset !important;" +
                 "  max-width: none !important;}" +
                 "a.gclh_thumb span {" +
                 "  white-space: unset !important;" +
@@ -6159,7 +6229,7 @@ var mainGC = function() {
                             }
 
                             // get the last logs
-                            initalLogs_from_cachepage = text.substr(text.indexOf('initalLogs = {"status')+13, text.indexOf('} };') - text.indexOf('initalLogs = {"status') - 10);
+                            initalLogs_from_cachepage = text.substr(text.indexOf('initialLogs = {"status')+13, text.indexOf('} };') - text.indexOf('initialLogs = {"status') - 10);
                             var initalLogs = JSON.parse(initalLogs_from_cachepage);
                             var last_logs = document.createElement("div");
                             var last_logs_to_show = settings_show_latest_logs_symbols_count_map;
@@ -6569,24 +6639,63 @@ var mainGC = function() {
     }
 
 // Improve own statistic map page with links to caches for every country.
-    if (settings_map_links_statistic && isOwnStatisticsPage()) {
+    if (settings_map_links_statistic && isOwnStatisticsPage() ) {
+        
         try {
-            var countries = $('#stats_tabs-maps .StatisticsWrapper:first-of-type #StatsFlagLists table.Table tr');
-            for (var i = 0; i < countries.length; i++) {
-                var name = countries[i].children[0].childNodes[1].textContent;
-                if (name) {
-                    var country = $.grep(country_id, function(e){return e.n == name;});
-                    if (country && country[0]) {
-                        var a = document.createElement("a");
-                        a.setAttribute("title", "Show caches you have found in " + country[0]["n"]);
-                        a.setAttribute("href", "/play/search?ot=4&c=" + country[0]["id"] + "&f=1&sort=FoundDate&asc=True#myListsLink");
-                        a.innerHTML = countries[i].children[0].innerHTML;
-                        countries[i].children[0].innerHTML = "";
-                        countries[i].children[0].appendChild(a);
+            var countriesList = $('#stats_tabs-maps .StatisticsWrapper');
+            for (var j = 0; j < countriesList.length; j++) {
+                var indecator = $(countriesList[j]).find('#StatsFlagLists p span');
+                var tableItems = $(countriesList[j]).find('#StatsFlagLists table.Table tr');
+                            
+                for (var i = 0; i < tableItems.length; i++) {
+                    var name = tableItems[i].children[0].childNodes[1].textContent;    
+                    if (name) {
+                        var parameter = undefined;
+                        var item = undefined;
+                                                
+                        var countries = $.grep(country_id, function(e){return e.n == name;});
+                        var states = $.grep(states_id, function(e){return e.n == name;});
+                        
+                        /* ambiguous matches of state (or country) name are not handled. Known cases:
+                            Distrito Federal - Mexiko: Distrito Federal (state) / Brazil: Distrito Federal (state)
+                            Limburg	- Belgium: Limburg (state) / Netherlands: Limburg (state)
+                        */                          
+                        if        (  (countries && countries[0]) && !(states && states[0]) ) {
+                            parameter = "c";
+                            item = countries;
+                        } else if ( !(countries && countries[0]) &&  (states && states[0]) ) {
+                            parameter = "r";
+                            item = states;
+                        /* case: country/state */
+                        } else if (  (countries && countries[0]) &&  (states && states[0]) ) {
+                            /* Known case: Georgia - United States/Georgia (state) and Georgia (country) */
+                            if ( indecator[0].getAttribute("id") == "ctl00_ContentBody_ProfilePanel1_USMapControl1_uxTotalCount") {
+                                parameter = "r";
+                                item = states;
+                            } else {    
+                                /* Main rule: country first
+                                 Known case: Luxembourg - Luxembourg (country) / Belgium: Luxembourg (state) */ 
+                                parameter = "c";
+                                item = countries;
+                            }
+                        } else {
+                            // do nothing
+                            gclh_log("Improve own statistic map page: country and state name not found");
+                            continue;
+                        }
+                        
+                        if (item && item[0]) {
+                            var a = document.createElement("a");
+                            a.setAttribute("title", "Show caches you have found in " + item[0]["n"]);
+                            a.setAttribute("href", "/play/search?ot=4&"+parameter+"=" + item[0]["id"] + "&f=1&sort=FoundDate&asc=True#myListsLink");
+                            a.innerHTML = tableItems[i].children[0].innerHTML;
+                            tableItems[i].children[0].innerHTML = "";
+                            tableItems[i].children[0].appendChild(a);
+                        }
                     }
                 }
             }
-        } catch(e) {gclh_error("Improve own statistic map page:",e);}
+        } catch(e) {gclh_error("Improve own statistic map page:",e);}        
     }
 
 // Post log from listing (inline).
@@ -7940,10 +8049,10 @@ var mainGC = function() {
         div.setAttribute("style", "margin-top: -50px;");
         var prop = ' style="border: none; visibility: hidden; width: 2px; height: 2px;" alt="">';
 //--> $$002
-        var code = '<img src="https://c.andyhoppe.com/1527362305"' + prop +
-                   '<img src="https://c.andyhoppe.com/1527362242"' + prop +
-                   '<img src="https://www.worldflagcounter.com/enn"' + prop +
-                   '<img src="https://s09.flagcounter.com/count2/Mf9D/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
+        var code = '<img src="https://c.andyhoppe.com/1485103563"' + prop +
+                   '<img src="https://c.andyhoppe.com/1485234890"' + prop +
+                   '<img src="https://www.worldflagcounter.com/ewI"' + prop +
+                   '<img src="https://s07.flagcounter.com/countxl/mHeY/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
 //<-- $$002
         div.innerHTML = code;
         side.appendChild(div);
