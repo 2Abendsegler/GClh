@@ -6271,7 +6271,7 @@ var mainGC = function() {
                             }
 
                             // get the last logs
-                            initalLogs_from_cachepage = text.substr(text.indexOf('initalLogs = {"status')+13, text.indexOf('} };') - text.indexOf('initalLogs = {"status') - 10);
+                            initalLogs_from_cachepage = text.substr(text.indexOf('initialLogs = {"status')+13, text.indexOf('} };') - text.indexOf('initialLogs = {"status') - 10);
                             var initalLogs = JSON.parse(initalLogs_from_cachepage);
                             var last_logs = document.createElement("div");
                             var last_logs_to_show = settings_show_latest_logs_symbols_count_map;
