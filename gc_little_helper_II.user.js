@@ -1813,8 +1813,8 @@ var mainGC = function() {
             var note = ($('.Note.PersonalCacheNote')[0] || $('.NotesWidget')[0]);
             if (settings_hide_cache_notes && note) note.remove();
             if (settings_hide_empty_cache_notes && !settings_hide_cache_notes && note) {
-                var desc = decode_innerHTML(note.getElementsByTagName("strong")[0]).replace(":", "");
-                var noteText = $('#cache_note')[0].innerHTML;
+                var desc = decode_innerHTML(note.getElementsByTagName("label")[0]).replace(":", "");
+                var noteText = $('#viewCacheNote')[0].innerHTML;
                 var link = document.createElement("font");
                 link.setAttribute("style", "font-size: 12px;");
                 link.innerHTML = "<a id='gclh_hide_note' href='javascript:void(0);' onClick='gclhHideNote();'>Hide "+desc+"</a>";
