@@ -53,6 +53,10 @@
 	<li>
 		<strong>Fix:</strong> MapPopup-Data was not loaded [Issue <a href="https://github.com/2Abendsegler/GClh/issues/747">#747</a>]<br>
 	</li>
+	<li>
+		<strong>Fix:</strong> Hide empty Personal note in a cache listing fails [Issue <a href="https://github.com/2Abendsegler/GClh/issues/746">#746</a>]<br>
+		Thanks to <a href="https://www.geocaching.com/profile/?u=CachingFoX">CachingFoX</a> for the fix.<br>
+	</li>
 </ul>
 (??.??.2018)<br>
 released by <a href="https://www.geocaching.com/profile/?u=Ruko2010">Ruko2010</a><br>
