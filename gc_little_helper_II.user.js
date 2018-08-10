@@ -4948,12 +4948,15 @@ jQuery.get('https://cdnjs.cloudflare.com/ajax/libs/jquery-endless-scroll/1.8.0/j
 
             // Dynamic load with full control.
             function gclh_dynamic_load(logs, num) {
-                var isBusy = false;
-                var gclh_currentPageIdx = 1, gclh_totalPages = 1;
-                var logInitialLoaded = false;
-                var browser = (typeof(chrome) !== "undefined") ? "chrome" : "firefox";
-                var isTM = (typeof GM_info != "undefined" && typeof GM_info.scriptHandler != "undefined" && GM_info.scriptHandler == "Tampermonkey") ? true : false;
-                unsafeWindow.$(window).endlessScroll({ 
+                
+                // HotFIX issue 745
+
+                // var isBusy = false;
+                // var gclh_currentPageIdx = 1, gclh_totalPages = 1;
+                // var logInitialLoaded = false;
+                // var browser = (typeof(chrome) !== "undefined") ? "chrome" : "firefox";
+                // var isTM = (typeof GM_info != "undefined" && typeof GM_info.scriptHandler != "undefined" && GM_info.scriptHandler == "Tampermonkey") ? true : false;
+                // unsafeWindow.$(window).endlessScroll({ 
                     // fireOnce: true, 
                     // fireDelay: 500, 
                     // bottomPixels: (($(document).height() - $("#cache_logs_container").offset().top) + 50), 
@@ -4989,7 +4992,7 @@ jQuery.get('https://cdnjs.cloudflare.com/ajax/libs/jquery-endless-scroll/1.8.0/j
                     //         isBusy = false; 
                     //     } 
                     // } 
-                }); 
+                // }); 
             }
 
             // Load all logs.
@@ -5030,6 +5033,15 @@ jQuery.get('https://cdnjs.cloudflare.com/ajax/libs/jquery-endless-scroll/1.8.0/j
                 if (settings_show_all_logs_but) addButtonOverLogs(gclh_load_all_logs, "gclh_load_all_logs", false, "Show all logs", "");
                 if (settings_show_bigger_avatars_but && !settings_hide_avatar && !isMemberInPmoCache() && settings_show_thumbnails) showBiggerAvatarsLink();
                 if (settings_show_log_counter_but) showLogCounterLink();
+
+                // HotFIX issue 745
+                // Add Button to end of Log Table to Show all Logs
+                if (!$('#cache_logs_table2')[0]) return;
+                var span = document.createElement("span");
+                span.id = "gclh_load_all_logs_2";
+                span.innerHTML = '<input type="button" style="width: 100%; background-color: lightgrey; font-size: 25px;" href="javascript:void(0);" title="" value="Hotfix: Click here to show all logs">';
+                span.addEventListener("click", gclh_load_all_logs, false);
+                $('#cache_logs_table2')[0].parentNode.append(span);
             }
 
             // Filter logs.
