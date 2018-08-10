@@ -2,7 +2,7 @@
 // @name             GC little helper II
 // @namespace        http://www.amshove.net
 //--> $$000
-// @version          0.9.9
+// @version          0.9.10
 //<-- $$000
 // @include          http*://www.geocaching.com/*
 // @include          http*://maps.google.tld/*
@@ -585,11 +585,12 @@ var mainGMaps = function() {
 //////////////////////////////
 var mainOSM = function() {
     try {
+        
         // Add link to GC Map on Openstreetmap.
         function addGCButton(waitCount) {
             if (document.location.href.match(/^https?:\/\/www\.openstreetmap\.org\/(.*)#map=/) && $(".control-key").length) {
                 if (settings_add_link_gc_map_on_osm) {
-                    var code = '<div class="control-gc leaflet-control"><a class="control-button" href="#" data-original-title="geocaching.com" style="outline: medium none;"><span class="icon" title="Geocaching Map" style="margin: 5px; display: inline-block; vertical-align: middle; height: 32px; width: 32px; background-image: url(\''+global_gc_icon_sw+'\'); background-size: 25px 25px;  background-position: center; background-repeat: no-repeat;"></span></a></div>';
+                    var code = '<div class="control-gc leaflet-control"><a class="control-button" href="#" data-original-title="Go to GC Map"><img src="'+OSM_sidebar_gc_icon+'" width="40px" height="40px"></a></div>';
                     $(".control-share").after(code);
                     $(".control-gc").click(function() {
                         var matches = document.location.href.match(/=([0-9]+)\/(-?[0-9.]*)\/(-?[0-9.]*)/);
@@ -598,8 +599,9 @@ var mainOSM = function() {
                             if (settings_switch_from_osm_to_gc_map_in_same_tab) location = url;
                             else window.open(url);
                         } else alert('This map has no geographical coordinates in its link. Just zoom or drag the map, afterwards this will work fine.');
-                    });
+                    });                    
                 }
+                
             } else {waitCount++; if (waitCount <= 50) setTimeout(function(){addGCButton(waitCount);}, 1000);}
         }
         addGCButton(0);
@@ -1811,8 +1813,8 @@ var mainGC = function() {
             var note = ($('.Note.PersonalCacheNote')[0] || $('.NotesWidget')[0]);
             if (settings_hide_cache_notes && note) note.remove();
             if (settings_hide_empty_cache_notes && !settings_hide_cache_notes && note) {
-                var desc = decode_innerHTML(note.getElementsByTagName("strong")[0]).replace(":", "");
-                var noteText = $('#cache_note')[0].innerHTML;
+                var desc = decode_innerHTML(note.getElementsByTagName("label")[0]).replace(":", "");
+                var noteText = $('#viewCacheNote')[0].innerHTML;
                 var link = document.createElement("font");
                 link.setAttribute("style", "font-size: 12px;");
                 link.innerHTML = "<a id='gclh_hide_note' href='javascript:void(0);' onClick='gclhHideNote();'>Hide "+desc+"</a>";
@@ -4615,6 +4617,49 @@ var mainGC = function() {
                         if (s) s.className = "summary";
                     }, 100);
                 }
+
+                function addVIPVUPLinksToReloadedFriends(table_length, maxwaittime){
+                    var leaderboard_table = document.getElementById('LeaderboardTable').getElementsByTagName("table")[0];
+                    var new_table_length = $(leaderboard_table).children().length;
+                    
+                    if(new_table_length > table_length){
+                        var side = $('table.leaderboard-table tbody.leaderboard-item .summary .profile-info');
+                        var links = $('table.leaderboard-table tbody.leaderboard-item .details .profile-link');
+                        if (!side || !links || side.length != links.length) return;
+                        for (var i = 0; i < links.length; i++) {
+                            if($(side[i]).find('img.gclh_vip').html() != null){
+                                // already has VIP/VUP Icons
+                                continue;
+                            }
+                            var span = document.createElement('span');
+                            span.setAttribute("style", "min-width: 80px; padding-right: 20px; display: table-cell; vertical-align: middle;");
+                            span.addEventListener("click", doNotChangeDetailsByClick, false);
+                            side[i].appendChild(span);
+                            var last = side[i].children.length - 1;
+                            var user = links[i].href.match(/https?:\/\/www\.geocaching\.com\/profile\/\?u=(.*)/);
+                            gclh_build_vipvupmail(side[i].children[last], decodeURIComponent(user[1]));
+                        }
+
+                        table_length = $(leaderboard_table).children().length;
+
+                        var LeaderboardFooter = document.getElementById('LeaderboardFooter');
+                        var button = LeaderboardFooter.getElementsByTagName("button")[0];
+
+                        if(button){
+                            button.addEventListener("click", function(){
+                                addVIPVUPLinksToReloadedFriends(table_length, 10000);
+                            }, false);
+                        }
+
+                    }else{
+                        if(maxwaittime > 0){
+                            setTimeout(function(){addVIPVUPLinksToReloadedFriends(table_length,maxwaittime-200);}, 200);
+                        }else{
+                            console.error("Could not add VIP/VUP Links to newly loaded friendleague members. Maximum wait time exeeded.");
+                        }
+                    }
+                }
+
                 function checkLeagueAvailable(waitCount) {
                     if ($('table.leaderboard-table tbody.leaderboard-item').length > 0) {
                         var side = $('table.leaderboard-table tbody.leaderboard-item .summary .profile-info');
@@ -4630,6 +4675,20 @@ var mainGC = function() {
                             var user = links[i].href.match(/https?:\/\/www\.geocaching\.com\/profile\/\?u=(.*)/);
                             gclh_build_vipvupmail(side[i].children[last], decodeURIComponent(user[1]));
                         }
+
+                        var leaderboard_table = document.getElementById('LeaderboardTable').getElementsByTagName("table")[0];
+
+                        var table_length = $(leaderboard_table).children().length;
+
+                        var LeaderboardFooter = document.getElementById('LeaderboardFooter');
+                        var button = LeaderboardFooter.getElementsByTagName("button")[0];
+
+                        if(button){
+                            button.addEventListener("click", function(){
+                                addVIPVUPLinksToReloadedFriends(table_length, 10000);
+                            }, false);
+                        }
+
                     } else {waitCount++; if (waitCount <= 50) setTimeout(function(){checkLeagueAvailable(waitCount);}, 200);}
                 }
                 checkLeagueAvailable(0);
@@ -4883,48 +4942,51 @@ var mainGC = function() {
 
             // Dynamic load with full control.
             function gclh_dynamic_load(logs, num) {
-                var isBusy = false;
-                var gclh_currentPageIdx = 1, gclh_totalPages = 1;
-                var logInitialLoaded = false;
-                var browser = (typeof(chrome) !== "undefined") ? "chrome" : "firefox";
-                var isTM = (typeof GM_info != "undefined" && typeof GM_info.scriptHandler != "undefined" && GM_info.scriptHandler == "Tampermonkey") ? true : false;
-                unsafeWindow.$(window).endlessScroll({
-                    fireOnce: true,
-                    fireDelay: 500,
-                    bottomPixels: (($(document).height() - $("#cache_logs_container").offset().top) + 50),
-                    ceaseFire: function() {
-                        // Stop scrolling if last page reached.
-                        return (gclh_totalPages < gclh_currentPageIdx);
-                    },
-                    callback: function() {
-                        if (!isBusy && !document.getElementById("gclh_all_logs_marker")) {
-                            isBusy = true;
-                            $("#pnlLazyLoad").show();
-                            if (isTM === false) {
-                                var logsToAdd = logs.slice(num, num + 10);
-                                addNewLogLines(encodeURIComponent(JSON.stringify(logsToAdd)));
-                                num += logsToAdd.length;
-                                window.postMessage("gclh_add_vip_icon", "https://www.geocaching.com");
-                                window.postMessage("setLinesColorInCacheListing", "https://www.geocaching.com");
-                            } else {
-                                for (var i = 0; i < 10; i++) {
-                                    if (logs[num]) {
-                                        var newBody = unsafeWindow.$(document.createElement("TBODY"));
-                                        unsafeWindow.$("#tmpl_CacheLogRow_gclh").tmpl(logs[num]).appendTo(newBody);
-                                        injectPageScript("$('a.tb_images').fancybox({'type': 'image', 'titlePosition': 'inside'});");
-                                        unsafeWindow.$(document.getElementById("cache_logs_table2") || document.getElementById("cache_logs_table")).append(newBody.children());
-                                    }
-                                    num++;  // Num kommt vom vorherigen laden "aller" logs.
-                                }
-                                gclh_add_vip_icon();
-                                setLinesColorInCacheListing();
-                            }
-                            if (!settings_hide_top_button) $("#topScroll").fadeIn();
-                            $("#pnlLazyLoad").hide();
-                            isBusy = false;
-                        }
-                    }
-                });
+                
+                // HotFIX issue 745
+
+                // var isBusy = false;
+                // var gclh_currentPageIdx = 1, gclh_totalPages = 1;
+                // var logInitialLoaded = false;
+                // var browser = (typeof(chrome) !== "undefined") ? "chrome" : "firefox";
+                // var isTM = (typeof GM_info != "undefined" && typeof GM_info.scriptHandler != "undefined" && GM_info.scriptHandler == "Tampermonkey") ? true : false;
+                // unsafeWindow.$(window).endlessScroll({
+                //     fireOnce: true,
+                //     fireDelay: 500,
+                //     bottomPixels: (($(document).height() - $("#cache_logs_container").offset().top) + 50),
+                //     ceaseFire: function() {
+                //         // Stop scrolling if last page reached.
+                //         return (gclh_totalPages < gclh_currentPageIdx);
+                //     },
+                //     callback: function() {
+                //         if (!isBusy && !document.getElementById("gclh_all_logs_marker")) {
+                //             isBusy = true;
+                //             $("#pnlLazyLoad").show();
+                //             if (isTM === false) {
+                //                 var logsToAdd = logs.slice(num, num + 10);
+                //                 addNewLogLines(encodeURIComponent(JSON.stringify(logsToAdd)));
+                //                 num += logsToAdd.length;
+                //                 window.postMessage("gclh_add_vip_icon", "https://www.geocaching.com");
+                //                 window.postMessage("setLinesColorInCacheListing", "https://www.geocaching.com");
+                //             } else {
+                //                 for (var i = 0; i < 10; i++) {
+                //                     if (logs[num]) {
+                //                         var newBody = unsafeWindow.$(document.createElement("TBODY"));
+                //                         unsafeWindow.$("#tmpl_CacheLogRow_gclh").tmpl(logs[num]).appendTo(newBody);
+                //                         injectPageScript("$('a.tb_images').fancybox({'type': 'image', 'titlePosition': 'inside'});");
+                //                         unsafeWindow.$(document.getElementById("cache_logs_table2") || document.getElementById("cache_logs_table")).append(newBody.children());
+                //                     }
+                //                     num++;  // Num kommt vom vorherigen laden "aller" logs.
+                //                 }
+                //                 gclh_add_vip_icon();
+                //                 setLinesColorInCacheListing();
+                //             }
+                //             if (!settings_hide_top_button) $("#topScroll").fadeIn();
+                //             $("#pnlLazyLoad").hide();
+                //             isBusy = false;
+                //         }
+                //     }
+                // });
             }
 
             // Load all logs.
@@ -4965,6 +5027,15 @@ var mainGC = function() {
                 if (settings_show_all_logs_but) addButtonOverLogs(gclh_load_all_logs, "gclh_load_all_logs", false, "Show all logs", "");
                 if (settings_show_bigger_avatars_but && !settings_hide_avatar && !isMemberInPmoCache() && settings_show_thumbnails) showBiggerAvatarsLink();
                 if (settings_show_log_counter_but) showLogCounterLink();
+
+                // HotFIX issue 745
+                // Add Button to end of Log Table to Show all Logs
+                if (!$('#cache_logs_table2')[0]) return;
+                var span = document.createElement("span");
+                span.id = "gclh_load_all_logs_2";
+                span.innerHTML = '<input type="button" style="width: 100%; background-color: lightgrey; font-size: 25px;" href="javascript:void(0);" title="" value="Hotfix: Click here to show all logs">';
+                span.addEventListener("click", gclh_load_all_logs, false);
+                $('#cache_logs_table2')[0].parentNode.append(span);
             }
 
             // Filter logs.
@@ -6115,63 +6186,20 @@ var mainGC = function() {
         try {
 
 
-            var template = '';
-                template += '<div class="map-item map-item-row-{{=$itemNumber!}}" style="display:{{=$ctx.hideItem($view)}};">';
-                template += '    <div class="code">{{=gc}}</div>';
-                template += '    <h4>';
-                template += '        <img src="/map/images/mapicons/{{=type.value}}.png">';
-                template += '        <a target="_blank" href="/seek/cache_details.aspx?wp={{=gc}}" data-event-category="data" data-event-label="View Geocache Details">{{= $ctx.formatCacheName(name, available, archived)!}}</a>';
-                template += '    </h4>';
-                template += '    <dl>';
-                template += '        <dt>Created by:</dt>';
-                template += '        <dd><a target="_blank" href="/profile/?guid={{=owner.value}}" data-event-category="data" data-event-label="View Owner Profile">{{=owner.text}}</a></dd>';
-                template += '        <dt>Difficulty:</dt>';
-                template += '        <dd><img alt="{{=difficulty.text}} out of 5" title="{{=difficulty.text}} out of 5" src="../images/stars/stars{{=difficulty.value}}.gif"></dd>';
-                template += '        <dt>Cache Size:</dt>';
-                template += '        <dd><img title="Size: {{=container.text}}" alt="#" src="../images/icons/container/{{=container.value}}"></dd>';
-                template += '    </dl>';
-                template += '    <dl>';
-                template += '        <dt>Date Hidden:</dt>';
-                template += '        <dd>{{=hidden}}</dd>';
-                template += '        <dt>Terrain:</dt>';
-                template += '        <dd><img alt="{{=terrain.text}} out of 5" title="{{=terrain.text}} out of 5" src="../images/stars/stars{{=terrain.value}}.gif"></dd>';
-                template += '        <dt>Favorite Points:</dt>';
-                template += '        <dd>';
-                template += '            <svg height="16" width="16">';
-                template += '               <image xlink:href="/images/icons/fave_fill_16.svg" src="/images/icons/fave_fill_16.png" width="16" height="16" alt="Favorite points" />';
-                template += '            </svg>';
-                template += '            <span class="favorite-points-count">{{=fp!}}</span>';
-                template += '        </dd>';
-                template += '    </dl>';
-                template += '    <div class="links Clear">';
-                template += '    {{#if $ctx.userIsLoggedIn() }}';
-                template += '        <a class="lnk btn-add-to-list" data-gcRefCode="{{=gc}}" href="/bookmarks/mark.aspx?guid={{=g}}&WptTypeID={{=type.value}}" target="_blank">';
-                template += '            <img src="/images/icons/16/bookmark_list.png"><span>Add to list</span>';
-                template += '        </a>';
-                template += '        {{#if $ctx.userCorrectSubscriberLevel(subrOnly) }}';
-                template += '                <a class="lnk send2gps" href="#" data-guid="{{=g}}" onclick="return send2gps(this);" data-event-category="data" data-event-label="Send to Garmin" data-event-action="Call to Action">';
-                template += '                    <img src="/images/icons/16/send_to_gps.png" ><span>Send to GPS</span>';
-                template += '                </a>';
-                template += '        {{else}}';
-                template += '                <span disabled="disabled"><img src="/images/icons/16/send_to_gps.png"> Send to GPS</span>';
-                template += '        {{/if}}';
-                template += '        <a class="lnk" href="/seek/log.aspx?guid={{=g}}" target="_blank" data-event-category="data" data-event-label="Log Geocache">';
-                template += '            <img src="/images/icons/16/write_log.png"><span>Log Visit</span>';
-                template += '        </a>';
-                template += '    {{else}}';
-                template += '        {{=$ctx.upsellText()!}}';
-                template += '    {{/if}}';
-                template += '    </div>';
-                template += '    <div class="links Clear">';
-                template += '        {{=$itemNumber!}} of {{=$ctx.totalRecords($view)}} nearby results &middot;';
-                template += '        {{#if $ctx.isFirst($view)}} &lt; Prev {{#else}} <a href="#" class="prev-item" data-next-id="{{=$itemNumber!}}">&lt; Prev</a> {{/if}} |';
-                template += '        {{#if $ctx.isLast($view)}} Next &gt; {{else}} <a href="#" class="next-item" data-next-id="{{=$ctx.nextID($view)}}">Next &gt;</a> {{/if}}';
-                template += '    </div>';
-                template += '    <div class="Clear popup_additional_info">';
-                template += '    </div>';
-                template += '</div>';
+            var template = $("#cacheDetailsTemplate").html().trim();
 
-                $("#cacheDetailsTemplate").html(template);
+            // {{=gc}} will be replaced by the GC-Code, so the div is unique
+            var new_template = '';
+                new_template += '<div id="popup_additional_info_{{=gc}}" class="links Clear popup_additional_info">';
+                new_template += '    <div class="loading_container">';
+                new_template += '        <img src="' + urlImages + 'ajax-loader.gif" />Loading additional Data...';
+                new_template += '    </div>';
+                new_template += '</div>';
+
+            var pos = template.lastIndexOf('</div>');
+            template = template.substring(0,pos) + new_template + '</div>';
+
+            $("#cacheDetailsTemplate").html(template);
 
 
             // select the target node
@@ -6194,11 +6222,12 @@ var mainGC = function() {
                     // so we have to load informations for all caches.
                     $('#gmCacheInfo .map-item').each(function () {
                         gccode = $(this).find('.code').html();
-                        if ($('#popup_additional_info_' + gccode)[0]) return;
+                        
+                        if ($('#already_loading_' + gccode)[0]) return;
                         $(this).find('dl dt')[0].innerHTML = $(this).find('dl dt')[0].innerHTML.replace(/Created by:/,"by:").replace(/Erstellt von:/,"von:");
 
-                        // Add Loading image
-                        $(this).find('.popup_additional_info').html('<div id="popup_additional_info_' + gccode +'" class="links Clear popup_additional_info"><div class="loading_container"><img src="' + urlImages + 'ajax-loader.gif" />Loading additional Data...</div></div>');
+                        // Add hidden Div, so we can know, that we are already loading data
+                        $(this).find('#popup_additional_info_' + gccode).append('<div id="already_loading_' + gccode +'"></div>'); 
 
                         $.get('https://www.geocaching.com/geocache/'+gccode, null, function(text){
 
@@ -6212,7 +6241,7 @@ var mainGC = function() {
                             }
 
                             // get the last logs
-                            initalLogs_from_cachepage = text.substr(text.indexOf('initalLogs = {"status')+13, text.indexOf('} };') - text.indexOf('initalLogs = {"status') - 10);
+                            initalLogs_from_cachepage = text.substr(text.indexOf('initialLogs = {"status')+13, text.indexOf('} };') - text.indexOf('initialLogs = {"status') - 10);
                             var initalLogs = JSON.parse(initalLogs_from_cachepage);
                             var last_logs = document.createElement("div");
                             var last_logs_to_show = settings_show_latest_logs_symbols_count_map;
