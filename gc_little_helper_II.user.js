@@ -614,6 +614,11 @@ var mainOSM = function() {
 //////////////////////////////
 var mainGC = function() {
 
+
+jQuery.get('https://cdnjs.cloudflare.com/ajax/libs/jquery-endless-scroll/1.8.0/js/jquery.endless-scroll.js', function(data) {
+    injectPageScript(data);
+});
+
 // Hide Facebook.
     if (settings_hide_facebook && (document.location.href.match(/\.com\/(play|account\/register|login|account\/login|seek\/log\.aspx?(.*))/))) {
         try {
@@ -4943,50 +4948,48 @@ var mainGC = function() {
 
             // Dynamic load with full control.
             function gclh_dynamic_load(logs, num) {
-                console.log('num:'+num);
                 var isBusy = false;
                 var gclh_currentPageIdx = 1, gclh_totalPages = 1;
                 var logInitialLoaded = false;
                 var browser = (typeof(chrome) !== "undefined") ? "chrome" : "firefox";
                 var isTM = (typeof GM_info != "undefined" && typeof GM_info.scriptHandler != "undefined" && GM_info.scriptHandler == "Tampermonkey") ? true : false;
-                // $(document.body).endlessScroll({
-                //     fireOnce: false,
-                //     fireDelay: 500,
-                //     inflowPixels: (($(document).height() - $("#cache_logs_container").offset().top) + 50),
-                //     ceaseFire: function() {
-                //         // Stop scrolling if last page reached.
-                //         console.log('num:'+num);
-                //         return (gclh_totalPages < gclh_currentPageIdx);
-                //     },
-                //     callback: function() {
-                //         if (!isBusy && !document.getElementById("gclh_all_logs_marker")) {
-                //             isBusy = true;
-                //             $("#pnlLazyLoad").show();
-                //             if (isTM === false) {
-                //                 var logsToAdd = logs.slice(num, num + 10);
-                //                 addNewLogLines(encodeURIComponent(JSON.stringify(logsToAdd)));
-                //                 num += logsToAdd.length;
-                //                 window.postMessage("gclh_add_vip_icon", "https://www.geocaching.com");
-                //                 window.postMessage("setLinesColorInCacheListing", "https://www.geocaching.com");
-                //             } else {
-                //                 for (var i = 0; i < 10; i++) {
-                //                     if (logs[num]) {
-                //                         var newBody = unsafeWindow.$(document.createElement("TBODY"));
-                //                         unsafeWindow.$("#tmpl_CacheLogRow_gclh").tmpl(logs[num]).appendTo(newBody);
-                //                         injectPageScript("$('a.tb_images').fancybox({'type': 'image', 'titlePosition': 'inside'});");
-                //                         unsafeWindow.$(document.getElementById("cache_logs_table2") || document.getElementById("cache_logs_table")).append(newBody.children());
-                //                     }
-                //                     num++;  // Num kommt vom vorherigen laden "aller" logs.
-                //                 }
-                //                 gclh_add_vip_icon();
-                //                 setLinesColorInCacheListing();
-                //             }
-                //             if (!settings_hide_top_button) $("#topScroll").fadeIn();
-                //             $("#pnlLazyLoad").hide();
-                //             isBusy = false;
-                //         }
-                //     }
-                // });
+                unsafeWindow.$(window).endlessScroll({ 
+                    // fireOnce: true, 
+                    // fireDelay: 500, 
+                    // bottomPixels: (($(document).height() - $("#cache_logs_container").offset().top) + 50), 
+                    // ceaseFire: function() { 
+                    //     // Stop scrolling if last page reached. 
+                    //     return (gclh_totalPages < gclh_currentPageIdx); 
+                    // }, 
+                    // callback: function() { 
+                    //     if (!isBusy && !document.getElementById("gclh_all_logs_marker")) { 
+                    //         isBusy = true; 
+                    //         $("#pnlLazyLoad").show(); 
+                    //         if (isTM === false) { 
+                    //             var logsToAdd = logs.slice(num, num + 10); 
+                    //             addNewLogLines(encodeURIComponent(JSON.stringify(logsToAdd))); 
+                    //             num += logsToAdd.length; 
+                    //             window.postMessage("gclh_add_vip_icon", "https://www.geocaching.com"); 
+                    //             window.postMessage("setLinesColorInCacheListing", "https://www.geocaching.com"); 
+                    //         } else { 
+                    //             for (var i = 0; i < 10; i++) { 
+                    //                 if (logs[num]) { 
+                    //                     var newBody = unsafeWindow.$(document.createElement("TBODY")); 
+                    //                     unsafeWindow.$("#tmpl_CacheLogRow_gclh").tmpl(logs[num]).appendTo(newBody); 
+                    //                     injectPageScript("$('a.tb_images').fancybox({'type': 'image', 'titlePosition': 'inside'});"); 
+                    //                     unsafeWindow.$(document.getElementById("cache_logs_table2") || document.getElementById("cache_logs_table")).append(newBody.children()); 
+                    //                 } 
+                    //                 num++;  // Num kommt vom vorherigen laden "aller" logs. 
+                    //             } 
+                    //             gclh_add_vip_icon(); 
+                    //             setLinesColorInCacheListing(); 
+                    //         } 
+                    //         if (!settings_hide_top_button) $("#topScroll").fadeIn(); 
+                    //         $("#pnlLazyLoad").hide(); 
+                    //         isBusy = false; 
+                    //     } 
+                    // } 
+                }); 
             }
 
             // Load all logs.
