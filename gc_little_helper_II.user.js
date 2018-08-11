@@ -11461,7 +11461,7 @@ function gclh_log(log) {
 function gclh_error(modul, err) {
     var txt = "GClh_ERROR - " + modul + " - " + document.location.href + ": " + err.message + "\nStacktrace:\n" + err.stack + (err.stacktrace ? ("\n" + err.stacktrace) : "");
     if (typeof(console) != "undefined") console.error(txt);
-    if (typeof(GM_log) != "undefined") GM_log(txt);
+    else if (typeof(GM_log) != "undefined") GM_log(txt); 
 }
 
 // Zufallszahl zwischen max und min.
