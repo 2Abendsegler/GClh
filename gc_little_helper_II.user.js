@@ -7708,17 +7708,6 @@ var mainGC = function() {
         }
     }
 
-// CSS Style hinzufügen.
-    function appendCssStyle(css, name) {
-        if (css == "") return;
-        if (name) var tag = $(name)[0];
-        else var tag = $('head')[0];
-        var style = document.createElement('style');
-        style.innerHTML = 'GClhII{} ' + css;
-        style.type = 'text/css';
-        tag.appendChild(style);
-    }
-
 // Zu lange Zeilen "kürzen", damit nicht umgebrochen wird.
     function noBreakInLine(n_side, n_maxwidth, n_title) {
         if (n_side == "" || n_side == undefined || n_maxwidth == 0) return;
@@ -11448,6 +11437,17 @@ function isLocation(path) {
         path = http + "://www.geocaching.com" + path;
     }
     return document.location.href.toLowerCase().indexOf(path) == 0;
+}
+
+// CSS Style hinzufügen.
+function appendCssStyle(css, name) {
+    if (css == "") return;
+    if (name) var tag = $(name)[0];
+    else var tag = $('head')[0];
+    var style = document.createElement('style');
+    style.innerHTML = 'GClhII{} ' + css;
+    style.type = 'text/css';
+    tag.appendChild(style);
 }
 
 // Logging.
