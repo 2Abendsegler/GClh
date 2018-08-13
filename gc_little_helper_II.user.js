@@ -4941,79 +4941,51 @@ var mainGC = function() {
             }
 
             var lastFired = 0;
+            var global_logs = false;
+            var global_num = 0;
 
-            function onScrollStart(){
-                
+            // Dynamic load with full control.
+            function gclh_dynamic_load(logs, num) {
+
+                if(lastFired == 0 && !global_logs){
+                    // First run, so we set the global logs/num and add the Event listener
+                    global_logs = logs;
+                    global_num = num;
+                    window.addEventListener("scroll", gclh_dynamic_load, false);
+                }
+
                 var currentTime = + new Date();
                 if((currentTime - lastFired) > 500){
                     // Fire every 500ms at maximum
                     lastFired = + new Date();
+                    
+                    var isBusy = false;
                     var startReloadAtThisPixel = (($(document).height() - $("#cache_logs_container").offset().top) + 50)
                     var currentPosition = $(this).scrollTop();
-                    console.log('startReloadAtThisPixel:' + startReloadAtThisPixel);
-                    console.log('currentPosition:' + currentPosition);
-                    console.log('-');
+                    
+                    if(currentPosition > startReloadAtThisPixel){
+                        if (!isBusy && !document.getElementById("gclh_all_logs_marker")) {
+                            isBusy = true;
+                            $("#pnlLazyLoad").show();
+                            for (var i = 0; i < 10; i++) {
+                                if (global_logs[global_num]) {
+                                    var newBody = unsafeWindow.$(document.createElement("TBODY"));
+                                    unsafeWindow.$("#tmpl_CacheLogRow_gclh").tmpl(global_logs[global_num]).appendTo(newBody);
+                                    injectPageScript("$('a.tb_images').fancybox({'type': 'image', 'titlePosition': 'inside'});");
+                                    unsafeWindow.$(document.getElementById("cache_logs_table2") || document.getElementById("cache_logs_table")).append(newBody.children());
+                                }
+                                global_num++;  // Num kommt vom vorherigen laden "aller" logs.
+                            }
+                            gclh_add_vip_icon();
+                            setLinesColorInCacheListing();
+                            if (!settings_hide_top_button) $("#topScroll").fadeIn();
+                            $("#pnlLazyLoad").hide();
+                            isBusy = false;
+                        }
+                    }
+
+
                 }
-            }
-
-
-            window.addEventListener("scroll", onScrollStart, false);
-
-
-
-            // Dynamic load with full control.
-            function gclh_dynamic_load(logs, num) {
-                
-                var isBusy = false;
-                var logInitialLoaded = false;
-
-
-                
-
-                // HotFIX issue 745
-
-                // var isBusy = false;
-                // var gclh_currentPageIdx = 1, gclh_totalPages = 1;
-                // var logInitialLoaded = false;
-                // var browser = (typeof(chrome) !== "undefined") ? "chrome" : "firefox";
-                // var isTM = (typeof GM_info != "undefined" && typeof GM_info.scriptHandler != "undefined" && GM_info.scriptHandler == "Tampermonkey") ? true : false;
-                // unsafeWindow.$(window).endlessScroll({
-                //     fireOnce: true,
-                //     fireDelay: 500,
-                //     bottomPixels: (($(document).height() - $("#cache_logs_container").offset().top) + 50),
-                //     ceaseFire: function() {
-                //         // Stop scrolling if last page reached.
-                //         return (gclh_totalPages < gclh_currentPageIdx);
-                //     },
-                //     callback: function() {
-                //         if (!isBusy && !document.getElementById("gclh_all_logs_marker")) {
-                //             isBusy = true;
-                //             $("#pnlLazyLoad").show();
-                //             if (isTM === false) {
-                //                 var logsToAdd = logs.slice(num, num + 10);
-                //                 addNewLogLines(encodeURIComponent(JSON.stringify(logsToAdd)));
-                //                 num += logsToAdd.length;
-                //                 window.postMessage("gclh_add_vip_icon", "https://www.geocaching.com");
-                //                 window.postMessage("setLinesColorInCacheListing", "https://www.geocaching.com");
-                //             } else {
-                //                 for (var i = 0; i < 10; i++) {
-                //                     if (logs[num]) {
-                //                         var newBody = unsafeWindow.$(document.createElement("TBODY"));
-                //                         unsafeWindow.$("#tmpl_CacheLogRow_gclh").tmpl(logs[num]).appendTo(newBody);
-                //                         injectPageScript("$('a.tb_images').fancybox({'type': 'image', 'titlePosition': 'inside'});");
-                //                         unsafeWindow.$(document.getElementById("cache_logs_table2") || document.getElementById("cache_logs_table")).append(newBody.children());
-                //                     }
-                //                     num++;  // Num kommt vom vorherigen laden "aller" logs.
-                //                 }
-                //                 gclh_add_vip_icon();
-                //                 setLinesColorInCacheListing();
-                //             }
-                //             if (!settings_hide_top_button) $("#topScroll").fadeIn();
-                //             $("#pnlLazyLoad").hide();
-                //             isBusy = false;
-                //         }
-                //     }
-                // });
             }
 
             // Load all logs.
@@ -5026,23 +4998,16 @@ var mainGC = function() {
                             for (var i = 0; i < tbodys.length; i++) {
                                 (document.getElementById("cache_logs_table2") || document.getElementById("cache_logs_table")).removeChild(tbodys[i]);
                             }
-                            if (isTM === false) {
-                                injectPageScript("var unsafeWindow = unsafeWindow||window; " + gclh_dynamic_load.toString() + " var settings_hide_top_button=" + settings_hide_top_button + "; ");
-                                injectPageScript("(" + addNewLogLines.toString() + ")(\"" + encodeURIComponent(JSON.stringify(logs)) + "\");");
-                                window.postMessage("gclh_add_vip_icon", "https://www.geocaching.com");
-                                window.postMessage("setLinesColorInCacheListing", "https://www.geocaching.com");
-                            } else {
-                                for (var i = 0; i < logs.length; i++) {
-                                    if (logs[i]) {
-                                        var newBody = unsafeWindow.$(document.createElement("TBODY"));
-                                        unsafeWindow.$("#tmpl_CacheLogRow_gclh").tmpl(logs[i]).appendTo(newBody);
-                                        injectPageScript("$('a.tb_images').fancybox({'type': 'image', 'titlePosition': 'inside'});");
-                                        unsafeWindow.$(document.getElementById("cache_logs_table2") || document.getElementById("cache_logs_table")).append(newBody.children());
-                                    }
+                            for (var i = 0; i < logs.length; i++) {
+                                if (logs[i]) {
+                                    var newBody = unsafeWindow.$(document.createElement("TBODY"));
+                                    unsafeWindow.$("#tmpl_CacheLogRow_gclh").tmpl(logs[i]).appendTo(newBody);
+                                    injectPageScript("$('a.tb_images').fancybox({'type': 'image', 'titlePosition': 'inside'});");
+                                    unsafeWindow.$(document.getElementById("cache_logs_table2") || document.getElementById("cache_logs_table")).append(newBody.children());
                                 }
-                                gclh_add_vip_icon();
-                                setLinesColorInCacheListing();
                             }
+                            gclh_add_vip_icon();
+                            setLinesColorInCacheListing();
                             setMarkerDisableDynamicLogLoad();
                             if (document.getElementById("gclh_show_log_counter")) document.getElementById("gclh_show_log_counter").style.visibility = "";
                         }
@@ -5054,15 +5019,6 @@ var mainGC = function() {
                 if (settings_show_all_logs_but) addButtonOverLogs(gclh_load_all_logs, "gclh_load_all_logs", false, "Show all logs", "");
                 if (settings_show_bigger_avatars_but && !settings_hide_avatar && !isMemberInPmoCache() && settings_show_thumbnails) showBiggerAvatarsLink();
                 if (settings_show_log_counter_but) showLogCounterLink();
-
-                // HotFIX issue 745
-                // Add Button to end of Log Table to Show all Logs
-                if (!$('#cache_logs_table2')[0]) return;
-                var span = document.createElement("span");
-                span.id = "gclh_load_all_logs_2";
-                span.innerHTML = '<input type="button" style="width: 100%; background-color: lightgrey; font-size: 25px;" href="javascript:void(0);" title="" value="Hotfix: Click here to show all logs">';
-                span.addEventListener("click", gclh_load_all_logs, false);
-                $('#cache_logs_table2')[0].parentNode.append(span);
             }
 
             // Filter logs.
@@ -5083,29 +5039,16 @@ var mainGC = function() {
                     for (var i = 0; i < tbodys.length; i++) {
                         (document.getElementById("cache_logs_table2") || document.getElementById("cache_logs_table")).removeChild(tbodys[i]);
                     }
-                    if (isTM === false) {
-                        var logsToAdd = [];
-                        for (var i = 0; i < logs.length; i++) {
-                            if (logs[i] && (logs[i].LogType == log_type || (log_type == "VIP" && (in_array(logs[i].UserName, global_vips) || logs[i].UserName == vip_owner)))) {
-                                logsToAdd.push(logs[i]);
-                            }
+                for (var i = 0; i < logs.length; i++) {
+                        if (logs[i] && (logs[i].LogType == log_type || (log_type == "VIP" && (in_array(logs[i].UserName, global_vips) || logs[i].UserName == vip_owner)))) {
+                            var newBody = unsafeWindow.$(document.createElement("TBODY"));
+                            unsafeWindow.$("#tmpl_CacheLogRow_gclh").tmpl(logs[i]).appendTo(newBody);
+                            unsafeWindow.$(document.getElementById("cache_logs_table2") || document.getElementById("cache_logs_table")).append(newBody.children());
+                            injectPageScript("$('a.tb_images').fancybox({'type': 'image', 'titlePosition': 'inside'});");
                         }
-                        injectPageScript("var unsafeWindow = unsafeWindow||window; " + gclh_dynamic_load.toString() + " var settings_hide_top_button=" + settings_hide_top_button + "; ");
-                        injectPageScript("(" + addNewLogLines.toString() + ")(\"" + encodeURIComponent(JSON.stringify(logsToAdd)) + "\");");
-                        window.postMessage("gclh_add_vip_icon", "https://www.geocaching.com");
-                        window.postMessage("setLinesColorInCacheListing", "https://www.geocaching.com");
-                    } else {
-                        for (var i = 0; i < logs.length; i++) {
-                            if (logs[i] && (logs[i].LogType == log_type || (log_type == "VIP" && (in_array(logs[i].UserName, global_vips) || logs[i].UserName == vip_owner)))) {
-                                var newBody = unsafeWindow.$(document.createElement("TBODY"));
-                                unsafeWindow.$("#tmpl_CacheLogRow_gclh").tmpl(logs[i]).appendTo(newBody);
-                                unsafeWindow.$(document.getElementById("cache_logs_table2") || document.getElementById("cache_logs_table")).append(newBody.children());
-                                injectPageScript("$('a.tb_images').fancybox({'type': 'image', 'titlePosition': 'inside'});");
-                            }
-                        }
-                        gclh_add_vip_icon();
-                        setLinesColorInCacheListing();
                     }
+                    gclh_add_vip_icon();
+                    setLinesColorInCacheListing();
                     setMarkerDisableDynamicLogLoad();
                     if (document.getElementById("gclh_show_log_counter")) document.getElementById("gclh_show_log_counter").style.visibility = "hidden";
                 }
@@ -5166,29 +5109,16 @@ var mainGC = function() {
                     for (var i = 0; i < tbodys.length; i++) {
                         (document.getElementById("cache_logs_table2") || document.getElementById("cache_logs_table")).removeChild(tbodys[i]);
                     }
-                    if (isTM === false) {
-                        var logsToAdd = [];
-                        for (var i = 0; i < logs.length; i++) {
-                            if (logs[i] && (logs[i].UserName.match(regexp) || logs[i].LogText.match(regexp))) {
-                                logsToAdd.push(logs[i]);
-                            }
+                    for (var i = 0; i < logs.length; i++) {
+                        if (logs[i] && (logs[i].UserName.match(regexp) || logs[i].LogText.match(regexp))) {
+                            var newBody = unsafeWindow.$(document.createElement("TBODY"));
+                            unsafeWindow.$("#tmpl_CacheLogRow_gclh").tmpl(logs[i]).appendTo(newBody);
+                            injectPageScript("$('a.tb_images').fancybox({'type': 'image', 'titlePosition': 'inside'});");
+                            unsafeWindow.$(document.getElementById("cache_logs_table2") || document.getElementById("cache_logs_table")).append(newBody.children());
                         }
-                        injectPageScript("var unsafeWindow = unsafeWindow||window; " + gclh_dynamic_load.toString() + " var settings_hide_top_button=" + settings_hide_top_button + "; ");
-                        injectPageScript("(" + addNewLogLines.toString() + ")(\"" + encodeURIComponent(JSON.stringify(logsToAdd)) + "\");");
-                        window.postMessage("gclh_add_vip_icon", "https://www.geocaching.com");
-                        window.postMessage("setLinesColorInCacheListing", "https://www.geocaching.com");
-                    } else {
-                        for (var i = 0; i < logs.length; i++) {
-                            if (logs[i] && (logs[i].UserName.match(regexp) || logs[i].LogText.match(regexp))) {
-                                var newBody = unsafeWindow.$(document.createElement("TBODY"));
-                                unsafeWindow.$("#tmpl_CacheLogRow_gclh").tmpl(logs[i]).appendTo(newBody);
-                                injectPageScript("$('a.tb_images').fancybox({'type': 'image', 'titlePosition': 'inside'});");
-                                unsafeWindow.$(document.getElementById("cache_logs_table2") || document.getElementById("cache_logs_table")).append(newBody.children());
-                            }
-                        }
-                        gclh_add_vip_icon();
-                        setLinesColorInCacheListing();
                     }
+                    gclh_add_vip_icon();
+                    setLinesColorInCacheListing();
                     setMarkerDisableDynamicLogLoad();
                     if (document.getElementById("gclh_show_log_counter")) document.getElementById("gclh_show_log_counter").style.visibility = "hidden";
                 }
@@ -5297,32 +5227,20 @@ var mainGC = function() {
                     gclh_filter(logs);
                     gclh_search(logs);
 
-                    if (isTM === false) {
-                        var logsToAdd = logs.slice(0, num);
-                        injectPageScript("var unsafeWindow = unsafeWindow||window; " + gclh_dynamic_load.toString() + " var settings_hide_top_button=" + settings_hide_top_button + "; ");
-                        injectPageScript(addNewLogLines.toString());
-                        injectPageScript("(" + addNewLogLines.toString() + ")(\"" + encodeURIComponent(JSON.stringify(logsToAdd)) + "\"); gclh_dynamic_load(JSON.parse(decodeURIComponent(\"" + encodeURIComponent(JSON.stringify(logs)) + "\"))," + num + ");");
-                        if (settings_show_vip_list) {
-                            gclh_build_vip_list();
-                            window.postMessage("gclh_add_vip_icon", "https://www.geocaching.com");
+                    for (var i = 0; i < num; i++) {
+                        if (logs[i]) {
+                            var newBody = unsafeWindow.$(document.createElement("TBODY"));
+                            unsafeWindow.$("#tmpl_CacheLogRow_gclh").tmpl(logs[i]).appendTo(newBody);
+                            injectPageScript("$('a.tb_images').fancybox({'type': 'image', 'titlePosition': 'inside'});");
+                            unsafeWindow.$(document.getElementById("cache_logs_table2") || document.getElementById("cache_logs_table")).append(newBody.children());
                         }
-                        window.postMessage("setLinesColorInCacheListing", "https://www.geocaching.com");
-                    } else {
-                        for (var i = 0; i < num; i++) {
-                            if (logs[i]) {
-                                var newBody = unsafeWindow.$(document.createElement("TBODY"));
-                                unsafeWindow.$("#tmpl_CacheLogRow_gclh").tmpl(logs[i]).appendTo(newBody);
-                                injectPageScript("$('a.tb_images').fancybox({'type': 'image', 'titlePosition': 'inside'});");
-                                unsafeWindow.$(document.getElementById("cache_logs_table2") || document.getElementById("cache_logs_table")).append(newBody.children());
-                            }
-                        }
-                        gclh_dynamic_load(logs, num);
-                        if (settings_show_vip_list) {
-                            gclh_build_vip_list();
-                            gclh_add_vip_icon();
-                        }
-                        setLinesColorInCacheListing();
                     }
+                    gclh_dynamic_load(logs, num);
+                    if (settings_show_vip_list) {
+                        gclh_build_vip_list();
+                        gclh_add_vip_icon();
+                    }
+                    setLinesColorInCacheListing();
                 }
                 gclh_load_helper(1);
             }
