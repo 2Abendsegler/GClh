@@ -4940,9 +4940,36 @@ var mainGC = function() {
                 }
             }
 
+            var lastFired = 0;
+
+            function onScrollStart(){
+                
+                var currentTime = + new Date();
+                if((currentTime - lastFired) > 500){
+                    // Fire every 500ms at maximum
+                    lastFired = + new Date();
+                    var startReloadAtThisPixel = (($(document).height() - $("#cache_logs_container").offset().top) + 50)
+                    var currentPosition = $(this).scrollTop();
+                    console.log('startReloadAtThisPixel:' + startReloadAtThisPixel);
+                    console.log('currentPosition:' + currentPosition);
+                    console.log('-');
+                }
+            }
+
+
+            window.addEventListener("scroll", onScrollStart, false);
+
+
+
             // Dynamic load with full control.
             function gclh_dynamic_load(logs, num) {
                 
+                var isBusy = false;
+                var logInitialLoaded = false;
+
+
+                
+
                 // HotFIX issue 745
 
                 // var isBusy = false;
