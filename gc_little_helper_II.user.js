@@ -5564,7 +5564,7 @@ var mainGC = function() {
                     collision: "flipfit flipfit"
                 });
                 if (!stop) {
-                    $('a.gclh_thumb:hover span img').on( "load", function() {
+                    $('a.gclh_thumb:hover span img').load(function() {
                         placeToolTip(element, true);
                     });
                 }
