@@ -45,7 +45,10 @@
 ## v0.9.11:
 <ul>
 	<li>
-		<strong>Fix:</strong> Nickname missing in the Latest logs section [Issue <a href="https://github.com/2Abendsegler/GClh/issues/753">#753</a>]<br>
+		<strong>Fix:</strong> Nickname missing in the latest logs section [Issue <a href="https://github.com/2Abendsegler/GClh/issues/753">#753</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> Preview of Pictures in Logs throws Error [Issue <a href="https://github.com/2Abendsegler/GClh/issues/755">#755</a>]<br>
 	</li>
 </ul>
 (??.??.2018)<br>
