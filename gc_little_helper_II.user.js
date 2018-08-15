@@ -1242,8 +1242,14 @@ var mainGC = function() {
                     for (var i = 0; i < logs.length; i++) {
                         if (settings_show_latest_logs_symbols_count == i) break;
                         var lateLog = new Object();
-                        lateLog['user'] = $(logs[i]).find('.logOwnerProfileName a[href*="/profile/?guid="]').text();
-                        lateLog['id'] = $(logs[i]).find('.logOwnerProfileName a[href*="/profile/?guid="]').attr('id');
+                        if(gcLogs){
+                            // Using initial GCLogs, they look different
+                            lateLog['user'] = $(logs[i]).find('a[href*="/profile/?guid="]').text();
+                            lateLog['id'] = $(logs[i]).attr('class').match(/l-\d+/)[0].substr(2);
+                        }else{
+                            lateLog['user'] = $(logs[i]).find('.logOwnerProfileName a[href*="/profile/?guid="]').text();
+                            lateLog['id'] = $(logs[i]).find('.logOwnerProfileName a[href*="/profile/?guid="]').attr('id');
+                        }
                         lateLog['src'] = $(logs[i]).find('.LogType img[src*="/images/logtypes/"]').attr('src');
                         lateLog['type'] = $(logs[i]).find('.LogType img[src*="/images/logtypes/"]').attr('title');
                         lateLog['date'] = $(logs[i]).find('.LogDate').text();
