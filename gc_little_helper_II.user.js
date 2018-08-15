@@ -4627,7 +4627,7 @@ var mainGC = function() {
                 function addVIPVUPLinksToReloadedFriends(table_length, maxwaittime){
                     var leaderboard_table = document.getElementById('LeaderboardTable').getElementsByTagName("table")[0];
                     var new_table_length = $(leaderboard_table).children().length;
-                    
+
                     if(new_table_length > table_length){
                         var side = $('table.leaderboard-table tbody.leaderboard-item .summary .profile-info');
                         var links = $('table.leaderboard-table tbody.leaderboard-item .details .profile-link');
@@ -4763,7 +4763,7 @@ var mainGC = function() {
                 '          {{/if}}';
             new_tmpl +=
                 '          &nbsp;&nbsp;' +
-                '          <a title="Top" href="#gclh_top" style="color: #000000; text-decoration: none; float: right; padding-left: 6px;">↑</a>' +
+                '          <a title="Top" href="#gclh_top" style="color: #000000; text-decoration: none; float: right; padding-left: 4px;">↑</a>' +
                 '        </strong>' +
                 '      </p>' +
                 '      <p class="logOwnerAvatar">' +
@@ -4833,8 +4833,9 @@ var mainGC = function() {
                 '</tr>';
 
             var css = "";
-            // Log Text noch etwas ausrichten, keinen Platz in der Höhe verlieren.
-            css += ".LogDisplayRight .LogText {min-height: unset; padding-top: 1.5em;}";
+            // Log Text und User Bereich noch etwas ausrichten, keinen Platz in der Höhe verlieren.
+            css += ".LogDisplayRight .LogText {min-height: unset; padding-top: 0; margin-bottom: 8px;}";
+            css += ".logOwnerProfileName {padding-top: 0; margin-bottom: 8px;} .logIcons, .logOwnerAvatar {margin-bottom: 4px;}";
             css += ".markdown-output {margin: unset;}";
             if (!settings_hide_avatar) css += ".markdown-output {min-height: 6em;}";
             // Bilderrahmen im Log noch etwas ausrichten und Trenner von Text und User auch hier einbauen.
