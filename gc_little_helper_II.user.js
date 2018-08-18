@@ -481,7 +481,7 @@ var variablesInit = function(c) {
     c.settings_show_enhanced_map_popup = getValue("settings_show_enhanced_map_popup", true);
     c.settings_show_latest_logs_symbols_count_map = getValue("settings_show_latest_logs_symbols_count_map", 10);
     c.settings_modify_new_drafts_page = getValue("settings_modify_new_drafts_page", true);
-    c.settings_developer_mode = getValue("settings_developer_mode", false);
+    c.settings_gclherror_alert = getValue("settings_gclherror_alert", false);
 
     try {
         if (c.userToken === null) {
@@ -9062,7 +9062,6 @@ var mainGC = function() {
             html += checkboxy('settings_sort_default_bookmarks', 'Sort default links for the Linklist') + show_help("With this option you can sort the default links for the Linklist by description. You can configure these default links to use in your Linklist at the end of this configuration page.<br><br>A change at this option evolute its effect only after a save.") + "<br>";
             html += checkboxy('settings_hide_colored_versions', 'Hide colored illustration of versions') + show_help("With this option the colored illustration of the versions and the version numbers in GClh Config (this page) are selectable.<br><br>A change at this option evolute its effect only after a save.") + "<br>";
             html += checkboxy('settings_make_config_main_areas_hideable', 'Make main areas in GClh Config hideable') + show_help("With this option you can hide and show the main areas in GClh Config (this page) with a left mouse click. With a right mouse click you can hide and show all the main areas in GClh Config together.<br><br>A change at this option evolute its effect only after a save.") + "<br>";
-            html += checkboxy('settings_developer_mode', 'Activate the developer mode') + show_help("") + "<br>";
             html += "</div>";
 
             html += "<h4 class='gclh_headline2'>"+prepareHideable.replace("#name#","nearestlist")+"Nearest list</h4>";
@@ -9666,6 +9665,13 @@ var mainGC = function() {
             html += "</table>";
             html += "</div>";
 
+            // section Development
+            html += "<h4 class='gclh_headline2'>"+prepareHideable.replace("#name#","development")+"Development</h4>";
+            html += "<div id='gclh_config_development' class='gclh_block'>";
+            html += checkboxy('settings_gclherror_alert', 'Shown an alert if an internal error occurs') + show_help("Shown an alert on the top of the page, if gclh_error() is called.") + "<br>";                
+            html += "</div>";     
+
+            // footer
             html += "<br><br>";
             html += "&nbsp;" + "<input class='gclh_form' type='button' value='" + setValueInSaveButton() + "' id='btn_save'> <input class='gclh_form' type='button' value='save & upload' id='btn_saveAndUpload'> <input class='gclh_form' type='button' value='" + setValueInCloseButton() + "' id='btn_close2'>";
             html += "<br><div width='400px' align='right' class='gclh_small' style='float: right;'>License: <a href='"+urlDocu+"license.md#readme' target='_blank' title='GNU General Public License Version 2'>GPLv2</a>, Warranty: <a href='"+urlDocu+"warranty.md#readme' target='_blank' title='GC little helper comes with ABSOLUTELY NO WARRANTY'>NO</a></div>";
@@ -9710,6 +9716,7 @@ var mainGC = function() {
                 makeConfigAreaHideable("logging");
                 makeConfigAreaHideable("mail");
                 makeConfigAreaHideable("linklist");
+                makeConfigAreaHideable("development");
             }
 
             // Linklist: Events, Anfangsbestand aufbauen.
@@ -10411,7 +10418,7 @@ var mainGC = function() {
                 'settings_show_draft_indicator',
                 'settings_show_enhanced_map_popup',
                 'settings_modify_new_drafts_page',
-                'settings_developer_mode'
+                'settings_gclherror_alert',
             );
 
             for (var i = 0; i < checkboxes.length; i++) {
@@ -10911,6 +10918,7 @@ var mainGC = function() {
         setShowHideConfigAll("gclh_config_logging", showHide);
         setShowHideConfigAll("gclh_config_mail", showHide);
         setShowHideConfigAll("gclh_config_linklist", showHide);
+        setShowHideConfigAll("gclh_config_development", showHide);
         if (showHide == "show") window.scroll(0, 0);
         else {
             document.getElementById(id_lnk).scrollIntoView();
@@ -11444,7 +11452,7 @@ function gclh_error(modul, err) {
     if (typeof(console) != "undefined") console.error(txt);
     else if (typeof(GM_log) != "undefined") GM_log(txt); 
     
-    if ( settings_developer_mode ) {
+    if ( settings_gclherror_alert ) {
         if ( $( "#gclh-gurumeditation" ).length == 0 ) {
             $("body").before('<div id="gclh-gurumeditation"></div>');            
             $("#gclh-gurumeditation").append('<div style="border: 5px solid #ff0000;"></div>');
