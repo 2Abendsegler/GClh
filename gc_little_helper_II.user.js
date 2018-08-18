@@ -9668,7 +9668,7 @@ var mainGC = function() {
             // section Development
             html += "<h4 class='gclh_headline2'>"+prepareHideable.replace("#name#","development")+"Development</h4>";
             html += "<div id='gclh_config_development' class='gclh_block'>";
-            html += checkboxy('settings_gclherror_alert', 'Shown an alert if an internal error occurs') + show_help("Shown an alert on the top of the page, if gclh_error() is called.") + "<br>";                
+            html += checkboxy('settings_gclherror_alert', 'Show an alert if an internal error occurs') + show_help("Show an alert on the top of the page, if gclh_error() is called.") + "<br>";                
             html += "</div>";     
 
             // footer
