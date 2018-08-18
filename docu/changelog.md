@@ -44,7 +44,9 @@
 ---
 ## v0.9.11:
 <ul>
-	
+	<li>
+		<strong>Fix:</strong> Nickname missing in the Latest logs section [Issue <a href="https://github.com/2Abendsegler/GClh/issues/753">#753</a>]<br>
+	</li>
 </ul>
 (??.??.2018)<br>
 released by <a href="https://www.geocaching.com/profile/?u=Ruko2010">Ruko2010</a><br>
