@@ -1067,7 +1067,7 @@ var mainGC = function() {
                 code += "  else if(search.match(/^[A-Z0-9]{6}\\b$/i)) document.location.href = '/track/details.aspx?tracker='+search;";
                 code += "  else document.location.href = '/seek/nearest.aspx?navi_search='+search;";
                 code += "}";
-                insertScript(code, "body");
+                injectPageScript(code, "body");
                 var searchfield = "<li><input onKeyDown='if(event.keyCode==13 && event.ctrlKey == false && event.altKey == false && event.shiftKey == false) {gclh_search_logs(); return false;}' type='text' size='6' name='navi_search' id='navi_search' style='padding: 1px; font-weight: bold; font-family: sans-serif; border: 2px solid #778555; border-radius: 7px 7px 7px 7px; background-color:#d8cd9d' value='" + settings_bookmarks_search_default + "'></li>";
                 $(".Menu, .menu").append(searchfield);
             }
@@ -1844,7 +1844,7 @@ var mainGC = function() {
                     "    }" +
                     "  }" +
                     "}";
-                insertScript(code, 'body');
+                injectPageScript(code, 'body');
             }
         } catch(e) {gclh_error("Hide complete and Show/Hide Cache Note:",e);}
     }
@@ -1982,7 +1982,7 @@ var mainGC = function() {
                     "    hint.innerHTML = convertROTStringWithBrackets(hint.innerHTML);" +
                     "  return false;" +
                     "}";
-                insertScript(code, 'body');
+                injectPageScript(code, 'body');
                 if ($('#ctl00_ContentBody_lnkDH')[0]) {
                     var link = $('#ctl00_ContentBody_lnkDH')[0];
                     link.setAttribute('onclick', 'hide_hint();');
@@ -2341,7 +2341,7 @@ var mainGC = function() {
         code += "  }";
         code += "  input.focus();";
         code += "}";
-        insertScript(code, 'body');
+        injectPageScript(code, 'body');
     }
     // Script für insert Log Template by click.
     function insert_tpl_fkt(newLogPage) {
@@ -2405,7 +2405,7 @@ var mainGC = function() {
         code += "  }";
         code += "  input.focus();";
         code += "}";
-        insertScript(code, 'body');
+        injectPageScript(code, 'body');
     }
     // Smilies aufbauen.
     function build_smilies(newLogPage) {
@@ -5414,7 +5414,7 @@ var mainGC = function() {
             code += "    document.getElementById('lnk_'+i).title = 'show';";
             code += "  }";
             code += "}";
-            insertScript(code, "body");
+            injectPageScript(code, "body");
             var boxes = $('.WidgetHeader');
             function saveStates() {
                 // Wenn Linklist angezeigt wird, dann mit Speicherindex "i" von Linklist beginnen, er ist 0. Ansonsten mit 1 beginnen.
@@ -5609,7 +5609,7 @@ var mainGC = function() {
                              + "}"
                              + "gclh_updateTmpl();"
                              + placeToolTip.toString();
-                    insertScript(code, "body");
+                    injectPageScript(code, "body");
                     css += ".TableLogContent {padding-left: 0; border-left: none;}";
                     css += ".LogImagesTable {margin-left: 0;} .LogImagesTable a.lnk {white-space: initial;}";
                 }
@@ -6399,7 +6399,7 @@ var mainGC = function() {
             $('#map_canvas').append('<div class="ui-resizable-handle ui-resizable-s" id="sgrip" style="width: 24px;height: 4px;background-color: transparent;border-top: 1px solid black;border-bottom: 1px solid black;bottom: 0px;left: 98%;transform: rotate(-45deg);"></div>');
             appendCssStyle('#map_canvas{ height: 450px;} .leaflet-bottom.leaflet-right {margin-right: 20px;}');
             var scriptText = "map.invalidateSize(); map.scrollWheelZoom.enable(); $('#map_canvas').resizable({handles: {'s': '#sgrip'}, minHeight: 300, maxHeight: 700, stop: function( event, ui ) {map.invalidateSize();}});";
-            insertScript(scriptText, 'head');
+            injectPageScript(scriptText, 'head');
         } catch(e) {gclh_error("tb_map_enhancement:",e);}
     }
 
@@ -9879,7 +9879,7 @@ var mainGC = function() {
             // ------------
             var code = GM_getResourceText("jscolor");
             code += 'new jscolor.init();';
-            insertScript(code, "body");
+            injectPageScript(code, "body");
 
             // Multi-Homezone:
             // ---------------
@@ -9909,7 +9909,7 @@ var mainGC = function() {
                         });
                         $(e).addClass("withPicker");
                     });
-                } else insertScript('new jscolor.init();', "body");
+                } else injectPageScript('new jscolor.init();', "body");
             });
             // Show/Hide Einstellungen zu Homezone circels.
             $("#settings_show_homezone").click(function() {
@@ -11525,19 +11525,12 @@ function is_link(name, url) {
 function is_page(name) {return is_link(name, document.location.href);}
 
 // Inject script into site context.
-function injectPageScript(scriptContent) {
+function injectPageScript(scriptContent, TagName) {
     var script = document.createElement("script");
     script.setAttribute("type", "text/javascript");
     script.innerHTML = scriptContent;
-    var pageHead = document.getElementsByTagName("head")[0];
+    var pageHead = document.getElementsByTagName(TagName?TagName:"head")[0];
     pageHead.appendChild(script);
-}
-function insertScript(code, TagName) {
-    var script = document.createElement("script");
-    script.setAttribute("type", "text/javascript");
-    script.innerHTML = code;
-    var side = document.getElementsByTagName(TagName)[0];
-    side.appendChild(script);
 }
 function injectPageScriptFunction(funct, functCall) {injectPageScript("(" + funct.toString() + ")" + functCall + ";");}
 
