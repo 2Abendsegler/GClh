@@ -1545,7 +1545,7 @@ var mainGC = function() {
                     count++;
                 } else if (waypoint.type == "listing" && waypoint.subtype == "origin") {
                     var radius = 0;
-                    if (waypoint.cachetype == "Traditional Cache") radius = 161;
+                    if (waypoint.cachetype == "Traditional Geocache") radius = 161;
                     else if (waypoint.cachetype == "Mystery Cache") radius = 3000;
                     floppsWaypoints.push(floppsMapWaypoint(waypoint, "O", radius, waypoint.lookup+'_ORIGIN'));
                 } else if (waypoint.type == "listing" && waypoint.subtype == "changed") {
