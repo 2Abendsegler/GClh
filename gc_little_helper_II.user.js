@@ -6343,7 +6343,7 @@ var mainGC = function() {
                             $('#popup_additional_info_' + local_gc_code).html(new_text);
 
                             // Get favorite score.
-                            var from = text.indexOf('userToken', text.indexOf('CDATA')) + 13;
+                            var from = text.indexOf('userToken', text.indexOf('MapTilesEnvironment')) + 13;
                             var length = text.indexOf("';", from) - from;
                             var userToken = text.substr(from, length);
                             getFavScore(local_gc_code, userToken);
