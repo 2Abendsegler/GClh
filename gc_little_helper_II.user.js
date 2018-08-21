@@ -481,6 +481,7 @@ var variablesInit = function(c) {
     c.settings_show_enhanced_map_popup = getValue("settings_show_enhanced_map_popup", true);
     c.settings_show_latest_logs_symbols_count_map = getValue("settings_show_latest_logs_symbols_count_map", 10);
     c.settings_modify_new_drafts_page = getValue("settings_modify_new_drafts_page", true);
+    c.settings_gclherror_alert = getValue("settings_gclherror_alert", false);
 
     try {
         if (c.userToken === null) {
@@ -7687,17 +7688,6 @@ var mainGC = function() {
         }
     }
 
-// CSS Style hinzufügen.
-    function appendCssStyle(css, name) {
-        if (css == "") return;
-        if (name) var tag = $(name)[0];
-        else var tag = $('head')[0];
-        var style = document.createElement('style');
-        style.innerHTML = 'GClhII{} ' + css;
-        style.type = 'text/css';
-        tag.appendChild(style);
-    }
-
 // Zu lange Zeilen "kürzen", damit nicht umgebrochen wird.
     function noBreakInLine(n_side, n_maxwidth, n_title) {
         if (n_side == "" || n_side == undefined || n_maxwidth == 0) return;
@@ -9676,6 +9666,13 @@ var mainGC = function() {
             html += "</table>";
             html += "</div>";
 
+            // section Development
+            html += "<h4 class='gclh_headline2'>"+prepareHideable.replace("#name#","development")+"Development</h4>";
+            html += "<div id='gclh_config_development' class='gclh_block'>";
+            html += checkboxy('settings_gclherror_alert', 'Show an alert if an internal error occurs') + show_help("Show an alert on the top of the page, if gclh_error() is called.") + "<br>";                
+            html += "</div>";     
+
+            // footer
             html += "<br><br>";
             html += "&nbsp;" + "<input class='gclh_form' type='button' value='" + setValueInSaveButton() + "' id='btn_save'> <input class='gclh_form' type='button' value='save & upload' id='btn_saveAndUpload'> <input class='gclh_form' type='button' value='" + setValueInCloseButton() + "' id='btn_close2'>";
             html += "<br><div width='400px' align='right' class='gclh_small' style='float: right;'>License: <a href='"+urlDocu+"license.md#readme' target='_blank' title='GNU General Public License Version 2'>GPLv2</a>, Warranty: <a href='"+urlDocu+"warranty.md#readme' target='_blank' title='GC little helper comes with ABSOLUTELY NO WARRANTY'>NO</a></div>";
@@ -9720,6 +9717,7 @@ var mainGC = function() {
                 makeConfigAreaHideable("logging");
                 makeConfigAreaHideable("mail");
                 makeConfigAreaHideable("linklist");
+                makeConfigAreaHideable("development");
             }
 
             // Linklist: Events, Anfangsbestand aufbauen.
@@ -10420,7 +10418,8 @@ var mainGC = function() {
                 'settings_compact_layout_new_dashboard',
                 'settings_show_draft_indicator',
                 'settings_show_enhanced_map_popup',
-                'settings_modify_new_drafts_page'
+                'settings_modify_new_drafts_page',
+                'settings_gclherror_alert',
             );
 
             for (var i = 0; i < checkboxes.length; i++) {
@@ -10920,6 +10919,7 @@ var mainGC = function() {
         setShowHideConfigAll("gclh_config_logging", showHide);
         setShowHideConfigAll("gclh_config_mail", showHide);
         setShowHideConfigAll("gclh_config_linklist", showHide);
+        setShowHideConfigAll("gclh_config_development", showHide);
         if (showHide == "show") window.scroll(0, 0);
         else {
             document.getElementById(id_lnk).scrollIntoView();
@@ -11429,6 +11429,17 @@ function isLocation(path) {
     return document.location.href.toLowerCase().indexOf(path) == 0;
 }
 
+// CSS Style hinzufügen.
+function appendCssStyle(css, name) {
+    if (css == "") return;
+    if (name) var tag = $(name)[0];
+    else var tag = $('head')[0];
+    var style = document.createElement('style');
+    style.innerHTML = 'GClhII{} ' + css;
+    style.type = 'text/css';
+    tag.appendChild(style);
+}
+
 // Logging.
 function gclh_log(log) {
     var txt = "GClh_LOG - " + document.location.href + ": " + log;
@@ -11440,7 +11451,41 @@ function gclh_log(log) {
 function gclh_error(modul, err) {
     var txt = "GClh_ERROR - " + modul + " - " + document.location.href + ": " + err.message + "\nStacktrace:\n" + err.stack + (err.stacktrace ? ("\n" + err.stacktrace) : "");
     if (typeof(console) != "undefined") console.error(txt);
-    if (typeof(GM_log) != "undefined") GM_log(txt);
+    else if (typeof(GM_log) != "undefined") GM_log(txt); 
+    
+    if ( settings_gclherror_alert ) {
+        if ( $( "#gclh-gurumeditation" ).length == 0 ) {
+            $("body").before('<div id="gclh-gurumeditation"></div>');            
+            $("#gclh-gurumeditation").append('<div style="border: 5px solid #ff0000;"></div>');
+            $("#gclh-gurumeditation > div").append('<p style="font-weight: bold; font-size: x-large;">GC Little Helper II Error</p>');
+            $("#gclh-gurumeditation > div").append('<div></div>');
+            $("#gclh-gurumeditation > div").append('<p style="font-size: smaller;">For more information see the console. <a href="https://github.com/2Abendsegler/GClh/issues/new?template=Bug_report.md" target="_blank">Create a bug report at Github.</a></p>');
+            var css = "";
+            css += "#gclh-gurumeditation {";
+            css += "    background-color:black;";
+            css += "    padding: 5px;";
+            css += "    color: red;";
+            css += "    text-align: center;"
+            css += "}";
+            css += "#gclh-gurumeditation a:link, #gclh-gurumeditation a:visited, #gclh-gurumeditation a:hover {"
+            css += "    color: red;";
+            css += "    text-decoration: underline;"
+            css += "}";
+            css += "#gclh-gurumeditation > div > p {";
+            css += "    margin: 0;";
+            css += "    padding: 15px;";
+            css += "    font-family:Arial;";
+            css += "}";
+            css += "#gclh-gurumeditation > div > div > p {";
+            css += "    margin: 0;"
+            css += "    font-family:Consolas,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New, monospace;";           
+            css += "}";
+            css += ".gclh_monospace {";
+            css += "}";
+            appendCssStyle(css);
+        }
+        $("#gclh-gurumeditation > div > div").append( "<p>"+modul + ": " + err.message+"</p>");
+    }
 }
 
 // Zufallszahl zwischen max und min.
