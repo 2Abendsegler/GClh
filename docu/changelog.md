@@ -1,4 +1,5 @@
-<a href="#v0910" title="GClh II version 0.9.10 (??.??.2018)">v0.9.10</a> &nbsp;
+<a href="#v0910" title="GClh II version 0.9.11 (??.??.2018)">v0.9.11</a> &nbsp;
+<a href="#v0910" title="GClh II version 0.9.10 (11.08.2018)">v0.9.10</a> &nbsp;
 <a href="#v099" title="GClh II version 0.9.9 (30.06.2018)">v0.9.9</a> &nbsp;
 <a href="#v098" title="GClh II version 0.9.8 (25.06.2018)">v0.9.8</a> &nbsp;
 <a href="#v097" title="GClh II version 0.9.7 (28.05.2018)">v0.9.7</a> &nbsp;
@@ -41,8 +42,27 @@
 
 
 ---
+## v0.9.11:
+<ul>
+	<li>
+		<strong>Fix:</strong> Nickname missing in the Latest logs section [Issue <a href="https://github.com/2Abendsegler/GClh/issues/753">#753</a>]<br>
+	</li>
+</ul>
+(??.??.2018)<br>
+released by <a href="https://www.geocaching.com/profile/?u=Ruko2010">Ruko2010</a><br>
+<br>
+
+---
 ## v0.9.10:
 <ul>
+	<li>
+		<strong>Improvement:</strong> Some changes to the Map-Popup to make it more flexible [Issue <a href="https://github.com/2Abendsegler/GClh/issues/646">#646</a>]<br>
+	</li>
+	<li>
+		<strong>Hot-Fix:</strong> Reload of logs in Listing-Page fails and breaks GClh. [Issue <a href="https://github.com/2Abendsegler/GClh/issues/745">#745</a>]<br>
+		This Problem is not fixed yet. We have just deactived this function to get the whole Listing page (VIP/VUP, etc.) back to work. In the meantime you can use the button under the last log or at the top of the logs to load all logs.<br>
+		<strong>We are still working on this Issue and hope to get a fix soon.</strong><br>
+	</li>
 	<li>
 		<strong>Fix:</strong> Updating names of countries [Issue <a href="https://github.com/2Abendsegler/GClh/issues/722">#722</a>]<br>
 		Thanks to <a href="https://www.geocaching.com/profile/?u=CachingFoX">CachingFoX</a> for the fix.<br>
@@ -51,10 +71,18 @@
 		<strong>Fix:</strong> Friendleague: After click on "see more" reloaded friends have no VIP/VUP Icons [Issue <a href="https://github.com/2Abendsegler/GClh/issues/734">#734</a>]<br>
 	</li>
 	<li>
-		<strong>Fix:</strong> MapPopup-Data was not loaded [Issue <a href="https://github.com/2Abendsegler/GClh/issues/747">#747</a>]<br>
+		<strong>Fix:</strong> Missing 'Go to GC Map' button at www.openstreetmap.org [Issue <a href="https://github.com/2Abendsegler/GClh/issues/740">#740</a>]<br>
+		Thanks to <a href="https://www.geocaching.com/profile/?u=CachingFoX">CachingFoX</a> for the fix.<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> MapPopup-Data is not loaded [Issue <a href="https://github.com/2Abendsegler/GClh/issues/747">#747</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> Hide empty Personal note in a cache listing fails [Issue <a href="https://github.com/2Abendsegler/GClh/issues/746">#746</a>]<br>
+		Thanks to <a href="https://www.geocaching.com/profile/?u=CachingFoX">CachingFoX</a> for the fix.<br>
 	</li>
 </ul>
-(??.??.2018)<br>
+(11.08.2018)<br>
 released by <a href="https://www.geocaching.com/profile/?u=Ruko2010">Ruko2010</a><br>
 <br>
 

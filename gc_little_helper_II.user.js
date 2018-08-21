@@ -481,6 +481,7 @@ var variablesInit = function(c) {
     c.settings_show_enhanced_map_popup = getValue("settings_show_enhanced_map_popup", true);
     c.settings_show_latest_logs_symbols_count_map = getValue("settings_show_latest_logs_symbols_count_map", 10);
     c.settings_modify_new_drafts_page = getValue("settings_modify_new_drafts_page", true);
+    c.settings_gclherror_alert = getValue("settings_gclherror_alert", false);
 
     try {
         if (c.userToken === null) {
@@ -1067,7 +1068,7 @@ var mainGC = function() {
                 code += "  else if(search.match(/^[A-Z0-9]{6}\\b$/i)) document.location.href = '/track/details.aspx?tracker='+search;";
                 code += "  else document.location.href = '/seek/nearest.aspx?navi_search='+search;";
                 code += "}";
-                insertScript(code, "body");
+                injectPageScript(code, "body");
                 var searchfield = "<li><input onKeyDown='if(event.keyCode==13 && event.ctrlKey == false && event.altKey == false && event.shiftKey == false) {gclh_search_logs(); return false;}' type='text' size='6' name='navi_search' id='navi_search' style='padding: 1px; font-weight: bold; font-family: sans-serif; border: 2px solid #778555; border-radius: 7px 7px 7px 7px; background-color:#d8cd9d' value='" + settings_bookmarks_search_default + "'></li>";
                 $(".Menu, .menu").append(searchfield);
             }
@@ -1182,7 +1183,7 @@ var mainGC = function() {
     }
 
 // Show eventday beside date.
-    if (settings_show_eventday && is_page("cache_listing") && $('#cacheDetails img')[0] && $('#cacheDetails img')[0].src.match(/\/images\/WptTypes\/(6|453|13|7005).gif/)) {  // Event, MegaEvent, Cito, GigaEvent
+    if (settings_show_eventday && is_page("cache_listing") && $('#cacheDetails svg.cache-icon use')[0] && $('#cacheDetails svg.cache-icon use')[0].href.baseVal.match(/\/cache-types.svg\#icon-(6$|453$|13$|7005$)/)) {  // Event, MegaEvent, Cito, GigaEvent
         try {
             var match = $('meta[name="og:description"]')[0].content.match(/([0-9]{2})\/([0-9]{2})\/([0-9]{4})/);
             var date = new Date(match[3], match[1]-1, match[2]);
@@ -1242,8 +1243,14 @@ var mainGC = function() {
                     for (var i = 0; i < logs.length; i++) {
                         if (settings_show_latest_logs_symbols_count == i) break;
                         var lateLog = new Object();
-                        lateLog['user'] = $(logs[i]).find('.logOwnerProfileName a[href*="/profile/?guid="]').text();
-                        lateLog['id'] = $(logs[i]).find('.logOwnerProfileName a[href*="/profile/?guid="]').attr('id');
+                        if(gcLogs){
+                            // Using initial GCLogs, they look different
+                            lateLog['user'] = $(logs[i]).find('a[href*="/profile/?guid="]').text();
+                            lateLog['id'] = $(logs[i]).attr('class').match(/l-\d+/)[0].substr(2);
+                        }else{
+                            lateLog['user'] = $(logs[i]).find('.logOwnerProfileName a[href*="/profile/?guid="]').text();
+                            lateLog['id'] = $(logs[i]).find('.logOwnerProfileName a[href*="/profile/?guid="]').attr('id');
+                        }
                         lateLog['src'] = $(logs[i]).find('.LogType img[src*="/images/logtypes/"]').attr('src');
                         lateLog['type'] = $(logs[i]).find('.LogType img[src*="/images/logtypes/"]').attr('title');
                         lateLog['date'] = $(logs[i]).find('.LogDate').text();
@@ -1539,7 +1546,7 @@ var mainGC = function() {
                     count++;
                 } else if (waypoint.type == "listing" && waypoint.subtype == "origin") {
                     var radius = 0;
-                    if (waypoint.cachetype == "Traditional Cache") radius = 161;
+                    if (waypoint.cachetype == "Traditional Geocache") radius = 161;
                     else if (waypoint.cachetype == "Mystery Cache") radius = 3000;
                     floppsWaypoints.push(floppsMapWaypoint(waypoint, "O", radius, waypoint.lookup+'_ORIGIN'));
                 } else if (waypoint.type == "listing" && waypoint.subtype == "changed") {
@@ -1838,7 +1845,7 @@ var mainGC = function() {
                     "    }" +
                     "  }" +
                     "}";
-                insertScript(code, 'body');
+                injectPageScript(code, 'body');
             }
         } catch(e) {gclh_error("Hide complete and Show/Hide Cache Note:",e);}
     }
@@ -1976,7 +1983,7 @@ var mainGC = function() {
                     "    hint.innerHTML = convertROTStringWithBrackets(hint.innerHTML);" +
                     "  return false;" +
                     "}";
-                insertScript(code, 'body');
+                injectPageScript(code, 'body');
                 if ($('#ctl00_ContentBody_lnkDH')[0]) {
                     var link = $('#ctl00_ContentBody_lnkDH')[0];
                     link.setAttribute('onclick', 'hide_hint();');
@@ -2335,7 +2342,7 @@ var mainGC = function() {
         code += "  }";
         code += "  input.focus();";
         code += "}";
-        insertScript(code, 'body');
+        injectPageScript(code, 'body');
     }
     // Script für insert Log Template by click.
     function insert_tpl_fkt(newLogPage) {
@@ -2399,7 +2406,7 @@ var mainGC = function() {
         code += "  }";
         code += "  input.focus();";
         code += "}";
-        insertScript(code, 'body');
+        injectPageScript(code, 'body');
     }
     // Smilies aufbauen.
     function build_smilies(newLogPage) {
@@ -4621,7 +4628,7 @@ var mainGC = function() {
                 function addVIPVUPLinksToReloadedFriends(table_length, maxwaittime){
                     var leaderboard_table = document.getElementById('LeaderboardTable').getElementsByTagName("table")[0];
                     var new_table_length = $(leaderboard_table).children().length;
-                    
+
                     if(new_table_length > table_length){
                         var side = $('table.leaderboard-table tbody.leaderboard-item .summary .profile-info');
                         var links = $('table.leaderboard-table tbody.leaderboard-item .details .profile-link');
@@ -4757,7 +4764,7 @@ var mainGC = function() {
                 '          {{/if}}';
             new_tmpl +=
                 '          &nbsp;&nbsp;' +
-                '          <a title="Top" href="#gclh_top" style="color: #000000; text-decoration: none; float: right; padding-left: 6px;">↑</a>' +
+                '          <a title="Top" href="#gclh_top" style="color: #000000; text-decoration: none; float: right; padding-left: 4px;">↑</a>' +
                 '        </strong>' +
                 '      </p>' +
                 '      <p class="logOwnerAvatar">' +
@@ -4827,8 +4834,9 @@ var mainGC = function() {
                 '</tr>';
 
             var css = "";
-            // Log Text noch etwas ausrichten, keinen Platz in der Höhe verlieren.
-            css += ".LogDisplayRight .LogText {min-height: unset; padding-top: 1.5em;}";
+            // Log Text und User Bereich noch etwas ausrichten, keinen Platz in der Höhe verlieren.
+            css += ".LogDisplayRight .LogText {min-height: unset; padding-top: 0; margin-bottom: 8px;}";
+            css += ".logOwnerProfileName {padding-top: 0; margin-bottom: 8px;} .logIcons, .logOwnerAvatar {margin-bottom: 4px;}";
             css += ".markdown-output {margin: unset;}";
             if (!settings_hide_avatar) css += ".markdown-output {min-height: 6em;}";
             // Bilderrahmen im Log noch etwas ausrichten und Trenner von Text und User auch hier einbauen.
@@ -5019,6 +5027,15 @@ var mainGC = function() {
                 if (settings_show_all_logs_but) addButtonOverLogs(gclh_load_all_logs, "gclh_load_all_logs", false, "Show all logs", "");
                 if (settings_show_bigger_avatars_but && !settings_hide_avatar && !isMemberInPmoCache() && settings_show_thumbnails) showBiggerAvatarsLink();
                 if (settings_show_log_counter_but) showLogCounterLink();
+
+                // HotFIX issue 745
+                // Add Button to end of Log Table to Show all Logs
+                if (!$('#cache_logs_table2')[0]) return;
+                var span = document.createElement("span");
+                span.id = "gclh_load_all_logs_2";
+                span.innerHTML = '<input type="button" style="width: 100%; background-color: lightgrey; font-size: 25px;" href="javascript:void(0);" title="" value="Hotfix: Click here to show all logs">';
+                span.addEventListener("click", gclh_load_all_logs, false);
+                $('#cache_logs_table2')[0].parentNode.append(span);
             }
 
             // Filter logs.
@@ -5353,7 +5370,7 @@ var mainGC = function() {
             code += "    document.getElementById('lnk_'+i).title = 'show';";
             code += "  }";
             code += "}";
-            insertScript(code, "body");
+            injectPageScript(code, "body");
             var boxes = $('.WidgetHeader');
             function saveStates() {
                 // Wenn Linklist angezeigt wird, dann mit Speicherindex "i" von Linklist beginnen, er ist 0. Ansonsten mit 1 beginnen.
@@ -5537,7 +5554,7 @@ var mainGC = function() {
             if (is_page("cache_listing") && !isMemberInPmoCache()) {
                 // Logs.
                 if (settings_load_logs_with_gclh) {
-                    var newImTpl = "<a class='tb_images lnk gclh_thumb' onmouseover='placeToolTip(this);' rel='fb_images_${LogID}' href='"+http+"://img.geocaching.com/cache/log/${FileName}' title='<span class=&quot;LogImgTitle&quot;>${Name} &nbsp;</span><span class=&quot;LogImgLink&quot;> <a target=&quot;_blank&quot; href=&quot;/seek/log.aspx?LID=${LogID}&amp;IID=${ImageGuid}&quot;>View Log</a></span><br><span class=&quot;LogImgDescription&quot;>${Descr}</span>'>"
+                    var newImTpl = "<a class='tb_images lnk gclh_thumb' onmouseover='placeToolTip;' rel='fb_images_${LogID}' href='"+http+"://img.geocaching.com/cache/log/${FileName}' title='<span class=&quot;LogImgTitle&quot;>${Name} &nbsp;</span><span class=&quot;LogImgLink&quot;> <a target=&quot;_blank&quot; href=&quot;/seek/log.aspx?LID=${LogID}&amp;IID=${ImageGuid}&quot;>View Log</a></span><br><span class=&quot;LogImgDescription&quot;>${Descr}</span>'>"
                                  + "<img title='${Name}' alt='${Name}' src='"+http+"://img.geocaching.com/cache/log/thumb/${FileName}'/> "
                                  + "<span title=''>#top#<img title='${Descr}' class='gclh_max' src='"+http+"://img.geocaching.com/cache/log/thumb/large/${FileName}'>#bot#</span></a>";
                     if (settings_imgcaption_on_top) newImTpl = newImTpl.replace('#top#', '${Name}').replace('#bot#', '');
@@ -5548,7 +5565,9 @@ var mainGC = function() {
                              + "}"
                              + "gclh_updateTmpl();"
                              + placeToolTip.toString();
-                    insertScript(code, "body");
+                    injectPageScript(code, "body");
+                    css += ".TableLogContent {padding-left: 0; border-left: none;}";
+                    css += ".LogImagesTable {margin-left: 0;} .LogImagesTable a.lnk {white-space: initial;}";
                 }
                 // Listing.
                 css += ".CachePageImages li {margin-bottom: 12px; background: unset; padding-left: 0px;}";
@@ -6279,7 +6298,7 @@ var mainGC = function() {
                             $('#popup_additional_info_' + local_gc_code).html(new_text);
 
                             // Get favorite score.
-                            var from = text.indexOf('userToken', text.indexOf('CDATA')) + 13;
+                            var from = text.indexOf('userToken', text.indexOf('MapTilesEnvironment')) + 13;
                             var length = text.indexOf("';", from) - from;
                             var userToken = text.substr(from, length);
                             getFavScore(local_gc_code, userToken);
@@ -6336,7 +6355,7 @@ var mainGC = function() {
             $('#map_canvas').append('<div class="ui-resizable-handle ui-resizable-s" id="sgrip" style="width: 24px;height: 4px;background-color: transparent;border-top: 1px solid black;border-bottom: 1px solid black;bottom: 0px;left: 98%;transform: rotate(-45deg);"></div>');
             appendCssStyle('#map_canvas{ height: 450px;} .leaflet-bottom.leaflet-right {margin-right: 20px;}');
             var scriptText = "map.invalidateSize(); map.scrollWheelZoom.enable(); $('#map_canvas').resizable({handles: {'s': '#sgrip'}, minHeight: 300, maxHeight: 700, stop: function( event, ui ) {map.invalidateSize();}});";
-            insertScript(scriptText, 'head');
+            injectPageScript(scriptText, 'head');
         } catch(e) {gclh_error("tb_map_enhancement:",e);}
     }
 
@@ -7623,17 +7642,6 @@ var mainGC = function() {
         }
     }
 
-// CSS Style hinzufügen.
-    function appendCssStyle(css, name) {
-        if (css == "") return;
-        if (name) var tag = $(name)[0];
-        else var tag = $('head')[0];
-        var style = document.createElement('style');
-        style.innerHTML = 'GClhII{} ' + css;
-        style.type = 'text/css';
-        tag.appendChild(style);
-    }
-
 // Zu lange Zeilen "kürzen", damit nicht umgebrochen wird.
     function noBreakInLine(n_side, n_maxwidth, n_title) {
         if (n_side == "" || n_side == undefined || n_maxwidth == 0) return;
@@ -8211,7 +8219,7 @@ var mainGC = function() {
                 wayp.note = "";
                 wayp.type = "listing";
                 wayp.subtype = "changed";
-                wayp.cachetype = $('#cacheDetails .cacheImage img')[0].getAttribute('title');
+                wayp.cachetype = $('.cacheImage')[0].getAttribute('title');
                 wayp.link = document.location.href;
                 addWP.push(wayp);
                 wayp = {};
@@ -8230,7 +8238,7 @@ var mainGC = function() {
             wayp.type = "listing";
             wayp.subtype = "origin";
             wayp.link = document.location.href;
-            wayp.cachetype = $('#cacheDetails .cacheImage img')[0].getAttribute('title');
+            wayp.cachetype = $('.cacheImage')[0].getAttribute('title');
             addWP.push(wayp);
             return addWP;
         } catch(e) {gclh_error("Reads the posted coordinates from the listing:",e);}
@@ -9612,6 +9620,13 @@ var mainGC = function() {
             html += "</table>";
             html += "</div>";
 
+            // section Development
+            html += "<h4 class='gclh_headline2'>"+prepareHideable.replace("#name#","development")+"Development</h4>";
+            html += "<div id='gclh_config_development' class='gclh_block'>";
+            html += checkboxy('settings_gclherror_alert', 'Show an alert if an internal error occurs') + show_help("Show an alert on the top of the page, if gclh_error() is called.") + "<br>";                
+            html += "</div>";     
+
+            // footer
             html += "<br><br>";
             html += "&nbsp;" + "<input class='gclh_form' type='button' value='" + setValueInSaveButton() + "' id='btn_save'> <input class='gclh_form' type='button' value='save & upload' id='btn_saveAndUpload'> <input class='gclh_form' type='button' value='" + setValueInCloseButton() + "' id='btn_close2'>";
             html += "<br><div width='400px' align='right' class='gclh_small' style='float: right;'>License: <a href='"+urlDocu+"license.md#readme' target='_blank' title='GNU General Public License Version 2'>GPLv2</a>, Warranty: <a href='"+urlDocu+"warranty.md#readme' target='_blank' title='GC little helper comes with ABSOLUTELY NO WARRANTY'>NO</a></div>";
@@ -9656,6 +9671,7 @@ var mainGC = function() {
                 makeConfigAreaHideable("logging");
                 makeConfigAreaHideable("mail");
                 makeConfigAreaHideable("linklist");
+                makeConfigAreaHideable("development");
             }
 
             // Linklist: Events, Anfangsbestand aufbauen.
@@ -9816,7 +9832,7 @@ var mainGC = function() {
             // ------------
             var code = GM_getResourceText("jscolor");
             code += 'new jscolor.init();';
-            insertScript(code, "body");
+            injectPageScript(code, "body");
 
             // Multi-Homezone:
             // ---------------
@@ -9846,7 +9862,7 @@ var mainGC = function() {
                         });
                         $(e).addClass("withPicker");
                     });
-                } else insertScript('new jscolor.init();', "body");
+                } else injectPageScript('new jscolor.init();', "body");
             });
             // Show/Hide Einstellungen zu Homezone circels.
             $("#settings_show_homezone").click(function() {
@@ -10356,7 +10372,8 @@ var mainGC = function() {
                 'settings_compact_layout_new_dashboard',
                 'settings_show_draft_indicator',
                 'settings_show_enhanced_map_popup',
-                'settings_modify_new_drafts_page'
+                'settings_modify_new_drafts_page',
+                'settings_gclherror_alert',
             );
 
             for (var i = 0; i < checkboxes.length; i++) {
@@ -10856,6 +10873,7 @@ var mainGC = function() {
         setShowHideConfigAll("gclh_config_logging", showHide);
         setShowHideConfigAll("gclh_config_mail", showHide);
         setShowHideConfigAll("gclh_config_linklist", showHide);
+        setShowHideConfigAll("gclh_config_development", showHide);
         if (showHide == "show") window.scroll(0, 0);
         else {
             document.getElementById(id_lnk).scrollIntoView();
@@ -11365,6 +11383,17 @@ function isLocation(path) {
     return document.location.href.toLowerCase().indexOf(path) == 0;
 }
 
+// CSS Style hinzufügen.
+function appendCssStyle(css, name) {
+    if (css == "") return;
+    if (name) var tag = $(name)[0];
+    else var tag = $('head')[0];
+    var style = document.createElement('style');
+    style.innerHTML = 'GClhII{} ' + css;
+    style.type = 'text/css';
+    tag.appendChild(style);
+}
+
 // Logging.
 function gclh_log(log) {
     var txt = "GClh_LOG - " + document.location.href + ": " + log;
@@ -11376,7 +11405,41 @@ function gclh_log(log) {
 function gclh_error(modul, err) {
     var txt = "GClh_ERROR - " + modul + " - " + document.location.href + ": " + err.message + "\nStacktrace:\n" + err.stack + (err.stacktrace ? ("\n" + err.stacktrace) : "");
     if (typeof(console) != "undefined") console.error(txt);
-    if (typeof(GM_log) != "undefined") GM_log(txt);
+    else if (typeof(GM_log) != "undefined") GM_log(txt); 
+    
+    if ( settings_gclherror_alert ) {
+        if ( $( "#gclh-gurumeditation" ).length == 0 ) {
+            $("body").before('<div id="gclh-gurumeditation"></div>');            
+            $("#gclh-gurumeditation").append('<div style="border: 5px solid #ff0000;"></div>');
+            $("#gclh-gurumeditation > div").append('<p style="font-weight: bold; font-size: x-large;">GC Little Helper II Error</p>');
+            $("#gclh-gurumeditation > div").append('<div></div>');
+            $("#gclh-gurumeditation > div").append('<p style="font-size: smaller;">For more information see the console. <a href="https://github.com/2Abendsegler/GClh/issues/new?template=Bug_report.md" target="_blank">Create a bug report at Github.</a></p>');
+            var css = "";
+            css += "#gclh-gurumeditation {";
+            css += "    background-color:black;";
+            css += "    padding: 5px;";
+            css += "    color: red;";
+            css += "    text-align: center;"
+            css += "}";
+            css += "#gclh-gurumeditation a:link, #gclh-gurumeditation a:visited, #gclh-gurumeditation a:hover {"
+            css += "    color: red;";
+            css += "    text-decoration: underline;"
+            css += "}";
+            css += "#gclh-gurumeditation > div > p {";
+            css += "    margin: 0;";
+            css += "    padding: 15px;";
+            css += "    font-family:Arial;";
+            css += "}";
+            css += "#gclh-gurumeditation > div > div > p {";
+            css += "    margin: 0;"
+            css += "    font-family:Consolas,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New, monospace;";           
+            css += "}";
+            css += ".gclh_monospace {";
+            css += "}";
+            appendCssStyle(css);
+        }
+        $("#gclh-gurumeditation > div > div").append( "<p>"+modul + ": " + err.message+"</p>");
+    }
 }
 
 // Zufallszahl zwischen max und min.
@@ -11462,19 +11525,12 @@ function is_link(name, url) {
 function is_page(name) {return is_link(name, document.location.href);}
 
 // Inject script into site context.
-function injectPageScript(scriptContent) {
+function injectPageScript(scriptContent, TagName) {
     var script = document.createElement("script");
     script.setAttribute("type", "text/javascript");
     script.innerHTML = scriptContent;
-    var pageHead = document.getElementsByTagName("head")[0];
+    var pageHead = document.getElementsByTagName(TagName?TagName:"head")[0];
     pageHead.appendChild(script);
-}
-function insertScript(code, TagName) {
-    var script = document.createElement("script");
-    script.setAttribute("type", "text/javascript");
-    script.innerHTML = code;
-    var side = document.getElementsByTagName(TagName)[0];
-    side.appendChild(script);
 }
 function injectPageScriptFunction(funct, functCall) {injectPageScript("(" + funct.toString() + ")" + functCall + ";");}
 
