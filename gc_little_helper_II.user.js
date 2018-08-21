@@ -1546,7 +1546,7 @@ var mainGC = function() {
                     count++;
                 } else if (waypoint.type == "listing" && waypoint.subtype == "origin") {
                     var radius = 0;
-                    if (waypoint.cachetype == "Traditional Cache") radius = 161;
+                    if (waypoint.cachetype == "Traditional Geocache") radius = 161;
                     else if (waypoint.cachetype == "Mystery Cache") radius = 3000;
                     floppsWaypoints.push(floppsMapWaypoint(waypoint, "O", radius, waypoint.lookup+'_ORIGIN'));
                 } else if (waypoint.type == "listing" && waypoint.subtype == "changed") {
@@ -8265,7 +8265,7 @@ var mainGC = function() {
                 wayp.note = "";
                 wayp.type = "listing";
                 wayp.subtype = "changed";
-                wayp.cachetype = $('#cacheDetails .cacheImage img')[0].getAttribute('title');
+                wayp.cachetype = $('.cacheImage')[0].getAttribute('title');
                 wayp.link = document.location.href;
                 addWP.push(wayp);
                 wayp = {};
@@ -8284,7 +8284,7 @@ var mainGC = function() {
             wayp.type = "listing";
             wayp.subtype = "origin";
             wayp.link = document.location.href;
-            wayp.cachetype = $('#cacheDetails .cacheImage img')[0].getAttribute('title');
+            wayp.cachetype = $('.cacheImage')[0].getAttribute('title');
             addWP.push(wayp);
             return addWP;
         } catch(e) {gclh_error("Reads the posted coordinates from the listing:",e);}
