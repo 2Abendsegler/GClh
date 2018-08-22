@@ -9403,7 +9403,9 @@ var mainGC = function() {
             html += "<div id='gclh_config_logging' class='gclh_block'>";
             html += checkboxy('settings_show_bbcode', 'Show smilies') + show_help("This option displays smilies options beside the log form. If you click on a smilie, it is inserted into your log.") + "<br>";
             html += checkboxy('settings_replace_log_by_last_log', 'Replace log by last log template') + show_help("If you enable this option, the last log template will replace the whole log. If you disable it, it will be appended to the log.") + "<br>";
+            html += newParameterOn3;
             html += checkboxy('settings_auto_open_tb_inventory_list', 'Auto open Trackable Inventory') + show_help("If you enable this option, the list of your Trackables is automatically expended when you load the log page.") + "<br>";
+            html += newParameterVersionSetzen(0.9) + newParameterOff;
             html += content_settings_show_log_it.replace("show_log_it", "show_log_itX2");
             html += content_settings_logit_for_basic_in_pmo.replace("basic_in_pmo","basic_in_pmoX0");
             html += newParameterOn3;
@@ -9645,8 +9647,10 @@ var mainGC = function() {
             // section Development
             html += "<h4 class='gclh_headline2'>"+prepareHideable.replace("#name#","development")+"Development</h4>";
             html += "<div id='gclh_config_development' class='gclh_block'>";
+            html += newParameterOn3;
             html += checkboxy('settings_gclherror_alert', 'Show an alert if an internal error occurs') + show_help("Show an alert on the top of the page, if gclh_error() is called.") + "<br>";                
-            html += "</div>";     
+            html += newParameterVersionSetzen(0.9) + newParameterOff;
+            html += "</div>";
 
             // footer
             html += "<br><br>";
