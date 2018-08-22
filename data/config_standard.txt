@@ -228,5 +228,6 @@
   "settings_compact_layout_new_dashboard": false,
   "settings_show_draft_indicator": true,
   "settings_show_latest_logs_symbols_count_map": "10",
-  "settings_show_enhanced_map_popup": true
+  "settings_show_enhanced_map_popup": true,
+  "settings_auto_open_tb_inventory_list": true
 }
