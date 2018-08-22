@@ -482,6 +482,7 @@ var variablesInit = function(c) {
     c.settings_show_latest_logs_symbols_count_map = getValue("settings_show_latest_logs_symbols_count_map", 10);
     c.settings_modify_new_drafts_page = getValue("settings_modify_new_drafts_page", true);
     c.settings_gclherror_alert = getValue("settings_gclherror_alert", false);
+    c.settings_auto_open_tb_inventory_list = getValue("settings_auto_open_tb_inventory_list", true);
 
     try {
         if (c.userToken === null) {
@@ -2540,6 +2541,12 @@ var mainGC = function() {
                if ($('#tbHeader .trackables-header').length) {
                   $(".trackables-list").append('<li id="cloned_tb_header"></li>');
                   $("#tbHeader").clone().insertAfter("#cloned_tb_header");
+
+                  // Open Trackable Inventory
+                  if(settings_auto_open_tb_inventory_list){
+                    $("#trackablesPanel button.btn-handle").trigger( "click" );
+                  }
+
                   clearInterval(checkExistTBHeader);
                }
             }, 500); // check every 500ms
@@ -9396,6 +9403,7 @@ var mainGC = function() {
             html += "<div id='gclh_config_logging' class='gclh_block'>";
             html += checkboxy('settings_show_bbcode', 'Show smilies') + show_help("This option displays smilies options beside the log form. If you click on a smilie, it is inserted into your log.") + "<br>";
             html += checkboxy('settings_replace_log_by_last_log', 'Replace log by last log template') + show_help("If you enable this option, the last log template will replace the whole log. If you disable it, it will be appended to the log.") + "<br>";
+            html += checkboxy('settings_auto_open_tb_inventory_list', 'Auto open Trackable Inventory') + show_help("If you enable this option, the list of your Trackables is automatically expended when you load the log page.") + "<br>";
             html += content_settings_show_log_it.replace("show_log_it", "show_log_itX2");
             html += content_settings_logit_for_basic_in_pmo.replace("basic_in_pmo","basic_in_pmoX0");
             html += newParameterOn3;
@@ -10388,6 +10396,7 @@ var mainGC = function() {
                 'settings_show_enhanced_map_popup',
                 'settings_modify_new_drafts_page',
                 'settings_gclherror_alert',
+                'settings_auto_open_tb_inventory_list',
             );
 
             for (var i = 0; i < checkboxes.length; i++) {
