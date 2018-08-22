@@ -1850,6 +1850,29 @@ var mainGC = function() {
         } catch(e) {gclh_error("Hide complete and Show/Hide Cache Note:",e);}
     }
 
+// Focus Cachenote-Textarea on Click of the Note (to avoid double click to edit)
+    if (is_page("cache_listing")) {
+        try 
+        {
+            var editCacheNote = document.querySelector('#editCacheNote');
+            if(editCacheNote){
+                var observer = new MutationObserver(function(mutations) {
+                    mutations.forEach(function(mutation) {
+                        if (mutation.type == "attributes") {
+                            if(document.getElementById('editCacheNote').style.display == ''){
+                                document.getElementById('cacheNoteText').focus();
+                            }
+                        }
+                    });
+                });
+
+                observer.observe(editCacheNote, {
+                  attributes: true //configure it to listen to attribute changes
+                });
+            }
+        } catch(e) {gclh_error("Focus Cachenote-Textarea on Click of the Note:",e);}
+    }
+
 // Show eMail and Message Center Link beside user. (Nicht in Cache Logs im Listing, das erfolgt später bei Log-Template.)
     show_mail_and_message_icon:
     try {
