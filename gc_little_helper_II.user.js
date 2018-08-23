@@ -2231,16 +2231,16 @@ var mainGC = function() {
                 $('.waypoint-elevation').each(function (index, value) {
                     $(this).html('<img src="' + urlImages + 'ajax-loader.gif" title="Load elevation data for the waypoint from '+elevationServices[serviceIndex]['name']+'."/>');
                 });
-                var context = {
-                    retries : serviceIndex,
-                    serviceName : elevationServices[serviceIndex]['name'],
-                    locations : locations
-                };
+
                 var locationsstring = locations.join('|');
                 GM_xmlhttpRequest({
                     method: 'GET',
                     url: elevationServices[serviceIndex].url.replace('{locations}',locationsstring),
-                    context: context,
+                    context: {
+                        retries : serviceIndex,
+                        serviceName : elevationServices[serviceIndex]['name'],
+                        locations : locations
+                    },
                     onload: elevationServices[serviceIndex]['function'],
                     onerror: function() {gclh_log("Elevation: ERROR: request elevation for waypoints failed!");}
                 });
