@@ -8212,6 +8212,47 @@ var mainGC = function() {
     // Trim decimal value to a given number of digits.
     function roundTO(val, decimals) {return Number(Math.round(val+'e'+decimals)+'e-'+decimals);}
     
+    function queryListingWaypoints( original ) {
+        var waypoints = [];
+        try {
+            var gccode = ($('#ctl00_ContentBody_CoordInfoLinkControl1_uxCoordInfoCode')[0]) ? $('#ctl00_ContentBody_CoordInfoLinkControl1_uxCoordInfoCode')[0].textContent : "n/a";
+            
+            var ListingCoords = {
+                name: unsafeWindow.mapLatLng.name,
+                gccode: gccode,
+                prefix: "",
+                source: "listing",
+                typeid: unsafeWindow.mapLatLng.type,
+                latitude: roundTO(unsafeWindow.mapLatLng.lat,6),
+                longitude: roundTO(unsafeWindow.mapLatLng.lng,6)
+            };
+            waypoints.push(ListingCoords);
+         
+            if ( original && unsafeWindow.mapLatLng.isUserDefined == true ) {
+                var OriginalCoords = Object.assign({}, ListingCoords); // create a copy 
+                OriginalCoords.latitude = roundTO(unsafeWindow.mapLatLng.oldLatLng[0],6);
+                OriginalCoords.longitude = roundTO(unsafeWindow.mapLatLng.oldLatLng[1],6);
+                OriginalCoords.source = "original";
+                waypoints.push(OriginalCoords);
+            }
+
+            for ( var i=0; i<cmapAdditionalWaypoints.length; i++ ) {
+                var waypoint = {
+                    name: cmapAdditionalWaypoints[i].name,
+                    gccode: gccode,
+                    prefix: cmapAdditionalWaypoints[i].pf,
+                    source: "waypoint",
+                    typeid: cmapAdditionalWaypoints[i].type,
+                    latitude: roundTO(cmapAdditionalWaypoints[i].lat,6),
+                    longitude: roundTO(cmapAdditionalWaypoints[i].lng,6)
+                };           
+                waypoints.push(waypoint);
+            }
+            
+        } catch(e) {gclh_error("queryListingWaypoints()",e);}
+        return waypoints;
+    }
+    
     // Get Additional Waypoints.
     function getAdditionalWaypoints() {
         try {
