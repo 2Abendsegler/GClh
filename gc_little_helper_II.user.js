@@ -1677,7 +1677,7 @@ var mainGC = function() {
         }
 
         var maxZoom = {'OpenStreetMap': 18, 'OpenStreetMap.de': 17, 'OpenTopoMap': 17, 'OpenCycleMap (Thunderf.)': 18, 'Outdoors (Thunderforest)': 18, 'Esri World Imagery': 18};
-        zoom = Math.min(zoom,maxZoom[map]) - 1;
+        zoom = Math.min(zoom,maxZoom[map]);
         var url = 'http://brouter.de/brouter-web/#zoom='+zoom+'&lat='+boundarybox.center.latitude+'&lon='+boundarybox.center.longitude+'&layer='+map+url+'&nogos=&profile=trekking&alternativeidx=0&format=geojson';
         return encodeURI(url);
     }
