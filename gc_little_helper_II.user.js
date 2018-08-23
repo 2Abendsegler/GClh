@@ -1476,6 +1476,8 @@ var mainGC = function() {
         } catch(e) {gclh_error("Add link to waypoint list and cache logs:",e);}
     }
 
+    const LatLonDigits = 6;
+    
 // Show links which open Flopp's Map with all waypoints of a cache.
     if (settings_show_flopps_link && is_page("cache_listing") ) {
         try {
@@ -1559,7 +1561,7 @@ var mainGC = function() {
     // Convert string to Flopp's Map specification.
     function floppsMapWaypoint(waypoint, id, radius, name) {
         name = name.replace(/[^a-zA-Z0-9_\-]/g,'_');  // A–Z, a–z, 0–9, - und _
-        return id+':'+waypoint.latitude+':'+waypoint.longitude+':'+radius+':'+name;
+        return id+':'+roundTO(waypoint.latitude,LatLonDigits)+':'+roundTO(waypoint.longitude,LatLonDigits)+':'+radius+':'+name;
     }
 
     // Creates permanent link to Flopp's Map.
@@ -1609,7 +1611,7 @@ var mainGC = function() {
         }
         var maxZoom = {'OSM': 18, 'OSM/DE': 18, 'OCM': 17, 'MQ': 17, 'OUTD': 17, 'TOPO': 15, 'roadmap':20, 'terrain':20, 'hybrid': 20};
         zoom = Math.min(zoom,maxZoom[map]);
-        var url = 'http://flopp.net/'+'?c='+boundarybox.center.latitude+':'+boundarybox.center.longitude+'&z='+zoom+'&t='+map+url;
+        var url = 'http://flopp.net/'+'?c='+roundTO(boundarybox.center.latitude,LatLonDigits)+':'+roundTO(boundarybox.center.longitude,LatLonDigits)+'&z='+zoom+'&t='+map+url;
         url += '&d=O:C';
         return encodeURI(url);
     }
@@ -1652,7 +1654,7 @@ var mainGC = function() {
         window.open(link);
     }
     // Convert string to BRouter specification.
-    function brouterMapWaypoint(waypoint) {return waypoint.longitude+','+waypoint.latitude;}
+    function brouterMapWaypoint(waypoint) {return roundTO(waypoint.longitude,LatLonDigits)+','+roundTO(waypoint.latitude,LatLonDigits);}
     // Build BRouter link.
     function buildBRouterMapLink(waypoints, map, shortnames) {
         var url = "";
@@ -1678,7 +1680,7 @@ var mainGC = function() {
 
         var maxZoom = {'OpenStreetMap': 18, 'OpenStreetMap.de': 17, 'OpenTopoMap': 17, 'OpenCycleMap (Thunderf.)': 18, 'Outdoors (Thunderforest)': 18, 'Esri World Imagery': 18};
         zoom = Math.min(zoom,maxZoom[map]);
-        var url = 'http://brouter.de/brouter-web/#zoom='+zoom+'&lat='+boundarybox.center.latitude+'&lon='+boundarybox.center.longitude+'&layer='+map+url+'&nogos=&profile=trekking&alternativeidx=0&format=geojson';
+        var url = 'http://brouter.de/brouter-web/#zoom='+zoom+'&lat='+roundTO(boundarybox.center.latitude,LatLonDigits)+'&lon='+roundTO(boundarybox.center.longitude,LatLonDigits)+'&layer='+map+url+'&nogos=&profile=trekking&alternativeidx=0&format=geojson';
         return encodeURI(url);
     }
 
@@ -8202,15 +8204,15 @@ var mainGC = function() {
                 prefix: "",
                 source: "listing",
                 typeid: unsafeWindow.mapLatLng.type,
-                latitude: roundTO(unsafeWindow.mapLatLng.lat,6),
-                longitude: roundTO(unsafeWindow.mapLatLng.lng,6)
+                latitude: unsafeWindow.mapLatLng.lat,
+                longitude: unsafeWindow.mapLatLng.lng
             };
             waypoints.push(ListingCoords);
          
             if ( original && unsafeWindow.mapLatLng.isUserDefined == true ) {
                 var OriginalCoords = Object.assign({}, ListingCoords); // create a copy 
-                OriginalCoords.latitude = roundTO(unsafeWindow.mapLatLng.oldLatLng[0],6);
-                OriginalCoords.longitude = roundTO(unsafeWindow.mapLatLng.oldLatLng[1],6);
+                OriginalCoords.latitude = unsafeWindow.mapLatLng.oldLatLng[0];
+                OriginalCoords.longitude = unsafeWindow.mapLatLng.oldLatLng[1];
                 OriginalCoords.source = "original";
                 waypoints.push(OriginalCoords);
             }
@@ -8222,8 +8224,8 @@ var mainGC = function() {
                     prefix: cmapAdditionalWaypoints[i].pf,
                     source: "waypoint",
                     typeid: cmapAdditionalWaypoints[i].type,
-                    latitude: roundTO(cmapAdditionalWaypoints[i].lat,6),
-                    longitude: roundTO(cmapAdditionalWaypoints[i].lng,6)
+                    latitude: cmapAdditionalWaypoints[i].lat,
+                    longitude: cmapAdditionalWaypoints[i].lng
                 };           
                 waypoints.push(waypoint);
             }
