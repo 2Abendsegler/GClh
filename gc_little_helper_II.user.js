@@ -1515,7 +1515,7 @@ var mainGC = function() {
         $('#'+openId).click(function() {openFloppsMap("");});
     }
     function openFloppsMap(map) {
-        var waypoints = extractWaypointsFromListing();
+        var waypoints = queryListingWaypoints(true);
         var link = buildFloppsMapLink(waypoints, map, false, {});
         window.open(link);
     }
@@ -1524,6 +1524,7 @@ var mainGC = function() {
         name = name.replace(/[^a-zA-Z0-9_\-]/g,'_');  // A–Z, a–z, 0–9, - und _
         return id+':'+waypoint.latitude+':'+waypoint.longitude+':'+radius+':'+name;
     }
+
     // Creates permanent link to Flopp's Map.
     function buildFloppsMapLink(waypoints, map, shortnames, status) {
         var url = "";
@@ -1535,19 +1536,21 @@ var mainGC = function() {
         var count = 0;
         for (var i=0; i<waypoints.length; i++) {
             var waypoint = waypoints[i];
-            if (waypoint !== undefined && waypoint.visible == true) {
-                if (waypoint.type == "waypoint") {
-                    var id = String.fromCharCode(65+Math.floor(count%26))+Math.floor(count/26+1);  // create Flopp's Map id: A1-A9 B1-B9 ....
-                    var radius = ((waypoint.subtype == "Physical Stage" || waypoint.subtype == "Final Location") ? "161" : "");
-                    floppsWaypoints.push(floppsMapWaypoint(waypoint, id, radius, waypoint.name));
+            if (waypoint !== undefined) {
+                if (waypoint.source == "waypoint") {
+                    var id = String.fromCharCode(65+Math.floor(count%26))+Math.floor(count/26+1);  // create Flopp's Map id: A1, B1, C1, ..., Z1, A2, B2, C3, ..
+                    var radius = ((waypoint.typeid == 219 /*Physical Stage*/ || waypoint.typeid == 220 /*Final Location*/ ) ? 161 : 0);
+                    floppsWaypoints.push(floppsMapWaypoint(waypoint, id, radius, waypoint.gccode+"_"+waypoint.prefix));
                     count++;
-                } else if (waypoint.type == "listing" && waypoint.subtype == "origin") {
+                } else if (waypoint.source == "original" ) {
                     var radius = 0;
-                    if (waypoint.cachetype == "Traditional Cache") radius = 161;
-                    else if (waypoint.cachetype == "Mystery Cache") radius = 3000;
-                    floppsWaypoints.push(floppsMapWaypoint(waypoint, "O", radius, waypoint.lookup+'_ORIGIN'));
-                } else if (waypoint.type == "listing" && waypoint.subtype == "changed") {
-                    floppsWaypoints.push(floppsMapWaypoint(waypoint, "C", 161, waypoint.lookup+'_CHANGED'));
+                    if (waypoint.typeid == 2 /* Traditional Geocache */ ) radius = 161; //  161m radius
+                    else if (waypoint.typeid == 8 /* Mystery cache */) radius = 3000; // Mystery cache 3000m radius 
+                    floppsWaypoints.push(floppsMapWaypoint(waypoint, "O", radius, waypoint.gccode+'_ORIGINAL'));
+                } else if (waypoint.source == "listing" ) {
+                    floppsWaypoints.push(floppsMapWaypoint(waypoint, "C", 161, waypoint.gccode'));
+                } else {
+                    gclh_log("buildFloppsMapLink() - unknown waypoint.source ("+waypoint.source+")")
                 }
                 Latmax = Math.max(Latmax, waypoint.latitude);
                 Latmin = Math.min(Latmin, waypoint.latitude);
@@ -1630,7 +1633,7 @@ var mainGC = function() {
         $('#'+openId).click(function() {openBRouter("OpenStreetMap");});
     }
     function openBRouter(map) {
-        var waypoints = extractWaypointsFromListing();
+        var waypoints = queryListingWaypoints(true);
         var link = buildBRouterMapLink(waypoints, map, false);
         window.open(link);
     }
@@ -1644,13 +1647,12 @@ var mainGC = function() {
         var Latmin = 90.0;
         var Lonmax = -180.0;
         var Lonmin = 180.0;
-        var count = 0;
+
         for (var i=0; i<waypoints.length; i++) {
             var waypoint = waypoints[i];
-            if (waypoint !== undefined && waypoint.visible == true) {
-                if (waypoint.type == "listing" || waypoint.type == "waypoint") {
+            if (waypoint !== undefined ) {
+                if (waypoint.source == "listing" || waypoint.source == "waypoint") {
                     brouterWaypoints.push(brouterMapWaypoint(waypoint));
-                    count++;
                 }
                 Latmax = Math.max(Latmax, waypoint.latitude);
                 Latmin = Math.min(Latmin, waypoint.latitude);
@@ -2192,6 +2194,55 @@ var mainGC = function() {
                 } catch(e) {gclh_error("addElevationToWaypoints():",e);}
             }
 
+            function prepareListingPageForElevations() {
+                // prepare cache listing
+                var waypoints = queryListingWaypoints();
+                var locations = [];
+                var classAttribute = "waypoint-elevation-na";
+                var idAttribute = "";
+                
+                // prepare cache listing - listing coordinates
+                classAttribute = "waypoint-elevation-na";
+                idAttribute = "";
+                for ( var j=0; j<waypoints.length; j++ ) {
+                    var waypoint = waypoints[j];
+                    if ( waypoint.source == "listing" ) {
+                        classAttribute = "waypoint-elevation";
+                        idAttribute = "elevation-waypoint-"+(locations.length);
+                        locations.push(waypoint.latitude+","+waypoint.longitude);
+                        break;
+                    }
+                }
+                $("#uxLatLonLink").after('<span title="Elevation">&nbsp;&nbsp;&nbsp;Elevation:&nbsp;<span class="'+classAttribute+'" id="'+idAttribute+'"></span></span>');                                
+                // prepare cache listing - waypoint table
+                var tbl = getWaypointTable();
+                if (tbl.length > 0) {
+                    tbl.find("thead > tr > th:eq(5)").after('<th scope="col">Elevation</th>');
+                    var length = tbl.find("tbody > tr").length;
+                    for (var i=0; i<length/2; i++) {
+                        var cellNote = tbl.find("tbody > tr:eq("+(i*2+1)+") > td:eq(1)");
+                        var colspan = cellNote.attr('colspan');
+                        cellNote.attr('colspan',colspan+1);
+                        var row1st = tbl.find("tbody > tr").eq(i*2);
+                        var cellPrefix = row1st.find("td:eq(2)").text().trim();
+                        
+                        classAttribute = "waypoint-elevation-na";
+                        idAttribute = "";
+                        for ( var j=0; j<waypoints.length; j++ ) {
+                            var waypoint = waypoints[j];
+                            if ( waypoint.prefix == cellPrefix && waypoint.source == "waypoint" ) {
+                                classAttribute = "waypoint-elevation";
+                                idAttribute = "elevation-waypoint-"+(locations.length);
+                                locations.push(waypoint.latitude+","+waypoint.longitude);
+                                break;
+                            }
+                        }
+                        row1st.find("td:eq(5)").after('<td><span class="'+classAttribute+'" id="'+idAttribute+'" ></span></td>');
+                    }
+                }
+                return locations;
+            }
+
             function getLocations() {
                 try {
                     var locations=[];
@@ -2231,6 +2282,7 @@ var mainGC = function() {
                 elevationServices.push(elevationServicesData[settings_secondary_elevation_service]);
             }
 
+            // this function can be re-entered
             function getElevations(serviceIndex,locations) {
                 if (serviceIndex >= elevationServices.length || elevationServices<0 ) {
                     $('.waypoint-elevation').each(function (index, value) {
@@ -2241,7 +2293,9 @@ var mainGC = function() {
                 $('.waypoint-elevation').each(function (index, value) {
                     $(this).html('<img src="' + urlImages + 'ajax-loader.gif" title="Load elevation data for the waypoint from '+elevationServices[serviceIndex]['name']+'."/>');
                 });
-
+                $('.waypoint-elevation-na').each(function (index, value) {
+                    $(this).html('n/a');
+                });
                 var locationsstring = locations.join('|');
                 GM_xmlhttpRequest({
                     method: 'GET',
@@ -2256,7 +2310,7 @@ var mainGC = function() {
                 });
             }
 
-            var locations = getLocations();
+            var locations = prepareListingPageForElevations();
             getElevations(0,locations);
         } catch(e) {gclh_error("AddElevation",e);}
     }
