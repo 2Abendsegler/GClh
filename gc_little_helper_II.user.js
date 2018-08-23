@@ -1548,7 +1548,10 @@ var mainGC = function() {
                     else if (waypoint.typeid == 8 /* Mystery cache */) radius = 3000; // Mystery cache 3000m radius 
                     floppsWaypoints.push(floppsMapWaypoint(waypoint, "O", radius, waypoint.gccode+'_ORIGINAL'));
                 } else if (waypoint.source == "listing" ) {
-                    floppsWaypoints.push(floppsMapWaypoint(waypoint, "C", 161, waypoint.gccode'));
+                    var radius = 0;
+                    if (waypoint.typeid == 2 /* Traditional Geocache */ ) radius = 161; //  161m radius
+                    else if (waypoint.typeid == 8 /* Mystery cache */) radius = 3000; // Mystery cache 3000m radius                     
+                    floppsWaypoints.push(floppsMapWaypoint(waypoint, "L", radius, waypoint.gccode));
                 } else {
                     gclh_log("buildFloppsMapLink() - unknown waypoint.source ("+waypoint.source+")")
                 }
