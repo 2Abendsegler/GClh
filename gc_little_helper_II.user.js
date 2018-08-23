@@ -1528,10 +1528,10 @@ var mainGC = function() {
             // Calculate width and height of boundary rectangle (in pixel).
             var latDelta = Math.abs(tile2lat(tileY_max,zoom)-tile2lat(tileY_min+1,zoom));
             var latPixelPerDegree = tiles_Y*256/latDelta;
-            var boundaryHeight = latPixelPerDegree*(boundarybox.Latmax-boundarybox.Latmin);
+            var boundaryHeight = latPixelPerDegree*Math.abs(boundarybox.Latmax-boundarybox.Latmin);
             var longDelta = Math.abs(tile2long(tileX_max+1,zoom)-tile2long(tileX_min,zoom));
             var longPixelPerDegree = tiles_X*256/longDelta;
-            var boundaryWidth = longPixelPerDegree*(boundarybox.Lonmax-boundarybox.Lonmin); 
+            var boundaryWidth = longPixelPerDegree*Math.abs(boundarybox.Lonmax-boundarybox.Lonmin); 
             if ((boundaryHeight < mapHeigth) && (boundaryWidth < mapWidth)) break;
         }
         return zoom;        
