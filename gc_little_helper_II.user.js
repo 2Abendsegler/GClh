@@ -2154,7 +2154,13 @@ var mainGC = function() {
                         else elevations.push(undefined);
                     }
                     addElevationToWaypoints(elevations,context);
-                } catch(e) {gclh_error("addElevationToWaypoints_GoogleElevation():",e);}
+                } catch(e) {
+                    gclh_error("addElevationToWaypoints_GoogleElevation():",e);
+                    // This it not nice but in case of invalid character at the beginning of 
+                    // responseText JSON.parse gives an exception. Exception handling have to be improved
+                    gclh_info( responseDetails.responseText );
+                    getElevations(context.retries+1,context.locations);
+                }
             }
 
             function addElevationToWaypoints_OpenElevation(responseDetails) {
@@ -2164,10 +2170,16 @@ var mainGC = function() {
                     var elevations = [];
                     for (var i=0; i<json.results.length; i++) {
                         if (json.results[i].latitude != -90) elevations.push(json.results[i].elevation);
-                        else elevations.push(undefined);                                              
+                        else elevations.push(undefined);
                     }
                     addElevationToWaypoints(elevations,context);
-                } catch(e) {gclh_error("addElevationToWaypoints_OpenElevation():",e);}
+                } catch(e) {
+                    gclh_error("addElevationToWaypoints_OpenElevation():",e);
+                    // This is not nice, but the OpenElevation service does not send any status information. 
+                    // We have to figure out, what will be send in case of error
+                    gclh_info( responseDetails.responseText );
+                    getElevations(context.retries+1,context.locations);
+                }
             }
 
             function addElevationToWaypoints(elevations,context) {
