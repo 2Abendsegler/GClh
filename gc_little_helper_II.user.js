@@ -1491,8 +1491,6 @@ var mainGC = function() {
                 tbl.append('<div class="GClhdropdown"><div id="ShowWaypointsOnFloppsMap" class="GClhdropbtn"><a>Show waypoints on Flopp\'s Map with &#8230;</a></div><div id="FloppsMapLayers" class="GClhdropdown-content"></div></div>');
                 buildFloppsMapLayers("FloppsMapLayers", "ShowWaypointsOnFloppsMap");
                 var status = {};
-                var waypoints = extractWaypointsFromListing();
-                var link = buildFloppsMapLink(waypoints, 'OSM', false, status);
                 if (status.limited == true) $(".floppsmap-warning").show();
                 else $(".floppsmap-warning").hide();
             }
@@ -8204,14 +8202,16 @@ var mainGC = function() {
         if (is_config == true) row.title += " topic\n(all topics with right mouse)";
     }
 
-// Waypoint evaluations.
+    // Waypoint evaluations.
     function getWaypointTable() {
         var tbl = $("#ctl00_ContentBody_Waypoints");
         if (tbl.length <= 0) tbl = $("#ctl00_ContentBody_WaypointList");
         return tbl;
     }
+    
     // Trim decimal value to a given number of digits.
     function roundTO(val, decimals) {return Number(Math.round(val+'e'+decimals)+'e-'+decimals);}
+    
     // Get Additional Waypoints.
     function getAdditionalWaypoints() {
         try {
