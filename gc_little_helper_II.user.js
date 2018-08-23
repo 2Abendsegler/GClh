@@ -1477,7 +1477,7 @@ var mainGC = function() {
     }
 
 // Show links which open Flopp's Map with all waypoints of a cache.
-    if (settings_show_flopps_link && is_page("cache_listing") || document.location.href.match(/\.com\/hide\/wptlist.aspx/)) {
+    if (settings_show_flopps_link && is_page("cache_listing") ) {
         try {
             // Add Flopps map link to the right sidebar.
             var linklist_for_flopps = $('.CacheDetailNavigation ul').first();
@@ -1601,7 +1601,7 @@ var mainGC = function() {
     }
 
 // Show links which open BRouter with all waypoints of a cache.
-    if (settings_show_brouter_link && is_page("cache_listing") || document.location.href.match(/\.com\/hide\/wptlist.aspx/)) {
+    if (settings_show_brouter_link && is_page("cache_listing") ) {
         try {
             // Add BRouter map link to the right sidebar.
             var linklist_for_brouter = $('.CacheDetailNavigation ul').first();
