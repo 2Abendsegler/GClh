@@ -1514,7 +1514,7 @@ var mainGC = function() {
         return boundarybox;
     }
     
-    function TileMapZoomLevelForBoundaryBox( boundarybox, widthOffset, heightOffset ) {
+    function TileMapZoomLevelForBoundaryBox( boundarybox, widthOffset, heightOffset, maxZoom ) {
         var browserZoomLevel = window.devicePixelRatio;
         var mapWidth = Math.round(window.innerWidth*browserZoomLevel)+widthOffset;
         var mapHeigth = Math.round(window.innerHeight*browserZoomLevel)+heightOffset;
@@ -1534,7 +1534,7 @@ var mainGC = function() {
             var longDelta = Math.abs(tile2long(tileX_max+1,zoom)-tile2long(tileX_min,zoom));
             var longPixelPerDegree = tiles_X*256/longDelta;
             var boundaryWidth = longPixelPerDegree*Math.abs(boundarybox.Lonmax-boundarybox.Lonmin); 
-            if ((boundaryHeight < mapHeigth) && (boundaryWidth < mapWidth)) break;
+            if ( ((boundaryHeight < mapHeigth) && (boundaryWidth < mapWidth)) && zoom<=maxZoom ) break;
         }
         return zoom;        
     }   
@@ -1595,7 +1595,10 @@ var mainGC = function() {
                 boundarybox = BoundaryBox( boundarybox, waypoint.latitude, waypoint.longitude )
             }
         }
-        var zoom = TileMapZoomLevelForBoundaryBox( boundarybox, -280, -50 );
+        
+        var maxZoom = {'OSM': 18, 'OSM/DE': 18, 'OCM': 17, 'MQ': 17, 'OUTD': 17, 'TOPO': 15, 'roadmap':20, 'terrain':20, 'hybrid': 20};
+        var zoom = TileMapZoomLevelForBoundaryBox( boundarybox, -280, -50, maxZoom[map] );
+        
         var url = "";
         status.limited = false;
         for (var i=0; i<floppsWaypoints.length; i++) {
@@ -1609,8 +1612,7 @@ var mainGC = function() {
             url += ((i == 0) ? '&m=' : '*');
             url += nextWaypoint;
         }
-        var maxZoom = {'OSM': 18, 'OSM/DE': 18, 'OCM': 17, 'MQ': 17, 'OUTD': 17, 'TOPO': 15, 'roadmap':20, 'terrain':20, 'hybrid': 20};
-        zoom = Math.min(zoom,maxZoom[map]);
+        
         var url = 'http://flopp.net/'+'?c='+roundTO(boundarybox.center.latitude,LatLonDigits)+':'+roundTO(boundarybox.center.longitude,LatLonDigits)+'&z='+zoom+'&t='+map+url;
         url += '&d=O:C';
         return encodeURI(url);
@@ -1670,7 +1672,10 @@ var mainGC = function() {
                 boundarybox = BoundaryBox( boundarybox, waypoint.latitude, waypoint.longitude )
             }
         }
-        var zoom = TileMapZoomLevelForBoundaryBox( boundarybox, 0, 0 );
+        
+        var maxZoom = {'OpenStreetMap': 18, 'OpenStreetMap.de': 17, 'OpenTopoMap': 17, 'OpenCycleMap (Thunderf.)': 18, 'Outdoors (Thunderforest)': 18, 'Esri World Imagery': 18};
+        var zoom = TileMapZoomLevelForBoundaryBox( boundarybox, 0, 0, maxZoom );
+        
         var url = "";
         for (var i=0; i<brouterWaypoints.length; i++) {
             var nextWaypoint = brouterWaypoints[i];
@@ -1678,8 +1683,6 @@ var mainGC = function() {
             url += nextWaypoint;
         }
 
-        var maxZoom = {'OpenStreetMap': 18, 'OpenStreetMap.de': 17, 'OpenTopoMap': 17, 'OpenCycleMap (Thunderf.)': 18, 'Outdoors (Thunderforest)': 18, 'Esri World Imagery': 18};
-        zoom = Math.min(zoom,maxZoom[map]);
         var url = 'http://brouter.de/brouter-web/#zoom='+zoom+'&lat='+roundTO(boundarybox.center.latitude,LatLonDigits)+'&lon='+roundTO(boundarybox.center.longitude,LatLonDigits)+'&layer='+map+url+'&nogos=&profile=trekking&alternativeidx=0&format=geojson';
         return encodeURI(url);
     }
