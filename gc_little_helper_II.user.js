@@ -1558,63 +1558,92 @@ var mainGC = function() {
         var link = buildFloppsMapLink(waypoints, map, false, {});
         window.open(link);
     }
+
     // Convert string to Flopp's Map specification.
-    function floppsMapWaypoint(waypoint, id, radius, name) {
+    function floppsMapWaypoint2String(waypoint, id, radius, name) {
         name = name.replace(/[^a-zA-Z0-9_\-]/g,'_');  // A–Z, a–z, 0–9, - und _
         return id+':'+roundTO(waypoint.latitude,LatLonDigits)+':'+roundTO(waypoint.longitude,LatLonDigits)+':'+radius+':'+name;
     }
 
     // Creates permanent link to Flopp's Map.
     function buildFloppsMapLink(waypoints, map, shortnames, status) {
-        var floppsWaypoints = [];
+        var context = {};
+        var maxZoomLevels = {'OSM': 18, 'OSM/DE': 18, 'OCM': 17, 'MQ': 17, 'OUTD': 17, 'TOPO': 15, 'roadmap':20, 'terrain':20, 'hybrid': 20};
+        
+        status.limited = false; // TODO
+        status.numbers = waypoints.length; // TODO
+        
+        var url = buildLinkToMapService( {
+            urlTemplate: 'http://flopp.net/?c={center_latitude}:{center_longitude}&z={zoom}&t={map}&m={waypoints}&d=O:C',
+            map : map,
+            maxZoomLevel :  maxZoomLevels[map],
+            waypoints : waypoints,
+            waypointSeparator : '*',
+            waypointFunction : floppsMapWaypoint,
+            context : context,
+            mapOffset : { width: -280, height: -50 }
+        });
+        return url;
+    }
+
+    function floppsMapWaypoint( waypoint, index, context ) {
+        if ( context == undefined ) context = {};
+        if ( context.flopps == undefined ) context.flopps = {};
+        if ( context.flopps.count == undefined ) context.flopps.count = 0;
+        var value = "";
+        
+        if (waypoint.source == "waypoint") {
+            var id = String.fromCharCode(65+Math.floor(context.flopps.count%26))+Math.floor(context.flopps.count/26+1);  // create Flopp's Map id: A1, B1, C1, ..., Z1, A2, B2, C3, ..
+            var radius = ((waypoint.typeid == 219 /*Physical Stage*/ || waypoint.typeid == 220 /*Final Location*/ ) ? 161 : 0);
+            value = floppsMapWaypoint2String(waypoint, id, radius, waypoint.gccode+"_"+waypoint.prefix);
+            context.flopps.count++;
+        } else if (waypoint.source == "original" ) {
+            var radius = 0;
+            if (waypoint.typeid == 2 /* Traditional Geocache */ ) radius = 161; //  161m radius
+            else if (waypoint.typeid == 8 /* Mystery cache */) radius = 3000; // Mystery cache 3000m radius 
+            value = floppsMapWaypoint2String(waypoint, "O", radius, waypoint.gccode+'_ORIGINAL');
+        } else if (waypoint.source == "listing" ) {
+            var radius = 0;
+            if (waypoint.typeid == 2 /* Traditional Geocache */ ) radius = 161; //  161m radius
+            else if (waypoint.typeid == 8 /* Mystery cache */) radius = 3000; // Mystery cache 3000m radius
+            value = floppsMapWaypoint2String(waypoint, "L", radius, waypoint.gccode);
+        } else {
+            gclh_log("floppsMapWaypoint() - unknown waypoint.source ("+waypoint.source+")")
+        }  
+        return value;
+    }
+    
+    function buildLinkToMapService( data ) {
+        var url = data.urlTemplate;
+        var status = {}; // TODO
+        var waypointString = "";
         var boundarybox = undefined;
-        var count = 0;
         
-        for (var i=0; i<waypoints.length; i++) {
-            var waypoint = waypoints[i];
-            if (waypoint !== undefined) {
-                if (waypoint.source == "waypoint") {
-                    var id = String.fromCharCode(65+Math.floor(count%26))+Math.floor(count/26+1);  // create Flopp's Map id: A1, B1, C1, ..., Z1, A2, B2, C3, ..
-                    var radius = ((waypoint.typeid == 219 /*Physical Stage*/ || waypoint.typeid == 220 /*Final Location*/ ) ? 161 : 0);
-                    floppsWaypoints.push(floppsMapWaypoint(waypoint, id, radius, waypoint.gccode+"_"+waypoint.prefix));
-                    count++;
-                } else if (waypoint.source == "original" ) {
-                    var radius = 0;
-                    if (waypoint.typeid == 2 /* Traditional Geocache */ ) radius = 161; //  161m radius
-                    else if (waypoint.typeid == 8 /* Mystery cache */) radius = 3000; // Mystery cache 3000m radius 
-                    floppsWaypoints.push(floppsMapWaypoint(waypoint, "O", radius, waypoint.gccode+'_ORIGINAL'));
-                } else if (waypoint.source == "listing" ) {
-                    var radius = 0;
-                    if (waypoint.typeid == 2 /* Traditional Geocache */ ) radius = 161; //  161m radius
-                    else if (waypoint.typeid == 8 /* Mystery cache */) radius = 3000; // Mystery cache 3000m radius
-                    floppsWaypoints.push(floppsMapWaypoint(waypoint, "L", radius, waypoint.gccode));
-                } else {
-                    gclh_log("buildFloppsMapLink() - unknown waypoint.source ("+waypoint.source+")")
-                }
-                boundarybox = BoundaryBox( boundarybox, waypoint.latitude, waypoint.longitude )
-            }
-        }
+        if ( data.context == undefined ) data.context = {};
         
-        var maxZoom = {'OSM': 18, 'OSM/DE': 18, 'OCM': 17, 'MQ': 17, 'OUTD': 17, 'TOPO': 15, 'roadmap':20, 'terrain':20, 'hybrid': 20};
-        var zoom = TileMapZoomLevelForBoundaryBox( boundarybox, -280, -50, maxZoom[map] );
+        status.limited = false; // TODO
         
-        var url = "";
-        status.limited = false;
-        for (var i=0; i<floppsWaypoints.length; i++) {
-            var nextWaypoint = floppsWaypoints[i];
-            // Limited the waypoint part to 2000 (+3) characters.
-            if ((url.length+nextWaypoint.length+1)>2003) {
+        for (var i=0; i<data.waypoints.length; i++) {
+            var stringWpt = data.waypointFunction( data.waypoints[i], i, data.context );
+            if ((waypointString.length+stringWpt.length+1)>2003) { // Limited the waypoint part to 2000 (+3) characters.
                 status.limited = true;
                 status.numbers = i;
                 break;
+            } else {
+                waypointString += (i?data.waypointSeparator:'') + stringWpt; 
+                boundarybox = BoundaryBox( boundarybox, data.waypoints[i].latitude, data.waypoints[i].longitude );
             }
-            url += ((i == 0) ? '&m=' : '*');
-            url += nextWaypoint;
         }
         
-        url = 'http://flopp.net/'+'?c='+roundTO(boundarybox.center.latitude,LatLonDigits)+':'+roundTO(boundarybox.center.longitude,LatLonDigits)+'&z='+zoom+'&t='+map+url;
-        url += '&d=O:C';
-        return encodeURI(url);
+        var zoom = TileMapZoomLevelForBoundaryBox( boundarybox, data.mapOffset.width, data.mapOffset.height, data.maxZoomLevel );
+        
+        url = url.replace("{center_latitude}",roundTO( boundarybox.center.latitude,LatLonDigits));
+        url = url.replace("{center_longitude}",roundTO( boundarybox.center.longitude,LatLonDigits));
+        url = url.replace("{zoom}",zoom);
+        url = url.replace("{map}",data.map);
+        url = url.replace("{waypoints}",waypointString);        
+    
+        return encodeURI(url)
     }
 
 // Show links which open BRouter with all waypoints of a cache.
