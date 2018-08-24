@@ -1536,7 +1536,7 @@ var mainGC = function() {
             var boundaryWidth = longPixelPerDegree*Math.abs(boundarybox.Lonmax-boundarybox.Lonmin); 
             if ( ((boundaryHeight < mapHeigth) && (boundaryWidth < mapWidth)) && zoom<=maxZoom ) break;
         }
-        return zoom;        
+        return zoom;
     }   
     
     // Flopp's Map link.
@@ -1559,11 +1559,7 @@ var mainGC = function() {
         window.open(link);
     }
 
-    // Convert string to Flopp's Map specification.
-    function floppsMapWaypoint2String(waypoint, id, radius, name) {
-        name = name.replace(/[^a-zA-Z0-9_\-]/g,'_');  // A–Z, a–z, 0–9, - und _
-        return id+':'+roundTO(waypoint.latitude,LatLonDigits)+':'+roundTO(waypoint.longitude,LatLonDigits)+':'+radius+':'+name;
-    }
+
 
     // Creates permanent link to Flopp's Map.
     function buildFloppsMapLink(waypoints, map, shortnames, status) {
@@ -1591,6 +1587,12 @@ var mainGC = function() {
         if ( context.flopps == undefined ) context.flopps = {};
         if ( context.flopps.count == undefined ) context.flopps.count = 0;
         var value = "";
+        
+        // Convert string to Flopp's Map specification.
+        function floppsMapWaypoint2String(waypoint, id, radius, name) {
+            name = name.replace(/[^a-zA-Z0-9_\-]/g,'_');  // A–Z, a–z, 0–9, - und _
+            return id+':'+roundTO(waypoint.latitude,LatLonDigits)+':'+roundTO(waypoint.longitude,LatLonDigits)+':'+radius+':'+name;
+        }
         
         if (waypoint.source == "waypoint") {
             var id = String.fromCharCode(65+Math.floor(context.flopps.count%26))+Math.floor(context.flopps.count/26+1);  // create Flopp's Map id: A1, B1, C1, ..., Z1, A2, B2, C3, ..
