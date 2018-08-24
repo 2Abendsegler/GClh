@@ -1632,11 +1632,11 @@ var mainGC = function() {
                 status.numbers = i;
                 break;
             } else {
-                waypointString += (i?data.waypointSeparator:'') + stringWpt; 
+                waypointString += (i?data.waypointSeparator:'') + stringWpt;
                 boundarybox = BoundaryBox( boundarybox, data.waypoints[i].latitude, data.waypoints[i].longitude );
             }
         }
-        
+
         var zoom = TileMapZoomLevelForBoundaryBox( boundarybox, data.mapOffset.width, data.mapOffset.height, data.maxZoomLevel );
         
         url = url.replace("{center_latitude}",roundTO( boundarybox.center.latitude,LatLonDigits));
@@ -1685,32 +1685,32 @@ var mainGC = function() {
         var link = buildBRouterMapLink(waypoints, map, false);
         window.open(link);
     }
-    // Convert string to BRouter specification.
-    function brouterMapWaypoint(waypoint) {return roundTO(waypoint.longitude,LatLonDigits)+','+roundTO(waypoint.latitude,LatLonDigits);}
+    
+    function brouterWaypoint( waypoint, index, context ) {
+        var value = "";        
+        if ( context.brouter == undefined ) context.brouter = {};
+        if (waypoint.source == "listing" || waypoint.source == "waypoint") {
+            value = roundTO(waypoint.longitude,LatLonDigits)+','+roundTO(waypoint.latitude,LatLonDigits);
+        }        
+        return value;
+    }
+       
     // Build BRouter link.
     function buildBRouterMapLink(waypoints, map, shortnames) {
-        var brouterWaypoints = [];
-        var boundarybox = undefined;
-
-        for (var i=0; i<waypoints.length; i++) {
-            var waypoint = waypoints[i];
-            if (waypoint !== undefined ) {
-                if (waypoint.source == "listing" || waypoint.source == "waypoint") {
-                    brouterWaypoints.push(brouterMapWaypoint(waypoint));
-                }
-                boundarybox = BoundaryBox( boundarybox, waypoint.latitude, waypoint.longitude )
-            }
-        }
-        
-        var maxZoom = {'OpenStreetMap': 18, 'OpenStreetMap.de': 17, 'OpenTopoMap': 17, 'OpenCycleMap (Thunderf.)': 18, 'Outdoors (Thunderforest)': 18, 'Esri World Imagery': 18};
-        var zoom = TileMapZoomLevelForBoundaryBox( boundarybox, 0, 0, maxZoom );
-        
-        var url = "";
-        for (var i=0; i<brouterWaypoints.length; i++) {
-            url += ((i == 0) ? '&lonlats=' : '|') + brouterWaypoints[i];
-        }
-        url = 'http://brouter.de/brouter-web/#zoom='+zoom+'&lat='+roundTO(boundarybox.center.latitude,LatLonDigits)+'&lon='+roundTO(boundarybox.center.longitude,LatLonDigits)+'&layer='+map+url+'&nogos=&profile=trekking&alternativeidx=0&format=geojson';
-        return encodeURI(url);
+        var context = {};
+        var maxZoomLevels = {'OpenStreetMap': 18, 'OpenStreetMap.de': 17, 'OpenTopoMap': 17, 'OpenCycleMap (Thunderf.)': 18, 'Outdoors (Thunderforest)': 18, 'Esri World Imagery': 18};
+             
+        var url = buildLinkToMapService( {
+            urlTemplate: 'http://brouter.de/brouter-web/#zoom={zoom}&lat={center_latitude}&lon={center_longitude}&layer={map}+&lonlats={waypoints}&nogos=&profile=trekking&alternativeidx=0&format=geojson',
+            map : map,
+            maxZoomLevel :  maxZoomLevels[map],
+            waypoints : waypoints,
+            waypointSeparator : '|',
+            waypointFunction : brouterWaypoint,
+            context : context,
+            mapOffset : { width: 0, height: 0 }
+        });
+        return url;
     }
 
 // CSS for BRouter and Flopp's Map links.
