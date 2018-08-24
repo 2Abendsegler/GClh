@@ -1566,7 +1566,6 @@ var mainGC = function() {
 
     // Creates permanent link to Flopp's Map.
     function buildFloppsMapLink(waypoints, map, shortnames, status) {
-        var url = "";
         var floppsWaypoints = [];
         var boundarybox = undefined;
         var count = 0;
@@ -1613,7 +1612,7 @@ var mainGC = function() {
             url += nextWaypoint;
         }
         
-        var url = 'http://flopp.net/'+'?c='+roundTO(boundarybox.center.latitude,LatLonDigits)+':'+roundTO(boundarybox.center.longitude,LatLonDigits)+'&z='+zoom+'&t='+map+url;
+        url = 'http://flopp.net/'+'?c='+roundTO(boundarybox.center.latitude,LatLonDigits)+':'+roundTO(boundarybox.center.longitude,LatLonDigits)+'&z='+zoom+'&t='+map+url;
         url += '&d=O:C';
         return encodeURI(url);
     }
@@ -1659,7 +1658,6 @@ var mainGC = function() {
     function brouterMapWaypoint(waypoint) {return roundTO(waypoint.longitude,LatLonDigits)+','+roundTO(waypoint.latitude,LatLonDigits);}
     // Build BRouter link.
     function buildBRouterMapLink(waypoints, map, shortnames) {
-        var url = "";
         var brouterWaypoints = [];
         var boundarybox = undefined;
 
@@ -1678,12 +1676,9 @@ var mainGC = function() {
         
         var url = "";
         for (var i=0; i<brouterWaypoints.length; i++) {
-            var nextWaypoint = brouterWaypoints[i];
-            url += ((i == 0) ? '&lonlats=' : '|');
-            url += nextWaypoint;
+            url += ((i == 0) ? '&lonlats=' : '|') + brouterWaypoints[i];
         }
-
-        var url = 'http://brouter.de/brouter-web/#zoom='+zoom+'&lat='+roundTO(boundarybox.center.latitude,LatLonDigits)+'&lon='+roundTO(boundarybox.center.longitude,LatLonDigits)+'&layer='+map+url+'&nogos=&profile=trekking&alternativeidx=0&format=geojson';
+        url = 'http://brouter.de/brouter-web/#zoom='+zoom+'&lat='+roundTO(boundarybox.center.latitude,LatLonDigits)+'&lon='+roundTO(boundarybox.center.longitude,LatLonDigits)+'&layer='+map+url+'&nogos=&profile=trekking&alternativeidx=0&format=geojson';
         return encodeURI(url);
     }
 
