@@ -1175,9 +1175,10 @@ var mainGC = function() {
                 if ($('#calLinks').find('a[title*="Google"]')[0]) {
                     var calL = $('#calLinks').find('a[title*="Google"]')[0];
                     if (calL && calL.href) calL.href = calL.href.replace(/&det(.*)&loc/, "&loc").replace(/%20\(http/, "&details=http").replace(/\)&spr/, "&spr");
+                } else {
+                    waitCount++;
+                    if (waitCount <= 20) setTimeout(function(){impCalLink(waitCount);}, 100);
                 }
-                waitCount++;
-                if (impCalLink <= 20) setTimeout(function(){impCalLink(waitCount);}, 100);
             }
             impCalLink(0);
         } catch(e) {gclh_error("Improve calendar link",e);}
