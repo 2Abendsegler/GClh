@@ -6193,6 +6193,8 @@ var mainGC = function() {
                     + "div.popup_additional_info span.favi_points svg, div.popup_additional_info span.tackables svg{position: relative;top: 4px;}";
             css += ".leaflet-popup-content-wrapper, .leaflet-popup-close-button {margin: 16px 3px 0px 13px;}";
             if (browser == 'firefox') css += ".gclh_owner {max-width: 110px;} .map-item-row-1 h4 a {max-width: 295px;} .gclh_owner, .map-item-row-1 h4 a {display: inline-block; white-space: nowrap; overflow: -moz-hidden-unscrollable; text-overflow: ellipsis;}";
+            css += "#box > div > dl:nth-child(3){width:60%;}";
+            css += "#box > div > dl:nth-child(4){width:40%;}";
             appendCssStyle(css);
 
             // create an observer instance
