@@ -23,8 +23,8 @@ If applicable, add screenshots to help explain your problem.
 
 **Desktop (please complete the following information):**
  - OS: [e.g. Windows, MacOS, Linux]
- - Browser [e.g. firefox, chrome, safari]
- - Version [e.g. 22]
+ - Browser: [e.g. firefox, chrome, safari]
+ - Version: [e.g. 22]
 
 **Additional context**
 Add any other context about the problem here.
