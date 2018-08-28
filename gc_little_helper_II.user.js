@@ -1557,7 +1557,7 @@ var mainGC = function() {
     }
     function openFloppsMap(map) {
         var context = {};
-        var maxZoomLevels = {'OSM': 18, 'OSM/DE': 18, 'OCM': 17, 'MQ': 17, 'OUTD': 17, 'TOPO': 15, 'roadmap':20, 'terrain':20, 'hybrid': 20};
+        var maxZoomLevels = {'OSM': 18, 'OSM/DE': 18, 'OCM': 17, 'TOPO': 15, 'roadmap':20, 'satellite': 20, 'terrain':20, 'hybrid': 20};
 
         var waypoints = queryListingWaypoints(true);
         var url = buildLinkToMapService( {
