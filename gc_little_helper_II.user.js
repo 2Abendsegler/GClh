@@ -2848,7 +2848,7 @@ var mainGC = function() {
                 // Header:
                 css += ".pq-info-wrapper {margin: 0; padding: 10px 0 0 0; background-color: unset; box-shadow: unset;} .pq-info-wrapper p:last-child {padding: 0;}";
                 css += "#Content .ui-tabs {margin-top: 3.4em;} .ui-tabs-active {box-shadow: 2px 0px 0 rgba(0,0,0,.2);} .ui-tabs .ui-tabs-nav li {margin-right: 4px;}";
-                css += ".Success {margin: 5px 0 0 0;} #Tabs {box-shadow: 2px 2px 0 rgba(0,0,0,.2);}";
+                css += ".Success {margin: 5px 0 0 0;}";
                 css += ".BreadcrumbWidget p {margin-top: 0;}";
                 if ($('#ctl00_ContentBody_lbHeading').length > 0 && $('#divContentMain h2').length > 0) {
                     var h3 = document.createElement("h3");
@@ -2859,7 +2859,11 @@ var mainGC = function() {
                 if ($('.pq-info-wrapper')[0] && $('.pq-info-wrapper')[0].children.length > 2) {
                     for (var i = 0; i <= 2; i++) {$('.pq-info-wrapper')[0].children[0].remove();}
                 }
-                $('#ActivePQs, #DownloadablePQs').each(function() {this.children[0].setAttribute("style", "margin: -25px 2px 0 0; float: right;");});
+                $('#ActivePQs, #DownloadablePQs').each(function() {
+                    this.setAttribute("style", "box-shadow: 2px 2px 0 rgba(0,0,0,.2);");
+                    this.children[0].setAttribute("style", "margin: -35px -15px 0 0; float: right;");
+                    this.children[0].children[0].setAttribute("style", "font-size: .6rem;");
+                });
                 // Table active PQs:
                 css += "table {margin-bottom: 0;} table.Table, table.Table th, table.Table td {padding: 5px; border: 1px solid #fff;}";
                 css += "table.Table tr {line-height: 16px;} table.Table th img, table.Table td img {vertical-align: sub;}";
