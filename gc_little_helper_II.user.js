@@ -2570,7 +2570,11 @@ var mainGC = function() {
 
                     $(".trackables-list").append(li);
 
-                    appendCssStyle(".tb_action_buttons{text-align:right;} .tb_action_buttons a{margin-right: 15px; text-decoration:underline;} .tb_action_buttons a:last-child{margin-right:0px;}");
+                    var css = 
+                        ".tb_action_buttons{text-align:right;} " +
+                        ".tb_action_buttons a{margin-right: 12px; text-decoration:underline;}" +
+                        ".tb_action_buttons a:last-child{margin-right:0px;}"
+                    appendCssStyle(css);
                   
                     // Open Trackable Inventory
                     if(settings_auto_open_tb_inventory_list){
