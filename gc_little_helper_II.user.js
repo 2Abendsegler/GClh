@@ -6479,6 +6479,7 @@ var mainGC = function() {
                 }
             }
         }
+        if ($('#ctl00_ContentBody_ProfilePanel1_lnkStatistics').length == 0 && isOwnStatisticsPage()) appendCssStyle("dl.ProfileDataList dt {float: left; clear: both; margin-right: 10px;}");
     } catch(e) {gclh_error("Improve cache matrix:",e);}
 
 // Improve own statistics page and own profile page with own log statistic.
