@@ -2539,16 +2539,48 @@ var mainGC = function() {
     if (document.location.href.match(/\.com\/play\/geocache\/gc\w+\/log/)) {
         try {
             var checkExistTBHeader = setInterval(function() {
-               if ($('#tbHeader .trackables-header').length) {
-                  $(".trackables-list").append('<li id="cloned_tb_header"></li>');
-                  $("#tbHeader").clone().insertAfter("#cloned_tb_header");
+                if ($('#tbHeader .trackables-header').length) {
+                
+                    var visit_link = document.createElement("a");
+                    visit_link.setAttribute("href", "javascript:void(0);");
+                    visit_link.appendChild(document.createTextNode('Visit all'));
+                    visit_link.addEventListener("click", function(){
+                        $('#tbHeader .btn-visit').trigger( "click" );
+                    });
 
-                  // Open Trackable Inventory
-                  if(settings_auto_open_tb_inventory_list){
-                    $("#trackablesPanel button.btn-handle").trigger( "click" );
-                  }
+                    var drop_link = document.createElement("a");
+                    drop_link.setAttribute("href", "javascript:void(0);");
+                    drop_link.appendChild(document.createTextNode('Drop all'));
+                    drop_link.addEventListener("click", function(){
+                        $('#tbHeader .btn-drop').trigger( "click" );
+                    });
 
-                  clearInterval(checkExistTBHeader);
+                    var clear_link = document.createElement("a");
+                    clear_link.setAttribute("href", "javascript:void(0);");
+                    clear_link.appendChild(document.createTextNode('Clear all'));
+                    clear_link.addEventListener("click", function(){
+                        $('#tbHeader .btn-clear').trigger( "click" );
+                    });
+
+                    var li = document.createElement("li");
+                    li.classList.add('tb_action_buttons');
+                    li.appendChild(clear_link);
+                    li.appendChild(visit_link);
+                    li.appendChild(drop_link);
+
+                    $(".trackables-list").append(li);
+
+                    var css = 
+                        ".tb_action_buttons{text-align:right;} " +
+                        ".tb_action_buttons a{margin-right: 12px; text-decoration:underline;}" +
+                        ".tb_action_buttons a:last-child{margin-right:0px;}"
+                    appendCssStyle(css);
+                  
+                    // Open Trackable Inventory
+                    if(settings_auto_open_tb_inventory_list){
+                        $("#trackablesPanel button.btn-handle").trigger( "click" );
+                    }
+                    clearInterval(checkExistTBHeader);
                }
             }, 500); // check every 500ms
         } catch(e) {gclh_error("Logpage Replicate TB-Header",e);}
