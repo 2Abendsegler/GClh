@@ -1480,29 +1480,101 @@ var mainGC = function() {
 
     const LatLonDigits = 6;
 
-// Show links which open Flopp's Map with all waypoints of a cache.
-    if (settings_show_flopps_link && is_page("cache_listing") ) {
-        try {
-            // Add Flopps map link to the right sidebar.
-            var linklist_for_flopps = $('.CacheDetailNavigation ul').first();
-            linklist_for_flopps.append('<li><div class="GClhdropdown"><a id="ShowWaypointsOnFloppsMap_linklist" class="GClhdropbtn">Show on Flopp\'s Map</a><div id="FloppsMapLayers_linklist" class="GClhdropdown-content"></div></div></li>');
-            buildFloppsMapLayers("FloppsMapLayers_linklist", "ShowWaypointsOnFloppsMap_linklist");
-            // Add Flopps map link under waypoints.
-            var tbl = getWaypointTable();
-            if (tbl.length > 0) {
-                tbl = tbl.next("p");
-                if ($('#ctl00_ContentBody_Waypoints_uxShowHiddenCoordinates')) tbl.append('<br>');
-                tbl.append('<div class="GClhdropdown"><div id="ShowWaypointsOnFloppsMap" class="GClhdropbtn"><a>Show waypoints on Flopp\'s Map with &#8230;</a></div><div id="FloppsMapLayers" class="GClhdropdown-content"></div></div>');
-                buildFloppsMapLayers("FloppsMapLayers", "ShowWaypointsOnFloppsMap");
-                var status = {};
-                if (status.limited == true) $(".floppsmap-warning").show();
-                else $(".floppsmap-warning").hide();
+    function mapservice_links( serviceName, linkTextSidebar, linkTextWaypointTable, service_configuration, ) {
+        var css = "";
+        css += "."+serviceName+"-content-layer {";
+        css += "  color: black;";
+        css += "  padding: 5px 16px 5px 16px;";
+        css += "  text-decoration: none;";
+        css += "  display: block;}";
+        css += "."+serviceName+"-content-layer:hover {";
+        css += "  background-color: #e1e1e1;";
+        css += "  cursor: pointer;}";
+        css += "#ShowWaypointsOnFloppsMap_linklist{"; // TODO
+        css += "  background-image: url(" + global_flopps_map_icon + ")}"; // TODO
+        appendCssStyle(css);
+
+        var html = "";
+        html += '<div class="GClhdropdown">';
+        html += '<a class="GClhdropbtn mapservice_click-{serviceName}" data-map="'+service_configuration.defaultMap+'">{linkText}</a>';
+        html += '<div class="GClhdropdown-content">';
+        for( var layer in service_configuration.layers ) {
+            html += '<div class="{serviceName}-content-layer mapservice_click-{serviceName}" data-map="'+layer+'">'+service_configuration.layers[layer].displayName+'</div>';
+        }
+        html += '</div>'
+        html += '</div>';
+        html = html.replace(/{serviceName}/g,serviceName);
+
+        // Add map service link to the right sidebar.
+        $('.CacheDetailNavigation ul').first().append('<li>'+html.replace('{linkText}',linkTextSidebar)+'</li>');
+
+        // Add map service link under waypoint table
+        var tbl = getWaypointTable();
+        if (tbl.length > 0) {
+            tbl.next("p").append('<br>'+html.replace('{linkText}',linkTextWaypointTable));
+        }
+
+        $('.mapservice_click-'+serviceName).click(function() {
+            var waypoints = queryListingWaypoints(true);
+            var map = $(this).data('map');
+            var data = {
+                urlTemplate: service_configuration.urlTemplate,
+                map : map,
+                maxZoomLevel : service_configuration.layers[map].maxZoom,
+                waypoints : waypoints,
+                waypointSeparator : service_configuration.waypointSeparator,
+                waypointFunction : service_configuration.waypointFunction,
+                context : service_configuration.context,
+                mapOffset : service_configuration.mapOffset
+            };
+
+            var url = data.urlTemplate;
+            var waypointString = "";
+            var boundarybox = undefined;
+
+            if ( data.context == undefined ) data.context = {};
+            if ( data.temp == undefined ) data.context.temp = {};
+            data.context.temp.count = 0;
+
+            for (var i=0; i<data.waypoints.length; i++) {
+                var waypoint = data.waypoints[i];
+                var value = "";
+                var radius = 0;
+
+                if (waypoint.source == "waypoint") {
+                    data.context.temp.count++;
+                    radius = ((waypoint.typeid == 219 /*Physical Stage*/ || waypoint.typeid == 220 /*Final Location*/ ) ? 161 : 0);
+                } else if (waypoint.source == "original" ) {
+                    radius = 0;
+                    if (waypoint.typeid == 2 /* Traditional Geocache */ ) radius = 161; //  161m radius
+                    else if (waypoint.typeid == 8 /* Mystery cache */) radius = 3000; // Mystery cache 3000m radius
+                } else if (waypoint.source == "listing" ) {
+                    radius = 0;
+                    if (waypoint.typeid == 2 /* Traditional Geocache */ ) radius = 161; //  161m radius
+                    else if (waypoint.typeid == 8 /* Mystery cache */) radius = 3000; // Mystery cache 3000m radius
+                } else {
+                    gclh_log("xxxWaypoint() - unknown waypoint.source ("+waypoint.source+")")
+                }
+
+                value = data.waypointFunction( waypoint, radius, data.context );
+                waypointString += (i?data.waypointSeparator:'') + value;
+                boundarybox = BoundaryBox( boundarybox, data.waypoints[i].latitude, data.waypoints[i].longitude );
             }
-            $('.FloppsMap-content-layer').click(function() {
-                var map = $(this).data('map');
-                openFloppsMap(map);
-            });
-        } catch(e) {gclh_error("Show Flopp's Map links:",e);}
+
+            var zoom = TileMapZoomLevelForBoundaryBox( boundarybox, data.mapOffset.width, data.mapOffset.height, data.maxZoomLevel );
+
+            url = url.replace("{center_latitude}",roundTO( boundarybox.center.latitude,LatLonDigits));
+            url = url.replace("{center_longitude}",roundTO( boundarybox.center.longitude,LatLonDigits));
+            url = url.replace("{zoom}",zoom);
+            url = url.replace("{map}",data.map);
+            url = url.replace("{waypoints}",waypointString);
+            url = encodeURI(url);
+
+            if ( url.length > 2000 ) {
+                alert("Pay attention the URL is very long. Data loss is possible.")
+            }
+            window.open(url);
+        });
     }
 
     function BoundaryBox( boundarybox, latitude, longitude ) {
@@ -1541,168 +1613,40 @@ var mainGC = function() {
         return zoom;
     }
 
-    // Flopp's Map link.
-    function buildFloppsMapLayers(id, openId) {
-        var div = '<div class="FloppsMap-content-layer" data-map=';
-        $('#'+id).append('<div class="GClhdropdown-content-info floppsmap-warning"><b>WARNING:</b> There are too many waypoints in the listing. Flopp\'s Map allows only a limited number of waypoints. Not all waypoints are shown.</div>');
-        $('#'+id).append(div+'"OSM">Openstreetmap</div>');
-        $('#'+id).append(div+'"OSM/DE">German Style</div>');
-        $('#'+id).append(div+'"OCM">OpenCycleMap</div>');
-        $('#'+id).append(div+'"TOPO">OpenTopMap</div>');
-        $('#'+id).append(div+'"roadmap">Google Maps</div>');
-        $('#'+id).append(div+'"satellite">Google Maps Satellite</div>');
-        $('#'+id).append(div+'"hybrid">Google Maps Hybrid</div>');
-        $('#'+id).append(div+'"terrain">Google Maps Terrain</div>');
-        $('#'+openId).click(function() {openFloppsMap("");});
-    }
-    function openFloppsMap(map) {
-        var context = {};
-        var maxZoomLevels = {'OSM': 18, 'OSM/DE': 18, 'OCM': 17, 'TOPO': 15, 'roadmap':20, 'satellite': 20, 'terrain':20, 'hybrid': 20};
+    function PrefixCode( code, prefix ) {return normalizeName(prefix+gccode.substring(2));}
+    function normalizeName( name ) {return name.replace(/[^a-zA-Z0-9_\-]/g,'_');}
 
-        var waypoints = queryListingWaypoints(true);
-        var url = buildLinkToMapService( {
-            urlTemplate: 'http://flopp.net/?c={center_latitude}:{center_longitude}&z={zoom}&t={map}&m={waypoints}&d=O:C',
-            map : map,
-            maxZoomLevel :  maxZoomLevels[map],
-            waypoints : waypoints,
-            waypointSeparator : '*',
-            waypointFunction : floppsMapWaypoint,
-            context : context,
-            mapOffset : { width: -280, height: -50 }
-        });
-
-        window.open(url);
-    }
-
-    function floppsMapWaypoint( waypoint, index, context ) {
-        if ( context == undefined ) context = {};
-        if ( context.flopps == undefined ) context.flopps = {};
-        if ( context.flopps.count == undefined ) context.flopps.count = 0;
-        var value = "";
-
-        // Convert string to Flopp's Map specification.
-        function floppsMapWaypoint2String(waypoint, id, radius, name) {
-            name = name.replace(/[^a-zA-Z0-9_\-]/g,'_');  // A–Z, a–z, 0–9, - und _
-            return id+':'+roundTO(waypoint.latitude,LatLonDigits)+':'+roundTO(waypoint.longitude,LatLonDigits)+':'+radius+':'+name;
-        }
-
+    function floppsMapWaypoint(waypoint, radius, context) {
+        var id = "";
+        var name = "";
         if (waypoint.source == "waypoint") {
-            var id = String.fromCharCode(65+Math.floor(context.flopps.count%26))+Math.floor(context.flopps.count/26+1);  // create Flopp's Map id: A1, B1, C1, ..., Z1, A2, B2, C3, ..
-            var radius = ((waypoint.typeid == 219 /*Physical Stage*/ || waypoint.typeid == 220 /*Final Location*/ ) ? 161 : 0);
-            value = floppsMapWaypoint2String(waypoint, id, radius, waypoint.gccode+"_"+waypoint.prefix);
-            context.flopps.count++;
+            id = String.fromCharCode(65+Math.floor(context.temp.count%26))+Math.floor(context.temp.count/26+1);  // create Flopp's Map id: A1, B1, C1, ..., Z1, A2, B2, C3, ..
+            name = PrefixCode(waypoint.gccode,waypoint.prefix);
         } else if (waypoint.source == "original" ) {
-            var radius = 0;
-            if (waypoint.typeid == 2 /* Traditional Geocache */ ) radius = 161; //  161m radius
-            else if (waypoint.typeid == 8 /* Mystery cache */) radius = 3000; // Mystery cache 3000m radius
-            value = floppsMapWaypoint2String(waypoint, "O", radius, waypoint.gccode+'_ORIGINAL');
+            id = "O";
+            name = waypoint.gccode+'_ORIGINAL';
         } else if (waypoint.source == "listing" ) {
-            var radius = 0;
-            if (waypoint.typeid == 2 /* Traditional Geocache */ ) radius = 161; //  161m radius
-            else if (waypoint.typeid == 8 /* Mystery cache */) radius = 3000; // Mystery cache 3000m radius
-            value = floppsMapWaypoint2String(waypoint, "L", radius, waypoint.gccode);
-        } else {
-            gclh_log("floppsMapWaypoint() - unknown waypoint.source ("+waypoint.source+")")
+            id = "L";
+            name = waypoint.gccode;
         }
-        return value;
+        return id+':'+roundTO(waypoint.latitude,LatLonDigits)+':'+roundTO(waypoint.longitude,LatLonDigits)+':'+radius+':'+name;
     }
 
-    function buildLinkToMapService( data ) {
-        var url = data.urlTemplate;
-        var status = {}; // TODO
-        var waypointString = "";
-        var boundarybox = undefined;
 
-        if ( data.context == undefined ) data.context = {};
 
-        status.limited = false; // TODO
-
-        for (var i=0; i<data.waypoints.length; i++) {
-            var stringWpt = data.waypointFunction( data.waypoints[i], i, data.context );
-            if ((waypointString.length+stringWpt.length+1)>2003) { // Limited the waypoint part to 2000 (+3) characters.
-                status.limited = true;
-                status.numbers = i;
-                break;
-            } else {
-                waypointString += (i?data.waypointSeparator:'') + stringWpt;
-                boundarybox = BoundaryBox( boundarybox, data.waypoints[i].latitude, data.waypoints[i].longitude );
-            }
-        }
-
-        var zoom = TileMapZoomLevelForBoundaryBox( boundarybox, data.mapOffset.width, data.mapOffset.height, data.maxZoomLevel );
-
-        url = url.replace("{center_latitude}",roundTO( boundarybox.center.latitude,LatLonDigits));
-        url = url.replace("{center_longitude}",roundTO( boundarybox.center.longitude,LatLonDigits));
-        url = url.replace("{zoom}",zoom);
-        url = url.replace("{map}",data.map);
-        url = url.replace("{waypoints}",waypointString);
-
-        return encodeURI(url)
-    }
-
-// Show links which open BRouter with all waypoints of a cache.
-    if (settings_show_brouter_link && is_page("cache_listing") ) {
-        try {
-            // Add BRouter map link to the right sidebar.
-            var linklist_for_brouter = $('.CacheDetailNavigation ul').first();
-            linklist_for_brouter.append('<li><div class="GClhdropdown"><a id="ShowWaypointsOnBRouter_linklist" class="GClhdropbtn">Show Route on BRouter</a><div id="BRouterMapLayers_linklist" class="GClhdropdown-content"></div></div></li>');
-            buildBRouterMapLayers("BRouterMapLayers_linklist", "ShowWaypointsOnBRouter_linklist");
-            // Add BRouter map link under waypoints.
-            var tbl = getWaypointTable();
-            if (tbl.length > 0) {
-                tbl = tbl.next("p");
-                tbl.append('<br><div class="GClhdropdown"><div id="ShowWaypointsOnBRouter" class="GClhdropbtn"><a>Show Route on BRouter with &#8230;</a></div><div id="BRouterMapLayers" class="GClhdropdown-content"></div></div>');
-                buildBRouterMapLayers("BRouterMapLayers", "ShowWaypointsOnBRouter");
-            }
-            $('.BRouter-content-layer').click(function() {
-                var map = $(this).data('map');
-                openBRouter(map);
-            });
-        } catch(e) {gclh_error("Show button BRouter and open BRouter:",e);}
-    }
-
-    // BRouter Map link.
-    function buildBRouterMapLayers(id, openId) {
-        var div = '<div class="BRouter-content-layer" data-map=';
-        $('#'+id).append(div+'"OpenStreetMap">OpenStreetMap</div>');
-        $('#'+id).append(div+'"OpenStreetMap.de">OpenStreetMap.de</div>');
-        $('#'+id).append(div+'"OpenTopoMap">OpenTopoMap</div>');
-        $('#'+id).append(div+'"OpenCycleMap (Thunderf.)">OpenCycleMap</div>');
-        $('#'+id).append(div+'"Outdoors (Thunderforest)">Outdoors</div>');
-        $('#'+id).append(div+'"Esri World Imagery">Esri World Imagery</div>');
-        $('#'+openId).click(function() {openBRouter("OpenStreetMap");});
-    }
-    function openBRouter(map) {
-        var context = {};
-        var maxZoomLevels = {'OpenStreetMap': 18, 'OpenStreetMap.de': 17, 'OpenTopoMap': 17, 'OpenCycleMap (Thunderf.)': 18, 'Outdoors (Thunderforest)': 18, 'Esri World Imagery': 18};
-
-        var waypoints = queryListingWaypoints(true);
-        var url = buildLinkToMapService( {
-            urlTemplate: 'http://brouter.de/brouter-web/#zoom={zoom}&lat={center_latitude}&lon={center_longitude}&layer={map}+&lonlats={waypoints}&nogos=&profile=trekking&alternativeidx=0&format=geojson',
-            map : map,
-            maxZoomLevel :  maxZoomLevels[map],
-            waypoints : waypoints,
-            waypointSeparator : '|',
-            waypointFunction : brouterWaypoint,
-            context : context,
-            mapOffset : { width: 0, height: 0 }
-        });
-
-        window.open(url);
-    }
-
-    function brouterWaypoint( waypoint, index, context ) {
+    function brouterWaypoint(waypoint, radius, context) {
         var value = "";
-        if ( context.brouter == undefined ) context.brouter = {};
-        if (waypoint.source == "listing" || waypoint.source == "waypoint") {
+        if (waypoint.source == "waypoint" || waypoint.source == "listing") {
             value = roundTO(waypoint.longitude,LatLonDigits)+','+roundTO(waypoint.latitude,LatLonDigits);
+        } else if (waypoint.source == "original" ) {
+            value = "";
         }
         return value;
     }
 
 // CSS for BRouter and Flopp's Map links.
-    if ((settings_show_brouter_link || settings_show_flopps_link) && (is_page("cache_listing") || document.location.href.match(/\.com\/hide\/wptlist.aspx/))) {
-        var css = "";
+    if ( (settings_show_brouter_link || settings_show_flopps_link ) && is_page("cache_listing") ) {
+
         css += ".GClhdropbtn {";
         css += "  cursor: pointer;}";
         css += ".GClhdropdown {";
@@ -1726,31 +1670,37 @@ var mainGC = function() {
         css += "  cursor: default;}";
         css += ".GClhdropdown:hover .GClhdropdown-content {";
         css += "  display: block;}";
-        if (settings_show_flopps_link) {
-            css += ".FloppsMap-content-layer {";
-            css += "  color: black;";
-            css += "  padding: 5px 16px 5px 16px;";
-            css += "  text-decoration: none;";
-            css += "  display: block;}";
-            css += ".FloppsMap-content-layer:hover {";
-            css += "  background-color: #e1e1e1;";
-            css += "  cursor: pointer;}";
-            css += "#ShowWaypointsOnFloppsMap_linklist{";
-            css += "  background-image: url(" + global_flopps_map_icon + ")}";
-        }
-        if (settings_show_brouter_link) {
-            css += ".BRouter-content-layer {";
-            css += "  color: black;";
-            css += "  padding: 5px 16px 5px 16px;";
-            css += "  text-decoration: none;";
-            css += "  display: block;}";
-            css += ".BRouter-content-layer:hover {";
-            css += "  background-color: #e1e1e1;";
-            css += "  cursor: pointer;}";
-            css += "#ShowWaypointsOnBRouter_linklist{";
-            css += "  background-image: url(" + global_brouter_icon + ")}";
-        }
         appendCssStyle(css);
+
+
+        // Show links which open Flopp's Map with all waypoints of a cache.
+        if ( settings_show_flopps_link ) {
+            try {
+                mapservice_links( "flopps", "Show on Flopp\'s Map", "Show waypoints on Flopp\'s Map with &#8230;", {
+                    urlTemplate: 'http://flopp.net/?c={center_latitude}:{center_longitude}&z={zoom}&t={map}&d=O:C&m={waypoints}',
+                    layers: {'OSM': { maxZoom: 18, displayName: 'Openstreetmap' }, 'OSM/DE': { maxZoom: 18, displayName: 'OSM German Style' }, 'OCM': { maxZoom: 17, displayName: 'OpenCycleMap' }, 'TOPO': { maxZoom: 15, displayName: 'OpenTopMap' }, 'roadmap':{ maxZoom: 20, displayName: 'Google Maps' }, 'hybrid': { maxZoom: 20, displayName: 'Google Maps Hybrid' }, 'terrain':{ maxZoom: 20, displayName: 'Google Maps Terrain' }, 'terrain':{ maxZoom: 20, displayName: 'Google Maps Satellite' }},
+                    waypointSeparator : '*',
+                    waypointFunction : floppsMapWaypoint,
+                    mapOffset : { width: -280, height: -50 },
+                    defaultMap : 'OSM',
+                    context : {}
+                });
+            } catch(e) {gclh_error("Show Flopp's Map links:",e);}
+        }
+        // Show links which open BRouter with all waypoints of a cache.
+        if ( settings_show_brouter_link ) {
+            try {
+                mapservice_links( "brouter", "Show route on BRouter", "Show route on BRouter with &#8230;", {
+                    urlTemplate: 'http://brouter.de/brouter-web/#zoom={zoom}&lat={center_latitude}&lon={center_longitude}&layer={map}+&lonlats={waypoints}&nogos=&profile=trekking&alternativeidx=0&format=geojson',
+                    layers: {'OpenStreetMap': { maxZoom: 18, displayName: 'OpenStreetMap' }, 'OpenStreetMap.de': { maxZoom: 17, displayName: 'OSM German Style' }, 'OpenTopoMap': { maxZoom: 17, displayName: 'OpenTopoMap' }, 'OpenCycleMap (Thunderf.)': { maxZoom: 18, displayName: 'OpenCycleMap' }, 'Outdoors (Thunderforest)': { maxZoom: 18, displayName: 'Outdoors' }, 'Esri World Imagery': { maxZoom: 18, displayName: 'Esri World Imagery' }},
+                    waypointSeparator : '|',
+                    waypointFunction : brouterWaypoint,
+                    mapOffset : { width: 0, height: 0 },
+                    defaultMap : 'OpenStreetMap',
+                    context : {}
+                });
+            } catch(e) {gclh_error("Show button BRouter and open BRouter:",e);}
+        }
     }
 
 // Build map overview.
