@@ -2848,7 +2848,7 @@ var mainGC = function() {
                 // Header:
                 css += ".pq-info-wrapper {margin: 0; padding: 10px 0 0 0; background-color: unset; box-shadow: unset;} .pq-info-wrapper p:last-child {padding: 0;}";
                 css += "#Content .ui-tabs {margin-top: 3.4em;} .ui-tabs-active {box-shadow: 2px 0px 0 rgba(0,0,0,.2);} .ui-tabs .ui-tabs-nav li {margin-right: 4px;}";
-                css += ".Success {margin: 5px 0 0 0;} #Tabs {box-shadow: 2px 2px 0 rgba(0,0,0,.2);}";
+                css += ".Success {margin: 5px 0 0 0;}";
                 css += ".BreadcrumbWidget p {margin-top: 0;}";
                 if ($('#ctl00_ContentBody_lbHeading').length > 0 && $('#divContentMain h2').length > 0) {
                     var h3 = document.createElement("h3");
@@ -2859,7 +2859,11 @@ var mainGC = function() {
                 if ($('.pq-info-wrapper')[0] && $('.pq-info-wrapper')[0].children.length > 2) {
                     for (var i = 0; i <= 2; i++) {$('.pq-info-wrapper')[0].children[0].remove();}
                 }
-                $('#ActivePQs, #DownloadablePQs').each(function() {this.children[0].setAttribute("style", "margin: -25px 2px 0 0; float: right;");});
+                $('#ActivePQs, #DownloadablePQs').each(function() {
+                    this.setAttribute("style", "box-shadow: 2px 2px 0 rgba(0,0,0,.2);");
+                    this.children[0].setAttribute("style", "margin: -35px -15px 0 0; float: right;");
+                    this.children[0].children[0].setAttribute("style", "font-size: .6rem;");
+                });
                 // Table active PQs:
                 css += "table {margin-bottom: 0;} table.Table, table.Table th, table.Table td {padding: 5px; border: 1px solid #fff;}";
                 css += "table.Table tr {line-height: 16px;} table.Table th img, table.Table td img {vertical-align: sub;}";
@@ -4048,7 +4052,7 @@ var mainGC = function() {
              document.location.href.match(/\.com\/map/)                          ||      // Map (For enhanced Popup Informations)
              document.location.href.match(/\.com\/my\/default\.aspx/)            ||      // Profil (Quicklist)
              document.location.href.match(/\.com\/account\/dashboard/)           ||      // Dashboard
-             document.location.href.match(/\.com\/seek\/nearest\.aspx\?(u|ul)=/) ||      // Nearest Lists mit User
+             document.location.href.match(/\.com\/seek\/nearest\.aspx(.*)(\?ul|\?u|&ul|&u)=/) ||  // Nearest Lists mit User
              document.location.href.match(/\.com\/bookmarks\/(view|bulk)/)       ||      // Bookmark Lists
              document.location.href.match(/\.com\/play\/friendleague/)           ||      // Friend League
              document.location.href.match(/\.com\/my\/myfriends\.aspx/)             )) { // Friends
@@ -4635,7 +4639,7 @@ var mainGC = function() {
 
             // Nearest lists:
             // ----------
-            } else if (document.location.href.match(/\.com\/seek\/nearest\.aspx\?(u|ul)=/)) {
+            } else if (document.location.href.match(/\.com\/seek\/nearest\.aspx(.*)(\?ul|\?u|&ul|&u)=/)) {
                 var id = "ctl00_ContentBody_LocationPanel1_OriginLabel";
                 if (document.getElementById(id)) {
                     appendCssStyle("#"+id+" a img {margin-right: -5px;}");
@@ -4670,7 +4674,7 @@ var mainGC = function() {
                                 continue;
                             }
                             var span = document.createElement('span');
-                            span.setAttribute("style", "min-width: 80px; padding-right: 20px; display: table-cell; vertical-align: middle;");
+                            span.setAttribute("style", "min-width: 80px; padding-right: 20px; display: table-cell; vertical-align: middle; box-sizing: unset;");
                             span.addEventListener("click", doNotChangeDetailsByClick, false);
                             side[i].appendChild(span);
                             var last = side[i].children.length - 1;
@@ -4706,7 +4710,7 @@ var mainGC = function() {
                         appendCssStyle(".leaderboard-item .profile-info a {display: table-cell;} .leaderboard-item .profile-info a img {margin-right: 5px;}");
                         for (var i = 0; i < links.length; i++) {
                             var span = document.createElement('span');
-                            span.setAttribute("style", "min-width: 80px; padding-right: 20px; display: table-cell; vertical-align: middle;");
+                            span.setAttribute("style", "min-width: 80px; padding-right: 20px; display: table-cell; vertical-align: middle; box-sizing: unset;");
                             span.addEventListener("click", doNotChangeDetailsByClick, false);
                             side[i].appendChild(span);
                             var last = side[i].children.length - 1;
@@ -5590,6 +5594,7 @@ var mainGC = function() {
                     injectPageScript(code, "body");
                     css += ".TableLogContent {padding-left: 0; border-left: none;}";
                     css += ".LogImagesTable {margin-left: 0;} .LogImagesTable a.lnk {white-space: initial;}";
+                    css += ".LogImagesTable a.gclh_thumb img {margin-bottom: 1px !important; margin-top: 1px; vertical-align: sub;}";
                 }
                 // Listing.
                 css += ".CachePageImages li {margin-bottom: 12px; background: unset; padding-left: 0px;}";
@@ -6193,7 +6198,7 @@ var mainGC = function() {
                     + "div.popup_additional_info .loading_container img{margin-right:5px;}"
                     + "div.popup_additional_info span.favi_points svg, div.popup_additional_info span.tackables svg{position: relative;top: 4px;}";
             css += ".leaflet-popup-content-wrapper, .leaflet-popup-close-button {margin: 16px 3px 0px 13px;}";
-            if (browser == 'firefox') css += ".gclh_owner {max-width: 110px;} .map-item-row-1 h4 a {max-width: 295px;} .gclh_owner, .map-item-row-1 h4 a {display: inline-block; white-space: nowrap; overflow: -moz-hidden-unscrollable; text-overflow: ellipsis;}";
+            if (browser == 'firefox') css += ".gclh_owner {max-width: 145px;} .map-item-row-1 h4 a {max-width: 295px;} .gclh_owner, .map-item-row-1 h4 a {display: inline-block; white-space: nowrap; overflow: -moz-hidden-unscrollable; text-overflow: ellipsis;}";
             css += "#gmCacheInfo dl:nth-child(3){width:60%;}";
             css += "#gmCacheInfo dl:nth-child(4){width:40%;}";
             appendCssStyle(css);
@@ -6385,7 +6390,7 @@ var mainGC = function() {
         } catch(e) {gclh_error("tb_map_enhancement:",e);}
     }
 
-// Improve cache matrix on statistics page and public profile page and handle cache search links in list or map. Find rate ... einzeilig.
+// Improve cache matrix on statistics page and public profile page and handle cache search links in list or map.
     try {
         if ((settings_count_own_matrix || settings_count_own_matrix_show_next) && isOwnStatisticsPage()) {
             var own = true;
@@ -8437,8 +8442,8 @@ var mainGC = function() {
 
 // User aus url ermitteln.
     function getUrlUser() {
-        var urluser = document.location.href.match(/\.com\/seek\/nearest\.aspx\?(ul|u)=(.*)/);
-        urluser = urldecode(urluser[2].replace(/&([A-Za-z0-9]+)=(.*)/, ""));
+        var urluser = document.location.href.match(/\.com\/seek\/nearest\.aspx(.*)(\?ul|\?u|&ul|&u)=(.*)/);
+        urluser = urldecode(urluser[3].replace(/&([A-Za-z0-9]+)=(.*)/, ""));
         urluser = urluser.replace(/&disable_redirect=/, "");
         if (!urluser.match(/^#/)) urluser = urluser.replace(/#(.*)/, "");
         return urluser;
