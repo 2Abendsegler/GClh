@@ -4048,7 +4048,7 @@ var mainGC = function() {
              document.location.href.match(/\.com\/map/)                          ||      // Map (For enhanced Popup Informations)
              document.location.href.match(/\.com\/my\/default\.aspx/)            ||      // Profil (Quicklist)
              document.location.href.match(/\.com\/account\/dashboard/)           ||      // Dashboard
-             document.location.href.match(/\.com\/seek\/nearest\.aspx\?(u|ul)=/) ||      // Nearest Lists mit User
+             document.location.href.match(/\.com\/seek\/nearest\.aspx(.*)(\?ul|\?u|&ul|&u)=/) ||  // Nearest Lists mit User
              document.location.href.match(/\.com\/bookmarks\/(view|bulk)/)       ||      // Bookmark Lists
              document.location.href.match(/\.com\/play\/friendleague/)           ||      // Friend League
              document.location.href.match(/\.com\/my\/myfriends\.aspx/)             )) { // Friends
@@ -4635,7 +4635,7 @@ var mainGC = function() {
 
             // Nearest lists:
             // ----------
-            } else if (document.location.href.match(/\.com\/seek\/nearest\.aspx\?(u|ul)=/)) {
+            } else if (document.location.href.match(/\.com\/seek\/nearest\.aspx(.*)(\?ul|\?u|&ul|&u)=/)) {
                 var id = "ctl00_ContentBody_LocationPanel1_OriginLabel";
                 if (document.getElementById(id)) {
                     appendCssStyle("#"+id+" a img {margin-right: -5px;}");
@@ -8436,8 +8436,8 @@ var mainGC = function() {
 
 // User aus url ermitteln.
     function getUrlUser() {
-        var urluser = document.location.href.match(/\.com\/seek\/nearest\.aspx\?(ul|u)=(.*)/);
-        urluser = urldecode(urluser[2].replace(/&([A-Za-z0-9]+)=(.*)/, ""));
+        var urluser = document.location.href.match(/\.com\/seek\/nearest\.aspx(.*)(\?ul|\?u|&ul|&u)=(.*)/);
+        urluser = urldecode(urluser[3].replace(/&([A-Za-z0-9]+)=(.*)/, ""));
         urluser = urluser.replace(/&disable_redirect=/, "");
         if (!urluser.match(/^#/)) urluser = urluser.replace(/#(.*)/, "");
         return urluser;
