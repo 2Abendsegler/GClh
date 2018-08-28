@@ -2539,48 +2539,16 @@ var mainGC = function() {
     if (document.location.href.match(/\.com\/play\/geocache\/gc\w+\/log/)) {
         try {
             var checkExistTBHeader = setInterval(function() {
-                if ($('#tbHeader .trackables-header').length) {
-                
-                    var visit_link = document.createElement("a");
-                    visit_link.setAttribute("href", "javascript:void(0);");
-                    visit_link.appendChild(document.createTextNode('Visit all'));
-                    visit_link.addEventListener("click", function(){
-                        $('#tbHeader .btn-visit').trigger( "click" );
-                    });
+               if ($('#tbHeader .trackables-header').length) {
+                  $(".trackables-list").append('<li id="cloned_tb_header"></li>');
+                  $("#tbHeader").clone().insertAfter("#cloned_tb_header");
 
-                    var drop_link = document.createElement("a");
-                    drop_link.setAttribute("href", "javascript:void(0);");
-                    drop_link.appendChild(document.createTextNode('Drop all'));
-                    drop_link.addEventListener("click", function(){
-                        $('#tbHeader .btn-drop').trigger( "click" );
-                    });
+                  // Open Trackable Inventory
+                  if(settings_auto_open_tb_inventory_list){
+                    $("#trackablesPanel button.btn-handle").trigger( "click" );
+                  }
 
-                    var clear_link = document.createElement("a");
-                    clear_link.setAttribute("href", "javascript:void(0);");
-                    clear_link.appendChild(document.createTextNode('Clear all'));
-                    clear_link.addEventListener("click", function(){
-                        $('#tbHeader .btn-clear').trigger( "click" );
-                    });
-
-                    var li = document.createElement("li");
-                    li.classList.add('tb_action_buttons');
-                    li.appendChild(clear_link);
-                    li.appendChild(visit_link);
-                    li.appendChild(drop_link);
-
-                    $(".trackables-list").append(li);
-
-                    var css = 
-                        ".tb_action_buttons{text-align:right;} " +
-                        ".tb_action_buttons a{margin-right: 12px; text-decoration:underline;}" +
-                        ".tb_action_buttons a:last-child{margin-right:0px;}"
-                    appendCssStyle(css);
-                  
-                    // Open Trackable Inventory
-                    if(settings_auto_open_tb_inventory_list){
-                        $("#trackablesPanel button.btn-handle").trigger( "click" );
-                    }
-                    clearInterval(checkExistTBHeader);
+                  clearInterval(checkExistTBHeader);
                }
             }, 500); // check every 500ms
         } catch(e) {gclh_error("Logpage Replicate TB-Header",e);}
@@ -6230,9 +6198,9 @@ var mainGC = function() {
                     + "div.popup_additional_info .loading_container img{margin-right:5px;}"
                     + "div.popup_additional_info span.favi_points svg, div.popup_additional_info span.tackables svg{position: relative;top: 4px;}";
             css += ".leaflet-popup-content-wrapper, .leaflet-popup-close-button {margin: 16px 3px 0px 13px;}";
-            if (browser == 'firefox') css += ".gclh_owner {max-width: 145px;} .map-item-row-1 h4 a {max-width: 295px;} .gclh_owner, .map-item-row-1 h4 a {display: inline-block; white-space: nowrap; overflow: -moz-hidden-unscrollable; text-overflow: ellipsis;}";
-            css += "#gmCacheInfo dl:nth-child(3){width:60%;}";
-            css += "#gmCacheInfo dl:nth-child(4){width:40%;}";
+            if (browser == 'firefox') css += ".gclh_owner {max-width: 140px;} .map-item-row-1 h4 a {max-width: 295px;} .gclh_owner, .map-item-row-1 h4 a {display: inline-block; white-space: nowrap; overflow: -moz-hidden-unscrollable; text-overflow: ellipsis;}";
+            css += "#gmCacheInfo dl:nth-child(3){width:58%;}";
+            css += "#gmCacheInfo dl:nth-child(4){width:42%;}";
             appendCssStyle(css);
 
             // create an observer instance
