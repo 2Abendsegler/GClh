@@ -1556,16 +1556,10 @@ var mainGC = function() {
         $('#'+openId).click(function() {openFloppsMap("");});
     }
     function openFloppsMap(map) {
-        var waypoints = queryListingWaypoints(true);
-        var link = buildFloppsMapLink(waypoints, map);
-        window.open(link);
-    }
-
-    // Creates permanent link to Flopp's Map.
-    function buildFloppsMapLink(waypoints, map) {
         var context = {};
         var maxZoomLevels = {'OSM': 18, 'OSM/DE': 18, 'OCM': 17, 'MQ': 17, 'OUTD': 17, 'TOPO': 15, 'roadmap':20, 'terrain':20, 'hybrid': 20};
 
+        var waypoints = queryListingWaypoints(true);
         var url = buildLinkToMapService( {
             urlTemplate: 'http://flopp.net/?c={center_latitude}:{center_longitude}&z={zoom}&t={map}&m={waypoints}&d=O:C',
             map : map,
@@ -1576,7 +1570,8 @@ var mainGC = function() {
             context : context,
             mapOffset : { width: -280, height: -50 }
         });
-        return url;
+
+        window.open(url);
     }
 
     function floppsMapWaypoint( waypoint, index, context ) {
@@ -1678,25 +1673,10 @@ var mainGC = function() {
         $('#'+openId).click(function() {openBRouter("OpenStreetMap");});
     }
     function openBRouter(map) {
-        var waypoints = queryListingWaypoints(true);
-        var link = buildBRouterMapLink(waypoints, map);
-        window.open(link);
-    }
-
-    function brouterWaypoint( waypoint, index, context ) {
-        var value = "";
-        if ( context.brouter == undefined ) context.brouter = {};
-        if (waypoint.source == "listing" || waypoint.source == "waypoint") {
-            value = roundTO(waypoint.longitude,LatLonDigits)+','+roundTO(waypoint.latitude,LatLonDigits);
-        }
-        return value;
-    }
-
-    // Build BRouter link.
-    function buildBRouterMapLink(waypoints, map) {
         var context = {};
         var maxZoomLevels = {'OpenStreetMap': 18, 'OpenStreetMap.de': 17, 'OpenTopoMap': 17, 'OpenCycleMap (Thunderf.)': 18, 'Outdoors (Thunderforest)': 18, 'Esri World Imagery': 18};
 
+        var waypoints = queryListingWaypoints(true);
         var url = buildLinkToMapService( {
             urlTemplate: 'http://brouter.de/brouter-web/#zoom={zoom}&lat={center_latitude}&lon={center_longitude}&layer={map}+&lonlats={waypoints}&nogos=&profile=trekking&alternativeidx=0&format=geojson',
             map : map,
@@ -1707,7 +1687,17 @@ var mainGC = function() {
             context : context,
             mapOffset : { width: 0, height: 0 }
         });
-        return url;
+
+        window.open(url);
+    }
+
+    function brouterWaypoint( waypoint, index, context ) {
+        var value = "";
+        if ( context.brouter == undefined ) context.brouter = {};
+        if (waypoint.source == "listing" || waypoint.source == "waypoint") {
+            value = roundTO(waypoint.longitude,LatLonDigits)+','+roundTO(waypoint.latitude,LatLonDigits);
+        }
+        return value;
     }
 
 // CSS for BRouter and Flopp's Map links.
