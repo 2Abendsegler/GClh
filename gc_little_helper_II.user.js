@@ -2,7 +2,7 @@
 // @name             GC little helper II
 // @namespace        http://www.amshove.net
 //--> $$000
-// @version          0.9.10
+// @version          0.9.11
 //<-- $$000
 // @include          http*://www.geocaching.com/*
 // @include          http*://maps.google.tld/*
@@ -587,7 +587,7 @@ var mainGMaps = function() {
 //////////////////////////////
 var mainOSM = function() {
     try {
-        
+
         // Add link to GC Map on Openstreetmap.
         function addGCButton(waitCount) {
             if (document.location.href.match(/^https?:\/\/www\.openstreetmap\.org\/(.*)#map=/) && $(".control-key").length) {
@@ -603,7 +603,7 @@ var mainOSM = function() {
                         } else alert('This map has no geographical coordinates in its link. Just zoom or drag the map, afterwards this will work fine.');
                     });
                 }
-                
+
             } else {waitCount++; if (waitCount <= 50) setTimeout(function(){addGCButton(waitCount);}, 1000);}
         }
         addGCButton(0);
@@ -1175,9 +1175,10 @@ var mainGC = function() {
                 if ($('#calLinks').find('a[title*="Google"]')[0]) {
                     var calL = $('#calLinks').find('a[title*="Google"]')[0];
                     if (calL && calL.href) calL.href = calL.href.replace(/&det(.*)&loc/, "&loc").replace(/%20\(http/, "&details=http").replace(/\)&spr/, "&spr");
+                } else {
+                    waitCount++;
+                    if (waitCount <= 20) setTimeout(function(){impCalLink(waitCount);}, 100);
                 }
-                waitCount++;
-                if (impCalLink <= 20) setTimeout(function(){impCalLink(waitCount);}, 100);
             }
             impCalLink(0);
         } catch(e) {gclh_error("Improve calendar link",e);}
@@ -2512,16 +2513,48 @@ var mainGC = function() {
     if (document.location.href.match(/\.com\/play\/geocache\/gc\w+\/log/)) {
         try {
             var checkExistTBHeader = setInterval(function() {
-               if ($('#tbHeader .trackables-header').length) {
-                  $(".trackables-list").append('<li id="cloned_tb_header"></li>');
-                  $("#tbHeader").clone().insertAfter("#cloned_tb_header");
+                if ($('#tbHeader .trackables-header').length) {
+                
+                    var visit_link = document.createElement("a");
+                    visit_link.setAttribute("href", "javascript:void(0);");
+                    visit_link.appendChild(document.createTextNode('Visit all'));
+                    visit_link.addEventListener("click", function(){
+                        $('#tbHeader .btn-visit').trigger( "click" );
+                    });
 
-                  // Open Trackable Inventory
-                  if(settings_auto_open_tb_inventory_list){
-                    $("#trackablesPanel button.btn-handle").trigger( "click" );
-                  }
+                    var drop_link = document.createElement("a");
+                    drop_link.setAttribute("href", "javascript:void(0);");
+                    drop_link.appendChild(document.createTextNode('Drop all'));
+                    drop_link.addEventListener("click", function(){
+                        $('#tbHeader .btn-drop').trigger( "click" );
+                    });
 
-                  clearInterval(checkExistTBHeader);
+                    var clear_link = document.createElement("a");
+                    clear_link.setAttribute("href", "javascript:void(0);");
+                    clear_link.appendChild(document.createTextNode('Clear all'));
+                    clear_link.addEventListener("click", function(){
+                        $('#tbHeader .btn-clear').trigger( "click" );
+                    });
+
+                    var li = document.createElement("li");
+                    li.classList.add('tb_action_buttons');
+                    li.appendChild(clear_link);
+                    li.appendChild(visit_link);
+                    li.appendChild(drop_link);
+
+                    $(".trackables-list").append(li);
+
+                    var css = 
+                        ".tb_action_buttons{text-align:right;} " +
+                        ".tb_action_buttons a{margin-right: 12px; text-decoration:underline;}" +
+                        ".tb_action_buttons a:last-child{margin-right:0px;}"
+                    appendCssStyle(css);
+                  
+                    // Open Trackable Inventory
+                    if(settings_auto_open_tb_inventory_list){
+                        $("#trackablesPanel button.btn-handle").trigger( "click" );
+                    }
+                    clearInterval(checkExistTBHeader);
                }
             }, 500); // check every 500ms
         } catch(e) {gclh_error("Logpage Replicate TB-Header",e);}
@@ -2821,7 +2854,7 @@ var mainGC = function() {
                 // Header:
                 css += ".pq-info-wrapper {margin: 0; padding: 10px 0 0 0; background-color: unset; box-shadow: unset;} .pq-info-wrapper p:last-child {padding: 0;}";
                 css += "#Content .ui-tabs {margin-top: 3.4em;} .ui-tabs-active {box-shadow: 2px 0px 0 rgba(0,0,0,.2);} .ui-tabs .ui-tabs-nav li {margin-right: 4px;}";
-                css += ".Success {margin: 5px 0 0 0;} #Tabs {box-shadow: 2px 2px 0 rgba(0,0,0,.2);}";
+                css += ".Success {margin: 5px 0 0 0;}";
                 css += ".BreadcrumbWidget p {margin-top: 0;}";
                 if ($('#ctl00_ContentBody_lbHeading').length > 0 && $('#divContentMain h2').length > 0) {
                     var h3 = document.createElement("h3");
@@ -2832,7 +2865,11 @@ var mainGC = function() {
                 if ($('.pq-info-wrapper')[0] && $('.pq-info-wrapper')[0].children.length > 2) {
                     for (var i = 0; i <= 2; i++) {$('.pq-info-wrapper')[0].children[0].remove();}
                 }
-                $('#ActivePQs, #DownloadablePQs').each(function() {this.children[0].setAttribute("style", "margin: -25px 2px 0 0; float: right;");});
+                $('#ActivePQs, #DownloadablePQs').each(function() {
+                    this.setAttribute("style", "box-shadow: 2px 2px 0 rgba(0,0,0,.2);");
+                    this.children[0].setAttribute("style", "margin: -35px -15px 0 0; float: right;");
+                    this.children[0].children[0].setAttribute("style", "font-size: .6rem;");
+                });
                 // Table active PQs:
                 css += "table {margin-bottom: 0;} table.Table, table.Table th, table.Table td {padding: 5px; border: 1px solid #fff;}";
                 css += "table.Table tr {line-height: 16px;} table.Table th img, table.Table td img {vertical-align: sub;}";
@@ -4021,7 +4058,7 @@ var mainGC = function() {
              document.location.href.match(/\.com\/map/)                          ||      // Map (For enhanced Popup Informations)
              document.location.href.match(/\.com\/my\/default\.aspx/)            ||      // Profil (Quicklist)
              document.location.href.match(/\.com\/account\/dashboard/)           ||      // Dashboard
-             document.location.href.match(/\.com\/seek\/nearest\.aspx\?(u|ul)=/) ||      // Nearest Lists mit User
+             document.location.href.match(/\.com\/seek\/nearest\.aspx(.*)(\?ul|\?u|&ul|&u)=/) ||  // Nearest Lists mit User
              document.location.href.match(/\.com\/bookmarks\/(view|bulk)/)       ||      // Bookmark Lists
              document.location.href.match(/\.com\/play\/friendleague/)           ||      // Friend League
              document.location.href.match(/\.com\/my\/myfriends\.aspx/)             )) { // Friends
@@ -4608,7 +4645,7 @@ var mainGC = function() {
 
             // Nearest lists:
             // ----------
-            } else if (document.location.href.match(/\.com\/seek\/nearest\.aspx\?(u|ul)=/)) {
+            } else if (document.location.href.match(/\.com\/seek\/nearest\.aspx(.*)(\?ul|\?u|&ul|&u)=/)) {
                 var id = "ctl00_ContentBody_LocationPanel1_OriginLabel";
                 if (document.getElementById(id)) {
                     appendCssStyle("#"+id+" a img {margin-right: -5px;}");
@@ -4643,7 +4680,7 @@ var mainGC = function() {
                                 continue;
                             }
                             var span = document.createElement('span');
-                            span.setAttribute("style", "min-width: 80px; padding-right: 20px; display: table-cell; vertical-align: middle;");
+                            span.setAttribute("style", "min-width: 80px; padding-right: 20px; display: table-cell; vertical-align: middle; box-sizing: unset;");
                             span.addEventListener("click", doNotChangeDetailsByClick, false);
                             side[i].appendChild(span);
                             var last = side[i].children.length - 1;
@@ -4679,7 +4716,7 @@ var mainGC = function() {
                         appendCssStyle(".leaderboard-item .profile-info a {display: table-cell;} .leaderboard-item .profile-info a img {margin-right: 5px;}");
                         for (var i = 0; i < links.length; i++) {
                             var span = document.createElement('span');
-                            span.setAttribute("style", "min-width: 80px; padding-right: 20px; display: table-cell; vertical-align: middle;");
+                            span.setAttribute("style", "min-width: 80px; padding-right: 20px; display: table-cell; vertical-align: middle; box-sizing: unset;");
                             span.addEventListener("click", doNotChangeDetailsByClick, false);
                             side[i].appendChild(span);
                             var last = side[i].children.length - 1;
@@ -4970,11 +5007,11 @@ var mainGC = function() {
                 if((currentTime - lastFired) > 500){
                     // Fire every 500ms at maximum
                     lastFired = + new Date();
-                    
+
                     var isBusy = false;
                     var startReloadAtThisPixel = (($(document).height() - $("#cache_logs_container").offset().top) + 50)
                     var currentPosition = $(this).scrollTop();
-                    
+
                     if(currentPosition > startReloadAtThisPixel){
                         if (!isBusy && !document.getElementById("gclh_all_logs_marker")) {
                             isBusy = true;
@@ -5563,6 +5600,7 @@ var mainGC = function() {
                     injectPageScript(code, "body");
                     css += ".TableLogContent {padding-left: 0; border-left: none;}";
                     css += ".LogImagesTable {margin-left: 0;} .LogImagesTable a.lnk {white-space: initial;}";
+                    css += ".LogImagesTable a.gclh_thumb img {margin-bottom: 1px !important; margin-top: 1px; vertical-align: sub;}";
                 }
                 // Listing.
                 css += ".CachePageImages li {margin-bottom: 12px; background: unset; padding-left: 0px;}";
@@ -6143,8 +6181,6 @@ var mainGC = function() {
 // Display more informations on map popup for a cache
     if (document.location.href.match(/\.com\/map\//) && settings_show_enhanced_map_popup) {
         try {
-
-
             var template = $("#cacheDetailsTemplate").html().trim();
 
             // {{=gc}} will be replaced by the GC-Code, so the div is unique
@@ -6160,7 +6196,6 @@ var mainGC = function() {
 
             $("#cacheDetailsTemplate").html(template);
 
-
             // select the target node
             var target = document.querySelector('.leaflet-popup-pane');
 
@@ -6168,7 +6203,8 @@ var mainGC = function() {
                     + "div.popup_additional_info .loading_container{display: flex; justify-content: center; align-items: center;}"
                     + "div.popup_additional_info .loading_container img{margin-right:5px;}"
                     + "div.popup_additional_info span.favi_points svg, div.popup_additional_info span.tackables svg{position: relative;top: 4px;}";
-            css += ".leaflet-popup-content-wrapper, .leaflet-popup-close-button {margin: 16px 3px 0px 13px;}"
+            css += ".leaflet-popup-content-wrapper, .leaflet-popup-close-button {margin: 16px 3px 0px 13px;}";
+            if (browser == 'firefox') css += ".gclh_owner {max-width: 110px;} .map-item-row-1 h4 a {max-width: 295px;} .gclh_owner, .map-item-row-1 h4 a {display: inline-block; white-space: nowrap; overflow: -moz-hidden-unscrollable; text-overflow: ellipsis;}";
             appendCssStyle(css);
 
             // create an observer instance
@@ -6181,12 +6217,16 @@ var mainGC = function() {
                     // so we have to load informations for all caches.
                     $('#gmCacheInfo .map-item').each(function () {
                         gccode = $(this).find('.code').html();
-                        
+
                         if ($('#already_loading_' + gccode)[0]) return;
-                        $(this).find('dl dt')[0].innerHTML = $(this).find('dl dt')[0].innerHTML.replace(/Created by:/,"by:").replace(/Erstellt von:/,"von:");
+                        $(this).find('dl dt')[0].innerHTML = "";
+                        if (browser == 'firefox') {
+                            $(this).find('h4 a')[0].title = $(this).find('h4 a')[0].innerHTML;
+                            $(this).find('dl dd')[0].childNodes[0].innerHTML = '<span class="gclh_owner" title="' + $(this).find('dl dd')[0].childNodes[0].innerHTML + '">' + $(this).find('dl dd')[0].childNodes[0].innerHTML + '</span>';
+                        }
 
                         // Add hidden Div, so we can know, that we are already loading data
-                        $(this).find('#popup_additional_info_' + gccode).append('<div id="already_loading_' + gccode +'"></div>'); 
+                        $(this).find('#popup_additional_info_' + gccode).append('<div id="already_loading_' + gccode +'"></div>');
 
                         $.get('https://www.geocaching.com/geocache/'+gccode, null, function(text){
 
@@ -6443,6 +6483,7 @@ var mainGC = function() {
                 }
             }
         }
+        if ($('#ctl00_ContentBody_ProfilePanel1_lnkStatistics').length == 0 && isOwnStatisticsPage()) appendCssStyle("dl.ProfileDataList dt {float: left; clear: both; margin-right: 10px;}");
     } catch(e) {gclh_error("Improve cache matrix:",e);}
 
 // Improve own statistics page and own profile page with own log statistic.
@@ -6611,26 +6652,26 @@ var mainGC = function() {
 
 // Improve own statistic map page with links to caches for every country.
     if (settings_map_links_statistic && isOwnStatisticsPage() ) {
-        
+
         try {
             var countriesList = $('#stats_tabs-maps .StatisticsWrapper');
             for (var j = 0; j < countriesList.length; j++) {
                 var indecator = $(countriesList[j]).find('#StatsFlagLists p span');
                 var tableItems = $(countriesList[j]).find('#StatsFlagLists table.Table tr');
-                            
+
                 for (var i = 0; i < tableItems.length; i++) {
-                    var name = tableItems[i].children[0].childNodes[1].textContent;    
+                    var name = tableItems[i].children[0].childNodes[1].textContent;
                     if (name) {
                         var parameter = undefined;
                         var item = undefined;
-                                                
+
                         var countries = $.grep(country_id, function(e){return e.n == name;});
                         var states = $.grep(states_id, function(e){return e.n == name;});
-                        
+
                         /* ambiguous matches of state (or country) name are not handled. Known cases:
                             Distrito Federal - Mexiko: Distrito Federal (state) / Brazil: Distrito Federal (state)
                             Limburg	- Belgium: Limburg (state) / Netherlands: Limburg (state)
-                        */                          
+                        */
                         if        (  (countries && countries[0]) && !(states && states[0]) ) {
                             parameter = "c";
                             item = countries;
@@ -6643,9 +6684,9 @@ var mainGC = function() {
                             if ( indecator[0].getAttribute("id") == "ctl00_ContentBody_ProfilePanel1_USMapControl1_uxTotalCount") {
                                 parameter = "r";
                                 item = states;
-                            } else {    
+                            } else {
                                 /* Main rule: country first
-                                 Known case: Luxembourg - Luxembourg (country) / Belgium: Luxembourg (state) */ 
+                                 Known case: Luxembourg - Luxembourg (country) / Belgium: Luxembourg (state) */
                                 parameter = "c";
                                 item = countries;
                             }
@@ -6654,7 +6695,7 @@ var mainGC = function() {
                             gclh_log("Improve own statistic map page: country and state name not found");
                             continue;
                         }
-                        
+
                         if (item && item[0]) {
                             var a = document.createElement("a");
                             a.setAttribute("title", "Show caches you have found in " + item[0]["n"]);
@@ -6666,7 +6707,7 @@ var mainGC = function() {
                     }
                 }
             }
-        } catch(e) {gclh_error("Improve own statistic map page:",e);}        
+        } catch(e) {gclh_error("Improve own statistic map page:",e);}
     }
 
 // Post log from listing (inline).
@@ -8346,8 +8387,8 @@ var mainGC = function() {
 
 // User aus url ermitteln.
     function getUrlUser() {
-        var urluser = document.location.href.match(/\.com\/seek\/nearest\.aspx\?(ul|u)=(.*)/);
-        urluser = urldecode(urluser[2].replace(/&([A-Za-z0-9]+)=(.*)/, ""));
+        var urluser = document.location.href.match(/\.com\/seek\/nearest\.aspx(.*)(\?ul|\?u|&ul|&u)=(.*)/);
+        urluser = urldecode(urluser[3].replace(/&([A-Za-z0-9]+)=(.*)/, ""));
         urluser = urluser.replace(/&disable_redirect=/, "");
         if (!urluser.match(/^#/)) urluser = urluser.replace(/#(.*)/, "");
         return urluser;
@@ -9563,7 +9604,7 @@ var mainGC = function() {
             html += "<h4 class='gclh_headline2'>"+prepareHideable.replace("#name#","development")+"Development</h4>";
             html += "<div id='gclh_config_development' class='gclh_block'>";
             html += newParameterOn3;
-            html += checkboxy('settings_gclherror_alert', 'Show an alert if an internal error occurs') + show_help("Show an alert on the top of the page, if gclh_error() is called.") + "<br>";                
+            html += checkboxy('settings_gclherror_alert', 'Show an alert if an internal error occurs') + show_help("Show an alert on the top of the page, if gclh_error() is called.") + "<br>";
             html += newParameterVersionSetzen(0.9) + newParameterOff;
             html += "</div>";
 
@@ -11347,11 +11388,11 @@ function gclh_log(log) {
 function gclh_error(modul, err) {
     var txt = "GClh_ERROR - " + modul + " - " + document.location.href + ": " + err.message + "\nStacktrace:\n" + err.stack + (err.stacktrace ? ("\n" + err.stacktrace) : "");
     if (typeof(console) != "undefined") console.error(txt);
-    else if (typeof(GM_log) != "undefined") GM_log(txt); 
-    
+    else if (typeof(GM_log) != "undefined") GM_log(txt);
+
     if ( settings_gclherror_alert ) {
         if ( $( "#gclh-gurumeditation" ).length == 0 ) {
-            $("body").before('<div id="gclh-gurumeditation"></div>');            
+            $("body").before('<div id="gclh-gurumeditation"></div>');
             $("#gclh-gurumeditation").append('<div style="border: 5px solid #ff0000;"></div>');
             $("#gclh-gurumeditation > div").append('<p style="font-weight: bold; font-size: x-large;">GC Little Helper II Error</p>');
             $("#gclh-gurumeditation > div").append('<div></div>');
@@ -11374,7 +11415,7 @@ function gclh_error(modul, err) {
             css += "}";
             css += "#gclh-gurumeditation > div > div > p {";
             css += "    margin: 0;"
-            css += "    font-family:Consolas,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New, monospace;";           
+            css += "    font-family:Consolas,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New, monospace;";
             css += "}";
             css += ".gclh_monospace {";
             css += "}";
