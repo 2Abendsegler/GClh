@@ -462,6 +462,8 @@ var variablesInit = function(c) {
     c.remove_navi_shop = getValue("remove_navi_shop", false);
     c.settings_show_flopps_link = getValue("settings_show_flopps_link", true);
     c.settings_show_brouter_link = getValue("settings_show_brouter_link", true);
+    c.settings_show_gpsvisualizer_link = getValue("settings_show_gpsvisualizer_link", true);
+    c.settings_show_gpsvisualizer_gcsymbols = getValue("settings_show_gpsvisualizer_gcsymbols", true);
     c.settings_show_default_links = getValue("settings_show_default_links", true);
     c.settings_bm_changed_and_go = getValue("settings_bm_changed_and_go", true);
     c.settings_bml_changed_and_go = getValue("settings_bml_changed_and_go", true);
@@ -1552,23 +1554,27 @@ var mainGC = function() {
                 var waypoint = data.waypoints[i];
                 var value = "";
                 var radius = 0;
+                var name = "";
 
                 if (waypoint.source == "waypoint") {
                     data.context.temp.count++;
                     radius = ((waypoint.typeid == 219 /*Physical Stage*/ || waypoint.typeid == 220 /*Final Location*/ ) ? 161 : 0);
+                    name = normalizeName(waypoint.prefixedName);
                 } else if (waypoint.source == "original" ) {
                     radius = 0;
                     if (waypoint.typeid == 2 /* Traditional Geocache */ ) radius = 161; //  161m radius
                     else if (waypoint.typeid == 8 /* Mystery cache */) radius = 3000; // Mystery cache 3000m radius
+                    name = normalizeName(waypoint.gccode+'_ORIGINAL');
                 } else if (waypoint.source == "listing" ) {
                     radius = 0;
                     if (waypoint.typeid == 2 /* Traditional Geocache */ ) radius = 161; //  161m radius
                     else if (waypoint.typeid == 8 /* Mystery cache */) radius = 3000; // Mystery cache 3000m radius
+                    name = normalizeName(waypoint.gccode);
                 } else {
                     gclh_log("xxxWaypoint() - unknown waypoint.source ("+waypoint.source+")")
                 }
 
-                value = data.waypointFunction( waypoint, radius, data.context );
+                value = data.waypointFunction( waypoint, name, radius, data.context );
                 waypointString += (i?data.waypointSeparator:'') + value;
                 boundarybox = BoundaryBox( boundarybox, data.waypoints[i].latitude, data.waypoints[i].longitude );
             }
@@ -1627,25 +1633,29 @@ var mainGC = function() {
 
     function normalizeName( name ) {return name.replace(/[^a-zA-Z0-9_\-]/g,'_');}
 
-    function floppsMapWaypoint(waypoint, radius, context) {
+    function floppsMapWaypoint(waypoint, name, radius, context) {
         var id = "";
-        var name = "";
         if (waypoint.source == "waypoint") {
             id = String.fromCharCode(65+Math.floor(context.temp.count%26))+Math.floor(context.temp.count/26+1);  // create Flopp's Map id: A1, B1, C1, ..., Z1, A2, B2, C3, ..
-            name = normalizeName(waypoint.prefixedName);
         } else if (waypoint.source == "original" ) {
             id = "O";
-            name = normalizeName(waypoint.gccode+'_ORIGINAL');
         } else if (waypoint.source == "listing" ) {
             id = "L";
-            name = normalizeName(waypoint.gccode);
         }
         return id+':'+roundTO(waypoint.latitude,LatLonDigits)+':'+roundTO(waypoint.longitude,LatLonDigits)+':'+radius+':'+name;
     }
 
+    function gpsvisualizerWaypoint(waypoint, name, radius, context) {
+        var symbol = "";
+        
+        if ( settings_show_gpsvisualizer_gcsymbols && waypoint.typeid in symbolsShortUrl ) {
+            symbol = symbolPinsShortUrl[waypoint.typeid];
+        }
+        
+        return name+","+roundTO(waypoint.latitude,LatLonDigits)+','+roundTO(waypoint.longitude,LatLonDigits)+','+radius+","+symbol;
+    }
 
-
-    function brouterWaypoint(waypoint, radius, context) {
+    function brouterWaypoint(waypoint, name, radius, context) {
         var value = "";
         if (waypoint.source == "waypoint" || waypoint.source == "listing") {
             value = roundTO(waypoint.longitude,LatLonDigits)+','+roundTO(waypoint.latitude,LatLonDigits);
@@ -1656,7 +1666,7 @@ var mainGC = function() {
     }
 
 // CSS for BRouter and Flopp's Map links.
-    if ( (settings_show_brouter_link || settings_show_flopps_link ) && is_page("cache_listing") ) {
+    if ( (settings_show_brouter_link || settings_show_flopps_link || settings_show_gpsvisualizer_link) && is_page("cache_listing") ) {
 
         css += ".GClhdropbtn {";
         css += "  cursor: pointer;}";
@@ -1713,12 +1723,30 @@ var mainGC = function() {
                     waypointFunction : brouterWaypoint,
                     mapOffset : { width: 0, height: 0 },
                     defaultMap : 'OpenStreetMap',
-                    sidebar : { linkText : "Show route on BRouter", icon : true, icondata : global_brouter_icon },
+                    sidebar : { linkText : "Show on BRouter", icon : true, icondata : global_brouter_icon },
                     waypointtable : { linkText : "Show route on BRouter with &#8230;", icon : false },
                     maxUrlLength: 4000,
                     context : {}
                 });
             } catch(e) {gclh_error("Show button BRouter and open BRouter",e);}
+        }
+        // Show links which open GPSVisualizer with all waypoints of a cache.
+        if ( settings_show_gpsvisualizer_link ) {
+            try {
+                mapservice_link( {
+                    uniqueServiceId: "gpsvisualizer",
+                    urlTemplate: 'http://www.gpsvisualizer.com/map_input?&google_zoom_level={zoom}&google_wpt_labels=1&form:data=name,latitude,longitude,circle_radius,symbol\n{waypoints}',
+                    layers: { 'google_map' : { displayName: 'Google street map', maxZoom: 20 }, 'google_satellite' : { displayName: 'Google aerial/satellite imagery', maxZoom: 20 }, 'google_hybrid" selected="' : { displayName: 'Google hybrid (streets+satellite)', maxZoom: 20 }, 'google_physical' : { displayName: 'Google terrain (physical map)', maxZoom: 20 }, 'google_openstreetmap' : { displayName: 'OpenStreetMap', maxZoom: 20 }, 'google_openstreetmap_tf' : { displayName: 'OpenStreetMap (ThunderForest)', maxZoom: 20 }, 'google_openstreetmap_komoot' : { displayName: 'OpenStreetMap (Komoot)', maxZoom: 20 }, 'google_opencyclemap' : { displayName: 'OpenCycleMap (ThunderForest)', maxZoom: 20 }, 'google_opentopomap' : { displayName: 'OpenTopoMap', maxZoom: 20 }, 'google_aerial_mapquest' : { displayName: 'World aerial imagery (MapQuest)', maxZoom: 20 }, 'google_opentopomap' : { displayName: 'Europe: OpenTopoMap', maxZoom: 20 }, 'google_4umaps' : { displayName: 'World topo maps (4UMaps.eu)', maxZoom: 20 }},
+                    waypointSeparator : '\n',
+                    waypointFunction : gpsvisualizerWaypoint,
+                    mapOffset : { width: 0, height: 0 },
+                    defaultMap : 'google_map',
+                    sidebar : { linkText : "Show on GPSVisualizer", icon : true, icondata : global_gpsvisualizer_icon },
+                    waypointtable : { linkText : "Show waypoints on GPSVisualizer with &#8230;", icon : false },
+                    maxUrlLength: 4000,
+                    context : {}
+                });
+            } catch(e) {gclh_error("Show button GPSVisualizer and open GPSVisualizer",e);}
         }
     }
 
@@ -9306,6 +9334,8 @@ var mainGC = function() {
             html += "</select> px" + show_help("With this option you can choose the height of the \"Add to list\" popup to bookmark a cache from 100 up to 520 pixel. The default is 205 pixel, similar to the standard.<br><br>This option requires \"Show compact layout in \"Add to list\" popup to bookmark a cache\".") + prem + "<br>";
             html += checkboxy('settings_show_flopps_link', 'Show Flopp\'s Map links in sidebar and under the "Additional Waypoints"') + show_help3("If there are no additional waypoints only the link in the sidebar is shown.") + "<br>";
             html += checkboxy('settings_show_brouter_link', 'Show BRouter links in sidebar and under the "Additional Waypoints"') + show_help3("If there are no additional waypoints only the link in the sidebar is shown.") + "<br>";
+            html += checkboxy('settings_show_gpsvisualizer_link', 'Show GPSVisualizer links in sidebar and under the "Additional Waypoints"') + show_help3("If there are no additional waypoints only the link in the sidebar is shown.") + "<br>";
+            html += "&nbsp;&nbsp;" + checkboxy('settings_show_gpsvisualizer_gcsymbols', 'Use Geocaching symbols on GPSVisualizer map') + show_help3("Instead of default icon/pin Geocaching symbols are used. If the URL too long deactivate this option.") + "<br>";
             html += newParameterVersionSetzen(0.8) + newParameterOff;
             html += newParameterOn3;
             html += checkboxy('settings_show_all_logs_but', 'Show button \"Show all logs\" above the logs') + "<br>";
@@ -9962,6 +9992,7 @@ var mainGC = function() {
             setEvForDepPara("settings_compact_layout_recviewed", "settings_fav_proz_recviewed");
             setEvForDepPara("settings_show_elevation_of_waypoints","settings_primary_elevation_service");
             setEvForDepPara("settings_show_elevation_of_waypoints","settings_secondary_elevation_service");
+            setEvForDepPara("settings_show_gpsvisualizer_link","settings_show_gpsvisualizer_gcsymbols");
             // Abhängigkeiten der Linklist Parameter.
             for (var i = 0; i < 100; i++) {
                 // 2. Spalte: Links für Custom BMs.
@@ -10296,6 +10327,8 @@ var mainGC = function() {
                 'settings_improve_add_to_list',
                 'settings_show_flopps_link',
                 'settings_show_brouter_link',
+                'settings_show_gpsvisualizer_link',
+                'settings_show_gpsvisualizer_gcsymbols',
                 'settings_show_default_links',
                 'settings_bm_changed_and_go',
                 'settings_bml_changed_and_go',
