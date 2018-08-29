@@ -1514,16 +1514,16 @@ var mainGC = function() {
         html = html.replace(/{uniqueServiceId}/g,uniqueServiceId);
 
         // Add map service link to the right sidebar.
-        var x = html.replace('{linkText}', service_configuration.sidebar.linkText);
-        x = x.replace('{customclasses}', ( service_configuration.sidebar.icon )?uniqueServiceId+'-sidebar-icon':'')
-        $('.CacheDetailNavigation ul').first().append('<li>'+x+'</li>');
+        var htmlSidebar = html.replace('{linkText}', service_configuration.sidebar.linkText);
+        htmlSidebar = htmlSidebar.replace('{customclasses}', ( service_configuration.sidebar.icon )?uniqueServiceId+'-sidebar-icon':'')
+        $('.CacheDetailNavigation ul').first().append('<li>'+htmlSidebar+'</li>');
 
         // Add map service link under waypoint table
-        var y = html.replace('{linkText}', service_configuration.waypointtable.linkText);
-        y = y.replace('{customclasses}',( service_configuration.waypointtable.icon )?uniqueServiceId+'-waypointable-icon':'')
         var tbl = getWaypointTable();
         if (tbl.length > 0) {
-            tbl.next("p").append('<br>'+y);
+            var htmlWaypointTable = html.replace('{linkText}', service_configuration.waypointtable.linkText);
+            htmlWaypointTable = htmlWaypointTable.replace('{customclasses}',( service_configuration.waypointtable.icon )?uniqueServiceId+'-waypointable-icon':'')
+            tbl.next("p").append('<br>'+htmlWaypointTable);
         }
 
         $('.mapservice_click-'+uniqueServiceId).click(function() {
