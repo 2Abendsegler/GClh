@@ -1700,7 +1700,7 @@ var mainGC = function() {
                     maxUrlLength: 2000,
                     context : {}
                 });
-            } catch(e) {gclh_error("Show Flopp's Map links:",e);}
+            } catch(e) {gclh_error("Show Flopp's Map links",e);}
         }
         // Show links which open BRouter with all waypoints of a cache.
         if ( settings_show_brouter_link ) {
@@ -1718,7 +1718,7 @@ var mainGC = function() {
                     maxUrlLength: 4000,
                     context : {}
                 });
-            } catch(e) {gclh_error("Show button BRouter and open BRouter:",e);}
+            } catch(e) {gclh_error("Show button BRouter and open BRouter",e);}
         }
     }
 
