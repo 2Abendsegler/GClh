@@ -1582,7 +1582,7 @@ var mainGC = function() {
             url = url.replace("{waypoints}",waypointString);
             url = encodeURI(url);
 
-            if ( url.length > 2000 ) {
+            if ( url.length > service_configuration.maxUrlLength ) {
                 alert("Pay attention the URL is very long. Data loss is possible.")
             }
             window.open(url);
@@ -1697,6 +1697,7 @@ var mainGC = function() {
                     defaultMap : 'OSM',
                     sidebar : { linkText : "Show on Flopp\'s Map", icon : true, icondata : global_flopps_map_icon },
                     waypointtable : { linkText : "Show waypoints on Flopp\'s Map with &#8230;", icon : false },
+                    maxUrlLength: 2000,
                     context : {}
                 });
             } catch(e) {gclh_error("Show Flopp's Map links:",e);}
@@ -1714,6 +1715,7 @@ var mainGC = function() {
                     defaultMap : 'OpenStreetMap',
                     sidebar : { linkText : "Show route on BRouter", icon : true, icondata : global_brouter_icon },
                     waypointtable : { linkText : "Show route on BRouter with &#8230;", icon : false },
+                    maxUrlLength: 4000,
                     context : {}
                 });
             } catch(e) {gclh_error("Show button BRouter and open BRouter:",e);}
