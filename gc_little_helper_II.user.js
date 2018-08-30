@@ -8179,15 +8179,15 @@ var mainGC = function() {
         if (tbl.length <= 0) tbl = $("#ctl00_ContentBody_WaypointList");
         return tbl;
     }
-    
+
     // Trim decimal value to a given number of digits.
     function roundTO(val, decimals) {return Number(Math.round(val+'e'+decimals)+'e-'+decimals);}
-    
+
     function queryListingWaypoints( original ) {
         var waypoints = [];
         try {
             var gccode = ($('#ctl00_ContentBody_CoordInfoLinkControl1_uxCoordInfoCode')[0]) ? $('#ctl00_ContentBody_CoordInfoLinkControl1_uxCoordInfoCode')[0].textContent : "n/a";
-            
+
             var ListingCoords = {
                 name: unsafeWindow.mapLatLng.name,
                 gccode: gccode,
@@ -8199,9 +8199,9 @@ var mainGC = function() {
                 prefixedName: gccode,
             };
             waypoints.push(ListingCoords);
-         
+
             if ( original && unsafeWindow.mapLatLng.isUserDefined == true ) {
-                var OriginalCoords = Object.assign({}, ListingCoords); // create a copy 
+                var OriginalCoords = Object.assign({}, ListingCoords); // create a copy
                 OriginalCoords.latitude = unsafeWindow.mapLatLng.oldLatLng[0];
                 OriginalCoords.longitude = unsafeWindow.mapLatLng.oldLatLng[1];
                 OriginalCoords.source = "original";
@@ -8218,10 +8218,10 @@ var mainGC = function() {
                     latitude: cmapAdditionalWaypoints[i].lat,
                     longitude: cmapAdditionalWaypoints[i].lng,
                     prefixedName: cmapAdditionalWaypoints[i].pf+gccode.substring(2),
-                };           
+                };
                 waypoints.push(waypoint);
             }
-            
+
         } catch(e) {gclh_error("queryListingWaypoints()",e);}
         return waypoints;
     }
