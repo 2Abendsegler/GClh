@@ -1647,12 +1647,14 @@ var mainGC = function() {
 
     function gpsvisualizerWaypoint(waypoint, name, radius, context) {
         var symbol = "";
+        var type = "";
         
-        if ( settings_show_gpsvisualizer_gcsymbols && waypoint.typeid in symbolsShortUrl ) {
-            symbol = symbolPinsShortUrl[waypoint.typeid];
+        if ( settings_show_gpsvisualizer_gcsymbols && waypoint.typeid in urlPinIcons ) {
+            symbol = urlPinIcons[waypoint.typeid]
+            type = waypointNames[waypoint.typeid];
         }
         
-        return name+","+roundTO(waypoint.latitude,LatLonDigits)+','+roundTO(waypoint.longitude,LatLonDigits)+','+radius+","+symbol;
+        return name+","+roundTO(waypoint.latitude,LatLonDigits)+','+roundTO(waypoint.longitude,LatLonDigits)+','+radius+"m,"+type+","+symbol;
     }
 
     function brouterWaypoint(waypoint, name, radius, context) {
@@ -1735,7 +1737,7 @@ var mainGC = function() {
             try {
                 mapservice_link( {
                     uniqueServiceId: "gpsvisualizer",
-                    urlTemplate: 'http://www.gpsvisualizer.com/map_input?&google_zoom_level={zoom}&google_wpt_labels=1&form:data=name,latitude,longitude,circle_radius,symbol\n{waypoints}',
+                    urlTemplate: 'http://www.gpsvisualizer.com/map_input?&google_zoom_level={zoom}&google_wpt_labels=1&form:data=name,latitude,longitude,circle_radius,desc,symbol\n{waypoints}',
                     layers: { 'google_map' : { displayName: 'Google street map', maxZoom: 20 }, 'google_satellite' : { displayName: 'Google aerial/satellite imagery', maxZoom: 20 }, 'google_hybrid" selected="' : { displayName: 'Google hybrid (streets+satellite)', maxZoom: 20 }, 'google_physical' : { displayName: 'Google terrain (physical map)', maxZoom: 20 }, 'google_openstreetmap' : { displayName: 'OpenStreetMap', maxZoom: 20 }, 'google_openstreetmap_tf' : { displayName: 'OpenStreetMap (ThunderForest)', maxZoom: 20 }, 'google_openstreetmap_komoot' : { displayName: 'OpenStreetMap (Komoot)', maxZoom: 20 }, 'google_opencyclemap' : { displayName: 'OpenCycleMap (ThunderForest)', maxZoom: 20 }, 'google_opentopomap' : { displayName: 'OpenTopoMap', maxZoom: 20 }, 'google_aerial_mapquest' : { displayName: 'World aerial imagery (MapQuest)', maxZoom: 20 }, 'google_opentopomap' : { displayName: 'Europe: OpenTopoMap', maxZoom: 20 }, 'google_4umaps' : { displayName: 'World topo maps (4UMaps.eu)', maxZoom: 20 }},
                     waypointSeparator : '\n',
                     waypointFunction : gpsvisualizerWaypoint,
