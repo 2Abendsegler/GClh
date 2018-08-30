@@ -1,5 +1,6 @@
 # Groundspeak Cache and Waypoint Ids
 A list of waypoint types
+
 | ID       | Type           | Name  | Symbol | Comment |
 | ------------- |:-------------:|----|:----:|----|
 2 | Cache | Traditional Geocache | ![id2] ![id2-pin]
