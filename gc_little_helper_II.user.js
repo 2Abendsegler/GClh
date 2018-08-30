@@ -4958,7 +4958,7 @@ var mainGC = function() {
                     for (var j = 0; j < newInitalLogs.length && j < tbody.children.length; j++) {
                         unsafeWindow.$(tbody.children[j]).replaceWith(newInitalLogs[j]);
                     }
-                    injectPageScript("$('a.tb_images').fancybox({'type': 'image', 'titlePosition': 'inside'});");
+                    unsafeWindow.$('a.tb_images').fancybox({'type': 'image', 'titlePostion': 'inside'});
                     gclh_add_vip_icon();
                     setLinesColorInCacheListing();
                 }
@@ -4974,14 +4974,6 @@ var mainGC = function() {
                     if (ev.data === "gclh_add_vip_icon") gclh_add_vip_icon();
                     if (ev.data === "setLinesColorInCacheListing") setLinesColorInCacheListing();
                 });
-                function addNewLogLines(escapedLogLines) {
-                    var unsafeWindow = unsafeWindow || window;
-                    var logs = JSON.parse(decodeURIComponent(escapedLogLines));
-                    var newBody = unsafeWindow.$(document.createElement("TBODY"));
-                    unsafeWindow.$("#tmpl_CacheLogRow_gclh").tmpl(logs).appendTo(newBody);
-                    unsafeWindow.$(document.getElementById("cache_logs_table2") || document.getElementById("cache_logs_table")).append(newBody.children());
-                    $('a.tb_images').fancybox({'type': 'image', 'titlePosition': 'inside'});
-                }
             }
             function disablePageAutoScroll() {
                 var unsafeWindow = (typeof(unsafeWindow) == "undefined" ? window : unsafeWindow);
@@ -5046,11 +5038,11 @@ var mainGC = function() {
                                 if (global_logs[global_num]) {
                                     var newBody = unsafeWindow.$(document.createElement("TBODY"));
                                     unsafeWindow.$("#tmpl_CacheLogRow_gclh").tmpl(global_logs[global_num]).appendTo(newBody);
-                                    injectPageScript("$('a.tb_images').fancybox({'type': 'image', 'titlePosition': 'inside'});");
                                     unsafeWindow.$(document.getElementById("cache_logs_table2") || document.getElementById("cache_logs_table")).append(newBody.children());
                                 }
                                 global_num++;  // Num kommt vom vorherigen laden "aller" logs.
                             }
+                            unsafeWindow.$('a.tb_images').fancybox({'type': 'image', 'titlePostion': 'inside'});
                             gclh_add_vip_icon();
                             setLinesColorInCacheListing();
                             if (!settings_hide_top_button) $("#topScroll").fadeIn();
@@ -5077,10 +5069,10 @@ var mainGC = function() {
                                 if (logs[i]) {
                                     var newBody = unsafeWindow.$(document.createElement("TBODY"));
                                     unsafeWindow.$("#tmpl_CacheLogRow_gclh").tmpl(logs[i]).appendTo(newBody);
-                                    injectPageScript("$('a.tb_images').fancybox({'type': 'image', 'titlePosition': 'inside'});");
                                     unsafeWindow.$(document.getElementById("cache_logs_table2") || document.getElementById("cache_logs_table")).append(newBody.children());
                                 }
                             }
+                            unsafeWindow.$('a.tb_images').fancybox({'type': 'image', 'titlePostion': 'inside'});
                             gclh_add_vip_icon();
                             setLinesColorInCacheListing();
                             setMarkerDisableDynamicLogLoad();
@@ -5119,9 +5111,9 @@ var mainGC = function() {
                             var newBody = unsafeWindow.$(document.createElement("TBODY"));
                             unsafeWindow.$("#tmpl_CacheLogRow_gclh").tmpl(logs[i]).appendTo(newBody);
                             unsafeWindow.$(document.getElementById("cache_logs_table2") || document.getElementById("cache_logs_table")).append(newBody.children());
-                            injectPageScript("$('a.tb_images').fancybox({'type': 'image', 'titlePosition': 'inside'});");
                         }
                     }
+                    unsafeWindow.$('a.tb_images').fancybox({'type': 'image', 'titlePostion': 'inside'});
                     gclh_add_vip_icon();
                     setLinesColorInCacheListing();
                     setMarkerDisableDynamicLogLoad();
@@ -5188,10 +5180,10 @@ var mainGC = function() {
                         if (logs[i] && (logs[i].UserName.match(regexp) || logs[i].LogText.match(regexp))) {
                             var newBody = unsafeWindow.$(document.createElement("TBODY"));
                             unsafeWindow.$("#tmpl_CacheLogRow_gclh").tmpl(logs[i]).appendTo(newBody);
-                            injectPageScript("$('a.tb_images').fancybox({'type': 'image', 'titlePosition': 'inside'});");
                             unsafeWindow.$(document.getElementById("cache_logs_table2") || document.getElementById("cache_logs_table")).append(newBody.children());
                         }
                     }
+                    unsafeWindow.$('a.tb_images').fancybox({'type': 'image', 'titlePostion': 'inside'});
                     gclh_add_vip_icon();
                     setLinesColorInCacheListing();
                     setMarkerDisableDynamicLogLoad();
@@ -5306,10 +5298,10 @@ var mainGC = function() {
                         if (logs[i]) {
                             var newBody = unsafeWindow.$(document.createElement("TBODY"));
                             unsafeWindow.$("#tmpl_CacheLogRow_gclh").tmpl(logs[i]).appendTo(newBody);
-                            injectPageScript("$('a.tb_images').fancybox({'type': 'image', 'titlePosition': 'inside'});");
                             unsafeWindow.$(document.getElementById("cache_logs_table2") || document.getElementById("cache_logs_table")).append(newBody.children());
                         }
                     }
+                    unsafeWindow.$('a.tb_images').fancybox({'type': 'image', 'titlePostion': 'inside'});
                     gclh_dynamic_load(logs, num);
                     if (settings_show_vip_list) {
                         gclh_build_vip_list();
