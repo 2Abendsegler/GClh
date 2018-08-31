@@ -1788,17 +1788,10 @@ var mainGC = function() {
     }
     // Url und Zoomwert aufbauen.
     function buildMapValues(zoom_value) {
-        var coords = new Array("", "");
-        var gc_type = "";
         if (zoom_value < 1) zoom_value = 1;
         if (zoom_value > 19) zoom_value = 19;
-        if ($('#uxLatLon')[0]) var coords = toDec($('#uxLatLon')[0].innerHTML);
-        if ($(".cacheImage").find("img").attr("src")) {
-            var src_arr = $(".cacheImage").find("img").attr("src").split("/");
-            var gc_type = src_arr[src_arr.length - 1].split(".")[0];
-        }
         var url = 'url(' + http + '://maps.google.com/maps/api/staticmap?zoom=' + zoom_value + '&size=248x248' + '&maptype=roadmap&'
-                + 'markers=icon:http://www.geocaching.com/images/wpttypes/pins/' + gc_type + '.png' + '|' + coords[0] + ',' + coords[1] + ')';
+                + 'markers=icon:http://www.geocaching.com/images/wpttypes/pins/' + unsafeWindow.mapLatLng.type + '.png' + '|' +unsafeWindow.mapLatLng.lat + ',' + unsafeWindow.mapLatLng.lng + ')';
         return [url, zoom_value];
     }
     // Reinzoomen.
