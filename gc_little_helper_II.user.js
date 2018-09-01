@@ -884,7 +884,7 @@ var mainGC = function() {
 
             // Account Settings, Message Center, Cache suchen, Cache verstecken, Geotours, Karten, account/dashboard und track:
             // ----------
-            if (is_page("settings") || is_page("messagecenter") || is_page("find_cache") || is_page("hide_cache") || is_page("geotours") || is_page("map") || is_page("dashboard") || is_page("track")) {
+            if (is_page("settings") || is_page("messagecenter") || is_page("find_cache") || is_page("hide_cache") || is_page("geotours") || is_page("map") || is_page("dashboard-section") || is_page("track")) {
                 css += "nav .wrapper {padding-right: " + new_padding_right + "px !important; width: unset;}";
                 // Fehler bei Plazierung Videos verursacht durch neues Logo korrigieren.
                 if (is_page("hide_cache")) css += ".video iframe {width: 90%;}";
@@ -948,7 +948,7 @@ var mainGC = function() {
     new_width:
     try {
         // Keine Anpassungen.
-        if (is_page("messagecenter") || is_page("settings") || is_page("hide_cache") || is_page("find_cache") || is_page("geotours") || is_page("map") || is_page("dashboard") || is_page("track")) break new_width;
+        if (is_page("messagecenter") || is_page("settings") || is_page("hide_cache") || is_page("find_cache") || is_page("geotours") || is_page("map") || is_page("dashboard-section") || is_page("track")) break new_width;
 
         if (getValue("settings_new_width") > 0) {
             var new_width = parseInt(getValue("settings_new_width"));
@@ -1014,7 +1014,7 @@ var mainGC = function() {
             if (!settings_change_header_layout) {
                 if (is_page("map")) {
                     appendCssStyle(".menu > li, .Menu > li {height: 100%; padding-top: 2.0em;} .submenu, .SubMenu {margin-top: 1.9em;}");
-                } else if (is_page("find_cache") || is_page("hide_cache") || is_page("geotours") || is_page("dashboard") || is_page("track")) {
+                } else if (is_page("find_cache") || is_page("hide_cache") || is_page("geotours") || is_page("dashboard-section") || is_page("track")) {
                     appendCssStyle(".menu > li, .Menu > li {height: 100%; padding-top: 2.1em;} .submenu, .SubMenu {margin-top: 2.0em;}");
                 } else {
                     appendCssStyle(".menu > li, .Menu > li {height: 100%; padding-top: 2.0em;} .submenu, .SubMenu {margin-top: 2.0em;}");
@@ -4032,7 +4032,7 @@ var mainGC = function() {
                 box.innerHTML = "";
                 buildBoxElementsLinks(box, bm_tmp);
             }
-        } catch(e) {gclh_error("Linklist, Default Links on new dashboard:",e);}
+        } catch(e) {gclh_error("Linklist, Default Links on new dashboard",e);}
     }
 
 // Loggen über Standard "Log It" Icons zu PMO Caches für Basic Members.
@@ -5563,7 +5563,7 @@ var mainGC = function() {
             // Change link "Your lists" from ".../account/lists" to ".../my/lists.aspx".
             if (settings_my_lists_old_fashioned) $('#DashboardSidebar ul li a[href*="/account/lists"]').prop("href", "/my/lists.aspx");
             appendCssStyle(css);
-        } catch(e) {gclh_error("Improve new dashboard:",e);}
+        } catch(e) {gclh_error("Improve new dashboard",e);}
     }
 
 // Show thumbnails.
@@ -7258,7 +7258,7 @@ var mainGC = function() {
             setTimeout(createFindPlayerForm, 5);
         }
         // Old Dashboard (Profile), Dashboard Seite.
-        if ((is_page('profile') && $('#ctl00_ContentBody_WidgetMiniProfile1_memberProfileLink')[0]) || (is_page('dashboard') && $('.bio-meta'))) {
+        if ((is_page('profile') && $('#ctl00_ContentBody_WidgetMiniProfile1_memberProfileLink')[0]) || (is_page("dashboard") && $('.bio-meta'))) {
             // Config, Sync und Changelog Links beim Avatar in Profile, Dashboard.
             var lnk_config = "<a href='#GClhShowConfig' id='gclh_config_lnk' name='gclh_config_lnk' title='" + scriptShortNameConfig + " v" + scriptVersion + (settings_f4_call_gclh_config ? " / Key F4":"") + "' >" + scriptShortNameConfig + "</a>";
             var lnk_sync = " | <a href='#GClhShowSync' id='gclh_sync_lnk' name='gclh_sync_lnk' title='" + scriptShortNameSync + " v" + scriptVersion + (settings_f10_call_gclh_sync ? " / Key F10":"") + "' >" + scriptShortNameSync + "</a>";
@@ -7282,7 +7282,7 @@ var mainGC = function() {
                 document.getElementsByName("lnk_findplayer_profile")[0].addEventListener('click', createFindPlayerForm, false);
             }
         }
-    } catch(e) {gclh_error("Aufbau Links zum Aufruf von Config, Sync und Find Player:",e);}
+    } catch(e) {gclh_error("Aufbau Links zum Aufruf von Config, Sync und Find Player",e);}
 
 // Special Links aus Linklist bzw. Default Links versorgen.
     try {
@@ -11578,6 +11578,9 @@ function is_page(name) {
             break;
         case "dashboard":
             if (url.match(/\/account\/dashboard$/)) status = true;
+            break;
+        case "dashboard-section":
+            if (url.match(/\/account\/dashboard/)) status = true;
             break;
         case "track":
             if (url.match(/\/track\/($|#$)/)) status = true;
