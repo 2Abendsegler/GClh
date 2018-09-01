@@ -11542,8 +11542,9 @@ function getValue(name, defaultValue) {
 }
 
 // Auf welcher Seite bin ich?
-function is_link(name, url) {
+function is_page(name) {
     var status = false;
+    var ulr = document.location.href;
     switch (name) {
         case "cache_listing":
             if (url.match(/\.com\/(seek\/cache_details\.aspx|geocache\/)/) && !document.getElementById("cspSubmit") && !document.getElementById("cspGoBack")) status = true;
@@ -11585,12 +11586,11 @@ function is_link(name, url) {
             if (url.match(/\.com\/my\/souvenirs\.aspx/)) status = true;
             break;
         default:
-            gclh_error("is_link", "is_link("+name+", ... ): unknown name");
+            gclh_error("is_page", "is_page("+name+", ... ): unknown name");
             break;
     }
     return status;
 }
-function is_page(name) {return is_link(name, document.location.href);}
 
 // Inject script into site context.
 function injectPageScript(scriptContent, TagName) {
