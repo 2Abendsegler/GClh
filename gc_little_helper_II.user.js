@@ -11577,7 +11577,7 @@ function is_page(name) {
             if (url.match(/\/account\/messagecenter/)) status = true;
             break;
         case "dashboard":
-            if (url.match(/\/account\/dashboard/)) status = true;
+            if (url.match(/\/account\/dashboard$/)) status = true;
             break;
         case "track":
             if (url.match(/\/track\/($|#$)/)) status = true;
