@@ -464,6 +464,7 @@ var variablesInit = function(c) {
     c.settings_show_brouter_link = getValue("settings_show_brouter_link", true);
     c.settings_show_gpsvisualizer_link = getValue("settings_show_gpsvisualizer_link", true);
     c.settings_show_gpsvisualizer_gcsymbols = getValue("settings_show_gpsvisualizer_gcsymbols", true);
+    c.settings_show_gpsvisualizer_typedesc = getValue("settings_show_gpsvisualizer_typedesc", true);
     c.settings_show_default_links = getValue("settings_show_default_links", true);
     c.settings_bm_changed_and_go = getValue("settings_bm_changed_and_go", true);
     c.settings_bml_changed_and_go = getValue("settings_bml_changed_and_go", true);
@@ -1590,7 +1591,7 @@ var mainGC = function() {
             url = encodeURI(url);
 
             if ( url.length > service_configuration.maxUrlLength ) {
-                alert("Pay attention the URL is very long. Data loss is possible.")
+                alert("Pay attention the URL is very long ("+url.length+" characters). Data loss is possible.")
             }
             window.open(url);
         });
@@ -1647,14 +1648,8 @@ var mainGC = function() {
     }
 
     function gpsvisualizerWaypoint(waypoint, name, radius, context) {
-        var symbol = "";
-        var type = "";
-        
-        if ( settings_show_gpsvisualizer_gcsymbols && waypoint.typeid in urlPinIcons ) {
-            symbol = urlPinIcons[waypoint.typeid]
-            type = waypointNames[waypoint.typeid];
-        }
-        
+        var symbol = ( settings_show_gpsvisualizer_gcsymbols && waypoint.typeid in urlPinIcons ) ? urlPinIcons[waypoint.typeid] : "";
+        var type = ( settings_show_gpsvisualizer_typedesc && waypoint.typeid in waypointNames ) ? waypointNames[waypoint.typeid] : "";
         return name+","+roundTO(waypoint.latitude,LatLonDigits)+','+roundTO(waypoint.longitude,LatLonDigits)+','+radius+"m,"+type+","+symbol;
     }
 
@@ -1739,7 +1734,7 @@ var mainGC = function() {
                 mapservice_link( {
                     uniqueServiceId: "gpsvisualizer",
                     urlTemplate: 'http://www.gpsvisualizer.com/map_input?&width=1244&height=700&trk_list=0&wpt_list=desc_border&google_zoom_level=auto&google_wpt_labels=1&form:data=name,latitude,longitude,circle_radius,desc,symbol\n{waypoints}',
-                    layers: { 'google_map' : { displayName: 'Google street map', maxZoom: 20 }, 'google_satellite' : { displayName: 'Google satellite', maxZoom: 20 }, 'google_hybrid" selected="' : { displayName: 'Google hybrid', maxZoom: 20 }, 'google_physical' : { displayName: 'Google terrain', maxZoom: 20 }, 'google_openstreetmap' : { displayName: 'OpenStreetMap', maxZoom: 20 }, 'google_openstreetmap_tf' : { displayName: 'OSM ThunderForest', maxZoom: 20 }, 'google_openstreetmap_komoot' : { displayName: 'OSM Komoot', maxZoom: 20 }, 'google_opencyclemap' : { displayName: 'OpenCycleMap', maxZoom: 20 }, 'google_opentopomap' : { displayName: 'OpenTopoMap', maxZoom: 20 }, 'google_4umaps' : { displayName: 'World topo maps (4UMaps.eu)', maxZoom: 20 }},
+                    layers: { 'google_map' : { displayName: 'Google street map', maxZoom: 20 }, 'google_satellite' : { displayName: 'Google satellite', maxZoom: 20 }, 'google_hybrid" selected="' : { displayName: 'Google hybrid', maxZoom: 20 }, 'google_physical' : { displayName: 'Google terrain', maxZoom: 20 }, 'google_openstreetmap' : { displayName: 'OpenStreetMap', maxZoom: 20 }, 'google_openstreetmap_tf' : { displayName: 'OSM ThunderForest', maxZoom: 20 }, 'google_openstreetmap_komoot' : { displayName: 'OSM Komoot', maxZoom: 20 }, 'google_opencyclemap' : { displayName: 'OpenCycleMap', maxZoom: 20 }, 'google_opentopomap' : { displayName: 'OpenTopoMap', maxZoom: 20 }, 'google_4umaps' : { displayName: 'World topo maps', maxZoom: 20 }},
                     waypointSeparator : '\n',
                     waypointFunction : gpsvisualizerWaypoint,
                     mapOffset : { width: 0, height: 0 },
@@ -8209,15 +8204,15 @@ var mainGC = function() {
         if (tbl.length <= 0) tbl = $("#ctl00_ContentBody_WaypointList");
         return tbl;
     }
-    
+
     // Trim decimal value to a given number of digits.
     function roundTO(val, decimals) {return Number(Math.round(val+'e'+decimals)+'e-'+decimals);}
-    
+
     function queryListingWaypoints( original ) {
         var waypoints = [];
         try {
             var gccode = ($('#ctl00_ContentBody_CoordInfoLinkControl1_uxCoordInfoCode')[0]) ? $('#ctl00_ContentBody_CoordInfoLinkControl1_uxCoordInfoCode')[0].textContent : "n/a";
-            
+
             var ListingCoords = {
                 name: unsafeWindow.mapLatLng.name,
                 gccode: gccode,
@@ -8229,9 +8224,9 @@ var mainGC = function() {
                 prefixedName: gccode,
             };
             waypoints.push(ListingCoords);
-         
+
             if ( original && unsafeWindow.mapLatLng.isUserDefined == true ) {
-                var OriginalCoords = Object.assign({}, ListingCoords); // create a copy 
+                var OriginalCoords = Object.assign({}, ListingCoords); // create a copy
                 OriginalCoords.latitude = unsafeWindow.mapLatLng.oldLatLng[0];
                 OriginalCoords.longitude = unsafeWindow.mapLatLng.oldLatLng[1];
                 OriginalCoords.source = "original";
@@ -8248,10 +8243,10 @@ var mainGC = function() {
                     latitude: cmapAdditionalWaypoints[i].lat,
                     longitude: cmapAdditionalWaypoints[i].lng,
                     prefixedName: cmapAdditionalWaypoints[i].pf+gccode.substring(2),
-                };           
+                };
                 waypoints.push(waypoint);
             }
-            
+
         } catch(e) {gclh_error("queryListingWaypoints()",e);}
         return waypoints;
     }
@@ -9378,7 +9373,8 @@ var mainGC = function() {
             html += checkboxy('settings_show_flopps_link', 'Show Flopp\'s Map links in sidebar and under the "Additional Waypoints"') + show_help3("If there are no additional waypoints only the link in the sidebar is shown.") + "<br>";
             html += checkboxy('settings_show_brouter_link', 'Show BRouter links in sidebar and under the "Additional Waypoints"') + show_help3("If there are no additional waypoints only the link in the sidebar is shown.") + "<br>";
             html += checkboxy('settings_show_gpsvisualizer_link', 'Show GPSVisualizer links in sidebar and under the "Additional Waypoints"') + show_help3("If there are no additional waypoints only the link in the sidebar is shown.") + "<br>";
-            html += "&nbsp;&nbsp;" + checkboxy('settings_show_gpsvisualizer_gcsymbols', 'Use Geocaching symbols on GPSVisualizer map') + show_help3("Instead of default icon/pin Geocaching symbols are used. If the URL too long deactivate this option.") + "<br>";
+            html += "&nbsp;&nbsp;" + checkboxy('settings_show_gpsvisualizer_gcsymbols', 'Use Geocaching symbols on GPSVisualizer map') + show_help3("Instead of default icon/pin Geocaching symbols are used. If the URL is too long deactivate this option.") + "<br>";
+            html += "&nbsp;&nbsp;" + checkboxy('settings_show_gpsvisualizer_typedesc', 'Transfer type of the waypoint as description') + show_help3("Transfer for every waypoint the type as text in the description. If the URL is too long deactivate this option.") + "<br>";
             html += newParameterVersionSetzen(0.8) + newParameterOff;
             html += newParameterOn3;
             html += checkboxy('settings_show_all_logs_but', 'Show button \"Show all logs\" above the logs') + "<br>";
@@ -10036,6 +10032,7 @@ var mainGC = function() {
             setEvForDepPara("settings_show_elevation_of_waypoints","settings_primary_elevation_service");
             setEvForDepPara("settings_show_elevation_of_waypoints","settings_secondary_elevation_service");
             setEvForDepPara("settings_show_gpsvisualizer_link","settings_show_gpsvisualizer_gcsymbols");
+            setEvForDepPara("settings_show_gpsvisualizer_link","settings_show_gpsvisualizer_typedesc");
             // Abhängigkeiten der Linklist Parameter.
             for (var i = 0; i < 100; i++) {
                 // 2. Spalte: Links für Custom BMs.
@@ -10372,6 +10369,7 @@ var mainGC = function() {
                 'settings_show_brouter_link',
                 'settings_show_gpsvisualizer_link',
                 'settings_show_gpsvisualizer_gcsymbols',
+                'settings_show_gpsvisualizer_typedesc',
                 'settings_show_default_links',
                 'settings_bm_changed_and_go',
                 'settings_bml_changed_and_go',
