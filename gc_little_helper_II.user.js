@@ -1531,70 +1531,74 @@ var mainGC = function() {
         }
 
         $('.mapservice_click-'+uniqueServiceId).click(function() {
-            var waypoints = queryListingWaypoints(true);
-            var map = $(this).data('map');
-            var data = {
-                urlTemplate: service_configuration.urlTemplate,
-                map : map,
-                maxZoomLevel : service_configuration.layers[map].maxZoom,
-                waypoints : waypoints,
-                waypointSeparator : service_configuration.waypointSeparator,
-                waypointFunction : service_configuration.waypointFunction,
-                context : service_configuration.context,
-                mapOffset : service_configuration.mapOffset
-            };
-
-            var url = data.urlTemplate;
-            var waypointString = "";
-            var boundarybox = undefined;
-
-            if ( data.context == undefined ) data.context = {};
-            if ( data.temp == undefined ) data.context.temp = {};
-            data.context.temp.count = 0;
-
-            for (var i=0; i<data.waypoints.length; i++) {
-                var waypoint = data.waypoints[i];
-                var value = "";
-                var radius = 0;
-                var name = "";
-
-                if (waypoint.source == "waypoint") {
-                    data.context.temp.count++;
-                    radius = ((waypoint.typeid == 219 /*Physical Stage*/ || waypoint.typeid == 220 /*Final Location*/ ) ? 161 : 0);
-                    name = normalizeName(waypoint.prefixedName);
-                } else if (waypoint.source == "original" ) {
-                    radius = 0;
-                    if (waypoint.typeid == 2 /* Traditional Geocache */ ) radius = 161; //  161m radius
-                    else if (waypoint.typeid == 8 /* Mystery cache */) radius = 3000; // Mystery cache 3000m radius
-                    name = normalizeName(waypoint.gccode+'_ORIGINAL');
-                } else if (waypoint.source == "listing" ) {
-                    radius = 0;
-                    if (waypoint.typeid == 2 /* Traditional Geocache */ ) radius = 161; //  161m radius
-                    else if (waypoint.typeid == 8 /* Mystery cache */) radius = 3000; // Mystery cache 3000m radius
-                    name = normalizeName(waypoint.gccode);
-                } else {
-                    gclh_log("xxxWaypoint() - unknown waypoint.source ("+waypoint.source+")")
-                }
-
-                value = data.waypointFunction( waypoint, name, radius, data.context );
-                waypointString += (i?data.waypointSeparator:'') + value;
-                boundarybox = BoundaryBox( boundarybox, data.waypoints[i].latitude, data.waypoints[i].longitude );
-            }
-
-            var zoom = TileMapZoomLevelForBoundaryBox( boundarybox, data.mapOffset.width, data.mapOffset.height, data.maxZoomLevel );
-
-            url = url.replace("{center_latitude}",roundTO( boundarybox.center.latitude,LatLonDigits));
-            url = url.replace("{center_longitude}",roundTO( boundarybox.center.longitude,LatLonDigits));
-            url = url.replace("{zoom}",zoom);
-            url = url.replace("{map}",data.map);
-            url = url.replace("{waypoints}",waypointString);
-            url = encodeURI(url);
-
-            if ( url.length > service_configuration.maxUrlLength ) {
-                alert("Pay attention the URL is very long ("+url.length+" characters). Data loss is possible.")
-            }
-            window.open(url);
+            service_configuration.action( this, service_configuration )
         });
+    }
+
+    function mapservice_open( thisObject, service_configuration )  {   
+        var waypoints = queryListingWaypoints(true);
+        var map = $(thisObject).data('map');
+        var data = {
+            urlTemplate: service_configuration.urlTemplate,
+            map : map,
+            maxZoomLevel : service_configuration.layers[map].maxZoom,
+            waypoints : waypoints,
+            waypointSeparator : service_configuration.waypointSeparator,
+            waypointFunction : service_configuration.waypointFunction,
+            context : service_configuration.context,
+            mapOffset : service_configuration.mapOffset
+        };
+
+        var url = data.urlTemplate;
+        var waypointString = "";
+        var boundarybox = undefined;
+
+        if ( data.context == undefined ) data.context = {};
+        if ( data.temp == undefined ) data.context.temp = {};
+        data.context.temp.count = 0;
+
+        for (var i=0; i<data.waypoints.length; i++) {
+            var waypoint = data.waypoints[i];
+            var value = "";
+            var radius = 0;
+            var name = "";
+
+            if (waypoint.source == "waypoint") {
+                data.context.temp.count++;
+                radius = ((waypoint.typeid == 219 /*Physical Stage*/ || waypoint.typeid == 220 /*Final Location*/ ) ? 161 : 0);
+                name = normalizeName(waypoint.prefixedName);
+            } else if (waypoint.source == "original" ) {
+                radius = 0;
+                if (waypoint.typeid == 2 /* Traditional Geocache */ ) radius = 161; //  161m radius
+                else if (waypoint.typeid == 8 /* Mystery cache */) radius = 3000; // Mystery cache 3000m radius
+                name = normalizeName(waypoint.gccode+'_ORIGINAL');
+            } else if (waypoint.source == "listing" ) {
+                radius = 0;
+                if (waypoint.typeid == 2 /* Traditional Geocache */ ) radius = 161; //  161m radius
+                else if (waypoint.typeid == 8 /* Mystery cache */) radius = 3000; // Mystery cache 3000m radius
+                name = normalizeName(waypoint.gccode);
+            } else {
+                gclh_log("xxxWaypoint() - unknown waypoint.source ("+waypoint.source+")")
+            }
+
+            value = data.waypointFunction( waypoint, name, radius, data.context );
+            waypointString += (i?data.waypointSeparator:'') + value;
+            boundarybox = BoundaryBox( boundarybox, data.waypoints[i].latitude, data.waypoints[i].longitude );
+        }
+
+        var zoom = TileMapZoomLevelForBoundaryBox( boundarybox, data.mapOffset.width, data.mapOffset.height, data.maxZoomLevel );
+
+        url = url.replace("{center_latitude}",roundTO( boundarybox.center.latitude,LatLonDigits));
+        url = url.replace("{center_longitude}",roundTO( boundarybox.center.longitude,LatLonDigits));
+        url = url.replace("{zoom}",zoom);
+        url = url.replace("{map}",data.map);
+        url = url.replace("{waypoints}",waypointString);
+        url = encodeURI(url);
+
+        if ( url.length > service_configuration.maxUrlLength ) {
+            alert("Pay attention the URL is very long ("+url.length+" characters). Data loss is possible.")
+        }
+        window.open(url);
     }
 
     function BoundaryBox( boundarybox, latitude, longitude ) {
@@ -1706,6 +1710,7 @@ var mainGC = function() {
                     sidebar : { linkText : "Show on Flopp\'s Map", icon : true, icondata : global_flopps_map_icon },
                     waypointtable : { linkText : "Show waypoints on Flopp\'s Map with &#8230;", icon : false },
                     maxUrlLength: 2000,
+                    action: mapservice_open,
                     context : {}
                 });
             } catch(e) {gclh_error("Show Flopp's Map links",e);}
@@ -1724,6 +1729,7 @@ var mainGC = function() {
                     sidebar : { linkText : "Show on BRouter", icon : true, icondata : global_brouter_icon },
                     waypointtable : { linkText : "Show route on BRouter with &#8230;", icon : false },
                     maxUrlLength: 4000,
+                    action: mapservice_open,
                     context : {}
                 });
             } catch(e) {gclh_error("Show button BRouter and open BRouter",e);}
@@ -1742,6 +1748,7 @@ var mainGC = function() {
                     sidebar : { linkText : "Show on GPSVisualizer", icon : true, icondata : global_gpsvisualizer_icon },
                     waypointtable : { linkText : "Show waypoints on GPSVisualizer with &#8230;", icon : false },
                     maxUrlLength: 4000,
+                    action: mapservice_open,
                     context : {}
                 });
             } catch(e) {gclh_error("Show button GPSVisualizer and open GPSVisualizer",e);}
