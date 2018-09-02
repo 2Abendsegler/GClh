@@ -255,6 +255,7 @@ var variablesInit = function(c) {
     c.settings_hide_socialshare = getValue("settings_hide_socialshare", true);
     c.settings_hide_disclaimer = getValue("settings_hide_disclaimer", true);
     c.settings_hide_cache_notes = getValue("settings_hide_cache_notes", false);
+    c.settings_adapt_height_cache_notes = getValue("settings_adapt_height_cache_notes", true);
     c.settings_hide_empty_cache_notes = getValue("settings_hide_empty_cache_notes", true);
     c.settings_show_all_logs = getValue("settings_show_all_logs", true);
     c.settings_show_all_logs_count = getValue("settings_show_all_logs_count", "30");
@@ -1816,8 +1817,20 @@ var mainGC = function() {
         }
     }
 
-// Hide complete and Show/Hide Cache Note.
+// Personal Cache Note at cache listing
     if (is_page("cache_listing")) {
+
+// Personal Cache Note: Adapt height of edit field for Personal Cache Note
+        if (settings_adapt_height_cache_notes) {
+            try {
+                var note = ($('.Note.PersonalCacheNote')[0] || $('.NotesWidget')[0]);
+                if ( note ) {
+                    $("#cacheNoteText").height($("#viewCacheNote").height()*1.02+36);
+                }
+            } catch(e) {gclh_error("Adapt size of edit field for personal cache note",e);}
+        }
+
+// Personal Cache Note: Hide complete and Show/Hide Cache Note.
         try {
             var note = ($('.Note.PersonalCacheNote')[0] || $('.NotesWidget')[0]);
             if (settings_hide_cache_notes && note) note.remove();
@@ -1849,11 +1862,9 @@ var mainGC = function() {
                     "}";
                 injectPageScript(code, 'body');
             }
-        } catch(e) {gclh_error("Hide complete and Show/Hide Cache Note:",e);}
-    }
+        } catch(e) {gclh_error("Hide complete and Show/Hide Cache Note",e);}
 
-// Focus Cachenote-Textarea on Click of the Note (to avoid double click to edit)
-    if (is_page("cache_listing")) {
+// Personal Cache Note: Focus Cachenote-Textarea on Click of the Note (to avoid double click to edit)
         try
         {
             var editCacheNote = document.querySelector('#editCacheNote');
@@ -1872,7 +1883,7 @@ var mainGC = function() {
                   attributes: true //configure it to listen to attribute changes
                 });
             }
-        } catch(e) {gclh_error("Focus Cachenote-Textarea on Click of the Note:",e);}
+        } catch(e) {gclh_error("Focus Cachenote-Textarea on Click of the Note",e);}
     }
 
 // Show eMail and Message Center Link beside user. (Nicht in Cache Logs im Listing, das erfolgt später bei Log-Template.)
@@ -9354,8 +9365,9 @@ var mainGC = function() {
             html += content_settings_log_inline_tb;
             html += checkboxy('settings_log_inline_pmo4basic', 'Log cache from listing for PMO (for basic members)') + show_help("With this option you can select, if inline logs should appear for Premium Member Only (PMO) caches althought you are a basic member.") + "<br>";
             html += content_settings_log_inline_tb.replace("settings_log_inline_tb", "settings_log_inline_tbX0");
-            html += checkboxy('settings_hide_empty_cache_notes', 'Hide cache notes if empty') + show_help("You can hide the personal cache notes if they are empty. There will be a link to show them to add a note.") + prem + "<br>";
-            html += checkboxy('settings_hide_cache_notes', 'Hide cache notes completely') + show_help("You can hide the personal cache notes completely, if you don't want to use them.") + prem + "<br>";
+            html += checkboxy('settings_hide_empty_cache_notes', 'Hide Personal Cache Notes if empty') + show_help("You can hide the Personal Cache Notes if they are empty. There will be a link to show them to add a note.") + prem + "<br>";
+            html += checkboxy('settings_hide_cache_notes', 'Hide Personal Cache Notes completely') + show_help("You can hide the Personal Cache Notes completely, if you don't want to use them.") + prem + "<br>";
+            html += checkboxy('settings_adapt_height_cache_notes', 'Adapt the height of the Personal Cache Note edit field') + show_help("The height of the Personal Cache Note edit field will be expand to show the complete note.") + prem + "<br>";
             html += checkboxy('settings_hide_disclaimer', 'Hide disclaimer') + "<br>";
             html += checkboxy('settings_hide_spoilerwarning', 'Hide spoiler warning') + "<br>";
             html += checkboxy('settings_hide_top_button', 'Hide the green "To Top" button') + show_help("Hide the green \"To Top\" button, which appears if you are reading logs.") + "<br>";
@@ -10266,6 +10278,7 @@ var mainGC = function() {
                 'settings_hide_disclaimer',
                 'settings_hide_cache_notes',
                 'settings_hide_empty_cache_notes',
+                'settings_adapt_height_cache_notes',
                 'settings_show_all_logs',
                 'settings_decrypt_hint',
                 'settings_visitCount_geocheckerCom',
