@@ -230,5 +230,6 @@
   "settings_show_latest_logs_symbols_count_map": "10",
   "settings_show_enhanced_map_popup": true,
   "settings_gclherror_alert": false,
-  "settings_auto_open_tb_inventory_list": true
+  "settings_auto_open_tb_inventory_list": true,
+  "settings_embedded_smartlink_ignorelist": true
 }

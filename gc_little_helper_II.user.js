@@ -483,6 +483,7 @@ var variablesInit = function(c) {
     c.settings_modify_new_drafts_page = getValue("settings_modify_new_drafts_page", true);
     c.settings_gclherror_alert = getValue("settings_gclherror_alert", false);
     c.settings_auto_open_tb_inventory_list = getValue("settings_auto_open_tb_inventory_list", true);
+    c.settings_embedded_smartlink_ignorelist = getValue("settings_embedded_smartlink_ignorelist", true);
 
     try {
         if (c.userToken === null) {
@@ -5562,6 +5563,36 @@ var mainGC = function() {
             }
             // Change link "Your lists" from ".../account/lists" to ".../my/lists.aspx".
             if (settings_my_lists_old_fashioned) $('#DashboardSidebar ul li a[href*="/account/lists"]').prop("href", "/my/lists.aspx");
+
+            // add link to Ignore List into dashboard sidebar
+            if (settings_embedded_smartlink_ignorelist) {
+
+                function openIgnoreList(response) { 
+                    try {
+                        if (response.responseText) {
+                            var linkIgnoreList = $(response.responseText).find('a[href*="/bookmarks/view.aspx?code="]').first().attr('href');
+                            window.open(linkIgnoreList,"_self");
+                        }
+                    } catch(e) {gclh_error("function openIgnoreList()",e);}
+                }
+
+                var sidebarLists = $($('ul[class="link-block"] a[href*="/my/watchlist.aspx"]')[0]);
+                var html = '<li><a id="gclh_goto_ignorelist" href="#">Ignore List</a></li>';
+                sidebarLists.parent().after(html);
+
+                $("#gclh_goto_ignorelist").click( function(e) {
+                    try {
+                        // link to ignore list is not static, the id can be changed
+                        GM_xmlhttpRequest({
+                            method: "GET",
+                            url: "https://www.geocaching.com/account/lists",
+                            onload: openIgnoreList
+                        });
+                        e.preventDefault();
+                    } catch(e) {gclh_error("Request link to Ignore List (#gclh_goto_ignorelist)",e);}
+                });
+            }
+
             appendCssStyle(css);
         } catch(e) {gclh_error("Improve new dashboard:",e);}
     }
@@ -9339,6 +9370,7 @@ var mainGC = function() {
             html += checkboxy('settings_but_search_map', 'Show buttons "Search" and "Map" on your dashboard') + "<br>";
             html += " &nbsp; " + checkboxy('settings_but_search_map_new_tab', 'Open links in new tab') + "<br>";
             html += checkboxy('settings_compact_layout_new_dashboard', 'Show compact layout on your dashboard') + "<br>";
+            html += checkboxy('settings_embedded_smartlink_ignorelist', 'Show link to Ignore List in sidebar section Lists') + show_help("Embedded a link in the section Lists to your Ignore List into the sidebar of the new dashboard.") + "<br>";
             html += newParameterVersionSetzen(0.9) + newParameterOff;
 
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>Old dashboard only</b></div>";
@@ -10442,6 +10474,7 @@ var mainGC = function() {
                 'settings_modify_new_drafts_page',
                 'settings_gclherror_alert',
                 'settings_auto_open_tb_inventory_list',
+                'settings_embedded_smartlink_ignorelist',
             );
 
             for (var i = 0; i < checkboxes.length; i++) {
