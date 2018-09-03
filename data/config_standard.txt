@@ -16,6 +16,7 @@
   "settings_hide_disclaimer": true,
   "settings_hide_cache_notes": false,
   "settings_hide_empty_cache_notes": true,
+  "settings_adapt_height_cache_notes": true,
   "settings_show_all_logs": true,
   "settings_show_all_logs_count": "30",
   "settings_decrypt_hint": true,
