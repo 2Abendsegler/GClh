@@ -5632,9 +5632,10 @@ var mainGC = function() {
                     if (settings_imgcaption_on_top) newImTpl = newImTpl.replace('#top#', '${Name}').replace('#bot#', '');
                     else  newImTpl = newImTpl.replace('#top#', '').replace('#bot#', '${Name}');
                     var code = "function gclh_updateTmpl() {"
+                             + " if ($.template != undefined) {"
                              + "  delete $.template['tmplCacheLogImages'];"
                              + "  $.template(\"tmplCacheLogImages\",\""+newImTpl+"\");"
-                             + "}"
+                             + "} }"
                              + "gclh_updateTmpl();"
                              + placeToolTip.toString();
                     injectPageScript(code, "body");
