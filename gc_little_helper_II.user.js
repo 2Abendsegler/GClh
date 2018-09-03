@@ -2324,7 +2324,9 @@ var mainGC = function() {
             }
 
             var locations = prepareListingPageForElevations();
-            getElevations(0,locations);
+            if ( locations.length > 0 ) {
+                getElevations(0,locations);
+            }
         } catch(e) {gclh_error("AddElevation",e);}
     }
 
