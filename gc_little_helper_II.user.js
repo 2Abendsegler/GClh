@@ -8209,6 +8209,10 @@ var mainGC = function() {
     function queryListingWaypoints( original ) {
         var waypoints = [];
         try {
+            if (unsafeWindow.mapLatLng == undefined) {
+                return [];
+            }
+            
             var gccode = ($('#ctl00_ContentBody_CoordInfoLinkControl1_uxCoordInfoCode')[0]) ? $('#ctl00_ContentBody_CoordInfoLinkControl1_uxCoordInfoCode')[0].textContent : "n/a";
 
             var ListingCoords = {
