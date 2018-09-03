@@ -5568,7 +5568,12 @@ var mainGC = function() {
                     try {
                         if (response.responseText) {
                             var linkIgnoreList = $(response.responseText).find('a[href*="/bookmarks/view.aspx?code="]').first().attr('href');
-                            window.open(linkIgnoreList,"_self");
+                            if ( linkIgnoreList ) {
+                                window.open(linkIgnoreList,"_self");
+                            } else {
+                                console.log(linkIgnoreList);
+                                alert("GClh cannot find a link to your Ignore List. Pleaes check if you have an Ignore List (it is Premium Member feature).");
+                            }
                         }
                     } catch(e) {gclh_error("function openIgnoreList()",e);}
                 }
