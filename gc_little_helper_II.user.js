@@ -688,6 +688,7 @@ var mainPGC = function() {
 
                 info_text.appendChild(document.createTextNode("This function will only work, if you don't set any other filter except country OR region!"));
                 info_text.appendChild(document.createElement("br"));
+                info_text.appendChild(document.createTextNode("PQ-Name (Prefix):"));
 
                 var button = document.createElement('button');
                 var t = document.createTextNode("Create PQ(s)");  
@@ -3238,11 +3239,8 @@ var mainGC = function() {
                         break;
 
                     case "country":
-                        console.log(cr_name);
                         // Modifiction for Countries with "," in the name. There is a "+" after the ","
                         cr_name = cr_name.split(/,(?!\+)/);
-
-                        console.log(cr_name);
                         if(cr_name.length >= 1){
                             for (var i = 0; i < cr_name.length; i++) {
                                 cr_name[i] = cr_name[i].replace(/\+/g, " ");
@@ -3250,8 +3248,8 @@ var mainGC = function() {
                                 var country = $.grep(country_id, function(e){return e.n == cr_name[i];});
 
                                 if(country.length == 0){
-                                    alert('No corresponding Country Name not found for Country: ' + cr_name[i]);
-                                    throw Error('No corresponding Country Name not found for Country: ' + cr_name[i]);
+                                    alert('No corresponding Country Name found for Country: ' + cr_name[i]);
+                                    throw Error('No corresponding Country Name found for Country: ' + cr_name[i]);
                                 }
 
                                 $('#ctl00_ContentBody_rbCountries').attr('checked', true);
@@ -3263,7 +3261,7 @@ var mainGC = function() {
                         }
                         break;
                    default:
-                        alert('Unknown Type. Please contact an admin of GClh.');
+                        alert('Unknown Type for area. Please contact an admin of GClh.');
                         throw new Error('unknown Type: ' + type);
                 }
 
@@ -3291,20 +3289,6 @@ var mainGC = function() {
                 document.getElementById('ctl00_ContentBody_btnSubmit').click();
                 
             }
-
-            // setTimeout(function(){
-            //     window.close();
-            // },3000);
-
-            // alert(findGetParameter('n'));
-            // alert(findGetParameter('t'));
-            // alert(findGetParameter('s'));
-            // alert(findGetParameter('sm'));
-            // alert(findGetParameter('sd'));
-            // alert(findGetParameter('sy'));
-            // alert(findGetParameter('em'));
-            // alert(findGetParameter('ed'));
-            // alert(findGetParameter('ey'));
 
             
         } catch(e) {gclh_error("Create Automated PQs from project-gc PQ splitter:",e);}
