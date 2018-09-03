@@ -4296,28 +4296,30 @@ var mainGC = function() {
 
                 // Show VIP List.
                 var map = $('#ctl00_ContentBody_detailWidget')[0];
-                var box = document.createElement("div");
-                var headline = document.createElement("h3");
-                var body = document.createElement("div");
-                box.setAttribute("class", "CacheDetailNavigationWidget NoPrint");
-                headline.setAttribute("class", "WidgetHeader");
-                body.setAttribute("class", "WidgetBody");
-                body.setAttribute("id", "gclh_vip_list");
-                headline.innerHTML = "<img width='16' height='16' style='margin-bottom: -2px;' title='Very important person List' alt='VIP-List' src='/images/icons/icon_attended.gif'> VIP-List";
-                if (settings_make_vip_lists_hideable) {
-                    headline.innerHTML = "<img id='lnk_gclh_vip_list' title='' src='' style='cursor: pointer'> " + headline.innerHTML;
-                }
-                box.appendChild(headline);
-                box.appendChild(body);
-                box.setAttribute("style", "margin-top: 1.5em;");
-                map.parentNode.insertBefore(box, map);
-                if (settings_make_vip_lists_hideable) {
-                    showHideBoxCL("lnk_gclh_vip_list", true);
-                    $('#lnk_gclh_vip_list')[0].addEventListener("click", function() {showHideBoxCL(this.id, false);}, false);
+                if ( map ) {
+                    var box = document.createElement("div");
+                    var headline = document.createElement("h3");
+                    var body = document.createElement("div");
+                    box.setAttribute("class", "CacheDetailNavigationWidget NoPrint");
+                    headline.setAttribute("class", "WidgetHeader");
+                    body.setAttribute("class", "WidgetBody");
+                    body.setAttribute("id", "gclh_vip_list");
+                    headline.innerHTML = "<img width='16' height='16' style='margin-bottom: -2px;' title='Very important person List' alt='VIP-List' src='/images/icons/icon_attended.gif'> VIP-List";
+                    if (settings_make_vip_lists_hideable) {
+                        headline.innerHTML = "<img id='lnk_gclh_vip_list' title='' src='' style='cursor: pointer'> " + headline.innerHTML;
+                    }
+                    box.appendChild(headline);
+                    box.appendChild(body);
+                    box.setAttribute("style", "margin-top: 1.5em;");
+                    map.parentNode.insertBefore(box, map);
+                    if (settings_make_vip_lists_hideable) {
+                        showHideBoxCL("lnk_gclh_vip_list", true);
+                        $('#lnk_gclh_vip_list')[0].addEventListener("click", function() {showHideBoxCL(this.id, false);}, false);
+                    }
                 }
 
                 // Show VIP List "not found".
-                if (settings_vip_show_nofound) {
+                if (settings_vip_show_nofound && map) {
                     var box2 = document.createElement("div");
                     var headline2 = document.createElement("h3");
                     var body2 = document.createElement("div");
@@ -4365,6 +4367,9 @@ var mainGC = function() {
                 gclh_build_vip_list = function() {
                     var show_owner = settings_show_owner_vip_list;
                     var list = document.getElementById("gclh_vip_list");
+                    if ( list == undefined ) {
+                        return;
+                    }
                     // Hier wird wohl Loading Icon entfernt.
                     list.innerHTML = "";
 
@@ -4796,7 +4801,7 @@ var mainGC = function() {
                 checkLeagueAvailable(0);
             }
         }
-    } catch(e) {gclh_error("VIP VUP:",e);}
+    } catch(e) {gclh_error("VIP VUP",e);}
 
 // Log-Template (Logtemplate) definieren.
     if (is_page("cache_listing")) {
