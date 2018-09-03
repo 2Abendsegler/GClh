@@ -1479,228 +1479,190 @@ var mainGC = function() {
         } catch(e) {gclh_error("Add link to waypoint list and cache logs:",e);}
     }
 
-// Show links which open Flopp's Map with all waypoints of a cache.
-    if (settings_show_flopps_link && is_page("cache_listing") || document.location.href.match(/\.com\/hide\/wptlist.aspx/)) {
-        try {
-            // Add Flopps map link to the right sidebar.
-            var linklist_for_flopps = $('.CacheDetailNavigation ul').first();
-            linklist_for_flopps.append('<li><div class="GClhdropdown"><a id="ShowWaypointsOnFloppsMap_linklist" class="GClhdropbtn">Show on Flopp\'s Map</a><div id="FloppsMapLayers_linklist" class="GClhdropdown-content"></div></div></li>');
-            buildFloppsMapLayers("FloppsMapLayers_linklist", "ShowWaypointsOnFloppsMap_linklist");
-            // Add Flopps map link under waypoints.
-            var tbl = getWaypointTable();
-            if (tbl.length > 0) {
-                tbl = tbl.next("p");
-                if ($('#ctl00_ContentBody_Waypoints_uxShowHiddenCoordinates')) tbl.append('<br>');
-                tbl.append('<div class="GClhdropdown"><div id="ShowWaypointsOnFloppsMap" class="GClhdropbtn"><a>Show waypoints on Flopp\'s Map with &#8230;</a></div><div id="FloppsMapLayers" class="GClhdropdown-content"></div></div>');
-                buildFloppsMapLayers("FloppsMapLayers", "ShowWaypointsOnFloppsMap");
-                var status = {};
-                var waypoints = extractWaypointsFromListing();
-                var link = buildFloppsMapLink(waypoints, 'OSM', false, status);
-                if (status.limited == true) $(".floppsmap-warning").show();
-                else $(".floppsmap-warning").hide();
-            }
-            $('.FloppsMap-content-layer').click(function() {
-                var map = $(this).data('map');
-                openFloppsMap(map);
-            });
-        } catch(e) {gclh_error("Show Flopp's Map links:",e);}
-    }
-    // Flopp's Map link.
-    function buildFloppsMapLayers(id, openId) {
-        var div = '<div class="FloppsMap-content-layer" data-map=';
-        $('#'+id).append('<div class="GClhdropdown-content-info floppsmap-warning"><b>WARNING:</b> There are too many waypoints in the listing. Flopp\'s Map allows only a limited number of waypoints. Not all waypoints are shown.</div>');
-        $('#'+id).append(div+'"OSM">Openstreetmap</div>');
-        $('#'+id).append(div+'"OSM/DE">German Style</div>');
-        $('#'+id).append(div+'"OCM">OpenCycleMap</div>');
-        $('#'+id).append(div+'"TOPO">OpenTopMap</div>');
-        $('#'+id).append(div+'"roadmap">Google Maps</div>');
-        $('#'+id).append(div+'"satellite">Google Maps Satellite</div>');
-        $('#'+id).append(div+'"hybrid">Google Maps Hybrid</div>');
-        $('#'+id).append(div+'"terrain">Google Maps Terrain</div>');
-        $('#'+openId).click(function() {openFloppsMap("");});
-    }
-    function openFloppsMap(map) {
-        var waypoints = extractWaypointsFromListing();
-        var link = buildFloppsMapLink(waypoints, map, false, {});
-        window.open(link);
-    }
-    // Convert string to Flopp's Map specification.
-    function floppsMapWaypoint(waypoint, id, radius, name) {
-        name = name.replace(/[^a-zA-Z0-9_\-]/g,'_');  // A–Z, a–z, 0–9, - und _
-        return id+':'+waypoint.latitude+':'+waypoint.longitude+':'+radius+':'+name;
-    }
-    // Creates permanent link to Flopp's Map.
-    function buildFloppsMapLink(waypoints, map, shortnames, status) {
-        var url = "";
-        var floppsWaypoints = [];
-        var Latmax = -90.0;
-        var Latmin = 90.0;
-        var Lonmax = -180.0;
-        var Lonmin = 180.0;
-        var count = 0;
-        for (var i=0; i<waypoints.length; i++) {
-            var waypoint = waypoints[i];
-            if (waypoint !== undefined && waypoint.visible == true) {
-                if (waypoint.type == "waypoint") {
-                    var id = String.fromCharCode(65+Math.floor(count%26))+Math.floor(count/26+1);  // create Flopp's Map id: A1-A9 B1-B9 ....
-                    var radius = ((waypoint.subtype == "Physical Stage" || waypoint.subtype == "Final Location") ? "161" : "");
-                    floppsWaypoints.push(floppsMapWaypoint(waypoint, id, radius, waypoint.name));
-                    count++;
-                } else if (waypoint.type == "listing" && waypoint.subtype == "origin") {
-                    var radius = 0;
-                    if (waypoint.cachetype == "Traditional Geocache") radius = 161;
-                    else if (waypoint.cachetype == "Mystery Cache") radius = 3000;
-                    floppsWaypoints.push(floppsMapWaypoint(waypoint, "O", radius, waypoint.lookup+'_ORIGIN'));
-                } else if (waypoint.type == "listing" && waypoint.subtype == "changed") {
-                    floppsWaypoints.push(floppsMapWaypoint(waypoint, "C", 161, waypoint.lookup+'_CHANGED'));
-                }
-                Latmax = Math.max(Latmax, waypoint.latitude);
-                Latmin = Math.min(Latmin, waypoint.latitude);
-                Lonmax = Math.max(Lonmax, waypoint.longitude);
-                Lonmin = Math.min(Lonmin, waypoint.longitude);
-            }
+    const LatLonDigits = 6;
+
+    function mapservice_link( service_configuration ) {
+        var uniqueServiceId = service_configuration.uniqueServiceId;
+
+        var css = "";
+        css += "."+uniqueServiceId+"-content-layer {";
+        css += "  color: black;";
+        css += "  padding: 5px 16px 5px 16px;";
+        css += "  text-decoration: none;";
+        css += "  display: block;}";
+        css += "."+uniqueServiceId+"-content-layer:hover {";
+        css += "  background-color: #e1e1e1;";
+        css += "  cursor: pointer;}";
+        if ( service_configuration.sidebar.icon ) {
+            css += "."+uniqueServiceId+"-sidebar-icon {";
+            css += "  background-image: url(" + service_configuration.sidebar.icondata + ")}";
         }
-        var browserZoomLevel = window.devicePixelRatio;
-        var floppsMapWidth = Math.round(window.innerWidth*browserZoomLevel)-280;  // minus width of sidebar
-        var floppsMapHeigth = Math.round(window.innerHeight*browserZoomLevel)-50;  // minus height of header
-        var zoom=-1;
-        for (zoom=23; zoom>=0; zoom--) {
-            // Calculate tile boundary box.
-            var tileY_min = lat2tile(Latmin,zoom);
-            var tileY_max = lat2tile(Latmax,zoom);
-            var tiles_Y = Math.abs(tileY_min-tileY_max+1);  // boundary box heigth in number of tiles
-            var tileX_min = long2tile(Lonmin,zoom);
-            var tileX_max = long2tile(Lonmax,zoom);
-            var tiles_X = Math.abs(tileX_max-tileX_min+1);  // boundary box width in  number of tiles
-            // Calculate width and height of boundary rectangle (in pixel).
-            var latDelta = Math.abs(tile2lat(tileY_max,zoom)-tile2lat(tileY_min+1,zoom));
-            var latPixelPerDegree = tiles_Y*256/latDelta;
-            var boundaryHeight = latPixelPerDegree*(Latmax-Latmin);
-            var longDelta = Math.abs(tile2long(tileX_max+1,zoom)-tile2long(tileX_min,zoom));
-            var longPixelPerDegree = tiles_X*256/longDelta;
-            var boundaryWidth = longPixelPerDegree*(Lonmax-Lonmin);
-            if ((boundaryHeight < floppsMapHeigth) && (boundaryWidth < floppsMapWidth)) break;
+        if ( service_configuration.waypointtable.icon ) {
+            css += "."+uniqueServiceId+"-waypointtable-icon {";
+            css += "  background-image: url(" + service_configuration.waypointtable.icondata + ")}";
         }
-        var url = "";
-        status.limited = false;
-        for (var i=0; i<floppsWaypoints.length; i++) {
-            var nextWaypoint = floppsWaypoints[i];
-            // Limited the waypoint part to 2000 (+3) characters.
-            if ((url.length+nextWaypoint.length+1)>2003) {
-                status.limited = true;
-                status.numbers = i;
-                break;
-            }
-            url += ((i == 0) ? '&m=' : '*');
-            url += nextWaypoint;
+        appendCssStyle(css);
+
+        var html = "";
+        html += '<div class="GClhdropdown">';
+        html += '<a class="GClhdropbtn mapservice_click-{uniqueServiceId} {customclasses}" data-map="'+service_configuration.defaultMap+'">{linkText}</a>';
+        html += '<div class="GClhdropdown-content">';
+        for( var layer in service_configuration.layers ) {
+            html += '<div class="{uniqueServiceId}-content-layer mapservice_click-{uniqueServiceId}" data-map="'+layer+'">'+service_configuration.layers[layer].displayName+'</div>';
         }
-        var center_latitude = ((Latmax+90.0)+(Latmin+90.0))/2-90.0;
-        var center_longitude = ((Lonmax+180.0)+(Lonmin+180.0))/2-180.0;
-        var maxZoom = {'OSM': 18, 'OSM/DE': 18, 'OCM': 17, 'MQ': 17, 'OUTD': 17, 'TOPO': 15, 'roadmap':20, 'terrain':20, 'hybrid': 20};
-        zoom = Math.min(zoom,maxZoom[map]);
-        var url = 'http://flopp.net/'+'?c='+center_latitude+':'+center_longitude+'&z='+zoom+'&t='+map+url;
-        url += '&d=O:C';
-        return encodeURI(url);
+        html += '</div>'
+        html += '</div>';
+        html = html.replace(/{uniqueServiceId}/g,uniqueServiceId);
+
+        // Add map service link to the right sidebar.
+        var htmlSidebar = html.replace('{linkText}', service_configuration.sidebar.linkText);
+        htmlSidebar = htmlSidebar.replace('{customclasses}', ( service_configuration.sidebar.icon )?uniqueServiceId+'-sidebar-icon':'')
+        $('.CacheDetailNavigation ul').first().append('<li>'+htmlSidebar+'</li>');
+
+        // Add map service link under waypoint table
+        var tbl = getWaypointTable();
+        if (tbl.length > 0) {
+            var htmlWaypointTable = html.replace('{linkText}', service_configuration.waypointtable.linkText);
+            htmlWaypointTable = htmlWaypointTable.replace('{customclasses}',( service_configuration.waypointtable.icon )?uniqueServiceId+'-waypointable-icon':'')
+            tbl.next("p").append('<br>'+htmlWaypointTable);
+        }
+
+        $('.mapservice_click-'+uniqueServiceId).click(function() {
+            service_configuration.action( this, service_configuration )
+        });
     }
 
-// Show links which open BRouter with all waypoints of a cache.
-    if (settings_show_brouter_link && is_page("cache_listing") || document.location.href.match(/\.com\/hide\/wptlist.aspx/)) {
-        try {
-            // Add BRouter map link to the right sidebar.
-            var linklist_for_brouter = $('.CacheDetailNavigation ul').first();
-            linklist_for_brouter.append('<li><div class="GClhdropdown"><a id="ShowWaypointsOnBRouter_linklist" class="GClhdropbtn">Show Route on BRouter</a><div id="BRouterMapLayers_linklist" class="GClhdropdown-content"></div></div></li>');
-            buildBRouterMapLayers("BRouterMapLayers_linklist", "ShowWaypointsOnBRouter_linklist");
-            // Add BRouter map link under waypoints.
-            var tbl = getWaypointTable();
-            if (tbl.length > 0) {
-                tbl = tbl.next("p");
-                tbl.append('<br><div class="GClhdropdown"><div id="ShowWaypointsOnBRouter" class="GClhdropbtn"><a>Show Route on BRouter with &#8230;</a></div><div id="BRouterMapLayers" class="GClhdropdown-content"></div></div>');
-                buildBRouterMapLayers("BRouterMapLayers", "ShowWaypointsOnBRouter");
+    function mapservice_open( thisObject, service_configuration )  {   
+        var waypoints = queryListingWaypoints(true);
+        var map = $(thisObject).data('map');
+        var data = {
+            urlTemplate: service_configuration.urlTemplate,
+            map : map,
+            maxZoomLevel : service_configuration.layers[map].maxZoom,
+            waypoints : waypoints,
+            waypointSeparator : service_configuration.waypointSeparator,
+            waypointFunction : service_configuration.waypointFunction,
+            context : service_configuration.context,
+            mapOffset : service_configuration.mapOffset
+        };
+
+        var url = data.urlTemplate;
+        var waypointString = "";
+        var boundarybox = undefined;
+
+        if ( data.context == undefined ) data.context = {};
+        if ( data.temp == undefined ) data.context.temp = {};
+        data.context.temp.count = 0;
+
+        for (var i=0; i<data.waypoints.length; i++) {
+            var waypoint = data.waypoints[i];
+            var value = "";
+            var radius = 0;
+
+            if (waypoint.source == "waypoint") {
+                data.context.temp.count++;
+                radius = ((waypoint.typeid == 219 /*Physical Stage*/ || waypoint.typeid == 220 /*Final Location*/ ) ? 161 : 0);
+            } else if (waypoint.source == "original" ) {
+                radius = 0;
+                if (waypoint.typeid == 2 /* Traditional Geocache */ ) radius = 161; //  161m radius
+                else if (waypoint.typeid == 8 /* Mystery cache */) radius = 3000; // Mystery cache 3000m radius
+            } else if (waypoint.source == "listing" ) {
+                radius = 0;
+                if (waypoint.typeid == 2 /* Traditional Geocache */ ) radius = 161; //  161m radius
+                else if (waypoint.typeid == 8 /* Mystery cache */) radius = 3000; // Mystery cache 3000m radius
+            } else {
+                gclh_log("xxxWaypoint() - unknown waypoint.source ("+waypoint.source+")")
             }
-            $('.BRouter-content-layer').click(function() {
-                var map = $(this).data('map');
-                openBRouter(map);
-            });
-        } catch(e) {gclh_error("Show button BRouter and open BRouter:",e);}
-    }
-    // BRouter Map link.
-    function buildBRouterMapLayers(id, openId) {
-        var div = '<div class="BRouter-content-layer" data-map=';
-        $('#'+id).append(div+'"OpenStreetMap">OpenStreetMap</div>');
-        $('#'+id).append(div+'"OpenStreetMap.de">OpenStreetMap.de</div>');
-        $('#'+id).append(div+'"OpenTopoMap">OpenTopoMap</div>');
-        $('#'+id).append(div+'"OpenCycleMap (Thunderf.)">OpenCycleMap</div>');
-        $('#'+id).append(div+'"Outdoors (Thunderforest)">Outdoors</div>');
-        $('#'+id).append(div+'"Esri World Imagery">Esri World Imagery</div>');
-        $('#'+openId).click(function() {openBRouter("OpenStreetMap");});
-    }
-    function openBRouter(map) {
-        var waypoints = extractWaypointsFromListing();
-        var link = buildBRouterMapLink(waypoints, map, false);
-        window.open(link);
-    }
-    // Convert string to BRouter specification.
-    function brouterMapWaypoint(waypoint) {return waypoint.longitude+','+waypoint.latitude;}
-    // Build BRouter link.
-    function buildBRouterMapLink(waypoints, map, shortnames) {
-        var url = "";
-        var brouterWaypoints = [];
-        var Latmax = -90.0;
-        var Latmin = 90.0;
-        var Lonmax = -180.0;
-        var Lonmin = 180.0;
-        var count = 0;
-        for (var i=0; i<waypoints.length; i++) {
-            var waypoint = waypoints[i];
-            if (waypoint !== undefined && waypoint.visible == true) {
-                if (waypoint.type == "listing" || waypoint.type == "waypoint") {
-                    brouterWaypoints.push(brouterMapWaypoint(waypoint));
-                    count++;
-                }
-                Latmax = Math.max(Latmax, waypoint.latitude);
-                Latmin = Math.min(Latmin, waypoint.latitude);
-                Lonmax = Math.max(Lonmax, waypoint.longitude);
-                Lonmin = Math.min(Lonmin, waypoint.longitude);
-            }
+
+            value = data.waypointFunction( waypoint, radius, data.context );
+            waypointString += (i?data.waypointSeparator:'') + value;
+            boundarybox = BoundaryBox( boundarybox, data.waypoints[i].latitude, data.waypoints[i].longitude );
         }
+
+        var zoom = TileMapZoomLevelForBoundaryBox( boundarybox, data.mapOffset.width, data.mapOffset.height, data.maxZoomLevel );
+
+        url = url.replace("{center_latitude}",roundTO( boundarybox.center.latitude,LatLonDigits));
+        url = url.replace("{center_longitude}",roundTO( boundarybox.center.longitude,LatLonDigits));
+        url = url.replace("{zoom}",zoom);
+        url = url.replace("{map}",data.map);
+        url = url.replace("{waypoints}",waypointString);
+        url = encodeURI(url);
+
+        if ( url.length > service_configuration.maxUrlLength ) {
+            alert("Pay attention the URL is very long. Data loss is possible.")
+        }
+        window.open(url);
+    }
+
+    function BoundaryBox( boundarybox, latitude, longitude ) {
+        boundarybox = boundarybox == undefined ? { Latmax : -90.0, Latmin : 90.0, Lonmax : -180.0, Lonmin : 180.0, center : { latitude : 0.0, longitude : 0.0 } } : boundarybox;
+        boundarybox.Latmax = Math.max(boundarybox.Latmax, latitude);
+        boundarybox.Latmin = Math.min(boundarybox.Latmin, latitude);
+        boundarybox.Lonmax = Math.max(boundarybox.Lonmax, longitude);
+        boundarybox.Lonmin = Math.min(boundarybox.Lonmin, longitude);
+        boundarybox.center.latitude = ((boundarybox.Latmax+90.0)+(boundarybox.Latmin+90.0))/2-90.0;
+        boundarybox.center.longitude = ((boundarybox.Lonmax+180.0)+(boundarybox.Lonmin+180.0))/2-180.0;
+        return boundarybox;
+    }
+
+    function TileMapZoomLevelForBoundaryBox( boundarybox, widthOffset, heightOffset, maxZoom ) {
         var browserZoomLevel = window.devicePixelRatio;
-        var brouterMapWidth = Math.round(window.innerWidth*browserZoomLevel);
-        var brouterMapHeigth = Math.round(window.innerHeight*browserZoomLevel);
+        var mapWidth = Math.round(window.innerWidth*browserZoomLevel)+widthOffset;
+        var mapHeigth = Math.round(window.innerHeight*browserZoomLevel)+heightOffset;
         var zoom=-1;
         for (zoom=23; zoom>=0; zoom--) {
             // Calculate tile boundary box.
-            var tileY_min = lat2tile(Latmin,zoom);
-            var tileY_max = lat2tile(Latmax,zoom);
+            var tileY_min = lat2tile(boundarybox.Latmin,zoom);
+            var tileY_max = lat2tile(boundarybox.Latmax,zoom);
             var tiles_Y = Math.abs(tileY_min-tileY_max+1);  // boundary box heigth in number of tiles
-            var tileX_min = long2tile(Lonmin,zoom);
-            var tileX_max = long2tile(Lonmax,zoom);
+            var tileX_min = long2tile(boundarybox.Lonmin,zoom);
+            var tileX_max = long2tile(boundarybox.Lonmax,zoom);
             var tiles_X = Math.abs(tileX_max-tileX_min+1);  // boundary box width in  number of tiles
             // Calculate width and height of boundary rectangle (in pixel).
             var latDelta = Math.abs(tile2lat(tileY_max,zoom)-tile2lat(tileY_min+1,zoom));
             var latPixelPerDegree = tiles_Y*256/latDelta;
-            var boundaryHeight = latPixelPerDegree*(Latmax-Latmin);
+            var boundaryHeight = latPixelPerDegree*Math.abs(boundarybox.Latmax-boundarybox.Latmin);
             var longDelta = Math.abs(tile2long(tileX_max+1,zoom)-tile2long(tileX_min,zoom));
             var longPixelPerDegree = tiles_X*256/longDelta;
-            var boundaryWidth = longPixelPerDegree*(Lonmax-Lonmin);
-            if ((boundaryHeight < brouterMapHeigth) && (boundaryWidth < brouterMapWidth)) break;
+            var boundaryWidth = longPixelPerDegree*Math.abs(boundarybox.Lonmax-boundarybox.Lonmin);
+            if ( ((boundaryHeight < mapHeigth) && (boundaryWidth < mapWidth)) && zoom<=maxZoom ) break;
         }
-        var url = "";
-        for (var i=0; i<brouterWaypoints.length; i++) {
-            var nextWaypoint = brouterWaypoints[i];
-            url += ((i == 0) ? '&lonlats=' : '|');
-            url += nextWaypoint;
+        return zoom;
+    }
+
+    function normalizeName( name ) {return name.replace(/[^a-zA-Z0-9_\-]/g,'_');}
+
+    function floppsMapWaypoint(waypoint, radius, context) {
+        var id = "";
+        var name = "";
+        if (waypoint.source == "waypoint") {
+            id = String.fromCharCode(65+Math.floor(context.temp.count%26))+Math.floor(context.temp.count/26+1);  // create Flopp's Map id: A1, B1, C1, ..., Z1, A2, B2, C3, ..
+            name = normalizeName(waypoint.prefixedName);
+        } else if (waypoint.source == "original" ) {
+            id = "O";
+            name = normalizeName(waypoint.gccode+'_ORIGINAL');
+        } else if (waypoint.source == "listing" ) {
+            id = "L";
+            name = normalizeName(waypoint.gccode);
         }
-        var center_latitude = ((Latmax+90.0)+(Latmin+90.0))/2-90.0;
-        var center_longitude = ((Lonmax+180.0)+(Lonmin+180.0))/2-180.0;
-        var maxZoom = {'OpenStreetMap': 18, 'OpenStreetMap.de': 17, 'OpenTopoMap': 17, 'OpenCycleMap (Thunderf.)': 18, 'Outdoors (Thunderforest)': 18, 'Esri World Imagery': 18};
-        zoom = Math.min(zoom,maxZoom[map]) - 1;
-        var url = 'http://brouter.de/brouter-web/#zoom='+zoom+'&lat='+center_latitude+'&lon='+center_longitude+'&layer='+map+url+'&nogos=&profile=trekking&alternativeidx=0&format=geojson';
-        return encodeURI(url);
+        return id+':'+roundTO(waypoint.latitude,LatLonDigits)+':'+roundTO(waypoint.longitude,LatLonDigits)+':'+radius+':'+name;
+    }
+
+
+
+    function brouterWaypoint(waypoint, radius, context) {
+        var value = "";
+        if (waypoint.source == "waypoint" || waypoint.source == "listing") {
+            value = roundTO(waypoint.longitude,LatLonDigits)+','+roundTO(waypoint.latitude,LatLonDigits);
+        } else if (waypoint.source == "original" ) {
+            value = "";
+        }
+        return value;
     }
 
 // CSS for BRouter and Flopp's Map links.
-    if ((settings_show_brouter_link || settings_show_flopps_link) && (is_page("cache_listing") || document.location.href.match(/\.com\/hide\/wptlist.aspx/))) {
-        var css = "";
+    if ( (settings_show_brouter_link || settings_show_flopps_link ) && is_page("cache_listing") ) {
+
         css += ".GClhdropbtn {";
         css += "  cursor: pointer;}";
         css += ".GClhdropdown {";
@@ -1724,31 +1686,47 @@ var mainGC = function() {
         css += "  cursor: default;}";
         css += ".GClhdropdown:hover .GClhdropdown-content {";
         css += "  display: block;}";
-        if (settings_show_flopps_link) {
-            css += ".FloppsMap-content-layer {";
-            css += "  color: black;";
-            css += "  padding: 5px 16px 5px 16px;";
-            css += "  text-decoration: none;";
-            css += "  display: block;}";
-            css += ".FloppsMap-content-layer:hover {";
-            css += "  background-color: #e1e1e1;";
-            css += "  cursor: pointer;}";
-            css += "#ShowWaypointsOnFloppsMap_linklist{";
-            css += "  background-image: url(" + global_flopps_map_icon + ")}";
-        }
-        if (settings_show_brouter_link) {
-            css += ".BRouter-content-layer {";
-            css += "  color: black;";
-            css += "  padding: 5px 16px 5px 16px;";
-            css += "  text-decoration: none;";
-            css += "  display: block;}";
-            css += ".BRouter-content-layer:hover {";
-            css += "  background-color: #e1e1e1;";
-            css += "  cursor: pointer;}";
-            css += "#ShowWaypointsOnBRouter_linklist{";
-            css += "  background-image: url(" + global_brouter_icon + ")}";
-        }
         appendCssStyle(css);
+
+
+        // Show links which open Flopp's Map with all waypoints of a cache.
+        if ( settings_show_flopps_link ) {
+            try {
+                mapservice_link( {
+                    uniqueServiceId: "flopps",
+                    urlTemplate: 'http://flopp.net/?c={center_latitude}:{center_longitude}&z={zoom}&t={map}&d=O:C&m={waypoints}',
+                    layers: {'OSM': { maxZoom: 18, displayName: 'Openstreetmap' }, 'OSM/DE': { maxZoom: 18, displayName: 'OSM German Style' }, 'OCM': { maxZoom: 17, displayName: 'OpenCycleMap' }, 'TOPO': { maxZoom: 15, displayName: 'OpenTopMap' }, 'roadmap':{ maxZoom: 20, displayName: 'Google Maps' }, 'hybrid': { maxZoom: 20, displayName: 'Google Maps Hybrid' }, 'terrain':{ maxZoom: 20, displayName: 'Google Maps Terrain' }, 'terrain':{ maxZoom: 20, displayName: 'Google Maps Satellite' }},
+                    waypointSeparator : '*',
+                    waypointFunction : floppsMapWaypoint,
+                    mapOffset : { width: -280, height: -50 },
+                    defaultMap : 'OSM',
+                    sidebar : { linkText : "Show on Flopp\'s Map", icon : true, icondata : global_flopps_map_icon },
+                    waypointtable : { linkText : "Show waypoints on Flopp\'s Map with &#8230;", icon : false },
+                    maxUrlLength: 2000,
+                    action: mapservice_open,
+                    context : {}
+                });
+            } catch(e) {gclh_error("Show Flopp's Map links",e);}
+        }
+        // Show links which open BRouter with all waypoints of a cache.
+        if ( settings_show_brouter_link ) {
+            try {
+                mapservice_link( {
+                    uniqueServiceId: "brouter",
+                    urlTemplate: 'http://brouter.de/brouter-web/#zoom={zoom}&lat={center_latitude}&lon={center_longitude}&layer={map}+&lonlats={waypoints}&nogos=&profile=trekking&alternativeidx=0&format=geojson',
+                    layers: {'OpenStreetMap': { maxZoom: 18, displayName: 'OpenStreetMap' }, 'OpenStreetMap.de': { maxZoom: 17, displayName: 'OSM German Style' }, 'OpenTopoMap': { maxZoom: 17, displayName: 'OpenTopoMap' }, 'OpenCycleMap (Thunderf.)': { maxZoom: 18, displayName: 'OpenCycleMap' }, 'Outdoors (Thunderforest)': { maxZoom: 18, displayName: 'Outdoors' }, 'Esri World Imagery': { maxZoom: 18, displayName: 'Esri World Imagery' }},
+                    waypointSeparator : '|',
+                    waypointFunction : brouterWaypoint,
+                    mapOffset : { width: 0, height: 0 },
+                    defaultMap : 'OpenStreetMap',
+                    sidebar : { linkText : "Show route on BRouter", icon : true, icondata : global_brouter_icon },
+                    waypointtable : { linkText : "Show route on BRouter with &#8230;", icon : false },
+                    maxUrlLength: 4000,
+                    action: mapservice_open,
+                    context : {}
+                });
+            } catch(e) {gclh_error("Show button BRouter and open BRouter",e);}
+        }
     }
 
 // Build map overview.
@@ -2180,7 +2158,13 @@ var mainGC = function() {
                         else elevations.push(undefined);
                     }
                     addElevationToWaypoints(elevations,context);
-                } catch(e) {gclh_error("addElevationToWaypoints_GoogleElevation():",e);}
+                } catch(e) {
+                    gclh_error("addElevationToWaypoints_GoogleElevation():",e);
+                    // This it not nice but in case of invalid character at the beginning of
+                    // responseText JSON.parse gives an exception. Exception handling have to be improved
+                    gclh_info( responseDetails.responseText );
+                    getElevations(context.retries+1,context.locations);
+                }
             }
 
             function addElevationToWaypoints_OpenElevation(responseDetails) {
@@ -2193,7 +2177,13 @@ var mainGC = function() {
                         else elevations.push(undefined);
                     }
                     addElevationToWaypoints(elevations,context);
-                } catch(e) {gclh_error("addElevationToWaypoints_OpenElevation():",e);}
+                } catch(e) {
+                    gclh_error("addElevationToWaypoints_OpenElevation():",e);
+                    // This is not nice, but the OpenElevation service does not send any status information.
+                    // We have to figure out, what will be send in case of error
+                    gclh_info( responseDetails.responseText );
+                    getElevations(context.retries+1,context.locations);
+                }
             }
 
             function addElevationToWaypoints(elevations,context) {
@@ -2208,35 +2198,53 @@ var mainGC = function() {
                 } catch(e) {gclh_error("addElevationToWaypoints():",e);}
             }
 
-            function getLocations() {
-                try {
-                    var locations=[];
-                    var tbl = getWaypointTable();
-                    if (tbl.length > 0) {
-                        tbl.find("thead > tr > th:eq(5)").after('<th scope="col">Elevation</th>');
-                        var length = tbl.find("tbody > tr").length;
-                        for (var i=0; i<length/2; i++) {
-                            var cellNote = tbl.find("tbody > tr:eq("+(i*2+1)+") > td:eq(1)");
-                            var colspan = cellNote.attr('colspan');
-                            cellNote.attr('colspan',colspan+1);
-                            var row1st = tbl.find("tbody > tr").eq(i*2);
-                            var cellCoordinates = row1st.find("td:eq(5)");
-                            var tmp_coords = toDec(cellCoordinates.text().trim());
-                            row1st.find("td:eq(5)").after('<td><span class="waypoint-elevation" id="elevation-waypoint-'+(locations.length)+'" ></span></td>');
-                            if (typeof tmp_coords[0] !== 'undefined' && typeof tmp_coords[1] !== 'undefined') {
-                                locations.push(tmp_coords[0]+","+tmp_coords[1]);
-                            } else {
-                                locations.push("-90.0,-180.0"); // For waypoints without visible coordinates.
+            function prepareListingPageForElevations() {
+                // prepare cache listing
+                var waypoints = queryListingWaypoints();
+                var locations = [];
+                var classAttribute = "waypoint-elevation-na";
+                var idAttribute = "";
+
+                // prepare cache listing - listing coordinates
+                classAttribute = "waypoint-elevation-na";
+                idAttribute = "";
+                for ( var j=0; j<waypoints.length; j++ ) {
+                    var waypoint = waypoints[j];
+                    if ( waypoint.source == "listing" ) {
+                        classAttribute = "waypoint-elevation";
+                        idAttribute = "elevation-waypoint-"+(locations.length);
+                        locations.push(waypoint.latitude+","+waypoint.longitude);
+                        break;
+                    }
+                }
+                $("#uxLatLonLink").after('<span title="Elevation">&nbsp;&nbsp;&nbsp;Elevation:&nbsp;<span class="'+classAttribute+'" id="'+idAttribute+'"></span></span>');
+                // prepare cache listing - waypoint table
+                var tbl = getWaypointTable();
+                if (tbl.length > 0) {
+                    tbl.find("thead > tr > th:eq(5)").after('<th scope="col">Elevation</th>');
+                    var length = tbl.find("tbody > tr").length;
+                    for (var i=0; i<length/2; i++) {
+                        var cellNote = tbl.find("tbody > tr:eq("+(i*2+1)+") > td:eq(1)");
+                        var colspan = cellNote.attr('colspan');
+                        cellNote.attr('colspan',colspan+1);
+                        var row1st = tbl.find("tbody > tr").eq(i*2);
+                        var cellPrefix = row1st.find("td:eq(2)").text().trim();
+
+                        classAttribute = "waypoint-elevation-na";
+                        idAttribute = "";
+                        for ( var j=0; j<waypoints.length; j++ ) {
+                            var waypoint = waypoints[j];
+                            if ( waypoint.prefix == cellPrefix && waypoint.source == "waypoint" ) {
+                                classAttribute = "waypoint-elevation";
+                                idAttribute = "elevation-waypoint-"+(locations.length);
+                                locations.push(waypoint.latitude+","+waypoint.longitude);
+                                break;
                             }
                         }
+                        row1st.find("td:eq(5)").after('<td><span class="'+classAttribute+'" id="'+idAttribute+'" ></span></td>');
                     }
-                    var waypoint = getListingCoordinates(false);
-                    if (waypoint !== undefined) {
-                        $("#uxLatLonLink").after('<span title="Elevation">&nbsp;&nbsp;&nbsp;Elevation:&nbsp;<span class="waypoint-elevation"  id="elevation-waypoint-'+(locations.length)+'" ></span></span>');
-                        locations.push( waypoint.latitude+","+waypoint.longitude );
-                    }
-                    return locations;
-                } catch(e) {gclh_error("getLocations():",e);}
+                }
+                return locations;
             }
 
             var elevationServices = [];
@@ -2247,6 +2255,7 @@ var mainGC = function() {
                 elevationServices.push(elevationServicesData[settings_secondary_elevation_service]);
             }
 
+            // this function can be re-entered
             function getElevations(serviceIndex,locations) {
                 if (serviceIndex >= elevationServices.length || elevationServices<0 ) {
                     $('.waypoint-elevation').each(function (index, value) {
@@ -2257,55 +2266,26 @@ var mainGC = function() {
                 $('.waypoint-elevation').each(function (index, value) {
                     $(this).html('<img src="' + urlImages + 'ajax-loader.gif" title="Load elevation data for the waypoint from '+elevationServices[serviceIndex]['name']+'."/>');
                 });
-                var context = {
-                    retries : serviceIndex,
-                    serviceName : elevationServices[serviceIndex]['name'],
-                    locations : locations
-                };
+                $('.waypoint-elevation-na').each(function (index, value) {
+                    $(this).html('n/a');
+                });
                 var locationsstring = locations.join('|');
                 GM_xmlhttpRequest({
                     method: 'GET',
                     url: elevationServices[serviceIndex].url.replace('{locations}',locationsstring),
-                    context: context,
+                    context: {
+                        retries : serviceIndex,
+                        serviceName : elevationServices[serviceIndex]['name'],
+                        locations : locations
+                    },
                     onload: elevationServices[serviceIndex]['function'],
                     onerror: function() {gclh_log("Elevation: ERROR: request elevation for waypoints failed!");}
                 });
             }
 
-            var locations = getLocations();
+            var locations = prepareListingPageForElevations();
             getElevations(0,locations);
         } catch(e) {gclh_error("AddElevation",e);}
-    }
-    // Returns true in case of modified coordinates.
-    function areListingCoordinatesModified() {
-        if ((typeof(unsafeWindow.userDefinedCoords) != 'undefined') && (unsafeWindow.userDefinedCoords.data.isUserDefined==true)) return true;
-        return false;
-    }
-    // Returns the listing coordinates as an array. In case of user changed listing coordinates, the changed coords are returned.
-    // If the parameter original true, always the original listing coordinates are returned.
-    function getListingCoordinates(original) {
-        var waypoint = undefined;
-        if (areListingCoordinatesModified()) {
-            waypoint = {latitude : undefined, longitude : undefined};
-            if ((typeof(original) != 'undefined') && original == true) {
-                waypoint.latitude = unsafeWindow.userDefinedCoords.data.oldLatLng[0];
-                waypoint.longitude = unsafeWindow.userDefinedCoords.data.oldLatLng[1];
-            } else {
-                waypoint.latitude = unsafeWindow.userDefinedCoords.data.newLatLng[0];
-                waypoint.longitude = unsafeWindow.userDefinedCoords.data.newLatLng[1];
-            }
-        } else {
-            var listingCoords = $('#ctl00_ContentBody_uxViewLargerMap');
-            if (listingCoords.length > 0 && listingCoords.attr('href').length > 0) {
-                var tmp_coords = listingCoords.attr('href').match(/(-)*(\d{1,3})(.(\d{1,6}))?/g);
-                if (typeof(tmp_coords[0]) !== undefined && typeof(tmp_coords[1]) !== undefined) {
-                    waypoint = {latitude : undefined, longitude : undefined};
-                    waypoint.latitude = tmp_coords[0];
-                    waypoint.longitude = tmp_coords[1];
-                }
-            }
-        }
-        return waypoint;
     }
 
 // Hide greenToTopButton.
@@ -8205,118 +8185,59 @@ var mainGC = function() {
         if (is_config == true) row.title += " topic\n(all topics with right mouse)";
     }
 
-// Waypoint evaluations.
+    // Waypoint evaluations.
     function getWaypointTable() {
         var tbl = $("#ctl00_ContentBody_Waypoints");
         if (tbl.length <= 0) tbl = $("#ctl00_ContentBody_WaypointList");
         return tbl;
     }
+
     // Trim decimal value to a given number of digits.
     function roundTO(val, decimals) {return Number(Math.round(val+'e'+decimals)+'e-'+decimals);}
-    // Get Additional Waypoints.
-    function getAdditionalWaypoints() {
+
+    function queryListingWaypoints( original ) {
+        var waypoints = [];
         try {
-            var addWP = [];
-            var tbl = document.getElementById('ctl00_ContentBody_Waypoints');
-            if (tbl == null) tbl = document.getElementById('ctl00_ContentBody_WaypointList');
-            if (tbl == null) return;
-            if (tbl.getElementsByTagName('tbody')) {
-                var tblbdy = tbl.getElementsByTagName('tbody')[0];
-                var tr_list = tblbdy.getElementsByTagName('tr');
-                for (var i=0; i < tr_list.length/2; i++) {
-                    var td_list = tr_list[2*i].getElementsByTagName('td');
-                    var td_list2nd = tr_list[2*i+1].getElementsByTagName('td');
-                    var wayp = {};
-                    if (td_list[3]) {
-                        wayp.icon = td_list[1].getElementsByTagName("img")[0].getAttribute("src");
-                        wayp.prefix = td_list[2].textContent.trim();
-                        wayp.lookup = td_list[3].textContent.trim();
-                        wayp.name = td_list[4].getElementsByTagName("a")[0].textContent;
-                        var oDiv = td_list[4];
-                        var firstText = "";
-                        for (var j = 0; j < oDiv.childNodes.length; j++) {
-                            var curNode = oDiv.childNodes[j];
-                            if (curNode.nodeName === "#text") firstText += curNode.nodeValue.trim();
-                        }
-                        wayp.subtype_name = firstText;
-                        wayp.link = td_list[4].getElementsByTagName("a")[0].getAttribute("href");
-                        var subtype = "";
-                        var icon = wayp.icon;
-                        if (icon.match(/trailhead.jpg/g)) subtype = "Trailhead";
-                        else if (icon.match(/flag.jpg/g)) subtype = "Final Location";
-                        else if (icon.match(/pkg.jpg/g)) subtype = "Parking Area";
-                        else if (icon.match(/stage.jpg/g)) subtype = "Physical Stage";
-                        else if (icon.match(/puzzle.jpg/g)) subtype = "Virtual Stage";
-                        else if (icon.match(/waypoint.jpg/g)) subtype = "Reference Point";
-                        else gclh_log("ERROR: getAdditionalWaypoints(): problem with waypoint "+wayp.lookup+"/"+wayp.prefix+ " - unknown waypoint type ("+icon+")");
-                        wayp.subtype = subtype;
-                        wayp.visible = false;
-                        tmp_coords = toDec(td_list[5].textContent.trim());
-                        if (typeof tmp_coords[0] !== 'undefined' && typeof tmp_coords[1] !== 'undefined') {
-                            wayp.latitude = tmp_coords[0];
-                            wayp.longitude = tmp_coords[1];
-                            wayp.visible = true;
-                        }
-                        wayp.note = td_list2nd[2].textContent.trim();
-                        wayp.type = "waypoint";
-                        addWP.push(wayp);
-                    }
-                }
+            var gccode = ($('#ctl00_ContentBody_CoordInfoLinkControl1_uxCoordInfoCode')[0]) ? $('#ctl00_ContentBody_CoordInfoLinkControl1_uxCoordInfoCode')[0].textContent : "n/a";
+
+            var ListingCoords = {
+                name: unsafeWindow.mapLatLng.name,
+                gccode: gccode,
+                prefix: "",
+                source: "listing",
+                typeid: unsafeWindow.mapLatLng.type,
+                latitude: unsafeWindow.mapLatLng.lat,
+                longitude: unsafeWindow.mapLatLng.lng,
+                prefixedName: gccode,
+            };
+            waypoints.push(ListingCoords);
+
+            if ( original && unsafeWindow.mapLatLng.isUserDefined == true ) {
+                var OriginalCoords = Object.assign({}, ListingCoords); // create a copy
+                OriginalCoords.latitude = unsafeWindow.mapLatLng.oldLatLng[0];
+                OriginalCoords.longitude = unsafeWindow.mapLatLng.oldLatLng[1];
+                OriginalCoords.source = "original";
+                waypoints.push(OriginalCoords);
             }
-        } catch(e) {gclh_error("getAdditionalWaypoints:",e);}
-        return addWP;
+
+            for ( var i=0; i<cmapAdditionalWaypoints.length; i++ ) {
+                var waypoint = {
+                    name: cmapAdditionalWaypoints[i].name,
+                    gccode: gccode,
+                    prefix: cmapAdditionalWaypoints[i].pf,
+                    source: "waypoint",
+                    typeid: cmapAdditionalWaypoints[i].type,
+                    latitude: cmapAdditionalWaypoints[i].lat,
+                    longitude: cmapAdditionalWaypoints[i].lng,
+                    prefixedName: cmapAdditionalWaypoints[i].pf+gccode.substring(2),
+                };
+                waypoints.push(waypoint);
+            }
+
+        } catch(e) {gclh_error("queryListingWaypoints()",e);}
+        return waypoints;
     }
-    // Reads posted coordinates from listing.
-    function getListingCoordinatesX() {
-        var addWP = [];
-        try {
-            if (!$('#cacheDetails')[0]) return;
-            var wayp = {};
-            var gccode = "n/a";
-            var gcname = "n/a";
-            if ($('#ctl00_ContentBody_CoordInfoLinkControl1_uxCoordInfoCode')[0]) gccode = $('#ctl00_ContentBody_CoordInfoLinkControl1_uxCoordInfoCode')[0].textContent;
-            if ($('#ctl00_ContentBody_CacheName')[0]) gcname = $('#ctl00_ContentBody_CacheName')[0].textContent;
-            if ((typeof(unsafeWindow.userDefinedCoords) != 'undefined') && (unsafeWindow.userDefinedCoords.data.isUserDefined==true)) {
-                wayp = {};
-                wayp.visible = true;
-                wayp.latitude = roundTO(unsafeWindow.userDefinedCoords.data.newLatLng[0],6);
-                wayp.longitude = roundTO(unsafeWindow.userDefinedCoords.data.newLatLng[1],6);
-                wayp.lookup = gccode;
-                wayp.prefix = "";
-                wayp.name = gcname;
-                wayp.note = "";
-                wayp.type = "listing";
-                wayp.subtype = "changed";
-                wayp.cachetype = $('.cacheImage')[0].getAttribute('title');
-                wayp.link = document.location.href;
-                addWP.push(wayp);
-                wayp = {};
-                wayp.latitude = roundTO(unsafeWindow.userDefinedCoords.data.oldLatLng[0],6);
-                wayp.longitude = roundTO(unsafeWindow.userDefinedCoords.data.oldLatLng[1],6);
-            } else if ($('#ctl00_ContentBody_uxViewLargerMap')[0]) {
-                var tmp_coords = $('#ctl00_ContentBody_uxViewLargerMap')[0].getAttribute('href').match(/(-)*(\d{1,3})(.(\d{1,6}))?/g);
-                wayp.latitude = tmp_coords[0];
-                wayp.longitude = tmp_coords[1];
-            } else gclh_log("ERROR: getListingCoordinatesX(): warning: listing coordinates are not found.");
-            wayp.visible = true;
-            wayp.lookup = gccode;
-            wayp.prefix = "";
-            wayp.name = gcname;
-            wayp.note = "";
-            wayp.type = "listing";
-            wayp.subtype = "origin";
-            wayp.link = document.location.href;
-            wayp.cachetype = $('.cacheImage')[0].getAttribute('title');
-            addWP.push(wayp);
-            return addWP;
-        } catch(e) {gclh_error("Reads the posted coordinates from the listing:",e);}
-    }
-    function extractWaypointsFromListing() {
-        var wayps = [];
-        wayps = wayps.concat(getListingCoordinatesX());
-        wayps = wayps.concat(getAdditionalWaypoints());
-        return wayps;
-    }
+
     // Calculate tile numbers X/Y from latitude/longitude or reverse.
     function lat2tile(lat,zoom)  {return (Math.floor((1-Math.log(Math.tan(lat*Math.PI/180) + 1/Math.cos(lat*Math.PI/180))/Math.PI)/2 *Math.pow(2,zoom)));}
     function long2tile(lon,zoom) {return (Math.floor((lon+180)/360*Math.pow(2,zoom)));}
