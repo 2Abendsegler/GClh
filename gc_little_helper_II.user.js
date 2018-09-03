@@ -5562,7 +5562,7 @@ var mainGC = function() {
             if (settings_my_lists_old_fashioned) $('#DashboardSidebar ul li a[href*="/account/lists"]').prop("href", "/my/lists.aspx");
 
             // add link to Ignore List into dashboard sidebar
-            if (settings_embedded_smartlink_ignorelist) {
+            if (settings_embedded_smartlink_ignorelist && $(".bio-userrole").text() == "Premium" ) {
 
                 function openIgnoreList(response) { 
                     try {
@@ -5571,7 +5571,6 @@ var mainGC = function() {
                             if ( linkIgnoreList ) {
                                 window.open(linkIgnoreList,"_self");
                             } else {
-                                console.log(linkIgnoreList);
                                 alert("GClh cannot find a link to your Ignore List. Pleaes check if you have an Ignore List (it is Premium Member feature).");
                             }
                         }
