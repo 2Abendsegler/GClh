@@ -2734,8 +2734,14 @@ var mainGC = function() {
             function checkLogType(waitCount) {
                 if ((!document.location.href.match(/log\?d\=/) && $('.selectric')[0]) ||  // Kein Draft
                     (document.location.href.match(/log\?d\=/) && document.getElementById('LogText').value != "" && settings_log_signature_on_fieldnotes)) {  // Draft
+                    
                     var initial_cursor_position = document.getElementById('LogText').selectionEnd;
-                    document.getElementById('LogText').innerHTML = getValue("settings_log_signature", "");
+                    var logtext = document.getElementById('LogText').value;
+                    var signature = getValue("settings_log_signature", "");
+                    if(!logtext.includes(signature)){
+                        document.getElementById('LogText').innerHTML = signature;
+                    }
+
                     replacePlaceholder(true);
                     if (document.location.href.match(/log\?d\=/)) {
                         // 2 Zeilen sinngemäß von DieBatzen ausgeliehen, um "<" und ">" richtig darzustellen.
