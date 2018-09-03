@@ -2550,7 +2550,7 @@ var mainGC = function() {
         try {
             var checkExistTBHeader = setInterval(function() {
                 if ($('#tbHeader .trackables-header').length) {
-                
+
                     var visit_link = document.createElement("a");
                     visit_link.setAttribute("href", "javascript:void(0);");
                     visit_link.appendChild(document.createTextNode('Visit all'));
@@ -2580,12 +2580,12 @@ var mainGC = function() {
 
                     $(".trackables-list").append(li);
 
-                    var css = 
+                    var css =
                         ".tb_action_buttons{text-align:right;} " +
                         ".tb_action_buttons a{margin-right: 12px; text-decoration:underline;}" +
                         ".tb_action_buttons a:last-child{margin-right:0px;}"
                     appendCssStyle(css);
-                  
+
                     // Open Trackable Inventory
                     if(settings_auto_open_tb_inventory_list){
                         $("#trackablesPanel button.btn-handle").trigger( "click" );
@@ -4934,6 +4934,8 @@ var mainGC = function() {
     overwrite_log_template:
     if (settings_load_logs_with_gclh && is_page("cache_listing") && !document.getElementById("ctl00_divNotSignedIn") && document.getElementById('tmpl_CacheLogRow')) {
         try {
+            // IDs der Cache Logs Tables.
+            var logsTab = '#cache_logs_table2, #cache_logs_table';
             // To Top Link.
             var a = document.createElement("a");
             a.setAttribute("href", "#");
@@ -5029,16 +5031,14 @@ var mainGC = function() {
 
             // Dynamic load with full control.
             function gclh_dynamic_load(logs, num) {
-
-                if(lastFired == 0 && !global_logs){
+                if (lastFired == 0 && !global_logs) {
                     // First run, so we set the global logs/num and add the Event listener
                     global_logs = logs;
                     global_num = num;
                     window.addEventListener("scroll", gclh_dynamic_load, false);
                 }
-
                 var currentTime = + new Date();
-                if((currentTime - lastFired) > 500){
+                if ((currentTime - lastFired) > 500) {
                     // Fire every 500ms at maximum
                     lastFired = + new Date();
 
@@ -5046,7 +5046,7 @@ var mainGC = function() {
                     var startReloadAtThisPixel = (($(document).height() - $("#cache_logs_container").offset().top) + 50)
                     var currentPosition = $(this).scrollTop();
 
-                    if(currentPosition > startReloadAtThisPixel){
+                    if (currentPosition > startReloadAtThisPixel) {
                         if (!isBusy && !document.getElementById("gclh_all_logs_marker")) {
                             isBusy = true;
                             $("#pnlLazyLoad").show();
@@ -5066,8 +5066,6 @@ var mainGC = function() {
                             isBusy = false;
                         }
                     }
-
-
                 }
             }
 
@@ -5077,10 +5075,7 @@ var mainGC = function() {
                     $('#gclh_load_all_logs').addClass("working");
                     setTimeout(function() {
                         if (logs) {
-                            var tbodys = (document.getElementById("cache_logs_table2") || document.getElementById("cache_logs_table")).getElementsByTagName("tbody");
-                            for (var i = 0; i < tbodys.length; i++) {
-                                (document.getElementById("cache_logs_table2") || document.getElementById("cache_logs_table")).removeChild(tbodys[i]);
-                            }
+                            $(logsTab).find('tbody').children().remove();
                             for (var i = 0; i < logs.length; i++) {
                                 if (logs[i]) {
                                     var newBody = unsafeWindow.$(document.createElement("TBODY"));
@@ -5118,11 +5113,8 @@ var mainGC = function() {
                     if (settings_show_owner_vip_list) var vip_owner = get_real_owner();
                     else var vip_owner = "#";
                     if (!logs) return false;
-                    var tbodys = (document.getElementById("cache_logs_table2") || document.getElementById("cache_logs_table")).getElementsByTagName("tbody");
-                    for (var i = 0; i < tbodys.length; i++) {
-                        (document.getElementById("cache_logs_table2") || document.getElementById("cache_logs_table")).removeChild(tbodys[i]);
-                    }
-                for (var i = 0; i < logs.length; i++) {
+                    $(logsTab).find('tbody').children().remove();
+                    for (var i = 0; i < logs.length; i++) {
                         if (logs[i] && (logs[i].LogType == log_type || (log_type == "VIP" && (in_array(logs[i].UserName, global_vips) || logs[i].UserName == vip_owner)))) {
                             var newBody = unsafeWindow.$(document.createElement("TBODY"));
                             unsafeWindow.$("#tmpl_CacheLogRow_gclh").tmpl(logs[i]).appendTo(newBody);
@@ -5188,10 +5180,7 @@ var mainGC = function() {
                     var search_text = this.value;
                     if (!search_text) return false;
                     var regexp = new RegExp("(" + search_text + ")", "i");
-                    var tbodys = (document.getElementById("cache_logs_table2") || document.getElementById("cache_logs_table")).getElementsByTagName("tbody");
-                    for (var i = 0; i < tbodys.length; i++) {
-                        (document.getElementById("cache_logs_table2") || document.getElementById("cache_logs_table")).removeChild(tbodys[i]);
-                    }
+                    $(logsTab).find('tbody').children().remove();
                     for (var i = 0; i < logs.length; i++) {
                         if (logs[i] && (logs[i].UserName.match(regexp) || logs[i].LogText.match(regexp))) {
                             var newBody = unsafeWindow.$(document.createElement("TBODY"));
