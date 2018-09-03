@@ -16,6 +16,7 @@
   "settings_hide_disclaimer": true,
   "settings_hide_cache_notes": false,
   "settings_hide_empty_cache_notes": true,
+  "settings_adapt_height_cache_notes": true,
   "settings_show_all_logs": true,
   "settings_show_all_logs_count": "30",
   "settings_decrypt_hint": true,
@@ -228,5 +229,7 @@
   "settings_compact_layout_new_dashboard": false,
   "settings_show_draft_indicator": true,
   "settings_show_latest_logs_symbols_count_map": "10",
-  "settings_show_enhanced_map_popup": true
+  "settings_show_enhanced_map_popup": true,
+  "settings_gclherror_alert": false,
+  "settings_auto_open_tb_inventory_list": true
 }

@@ -1,4 +1,6 @@
-<a href="#v099" title="GClh II version 0.9.9 (??.??.2018)">v0.9.9</a> &nbsp;
+<a href="#v0911" title="GClh II version 0.9.11 (25.08.2018)">v0.9.11</a> &nbsp;
+<a href="#v0910" title="GClh II version 0.9.10 (11.08.2018)">v0.9.10</a> &nbsp;
+<a href="#v099" title="GClh II version 0.9.9 (30.06.2018)">v0.9.9</a> &nbsp;
 <a href="#v098" title="GClh II version 0.9.8 (25.06.2018)">v0.9.8</a> &nbsp;
 <a href="#v097" title="GClh II version 0.9.7 (28.05.2018)">v0.9.7</a> &nbsp;
 <a href="#v096" title="GClh II version 0.9.6 (14.05.2018)">v0.9.6</a> &nbsp;
@@ -38,6 +40,104 @@
 <a href="#v021" title="GClh II version 0.2.1 (05.01.2017)">v0.2.1</a> &nbsp; 
 <a href="#v01" title="GClh II version 0.1 (05.01.2017)">v0.1</a> &nbsp; 
 
+
+---
+## v0.9.11:
+<ul>
+	<li>
+		<strong>New:</strong> Alert if gclh_error is called (only in developer mode) [Issue <a href="https://github.com/2Abendsegler/GClh/issues/752">#752</a>]<br>
+		We introduced a new section "Development" in the configuration. Here we will place features that are mostly designed for developers. The standard user can ignore this configurations.<br>
+		Thanks to <a href="https://www.geocaching.com/profile/?u=CachingFoX">CachingFoX</a> for the implementation.<br>
+	</li>
+	<li>
+		<strong>New:</strong> Clicking on the Personal Note Field focusing the input (no need to click twice any more) [Issue <a href="https://github.com/2Abendsegler/GClh/issues/762">#762</a>]<br>
+	</li>
+	<li>
+		<strong>New:</strong> Auto Open Trackables when loading the logging page (new design) [Issue <a href="https://github.com/2Abendsegler/GClh/issues/775">#775</a>]<br>
+	</li>
+	<li>
+		<strong>New:</strong> Line break for cache title and owner in additional popup on map [Issue <a href="https://github.com/2Abendsegler/GClh/issues/768">#768</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> Nickname missing in the Latest logs section [Issue <a href="https://github.com/2Abendsegler/GClh/issues/753">#753</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> Preview of Pictures in Logs throws Error [Issue <a href="https://github.com/2Abendsegler/GClh/issues/755">#755</a>]<br>
+		Thanks to <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a> for the fix.<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> Logs with Many Pictures: Picture container floats out of viewport [Issue <a href="https://github.com/2Abendsegler/GClh/issues/754">#754</a>]<br>
+		Thanks to <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a> for the fix.<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> Formatting in logs is demolished due to changes made by GS [Issue <a href="https://github.com/2Abendsegler/GClh/issues/759">#759</a>]<br>
+		Thanks to <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a> for the fix.<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> Eventdate is missing [Issue <a href="https://github.com/2Abendsegler/GClh/issues/764">#764</a>]<br>
+		Thanks to <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a> for the fix.<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> No favorites in percent in map on additional popup [Issue <a href="https://github.com/2Abendsegler/GClh/issues/766">#766</a>]<br>
+		Thanks to <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a> for the fix.<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> Listing Coordinates are not transfered to Flopp's Map and BRouter [Issue <a href="https://github.com/2Abendsegler/GClh/issues/771">#771</a>]<br>
+		Thanks to <a href="https://www.geocaching.com/profile/?u=CachingFoX">CachingFoX</a> for the fix.<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> Logs are not added while scrolling down [Issue <a href="https://github.com/2Abendsegler/GClh/issues/745">#745</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> Calling Config from new dashboard do not work correct [Issue <a href="https://github.com/2Abendsegler/GClh/issues/784">#784</a>]<br>
+		Thanks to <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a> for the fix.<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> Wrong implementation of delayed re-try call idiom at impCallLink() [Issue <a href="https://github.com/2Abendsegler/GClh/issues/788">#788</a>]<br>
+		Thanks to <a href="https://www.geocaching.com/profile/?u=CachingFoX">CachingFoX</a> for the fix.<br>
+	</li>
+	<li>
+		<strong>Refactoring:</strong> [Issue <a href="https://github.com/2Abendsegler/GClh/issues/770">#770</a>], [Issue <a href="https://github.com/2Abendsegler/GClh/issues/770">#770</a>]<br>
+		Thanks to <a href="https://www.geocaching.com/profile/?u=CachingFoX">CachingFoX</a> for the implementation.<br>
+	</li>
+</ul>
+(25.08.2018)<br>
+released by <a href="https://www.geocaching.com/profile/?u=Ruko2010">Ruko2010</a><br>
+<br>
+
+---
+## v0.9.10:
+<ul>
+	<li>
+		<strong>Improvement:</strong> Some changes to the Map-Popup to make it more flexible [Issue <a href="https://github.com/2Abendsegler/GClh/issues/646">#646</a>]<br>
+	</li>
+	<li>
+		<strong>Hot-Fix:</strong> Reload of logs in Listing-Page fails and breaks GClh. [Issue <a href="https://github.com/2Abendsegler/GClh/issues/745">#745</a>]<br>
+		This Problem is not fixed yet. We have just deactived this function to get the whole Listing page (VIP/VUP, etc.) back to work. In the meantime you can use the button under the last log or at the top of the logs to load all logs.<br>
+		<strong>We are still working on this Issue and hope to get a fix soon.</strong><br>
+	</li>
+	<li>
+		<strong>Fix:</strong> Updating names of countries [Issue <a href="https://github.com/2Abendsegler/GClh/issues/722">#722</a>]<br>
+		Thanks to <a href="https://www.geocaching.com/profile/?u=CachingFoX">CachingFoX</a> for the fix.<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> Friendleague: After click on "see more" reloaded friends have no VIP/VUP Icons [Issue <a href="https://github.com/2Abendsegler/GClh/issues/734">#734</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> Missing 'Go to GC Map' button at www.openstreetmap.org [Issue <a href="https://github.com/2Abendsegler/GClh/issues/740">#740</a>]<br>
+		Thanks to <a href="https://www.geocaching.com/profile/?u=CachingFoX">CachingFoX</a> for the fix.<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> MapPopup-Data is not loaded [Issue <a href="https://github.com/2Abendsegler/GClh/issues/747">#747</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> Hide empty Personal note in a cache listing fails [Issue <a href="https://github.com/2Abendsegler/GClh/issues/746">#746</a>]<br>
+		Thanks to <a href="https://www.geocaching.com/profile/?u=CachingFoX">CachingFoX</a> for the fix.<br>
+	</li>
+</ul>
+(11.08.2018)<br>
+released by <a href="https://www.geocaching.com/profile/?u=Ruko2010">Ruko2010</a><br>
+<br>
 
 ---
 ## v0.9.9:
