@@ -487,6 +487,7 @@ var variablesInit = function(c) {
     c.settings_modify_new_drafts_page = getValue("settings_modify_new_drafts_page", true);
     c.settings_gclherror_alert = getValue("settings_gclherror_alert", false);
     c.settings_auto_open_tb_inventory_list = getValue("settings_auto_open_tb_inventory_list", true);
+    c.settings_embedded_smartlink_ignorelist = getValue("settings_embedded_smartlink_ignorelist", true);
 
     try {
         if (c.userToken === null) {
@@ -2189,7 +2190,7 @@ var mainGC = function() {
                     }
                     addElevationToWaypoints(elevations,context);
                 } catch(e) {
-                    gclh_error("addElevationToWaypoints_GoogleElevation():",e);
+                    gclh_error("addElevationToWaypoints_GoogleElevation()",e);
                     // This it not nice but in case of invalid character at the beginning of
                     // responseText JSON.parse gives an exception. Exception handling have to be improved
                     gclh_info( responseDetails.responseText );
@@ -2201,14 +2202,24 @@ var mainGC = function() {
                 try {
                     context = responseDetails.context;
                     json = JSON.parse(responseDetails.responseText);
-                    var elevations = [];
-                    for (var i=0; i<json.results.length; i++) {
-                        if (json.results[i].latitude != -90) elevations.push(json.results[i].elevation);
-                        else elevations.push(undefined);
+                    if ( 'error' in json ) {
+                        var mess = "\naddElevationToWaypoints_OpenElevation():\n- Error: "+json.error;
+                        gclh_log(mess);
+                        getElevations(context.retries+1,context.locations);
+                    } else if ( ! ('results' in json) )  {
+                        var mess = "\naddElevationToWaypoints_OpenElevation():\n- Results:"+json;
+                        gclh_log(mess);
+                        getElevations(context.retries+1,context.locations);
+                    } else {
+                        var elevations = [];
+                        for (var i=0; i<json.results.length; i++) {
+                            if (json.results[i].latitude != -90) elevations.push(json.results[i].elevation);
+                            else elevations.push(undefined);
+                        }
+                        addElevationToWaypoints(elevations,context);
                     }
-                    addElevationToWaypoints(elevations,context);
                 } catch(e) {
-                    gclh_error("addElevationToWaypoints_OpenElevation():",e);
+                    gclh_error("addElevationToWaypoints_OpenElevation()",e);
                     // This is not nice, but the OpenElevation service does not send any status information.
                     // We have to figure out, what will be send in case of error
                     gclh_info( responseDetails.responseText );
@@ -2314,7 +2325,9 @@ var mainGC = function() {
             }
 
             var locations = prepareListingPageForElevations();
-            getElevations(0,locations);
+            if ( locations.length > 0 ) {
+                getElevations(0,locations);
+            }
         } catch(e) {gclh_error("AddElevation",e);}
     }
 
@@ -2851,7 +2864,7 @@ var mainGC = function() {
             // Grab mail template from URL.
             var matches = document.location.href.match(/&text=(.*)/);
             if (matches && matches[1]) {
-                $('#ctl00_ContentBody_SendMessagePanel1_tbMessage')[0].innerHTML = decodeURIComponent(matches[1]);
+                $('#ctl00_ContentBody_SendMessagePanel1_tbMessage')[0].innerHTML = decodeUnicodeURIComponent(matches[1]);
             // Build mail template.
             } else {
                 template = buildSendTemplate().replace(/#Receiver#/ig, $('#ctl00_ContentBody_SendMessagePanel1_lblEmailInfo')[0].children[0].innerHTML);
@@ -2865,7 +2878,7 @@ var mainGC = function() {
         try {
             var val = "";
             var matches = document.location.href.match(/&text=(.*)/);
-            if (matches && matches[1]) val = decodeURIComponent(matches[1]);
+            if (matches && matches[1]) val = decodeUnicodeURIComponent(matches[1]);
             updateMessage(0);
             function updateMessage(waitCount) {
                 if ($('textarea')[0] && $('textarea')[0].value == "" && $('#cpMsgLogHead .h5')[0].innerHTML != "") {
@@ -2913,6 +2926,7 @@ var mainGC = function() {
                     this.children[0].children[0].setAttribute("style", "font-size: .6rem;");
                 });
                 // Table active PQs:
+                if ($('#ActivePQs').attr('aria-hidden') == 'true') $('#ActivePQs')[0].style.display = 'none';
                 css += "table {margin-bottom: 0;} table.Table, table.Table th, table.Table td {padding: 5px; border: 1px solid #fff;}";
                 css += "table.Table tr {line-height: 16px;} table.Table th img, table.Table td img {vertical-align: sub;}";
                 if ($('#pqRepeater thead tr').length > 0 && $('#pqRepeater thead tr')[0].children.length > 12) {
@@ -2969,6 +2983,7 @@ var mainGC = function() {
                     }
                 }
                 // Table downloadable PQs (additional):
+                if ($('#DownloadablePQs').attr('aria-hidden') == 'true') $('#DownloadablePQs')[0].style.display = 'none';
                 if ($('#uxOfflinePQTable thead tr').length > 0) lastGen($('#uxOfflinePQTable thead tr')[0].children[5]);
                 if ($('#uxOfflinePQTable tbody tr').length > 0) $('#uxOfflinePQTable tbody tr').each(function() {if (this.children[5]) this.children[5].style.whiteSpace = "nowrap";});
                 if ($('#ctl00_ContentBody_PQListControl1_lbFoundGenerated').length > 0) {
@@ -4284,28 +4299,30 @@ var mainGC = function() {
 
                 // Show VIP List.
                 var map = $('#ctl00_ContentBody_detailWidget')[0];
-                var box = document.createElement("div");
-                var headline = document.createElement("h3");
-                var body = document.createElement("div");
-                box.setAttribute("class", "CacheDetailNavigationWidget NoPrint");
-                headline.setAttribute("class", "WidgetHeader");
-                body.setAttribute("class", "WidgetBody");
-                body.setAttribute("id", "gclh_vip_list");
-                headline.innerHTML = "<img width='16' height='16' style='margin-bottom: -2px;' title='Very important person List' alt='VIP-List' src='/images/icons/icon_attended.gif'> VIP-List";
-                if (settings_make_vip_lists_hideable) {
-                    headline.innerHTML = "<img id='lnk_gclh_vip_list' title='' src='' style='cursor: pointer'> " + headline.innerHTML;
-                }
-                box.appendChild(headline);
-                box.appendChild(body);
-                box.setAttribute("style", "margin-top: 1.5em;");
-                map.parentNode.insertBefore(box, map);
-                if (settings_make_vip_lists_hideable) {
-                    showHideBoxCL("lnk_gclh_vip_list", true);
-                    $('#lnk_gclh_vip_list')[0].addEventListener("click", function() {showHideBoxCL(this.id, false);}, false);
+                if ( map ) {
+                    var box = document.createElement("div");
+                    var headline = document.createElement("h3");
+                    var body = document.createElement("div");
+                    box.setAttribute("class", "CacheDetailNavigationWidget NoPrint");
+                    headline.setAttribute("class", "WidgetHeader");
+                    body.setAttribute("class", "WidgetBody");
+                    body.setAttribute("id", "gclh_vip_list");
+                    headline.innerHTML = "<img width='16' height='16' style='margin-bottom: -2px;' title='Very important person List' alt='VIP-List' src='/images/icons/icon_attended.gif'> VIP-List";
+                    if (settings_make_vip_lists_hideable) {
+                        headline.innerHTML = "<img id='lnk_gclh_vip_list' title='' src='' style='cursor: pointer'> " + headline.innerHTML;
+                    }
+                    box.appendChild(headline);
+                    box.appendChild(body);
+                    box.setAttribute("style", "margin-top: 1.5em;");
+                    map.parentNode.insertBefore(box, map);
+                    if (settings_make_vip_lists_hideable) {
+                        showHideBoxCL("lnk_gclh_vip_list", true);
+                        $('#lnk_gclh_vip_list')[0].addEventListener("click", function() {showHideBoxCL(this.id, false);}, false);
+                    }
                 }
 
                 // Show VIP List "not found".
-                if (settings_vip_show_nofound) {
+                if (settings_vip_show_nofound && map) {
                     var box2 = document.createElement("div");
                     var headline2 = document.createElement("h3");
                     var body2 = document.createElement("div");
@@ -4353,6 +4370,9 @@ var mainGC = function() {
                 gclh_build_vip_list = function() {
                     var show_owner = settings_show_owner_vip_list;
                     var list = document.getElementById("gclh_vip_list");
+                    if ( list == undefined ) {
+                        return;
+                    }
                     // Hier wird wohl Loading Icon entfernt.
                     list.innerHTML = "";
 
@@ -4727,7 +4747,7 @@ var mainGC = function() {
                             side[i].appendChild(span);
                             var last = side[i].children.length - 1;
                             var user = links[i].href.match(/https?:\/\/www\.geocaching\.com\/profile\/\?u=(.*)/);
-                            gclh_build_vipvupmail(side[i].children[last], decodeURIComponent(user[1]));
+                            gclh_build_vipvupmail(side[i].children[last], decodeUnicodeURIComponent(user[1]));
                         }
 
                         table_length = $(leaderboard_table).children().length;
@@ -4763,7 +4783,7 @@ var mainGC = function() {
                             side[i].appendChild(span);
                             var last = side[i].children.length - 1;
                             var user = links[i].href.match(/https?:\/\/www\.geocaching\.com\/profile\/\?u=(.*)/);
-                            gclh_build_vipvupmail(side[i].children[last], decodeURIComponent(user[1]));
+                            gclh_build_vipvupmail(side[i].children[last], decodeUnicodeURIComponent(user[1]));
                         }
 
                         var leaderboard_table = document.getElementById('LeaderboardTable').getElementsByTagName("table")[0];
@@ -4784,7 +4804,7 @@ var mainGC = function() {
                 checkLeagueAvailable(0);
             }
         }
-    } catch(e) {gclh_error("VIP VUP:",e);}
+    } catch(e) {gclh_error("VIP VUP",e);}
 
 // Log-Template (Logtemplate) definieren.
     if (is_page("cache_listing")) {
@@ -5559,6 +5579,40 @@ var mainGC = function() {
             }
             // Change link "Your lists" from ".../account/lists" to ".../my/lists.aspx".
             if (settings_my_lists_old_fashioned) $('#DashboardSidebar ul li a[href*="/account/lists"]').prop("href", "/my/lists.aspx");
+
+            // add link to Ignore List into dashboard sidebar
+            if (settings_embedded_smartlink_ignorelist && $(".bio-userrole").text() == "Premium" ) {
+
+                function openIgnoreList(response) { 
+                    try {
+                        if (response.responseText) {
+                            var linkIgnoreList = $(response.responseText).find('a[href*="/bookmarks/view.aspx?code="]').first().attr('href');
+                            if ( linkIgnoreList ) {
+                                window.open(linkIgnoreList,"_self");
+                            } else {
+                                alert("GClh cannot find a link to your Ignore List. Pleaes check if you have an Ignore List (it is Premium Member feature).");
+                            }
+                        }
+                    } catch(e) {gclh_error("function openIgnoreList()",e);}
+                }
+
+                var sidebarLists = $($('ul[class="link-block"] a[href*="/my/watchlist.aspx"]')[0]);
+                var html = '<li><a id="gclh_goto_ignorelist" href="#">Ignore List</a></li>';
+                sidebarLists.parent().after(html);
+
+                $("#gclh_goto_ignorelist").click( function(e) {
+                    try {
+                        // link to ignore list is not static, the id can be changed
+                        GM_xmlhttpRequest({
+                            method: "GET",
+                            url: "https://www.geocaching.com/account/lists",
+                            onload: openIgnoreList
+                        });
+                        e.preventDefault();
+                    } catch(e) {gclh_error("Request link to Ignore List (#gclh_goto_ignorelist)",e);}
+                });
+            }
+
             appendCssStyle(css);
         } catch(e) {gclh_error("Improve new dashboard",e);}
     }
@@ -5615,9 +5669,10 @@ var mainGC = function() {
                     if (settings_imgcaption_on_top) newImTpl = newImTpl.replace('#top#', '${Name}').replace('#bot#', '');
                     else  newImTpl = newImTpl.replace('#top#', '').replace('#bot#', '${Name}');
                     var code = "function gclh_updateTmpl() {"
+                             + " if ($.template != undefined) {"
                              + "  delete $.template['tmplCacheLogImages'];"
                              + "  $.template(\"tmplCacheLogImages\",\""+newImTpl+"\");"
-                             + "}"
+                             + "} }"
                              + "gclh_updateTmpl();"
                              + placeToolTip.toString();
                     injectPageScript(code, "body");
@@ -7510,6 +7565,17 @@ var mainGC = function() {
         return ret;
     }
 
+// decodeURIComponent for non-standard unicode encoding (issue-818)
+    function decodeUnicodeURIComponent(s) {
+        function unicodeToChar(text) {
+            return text.replace(/%u[\dA-F]{4}/gi, 
+                   function (match) {
+                        return String.fromCharCode(parseInt(match.replace(/%u/g, ''), 16));
+                   });
+        }
+        return decodeURIComponent(unicodeToChar(s));
+    }
+
 // Enkodieren in url und dekodieren aus url.
     function urlencode(s) {
         s = s.replace(/&amp;/g, "&");
@@ -7520,12 +7586,13 @@ var mainGC = function() {
         s = s.replace(/ /g, "+");
         return s;
     }
+
     function urldecode(s) {
         s = s.replace(/\+/g, " ");
         s = s.replace(/%252b/ig, "+");
         s = s.replace(/%7e/g, "~");
         s = s.replace(/%27/g, "'");
-        s = decodeURIComponent(s);
+        s = decodeUnicodeURIComponent(s);
         return s;
     }
 
@@ -8209,6 +8276,10 @@ var mainGC = function() {
     function queryListingWaypoints( original ) {
         var waypoints = [];
         try {
+            if (unsafeWindow.mapLatLng == undefined) {
+                return [];
+            }
+            
             var gccode = ($('#ctl00_ContentBody_CoordInfoLinkControl1_uxCoordInfoCode')[0]) ? $('#ctl00_ContentBody_CoordInfoLinkControl1_uxCoordInfoCode')[0].textContent : "n/a";
 
             var ListingCoords = {
@@ -9277,6 +9348,7 @@ var mainGC = function() {
             html += checkboxy('settings_but_search_map', 'Show buttons "Search" and "Map" on your dashboard') + "<br>";
             html += " &nbsp; " + checkboxy('settings_but_search_map_new_tab', 'Open links in new tab') + "<br>";
             html += checkboxy('settings_compact_layout_new_dashboard', 'Show compact layout on your dashboard') + "<br>";
+            html += checkboxy('settings_embedded_smartlink_ignorelist', 'Show link to Ignore List in sidebar section Lists') + show_help("Embedded a link in the section Lists to your Ignore List into the sidebar of the new dashboard.") + "<br>";
             html += newParameterVersionSetzen(0.9) + newParameterOff;
 
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>Old dashboard only</b></div>";
@@ -10390,6 +10462,7 @@ var mainGC = function() {
                 'settings_modify_new_drafts_page',
                 'settings_gclherror_alert',
                 'settings_auto_open_tb_inventory_list',
+                'settings_embedded_smartlink_ignorelist',
             );
 
             for (var i = 0; i < checkboxes.length; i++) {
@@ -11078,23 +11151,25 @@ var mainGC = function() {
     (function(window){
         window.utils = {
             parseQueryString: function(str) {
-                var ret = Object.create(null);
-                if (typeof str !== 'string') return ret;
-                str = str.trim().replace(/^(\?|#|&)/, '');
-                if (!str) return ret;
-                str.split('&').forEach(function(param) {
-                    var parts = param.replace(/\+/g, ' ').split('=');
-                    // Firefox (pre 40) decodes `%3D` to `=` (https://github.com/sindresorhus/query-string/pull/37)
-                    var key = parts.shift();
-                    var val = parts.length > 0 ? parts.join('=') : undefined;
-                    key = decodeURIComponent(key);
-                    // missing `=` should be `null`: (http://w3.org/TR/2012/WD-url-20120524/#collect-url-parameters)
-                    val = val === undefined ? null : decodeURIComponent(val);
-                    if (ret[key] === undefined) ret[key] = val;
-                    else if (Array.isArray(ret[key])) ret[key].push(val);
-                    else ret[key] = [ret[key], val];
-                });
-                return ret;
+                try {
+                    var ret = Object.create(null);
+                    if (typeof str !== 'string') return ret;
+                    str = str.trim().replace(/^(\?|#|&)/, '');
+                    if (!str) return ret;
+                    str.split('&').forEach(function(param) {
+                        var parts = param.replace(/\+/g, ' ').split('=');
+                        // Firefox (pre 40) decodes `%3D` to `=` (https://github.com/sindresorhus/query-string/pull/37)
+                        var key = parts.shift();
+                        var val = parts.length > 0 ? parts.join('=') : undefined;
+                        key = decodeUnicodeURIComponent(key);
+                        // missing `=` should be `null`: (http://w3.org/TR/2012/WD-url-20120524/#collect-url-parameters)
+                        val = val === undefined ? null : decodeUnicodeURIComponent(val);
+                        if (ret[key] === undefined) ret[key] = val;
+                        else if (Array.isArray(ret[key])) ret[key].push(val);
+                        else ret[key] = [ret[key], val];
+                    });
+                    return ret;
+                } catch(e) { gclh_error("parseQueryString()",e)};
             }
         };
     })(window);
@@ -11498,6 +11573,8 @@ function is_page(name) {
             if (url.match(/\/(seek\/cache_details\.aspx|geocache\/)/) && !document.getElementById("cspSubmit") && !document.getElementById("cspGoBack")) status = true;
             // Exclude (new) Log Page
             if(url.match(/\/(geocache\/).*\/log/)) status = false;
+            // Exclude unpublished Caches
+            if(document.getElementsByClassName('UnpublishedCacheSearchWidget').length > 0) status = false;
             break;
         case "profile":
             if (url.match(/\/my(\/default\.aspx)?/)) status = true;
