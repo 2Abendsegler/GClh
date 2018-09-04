@@ -2190,7 +2190,7 @@ var mainGC = function() {
                     }
                     addElevationToWaypoints(elevations,context);
                 } catch(e) {
-                    gclh_error("addElevationToWaypoints_GoogleElevation():",e);
+                    gclh_error("addElevationToWaypoints_GoogleElevation()",e);
                     // This it not nice but in case of invalid character at the beginning of
                     // responseText JSON.parse gives an exception. Exception handling have to be improved
                     gclh_info( responseDetails.responseText );
@@ -2202,14 +2202,24 @@ var mainGC = function() {
                 try {
                     context = responseDetails.context;
                     json = JSON.parse(responseDetails.responseText);
-                    var elevations = [];
-                    for (var i=0; i<json.results.length; i++) {
-                        if (json.results[i].latitude != -90) elevations.push(json.results[i].elevation);
-                        else elevations.push(undefined);
+                    if ( 'error' in json ) {
+                        var mess = "\naddElevationToWaypoints_OpenElevation():\n- Error: "+json.error;
+                        gclh_log(mess);
+                        getElevations(context.retries+1,context.locations);
+                    } else if ( ! ('results' in json) )  {
+                        var mess = "\naddElevationToWaypoints_OpenElevation():\n- Results:"+json;
+                        gclh_log(mess);
+                        getElevations(context.retries+1,context.locations);
+                    } else {
+                        var elevations = [];
+                        for (var i=0; i<json.results.length; i++) {
+                            if (json.results[i].latitude != -90) elevations.push(json.results[i].elevation);
+                            else elevations.push(undefined);
+                        }
+                        addElevationToWaypoints(elevations,context);
                     }
-                    addElevationToWaypoints(elevations,context);
                 } catch(e) {
-                    gclh_error("addElevationToWaypoints_OpenElevation():",e);
+                    gclh_error("addElevationToWaypoints_OpenElevation()",e);
                     // This is not nice, but the OpenElevation service does not send any status information.
                     // We have to figure out, what will be send in case of error
                     gclh_info( responseDetails.responseText );
@@ -2315,7 +2325,9 @@ var mainGC = function() {
             }
 
             var locations = prepareListingPageForElevations();
-            getElevations(0,locations);
+            if ( locations.length > 0 ) {
+                getElevations(0,locations);
+            }
         } catch(e) {gclh_error("AddElevation",e);}
     }
 
@@ -4285,28 +4297,30 @@ var mainGC = function() {
 
                 // Show VIP List.
                 var map = $('#ctl00_ContentBody_detailWidget')[0];
-                var box = document.createElement("div");
-                var headline = document.createElement("h3");
-                var body = document.createElement("div");
-                box.setAttribute("class", "CacheDetailNavigationWidget NoPrint");
-                headline.setAttribute("class", "WidgetHeader");
-                body.setAttribute("class", "WidgetBody");
-                body.setAttribute("id", "gclh_vip_list");
-                headline.innerHTML = "<img width='16' height='16' style='margin-bottom: -2px;' title='Very important person List' alt='VIP-List' src='/images/icons/icon_attended.gif'> VIP-List";
-                if (settings_make_vip_lists_hideable) {
-                    headline.innerHTML = "<img id='lnk_gclh_vip_list' title='' src='' style='cursor: pointer'> " + headline.innerHTML;
-                }
-                box.appendChild(headline);
-                box.appendChild(body);
-                box.setAttribute("style", "margin-top: 1.5em;");
-                map.parentNode.insertBefore(box, map);
-                if (settings_make_vip_lists_hideable) {
-                    showHideBoxCL("lnk_gclh_vip_list", true);
-                    $('#lnk_gclh_vip_list')[0].addEventListener("click", function() {showHideBoxCL(this.id, false);}, false);
+                if ( map ) {
+                    var box = document.createElement("div");
+                    var headline = document.createElement("h3");
+                    var body = document.createElement("div");
+                    box.setAttribute("class", "CacheDetailNavigationWidget NoPrint");
+                    headline.setAttribute("class", "WidgetHeader");
+                    body.setAttribute("class", "WidgetBody");
+                    body.setAttribute("id", "gclh_vip_list");
+                    headline.innerHTML = "<img width='16' height='16' style='margin-bottom: -2px;' title='Very important person List' alt='VIP-List' src='/images/icons/icon_attended.gif'> VIP-List";
+                    if (settings_make_vip_lists_hideable) {
+                        headline.innerHTML = "<img id='lnk_gclh_vip_list' title='' src='' style='cursor: pointer'> " + headline.innerHTML;
+                    }
+                    box.appendChild(headline);
+                    box.appendChild(body);
+                    box.setAttribute("style", "margin-top: 1.5em;");
+                    map.parentNode.insertBefore(box, map);
+                    if (settings_make_vip_lists_hideable) {
+                        showHideBoxCL("lnk_gclh_vip_list", true);
+                        $('#lnk_gclh_vip_list')[0].addEventListener("click", function() {showHideBoxCL(this.id, false);}, false);
+                    }
                 }
 
                 // Show VIP List "not found".
-                if (settings_vip_show_nofound) {
+                if (settings_vip_show_nofound && map) {
                     var box2 = document.createElement("div");
                     var headline2 = document.createElement("h3");
                     var body2 = document.createElement("div");
@@ -4354,6 +4368,9 @@ var mainGC = function() {
                 gclh_build_vip_list = function() {
                     var show_owner = settings_show_owner_vip_list;
                     var list = document.getElementById("gclh_vip_list");
+                    if ( list == undefined ) {
+                        return;
+                    }
                     // Hier wird wohl Loading Icon entfernt.
                     list.innerHTML = "";
 
@@ -4785,7 +4802,7 @@ var mainGC = function() {
                 checkLeagueAvailable(0);
             }
         }
-    } catch(e) {gclh_error("VIP VUP:",e);}
+    } catch(e) {gclh_error("VIP VUP",e);}
 
 // Log-Template (Logtemplate) definieren.
     if (is_page("cache_listing")) {
@@ -5650,9 +5667,10 @@ var mainGC = function() {
                     if (settings_imgcaption_on_top) newImTpl = newImTpl.replace('#top#', '${Name}').replace('#bot#', '');
                     else  newImTpl = newImTpl.replace('#top#', '').replace('#bot#', '${Name}');
                     var code = "function gclh_updateTmpl() {"
+                             + " if ($.template != undefined) {"
                              + "  delete $.template['tmplCacheLogImages'];"
                              + "  $.template(\"tmplCacheLogImages\",\""+newImTpl+"\");"
-                             + "}"
+                             + "} }"
                              + "gclh_updateTmpl();"
                              + placeToolTip.toString();
                     injectPageScript(code, "body");
@@ -8256,6 +8274,10 @@ var mainGC = function() {
     function queryListingWaypoints( original ) {
         var waypoints = [];
         try {
+            if (unsafeWindow.mapLatLng == undefined) {
+                return [];
+            }
+            
             var gccode = ($('#ctl00_ContentBody_CoordInfoLinkControl1_uxCoordInfoCode')[0]) ? $('#ctl00_ContentBody_CoordInfoLinkControl1_uxCoordInfoCode')[0].textContent : "n/a";
 
             var ListingCoords = {
@@ -11547,6 +11569,8 @@ function is_page(name) {
     switch (name) {
         case "cache_listing":
             if (url.match(/\/(seek\/cache_details\.aspx|geocache\/)/) && !document.getElementById("cspSubmit") && !document.getElementById("cspGoBack")) status = true;
+            // Exclude unpublished Caches
+            if(document.getElementsByClassName('UnpublishedCacheSearchWidget').length > 0) status = false;
             break;
         case "profile":
             if (url.match(/\/my(\/default\.aspx)?/)) status = true;
