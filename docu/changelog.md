@@ -100,6 +100,9 @@
 		Thanks to <a href="https://www.geocaching.com/profile/?u=CachingFox">CachingFox</a> for the fix.<br>
 	</li>
 </ul>
+(04.09.2018)<br>
+released by <a href="https://www.geocaching.com/profile/?u=Ruko2010">Ruko2010</a><br>
+<br>
 
 
 ---
