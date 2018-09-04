@@ -691,9 +691,6 @@ var mainPGC = function() {
                     return;
                 }
 
-
-                info_text.appendChild(document.createTextNode("This function will only work, if you don't set any other filter except country OR region!"));
-                info_text.appendChild(document.createElement("br"));
                 info_text.appendChild(document.createTextNode("PQ-Name (Prefix):"));
 
                 var button = document.createElement('button');
@@ -753,10 +750,15 @@ var mainPGC = function() {
                                 var cache_count = 1000;
                                 if(table_index == 1) cache_count = 500;
                                 
+                                var pq_name = $("#pq_name_"+table_index).val()+"_"+(counter-1);
+                                if(counter <= 10){
+                                    pq_name = $("#pq_name_"+table_index).val()+"_0"+(counter-1);
+                                }
+
                                 var param = 
                                     {
                                         PQSplit: 1,
-                                        n: $("#pq_name_"+table_index).val()+"_"+(counter-1),
+                                        n: pq_name,
                                         t: type,
                                         s: name,
                                         c: cache_count,
@@ -793,6 +795,15 @@ var mainPGC = function() {
                 td.appendChild(info_text);
                 td.appendChild(input);
                 td.appendChild(button);
+
+                var heading_instructions = document.createElement("h5");
+                heading_instructions.appendChild(document.createTextNode("Instruction"));
+
+                td.appendChild(heading_instructions);
+                td.appendChild(document.createTextNode("This function will only work, if you don't set any other filter except country or region!"));
+                td.appendChild(document.createElement("br"));
+                td.appendChild(document.createTextNode("If you click the \"Create PQ(s)\" Button GClh will open as many Pop-ups as PQs should be created. Please wait until all Pop-ups are loaded. They will close themselves after the PQs are created. Please make sure you do not have a Pop-up-Blocker enabled. Otherwise this function will not work. All PQs will get the Name that you enter in the text field and an ongoing number."));
+
                 tr.appendChild(td);
                 tfoot.appendChild(tr);
                 $(this).append(tfoot); 
