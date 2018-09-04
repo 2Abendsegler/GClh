@@ -11496,6 +11496,8 @@ function is_page(name) {
     switch (name) {
         case "cache_listing":
             if (url.match(/\/(seek\/cache_details\.aspx|geocache\/)/) && !document.getElementById("cspSubmit") && !document.getElementById("cspGoBack")) status = true;
+            // Exclude (new) Log Page
+            if(url.match(/\/(geocache\/).*\/log/)) status = false;
             break;
         case "profile":
             if (url.match(/\/my(\/default\.aspx)?/)) status = true;
