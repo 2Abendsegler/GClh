@@ -13,7 +13,7 @@
 // @require          http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js
 // @require          http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js
 // @require          https://cdnjs.cloudflare.com/ajax/libs/dropbox.js/2.5.2/Dropbox-sdk.min.js
-// @require          https://raw.githubusercontent.com/2Abendsegler/GClh/collector/data/gclh_defi.js
+// @require          https://raw.githubusercontent.com/2Abendsegler/GClh/master/data/gclh_defi.js
 // @require          https://www.geocaching.com/scripts/MarkdownDeepLib.min.js
 // @require          https://www.geocaching.com/scripts/SmileyConverter.js
 // @connect          maps.googleapis.com
