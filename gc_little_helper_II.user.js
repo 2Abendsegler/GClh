@@ -491,6 +491,7 @@ var variablesInit = function(c) {
     c.settings_gclherror_alert = getValue("settings_gclherror_alert", false);
     c.settings_auto_open_tb_inventory_list = getValue("settings_auto_open_tb_inventory_list", true);
     c.settings_embedded_smartlink_ignorelist = getValue("settings_embedded_smartlink_ignorelist", true);
+    c.settings_both_tabs_list_of_pqs_one_page = getValue("settings_both_tabs_list_of_pqs_one_page", false);
 
     try {
         if (c.userToken === null) {
@@ -3125,6 +3126,8 @@ var mainGC = function() {
     if (document.location.href.match(/\.com\/pocket/) && document.getElementById("uxCreateNewPQ") && $('table.Table')[0]) {
         try {
             var css = "";
+            // Number of Active Pocket Queries.
+            if ($('#ui-id-1')[0]) $('#ui-id-1').append("&nbsp;<span title='Number of Active Pocket Queries'>("+$('#pqRepeater tbody tr:not(.TableFooter)').length+")</span>");
             // Compact layout.
             if (settings_compact_layout_list_of_pqs) {
                 function lastGen(elem) {
@@ -3148,11 +3151,9 @@ var mainGC = function() {
                 }
                 $('#ActivePQs, #DownloadablePQs').each(function() {
                     this.setAttribute("style", "box-shadow: 2px 2px 0 rgba(0,0,0,.2);");
-                    this.children[0].setAttribute("style", "margin: -35px -15px 0 0; float: right;");
-                    this.children[0].children[0].setAttribute("style", "font-size: .6rem;");
+                    this.children[0].children[0].setAttribute("style", "font-size: .6rem; margin: -35px -15px 0 0; float: right;");
                 });
                 // Table active PQs:
-                if ($('#ActivePQs').attr('aria-hidden') == 'true') $('#ActivePQs')[0].style.display = 'none';
                 css += "table {margin-bottom: 0;} table.Table, table.Table th, table.Table td {padding: 5px; border: 1px solid #fff;}";
                 css += "table.Table tr {line-height: 16px;} table.Table th img, table.Table td img {vertical-align: sub;}";
                 if ($('#pqRepeater thead tr').length > 0 && $('#pqRepeater thead tr')[0].children.length > 12) {
@@ -3209,11 +3210,27 @@ var mainGC = function() {
                     }
                 }
                 // Table downloadable PQs (additional):
-                if ($('#DownloadablePQs').attr('aria-hidden') == 'true') $('#DownloadablePQs')[0].style.display = 'none';
                 if ($('#uxOfflinePQTable thead tr').length > 0) lastGen($('#uxOfflinePQTable thead tr')[0].children[5]);
                 if ($('#uxOfflinePQTable tbody tr').length > 0) $('#uxOfflinePQTable tbody tr').each(function() {if (this.children[5]) this.children[5].style.whiteSpace = "nowrap";});
                 if ($('#ctl00_ContentBody_PQListControl1_lbFoundGenerated').length > 0) {
                     $('#ctl00_ContentBody_PQListControl1_lbFoundGenerated')[0].innerHTML = $('#ctl00_ContentBody_PQListControl1_lbFoundGenerated')[0].innerHTML.replace(/\*/, "");
+                }
+                // Show both tabs (Active and Downloadable) of list of pqs on one page.
+                if ($('#ActivePQs')[0] && $('#DownloadablePQs')[0]) {
+                    if (settings_both_tabs_list_of_pqs_one_page) {
+                        $('#ActivePQs, #DownloadablePQs').attr('aria-hidden', 'false');
+                        $('#ActivePQs, #DownloadablePQs').each(function() {
+                            this.style.display = 'block';
+                            this.children[0].children[0].style.margin = '0px';
+                        });
+                        $('#DownloadablePQs')[0].style.marginTop = '10px';
+                        $('#ActivePQs')[0].children[0].innerHTML = $('#ui-id-1')[0].innerHTML + $('#ActivePQs')[0].children[0].innerHTML;
+                        $('#DownloadablePQs')[0].children[0].innerHTML = $('#ui-id-2')[0].innerHTML + $('#DownloadablePQs')[0].children[0].innerHTML;
+                        $('ul.ui-tabs-nav')[0].remove();
+                    } else {
+                        if ($('#ActivePQs').attr('aria-hidden') == 'true') $('#ActivePQs')[0].style.display = 'none';
+                        if ($('#DownloadablePQs').attr('aria-hidden') == 'true') $('#DownloadablePQs')[0].style.display = 'none';
+                    }
                 }
                 // Footer:
                 if ($('.pq-legend').length > 0) {
@@ -3223,8 +3240,6 @@ var mainGC = function() {
             }
             // "Find cache along a route" als Button.
             if ($('#uxFindCachesAlongaRoute.btn.btn-secondary').length > 0) $('#uxFindCachesAlongaRoute')[0].className = "btn btn-primary";
-            // Number of Active Pocket Queries.
-            if ($('#ui-id-1')[0]) $('#ui-id-1').append("&nbsp;<span title='Number of Active Pocket Queries'>("+$('#pqRepeater tbody tr:not(.TableFooter)').length+")</span>");
             // Refresh button.
             var refreshButton = document.createElement("p");
             refreshButton.innerHTML = "<a href='/pocket/default.aspx' title='Refresh Page'>Refresh Page</a>";
@@ -9454,6 +9469,11 @@ var mainGC = function() {
             html += content_settings_submit_log_button;
             html += newParameterOn2;
             html += checkboxy('settings_compact_layout_list_of_pqs', 'Show compact layout in list of pocket queries') + "<br>";
+            html += newParameterVersionSetzen(0.8) + newParameterOff;
+            html += newParameterOn3;
+            html += " &nbsp; " + checkboxy('settings_both_tabs_list_of_pqs_one_page', 'Show both tabs in list of pocket queries of one page') + show_help("Show the both tabs \"Active Pocket Queries\" and \"Pocket Queries Ready for Download\" together of one page.") + "<br>";
+            html += newParameterVersionSetzen(0.9) + newParameterOff;
+            html += newParameterOn2;
             html += checkboxy('settings_compact_layout_pqs', 'Show compact layout in pocket queries') + "<br>";
             html += newParameterVersionSetzen(0.8) + newParameterOff;
             html += newParameterOn3;
@@ -10805,6 +10825,7 @@ var mainGC = function() {
                 'settings_gclherror_alert',
                 'settings_auto_open_tb_inventory_list',
                 'settings_embedded_smartlink_ignorelist',
+                'settings_both_tabs_list_of_pqs_one_page',
             );
 
             for (var i = 0; i < checkboxes.length; i++) {
