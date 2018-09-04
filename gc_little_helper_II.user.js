@@ -2637,7 +2637,7 @@ var mainGC = function() {
                     return mess;
                 }
             };
-            $('#ctl00_ContentBody_LogBookPanel1_btnSubmitLog')[0].addEventListener("click", function() {changed = false;}, false);  // Keine Meldung beim Submit.
+            if ($('#ctl00_ContentBody_LogBookPanel1_btnSubmitLog')[0]) $('#ctl00_ContentBody_LogBookPanel1_btnSubmitLog')[0].addEventListener("click", function() {changed = false;}, false);  // Keine Meldung beim Submit.
             var logfield = $('#ctl00_ContentBody_LogBookPanel1_uxLogInfo')[0];
             logfield.addEventListener("keyup", function() {limitLogText(logfield);}, false);
             logfield.addEventListener("change", function() {limitLogText(logfield);}, false);
