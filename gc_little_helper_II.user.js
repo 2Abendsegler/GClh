@@ -2,11 +2,12 @@
 // @name             GC little helper II
 // @namespace        http://www.amshove.net
 //--> $$000
-// @version          0.9.11
+// @version          0.9.12
 //<-- $$000
 // @include          http*://www.geocaching.com/*
 // @include          http*://maps.google.tld/*
 // @include          http*://www.google.tld/maps*
+// @include          http*://project-gc.com/Tools/PQSplit*
 // @include          http*://www.openstreetmap.org*
 // @exclude          /^https?://www\.geocaching\.com/(login|jobs|careers|brandedpromotions|promotions|blog|help|seek/sendtogps|profile/profilecontent)/
 // @resource jscolor https://raw.githubusercontent.com/2Abendsegler/GClh/master/data/jscolor.js
@@ -46,6 +47,8 @@ var start = function(c) {
                 mainOSM();
             } else if (document.location.href.match(/^https?:\/\/www\.geocaching\.com/)) {
                 mainGC();
+            }else if (document.location.href.match(/^https?:\/\/project-gc\.com\/Tools\/PQSplit/)) {
+                mainPGC();
             }
         });
 };
@@ -586,6 +589,229 @@ var mainGMaps = function() {
             hideLeftSidebar(0);
         }
     } catch(e) {gclh_error("mainGMaps:",e);}
+};
+//////////////////////////////
+// Project GC
+//////////////////////////////
+var mainPGC = function() {
+    try {
+        // CSS Style hinzufügen.
+        function appendCssStyle(css, name) {
+            if (css == "") return;
+            if (name) var tag = $(name)[0];
+            else var tag = $('head')[0];
+            var style = document.createElement('style');
+            style.innerHTML = 'GClhII{} ' + css;
+            style.type = 'text/css';
+            tag.appendChild(style);
+        }
+
+        function getMonthNumber(lang, input){
+            if(lang = 'DE'){
+                if(input == 'Januar') return 1;
+                if(input == 'Februar') return 2;
+                if(input == 'März') return 3;
+                if(input == 'April') return 4;
+                if(input == 'Mai') return 5;
+                if(input == 'Juni') return 6;
+                if(input == 'Juli') return 7;
+                if(input == 'August') return 8;
+                if(input == 'September') return 9;
+                if(input == 'Oktober') return 10;
+                if(input == 'November') return 11;
+                if(input == 'Dezember') return 12;
+            }
+
+            if(lang = 'EN'){
+                if(input == 'January') return 1;
+                if(input == 'February') return 2;
+                if(input == 'March') return 3;
+                if(input == 'April') return 4;
+                if(input == 'May') return 5;
+                if(input == 'June') return 6;
+                if(input == 'July') return 7;
+                if(input == 'August') return 8;
+                if(input == 'September') return 9;
+                if(input == 'October') return 10;
+                if(input == 'November') return 11;
+                if(input == 'December') return 12;
+            }
+
+            return false;
+        }
+
+        if($('.row table').length > 0){
+            
+
+            // Add some CSS
+            var css = "";
+                css += "tfoot{";
+                css += "    background-color: #d4edda;";
+                css += "}";
+
+            appendCssStyle(css);
+
+            // Only one of the Multiselcts has a value. Either the Country or the Region
+
+            //Check if other Filters are set!
+
+            var error_text = '';
+
+            if($('#inputlist li').length > 1){
+                error_text = "More than one filter was set! You can not use this function. Please remove all filters except country/region.";
+            }
+
+            if($('#multi_countryselect').val() != null){
+                name = $('#multi_countryselect').val();
+                type = "country";
+            }else if($('#multi_countryregionselect').val() != null){
+                name = $('#multi_countryregionselect').val();
+                type = "region";
+            }else{
+                error_text = 'No Country/Region selected.';
+            }
+
+            $('.row table').each(function(table_index){
+                var tfoot = document.createElement('tfoot');
+                var tr = document.createElement('tr');
+                var td = document.createElement('td');
+                td.colSpan = "5";
+
+                var heading = document.createElement("h4");
+                heading.appendChild(document.createTextNode("Create PQ(s) on geocaching.com"));
+
+                var info_text = document.createElement("span");
+                info_text.appendChild(heading);
+
+                // Check if we need to add the function, or if we have an error before
+                if(error_text != ''){
+                    info_text.appendChild(document.createTextNode(error_text));
+                    td.appendChild(info_text);
+                    tr.appendChild(td);
+                    tfoot.appendChild(tr);
+                    $(this).append(tfoot); 
+                    return;
+                }
+
+                info_text.appendChild(document.createTextNode("PQ-Name (Prefix):"));
+
+                var button = document.createElement('button');
+                var t = document.createTextNode("Create PQ(s)");  
+                button.appendChild(t);
+
+                var input = document.createElement('input');
+                var input = document.createElement("input");
+                input.setAttribute("type", "text");
+                input.setAttribute("value", "PQName");
+                input.setAttribute("id", "pq_name_"+table_index);
+                
+                button.addEventListener("click", function(){
+                    var current_table = $(this).closest('table');
+                    var counter = 0;
+                    var language;
+                    var data = new Array();
+                    $(current_table).find('tr').each(function(){
+                        counter++;
+                        console.log($(this));
+                        if(counter == 1){
+                            // first tr, determine Language
+                            var lang_text = $(this).children().eq(1).text();
+                            if(lang_text == 'Startdatum'){
+                                language = 'DE';
+                            }else if(lang_text == 'Start date'){
+                                language = 'EN';
+                            }else{
+                                // Lang not supported
+                                alert('Language not supported. Please switch to German or English to use this funktion');
+                                language = 'NONE';
+                            }
+                        }else{
+                            // Other td, here is the Data we need
+                            // Only process if the first column has Data in it
+                            if($(this).children().eq(1).text() != ""){
+                                
+                                var start = $(this).children().eq(1).text();
+                                var start_array = start.split('/');
+
+                                var start_month = getMonthNumber(language,start_array[0]);
+                                var start_day   = parseInt(start_array[1]);
+                                var start_year  = parseInt(start_array[2]);
+
+                                var end = $(this).children().eq(2).text();
+                                if(end.indexOf("/") != -1){
+                                    var end_array = end.split('/');
+                                    var end_month = getMonthNumber(language,end_array[0]);
+                                    var end_day   = parseInt(end_array[1]);
+                                    var end_year  = parseInt(end_array[2]);
+                                }else{
+                                    var end_month = "";
+                                    var end_day   = "";
+                                    var end_year  = "";
+                                }
+
+                                var cache_count = 1000;
+                                if(table_index == 1) cache_count = 500;
+                                
+                                var pq_name = $("#pq_name_"+table_index).val()+"_"+(counter-1);
+                                if(counter <= 10){
+                                    pq_name = $("#pq_name_"+table_index).val()+"_0"+(counter-1);
+                                }
+
+                                var param = 
+                                    {
+                                        PQSplit: 1,
+                                        n: pq_name,
+                                        t: type,
+                                        s: name,
+                                        c: cache_count,
+                                        sm: start_month, 
+                                        sd: start_day, 
+                                        sy: start_year,
+
+                                        em: end_month, 
+                                        ed: end_day, 
+                                        ey: end_year
+                                        
+                                    };
+
+                                var new_url = "https://www.geocaching.com/pocket/gcquery.aspx?"+$.param( param );
+
+                                if(new_url.length > 2000){
+                                    alert("The URL is too long! Please use fewer countries/regions or you can't use this funciton. Some of the PQs could already be created!");
+                                    return false;
+                                }else{
+                                    console.log('Open New Window: '+'PQ_'+(counter-1));
+                                    // window.open(new_url,'PQ_'+(counter-1),'PopUp','PQ_'+(counter-1),'scrollbars=1,menubar=0,resizable=1,width=200,height=300');
+                                    window.open(new_url,'PQ_'+(counter-1),'scrollbars=1,menubar=0,resizable=1,width=500,height=500,left='+((counter-1)*40));
+                                }
+
+                                // Only one for now...
+                                // return false;
+                            }
+                        }
+                    });
+
+                }, false);
+
+                
+                td.appendChild(info_text);
+                td.appendChild(input);
+                td.appendChild(button);
+
+                var heading_instructions = document.createElement("h5");
+                heading_instructions.appendChild(document.createTextNode("Instruction"));
+
+                td.appendChild(heading_instructions);
+                td.appendChild(document.createTextNode("This function will only work, if you don't set any other filter except country or region!"));
+                td.appendChild(document.createElement("br"));
+                td.appendChild(document.createTextNode("If you click the \"Create PQ(s)\" Button GClh will open as many Pop-ups as PQs should be created. Please wait until all Pop-ups are loaded. They will close themselves after the PQs are created. Please make sure you do not have a Pop-up-Blocker enabled. Otherwise this function will not work. All PQs will get the Name that you enter in the text field and an ongoing number."));
+
+                tr.appendChild(td);
+                tfoot.appendChild(tr);
+                $(this).append(tfoot); 
+            });
+        }
+    } catch(e) {gclh_error("mainPGC:",e);}
 };
 
 //////////////////////////////
@@ -3083,6 +3309,122 @@ var mainGC = function() {
             }
             appendCssStyle(css);
         } catch(e) {gclh_error("Improve list of PQs:",e);}
+    }
+
+    // Try to find values from Project-GC PQSplit
+    if (document.location.href.match(/\.com\/pocket\/gcquery\.aspx/)){
+        try{
+
+            function findGetParameter(parameterName) {
+                var result = null,
+                    tmp = [];
+                var items = location.search.substr(1).split("&");
+                for (var index = 0; index < items.length; index++) {
+                    tmp = items[index].split("=");
+                    if (tmp[0] === parameterName) result = decodeURIComponent(tmp[1]);
+                }
+                return result;
+            }
+
+            if(findGetParameter('PQSplit')){
+                // Yes we come from PQSplitter
+                    
+                //Test if we already saved the PQ. If yes => close the window
+                if($( "#divContentMain p.Success" ).length){
+
+                    setTimeout(function(){
+                        window.close();
+                    },1000);
+                    return true;
+                }
+
+
+                $('#ctl00_ContentBody_tbName').val(findGetParameter('n'));
+                $('#ctl00_ContentBody_tbResults').val(findGetParameter('c'));
+
+                var type = findGetParameter('t');
+                var cr_name = findGetParameter('s');
+                switch (type) {
+                    case "region":
+                        // Modifiction for Countries with "," in the name. There is a "+" after the ","
+                        cr_name = cr_name.split(/,(?!\+)/);
+                        
+                        if(cr_name.length >= 1){
+                            for (var i = 0; i < cr_name.length; i++) {
+                                cr_name[i] = cr_name[i].replace(/\+/g, " ");
+
+                                var region = cr_name[i].substr(cr_name[i].indexOf('|')+1);
+                                
+                                var state = $.grep(states_id, function(e){return e.n == region;});
+
+                                if(state.length == 0){
+                                    alert('No corresponding Region Name not found for Region: ' + region);
+                                    throw Error('No corresponding Region Name not found for Region: ' + region);
+                                }
+
+                                $('#ctl00_ContentBody_rbStates').attr('checked', true);
+                                $('#ctl00_ContentBody_lbStates option[value=' + state[0].id + ']').attr('selected', true);
+                            }
+                        }else{
+                            alert('No Region Name found.');
+                            throw Error('No Region Name found.');
+                        }
+                        break;
+
+                    case "country":
+                        // Modifiction for Countries with "," in the name. There is a "+" after the ","
+                        cr_name = cr_name.split(/,(?!\+)/);
+                        if(cr_name.length >= 1){
+                            for (var i = 0; i < cr_name.length; i++) {
+                                cr_name[i] = cr_name[i].replace(/\+/g, " ");
+
+                                var country = $.grep(country_id, function(e){return e.n == cr_name[i];});
+
+                                if(country.length == 0){
+                                    alert('No corresponding Country Name found for Country: ' + cr_name[i]);
+                                    throw Error('No corresponding Country Name found for Country: ' + cr_name[i]);
+                                }
+
+                                $('#ctl00_ContentBody_rbCountries').attr('checked', true);
+                                $('#ctl00_ContentBody_lbCountries option[value=' + country[0].id + ']').attr('selected', true);
+                            }
+                        }else{
+                            alert('No Country Name found.');
+                            throw Error('No Country Name found.');
+                        }
+                        break;
+                   default:
+                        alert('Unknown Type for area. Please contact an admin of GClh.');
+                        throw new Error('unknown Type: ' + type);
+                }
+
+                $('#ctl00_ContentBody_rbPlacedBetween').attr('checked', true);
+
+                $('#ctl00_ContentBody_DateTimeBegin_Month option[value=' + findGetParameter('sm') + ']').attr('selected', true);
+                $('#ctl00_ContentBody_DateTimeBegin_Day option[value=' + findGetParameter('sd') + ']').attr('selected', true);
+                $('#ctl00_ContentBody_DateTimeBegin_Year option[value=' + findGetParameter('sy') + ']').attr('selected', true);
+
+                if((findGetParameter('em') != '') && (findGetParameter('ed') != '') && (findGetParameter('ey') != '')){
+                   var month = findGetParameter('em');
+                   var day = findGetParameter('ed');
+                   var year = findGetParameter('ey');
+                }else{
+                    var month = 12;
+                    var day = 31;
+                    var year = (new Date()).getFullYear()+1;
+                }
+
+                $('#ctl00_ContentBody_DateTimeEnd_Month option[value=' + month + ']').attr('selected', true);
+                $('#ctl00_ContentBody_DateTimeEnd_Day option[value=' + day + ']').attr('selected', true);
+                $('#ctl00_ContentBody_DateTimeEnd_Year option[value=' + year + ']').attr('selected', true);
+
+                // All values are set, submit the form
+                document.getElementById('ctl00_ContentBody_btnSubmit').click();
+                
+            }
+
+            
+        } catch(e) {gclh_error("Create Automated PQs from project-gc PQ splitter:",e);}
     }
 
 // Show Log It button.
