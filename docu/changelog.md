@@ -65,7 +65,20 @@
 	<li>
 		<strong>New:</strong> Add link to ignore list in sidebar [Issues <a href="https://github.com/2Abendsegler/GClh/issues/815">#815</a>, <a href="https://github.com/2Abendsegler/GClh/issues/819">#819</a>]<br>
 		Thanks to <a href="https://www.geocaching.com/profile/?u=CachingFox">CachingFox</a> for the implementation.<br>
+		<img src="../images/0.9.12/Screen07.png" alt="Screen07.png"><br>
 		<img src="../images/0.9.12/Screen03.png" alt="Screen03.png"><br>
+	</li>
+	<li>
+		<strong>New:</strong> Show both tabs "Active Pocket Queries" and "Pocket Queries Ready for Download" together of one page [Issue <a href="https://github.com/2Abendsegler/GClh/issues/835">#835</a>]<br>
+		Thanks to <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a> for the implementation.<br>
+		<img src="../images/0.9.12/Screen05.jpg" alt="Screen05.jpg"><br>
+		<img src="../images/0.9.12/Screen06.JPG" alt="Screen06.JPG"><br>
+		This feature is disabled by default. You can enable it in the GClh configuration.
+	</li>
+	<li>
+		<strong>New:</strong> Own statistic values in one line [Issue <a href="https://github.com/2Abendsegler/GClh/issues/800">#800</a>]<br>
+		Thanks to <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a> for the implementation.<br>
+		<img src="../images/0.9.12/Screen08.JPG" alt="Screen08.JPG"><br>
 	</li>
 	<li>
 		<strong>Fix:</strong> Duplicated Buttons in TB-List (Log Page) are not working [Issue <a href="https://github.com/2Abendsegler/GClh/issues/786">#786</a>]<br>
@@ -98,6 +111,30 @@
 	<li>
 		<strong>Fix:</strong> Error messages at 'All Geocaches' on the public profile [Issue <a href="https://github.com/2Abendsegler/GClh/issues/818">#818</a>]<br>
 		Thanks to <a href="https://www.geocaching.com/profile/?u=CachingFox">CachingFox</a> for the fix.<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> The list of pq shows Active and Ready for Download together of one page [Issue <a href="https://github.com/2Abendsegler/GClh/issues/830">#830</a>]<br>
+		Thanks to <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a> for the fix.<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> If a message comes before posting a special log there is an error [Issue <a href="https://github.com/2Abendsegler/GClh/issues/836">#836</a>]<br>
+		Thanks to <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a> for the fix.<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> Button Show all logs and other sections do not work [Issue <a href="https://github.com/2Abendsegler/GClh/issues/761">#761</a>]<br>
+		Thanks to <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a> for the fix.<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> Tune server time output in pocket querries [Issue <a href="https://github.com/2Abendsegler/GClh/issues/796">#796</a>]<br>
+		Thanks to <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a> for the fix.<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> Tune positioning of buttons on friend league page. Tune distance of the images in the logs in the listing [Issue <a href="https://github.com/2Abendsegler/GClh/issues/790">#790</a>]<br>
+		Thanks to <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a> for the fix.<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> Username for generating profile link is not always recognized [Issue <a href="https://github.com/2Abendsegler/GClh/issues/793">#793</a>]<br>
+		Thanks to <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a> for the fix.<br>
 	</li>
 </ul>
 (04.09.2018)<br>
