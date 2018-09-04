@@ -13,7 +13,7 @@
 // @require          http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js
 // @require          http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js
 // @require          https://cdnjs.cloudflare.com/ajax/libs/dropbox.js/2.5.2/Dropbox-sdk.min.js
-// @require          https://raw.githubusercontent.com/2Abendsegler/GClh/master/data/gclh_defi.js
+// @require          https://raw.githubusercontent.com/2Abendsegler/GClh/collector/data/gclh_defi.js
 // @require          https://www.geocaching.com/scripts/MarkdownDeepLib.min.js
 // @require          https://www.geocaching.com/scripts/SmileyConverter.js
 // @connect          maps.googleapis.com
@@ -2637,7 +2637,7 @@ var mainGC = function() {
                     return mess;
                 }
             };
-            $('#ctl00_ContentBody_LogBookPanel1_btnSubmitLog')[0].addEventListener("click", function() {changed = false;}, false);  // Keine Meldung beim Submit.
+            if ($('#ctl00_ContentBody_LogBookPanel1_btnSubmitLog')[0]) $('#ctl00_ContentBody_LogBookPanel1_btnSubmitLog')[0].addEventListener("click", function() {changed = false;}, false);  // Keine Meldung beim Submit.
             var logfield = $('#ctl00_ContentBody_LogBookPanel1_uxLogInfo')[0];
             logfield.addEventListener("keyup", function() {limitLogText(logfield);}, false);
             logfield.addEventListener("change", function() {limitLogText(logfield);}, false);
