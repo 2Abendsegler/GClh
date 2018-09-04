@@ -11518,7 +11518,7 @@ function is_page(name) {
     switch (name) {
         case "cache_listing":
             if (url.match(/\/(seek\/cache_details\.aspx|geocache\/)/) && !document.getElementById("cspSubmit") && !document.getElementById("cspGoBack")) status = true;
-            // Exclude unpublised Caches
+            // Exclude unpublished Caches
             if(document.getElementsByClassName('UnpublishedCacheSearchWidget').length > 0) status = false;
             break;
         case "profile":
