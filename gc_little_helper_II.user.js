@@ -2913,6 +2913,7 @@ var mainGC = function() {
                     this.children[0].children[0].setAttribute("style", "font-size: .6rem;");
                 });
                 // Table active PQs:
+                if ($('#ActivePQs').attr('aria-hidden') == 'true') $('#ActivePQs')[0].style.display = 'none';
                 css += "table {margin-bottom: 0;} table.Table, table.Table th, table.Table td {padding: 5px; border: 1px solid #fff;}";
                 css += "table.Table tr {line-height: 16px;} table.Table th img, table.Table td img {vertical-align: sub;}";
                 if ($('#pqRepeater thead tr').length > 0 && $('#pqRepeater thead tr')[0].children.length > 12) {
@@ -2969,6 +2970,7 @@ var mainGC = function() {
                     }
                 }
                 // Table downloadable PQs (additional):
+                if ($('#DownloadablePQs').attr('aria-hidden') == 'true') $('#DownloadablePQs')[0].style.display = 'none';
                 if ($('#uxOfflinePQTable thead tr').length > 0) lastGen($('#uxOfflinePQTable thead tr')[0].children[5]);
                 if ($('#uxOfflinePQTable tbody tr').length > 0) $('#uxOfflinePQTable tbody tr').each(function() {if (this.children[5]) this.children[5].style.whiteSpace = "nowrap";});
                 if ($('#ctl00_ContentBody_PQListControl1_lbFoundGenerated').length > 0) {
