@@ -2852,7 +2852,7 @@ var mainGC = function() {
             // Grab mail template from URL.
             var matches = document.location.href.match(/&text=(.*)/);
             if (matches && matches[1]) {
-                $('#ctl00_ContentBody_SendMessagePanel1_tbMessage')[0].innerHTML = decodeURIComponent(matches[1]);
+                $('#ctl00_ContentBody_SendMessagePanel1_tbMessage')[0].innerHTML = decodeUnicodeURIComponent(matches[1]);
             // Build mail template.
             } else {
                 template = buildSendTemplate().replace(/#Receiver#/ig, $('#ctl00_ContentBody_SendMessagePanel1_lblEmailInfo')[0].children[0].innerHTML);
@@ -2866,7 +2866,7 @@ var mainGC = function() {
         try {
             var val = "";
             var matches = document.location.href.match(/&text=(.*)/);
-            if (matches && matches[1]) val = decodeURIComponent(matches[1]);
+            if (matches && matches[1]) val = decodeUnicodeURIComponent(matches[1]);
             updateMessage(0);
             function updateMessage(waitCount) {
                 if ($('textarea')[0] && $('textarea')[0].value == "" && $('#cpMsgLogHead .h5')[0].innerHTML != "") {
@@ -4728,7 +4728,7 @@ var mainGC = function() {
                             side[i].appendChild(span);
                             var last = side[i].children.length - 1;
                             var user = links[i].href.match(/https?:\/\/www\.geocaching\.com\/profile\/\?u=(.*)/);
-                            gclh_build_vipvupmail(side[i].children[last], decodeURIComponent(user[1]));
+                            gclh_build_vipvupmail(side[i].children[last], decodeUnicodeURIComponent(user[1]));
                         }
 
                         table_length = $(leaderboard_table).children().length;
@@ -4764,7 +4764,7 @@ var mainGC = function() {
                             side[i].appendChild(span);
                             var last = side[i].children.length - 1;
                             var user = links[i].href.match(/https?:\/\/www\.geocaching\.com\/profile\/\?u=(.*)/);
-                            gclh_build_vipvupmail(side[i].children[last], decodeURIComponent(user[1]));
+                            gclh_build_vipvupmail(side[i].children[last], decodeUnicodeURIComponent(user[1]));
                         }
 
                         var leaderboard_table = document.getElementById('LeaderboardTable').getElementsByTagName("table")[0];
@@ -7545,6 +7545,17 @@ var mainGC = function() {
         return ret;
     }
 
+// decodeURIComponent for non-standard unicode encoding (issue-818)
+    function decodeUnicodeURIComponent(s) {
+        function unicodeToChar(text) {
+            return text.replace(/%u[\dA-F]{4}/gi, 
+                   function (match) {
+                        return String.fromCharCode(parseInt(match.replace(/%u/g, ''), 16));
+                   });
+        }
+        return decodeURIComponent(unicodeToChar(s));
+    }
+
 // Enkodieren in url und dekodieren aus url.
     function urlencode(s) {
         s = s.replace(/&amp;/g, "&");
@@ -7555,12 +7566,13 @@ var mainGC = function() {
         s = s.replace(/ /g, "+");
         return s;
     }
+
     function urldecode(s) {
         s = s.replace(/\+/g, " ");
         s = s.replace(/%252b/ig, "+");
         s = s.replace(/%7e/g, "~");
         s = s.replace(/%27/g, "'");
-        s = decodeURIComponent(s);
+        s = decodeUnicodeURIComponent(s);
         return s;
     }
 
@@ -11115,23 +11127,25 @@ var mainGC = function() {
     (function(window){
         window.utils = {
             parseQueryString: function(str) {
-                var ret = Object.create(null);
-                if (typeof str !== 'string') return ret;
-                str = str.trim().replace(/^(\?|#|&)/, '');
-                if (!str) return ret;
-                str.split('&').forEach(function(param) {
-                    var parts = param.replace(/\+/g, ' ').split('=');
-                    // Firefox (pre 40) decodes `%3D` to `=` (https://github.com/sindresorhus/query-string/pull/37)
-                    var key = parts.shift();
-                    var val = parts.length > 0 ? parts.join('=') : undefined;
-                    key = decodeURIComponent(key);
-                    // missing `=` should be `null`: (http://w3.org/TR/2012/WD-url-20120524/#collect-url-parameters)
-                    val = val === undefined ? null : decodeURIComponent(val);
-                    if (ret[key] === undefined) ret[key] = val;
-                    else if (Array.isArray(ret[key])) ret[key].push(val);
-                    else ret[key] = [ret[key], val];
-                });
-                return ret;
+                try {
+                    var ret = Object.create(null);
+                    if (typeof str !== 'string') return ret;
+                    str = str.trim().replace(/^(\?|#|&)/, '');
+                    if (!str) return ret;
+                    str.split('&').forEach(function(param) {
+                        var parts = param.replace(/\+/g, ' ').split('=');
+                        // Firefox (pre 40) decodes `%3D` to `=` (https://github.com/sindresorhus/query-string/pull/37)
+                        var key = parts.shift();
+                        var val = parts.length > 0 ? parts.join('=') : undefined;
+                        key = decodeUnicodeURIComponent(key);
+                        // missing `=` should be `null`: (http://w3.org/TR/2012/WD-url-20120524/#collect-url-parameters)
+                        val = val === undefined ? null : decodeUnicodeURIComponent(val);
+                        if (ret[key] === undefined) ret[key] = val;
+                        else if (Array.isArray(ret[key])) ret[key].push(val);
+                        else ret[key] = [ret[key], val];
+                    });
+                    return ret;
+                } catch(e) { gclh_error("parseQueryString()",e)};
             }
         };
     })(window);
