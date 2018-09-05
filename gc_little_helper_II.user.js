@@ -651,7 +651,11 @@ var mainPGC = function() {
 
             appendCssStyle(css);
 
-            // Only one of the Multiselcts has a value. Either the Country or the Region
+            var open_popups = 0;
+            var popups = new Array(100);
+            var timers = new Array(100);
+
+            // Only one of the Multiselects has a value. Either the Country or the Region
 
             //Check if other Filters are set!
 
@@ -712,7 +716,7 @@ var mainPGC = function() {
                     var data = new Array();
                     $(current_table).find('tr').each(function(){
                         counter++;
-                        console.log($(this));
+                        // console.log($(this));
                         if(counter == 1){
                             // first tr, determine Language
                             var lang_text = $(this).children().eq(1).text();
@@ -782,7 +786,19 @@ var mainPGC = function() {
                                 }else{
                                     console.log('Open New Window: '+'PQ_'+(counter-1));
                                     // window.open(new_url,'PQ_'+(counter-1),'PopUp','PQ_'+(counter-1),'scrollbars=1,menubar=0,resizable=1,width=200,height=300');
-                                    window.open(new_url,'PQ_'+(counter-1),'scrollbars=1,menubar=0,resizable=1,width=500,height=500,left='+((counter-1)*40));
+                                    
+                                    var popup_counter = counter;
+                                    popups[popup_counter] = window.open(new_url,'PQ_'+(counter-1),'scrollbars=1,menubar=0,resizable=1,width=500,height=500,left='+((counter-1)*40)); 
+                                    open_popups++;
+                                    timers[popup_counter] = setInterval(function() { 
+                                        // console.log(popup_counter);
+                                        // console.log(popups[popup_counter]);
+                                        if(popups[popup_counter].closed) {
+                                            clearInterval(timers[popup_counter]);
+                                            open_popups--;
+                                            console.log('open windows: ' + open_popups);
+                                        }
+                                    }, 1000);
                                 }
 
                                 // Only one for now...
