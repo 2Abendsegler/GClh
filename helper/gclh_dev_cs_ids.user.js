@@ -66,8 +66,15 @@ function CountriesStates_JSON(selector, functionname, objectname) { // output js
         }
         code += '        {"n":"'+$(this).text()+'","id":"'+$(this).val()+'"}';
     });
-    code = function "+functionname+"(c) {\n    "+objectname+" = [\n"+code+'\n    ];\n}
 
+    code = "[\n"+code+"\n    ]";
+    try {
+        JSON.parse(code); // check for syntax errors
+    } catch(e) {
+        code = e;
+    }
+
+    code = "function "+functionname+"(c) {\n    "+objectname+" = "+code+";\n}";   
     $(selector).after('<pre>'+code+'</pre>');
     return code;
 }
