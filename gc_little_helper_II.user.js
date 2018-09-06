@@ -590,6 +590,7 @@ var mainGMaps = function() {
         }
     } catch(e) {gclh_error("mainGMaps:",e);}
 };
+
 //////////////////////////////
 // Project GC
 //////////////////////////////
@@ -641,7 +642,6 @@ var mainPGC = function() {
         }
 
         if($('.row table').length > 0){
-            
 
             // Add some CSS
             var css = "";
@@ -653,7 +653,7 @@ var mainPGC = function() {
 
             // Only one of the Multiselcts has a value. Either the Country or the Region
 
-            //Check if other Filters are set!
+            // Check if other Filters are set!
 
             var error_text = '';
 
@@ -689,14 +689,14 @@ var mainPGC = function() {
                     td.appendChild(info_text);
                     tr.appendChild(td);
                     tfoot.appendChild(tr);
-                    $(this).append(tfoot); 
+                    $(this).append(tfoot);
                     return;
                 }
 
                 info_text.appendChild(document.createTextNode("PQ-Name (Prefix):"));
 
                 var button = document.createElement('button');
-                var t = document.createTextNode("Create PQ(s)");  
+                var t = document.createTextNode("Create PQ(s)");
                 button.appendChild(t);
 
                 var input = document.createElement('input');
@@ -704,7 +704,7 @@ var mainPGC = function() {
                 input.setAttribute("type", "text");
                 input.setAttribute("value", "PQName");
                 input.setAttribute("id", "pq_name_"+table_index);
-                
+
                 button.addEventListener("click", function(){
                     var current_table = $(this).closest('table');
                     var counter = 0;
@@ -729,7 +729,7 @@ var mainPGC = function() {
                             // Other td, here is the Data we need
                             // Only process if the first column has Data in it
                             if($(this).children().eq(1).text() != ""){
-                                
+
                                 var start = $(this).children().eq(1).text();
                                 var start_array = start.split('/');
 
@@ -751,27 +751,27 @@ var mainPGC = function() {
 
                                 var cache_count = 1000;
                                 if(table_index == 1) cache_count = 500;
-                                
+
                                 var pq_name = $("#pq_name_"+table_index).val()+"_"+(counter-1);
                                 if(counter <= 10){
                                     pq_name = $("#pq_name_"+table_index).val()+"_0"+(counter-1);
                                 }
 
-                                var param = 
+                                var param =
                                     {
                                         PQSplit: 1,
                                         n: pq_name,
                                         t: type,
                                         s: name,
                                         c: cache_count,
-                                        sm: start_month, 
-                                        sd: start_day, 
+                                        sm: start_month,
+                                        sd: start_day,
                                         sy: start_year,
 
-                                        em: end_month, 
-                                        ed: end_day, 
+                                        em: end_month,
+                                        ed: end_day,
                                         ey: end_year
-                                        
+
                                     };
 
                                 var new_url = "https://www.geocaching.com/pocket/gcquery.aspx?"+$.param( param );
@@ -793,7 +793,6 @@ var mainPGC = function() {
 
                 }, false);
 
-                
                 td.appendChild(info_text);
                 td.appendChild(input);
                 td.appendChild(button);
@@ -808,7 +807,7 @@ var mainPGC = function() {
 
                 tr.appendChild(td);
                 tfoot.appendChild(tr);
-                $(this).append(tfoot); 
+                $(this).append(tfoot);
             });
         }
     } catch(e) {gclh_error("mainPGC:",e);}
@@ -1764,7 +1763,7 @@ var mainGC = function() {
         });
     }
 
-    function mapservice_open( thisObject, service_configuration )  {   
+    function mapservice_open( thisObject, service_configuration )  {
         var waypoints = queryListingWaypoints(true);
         var map = $(thisObject).data('map');
         var data = {
@@ -2984,7 +2983,7 @@ var mainGC = function() {
             function checkLogType(waitCount) {
                 if ((!document.location.href.match(/log\?d\=/) && $('.selectric')[0]) ||  // Kein Draft
                     (document.location.href.match(/log\?d\=/) && document.getElementById('LogText').value != "" && settings_log_signature_on_fieldnotes)) {  // Draft
-                    
+
                     var initial_cursor_position = document.getElementById('LogText').selectionEnd;
                     var logtext = document.getElementById('LogText').value;
                     var signature = getValue("settings_log_signature", "");
@@ -3311,7 +3310,7 @@ var mainGC = function() {
         } catch(e) {gclh_error("Improve list of PQs:",e);}
     }
 
-    // Try to find values from Project-GC PQSplit
+// Try to find values from Project-GC PQSplit
     if (document.location.href.match(/\.com\/pocket\/gcquery\.aspx/)){
         try{
 
@@ -3328,7 +3327,7 @@ var mainGC = function() {
 
             if(findGetParameter('PQSplit')){
                 // Yes we come from PQSplitter
-                    
+
                 //Test if we already saved the PQ. If yes => close the window
                 if($( "#divContentMain p.Success" ).length){
 
@@ -3337,7 +3336,6 @@ var mainGC = function() {
                     },1000);
                     return true;
                 }
-
 
                 $('#ctl00_ContentBody_tbName').val(findGetParameter('n'));
                 $('#ctl00_ContentBody_tbResults').val(findGetParameter('c'));
@@ -3348,13 +3346,13 @@ var mainGC = function() {
                     case "region":
                         // Modifiction for Countries with "," in the name. There is a "+" after the ","
                         cr_name = cr_name.split(/,(?!\+)/);
-                        
+
                         if(cr_name.length >= 1){
                             for (var i = 0; i < cr_name.length; i++) {
                                 cr_name[i] = cr_name[i].replace(/\+/g, " ");
 
                                 var region = cr_name[i].substr(cr_name[i].indexOf('|')+1);
-                                
+
                                 var state = $.grep(states_id, function(e){return e.n == region;});
 
                                 if(state.length == 0){
@@ -3420,10 +3418,7 @@ var mainGC = function() {
 
                 // All values are set, submit the form
                 document.getElementById('ctl00_ContentBody_btnSubmit').click();
-                
             }
-
-            
         } catch(e) {gclh_error("Create Automated PQs from project-gc PQ splitter:",e);}
     }
 
@@ -3490,7 +3485,8 @@ var mainGC = function() {
             function newHeadcell(tr0, ch, desc) {
                 var th = document.createElement("th");
                 th.appendChild(document.createTextNode(desc));
-                tr0.children[ch].parentNode.insertBefore(th, tr0.children[ch]);
+                if (tr0.children[ch]) tr0.children[ch].parentNode.insertBefore(th, tr0.children[ch]);
+                else tr0.appendChild(th);
             }
             if ($('table.SearchResultsTable tbody tr')[0] && $('table.SearchResultsTable tbody tr')[0].children.length > 8) {
                 var tr0 = $('table.SearchResultsTable tbody tr')[0];
@@ -3511,7 +3507,8 @@ var mainGC = function() {
                 if (obj) td.appendChild(content);
                 else td.appendChild(document.createTextNode(content));
                 td.setAttribute("class", clas);
-                trDataNew.children[chil].parentNode.insertBefore(td, trDataNew.children[chil]);
+                if (trDataNew.children[chil]) trDataNew.children[chil].parentNode.insertBefore(td, trDataNew.children[chil]);
+                else trDataNew.appendChild(td);
             }
             if ($('table.SearchResultsTable tbody tr.Data').length > 0) {
                 $('table.SearchResultsTable tbody tr.Data td:not(.Merge)').each(function() {
@@ -5940,7 +5937,7 @@ var mainGC = function() {
             // add link to Ignore List into dashboard sidebar
             if (settings_embedded_smartlink_ignorelist && $(".bio-userrole").text() == "Premium" ) {
 
-                function openIgnoreList(response) { 
+                function openIgnoreList(response) {
                     try {
                         if (response.responseText) {
                             var linkIgnoreList = $(response.responseText).find('a[href*="/bookmarks/view.aspx?code="]').first().attr('href');
@@ -7925,10 +7922,10 @@ var mainGC = function() {
 // decodeURIComponent for non-standard unicode encoding (issue-818)
     function decodeUnicodeURIComponent(s) {
         function unicodeToChar(text) {
-            return text.replace(/%u[\dA-F]{4}/gi, 
-                   function (match) {
-                        return String.fromCharCode(parseInt(match.replace(/%u/g, ''), 16));
-                   });
+            return text.replace(/%u[\dA-F]{4}/gi,
+                function (match) {
+                    return String.fromCharCode(parseInt(match.replace(/%u/g, ''), 16));
+                });
         }
         return decodeURIComponent(unicodeToChar(s));
     }
@@ -8636,7 +8633,7 @@ var mainGC = function() {
             if (unsafeWindow.mapLatLng == undefined) {
                 return [];
             }
-            
+
             var gccode = ($('#ctl00_ContentBody_CoordInfoLinkControl1_uxCoordInfoCode')[0]) ? $('#ctl00_ContentBody_CoordInfoLinkControl1_uxCoordInfoCode')[0].textContent : "n/a";
 
             var ListingCoords = {
