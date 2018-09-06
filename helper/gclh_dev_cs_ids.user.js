@@ -24,16 +24,16 @@ var start = function(c) {
         .then(function() {return jqueryInit(c);})
         .then(function() {return constInit(c);})
         .done(function() {
+            /* workaround: unknown and United States are not part of the list */
+            $("#ctl00_ContentBody_lbCountries").append('<option value="2">United States</option>');
+            $("#ctl00_ContentBody_lbCountries").append('<option value="1">Unknown</option>');            
             abc();
-            // xyz();
+            xyz();
         });
 };
 
 function abc() { // output Excel-compatible csv, sorted by id
     var code=""; 
-    $("#ctl00_ContentBody_lbCountries").append('<option value="2">United States</option>');
-    $("#ctl00_ContentBody_lbCountries").append('<option value="1">Unknown</option>');
-    
     
     $("#ctl00_ContentBody_lbCountries").append($("#ctl00_ContentBody_lbCountries option").remove().sort(function(a, b) {
         var at = parseInt($(a).val()), bt = parseInt($(b).val());
@@ -66,9 +66,6 @@ function abc() { // output Excel-compatible csv, sorted by id
 
 function xyz() { // output json object, sorted by country/state name
     var code=""; 
-    $("#ctl00_ContentBody_lbCountries").append('<option value="2">United States</option>');
-    $("#ctl00_ContentBody_lbCountries").append('<option value="1">Unknown</option>');
-    
     
     $("#ctl00_ContentBody_lbCountries").append($("#ctl00_ContentBody_lbCountries option").remove().sort(function(a, b) {
         var at = $(a).text(), bt = $(b).text();
