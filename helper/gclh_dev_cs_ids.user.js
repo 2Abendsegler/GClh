@@ -22,16 +22,14 @@
 var start = function(c) {
     quitOnAdFrames()
         .then(function() {return jqueryInit(c);})
-        .then(function() {return browserInit(c);})
         .then(function() {return constInit(c);})
-        .then(function() {return variablesInit(c);})
         .done(function() {
-            //abc();
-            xyz();
+            abc();
+            // xyz();
         });
 };
 
-function abc() {
+function abc() { // output Excel-compatible csv, sorted by id
     var code=""; 
     $("#ctl00_ContentBody_lbCountries").append('<option value="2">United States</option>');
     $("#ctl00_ContentBody_lbCountries").append('<option value="1">Unknown</option>');
@@ -66,7 +64,7 @@ function abc() {
     $("#ctl00_ContentBody_lbStates").after('<pre>'+code+'</pre>');    
 }
 
-function xyz() {
+function xyz() { // output json object, sorted by country/state name
     var code=""; 
     $("#ctl00_ContentBody_lbCountries").append('<option value="2">United States</option>');
     $("#ctl00_ContentBody_lbCountries").append('<option value="1">Unknown</option>');
@@ -121,41 +119,14 @@ var jqueryInit = function(c) {
     return jqueryInitDeref.promise();
 };
 
-var browserInit = function(c) {
-    var browserInitDeref = new jQuery.Deferred();
-    c.CONFIG = {};
-    // Browser ermitteln. Opera ... ist auch chrome.
-    c.browser = (typeof(chrome) !== "undefined") ? "chrome" : "firefox";
-    c.GM_setValue("browser", browser);
-    c.CONFIG = JSON.parse(GM_getValue("CONFIG", '{}'));
-    // Ist Tampermonkey der Scriptmanager.
-    c.isTM = (typeof GM_info != "undefined" && typeof GM_info.scriptHandler != "undefined" && GM_info.scriptHandler == "Tampermonkey") ? true : false;
-    c.GM_setValue("isTampermonkey", isTM);
-    browserInitDeref.resolve();
-    return browserInitDeref.promise();
-};
-
 var constInit = function(c) {
     var constInitDeref = new jQuery.Deferred();
 
-    iconsInit(c);
-    langInit(c);
-    layersInit(c);
-    elevationServicesDataInit(c);
     country_idInit(c);
     states_idInit(c);
-
+    
     constInitDeref.resolve();
     return constInitDeref.promise();
 };
-
-var variablesInit = function(c) {
-    var variablesInitDeref = new jQuery.Deferred();
-
-    variablesInitDeref.resolve();
-    return variablesInitDeref.promise();
-};
-
-
 
 start(this);
