@@ -27,12 +27,12 @@ var start = function(c) {
             /* workaround: unknown and United States are not part of the list */
             $("#ctl00_ContentBody_lbCountries").append('<option value="2">United States</option>');
             $("#ctl00_ContentBody_lbCountries").append('<option value="1">Unknown</option>');            
-            abc();
-            xyz();
+            CountriesStates_ExcelCSV();
+            CountriesStates_JSON();
         });
 };
 
-function abc() { // output Excel-compatible csv, sorted by id
+function CountriesStates_ExcelCSV() { // output Excel-compatible csv, sorted by id
     var code=""; 
     
     $("#ctl00_ContentBody_lbCountries").append($("#ctl00_ContentBody_lbCountries option").remove().sort(function(a, b) {
@@ -64,7 +64,7 @@ function abc() { // output Excel-compatible csv, sorted by id
     $("#ctl00_ContentBody_lbStates").after('<pre>'+code+'</pre>');    
 }
 
-function xyz() { // output json object, sorted by country/state name
+function CountriesStates_JSON() { // output json object, sorted by country/state name
     var code=""; 
     
     $("#ctl00_ContentBody_lbCountries").append($("#ctl00_ContentBody_lbCountries option").remove().sort(function(a, b) {
