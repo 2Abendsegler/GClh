@@ -1,3 +1,4 @@
+<a href="#v0913" title="GClh II version 0.9.13 (??.??.2018)">v0.9.13</a> &nbsp;
 <a href="#v0912" title="GClh II version 0.9.12 (04.09.2018)">v0.9.12</a> &nbsp;
 <a href="#v0911" title="GClh II version 0.9.11 (25.08.2018)">v0.9.11</a> &nbsp;
 <a href="#v0910" title="GClh II version 0.9.10 (11.08.2018)">v0.9.10</a> &nbsp;
@@ -40,6 +41,19 @@
 <a href="#v022" title="GClh II version 0.2.2 (09.01.2017)">v0.2.2</a> &nbsp; 
 <a href="#v021" title="GClh II version 0.2.1 (05.01.2017)">v0.2.1</a> &nbsp; 
 <a href="#v01" title="GClh II version 0.1 (05.01.2017)">v0.1</a> &nbsp; 
+
+
+---
+## v0.9.13:
+<ul>
+	<li>
+		<strong>Fix:</strong> Error in Nearest List, PQ, Recently viewed because of missing last column "Send to GPS" [Issue <a href="https://github.com/2Abendsegler/GClh/issues/844">#844</a>]<br>
+		Thanks to <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a> for the fix.<br>
+	</li>
+</ul>
+(??.??.2018)<br>
+released by <a href="https://www.geocaching.com/profile/?u=Ruko2010">Ruko2010</a><br>
+<br>
 
 
 ---
