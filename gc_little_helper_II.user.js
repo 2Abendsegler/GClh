@@ -3485,7 +3485,8 @@ var mainGC = function() {
             function newHeadcell(tr0, ch, desc) {
                 var th = document.createElement("th");
                 th.appendChild(document.createTextNode(desc));
-                tr0.children[ch].parentNode.insertBefore(th, tr0.children[ch]);
+                if (tr0.children[ch]) tr0.children[ch].parentNode.insertBefore(th, tr0.children[ch]);
+                else tr0.appendChild(th);
             }
             if ($('table.SearchResultsTable tbody tr')[0] && $('table.SearchResultsTable tbody tr')[0].children.length > 8) {
                 var tr0 = $('table.SearchResultsTable tbody tr')[0];
@@ -3506,7 +3507,8 @@ var mainGC = function() {
                 if (obj) td.appendChild(content);
                 else td.appendChild(document.createTextNode(content));
                 td.setAttribute("class", clas);
-                trDataNew.children[chil].parentNode.insertBefore(td, trDataNew.children[chil]);
+                if (trDataNew.children[chil]) trDataNew.children[chil].parentNode.insertBefore(td, trDataNew.children[chil]);
+                else trDataNew.appendChild(td);
             }
             if ($('table.SearchResultsTable tbody tr.Data').length > 0) {
                 $('table.SearchResultsTable tbody tr.Data td:not(.Merge)').each(function() {
