@@ -27,72 +27,49 @@ var start = function(c) {
             /* workaround: unknown and United States are not part of the list */
             $("#ctl00_ContentBody_lbCountries").append('<option value="2">United States</option>');
             $("#ctl00_ContentBody_lbCountries").append('<option value="1">Unknown</option>');            
-            CountriesStates_ExcelCSV();
-            CountriesStates_JSON();
+            CountriesStates_ExcelCSV("#ctl00_ContentBody_lbCountries");
+            CountriesStates_ExcelCSV("#ctl00_ContentBody_lbStates");
+            CountriesStates_JSON("#ctl00_ContentBody_lbCountries", "country_idInit","c.country_id");
+            CountriesStates_JSON("#ctl00_ContentBody_lbStates", "states_idInit","c.states_id");
         });
 };
 
-function CountriesStates_ExcelCSV() { // output Excel-compatible csv, sorted by id
+function CountriesStates_ExcelCSV(selector) { // output Excel-compatible csv, sorted by id
     var code=""; 
-    
-    $("#ctl00_ContentBody_lbCountries").append($("#ctl00_ContentBody_lbCountries option").remove().sort(function(a, b) {
+
+    $(selector).append($(selector+" option").remove().sort(function(a, b) {
         var at = parseInt($(a).val()), bt = parseInt($(b).val());
         return (at > bt)?1:((at < bt)?-1:0);
     }));
-    
-    
-    $("#ctl00_ContentBody_lbCountries option").each(function() {
-        if (code != '') {
-            code += '\n';
-        }                
-        code += $(this).val()+';'+$(this).text()+'';
-    });
-    $("#ctl00_ContentBody_lbCountries").after('<pre>'+code+'</pre>');            
-   
-    code="";   
-    $("#ctl00_ContentBody_lbStates").append($("#ctl00_ContentBody_lbStates option").remove().sort(function(a, b) {
-        var at = parseInt($(a).val()), bt = parseInt($(b).val());
-        return (at > bt)?1:((at < bt)?-1:0);
-    }));
-    
-    $("#ctl00_ContentBody_lbStates option").each(function() {
+
+    $(selector+" option").each(function() {
         if (code != '') {
             code += '\n';
         }
         code += $(this).val()+';'+$(this).text()+'';
     });
-    $("#ctl00_ContentBody_lbStates").after('<pre>'+code+'</pre>');    
+    $(selector).after('<pre>'+code+'</pre>');
+    return code;
 }
 
-function CountriesStates_JSON() { // output json object, sorted by country/state name
+function CountriesStates_JSON(selector, functionname, objectname) { // output json object, sorted by country/state name
     var code=""; 
-    
-    $("#ctl00_ContentBody_lbCountries").append($("#ctl00_ContentBody_lbCountries option").remove().sort(function(a, b) {
+
+    $(selector).append($(selector+" option").remove().sort(function(a, b) {
         var at = $(a).text(), bt = $(b).text();
-        return at.localeCompare(bt); // (at > bt)?1:((at < bt)?-1:0);
+        return at.localeCompare(bt);
     }));
-    
-    
-    $("#ctl00_ContentBody_lbCountries option").each(function() {
-        if (code != '') {
-            code += ',\n';
-        }                
-        code += '        {"n":"'+$(this).text()+'","id":"'+$(this).val()+'"}';
-    });
-    $("#ctl00_ContentBody_lbCountries").after("<pre>function country_idInit(c) {\n    c.country_id = [\n"+code+'\n    ];\n}</pre>');            
-   
-    code="";   
-    $("#ctl00_ContentBody_lbStates").append($("#ctl00_ContentBody_lbStates option").remove().sort(function(a, b) {
-        var at = $(a).text(), bt = $(b).text();
-        return at.localeCompare(bt); // (at > bt)?1:((at < bt)?-1:0);
-    }));    
-    $("#ctl00_ContentBody_lbStates option").each(function() {
+
+    $(selector+" option").each(function() {
         if (code != '') {
             code += ',\n';
         }
         code += '        {"n":"'+$(this).text()+'","id":"'+$(this).val()+'"}';
     });
-    $("#ctl00_ContentBody_lbStates").after("<pre>function states_idInit(c) {\n    c.states_id = [\n"+code+'\n    ];\n}</pre>');    
+    code = function "+functionname+"(c) {\n    "+objectname+" = [\n"+code+'\n    ];\n}
+
+    $(selector).after('<pre>'+code+'</pre>');
+    return code;
 }
 
 
