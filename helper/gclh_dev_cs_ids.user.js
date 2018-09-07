@@ -2,7 +2,7 @@
 // @name             GC little helper II Countries/States Ids
 // @namespace        http://www.amshove.net
 // @version          0.0.1
-// @include          http*://www.geocaching.com/pocket/gcquery.aspx*
+// @include          http*://www.geocaching.com/pocket/*
 // @require          http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js
 // @require          https://raw.githubusercontent.com/2Abendsegler/GClh/master/data/gclh_defi.js
 // @connect          raw.githubusercontent.com
@@ -26,13 +26,30 @@ var start = function(c) {
         .done(function() {
             /* workaround: unknown and United States are not part of the list */
             $("#ctl00_ContentBody_lbCountries").append('<option value="2">United States</option>');
-            $("#ctl00_ContentBody_lbCountries").append('<option value="1">Unknown</option>');            
-            CountriesStates_ExcelCSV("#ctl00_ContentBody_lbCountries");
-            CountriesStates_ExcelCSV("#ctl00_ContentBody_lbStates");
-            CountriesStates_JSON("#ctl00_ContentBody_lbCountries", "country_idInit","c.country_id");
-            CountriesStates_JSON("#ctl00_ContentBody_lbStates", "states_idInit","c.states_id");
+            $("#ctl00_ContentBody_lbCountries").append('<option value="1">Unknown</option>');
+
+            var data = "";
+
+            data = CountriesStates_ExcelCSV("#ctl00_ContentBody_lbCountries");
+            embeddedIntoPage("#ctl00_ContentBody_lbCountries", data);
+
+            data = CountriesStates_ExcelCSV("#ctl00_ContentBody_lbStates");
+            embeddedIntoPage("#ctl00_ContentBody_lbStates", data);
+
+            data = CountriesStates_JSON("#ctl00_ContentBody_lbCountries", "country_idInit","c.country_id");
+            embeddedIntoPage("#ctl00_ContentBody_lbCountries", data);
+            
+            data = CountriesStates_JSON("#ctl00_ContentBody_lbStates", "states_idInit","c.states_id");
+            embeddedIntoPage("#ctl00_ContentBody_lbStates", data);
         });
 };
+
+function embeddedIntoPage(selector, code) {
+    code = code.replace(/\n/g,"<br/>");
+    code = code.replace(/\t/g,"    ");
+    code = code.replace(/ /g,"&nbsp;");    
+    $(selector).after('<div style="font-size: smaller; font-family: Courier New, Courier, monospace; background-color: #FFFFA5; padding: 3px; margin: 3px;">'+code+'</div>');    
+}
 
 function CountriesStates_ExcelCSV(selector) { // output Excel-compatible csv, sorted by id
     var code=""; 
@@ -48,7 +65,7 @@ function CountriesStates_ExcelCSV(selector) { // output Excel-compatible csv, so
         }
         code += $(this).val()+';'+$(this).text()+'';
     });
-    $(selector).after('<pre>'+code+'</pre>');
+   
     return code;
 }
 
@@ -64,18 +81,18 @@ function CountriesStates_JSON(selector, functionname, objectname) { // output js
         if (code != '') {
             code += ',\n';
         }
-        code += '        {"n":"'+$(this).text()+'","id":"'+$(this).val()+'"}';
+        code += '\t\t{"n":"'+$(this).text()+'","id":"'+$(this).val()+'"}';
     });
 
-    code = "[\n"+code+"\n    ]";
+    code = "[\n"+code+"\n\t]";
     try {
         JSON.parse(code); // check for syntax errors
     } catch(e) {
-        code = e;
+        code = "\n\n"+e+"\n\n"+code;
     }
-
-    code = "function "+functionname+"(c) {\n    "+objectname+" = "+code+";\n}";   
-    $(selector).after('<pre>'+code+'</pre>');
+    
+    code = "function "+functionname+"(c) {\n\t"+objectname+" = "+code+";\n}";   
+    
     return code;
 }
 
