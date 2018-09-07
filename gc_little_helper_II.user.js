@@ -2419,7 +2419,7 @@ var mainGC = function() {
                     gclh_error("addElevationToWaypoints_GoogleElevation()",e);
                     // This it not nice but in case of invalid character at the beginning of
                     // responseText JSON.parse gives an exception. Exception handling have to be improved
-                    gclh_info( responseDetails.responseText );
+                    gclh_log( responseDetails.responseText );
                     getElevations(context.retries+1,context.locations);
                 }
             }
@@ -2448,7 +2448,7 @@ var mainGC = function() {
                     gclh_error("addElevationToWaypoints_OpenElevation()",e);
                     // This is not nice, but the OpenElevation service does not send any status information.
                     // We have to figure out, what will be send in case of error
-                    gclh_info( responseDetails.responseText );
+                    gclh_log( responseDetails.responseText );
                     getElevations(context.retries+1,context.locations);
                 }
             }
