@@ -1948,7 +1948,7 @@ var mainGC = function() {
             try {
                 mapservice_link( {
                     uniqueServiceId: "brouter",
-                    urlTemplate: 'http://brouter.de/brouter-web/#zoom={zoom}&lat={center_latitude}&lon={center_longitude}&layer={map}+&lonlats={waypoints}&nogos=&profile=trekking&alternativeidx=0&format=geojson',
+                    urlTemplate: 'http://brouter.de/brouter-web/#zoom={zoom}&lat={center_latitude}&lon={center_longitude}&layer={map}&lonlats={waypoints}&nogos=&profile=trekking&alternativeidx=0&format=geojson',
                     layers: {'OpenStreetMap': { maxZoom: 18, displayName: 'OpenStreetMap' }, 'OpenStreetMap.de': { maxZoom: 17, displayName: 'OSM German Style' }, 'OpenTopoMap': { maxZoom: 17, displayName: 'OpenTopoMap' }, 'OpenCycleMap (Thunderf.)': { maxZoom: 18, displayName: 'OpenCycleMap' }, 'Outdoors (Thunderforest)': { maxZoom: 18, displayName: 'Outdoors' }, 'Esri World Imagery': { maxZoom: 18, displayName: 'Esri World Imagery' }},
                     waypointSeparator : '|',
                     waypointFunction : brouterWaypoint,
@@ -1967,7 +1967,7 @@ var mainGC = function() {
             try {
                 mapservice_link( {
                     uniqueServiceId: "gpsvisualizer",
-                    urlTemplate: 'http://www.gpsvisualizer.com/map_input?&width=1244&height=700&trk_list=0&wpt_list=desc_border&google_zoom_level=auto&google_wpt_labels=1&form:data=name,latitude,longitude,circle_radius,desc,symbol\n{waypoints}',
+                    urlTemplate: 'http://www.gpsvisualizer.com/map_input?&width=1244&height=700&trk_list=0&wpt_list=desc_border&bg_map={map}&google_zoom_level=auto&google_wpt_labels=1&form:data=name,latitude,longitude,circle_radius,desc,symbol\n{waypoints}',
                     layers: { 'google_map' : { displayName: 'Google street map', maxZoom: 20 }, 'google_satellite' : { displayName: 'Google satellite', maxZoom: 20 }, 'google_hybrid" selected="' : { displayName: 'Google hybrid', maxZoom: 20 }, 'google_physical' : { displayName: 'Google terrain', maxZoom: 20 }, 'google_openstreetmap' : { displayName: 'OpenStreetMap', maxZoom: 20 }, 'google_openstreetmap_tf' : { displayName: 'OSM ThunderForest', maxZoom: 20 }, 'google_openstreetmap_komoot' : { displayName: 'OSM Komoot', maxZoom: 20 }, 'google_opencyclemap' : { displayName: 'OpenCycleMap', maxZoom: 20 }, 'google_opentopomap' : { displayName: 'OpenTopoMap', maxZoom: 20 }, 'google_4umaps' : { displayName: 'World topo maps', maxZoom: 20 }},
                     waypointSeparator : '\n',
                     waypointFunction : gpsvisualizerWaypoint,
