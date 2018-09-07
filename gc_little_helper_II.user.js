@@ -2427,14 +2427,18 @@ var mainGC = function() {
             function addElevationToWaypoints_OpenElevation(responseDetails) {
                 try {
                     context = responseDetails.context;
+                    if ( responseDetails.responseText[0] != '{' ) { 
+                        // workaround: sometimes OpenElevation answers with an HTML formatted content not with JSON data
+                        gclh_log("\naddElevationToWaypoints_OpenElevation():\n- Unexpected response data:"+responseDetails.responseText.slice(20)+"…"); 
+                        getElevations(context.retries+1,context.locations);
+                    }
+
                     json = JSON.parse(responseDetails.responseText);
                     if ( 'error' in json ) {
-                        var mess = "\naddElevationToWaypoints_OpenElevation():\n- Error: "+json.error;
-                        gclh_log(mess);
+                        gclh_log("\naddElevationToWaypoints_OpenElevation():\n- Error: "+json.error);
                         getElevations(context.retries+1,context.locations);
                     } else if ( ! ('results' in json) )  {
-                        var mess = "\naddElevationToWaypoints_OpenElevation():\n- Results:"+json;
-                        gclh_log(mess);
+                        gclh_log("\naddElevationToWaypoints_OpenElevation():\n- Results:"+json);
                         getElevations(context.retries+1,context.locations);
                     } else {
                         var elevations = [];
@@ -2546,7 +2550,27 @@ var mainGC = function() {
                         locations : locations
                     },
                     onload: elevationServices[serviceIndex]['function'],
-                    onerror: function() {gclh_log("Elevation: ERROR: request elevation for waypoints failed!");}
+                    onerror: function(responseDetails) { 
+                        var context = responseDetails.context;
+                        gclh_error("getElevations("+context.serviceName+")", { 'message': 'GM_xmlhttpRequest() reported error.', 'stack': '' });
+                        console.log(responseDetails); // workaround gclh_log doesn't work for responseDetails. Error message 'TypeError: Function.prototype.toString called on incompatible object'
+                        getElevations(context.retries+1,context.locations);
+                    },
+                    onreadystatechange: function(responseDetails) { 
+                        // console.log(responseDetails); // workaround gclh_log doesn't work for responseDetails. Error message 'TypeError: Function.prototype.toString called on incompatible object'
+                    },
+                    ontimeout: function(responseDetails) { 
+                        var context = responseDetails.context;
+                        gclh_error("getElevations("+context.serviceName+")", { 'message': 'GM_xmlhttpRequest() reported timeout.', 'stack': '' });
+                        console.log(responseDetails); // workaround gclh_log doesn't work for responseDetails. Error message 'TypeError: Function.prototype.toString called on incompatible object'
+                        getElevations(context.retries+1,context.locations);
+                    },
+                    onabort: function(responseDetails) { 
+                        var context = responseDetails.context;
+                        gclh_error("getElevations("+context.serviceName+")", { 'message': 'GM_xmlhttpRequest() reported abort.', 'stack': '' });
+                        console.log(responseDetails); // workaround gclh_log doesn't work for responseDetails. Error message 'TypeError: Function.prototype.toString called on incompatible object'
+                        getElevations(context.retries+1,context.locations);
+                    },
                 });
             }
 
