@@ -11930,50 +11930,50 @@ function is_page(name) {
     var url = document.location.pathname;
     switch (name) {
         case "cache_listing":
-            if (url.match(/\/(seek\/cache_details\.aspx|geocache\/)/) && !document.getElementById("cspSubmit") && !document.getElementById("cspGoBack")) status = true;
+            if (url.match(/^\/(seek\/cache_details\.aspx|geocache\/)/) && !document.getElementById("cspSubmit") && !document.getElementById("cspGoBack")) status = true;
             // Exclude (new) Log Page
-            if(url.match(/\/(geocache\/).*\/log/)) status = false;
+            if(url.match(/^\/(geocache\/).*\/log/)) status = false;
             // Exclude unpublished Caches
             if(document.getElementsByClassName('UnpublishedCacheSearchWidget').length > 0) status = false;
             break;
         case "profile":
-            if (url.match(/\/my(\/default\.aspx)?/)) status = true;
+            if (url.match(/^\/my(\/default\.aspx)?/)) status = true;
             break;
         case "publicProfile":
-            if (url.match(/\/(profile|p\/)/)) status = true;
+            if (url.match(/^\/(profile|p\/)/)) status = true;
             break;
         case "map":
-            if (url.match(/\/map/)) status = true;
+            if (url.match(/^\/map/)) status = true;
             break;
         case "find_cache":
-            if (url.match(/\/play\/(search|geocache)/)) status = true;
+            if (url.match(/^\/play\/(search|geocache)/)) status = true;
             break;
         case "hide_cache":
-            if (url.match(/\/play\/(hide|friendleague|souvenircampaign)/)) status = true;
+            if (url.match(/^\/play\/(hide|friendleague|souvenircampaign)/)) status = true;
             break;
         case "geotours":
-            if (url.match(/\/play\/geotours/)) status = true;
+            if (url.match(/^\/play\/geotours/)) status = true;
             break;
         case "drafts":
-            if (url.match(/\/account\/drafts/)) status = true;
+            if (url.match(/^\/account\/drafts/)) status = true;
             break;
         case "settings":
-            if (url.match(/\/account\/(settings|lists|drafts)/)) status = true;
+            if (url.match(/^\/account\/(settings|lists|drafts)/)) status = true;
             break;
         case "messagecenter":
-            if (url.match(/\/account\/messagecenter/)) status = true;
+            if (url.match(/^\/account\/messagecenter/)) status = true;
             break;
         case "dashboard":
-            if (url.match(/\/account\/dashboard$/)) status = true;
+            if (url.match(/^\/account\/dashboard$/)) status = true;
             break;
         case "dashboard-section":
-            if (url.match(/\/account\/dashboard/)) status = true;
+            if (url.match(/^\/account\/dashboard/)) status = true;
             break;
         case "track":
-            if (url.match(/\/track\/($|#$)/)) status = true;
+            if (url.match(/^\/track\/($|#$)/)) status = true;
             break;
         case "souvenirs": /* only dashboard TODO public profile page */
-            if (url.match(/\/my\/souvenirs\.aspx/)) status = true;
+            if (url.match(/^\/my\/souvenirs\.aspx/)) status = true;
             break;
         default:
             gclh_error("is_page", "is_page("+name+", ... ): unknown name");
