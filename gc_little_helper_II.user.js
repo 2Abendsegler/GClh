@@ -2045,11 +2045,15 @@ var mainGC = function() {
     if (is_page("cache_listing")) {
 
 // Personal Cache Note: Adapt height of edit field for Personal Cache Note
+        function calcHeightOfCacheNote() {
+            return $("#viewCacheNote").parent().height()*1.02+36;
+        }
+
         if (settings_adapt_height_cache_notes) {
             try {
                 var note = ($('.Note.PersonalCacheNote')[0] || $('.NotesWidget')[0]);
                 if ( note ) {
-                    $("#cacheNoteText").height($("#viewCacheNote").height()*1.02+36);
+                    $("#cacheNoteText").height(calcHeightOfCacheNote());
                 }
             } catch(e) {gclh_error("Adapt size of edit field for personal cache note",e);}
         }
@@ -2100,8 +2104,8 @@ var mainGC = function() {
                                 document.getElementById('cacheNoteText').focus();
                             } else {
                                 // take the parent, because empty lines are not handle by span-element #viewCacheNote
-                                if (  $("#cacheNoteText").height() != $("#viewCacheNote").parent().height()*1.02+36 ) {
-                                    $("#cacheNoteText").height($("#viewCacheNote").parent().height()*1.02+36 );
+                                if (  $("#cacheNoteText").height() != calcHeightOfCacheNote() ) {
+                                    $("#cacheNoteText").height(calcHeightOfCacheNote());
                                 }
                             }
                         }
