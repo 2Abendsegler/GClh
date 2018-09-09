@@ -2429,17 +2429,20 @@ var mainGC = function() {
                     context = responseDetails.context;
                     if ( responseDetails.responseText[0] != '{' ) { 
                         // workaround: sometimes OpenElevation answers with an HTML formatted content not with JSON data
-                        gclh_log("\naddElevationToWaypoints_OpenElevation():\n- Unexpected response data:"+responseDetails.responseText.slice(20)+"…"); 
+                        gclh_log("\naddElevationToWaypoints_OpenElevation():\n- Unexpected response data:"+responseDetails.responseText.substring(0,100)+"…");
                         getElevations(context.retries+1,context.locations);
+                        return;
                     }
 
                     json = JSON.parse(responseDetails.responseText);
                     if ( 'error' in json ) {
                         gclh_log("\naddElevationToWaypoints_OpenElevation():\n- Error: "+json.error);
                         getElevations(context.retries+1,context.locations);
+                        return;
                     } else if ( ! ('results' in json) )  {
                         gclh_log("\naddElevationToWaypoints_OpenElevation():\n- Results:"+json);
                         getElevations(context.retries+1,context.locations);
+                        return;
                     } else {
                         var elevations = [];
                         for (var i=0; i<json.results.length; i++) {
