@@ -2098,6 +2098,11 @@ var mainGC = function() {
                         if (mutation.type == "attributes") {
                             if(document.getElementById('editCacheNote').style.display == ''){
                                 document.getElementById('cacheNoteText').focus();
+                            } else {
+                                // take the parent, because empty lines are not handle by span-element #viewCacheNote
+                                if (  $("#cacheNoteText").height() != $("#viewCacheNote").parent().height()*1.02+36 ) {
+                                    $("#cacheNoteText").height($("#viewCacheNote").parent().height()*1.02+36 );
+                                }
                             }
                         }
                     });
