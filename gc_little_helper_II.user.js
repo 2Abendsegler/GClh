@@ -519,7 +519,7 @@ var variablesInit = function(c) {
                 }
             }
         }
-    } catch(e) {gclh_error("Error parsing userdata from page:",e);}
+    } catch(e) {gclh_error("Error parsing userdata from page",e);}
 
     variablesInitDeref.resolve();
     return variablesInitDeref.promise();
@@ -588,7 +588,7 @@ var mainGMaps = function() {
             }
             hideLeftSidebar(0);
         }
-    } catch(e) {gclh_error("mainGMaps:",e);}
+    } catch(e) {gclh_error("mainGMaps",e);}
 };
 
 //////////////////////////////
@@ -810,7 +810,7 @@ var mainPGC = function() {
                 $(this).append(tfoot);
             });
         }
-    } catch(e) {gclh_error("mainPGC:",e);}
+    } catch(e) {gclh_error("mainPGC",e);}
 };
 
 //////////////////////////////
@@ -838,7 +838,7 @@ var mainOSM = function() {
             } else {waitCount++; if (waitCount <= 50) setTimeout(function(){addGCButton(waitCount);}, 1000);}
         }
         addGCButton(0);
-    } catch(e) {gclh_error("mainOSM:",e);}
+    } catch(e) {gclh_error("mainOSM",e);}
 };
 
 //////////////////////////////
@@ -855,7 +855,7 @@ var mainGC = function() {
             if ($('.disclaimer')[0]) $('.disclaimer')[0].style.display = "none";
             if ($('.login-with-facebook')[0]) $('.login-with-facebook')[0].style.display = "none";
             if ($('.horizontal-rule')[0]) $('.horizontal-rule')[0].style.display = "none";
-        } catch(e) {gclh_error("Hide Facebook:",e);}
+        } catch(e) {gclh_error("Hide Facebook",e);}
     }
 
 // Wenn nicht angeloggt, dann aussteigen.
@@ -921,7 +921,7 @@ var mainGC = function() {
                     la[0].dispatchEvent(event);
                 }
             }
-        } catch(e) {gclh_error("Set language to default language:",e);}
+        } catch(e) {gclh_error("Set language to default language",e);}
     }
 
 // Faster loading trackables without images.
@@ -929,7 +929,7 @@ var mainGC = function() {
         try {
             window.stop();
             $('table.Table tbody tr td a img').each(function() {this.src = "/images/icons/16/watch.png"; this.title = ""; this.style.paddingLeft = "15px";});
-        } catch(e) {gclh_error("Faster loading trackables without images:",e);}
+        } catch(e) {gclh_error("Faster loading trackables without images",e);}
     }
 
 // Migration: Installationszähler. Migrationsaufgaben erledigen.
@@ -938,7 +938,7 @@ var mainGC = function() {
         try {
             instCount(declaredVersion);
             migrationTasks();
-        } catch(e) {gclh_error("Migration:",e);}
+        } catch(e) {gclh_error("Migration",e);}
     }
 
 // Redirect to Map (von Search Liste direkt in Karte springen).
@@ -998,7 +998,7 @@ var mainGC = function() {
             }
             window.addEventListener('keydown', keydownF10, true);
         }
-    } catch(e) {gclh_error("F2, F4, F10 keys:",e);}
+    } catch(e) {gclh_error("F2, F4, F10 keys",e);}
 
 // Set global data.
     if ($('.li-user-info')[0] && $('.li-user-info')[0].children[1]) var global_me = decode_innerHTML($('.li-user-info')[0].children[1]);
@@ -1156,7 +1156,7 @@ var mainGC = function() {
             css = css.replace(/#m/gi, "menu").replace(/#sm/gi, "submenu").replace(/#l/gi, "nav .logo");
             appendCssStyle(css);
         }
-    } catch(e) {gclh_error("Change header layout:",e);}
+    } catch(e) {gclh_error("Change header layout",e);}
     // GC Logo.
     function changeGcLogo(side) {
         if (settings_show_smaller_gc_link && side && side.children[0]) {
@@ -1224,7 +1224,7 @@ var mainGC = function() {
             }
             appendCssStyle(css);
         }
-    } catch(e) {gclh_error("New width:",e);}
+    } catch(e) {gclh_error("New width",e);}
 
 // Remove GC Menüs.
     try {
@@ -1236,7 +1236,7 @@ var mainGC = function() {
                 m[i].parentNode.remove();
             }
         }
-    } catch(e) {gclh_error("Remove GC Menüs:",e);}
+    } catch(e) {gclh_error("Remove GC Menüs",e);}
 
 // Linklist on top.
     try {
@@ -1384,7 +1384,7 @@ var mainGC = function() {
                     // This should not happen, only if GC changes something
                 }
             });
-        }catch(e) {gclh_error("Show draft indicator in header:",e);}
+        }catch(e) {gclh_error("Show draft indicator in header",e);}
     }
 
 // Disabled and archived ...
@@ -1396,7 +1396,7 @@ var mainGC = function() {
                 $('#ctl00_ContentBody_CacheName')[0].style.textDecoration = 'line-through';
             }
             if ($('.more-cache-logs-link')[0] && $('.more-cache-logs-link')[0].href) $('.more-cache-logs-link')[0].href = "#logs_section";
-        } catch(e) {gclh_error("Disabled and archived:",e);}
+        } catch(e) {gclh_error("Disabled and archived",e);}
     }
 
 // Improve calendar link in events. (Im Google Link den Cache Link von &location nach &details verschieben.)
@@ -1428,7 +1428,7 @@ var mainGC = function() {
                 var side = $('#ctl00_ContentBody_mcd2')[0];
                 side.insertBefore(elem, side.childNodes[1]);
             }
-        } catch(e) {gclh_error("Show eventday beside date:",e);}
+        } catch(e) {gclh_error("Show eventday beside date",e);}
     }
 
 // Show real owner.
@@ -1441,7 +1441,7 @@ var mainGC = function() {
                 link_owner.innerHTML = (settings_show_real_owner ? real_owner : pseudo);
                 link_owner.title = (settings_show_real_owner ? pseudo : real_owner);
             }
-        } catch(e) {gclh_error("Show real owner:",e);}
+        } catch(e) {gclh_error("Show real owner",e);}
     }
 
 // Hide disclaimer on cache listing and print page.
@@ -1449,7 +1449,7 @@ var mainGC = function() {
         try {
             var d = ($('.Note.Disclaimer')[0] || $('.DisclaimerWidget')[0] || $('.TermsWidget.no-print')[0]);
             if (d) d.remove();
-        } catch(e) {gclh_error("Hide disclaimer:",e);}
+        } catch(e) {gclh_error("Hide disclaimer",e);}
     }
 
 // Highlight related web page link.
@@ -1458,7 +1458,7 @@ var mainGC = function() {
             var lnk = $('#ctl00_ContentBody_uxCacheUrl')[0];
             var html = "<fieldset class=\"DisclaimerWidget\"><legend class=\"warning\">Please note</legend><p class=\"NoBottomSpacing\">"+lnk.parentNode.innerHTML+"</p></fieldset>";
             lnk.parentNode.innerHTML = html;
-        } catch(e) {gclh_error("Highlight related web page link:",e);}
+        } catch(e) {gclh_error("Highlight related web page link",e);}
     }
 
 // Show the latest logs symbols.
@@ -1549,7 +1549,7 @@ var mainGC = function() {
                 } else {waitCount++; if (waitCount <= 250) setTimeout(function(){showLatestLogsSymbols(waitCount);}, 200);}
             }
             showLatestLogsSymbols(0);
-        } catch(e) {gclh_error("Show the latest logs symbols:",e);}
+        } catch(e) {gclh_error("Show the latest logs symbols",e);}
     }
 
 // Copy GC Code to clipboard.
@@ -1575,7 +1575,7 @@ var mainGC = function() {
                 setTimeout(function() { $('#gclh_ctoc')[0].style.opacity = 'unset'; }, 200);
                 ctoc = false;
             });
-        } catch(e) {gclh_error("Copy GC Code to clipboard:",e);}
+        } catch(e) {gclh_error("Copy GC Code to clipboard",e);}
     }
 
 // Show favorite percentage.
@@ -1604,7 +1604,7 @@ var mainGC = function() {
                 } else {waitCount++; if (waitCount <= 100) setTimeout(function(){gclh_load_score(waitCount);}, 100);}
             }
             gclh_load_score(0);
-        } catch(e) {gclh_error("Show favorite percentage:",e);}
+        } catch(e) {gclh_error("Show favorite percentage",e);}
     }
 
 // Highlight usercoords.
@@ -1614,7 +1614,7 @@ var mainGC = function() {
                     + (settings_highlight_usercoords_bb ? "border-bottom: 2px solid #999; " : "border-bottom: unset; ")
                     + (settings_highlight_usercoords_it ? "font-style: italic;}" : "font-style: unset;}");
             appendCssStyle(css);
-        } catch(e) {gclh_error("Highlight usercoords:",e);}
+        } catch(e) {gclh_error("Highlight usercoords",e);}
     }
 
 // Show other coord formats listing, print page.
@@ -1625,7 +1625,7 @@ var mainGC = function() {
             var coords = $('#uxLatLon')[0].innerHTML;
             otherFormats(" - ");
             box.innerHTML = "<font style='font-size: 10px;'>" + box.innerHTML + "</font><br>";
-        } catch(e) {gclh_error("Show other coord formats listing:",e);}
+        } catch(e) {gclh_error("Show other coord formats listing",e);}
     }
     if (document.location.href.match(/\.com\/seek\/cdpf\.aspx/)) {
         try {
@@ -1638,7 +1638,7 @@ var mainGC = function() {
                     otherFormats("<br>");
                 }
             }
-        } catch(e) {gclh_error("Show other coord formats print page:",e);}
+        } catch(e) {gclh_error("Show other coord formats print page",e);}
     }
     function otherFormats(trenn) {
         var dec = toDec(coords);
@@ -1662,7 +1662,7 @@ var mainGC = function() {
             var small = document.createElement("small");
             small.innerHTML = '<a href="'+map_url+'?ll='+coords[0]+','+coords[1]+'">Map this Location</a>';
             link.append(small);
-        } catch(e) {gclh_error("Map this Location:",e);}
+        } catch(e) {gclh_error("Map this Location",e);}
     }
 
 // Stop ignoring.
@@ -1676,7 +1676,7 @@ var mainGC = function() {
                     break;
                 }
             }
-        } catch(e) {gclh_error("Stop ignoring:",e);}
+        } catch(e) {gclh_error("Stop ignoring",e);}
     }
 
 // Improve Add to list in cache listing.
@@ -1692,7 +1692,7 @@ var mainGC = function() {
                     + ".status.success, .success-message {right: 2px !important; padding: 0 5px !important; background-color: white !important; color: #E0B70A !important;}";
             appendCssStyle(css);
             $('.btn-add-to-list')[0].addEventListener("click", function() {window.scroll(0, 0);});
-        } catch(e) {gclh_error("Improve Add to list:",e);}
+        } catch(e) {gclh_error("Improve Add to list",e);}
     }
 
 // Add link to waypoint list and cache logs to right sidebar.
@@ -1707,7 +1707,7 @@ var mainGC = function() {
             css += '.CacheDetailNavigation a[href*="#ctl00_ContentBody_bottomSection"]{background-image:url(/images/icons/16/waypoints.png);}';
             css += '.CacheDetailNavigation a[href*="#logs_section"]{background-image:url(' + global_logs_icon + ');}';
             appendCssStyle(css);
-        } catch(e) {gclh_error("Add link to waypoint list and cache logs:",e);}
+        } catch(e) {gclh_error("Add link to waypoint list and cache logs",e);}
     }
 
     const LatLonDigits = 6;
@@ -2016,7 +2016,7 @@ var mainGC = function() {
             body.appendChild(map);
             box.appendChild(body);
             side.parentNode.insertBefore(box, side);
-        } catch(e) {gclh_error("Build map overview:",e);}
+        } catch(e) {gclh_error("Build map overview",e);}
     }
     // Url und Zoomwert aufbauen.
     function buildMapValues(zoom_value) {
@@ -2167,7 +2167,7 @@ var mainGC = function() {
                 }
             }
         }
-    } catch(e) {gclh_error("Show mail and message icon:",e);}
+    } catch(e) {gclh_error("Show mail and message icon",e);}
 
 // Banner zu neuen Themen entfernen.
     if (settings_remove_banner) {
@@ -2180,14 +2180,14 @@ var mainGC = function() {
                 }
                 $('#activationAlert').find('div.container').find('a[href*="/my/lists.aspx"]').closest('#activationAlert').remove();
             }
-        } catch(e) {gclh_error("Remove banner:",e);}
+        } catch(e) {gclh_error("Remove banner",e);}
     }
 
 // Activate fancybox for pictures in the description.
     if (is_page("cache_listing")) {
         try {
             if (typeof unsafeWindow.$.fancybox != "undefined") unsafeWindow.$('.CachePageImages a[rel="lightbox"]').fancybox();
-        } catch(e) {gclh_error("Activate fancybox:",e);}
+        } catch(e) {gclh_error("Activate fancybox",e);}
     }
 
 // Link to bigger pictures for owner added images.
@@ -2197,7 +2197,7 @@ var mainGC = function() {
             var a = $('#ctl00_ContentBody_LongDescription, .CachePageImages').find('a[href*="geocaching.com/cache/large/"]');
             for (var i = 0; i < img.length; i++) {img[i].src = img[i].src.replace("/large/", "/");}
             for (var i = 0; i < a.length; i++) {a[i].href = a[i].href.replace("/large/", "/");}
-        } catch(e) {gclh_error("Link to bigger pictures for owner added images:",e);}
+        } catch(e) {gclh_error("Link to bigger pictures for owner added images",e);}
     }
 
 // Decrypt hints.
@@ -2209,14 +2209,14 @@ var mainGC = function() {
                 var decryptKey = $('#dk')[0];
                 if (decryptKey) decryptKey.parentNode.removeChild(decryptKey);
             }
-        } catch(e) {gclh_error("Decrypt hints:",e);}
+        } catch(e) {gclh_error("Decrypt hints",e);}
     }
     if (settings_decrypt_hint && document.location.href.match(/\.com\/seek\/cdpf\.aspx/)) {
         try {
             if ($('#uxDecryptedHint')[0]) $('#uxDecryptedHint')[0].style.display = 'none';
             if ($('#uxEncryptedHint')[0]) $('#uxEncryptedHint')[0].style.display = '';
             if ($('.EncryptionKey')[0]) $('.EncryptionKey')[0].remove();
-        } catch(e) {gclh_error("Decrypt cdpf hints:",e);}
+        } catch(e) {gclh_error("Decrypt cdpf hints",e);}
     }
 
 // Hide hints.
@@ -2258,7 +2258,7 @@ var mainGC = function() {
             // Remove hint description.
             var decryptKey = $('#dk')[0];
             if (decryptKey) decryptKey.parentNode.removeChild(decryptKey);
-        } catch(e) {gclh_error("Hide hints:",e);}
+        } catch(e) {gclh_error("Hide hints",e);}
     }
 
 // Improve inventory list in cache listing.
@@ -2267,7 +2267,7 @@ var mainGC = function() {
             // Trackable Namen kürzen, damit nicht umgebrochen wird, und Title setzen.
             var inventory = $('#ctl00_ContentBody_uxTravelBugList_uxInventoryLabel').closest('.CacheDetailNavigationWidget').find('.WidgetBody span');
             for (var i = 0; i < inventory.length; i++) {noBreakInLine(inventory[i], 201, inventory[i].innerHTML);}
-        } catch(e) {gclh_error("Improve inventory list:",e);}
+        } catch(e) {gclh_error("Improve inventory list",e);}
     }
 
 // Show Google-Maps Link on Cache Listing Page.
@@ -2292,7 +2292,7 @@ var mainGC = function() {
             span.appendChild(document.createTextNode("Show area on Google Maps"));
             link.appendChild(span);
             box.appendChild(link);
-        } catch(e) {gclh_error("Show google maps link:",e);}
+        } catch(e) {gclh_error("Show google maps link",e);}
     }
 
 // Hide spoilerwarning above the logs.
@@ -2306,7 +2306,7 @@ var mainGC = function() {
                     sp.className += " Clear";
                 }
             }
-        } catch(e) {gclh_error("Hide spoilerwarning:",e);}
+        } catch(e) {gclh_error("Hide spoilerwarning",e);}
     }
 
 // Hide warning message.
@@ -2326,7 +2326,7 @@ var mainGC = function() {
                     div.addEventListener("click", warnMessageHideAndSave, false);
                     $('.WarningMessage')[0].parentNode.insertBefore(div, $('.WarningMessage')[0]);
                 }
-            } catch(e) {gclh_error("Hide warning message:",e);}
+            } catch(e) {gclh_error("Hide warning message",e);}
         }
     }
     // Warnmeldung verbergen und Inhalt sichern.
@@ -2387,7 +2387,7 @@ var mainGC = function() {
                     }
                 }
             }
-        } catch(e) {gclh_error("Driving direction for Waypoints:",e);}
+        } catch(e) {gclh_error("Driving direction for Waypoints",e);}
     }
 
 // Added elevation to every additional waypoint with shown coordinates.
@@ -2462,7 +2462,7 @@ var mainGC = function() {
                         $("#elevation-waypoint-"+i).html(text);
                         $("#elevation-waypoint-"+i).attr('title','Elevation data from '+context.serviceName);
                     }
-                } catch(e) {gclh_error("addElevationToWaypoints():",e);}
+                } catch(e) {gclh_error("addElevationToWaypoints()",e);}
             }
 
             function prepareListingPageForElevations() {
@@ -2573,7 +2573,7 @@ var mainGC = function() {
             build_tpls();
             var box = $('#litDescrCharCount')[0];
             box.innerHTML = liste;
-        } catch(e) {gclh_error("Smilies and Log Templates old log page:",e);}
+        } catch(e) {gclh_error("Smilies and Log Templates old log page",e);}
     }
 // Show Smilies und Log Templates new log page.
     if (document.location.href.match(/\.com\/play\/geocache\/gc\w+\/log/) &&
@@ -2599,7 +2599,7 @@ var mainGC = function() {
             css += "#gclh_log_tpls {position: relative; float: right; bottom: 8px; margin-right: -1px; width: unset; border: 1px solid #9b9b9b; box-shadow: none; height: 40px; padding-top: 5px;}";
             css += "select:hover, select:focus, select:active {background-image: url(/play/app/ui-icons/icons/global/caret-down-hover.svg);}";
             appendCssStyle(css);
-        } catch(e) {gclh_error("Smilies and Log Templates new log page:",e);}
+        } catch(e) {gclh_error("Smilies and Log Templates new log page",e);}
     }
     // Script für insert Smilie by click.
     function insert_smilie_fkt(id) {
@@ -2782,7 +2782,7 @@ var mainGC = function() {
             });
 
             appendCssStyle('.markdown-output span.WaypointLog{color:#4a4a4a;display:block;font-weight:bold;margin-bottom:2em}.markdown-output{font-size:1.08em;line-height:1.375em;overflow:hidden;word-wrap:break-word}.markdown-output h1{color:#4a4a4a;font-size:1.285em;font-weight:bold;line-height:1.375em;margin:0}.markdown-output h2{color:#4a4a4a;font-size:1.285em;font-weight:normal;line-height:1.375em;margin:0}.markdown-output h3{color:#00b265;font-size:1.285em;font-weight:normal;line-height:1.375em;margin:0;text-transform:uppercase}.markdown-output hr{background:#d8d8d8;height:2px;margin:1.45em 0}.markdown-output p{color:#4a4a4a;margin:0 0 1.5em}.markdown-output li{list-style:inherit}.markdown-output ul{list-style-type:disc}.markdown-output ol{list-style-type:decimal}.markdown-output ul,.markdown-output ol{color:#4a4a4a;margin:0 1.5em 1.5em .75em;padding-left:1.5em}.markdown-output li ul{list-style-type:none;margin-left:0;margin-bottom:0;padding-left:0}.markdown-output li ul li::before{background-color:#e0b70a;border-radius:50%;content:"";display:inline-block;height:5px;margin-right:.75em;margin-top:-1px;width:5px;vertical-align:middle}.markdown-output li ol{margin-left:0;margin-bottom:0}.markdown-output blockquote{background:none;font-style:normal;margin:1.5em .75em;padding:0}.markdown-output blockquote p{color:#00b265;font-weight:bold}.markdown-output blockquote p::before{content:\'“\'}.markdown-output blockquote p::after{content:\'”\'}.markdown-output a,#bd .markdown-output a{color:#006cff;text-decoration:none}.markdown-output a:hover,.markdown-output a:focus{border-bottom:1px solid #006cff;color:#006cff}.markdown-output .AlignRight a{color:#00447c}.markdown-output .AlignRight a:visited{color:#00a0b0}.markdown-output .AlignRight a:hover,.markdown-output .AlignRight a:focus{border-bottom:none;color:#6c8e10}.markdown-output~.AlternatingRow,table .markdown-output~tr.AlternatingRow td{background:#fff}.markdown-output.BorderBottom td{border-bottom-color:#9b9b9b}.markdown-output.BorderBottom:last-child td{border-bottom:none}.markdown-output>td:last-child{padding-bottom:2.5em}');
-        } catch(e) {gclh_error("Logpage Log Preview:",e);}
+        } catch(e) {gclh_error("Logpage Log Preview",e);}
     }
 // Replicate TB-Header to bottom
     if (document.location.href.match(/\.com\/play\/geocache\/gc\w+\/log/)) {
@@ -2875,7 +2875,7 @@ var mainGC = function() {
             counterelement.innerHTML = "0/4000";
             counterspan.appendChild(counterelement);
             counterpos.appendChild(counterspan);
-        } catch(e) {gclh_error("Maxlength of logtext and unsaved warning:",e);}
+        } catch(e) {gclh_error("Maxlength of logtext and unsaved warning",e);}
     }
 
 // Autovisit Old Log Page.
@@ -2931,7 +2931,7 @@ var mainGC = function() {
             function getTypeO() {return $('#ctl00_ContentBody_LogBookPanel1_ddLogType')[0].value;}
             function getTbsO() {return $('#tblTravelBugs tbody tr td select').closest('td');}
             function getTbO(tb) {return [$(tb).find('td a')[0].innerHTML, $(tb).find('td select option')[0].value];}
-        } catch(e) {gclh_error("Autovisit Old:",e);}
+        } catch(e) {gclh_error("Autovisit Old",e);}
     }
 
 // Default Log Type and Log Signature Old Log Page.
@@ -2959,7 +2959,7 @@ var mainGC = function() {
                 if (settings_log_signature_on_fieldnotes) document.getElementById('ctl00_ContentBody_LogBookPanel1_uxLogInfo').innerHTML += getValue("settings_log_signature", "");
             } else document.getElementById('ctl00_ContentBody_LogBookPanel1_uxLogInfo').innerHTML += getValue("settings_log_signature", "");
             replacePlaceholder();
-        } catch(e) {gclh_error("Default Log-Type and Signature Old Log Page(CACHE):",e);}
+        } catch(e) {gclh_error("Default Log-Type and Signature Old Log Page(CACHE)",e);}
     }
     // TB:
     if (document.location.href.match(/\.com\/track\/log\.aspx/) && $('#ctl00_ContentBody_LogBookPanel1_ddLogType')[0]) {
@@ -2974,7 +2974,7 @@ var mainGC = function() {
             // Signature.
             if ($('#ctl00_ContentBody_LogBookPanel1_uxLogInfo')[0] && $('#ctl00_ContentBody_LogBookPanel1_uxLogInfo')[0].innerHTML == "") $('#ctl00_ContentBody_LogBookPanel1_uxLogInfo')[0].innerHTML = getValue("settings_tb_signature", "");
             replacePlaceholder();
-        } catch(e) {gclh_error("Default Log-Type and Signature (TB):",e);}
+        } catch(e) {gclh_error("Default Log-Type and Signature (TB)",e);}
     }
 // Log Signature New Log Page.
     if (document.location.href.match(/\.com\/play\/geocache\/gc\w+\/log/)) {
@@ -3001,7 +3001,7 @@ var mainGC = function() {
                     document.getElementById('LogText').selectionEnd = initial_cursor_position;
                 } else {waitCount++; if (waitCount <= 100) setTimeout(function(){checkLogType(waitCount);}, 100);}
             }
-        } catch(e) {gclh_error("Signature New Log Page(CACHE):",e);}
+        } catch(e) {gclh_error("Signature New Log Page(CACHE)",e);}
     }
     function replacePlaceholder(newLogPage) {
         if (newLogPage) var id = "LogText";
@@ -3039,7 +3039,7 @@ var mainGC = function() {
             if ($('#ctl00_ContentBody_LogBookPanel1_btnSubmitLog')[0]) $('#ctl00_ContentBody_LogBookPanel1_btnSubmitLog')[0].addEventListener('click', sendOldLog, true);
             function sendNewLog(e) {setValue("last_logtext", $('#LogText')[0].value);}
             if ($('.btn-submit')[0] && $('.btn-submit')[0].parentNode) $('.btn-submit')[0].parentNode.addEventListener('click', sendNewLog, true);
-        } catch(e) {gclh_error("Last Log-Text speichern:",e);}
+        } catch(e) {gclh_error("Last Log-Text speichern",e);}
     }
 
 // Hide socialshare.
@@ -3047,7 +3047,7 @@ var mainGC = function() {
         try {
             if ($('#sharing_container')[0]) $('#sharing_container')[0].style.display = "none";
             if ($('#uxSocialSharing')[0]) $('#uxSocialSharing')[0].style.display = "none";
-        } catch(e) {gclh_error("Hide socialshare1:",e);}
+        } catch(e) {gclh_error("Hide socialshare1",e);}
     }
     if (settings_hide_socialshare && document.location.href.match(/\.com\/play\/friendleague/)) {
         try {
@@ -3056,14 +3056,14 @@ var mainGC = function() {
                 $('.btn.btn-facebook')[0].parentNode.previousElementSibling.style.display = "none";
                 if ($('.share-button-group')[0]) $('.share-button-group')[0].style.marginBottom = "0";
             }
-        } catch(e) {gclh_error("Hide socialshare2:",e);}
+        } catch(e) {gclh_error("Hide socialshare2",e);}
     }
 
 // Remove advertisement link.
     if (settings_hide_advert_link) {
         try {
             $('a[href*="advertising.aspx"]').remove();
-        } catch(e) {gclh_error("Hide advertisement link:",e);}
+        } catch(e) {gclh_error("Hide advertisement link",e);}
     }
 
 // Improve Mail.
@@ -3096,7 +3096,7 @@ var mainGC = function() {
                 template = buildSendTemplate().replace(/#Receiver#/ig, $('#ctl00_ContentBody_SendMessagePanel1_lblEmailInfo')[0].children[0].innerHTML);
                 $('#ctl00_ContentBody_SendMessagePanel1_tbMessage')[0].innerHTML = template;
             }
-        } catch(e) {gclh_error("Improve Mail:",e);}
+        } catch(e) {gclh_error("Improve Mail",e);}
     }
 
 // Improve Message.
@@ -3118,7 +3118,7 @@ var mainGC = function() {
                 waitCount++;
                 if (waitCount <= 600) setTimeout(function(){updateMessage(waitCount);}, 100);
             }
-        } catch(e) {gclh_error("Improve Message:",e);}
+        } catch(e) {gclh_error("Improve Message",e);}
     }
 
 // Improve list of pocket queries (list of PQs).
@@ -3307,7 +3307,7 @@ var mainGC = function() {
                 unsafeWindow.$('#ActivePQs').css("padding-right", "0px");
             }
             appendCssStyle(css);
-        } catch(e) {gclh_error("Improve list of PQs:",e);}
+        } catch(e) {gclh_error("Improve list of PQs",e);}
     }
 
 // Try to find values from Project-GC PQSplit
@@ -3419,7 +3419,7 @@ var mainGC = function() {
                 // All values are set, submit the form
                 document.getElementById('ctl00_ContentBody_btnSubmit').click();
             }
-        } catch(e) {gclh_error("Create Automated PQs from project-gc PQ splitter:",e);}
+        } catch(e) {gclh_error("Create Automated PQs from project-gc PQ splitter",e);}
     }
 
 // Show Log It button.
@@ -3434,7 +3434,7 @@ var mainGC = function() {
                     links[i].parentNode.innerHTML = links[i].parentNode.innerHTML.replace("<br>", "<a title='Log it' href='/seek/log.aspx?wp=" + match[1] + "'><img src='/images/stockholm/16x16/add_comment.gif'></a><br>");
                 }
             }
-        } catch(e) {gclh_error("Show Log It button:",e);}
+        } catch(e) {gclh_error("Show Log It button",e);}
     }
 
 // Improve pocket queries, nearest lists, recently viewed. Compact layout, favorites percentage.
@@ -3569,7 +3569,7 @@ var mainGC = function() {
                 });
             }
             appendCssStyle(css);
-        } catch(e) {gclh_error("Improve PQs ... :",e);}
+        } catch(e) {gclh_error("Improve PQs ...",e);}
     }
 
 // Pocket query set default value for new one, set warning message.
@@ -3620,7 +3620,7 @@ var mainGC = function() {
                 for (var i=0; i<=13; i++) {$(idOp+i).change(verifyPqOpt);}
                 verifyPqOpt();
             }
-        } catch(e) {gclh_error("Pocket query set defaults, set warning:",e);}
+        } catch(e) {gclh_error("Pocket query set defaults, set warning",e);}
     }
     // Marks two PQ options, which are in rejection.
     function markOptInRej(opt1, opt2) {
@@ -3684,7 +3684,7 @@ var mainGC = function() {
                 $('#gclh_map').attr("src", 'http://staticmap.openstreetmap.de/staticmap.php?center=' + lat + ',' + lng + '&zoom=15&size=450x350&markers=' + lat + ',' + lng + ',ol-marker');
             });
             $('.LatLongTable input').change();
-        } catch(e) {gclh_error("Map on create pocket query page:",e);}
+        } catch(e) {gclh_error("Map on create pocket query page",e);}
     }
 
 // Name for PQ from bookmark.
@@ -3692,7 +3692,7 @@ var mainGC = function() {
         try {
             if ($('#ctl00_ContentBody_tbName')[0].value == "") $('#ctl00_ContentBody_tbName')[0].value = $('#ctl00_ContentBody_lnkListName')[0].innerHTML;
             $('#ctl00_ContentBody_cbIncludePQNameInFileName')[0].checked = true;
-        } catch(e) {gclh_error("Name for PQ from bookmark:",e);}
+        } catch(e) {gclh_error("Name for PQ from bookmark",e);}
     }
 
 // Improve list of bookmark lists.
@@ -3740,7 +3740,7 @@ var mainGC = function() {
             // Number of BMLs.
             if ($('.span-10 h3')[0]) $('.span-10 h3')[0].innerHTML += "&nbsp;<span title='Number of Bookmark Lists of the maximum allowed 100'>("+$('table.Table tbody tr').length+"/100)</span>";
             appendCssStyle(css);
-        } catch(e) {gclh_error("Improve list of bookmark lists:",e);}
+        } catch(e) {gclh_error("Improve list of bookmark lists",e);}
     }
 
 // Improve bookmark lists.
@@ -3820,7 +3820,7 @@ var mainGC = function() {
                 }
             }
             appendCssStyle(css);
-        } catch(e) {gclh_error("Improve bookmark lists:",e);}
+        } catch(e) {gclh_error("Improve bookmark lists",e);}
     }
     // Daten der aktuellen BML ermitteln.
     function getBMLAct(name) {
@@ -3963,7 +3963,7 @@ var mainGC = function() {
                 if ($('#ctl00_ContentBody_WatchListControl1_uxWatchList_ctl00_uxChkAll')[0]) $('#ctl00_ContentBody_WatchListControl1_uxWatchList_ctl00_uxChkAll')[0].style.display = "none";
                 if ($('#ctl00_ContentBody_ListInfo_uxUncheckAllImage')[0]) $('#ctl00_ContentBody_ListInfo_uxUncheckAllImage')[0].style.display = "none";
             }
-        } catch(e) {gclh_error("Add buttons to bookmark list and watchlist:",e);}
+        } catch(e) {gclh_error("Add buttons to bookmark list and watchlist",e);}
     }
     // Summenfelder Anzahl Caches definieren, Configparameter setzen.
     function sumsCreateFields(configParameter) {
@@ -4225,7 +4225,7 @@ var mainGC = function() {
             button.setAttribute("style", "height: 35px;");
             button.addEventListener("click", gclh_reset_counter, false);
             document.getElementById('ctl00_ContentBody_btnAddFriend').parentNode.insertBefore(button, document.getElementById('ctl00_ContentBody_btnAddFriend').nextSibling);
-        } catch(e) {gclh_error("Improve friends list:",e);}
+        } catch(e) {gclh_error("Improve friends list",e);}
     }
 
 // Improve drafts old page.
@@ -4294,7 +4294,7 @@ var mainGC = function() {
             tr = buildDraftSL();
             $('table.Table tbody')[0].append(tr);
             $('#gclh_all_b')[0].addEventListener("click", gclhSelAll, false);
-        } catch(e) {gclh_error("Improve drafts old page:",e);}
+        } catch(e) {gclh_error("Improve drafts old page",e);}
     }
 
 // Improve drafts new page.
@@ -4374,7 +4374,7 @@ var mainGC = function() {
             template += '    </button>';
             template += '</div>';
             $("#draftItem").html(template);
-        } catch(e) {gclh_error("New drafts page:",e);}
+        } catch(e) {gclh_error("New drafts page",e);}
     }
 
 // Linklist on old dashboard.
@@ -4396,7 +4396,7 @@ var mainGC = function() {
             div0.appendChild(head);
             div0.appendChild(div);
             side.appendChild(div0);
-        } catch(e) {gclh_error("Linklist on old dashboard:",e);}
+        } catch(e) {gclh_error("Linklist on old dashboard",e);}
     }
 
 // Linklist, Default Links on new dashboard.
@@ -4429,7 +4429,7 @@ var mainGC = function() {
                     premiumTeile[i].addEventListener("click", function() {buildLogItLink(this);}, false);
                 }
             }
-        } catch(e) {gclh_error("Log-It for basic in pmo:",e);}
+        } catch(e) {gclh_error("Log-It for basic in pmo",e);}
     }
     // Link ausführen trotz Tool Tipp.
     function buildLogItLink(premiumTeil) {
@@ -5301,7 +5301,7 @@ var mainGC = function() {
             // Länge der Usernamen in den Logs beschränken, damit sie nicht umgebrochen werden.
             css += ".logOwnerProfileName {max-width: 135px; display: inline-block; overflow: hidden; vertical-align: bottom; white-space: nowrap; text-overflow: ellipsis;}";
             appendCssStyle(css);
-        } catch(e) {gclh_error("Define log-template:",e);}
+        } catch(e) {gclh_error("Define log-template",e);}
     }
 
 // Overwrite Log-Template (Logtemplate) and Log-Load-Function. (Muß unbedingt nach VIP laufen.)
@@ -5697,7 +5697,7 @@ var mainGC = function() {
                 else if (logsCount%2 != 0) logsCount += 1;
                 gclh_load_logs(logsCount);
             } else gclh_load_logs(30);
-        } catch(e) {gclh_error("Replace Log-Loading function:",e);}
+        } catch(e) {gclh_error("Replace Log-Loading function",e);}
     }
     // Zeilen in Cache Listings in Zebra und für User, Owner, Reviewer und VIP einfärben.
     function setLinesColorInCacheListing() {
@@ -5781,7 +5781,7 @@ var mainGC = function() {
                 }
             }
         }
-    } catch(e) {gclh_error("Color lines in lists:",e);}
+    } catch(e) {gclh_error("Color lines in lists",e);}
 
 // Improve old dashboard. (Muß nach VIP laufen.)
     if (is_page("profile")) {
@@ -5851,7 +5851,7 @@ var mainGC = function() {
                 }
             }
             appendCssStyle(css);
-        } catch(e) {gclh_error("Improve old dashboard:",e);}
+        } catch(e) {gclh_error("Improve old dashboard",e);}
     }
 
 // Improve new dashboard.
@@ -6102,7 +6102,7 @@ var mainGC = function() {
                 "  max-height: " + settings_hover_image_max_size + "px;" +
                 "  max-width:  " + settings_hover_image_max_size + "px;}";
             appendCssStyle(css);
-        } catch(e) {gclh_error("Show Thumbnails:",e);}
+        } catch(e) {gclh_error("Show Thumbnails",e);}
     }
     function avatarThumbnail(link) {
         var thumb = link.children[0];
@@ -6132,7 +6132,7 @@ var mainGC = function() {
                 }
                 $('#gclh_show_bigger_avatars').removeClass("working");
             }, 100);
-        } catch(e) {gclh_error("showBiggerAvatars:",e);}
+        } catch(e) {gclh_error("showBiggerAvatars",e);}
     }
 
 // Show gallery images in 2 instead of 4 cols.
@@ -6177,7 +6177,7 @@ var mainGC = function() {
                 document.getElementById(dataListId).removeChild(document.getElementById(dataListId).firstChild);
                 document.getElementById(dataListId).appendChild(tbody);
             }
-        } catch(e) {gclh_error("Show gallery images in 2 instead of 4 cols:",e);}
+        } catch(e) {gclh_error("Show gallery images in 2 instead of 4 cols",e);}
     }
 
 // Add layers, control to map and set default layers.
@@ -6282,7 +6282,7 @@ var mainGC = function() {
             }
             addLayerControl();
             loopAtLayerControls(0);
-        } catch(e) {gclh_error("Add layers, control to map and set default layers:",e);}
+        } catch(e) {gclh_error("Add layers, control to map and set default layers",e);}
     }
 
 // Hide Map Header.
@@ -6314,7 +6314,7 @@ var mainGC = function() {
                         all_map_layers["Geocaching"].accessToken = r.access_token;
                     });
             }, 0);
-        } catch(e) {gclh_error("Hide Map Header:",e);}
+        } catch(e) {gclh_error("Hide Map Header",e);}
     }
 
 // Change map parameter and add Homezone to map.
@@ -6380,7 +6380,7 @@ var mainGC = function() {
             }
             window.addEventListener("load", gclh_map_loaded, false);
             appendCssStyle(".leaflet-control-layers-base {min-width: 200px;}");
-        } catch(e) {gclh_error("Change map parameter and add Homezone to map:",e);}
+        } catch(e) {gclh_error("Change map parameter and add Homezone to map",e);}
     }
 
 // Add links to Google, OSM, Flopp's und GeoHack Map on GC Map.
@@ -6497,7 +6497,7 @@ var mainGC = function() {
                 } else {waitCount++; if (waitCount <= 50) setTimeout(function(){attachGeoServiceControl(waitCount);}, 100);}
             }
             attachGeoServiceControl(0);
-        } catch(e) {gclh_error("Add links to Google, OSM, Flopp's und GeoHack Map on GC Map:",e);}
+        } catch(e) {gclh_error("Add links to Google, OSM, Flopp's und GeoHack Map on GC Map",e);}
     }
 
 // Hide found/hidden Caches on Map. Add Buttons for hiding/showing all Caches.
@@ -6577,7 +6577,7 @@ var mainGC = function() {
                 if (settings_map_hide_8 && settings_map_hide_5 && settings_map_hide_1858) $('#chkLegendBlue')[0].childNodes[0].setAttribute("class", "a_cat_displayed cat_untoggled");
             }
             window.addEventListener("load", hideCacheTypes, false);
-        } catch(e) {gclh_error("Hide found/hidden Caches / Cache Types on Map:",e);}
+        } catch(e) {gclh_error("Hide found/hidden Caches / Cache Types on Map",e);}
     }
 
 // Display Google-Maps warning, wenn Leaflet-Map nicht aktiv ist.
@@ -6607,7 +6607,7 @@ var mainGC = function() {
                 }
             }
             checkMap(0);
-        } catch(e) {gclh_error("Display Google-Maps warning:",e);}
+        } catch(e) {gclh_error("Display Google-Maps warning",e);}
     }
 
 // Display more informations on map popup for a cache
@@ -6823,7 +6823,7 @@ var mainGC = function() {
             appendCssStyle('#map_canvas{ height: 450px;} .leaflet-bottom.leaflet-right {margin-right: 20px;}');
             var scriptText = "map.invalidateSize(); map.scrollWheelZoom.enable(); $('#map_canvas').resizable({handles: {'s': '#sgrip'}, minHeight: 300, maxHeight: 700, stop: function( event, ui ) {map.invalidateSize();}});";
             injectPageScript(scriptText, 'head');
-        } catch(e) {gclh_error("tb_map_enhancement:",e);}
+        } catch(e) {gclh_error("tb_map_enhancement",e);}
     }
 
 // Improve cache matrix on statistics page and public profile page and handle cache search links in list or map.
@@ -6916,14 +6916,14 @@ var mainGC = function() {
             }
         }
         if ($('#ctl00_ContentBody_ProfilePanel1_lnkStatistics').length == 0 && isOwnStatisticsPage()) appendCssStyle("dl.ProfileDataList dt {float: left; clear: both; margin-right: 10px;}");
-    } catch(e) {gclh_error("Improve cache matrix:",e);}
+    } catch(e) {gclh_error("Improve cache matrix",e);}
 
 // Improve own statistics page and own profile page with own log statistic.
     if (settings_log_statistic && isOwnStatisticsPage()) {
         try {
             getLogSt("cache", "/my/logs.aspx?s=1");
             getLogSt("track", "/my/logs.aspx?s=2");
-        } catch(e) {gclh_error("Improve own log statistic:",e);}
+        } catch(e) {gclh_error("Improve own log statistic",e);}
     }
     function getLogSt(type, url, manual) {
         var logsName = (type == "cache" ? "Cache":"Trackable") + " logs";
@@ -7139,7 +7139,7 @@ var mainGC = function() {
                     }
                 }
             }
-        } catch(e) {gclh_error("Improve own statistic map page:",e);}
+        } catch(e) {gclh_error("Improve own statistic map page",e);}
     }
 
 // Post log from listing (inline).
@@ -7202,7 +7202,7 @@ var mainGC = function() {
         }
         // Im aufgebauten iframe, quasi nicht im Cache Listing. Nur auf old log page Veränderungen vornehmen.
         if (document.location.href.match(/\.com\/seek\/log\.aspx\?(.*)\&gclh\=small/)) hideForInlineLogging();
-    } catch(e) {gclh_error("Post log from listing (inline):",e);}
+    } catch(e) {gclh_error("Post log from listing (inline)",e);}
 // Post log from PMO-Listing as Basic Member (inline).
     try {
         // iframe aufbauen und verbergen.
@@ -7237,7 +7237,7 @@ var mainGC = function() {
         }
         // Im aufgebauten iframe, quasi nicht im Cache Listing. Nur auf old log page Veränderungen vornehmen.
         if (document.location.href.match(/\.com\/seek\/log\.aspx\?(.*)\&gclh\=small/)) hideForInlineLogging(true);
-    } catch(e) {gclh_error("Post log from PMO-Listing as Basic Member (inline):",e);}
+    } catch(e) {gclh_error("Post log from PMO-Listing as Basic Member (inline)",e);}
     // Hide for both inline loggings.
     function hideForInlineLogging(pmo) {
         if ($('html')[0]) $('html')[0].style.backgroundColor = "#FFFFFF";
@@ -7329,7 +7329,7 @@ var mainGC = function() {
             }
             if ($('#ctl00_ContentBody_ProfilePanel1_dlCollectibles')[0]) gclh_coin_stats("ctl00_ContentBody_ProfilePanel1_dlCollectibles");
             if ($('#ctl00_ContentBody_ProfilePanel1_dlCollectiblesOwned')[0]) gclh_coin_stats("ctl00_ContentBody_ProfilePanel1_dlCollectiblesOwned");
-        } catch(e) {gclh_error("Show Coin-Sums:",e);}
+        } catch(e) {gclh_error("Show Coin-Sums",e);}
     }
 
 // Show Coin Series in TB-Listing.
@@ -7344,14 +7344,14 @@ var mainGC = function() {
                 dl.appendChild(dt);
                 dl.appendChild(dd);
             }
-        } catch(e) {gclh_error("Show Coin Series:",e);}
+        } catch(e) {gclh_error("Show Coin Series",e);}
     }
 
 // Count favorite points.
     if (document.location.href.match(/\.com\/my\/favorites\.aspx/) && $('table.Table tbody tr')[0]) {
         try {
             buildFavSum();
-        } catch(e) {gclh_error("Count favorite points:",e);}
+        } catch(e) {gclh_error("Count favorite points",e);}
     }
 // Sum up FP and BM entries, count favorite points.
     if (is_page("publicProfile") && $('#ctl00_ContentBody_ProfilePanel1_lnkLists.Active')[0] && $('table.Table tbody tr')[0]) {
@@ -7360,7 +7360,7 @@ var mainGC = function() {
                 $(e).text($(e).text() + ' (' + $(e).next().find('tbody tr').length + ')');
             });
             buildFavSum(true);
-        } catch(e) {gclh_error("Sum up FP and BM entries, count favorite points:",e);}
+        } catch(e) {gclh_error("Sum up FP and BM entries, count favorite points",e);}
     }
     function buildFavSum(pp) {
         function buildSL(tag) {
@@ -7393,7 +7393,7 @@ var mainGC = function() {
     if (document.location.href.match(/\.com\/seek\/cdpf\.aspx/)) {
         try {
             if ($('#Footer')[0]) $('#Footer')[0].remove();
-        } catch(e) {gclh_error("Hide side rights on print page:",e);}
+        } catch(e) {gclh_error("Hide side rights on print page",e);}
     }
 
 // Hide feedback icon.
@@ -7405,7 +7405,7 @@ var mainGC = function() {
                 if (waitCount <= 50) setTimeout(function(){hideFbIcon(waitCount);}, 200);
             }
             hideFbIcon(0);
-        } catch(e) {gclh_error("Hide feedback icon:",e);}
+        } catch(e) {gclh_error("Hide feedback icon",e);}
     }
 
 // Edit and Image Links to own caches in profile.
@@ -7425,7 +7425,7 @@ var mainGC = function() {
                     }
                 }
             }
-        } catch(e) {gclh_error("Edit and Image Links to own caches in profile:",e);}
+        } catch(e) {gclh_error("Edit and Image Links to own caches in profile",e);}
     }
 
 // Hide archived at own caches.
@@ -7438,7 +7438,7 @@ var mainGC = function() {
                     if (archived) links[i].parentNode.parentNode.style.display = 'none';
                 }
             }
-        } catch(e) {gclh_error("Hide archived at own caches:",e);}
+        } catch(e) {gclh_error("Hide archived at own caches",e);}
     }
 
 // Werden nicht alle eigenen Logs geladen, weil z.B. über Browser gestoppt, dann Anzahl Logs geladen und Datum letztes Log angeben.
@@ -7458,7 +7458,7 @@ var mainGC = function() {
                         result.innerHTML = result.innerHTML + " (Only " + loaded + " logs loaded" + dateLastLog + ".)";
                     }
                 }
-            } catch(e) {gclh_error("Stopped logs loading:",e);}
+            } catch(e) {gclh_error("Stopped logs loading",e);}
         }
     }
 
@@ -7511,7 +7511,7 @@ var mainGC = function() {
                 }
             }
             appendCssStyle('select {color: #594a42;}');
-        } catch(e) {gclh_error("Add selectable month and year in calendar:",e);}
+        } catch(e) {gclh_error("Add selectable month and year in calendar",e);}
     }
 
 // Show warning for not available images.
@@ -7552,7 +7552,7 @@ var mainGC = function() {
             for (var i = 0; i < a.length; i++) {
                 checkBGImage(a[i], urlImagesSvg+'image_not_available_background.svg');
             }
-        } catch(e) {gclh_error("Show warning for not available images:",e);}
+        } catch(e) {gclh_error("Show warning for not available images",e);}
     }
 
 // Save home coords.
@@ -7565,7 +7565,7 @@ var mainGC = function() {
                 } else {waitCount++; if (waitCount <= 20) setTimeout(function(){saveHomeCoordsWait(waitCount);}, 100);}
             }
             saveHomeCoordsWait(0);
-        } catch(e) {gclh_error('Save Homecoords:',e);}
+        } catch(e) {gclh_error('Save Homecoords',e);}
     }
     function saveHomeCoords() {
         var link = $('#Query')[0];
@@ -7590,7 +7590,7 @@ var mainGC = function() {
                     if (getValue("uid", "") != uid[1]) setValue("uid", uid[1]);
                 }
             }
-        } catch(e) {gclh_error("Save uid:",e);}
+        } catch(e) {gclh_error("Save uid",e);}
     }
 
 // Add mailto link to profilpage.
@@ -7604,7 +7604,7 @@ var mainGC = function() {
                 link.parentNode.appendChild(document.createTextNode(" "));
                 link.parentNode.appendChild(mailto);
             }
-        } catch(e) {gclh_error("Add mailto-link to profilepage:",e);}
+        } catch(e) {gclh_error("Add mailto-link to profilepage",e);}
     }
 
 // Hide GC Avatar Option.
@@ -7630,7 +7630,7 @@ var mainGC = function() {
                 setValue('settings_distance_units', units);
                 settings_distance_units = units;
             }
-        } catch(e) {gclh_error("Hide GC Avatar Option:",e);}
+        } catch(e) {gclh_error("Hide GC Avatar Option",e);}
     }
 
 // Aufbau Links zum Aufruf von Config, Sync und Find Player. Und Changelog im Profile.
@@ -7693,7 +7693,7 @@ var mainGC = function() {
 // Special Links aus Linklist bzw. Default Links versorgen.
     try {
         setSpecialLinks();
-    } catch(e) {gclh_error("Special Links:",e);}
+    } catch(e) {gclh_error("Special Links",e);}
     function setSpecialLinks() {
         // Links zu Nearest Lists/Map in Linklist und Default Links setzen.
         if (getValue("home_lat", 0) != 0 && getValue("home_lng") != 0) {
@@ -7728,7 +7728,7 @@ var mainGC = function() {
                 function clickSearch() {$('#ctl00_ContentBody_LocationPanel1_btnLocale')[0].click();}
                 window.addEventListener("load", clickSearch, false);
             }
-        } catch(e) {gclh_error("Eingaben im Search Field verarbeiten:",e);}
+        } catch(e) {gclh_error("Eingaben im Search Field verarbeiten",e);}
     }
 
 // Append '&visitcount=1' to all geochecker.com links.
@@ -7737,7 +7737,7 @@ var mainGC = function() {
             $('#ctl00_ContentBody_LongDescription a[href^="http://www.geochecker.com/index.php?code="]').filter(':not([href*="visitcount=1"])').attr('href', function(i, str) {
                 return str + '&visitcount=1';
             }).attr('rel', 'noreferrer');
-        } catch(e) {gclh_error("Append '&visitcount=1' to all geochecker.com links:",e);}
+        } catch(e) {gclh_error("Append '&visitcount=1' to all geochecker.com links",e);}
     }
 
 // Auto check checkbox on hide cache process.
@@ -7747,7 +7747,7 @@ var mainGC = function() {
             $("#ctl00_ContentBody_chkUnderstand").prop('checked', true);
             $("#ctl00_ContentBody_chkDisclaimer").prop('checked', true);
             $("#ctl00_ContentBody_chkAgree").prop('checked', true);
-        } catch(e) {gclh_error("Auto check checkbox on hide cache process:",e);}
+        } catch(e) {gclh_error("Auto check checkbox on hide cache process",e);}
     }
 
 // Improve Souvenirs
@@ -7815,7 +7815,7 @@ var mainGC = function() {
                 $("#actionSouvenirsSortAcquiredTitleAtoZ").click(function() {ReorderSouvenirs(TitleAtoZ);});
                 $("#actionSouvenirsSortAcquiredTitleZtoA").click(function() {ReorderSouvenirs(TitleZtoA);});
             }
-        } catch(e) {gclh_error("Improve Souvenirs:",e);}
+        } catch(e) {gclh_error("Improve Souvenirs",e);}
     }
 
 // Check for upgrade.
@@ -7856,14 +7856,14 @@ var mainGC = function() {
                                         alert(text);
                                     }
                                 }
-                            } catch(e) {gclh_error("Check for upgrade, onload:",e);}
+                            } catch(e) {gclh_error("Check for upgrade, onload",e);}
                         }
                     });
                 }
             }
         }
         checkForUpgrade(false);
-    } catch(e) {gclh_error("Check for upgrade:",e);}
+    } catch(e) {gclh_error("Check for upgrade",e);}
 
 // Special days.
     if (is_page("cache_listing")) {
@@ -7899,7 +7899,7 @@ var mainGC = function() {
                     checkChristmasData(0);
                 }
             }
-        } catch(e) {gclh_error("Special days:",e);}
+        } catch(e) {gclh_error("Special days",e);}
     }
 
 //////////////////////////////
@@ -8787,7 +8787,7 @@ var mainGC = function() {
                 }
                 $('#gclh_show_log_counter').removeClass("working");
             }, 100);
-        } catch(e) {gclh_error("showLogCounter:",e);}
+        } catch(e) {gclh_error("showLogCounter",e);}
     }
 
 // Add button over logs in cache listing.
@@ -9052,7 +9052,7 @@ var mainGC = function() {
                     return false;
                 });
             }
-        } catch(e) {gclh_error("User defined search:",e);}
+        } catch(e) {gclh_error("User defined search",e);}
     }
 
 //////////////////////////////
@@ -11378,7 +11378,7 @@ var mainGC = function() {
             if (document.getElementById("rc_temp").checked) {
                 rcGetData(urlScript, "js");
             }
-        } catch(e) {gclh_error("Reset config data:",e);}
+        } catch(e) {gclh_error("Reset config data",e);}
     }
     function rcGetData(url, name) {
         global_rc_data = global_rc_status = "";
