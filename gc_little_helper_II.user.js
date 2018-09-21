@@ -11714,7 +11714,7 @@ var mainGC = function() {
             "include_has_explicit_shared_members": false
             })
             .then(function(response) {
-                console.log('content_hash:' + response.content_hash);
+                // console.log('content_hash:' + response.content_hash);
                 if (response != null && response != "") deferred.resolve(response.content_hash);
                 else deferred.reject('Error: response had no file or file was empty.');
             })
