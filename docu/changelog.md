@@ -70,6 +70,7 @@ released by <a href="https://www.geocaching.com/profile/?u=Ruko2010">Ruko2010</a
 		<strong>New:</strong> Added GPSVisualizer as an additional map service [Issue <a href="https://github.com/2Abendsegler/GClh/issues/807">#807</a>]<br>
 		Thanks to <a href="https://www.geocaching.com/profile/?u=CachingFox">CachingFox</a> for the implementation.<br>
 		<img src="../images/0.9.12/Screen01.png" alt="Screen01.png"><br>
+		<img src="../images/0.9.12/Screen09.png" alt="Screen09.png"><br>
 	</li>
 	<li>
 		<strong>New:</strong> Adapt the height of the edit field 'Personal Cache Note' to show the complete note [Issues <a href="https://github.com/2Abendsegler/GClh/issues/821">#821</a>, <a href="https://github.com/2Abendsegler/GClh/issues/816">#816</a>]<br>
