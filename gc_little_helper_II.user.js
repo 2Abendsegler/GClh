@@ -7420,10 +7420,7 @@ var mainGC = function() {
                     if (!$(links[i]).find('img').length) {
                         var match = links[i].href.match(/\/seek\/cache_details\.aspx\?guid=(.*)/);
                         if (match[1]) {
-                            links[i].parentNode.innerHTML += " <a href='/hide/report.aspx?guid=" + match[1] + "'><img src='/images/stockholm/16x16/page_white_edit.gif'></a>";
-                            if (document.location.href.match(/\.com\/my\/owned\.aspx/)) {
-                                links[i].parentNode.innerHTML += " <a href='/seek/gallery.aspx?guid=" + match[1] + "'><img src='/images/stockholm/16x16/photos.gif'></a>";
-                            }
+                            links[i].parentNode.innerHTML += " <a href='/hide/report.aspx?guid=" + match[1] + "'><img src='/images/stockholm/16x16/page_white_edit.gif'></a> <a href='/seek/gallery.aspx?guid=" + match[1] + "'><img src='/images/stockholm/16x16/photos.gif'></a>";
                         }
                     }
                 }
