@@ -4475,6 +4475,7 @@ var mainGC = function() {
              document.location.href.match(/\.com\/seek\/nearest\.aspx(.*)(\?ul|\?u|&ul|&u)=/) ||  // Nearest Lists mit User
              document.location.href.match(/\.com\/bookmarks\/(view|bulk)/)       ||      // Bookmark Lists
              document.location.href.match(/\.com\/play\/friendleague/)           ||      // Friend League
+             document.location.href.match(/\.com\/seek\/auditlog\.aspx/)         ||      // Audit Log
              document.location.href.match(/\.com\/my\/myfriends\.aspx/)             )) { // Friends
             var myself = global_me;
             var gclh_build_vip_list = function() {};
@@ -4986,6 +4987,33 @@ var mainGC = function() {
                     }
                 };
                 gclh_build_vip_list();
+
+            // Audit Log
+            // ----------
+            } else if (document.location.href.match(/\.com\/seek\/auditlog\.aspx/)) {
+                var links = document.getElementsByTagName('a');
+                for (var i = 0; i < links.length; i++) {
+                    if (links[i].href.match(/profile\?guid=/)) {
+                        side = $(links[i]);
+                        console.log(side.attr('href'));
+                        guid = side.attr('href').substring(14,36+14);
+                        console.log(guid);
+                        username = side.text();
+
+                        buildSendIcons(side[0], username, "per guid", guid);
+
+                        var link = gclh_build_vipvup(username, global_vips, "vip");
+                        link.children[0].style.marginLeft = "5px";
+                        link.children[0].style.marginRight = "3px";
+                        side[0].appendChild(link);
+                        // Build VUP Icon.
+                        if (settings_process_vup && username != global_activ_username) {
+                            link = gclh_build_vipvup(username, global_vups, "vup");
+                            link.children[0].setAttribute("style", "margin-left: 0px; margin-right: 0px");
+                            side[0].appendChild(link);
+                        }
+                    }
+                }
 
             // TB Listing. Post, Edit, View Cache und TB Logs. Mail schreiben, Bookmark lists, Trackable Inventory. (Nicht post cache log new page.)
             // ----------
