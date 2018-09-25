@@ -1419,14 +1419,19 @@ var mainGC = function() {
     if (settings_show_eventday && is_page("cache_listing") && $('#cacheDetails svg.cache-icon use')[0] && $('#cacheDetails svg.cache-icon use')[0].href.baseVal.match(/\/cache-types.svg\#icon-(6$|453$|13$|7005$)/)) {  // Event, MegaEvent, Cito, GigaEvent
         try {
             var match = $('meta[name="og:description"]')[0].content.match(/([0-9]{2})\/([0-9]{2})\/([0-9]{4})/);
-            var date = new Date(match[3], match[1]-1, match[2]);
-            if (date != "Invalid Date") {
-                var weekday = new Array(7);
-                weekday[0] = "Sunday"; weekday[1] = "Monday"; weekday[2] = "Tuesday"; weekday[3] = "Wednesday"; weekday[4] = "Thursday"; weekday[5] = "Friday"; weekday[6] = "Saturday";
-                var name = " (" + weekday[date.getDay()] + ") ";
-                var elem = document.createTextNode(name);
-                var side = $('#ctl00_ContentBody_mcd2')[0];
-                side.insertBefore(elem, side.childNodes[1]);
+            if(match == null){
+                match = $('meta[name="description"]')[1].content.match(/([0-9]{2})\/([0-9]{2})\/([0-9]{4})/);
+            }
+            if(match != null){
+                var date = new Date(match[3], match[1]-1, match[2]);
+                if (date != "Invalid Date") {
+                    var weekday = new Array(7);
+                    weekday[0] = "Sunday"; weekday[1] = "Monday"; weekday[2] = "Tuesday"; weekday[3] = "Wednesday"; weekday[4] = "Thursday"; weekday[5] = "Friday"; weekday[6] = "Saturday";
+                    var name = " (" + weekday[date.getDay()] + ") ";
+                    var elem = document.createTextNode(name);
+                    var side = $('#ctl00_ContentBody_mcd2')[0];
+                    side.insertBefore(elem, side.childNodes[1]);
+                }
             }
         } catch(e) {gclh_error("Show eventday beside date",e);}
     }
