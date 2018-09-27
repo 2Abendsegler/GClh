@@ -5450,7 +5450,10 @@ var mainGC = function() {
                     // First run, so we set the global logs/num and add the Event listener
                     global_logs = logs;
                     global_num = num;
-                    window.addEventListener("scroll", gclh_dynamic_load, false);
+                    window.addEventListener("scroll", function (event) {
+                        gclh_dynamic_load();
+                        event.stopPropagation();
+                    }, true);
                 }
                 var currentTime = + new Date();
                 if ((currentTime - lastFired) > 500) {
