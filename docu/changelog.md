@@ -47,6 +47,11 @@
 ## v0.9.13:
 <ul>
 	<li>
+		<strong>New:</strong> Project-GC - PQ-Splitter: You can now configurate how often the querys should run and choose between primary and secondary Output Email [Issue <a href="https://github.com/2Abendsegler/GClh/issues/861">#861</a>]<br>
+		Thanks to <a href="https://www.geocaching.com/profile/?u=Ruko2010">Ruko2010</a> for the implementation.<br>
+		<img src="../images/0.9.13/Screen01.png" alt="Screen01.png"><br>
+	</li>
+	<li>
 		<strong>Fix:</strong> Error in Nearest List, PQ, Recently viewed because of missing last column "Send to GPS" [Issue <a href="https://github.com/2Abendsegler/GClh/issues/844">#844</a>]<br>
 		Thanks to <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a> for the fix.<br>
 	</li>
