@@ -803,8 +803,8 @@ var mainPGC = function() {
                                         sd: start_day, 
                                         sy: start_year,
 
-                                        em: end_month, 
-                                        ed: end_day, 
+                                        em: end_month,
+                                        ed: end_day,
                                         ey: end_year
 
                                     };
