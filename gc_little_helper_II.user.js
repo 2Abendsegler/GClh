@@ -2165,6 +2165,18 @@ var mainGC = function() {
                         });
                     }
                 }
+            // Audit Log
+            // ----------
+            } else if (document.location.href.match(/\.com\/seek\/auditlog\.aspx/)) {
+                var links = document.getElementsByTagName('a');
+                for (var i = 0; i < links.length; i++) {
+                    if (links[i].href.match(/profile\?guid=/)) {
+                        side = $(links[i]);
+                        guid = side.attr('href').substring(14,36+14);
+                        username = side.text();
+                        buildSendIcons(side[0], username, "per guid", guid);
+                    }
+                }
             // Rest:
             } else {
                 if (is_page("cache_listing")) var links = $('#divContentMain .span-17, #divContentMain .sidebar').find('a[href*="/profile/?guid="]');
@@ -4513,6 +4525,7 @@ var mainGC = function() {
              document.location.href.match(/\.com\/seek\/nearest\.aspx(.*)(\?ul|\?u|&ul|&u)=/) ||  // Nearest Lists mit User
              document.location.href.match(/\.com\/bookmarks\/(view|bulk)/)       ||      // Bookmark Lists
              document.location.href.match(/\.com\/play\/friendleague/)           ||      // Friend League
+             document.location.href.match(/\.com\/seek\/auditlog\.aspx/)         ||      // Audit Log
              document.location.href.match(/\.com\/my\/myfriends\.aspx/)             )) { // Friends
             var myself = global_me;
             var gclh_build_vip_list = function() {};
@@ -5025,14 +5038,18 @@ var mainGC = function() {
                 };
                 gclh_build_vip_list();
 
-            // TB Listing. Post, Edit, View Cache und TB Logs. Mail schreiben, Bookmark lists, Trackable Inventory. (Nicht post cache log new page.)
+            // TB Listing. Post, Edit, View Cache und TB Logs. Mail schreiben, Bookmark lists, Trackable Inventory, Audit log. (Nicht post cache log new page.)
             // ----------
             } else if (document.location.href.match(/\.com\/track\/details\.aspx/) ||
                        document.location.href.match(/\.com\/(seek|track)\/log\.aspx/) ||
                        document.location.href.match(/\.com\/email\//) ||
                        document.location.href.match(/\.com\/bookmarks\/(view\.aspx\?guid=|bulk\.aspx\?listid=|view\.aspx\?code=)/) ||
+                       document.location.href.match(/\.com\/seek\/auditlog\.aspx/) ||
                        document.location.href.match(/\.com\/my\/inventory\.aspx/)) {
                 var links = $('a[href*="/profile/?guid="]');
+                if(document.location.href.match(/\.com\/seek\/auditlog\.aspx/)){
+                    var links = $('a[href*="/profile?guid="]');
+                }
                 for (var i = 0; i < links.length; i++) {
                     // Wenn es hier um User "In the hands of ..." im TB Listing geht, dann nicht weitermachen weil Username nicht wirklich bekannt ist.
                     if (links[i].id == "ctl00_ContentBody_BugDetails_BugLocation") continue;
