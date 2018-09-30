@@ -1,3 +1,4 @@
+<a href="#v0913" title="GClh II version 0.9.13 (??.??.2018)">v0.9.13</a> &nbsp;
 <a href="#v0912" title="GClh II version 0.9.12 (04.09.2018)">v0.9.12</a> &nbsp;
 <a href="#v0911" title="GClh II version 0.9.11 (25.08.2018)">v0.9.11</a> &nbsp;
 <a href="#v0910" title="GClh II version 0.9.10 (11.08.2018)">v0.9.10</a> &nbsp;
@@ -43,6 +44,19 @@
 
 
 ---
+## v0.9.13:
+<ul>
+	<li>
+		<strong>Fix:</strong> Error in Nearest List, PQ, Recently viewed because of missing last column "Send to GPS" [Issue <a href="https://github.com/2Abendsegler/GClh/issues/844">#844</a>]<br>
+		Thanks to <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a> for the fix.<br>
+	</li>
+</ul>
+(??.??.2018)<br>
+released by <a href="https://www.geocaching.com/profile/?u=Ruko2010">Ruko2010</a><br>
+<br>
+
+
+---
 ## v0.9.12:
 <ul>
 	<li>
@@ -56,6 +70,7 @@
 		<strong>New:</strong> Added GPSVisualizer as an additional map service [Issue <a href="https://github.com/2Abendsegler/GClh/issues/807">#807</a>]<br>
 		Thanks to <a href="https://www.geocaching.com/profile/?u=CachingFox">CachingFox</a> for the implementation.<br>
 		<img src="../images/0.9.12/Screen01.png" alt="Screen01.png"><br>
+		<img src="../images/0.9.12/Screen09.png" alt="Screen09.png"><br>
 	</li>
 	<li>
 		<strong>New:</strong> Adapt the height of the edit field 'Personal Cache Note' to show the complete note [Issues <a href="https://github.com/2Abendsegler/GClh/issues/821">#821</a>, <a href="https://github.com/2Abendsegler/GClh/issues/816">#816</a>]<br>
