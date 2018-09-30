@@ -641,6 +641,42 @@ var mainPGC = function() {
             return false;
         }
 
+        var open_popup_count = 0;
+        var open_popups;
+        function create_pqs(first_run = true){
+            
+            if(first_run){
+                open_popups = new Array(urls_for_pqs_to_create.length);
+                open_popup_count = 0;
+            }
+
+            var already_done_count = 0;
+            
+            for (var i = 0; i < urls_for_pqs_to_create.length; i++) {
+                if(urls_for_pqs_to_create[i] != ''){
+                    if(open_popup_count < 5){
+                        open_popups[i] = window.open(urls_for_pqs_to_create[i],'PQ_'+i,'scrollbars=1,menubar=0,resizable=1,width=500,height=500,left='+(i*40));
+                        urls_for_pqs_to_create[i] = '';
+                        open_popup_count++;
+                    }
+                }else{
+                    already_done_count++;
+                }
+
+                if(typeof open_popups[i] !== 'undefined' && open_popups[i] !== false && open_popups[i].closed){
+                    open_popup_count--;
+                    open_popups[i] = false;
+                }
+            }
+
+            if(already_done_count < urls_for_pqs_to_create.length){
+                // Restart function
+                setTimeout(function(){create_pqs(false);}, 1000);
+            }else{
+                alert('We are done creating the Pocket Querys.');
+            }
+        }
+
         if($('.row table').length > 0){
 
             // Add some CSS
@@ -651,9 +687,7 @@ var mainPGC = function() {
 
             appendCssStyle(css);
 
-            var open_popups = 0;
-            var popups = new Array(100);
-            var timers = new Array(100);
+            var urls_for_pqs_to_create = [];
 
             // Only one of the Multiselects has a value. Either the Country or the Region
 
@@ -784,21 +818,7 @@ var mainPGC = function() {
                                     alert("The URL is too long! Please use fewer countries/regions or you can't use this funciton. Some of the PQs could already be created!");
                                     return false;
                                 }else{
-                                    console.log('Open New Window: '+'PQ_'+(counter-1));
-                                    // window.open(new_url,'PQ_'+(counter-1),'PopUp','PQ_'+(counter-1),'scrollbars=1,menubar=0,resizable=1,width=200,height=300');
-                                    
-                                    var popup_counter = counter;
-                                    popups[popup_counter] = window.open(new_url,'PQ_'+(counter-1),'scrollbars=1,menubar=0,resizable=1,width=500,height=500,left='+((counter-1)*40)); 
-                                    open_popups++;
-                                    timers[popup_counter] = setInterval(function() { 
-                                        // console.log(popup_counter);
-                                        // console.log(popups[popup_counter]);
-                                        if(popups[popup_counter].closed) {
-                                            clearInterval(timers[popup_counter]);
-                                            open_popups--;
-                                            console.log('open windows: ' + open_popups);
-                                        }
-                                    }, 1000);
+                                    urls_for_pqs_to_create.push(new_url);
                                 }
 
                                 // Only one for now...
@@ -806,6 +826,8 @@ var mainPGC = function() {
                             }
                         }
                     });
+
+                    create_pqs();
 
                 }, false);
 
@@ -819,7 +841,7 @@ var mainPGC = function() {
                 td.appendChild(heading_instructions);
                 td.appendChild(document.createTextNode("This function will only work, if you don't set any other filter except country or region!"));
                 td.appendChild(document.createElement("br"));
-                td.appendChild(document.createTextNode("If you click the \"Create PQ(s)\" Button GClh will open as many Pop-ups as PQs should be created. Please wait until all Pop-ups are loaded. They will close themselves after the PQs are created. Please make sure you do not have a Pop-up-Blocker enabled. Otherwise this function will not work. All PQs will get the Name that you enter in the text field and an ongoing number."));
+                td.appendChild(document.createTextNode("If you click the \"Create PQ(s)\" Button GClh will open as many Pop-ups as PQs should be created. Please wait until all Pop-ups are loaded. The number of simultaneously loaded Popups is limited to 5. We will display a message if all PQs are created. The Popups will close themselves after the PQs are created. Please make sure you do not have a Pop-up-Blocker enabled. Otherwise this function will not work. All PQs will get the Name that you enter in the text field and an ongoing number."));
 
                 tr.appendChild(td);
                 tfoot.appendChild(tr);
