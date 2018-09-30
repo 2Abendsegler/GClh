@@ -11796,11 +11796,8 @@ var mainGC = function() {
             });
     }
 // Add Background-Color for Selection in Firefox
-    if(is_page('messagecenter') || is_page('settings')){
-
-        var css = "::-moz-selection {background: #B4D5FF;}"
-        appendCssStyle(css, 'body');
-    }
+    var css = "::-moz-selection {background: #B4D5FF;}"
+    appendCssStyle(css, 'body');
 
 };  // End of mainGC.
 
