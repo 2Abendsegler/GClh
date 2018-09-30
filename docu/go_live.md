@@ -47,10 +47,18 @@ Beachten, dass neue Config Parameter sehr wahrscheinlich in der Standardkonfigur
 https://raw.githubusercontent.com/2Abendsegler/GClh/master/data/config_standard.txt</li>
 <li>$$005 Beachten, dass neue Config Parameter vielleicht eine neue Ausnahmeregeln hervorrufen, die in function rcConfigDataNotInUseDel aufgenommen werden muß.</li></ul>
 
-####  <a id="6de"></a>6. Über GitHub lokales Backup von branch collector erzeugen.
-
-####  <a id="7de"></a>7. Auf branch master transportieren.
+####  <a id="6de"></a>6. Auf branch master transportieren.
 Es kann einige Minuten dauern, bis die neue Version auf dem RAW Link angekommen ist.
+
+####  <a id="7de"></a>7. Für branch master ein neues Release erzeugen
+Folgendes Vorgehen ist empfehlenswert:
+<ul>
+	<li>Code => release => Draft a new release</li>
+	<li>Tag Version: Aktuelle Version, zum Beispiel v0.9.13</li>
+	<li>Target: Master</li>
+	<li>Release Title: Aktuelle Version, zum Beispiel v0.9.13</li>
+	<li>Description kann leer bleiben, da wir unser Changelog haben</li>
+</ul>
 
 ####  <a id="8de"></a>8. Forumsbeitrag für neue Version.
 
