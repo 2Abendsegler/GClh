@@ -3424,7 +3424,7 @@ var mainGC = function() {
 
                     setTimeout(function(){
                         window.close();
-                    },1000);
+                    },10);
                     return true;
                 }
 
