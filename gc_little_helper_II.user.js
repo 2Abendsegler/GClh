@@ -674,6 +674,7 @@ var mainPGC = function() {
                 setTimeout(function(){create_pqs(false);}, 1000);
             }else{
                 alert('We are done creating the Pocket Querys.');
+                $("button[data='PQCreateButton']").prop("disabled",false);
             }
         }
 
@@ -736,6 +737,7 @@ var mainPGC = function() {
                 var button = document.createElement('button');
                 var t = document.createTextNode("Create PQ(s)");
                 button.appendChild(t);
+                button.setAttribute("data", "PQCreateButton");
 
                 var input = document.createElement('input');
                 var input = document.createElement("input");
@@ -748,6 +750,8 @@ var mainPGC = function() {
                     var counter = 0;
                     var language;
                     var data = new Array();
+                    $("button[data='PQCreateButton']").prop("disabled",true);
+
                     $(current_table).find('tr').each(function(){
                         counter++;
                         // console.log($(this));
