@@ -642,10 +642,19 @@ var mainPGC = function() {
         }
 
         var open_popup_count = 0;
-        var open_popups;
+        var open_popups = null;
         function create_pqs(first_run = true){
             
             if(first_run){
+                // Cleanup last run (if there is one!)
+                if((open_popups != null) && (Array.isArray(open_popups))){
+                    for (var i = 0; i < open_popups.length; i++) {
+                        if(typeof open_popups[i] !== 'undefined' && open_popups[i] !== false){
+                            open_popups[i].close();
+                        }
+                    }
+                }
+
                 open_popups = new Array(urls_for_pqs_to_create.length);
                 open_popup_count = 0;
             }
@@ -750,6 +759,10 @@ var mainPGC = function() {
                     var counter = 0;
                     var language;
                     var data = new Array();
+
+                    // Cleanup old Data (if there is any)
+                    urls_for_pqs_to_create = [];
+
                     $("button[data='PQCreateButton']").prop("disabled",true);
 
                     $(current_table).find('tr').each(function(){
