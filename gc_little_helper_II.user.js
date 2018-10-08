@@ -678,8 +678,11 @@ var mainPGC = function() {
                 }
             }
 
-            if(already_done_count < urls_for_pqs_to_create.length){
-                // Restart function
+            if(
+                (already_done_count < urls_for_pqs_to_create.length) || 
+                (open_popup_count > 0)
+            ){
+                // Restart function until everything is finished
                 setTimeout(function(){create_pqs(false);}, 1000);
             }else{
                 alert('We are done creating the Pocket Querys.');
