@@ -50,10 +50,71 @@
 		<strong>New:</strong> Project-GC - PQ-Splitter: You can now configurate how often the querys should run and choose between primary and secondary Output Email [Issue <a href="https://github.com/2Abendsegler/GClh/issues/861">#861</a>]<br>
 		Thanks to <a href="https://www.geocaching.com/profile/?u=Ruko2010">Ruko2010</a> for the implementation.<br>
 		<img src="../images/0.9.13/Screen01.png" alt="Screen01.png"><br>
+  </li>
+  <li>
+		<strong>New:</strong> Added VIP/VUP and Message Icon behind Usernames on "Read the audit Log"-page (this page is only visible for own <i>premium caches</i>) [Issue <a href="https://github.com/2Abendsegler/GClh/issues/874">#874</a>]<br>
+		Thanks to <a href="https://www.geocaching.com/profile/?u=Ruko2010">Ruko2010</a> for the implementation.<br>
+		<img src="../images/0.9.13/Screen02.png" alt="Screen02.png"><br>
+	</li>
+	<li>
+		<strong>Improvement:</strong> PQ-Splitter (Project GC) now only opens 5 Popups at a time to reduce the browsers resource consumption [Issue <a href="https://github.com/2Abendsegler/GClh/issues/842">#842</a>]<br>
+		Thanks to <a href="https://www.geocaching.com/profile/?u=Ruko2010">Ruko2010</a> for the implementation.<br>
+	</li>
+	<li>
+		<strong>Improvement:</strong> Selection in Message Center and Profile Settings is not visible in Firefox [Issue <a href="https://github.com/2Abendsegler/GClh/issues/878">#878</a>]<br>
+		Thanks to <a href="https://www.geocaching.com/profile/?u=Ruko2010">Ruko2010</a> for the implementation.<br>
 	</li>
 	<li>
 		<strong>Fix:</strong> Error in Nearest List, PQ, Recently viewed because of missing last column "Send to GPS" [Issue <a href="https://github.com/2Abendsegler/GClh/issues/844">#844</a>]<br>
 		Thanks to <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a> for the fix.<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> Edit and Image Links to own caches doesn't shown [Issue <a href="https://github.com/2Abendsegler/GClh/issues/810">#810</a>]<br>
+		Thanks to <a href="https://www.geocaching.com/profile/?u=Ruko2010">Ruko2010</a> for the fix.<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> Loading logs do not stop after click to button show all logs [Issue <a href="https://github.com/2Abendsegler/GClh/issues/825">#825</a>]<br>
+		Thanks to <a href="https://www.geocaching.com/profile/?u=Ruko2010">Ruko2010</a> for the fix.<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> Disable Loading Logs by GC on Product Listing Page [Issue <a href="https://github.com/2Abendsegler/GClh/issues/832">#832</a>]<br>
+		Thanks to <a href="https://www.geocaching.com/profile/?u=Ruko2010">Ruko2010</a> for the fix.<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> PQ error because of missing last column "Send to GPS". [Issue <a href="https://github.com/2Abendsegler/GClh/issues/844">#844</a>]<br>
+		Thanks to <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a> for the fix.<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> Improved Elevation Service Error Handling [Issue <a href="https://github.com/2Abendsegler/GClh/issues/847">#847</a>]<br>
+		Thanks to <a href="https://www.geocaching.com/profile/?u=CachingFoX">CachingFoX</a> for the fix.<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> Adapt the height of the Personal Cache Note does not work properly [Issue <a href="https://github.com/2Abendsegler/GClh/issues/848">#848</a>]<br>
+		Thanks to <a href="https://www.geocaching.com/profile/?u=CachingFoX">CachingFoX</a> for the fix.<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> Added Color in Configuration and Documentation in Changelog for new parameter "Show GPSVisualizer" introduced in 0.9.12 [Issues <a href="https://github.com/2Abendsegler/GClh/issues/849">#849</a>, <a href="https://github.com/2Abendsegler/GClh/issues/850">#850</a>]<br>
+		Thanks to <a href="https://www.geocaching.com/profile/?u=CachingFoX">CachingFoX</a> and <a href="https://www.geocaching.com/profile/?u=Ruko2010">Ruko2010</a> for the fixes.<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> Preselection map for BRouter does not work [Issue <a href="https://github.com/2Abendsegler/GClh/issues/852">#852</a>]<br>
+		Thanks to <a href="https://www.geocaching.com/profile/?u=CachingFoX">CachingFoX</a> for the fix.<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> Error on Profile (Settings) [Issue <a href="https://github.com/2Abendsegler/GClh/issues/854">#854</a>]<br>
+		Thanks to <a href="https://www.geocaching.com/profile/?u=CachingFoX">CachingFoX</a> for the fix.<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> Need to scroll down to see image description in pop-up mode [Issue <a href="https://github.com/2Abendsegler/GClh/issues/862">#862</a>]<br>
+		Thanks to <a href="https://www.geocaching.com/profile/?u=Ruko2010">Ruko2010</a> for the fix.<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> Flopps Maps Link in Listing: Link to Google Maps Satellite not working [Issue <a href="https://github.com/2Abendsegler/GClh/issues/868">#868</a>]<br>
+		Thanks to <a href="https://www.geocaching.com/profile/?u=Ruko2010">Ruko2010</a> for the fix.<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> Showing Weekday throws Error on unpublished Events [Issue <a href="https://github.com/2Abendsegler/GClh/issues/876">#876</a>]<br>
+		Thanks to <a href="https://www.geocaching.com/profile/?u=Ruko2010">Ruko2010</a> for the fix.<br>
 	</li>
 </ul>
 (??.??.2018)<br>
