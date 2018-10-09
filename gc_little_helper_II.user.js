@@ -607,6 +607,33 @@ var mainPGC = function() {
             tag.appendChild(style);
         }
 
+        function createRadioElement( name, id = false, checked = false ) {
+            var radioInput;
+            try {
+                var radioHtml = '<input type="radio" name="' + name + '"';
+                if ( checked ) {
+                    radioHtml += ' checked="checked"';
+                }
+                if (id) {
+                    radioHtml += ' id="' + id + '"';
+                }
+                radioHtml += '/>';
+                radioInput = document.createElement(radioHtml);
+            } catch( err ) {
+                radioInput = document.createElement('input');
+                radioInput.setAttribute('type', 'radio');
+                radioInput.setAttribute('name', name);
+                if ( checked ) {
+                    radioInput.setAttribute('checked', 'checked');
+                }
+                if ( id ) {
+                    radioInput.setAttribute('id', id);
+                }
+            }
+
+            return radioInput;
+        }
+
         function getMonthNumber(lang, input){
             if(lang = 'DE'){
                 if(input == 'Januar') return 1;
@@ -757,6 +784,11 @@ var mainPGC = function() {
                                     pq_name = $("#pq_name_"+table_index).val()+"_0"+(counter-1);
                                 }
 
+                                var temp_id = $("input[name=how_often_"+table_index+"]:checked").attr('id');
+                                var how_often = temp_id.substr(temp_id.lastIndexOf("_")+1);
+
+                                var email = $("#output_email_"+table_index).val();
+
                                 var param =
                                     {
                                         PQSplit: 1,
@@ -764,8 +796,11 @@ var mainPGC = function() {
                                         t: type,
                                         s: name,
                                         c: cache_count,
-                                        sm: start_month,
-                                        sd: start_day,
+                                        ho: how_often,
+                                        e: email,
+                                        
+                                        sm: start_month, 
+                                        sd: start_day, 
                                         sy: start_year,
 
                                         em: end_month,
@@ -804,6 +839,36 @@ var mainPGC = function() {
                 td.appendChild(document.createTextNode("This function will only work, if you don't set any other filter except country or region!"));
                 td.appendChild(document.createElement("br"));
                 td.appendChild(document.createTextNode("If you click the \"Create PQ(s)\" Button GClh will open as many Pop-ups as PQs should be created. Please wait until all Pop-ups are loaded. They will close themselves after the PQs are created. Please make sure you do not have a Pop-up-Blocker enabled. Otherwise this function will not work. All PQs will get the Name that you enter in the text field and an ongoing number."));
+
+                var heading_config = document.createElement("h5");
+                heading_config.appendChild(document.createTextNode("Configuration"));
+                td.appendChild(heading_config);
+
+                td.appendChild(document.createTextNode("Choose how often your query should run:"));
+                td.appendChild(document.createElement("br"));
+
+                td.appendChild(createRadioElement('how_often_'+table_index, 'how_often_'+table_index+'_1', true));
+                td.appendChild(document.createTextNode(" Uncheck the day of the week after the query runs"));
+                td.appendChild(document.createElement("br"));
+                td.appendChild(createRadioElement('how_often_'+table_index, 'how_often_'+table_index+'_2', false));
+                td.appendChild(document.createTextNode(" Run this query every week on the days checked"));
+                td.appendChild(document.createElement("br"));
+                td.appendChild(createRadioElement('how_often_'+table_index, 'how_often_'+table_index+'_3', false));
+                td.appendChild(document.createTextNode(" Run this query once then delete it"));
+                td.appendChild(document.createElement("br"));
+                td.appendChild(document.createElement("br"));
+
+                td.appendChild(document.createTextNode("Output to Email:"));
+                td.appendChild(document.createElement("br"));
+
+                var output_email = document.createElement("select");
+                output_email.setAttribute("id", "output_email_"+table_index);
+                output_email.appendChild(new Option("Primary", "1"));
+                output_email.appendChild(new Option("Secondary", "2"));
+                td.appendChild(output_email);
+                td.appendChild(document.createElement("br"));
+                td.appendChild(document.createTextNode("Attention: This will only work if you have 2 or more Email addresses in your Profile."));
+                td.appendChild(document.createElement("br"));
 
                 tr.appendChild(td);
                 tfoot.appendChild(tr);
@@ -3392,6 +3457,29 @@ var mainGC = function() {
 
                 $('#ctl00_ContentBody_tbName').val(findGetParameter('n'));
                 $('#ctl00_ContentBody_tbResults').val(findGetParameter('c'));
+
+                // How often should the query run
+                switch(findGetParameter('ho')){
+                    case "1":
+                        $("#ctl00_ContentBody_rbRunOption_0").prop("checked", true);
+                        break;
+
+                    case "2":
+                        $("#ctl00_ContentBody_rbRunOption_1").prop("checked", true);
+                        break;
+
+                    case "3":
+                        $("#ctl00_ContentBody_rbRunOption_2").prop("checked", true);
+                        break;
+                }
+
+                // Select the output Email Address
+                if(findGetParameter('e') == 2){
+                    // look if we have secondary email
+                    if($('#ctl00_ContentBody_ddlAltEmails')){
+                        $('#ctl00_ContentBody_ddlAltEmails option:eq(1)').attr('selected', 'selected');
+                    }
+                }
 
                 var type = findGetParameter('t');
                 var cr_name = findGetParameter('s');
