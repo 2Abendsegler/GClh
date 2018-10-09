@@ -668,6 +668,55 @@ var mainPGC = function() {
             return false;
         }
 
+        var open_popup_count = 0;
+        var open_popups = null;
+        function create_pqs(first_run = true){
+            
+            if(first_run){
+                // Cleanup last run (if there is one!)
+                if((open_popups != null) && (Array.isArray(open_popups))){
+                    for (var i = 0; i < open_popups.length; i++) {
+                        if(typeof open_popups[i] !== 'undefined' && open_popups[i] !== false){
+                            open_popups[i].close();
+                        }
+                    }
+                }
+
+                open_popups = new Array(urls_for_pqs_to_create.length);
+                open_popup_count = 0;
+            }
+
+            var already_done_count = 0;
+            
+            for (var i = 0; i < urls_for_pqs_to_create.length; i++) {
+                if(urls_for_pqs_to_create[i] != ''){
+                    if(open_popup_count < 5){
+                        open_popups[i] = window.open(urls_for_pqs_to_create[i],'PQ_'+i,'scrollbars=1,menubar=0,resizable=1,width=500,height=500,left='+(i*40));
+                        urls_for_pqs_to_create[i] = '';
+                        open_popup_count++;
+                    }
+                }else{
+                    already_done_count++;
+                }
+
+                if(typeof open_popups[i] !== 'undefined' && open_popups[i] !== false && open_popups[i].closed){
+                    open_popup_count--;
+                    open_popups[i] = false;
+                }
+            }
+
+            if(
+                (already_done_count < urls_for_pqs_to_create.length) || 
+                (open_popup_count > 0)
+            ){
+                // Restart function until everything is finished
+                setTimeout(function(){create_pqs(false);}, 1000);
+            }else{
+                alert('We are done creating the Pocket Querys.');
+                $("button[data='PQCreateButton']").prop("disabled",false);
+            }
+        }
+
         if($('.row table').length > 0){
 
             // Add some CSS
@@ -678,7 +727,9 @@ var mainPGC = function() {
 
             appendCssStyle(css);
 
-            // Only one of the Multiselcts has a value. Either the Country or the Region
+            var urls_for_pqs_to_create = [];
+
+            // Only one of the Multiselects has a value. Either the Country or the Region
 
             // Check if other Filters are set!
 
@@ -725,6 +776,7 @@ var mainPGC = function() {
                 var button = document.createElement('button');
                 var t = document.createTextNode("Create PQ(s)");
                 button.appendChild(t);
+                button.setAttribute("data", "PQCreateButton");
 
                 var input = document.createElement('input');
                 var input = document.createElement("input");
@@ -737,9 +789,15 @@ var mainPGC = function() {
                     var counter = 0;
                     var language;
                     var data = new Array();
+
+                    // Cleanup old Data (if there is any)
+                    urls_for_pqs_to_create = [];
+
+                    $("button[data='PQCreateButton']").prop("disabled",true);
+
                     $(current_table).find('tr').each(function(){
                         counter++;
-                        console.log($(this));
+                        // console.log($(this));
                         if(counter == 1){
                             // first tr, determine Language
                             var lang_text = $(this).children().eq(1).text();
@@ -815,9 +873,7 @@ var mainPGC = function() {
                                     alert("The URL is too long! Please use fewer countries/regions or you can't use this funciton. Some of the PQs could already be created!");
                                     return false;
                                 }else{
-                                    console.log('Open New Window: '+'PQ_'+(counter-1));
-                                    // window.open(new_url,'PQ_'+(counter-1),'PopUp','PQ_'+(counter-1),'scrollbars=1,menubar=0,resizable=1,width=200,height=300');
-                                    window.open(new_url,'PQ_'+(counter-1),'scrollbars=1,menubar=0,resizable=1,width=500,height=500,left='+((counter-1)*40));
+                                    urls_for_pqs_to_create.push(new_url);
                                 }
 
                                 // Only one for now...
@@ -825,6 +881,8 @@ var mainPGC = function() {
                             }
                         }
                     });
+
+                    create_pqs();
 
                 }, false);
 
@@ -838,7 +896,7 @@ var mainPGC = function() {
                 td.appendChild(heading_instructions);
                 td.appendChild(document.createTextNode("This function will only work, if you don't set any other filter except country or region!"));
                 td.appendChild(document.createElement("br"));
-                td.appendChild(document.createTextNode("If you click the \"Create PQ(s)\" Button GClh will open as many Pop-ups as PQs should be created. Please wait until all Pop-ups are loaded. They will close themselves after the PQs are created. Please make sure you do not have a Pop-up-Blocker enabled. Otherwise this function will not work. All PQs will get the Name that you enter in the text field and an ongoing number."));
+                td.appendChild(document.createTextNode("If you click the \"Create PQ(s)\" Button GClh will open as many Pop-ups as PQs should be created. Please wait until all Pop-ups are loaded. The number of simultaneously loaded Popups is limited to 5. We will display a message if all PQs are created. The Popups will close themselves after the PQs are created. Please make sure you do not have a Pop-up-Blocker enabled. Otherwise this function will not work. All PQs will get the Name that you enter in the text field and an ongoing number."));
 
                 var heading_config = document.createElement("h5");
                 heading_config.appendChild(document.createTextNode("Configuration"));
@@ -3451,7 +3509,7 @@ var mainGC = function() {
 
                     setTimeout(function(){
                         window.close();
-                    },1000);
+                    },10);
                     return true;
                 }
 
