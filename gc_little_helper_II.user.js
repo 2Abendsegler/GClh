@@ -4031,7 +4031,13 @@ var mainGC = function() {
         sums["Found"] = table.find('tbody tr').find('img[src*="found"]').length;
         sums["Archived"] = table.find('tbody tr').find('span.Strike.OldWarning,span.Strike.Warning').length;
         sums["Deactivated"] = table.find('tbody tr').find('span.Strike:not(.OldWarning,.Warning)').length;
-        sums["PastEvents"] = table.find('tbody tr').find('span.Strike:not(.OldWarning,.Warning)').length;
+        
+        sums["PastEvents"] = 0;
+        checkboxes.each(function() {
+            if(isPastEvent($(this).closest('tr').find("td:nth-of-type(5) a").html())){
+                sums["PastEvents"]++;
+            }
+        });
     }
     // Events für Checkboxen setzen.
     function sumsSetEventsForCheckboxes(checkboxes) {
@@ -4110,7 +4116,8 @@ var mainGC = function() {
             if (checkbox.checked) sums["chDeactivated"]++;
             else sums["chDeactivated"]--;
         }
-        if ($('#'+cbId).closest('tr').find('span.Strike:not(.OldWarning,.Warning)').length > 0) {
+
+        if (isPastEvent($('#'+cbId).closest('tr').find("td:nth-of-type(5) a").html())){
             if (checkbox.checked) sums["chPastEvents"]++;
             else sums["chPastEvents"]--;
         }
@@ -4123,7 +4130,14 @@ var mainGC = function() {
         sums["chFound"] = table.find('tbody tr').find('img[src*="found"]').closest('tr').find(checkbox_selector + ':checked').length;
         sums["chArchived"] = table.find('tbody tr').find('span.Strike.OldWarning,span.Strike.Warning').closest('tr').find(checkbox_selector + ':checked').length;
         sums["chDeactivated"] = table.find('tbody tr').find('span.Strike:not(.OldWarning,.Warning)').closest('tr').find(checkbox_selector + ':checked').length;
-        sums["chPastEvents"] = table.find('tbody tr').find('span.Strike:not(.OldWarning,.Warning)').closest('tr').find(checkbox_selector + ':checked').length;
+        
+        sums["chPastEvents"] = 0;
+        checkboxes.each(function() {
+            if(isPastEvent($(this).closest('tr').find("td:nth-of-type(5) a").html())){
+                if (this.checked) sums["chPastEvents"]++;
+            }
+        });
+
         sumsChangeAllFields();
     }
 
