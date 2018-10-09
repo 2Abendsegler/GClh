@@ -3960,23 +3960,11 @@ var mainGC = function() {
                 }));
                 sumsOutputFields(button_wrapper, "Deactivated");
 
-                var today = new Date();
-
                 button_wrapper.append(button_template.clone().text('Past Events').click(function() {
                     
                     checkboxes.each(function() {
-                        var text = $(this).closest('tr').find("td:nth-of-type(5) a").html();
-                        // Search for the last Date that looks like this: (09/26/2018)
-                        var matches = text.match(/(\s\((0[1-9]|1[0-2])\/(0[1-9]|[12]\d|3[01])\/[12]\d{3}\)$)/gm);
-                        if(matches != null){
-                            // last match is our date we search for
-                            var text_date = matches[matches.length-1];
-                            // remove unwanted chars:
-                            text_date = text_date.replace(" ","").replace("(","").replace(")","");
-                            var date = Date.parse(text_date);
-                            if(today.getTime() > date){
-                                this.checked = !this.checked;
-                            }
+                        if(isPastEvent($(this).closest('tr').find("td:nth-of-type(5) a").html())){
+                            this.checked = !this.checked;
                         }
                     });
                     sumsCountCheckedAll();
@@ -3992,6 +3980,43 @@ var mainGC = function() {
             }
         } catch(e) {gclh_error("Add buttons to bookmark list and watchlist",e);}
     }
+
+    //Check if Cache is a pastEvent
+    function isPastEvent(linktext){
+
+        // Mega/Giga Events: we can only detect archived Mega / Giga Events because they don't write the Date after the Cachename
+        if(
+            ((linktext.indexOf('alt="Mega-Event Cache"') != -1) && (linktext.indexOf('OldWarning Strike') != -1)) ||
+            ((linktext.indexOf('alt="Giga-Event Cache"') != -1) && (linktext.indexOf('OldWarning Strike') != -1))
+        ){
+            return true;
+        }
+
+        if(
+            (linktext.indexOf('alt="Event Cache"') == -1) &&
+            (linktext.indexOf('alt="Cache In Trash Out Event"') == -1)
+        ){
+            // No Event Icon!
+            return false;
+        }
+
+        var today = new Date();
+        // Search for the last Date that looks like this: (09/26/2018)
+        var matches = linktext.match(/(\s\((0[1-9]|1[0-2])\/(0[1-9]|[12]\d|3[01])\/[12]\d{3}\)$)/gm);
+        if(matches != null){
+            // last match is our date we search for
+            var text_date = matches[matches.length-1];
+            // remove unwanted chars:
+            text_date = text_date.replace(" ","").replace("(","").replace(")","");
+            var date = Date.parse(text_date);
+            if(today.getTime() > date){
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     // Summenfelder Anzahl Caches definieren, Configparameter setzen.
     function sumsCreateFields(configParameter) {
         var sums = new Object();
