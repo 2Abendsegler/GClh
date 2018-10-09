@@ -4155,6 +4155,18 @@ var mainGC = function() {
                     sumsCountCheckedAll();
                 }));
                 sumsOutputFields(button_wrapper, "Deactivated");
+
+                button_wrapper.append(button_template.clone().text('Past Events').click(function() {
+                    
+                    checkboxes.each(function() {
+                        if(isPastEvent($(this).closest('tr').find("td:nth-of-type(5) a").html())){
+                            this.checked = !this.checked;
+                        }
+                    });
+                    sumsCountCheckedAll();
+                }));
+                sumsOutputFields(button_wrapper, "PastEvents");
+                
                 var tfoot = $('<tfoot />').append($('<tr />').append(button_wrapper));
                 table.append(tfoot);
                 checkboxes.prop('checked', false);
@@ -4164,10 +4176,47 @@ var mainGC = function() {
             }
         } catch(e) {gclh_error("Add buttons to bookmark list and watchlist",e);}
     }
+
+    //Check if Cache is a pastEvent
+    function isPastEvent(linktext){
+
+        // Mega/Giga Events: we can only detect archived Mega / Giga Events because they don't write the Date after the Cachename
+        if(
+            ((linktext.indexOf('alt="Mega-Event Cache"') != -1) && (linktext.indexOf('OldWarning Strike') != -1)) ||
+            ((linktext.indexOf('alt="Giga-Event Cache"') != -1) && (linktext.indexOf('OldWarning Strike') != -1))
+        ){
+            return true;
+        }
+
+        if(
+            (linktext.indexOf('alt="Event Cache"') == -1) &&
+            (linktext.indexOf('alt="Cache In Trash Out Event"') == -1)
+        ){
+            // No Event Icon!
+            return false;
+        }
+
+        var today = new Date();
+        // Search for the last Date that looks like this: (09/26/2018)
+        var matches = linktext.match(/(\s\((0[1-9]|1[0-2])\/(0[1-9]|[12]\d|3[01])\/[12]\d{3}\)$)/gm);
+        if(matches != null){
+            // last match is our date we search for
+            var text_date = matches[matches.length-1];
+            // remove unwanted chars:
+            text_date = text_date.replace(" ","").replace("(","").replace(")","");
+            var date = Date.parse(text_date);
+            if(today.getTime() > date){
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     // Summenfelder Anzahl Caches definieren, Configparameter setzen.
     function sumsCreateFields(configParameter) {
         var sums = new Object();
-        sums["All"] = sums["chAll"] = sums["Found"] = sums["chFound"] = sums["Archived"] = sums["chArchived"] = sums["Deactivated"] = sums["chDeactivated"] = 0;
+        sums["All"] = sums["chAll"] = sums["Found"] = sums["chFound"] = sums["Archived"] = sums["chArchived"] = sums["Deactivated"] = sums["chDeactivated"] = sums["chPastEvents"] = 0;
         sums["configParameter"] = configParameter;
       return sums;
     }
@@ -4178,6 +4227,13 @@ var mainGC = function() {
         sums["Found"] = table.find('tbody tr').find('img[src*="found"]').length;
         sums["Archived"] = table.find('tbody tr').find('span.Strike.OldWarning,span.Strike.Warning').length;
         sums["Deactivated"] = table.find('tbody tr').find('span.Strike:not(.OldWarning,.Warning)').length;
+        
+        sums["PastEvents"] = 0;
+        checkboxes.each(function() {
+            if(isPastEvent($(this).closest('tr').find("td:nth-of-type(5) a").html())){
+                sums["PastEvents"]++;
+            }
+        });
     }
     // Events für Checkboxen setzen.
     function sumsSetEventsForCheckboxes(checkboxes) {
@@ -4202,6 +4258,7 @@ var mainGC = function() {
         sumsChangeFields("Found", sums["chFound"], sums["Found"]);
         sumsChangeFields("Archived", sums["chArchived"], sums["Archived"]);
         sumsChangeFields("Deactivated", sums["chDeactivated"], sums["Deactivated"]);
+        sumsChangeFields("PastEvents", sums["chPastEvents"], sums["PastEvents"]);
     }
     function sumsChangeFields(kind, sums_ch, sums) {
         if (sums["configParameter"] == false) return;
@@ -4221,11 +4278,12 @@ var mainGC = function() {
         sums["chFound"] = sums["Found"];
         sums["chArchived"] = sums["Archived"];
         sums["chDeactivated"] = sums["Deactivated"];
+        sums["chPastEvents"] = sums["PastEvents"];
         sumsChangeAllFields();
     }
     function sumsCountChecked_SelectionNone() {
         if (sums["configParameter"] == false) return;
-        sums["chAll"] = sums["chFound"] = sums["chArchived"] = sums["chDeactivated"] = 0;
+        sums["chAll"] = sums["chFound"] = sums["chArchived"] = sums["chDeactivated"] = sums["chPastEvents"] = 0;
         sumsChangeAllFields();
     }
     function sumsCountChecked_SelectionInvert() {
@@ -4234,6 +4292,7 @@ var mainGC = function() {
         sums["chFound"] = sums["Found"] - sums["chFound"];
         sums["chArchived"] = sums["Archived"] - sums["chArchived"];
         sums["chDeactivated"] = sums["Deactivated"] - sums["chDeactivated"];
+        sums["chPastEvents"] = sums["PastEvents"] - sums["chPastEvents"];
         sumsChangeAllFields();
     }
     // Anzahl markierte Caches für Click auf Checkbox.
@@ -4253,6 +4312,11 @@ var mainGC = function() {
             if (checkbox.checked) sums["chDeactivated"]++;
             else sums["chDeactivated"]--;
         }
+
+        if (isPastEvent($('#'+cbId).closest('tr').find("td:nth-of-type(5) a").html())){
+            if (checkbox.checked) sums["chPastEvents"]++;
+            else sums["chPastEvents"]--;
+        }
         sumsChangeAllFields();
     }
     // Anzahl markierter Caches für alles.
@@ -4262,6 +4326,14 @@ var mainGC = function() {
         sums["chFound"] = table.find('tbody tr').find('img[src*="found"]').closest('tr').find(checkbox_selector + ':checked').length;
         sums["chArchived"] = table.find('tbody tr').find('span.Strike.OldWarning,span.Strike.Warning').closest('tr').find(checkbox_selector + ':checked').length;
         sums["chDeactivated"] = table.find('tbody tr').find('span.Strike:not(.OldWarning,.Warning)').closest('tr').find(checkbox_selector + ':checked').length;
+        
+        sums["chPastEvents"] = 0;
+        checkboxes.each(function() {
+            if(isPastEvent($(this).closest('tr').find("td:nth-of-type(5) a").html())){
+                if (this.checked) sums["chPastEvents"]++;
+            }
+        });
+
         sumsChangeAllFields();
     }
 
