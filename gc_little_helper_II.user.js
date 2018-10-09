@@ -2,7 +2,7 @@
 // @name             GC little helper II
 // @namespace        http://www.amshove.net
 //--> $$000
-// @version          0.9.12
+// @version          0.9.13
 //<-- $$000
 // @include          http*://www.geocaching.com/*
 // @include          http*://maps.google.tld/*
@@ -896,8 +896,15 @@ var mainPGC = function() {
                 td.appendChild(heading_instructions);
                 td.appendChild(document.createTextNode("This function will only work, if you don't set any other filter except country or region!"));
                 td.appendChild(document.createElement("br"));
-                td.appendChild(document.createTextNode("If you click the \"Create PQ(s)\" Button GClh will open as many Pop-ups as PQs should be created. Please wait until all Pop-ups are loaded. The number of simultaneously loaded Popups is limited to 5. We will display a message if all PQs are created. The Popups will close themselves after the PQs are created. Please make sure you do not have a Pop-up-Blocker enabled. Otherwise this function will not work. All PQs will get the Name that you enter in the text field and an ongoing number."));
-
+                td.appendChild(document.createTextNode("If you click the \"Create PQ(s)\" Button GClh will open as many Pop-ups as PQs should be created. Please wait until all Pop-ups are loaded. The number of simultaneously loaded Popups is limited to 5. We will display a message if all PQs are created. The Popups will close themselves after the PQs are created. "));
+                
+                var span = document.createElement('span');
+                span.innerHTML = 'Please make sure you do not have a Pop-up-Blocker enabled. Otherwise this function will not work as expected. ';
+                span.style.fontWeight = 'bold';
+                td.appendChild(span);
+                
+                td.appendChild(document.createTextNode("All PQs will get the Name that you enter in the text field and an ongoing number."));
+                
                 var heading_config = document.createElement("h5");
                 heading_config.appendChild(document.createTextNode("Configuration"));
                 td.appendChild(heading_config);
