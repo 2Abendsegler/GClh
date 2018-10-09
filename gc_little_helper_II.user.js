@@ -5554,7 +5554,7 @@ var mainGC = function() {
                     for (var j = 0; j < newInitalLogs.length && j < tbody.children.length; j++) {
                         unsafeWindow.$(tbody.children[j]).replaceWith(newInitalLogs[j]);
                     }
-                    unsafeWindow.$('a.tb_images').fancybox({'type': 'image', 'titlePostion': 'inside'});
+                    unsafeWindow.$('a.tb_images').fancybox({'type': 'image', 'titlePosition': 'inside'});
                     gclh_add_vip_icon();
                     setLinesColorInCacheListing();
                 }
@@ -5639,7 +5639,7 @@ var mainGC = function() {
                                 }
                                 global_num++;  // Num kommt vom vorherigen laden "aller" logs.
                             }
-                            unsafeWindow.$('a.tb_images').fancybox({'type': 'image', 'titlePostion': 'inside'});
+                            unsafeWindow.$('a.tb_images').fancybox({'type': 'image', 'titlePosition': 'inside'});
                             gclh_add_vip_icon();
                             setLinesColorInCacheListing();
                             if (!settings_hide_top_button) $("#topScroll").fadeIn();
@@ -5664,7 +5664,7 @@ var mainGC = function() {
                                     unsafeWindow.$(document.getElementById("cache_logs_table2") || document.getElementById("cache_logs_table")).append(newBody.children());
                                 }
                             }
-                            unsafeWindow.$('a.tb_images').fancybox({'type': 'image', 'titlePostion': 'inside'});
+                            unsafeWindow.$('a.tb_images').fancybox({'type': 'image', 'titlePosition': 'inside'});
                             gclh_add_vip_icon();
                             setLinesColorInCacheListing();
                             setMarkerDisableDynamicLogLoad();
@@ -5702,7 +5702,7 @@ var mainGC = function() {
                             unsafeWindow.$(document.getElementById("cache_logs_table2") || document.getElementById("cache_logs_table")).append(newBody.children());
                         }
                     }
-                    unsafeWindow.$('a.tb_images').fancybox({'type': 'image', 'titlePostion': 'inside'});
+                    unsafeWindow.$('a.tb_images').fancybox({'type': 'image', 'titlePosition': 'inside'});
                     gclh_add_vip_icon();
                     setLinesColorInCacheListing();
                     setMarkerDisableDynamicLogLoad();
@@ -5769,7 +5769,7 @@ var mainGC = function() {
                             unsafeWindow.$(document.getElementById("cache_logs_table2") || document.getElementById("cache_logs_table")).append(newBody.children());
                         }
                     }
-                    unsafeWindow.$('a.tb_images').fancybox({'type': 'image', 'titlePostion': 'inside'});
+                    unsafeWindow.$('a.tb_images').fancybox({'type': 'image', 'titlePosition': 'inside'});
                     gclh_add_vip_icon();
                     setLinesColorInCacheListing();
                     setMarkerDisableDynamicLogLoad();
@@ -5887,7 +5887,7 @@ var mainGC = function() {
                             unsafeWindow.$(document.getElementById("cache_logs_table2") || document.getElementById("cache_logs_table")).append(newBody.children());
                         }
                     }
-                    unsafeWindow.$('a.tb_images').fancybox({'type': 'image', 'titlePostion': 'inside'});
+                    unsafeWindow.$('a.tb_images').fancybox({'type': 'image', 'titlePosition': 'inside'});
                     gclh_dynamic_load(logs, num);
                     if (settings_show_vip_list) {
                         gclh_build_vip_list();
