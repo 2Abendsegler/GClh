@@ -11852,6 +11852,9 @@ var mainGC = function() {
                 console.log(error);
             });
     }
+// Add Background-Color for Selection in Firefox
+    var css = "::-moz-selection {background: #B4D5FF;}"
+    appendCssStyle(css, 'body');
 
 };  // End of mainGC.
 
