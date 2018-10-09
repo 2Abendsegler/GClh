@@ -47,6 +47,11 @@
 ## v0.9.13:
 <ul>
 	<li>
+		<strong>New:</strong> Project-GC - PQ-Splitter: You can now configurate how often the querys should run and choose between primary and secondary Output Email [Issue <a href="https://github.com/2Abendsegler/GClh/issues/861">#861</a>]<br>
+		Thanks to <a href="https://www.geocaching.com/profile/?u=Ruko2010">Ruko2010</a> for the implementation.<br>
+		<img src="../images/0.9.13/Screen01.png" alt="Screen01.png"><br>
+  </li>
+  <li>
 		<strong>New:</strong> Added VIP/VUP and Message Icon behind Usernames on "Read the audit Log"-page (this page is only visible for own <i>premium caches</i>) [Issue <a href="https://github.com/2Abendsegler/GClh/issues/874">#874</a>]<br>
 		Thanks to <a href="https://www.geocaching.com/profile/?u=Ruko2010">Ruko2010</a> for the implementation.<br>
 		<img src="../images/0.9.13/Screen02.png" alt="Screen02.png"><br>

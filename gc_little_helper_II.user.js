@@ -607,6 +607,33 @@ var mainPGC = function() {
             tag.appendChild(style);
         }
 
+        function createRadioElement( name, id = false, checked = false ) {
+            var radioInput;
+            try {
+                var radioHtml = '<input type="radio" name="' + name + '"';
+                if ( checked ) {
+                    radioHtml += ' checked="checked"';
+                }
+                if (id) {
+                    radioHtml += ' id="' + id + '"';
+                }
+                radioHtml += '/>';
+                radioInput = document.createElement(radioHtml);
+            } catch( err ) {
+                radioInput = document.createElement('input');
+                radioInput.setAttribute('type', 'radio');
+                radioInput.setAttribute('name', name);
+                if ( checked ) {
+                    radioInput.setAttribute('checked', 'checked');
+                }
+                if ( id ) {
+                    radioInput.setAttribute('id', id);
+                }
+            }
+
+            return radioInput;
+        }
+
         function getMonthNumber(lang, input){
             if(lang = 'DE'){
                 if(input == 'Januar') return 1;
@@ -641,6 +668,55 @@ var mainPGC = function() {
             return false;
         }
 
+        var open_popup_count = 0;
+        var open_popups = null;
+        function create_pqs(first_run = true){
+            
+            if(first_run){
+                // Cleanup last run (if there is one!)
+                if((open_popups != null) && (Array.isArray(open_popups))){
+                    for (var i = 0; i < open_popups.length; i++) {
+                        if(typeof open_popups[i] !== 'undefined' && open_popups[i] !== false){
+                            open_popups[i].close();
+                        }
+                    }
+                }
+
+                open_popups = new Array(urls_for_pqs_to_create.length);
+                open_popup_count = 0;
+            }
+
+            var already_done_count = 0;
+            
+            for (var i = 0; i < urls_for_pqs_to_create.length; i++) {
+                if(urls_for_pqs_to_create[i] != ''){
+                    if(open_popup_count < 5){
+                        open_popups[i] = window.open(urls_for_pqs_to_create[i],'PQ_'+i,'scrollbars=1,menubar=0,resizable=1,width=500,height=500,left='+(i*40));
+                        urls_for_pqs_to_create[i] = '';
+                        open_popup_count++;
+                    }
+                }else{
+                    already_done_count++;
+                }
+
+                if(typeof open_popups[i] !== 'undefined' && open_popups[i] !== false && open_popups[i].closed){
+                    open_popup_count--;
+                    open_popups[i] = false;
+                }
+            }
+
+            if(
+                (already_done_count < urls_for_pqs_to_create.length) || 
+                (open_popup_count > 0)
+            ){
+                // Restart function until everything is finished
+                setTimeout(function(){create_pqs(false);}, 1000);
+            }else{
+                alert('We are done creating the Pocket Querys.');
+                $("button[data='PQCreateButton']").prop("disabled",false);
+            }
+        }
+
         if($('.row table').length > 0){
 
             // Add some CSS
@@ -651,7 +727,9 @@ var mainPGC = function() {
 
             appendCssStyle(css);
 
-            // Only one of the Multiselcts has a value. Either the Country or the Region
+            var urls_for_pqs_to_create = [];
+
+            // Only one of the Multiselects has a value. Either the Country or the Region
 
             // Check if other Filters are set!
 
@@ -698,6 +776,7 @@ var mainPGC = function() {
                 var button = document.createElement('button');
                 var t = document.createTextNode("Create PQ(s)");
                 button.appendChild(t);
+                button.setAttribute("data", "PQCreateButton");
 
                 var input = document.createElement('input');
                 var input = document.createElement("input");
@@ -710,9 +789,15 @@ var mainPGC = function() {
                     var counter = 0;
                     var language;
                     var data = new Array();
+
+                    // Cleanup old Data (if there is any)
+                    urls_for_pqs_to_create = [];
+
+                    $("button[data='PQCreateButton']").prop("disabled",true);
+
                     $(current_table).find('tr').each(function(){
                         counter++;
-                        console.log($(this));
+                        // console.log($(this));
                         if(counter == 1){
                             // first tr, determine Language
                             var lang_text = $(this).children().eq(1).text();
@@ -757,6 +842,11 @@ var mainPGC = function() {
                                     pq_name = $("#pq_name_"+table_index).val()+"_0"+(counter-1);
                                 }
 
+                                var temp_id = $("input[name=how_often_"+table_index+"]:checked").attr('id');
+                                var how_often = temp_id.substr(temp_id.lastIndexOf("_")+1);
+
+                                var email = $("#output_email_"+table_index).val();
+
                                 var param =
                                     {
                                         PQSplit: 1,
@@ -764,8 +854,11 @@ var mainPGC = function() {
                                         t: type,
                                         s: name,
                                         c: cache_count,
-                                        sm: start_month,
-                                        sd: start_day,
+                                        ho: how_often,
+                                        e: email,
+                                        
+                                        sm: start_month, 
+                                        sd: start_day, 
                                         sy: start_year,
 
                                         em: end_month,
@@ -780,9 +873,7 @@ var mainPGC = function() {
                                     alert("The URL is too long! Please use fewer countries/regions or you can't use this funciton. Some of the PQs could already be created!");
                                     return false;
                                 }else{
-                                    console.log('Open New Window: '+'PQ_'+(counter-1));
-                                    // window.open(new_url,'PQ_'+(counter-1),'PopUp','PQ_'+(counter-1),'scrollbars=1,menubar=0,resizable=1,width=200,height=300');
-                                    window.open(new_url,'PQ_'+(counter-1),'scrollbars=1,menubar=0,resizable=1,width=500,height=500,left='+((counter-1)*40));
+                                    urls_for_pqs_to_create.push(new_url);
                                 }
 
                                 // Only one for now...
@@ -790,6 +881,8 @@ var mainPGC = function() {
                             }
                         }
                     });
+
+                    create_pqs();
 
                 }, false);
 
@@ -809,8 +902,39 @@ var mainPGC = function() {
                 span.innerHTML = 'Please make sure you do not have a Pop-up-Blocker enabled. Otherwise this function will not work as expected. ';
                 span.style.fontWeight = 'bold';
                 td.appendChild(span);
-
+                
                 td.appendChild(document.createTextNode("All PQs will get the Name that you enter in the text field and an ongoing number."));
+                
+                var heading_config = document.createElement("h5");
+                heading_config.appendChild(document.createTextNode("Configuration"));
+                td.appendChild(heading_config);
+
+                td.appendChild(document.createTextNode("Choose how often your query should run:"));
+                td.appendChild(document.createElement("br"));
+
+                td.appendChild(createRadioElement('how_often_'+table_index, 'how_often_'+table_index+'_1', true));
+                td.appendChild(document.createTextNode(" Uncheck the day of the week after the query runs"));
+                td.appendChild(document.createElement("br"));
+                td.appendChild(createRadioElement('how_often_'+table_index, 'how_often_'+table_index+'_2', false));
+                td.appendChild(document.createTextNode(" Run this query every week on the days checked"));
+                td.appendChild(document.createElement("br"));
+                td.appendChild(createRadioElement('how_often_'+table_index, 'how_often_'+table_index+'_3', false));
+                td.appendChild(document.createTextNode(" Run this query once then delete it"));
+                td.appendChild(document.createElement("br"));
+                td.appendChild(document.createElement("br"));
+
+                td.appendChild(document.createTextNode("Output to Email:"));
+                td.appendChild(document.createElement("br"));
+
+                var output_email = document.createElement("select");
+                output_email.setAttribute("id", "output_email_"+table_index);
+                output_email.appendChild(new Option("Primary", "1"));
+                output_email.appendChild(new Option("Secondary", "2"));
+                td.appendChild(output_email);
+                td.appendChild(document.createElement("br"));
+                td.appendChild(document.createTextNode("Attention: This will only work if you have 2 or more Email addresses in your Profile."));
+                td.appendChild(document.createElement("br"));
+
                 tr.appendChild(td);
                 tfoot.appendChild(tr);
                 $(this).append(tfoot);
@@ -3392,12 +3516,35 @@ var mainGC = function() {
 
                     setTimeout(function(){
                         window.close();
-                    },1000);
+                    },10);
                     return true;
                 }
 
                 $('#ctl00_ContentBody_tbName').val(findGetParameter('n'));
                 $('#ctl00_ContentBody_tbResults').val(findGetParameter('c'));
+
+                // How often should the query run
+                switch(findGetParameter('ho')){
+                    case "1":
+                        $("#ctl00_ContentBody_rbRunOption_0").prop("checked", true);
+                        break;
+
+                    case "2":
+                        $("#ctl00_ContentBody_rbRunOption_1").prop("checked", true);
+                        break;
+
+                    case "3":
+                        $("#ctl00_ContentBody_rbRunOption_2").prop("checked", true);
+                        break;
+                }
+
+                // Select the output Email Address
+                if(findGetParameter('e') == 2){
+                    // look if we have secondary email
+                    if($('#ctl00_ContentBody_ddlAltEmails')){
+                        $('#ctl00_ContentBody_ddlAltEmails option:eq(1)').attr('selected', 'selected');
+                    }
+                }
 
                 var type = findGetParameter('t');
                 var cr_name = findGetParameter('s');
@@ -4015,6 +4162,18 @@ var mainGC = function() {
                     sumsCountCheckedAll();
                 }));
                 sumsOutputFields(button_wrapper, "Deactivated");
+
+                button_wrapper.append(button_template.clone().text('Past Events').click(function() {
+                    
+                    checkboxes.each(function() {
+                        if(isPastEvent($(this).closest('tr').find("td:nth-of-type(5) a").html())){
+                            this.checked = !this.checked;
+                        }
+                    });
+                    sumsCountCheckedAll();
+                }));
+                sumsOutputFields(button_wrapper, "PastEvents");
+                
                 var tfoot = $('<tfoot />').append($('<tr />').append(button_wrapper));
                 table.append(tfoot);
                 checkboxes.prop('checked', false);
@@ -4024,10 +4183,47 @@ var mainGC = function() {
             }
         } catch(e) {gclh_error("Add buttons to bookmark list and watchlist",e);}
     }
+
+    //Check if Cache is a pastEvent
+    function isPastEvent(linktext){
+
+        // Mega/Giga Events: we can only detect archived Mega / Giga Events because they don't write the Date after the Cachename
+        if(
+            ((linktext.indexOf('alt="Mega-Event Cache"') != -1) && (linktext.indexOf('OldWarning Strike') != -1)) ||
+            ((linktext.indexOf('alt="Giga-Event Cache"') != -1) && (linktext.indexOf('OldWarning Strike') != -1))
+        ){
+            return true;
+        }
+
+        if(
+            (linktext.indexOf('alt="Event Cache"') == -1) &&
+            (linktext.indexOf('alt="Cache In Trash Out Event"') == -1)
+        ){
+            // No Event Icon!
+            return false;
+        }
+
+        var today = new Date();
+        // Search for the last Date that looks like this: (09/26/2018)
+        var matches = linktext.match(/(\s\((0[1-9]|1[0-2])\/(0[1-9]|[12]\d|3[01])\/[12]\d{3}\)$)/gm);
+        if(matches != null){
+            // last match is our date we search for
+            var text_date = matches[matches.length-1];
+            // remove unwanted chars:
+            text_date = text_date.replace(" ","").replace("(","").replace(")","");
+            var date = Date.parse(text_date);
+            if(today.getTime() > date){
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     // Summenfelder Anzahl Caches definieren, Configparameter setzen.
     function sumsCreateFields(configParameter) {
         var sums = new Object();
-        sums["All"] = sums["chAll"] = sums["Found"] = sums["chFound"] = sums["Archived"] = sums["chArchived"] = sums["Deactivated"] = sums["chDeactivated"] = 0;
+        sums["All"] = sums["chAll"] = sums["Found"] = sums["chFound"] = sums["Archived"] = sums["chArchived"] = sums["Deactivated"] = sums["chDeactivated"] = sums["chPastEvents"] = 0;
         sums["configParameter"] = configParameter;
       return sums;
     }
@@ -4038,6 +4234,13 @@ var mainGC = function() {
         sums["Found"] = table.find('tbody tr').find('img[src*="found"]').length;
         sums["Archived"] = table.find('tbody tr').find('span.Strike.OldWarning,span.Strike.Warning').length;
         sums["Deactivated"] = table.find('tbody tr').find('span.Strike:not(.OldWarning,.Warning)').length;
+        
+        sums["PastEvents"] = 0;
+        checkboxes.each(function() {
+            if(isPastEvent($(this).closest('tr').find("td:nth-of-type(5) a").html())){
+                sums["PastEvents"]++;
+            }
+        });
     }
     // Events für Checkboxen setzen.
     function sumsSetEventsForCheckboxes(checkboxes) {
@@ -4062,6 +4265,7 @@ var mainGC = function() {
         sumsChangeFields("Found", sums["chFound"], sums["Found"]);
         sumsChangeFields("Archived", sums["chArchived"], sums["Archived"]);
         sumsChangeFields("Deactivated", sums["chDeactivated"], sums["Deactivated"]);
+        sumsChangeFields("PastEvents", sums["chPastEvents"], sums["PastEvents"]);
     }
     function sumsChangeFields(kind, sums_ch, sums) {
         if (sums["configParameter"] == false) return;
@@ -4081,11 +4285,12 @@ var mainGC = function() {
         sums["chFound"] = sums["Found"];
         sums["chArchived"] = sums["Archived"];
         sums["chDeactivated"] = sums["Deactivated"];
+        sums["chPastEvents"] = sums["PastEvents"];
         sumsChangeAllFields();
     }
     function sumsCountChecked_SelectionNone() {
         if (sums["configParameter"] == false) return;
-        sums["chAll"] = sums["chFound"] = sums["chArchived"] = sums["chDeactivated"] = 0;
+        sums["chAll"] = sums["chFound"] = sums["chArchived"] = sums["chDeactivated"] = sums["chPastEvents"] = 0;
         sumsChangeAllFields();
     }
     function sumsCountChecked_SelectionInvert() {
@@ -4094,6 +4299,7 @@ var mainGC = function() {
         sums["chFound"] = sums["Found"] - sums["chFound"];
         sums["chArchived"] = sums["Archived"] - sums["chArchived"];
         sums["chDeactivated"] = sums["Deactivated"] - sums["chDeactivated"];
+        sums["chPastEvents"] = sums["PastEvents"] - sums["chPastEvents"];
         sumsChangeAllFields();
     }
     // Anzahl markierte Caches für Click auf Checkbox.
@@ -4113,6 +4319,11 @@ var mainGC = function() {
             if (checkbox.checked) sums["chDeactivated"]++;
             else sums["chDeactivated"]--;
         }
+
+        if (isPastEvent($('#'+cbId).closest('tr').find("td:nth-of-type(5) a").html())){
+            if (checkbox.checked) sums["chPastEvents"]++;
+            else sums["chPastEvents"]--;
+        }
         sumsChangeAllFields();
     }
     // Anzahl markierter Caches für alles.
@@ -4122,6 +4333,14 @@ var mainGC = function() {
         sums["chFound"] = table.find('tbody tr').find('img[src*="found"]').closest('tr').find(checkbox_selector + ':checked').length;
         sums["chArchived"] = table.find('tbody tr').find('span.Strike.OldWarning,span.Strike.Warning').closest('tr').find(checkbox_selector + ':checked').length;
         sums["chDeactivated"] = table.find('tbody tr').find('span.Strike:not(.OldWarning,.Warning)').closest('tr').find(checkbox_selector + ':checked').length;
+        
+        sums["chPastEvents"] = 0;
+        checkboxes.each(function() {
+            if(isPastEvent($(this).closest('tr').find("td:nth-of-type(5) a").html())){
+                if (this.checked) sums["chPastEvents"]++;
+            }
+        });
+
         sumsChangeAllFields();
     }
 
@@ -5414,7 +5633,7 @@ var mainGC = function() {
                     for (var j = 0; j < newInitalLogs.length && j < tbody.children.length; j++) {
                         unsafeWindow.$(tbody.children[j]).replaceWith(newInitalLogs[j]);
                     }
-                    unsafeWindow.$('a.tb_images').fancybox({'type': 'image', 'titlePostion': 'inside'});
+                    unsafeWindow.$('a.tb_images').fancybox({'type': 'image', 'titlePosition': 'inside'});
                     gclh_add_vip_icon();
                     setLinesColorInCacheListing();
                 }
@@ -5499,7 +5718,7 @@ var mainGC = function() {
                                 }
                                 global_num++;  // Num kommt vom vorherigen laden "aller" logs.
                             }
-                            unsafeWindow.$('a.tb_images').fancybox({'type': 'image', 'titlePostion': 'inside'});
+                            unsafeWindow.$('a.tb_images').fancybox({'type': 'image', 'titlePosition': 'inside'});
                             gclh_add_vip_icon();
                             setLinesColorInCacheListing();
                             if (!settings_hide_top_button) $("#topScroll").fadeIn();
@@ -5524,7 +5743,7 @@ var mainGC = function() {
                                     unsafeWindow.$(document.getElementById("cache_logs_table2") || document.getElementById("cache_logs_table")).append(newBody.children());
                                 }
                             }
-                            unsafeWindow.$('a.tb_images').fancybox({'type': 'image', 'titlePostion': 'inside'});
+                            unsafeWindow.$('a.tb_images').fancybox({'type': 'image', 'titlePosition': 'inside'});
                             gclh_add_vip_icon();
                             setLinesColorInCacheListing();
                             setMarkerDisableDynamicLogLoad();
@@ -5562,7 +5781,7 @@ var mainGC = function() {
                             unsafeWindow.$(document.getElementById("cache_logs_table2") || document.getElementById("cache_logs_table")).append(newBody.children());
                         }
                     }
-                    unsafeWindow.$('a.tb_images').fancybox({'type': 'image', 'titlePostion': 'inside'});
+                    unsafeWindow.$('a.tb_images').fancybox({'type': 'image', 'titlePosition': 'inside'});
                     gclh_add_vip_icon();
                     setLinesColorInCacheListing();
                     setMarkerDisableDynamicLogLoad();
@@ -5629,7 +5848,7 @@ var mainGC = function() {
                             unsafeWindow.$(document.getElementById("cache_logs_table2") || document.getElementById("cache_logs_table")).append(newBody.children());
                         }
                     }
-                    unsafeWindow.$('a.tb_images').fancybox({'type': 'image', 'titlePostion': 'inside'});
+                    unsafeWindow.$('a.tb_images').fancybox({'type': 'image', 'titlePosition': 'inside'});
                     gclh_add_vip_icon();
                     setLinesColorInCacheListing();
                     setMarkerDisableDynamicLogLoad();
@@ -5747,7 +5966,7 @@ var mainGC = function() {
                             unsafeWindow.$(document.getElementById("cache_logs_table2") || document.getElementById("cache_logs_table")).append(newBody.children());
                         }
                     }
-                    unsafeWindow.$('a.tb_images').fancybox({'type': 'image', 'titlePostion': 'inside'});
+                    unsafeWindow.$('a.tb_images').fancybox({'type': 'image', 'titlePosition': 'inside'});
                     gclh_dynamic_load(logs, num);
                     if (settings_show_vip_list) {
                         gclh_build_vip_list();
@@ -11858,6 +12077,9 @@ var mainGC = function() {
                 console.log(error);
             });
     }
+// Add Background-Color for Selection in Firefox
+    var css = "::-moz-selection {background: #B4D5FF;}"
+    appendCssStyle(css, 'body');
 
 };  // End of mainGC.
 
