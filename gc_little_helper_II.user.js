@@ -9114,6 +9114,8 @@ var mainGC = function() {
             var username = decode_innerHTML(span);
             return [username, guid[1]];
         }
+
+        return [false, false];
     }
 
 // User aus url ermitteln.
