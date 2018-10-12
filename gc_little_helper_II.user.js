@@ -5687,16 +5687,6 @@ var mainGC = function() {
                     unsafeWindow.$('a.tb_images').fancybox({'type': 'image', 'titlePosition': 'inside'});
                     gclh_add_vip_icon();
                     setLinesColorInCacheListing();
-
-                    // var log_ids = [];
-                    // global_logs.some(function(element) {
-                    //     log_ids.push(element.LogID);
-                    //     return log_ids.length > 100;;
-                    // });
-                    // console.log(log_ids);
-
-                    var log_ids = [];
-                    unsafeWindow.appendUpvotesToLogs(log_ids);
                 }
             }
             function loadListener(e) {
@@ -5771,8 +5761,10 @@ var mainGC = function() {
                         if (!isBusy && !document.getElementById("gclh_all_logs_marker")) {
                             isBusy = true;
                             $("#pnlLazyLoad").show();
+                            var log_ids = [];
                             for (var i = 0; i < 10; i++) {
                                 if (global_logs[global_num]) {
+                                    log_ids.push(global_logs[global_num].LogID);
                                     var newBody = unsafeWindow.$(document.createElement("TBODY"));
                                     unsafeWindow.$("#tmpl_CacheLogRow_gclh").tmpl(global_logs[global_num]).appendTo(newBody);
                                     unsafeWindow.$(document.getElementById("cache_logs_table2") || document.getElementById("cache_logs_table")).append(newBody.children());
@@ -5782,6 +5774,7 @@ var mainGC = function() {
                             unsafeWindow.$('a.tb_images').fancybox({'type': 'image', 'titlePosition': 'inside'});
                             gclh_add_vip_icon();
                             setLinesColorInCacheListing();
+                            unsafeWindow.appendUpvotesToLogs(log_ids);
                             if (!settings_hide_top_button) $("#topScroll").fadeIn();
                             $("#pnlLazyLoad").hide();
                             isBusy = false;
@@ -6020,14 +6013,19 @@ var mainGC = function() {
                     gclh_filter(logs);
                     gclh_search(logs);
 
+                    var log_ids = [];
+
                     for (var i = 0; i < num; i++) {
                         if (logs[i]) {
+                            log_ids.push(logs[i].LogID);
                             var newBody = unsafeWindow.$(document.createElement("TBODY"));
                             unsafeWindow.$("#tmpl_CacheLogRow_gclh").tmpl(logs[i]).appendTo(newBody);
                             unsafeWindow.$(document.getElementById("cache_logs_table2") || document.getElementById("cache_logs_table")).append(newBody.children());
                         }
                     }
                     unsafeWindow.$('a.tb_images').fancybox({'type': 'image', 'titlePosition': 'inside'});
+                    unsafeWindow.appendUpvotesToLogs(log_ids);
+
                     gclh_dynamic_load(logs, num);
                     if (settings_show_vip_list) {
                         gclh_build_vip_list();
