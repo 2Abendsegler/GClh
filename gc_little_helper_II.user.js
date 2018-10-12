@@ -5471,7 +5471,7 @@ var mainGC = function() {
                 '{{' + vupHideCompleteLog  + '}}' +
                 '<tr class="log-row display_none" data-encoded="${IsEncoded}" style="display:none" >' +
                 '{{else}}' +
-                '<tr class="log-row" data-encoded="${IsEncoded}" >' +
+                '<tr class="log-row l-${LogID}" data-encoded="${IsEncoded}" >' +
                 '{{/if}}' +
                 '  <td>' +
                 '    <div class="FloatLeft LogDisplayLeft" >' +
@@ -5687,6 +5687,16 @@ var mainGC = function() {
                     unsafeWindow.$('a.tb_images').fancybox({'type': 'image', 'titlePosition': 'inside'});
                     gclh_add_vip_icon();
                     setLinesColorInCacheListing();
+
+                    // var log_ids = [];
+                    // global_logs.some(function(element) {
+                    //     log_ids.push(element.LogID);
+                    //     return log_ids.length > 100;;
+                    // });
+                    // console.log(log_ids);
+
+                    var log_ids = [];
+                    unsafeWindow.appendUpvotesToLogs(log_ids);
                 }
             }
             function loadListener(e) {
