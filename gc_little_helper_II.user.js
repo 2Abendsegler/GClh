@@ -2146,25 +2146,12 @@ var mainGC = function() {
         try {
             leafletInit();
 
-            // $(".CacheDetailNavigation).after()
-
-            var side = $('#ctl00_ContentBody_detailWidget')[0];
-            var box = document.createElement("div");
-            var body = document.createElement("div");
-            var map = document.createElement("div");
-
-            box.setAttribute("class", "CacheDetailNavigationWidget");  // No print prüfen
-            box.setAttribute("style", "margin-top: 1.5em;");
-            body.setAttribute("id", "gclh_map_overview");
-            body.setAttribute("class", "WidgetBody");
-            body.setAttribute("style", "padding: 0;");
-            map.setAttribute("id", "gclh_map_static_values");
-            map.setAttribute("style", "height: 248px; width: 248px;");
-
-
-            body.appendChild(map);
-            box.appendChild(body);
-            side.parentNode.insertBefore(box, side);
+            var html = "";
+            html += "<div class='CacheDetailNavigationWidget' style='margin-top: 1.5em;'>";
+            html += "<div id='gclh_map_overview' class='WidgetBody' style='padding: 0; height: 248px; width: 248px;'>";
+            html += "</div>";
+            html += "</div>";
+            $(".CacheDetailNavigation").after(html);
 
             var previewMap = L.map('gclh_map_overview', {
                   dragging: true,
@@ -2188,15 +2175,15 @@ var mainGC = function() {
                 });
             }
 
-            // change zoom control only for overview map
+            // make buttons of zoom control smaller only for overview map
             $("#gclh_map_overview .leaflet-bar").attr("style","width: 20px; height: 41px; line-height: 40px;");
             $("#gclh_map_overview .leaflet-control-zoom-in").attr("style","width: 20px; height: 20px; line-height: 20px; font-size: 11px;");
             $("#gclh_map_overview .leaflet-control-zoom-out").attr("style","width: 20px; height: 20px; line-height: 20px; font-size: 11px;");
 
             var marker = L.marker([lat, lng],{icon: L.icon({
                 iconUrl: 'http://www.geocaching.com/images/wpttypes/pins/' + unsafeWindow.mapLatLng.type + '.png',
-                iconSize:     [20, 23],
-                iconAnchor:   [10, 23],
+                iconSize: [20, 23],
+                iconAnchor: [10, 23],
             })}).addTo(previewMap);
 
         } catch(e) {gclh_error("Build map overview",e);}
