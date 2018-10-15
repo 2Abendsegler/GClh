@@ -17,6 +17,8 @@
 // @require          https://raw.githubusercontent.com/2Abendsegler/GClh/master/data/gclh_defi.js
 // @require          https://www.geocaching.com/scripts/MarkdownDeepLib.min.js
 // @require          https://www.geocaching.com/scripts/SmileyConverter.js
+// @resource leafletjs   https://unpkg.com/leaflet@1.2.0/dist/leaflet.js
+// @resource leafletcss  https://unpkg.com/leaflet@1.2.0/dist/leaflet.css
 // @connect          maps.googleapis.com
 // @connect          raw.githubusercontent.com
 // @connect          api.open-elevation.com
@@ -31,6 +33,7 @@
 // @grant            GM_xmlhttpRequest
 // @grant            GM_getResourceText
 // @grant            GM_info
+// @grant            GM_addStyle
 // ==/UserScript==
 
 var start = function(c) {
@@ -81,6 +84,15 @@ var jqueryInit = function(c) {
     var jqueryInitDeref = new jQuery.Deferred();
     jqueryInitDeref.resolve();
     return jqueryInitDeref.promise();
+};
+
+var leafletInit = function(c) {
+    if ( !$('#gclh_leafletjs').length ) {
+        var newCSS = GM_getResourceText ("leafletcss");
+        GM_addStyle (newCSS);
+        var newJS = GM_getResourceText("leafletjs");
+        injectPageScript(newJS, "body", 'gclh_leafletjs');
+    }
 };
 
 var browserInit = function(c) {
@@ -313,6 +325,7 @@ var variablesInit = function(c) {
     c.settings_show_save_message = getValue("settings_show_save_message", true);
     c.settings_map_overview_build = getValue("settings_map_overview_build", true);
     c.settings_map_overview_zoom = getValue("settings_map_overview_zoom", 11);
+    c.settings_map_overview_layer = getValue("settings_map_overview_layer", "Geocaching");
     c.settings_logit_for_basic_in_pmo = getValue("settings_logit_for_basic_in_pmo", true);
     c.settings_log_statistic = getValue("settings_log_statistic", true);
     c.settings_log_statistic_percentage = getValue("settings_log_statistic_percentage", true);
@@ -437,6 +450,8 @@ var variablesInit = function(c) {
     c.settings_pq_terrain = getValue("settings_pq_terrain",">=");
     c.settings_pq_terrain_score = getValue("settings_pq_terrain_score","1");
     c.settings_pq_automatically_day = getValue("settings_pq_automatically_day",false);
+    c.settings_pq_previewmap = getValue("settings_pq_previewmap",true);
+    c.settings_pq_previewmap_layer = getValue("settings_pq_previewmap_layer","Geocaching");
     c.settings_mail_icon_new_win = getValue("settings_mail_icon_new_win",false);
     c.settings_message_icon_new_win = getValue("settings_message_icon_new_win",false);
     c.settings_hide_cache_approvals = getValue("settings_hide_cache_approvals", true);
@@ -2121,59 +2136,62 @@ var mainGC = function() {
 // Build map overview.
     if (settings_map_overview_build && is_page("cache_listing") && $('#ctl00_ContentBody_detailWidget')[0]) {
         try {
+            // leaflet is already init on the cache page
+
+            // $(".CacheDetailNavigation).after()
+
             var side = $('#ctl00_ContentBody_detailWidget')[0];
             var box = document.createElement("div");
             var body = document.createElement("div");
             var map = document.createElement("div");
-            var zoomControl = document.createElement("div");
-            var zoomPlus = document.createElement("img");
-            var zoomMinus = document.createElement("img");
-            box.setAttribute("class", "CacheDetailNavigationWidget");
+
+            box.setAttribute("class", "CacheDetailNavigationWidget");  // No print prüfen
             box.setAttribute("style", "margin-top: 1.5em;");
             body.setAttribute("id", "gclh_map_overview");
             body.setAttribute("class", "WidgetBody");
             body.setAttribute("style", "padding: 0;");
             map.setAttribute("id", "gclh_map_static_values");
             map.setAttribute("style", "height: 248px; width: 248px;");
-            [map.style.backgroundImage, map.value] = buildMapValues(settings_map_overview_zoom);
-            zoomControl.setAttribute("style", "padding: 3px 0px 0px 3px; width: 16px; float: left;");
-            zoomPlus.setAttribute("style", "opacity: 0.75; cursor: pointer;");
-            zoomPlus.setAttribute("title", "Zoom in");
-            zoomPlus.src = "/images/zoom_in.png";
-            zoomPlus.addEventListener('click', mapZoomIn, false);
-            zoomMinus.setAttribute("style", "opacity: 0.75; cursor: pointer;");
-            zoomMinus.setAttribute("title", "Zoom out");
-            zoomMinus.src = "/images/zoom_out.png";
-            zoomMinus.addEventListener('click', mapZoomOut, false);
-            zoomControl.appendChild(zoomPlus);
-            zoomControl.appendChild(zoomMinus);
-            map.appendChild(zoomControl);
+
+
             body.appendChild(map);
             box.appendChild(body);
             side.parentNode.insertBefore(box, side);
+
+            var previewMap = L.map('gclh_map_overview', {
+                  dragging: true,
+                  zoomControl: true,
+            }).setView([lat, lng],settings_map_overview_zoom);
+
+            var layer = ( settings_map_overview_layer == "" || settings_map_overview_layer == "Geocaching" ) ? all_map_layers['OpenStreetMap Default'] : all_map_layers[settings_map_overview_layer];
+            var layerObj = L.tileLayer( layer.tileUrl, layer ).addTo(previewMap);
+
+            // delayed load of Groudspeaks map layer (we need an access token)
+            if ( settings_map_overview_layer == "Geocaching" ) {
+                gclh_GetGcAccessToken( function(r) {
+                    all_map_layers["Geocaching"].accessToken = r.access_token;
+
+                    var layer = all_map_layers['Geocaching'];
+                    L.tileLayer( layer.tileUrl, layer ).addTo(previewMap);
+
+                    previewMap.eachLayer(function (layer) {
+                        if ( layerObj == layer ) previewMap.removeLayer(layer);
+                    });
+                });
+            }
+
+            // change zoom control only for overview map
+            $("#gclh_map_overview .leaflet-bar").attr("style","width: 20px; height: 41px; line-height: 40px;");
+            $("#gclh_map_overview .leaflet-control-zoom-in").attr("style","width: 20px; height: 20px; line-height: 20px; font-size: 11px;");
+            $("#gclh_map_overview .leaflet-control-zoom-out").attr("style","width: 20px; height: 20px; line-height: 20px; font-size: 11px;");
+
+            var marker = L.marker([lat, lng],{icon: L.icon({
+                iconUrl: 'http://www.geocaching.com/images/wpttypes/pins/' + unsafeWindow.mapLatLng.type + '.png',
+                iconSize:     [20, 23],
+                iconAnchor:   [10, 23],
+            })}).addTo(previewMap);
+
         } catch(e) {gclh_error("Build map overview",e);}
-    }
-    // Url und Zoomwert aufbauen.
-    function buildMapValues(zoom_value) {
-        if (zoom_value < 1) zoom_value = 1;
-        if (zoom_value > 19) zoom_value = 19;
-        var url = 'url(' + http + '://maps.google.com/maps/api/staticmap?zoom=' + zoom_value + '&size=248x248' + '&maptype=roadmap&'
-                + 'markers=icon:http://www.geocaching.com/images/wpttypes/pins/' + unsafeWindow.mapLatLng.type + '.png' + '|' +unsafeWindow.mapLatLng.lat + ',' + unsafeWindow.mapLatLng.lng + ')';
-        return [url, zoom_value];
-    }
-    // Reinzoomen.
-    function mapZoomIn() {
-        if ($('#gclh_map_static_values')[0]) {
-            var map = $('#gclh_map_static_values')[0];
-            [map.style.backgroundImage, map.value] = buildMapValues(parseInt(map.value) + 1);
-        }
-    }
-    // Rauszoomen.
-    function mapZoomOut() {
-        if ($('#gclh_map_static_values')[0]) {
-            var map = $('#gclh_map_static_values')[0];
-            [map.style.backgroundImage, map.value] = buildMapValues(parseInt(map.value) - 1);
-        }
     }
 
 // Personal Cache Note at cache listing
@@ -3854,11 +3872,49 @@ var mainGC = function() {
     }
 
 // Map on create pocket query page.
-    if (document.location.href.match(/\.com\/pocket\/gcquery\.aspx/)) {
+    if (settings_pq_previewmap && document.location.href.match(/\.com\/pocket\/gcquery\.aspx/)) {
         try {
-            $('.LatLongTable').after('<img style="position:absolute;top: 8px; left: 300px;height:350px;width:470px;" id="gclh_map">').parent().css("style", "relative");
+            leafletInit();
+
+            $('.LatLongTable').after('<div style="position:absolute;top: 8px; left: 300px;height:330px;width:470px;" id="gclh_map" ></div>').parent().css("style", "relative");
+
+            var previewMap = L.map('gclh_map', {
+                  dragging: false,
+                  zoomControl: true,
+            }).setView([0, 0],0); // to avoid problems;
+
+            var layer = ( settings_pq_previewmap_layer == "" || settings_pq_previewmap_layer == "Geocaching" ) ? all_map_layers['OpenStreetMap Default'] : all_map_layers[settings_pq_previewmap_layer];
+            var layerObj = L.tileLayer( layer.tileUrl, layer ).addTo(previewMap);
+
+            // delayed load of Groudspeaks map layer (we need an access token)
+            if ( settings_pq_previewmap_layer == "Geocaching" ) {
+                gclh_GetGcAccessToken( function(r) {
+                    all_map_layers["Geocaching"].accessToken = r.access_token;
+
+                    var layer = all_map_layers['Geocaching'];
+                    L.tileLayer( layer.tileUrl, layer ).addTo(previewMap);
+
+                    previewMap.eachLayer(function (layer) {
+                        if ( layerObj == layer ) previewMap.removeLayer(layer);
+                    });
+                });
+            }
+
+            var marker = L.marker([0, 0],{icon: L.icon({
+                iconUrl: map_marker,
+                shadowUrl: map_marker_shadow,
+                iconSize:     [25, 41], // size of the icon
+                shadowSize:   [41, 41], // size of the shadow
+                iconAnchor:   [11, 41], // point of the icon which will correspond to marker's location
+                shadowAnchor: [11, 41],  // the same for the shadow
+            })}).addTo(previewMap);
+
+            var radius = L.circle([0, 0], {radius: 0}).addTo(previewMap);
+
+            var group = new L.featureGroup([marker, radius]);
+
             $('#ctl00_ContentBody_rbOriginNone').closest('fieldset')[0].id = "gclh_Origin";
-            $('.LatLongTable input, #gclh_Origin').change(function() {
+            $('.LatLongTable input, #gclh_Origin, #ctl00_ContentBody_tbRadius, #ctl00_ContentBody_rbUnitType_0, #ctl00_ContentBody_rbUnitType_1').change(function() {
                 var coordType = document.getElementsByName("ctl00$ContentBody$LatLong")[0].value;
                 var northField = $('#ctl00_ContentBody_LatLong\\:_selectNorthSouth')[0];
                 var northSouth = $(northField.options[northField.selectedIndex]).text().replace('.', '');
@@ -3886,8 +3942,20 @@ var mainGC = function() {
                         lng = (westEast == "W" ? "-" : "") + $('#ctl00_ContentBody_LatLong__inputLongDegs')[0].value;
                         break;
                 }
-                if (!$('#ctl00_ContentBody_rbOriginWpt')[0].checked) lat = lng = "";
-                $('#gclh_map').attr("src", 'http://staticmap.openstreetmap.de/staticmap.php?center=' + lat + ',' + lng + '&zoom=15&size=450x350&markers=' + lat + ',' + lng + ',ol-marker');
+                if (!$('#ctl00_ContentBody_rbOriginWpt')[0].checked) {
+                    lat = lng = "";
+                    $('#gclh_map').hide();
+                } else {
+                    $('#gclh_map').show();
+                    previewMap.setView([lat, lng]);
+                    marker.setLatLng([lat, lng]);
+                    radius.setLatLng([lat, lng]);
+
+                    var factor = (($("input[name='ctl00$ContentBody$rbUnitType']:checked").val() == "mi")?1609:1000);
+                    radius.setRadius(parseInt($("#ctl00_ContentBody_tbRadius").val())*factor);
+
+                    previewMap.fitBounds(group.getBounds(), { padding: [20, 20] });
+                }
             });
             $('.LatLongTable input').change();
         } catch(e) {gclh_error("Map on create pocket query page",e);}
@@ -6590,7 +6658,7 @@ var mainGC = function() {
                 } else {waitCount++; if (waitCount <= 50) setTimeout(function(){checkMapLeaflet(waitCount);}, 100);}
             }
             checkMapLeaflet(0);
-            gclh_GetGcAccessToken( function(r) { 
+            gclh_GetGcAccessToken( function(r) {
                 all_map_layers["Geocaching"].accessToken = r.access_token;
             });
         } catch(e) {gclh_error("Hide Map Header",e);}
@@ -9753,6 +9821,15 @@ var mainGC = function() {
             html += " &nbsp; " + checkboxy('settings_fav_proz_pqs', 'Show favorites percentage') + "<br>";
             html += newParameterVersionSetzen(0.9) + newParameterOff;
             html += checkboxy('settings_pq_warning', "Get a warning in case of empty pocket queries") + show_help("Show a message if one or more options are in conflict. This helps to avoid empty pocket queries.") + "<br>";
+            html += newParameterOn3;
+            html += checkboxy('settings_pq_previewmap','Show preview map for origin by coordinates') + "&nbsp;";
+            html += '<select class="gclh_form" id="settings_pq_previewmap_layer">';
+            for ( name in all_map_layers) {
+                html += "  <option value='" + name + "' " + (settings_pq_previewmap_layer == name ? "selected='selected'" : "") + "> " + name + "</option>";
+            }
+            html += '</select>'+ "<br>";
+            html += newParameterVersionSetzen(0.9) + newParameterOff;
+
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>Default values for new pocket query</b></div>";
             html += checkboxy('settings_pq_set_cachestotal', "Set number of caches to ") + "<input class='gclh_form' size=4 type='text' id='settings_pq_cachestotal' value='" + settings_pq_cachestotal + "'><br>";
             html += checkboxy('settings_pq_option_ihaventfound', "Enable option \"I haven't found\"") + "<br>";
@@ -10030,11 +10107,20 @@ var mainGC = function() {
             html += "</select> latest logs symbols at the top" + show_help("With this option, the choosen count of the latest logs symbols is shown at the top of the cache listing.<br><br>" + t_reqLlwG) + "<br>";
             html += checkboxy('settings_show_remove_ignoring_link', 'Show \"Stop Ignoring\", if cache is already ignored') + show_help("This option replace the \"Ignore\" link description with the \"Stop Ignoring\" link description in the cache listing, if the cache is already ignored.") + prem + "<br>";
             html += checkboxy('settings_map_overview_build', 'Show cache location in overview map') + show_help("With this option there will be an additional map top right in the cache listing as an overview of the cache location. This was available earlier on GC standard.") + "<br>";
+
+            html += newParameterOn3;
+            html += ' &nbsp; &nbsp; Map layer: <select class="gclh_form" id="settings_map_overview_layer">';
+            for (name in all_map_layers) {
+                html += "  <option value='" + name + "' " + (settings_map_overview_layer == name ? "selected='selected'" : "") + "> " + name + "</option>";
+            }
+            html += '</select>';
+
             html += " &nbsp; &nbsp;" + "Map zoom value: <select class='gclh_form' id='settings_map_overview_zoom'>";
             for (var i = 1; i < 20; i++) {
                 html += "  <option value='" + i + "' " + (settings_map_overview_zoom == i ? "selected=\"selected\"" : "") + ">" + i + "</option>";
             }
             html += "</select>" + show_help("With this option you can choose the zoom value to start in the map. \"1\" is the hole world and \"19\" is the maximal enlargement. Default is \"11\". <br><br>This option requires \"Show cache location in overview map\".") + "<br>";
+            html += newParameterVersionSetzen(0.9) + newParameterOff;
             html += checkboxy('settings_show_vip_list', 'Show VIP list') + show_help("The VIP list is a list, displayed at the right side on a cache listing. You can add any user to your VIP list by clicking the little VIP icon beside the user. If it is green, this person is a VIP. The VIP list only shows VIPs and the logs of VIPs, which already posted a log to this cache. With this option you are able to see which of your VIPs already found this cache. On your dashboard page there is an overview of all your VIPs.<br>(VIP: Very important person)") + "<br>";
             html += "&nbsp; " + checkboxy('settings_show_owner_vip_list', 'Show owner in VIP list')  + show_help("If you enable this option, the owner is a VIP for the cache, so you can see, what happened with the cache (disable, maint, enable, ...). Then the owner is shown not only in VIP list but also in VIP logs.<br>(VIP: Very important person)<br><br>" + t_reqSVl)+ "<br>";
             html += "&nbsp; " + checkboxy('settings_show_long_vip', 'Show long VIP list (one row per log)') + show_help("This is another type of displaying the VIP list. If you disable this option you get the short list, one row per VIP and the logs as icons beside the VIP. If you enable this option, there is a row for every log.<br>(VIP: Very important person)<br><br>" + t_reqSVl) + "<br>";
@@ -10081,7 +10167,7 @@ var mainGC = function() {
             html += checkboxy('settings_show_flopps_link', 'Show Flopp\'s Map links in sidebar and under the "Additional Waypoints"') + show_help3("If there are no additional waypoints only the link in the sidebar is shown.") + "<br>";
             html += checkboxy('settings_show_brouter_link', 'Show BRouter links in sidebar and under the "Additional Waypoints"') + show_help3("If there are no additional waypoints only the link in the sidebar is shown.") + "<br>";
             html += newParameterVersionSetzen(0.8) + newParameterOff;
-            html += newParameterOn3;            
+            html += newParameterOn3;
             html += checkboxy('settings_show_gpsvisualizer_link', 'Show GPSVisualizer links in sidebar and under the "Additional Waypoints"') + show_help3("If there are no additional waypoints only the link in the sidebar is shown.") + "<br>";
             html += "&nbsp;&nbsp;" + checkboxy('settings_show_gpsvisualizer_gcsymbols', 'Use Geocaching symbols on GPSVisualizer map') + show_help3("Instead of default icon/pin Geocaching symbols are used. If the URL is too long deactivate this option.") + "<br>";
             html += "&nbsp;&nbsp;" + checkboxy('settings_show_gpsvisualizer_typedesc', 'Transfer type of the waypoint as description') + show_help3("Transfer for every waypoint the type as text in the description. If the URL is too long deactivate this option.") + "<br>";
@@ -10703,6 +10789,7 @@ var mainGC = function() {
             setEvForDepPara("settings_show_thumbnailsX0", "settings_spoiler_strings");
             setEvForDepPara("settings_show_thumbnailsX0", "settings_imgcaption_on_top");
             setEvForDepPara("settings_map_overview_build", "settings_map_overview_zoom");
+            setEvForDepPara("settings_map_overview_build", "settings_map_overview_layer");
             setEvForDepPara("settings_count_own_matrix_show_next", "settings_count_own_matrix_show_count_next");
             setEvForDepPara("settings_count_own_matrix_show_next", "settings_count_own_matrix_show_color_next");
             setEvForDepPara("settings_count_own_matrix_show_next", "restore_settings_count_own_matrix_show_color_next");
@@ -10729,6 +10816,7 @@ var mainGC = function() {
             setEvForDepPara("settings_pq_set_difficulty", "settings_pq_difficulty_score");
             setEvForDepPara("settings_pq_set_terrain", "settings_pq_terrain");
             setEvForDepPara("settings_pq_set_terrain", "settings_pq_terrain_score");
+            setEvForDepPara("settings_pq_previewmap", "settings_pq_previewmap_layer");
             setEvForDepPara("settings_show_all_logs", "settings_show_all_logs_count");
             setEvForDepPara("settings_strike_archived", "settings_highlight_usercoords");
             setEvForDepPara("settings_strike_archived", "settings_highlight_usercoords_bb");
@@ -10871,6 +10959,7 @@ var mainGC = function() {
             setValue("settings_lines_color_reviewer", document.getElementById('settings_lines_color_reviewer').value.replace("#",""));
             setValue("settings_lines_color_vip", document.getElementById('settings_lines_color_vip').value.replace("#",""));
             setValue("settings_map_overview_zoom", document.getElementById('settings_map_overview_zoom').value);
+            setValue("settings_map_overview_layer", document.getElementById('settings_map_overview_layer').value);
             setValue("settings_count_own_matrix_show_count_next", document.getElementById('settings_count_own_matrix_show_count_next').value);
             setValue("settings_count_own_matrix_show_color_next", document.getElementById('settings_count_own_matrix_show_color_next').value.replace("#",""));
             setValue("settings_count_own_matrix_links_radius", document.getElementById('settings_count_own_matrix_links_radius').value);
@@ -10883,6 +10972,7 @@ var mainGC = function() {
             setValue("settings_pq_difficulty_score", document.getElementById('settings_pq_difficulty_score').value);
             setValue("settings_pq_terrain", document.getElementById('settings_pq_terrain').value);
             setValue("settings_pq_terrain_score", document.getElementById('settings_pq_terrain_score').value);
+            setValue("settings_pq_previewmap_layer", document.getElementById('settings_pq_previewmap_layer').value);
             setValue("settings_improve_add_to_list_height", document.getElementById('settings_improve_add_to_list_height').value);
             setValue("settings_primary_elevation_service", document.getElementById('settings_primary_elevation_service').value);
             setValue("settings_secondary_elevation_service", document.getElementById('settings_secondary_elevation_service').value);
@@ -11054,6 +11144,7 @@ var mainGC = function() {
                 'settings_pq_set_difficulty',
                 'settings_pq_set_terrain',
                 'settings_pq_automatically_day',
+                'settings_pq_previewmap',
                 'settings_mail_icon_new_win',
                 'settings_message_icon_new_win',
                 'settings_hide_cache_approvals',
