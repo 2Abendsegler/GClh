@@ -3904,7 +3904,7 @@ var mainGC = function() {
                 shadowAnchor: [11, 41],  // the same for the shadow
             })}).addTo(previewMap);
 
-            var radius = L.circle( [0,0], radius ).addTo(previewMap);
+            var radius = L.circle( [0,0], 0 ).addTo(previewMap);
 
             var group = new L.featureGroup([marker, radius]);
 
