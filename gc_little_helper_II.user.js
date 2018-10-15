@@ -17,8 +17,8 @@
 // @require          https://raw.githubusercontent.com/2Abendsegler/GClh/master/data/gclh_defi.js
 // @require          https://www.geocaching.com/scripts/MarkdownDeepLib.min.js
 // @require          https://www.geocaching.com/scripts/SmileyConverter.js
-// @resource leafletjs   https://unpkg.com/leaflet@1.2.0/dist/leaflet.js
-// @resource leafletcss  https://unpkg.com/leaflet@1.2.0/dist/leaflet.css
+// @resource leafletjs   https://raw.githubusercontent.com/2Abendsegler/GClh/master/data/leaflet.js
+// @resource leafletcss  https://raw.githubusercontent.com/2Abendsegler/GClh/master/data/leaflet.css
 // @connect          maps.googleapis.com
 // @connect          raw.githubusercontent.com
 // @connect          api.open-elevation.com
@@ -87,12 +87,20 @@ var jqueryInit = function(c) {
 };
 
 var leafletInit = function(c) {
-    if ( !$('#gclh_leafletjs').length ) {
-        var newCSS = GM_getResourceText ("leafletcss");
-        GM_addStyle (newCSS);
-        var newJS = GM_getResourceText("leafletjs");
-        injectPageScript(newJS, "body", 'gclh_leafletjs');
-    }
+    try {
+        if ( typeof L == "undefined" ) {
+            if ( !$('#gclh_leafletjs').length ) {
+                var newCSS = GM_getResourceText ("leafletcss");
+                GM_addStyle (newCSS);
+                var newJS = GM_getResourceText("leafletjs");
+                injectPageScript(newJS, "body", 'gclh_leafletjs');
+            }
+        }
+
+        if ( L.version != "0.7.2" ) {
+            gclh_error("Unexpected vesion of leaflet. Version 0.7.2 required, version "+L.version+" is loaded.");
+        }
+    } catch(e) { gclh_error("leafletInit failed",e);}
 };
 
 var browserInit = function(c) {
@@ -2136,7 +2144,7 @@ var mainGC = function() {
 // Build map overview.
     if (settings_map_overview_build && is_page("cache_listing") && $('#ctl00_ContentBody_detailWidget')[0]) {
         try {
-            // leaflet is already init on the cache page
+            leafletInit();
 
             // $(".CacheDetailNavigation).after()
 
@@ -3909,7 +3917,7 @@ var mainGC = function() {
                 shadowAnchor: [11, 41],  // the same for the shadow
             })}).addTo(previewMap);
 
-            var radius = L.circle([0, 0], {radius: 0}).addTo(previewMap);
+            var radius = L.circle( [0,0], radius ).addTo(previewMap);
 
             var group = new L.featureGroup([marker, radius]);
 
@@ -12352,9 +12360,12 @@ function is_page(name) {
 }
 
 // Inject script into site context.
-function injectPageScript(scriptContent, TagName) {
+function injectPageScript(scriptContent, TagName, IdName) {
     var script = document.createElement("script");
     script.setAttribute("type", "text/javascript");
+    if ( IdName !== undefined ) {
+        script.setAttribute("id", IdName);
+    }
     script.innerHTML = scriptContent;
     var pageHead = document.getElementsByTagName(TagName?TagName:"head")[0];
     pageHead.appendChild(script);
