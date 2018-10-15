@@ -6590,16 +6590,9 @@ var mainGC = function() {
                 } else {waitCount++; if (waitCount <= 50) setTimeout(function(){checkMapLeaflet(waitCount);}, 100);}
             }
             checkMapLeaflet(0);
-            setTimeout(function() {
-                $.ajax({
-                        type: "POST",
-                        url: "/account/oauth/token",
-                        timeout: 10000
-                    })
-                    .done(function(r) {
-                        all_map_layers["Geocaching"].accessToken = r.access_token;
-                    });
-            }, 0);
+            gclh_GetGcAccessToken( function(r) { 
+                all_map_layers["Geocaching"].accessToken = r.access_token;
+            });
         } catch(e) {gclh_error("Hide Map Header",e);}
     }
 
@@ -12302,6 +12295,22 @@ function getDateDiffString(dateNew, dateOld) {
     // Replaces last comma with "and" to humanize the string.
     strDateDiff = strDateDiff.replace(/,([^,]*)$/, " and$1");
     return strDateDiff;
+}
+
+// Get Geocaching Access Token
+function gclh_GetGcAccessToken( handler ) {
+    setTimeout(function() {
+        $.ajax({
+                type: "POST",
+                url: "/account/oauth/token",
+                timeout: 10000
+            })
+            .done( function(r) {
+                try {
+                    handler(r);
+                } catch(e) {gclh_error("gclh_GetGcAccessToken()",e);}
+            });
+    }, 0);
 }
 
 start(this);
