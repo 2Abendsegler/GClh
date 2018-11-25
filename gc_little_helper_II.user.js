@@ -3304,6 +3304,33 @@ var mainGC = function() {
         } catch(e) {gclh_error("Improve Message",e);}
     }
 
+// Update Standard Message on Click of a Username in Messagecenter
+    if (is_page("messagecenter")) {
+        try {
+            
+            addMessageButtonListener(0);
+            function addMessageButtonListener(waitCount) {
+                console.log('asd');
+
+                if($( "#cpConvoPanelFeed ol li" ).length > 0){
+                    
+                    $( "#cpConvoPanelFeed ol li" ).each(function() {
+                      $(this).click(function(){
+                        // Hier funktion für Update Message einfügen
+                        console.log('TEMP');
+                      });
+                    });
+                    
+                    waitCount = 700;
+                }
+                
+                waitCount++;
+                if (waitCount <= 600) setTimeout(function(){addMessageButtonListener(waitCount);}, 100);
+            }
+
+        } catch(e) {gclh_error("Update Standard Message on Click of a Username in Messagecenter",e);}
+    }
+
 // Improve list of pocket queries (list of PQs).
     if (document.location.href.match(/\.com\/pocket/) && document.getElementById("uxCreateNewPQ") && $('table.Table')[0]) {
         try {
