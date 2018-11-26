@@ -4166,11 +4166,18 @@ var mainGC = function() {
                 button_wrapper.append(button_template.clone().text('Past Events').click(function() {
                     
                     checkboxes.each(function() {
+                        if(this.id == 'ctl00_ContentBody_WatchListControl1_uxWatchList_ctl00_uxChkAll'){
+                            return true;
+                        }
                         // differnet length of tables for own and "external" bookmark lists
                         var element = $(this).closest('tr').find("td:nth-of-type(5) a").html();
                         if(element == null){
                             element = $(this).closest('tr').find("td:nth-of-type(4) a").html();
                         }
+                        if(element == null){
+                            element = $(this).closest('tr').find("td:nth-of-type(3) a").html();
+                        }
+
                         if(isPastEvent(element)){
                             this.checked = !this.checked;
                         }
@@ -4242,10 +4249,18 @@ var mainGC = function() {
         
         sums["PastEvents"] = 0;
         checkboxes.each(function() {
+            
+            if(this.id == 'ctl00_ContentBody_WatchListControl1_uxWatchList_ctl00_uxChkAll'){
+                return true;
+            }
+
             // differnet length of tables for own and "external" bookmark lists
             var element = $(this).closest('tr').find("td:nth-of-type(5) a").html();
             if(element == null){
                 element = $(this).closest('tr').find("td:nth-of-type(4) a").html();
+            }
+            if(element == null){
+                element = $(this).closest('tr').find("td:nth-of-type(3) a").html();
             }
             if(isPastEvent(element)){
                 sums["PastEvents"]++;
@@ -4335,7 +4350,12 @@ var mainGC = function() {
         if(element == null){
             element = $('#'+cbId).closest('tr').find("td:nth-of-type(4) a").html();
         }
+        if(element == null){
+            element = $('#'+cbId).closest('tr').find("td:nth-of-type(3) a").html();
+        }
 
+            console.log('2');
+            console.log(element);
         if (isPastEvent(element)){
             if (checkbox.checked) sums["chPastEvents"]++;
             else sums["chPastEvents"]--;
@@ -4352,11 +4372,19 @@ var mainGC = function() {
         
         sums["chPastEvents"] = 0;
         checkboxes.each(function() {
+            if(this.id == 'ctl00_ContentBody_WatchListControl1_uxWatchList_ctl00_uxChkAll'){
+                return true;
+            }
+
             // differnet length of tables for own and "external" bookmark lists
             var element = $(this).closest('tr').find("td:nth-of-type(5) a").html();
             if(element == null){
                 element = $(this).closest('tr').find("td:nth-of-type(4) a").html();
             }
+            if(element == null){
+                element = $(this).closest('tr').find("td:nth-of-type(3) a").html();
+            }
+
             if(isPastEvent(element)){
                 if (this.checked) sums["chPastEvents"]++;
             }
