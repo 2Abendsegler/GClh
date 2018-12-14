@@ -1843,7 +1843,7 @@ var mainGC = function() {
             var height = ((parseInt(settings_improve_add_to_list_height) < 100) ? parseInt(100) : parseInt(settings_improve_add_to_list_height));
             var css = ".loading {background: url(/images/loading2.gif) no-repeat center !important;}"
                     + ".add-list {max-height: " + height + "px !important;}"
-                    + ".add-list li {padding: 4px 0 !important;}"
+                    + ".add-list li {padding: 2px 0 !important;}"
                     + ".add-list li button {font-size: 14px !important; margin: 0 !important; height: 18px !important;}"
                     + ".status {font-size: 14px !important; margin: 0 !important; top: 8px !important; width: unset !important; right: 0px !important;}"
                     + ".status .loading {top: -6px !important; right: 0px !important; padding: 0 2px !important; background-color: white !important; background: url(/images/loading2.gif) no-repeat center;}"
@@ -6721,7 +6721,7 @@ var mainGC = function() {
                 checkForAddHomeZoneMap(0);
             }
             window.addEventListener("load", gclh_map_loaded, false);
-            appendCssStyle(".leaflet-control-layers-base {min-width: 200px;}");
+            appendCssStyle(".leaflet-control-layers-base {min-width: 200px;} .add-list li {padding: 2px 0} .add-list li button {font-size: 14px; margin-bottom: 0px;}");
         } catch(e) {gclh_error("Change map parameter and add Homezone to map",e);}
     }
 
