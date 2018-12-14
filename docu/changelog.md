@@ -48,6 +48,10 @@
 ## v0.9.14:
 <ul>
 	<li>
+		<strong>Improvement:</strong> Save Personal Cache Note in cache listing with F2 key: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/907">#907</a>]<br>
+		Thanks to <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a> for the implementation.<br>
+	</li>
+	<li>
 		<strong>Fix:</strong> Log Templates do not work when Owner Name contains a Single Quote: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/902">#902</a>]<br>
 		Thanks to <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a> for the fix.<br>
 	</li>
