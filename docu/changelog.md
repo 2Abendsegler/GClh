@@ -48,6 +48,11 @@
 ## v0.9.14:
 <ul>
 	<li>
+		<strong>Improvement:</strong> Process icon "Copy GC Code to clipboard" also on additional Popup in maps: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/911">#911</a>]<br>
+		<img src="../images/0.9.14/Screen01.jpg" alt="Screen01.jpg"><br>
+		Thanks to <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a> for the implementation.<br>
+	</li>
+	<li>
 		<strong>Improvement:</strong> Save Personal Cache Note in cache listing with F2 key: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/907">#907</a>]<br>
 		Thanks to <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a> for the implementation.<br>
 	</li>
