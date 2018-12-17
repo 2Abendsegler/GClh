@@ -2177,8 +2177,10 @@ var mainGC = function() {
 
             // make buttons of zoom control smaller only for overview map
             $("#gclh_map_overview .leaflet-bar").attr("style","width: 20px; height: 41px; line-height: 40px;");
-            $("#gclh_map_overview .leaflet-control-zoom-in").attr("style","width: 20px; height: 20px; line-height: 20px; font-size: 11px;");
-            $("#gclh_map_overview .leaflet-control-zoom-out").attr("style","width: 20px; height: 20px; line-height: 20px; font-size: 11px;");
+            $("#gclh_map_overview .leaflet-control-zoom-in").attr("style","width: 20px; height: 20px; line-height: 20px; font-size: 11px; padding-right: 1px;");
+            $("#gclh_map_overview .leaflet-control-zoom-out").attr("style","width: 20px; height: 20px; line-height: 20px; font-size: 11px; padding-right: 1px;");
+            //
+            $("#gclh_map_overview .leaflet-control-attribution").attr("style","max-width: 238px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;");
 
             var marker = L.marker([lat, lng],{icon: L.icon({
                 iconUrl: 'http://www.geocaching.com/images/wpttypes/pins/' + unsafeWindow.mapLatLng.type + '.png',
