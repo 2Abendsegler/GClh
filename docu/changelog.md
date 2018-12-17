@@ -48,13 +48,11 @@
 ## v0.9.14:
 <ul>
 	<li>
-		<strong>Improvement:</strong> Process icon "Copy GC Code to clipboard" also on additional Popup in maps: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/911">#911</a>]<br>
+		<strong>Improvement:</strong> Process icon "Copy GC Code to clipboard" also on additional Popup in maps: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/911">#911</a> / Thanks <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a>]<br>
 		<img src="../images/0.9.14/Screen01.jpg" alt="Screen01.jpg"><br>
-		Thanks to <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a> for the implementation.<br>
 	</li>
 	<li>
-		<strong>Improvement:</strong> Save Personal Cache Note in cache listing with F2 key: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/907">#907</a>]<br>
-		Thanks to <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a> for the implementation.<br>
+		<strong>Improvement:</strong> Save Personal Cache Note in cache listing with F2 key: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/907">#907</a> / Thanks <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a>]<br>
 	</li>
 	<li>
 		<strong>Improvement:</strong> Past events error in foreign bookmarklists and in watchlist: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/898">#898</a> / Thanks <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a>]<br>
@@ -62,16 +60,13 @@
 		<img src="../images/0.9.14/Screen02.jpg" alt="Screen02.jpg"><br>
 	</li>
 	<li>
-		<strong>Fix:</strong> Log Templates do not work when Owner Name contains a Single Quote: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/902">#902</a>]<br>
-		Thanks to <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a> for the fix.<br>
+		<strong>Fix:</strong> Log Templates do not work when Owner Name contains a Single Quote: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/902">#902</a> / Thanks <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a>]<br>
 	</li>
 	<li>
-		<strong>Fix:</strong> Unification of line spacing and font size of "Add to list" popup: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/905">#905</a>]<br>
-		Thanks to <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a> for the fix.<br>
+		<strong>Fix:</strong> Unification of line spacing and font size of "Add to list" popup: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/905">#905</a> / Thanks <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a>]<br>
 	</li>
 	<li>
-		<strong>Fix:</strong> Log inline and PMO log inline on listing do not work: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/888">#888</a>]<br>
-		Thanks to <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a> for the fix.<br>
+		<strong>Fix:</strong> Log inline and PMO log inline on listing do not work: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/888">#888</a> / Thanks <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a>]<br>
 	</li>
 </ul>
 (??.??.2018)<br>
