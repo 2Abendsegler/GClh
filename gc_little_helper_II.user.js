@@ -515,6 +515,7 @@ var variablesInit = function(c) {
     c.settings_auto_open_tb_inventory_list = getValue("settings_auto_open_tb_inventory_list", true);
     c.settings_embedded_smartlink_ignorelist = getValue("settings_embedded_smartlink_ignorelist", true);
     c.settings_both_tabs_list_of_pqs_one_page = getValue("settings_both_tabs_list_of_pqs_one_page", false);
+    c.settings_past_events_on_bm = getValue("settings_past_events_on_bm", true);
 
     try {
         if (c.userToken === null) {
@@ -4225,18 +4226,17 @@ var mainGC = function() {
                     sumsCountCheckedAll();
                 }));
                 sumsOutputFields(button_wrapper, "Deactivated");
-
-                button_wrapper.append(button_template.clone().text('Past Events').click(function() {
-                    
-                    checkboxes.each(function() {
-                        if(isPastEvent($(this).closest('tr').find("td:nth-of-type(5) a").html())){
+                if (settings_past_events_on_bm) {
+                    button_wrapper.append(button_template.clone().text('Past Events').click(function() {
+                        table.find('.gclhPastEvent').closest('tr').find(checkbox_selector).each(function() {
                             this.checked = !this.checked;
-                        }
-                    });
-                    sumsCountCheckedAll();
-                }));
-                sumsOutputFields(button_wrapper, "PastEvents");
-                
+                        });
+                        sumsCountCheckedAll();
+                    }));
+                    sumsOutputFields(button_wrapper, "PastEvents");
+                    prepare_events();
+                }
+
                 var tfoot = $('<tfoot />').append($('<tr />').append(button_wrapper));
                 table.append(tfoot);
                 checkboxes.prop('checked', false);
@@ -4246,43 +4246,42 @@ var mainGC = function() {
             }
         } catch(e) {gclh_error("Add buttons to bookmark list and watchlist",e);}
     }
-
-    //Check if Cache is a pastEvent
-    function isPastEvent(linktext){
-
-        // Mega/Giga Events: we can only detect archived Mega / Giga Events because they don't write the Date after the Cachename
-        if(
-            ((linktext.indexOf('alt="Mega-Event Cache"') != -1) && (linktext.indexOf('OldWarning Strike') != -1)) ||
-            ((linktext.indexOf('alt="Giga-Event Cache"') != -1) && (linktext.indexOf('OldWarning Strike') != -1))
-        ){
-            return true;
-        }
-
-        if(
-            (linktext.indexOf('alt="Event Cache"') == -1) &&
-            (linktext.indexOf('alt="Cache In Trash Out Event"') == -1)
-        ){
-            // No Event Icon!
-            return false;
-        }
-
+    function prepare_events() {
         var today = new Date();
-        // Search for the last Date that looks like this: (09/26/2018)
-        var matches = linktext.match(/(\s\((0[1-9]|1[0-2])\/(0[1-9]|[12]\d|3[01])\/[12]\d{3}\)$)/gm);
-        if(matches != null){
-            // last match is our date we search for
-            var text_date = matches[matches.length-1];
-            // remove unwanted chars:
-            text_date = text_date.replace(" ","").replace("(","").replace(")","");
-            var date = Date.parse(text_date);
-            if(today.getTime() > date){
-                return true;
-            }
-        }
-
-        return false;
+        table.find('img[src*="/sm/6."],img[src*="/sm/13."],img[src*="/sm/453."],img[src*="/sm/7005."]').closest('td').each(function() {
+            var url = (current_page == "bookmark" ? this.children[0].href : this.nextElementSibling.children[0].href)
+            $.get(url, null, function(text){
+                url = url.replace("https://www.geocaching.com", "");
+                var name = $(text).find('#ctl00_ContentBody_CacheName').closest('span')[0];
+                // Date looks like "end: new Date(2014, 06-1, 21)"
+                var tDate = text.match(/end:\snew\sDate\((([12]\d{3}),\s(0[1-9]|1[0-2])-\d,\s(0[1-9]|[12]\d|3[01]))\)/);
+                if (name && name.innerHTML && tDate && tDate[2] && tDate[3] && tDate[4]) {
+                    var date = new Date(tDate[2], tDate[3]-1, tDate[4]);
+                    if ($('#ctl00_ContentBody_ListInfo_uxListOwner')[0]) var a = table.find('a[href*="'+url+'"]').find('img').closest('a')[0];
+                    else var a = table.find('a[href*="'+url+'"]').closest('a')[0];
+                    if ($(a).find('span')[0]) {
+                        $(a).find('span')[0].innerText = "";
+                        if ($(a).find('span')[0].nextSibling) $(a).find('span')[0].nextSibling.data = ""; }
+                    else if ($(a).find('img')[0]) $(a).find('img')[0].nextSibling.data = "";
+                    else a.innerText = "";
+                    var span = document.createElement('span');
+                    a.append(span);
+                    $(a).find('span')[0].innerText = " " + name.innerHTML;
+                    var span = document.createElement('span');
+                    span.innerHTML = " (" + date.toLocaleDateString() + ")";
+                    a.parentNode.insertBefore(span, a.nextSibling);
+                    if (today.getTime() > date) {
+                        $(a).find('span')[0].className += " gclhPastEvent";
+                        $(a).find('span')[0].title += "Past Event";
+                        a.nextSibling.title = "Past Event";
+                        a.nextSibling.style.color = "#8c0b0b";
+                        sums["PastEvents"]++;
+                        sumsChangeFields("PastEvents", sums["chPastEvents"], sums["PastEvents"]);
+                    } else a.nextSibling.title = "Event Date";
+                }
+            });
+        });
     }
-
     // Summenfelder Anzahl Caches definieren, Configparameter setzen.
     function sumsCreateFields(configParameter) {
         var sums = new Object();
@@ -4297,13 +4296,7 @@ var mainGC = function() {
         sums["Found"] = table.find('tbody tr').find('img[src*="found"]').length;
         sums["Archived"] = table.find('tbody tr').find('span.Strike.OldWarning,span.Strike.Warning').length;
         sums["Deactivated"] = table.find('tbody tr').find('span.Strike:not(.OldWarning,.Warning)').length;
-        
-        sums["PastEvents"] = 0;
-        checkboxes.each(function() {
-            if(isPastEvent($(this).closest('tr').find("td:nth-of-type(5) a").html())){
-                sums["PastEvents"]++;
-            }
-        });
+        sums["PastEvents"] = table.find('tbody tr').find('.gclhPastEvent').length;
     }
     // Events für Checkboxen setzen.
     function sumsSetEventsForCheckboxes(checkboxes) {
@@ -4382,8 +4375,7 @@ var mainGC = function() {
             if (checkbox.checked) sums["chDeactivated"]++;
             else sums["chDeactivated"]--;
         }
-
-        if (isPastEvent($('#'+cbId).closest('tr').find("td:nth-of-type(5) a").html())){
+        if ($('#'+cbId).closest('tr').find('.gclhPastEvent').length > 0) {
             if (checkbox.checked) sums["chPastEvents"]++;
             else sums["chPastEvents"]--;
         }
@@ -4396,14 +4388,7 @@ var mainGC = function() {
         sums["chFound"] = table.find('tbody tr').find('img[src*="found"]').closest('tr').find(checkbox_selector + ':checked').length;
         sums["chArchived"] = table.find('tbody tr').find('span.Strike.OldWarning,span.Strike.Warning').closest('tr').find(checkbox_selector + ':checked').length;
         sums["chDeactivated"] = table.find('tbody tr').find('span.Strike:not(.OldWarning,.Warning)').closest('tr').find(checkbox_selector + ':checked').length;
-        
-        sums["chPastEvents"] = 0;
-        checkboxes.each(function() {
-            if(isPastEvent($(this).closest('tr').find("td:nth-of-type(5) a").html())){
-                if (this.checked) sums["chPastEvents"]++;
-            }
-        });
-
+        sums["chPastEvents"] = table.find('tbody tr').find('.gclhPastEvent').closest('tr').find(checkbox_selector + ':checked').length;
         sumsChangeAllFields();
     }
 
@@ -9859,6 +9844,7 @@ var mainGC = function() {
             html += newParameterOn3;
             html += checkboxy('settings_bm_changed_and_go', 'After change of bookmark go to bookmark list automatically') + show_help3("With this option you can switch to the bookmark list automatically after a change of a bookmark. The confirmation page of this change will skip.") + "<br>";
             html += checkboxy('settings_bml_changed_and_go', 'After change of bookmark list go to bookmark list automatically') + show_help3("With this option you can switch to the bookmark list automatically after a change of the bookmark list. The confirmation page of this change will skip.") + "<br>";
+            html += checkboxy('settings_past_events_on_bm', 'Past events processing') + show_help3("With this option you can recognize and select past events in bookmark lists and in the watchlist. <br><br>For this, the cache listings of the events must be read additionally. If you do not want this, the option can be disabled.") + "<br>";
             html += newParameterVersionSetzen(0.9) + newParameterOff;
             html += "</div>";
 
@@ -11189,6 +11175,7 @@ var mainGC = function() {
                 'settings_auto_open_tb_inventory_list',
                 'settings_embedded_smartlink_ignorelist',
                 'settings_both_tabs_list_of_pqs_one_page',
+                'settings_past_events_on_bm',
             );
 
             for (var i = 0; i < checkboxes.length; i++) {
