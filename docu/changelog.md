@@ -57,6 +57,11 @@
 		Thanks to <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a> for the implementation.<br>
 	</li>
 	<li>
+		<strong>Improvement:</strong> Past events error in foreign bookmarklists and in watchlist: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/898">#898</a> / Thanks <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a>]<br>
+		To recognize and to select past events in bookmark lists and in the watchlist, the cache listings of the events will be read additionally. If you do not want this, the option can be disabled.<br>
+		<img src="../images/0.9.14/Screen02.jpg" alt="Screen02.jpg"><br>
+	</li>
+	<li>
 		<strong>Fix:</strong> Log Templates do not work when Owner Name contains a Single Quote: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/902">#902</a>]<br>
 		Thanks to <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a> for the fix.<br>
 	</li>
