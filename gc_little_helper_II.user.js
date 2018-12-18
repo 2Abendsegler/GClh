@@ -7520,7 +7520,7 @@ var mainGC = function() {
 // Post log from listing (inline).
     try {
         // iframe aufbauen und verbergen.
-        if (settings_log_inline && is_page("cache_listing") && $('#ctl00_ContentBody_MapLinks_MapLinks')[0]) {
+        if (settings_log_inline && is_page("cache_listing") && $('#ctl00_ContentBody_bottomSection')[0] && $('#ctl00_ContentBody_bottomSection')[0].children[0]) {
             var links = document.getElementsByTagName('a');
             var menu = false;
             var watch = false;
@@ -7534,7 +7534,7 @@ var mainGC = function() {
                     watch = links[i];
                 }
             }
-            var head = document.getElementById("ctl00_ContentBody_MapLinks_MapLinks").parentNode.parentNode.nextSibling;
+            var head = document.getElementById("ctl00_ContentBody_bottomSection").children[0];
             function hide_iframe() {
                 var frame = document.getElementById('gclhFrame');
                 if (frame.style.display == "") frame.style.display = "none";
@@ -7581,7 +7581,7 @@ var mainGC = function() {
 // Post log from PMO-Listing as Basic Member (inline).
     try {
         // iframe aufbauen und verbergen.
-        if (settings_log_inline_pmo4basic && is_page("cache_listing") && ($('#ctl00_ContentBody_memberComparePanel')[0] || $('.pmo-banner')[0] || $('.pmo-upsell')[0])) {
+        if (settings_log_inline_pmo4basic && is_page("cache_listing") && $('.ul__cache-details.unstyled')[0]) {
             function hide_iframe() {
                 var frame = document.getElementById('gclhFrame');
                 if (frame.style.display == "") frame.style.display = "none";
@@ -7606,7 +7606,7 @@ var mainGC = function() {
             img.setAttribute("border", "0");
             a.appendChild(img);
             a.addEventListener("click", hide_iframe, false);
-            var banner = $('.pmo-banner')[0];
+            var banner = $('.ul__cache-details.unstyled')[0].parentNode.nextSibling;
             banner.parentNode.insertBefore(a, banner);
             banner.parentNode.insertBefore(iframe, banner);
         }
@@ -8854,7 +8854,7 @@ var mainGC = function() {
 
 // Ist Basic Member in PMO Cache?
     function isMemberInPmoCache() {
-        if (is_page("cache_listing") && $('.pmo-banner')[0] && $('.pmo-upsell')[0]) return true;
+        if (is_page("cache_listing") && $('#premium-upgrade-widget')[0]) return true;
         else return false;
     }
 
