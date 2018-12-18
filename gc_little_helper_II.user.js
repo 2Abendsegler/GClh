@@ -694,7 +694,7 @@ var mainPGC = function() {
         var open_popup_count = 0;
         var open_popups = null;
         function create_pqs(first_run = true){
-            
+
             if(first_run){
                 // Cleanup last run (if there is one!)
                 if((open_popups != null) && (Array.isArray(open_popups))){
@@ -710,7 +710,7 @@ var mainPGC = function() {
             }
 
             var already_done_count = 0;
-            
+
             for (var i = 0; i < urls_for_pqs_to_create.length; i++) {
                 if(urls_for_pqs_to_create[i] != ''){
                     if(open_popup_count < 5){
@@ -729,7 +729,7 @@ var mainPGC = function() {
             }
 
             if(
-                (already_done_count < urls_for_pqs_to_create.length) || 
+                (already_done_count < urls_for_pqs_to_create.length) ||
                 (open_popup_count > 0)
             ){
                 // Restart function until everything is finished
@@ -879,9 +879,9 @@ var mainPGC = function() {
                                         c: cache_count,
                                         ho: how_often,
                                         e: email,
-                                        
-                                        sm: start_month, 
-                                        sd: start_day, 
+
+                                        sm: start_month,
+                                        sd: start_day,
                                         sy: start_year,
 
                                         em: end_month,
@@ -920,14 +920,14 @@ var mainPGC = function() {
                 td.appendChild(document.createTextNode("This function will only work, if you don't set any other filter except country or region!"));
                 td.appendChild(document.createElement("br"));
                 td.appendChild(document.createTextNode("If you click the \"Create PQ(s)\" Button GClh will open as many Pop-ups as PQs should be created. Please wait until all Pop-ups are loaded. The number of simultaneously loaded Popups is limited to 5. We will display a message if all PQs are created. The Popups will close themselves after the PQs are created. "));
-                
+
                 var span = document.createElement('span');
                 span.innerHTML = 'Please make sure you do not have a Pop-up-Blocker enabled. Otherwise this function will not work as expected. ';
                 span.style.fontWeight = 'bold';
                 td.appendChild(span);
-                
+
                 td.appendChild(document.createTextNode("All PQs will get the Name that you enter in the text field and an ongoing number."));
-                
+
                 var heading_config = document.createElement("h5");
                 heading_config.appendChild(document.createTextNode("Configuration"));
                 td.appendChild(heading_config);
@@ -2602,7 +2602,7 @@ var mainGC = function() {
             function addElevationToWaypoints_OpenElevation(responseDetails) {
                 try {
                     context = responseDetails.context;
-                    if ( responseDetails.responseText[0] != '{' ) { 
+                    if ( responseDetails.responseText[0] != '{' ) {
                         // workaround: sometimes OpenElevation answers with an HTML formatted content not with JSON data
                         gclh_log("\naddElevationToWaypoints_OpenElevation():\n- Unexpected response data:"+responseDetails.responseText.substring(0,100)+"…");
                         getElevations(context.retries+1,context.locations);
@@ -2728,22 +2728,22 @@ var mainGC = function() {
                         locations : locations
                     },
                     onload: elevationServices[serviceIndex]['function'],
-                    onerror: function(responseDetails) { 
+                    onerror: function(responseDetails) {
                         var context = responseDetails.context;
                         gclh_error("getElevations("+context.serviceName+")", { 'message': 'GM_xmlhttpRequest() reported error.', 'stack': '' });
                         console.log(responseDetails); // workaround gclh_log doesn't work for responseDetails. Error message 'TypeError: Function.prototype.toString called on incompatible object'
                         getElevations(context.retries+1,context.locations);
                     },
-                    onreadystatechange: function(responseDetails) { 
+                    onreadystatechange: function(responseDetails) {
                         // console.log(responseDetails); // workaround gclh_log doesn't work for responseDetails. Error message 'TypeError: Function.prototype.toString called on incompatible object'
                     },
-                    ontimeout: function(responseDetails) { 
+                    ontimeout: function(responseDetails) {
                         var context = responseDetails.context;
                         gclh_error("getElevations("+context.serviceName+")", { 'message': 'GM_xmlhttpRequest() reported timeout.', 'stack': '' });
                         console.log(responseDetails); // workaround gclh_log doesn't work for responseDetails. Error message 'TypeError: Function.prototype.toString called on incompatible object'
                         getElevations(context.retries+1,context.locations);
                     },
-                    onabort: function(responseDetails) { 
+                    onabort: function(responseDetails) {
                         var context = responseDetails.context;
                         gclh_error("getElevations("+context.serviceName+")", { 'message': 'GM_xmlhttpRequest() reported abort.', 'stack': '' });
                         console.log(responseDetails); // workaround gclh_log doesn't work for responseDetails. Error message 'TypeError: Function.prototype.toString called on incompatible object'
@@ -4234,7 +4234,7 @@ var mainGC = function() {
                 sumsOutputFields(button_wrapper, "Deactivated");
 
                 button_wrapper.append(button_template.clone().text('Past Events').click(function() {
-                    
+
                     checkboxes.each(function() {
                         if(isPastEvent($(this).closest('tr').find("td:nth-of-type(5) a").html())){
                             this.checked = !this.checked;
@@ -4243,7 +4243,7 @@ var mainGC = function() {
                     sumsCountCheckedAll();
                 }));
                 sumsOutputFields(button_wrapper, "PastEvents");
-                
+
                 var tfoot = $('<tfoot />').append($('<tr />').append(button_wrapper));
                 table.append(tfoot);
                 checkboxes.prop('checked', false);
@@ -4304,7 +4304,7 @@ var mainGC = function() {
         sums["Found"] = table.find('tbody tr').find('img[src*="found"]').length;
         sums["Archived"] = table.find('tbody tr').find('span.Strike.OldWarning,span.Strike.Warning').length;
         sums["Deactivated"] = table.find('tbody tr').find('span.Strike:not(.OldWarning,.Warning)').length;
-        
+
         sums["PastEvents"] = 0;
         checkboxes.each(function() {
             if(isPastEvent($(this).closest('tr').find("td:nth-of-type(5) a").html())){
@@ -4389,7 +4389,6 @@ var mainGC = function() {
             if (checkbox.checked) sums["chDeactivated"]++;
             else sums["chDeactivated"]--;
         }
-
         if (isPastEvent($('#'+cbId).closest('tr').find("td:nth-of-type(5) a").html())){
             if (checkbox.checked) sums["chPastEvents"]++;
             else sums["chPastEvents"]--;
@@ -4403,7 +4402,6 @@ var mainGC = function() {
         sums["chFound"] = table.find('tbody tr').find('img[src*="found"]').closest('tr').find(checkbox_selector + ':checked').length;
         sums["chArchived"] = table.find('tbody tr').find('span.Strike.OldWarning,span.Strike.Warning').closest('tr').find(checkbox_selector + ':checked').length;
         sums["chDeactivated"] = table.find('tbody tr').find('span.Strike:not(.OldWarning,.Warning)').closest('tr').find(checkbox_selector + ':checked').length;
-        
         sums["chPastEvents"] = 0;
         checkboxes.each(function() {
             if(isPastEvent($(this).closest('tr').find("td:nth-of-type(5) a").html())){
@@ -6985,8 +6983,11 @@ var mainGC = function() {
                     + "div.popup_additional_info .loading_container img{margin-right:5px;}"
                     + "div.popup_additional_info span.favi_points svg, div.popup_additional_info span.tackables svg{position: relative;top: 4px;}";
             css += ".leaflet-popup-content-wrapper, .leaflet-popup-close-button {margin: 16px 3px 0px 13px;}";
-            if (browser == 'firefox') css += ".gclh_owner {max-width: 110px;} .map-item-row-1 h4 a {max-width: 295px;} .gclh_owner, .map-item-row-1 h4 a {display: inline-block; white-space: nowrap; overflow: -moz-hidden-unscrollable; text-overflow: ellipsis;}";
+            css += ".gclh_ctoc img {width: 14px; padding: 3px 1px 0 0; float: right;}";
+            if (browser == 'firefox') css += ".gclh_owner {max-width: 110px;} .map-item-row-1 h4 a {max-width: 265px;} .gclh_owner, .map-item-row-1 h4 a {display: inline-block; white-space: nowrap; overflow: -moz-hidden-unscrollable; text-overflow: ellipsis;}";
             appendCssStyle(css);
+            var global_ctoc_flag = false;
+            var global_ctoc_cont = "";
 
             // create an observer instance
             var observer = new MutationObserver(function(mutations) {
@@ -7137,6 +7138,31 @@ var mainGC = function() {
                             link.children[0].setAttribute("style", "margin-left: 0px; margin-right: 0px");
                             side[0].appendChild(link);
                         }
+
+                        // Copy GC code to clipboard.
+                        var div = document.createElement('div');
+                        div.className = "gclh_ctoc";
+                        var code = gccode;
+                        div.id = "gclh_ctoc_" + code;
+                        div.innerHTML = '<a href="javascript:void(0);"><img src="'+global_copy_icon+'" title="Copy GC Code to clipboard"></a>';
+                        $(this).find('h4')[0].parentNode.insertBefore(div, $(this).find('h4')[0]);
+                        $(this).find('#gclh_ctoc_'+code)[0].addEventListener('click', function() {
+                            // Tastenkombination Strg+c ausführen für eigene Verarbeitung.
+                            global_ctoc_flag = true;
+                            global_ctoc_cont = code;
+                            document.execCommand('copy');
+                        }, false);
+                        document.addEventListener('copy', function(e){
+                            // Normale Tastenkombination Strg+c für markierten Bereich nicht verarbeiten, nur eigene Tastenkombination Strg+c verarbeiten.
+                            if (!global_ctoc_flag) return;
+                            global_ctoc_flag = false;
+                            // Gegebenenfalls markierter Bereich wird nicht beachtet.
+                            e.preventDefault();
+                            // GC Code verarbeiten.
+                            e.clipboardData.setData('text/plain', global_ctoc_cont);
+                            $('#gclh_ctoc_'+global_ctoc_cont)[0].style.opacity = '0.3';
+                            setTimeout(function() { $('#gclh_ctoc_'+global_ctoc_cont)[0].style.opacity = 'unset'; }, 200);
+                        });
                     });
                 });
             });
