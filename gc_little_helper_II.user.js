@@ -2819,6 +2819,7 @@ var mainGC = function() {
         finds = get_my_finds();
         var [aDate, aTime, aDateTime] = getDateTime();
         var me = global_me;
+        aOwner = aOwner.replace(/'/g,"\\'");
         var code = "function gclh_insert_tpl(id){";
         if (newLogPage) {
             // --> Chrom
