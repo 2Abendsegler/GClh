@@ -695,7 +695,7 @@ var mainPGC = function() {
         var open_popup_count = 0;
         var open_popups = null;
         function create_pqs(first_run = true){
-            
+
             if(first_run){
                 // Cleanup last run (if there is one!)
                 if((open_popups != null) && (Array.isArray(open_popups))){
@@ -711,7 +711,7 @@ var mainPGC = function() {
             }
 
             var already_done_count = 0;
-            
+
             for (var i = 0; i < urls_for_pqs_to_create.length; i++) {
                 if(urls_for_pqs_to_create[i] != ''){
                     if(open_popup_count < 5){
@@ -730,7 +730,7 @@ var mainPGC = function() {
             }
 
             if(
-                (already_done_count < urls_for_pqs_to_create.length) || 
+                (already_done_count < urls_for_pqs_to_create.length) ||
                 (open_popup_count > 0)
             ){
                 // Restart function until everything is finished
@@ -880,9 +880,9 @@ var mainPGC = function() {
                                         c: cache_count,
                                         ho: how_often,
                                         e: email,
-                                        
-                                        sm: start_month, 
-                                        sd: start_day, 
+
+                                        sm: start_month,
+                                        sd: start_day,
                                         sy: start_year,
 
                                         em: end_month,
@@ -921,14 +921,14 @@ var mainPGC = function() {
                 td.appendChild(document.createTextNode("This function will only work, if you don't set any other filter except country or region!"));
                 td.appendChild(document.createElement("br"));
                 td.appendChild(document.createTextNode("If you click the \"Create PQ(s)\" Button GClh will open as many Pop-ups as PQs should be created. Please wait until all Pop-ups are loaded. The number of simultaneously loaded Popups is limited to 5. We will display a message if all PQs are created. The Popups will close themselves after the PQs are created. "));
-                
+
                 var span = document.createElement('span');
                 span.innerHTML = 'Please make sure you do not have a Pop-up-Blocker enabled. Otherwise this function will not work as expected. ';
                 span.style.fontWeight = 'bold';
                 td.appendChild(span);
-                
+
                 td.appendChild(document.createTextNode("All PQs will get the Name that you enter in the text field and an ongoing number."));
-                
+
                 var heading_config = document.createElement("h5");
                 heading_config.appendChild(document.createTextNode("Configuration"));
                 td.appendChild(heading_config);
@@ -1123,6 +1123,12 @@ var mainGC = function() {
                 else if ($('#ctl00_ContentBody_btnSubmit')[0]) var id = "ctl00_ContentBody_btnSubmit";
                 else if ($('#ctl00_ContentBody_Attributes_btnUpdate')[0]) var id = "ctl00_ContentBody_Attributes_btnUpdate";
                 else if ($('#ctl00_ContentBody_WaypointEdit_uxSubmitIt')[0]) var id = "ctl00_ContentBody_WaypointEdit_uxSubmitIt";
+            }
+            // "Save" Personal Cache Note in cache listing.
+            if (is_page("cache_listing") && $('.js-pcn-submit')[0]) {
+                var id = "gclh_js-pcn-submit";
+                $('.js-pcn-submit')[0].id = id;
+                document.getElementById(id).innerHTML += " (F2)";
             }
             if (id && document.getElementById(id)) {
                 function keydownF2(e) {
@@ -1844,7 +1850,7 @@ var mainGC = function() {
             var height = ((parseInt(settings_improve_add_to_list_height) < 100) ? parseInt(100) : parseInt(settings_improve_add_to_list_height));
             var css = ".loading {background: url(/images/loading2.gif) no-repeat center !important;}"
                     + ".add-list {max-height: " + height + "px !important;}"
-                    + ".add-list li {padding: 4px 0 !important;}"
+                    + ".add-list li {padding: 2px 0 !important;}"
                     + ".add-list li button {font-size: 14px !important; margin: 0 !important; height: 18px !important;}"
                     + ".status {font-size: 14px !important; margin: 0 !important; top: 8px !important; width: unset !important; right: 0px !important;}"
                     + ".status .loading {top: -6px !important; right: 0px !important; padding: 0 2px !important; background-color: white !important; background: url(/images/loading2.gif) no-repeat center;}"
@@ -2178,8 +2184,10 @@ var mainGC = function() {
 
             // make buttons of zoom control smaller only for overview map
             $("#gclh_map_overview .leaflet-bar").attr("style","width: 20px; height: 41px; line-height: 40px;");
-            $("#gclh_map_overview .leaflet-control-zoom-in").attr("style","width: 20px; height: 20px; line-height: 20px; font-size: 11px;");
-            $("#gclh_map_overview .leaflet-control-zoom-out").attr("style","width: 20px; height: 20px; line-height: 20px; font-size: 11px;");
+            $("#gclh_map_overview .leaflet-control-zoom-in").attr("style","width: 20px; height: 20px; line-height: 20px; font-size: 11px; padding-right: 1px;");
+            $("#gclh_map_overview .leaflet-control-zoom-out").attr("style","width: 20px; height: 20px; line-height: 20px; font-size: 11px; padding-right: 1px;");
+            // Länge der Kartenbezeichnung ... begrenzen.
+            $("#gclh_map_overview .leaflet-control-attribution").attr("style","max-width: 238px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;");
 
             var marker = L.marker([lat, lng],{icon: L.icon({
                 iconUrl: 'http://www.geocaching.com/images/wpttypes/pins/' + unsafeWindow.mapLatLng.type + '.png',
@@ -2597,7 +2605,7 @@ var mainGC = function() {
             function addElevationToWaypoints_OpenElevation(responseDetails) {
                 try {
                     context = responseDetails.context;
-                    if ( responseDetails.responseText[0] != '{' ) { 
+                    if ( responseDetails.responseText[0] != '{' ) {
                         // workaround: sometimes OpenElevation answers with an HTML formatted content not with JSON data
                         gclh_log("\naddElevationToWaypoints_OpenElevation():\n- Unexpected response data:"+responseDetails.responseText.substring(0,100)+"…");
                         getElevations(context.retries+1,context.locations);
@@ -2723,22 +2731,22 @@ var mainGC = function() {
                         locations : locations
                     },
                     onload: elevationServices[serviceIndex]['function'],
-                    onerror: function(responseDetails) { 
+                    onerror: function(responseDetails) {
                         var context = responseDetails.context;
                         gclh_error("getElevations("+context.serviceName+")", { 'message': 'GM_xmlhttpRequest() reported error.', 'stack': '' });
                         console.log(responseDetails); // workaround gclh_log doesn't work for responseDetails. Error message 'TypeError: Function.prototype.toString called on incompatible object'
                         getElevations(context.retries+1,context.locations);
                     },
-                    onreadystatechange: function(responseDetails) { 
+                    onreadystatechange: function(responseDetails) {
                         // console.log(responseDetails); // workaround gclh_log doesn't work for responseDetails. Error message 'TypeError: Function.prototype.toString called on incompatible object'
                     },
-                    ontimeout: function(responseDetails) { 
+                    ontimeout: function(responseDetails) {
                         var context = responseDetails.context;
                         gclh_error("getElevations("+context.serviceName+")", { 'message': 'GM_xmlhttpRequest() reported timeout.', 'stack': '' });
                         console.log(responseDetails); // workaround gclh_log doesn't work for responseDetails. Error message 'TypeError: Function.prototype.toString called on incompatible object'
                         getElevations(context.retries+1,context.locations);
                     },
-                    onabort: function(responseDetails) { 
+                    onabort: function(responseDetails) {
                         var context = responseDetails.context;
                         gclh_error("getElevations("+context.serviceName+")", { 'message': 'GM_xmlhttpRequest() reported abort.', 'stack': '' });
                         console.log(responseDetails); // workaround gclh_log doesn't work for responseDetails. Error message 'TypeError: Function.prototype.toString called on incompatible object'
@@ -2820,6 +2828,7 @@ var mainGC = function() {
         finds = get_my_finds();
         var [aDate, aTime, aDateTime] = getDateTime();
         var me = global_me;
+        aOwner = aOwner.replace(/'/g,"\\'");
         var code = "function gclh_insert_tpl(id){";
         if (newLogPage) {
             // --> Chrom
@@ -6706,7 +6715,7 @@ var mainGC = function() {
                 checkForAddHomeZoneMap(0);
             }
             window.addEventListener("load", gclh_map_loaded, false);
-            appendCssStyle(".leaflet-control-layers-base {min-width: 200px;}");
+            appendCssStyle(".leaflet-control-layers-base {min-width: 200px;} .add-list li {padding: 2px 0} .add-list li button {font-size: 14px; margin-bottom: 0px;}");
         } catch(e) {gclh_error("Change map parameter and add Homezone to map",e);}
     }
 
@@ -6963,8 +6972,11 @@ var mainGC = function() {
                     + "div.popup_additional_info .loading_container img{margin-right:5px;}"
                     + "div.popup_additional_info span.favi_points svg, div.popup_additional_info span.tackables svg{position: relative;top: 4px;}";
             css += ".leaflet-popup-content-wrapper, .leaflet-popup-close-button {margin: 16px 3px 0px 13px;}";
-            if (browser == 'firefox') css += ".gclh_owner {max-width: 110px;} .map-item-row-1 h4 a {max-width: 295px;} .gclh_owner, .map-item-row-1 h4 a {display: inline-block; white-space: nowrap; overflow: -moz-hidden-unscrollable; text-overflow: ellipsis;}";
+            css += ".gclh_ctoc img {width: 14px; padding: 3px 1px 0 0; float: right;}";
+            if (browser == 'firefox') css += ".gclh_owner {max-width: 110px;} .map-item-row-1 h4 a {max-width: 265px;} .gclh_owner, .map-item-row-1 h4 a {display: inline-block; white-space: nowrap; overflow: -moz-hidden-unscrollable; text-overflow: ellipsis;}";
             appendCssStyle(css);
+            var global_ctoc_flag = false;
+            var global_ctoc_cont = "";
 
             // create an observer instance
             var observer = new MutationObserver(function(mutations) {
@@ -7048,7 +7060,7 @@ var mainGC = function() {
                             }
 
                             // get all type of logs and their count
-                            var all_logs = $(text).find('.LogTotals')[0].innerHTML;
+                            var all_logs = $(text).find('.LogTotals')[0].innerHTML.replace(/alt="(.*?)"/g, "alt=\"...\"");
 
                             // get the number of trackables in the cache
                             var trachables = 0;
@@ -7115,6 +7127,31 @@ var mainGC = function() {
                             link.children[0].setAttribute("style", "margin-left: 0px; margin-right: 0px");
                             side[0].appendChild(link);
                         }
+
+                        // Copy GC code to clipboard.
+                        var div = document.createElement('div');
+                        div.className = "gclh_ctoc";
+                        var code = gccode;
+                        div.id = "gclh_ctoc_" + code;
+                        div.innerHTML = '<a href="javascript:void(0);"><img src="'+global_copy_icon+'" title="Copy GC Code to clipboard"></a>';
+                        $(this).find('h4')[0].parentNode.insertBefore(div, $(this).find('h4')[0]);
+                        $(this).find('#gclh_ctoc_'+code)[0].addEventListener('click', function() {
+                            // Tastenkombination Strg+c ausführen für eigene Verarbeitung.
+                            global_ctoc_flag = true;
+                            global_ctoc_cont = code;
+                            document.execCommand('copy');
+                        }, false);
+                        document.addEventListener('copy', function(e){
+                            // Normale Tastenkombination Strg+c für markierten Bereich nicht verarbeiten, nur eigene Tastenkombination Strg+c verarbeiten.
+                            if (!global_ctoc_flag) return;
+                            global_ctoc_flag = false;
+                            // Gegebenenfalls markierter Bereich wird nicht beachtet.
+                            e.preventDefault();
+                            // GC Code verarbeiten.
+                            e.clipboardData.setData('text/plain', global_ctoc_cont);
+                            $('#gclh_ctoc_'+global_ctoc_cont)[0].style.opacity = '0.3';
+                            setTimeout(function() { $('#gclh_ctoc_'+global_ctoc_cont)[0].style.opacity = 'unset'; }, 200);
+                        });
                     });
                 });
             });
@@ -7472,7 +7509,7 @@ var mainGC = function() {
 // Post log from listing (inline).
     try {
         // iframe aufbauen und verbergen.
-        if (settings_log_inline && is_page("cache_listing") && $('#ctl00_ContentBody_MapLinks_MapLinks')[0]) {
+        if (settings_log_inline && is_page("cache_listing") && $('#ctl00_ContentBody_bottomSection')[0] && $('#ctl00_ContentBody_bottomSection')[0].children[0]) {
             var links = document.getElementsByTagName('a');
             var menu = false;
             var watch = false;
@@ -7486,7 +7523,7 @@ var mainGC = function() {
                     watch = links[i];
                 }
             }
-            var head = document.getElementById("ctl00_ContentBody_MapLinks_MapLinks").parentNode.parentNode.nextSibling;
+            var head = document.getElementById("ctl00_ContentBody_bottomSection").children[0];
             function hide_iframe() {
                 var frame = document.getElementById('gclhFrame');
                 if (frame.style.display == "") frame.style.display = "none";
@@ -7533,7 +7570,7 @@ var mainGC = function() {
 // Post log from PMO-Listing as Basic Member (inline).
     try {
         // iframe aufbauen und verbergen.
-        if (settings_log_inline_pmo4basic && is_page("cache_listing") && ($('#ctl00_ContentBody_memberComparePanel')[0] || $('.pmo-banner')[0] || $('.pmo-upsell')[0])) {
+        if (settings_log_inline_pmo4basic && is_page("cache_listing") && $('.ul__cache-details.unstyled')[0]) {
             function hide_iframe() {
                 var frame = document.getElementById('gclhFrame');
                 if (frame.style.display == "") frame.style.display = "none";
@@ -7558,7 +7595,7 @@ var mainGC = function() {
             img.setAttribute("border", "0");
             a.appendChild(img);
             a.addEventListener("click", hide_iframe, false);
-            var banner = $('.pmo-banner')[0];
+            var banner = $('.ul__cache-details.unstyled')[0].parentNode.nextSibling;
             banner.parentNode.insertBefore(a, banner);
             banner.parentNode.insertBefore(iframe, banner);
         }
@@ -8806,7 +8843,7 @@ var mainGC = function() {
 
 // Ist Basic Member in PMO Cache?
     function isMemberInPmoCache() {
-        if (is_page("cache_listing") && $('.pmo-banner')[0] && $('.pmo-upsell')[0]) return true;
+        if (is_page("cache_listing") && $('#premium-upgrade-widget')[0]) return true;
         else return false;
     }
 
@@ -8818,10 +8855,10 @@ var mainGC = function() {
         div.setAttribute("style", "margin-top: -50px;");
         var prop = ' style="border: none; visibility: hidden; width: 2px; height: 2px;" alt="">';
 //--> $$002
-        var code = '<img src="https://c.andyhoppe.com/1485103563"' + prop +
-                   '<img src="https://c.andyhoppe.com/1485234890"' + prop +
-                   '<img src="https://www.worldflagcounter.com/ewI"' + prop +
-                   '<img src="https://s07.flagcounter.com/countxl/mHeY/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
+        var code = '<img src="https://c.andyhoppe.com/1544783761"' + prop +
+                   '<img src="https://c.andyhoppe.com/1544783818"' + prop +
+                   '<img src="https://www.worldflagcounter.com/fyS"' + prop +
+                   '<img src="https://s11.flagcounter.com/count2/r0iW/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
 //<-- $$002
         div.innerHTML = code;
         side.appendChild(div);
@@ -9788,7 +9825,7 @@ var mainGC = function() {
             html += "<div id='gclh_config_pq' class='gclh_block'>";
             html += checkboxy('settings_fixed_pq_header', 'Show fixed header in list of pocket queries') + show_help("With this option the header in list of pocket queries is fixed and the list of pocket queries can be scrolled.<br><br>This option evolute its effect not with the compact layout in list of pocket queries.") + "<br>";
             html += content_settings_show_log_it.replace("show_log_it","show_log_itX0");
-            var content_settings_submit_log_button = checkboxy('settings_submit_log_button', 'Submit log, pocket query, bookmark or hide cache on F2') + show_help("With this option you are able to submit your log by pressing key F2 instead of scrolling to the bottom and move the mouse to the button. <br><br>This feature also works to submit pocket queries and bookmarks. <br><br>And it works on the whole hide cache process with all of the buttons of the create and the change functionality.") + "<br>";
+            var content_settings_submit_log_button = checkboxy('settings_submit_log_button', 'Submit log, pocket query, bookmark or hide cache on F2') + show_help("With this option you are able to submit your log by pressing key F2 instead of scrolling to the bottom and move the mouse to the button. <br><br>This feature also works to submit pocket queries and bookmarks. <br><br>And it works on the whole hide cache process with all of the buttons of the create and the change functionality. <br><br>It works also to save Personal Cache Notes in cache listings.") + "<br>";
             html += content_settings_submit_log_button;
             html += newParameterOn2;
             html += checkboxy('settings_compact_layout_list_of_pqs', 'Show compact layout in list of pocket queries') + "<br>";
