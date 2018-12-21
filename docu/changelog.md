@@ -60,6 +60,9 @@
 		<img src="../images/0.9.14/Screen02.jpg" alt="Screen02.jpg"><br>
 	</li>
 	<li>
+		<strong>Improvement:</strong> Preventing twitching on the additional map popup: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/916">#916</a> / Thanks <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
 		<strong>Fix:</strong> Log Templates do not work when Owner Name contains a Single Quote: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/902">#902</a> / Thanks <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a>]<br>
 	</li>
 	<li>
