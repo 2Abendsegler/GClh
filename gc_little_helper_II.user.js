@@ -7073,7 +7073,7 @@ var mainGC = function() {
                             }
 
                             // get all type of logs and their count
-                            var all_logs = $(text).find('.LogTotals')[0].innerHTML;
+                            var all_logs = $(text).find('.LogTotals')[0].innerHTML.replace(/alt="(.*?)"/g, "alt=\"...\"");
 
                             // get the number of trackables in the cache
                             var trachables = 0;
