@@ -1,4 +1,4 @@
-<a href="#v0914" title="GClh II version 0.9.14 (??.??.2018)">v0.9.14</a> &nbsp;
+<a href="#v0914" title="GClh II version 0.9.14 (21.12.2018)">v0.9.14</a> &nbsp;
 <a href="#v0913" title="GClh II version 0.9.13 (09.10.2018)">v0.9.13</a> &nbsp;
 <a href="#v0912" title="GClh II version 0.9.12 (04.09.2018)">v0.9.12</a> &nbsp;
 <a href="#v0911" title="GClh II version 0.9.11 (25.08.2018)">v0.9.11</a> &nbsp;
@@ -48,12 +48,12 @@
 ## v0.9.14:
 <ul>
 	<li>
-		<strong>Improvement:</strong> Process icon "Copy GC Code to clipboard" also on additional Popup in maps: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/911">#911</a> / Thanks <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a>]<br>
-		<img src="../images/0.9.14/Screen01.jpg" alt="Screen01.jpg"><br>
+		<strong>Improvement:</strong> Save Personal Cache Note in cache listing with F2 key: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/907">#907</a> / Thanks <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a>]<br>
+		<img src="../images/0.9.14/Screen03.jpg" alt="Screen03.jpg"><br>
 	</li>
 	<li>
-		<strong>Improvement:</strong> Save also Personal Cache Note in cache listing with F2 key: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/907">#907</a> / Thanks <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a>]<br>
-		<img src="../images/0.9.14/Screen03.jpg" alt="Screen03.jpg"><br>
+		<strong>Improvement:</strong> Process icon "Copy GC Code to clipboard" also on additional Popup in maps: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/911">#911</a> / Thanks <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a>]<br>
+		<img src="../images/0.9.14/Screen01.jpg" alt="Screen01.jpg"><br>
 	</li>
 	<li>
 		<strong>Improvement:</strong> Past events error in foreign bookmarklists and in watchlist: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/898">#898</a> / Thanks <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a>]<br>
@@ -61,7 +61,10 @@
 		<img src="../images/0.9.14/Screen02.jpg" alt="Screen02.jpg"><br>
 	</li>
 	<li>
-		<strong>Improvement:</strong> Preventing twitching on the additional map popup: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/916">#916</a> / Thanks <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a>]<br>
+		<strong>Fix:</strong> Bookmark List: Create PQ-Button disappears in Compact Layout: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/891">#891</a> / Thanks <a href="https://www.geocaching.com/profile/?u=Ruko2010">Ruko2010</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> Error while generating Message Icons on own Caches: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/889">#889</a> / Thanks <a href="https://www.geocaching.com/profile/?u=Ruko2010">Ruko2010</a>]<br>
 	</li>
 	<li>
 		<strong>Fix:</strong> Log Templates do not work when Owner Name contains a Single Quote: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/902">#902</a> / Thanks <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a>]<br>
@@ -72,8 +75,18 @@
 	<li>
 		<strong>Fix:</strong> Log inline and PMO log inline on listing do not work: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/888">#888</a> / Thanks <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a>]<br>
 	</li>
+	<li>
+		<strong>Fix:</strong> Small map in Listing does not show up: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/865">#865</a> / Thanks <a href="https://www.geocaching.com/profile/?u=CachingFoX">CachingFoX</a>, <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a>]<br>
+		Small Map in Listing and while creating a Pocketquery is now configurable. You can choose the map layer and the zoom:<br>
+		<img src="../images/0.9.14/Screen04.png" alt="Screen04.png"><br>
+		<img src="../images/0.9.14/Screen05.png" alt="Screen05.png"><br>
+		<img src="../images/0.9.14/Screen06.png" alt="Screen06.png"><br>
+	</li>
+	<li>
+		<strong>Improvement:</strong> Preventing twitching on the additional map popup: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/916">#916</a> / Thanks <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a>]<br>
+	</li>
 </ul>
-(??.??.2018)<br>
+(21.12.2018)<br>
 released by <a href="https://www.geocaching.com/profile/?u=Ruko2010">Ruko2010</a><br>
 <br>
 
