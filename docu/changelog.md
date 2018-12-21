@@ -52,12 +52,16 @@
 		<img src="../images/0.9.14/Screen01.jpg" alt="Screen01.jpg"><br>
 	</li>
 	<li>
-		<strong>Improvement:</strong> Save Personal Cache Note in cache listing with F2 key: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/907">#907</a> / Thanks <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a>]<br>
+		<strong>Improvement:</strong> Save also Personal Cache Note in cache listing with F2 key: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/907">#907</a> / Thanks <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a>]<br>
+		<img src="../images/0.9.14/Screen03.jpg" alt="Screen03.jpg"><br>
 	</li>
 	<li>
 		<strong>Improvement:</strong> Past events error in foreign bookmarklists and in watchlist: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/898">#898</a> / Thanks <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a>]<br>
 		To recognize and to select past events in bookmark lists and in the watchlist, the cache listings of the events will be read additionally. If you do not want this, the option can be disabled.<br>
 		<img src="../images/0.9.14/Screen02.jpg" alt="Screen02.jpg"><br>
+	</li>
+	<li>
+		<strong>Improvement:</strong> Preventing twitching on the additional map popup: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/916">#916</a> / Thanks <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a>]<br>
 	</li>
 	<li>
 		<strong>Fix:</strong> Log Templates do not work when Owner Name contains a Single Quote: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/902">#902</a> / Thanks <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a>]<br>
