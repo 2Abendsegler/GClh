@@ -1,3 +1,4 @@
+<a href="#v0915" title="GClh II version 0.9.15 (??.??.2019)">v0.9.15</a> &nbsp;
 <a href="#v0914" title="GClh II version 0.9.14 (21.12.2018)">v0.9.14</a> &nbsp;
 <a href="#v0913" title="GClh II version 0.9.13 (09.10.2018)">v0.9.13</a> &nbsp;
 <a href="#v0912" title="GClh II version 0.9.12 (04.09.2018)">v0.9.12</a> &nbsp;
@@ -45,6 +46,20 @@
 
 
 ---
+## v0.9.15:
+<ul>
+	<li>
+		<strong>Improvement:</strong> Show elevations for waypoints and listing coordinates also with Geonames: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/920">#920</a> / Thanks <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a>]<br>
+		Because the number of calls to the Google Elevation API is limited and the Open-Elevation API is very slow and sometimes providing erroneous data, the Geonames API has also been implemented. The Geonames API is very fast. As before, a first and a second service can be selected.<br>
+		Settings -> Listing:<br>
+		<img src="../images/0.9.15/Screen01.jpg" alt="Screen01.jpg"><br>
+	</li>
+</ul>
+(??.??.2019)<br>
+released by <a href="https://www.geocaching.com/profile/?u=Ruko2010">Ruko2010</a><br>
+<br>
+
+---
 ## v0.9.14:
 <ul>
 	<li>
@@ -76,7 +91,7 @@
 		<strong>Fix:</strong> Log inline and PMO log inline on listing do not work: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/888">#888</a> / Thanks <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a>]<br>
 	</li>
 	<li>
-		<strong>Fix:</strong> Small map in Listing does not show up: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/865">#865</a> / Thanks <a href="https://www.geocaching.com/profile/?u=CachingFoX">CachingFoX</a>, <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a>]<br>
+		<strong>Fix:</strong> Small map in Listing does not show up: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/865">#865</a> / Thanks <a href="https://www.geocaching.com/profile/?u=CachingFoX">CachingFoX</a>]<br>
 		Small Map in Listing and while creating a Pocketquery is now configurable. You can choose the map layer and the zoom:<br>
 		<img src="../images/0.9.14/Screen04.png" alt="Screen04.png"><br>
 		<img src="../images/0.9.14/Screen05.png" alt="Screen05.png"><br>
