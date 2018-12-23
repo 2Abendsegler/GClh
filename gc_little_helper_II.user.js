@@ -22,6 +22,7 @@
 // @connect          maps.googleapis.com
 // @connect          raw.githubusercontent.com
 // @connect          api.open-elevation.com
+// @connect          api.geonames.org
 // @description      Some little things to make life easy (on www.geocaching.com).
 // @copyright        2010-2016 Torsten Amshove, 2016-2018 2Abendsegler, 2017-2018 Ruko2010
 // @author           Torsten Amshove; 2Abendsegler; Ruko2010
@@ -2576,6 +2577,7 @@ var mainGC = function() {
             }
             elevationServicesData[1]['function'] = addElevationToWaypoints_GoogleElevation;
             elevationServicesData[2]['function'] = addElevationToWaypoints_OpenElevation;
+            elevationServicesData[3]['function'] = addElevationToWaypoints_GeonamesElevation;
 
             function addElevationToWaypoints_GoogleElevation(responseDetails) {
                 try {
@@ -2636,6 +2638,19 @@ var mainGC = function() {
                     gclh_log( responseDetails.responseText );
                     getElevations(context.retries+1,context.locations);
                 }
+            }
+
+            function addElevationToWaypoints_GeonamesElevation(responseDetails) {
+                try {
+                    context = responseDetails.context;
+                    json = JSON.parse(responseDetails.responseText);
+                    var elevations = [];
+                    for (var i=0; i<json.geonames.length; i++) {
+                        if (json.geonames[i].astergdem === -9999) elevations.push("0");
+                        else elevations.push(json.geonames[i].astergdem);
+                    }
+                    addElevationToWaypoints(elevations,context);
+                } catch(e) {gclh_error("addElevationToWaypoints_GeonamesElevation()",e);}
             }
 
             function addElevationToWaypoints(elevations,context) {
@@ -2721,7 +2736,16 @@ var mainGC = function() {
                 $('.waypoint-elevation-na').each(function (index, value) {
                     $(this).html('n/a');
                 });
-                var locationsstring = locations.join('|');
+                if (elevationServices[serviceIndex].name == "Geonames-Elevation") {
+                    var lats = "";
+                    var lngs = "";
+                    for (var i=0; i<locations.length; i++) {
+                        var latlng = locations[i].split(",");
+                        lats += (lats == "" ? latlng[0] : ","+latlng[0]);
+                        lngs += (lngs == "" ? latlng[1] : ","+latlng[1]);
+                    }
+                    var locationsstring = "lats="+lats+"&lngs="+lngs+"&username=gclh";
+                } else var locationsstring = locations.join('|');
                 GM_xmlhttpRequest({
                     method: 'GET',
                     url: elevationServices[serviceIndex].url.replace('{locations}',locationsstring),
