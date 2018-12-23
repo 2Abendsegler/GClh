@@ -2646,7 +2646,7 @@ var mainGC = function() {
                     json = JSON.parse(responseDetails.responseText);
                     var elevations = [];
                     for (var i=0; i<json.geonames.length; i++) {
-                        if (json.geonames[i].astergdem === -9999) elevations.push("0");
+                        if (json.geonames[i].astergdem === -9999 || json.geonames[i].astergdem === -32768) elevations.push("0");
                         else elevations.push(json.geonames[i].astergdem);
                     }
                     addElevationToWaypoints(elevations,context);
