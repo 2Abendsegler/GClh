@@ -7022,7 +7022,7 @@ var mainGC = function() {
                                 lateLog['user'] = initalLogs['data'][i].UserName;
                                 lateLog['src']  = '/images/logtypes/' + initalLogs['data'][i].LogTypeImage;
                                 lateLog['type'] = initalLogs['data'][i].LogType;
-                                lateLog['date'] = initalLogs['data'][i].Created;
+                                lateLog['date'] = initalLogs['data'][i].Visited;
                                 lateLog['log']  = initalLogs['data'][i].LogText;
                                 lateLogs[i]     = lateLog;
                             }
