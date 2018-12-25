@@ -71,6 +71,7 @@
 	</li>
 	<li>
 		<strong>Fix:</strong> Prevention of line break caused by long cache names in the map popup works only for the first cache: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/924">#924</a> / Thanks <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a>]<br>
+		(It is only implemented for browser Mozilla Firefox.)<br>
 	</li>
 	<li>
 		<strong>Fix:</strong> Button "Mark Caches with Corr. Coords" in bookmarklists can be pressed several times although the process is already running: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/925">#925</a> / Thanks <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a>]<br>
