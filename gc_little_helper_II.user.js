@@ -7750,19 +7750,25 @@ var mainGC = function() {
         } catch(e) {gclh_error("Show Coin Series",e);}
     }
 
-// Count favorite points.
+// Improve favorites and profile lists page.
     if (document.location.href.match(/\.com\/my\/favorites\.aspx/) && $('table.Table tbody tr')[0]) {
         try {
+            // Count favorite points.
             buildFavSum();
+            // No line-breaks in column location.
+            if (settings_new_width >= 1000) appendCssStyle('table.Table tbody tr td:nth-child(4) {white-space: nowrap;}');
         } catch(e) {gclh_error("Count favorite points",e);}
     }
-// Sum up FP and BM entries, count favorite points.
     if (is_page("publicProfile") && $('#ctl00_ContentBody_ProfilePanel1_lnkLists.Active')[0] && $('table.Table tbody tr')[0]) {
         try {
+            // Sum up FP and BM entries.
             $('#ctl00_ContentBody_ProfilePanel1_pnlBookmarks h3').each(function(i, e) {
                 $(e).text($(e).text() + ' (' + $(e).next().find('tbody tr').length + ')');
             });
+            // Count favorite points.
             buildFavSum(true);
+            // No line-breaks in column location.
+            if (settings_new_width >= 1000) appendCssStyle('table.Table tbody tr td:nth-child(3) {white-space: nowrap;}');
         } catch(e) {gclh_error("Sum up FP and BM entries, count favorite points",e);}
     }
     function buildFavSum(pp) {
