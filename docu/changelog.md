@@ -67,7 +67,7 @@
 			<img src="../images/0.9.15/Screen04.jpg" alt="Screen04.jpg"><br>
 			<img src="../images/0.9.15/Screen05.jpg" alt="Screen05.jpg"></a><br>
 		It is only used with a page width of at least 1000 pixels.<br>
-		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_show_elevation_of_waypoints">Settings -> Global:<br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_new_width">Settings -> Global:<br>
 			<img src="../images/0.9.15/Screen06.jpg" alt="Screen06.jpg"></a><br>
 	</li>
 	<li>
