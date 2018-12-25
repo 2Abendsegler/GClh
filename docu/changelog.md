@@ -52,22 +52,23 @@
 		<strong>New:</strong> Show elevation on additional popup on the map: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/802">#802</a> / Thanks <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a>]<br>
 		<img src="../images/0.9.15/Screen02.jpg" alt="Screen02.jpg"><br>
 		It only works if elevations for waypoints and listing coordinates is activated and at least a first service is named there.<br>
-		Settings -> Listing:<br>
-		<img src="../images/0.9.15/Screen03.jpg" alt="Screen03.jpg"><br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_show_elevation_of_waypoints">Settings -> Listing:<br>
+			<img src="../images/0.9.15/Screen03.jpg" alt="Screen03.jpg"></a><br>
 	</li>
 	<li>
 		<strong>Improvement:</strong> Show elevations for waypoints and listing coordinates also with Geonames: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/920">#920</a> / Thanks <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a>]<br>
 		Because the number of calls to the Google Elevation API is limited and the Open-Elevation API is very slow and sometimes providing erroneous data, the Geonames API has also been implemented. The Geonames API is very fast. As before, a first and a second service can be selected.<br>
-		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_show_elevation_of_waypoints">Settings -> Listing:</a><br>
-		<img src="../images/0.9.15/Screen01.jpg" alt="Screen01.jpg"><br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_show_elevation_of_waypoints">Settings -> Listing:<br>
+			<img src="../images/0.9.15/Screen01.jpg" alt="Screen01.jpg"></a><br>
 	</li>
 	<li>
 		<strong>Improvement:</strong> On favorites page no line-breaks in column location: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/926">#926</a> / Thanks <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a>]<br>
-		<a href="https://www.geocaching.com/my/favorites.aspx"><img src="../images/0.9.15/Screen04.jpg" alt="Screen04.jpg"></a><br>
-		<a href="https://www.geocaching.com/my/favorites.aspx"><img src="../images/0.9.15/Screen05.jpg" alt="Screen05.jpg"></a><br>
+		<a href="https://www.geocaching.com/my/favorites.aspx">
+			<img src="../images/0.9.15/Screen04.jpg" alt="Screen04.jpg"><br>
+			<img src="../images/0.9.15/Screen05.jpg" alt="Screen05.jpg"></a><br>
 		It is only used with a page width of at least 1000 pixels.<br>
-		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_show_elevation_of_waypoints">Settings -> Global:</a><br>
-		<img src="../images/0.9.15/Screen06.jpg" alt="Screen06.jpg"><br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_show_elevation_of_waypoints">Settings -> Global:<br>
+			<img src="../images/0.9.15/Screen06.jpg" alt="Screen06.jpg"></a><br>
 	</li>
 	<li>
 		<strong>Fix:</strong> Prevention of line break caused by long cache names in the map popup works only for the first cache: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/924">#924</a> / Thanks <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a>]<br>
