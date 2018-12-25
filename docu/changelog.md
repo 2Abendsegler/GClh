@@ -63,7 +63,7 @@
 	</li>
 	<li>
 		<strong>Improvement:</strong> On favorites page no line-breaks in column location: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/926">#926</a> / Thanks <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a>]<br>
-		<a href="https://www.geocaching.com/my/favorites.aspx"<img src="../images/0.9.15/Screen04.jpg" alt="Screen04.jpg"></a><br>
+		<a href="https://www.geocaching.com/my/favorites.aspx"><img src="../images/0.9.15/Screen04.jpg" alt="Screen04.jpg"></a><br>
 		<img src="../images/0.9.15/Screen05.jpg" alt="Screen05.jpg"><br>
 		It is only used with a page width of at least 1000 pixels.<br>
 		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_show_elevation_of_waypoints">Settings -> Global:</a><br>
