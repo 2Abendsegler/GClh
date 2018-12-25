@@ -2570,7 +2570,7 @@ var mainGC = function() {
     }
 
 // Added elevation to every additional waypoint with shown coordinates.
-    if (settings_show_elevation_of_waypoints && is_page("cache_listing") && !isMemberInPmoCache()) {
+    if (settings_show_elevation_of_waypoints && ((is_page("cache_listing") && !isMemberInPmoCache()) || is_page("map"))) {
         try {
             function formatElevation(elevation) {
                 return ((elevation>0)?"+":"")+((settings_distance_units != "Imperial")?(Math.round(elevation) + "m"):(Math.round(elevation*3.28084) + "ft"));
@@ -2778,10 +2778,9 @@ var mainGC = function() {
                     },
                 });
             }
-
-            var locations = prepareListingPageForElevations();
-            if ( locations.length > 0 ) {
-                getElevations(0,locations);
+            if (is_page("cache_listing")) {
+                var locations = prepareListingPageForElevations();
+                if ( locations.length > 0 ) getElevations(0,locations);
             }
         } catch(e) {gclh_error("AddElevation",e);}
     }
@@ -4162,7 +4161,7 @@ var mainGC = function() {
     }
     // Mark caches with corrected coords.
     function markCorrCoordForBm() {
-        if ($('#gclh_linkCorrCoords')[0].className == "working") return;
+        if ($('#gclh_linkCorrCoords.working')[0]) return;
         $('#gclh_linkCorrCoords').addClass('working');
         var anzLines = $('table.Table tbody tr').length / 2;
         $('table.Table tbody tr').each(function() {
@@ -6997,7 +6996,12 @@ var mainGC = function() {
                     + "div.popup_additional_info span.favi_points svg, div.popup_additional_info span.tackables svg{position: relative;top: 4px;}";
             css += ".leaflet-popup-content-wrapper, .leaflet-popup-close-button {margin: 16px 3px 0px 13px;}";
             css += ".gclh_ctoc img {width: 14px; padding: 3px 1px 0 0; float: right;}";
-            if (browser == 'firefox') css += ".gclh_owner {max-width: 110px;} .map-item-row-1 h4 a {max-width: 265px;} .gclh_owner, .map-item-row-1 h4 a {display: inline-block; white-space: nowrap; overflow: -moz-hidden-unscrollable; text-overflow: ellipsis;}";
+            css += "div.gclh_latest_log {margin-top:5px;}";
+            css += "div.gclh_latest_log:hover {position: relative;}";
+            css += "div.gclh_latest_log span {display: none; position: absolute; left: 0px; width: 500px; padding: 5px; text-decoration:none; text-align:left; vertical-align:top; color: #000000;}";
+            css += "div.gclh_latest_log:hover span {font-size: 13px; display: block; top: 16px; border: 1px solid #8c9e65; background-color:#dfe1d2; z-index:10000;}";
+            css += "span.premium_only img {margin-right:0px;}";
+            if (browser == 'firefox') css += ".gclh_owner {max-width: 110px;} .map-item h4 a {max-width: 265px;} .gclh_owner, .map-item h4 a {display: inline-block; white-space: nowrap; overflow: -moz-hidden-unscrollable; text-overflow: ellipsis;}";
             appendCssStyle(css);
             var global_ctoc_flag = false;
             var global_ctoc_cont = "";
@@ -7007,6 +7011,10 @@ var mainGC = function() {
                 mutations.forEach(function(mutation) {
                     gccode = $('#gmCacheInfo .code').html();
                     if(gccode == null) return;
+                    // Listing coordinates of all caches in additional popup.
+                    var locations = [];
+                    // Count of caches (map-items) in additional popup.
+                    var countMapItems = $('.map-item').length;
 
                     // New Popup. This can contain more than one cache (if 2 or more are close together)
                     // so we have to load informations for all caches.
@@ -7022,6 +7030,10 @@ var mainGC = function() {
 
                         // Add hidden Div, so we can know, that we are already loading data
                         $(this).find('#popup_additional_info_' + gccode).append('<div id="already_loading_' + gccode +'"></div>');
+
+                        // Get index of map items.
+                        var indexMapItems = $(this).find('#popup_additional_info_' + gccode).closest('.map-item')[0].className.match(/map-item-row-(\d+)/);
+                        var indexMapItems = indexMapItems[1] -1;
 
                         $.get('https://www.geocaching.com/geocache/'+gccode, null, function(text){
 
@@ -7076,11 +7088,6 @@ var mainGC = function() {
                                     inner_div.appendChild(div_log_wrapper);
                                 }
                                 last_logs.appendChild(div);
-                                var css = "div.gclh_latest_log {margin-top:5px;}"
-                                        + "div.gclh_latest_log:hover {position: relative;}"
-                                        + "div.gclh_latest_log span {display: none; position: absolute; left: 0px; width: 500px; padding: 5px; text-decoration:none; text-align:left; vertical-align:top; color: #000000;}"
-                                        + "div.gclh_latest_log:hover span {font-size: 13px; display: block; top: 16px; border: 1px solid #8c9e65; background-color:#dfe1d2; z-index:10000;}";
-                                appendCssStyle(css);
                             }
 
                             // get all type of logs and their count
@@ -7118,10 +7125,11 @@ var mainGC = function() {
                             var new_text = '<span style="margin-right: 5px;">Logs:</span>' + all_logs.replace(/&nbsp;/g, " ") + '<br>';
                             new_text += $(last_logs).prop('outerHTML');
                             new_text += '<span title="Place">' + place + '</span> | ';
+                            if (settings_show_elevation_of_waypoints) {
+                                new_text += '<span id="elevation-waypoint-'+indexMapItems+'"></span> | ';
+                            }
                             new_text += '<span class="favi_points" title="Favorites in percent"><svg height="16" width="16"><image xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="/images/icons/fave_fill_16.svg" src="/images/icons/fave_fill_16.png" width="16" height="16" alt="Favorite points"></image></svg> ' + fav_percent + '</span> | ';
                             if(premium_only){
-                                var css = "span.premium_only img {margin-right:0px;}";
-                                appendCssStyle(css);
                                 new_text += ' <span class="premium_only" title="Premium Only Cache"><img src="/images/icons/16/premium_only.png" width="16" height="16" alt="Premium Only Cache" /></span> | ';
                             }
                             new_text += '<span class="tackables" title="Number of trackables"><svg height="16" width="16" class="icon-sm"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="/account/app/ui-icons/sprites/global.svg#icon-travelbug-default"></use></svg> ' + trachables + '</span><br>';
@@ -7132,6 +7140,13 @@ var mainGC = function() {
                             var length = text.indexOf("';", from) - from;
                             var userToken = text.substr(from, length);
                             getFavScore(local_gc_code, userToken);
+
+                            // Get elevations.
+                            if (settings_show_elevation_of_waypoints) {
+                                var coords = toDec($(text).find('#uxLatLon')[0].innerHTML);
+                                locations.push(coords[0]+","+coords[1]);
+                                if (locations && locations.length == countMapItems) getElevations(0,locations);
+                            }
                         });
 
                         // Improve Original Box Content
