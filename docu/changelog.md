@@ -62,6 +62,14 @@
 		<img src="../images/0.9.15/Screen01.jpg" alt="Screen01.jpg"><br>
 	</li>
 	<li>
+		<strong>Improvement:</strong> On favorites page no line-breaks in column location: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/926">#926</a> / Thanks <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a>]<br>
+		<img src="../images/0.9.15/Screen04.jpg" alt="Screen04.jpg"><br>
+		<img src="../images/0.9.15/Screen05.jpg" alt="Screen05.jpg"><br>
+		It is only used with a page width of at least 1000 pixels.<br>
+		Settings -> Global:<br>
+		<img src="../images/0.9.15/Screen06.jpg" alt="Screen06.jpg"><br>
+	</li>
+	<li>
 		<strong>Fix:</strong> Prevention of line break caused by long cache names in the map popup works only for the first cache: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/924">#924</a> / Thanks <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a>]<br>
 	</li>
 	<li>
