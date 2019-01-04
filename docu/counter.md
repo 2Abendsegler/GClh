@@ -19,7 +19,7 @@ Number of installations between 21.12.2018 and 04.01.2019 (14 days) under GClh I
 <li>All, corresponding World Flag Counter: Total na<br></li>
 <li>All, corresponding Andy Hope: Total na<br></li>
 <li>All, corresponding Flag Counter: Total na<br></li></ul>
-<br>
+<br> 
 
 ---
 ### v0.9.7:
