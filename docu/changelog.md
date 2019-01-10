@@ -1,3 +1,4 @@
+<a href="#v0915" title="GClh II version 0.9.15 (??.??.2019)">v0.9.15</a> &nbsp;
 <a href="#v0914" title="GClh II version 0.9.14 (21.12.2018)">v0.9.14</a> &nbsp;
 <a href="#v0913" title="GClh II version 0.9.13 (09.10.2018)">v0.9.13</a> &nbsp;
 <a href="#v0912" title="GClh II version 0.9.12 (04.09.2018)">v0.9.12</a> &nbsp;
@@ -45,6 +46,46 @@
 
 
 ---
+## v0.9.15:
+<ul>
+	<li>
+		<strong>New:</strong> Show elevation on additional popup on the map: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/802">#802</a> / Thanks <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a>]<br>
+		<img src="../images/0.9.15/Screen02.jpg" alt="Screen02.jpg"><br>
+		It only works if elevations for waypoints and listing coordinates is activated and at least a first service is named there.<br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_show_elevation_of_waypoints">Settings -> Listing:<br>
+			<img src="../images/0.9.15/Screen03.jpg" alt="Screen03.jpg"></a><br>
+	</li>
+	<li>
+		<strong>Improvement:</strong> Show elevations for waypoints and listing coordinates also with Geonames: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/920">#920</a> / Thanks <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a>]<br>
+		Because the number of calls to the Google Elevation API is limited and the Open-Elevation API is very slow and sometimes providing erroneous data, the Geonames API has also been implemented. The Geonames API is very fast. As before, a first and a second service can be selected.<br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_show_elevation_of_waypoints">Settings -> Listing:<br>
+			<img src="../images/0.9.15/Screen01.jpg" alt="Screen01.jpg"></a><br>
+	</li>
+	<li>
+		<strong>Improvement:</strong> On favorites page no line-breaks in column location: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/926">#926</a> / Thanks <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a>]<br>
+		<a href="https://www.geocaching.com/my/favorites.aspx">
+			<img src="../images/0.9.15/Screen04.jpg" alt="Screen04.jpg"><br>
+			<img src="../images/0.9.15/Screen05.jpg" alt="Screen05.jpg"></a><br>
+		It is only used with a page width of at least 1000 pixels.<br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_new_width">Settings -> Global:<br>
+			<img src="../images/0.9.15/Screen06.jpg" alt="Screen06.jpg"></a><br>
+	</li>
+	<li>
+		<strong>Fix:</strong> Prevention of line break caused by long cache names in the map popup works only for the first cache: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/924">#924</a> / Thanks <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a>]<br>
+		(It is only implemented for browser Mozilla Firefox.)<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> Button "Mark Caches with Corr. Coords" in bookmarklists can be pressed several times although the process is already running: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/925">#925</a> / Thanks <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> Button "Mark Caches with Corr. Coords" in bookmarklists doesn't work on foreign bookmarklists: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/928">#928</a> / Thanks <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+</ul>
+(??.??.2019)<br>
+released by <a href="https://www.geocaching.com/profile/?u=Ruko2010">Ruko2010</a><br>
+<br>
+
+---
 ## v0.9.14:
 <ul>
 	<li>
@@ -76,7 +117,7 @@
 		<strong>Fix:</strong> Log inline and PMO log inline on listing do not work: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/888">#888</a> / Thanks <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a>]<br>
 	</li>
 	<li>
-		<strong>Fix:</strong> Small map in Listing does not show up: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/865">#865</a> / Thanks <a href="https://www.geocaching.com/profile/?u=CachingFoX">CachingFoX</a>, <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a>]<br>
+		<strong>Fix:</strong> Small map in Listing does not show up: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/865">#865</a> / Thanks <a href="https://www.geocaching.com/profile/?u=CachingFoX">CachingFoX</a>]<br>
 		Small Map in Listing and while creating a Pocketquery is now configurable. You can choose the map layer and the zoom:<br>
 		<img src="../images/0.9.14/Screen04.png" alt="Screen04.png"><br>
 		<img src="../images/0.9.14/Screen05.png" alt="Screen05.png"><br>
