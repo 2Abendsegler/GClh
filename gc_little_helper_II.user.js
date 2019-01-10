@@ -3305,21 +3305,38 @@ var mainGC = function() {
     }
 
 // Update Standard Message on Click of a Username in Messagecenter
+    
+    function addEventlistenerForMessageCenterNames(){
+        $( "#cpConvoPanelFeed ol li" ).each(function() {
+          // only add the listener once
+          if(!$(this).hasClass('listeneradded')){
+              $(this).addClass('listeneradded');
+              $(this).click(function(){
+                
+                var rec = $(this).find('.activity-header').text();
+                rec = rec.replace(/^(\s*)/,'').replace(/(\s*)$/,'');
+                val = buildSendTemplate().replace(/#Receiver#/ig, rec);
+
+                $('textarea').value = val;
+
+              });
+          }
+        });
+    }
+
     if (is_page("messagecenter")) {
         try {
             
             addMessageButtonListener(0);
             function addMessageButtonListener(waitCount) {
-                console.log('asd');
-
                 if($( "#cpConvoPanelFeed ol li" ).length > 0){
-                    
-                    $( "#cpConvoPanelFeed ol li" ).each(function() {
-                      $(this).click(function(){
-                        // Hier funktion für Update Message einfügen
-                        console.log('TEMP');
-                      });
+
+                    $('#cpConvoPanelFeed ol').bind('DOMSubtreeModified', function(event) {
+                        addEventlistenerForMessageCenterNames();
                     });
+                    
+                    // Add for initial Names
+                    addEventlistenerForMessageCenterNames();
                     
                     waitCount = 700;
                 }
