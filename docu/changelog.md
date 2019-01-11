@@ -80,6 +80,9 @@
 	<li>
 		<strong>Fix:</strong> Button "Mark Caches with Corr. Coords" in bookmarklists doesn't work on foreign bookmarklists: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/928">#928</a> / Thanks <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a>]<br>
 	</li>
+	<li>
+		<strong>Fix:</strong> From Friend League to Leaderboard: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/932">#932</a> / Thanks <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a>]<br>
+	</li>
 </ul>
 (??.??.2019)<br>
 released by <a href="https://www.geocaching.com/profile/?u=Ruko2010">Ruko2010</a><br>
