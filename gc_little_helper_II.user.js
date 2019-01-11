@@ -9279,12 +9279,17 @@ var mainGC = function() {
         html += ".btn-user-active, .btn-user:hover, .btn-user:active {";
         html += "  background-color: #00b265;";
         html += "  border-color: #00b265;}";
+        html += ".btn-iconsvg {";
+        html += "  -webkit-appearance: none;";
+        html += "  width: unset !important;}";
         html += ".btn-iconsvg svg {";
         html += "  width: 22px;";
         html += "  height: 22px;";
         html += "  margin-right: 3px;}";
         html += ".add-list li {";
         html += "  padding: 2px 0;}";
+        html += ".add-list {";
+        html += "  padding-bottom: 4px;}";
         appendCssStyle(html);
     }
     function saveFilterSet() {setValue("settings_search_data", JSON.stringify(settings_search_data));}
