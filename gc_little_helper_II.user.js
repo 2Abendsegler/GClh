@@ -2659,6 +2659,7 @@ var mainGC = function() {
                     for (var i=0; i<elevations.length; i++) {
                         text = "n/a";
                         if (elevations[i] != undefined) text = formatElevation(elevations[i]);
+                        if (is_page("map")) text = " " + text + " | ";
                         $("#elevation-waypoint-"+i).html(text);
                         $("#elevation-waypoint-"+i).attr('title','Elevation data from '+context.serviceName);
                     }
@@ -4164,10 +4165,13 @@ var mainGC = function() {
         if ($('#gclh_linkCorrCoords.working')[0]) return;
         $('#gclh_linkCorrCoords').addClass('working');
         var anzLines = $('table.Table tbody tr').length / 2;
+        if ($('table.Table tbody tr').first().find('td:nth-child(4)').find('img[src*="WptTypes"]')[0]) var colGccode = 3;
+        else var colGccode = 4;
+        var colName = colGccode + 1;
         $('table.Table tbody tr').each(function() {
-            if ($(this).find('td:nth-child(4) a')[0]) {
-                var gccode = $(this).find('td:nth-child(4) a')[0].innerHTML;
-                if (!$('#gclh_colCorrCoords')[0]) $(this).find('td:nth-child(5)').after('<td id="cc_'+gccode+'" class="cc_cell"></td>');
+            if ($(this).find('td:nth-child('+colGccode+') a')[0]) {
+                var gccode = $(this).find('td:nth-child('+colGccode+') a')[0].innerHTML;
+                if (!$('#gclh_colCorrCoords')[0]) $(this).find('td:nth-child('+colName+')').after('<td id="cc_'+gccode+'" class="cc_cell"></td>');
                 else $('#cc_'+gccode)[0].innerHTML = "";
             } else {
                 if (!$('#gclh_colCorrCoords')[0]) $(this).find('td:nth-child(2)').after('<td></td>');
@@ -4181,7 +4185,7 @@ var mainGC = function() {
                 if (anzLines == 0) $('#gclh_linkCorrCoords').removeClass('working');
             });
         });
-        if (!$('#gclh_colCorrCoords')[0]) $('table.Table thead tr th:nth-child(5)').after('<th id="gclh_colCorrCoords" style="width: 90px;"><span title="Caches with Corrected Coordinates">Corr. Coords</span></th>');
+        if (!$('#gclh_colCorrCoords')[0]) $('table.Table thead tr th:nth-child('+colName+')').after('<th id="gclh_colCorrCoords" style="width: 90px;"><span title="Caches with Corrected Coordinates">Corr. Coords</span></th>');
     }
     // Show, hide Longtext/Description.
     function hideTextBm() {
@@ -7058,7 +7062,7 @@ var mainGC = function() {
                                 lateLog['user'] = initalLogs['data'][i].UserName;
                                 lateLog['src']  = '/images/logtypes/' + initalLogs['data'][i].LogTypeImage;
                                 lateLog['type'] = initalLogs['data'][i].LogType;
-                                lateLog['date'] = initalLogs['data'][i].Created;
+                                lateLog['date'] = initalLogs['data'][i].Visited;
                                 lateLog['log']  = initalLogs['data'][i].LogText;
                                 lateLogs[i]     = lateLog;
                             }
@@ -7126,7 +7130,7 @@ var mainGC = function() {
                             new_text += $(last_logs).prop('outerHTML');
                             new_text += '<span title="Place">' + place + '</span> | ';
                             if (settings_show_elevation_of_waypoints) {
-                                new_text += '<span id="elevation-waypoint-'+indexMapItems+'"></span> | ';
+                                new_text += '<span id="elevation-waypoint-'+indexMapItems+'"></span>';
                             }
                             new_text += '<span class="favi_points" title="Favorites in percent"><svg height="16" width="16"><image xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="/images/icons/fave_fill_16.svg" src="/images/icons/fave_fill_16.png" width="16" height="16" alt="Favorite points"></image></svg> ' + fav_percent + '</span> | ';
                             if(premium_only){
@@ -8900,10 +8904,10 @@ var mainGC = function() {
         div.setAttribute("style", "margin-top: -50px;");
         var prop = ' style="border: none; visibility: hidden; width: 2px; height: 2px;" alt="">';
 //--> $$002
-        var code = '<img src="https://c.andyhoppe.com/1544783761"' + prop +
-                   '<img src="https://c.andyhoppe.com/1544783818"' + prop +
-                   '<img src="https://www.worldflagcounter.com/fyS"' + prop +
-                   '<img src="https://s11.flagcounter.com/count2/r0iW/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
+        var code = '<img src="https://c.andyhoppe.com/1546618046"' + prop +
+                   '<img src="https://c.andyhoppe.com/1546618172"' + prop +
+                   '<img src="https://www.worldflagcounter.com/fDc"' + prop +
+                   '<img src="https://s11.flagcounter.com/count2/NoI5/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
 //<-- $$002
         div.innerHTML = code;
         side.appendChild(div);
