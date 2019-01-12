@@ -2643,13 +2643,23 @@ var mainGC = function() {
             function addElevationToWaypoints_GeonamesElevation(responseDetails) {
                 try {
                     context = responseDetails.context;
-                    json = JSON.parse(responseDetails.responseText);
-                    var elevations = [];
-                    for (var i=0; i<json.geonames.length; i++) {
-                        if (json.geonames[i].astergdem === -9999 || json.geonames[i].astergdem === -32768) elevations.push("0");
-                        else elevations.push(json.geonames[i].astergdem);
+                    if (responseDetails.responseText.match(/<html>/)) {
+                        if (responseDetails.responseText.match(/Service Unavailable/)) {
+                            gclh_log("\naddElevationToWaypoints_GeonamesElevation():\n- Error: Service Unavailable");
+                        } else {
+                            gclh_log("\naddElevationToWaypoints_GeonamesElevation():\n- Error:\n"+responseDetails.responseText);
+                        }
+                        getElevations(context.retries+1,context.locations);
+                        return;
+                    } else {
+                        json = JSON.parse(responseDetails.responseText);
+                        var elevations = [];
+                        for (var i=0; i<json.geonames.length; i++) {
+                            if (json.geonames[i].astergdem === -9999 || json.geonames[i].astergdem === -32768) elevations.push("0");
+                            else elevations.push(json.geonames[i].astergdem);
+                        }
+                        addElevationToWaypoints(elevations,context);
                     }
-                    addElevationToWaypoints(elevations,context);
                 } catch(e) {gclh_error("addElevationToWaypoints_GeonamesElevation()",e);}
             }
 
