@@ -2645,7 +2645,7 @@ var mainGC = function() {
                     context = responseDetails.context;
                     if (responseDetails.responseText.match(/<html>/)) {
                         if (responseDetails.responseText.match(/Service Unavailable/)) {
-                            gclh_log("\naddElevationToWaypoints_GeonamesElevation():\n- Error: Service Unavailable");
+                            gclh_log("\naddElevationToWaypoints_GeonamesElevation():\n- Info: Service Unavailable");
                         } else {
                             gclh_log("\naddElevationToWaypoints_GeonamesElevation():\n- Error:\n"+responseDetails.responseText);
                         }
