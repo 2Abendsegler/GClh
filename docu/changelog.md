@@ -89,6 +89,9 @@
 	<li>
 		<strong>Fix:</strong> Error on friends page in section Pending Friend Requests: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/941">#941</a> / Thanks <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a>]<br>
 	</li>
+	<li>
+		<strong>Fix:</strong> Error on emtpy trackable pages: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/943">#943</a> / Thanks <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a>]<br>
+	</li>
 </ul>
 (??.??.2019)<br>
 released by <a href="https://www.geocaching.com/profile/?u=Ruko2010">Ruko2010</a><br>
