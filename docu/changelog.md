@@ -75,7 +75,7 @@
 		(It is only implemented for browser Mozilla Firefox.)<br>
 	</li>
 	<li>
-		<strong>Fix:</strong> Button "Mark Caches with Corr. Coords" can be pressed several times although the process is already running. [<a href="https://github.com/2Abendsegler/GClh/issues/925" title="Issue 925">925</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		<strong>Fix:</strong> Button "Mark Caches with Corr. Coords" can be pressed several times although it is already running. [<a href="https://github.com/2Abendsegler/GClh/issues/925" title="Issue 925">925</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 	</li>
 	<li>
 		<strong>Fix:</strong> Button "Mark Caches with Corr. Coords" doesn't work on foreign bookmarklists. [<a href="https://github.com/2Abendsegler/GClh/issues/928" title="Issue 928">928</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
