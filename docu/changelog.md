@@ -71,7 +71,7 @@
 			<img src="../images/0.9.15/Screen06.jpg" alt="Screen06.jpg"></a><br>
 	</li>
 	<li>
-		<strong>Fix:</strong> Prevention of line breaks caused by long cache names in the map popup works only for the first cache. [<a href="https://github.com/2Abendsegler/GClh/issues/924" title="Issue 924">924</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		<strong>Fix:</strong> Prevention line break caused by long cache name in map popup, works only for the first cache. [<a href="https://github.com/2Abendsegler/GClh/issues/924" title="Issue 924">924</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 		(It is only implemented for browser Mozilla Firefox.)<br>
 	</li>
 	<li>
