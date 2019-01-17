@@ -140,12 +140,15 @@ Startet ein Script nicht, so handelt es sich in der Regel um Abstimmungsprobleme
 			</li>
 		</ul>
 	</li>
+	<br>
 	<li>
 		Rechte Maustaste funktioniert regelmäßig durch antippen und halten.<br>
 	</li>
+	<br>
 	<li>
 		Linklist und gewohntes Menü sind nicht sichtbar. Sie verstecken sich rechts oben in einem seitlichen Menü, beispielsweise auf den Seiten Dashboard, Geocache Suche oder Karte. Aktiviert man im Browser "Desktop-Seite", wird die Linklist und das Menü wie gewohnt angezeigt.<br>
 	</li>
+	<br>
 	<li>
 		Es gibt keine Funktionstasten / F-Tasten mit der Standard Android Tastatur.<br>
 		<ul>
