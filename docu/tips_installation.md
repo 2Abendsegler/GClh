@@ -70,7 +70,6 @@ Process the following instructions on your Android device.<br><br>
 Die Taste F4 zum Aufrufen des GClh Config und die Taste F2 zum Speichern im GClh Config bzw. zum Speichern eines Logs, einer Bookmark, einer Pocket Query ... , sind standardmäßig aktiviert. Sie können im GClh Config im Bereich GClh Config / Sync bzw. im Bereich Logging geändert werden. <br>
 Im Browser Vivaldi sind diese Tasten auch standardmäßig aktiviert. Sie können in Vivaldi über Einstellungen / Tastatur geändert werden.<br>
 
-<a id="android_de"></a>
 ### <a id="android_firefox_de"></a><img src="/images/mozilla_firefox_android_logo_small.png" title="Android / Mozilla Firefox" alt="Android / Mozilla Firefox"> Android / Mozilla Firefox:
 * Wir supporten Android Geräte zur Zeit nicht. Dennoch ist das Script auch unter Android funktionsfähig mit nur wenigen Einschränkungen. Hier wird eine der Möglichkeiten zur Installation des Scriptes auf Android Geräten beschrieben. In den [FAQs](https://github.com/2Abendsegler/GClh/blob/master/docu/faq.md#4-de) gibt es noch einige Hinweise zur Nutzung auf Android Geräten.<br>
 Führe die folgenden Anweisungen auf deinem Android Gerät aus.<br><br>
