@@ -32,7 +32,30 @@ If you have problems to drag & drop the lower links because the Linklist area is
 
 <a id="3-en"></a>
 ## 3. GClh doesn't start.
-...<br>
+If a script does not start, these are usually matching problems between the browser and the script manager Tampermonkey. These problems mainly occur when a tab in a browser passes beyond a session. This can be caused by the user by leaving tabs in the browser, for example, when hibernating. It can also be caused by the browser, for example, when restoring tabs after a cancellation.<br>
+
+*Resolve problems:* Problems can be resolved depending on the situation regularly with one of the following points.<br>
+<ul>
+	<li>
+		Close tabs in browser, re-select tabs.<br>
+	</li>
+	<li>
+		Close tabs in browser, close browser, start browser, re-select tabs.<br>
+	</li>
+	<li>
+		Deactivate the script manager Tampermonkey and reactivate it after a few seconds (unless you have deactivated "Automatic page reload" in Tampermonkey).<br>
+	</li>
+</ul>
+
+*Prevent problems:* <br>
+<ul>
+	<li>
+		Close tabs in the browser before hibernating the computer, so that the tabs no longer exist when reactivated.<br>
+	</li>
+	<li>
+		(Android) Close tabs in the browser before closing the browser, so that the tabs are no longer available the next time you launch the browser.<br>
+	</li>
+</ul>
 <br>
 
 <a id="4-en"></a>
