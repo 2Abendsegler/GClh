@@ -1,4 +1,4 @@
-<a href="#v0915" title="GClh II version 0.9.15 (??.??.2019)">v0.9.15</a> &nbsp;
+<a href="#v0915" title="GClh II version 0.9.15 (18.01.2019)">v0.9.15</a> &nbsp;
 <a href="#v0914" title="GClh II version 0.9.14 (21.12.2018)">v0.9.14</a> &nbsp;
 <a href="#v0913" title="GClh II version 0.9.13 (09.10.2018)">v0.9.13</a> &nbsp;
 <a href="#v0912" title="GClh II version 0.9.12 (04.09.2018)">v0.9.12</a> &nbsp;
@@ -104,8 +104,8 @@
 		<strong>Fix:</strong> Error on emtpy trackable pages. [<a href="https://github.com/2Abendsegler/GClh/issues/943" title="Issue 943">943</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 	</li>
 </ul>
-(??.??.2019)<br>
-released by <a href="https://www.geocaching.com/profile/?u=Ruko2010">Ruko2010</a><br>
+(18.01.2019)<br>
+released by <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a><br>
 <br>
 
 ---
