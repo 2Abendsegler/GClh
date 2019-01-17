@@ -2,7 +2,7 @@
 // @name             GC little helper II
 // @namespace        http://www.amshove.net
 //--> $$000
-// @version          0.9.14
+// @version          0.9.15
 //<-- $$000
 // @include          http*://www.geocaching.com/*
 // @include          http*://maps.google.tld/*
@@ -803,7 +803,6 @@ var mainPGC = function() {
                 button.appendChild(t);
                 button.setAttribute("data", "PQCreateButton");
 
-                var input = document.createElement('input');
                 var input = document.createElement("input");
                 input.setAttribute("type", "text");
                 input.setAttribute("value", "PQName");
