@@ -128,11 +128,12 @@ Startet ein Script nicht, so handelt es sich in der Regel um Abstimmungsprobleme
 			</li>
 		</ul>
 	</li>
+	<br>
 	<li>
 		Feldaktivierungen durch Mausbewegung über ein Feld funktionieren in der Regel durch antippen.<br>
 		<ul>
 			<li>
-				Icons auf Karte: In der Karte läßt sich das Icon "Go to Map" nicht anwählen. Alle anderen Icons in der Karte funktionieren jedoch.<br>
+				Icons auf Karte: In der Karte läßt sich das Icon "Go to Map" nicht anwählen. Alle anderen Icons in der Karte funktionieren.<br>
 			</li>
 			<li>
 				Vorschau Bilder (Listings, Gallerien): Sie funktionieren durch antippen, gleichzeitig wird durchs Antippen jedoch auch die normale Anzeige des Bildes in groß aktiviert. Die Vorschau der Bilder sollte <a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_show_thumbnailsX0" title="Link zu deinem GClh Config">deaktiviert</a> werden.<br>
@@ -143,8 +144,7 @@ Startet ein Script nicht, so handelt es sich in der Regel um Abstimmungsprobleme
 		Rechte Maustaste funktioniert regelmäßig durch antippen und halten.<br>
 	</li>
 	<li>
-		Linklist und gewohntes Menü sind nicht sichtbar. Sie verstecken sich rechts oben in einem seitlichen Menü, beispielsweise auf den Seiten Dashboard, Geocache Suche oder Karte.<br>
-		Aktiviert man im Browser "Desktop-Seite", wird die Linklist und das Menü wie gewohnt angezeigt.<br>
+		Linklist und gewohntes Menü sind nicht sichtbar. Sie verstecken sich rechts oben in einem seitlichen Menü, beispielsweise auf den Seiten Dashboard, Geocache Suche oder Karte. Aktiviert man im Browser "Desktop-Seite", wird die Linklist und das Menü wie gewohnt angezeigt.<br>
 	</li>
 	<li>
 		Es gibt keine Funktionstasten / F-Tasten mit der Standard Android Tastatur.<br>
