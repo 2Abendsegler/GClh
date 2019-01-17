@@ -116,9 +116,7 @@ Startet ein Script nicht, so handelt es sich in der Regel um Abstimmungsprobleme
 
 <a id="4-de"></a>
 ## 4. Hinweise für die Nutzung auf Android Geräten.
-<ol>
-	<li>
-		Drag & Drop Operationen funktionieren nicht.<br>
+Drag & Drop Operationen funktionieren nicht.<br>
 <ul>
 	<li>
 		GClh Config: Im Kapitel "Linklist / Navigation" können von der linken Spalte <a href="https://www.geocaching.com/my/#GClhShowConfig#a#ll#settings_bookmarks_top_menu_h" title="Link zu deinem GClh Config">Default links</a> keine neuen Einträge in die rechte Spalte "Linklist" gehängt werden.<br>
@@ -127,7 +125,8 @@ Startet ein Script nicht, so handelt es sich in der Regel um Abstimmungsprobleme
 		GClh Config: Im Kapitel "Linklist / Navigation" kann in der rechten Spalte <a href="https://www.geocaching.com/my/#GClhShowConfig#a#ll#settings_bookmarks_top_menu_h" title="Link zu deinem GClh Config">Linklist</a> die Reihenfolge nicht geändert werden.<br>
 	</li>
 </ul>
-	</li>		Feldaktivierungen durch Mausbewegung über ein Feld funktionieren in der Regel durch antippen.<br>
+<br>
+Feldaktivierungen durch Mausbewegung über ein Feld funktionieren in der Regel durch antippen.<br>
 <ul>
 	<li>
 		Icons auf Karte: In der Karte läßt sich das Icon "Go to Map" nicht anwählen. Alle anderen Icons in der Karte funktionieren jedoch.<br>
@@ -136,13 +135,13 @@ Startet ein Script nicht, so handelt es sich in der Regel um Abstimmungsprobleme
 		Vorschau Bilder (Listings, Gallerien): Sie funktionieren durch antippen, gleichzeitig wird durchs Antippen jedoch auch die normale Anzeige des Bildes in groß aktiviert. Die Vorschau der Bilder sollte <a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_show_thumbnailsX0" title="Link zu deinem GClh Config">deaktiviert</a> werden.<br>
 	</li>
 </ul>
-	<li>
-		Rechte Maustaste funktioniert regelmäßig durch antippen und halten.<br>
-	<li>
-		Linklist und gewohntes Menü sind nicht sichtbar. Sie verstecken sich rechts oben in einem seitlichen Menü, beispielsweise auf den Seiten Dashboard, Geocache Suche oder Karte.<br>
+<br>
+Rechte Maustaste funktioniert regelmäßig durch antippen und halten.<br>
+<br>
+Linklist und gewohntes Menü sind nicht sichtbar. Sie verstecken sich rechts oben in einem seitlichen Menü, beispielsweise auf den Seiten Dashboard, Geocache Suche oder Karte.<br>
 Aktiviert man im Browser "Desktop-Seite", wird die Linklist und das Menü wie gewohnt angezeigt.<br>
-	<li>
-		Es gibt keine Funktionstasten / F-Tasten mit der Standard Android Tastatur.<br>
+<br>
+Es gibt keine Funktionstasten / F-Tasten mit der Standard Android Tastatur.<br>
 <ul>
 	<li>
 		F2 zum Speichern ... funktioniert nicht (GClh Config, Bookmarklisten, PQ, Hide ...).<br>
@@ -151,5 +150,4 @@ Aktiviert man im Browser "Desktop-Seite", wird die Linklist und das Menü wie ge
 		F4 bzw. F10 zum Aufrufen des GClh Config bzw. GClh Sync funktionieren nicht.<br>
 	</li>
 </ul>
-</ol>
 <br>
