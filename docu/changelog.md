@@ -54,6 +54,7 @@
 		Extension of the FAQ:<br>
 		- <a href="https://github.com/2Abendsegler/GClh/blob/master/docu/faq.md#4-en" title="Link to FAQ">Hints for using on Android devices (english)</a> / <a href="https://github.com/2Abendsegler/GClh/blob/master/docu/faq.md#4-de" title="Link to FAQ">(german)</a>.<br>
 		- <a href="https://github.com/2Abendsegler/GClh/blob/master/docu/faq.md#3-en" title="Link to FAQ">GClh doesn't start (english)</a> / <a href="https://github.com/2Abendsegler/GClh/blob/master/docu/faq.md#3-de" title="Link to FAQ">(german)</a>.<br>
+		<br>
 	</li>
 	<li>
 		<strong>New:</strong> Show elevations on additional popup on the map. [<a href="https://github.com/2Abendsegler/GClh/issues/802" title="Issue 802">802</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
@@ -61,12 +62,14 @@
 		It only works if elevations for waypoints and listing coordinates is activated and at least a first service is named there.<br>
 		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_show_elevation_of_waypoints" title="Link to your GClh Config">Settings -> Listing:<br>
 			<img src="../images/0.9.15/Screen03.jpg" alt="Screen03.jpg"></a><br>
+		<br>
 	</li>
 	<li>
 		<strong>Improvement:</strong> Show elevations also with Geonames. [<a href="https://github.com/2Abendsegler/GClh/issues/920" title="Issue 920">920</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 		Because the number of calls to the Google Elevation API is limited and the Open-Elevation API is very slow and sometimes providing erroneous data, the Geonames API has also been implemented. The Geonames API is very fast. As before, a first and a second service can be selected.<br>
 		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_show_elevation_of_waypoints" title="Link to your GClh Config">Settings -> Listing:<br>
 			<img src="../images/0.9.15/Screen01.jpg" alt="Screen01.jpg"></a><br>
+		<br>
 	</li>
 	<li>
 		<strong>Improvement:</strong> On favorites page no line-breaks in column location. [<a href="https://github.com/2Abendsegler/GClh/issues/926" title="Issue 926">926</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
@@ -76,6 +79,7 @@
 		It is only used with a page width of at least 1000 pixels.<br>
 		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_new_width" title="Link to your GClh Config">Settings -> Global:<br>
 			<img src="../images/0.9.15/Screen06.jpg" alt="Screen06.jpg"></a><br>
+		<br>
 	</li>
 	<li>
 		<strong>Fix:</strong> Prevention line break caused by long cache name in map popup, works only for the first cache. [<a href="https://github.com/2Abendsegler/GClh/issues/924" title="Issue 924">924</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
