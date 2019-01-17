@@ -4,7 +4,7 @@
 --------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------
 <a href="#1-en">1. What can I do if the Warning is displayed "GClh is running more than once"?</a> 		  | <a href="#1-de">1. Was kann ich tun wenn die Warnung angezeigt wird, dass GClh mehr als einmal läuft?</a>
 <a href="#2-en">2. In the Config I can't add new links to the Linklist because it is out of the view.</a> | <a href="#2-de">2. Ich kann in der Konfiguration keine neuen Links zur Linkliste hinzufügen, da die Linkliste außerhalb des Bildschirms ist.</a>
-<a href="#3-en">3. Hints for use on Android devices.</a> 		  | <a href="#3-de">3. Hinweise für die Nutzung auf Android Geräten.</a>
+<a href="#3-en">3. Hints for using on Android devices.</a> 		  | <a href="#3-de">3. Hinweise für die Nutzung auf Android Geräten.</a>
 
 ---
 <a id="en"></a>
@@ -38,7 +38,7 @@ high key on your keyboard during you hold the mouseclick.
 
 <a id="3-en"></a>
 
-## 3. Hints for use on Android devices.
+## 3. Hints for using on Android devices.
 ...
 <br>
 
