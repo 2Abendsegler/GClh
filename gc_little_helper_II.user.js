@@ -2643,13 +2643,23 @@ var mainGC = function() {
             function addElevationToWaypoints_GeonamesElevation(responseDetails) {
                 try {
                     context = responseDetails.context;
-                    json = JSON.parse(responseDetails.responseText);
-                    var elevations = [];
-                    for (var i=0; i<json.geonames.length; i++) {
-                        if (json.geonames[i].astergdem === -9999 || json.geonames[i].astergdem === -32768) elevations.push("0");
-                        else elevations.push(json.geonames[i].astergdem);
+                    if (responseDetails.responseText.match(/<html>/)) {
+                        if (responseDetails.responseText.match(/Service Unavailable/)) {
+                            gclh_log("\naddElevationToWaypoints_GeonamesElevation():\n- Info: Service Unavailable");
+                        } else {
+                            gclh_log("\naddElevationToWaypoints_GeonamesElevation():\n- Error:\n"+responseDetails.responseText);
+                        }
+                        getElevations(context.retries+1,context.locations);
+                        return;
+                    } else {
+                        json = JSON.parse(responseDetails.responseText);
+                        var elevations = [];
+                        for (var i=0; i<json.geonames.length; i++) {
+                            if (json.geonames[i].astergdem === -9999 || json.geonames[i].astergdem === -32768) elevations.push("0");
+                            else elevations.push(json.geonames[i].astergdem);
+                        }
+                        addElevationToWaypoints(elevations,context);
                     }
-                    addElevationToWaypoints(elevations,context);
                 } catch(e) {gclh_error("addElevationToWaypoints_GeonamesElevation()",e);}
             }
 
@@ -2659,6 +2669,7 @@ var mainGC = function() {
                     for (var i=0; i<elevations.length; i++) {
                         text = "n/a";
                         if (elevations[i] != undefined) text = formatElevation(elevations[i]);
+                        if (is_page("map")) text = " " + text + " | ";
                         $("#elevation-waypoint-"+i).html(text);
                         $("#elevation-waypoint-"+i).attr('title','Elevation data from '+context.serviceName);
                     }
@@ -7129,7 +7140,7 @@ var mainGC = function() {
                             new_text += $(last_logs).prop('outerHTML');
                             new_text += '<span title="Place">' + place + '</span> | ';
                             if (settings_show_elevation_of_waypoints) {
-                                new_text += '<span id="elevation-waypoint-'+indexMapItems+'"></span> | ';
+                                new_text += '<span id="elevation-waypoint-'+indexMapItems+'"></span>';
                             }
                             new_text += '<span class="favi_points" title="Favorites in percent"><svg height="16" width="16"><image xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="/images/icons/fave_fill_16.svg" src="/images/icons/fave_fill_16.png" width="16" height="16" alt="Favorite points"></image></svg> ' + fav_percent + '</span> | ';
                             if(premium_only){
