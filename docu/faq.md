@@ -64,7 +64,7 @@ Wenn du Probleme mit dem Drag & Drop hast beim Hinzufügen neuer Links zur Linkl
 <br>
 
 <a id="3-de"></a>
-## 3. Hinweise für die Nutzung auf Android Geräten.
+## 3. GClh startet nicht.
 Startet ein Script nicht, so handelt es sich in der Regel um Abstimmungsprobleme zwischen dem Browser und dem Script-Manager. Diese Probleme treten hauptsächlich dann auf, wenn ein Tab in einem Browser über eine Session hinaus besteht. Das kann durch den User veranlaßt sein indem er Tabs im Browser beispielsweise im Ruhezustand bestehen läßt. Es kann aber auch durch den Browser veranlaßt sein beispielweise bei einer Wiederherstellung von Tabs nach einem Abbruch.<br>
 Probleme beheben: Probleme können je nach Sachlage regelmäßig mit einem der folgenden Punkte behoben werden:<br>
 <ol>
