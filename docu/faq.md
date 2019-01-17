@@ -4,7 +4,8 @@
 --- | --- 
 <a href="#1-en">1. What can I do if the Warning is displayed "GClh is running more than once"?</a> | <a href="#1-de">1. Was kann ich tun wenn die Warnung angezeigt wird, dass GClh mehr als einmal läuft?</a>
 <a href="#2-en">2. In the Config I can't add new links to the Linklist because it is out of the view.</a> | <a href="#2-de">2. Ich kann in der Konfiguration keine neuen Links zur Linkliste hinzufügen, da die Linkliste außerhalb des Bildschirms ist.</a>
-<a href="#3-en">3. Hints for using on Android devices.</a> | <a href="#3-de">3. Hinweise für die Nutzung auf Android Geräten.</a>
+<a href="#3-en">3. GClh doesn't start.</a> | <a href="#3-de">3. GClh startet nicht.</a>
+<a href="#4-en">4. Hints for using on Android devices.</a> | <a href="#4-de">4. Hinweise für die Nutzung auf Android Geräten.</a>
 
 ---
 <a id="en"></a><img src="../images/flag_en.png">
@@ -30,7 +31,12 @@ If you have problems to drag & drop the lower links because the Linklist area is
 <br>
 
 <a id="3-en"></a>
-## 3. Hints for using on Android devices.
+## 3. GClh doesn't start.
+...<br>
+<br>
+
+<a id="4-en"></a>
+## 4. Hints for using on Android devices.
 ...<br>
 <br>
 
@@ -59,5 +65,31 @@ Wenn du Probleme mit dem Drag & Drop hast beim Hinzufügen neuer Links zur Linkl
 
 <a id="3-de"></a>
 ## 3. Hinweise für die Nutzung auf Android Geräten.
+Startet ein Script nicht, so handelt es sich in der Regel um Abstimmungsprobleme zwischen dem Browser und dem Script-Manager. Diese Probleme treten hauptsächlich dann auf, wenn ein Tab in einem Browser über eine Session hinaus besteht. Das kann durch den User veranlaßt sein indem er Tabs im Browser beispielsweise im Ruhezustand bestehen läßt. Es kann aber auch durch den Browser veranlaßt sein beispielweise bei einer Wiederherstellung von Tabs nach einem Abbruch.<br>
+Probleme beheben: Probleme können je nach Sachlage regelmäßig mit einem der folgenden Punkte behoben werden:<br>
+<ol>
+	<li>
+		Tabs im Browser schließen, Tabs neu anwählen.<br>
+	</li>
+	<li>
+		Tabs im Browser schließen, Browser schließen, Browser starten, Tabs neu anwählen.<br>
+	</li>
+	<li>
+		Script-Manager Tampermonkey deaktivieren und nach einigen Sekunden wieder aktivieren (sofern man "Automatisches Seiten-Neu-Laden" in Tampermonkey nicht deaktiviert hat).<br>
+	</li>
+</ol>
+Problemen vorbeugen:<br> 
+<ol>
+	<li>
+		Tabs im Browser schließen bevor man den Rechner in den Ruhezustand schickt, damit bei der Reaktivierung die Tabs nicht mehr vorhanden sind.<br>
+	</li>
+	<li>
+		(Android) Tabs im Browser schließen bevor man den Browser schließt damit beim nächsten Aufruf des Browsers die Tabs nicht mehr vorhanden sind.<br>
+	</li>
+</ol>
+<br>
+
+<a id="4-de"></a>
+## 4. Hinweise für die Nutzung auf Android Geräten.
 ...<br>
 <br>
