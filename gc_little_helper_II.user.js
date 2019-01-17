@@ -4439,7 +4439,7 @@ var mainGC = function() {
     }
 
 // Improve friends list.
-    if (document.location.href.match(/\.com\/my\/myfriends\.aspx/)) {
+    if (document.location.href.match(/\.com\/my\/myfriends\.aspx/) && $('#ctl00_ContentBody_btnAddFriend')[0]) {
         try {
             var friends = document.getElementsByClassName("FriendText");
             var day = new Date().getDate();
