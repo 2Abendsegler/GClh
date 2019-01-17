@@ -222,7 +222,7 @@ var constInit = function(c) {
     externalBookmark("Changelog GClh II", urlChangelog, c.bookmarks);
     bookmark("Lists", "/my/lists.aspx", c.bookmarks);
     bookmark("Souvenirs", "/my/souvenirs.aspx", c.bookmarks);
-    bookmark("Friend League", "/play/friendleague", c.bookmarks);
+    bookmark("Leaderboard", "/play/leaderboard", c.bookmarks);
     bookmark("Trackables", "/track/", c.bookmarks);
     bookmark("GeoTours", "/play/geotours", c.bookmarks);
     // Custom Bookmark-title.
@@ -2642,13 +2642,23 @@ var mainGC = function() {
             function addElevationToWaypoints_GeonamesElevation(responseDetails) {
                 try {
                     context = responseDetails.context;
-                    json = JSON.parse(responseDetails.responseText);
-                    var elevations = [];
-                    for (var i=0; i<json.geonames.length; i++) {
-                        if (json.geonames[i].astergdem === -9999 || json.geonames[i].astergdem === -32768) elevations.push("0");
-                        else elevations.push(json.geonames[i].astergdem);
+                    if (responseDetails.responseText.match(/<html>/)) {
+                        if (responseDetails.responseText.match(/Service Unavailable/)) {
+                            gclh_log("\naddElevationToWaypoints_GeonamesElevation():\n- Info: Service Unavailable");
+                        } else {
+                            gclh_log("\naddElevationToWaypoints_GeonamesElevation():\n- Error:\n"+responseDetails.responseText);
+                        }
+                        getElevations(context.retries+1,context.locations);
+                        return;
+                    } else {
+                        json = JSON.parse(responseDetails.responseText);
+                        var elevations = [];
+                        for (var i=0; i<json.geonames.length; i++) {
+                            if (json.geonames[i].astergdem === -9999 || json.geonames[i].astergdem === -32768) elevations.push("0");
+                            else elevations.push(json.geonames[i].astergdem);
+                        }
+                        addElevationToWaypoints(elevations,context);
                     }
-                    addElevationToWaypoints(elevations,context);
                 } catch(e) {gclh_error("addElevationToWaypoints_GeonamesElevation()",e);}
             }
 
@@ -2658,6 +2668,7 @@ var mainGC = function() {
                     for (var i=0; i<elevations.length; i++) {
                         text = "n/a";
                         if (elevations[i] != undefined) text = formatElevation(elevations[i]);
+                        if (is_page("map")) text = " " + text + " | ";
                         $("#elevation-waypoint-"+i).html(text);
                         $("#elevation-waypoint-"+i).attr('title','Elevation data from '+context.serviceName);
                     }
@@ -3277,7 +3288,7 @@ var mainGC = function() {
             if ($('#uxSocialSharing')[0]) $('#uxSocialSharing')[0].style.display = "none";
         } catch(e) {gclh_error("Hide socialshare1",e);}
     }
-    if (settings_hide_socialshare && document.location.href.match(/\.com\/play\/friendleague/)) {
+    if (settings_hide_socialshare && document.location.href.match(/\.com\/play\/(friendleague|leaderboard)/)) {
         try {
             if ($('.btn.btn-facebook')[0]) {
                 $('.btn.btn-facebook')[0].parentNode.style.display = "none";
@@ -4516,7 +4527,7 @@ var mainGC = function() {
                     friend.getElementsByTagName("dd")[2].getElementsByTagName("span")[0].innerHTML = "<a href='http://maps.google.de/?q=" + (friendlocation.replace(/&/g, "")) + "' target='_blank'>" + friendlocation + "</a>";
                 }
                 // Bottom line.
-                friend.getElementsByTagName("p")[0].innerHTML = "<a name='lnk_profilegallery2' href='" + name.href + '#gclhpb#ctl00$ContentBody$ProfilePanel1$lnkGallery' + "'>Gallery</a> | " + friend.getElementsByTagName("p")[0].innerHTML;
+                friend.getElementsByTagName("p")[0].innerHTML = "<a name='lnk_profilegallery2' href='" + name.href + '#gclhpb#ctl00_ContentBody_ProfilePanel1_lnkGallery' + "'>Gallery</a> | " + friend.getElementsByTagName("p")[0].innerHTML;
             }
             function gclh_reset_counter() {
                 var friends = document.getElementsByClassName("FriendText");
@@ -4831,7 +4842,7 @@ var mainGC = function() {
              document.location.href.match(/\.com\/account\/dashboard/)           ||      // Dashboard
              document.location.href.match(/\.com\/seek\/nearest\.aspx(.*)(\?ul|\?u|&ul|&u)=/) ||  // Nearest Lists mit User
              document.location.href.match(/\.com\/bookmarks\/(view|bulk)/)       ||      // Bookmark Lists
-             document.location.href.match(/\.com\/play\/friendleague/)           ||      // Friend League
+             document.location.href.match(/\.com\/play\/(friendleague|leaderboard)/) ||  // Friend League, Leaderboard
              document.location.href.match(/\.com\/seek\/auditlog\.aspx/)         ||      // Audit Log
              document.location.href.match(/\.com\/my\/myfriends\.aspx/)             )) { // Friends
             var myself = global_me;
@@ -5437,7 +5448,7 @@ var mainGC = function() {
 
             // Friend League:
             // ----------
-            } else if (document.location.href.match(/\.com\/play\/friendleague/)) {
+            } else if (document.location.href.match(/\.com\/play\/(friendleague|leaderboard)/)) {
                 // Click im Knoten mit Class summary klappt Details auf/zu. Beim Click auf Buttons das verhindern durch temporäre Änderung dieser Class.
                 function doNotChangeDetailsByClick() {
                     this.parentNode.parentNode.parentNode.className = "gclh_summary";
@@ -5484,7 +5495,7 @@ var mainGC = function() {
                         if(maxwaittime > 0){
                             setTimeout(function(){addVIPVUPLinksToReloadedFriends(table_length,maxwaittime-200);}, 200);
                         }else{
-                            console.error("Could not add VIP/VUP Links to newly loaded friendleague members. Maximum wait time exeeded.");
+                            console.error("Could not add VIP/VUP Links to newly loaded Leaderboard members. Maximum wait time exeeded.");
                         }
                     }
                 }
@@ -7128,7 +7139,7 @@ var mainGC = function() {
                             new_text += $(last_logs).prop('outerHTML');
                             new_text += '<span title="Place">' + place + '</span> | ';
                             if (settings_show_elevation_of_waypoints) {
-                                new_text += '<span id="elevation-waypoint-'+indexMapItems+'"></span> | ';
+                                new_text += '<span id="elevation-waypoint-'+indexMapItems+'"></span>';
                             }
                             new_text += '<span class="favi_points" title="Favorites in percent"><svg height="16" width="16"><image xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="/images/icons/fave_fill_16.svg" src="/images/icons/fave_fill_16.png" width="16" height="16" alt="Favorite points"></image></svg> ' + fav_percent + '</span> | ';
                             if(premium_only){
@@ -12386,7 +12397,7 @@ function is_page(name) {
             if (url.match(/^\/play\/(search|geocache)/)) status = true;
             break;
         case "hide_cache":
-            if (url.match(/^\/play\/(hide|friendleague|souvenircampaign)/)) status = true;
+            if (url.match(/^\/play\/(hide|friendleague|leaderboard|souvenircampaign)/)) status = true;
             break;
         case "geotours":
             if (url.match(/^\/play\/geotours/)) status = true;

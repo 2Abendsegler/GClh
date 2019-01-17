@@ -57,18 +57,18 @@
 		<br>
 	</li>
 	<li>
-		<strong>New:</strong> Show elevations on additional popup on the map. [<a href="https://github.com/2Abendsegler/GClh/issues/802" title="Issue 802">802</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		<strong>New:</strong> Show elevations also with Geonames. [<a href="https://github.com/2Abendsegler/GClh/issues/920" title="Issue 920">920</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		Because the number of calls to the Google Elevation API is limited and the Open-Elevation API is very slow and sometimes providing erroneous data, the Geonames API has also been implemented. The Geonames API is very fast. As before, a first and a second service can be selected.<br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_show_elevation_of_waypoints" title="Link to your GClh Config">Settings -> Listing:<br>
+			<img src="../images/0.9.15/Screen01.jpg" alt="Screen01.jpg"></a><br>
+		<br>
+	</li>
+	<li>
+		<strong>New:</strong> Show elevation on additional popup on the map: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/802">#802</a> / Thanks <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a>]<br>
 		<img src="../images/0.9.15/Screen02.jpg" alt="Screen02.jpg"><br>
 		It only works if elevations for waypoints and listing coordinates is activated and at least a first service is named there.<br>
 		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_show_elevation_of_waypoints" title="Link to your GClh Config">Settings -> Listing:<br>
 			<img src="../images/0.9.15/Screen03.jpg" alt="Screen03.jpg"></a><br>
-		<br>
-	</li>
-	<li>
-		<strong>Improvement:</strong> Show elevations also with Geonames. [<a href="https://github.com/2Abendsegler/GClh/issues/920" title="Issue 920">920</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
-		Because the number of calls to the Google Elevation API is limited and the Open-Elevation API is very slow and sometimes providing erroneous data, the Geonames API has also been implemented. The Geonames API is very fast. As before, a first and a second service can be selected.<br>
-		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_show_elevation_of_waypoints" title="Link to your GClh Config">Settings -> Listing:<br>
-			<img src="../images/0.9.15/Screen01.jpg" alt="Screen01.jpg"></a><br>
 		<br>
 	</li>
 	<li>
@@ -102,6 +102,9 @@
 	</li>
 	<li>
 		<strong>Fix:</strong> Error on emtpy trackable pages. [<a href="https://github.com/2Abendsegler/GClh/issues/943" title="Issue 943">943</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> From "Friend League" to "Leaderboard": [Issue <a href="https://github.com/2Abendsegler/GClh/issues/932">#932</a> / Thanks <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a>]<br>
 	</li>
 </ul>
 (18.01.2019)<br>
