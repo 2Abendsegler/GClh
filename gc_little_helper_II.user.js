@@ -222,7 +222,7 @@ var constInit = function(c) {
     externalBookmark("Changelog GClh II", urlChangelog, c.bookmarks);
     bookmark("Lists", "/my/lists.aspx", c.bookmarks);
     bookmark("Souvenirs", "/my/souvenirs.aspx", c.bookmarks);
-    bookmark("Friend League", "/play/friendleague", c.bookmarks);
+    bookmark("Leaderboard", "/play/leaderboard", c.bookmarks);
     bookmark("Trackables", "/track/", c.bookmarks);
     bookmark("GeoTours", "/play/geotours", c.bookmarks);
     // Custom Bookmark-title.
@@ -3278,7 +3278,7 @@ var mainGC = function() {
             if ($('#uxSocialSharing')[0]) $('#uxSocialSharing')[0].style.display = "none";
         } catch(e) {gclh_error("Hide socialshare1",e);}
     }
-    if (settings_hide_socialshare && document.location.href.match(/\.com\/play\/friendleague/)) {
+    if (settings_hide_socialshare && document.location.href.match(/\.com\/play\/(friendleague|leaderboard)/)) {
         try {
             if ($('.btn.btn-facebook')[0]) {
                 $('.btn.btn-facebook')[0].parentNode.style.display = "none";
@@ -4832,7 +4832,7 @@ var mainGC = function() {
              document.location.href.match(/\.com\/account\/dashboard/)           ||      // Dashboard
              document.location.href.match(/\.com\/seek\/nearest\.aspx(.*)(\?ul|\?u|&ul|&u)=/) ||  // Nearest Lists mit User
              document.location.href.match(/\.com\/bookmarks\/(view|bulk)/)       ||      // Bookmark Lists
-             document.location.href.match(/\.com\/play\/friendleague/)           ||      // Friend League
+             document.location.href.match(/\.com\/play\/(friendleague|leaderboard)/) ||  // Friend League, Leaderboard
              document.location.href.match(/\.com\/seek\/auditlog\.aspx/)         ||      // Audit Log
              document.location.href.match(/\.com\/my\/myfriends\.aspx/)             )) { // Friends
             var myself = global_me;
@@ -5438,7 +5438,7 @@ var mainGC = function() {
 
             // Friend League:
             // ----------
-            } else if (document.location.href.match(/\.com\/play\/friendleague/)) {
+            } else if (document.location.href.match(/\.com\/play\/(friendleague|leaderboard)/)) {
                 // Click im Knoten mit Class summary klappt Details auf/zu. Beim Click auf Buttons das verhindern durch temporäre Änderung dieser Class.
                 function doNotChangeDetailsByClick() {
                     this.parentNode.parentNode.parentNode.className = "gclh_summary";
@@ -5485,7 +5485,7 @@ var mainGC = function() {
                         if(maxwaittime > 0){
                             setTimeout(function(){addVIPVUPLinksToReloadedFriends(table_length,maxwaittime-200);}, 200);
                         }else{
-                            console.error("Could not add VIP/VUP Links to newly loaded friendleague members. Maximum wait time exeeded.");
+                            console.error("Could not add VIP/VUP Links to newly loaded Leaderboard members. Maximum wait time exeeded.");
                         }
                     }
                 }
@@ -12387,7 +12387,7 @@ function is_page(name) {
             if (url.match(/^\/play\/(search|geocache)/)) status = true;
             break;
         case "hide_cache":
-            if (url.match(/^\/play\/(hide|friendleague|souvenircampaign)/)) status = true;
+            if (url.match(/^\/play\/(hide|friendleague|leaderboard|souvenircampaign)/)) status = true;
             break;
         case "geotours":
             if (url.match(/^\/play\/geotours/)) status = true;
