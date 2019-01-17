@@ -2,7 +2,7 @@
 // @name             GC little helper II
 // @namespace        http://www.amshove.net
 //--> $$000
-// @version          0.9.14
+// @version          0.9.15
 //<-- $$000
 // @include          http*://www.geocaching.com/*
 // @include          http*://maps.google.tld/*
@@ -24,7 +24,7 @@
 // @connect          api.open-elevation.com
 // @connect          api.geonames.org
 // @description      Some little things to make life easy (on www.geocaching.com).
-// @copyright        2010-2016 Torsten Amshove, 2016-2018 2Abendsegler, 2017-2018 Ruko2010
+// @copyright        2010-2016 Torsten Amshove, 2016-2019 2Abendsegler, 2017-2019 Ruko2010
 // @author           Torsten Amshove; 2Abendsegler; Ruko2010
 // @icon             https://raw.githubusercontent.com/2Abendsegler/GClh/master/images/gclh_logo.png
 // @license          GNU General Public License v2.0
@@ -804,7 +804,6 @@ var mainPGC = function() {
                 button.appendChild(t);
                 button.setAttribute("data", "PQCreateButton");
 
-                var input = document.createElement('input');
                 var input = document.createElement("input");
                 input.setAttribute("type", "text");
                 input.setAttribute("value", "PQName");
