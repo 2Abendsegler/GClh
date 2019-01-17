@@ -32,7 +32,7 @@ The key F4 for calling the GClh Config and the key F2 for saving from GClh Confi
 In Vivaldi browser, these keys are also enabled by default. They can be changed in Vivaldi via settings / keyboard.<br>
 
 ### <a id="android_firefox_en"></a><img src="/images/mozilla_firefox_android_logo_small.png" title="Android / Mozilla Firefox" alt="Android / Mozilla Firefox"> Android / Mozilla Firefox:
-* We do not support Android at the moment. Nevertheless, the script is largely functional on Android with only a few restrictions. Here is described one of the ways to install the srcipt on Android devices. In the [FAQs](https://github.com/2Abendsegler/GClh/blob/master/docu/faq.md#3-en) there are some hints for using on Android devices.<br>
+* We do not support Android devices at the moment. Nevertheless, the script is largely functional on Android with only a few restrictions. Here is described one of the ways to install the srcipt on Android devices. In the [FAQs](https://github.com/2Abendsegler/GClh/blob/master/docu/faq.md#3-en) there are some hints for using on Android devices.<br>
 Process the following instructions on your Android device.<br><br>
 * Install [Firefox for Android](https://play.google.com/store/apps/details?id=org.mozilla.firefox) on your device.<br>
 * Install the script manager [Tampermonkey](https://addons.mozilla.org/de/firefox/addon/tampermonkey/) as Add-on in Firefox.<br>
@@ -71,7 +71,7 @@ Die Taste F4 zum Aufrufen des GClh Config und die Taste F2 zum Speichern im GClh
 Im Browser Vivaldi sind diese Tasten auch standardmäßig aktiviert. Sie können in Vivaldi über Einstellungen / Tastatur geändert werden.<br>
 
 ### <a id="android_firefox_de"></a><img src="/images/mozilla_firefox_android_logo_small.png" title="Android / Mozilla Firefox" alt="Android / Mozilla Firefox"> Android / Mozilla Firefox:
-* Wir supporten Android zur Zeit nicht. Dennoch ist das Script in weiten Teilen auch unter Android funktionsfähig mit nur wenigen Einschränkungen. Hier wird eine der Möglichkeiten zur Installation des Scriptes auf Android Geräten beschrieben. In den [FAQs](https://github.com/2Abendsegler/GClh/blob/master/docu/faq.md#3-de) gibt es noch einige Hinweise zur Nutzung auf Android Geräten.<br>
+* Wir supporten Android Geräte zur Zeit nicht. Dennoch ist das Script in weiten Teilen auch unter Android funktionsfähig mit nur wenigen Einschränkungen. Hier wird eine der Möglichkeiten zur Installation des Scriptes auf Android Geräten beschrieben. In den [FAQs](https://github.com/2Abendsegler/GClh/blob/master/docu/faq.md#3-de) gibt es noch einige Hinweise zur Nutzung auf Android Geräten.<br>
 Führe die folgenden Anweisungen auf deinem Android Gerät aus.<br><br>
 * Installiere [Firefox für Android](https://play.google.com/store/apps/details?id=org.mozilla.firefox) auf deinem Gerät.<br>
 * Installiere den Script-Manager [Tampermonkey](https://addons.mozilla.org/de/firefox/addon/tampermonkey/) als Add-On in Firefox.<br>
