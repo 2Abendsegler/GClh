@@ -22,6 +22,7 @@ If this warning is displayed, it is mostly true. So you can check some points:<b
 	</li>
 </ol>
 If you still get the warning, please leave a bugreport <a href="https://github.com/2Abendsegler/GClh/issues">here</a> and we will try to assist you.<br>
+<br>
 
 <a id="2-en"></a>
 ## 2. In the Config I can't add new links to the Linklist because it is out of the view.
