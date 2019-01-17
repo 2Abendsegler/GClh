@@ -53,7 +53,7 @@ If a script does not start, these are usually matching problems between the brow
 		Close tabs in the browser before hibernating the computer, so that the tabs no longer exist when reactivated.<br>
 	</li>
 	<li>
-		(Android) Close tabs in the browser before closing the browser, so that the tabs are no longer available the next time you launch the browser.<br>
+		(Android) Close tabs in the browser before closing the browser, so that the tabs are no longer available the next time you start the browser.<br>
 	</li>
 </ul>
 <br>
