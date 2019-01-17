@@ -89,7 +89,7 @@
 		(It is only implemented for browser Mozilla Firefox.)<br>
 	</li>
 	<li>
-		<strong>Fix:</strong> Button "Mark Caches with Corr. Coords" can be pressed several times although it is already running. [<a href="https://github.com/2Abendsegler/GClh/issues/925" title="Issue 925">925</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		<strong>Fix:</strong> Button "Mark Caches with Corr. Coords" can be pressed several times. [<a href="https://github.com/2Abendsegler/GClh/issues/925" title="Issue 925">925</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 	</li>
 	<li>
 		<strong>Fix:</strong> Button "Mark Caches with Corr. Coords" doesn't work on foreign bookmarklists. [<a href="https://github.com/2Abendsegler/GClh/issues/928" title="Issue 928">928</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
@@ -108,6 +108,9 @@
 	</li>
 	<li>
 		<strong>Fix:</strong> From "Friend League" to "Leaderboard". [<a href="https://github.com/2Abendsegler/GClh/issues/932" title="Issue 932">932</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> Link in dashboard to ignore list does not work with right mouse. [<a href="https://github.com/2Abendsegler/GClh/issues/851" title="Issue 851">851</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 	</li>
 </ul>
 (18.01.2019)<br>
