@@ -56,6 +56,10 @@
 			<img src="../images/0.9.15/Screen03.jpg" alt="Screen03.jpg"></a><br>
 	</li>
 	<li>
+		<strong>New:</strong> <img src="../images/mozilla_firefox_android_logo_small.png" title="Android / Mozilla Firefox" alt="Android / Mozilla Firefox"> How you install GClh on android. [<a href="https://github.com/2Abendsegler/GClh/issues/783" title="Issue 783">783</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		Extension of the <a href="https://github.com/2Abendsegler/GClh/master/docu/tips_installation.md#android_firefox_en">Tips for the installation of GC little helper II in english</a> (<a href="https://github.com/2Abendsegler/GClh/master/docu/tips_installation.md#android_firefox_de">german</a>).<br>
+	</li>
+	<li>
 		<strong>Improvement:</strong> Show elevations also with Geonames. [<a href="https://github.com/2Abendsegler/GClh/issues/920" title="Issue 920">920</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 		Because the number of calls to the Google Elevation API is limited and the Open-Elevation API is very slow and sometimes providing erroneous data, the Geonames API has also been implemented. The Geonames API is very fast. As before, a first and a second service can be selected.<br>
 		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_show_elevation_of_waypoints" title="Link to your GClh Config">Settings -> Listing:<br>
