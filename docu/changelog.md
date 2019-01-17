@@ -104,7 +104,7 @@
 		<strong>Fix:</strong> Error on emtpy trackable pages. [<a href="https://github.com/2Abendsegler/GClh/issues/943" title="Issue 943">943</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 	</li>
 	<li>
-		<strong>Fix:</strong> From "Friend League" to "Leaderboard": [Issue <a href="https://github.com/2Abendsegler/GClh/issues/932">#932</a> / Thanks <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a>]<br>
+		<strong>Fix:</strong> From "Friend League" to "Leaderboard". [<a href="https://github.com/2Abendsegler/GClh/issues/932" title="Issue 932">932</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 	</li>
 </ul>
 (18.01.2019)<br>
