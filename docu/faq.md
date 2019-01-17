@@ -25,56 +25,39 @@ If you still get the warning, please leave a bugreport <a href="https://github.c
 <br>
 
 <a id="2-en"></a>
-
 ## 2. In the Config I can't add new links to the Linklist because it is out of the view.
-If you have problems to drag & drop the lower links because the Linklist area is not on the screen, then use the arrow 
-high key on your keyboard during you hold the mouseclick.
+If you have problems to drag & drop the lower links because the Linklist area is not on the screen, then use the arrow high key on your keyboard during you hold the mouseclick.
 <br>
 
 <a id="3-en"></a>
-
 ## 3. Hints for using on Android devices.
 ...
 <br>
 
 ---
-<a id="de"></a>
-<img src="../images/flag_de.png">
+<a id="de"></a><img src="../images/flag_de.png">
+
 <a id="1-de"></a>
-
 ## 1. Was kann ich tun wenn die Warnung angezeigt wird, dass GClh mehr als einmal läuft?
-
-*GC little helper II* funktioniert nur richtig, wenn es nur einmal im Browser ausgeführt wird. Deshalb prüft das 
-Script selbst, ob dies der Fall ist.<br>
-Wenn die Meldung angezeigt wird, dass GClh mehr als einmal läuft, dann ist das auch meist der Fall. Daher sollten 
-folgende Sachen geprüft werden:
+*GC little helper II* funktioniert nur richtig, wenn es nur einmal im Browser ausgeführt wird. Deshalb prüft das Script selbst, ob dies der Fall ist.<br>
+Wenn die Meldung angezeigt wird, dass GClh mehr als einmal läuft, dann ist das auch meist der Fall. Daher sollten folgende Sachen geprüft werden:
 <ol>
 	<li>
-		Bitte prüfe, ob mehr als ein Scriptmanager installiert ist (zum Beispiel neben Tampermonkey auch noch 
-		Greasemonkey). Wahrscheinlich ist GClh in beiden Scriptmanagern installiert. GClh muss in diesem Fall in einem 
-		der Scriptmanager deinstalliert werden. Da wir nur Tampermonkey unterstützen, deinstalliere GClh bitte in allen 
-		anderen Scriptmanagern.
+		Bitte prüfe, ob mehr als ein Scriptmanager installiert ist (zum Beispiel neben Tampermonkey auch noch Greasemonkey). Wahrscheinlich ist GClh in beiden Scriptmanagern installiert. GClh muss in diesem Fall in einem der Scriptmanager deinstalliert werden. Da wir nur Tampermonkey unterstützen, deinstalliere GClh bitte in allen anderen Scriptmanagern.
 	</li>
 	<li>
-		Eventuell ist GClh mehr als einmal installiert. Dies kann zum Beispiel bei Tampermonkey in der Scritpübersicht 
-		geprüft werden. Wenn dies der Fall ist, dann deinstalliere alle Versionen bis auf eine und das Problem 
-		sollte behoben sein.
+		Eventuell ist GClh mehr als einmal installiert. Dies kann zum Beispiel bei Tampermonkey in der Scritpübersicht geprüft werden. Wenn dies der Fall ist, dann deinstalliere alle Versionen bis auf eine und das Problem sollte behoben sein.
 	</li>
 </ol>
-Sollte die Warnung dann immer noch auftauchen, dann erstelle bitte 
-<a href="https://github.com/2Abendsegler/GClh/issues">hier</a> einen Bugreport und wir werden versuchen dir zu helfen.
+Sollte die Warnung dann immer noch auftauchen, dann erstelle bitte <a href="https://github.com/2Abendsegler/GClh/issues">hier</a> einen Bugreport und wir werden versuchen dir zu helfen.
 <br>
 
 <a id="2-de"></a>
-
-## 2. Ich kann in der Konfiguration keine neuen Links zur Linkliste hinzufügen, da die Linkliste außerhalb des Bildschirms ist.
-Wenn du Probleme mit dem Drag & Drop hast beim hinzufügen neuer Links zur Linkliste, da die Links zu tief sind und die 
-Liste aus dem sichtbaren Bereich rausscollt, dann nutze einfach die Pfeiltasten (Pfeiltaste nach oben) während du 
-das neue Element weiter fest hälst.
+## 2. Ich kann im GClh Config keine neuen Links zur Linkliste hinzufügen, da die Linkliste außerhalb des Bildschirms ist.
+Wenn du Probleme mit dem Drag & Drop hast beim Hinzufügen neuer Links zur Linkliste, da die Links zu tief sind und die Liste aus dem sichtbaren Bereich rausscollt, dann nutze einfach die Pfeiltasten (Pfeiltaste nach oben) während du das neue Element weiter fest hälst.
 <br>
 
 <a id="3-de"></a>
-
 ## 3. Hinweise für die Nutzung auf Android Geräten.
 ...
 <br>
