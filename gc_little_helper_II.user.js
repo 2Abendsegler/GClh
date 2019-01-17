@@ -136,6 +136,7 @@ var constInit = function(c) {
     c.urlScript = "https://raw.githubusercontent.com/2Abendsegler/GClh/master/gc_little_helper_II.user.js";
     c.urlConfigSt = "https://raw.githubusercontent.com/2Abendsegler/GClh/master/data/config_standard.txt";
     c.urlChangelog = "https://github.com/2Abendsegler/GClh/blob/master/docu/changelog.md#readme";
+    c.urlFaq = "https://github.com/2Abendsegler/GClh/blob/master/docu/faq.md#readme";
     c.urlDocu = "https://github.com/2Abendsegler/GClh/blob/master/docu/";
     c.urlImages = "https://raw.githubusercontent.com/2Abendsegler/GClh/master/images/";
     c.urlImagesSvg = "https://rawgit.com/2Abendsegler/GClh/master/images/";
@@ -4438,7 +4439,7 @@ var mainGC = function() {
     }
 
 // Improve friends list.
-    if (document.location.href.match(/\.com\/my\/myfriends\.aspx/)) {
+    if (document.location.href.match(/\.com\/my\/myfriends\.aspx/) && $('#ctl00_ContentBody_btnAddFriend')[0]) {
         try {
             var friends = document.getElementsByClassName("FriendText");
             var day = new Date().getDate();
@@ -6131,7 +6132,7 @@ var mainGC = function() {
         // TB Listing: Zeilen in Zebra, für User, Owner, Reviewer und VIP einfärben.
         } else if (document.location.href.match(/\.com\/track\/details\.aspx\?/)) {
             var lines = $("table.Table").find("tbody").find("tr");
-            if (lines.length > 1) {
+            if ($(lines).find('.BorderTop')[0]) {
                 var linesNew = lines.slice(0, -1);
                 var owner = document.getElementById("ctl00_ContentBody_BugDetails_BugOwner").innerHTML;
                 setLinesColorInZebra(settings_show_tb_listings_in_zebra, linesNew, 2);
@@ -6313,37 +6314,36 @@ var mainGC = function() {
             // Change link "Your lists" from ".../account/lists" to ".../my/lists.aspx".
             if (settings_my_lists_old_fashioned) $('#DashboardSidebar ul li a[href*="/account/lists"]').prop("href", "/my/lists.aspx");
 
-            // add link to Ignore List into dashboard sidebar
+            // Add link to Ignore List into dashboard sidebar.
             if (settings_embedded_smartlink_ignorelist && $(".bio-userrole").text() == "Premium" ) {
-
                 function openIgnoreList(response) {
                     try {
+                        if (document.location.href.match(/#gclhGotoIgnorelist/)) document.location.href = clearUrlAppendix(document.location.href, false);
                         if (response.responseText) {
                             var linkIgnoreList = $(response.responseText).find('a[href*="/bookmarks/view.aspx?code="]').first().attr('href');
-                            if ( linkIgnoreList ) {
-                                window.open(linkIgnoreList,"_self");
-                            } else {
-                                alert("GClh cannot find a link to your Ignore List. Pleaes check if you have an Ignore List (it is Premium Member feature).");
-                            }
+                            if (linkIgnoreList) window.open(linkIgnoreList,"_self");
+                            else alert("GClh cannot find a link to your Ignore List.\n\nPlease check if you have an Ignore List\n(it is a Premium Member feature).");
                         }
                     } catch(e) {gclh_error("function openIgnoreList()",e);}
                 }
-
-                var sidebarLists = $($('ul[class="link-block"] a[href*="/my/watchlist.aspx"]')[0]);
-                var html = '<li><a id="gclh_goto_ignorelist" href="#">Ignore List</a></li>';
-                sidebarLists.parent().after(html);
-
-                $("#gclh_goto_ignorelist").click( function(e) {
+                function getIgnoreList() {
                     try {
-                        // link to ignore list is not static, the id can be changed
+                        // Link to ignore list is not static, the id can be changed.
                         GM_xmlhttpRequest({
                             method: "GET",
                             url: "https://www.geocaching.com/account/lists",
                             onload: openIgnoreList
                         });
-                        e.preventDefault();
-                    } catch(e) {gclh_error("Request link to Ignore List (#gclh_goto_ignorelist)",e);}
+                    } catch(e) {gclh_error("function getIgnoreList()",e);}
+                }
+                var sidebarLists = $($('ul[class="link-block"] a[href*="/my/watchlist.aspx"]')[0]);
+                var html = '<li><a id="gclh_goto_ignorelist" href="#gclhGotoIgnorelist">Ignore List</a></li>';
+                sidebarLists.parent().after(html);
+                $("#gclh_goto_ignorelist").click( function(e) {
+                    getIgnoreList();
+                    e.preventDefault();
                 });
+                if (document.location.href.match(/#gclhGotoIgnorelist/)) getIgnoreList();
             }
 
             appendCssStyle(css);
@@ -9289,12 +9289,17 @@ var mainGC = function() {
         html += ".btn-user-active, .btn-user:hover, .btn-user:active {";
         html += "  background-color: #00b265;";
         html += "  border-color: #00b265;}";
+        html += ".btn-iconsvg {";
+        html += "  -webkit-appearance: none;";
+        html += "  width: unset !important;}";
         html += ".btn-iconsvg svg {";
         html += "  width: 22px;";
         html += "  height: 22px;";
         html += "  margin-right: 3px;}";
         html += ".add-list li {";
         html += "  padding: 2px 0;}";
+        html += ".add-list {";
+        html += "  padding-bottom: 4px;}";
         appendCssStyle(html);
     }
     function saveFilterSet() {setValue("settings_search_data", JSON.stringify(settings_search_data));}
@@ -9762,7 +9767,8 @@ var mainGC = function() {
             html += "<div id='gclh_config_content1'>";
             html += "&nbsp;" + "<font style='float: right; font-size: 11px; ' >";
             html += "<a href='http://geoclub.de/forum/viewforum.php?f=117' title='Help is available on the Geoclub forum' target='_blank'>Help</a> | ";
-            html += "<a href='https://github.com/2Abendsegler/GClh/issues?q=is:issue is:open sort:created-desc' title='Show open issues on GitHub' target='_blank'>Open issues</a> | ";
+            html += "<a href='"+urlFaq+"' title='Frequently asked questions on GitHub' target='_blank'>FAQs</a> | ";
+            html += "<a href='https://github.com/2Abendsegler/GClh/issues?q=is:issue is:open sort:created-desc' title='Show/open issues on GitHub' target='_blank'>Issues</a> | ";
             html += "<a href='"+urlChangelog+"' title='Documentation of changes and new features in GClh II on GitHub' target='_blank'>Changelog</a> | ";
             html += "<a id='check_for_upgrade' href='#' style='cursor: pointer' title='Check for upgrade GClh II'>Check for upgrade</a> | ";
             html += "<a href='https://github.com/2Abendsegler/GClh/tree/master' title='Development plattform and issue system of GClh II' target='_blank'>GitHub</a> | ";
@@ -12312,7 +12318,7 @@ function gclh_error(modul, err) {
             $("#gclh-gurumeditation").append('<div style="border: 5px solid #ff0000;"></div>');
             $("#gclh-gurumeditation > div").append('<p style="font-weight: bold; font-size: x-large;">GC Little Helper II Error</p>');
             $("#gclh-gurumeditation > div").append('<div></div>');
-            $("#gclh-gurumeditation > div").append('<p style="font-size: smaller;">For more information see the console. <a href="https://github.com/2Abendsegler/GClh/issues/new?template=Bug_report.md" target="_blank">Create a bug report at Github.</a></p>');
+            $("#gclh-gurumeditation > div").append('<p style="font-size: smaller;">For more information see the console. <a href="https://github.com/2Abendsegler/GClh/issues" target="_blank">Create a new issue / bug report at GitHub.</a></p>');
             var css = "";
             css += "#gclh-gurumeditation {";
             css += "    background-color:black;";
