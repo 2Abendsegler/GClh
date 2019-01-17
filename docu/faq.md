@@ -74,7 +74,7 @@ If a script does not start, these are usually matching problems between the brow
 	</li>
 	<br>
 	<li>
-		Field activations by moving a mouse over a field usually work by touching.<br>
+		Field activations by moving a mouse over a field usually works by touching.<br>
 		<ul>
 			<li>
 				Icons on map: The icon "Go to Map" can not be selected in the map. All other icons in the map work.<br>
@@ -90,7 +90,7 @@ If a script does not start, these are usually matching problems between the brow
 	</li>
 	<br>
 	<li>
-		Linklist and usual menu are not always visible. Its then hide top right in a side menu, for example on the pages Dashboard, Geocache Search or Map. If you activate "Desktop Page" in the browser, the Linklist and the menu are displayed as usual.<br>
+		Linklist and usual menu are not always visible. It is then hidden at the top right in a side menu, for example on the pages Dashboard, Geocache Search or Map. If you activate "Desktop Page" in the browser, the Linklist and the menu are displayed as usual.<br>
 	</li>
 	<br>
 	<li>
