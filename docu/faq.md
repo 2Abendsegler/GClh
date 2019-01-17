@@ -24,7 +24,7 @@ If this warning is displayed, it is mostly true. So you can check some points:
 		by viewing the Scriptoverview. If this is the case, just uninstall all but one instance of GClh.
 	</li>
 </ol>
-If you still get the warning, please leave a bugreport <a href="https://github.com/2Abendsegler/GClh/issues/new?template=Bug_report.md">here</a> and we will try to assist you.
+If you still get the warning, please leave a bugreport <a href="https://github.com/2Abendsegler/GClh/issues">here</a> and we will try to assist you.
 <br>
 
 <a id="2-en"></a>
@@ -58,7 +58,7 @@ folgende Sachen geprüft werden:
 	</li>
 </ol>
 Sollte die Warnung dann immer noch auftauchen, dann erstelle bitte 
-<a href="https://github.com/2Abendsegler/GClh/issues/new?template=Bug_report.md">hier</a> einen Bugreport und wir werden versuchen dir zu helfen.
+<a href="https://github.com/2Abendsegler/GClh/issues">hier</a> einen Bugreport und wir werden versuchen dir zu helfen.
 <br>
 
 <a id="2-de"></a>
