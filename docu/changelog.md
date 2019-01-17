@@ -65,7 +65,7 @@
 		<br>
 	</li>
 	<li>
-		<strong>New:</strong> Show elevation on additional popup on the map: [Issue <a href="https://github.com/2Abendsegler/GClh/issues/802">#802</a> / Thanks <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a>]<br>
+		<strong>New:</strong> Show elevation on additional popup on the map. [<a href="https://github.com/2Abendsegler/GClh/issues/802" title="Issue 802">802</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 		<img src="../images/0.9.15/Screen02.jpg" alt="Screen02.jpg"><br>
 		It only works if elevations for waypoints and listing coordinates is activated and at least a first service is named there.<br>
 		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_show_elevation_of_waypoints" title="Link to your GClh Config">Settings -> Listing:<br>
