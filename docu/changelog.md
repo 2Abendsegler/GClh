@@ -50,7 +50,7 @@
 <ul>
 	<li>
 		<strong>New:</strong> <img src="../images/mozilla_firefox_android_logo_small.png" title="Android / Mozilla Firefox" alt="Android / Mozilla Firefox"> How you install GClh on android. [<a href="https://github.com/2Abendsegler/GClh/issues/783" title="Issue 783">783</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
-		Extension of the <a href="https://github.com/2Abendsegler/GClh/master/docu/tips_installation.md#android_firefox_en">Tips for the installation of GC little helper II in english</a> (<a href="https://github.com/2Abendsegler/GClh/master/docu/tips_installation.md#android_firefox_de">german</a>).<br>
+		Extension of the <a href="https://github.com/2Abendsegler/GClh/blob/master/docu/tips_installation.md#android_firefox_en">Tips for the installation of GC little helper II in english</a> (<a href="https://github.com/2Abendsegler/GClh/blob/master/docu/tips_installation.md#android_firefox_de">german</a>).<br>
 	</li>
 	<li>
 		<strong>New:</strong> Show elevations on additional popup on the map. [<a href="https://github.com/2Abendsegler/GClh/issues/802" title="Issue 802">802</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
