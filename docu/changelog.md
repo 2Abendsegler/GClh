@@ -82,6 +82,9 @@
 		<br>
 	</li>
 	<li>
+		<strong>Fix:</strong> Wrong log's date in "latest logs" section of the map pop-up. [<a href="https://github.com/2Abendsegler/GClh/issues/922" title="Issue 922">922</a> / <a href="https://www.geocaching.com/profile/?u=Ruko2010" title="Thanks to Ruko2010">Ruko2010</a>]<br>
+	</li>
+	<li>
 		<strong>Fix:</strong> Prevention line break caused by long cache name in map popup, works only for the first cache. [<a href="https://github.com/2Abendsegler/GClh/issues/924" title="Issue 924">924</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 		(It is only implemented for browser Mozilla Firefox.)<br>
 	</li>
