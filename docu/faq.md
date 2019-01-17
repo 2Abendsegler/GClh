@@ -4,6 +4,7 @@
 --------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------
 <a href="#1-en">1. What can I do if the Warning is displayed "GClh is running more than once"?</a> 		  | <a href="#1-de">1. Was kann ich tun wenn die Warnung angezeigt wird, dass GClh mehr als einmal läuft?</a>
 <a href="#2-en">2. In the Config I can't add new links to the Linklist because it is out of the view.</a> | <a href="#2-de">2. Ich kann in der Konfiguration keine neuen Links zur Linkliste hinzufügen, da die Linkliste außerhalb des Bildschirms ist.</a>
+<a href="#3-en">3. Hints for use on Android devices.</a> 		  | <a href="#3-de">3. Hinweise für die Nutzung auf Android Geräten.</a>
 
 ---
 <img src="../images/flag_en.png">
@@ -32,6 +33,12 @@ If you still get the warning, please leave a bugreport <a href="https://github.c
 ## 2. In the Config I can't add new links to the Linklist because it is out of the view.
 If you have problems to drag & drop the lower links because the Linklist area is not on the screen, then use the arrow 
 high key on your keyboard during you hold the mouseclick.
+<br>
+
+<a id="3-en"></a>
+
+## 3. Hints for use on Android devices.
+...
 <br>
 
 ---
@@ -67,4 +74,10 @@ Sollte die Warnung dann immer noch auftauchen, dann erstelle bitte
 Wenn du Probleme mit dem Drag & Drop hast beim hinzufügen neuer Links zur Linkliste, da die Links zu tief sind und die 
 Liste aus dem sichtbaren Bereich rausscollt, dann nutze einfach die Pfeiltasten (Pfeiltaste nach oben) während du 
 das neue Element weiter fest hälst.
+<br>
+
+<a id="3-de"></a>
+
+## 3. Hinweise für die Nutzung auf Android Geräten.
+...
 <br>
