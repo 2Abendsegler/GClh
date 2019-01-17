@@ -60,7 +60,51 @@ If a script does not start, these are usually matching problems between the brow
 
 <a id="4-en"></a>
 ## 4. Hints for using on Android devices.
-...<br>
+<ul>
+	<li>
+		Drag & drop operations do not work.<br>
+		<ul>
+			<li>
+				GClh Config: In chapter "Linklist / Navigation", no new entries can be placed in the right column "Linklist" from the left column <a href="https://www.geocaching.com/my/#GClhShowConfig#a#ll#settings_bookmarks_top_menu_h" title="Link to your GClh Config">Default links</a>.<br>
+			</li>
+			<li>
+				GClh Config: In chapter "Linklist / Navigation" the order can not be changed in the right column <a href="https://www.geocaching.com/my/#GClhShowConfig#a#ll#settings_bookmarks_top_menu_h" title="Link to your GClh Config">Linklist</a>.<br>
+			</li>
+		</ul>
+	</li>
+	<br>
+	<li>
+		Field activations by moving a mouse over a field usually work by touching.<br>
+		<ul>
+			<li>
+				Icons on map: The icon "Go to Map" can not be selected in the map. All other icons in the map work.<br>
+			</li>
+			<li>
+				Preview pictures (thumbnails) in Listings and Galleries: They work by touching, but at the same time touching also activates the normal display of the large picture. The <a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_show_thumbnailsX0" title="Link to your GClh Config">preview of the pictures</a> should be deactivated.<br>
+			</li>
+		</ul>
+	</li>
+	<br>
+	<li>
+		Right mouse works usually by touching and holding.<br>
+	</li>
+	<br>
+	<li>
+		Linklist and usual menu are not always visible. Its then hide top right in a side menu, for example on the pages Dashboard, Geocache Search or Map. If you activate "Desktop Page" in the browser, the Linklist and the menu are displayed as usual.<br>
+	</li>
+	<br>
+	<li>
+		There are no function keys / F-keys with the standard Android keyboard.<br>
+		<ul>
+			<li>
+				F2 to save ... does not work (GClh config, bookmark lists, PQ, hide ...).<br>
+			</li>
+			<li>
+				F4 or F10 to call the GClh Config or GClh Sync will not work.<br>
+			</li>
+		</ul>
+	</li>
+</ul>
 <br>
 
 ---
@@ -136,7 +180,7 @@ Startet ein Script nicht, so handelt es sich in der Regel um Abstimmungsprobleme
 				Icons auf Karte: In der Karte läßt sich das Icon "Go to Map" nicht anwählen. Alle anderen Icons in der Karte funktionieren.<br>
 			</li>
 			<li>
-				Vorschau Bilder (Listings, Gallerien): Sie funktionieren durch antippen, gleichzeitig wird durchs Antippen jedoch auch die normale Anzeige des Bildes in groß aktiviert. Die Vorschau der Bilder sollte <a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_show_thumbnailsX0" title="Link zu deinem GClh Config">deaktiviert</a> werden.<br>
+				Vorschau der Bilder (thumbnails) in Listings and Gallerien: Sie funktionieren durch antippen, gleichzeitig wird durchs Antippen jedoch auch die normale Anzeige des Bildes in groß aktiviert. Die <a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_show_thumbnailsX0" title="Link zu deinem GClh Config">Vorschau der Bilder</a> sollte deaktiviert werden.<br>
 			</li>
 		</ul>
 	</li>
@@ -146,14 +190,14 @@ Startet ein Script nicht, so handelt es sich in der Regel um Abstimmungsprobleme
 	</li>
 	<br>
 	<li>
-		Linklist und gewohntes Menü sind nicht sichtbar. Sie verstecken sich rechts oben in einem seitlichen Menü, beispielsweise auf den Seiten Dashboard, Geocache Suche oder Karte. Aktiviert man im Browser "Desktop-Seite", wird die Linklist und das Menü wie gewohnt angezeigt.<br>
+		Linklist und gewohntes Menü sind nicht immer sichtbar. Sie verstecken sich dann rechts oben in einem seitlichen Menü, beispielsweise auf den Seiten Dashboard, Geocache Suche oder Karte. Aktiviert man im Browser "Desktop-Seite", wird die Linklist und das Menü wie gewohnt angezeigt.<br>
 	</li>
 	<br>
 	<li>
 		Es gibt keine Funktionstasten / F-Tasten mit der Standard Android Tastatur.<br>
 		<ul>
 			<li>
-				F2 zum Speichern ... funktioniert nicht (GClh Config, Bookmarklisten, PQ, Hide ...).<br>
+				F2 zum Speichern ... funktioniert nicht (GClh Config, Bookmarklisten, PQ, Verstecken ...).<br>
 			</li>
 			<li>
 				F4 bzw. F10 zum Aufrufen des GClh Config bzw. GClh Sync funktionieren nicht.<br>
