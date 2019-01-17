@@ -67,8 +67,7 @@ Wenn du Probleme mit dem Drag & Drop hast beim Hinzufügen neuer Links zur Linkl
 ## 3. GClh startet nicht.
 Startet ein Script nicht, so handelt es sich in der Regel um Abstimmungsprobleme zwischen dem Browser und dem Script-Manager Tampermonkey. Diese Probleme treten hauptsächlich dann auf, wenn ein Tab in einem Browser über eine Session hinaus besteht. Das kann durch den User veranlaßt sein indem er Tabs im Browser beispielsweise im Ruhezustand bestehen läßt. Es kann aber auch durch den Browser veranlaßt sein beispielweise bei einer Wiederherstellung von Tabs nach einem Abbruch.<br>
 <br>
-*Probleme beheben:* 
-Probleme können je nach Sachlage regelmäßig mit einem der folgenden Punkte behoben werden:<br>
+*Probleme beheben:* Probleme können je nach Sachlage regelmäßig mit einem der folgenden Punkte behoben werden.<br>
 <ul>
 	<li>
 		Tabs im Browser schließen, Tabs neu anwählen.<br>
@@ -80,8 +79,8 @@ Probleme können je nach Sachlage regelmäßig mit einem der folgenden Punkte be
 		Script-Manager Tampermonkey deaktivieren und nach einigen Sekunden wieder aktivieren (sofern man "Automatisches Seiten-Neu-Laden" in Tampermonkey nicht deaktiviert hat).<br>
 	</li>
 </ul>
-
-*Problemen vorbeugen:* ddd <br>
+<br>
+*Problemen vorbeugen:* <br>
 <ul>
 	<li>
 		Tabs im Browser schließen bevor man den Rechner in den Ruhezustand schickt, damit bei der Reaktivierung die Tabs nicht mehr vorhanden sind.<br>
