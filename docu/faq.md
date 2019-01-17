@@ -79,7 +79,7 @@ Startet ein Script nicht, so handelt es sich in der Regel um Abstimmungsprobleme
 		Script-Manager Tampermonkey deaktivieren und nach einigen Sekunden wieder aktivieren (sofern man "Automatisches Seiten-Neu-Laden" in Tampermonkey nicht deaktiviert hat).<br>
 	</li>
 </ul>
-*Problemen vorbeugen:*<br> 
+*Problemen vorbeugen:* <br> 
 <ul>
 	<li>
 		Tabs im Browser schließen bevor man den Rechner in den Ruhezustand schickt, damit bei der Reaktivierung die Tabs nicht mehr vorhanden sind.<br>
