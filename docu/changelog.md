@@ -59,6 +59,7 @@
 	<li>
 		<strong>New:</strong> Show elevations also with Geonames. [<a href="https://github.com/2Abendsegler/GClh/issues/920" title="Issue 920">920</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 		Because the number of calls to the Google Elevation API is limited and the Open-Elevation API is very slow and sometimes providing erroneous data, the Geonames API has also been implemented. The Geonames API is very fast. As before, a first and a second service can be selected.<br>
+		We recommend the following settings.<br>
 		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_show_elevation_of_waypoints" title="Link to your GClh Config">Settings -> Listing:<br>
 			<img src="../images/0.9.15/Screen01.jpg" alt="Screen01.jpg"></a><br>
 		<br>
