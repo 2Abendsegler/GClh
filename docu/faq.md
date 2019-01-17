@@ -7,23 +7,18 @@
 <a href="#3-en">3. Hints for using on Android devices.</a> 		  | <a href="#3-de">3. Hinweise für die Nutzung auf Android Geräten.</a>
 
 ---
-<a id="en"></a>
-<img src="../images/flag_en.png">
-<a id="1-en"></a>
+<a id="en"></a><img src="../images/flag_en.png">
 
+<a id="1-en"></a>
 ## 1. What can I do if the Warning is displayed "GClh is running more than once"?
-*GC little helper II* is only working correctly, if it's just running once at a time. Because of that, the script 
-itself checks if it's the only GClh running.<br>
-If this warning is displayed, it is mostly true. So you can check some points:
+*GC little helper II* is only working correctly, if it's just running once at a time. Because of that, the script itself checks if it's the only GClh running.<br>
+If this warning is displayed, it is mostly true. So you can check some points:<br>
 <ol>
 	<li>
-		Please check if you have more than one Scriptmanger (i.e. Tampermonkey and Greasemonkey) installed. Maybe GClh 
-		is installed in both of the Scriptmanager. In this case you just have to uninstall GClh in one of this 
-		Scriptmanagers. Since we only support Tampermonkey, you should uninstall it in Greasemonkey.
+		Please check if you have more than one Scriptmanger (i.e. Tampermonkey and Greasemonkey) installed. Maybe GClh is installed in both of the Scriptmanager. In this case you just have to uninstall GClh in one of this Scriptmanagers. Since we only support Tampermonkey, you should uninstall it in Greasemonkey.<br>
 	</li>
 	<li>
-		Maybe GClh is installed more than once in your Scriptmanger. You can check this for example in Tampermonkey 
-		by viewing the Scriptoverview. If this is the case, just uninstall all but one instance of GClh.
+		Maybe GClh is installed more than once in your Scriptmanger. You can check this for example in Tampermonkey by viewing the Scriptoverview. If this is the case, just uninstall all but one instance of GClh.
 	</li>
 </ol>
 If you still get the warning, please leave a bugreport <a href="https://github.com/2Abendsegler/GClh/issues">here</a> and we will try to assist you.
