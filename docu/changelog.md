@@ -52,6 +52,9 @@
 	<li>
 		<strong>Fix:</strong> Prevent unwanted line breaks in GClh Config. [<a href="https://github.com/2Abendsegler/GClh/issues/956" title="Issue 956">956</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 	</li>
+	<li>
+		<strong>Fix:</strong> Refine newer log page on small devices. [<a href="https://github.com/2Abendsegler/GClh/issues/957" title="Issue 957">957</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
 </ul>
 (??.01.2019)<br>
 released by <a href="https://www.geocaching.com/profile/?u=Ruko2010">Ruko2010</a><br>
