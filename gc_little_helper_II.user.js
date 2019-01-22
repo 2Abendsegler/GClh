@@ -2816,8 +2816,6 @@ var mainGC = function() {
     }
 // Show Smilies und Log Templates new log page.
     if (document.location.href.match(/\.com\/play\/geocache\/gc\w+\/log/) &&
-//xxxx
-//        $('.muted')[0] && $('#LogDate')[0] && $('#logContent')[0] && $('#LogText')[0]) {
         $('.muted')[0] && $('#LogDate')[0] && $('#logContent')[0] && $('#LogText')[0] && $('#reportProblemInfo')[0]) {
         try {
             var [aGCTBName, aGCTBLink, aGCTBNameLink, aLogDate] = getGCTBInfo(true);
@@ -2825,16 +2823,10 @@ var mainGC = function() {
             insert_smilie_fkt("LogText");
             insert_tpl_fkt(true);
             var liste = "";
-//xxxx
-//            if (settings_show_bbcode) build_smilies(true);
-//            build_tpls(true);
             build_tpls(true);
             if (settings_show_bbcode) build_smilies(true);
             var box = document.createElement("div");
             box.innerHTML = liste;
-//xxxx
-//            side = $('#logContent')[0];
-//            side.insertBefore(box, side.childNodes[0]);
             side = $('#reportProblemInfo')[0];
             side.parentNode.insertBefore(box, side);
             // --> Chrom
@@ -2842,9 +2834,6 @@ var mainGC = function() {
             if (browser == "chrome") $('#gclh_log_tpls')[0].addEventListener("click", gclh_insert_tpl, false);
             // <-- Chrom
             var css = "";
-//xxxx
-//            css += ".flatpickr-wrapper {left: 244px; float: unset !important;}";
-//            css += "#gclh_log_tpls {position: relative; float: right; bottom: 8px; margin-right: -1px; width: unset; border: 1px solid #9b9b9b; box-shadow: none; height: 40px; padding-top: 5px;}";
             css += ".flatpickr-wrapper {margin-bottom: unset !important; bottom: 6px !important;}";
             css += "#gclh_log_tpls {position: relative; max-width: 240px; width: unset; border: 1px solid #9b9b9b; box-shadow: none; height: 40px; padding-top: 5px;}";
             css += "select:hover, select:focus, select:active {background-image: url(/play/app/ui-icons/icons/global/caret-down-hover.svg);}";
@@ -2936,8 +2925,6 @@ var mainGC = function() {
     // Smilies aufbauen.
     function build_smilies(newLogPage) {
         var o = "<p style='margin: 5px;'>";
-//xxxx
-//        if (newLogPage) liste += "<p style='float: right; margin-top: -60px; margin-right: -8px;'>";
         if (newLogPage) liste += "<div style='float: right; margin-right: -5px; display: inline-block;'>";
         else liste += "<br>" + o;
         bs("[:)]", "");
@@ -2951,8 +2938,6 @@ var mainGC = function() {
         bs("[:o)]", "_clown");
         bs("[B)]", "_blackeye");
         bs("[8]", "_8ball");
-//xxxx
-//        if (newLogPage) liste += "<p style='float: right; margin-top: -40px; margin-right: -8px;'>";
         if (newLogPage) liste += "<br>";
         else liste += "</p>" + o;
         bs("[:(]", "_sad");
@@ -2966,8 +2951,6 @@ var mainGC = function() {
         bs("[^]", "_approve");
         bs("[V]", "_dissapprove");
         bs("[?]", "_question");
-//xxxx
-//        liste += "</p>";
         if (newLogPage) liste += "</div>";
         else liste += "</p>";
         function bs(s, n) {liste += "<a href='#' onClick='gclh_insert_smilie(\"" + s + "\",\"\"); return false;'" + (newLogPage ? "style='margin: -2px;'" : "") + "><img src='/images/icons/icon_smile" + n + ".gif' title='" + s + " " + n.replace("_", "") + "' border='0'></a>&nbsp;&nbsp;";}
@@ -2988,9 +2971,6 @@ var mainGC = function() {
             logicNew += "<option value='last_logtext' onClick='gclh_insert_tpl(\"gclh_template[last_logtext]\"); return false;' style='color: #4a4a4a;'>[Last Cache-Log]</option>";
         }
         if (newLogPage) {
-//xxxx
-//            liste += texts;
-//            liste += "<select id='gclh_log_tpls' class='gclh_form' style='color: #9b9b9b;'>";
             liste += "<br style='line-height: 40px'>" + texts;
             liste += "<select id='gclh_log_tpls' class='gclh_form' style='color: #9b9b9b; display: initial; font-family: Noto Sans; font-size: 14px;'>";
             liste += "<option value='-1' selected='selected'" + "style='display: none; visibility: hidden;'>- Log Templates -</option>";
