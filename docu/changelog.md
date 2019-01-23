@@ -50,6 +50,9 @@
 ## v0.10:
 <ul>
 	<li>
+		<strong>Improvement:</strong> Show log counter when opening cache listing. [<a href="https://github.com/2Abendsegler/GClh/issues/954" title="Issue 954">954</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
 		<strong>Fix:</strong> Prevent unwanted line breaks in GClh Config. [<a href="https://github.com/2Abendsegler/GClh/issues/956" title="Issue 956">956</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 	</li>
 	<li>
