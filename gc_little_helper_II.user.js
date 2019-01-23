@@ -506,6 +506,7 @@ var variablesInit = function(c) {
     c.settings_fav_proz_recviewed = getValue("settings_fav_proz_recviewed", true);
     c.settings_show_all_logs_but = getValue("settings_show_all_logs_but", true);
     c.settings_show_log_counter_but = getValue("settings_show_log_counter_but", true);
+    c.settings_show_log_counter = getValue("settings_show_log_counter", false);
     c.settings_show_bigger_avatars_but = getValue("settings_show_bigger_avatars_but", true);
     c.settings_hide_feedback_icon = getValue("settings_hide_feedback_icon", false);
     c.settings_compact_layout_new_dashboard = getValue("settings_compact_layout_new_dashboard", false);
@@ -9177,6 +9178,7 @@ var mainGC = function() {
 // Show log counter.
     function showLogCounterLink() {
         addButtonOverLogs(showLogCounter, "gclh_show_log_counter", true, "Show log counter", "Show log counter for log type and total");
+        if (settings_show_log_counter_but && settings_show_log_counter) showLogCounter();
         appendCssStyle(".gclh_logCounter {font-size: 10px !important; padding-left: 6px; font-style: italic;}");
     }
     function showLogCounter() {
@@ -10256,6 +10258,11 @@ var mainGC = function() {
             html += "&nbsp;&nbsp;" + checkboxy('settings_show_gpsvisualizer_typedesc', 'Transfer type of the waypoint as description') + show_help3("Transfer for every waypoint the type as text in the description. If the URL is too long deactivate this option.") + "<br>";
             html += checkboxy('settings_show_all_logs_but', 'Show button \"Show all logs\" above the logs') + "<br>";
             html += checkboxy('settings_show_log_counter_but', 'Show button \"Show log counter\" above the logs') + "<br>";
+            html += newParameterVersionSetzen(0.9) + newParameterOff;
+            html += newParameterOn1;
+            html += "&nbsp;&nbsp;" + checkboxy('settings_show_log_counter', 'Show log counter when opening cache listing') + "<br>";
+            html += newParameterVersionSetzen("0.10") + newParameterOff;
+            html += newParameterOn3;
             html += checkboxy('settings_show_bigger_avatars_but', 'Show button \"Show bigger avatars\" above the logs') + "<br>";
             html += newParameterVersionSetzen(0.9) + newParameterOff;
             html += "</div>";
@@ -10912,6 +10919,7 @@ var mainGC = function() {
             setEvForDepPara("settings_show_elevation_of_waypoints","settings_secondary_elevation_service");
             setEvForDepPara("settings_show_gpsvisualizer_link","settings_show_gpsvisualizer_gcsymbols");
             setEvForDepPara("settings_show_gpsvisualizer_link","settings_show_gpsvisualizer_typedesc");
+            setEvForDepPara("settings_show_log_counter_but","settings_show_log_counter");
             // Abhängigkeiten der Linklist Parameter.
             for (var i = 0; i < 100; i++) {
                 // 2. Spalte: Links für Custom BMs.
@@ -11265,6 +11273,7 @@ var mainGC = function() {
                 'settings_fav_proz_recviewed',
                 'settings_show_all_logs_but',
                 'settings_show_log_counter_but',
+                'settings_show_log_counter',
                 'settings_show_bigger_avatars_but',
                 'settings_hide_feedback_icon',
                 'settings_compact_layout_new_dashboard',
