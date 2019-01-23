@@ -53,9 +53,9 @@
 		<strong>New:</strong> Show log counter when opening cache listing. [<a href="https://github.com/2Abendsegler/GClh/issues/954" title="Issue 954">954</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 		<img src="../images/v0.10_Screen01.jpg" alt="v0.10_Screen01.jpg"><br>
 		The functionality to show log counter is not new. New is only the possibility to activate the display by default without pushing the button.<br>
-		Settings -> Listing:<br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_show_log_counter_but" title="Link to your GClh Config">Settings -> Listing:<br>
 		<img src="../images/v0.10_Screen02.jpg" alt="v0.10_Screen02.jpg"><br>
-		If you want to use it, you have to activate the paramater.<br>
+			If you want to use it, you have to activate the paramater.</a><br>
 	</li>
 	<li>
 		<strong>Fix:</strong> Prevent unwanted line breaks in GClh Config. [<a href="https://github.com/2Abendsegler/GClh/issues/956" title="Issue 956">956</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
