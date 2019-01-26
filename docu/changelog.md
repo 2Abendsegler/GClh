@@ -55,7 +55,7 @@
 		The functionality to show log counter is not new. New is only the possibility to activate the display by default without pushing a button.<br>
 		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_show_log_counter_but" title="Link to your GClh Config">Settings -> Listing:<br>
 		<img src="../images/0.10/Screen02.jpg" alt="Screen02.jpg"></a><br>
-			If you want to use it, you have to <a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_show_log_counter_but" title="Link to your GClh Config">activate the paramater</a>.<br>
+			If you want to use it, you have to <a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_show_log_counter_but" title="Link to your GClh Config">activate the parameter</a>.<br>
 		<br>
 	</li>
 	<li>
