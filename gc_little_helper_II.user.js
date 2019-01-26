@@ -6694,7 +6694,7 @@ var mainGC = function() {
 // Change map parameter and add Homezone to map.
     if (document.location.href.match(/\.com\/map\//)) {
         try {
-            function gclh_map_loaded() {
+            function changeMap() {
                 if (settings_map_hide_sidebar) {
                     if (document.getElementById("searchtabs").parentNode.style.left != "-355px") {
                         var links = document.getElementsByTagName("a");
@@ -6752,7 +6752,7 @@ var mainGC = function() {
                 }
                 checkForAddHomeZoneMap(0);
             }
-            window.addEventListener("load", gclh_map_loaded, false);
+            isMapLoad(changeMap);
             appendCssStyle(".leaflet-control-layers-base {min-width: 200px;} .add-list li {padding: 2px 0} .add-list li button {font-size: 14px; margin-bottom: 0px;}");
         } catch(e) {gclh_error("Change map parameter and add Homezone to map",e);}
     }
@@ -6884,12 +6884,13 @@ var mainGC = function() {
                 var button = unsafeWindow.document.getElementById("m_myCaches").childNodes[1];
                 if (button) button.click();
             }
-            if (settings_map_hide_found) window.addEventListener("load", hideFoundCaches, false);
+            if (settings_map_hide_found) isMapLoad(hideFoundCaches);
             function hideHiddenCaches() {
                 if (document.location.href.match(/&asq=/)) return;
                 var button = unsafeWindow.document.getElementById("m_myCaches").childNodes[3];
                 if (button) button.click();
             }
+            if (settings_map_hide_hidden) isMapLoad(hideHiddenCaches);
             function getAllCachetypeButtons(){
                 return ['Legend2', 'Legend9', 'Legend3', 'Legend6', 'Legend13', 'Legend453', 'Legend7005', 'Legend1304', 'Legend137', 'Legend4', 'Legend11', 'Legend8', 'Legend5', 'Legend1858'];
             }
@@ -6924,7 +6925,6 @@ var mainGC = function() {
             li.appendChild(a);
             ul.appendChild(li);
             li.onclick = function() {showAllCacheTypes();};
-            if (settings_map_hide_hidden) window.addEventListener("load", hideHiddenCaches, false);
             // Apply Cache Type Filter.
             function hideCacheTypes() {
                 if (document.location.href.match(/&asq=/)) return;
@@ -6950,7 +6950,7 @@ var mainGC = function() {
                 if (settings_map_hide_4 && settings_map_hide_11 && settings_map_hide_137) $('#chkLegendWhite')[0].childNodes[0].setAttribute("class", "a_cat_displayed cat_untoggled");
                 if (settings_map_hide_8 && settings_map_hide_5 && settings_map_hide_1858) $('#chkLegendBlue')[0].childNodes[0].setAttribute("class", "a_cat_displayed cat_untoggled");
             }
-            window.addEventListener("load", hideCacheTypes, false);
+            isMapLoad(hideCacheTypes);
         } catch(e) {gclh_error("Hide found/hidden Caches / Cache Types on Map",e);}
     }
 
@@ -9264,6 +9264,13 @@ var mainGC = function() {
         urluser = urluser.replace(/&disable_redirect=/, "");
         if (!urluser.match(/^#/)) urluser = urluser.replace(/#(.*)/, "");
         return urluser;
+    }
+
+// Alternative to event load on the map.(Load event on map doesn't work always with open in new tab.)
+    function isMapLoad(fkt) {
+        if (waitCount == undefined) var waitCount = 0;
+        if ($('.groundspeak-control-findmylocation')[0] && $('.leaflet-control-scale')[0]) fkt();
+        else {waitCount++; if (waitCount <= 50) setTimeout(function(){isMapLoad(fkt);}, 200);}
     }
 
 //////////////////////////////
