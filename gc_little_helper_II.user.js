@@ -9266,7 +9266,7 @@ var mainGC = function() {
         return urluser;
     }
 
-// Alternative to event load on the map.(Load event on map doesn't work always with open in new tab.)
+// Alternative to event load on map. (Load event on map doesn't work always with open in new tab.)
     function isMapLoad(fkt) {
         if (waitCount == undefined) var waitCount = 0;
         if ($('.groundspeak-control-findmylocation')[0] && $('.leaflet-control-scale')[0]) fkt();
