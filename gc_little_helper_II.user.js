@@ -5871,6 +5871,7 @@ var mainGC = function() {
                             gclh_add_vip_icon();
                             setLinesColorInCacheListing();
                             unsafeWindow.appendUpvotesToLogs(log_ids);
+                            updateGreatStoryEvents();
                             if (!settings_hide_top_button) $("#topScroll").fadeIn();
                             $("#pnlLazyLoad").hide();
                             isBusy = false;
@@ -6121,6 +6122,7 @@ var mainGC = function() {
                     }
                     unsafeWindow.$('a.tb_images').fancybox({'type': 'image', 'titlePosition': 'inside'});
                     unsafeWindow.appendUpvotesToLogs(log_ids);
+                    updateGreatStoryEvents();
 
                     gclh_dynamic_load(logs, num);
                     if (settings_show_vip_list) {
@@ -6140,6 +6142,23 @@ var mainGC = function() {
             } else gclh_load_logs(30);
         } catch(e) {gclh_error("Replace Log-Loading function",e);}
     }
+
+    function updateGreatStoryEvents(){
+        $('.great-story-btn').each(function(){
+            $(this).unbind('click');
+            $(this).click(function(){
+                return upvoteLog($(this));
+            });
+        });
+
+        $('.helpful-btn').each(function(){
+            $(this).unbind('click');
+            $(this).click(function(){
+                return upvoteLog($(this));
+            });
+        });
+    }
+
     // Zeilen in Cache Listings in Zebra und für User, Owner, Reviewer und VIP einfärben.
     function setLinesColorInCacheListing() {
         if (is_page("cache_listing")) {
