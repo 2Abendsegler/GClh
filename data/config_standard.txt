@@ -190,7 +190,7 @@
   "settings_driving_direction_link": true,
   "settings_driving_direction_parking_area": false,
   "settings_show_elevation_of_waypoints": true,
-  "settings_primary_elevation_service": 1,
+  "settings_primary_elevation_service": 3,
   "settings_secondary_elevation_service": 2,
   "settings_img_warning": false,
   "settings_fieldnotes_old_fashioned": false,
@@ -233,5 +233,9 @@
   "settings_gclherror_alert": false,
   "settings_auto_open_tb_inventory_list": true,
   "settings_embedded_smartlink_ignorelist": true,
-  "settings_both_tabs_list_of_pqs_one_page": false
+  "settings_both_tabs_list_of_pqs_one_page": false,
+  "settings_pq_previewmap": true,
+  "settings_past_events_on_bm": true,
+  "settings_pq_previewmap_layer": "Geocaching",
+  "settings_map_overview_layer": "Geocaching"
 }
