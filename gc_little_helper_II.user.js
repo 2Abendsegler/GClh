@@ -4094,7 +4094,9 @@ var mainGC = function() {
                 var lines = $('table.Table tbody').find('tr');
                 for (var i = 0; i < lines.length; i += 2) {
                     if (!lines[i].className.match(/BorderTop/)) lines[i].className += " BorderTop";
-                    lines[i].children[1].childNodes[3].outerHTML = "&nbsp;&nbsp;";
+                    if (lines[i].children[1].childNodes[3] && lines[i].children[1].childNodes[3].nodeName == "BR") {
+                        lines[i].children[1].childNodes[3].outerHTML = "&nbsp;&nbsp;";
+                    }
                     lines[i].children[1].style.whiteSpace = "nowrap";
                     if (lines[i].children[5]) lines[i].children[5].style.whiteSpace = "nowrap";
                     if (lines[i+1].children[1].innerHTML == "") lines[i+1].style.display = "table-column";
