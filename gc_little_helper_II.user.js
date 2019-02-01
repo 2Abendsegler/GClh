@@ -6987,7 +6987,7 @@ var mainGC = function() {
     }
 
 // Display more informations on map popup for a cache
-    if (document.location.href.match(/\.com\/map\//) && settings_show_enhanced_map_popup) {
+    if (document.location.href.match(/\.com\/map\//) && settings_show_enhanced_map_popup && getValue("gclhLeafletMapActive")) {
         try {
             var template = $("#cacheDetailsTemplate").html().trim();
 
