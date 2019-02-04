@@ -70,6 +70,9 @@
 	<li>
 		<strong>Fix:</strong> Error on shared bookmark lists if no home coordinates are known. [<a href="https://github.com/2Abendsegler/GClh/issues/970" title="Issue 970">970</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 	</li>
+	<li>
+		<strong>Fix:</strong> Map error with additional layer and additional popup if Leaflet is not selected. [<a href="https://github.com/2Abendsegler/GClh/issues/969" title="Issue 969">969</a> / <a href="https://www.geocaching.com/profile/?u=Ruko2010" title="Thanks to Ruko2010">Ruko2010</a>, <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
 </ul>
 (??.01.2019)<br>
 released by <a href="https://www.geocaching.com/profile/?u=Ruko2010">Ruko2010</a><br>
