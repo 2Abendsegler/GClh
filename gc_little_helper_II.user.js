@@ -6563,8 +6563,30 @@ var mainGC = function() {
         } catch(e) {gclh_error("Show gallery images in 2 instead of 4 cols",e);}
     }
 
+// Display Google-Maps warning, wenn Leaflet-Map nicht aktiv ist.
+    if (document.location.href.match(/\.com\/map\//)) {
+        try {
+            // Wenn Leaflet-Map aktiv, alles ok, Kz aktiv merken.
+            if ($('.leaflet-container')[0]) setValue("gclhLeafletMapActive", true);
+            // Wenn Screen "Set Map Preferences", Leaflet-Map wird nicht kommen, also nichts tun.
+            else if ($('.container')[0]);
+            // Wenn Leaflet-Map Kz aktiv und Screen "Set Map Preferences" nicht angezeigt wird, dann ist Google aktiv.
+            else {
+                // Prüfen, ob zuvor Leaflet-Map aktiv war, Status sich also geändert hat, dann Meldung ausgeben, neuen Status "nicht aktiv" merken.
+                if (getValue("gclhLeafletMapActive", true)) {
+                    setValue("gclhLeafletMapActive", false);
+                    var mess = "Please note, that GC little helper only supports\n"
+                             + "the Leaflet-Map. You are using the Google-Map.\n\n"
+                             + "You can change the map in the left sidebar with \n"
+                             + "the button \"Set Map Preferences\".";
+                    alert(mess);
+                }
+            }
+        } catch(e) {gclh_error("Display Google-Maps warning",e);}
+    }
+
 // Add layers, control to map and set default layers.
-    if (settings_use_gclh_layercontrol && document.location.href.match(/\.com\/map\//)) {
+    if (settings_use_gclh_layercontrol && document.location.href.match(/\.com\/map\//) && getValue("gclhLeafletMapActive")) {
         try {
             // Auswahl nur bestimmter Layer.
             var map_layers = new Object();
@@ -6956,38 +6978,8 @@ var mainGC = function() {
         } catch(e) {gclh_error("Hide found/hidden Caches / Cache Types on Map",e);}
     }
 
-// Display Google-Maps warning, wenn Leaflet-Map nicht aktiv ist.
-    if (document.location.href.match(/\.com\/map\//)) {
-        try {
-            function checkMap(waitCount) {
-                // Wenn Leaflet-Map aktiv, alles ok, Kz aktiv merken.
-                if ($('.leaflet-container')[0]) {
-                    setValue("gclhLeafletMapActive", true);
-                    return;
-                }
-                // Wenn Screen "Set Map Preferences", Leaflet-Map wird nicht kommen, also nichts tun.
-                if ($('.container')[0]) return;
-                waitCount++;
-                if (waitCount <= 5) setTimeout(function(){checkMap(waitCount);}, 1000);
-                else {
-                    // Wenn Leaflet-Map Kz aktiv und Screen "Set Map Preferences" nicht angezeigt wird, dann ist Google aktiv.
-                    // Prüfen, ob zuvor Leaflet-Map aktiv war, Status sich also geändert hat, dann Meldung ausgeben, neuen Status "nicht aktiv" merken.
-                    if (getValue("gclhLeafletMapActive", true)) {
-                        var mess = "Please note, that GC little helper only supports\n"
-                                 + "the Leaflet-Map. You are using the Google-Map.\n\n"
-                                 + "You can change the map in the left sidebar with \n"
-                                 + "the button \"Set Map Preferences\".";
-                        alert(mess);
-                        setValue("gclhLeafletMapActive", false);
-                    }
-                }
-            }
-            checkMap(0);
-        } catch(e) {gclh_error("Display Google-Maps warning",e);}
-    }
-
 // Display more informations on map popup for a cache
-    if (document.location.href.match(/\.com\/map\//) && settings_show_enhanced_map_popup) {
+    if (document.location.href.match(/\.com\/map\//) && settings_show_enhanced_map_popup && getValue("gclhLeafletMapActive")) {
         try {
             var template = $("#cacheDetailsTemplate").html().trim();
 
