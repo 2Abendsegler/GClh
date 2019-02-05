@@ -2752,21 +2752,21 @@ var mainGC = function() {
                 var additionalListingIndex = 0;
                 if (elevationServices[serviceIndex].name == "Geonames-Elevation") {
                     var maxLocations = 20;
+                    var countLocations = 0;
                     var lats = "";
                     var lngs = "";
-                    var countLocations = 0;
                     for (var i=0; i<locations.length; i++) {
+                        countLocations++;
                         var latlng = locations[i].split(",");
                         lats += (lats == "" ? latlng[0] : ","+latlng[0]);
                         lngs += (lngs == "" ? latlng[1] : ","+latlng[1]);
-                        countLocations++;
                         if (countLocations == maxLocations || i == (locations.length - 1)) {
                             var locationsstring = "lats="+lats+"&lngs="+lngs+"&username=gclh";
                             getElevationsPackage();
+                            additionalListingIndex = additionalListingIndex + maxLocations;
+                            countLocations = 0;
                             lats = "";
                             lngs = "";
-                            countLocations = 0;
-                            additionalListingIndex = additionalListingIndex + maxLocations;
                         }
                     }
                 } else {
