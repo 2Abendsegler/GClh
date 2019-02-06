@@ -3843,7 +3843,7 @@ var mainGC = function() {
             var idCB = "#ctl00_ContentBody_";
             var idOp = "#ctl00_ContentBody_cbOptions_";
             var idDa = "#ctl00_ContentBody_cbDays_";
-            if (($("p.Success").length <= 0) && (document.location.href.match(/\.com\/pocket\/gcquery\.aspx$/) || document.location.href.match(/\.com\/pocket\/gcquery\.aspx\/ll=/))) {
+            if (($("p.Success").length <= 0) && (document.location.href.match(/\.com\/pocket\/gcquery\.aspx$/) || document.location.href.match(/\.com\/pocket\/gcquery\.aspx\?ll=/))) {
                 if (settings_pq_set_cachestotal) $(idCB+"tbResults").val(settings_pq_cachestotal);
                 if (settings_pq_option_ihaventfound) {
                     $(idOp+"0").prop('checked', true);
