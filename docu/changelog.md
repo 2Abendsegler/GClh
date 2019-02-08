@@ -59,6 +59,12 @@
 		<br>
 	</li>
 	<li>
+		<strong>New:</strong> Display difficulty/terrain in bookmark lists. [<a href="https://github.com/2Abendsegler/GClh/issues/975" title="Issue 975">975</a> / <a href="https://www.geocaching.com/profile/?u=Ruko2010" title="Thanks to Ruko2010">Ruko2010</a>]<br>
+		<img src="../images/0.9.16/Screen03.gif" alt="Screen03.gif"><br>
+		We changed the function of showing corrected coordinates to "add additional informations" and added Difficult and Terrain for each cache.<br>
+		<br>
+	</li>
+	<li>
 		<strong>Fix:</strong> Prevent unwanted line breaks in GClh Config. [<a href="https://github.com/2Abendsegler/GClh/issues/956" title="Issue 956">956</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 	</li>
 	<li>
