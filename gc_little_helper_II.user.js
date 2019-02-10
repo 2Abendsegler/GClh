@@ -4135,10 +4135,10 @@ var mainGC = function() {
             // Build buttons "Add additional info" and "Hide Text" right beside button "Copy List".
             if ($('#ctl00_ContentBody_ListInfo_btnCopyList')[0]) {
                 var span = document.createElement("span");
-                span.innerHTML += '<input id="gclh_linkAdditionalInfo" title="Add additional informations" value="Add additional informations" class="gclh_bt" type="button">';
+                span.innerHTML += '<input id="gclh_linkAdditionalInfo" title="Add additional information" value="Add additional information" class="gclh_bt" type="button">';
                 span.innerHTML += '<input id="gclh_hideTextBm" title="Show/hide Longtext in Bookmark" value="Hide Text" class="gclh_bt gclh_lt" type="button">';
                 $('#ctl00_ContentBody_ListInfo_btnCopyList')[0].parentNode.insertBefore(span, $('#ctl00_ContentBody_ListInfo_btnCopyList')[0].nextSibling);
-                css += ".cc_cell {text-align: center !important}";
+                css += ".cc_cell {text-align: left !important}";
                 css += ".gclh_hideBm {display: table-column;}";
                 css += ".gclh_bt {margin-left: 4px;} .working {opacity: 0.3; cursor: default;}";
                 $('#gclh_linkAdditionalInfo')[0].addEventListener("click", addAdditionalInfoForBM, false);
@@ -4225,7 +4225,13 @@ var mainGC = function() {
                 if (anzLines == 0) $('#gclh_linkAdditionalInfo').removeClass('working');
             });
         });
-        if (!$('#gclh_colAdditionalInfo')[0]) $('table.Table thead tr th:nth-child('+colName+')').after('<th id="gclh_colAdditionalInfo" style="width: 90px;"><span title="Additional Information (Corrected Coordinates/ Diff-Terr)">Corr. Coords - D/T</span></th>');
+        if (!$('#gclh_colAdditionalInfo')[0]) $('table.Table thead tr th:nth-child('+colName+')').after('<th id="gclh_colAdditionalInfo" style="width: 92px;"><span title="Additional Information (Corrected Coordinates - Difficulty/Terrain)">Corr.Coords - D/T</span></th>');
+
+        var css = "";
+        if (settings_new_width >= 1050){
+            css += "#gclh_colAdditionalInfo {width: 122px;}";
+        }
+        appendCssStyle(css);
     }
     // Show, hide Longtext/Description.
     function hideTextBm() {
