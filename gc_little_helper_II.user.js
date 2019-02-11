@@ -3287,7 +3287,9 @@ var mainGC = function() {
         try {
             var val = "";
             var matches = document.location.href.match(/&text=(.*)/);
+
             if (matches && matches[1]) val = decodeUnicodeURIComponent(matches[1]);
+
             updateMessage(0);
             function updateMessage(waitCount) {
                 if ($('textarea')[0] && $('textarea')[0].value == "" && $('#cpMsgLogHead .h5')[0].innerHTML != "") {
@@ -3295,6 +3297,10 @@ var mainGC = function() {
                         var rec = decode_innerHTML($('#cpMsgLogHead .h5')[0]);
                         rec = rec.replace(/^(\s*)/,'').replace(/(\s*)$/,'');
                         val = buildSendTemplate().replace(/#Receiver#/ig, rec);
+                    }else{
+                        var rec = decode_innerHTML($('#cpMsgLogHead .h5')[0]);
+                        rec = rec.replace(/^(\s*)/,'').replace(/(\s*)$/,'');
+                        val = val.replace(/#Receiver#/ig, rec);
                     }
                     $('textarea')[0].value = val;
                 }
@@ -3312,10 +3318,11 @@ var mainGC = function() {
           if(!$(this).hasClass('listeneradded')){
               $(this).addClass('listeneradded');
               $(this).click(function(){
-                
+
+                val = decodeUnicodeURIComponent(matches[1])
                 var rec = $(this).find('.activity-header').text();
                 rec = rec.replace(/^(\s*)/,'').replace(/(\s*)$/,'');
-                val = buildSendTemplate().replace(/#Receiver#/ig, rec);
+                val = val.replace(/#Receiver#/ig, rec);
 
                 $('textarea').value = val;
 
