@@ -61,7 +61,7 @@
 	<li>
 		<strong>New:</strong> Display difficulty and terrain in bookmark lists. [<a href="https://github.com/2Abendsegler/GClh/issues/975" title="Issue 975">975</a> / <a href="https://www.geocaching.com/profile/?u=Ruko2010" title="Thanks to Ruko2010">Ruko2010</a>]<br>
 		<img src="../images/0.9.16/Screen03.gif" alt="Screen03.gif"><br>
-		We changed the function of showing corrected coordinates to "Add additional information" and added Difficult and Terrain for each cache.<br>
+		We changed the function of showing corrected coordinates to "Add additional information" and added difficulty and terrain for each cache.<br>
 		<br>
 	</li>
 	<li>
