@@ -4132,16 +4132,16 @@ var mainGC = function() {
                 css += ".gclh_link {margin-left: 4px;}";
                 if ($('#ctl00_ContentBody_lbHeading')[0].childNodes[0]) getBMLAct($('#ctl00_ContentBody_lbHeading')[0].childNodes[0].data.replace(/(\s+)$/,''));
             }
-            // Build buttons "Mark Caches with Corr. Coords" and "Hide Text" right beside button "Copy List".
+            // Build buttons "Add additional info" and "Hide Text" right beside button "Copy List".
             if ($('#ctl00_ContentBody_ListInfo_btnCopyList')[0]) {
                 var span = document.createElement("span");
-                span.innerHTML += '<input id="gclh_linkCorrCoords" title="Mark Caches with Corrected Coordinates" value="Mark Caches with Corr. Coords" class="gclh_bt" type="button">';
+                span.innerHTML += '<input id="gclh_linkAdditionalInfo" title="Add additional information (Corrected Coordinates - Difficulty/Terrain)" value="Add additional information" class="gclh_bt" type="button">';
                 span.innerHTML += '<input id="gclh_hideTextBm" title="Show/hide Longtext in Bookmark" value="Hide Text" class="gclh_bt gclh_lt" type="button">';
                 $('#ctl00_ContentBody_ListInfo_btnCopyList')[0].parentNode.insertBefore(span, $('#ctl00_ContentBody_ListInfo_btnCopyList')[0].nextSibling);
-                css += ".cc_cell {text-align: center !important}";
+                css += ".cc_cell {text-align: left !important}";
                 css += ".gclh_hideBm {display: table-column;}";
                 css += ".gclh_bt {margin-left: 4px;} .working {opacity: 0.3; cursor: default;}";
-                $('#gclh_linkCorrCoords')[0].addEventListener("click", markCorrCoordForBm, false);
+                $('#gclh_linkAdditionalInfo')[0].addEventListener("click", addAdditionalInfoForBM, false);
                 $('#gclh_hideTextBm')[0].addEventListener("click", hideTextBm, false);
             }
             // Build button "Download as kml" right beside button "Download .LOC".
@@ -4195,9 +4195,9 @@ var mainGC = function() {
         });
     }
     // Mark caches with corrected coords.
-    function markCorrCoordForBm() {
-        if ($('#gclh_linkCorrCoords.working')[0]) return;
-        $('#gclh_linkCorrCoords').addClass('working');
+    function addAdditionalInfoForBM() {
+        if ($('#gclh_linkAdditionalInfo.working')[0]) return;
+        $('#gclh_linkAdditionalInfo').addClass('working');
         var anzLines = $('table.Table tbody tr').length / 2;
         if ($('table.Table tbody tr').first().find('td:nth-child(4)').find('img[src*="WptTypes"]')[0]) var colGccode = 3;
         else var colGccode = 4;
@@ -4205,21 +4205,28 @@ var mainGC = function() {
         $('table.Table tbody tr').each(function() {
             if ($(this).find('td:nth-child('+colGccode+') a')[0]) {
                 var gccode = $(this).find('td:nth-child('+colGccode+') a')[0].innerHTML;
-                if (!$('#gclh_colCorrCoords')[0]) $(this).find('td:nth-child('+colName+')').after('<td id="cc_'+gccode+'" class="cc_cell"></td>');
+                if (!$('#gclh_colAdditionalInfo')[0]) $(this).find('td:nth-child('+colName+')').after('<td id="cc_'+gccode+'" class="cc_cell"></td>');
                 else $('#cc_'+gccode)[0].innerHTML = "";
             } else {
-                if (!$('#gclh_colCorrCoords')[0]) $(this).find('td:nth-child(2)').after('<td></td>');
+                if (!$('#gclh_colAdditionalInfo')[0]) $(this).find('td:nth-child(2)').after('<td></td>');
                 return;
             }
             $.get('https://www.geocaching.com/geocache/'+gccode, null, function(text){
                 var corr_gccode = $(text).find('#ctl00_ContentBody_CoordInfoLinkControl1_uxCoordInfoCode')[0].innerHTML;
+                // coorected coords
                 if (text.includes('"isUserDefined":true,"newLatLng"')) $('#cc_'+corr_gccode)[0].innerHTML = '<img title="Corrected Coordinates" alt="Corr. Coords" src="'+global_green_tick+'">';
                 else $('#cc_'+corr_gccode)[0].innerHTML = '<img style="opacity: 0.8;" title="No Corrected Coordinates" alt="No Corr. Coords" src="'+global_red_tick+'">';
+                var diff = $(text).find("#ctl00_ContentBody_uxLegendScale img").attr("alt");
+                diff = diff.substr(0,diff.indexOf(' '));
+                var terr = $(text).find("#ctl00_ContentBody_Localize12 img").attr("alt");
+                terr = terr.substr(0,terr.indexOf(' '));
+                $('#cc_'+corr_gccode)[0].innerHTML = $('#cc_'+corr_gccode)[0].innerHTML + ' - D'+diff+'/T'+terr;
                 anzLines--;
-                if (anzLines == 0) $('#gclh_linkCorrCoords').removeClass('working');
+                if (anzLines == 0) $('#gclh_linkAdditionalInfo').removeClass('working');
             });
         });
-        if (!$('#gclh_colCorrCoords')[0]) $('table.Table thead tr th:nth-child('+colName+')').after('<th id="gclh_colCorrCoords" style="width: 90px;"><span title="Caches with Corrected Coordinates">Corr. Coords</span></th>');
+        if (!$('#gclh_colAdditionalInfo')[0]) $('table.Table thead tr th:nth-child('+colName+')').after('<th id="gclh_colAdditionalInfo" style="width: 92px;"><span title="Additional information (Corrected Coordinates - Difficulty/Terrain)">Corr.Coords - D/T</span></th>');
+        if (settings_new_width >= 1050) appendCssStyle("#gclh_colAdditionalInfo {width: 122px !important;}");
     }
     // Show, hide Longtext/Description.
     function hideTextBm() {
