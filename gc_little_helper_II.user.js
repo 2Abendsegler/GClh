@@ -8548,7 +8548,8 @@ var mainGC = function() {
             username_send = "user";
         }
         // Message, Mail Template aufbauen.
-        template = urlencode(buildSendTemplate().replace(/#Receiver#/ig, b_username));
+        // template = urlencode(buildSendTemplate().replace(/#Receiver#/ig, b_username));
+        template = urlencode(buildSendTemplate());
         // Message Icon erzeugen.
         if (settings_show_message && b_art == "per guid") {
             var mess_link = document.createElement("a");
