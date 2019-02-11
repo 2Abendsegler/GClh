@@ -8548,8 +8548,8 @@ var mainGC = function() {
             username_send = "user";
         }
         // Message, Mail Template aufbauen.
-        // template = urlencode(buildSendTemplate().replace(/#Receiver#/ig, b_username));
-        template = urlencode(buildSendTemplate());
+        template_message = urlencode(buildSendTemplate());
+        template = urlencode(buildSendTemplate().replace(/#Receiver#/ig, b_username));
         // Message Icon erzeugen.
         if (settings_show_message && b_art == "per guid") {
             var mess_link = document.createElement("a");
@@ -8559,7 +8559,7 @@ var mainGC = function() {
             mess_img.setAttribute("src", global_message_icon);
             mess_link.appendChild(mess_img);
             if (settings_message_icon_new_win) mess_link.setAttribute("target", "_blank");
-            mess_link.setAttribute("href", "/account/messagecenter?recipientId=" + guid + "&text=" + template);
+            mess_link.setAttribute("href", "/account/messagecenter?recipientId=" + guid + "&text=" + template_message);
             b_side.parentNode.insertBefore(mess_link, b_side.nextSibling);
             b_side.parentNode.insertBefore(document.createTextNode(" "), b_side.nextSibling);
             // "Message this owner" und Icon entfernen.
