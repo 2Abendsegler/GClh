@@ -4226,12 +4226,7 @@ var mainGC = function() {
             });
         });
         if (!$('#gclh_colAdditionalInfo')[0]) $('table.Table thead tr th:nth-child('+colName+')').after('<th id="gclh_colAdditionalInfo" style="width: 92px;"><span title="Additional information (Corrected Coordinates - Difficulty/Terrain)">Corr.Coords - D/T</span></th>');
-
-        var css = "";
-        if (settings_new_width >= 1050){
-            css += "#gclh_colAdditionalInfo {width: 122px;}";
-        }
-        appendCssStyle(css);
+        if (settings_new_width >= 1050) appendCssStyle("#gclh_colAdditionalInfo {width: 122px !important;}");
     }
     // Show, hide Longtext/Description.
     function hideTextBm() {
