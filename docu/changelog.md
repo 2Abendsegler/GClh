@@ -65,6 +65,10 @@
 		<br>
 	</li>
 	<li>
+		<strong>New:</strong> Add Link to "Unpublished Hides" to Linklist [<a href="https://github.com/2Abendsegler/GClh/issues/982" title="Issue 982">982</a> / <a href="https://www.geocaching.com/profile/?u=Ruko2010" title="Thanks to Ruko2010">Ruko2010</a>]<br>
+		<br>
+	</li>
+	<li>
 		<strong>Fix:</strong> Prevent unwanted line breaks in GClh Config. [<a href="https://github.com/2Abendsegler/GClh/issues/956" title="Issue 956">956</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 	</li>
 	<li>
