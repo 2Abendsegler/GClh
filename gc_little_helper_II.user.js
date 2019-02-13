@@ -3366,7 +3366,9 @@ var mainGC = function() {
         try {
             var val = "";
             var matches = document.location.href.match(/&text=(.*)/);
+
             if (matches && matches[1]) val = decodeUnicodeURIComponent(matches[1]);
+
             updateMessage(0);
             function updateMessage(waitCount) {
                 if ($('textarea')[0] && $('textarea')[0].value == "" && $('#cpMsgLogHead .h5')[0].innerHTML != "") {
@@ -3374,6 +3376,10 @@ var mainGC = function() {
                         var rec = decode_innerHTML($('#cpMsgLogHead .h5')[0]);
                         rec = rec.replace(/^(\s*)/,'').replace(/(\s*)$/,'');
                         val = buildSendTemplate().replace(/#Receiver#/ig, rec);
+                    }else{
+                        var rec = decode_innerHTML($('#cpMsgLogHead .h5')[0]);
+                        rec = rec.replace(/^(\s*)/,'').replace(/(\s*)$/,'');
+                        val = val.replace(/#Receiver#/ig, rec);
                     }
                     $('textarea')[0].value = val;
                 }
@@ -3381,6 +3387,51 @@ var mainGC = function() {
                 if (waitCount <= 600) setTimeout(function(){updateMessage(waitCount);}, 100);
             }
         } catch(e) {gclh_error("Improve Message",e);}
+    }
+
+// Update Standard Message on Click of a Username in Messagecenter
+    
+    function addEventlistenerForMessageCenterNames(){
+        $( "#cpConvoPanelFeed ol li" ).each(function() {
+          // only add the listener once
+          if(!$(this).hasClass('listeneradded')){
+              $(this).addClass('listeneradded');
+              $(this).click(function(){
+
+                val = decodeUnicodeURIComponent(matches[1])
+                var rec = $(this).find('.activity-header').text();
+                rec = rec.replace(/^(\s*)/,'').replace(/(\s*)$/,'');
+                val = val.replace(/#Receiver#/ig, rec);
+
+                $('textarea').value = val;
+
+              });
+          }
+        });
+    }
+
+    if (is_page("messagecenter")) {
+        try {
+            
+            addMessageButtonListener(0);
+            function addMessageButtonListener(waitCount) {
+                if($( "#cpConvoPanelFeed ol li" ).length > 0){
+
+                    $('#cpConvoPanelFeed ol').bind('DOMSubtreeModified', function(event) {
+                        addEventlistenerForMessageCenterNames();
+                    });
+                    
+                    // Add for initial Names
+                    addEventlistenerForMessageCenterNames();
+                    
+                    waitCount = 700;
+                }
+                
+                waitCount++;
+                if (waitCount <= 600) setTimeout(function(){addMessageButtonListener(waitCount);}, 100);
+            }
+
+        } catch(e) {gclh_error("Update Standard Message on Click of a Username in Messagecenter",e);}
     }
 
 // Improve list of pocket queries (list of PQs).
@@ -8656,6 +8707,7 @@ var mainGC = function() {
             username_send = "user";
         }
         // Message, Mail Template aufbauen.
+        template_message = urlencode(buildSendTemplate());
         template = urlencode(buildSendTemplate().replace(/#Receiver#/ig, b_username));
         // Message Icon erzeugen.
         if (settings_show_message && b_art == "per guid") {
@@ -8666,7 +8718,7 @@ var mainGC = function() {
             mess_img.setAttribute("src", global_message_icon);
             mess_link.appendChild(mess_img);
             if (settings_message_icon_new_win) mess_link.setAttribute("target", "_blank");
-            mess_link.setAttribute("href", "/account/messagecenter?recipientId=" + guid + "&text=" + template);
+            mess_link.setAttribute("href", "/account/messagecenter?recipientId=" + guid + "&text=" + template_message);
             b_side.parentNode.insertBefore(mess_link, b_side.nextSibling);
             b_side.parentNode.insertBefore(document.createTextNode(" "), b_side.nextSibling);
             // "Message this owner" und Icon entfernen.
