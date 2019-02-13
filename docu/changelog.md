@@ -1,4 +1,4 @@
-<a href="#v0916" title="GClh II version 0.9.16 (??.01.2019)">v0.9.16</a> &nbsp;
+<a href="#v0916" title="GClh II version 0.9.16 (13.02.2019)">v0.9.16</a> &nbsp;
 <a href="#v0915" title="GClh II version 0.9.15 (18.01.2019)">v0.9.15</a> &nbsp;
 <a href="#v0914" title="GClh II version 0.9.14 (21.12.2018)">v0.9.14</a> &nbsp;
 <a href="#v0913" title="GClh II version 0.9.13 (09.10.2018)">v0.9.13</a> &nbsp;
@@ -93,8 +93,8 @@
 		<strong>Fix:</strong> Message Center: cacher name in greeting doesn't change on click on another geocacher [<a href="https://github.com/2Abendsegler/GClh/issues/901" title="Issue 901">901</a> / <a href="https://www.geocaching.com/profile/?u=Ruko2010" title="Thanks to Ruko2010">Ruko2010</a>]<br>
 	</li>
 </ul>
-(??.01.2019)<br>
-released by <a href="https://www.geocaching.com/profile/?u=Ruko2010">Ruko2010</a><br>
+(13.02.2019)<br>
+released by <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a><br>
 <br>
 
 ---
