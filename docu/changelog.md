@@ -89,6 +89,9 @@
 	<li>
 		<strong>Fix:</strong> Save As Pocket Query - Default settings for new pocket queries do not work. [<a href="https://github.com/2Abendsegler/GClh/issues/978" title="Issue 978">978</a> / <a href="https://www.geocaching.com/profile/?u=Ruko2010" title="Thanks to Ruko2010">Ruko2010</a>]<br>
 	</li>
+	<li>
+		<strong>Fix:</strong> Message Center: cacher name in greeting doesn't change on click on another geocacher [<a href="https://github.com/2Abendsegler/GClh/issues/901" title="Issue 901">901</a> / <a href="https://www.geocaching.com/profile/?u=Ruko2010" title="Thanks to Ruko2010">Ruko2010</a>]<br>
+	</li>
 </ul>
 (??.01.2019)<br>
 released by <a href="https://www.geocaching.com/profile/?u=Ruko2010">Ruko2010</a><br>
