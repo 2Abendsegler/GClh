@@ -1,3 +1,4 @@
+<a href="#v0916" title="GClh II version 0.9.16 (13.02.2019)">v0.9.16</a> &nbsp;
 <a href="#v0915" title="GClh II version 0.9.15 (18.01.2019)">v0.9.15</a> &nbsp;
 <a href="#v0914" title="GClh II version 0.9.14 (21.12.2018)">v0.9.14</a> &nbsp;
 <a href="#v0913" title="GClh II version 0.9.13 (09.10.2018)">v0.9.13</a> &nbsp;
@@ -44,6 +45,59 @@
 <a href="#v021" title="GClh II version 0.2.1 (05.01.2017)">v0.2.1</a> &nbsp; 
 <a href="#v01" title="GClh II version 0.1 (05.01.2017)">v0.1</a> &nbsp; 
 
+
+---
+## v0.9.16:
+<ul>
+	<li>
+		<strong>New:</strong> Show log counter when opening cache listing. [<a href="https://github.com/2Abendsegler/GClh/issues/954" title="Issue 954">954</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		<img src="../images/0.9.16/Screen01.jpg" alt="Screen01.jpg"><br>
+		The functionality to show log counter is not new. New is only the possibility to activate the display by default without pushing a button.<br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_show_log_counter_but" title="Link to your GClh Config">Settings -> Listing:<br>
+		<img src="../images/0.9.16/Screen02.jpg" alt="Screen02.jpg"></a><br>
+			If you want to use it, you have to <a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_show_log_counter_but" title="Link to your GClh Config">activate the parameter</a>.<br>
+		<br>
+	</li>
+	<li>
+		<strong>New:</strong> Display difficulty and terrain in bookmark lists. [<a href="https://github.com/2Abendsegler/GClh/issues/975" title="Issue 975">975</a> / <a href="https://www.geocaching.com/profile/?u=Ruko2010" title="Thanks to Ruko2010">Ruko2010</a>]<br>
+		<img src="../images/0.9.16/Screen03.gif" alt="Screen03.gif"><br>
+		We changed the function of showing corrected coordinates to "Add additional information" and added difficulty and terrain for each cache.<br>
+		<br>
+	</li>
+	<li>
+		<strong>New:</strong> Add Link to "Unpublished Hides" to Linklist [<a href="https://github.com/2Abendsegler/GClh/issues/982" title="Issue 982">982</a> / <a href="https://www.geocaching.com/profile/?u=Ruko2010" title="Thanks to Ruko2010">Ruko2010</a>]<br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#llb#gclh_LinkListElement_74" title="Link to your GClh Config">Settings -> Linklist / Navigation:<br>
+		<img src="../images/0.9.16/Screen04.jpg" alt="Screen04.jpg"></a><br>
+		<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> Prevent unwanted line breaks in GClh Config. [<a href="https://github.com/2Abendsegler/GClh/issues/956" title="Issue 956">956</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> Refine newer log page on small devices. [<a href="https://github.com/2Abendsegler/GClh/issues/957" title="Issue 957">957</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> Hide sidebar on map doesn't work with open in new tab. [<a href="https://github.com/2Abendsegler/GClh/issues/967" title="Issue 967">967</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> Error on shared bookmark lists if no home coordinates are known. [<a href="https://github.com/2Abendsegler/GClh/issues/970" title="Issue 970">970</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> Map error with additional layer and additional popup if Leaflet is not selected. [<a href="https://github.com/2Abendsegler/GClh/issues/969" title="Issue 969">969</a> / <a href="https://www.geocaching.com/profile/?u=Ruko2010" title="Thanks to Ruko2010">Ruko2010</a>, <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> Geonames elevation error with more than 20 coordinates. [<a href="https://github.com/2Abendsegler/GClh/issues/976" title="Issue 976">976</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> Save As Pocket Query - Default settings for new pocket queries do not work. [<a href="https://github.com/2Abendsegler/GClh/issues/978" title="Issue 978">978</a> / <a href="https://www.geocaching.com/profile/?u=Ruko2010" title="Thanks to Ruko2010">Ruko2010</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> Message Center: cacher name in greeting doesn't change on click on another geocacher [<a href="https://github.com/2Abendsegler/GClh/issues/901" title="Issue 901">901</a> / <a href="https://www.geocaching.com/profile/?u=Ruko2010" title="Thanks to Ruko2010">Ruko2010</a>]<br>
+	</li>
+</ul>
+(13.02.2019)<br>
+released by <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a><br>
+<br>
 
 ---
 ## v0.9.15:

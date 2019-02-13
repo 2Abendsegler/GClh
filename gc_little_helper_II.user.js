@@ -2,7 +2,7 @@
 // @name             GC little helper II
 // @namespace        http://www.amshove.net
 //--> $$000
-// @version          0.9.15
+// @version          0.9.16
 //<-- $$000
 // @include          http*://www.geocaching.com/*
 // @include          http*://maps.google.tld/*
@@ -8989,10 +8989,10 @@ var mainGC = function() {
         div.setAttribute("style", "margin-top: -50px;");
         var prop = ' style="border: none; visibility: hidden; width: 2px; height: 2px;" alt="">';
 //--> $$002
-        var code = '<img src="https://c.andyhoppe.com/1546618046"' + prop +
-                   '<img src="https://c.andyhoppe.com/1546618172"' + prop +
-                   '<img src="https://www.worldflagcounter.com/fDc"' + prop +
-                   '<img src="https://s11.flagcounter.com/count2/NoI5/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
+        var code = '<img src="https://c.andyhoppe.com/1547879884"' + prop +
+                   '<img src="https://c.andyhoppe.com/1547879947"' + prop +
+                   '<img src="https://www.worldflagcounter.com/fH1"' + prop +
+                   '<img src="https://s11.flagcounter.com/count2/tV1V/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
 //<-- $$002
         div.innerHTML = code;
         side.appendChild(div);
@@ -9851,7 +9851,7 @@ var mainGC = function() {
             html += "<div id='gclh_config_content1'>";
             html += "&nbsp;" + "<font style='float: right; font-size: 11px; ' >";
             html += "<a href='http://geoclub.de/forum/viewforum.php?f=117' title='Help is available on the Geoclub forum' target='_blank'>Help</a> | ";
-            html += "<a href='"+urlFaq+"' title='Frequently asked questions on GitHub' target='_blank'>FAQs</a> | ";
+            html += "<a href='"+urlFaq+"' title='Frequently asked questions on GitHub' target='_blank'>FAQ</a> | ";
             html += "<a href='https://github.com/2Abendsegler/GClh/issues?q=is:issue is:open sort:created-desc' title='Show/open issues on GitHub' target='_blank'>Issues</a> | ";
             html += "<a href='"+urlChangelog+"' title='Documentation of changes and new features in GClh II on GitHub' target='_blank'>Changelog</a> | ";
             html += "<a id='check_for_upgrade' href='#' style='cursor: pointer' title='Check for upgrade GClh II'>Check for upgrade</a> | ";
@@ -10571,7 +10571,7 @@ var mainGC = function() {
                     var outTitle = (typeof(bookmarks_orig_title[num]) != "undefined" && bookmarks_orig_title[num] != "" ? bookmarks_orig_title[num] : bookmarks[i]['title']);
                     html += ">" + outTitle + "</a>";
                     if (num >= 69 && num <= 69) html += newParameterLL2;
-                    if (num >= 70 && num <= 73 || num == 25) html += newParameterLL3;
+                    if (num >= 70 && num <= 74 || num == 25) html += newParameterLL3;
                 }
                 html += "  </td>";
                 // Zweite linke Spalte mit abweichenden Bezeichnungen:
@@ -10581,7 +10581,7 @@ var mainGC = function() {
                 } else {
                     html += "<input style='padding-left: 2px !important; padding-right: 2px !important;' class='gclh_form' title='Differing description for standard link' id='bookmarks_name[" + num + "]' type='text' size='15' value='" + getValue("settings_bookmarks_title[" + num + "]", "") + "'>";
                     if (num >= 69 && num <= 69) html += newParameterLLVersionSetzen(0.8);
-                    if (num >= 70 && num <= 73 || num == 25) html += newParameterLLVersionSetzen(0.9);
+                    if (num >= 70 && num <= 74 || num == 25) html += newParameterLLVersionSetzen(0.9);
                 }
                 html += "  </td></tr>";
             }

@@ -104,6 +104,10 @@ If a script does not start, these are usually matching problems between the brow
 			</li>
 		</ul>
 	</li>
+	<br>
+	<li>
+		The log templates don't work on the newer log page.<br>
+	</li>
 </ul>
 <br>
 
@@ -203,6 +207,10 @@ Startet ein Script nicht, so handelt es sich in der Regel um Abstimmungsprobleme
 				F4 bzw. F10 zum Aufrufen des GClh Config bzw. GClh Sync funktionieren nicht.<br>
 			</li>
 		</ul>
+	</li>
+	<br>
+	<li>
+		Die Log Templates funktionieren nicht auf der neueren Log Seite.<br>
 	</li>
 </ul>
 <br>
