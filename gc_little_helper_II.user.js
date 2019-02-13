@@ -226,6 +226,7 @@ var constInit = function(c) {
     bookmark("Leaderboard", "/play/leaderboard", c.bookmarks);
     bookmark("Trackables", "/track/", c.bookmarks);
     bookmark("GeoTours", "/play/geotours", c.bookmarks);
+    bookmark("Unpublished Hides", "/account/dashboard/unpublishedcaches", c.bookmarks);
     // Custom Bookmark-title.
     c.bookmarks_orig_title = new Array();
     for (var i = 0; i < c.bookmarks.length; i++) {
