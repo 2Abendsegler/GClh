@@ -66,6 +66,8 @@
 	</li>
 	<li>
 		<strong>New:</strong> Add Link to "Unpublished Hides" to Linklist [<a href="https://github.com/2Abendsegler/GClh/issues/982" title="Issue 982">982</a> / <a href="https://www.geocaching.com/profile/?u=Ruko2010" title="Thanks to Ruko2010">Ruko2010</a>]<br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#llb#gclh_LinkListElement_74" title="Link to your GClh Config">Settings -> Linklist / Navigation:<br>
+		<img src="../images/0.9.16/Screen04.jpg" alt="Screen04.jpg"></a><br>
 		<br>
 	</li>
 	<li>
