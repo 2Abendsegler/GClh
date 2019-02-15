@@ -6235,6 +6235,12 @@ var mainGC = function() {
         $('.great-story-btn').each(function(){
             $(this).unbind('click');
             $(this).click(function(){
+                // there is a bug in jQuery(?):
+                // if you have a data attribute (like data-upvoted="false") and you also have set objekt.data(upvoted,"true")
+                // JQuery will override your data value with the data value from the dom. So we check here, if the button has 
+                // a class "upvoted", and if yes, we reset the object.data("upvoted") to true. Otherwise, when the button is 
+                // upvoted, the first click would not result in "not upvoting" the log, but the secound.
+                if($(this).hasClass('upvoted')) $(this).data('upvoted', true);
                 return upvoteLog($(this));
             });
         });
@@ -6242,6 +6248,12 @@ var mainGC = function() {
         $('.helpful-btn').each(function(){
             $(this).unbind('click');
             $(this).click(function(){
+                // there is a bug in jQuery(?):
+                // if you have a data attribute (like data-upvoted="false") and you also have set objekt.data(upvoted,"true")
+                // JQuery will override your data value with the data value from the dom. So we check here, if the button has 
+                // a class "upvoted", and if yes, we reset the object.data("upvoted") to true. Otherwise, when the button is 
+                // upvoted, the first click would not result in "not upvoting" the log, but the secound.
+                if($(this).hasClass('upvoted')) $(this).data('upvoted', true);
                 return upvoteLog($(this));
             });
         });
