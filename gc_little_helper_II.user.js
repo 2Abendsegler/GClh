@@ -5910,6 +5910,9 @@ var mainGC = function() {
                 }
             }
 
+            var isGreatStoryAndHelpfulActive = false;
+            if($('#cache_logs_container #sortOrder').length) isGreatStoryAndHelpfulActive = true;
+
             var lastFired = 0;
             var global_logs = false;
             var global_num = 0;
@@ -5951,8 +5954,10 @@ var mainGC = function() {
                             unsafeWindow.$('a.tb_images').fancybox({'type': 'image', 'titlePosition': 'inside'});
                             gclh_add_vip_icon();
                             setLinesColorInCacheListing();
-                            unsafeWindow.appendUpvotesToLogs(log_ids);
-                            updateGreatStoryEvents();
+                            if(isGreatStoryAndHelpfulActive){
+                                unsafeWindow.appendUpvotesToLogs(log_ids);
+                                updateGreatStoryEvents();
+                            }
                             if (!settings_hide_top_button) $("#topScroll").fadeIn();
                             $("#pnlLazyLoad").hide();
                             isBusy = false;
@@ -6202,8 +6207,10 @@ var mainGC = function() {
                         }
                     }
                     unsafeWindow.$('a.tb_images').fancybox({'type': 'image', 'titlePosition': 'inside'});
-                    unsafeWindow.appendUpvotesToLogs(log_ids);
-                    updateGreatStoryEvents();
+                    if(isGreatStoryAndHelpfulActive){
+                        unsafeWindow.appendUpvotesToLogs(log_ids);
+                        updateGreatStoryEvents();
+                    }
 
                     gclh_dynamic_load(logs, num);
                     if (settings_show_vip_list) {
