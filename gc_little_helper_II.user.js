@@ -1401,6 +1401,8 @@ var mainGC = function() {
         }
     } catch(e) {gclh_error("Remove GC Menüs",e);}
 
+// SOME CHANGES TO HAVE A COMMIT
+
 // Linklist on top.
     try {
         if (settings_bookmarks_on_top) {
