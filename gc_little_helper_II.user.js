@@ -1164,7 +1164,7 @@ var mainGC = function() {
     } catch(e) {gclh_error("F2, F4, F10 keys",e);}
 
 // Set global data.
-    if ($('.li-user-info')[0] && $('.li-user-info')[0].children[1]) var global_me = decode_innerHTML($('.li-user-info')[0].children[1]);
+    if ($('.li-user-info span.user-name')[0]) var global_me = decode_innerHTML($('.li-user-info span.user-name')[0]);
 
 // Change Header layout.
     change_header_layout:
