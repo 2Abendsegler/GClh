@@ -5911,7 +5911,31 @@ var mainGC = function() {
             }
 
             var isGreatStoryAndHelpfulActive = false;
-            if($('#cache_logs_container #sortOrder').length) isGreatStoryAndHelpfulActive = true;
+            if($('#cache_logs_container #sortOrder').length){
+                isGreatStoryAndHelpfulActive = true;  
+                // remove the sorting select
+
+                var new_sort_element = document.createElement('select');
+                new_sort_element.setAttribute('id', 'new_sort_element');
+                new_sort_element.onchange = function() {
+                 alert(this.value);
+               }
+                
+                var newest = document.createElement('option');
+                newest.innerHTML = 'Newest';
+                new_sort_element.appendChild(newest);
+                
+                var beststory = document.createElement('option');
+                beststory.innerHTML = 'Best story';
+                new_sort_element.appendChild(beststory);
+                
+                var mosthelpful = document.createElement('option');
+                mosthelpful.innerHTML = 'Most helpful';
+                new_sort_element.appendChild(mosthelpful);
+
+                $("#cache_logs_container #sortOrder").before(new_sort_element);
+                $('#cache_logs_container #sortOrder').remove();
+            }
 
             var lastFired = 0;
             var global_logs = false;
@@ -6220,6 +6244,8 @@ var mainGC = function() {
                             }
                         }
                         // Add Great story / helpful data to logs
+                        // give starting index to the function, so it knows 
+                        // what index has to be updated
                         if(isGreatStoryAndHelpfulActive){
                             getUpvoteData(all_ids,((z-1)*100));
                         }
