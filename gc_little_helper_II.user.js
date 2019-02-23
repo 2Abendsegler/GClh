@@ -6151,6 +6151,33 @@ var mainGC = function() {
                     });
                 }
 
+                function getUpvoteData(logIds,starting_index) {
+                    $.ajax({
+                        type: "GET",
+                        url: "/account/oauth/token",
+                        success: function (result) {
+                            $.ajax({
+                                type: "GET",
+                                url: "/api/proxy/web/v1/Geocaches/logs/upvote",
+                                dataType: 'json',
+                                headers: {
+                                    "Authorization": "Bearer " + result.access_token
+                                },
+                                data: {
+                                    geocacheLogIds: logIds.join(',')
+                                },
+                                success: function (data) {
+                                    for (var i = 0; i < logIds.length; i++) {
+                                        // Append Great Story and Helpful to our loaded logs
+                                        logs[i+starting_index].greatStory = data[logIds[i]].greatStory.count;
+                                        logs[i+starting_index].helpful = data[logIds[i]].helpful.count;
+                                    }
+                                }
+                            });
+                        }
+                    });
+                }
+
                 function gclh_load_dataHelper() {
                     logs = new Array();
                     // Disable scroll Function on Page.
@@ -6168,10 +6195,13 @@ var mainGC = function() {
                     unsafeWindow.$('#cache_logs_table2').append(tableContent);
                     $(tableContent).find('.log-row').remove();
                     for (var z = 1; z <= numPages; z++) {
+                        var all_ids = new Array();
+                        // console.log(data[z].data);
                         var json = data[z];
                         logs = logs.concat(json.data);
                         for (var i = 0; i < json.data.length; i++) {
                             var user = json.data[i].UserName;
+                            all_ids.push(json.data[i].LogID);
                             if (settings_show_vip_list) {
                                 all_users.push(user);
                                 if (!log_infos[user]) log_infos[user] = new Array();
@@ -6188,6 +6218,10 @@ var mainGC = function() {
                                 log_infos_long[index]["log"] = json.data[i].LogText;
                                 index++;
                             }
+                        }
+                        // Add Great story / helpful data to logs
+                        if(isGreatStoryAndHelpfulActive){
+                            getUpvoteData(all_ids,((z-1)*100));
                         }
                     }
 
@@ -6235,7 +6269,7 @@ var mainGC = function() {
         $('.great-story-btn').each(function(){
             $(this).unbind('click');
             $(this).click(function(){
-                // there is a bug in jQuery(?):
+                // there is a bug (or a feature) in jQuery(?):
                 // if you have a data attribute (like data-upvoted="false") and you also have set objekt.data(upvoted,"true")
                 // JQuery will override your data value with the data value from the dom. So we check here, if the button has 
                 // a class "upvoted", and if yes, we reset the object.data("upvoted") to true. Otherwise, when the button is 
@@ -6248,7 +6282,7 @@ var mainGC = function() {
         $('.helpful-btn').each(function(){
             $(this).unbind('click');
             $(this).click(function(){
-                // there is a bug in jQuery(?):
+                // there is a bug (or a feature) in jQuery(?):
                 // if you have a data attribute (like data-upvoted="false") and you also have set objekt.data(upvoted,"true")
                 // JQuery will override your data value with the data value from the dom. So we check here, if the button has 
                 // a class "upvoted", and if yes, we reset the object.data("upvoted") to true. Otherwise, when the button is 
