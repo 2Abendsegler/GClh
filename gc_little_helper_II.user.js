@@ -6246,8 +6246,8 @@ var mainGC = function() {
 
                             //Sort all the logs
                             logs.sort(function(a, b) {
-                                if(sorting_key == 'newest'){
-                                    return a[sorting_key] - b[sorting_key];
+                                if((sorting_key == 'newest') || (b[sorting_key] == a[sorting_key])){
+                                    return a['newest'] - b['newest'];
                                 }else{
                                     return b[sorting_key] - a[sorting_key];
                                 }
