@@ -5911,31 +5911,7 @@ var mainGC = function() {
             }
 
             var isGreatStoryAndHelpfulActive = false;
-            if($('#cache_logs_container #sortOrder').length){
-                isGreatStoryAndHelpfulActive = true;  
-                // remove the sorting select
-
-                var new_sort_element = document.createElement('select');
-                new_sort_element.setAttribute('id', 'new_sort_element');
-                new_sort_element.onchange = function() {
-                 alert(this.value);
-               }
-                
-                var newest = document.createElement('option');
-                newest.innerHTML = 'Newest';
-                new_sort_element.appendChild(newest);
-                
-                var beststory = document.createElement('option');
-                beststory.innerHTML = 'Best story';
-                new_sort_element.appendChild(beststory);
-                
-                var mosthelpful = document.createElement('option');
-                mosthelpful.innerHTML = 'Most helpful';
-                new_sort_element.appendChild(mosthelpful);
-
-                $("#cache_logs_container #sortOrder").before(new_sort_element);
-                $('#cache_logs_container #sortOrder').remove();
-            }
+            if($('#cache_logs_container #sortOrder').length) isGreatStoryAndHelpfulActive = true
 
             var lastFired = 0;
             var global_logs = false;
@@ -6195,6 +6171,7 @@ var mainGC = function() {
                                         // Append Great Story and Helpful to our loaded logs
                                         logs[i+starting_index].greatStory = data[logIds[i]].greatStory.count;
                                         logs[i+starting_index].helpful = data[logIds[i]].helpful.count;
+                                        logs[i+starting_index].newest = i+starting_index;
                                     }
                                 }
                             });
@@ -6256,6 +6233,67 @@ var mainGC = function() {
                     gclh_filter(logs);
                     gclh_search(logs);
 
+                    if(isGreatStoryAndHelpfulActive){
+                        // remove the sorting select
+
+                        var new_sort_element = document.createElement('select');
+                        new_sort_element.setAttribute('id', 'new_sort_element');
+                        new_sort_element.onchange = function() {
+                            
+                            var sorting_key = this.value;
+
+                            $(this).after('<img id="sort_logs_working" src="' + urlImages + 'ajax-loader.gif" />');
+
+                            //Sort all the logs
+                            logs.sort(function(a, b) {
+                                if(sorting_key == 'newest'){
+                                    return a[sorting_key] - b[sorting_key];
+                                }else{
+                                    return b[sorting_key] - a[sorting_key];
+                                }
+                            });
+
+                            setTimeout(function() {
+                                if (logs) {
+                                    // IDs der Cache Logs Tables.
+                                    $('#cache_logs_table2, #cache_logs_table').find('tbody').children().remove();
+                                    for (var i = 0; i < logs.length; i++) {
+                                        if (logs[i]) {
+                                            var newBody = unsafeWindow.$(document.createElement("TBODY"));
+                                            unsafeWindow.$("#tmpl_CacheLogRow_gclh").tmpl(logs[i]).appendTo(newBody);
+                                            unsafeWindow.$(document.getElementById("cache_logs_table2") || document.getElementById("cache_logs_table")).append(newBody.children());
+                                        }
+                                    }
+                                    unsafeWindow.$('a.tb_images').fancybox({'type': 'image', 'titlePosition': 'inside'});
+                                    gclh_add_vip_icon();
+                                    setLinesColorInCacheListing();
+                                    setMarkerDisableDynamicLogLoad();
+                                    if (document.getElementById("gclh_show_log_counter")) document.getElementById("gclh_show_log_counter").style.visibility = "";
+                                }
+                                $('#sort_logs_working').remove();
+                            }, 100);
+
+                       }
+                        
+                        var newest = document.createElement('option');
+                        newest.innerHTML = 'Newest';
+                        newest.value = 'newest';
+                        new_sort_element.appendChild(newest);
+                        
+                        var beststory = document.createElement('option');
+                        beststory.innerHTML = 'Best story';
+                        beststory.value = 'greatStory';
+                        new_sort_element.appendChild(beststory);
+                        
+                        var mosthelpful = document.createElement('option');
+                        mosthelpful.innerHTML = 'Most helpful';
+                        mosthelpful.value = 'helpful';
+                        new_sort_element.appendChild(mosthelpful);
+
+                        $("#cache_logs_container #sortOrder").before(new_sort_element);
+                        $('#cache_logs_container #sortOrder').remove();
+                    }
+
                     var log_ids = [];
 
                     for (var i = 0; i < num; i++) {
@@ -6288,6 +6326,7 @@ var mainGC = function() {
                 else if (logsCount%2 != 0) logsCount += 1;
                 gclh_load_logs(logsCount);
             } else gclh_load_logs(30);
+
         } catch(e) {gclh_error("Replace Log-Loading function",e);}
     }
 
