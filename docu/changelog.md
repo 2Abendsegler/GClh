@@ -1,3 +1,4 @@
+<a href="#v0917" title="GClh II version 0.9.17 (XX.XX.2019)">v0.9.17</a> &nbsp;
 <a href="#v0916" title="GClh II version 0.9.16 (13.02.2019)">v0.9.16</a> &nbsp;
 <a href="#v0915" title="GClh II version 0.9.15 (18.01.2019)">v0.9.15</a> &nbsp;
 <a href="#v0914" title="GClh II version 0.9.14 (21.12.2018)">v0.9.14</a> &nbsp;
@@ -45,6 +46,26 @@
 <a href="#v021" title="GClh II version 0.2.1 (05.01.2017)">v0.2.1</a> &nbsp; 
 <a href="#v01" title="GClh II version 0.1 (05.01.2017)">v0.1</a> &nbsp; 
 
+
+---
+## v0.9.17:
+<ul>
+	<li>
+		<strong>Fix:</strong> GreatStory and Helpful Buttons get deleted by GClh [<a href="https://github.com/2Abendsegler/GClh/issues/663" title="Issue 663">663</a> / <a href="https://www.geocaching.com/profile/?u=Ruko2010" title="Thanks to Ruko2010">Ruko2010</a>]<br>
+		Groundspeak is testing a new Vote System for Logs in certain countrys (i.e. Norway). If you want to have a look at it, you can visit for example: <a href="https://coord.info/GC51MPR" title="GC51MPR">GC51MPR</a>.</br>
+		GClh is now adding the Vote Buttons correctly to the logs and replaces the sorting function with its own function to ensure correct work.<br>
+		<img src="../images/0.9.17/Screen01.gif" alt="Screen01.gif"><br>
+	</li>
+	<li>
+		<strong>Fix:</strong> Logtemplate not inserted (Chrome / Safari)[<a href="https://github.com/2Abendsegler/GClh/issues/962" title="Issue 962">962</a> / <a href="https://www.geocaching.com/profile/?u=Ruko2010" title="Thanks to Ruko2010">Ruko2010</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> Message Center - Receiver does not update if Message Center is accessed directly [<a href="https://github.com/2Abendsegler/GClh/issues/901" title="Issue 901">901</a> / <a href="https://www.geocaching.com/profile/?u=Ruko2010" title="Thanks to Ruko2010">Ruko2010</a>]<br>
+	</li>
+</ul>
+(?.?.2019)<br>
+released by <a href="https://www.geocaching.com/profile/?u=Ruko2010">Ruko2010</a><br>
+<br>
 
 ---
 ## v0.9.16:
