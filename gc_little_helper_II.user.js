@@ -5748,7 +5748,7 @@ var mainGC = function() {
                 '      </div>' +
                 '     {{if LogType === "Found it" || LogType === "Didn\'t find it" || LogType === "Webcam photo taken" || LogType === "Attended" || LogType === "Announcement" }}' +
                 '         <div class="upvotes">' +
-                '             <button class="great-story-btn"' +
+                '             <button class="great-story-btn{{if (typeof greatStoryupvotedByUser != "undefined") && greatStoryupvotedByUser}} upvoted{{/if}}"' +
                 '                     type="button" ' +
                 '                     data-log-id="${LogID}" ' +
                 '                     data-upvoted="false" ' +
@@ -5768,12 +5768,12 @@ var mainGC = function() {
                 '                     </g>' +
                 '                   </g>' +
                 '                 </svg>' +
-                '                 <span>Great story</span>' +
+                '                 <span>Great story{{if (typeof greatStory != "undefined") && greatStory > 0}} (${greatStory}){{/if}}</span>' +
                 '             </button>' +
                 '             <span class="loading-container hide loading-${LogID}">' +
                 '                 <img src="/app/ui-images/branding/loading-spinner.svg"></img>' +
                 '             </span>' +
-                '             <button class="helpful-btn" ' +
+                '             <button class="helpful-btn{{if (typeof helpfulupvotedByUser != "undefined") && helpfulupvotedByUser}} upvoted{{/if}}" ' +
                 '                     type="button" data-log-id="${LogID}"' +
                 '                     data-upvoted="false" ' +
                 '                     data-upvote-type="2" ' +
@@ -5793,7 +5793,7 @@ var mainGC = function() {
                 '                     </g>' +
                 '                   </g>' +
                 '                 </svg>' +
-                '                 <span>Helpful</span>' +
+                '                 <span>Helpful{{if (typeof helpful != "undefined") && helpful > 0}} (${helpful}){{/if}}</span>' +
                 '             </button>' +
                 '         </div>' +
                 '         {{/if}}' +
@@ -6170,7 +6170,9 @@ var mainGC = function() {
                                     for (var i = 0; i < logIds.length; i++) {
                                         // Append Great Story and Helpful to our loaded logs
                                         logs[i+starting_index].greatStory = data[logIds[i]].greatStory.count;
+                                        logs[i+starting_index].greatStoryupvotedByUser = data[logIds[i]].greatStory.upvotedByUser;
                                         logs[i+starting_index].helpful = data[logIds[i]].helpful.count;
+                                        logs[i+starting_index].helpfulupvotedByUser = data[logIds[i]].helpful.upvotedByUser;
                                         logs[i+starting_index].newest = i+starting_index;
                                     }
                                 }
@@ -6269,6 +6271,9 @@ var mainGC = function() {
                                     setLinesColorInCacheListing();
                                     setMarkerDisableDynamicLogLoad();
                                     if (document.getElementById("gclh_show_log_counter")) document.getElementById("gclh_show_log_counter").style.visibility = "";
+                                    
+                                    $('.upvotes').show();
+                                    updateGreatStoryEvents();
                                 }
                                 $('#sort_logs_working').remove();
                             }, 100);
