@@ -2,7 +2,7 @@
 // @name             GC little helper II
 // @namespace        http://www.amshove.net
 //--> $$000
-// @version          0.9.15
+// @version          0.9.16
 //<-- $$000
 // @include          http*://www.geocaching.com/*
 // @include          http*://maps.google.tld/*
@@ -226,6 +226,7 @@ var constInit = function(c) {
     bookmark("Leaderboard", "/play/leaderboard", c.bookmarks);
     bookmark("Trackables", "/track/", c.bookmarks);
     bookmark("GeoTours", "/play/geotours", c.bookmarks);
+    bookmark("Unpublished Hides", "/account/dashboard/unpublishedcaches", c.bookmarks);
     // Custom Bookmark-title.
     c.bookmarks_orig_title = new Array();
     for (var i = 0; i < c.bookmarks.length; i++) {
@@ -3366,7 +3367,9 @@ var mainGC = function() {
         try {
             var val = "";
             var matches = document.location.href.match(/&text=(.*)/);
+
             if (matches && matches[1]) val = decodeUnicodeURIComponent(matches[1]);
+
             updateMessage(0);
             function updateMessage(waitCount) {
                 if ($('textarea')[0] && $('textarea')[0].value == "" && $('#cpMsgLogHead .h5')[0].innerHTML != "") {
@@ -3374,6 +3377,10 @@ var mainGC = function() {
                         var rec = decode_innerHTML($('#cpMsgLogHead .h5')[0]);
                         rec = rec.replace(/^(\s*)/,'').replace(/(\s*)$/,'');
                         val = buildSendTemplate().replace(/#Receiver#/ig, rec);
+                    }else{
+                        var rec = decode_innerHTML($('#cpMsgLogHead .h5')[0]);
+                        rec = rec.replace(/^(\s*)/,'').replace(/(\s*)$/,'');
+                        val = val.replace(/#Receiver#/ig, rec);
                     }
                     $('textarea')[0].value = val;
                 }
@@ -3381,6 +3388,51 @@ var mainGC = function() {
                 if (waitCount <= 600) setTimeout(function(){updateMessage(waitCount);}, 100);
             }
         } catch(e) {gclh_error("Improve Message",e);}
+    }
+
+// Update Standard Message on Click of a Username in Messagecenter
+    
+    function addEventlistenerForMessageCenterNames(){
+        $( "#cpConvoPanelFeed ol li" ).each(function() {
+          // only add the listener once
+          if(!$(this).hasClass('listeneradded')){
+              $(this).addClass('listeneradded');
+              $(this).click(function(){
+
+                val = decodeUnicodeURIComponent(matches[1])
+                var rec = $(this).find('.activity-header').text();
+                rec = rec.replace(/^(\s*)/,'').replace(/(\s*)$/,'');
+                val = val.replace(/#Receiver#/ig, rec);
+
+                $('textarea').value = val;
+
+              });
+          }
+        });
+    }
+
+    if (is_page("messagecenter")) {
+        try {
+            
+            addMessageButtonListener(0);
+            function addMessageButtonListener(waitCount) {
+                if($( "#cpConvoPanelFeed ol li" ).length > 0){
+
+                    $('#cpConvoPanelFeed ol').bind('DOMSubtreeModified', function(event) {
+                        addEventlistenerForMessageCenterNames();
+                    });
+                    
+                    // Add for initial Names
+                    addEventlistenerForMessageCenterNames();
+                    
+                    waitCount = 700;
+                }
+                
+                waitCount++;
+                if (waitCount <= 600) setTimeout(function(){addMessageButtonListener(waitCount);}, 100);
+            }
+
+        } catch(e) {gclh_error("Update Standard Message on Click of a Username in Messagecenter",e);}
     }
 
 // Improve list of pocket queries (list of PQs).
@@ -8656,6 +8708,7 @@ var mainGC = function() {
             username_send = "user";
         }
         // Message, Mail Template aufbauen.
+        template_message = urlencode(buildSendTemplate());
         template = urlencode(buildSendTemplate().replace(/#Receiver#/ig, b_username));
         // Message Icon erzeugen.
         if (settings_show_message && b_art == "per guid") {
@@ -8666,7 +8719,7 @@ var mainGC = function() {
             mess_img.setAttribute("src", global_message_icon);
             mess_link.appendChild(mess_img);
             if (settings_message_icon_new_win) mess_link.setAttribute("target", "_blank");
-            mess_link.setAttribute("href", "/account/messagecenter?recipientId=" + guid + "&text=" + template);
+            mess_link.setAttribute("href", "/account/messagecenter?recipientId=" + guid + "&text=" + template_message);
             b_side.parentNode.insertBefore(mess_link, b_side.nextSibling);
             b_side.parentNode.insertBefore(document.createTextNode(" "), b_side.nextSibling);
             // "Message this owner" und Icon entfernen.
@@ -8936,10 +8989,10 @@ var mainGC = function() {
         div.setAttribute("style", "margin-top: -50px;");
         var prop = ' style="border: none; visibility: hidden; width: 2px; height: 2px;" alt="">';
 //--> $$002
-        var code = '<img src="https://c.andyhoppe.com/1546618046"' + prop +
-                   '<img src="https://c.andyhoppe.com/1546618172"' + prop +
-                   '<img src="https://www.worldflagcounter.com/fDc"' + prop +
-                   '<img src="https://s11.flagcounter.com/count2/NoI5/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
+        var code = '<img src="https://c.andyhoppe.com/1547879884"' + prop +
+                   '<img src="https://c.andyhoppe.com/1547879947"' + prop +
+                   '<img src="https://www.worldflagcounter.com/fH1"' + prop +
+                   '<img src="https://s11.flagcounter.com/count2/tV1V/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
 //<-- $$002
         div.innerHTML = code;
         side.appendChild(div);
@@ -9798,7 +9851,7 @@ var mainGC = function() {
             html += "<div id='gclh_config_content1'>";
             html += "&nbsp;" + "<font style='float: right; font-size: 11px; ' >";
             html += "<a href='http://geoclub.de/forum/viewforum.php?f=117' title='Help is available on the Geoclub forum' target='_blank'>Help</a> | ";
-            html += "<a href='"+urlFaq+"' title='Frequently asked questions on GitHub' target='_blank'>FAQs</a> | ";
+            html += "<a href='"+urlFaq+"' title='Frequently asked questions on GitHub' target='_blank'>FAQ</a> | ";
             html += "<a href='https://github.com/2Abendsegler/GClh/issues?q=is:issue is:open sort:created-desc' title='Show/open issues on GitHub' target='_blank'>Issues</a> | ";
             html += "<a href='"+urlChangelog+"' title='Documentation of changes and new features in GClh II on GitHub' target='_blank'>Changelog</a> | ";
             html += "<a id='check_for_upgrade' href='#' style='cursor: pointer' title='Check for upgrade GClh II'>Check for upgrade</a> | ";
@@ -10518,7 +10571,7 @@ var mainGC = function() {
                     var outTitle = (typeof(bookmarks_orig_title[num]) != "undefined" && bookmarks_orig_title[num] != "" ? bookmarks_orig_title[num] : bookmarks[i]['title']);
                     html += ">" + outTitle + "</a>";
                     if (num >= 69 && num <= 69) html += newParameterLL2;
-                    if (num >= 70 && num <= 73 || num == 25) html += newParameterLL3;
+                    if (num >= 70 && num <= 74 || num == 25) html += newParameterLL3;
                 }
                 html += "  </td>";
                 // Zweite linke Spalte mit abweichenden Bezeichnungen:
@@ -10528,7 +10581,7 @@ var mainGC = function() {
                 } else {
                     html += "<input style='padding-left: 2px !important; padding-right: 2px !important;' class='gclh_form' title='Differing description for standard link' id='bookmarks_name[" + num + "]' type='text' size='15' value='" + getValue("settings_bookmarks_title[" + num + "]", "") + "'>";
                     if (num >= 69 && num <= 69) html += newParameterLLVersionSetzen(0.8);
-                    if (num >= 70 && num <= 73 || num == 25) html += newParameterLLVersionSetzen(0.9);
+                    if (num >= 70 && num <= 74 || num == 25) html += newParameterLLVersionSetzen(0.9);
                 }
                 html += "  </td></tr>";
             }
