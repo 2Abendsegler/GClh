@@ -6244,7 +6244,7 @@ var mainGC = function() {
                             
                             var sorting_key = this.value;
 
-                            $(this).after('<img id="sort_logs_working" src="' + urlImages + 'ajax-loader.gif" />');
+                            $(this).after(' <img id="sort_logs_working" src="' + urlImages + 'ajax-loader.gif" />');
 
                             //Sort all the logs
                             logs.sort(function(a, b) {
@@ -6297,6 +6297,8 @@ var mainGC = function() {
 
                         $("#cache_logs_container #sortOrder").before(new_sort_element);
                         $('#cache_logs_container #sortOrder').remove();
+
+                        $("#new_sort_element").after('<br/> <strong>Attention:</strong> Be aware, that sorting the logs will have to load all logs. If there are many logs in this cache, it could take some time.');
                     }
 
                     var log_ids = [];
