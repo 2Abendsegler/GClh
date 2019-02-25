@@ -2851,10 +2851,6 @@ var mainGC = function() {
             box.innerHTML = liste;
             side = $('#reportProblemInfo')[0];
             side.parentNode.insertBefore(box, side);
-            // --> Chrom
-            // Chrome kann kein onClick auf einem option Element. Workaround über Click Event auf select und dann Zuordnung über selectedIndex.
-            if (browser == "chrome") $('#gclh_log_tpls')[0].addEventListener("click", gclh_insert_tpl, false);
-            // <-- Chrom
             var css = "";
             css += ".flatpickr-wrapper {margin-bottom: unset !important; bottom: 6px !important;}";
             css += "#gclh_log_tpls {position: relative; max-width: 240px; width: unset; border: 1px solid #9b9b9b; box-shadow: none; height: 40px; padding-top: 5px;}";
@@ -2887,12 +2883,6 @@ var mainGC = function() {
         aOwner = aOwner.replace(/'/g,"\\'");
         var code = "function gclh_insert_tpl(id){";
         if (newLogPage) {
-            // --> Chrom
-            code += "  if (id && id.path) {";
-            code += "    if (this.selectedIndex <= 0) return;";
-            code += "    else var id = 'gclh_template['+this.children[this.selectedIndex].value+']';";
-            code += "  }";
-            // <-- Chrom
             code += "  document.getElementById('gclh_log_tpls').value = -1;";
             code += "  var aLogDate = document.getElementById('LogDate').value;";
             code += "  var input = document.getElementById('LogText');";
@@ -2984,17 +2974,17 @@ var mainGC = function() {
             if (getValue("settings_log_template_name["+i+"]", "") != "") {
                 texts += "<div id='gclh_template["+i+"]' style='display: none;'>" + getValue("settings_log_template["+i+"]", "") + "</div>";
                 logicOld += "<a href='#' onClick='gclh_insert_tpl(\"gclh_template["+i+"]\"); return false;' style='color: #000000; text-decoration: none; font-weight: normal;'> - " + getValue("settings_log_template_name["+i+"]", "") + "</a><br>";
-                logicNew += "<option value='"+i+"' onClick='gclh_insert_tpl(\"gclh_template["+i+"]\"); return false;' style='color: #4a4a4a;'>" + getValue("settings_log_template_name["+i+"]", "") + "</option>";
+                logicNew += "<option value='gclh_template["+i+"]' style='color: #4a4a4a;'>" + getValue("settings_log_template_name["+i+"]", "") + "</option>";
             }
         }
         if (getValue("last_logtext", "") != "") {
             texts += "<div id='gclh_template[last_logtext]' style='display: none;'>" + getValue("last_logtext", "") + "</div>";
             logicOld += "<a href='#' onClick='gclh_insert_tpl(\"gclh_template[last_logtext]\"); return false;' style='color: #000000; text-decoration: none; font-weight: normal;'> - [Last Cache-Log]</a><br>";
-            logicNew += "<option value='last_logtext' onClick='gclh_insert_tpl(\"gclh_template[last_logtext]\"); return false;' style='color: #4a4a4a;'>[Last Cache-Log]</option>";
+            logicNew += "<option value='gclh_template[last_logtext]' style='color: #4a4a4a;'>[Last Cache-Log]</option>";
         }
         if (newLogPage) {
             liste += "<br style='line-height: 40px'>" + texts;
-            liste += "<select id='gclh_log_tpls' class='gclh_form' style='color: #9b9b9b; display: initial; font-family: Noto Sans; font-size: 14px;'>";
+            liste += "<select id='gclh_log_tpls' onChange='gclh_insert_tpl(this.value)'; class='gclh_form' style='color: #9b9b9b; display: initial; font-family: Noto Sans; font-size: 14px;'>";
             liste += "<option value='-1' selected='selected'" + "style='display: none; visibility: hidden;'>- Log Templates -</option>";
             liste += logicNew;
             liste += "</select>";
