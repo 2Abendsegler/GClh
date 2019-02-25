@@ -3399,7 +3399,14 @@ var mainGC = function() {
               $(this).addClass('listeneradded');
               $(this).click(function(){
 
-                val = decodeUnicodeURIComponent(matches[1])
+                console.log(matches);
+
+                if(matches != null){
+                    val = decodeUnicodeURIComponent(matches[1])
+                }else{
+                    val = buildSendTemplate();
+                }
+
                 var rec = $(this).find('.activity-header').text();
                 rec = rec.replace(/^(\s*)/,'').replace(/(\s*)$/,'');
                 val = val.replace(/#Receiver#/ig, rec);
