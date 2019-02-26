@@ -3399,8 +3399,6 @@ var mainGC = function() {
               $(this).addClass('listeneradded');
               $(this).click(function(){
 
-                console.log(matches);
-
                 if(matches != null){
                     val = decodeUnicodeURIComponent(matches[1])
                 }else{
