@@ -71,8 +71,8 @@ If a script does not start, these are usually matching problems between the brow
 				GClh Config: In chapter "Linklist / Navigation" the order can not be changed in the right column <a href="https://www.geocaching.com/my/#GClhShowConfig#a#ll#settings_bookmarks_top_menu_h" title="Link to your GClh Config">Linklist</a>.<br>
 			</li>
 		</ul>
+		<br>
 	</li>
-	<br>
 	<li>
 		Field activations by moving a mouse over a field usually works by touching.<br>
 		<ul>
@@ -84,15 +84,12 @@ If a script does not start, these are usually matching problems between the brow
 			</li>
 		</ul>
 	</li>
-	<br>
 	<li>
 		Right mouse works usually by touching and holding.<br>
 	</li>
-	<br>
 	<li>
 		Linklist and usual menu are not always visible. It is then hidden at the top right in a side menu, for example on the pages Dashboard, Geocache Search or Map. If you activate "Desktop Page" in the browser, the Linklist and the menu are displayed as usual.<br>
 	</li>
-	<br>
 	<li>
 		There are no function keys / F-keys with the standard Android keyboard.<br>
 		<ul>
@@ -172,7 +169,6 @@ Startet ein Script nicht, so handelt es sich in der Regel um Abstimmungsprobleme
 			</li>
 		</ul>
 	</li>
-	<br>
 	<li>
 		Feldaktivierungen durch Mausbewegung über ein Feld funktionieren in der Regel durch antippen.<br>
 		<ul>
@@ -184,15 +180,12 @@ Startet ein Script nicht, so handelt es sich in der Regel um Abstimmungsprobleme
 			</li>
 		</ul>
 	</li>
-	<br>
 	<li>
 		Rechte Maustaste funktioniert regelmäßig durch antippen und halten.<br>
 	</li>
-	<br>
 	<li>
 		Linklist und gewohntes Menü sind nicht immer sichtbar. Sie verstecken sich dann rechts oben in einem seitlichen Menü, beispielsweise auf den Seiten Dashboard, Geocache Suche oder Karte. Aktiviert man im Browser "Desktop-Seite", wird die Linklist und das Menü wie gewohnt angezeigt.<br>
 	</li>
-	<br>
 	<li>
 		Es gibt keine Funktionstasten / F-Tasten mit der Standard Android Tastatur.<br>
 		<ul>
