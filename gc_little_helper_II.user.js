@@ -4378,7 +4378,7 @@ var mainGC = function() {
                 url = url.replace("https://www.geocaching.com", "");
                 var name = $(text).find('#ctl00_ContentBody_CacheName').closest('span')[0];
                 // Date looks like "end: new Date(2014, 06-1, 21,"
-                var tDate = text.match(/end:\snew\sDate\((([12]\d{3}),\s(0[1-9]|1[0-2])-\d,\s(0[1-9]|[12]\d|3[01]),)/);
+                var tDate = text.match(/end:\snew\sDate\((([12]\d{3}),\s(0[1-9]|1[0-2])-\d,\s(0[1-9]|[12]\d|3[01])),/);
                 if (name && name.innerHTML && tDate && tDate[2] && tDate[3] && tDate[4]) {
                     var date = new Date(tDate[2], tDate[3]-1, tDate[4]);
                     if ($('#ctl00_ContentBody_ListInfo_uxListOwner')[0]) var a = table.find('a[href*="'+url+'"]').find('img').closest('a')[0];
