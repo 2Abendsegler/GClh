@@ -66,6 +66,9 @@
 	<li>
 		<strong>Fix:</strong> "Past Events" in bookmarklists and watchlists don't work with the new event time [<a href="https://github.com/2Abendsegler/GClh/issues/997" title="Issue 997">997</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 	</li>
+	<li>
+		<strong>Fix:</strong> Show ignore list and hide area Lists in dashboard doesn't work [<a href="https://github.com/2Abendsegler/GClh/issues/999" title="Issue 999">999</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
 </ul>
 (?.?.2019)<br>
 released by <a href="https://www.geocaching.com/profile/?u=Ruko2010">Ruko2010</a><br>
