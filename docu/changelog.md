@@ -63,6 +63,9 @@
 	<li>
 		<strong>Fix:</strong> Message Center - Receiver does not update if Message Center is accessed directly [<a href="https://github.com/2Abendsegler/GClh/issues/901" title="Issue 901">901</a> / <a href="https://www.geocaching.com/profile/?u=Ruko2010" title="Thanks to Ruko2010">Ruko2010</a>]<br>
 	</li>
+	<li>
+		<strong>Fix:</strong> "Past Events" in bookmarklists and watchlists don't work with the new event time [<a href="https://github.com/2Abendsegler/GClh/issues/997" title="Issue 997">997</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
 </ul>
 (?.?.2019)<br>
 released by <a href="https://www.geocaching.com/profile/?u=Ruko2010">Ruko2010</a><br>
