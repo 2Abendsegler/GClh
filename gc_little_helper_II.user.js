@@ -6350,7 +6350,7 @@ var mainGC = function() {
                 $(list[i]).addClass(getValue("show_box_dashboard_" + ident, true) == true ? "gclh" : "gclh isHide");
                 $(list[i+1]).addClass(getValue("show_box_dashboard_" + ident, true) == true ? "" : "isHide");
                 list[i].setAttribute("name", "head_" + ident);
-                list[i].innerHTML += "<svg><use xlink:href='/account/app/ui-icons/sprites/global.svg#icon-expand-svg-fill'></use></svg>";
+                list[i].innerHTML += "<svg><use xlink:href='/account/app/ui-icons/sprites/global.svg#icon-expand-svg-fill' title=''></use></svg>";
                 list[i].addEventListener("click", showHideBoxDashboard, false);
             }
             // Show trackables inventory.
@@ -6391,7 +6391,6 @@ var mainGC = function() {
             }
             // Change link "Your lists" from ".../account/lists" to ".../my/lists.aspx".
             if (settings_my_lists_old_fashioned) $('#DashboardSidebar ul li a[href*="/account/lists"]').prop("href", "/my/lists.aspx");
-
             // Add link to Ignore List into dashboard sidebar.
             if (settings_embedded_smartlink_ignorelist && $(".bio-userrole").text() == "Premium" ) {
                 function openIgnoreList(response) {
@@ -6414,7 +6413,7 @@ var mainGC = function() {
                         });
                     } catch(e) {gclh_error("function getIgnoreList()",e);}
                 }
-                var sidebarLists = $($('ul[class="link-block"] a[href*="/my/watchlist.aspx"]')[0]);
+                var sidebarLists = $($('ul.link-block a[href*="/my/watchlist.aspx"]'));
                 var html = '<li><a id="gclh_goto_ignorelist" href="#gclhGotoIgnorelist">Ignore List</a></li>';
                 sidebarLists.parent().after(html);
                 $("#gclh_goto_ignorelist").click( function(e) {
@@ -6423,7 +6422,6 @@ var mainGC = function() {
                 });
                 if (document.location.href.match(/#gclhGotoIgnorelist/)) getIgnoreList();
             }
-
             appendCssStyle(css);
         } catch(e) {gclh_error("Improve new dashboard",e);}
     }
@@ -9178,7 +9176,7 @@ var mainGC = function() {
         css += ".link-header.gclh.isHide svg {transform: rotate(90deg);}";
         css += ".link-block.gclh {padding-top: 0px; border-bottom: unset; display: block;}";
         css += ".link-block.gclh a:hover {text-decoration: underline; color: #02874d;} .link-block.gclh a {padding: 0 4px 0 0; font-size: 14px;}";
-        css += ".link-block.isHide {display: none} .link-block {border-bottom: unset;}";
+        css += ".link-block.isHide {display: none !important} .link-block {border-bottom: unset;}";
         appendCssStyle(css);
     }
     function buildBoxDashboard(ident, name, title) {
