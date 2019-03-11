@@ -8211,8 +8211,8 @@ var mainGC = function() {
         try {
             var matches = document.location.href.match(/\?navi_search=(.*)/);
             if (matches && matches[1]) {
-                $('#ctl00_ContentBody_LocationPanel1_OriginText')[0].value = urldecode(matches[1]).replace(/%20/g, " ");
-                function clickSearch() {$('#ctl00_ContentBody_LocationPanel1_btnLocale')[0].click();}
+                $('#OriginText')[0].value = urldecode(matches[1]).replace(/%20/g, " ");
+                function clickSearch() {$('#btnLocale')[0].click();}
                 window.addEventListener("load", clickSearch, false);
             }
         } catch(e) {gclh_error("Eingaben im Search Field verarbeiten",e);}
