@@ -1,4 +1,4 @@
-// ==UserScript==
+​// ==UserScript==
 // @name             GC little helper II
 // @namespace        http://www.amshove.net
 //--> $$000
@@ -9781,16 +9781,17 @@ var mainGC = function() {
         html += "a.gclh_info_rc:hover span {";
         html += "  width: 500px !important;";
         html += "  left: -245px !important;}";
-        html += ".gclh_rc_area {";
+        html += ".gclh_rc_area, .gclh_thanks_area {";
         html += "  z-index: 1001;";
         html += "  border: 1px solid #778555;";
         html += "  border-radius: 30px;";
         html += "  padding: 20px;";
         html += "  margin-top: 15px;}";
         html += ".gclh_rc_area_button {margin-left: 185px;}";
-        html += ".gclh_rc_form {";
+        html += ".gclh_rc_form, .gclh_thanks_form {";
         html += "  margin-bottom: 15px !important;";
         html += "  margin-left: 15px !important;}";
+        html += ".gclh_thanks_area_button {margin-left: 230px;}";
         html += ".ll_heading {";
         html += "  margin-top: 0px;";
         html += "  margin-bottom: 0px;";
@@ -9832,8 +9833,12 @@ var mainGC = function() {
         if (settings_make_config_main_areas_hideable && !document.location.href.match(/#a#/i)) {
             var prepareHideable = "<img id='lnk_gclh_config_#name#' title='' src='' style='cursor: pointer'> ";
         } else var prepareHideable = "";
-        if ($('#settings_overlay')[0] && $('#settings_overlay')[0].style.display == "none") $('#settings_overlay')[0].style.display = "";
-        else {
+        if ($('#settings_overlay')[0] && $('#settings_overlay')[0].style.display == "none") {
+            $('#gclh_config_content_thanks').hide();
+            $('#gclh_config_content1').show();
+            $('#gclh_config_content3').show();
+            $('#settings_overlay')[0].style.display = "";
+        } else {
             create_config_css();
             var div = document.createElement("div");
             div.setAttribute("id", "settings_overlay");
@@ -9841,15 +9846,17 @@ var mainGC = function() {
             var html = "";
             html += "<h3 class='gclh_headline' title='Some little things to make life easy (on www.geocaching.com).' >" + scriptNameConfig + " <font class='gclh_small'>v" + scriptVersion + "</font></h3>";
             html += "<div class='gclh_content'>";
+
             html += "<div id='gclh_config_content1'>";
             html += "&nbsp;" + "<font style='float: right; font-size: 11px; ' >";
             html += "<a href='http://geoclub.de/forum/viewforum.php?f=117' title='Help is available on the Geoclub forum' target='_blank'>Help</a> | ";
             html += "<a href='"+urlFaq+"' title='Frequently asked questions on GitHub' target='_blank'>FAQ</a> | ";
             html += "<a href='https://github.com/2Abendsegler/GClh/issues?q=is:issue is:open sort:created-desc' title='Show/open issues on GitHub' target='_blank'>Issues</a> | ";
-            html += "<a href='"+urlChangelog+"' title='Documentation of changes and new features in GClh II on GitHub' target='_blank'>Changelog</a> | ";
-            html += "<a id='check_for_upgrade' href='#' style='cursor: pointer' title='Check for upgrade GClh II'>Check for upgrade</a> | ";
-            html += "<a href='https://github.com/2Abendsegler/GClh/tree/master' title='Development plattform and issue system of GClh II' target='_blank'>GitHub</a> | ";
-            html += "<a id='rc_link' href='#' style='cursor: pointer' title='Reset some configuration data'>Reset</a></font>";
+            html += "<a href='"+urlChangelog+"' title='Documentation of changes and new features on GitHub' target='_blank'>Changelog</a> | ";
+            html += "<a id='check_for_upgrade' href='#' style='cursor: pointer' title='Check for new version'>Check for upgrade</a> | ";
+            html += "<a href='https://github.com/2Abendsegler/GClh/tree/master' title='Development plattform and issue system' target='_blank'>GitHub</a> | ";
+            html += "<a id='rc_link' href='#' style='cursor: pointer' title='Reset some configuration data'>Reset</a> | ";
+            html += "<a id='thanks_link' href='#' style='cursor: pointer' title='Note of thanks'>Thanks</a></font>";
             html += "</div>";
 
             html += "<div id='gclh_config_content2'>";
@@ -9861,11 +9868,37 @@ var mainGC = function() {
             html += "<input type='radio' name='rc' id='rc_uid' class='gclh_rc'><label for='rc_uid'>Reset your own id for your trackables</label>" + show_help_rc("This option could help you with problems with your own trackables lists, which based on an special id, the uid. The uid are not deleted at GC, but only in GClh. <br><br>After reset, you have to go to your dashboard, so that GClh can save your uid again automatically. You have only to go to this page, you have nothing to do at this page, GClh save the uid automatically. <br><br>At last, choose button \"close\".");
             html += "<font class='gclh_small'> (After reset, go to <a href='/my/' target='_blank'>Dashboard</a> )</font>" + "<br><br>";
             html += "<div class='gclh_rc_area_button'>";
-            html += "<img id='rc_doing' src='' title='' alt='' style='margin-top: 4px; margin-left: -25px; position: absolute;' /><input class='gclh_rc_form' type='button' value='reset' id='rc_reset_button'> <input style='cursor: pointer;' class='gclh_rc_form' type='button' value='close' id='rc_close_button'>";
+            html += "<img id='rc_doing' src='' title='' alt='' style='margin-top: 4px; margin-left: -25px; position: absolute;' /><input class='gclh_rc_form' type='button' value='reset' id='rc_reset_button'> <input class='gclh_rc_form' type='button' value='close' id='rc_close_button'>";
             html += "</div>";
             html += "<pre class='gclh_form' style='display: block; height: 220px; overflow: auto; margin-bottom: 0px; font-size: 12px;' type='text' value='' id='rc_configData' contenteditable='true'></pre>";
             html += "</div>";
             html += "</div>";
+
+            html += "<div id='gclh_config_content_thanks'>";
+            html += "<div class='gclh_thanks_area'>";
+            html += "There are numerous persons who have shaped and advanced the tool with their time and their know-how. Many thanks to all of you!<br><br>";
+            html += "Responsibility and development:<br>";
+            html += "<ul>";
+            html += "<li><a href='/profile/?u=Ruko2010' target='_blank' title='GC profile for Ruko2010'>Ruko2010</a></li>";
+            html += "<li><a href='/profile/?u=2Abendsegler' target='_blank' title='GC profile for 2Abendsegler'>2Abendsegler</a></li>";
+            html += "<li><span title='Currently no longer active'>(</span><a href='/profile/?u=Torsten-' target='_blank' title='GC profile for Torsten-'>Torsten Amshove</a><span title='Currently no longer active'>)</span></li>";
+            html += "</ul>";
+            html += "Development:<br>";
+            html += "<ul>";
+            html += "<li><a href='/profile/?u=CachingFoX' target='_blank' title='GC profile for CachingFoX'>CachingFoX</a></li>";
+            html += "<li><a href='/profile/?u=Herr Ma' target='_blank' title='GC profile for Herr Ma'>Herr Ma</a></li>";
+            html += "<li><a href='/profile/?u=DrakMrak' target='_blank' title='GC profile for DrakMrak'>DrakMrak</a></li>";
+            html += "<li><a href='/profile/?u=Dratenik' target='_blank' title='GC profile for Dratenik'>Dratenik</a></li>";
+            html += "<li><a href='/profile/?u=Nicole1338' target='_blank' title='GC profile for Nicole1338'>Nicole1338</a></li>";
+            html += "<li><a href='/profile/?u=Bananeweizen' target='_blank' title='GC profile for Bananeweizen'>Bananeweizen</a></li>";
+            html += "<li><a href='/profile/?u=ramirez_' target='_blank' title='GC profile for ramirez_'>ramirez_</a></li>";
+            html += "<li><a href='/profile/?u=radlerandi' target='_blank' title='GC profile for radlerandi'>radlerandi</a></li>";
+            html += "<li><a href='/profile/?u=king-ton' target='_blank' title='GC profile for king-ton'>king-ton</a></li>";
+            html += "<li><a href='/profile/?u=dontpänic' target='_blank' title='GC profile for dontpänic'>dontpänic</a></li>";
+            html += "</ul><br>";
+            html += "<div class='gclh_thanks_area_button'>";
+            html += "<input class='gclh_thanks_form' type='button' value='close' id='thanks_close_button'>";
+            html += "</div></div></div>";
 
             html += "<div id='gclh_config_content3'>";
             html += "<br>";
@@ -10593,9 +10626,9 @@ var mainGC = function() {
             // footer
             html += "<br><br>";
             html += "&nbsp;" + "<input class='gclh_form' type='button' value='" + setValueInSaveButton() + "' id='btn_save'> <input class='gclh_form' type='button' value='save & upload' id='btn_saveAndUpload'> <input class='gclh_form' type='button' value='" + setValueInCloseButton() + "' id='btn_close2'>";
-            html += "<br><div align='right' class='gclh_small' style='float: right; padding-top: 5px;'>License: <a href='"+urlDocu+"license.md#readme' target='_blank' title='GNU General Public License Version 2'>GPLv2</a>, Warranty: <a href='"+urlDocu+"warranty.md#readme' target='_blank' title='GC little helper comes with ABSOLUTELY NO WARRANTY'>NO</a></div><br>";
+            html += "<br><div align='right' class='gclh_small' style='float: right; padding-top: 5px;'>License: <a href='"+urlDocu+"license.md#readme' target='_blank' title='GNU General Public License Version 2'>GPLv2</a> | Warranty: <a href='"+urlDocu+"warranty.md#readme' target='_blank' title='GC little helper II comes with ABSOLUTELY NO WARRANTY'>NO</a></div><br>";
             var end = (new Date()).getFullYear();
-            html += "<div align='right' class='gclh_small' style='float: right;'>Copyright © 2010-2016 <a href='/profile/?u=Torsten-' target='_blank'>Torsten Amshove</a>, 2016-"+end+" <a href='/profile/?u=2Abendsegler' target='_blank'>2Abendsegler</a>, 2017-"+end+" <a href='/profile/?u=Ruko2010' target='_blank'>Ruko2010</a></div>";
+            html += "<div align='right' class='gclh_small' style='float: right;'>Copyright © 2010-2016 <a href='/profile/?u=Torsten-' target='_blank' title='GC profile for Torsten-'>Torsten Amshove</a>, 2016-"+end+" <a href='/profile/?u=2Abendsegler' target='_blank' title='GC profile for 2Abendsegler'>2Abendsegler</a>, 2017-"+end+" <a href='/profile/?u=Ruko2010' target='_blank' title='GC profile for Ruko2010'>Ruko2010</a></div>";
             html += "</div></div>";
 
             // Config Content: Aufbauen, Reset Area verbergen, Special Links Nearest List/Map, Own Trackables versorgen.
@@ -10603,6 +10636,7 @@ var mainGC = function() {
             div.innerHTML = html;
             $('body')[0].appendChild(div);
             $('#gclh_config_content2').hide();
+            $('#gclh_config_content_thanks').hide();
             $('#settings_show_homezone,#settings_use_gclh_layercontrol,#settings_bookmarks_top_menu,#settings_bookmarks_top_menu_h').addClass('shadowBig');
             setSpecialLinks();
 
@@ -10843,6 +10877,8 @@ var mainGC = function() {
             $('#rc_link')[0].addEventListener("click", rcPrepare, false);
             $('#rc_reset_button')[0].addEventListener("click", rcReset, false);
             $('#rc_close_button')[0].addEventListener("click", rcClose, false);
+            $('#thanks_link')[0].addEventListener("click", thanksShow, false);
+            $('#thanks_close_button')[0].addEventListener("click", btnClose, false);
             $('#gclh_linklist_link_1')[0].addEventListener("click", gclh_show_linklist, false);
             $('#gclh_linklist_link_2')[0].addEventListener("click", gclh_show_linklist, false);
             $('#btn_close2')[0].addEventListener("click", btnClose, false);
@@ -11872,6 +11908,14 @@ var mainGC = function() {
             $('#'+stamm).show();
         }
         setValue("show_box_"+stamm, (whatToDo == "show" ? false : true));
+    }
+
+// Show config screen "thanks".
+    function thanksShow() {
+        if (document.getElementById('settings_overlay')) document.getElementById('settings_overlay').style.overflow = "hidden";
+        $('#gclh_config_content1').hide();
+        $('#gclh_config_content3').hide();
+        $('#gclh_config_content_thanks').show(600);
     }
 
 //////////////////////////////
