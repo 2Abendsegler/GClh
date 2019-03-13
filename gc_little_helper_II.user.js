@@ -1,4 +1,4 @@
-​// ==UserScript==
+// ==UserScript==
 // @name             GC little helper II
 // @namespace        http://www.amshove.net
 //--> $$000
@@ -9792,6 +9792,27 @@ var mainGC = function() {
         html += "  margin-bottom: 15px !important;";
         html += "  margin-left: 15px !important;}";
         html += ".gclh_thanks_area_button {margin-left: 230px;}";
+        html += ".gclh_thanks_table {";
+        html += "  border-collapse: collapse;";
+        html += "  border: 2px solid #d8cd9d !important; }";
+        html += ".gclh_thanks_table th {";
+        html += "  border: 1px solid #778555;";
+        html += "  border-bottom-width: 2px;";
+        html += "  padding: 0px 4px;";
+        html += "  vertical-align: initial;";
+        html += "  font-weight: initial;}";
+        html += ".gclh_thanks_table th span:not(.gclh_span) {font-variant: all-petite-caps;}";
+        html += ".gclh_thanks_table th:nth-child(1) {border-right-width: 2px;}";
+        html += ".gclh_thanks_table td {";
+        html += "  border: 1px solid #778555;";
+        html += "  vertical-align: initial;";
+        html += "  text-align: center;}";
+        html += ".gclh_thanks_table td:nth-child(1) {";
+        html += "  border-right-width: 2px;";
+        html += "  padding: 0px 4px;";
+        html += "  text-align: initial;}";
+        html += ".gclh_thanks_table td img {vertical-align: text-top}";
+        html += ".gclh_thanks_table tr.separator td {border-bottom-width: 2px;}";
         html += ".ll_heading {";
         html += "  margin-top: 0px;";
         html += "  margin-bottom: 0px;";
@@ -9853,7 +9874,7 @@ var mainGC = function() {
             html += "<a href='"+urlFaq+"' title='Frequently asked questions on GitHub' target='_blank'>FAQ</a> | ";
             html += "<a href='https://github.com/2Abendsegler/GClh/issues?q=is:issue is:open sort:created-desc' title='Show/open issues on GitHub' target='_blank'>Issues</a> | ";
             html += "<a href='"+urlChangelog+"' title='Documentation of changes and new features on GitHub' target='_blank'>Changelog</a> | ";
-            html += "<a id='check_for_upgrade' href='#' style='cursor: pointer' title='Check for new version'>Check for upgrade</a> | ";
+            html += "<a id='check_for_upgrade' href='#' style='cursor: pointer' title='Check for new version'>Upgrade</a> | ";
             html += "<a href='https://github.com/2Abendsegler/GClh/tree/master' title='Development plattform and issue system' target='_blank'>GitHub</a> | ";
             html += "<a id='rc_link' href='#' style='cursor: pointer' title='Reset some configuration data'>Reset</a> | ";
             html += "<a id='thanks_link' href='#' style='cursor: pointer' title='Note of thanks'>Thanks</a></font>";
@@ -9877,27 +9898,42 @@ var mainGC = function() {
             html += "<div id='gclh_config_content_thanks'>";
             html += "<div class='gclh_thanks_area'>";
             html += "There are numerous persons who have shaped and advanced the tool with their time and their know-how. Many thanks to all of you!<br><br>";
-            html += "Responsibility and development:<br>";
-            html += "<ul>";
-            html += "<li><a href='/profile/?u=Ruko2010' target='_blank' title='GC profile for Ruko2010'>Ruko2010</a></li>";
-            html += "<li><a href='/profile/?u=2Abendsegler' target='_blank' title='GC profile for 2Abendsegler'>2Abendsegler</a></li>";
-            html += "<li><span title='Currently no longer active'>(</span><a href='/profile/?u=Torsten-' target='_blank' title='GC profile for Torsten-'>Torsten Amshove</a><span title='Currently no longer active'>)</span></li>";
-            html += "</ul>";
-            html += "Development:<br>";
-            html += "<ul>";
-            html += "<li><a href='/profile/?u=CachingFoX' target='_blank' title='GC profile for CachingFoX'>CachingFoX</a></li>";
-            html += "<li><a href='/profile/?u=Herr Ma' target='_blank' title='GC profile for Herr Ma'>Herr Ma</a></li>";
-            html += "<li><a href='/profile/?u=DrakMrak' target='_blank' title='GC profile for DrakMrak'>DrakMrak</a></li>";
-            html += "<li><a href='/profile/?u=Dratenik' target='_blank' title='GC profile for Dratenik'>Dratenik</a></li>";
-            html += "<li><a href='/profile/?u=Nicole1338' target='_blank' title='GC profile for Nicole1338'>Nicole1338</a></li>";
-            html += "<li><a href='/profile/?u=Bananeweizen' target='_blank' title='GC profile for Bananeweizen'>Bananeweizen</a></li>";
-            html += "<li><a href='/profile/?u=ramirez_' target='_blank' title='GC profile for ramirez_'>ramirez_</a></li>";
-            html += "<li><a href='/profile/?u=radlerandi' target='_blank' title='GC profile for radlerandi'>radlerandi</a></li>";
-            html += "<li><a href='/profile/?u=king-ton' target='_blank' title='GC profile for king-ton'>king-ton</a></li>";
-            html += "<li><a href='/profile/?u=dontpänic' target='_blank' title='GC profile for dontpänic'>dontpänic</a></li>";
-            html += "</ul><br>";
+            html += "<table class='gclh_thanks_table'>";
+            html += "    <thead>";
+            html += "        <tr><th></th><th><span>Project Management</span></th><th><span>Development Lead</span></th><th><span>Development</span></th><th><span>Bug Reporting</span>" + show_help3("Bugs reported to the issue system on GitHub.") + "</th></tr>";
+            html += "    </thead>";
+            html += "    <tbody>";
+            html += thanksLineBuild("Ruko2010",      "y", "y", "n", "29" );
+            html += thanksLineBuild("2Abendsegler",  "y", "y", "n", "80",  "separator");
+            html += thanksLineBuild("CachingFoX",    "n", "n", "y", "11" );
+            html += thanksLineBuild("Herr Ma",       "n", "n", "y", "1"  );              // alias MarcusBi
+            html += thanksLineBuild("DrakMrak",      "n", "n", "y", "n"  );
+            html += thanksLineBuild("Dratenik",      "n", "n", "y", "n"  );
+            html += thanksLineBuild("Nicole1338",    "n", "n", "y", "n"  );
+            html += thanksLineBuild("Bananeweizen",  "n", "n", "y", "n"  );
+            html += thanksLineBuild("ramirez_",      "n", "n", "y", "n"  );              // alias ramirezhr
+            html += thanksLineBuild("radlerandi",    "n", "n", "y", "n"  );
+            html += thanksLineBuild("king-ton",      "n", "n", "y", "n"  );
+            html += thanksLineBuild("dontpänic",     "n", "n", "y", "n",   "separator"); // alias haarspalter
+            html += thanksLineBuild("PontiacCZ",     "n", "n", "n", "8"  );
+            html += thanksLineBuild("Magpie42",      "n", "n", "n", "3"  );              // alias MagpieFourtyTwo
+            html += thanksLineBuild("V60",           "n", "n", "n", "1"  );              // alias V60GC
+            html += thanksLineBuild("Die Batzen",    "n", "n", "n", "1"  );              // alias DieBatzen
+            html += thanksLineBuild("stepborc",      "n", "n", "n", "1"  );
+            html += thanksLineBuild("stepborc",      "n", "n", "n", "1"  );
+            html += thanksLineBuild("Jipem",         "n", "n", "n", "1"  );
+            html += thanksLineBuild("stepborc",      "n", "n", "n", "1"  );
+            html += thanksLineBuild("Cappa-d",       "n", "n", "n", "1"  );
+            html += thanksLineBuild("winkamol",      "n", "n", "n", "1"  );
+            html += thanksLineBuild("RoRo",          "n", "n", "n", "1"  );              // alias RolandRosenfeld
+            html += thanksLineBuild("barnold",       "n", "n", "n", "1"  );              // alias barnoldGEOC
+            html += thanksLineBuild("arbor95",       "n", "n", "n", "1"  );
+            html += thanksLineBuild("BlueEagle23",   "n", "n", "n", "1"  );
+            html += thanksLineBuild("Donnerknispel", "n", "n", "n", "1"  );
+            html += "    </tbody>";
+            html += "</table>";
             html += "<div class='gclh_thanks_area_button'>";
-            html += "<input class='gclh_thanks_form' type='button' value='close' id='thanks_close_button'>";
+            html += "<br><input class='gclh_thanks_form' type='button' value='close' id='thanks_close_button'>";
             html += "</div></div></div>";
 
             html += "<div id='gclh_config_content3'>";
@@ -11916,6 +11952,24 @@ var mainGC = function() {
         $('#gclh_config_content1').hide();
         $('#gclh_config_content3').hide();
         $('#gclh_config_content_thanks').show(600);
+    }
+
+// Build line with user and contribution on config screen "thanks".
+    function thanksLineBuild(name, proj, devl, dev, err, separator) {
+        if (!separator) var separator = "";
+        return "<tr class='" + separator + "'><td><a href='/profile/?u=" + name + "' target='_blank' title='GC profile for " + name + "'>" + name + "</a></td>" +
+               thanksFlagBuild(proj) + thanksFlagBuild(devl) + thanksFlagBuild(dev) + thanksFlagBuild(err) + "</tr>";
+    }
+    function thanksFlagBuild(flag) {
+        if (flag == "n") {
+            var src = "";
+            var title = "";
+        } else {
+            var src = global_green_tick;
+            if (flag == "y") var title = "";
+            else var title = "about " + flag + (flag == "1" ? " bug" : " bugs") + " reported";
+        }
+        return "<td><img src='" + src + "' title='" + title + "'></td>";
     }
 
 //////////////////////////////
