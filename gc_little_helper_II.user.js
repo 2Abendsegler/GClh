@@ -9914,32 +9914,32 @@ var mainGC = function() {
             html += "    </thead>";
             html += "    <tbody>";
 //--> $$006
-            html += thanksLineBuild("Ruko2010",             "y", "y", "n", "29" );
-            html += thanksLineBuild("2Abendsegler",         "y", "y", "n", "80",  "separator");
-            html += thanksLineBuild("CachingFoX",           "n", "n", "y", "11" );
-            html += thanksLineBuild("Herr Ma",              "n", "n", "y", "1"  );              // alias MarcusBi
-            html += thanksLineBuild("DrakMrak",             "n", "n", "y", "n"  );
-            html += thanksLineBuild("Dratenik",             "n", "n", "y", "n"  );
-            html += thanksLineBuild("Nicole1338",           "n", "n", "y", "n"  );
-            html += thanksLineBuild("Bananeweizen",         "n", "n", "y", "n"  );
-            html += thanksLineBuild("ramirez_",             "n", "n", "y", "n"  );              // alias ramirezhr
-            html += thanksLineBuild("radlerandi",           "n", "n", "y", "n"  );
-            html += thanksLineBuild("king-ton",             "n", "n", "y", "n"  );
-            html += thanksLineBuild("dontpänic",            "n", "n", "y", "n",   "separator"); // alias haarspalter
-            html += thanksLineBuild("Pontiac_CZ",           "n", "n", "n", "8"  );              // alias PontiacCZ
-            html += thanksLineBuild("Magpie42",             "n", "n", "n", "3"  );              // alias MagpieFourtyTwo
-            html += thanksLineBuild("arbor95",              "n", "n", "n", "1"  );
-            html += thanksLineBuild("barnold",              "n", "n", "n", "1"  );              // alias barnoldGEOC
-            html += thanksLineBuild("BlueEagle23",          "n", "n", "n", "1"  );
-            html += thanksLineBuild("Cappa-d",              "n", "n", "n", "1"  );
-            html += thanksLineBuild("Die Batzen",           "n", "n", "n", "1"  );              // alias DieBatzen
-            html += thanksLineBuild("Donnerknispel",        "n", "n", "n", "1"  );
-            html += thanksLineBuild("Jipem",                "n", "n", "n", "1"  );
-            html += thanksLineBuild("☺Mitchsa & firefly70", "n", "n", "n", "3"  );              // alias Mitchsa
-            html += thanksLineBuild("RoRo",                 "n", "n", "n", "1"  );              // alias RolandRosenfeld
-            html += thanksLineBuild("stepborc",             "n", "n", "n", "1"  );
-            html += thanksLineBuild("V60",                  "n", "n", "n", "1"  );              // alias V60GC
-            html += thanksLineBuild("winkamol",             "n", "n", "n", "1"  );
+            html += thanksLineBuild("Ruko2010",             "y", "y", "n", "y" );
+            html += thanksLineBuild("2Abendsegler",         "y", "y", "n", "y", "separator");
+            html += thanksLineBuild("CachingFoX",           "n", "n", "y", "y" );
+            html += thanksLineBuild("Herr Ma",              "n", "n", "y", "y" );             // alias MarcusBi
+            html += thanksLineBuild("DrakMrak",             "n", "n", "y", "n" );
+            html += thanksLineBuild("Dratenik",             "n", "n", "y", "n" );
+            html += thanksLineBuild("Nicole1338",           "n", "n", "y", "n" );
+            html += thanksLineBuild("Bananeweizen",         "n", "n", "y", "n" );
+            html += thanksLineBuild("ramirez_",             "n", "n", "y", "n" );             // alias ramirezhr
+            html += thanksLineBuild("radlerandi",           "n", "n", "y", "n" );
+            html += thanksLineBuild("king-ton",             "n", "n", "y", "n" );
+            html += thanksLineBuild("dontpänic",            "n", "n", "y", "n", "separator"); // alias haarspalter
+            html += thanksLineBuild("arbor95",              "n", "n", "n", "y" );
+            html += thanksLineBuild("barnold",              "n", "n", "n", "y" );             // alias barnoldGEOC
+            html += thanksLineBuild("BlueEagle23",          "n", "n", "n", "y" );
+            html += thanksLineBuild("Cappa-d",              "n", "n", "n", "y" );
+            html += thanksLineBuild("Die Batzen",           "n", "n", "n", "y" );             // alias DieBatzen
+            html += thanksLineBuild("Donnerknispel",        "n", "n", "n", "y" );
+            html += thanksLineBuild("Jipem",                "n", "n", "n", "y" );
+            html += thanksLineBuild("Magpie42",             "n", "n", "n", "y" );             // alias MagpieFourtyTwo
+            html += thanksLineBuild("☺Mitchsa & firefly70", "n", "n", "n", "y" );             // alias Mitchsa
+            html += thanksLineBuild("Pontiac_CZ",           "n", "n", "n", "y" );             // alias PontiacCZ
+            html += thanksLineBuild("RoRo",                 "n", "n", "n", "y" );             // alias RolandRosenfeld
+            html += thanksLineBuild("stepborc",             "n", "n", "n", "y" );
+            html += thanksLineBuild("V60",                  "n", "n", "n", "y" );             // alias V60GC
+            html += thanksLineBuild("winkamol",             "n", "n", "n", "y" );
 //<-- $$006
             html += "    </tbody>";
             html += "</table>";
@@ -11975,17 +11975,7 @@ var mainGC = function() {
         return "<tr class='" + separator + "'><td><a href='/profile/?u=" + urlencode(name) + "' target='_blank' title='GC profile for " + name + "'>" + name + "</a></td>" +
                thanksFlagBuild(proj) + thanksFlagBuild(devl) + thanksFlagBuild(dev) + thanksFlagBuild(err) + "</tr>";
     }
-    function thanksFlagBuild(flag) {
-        if (flag == "n") {
-            var src = "";
-            var title = "";
-        } else {
-            var src = global_green_tick;
-            if (flag == "y") var title = "";
-            else var title = "about " + flag + (flag == "1" ? " bug" : " bugs") + " reported";
-        }
-        return "<td><img src='" + src + "' title='" + title + "'></td>";
-    }
+    function thanksFlagBuild(flag) {return "<td><img src='" + (flag == "y" ? global_green_tick : "") + "'></td>";}
 
 //////////////////////////////
 // Config Reset Functions
