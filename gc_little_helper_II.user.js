@@ -9802,15 +9802,25 @@ var mainGC = function() {
         html += "  vertical-align: initial;";
         html += "  font-weight: initial;}";
         html += ".gclh_thanks_table th span:not(.gclh_span) {font-variant: all-petite-caps;}";
-        html += ".gclh_thanks_table th:nth-child(1) {border-right-width: 2px;}";
+        html += ".gclh_thanks_table th:nth-child(1) {";
+        html += "  border-right-width: 2px;";
+        html += "  max-width: 100px;}";
         html += ".gclh_thanks_table td {";
         html += "  border: 1px solid #778555;";
         html += "  vertical-align: initial;";
         html += "  text-align: center;}";
         html += ".gclh_thanks_table td:nth-child(1) {";
         html += "  border-right-width: 2px;";
+        html += "  max-width: 100px;";
         html += "  padding: 0px 4px;";
         html += "  text-align: initial;}";
+        html += ".gclh_thanks_table td:nth-child(1) a {";
+        html += "  max-width: 100px;";
+        html += "  display: inline-block;";
+        html += "  overflow: hidden;";
+        html += "  vertical-align: bottom;";
+        html += "  white-space: nowrap;";
+        html += "  text-overflow: ellipsis;}";
         html += ".gclh_thanks_table td img {vertical-align: text-top}";
         html += ".gclh_thanks_table tr.separator td {border-bottom-width: 2px;}";
         html += ".ll_heading {";
@@ -9903,35 +9913,40 @@ var mainGC = function() {
             html += "        <tr><th></th><th><span>Project Management</span></th><th><span>Development Lead</span></th><th><span>Development</span></th><th><span>Bug Reporting</span>" + show_help3("Bugs reported to the issue system on GitHub.") + "</th></tr>";
             html += "    </thead>";
             html += "    <tbody>";
-            html += thanksLineBuild("Ruko2010",      "y", "y", "n", "29" );
-            html += thanksLineBuild("2Abendsegler",  "y", "y", "n", "80",  "separator");
-            html += thanksLineBuild("CachingFoX",    "n", "n", "y", "11" );
-            html += thanksLineBuild("Herr Ma",       "n", "n", "y", "1"  );              // alias MarcusBi
-            html += thanksLineBuild("DrakMrak",      "n", "n", "y", "n"  );
-            html += thanksLineBuild("Dratenik",      "n", "n", "y", "n"  );
-            html += thanksLineBuild("Nicole1338",    "n", "n", "y", "n"  );
-            html += thanksLineBuild("Bananeweizen",  "n", "n", "y", "n"  );
-            html += thanksLineBuild("ramirez_",      "n", "n", "y", "n"  );              // alias ramirezhr
-            html += thanksLineBuild("radlerandi",    "n", "n", "y", "n"  );
-            html += thanksLineBuild("king-ton",      "n", "n", "y", "n"  );
-            html += thanksLineBuild("dontpänic",     "n", "n", "y", "n",   "separator"); // alias haarspalter
-            html += thanksLineBuild("PontiacCZ",     "n", "n", "n", "8"  );
-            html += thanksLineBuild("Magpie42",      "n", "n", "n", "3"  );              // alias MagpieFourtyTwo
-            html += thanksLineBuild("V60",           "n", "n", "n", "1"  );              // alias V60GC
-            html += thanksLineBuild("Die Batzen",    "n", "n", "n", "1"  );              // alias DieBatzen
-            html += thanksLineBuild("stepborc",      "n", "n", "n", "1"  );
-            html += thanksLineBuild("stepborc",      "n", "n", "n", "1"  );
-            html += thanksLineBuild("Jipem",         "n", "n", "n", "1"  );
-            html += thanksLineBuild("stepborc",      "n", "n", "n", "1"  );
-            html += thanksLineBuild("Cappa-d",       "n", "n", "n", "1"  );
-            html += thanksLineBuild("winkamol",      "n", "n", "n", "1"  );
-            html += thanksLineBuild("RoRo",          "n", "n", "n", "1"  );              // alias RolandRosenfeld
-            html += thanksLineBuild("barnold",       "n", "n", "n", "1"  );              // alias barnoldGEOC
-            html += thanksLineBuild("arbor95",       "n", "n", "n", "1"  );
-            html += thanksLineBuild("BlueEagle23",   "n", "n", "n", "1"  );
-            html += thanksLineBuild("Donnerknispel", "n", "n", "n", "1"  );
+//--> $$006
+            html += thanksLineBuild("Ruko2010",             "y", "y", "n", "29" );
+            html += thanksLineBuild("2Abendsegler",         "y", "y", "n", "80",  "separator");
+            html += thanksLineBuild("CachingFoX",           "n", "n", "y", "11" );
+            html += thanksLineBuild("Herr Ma",              "n", "n", "y", "1"  );              // alias MarcusBi
+            html += thanksLineBuild("DrakMrak",             "n", "n", "y", "n"  );
+            html += thanksLineBuild("Dratenik",             "n", "n", "y", "n"  );
+            html += thanksLineBuild("Nicole1338",           "n", "n", "y", "n"  );
+            html += thanksLineBuild("Bananeweizen",         "n", "n", "y", "n"  );
+            html += thanksLineBuild("ramirez_",             "n", "n", "y", "n"  );              // alias ramirezhr
+            html += thanksLineBuild("radlerandi",           "n", "n", "y", "n"  );
+            html += thanksLineBuild("king-ton",             "n", "n", "y", "n"  );
+            html += thanksLineBuild("dontpänic",            "n", "n", "y", "n",   "separator"); // alias haarspalter
+            html += thanksLineBuild("Pontiac_CZ",           "n", "n", "n", "8"  );              // alias PontiacCZ
+            html += thanksLineBuild("Magpie42",             "n", "n", "n", "3"  );              // alias MagpieFourtyTwo
+            html += thanksLineBuild("arbor95",              "n", "n", "n", "1"  );
+            html += thanksLineBuild("barnold",              "n", "n", "n", "1"  );              // alias barnoldGEOC
+            html += thanksLineBuild("BlueEagle23",          "n", "n", "n", "1"  );
+            html += thanksLineBuild("Cappa-d",              "n", "n", "n", "1"  );
+            html += thanksLineBuild("Die Batzen",           "n", "n", "n", "1"  );              // alias DieBatzen
+            html += thanksLineBuild("Donnerknispel",        "n", "n", "n", "1"  );
+            html += thanksLineBuild("Jipem",                "n", "n", "n", "1"  );
+            html += thanksLineBuild("☺Mitchsa & firefly70", "n", "n", "n", "3"  );              // alias Mitchsa
+            html += thanksLineBuild("RoRo",                 "n", "n", "n", "1"  );              // alias RolandRosenfeld
+            html += thanksLineBuild("stepborc",             "n", "n", "n", "1"  );
+            html += thanksLineBuild("V60",                  "n", "n", "n", "1"  );              // alias V60GC
+            html += thanksLineBuild("winkamol",             "n", "n", "n", "1"  );
+//<-- $$006
             html += "    </tbody>";
             html += "</table>";
+//--> $$007
+            var thanksLastUpdate = "14.03.2019";
+//<-- $$007
+            html += "<span style='float: right; font-size: 10px;'>Last update: " + thanksLastUpdate + " </span>";
             html += "<div class='gclh_thanks_area_button'>";
             html += "<br><input class='gclh_thanks_form' type='button' value='close' id='thanks_close_button'>";
             html += "</div></div></div>";
@@ -11957,7 +11972,7 @@ var mainGC = function() {
 // Build line with user and contribution on config screen "thanks".
     function thanksLineBuild(name, proj, devl, dev, err, separator) {
         if (!separator) var separator = "";
-        return "<tr class='" + separator + "'><td><a href='/profile/?u=" + name + "' target='_blank' title='GC profile for " + name + "'>" + name + "</a></td>" +
+        return "<tr class='" + separator + "'><td><a href='/profile/?u=" + urlencode(name) + "' target='_blank' title='GC profile for " + name + "'>" + name + "</a></td>" +
                thanksFlagBuild(proj) + thanksFlagBuild(devl) + thanksFlagBuild(dev) + thanksFlagBuild(err) + "</tr>";
     }
     function thanksFlagBuild(flag) {
