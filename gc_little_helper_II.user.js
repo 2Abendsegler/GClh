@@ -3381,7 +3381,7 @@ var mainGC = function() {
     }
 
 // Update Standard Message on Click of a Username in Messagecenter
-    
+
     function addEventlistenerForMessageCenterNames(){
         $( "#cpConvoPanelFeed ol li" ).each(function() {
           // only add the listener once
@@ -3408,7 +3408,7 @@ var mainGC = function() {
 
     if (is_page("messagecenter")) {
         try {
-            
+
             addMessageButtonListener(0);
             function addMessageButtonListener(waitCount) {
                 if($( "#cpConvoPanelFeed ol li" ).length > 0){
@@ -3416,13 +3416,13 @@ var mainGC = function() {
                     $('#cpConvoPanelFeed ol').bind('DOMSubtreeModified', function(event) {
                         addEventlistenerForMessageCenterNames();
                     });
-                    
+
                     // Add for initial Names
                     addEventlistenerForMessageCenterNames();
-                    
+
                     waitCount = 700;
                 }
-                
+
                 waitCount++;
                 if (waitCount <= 600) setTimeout(function(){addMessageButtonListener(waitCount);}, 100);
             }
@@ -9914,38 +9914,38 @@ var mainGC = function() {
             html += "    </thead>";
             html += "    <tbody>";
 //--> $$006
-            html += thanksLineBuild("Ruko2010",             "y", "y", "n", "y" );
-            html += thanksLineBuild("2Abendsegler",         "y", "y", "n", "y", "separator");
-            html += thanksLineBuild("CachingFoX",           "n", "n", "y", "y" );
-            html += thanksLineBuild("Herr Ma",              "n", "n", "y", "y" );             // alias MarcusBi
-            html += thanksLineBuild("DrakMrak",             "n", "n", "y", "n" );
-            html += thanksLineBuild("Dratenik",             "n", "n", "y", "n" );
-            html += thanksLineBuild("Nicole1338",           "n", "n", "y", "n" );
-            html += thanksLineBuild("Bananeweizen",         "n", "n", "y", "n" );
-            html += thanksLineBuild("ramirez_",             "n", "n", "y", "n" );             // alias ramirezhr
-            html += thanksLineBuild("radlerandi",           "n", "n", "y", "n" );
-            html += thanksLineBuild("king-ton",             "n", "n", "y", "n" );
-            html += thanksLineBuild("dontpänic",            "n", "n", "y", "n", "separator"); // alias haarspalter
-            html += thanksLineBuild("arbor95",              "n", "n", "n", "y" );
-            html += thanksLineBuild("barnold",              "n", "n", "n", "y" );             // alias barnoldGEOC
-            html += thanksLineBuild("BlueEagle23",          "n", "n", "n", "y" );
-            html += thanksLineBuild("Cappa-d",              "n", "n", "n", "y" );
-            html += thanksLineBuild("Die Batzen",           "n", "n", "n", "y" );             // alias DieBatzen
-            html += thanksLineBuild("Donnerknispel",        "n", "n", "n", "y" );
-            html += thanksLineBuild("Jipem",                "n", "n", "n", "y" );
-            html += thanksLineBuild("Magpie42",             "n", "n", "n", "y" );             // alias MagpieFourtyTwo
-            html += thanksLineBuild("☺Mitchsa & firefly70", "n", "n", "n", "y" );             // alias Mitchsa
-            html += thanksLineBuild("Pontiac_CZ",           "n", "n", "n", "y" );             // alias PontiacCZ
-            html += thanksLineBuild("RoRo",                 "n", "n", "n", "y" );             // alias RolandRosenfeld
-            html += thanksLineBuild("stepborc",             "n", "n", "n", "y" );
-            html += thanksLineBuild("V60",                  "n", "n", "n", "y" );             // alias V60GC
-            html += thanksLineBuild("winkamol",             "n", "n", "n", "y" );
+            // Bezeichnung:         GC Name                 Abw. GitHub Name   ProjM  DevL   Dev    BugR   Separator
+            html += thanksLineBuild("Ruko2010",             "",                true,  true,  false, true,  false);
+            html += thanksLineBuild("2Abendsegler",         "",                true,  true,  false, true,  true );
+            html += thanksLineBuild("CachingFoX",           "",                false, false, true,  true,  false);
+            html += thanksLineBuild("Herr Ma",              "MarcusBi",        false, false, true,  true,  false);
+            html += thanksLineBuild("DrakMrak",             "",                false, false, true,  false, false);
+            html += thanksLineBuild("Dratenik",             "",                false, false, true,  false, false);
+            html += thanksLineBuild("Nicole1338",           "",                false, false, true,  false, false);
+            html += thanksLineBuild("Bananeweizen",         "",                false, false, true,  false, false);
+            html += thanksLineBuild("ramirez_",             "ramirezhr",       false, false, true,  false, false);
+            html += thanksLineBuild("radlerandi",           "",                false, false, true,  false, false);
+            html += thanksLineBuild("king-ton",             "",                false, false, true,  false, false);
+            html += thanksLineBuild("dontpänic",            "haarspalter",     false, false, true,  false, true );
+            html += thanksLineBuild("arbor95",              "",                false, false, false, true,  false);
+            html += thanksLineBuild("barnold",              "barnoldGEOC",     false, false, false, true,  false);
+            html += thanksLineBuild("BlueEagle23",          "",                false, false, false, true,  false);
+            html += thanksLineBuild("Cappa-d",              "",                false, false, false, true,  false);
+            html += thanksLineBuild("",                     "gboye",           false, false, false, true,  false);
+            html += thanksLineBuild("Die Batzen",           "DieBatzen",       false, false, false, true,  false);
+            html += thanksLineBuild("Donnerknispel",        "",                false, false, false, true,  false);
+            html += thanksLineBuild("Jipem",                "",                false, false, false, true,  false);
+            html += thanksLineBuild("Magpie42",             "MagpieFourtyTwo", false, false, false, true,  false);
+            html += thanksLineBuild("☺Mitchsa & firefly70", "Mitchsa",         false, false, false, true,  false);
+            html += thanksLineBuild("Pontiac_CZ",           "PontiacCZ",       false, false, false, true,  false);
+            html += thanksLineBuild("RoRo",                 "RolandRosenfeld", false, false, false, true,  false);
+            html += thanksLineBuild("stepborc",             "",                false, false, false, true,  false);
+            html += thanksLineBuild("V60",                  "V60GC",           false, false, false, true,  false);
+            html += thanksLineBuild("winkamol",             "",                false, false, false, true,  false);
+            var thanksLastUpdate = "15.03.2019";
 //<-- $$006
             html += "    </tbody>";
             html += "</table>";
-//--> $$007
-            var thanksLastUpdate = "14.03.2019";
-//<-- $$007
             html += "<span style='float: right; font-size: 10px;'>Last update: " + thanksLastUpdate + " </span>";
             html += "<div class='gclh_thanks_area_button'>";
             html += "<br><input class='gclh_thanks_form' type='button' value='close' id='thanks_close_button'>";
@@ -11970,12 +11970,12 @@ var mainGC = function() {
     }
 
 // Build line with user and contribution on config screen "thanks".
-    function thanksLineBuild(name, proj, devl, dev, err, separator) {
-        if (!separator) var separator = "";
-        return "<tr class='" + separator + "'><td><a href='/profile/?u=" + urlencode(name) + "' target='_blank' title='GC profile for " + name + "'>" + name + "</a></td>" +
+    function thanksLineBuild(gcname, ghname, proj, devl, dev, err, sepa) {
+        return "<tr " + (sepa == true ? "class='separator'" : "") + ">" +
+               "<td>" + (gcname != "" ? "<a href='/profile/?u="+urlencode(gcname)+"' target='_blank' title='GC profile for "+gcname+"'>"+gcname+"</a>" : ghname) + "</td>" +
                thanksFlagBuild(proj) + thanksFlagBuild(devl) + thanksFlagBuild(dev) + thanksFlagBuild(err) + "</tr>";
     }
-    function thanksFlagBuild(flag) {return "<td><img src='" + (flag == "y" ? global_green_tick : "") + "'></td>";}
+    function thanksFlagBuild(flag) {return "<td><img src='" + (flag == true ? global_green_tick : "") + "'></td>";}
 
 //////////////////////////////
 // Config Reset Functions
