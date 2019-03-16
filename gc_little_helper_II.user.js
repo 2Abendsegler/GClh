@@ -2,7 +2,7 @@
 // @name             GC little helper II
 // @namespace        http://www.amshove.net
 //--> $$000
-// @version          0.9.16
+// @version          0.9.16 andi
 //<-- $$000
 // @include          http*://www.geocaching.com/*
 // @include          http*://maps.google.tld/*
@@ -2116,7 +2116,7 @@ var mainGC = function() {
             try {
                 mapservice_link( {
                     uniqueServiceId: "brouter",
-                    urlTemplate: 'http://brouter.de/brouter-web/#zoom={zoom}&lat={center_latitude}&lon={center_longitude}&layer={map}&lonlats={waypoints}&nogos=&profile=trekking&alternativeidx=0&format=geojson',
+                    urlTemplate: 'http://brouter.de/brouter-web/#map={zoom}/{center_latitude}/{center_longitude}/{map}&lonlats={waypoints}',
                     layers: {'OpenStreetMap': { maxZoom: 18, displayName: 'OpenStreetMap' }, 'OpenStreetMap.de': { maxZoom: 17, displayName: 'OSM German Style' }, 'OpenTopoMap': { maxZoom: 17, displayName: 'OpenTopoMap' }, 'OpenCycleMap (Thunderf.)': { maxZoom: 18, displayName: 'OpenCycleMap' }, 'Outdoors (Thunderforest)': { maxZoom: 18, displayName: 'Outdoors' }, 'Esri World Imagery': { maxZoom: 18, displayName: 'Esri World Imagery' }},
                     waypointSeparator : '|',
                     waypointFunction : brouterWaypoint,
@@ -3381,7 +3381,7 @@ var mainGC = function() {
     }
 
 // Update Standard Message on Click of a Username in Messagecenter
-    
+
     function addEventlistenerForMessageCenterNames(){
         $( "#cpConvoPanelFeed ol li" ).each(function() {
           // only add the listener once
@@ -3408,7 +3408,7 @@ var mainGC = function() {
 
     if (is_page("messagecenter")) {
         try {
-            
+
             addMessageButtonListener(0);
             function addMessageButtonListener(waitCount) {
                 if($( "#cpConvoPanelFeed ol li" ).length > 0){
@@ -3416,13 +3416,13 @@ var mainGC = function() {
                     $('#cpConvoPanelFeed ol').bind('DOMSubtreeModified', function(event) {
                         addEventlistenerForMessageCenterNames();
                     });
-                    
+
                     // Add for initial Names
                     addEventlistenerForMessageCenterNames();
-                    
+
                     waitCount = 700;
                 }
-                
+
                 waitCount++;
                 if (waitCount <= 600) setTimeout(function(){addMessageButtonListener(waitCount);}, 100);
             }
