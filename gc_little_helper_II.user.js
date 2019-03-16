@@ -9921,7 +9921,7 @@ var mainGC = function() {
             html += thanksLineBuild("Herr Ma",              "MarcusBi",        false, false, true,  true,  false);
             html += thanksLineBuild("DrakMrak",             "",                false, false, true,  false, false);
             html += thanksLineBuild("Dratenik",             "",                false, false, true,  false, false);
-            html += thanksLineBuild("radlerandi",           "",                false, false, true,  true,  false);
+            html += thanksLineBuild("radlerandi",           "",                false, false, true,  false, false);
             html += thanksLineBuild("Nicole1338",           "",                false, false, true,  false, false);
             html += thanksLineBuild("Bananeweizen",         "",                false, false, true,  false, false);
             html += thanksLineBuild("ramirez_",             "ramirezhr",       false, false, true,  false, false);
@@ -9942,7 +9942,7 @@ var mainGC = function() {
             html += thanksLineBuild("stepborc",             "",                false, false, false, true,  false);
             html += thanksLineBuild("V60",                  "V60GC",           false, false, false, true,  false);
             html += thanksLineBuild("winkamol",             "",                false, false, false, true,  false);
-            var thanksLastUpdate = "15.03.2019";
+            var thanksLastUpdate = "16.03.2019";
 //<-- $$006
             html += "    </tbody>";
             html += "</table>";
