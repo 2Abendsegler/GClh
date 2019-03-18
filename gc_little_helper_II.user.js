@@ -3381,7 +3381,7 @@ var mainGC = function() {
     }
 
 // Update Standard Message on Click of a Username in Messagecenter
-    
+
     function addEventlistenerForMessageCenterNames(){
         $( "#cpConvoPanelFeed ol li" ).each(function() {
           // only add the listener once
@@ -3408,7 +3408,7 @@ var mainGC = function() {
 
     if (is_page("messagecenter")) {
         try {
-            
+
             addMessageButtonListener(0);
             function addMessageButtonListener(waitCount) {
                 if($( "#cpConvoPanelFeed ol li" ).length > 0){
@@ -3416,13 +3416,13 @@ var mainGC = function() {
                     $('#cpConvoPanelFeed ol').bind('DOMSubtreeModified', function(event) {
                         addEventlistenerForMessageCenterNames();
                     });
-                    
+
                     // Add for initial Names
                     addEventlistenerForMessageCenterNames();
-                    
+
                     waitCount = 700;
                 }
-                
+
                 waitCount++;
                 if (waitCount <= 600) setTimeout(function(){addMessageButtonListener(waitCount);}, 100);
             }
@@ -9781,16 +9781,48 @@ var mainGC = function() {
         html += "a.gclh_info_rc:hover span {";
         html += "  width: 500px !important;";
         html += "  left: -245px !important;}";
-        html += ".gclh_rc_area {";
+        html += ".gclh_rc_area, .gclh_thanks_area {";
         html += "  z-index: 1001;";
         html += "  border: 1px solid #778555;";
         html += "  border-radius: 30px;";
         html += "  padding: 20px;";
         html += "  margin-top: 15px;}";
         html += ".gclh_rc_area_button {margin-left: 185px;}";
-        html += ".gclh_rc_form {";
+        html += ".gclh_rc_form, .gclh_thanks_form {";
         html += "  margin-bottom: 15px !important;";
         html += "  margin-left: 15px !important;}";
+        html += ".gclh_thanks_area_button {margin-left: 230px;}";
+        html += ".gclh_thanks_table {";
+        html += "  border-collapse: collapse;";
+        html += "  border: 2px solid #d8cd9d !important; }";
+        html += ".gclh_thanks_table th {";
+        html += "  border: 1px solid #778555;";
+        html += "  border-bottom-width: 2px;";
+        html += "  padding: 0px 4px;";
+        html += "  vertical-align: initial;";
+        html += "  font-weight: initial;}";
+        html += ".gclh_thanks_table th span:not(.gclh_span) {font-variant: all-petite-caps;}";
+        html += ".gclh_thanks_table th:nth-child(1) {";
+        html += "  border-right-width: 2px;";
+        html += "  max-width: 100px;}";
+        html += ".gclh_thanks_table td {";
+        html += "  border: 1px solid #778555;";
+        html += "  vertical-align: initial;";
+        html += "  text-align: center;}";
+        html += ".gclh_thanks_table td:nth-child(1) {";
+        html += "  border-right-width: 2px;";
+        html += "  max-width: 100px;";
+        html += "  padding: 0px 4px;";
+        html += "  text-align: initial;}";
+        html += ".gclh_thanks_table td:nth-child(1) a {";
+        html += "  max-width: 100px;";
+        html += "  display: inline-block;";
+        html += "  overflow: hidden;";
+        html += "  vertical-align: bottom;";
+        html += "  white-space: nowrap;";
+        html += "  text-overflow: ellipsis;}";
+        html += ".gclh_thanks_table td img {vertical-align: text-top}";
+        html += ".gclh_thanks_table tr.separator td {border-bottom-width: 2px;}";
         html += ".ll_heading {";
         html += "  margin-top: 0px;";
         html += "  margin-bottom: 0px;";
@@ -9832,8 +9864,12 @@ var mainGC = function() {
         if (settings_make_config_main_areas_hideable && !document.location.href.match(/#a#/i)) {
             var prepareHideable = "<img id='lnk_gclh_config_#name#' title='' src='' style='cursor: pointer'> ";
         } else var prepareHideable = "";
-        if ($('#settings_overlay')[0] && $('#settings_overlay')[0].style.display == "none") $('#settings_overlay')[0].style.display = "";
-        else {
+        if ($('#settings_overlay')[0] && $('#settings_overlay')[0].style.display == "none") {
+            $('#gclh_config_content_thanks').hide();
+            $('#gclh_config_content1').show();
+            $('#gclh_config_content3').show();
+            $('#settings_overlay')[0].style.display = "";
+        } else {
             create_config_css();
             var div = document.createElement("div");
             div.setAttribute("id", "settings_overlay");
@@ -9841,15 +9877,17 @@ var mainGC = function() {
             var html = "";
             html += "<h3 class='gclh_headline' title='Some little things to make life easy (on www.geocaching.com).' >" + scriptNameConfig + " <font class='gclh_small'>v" + scriptVersion + "</font></h3>";
             html += "<div class='gclh_content'>";
+
             html += "<div id='gclh_config_content1'>";
             html += "&nbsp;" + "<font style='float: right; font-size: 11px; ' >";
             html += "<a href='http://geoclub.de/forum/viewforum.php?f=117' title='Help is available on the Geoclub forum' target='_blank'>Help</a> | ";
             html += "<a href='"+urlFaq+"' title='Frequently asked questions on GitHub' target='_blank'>FAQ</a> | ";
             html += "<a href='https://github.com/2Abendsegler/GClh/issues?q=is:issue is:open sort:created-desc' title='Show/open issues on GitHub' target='_blank'>Issues</a> | ";
-            html += "<a href='"+urlChangelog+"' title='Documentation of changes and new features in GClh II on GitHub' target='_blank'>Changelog</a> | ";
-            html += "<a id='check_for_upgrade' href='#' style='cursor: pointer' title='Check for upgrade GClh II'>Check for upgrade</a> | ";
-            html += "<a href='https://github.com/2Abendsegler/GClh/tree/master' title='Development plattform and issue system of GClh II' target='_blank'>GitHub</a> | ";
-            html += "<a id='rc_link' href='#' style='cursor: pointer' title='Reset some configuration data'>Reset</a></font>";
+            html += "<a href='"+urlChangelog+"' title='Documentation of changes and new features on GitHub' target='_blank'>Changelog</a> | ";
+            html += "<a id='check_for_upgrade' href='#' style='cursor: pointer' title='Check for new version'>Upgrade</a> | ";
+            html += "<a href='https://github.com/2Abendsegler/GClh/tree/master' title='Development plattform and issue system' target='_blank'>GitHub</a> | ";
+            html += "<a id='rc_link' href='#' style='cursor: pointer' title='Reset some configuration data'>Reset</a> | ";
+            html += "<a id='thanks_link' href='#' style='cursor: pointer' title='Note of thanks'>Thanks</a></font>";
             html += "</div>";
 
             html += "<div id='gclh_config_content2'>";
@@ -9861,11 +9899,57 @@ var mainGC = function() {
             html += "<input type='radio' name='rc' id='rc_uid' class='gclh_rc'><label for='rc_uid'>Reset your own id for your trackables</label>" + show_help_rc("This option could help you with problems with your own trackables lists, which based on an special id, the uid. The uid are not deleted at GC, but only in GClh. <br><br>After reset, you have to go to your dashboard, so that GClh can save your uid again automatically. You have only to go to this page, you have nothing to do at this page, GClh save the uid automatically. <br><br>At last, choose button \"close\".");
             html += "<font class='gclh_small'> (After reset, go to <a href='/my/' target='_blank'>Dashboard</a> )</font>" + "<br><br>";
             html += "<div class='gclh_rc_area_button'>";
-            html += "<img id='rc_doing' src='' title='' alt='' style='margin-top: 4px; margin-left: -25px; position: absolute;' /><input class='gclh_rc_form' type='button' value='reset' id='rc_reset_button'> <input style='cursor: pointer;' class='gclh_rc_form' type='button' value='close' id='rc_close_button'>";
+            html += "<img id='rc_doing' src='' title='' alt='' style='margin-top: 4px; margin-left: -25px; position: absolute;' /><input class='gclh_rc_form' type='button' value='reset' id='rc_reset_button'> <input class='gclh_rc_form' type='button' value='close' id='rc_close_button'>";
             html += "</div>";
             html += "<pre class='gclh_form' style='display: block; height: 220px; overflow: auto; margin-bottom: 0px; font-size: 12px;' type='text' value='' id='rc_configData' contenteditable='true'></pre>";
             html += "</div>";
             html += "</div>";
+
+            html += "<div id='gclh_config_content_thanks'>";
+            html += "<div class='gclh_thanks_area'>";
+            html += "There are numerous persons who have shaped and advanced the tool with their time and their know-how. Many thanks to all of you!<br><br>";
+            html += "<table class='gclh_thanks_table'>";
+            html += "    <thead>";
+            html += "        <tr><th></th><th><span>Project Management</span></th><th><span>Development Lead</span></th><th><span>Development</span></th><th><span>Bug Reporting</span>" + show_help3("Bugs reported to the issue system on GitHub.") + "</th></tr>";
+            html += "    </thead>";
+            html += "    <tbody>";
+//--> $$006
+            // Bezeichnung:         GC Name                 Abw. GitHub Name   ProjM  DevL   Dev    BugR   Separator
+            html += thanksLineBuild("Ruko2010",             "",                true,  true,  false, true,  false);
+            html += thanksLineBuild("2Abendsegler",         "",                true,  true,  false, true,  true );
+            html += thanksLineBuild("CachingFoX",           "",                false, false, true,  true,  false);
+            html += thanksLineBuild("Herr Ma",              "MarcusBi",        false, false, true,  true,  false);
+            html += thanksLineBuild("DrakMrak",             "",                false, false, true,  false, false);
+            html += thanksLineBuild("Dratenik",             "",                false, false, true,  false, false);
+            html += thanksLineBuild("radlerandi",           "",                false, false, true,  false, false);
+            html += thanksLineBuild("Nicole1338",           "",                false, false, true,  false, false);
+            html += thanksLineBuild("Bananeweizen",         "",                false, false, true,  false, false);
+            html += thanksLineBuild("ramirez_",             "ramirezhr",       false, false, true,  false, false);
+            html += thanksLineBuild("king-ton",             "",                false, false, true,  false, false);
+            html += thanksLineBuild("dontpänic",            "haarspalter",     false, false, true,  false, true );
+            html += thanksLineBuild("arbor95",              "",                false, false, false, true,  false);
+            html += thanksLineBuild("barnold",              "barnoldGEOC",     false, false, false, true,  false);
+            html += thanksLineBuild("BlueEagle23",          "",                false, false, false, true,  false);
+            html += thanksLineBuild("Cappa-d",              "",                false, false, false, true,  false);
+            html += thanksLineBuild("",                     "gboye",           false, false, false, true,  false);
+            html += thanksLineBuild("Die Batzen",           "DieBatzen",       false, false, false, true,  false);
+            html += thanksLineBuild("Donnerknispel",        "",                false, false, false, true,  false);
+            html += thanksLineBuild("Jipem",                "",                false, false, false, true,  false);
+            html += thanksLineBuild("Magpie42",             "MagpieFourtyTwo", false, false, false, true,  false);
+            html += thanksLineBuild("☺Mitchsa & firefly70", "Mitchsa",         false, false, false, true,  false);
+            html += thanksLineBuild("Pontiac_CZ",           "PontiacCZ",       false, false, false, true,  false);
+            html += thanksLineBuild("RoRo",                 "RolandRosenfeld", false, false, false, true,  false);
+            html += thanksLineBuild("stepborc",             "",                false, false, false, true,  false);
+            html += thanksLineBuild("V60",                  "V60GC",           false, false, false, true,  false);
+            html += thanksLineBuild("winkamol",             "",                false, false, false, true,  false);
+            var thanksLastUpdate = "16.03.2019";
+//<-- $$006
+            html += "    </tbody>";
+            html += "</table>";
+            html += "<span style='float: right; font-size: 10px;'>Last update: " + thanksLastUpdate + " </span>";
+            html += "<div class='gclh_thanks_area_button'>";
+            html += "<br><input class='gclh_thanks_form' type='button' value='close' id='thanks_close_button'>";
+            html += "</div></div></div>";
 
             html += "<div id='gclh_config_content3'>";
             html += "<br>";
@@ -10593,9 +10677,9 @@ var mainGC = function() {
             // footer
             html += "<br><br>";
             html += "&nbsp;" + "<input class='gclh_form' type='button' value='" + setValueInSaveButton() + "' id='btn_save'> <input class='gclh_form' type='button' value='save & upload' id='btn_saveAndUpload'> <input class='gclh_form' type='button' value='" + setValueInCloseButton() + "' id='btn_close2'>";
-            html += "<br><div align='right' class='gclh_small' style='float: right; padding-top: 5px;'>License: <a href='"+urlDocu+"license.md#readme' target='_blank' title='GNU General Public License Version 2'>GPLv2</a>, Warranty: <a href='"+urlDocu+"warranty.md#readme' target='_blank' title='GC little helper comes with ABSOLUTELY NO WARRANTY'>NO</a></div><br>";
+            html += "<br><div align='right' class='gclh_small' style='float: right; padding-top: 5px;'>License: <a href='"+urlDocu+"license.md#readme' target='_blank' title='GNU General Public License Version 2'>GPLv2</a> | Warranty: <a href='"+urlDocu+"warranty.md#readme' target='_blank' title='GC little helper II comes with ABSOLUTELY NO WARRANTY'>NO</a></div><br>";
             var end = (new Date()).getFullYear();
-            html += "<div align='right' class='gclh_small' style='float: right;'>Copyright © 2010-2016 <a href='/profile/?u=Torsten-' target='_blank'>Torsten Amshove</a>, 2016-"+end+" <a href='/profile/?u=2Abendsegler' target='_blank'>2Abendsegler</a>, 2017-"+end+" <a href='/profile/?u=Ruko2010' target='_blank'>Ruko2010</a></div>";
+            html += "<div align='right' class='gclh_small' style='float: right;'>Copyright © 2010-2016 <a href='/profile/?u=Torsten-' target='_blank' title='GC profile for Torsten-'>Torsten Amshove</a>, 2016-"+end+" <a href='/profile/?u=2Abendsegler' target='_blank' title='GC profile for 2Abendsegler'>2Abendsegler</a>, 2017-"+end+" <a href='/profile/?u=Ruko2010' target='_blank' title='GC profile for Ruko2010'>Ruko2010</a></div>";
             html += "</div></div>";
 
             // Config Content: Aufbauen, Reset Area verbergen, Special Links Nearest List/Map, Own Trackables versorgen.
@@ -10603,6 +10687,7 @@ var mainGC = function() {
             div.innerHTML = html;
             $('body')[0].appendChild(div);
             $('#gclh_config_content2').hide();
+            $('#gclh_config_content_thanks').hide();
             $('#settings_show_homezone,#settings_use_gclh_layercontrol,#settings_bookmarks_top_menu,#settings_bookmarks_top_menu_h').addClass('shadowBig');
             setSpecialLinks();
 
@@ -10843,6 +10928,8 @@ var mainGC = function() {
             $('#rc_link')[0].addEventListener("click", rcPrepare, false);
             $('#rc_reset_button')[0].addEventListener("click", rcReset, false);
             $('#rc_close_button')[0].addEventListener("click", rcClose, false);
+            $('#thanks_link')[0].addEventListener("click", thanksShow, false);
+            $('#thanks_close_button')[0].addEventListener("click", btnClose, false);
             $('#gclh_linklist_link_1')[0].addEventListener("click", gclh_show_linklist, false);
             $('#gclh_linklist_link_2')[0].addEventListener("click", gclh_show_linklist, false);
             $('#btn_close2')[0].addEventListener("click", btnClose, false);
@@ -11873,6 +11960,22 @@ var mainGC = function() {
         }
         setValue("show_box_"+stamm, (whatToDo == "show" ? false : true));
     }
+
+// Show config screen "thanks".
+    function thanksShow() {
+        if (document.getElementById('settings_overlay')) document.getElementById('settings_overlay').style.overflow = "hidden";
+        $('#gclh_config_content1').hide();
+        $('#gclh_config_content3').hide();
+        $('#gclh_config_content_thanks').show(600);
+    }
+
+// Build line with user and contribution on config screen "thanks".
+    function thanksLineBuild(gcname, ghname, proj, devl, dev, err, sepa) {
+        return "<tr " + (sepa == true ? "class='separator'" : "") + ">" +
+               "<td>" + (gcname != "" ? "<a href='/profile/?u="+urlencode(gcname)+"' target='_blank' title='GC profile for "+gcname+"'>"+gcname+"</a>" : ghname) + "</td>" +
+               thanksFlagBuild(proj) + thanksFlagBuild(devl) + thanksFlagBuild(dev) + thanksFlagBuild(err) + "</tr>";
+    }
+    function thanksFlagBuild(flag) {return "<td><img src='" + (flag == true ? global_green_tick : "") + "'></td>";}
 
 //////////////////////////////
 // Config Reset Functions
