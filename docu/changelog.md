@@ -72,6 +72,9 @@
 	<li>
 		<strong>Fix:</strong> Search field in header doesn't work with a location name [<a href="https://github.com/2Abendsegler/GClh/issues/1002" title="Issue 1002">1002</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 	</li>
+	<li>
+		<strong>Fix:</strong> BRouter has a new URL schema [<a href="https://github.com/2Abendsegler/GClh/issues/1007" title="Issue 1007">1007</a> / <a href="https://www.geocaching.com/profile/?u=RadlerAndi" title="Thanks to RadlerAndi">RadlerAndi</a>]<br>
+	</li>
 </ul>
 (?.?.2019)<br>
 released by <a href="https://www.geocaching.com/profile/?u=Ruko2010">Ruko2010</a><br>
