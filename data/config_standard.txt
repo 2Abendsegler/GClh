@@ -237,6 +237,7 @@
   "settings_both_tabs_list_of_pqs_one_page": false,
   "settings_pq_previewmap": true,
   "settings_past_events_on_bm": true,
+  "settings_show_log_totals": true,
   "settings_pq_previewmap_layer": "Geocaching",
   "settings_map_overview_layer": "Geocaching"
 }
