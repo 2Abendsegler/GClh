@@ -51,6 +51,11 @@
 ## v0.9.17:
 <ul>
 	<li>
+		<strong>New:</strong> We added Note of Thanks to honor all the contributors to this project. [<a href="https://github.com/2Abendsegler/GClh/issues/1004" title="Issue 1004">1004</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		You can access it via the config screen: <br />
+		<img src="../images/0.9.17/Screen02.png" alt="Screen02.png"><br>
+	</li>
+	<li>
 		<strong>Fix:</strong> GreatStory and Helpful Buttons get deleted by GClh [<a href="https://github.com/2Abendsegler/GClh/issues/663" title="Issue 663">663</a> / <a href="https://www.geocaching.com/profile/?u=Ruko2010" title="Thanks to Ruko2010">Ruko2010</a>]<br>
 		Groundspeak is testing a new Vote System for Logs in certain countrys (i.e. Norway). If you want to have a look at it, you can visit for example: <a href="https://coord.info/GC51MPR" title="GC51MPR">GC51MPR</a>.</br>
 		GClh is now adding the Vote Buttons correctly to the logs and replaces the sorting function with its own function to ensure correct work.<br>
