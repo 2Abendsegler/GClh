@@ -520,6 +520,7 @@ var variablesInit = function(c) {
     c.settings_embedded_smartlink_ignorelist = getValue("settings_embedded_smartlink_ignorelist", true);
     c.settings_both_tabs_list_of_pqs_one_page = getValue("settings_both_tabs_list_of_pqs_one_page", false);
     c.settings_past_events_on_bm = getValue("settings_past_events_on_bm", true);
+    c.settings_show_log_totals = getValue("settings_show_log_totals", true);
 
     try {
         if (c.userToken === null) {
@@ -1718,6 +1719,17 @@ var mainGC = function() {
             }
             showLatestLogsSymbols(0);
         } catch(e) {gclh_error("Show the latest logs symbols",e);}
+    }
+
+// Show log totals symbols at the top of cache listing.
+    if (is_page("cache_listing") && settings_show_log_totals && $('.LogTotals')[0] && $('#ctl00_ContentBody_size')[0]) {
+        try {
+            var div = document.createElement('div');
+            div.className = "gclh_LogTotals Clear";
+            div.innerHTML = $('.LogTotals')[0].innerHTML.replace(/alt="(.*?)"/g, "alt=\" \"").replace(/(&nbsp;){5}/g, "&nbsp;&nbsp;");
+            $('#ctl00_ContentBody_size')[0].parentNode.insertBefore(div, $('#ctl00_ContentBody_size')[0].nextSibling.nextSibling.nextSibling);
+            appendCssStyle('.gclh_LogTotals {float: right;} .gclh_LogTotals img {vertical-align: bottom;}');
+        } catch(e) {gclh_error("Show log totals symbols at the top",e);}
     }
 
 // Copy GC Code to clipboard.
@@ -10352,6 +10364,9 @@ var mainGC = function() {
                 html += "  <option value='" + i + "' " + (settings_show_latest_logs_symbols_count == i ? "selected=\"selected\"" : "") + ">" + i + "</option>";
             }
             html += "</select> latest logs symbols at the top" + show_help("With this option, the choosen count of the latest logs symbols is shown at the top of the cache listing.<br><br>" + t_reqLlwG) + "<br>";
+            html += newParameterOn3;
+            html += checkboxy('settings_show_log_totals', 'Show the log totals symbols at the top') + "<br>";
+            html += newParameterVersionSetzen(0.9) + newParameterOff;
             html += checkboxy('settings_show_remove_ignoring_link', 'Show \"Stop Ignoring\", if cache is already ignored') + show_help("This option replace the \"Ignore\" link description with the \"Stop Ignoring\" link description in the cache listing, if the cache is already ignored.") + prem + "<br>";
             html += checkboxy('settings_map_overview_build', 'Show cache location in overview map') + show_help("With this option there will be an additional map top right in the cache listing as an overview of the cache location. This was available earlier on GC standard.") + "<br>";
             html += newParameterOn3;
@@ -11444,6 +11459,7 @@ var mainGC = function() {
                 'settings_embedded_smartlink_ignorelist',
                 'settings_both_tabs_list_of_pqs_one_page',
                 'settings_past_events_on_bm',
+                'settings_show_log_totals',
             );
 
             for (var i = 0; i < checkboxes.length; i++) {
