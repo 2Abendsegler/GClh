@@ -9917,6 +9917,7 @@ var mainGC = function() {
             // Bezeichnung:         GC Name                 Abw. GitHub Name   ProjM  DevL   Dev    BugR   Separator
             html += thanksLineBuild("Ruko2010",             "",                true,  true,  false, true,  false);
             html += thanksLineBuild("2Abendsegler",         "",                true,  true,  false, true,  true );
+            // Rangliste Development von hier https://github.com/2Abendsegler/GClh/graphs/contributors.
             html += thanksLineBuild("CachingFoX",           "",                false, false, true,  true,  false);
             html += thanksLineBuild("Herr Ma",              "MarcusBi",        false, false, true,  true,  false);
             html += thanksLineBuild("DrakMrak",             "",                false, false, true,  false, false);
@@ -9927,6 +9928,7 @@ var mainGC = function() {
             html += thanksLineBuild("ramirez_",             "ramirezhr",       false, false, true,  false, false);
             html += thanksLineBuild("king-ton",             "",                false, false, true,  false, false);
             html += thanksLineBuild("dontpänic",            "haarspalter",     false, false, true,  false, true );
+            // Bug Reporting alphabetisch.
             html += thanksLineBuild("arbor95",              "",                false, false, false, true,  false);
             html += thanksLineBuild("barnold",              "barnoldGEOC",     false, false, false, true,  false);
             html += thanksLineBuild("BlueEagle23",          "",                false, false, false, true,  false);
@@ -9942,7 +9944,7 @@ var mainGC = function() {
             html += thanksLineBuild("stepborc",             "",                false, false, false, true,  false);
             html += thanksLineBuild("V60",                  "V60GC",           false, false, false, true,  false);
             html += thanksLineBuild("winkamol",             "",                false, false, false, true,  false);
-            var thanksLastUpdate = "16.03.2019";
+            var thanksLastUpdate = "19.03.2019";
 //<-- $$006
             html += "    </tbody>";
             html += "</table>";
@@ -10929,7 +10931,7 @@ var mainGC = function() {
             $('#rc_reset_button')[0].addEventListener("click", rcReset, false);
             $('#rc_close_button')[0].addEventListener("click", rcClose, false);
             $('#thanks_link')[0].addEventListener("click", thanksShow, false);
-            $('#thanks_close_button')[0].addEventListener("click", btnClose, false);
+            $('#thanks_close_button')[0].addEventListener("click", gclh_showConfig, false);
             $('#gclh_linklist_link_1')[0].addEventListener("click", gclh_show_linklist, false);
             $('#gclh_linklist_link_2')[0].addEventListener("click", gclh_show_linklist, false);
             $('#btn_close2')[0].addEventListener("click", btnClose, false);
