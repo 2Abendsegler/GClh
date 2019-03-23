@@ -51,9 +51,15 @@
 ## v0.9.17:
 <ul>
 	<li>
-		<strong>New:</strong> We added Note of Thanks to honor all the contributors to this project. [<a href="https://github.com/2Abendsegler/GClh/issues/1004" title="Issue 1004">1004</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		<strong>New:</strong> We added a Note of Thanks to honor all the contributors to this project. [<a href="https://github.com/2Abendsegler/GClh/issues/1004" title="Issue 1004">1004</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 		You can access it via the config screen: <br />
 		<img src="../images/0.9.17/Screen02.png" alt="Screen02.png"><br>
+	</li>
+	<li>
+		<strong>New:</strong> Show log totals symbols at the top of the cache listing. [<a href="https://github.com/2Abendsegler/GClh/issues/1009" title="Issue 1009">1009</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler" >2Abendsegler</a>]<br>
+		<img src="../images/0.9.17/Screen03.png" alt="Screen03.png"><br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_show_log_totals" title="Link to your GClh Config" >Settings -> Listing:<br>
+		<img src="../images/0.9.17/Screen04.png" alt="Screen04.png"></a><br>
 	</li>
 	<li>
 		<strong>Fix:</strong> GreatStory and Helpful Buttons get deleted by GClh [<a href="https://github.com/2Abendsegler/GClh/issues/663" title="Issue 663">663</a> / <a href="https://www.geocaching.com/profile/?u=Ruko2010" title="Thanks to Ruko2010">Ruko2010</a>]<br>
