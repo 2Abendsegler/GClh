@@ -159,7 +159,7 @@ var constInit = function(c) {
     bookmark("Drafts Upload", "/my/uploadfieldnotes.aspx", c.bookmarks);
     bookmark("Pocket Queries", "/pocket/default.aspx", c.bookmarks);
     bookmark("Pocket Queries Saved", "/pocket/default.aspx#DownloadablePQs", c.bookmarks);
-    bookmark("Bookmarks", "/bookmarks/default.aspx", c.bookmarks);
+    bookmark("Bookmarks", "/account/lists", c.bookmarks);
     bookmark("Notifications", "/notify/default.aspx", c.bookmarks);
     profileSpecialBookmark("Find Player", defaultFindPlayerLink, "lnk_findplayer", c.bookmarks);
     bookmark("E-Mail", "/email/default.aspx", c.bookmarks);
@@ -479,7 +479,6 @@ var variablesInit = function(c) {
     c.settings_remove_banner_for_garminexpress = getValue("settings_remove_banner_for_garminexpress", false);
     c.settings_remove_banner_blue = getValue("settings_remove_banner_blue", false);
     c.settings_compact_layout_bm_lists = getValue("settings_compact_layout_bm_lists", true);
-    c.settings_compact_layout_list_of_bm_lists = getValue("settings_compact_layout_list_of_bm_lists", true);
     c.settings_compact_layout_pqs = getValue("settings_compact_layout_pqs", true);
     c.settings_compact_layout_list_of_pqs = getValue("settings_compact_layout_list_of_pqs", true);
     c.settings_compact_layout_nearest = getValue("settings_compact_layout_nearest", true);
@@ -4087,54 +4086,6 @@ var mainGC = function() {
             if ($('#ctl00_ContentBody_tbName')[0].value == "") $('#ctl00_ContentBody_tbName')[0].value = $('#ctl00_ContentBody_lnkListName')[0].innerHTML;
             $('#ctl00_ContentBody_cbIncludePQNameInFileName')[0].checked = true;
         } catch(e) {gclh_error("Name for PQ from bookmark",e);}
-    }
-
-// Improve list of bookmark lists.
-    if (document.location.href.match(/\.com\/(bookmarks\/default|my\/lists)\.aspx/) && !document.location.href.match(/&WptTypeID=/) && $('table.Table')[0]) {
-        try {
-            var css = "";
-            // Compact layout.
-            if (settings_compact_layout_list_of_bm_lists) {
-                // Header:
-                css += ".ListManagementFavoritesWidget, .ListsManagemntWatchlistWidget {margin: 0 0 1.5em; padding: 0.5em;}";
-                css += ".BreadcrumbWidget p {margin-top: 0;} .span-20.last p:nth-child(1) {margin-bottom: 0}";
-                $('#divContentMain div h2').first().remove();
-                $('#divContentMain p.NoBottomSpacing').first().remove();
-                $('#divContentMain div h3').first().closest('div').remove();
-                $('#ctl00_ContentBody_hlCreateNewBookmarkList').closest('p').prop("style", "margin: 0 0 0.5em");
-                // Table:
-                css += "table.Table tr {line-height: 16px;} table.Table th, table.Table td {border: 1px solid #fff;}";
-                css += "table.Table td, table.Table td a {vertical-align: top !important;} table.Table td img {vertical-align: top !important; padding-right: 8px;}";
-                $('table.Table thead tr')[0].children[1].innerHTML = "Status";
-                $('table.Table thead tr')[0].children[5].innerHTML = "PQ";
-                $('table.Table thead tr')[0].children[6].innerHTML = "KML";
-                var span = document.createElement("span");
-                span.innerHTML += '<input id="gclh_hideTextBm" title="Show/hide Text in column Description" value="Hide Text" class="gclh_bt gclh_desc" type="button">';
-                $('table.Table thead tr th:nth-child(4)')[0].append(span);
-                css += ".gclh_hideBm {display: none;}";
-                css += ".gclh_bt {margin-left: 4px;} .working {opacity: 0.3; cursor: default;}";
-                $('#gclh_hideTextBm')[0].addEventListener("click", hideTextBm, false);
-                var lines = $('table.Table tbody tr');
-                for (var i = 0; i < lines.length; i++) {
-                    while (lines[i].children[2].childNodes[2]) {lines[i].children[2].childNodes[2].remove();}
-                    lines[i].children[1].style.whiteSpace = "nowrap";
-                    lines[i].children[3].innerHTML = '<span>' + lines[i].children[3].innerHTML + '</span>';
-                    lines[i].children[4].style.whiteSpace = "nowrap";
-                    lines[i].children[4].children[0].innerHTML = '<img src="/images/icons/16/edit.png" alt="Edit">';
-                    lines[i].children[4].children[1].innerHTML = '<img src="/images/icons/16/watch.png" alt="View">';
-                    lines[i].children[4].children[2].innerHTML = '<img src="/images/icons/16/delete.png" alt="Delete">';
-                    lines[i].children[4].childNodes[4].remove();
-                    lines[i].children[4].childNodes[2].remove();
-                    lines[i].children[5].children[0].innerHTML = '<img src="/images/icons/16/bookmark_pq.png" alt="Create PQ">';
-                    lines[i].children[6].children[0].innerHTML = '<img src="/images/icons/16/download.png" alt="Download">';
-                }
-                // Footer:
-                $('#divContentMain div ul').first().remove();
-            }
-            // Number of BMLs.
-            if ($('.span-10 h3')[0]) $('.span-10 h3')[0].innerHTML += "&nbsp;<span title='Number of Bookmark Lists of the maximum allowed 100'>("+$('table.Table tbody tr').length+"/100)</span>";
-            appendCssStyle(css);
-        } catch(e) {gclh_error("Improve list of bookmark lists",e);}
     }
 
 // Improve bookmark lists.
@@ -10114,7 +10065,6 @@ var mainGC = function() {
             html += checkboxy('settings_show_sums_in_bookmark_lists', 'Show number of caches in bookmark lists') + show_help("With this option the number of caches and the number of selected caches in the categories \"All\", \"Found\", \"Archived\" and \"Deactivated\", corresponding to the select buttons, are shown in bookmark lists at the end of the list.") + "<br>";
             html += content_settings_submit_log_button.replace("log_button","log_buttonX0");
             html += newParameterOn2;
-            html += checkboxy('settings_compact_layout_list_of_bm_lists', 'Show compact layout in list of bookmark lists') + "<br>";
             html += checkboxy('settings_compact_layout_bm_lists', 'Show compact layout in bookmark lists') + "<br>";
             html += newParameterVersionSetzen(0.8) + newParameterOff;
             html += newParameterOn3;
@@ -11423,7 +11373,6 @@ var mainGC = function() {
                 'settings_remove_banner_for_garminexpress',
                 'settings_remove_banner_blue',
                 'settings_compact_layout_bm_lists',
-                'settings_compact_layout_list_of_bm_lists',
                 'settings_compact_layout_pqs',
                 'settings_compact_layout_list_of_pqs',
                 'settings_compact_layout_nearest',
