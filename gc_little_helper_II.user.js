@@ -5802,26 +5802,21 @@ var mainGC = function() {
             }
 
             // Reinit initalLogs.
-            if ((!document.getElementById("cache_logs_table") && !document.getElementById("cache_logs_table2")) ||
-                (!document.getElementById("cache_logs_table").getElementsByTagName("tbody") && !document.getElementById("cache_logs_table2").getElementsByTagName("tbody")) ||
-                (document.getElementById("cache_logs_table").getElementsByTagName("tbody").length == 0 && document.getElementById("cache_logs_table2").getElementsByTagName("tbody").length == 0)) break overwrite_log_template;
-            var tbody = (document.getElementById("cache_logs_table2") || document.getElementById("cache_logs_table")).getElementsByTagName("tbody");
-            if (tbody.length > 0) {
-                tbody = tbody[0];
-                if (tbody.children.length > 0 && isTM === false) {
-                    var initialLogData = chromeUserData.initalLogs || unsafeWindow.initalLogs || initalLogs;
-                    var inclAvatars = chromeUserData.includeAvatars || unsafeWindow.includeAvatars || includeAvatars;
-                    var newInitalLogs = $("#tmpl_CacheLogRow").tmpl(initialLogData.data, {
-                        includeAvatars: inclAvatars
-                    });
-                    for (var j = 0; j < newInitalLogs.length && j < tbody.children.length; j++) {
-                        unsafeWindow.$(tbody.children[j]).replaceWith(newInitalLogs[j]);
-                    }
-                    unsafeWindow.$('a.tb_images').fancybox({'type': 'image', 'titlePosition': 'inside'});
-                    gclh_add_vip_icon();
-                    setLinesColorInCacheListing();
-                }
+            // Remove all logs
+            unsafeWindow.$("#cache_logs_table tbody").children().remove();
+            
+            var initialLogs = unsafeWindow.initialLogs;
+            var inclAvatars = chromeUserData.includeAvatars || unsafeWindow.includeAvatars || includeAvatars;
+
+            for (var i = 0; i < initialLogs.data.length; i++) {
+                var newBody = unsafeWindow.$(document.createElement("TBODY"));
+                unsafeWindow.$("#tmpl_CacheLogRow_gclh").tmpl(initialLogs.data[i]).appendTo(newBody);
+                unsafeWindow.$(document.getElementById("cache_logs_table")).append(newBody.children());
             }
+            unsafeWindow.$('a.tb_images').fancybox({'type': 'image', 'titlePosition': 'inside'});
+            gclh_add_vip_icon();
+            setLinesColorInCacheListing();
+
             function loadListener(e) {
                 gclh_add_vip_icon();
                 setLinesColorInCacheListing();
