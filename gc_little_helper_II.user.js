@@ -6094,6 +6094,12 @@ var mainGC = function() {
                                 log_infos_long[index]["date"] = json.data[i].Visited;
                                 log_infos_long[index]["log"] = json.data[i].LogText;
                                 log_infos_long[index]["membership_level"] = json.data[i].creator.GroupTitle;
+
+                                if(json.data[i].LogType == "Publish Listing"){
+                                    log_infos[user][index]["membership_level"] = "Reviewer";
+                                    log_infos_long[index]["membership_level"] = "Reviewer";
+                                }
+
                                 index++;
                             }
                         }
