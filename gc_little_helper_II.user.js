@@ -6159,7 +6159,7 @@ var mainGC = function() {
                     }
                     setLinesColorInCacheListing();
                 }
-                // gclh_load_helper(1);
+                gclh_load_helper(1);
             }
             if (settings_show_all_logs) {
                 var logsCount = parseInt(settings_show_all_logs_count);
