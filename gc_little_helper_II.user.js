@@ -5254,6 +5254,13 @@ var mainGC = function() {
                         if (!log_infos[owner_name]) log_infos[owner_name] = new Array();
                         gclh_build_list(owner_name);
                         for (var i = 0; i < global_vips.length; i++) {gclh_build_list(global_vips[i]);}
+
+                        console.log(log_infos);
+
+                        // Add Reviewer data
+                        for (var i = 0; i < log_infos_long.length; i++) {
+                            if(log_infos_long[i]["membership_level"] == "Reviewer") gclh_build_list(log_infos_long[i]["user"]);
+                        }
                     }
 
                     // "Not found"-Liste erstellen.
