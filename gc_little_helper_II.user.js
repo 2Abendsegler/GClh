@@ -5156,7 +5156,7 @@ var mainGC = function() {
                         if (getValue("settings_load_logs_with_gclh") == false) return;
                         for (var i = 0; i < log_infos_long.length; i++) {
                             var user = log_infos_long[i]["user"];
-                            if (in_array(user, global_vips) || user == owner_name) {
+                            if (in_array(user, global_vips) || user == owner_name || log_infos_long[i]["membership_level"] == "Reviewer") {
                                 if (!log_infos_long[i]["date"]) continue;
                                 if (log_infos_long[i]["icon"].match(/\/(2|10)\.png$/)) users_found.push(user);  // Für not found liste.
                                 var span = document.createElement("span");
@@ -6079,12 +6079,14 @@ var mainGC = function() {
                                 log_infos[user][index]["id"] = json.data[i].LogID;
                                 log_infos[user][index]["date"] = json.data[i].Visited;
                                 log_infos[user][index]["log"] = json.data[i].LogText;
+                                log_infos[user][index]["membership_level"] = json.data[i].creator.GroupTitle;
                                 log_infos_long[index] = new Object();
                                 log_infos_long[index]["user"] = user;
                                 log_infos_long[index]["icon"] = "/images/logtypes/" + json.data[i].LogTypeImage;
                                 log_infos_long[index]["id"] = json.data[i].LogID;
                                 log_infos_long[index]["date"] = json.data[i].Visited;
                                 log_infos_long[index]["log"] = json.data[i].LogText;
+                                log_infos_long[index]["membership_level"] = json.data[i].creator.GroupTitle;
                                 index++;
                             }
                         }
