@@ -199,7 +199,6 @@
   "settings_remove_banner_for_garminexpress": false,
   "settings_remove_banner_blue": false,
   "settings_compact_layout_bm_lists": true,
-  "settings_compact_layout_list_of_bm_lists": true,
   "settings_compact_layout_pqs": true,
   "settings_compact_layout_list_of_pqs": true,
   "settings_compact_layout_nearest": true,
