@@ -5762,7 +5762,6 @@ var mainGC = function() {
             css += ".LogDisplayRight .LogText {min-height: unset; padding-top: 0; margin-bottom: 8px;}";
             css += ".logOwnerProfileName {padding-top: 0; margin-bottom: 8px;} .logIcons, .logOwnerAvatar {margin-bottom: 4px;}";
             css += ".markdown-output {margin: unset;}";
-            css += "#cache_logs_table {background-color: blue;}";
             if (!settings_hide_avatar) css += ".markdown-output {min-height: 6em;}";
             // Bilderrahmen im Log noch etwas ausrichten und Trenner von Text und User auch hier einbauen.
             css += ".TableLogContent {padding-left: 0.5em; border-left: 1px solid #d7d7d7;}";
