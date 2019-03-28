@@ -62,6 +62,9 @@
 		<img src="../images/0.9.17/Screen04.png" alt="Screen04.png"></a><br>
 	</li>
 	<li>
+		<strong>New:</strong> Replace initial Logs faster with GClh Template  [<a href="https://github.com/2Abendsegler/GClh/issues/995" title="Issue 995">995</a> / <a href="https://www.geocaching.com/profile/?u=Ruko2010" title="Thanks to Ruko2010" >Ruko2010</a>]<br>
+	</li>
+	<li>
 		<strong>Fix:</strong> GreatStory and Helpful Buttons get deleted by GClh [<a href="https://github.com/2Abendsegler/GClh/issues/663" title="Issue 663">663</a> / <a href="https://www.geocaching.com/profile/?u=Ruko2010" title="Thanks to Ruko2010">Ruko2010</a>]<br>
 		Groundspeak is testing a new Vote System for Logs in certain countrys (i.e. Norway). If you want to have a look at it, you can visit for example: <a href="https://coord.info/GC51MPR" title="GC51MPR">GC51MPR</a>.</br>
 		GClh is now adding the Vote Buttons correctly to the logs and replaces the sorting function with its own function to ensure correct work.<br>
@@ -88,6 +91,9 @@
 	</li>
 	<li>
 		<strong>Fix:</strong> Missing button create pocket query on foreign bookmarklists. [<a href="https://github.com/2Abendsegler/GClh/issues/1012" title="Issue 1012">1012</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> Build back old designed page list of bookmark lists and Rename link list of bookmark lists to new designed page. [<a href="https://github.com/2Abendsegler/GClh/issues/1015" title="Issue 1015">1015</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 	</li>
 </ul>
 (?.?.2019)<br>
