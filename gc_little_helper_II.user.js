@@ -5802,20 +5802,26 @@ var mainGC = function() {
             }
 
             // Reinit initalLogs.
-            // Remove all logs
-            unsafeWindow.$("#cache_logs_table tbody").children().remove();
-            
-            var initialLogs = unsafeWindow.initialLogs;
-            var inclAvatars = chromeUserData.includeAvatars || unsafeWindow.includeAvatars || includeAvatars;
+            // Timeout is necessary because otherwise the fancybox for images is not working (WTF??)
+            setTimeout(function(){
+                // Remove all logs
+                unsafeWindow.$("#cache_logs_table tbody").children().remove();
+                
+                var initialLogs = unsafeWindow.initialLogs;
+                var inclAvatars = chromeUserData.includeAvatars || unsafeWindow.includeAvatars || includeAvatars;
 
-            for (var i = 0; i < initialLogs.data.length; i++) {
-                var newBody = unsafeWindow.$(document.createElement("TBODY"));
-                unsafeWindow.$("#tmpl_CacheLogRow_gclh").tmpl(initialLogs.data[i]).appendTo(newBody);
-                unsafeWindow.$(document.getElementById("cache_logs_table")).append(newBody.children());
-            }
-            unsafeWindow.$('a.tb_images').fancybox({'type': 'image', 'titlePosition': 'inside'});
-            gclh_add_vip_icon();
-            setLinesColorInCacheListing();
+                for (var i = 0; i < initialLogs.data.length; i++) {
+                    var newBody = unsafeWindow.$(document.createElement("TBODY"));
+                    unsafeWindow.$("#tmpl_CacheLogRow_gclh").tmpl(initialLogs.data[i]).appendTo(newBody);
+                    unsafeWindow.$(document.getElementById("cache_logs_table")).append(newBody.children());
+                }
+            
+                unsafeWindow.$('a.tb_images').fancybox({'type': 'image', 'titlePosition': 'inside'});
+                gclh_add_vip_icon();
+                setLinesColorInCacheListing();
+            }, 0);
+            
+            
 
             function loadListener(e) {
                 gclh_add_vip_icon();
@@ -6153,7 +6159,7 @@ var mainGC = function() {
                     }
                     setLinesColorInCacheListing();
                 }
-                gclh_load_helper(1);
+                // gclh_load_helper(1);
             }
             if (settings_show_all_logs) {
                 var logsCount = parseInt(settings_show_all_logs_count);
