@@ -5262,6 +5262,8 @@ var mainGC = function() {
                         // Add Reviewer data
                         for (var i = 0; i < log_infos_long.length; i++) {
                             if(log_infos_long[i]["membership_level"] == "Reviewer"){
+                                // Test if we already added him
+                                if(in_array(log_infos_long[i]["user"], reviewer)) continue;
                                 gclh_build_list(log_infos_long[i]["user"], true);
                                 reviewer.push(log_infos_long[i]["user"]);
                             }
