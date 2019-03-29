@@ -5212,8 +5212,7 @@ var mainGC = function() {
                             } else if (user == myself){
                                 span.appendChild(document.createTextNode("Me: "));  
                             } else if (is_reviewer){
-                                span.appendChild(document.createTextNode("Reviewer: ")); 
-
+                                span.appendChild(document.createTextNode("Reviewer: "));
                             }
                             span.appendChild(profile);
                             // Build VIP Icon. Wenn es Owner ist und Owner in VUP array, dann VUP Icon.
@@ -5253,6 +5252,8 @@ var mainGC = function() {
                         }
                     }
 
+
+                    var reviewer = new Array();
                     owner_name = html_to_str(owner_name);
                     if (settings_show_long_vip) gclh_build_long_list();
                     else {
@@ -5260,9 +5261,17 @@ var mainGC = function() {
                         gclh_build_list(owner_name);
                         // Add Reviewer data
                         for (var i = 0; i < log_infos_long.length; i++) {
-                            if(log_infos_long[i]["membership_level"] == "Reviewer") gclh_build_list(log_infos_long[i]["user"], true);
+                            if(log_infos_long[i]["membership_level"] == "Reviewer"){
+                                gclh_build_list(log_infos_long[i]["user"], true);
+                                reviewer.push(log_infos_long[i]["user"]);
+                            }
                         }
-                        for (var i = 0; i < global_vips.length; i++) {gclh_build_list(global_vips[i]);}
+
+                        for (var i = 0; i < global_vips.length; i++) {
+                            // do not add Reviewer again
+                            if(in_array(global_vips[i], reviewer)) continue;
+                            gclh_build_list(global_vips[i]);
+                        }
                     }
 
                     // "Not found"-Liste erstellen.
