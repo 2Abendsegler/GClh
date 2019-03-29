@@ -5198,7 +5198,7 @@ var mainGC = function() {
                         }
                     }
 
-                    function gclh_build_list(user) {
+                    function gclh_build_list(user, is_reviewer = false) {
                         if (getValue("settings_load_logs_with_gclh") == false) return;
                         if (!show_owner && owner_name && owner_name == user) return true;
                         if (in_array(user, all_users) || (owner_name == user)) {
@@ -5209,7 +5209,12 @@ var mainGC = function() {
                             if (show_owner && owner_name && owner_name == user) {
                                 span.appendChild(document.createTextNode("Owner: "));
                                 show_owner = false;
-                            } else if (user == myself) span.appendChild(document.createTextNode("Me: "));
+                            } else if (user == myself){
+                                span.appendChild(document.createTextNode("Me: "));  
+                            } else if (is_reviewer){
+                                span.appendChild(document.createTextNode("Reviewer: ")); 
+
+                            }
                             span.appendChild(profile);
                             // Build VIP Icon. Wenn es Owner ist und Owner in VUP array, dann VUP Icon.
                             if (owner_name && owner_name == user && in_array(user, global_vups)) link = gclh_build_vipvup(user, global_vups, "vup");
@@ -5253,14 +5258,11 @@ var mainGC = function() {
                     else {
                         if (!log_infos[owner_name]) log_infos[owner_name] = new Array();
                         gclh_build_list(owner_name);
-                        for (var i = 0; i < global_vips.length; i++) {gclh_build_list(global_vips[i]);}
-
-                        console.log(log_infos);
-
                         // Add Reviewer data
                         for (var i = 0; i < log_infos_long.length; i++) {
-                            if(log_infos_long[i]["membership_level"] == "Reviewer") gclh_build_list(log_infos_long[i]["user"]);
+                            if(log_infos_long[i]["membership_level"] == "Reviewer") gclh_build_list(log_infos_long[i]["user"], true);
                         }
+                        for (var i = 0; i < global_vips.length; i++) {gclh_build_list(global_vips[i]);}
                     }
 
                     // "Not found"-Liste erstellen.
