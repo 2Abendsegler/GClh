@@ -561,7 +561,7 @@ var mainGMaps = function() {
         // Add link to GC Map on Google Maps page.
         if (settings_add_link_gc_map_on_google_maps) {
             function addGcButton(waitCount) {
-                if (document.getElementById("gbsfw")) {
+                if (document.getElementById("gbwa")) {
                     var code = "";
                     code += "function openGcMap(){";
                     code += "  var matches = document.location.href.match(/@(-?[0-9.]*),(-?[0-9.]*),([0-9.]*)z/);";
@@ -599,7 +599,7 @@ var mainGMaps = function() {
                     aTag.setAttribute("title", "Geocaching Map");
                     var url = "url('" + http + "://www.geocaching.com/images/about/logos/geocaching/Logo_Geocaching_color_notext_32.png')";
                     aTag.setAttribute("style", "display: inline-block; vertical-align: middle; height: 32px; width: 32px; background-image: " + url + ";");
-                    var side = document.getElementById("gbsfw").parentNode;
+                    var side = document.getElementById("gbwa").parentNode;
                     div.appendChild(script);
                     div.appendChild(aTag);
                     side.parentNode.insertBefore(div, side);
@@ -610,7 +610,7 @@ var mainGMaps = function() {
         // Hide left sidebar on Google Maps.
         if (settings_hide_left_sidebar_on_google_maps) {
             function hideLeftSidebar(waitCount) {
-                if ($('#gbsfw')[0] && $('.widget-pane-toggle-button')[0] && $('.widget-pane')[0]) {
+                if ($('#gbwa')[0] && $('.widget-pane-toggle-button')[0] && $('.widget-pane')[0]) {
                     if (!$('.widget-pane')[0].className.match("widget-pane-collapsed")) $('.widget-pane-toggle-button')[0].click();
                 } else {waitCount++; if (waitCount <= 60) setTimeout(function(){hideLeftSidebar(waitCount);}, 250);}
             }
