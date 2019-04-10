@@ -6377,7 +6377,7 @@ var mainGC = function() {
                         });
                     } catch(e) {gclh_error("function getIgnoreList()",e);}
                 }
-                var sidebarLists = $($('ul.link-block a[href*="/my/watchlist.aspx"]'));
+                var sidebarLists = $($('ul.link-block:not(".gclh") a[href*="/my/watchlist.aspx"]'));
                 var html = '<li><a id="gclh_goto_ignorelist" href="#gclhGotoIgnorelist">Ignore List</a></li>';
                 sidebarLists.parent().after(html);
                 $("#gclh_goto_ignorelist").click( function(e) {
