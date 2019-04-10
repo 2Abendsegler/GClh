@@ -1,4 +1,4 @@
-<a href="#v0917" title="GClh II version 0.9.17 (XX.XX.2019)">v0.9.17</a> &nbsp;
+<a href="#v0917" title="GClh II version 0.9.17 (10.04.2019)">v0.9.17</a> &nbsp;
 <a href="#v0916" title="GClh II version 0.9.16 (13.02.2019)">v0.9.16</a> &nbsp;
 <a href="#v0915" title="GClh II version 0.9.15 (18.01.2019)">v0.9.15</a> &nbsp;
 <a href="#v0914" title="GClh II version 0.9.14 (21.12.2018)">v0.9.14</a> &nbsp;
@@ -96,7 +96,7 @@
 		<strong>Fix:</strong> In dashboards sidebar the link to "Ignore List" comes also in chapter "Linklist" and "Default Links". [<a href="https://github.com/2Abendsegler/GClh/issues/1020" title="Issue 1020">1020</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 	</li>
 </ul>
-(?.?.2019)<br>
+(10.04.2019)<br>
 released by <a href="https://www.geocaching.com/profile/?u=Ruko2010">Ruko2010</a><br>
 <br>
 
