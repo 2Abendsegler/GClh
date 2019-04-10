@@ -89,6 +89,12 @@
 	<li>
 		<strong>Fix:</strong> Build back old designed page list of bookmark lists and Rename link list of bookmark lists to new designed page. [<a href="https://github.com/2Abendsegler/GClh/issues/1015" title="Issue 1015">1015</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 	</li>
+	<li>
+		<strong>Fix:</strong> On Google Maps page icon to GC Map is missing. [<a href="https://github.com/2Abendsegler/GClh/issues/1018" title="Issue 1018">1018</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> In dashboards sidebar the link to "Ignore List" comes also in chapter "Linklist" and "Default Links". [<a href="https://github.com/2Abendsegler/GClh/issues/1020" title="Issue 1020">1020</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
 </ul>
 (?.?.2019)<br>
 released by <a href="https://www.geocaching.com/profile/?u=Ruko2010">Ruko2010</a><br>
