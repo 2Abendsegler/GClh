@@ -65,12 +65,6 @@
 		<strong>New:</strong> Replace initial Logs faster with GClh Template  [<a href="https://github.com/2Abendsegler/GClh/issues/995" title="Issue 995">995</a> / <a href="https://www.geocaching.com/profile/?u=Ruko2010" title="Thanks to Ruko2010" >Ruko2010</a>]<br>
 	</li>
 	<li>
-		<strong>Fix:</strong> GreatStory and Helpful Buttons get deleted by GClh [<a href="https://github.com/2Abendsegler/GClh/issues/663" title="Issue 663">663</a> / <a href="https://www.geocaching.com/profile/?u=Ruko2010" title="Thanks to Ruko2010">Ruko2010</a>]<br>
-		Groundspeak is testing a new Vote System for Logs in certain countrys (i.e. Norway). If you want to have a look at it, you can visit for example: <a href="https://coord.info/GC51MPR" title="GC51MPR">GC51MPR</a>.</br>
-		GClh is now adding the Vote Buttons correctly to the logs and replaces the sorting function with its own function to ensure correct work.<br>
-		<img src="../images/0.9.17/Screen01.gif" alt="Screen01.gif"><br>
-	</li>
-	<li>
 		<strong>Fix:</strong> Logtemplate not inserted (Chrome / Safari)[<a href="https://github.com/2Abendsegler/GClh/issues/962" title="Issue 962">962</a> / <a href="https://www.geocaching.com/profile/?u=Ruko2010" title="Thanks to Ruko2010">Ruko2010</a>]<br>
 		With fixing this bug, the insertion of a log Template is now also working on Android <br/>
 	</li>
