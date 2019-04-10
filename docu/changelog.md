@@ -1,3 +1,4 @@
+<a href="#v0917" title="GClh II version 0.9.17 (10.04.2019)">v0.9.17</a> &nbsp;
 <a href="#v0916" title="GClh II version 0.9.16 (13.02.2019)">v0.9.16</a> &nbsp;
 <a href="#v0915" title="GClh II version 0.9.15 (18.01.2019)">v0.9.15</a> &nbsp;
 <a href="#v0914" title="GClh II version 0.9.14 (21.12.2018)">v0.9.14</a> &nbsp;
@@ -45,6 +46,59 @@
 <a href="#v021" title="GClh II version 0.2.1 (05.01.2017)">v0.2.1</a> &nbsp; 
 <a href="#v01" title="GClh II version 0.1 (05.01.2017)">v0.1</a> &nbsp; 
 
+
+---
+## v0.9.17:
+<ul>
+	<li>
+		<strong>New:</strong> We added a Note of Thanks to honor all the contributors to this project. [<a href="https://github.com/2Abendsegler/GClh/issues/1004" title="Issue 1004">1004</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		You can access it via the config screen: <br />
+		<img src="../images/0.9.17/Screen02.png" alt="Screen02.png"><br>
+	</li>
+	<li>
+		<strong>New:</strong> Show log totals symbols at the top of the cache listing. [<a href="https://github.com/2Abendsegler/GClh/issues/1009" title="Issue 1009">1009</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler" >2Abendsegler</a>]<br>
+		<img src="../images/0.9.17/Screen03.png" alt="Screen03.png"><br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_show_log_totals" title="Link to your GClh Config" >Settings -> Listing:<br>
+		<img src="../images/0.9.17/Screen04.png" alt="Screen04.png"></a><br>
+	</li>
+	<li>
+		<strong>New:</strong> Replace initial Logs faster with GClh Template  [<a href="https://github.com/2Abendsegler/GClh/issues/995" title="Issue 995">995</a> / <a href="https://www.geocaching.com/profile/?u=Ruko2010" title="Thanks to Ruko2010" >Ruko2010</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> Logtemplate not inserted (Chrome / Safari)[<a href="https://github.com/2Abendsegler/GClh/issues/962" title="Issue 962">962</a> / <a href="https://www.geocaching.com/profile/?u=Ruko2010" title="Thanks to Ruko2010">Ruko2010</a>]<br>
+		With fixing this bug, the insertion of a log Template is now also working on Android <br/>
+	</li>
+	<li>
+		<strong>Fix:</strong> Message Center - Receiver does not update if Message Center is accessed directly [<a href="https://github.com/2Abendsegler/GClh/issues/901" title="Issue 901">901</a> / <a href="https://www.geocaching.com/profile/?u=Ruko2010" title="Thanks to Ruko2010">Ruko2010</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> "Past Events" in bookmarklists and watchlists don't work with the new event time [<a href="https://github.com/2Abendsegler/GClh/issues/997" title="Issue 997">997</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> Show ignore list and hide area Lists in dashboard doesn't work [<a href="https://github.com/2Abendsegler/GClh/issues/999" title="Issue 999">999</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> Search field in header doesn't work with a location name [<a href="https://github.com/2Abendsegler/GClh/issues/1002" title="Issue 1002">1002</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> BRouter has a new URL schema [<a href="https://github.com/2Abendsegler/GClh/issues/1007" title="Issue 1007">1007</a> / <a href="https://www.geocaching.com/profile/?u=RadlerAndi" title="Thanks to RadlerAndi">RadlerAndi</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> Missing button create pocket query on foreign bookmarklists. [<a href="https://github.com/2Abendsegler/GClh/issues/1012" title="Issue 1012">1012</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> Build back old designed page list of bookmark lists and Rename link list of bookmark lists to new designed page. [<a href="https://github.com/2Abendsegler/GClh/issues/1015" title="Issue 1015">1015</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> On Google Maps page icon to GC Map is missing. [<a href="https://github.com/2Abendsegler/GClh/issues/1018" title="Issue 1018">1018</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> In dashboards sidebar the link to "Ignore List" comes also in chapter "Linklist" and "Default Links". [<a href="https://github.com/2Abendsegler/GClh/issues/1020" title="Issue 1020">1020</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+</ul>
+(10.04.2019)<br>
+released by <a href="https://www.geocaching.com/profile/?u=Ruko2010">Ruko2010</a><br>
+<br>
 
 ---
 ## v0.9.16:

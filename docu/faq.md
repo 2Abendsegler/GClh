@@ -71,8 +71,8 @@ If a script does not start, these are usually matching problems between the brow
 				GClh Config: In chapter "Linklist / Navigation" the order can not be changed in the right column <a href="https://www.geocaching.com/my/#GClhShowConfig#a#ll#settings_bookmarks_top_menu_h" title="Link to your GClh Config">Linklist</a>.<br>
 			</li>
 		</ul>
+		<br>
 	</li>
-	<br>
 	<li>
 		Field activations by moving a mouse over a field usually works by touching.<br>
 		<ul>
@@ -81,18 +81,18 @@ If a script does not start, these are usually matching problems between the brow
 			</li>
 			<li>
 				Preview pictures (thumbnails) in Listings and Galleries: They work by touching, but at the same time touching also activates the normal display of the large picture. The <a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_show_thumbnailsX0" title="Link to your GClh Config">preview of the pictures</a> should be deactivated.<br>
+				<br/>
 			</li>
 		</ul>
 	</li>
-	<br>
 	<li>
 		Right mouse works usually by touching and holding.<br>
+		<br/>
 	</li>
-	<br>
 	<li>
 		Linklist and usual menu are not always visible. It is then hidden at the top right in a side menu, for example on the pages Dashboard, Geocache Search or Map. If you activate "Desktop Page" in the browser, the Linklist and the menu are displayed as usual.<br>
+		<br/>
 	</li>
-	<br>
 	<li>
 		There are no function keys / F-keys with the standard Android keyboard.<br>
 		<ul>
@@ -103,10 +103,6 @@ If a script does not start, these are usually matching problems between the brow
 				F4 or F10 to call the GClh Config or GClh Sync will not work.<br>
 			</li>
 		</ul>
-	</li>
-	<br>
-	<li>
-		The log templates don't work on the newer log page.<br>
 	</li>
 </ul>
 <br>
@@ -173,10 +169,10 @@ Startet ein Script nicht, so handelt es sich in der Regel um Abstimmungsprobleme
 			</li>
 			<li>
 				GClh Config: Im Kapitel "Linklist / Navigation" kann in der rechten Spalte <a href="https://www.geocaching.com/my/#GClhShowConfig#a#ll#settings_bookmarks_top_menu_h" title="Link zu deinem GClh Config">Linklist</a> die Reihenfolge nicht geändert werden.<br>
+				<br/>
 			</li>
 		</ul>
 	</li>
-	<br>
 	<li>
 		Feldaktivierungen durch Mausbewegung über ein Feld funktionieren in der Regel durch antippen.<br>
 		<ul>
@@ -185,18 +181,18 @@ Startet ein Script nicht, so handelt es sich in der Regel um Abstimmungsprobleme
 			</li>
 			<li>
 				Vorschau der Bilder (thumbnails) in Listings and Gallerien: Sie funktionieren durch antippen, gleichzeitig wird durchs Antippen jedoch auch die normale Anzeige des Bildes in groß aktiviert. Die <a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_show_thumbnailsX0" title="Link zu deinem GClh Config">Vorschau der Bilder</a> sollte deaktiviert werden.<br>
+				<br/>
 			</li>
 		</ul>
 	</li>
-	<br>
 	<li>
 		Rechte Maustaste funktioniert regelmäßig durch antippen und halten.<br>
+		<br/>
 	</li>
-	<br>
 	<li>
 		Linklist und gewohntes Menü sind nicht immer sichtbar. Sie verstecken sich dann rechts oben in einem seitlichen Menü, beispielsweise auf den Seiten Dashboard, Geocache Suche oder Karte. Aktiviert man im Browser "Desktop-Seite", wird die Linklist und das Menü wie gewohnt angezeigt.<br>
+		<br/>
 	</li>
-	<br>
 	<li>
 		Es gibt keine Funktionstasten / F-Tasten mit der Standard Android Tastatur.<br>
 		<ul>
@@ -207,10 +203,6 @@ Startet ein Script nicht, so handelt es sich in der Regel um Abstimmungsprobleme
 				F4 bzw. F10 zum Aufrufen des GClh Config bzw. GClh Sync funktionieren nicht.<br>
 			</li>
 		</ul>
-	</li>
-	<br>
-	<li>
-		Die Log Templates funktionieren nicht auf der neueren Log Seite.<br>
 	</li>
 </ul>
 <br>

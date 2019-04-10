@@ -199,7 +199,6 @@
   "settings_remove_banner_for_garminexpress": false,
   "settings_remove_banner_blue": false,
   "settings_compact_layout_bm_lists": true,
-  "settings_compact_layout_list_of_bm_lists": true,
   "settings_compact_layout_pqs": true,
   "settings_compact_layout_list_of_pqs": true,
   "settings_compact_layout_nearest": true,
@@ -237,6 +236,7 @@
   "settings_both_tabs_list_of_pqs_one_page": false,
   "settings_pq_previewmap": true,
   "settings_past_events_on_bm": true,
+  "settings_show_log_totals": true,
   "settings_pq_previewmap_layer": "Geocaching",
   "settings_map_overview_layer": "Geocaching"
 }
