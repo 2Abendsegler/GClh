@@ -2,7 +2,7 @@
 // @name             GC little helper II
 // @namespace        http://www.amshove.net
 //--> $$000
-// @version          0.9.16
+// @version          0.9.17
 //<-- $$000
 // @include          http*://www.geocaching.com/*
 // @include          http*://maps.google.tld/*
@@ -8991,7 +8991,7 @@ var mainGC = function() {
 //--> $$002
         var code = '<img src="https://c.andyhoppe.com/1547879884"' + prop +
                    '<img src="https://c.andyhoppe.com/1547879947"' + prop +
-                   '<img src="https://www.worldflagcounter.com/fH1"' + prop +
+                   '<img src="https://www.worldflagcounter.com/f1X"' + prop +
                    '<img src="https://s11.flagcounter.com/count2/tV1V/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
 //<-- $$002
         div.innerHTML = code;
