@@ -2472,8 +2472,8 @@ var mainGC = function() {
             link.setAttribute("class", "lnk");
             link.setAttribute("target", "_blank");
             link.setAttribute("title", "Show area on Google Maps");
-            var matches = ref_link.href.match(/\?lat=(-?[0-9.]*)&lng=(-?[0-9.]*)/);
-            var latlng = matches[1] + "," + matches[2];
+            var coords = toDec($('#uxLatLon')[0].innerHTML);
+            var latlng = coords[0] + "," + coords[1];
             // &ll sorgt für Zentrierung der Seite beim Marker auch wenn linke Sidebar aufklappt. Zoom 18 setzen, weil GC Map eigentlich nicht mehr kann.
             link.setAttribute("href", "https://maps.google.de/maps?q=" + latlng + "&ll=" + latlng + "&z=18");
             var img = document.createElement("img");
