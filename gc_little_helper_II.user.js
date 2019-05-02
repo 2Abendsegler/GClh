@@ -5157,7 +5157,7 @@ var mainGC = function() {
                         if (getValue("settings_load_logs_with_gclh") == false) return;
                         for (var i = 0; i < log_infos_long.length; i++) {
                             var user = log_infos_long[i]["user"];
-                            if (in_array(user, global_vips) || user == owner_name || log_infos_long[i]["membership_level"] == "Reviewer") {
+                            if (in_array(user, global_vips) || user == owner_name || (settings_show_reviewer_as_vip && log_infos_long[i]["membership_level"] == "Reviewer")) {
                                 if (!log_infos_long[i]["date"]) continue;
                                 if (log_infos_long[i]["icon"].match(/\/(2|10)\.png$/)) users_found.push(user);  // Für not found liste.
                                 var span = document.createElement("span");
@@ -5261,12 +5261,14 @@ var mainGC = function() {
                         if (!log_infos[owner_name]) log_infos[owner_name] = new Array();
                         gclh_build_list(owner_name);
                         // Add Reviewer data
-                        for (var i = 0; i < log_infos_long.length; i++) {
-                            if(log_infos_long[i]["membership_level"] == "Reviewer"){
-                                // Test if we already added him
-                                if(in_array(log_infos_long[i]["user"], reviewer)) continue;
-                                gclh_build_list(log_infos_long[i]["user"], true);
-                                reviewer.push(log_infos_long[i]["user"]);
+                        if(settings_show_reviewer_as_vip){
+                            for (var i = 0; i < log_infos_long.length; i++) {
+                                if(log_infos_long[i]["membership_level"] == "Reviewer"){
+                                    // Test if we already added him
+                                    if(in_array(log_infos_long[i]["user"], reviewer)) continue;
+                                    gclh_build_list(log_infos_long[i]["user"], true);
+                                    reviewer.push(log_infos_long[i]["user"]);
+                                }
                             }
                         }
 
