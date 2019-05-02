@@ -3219,9 +3219,20 @@ var mainGC = function() {
                 }
             }
             // Signature.
+
+            var logtext = document.getElementById('ctl00_ContentBody_LogBookPanel1_uxLogInfo').value;
+            var signature = getValue("settings_log_signature", "");
+
             if (document.location.href.match(/\.com\/seek\/log\.aspx\?PLogGuid\=/)) {
-                if (settings_log_signature_on_fieldnotes) document.getElementById('ctl00_ContentBody_LogBookPanel1_uxLogInfo').innerHTML += getValue("settings_log_signature", "");
-            } else document.getElementById('ctl00_ContentBody_LogBookPanel1_uxLogInfo').innerHTML += getValue("settings_log_signature", "");
+                
+                if (settings_log_signature_on_fieldnotes && !logtext.includes(signature)){
+                    document.getElementById('ctl00_ContentBody_LogBookPanel1_uxLogInfo').innerHTML += signature;
+                }
+            } else{
+                if(!logtext.includes(signature)){
+                    document.getElementById('ctl00_ContentBody_LogBookPanel1_uxLogInfo').innerHTML += signature;
+                }
+            }
             replacePlaceholder();
         } catch(e) {gclh_error("Default Log-Type and Signature Old Log Page(CACHE)",e);}
     }
