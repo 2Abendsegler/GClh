@@ -3090,7 +3090,7 @@ var mainGC = function() {
                     appendCssStyle(css);
 
                     // Open Trackable Inventory
-                    if(settings_auto_open_tb_inventory_list){
+                    if(settings_auto_open_tb_inventory_list && $('#trackablesPanel .inventory-panel').css('display') == 'none'){
                         $("#trackablesPanel button.btn-handle").trigger( "click" );
                     }
                     clearInterval(checkExistTBHeader);
