@@ -238,5 +238,6 @@
   "settings_past_events_on_bm": true,
   "settings_show_log_totals": true,
   "settings_pq_previewmap_layer": "Geocaching",
-  "settings_map_overview_layer": "Geocaching"
+  "settings_map_overview_layer": "Geocaching",
+  "settings_show_reviewer_as_vip": true
 }

@@ -520,6 +520,7 @@ var variablesInit = function(c) {
     c.settings_both_tabs_list_of_pqs_one_page = getValue("settings_both_tabs_list_of_pqs_one_page", false);
     c.settings_past_events_on_bm = getValue("settings_past_events_on_bm", true);
     c.settings_show_log_totals = getValue("settings_show_log_totals", true);
+    c.settings_show_reviewer_as_vip = getValue("settings_show_reviewer_as_vip", true);
 
     try {
         if (c.userToken === null) {
@@ -5167,7 +5168,7 @@ var mainGC = function() {
                         if (getValue("settings_load_logs_with_gclh") == false) return;
                         for (var i = 0; i < log_infos_long.length; i++) {
                             var user = log_infos_long[i]["user"];
-                            if (in_array(user, global_vips) || user == owner_name) {
+                            if (in_array(user, global_vips) || user == owner_name || (settings_show_reviewer_as_vip && log_infos_long[i]["membership_level"] == "Reviewer")) {
                                 if (!log_infos_long[i]["date"]) continue;
                                 if (log_infos_long[i]["icon"].match(/\/(2|10)\.png$/)) users_found.push(user);  // Für not found liste.
                                 var span = document.createElement("span");
@@ -5209,7 +5210,7 @@ var mainGC = function() {
                         }
                     }
 
-                    function gclh_build_list(user) {
+                    function gclh_build_list(user, is_reviewer = false) {
                         if (getValue("settings_load_logs_with_gclh") == false) return;
                         if (!show_owner && owner_name && owner_name == user) return true;
                         if (in_array(user, all_users) || (owner_name == user)) {
@@ -5220,7 +5221,11 @@ var mainGC = function() {
                             if (show_owner && owner_name && owner_name == user) {
                                 span.appendChild(document.createTextNode("Owner: "));
                                 show_owner = false;
-                            } else if (user == myself) span.appendChild(document.createTextNode("Me: "));
+                            } else if (user == myself){
+                                span.appendChild(document.createTextNode("Me: "));  
+                            } else if (is_reviewer){
+                                span.appendChild(document.createTextNode("Reviewer: "));
+                            }
                             span.appendChild(profile);
                             // Build VIP Icon. Wenn es Owner ist und Owner in VUP array, dann VUP Icon.
                             if (owner_name && owner_name == user && in_array(user, global_vups)) link = gclh_build_vipvup(user, global_vups, "vup");
@@ -5259,12 +5264,30 @@ var mainGC = function() {
                         }
                     }
 
+
+                    var reviewer = new Array();
                     owner_name = html_to_str(owner_name);
                     if (settings_show_long_vip) gclh_build_long_list();
                     else {
                         if (!log_infos[owner_name]) log_infos[owner_name] = new Array();
                         gclh_build_list(owner_name);
-                        for (var i = 0; i < global_vips.length; i++) {gclh_build_list(global_vips[i]);}
+                        // Add Reviewer data
+                        if(settings_show_reviewer_as_vip){
+                            for (var i = 0; i < log_infos_long.length; i++) {
+                                if(log_infos_long[i]["membership_level"] == "Reviewer"){
+                                    // Test if we already added him
+                                    if(in_array(log_infos_long[i]["user"], reviewer)) continue;
+                                    gclh_build_list(log_infos_long[i]["user"], true);
+                                    reviewer.push(log_infos_long[i]["user"]);
+                                }
+                            }
+                        }
+
+                        for (var i = 0; i < global_vips.length; i++) {
+                            // do not add Reviewer again
+                            if(in_array(global_vips[i], reviewer)) continue;
+                            gclh_build_list(global_vips[i]);
+                        }
                     }
 
                     // "Not found"-Liste erstellen.
@@ -6090,12 +6113,20 @@ var mainGC = function() {
                                 log_infos[user][index]["id"] = json.data[i].LogID;
                                 log_infos[user][index]["date"] = json.data[i].Visited;
                                 log_infos[user][index]["log"] = json.data[i].LogText;
+                                log_infos[user][index]["membership_level"] = json.data[i].creator.GroupTitle;
                                 log_infos_long[index] = new Object();
                                 log_infos_long[index]["user"] = user;
                                 log_infos_long[index]["icon"] = "/images/logtypes/" + json.data[i].LogTypeImage;
                                 log_infos_long[index]["id"] = json.data[i].LogID;
                                 log_infos_long[index]["date"] = json.data[i].Visited;
                                 log_infos_long[index]["log"] = json.data[i].LogText;
+                                log_infos_long[index]["membership_level"] = json.data[i].creator.GroupTitle;
+
+                                if(json.data[i].LogType == "Publish Listing"){
+                                    log_infos[user][index]["membership_level"] = "Reviewer";
+                                    log_infos_long[index]["membership_level"] = "Reviewer";
+                                }
+
                                 index++;
                             }
                         }
@@ -10345,6 +10376,9 @@ var mainGC = function() {
             html += newParameterVersionSetzen(0.9) + newParameterOff;
             html += checkboxy('settings_show_vip_list', 'Show VIP list') + show_help("The VIP list is a list, displayed at the right side on a cache listing. You can add any user to your VIP list by clicking the little VIP icon beside the user. If it is green, this person is a VIP. The VIP list only shows VIPs and the logs of VIPs, which already posted a log to this cache. With this option you are able to see which of your VIPs already found this cache. On your dashboard page there is an overview of all your VIPs.<br>(VIP: Very important person)") + "<br>";
             html += "&nbsp; " + checkboxy('settings_show_owner_vip_list', 'Show owner in VIP list')  + show_help("If you enable this option, the owner is a VIP for the cache, so you can see, what happened with the cache (disable, maint, enable, ...). Then the owner is shown not only in VIP list but also in VIP logs.<br>(VIP: Very important person)<br><br>" + t_reqSVl)+ "<br>";
+            html += newParameterOn3;
+            html += "&nbsp; " + checkboxy('settings_show_reviewer_as_vip', 'Show reviewer/publisher in VIP list')  + show_help("If you enable this option, the reviewer or publisher of the cache is a VIP for the cache.<br><br>" + t_reqSVl)+ "<br>";
+            html += newParameterVersionSetzen(0.9) + newParameterOff;
             html += "&nbsp; " + checkboxy('settings_show_long_vip', 'Show long VIP list (one row per log)') + show_help("This is another type of displaying the VIP list. If you disable this option you get the short list, one row per VIP and the logs as icons beside the VIP. If you enable this option, there is a row for every log.<br>(VIP: Very important person)<br><br>" + t_reqSVl) + "<br>";
             html += "&nbsp; " + checkboxy('settings_vip_show_nofound', 'Show a list of VIPs who have not found the cache') + "<br>";
             html += "&nbsp; " + checkboxy('settings_make_vip_lists_hideable', 'Make VIP lists in listing hideable') + show_help("With this option you can hide and show the VIP lists \"VIP-List\" and \"VIP-List not found\" in cache listing with one click.<br>(VIP: Very important person)<br><br>" + t_reqSVl) + "<br>";
@@ -11421,6 +11455,7 @@ var mainGC = function() {
                 'settings_both_tabs_list_of_pqs_one_page',
                 'settings_past_events_on_bm',
                 'settings_show_log_totals',
+                'settings_show_reviewer_as_vip',
             );
 
             for (var i = 0; i < checkboxes.length; i++) {
