@@ -63,7 +63,7 @@
 		<strong>Fix:</strong> "Open Trackables" in Draft Mode not working consistently. [<a href="https://github.com/2Abendsegler/GClh/issues/1024" title="Issue 1024">1024</a> / <a href="https://www.geocaching.com/profile/?u=Ruko2010" title="Thanks to Ruko2010">Ruko2010</a>]<br>
 	</li>
 	<li>
-		<strong>Fix:</strong> The edit log functinality integrates the signature once again (Old log page). [<a href="https://github.com/2Abendsegler/GClh/issues/1023" title="Issue 1023">1023</a> / <a href="https://www.geocaching.com/profile/?u=Ruko2010" title="Thanks to Ruko2010">Ruko2010</a>]<br>
+		<strong>Fix:</strong> The "edit log" - functionality integrates the signature once again (Old log page). [<a href="https://github.com/2Abendsegler/GClh/issues/1023" title="Issue 1023">1023</a> / <a href="https://www.geocaching.com/profile/?u=Ruko2010" title="Thanks to Ruko2010">Ruko2010</a>]<br>
 	</li>
 	<li>
 		<strong>Fix:</strong> Geonames in standard configuration as first service. [<a href="https://github.com/2Abendsegler/GClh/issues/1030" title="Issue 1030">1030</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
