@@ -5949,7 +5949,7 @@ var mainGC = function() {
                             setLinesColorInCacheListing();
                             if(isGreatStoryAndHelpfulActive){
                                 unsafeWindow.appendUpvotesToLogs(log_ids);
-                                updateGreatStoryEvents();
+                                updateGreatStoryEvents(logs);
                             }
                             if (!settings_hide_top_button) $("#topScroll").fadeIn();
                             $("#pnlLazyLoad").hide();
@@ -6274,7 +6274,7 @@ var mainGC = function() {
                                     if (document.getElementById("gclh_show_log_counter")) document.getElementById("gclh_show_log_counter").style.visibility = "";
                                     
                                     $('.upvotes').show();
-                                    updateGreatStoryEvents();
+                                    updateGreatStoryEvents(logs);
                                 }
                                 $('#sort_logs_working').remove();
                             }, 100);
@@ -6315,7 +6315,7 @@ var mainGC = function() {
                     unsafeWindow.$('a.tb_images').fancybox({'type': 'image', 'titlePosition': 'inside'});
                     if(isGreatStoryAndHelpfulActive){
                         unsafeWindow.appendUpvotesToLogs(log_ids);
-                        updateGreatStoryEvents();
+                        updateGreatStoryEvents(logs);
                     }
 
                     gclh_dynamic_load(logs, num);
@@ -6327,6 +6327,83 @@ var mainGC = function() {
                 }
                 gclh_load_helper(1);
             }
+
+            function updateGreatStoryEvents(all_logs){
+                $('.great-story-btn').each(function(){
+                    $(this).unbind('click');
+                    $(this).click(function(){
+
+                        // there is a bug (or a feature) in jQuery(?):
+                        // if you have a data attribute (like data-upvoted="false") and you also have set objekt.data(upvoted,"true")
+                        // JQuery will override your data value with the data value from the dom. So we check here, if the button has 
+                        // a class "upvoted", and if yes, we reset the object.data("upvoted") to true. Otherwise, when the button is 
+                        // upvoted, the first click would not result in "not upvoting" the log, but the secound.
+                        if($(this).hasClass('upvoted')) $(this).data('upvoted', true);
+
+                        //also we have to update our internal counter of votes for the log to display it correctly on sorting
+
+                        var log_index = false;
+                        for (var i = 0; i < all_logs.length; i++) {
+                            if(all_logs[i].LogID == $(this).data('log-id')){
+                                log_index = i;
+                            }
+                        }
+
+                        if(log_index === false){
+                            return upvoteLog($(this));
+                            throw Error('Could not find Log coresponding to Upvote clicked.');
+                        }
+
+                        if($(this).hasClass('upvoted')){
+                            all_logs[log_index].greatStory -= 1;
+                            all_logs[log_index].greatStoryupvotedByUser = false;
+                        }else{
+                            all_logs[log_index].greatStory += 1;
+                            all_logs[log_index].greatStoryupvotedByUser = true;
+                        }
+
+                        return upvoteLog($(this));
+                    });
+                });
+
+                $('.helpful-btn').each(function(){
+                    $(this).unbind('click');
+                    $(this).click(function(){
+                        
+                        // there is a bug (or a feature) in jQuery(?):
+                        // if you have a data attribute (like data-upvoted="false") and you also have set objekt.data(upvoted,"true")
+                        // JQuery will override your data value with the data value from the dom. So we check here, if the button has 
+                        // a class "upvoted", and if yes, we reset the object.data("upvoted") to true. Otherwise, when the button is 
+                        // upvoted, the first click would not result in "not upvoting" the log, but the secound.
+                        if($(this).hasClass('upvoted')) $(this).data('upvoted', true);
+
+                        //also we have to update our internal counter of votes for the log to display it correctly on sorting
+
+                        var log_index = false;
+                        for (var i = 0; i < all_logs.length; i++) {
+                            if(all_logs[i].LogID == $(this).data('log-id')){
+                                log_index = i;
+                            }
+                        }
+
+                        if(log_index === false){
+                            return upvoteLog($(this));
+                            throw Error('Could not find Log coresponding to Upvote clicked.');
+                        }
+
+                        if($(this).hasClass('upvoted')){
+                            all_logs[log_index].greatStory -= 1;
+                            all_logs[log_index].greatStoryupvotedByUser = false;
+                        }else{
+                            all_logs[log_index].helpful += 1;
+                            all_logs[log_index].helpfulupvotedByUser = true;
+                        }
+                        
+                        return upvoteLog($(this));
+                    });
+                });
+            }
+
             if (settings_show_all_logs) {
                 var logsCount = parseInt(settings_show_all_logs_count);
                 if (logsCount == 0) logsCount = 5000;
@@ -6336,34 +6413,7 @@ var mainGC = function() {
             } else gclh_load_logs(30);
 
         } catch(e) {gclh_error("Replace Log-Loading function",e);}
-    }
 
-    function updateGreatStoryEvents(){
-        $('.great-story-btn').each(function(){
-            $(this).unbind('click');
-            $(this).click(function(){
-                // there is a bug (or a feature) in jQuery(?):
-                // if you have a data attribute (like data-upvoted="false") and you also have set objekt.data(upvoted,"true")
-                // JQuery will override your data value with the data value from the dom. So we check here, if the button has 
-                // a class "upvoted", and if yes, we reset the object.data("upvoted") to true. Otherwise, when the button is 
-                // upvoted, the first click would not result in "not upvoting" the log, but the secound.
-                if($(this).hasClass('upvoted')) $(this).data('upvoted', true);
-                return upvoteLog($(this));
-            });
-        });
-
-        $('.helpful-btn').each(function(){
-            $(this).unbind('click');
-            $(this).click(function(){
-                // there is a bug (or a feature) in jQuery(?):
-                // if you have a data attribute (like data-upvoted="false") and you also have set objekt.data(upvoted,"true")
-                // JQuery will override your data value with the data value from the dom. So we check here, if the button has 
-                // a class "upvoted", and if yes, we reset the object.data("upvoted") to true. Otherwise, when the button is 
-                // upvoted, the first click would not result in "not upvoting" the log, but the secound.
-                if($(this).hasClass('upvoted')) $(this).data('upvoted', true);
-                return upvoteLog($(this));
-            });
-        });
     }
 
     // Zeilen in Cache Listings in Zebra und für User, Owner, Reviewer und VIP einfärben.
