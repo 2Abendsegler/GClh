@@ -6264,8 +6264,11 @@ var mainGC = function() {
                             setTimeout(function() {
                                 if (logs) {
                                     // IDs der Cache Logs Tables.
+
+                                    var count = $('#cache_logs_table2, #cache_logs_table').find('tbody').children().length;
+
                                     $('#cache_logs_table2, #cache_logs_table').find('tbody').children().remove();
-                                    for (var i = 0; i < logs.length; i++) {
+                                    for (var i = 0; i < count; i++) {
                                         if (logs[i]) {
                                             var newBody = unsafeWindow.$(document.createElement("TBODY"));
                                             unsafeWindow.$("#tmpl_CacheLogRow_gclh").tmpl(logs[i]).appendTo(newBody);
@@ -6275,10 +6278,8 @@ var mainGC = function() {
                                     unsafeWindow.$('a.tb_images').fancybox({'type': 'image', 'titlePosition': 'inside'});
                                     gclh_add_vip_icon();
                                     setLinesColorInCacheListing();
-                                    setMarkerDisableDynamicLogLoad();
                                     if (document.getElementById("gclh_show_log_counter")) document.getElementById("gclh_show_log_counter").style.visibility = "";
                                     
-                                    $('.upvotes').show();
                                     updateGreatStoryEvents(logs);
                                 }
                                 $('#sort_logs_working').remove();
@@ -6303,8 +6304,6 @@ var mainGC = function() {
 
                         $("#cache_logs_container #sortOrder").before(new_sort_element);
                         $('#cache_logs_container #sortOrder').remove();
-
-                        $("#new_sort_element").after('<br/> <strong>Attention:</strong> Be aware, that sorting the logs will have to load all logs. If there are many logs in this cache, it could take some time.');
                     }
 
                     var log_ids = [];
