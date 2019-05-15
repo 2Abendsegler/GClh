@@ -1,3 +1,4 @@
+<a href="#v0917" title="GClh II version 0.9.18 (??.??.2019)">v0.9.18</a> &nbsp;
 <a href="#v0917" title="GClh II version 0.9.17 (10.04.2019)">v0.9.17</a> &nbsp;
 <a href="#v0916" title="GClh II version 0.9.16 (13.02.2019)">v0.9.16</a> &nbsp;
 <a href="#v0915" title="GClh II version 0.9.15 (18.01.2019)">v0.9.15</a> &nbsp;
@@ -46,6 +47,31 @@
 <a href="#v021" title="GClh II version 0.2.1 (05.01.2017)">v0.2.1</a> &nbsp; 
 <a href="#v01" title="GClh II version 0.1 (05.01.2017)">v0.1</a> &nbsp; 
 
+
+---
+## v0.9.18:
+<ul>
+	<li>
+		<strong>New:</strong> Integrate reviewer/publisher in VIP lists. [<a href="https://github.com/2Abendsegler/GClh/issues/1011" title="Issue 1011">1011</a> / <a href="https://www.geocaching.com/profile/?u=Ruko2010" title="Thanks to Ruko2010">Ruko2010</a>]<br>
+		You can now show the reviewer/publisher of the cache in your VIP list: <br />
+		<img src="../images/0.9.18/Screen01.png" alt="Screen01.png"><br>
+	</li>
+	<li>
+		<strong>Fix:</strong> Show Google-Maps Link on Cache Listing Page does not work. [<a href="https://github.com/2Abendsegler/GClh/issues/1025" title="Issue 1025">1025</a> / <a href="https://www.geocaching.com/profile/?u=Ruko2010" title="Thanks to Ruko2010">Ruko2010</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> "Open Trackables" in Draft Mode not working consistently. [<a href="https://github.com/2Abendsegler/GClh/issues/1024" title="Issue 1024">1024</a> / <a href="https://www.geocaching.com/profile/?u=Ruko2010" title="Thanks to Ruko2010">Ruko2010</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> The edit log functinality integrates the signature once again (Old log page). [<a href="https://github.com/2Abendsegler/GClh/issues/1023" title="Issue 1023">1023</a> / <a href="https://www.geocaching.com/profile/?u=Ruko2010" title="Thanks to Ruko2010">Ruko2010</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> Geonames in standard configuration as first service. [<a href="https://github.com/2Abendsegler/GClh/issues/1030" title="Issue 1030">1030</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+</ul>
+(??.??.2019)<br>
+released by <a href="https://www.geocaching.com/profile/?u=Ruko2010">Ruko2010</a><br>
+<br>
 
 ---
 ## v0.9.17:
