@@ -5808,6 +5808,9 @@ var mainGC = function() {
             css += ".TableLogContent {padding-left: 0.5em; border-left: 1px solid #d7d7d7;}";
             // Länge der Usernamen in den Logs beschränken, damit sie nicht umgebrochen werden.
             css += ".logOwnerProfileName {max-width: 135px; display: inline-block; overflow: hidden; vertical-align: bottom; white-space: nowrap; text-overflow: ellipsis;}";
+
+            if(isGreatStoryAndHelpfulActive) css += ".upvotes{display: block;}";
+
             appendCssStyle(css);
         } catch(e) {gclh_error("Define log-template",e);}
     }
