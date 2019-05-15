@@ -5618,6 +5618,9 @@ var mainGC = function() {
             global_MailTemplate = urlencode(buildSendTemplate().replace(/#Receiver#/ig, "__Receiver__"));
             global_MailTemplate = global_MailTemplate.replace(/__Receiver__/ig, "${UserName}");
 
+            var isGreatStoryAndHelpfulActive = false;
+            if($('#cache_logs_container #sortOrder').length) isGreatStoryAndHelpfulActive = true
+
             var vupUserString = 'if UserName == "#" ';
             var vupHideAvatarString  = 'if (UserName != "#" ';
             var vupHideCompleteLog = vupUserString;
@@ -5737,7 +5740,8 @@ var mainGC = function() {
                 '        {{if (userInfo.ID==AccountID)}}' +
                 '        <small><a title="Upload Image" href="/seek/upload.aspx?LID=${LogID}" target="_blank">Upload Image</a></small>' +
                 '        {{/if}}' +
-                '      </div>' +
+                '      </div>';
+            if(isGreatStoryAndHelpfulActive) new_tmpl += 
                 '     {{if LogType === "Found it" || LogType === "Didn\'t find it" || LogType === "Webcam photo taken" || LogType === "Attended" || LogType === "Announcement" }}' +
                 '         <div class="upvotes">' +
                 '             <button class="great-story-btn{{if (typeof greatStoryupvotedByUser != "undefined") && greatStoryupvotedByUser}} upvoted{{/if}}"' +
@@ -5788,7 +5792,8 @@ var mainGC = function() {
                 '                 <span>Helpful{{if (typeof helpful != "undefined") && helpful > 0}} (${helpful}){{/if}}</span>' +
                 '             </button>' +
                 '         </div>' +
-                '         {{/if}}' +
+                '     {{/if}}';
+            new_tmpl +=
                 '     </div>' +
                 '   </td>' +
                 '</tr>';
@@ -5902,9 +5907,6 @@ var mainGC = function() {
                     unsafeWindow.$(link).addClass("gclh_vup_hasIcon");
                 }
             }
-
-            var isGreatStoryAndHelpfulActive = false;
-            if($('#cache_logs_container #sortOrder').length) isGreatStoryAndHelpfulActive = true
 
             var lastFired = 0;
             var global_logs = false;
