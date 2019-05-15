@@ -2,7 +2,7 @@
 // @name             GC little helper II
 // @namespace        http://www.amshove.net
 //--> $$000
-// @version          0.9.16
+// @version          0.9.17
 //<-- $$000
 // @include          http*://www.geocaching.com/*
 // @include          http*://maps.google.tld/*
@@ -469,7 +469,7 @@ var variablesInit = function(c) {
     c.settings_driving_direction_link = getValue("settings_driving_direction_link",true);
     c.settings_driving_direction_parking_area = getValue("settings_driving_direction_parking_area",false);
     c.settings_show_elevation_of_waypoints = getValue("settings_show_elevation_of_waypoints", true);
-    c.settings_primary_elevation_service = getValue("settings_primary_elevation_service", 1);
+    c.settings_primary_elevation_service = getValue("settings_primary_elevation_service", 3);
     c.settings_secondary_elevation_service = getValue("settings_secondary_elevation_service", 2);
     c.settings_distance_units = getValue("settings_distance_units", "");
     c.settings_img_warning = getValue("settings_img_warning", false);
@@ -520,6 +520,7 @@ var variablesInit = function(c) {
     c.settings_both_tabs_list_of_pqs_one_page = getValue("settings_both_tabs_list_of_pqs_one_page", false);
     c.settings_past_events_on_bm = getValue("settings_past_events_on_bm", true);
     c.settings_show_log_totals = getValue("settings_show_log_totals", true);
+    c.settings_show_reviewer_as_vip = getValue("settings_show_reviewer_as_vip", true);
 
     try {
         if (c.userToken === null) {
@@ -561,7 +562,7 @@ var mainGMaps = function() {
         // Add link to GC Map on Google Maps page.
         if (settings_add_link_gc_map_on_google_maps) {
             function addGcButton(waitCount) {
-                if (document.getElementById("gbsfw")) {
+                if (document.getElementById("gbwa")) {
                     var code = "";
                     code += "function openGcMap(){";
                     code += "  var matches = document.location.href.match(/@(-?[0-9.]*),(-?[0-9.]*),([0-9.]*)z/);";
@@ -599,7 +600,7 @@ var mainGMaps = function() {
                     aTag.setAttribute("title", "Geocaching Map");
                     var url = "url('" + http + "://www.geocaching.com/images/about/logos/geocaching/Logo_Geocaching_color_notext_32.png')";
                     aTag.setAttribute("style", "display: inline-block; vertical-align: middle; height: 32px; width: 32px; background-image: " + url + ";");
-                    var side = document.getElementById("gbsfw").parentNode;
+                    var side = document.getElementById("gbwa").parentNode;
                     div.appendChild(script);
                     div.appendChild(aTag);
                     side.parentNode.insertBefore(div, side);
@@ -610,7 +611,7 @@ var mainGMaps = function() {
         // Hide left sidebar on Google Maps.
         if (settings_hide_left_sidebar_on_google_maps) {
             function hideLeftSidebar(waitCount) {
-                if ($('#gbsfw')[0] && $('.widget-pane-toggle-button')[0] && $('.widget-pane')[0]) {
+                if ($('#gbwa')[0] && $('.widget-pane-toggle-button')[0] && $('.widget-pane')[0]) {
                     if (!$('.widget-pane')[0].className.match("widget-pane-collapsed")) $('.widget-pane-toggle-button')[0].click();
                 } else {waitCount++; if (waitCount <= 60) setTimeout(function(){hideLeftSidebar(waitCount);}, 250);}
             }
@@ -2472,8 +2473,8 @@ var mainGC = function() {
             link.setAttribute("class", "lnk");
             link.setAttribute("target", "_blank");
             link.setAttribute("title", "Show area on Google Maps");
-            var matches = ref_link.href.match(/\?lat=(-?[0-9.]*)&lng=(-?[0-9.]*)/);
-            var latlng = matches[1] + "," + matches[2];
+            var coords = toDec($('#uxLatLon')[0].innerHTML);
+            var latlng = coords[0] + "," + coords[1];
             // &ll sorgt für Zentrierung der Seite beim Marker auch wenn linke Sidebar aufklappt. Zoom 18 setzen, weil GC Map eigentlich nicht mehr kann.
             link.setAttribute("href", "https://maps.google.de/maps?q=" + latlng + "&ll=" + latlng + "&z=18");
             var img = document.createElement("img");
@@ -3090,7 +3091,7 @@ var mainGC = function() {
                     appendCssStyle(css);
 
                     // Open Trackable Inventory
-                    if(settings_auto_open_tb_inventory_list){
+                    if(settings_auto_open_tb_inventory_list && $('#trackablesPanel .inventory-panel').css('display') == 'none'){
                         $("#trackablesPanel button.btn-handle").trigger( "click" );
                     }
                     clearInterval(checkExistTBHeader);
@@ -3219,9 +3220,20 @@ var mainGC = function() {
                 }
             }
             // Signature.
+
+            var logtext = document.getElementById('ctl00_ContentBody_LogBookPanel1_uxLogInfo').value;
+            var signature = getValue("settings_log_signature", "");
+
             if (document.location.href.match(/\.com\/seek\/log\.aspx\?PLogGuid\=/)) {
-                if (settings_log_signature_on_fieldnotes) document.getElementById('ctl00_ContentBody_LogBookPanel1_uxLogInfo').innerHTML += getValue("settings_log_signature", "");
-            } else document.getElementById('ctl00_ContentBody_LogBookPanel1_uxLogInfo').innerHTML += getValue("settings_log_signature", "");
+                
+                if (settings_log_signature_on_fieldnotes && !logtext.includes(signature)){
+                    document.getElementById('ctl00_ContentBody_LogBookPanel1_uxLogInfo').innerHTML += signature;
+                }
+            } else{
+                if(!logtext.includes(signature)){
+                    document.getElementById('ctl00_ContentBody_LogBookPanel1_uxLogInfo').innerHTML += signature;
+                }
+            }
             replacePlaceholder();
         } catch(e) {gclh_error("Default Log-Type and Signature Old Log Page(CACHE)",e);}
     }
@@ -5156,7 +5168,7 @@ var mainGC = function() {
                         if (getValue("settings_load_logs_with_gclh") == false) return;
                         for (var i = 0; i < log_infos_long.length; i++) {
                             var user = log_infos_long[i]["user"];
-                            if (in_array(user, global_vips) || user == owner_name) {
+                            if (in_array(user, global_vips) || user == owner_name || (settings_show_reviewer_as_vip && log_infos_long[i]["membership_level"] == "Reviewer")) {
                                 if (!log_infos_long[i]["date"]) continue;
                                 if (log_infos_long[i]["icon"].match(/\/(2|10)\.png$/)) users_found.push(user);  // Für not found liste.
                                 var span = document.createElement("span");
@@ -5198,7 +5210,7 @@ var mainGC = function() {
                         }
                     }
 
-                    function gclh_build_list(user) {
+                    function gclh_build_list(user, is_reviewer = false) {
                         if (getValue("settings_load_logs_with_gclh") == false) return;
                         if (!show_owner && owner_name && owner_name == user) return true;
                         if (in_array(user, all_users) || (owner_name == user)) {
@@ -5209,7 +5221,11 @@ var mainGC = function() {
                             if (show_owner && owner_name && owner_name == user) {
                                 span.appendChild(document.createTextNode("Owner: "));
                                 show_owner = false;
-                            } else if (user == myself) span.appendChild(document.createTextNode("Me: "));
+                            } else if (user == myself){
+                                span.appendChild(document.createTextNode("Me: "));  
+                            } else if (is_reviewer){
+                                span.appendChild(document.createTextNode("Reviewer: "));
+                            }
                             span.appendChild(profile);
                             // Build VIP Icon. Wenn es Owner ist und Owner in VUP array, dann VUP Icon.
                             if (owner_name && owner_name == user && in_array(user, global_vups)) link = gclh_build_vipvup(user, global_vups, "vup");
@@ -5248,12 +5264,30 @@ var mainGC = function() {
                         }
                     }
 
+
+                    var reviewer = new Array();
                     owner_name = html_to_str(owner_name);
                     if (settings_show_long_vip) gclh_build_long_list();
                     else {
                         if (!log_infos[owner_name]) log_infos[owner_name] = new Array();
                         gclh_build_list(owner_name);
-                        for (var i = 0; i < global_vips.length; i++) {gclh_build_list(global_vips[i]);}
+                        // Add Reviewer data
+                        if(settings_show_reviewer_as_vip){
+                            for (var i = 0; i < log_infos_long.length; i++) {
+                                if(log_infos_long[i]["membership_level"] == "Reviewer"){
+                                    // Test if we already added him
+                                    if(in_array(log_infos_long[i]["user"], reviewer)) continue;
+                                    gclh_build_list(log_infos_long[i]["user"], true);
+                                    reviewer.push(log_infos_long[i]["user"]);
+                                }
+                            }
+                        }
+
+                        for (var i = 0; i < global_vips.length; i++) {
+                            // do not add Reviewer again
+                            if(in_array(global_vips[i], reviewer)) continue;
+                            gclh_build_list(global_vips[i]);
+                        }
                     }
 
                     // "Not found"-Liste erstellen.
@@ -6172,12 +6206,20 @@ var mainGC = function() {
                                 log_infos[user][index]["id"] = json.data[i].LogID;
                                 log_infos[user][index]["date"] = json.data[i].Visited;
                                 log_infos[user][index]["log"] = json.data[i].LogText;
+                                log_infos[user][index]["membership_level"] = json.data[i].creator.GroupTitle;
                                 log_infos_long[index] = new Object();
                                 log_infos_long[index]["user"] = user;
                                 log_infos_long[index]["icon"] = "/images/logtypes/" + json.data[i].LogTypeImage;
                                 log_infos_long[index]["id"] = json.data[i].LogID;
                                 log_infos_long[index]["date"] = json.data[i].Visited;
                                 log_infos_long[index]["log"] = json.data[i].LogText;
+                                log_infos_long[index]["membership_level"] = json.data[i].creator.GroupTitle;
+
+                                if(json.data[i].LogType == "Publish Listing"){
+                                    log_infos[user][index]["membership_level"] = "Reviewer";
+                                    log_infos_long[index]["membership_level"] = "Reviewer";
+                                }
+
                                 index++;
                             }
                         }
@@ -6580,7 +6622,7 @@ var mainGC = function() {
                         });
                     } catch(e) {gclh_error("function getIgnoreList()",e);}
                 }
-                var sidebarLists = $($('ul.link-block a[href*="/my/watchlist.aspx"]'));
+                var sidebarLists = $($('ul.link-block:not(".gclh") a[href*="/my/watchlist.aspx"]'));
                 var html = '<li><a id="gclh_goto_ignorelist" href="#gclhGotoIgnorelist">Ignore List</a></li>';
                 sidebarLists.parent().after(html);
                 $("#gclh_goto_ignorelist").click( function(e) {
@@ -9151,7 +9193,7 @@ var mainGC = function() {
 //--> $$002
         var code = '<img src="https://c.andyhoppe.com/1547879884"' + prop +
                    '<img src="https://c.andyhoppe.com/1547879947"' + prop +
-                   '<img src="https://www.worldflagcounter.com/fH1"' + prop +
+                   '<img src="https://www.worldflagcounter.com/f1X"' + prop +
                    '<img src="https://s11.flagcounter.com/count2/tV1V/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
 //<-- $$002
         div.innerHTML = code;
@@ -10537,6 +10579,9 @@ var mainGC = function() {
             html += newParameterVersionSetzen(0.9) + newParameterOff;
             html += checkboxy('settings_show_vip_list', 'Show VIP list') + show_help("The VIP list is a list, displayed at the right side on a cache listing. You can add any user to your VIP list by clicking the little VIP icon beside the user. If it is green, this person is a VIP. The VIP list only shows VIPs and the logs of VIPs, which already posted a log to this cache. With this option you are able to see which of your VIPs already found this cache. On your dashboard page there is an overview of all your VIPs.<br>(VIP: Very important person)") + "<br>";
             html += "&nbsp; " + checkboxy('settings_show_owner_vip_list', 'Show owner in VIP list')  + show_help("If you enable this option, the owner is a VIP for the cache, so you can see, what happened with the cache (disable, maint, enable, ...). Then the owner is shown not only in VIP list but also in VIP logs.<br>(VIP: Very important person)<br><br>" + t_reqSVl)+ "<br>";
+            html += newParameterOn3;
+            html += "&nbsp; " + checkboxy('settings_show_reviewer_as_vip', 'Show reviewer/publisher in VIP list')  + show_help("If you enable this option, the reviewer or publisher of the cache is a VIP for the cache.<br><br>" + t_reqSVl)+ "<br>";
+            html += newParameterVersionSetzen(0.9) + newParameterOff;
             html += "&nbsp; " + checkboxy('settings_show_long_vip', 'Show long VIP list (one row per log)') + show_help("This is another type of displaying the VIP list. If you disable this option you get the short list, one row per VIP and the logs as icons beside the VIP. If you enable this option, there is a row for every log.<br>(VIP: Very important person)<br><br>" + t_reqSVl) + "<br>";
             html += "&nbsp; " + checkboxy('settings_vip_show_nofound', 'Show a list of VIPs who have not found the cache') + "<br>";
             html += "&nbsp; " + checkboxy('settings_make_vip_lists_hideable', 'Make VIP lists in listing hideable') + show_help("With this option you can hide and show the VIP lists \"VIP-List\" and \"VIP-List not found\" in cache listing with one click.<br>(VIP: Very important person)<br><br>" + t_reqSVl) + "<br>";
@@ -11613,6 +11658,7 @@ var mainGC = function() {
                 'settings_both_tabs_list_of_pqs_one_page',
                 'settings_past_events_on_bm',
                 'settings_show_log_totals',
+                'settings_show_reviewer_as_vip',
             );
 
             for (var i = 0; i < checkboxes.length; i++) {
