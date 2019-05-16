@@ -58,9 +58,10 @@
 	</li>
 	<li>
 		<strong>New:</strong> "Great story" and "Helpful" are not longer deleted by GClh. [<a href="https://github.com/2Abendsegler/GClh/issues/663" title="Issue 663">663</a> / <a href="https://www.geocaching.com/profile/?u=Ruko2010" title="Thanks to Ruko2010">Ruko2010</a>]<br>
-		If you havn't noticed yet, since about 1 year, Groundspeak is testing a new feature where you can tag a log as "Great Story" or "Helpful" and you can sort the logs by the rating of the users.<br>
-		This feature is only available in Canada and Norway at this time. Since today, GClh is deleting these so called "Upvote"-Buttons, because we replace the log template with our own. But from now on, GClh no longer deletes those buttons and you can use them. Also the sort is working with.<br>
+		If you haven't noticed yet, since about 1 year, Groundspeak is testing a new feature where you can tag a log as "Great Story" or "Helpful" and you can sort the logs by the rating of the users.<br>
+		This feature is only available in Canada and Norway at this time. Since today, GClh is deleting these so called "Upvote"-Buttons, because we replace the log template with our own to display some more informations (like user-avatar). But from now on, GClh no longer deletes those buttons and you can use them to rate the logs and sort them by a certain rating.<br>
 		If you want to know more about this topic, here is a blogpost from Groundspeak: <a href="https://www.geocaching.com/blog/2018/05/faq-log-upvotes/" title="Log Upvotes">https://www.geocaching.com/blog/2018/05/faq-log-upvotes/</a><br>
+		And this is how it looks like:<br>
 		<img src="../images/0.9.18/Screen02.png" alt="Screen02.png"><br>
 	</li>
 	<li>
