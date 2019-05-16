@@ -48,34 +48,66 @@
 <a href="#v01" title="GClh II version 0.1 (05.01.2017)">v0.1</a> &nbsp; 
 
 
+<style>
+	h4.change {
+	    border-radius: 30px;
+	    padding: 1px 8px 2px;
+	    display: inline-block;
+	    color: white;
+	    text-transform: uppercase;
+	    font-size: 13px;
+	    margin-bottom: 6px;
+	    cursor: default;
+	}
+
+	.new {
+	    background-color: hsl(35, 100%, 50%);
+	}
+
+	.fixed {
+	    background-color: hsl(120, 100%, 35%);
+	}
+
+	.improvements {
+	    background-color: hsl(210, 100%, 60%);
+	}
+</style>
+
+
 ---
 ## v0.9.18:
-<ul>
-	<li>
-		<strong>New:</strong> Integrate reviewer/publisher in VIP lists. [<a href="https://github.com/2Abendsegler/GClh/issues/1011" title="Issue 1011">1011</a> / <a href="https://www.geocaching.com/profile/?u=Ruko2010" title="Thanks to Ruko2010">Ruko2010</a>]<br>
-		You can now show the reviewer/publisher of the cache in your VIP list: <br />
-		<img src="../images/0.9.18/Screen01.png" alt="Screen01.png"><br>
-	</li>
-	<li>
-		<strong>New:</strong> "Great story" and "Helpful" are not longer deleted by GClh. [<a href="https://github.com/2Abendsegler/GClh/issues/663" title="Issue 663">663</a> / <a href="https://www.geocaching.com/profile/?u=Ruko2010" title="Thanks to Ruko2010">Ruko2010</a>]<br>
-		If you havn't noticed yet, since about 1 year, Groundspeak is testing a new feature where you can tag a log as "Great Story" or "Helpful" and you can sort the logs by the rating of the users.<br />
-		This feature is only available in Canada and Norway at this time. Since today, GClh is deleting these so called "Upvote"-Buttons, because we replace the log template with our own. But from now on, GClh no longer deletes those buttons and you can use them. Also the sort is working with.<br />
-		If you want to know more about this topic, here is a blogpost from Groundspeak: [<a href="https://www.geocaching.com/blog/2018/05/faq-log-upvotes/" title="Log Upvotes">https://www.geocaching.com/blog/2018/05/faq-log-upvotes/</a>
-		<img src="../images/0.9.18/Screen02.png" alt="Screen02.png"><br>
-	</li>
-	<li>
-		<strong>Fix:</strong> Show Google-Maps Link on Cache Listing Page does not work. [<a href="https://github.com/2Abendsegler/GClh/issues/1025" title="Issue 1025">1025</a> / <a href="https://www.geocaching.com/profile/?u=Ruko2010" title="Thanks to Ruko2010">Ruko2010</a>]<br>
-	</li>
-	<li>
-		<strong>Fix:</strong> "Open Trackables" in Draft Mode not working consistently. [<a href="https://github.com/2Abendsegler/GClh/issues/1024" title="Issue 1024">1024</a> / <a href="https://www.geocaching.com/profile/?u=Ruko2010" title="Thanks to Ruko2010">Ruko2010</a>]<br>
-	</li>
-	<li>
-		<strong>Fix:</strong> The "edit log" - functionality integrates the signature once again (Old log page). [<a href="https://github.com/2Abendsegler/GClh/issues/1023" title="Issue 1023">1023</a> / <a href="https://www.geocaching.com/profile/?u=Ruko2010" title="Thanks to Ruko2010">Ruko2010</a>]<br>
-	</li>
-	<li>
-		<strong>Fix:</strong> Geonames in standard configuration as first service. [<a href="https://github.com/2Abendsegler/GClh/issues/1030" title="Issue 1030">1030</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
-	</li>
-</ul>
+<h4 class="change new">New</h4>
+	<ul>
+		<li>
+			Integrate reviewer/publisher in VIP lists. [<a href="https://github.com/2Abendsegler/GClh/issues/1011" title="Issue 1011">1011</a> / <a href="https://www.geocaching.com/profile/?u=Ruko2010" title="Thanks to Ruko2010">Ruko2010</a>]<br>
+			You can now show the reviewer/publisher of the cache in your VIP list: <br />
+			<img src="../images/0.9.18/Screen01.png" alt="Screen01.png"><br>
+		</li>
+		<li>
+			"Great story" and "Helpful" are not longer deleted by GClh. [<a href="https://github.com/2Abendsegler/GClh/issues/663" title="Issue 663">663</a> / <a href="https://www.geocaching.com/profile/?u=Ruko2010" title="Thanks to Ruko2010">Ruko2010</a>]<br>
+			If you havn't noticed yet, since about 1 year, Groundspeak is testing a new feature where you can tag a log as "Great Story" or "Helpful" and you can sort the logs by the rating of the users.<br />
+			This feature is only available in Canada and Norway at this time. Since today, GClh is deleting these so called "Upvote"-Buttons, because we replace the log template with our own. But from now on, GClh no longer deletes those buttons and you can use them. Also the sort is working with.<br />
+			If you want to know more about this topic, here is a blogpost from Groundspeak: <a href="https://www.geocaching.com/blog/2018/05/faq-log-upvotes/" title="Log Upvotes">https://www.geocaching.com/blog/2018/05/faq-log-upvotes/</a><br>
+			<img src="../images/0.9.18/Screen02.png" alt="Screen02.png"><br>
+		</li>
+	</ul>
+
+<h4 class="change fixed">Fixed</h4>
+	<ul>
+		<li>
+			Show Google-Maps Link on Cache Listing Page does not work. [<a href="https://github.com/2Abendsegler/GClh/issues/1025" title="Issue 1025">1025</a> / <a href="https://www.geocaching.com/profile/?u=Ruko2010" title="Thanks to Ruko2010">Ruko2010</a>]<br>
+		</li>
+		<li>
+			"Open Trackables" in Draft Mode not working consistently. [<a href="https://github.com/2Abendsegler/GClh/issues/1024" title="Issue 1024">1024</a> / <a href="https://www.geocaching.com/profile/?u=Ruko2010" title="Thanks to Ruko2010">Ruko2010</a>]<br>
+		</li>
+		<li>
+			The "edit log" - functionality integrates the signature once again (Old log page). [<a href="https://github.com/2Abendsegler/GClh/issues/1023" title="Issue 1023">1023</a> / <a href="https://www.geocaching.com/profile/?u=Ruko2010" title="Thanks to Ruko2010">Ruko2010</a>]<br>
+		</li>
+		<li>
+			Geonames in standard configuration as first service. [<a href="https://github.com/2Abendsegler/GClh/issues/1030" title="Issue 1030">1030</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		</li>
+	</ul>
+
 (??.??.2019)<br>
 released by <a href="https://www.geocaching.com/profile/?u=Ruko2010">Ruko2010</a><br>
 <br>
