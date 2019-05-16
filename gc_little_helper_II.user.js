@@ -6396,8 +6396,8 @@ var mainGC = function() {
                         }
 
                         if($(this).hasClass('upvoted')){
-                            all_logs[log_index].greatStory -= 1;
-                            all_logs[log_index].greatStoryupvotedByUser = false;
+                            all_logs[log_index].helpful -= 1;
+                            all_logs[log_index].helpfulupvotedByUser = false;
                         }else{
                             all_logs[log_index].helpful += 1;
                             all_logs[log_index].helpfulupvotedByUser = true;
