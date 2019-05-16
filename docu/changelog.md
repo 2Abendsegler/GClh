@@ -53,14 +53,14 @@
 <ul>
 	<li>
 		<strong>New:</strong> Integrate reviewer/publisher in VIP lists. [<a href="https://github.com/2Abendsegler/GClh/issues/1011" title="Issue 1011">1011</a> / <a href="https://www.geocaching.com/profile/?u=Ruko2010" title="Thanks to Ruko2010">Ruko2010</a>]<br>
-		You can now show the reviewer/publisher of the cache in your VIP list: <br />
+		You can now show the reviewer/publisher of the cache in your VIP list: <br>
 		<img src="../images/0.9.18/Screen01.png" alt="Screen01.png"><br>
 	</li>
 	<li>
 		<strong>New:</strong> "Great story" and "Helpful" are not longer deleted by GClh. [<a href="https://github.com/2Abendsegler/GClh/issues/663" title="Issue 663">663</a> / <a href="https://www.geocaching.com/profile/?u=Ruko2010" title="Thanks to Ruko2010">Ruko2010</a>]<br>
-		If you havn't noticed yet, since about 1 year, Groundspeak is testing a new feature where you can tag a log as "Great Story" or "Helpful" and you can sort the logs by the rating of the users.<br />
-		This feature is only available in Canada and Norway at this time. Since today, GClh is deleting these so called "Upvote"-Buttons, because we replace the log template with our own. But from now on, GClh no longer deletes those buttons and you can use them. Also the sort is working with.<br />
-		If you want to know more about this topic, here is a blogpost from Groundspeak: <a href="https://www.geocaching.com/blog/2018/05/faq-log-upvotes/" title="Log Upvotes">https://www.geocaching.com/blog/2018/05/faq-log-upvotes/</a><br />
+		If you havn't noticed yet, since about 1 year, Groundspeak is testing a new feature where you can tag a log as "Great Story" or "Helpful" and you can sort the logs by the rating of the users.<br>
+		This feature is only available in Canada and Norway at this time. Since today, GClh is deleting these so called "Upvote"-Buttons, because we replace the log template with our own. But from now on, GClh no longer deletes those buttons and you can use them. Also the sort is working with.<br>
+		If you want to know more about this topic, here is a blogpost from Groundspeak: <a href="https://www.geocaching.com/blog/2018/05/faq-log-upvotes/" title="Log Upvotes">https://www.geocaching.com/blog/2018/05/faq-log-upvotes/</a><br>
 		<img src="../images/0.9.18/Screen02.png" alt="Screen02.png"><br>
 	</li>
 	<li>
@@ -85,7 +85,7 @@ released by <a href="https://www.geocaching.com/profile/?u=Ruko2010">Ruko2010</a
 <ul>
 	<li>
 		<strong>New:</strong> We added a Note of Thanks to honor all the contributors to this project. [<a href="https://github.com/2Abendsegler/GClh/issues/1004" title="Issue 1004">1004</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
-		You can access it via the config screen: <br />
+		You can access it via the config screen: <br>
 		<img src="../images/0.9.17/Screen02.png" alt="Screen02.png"><br>
 	</li>
 	<li>
@@ -794,7 +794,7 @@ released by <a href="https://www.geocaching.com/profile/?u=Ruko2010">Ruko2010</a
 ## v0.9.4:
 <ul>
 	<li>
-		<strong>New:</strong> Enhanced the map popup for a cache. [Issue <a href="https://github.com/2Abendsegler/GClh/issues/554">#554</a>, <a href="https://github.com/2Abendsegler/GClh/issues/623">#623</a>]<br />
+		<strong>New:</strong> Enhanced the map popup for a cache. [Issue <a href="https://github.com/2Abendsegler/GClh/issues/554">#554</a>, <a href="https://github.com/2Abendsegler/GClh/issues/623">#623</a>]<br>
 		Additional Informations displayed:
 		<ul>
 			<li>Number of different log types</li>
@@ -808,7 +808,7 @@ released by <a href="https://www.geocaching.com/profile/?u=Ruko2010">Ruko2010</a
 		<img src="../images/v0.9.4_Screen02.png" alt="v0.9.4_Screen02.png"><br>
 	</li>
 	<li>
-		<strong>New:</strong> Sorting of Souvenirs. [Issue <a href="https://github.com/2Abendsegler/GClh/issues/624">#624</a>]<br />
+		<strong>New:</strong> Sorting of Souvenirs. [Issue <a href="https://github.com/2Abendsegler/GClh/issues/624">#624</a>]<br>
 		Available sorting methods:
 		<ul>
 			<li>Sort by Date, latest first</li>
@@ -821,14 +821,14 @@ released by <a href="https://www.geocaching.com/profile/?u=Ruko2010">Ruko2010</a
 		Thanks to <a href="https://www.geocaching.com/profile/?u=CachingFoX">CachingFoX</a> for the idea and the implementation.<br>
 	</li>
 	<li>
-		<strong>New:</strong> You can now choose between Google Elevation Service and Open Elevation Service for Elevation-Data. [Issue <a href="https://github.com/2Abendsegler/GClh/issues/621">#621</a>]<br />
+		<strong>New:</strong> You can now choose between Google Elevation Service and Open Elevation Service for Elevation-Data. [Issue <a href="https://github.com/2Abendsegler/GClh/issues/621">#621</a>]<br>
 		You can choose the order of the services. The secound method will be used as Fall-Back if the first encounters an error or the data is missing.
 		<br>
 		<img src="../images/v0.9.4_Screen04.png" alt="v0.9.4_Screen04.png"><br>
 		Thanks to <a href="https://www.geocaching.com/profile/?u=CachingFoX">CachingFoX</a> for the idea and the implementation.<br>
 	</li>
 	<li>
-		<strong>New:</strong> Improvements of the new Draft-Page. [Issue <a href="https://github.com/2Abendsegler/GClh/issues/620">#620</a>]<br />
+		<strong>New:</strong> Improvements of the new Draft-Page. [Issue <a href="https://github.com/2Abendsegler/GClh/issues/620">#620</a>]<br>
 		<ul>
 			<li>the Logtype (e.g. "Found-it", "Write-Note", etc.) is now displayed as Icon next to the cacheicon</li>
 			<li>new link icon on the right to go directly to the cache listing (instead if the "new-log-page")</li>
@@ -840,7 +840,7 @@ released by <a href="https://www.geocaching.com/profile/?u=Ruko2010">Ruko2010</a
 		Thanks to <a href="https://www.geocaching.com/profile/?u=CachingFoX">CachingFoX</a> for the idea and the implementation.<br>
 	</li>
 	<li>
-		<strong>New:</strong> We now have a Documentation, how you can develop Userscripts like GClh easily with Tampermonkey and Github. [Issue <a href="https://github.com/2Abendsegler/GClh/issues/619">#619</a>]<br />
+		<strong>New:</strong> We now have a Documentation, how you can develop Userscripts like GClh easily with Tampermonkey and Github. [Issue <a href="https://github.com/2Abendsegler/GClh/issues/619">#619</a>]<br>
 		You can find it here: <a href="https://github.com/2Abendsegler/GClh/blob/master/docu/development-tampermonkey.md">Development with Tampermonkey</a><br>
 		Thanks to <a href="https://www.geocaching.com/profile/?u=CachingFoX">CachingFoX</a> for the idea and the implementation.<br>
 	</li>
