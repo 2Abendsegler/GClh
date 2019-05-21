@@ -55,12 +55,14 @@
 		<strong>New:</strong> Integrate reviewer/publisher in VIP lists. [<a href="https://github.com/2Abendsegler/GClh/issues/1011" title="Issue 1011">1011</a> / <a href="https://www.geocaching.com/profile/?u=Ruko2010" title="Thanks to Ruko2010">Ruko2010</a>]<br>
 		You can now show the reviewer/publisher of the cache in your VIP list: <br>
 		<img src="../images/0.9.18/Screen01.png" alt="Screen01.png"><br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_show_reviewer_as_vip" title="Link to your GClh Config">Settings -> Listing:<br>
+		<img src="../images/0.9.18/Screen03.png" alt="Screen03.png"></a><br>
 	</li>
 	<li>
 		<strong>New:</strong> "Great story" and "Helpful" are not longer deleted by GClh. [<a href="https://github.com/2Abendsegler/GClh/issues/663" title="Issue 663">663</a> / <a href="https://www.geocaching.com/profile/?u=Ruko2010" title="Thanks to Ruko2010">Ruko2010</a>]<br>
 		If you haven't noticed yet, since about 1 year, Groundspeak is testing a new feature where you can tag a log as "Great Story" or "Helpful" and you can sort the logs by the rating of the users.<br>
-		This feature is only available in Canada and Norway at this time. Since today, GClh is deleting these so called "Upvote"-Buttons, because we replace the log template with our own to display some more informations (like user-avatar). But from now on, GClh no longer deletes those buttons and you can use them to rate the logs and sort them by a certain rating.<br>
-		If you want to know more about this topic, here is a blogpost from Groundspeak: <a href="https://www.geocaching.com/blog/2018/05/faq-log-upvotes/" title="Log Upvotes">https://www.geocaching.com/blog/2018/05/faq-log-upvotes/</a><br>
+		This feature is only available in Canada and Norway at this time. Since today, GClh is deleting these so called "Upvote"-Buttons, because we replace the log template. But from now on, GClh no longer deletes those buttons and you can use them to rate the logs and sort them by a certain rating.<br>
+		If you want to know more about this topic, here is a blogpost from Groundspeak: <a href="https://www.geocaching.com/blog/2018/05/faq-log-upvotes/" title="Log Upvotes">here</a><br>
 		And this is how it looks like:<br>
 		<img src="../images/0.9.18/Screen02.png" alt="Screen02.png"><br>
 	</li>
