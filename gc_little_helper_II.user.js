@@ -5992,6 +5992,10 @@ var mainGC = function() {
                 if (settings_show_all_logs_but) addButtonOverLogs(gclh_load_all_logs, "gclh_load_all_logs", false, "Show all logs", "");
                 if (settings_show_bigger_avatars_but && !settings_hide_avatar && !isMemberInPmoCache() && settings_show_thumbnails) showBiggerAvatarsLink();
                 if (settings_show_log_counter_but) showLogCounterLink();
+                if(isGreatStoryAndHelpfulActive){
+                    $('#new_sort_element_upvote').prop( "disabled", false );
+                    $('#new_sort_element_upvote').removeClass("isDisabled");
+                } 
             }
 
             // Filter logs.
@@ -6128,6 +6132,75 @@ var mainGC = function() {
                     document.getElementById("gclh_vip_list_nofound").appendChild(span_loading);
                 }
 
+                if(isGreatStoryAndHelpfulActive){
+                    // remove the sorting select
+
+                    appendCssStyle("#new_sort_element_upvote.isDisabled{opacity: 0.5;}")
+
+                    var new_sort_element = document.createElement('select');
+                    new_sort_element.setAttribute('id', 'new_sort_element_upvote');
+                    new_sort_element.classList.add("isDisabled");;
+                    new_sort_element.disabled = true;
+                    new_sort_element.onchange = function() {
+                        
+                        var sorting_key = this.value;
+
+                        $(this).after(' <img id="sort_logs_working" src="' + urlImages + 'ajax-loader.gif" />');
+
+                        //Sort all the logs
+                        logs.sort(function(a, b) {
+                            if((sorting_key == 'newest') || (b[sorting_key] == a[sorting_key])){
+                                return a['newest'] - b['newest'];
+                            }else{
+                                return b[sorting_key] - a[sorting_key];
+                            }
+                        });
+
+                        setTimeout(function() {
+                            if (logs) {
+                                // IDs der Cache Logs Tables.
+
+                                var count = $('tbody',$('#cache_logs_table2, #cache_logs_table')).first().children().length;
+
+                                $('tbody',$('#cache_logs_table2, #cache_logs_table')).first().children().remove();
+                                for (var i = 0; i < count; i++) {
+                                    if (logs[i]) {
+                                        var newBody = unsafeWindow.$(document.createElement("TBODY"));
+                                        unsafeWindow.$("#tmpl_CacheLogRow_gclh").tmpl(logs[i]).appendTo(newBody);
+                                        unsafeWindow.$(document.getElementById("cache_logs_table2") || document.getElementById("cache_logs_table")).append(newBody.children());
+                                    }
+                                }
+                                unsafeWindow.$('a.tb_images').fancybox({'type': 'image', 'titlePosition': 'inside'});
+                                gclh_add_vip_icon();
+                                setLinesColorInCacheListing();
+                                if (document.getElementById("gclh_show_log_counter")) document.getElementById("gclh_show_log_counter").style.visibility = "";
+                                
+                                updateGreatStoryEvents(logs);
+                            }
+                            $('#sort_logs_working').remove();
+                        }, 100);
+
+                   }
+                    
+                    var newest = document.createElement('option');
+                    newest.innerHTML = 'Newest';
+                    newest.value = 'newest';
+                    new_sort_element.appendChild(newest);
+                    
+                    var beststory = document.createElement('option');
+                    beststory.innerHTML = 'Best story';
+                    beststory.value = 'greatStory';
+                    new_sort_element.appendChild(beststory);
+                    
+                    var mosthelpful = document.createElement('option');
+                    mosthelpful.innerHTML = 'Most helpful';
+                    mosthelpful.value = 'helpful';
+                    new_sort_element.appendChild(mosthelpful);
+
+                    $("#cache_logs_container #sortOrder").before(new_sort_element);
+                    $('#cache_logs_container #sortOrder').remove();
+                }
+
                 function gclh_load_helper(count) {
                     var url = http + "://www.geocaching.com/seek/geocache.logbook?tkn=" + userToken + "&idx=" + curIdx + "&num=100&decrypt=false";
                     GM_xmlhttpRequest({
@@ -6240,71 +6313,6 @@ var mainGC = function() {
                     gclh_load_all(logs);
                     gclh_filter(logs);
                     gclh_search(logs);
-
-                    if(isGreatStoryAndHelpfulActive){
-                        // remove the sorting select
-
-                        var new_sort_element = document.createElement('select');
-                        new_sort_element.setAttribute('id', 'new_sort_element');
-                        new_sort_element.onchange = function() {
-                            
-                            var sorting_key = this.value;
-
-                            $(this).after(' <img id="sort_logs_working" src="' + urlImages + 'ajax-loader.gif" />');
-
-                            //Sort all the logs
-                            logs.sort(function(a, b) {
-                                if((sorting_key == 'newest') || (b[sorting_key] == a[sorting_key])){
-                                    return a['newest'] - b['newest'];
-                                }else{
-                                    return b[sorting_key] - a[sorting_key];
-                                }
-                            });
-
-                            setTimeout(function() {
-                                if (logs) {
-                                    // IDs der Cache Logs Tables.
-
-                                    var count = $('tbody',$('#cache_logs_table2, #cache_logs_table')).first().children().length;
-
-                                    $('tbody',$('#cache_logs_table2, #cache_logs_table')).first().children().remove();
-                                    for (var i = 0; i < count; i++) {
-                                        if (logs[i]) {
-                                            var newBody = unsafeWindow.$(document.createElement("TBODY"));
-                                            unsafeWindow.$("#tmpl_CacheLogRow_gclh").tmpl(logs[i]).appendTo(newBody);
-                                            unsafeWindow.$(document.getElementById("cache_logs_table2") || document.getElementById("cache_logs_table")).append(newBody.children());
-                                        }
-                                    }
-                                    unsafeWindow.$('a.tb_images').fancybox({'type': 'image', 'titlePosition': 'inside'});
-                                    gclh_add_vip_icon();
-                                    setLinesColorInCacheListing();
-                                    if (document.getElementById("gclh_show_log_counter")) document.getElementById("gclh_show_log_counter").style.visibility = "";
-                                    
-                                    updateGreatStoryEvents(logs);
-                                }
-                                $('#sort_logs_working').remove();
-                            }, 100);
-
-                       }
-                        
-                        var newest = document.createElement('option');
-                        newest.innerHTML = 'Newest';
-                        newest.value = 'newest';
-                        new_sort_element.appendChild(newest);
-                        
-                        var beststory = document.createElement('option');
-                        beststory.innerHTML = 'Best story';
-                        beststory.value = 'greatStory';
-                        new_sort_element.appendChild(beststory);
-                        
-                        var mosthelpful = document.createElement('option');
-                        mosthelpful.innerHTML = 'Most helpful';
-                        mosthelpful.value = 'helpful';
-                        new_sort_element.appendChild(mosthelpful);
-
-                        $("#cache_logs_container #sortOrder").before(new_sort_element);
-                        $('#cache_logs_container #sortOrder').remove();
-                    }
 
                     var log_ids = [];
 
