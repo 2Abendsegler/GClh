@@ -6265,9 +6265,9 @@ var mainGC = function() {
                                 if (logs) {
                                     // IDs der Cache Logs Tables.
 
-                                    var count = $('#cache_logs_table2, #cache_logs_table').find('tbody').children().length;
+                                    var count = $('tbody',$('#cache_logs_table2, #cache_logs_table')).first().children().length;
 
-                                    $('#cache_logs_table2, #cache_logs_table').find('tbody').children().remove();
+                                    $('tbody',$('#cache_logs_table2, #cache_logs_table')).first().children().remove();
                                     for (var i = 0; i < count; i++) {
                                         if (logs[i]) {
                                             var newBody = unsafeWindow.$(document.createElement("TBODY"));
