@@ -6145,6 +6145,16 @@ var mainGC = function() {
                         
                         var sorting_key = this.value;
 
+                        // Deactivate gclh_show_log_counter_button when sorting is not "newest"
+                        var gclh_show_log_counter_button = $("#gclh_show_log_counter input")[0];
+                        if(gclh_show_log_counter_button){
+                            if(sorting_key == 'newest'){
+                                gclh_show_log_counter_button.disabled = false;
+                            }else{
+                                gclh_show_log_counter_button.disabled = true;
+                            }
+                        }
+
                         $(this).after(' <img id="sort_logs_working" src="' + urlImages + 'ajax-loader.gif" />');
 
                         //Sort all the logs
