@@ -5618,8 +5618,8 @@ var mainGC = function() {
             global_MailTemplate = urlencode(buildSendTemplate().replace(/#Receiver#/ig, "__Receiver__"));
             global_MailTemplate = global_MailTemplate.replace(/__Receiver__/ig, "${UserName}");
 
-            var isGreatStoryAndHelpfulActive = false;
-            if($('#cache_logs_container #sortOrder').length) isGreatStoryAndHelpfulActive = true
+            var isUpvoteActive = false;
+            if($('#cache_logs_container #sortOrder').length) isUpvoteActive = true
 
             var vupUserString = 'if UserName == "#" ';
             var vupHideAvatarString  = 'if (UserName != "#" ';
@@ -5741,7 +5741,7 @@ var mainGC = function() {
                 '        <small><a title="Upload Image" href="/seek/upload.aspx?LID=${LogID}" target="_blank">Upload Image</a></small>' +
                 '        {{/if}}' +
                 '      </div>';
-            if(isGreatStoryAndHelpfulActive) new_tmpl += 
+            if(isUpvoteActive) new_tmpl += 
                 '     {{if LogType === "Found it" || LogType === "Didn\'t find it" || LogType === "Webcam photo taken" || LogType === "Attended" || LogType === "Announcement" }}' +
                 '         <div class="upvotes">' +
                 '             <button class="great-story-btn{{if (typeof greatStoryupvotedByUser != "undefined") && greatStoryupvotedByUser}} upvoted{{/if}}"' +
@@ -5809,7 +5809,7 @@ var mainGC = function() {
             // Länge der Usernamen in den Logs beschränken, damit sie nicht umgebrochen werden.
             css += ".logOwnerProfileName {max-width: 135px; display: inline-block; overflow: hidden; vertical-align: bottom; white-space: nowrap; text-overflow: ellipsis;}";
 
-            if(isGreatStoryAndHelpfulActive) css += ".upvotes{display: block;}";
+            if(isUpvoteActive) css += ".upvotes{display: block;}";
 
             appendCssStyle(css);
         } catch(e) {gclh_error("Define log-template",e);}
@@ -5952,9 +5952,9 @@ var mainGC = function() {
                             unsafeWindow.$('a.tb_images').fancybox({'type': 'image', 'titlePosition': 'inside'});
                             gclh_add_vip_icon();
                             setLinesColorInCacheListing();
-                            if(isGreatStoryAndHelpfulActive){
+                            if(isUpvoteActive){
                                 unsafeWindow.appendUpvotesToLogs(log_ids);
-                                updateGreatStoryEvents(logs);
+                                updateUpvoteEvents(logs);
                             }
                             if (!settings_hide_top_button) $("#topScroll").fadeIn();
                             $("#pnlLazyLoad").hide();
@@ -5992,7 +5992,7 @@ var mainGC = function() {
                 if (settings_show_all_logs_but) addButtonOverLogs(gclh_load_all_logs, "gclh_load_all_logs", false, "Show all logs", "");
                 if (settings_show_bigger_avatars_but && !settings_hide_avatar && !isMemberInPmoCache() && settings_show_thumbnails) showBiggerAvatarsLink();
                 if (settings_show_log_counter_but) showLogCounterLink();
-                if(isGreatStoryAndHelpfulActive){
+                if(isUpvoteActive){
                     $('#new_sort_element_upvote').prop( "disabled", false );
                     $('#new_sort_element_upvote').removeClass("isDisabled");
                 } 
@@ -6132,7 +6132,7 @@ var mainGC = function() {
                     document.getElementById("gclh_vip_list_nofound").appendChild(span_loading);
                 }
 
-                if(isGreatStoryAndHelpfulActive){
+                if(isUpvoteActive){
                     // remove the sorting select
 
                     appendCssStyle("#new_sort_element_upvote.isDisabled{opacity: 0.5;}")
@@ -6185,7 +6185,7 @@ var mainGC = function() {
                                 setLinesColorInCacheListing();
                                 if (document.getElementById("gclh_show_log_counter")) document.getElementById("gclh_show_log_counter").style.visibility = "";
                                 
-                                updateGreatStoryEvents(logs);
+                                updateUpvoteEvents(logs);
                             }
                             $('#sort_logs_working').remove();
                         }, 100);
@@ -6314,7 +6314,7 @@ var mainGC = function() {
                         // Add Great story / helpful data to logs
                         // give starting index to the function, so it knows 
                         // what index has to be updated
-                        if(isGreatStoryAndHelpfulActive){
+                        if(isUpvoteActive){
                             getUpvoteData(all_ids,((z-1)*100));
                         }
                     }
@@ -6335,9 +6335,9 @@ var mainGC = function() {
                         }
                     }
                     unsafeWindow.$('a.tb_images').fancybox({'type': 'image', 'titlePosition': 'inside'});
-                    if(isGreatStoryAndHelpfulActive){
+                    if(isUpvoteActive){
                         unsafeWindow.appendUpvotesToLogs(log_ids);
-                        updateGreatStoryEvents(logs);
+                        updateUpvoteEvents(logs);
                     }
 
                     gclh_dynamic_load(logs, num);
@@ -6350,7 +6350,7 @@ var mainGC = function() {
                 gclh_load_helper(1);
             }
 
-            function updateGreatStoryEvents(all_logs){
+            function updateUpvoteEvents(all_logs){
                 $('.great-story-btn').each(function(){
                     $(this).unbind('click');
                     $(this).click(function(){
