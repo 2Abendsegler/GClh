@@ -3585,14 +3585,16 @@ var mainGC = function() {
             // Fixed header.
             if (settings_fixed_pq_header && (document.getElementById("pqRepeater") || document.getElementById("uxOfflinePQTable"))) {
 
+              var positionPx = 0;
+              if (browser === "chrome" || browser === "edge") {
+                positionPx = -1; // Mitigate ugly gap for header/footer
+              }
+
               var css = "";
 
-              // Fixed PQ header - th is hack for Chrome, Edge # see on bug https://bugs.chromium.org/p/chromium/issues/detail?id=702927
-              css += "#uxOfflinePQTable thead th, #pqRepeater thead th { position: -webkit-sticky; position: sticky; top: 0; } ";
-              // Fixed PQ footer too
-              css += "#uxOfflinePQTable  .TableFooter, #pqRepeater .TableFooter { position: -webkit-sticky; position: sticky; bottom: 0; } ";
-              // Footer with same color as header
-              css += ".PocketQueryListTable tr.TableFooter td { background-color: #E3DDC2; } ";
+              // Fixed PQ header and footer - used TH and TD selector is hack for Chrome, Edge # see on bug https://bugs.chromium.org/p/chromium/issues/detail?id=702927
+              css += "#uxOfflinePQTable thead th, #pqRepeater thead th { position: -webkit-sticky; position: sticky; top: " + positionPx + "px; } ";
+              css += ".PocketQueryListTable tr.TableFooter td { background-color: #E3DDC2; position: -webkit-sticky; position: sticky; bottom: " + positionPx + "px; } ";
               // Link from footer as button for better UX
               css += "#uxOfflinePQTable .TableFooter A, #pqRepeater .TableFooter A { appearance: button; -moz-appearance: button; -webkit-appearance: button; "
                   + " text-decoration: none; font: menu; color: ButtonText; display: inline-block; padding: 2px 8px; white-space: nowrap; } ";
