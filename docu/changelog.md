@@ -1,4 +1,4 @@
-<a href="#v0918" title="GClh II version 0.9.18 (??.??.2019)">v0.9.18</a> &nbsp;
+<a href="#v0918" title="GClh II version 0.9.18 (23.05.2019)">v0.9.18</a> &nbsp;
 <a href="#v0917" title="GClh II version 0.9.17 (10.04.2019)">v0.9.17</a> &nbsp;
 <a href="#v0916" title="GClh II version 0.9.16 (13.02.2019)">v0.9.16</a> &nbsp;
 <a href="#v0915" title="GClh II version 0.9.15 (18.01.2019)">v0.9.15</a> &nbsp;
@@ -79,7 +79,7 @@
 		<strong>Fix:</strong> Geonames in standard configuration as first service. [<a href="https://github.com/2Abendsegler/GClh/issues/1030" title="Issue 1030">1030</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 	</li>
 </ul>
-(??.??.2019)<br>
+(23.05.2019)<br>
 released by <a href="https://www.geocaching.com/profile/?u=Ruko2010">Ruko2010</a><br>
 <br>
 
