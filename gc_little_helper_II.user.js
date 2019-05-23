@@ -6136,6 +6136,7 @@ var mainGC = function() {
                     // remove the sorting select
 
                     appendCssStyle("#new_sort_element_upvote.isDisabled{opacity: 0.5;}")
+                    appendCssStyle("#gclh_show_log_counter.isDisabled{opacity: 0.5;}")
 
                     var new_sort_element = document.createElement('select');
                     new_sort_element.setAttribute('id', 'new_sort_element_upvote');
@@ -6149,8 +6150,10 @@ var mainGC = function() {
                         var gclh_show_log_counter_button = $("#gclh_show_log_counter input")[0];
                         if(gclh_show_log_counter_button){
                             if(sorting_key == 'newest'){
+                                $("#gclh_show_log_counter").removeClass("isDisabled");
                                 gclh_show_log_counter_button.disabled = false;
                             }else{
+                                $("#gclh_show_log_counter").addClass("isDisabled");
                                 gclh_show_log_counter_button.disabled = true;
                             }
                         }
