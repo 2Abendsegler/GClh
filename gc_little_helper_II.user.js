@@ -441,7 +441,7 @@ var variablesInit = function(c) {
     c.settings_hover_image_max_size = getValue("settings_hover_image_max_size", 600);
     c.settings_vip_show_nofound = getValue("settings_vip_show_nofound", true);
     c.settings_use_gclh_layercontrol = getValue("settings_use_gclh_layercontrol", true);
-    c.settings_fixed_pq_header = getValue("settings_fixed_pq_header", true);
+    c.settings_fixed_pq_header = getValue("settings_fixed_pq_header", false);
     c.settings_friendlist_summary = getValue("settings_friendlist_summary", true);
     c.settings_friendlist_summary_viponly = getValue("settings_friendlist_summary_viponly", false);
     c.settings_search_data = JSON.parse(getValue("settings_search_data", "[]"));
@@ -3586,7 +3586,7 @@ var mainGC = function() {
             if (settings_fixed_pq_header && (document.getElementById("pqRepeater") || document.getElementById("uxOfflinePQTable"))) {
 
               var positionPx = 0;
-              if (browser === "chrome" || browser === "edge") {
+              if (browser === "chrome") {
                 positionPx = -1; // Mitigate ugly gap for header/footer
               }
 
@@ -3596,7 +3596,7 @@ var mainGC = function() {
               css += "#uxOfflinePQTable thead th, #pqRepeater thead th { position: -webkit-sticky; position: sticky; top: " + positionPx + "px; } ";
               css += ".PocketQueryListTable tr.TableFooter td { background-color: #E3DDC2; position: -webkit-sticky; position: sticky; bottom: " + positionPx + "px; } ";
               // Link from footer as button for better UX
-              css += "#uxOfflinePQTable .TableFooter A, #pqRepeater .TableFooter A { appearance: button; -moz-appearance: button; -webkit-appearance: button; "
+              css += "#uxOfflinePQTable .TableFooter A, #pqRepeater .TableFooter A { -moz-appearance: button; -webkit-appearance: button; appearance: button; "
                   + " text-decoration: none; font: menu; color: ButtonText; display: inline-block; padding: 2px 8px; white-space: nowrap; } ";
 
               appendCssStyle(css);
