@@ -441,7 +441,7 @@ var variablesInit = function(c) {
     c.settings_hover_image_max_size = getValue("settings_hover_image_max_size", 600);
     c.settings_vip_show_nofound = getValue("settings_vip_show_nofound", true);
     c.settings_use_gclh_layercontrol = getValue("settings_use_gclh_layercontrol", true);
-    c.settings_fixed_pq_header = getValue("settings_fixed_pq_header", false);
+    c.settings_fixed_pq_header = getValue("settings_fixed_pq_header", true);
     c.settings_friendlist_summary = getValue("settings_friendlist_summary", true);
     c.settings_friendlist_summary_viponly = getValue("settings_friendlist_summary_viponly", false);
     c.settings_search_data = JSON.parse(getValue("settings_search_data", "[]"));
@@ -3595,50 +3595,24 @@ var mainGC = function() {
                 }
             }
             // Fixed header.
-            if (settings_fixed_pq_header && document.getElementById("pqRepeater") && !settings_compact_layout_list_of_pqs) {
-                // Scrolify based on http://stackoverflow.com/questions/673153/html-table-with-fixed-headers.
-                function scrolify(tblAsJQueryObject, height) {
-                    var oTbl = window.$(tblAsJQueryObject);
-                    var oTblDiv = window.$("<div/>");
-                    oTblDiv.css('height', height);
-                    oTblDiv.css('overflow-y', 'auto');
-                    oTblDiv.css("margin-bottom", oTbl.css("margin-bottom"));
-                    oTbl.css("margin-bottom", "0px");
-                    oTbl.wrap(oTblDiv);
-                    // Width korrigieren.
-                    oTbl.find('thead tr th')[1].style.width = '20px';
-                    oTbl.find('thead tr th')[oTbl.find('thead tr th').length-1].style.width = '120px';
-                    // Save original width.
-                    oTbl.attr("data-item-original-width", oTbl.width());
-                    oTbl.find('thead tr td').each(function() {
-                        window.$(this).attr("data-item-original-width", (unsafeWindow || window).$(this).width());
-                    });
-                    oTbl.find('tbody tr:eq(0) td').each(function() {
-                        window.$(this).attr("data-item-original-width", (unsafeWindow || window).$(this).width());
-                    });
-                    // Clone the original table.
-                    var newTbl = oTbl.clone();
-                    // Remove table header from original table.
-                    oTbl.find('thead tr').remove();
-                    // Remove table body from new table.
-                    newTbl.find('tbody tr').remove();
-                    // Integrate changes.
-                    oTbl.parent().before(newTbl);
-                    newTbl.wrap("<div/>");
-                    // Replace ORIGINAL COLUMN width.
-                    newTbl.width(newTbl.attr('data-item-original-width'));
-                    newTbl.find('thead tr td').each(function() {
-                        window.$(this).width(window.$(this).attr("data-item-original-width"));
-                    });
-                    oTbl.width(oTbl.attr('data-item-original-width'));
-                    oTbl.find('tbody tr:eq(0) td').each(function() {
-                        window.$(this).width(window.$(this).attr("data-item-original-width"));
-                    });
-                }
-                scrolify(unsafeWindow.$('#pqRepeater'), 300);
-                unsafeWindow.$('#ActivePQs').css("padding-right", "0px");
-            }
-            appendCssStyle(css);
+            if (settings_fixed_pq_header && (document.getElementById("pqRepeater") || document.getElementById("uxOfflinePQTable"))) {
+
+              var positionPx = 0;
+              if (browser === "chrome") {
+                positionPx = -1; // Mitigate ugly gap for header/footer
+              }
+
+              var css = "";
+
+              // Fixed PQ header and footer - used TH and TD selector is hack for Chrome, Edge # see on bug https://bugs.chromium.org/p/chromium/issues/detail?id=702927
+              css += "#uxOfflinePQTable thead th, #pqRepeater thead th { position: -webkit-sticky; position: sticky; top: " + positionPx + "px; } ";
+              css += ".PocketQueryListTable tr.TableFooter td { background-color: #E3DDC2; position: -webkit-sticky; position: sticky; bottom: " + positionPx + "px; } ";
+              // Link from footer as button for better UX
+              css += "#uxOfflinePQTable .TableFooter A, #pqRepeater .TableFooter A { -moz-appearance: button; -webkit-appearance: button; appearance: button; "
+                  + " text-decoration: none; font: menu; color: ButtonText; display: inline-block; padding: 2px 8px; white-space: nowrap; } ";
+
+              appendCssStyle(css);
+          }
         } catch(e) {gclh_error("Improve list of PQs",e);}
     }
 
@@ -5850,7 +5824,7 @@ var mainGC = function() {
             setTimeout(function(){
                 // Remove all logs
                 unsafeWindow.$("#cache_logs_table tbody").children().remove();
-                
+
                 var initialLogs = unsafeWindow.initialLogs;
                 var inclAvatars = chromeUserData.includeAvatars || unsafeWindow.includeAvatars || includeAvatars;
 
@@ -5859,13 +5833,13 @@ var mainGC = function() {
                     unsafeWindow.$("#tmpl_CacheLogRow_gclh").tmpl(initialLogs.data[i]).appendTo(newBody);
                     unsafeWindow.$(document.getElementById("cache_logs_table")).append(newBody.children());
                 }
-            
+
                 unsafeWindow.$('a.tb_images').fancybox({'type': 'image', 'titlePosition': 'inside'});
                 gclh_add_vip_icon();
                 setLinesColorInCacheListing();
             }, 0);
-            
-            
+
+
 
             function loadListener(e) {
                 gclh_add_vip_icon();
@@ -10334,7 +10308,7 @@ var mainGC = function() {
 
             html += "<h4 class='gclh_headline2'>"+prepareHideable.replace("#name#","pq")+"Pocket query" + prem + "</h4>";
             html += "<div id='gclh_config_pq' class='gclh_block'>";
-            html += checkboxy('settings_fixed_pq_header', 'Show fixed header in list of pocket queries') + show_help("With this option the header in list of pocket queries is fixed and the list of pocket queries can be scrolled.<br><br>This option evolute its effect not with the compact layout in list of pocket queries.") + "<br>";
+            html += checkboxy('settings_fixed_pq_header', 'Show fixed header/footer in list of pocket queries') + show_help("Convenient for large PQ lists. With this option, you get a permanent view of the headers (weekday information) and footer (the number of running / remaining PQs) even if it is your list the larger as your monitor.") + "<br>"
             html += content_settings_show_log_it.replace("show_log_it","show_log_itX0");
             var content_settings_submit_log_button = checkboxy('settings_submit_log_button', 'Submit log, pocket query, bookmark or hide cache on F2') + show_help("With this option you are able to submit your log by pressing key F2 instead of scrolling to the bottom and move the mouse to the button. <br><br>This feature also works to submit pocket queries and bookmarks. <br><br>And it works on the whole hide cache process with all of the buttons of the create and the change functionality. <br><br>It works also to save Personal Cache Notes in cache listings.") + "<br>";
             html += content_settings_submit_log_button;
