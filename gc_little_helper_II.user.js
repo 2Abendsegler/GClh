@@ -5791,7 +5791,7 @@ var mainGC = function() {
 
 // Overwrite Log-Template (Logtemplate) and Log-Load-Function. (Muß unbedingt nach VIP laufen.)
     overwrite_log_template:
-    if (settings_load_logs_with_gclh && is_page("cache_listing") && !document.getElementById("ctl00_divNotSignedIn") && document.getElementById('tmpl_CacheLogRow')) {
+    if (settings_load_logs_with_gclh && is_page("cache_listing") && !document.getElementById("ctl00_divNotSignedIn") && document.getElementById('tmpl_CacheLogRow') && document.getElementById("cache_logs_table")) {
         try {
             // IDs der Cache Logs Tables.
             var logsTab = '#cache_logs_table2, #cache_logs_table';
