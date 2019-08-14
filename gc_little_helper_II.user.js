@@ -5969,7 +5969,18 @@ var mainGC = function() {
                 if(isUpvoteActive){
                     $('#new_sort_element_upvote').prop( "disabled", false );
                     $('#new_sort_element_upvote').removeClass("isDisabled");
-                } 
+                }
+
+
+                addButtonOverLogs(function(){$('#cache_logs_container').toggleClass('compact_logbook');}, "toggle_compact_logbook", false, "Show/Hide compact Logbook", "");
+                var unimportant_css = 
+                          ".compact_logbook .logIcons,"
+                        + ".compact_logbook .logOwnerAvatar,"
+                        + ".compact_logbook .logOwnerStats,"
+                        + ".compact_logbook .LogContent,"
+                        + ".compact_logbook .AlignRight small"
+                        + "{display:none;}";
+                appendCssStyle(unimportant_css);
             }
 
             // Filter logs.
