@@ -521,6 +521,7 @@ var variablesInit = function(c) {
     c.settings_past_events_on_bm = getValue("settings_past_events_on_bm", true);
     c.settings_show_log_totals = getValue("settings_show_log_totals", true);
     c.settings_show_reviewer_as_vip = getValue("settings_show_reviewer_as_vip", true);
+    c.settings_hide_found_count = getValue("settings_hide_found_count", false);
     c.settings_show_compact_logbook_but = getValue("settings_show_compact_logbook_but", true);
 
     try {
@@ -5840,7 +5841,11 @@ var mainGC = function() {
                 setLinesColorInCacheListing();
             }, 0);
 
-
+            if (settings_hide_found_count){
+                var css = "#cache_logs_container .logOwnerStats"
+                        + "{display:none;}";
+                appendCssStyle(css);
+            }
 
             function loadListener(e) {
                 gclh_add_vip_icon();
@@ -10699,6 +10704,7 @@ var mainGC = function() {
             html += "&nbsp;&nbsp;" + checkboxy('settings_show_log_counter', 'Show log counter when opening cache listing') + "<br>";
             html += checkboxy('settings_show_bigger_avatars_but', 'Show button \"Show bigger avatars\" above the logs') + "<br>";
             html += checkboxy('settings_show_compact_logbook_but', 'Show button \"Show/Hide compact Logbook\" above the logs') + "<br>";
+            html += checkboxy('settings_hide_found_count', 'Hide found count') + "<br>";
             html += newParameterVersionSetzen(0.9) + newParameterOff;
             html += "</div>";
 
@@ -11724,6 +11730,7 @@ var mainGC = function() {
                 'settings_past_events_on_bm',
                 'settings_show_log_totals',
                 'settings_show_reviewer_as_vip',
+                'settings_hide_found_count',
                 'settings_show_compact_logbook_but',
             );
 
