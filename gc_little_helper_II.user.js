@@ -522,6 +522,7 @@ var variablesInit = function(c) {
     c.settings_show_log_totals = getValue("settings_show_log_totals", true);
     c.settings_show_reviewer_as_vip = getValue("settings_show_reviewer_as_vip", true);
     c.settings_hide_found_count = getValue("settings_hide_found_count", false);
+    c.settings_show_compact_logbook_but = getValue("settings_show_compact_logbook_but", true);
 
     try {
         if (c.userToken === null) {
@@ -5974,7 +5975,21 @@ var mainGC = function() {
                 if(isUpvoteActive){
                     $('#new_sort_element_upvote').prop( "disabled", false );
                     $('#new_sort_element_upvote').removeClass("isDisabled");
-                } 
+                }
+
+                if (settings_show_compact_logbook_but){
+                    addButtonOverLogs(function(){$('#cache_logs_container').toggleClass('compact_logbook');}, "toggle_compact_logbook", false, "Show/Hide compact Logbook", "");
+                    var unimportant_css = 
+                              ".compact_logbook .logIcons,"
+                            + ".compact_logbook .logOwnerAvatar,"
+                            + ".compact_logbook .logOwnerStats,"
+                            + ".compact_logbook .LogContent,"
+                            + ".compact_logbook .TableLogContent,"
+                            + ".compact_logbook .upvotes,"
+                            + ".compact_logbook .AlignRight small"
+                            + "{display:none;}";
+                    appendCssStyle(unimportant_css);
+                }
             }
 
             // Filter logs.
@@ -10688,6 +10703,7 @@ var mainGC = function() {
             html += checkboxy('settings_show_log_counter_but', 'Show button \"Show log counter\" above the logs') + "<br>";
             html += "&nbsp;&nbsp;" + checkboxy('settings_show_log_counter', 'Show log counter when opening cache listing') + "<br>";
             html += checkboxy('settings_show_bigger_avatars_but', 'Show button \"Show bigger avatars\" above the logs') + "<br>";
+            html += checkboxy('settings_show_compact_logbook_but', 'Show button \"Show/Hide compact Logbook\" above the logs') + "<br>";
             html += checkboxy('settings_hide_found_count', 'Hide found count') + "<br>";
             html += newParameterVersionSetzen(0.9) + newParameterOff;
             html += "</div>";
@@ -11715,6 +11731,7 @@ var mainGC = function() {
                 'settings_show_log_totals',
                 'settings_show_reviewer_as_vip',
                 'settings_hide_found_count',
+                'settings_show_compact_logbook_but',
             );
 
             for (var i = 0; i < checkboxes.length; i++) {
