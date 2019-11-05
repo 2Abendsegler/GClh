@@ -46,6 +46,7 @@ Temporärer Austausch der Vollzugsmeldung mit Hinweis auf Notwendigkeit von Tamp
 Beachten, dass neue Config Parameter sehr wahrscheinlich in der Standardkonfiguration aufgenommen werden müssen. Sie dient bei einem Reset für eine korrekte Konfiguration, ohne die Arbeitsdaten zu entfernen. Entfernte Config Parameter sollten auch in der Standardkonfiguration entfernt werden.<br>
 https://raw.githubusercontent.com/2Abendsegler/GClh/master/data/config_standard.txt</li>
 <li>$$005 Beachten, dass neue Config Parameter vielleicht eine neue Ausnahmeregeln hervorrufen, die in function rcConfigDataNotInUseDel aufgenommen werden muß.</li></ul>
+<li>$$006 Hier werden die Contributers und Bugreporter eingetragen. Sollte jemand neues einen Bug gemeldet/gefixt haben, dann ihn hier noch hinzufügen.</li>
 
 ####  <a id="6de"></a>6. Auf branch master transportieren.
 Es kann einige Minuten dauern, bis die neue Version auf dem RAW Link angekommen ist.
