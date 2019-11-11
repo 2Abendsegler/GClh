@@ -1019,7 +1019,7 @@ var mainGC = function() {
     }
 
 // Wenn nicht angeloggt, dann aussteigen.
-   if (!$('.li-user-info')[0]) return;
+   if (!$('.li-user-info')[0] && !is_page("searchmap") && !is_page("bookmarklist")) return;
 
 // Run after redirect.
     if (typeof(unsafeWindow.__doPostBack) == "function") {
@@ -5144,7 +5144,7 @@ var mainGC = function() {
                         if (getValue("settings_load_logs_with_gclh") == false) return;
                         for (var i = 0; i < log_infos_long.length; i++) {
                             var user = log_infos_long[i]["user"];
-                            if (in_array(user, global_vips) || user == owner_name || (settings_show_reviewer_as_vip && log_infos_long[i]["membership_level"] == "Reviewer")) {
+                            if (in_array(user, global_vips) || user == owner_name || (settings_show_reviewer_as_vip && log_infos_long[i]["membership_level"] == "Reviewer")) {
                                 if (!log_infos_long[i]["date"]) continue;
                                 if (log_infos_long[i]["icon"].match(/\/(2|10)\.png$/)) users_found.push(user);  // Für not found liste.
                                 var span = document.createElement("span");
@@ -6156,7 +6156,7 @@ var mainGC = function() {
 
                         //Sort all the logs
                         logs.sort(function(a, b) {
-                            if((sorting_key == 'newest') || (b[sorting_key] == a[sorting_key])){
+                            if((sorting_key == 'newest') || (b[sorting_key] == a[sorting_key])){
                                 return a['newest'] - b['newest'];
                             }else{
                                 return b[sorting_key] - a[sorting_key];
@@ -12866,6 +12866,12 @@ function is_page(name) {
             break;
         case "publicProfile":
             if (url.match(/^\/(profile|p\/)/)) status = true;
+            break;
+        case "bookmarklist":
+            if (url.match(/^\/plan\/lists($|#$|\/$|\/#$)/)) status = true;
+            break;
+        case "searchmap":
+            if (url.match(/^\/play\/map/)) status = true;
             break;
         case "map":
             if (url.match(/^\/map/)) status = true;
