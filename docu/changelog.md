@@ -1,3 +1,4 @@
+<a href="#v010" title="GClh II version 0.10 (??.??.2019)">v0.10</a> &nbsp;
 <a href="#v0918" title="GClh II version 0.9.18 (23.05.2019)">v0.9.18</a> &nbsp;
 <a href="#v0917" title="GClh II version 0.9.17 (10.04.2019)">v0.9.17</a> &nbsp;
 <a href="#v0916" title="GClh II version 0.9.16 (13.02.2019)">v0.9.16</a> &nbsp;
@@ -47,6 +48,23 @@
 <a href="#v021" title="GClh II version 0.2.1 (05.01.2017)">v0.2.1</a> &nbsp; 
 <a href="#v01" title="GClh II version 0.1 (05.01.2017)">v0.1</a> &nbsp; 
 
+
+---
+## v0.10:
+<ul>
+	<li>
+		<strong>New:</strong> Rewrite fixed PQ header/footer by pure CSS. Compatible with compact view. [<a href="https://github.com/2Abendsegler/GClh/issues/1034" title="Issue 1034">1034</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to Dratenik">Dratenik</a>]<br>
+		<img src="../images/0.10/Screen01.jpg" alt="Screen01.jpg"><br>
+		Settings -> Pocket query:<br>
+		<img src="../images/0.10/Screen02.jpg" alt="Screen02.jpg"><br>
+	</li>
+	<li>
+		<strong>Fix:</strong> Geonames in standard configuration as first service. [<a href="https://github.com/2Abendsegler/GClh/issues/1030" title="Issue 1030">1030</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+</ul>
+(??.??.2019)<br>
+released by <a href="https://www.geocaching.com/profile/?u=Ruko2010">Ruko2010</a><br>
+<br>
 
 ---
 ## v0.9.18:
