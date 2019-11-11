@@ -61,7 +61,7 @@
 		<img src="../images/0.10/Screen02.jpg" alt="Screen02.jpg"></a><br>
 	</li>
 	<li>
-		<strong>New:</strong> Button for hiding lot of stuff in the logs. [<a href="https://github.com/2Abendsegler/GClh/issues/1045" title="Issue 1045">1045</a> / <a href="https://www.geocaching.com/profile/?u=Ruko2010" title="Thanks to Ruko2010">Ruko2010</a>]<br>
+		<strong>New:</strong> Button for hiding lot of stuff in cache listing logs. [<a href="https://github.com/2Abendsegler/GClh/issues/1045" title="Issue 1045">1045</a> / <a href="https://www.geocaching.com/profile/?u=Ruko2010" title="Thanks to Ruko2010">Ruko2010</a>]<br>
 		The functionality can be used, for example, to compare an external logbook with an online logbook.<br>
 		<img src="../images/0.10/Screen05.jpg" alt="Screen05.jpg"><br>
 		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_show_compact_logbook_but" title="Link to your GClh Config">Settings -> Listing:<br>
