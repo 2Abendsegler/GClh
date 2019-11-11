@@ -6137,7 +6137,7 @@ var mainGC = function() {
                     new_sort_element.classList.add("isDisabled");;
                     new_sort_element.disabled = true;
                     new_sort_element.onchange = function() {
-                        
+
                         var sorting_key = this.value;
 
                         // Deactivate gclh_show_log_counter_button when sorting is not "newest"
