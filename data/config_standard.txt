@@ -146,7 +146,7 @@
   "settings_map_hide_sidebar": true,
   "settings_vip_show_nofound": true,
   "settings_use_gclh_layercontrol": true,
-  "settings_fixed_pq_header": false,
+  "settings_fixed_pq_header": true,
   "remove_navi_play": false,
   "remove_navi_community": false,
   "remove_navi_shop": false,
@@ -241,5 +241,6 @@
   "settings_map_overview_layer": "Geocaching",
   "settings_show_reviewer_as_vip": true,
   "settings_hide_found_count": false,
-  "settings_show_compact_logbook_but": true
+  "settings_show_compact_logbook_but": true,
+  "settings_show_1000_bm_lists": false
 }
