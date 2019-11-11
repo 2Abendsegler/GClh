@@ -9262,7 +9262,7 @@ var mainGC = function() {
 //--> $$002
         var code = '<img src="https://c.andyhoppe.com/1573469947"' + prop +
                    '<img src="https://c.andyhoppe.com/1573469999"' + prop +
-                   '<img src="https://www.worldflagcounter.com/f1X"' + prop +
+                   '<img src="https://www.worldflagcounter.com/gCO"' + prop +
                    '<img src="https://s11.flagcounter.com/count2/DOTx/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
 //<-- $$002
         div.innerHTML = code;
