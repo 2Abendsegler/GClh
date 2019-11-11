@@ -53,13 +53,24 @@
 ## v0.10:
 <ul>
 	<li>
-		<strong>New:</strong> Rewrite fixed PQ header/footer by pure CSS. Compatible with compact view. [<a href="https://github.com/2Abendsegler/GClh/issues/1034" title="Issue 1034">1034</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to Dratenik">Dratenik</a>]<br>
+		<strong>New:</strong> Rewrite fixed PQ header/footer by pure CSS. Compatible with compact view. [<a href="https://github.com/2Abendsegler/GClh/issues/1034" title="Issue 1034">1034</a> / <a href="https://www.geocaching.com/profile/?u=Dratenik" title="Thanks to Dratenik">Dratenik</a>]<br>
+		The functionality is not new. New is only the great look.<br>
 		<img src="../images/0.10/Screen01.jpg" alt="Screen01.jpg"><br>
-		Settings -> Pocket query:<br>
-		<img src="../images/0.10/Screen02.jpg" alt="Screen02.jpg"><br>
+		If you want to use it, you have to activate the parameter.<br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_fixed_pq_header" title="Link to your GClh Config">Settings -> Pocket query:<br>
+		<img src="../images/0.10/Screen02.jpg" alt="Screen02.jpg"></a><br>
 	</li>
 	<li>
-		<strong>Fix:</strong> Geonames in standard configuration as first service. [<a href="https://github.com/2Abendsegler/GClh/issues/1030" title="Issue 1030">1030</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		<strong>New:</strong> Hide found counter in cache listing. [<a href="https://github.com/2Abendsegler/GClh/issues/1044" title="Issue 1044">1044</a> / <a href="https://www.geocaching.com/profile/?u=Ruko2010" title="Thanks to Ruko2010">Ruko2010</a>]<br>
+		<img src="../images/0.10/Screen01.jpg" alt="Screen01.jpg"><br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_hide_found_count" title="Link to your GClh Config">Settings -> Listing:<br>
+		<img src="../images/0.10/Screen02.jpg" alt="Screen02.jpg"></a><br>
+	</li>
+	<li>
+		<strong>Fix:</strong> Thunderforest is no longer supported on BRouter and Flopps. [<a href="https://github.com/2Abendsegler/GClh/issues/1041" title="Issue 1041">1041</a> / <a href="https://www.geocaching.com/profile/?u=Ruko2010" title="Thanks to Ruko2010">Ruko2010</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> Show listing of (own) unpublished cache throws error. [<a href="https://github.com/2Abendsegler/GClh/issues/1039" title="Issue 1039">1039</a> / <a href="https://www.geocaching.com/profile/?u=Ruko2010" title="Thanks to Ruko2010">Ruko2010</a>]<br>
 	</li>
 </ul>
 (??.??.2019)<br>
