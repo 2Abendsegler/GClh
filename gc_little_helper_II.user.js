@@ -523,6 +523,7 @@ var variablesInit = function(c) {
     c.settings_show_reviewer_as_vip = getValue("settings_show_reviewer_as_vip", true);
     c.settings_hide_found_count = getValue("settings_hide_found_count", false);
     c.settings_show_compact_logbook_but = getValue("settings_show_compact_logbook_but", true);
+    c.settings_show_1000_bm_lists = getValue("settings_show_1000_bm_lists", false);
 
     try {
         if (c.userToken === null) {
@@ -4076,7 +4077,54 @@ var mainGC = function() {
         } catch(e) {gclh_error("Name for PQ from bookmark",e);}
     }
 
-// Improve bookmark lists.
+// Improve new list of bookmark lists and new bookmark lists.
+    if (is_page('bookmarklist')) {
+        try {
+            // Set 1000 caches in list of bookmark lists.
+            if (settings_show_1000_bm_lists) {
+                getBMLs(0);
+            }
+            function getBMLs(waitCount) {
+                if ($('.list-name-container').length > 0) {
+                    setBMLs1000($('.list-name-container'));
+                    setBMLsEvts($('.list-overflow'));
+                } else {waitCount++; if (waitCount <= 50) setTimeout(function(){getBMLs(waitCount);}, 200);}
+            }
+            function setBMLs1000(items) {
+                if (items && items.length > 0) {
+                    for (var i = 0; i < items.length; i++) {
+                        items[i].href += '?&take=1000';
+                    }
+                }
+            }
+            function setBMLsEvts(items) {
+                for (var i = 0; i < items.length; i++) {
+                    items[i].addEventListener("click", getEdit, false);
+                }
+            }
+            function getEdit() {
+                getEditBML(0);
+            }
+            function getEditBML(waitcount) {
+                if ($('.list-hub-action-menu')[0]) {
+                    var menu = $('.list-hub-action-menu')[0];
+                    setBMLs1000($(menu).find('a[href*="plan/lists/BM"]'));
+                } else {waitcount++; if (waitcount <= 40) setTimeout(function(){getEditBML(waitcount);}, 50);}
+            }
+            // Remove number of caches and page controls in bookmark lists.
+            if (settings_show_1000_bm_lists) {
+                removePageControls(0);
+            }
+            function removePageControls(waitcount) {
+                if ($('.page-controls')[0] && $('.pagination-controls')[0]) {
+                    $('.page-controls')[0].remove();
+                    $('.pagination-controls')[0].remove();
+                } else {waitcount++; if (waitcount <= 50) setTimeout(function(){removePageControls(waitcount);}, 200);}
+            }
+        } catch(e) {gclh_error("Improve new bookmark lists",e);}
+    }
+
+// Improve old bookmark lists.
     if (document.location.href.match(/\.com\/bookmarks\/(view\.aspx\?guid=|bulk\.aspx\?listid=|view\.aspx\?code=)/) && document.getElementById('ctl00_ContentBody_ListInfo_cboItemsPerPage')) {
         try {
             var css = "";
@@ -4245,7 +4293,7 @@ var mainGC = function() {
         }, 200);
     }
 
-// Add buttons to bookmark lists and watchlist to select caches.
+// Add buttons to old bookmark lists and watchlist to select caches.
     var current_page;
     if (document.location.href.match(/\.com\/bookmarks/) && !document.location.href.match(/\.com\/bookmarks\/default/)) current_page = "bookmark";
     else if (document.location.href.match(/\.com\/my\/watchlist\.aspx/)) current_page = "watch";
@@ -10387,6 +10435,9 @@ var mainGC = function() {
             html += checkboxy('settings_bml_changed_and_go', 'After change of bookmark list go to bookmark list automatically') + show_help3("With this option you can switch to the bookmark list automatically after a change of the bookmark list. The confirmation page of this change will skip.") + "<br>";
             html += checkboxy('settings_past_events_on_bm', 'Past events processing') + show_help3("With this option you can recognize and select past events in bookmark lists and in the watchlist. <br><br>For this, the cache listings of the events must be read additionally. If you do not want this, the option can be disabled.") + "<br>";
             html += newParameterVersionSetzen(0.9) + newParameterOff;
+            html += newParameterOn1;
+            html += checkboxy('settings_show_1000_bm_lists', 'Show 1000 caches in bookmark lists') + "<br>";
+            html += newParameterVersionSetzen("0.10") + newParameterOff;
             html += "</div>";
 
             html += "<h4 class='gclh_headline2'>"+prepareHideable.replace("#name#","friends")+"Friends list" + "</h4>";
@@ -10402,7 +10453,6 @@ var mainGC = function() {
             html += checkboxy('settings_hide_cache_approvals', 'Auto set approval in hide cache process') + show_help("This option activates the checkbox for approval the \"terms of use agreement\" and the \"geocache hiding guidelines\" in the hide cache process.") + "<br>";
             html += content_settings_submit_log_button.replace("log_button","log_buttonX1");
             html += "</div>";
-
 
             html += "<h4 class='gclh_headline2'>"+prepareHideable.replace("#name#","others")+"Others" + "</h4>";
             html += "<div id='gclh_config_others' class='gclh_block'>";
@@ -11732,6 +11782,7 @@ var mainGC = function() {
                 'settings_show_reviewer_as_vip',
                 'settings_hide_found_count',
                 'settings_show_compact_logbook_but',
+                'settings_show_1000_bm_lists',
             );
 
             for (var i = 0; i < checkboxes.length; i++) {
@@ -12868,7 +12919,7 @@ function is_page(name) {
             if (url.match(/^\/(profile|p\/)/)) status = true;
             break;
         case "bookmarklist":
-            if (url.match(/^\/plan\/lists($|#$|\/$|\/#$)/)) status = true;
+            if (url.match(/^\/plan\/lists($|#$|\/$|\/#$|\/BM)/)) status = true;
             break;
         case "searchmap":
             if (url.match(/^\/play\/map/)) status = true;
