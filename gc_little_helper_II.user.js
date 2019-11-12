@@ -3227,7 +3227,6 @@ var mainGC = function() {
             var signature = getValue("settings_log_signature", "");
 
             if (document.location.href.match(/\.com\/seek\/log\.aspx\?PLogGuid\=/)) {
-                
                 if (settings_log_signature_on_fieldnotes && !logtext.includes(signature)){
                     document.getElementById('ctl00_ContentBody_LogBookPanel1_uxLogInfo').innerHTML += signature;
                 }
@@ -5198,7 +5197,7 @@ var mainGC = function() {
                                 span.appendChild(document.createTextNode("Owner: "));
                                 show_owner = false;
                             } else if (user == myself){
-                                span.appendChild(document.createTextNode("Me: "));  
+                                span.appendChild(document.createTextNode("Me: "));
                             } else if (is_reviewer){
                                 span.appendChild(document.createTextNode("Reviewer: "));
                             }
@@ -5717,7 +5716,7 @@ var mainGC = function() {
                 '        <small><a title="Upload Image" href="/seek/upload.aspx?LID=${LogID}" target="_blank">Upload Image</a></small>' +
                 '        {{/if}}' +
                 '      </div>';
-            if(isUpvoteActive) new_tmpl += 
+            if(isUpvoteActive) new_tmpl +=
                 '     {{if LogType === "Found it" || LogType === "Didn\'t find it" || LogType === "Webcam photo taken" || LogType === "Attended" || LogType === "Announcement" }}' +
                 '         <div class="upvotes">' +
                 '             <button class="great-story-btn{{if (typeof greatStoryupvotedByUser != "undefined") && greatStoryupvotedByUser}} upvoted{{/if}}"' +
@@ -5978,8 +5977,8 @@ var mainGC = function() {
                 }
 
                 if (settings_show_compact_logbook_but){
-                    addButtonOverLogs(function(){$('#cache_logs_container').toggleClass('compact_logbook');}, "toggle_compact_logbook", false, "Show/Hide compact Logbook", "");
-                    var unimportant_css = 
+                    addButtonOverLogs(function(){$('#cache_logs_container').toggleClass('compact_logbook');}, "toggle_compact_logbook", false, "Show/Hide compact logs", "");
+                    var unimportant_css =
                               ".compact_logbook .logIcons,"
                             + ".compact_logbook .logOwnerAvatar,"
                             + ".compact_logbook .logOwnerStats,"
@@ -6181,24 +6180,23 @@ var mainGC = function() {
                                 gclh_add_vip_icon();
                                 setLinesColorInCacheListing();
                                 if (document.getElementById("gclh_show_log_counter")) document.getElementById("gclh_show_log_counter").style.visibility = "";
-                                
+
                                 updateUpvoteEvents(logs);
                             }
                             $('#sort_logs_working').remove();
                         }, 100);
+                    }
 
-                   }
-                    
                     var newest = document.createElement('option');
                     newest.innerHTML = 'Newest';
                     newest.value = 'newest';
                     new_sort_element.appendChild(newest);
-                    
+
                     var beststory = document.createElement('option');
                     beststory.innerHTML = 'Best story';
                     beststory.value = 'greatStory';
                     new_sort_element.appendChild(beststory);
-                    
+
                     var mosthelpful = document.createElement('option');
                     mosthelpful.innerHTML = 'Most helpful';
                     mosthelpful.value = 'helpful';
@@ -6309,7 +6307,7 @@ var mainGC = function() {
                             }
                         }
                         // Add Great story / helpful data to logs
-                        // give starting index to the function, so it knows 
+                        // give starting index to the function, so it knows
                         // what index has to be updated
                         if(isUpvoteActive){
                             getUpvoteData(all_ids,((z-1)*100));
@@ -6354,8 +6352,8 @@ var mainGC = function() {
 
                         // there is a bug (or a feature) in jQuery(?):
                         // if you have a data attribute (like data-upvoted="false") and you also have set objekt.data(upvoted,"true")
-                        // JQuery will override your data value with the data value from the dom. So we check here, if the button has 
-                        // a class "upvoted", and if yes, we reset the object.data("upvoted") to true. Otherwise, when the button is 
+                        // JQuery will override your data value with the data value from the dom. So we check here, if the button has
+                        // a class "upvoted", and if yes, we reset the object.data("upvoted") to true. Otherwise, when the button is
                         // upvoted, the first click would not result in "not upvoting" the log, but the secound.
                         if($(this).hasClass('upvoted')) $(this).data('upvoted', true);
 
@@ -6388,11 +6386,11 @@ var mainGC = function() {
                 $('.helpful-btn').each(function(){
                     $(this).unbind('click');
                     $(this).click(function(){
-                        
+
                         // there is a bug (or a feature) in jQuery(?):
                         // if you have a data attribute (like data-upvoted="false") and you also have set objekt.data(upvoted,"true")
-                        // JQuery will override your data value with the data value from the dom. So we check here, if the button has 
-                        // a class "upvoted", and if yes, we reset the object.data("upvoted") to true. Otherwise, when the button is 
+                        // JQuery will override your data value with the data value from the dom. So we check here, if the button has
+                        // a class "upvoted", and if yes, we reset the object.data("upvoted") to true. Otherwise, when the button is
                         // upvoted, the first click would not result in "not upvoting" the log, but the secound.
                         if($(this).hasClass('upvoted')) $(this).data('upvoted', true);
 
@@ -6417,7 +6415,7 @@ var mainGC = function() {
                             all_logs[log_index].helpful += 1;
                             all_logs[log_index].helpfulupvotedByUser = true;
                         }
-                        
+
                         return upvoteLog($(this));
                     });
                 });
@@ -10696,7 +10694,7 @@ var mainGC = function() {
             html += checkboxy('settings_show_bigger_avatars_but', 'Show button \"Show bigger avatars\" above the logs') + "<br>";
             html += newParameterVersionSetzen(0.9) + newParameterOff;
             html += newParameterOn1;
-            html += checkboxy('settings_show_compact_logbook_but', 'Show button \"Show/Hide compact Logbook\" above the logs') + "<br>";
+            html += checkboxy('settings_show_compact_logbook_but', 'Show button \"Show/Hide compact logs\" above the logs') + "<br>";
             html += checkboxy('settings_hide_found_count', 'Hide found count') + "<br>";
             html += newParameterVersionSetzen("0.10") + newParameterOff;
             html += "</div>";
