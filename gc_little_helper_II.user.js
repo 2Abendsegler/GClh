@@ -1993,8 +1993,10 @@ var mainGC = function() {
             }
 
             value = data.waypointFunction( waypoint, name, radius, data.context );
-            waypointString += (i?data.waypointSeparator:'') + value;
-            boundarybox = BoundaryBox( boundarybox, data.waypoints[i].latitude, data.waypoints[i].longitude );
+            if (value != "") {
+                waypointString += (i?data.waypointSeparator:'') + value;
+                boundarybox = BoundaryBox( boundarybox, data.waypoints[i].latitude, data.waypoints[i].longitude );
+            }
         }
 
         var zoom = TileMapZoomLevelForBoundaryBox( boundarybox, data.mapOffset.width, data.mapOffset.height, data.maxZoomLevel );
@@ -2133,7 +2135,7 @@ var mainGC = function() {
                     uniqueServiceId: "brouter",
                     urlTemplate: 'http://brouter.de/brouter-web/#map={zoom}/{center_latitude}/{center_longitude}/{map}&lonlats={waypoints}',
                     layers: {'OpenStreetMap': { maxZoom: 18, displayName: 'OpenStreetMap' }, 'OpenStreetMap.de': { maxZoom: 17, displayName: 'OSM German Style' }, 'OpenTopoMap': { maxZoom: 17, displayName: 'OpenTopoMap' }, 'Esri World Imagery': { maxZoom: 18, displayName: 'Esri World Imagery' }},
-                    waypointSeparator : '|',
+                    waypointSeparator : ';',
                     waypointFunction : brouterWaypoint,
                     mapOffset : { width: 0, height: 0 },
                     defaultMap : 'OpenStreetMap',
