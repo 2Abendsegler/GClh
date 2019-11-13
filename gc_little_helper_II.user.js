@@ -6051,7 +6051,7 @@ var mainGC = function() {
                 }
 
                 if (settings_show_compact_logbook_but){
-                    addButtonOverLogs(function(){$('#cache_logs_container').toggleClass('compact_logbook');}, "toggle_compact_logbook", false, "Show/Hide compact Logbook", "");
+                    addButtonOverLogs(toggle_compact_logbook, "toggle_compact_logbook", false, "Show compact logs", "Show/hide compact logs");
                     var unimportant_css =
                               ".compact_logbook .logIcons,"
                             + ".compact_logbook .logOwnerAvatar,"
@@ -9628,6 +9628,16 @@ var mainGC = function() {
                 $('#gclh_show_log_counter').removeClass("working");
             }, 100);
         } catch(e) {gclh_error("showLogCounter",e);}
+    }
+
+// Show/Hide comapct logs.
+    function toggle_compact_logbook(){
+        $('#cache_logs_container').toggleClass('compact_logbook');
+        if ($('#cache_logs_container').hasClass('compact_logbook')) {
+            $('#toggle_compact_logbook')[0].children[0].value = 'Hide compact logs';
+        } else {
+            $('#toggle_compact_logbook')[0].children[0].value = 'Show compact logs';
+        }
     }
 
 // Add button over logs in cache listing.
