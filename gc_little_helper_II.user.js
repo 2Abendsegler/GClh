@@ -2889,6 +2889,8 @@ var mainGC = function() {
         code += "    input.selectionStart = input.selectionEnd = pos;";
         code += "  }";
         code += "  input.focus();";
+        // Auch im Log Preview zur Anzeige bringen.
+        code += "  input.dispatchEvent(new KeyboardEvent('keyup', {'keyCode': 32}));";
         code += "}";
         injectPageScript(code, 'body');
     }
@@ -2948,6 +2950,8 @@ var mainGC = function() {
         code += "    }";
         code += "  }";
         code += "  input.focus();";
+        // Auch im Log Preview zur Anzeige bringen.
+        code += "  input.dispatchEvent(new KeyboardEvent('keyup', {'keyCode': 32}));";
         code += "}";
         injectPageScript(code, 'body');
     }
@@ -3208,6 +3212,7 @@ var mainGC = function() {
     // Cache:
     if (document.location.href.match(/\.com\/seek\/log\.aspx\?(id|guid|ID|PLogGuid|wp)\=/) && $('#ctl00_ContentBody_LogBookPanel1_ddLogType')[0] && $('#ctl00_ContentBody_LogBookPanel1_lbConfirm').length == 0) {
         try {
+            // Logtype.
             if (!document.location.href.match(/\&LogType\=/) && !document.location.href.match(/PLogGuid/)) {
                 var cache_type = document.getElementById("ctl00_ContentBody_LogBookPanel1_WaypointLink").nextSibling.childNodes[0].title;
                 var select_val = "-1";
@@ -3224,27 +3229,34 @@ var mainGC = function() {
                     }
                 }
             }
-            // Signature.
 
+            // Signature.
             var logtext = document.getElementById('ctl00_ContentBody_LogBookPanel1_uxLogInfo').value;
             var signature = getValue("settings_log_signature", "");
-
+            // Cursorposition gegebenenfalls hinter Draft ermitteln.
+            document.getElementById('ctl00_ContentBody_LogBookPanel1_uxLogInfo').innerHTML += "";
+            var initial_cursor_position = document.getElementById('ctl00_ContentBody_LogBookPanel1_uxLogInfo').selectionEnd;
+            // Draft.
             if (document.location.href.match(/\.com\/seek\/log\.aspx\?PLogGuid\=/)) {
-                
                 if (settings_log_signature_on_fieldnotes && !logtext.includes(signature)){
                     document.getElementById('ctl00_ContentBody_LogBookPanel1_uxLogInfo').innerHTML += signature;
                 }
+            // Kein Draft.
             } else{
                 if(!logtext.includes(signature)){
                     document.getElementById('ctl00_ContentBody_LogBookPanel1_uxLogInfo').innerHTML += signature;
                 }
             }
             replacePlaceholder();
-        } catch(e) {gclh_error("Default Log-Type and Signature Old Log Page(CACHE)",e);}
+            document.getElementById('ctl00_ContentBody_LogBookPanel1_uxLogInfo').selectionEnd = initial_cursor_position;
+            // Auch im Log Preview zur Anzeige bringen.
+            document.getElementById('ctl00_ContentBody_LogBookPanel1_uxLogInfo').dispatchEvent(new KeyboardEvent('keyup', {'keyCode': 32}));
+        } catch(e) {gclh_error("Default Log-Type and Signature Old Log Page (CACHE)",e);}
     }
     // TB:
     if (document.location.href.match(/\.com\/track\/log\.aspx/) && $('#ctl00_ContentBody_LogBookPanel1_ddLogType')[0]) {
         try {
+            // Logtype.
             if (settings_default_tb_logtype != "-1" && !document.location.href.match(/\&LogType\=/)) {
                 var select = document.getElementById('ctl00_ContentBody_LogBookPanel1_ddLogType');
                 var childs = select.children;
@@ -3252,9 +3264,13 @@ var mainGC = function() {
                     if (childs[i].value == settings_default_tb_logtype) select.selectedIndex = i;
                 }
             }
+
             // Signature.
             if ($('#ctl00_ContentBody_LogBookPanel1_uxLogInfo')[0] && $('#ctl00_ContentBody_LogBookPanel1_uxLogInfo')[0].innerHTML == "") $('#ctl00_ContentBody_LogBookPanel1_uxLogInfo')[0].innerHTML = getValue("settings_tb_signature", "");
             replacePlaceholder();
+            document.getElementById('ctl00_ContentBody_LogBookPanel1_uxLogInfo').selectionEnd = 0;
+            // Auch im Log Preview zur Anzeige bringen.
+            document.getElementById('ctl00_ContentBody_LogBookPanel1_uxLogInfo').dispatchEvent(new KeyboardEvent('keyup', {'keyCode': 32}));
         } catch(e) {gclh_error("Default Log-Type and Signature (TB)",e);}
     }
 // Log Signature New Log Page.
@@ -3262,16 +3278,21 @@ var mainGC = function() {
         try {
             checkLogType(0);
             function checkLogType(waitCount) {
+                // Drafts ohne Signatur.
+                if (document.location.href.match(/log\?d\=/) && document.getElementById('LogText').value != "" && !settings_log_signature_on_fieldnotes) {
+                    // Auch im Log Preview zur Anzeige bringen.
+                    document.getElementById('LogText').dispatchEvent(new KeyboardEvent('keyup', {'keyCode': 32}));
+                }
+
+                // Kein Draft oder Draft mit Signatur.
                 if ((!document.location.href.match(/log\?d\=/) && $('.selectric')[0]) ||  // Kein Draft
                     (document.location.href.match(/log\?d\=/) && document.getElementById('LogText').value != "" && settings_log_signature_on_fieldnotes)) {  // Draft
-
                     var initial_cursor_position = document.getElementById('LogText').selectionEnd;
                     var logtext = document.getElementById('LogText').value;
                     var signature = getValue("settings_log_signature", "");
                     if(!logtext.includes(signature)){
                         document.getElementById('LogText').innerHTML = signature;
                     }
-
                     replacePlaceholder(true);
                     if (document.location.href.match(/log\?d\=/)) {
                         // 2 Zeilen sinngemäß von DieBatzen ausgeliehen, um "<" und ">" richtig darzustellen.
@@ -3280,9 +3301,11 @@ var mainGC = function() {
                         document.getElementById('LogText').value += value;
                     }
                     document.getElementById('LogText').selectionEnd = initial_cursor_position;
-                } else {waitCount++; if (waitCount <= 100) setTimeout(function(){checkLogType(waitCount);}, 100);}
+                    // Auch im Log Preview zur Anzeige bringen.
+                    document.getElementById('LogText').dispatchEvent(new KeyboardEvent('keyup', {'keyCode': 32}));
+                } else {waitCount++; if (waitCount <= 1000) setTimeout(function(){checkLogType(waitCount);}, 10);}
             }
-        } catch(e) {gclh_error("Signature New Log Page(CACHE)",e);}
+        } catch(e) {gclh_error("Signature New Log Page (CACHE)",e);}
     }
     function replacePlaceholder(newLogPage) {
         if (newLogPage) var id = "LogText";
@@ -4107,21 +4130,21 @@ var mainGC = function() {
             function getEdit() {
                 getEditBML(0);
             }
-            function getEditBML(waitcount) {
+            function getEditBML(waitCount) {
                 if ($('.list-hub-action-menu')[0]) {
                     var menu = $('.list-hub-action-menu')[0];
                     setBMLs1000($(menu).find('a[href*="plan/lists/BM"]'));
-                } else {waitcount++; if (waitcount <= 40) setTimeout(function(){getEditBML(waitcount);}, 50);}
+                } else {waitCount++; if (waitCount <= 40) setTimeout(function(){getEditBML(waitCount);}, 50);}
             }
             // Remove number of caches and page controls in bookmark lists.
             if (settings_show_1000_bm_lists) {
                 removePageControls(0);
             }
-            function removePageControls(waitcount) {
+            function removePageControls(waitCount) {
                 if ($('.page-controls')[0] && $('.pagination-controls')[0]) {
                     $('.page-controls')[0].remove();
                     $('.pagination-controls')[0].remove();
-                } else {waitcount++; if (waitcount <= 50) setTimeout(function(){removePageControls(waitcount);}, 200);}
+                } else {waitCount++; if (waitCount <= 50) setTimeout(function(){removePageControls(waitCount);}, 200);}
             }
         } catch(e) {gclh_error("Improve new bookmark lists",e);}
     }
@@ -5248,7 +5271,7 @@ var mainGC = function() {
                                 span.appendChild(document.createTextNode("Owner: "));
                                 show_owner = false;
                             } else if (user == myself){
-                                span.appendChild(document.createTextNode("Me: "));  
+                                span.appendChild(document.createTextNode("Me: "));
                             } else if (is_reviewer){
                                 span.appendChild(document.createTextNode("Reviewer: "));
                             }
@@ -5767,7 +5790,7 @@ var mainGC = function() {
                 '        <small><a title="Upload Image" href="/seek/upload.aspx?LID=${LogID}" target="_blank">Upload Image</a></small>' +
                 '        {{/if}}' +
                 '      </div>';
-            if(isUpvoteActive) new_tmpl += 
+            if(isUpvoteActive) new_tmpl +=
                 '     {{if LogType === "Found it" || LogType === "Didn\'t find it" || LogType === "Webcam photo taken" || LogType === "Attended" || LogType === "Announcement" }}' +
                 '         <div class="upvotes">' +
                 '             <button class="great-story-btn{{if (typeof greatStoryupvotedByUser != "undefined") && greatStoryupvotedByUser}} upvoted{{/if}}"' +
@@ -6029,7 +6052,7 @@ var mainGC = function() {
 
                 if (settings_show_compact_logbook_but){
                     addButtonOverLogs(function(){$('#cache_logs_container').toggleClass('compact_logbook');}, "toggle_compact_logbook", false, "Show/Hide compact Logbook", "");
-                    var unimportant_css = 
+                    var unimportant_css =
                               ".compact_logbook .logIcons,"
                             + ".compact_logbook .logOwnerAvatar,"
                             + ".compact_logbook .logOwnerStats,"
@@ -6187,7 +6210,7 @@ var mainGC = function() {
                     new_sort_element.classList.add("isDisabled");;
                     new_sort_element.disabled = true;
                     new_sort_element.onchange = function() {
-                        
+
                         var sorting_key = this.value;
 
                         // Deactivate gclh_show_log_counter_button when sorting is not "newest"
@@ -6231,24 +6254,24 @@ var mainGC = function() {
                                 gclh_add_vip_icon();
                                 setLinesColorInCacheListing();
                                 if (document.getElementById("gclh_show_log_counter")) document.getElementById("gclh_show_log_counter").style.visibility = "";
-                                
+
                                 updateUpvoteEvents(logs);
                             }
                             $('#sort_logs_working').remove();
                         }, 100);
 
                    }
-                    
+
                     var newest = document.createElement('option');
                     newest.innerHTML = 'Newest';
                     newest.value = 'newest';
                     new_sort_element.appendChild(newest);
-                    
+
                     var beststory = document.createElement('option');
                     beststory.innerHTML = 'Best story';
                     beststory.value = 'greatStory';
                     new_sort_element.appendChild(beststory);
-                    
+
                     var mosthelpful = document.createElement('option');
                     mosthelpful.innerHTML = 'Most helpful';
                     mosthelpful.value = 'helpful';
@@ -6359,7 +6382,7 @@ var mainGC = function() {
                             }
                         }
                         // Add Great story / helpful data to logs
-                        // give starting index to the function, so it knows 
+                        // give starting index to the function, so it knows
                         // what index has to be updated
                         if(isUpvoteActive){
                             getUpvoteData(all_ids,((z-1)*100));
@@ -6404,8 +6427,8 @@ var mainGC = function() {
 
                         // there is a bug (or a feature) in jQuery(?):
                         // if you have a data attribute (like data-upvoted="false") and you also have set objekt.data(upvoted,"true")
-                        // JQuery will override your data value with the data value from the dom. So we check here, if the button has 
-                        // a class "upvoted", and if yes, we reset the object.data("upvoted") to true. Otherwise, when the button is 
+                        // JQuery will override your data value with the data value from the dom. So we check here, if the button has
+                        // a class "upvoted", and if yes, we reset the object.data("upvoted") to true. Otherwise, when the button is
                         // upvoted, the first click would not result in "not upvoting" the log, but the secound.
                         if($(this).hasClass('upvoted')) $(this).data('upvoted', true);
 
@@ -6438,11 +6461,11 @@ var mainGC = function() {
                 $('.helpful-btn').each(function(){
                     $(this).unbind('click');
                     $(this).click(function(){
-                        
+
                         // there is a bug (or a feature) in jQuery(?):
                         // if you have a data attribute (like data-upvoted="false") and you also have set objekt.data(upvoted,"true")
-                        // JQuery will override your data value with the data value from the dom. So we check here, if the button has 
-                        // a class "upvoted", and if yes, we reset the object.data("upvoted") to true. Otherwise, when the button is 
+                        // JQuery will override your data value with the data value from the dom. So we check here, if the button has
+                        // a class "upvoted", and if yes, we reset the object.data("upvoted") to true. Otherwise, when the button is
                         // upvoted, the first click would not result in "not upvoting" the log, but the secound.
                         if($(this).hasClass('upvoted')) $(this).data('upvoted', true);
 
@@ -6467,7 +6490,7 @@ var mainGC = function() {
                             all_logs[log_index].helpful += 1;
                             all_logs[log_index].helpfulupvotedByUser = true;
                         }
-                        
+
                         return upvoteLog($(this));
                     });
                 });
