@@ -4130,21 +4130,21 @@ var mainGC = function() {
             function getEdit() {
                 getEditBML(0);
             }
-            function getEditBML(waitcount) {
+            function getEditBML(waitCount) {
                 if ($('.list-hub-action-menu')[0]) {
                     var menu = $('.list-hub-action-menu')[0];
                     setBMLs1000($(menu).find('a[href*="plan/lists/BM"]'));
-                } else {waitcount++; if (waitcount <= 40) setTimeout(function(){getEditBML(waitcount);}, 50);}
+                } else {waitCount++; if (waitCount <= 40) setTimeout(function(){getEditBML(waitCount);}, 50);}
             }
             // Remove number of caches and page controls in bookmark lists.
             if (settings_show_1000_bm_lists) {
                 removePageControls(0);
             }
-            function removePageControls(waitcount) {
+            function removePageControls(waitCount) {
                 if ($('.page-controls')[0] && $('.pagination-controls')[0]) {
                     $('.page-controls')[0].remove();
                     $('.pagination-controls')[0].remove();
-                } else {waitcount++; if (waitcount <= 50) setTimeout(function(){removePageControls(waitcount);}, 200);}
+                } else {waitCount++; if (waitCount <= 50) setTimeout(function(){removePageControls(waitCount);}, 200);}
             }
         } catch(e) {gclh_error("Improve new bookmark lists",e);}
     }
