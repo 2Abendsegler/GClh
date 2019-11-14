@@ -71,6 +71,14 @@
 		<img src="../images/0.10/Screen07.jpg" alt="Screen07.jpg"></a><br>
 		If you want to use it, you have to activate the parameter.<br><br>
 	</li>
+	<li>
+		<strong>New:</strong> Rewrite fixed PQ header/footer by pure CSS. Compatible with compact view. [<a href="https://github.com/2Abendsegler/GClh/issues/1034" title="Issue 1034">1034</a> / <a href="https://www.geocaching.com/profile/?u=Dratenik" title="Thanks to Dratenik">Dratenik</a>]<br>
+		The functionality is not new. New is only the great functionality. Especially for small screens very well, because the line stays at the bottom of the screen when you scroll through the pocket queries.<br>
+		<img src="../images/0.10/Screen01.jpg" alt="Screen01.jpg"><br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_fixed_pq_header" title="Link to your GClh Config">Settings -> Pocket query:<br>
+		<img src="../images/0.10/Screen02.jpg" alt="Screen02.jpg"></a><br>
+	        Please note that the feature is not new and you may need to activate the parameter.<br><br>
+	</li>
         <li>
 		<strong>New:</strong> Button for hiding lot of stuff in cache listing logs. [<a href="https://github.com/2Abendsegler/GClh/issues/1045" title="Issue 1045">1045</a> / <a href="https://www.geocaching.com/profile/?u=Ruko2010" title="Thanks to Ruko2010">Ruko2010</a>]<br>
 		The functionality can be used, for example, to compare an external logbook with an online logbook.<br>
@@ -84,14 +92,6 @@
 		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_hide_found_count" title="Link to your GClh Config">Settings -> Listing:<br>
 		<img src="../images/0.10/Screen04.jpg" alt="Screen04.jpg"></a><br>
 		If you want to use it, you have to activate the parameter.<br><br>
-	</li>
-	<li>
-		<strong>New:</strong> Rewrite fixed PQ header/footer by pure CSS. Compatible with compact view. [<a href="https://github.com/2Abendsegler/GClh/issues/1034" title="Issue 1034">1034</a> / <a href="https://www.geocaching.com/profile/?u=Dratenik" title="Thanks to Dratenik">Dratenik</a>]<br>
-		The functionality is not new. New is only the great functionality. Especially for small screens very well, because the line stays at the bottom of the screen when you scroll through the pocket queries.<br>
-		<img src="../images/0.10/Screen01.jpg" alt="Screen01.jpg"><br>
-		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_fixed_pq_header" title="Link to your GClh Config">Settings -> Pocket query:<br>
-		<img src="../images/0.10/Screen02.jpg" alt="Screen02.jpg"></a><br>
-	        Please note that the feature is not new and you may need to activate the parameter.<br><br>
 	</li>
 	<li>
 		<strong>Fix:</strong> Thunderforest is no longer supported on BRouter and Flopps. [<a href="https://github.com/2Abendsegler/GClh/issues/1041" title="Issue 1041">1041</a> / <a href="https://www.geocaching.com/profile/?u=radlerandi" title="Thanks to radlerandi">radlerandi</a>]<br><br>
