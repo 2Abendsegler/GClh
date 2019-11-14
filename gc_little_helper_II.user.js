@@ -495,6 +495,8 @@ var variablesInit = function(c) {
     c.settings_show_gpsvisualizer_gcsymbols = getValue("settings_show_gpsvisualizer_gcsymbols", true);
     c.settings_show_gpsvisualizer_typedesc = getValue("settings_show_gpsvisualizer_typedesc", true);
     c.settings_show_openrouteservice_link = getValue("settings_show_openrouteservice_link", true);
+    c.settings_show_openrouteservice_home = getValue("settings_show_openrouteservice_home", false);
+    c.settings_show_openrouteservice_medium = getValue("settings_show_openrouteservice_medium", "2b");
     c.settings_show_default_links = getValue("settings_show_default_links", true);
     c.settings_bm_changed_and_go = getValue("settings_bm_changed_and_go", true);
     c.settings_bml_changed_and_go = getValue("settings_bml_changed_and_go", true);
@@ -1952,6 +1954,23 @@ var mainGC = function() {
 
     function mapservice_open( thisObject, service_configuration ) {
         var waypoints = queryListingWaypoints(true);
+        if (service_configuration.useHomeCoords == true) {
+            var homeCoords = {
+                name: 'Home coordinates',
+                gccode: $('#ctl00_ContentBody_CoordInfoLinkControl1_uxCoordInfoCode')[0].innerHTML,
+                prefix: "",
+                source: "GClh Config",
+                typeid: '',
+                latitude: (getValue("home_lat") / 10000000),
+                longitude: (getValue("home_lng") / 10000000),
+                prefixedName: $('#ctl00_ContentBody_CoordInfoLinkControl1_uxCoordInfoCode')[0].innerHTML,
+            };
+            waypoints.unshift(homeCoords); // Vorne anfügen.
+        }
+        if (!service_configuration.runWithOneWaypoint && waypoints.length == 1) {
+            waypoints.push(waypoints[0]);
+        }
+
         var map = $(thisObject).data('map');
         var data = {
             urlTemplate: service_configuration.urlTemplate,
@@ -1962,12 +1981,9 @@ var mainGC = function() {
             waypointFunction: service_configuration.waypointFunction,
             context: service_configuration.context,
             mapOffset: service_configuration.mapOffset,
+            useHomeCoords: service_configuration.useHomeCoords,
             runWithOneWaypoint: service_configuration.runWithOneWaypoint
         };
-
-        if (!service_configuration.runWithOneWaypoint && waypoints.length == 1) {
-            waypoints.push(waypoints[0]);
-        }
 
         var url = data.urlTemplate;
         var waypointString = "";
@@ -1996,6 +2012,9 @@ var mainGC = function() {
                 radius = 0;
                 if (waypoint.typeid == 2 /* Traditional Geocache */ ) radius = 161; //  161m radius
                 else if (waypoint.typeid == 8 /* Mystery cache */) radius = 3000; // Mystery cache 3000m radius
+                name = normalizeName(waypoint.gccode);
+            } else if (waypoint.source == "GClh Config" ) {
+                radius = 0;
                 name = normalizeName(waypoint.gccode);
             } else {
                 gclh_log("xxxWaypoint() - unknown waypoint.source ("+waypoint.source+")");
@@ -2137,6 +2156,7 @@ var mainGC = function() {
                     maxUrlLength: 2000,
                     action: mapservice_open,
                     context : {},
+                    useHomeCoords: false,
                     runWithOneWaypoint: true
                 });
             } catch(e) {gclh_error("Show Flopp's Map links",e);}
@@ -2157,6 +2177,7 @@ var mainGC = function() {
                     maxUrlLength: 4000,
                     action: mapservice_open,
                     context : {},
+                    useHomeCoords: false,
                     runWithOneWaypoint: true
                 });
             } catch(e) {gclh_error("Show button BRouter and open BRouter",e);}
@@ -2177,6 +2198,7 @@ var mainGC = function() {
                     maxUrlLength: 4000,
                     action: mapservice_open,
                     context : {},
+                    useHomeCoords: false,
                     runWithOneWaypoint: true
                 });
             } catch(e) {gclh_error("Show button GPSVisualizer and open GPSVisualizer",e);}
@@ -2186,7 +2208,7 @@ var mainGC = function() {
             try {
                 mapservice_link( {
                     uniqueServiceId: "openrouteservice",
-                    urlTemplate: 'https://maps.openrouteservice.org/directions?b=2b&c=0&a={waypoints}',
+                    urlTemplate: 'https://maps.openrouteservice.org/directions?b='+settings_show_openrouteservice_medium+'&c=0&a={waypoints}',
                     layers: {'': { maxZoom: '', displayName: ''}},
                     waypointSeparator: ',',
                     waypointFunction: openrouteserviceWaypoint,
@@ -2197,6 +2219,7 @@ var mainGC = function() {
                     maxUrlLength: 4000,
                     action: mapservice_open,
                     context: {},
+                    useHomeCoords: settings_show_openrouteservice_home,
                     runWithOneWaypoint: false
                 });
             } catch(e) {gclh_error("Show button Openrouteservice and open Openrouteservice",e);}
@@ -10822,6 +10845,17 @@ var mainGC = function() {
             html += newParameterVersionSetzen(0.9) + newParameterOff;
             html += newParameterOn1;
             html += checkboxy('settings_show_openrouteservice_link', 'Show Openrouteservice links in sidebar and under the "Add. Waypoints"') + show_help3("If there are no additional waypoints only the link in the sidebar is shown.") + "<br>";
+            html += "&nbsp;&nbsp;" + checkboxy('settings_show_openrouteservice_home', 'Use home coordinates as start point') + show_help("You can use your home coordinates, here in the GClh Config, as start point and first waypoint for the route calculation.") + "<br>";
+            html += "&nbsp;&nbsp;&nbsp;" + "Medium for locomotion: <select class='gclh_form' id='settings_show_openrouteservice_medium' style='width: 250px;'>";
+            html += "  <option value=\"0\" " + (settings_show_openrouteservice_medium == "0" ? "selected=\"selected\"" : "") + ">Car</option>";
+            html += "  <option value=\"1\" " + (settings_show_openrouteservice_medium == "1" ? "selected=\"selected\"" : "") + ">Bike</option>";
+            html += "  <option value=\"1b\" " + (settings_show_openrouteservice_medium == "1b" ? "selected=\"selected\"" : "") + ">Mountain bike</option>";
+            html += "  <option value=\"1c\" " + (settings_show_openrouteservice_medium == "1c" ? "selected=\"selected\"" : "") + ">Racing bike</option>";
+            html += "  <option value=\"1f\" " + (settings_show_openrouteservice_medium == "1f" ? "selected=\"selected\"" : "") + ">E-Bike</option>";
+            html += "  <option value=\"2\" " + (settings_show_openrouteservice_medium == "2" ? "selected=\"selected\"" : "") + ">Pedestrian walking</option>";
+            html += "  <option value=\"2b\" " + (settings_show_openrouteservice_medium == "2b" ? "selected=\"selected\"" : "") + ">Pedestrian hiking</option>";
+            html += "  <option value=\"3\" " + (settings_show_openrouteservice_medium == "3" ? "selected=\"selected\"" : "") + ">Wheelchair (only Europe)</option>";
+            html += "</select>";
             html += newParameterVersionSetzen("0.10") + newParameterOff;
             html += newParameterOn3;
             html += checkboxy('settings_show_all_logs_but', 'Show button \"Show all logs\" above the logs') + "<br>";
@@ -11488,6 +11522,8 @@ var mainGC = function() {
             setEvForDepPara("settings_show_elevation_of_waypoints","settings_secondary_elevation_service");
             setEvForDepPara("settings_show_gpsvisualizer_link","settings_show_gpsvisualizer_gcsymbols");
             setEvForDepPara("settings_show_gpsvisualizer_link","settings_show_gpsvisualizer_typedesc");
+            setEvForDepPara("settings_show_openrouteservice_link","settings_show_openrouteservice_home");
+            setEvForDepPara("settings_show_openrouteservice_link","settings_show_openrouteservice_medium");
             setEvForDepPara("settings_show_log_counter_but","settings_show_log_counter");
             // Abhängigkeiten der Linklist Parameter.
             for (var i = 0; i < 100; i++) {
@@ -11637,6 +11673,7 @@ var mainGC = function() {
             setValue("settings_primary_elevation_service", document.getElementById('settings_primary_elevation_service').value);
             setValue("settings_secondary_elevation_service", document.getElementById('settings_secondary_elevation_service').value);
             setValue("settings_show_latest_logs_symbols_count_map", document.getElementById('settings_show_latest_logs_symbols_count_map').value);
+            setValue("settings_show_openrouteservice_medium", document.getElementById('settings_show_openrouteservice_medium').value);
 
             // Map Layers in vorgegebener Reihenfolge übernehmen.
             var new_map_layers_available = document.getElementById('settings_maplayers_available');
@@ -11830,6 +11867,7 @@ var mainGC = function() {
                 'settings_show_gpsvisualizer_gcsymbols',
                 'settings_show_gpsvisualizer_typedesc',
                 'settings_show_openrouteservice_link',
+                'settings_show_openrouteservice_home',
                 'settings_show_default_links',
                 'settings_bm_changed_and_go',
                 'settings_bml_changed_and_go',
