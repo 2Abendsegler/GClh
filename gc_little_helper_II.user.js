@@ -2214,7 +2214,7 @@ var mainGC = function() {
                     waypointFunction: openrouteserviceWaypoint,
                     mapOffset: {width: 0, height: 0},
                     defaultMap: '',
-                    sidebar: {linkText: "Show on Openrouteservise", icon: true, icondata: global_openrouteservice_icon},
+                    sidebar: {linkText: "Show on Openrouteservice", icon: true, icondata: global_openrouteservice_icon},
                     waypointtable: {linkText: "Show route on Openrouteservice", icon: false},
                     maxUrlLength: 4000,
                     action: mapservice_open,
