@@ -60,7 +60,7 @@
                 <img src="../images/0.10/Screen10.jpg" alt="Screen10.jpg"></a><br>
 		Or you can pick Openrouteservice in cache listing behind the "Additional Waypoints", if there are additional waypoints.<br>
                 <img src="../images/0.10/Screen11.jpg" alt="Screen11.jpg"></a><br>
-		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_show_openrouteservice_link" title="Link to your GClh Config">Settings -> Linklist:<br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_show_openrouteservice_link" title="Link to your GClh Config">Settings -> Listing:<br>
 		<img src="../images/0.10/Screen12.jpg" alt="Screen12.jpg"></a><br>
 		If you want to use your home coordinates as start point for the route, you have to activate the parameter.<br>
 		Openrouteservice also offers in addition to usual mediums for locomotion "wheelchair" as medium for locomotion in europe.<br>
