@@ -494,6 +494,7 @@ var variablesInit = function(c) {
     c.settings_show_gpsvisualizer_link = getValue("settings_show_gpsvisualizer_link", true);
     c.settings_show_gpsvisualizer_gcsymbols = getValue("settings_show_gpsvisualizer_gcsymbols", true);
     c.settings_show_gpsvisualizer_typedesc = getValue("settings_show_gpsvisualizer_typedesc", true);
+    c.settings_show_openrouteservice_link = getValue("settings_show_openrouteservice_link", true);
     c.settings_show_default_links = getValue("settings_show_default_links", true);
     c.settings_bm_changed_and_go = getValue("settings_bm_changed_and_go", true);
     c.settings_bml_changed_and_go = getValue("settings_bml_changed_and_go", true);
@@ -1915,50 +1916,58 @@ var mainGC = function() {
             css += "."+uniqueServiceId+"-waypointtable-icon {";
             css += "  background-image: url(" + service_configuration.waypointtable.icondata + ")}";
         }
+        css += ".noGClhdropbtn {";
+        css += "  display: none !important;}";
         appendCssStyle(css);
 
         var html = "";
         html += '<div class="GClhdropdown">';
         html += '<a class="GClhdropbtn mapservice_click-{uniqueServiceId} {customclasses}" data-map="'+service_configuration.defaultMap+'">{linkText}</a>';
-        html += '<div class="GClhdropdown-content">';
+        var nodropbtn = (service_configuration.defaultMap == "" ? "noGClhdropbtn" : "");
+        html += '<div class="GClhdropdown-content '+nodropbtn+'">';
         for( var layer in service_configuration.layers ) {
             html += '<div class="{uniqueServiceId}-content-layer mapservice_click-{uniqueServiceId}" data-map="'+layer+'">'+service_configuration.layers[layer].displayName+'</div>';
         }
-        html += '</div>'
+        html += '</div>';
         html += '</div>';
         html = html.replace(/{uniqueServiceId}/g,uniqueServiceId);
 
         // Add map service link to the right sidebar.
         var htmlSidebar = html.replace('{linkText}', service_configuration.sidebar.linkText);
-        htmlSidebar = htmlSidebar.replace('{customclasses}', ( service_configuration.sidebar.icon )?uniqueServiceId+'-sidebar-icon':'')
+        htmlSidebar = htmlSidebar.replace('{customclasses}', ( service_configuration.sidebar.icon )?uniqueServiceId+'-sidebar-icon':'');
         $('.CacheDetailNavigation ul').first().append('<li>'+htmlSidebar+'</li>');
 
-        // Add map service link under waypoint table
+        // Add map service link under waypoint table.
         var tbl = getWaypointTable();
         if (tbl.length > 0) {
             var htmlWaypointTable = html.replace('{linkText}', service_configuration.waypointtable.linkText);
-            htmlWaypointTable = htmlWaypointTable.replace('{customclasses}',( service_configuration.waypointtable.icon )?uniqueServiceId+'-waypointable-icon':'')
+            htmlWaypointTable = htmlWaypointTable.replace('{customclasses}',( service_configuration.waypointtable.icon )?uniqueServiceId+'-waypointable-icon':'');
             tbl.next("p").append('<br>'+htmlWaypointTable);
         }
 
         $('.mapservice_click-'+uniqueServiceId).click(function() {
-            service_configuration.action( this, service_configuration )
+            service_configuration.action( this, service_configuration );
         });
     }
 
-    function mapservice_open( thisObject, service_configuration )  {
+    function mapservice_open( thisObject, service_configuration ) {
         var waypoints = queryListingWaypoints(true);
         var map = $(thisObject).data('map');
         var data = {
             urlTemplate: service_configuration.urlTemplate,
-            map : map,
-            maxZoomLevel : service_configuration.layers[map].maxZoom,
-            waypoints : waypoints,
-            waypointSeparator : service_configuration.waypointSeparator,
-            waypointFunction : service_configuration.waypointFunction,
-            context : service_configuration.context,
-            mapOffset : service_configuration.mapOffset
+            map: map,
+            maxZoomLevel: service_configuration.layers[map].maxZoom,
+            waypoints: waypoints,
+            waypointSeparator: service_configuration.waypointSeparator,
+            waypointFunction: service_configuration.waypointFunction,
+            context: service_configuration.context,
+            mapOffset: service_configuration.mapOffset,
+            runWithOneWaypoint: service_configuration.runWithOneWaypoint
         };
+
+        if (!service_configuration.runWithOneWaypoint && waypoints.length == 1) {
+            waypoints.push(waypoints[0]);
+        }
 
         var url = data.urlTemplate;
         var waypointString = "";
@@ -1989,7 +1998,7 @@ var mainGC = function() {
                 else if (waypoint.typeid == 8 /* Mystery cache */) radius = 3000; // Mystery cache 3000m radius
                 name = normalizeName(waypoint.gccode);
             } else {
-                gclh_log("xxxWaypoint() - unknown waypoint.source ("+waypoint.source+")")
+                gclh_log("xxxWaypoint() - unknown waypoint.source ("+waypoint.source+")");
             }
 
             value = data.waypointFunction( waypoint, name, radius, data.context );
@@ -2009,7 +2018,7 @@ var mainGC = function() {
         url = encodeURI(url);
 
         if ( url.length > service_configuration.maxUrlLength ) {
-            alert("Pay attention the URL is very long ("+url.length+" characters). Data loss is possible.")
+            alert("Pay attention the URL is very long ("+url.length+" characters). Data loss is possible.");
         }
         window.open(url);
     }
@@ -2080,10 +2089,14 @@ var mainGC = function() {
         return value;
     }
 
-// CSS for BRouter and Flopp's Map links.
-    if ( (settings_show_brouter_link || settings_show_flopps_link || settings_show_gpsvisualizer_link) && is_page("cache_listing") ) {
+    function openrouteserviceWaypoint(waypoint, name, radius, context) {
+        return roundTO(waypoint.latitude,LatLonDigits)+','+roundTO(waypoint.longitude,LatLonDigits);
+    }
 
+// CSS for BRouter, Flopp's Map, GPSVisualizer und Openrouteservice links.
+    if ( (settings_show_brouter_link || settings_show_flopps_link || settings_show_gpsvisualizer_link || settings_show_openrouteservice_link) && is_page("cache_listing") ) {
         css += ".GClhdropbtn {";
+        css += "  white-space: nowrap;";
         css += "  cursor: pointer;}";
         css += ".GClhdropdown {";
         css += "  position: relative;";
@@ -2108,7 +2121,6 @@ var mainGC = function() {
         css += "  display: block;}";
         appendCssStyle(css);
 
-
         // Show links which open Flopp's Map with all waypoints of a cache.
         if ( settings_show_flopps_link ) {
             try {
@@ -2124,7 +2136,8 @@ var mainGC = function() {
                     waypointtable : { linkText : "Show waypoints on Flopp\'s Map with &#8230;", icon : false },
                     maxUrlLength: 2000,
                     action: mapservice_open,
-                    context : {}
+                    context : {},
+                    runWithOneWaypoint: true
                 });
             } catch(e) {gclh_error("Show Flopp's Map links",e);}
         }
@@ -2143,7 +2156,8 @@ var mainGC = function() {
                     waypointtable : { linkText : "Show route on BRouter with &#8230;", icon : false },
                     maxUrlLength: 4000,
                     action: mapservice_open,
-                    context : {}
+                    context : {},
+                    runWithOneWaypoint: true
                 });
             } catch(e) {gclh_error("Show button BRouter and open BRouter",e);}
         }
@@ -2162,9 +2176,30 @@ var mainGC = function() {
                     waypointtable : { linkText : "Show waypoints on GPSVisualizer with &#8230;", icon : false },
                     maxUrlLength: 4000,
                     action: mapservice_open,
-                    context : {}
+                    context : {},
+                    runWithOneWaypoint: true
                 });
             } catch(e) {gclh_error("Show button GPSVisualizer and open GPSVisualizer",e);}
+        }
+        // Show links which open Openrouteservice with all waypoints of a cache.
+        if ( settings_show_openrouteservice_link ) {
+            try {
+                mapservice_link( {
+                    uniqueServiceId: "openrouteservice",
+                    urlTemplate: 'https://maps.openrouteservice.org/directions?b=2b&c=0&a={waypoints}',
+                    layers: {'': { maxZoom: '', displayName: ''}},
+                    waypointSeparator: ',',
+                    waypointFunction: openrouteserviceWaypoint,
+                    mapOffset: {width: 0, height: 0},
+                    defaultMap: '',
+                    sidebar: {linkText: "Show on Openrouteservise", icon: true, icondata: global_openrouteservice_icon},
+                    waypointtable: {linkText: "Show route on Openrouteservice", icon: false},
+                    maxUrlLength: 4000,
+                    action: mapservice_open,
+                    context: {},
+                    runWithOneWaypoint: false
+                });
+            } catch(e) {gclh_error("Show button Openrouteservice and open Openrouteservice",e);}
         }
     }
 
@@ -10784,6 +10819,11 @@ var mainGC = function() {
             html += checkboxy('settings_show_gpsvisualizer_link', 'Show GPSVisualizer links in sidebar and under the "Additional Waypoints"') + show_help3("If there are no additional waypoints only the link in the sidebar is shown.") + "<br>";
             html += "&nbsp;&nbsp;" + checkboxy('settings_show_gpsvisualizer_gcsymbols', 'Use Geocaching symbols on GPSVisualizer map') + show_help3("Instead of default icon/pin Geocaching symbols are used. If the URL is too long deactivate this option.") + "<br>";
             html += "&nbsp;&nbsp;" + checkboxy('settings_show_gpsvisualizer_typedesc', 'Transfer type of the waypoint as description') + show_help3("Transfer for every waypoint the type as text in the description. If the URL is too long deactivate this option.") + "<br>";
+            html += newParameterVersionSetzen(0.9) + newParameterOff;
+            html += newParameterOn1;
+            html += checkboxy('settings_show_openrouteservice_link', 'Show Openrouteservice links in sidebar and under the "Add. Waypoints"') + show_help3("If there are no additional waypoints only the link in the sidebar is shown.") + "<br>";
+            html += newParameterVersionSetzen("0.10") + newParameterOff;
+            html += newParameterOn3;
             html += checkboxy('settings_show_all_logs_but', 'Show button \"Show all logs\" above the logs') + "<br>";
             html += checkboxy('settings_show_log_counter_but', 'Show button \"Show log counter\" above the logs') + "<br>";
             html += "&nbsp;&nbsp;" + checkboxy('settings_show_log_counter', 'Show log counter when opening cache listing') + "<br>";
@@ -11789,6 +11829,7 @@ var mainGC = function() {
                 'settings_show_gpsvisualizer_link',
                 'settings_show_gpsvisualizer_gcsymbols',
                 'settings_show_gpsvisualizer_typedesc',
+                'settings_show_openrouteservice_link',
                 'settings_show_default_links',
                 'settings_bm_changed_and_go',
                 'settings_bml_changed_and_go',
