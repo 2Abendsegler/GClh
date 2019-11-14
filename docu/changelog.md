@@ -90,7 +90,8 @@
 		The functionality is not new. New is only the great functionality. Especially for small screens very well, because the line stays at the bottom of the screen when you scroll through the pocket queries.<br>
 		<img src="../images/0.10/Screen01.jpg" alt="Screen01.jpg"><br>
 		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_fixed_pq_header" title="Link to your GClh Config">Settings -> Pocket query:<br>
-		<img src="../images/0.10/Screen02.jpg" alt="Screen02.jpg"></a><br><br>
+		<img src="../images/0.10/Screen02.jpg" alt="Screen02.jpg"></a><br>
+	        Please note that the feature is not new and you may need to activate the parameter.<br><br>
 	</li>
 	<li>
 		<strong>Fix:</strong> Thunderforest is no longer supported on BRouter and Flopps. [<a href="https://github.com/2Abendsegler/GClh/issues/1041" title="Issue 1041">1041</a> / <a href="https://www.geocaching.com/profile/?u=radlerandi" title="Thanks to radlerandi">radlerandi</a>]<br><br>
