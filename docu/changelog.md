@@ -66,7 +66,7 @@
 	</li>
 	<li>
 		<strong>New:</strong> New designed list of bookmark lists and bookmark lists: Show 1000 caches in bookmark lists. [<a href="https://github.com/2Abendsegler/GClh/issues/1059" title="Issue 1059">1059</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
-		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_show_1000_bm_lists" title="Link to your GClh Config">Settings -> Bookmark list:<br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_show_1000_bm_lists" title="Link to your GClh Config">Settings -> Bookmark list:<br> 
 		<img src="../images/0.10/Screen07.jpg" alt="Screen07.jpg"></a><br>
 		If you want to use it, you have to activate the parameter.<br><br>
 	</li>
