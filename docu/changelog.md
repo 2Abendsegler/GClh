@@ -72,6 +72,14 @@
 		If you want to use it, you have to activate the parameter.<br><br>
 	</li>
 	<li>
+		<strong>New:</strong> One click ignoring/restoring. [<a href="https://github.com/2Abendsegler/GClh/issues/1053" title="Issue 1053">1053</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		With this feature you will be able to ignore respectively restore the cache with only one click.<br>
+		<img src="../images/0.10/Screen01.jpg" alt="Screen01.jpg"><br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_fixed_pq_header" title="Link to your GClh Config">Settings -> Listing:<br>
+		<img src="../images/0.10/Screen14.gif" alt="Screen14.gif"></a><br>
+	        The **One click** feature runs only together with the **Show "Stop Ignoring"**. Please note that the **Show "Stop Ignoring"** is not new and you may need to activate the parameter.<br><br>
+	</li>
+	<li>
 		<strong>New:</strong> Rewrite fixed PQ header/footer by pure CSS. Compatible with compact view. [<a href="https://github.com/2Abendsegler/GClh/issues/1034" title="Issue 1034">1034</a> / <a href="https://www.geocaching.com/profile/?u=Dratenik" title="Thanks to Dratenik">Dratenik</a>]<br>
 		The functionality is not new. New is only the great functionality. Especially for small screens very well, because the line stays at the bottom of the screen when you scroll through the pocket queries.<br>
 		<img src="../images/0.10/Screen01.jpg" alt="Screen01.jpg"><br>
