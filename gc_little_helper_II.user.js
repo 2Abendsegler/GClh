@@ -303,6 +303,7 @@ var variablesInit = function(c) {
     c.settings_show_smaller_gc_link = getValue("settings_show_smaller_gc_link", true);
     c.settings_show_message = getValue("settings_show_message", true);
     c.settings_show_remove_ignoring_link = getValue("settings_show_remove_ignoring_link", true);
+    c.settings_use_one_click_ignoring = getValue("settings_use_one_click_ignoring", true);
     c.settings_show_common_lists_in_zebra = getValue("settings_show_common_lists_in_zebra", true);
     c.settings_show_common_lists_color_user = getValue("settings_show_common_lists_color_user", true);
     c.settings_show_cache_listings_in_zebra = getValue("settings_show_cache_listings_in_zebra", false);
@@ -1851,18 +1852,84 @@ var mainGC = function() {
         } catch(e) {gclh_error("Map this Location",e);}
     }
 
-// Stop ignoring.
+// Improve ignore button handling.
     if (is_page("cache_listing") && settings_show_remove_ignoring_link) {
         try {
+            var css = '';
+            // Set ignore.
+            changeIgnoreButton('Ignore');
+            // Prepare one click ignoring.
+            if (settings_use_one_click_ignoring) {
+                var link = '#ctl00_ContentBody_GeoNav_uxIgnoreBtn a';
+                $(link).attr('data-url', $(link)[0].href);
+                $(link)[0].href = 'javascript:void(0);';
+                $(link)[0].addEventListener("click", oneClickIgnoring, false);
+                changeIgnoreButton('Ignore');
+                var saved = document.createElement('span');
+                saved.setAttribute('id', 'ignoreSaved');
+                saved.appendChild(document.createTextNode('saved'));
+                $('#ctl00_ContentBody_GeoNav_uxIgnoreBtn')[0].append(saved);
+                css += ".working {opacity: 0.3; cursor: default;}";
+                css += "#ignoreSaved {display: none; color: #E0B70A; float: right;}";
+            }
+            // Set stop ignoring.
             var bmLs = $('.BookmarkList').last().find('li a[href*="/bookmarks/view.aspx?guid="], li a[href*="/profile/?guid="]');
             for (var i=0; (i+1) < bmLs.length; i=i+2) {
                 if (bmLs[i].innerHTML.match(/^Ignore List$/) && bmLs[i+1] && bmLs[i+1].innerHTML == global_me) {
-                    $('#ctl00_ContentBody_GeoNav_uxIgnoreBtn a')[0].innerHTML = "Stop Ignoring";
-                    $('#ctl00_ContentBody_GeoNav_uxIgnoreBtn a')[0].style.backgroundImage = "url("+global_stop_ignore_icon+")";
+                    changeIgnoreButton('Stop Ignoring');
                     break;
                 }
             }
-        } catch(e) {gclh_error("Stop ignoring",e);}
+            // CSS for all.
+            appendCssStyle(css);
+        } catch(e) {gclh_error("Improve ignore button handling",e);}
+    }
+    function changeIgnoreButton(buttonSetTo, saved) {
+        if (saved && saved == 'saved') {
+            $('#ignoreSaved')[0].style.display = 'inline';
+            $('#ignoreSaved').fadeOut(2500, 'swing');
+        }
+        $('#ctl00_ContentBody_GeoNav_uxIgnoreBtn a')[0].innerHTML = buttonSetTo;
+        $('#ctl00_ContentBody_GeoNav_uxIgnoreBtn a')[0].style.backgroundImage = (buttonSetTo == 'Ignore' ? 'url(/images/icons/16/ignore.png)' : 'url('+global_stop_ignore_icon+')');
+    }
+    function oneClickIgnoring() {
+        if ($('#ctl00_ContentBody_GeoNav_uxIgnoreBtn a.working')[0]) return;
+        $('#ctl00_ContentBody_GeoNav_uxIgnoreBtn a').addClass('working');
+        var url = $('#ctl00_ContentBody_GeoNav_uxIgnoreBtn a')[0].getAttribute('data-url');
+        GM_xmlhttpRequest({
+            method: "GET",
+            url: url,
+            onload: function(response) {
+                var viewstate = encodeURIComponent(response.responseText.match(/id="__VIEWSTATE" value="([0-9a-zA-Z+-\/=]*)"/)[1]);
+                var viewstategenerator = (response.responseText.match(/id="__VIEWSTATEGENERATOR" value="([0-9A-Z]*)"/))[1];
+                var postData = '__EVENTTARGET=&__EVENTARGUMENT=&__VIEWSTATE=' + viewstate + '&__VIEWSTATEGENERATOR=' + viewstategenerator
+                             + '&navi_search=&ctl00%24ContentBody%24btnYes=Yes.+Ignore+it.';
+                GM_xmlhttpRequest({
+                    method: 'POST',
+                    url: url,
+                    data: postData,
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                        'Referer': url
+                    },
+                    onload: function(response) {
+                        if (response.responseText.indexOf('<p class="Success">') !== -1) {
+                            // If cache was just ignored, set button to stop ignoring.
+                            if (response.responseText.indexOf('<strong>') !== -1) {
+                                changeIgnoreButton('Stop Ignoring', 'saved');
+                            // If cache was just restored, set button to ignore.
+                            } else {
+                                changeIgnoreButton('Ignore', 'saved');
+                            }
+                        }
+                        $('#ctl00_ContentBody_GeoNav_uxIgnoreBtn a').removeClass('working');
+                    },
+                    onerror: function(response) {$('#ctl00_ContentBody_GeoNav_uxIgnoreBtn a').removeClass('working');},
+                    ontimeout: function(response) {$('#ctl00_ContentBody_GeoNav_uxIgnoreBtn a').removeClass('working');},
+                    onabort: function(response) {$('#ctl00_ContentBody_GeoNav_uxIgnoreBtn a').removeClass('working');}
+                });
+            }
+        });
     }
 
 // Improve Add to list in cache listing.
@@ -8833,6 +8900,7 @@ var mainGC = function() {
         s = s.replace(/~/g, "%7e");
         s = s.replace(/'/g, "%27");
         s = s.replace(/%26amp%3b/g, "%26");
+        s = s.replace(/%26nbsp%3B/g, "%20");
         s = s.replace(/ /g, "+");
         return s;
     }
@@ -10776,6 +10844,9 @@ var mainGC = function() {
             html += checkboxy('settings_show_log_totals', 'Show the log totals symbols at the top') + "<br>";
             html += newParameterVersionSetzen(0.9) + newParameterOff;
             html += checkboxy('settings_show_remove_ignoring_link', 'Show \"Stop Ignoring\", if cache is already ignored') + show_help("This option replace the \"Ignore\" link description with the \"Stop Ignoring\" link description in the cache listing, if the cache is already ignored.") + prem + "<br>";
+            html += newParameterOn1;
+            html += "&nbsp; " + checkboxy('settings_use_one_click_ignoring', 'One click ignoring/restoring') + show_help("With this option you will be able to ignore respectively restore the cache with only one click.") + "<br>";
+            html += newParameterVersionSetzen('0.10') + newParameterOff;
             html += checkboxy('settings_map_overview_build', 'Show cache location in overview map') + show_help("With this option there will be an additional map top right in the cache listing as an overview of the cache location. This was available earlier on GC standard.") + "<br>";
             html += newParameterOn3;
             html += ' &nbsp; &nbsp; Map layer: <select class="gclh_form" id="settings_map_overview_layer">';
@@ -11525,6 +11596,7 @@ var mainGC = function() {
             setEvForDepPara("settings_show_openrouteservice_link","settings_show_openrouteservice_home");
             setEvForDepPara("settings_show_openrouteservice_link","settings_show_openrouteservice_medium");
             setEvForDepPara("settings_show_log_counter_but","settings_show_log_counter");
+            setEvForDepPara("settings_show_remove_ignoring_link","settings_use_one_click_ignoring");
             // Abhängigkeiten der Linklist Parameter.
             for (var i = 0; i < 100; i++) {
                 // 2. Spalte: Links für Custom BMs.
@@ -11719,6 +11791,7 @@ var mainGC = function() {
                 'settings_menu_float_right',
                 'settings_show_message',
                 'settings_show_remove_ignoring_link',
+                'settings_use_one_click_ignoring',
                 'settings_show_common_lists_in_zebra',
                 'settings_show_common_lists_color_user',
                 'settings_show_cache_listings_in_zebra',
