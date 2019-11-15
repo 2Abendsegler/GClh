@@ -48,7 +48,6 @@
 <a href="#v021" title="GClh II version 0.2.1 (05.01.2017)">v0.2.1</a> &nbsp; 
 <a href="#v01" title="GClh II version 0.1 (05.01.2017)">v0.1</a> &nbsp; 
 
-
 ---
 ## v0.10:
 <ul>
@@ -73,11 +72,11 @@
 	</li>
 	<li>
 		<strong>New:</strong> One click ignoring/restoring. [<a href="https://github.com/2Abendsegler/GClh/issues/1053" title="Issue 1053">1053</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
-		With this feature you will be able to ignore respectively restore the cache with only one click.<br>
-		<img src="../images/0.10/Screen01.jpg" alt="Screen01.jpg"><br>
-		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_fixed_pq_header" title="Link to your GClh Config">Settings -> Listing:<br>
-		<img src="../images/0.10/Screen14.gif" alt="Screen14.gif"></a><br>
-	        The **One click** feature runs only together with the **Show "Stop Ignoring"**. Please note that the **Show "Stop Ignoring"** is not new and you may need to activate the parameter.<br><br>
+		With this feature you will be able to ignore respectively restore the cache in the cache listing with only one click.<br>
+		<img src="../images/0.10/Screen13.gif" alt="Screen13.gif"><br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_use_one_click_ignoring" title="Link to your GClh Config">Settings -> Listing:<br>
+		<img src="../images/0.10/Screen14.jpg" alt="Screen14.jpg"></a><br>
+	        The _One click_ feature runs only together with the _Show "Stop Ignoring"_ feature. Please note that the _Show "Stop Ignoring"_ feature is not new and you may need to activate the parameter, if you want to use the _One click_ feature.<br><br>
 	</li>
 	<li>
 		<strong>New:</strong> Rewrite fixed PQ header/footer by pure CSS. Compatible with compact view. [<a href="https://github.com/2Abendsegler/GClh/issues/1034" title="Issue 1034">1034</a> / <a href="https://www.geocaching.com/profile/?u=Dratenik" title="Thanks to Dratenik">Dratenik</a>]<br>
