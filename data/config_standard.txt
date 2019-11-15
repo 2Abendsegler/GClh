@@ -35,6 +35,7 @@
   "settings_show_smaller_gc_link": true,
   "settings_show_message": true,
   "settings_show_remove_ignoring_link": true,
+  "settings_use_one_click_ignoring": true,
   "settings_show_common_lists_in_zebra": true,
   "settings_show_common_lists_color_user": true,
   "settings_show_cache_listings_in_zebra": false,
