@@ -1,3 +1,4 @@
+<a href="#v010" title="GClh II version 0.10 (??.??.2019)">v0.10</a> &nbsp;
 <a href="#v0918" title="GClh II version 0.9.18 (23.05.2019)">v0.9.18</a> &nbsp;
 <a href="#v0917" title="GClh II version 0.9.17 (10.04.2019)">v0.9.17</a> &nbsp;
 <a href="#v0916" title="GClh II version 0.9.16 (13.02.2019)">v0.9.16</a> &nbsp;
@@ -47,6 +48,73 @@
 <a href="#v021" title="GClh II version 0.2.1 (05.01.2017)">v0.2.1</a> &nbsp; 
 <a href="#v01" title="GClh II version 0.1 (05.01.2017)">v0.1</a> &nbsp; 
 
+---
+## v0.10:
+<ul>
+	<li>
+		<strong>New:</strong> Added Openrouteservice as an additional map service. [<a href="https://github.com/2Abendsegler/GClh/issues/897" title="Issue 897">897</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+                <img src="../images/0.10/Screen08.jpg" alt="Screen08.jpg"></a><br>
+                <img src="../images/0.10/Screen09.jpg" alt="Screen09.jpg"></a><br>
+		You can pick Openrouteservice in cache listing in the right navigation bar.<br>
+                <img src="../images/0.10/Screen10.jpg" alt="Screen10.jpg"></a><br>
+		Or you can pick Openrouteservice in cache listing behind the "Additional Waypoints", if there are additional waypoints.<br>
+                <img src="../images/0.10/Screen11.jpg" alt="Screen11.jpg"></a><br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_show_openrouteservice_link" title="Link to your GClh Config">Settings -> Listing:<br>
+		<img src="../images/0.10/Screen12.jpg" alt="Screen12.jpg"></a><br>
+		If you want to use your home coordinates as start point for the route, you have to activate the parameter.<br>
+		Openrouteservice also offers in addition to usual mediums for locomotion "wheelchair" as medium for locomotion in europe.<br><br>
+	</li>
+	<li>
+		<strong>New:</strong> New designed list of bookmark lists and bookmark lists: Show 1000 caches in bookmark lists. [<a href="https://github.com/2Abendsegler/GClh/issues/1059" title="Issue 1059">1059</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_show_1000_bm_lists" title="Link to your GClh Config">Settings -> Bookmark list:<br>
+		<img src="../images/0.10/Screen07.jpg" alt="Screen07.jpg"></a><br>
+		If you want to use it, you have to activate the parameter.<br><br>
+	</li>
+	<li>
+		<strong>New:</strong> One click ignoring/restoring. [<a href="https://github.com/2Abendsegler/GClh/issues/1053" title="Issue 1053">1053</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		With this feature you will be able to ignore respectively restore the cache in the cache listing with only one click.<br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_use_one_click_ignoring" title="Link to your GClh Config">Settings -> Listing:<br>
+		<img src="../images/0.10/Screen14.jpg" alt="Screen14.jpg"></a><br>
+	        The "One click" feature runs only together with the "Show Stop Ignoring" feature. Please note that the "Show Stop Ignoring" feature is not new and you may need to activate the parameter, if you want to use the "One click" feature.<br><br>
+	</li>
+	<li>
+		<strong>New:</strong> Rewrite fixed PQ header/footer by pure CSS. Compatible with compact view. [<a href="https://github.com/2Abendsegler/GClh/issues/1034" title="Issue 1034">1034</a> / <a href="https://www.geocaching.com/profile/?u=Dratenik" title="Thanks to Dratenik">Dratenik</a>]<br>
+		The functionality is not new. New is only the great functionality. Especially for small screens very well, because the line stays at the bottom of the screen when you scroll through the pocket queries.<br>
+		<img src="../images/0.10/Screen01.jpg" alt="Screen01.jpg"><br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_fixed_pq_header" title="Link to your GClh Config">Settings -> Pocket query:<br>
+		<img src="../images/0.10/Screen02.jpg" alt="Screen02.jpg"></a><br>
+	        Please note that the feature is not new and you may need to activate the parameter.<br><br>
+	</li>
+        <li>
+		<strong>New:</strong> Button for hiding lot of stuff in cache listing logs. [<a href="https://github.com/2Abendsegler/GClh/issues/1045" title="Issue 1045">1045</a> / <a href="https://www.geocaching.com/profile/?u=Ruko2010" title="Thanks to Ruko2010">Ruko2010</a>]<br>
+		The functionality can be used, for example, to compare an external logbook with an online logbook.<br>
+		<img src="../images/0.10/Screen05.jpg" alt="Screen05.jpg"><br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_show_compact_logbook_but" title="Link to your GClh Config">Settings -> Listing:<br>
+		<img src="../images/0.10/Screen06.jpg" alt="Screen06.jpg"></a><br><br>
+	</li>
+	<li>
+		<strong>New:</strong> Hide found counter in cache listing. [<a href="https://github.com/2Abendsegler/GClh/issues/1044" title="Issue 1044">1044</a> / <a href="https://www.geocaching.com/profile/?u=Ruko2010" title="Thanks to Ruko2010">Ruko2010</a>]<br>
+		<img src="../images/0.10/Screen03.jpg" alt="Screen03.jpg"><br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_hide_found_count" title="Link to your GClh Config">Settings -> Listing:<br>
+		<img src="../images/0.10/Screen04.jpg" alt="Screen04.jpg"></a><br>
+		If you want to use it, you have to activate the parameter.<br><br>
+	</li>
+	<li>
+		<strong>Fix:</strong> Thunderforest is no longer supported on BRouter and Flopps. [<a href="https://github.com/2Abendsegler/GClh/issues/1041" title="Issue 1041">1041</a> / <a href="https://www.geocaching.com/profile/?u=radlerandi" title="Thanks to radlerandi">radlerandi</a>]<br><br>
+	</li>
+	<li>
+		<strong>Fix:</strong> Show listing of (own) unpublished cache throws error. [<a href="https://github.com/2Abendsegler/GClh/issues/1039" title="Issue 1039">1039</a> / <a href="https://www.geocaching.com/profile/?u=Ruko2010" title="Thanks to Ruko2010">Ruko2010</a>]<br><br>
+	</li>
+	<li>
+		<strong>Fix:</strong> BRouter with empty waypoint in URL. [<a href="https://github.com/2Abendsegler/GClh/issues/1042" title="Issue 1042">1042</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br><br>
+	</li>
+	<li>
+		<strong>Fix:</strong> Improve new and old log form. Show log preview on log page direct after automatic adding log signature, using log templates and using smilies. Make sure that signature is not generated multiple times. [<a href="https://github.com/2Abendsegler/GClh/issues/1047" title="Issue 1047">1047</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+</ul>
+(??.??.2019)<br>
+released by <a href="https://www.geocaching.com/profile/?u=Ruko2010">Ruko2010</a><br>
+<br>
 
 ---
 ## v0.9.18:
