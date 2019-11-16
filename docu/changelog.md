@@ -81,6 +81,7 @@
 	<li>
 		<strong>New:</strong> One click watching. [<a href="https://github.com/2Abendsegler/GClh/issues/1072" title="Issue 1072">1072</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 		With this feature you can add a cache in cache listing to your watchlist with just one click.<br>
+		<img src="../images/0.10/Screen15.gif" alt="Screen15.gif"></a><br>
 		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_use_one_click_watching" title="Link to your GClh Config">Settings -> Listing:<br>
 		<img src="../images/0.10/Screen16.jpg" alt="Screen16.jpg"></a><br>
 	</li>
