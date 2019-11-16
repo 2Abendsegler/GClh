@@ -18,6 +18,7 @@
 <a href="#v092" title="GClh II version 0.9.2 (08.02.2018)">v0.9.2</a> &nbsp;
 <a href="#v091" title="GClh II version 0.9.1 (16.01.2018)">v0.9.1</a> &nbsp;
 <a href="#v09" title="GClh II version 0.9 (19.12.2017)">v0.9</a> &nbsp;
+<a href="changelog_before.md" title="Go to earlier changelog">Earlier changelog</a> &nbsp;
 
 ---
 ## v0.10:
