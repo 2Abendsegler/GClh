@@ -1,4 +1,4 @@
-<a href="..changelog" title="Go to later changelogs">Later changelogs</a> &nbsp;
+<a href="changelog" title="Go to later changelogs">Later changelogs</a> &nbsp;
 <a href="#v0811" title="GClh II version 0.8.11 (26.11.2017)">v0.8.11</a> &nbsp;
 <a href="#v0810" title="GClh II version 0.8.10 (15.11.2017)">v0.8.10</a> &nbsp;
 <a href="#v089" title="GClh II version 0.8.9 (03.11.2017)">v0.8.9</a> &nbsp;
