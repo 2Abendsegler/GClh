@@ -304,6 +304,7 @@ var variablesInit = function(c) {
     c.settings_show_message = getValue("settings_show_message", true);
     c.settings_show_remove_ignoring_link = getValue("settings_show_remove_ignoring_link", true);
     c.settings_use_one_click_ignoring = getValue("settings_use_one_click_ignoring", true);
+    c.settings_use_one_click_watching = getValue("settings_use_one_click_watching", true);
     c.settings_show_common_lists_in_zebra = getValue("settings_show_common_lists_in_zebra", true);
     c.settings_show_common_lists_color_user = getValue("settings_show_common_lists_color_user", true);
     c.settings_show_cache_listings_in_zebra = getValue("settings_show_cache_listings_in_zebra", false);
@@ -1852,13 +1853,21 @@ var mainGC = function() {
         } catch(e) {gclh_error("Map this Location",e);}
     }
 
-// Improve ignore button handling.
+// Improve Ignore, Stop Ignoring, Watch button handling.
+    if ((settings_show_remove_ignoring_link && settings_use_one_click_ignoring) || settings_use_one_click_watching) {
+        var css = '';
+        css += ".working {opacity: 0.3; cursor: default;}";
+        css += "#ignoreSaved, #watchSaved {display: none; color: #E0B70A; float: right;}";
+        appendCssStyle(css);
+    }
+
+// Improve Ignore, Stop Ignoring button handling.
     if (is_page("cache_listing") && settings_show_remove_ignoring_link) {
         try {
-            var css = '';
-            // Set ignore.
+            // Set Ignore.
             changeIgnoreButton('Ignore');
-            // Prepare one click ignoring.
+
+            // Prepare one click Ignore, Stop Ignoring.
             if (settings_use_one_click_ignoring) {
                 var link = '#ctl00_ContentBody_GeoNav_uxIgnoreBtn a';
                 $(link).attr('data-url', $(link)[0].href);
@@ -1869,10 +1878,9 @@ var mainGC = function() {
                 saved.setAttribute('id', 'ignoreSaved');
                 saved.appendChild(document.createTextNode('saved'));
                 $('#ctl00_ContentBody_GeoNav_uxIgnoreBtn')[0].append(saved);
-                css += ".working {opacity: 0.3; cursor: default;}";
-                css += "#ignoreSaved {display: none; color: #E0B70A; float: right;}";
             }
-            // Set stop ignoring.
+
+            // Set Stop Ignoring.
             var bmLs = $('.BookmarkList').last().find('li a[href*="/bookmarks/view.aspx?guid="], li a[href*="/profile/?guid="]');
             for (var i=0; (i+1) < bmLs.length; i=i+2) {
                 if (bmLs[i].innerHTML.match(/^Ignore List$/) && bmLs[i+1] && bmLs[i+1].innerHTML == global_me) {
@@ -1880,30 +1888,24 @@ var mainGC = function() {
                     break;
                 }
             }
-            // CSS for all.
-            appendCssStyle(css);
-        } catch(e) {gclh_error("Improve ignore button handling",e);}
-    }
-    function changeIgnoreButton(buttonSetTo, saved) {
-        if (saved && saved == 'saved') {
-            $('#ignoreSaved')[0].style.display = 'inline';
-            $('#ignoreSaved').fadeOut(2500, 'swing');
-        }
-        $('#ctl00_ContentBody_GeoNav_uxIgnoreBtn a')[0].innerHTML = buttonSetTo;
-        $('#ctl00_ContentBody_GeoNav_uxIgnoreBtn a')[0].style.backgroundImage = (buttonSetTo == 'Ignore' ? 'url(/images/icons/16/ignore.png)' : 'url('+global_stop_ignore_icon+')');
+        } catch(e) {gclh_error("Improve Ignore, Stop Ignoring button handling",e);}
     }
     function oneClickIgnoring() {
-        if ($('#ctl00_ContentBody_GeoNav_uxIgnoreBtn a.working')[0]) return;
-        $('#ctl00_ContentBody_GeoNav_uxIgnoreBtn a').addClass('working');
-        var url = $('#ctl00_ContentBody_GeoNav_uxIgnoreBtn a')[0].getAttribute('data-url');
+        var link = '#ctl00_ContentBody_GeoNav_uxIgnoreBtn a';
+        if ($(link+'.working')[0]) return;
+        $(link).addClass('working');
+
+        var url = $(link)[0].getAttribute('data-url');
+
         GM_xmlhttpRequest({
-            method: "GET",
+            method: 'GET',
             url: url,
             onload: function(response) {
                 var viewstate = encodeURIComponent(response.responseText.match(/id="__VIEWSTATE" value="([0-9a-zA-Z+-\/=]*)"/)[1]);
                 var viewstategenerator = (response.responseText.match(/id="__VIEWSTATEGENERATOR" value="([0-9A-Z]*)"/))[1];
                 var postData = '__EVENTTARGET=&__EVENTARGUMENT=&__VIEWSTATE=' + viewstate + '&__VIEWSTATEGENERATOR=' + viewstategenerator
                              + '&navi_search=&ctl00%24ContentBody%24btnYes=Yes.+Ignore+it.';
+
                 GM_xmlhttpRequest({
                     method: 'POST',
                     url: url,
@@ -1922,14 +1924,84 @@ var mainGC = function() {
                                 changeIgnoreButton('Ignore', 'saved');
                             }
                         }
-                        $('#ctl00_ContentBody_GeoNav_uxIgnoreBtn a').removeClass('working');
+                        $(link).removeClass('working');
                     },
-                    onerror: function(response) {$('#ctl00_ContentBody_GeoNav_uxIgnoreBtn a').removeClass('working');},
-                    ontimeout: function(response) {$('#ctl00_ContentBody_GeoNav_uxIgnoreBtn a').removeClass('working');},
-                    onabort: function(response) {$('#ctl00_ContentBody_GeoNav_uxIgnoreBtn a').removeClass('working');}
+                    onerror: function(response) {$(link).removeClass('working');},
+                    ontimeout: function(response) {$(link).removeClass('working');},
+                    onabort: function(response) {$(link).removeClass('working');}
                 });
             }
         });
+    }
+    function changeIgnoreButton(buttonSetTo, saved) {
+        var link = '#ctl00_ContentBody_GeoNav_uxIgnoreBtn a';
+        if (saved && saved == 'saved') {
+            $('#ignoreSaved')[0].style.display = 'inline';
+            $('#ignoreSaved').fadeOut(2500, 'swing');
+        }
+        $(link)[0].innerHTML = buttonSetTo;
+        $(link)[0].style.backgroundImage = (buttonSetTo == 'Ignore' ? 'url(/images/icons/16/ignore.png)' : 'url('+global_stop_ignore_icon+')');
+    }
+
+// Improve Watch button handling. (Not for Stop Watching handling.)
+    if (is_page("cache_listing") && settings_use_one_click_watching && !$('#ctl00_ContentBody_GeoNav_uxWatchlistBtn a')[0].href.match(/action=rem/)) {
+        try {
+            // Prepare one click watching.
+            var link = '#ctl00_ContentBody_GeoNav_uxWatchlistBtn a';
+            $(link).attr('data-url', $(link)[0].href);
+            var wID = $(link)[0].href.match(/aspx\?w=([0-9]+)/);
+            $(link).attr('data-wID', wID[1]);
+            $(link)[0].href = 'javascript:void(0);';
+            $(link)[0].addEventListener("click", oneClickWatching, false);
+            changeWatchButton($(link)[0].innerHTML);
+            var saved = document.createElement('span');
+            saved.setAttribute('id', 'watchSaved');
+            saved.appendChild(document.createTextNode('saved'));
+            $('#ctl00_ContentBody_GeoNav_uxWatchlistBtn')[0].append(saved);
+        } catch(e) {gclh_error("Improve Watch button handling.",e);}
+    }
+    function oneClickWatching() {
+        var link = '#ctl00_ContentBody_GeoNav_uxWatchlistBtn a';
+        if ($(link+'.working')[0]) return;
+        $(link).addClass('working');
+
+        var url = $(link)[0].getAttribute('data-url');
+        var nr = $('#ctl00_ContentBody_GeoNav_uxWatchlistBtn')[0].childNodes[1].data.replace(/\(|\)|\s/g, '');
+
+        // Watching.
+        if (!url.match(/action=rem/)) {
+            GM_xmlhttpRequest({
+                method: 'POST',
+                url: url,
+                onload: function(response) {
+                    if (response.responseText.indexOf('ctl00_ContentBody_lbAction') !== -1) {
+                        // Cache was just watched, set button to stop watching.
+                        nr++;
+                        changeWatchButton('Stop Watching', 'saved', nr);
+                    }
+                    $(link).removeClass('working');
+                },
+                onerror: function(response) {$(link).removeClass('working');},
+                ontimeout: function(response) {$(link).removeClass('working');},
+                onabort: function(response) {$(link).removeClass('working');}
+            });
+        }
+    }
+    function changeWatchButton(buttonSetTo, saved, nr) {
+        var link = '#ctl00_ContentBody_GeoNav_uxWatchlistBtn a';
+        if (saved && saved == 'saved') {
+            $('#watchSaved')[0].style.display = 'inline';
+            $('#watchSaved').fadeOut(2500, 'swing');
+        }
+        $(link)[0].innerHTML = buttonSetTo;
+        $(link)[0].style.backgroundImage = (buttonSetTo == 'Watch' ? 'url(/images/icons/16/watch.png)' : 'url(/images/icons/16/stop_watching.png)');
+        if (nr) $('#ctl00_ContentBody_GeoNav_uxWatchlistBtn')[0].childNodes[1].data = ' (' + nr + ')';
+        if (buttonSetTo != 'Watch') {
+            $(link)[0].removeEventListener("click", oneClickWatching);
+            var wID = $(link)[0].getAttribute('data-wID');
+            var urlNew = '/my/watchlist.aspx?' + (buttonSetTo == 'Watch' ? 'w='+wID : 'ds=1&id='+wID+'&action=rem');
+            $(link)[0].href = urlNew;
+        }
     }
 
 // Improve Add to list in cache listing.
@@ -10837,7 +10909,8 @@ var mainGC = function() {
             html += newParameterVersionSetzen(0.9) + newParameterOff;
             html += checkboxy('settings_show_remove_ignoring_link', 'Show \"Stop Ignoring\", if cache is already ignored') + show_help("This option replace the \"Ignore\" link description with the \"Stop Ignoring\" link description in the cache listing, if the cache is already ignored.") + prem + "<br>";
             html += newParameterOn1;
-            html += "&nbsp; " + checkboxy('settings_use_one_click_ignoring', 'One click ignoring/restoring') + show_help("With this option you will be able to ignore respectively restore the cache with only one click.") + "<br>";
+            html += "&nbsp; " + checkboxy('settings_use_one_click_ignoring', 'One click ignoring/restoring') + show_help("With this option you will be able to ignore respectively restore a cache in cache listing with only one click.") + "<br>";
+            html += checkboxy('settings_use_one_click_watching', 'Add cache with one click to watchlist') + show_help("With this option, you can add a cache in cache listing to your watchlist with just one click.") + "<br>";
             html += newParameterVersionSetzen('0.10') + newParameterOff;
             html += checkboxy('settings_map_overview_build', 'Show cache location in overview map') + show_help("With this option there will be an additional map top right in the cache listing as an overview of the cache location. This was available earlier on GC standard.") + "<br>";
             html += newParameterOn3;
@@ -11784,6 +11857,7 @@ var mainGC = function() {
                 'settings_show_message',
                 'settings_show_remove_ignoring_link',
                 'settings_use_one_click_ignoring',
+                'settings_use_one_click_watching',
                 'settings_show_common_lists_in_zebra',
                 'settings_show_common_lists_color_user',
                 'settings_show_cache_listings_in_zebra',
