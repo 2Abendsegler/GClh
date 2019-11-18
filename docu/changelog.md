@@ -26,9 +26,8 @@
 	<li>
 		<strong>New:</strong> Added Openrouteservice as an additional map service. [<a href="https://github.com/2Abendsegler/GClh/issues/897" title="Issue 897">897</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
                 <img src="../images/0.10/Screen08.gif" alt="Screen08.gif"></a><br>
-		You can pick Openrouteservice in cache listing in the right navigation bar.<br>
-                <img src="../images/0.10/Screen10.jpg" alt="Screen10.jpg"></a><br>
-		Or you can pick Openrouteservice in cache listing behind the "Additional Waypoints", if there are additional waypoints.<br>
+		You can pick Openrouteservice in cache listing in the right navigation bar, or behind the "Additional Waypoints", if there are additional waypoints.<br>
+                <img src="../images/0.10/Screen10.jpg" alt="Screen10.jpg"></a> 
                 <img src="../images/0.10/Screen11.jpg" alt="Screen11.jpg"></a><br>
 		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_show_openrouteservice_link" title="Link to your GClh Config">Settings -> Listing:<br>
 		<img src="../images/0.10/Screen12.jpg" alt="Screen12.jpg"></a><br>
