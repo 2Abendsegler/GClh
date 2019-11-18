@@ -6940,34 +6940,9 @@ var mainGC = function() {
             if (settings_my_lists_old_fashioned) $('#DashboardSidebar ul li a[href*="/account/lists"]').prop("href", "/my/lists.aspx");
             // Add link to Ignore List into dashboard sidebar.
             if (settings_embedded_smartlink_ignorelist && $(".bio-userrole").text() == "Premium" ) {
-                function openIgnoreList(response) {
-                    try {
-                        if (document.location.href.match(/#gclhGotoIgnorelist/)) document.location.href = clearUrlAppendix(document.location.href, false);
-                        if (response.responseText) {
-                            var linkIgnoreList = $(response.responseText).find('a[href*="/bookmarks/view.aspx?code="]').first().attr('href');
-                            if (linkIgnoreList) window.open(linkIgnoreList,"_self");
-                            else alert("GClh cannot find a link to your Ignore List.\n\nPlease check if you have an Ignore List\n(it is a Premium Member feature).");
-                        }
-                    } catch(e) {gclh_error("function openIgnoreList()",e);}
-                }
-                function getIgnoreList() {
-                    try {
-                        // Link to ignore list is not static, the id can be changed.
-                        GM_xmlhttpRequest({
-                            method: "GET",
-                            url: "https://www.geocaching.com/account/lists",
-                            onload: openIgnoreList
-                        });
-                    } catch(e) {gclh_error("function getIgnoreList()",e);}
-                }
                 var sidebarLists = $($('ul.link-block:not(".gclh") a[href*="/my/watchlist.aspx"]'));
-                var html = '<li><a id="gclh_goto_ignorelist" href="#gclhGotoIgnorelist">Ignore List</a></li>';
+                var html = '<li><a id="gclh_goto_ignorelist" href="/plan/lists/ignored">Ignore List</a></li>';
                 sidebarLists.parent().after(html);
-                $("#gclh_goto_ignorelist").click( function(e) {
-                    getIgnoreList();
-                    e.preventDefault();
-                });
-                if (document.location.href.match(/#gclhGotoIgnorelist/)) getIgnoreList();
             }
             appendCssStyle(css);
         } catch(e) {gclh_error("Improve new dashboard",e);}
