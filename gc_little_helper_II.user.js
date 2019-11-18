@@ -832,7 +832,6 @@ var mainPGC = function() {
 
                     $(current_table).find('tr').each(function(){
                         counter++;
-                        // console.log($(this));
                         if(counter == 1){
                             // first tr, determine Language
                             var lang_text = $(this).children().eq(1).text();
@@ -1587,7 +1586,7 @@ var mainGC = function() {
     }
 
 // Show eventday beside date.
-    if (settings_show_eventday && is_page("cache_listing") && $('#cacheDetails svg.cache-icon use')[0] && $('#cacheDetails svg.cache-icon use')[0].href.baseVal.match(/\/cache-types.svg\#icon-(6$|453$|13$|7005$)/)) {  // Event, MegaEvent, Cito, GigaEvent
+    if (settings_show_eventday && is_page("cache_listing") && $('#cacheDetails svg.cache-icon use')[0] && $('#cacheDetails svg.cache-icon use')[0].href.baseVal.match(/\/cache-types.svg\#icon-(6$|6-|453$|453-|13$|13-|7005$|7005-)/)) {  // Event, MegaEvent, Cito, GigaEvent
         try {
             var match = $('meta[name="og:description"]')[0].content.match(/([0-9]{2})\/([0-9]{2})\/([0-9]{4})/);
             if(match == null){
@@ -3006,7 +3005,6 @@ var mainGC = function() {
                             getElevations(context.retries+1,context.locations);
                         },
                         onreadystatechange: function(responseDetails) {
-                            // console.log(responseDetails); // workaround gclh_log doesn't work for responseDetails. Error message 'TypeError: Function.prototype.toString called on incompatible object'
                         },
                         ontimeout: function(responseDetails) {
                             var context = responseDetails.context;
@@ -6545,7 +6543,6 @@ var mainGC = function() {
                     $(tableContent).find('.log-row').remove();
                     for (var z = 1; z <= numPages; z++) {
                         var all_ids = new Array();
-                        // console.log(data[z].data);
                         var json = data[z];
                         logs = logs.concat(json.data);
                         for (var i = 0; i < json.data.length; i++) {
