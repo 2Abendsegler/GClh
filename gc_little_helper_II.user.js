@@ -1252,12 +1252,10 @@ var mainGC = function() {
                 ".#m .#sm {margin-left: 0 !important}";
             // Vertikales Menü ausrichten.
             if (settings_bookmarks_top_menu) {
-                // Menüzeilenhöhe.
-                css += "ul.#m {line-height: 16px;}";
+                // Menüzeilenhöhe, Menü nicht flex.
+                css += "ul.#m {line-height: 16px; display: block;}";
                 // Zwischen Menüname und Submenü keine Lücke lassen, sonst klappts nicht mit einfachem Aufklappen.
                 css += ".#m li a, .#m li a:link, .#m li a:visited {margin-bottom: 10px;} .#m ul.#sm {margin-top: -6px;}";
-                // Menü, Searchfield ausrichten in Abhängigkeit von Schriftgröße.
-                css += "ul.#m > li {margin-top: " + (3 + (16 - font_size_menu) / 2) + "px;}";
             // Horizontales Menü ausrichten.
             } else {
                 // Menüzeilenhöhe.
@@ -1292,8 +1290,13 @@ var mainGC = function() {
                 // Vertikales Menü ausrichten.
                 if (settings_bookmarks_top_menu) {
                     css += ".#m ul.#sm {margin-top: 0px; margin-left: 32px !important;} .#m .submenu::after {left: 4px; width: 26px;}";
-                    // Menü nicht flex.
-                    if (settings_menu_float_right) css += ".#m {display: block;} ul.#m > li {top: 0px;}";
+                    // Menü, Searchfield ausrichten in Abhängigkeit von Schriftgröße. Menü nicht flex.
+                    if (settings_menu_float_right) {
+                        css += "ul.#m > li {margin-top: " + (3 + (16 - font_size_menu) / 2) + "px;}";
+                    } else {
+                        if (is_page("map")) css += "ul.#m > li {margin-top: " + (-2 + (16 - font_size_menu) / 2) + "px;}";
+                        else css += "ul.#m > li {margin-top: " + (3 + (16 - font_size_menu) / 2) + "px;}";
+                    }
                     // Menü in Karte ausrichten.
                     if (is_page("map") && !settings_menu_float_right) css += ".#m {height: unset !important;}";
                     if (is_page("map") && settings_menu_float_right) css += "#navi_search {margin: 0 !important;}";
@@ -1313,7 +1316,12 @@ var mainGC = function() {
                     css += ".#m ul.#sm {margin-top: 15px; margin-left: 32px !important;} .#m .submenu::after {left: 4px; width: 26px;}";
                     // Zwischen Menüname und Submenü keine Lücke lassen, sonst klappt das nicht mit dem einfachen Aufklappen.
                     css += ".#m > li .dropdown {padding-bottom: 14px !important;}";
-                    if (settings_menu_float_right) css += "ul.#m > li {margin-top: 8px !important}";
+                    // Menü, Searchfield ausrichten in Abhängigkeit von Schriftgröße. Menü nicht flex.
+                    if (settings_menu_float_right) {
+                        css += "ul.#m > li {margin-top: " + (7 + (16 - font_size_menu) / 2) + "px;}";
+                    } else {
+                        css += "ul.#m > li {margin-top: " + (5 + (16 - font_size_menu) / 2) + "px;}";
+                    }
                 // Horizontales Menü ausrichten in Abhängigkeit von Anzahl Zeilen.
                 } else {
                     if      (settings_menu_number_of_lines == 1) css += "ul.#m {top:   4px !important;}";
@@ -13146,7 +13154,7 @@ function is_page(name) {
             if (url.match(/^\/play\/(search|geocache)/)) status = true;
             break;
         case "hide_cache":
-            if (url.match(/^\/play\/(hide|friendleague|leaderboard|souvenircampaign)/)) status = true;
+            if (url.match(/^\/play\/(hide|friendleague|leaderboard|souvenircampaign|guidelines)/)) status = true;
             break;
         case "geotours":
             if (url.match(/^\/play\/geotours/)) status = true;
