@@ -476,7 +476,6 @@ var variablesInit = function(c) {
     c.settings_distance_units = getValue("settings_distance_units", "");
     c.settings_img_warning = getValue("settings_img_warning", false);
     c.settings_fieldnotes_old_fashioned = getValue("settings_fieldnotes_old_fashioned", false);
-    c.settings_my_lists_old_fashioned = getValue("settings_my_lists_old_fashioned", false);
     c.settings_remove_banner = getValue("settings_remove_banner", false);
     c.settings_remove_banner_for_garminexpress = getValue("settings_remove_banner_for_garminexpress", false);
     c.settings_remove_banner_blue = getValue("settings_remove_banner_blue", false);
@@ -1013,7 +1012,7 @@ var mainOSM = function() {
 var mainGC = function() {
 
 // Hide Facebook.
-    if (settings_hide_facebook && (document.location.href.match(/\.com\/(play|account\/register|login|account\/login|seek\/log\.aspx?(.*)|account\/signin)/))) {
+    if (settings_hide_facebook && (document.location.href.match(/\.com\/(play|account\/register|login|account\/login|seek\/log\.aspx?(.*)|account\/signin\?)/))) {
         try {
             if ($('.btn.btn-facebook')[0]) $('.btn.btn-facebook')[0].style.display = "none";
             if ($('.divider-flex')[0]) $('.divider-flex')[0].style.display = "none";
@@ -1862,7 +1861,7 @@ var mainGC = function() {
     }
 
 // Improve Ignore, Stop Ignoring button handling.
-    if (is_page("cache_listing") && settings_show_remove_ignoring_link && $('#ctl00_ContentBody_GeoNav_uxIgnoreBtn')[0]) {
+    if (is_page("cache_listing") && settings_show_remove_ignoring_link) {
         try {
             // Set Ignore.
             changeIgnoreButton('Ignore');
@@ -1944,7 +1943,7 @@ var mainGC = function() {
     }
 
 // Improve Watch button handling. (Not for Stop Watching handling.)
-    if (is_page("cache_listing") && settings_use_one_click_watching && $('#ctl00_ContentBody_GeoNav_uxWatchlistBtn a')[0] && !$('#ctl00_ContentBody_GeoNav_uxWatchlistBtn a')[0].href.match(/action=rem/)) {
+    if (is_page("cache_listing") && settings_use_one_click_watching && !$('#ctl00_ContentBody_GeoNav_uxWatchlistBtn a')[0].href.match(/action=rem/)) {
         try {
             // Prepare one click watching.
             var link = '#ctl00_ContentBody_GeoNav_uxWatchlistBtn a';
@@ -6838,8 +6837,6 @@ var mainGC = function() {
                 }
                 i++;
             }
-            // Change link "Your lists" from ".../account/lists" to ".../my/lists.aspx".
-            if (settings_my_lists_old_fashioned) $('#divContentMain').find('p').first().find('a[href*="/account/lists"]').prop("href", "/my/lists.aspx");
             if ($('#ctl00_ContentBody_WidgetMiniProfile1_LoggedInPanel').length > 0) {
                 // Hide TBs/Coins.
                 if (settings_hide_visits_in_profile) {
@@ -6936,8 +6933,6 @@ var mainGC = function() {
                  css += ".link-block .gclh a {font-size: 14px; margin-left: 16px;} .link-block .gclh span:hover {text-decoration: underline; color: #02874d;}";
                  css += ".link-block .gclh span {overflow: hidden; vertical-align: top; white-space: nowrap; text-overflow: ellipsis; display: inline-block; margin-left: 2px; max-width: 220px;}";
             }
-            // Change link "Your lists" from ".../account/lists" to ".../my/lists.aspx".
-            if (settings_my_lists_old_fashioned) $('#DashboardSidebar ul li a[href*="/account/lists"]').prop("href", "/my/lists.aspx");
             // Add link to Ignore List into dashboard sidebar.
             if (settings_embedded_smartlink_ignorelist && $(".bio-userrole").text() == "Premium" ) {
                 function openIgnoreList(response) {
@@ -7140,7 +7135,7 @@ var mainGC = function() {
 // Show gallery images in 2 instead of 4 cols.
     if (settings_show_big_gallery && (is_page("publicProfile") || document.location.href.match(/\.com\/(seek\/gallery\.aspx?|track\/gallery\.aspx?)/))) {
         try {
-            appendCssStyle("table.GalleryTable .imageLink {max-width: unset; max-height: unset;}");
+            appendCssStyle("table.GalleryTable .imageLink {max-width: unset}");
             var links = document.getElementsByTagName("a");
             var tds = new Array();
             // Make images bigger.
@@ -8163,7 +8158,6 @@ var mainGC = function() {
                             var a = document.createElement("a");
                             a.setAttribute("title", "Show caches you have found in " + item[0]["n"]);
                             a.setAttribute("href", "/play/search?ot=4&"+parameter+"=" + item[0]["id"] + "&f=1&sort=FoundDate&asc=True#myListsLink");
-                            a.setAttribute("style", "color: #3d76c5;");
                             a.innerHTML = tableItems[i].children[0].innerHTML;
                             tableItems[i].children[0].innerHTML = "";
                             tableItems[i].children[0].appendChild(a);
@@ -9928,7 +9922,7 @@ var mainGC = function() {
         html += ".add-list li {";
         html += "  padding: 2px 0;}";
         html += ".add-list {";
-        html += "  padding-bottom: 5px;}";
+        html += "  padding-bottom: 4px;}";
         appendCssStyle(html);
     }
     function saveFilterSet() {setValue("settings_search_data", JSON.stringify(settings_search_data));}
@@ -10812,7 +10806,7 @@ var mainGC = function() {
             html += "&nbsp; " + checkboxy('settings_imgcaption_on_top', 'Show caption on top') + show_help("This option requires \"Show thumbnails of images\".");
             var content_geothumbs = "<font class='gclh_small' style='margin-left: 130px; margin-top: 4px; position: absolute;'> (Alternative: <a href='http://benchmarks.org.uk/greasemonkey/geothumbs.php' target='_blank'>Geothumbs</a> " + show_help("A great alternative to the GClh bigger image functionality with \"Show thumbnails of images\" and \"Show bigger images in gallery\", provides the script Geothumbs (Geocaching Thumbnails). <br><br>The script works like GClh with Firefox, Google Chrome and Opera as Tampermonkey script. <br><br>If you use Geothumbs, you have to uncheck both GClh bigger image functionality \"Show thumbnails of images\" and \"Show bigger images in gallery\".") + ")</font>" + "<br>";
             html += content_geothumbs;
-            html += checkboxy('settings_show_big_gallery', 'Show bigger images in gallery') + show_help("With this option the images in the galleries of caches, TBs and public profiles are displayed bigger and not in 4 columns, but in 2 columns.<br><br>It runs not together with \"Show thumbnails of images\".");
+            html += checkboxy('settings_show_big_gallery', 'Show bigger images in gallery') + show_help("With this option the images in the galleries of caches, TBs and public profiles are displayed bigger and not in 4 columns, but in 2 columns.");
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>Statistic</b>" + prem + "</div>";
             html += checkboxy('settings_count_own_matrix', 'Calculate your cache matrix') + show_help("With this option the count of found difficulty and terrain combinations and the count of complete matrixes are calculated and shown above the cache matrix on your statistic page.") + "<br>";
             html += checkboxy('settings_count_foreign_matrix', 'Calculate other users cache matrix') + show_help("With this option the count of found difficulty and terrain combinations and the count of complete matrixes are calculated and shown above the cache matrix on other users statistic page.") + "<br>";
@@ -10849,9 +10843,6 @@ var mainGC = function() {
             html += "<div id='gclh_config_db' class='gclh_block'>";
             html += checkboxy('settings_bookmarks_show', "Show <a class='gclh_ref' href='#gclh_linklist' title='Link to topic \"Linklist / Navigation\"' id='gclh_linklist_link_2'>Linklist</a> on your dashboard") + show_help("Show the Linklist at the sidebar on your dashboard. You can configure the links in the Linklist at the end of this configuration page.") + "<br>";
             html += checkboxy('settings_show_mail_in_allmyvips', 'Show mail link beside user in "All my VIPs/VUPs" list on your dashboard') + show_help3("With this option there will be an small mail icon beside every user in the list with all your VIPs (All my VIPs) on your dashboard page. With this icon you get directly to the mail page to mail to this user.<br>(VIP: Very important person)<br><br>If VUP processing is activated, this also applies to your VUPs (All my VUPs).<br>(VUP: Very unimportant person)<br><br>This option requires \"Show mail link beside user\" and \"Show VIP list\".") + "<br>";
-            html += newParameterOn2;
-            html += checkboxy('settings_my_lists_old_fashioned', 'Change link \"Lists\" and \"Your lists\" to old-fashioned lists page') + show_help("This option changes the link \"Lists\" on your old dashboard and the link \"Your lists\" on your new dashboard from the new lists page \".../account/lists\" to the old-fashioned lists page \".../my/lists\".<br>The page includes the list of your bookmark lists, your ignore list and the links to your favorites and your watchlist.") + "<br>";
-            html += newParameterVersionSetzen(0.8) + newParameterOff;
 
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>New dashboard only</b></div>";
             html += newParameterOn3;
@@ -11990,7 +11981,6 @@ var mainGC = function() {
                 'settings_show_elevation_of_waypoints',
                 'settings_img_warning',
                 'settings_fieldnotes_old_fashioned',
-                'settings_my_lists_old_fashioned',
                 'settings_remove_banner',
                 'settings_remove_banner_for_garminexpress',
                 'settings_remove_banner_blue',
