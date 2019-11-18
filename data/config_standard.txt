@@ -196,7 +196,6 @@
   "settings_secondary_elevation_service": 2,
   "settings_img_warning": false,
   "settings_fieldnotes_old_fashioned": false,
-  "settings_my_lists_old_fashioned": false,
   "settings_remove_banner": false,
   "settings_remove_banner_for_garminexpress": false,
   "settings_remove_banner_blue": false,
