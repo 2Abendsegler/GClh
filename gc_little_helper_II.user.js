@@ -1862,7 +1862,7 @@ var mainGC = function() {
     }
 
 // Improve Ignore, Stop Ignoring button handling.
-    if (is_page("cache_listing") && settings_show_remove_ignoring_link) {
+    if (is_page("cache_listing") && settings_show_remove_ignoring_link && $('#ctl00_ContentBody_GeoNav_uxIgnoreBtn')[0]) {
         try {
             // Set Ignore.
             changeIgnoreButton('Ignore');
@@ -1944,7 +1944,7 @@ var mainGC = function() {
     }
 
 // Improve Watch button handling. (Not for Stop Watching handling.)
-    if (is_page("cache_listing") && settings_use_one_click_watching && !$('#ctl00_ContentBody_GeoNav_uxWatchlistBtn a')[0].href.match(/action=rem/)) {
+    if (is_page("cache_listing") && settings_use_one_click_watching && $('#ctl00_ContentBody_GeoNav_uxWatchlistBtn a')[0] && !$('#ctl00_ContentBody_GeoNav_uxWatchlistBtn a')[0].href.match(/action=rem/)) {
         try {
             // Prepare one click watching.
             var link = '#ctl00_ContentBody_GeoNav_uxWatchlistBtn a';
