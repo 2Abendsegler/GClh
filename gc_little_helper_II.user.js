@@ -7115,7 +7115,7 @@ var mainGC = function() {
 // Show gallery images in 2 instead of 4 cols.
     if (settings_show_big_gallery && (is_page("publicProfile") || document.location.href.match(/\.com\/(seek\/gallery\.aspx?|track\/gallery\.aspx?)/))) {
         try {
-            appendCssStyle("table.GalleryTable .imageLink {max-width: unset}");
+            appendCssStyle("table.GalleryTable .imageLink {max-width: unset; max-height: unset;}");
             var links = document.getElementsByTagName("a");
             var tds = new Array();
             // Make images bigger.
@@ -8138,6 +8138,7 @@ var mainGC = function() {
                             var a = document.createElement("a");
                             a.setAttribute("title", "Show caches you have found in " + item[0]["n"]);
                             a.setAttribute("href", "/play/search?ot=4&"+parameter+"=" + item[0]["id"] + "&f=1&sort=FoundDate&asc=True#myListsLink");
+                            a.setAttribute("style", "color: #3d76c5;");
                             a.innerHTML = tableItems[i].children[0].innerHTML;
                             tableItems[i].children[0].innerHTML = "";
                             tableItems[i].children[0].appendChild(a);
@@ -9902,7 +9903,7 @@ var mainGC = function() {
         html += ".add-list li {";
         html += "  padding: 2px 0;}";
         html += ".add-list {";
-        html += "  padding-bottom: 4px;}";
+        html += "  padding-bottom: 5px;}";
         appendCssStyle(html);
     }
     function saveFilterSet() {setValue("settings_search_data", JSON.stringify(settings_search_data));}
