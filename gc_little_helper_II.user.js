@@ -3610,7 +3610,6 @@ var mainGC = function() {
         try {
             var val = "";
             var matches = document.location.href.match(/&text=(.*)/);
-
             if (matches && matches[1]) val = decodeUnicodeURIComponent(matches[1]);
 
             updateMessage(0);
@@ -3634,26 +3633,21 @@ var mainGC = function() {
     }
 
 // Update Standard Message on Click of a Username in Messagecenter
-
     function addEventlistenerForMessageCenterNames(){
         $( "#cpConvoPanelFeed ol li" ).each(function() {
           // only add the listener once
           if(!$(this).hasClass('listeneradded')){
               $(this).addClass('listeneradded');
               $(this).click(function(){
-
                 if(matches != null){
                     val = decodeUnicodeURIComponent(matches[1])
                 }else{
                     val = buildSendTemplate();
                 }
-
                 var rec = $(this).find('.activity-header').text();
                 rec = rec.replace(/^(\s*)/,'').replace(/(\s*)$/,'');
                 val = val.replace(/#Receiver#/ig, rec);
-
                 $('textarea').value = val;
-
               });
           }
         });
@@ -3661,25 +3655,19 @@ var mainGC = function() {
 
     if (is_page("messagecenter")) {
         try {
-
             addMessageButtonListener(0);
             function addMessageButtonListener(waitCount) {
                 if($( "#cpConvoPanelFeed ol li" ).length > 0){
-
                     $('#cpConvoPanelFeed ol').bind('DOMSubtreeModified', function(event) {
                         addEventlistenerForMessageCenterNames();
                     });
-
                     // Add for initial Names
                     addEventlistenerForMessageCenterNames();
-
                     waitCount = 700;
                 }
-
                 waitCount++;
                 if (waitCount <= 600) setTimeout(function(){addMessageButtonListener(waitCount);}, 100);
             }
-
         } catch(e) {gclh_error("Update Standard Message on Click of a Username in Messagecenter",e);}
     }
 
@@ -3826,21 +3814,17 @@ var mainGC = function() {
             }
             // Fixed header.
             if (settings_fixed_pq_header && (document.getElementById("pqRepeater") || document.getElementById("uxOfflinePQTable"))) {
-
               var positionPx = 0;
               if (browser === "chrome") {
                 positionPx = -1; // Mitigate ugly gap for header/footer
               }
-
               var css = "";
-
               // Fixed PQ header and footer - used TH and TD selector is hack for Chrome, Edge # see on bug https://bugs.chromium.org/p/chromium/issues/detail?id=702927
               css += "#uxOfflinePQTable thead th, #pqRepeater thead th { position: -webkit-sticky; position: sticky; top: " + positionPx + "px; } ";
               css += ".PocketQueryListTable tr.TableFooter td { background-color: #E3DDC2; position: -webkit-sticky; position: sticky; bottom: " + positionPx + "px; } ";
               // Link from footer as button for better UX
               css += "#uxOfflinePQTable .TableFooter A, #pqRepeater .TableFooter A { -moz-appearance: button; -webkit-appearance: button; appearance: button; "
                   + " text-decoration: none; font: menu; color: ButtonText; display: inline-block; padding: 2px 8px; white-space: nowrap; } ";
-
               appendCssStyle(css);
           }
         } catch(e) {gclh_error("Improve list of PQs",e);}
@@ -8882,18 +8866,18 @@ var mainGC = function() {
             var year = now.getYear() + 1900;
             var month = now.getMonth() + 1;
             var date = now.getDate();
-            // Ostern 2018.
-            if ((date >= 30 && date <= 31 && month == 3 && year == 2018) || (date >= 01 && date <= 02 && month == 4 && year == 2018)) {
+            // Ostern 2020.
+            if ((date >= 10 && date <= 13 && month == 4 && year == 2020)) {
                 $(".CacheDetailNavigation:first > ul:first").append('<li><img src="'+urlImages+'easter_bunny_001.jpg" style="margin-bottom: -35px;" title="Happy Easter"></li>');
             }
-            // Weihnachten 2018.
-            if (month == 12 && year == 2018) {
+            // Weihnachten 2019.
+            if (month == 12 && year == 2019) {
                 var max = 0;
-                if      (date == 1 || date == 2) max = 64;
+                if      (date == 1) max = 64;
                 else if (date == 5 || date == 6) max = 64;
-                else if (date == 8 || date == 9) max = 48;
-                else if (date == 15 || date == 16) max = 48;
-                else if (date >= 22 && date <= 26) max = 16;
+                else if (date == 7 || date == 8) max = 64;
+                else if (date == 14 || date == 15) max = 64;
+                else if (date >= 22 && date <= 26) max = 48;
                 if (max > 0) {
                     function checkChristmasData(waitCount) {
                         if ($('#gclh_vip_list span').length > 0 && $('#gclh_vip_list .StatusIcon').length == 0) {
@@ -9622,14 +9606,14 @@ var mainGC = function() {
         if (is_config == true) row.title += " topic\n(all topics with right mouse)";
     }
 
-    // Waypoint evaluations.
+// Waypoint evaluations.
     function getWaypointTable() {
         var tbl = $("#ctl00_ContentBody_Waypoints");
         if (tbl.length <= 0) tbl = $("#ctl00_ContentBody_WaypointList");
         return tbl;
     }
 
-    // Trim decimal value to a given number of digits.
+// Trim decimal value to a given number of digits.
     function roundTO(val, decimals) {return Number(Math.round(val+'e'+decimals)+'e-'+decimals);}
 
     function queryListingWaypoints( original ) {
@@ -9679,7 +9663,7 @@ var mainGC = function() {
         return waypoints;
     }
 
-    // Calculate tile numbers X/Y from latitude/longitude or reverse.
+// Calculate tile numbers X/Y from latitude/longitude or reverse.
     function lat2tile(lat,zoom)  {return (Math.floor((1-Math.log(Math.tan(lat*Math.PI/180) + 1/Math.cos(lat*Math.PI/180))/Math.PI)/2 *Math.pow(2,zoom)));}
     function long2tile(lon,zoom) {return (Math.floor((lon+180)/360*Math.pow(2,zoom)));}
     function tile2long(x,z) {return (x/Math.pow(2,z)*360-180);}
