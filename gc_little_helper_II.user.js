@@ -1745,7 +1745,33 @@ var mainGC = function() {
             appendCssStyle('.gclh_LogTotals {float: right;} .gclh_LogTotals img {vertical-align: bottom;}');
         } catch(e) {gclh_error("Show log totals symbols at the top",e);}
     }
-
+    
+// Copy Coords2Clipboard
+    if (is_page("cache_listing") && $('#uxLatLonLink')[0]) {
+        try {
+            var cc2c = false;
+            var span2 = document.createElement('span');
+            span2.innerHTML = '<a href="javascript:void(0);" id="gclh_cc2c"><img src="'+global_copy_icon+'" title="Copy coordinate to clipboard" style="vertical-align: text-top;">&nbsp;</a>';
+            $('#uxLatLonLink')[0].parentNode.insertBefore(span2, $('#uxLatLonLink')[0] );
+            $('#gclh_cc2c')[0].addEventListener('click', function() {
+                // Tastenkombination Strg+c ausführen für eigene Verarbeitung.
+                cc2c = true;
+                document.execCommand('copy');
+            }, false);
+            document.addEventListener('copy', function(e){
+                // Normale Tastenkombination Strg+c für markierter Bereich hier nicht verarbeiten. Nur eigene Tastenkombination Strg+c hier verarbeiten.
+                if (!cc2c) return;
+                // Gegebenenfalls markierter Bereich wird hier nicht beachtet.
+                e.preventDefault();
+                // angezeigte Koordinaten werden hier verarbeitet.
+                e.clipboardData.setData('text/plain', $('#uxLatLon')[0].innerHTML);
+                $('#gclh_cc2c')[0].style.opacity = '0.3';
+                setTimeout(function() { $('#gclh_cc2c')[0].style.opacity = 'unset'; }, 200);
+                cc2c = false;
+            });
+        } catch(e) {gclh_error("Copy Coords to Clipboard:",e);}
+    }
+    
 // Copy GC Code to clipboard.
     if (is_page('cache_listing') && $('.CoordInfoLink')[0] && $('#ctl00_ContentBody_CoordInfoLinkControl1_uxCoordInfoCode')[0]) {
         try {
@@ -2042,7 +2068,58 @@ var mainGC = function() {
     }
 
     const LatLonDigits = 6;
+    
+    function copydata_link() {
+        var css = "";
+        css += ".copydata-content-layer {";
+        css += "  color: black;";
+        css += "  padding: 5px 16px 5px 16px;";
+        css += "  text-decoration: none;";
+        css += "  display: block;}";
+        css += ".copydata-content-layer:hover {";
+        css += "  background-color: #e1e1e1;";
+        css += "  cursor: pointer;}";
+        css += ".copydata-sidebar-icon {";
+        css += "  background-image: url(" + global_copy_icon + ")}";
+        appendCssStyle(css);
 
+        var html = "";
+        var g_name = $('#ctl00_ContentBody_CacheName')[0].innerHTML;
+        var g_code = $('#ctl00_ContentBody_CoordInfoLinkControl1_uxCoordInfoCode')[0].innerHTML;
+        var g_coord = $('#uxLatLon')[0].innerHTML;
+
+        html += '<div class="GClhdropdown">';
+        html += '<a class="GClhdropbtn copydata_click copydata-sidebar-icon" data-text="'+g_name+'">Copy Data to Clipboard</a>';
+        html += '<div class="GClhdropdown-content">';
+
+        html += '<div class="copydata-content-layer copydata_click" data-text="'+g_name+'">Cache Name</div>';
+        html += '<div class="copydata-content-layer copydata_click" data-text="'+g_code+'">GC-Code</div>';
+        html += '<div class="copydata-content-layer copydata_click" data-text="https://coord.info/'+g_code+'">Cache Link</div>';
+        html += '<div class="copydata-content-layer copydata_click" data-text="'+ g_coord + '">Listing Coords</div>';
+        // original coords (if exists)
+        if (unsafeWindow.mapLatLng != undefined) {
+            if (unsafeWindow.mapLatLng.isUserDefined == true ) {
+                html += '<div class="copydata-content-layer copydata_click" data-text="'+ unsafeWindow.mapLatLng.oldLatLngDisplay + '">Original Coords</div>';
+            }
+        }
+        html += '</div>'
+        html += '</div>';
+
+        $('.CacheDetailNavigation ul').first().append('<li>'+html+'</li>');
+
+        $('.copydata_click').click(function() {
+            copydata_copy( this )
+        });
+    }
+    function copydata_copy( thisObject ) {
+        const el = document.createElement('textarea');
+        el.value = $(thisObject).data('text');;
+        document.body.appendChild(el);
+        el.select();
+        document.execCommand('copy');
+        document.body.removeChild(el);
+    }
+    
     function mapservice_link( service_configuration ) {
         var uniqueServiceId = service_configuration.uniqueServiceId;
 
@@ -2369,6 +2446,10 @@ var mainGC = function() {
                 });
             } catch(e) {gclh_error("Show button Openrouteservice and open Openrouteservice",e);}
         }
+        // Show links to Copy Data
+        try {
+            copydata_link();
+        } catch(e) {gclh_error("Show button CopyData and copy data to clip",e);}
     }
 
 // Build map overview.
