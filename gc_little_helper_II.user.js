@@ -2090,7 +2090,7 @@ var mainGC = function() {
 
         html += '<div class="GClhdropdown">';
         html += '<a class="GClhdropbtn copydata_click copydata-sidebar-icon" data-text="'+g_name+'">Copy Data to Clipboard</a>';
-        html += '<div class="GClhdropdown-content">';
+        html += '<div class="GClhdropdown-content" id="CopyDropDown">';
 
         html += '<div class="copydata-content-layer copydata_click" data-text="'+g_name+'">Cache Name</div>';
         html += '<div class="copydata-content-layer copydata_click" data-text="'+g_code+'">GC-Code</div>';
@@ -2118,6 +2118,8 @@ var mainGC = function() {
         el.select();
         document.execCommand('copy');
         document.body.removeChild(el);
+        document.getElementById('CopyDropDown').style.visibility = 'hidden';
+        setTimeout(function() { document.getElementById('CopyDropDown').style.visibility = 'unset'; }, 100);
     }
     
     function mapservice_link( service_configuration ) {
