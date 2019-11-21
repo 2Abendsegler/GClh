@@ -2118,8 +2118,8 @@ var mainGC = function() {
         el.select();
         document.execCommand('copy');
         document.body.removeChild(el);
-        document.getElementById('CopyDropDown').style.visibility = 'hidden';
-        setTimeout(function() { document.getElementById('CopyDropDown').style.visibility = 'unset'; }, 100);
+        $('#CopyDropDown')[0].style.visibility = 'hidden';
+        setTimeout(function() { $('#CopyDropDown')[0].style.visibility = 'unset'; }, 100);
     }
     
     function mapservice_link( service_configuration ) {
