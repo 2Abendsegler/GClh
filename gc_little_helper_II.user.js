@@ -1020,7 +1020,7 @@ var asynchronGC = function() {
             var bis = response.indexOf('<section id="Content">');
             if (von && bis && von != -1 && bis != -1) {
                 var headerHTML = response.slice(von, bis - 1);
-                headerHTML = headerHTML.replace('<nav ', '<gclh_nav ').replace('</nav>', '</gclh_nav>');
+                headerHTML = headerHTML.replace('<nav ', '<gclh_nav ').replace('</nav>', '</gclh_nav>').replace(/href="../gi, 'href="');
                 // Build header and start mainGC.
                 function buildUpHeaderAndStart(waitCount, html) {
                     if ($('nav.gc-nav-menu, #GCHeader') && !html == "") {
