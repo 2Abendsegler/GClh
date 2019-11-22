@@ -215,6 +215,7 @@
   "settings_show_openrouteservice_link": true,
   "settings_show_openrouteservice_home": false,
   "settings_show_openrouteservice_medium": "2b",
+  "settings_show_copydata_menu": true,
   "settings_font_color_menu": "93B516",
   "settings_font_color_submenu": "93B516",
   "settings_esc_close_gclh_config": true,

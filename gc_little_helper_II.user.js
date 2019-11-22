@@ -144,6 +144,11 @@ var constInit = function(c) {
     c.urlDocu = "https://github.com/2Abendsegler/GClh/blob/master/docu/";
     c.urlImages = "https://raw.githubusercontent.com/2Abendsegler/GClh/master/images/";
     c.urlImagesSvg = "https://rawgit.com/2Abendsegler/GClh/master/images/";
+    c.idCopyName = "idName";
+    c.idCopyCode = "idCode";
+    c.idCopyUrl = "idUrl";
+    c.idCopyCoords = "idCoords";
+    c.idCopyOrg = "idOrg";
     // Define bookmarks:
     c.bookmarks = new Array();
     // WICHTIG: Die Reihenfolge darf hier auf keinen Fall geändert werden, weil dadurch eine falsche Zuordnung zu den gespeicherten Userdaten erfolgen würde!
@@ -503,6 +508,7 @@ var variablesInit = function(c) {
     c.settings_show_openrouteservice_link = getValue("settings_show_openrouteservice_link", true);
     c.settings_show_openrouteservice_home = getValue("settings_show_openrouteservice_home", false);
     c.settings_show_openrouteservice_medium = getValue("settings_show_openrouteservice_medium", "2b");
+    c.settings_show_copydata_menu = getValue("settings_show_copydata_menu", true);
     c.settings_show_default_links = getValue("settings_show_default_links", true);
     c.settings_bm_changed_and_go = getValue("settings_bm_changed_and_go", true);
     c.settings_bml_changed_and_go = getValue("settings_bml_changed_and_go", true);
@@ -1808,7 +1814,33 @@ var mainGC = function() {
             appendCssStyle('.gclh_LogTotals {float: right;} .gclh_LogTotals img {vertical-align: bottom;}');
         } catch(e) {gclh_error("Show log totals symbols at the top",e);}
     }
-
+    
+// Copy Coords to clipboard
+    if (is_page("cache_listing") && $('#uxLatLonLink')[0]) {
+        try {
+            var cc2c = false;
+            var span2 = document.createElement('span');
+            span2.innerHTML = '<a href="javascript:void(0);" id="gclh_cc2c"><img src="'+global_copy_icon+'" title="Copy Coordinates to Clipboard" style="vertical-align: text-top;">&nbsp;</a>';
+            $('#uxLatLonLink')[0].parentNode.insertBefore(span2, $('#uxLatLonLink')[0] );
+            $('#gclh_cc2c')[0].addEventListener('click', function() {
+                // Tastenkombination Strg+c ausführen für eigene Verarbeitung.
+                cc2c = true;
+                document.execCommand('copy');
+            }, false);
+            document.addEventListener('copy', function(e){
+                // Normale Tastenkombination Strg+c für markierter Bereich hier nicht verarbeiten. Nur eigene Tastenkombination Strg+c hier verarbeiten.
+                if (!cc2c) return;
+                // Gegebenenfalls markierter Bereich wird hier nicht beachtet.
+                e.preventDefault();
+                // angezeigte Koordinaten werden hier verarbeitet.
+                e.clipboardData.setData('text/plain', $('#uxLatLon')[0].innerHTML);
+                $('#gclh_cc2c')[0].style.opacity = '0.3';
+                setTimeout(function() { $('#gclh_cc2c')[0].style.opacity = 'unset'; }, 200);
+                cc2c = false;
+            });
+        } catch(e) {gclh_error("Copy Coordinates to Clipboard:",e);}
+    }
+    
 // Copy GC Code to clipboard.
     if (is_page('cache_listing') && $('.CoordInfoLink')[0] && $('#ctl00_ContentBody_CoordInfoLinkControl1_uxCoordInfoCode')[0]) {
         try {
@@ -2105,7 +2137,77 @@ var mainGC = function() {
     }
 
     const LatLonDigits = 6;
+    
+    function create_copydata_menu() {
+        var css = "";
+        css += ".copydata-content-layer {";
+        css += "  color: black;";
+        css += "  padding: 5px 12px 5px 14px;";
+        css += "  text-decoration: none;";
+        css += "  display: block;}";
+        css += ".copydata-content-layer:hover {";
+        css += "  background-color: #e1e1e1;";
+        css += "  cursor: pointer;}";
+        css += ".copydata-sidebar-icon {";
+        css += "  background-image: url(" + global_copy_icon + ")}";
+        appendCssStyle(css);
+        var html = "";
+        var orgFlag = false;
+        html += '<div class="GClhdropdown">';
+        html += '<a class="GClhdropbtn copydata_click copydata-sidebar-icon" data-id="'+idCopyName+'">Copy Data to Clipboard</a>';
+        html += '<div class="GClhdropdown-content" id="CopyDropDown">';
+        html += '<div class="copydata-content-layer copydata_click" data-id="'+idCopyName+'">Cache Name</div>';
+        html += '<div class="copydata-content-layer copydata_click" data-id="'+idCopyCode+'">GC Code</div>';
+        html += '<div class="copydata-content-layer copydata_click" data-id="'+idCopyUrl+'">Cache Link</div>';
+        // check for original coords
+        if (unsafeWindow.mapLatLng != undefined) {
+           if (unsafeWindow.mapLatLng.isUserDefined == true ) {
+              orgFlag = true;
+           }
+        }
+        if (orgFlag) {
+           html += '<div class="copydata-content-layer copydata_click" data-id="'+idCopyCoords+'">Corrected Coordinates</div>';
+           html += '<div class="copydata-content-layer copydata_click" data-id="'+idCopyOrg+'">Original Coordinates</div>';
+        } else {
+           html += '<div class="copydata-content-layer copydata_click" data-id="'+idCopyCoords+'">Coordinates</div>';
+        }
+        html += '</div>'
+        html += '</div>';
+        $('.CacheDetailNavigation ul').first().append('<li>'+html+'</li>');
+        $('.copydata_click').click(function() {
+            copydata_copy( this )
+        });
+    }
 
+    function copydata_copy( thisObject ) {
+        const el = document.createElement('textarea');
+        switch ($(thisObject).data('id')) {
+            case idCopyName:
+                el.value = $('#ctl00_ContentBody_CacheName')[0].innerHTML.replace(new RegExp('&nbsp;', 'g'),' ');
+                break;
+            case idCopyCode:
+                el.value = $('#ctl00_ContentBody_CoordInfoLinkControl1_uxCoordInfoCode')[0].innerHTML;
+                break;
+            case idCopyUrl:
+                el.value = "https://coord.info/"+$('#ctl00_ContentBody_CoordInfoLinkControl1_uxCoordInfoCode')[0].innerHTML;
+                break;
+            case idCopyCoords:
+                el.value = $('#uxLatLon')[0].innerHTML;
+                break;
+            case idCopyOrg:
+                el.value = unsafeWindow.mapLatLng.oldLatLngDisplay.replace(new RegExp('\'', 'g'),'');
+                break;
+            default:
+                el.value = "";
+        }
+        document.body.appendChild(el);
+        el.select();
+        document.execCommand('copy');
+        document.body.removeChild(el);
+        $('#CopyDropDown')[0].style.visibility = 'hidden';
+        setTimeout(function() { $('#CopyDropDown')[0].style.visibility = 'unset'; }, 100);
+    }
+    
     function mapservice_link( service_configuration ) {
         var uniqueServiceId = service_configuration.uniqueServiceId;
 
@@ -2321,7 +2423,7 @@ var mainGC = function() {
     }
 
 // CSS for BRouter, Flopp's Map, GPSVisualizer und Openrouteservice links.
-    if ( (settings_show_brouter_link || settings_show_flopps_link || settings_show_gpsvisualizer_link || settings_show_openrouteservice_link) && is_page("cache_listing") ) {
+    if ( (settings_show_brouter_link || settings_show_flopps_link || settings_show_gpsvisualizer_link || settings_show_openrouteservice_link || settings_show_copydata_menu) && is_page("cache_listing") ) {
         css += ".GClhdropbtn {";
         css += "  white-space: nowrap;";
         css += "  cursor: pointer;}";
@@ -2431,6 +2533,12 @@ var mainGC = function() {
                     runWithOneWaypoint: false
                 });
             } catch(e) {gclh_error("Show button Openrouteservice and open Openrouteservice",e);}
+        }
+        // Show 'Copy Data to Clipboard' Menu
+        if (settings_show_copydata_menu ) {
+           try {
+               create_copydata_menu();
+           } catch(e) {gclh_error("Create Menu 'Copy Data to Clipboard'",e);}
         }
     }
 
@@ -11009,7 +11117,8 @@ var mainGC = function() {
             html += "  <option value=\"2\" " + (settings_show_openrouteservice_medium == "2" ? "selected=\"selected\"" : "") + ">Pedestrian walking</option>";
             html += "  <option value=\"2b\" " + (settings_show_openrouteservice_medium == "2b" ? "selected=\"selected\"" : "") + ">Pedestrian hiking</option>";
             html += "  <option value=\"3\" " + (settings_show_openrouteservice_medium == "3" ? "selected=\"selected\"" : "") + ">Wheelchair (only Europe)</option>";
-            html += "</select>";
+            html += "</select>" + "<br>";
+            html += checkboxy('settings_show_copydata_menu', 'Show "Copy Data to Clipboard" menu in sidebar') + show_help3("Shows a menu to copy various cache data to the clipboard.") + "<br>";
             html += newParameterVersionSetzen("0.10") + newParameterOff;
             html += newParameterOn3;
             html += checkboxy('settings_show_all_logs_but', 'Show button \"Show all logs\" above the logs') + "<br>";
@@ -12024,6 +12133,7 @@ var mainGC = function() {
                 'settings_show_gpsvisualizer_typedesc',
                 'settings_show_openrouteservice_link',
                 'settings_show_openrouteservice_home',
+                'settings_show_copydata_menu',
                 'settings_show_default_links',
                 'settings_bm_changed_and_go',
                 'settings_bml_changed_and_go',
