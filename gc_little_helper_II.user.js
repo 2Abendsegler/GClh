@@ -140,6 +140,11 @@ var constInit = function(c) {
     c.urlDocu = "https://github.com/2Abendsegler/GClh/blob/master/docu/";
     c.urlImages = "https://raw.githubusercontent.com/2Abendsegler/GClh/master/images/";
     c.urlImagesSvg = "https://rawgit.com/2Abendsegler/GClh/master/images/";
+    c.idCopyName = "idName";
+    c.idCopyCode = "idCode";
+    c.idCopyUrl = "idUrl";
+    c.idCopyCoords = "idCoords";
+    c.idCopyOrg = "idOrg";
     // Define bookmarks:
     c.bookmarks = new Array();
     // WICHTIG: Die Reihenfolge darf hier auf keinen Fall geändert werden, weil dadurch eine falsche Zuordnung zu den gespeicherten Userdaten erfolgen würde!
@@ -2084,16 +2089,13 @@ var mainGC = function() {
         css += "  background-image: url(" + global_copy_icon + ")}";
         appendCssStyle(css);
         var html = "";
-        var g_name = $('#ctl00_ContentBody_CacheName')[0].innerHTML;
-        var g_code = $('#ctl00_ContentBody_CoordInfoLinkControl1_uxCoordInfoCode')[0].innerHTML;
-        var g_coord = $('#uxLatLon')[0].innerHTML;
         var orgFlag = false;
         html += '<div class="GClhdropdown">';
-        html += '<a class="GClhdropbtn copydata_click copydata-sidebar-icon" data-text="'+g_name+'">Copy Data to Clipboard</a>';
+        html += '<a class="GClhdropbtn copydata_click copydata-sidebar-icon" data-id="'+idCopyName+'">Copy Data to Clipboard</a>';
         html += '<div class="GClhdropdown-content" id="CopyDropDown">';
-        html += '<div class="copydata-content-layer copydata_click" data-text="'+g_name+'">Cache Name</div>';
-        html += '<div class="copydata-content-layer copydata_click" data-text="'+g_code+'">GC Code</div>';
-        html += '<div class="copydata-content-layer copydata_click" data-text="https://coord.info/'+g_code+'">Cache Link</div>';
+        html += '<div class="copydata-content-layer copydata_click" data-id="'+idCopyName+'">Cache Name</div>';
+        html += '<div class="copydata-content-layer copydata_click" data-id="'+idCopyCode+'">GC Code</div>';
+        html += '<div class="copydata-content-layer copydata_click" data-id="'+idCopyUrl+'">Cache Link</div>';
         // check for original coords
         if (unsafeWindow.mapLatLng != undefined) {
            if (unsafeWindow.mapLatLng.isUserDefined == true ) {
@@ -2101,11 +2103,10 @@ var mainGC = function() {
            }
         }
         if (orgFlag) {
-           g_orgcoord = unsafeWindow.mapLatLng.oldLatLngDisplay;
-           html += '<div class="copydata-content-layer copydata_click" data-text="'+ g_coord + '">Corrected Coordinates</div>';
-           html += '<div class="copydata-content-layer copydata_click" data-text="'+ g_orgcoord.replace(new RegExp('\'', 'g'),'') + '">Original Coordinates</div>';
+           html += '<div class="copydata-content-layer copydata_click" data-id="'+idCopyCoords+'">Corrected Coordinates</div>';
+           html += '<div class="copydata-content-layer copydata_click" data-id="'+idCopyOrg+'">Original Coordinates</div>';
         } else {
-           html += '<div class="copydata-content-layer copydata_click" data-text="'+ g_coord + '">Coordinates</div>';
+           html += '<div class="copydata-content-layer copydata_click" data-id="'+idCopyCoords+'">Coordinates</div>';
         }
         html += '</div>'
         html += '</div>';
@@ -2117,7 +2118,25 @@ var mainGC = function() {
 
     function copydata_copy( thisObject ) {
         const el = document.createElement('textarea');
-        el.value = $(thisObject).data('text');;
+        switch ($(thisObject).data('id')) {
+            case idCopyName:
+                el.value = $('#ctl00_ContentBody_CacheName')[0].innerHTML.replace(new RegExp('&nbsp;', 'g'),' ');
+                break;
+            case idCopyCode:
+                el.value = $('#ctl00_ContentBody_CoordInfoLinkControl1_uxCoordInfoCode')[0].innerHTML;
+                break;
+            case idCopyUrl:
+                el.value = "https://coord.info/"+$('#ctl00_ContentBody_CoordInfoLinkControl1_uxCoordInfoCode')[0].innerHTML;
+                break;
+            case idCopyCoords:
+                el.value = $('#uxLatLon')[0].innerHTML;
+                break;
+            case idCopyOrg:
+                el.value = unsafeWindow.mapLatLng.oldLatLngDisplay.replace(new RegExp('\'', 'g'),'');
+                break;
+            default:
+                el.value = "";
+        }
         document.body.appendChild(el);
         el.select();
         document.execCommand('copy');
