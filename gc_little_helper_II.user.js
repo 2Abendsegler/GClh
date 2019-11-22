@@ -4332,7 +4332,7 @@ var mainGC = function() {
     }
 
 // Improve new list of bookmark lists and new bookmark lists.
-    if (is_page('bookmarklist')) {
+    if (is_page('lists')) {
         try {
             // Set 1000 caches in list of bookmark lists.
             if (settings_show_1000_bm_lists) {
