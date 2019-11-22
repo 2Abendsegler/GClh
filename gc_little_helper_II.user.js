@@ -498,6 +498,7 @@ var variablesInit = function(c) {
     c.settings_show_openrouteservice_link = getValue("settings_show_openrouteservice_link", true);
     c.settings_show_openrouteservice_home = getValue("settings_show_openrouteservice_home", false);
     c.settings_show_openrouteservice_medium = getValue("settings_show_openrouteservice_medium", "2b");
+    c.settings_show_copydata_menu = getValue("settings_show_copydata_menu", true);
     c.settings_show_default_links = getValue("settings_show_default_links", true);
     c.settings_bm_changed_and_go = getValue("settings_bm_changed_and_go", true);
     c.settings_bml_changed_and_go = getValue("settings_bml_changed_and_go", true);
@@ -1746,12 +1747,12 @@ var mainGC = function() {
         } catch(e) {gclh_error("Show log totals symbols at the top",e);}
     }
     
-// Copy Coords2Clipboard
+// Copy Coords to clipboard
     if (is_page("cache_listing") && $('#uxLatLonLink')[0]) {
         try {
             var cc2c = false;
             var span2 = document.createElement('span');
-            span2.innerHTML = '<a href="javascript:void(0);" id="gclh_cc2c"><img src="'+global_copy_icon+'" title="Copy coordinate to clipboard" style="vertical-align: text-top;">&nbsp;</a>';
+            span2.innerHTML = '<a href="javascript:void(0);" id="gclh_cc2c"><img src="'+global_copy_icon+'" title="Copy Coordinates to Clipboard" style="vertical-align: text-top;">&nbsp;</a>';
             $('#uxLatLonLink')[0].parentNode.insertBefore(span2, $('#uxLatLonLink')[0] );
             $('#gclh_cc2c')[0].addEventListener('click', function() {
                 // Tastenkombination Strg+c ausführen für eigene Verarbeitung.
@@ -1769,7 +1770,7 @@ var mainGC = function() {
                 setTimeout(function() { $('#gclh_cc2c')[0].style.opacity = 'unset'; }, 200);
                 cc2c = false;
             });
-        } catch(e) {gclh_error("Copy Coords to Clipboard:",e);}
+        } catch(e) {gclh_error("Copy Coordinates to Clipboard:",e);}
     }
     
 // Copy GC Code to clipboard.
@@ -2069,11 +2070,11 @@ var mainGC = function() {
 
     const LatLonDigits = 6;
     
-    function copydata_link() {
+    function create_copydata_menu() {
         var css = "";
         css += ".copydata-content-layer {";
         css += "  color: black;";
-        css += "  padding: 5px 16px 5px 16px;";
+        css += "  padding: 5px 12px 5px 14px;";
         css += "  text-decoration: none;";
         css += "  display: block;}";
         css += ".copydata-content-layer:hover {";
@@ -2082,35 +2083,38 @@ var mainGC = function() {
         css += ".copydata-sidebar-icon {";
         css += "  background-image: url(" + global_copy_icon + ")}";
         appendCssStyle(css);
-
         var html = "";
         var g_name = $('#ctl00_ContentBody_CacheName')[0].innerHTML;
         var g_code = $('#ctl00_ContentBody_CoordInfoLinkControl1_uxCoordInfoCode')[0].innerHTML;
         var g_coord = $('#uxLatLon')[0].innerHTML;
-
+        var orgFlag = false;
         html += '<div class="GClhdropdown">';
         html += '<a class="GClhdropbtn copydata_click copydata-sidebar-icon" data-text="'+g_name+'">Copy Data to Clipboard</a>';
         html += '<div class="GClhdropdown-content" id="CopyDropDown">';
-
         html += '<div class="copydata-content-layer copydata_click" data-text="'+g_name+'">Cache Name</div>';
-        html += '<div class="copydata-content-layer copydata_click" data-text="'+g_code+'">GC-Code</div>';
+        html += '<div class="copydata-content-layer copydata_click" data-text="'+g_code+'">GC Code</div>';
         html += '<div class="copydata-content-layer copydata_click" data-text="https://coord.info/'+g_code+'">Cache Link</div>';
-        html += '<div class="copydata-content-layer copydata_click" data-text="'+ g_coord + '">Listing Coords</div>';
-        // original coords (if exists)
+        // check for original coords
         if (unsafeWindow.mapLatLng != undefined) {
-            if (unsafeWindow.mapLatLng.isUserDefined == true ) {
-                html += '<div class="copydata-content-layer copydata_click" data-text="'+ unsafeWindow.mapLatLng.oldLatLngDisplay + '">Original Coords</div>';
-            }
+           if (unsafeWindow.mapLatLng.isUserDefined == true ) {
+              orgFlag = true;
+           }
+        }
+        if (orgFlag) {
+           g_orgcoord = unsafeWindow.mapLatLng.oldLatLngDisplay;
+           html += '<div class="copydata-content-layer copydata_click" data-text="'+ g_coord + '">Corrected Coordinates</div>';
+           html += '<div class="copydata-content-layer copydata_click" data-text="'+ g_orgcoord.replace(new RegExp('\'', 'g'),'') + '">Original Coordinates</div>';
+        } else {
+           html += '<div class="copydata-content-layer copydata_click" data-text="'+ g_coord + '">Coordinates</div>';
         }
         html += '</div>'
         html += '</div>';
-
         $('.CacheDetailNavigation ul').first().append('<li>'+html+'</li>');
-
         $('.copydata_click').click(function() {
             copydata_copy( this )
         });
     }
+
     function copydata_copy( thisObject ) {
         const el = document.createElement('textarea');
         el.value = $(thisObject).data('text');;
@@ -2337,7 +2341,7 @@ var mainGC = function() {
     }
 
 // CSS for BRouter, Flopp's Map, GPSVisualizer und Openrouteservice links.
-    if ( (settings_show_brouter_link || settings_show_flopps_link || settings_show_gpsvisualizer_link || settings_show_openrouteservice_link) && is_page("cache_listing") ) {
+    if ( (settings_show_brouter_link || settings_show_flopps_link || settings_show_gpsvisualizer_link || settings_show_openrouteservice_link || settings_show_copydata_menu) && is_page("cache_listing") ) {
         css += ".GClhdropbtn {";
         css += "  white-space: nowrap;";
         css += "  cursor: pointer;}";
@@ -2448,10 +2452,12 @@ var mainGC = function() {
                 });
             } catch(e) {gclh_error("Show button Openrouteservice and open Openrouteservice",e);}
         }
-        // Show links to Copy Data
-        try {
-            copydata_link();
-        } catch(e) {gclh_error("Show button CopyData and copy data to clip",e);}
+        // Show 'Copy Data to Clipboard' Menu
+        if (settings_show_copydata_menu ) {
+           try {
+               create_copydata_menu();
+           } catch(e) {gclh_error("Create Menu 'Copy Data to Clipboard'",e);}
+        }
     }
 
 // Build map overview.
@@ -11029,7 +11035,8 @@ var mainGC = function() {
             html += "  <option value=\"2\" " + (settings_show_openrouteservice_medium == "2" ? "selected=\"selected\"" : "") + ">Pedestrian walking</option>";
             html += "  <option value=\"2b\" " + (settings_show_openrouteservice_medium == "2b" ? "selected=\"selected\"" : "") + ">Pedestrian hiking</option>";
             html += "  <option value=\"3\" " + (settings_show_openrouteservice_medium == "3" ? "selected=\"selected\"" : "") + ">Wheelchair (only Europe)</option>";
-            html += "</select>";
+            html += "</select>" + "<br>";
+            html += checkboxy('settings_show_copydata_menu', 'Show "Copy Data to Clipboard" menu in sidebar') + show_help3("Shows a menu to copy various cache data to the clipboard.") + "<br>";
             html += newParameterVersionSetzen("0.10") + newParameterOff;
             html += newParameterOn3;
             html += checkboxy('settings_show_all_logs_but', 'Show button \"Show all logs\" above the logs') + "<br>";
@@ -12044,6 +12051,7 @@ var mainGC = function() {
                 'settings_show_gpsvisualizer_typedesc',
                 'settings_show_openrouteservice_link',
                 'settings_show_openrouteservice_home',
+                'settings_show_copydata_menu',
                 'settings_show_default_links',
                 'settings_bm_changed_and_go',
                 'settings_bml_changed_and_go',
