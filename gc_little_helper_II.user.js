@@ -1021,7 +1021,7 @@ var asynchronGC = function() {
             var bis = response.indexOf('<section id="Content">');
             if (von && bis && von != -1 && bis != -1) {
                 var headerHTML = response.slice(von, bis - 1);
-                headerHTML = headerHTML.replace('<nav ', '<gclh_nav ').replace('</nav>', '</gclh_nav>').replace(/href="../gi, 'href="');
+                headerHTML = headerHTML.replace('<nav ', '<gclh_nav ').replace('</nav>', '</gclh_nav>').replace(/href="\.\./gi, 'href="');
                 // Build header and start mainGC.
                 function buildUpHeaderAndStart(waitCount, html) {
                     if ($('nav.gc-nav-menu, #GCHeader') && !html == "") {
@@ -1036,6 +1036,24 @@ var asynchronGC = function() {
                         $('#ctl00_uxLoginStatus_divSignedIn button.li-user-toggle')[0].addEventListener('click', function(){
                             $('#ctl00_uxLoginStatus_divSignedIn li.li-user').toggleClass('gclh_open');
                         });
+                        // Logout bend into shape.
+                        $('.js-sign-out')[0].addEventListener('click', function(){
+                            GM_xmlhttpRequest({
+                                method: 'POST',
+                                url: 'https://www.geocaching.com/account/logout',
+                                headers: {
+                                    'Content-Type': 'application/x-www-form-urlencoded',
+                                    'Referer': document.location.pathname
+                                },
+                                onload: function(response) {
+                                    window.location.reload(false);
+                                }
+                            });
+                        });
+                        // Special css for searchmap.
+                        if (is_page('searchmap')) {
+                            css += 'gclh_nav .wrapper {z-index: 1005;} gclh_nav li input {height: unset !important;}';
+                        }
                         appendCssStyle(css);
                         // Start mainGC.
                         mainGC();
@@ -9505,7 +9523,7 @@ var mainGC = function() {
 // Ist spezielle Verarbeitung auf aktueller Seite erlaubt?
     function checkTaskAllowed(task, doAlert) {
         if ((document.location.href.match(/^https?:\/\/(www\.wherigo|www\.waymarking|labs\.geocaching)\.com/) || isMemberInPmoCache()) ||
-            (task != "Find Player" &&  document.location.href.match(/\.com\/map\//))) {
+            (task != "Find Player" &&  document.location.href.match(/(\.com\/map\/|\.com\/play\/map\/)/))) {
             if (doAlert != false) alert("This GC little helper functionality is not available at this page.\n\nPlease go to the \"Dashboard\" page, there is anyway all of these \nfunctionality available. ( www.geocaching.com/my )");
             return false;
         }
