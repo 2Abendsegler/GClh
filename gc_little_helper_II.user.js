@@ -236,6 +236,7 @@ var constInit = function(c) {
     bookmark("Trackables", "/track/", c.bookmarks);
     bookmark("GeoTours", "/play/geotours", c.bookmarks);
     bookmark("Unpublished Hides", "/account/dashboard/unpublishedcaches", c.bookmarks);
+    bookmark("Search Map", "/play/search", c.bookmarks);
     // Custom Bookmark-title.
     c.bookmarks_orig_title = new Array();
     for (var i = 0; i < c.bookmarks.length; i++) {
@@ -1814,13 +1815,13 @@ var mainGC = function() {
             appendCssStyle('.gclh_LogTotals {float: right;} .gclh_LogTotals img {vertical-align: bottom;}');
         } catch(e) {gclh_error("Show log totals symbols at the top",e);}
     }
-    
-// Copy Coords to clipboard
+
+// Copy Coords to clipboard.
     if (is_page("cache_listing") && $('#uxLatLonLink')[0]) {
         try {
             var cc2c = false;
             var span2 = document.createElement('span');
-            span2.innerHTML = '<a href="javascript:void(0);" id="gclh_cc2c"><img src="'+global_copy_icon+'" title="Copy Coordinates to Clipboard" style="vertical-align: text-top;">&nbsp;</a>';
+            span2.innerHTML = '<a href="javascript:void(0);" id="gclh_cc2c"><img src="'+global_copy_icon+'" title="Copy Coordinates to Clipboard" style="vertical-align: text-top;"></a> ';
             $('#uxLatLonLink')[0].parentNode.insertBefore(span2, $('#uxLatLonLink')[0] );
             $('#gclh_cc2c')[0].addEventListener('click', function() {
                 // Tastenkombination Strg+c ausführen für eigene Verarbeitung.
@@ -1840,7 +1841,7 @@ var mainGC = function() {
             });
         } catch(e) {gclh_error("Copy Coordinates to Clipboard:",e);}
     }
-    
+
 // Copy GC Code to clipboard.
     if (is_page('cache_listing') && $('.CoordInfoLink')[0] && $('#ctl00_ContentBody_CoordInfoLinkControl1_uxCoordInfoCode')[0]) {
         try {
@@ -2136,8 +2137,7 @@ var mainGC = function() {
         } catch(e) {gclh_error("Add link to waypoint list and cache logs",e);}
     }
 
-    const LatLonDigits = 6;
-    
+// Button to copy data to clipboard at right sidebar.
     function create_copydata_menu() {
         var css = "";
         css += ".copydata-content-layer {";
@@ -2207,7 +2207,10 @@ var mainGC = function() {
         $('#CopyDropDown')[0].style.visibility = 'hidden';
         setTimeout(function() { $('#CopyDropDown')[0].style.visibility = 'unset'; }, 100);
     }
-    
+
+// Links BRouter, Flopps Map, GPSVisualizer and Openrouteservice at right sidebar.
+    const LatLonDigits = 6;
+
     function mapservice_link( service_configuration ) {
         var uniqueServiceId = service_configuration.uniqueServiceId;
 
@@ -2422,7 +2425,7 @@ var mainGC = function() {
         return roundTO(waypoint.latitude,LatLonDigits)+','+roundTO(waypoint.longitude,LatLonDigits);
     }
 
-// CSS for BRouter, Flopp's Map, GPSVisualizer und Openrouteservice links.
+// CSS for BRouter, Flopp's Map, GPSVisualizer, Openrouteservice and Copy Data links.
     if ( (settings_show_brouter_link || settings_show_flopps_link || settings_show_gpsvisualizer_link || settings_show_openrouteservice_link || settings_show_copydata_menu) && is_page("cache_listing") ) {
         css += ".GClhdropbtn {";
         css += "  white-space: nowrap;";
@@ -2436,7 +2439,7 @@ var mainGC = function() {
         css += "  background-color: #f9f9f9;";
         css += "  min-width: 170px;";
         css += "  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);";
-        css += "  z-index: 1;}";
+        css += "  z-index: 1001;}";
         css += ".GClhdropdown-content-info {";
         css += "  color: black;";
         css += "  background-color: #ffffa5;";
@@ -2592,10 +2595,10 @@ var mainGC = function() {
         } catch(e) {gclh_error("Build map overview",e);}
     }
 
-// Personal Cache Note at cache listing
+// Personal Cache Note at cache listing.
     if (is_page("cache_listing")) {
 
-// Personal Cache Note: Adapt height of edit field for Personal Cache Note
+        // Personal Cache Note: Adapt height of edit field for Personal Cache Note
         function calcHeightOfCacheNote() {
             return $("#viewCacheNote").parent().height()*1.02+36;
         }
@@ -2609,7 +2612,7 @@ var mainGC = function() {
             } catch(e) {gclh_error("Adapt size of edit field for personal cache note",e);}
         }
 
-// Personal Cache Note: Hide complete and Show/Hide Cache Note.
+        // Personal Cache Note: Hide complete and Show/Hide Cache Note.
         try {
             var note = ($('.Note.PersonalCacheNote')[0] || $('.NotesWidget')[0]);
             if (settings_hide_cache_notes && note) note.remove();
@@ -2643,7 +2646,7 @@ var mainGC = function() {
             }
         } catch(e) {gclh_error("Hide complete and Show/Hide Cache Note",e);}
 
-// Personal Cache Note: Focus Cachenote-Textarea on Click of the Note (to avoid double click to edit)
+        // Personal Cache Note: Focus Cachenote-Textarea on Click of the Note (to avoid double click to edit)
         try
         {
             var editCacheNote = document.querySelector('#editCacheNote');
@@ -3381,7 +3384,7 @@ var mainGC = function() {
             liste += "<select id='gclh_log_tpls' onChange='gclh_insert_tpl(this.value)'; class='gclh_form' style='color: #9b9b9b; display: initial; font-family: Noto Sans; font-size: 14px;'>";
             liste += "<option value='-1' selected='selected'" + "style='display: none; visibility: hidden;'>- Log Templates -</option>";
             liste += logicNew;
-            liste += "</select>";
+            liste += "</select>" + "<br>";
         } else liste += "<br><p style='margin: 0;'>Templates:</p>" + texts + logicOld;
     }
 // Vorschau für Log, Log preview.
@@ -9598,7 +9601,7 @@ var mainGC = function() {
     }
     newParameterOff = "</div>";
     function newParameterLLVersionSetzen(version) {
-        var newParameterVers = '<span style="font-size: 70%; font-style: italic; margin-top: 10px; margin-left: -192px; position: absolute; cursor: default;"';
+        var newParameterVers = '<span style="font-size: 70%; font-style: italic; margin-top: 10px; margin-left: -180px; position: absolute; cursor: default;"';
         if (version != "") newParameterVers += 'title="Implemented with version ' + version + '">' + version + '</span>';
         else newParameterVers += '></span>';
         if (settings_hide_colored_versions) newParameterVers = "";
@@ -10531,7 +10534,7 @@ var mainGC = function() {
         for (var i = 0; i < data.length; i++) {
             html += "  <option value='" + data[i][1] + "' " + (selectedValue == data[i][1] ? "selected='selected'" : "") + "> " + data[i][0] + "</option>";
         }
-        html += '</select>';
+        html += '</select>' + '<br>';
         return html;
     }
 
@@ -11046,7 +11049,7 @@ var mainGC = function() {
             for (name in all_map_layers) {
                 html += "  <option value='" + name + "' " + (settings_map_overview_layer == name ? "selected='selected'" : "") + "> " + name + "</option>";
             }
-            html += '</select>';
+            html += '</select>' + '<br>';
             html += " &nbsp;" + "Map zoom value: <select class='gclh_form' id='settings_map_overview_zoom'>";
             for (var i = 1; i < 20; i++) {
                 html += "  <option value='" + i + "' " + (settings_map_overview_zoom == i ? "selected=\"selected\"" : "") + ">" + i + "</option>";
@@ -11083,7 +11086,7 @@ var mainGC = function() {
             for (var i = 1; i < elevationServicesData.length; i++) {
                 html += "  <option value='"+i+"' " + (settings_primary_elevation_service == i ? "selected=\"selected\"" : "") + ">"+elevationServicesData[i]['name']+"</option>";
             }
-            html += "</select>";
+            html += "</select>" + "<br>";
             html += "&nbsp;&nbsp;" + "Second service: <select class='gclh_form' id='settings_secondary_elevation_service' style='width: 160px;'>";
             for (var i = 0; i < elevationServicesData.length; i++) {
                 html += "  <option value='"+i+"' " + (settings_secondary_elevation_service == i ? "selected=\"selected\"" : "") + ">"+elevationServicesData[i]['name']+"</option>";
@@ -11358,6 +11361,7 @@ var mainGC = function() {
                     html += ">" + outTitle + "</a>";
                     if (num >= 69 && num <= 69) html += newParameterLL2;
                     if (num >= 70 && num <= 74 || num == 25) html += newParameterLL3;
+                    if (num >= 75 && num <= 75) html += newParameterLL1;
                 }
                 html += "  </td>";
                 // Zweite linke Spalte mit abweichenden Bezeichnungen:
@@ -11368,6 +11372,7 @@ var mainGC = function() {
                     html += "<input style='padding-left: 2px !important; padding-right: 2px !important;' class='gclh_form' title='Differing description for standard link' id='bookmarks_name[" + num + "]' type='text' size='15' value='" + getValue("settings_bookmarks_title[" + num + "]", "") + "'>";
                     if (num >= 69 && num <= 69) html += newParameterLLVersionSetzen(0.8);
                     if (num >= 70 && num <= 74 || num == 25) html += newParameterLLVersionSetzen(0.9);
+                    if (num >= 75 && num <= 75) html += newParameterLLVersionSetzen("0.10");
                 }
                 html += "  </td></tr>";
             }
