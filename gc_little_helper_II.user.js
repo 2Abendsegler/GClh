@@ -50,7 +50,11 @@ var start = function(c) {
             } else if (document.location.href.match(/^https?:\/\/www\.openstreetmap\.org/)) {
                 mainOSM();
             } else if (document.location.href.match(/^https?:\/\/www\.geocaching\.com/)) {
-                mainGC();
+                if (is_page('lists') || is_page('searchmap')) {
+                    asynchronGC();
+                } else {
+                    mainGC();
+                }
             }else if (document.location.href.match(/^https?:\/\/project-gc\.com\/Tools\/PQSplit/)) {
                 mainPGC();
             }
@@ -242,6 +246,7 @@ var constInit = function(c) {
     langInit(c);
     layersInit(c);
     elevationServicesDataInit(c);
+    corecssInit(c);
     country_idInit(c);
     states_idInit(c);
 
@@ -1006,6 +1011,43 @@ var mainOSM = function() {
 };
 
 //////////////////////////////
+// GClh asynchron GC pages
+//////////////////////////////
+var asynchronGC = function() {
+    try {
+        // Get header from other GC page.
+        $.get('https://www.geocaching.com/adopt', null, function(response){
+            var von = response.indexOf('<nav id="gcNavigation">');
+            var bis = response.indexOf('<section id="Content">');
+            if (von && bis && von != -1 && bis != -1) {
+                var headerHTML = response.slice(von, bis - 1);
+                headerHTML = headerHTML.replace('<nav ', '<gclh_nav ').replace('</nav>', '</gclh_nav>').replace(/href="../gi, 'href="');
+                // Build header and start mainGC.
+                function buildUpHeaderAndStart(waitCount, html) {
+                    if ($('nav.gc-nav-menu, #GCHeader') && !html == "") {
+                        // Part of core CSS of Groundspeak.
+                        var css = corecss;
+                        // Integrate html for new header.
+                        $('nav.gc-nav-menu, #GCHeader').before(html);
+                        // Make GC header invisible.
+                        $('nav.gc-nav-menu, #GCHeader')[0].style.display = 'none';
+                        // User profile menu bend into shape.
+                        css += '.gclh_open ul.submenu {visibility: visible; display: block;}';
+                        $('#ctl00_uxLoginStatus_divSignedIn button.li-user-toggle')[0].addEventListener('click', function(){
+                            $('#ctl00_uxLoginStatus_divSignedIn li.li-user').toggleClass('gclh_open');
+                        });
+                        appendCssStyle(css);
+                        // Start mainGC.
+                        mainGC();
+                    } else {waitCount++; if (waitCount <= 200) setTimeout(function(){buildUpHeaderAndStart(waitCount, html);}, 50);}
+                }
+                buildUpHeaderAndStart(0, headerHTML);
+            }
+        });
+    } catch(e) {gclh_error("asynchronGC",e);}
+};
+
+//////////////////////////////
 // GClh Main
 //////////////////////////////
 var mainGC = function() {
@@ -1023,7 +1065,7 @@ var mainGC = function() {
     }
 
 // Wenn nicht angeloggt, dann aussteigen.
-   if (!$('.li-user-info')[0] && !is_page("searchmap") && !is_page("bookmarklist")) return;
+   if (!$('.li-user-info')[0]) return;
 
 // Run after redirect.
     if (typeof(unsafeWindow.__doPostBack) == "function") {
@@ -1274,7 +1316,7 @@ var mainGC = function() {
             css +=
                 "#l {flex: unset; overflow: unset; margin-left: -32px} #newgclogo {width: 30px !important;}" +
                 ".#m {width: " + new_width_menu + "px !important; margin-left: 6px !important;}" +
-                "nav .wrapper {min-width: " + (new_width + 40) + "px !important; max-width: unset;}";
+                "nav .wrapper, gclh_nav .wrapper {min-width: " + (new_width + 40) + "px !important; max-width: unset;}";
             // Bereich links ausrichten in Abhängigkeit davon, ob Logo geändert wird und ob GC Tour im Einsatz ist.
             if      (!settings_show_smaller_gc_link && !settings_gc_tour_is_working) css += "#l {margin-top:   0px; fill: #ffffff;}";
             else if (!settings_show_smaller_gc_link && settings_gc_tour_is_working)  css += "#l {margin-top: -47px; fill: #ffffff;}";
@@ -1308,7 +1350,7 @@ var mainGC = function() {
             // ----------
             } else {
                 if (settings_fixed_header_layout) {
-                    css += "nav .wrapper {width: " + new_width + "px !important; padding-left: 50px; padding-right: 30px; min-width: unset}";
+                    css += "nav .wrapper, gclh_nav .wrapper {width: " + new_width + "px !important; padding-left: 50px; padding-right: 30px; min-width: unset}";
                     if (settings_remove_logo && settings_show_smaller_gc_link) css += ".#m {margin-left: -28px !important;}";
                 }
                 // Vertikales Menü  ausrichten.
@@ -1331,7 +1373,7 @@ var mainGC = function() {
             }
             // Alle Seiten: Platzhalter umsetzen:
             // ----------
-            css = css.replace(/#m/gi, "menu").replace(/#sm/gi, "submenu").replace(/#l/gi, "nav .logo");
+            css = css.replace(/#m/gi, "menu").replace(/#sm/gi, "submenu").replace(/#l/gi, "nav .logo, gclh_nav .logo");
             appendCssStyle(css);
         }
     } catch(e) {gclh_error("Change header layout",e);}
@@ -1357,7 +1399,7 @@ var mainGC = function() {
     new_width:
     try {
         // Keine Anpassungen.
-        if (is_page("messagecenter") || is_page("settings") || is_page("hide_cache") || is_page("find_cache") || is_page("geotours") || is_page("map") || is_page("dashboard-section") || is_page("track")) break new_width;
+        if (is_page('lists') || is_page('searchmap') || is_page("messagecenter") || is_page("settings") || is_page("hide_cache") || is_page("find_cache") || is_page("geotours") || is_page("map") || is_page("dashboard-section") || is_page("track")) break new_width;
 
         if (getValue("settings_new_width") > 0) {
             var new_width = parseInt(getValue("settings_new_width"));
@@ -1412,6 +1454,9 @@ var mainGC = function() {
                 (m[i].href.match(/\/forums\/$/) && getValue('remove_navi_community')) ||
                 (m[i].href.match(/shop\.geocaching\.com/) && getValue('remove_navi_shop'))) {
                 m[i].parentNode.remove();
+            }
+            if (m[i].href.match(/\/play\/search/) || m[i].href.match(/\/forums\/$/) || m[i].href.match(/shop\.geocaching\.com/)) {
+                m[i].href = '#';
             }
         }
     } catch(e) {gclh_error("Remove GC Menüs",e);}
@@ -4289,7 +4334,7 @@ var mainGC = function() {
     }
 
 // Improve new list of bookmark lists and new bookmark lists.
-    if (is_page('bookmarklist')) {
+    if (is_page('lists')) {
         try {
             // Set 1000 caches in list of bookmark lists.
             if (settings_show_1000_bm_lists) {
@@ -13125,8 +13170,8 @@ function is_page(name) {
         case "publicProfile":
             if (url.match(/^\/(profile|p\/)/)) status = true;
             break;
-        case "bookmarklist":
-            if (url.match(/^\/plan\/lists($|#$|\/$|\/#$|\/BM)/)) status = true;
+        case "lists":
+            if (url.match(/^\/plan\/lists/)) status = true;
             break;
         case "searchmap":
             if (url.match(/^\/play\/map/)) status = true;
