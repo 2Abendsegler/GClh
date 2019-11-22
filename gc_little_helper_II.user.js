@@ -50,7 +50,11 @@ var start = function(c) {
             } else if (document.location.href.match(/^https?:\/\/www\.openstreetmap\.org/)) {
                 mainOSM();
             } else if (document.location.href.match(/^https?:\/\/www\.geocaching\.com/)) {
-                mainGC();
+                if (is_page('lists') || is_page('searchmap')) {
+                    asynchronGC();
+                } else {
+                    mainGC();
+                }
             }else if (document.location.href.match(/^https?:\/\/project-gc\.com\/Tools\/PQSplit/)) {
                 mainPGC();
             }
@@ -1006,6 +1010,42 @@ var mainOSM = function() {
 };
 
 //////////////////////////////
+// GClh asynchron GC pages
+//////////////////////////////
+var asynchronGC = function() {
+    try {
+        // Get header from other GC page.
+        $.get('https://www.geocaching.com/adopt', null, function(response){
+            var von = response.indexOf('<nav id="gcNavigation">');
+            var bis = response.indexOf('<section id="Content">');
+            if (von && bis && von != -1 && bis != -1) {
+                var headerHTML = response.slice(von, bis - 1);
+                headerHTML = headerHTML.replace('<nav ', '<gclh_nav ').replace('</nav>', '</gclh_nav>');
+                // Build header and start mainGC.
+                function buildUpHeaderAndStart(waitCount, html) {
+                    if ($('nav.gc-nav-menu, #GCHeader') && !html == "") {
+                        // Load part of core CSS of Groundspeak.
+                        loadCoreCss();
+                        // Integrate html for new header.
+                        $('nav.gc-nav-menu, #GCHeader').before(html);
+                        // Make GC header invisible.
+                        $('nav.gc-nav-menu, #GCHeader')[0].style.display = 'none';
+                        // User profile menu bend into shape.
+                        appendCssStyle('.gclh_open ul.submenu {visibility: visible; display: block;}');
+                        $('#ctl00_uxLoginStatus_divSignedIn button.li-user-toggle')[0].addEventListener('click', function(){
+                            $('#ctl00_uxLoginStatus_divSignedIn li.li-user').toggleClass('gclh_open');
+                        });
+                        // Start mainGC.
+                        mainGC();
+                    } else {waitCount++; if (waitCount <= 200) setTimeout(function(){buildUpHeaderAndStart(waitCount, html);}, 50);}
+                }
+                buildUpHeaderAndStart(0, headerHTML);
+            }
+        });
+    } catch(e) {gclh_error("asynchronGC",e);}
+};
+
+//////////////////////////////
 // GClh Main
 //////////////////////////////
 var mainGC = function() {
@@ -1023,7 +1063,7 @@ var mainGC = function() {
     }
 
 // Wenn nicht angeloggt, dann aussteigen.
-   if (!$('.li-user-info')[0] && !is_page("searchmap") && !is_page("bookmarklist")) return;
+   if (!$('.li-user-info')[0]) return;
 
 // Run after redirect.
     if (typeof(unsafeWindow.__doPostBack) == "function") {
@@ -1274,7 +1314,7 @@ var mainGC = function() {
             css +=
                 "#l {flex: unset; overflow: unset; margin-left: -32px} #newgclogo {width: 30px !important;}" +
                 ".#m {width: " + new_width_menu + "px !important; margin-left: 6px !important;}" +
-                "nav .wrapper {min-width: " + (new_width + 40) + "px !important; max-width: unset;}";
+                "nav .wrapper, gclh_nav .wrapper {min-width: " + (new_width + 40) + "px !important; max-width: unset;}";
             // Bereich links ausrichten in Abhängigkeit davon, ob Logo geändert wird und ob GC Tour im Einsatz ist.
             if      (!settings_show_smaller_gc_link && !settings_gc_tour_is_working) css += "#l {margin-top:   0px; fill: #ffffff;}";
             else if (!settings_show_smaller_gc_link && settings_gc_tour_is_working)  css += "#l {margin-top: -47px; fill: #ffffff;}";
@@ -1308,7 +1348,7 @@ var mainGC = function() {
             // ----------
             } else {
                 if (settings_fixed_header_layout) {
-                    css += "nav .wrapper {width: " + new_width + "px !important; padding-left: 50px; padding-right: 30px; min-width: unset}";
+                    css += "nav .wrapper, gclh_nav .wrapper {width: " + new_width + "px !important; padding-left: 50px; padding-right: 30px; min-width: unset}";
                     if (settings_remove_logo && settings_show_smaller_gc_link) css += ".#m {margin-left: -28px !important;}";
                 }
                 // Vertikales Menü  ausrichten.
@@ -1331,7 +1371,7 @@ var mainGC = function() {
             }
             // Alle Seiten: Platzhalter umsetzen:
             // ----------
-            css = css.replace(/#m/gi, "menu").replace(/#sm/gi, "submenu").replace(/#l/gi, "nav .logo");
+            css = css.replace(/#m/gi, "menu").replace(/#sm/gi, "submenu").replace(/#l/gi, "nav .logo, gclh_nav .logo");
             appendCssStyle(css);
         }
     } catch(e) {gclh_error("Change header layout",e);}
@@ -1357,7 +1397,7 @@ var mainGC = function() {
     new_width:
     try {
         // Keine Anpassungen.
-        if (is_page("messagecenter") || is_page("settings") || is_page("hide_cache") || is_page("find_cache") || is_page("geotours") || is_page("map") || is_page("dashboard-section") || is_page("track")) break new_width;
+        if (is_page('lists') || is_page('searchmap') || is_page("messagecenter") || is_page("settings") || is_page("hide_cache") || is_page("find_cache") || is_page("geotours") || is_page("map") || is_page("dashboard-section") || is_page("track")) break new_width;
 
         if (getValue("settings_new_width") > 0) {
             var new_width = parseInt(getValue("settings_new_width"));
@@ -1412,6 +1452,9 @@ var mainGC = function() {
                 (m[i].href.match(/\/forums\/$/) && getValue('remove_navi_community')) ||
                 (m[i].href.match(/shop\.geocaching\.com/) && getValue('remove_navi_shop'))) {
                 m[i].parentNode.remove();
+            }
+            if (m[i].href.match(/\/play\/search/) || m[i].href.match(/\/forums\/$/) || m[i].href.match(/shop\.geocaching\.com/)) {
+                m[i].href = '#';
             }
         }
     } catch(e) {gclh_error("Remove GC Menüs",e);}
@@ -13107,6 +13150,380 @@ function getValue(name, defaultValue) {
     return CONFIG[name];
 }
 
+// Part of core CSS of Groundspeak. All nav changed in gclh_nav.
+function loadCoreCss() {
+    var css = "" +
+        "gclh_nav {" +
+        "  display:block" +
+        "}" +
+        "gclh_nav {" +
+        "  min-width:1030px" +
+        "}" +
+        "gclh_nav {" +
+        "  flex-shrink:0" +
+        "}" +
+        "gclh_nav," +
+        "gclh_nav * {" +
+        "  -moz-box-sizing:border-box;" +
+        "  -webkit-box-sizing:border-box;" +
+        "  box-sizing:border-box" +
+        "}" +
+        ".logo {" +
+        "  color:#fff;" +
+        "  fill:currentColor;" +
+        "  float:left;" +
+        "  height:32px;" +
+        "  margin-top:0;" +
+        "  overflow:hidden;" +
+        "  flex:0 0 216px;" +
+        "  margin-top:0;" +
+        "  width:216px" +
+        "}" +
+        ".logo svg {" +
+        "  height:100%;" +
+        "  min-width:100%;" +
+        "  width:216px" +
+        "}" +
+        ".logo img {" +
+        "  position:absolute;" +
+        "  clip:rect(29px,196px,58px,0);" +
+        "  height:auto;" +
+        "  margin-top:-29px" +
+        "}" +
+        "gclh_nav {" +
+        "  align-items:center;" +
+        "  background-color:#02874d;" +
+        "  font-size:14px;" +
+        "  height:80px;" +
+        "  position:static;" +
+        "  right:0;" +
+        "  top:0;" +
+        "  width:100%" +
+        "}" +
+        "gclh_nav .wrapper {" +
+        "  align-items:center;" +
+        "  background-color:#02874d;" +
+        "  display:flex;" +
+        "  flex-direction:row;" +
+        "  margin:0 auto;" +
+        "  min-width:990px;" +
+        "  max-width:1300px;" +
+        "  position:relative;" +
+        "  height:100%;" +
+        "  padding-left:32px;" +
+        "  padding-right:32px;" +
+        "  width:100%" +
+        "}" +
+        "gclh_nav ul {" +
+        "  list-style:none;" +
+        "  margin:0;" +
+        "  padding:0" +
+        "}" +
+        "gclh_nav ul {" +
+        "  list-style:none;" +
+        "  list-style-image:none" +
+        "}" +
+        ".menu {" +
+        "  align-items:center;" +
+        "  background:none;" +
+        "  display:flex;" +
+        "  height:100%;" +
+        "  margin-left:0" +
+        "}" +
+        ".menu>li {" +
+        "  display:inline-block;" +
+        "  margin-left:32px;" +
+        "  padding:0;" +
+        "  position:relative;" +
+        "  overflow:initial;" +
+        "  white-space:initial;" +
+        "  text-overflow:ellipsis" +
+        "}" +
+        ".menu>li.mobile {" +
+        "  display:none" +
+        "}" +
+        ".menu a," +
+        ".menu form {" +
+        "  align-items:center;" +
+        "  overflow:hidden;" +
+        "  text-decoration:none;" +
+        "  text-overflow:ellipsis;" +
+        "  white-space:nowrap" +
+        "}" +
+        ".menu a:hover," +
+        ".menu a:focus {" +
+        "  text-decoration:none" +
+        "}" +
+        ".menu>li>a {" +
+        "  font-size:16px;" +
+        "  text-transform:initial" +
+        "}" +
+        ".menu a svg," +
+        ".menu form svg {" +
+        "  height:18px;" +
+        "  margin:0 .5em 0 0;" +
+        "  position:relative;" +
+        "  width:18px" +
+        "}" +
+        ".menu .hover .submenu {" +
+        "  display:block" +
+        "}" +
+        ".submenu {" +
+        "  background:#fff;" +
+        "  border:1px solid #e1e1e1;" +
+        "  border-top:0;" +
+        "  box-shadow:0 1px 10px rgba(0,0,0,.1);" +
+        "  display:none;" +
+        "  margin-top:2.1em;" +
+        "  margin-left:50%;" +
+        "  min-width:12em;" +
+        "  padding:12px 0;" +
+        "  position:absolute;" +
+        "  transform:translateX(-2em);" +
+        "  z-index:100;" +
+        "  color:#4a4a4a" +
+        "}" +
+        ".submenu::after {" +
+        "  background-color:#fff;" +
+        "  content:'';" +
+        "  height:24px;" +
+        "  left:20px;" +
+        "  position:absolute;" +
+        "  top:-12px;" +
+        "  transform:rotate(45deg);" +
+        "  width:24px;" +
+        "  z-index:-1" +
+        "}" +
+        ".submenu li {" +
+        "  overflow:hidden;" +
+        "  text-overflow:ellipsis;" +
+        "  white-space:nowrap" +
+        "}" +
+        ".menu .li-attention {" +
+        "  border-bottom:1px solid #e1e1e1" +
+        "}" +
+        ".menu .li-attention a {" +
+        "  padding-top:12px;" +
+        "  padding-bottom:12px" +
+        "}" +
+        ".menu .li-attention+li:not(.li-attention) {" +
+        "  margin-top:12px" +
+        "}" +
+        ".submenu a," +
+        ".submenu button {" +
+        "  color:#4a4a4a;" +
+        "  display:flex;" +
+        "  font-size:16px;" +
+        "  line-height:1.5em;" +
+        "  padding:8px 24px" +
+        "}" +
+        ".submenu a," +
+        ".submenu a:visited {" +
+        "  color:#4a4a4a" +
+        "}" +
+        ".submenu a:hover," +
+        ".submenu button:hover {" +
+        "  background-color:#e8f6ef;" +
+        "  color:#4a4a4a;" +
+        "  text-decoration:none" +
+        "}" +
+        ".menu>li>a {" +
+        "  font-size:16px;" +
+        "  text-transform:initial" +
+        "}" +
+        ".menu>li .dropdown {" +
+        "  color:rgba(255,255,255,.8);" +
+        "  cursor:pointer;" +
+        "  margin:0;" +
+        "  padding:0" +
+        "}" +
+        ".menu>li .dropdown:focus {" +
+        "  color:#fff" +
+        "}" +
+        "gclh_nav .profile-panel," +
+        ".logged-out-user {" +
+        "  align-items:center;" +
+        "  display:flex;" +
+        "  flex-direction:row;" +
+        "  height:auto;" +
+        "  margin-left:auto;" +
+        "  padding:0;" +
+        "  position:initial;" +
+        "  width:auto;" +
+        "  background-color:#02874d;" +
+        "  color:#fff;" +
+        "  order:1" +
+        "}" +
+        "gclh_nav .profile-panel a {" +
+        "  color:#fff;" +
+        "  text-decoration:none" +
+        "}" +
+        ".profile-panel>li {" +
+        "  height:40px" +
+        "}" +
+        ".profile-panel .li-membership {" +
+        "  display:initial;" +
+        "  margin:0;" +
+        "  order:unset" +
+        "}" +
+        ".profile-panel .li-membership.tablet {" +
+        "  display:none" +
+        "}" +
+        ".logged-out-user .btn-loggedout {" +
+        "  color:#fff" +
+        "}" +
+        ".logged-out-user .btn-loggedout," +
+        ".profile-panel .btn-upgrade {" +
+        "  width:160px;" +
+        "  border:1px solid #fff;" +
+        "  border-radius:3px;" +
+        "  display:inline-block;" +
+        "  position:relative;" +
+        "  text-align:center" +
+        "}" +
+        ".logged-out-user .btn-loggedout:hover," +
+        ".logged-out-user .btn-loggedout:focus," +
+        ".profile-panel .btn-upgrade:hover," +
+        ".profile-panel .btn-upgrade:focus {" +
+        "  background-color:#fff;" +
+        "  color:#02874d" +
+        "}" +
+        ".profile-panel .li-user-info a," +
+        ".profile-panel .btn-loggedout," +
+        ".profile-panel .btn-upgrade," +
+        ".profile-panel .user-avatar~span {" +
+        "  max-width:100%;" +
+        "  overflow:hidden;" +
+        "  text-overflow:ellipsis;" +
+        "  white-space:nowrap" +
+        "}" +
+        ".logged-out-user .btn+.btn," +
+        ".profile-panel>li+li {" +
+        "  margin-left:24px" +
+        "}" +
+        ".profile-panel>li {" +
+        "  height:40px" +
+        "}" +
+        ".li-messages {" +
+        "  align-items:center;" +
+        "  display:flex;" +
+        "  right:24px;" +
+        "  top:24px" +
+        "}" +
+        ".li-messages a {" +
+        "  align-items:center;" +
+        "  display:flex;" +
+        "  justify-content:center;" +
+        "  height:40px;" +
+        "  position:relative;" +
+        "  width:48px" +
+        "}" +
+        ".li-messages a:hover," +
+        ".li-messages a:focus," +
+        ".li-messages a:active {" +
+        "  color:#fff" +
+        "}" +
+        ".li-messages svg {" +
+        "  height:30px;" +
+        "  width:auto" +
+        "}" +
+        ".profile-panel .li-user {" +
+        "  align-items:center;" +
+        "  display:flex;" +
+        "  margin-bottom:0;" +
+        "  order:unset;" +
+        "  position:initial;" +
+        "  left:24px;" +
+        "  top:24px;" +
+        "  white-space:nowrap" +
+        "}" +
+        ".profile-panel .li-user-info {" +
+        "  display:initial;" +
+        "  width:160px" +
+        "}" +
+        ".profile-panel .user-avatar {" +
+        "  display:block;" +
+        "  float:left;" +
+        "  margin-right:12px;" +
+        "  position:relative" +
+        "}" +
+        ".profile-panel .li-user-info .user-avatar {" +
+        "  font-size:16px;" +
+        "  margin-right:12px" +
+        "}" +
+        ".profile-panel .user-avatar," +
+        ".profile-panel .user-avatar img {" +
+        "  border-radius:3px;" +
+        "  height:40px;" +
+        "  width:40px" +
+        "}" +
+        ".profile-panel .user-name {" +
+        "  font-size:16px;" +
+        "  line-height:21px" +
+        "}" +
+        ".profile-panel .li-user-info .cache-count," +
+        ".profile-panel .li-user-info .user-name {" +
+        "  display:block;" +
+        "  width:auto" +
+        "}" +
+        ".profile-panel .li-user-toggle {" +
+        "  background:none;" +
+        "  border:0;" +
+        "  border-radius:3px;" +
+        "  color:#fff;" +
+        "  cursor:pointer;" +
+        "  display:inline-block;" +
+        "  height:32px;" +
+        "  margin-left:24px;" +
+        "  outline:none;" +
+        "  -webkit-transition:.3s all;" +
+        "  -moz-transition:.3s all;" +
+        "  -o-transition:.3s all;" +
+        "  padding:0;" +
+        "  transition:.3s all;" +
+        "  width:32px" +
+        "}" +
+        ".profile-panel .li-user-toggle:hover," +
+        ".profile-panel .li-user-toggle:focus {" +
+        "  color:#02874d" +
+        "}" +
+        ".profile-panel .li-user-toggle svg {" +
+        "  fill:currentColor;" +
+        "  pointer-events:none;" +
+        "  margin-top:5px" +
+        "}" +
+        ".profile-panel .li-user-toggle:hover," +
+        ".profile-panel .li-user-toggle:focus {" +
+        "  background:#fff" +
+        "}" +
+        "gclh_nav .profile-panel ul {" +
+        "  display:none;" +
+        "  margin-left:0;" +
+        "  right:-.5em;" +
+        "  top:3.6em" +
+        "}" +
+        ".profile-panel .submenu.user-expanded {" +
+        "  display:block" +
+        "}" +
+        "gclh_nav .profile-panel .submenu a," +
+        ".profile-panel .submenu button {" +
+        "  color:#4a4a4a" +
+        "}" +
+        "gclh_nav .profile-panel .submenu button {" +
+        "  width:100%" +
+        "}" +
+        ".submenu button {" +
+        "  background:none;" +
+        "  border:0;" +
+        "  cursor:pointer" +
+        "}" +
+        "gclh_nav .profile-panel ul::after {" +
+        "  left:initial;" +
+        "  right:14px" +
+        "}";
+    appendCssStyle(css);
+}
+
 // Auf welcher Seite bin ich?
 function is_page(name) {
     var status = false;
@@ -13125,8 +13542,8 @@ function is_page(name) {
         case "publicProfile":
             if (url.match(/^\/(profile|p\/)/)) status = true;
             break;
-        case "bookmarklist":
-            if (url.match(/^\/plan\/lists($|#$|\/$|\/#$|\/BM)/)) status = true;
+        case "lists":
+            if (url.match(/^\/plan\/lists/)) status = true;
             break;
         case "searchmap":
             if (url.match(/^\/play\/map/)) status = true;
