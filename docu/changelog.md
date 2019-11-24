@@ -23,7 +23,7 @@
 ---
 ## v0.10:
 <br>
-## Listing:<br>
+<strong style="font-size: 120%">Listing:</strong><br><br>
 <ul>
 	<li>
 		<strong>New:</strong> Added Openrouteservice as an additional map service. [<a href="https://github.com/2Abendsegler/GClh/issues/897" title="Issue 897">897</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
