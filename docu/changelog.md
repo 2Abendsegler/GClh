@@ -25,14 +25,14 @@
 <ul>
 	<li>
 		<strong>New:</strong> Added Openrouteservice as an additional map service. [<a href="https://github.com/2Abendsegler/GClh/issues/897" title="Issue 897">897</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		Openrouteservice also offers in addition to usual mediums for locomotion "wheelchair" as medium for locomotion in europe.<br>
                 <img src="../images/0.10/Screen08.gif" alt="Screen08.gif"></a><br>
 		You can pick Openrouteservice in cache listing in the right navigation bar, or behind the "Additional Waypoints", if there are additional waypoints.<br>
                 <img src="../images/0.10/Screen10.jpg" alt="Screen10.jpg"></a> 
                 <img src="../images/0.10/Screen11.jpg" alt="Screen11.jpg"></a><br>
 		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_show_openrouteservice_link" title="Link to your GClh Config">Settings -> Listing:<br>
 		<img src="../images/0.10/Screen12.jpg" alt="Screen12.jpg"></a><br>
-		If you want to use your home coordinates as start point for the route, you have to activate the parameter.<br>
-		Openrouteservice also offers in addition to usual mediums for locomotion "wheelchair" as medium for locomotion in europe.<br><br>
+		If you want to use your home coordinates as start point for the route, you have to activate the parameter.<br><br>
 	</li>
 	<li>
 		<strong>New:</strong> Copy various cache informations to clipboard. [<a href="https://github.com/2Abendsegler/GClh/issues/1096" title="Issue 1096">1096</a> / <a href="https://www.geocaching.com/profile/?u=Herr Ma" title="Thanks to Herr Ma">Herr Ma</a>]<br>
