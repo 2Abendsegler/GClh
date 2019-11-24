@@ -152,6 +152,7 @@
 		<strong>Fix:</strong> Arrangement the Linklist and the other menus at the right side does not run. Alignment of vertical and horizontal menus. [<a href="https://github.com/2Abendsegler/GClh/issues/1091" title="Issue 1091">1091</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 	</li>
 </ul>
+<br>
 (??.??.2019)<br>
 released by <a href="https://www.geocaching.com/profile/?u=Ruko2010">Ruko2010</a><br>
 <br>
