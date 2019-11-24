@@ -104,7 +104,7 @@
 		If you want to use it, you have to activate the parameter.<br><br>
 	</li>
 </ul>
-<br>
+<br><br>
 <strong>Pocket query:</strong><br><br>
 <ul>	
 	<li>
