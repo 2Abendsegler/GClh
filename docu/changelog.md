@@ -90,7 +90,7 @@
 		<strong>Fix:</strong> The long VIP list doesn't consider the parameter "Show owner in VIP list". [<a href="https://github.com/2Abendsegler/GClh/issues/1088" title="Issue 1088">1088</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 	</li>
 </ul>
-<br>
+<br><br>
 <strong>Lists, Bookmark list, Favorites, Ignore list:</strong><br><br>
 <ul>	
 	<li>
@@ -104,7 +104,7 @@
 		If you want to use it, you have to activate the parameter.<br><br>
 	</li>
 </ul>
-<br><br>
+<br>
 <strong>Pocket query:</strong><br><br>
 <ul>	
 	<li>
