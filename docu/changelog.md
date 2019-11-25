@@ -94,7 +94,7 @@
 <strong>Lists, Bookmark list, Favorites, Ignore list:</strong><br><br>
 <ul>	
 	<li>
-		<strong>New:</strong> Integrate GClh header with Linklist in new designed lists page. [<a href="https://github.com/2Abendsegler/GClh/issues/1052" title="Issue 1052">1052</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		<strong>New:</strong> Integrate GClh header with Linklist and GC Search in new designed lists page. [<a href="https://github.com/2Abendsegler/GClh/issues/1052" title="Issue 1052">1052</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 		<img src="../images/0.10/Screen20.jpg" alt="Screen20.jpg"></a><br><br>
 	</li>
 	<li>
@@ -120,7 +120,7 @@
 <strong>Map (search map):</strong><br><br>
 <ul>	
 	<li>
-		<strong>New:</strong> Integrate GClh header with Linklist in new designed map page (search map). [<a href="https://github.com/2Abendsegler/GClh/issues/987" title="Issue 987">987</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		<strong>New:</strong> Integrate GClh header with Linklist and GC Search in new designed map page (search map). [<a href="https://github.com/2Abendsegler/GClh/issues/987" title="Issue 987">987</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 		<img src="../images/0.10/Screen21.jpg" alt="Screen21.jpg"></a><br><br>
 	</li>
 </ul>
