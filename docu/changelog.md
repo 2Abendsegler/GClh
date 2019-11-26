@@ -86,7 +86,7 @@
 		If you want to use it in your Linklist, you have to set it.<br><br>
 	</li>
 	<li>
-		<strong>New:</strong> Show 1000 caches in new designed bookmark lists. [<a href="https://github.com/2Abendsegler/GClh/issues/1059" title="Issue 1059">1059</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		<strong>New:</strong> Show 1000 caches instead of maximum 500 caches in new designed bookmark lists. [<a href="https://github.com/2Abendsegler/GClh/issues/1059" title="Issue 1059">1059</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 		Because GS does not allow an extension of the button to choose the number of showing caches, we hide the button if you use the feature to show 1000 caches.<br>
 		<img src="../images/0.10/Screen25.jpg" alt="Screen25.jpg"><br>
 		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_show_1000_bm_lists" title="Link to your GClh Config">Settings -> Bookmark list:<br> 
