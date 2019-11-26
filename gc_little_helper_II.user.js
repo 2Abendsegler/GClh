@@ -4499,9 +4499,8 @@ var mainGC = function() {
                 if (settings_show_1000_bm_lists) {
                     if (items && items.length > 0) {
                         for (var i = 0; i < items.length; i++) {
-                            if (!items[i].href.match(/\?&/)) items[i].href += '?';
-                            items[i].href = items[i].href.replace(/&take=(\d+)/, '');
-                            items[i].href += '&take=1000';
+                            items[i].href = items[i].href.replace(/\?take=(\d+)/, '');
+                            items[i].href += '?take=1000';
                         }
                     }
                 }
@@ -4527,7 +4526,7 @@ var mainGC = function() {
             }
             // Disable page size control.
             function disablePageSizeControlBML(waitCount) {
-                if (settings_show_1000_bm_lists && document.location.href.match(/&take=1000/)) {
+                if (settings_show_1000_bm_lists && document.location.href.match(/take=1000/)) {
                     if ($('.page-size-controls')[0] && $('.list-details')[0] && !$('.gc-button-group')[0]) {
                         $('.page-size-controls')[0].style.display = 'none';
                     } else {waitCount++; if (waitCount <= 200) setTimeout(function(){disablePageSizeControlBML(waitCount);}, 50);}
