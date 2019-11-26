@@ -76,7 +76,7 @@
 ### Lists, Bookmark lists, Favorites, Ignore list:
 <ul>	
 	<li>
-		<strong>New:</strong> Integrate GClh header with Linklist and GC Search in new designed lists page. [<a href="https://github.com/2Abendsegler/GClh/issues/1052" title="Issue 1052">1052</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		<strong>New:</strong> Integrate GClh header with Linklist and GClh Search in new designed lists page with My Lists, Favorites and Ignored Caches. [<a href="https://github.com/2Abendsegler/GClh/issues/1052" title="Issue 1052">1052</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 		<img src="../images/0.10/Screen20.jpg" alt="Screen20.jpg"><br><br>
 	</li>
 	<li>
@@ -87,6 +87,8 @@
 	</li>
 	<li>
 		<strong>New:</strong> New designed list of bookmark lists and bookmark lists: Show 1000 caches in bookmark lists. [<a href="https://github.com/2Abendsegler/GClh/issues/1059" title="Issue 1059">1059</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		Because GS does not allow an extension of the button to choose the number of showing caches, we have hidden the button.<br>
+		<img src="../images/0.10/Screen25.jpg" alt="Screen25.jpg"><br>
 		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_show_1000_bm_lists" title="Link to your GClh Config">Settings -> Bookmark list:<br> 
 		<img src="../images/0.10/Screen07.jpg" alt="Screen07.jpg"></a><br>
 		If you want to use it, you have to activate the parameter.<br><br>
@@ -125,7 +127,7 @@
 ### Others:
 <ul>	
 	<li>
-		<strong>Improve:</strong> Improve GC Search to Geo tours. [<a href="https://github.com/2Abendsegler/GClh/issues/1104" title="Issue 1104">1104</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br>
+		<strong>Improve:</strong> Improve GClh Search to Geo tours. [<a href="https://github.com/2Abendsegler/GClh/issues/1104" title="Issue 1104">1104</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br>
 		<img src="../images/0.10/Screen22.gif" alt="Screen22.gif"></a><br><br>
 	</li>
 	<li>
