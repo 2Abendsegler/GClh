@@ -3,8 +3,9 @@
 
 ---
 ## v0.10:
+
+### Listing:
 <br>
-<strong>Listing:</strong><br><br>
 <ul>
 	<li>
 		<strong>New:</strong> Added Openrouteservice as an additional map service. [<a href="https://github.com/2Abendsegler/GClh/issues/897" title="Issue 897">897</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
@@ -92,7 +93,9 @@
 	</li>
 </ul>
 <br>
-<strong>Pocket query:</strong><br><br>
+
+### Pocket query:
+<br>
 <ul>	
 	<li>
 		<strong>Improve:</strong> Rewrite fixed PQ header/footer by pure CSS. Compatible with compact view. [<a href="https://github.com/2Abendsegler/GClh/issues/1034" title="Issue 1034">1034</a> / <a href="https://www.geocaching.com/profile/?u=Dratenik" title="Thanks to Dratenik">Dratenik</a>]<br>
@@ -104,7 +107,9 @@
 	</li>
 </ul>
 <br>
-<strong>Map (search map):</strong><br><br>
+
+### Map (search map):
+<br>
 <ul>	
 	<li>
 		<strong>New:</strong> Integrate GClh header with Linklist and GC Search in new designed map page (search map). [<a href="https://github.com/2Abendsegler/GClh/issues/987" title="Issue 987">987</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
@@ -118,7 +123,9 @@
 	</li>
 </ul>
 <br>
-<strong>Others:</strong><br><br>
+
+### Others:
+<br>
 <ul>	
 	<li>
 		<strong>Improve:</strong> Improve GC Search to Geo tours. [<a href="https://github.com/2Abendsegler/GClh/issues/1104" title="Issue 1104">1104</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br>
