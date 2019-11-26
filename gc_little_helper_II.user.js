@@ -514,6 +514,7 @@ var variablesInit = function(c) {
     c.settings_show_enhanced_map_popup = getValue("settings_show_enhanced_map_popup", true);
     c.settings_show_latest_logs_symbols_count_map = getValue("settings_show_latest_logs_symbols_count_map", 10);
     c.settings_modify_new_drafts_page = getValue("settings_modify_new_drafts_page", true);
+    c.settings_compact_layout_unpublishedList = getValue("settings_compact_layout_unpublishedList", true);
     c.settings_gclherror_alert = getValue("settings_gclherror_alert", false);
     c.settings_auto_open_tb_inventory_list = getValue("settings_auto_open_tb_inventory_list", true);
     c.settings_embedded_smartlink_ignorelist = getValue("settings_embedded_smartlink_ignorelist", true);
@@ -8364,6 +8365,24 @@ var mainGC = function() {
         } catch(e) {gclh_error("Save uid",e);}
     }
 
+// Compact Layout für unpublished Caches
+	if (document.location.pathname.match(/^\/account\/dashboard\/unpublishedcaches/) && settings_compact_layout_unpublishedList) {
+		unpublished_caches_list = document.querySelectorAll('#UnpublishedCaches li');
+		console.log(unpublished_caches_list)
+		for (let i=0; i<unpublished_caches_list.length; i++) {
+			let li = document.createElement('li');
+			li.setAttribute('class', 'activity-item')
+			let icon = unpublished_caches_list[i].getElementsByTagName('div')[0];
+			let name = unpublished_caches_list[i].getElementsByTagName('a')[0];
+			name.setAttribute('style', 'font-size: .875rem;');
+			icon.appendChild(name);
+			icon.setAttribute('style', 'display:flex; align-items:center; justify-content:flex-start;');
+			icon.getElementsByTagName('svg')[0].setAttribute('style', 'margin-top: unset;')
+			li.appendChild(icon);
+			unpublished_caches_list[i].parentNode.replaceChild(li, unpublished_caches_list[i]);
+		}
+	}
+
 // Add mailto link to profilpage.
     if (is_page("publicProfile") && $('#ctl00_ContentBody_ProfilePanel1_lnkEmailUser')[0]) {
         try {
@@ -10418,7 +10437,8 @@ var mainGC = function() {
             html += newParameterOn3;
             html += checkboxy('settings_modify_new_drafts_page', 'Modify draft items on the new drafts page') + show_help("Change the linkage of each draft. The title of the geocache now links to the geocaching listing and the cache icon, too (2nd line). The pen icon and the preview note links to the log composing page (3rd line). Add the log type as overlay icon onto the cache icon.") + "<br>";
             html += newParameterVersionSetzen(0.9) + newParameterOff;
-            html += "</div>";
+            html += checkboxy('settings_compact_layout_unpublishedList', 'Show compact layout for unpublished caches') + "<br>";
+			html += "</div>";
 
             html += "<h4 class='gclh_headline2'>"+prepareHideable.replace("#name#","maps")+"Map</h4>";
             html += "<div id='gclh_config_maps' class='gclh_block'>";
@@ -11727,6 +11747,7 @@ var mainGC = function() {
                 'settings_show_draft_indicator',
                 'settings_show_enhanced_map_popup',
                 'settings_modify_new_drafts_page',
+                'settings_compact_layout_unpublishedList',
                 'settings_gclherror_alert',
                 'settings_auto_open_tb_inventory_list',
                 'settings_embedded_smartlink_ignorelist',
