@@ -4463,51 +4463,102 @@ var mainGC = function() {
         } catch(e) {gclh_error("Name for PQ from bookmark",e);}
     }
 
+// Set mutation observer for the buttons in new lists page with My Lists, Favorites, Ignored Caches.
+    if (is_page('lists')) {
+        try {
+            var global_buildObserverBMLs = false;
+
+            // Build mutation observer for buttons.
+            function buildObserverButtons() {
+                var observerButtons = new MutationObserver(function(mutations) {
+                    mutations.forEach(function(mutation) {
+                        if (global_buildObserverBMLs == false) checkForBuildObserverBMLs(0);
+                        getBMLs(0);
+                    });
+                });
+                var target = document.querySelector('.gc-button-group');
+                var config = { childList: true };
+                observerButtons.observe(target, config);
+            }
+            // Check if mutation observer for Buttons can be build.
+            function checkForBuildObserverButtons(waitCount) {
+                if ($('.gc-button-group')[0]) {
+                    buildObserverButtons();
+                } else {waitCount++; if (waitCount <= 200) setTimeout(function(){checkForBuildObserverButtons(waitCount);}, 50);}
+            }
+
+            checkForBuildObserverButtons(0);
+        } catch(e) {gclh_error("Set mutation observer for the buttons in new lists page",e);}
+    }
+
 // Improve new list of bookmark lists and new bookmark lists.
     if (is_page('lists')) {
         try {
-            // Set 1000 caches in list of bookmark lists.
-            if (settings_show_1000_bm_lists) {
-                getBMLs(0);
-            }
-            function getBMLs(waitCount) {
-                if ($('.list-name-container').length > 0) {
-                    setBMLs1000($('.list-name-container'));
-                    setBMLsEvts($('.list-overflow'));
-                } else {waitCount++; if (waitCount <= 50) setTimeout(function(){getBMLs(waitCount);}, 200);}
-            }
+            // Set 1000 in links to BMLs.
             function setBMLs1000(items) {
-                if (items && items.length > 0) {
-                    for (var i = 0; i < items.length; i++) {
-                        items[i].href += '?&take=1000';
+                if (settings_show_1000_bm_lists) {
+                    if (items && items.length > 0) {
+                        for (var i = 0; i < items.length; i++) {
+                            if (!items[i].href.match(/\?&/)) items[i].href += '?';
+                            items[i].href = items[i].href.replace(/&take=(\d+)/, '');
+                            items[i].href += '&take=1000';
+                        }
                     }
                 }
             }
-            function setBMLsEvts(items) {
-                for (var i = 0; i < items.length; i++) {
-                    items[i].addEventListener("click", getEdit, false);
+            // Get BMLs.
+            function getBMLs(waitCount) {
+                if ($('.list-table')[0] && $('.rt-tbody')[0] && $('.rt-tbody a[href*="plan/lists/BM"]').length > 0) {
+                    var bmls = $('.rt-tbody a[href*="plan/lists/BM"]');
+                    setBMLs1000(bmls);
+                } else {waitCount++; if (waitCount <= 200) setTimeout(function(){getBMLs(waitCount);}, 50);}
+            }
+            // Get edit icon BML in popup.
+            function getEditIconBML() {
+                if (settings_show_1000_bm_lists) {
+                    if ($('.list-table')[0] && $('.list-hub-action-menu')[0] && $('.list-hub-action-menu a[href*="plan/lists/BM"]')[0]) {
+                        var editIcon = $('.list-hub-action-menu a[href*="plan/lists/BM"]');
+                        var editIconNew = editIcon.clone();
+                        editIcon.after(editIconNew);
+                        editIcon.remove();
+                        setBMLs1000(editIconNew);
+                    }
                 }
             }
-            function getEdit() {
-                getEditBML(0);
+            // Disable page size control.
+            function disablePageSizeControlBML(waitCount) {
+                if (settings_show_1000_bm_lists && document.location.href.match(/&take=1000/)) {
+                    if ($('.page-size-controls')[0] && $('.list-details')[0] && !$('.gc-button-group')[0]) {
+                        $('.page-size-controls')[0].style.display = 'none';
+                    } else {waitCount++; if (waitCount <= 200) setTimeout(function(){disablePageSizeControlBML(waitCount);}, 50);}
+                }
             }
-            function getEditBML(waitCount) {
-                if ($('.list-hub-action-menu')[0]) {
-                    var menu = $('.list-hub-action-menu')[0];
-                    setBMLs1000($(menu).find('a[href*="plan/lists/BM"]'));
-                } else {waitCount++; if (waitCount <= 40) setTimeout(function(){getEditBML(waitCount);}, 50);}
+
+            // Build mutation observer for BMLs.
+            function buildObserverBMLs() {
+                var observerBMLs = new MutationObserver(function(mutations) {
+                    mutations.forEach(function(mutation) {
+                        getEditIconBML();
+                        getBMLs(0);
+                        disablePageSizeControlBML(0);
+                    });
+                });
+                var target = document.querySelector('body');
+                var config = { attributes: true, childList: true, characterData: true };
+                observerBMLs.observe(target, config);
             }
-            // Remove number of caches and page controls in bookmark lists.
-            if (settings_show_1000_bm_lists) {
-                removePageControls(0);
+            // Check if mutation observer for BMLs can be build.
+            function checkForBuildObserverBMLs(waitCount) {
+                if ($('body')[0]) {
+                    global_buildObserverBMLs == true;
+                    buildObserverBMLs();
+                } else {waitCount++; if (waitCount <= 200) setTimeout(function(){checkForBuildObserverBMLs(waitCount);}, 50);}
             }
-            function removePageControls(waitCount) {
-                if ($('.page-controls')[0] && $('.pagination-controls')[0]) {
-                    $('.page-controls')[0].remove();
-                    $('.pagination-controls')[0].remove();
-                } else {waitCount++; if (waitCount <= 50) setTimeout(function(){removePageControls(waitCount);}, 200);}
-            }
-        } catch(e) {gclh_error("Improve new bookmark lists",e);}
+
+            checkForBuildObserverBMLs(0)
+            disablePageSizeControlBML(0);
+            getBMLs(0);
+        } catch(e) {gclh_error("Improve new list of bookmark lists and new bookmark lists",e);}
     }
 
 // Improve old bookmark lists.
