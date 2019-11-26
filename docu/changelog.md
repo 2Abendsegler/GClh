@@ -80,7 +80,7 @@
 	</li>
 	<li>
 		<strong>New:</strong> Add link "Ignore List" to Linklist. [<a href="https://github.com/2Abendsegler/GClh/issues/1052" title="Issue 1052">1052</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
-		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#llb#gclh_LinkListElement_76" title="Link to your GClh Config">Settings -> Linklist / Navigation:<br> 
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#ll#settings_bookmarks_top_menu_h" title="Link to your GClh Config">Settings -> Linklist / Navigation:<br> 
 		<img src="../images/0.10/Screen23.jpg" alt="Screen23.jpg"></a><br>
 		If you want to use it in your Linklist, you have to set it.<br><br>
 	</li>
@@ -112,7 +112,7 @@
 	</li>
 	<li>
 		<strong>New:</strong> Add link "Search Map" to Linklist. [<a href="https://github.com/2Abendsegler/GClh/issues/987" title="Issue 987">987</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
-		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#llb#gclh_LinkListElement_75" title="Link to your GClh Config">Settings -> Linklist / Navigation:<br> 
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#ll#settings_bookmarks_top_menu_h" title="Link to your GClh Config">Settings -> Linklist / Navigation:<br> 
 		<img src="../images/0.10/Screen24.jpg" alt="Screen24.jpg"></a><br>
 		If you want to use it in your Linklist, you have to set it.<br><br>
 	</li>
