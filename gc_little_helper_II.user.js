@@ -8368,16 +8368,15 @@ var mainGC = function() {
 // Compact Layout für unpublished Caches
 	if (document.location.pathname.match(/^\/account\/dashboard\/unpublishedcaches/) && settings_compact_layout_unpublishedList) {
 		unpublished_caches_list = document.querySelectorAll('#UnpublishedCaches li');
-		console.log(unpublished_caches_list)
 		for (let i=0; i<unpublished_caches_list.length; i++) {
 			let li = document.createElement('li');
-			li.setAttribute('class', 'activity-item')
+			li.setAttribute('class', 'activity-item');
 			let icon = unpublished_caches_list[i].getElementsByTagName('div')[0];
 			let name = unpublished_caches_list[i].getElementsByTagName('a')[0];
 			name.setAttribute('style', 'font-size: .875rem;');
 			icon.appendChild(name);
 			icon.setAttribute('style', 'display:flex; align-items:center; justify-content:flex-start;');
-			icon.getElementsByTagName('svg')[0].setAttribute('style', 'margin-top: unset;')
+			icon.getElementsByTagName('svg')[0].setAttribute('style', 'margin-top: unset;');
 			li.appendChild(icon);
 			unpublished_caches_list[i].parentNode.replaceChild(li, unpublished_caches_list[i]);
 		}
