@@ -10847,7 +10847,7 @@ var mainGC = function() {
             html += checkboxy('settings_past_events_on_bm', 'Past events processing') + show_help3("With this option you can recognize and select past events in bookmark lists and in the watchlist. <br><br>For this, the cache listings of the events must be read additionally. If you do not want this, the option can be disabled.") + "<br>";
             html += newParameterVersionSetzen(0.9) + newParameterOff;
             html += newParameterOn1;
-            html += checkboxy('settings_show_1000_bm_lists', 'Show 1000 caches in bookmark lists') + "<br>";
+            html += checkboxy('settings_show_1000_bm_lists', 'Show 1000 caches in own bookmark lists') + "<br>";
             html += newParameterVersionSetzen("0.10") + newParameterOff;
             html += "</div>";
 
