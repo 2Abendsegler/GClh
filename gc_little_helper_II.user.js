@@ -8364,6 +8364,86 @@ var mainGC = function() {
         } catch(e) {gclh_error("Save uid",e);}
     }
 
+// Füge Unpublished Caches zum Dashboard
+/*
+ToDo:
+- Status: Publish
+- Sortieren: Namen
+             GC-Code
+             CacheTyp
+             Status
+*/
+    if (is_page('dashboard') && settings_showUnpublishedHides) {
+        try {
+            $.get('https://www.geocaching.com/account/dashboard/unpublishedcaches', null, function(text){
+                // Look for unpublished Caches
+                var unpublished_list = $(text).find('#UnpublishedCaches li');
+                if(unpublished_list != null){
+                    var unpublished = unpublished_list[0];
+                    if(unpublished_list.length > 0){
+                        // we found unpublished
+                        var unpublished_caches = document.createElement('div');
+                        unpublished_caches.setAttribute('id', 'GClh_unpublishedCaches');
+                        unpublished_caches.setAttribute('class', 'panel collapsible');
+                        var unpublished_cachesVisible = true;
+                        var head = document.createElement('div');
+                        head.setAttribute('class', 'panel-header isActive');
+                        head.innerHTML = '    <h1 class="h5 no-margin">Unpublished Hides</h1>'
+                                       + '    <svg height="22" width="22" class="opener">'
+                                       + '        <use xlink:href="/account/app/ui-icons/sprites/global.svg#icon-expand-svg-fill"></use>'
+                                       + '    </svg>';
+                        head.addEventListener('click', function() {
+                            if (unpublished_cachesVisible == true) {
+                                head.setAttribute('class', 'panel-header');
+                                html.setAttribute('style', 'display:none;padding-left:unset;');
+                                unpublished_cachesVisible = false;
+                            }else {
+                                head.setAttribute('class', 'panel-header isActive');
+                                html.setAttribute('style', 'padding-left:unset;');
+                                unpublished_cachesVisible = true;
+                            }
+                        });
+                        unpublished_caches.appendChild(head);
+                        var html = document.createElement('ul');
+                        html.setAttribute('style', 'padding-left: unset');
+                        for (let i=0; i<unpublished_list.length; i++) {
+                            let icon = unpublished_list[i].getElementsByTagName('div')[0];
+                            let name = unpublished_list[i].getElementsByTagName('div')[1];
+                            name.getElementsByTagName('p')[0].setAttribute('style', 'margin:unset;')
+                            let cacheUrl = 'https://www.geocaching.com/geocache/' + name.getElementsByTagName('a')[0].href.substring(19, 26);
+                            $.get(cacheUrl, null, function(text2){
+                                let span = document.createElement('span');
+                                span.setAttribute('style', 'font-size: .875rem;')
+                                let divs = $(text2).find('#divContentMain div');
+                                if (divs[0].id == 'unpublishedMessage') { //Der Cache ist noch nicht eingereicht, du hast ihn disabled oder dem Reviewer geantwortet.
+                                    span.innerHTML = '<b>Status:</b> <em>Disabled</em>';
+                                }else if (divs[0].id == 'unpublishedReviewerNoteMessage') { //Der Reviewer hat geantwortet
+                                    span.innerHTML = '<b>Status:</b> <em>Your reviewer has responded</em>';
+                                }else if (divs[0].id == 'unpublishedEnabledMessage') { //Der Cache wurde subbmited, aber noch nicht von einem Reviewer bearbeitet
+                                    span.innerHTML = '<b>Status:</b> <em>Waiting for review</em>';
+                                }else if (divs[0].id == 'unpublishedDisabledMessage') { //Der Cache wurde überprüft und wartet auf dem publish (evt. ToDo: Publishzeit suchen)
+                                    span.innerHTML = '<b>Status:</b> <em>Ready to publish</em>';
+                                }else {
+                                    span.innerHTML = '<b>GClh Error:</b> GS change something. Please create an <a href="https://github.com/2Abendsegler/GClh/issues" target="_blank">issue</a>.';
+                                }
+                                icon.appendChild(span);
+                            });
+                            icon.setAttribute('style', 'display:flex; align-items:center; justify-content:flex-start;');
+                            icon.getElementsByTagName('svg')[0].setAttribute('style', 'margin-top: unset;')
+                            let li = document.createElement('li');
+                            li.setAttribute('class', 'activity-item')
+                            li.appendChild(icon);
+                            li.appendChild(name);
+                            html.appendChild(li);
+                        }
+                        unpublished_caches.appendChild(html);
+                        document.getElementsByClassName('sidebar-right')[0].appendChild(unpublished_caches);
+                    } // else: No unpublished found
+                } //else: nichts gefunden, nichts passiert
+            });
+        } catch(e) {gclh_error("Add unpublished hides in dashboard", e);}
+    }
+
 // Add mailto link to profilpage.
     if (is_page("publicProfile") && $('#ctl00_ContentBody_ProfilePanel1_lnkEmailUser')[0]) {
         try {
