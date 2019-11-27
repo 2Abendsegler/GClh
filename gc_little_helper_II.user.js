@@ -521,6 +521,7 @@ var variablesInit = function(c) {
     c.settings_past_events_on_bm = getValue("settings_past_events_on_bm", true);
     c.settings_show_log_totals = getValue("settings_show_log_totals", true);
     c.settings_show_reviewer_as_vip = getValue("settings_show_reviewer_as_vip", true);
+    c.settings_showUnpublishedHides = getValue("settings_showUnpublishedHides", true);
 
     try {
         if (c.userToken === null) {
@@ -10672,6 +10673,7 @@ ToDo:
             html += checkboxy('settings_compact_layout_new_dashboard', 'Show compact layout on your dashboard') + "<br>";
             html += checkboxy('settings_embedded_smartlink_ignorelist', 'Show link to Ignore List in sidebar section Lists') + show_help("Embedded a link in the section Lists to your Ignore List into the sidebar of the new dashboard.") + "<br>";
             html += newParameterVersionSetzen(0.9) + newParameterOff;
+            html += checkboxy('settings_showUnpublishedHides', 'Show unpublished caches on your dashboard') + "<br>";
 
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>Old dashboard only</b></div>";
             html += checkboxy('settings_hide_visits_in_profile', 'Hide TB/Coin visits on your dashboard') + "<br>";
@@ -11814,6 +11816,7 @@ ToDo:
                 'settings_past_events_on_bm',
                 'settings_show_log_totals',
                 'settings_show_reviewer_as_vip',
+                'settings_showUnpublishedHides',
             );
 
             for (var i = 0; i < checkboxes.length; i++) {
