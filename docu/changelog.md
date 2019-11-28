@@ -59,6 +59,12 @@
 		If you want to use it, you have to activate the parameter.<br><br>
 	</li>
 	<li>
+		<strong>New:</strong> Set log status icon always visible. [<a href="https://github.com/2Abendsegler/GClh/issues/1110" title="Issue 1110">1110</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		<img src="../images/0.10/Screen26.jpg" alt="Screen26.jpg"> <img src="../images/0.10/Screen27.jpg" alt="Screen27.jpg"><br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_log_status_icon_visible" title="Link to your GClh Config">Settings -> Listing:<br>
+		<img src="../images/0.10/Screen28.jpg" alt="Screen28.jpg"></a><br><br>
+	</li>
+	<li>
 		<strong>Fix:</strong> Thunderforest is no longer supported on BRouter and Flopps. [<a href="https://github.com/2Abendsegler/GClh/issues/1041" title="Issue 1041">1041</a> / <a href="https://www.geocaching.com/profile/?u=radlerandi" title="Thanks to radlerandi">radlerandi</a>]<br>
 	</li>
 	<li>
