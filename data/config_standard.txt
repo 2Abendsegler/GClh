@@ -250,5 +250,6 @@
   "settings_hide_found_count": false,
   "settings_show_compact_logbook_but": true,
   "settings_show_1000_bm_lists": false,
+  "settings_cache_type_icon_visible": true,
   "settings_log_status_icon_visible": true
 }
