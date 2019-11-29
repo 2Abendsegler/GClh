@@ -8366,12 +8366,61 @@ var mainGC = function() {
             }
         } catch(e) {gclh_error("Save uid",e);}
     }
+	
+//Liste mit unveröffentlichten Caches sortieren
+	function abc(a, b) {
+		var sort = (a.getElementsByTagName('strong')[0].innerHTML < b.getElementsByTagName('strong')[0].innerHTML) ? -1 : (b.getElementsByTagName('strong')[0].innerHTML < a.getElementsByTagName('strong')[0].innerHTML) ? 1 : 0;
+		return sort;
+	}
+	function gcAuf(a, b) {
+		var sort = (a.getElementsByTagName('a')[0].href.substring(19, 26) < b.getElementsByTagName('a')[0].href.substring(19, 26)) ? -1 : (b.getElementsByTagName('a')[0].href.substring(19, 26) < a.getElementsByTagName('a')[0].href.substring(19, 26)) ? 1 : 0;
+		return sort;
+	}
+	function gcAb(a, b) {
+		var sort = (a.getElementsByTagName('a')[0].href.substring(19, 26) > b.getElementsByTagName('a')[0].href.substring(19, 26)) ? -1 : (b.getElementsByTagName('a')[0].href.substring(19, 26) > a.getElementsByTagName('a')[0].href.substring(19, 26)) ? 1 : 0;
+		return sort;
+	}
+	if (settings_set_compactLayoutUnpublishedHides_sort && document.location.pathname.match(/^\/account\/dashboard\/unpublishedcaches/)) {
+		try {
+			var unpublishedCaches_ol = document.querySelectorAll('#UnpublishedCaches ol');
+			//damit nicht mehrere Listen (deaktiviert / eingereicht) durcheinander gewürfelt werden
+			for (let index=0; index<unpublishedCaches_ol.length; index++) {
+				var unpublishedCaches_original = unpublishedCaches_ol[index].querySelectorAll('li');
+				var unpublishedCaches_list = new Array();
+				for (let i=0; i<unpublishedCaches_original.length; i++) { //in ein eigenes Array einfügen, damit .sort() funktioniert
+					unpublishedCaches_list.push(unpublishedCaches_original[i]);
+				}
+				switch (settings_compactLayoutUnpublishedHides_sort) {
+					case 'abc':
+						unpublishedCaches_list.sort(abc);
+						break;
+					case 'gcAb':
+						unpublishedCaches_list.sort(gcAb);
+						break;
+					case 'gcAuf':
+						unpublishedCaches_list.sort(gcAuf);
+						break;
+					default:
+						gclh_error("Sort unpublished caches",e);
+						break;
+				}
+				//erst alle listen elemente entfernen, da .replace() nicht funtioniert
+				for (let i=0; i<unpublishedCaches_original.length; i++) {
+                    unpublishedCaches_original[i].remove();
+				}
+				for (let i=0; i<unpublishedCaches_original.length; i++) {
+                    document.getElementById('UnpublishedCaches').getElementsByTagName('ol')[index].appendChild(unpublishedCaches_list[i]);
+				}
+			}
+		} catch(e) {gclh_error("Sort unpublished caches",e);}
+	}
 
-// Compact Layout für unpublished Caches
+// Compact Layout für unveröffentlichten Caches
     if (settings_compactLayout_unpublishedList && document.location.pathname.match(/^\/account\/dashboard\/unpublishedcaches/)) {
         try {
             document.getElementById('LayoutFeed').setAttribute('style', 'max-width:max-content; min-width:600px; width:unset;');
             if (document.getElementById('UnpublishedCaches')) {
+				var unpublished_caches_list = document.querySelectorAll('#UnpublishedCaches li');
                 for (let i=0; i<unpublished_caches_list.length; i++) {
                     let li = document.createElement('li');
                     li.setAttribute('class', 'activity-item');
