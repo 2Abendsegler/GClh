@@ -521,7 +521,9 @@ var variablesInit = function(c) {
     c.settings_past_events_on_bm = getValue("settings_past_events_on_bm", true);
     c.settings_show_log_totals = getValue("settings_show_log_totals", true);
     c.settings_show_reviewer_as_vip = getValue("settings_show_reviewer_as_vip", true);
-    c.settings_compact_layout_unpublishedList = getValue("settings_compact_layout_unpublishedList", true);
+    c.settings_compactLayout_unpublishedList = getValue("settings_compactLayout_unpublishedList", true);
+    c.settings_set_compactLayoutUnpublishedHides_sort = getValue("settings_set_compactLayoutUnpublishedHides_sort", true);
+    c.settings_compactLayoutUnpublishedHides_sort = getValue("settings_compactLayoutUnpublishedHides_sort", true);
 
     try {
         if (c.userToken === null) {
@@ -8366,32 +8368,28 @@ var mainGC = function() {
     }
 
 // Compact Layout für unpublished Caches
-    if (document.location.pathname.match(/^\/account\/dashboard\/unpublishedcaches/) && settings_compact_layout_unpublishedList) {
+    if (settings_compactLayout_unpublishedList && document.location.pathname.match(/^\/account\/dashboard\/unpublishedcaches/)) {
         try {
             document.getElementById('LayoutFeed').setAttribute('style', 'max-width:max-content; min-width:600px; width:unset;');
-            if (unpublished_caches_list = document.getElementById('UnpublishedCaches')) {
-                var unpublished_lists = document.querySelectorAll('#UnpublishedCaches ol');
-                for (let i=0; i<unpublished_lists.length; i++) {
-                    unpublished_caches_list = document.getElementById('UnpublishedCaches').getElementsByTagName('ol')[i].getElementsByTagName('li');
-                    for (let index=0; index<unpublished_caches_list.length; index++) {
-                        let li = document.createElement('li');
-                        li.setAttribute('class', 'activity-item');
-                        let icon = unpublished_caches_list[index].getElementsByTagName('div')[0];
-                        let name = unpublished_caches_list[index].getElementsByTagName('a')[0];
-                        name.setAttribute('style', 'font-size: .875rem;');
-                        icon.appendChild(name);
-                        icon.setAttribute('style', 'display:flex; align-items:center; justify-content:flex-start;');
-                        icon.getElementsByTagName('svg')[0].setAttribute('style', 'margin-top:unset;');
-                        li.appendChild(icon);
-                        unpublished_caches_list[index].parentNode.replaceChild(li, unpublished_caches_list[index]);
-                    }
+            if (document.getElementById('UnpublishedCaches')) {
+                for (let i=0; i<unpublished_caches_list.length; i++) {
+                    let li = document.createElement('li');
+                    li.setAttribute('class', 'activity-item');
+                    let icon = unpublished_caches_list[i].getElementsByTagName('div')[0];
+                    let name = unpublished_caches_list[i].getElementsByTagName('a')[0];
+                    name.setAttribute('style', 'font-size: .875rem;');
+                    icon.appendChild(name);
+                    icon.setAttribute('style', 'display:flex; align-items:center; justify-content:flex-start;');
+                    icon.getElementsByTagName('svg')[0].setAttribute('style', 'margin-top:unset;');
+                    li.appendChild(icon);
+                    unpublished_caches_list[i].parentNode.replaceChild(li, unpublished_caches_list[i]);
                 }
             }else {
-				var h6 = document.createElement('h6');
-				h6.setAttribute('class', 'h6');
-				h6.innerHTML = 'You Have No Unpublished Caches';
-				document.getElementById('LayoutFeed').appendChild(h6);
-			}
+                var h6 = document.createElement('h6');
+                h6.setAttribute('class', 'h6');
+                h6.innerHTML = 'You Have No Unpublished Caches';
+                document.getElementById('LayoutFeed').appendChild(h6);
+            }
         } catch(e) {gclh_error("Compact layout for unpublished caches",e);}
     }
 
@@ -10450,7 +10448,13 @@ var mainGC = function() {
             html += checkboxy('settings_modify_new_drafts_page', 'Modify draft items on the new drafts page') + show_help("Change the linkage of each draft. The title of the geocache now links to the geocaching listing and the cache icon, too (2nd line). The pen icon and the preview note links to the log composing page (3rd line). Add the log type as overlay icon onto the cache icon.") + "<br>";
             html += newParameterVersionSetzen(0.9) + newParameterOff;
             html += newParameterOn1;
-            html += checkboxy('settings_compact_layout_unpublishedList', 'Show compact layout for unpublished caches') + "<br>";
+            html += checkboxy('settings_compactLayout_unpublishedList', 'Show compact layout for unpublished caches') + "<br>";
+            html += checkboxy('settings_set_compactLayoutUnpublishedHides_sort', 'Sort unpublished caches');
+            html += "<select class='gclh_form' id='settings_compactLayoutUnpublishedHides_sort'>";
+            html += "  <option value='abc' " + (settings_compactLayoutUnpublishedHides_sort == 'abc' ? "selected='selected'" : "") + "> Alphabetical</option>";
+            html += "  <option value='gcAuf' " + (settings_compactLayoutUnpublishedHides_sort == 'gcAuf' ? "selected='selected'" : "") + "> GC-Code (ascending)</option>";
+            html += "  <option value='gcAb' " + (settings_compactLayoutUnpublishedHides_sort == 'gcAb' ? "selected='selected'" : "") + "> GC-Code (descending)</option>";
+            html += "</select><br>";
             html += newParameterVersionSetzen("0.10") + newParameterOff;
             html += "</div>";
 
@@ -11402,6 +11406,7 @@ var mainGC = function() {
             setEvForDepPara("settings_show_gpsvisualizer_link","settings_show_gpsvisualizer_gcsymbols");
             setEvForDepPara("settings_show_gpsvisualizer_link","settings_show_gpsvisualizer_typedesc");
             setEvForDepPara("settings_show_log_counter_but","settings_show_log_counter");
+            setEvForDepPara("settings_set_compactLayoutUnpublishedHides_sort","settings_compactLayoutUnpublishedHides_sort");
             // Abhängigkeiten der Linklist Parameter.
             for (var i = 0; i < 100; i++) {
                 // 2. Spalte: Links für Custom BMs.
@@ -11768,7 +11773,8 @@ var mainGC = function() {
                 'settings_past_events_on_bm',
                 'settings_show_log_totals',
                 'settings_show_reviewer_as_vip',
-                'settings_compact_layout_unpublishedList',
+                'settings_compactLayout_unpublishedList',
+                'settings_set_compactLayoutUnpublishedHides_sort',
             );
 
             for (var i = 0; i < checkboxes.length; i++) {
