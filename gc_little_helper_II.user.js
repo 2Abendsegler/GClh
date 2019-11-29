@@ -8371,8 +8371,6 @@ var mainGC = function() {
 /*
 ToDo:
 - Status: Publish
-- Sortieren: Namen
-             GC-Code
 */
     if (is_page('dashboard') && settings_showUnpublishedHides) {
         try {
@@ -8394,7 +8392,7 @@ ToDo:
                                     unpublished_list.sort(gcAuf);
                                     break;
                                 default:
-                                    unpublished_list.sort(abc);
+                                    gclh_error("Sort unpublished caches on dashboard", e);
                             }
                         }
                         showList();
