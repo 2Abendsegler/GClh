@@ -59,12 +59,12 @@
 		If you want to use it, you have to activate the parameter.<br><br>
 	</li>
 	<li>
-		<strong>New:</strong> Set cache type icon and log status icon in cache listing visible. [<a href="https://github.com/2Abendsegler/GClh/issues/1110" title="Issue 1110">1110</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
-		Cache type icon:
+		<strong>New:</strong> Set cache type icon and log status icon in cache listing always visible. [<a href="https://github.com/2Abendsegler/GClh/issues/1110" title="Issue 1110">1110</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		Cache type icon:<br>
 		<img src="../images/0.10/Screen29.jpg" alt="Screen29.jpg"> <img src="../images/0.10/Screen30.jpg" alt="Screen30.jpg"><br>
 		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_cache_type_icon_visible" title="Link to your GClh Config">Settings -> Listing:<br>
 		<img src="../images/0.10/Screen31.jpg" alt="Screen31.jpg"></a><br>
-		Log status icon:
+		Log status icon:<br>
 		<img src="../images/0.10/Screen26.jpg" alt="Screen26.jpg"> <img src="../images/0.10/Screen27.jpg" alt="Screen27.jpg"><br>
 		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_log_status_icon_visible" title="Link to your GClh Config">Settings -> Listing:<br>
 		<img src="../images/0.10/Screen28.jpg" alt="Screen28.jpg"></a><br><br>
