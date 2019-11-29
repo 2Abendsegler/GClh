@@ -7871,7 +7871,7 @@ var mainGC = function() {
 
                         /* ambiguous matches of state (or country) name are not handled. Known cases:
                             Distrito Federal - Mexiko: Distrito Federal (state) / Brazil: Distrito Federal (state)
-                            Limburg	- Belgium: Limburg (state) / Netherlands: Limburg (state)
+                            Limburg    - Belgium: Limburg (state) / Netherlands: Limburg (state)
                         */
                         if        (  (countries && countries[0]) && !(states && states[0]) ) {
                             parameter = "c";
@@ -8368,19 +8368,30 @@ var mainGC = function() {
 // Compact Layout für unpublished Caches
     if (document.location.pathname.match(/^\/account\/dashboard\/unpublishedcaches/) && settings_compact_layout_unpublishedList) {
         try {
-            unpublished_caches_list = document.querySelectorAll('#UnpublishedCaches li');
-            for (let i=0; i<unpublished_caches_list.length; i++) {
-                let li = document.createElement('li');
-                li.setAttribute('class', 'activity-item');
-                let icon = unpublished_caches_list[i].getElementsByTagName('div')[0];
-                let name = unpublished_caches_list[i].getElementsByTagName('a')[0];
-                name.setAttribute('style', 'font-size: .875rem;');
-                icon.appendChild(name);
-                icon.setAttribute('style', 'display:flex; align-items:center; justify-content:flex-start;');
-                icon.getElementsByTagName('svg')[0].setAttribute('style', 'margin-top: unset;');
-                li.appendChild(icon);
-                unpublished_caches_list[i].parentNode.replaceChild(li, unpublished_caches_list[i]);
-            }
+            document.getElementById('LayoutFeed').setAttribute('style', 'max-width:max-content; min-width:600px; width:unset;');
+            if (unpublished_caches_list = document.getElementById('UnpublishedCaches')) {
+                var unpublished_lists = document.querySelectorAll('#UnpublishedCaches ol');
+                for (let i=0; i<unpublished_lists.length; i++) {
+                    unpublished_caches_list = document.getElementById('UnpublishedCaches').getElementsByTagName('ol')[i].getElementsByTagName('li');
+                    for (let index=0; index<unpublished_caches_list.length; index++) {
+                        let li = document.createElement('li');
+                        li.setAttribute('class', 'activity-item');
+                        let icon = unpublished_caches_list[index].getElementsByTagName('div')[0];
+                        let name = unpublished_caches_list[index].getElementsByTagName('a')[0];
+                        name.setAttribute('style', 'font-size: .875rem;');
+                        icon.appendChild(name);
+                        icon.setAttribute('style', 'display:flex; align-items:center; justify-content:flex-start;');
+                        icon.getElementsByTagName('svg')[0].setAttribute('style', 'margin-top:unset;');
+                        li.appendChild(icon);
+                        unpublished_caches_list[index].parentNode.replaceChild(li, unpublished_caches_list[index]);
+                    }
+                }
+            }else {
+				var h6 = document.createElement('h6');
+				h6.setAttribute('class', 'h6');
+				h6.innerHTML = 'You Have No Unpublished Caches';
+				document.getElementById('LayoutFeed').appendChild(h6);
+			}
         } catch(e) {gclh_error("Compact layout for unpublished caches",e);}
     }
 
