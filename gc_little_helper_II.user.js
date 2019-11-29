@@ -542,6 +542,7 @@ var variablesInit = function(c) {
     c.settings_show_compact_logbook_but = getValue("settings_show_compact_logbook_but", true);
     c.settings_show_1000_bm_lists = getValue("settings_show_1000_bm_lists", false);
     c.settings_log_status_icon_visible = getValue("settings_log_status_icon_visible", true);
+    c.settings_cache_type_icon_visible = getValue("settings_cache_type_icon_visible", true);
 
     try {
         if (c.userToken === null) {
@@ -1648,6 +1649,9 @@ var mainGC = function() {
             if ($('.more-cache-logs-link')[0] && $('.more-cache-logs-link')[0].href) $('.more-cache-logs-link')[0].href = "#logs_section";
             if (settings_log_status_icon_visible && $('#activityBadge use')[0]) {
                 $('#activityBadge use')[0].setAttribute('xlink:href', $('#activityBadge use')[0].getAttribute('xlink:href').replace('-disabled', ''));
+            }
+            if (settings_cache_type_icon_visible && $('#uxCacheImage use')[0]) {
+                $('#uxCacheImage use')[0].setAttribute('xlink:href', $('#uxCacheImage use')[0].getAttribute('xlink:href').replace('-disabled', ''));
             }
         } catch(e) {gclh_error("Disabled and archived",e);}
     }
@@ -11187,6 +11191,7 @@ var mainGC = function() {
             html += newParameterOn1;
             html += checkboxy('settings_show_compact_logbook_but', 'Show button \"Show/Hide compact logs\" above the logs') + "<br>";
             html += checkboxy('settings_hide_found_count', 'Hide found count') + "<br>";
+            html += checkboxy('settings_cache_type_icon_visible', 'Set cache type icon always visible') + show_help("With this option, the cache type icon is always displayed complete, even if the cache is deactivated or archived.") + "<br>";
             html += checkboxy('settings_log_status_icon_visible', 'Set log status icon always visible') + show_help("With this option, the log status icon is always displayed complete, even if the cache is deactivated or archived. The log status icon is located above the cache type icons and indicates for example if a cache was found, if there is a personal note or if there are corrected coordinates.") + "<br>";
             html += newParameterVersionSetzen("0.10") + newParameterOff;
             html += "</div>";
@@ -12225,6 +12230,7 @@ var mainGC = function() {
                 'settings_show_compact_logbook_but',
                 'settings_show_1000_bm_lists',
                 'settings_log_status_icon_visible',
+                'settings_cache_type_icon_visible',
             );
 
             for (var i = 0; i < checkboxes.length; i++) {
