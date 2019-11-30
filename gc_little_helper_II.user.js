@@ -8383,7 +8383,6 @@ var mainGC = function() {
     if (settings_set_compactLayoutUnpublishedHides_sort && document.location.pathname.match(/^\/account\/dashboard\/unpublishedcaches/)) {
         try {
             var unpublishedCaches_ol = document.querySelectorAll('#LayoutFeed ol');
-			console.log(unpublishedCaches_ol);
             //damit nicht mehrere Listen (deaktiviert / eingereicht) durcheinander gewürfelt werden
             for (let index=0; index<unpublishedCaches_ol.length; index++) {
                 var unpublishedCaches_original = unpublishedCaches_ol[index].querySelectorAll('li');
@@ -8391,7 +8390,6 @@ var mainGC = function() {
                 for (let i=0; i<unpublishedCaches_original.length; i++) { //in ein eigenes Array einfügen, damit .sort() funktioniert
                     unpublishedCaches_list.push(unpublishedCaches_original[i]);
                 }
-				console.log(unpublishedCaches_list);
                 switch (settings_compactLayoutUnpublishedHides_sort) {
                     case 'abc':
                         unpublishedCaches_list.sort(abc);
