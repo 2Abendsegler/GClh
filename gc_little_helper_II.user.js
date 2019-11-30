@@ -523,7 +523,7 @@ var variablesInit = function(c) {
     c.settings_show_reviewer_as_vip = getValue("settings_show_reviewer_as_vip", true);
     c.settings_compactLayout_unpublishedList = getValue("settings_compactLayout_unpublishedList", true);
     c.settings_set_compactLayoutUnpublishedHides_sort = getValue("settings_set_compactLayoutUnpublishedHides_sort", true);
-    c.settings_compactLayoutUnpublishedHides_sort = getValue("settings_compactLayoutUnpublishedHides_sort", true);
+    c.settings_compactLayoutUnpublishedHides_sort = getValue("settings_compactLayoutUnpublishedHides_sort", 'abc');
 
     try {
         if (c.userToken === null) {
@@ -11606,6 +11606,7 @@ var mainGC = function() {
             setValue("settings_primary_elevation_service", document.getElementById('settings_primary_elevation_service').value);
             setValue("settings_secondary_elevation_service", document.getElementById('settings_secondary_elevation_service').value);
             setValue("settings_show_latest_logs_symbols_count_map", document.getElementById('settings_show_latest_logs_symbols_count_map').value);
+            setValue("settings_compactLayoutUnpublishedHides_sort", document.getElementById('settings_compactLayoutUnpublishedHides_sort').value);
 
             // Map Layers in vorgegebener Reihenfolge übernehmen.
             var new_map_layers_available = document.getElementById('settings_maplayers_available');
