@@ -8369,9 +8369,9 @@ var mainGC = function() {
             }
         } catch(e) {gclh_error("Save uid",e);}
     }
-    
+
 //Liste mit unveröffentlichten Caches sortieren
-	//Funktionen zum sortieren, in der unpublished Übersicht und in der Erweiterung im Dashboard
+    //Funktionen zum sortieren, in der unpublished Übersicht und in der Erweiterung im Dashboard
     function abc(a, b) {
         var sort = (a.getElementsByTagName('strong')[0].innerHTML < b.getElementsByTagName('strong')[0].innerHTML) ? -1 : (b.getElementsByTagName('strong')[0].innerHTML < a.getElementsByTagName('strong')[0].innerHTML) ? 1 : 0;
         return sort;
@@ -8384,7 +8384,7 @@ var mainGC = function() {
         var sort = (a.getElementsByTagName('a')[0].href.substring(19, 26) > b.getElementsByTagName('a')[0].href.substring(19, 26)) ? -1 : (b.getElementsByTagName('a')[0].href.substring(19, 26) > a.getElementsByTagName('a')[0].href.substring(19, 26)) ? 1 : 0;
         return sort;
     }
-	
+
     if (settings_set_compactLayoutUnpublishedHides_sort && document.location.pathname.match(/^\/account\/dashboard\/unpublishedcaches/)) {
         try {
             var unpublishedCaches_ol = document.querySelectorAll('#LayoutFeed ol');
@@ -8507,13 +8507,14 @@ var mainGC = function() {
                                     span.innerHTML = '<b>Status:</b> <em>Disabled</em>';
                                 }else if (divs[0].id == 'unpublishedReviewerNoteMessage') { //Der Reviewer hat geantwortet
                                     span.innerHTML = '<b>Status:</b> <em>Your reviewer has responded</em>';
-                                }else if (divs[0].id == 'unpublishedEnabledMessage') { //Der Cache wurde subbmited, aber noch nicht von einem Reviewer bearbeitet
+                                }else if (divs[0].id == 'unpublishedEnabledMessage') { //Der Cache wurde submited, aber noch nicht von einem Reviewer bearbeitet
                                     span.innerHTML = '<b>Status:</b> <em>Waiting for review</em>';
-                                }else if (divs[0].id == 'ctl00_ContentBody_lockedMessage') { //Der Cache wurde überprüft und wartet auf dem publish (evt. ToDo: Publishzeit suchen)
+                                }else if (divs[0].id == 'ctl00_ContentBody_lockedMessage') { //Der Cache wurde überprüft und wartet auf den publish
                                     span.innerHTML = '<b>Status:</b> <em>Ready to publish</em>';
                                 }else {
-                                    span.innerHTML = '<b>GClh Error:</b> GS change something. Please create an <a href="https://github.com/2Abendsegler/GClh/issues" target="_blank">bug report</a>.';
-                                }
+									let errorMsg = 'GS change something. Error: Show status for' + name.getElementsByTagName('a')[0].href.substring(19, 26);
+									gclh_error(errorMsg, e);}
+								}
                                 icon.appendChild(span);
                             });
                             icon.setAttribute('style', 'display:flex; align-items:center; justify-content:flex-start;');
@@ -8526,10 +8527,10 @@ var mainGC = function() {
                         }
                         unpublished_caches.appendChild(html);
                         document.getElementsByClassName('sidebar-right')[0].appendChild(unpublished_caches);
-                    } // else: No unpublished found
-                } //else: nichts gefunden, nichts passiert
+                    }
+                }
             });
-        } catch(e) {gclh_error("Add unpublished hides in dashboard", e);}
+        } catch(e) {gclh_error("Show unpublished hides in dashboard", e);}
     }
 
 // Add mailto link to profilpage.
