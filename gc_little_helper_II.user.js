@@ -8372,11 +8372,11 @@ var mainGC = function() {
         var sort = (a.getElementsByTagName('strong')[0].innerHTML < b.getElementsByTagName('strong')[0].innerHTML) ? -1 : (b.getElementsByTagName('strong')[0].innerHTML < a.getElementsByTagName('strong')[0].innerHTML) ? 1 : 0;
         return sort;
     }
-    function gcAuf(a, b) {
+    function gcOld(a, b) {
         var sort = (a.getElementsByTagName('a')[0].href.substring(19, 26) < b.getElementsByTagName('a')[0].href.substring(19, 26)) ? -1 : (b.getElementsByTagName('a')[0].href.substring(19, 26) < a.getElementsByTagName('a')[0].href.substring(19, 26)) ? 1 : 0;
         return sort;
     }
-    function gcAb(a, b) {
+    function gcNew(a, b) {
         var sort = (a.getElementsByTagName('a')[0].href.substring(19, 26) > b.getElementsByTagName('a')[0].href.substring(19, 26)) ? -1 : (b.getElementsByTagName('a')[0].href.substring(19, 26) > a.getElementsByTagName('a')[0].href.substring(19, 26)) ? 1 : 0;
         return sort;
     }
@@ -8394,11 +8394,11 @@ var mainGC = function() {
                     case 'abc':
                         unpublishedCaches_list.sort(abc);
                         break;
-                    case 'gcAb':
-                        unpublishedCaches_list.sort(gcAb);
+                    case 'gcNew':
+                        unpublishedCaches_list.sort(gcNew);
                         break;
-                    case 'gcAuf':
-                        unpublishedCaches_list.sort(gcAuf);
+                    case 'gcOld':
+                        unpublishedCaches_list.sort(gcOld);
                         break;
                     default:
                         gclh_error("Sort unpublished caches",e);
@@ -10501,8 +10501,8 @@ var mainGC = function() {
             html += checkboxy('settings_set_compactLayoutUnpublishedHides_sort', 'Sort unpublished caches');
             html += "<select class='gclh_form' id='settings_compactLayoutUnpublishedHides_sort'>";
             html += "  <option value='abc' " + (settings_compactLayoutUnpublishedHides_sort == 'abc' ? "selected='selected'" : "") + "> Alphabetical</option>";
-            html += "  <option value='gcAuf' " + (settings_compactLayoutUnpublishedHides_sort == 'gcAuf' ? "selected='selected'" : "") + "> GC-Code (ascending)</option>";
-            html += "  <option value='gcAb' " + (settings_compactLayoutUnpublishedHides_sort == 'gcAb' ? "selected='selected'" : "") + "> GC-Code (descending)</option>";
+            html += "  <option value='gcOld' " + (settings_compactLayoutUnpublishedHides_sort == 'gcOld' ? "selected='selected'" : "") + "> GC-Code (oldest first)</option>";
+            html += "  <option value='gcNew' " + (settings_compactLayoutUnpublishedHides_sort == 'gcNew' ? "selected='selected'" : "") + "> GC-Code (newest first)</option>";
             html += "</select><br>";
             html += newParameterVersionSetzen("0.10") + newParameterOff;
             html += "</div>";
