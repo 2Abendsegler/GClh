@@ -8509,10 +8509,10 @@ var mainGC = function() {
                                     span.innerHTML = '<b>Status:</b> <em>Your reviewer has responded</em>';
                                 }else if (divs[0].id == 'unpublishedEnabledMessage') { //Der Cache wurde subbmited, aber noch nicht von einem Reviewer bearbeitet
                                     span.innerHTML = '<b>Status:</b> <em>Waiting for review</em>';
-                                }else if (divs[0].id == 'unpublishedDisabledMessage') { //Der Cache wurde überprüft und wartet auf dem publish (evt. ToDo: Publishzeit suchen)
+                                }else if (divs[0].id == 'ctl00_ContentBody_lockedMessage') { //Der Cache wurde überprüft und wartet auf dem publish (evt. ToDo: Publishzeit suchen)
                                     span.innerHTML = '<b>Status:</b> <em>Ready to publish</em>';
                                 }else {
-                                    span.innerHTML = '<b>GClh Error:</b> GS change something. Please create an <a href="https://github.com/2Abendsegler/GClh/issues" target="_blank">issue</a>.';
+                                    span.innerHTML = '<b>GClh Error:</b> GS change something. Please create an <a href="https://github.com/2Abendsegler/GClh/issues" target="_blank">bug report</a>.';
                                 }
                                 icon.appendChild(span);
                             });
@@ -10769,7 +10769,7 @@ var mainGC = function() {
             html += checkboxy('settings_compact_layout_new_dashboard', 'Show compact layout on your dashboard') + "<br>";
             html += checkboxy('settings_embedded_smartlink_ignorelist', 'Show link to Ignore List in sidebar section Lists') + show_help("Embedded a link in the section Lists to your Ignore List into the sidebar of the new dashboard.") + "<br>";
             html += newParameterVersionSetzen(0.9) + newParameterOff;
-            html += newParameterOn3;
+            html += newParameterOn1;
             html += checkboxy('settings_showUnpublishedHides', 'Show unpublished caches on your dashboard') + "<br>";
             html += " &nbsp; " + checkboxy('settings_set_showUnpublishedHides_sort', 'Sort unpublished caches on your dashboard') + "";
             html += "<select class='gclh_form' id='settings_showUnpublishedHides_sort'>";
