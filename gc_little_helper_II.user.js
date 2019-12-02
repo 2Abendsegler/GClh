@@ -8493,7 +8493,12 @@ var mainGC = function() {
                         });
                         unpublished_caches.appendChild(head);
                         var html = document.createElement('ul');
-                        html.setAttribute('style', 'padding-left: unset');
+                        if (!getValue('unpublishedCaches_visible', false)) {
+                            head.setAttribute('class', 'panel-header');
+                            html.setAttribute('style', 'display:none;padding-left:unset;');
+                        }else {
+                            html.setAttribute('style', 'padding-left: unset');
+                        }
                         for (let i=0; i<unpublished_list.length; i++) {
                             let icon = unpublished_list[i].getElementsByTagName('div')[0];
                             let name = unpublished_list[i].getElementsByTagName('div')[1];
