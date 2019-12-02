@@ -8512,9 +8512,9 @@ var mainGC = function() {
                                 }else if (divs[0].id == 'ctl00_ContentBody_lockedMessage') { //Der Cache wurde überprüft und wartet auf den publish
                                     span.innerHTML = '<b>Status:</b> <em>Ready to publish</em>';
                                 }else {
-									let errorMsg = 'GS change something. Error: Show status for' + name.getElementsByTagName('a')[0].href.substring(19, 26);
-									gclh_error(errorMsg, e);}
-								}
+                                    let errorMsg = 'GS change something. Error: Show status for' + name.getElementsByTagName('a')[0].href.substring(19, 26);
+                                    gclh_error(errorMsg, e);
+                                }
                                 icon.appendChild(span);
                             });
                             icon.setAttribute('style', 'display:flex; align-items:center; justify-content:flex-start;');
@@ -11557,6 +11557,8 @@ var mainGC = function() {
             setEvForDepPara("settings_show_log_counter_but","settings_show_log_counter");
             setEvForDepPara("settings_set_compactLayoutUnpublishedHides_sort","settings_compactLayoutUnpublishedHides_sort");
             setEvForDepPara("settings_set_showUnpublishedHides_sort","settings_showUnpublishedHides_sort");
+            setEvForDepPara("settings_showUnpublishedHides","settings_set_showUnpublishedHides_sort");
+            setEvForDepPara("settings_showUnpublishedHides","settings_showUnpublishedHides_sort");
             // Abhängigkeiten der Linklist Parameter.
             for (var i = 0; i < 100; i++) {
                 // 2. Spalte: Links für Custom BMs.
