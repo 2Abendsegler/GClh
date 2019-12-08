@@ -6716,6 +6716,175 @@ var mainGC = function() {
         } catch(e) {gclh_error("Improve new dashboard",e);}
     }
 
+//Funktionen zum sortieren, in der unpublished Übersicht und in der Erweiterung im Dashboard
+    function abc(a, b) {
+        var sort = (a.getElementsByTagName('strong')[0].innerHTML < b.getElementsByTagName('strong')[0].innerHTML) ? -1 : (b.getElementsByTagName('strong')[0].innerHTML < a.getElementsByTagName('strong')[0].innerHTML) ? 1 : 0;
+        return sort;
+    }
+    function gcOld(a, b) {
+        var sort = (a.getElementsByTagName('a')[0].href.substring(19, 26) < b.getElementsByTagName('a')[0].href.substring(19, 26)) ? -1 : (b.getElementsByTagName('a')[0].href.substring(19, 26) < a.getElementsByTagName('a')[0].href.substring(19, 26)) ? 1 : 0;
+        return sort;
+    }
+    function gcNew(a, b) {
+        var sort = (a.getElementsByTagName('a')[0].href.substring(19, 26) > b.getElementsByTagName('a')[0].href.substring(19, 26)) ? -1 : (b.getElementsByTagName('a')[0].href.substring(19, 26) > a.getElementsByTagName('a')[0].href.substring(19, 26)) ? 1 : 0;
+        return sort;
+    }
+
+// Füge Unpublished Caches zum Dashboard
+    if (is_page('dashboard') && settings_showUnpublishedHides) {
+        try {
+            $.get('https://www.geocaching.com/account/dashboard/unpublishedcaches', null, function(text) {
+                // Look for unpublished Caches
+                var unpublished_list = $(text).find('#UnpublishedCaches li');
+                if (unpublished_list != null) {
+                    if(unpublished_list.length > 0){
+                        // we found unpublished
+                        if (settings_set_showUnpublishedHides_sort) {
+                            switch (settings_showUnpublishedHides_sort) {
+                                case 'abc':
+                                    unpublished_list.sort(abc);
+                                    break;
+                                case 'gcNew':
+                                    unpublished_list.sort(gcNew);
+                                    break;
+                                case 'gcOld':
+                                    unpublished_list.sort(gcOld);
+                                    break;
+                                default:
+                                    gclh_error("Sort unpublished caches on dashboard", e);
+                            }
+                        }
+                        var unpublished_caches = document.createElement('div');
+                        unpublished_caches.setAttribute('id', 'GClh_unpublishedCaches');
+                        unpublished_caches.setAttribute('class', 'panel collapsible');
+                        var head = document.createElement('div');
+                        head.setAttribute('class', 'panel-header isActive');
+                        head.innerHTML = '    <h1 class="h5 no-margin">Unpublished Hides</h1>'
+                                       + '    <svg height="22" width="22" class="opener">'
+                                       + '        <use xlink:href="/account/app/ui-icons/sprites/global.svg#icon-expand-svg-fill"></use>'
+                                       + '    </svg>';
+                        head.addEventListener('click', function() {
+                            if (getValue('unpublishedCaches_visible', true)) {
+                                head.setAttribute('class', 'panel-header');
+                                html.setAttribute('style', 'display:none;padding-left:unset;');
+                                setValue('unpublishedCaches_visible', false);
+                            }else {
+                                head.setAttribute('class', 'panel-header isActive');
+                                html.setAttribute('style', 'padding-left:unset;');
+                                setValue('unpublishedCaches_visible', true);
+                            }
+                        });
+                        unpublished_caches.appendChild(head);
+                        var html = document.createElement('ul');
+                        if (!getValue('unpublishedCaches_visible', false)) {
+                            head.setAttribute('class', 'panel-header');
+                            html.setAttribute('style', 'display:none;padding-left:unset;');
+                        }else {
+                            html.setAttribute('style', 'padding-left: unset');
+                        }
+                        for (let i=0; i<unpublished_list.length; i++) {
+                            let icon = unpublished_list[i].getElementsByTagName('div')[0];
+                            let name = unpublished_list[i].getElementsByTagName('div')[1];
+                            name.getElementsByTagName('p')[0].setAttribute('style', 'margin:unset;');
+                            let cacheUrl = 'https://www.geocaching.com/geocache/' + name.getElementsByTagName('a')[0].href.substring(19, 26);
+                            $.get(cacheUrl, null, function(text2){
+                                let span = document.createElement('span');
+                                span.setAttribute('style', 'font-size: .875rem;');
+                                let divs = $(text2).find('#divContentMain div');
+                                if (divs[0].id == 'unpublishedMessage') { //Der Cache ist noch nicht eingereicht, du hast ihn disabled oder dem Reviewer geantwortet.
+                                    span.innerHTML = '<b>Status:</b> <em>Disabled</em>';
+                                }else if (divs[0].id == 'unpublishedReviewerNoteMessage') { //Der Reviewer hat geantwortet
+                                    span.innerHTML = '<b>Status:</b> <em>Your reviewer has responded</em>';
+                                }else if (divs[0].id == 'unpublishedEnabledMessage') { //Der Cache wurde submited, aber noch nicht von einem Reviewer bearbeitet
+                                    span.innerHTML = '<b>Status:</b> <em>Waiting for review</em>';
+                                }else if (divs[0].id == 'ctl00_ContentBody_lockedMessage') { //Der Cache wurde überprüft und wartet auf den publish
+                                    span.innerHTML = '<b>Status:</b> <em>Ready to publish</em>';
+                                }else {
+                                    let errorMsg = 'GS change something. Error: Show status for' + name.getElementsByTagName('a')[0].href.substring(19, 26);
+                                    gclh_error(errorMsg, e);
+                                }
+                                icon.appendChild(span);
+                            });
+                            icon.setAttribute('style', 'display:flex; align-items:center; justify-content:flex-start;');
+                            icon.getElementsByTagName('svg')[0].setAttribute('style', 'margin-top: unset;');
+                            let li = document.createElement('li');
+                            li.setAttribute('class', 'activity-item');
+                            li.appendChild(icon);
+                            li.appendChild(name);
+                            html.appendChild(li);
+                        }
+                        unpublished_caches.appendChild(html);
+                        document.getElementsByClassName('sidebar-right')[0].appendChild(unpublished_caches);
+                    }
+                }
+            });
+        } catch(e) {gclh_error("Show unpublished hides in dashboard", e);}
+    }
+
+//Liste mit unveröffentlichten Caches sortieren
+
+    if (settings_set_compactLayoutUnpublishedHides_sort && document.location.pathname.match(/^\/account\/dashboard\/unpublishedcaches/)) {
+        try {
+            var unpublishedCaches_ol = document.querySelectorAll('#LayoutFeed ol');
+            //damit nicht mehrere Listen (deaktiviert / eingereicht) durcheinander gewürfelt werden
+            for (let index=0; index<unpublishedCaches_ol.length; index++) {
+                var unpublishedCaches_original = unpublishedCaches_ol[index].querySelectorAll('li');
+                var unpublishedCaches_list = new Array();
+                for (let i=0; i<unpublishedCaches_original.length; i++) { //in ein eigenes Array einfügen, damit .sort() funktioniert
+                    unpublishedCaches_list.push(unpublishedCaches_original[i]);
+                }
+                switch (settings_compactLayoutUnpublishedHides_sort) {
+                    case 'abc':
+                        unpublishedCaches_list.sort(abc);
+                        break;
+                    case 'gcNew':
+                        unpublishedCaches_list.sort(gcNew);
+                        break;
+                    case 'gcOld':
+                        unpublishedCaches_list.sort(gcOld);
+                        break;
+                    default:
+                        gclh_error("Sort unpublished caches",e);
+                        break;
+                }
+                //erst alle listen elemente entfernen, da .replace() nicht funtioniert
+                for (let i=0; i<unpublishedCaches_original.length; i++) {
+                    unpublishedCaches_original[i].remove();
+                }
+                for (let i=0; i<unpublishedCaches_original.length; i++) {
+                    document.getElementById('LayoutFeed').getElementsByTagName('ol')[index].appendChild(unpublishedCaches_list[i]);
+                }
+            }
+        } catch(e) {gclh_error("Sort unpublished caches",e);}
+    }
+
+// Compact Layout für unveröffentlichten Caches
+    if (settings_compactLayout_unpublishedList && document.location.pathname.match(/^\/account\/dashboard\/unpublishedcaches/)) {
+        try {
+            document.getElementById('LayoutFeed').setAttribute('style', 'max-width:max-content; min-width:600px; width:unset;');
+            if (document.getElementById('UnpublishedCaches')) {
+                var unpublished_caches_list = document.querySelectorAll('#UnpublishedCaches li');
+                for (let i=0; i<unpublished_caches_list.length; i++) {
+                    let li = document.createElement('li');
+                    li.setAttribute('class', 'activity-item');
+                    let icon = unpublished_caches_list[i].getElementsByTagName('div')[0];
+                    let name = unpublished_caches_list[i].getElementsByTagName('a')[0];
+                    name.setAttribute('style', 'font-size: .875rem;');
+                    icon.appendChild(name);
+                    icon.setAttribute('style', 'display:flex; align-items:center; justify-content:flex-start;');
+                    icon.getElementsByTagName('svg')[0].setAttribute('style', 'margin-top:unset;');
+                    li.appendChild(icon);
+                    unpublished_caches_list[i].parentNode.replaceChild(li, unpublished_caches_list[i]);
+                }
+            }else {
+                var h6 = document.createElement('h6');
+                h6.setAttribute('class', 'h6');
+                h6.innerHTML = 'You Have No Unpublished Caches';
+                document.getElementById('LayoutFeed').appendChild(h6);
+            }
+        } catch(e) {gclh_error("Compact layout for unpublished caches",e);}
+    }
+
 // Show thumbnails.
     if (settings_show_thumbnails) {
         try {
@@ -8368,174 +8537,6 @@ var mainGC = function() {
                 }
             }
         } catch(e) {gclh_error("Save uid",e);}
-    }
-
-//Liste mit unveröffentlichten Caches sortieren
-    //Funktionen zum sortieren, in der unpublished Übersicht und in der Erweiterung im Dashboard
-    function abc(a, b) {
-        var sort = (a.getElementsByTagName('strong')[0].innerHTML < b.getElementsByTagName('strong')[0].innerHTML) ? -1 : (b.getElementsByTagName('strong')[0].innerHTML < a.getElementsByTagName('strong')[0].innerHTML) ? 1 : 0;
-        return sort;
-    }
-    function gcOld(a, b) {
-        var sort = (a.getElementsByTagName('a')[0].href.substring(19, 26) < b.getElementsByTagName('a')[0].href.substring(19, 26)) ? -1 : (b.getElementsByTagName('a')[0].href.substring(19, 26) < a.getElementsByTagName('a')[0].href.substring(19, 26)) ? 1 : 0;
-        return sort;
-    }
-    function gcNew(a, b) {
-        var sort = (a.getElementsByTagName('a')[0].href.substring(19, 26) > b.getElementsByTagName('a')[0].href.substring(19, 26)) ? -1 : (b.getElementsByTagName('a')[0].href.substring(19, 26) > a.getElementsByTagName('a')[0].href.substring(19, 26)) ? 1 : 0;
-        return sort;
-    }
-
-    if (settings_set_compactLayoutUnpublishedHides_sort && document.location.pathname.match(/^\/account\/dashboard\/unpublishedcaches/)) {
-        try {
-            var unpublishedCaches_ol = document.querySelectorAll('#LayoutFeed ol');
-            //damit nicht mehrere Listen (deaktiviert / eingereicht) durcheinander gewürfelt werden
-            for (let index=0; index<unpublishedCaches_ol.length; index++) {
-                var unpublishedCaches_original = unpublishedCaches_ol[index].querySelectorAll('li');
-                var unpublishedCaches_list = new Array();
-                for (let i=0; i<unpublishedCaches_original.length; i++) { //in ein eigenes Array einfügen, damit .sort() funktioniert
-                    unpublishedCaches_list.push(unpublishedCaches_original[i]);
-                }
-                switch (settings_compactLayoutUnpublishedHides_sort) {
-                    case 'abc':
-                        unpublishedCaches_list.sort(abc);
-                        break;
-                    case 'gcNew':
-                        unpublishedCaches_list.sort(gcNew);
-                        break;
-                    case 'gcOld':
-                        unpublishedCaches_list.sort(gcOld);
-                        break;
-                    default:
-                        gclh_error("Sort unpublished caches",e);
-                        break;
-                }
-                //erst alle listen elemente entfernen, da .replace() nicht funtioniert
-                for (let i=0; i<unpublishedCaches_original.length; i++) {
-                    unpublishedCaches_original[i].remove();
-                }
-                for (let i=0; i<unpublishedCaches_original.length; i++) {
-                    document.getElementById('LayoutFeed').getElementsByTagName('ol')[index].appendChild(unpublishedCaches_list[i]);
-                }
-            }
-        } catch(e) {gclh_error("Sort unpublished caches",e);}
-    }
-
-// Compact Layout für unveröffentlichten Caches
-    if (settings_compactLayout_unpublishedList && document.location.pathname.match(/^\/account\/dashboard\/unpublishedcaches/)) {
-        try {
-            document.getElementById('LayoutFeed').setAttribute('style', 'max-width:max-content; min-width:600px; width:unset;');
-            if (document.getElementById('UnpublishedCaches')) {
-                var unpublished_caches_list = document.querySelectorAll('#UnpublishedCaches li');
-                for (let i=0; i<unpublished_caches_list.length; i++) {
-                    let li = document.createElement('li');
-                    li.setAttribute('class', 'activity-item');
-                    let icon = unpublished_caches_list[i].getElementsByTagName('div')[0];
-                    let name = unpublished_caches_list[i].getElementsByTagName('a')[0];
-                    name.setAttribute('style', 'font-size: .875rem;');
-                    icon.appendChild(name);
-                    icon.setAttribute('style', 'display:flex; align-items:center; justify-content:flex-start;');
-                    icon.getElementsByTagName('svg')[0].setAttribute('style', 'margin-top:unset;');
-                    li.appendChild(icon);
-                    unpublished_caches_list[i].parentNode.replaceChild(li, unpublished_caches_list[i]);
-                }
-            }else {
-                var h6 = document.createElement('h6');
-                h6.setAttribute('class', 'h6');
-                h6.innerHTML = 'You Have No Unpublished Caches';
-                document.getElementById('LayoutFeed').appendChild(h6);
-            }
-        } catch(e) {gclh_error("Compact layout for unpublished caches",e);}
-    }
-
-// Füge Unpublished Caches zum Dashboard
-    if (is_page('dashboard') && settings_showUnpublishedHides) {
-        try {
-            $.get('https://www.geocaching.com/account/dashboard/unpublishedcaches', null, function(text) {
-                // Look for unpublished Caches
-                var unpublished_list = $(text).find('#UnpublishedCaches li');
-                if (unpublished_list != null) {
-                    if(unpublished_list.length > 0){
-                        // we found unpublished
-                        if (settings_set_showUnpublishedHides_sort) {
-                            switch (settings_showUnpublishedHides_sort) {
-                                case 'abc':
-                                    unpublished_list.sort(abc);
-                                    break;
-                                case 'gcNew':
-                                    unpublished_list.sort(gcNew);
-                                    break;
-                                case 'gcOld':
-                                    unpublished_list.sort(gcOld);
-                                    break;
-                                default:
-                                    gclh_error("Sort unpublished caches on dashboard", e);
-                            }
-                        }
-                        var unpublished_caches = document.createElement('div');
-                        unpublished_caches.setAttribute('id', 'GClh_unpublishedCaches');
-                        unpublished_caches.setAttribute('class', 'panel collapsible');
-                        var head = document.createElement('div');
-                        head.setAttribute('class', 'panel-header isActive');
-                        head.innerHTML = '    <h1 class="h5 no-margin">Unpublished Hides</h1>'
-                                       + '    <svg height="22" width="22" class="opener">'
-                                       + '        <use xlink:href="/account/app/ui-icons/sprites/global.svg#icon-expand-svg-fill"></use>'
-                                       + '    </svg>';
-                        head.addEventListener('click', function() {
-                            if (getValue('unpublishedCaches_visible', true)) {
-                                head.setAttribute('class', 'panel-header');
-                                html.setAttribute('style', 'display:none;padding-left:unset;');
-                                setValue('unpublishedCaches_visible', false);
-                            }else {
-                                head.setAttribute('class', 'panel-header isActive');
-                                html.setAttribute('style', 'padding-left:unset;');
-                                setValue('unpublishedCaches_visible', true);
-                            }
-                        });
-                        unpublished_caches.appendChild(head);
-                        var html = document.createElement('ul');
-                        if (!getValue('unpublishedCaches_visible', false)) {
-                            head.setAttribute('class', 'panel-header');
-                            html.setAttribute('style', 'display:none;padding-left:unset;');
-                        }else {
-                            html.setAttribute('style', 'padding-left: unset');
-                        }
-                        for (let i=0; i<unpublished_list.length; i++) {
-                            let icon = unpublished_list[i].getElementsByTagName('div')[0];
-                            let name = unpublished_list[i].getElementsByTagName('div')[1];
-                            name.getElementsByTagName('p')[0].setAttribute('style', 'margin:unset;');
-                            let cacheUrl = 'https://www.geocaching.com/geocache/' + name.getElementsByTagName('a')[0].href.substring(19, 26);
-                            $.get(cacheUrl, null, function(text2){
-                                let span = document.createElement('span');
-                                span.setAttribute('style', 'font-size: .875rem;');
-                                let divs = $(text2).find('#divContentMain div');
-                                if (divs[0].id == 'unpublishedMessage') { //Der Cache ist noch nicht eingereicht, du hast ihn disabled oder dem Reviewer geantwortet.
-                                    span.innerHTML = '<b>Status:</b> <em>Disabled</em>';
-                                }else if (divs[0].id == 'unpublishedReviewerNoteMessage') { //Der Reviewer hat geantwortet
-                                    span.innerHTML = '<b>Status:</b> <em>Your reviewer has responded</em>';
-                                }else if (divs[0].id == 'unpublishedEnabledMessage') { //Der Cache wurde submited, aber noch nicht von einem Reviewer bearbeitet
-                                    span.innerHTML = '<b>Status:</b> <em>Waiting for review</em>';
-                                }else if (divs[0].id == 'ctl00_ContentBody_lockedMessage') { //Der Cache wurde überprüft und wartet auf den publish
-                                    span.innerHTML = '<b>Status:</b> <em>Ready to publish</em>';
-                                }else {
-                                    let errorMsg = 'GS change something. Error: Show status for' + name.getElementsByTagName('a')[0].href.substring(19, 26);
-                                    gclh_error(errorMsg, e);
-                                }
-                                icon.appendChild(span);
-                            });
-                            icon.setAttribute('style', 'display:flex; align-items:center; justify-content:flex-start;');
-                            icon.getElementsByTagName('svg')[0].setAttribute('style', 'margin-top: unset;');
-                            let li = document.createElement('li');
-                            li.setAttribute('class', 'activity-item');
-                            li.appendChild(icon);
-                            li.appendChild(name);
-                            html.appendChild(li);
-                        }
-                        unpublished_caches.appendChild(html);
-                        document.getElementsByClassName('sidebar-right')[0].appendChild(unpublished_caches);
-                    }
-                }
-            });
-        } catch(e) {gclh_error("Show unpublished hides in dashboard", e);}
     }
 
 // Add mailto link to profilpage.
