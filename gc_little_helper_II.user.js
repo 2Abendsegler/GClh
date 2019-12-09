@@ -521,6 +521,8 @@ var variablesInit = function(c) {
     c.settings_past_events_on_bm = getValue("settings_past_events_on_bm", true);
     c.settings_show_log_totals = getValue("settings_show_log_totals", true);
     c.settings_show_reviewer_as_vip = getValue("settings_show_reviewer_as_vip", true);
+    c.settings_newMap_searchThisAreaAfterDraggingMap = getValue("settings_newMap_searchThisAreaAfterDraggingMap", true);
+    c.settings_newMap_compactLayout = getValue("settings_newMap_compactLayout", false);
 
     try {
         if (c.userToken === null) {
@@ -7617,6 +7619,7 @@ var mainGC = function() {
                 if (!document.location.href.match(/\.com\/play\/map\?bm=/) && document.getElementById('clear-map-control') && settings_newMap_searchThisAreaAfterDraggingMap) {
                     document.getElementById('clear-map-control').click();
                 }
+
                 //Compact layout on detail screen
                 if (settings_newMap_compactLayout) {
                     if (document.querySelector('#search-filters') && document.getElementsByClassName('text-field')[0]) { //Filter
@@ -10606,6 +10609,8 @@ var mainGC = function() {
             html += "</select> latest log symbols" + show_help("With this option, the choosen count of the latest logs symbols is shown at the map popup for a cache.") + "<br>";
             html += newParameterVersionSetzen(0.9) + newParameterOff;
             html += "</div>";
+            //settings_newMap_compactLayout
+            //settings_newMap_searchThisAreaAfterDraggingMap
 
             html += "<h4 class='gclh_headline2'>"+prepareHideable.replace("#name#","profile")+"Public profile</h4>";
             html += "<div id='gclh_config_profile' class='gclh_block'>";
@@ -11809,6 +11814,8 @@ var mainGC = function() {
                 'settings_past_events_on_bm',
                 'settings_show_log_totals',
                 'settings_show_reviewer_as_vip',
+                'settings_newMap_searchThisAreaAfterDraggingMap',
+                'settings_newMap_compactLayout',
             );
 
             for (var i = 0; i < checkboxes.length; i++) {
