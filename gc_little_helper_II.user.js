@@ -7587,31 +7587,8 @@ var mainGC = function() {
     }
 
 //Neue Karte
-    var settings_newMap_compactLayout = true; //nur für testzwecke, da defaul = false
     if (document.location.href.match(/\.com\/play\/map\//) || document.location.href.match(/\.com\/play\/map\?/)) {
         try {
-            if (settings_newMap_compactLayout) {
-                var css = '.search-bar {padding: 10px !important;}'
-                        + '.geocache-item, .cache-preview-header {padding: 5px 15px !important;}' //Cacheliste / cachevorschau
-                        + '.cache-detail-preview {padding: unset !important;}'
-                        + '.more-info {top: 0 !important;}'
-                        + '.geocache-action-bar {padding: 0 10px 5px !important;}'
-                        + '.cache-preview-attributes, .cache-preview-action-menu, .search-filters-block {padding: 5px 12px !important;}'
-                        + '.cache-activity-log {padding: 7px !important;}'
-                        + '.cache-preview-activities header {padding: 5px !important;}'
-                        + '.geocache-owner {margin-top: 0px !important; padding: 5px !important;} '
-                        + '.geocache-owner-name, .geocache-placed-date, .view-all-row, .cache-open-text-cta {display: none !important;}'
-                        + '.gclhOwner {color: #9b9b9b;}'
-                        + '.attributes {margin-bottom: 0 !important; padding-bottom: 5px !important;}'
-                        + '#search-filters-controls {padding-bottom: 7px !important;}' //filter
-                        + '.search-filter-group label {padding: 5px !important;}'
-                        + '.toggle-filter, search-filter-group {margin: 10px 0 !important;}'
-                        + '#search-filters-content .trinary-control, .search-filters-block.search-filters-attributes {margin-top: 0 !important;}'
-                        + '.label {text-transform: none !important;}'
-                        + '.chip-field-container, .text-field {min-height: unset !important; padding: 4px !important;}'
-                        + '#sidebar footer {padding: 5px 0 !important;}';
-                appendCssStyle(css);
-            }
             var newMapObserver = new MutationObserver(function(mutations) {
                 newMapObserver.disconnect(); //disconnect um das mehrfache feuern der subtrees zu vermeiden.
 
@@ -7620,33 +7597,10 @@ var mainGC = function() {
                     document.getElementById('clear-map-control').click();
                 }
 
-                //Compact layout on detail screen
-                if (settings_newMap_compactLayout) {
-                    if (document.querySelector('#search-filters') && document.getElementsByClassName('text-field')[0]) { //Filter
-                        document.getElementsByClassName('text-field')[0].setAttribute('class', 'chip-field-input'); //GS nutzt unterschiediche klassen für input felder
-                    }
-
-                    if (document.querySelector('.cache-preview-header')){ // cachevorschau
-                        document.querySelector('.more-info-link').getElementsByTagName('span')[1].setAttribute('style', 'display:none;');
-                        var buttons = document.querySelectorAll('.cache-preview-action-menu ul li');
-                        for (let i=0; i<3; i++) {
-                            buttons[i].getElementsByTagName('span')[0].setAttribute('style', 'display:none;')
-                            buttons[i].title = buttons[i].getElementsByTagName('span')[0].innerHTML;
-                        }
-                        if (document.querySelector('.gclhOwner')) {
-                            document.querySelector('.gclhOwner').remove();
-                        }
-                        let span = document.createElement('span');
-                        span.setAttribute('class', 'gclhOwner');
-                        span.innerHTML = document.querySelector('.geocache-owner-name').innerHTML + ' ' + document.querySelector('.geocache-placed-date').innerHTML;
-                        document.querySelector('.geocache-owner').appendChild(span);
-                    }
-
-                    //überwachung wieder starten
-                    let target = document.querySelector('body');
-                    let config = {attributes: true, childList: true, characterData: true, subtree: true};
-                    newMapObserver.observe(target, config);
-                }
+                //überwachung wieder starten
+                let target = document.querySelector('body');
+                let config = {attributes: true, childList: true, characterData: true, subtree: true};
+                newMapObserver.observe(target, config);
             });
 
             waitForBody();
