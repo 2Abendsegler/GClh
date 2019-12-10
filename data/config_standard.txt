@@ -109,6 +109,7 @@
   "settings_highlight_usercoords_it": true,
   "settings_map_hide_found": true,
   "settings_map_hide_hidden": true,
+  "settings_map_hide_dnfs": true,
   "settings_map_hide_2": false,
   "settings_map_hide_9": false,
   "settings_map_hide_5": false,
