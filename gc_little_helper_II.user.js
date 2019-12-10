@@ -7171,7 +7171,7 @@ var mainGC = function() {
         } catch(e) {gclh_error("Improve new dashboard",e);}
     }
 
-//Funktionen zum sortieren, in der unpublished Übersicht und in der Erweiterung im Dashboard
+// Funktionen zum sortieren, in der unpublished Übersicht und in der Erweiterung im Dashboard.
     function abc(a, b) {
         var sort = (a.getElementsByTagName('strong')[0].innerHTML < b.getElementsByTagName('strong')[0].innerHTML) ? -1 : (b.getElementsByTagName('strong')[0].innerHTML < a.getElementsByTagName('strong')[0].innerHTML) ? 1 : 0;
         return sort;
@@ -7185,15 +7185,15 @@ var mainGC = function() {
         return sort;
     }
 
-// Füge Unpublished Caches zum Dashboard
+// Füge Unpublished Caches zum Dashboard.
     if (is_page('dashboard') && settings_showUnpublishedHides) {
         try {
             $.get('https://www.geocaching.com/account/dashboard/unpublishedcaches', null, function(text) {
-                // Look for unpublished Caches
+                // Look for unpublished Caches.
                 var unpublished_list = $(text).find('#UnpublishedCaches li');
                 if (unpublished_list != null) {
                     if(unpublished_list.length > 0){
-                        // we found unpublished
+                        // We found unpublished.
                         if (settings_set_showUnpublishedHides_sort) {
                             switch (settings_showUnpublishedHides_sort) {
                                 case 'abc':
@@ -7276,12 +7276,11 @@ var mainGC = function() {
         } catch(e) {gclh_error("Show unpublished hides in dashboard", e);}
     }
 
-//Liste mit unveröffentlichten Caches sortieren
-
+// Liste mit unveröffentlichten Caches sortieren.
     if (settings_set_compactLayoutUnpublishedHides_sort && document.location.pathname.match(/^\/account\/dashboard\/unpublishedcaches/)) {
         try {
             var unpublishedCaches_ol = document.querySelectorAll('#LayoutFeed ol');
-            //damit nicht mehrere Listen (deaktiviert / eingereicht) durcheinander gewürfelt werden
+            // Damit nicht mehrere Listen (deaktiviert / eingereicht) durcheinander gewürfelt werden.
             for (let index=0; index<unpublishedCaches_ol.length; index++) {
                 var unpublishedCaches_original = unpublishedCaches_ol[index].querySelectorAll('li');
                 var unpublishedCaches_list = new Array();
@@ -7302,7 +7301,7 @@ var mainGC = function() {
                         gclh_error("Sort unpublished caches",e);
                         break;
                 }
-                //erst alle listen elemente entfernen, da .replace() nicht funtioniert
+                // Erst alle Listen Elemente entfernen, da .replace() nicht funtioniert.
                 for (let i=0; i<unpublishedCaches_original.length; i++) {
                     unpublishedCaches_original[i].remove();
                 }
@@ -7313,7 +7312,7 @@ var mainGC = function() {
         } catch(e) {gclh_error("Sort unpublished caches",e);}
     }
 
-// Compact Layout für unveröffentlichten Caches
+// Compact Layout für unveröffentlichten Caches.
     if (settings_compactLayout_unpublishedList && document.location.pathname.match(/^\/account\/dashboard\/unpublishedcaches/)) {
         try {
             document.getElementById('LayoutFeed').setAttribute('style', 'max-width:max-content; min-width:600px; width:unset;');
@@ -11057,7 +11056,7 @@ var mainGC = function() {
             html += newParameterVersionSetzen(0.9) + newParameterOff;
             html += newParameterOn1;
             html += checkboxy('settings_compactLayout_unpublishedList', 'Show compact layout for unpublished caches') + "<br>";
-            html += checkboxy('settings_set_compactLayoutUnpublishedHides_sort', 'Sort unpublished caches');
+            html += checkboxy('settings_set_compactLayoutUnpublishedHides_sort', 'Sort unpublished caches') + " ";
             html += "<select class='gclh_form' id='settings_compactLayoutUnpublishedHides_sort'>";
             html += "  <option value='abc' " + (settings_compactLayoutUnpublishedHides_sort == 'abc' ? "selected='selected'" : "") + "> Alphabetical</option>";
             html += "  <option value='gcOld' " + (settings_compactLayoutUnpublishedHides_sort == 'gcOld' ? "selected='selected'" : "") + "> GC-Code (oldest first)</option>";
@@ -11237,7 +11236,7 @@ var mainGC = function() {
             html += newParameterVersionSetzen(0.9) + newParameterOff;
             html += newParameterOn1;
             html += checkboxy('settings_showUnpublishedHides', 'Show unpublished caches on your dashboard') + "<br>";
-            html += " &nbsp; " + checkboxy('settings_set_showUnpublishedHides_sort', 'Sort unpublished caches on your dashboard') + "";
+            html += " &nbsp; " + checkboxy('settings_set_showUnpublishedHides_sort', 'Sort unpublished caches on your dashboard') + " ";
             html += "<select class='gclh_form' id='settings_showUnpublishedHides_sort'>";
             html += "  <option value='abc' " + (settings_showUnpublishedHides_sort == 'abc' ? "selected='selected'" : "") + "> Alphabetical</option>";
             html += "  <option value='gcOld' " + (settings_showUnpublishedHides_sort == 'gcOld' ? "selected='selected'" : "") + "> GC-Code (Oldest first)</option>";
