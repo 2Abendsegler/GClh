@@ -415,6 +415,7 @@ var variablesInit = function(c) {
     c.settings_highlight_usercoords_it = getValue('settings_highlight_usercoords_it', true);
     c.settings_map_hide_found = getValue('settings_map_hide_found', true);
     c.settings_map_hide_hidden = getValue('settings_map_hide_hidden', true);
+    c.settings_map_hide_dnfs = getValue('settings_map_hide_dnfs', true);
     c.settings_map_hide_2 = getValue('settings_map_hide_2', false);
     c.settings_map_hide_9 = getValue('settings_map_hide_9', false);
     c.settings_map_hide_5 = getValue('settings_map_hide_5', false);
@@ -7900,6 +7901,12 @@ var mainGC = function() {
                 if (button) button.click();
             }
             if (settings_map_hide_hidden) isMapLoad(hideHiddenCaches);
+            function removeDNFSmileys() {
+                if (document.location.href.match(/&asq=/)) return;
+                var button = unsafeWindow.document.getElementById("m_myCaches").childNodes[5];
+                if (button) button.click();
+            }
+            if (settings_map_hide_dnfs) isMapLoad(removeDNFSmileys);
             function getAllCachetypeButtons(){
                 return ['Legend2', 'Legend9', 'Legend3', 'Legend6', 'Legend13', 'Legend453', 'Legend7005', 'Legend1304', 'Legend137', 'Legend4', 'Legend11', 'Legend8', 'Legend5', 'Legend1858'];
             }
@@ -11117,6 +11124,9 @@ var mainGC = function() {
             html += checkboxy('settings_hide_map_header', 'Hide header by default') + "<br>";
             html += checkboxy('settings_map_hide_found', 'Hide found caches by default') + prem + "<br>";
             html += checkboxy('settings_map_hide_hidden', 'Hide own caches by default') + prem + "<br>";
+            html += newParameterOn1;
+            html += checkboxy('settings_map_hide_dnfs', 'Hide DNF smileys by default') + prem + "<br>";
+            html += newParameterVersionSetzen('0.10') + newParameterOff;
             html += "&nbsp;" + "Hide cache types by default: " + prem + "<br>";
 
             var imgStyle = "style='padding-top: 4px; vertical-align: bottom;'";
@@ -12321,6 +12331,7 @@ var mainGC = function() {
                 'settings_highlight_usercoords_it',
                 'settings_map_hide_found',
                 'settings_map_hide_hidden',
+                'settings_map_hide_dnfs',
                 'settings_map_hide_2',
                 'settings_map_hide_9',
                 'settings_map_hide_5',
