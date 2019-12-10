@@ -120,7 +120,7 @@
 </ul>
 <br>
 
-### Map (search map):
+### Map (search map / new map):
 <ul>	
 	<li>
 		<strong>New:</strong> Integrate GClh header with Linklist and GC Search in new designed map page (search map). [<a href="https://github.com/2Abendsegler/GClh/issues/987" title="Issue 987">987</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
@@ -131,6 +131,18 @@
 		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#ll#settings_bookmarks_top_menu_h" title="Link to your GClh Config">Settings -> Linklist / Navigation:<br> 
 		<img src="../images/0.10/Screen24.jpg" alt="Screen24.jpg"></a><br>
 		If you want to use it in your Linklist, you have to set it.<br><br>
+	</li>
+</ul>
+<br>
+
+
+### Map (browse map / old map):
+<ul>	
+	<li>
+		<strong>New:</strong> Hide DNF smileys by default in browse map (old map). [<a href="https://github.com/2Abendsegler/GClh/issues/1115" title="Issue 1115">1115</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br>
+		<img src="../images/0.10/Screen36.jpg" alt="Screen36.jpg"></a><br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_map_hide_dnfs" title="Link to your GClh Config">Settings -> Map:<br> 
+		<img src="../images/0.10/Screen37.jpg" alt="Screen37.jpg"></a><br><br>
 	</li>
 </ul>
 <br>
