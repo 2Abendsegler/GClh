@@ -142,7 +142,7 @@
 		Show unpublished caches in dashboard under Nearby Events:<br>
 		<img src="../images/0.10/Screen32.jpg" alt="Screen32.jpg"><br>
 		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_showUnpublishedHides" title="Link to your GClh Config">Settings -> Dashboard:<br> 
-		<img src="../images/0.10/Screen33.jpg" alt="Screen33.jpg"></a><br>
+		<img src="../images/0.10/Screen33.jpg" alt="Screen33.jpg"></a><br><br>
 		Show compact layout on unpublished caches page:<br>
 		<img src="../images/0.10/Screen34.jpg" alt="Screen34.jpg"><br>
 		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_compactLayout_unpublishedList" title="Link to your GClh Config">Settings -> Others:<br> 
