@@ -67,7 +67,7 @@ var checkRunningOnce = function(c) {
             var text = 'The script "GC little helper II" is already running.\nPlease make sure that it runs only once.\n\nDo you want to see tips on how this could happen \nand what you can do about it?';
             var url  = 'https://github.com/2Abendsegler/GClh/blob/master/docu/faq.md';
             if (window.confirm(text)) window.open(url, '_blank');
-        }else appendMetaId("GClh_II_running");
+        } else appendMetaId("GClh_II_running");
     }
 };
 
@@ -540,7 +540,20 @@ var variablesInit = function(c) {
     c.settings_show_reviewer_as_vip = getValue("settings_show_reviewer_as_vip", true);
     c.settings_hide_found_count = getValue("settings_hide_found_count", false);
     c.settings_show_compact_logbook_but = getValue("settings_show_compact_logbook_but", true);
-    c.settings_show_1000_bm_lists = getValue("settings_show_1000_bm_lists", false);
+    c.settings_lists_compact_layout = getValue("settings_lists_compact_layout", false);
+    c.settings_lists_disabled = getValue("settings_lists_disabled", false);
+    c.settings_lists_disabled_color = getValue("settings_lists_disabled_color", "4A4A4A");
+    c.settings_lists_disabled_strikethrough = getValue("settings_lists_disabled_strikethrough", true);
+    c.settings_lists_archived = getValue("settings_lists_archived", false);
+    c.settings_lists_archived_color = getValue("settings_lists_archived_color", "8C0B0B");
+    c.settings_lists_archived_strikethrough = getValue("settings_lists_archived_strikethrough", true);
+    c.settings_lists_icons_visible = getValue("settings_lists_icons_visible", false);
+    c.settings_lists_log_status_icons_visible = getValue("settings_lists_log_status_icons_visible", true);
+    c.settings_lists_cache_type_icons_visible = getValue("settings_lists_cache_type_icons_visible", true);
+    c.settings_lists_premium_column = getValue("settings_lists_premium_column", false);
+    c.settings_lists_found_column_bml = getValue("settings_lists_found_column_bml", false);
+    c.settings_lists_show_log_it = getValue("settings_lists_show_log_it", false);
+    c.settings_lists_back_to_top = getValue("settings_lists_back_to_top", false);
 
     try {
         if (c.userToken === null) {
@@ -1032,7 +1045,7 @@ var asynchronGC = function() {
                 headerHTML = headerHTML.replace('<nav ', '<gclh_nav ').replace('</nav>', '</gclh_nav>').replace(/href="\.\./gi, 'href="');
                 // Build header and start mainGC.
                 function buildUpHeaderAndStart(waitCount, html) {
-                    if ($('nav.gc-nav-menu, #GCHeader') && !html == "") {
+                    if ($('nav.gc-nav-menu, #GCHeader')[0] && !html == "") {
                         // Part of core CSS of Groundspeak.
                         var css = corecss;
                         // Integrate html for new header.
@@ -1641,6 +1654,7 @@ var mainGC = function() {
         try {
             if ($('#ctl00_ContentBody_uxGalleryImagesLink')[0]) $('#ctl00_ContentBody_uxGalleryImagesLink')[0].innerHTML = $('#ctl00_ContentBody_uxGalleryImagesLink')[0].innerHTML.replace("View the ", "");
             if ($('#ctl00_ContentBody_archivedMessage')[0] && $('#ctl00_ContentBody_CacheName')[0]) $('#ctl00_ContentBody_CacheName')[0].style.color = '#8C0B0B';
+            // (If the cache is locked for new logs, the ctl00_ContentBody_archivedMessage respectively the ctl00_ContentBody_disabledMessage info is not available.)
             if (settings_strike_archived && $('#ctl00_ContentBody_CacheName')[0] && ($('#ctl00_ContentBody_archivedMessage')[0] || $('#ctl00_ContentBody_disabledMessage')[0])) {
                 $('#ctl00_ContentBody_CacheName')[0].style.textDecoration = 'line-through';
             }
@@ -2176,7 +2190,7 @@ var mainGC = function() {
         html += '</div>';
         $('.CacheDetailNavigation ul').first().append('<li>'+html+'</li>');
         $('.copydata_click').click(function() {
-            copydata_copy( this )
+            copydata_copy( this );
         });
     }
 
@@ -4463,101 +4477,316 @@ var mainGC = function() {
         } catch(e) {gclh_error("Name for PQ from bookmark",e);}
     }
 
-// Set mutation observer for the buttons in new lists page with My Lists, Favorites, Ignored Caches.
+// Improve new lists page with my lists, bookmark lists, favorites list and ignore list.
     if (is_page('lists')) {
         try {
-            var global_buildObserverBMLs = false;
-
-            // Build mutation observer for buttons.
-            function buildObserverButtons() {
-                var observerButtons = new MutationObserver(function(mutations) {
-                    mutations.forEach(function(mutation) {
-                        if (global_buildObserverBMLs == false) checkForBuildObserverBMLs(0);
-                        getBMLs(0);
-                    });
-                });
-                var target = document.querySelector('.gc-button-group');
-                var config = { childList: true };
-                observerButtons.observe(target, config);
+            // Set lines in color for user and in zebra.
+            // Set correct number of columns in longtext. BMLs and Ignore List.
+            function setLinesInColorAndCorrectColspan(waitCount) {
+                if ($('.rt-table .rt-tbody .rt-tr')[0] || ($('.geocache-table tbody tr')[0])) {
+                    var lines = $('.rt-table .rt-tbody .rt-tr, .geocache-table tbody tr');
+                    if (lines && $('.geocache-table tbody tr')[0]) {
+                        if (settings_show_common_lists_color_user && $('.list-details')[0]) {
+                            setLinesColorUser('settings_show_common_lists_color', 'user', lines, 1, '', 'new');
+                        }
+                        var numberOfColumns = $(lines[0]).find($('td')).length - 1;
+                        $('.geocache-table tbody tr td.cache-description').each(function() {
+                            $(this).attr('colspan', numberOfColumns);
+                        });
+                    }
+                    if (lines && settings_show_common_lists_in_zebra) {
+                        setLinesColorInZebra(settings_show_common_lists_in_zebra, lines, 1);
+                    }
+                } else {waitCount++; if (waitCount <= 50) setTimeout(function(){setLinesInColorAndCorrectColspan(waitCount);}, 200);}
             }
-            // Check if mutation observer for Buttons can be build.
-            function checkForBuildObserverButtons(waitCount) {
-                if ($('.gc-button-group')[0]) {
-                    buildObserverButtons();
-                } else {waitCount++; if (waitCount <= 200) setTimeout(function(){checkForBuildObserverButtons(waitCount);}, 50);}
+
+            // Improve layout.
+            function improveLayoutHead(waitCount) {
+                if ($('.rt-table .rt-thead .rt-tr')[0] || $('.geocache-table thead tr')[0]) {
+                    if ($('.gclh_improveLayoutHead')[0]) return;
+                    var css = '';
+                    // Compact layout.
+                    if (settings_lists_compact_layout) {
+                        // BML: Disable back button.
+                        css += '.breadcrumb {display: none;}';
+                        // BML: Set icon edit description upwards.
+                        if ($('.edit-description')[0] && $('.structure header h1')[0]) {
+                            $('.structure header h1 span').before($('.edit-description:first').remove().get().reverse());
+                            css += '.edit-description {margin-left: 12px; margin-right: 4px;}';
+                        }
+                        // BML: Disable "Add a description about your List".
+                        css += '.list-description.faded {display: none;}';
+                        // BML: Disable ratings if no ratings available.
+                        if ($('.list-details-ratings .no-list-ratings')[0]) {
+                            css += '.list-details-ratings {display: none;}';
+                        }
+                        // FAVORITES: Disable description.
+                        if ($('header.section-header')[0]) {
+                            css += '.section-description {display: none;}';
+                        }
+                        // IGNORE: Disable description.
+                        if ($('header.ignore-header')[0]) {
+                            css += '.list-description {display: none !important;}';
+                        }
+                        // Description BMLs, distance.
+                        if (!$('.gc-button-group')[0]) {
+                            css += '.list-description {margin-bottom: 6px !important;}';
+                        }
+                        // Gray bar, distance and size.
+                        css += '.section-controls {height: 40px; margin-top: 8px; margin-bottom: 8px; padding: 0 6px;}';
+                        css += '.section-controls .page-size-controls {margin-right: 0px;}';
+                        css += '.section-controls .pagination-controls {padding-left: 10px;}';
+                        css += '.pagination-controls .pagination-control {height: 24px; width: 24px;}';
+                        css += '.pagination-controls .pagination-control svg {height: 20px; width: 20px;}';
+                        css += '.gc-labeled-select .gc-select select {padding: 6px 12px;}';
+                        css += '.gc-labeled-select .gc-select select + svg {top: 8px;}';
+                        // Owner BMLs, distance.
+                        css += '.list-meta .byline {margin: 8px 0px;}';
+                        // Multiselect action bar, distance and size.
+                        css += '.multi-select-action-bar {padding: 5px;}';
+                        css += '.multi-select-action-bar .multi-select-action-bar-count-section {padding-left: 0px;}';
+                        css += '.gc-button.gc-button-has-type {line-height: 1.15; padding: 8px;}';
+                        css += 'button.multi-select-action-bar-button:nth-child(2) {border-bottom-width: 2px; padding-bottom: 5px; padding-top: 5px; margin-right: 5px;}';
+                        css += '#multi-select-action-bar-add-button {padding-top: 5px; padding-bottom: 5px;}';
+                        // Button list of BMLs, size.
+                        css += '.list-hub button.gc-button:nth-child(2) {padding-top: 1px; padding-bottom: 1px;}';
+                        css += '.list-hub .section-header svg {width: 20px;}';
+                        // Überschriften.
+                        css += '.geocache-table thead th.header-multiselect {width: 42px !important;}';
+                        css += '.geocache-table thead th {padding: 8px 4px !important; width: unset !important;}';
+                        css += '.geocache-table .header-geocache-name {padding-left: 50px !important;}';
+                        // My Lists, header, distance.
+                        css += '.rt-thead .rt-tr {padding-left: 7px;}';
+                        // My Lists, header progress bar, distance and size.
+                        css += '.rt-thead .rt-th.list-progress-header {margin-left: 30px;}';
+                        css += '.rt-thead .rt-th.list-status-header {margin-left: 20px;}';
+                        // Listname and visibility, size.
+                        css += '.structure header h1 {font-size: 21px;}';
+                        css += '.structure header .visibility-tag {font-size: 16px;}';
+                    }
+                    // Disable "Back to top" button.
+                    if (settings_lists_back_to_top) {
+                        css += '.scroll-to-top {display: none;}';
+                    }
+                    if (!css == '') appendCssStyle(css);
+                    if ($('table')[0]) $('table').addClass('gclh_improveLayoutHead');
+                    if ($('.rt-table')[0]) $('.rt-table').addClass('gclh_improveLayoutHead');
+                } else {waitCount++; if (waitCount <= 200) setTimeout(function(){improveLayoutHead(waitCount);}, 50);}
             }
-
-            checkForBuildObserverButtons(0);
-        } catch(e) {gclh_error("Set mutation observer for the buttons in new lists page",e);}
-    }
-
-// Improve new list of bookmark lists and new bookmark lists.
-    if (is_page('lists')) {
-        try {
-            // Set 1000 in links to BMLs.
-            function setBMLs1000(items) {
-                if (settings_show_1000_bm_lists) {
-                    if (items && items.length > 0) {
-                        for (var i = 0; i < items.length; i++) {
-                            items[i].href = items[i].href.replace(/\?take=(\d+)/, '');
-                            items[i].href += '?take=1000';
+            function improveLayoutBody(waitCount) {
+                if ($('.rt-table .rt-tbody .rt-tr')[0] || $('.geocache-table tbody tr')[0]) {
+                    var css = '';
+                    // Compact layout.
+                    if (settings_lists_compact_layout) {
+                        // Column distance.
+                        css += '.geocache-table tbody td {padding: 4px 4px;}';
+                        // Column width.
+                        css += '.geocache-table tbody td.cell-multiselect {width: 42px !important;}';
+                        // Cache icon size.
+                        css += '.geocache-type-icon {height: 35px !important; min-width: 35px !important; width: 35px !important; vertical-align: middle;}';
+                        // GC name.
+                        css += '.geocache-table .cell-geocache-name {align-items: unset;}';
+                        // GC name and GC code distance.
+                        css += '.geocache-name {margin-bottom: 0px !important; margin-top: 0px;}';
+                        // Edit button size.
+                        css += '.edit-geocache-button {height: 35px; width: 35px;}';
+                        // Do not break column distance.
+                        css += '.geocache-distance-display {white-space: nowrap;}';
+                        // Do not break column location.
+                        css += '.cell-geocache-location {white-space: nowrap;}';
+                        // On the favorites a flex element is missing. That is the reason because the lines are so high.
+                        css += '.geocache-table .cell-geocache-name {display: flex;}';
+                        // My Lists, lines list name, size.
+                        css += '.rt-tbody .list-name {font-size: 14px; font-weight: bold;}';
+                        // My Lists, lines, distance.
+                        css += '.rt-tbody .rt-tr {padding-left: 12px;}';
+                        // My Lists, lines progress bar, distance and size.
+                        css += '.rt-tbody .rt-tr {height: 40px;}';
+                        css += '.rt-tbody .gc-progress-bar .meta {margin-top: 0px; position: absolute; top: 10px; margin-left: 155px; width: 72px; text-align: center;}';
+                        css += '.rt-tbody .rt-td.list-status {margin-left: 50px;}';
+                        // Show number of bookmark lists.
+                        if ($('.rt-tbody .rt-tr')[0] && $('.structure header h1')[0] && $('.structure header h1')[0].childNodes[0]) {
+                            if (!$('.gclh_number_of_lines')[0]) {
+                                var span = document.createElement('span');
+                                span.setAttribute('class', 'gclh_number_of_lines');
+                                span.setAttribute('title', 'Number of lists');
+                                $('.structure header h1')[0].childNodes[0].after(span);
+                            }
+                            $('.gclh_number_of_lines')[0].innerHTML = ' (' + $('.rt-tbody .rt-tr').length + ')';
+                        }
+                        // Indent of longtext until cache name on BMLs and Ignore List.
+                        if ($('.list-details')[0]) {
+                            css += '.cache-description {padding-left: 51px !important;}';
                         }
                     }
-                }
-            }
-            // Get BMLs.
-            function getBMLs(waitCount) {
-                if ($('.list-table')[0] && $('.rt-tbody')[0] && $('.rt-tbody a[href*="plan/lists/BM"]').length > 0) {
-                    var bmls = $('.rt-tbody a[href*="plan/lists/BM"]');
-                    setBMLs1000(bmls);
-                } else {waitCount++; if (waitCount <= 200) setTimeout(function(){getBMLs(waitCount);}, 50);}
-            }
-            // Get edit icon BML in popup.
-            function getEditIconBML() {
-                if (settings_show_1000_bm_lists) {
-                    if ($('.list-table')[0] && $('.list-hub-action-menu')[0] && $('.list-hub-action-menu a[href*="plan/lists/BM"]')[0]) {
-                        var editIcon = $('.list-hub-action-menu a[href*="plan/lists/BM"]');
-                        var editIconNew = editIcon.clone();
-                        editIcon.after(editIconNew);
-                        editIcon.remove();
-                        setBMLs1000(editIconNew);
+                    // Improve disabled caches.
+                    if (settings_lists_disabled) {
+                        var items = $('.geocache-details .geocache-status.disabled').closest('.geocache-details');
+                        if (items) {
+                            for (var i = 0; i < items.length; i++) {
+                                if ($(items[i]).find($('.geocache-name'))[0]) {
+                                    if (!$(items[i]).find($('.geocache-name')).hasClass('disabled')) {
+                                        $(items[i]).find($('.geocache-name')).addClass('disabled');
+                                    }
+                                    if (!$(items[i]).find($('.geocache-name'))[0].getAttribute('title') == 'disabled') {
+                                        $(items[i]).find($('.geocache-name'))[0].setAttribute('title', 'disabled');
+                                    }
+                                }
+                            }
+                        }
+                        css += '.geocache-name.disabled a {color: #' + settings_lists_disabled_color + ';}';
+                        css += '.geocache-name.disabled a {text-decoration: ' + (settings_lists_disabled_strikethrough == true ? "line-through" : "none") + '}';
                     }
-                }
-            }
-            // Disable page size control.
-            function disablePageSizeControlBML(waitCount) {
-                if (settings_show_1000_bm_lists && document.location.href.match(/take=1000/)) {
-                    if ($('.page-size-controls')[0] && $('.list-details')[0] && !$('.gc-button-group')[0]) {
-                        $('.page-size-controls')[0].style.display = 'none';
-                    } else {waitCount++; if (waitCount <= 200) setTimeout(function(){disablePageSizeControlBML(waitCount);}, 50);}
-                }
+                    // Improve archived caches.
+                    if (settings_lists_archived) {
+                        var items = $('.geocache-details .geocache-status.archived').closest('.geocache-details');
+                        if (items) {
+                            for (var i = 0; i < items.length; i++) {
+                                if ($(items[i]).find($('.geocache-name'))[0]) {
+                                    if (!$(items[i]).find($('.geocache-name')).hasClass('archived')) {
+                                        $(items[i]).find($('.geocache-name')).addClass('archived');
+                                    }
+                                    if (!$(items[i]).find($('.geocache-name'))[0].getAttribute('title') == 'archived') {
+                                        $(items[i]).find($('.geocache-name'))[0].setAttribute('title', 'archived');
+                                    }
+                                }
+                            }
+                        }
+                        css += '.geocache-name.archived a {color: #' + settings_lists_archived_color + ';}';
+                        css += '.geocache-name.archived a {text-decoration: ' + (settings_lists_archived_strikethrough == true ? "line-through" : "none") + '}';
+                    }
+                    // Set premium identifier in own column.
+                    if (settings_lists_premium_column) {
+                        if (!$('.header-premium-gclh')[0]) {
+                            $('table thead th.header-geocache-name').after('<th class="header-premium-gclh" title="Premium Member Only Cache">PMO</th>');
+                        }
+                        $('table tbody tr').each(function() {
+                            if (!$(this).find('.cell-premium-gclh')[0]) {
+                                if ($(this).find('.cell-geocache-name .geocache-status')[0] && $(this).find('.cell-geocache-name .geocache-status')[0].innerHTML.match(/premium/i)) {
+                                    $(this).find('.cell-geocache-name').after('<td class="cell-premium-gclh"><img src="/images/icons/16/premium_only.png" title="Premium Member Only Cache"></td>');
+                                } else $(this).find('.cell-geocache-name').after('<td class="cell-premium-gclh"></td>');
+                            }
+                        });
+                        css += '.cell-premium-gclh img {vertical-align: sub;}';
+                        css += '.header-premium-gclh {cursor: default;}';
+                    }
+                    // Hide cache status line.
+                    if (settings_lists_disabled && settings_lists_archived && settings_lists_premium_column) {
+                        css += '.geocache-status {display: none;}';
+                    }
+                    // Set found identifier in own column on BMLs.
+                    if (settings_lists_found_column_bml && !$('.gc-button-group')[0]) {
+                        if (!$('.header-found-gclh')[0]) {
+                            $('table thead th.header-geocache-name').after('<th class="header-found-gclh" title="Found Geocache">Found</th>');
+                        }
+                        $('table tbody tr').each(function() {
+                            if (!$(this).find('.cell-found-gclh')[0]) {
+                                if ($(this).find('.cell-geocache-name svg.log-status use')[0] && $(this).find('.cell-geocache-name svg.log-status use').attr('xlink:href')[0] && $(this).find('.cell-geocache-name svg.log-status use').attr('xlink:href').match(/smiley/i)) {
+                                    $(this).find('.cell-geocache-name').after('<td class="cell-found-gclh" title="Found Geocache"><svg class="found-gclh"><use xlink:href="#smiley"></svg></td>');
+                                } else $(this).find('.cell-geocache-name').after('<td class="cell-found-gclh"></td>');
+                            }
+                        });
+                        css += '.found-gclh {height: 16px; width: 16px; vertical-align: sub;}';
+                        css += '.header-found-gclh {cursor: default;}';
+                    }
+                    // Show GClh "Log it" icon on BMLs.
+                    if (settings_lists_show_log_it && !$('.gc-button-group')[0]) {
+                        $('table tbody tr .geocache-details').each(function() {
+                            if (!$(this).find('.gclh_log_it')[0]) {
+                                var gccode = $(this).find('.geocache-code')[0].innerHTML.match(/\|\s(.*)$/);
+                                if (gccode && gccode[1]) {
+                                    $(this).find('.geocache-name a').after(' <a class="gclh_log_it" title="Log it" href="/seek/log.aspx?wp=' + gccode[1] + '"><img src="/images/stockholm/16x16/add_comment.gif"></a>');
+                                }
+                            }
+                        });
+                        css += '.gclh_log_it img {vertical-align: top;}';
+                    }
+                    // Set cache type icons visible.
+                    if (settings_lists_icons_visible) {
+                        if (settings_lists_cache_type_icons_visible) setIconsVisible('svg.geocache-type-icon use', true);
+                        else setIconsVisible('svg.geocache-type-icon use', false);
+                    }
+                    // Set log status icons visible.
+                    if (settings_lists_icons_visible) {
+                        if (settings_lists_log_status_icons_visible) setIconsVisible('svg.log-status use', true);
+                        else setIconsVisible('svg.log-status use', false);
+                    }
+                    function setIconsVisible(pfad, visible) {
+                        var items = $('.list-item-details');
+                        if (items) {
+                            for (var i = 0; i < items.length; i++) {
+                                if ($(items[i]).find('.geocache-status.archived, .geocache-status.disabled')[0]) {
+                                    var attrib = $(items[i]).find(pfad)[0].getAttribute('xlink:href');
+                                    if (visible == true) {
+                                        if (attrib && attrib.match(/#(.*)_disabled/)) {
+                                            $(items[i]).find(pfad)[0].setAttribute('xlink:href', attrib.replace('_disabled', ''));
+                                        }
+                                    } else {
+                                        if (attrib && !attrib.match(/#(.*)_disabled/)) {
+                                            $(items[i]).find(pfad)[0].setAttribute('xlink:href', attrib + '_disabled');
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    setLinesInColorAndCorrectColspan(0);
+                    if (!$('.gclh_improveLayoutBody')[0] && !css == '') appendCssStyle(css);
+                    if ($('table')[0] && !$('table').hasClass('gclh_improveLayoutBody')) $('table').addClass('gclh_improveLayoutBody');
+                    if ($('.rt-table')[0] && !$('table').hasClass('gclh_improveLayoutBody')) $('.rt-table').addClass('gclh_improveLayoutBody');
+                } else {waitCount++; if (waitCount <= 200) setTimeout(function(){improveLayoutBody(waitCount);}, 50);}
             }
 
-            // Build mutation observer for BMLs.
-            function buildObserverBMLs() {
-                var observerBMLs = new MutationObserver(function(mutations) {
+            // Processing all steps.
+            function processAll() {
+                improveLayoutHead(0);
+                improveLayoutBody(0);
+                setLinesInColorAndCorrectColspan(0);
+            }
+
+            // Build mutation observer for body.
+            function buildObserverBodyLists() {
+                var observerBodyLists = new MutationObserver(function(mutations) {
                     mutations.forEach(function(mutation) {
-                        getEditIconBML();
-                        getBMLs(0);
-                        disablePageSizeControlBML(0);
+                        processAll();
                     });
                 });
                 var target = document.querySelector('body');
                 var config = { attributes: true, childList: true, characterData: true };
-                observerBMLs.observe(target, config);
+                observerBodyLists.observe(target, config);
             }
-            // Check if mutation observer for BMLs can be build.
-            function checkForBuildObserverBMLs(waitCount) {
+            // Check if mutation observer for body can be build.
+            function checkForBuildObserverBodyLists(waitCount) {
                 if ($('body')[0]) {
-                    global_buildObserverBMLs == true;
-                    buildObserverBMLs();
-                } else {waitCount++; if (waitCount <= 200) setTimeout(function(){checkForBuildObserverBMLs(waitCount);}, 50);}
+                    if ($('.gclh_buildObserverBodyLists')[0]) return;
+                    $('body').addClass('gclh_buildObserverBodyLists');
+                   buildObserverBodyLists();
+                } else {waitCount++; if (waitCount <= 200) setTimeout(function(){checkForBuildObserverBodyLists(waitCount);}, 50);}
             }
 
-            checkForBuildObserverBMLs(0)
-            disablePageSizeControlBML(0);
-            getBMLs(0);
-        } catch(e) {gclh_error("Improve new list of bookmark lists and new bookmark lists",e);}
+            // Build mutation observer for the buttons.
+            function buildObserverButtonsLists() {
+                var observerButtonsLists = new MutationObserver(function(mutations) {
+                    mutations.forEach(function(mutation) {
+                        processAll();
+                        checkForBuildObserverBodyLists(0);
+                    });
+                });
+                var target = document.querySelector('.desktop-nav-display');
+                var config = { attributes: true, childList: true, characterData: true };
+                observerButtonsLists.observe(target, config);
+            }
+            // Check if mutation observer for the buttons can be build.
+            function checkForBuildObserverButtonsLists(waitCount) {
+                if ($('.gc-button-group')[0]) {
+                    buildObserverButtonsLists();
+                } else {waitCount++; if (waitCount <= 200) setTimeout(function(){checkForBuildObserverButtonsLists(waitCount);}, 50);}
+            }
+
+            checkForBuildObserverBodyLists(0);
+            checkForBuildObserverButtonsLists(0);
+            processAll();
+        } catch(e) {gclh_error("Improve new lists page",e);}
     }
 
 // Improve old bookmark lists.
@@ -6962,7 +7191,7 @@ var mainGC = function() {
                 + "table.Table tr.QuinaryRow td, .QuinaryRow, table.Table tr td.QuinaryRow {background-color: #" + getValue("settings_lines_color_reviewer") + " !important;}"
                 + "table.Table tr.SenaryRow td, .SenaryRow, table.Table tr td.SenaryRow {background-color: #" + getValue("settings_lines_color_vip") + " !important;}";
         appendCssStyle(css);
-        // BMlisten: Zeilen in Zebra und Funde User einfärben. BMlisten scheinen einzige Listen, bei denen das nicht vorgesehen ist.
+        // BMlisten ALT: Zeilen in Zebra und Funde User einfärben. BMlisten scheinen einzige Listen, bei denen das nicht vorgesehen ist.
         if (document.location.href.match(/\.com\/bookmarks\/(view\.aspx\?guid=|bulk\.aspx\?listid=|view\.aspx\?code=)/) && document.getElementById('ctl00_ContentBody_ListInfo_cboItemsPerPage')) {
             var lines = $("table.Table").find("tbody").find("tr");
             setLinesColorInZebra(settings_show_common_lists_in_zebra, lines, 2);
@@ -9494,30 +9723,51 @@ var mainGC = function() {
         if (para == false) setLinesColorNone(lines, replaceSpec);
         // Wenn Einfärbung stattfinden soll.
         else {
-            // Zeilen im ersten Zeilenbereich gegebenenfalls auf hell zurücksetzen.
-            for (var i = 0; i < lines.length; i += (2 * linesTogether)) {
-                for (var j = 0; j < linesTogether; j++) {
-                    if (lines[i+j].className.match(replaceSpec)) {
-                        var newClass = lines[i+j].className.replace(replaceSpec, "");
-                        lines[i+j].setAttribute("class", newClass);
+            if (is_page('lists')) {
+                var hell = true;
+                for (var i = 0; i < lines.length; i++) {
+                    if (hell == true) {
+                        hell = false;
+                        if ($(lines[i]).hasClass(setSpec)) $(lines[i]).removeClass(setSpec);
+                        if ($(lines[i]).hasClass('has-description') && lines[i+1]) {
+                            if ($(lines[i+1]).hasClass(setSpec)) $(lines[i+1]).removeClass(setSpec);
+                            i++;
+                        }
+                    } else {
+                        hell = true;
+                        if (!$(lines[i]).hasClass(setSpec)) $(lines[i]).addClass(setSpec);
+                        if ($(lines[i]).hasClass('has-description') && lines[i+1]) {
+                            if (!$(lines[i+1]).hasClass(setSpec)) $(lines[i+1]).addClass(setSpec);
+                            i++;
+                        }
                     }
                 }
-            }
-            // Zeilen im zweiten Zeilenbereich gegebenenfalls an erster Stelle auf dunkel setzen.
-            for (var i = linesTogether; i < lines.length; i += (2 * linesTogether)) {
-                for (var j = 0; j < linesTogether; j++) {
-                    if (lines[i+j].className.match(replaceSpec));
-                    else {
-                        if (lines[i+j].getAttribute("class") == (undefined|null|"")) var oldClass = "";
-                        else var oldClass = " " + lines[i+j].getAttribute("class");
-                        lines[i+j].setAttribute("class", setSpec + oldClass);
+            } else {
+                // Zeilen im ersten Zeilenbereich gegebenenfalls auf hell zurücksetzen.
+                for (var i = 0; i < lines.length; i += (2 * linesTogether)) {
+                    for (var j = 0; j < linesTogether; j++) {
+                        if (lines[i+j].className.match(replaceSpec)) {
+                            var newClass = lines[i+j].className.replace(replaceSpec, "");
+                            lines[i+j].setAttribute("class", newClass);
+                        }
+                    }
+                }
+                // Zeilen im zweiten Zeilenbereich gegebenenfalls an erster Stelle auf dunkel setzen.
+                for (var i = linesTogether; i < lines.length; i += (2 * linesTogether)) {
+                    for (var j = 0; j < linesTogether; j++) {
+                        if (lines[i+j].className.match(replaceSpec));
+                        else {
+                            if (lines[i+j].getAttribute("class") == (undefined|null|"")) var oldClass = "";
+                            else var oldClass = " " + lines[i+j].getAttribute("class");
+                            lines[i+j].setAttribute("class", setSpec + oldClass);
+                        }
                     }
                 }
             }
         }
     }
 
-// User, Owner einfärben bzw. Einfärbung entfernen.
+// User, Owner, Reviewer, VIPs einfärben bzw. Einfärbung entfernen.
     function setLinesColorUser(paraStamm, tasks, lines, linesTogether, owner, bookmarklist) {
         if (lines.length == 0) return;
         var user = global_me;
@@ -9551,6 +9801,7 @@ var mainGC = function() {
                 var newClass = "";
                 var aTags = lines[i].getElementsByTagName("a");
                 var imgTags = lines[i].getElementsByTagName("img");
+                if (bookmarklist == 'new') var useTags = lines[i].getElementsByTagName("use");
                 // Cache, TB Listing. Anhand guid prüfen, ob Einfärbung für User oder Owner notwendig ist.
                 if (para["user"] || para["owner"]) {
                     for (var j = 0; j < aTags.length; j++) {
@@ -9560,11 +9811,20 @@ var mainGC = function() {
                             break;
                         }
                     }
-                    // Bookmark Listen. Anhand Found Icon prüfen, ob Einfärbung für User notwendig ist.
+                    // Bookmark Listen ALT. Anhand Found Icon prüfen, ob Einfärbung für User notwendig ist.
                     // (Originallogs würden wegen src mit found noch hier reingehen -> para bookmarklist.)
-                    if (newClass == "" && para["user"] && bookmarklist) {
+                    if (newClass == "" && para["user"] && bookmarklist == true) {
                         for (var j = 0; j < imgTags.length; j++) {
                             if (imgTags[j].src.match(/\/found\./)) {
+                                newClass = setSpecUser;
+                                break;
+                            }
+                        }
+                    }
+                    // Bookmark Listen NEU. Anhand xlink:href="#smiley" prüfen, ob Einfärbung für User notwendig ist.
+                    if (newClass == "" && para["user"] && bookmarklist == 'new' && useTags.length > 0) {
+                        for (var j = 0; j < useTags.length; j++) {
+                            if (useTags[j].getAttribute('xlink:href').match(/#smiley/)) {
                                 newClass = setSpecUser;
                                 break;
                             }
@@ -9614,6 +9874,9 @@ var mainGC = function() {
                             if (lines[i+j].getAttribute("class") == null) var oldClass = "";
                             else var oldClass = " " + lines[i+j].getAttribute("class");
                             lines[i+j].setAttribute("class", newClass + oldClass);
+                            if (bookmarklist == 'new' && $(lines[i+j]).hasClass('has-description') && lines[i+j+1]) {
+                                lines[i+j+1].setAttribute("class", newClass + oldClass);
+                            }
                         }
                     }
                 }
@@ -10585,7 +10848,7 @@ var mainGC = function() {
         for (var i = 0; i < data.length; i++) {
             html += "  <option value='" + data[i][1] + "' " + (selectedValue == data[i][1] ? "selected='selected'" : "") + "> " + data[i][0] + "</option>";
         }
-        html += '</select>' + '<br>';
+        html += '</select>';
         return html;
     }
 
@@ -10835,19 +11098,33 @@ var mainGC = function() {
 
             html += "<h4 class='gclh_headline2'>"+prepareHideable.replace("#name#","bm")+"Bookmark list" + prem + "</h4>";
             html += "<div id='gclh_config_bm' class='gclh_block'>";
+
+            html += "<div style='margin-top: 9px; margin-left: 5px'><b>New bookmark lists, favorites list, ignore list only</b></div>";
+            html += newParameterOn1;
+            html += checkboxy('settings_lists_compact_layout', 'Show compact layout') + show_help("With this option the list of bookmark lists, the bookmark lists, the favorites list and the ignore list is displayed in compact layout.") + "<br>";
+            var content_status_line = "If the name of disabled and archived caches are specially represented and the identifier of premium member only caches are shown in an own column, the cache status line above the cache name is hidden.";
+            html += checkboxy('settings_lists_disabled', 'Show name of disabled caches ') + checkboxy('settings_lists_disabled_strikethrough', 'strike through in color ');
+            html += "<input class='gclh_form color' type='text' size=6 id='settings_lists_disabled_color' style='margin-left: 0px;' value='" + getValue("settings_lists_disabled_color", "4A4A4A") + "'>";
+            html += "<img src=" + global_restore_icon + " id='restore_settings_lists_disabled_color' title='back to default' style='width: 12px; cursor: pointer;'>" + show_help3(content_status_line) + "<br>";
+            html += checkboxy('settings_lists_archived', 'Show name of archived caches ') + checkboxy('settings_lists_archived_strikethrough', 'strike through in color ');
+            html += "<input class='gclh_form color' type='text' size=6 id='settings_lists_archived_color' style='margin-left: 0px;' value='" + getValue("settings_lists_archived_color", "8C0B0B") + "'>";
+            html += "<img src=" + global_restore_icon + " id='restore_settings_lists_archived_color' title='back to default' style='width: 12px; cursor: pointer;'>" + show_help3(content_status_line) + "<br>";
+            html += checkboxy('settings_lists_icons_visible', 'Set visibility of cache type icons and log status icons') + show_help("The cache type icon and the log status icon are sometimes slightly invisible and sometimes visible, if the cache is disabled or archived. With this and the following options, you can set it consistently, if the cache is disabled or archived.") + "<br>";
+            html += " &nbsp; " + checkboxy('settings_lists_cache_type_icons_visible', 'Set cache type icon visible, if cache is disabled or archived') + "<br>";
+            html += " &nbsp; " + checkboxy('settings_lists_log_status_icons_visible', 'Set log status icon visible, if cache is disabled or archived') + "<br>";
+            html += checkboxy('settings_lists_premium_column', 'Set identifier of premium member only caches in own column') + show_help(content_status_line) + "<br>";
+            html += checkboxy('settings_lists_found_column_bml', 'Set found smiley in own column') + show_help("Only in bookmark lists, not in favorites list and ignore list.") + "<br>";
+            html += checkboxy('settings_lists_show_log_it', 'Show GClh \"Log it\" icon') + show_help("Only in bookmark lists, not in favorites list and ignore list.<br><br>The GClh \"Log it\" icon is displayed beside cache titles. If you click it, you will be redirected directly to the log form. <br><br>You can use it too as basic member to log Premium Member Only (PMO) caches.") + "<br>";
+            html += checkboxy('settings_lists_back_to_top', 'Hide \"Back to top\" icon') + "<br>";
+            html += newParameterVersionSetzen("0.10") + newParameterOff;
+
+            html += "<div style='margin-top: 9px; margin-left: 5px'><b>Old bookmark lists only</b></div>";
             html += checkboxy('settings_show_sums_in_bookmark_lists', 'Show number of caches in bookmark lists') + show_help("With this option the number of caches and the number of selected caches in the categories \"All\", \"Found\", \"Archived\" and \"Deactivated\", corresponding to the select buttons, are shown in bookmark lists at the end of the list.") + "<br>";
             html += content_settings_submit_log_button.replace("log_button","log_buttonX0");
-            html += newParameterOn2;
-            html += checkboxy('settings_compact_layout_bm_lists', 'Show compact layout in bookmark lists') + "<br>";
-            html += newParameterVersionSetzen(0.8) + newParameterOff;
             html += newParameterOn3;
             html += checkboxy('settings_bm_changed_and_go', 'After change of bookmark go to bookmark list automatically') + show_help3("With this option you can switch to the bookmark list automatically after a change of a bookmark. The confirmation page of this change will skip.") + "<br>";
             html += checkboxy('settings_bml_changed_and_go', 'After change of bookmark list go to bookmark list automatically') + show_help3("With this option you can switch to the bookmark list automatically after a change of the bookmark list. The confirmation page of this change will skip.") + "<br>";
-            html += checkboxy('settings_past_events_on_bm', 'Past events processing') + show_help3("With this option you can recognize and select past events in bookmark lists and in the watchlist. <br><br>For this, the cache listings of the events must be read additionally. If you do not want this, the option can be disabled.") + "<br>";
             html += newParameterVersionSetzen(0.9) + newParameterOff;
-            html += newParameterOn1;
-            html += checkboxy('settings_show_1000_bm_lists', 'Show 1000 caches in own bookmark lists') + "<br>";
-            html += newParameterVersionSetzen("0.10") + newParameterOff;
             html += "</div>";
 
             html += "<h4 class='gclh_headline2'>"+prepareHideable.replace("#name#","friends")+"Friends list" + "</h4>";
@@ -11096,11 +11373,11 @@ var mainGC = function() {
             html += newParameterVersionSetzen('0.10') + newParameterOff;
             html += checkboxy('settings_map_overview_build', 'Show cache location in overview map') + show_help("With this option there will be an additional map top right in the cache listing as an overview of the cache location. This was available earlier on GC standard.") + "<br>";
             html += newParameterOn3;
-            html += ' &nbsp; &nbsp; Map layer: <select class="gclh_form" id="settings_map_overview_layer">';
+            html += ' &nbsp; &nbsp;Map layer: <select class="gclh_form" id="settings_map_overview_layer">';
             for (name in all_map_layers) {
                 html += "  <option value='" + name + "' " + (settings_map_overview_layer == name ? "selected='selected'" : "") + "> " + name + "</option>";
             }
-            html += '</select>' + '<br>';
+            html += '</select>';
             html += " &nbsp;" + "Map zoom value: <select class='gclh_form' id='settings_map_overview_zoom'>";
             for (var i = 1; i < 20; i++) {
                 html += "  <option value='" + i + "' " + (settings_map_overview_zoom == i ? "selected=\"selected\"" : "") + ">" + i + "</option>";
@@ -11137,7 +11414,7 @@ var mainGC = function() {
             for (var i = 1; i < elevationServicesData.length; i++) {
                 html += "  <option value='"+i+"' " + (settings_primary_elevation_service == i ? "selected=\"selected\"" : "") + ">"+elevationServicesData[i]['name']+"</option>";
             }
-            html += "</select>" + "<br>";
+            html += "</select>";
             html += "&nbsp;&nbsp;" + "Second service: <select class='gclh_form' id='settings_secondary_elevation_service' style='width: 160px;'>";
             for (var i = 0; i < elevationServicesData.length; i++) {
                 html += "  <option value='"+i+"' " + (settings_secondary_elevation_service == i ? "selected=\"selected\"" : "") + ">"+elevationServicesData[i]['name']+"</option>";
@@ -11716,6 +11993,8 @@ var mainGC = function() {
             $('#restore_settings_font_color_submenuX0')[0].addEventListener("click", restoreField, false);
             $('#restore_settings_count_own_matrix_show_color_next')[0].addEventListener("click", restoreField, false);
             $('#settings_process_vup')[0].addEventListener("click", alert_settings_process_vup, false);
+            $('#restore_settings_lists_disabled_color')[0].addEventListener("click", restoreField, false);
+            $('#restore_settings_lists_archived_color')[0].addEventListener("click", restoreField, false);
 
             // Events setzen für Parameter, die im GClh Config mehrfach ausgegeben wurden, weil sie zu mehreren Themen gehören. Es handelt sich hier um den Parameter selbst.
             // In der Function werden Events für den Parameter selbst (ZB: "settings_show_mail_in_viplist") und dessen Clone gesetzt, die hinten mit "X" und Nummerierung
@@ -11845,6 +12124,14 @@ var mainGC = function() {
             setEvForDepPara("settings_show_openrouteservice_link","settings_show_openrouteservice_medium");
             setEvForDepPara("settings_show_log_counter_but","settings_show_log_counter");
             setEvForDepPara("settings_show_remove_ignoring_link","settings_use_one_click_ignoring");
+            setEvForDepPara("settings_lists_disabled","settings_lists_disabled_color");
+            setEvForDepPara("settings_lists_disabled","restore_settings_lists_disabled_color");
+            setEvForDepPara("settings_lists_disabled","settings_lists_disabled_strikethrough");
+            setEvForDepPara("settings_lists_archived","settings_lists_archived_color");
+            setEvForDepPara("settings_lists_archived","restore_settings_lists_archived_color");
+            setEvForDepPara("settings_lists_archived","settings_lists_archived_strikethrough");
+            setEvForDepPara("settings_lists_icons_visible","settings_lists_log_status_icons_visible");
+            setEvForDepPara("settings_lists_icons_visible","settings_lists_cache_type_icons_visible");
             // Abhängigkeiten der Linklist Parameter.
             for (var i = 0; i < 100; i++) {
                 // 2. Spalte: Links für Custom BMs.
@@ -11994,6 +12281,8 @@ var mainGC = function() {
             setValue("settings_secondary_elevation_service", document.getElementById('settings_secondary_elevation_service').value);
             setValue("settings_show_latest_logs_symbols_count_map", document.getElementById('settings_show_latest_logs_symbols_count_map').value);
             setValue("settings_show_openrouteservice_medium", document.getElementById('settings_show_openrouteservice_medium').value);
+            setValue("settings_lists_disabled_color", document.getElementById('settings_lists_disabled_color').value.replace("#",""));
+            setValue("settings_lists_archived_color", document.getElementById('settings_lists_archived_color').value.replace("#",""));
 
             // Map Layers in vorgegebener Reihenfolge übernehmen.
             var new_map_layers_available = document.getElementById('settings_maplayers_available');
@@ -12218,7 +12507,18 @@ var mainGC = function() {
                 'settings_show_reviewer_as_vip',
                 'settings_hide_found_count',
                 'settings_show_compact_logbook_but',
-                'settings_show_1000_bm_lists',
+                'settings_lists_compact_layout',
+                'settings_lists_disabled',
+                'settings_lists_disabled_strikethrough',
+                'settings_lists_archived',
+                'settings_lists_archived_strikethrough',
+                'settings_lists_icons_visible',
+                'settings_lists_log_status_icons_visible',
+                'settings_lists_cache_type_icons_visible',
+                'settings_lists_premium_column',
+                'settings_lists_found_column_bml',
+                'settings_lists_show_log_it',
+                'settings_lists_back_to_top',
             );
 
             for (var i = 0; i < checkboxes.length; i++) {
@@ -12568,6 +12868,8 @@ var mainGC = function() {
                 case "settings_lines_color_owner": field.value = "E0E0C3"; break;
                 case "settings_lines_color_reviewer": field.value = "EAD0C3"; break;
                 case "settings_lines_color_vip": field.value = "F0F0A0"; break;
+                case "settings_lists_disabled_color": field.value = "4A4A4A"; break;
+                case "settings_lists_archived_color": field.value = "8C0B0B"; break;
                 case "settings_font_color_menu": restoreColor("settings_font_color_menuX0", "restore_settings_font_color_menuX0", field.value); break;
                 case "settings_font_color_menuX0": restoreColor("settings_font_color_menu", "restore_settings_font_color_menu", field.value); break;
                 case "settings_font_color_submenu": restoreColor("settings_font_color_submenuX0", "restore_settings_font_color_submenuX0", field.value); break;
