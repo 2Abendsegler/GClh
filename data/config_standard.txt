@@ -250,7 +250,6 @@
   "settings_show_reviewer_as_vip": true,
   "settings_hide_found_count": false,
   "settings_show_compact_logbook_but": true,
-  "settings_show_1000_bm_lists": false,
   "settings_cache_type_icon_visible": true,
   "settings_log_status_icon_visible": true,
   "settings_compactLayout_unpublishedList": true,
@@ -258,5 +257,19 @@
   "settings_compactLayoutUnpublishedHides_sort": "abc",
   "settings_showUnpublishedHides": true,
   "settings_set_showUnpublishedHides_sort": true,
-  "settings_showUnpublishedHides_sort": "abc"
+  "settings_showUnpublishedHides_sort": "abc",
+  "settings_lists_compact_layout": false,
+  "settings_lists_disabled": false,
+  "settings_lists_disabled_color": "4A4A4A",
+  "settings_lists_disabled_strikethrough": true,
+  "settings_lists_archived": false,
+  "settings_lists_archived_color": "8C0B0B",
+  "settings_lists_archived_strikethrough": true,
+  "settings_lists_icons_visible": false,
+  "settings_lists_log_status_icons_visible": true,
+  "settings_lists_cache_type_icons_visible": true,
+  "settings_lists_premium_column": false,
+  "settings_lists_found_column_bml": false,
+  "settings_lists_show_log_it": false,
+  "settings_lists_back_to_top": false
 }
