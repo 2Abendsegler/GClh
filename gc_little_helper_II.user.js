@@ -563,6 +563,7 @@ var variablesInit = function(c) {
     c.settings_lists_found_column_bml = getValue("settings_lists_found_column_bml", false);
     c.settings_lists_show_log_it = getValue("settings_lists_show_log_it", false);
     c.settings_lists_back_to_top = getValue("settings_lists_back_to_top", false);
+    c.settings_searchmap_autoupdate_after_dragging = getValue("settings_searchmap_autoupdate_after_dragging", true);
 
     try {
         if (c.userToken === null) {
@@ -7792,6 +7793,55 @@ var mainGC = function() {
         } catch(e) {gclh_error("Show gallery images in 2 instead of 4 cols",e);}
     }
 
+// Improve search map.
+    if (is_page('searchmap')) {
+        try {
+            // Virtually hit "Search this area" after dragging the map.
+            function searchThisArea() {
+                if (!document.location.href.match(/\.com\/play\/map\?bm=/) && settings_searchmap_autoupdate_after_dragging) {
+                    if (document.getElementById('clear-map-control')) {
+                        document.getElementById('clear-map-control').click();
+                    }
+                }
+            }
+
+            // Processing all steps.
+            function processAllSearchMap() {
+                searchThisArea();
+            }
+
+            // Build mutation observer for body.
+            function buildObserverBodySearchMap() {
+                var observerBodySearchMap = new MutationObserver(function(mutations) {
+                    mutations.forEach(function(mutation) {
+                        processAllSearchMap();
+                    });
+                });
+                var target = document.querySelector('body');
+                var config = { attributes: true, childList: true, characterData: true };
+                observerBodySearchMap.observe(target, config);
+            }
+            // Check if mutation observer for body can be build.
+            function checkForBuildObserverBodySearchMap(waitCount) {
+                if ($('body')[0]) {
+                    if ($('.gclh_buildObserverBodySearchMap')[0]) return;
+                    $('body').addClass('gclh_buildObserverBodySearchMap');
+                   buildObserverBodySearchMap();
+                } else {waitCount++; if (waitCount <= 200) setTimeout(function(){checkForBuildObserverBodySearchMap(waitCount);}, 50);}
+            }
+
+            checkForBuildObserverBodySearchMap(0);
+            processAllSearchMap();
+
+            var css = '';
+            // Hide button search this area and icon loading.
+            if (!document.location.href.match(/\.com\/play\/map\?bm=/) && settings_searchmap_autoupdate_after_dragging) {
+                css += '#clear-map-control, .loading-container {display: none;}';
+            }
+            if (css != "") appendCssStyle(css);
+        } catch(e) {gclh_error("Improve search map",e);}
+    }
+
 // Display Google-Maps warning, wenn Leaflet-Map nicht aktiv ist.
     if (document.location.href.match(/\.com\/map\//)) {
         try {
@@ -11032,6 +11082,13 @@ var mainGC = function() {
         html += "  font-size: 14px;";
         html += "  font-style: normal;";
         html += "  font-weight: bold;}";
+        html += ".gclh_old_new_line {";
+        html += "  font-size: 14px;";
+        html += "  font-style: italic;";
+        html += "  font-weight: bold;";
+        html += "  margin-top: 12px;";
+        html += "  margin-bottom: 3px;";
+        html += "  margin-left: 5px;}";
         appendCssStyle(html, "body");
     }
 
@@ -11302,7 +11359,7 @@ var mainGC = function() {
             html += "<h4 class='gclh_headline2'>"+prepareHideable.replace("#name#","bm")+"Bookmark list" + prem + "</h4>";
             html += "<div id='gclh_config_bm' class='gclh_block'>";
 
-            html += "<div style='margin-top: 9px; margin-left: 5px'><b>New bookmark lists, favorites list, ignore list only</b></div>";
+            html += "<div class='gclh_old_new_line'>New bookmark lists, favorites list, ignore list only</div>";
             html += newParameterOn1;
             html += checkboxy('settings_lists_compact_layout', 'Show compact layout') + show_help("With this option the list of bookmark lists, the bookmark lists, the favorites list and the ignore list is displayed in compact layout.") + "<br>";
             var content_status_line = "If the name of disabled and archived caches are specially represented and the identifier of premium member only caches are shown in an own column, the cache status line above the cache name is hidden.";
@@ -11321,7 +11378,7 @@ var mainGC = function() {
             html += checkboxy('settings_lists_back_to_top', 'Hide \"Back to top\" icon') + "<br>";
             html += newParameterVersionSetzen("0.10") + newParameterOff;
 
-            html += "<div style='margin-top: 9px; margin-left: 5px'><b>Old bookmark lists only</b></div>";
+            html += "<div class='gclh_old_new_line'>Old bookmark lists only</div>";
             html += checkboxy('settings_show_sums_in_bookmark_lists', 'Show number of caches in bookmark lists') + show_help("With this option the number of caches and the number of selected caches in the categories \"All\", \"Found\", \"Archived\" and \"Deactivated\", corresponding to the select buttons, are shown in bookmark lists at the end of the list.") + "<br>";
             html += content_settings_submit_log_button.replace("log_button","log_buttonX0");
             html += newParameterOn3;
@@ -11464,6 +11521,7 @@ var mainGC = function() {
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>Flopp's Map page</b></div>";
             html += checkboxy('settings_add_link_flopps_on_gc_map', 'Add link to Flopp\'s Map on GC Map') + show_help("With this option an icon are placed on the GC Map page to link to the same area in Flopp\'s Map.") + "<br>";
             html += " &nbsp; " + checkboxy('settings_switch_to_flopps_in_same_tab', 'Switch to Flopp\'s Map in same browser tab') + "<br>";
+            html += "<div class='gclh_old_new_line'>New map (search map) only</div>";
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>GeoHack page</b></div>";
             html += checkboxy('settings_add_link_geohack_on_gc_map', 'Add link to GeoHack on GC Map') + show_help("With this option an icon are placed on the GC Map page to link to the same area in GeoHack.") + "<br>";
             html += " &nbsp; " + checkboxy('settings_switch_to_geohack_in_same_tab', 'Switch to GeoHack in same browser tab') + "<br>";
@@ -11476,6 +11534,11 @@ var mainGC = function() {
             }
             html += "</select> latest log symbols" + show_help("With this option, the choosen count of the latest logs symbols is shown at the map popup for a cache.") + "<br>";
             html += newParameterVersionSetzen(0.9) + newParameterOff;
+
+            html += "<div class='gclh_old_new_line'>New map (search map) only</div>";
+            html += newParameterOn1;
+            html += checkboxy('settings_searchmap_autoupdate_after_dragging', 'Automatic search for new caches after dragging') + "<br>";
+            html += newParameterVersionSetzen('0.10') + newParameterOff;
             html += "</div>";
 
             html += "<h4 class='gclh_headline2'>"+prepareHideable.replace("#name#","profile")+"Public profile</h4>";
@@ -11526,7 +11589,7 @@ var mainGC = function() {
             html += checkboxy('settings_bookmarks_show', "Show <a class='gclh_ref' href='#gclh_linklist' title='Link to topic \"Linklist / Navigation\"' id='gclh_linklist_link_2'>Linklist</a> on your dashboard") + show_help("Show the Linklist at the sidebar on your dashboard. You can configure the links in the Linklist at the end of this configuration page.") + "<br>";
             html += checkboxy('settings_show_mail_in_allmyvips', 'Show mail link beside user in "All my VIPs/VUPs" list on your dashboard') + show_help3("With this option there will be an small mail icon beside every user in the list with all your VIPs (All my VIPs) on your dashboard page. With this icon you get directly to the mail page to mail to this user.<br>(VIP: Very important person)<br><br>If VUP processing is activated, this also applies to your VUPs (All my VUPs).<br>(VUP: Very unimportant person)<br><br>This option requires \"Show mail link beside user\" and \"Show VIP list\".") + "<br>";
 
-            html += "<div style='margin-top: 9px; margin-left: 5px'><b>New dashboard only</b></div>";
+            html += "<div class='gclh_old_new_line'>New dashboard only</div>";
             html += newParameterOn3;
             html += checkboxy('settings_show_default_links', 'Show all default links on your dashboard') + show_help("Show all the default links for the Linklist sorted at the sidebar on your dashboard.") + "<br>";
             html += checkboxy('settings_show_tb_inv', 'Show trackables inventory on your dashboard') + show_help("With this option a maximum of ten trackables of your trackables inventory is shown on your new dashboard. (On old dashboard it is GC standard to show it.)") + "<br>";
@@ -11545,7 +11608,7 @@ var mainGC = function() {
             html += "</select><br>";
             html += newParameterVersionSetzen('0.10') + newParameterOff;
 
-            html += "<div style='margin-top: 9px; margin-left: 5px'><b>Old dashboard only</b></div>";
+            html += "<div class='gclh_old_new_line'>Old dashboard only</div>";
             html += checkboxy('settings_hide_visits_in_profile', 'Hide TB/Coin visits on your dashboard') + "<br>";
             var content_settings_logit_for_basic_in_pmo = checkboxy('settings_logit_for_basic_in_pmo', 'Log PMO caches by standard \"Log It\" icon (for basic members)') + show_help3("With this option basic members are able to choose the standard \"Log It\" icon to call the logging screen for Premium Member Only caches (PMO). The tool tipp blocked not longer this call. You can have the same result by using the right mouse across the \"Log It\" icon and then new tab. <br>The \"Log It\" icon is besides the caches for example in the \"Recently viewed caches list\" and next to the caches on your old dashboard.") + "<br>";
             html += content_settings_logit_for_basic_in_pmo;
@@ -11715,7 +11778,7 @@ var mainGC = function() {
             html += "&nbsp;" + "TB log signature:" + show_help("The signature will automatically be inserted into your TB logs. <br><br>Also you are able to use placeholder for variables which will be replaced in the log.") + " &nbsp; (Possible placeholder:" + show_help_big(placeholderDescription) + ")<br>";
             html += "&nbsp;" + "<textarea class='gclh_form' rows='3' cols='56' id='settings_tb_signature' style='margin-top: 2px;'>&zwnj;" + getValue("settings_tb_signature", "") + "</textarea><br>";
 
-            html += "<div style='margin-top: 9px; margin-left: 5px'><b>Old logging page only</b></div>";
+            html += "<div class='gclh_old_new_line'>Old logging page only</div>";
             html += content_settings_submit_log_button.replace("log_button","log_buttonX2");
             html += checkboxy('settings_autovisit', 'Enable \"AutoVisit\" feature for trackables') + show_help("With this option you are able to select trackables which should be automatically set from \"No action\" to \"Visited\" on every log, if the logtype is \"Found It\", \"Webcam Photo Taken\" or \"Attended\". For other logtypes trackables are automatically set from \"Visited\" to \"No action\". You can select \"AutoVisit\" for each trackable in the list on the bottom of the log form.") + "<br>";
             html += checkboxy('settings_fieldnotes_old_fashioned', 'Logging drafts old-fashioned') + show_help("This option deactivates on old drafts page the logging of drafts by the new log page and activates logging of drafts by the old-fashioned log page.") + "<br>";
@@ -12758,6 +12821,7 @@ var mainGC = function() {
                 'settings_lists_found_column_bml',
                 'settings_lists_show_log_it',
                 'settings_lists_back_to_top',
+                'settings_searchmap_autoupdate_after_dragging',
             );
 
             for (var i = 0; i < checkboxes.length; i++) {
