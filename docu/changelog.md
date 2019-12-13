@@ -205,8 +205,8 @@
 	</li>
 </ul>
 <br>
-(??.??.2019)<br>
-released by <a href="https://www.geocaching.com/profile/?u=Ruko2010">Ruko2010</a><br>
+(13.12.2019)<br>
+released by <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a><br>
 <br>
 
 <a href="changelog_before.md" title="Go to earlier changelog">Go to earlier changelog.</a> &nbsp;
