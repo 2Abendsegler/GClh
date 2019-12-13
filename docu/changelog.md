@@ -108,7 +108,7 @@
 	<li>
 		<strong>New:</strong> Virtually hit "Search this area" after dragging the map. [<a href="https://github.com/2Abendsegler/GClh/issues/966" title="Issue 966">966</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_searchmap_autoupdate_after_dragging" title="Link to your GClh Config">Settings -> Map:<br> 
-		<img src="../images/0.10/Screen38.jpg" alt="Screen38.jpg"></a><br>
+		<img src="../images/0.10/Screen38.jpg" alt="Screen38.jpg"></a><br><br>
 	</li>
 	<li>
 		<strong>New:</strong> Add link "Search Map" to Linklist. [<a href="https://github.com/2Abendsegler/GClh/issues/987" title="Issue 987">987</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
