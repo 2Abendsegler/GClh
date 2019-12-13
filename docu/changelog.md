@@ -149,11 +149,11 @@
 	<li>
 		<strong>New:</strong> Show unpublished caches in dashboard and show compact layout on unpublished caches page. [<a href="https://github.com/2Abendsegler/GClh/issues/1055" title="Issue 1055">1055</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br>
 		Show unpublished caches in dashboard under Nearby Events:<br>
+		<img src="../images/0.10/Screen32.jpg" alt="Screen32.jpg"><br>
 		Status "Disabled": The cache has not yet been submitted, you have disabled it or responded to the reviewer.<br>
 		Status "Waiting for review": The cache has been submitted, but not yet edited by a reviewer.<br>
 		Status "Your reviewer has responded": The cache has been submitted, the reviewer has responded.<br>
 		Status "Ready to publish": The cache has been checked, is locked for further changes, and is waiting for the publish.<br>
-		<img src="../images/0.10/Screen32.jpg" alt="Screen32.jpg"><br>
 		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_showUnpublishedHides" title="Link to your GClh Config">Settings -> Dashboard:<br> 
 		<img src="../images/0.10/Screen33.jpg" alt="Screen33.jpg"></a><br><br>
 		Show compact layout on unpublished caches page:<br>
