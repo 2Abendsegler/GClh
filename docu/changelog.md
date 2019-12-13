@@ -7,15 +7,19 @@
 ### Listing:
 <ul>
 	<li>
-		<strong>New:</strong> Added Openrouteservice as an additional map service. [<a href="https://github.com/2Abendsegler/GClh/issues/897" title="Issue 897">897</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
-		Openrouteservice also offers in addition to usual mediums for locomotion "wheelchair" as medium for locomotion in europe.<br>
-                <img src="../images/0.10/Screen08.gif" alt="Screen08.gif"></a><br>
-		You can pick Openrouteservice in cache listing in the right navigation bar, or behind the "Additional Waypoints", if there are additional waypoints.<br>
-                <img src="../images/0.10/Screen10.jpg" alt="Screen10.jpg"></a> 
-                <img src="../images/0.10/Screen11.jpg" alt="Screen11.jpg"></a><br>
-		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_show_openrouteservice_link" title="Link to your GClh Config">Settings -> Listing:<br>
-		<img src="../images/0.10/Screen12.jpg" alt="Screen12.jpg"></a><br>
-		If you want to use your home coordinates as start point for the route, you have to activate the parameter.<br><br>
+		<strong>New:</strong> One click ignoring/restoring. [<a href="https://github.com/2Abendsegler/GClh/issues/1053" title="Issue 1053">1053</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		With this feature you will be able to ignore respectively restore a cache in cache listing with only one click.<br>
+		<img src="../images/0.10/Screen13.gif" alt="Screen13.gif"></a><br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_use_one_click_ignoring" title="Link to your GClh Config">Settings -> Listing:<br>
+		<img src="../images/0.10/Screen14.jpg" alt="Screen14.jpg"></a><br>
+	        The "One click" feature runs only together with the "Show Stop Ignoring" feature. Please note that the "Show Stop Ignoring" feature is not new and you may need to activate the parameter, if you want to use the "One click" feature.<br><br>
+	</li>
+	<li>
+		<strong>New:</strong> One click watching. [<a href="https://github.com/2Abendsegler/GClh/issues/1072" title="Issue 1072">1072</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		With this feature you can add a cache in cache listing to your watchlist with just one click.<br>
+		<img src="../images/0.10/Screen15.gif" alt="Screen15.gif"></a><br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_use_one_click_watching" title="Link to your GClh Config">Settings -> Listing:<br>
+		<img src="../images/0.10/Screen16.jpg" alt="Screen16.jpg"></a><br><br>
 	</li>
 	<li>
 		<strong>New:</strong> Copy various cache informations to clipboard. [<a href="https://github.com/2Abendsegler/GClh/issues/1096" title="Issue 1096">1096</a> / <a href="https://www.geocaching.com/profile/?u=Herr Ma" title="Thanks to Herr Ma">Herr Ma</a>]<br>
@@ -30,19 +34,15 @@
 		<img src="../images/0.10/Screen19.jpg" alt="Screen19.jpg"><br><br>
 	</li>
 	<li>
-		<strong>New:</strong> One click ignoring/restoring. [<a href="https://github.com/2Abendsegler/GClh/issues/1053" title="Issue 1053">1053</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
-		With this feature you will be able to ignore respectively restore a cache in cache listing with only one click.<br>
-		<img src="../images/0.10/Screen13.gif" alt="Screen13.gif"></a><br>
-		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_use_one_click_ignoring" title="Link to your GClh Config">Settings -> Listing:<br>
-		<img src="../images/0.10/Screen14.jpg" alt="Screen14.jpg"></a><br>
-	        The "One click" feature runs only together with the "Show Stop Ignoring" feature. Please note that the "Show Stop Ignoring" feature is not new and you may need to activate the parameter, if you want to use the "One click" feature.<br><br>
-	</li>
-	<li>
-		<strong>New:</strong> One click watching. [<a href="https://github.com/2Abendsegler/GClh/issues/1072" title="Issue 1072">1072</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
-		With this feature you can add a cache in cache listing to your watchlist with just one click.<br>
-		<img src="../images/0.10/Screen15.gif" alt="Screen15.gif"></a><br>
-		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_use_one_click_watching" title="Link to your GClh Config">Settings -> Listing:<br>
-		<img src="../images/0.10/Screen16.jpg" alt="Screen16.jpg"></a><br><br>
+		<strong>New:</strong> Added Openrouteservice as an additional map service. [<a href="https://github.com/2Abendsegler/GClh/issues/897" title="Issue 897">897</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		Openrouteservice also offers in addition to usual mediums for locomotion "wheelchair" as medium for locomotion in europe.<br>
+                <img src="../images/0.10/Screen08.gif" alt="Screen08.gif"></a><br>
+		You can pick Openrouteservice in cache listing in the right navigation bar, or behind the "Additional Waypoints", if there are additional waypoints.<br>
+                <img src="../images/0.10/Screen10.jpg" alt="Screen10.jpg"></a> 
+                <img src="../images/0.10/Screen11.jpg" alt="Screen11.jpg"></a><br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_show_openrouteservice_link" title="Link to your GClh Config">Settings -> Listing:<br>
+		<img src="../images/0.10/Screen12.jpg" alt="Screen12.jpg"></a><br>
+		If you want to use your home coordinates as start point for the route, you have to activate the parameter.<br><br>
 	</li>
         <li>
 		<strong>New:</strong> Button for hiding lot of stuff in cache listing logs. [<a href="https://github.com/2Abendsegler/GClh/issues/1045" title="Issue 1045">1045</a> / <a href="https://www.geocaching.com/profile/?u=Ruko2010" title="Thanks to Ruko2010">Ruko2010</a>]<br>
@@ -84,7 +84,7 @@
 </ul>
 <br>
 
-### Lists, Bookmark lists, Favorites, Ignore list:
+### New lists, bookmark lists, favorites list, ignore list:
 <ul>	
 	<li>
 		<strong>New:</strong> Integrate GClh header with Linklist and GClh Search in new designed lists page with My Lists, Favorites and Ignored Caches. [<a href="https://github.com/2Abendsegler/GClh/issues/1052" title="Issue 1052">1052</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
@@ -99,20 +99,7 @@
 </ul>
 <br>
 
-### Pocket query:
-<ul>	
-	<li>
-		<strong>Improve:</strong> Rewrite fixed PQ header/footer by pure CSS. Compatible with compact view. [<a href="https://github.com/2Abendsegler/GClh/issues/1034" title="Issue 1034">1034</a> / <a href="https://www.geocaching.com/profile/?u=Dratenik" title="Thanks to Dratenik">Dratenik</a>]<br>
-		The functionality is not new. New is only the great functionality. Especially for small screens very well, because the line stays at the bottom of the screen when you scroll through the pocket queries.<br>
-		<img src="../images/0.10/Screen01.gif" alt="Screen01.gif"><br>
-		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_fixed_pq_header" title="Link to your GClh Config">Settings -> Pocket query:<br>
-		<img src="../images/0.10/Screen02.jpg" alt="Screen02.jpg"></a><br>
-	        Please note that the feature is not new and you may need to activate the parameter.<br><br>
-	</li>
-</ul>
-<br>
-
-### Search Map (new map):
+### Search map (new map):
 <ul>	
 	<li>
 		<strong>New:</strong> Integrate GClh header with Linklist and GC Search in new designed map page (search map). [<a href="https://github.com/2Abendsegler/GClh/issues/987" title="Issue 987">987</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
@@ -133,13 +120,26 @@
 <br>
 
 
-### Browse Map (old map):
+### Browse map (old map):
 <ul>	
 	<li>
 		<strong>New:</strong> Hide DNF smileys by default in browse map (old map). [<a href="https://github.com/2Abendsegler/GClh/issues/1115" title="Issue 1115">1115</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br>
 		<img src="../images/0.10/Screen36.jpg" alt="Screen36.jpg"></a><br>
 		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_map_hide_dnfs" title="Link to your GClh Config">Settings -> Map:<br> 
 		<img src="../images/0.10/Screen37.jpg" alt="Screen37.jpg"></a><br><br>
+	</li>
+</ul>
+<br>
+
+### Pocket query:
+<ul>	
+	<li>
+		<strong>Improve:</strong> Rewrite fixed PQ header/footer by pure CSS. Compatible with compact view. [<a href="https://github.com/2Abendsegler/GClh/issues/1034" title="Issue 1034">1034</a> / <a href="https://www.geocaching.com/profile/?u=Dratenik" title="Thanks to Dratenik">Dratenik</a>]<br>
+		The functionality is not new. New is only the great functionality. Especially for small screens very well, because the line stays at the bottom of the screen when you scroll through the pocket queries.<br>
+		<img src="../images/0.10/Screen01.gif" alt="Screen01.gif"><br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_fixed_pq_header" title="Link to your GClh Config">Settings -> Pocket query:<br>
+		<img src="../images/0.10/Screen02.jpg" alt="Screen02.jpg"></a><br>
+	        Please note that the feature is not new and you may need to activate the parameter.<br><br>
 	</li>
 </ul>
 <br>
