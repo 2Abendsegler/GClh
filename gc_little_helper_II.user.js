@@ -7804,10 +7804,55 @@ var mainGC = function() {
                     }
                 }
             }
+            //Hide Header
+            function hideOrShowSearchmapHeader(hideShow) {
+                if (hideShow == 'hide') {
+                    $('#sidebar, #clear-map-control, .map-container').addClass('hideHeaderPosition');
+                    $('#gcNavigation, #GCHeader').addClass('hideHeaderDisplayNone');
+                    document.querySelector('#hideShowHeaderLink').innerHTML = 'Show header';
+                    document.querySelector('#hideShowHeaderLink').onclick = function() {
+                        hideOrShowSearchmapHeader('show');
+                    };
+                    isHeaderHide = true;
+                }else { //show
+                    $('#sidebar, #clear-map-control, .map-container').removeClass('hideHeaderPosition');
+                    $('#gcNavigation, #GCHeader').removeClass('hideHeaderDisplayNone');
+                    document.querySelector('#hideShowHeaderLink').innerHTML = 'Hide header';
+                    document.querySelector('#hideShowHeaderLink').onclick = function() {
+                        hideOrShowSearchmapHeader('hide');
+                    };
+                    isHeaderHide = false;
+                }
+            }
+            function showLinkHideSearchmapHeader() {
+                if (document.querySelector('.sidebar-control.sidebar-search-container')) {
+                    var a = document.createElement('a');
+                    a.id = 'hideShowHeaderLink';
+                    a.href = '#';
+                    if (settings_hide_map_header) {
+                        a.innerHTML = 'Show header';
+                        a.onclick = function() {
+                            hideOrShowSearchmapHeader('show');
+                        };
+                    }else{
+                        a.innerHTML = 'Hide header';
+                        a.onclick = function() {
+                            hideOrShowSearchmapHeader('hide');
+                        };
+                    }
+                    document.querySelector('.sidebar-control.sidebar-search-container').appendChild(a);
+                    if (settings_hide_map_header) hideOrShowSearchmapHeader('hide');
+                }else {
+                    window.setTimeout(showLinkHideSearchmapHeader, 200);
+                }
+            }
 
             // Processing all steps.
             function processAllSearchMap() {
                 searchThisArea();
+                if (!document.querySelector('#sidebar.hideHeaderPosition') && isHeaderHide) {
+                    $('#sidebar').addClass('hideHeaderPosition');
+                }
             }
 
             // Build mutation observer for body.
@@ -7832,11 +7877,23 @@ var mainGC = function() {
 
             checkForBuildObserverBodySearchMap(0);
             processAllSearchMap();
+            showLinkHideSearchmapHeader();
+            var isHeaderHide = settings_hide_map_header;
 
             var css = '';
             // Hide button search this area and icon loading.
             if (!document.location.href.match(/\.com\/play\/map\?bm=/) && settings_searchmap_autoupdate_after_dragging) {
                 css += '#clear-map-control, .loading-container {display: none;}';
+            }
+            // Hide header
+            // Klassen um sie hinzufügen und entfernen zu können. Platzieren und verstecken Elemente
+            css += '.hideHeaderPosition {position: fixed !important;}';
+            css += '.hideHeaderDisplayNone {display: none !important;}';
+            if (settings_hide_map_header) {
+                css += '.sidebar-control.sidebar-search-container {background-color:whitesmoke;}'; // Hintergrundfarbe um weißen Hintergrund zu vermeiden
+                css += '#search-filters-content {position:unset;}'; // Position unset um das verrutschen zu vermeiden
+                css += '.leaflet-gl-layer.mapboxgl-map {height:100%;}'; // Höhe auf 100% setzen, um unten graue Karte zu vermeiden
+                css += '#hideShowHeaderLink {display:block; width:calc(100% - 12px); padding-bottom:12px; text-align:right;}'; // Link rechtsbündig
             }
             if (css != "") appendCssStyle(css);
         } catch(e) {gclh_error("Improve search map",e);}
