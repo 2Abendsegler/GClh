@@ -96,14 +96,6 @@
 		<img src="../images/0.10/Screen23.jpg" alt="Screen23.jpg"></a><br>
 		If you want to use it in your Linklist, you have to set it.<br><br>
 	</li>
-	<li>
-		<strong>New:</strong> Show 1000 caches instead of maximum 500 caches in own bookmark lists. [<a href="https://github.com/2Abendsegler/GClh/issues/1059" title="Issue 1059">1059</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
-		Because GS does not allow an extension of the button to choose the number of showing caches, we hide the button if you use the feature to show 1000 caches.<br>
-		<img src="../images/0.10/Screen25.jpg" alt="Screen25.jpg"><br>
-		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_show_1000_bm_lists" title="Link to your GClh Config">Settings -> Bookmark list:<br> 
-		<img src="../images/0.10/Screen07.jpg" alt="Screen07.jpg"></a><br>
-		If you want to use it, you have to activate the parameter.<br><br>
-	</li>
 </ul>
 <br>
 
@@ -125,6 +117,11 @@
 	<li>
 		<strong>New:</strong> Integrate GClh header with Linklist and GC Search in new designed map page (search map). [<a href="https://github.com/2Abendsegler/GClh/issues/987" title="Issue 987">987</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 		<img src="../images/0.10/Screen21.jpg" alt="Screen21.jpg"></a><br><br>
+	</li>
+	<li>
+		<strong>New:</strong> Virtually hit "Search this area" after dragging the map. [<a href="https://github.com/2Abendsegler/GClh/issues/966" title="Issue 966">966</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_searchmap_autoupdate_after_dragging" title="Link to your GClh Config">Settings -> Map:<br> 
+		<img src="../images/0.10/Screen38.jpg" alt="Screen38.jpg"></a><br>
 	</li>
 	<li>
 		<strong>New:</strong> Add link "Search Map" to Linklist. [<a href="https://github.com/2Abendsegler/GClh/issues/987" title="Issue 987">987</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
