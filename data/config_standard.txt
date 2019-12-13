@@ -271,5 +271,6 @@
   "settings_lists_premium_column": false,
   "settings_lists_found_column_bml": false,
   "settings_lists_show_log_it": false,
-  "settings_lists_back_to_top": false
+  "settings_lists_back_to_top": false,
+  "settings_searchmap_autoupdate_after_dragging": true
 }
