@@ -91,6 +91,17 @@
 		<img src="../images/0.10/Screen20.jpg" alt="Screen20.jpg"><br><br>
 	</li>
 	<li>
+		<strong>New:</strong> Improve new lists pages. [<a href="https://github.com/2Abendsegler/GClh/issues/1119" title="Issue 1119">1119</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		<img src="../images/0.10/Screen39.jpg" alt="Screen39.jpg"><br>
+		<img src="../images/0.10/Screen40.jpg" alt="Screen40.jpg"><br>
+		<img src="../images/0.10/Screen41.jpg" alt="Screen41.jpg"><br>
+		<img src="../images/0.10/Screen42.jpg" alt="Screen42.jpg"><br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_lists_compact_layout" title="Link to your GClh Config">Settings -> Map:<br> 
+		<img src="../images/0.10/Screen43.jpg" alt="Screen43.jpg"></a><br>
+		If you want to use these features, you have to activate the parameter.<br>
+		Please note, that these pages are still under construction by GS. Changes can also affect our features.<br><br>
+	</li>
+	<li>
 		<strong>New:</strong> Add link "Ignore List" for using in Linklist. [<a href="https://github.com/2Abendsegler/GClh/issues/1052" title="Issue 1052">1052</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#ll#settings_bookmarks_top_menu_h" title="Link to your GClh Config">Settings -> Linklist / Navigation:<br> 
 		<img src="../images/0.10/Screen23.jpg" alt="Screen23.jpg"></a><br>
@@ -103,7 +114,7 @@
 <ul>	
 	<li>
 		<strong>New:</strong> Integrate GClh header with Linklist and GC Search in new designed map page (search map). [<a href="https://github.com/2Abendsegler/GClh/issues/987" title="Issue 987">987</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
-		<img src="../images/0.10/Screen21.jpg" alt="Screen21.jpg"></a><br><br>
+		<img src="../images/0.10/Screen21.jpg" alt="Screen21.jpg"><br><br>
 	</li>
 	<li>
 		<strong>New:</strong> Virtually hit "Search this area" after dragging the map. [<a href="https://github.com/2Abendsegler/GClh/issues/966" title="Issue 966">966</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
