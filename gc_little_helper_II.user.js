@@ -7222,23 +7222,37 @@ var mainGC = function() {
             }
         // Andere Listen: In Zeilen gegebenenfalls Einfärbung für Zebra oder User entfernen.
         } else if (!is_page("cache_listing")) {
-            if (settings_show_common_lists_in_zebra == false){
+            if (document.location.href.match(/\.com\/my\/recentlyviewedcaches\.aspx/)) {
                 var lines = $("table").find("tbody").find("tr");
                 var replaceSpec = /(AlternatingRow)(\s*)/g;
                 setLinesColorNone(lines, replaceSpec);
-            }
-            if (settings_show_common_lists_color_user == false){
-                var lines = $("table").find("tbody").find("tr");
                 var replaceSpec = /(TertiaryRow)(\s*)/g;
                 setLinesColorNone(lines, replaceSpec);
-                // Wenn User nicht eingefärbt werden soll, Zebra aber ausgewählt ist, dann muss Zebra explizit gesetzt werden, weil nur ein Wert im Standard
-                // gesetzt wurde, hier eben Wert für User.
-                if (settings_show_common_lists_in_zebra) {
-                    if (document.location.href.match(/\.com\/seek\/nearest\.aspx\?/) ||
-                        document.location.href.match(/\.com\/my\/recentlyviewedcaches\.aspx/)) {
-                        // Überschrift weglassen, einzeilig.
-                        var lines = $("table.Table").find("tbody").find("tr").slice(1);
-                        setLinesColorInZebra(settings_show_common_lists_in_zebra, lines, 1);
+                if (settings_show_common_lists_in_zebra == true){
+                    var lines = $("table.Table").find("tbody").find("tr").slice(1);
+                    setLinesColorInZebra(settings_show_common_lists_in_zebra, lines, 1);
+                }
+                if (settings_show_common_lists_color_user == true){
+                    setLinesColorUser("settings_show_common_lists_color", "user", lines, 1, "", true);
+                }
+            } else {
+                if (settings_show_common_lists_in_zebra == false){
+                    var lines = $("table").find("tbody").find("tr");
+                    var replaceSpec = /(AlternatingRow)(\s*)/g;
+                    setLinesColorNone(lines, replaceSpec);
+                }
+                if (settings_show_common_lists_color_user == false){
+                    var lines = $("table").find("tbody").find("tr");
+                    var replaceSpec = /(TertiaryRow)(\s*)/g;
+                    setLinesColorNone(lines, replaceSpec);
+                    // Wenn User nicht eingefärbt werden soll, Zebra aber ausgewählt ist, dann muss Zebra explizit gesetzt werden, weil nur ein Wert im Standard
+                    // gesetzt wurde, hier eben Wert für User.
+                    if (settings_show_common_lists_in_zebra) {
+                        if (document.location.href.match(/\.com\/seek\/nearest\.aspx\?/)) {
+                            // Überschrift weglassen, einzeilig.
+                            var lines = $("table.Table").find("tbody").find("tr").slice(1);
+                            setLinesColorInZebra(settings_show_common_lists_in_zebra, lines, 1);
+                        }
                     }
                 }
             }
