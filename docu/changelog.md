@@ -84,7 +84,7 @@
 </ul>
 <br>
 
-### New My Lists, Favorites and Ignored geocaches:
+### My Lists, Favorites and Ignored geocaches:
 <ul>	
 	<li>
 		<strong>New:</strong> Integrate GClh header with Linklist and GClh Search in new designed lists page with My Lists, Favorites and Ignored geocaches. [<a href="https://github.com/2Abendsegler/GClh/issues/1052" title="Issue 1052">1052</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
