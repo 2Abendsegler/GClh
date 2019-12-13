@@ -96,7 +96,7 @@
 		<img src="../images/0.10/Screen40.jpg" alt="Screen40.jpg"><br>
 		<img src="../images/0.10/Screen41.jpg" alt="Screen41.jpg"><br>
 		<img src="../images/0.10/Screen42.jpg" alt="Screen42.jpg"><br>
-		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_lists_compact_layout" title="Link to your GClh Config">Settings -> Map:<br> 
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_lists_compact_layout" title="Link to your GClh Config">Settings -> Bookmark list:<br> 
 		<img src="../images/0.10/Screen43.jpg" alt="Screen43.jpg"></a><br>
 		If you want to use these features, you have to activate the parameter.<br>
 		Please note, that these pages are still under construction by GS. Changes can also affect our features.<br><br>
