@@ -98,8 +98,8 @@
 		<img src="../images/0.10/Screen42.jpg" alt="Screen42.jpg"><br>
 		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_lists_compact_layout" title="Link to your GClh Config">Settings -> Bookmark list:<br> 
 		<img src="../images/0.10/Screen43.jpg" alt="Screen43.jpg"></a><br>
-		If you want to use these features, you have to activate the parameter.<br><br>
-		Please note, that these pages are still under construction by GS. Changes can also affect our features.<br><br>
+		If you want to use these features, you have to activate the parameter.<br>
+		<i>Please note, that these pages are still under construction by GS. Changes can also affect our features.</i><br><br>
 	</li>
 	<li>
 		<strong>New:</strong> Add link "Ignore List" for using in Linklist. [<a href="https://github.com/2Abendsegler/GClh/issues/1052" title="Issue 1052">1052</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
