@@ -6,7 +6,7 @@
 ## v0.10.1:
 <ul>
 	<li>
-		<strong>Info:</strong> Please check your settings for the elevation data:<br>
+		<strong>Info:</strong> Please check your settings for the elevation data. [<a href="https://github.com/2Abendsegler/GClh/issues/1138" title="Issue 1131">1131</a>]<br>
                 You should set Geonames-Elevation as first service and Open-Elevation as second service.<br> 
 <a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_show_elevation_of_waypoints" title="Link to your GClh Config">Settings -> Listing:<br>
 		<img src="../images/0.9.15/Screen01.jpg" alt="Screen01.jpg"></a><br>
