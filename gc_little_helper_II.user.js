@@ -2141,12 +2141,10 @@ var mainGC = function() {
     if (is_page("cache_listing") && settings_improve_add_to_list && $('.btn-add-to-list')[0]) {
         try {
             var height = ((parseInt(settings_improve_add_to_list_height) < 100) ? parseInt(100) : parseInt(settings_improve_add_to_list_height));
-            var css = ".loading {background: url(/images/loading2.gif) no-repeat center !important;}"
-                    + ".add-list {max-height: " + height + "px !important;}"
+            var css = ".add-list {max-height: " + height + "px !important;}"
                     + ".add-list li {padding: 2px 0 !important;}"
                     + ".add-list li button {font-size: 14px !important; margin: 0 !important; height: 18px !important;}"
-                    + ".status {font-size: 14px !important; margin: 0 !important; top: 8px !important; width: unset !important; right: 0px !important;}"
-                    + ".status .loading {top: -6px !important; right: 0px !important; padding: 0 2px !important; background-color: white !important; background: url(/images/loading2.gif) no-repeat center;}"
+                    + ".status {font-size: 14px !important; width: unset !important;}"
                     + ".status.success, .success-message {right: 2px !important; padding: 0 5px !important; background-color: white !important; color: #E0B70A !important;}";
             appendCssStyle(css);
             $('.btn-add-to-list')[0].addEventListener("click", function() {window.scroll(0, 0);});
