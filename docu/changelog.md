@@ -15,6 +15,16 @@
 		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_show_elevation_of_waypoints" title="Link to your GClh Config">Settings -> Listing:<br>
 		<img src="../images/0.9.15/Screen01.jpg" alt="Screen01.jpg"></a><br><br>
 	</li>
+	<li>
+		<strong>New:</strong> Show an overflowed username in a cache listing log when hovering over with the mouse. [<a href="https://github.com/2Abendsegler/GClh/issues/1138" title="Issue 1138">1138</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		<img src="../images/0.10.1/Screen01.jpg" alt="Screen01.jpg"><br><br>
+	</li>
+	<li>
+		<strong>Fix:</strong> One click watching feature doesn't work in other languages than english. [<a href="https://github.com/2Abendsegler/GClh/issues/1129" title="Issue 1129">1129</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> The add to list loading and success message in cache listing are displaced. [<a href="https://github.com/2Abendsegler/GClh/issues/1133" title="Issue 1133">1133</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
 </ul>
 <br>
 (20.12.2019)<br>
