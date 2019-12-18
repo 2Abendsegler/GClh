@@ -2077,20 +2077,25 @@ var mainGC = function() {
     }
 
 // Improve Watch button handling. (Not for Stop Watching handling.)
-    if (is_page("cache_listing") && settings_use_one_click_watching && $('#ctl00_ContentBody_GeoNav_uxWatchlistBtn a')[0] && !$('#ctl00_ContentBody_GeoNav_uxWatchlistBtn a')[0].href.match(/action=rem/)) {
+    if (is_page("cache_listing") && settings_use_one_click_watching && $('#ctl00_ContentBody_GeoNav_uxWatchlistBtn a')[0]) {
         try {
             // Prepare one click watching.
             var link = '#ctl00_ContentBody_GeoNav_uxWatchlistBtn a';
-            $(link).attr('data-url', $(link)[0].href);
-            var wID = $(link)[0].href.match(/aspx\?w=([0-9]+)/);
-            $(link).attr('data-wID', wID[1]);
-            $(link)[0].href = 'javascript:void(0);';
-            $(link)[0].addEventListener("click", oneClickWatching, false);
-            changeWatchButton($(link)[0].innerHTML);
-            var saved = document.createElement('span');
-            saved.setAttribute('id', 'watchSaved');
-            saved.appendChild(document.createTextNode('saved'));
-            $('#ctl00_ContentBody_GeoNav_uxWatchlistBtn')[0].append(saved);
+            if ($(link)[0].href.match(/action=rem/)) {
+                $(link)[0].innerHTML = 'Stop Watching';
+            } else {
+                $(link)[0].innerHTML = 'Watch';
+                $(link).attr('data-url', $(link)[0].href);
+                var wID = $(link)[0].href.match(/aspx\?w=([0-9]+)/);
+                $(link).attr('data-wID', wID[1]);
+                $(link)[0].href = 'javascript:void(0);';
+                $(link)[0].addEventListener("click", oneClickWatching, false);
+                changeWatchButton($(link)[0].innerHTML);
+                var saved = document.createElement('span');
+                saved.setAttribute('id', 'watchSaved');
+                saved.appendChild(document.createTextNode('saved'));
+                $('#ctl00_ContentBody_GeoNav_uxWatchlistBtn')[0].append(saved);
+            }
         } catch(e) {gclh_error("Improve Watch button handling.",e);}
     }
     function oneClickWatching() {
