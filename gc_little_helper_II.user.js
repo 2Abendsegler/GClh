@@ -7174,6 +7174,12 @@ var mainGC = function() {
             var owner = get_real_owner();
             setLinesColorInZebra(settings_show_cache_listings_in_zebra, lines, 1);
             setLinesColorUser("settings_show_cache_listings_color", "user,owner,reviewer,vips", lines, 1, owner);
+            // Show an overflowed username in a cache listing log when hovering over with the mouse.
+            $('.logOwnerProfileName').each(function() {
+                if (window.getComputedStyle(this).width == '135px') {
+                    this.setAttribute('title', $(this).find('a')[0].innerHTML);
+                }
+            });
         }
     }
     // Bei Click auf VIP Icon, Einfärbung für VIP neu machen.
