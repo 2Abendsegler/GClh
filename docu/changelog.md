@@ -1,5 +1,25 @@
-<a href="#v010" title="GClh II version 0.10 (??.??.2019)">v0.10</a> &nbsp;
+<a href="#v0101" title="GClh II version 0.10.1 (20.12.2019)">v0.10.1</a> &nbsp;
+<a href="#v010" title="GClh II version 0.10 (13.12.2019)">v0.10</a> &nbsp;
 <a href="changelog_before.md" title="Go to earlier changelog">Earlier changelog</a> &nbsp;
+
+---
+## v0.10.1:
+<ul>
+	<li>
+	<li>
+		<strong>Info:</strong> Please check your settings for the elevation data:<br>
+                You should set Geonames-Elevation as first service and Open-Elevation as second service.<br> 
+<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_show_elevation_of_waypoints" title="Link to your GClh Config">Settings -> Listing:<br>
+		<img src="../images/0.9.15/Screen01.jpg" alt="Screen01.jpg"></a><br>
+		Because the number of calls to the Google Elevation API is limited and the Open-Elevation API is very slow and sometimes providing erroneous data, the Geonames API has also been implemented with version 0.9.15. The Geonames API is very fast and providing almost no erroneous data.<br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_show_elevation_of_waypoints" title="Link to your GClh Config">Settings -> Listing:<br>
+		<img src="../images/0.9.15/Screen01.jpg" alt="Screen01.jpg"></a><br><br>
+	</li>
+</ul>
+<br>
+(20.12.2019)<br>
+released by <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a><br>
+<br>
 
 ---
 ## v0.10:
