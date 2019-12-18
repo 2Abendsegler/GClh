@@ -6361,7 +6361,6 @@ var mainGC = function() {
                 '          {{/if}}' +
                 '        </strong>' +
                 '      </p>' +
-              ' {{'
                 '      <p class="logIcons">' +
                 '        <strong>' +
                 '          <a class="logOwnerBadge">' +
