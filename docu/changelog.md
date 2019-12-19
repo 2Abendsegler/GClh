@@ -6,11 +6,11 @@
 ## v0.10.1:
 <ul>
 	<li>
-		<strong>Info:</strong> Please check your settings for the elevation data. [<a href="https://github.com/2Abendsegler/GClh/issues/1138" title="Issue 1131">1131</a>]<br>
-                You should set Geonames-Elevation as first service and Open-Elevation as second service.<br> 
+		Please check your settings for the elevation data. [<a href="https://github.com/2Abendsegler/GClh/issues/1138" title="Issue 1131">1131</a>]<br>
+                Because the number of calls of Google Elevation is limited and Open-Elevation is very slow and sometimes providing erroneous data, Geonames-Elevation has been implemented with version 0.9.15. Geonames-Elevation is very fast and providing almost no erroneous data.<br> 
+		Therefore we recommend the following settings.<br>
 <a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_show_elevation_of_waypoints" title="Link to your GClh Config">Settings -> Listing:<br>
-		<img src="../images/0.9.15/Screen01.jpg" alt="Screen01.jpg"></a><br>
-		<i>Because the number of calls to the Google Elevation API is limited and the Open-Elevation API is very slow and sometimes providing erroneous data, the Geonames API has also been implemented with version 0.9.15. The Geonames API is very fast and providing almost no erroneous data.</i><br><br>
+		<img src="../images/0.9.15/Screen01.jpg" alt="Screen01.jpg"></a><br><br>
 	</li>
 	<li>
 		<strong>New:</strong> Show an overflowed username in a cache listing log when hovering over with the mouse. [<a href="https://github.com/2Abendsegler/GClh/issues/1138" title="Issue 1138">1138</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
