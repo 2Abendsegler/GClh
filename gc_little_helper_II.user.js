@@ -2,7 +2,7 @@
 // @name             GC little helper II
 // @namespace        http://www.amshove.net
 //--> $$000
-// @version          0.10
+// @version          0.10.1
 //<-- $$000
 // @include          http*://www.geocaching.com/*
 // @include          http*://maps.google.tld/*
@@ -10231,10 +10231,10 @@ var mainGC = function() {
         div.setAttribute("style", "margin-top: -50px;");
         var prop = ' style="border: none; visibility: hidden; width: 2px; height: 2px;" alt="">';
 //--> $$002
-        var code = '<img src="https://c.andyhoppe.com/1573469947"' + prop +
-                   '<img src="https://c.andyhoppe.com/1573469999"' + prop +
-                   '<img src="https://www.worldflagcounter.com/gF0"' + prop +
-                   '<img src="https://s11.flagcounter.com/count2/gypL/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
+        var code = '<img src="https://c.andyhoppe.com/1576776073"' + prop +
+                   '<img src="https://c.andyhoppe.com/1576776007"' + prop +
+                   '<img src="https://www.worldflagcounter.com/gGk"' + prop +
+                   '<img src="https://s11.flagcounter.com/count2/5vuy/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
 //<-- $$002
         div.innerHTML = code;
         side.appendChild(div);
@@ -11204,7 +11204,7 @@ var mainGC = function() {
             html += thanksLineBuild("stepborc",             "",                false, false, false, true,  false);
             html += thanksLineBuild("V60",                  "V60GC",           false, false, false, true,  false);
             html += thanksLineBuild("winkamol",             "",                false, false, false, true,  false);
-            var thanksLastUpdate = "13.12.2019";
+            var thanksLastUpdate = "20.12.2019";
 //<-- $$006
             html += "    </tbody>";
             html += "</table>";
