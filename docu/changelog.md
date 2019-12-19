@@ -1,5 +1,32 @@
-<a href="#v010" title="GClh II version 0.10 (??.??.2019)">v0.10</a> &nbsp;
+<a href="#v0101" title="GClh II version 0.10.1 (20.12.2019)">v0.10.1</a> &nbsp;
+<a href="#v010" title="GClh II version 0.10 (13.12.2019)">v0.10</a> &nbsp;
 <a href="changelog_before.md" title="Go to earlier changelog">Earlier changelog</a> &nbsp;
+
+---
+## v0.10.1:
+<ul>
+	<li>
+		<strong>Info:</strong> Please check your settings for the elevation data. [<a href="https://github.com/2Abendsegler/GClh/issues/1138" title="Issue 1131">1131</a>]<br>
+                Because the number of calls of Google Elevation is limited and Open-Elevation is very slow and sometimes providing erroneous data, Geonames-Elevation has been implemented with version 0.9.15. Geonames-Elevation is very fast and providing almost no erroneous data.<br> 
+		Therefore we recommend the following settings.<br>
+<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_show_elevation_of_waypoints" title="Link to your GClh Config">Settings -> Listing:<br>
+		<img src="../images/0.9.15/Screen01.jpg" alt="Screen01.jpg"></a><br><br>
+	</li>
+	<li>
+		<strong>New:</strong> Show an overflowed username in a cache listing log when hovering over with the mouse. [<a href="https://github.com/2Abendsegler/GClh/issues/1138" title="Issue 1138">1138</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		<img src="../images/0.10.1/Screen01.jpg" alt="Screen01.jpg"><br><br>
+	</li>
+	<li>
+		<strong>Fix:</strong> One click watching feature doesn't work in other languages than english. [<a href="https://github.com/2Abendsegler/GClh/issues/1129" title="Issue 1129">1129</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> The add to list loading and success message in cache listing are displaced. [<a href="https://github.com/2Abendsegler/GClh/issues/1133" title="Issue 1133">1133</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+</ul>
+<br>
+(20.12.2019)<br>
+released by <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a><br>
+<br>
 
 ---
 ## v0.10:

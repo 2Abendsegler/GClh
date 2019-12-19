@@ -2,7 +2,7 @@
 // @name             GC little helper II
 // @namespace        http://www.amshove.net
 //--> $$000
-// @version          0.10
+// @version          0.10.1
 //<-- $$000
 // @include          http*://www.geocaching.com/*
 // @include          http*://maps.google.tld/*
@@ -2077,20 +2077,25 @@ var mainGC = function() {
     }
 
 // Improve Watch button handling. (Not for Stop Watching handling.)
-    if (is_page("cache_listing") && settings_use_one_click_watching && $('#ctl00_ContentBody_GeoNav_uxWatchlistBtn a')[0] && !$('#ctl00_ContentBody_GeoNav_uxWatchlistBtn a')[0].href.match(/action=rem/)) {
+    if (is_page("cache_listing") && settings_use_one_click_watching && $('#ctl00_ContentBody_GeoNav_uxWatchlistBtn a')[0]) {
         try {
             // Prepare one click watching.
             var link = '#ctl00_ContentBody_GeoNav_uxWatchlistBtn a';
-            $(link).attr('data-url', $(link)[0].href);
-            var wID = $(link)[0].href.match(/aspx\?w=([0-9]+)/);
-            $(link).attr('data-wID', wID[1]);
-            $(link)[0].href = 'javascript:void(0);';
-            $(link)[0].addEventListener("click", oneClickWatching, false);
-            changeWatchButton($(link)[0].innerHTML);
-            var saved = document.createElement('span');
-            saved.setAttribute('id', 'watchSaved');
-            saved.appendChild(document.createTextNode('saved'));
-            $('#ctl00_ContentBody_GeoNav_uxWatchlistBtn')[0].append(saved);
+            if ($(link)[0].href.match(/action=rem/)) {
+                $(link)[0].innerHTML = 'Stop Watching';
+            } else {
+                $(link)[0].innerHTML = 'Watch';
+                $(link).attr('data-url', $(link)[0].href);
+                var wID = $(link)[0].href.match(/aspx\?w=([0-9]+)/);
+                $(link).attr('data-wID', wID[1]);
+                $(link)[0].href = 'javascript:void(0);';
+                $(link)[0].addEventListener("click", oneClickWatching, false);
+                changeWatchButton($(link)[0].innerHTML);
+                var saved = document.createElement('span');
+                saved.setAttribute('id', 'watchSaved');
+                saved.appendChild(document.createTextNode('saved'));
+                $('#ctl00_ContentBody_GeoNav_uxWatchlistBtn')[0].append(saved);
+            }
         } catch(e) {gclh_error("Improve Watch button handling.",e);}
     }
     function oneClickWatching() {
@@ -2141,12 +2146,10 @@ var mainGC = function() {
     if (is_page("cache_listing") && settings_improve_add_to_list && $('.btn-add-to-list')[0]) {
         try {
             var height = ((parseInt(settings_improve_add_to_list_height) < 100) ? parseInt(100) : parseInt(settings_improve_add_to_list_height));
-            var css = ".loading {background: url(/images/loading2.gif) no-repeat center !important;}"
-                    + ".add-list {max-height: " + height + "px !important;}"
+            var css = ".add-list {max-height: " + height + "px !important;}"
                     + ".add-list li {padding: 2px 0 !important;}"
                     + ".add-list li button {font-size: 14px !important; margin: 0 !important; height: 18px !important;}"
-                    + ".status {font-size: 14px !important; margin: 0 !important; top: 8px !important; width: unset !important; right: 0px !important;}"
-                    + ".status .loading {top: -6px !important; right: 0px !important; padding: 0 2px !important; background-color: white !important; background: url(/images/loading2.gif) no-repeat center;}"
+                    + ".status {font-size: 14px !important; width: unset !important;}"
                     + ".status.success, .success-message {right: 2px !important; padding: 0 5px !important; background-color: white !important; color: #E0B70A !important;}";
             appendCssStyle(css);
             $('.btn-add-to-list')[0].addEventListener("click", function() {window.scroll(0, 0);});
@@ -7171,6 +7174,12 @@ var mainGC = function() {
             var owner = get_real_owner();
             setLinesColorInZebra(settings_show_cache_listings_in_zebra, lines, 1);
             setLinesColorUser("settings_show_cache_listings_color", "user,owner,reviewer,vips", lines, 1, owner);
+            // Show an overflowed username in a cache listing log when hovering over with the mouse.
+            $('.logOwnerProfileName').each(function() {
+                if (window.getComputedStyle(this).width == '135px') {
+                    this.setAttribute('title', $(this).find('a')[0].innerHTML);
+                }
+            });
         }
     }
     // Bei Click auf VIP Icon, Einfärbung für VIP neu machen.
@@ -10231,10 +10240,10 @@ var mainGC = function() {
         div.setAttribute("style", "margin-top: -50px;");
         var prop = ' style="border: none; visibility: hidden; width: 2px; height: 2px;" alt="">';
 //--> $$002
-        var code = '<img src="https://c.andyhoppe.com/1573469947"' + prop +
-                   '<img src="https://c.andyhoppe.com/1573469999"' + prop +
-                   '<img src="https://www.worldflagcounter.com/gF0"' + prop +
-                   '<img src="https://s11.flagcounter.com/count2/gypL/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
+        var code = '<img src="https://c.andyhoppe.com/1576776073"' + prop +
+                   '<img src="https://c.andyhoppe.com/1576776007"' + prop +
+                   '<img src="https://www.worldflagcounter.com/gGk"' + prop +
+                   '<img src="https://s11.flagcounter.com/count2/5vuy/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
 //<-- $$002
         div.innerHTML = code;
         side.appendChild(div);
@@ -11204,7 +11213,7 @@ var mainGC = function() {
             html += thanksLineBuild("stepborc",             "",                false, false, false, true,  false);
             html += thanksLineBuild("V60",                  "V60GC",           false, false, false, true,  false);
             html += thanksLineBuild("winkamol",             "",                false, false, false, true,  false);
-            var thanksLastUpdate = "13.12.2019";
+            var thanksLastUpdate = "20.12.2019";
 //<-- $$006
             html += "    </tbody>";
             html += "</table>";

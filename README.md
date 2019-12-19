@@ -19,7 +19,7 @@ If you need any help with the installation, you can have a look at our [Installa
 ## Our Goal
 *GC little helper II* is a tool to enhance and extend the functionality on www.geocaching.com. All functions can be configured in a configuration menue. It uses english as language.
 
-Is free of charge and without any advertising.
+It is free of charge and without any advertising.
 
 The tool is developed in Javascript and can be used with the script manager Tampermonkey under Firefox, Google Chrome, Safari, Opera, Microsoft Edge und Vivaldi.
 
