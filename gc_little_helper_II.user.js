@@ -450,6 +450,7 @@ var variablesInit = function(c) {
     c.settings_hide_top_button = getValue("settings_hide_top_button", false);
     c.settings_show_real_owner = getValue("settings_show_real_owner", false);
     c.settings_hide_archived_in_owned = getValue("settings_hide_archived_in_owned", false);
+    c.settings_show_button_for_hide_archived = getValue("settings_show_button_for_hide_archived", true);
     c.settings_hide_visits_in_profile = getValue("settings_hide_visits_in_profile", false);
     c.settings_log_signature_on_fieldnotes = getValue("settings_log_signature_on_fieldnotes", true);
     c.settings_map_hide_sidebar = getValue("settings_map_hide_sidebar", true);
@@ -9129,16 +9130,58 @@ var mainGC = function() {
         } catch(e) {gclh_error("Edit and Image Links to own caches in profile",e);}
     }
 
-// Hide archived at own caches.
-    if (settings_hide_archived_in_owned && document.location.href.match(/\.com\/my\/owned\.aspx/)) {
+// Owned caches list.
+    if (document.location.href.match(/\.com\/my\/owned\.aspx/)) {
         try {
-            var links = $('a');
-            for (var i = 0; i < links.length; i++) {
-                if (links[i].href.match(/\/seek\/cache_details\.aspx\?/)) {
+            function showActive() {
+                for (var i = 0; i < links.length; i++) {
                     var archived = links[i].classList.contains("OldWarning");
-                    if (archived) links[i].parentNode.parentNode.style.display = 'none';
+                    if (archived) links[i].parentNode.parentNode.setAttribute('style', 'display: none');
+                    else links[i].parentNode.parentNode.removeAttribute('style');
+                }
+                if (settings_show_button_for_hide_archived)    {
+                    button.value = 'Show all';
+                    button.onclick = showAll;
                 }
             }
+            function showAll() {
+                for (var i = 0; i < links.length; i++) {
+                    var archived = links[i].classList.contains("OldWarning");
+                    if (archived) links[i].parentNode.parentNode.removeAttribute('style');
+                }
+                button.value = 'Show archived';
+                button.onclick = showArchived;
+            }
+            function showArchived() {
+                for (var i = 0; i < links.length; i++) {
+                    var archived = links[i].classList.contains("OldWarning");
+                    if (archived) links[i].parentNode.parentNode.removeAttribute('style');
+                    else links[i].parentNode.parentNode.setAttribute('style', 'display: none');
+                }
+                button.value = 'Show active';
+                button.onclick = showActive;
+            }
+
+            var links = $('#divContentMain tbody tr a.lnk');
+            var archivedCaches = 0;
+            for (let i=0; i<links.length; i++) {
+                var archived = links[i].classList.contains("OldWarning");
+                if (archived) archivedCaches++;
+            }
+            document.querySelector('#ctl00_ContentBody_lbHeading').innerHTML += '&nbsp;(' + archivedCaches + '&nbsp;archived)';
+            if (settings_show_button_for_hide_archived)    {
+                var button = document.createElement('input');
+                button.type = 'button';
+                button.value = 'Show activate';
+                document.querySelector('#divContentMain').insertBefore(button, document.querySelector('.MyOwnedCachesTable'));
+                button.onclick = showActive;
+                // CSS
+                var css = 'input {cursor: pointer;}'
+                        + 'h2.BottomSpacing {margin-bottom: 10px !important;}'
+                        + '.SearchResultsTable.MyOwnedCachesTable {margin-top: 15px !important;}';
+                appendCssStyle(css);
+            }
+            if (settings_hide_archived_in_owned) showActive();
         } catch(e) {gclh_error("Hide archived at own caches",e);}
     }
 
@@ -11407,6 +11450,9 @@ var mainGC = function() {
             html += checkboxy('settings_search_enable_user_defined', 'Enable user defined filter sets for geocache searchs') + show_help("This features enables you to store favourites filter settings in the geocache search and call them quickly.") + prem + "<br>";
             html += checkboxy('settings_show_sums_in_watchlist', 'Show number of caches in your watchlist') + show_help("With this option the number of caches and the number of selected caches in the categories \"All\", \"Archived\" and \"Deactivated\", corresponding to the select buttons, are shown in your watchlist at the end of the list.") + "<br>";
             html += checkboxy('settings_hide_archived_in_owned', 'Hide archived caches in owned list') + "<br>";
+            html += newParameterOn1;
+            html += checkboxy('settings_show_button_for_hide_archived', 'Show button for hide archived caches in owned list') + "<br>";
+            html += newParameterVersionSetzen("0.10") + newParameterOff;
             html += newParameterOn3;
             html += checkboxy('settings_modify_new_drafts_page', 'Modify draft items on the new drafts page') + show_help("Change the linkage of each draft. The title of the geocache now links to the geocaching listing and the cache icon, too (2nd line). The pen icon and the preview note links to the log composing page (3rd line). Add the log type as overlay icon onto the cache icon.") + "<br>";
             html += newParameterVersionSetzen(0.9) + newParameterOff;
@@ -12728,6 +12774,7 @@ var mainGC = function() {
                 'settings_replace_log_by_last_log',
                 'settings_show_real_owner',
                 'settings_hide_archived_in_owned',
+                'settings_show_button_for_hide_archived',
                 'settings_hide_visits_in_profile',
                 'settings_log_signature_on_fieldnotes',
                 'settings_vip_show_nofound',
