@@ -9478,24 +9478,24 @@ var mainGC = function() {
 
     if (setting_show_counter_for_limited_fields && document.location.href.match(/\.com\/hide\/(report|description|edit)\.aspx/)) {
         try {
-			var name = ($('#tbNickname')[0] ? $('#tbNickname')[0] : $('#ctl00_ContentBody_tbGeocacheName')[0]);
-			var placedBy = ($('#tbPlacedBy')[0] ? $('#tbPlacedBy')[0] : $('#ctl00_ContentBody_tbPlacedBy')[0]);
-			var hint = ($('#tbHints')[0] ? $('#tbHints')[0] : $('#tbHint')[0])
+            var name = ($('#tbNickname')[0] ? $('#tbNickname')[0] : $('#ctl00_ContentBody_tbGeocacheName')[0]);
+            var placedBy = ($('#tbPlacedBy')[0] ? $('#tbPlacedBy')[0] : $('#ctl00_ContentBody_tbPlacedBy')[0]);
+            var hint = ($('#tbHints')[0] ? $('#tbHints')[0] : $('#tbHint')[0])
 
             function createCounterElement(countername, textbox, maxLength) {
                 var counterelement = document.createElement('span');
                 var counterspan = document.createElement('p');
-				counterspan.style = 'margin-bottom: 0px';
+                counterspan.style = 'margin-bottom: 0px';
                 counterspan.id = countername;
                 counterspan.innerHTML = "<b>Length: </b>";
                 counterelement.innerHTML = "<span>" + $(textbox).val().replace(/\n/g, "\r\n").length + "/" + maxLength + "</span>";
                 counterspan.appendChild(counterelement);
                 textbox.parentNode.append(counterspan);
             }
-			createCounterElement('nameCounter', name, 50);
-			createCounterElement('placedByCounter', placedBy, 50);
-			createCounterElement('hintCounter', hint, 250);
-			
+            createCounterElement('nameCounter', name, 50);
+            createCounterElement('placedByCounter', placedBy, 50);
+            createCounterElement('hintCounter', hint, 250);
+            
             name.addEventListener("keyup", function() {limitLogText(name, document.querySelector('#nameCounter span'), 50);}, false);
             name.addEventListener("change", function() {limitLogText(name, document.querySelector('#nameCounter span'), 50);}, false);
             placedBy.addEventListener("keyup", function() {limitLogText(placedBy, document.querySelector('#placedByCounter span'), 50);}, false);
