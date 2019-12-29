@@ -498,6 +498,7 @@ var variablesInit = function(c) {
     c.settings_compact_layout_nearest = getValue("settings_compact_layout_nearest", true);
     c.settings_compact_layout_recviewed = getValue("settings_compact_layout_recviewed", true);
     c.settings_map_links_statistic = getValue("settings_map_links_statistic", true);
+    c.settings_map_percentage_statistic = getValue("settings_map_percentage_statistic", true);
     c.settings_improve_add_to_list_height = getValue("settings_improve_add_to_list_height", 205);
     c.settings_improve_add_to_list = getValue("settings_improve_add_to_list", true);
     c.remove_navi_play = getValue("remove_navi_play", false);
@@ -8790,7 +8791,6 @@ var mainGC = function() {
 
 // Improve own statistic map page with links to caches for every country.
     if (settings_map_links_statistic && isOwnStatisticsPage() ) {
-
         try {
             var countriesList = $('#stats_tabs-maps .StatisticsWrapper');
             for (var j = 0; j < countriesList.length; j++) {
@@ -8802,7 +8802,6 @@ var mainGC = function() {
                     if (name) {
                         var parameter = undefined;
                         var item = undefined;
-
                         var countries = $.grep(country_id, function(e){return e.n == name;});
                         var states = $.grep(states_id, function(e){return e.n == name;});
 
@@ -8847,6 +8846,31 @@ var mainGC = function() {
                 }
             }
         } catch(e) {gclh_error("Improve own statistic map page",e);}
+    }
+
+// Improve statistic map page with total and percentage.
+    if ((document.location.href.match(/\.com\/my\/statistics\.aspx/)) || (is_page("publicProfile") && $('#ctl00_ContentBody_ProfilePanel1_lnkStatistics.Active')[0])) {
+        try {
+            $('#stats_tabs-maps .StatisticsWrapper').each(function() {
+                var total = 0;
+                $(this).find('table tbody').each(function() {
+                    $(this).find('tr > td:nth-child(2) > strong').each(function() {
+                        total += JSON.parse($(this)[0].innerHTML.replace(/\s/g, ''));
+                    });
+                    if (settings_map_percentage_statistic) {
+                        $(this).find('tr > td:nth-child(2) > strong').each(function() {
+                            var count = JSON.parse($(this)[0].innerHTML.replace(/\s/g, ''));
+                            var perc = (Math.round(count * 100 * 100 / total) / 100).toFixed(2);
+                            var td = document.createElement('td');
+                            td.innerHTML = '<strong>' + perc + '%</strong>';
+                            td.setAttribute('title', count + (count == 1 ? ' cache are ':' caches are ') + perc + '% of the total of ' + total + ' caches.');
+                            $(this)[0].parentNode.parentNode.appendChild(td);
+                        });
+                    }
+                });
+                $(this)[0].previousElementSibling.innerHTML = total + ' ' + $(this)[0].previousElementSibling.innerHTML;
+            });
+        } catch(e) {gclh_error("Improve statistic map page",e);}
     }
 
 // Post log from listing (inline).
@@ -11591,6 +11615,9 @@ var mainGC = function() {
             html += newParameterOn2;
             html += checkboxy('settings_map_links_statistic', 'Show links to found caches for every country on statistic map') + show_help("With this option, you can improve your own statistic maps page for you with links to caches you have found for every country.") + "<br>";
             html += newParameterVersionSetzen(0.8) + newParameterOff;
+            html += newParameterOn1;
+            html += checkboxy('settings_map_percentage_statistic', 'Show percentage of found caches for every country on statistic map') + "<br>";
+            html += newParameterVersionSetzen('0.10') + newParameterOff;
             html += "</div>";
 
             html += "<h4 class='gclh_headline2'>"+prepareHideable.replace("#name#","db")+"Dashboard</h4>";
@@ -12775,6 +12802,7 @@ var mainGC = function() {
                 'settings_compact_layout_nearest',
                 'settings_compact_layout_recviewed',
                 'settings_map_links_statistic',
+                'settings_map_percentage_statistic',
                 'settings_improve_add_to_list',
                 'settings_show_flopps_link',
                 'settings_show_brouter_link',
