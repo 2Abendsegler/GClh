@@ -1348,7 +1348,7 @@ var mainGC = function() {
                 // Menüzeilenhöhe, Menü nicht flex.
                 css += "ul.#m {line-height: 16px; display: block;}";
                 // Zwischen Menüname und Submenü keine Lücke lassen, sonst klappts nicht mit einfachem Aufklappen.
-                css += ".#m li a, .#m li a:link, .#m li a:visited {margin-bottom: 10px;} .#m ul.#sm {margin-top: -6px;}";
+                css += ".#m li a, .#m li a:link, .#m li a:visited {margin-bottom: 13px;} .#m ul.#sm {margin-top: -6px;}";
             // Horizontales Menü ausrichten.
             } else {
                 // Menüzeilenhöhe.
@@ -1406,7 +1406,7 @@ var mainGC = function() {
                 }
                 // Vertikales Menü  ausrichten.
                 if (settings_bookmarks_top_menu) {
-                    css += ".#m ul.#sm {margin-top: 15px; margin-left: 32px !important;} .#m .submenu::after {left: 4px; width: 26px;}";
+                    css += ".#m ul.#sm {margin-top: 17px; margin-left: 32px !important;} .#m .submenu::after {left: 4px; width: 26px;}";
                     // Zwischen Menüname und Submenü keine Lücke lassen, sonst klappt das nicht mit dem einfachen Aufklappen.
                     css += ".#m > li .dropdown {padding-bottom: 14px !important;}";
                     // Menü, Searchfield ausrichten in Abhängigkeit von Schriftgröße. Menü nicht flex.
