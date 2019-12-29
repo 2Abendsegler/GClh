@@ -144,6 +144,7 @@
   "settings_hide_top_button": false,
   "settings_show_real_owner": false,
   "settings_hide_archived_in_owned": false,
+  "settings_show_button_for_hide_archived": true,
   "settings_hide_visits_in_profile": false,
   "settings_log_signature_on_fieldnotes": true,
   "settings_map_hide_sidebar": true,
