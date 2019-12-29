@@ -9139,7 +9139,7 @@ var mainGC = function() {
         } catch(e) {gclh_error("Edit and Image Links to own caches in profile",e);}
     }
 
-// Owned caches list.
+// Improve owned caches list.
     if (document.location.href.match(/\.com\/my\/owned\.aspx/)) {
         try {
             function showActive() {
@@ -9184,14 +9184,13 @@ var mainGC = function() {
                 button.value = 'Show activate';
                 document.querySelector('#divContentMain').insertBefore(button, document.querySelector('.MyOwnedCachesTable'));
                 button.onclick = showActive;
-                // CSS
                 var css = 'input {cursor: pointer;}'
                         + 'h2.BottomSpacing {margin-bottom: 10px !important;}'
                         + '.SearchResultsTable.MyOwnedCachesTable {margin-top: 15px !important;}';
                 appendCssStyle(css);
             }
             if (settings_hide_archived_in_owned) showActive();
-        } catch(e) {gclh_error("Hide archived at own caches",e);}
+        } catch(e) {gclh_error("Improve owned caches list",e);}
     }
 
 // Werden nicht alle eigenen Logs geladen, weil z.B. über Browser gestoppt, dann Anzahl Logs geladen und Datum letztes Log angeben.
@@ -11460,7 +11459,7 @@ var mainGC = function() {
             html += checkboxy('settings_show_sums_in_watchlist', 'Show number of caches in your watchlist') + show_help("With this option the number of caches and the number of selected caches in the categories \"All\", \"Archived\" and \"Deactivated\", corresponding to the select buttons, are shown in your watchlist at the end of the list.") + "<br>";
             html += checkboxy('settings_hide_archived_in_owned', 'Hide archived caches in owned list') + "<br>";
             html += newParameterOn1;
-            html += checkboxy('settings_show_button_for_hide_archived', 'Show button for hide archived caches in owned list') + show_help('With this option you see a Button for show only active (hide archived), show all and show only archived caches') + "<br>";
+            html += checkboxy('settings_show_button_for_hide_archived', 'Show button to display all, active or archived caches in owned list') + show_help3('With this option a button is shown in owned caches list to display all caches, only active caches or only archived caches in the owned caches list.') + "<br>";
             html += newParameterVersionSetzen("0.10") + newParameterOff;
             html += newParameterOn3;
             html += checkboxy('settings_modify_new_drafts_page', 'Modify draft items on the new drafts page') + show_help("Change the linkage of each draft. The title of the geocache now links to the geocaching listing and the cache icon, too (2nd line). The pen icon and the preview note links to the log composing page (3rd line). Add the log type as overlay icon onto the cache icon.") + "<br>";
