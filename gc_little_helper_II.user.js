@@ -1115,6 +1115,35 @@ var mainGC = function() {
         } catch(e) {gclh_error("Hide Facebook",e);}
     }
 
+// Improve print page cache listing.
+    if (document.location.href.match(/\.com\/seek\/cdpf\.aspx/)) {
+        try {
+            // Hide disclaimer.
+            if (settings_hide_disclaimer) {
+                var d = ($('.Note.Disclaimer')[0] || $('.DisclaimerWidget')[0] || $('.TermsWidget.no-print')[0]);
+                if (d) d.remove();
+            }
+            // Decrypt hints.
+            if (settings_decrypt_hint) {
+                if ($('#uxDecryptedHint')[0]) $('#uxDecryptedHint')[0].style.display = 'none';
+                if ($('#uxEncryptedHint')[0]) $('#uxEncryptedHint')[0].style.display = '';
+                if ($('.EncryptionKey')[0]) $('.EncryptionKey')[0].remove();
+            }
+            // Show other coord formats.
+            var box = document.getElementsByClassName("UTM Meta")[0];
+            var coords = document.getElementsByClassName("LatLong Meta")[0];
+            if (box && coords) {
+                var match = coords.innerHTML.match(/((N|S) [0-9][0-9]. [0-9][0-9]\.[0-9][0-9][0-9] (E|W) [0-9][0-9][0-9]. [0-9][0-9]\.[0-9][0-9][0-9])/);
+                if (match && match[1]) {
+                    coords = match[1];
+                    otherFormats("<br>");
+                }
+            }
+            // Hide side rights.
+            if ($('#Footer')[0]) $('#Footer')[0].remove();
+        } catch(e) {gclh_error("Improve print page cache listing",e);}
+    }
+
 // Wenn nicht angeloggt, dann aussteigen.
    if (!$('.li-user-info')[0]) return;
 
@@ -1730,8 +1759,8 @@ var mainGC = function() {
         } catch(e) {gclh_error("Show real owner",e);}
     }
 
-// Hide disclaimer on cache listing and print page.
-    if (settings_hide_disclaimer && (is_page("cache_listing") || document.location.href.match(/\.com\/seek\/cdpf\.aspx/))) {
+// Hide disclaimer on cache listing.
+    if (settings_hide_disclaimer && is_page("cache_listing")) {
         try {
             var d = ($('.Note.Disclaimer')[0] || $('.DisclaimerWidget')[0] || $('.TermsWidget.no-print')[0]);
             if (d) d.remove();
@@ -1940,7 +1969,7 @@ var mainGC = function() {
         } catch(e) {gclh_error("Highlight usercoords",e);}
     }
 
-// Show other coord formats listing, print page.
+// Show other coord formats cache listing.
     if (is_page("cache_listing") && $('#uxLatLon')[0]) {
         try {
             var box = $('#ctl00_ContentBody_LocationSubPanel')[0];
@@ -1949,19 +1978,6 @@ var mainGC = function() {
             otherFormats(" - ");
             box.innerHTML = "<font style='font-size: 10px;'>" + box.innerHTML + "</font><br>";
         } catch(e) {gclh_error("Show other coord formats listing",e);}
-    }
-    if (document.location.href.match(/\.com\/seek\/cdpf\.aspx/)) {
-        try {
-            var box = document.getElementsByClassName("UTM Meta")[0];
-            var coords = document.getElementsByClassName("LatLong Meta")[0];
-            if (box && coords) {
-                var match = coords.innerHTML.match(/((N|S) [0-9][0-9]. [0-9][0-9]\.[0-9][0-9][0-9] (E|W) [0-9][0-9][0-9]. [0-9][0-9]\.[0-9][0-9][0-9])/);
-                if (match && match[1]) {
-                    coords = match[1];
-                    otherFormats("<br>");
-                }
-            }
-        } catch(e) {gclh_error("Show other coord formats print page",e);}
     }
     function otherFormats(trenn) {
         var dec = toDec(coords);
@@ -2814,26 +2830,19 @@ var mainGC = function() {
 // Decrypt hints.
     if (settings_decrypt_hint && !settings_hide_hint && is_page("cache_listing")) {
         try {
-            if ($('#ctl00_ContentBody_EncryptionKey')[0]) {
-                if (browser == "chrome") injectPageScript("(function(){dht();})()");
-                else unsafeWindow.dht($('#ctl00_ContentBody_lnkDH')[0]);
+            if ($('#ctl00_ContentBody_EncryptionKey')[0] && $('#ctl00_ContentBody_lnkDH')[0]) {
+                document.getElementById('ctl00_ContentBody_lnkDH').click();
                 var decryptKey = $('#dk')[0];
                 if (decryptKey) decryptKey.parentNode.removeChild(decryptKey);
             }
         } catch(e) {gclh_error("Decrypt hints",e);}
-    }
-    if (settings_decrypt_hint && document.location.href.match(/\.com\/seek\/cdpf\.aspx/)) {
-        try {
-            if ($('#uxDecryptedHint')[0]) $('#uxDecryptedHint')[0].style.display = 'none';
-            if ($('#uxEncryptedHint')[0]) $('#uxEncryptedHint')[0].style.display = '';
-            if ($('.EncryptionKey')[0]) $('.EncryptionKey')[0].remove();
-        } catch(e) {gclh_error("Decrypt cdpf hints",e);}
     }
 
 // Hide hints.
     if (settings_hide_hint && is_page("cache_listing")) {
         try {
             // Replace hints by a link which shows the hints dynamically.
+            if ($('#ctl00_ContentBody_lnkDH')[0]) document.getElementById('ctl00_ContentBody_lnkDH').click();
             var hint = $('#div_hint')[0];
             var label = $('#ctl00_ContentBody_hints strong')[0];
             if (hint && label && trim(hint.innerHTML).length > 0) {
@@ -9125,13 +9134,6 @@ var mainGC = function() {
         $('table.Table tbody')[0].append(tr);
         tr = buildSL("th",pp);
         $('table.Table thead')[0].append(tr);
-    }
-
-// Hide side rights on print page.
-    if (document.location.href.match(/\.com\/seek\/cdpf\.aspx/)) {
-        try {
-            if ($('#Footer')[0]) $('#Footer')[0].remove();
-        } catch(e) {gclh_error("Hide side rights on print page",e);}
     }
 
 // Hide feedback icon.
