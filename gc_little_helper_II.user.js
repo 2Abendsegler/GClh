@@ -2826,7 +2826,15 @@ var mainGC = function() {
 // Activate fancybox for pictures in the description.
     if (is_page("cache_listing")) {
         try {
-            if (typeof unsafeWindow.$.fancybox != "undefined") unsafeWindow.$('.CachePageImages a[rel="lightbox"]').fancybox();
+            // Adjustments due to GSs GDPR changes.
+            function check_for_fancybox(waitCount) {
+                if (typeof unsafeWindow.$ !== "undefined") {
+                    if (typeof unsafeWindow.$.fancybox != "undefined") {
+                        unsafeWindow.$('.CachePageImages a[rel="lightbox"]').fancybox();
+                    }
+                } else {waitCount++; if (waitCount <= 50) setTimeout(function(){check_for_fancybox(waitCount);}, 200);}
+            }
+            check_for_fancybox(0);
         } catch(e) {gclh_error("Activate fancybox",e);}
     }
 
