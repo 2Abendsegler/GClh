@@ -1955,6 +1955,7 @@ var mainGC = function() {
                     }
                 } else {waitCount++; if (waitCount <= 100) setTimeout(function(){gclh_load_score(waitCount);}, 100);}
             }
+            // Adjustments due to GSs GDPR changes.
             function check_for_gclh_load_score(waitCount) {
                 if (typeof unsafeWindow.showFavoriteScore !== "undefined") {
                     gclh_load_score(0);
@@ -2614,41 +2615,48 @@ var mainGC = function() {
             html += "</div>";
             $(".CacheDetailNavigation").after(html);
 
-            var previewMap = L.map('gclh_map_overview', {
-                  dragging: true,
-                  zoomControl: true,
-            }).setView([lat, lng],settings_map_overview_zoom);
+            function build_map_overview() {
+                var previewMap = L.map('gclh_map_overview', {
+                      dragging: true,
+                      zoomControl: true,
+                }).setView([lat, lng],settings_map_overview_zoom);
 
-            var layer = ( settings_map_overview_layer == "" || settings_map_overview_layer == "Geocaching" ) ? all_map_layers['OpenStreetMap Default'] : all_map_layers[settings_map_overview_layer];
-            var layerObj = L.tileLayer( layer.tileUrl, layer ).addTo(previewMap);
+                var layer = ( settings_map_overview_layer == "" || settings_map_overview_layer == "Geocaching" ) ? all_map_layers['OpenStreetMap Default'] : all_map_layers[settings_map_overview_layer];
+                var layerObj = L.tileLayer( layer.tileUrl, layer ).addTo(previewMap);
 
-            // delayed load of Groudspeaks map layer (we need an access token)
-            if ( settings_map_overview_layer == "Geocaching" ) {
-                gclh_GetGcAccessToken( function(r) {
-                    all_map_layers["Geocaching"].accessToken = r.access_token;
-
-                    var layer = all_map_layers['Geocaching'];
-                    L.tileLayer( layer.tileUrl, layer ).addTo(previewMap);
-
-                    previewMap.eachLayer(function (layer) {
-                        if ( layerObj == layer ) previewMap.removeLayer(layer);
+                // Delayed load of Groudspeaks map layer (we need an access token).
+                if ( settings_map_overview_layer == "Geocaching" ) {
+                    gclh_GetGcAccessToken( function(r) {
+                        all_map_layers["Geocaching"].accessToken = r.access_token;
+                        var layer = all_map_layers['Geocaching'];
+                        L.tileLayer( layer.tileUrl, layer ).addTo(previewMap);
+                        previewMap.eachLayer(function (layer) {
+                            if ( layerObj == layer ) previewMap.removeLayer(layer);
+                        });
                     });
-                });
+                }
+
+                // Make buttons of zoom control smaller only for overview map.
+                $("#gclh_map_overview .leaflet-bar").attr("style","width: 20px; height: 41px; line-height: 40px;");
+                $("#gclh_map_overview .leaflet-control-zoom-in").attr("style","width: 20px; height: 20px; line-height: 20px; font-size: 11px; padding-right: 1px;");
+                $("#gclh_map_overview .leaflet-control-zoom-out").attr("style","width: 20px; height: 20px; line-height: 20px; font-size: 11px; padding-right: 1px;");
+                // Länge der Kartenbezeichnung ... begrenzen.
+                $("#gclh_map_overview .leaflet-control-attribution").attr("style","max-width: 238px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;");
+
+                var marker = L.marker([lat, lng],{icon: L.icon({
+                    iconUrl: 'http://www.geocaching.com/images/wpttypes/pins/' + unsafeWindow.mapLatLng.type + '.png',
+                    iconSize: [20, 23],
+                    iconAnchor: [10, 23],
+                })}).addTo(previewMap);
             }
 
-            // make buttons of zoom control smaller only for overview map
-            $("#gclh_map_overview .leaflet-bar").attr("style","width: 20px; height: 41px; line-height: 40px;");
-            $("#gclh_map_overview .leaflet-control-zoom-in").attr("style","width: 20px; height: 20px; line-height: 20px; font-size: 11px; padding-right: 1px;");
-            $("#gclh_map_overview .leaflet-control-zoom-out").attr("style","width: 20px; height: 20px; line-height: 20px; font-size: 11px; padding-right: 1px;");
-            // Länge der Kartenbezeichnung ... begrenzen.
-            $("#gclh_map_overview .leaflet-control-attribution").attr("style","max-width: 238px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;");
-
-            var marker = L.marker([lat, lng],{icon: L.icon({
-                iconUrl: 'http://www.geocaching.com/images/wpttypes/pins/' + unsafeWindow.mapLatLng.type + '.png',
-                iconSize: [20, 23],
-                iconAnchor: [10, 23],
-            })}).addTo(previewMap);
-
+            // Adjustments due to GSs GDPR changes.
+            function check_for_build_map_overview(waitCount) {
+                if (typeof lat !== "undefined" && typeof lng !== "undefined") {
+                    build_map_overview();
+                } else {waitCount++; if (waitCount <= 50) setTimeout(function(){check_for_build_map_overview(waitCount);}, 200);}
+            }
+            check_for_build_map_overview(0);
         } catch(e) {gclh_error("Build map overview",e);}
     }
 
