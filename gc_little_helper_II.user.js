@@ -1955,7 +1955,12 @@ var mainGC = function() {
                     }
                 } else {waitCount++; if (waitCount <= 100) setTimeout(function(){gclh_load_score(waitCount);}, 100);}
             }
-            gclh_load_score(0);
+            function check_for_gclh_load_score(waitCount) {
+                if (typeof unsafeWindow.showFavoriteScore !== "undefined") {
+                    gclh_load_score(0);
+                } else {waitCount++; if (waitCount <= 50) setTimeout(function(){check_for_gclh_load_score(waitCount);}, 200);}
+            }
+            check_for_gclh_load_score(0);
         } catch(e) {gclh_error("Show favorite percentage",e);}
     }
 
