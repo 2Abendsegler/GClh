@@ -11,8 +11,9 @@
 	</li>
 	<li>
 		<strong>Fix:</strong> Errors due to GDPR changes of GS. [<a href="https://github.com/2Abendsegler/GClh/issues/1153" title="Issue 1153">1153</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
-		Show favorite percentage in cache listing run into error.<br>
-		Build map overview in cache listing run into error.<br>
+		Many thanks to <a href="https://www.geocaching.com/profile/?u=Chrono81" title="Thanks to Chrono81">Chrono81</a> for the great tip.<br>
+		- Show favorite percentage in cache listing run into error.<br>
+		- Build map overview in cache listing run into error.<br>
 		Activate fancybox in cache listing run into error.<br>
 		Decrypt hints in cache listing run into error.<br>
 		Replace Log-Loading function in cache listing run into error.<br>
