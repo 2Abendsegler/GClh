@@ -1934,34 +1934,30 @@ var mainGC = function() {
     if (settings_show_fav_percentage && is_page("cache_listing") && $('#uxFavContainerLink')[0]) {
         try {
             function gclh_load_score(waitCount) {
-                unsafeWindow.showFavoriteScore();
-                if ($('.favorite-container')[0] && $('.favorite-score')[0].innerHTML.match("%") && $('.favorite-dropdown')[0]) {
-                    var fav = $('.favorite-container')[0];
-                    var score = $('.favorite-score')[0].innerHTML.match(/(.*%)\.*/);
-                    if (score && score[1]) {
-                        // Eigener Favoritenpunkt. Class hideMe -> kein Favoritenpunkt. Keine class hideMe -> Favoritenpunkt.
-                        var myfav = $('#pnlFavoriteCache')[0];
-                        var myfavHTML = "";
-                        if (myfav) {
-                            if (myfav.className.match("hideMe")) myfavHTML = '&nbsp;<img src="/images/icons/reg_user.gif" />';
-                            else myfavHTML = '&nbsp;<img src="/images/icons/prem_user.gif" />';
+                if (typeof unsafeWindow.showFavoriteScore !== "undefined") { // GDPR
+                    unsafeWindow.showFavoriteScore();
+                    if ($('.favorite-container')[0] && $('.favorite-score')[0].innerHTML.match("%") && $('.favorite-dropdown')[0]) {
+                        var fav = $('.favorite-container')[0];
+                        var score = $('.favorite-score')[0].innerHTML.match(/(.*%)\.*/);
+                        if (score && score[1]) {
+                            // Eigener Favoritenpunkt. Class hideMe -> kein Favoritenpunkt. Keine class hideMe -> Favoritenpunkt.
+                            var myfav = $('#pnlFavoriteCache')[0];
+                            var myfavHTML = "";
+                            if (myfav) {
+                                if (myfav.className.match("hideMe")) myfavHTML = '&nbsp;<img src="/images/icons/reg_user.gif" />';
+                                else myfavHTML = '&nbsp;<img src="/images/icons/prem_user.gif" />';
+                            }
+                            fav.getElementsByTagName('span')[0].nextSibling.remove();
+                            fav.innerHTML += score[1] + myfavHTML;
+                            var dd = $('.favorite-dropdown')[0];
+                            dd.style.borderTop = "1px solid #f0edeb";
+                            dd.style.borderTopLeftRadius = "5px";
+                            dd.style.minWidth = "190px";
                         }
-                        fav.getElementsByTagName('span')[0].nextSibling.remove();
-                        fav.innerHTML += score[1] + myfavHTML;
-                        var dd = $('.favorite-dropdown')[0];
-                        dd.style.borderTop = "1px solid #f0edeb";
-                        dd.style.borderTopLeftRadius = "5px";
-                        dd.style.minWidth = "190px";
-                    }
-                } else {waitCount++; if (waitCount <= 100) setTimeout(function(){gclh_load_score(waitCount);}, 100);}
+                    } else {waitCount++; if (waitCount <= 100) setTimeout(function(){gclh_load_score(waitCount);}, 100);}
+                } else {waitCount++; if (waitCount <= 100) setTimeout(function(){gclh_load_score(waitCount);}, 100);} // GDPR
             }
-            // Adjustments due to GSs GDPR changes.
-            function check_for_gclh_load_score(waitCount) {
-                if (typeof unsafeWindow.showFavoriteScore !== "undefined") {
-                    gclh_load_score(0);
-                } else {waitCount++; if (waitCount <= 50) setTimeout(function(){check_for_gclh_load_score(waitCount);}, 200);}
-            }
-            check_for_gclh_load_score(0);
+            gclh_load_score(0);
         } catch(e) {gclh_error("Show favorite percentage",e);}
     }
 
@@ -2615,48 +2611,48 @@ var mainGC = function() {
             html += "</div>";
             $(".CacheDetailNavigation").after(html);
 
-            function build_map_overview() {
-                var previewMap = L.map('gclh_map_overview', {
-                      dragging: true,
-                      zoomControl: true,
-                }).setView([lat, lng],settings_map_overview_zoom);
+            function build_map_overview(waitCount) { // GDPR
+                if (typeof lat !== "undefined" && typeof lng !== "undefined") { // GDPR
+                    var previewMap = L.map('gclh_map_overview', {
+                          dragging: true,
+                          zoomControl: true,
+                    }).setView([lat, lng],settings_map_overview_zoom);
 
-                var layer = ( settings_map_overview_layer == "" || settings_map_overview_layer == "Geocaching" ) ? all_map_layers['OpenStreetMap Default'] : all_map_layers[settings_map_overview_layer];
-                var layerObj = L.tileLayer( layer.tileUrl, layer ).addTo(previewMap);
+                    var layer = ( settings_map_overview_layer == "" || settings_map_overview_layer == "Geocaching" ) ? all_map_layers['OpenStreetMap Default'] : all_map_layers[settings_map_overview_layer];
+                    var layerObj = L.tileLayer( layer.tileUrl, layer ).addTo(previewMap);
 
-                // Delayed load of Groudspeaks map layer (we need an access token).
-                if ( settings_map_overview_layer == "Geocaching" ) {
-                    gclh_GetGcAccessToken( function(r) {
-                        all_map_layers["Geocaching"].accessToken = r.access_token;
-                        var layer = all_map_layers['Geocaching'];
-                        L.tileLayer( layer.tileUrl, layer ).addTo(previewMap);
-                        previewMap.eachLayer(function (layer) {
-                            if ( layerObj == layer ) previewMap.removeLayer(layer);
+                    // Delayed load of Groudspeaks map layer (we need an access token).
+                    if ( settings_map_overview_layer == "Geocaching" ) {
+                        gclh_GetGcAccessToken( function(r) {
+                            all_map_layers["Geocaching"].accessToken = r.access_token;
+                            var layer = all_map_layers['Geocaching'];
+                            L.tileLayer( layer.tileUrl, layer ).addTo(previewMap);
+                            previewMap.eachLayer(function (layer) {
+                                if ( layerObj == layer ) previewMap.removeLayer(layer);
+                            });
                         });
-                    });
-                }
+                    }
 
-                // Make buttons of zoom control smaller only for overview map.
-                $("#gclh_map_overview .leaflet-bar").attr("style","width: 20px; height: 41px; line-height: 40px;");
-                $("#gclh_map_overview .leaflet-control-zoom-in").attr("style","width: 20px; height: 20px; line-height: 20px; font-size: 11px; padding-right: 1px;");
-                $("#gclh_map_overview .leaflet-control-zoom-out").attr("style","width: 20px; height: 20px; line-height: 20px; font-size: 11px; padding-right: 1px;");
-                // Länge der Kartenbezeichnung ... begrenzen.
-                $("#gclh_map_overview .leaflet-control-attribution").attr("style","max-width: 238px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;");
+                    // Make buttons of zoom control smaller only for overview map.
+                    $("#gclh_map_overview .leaflet-bar").attr("style","width: 20px; height: 41px; line-height: 40px;");
+                    $("#gclh_map_overview .leaflet-control-zoom-in").attr("style","width: 20px; height: 20px; line-height: 20px; font-size: 11px; padding-right: 1px;");
+                    $("#gclh_map_overview .leaflet-control-zoom-out").attr("style","width: 20px; height: 20px; line-height: 20px; font-size: 11px; padding-right: 1px;");
+                    // Länge der Kartenbezeichnung ... begrenzen.
+                    $("#gclh_map_overview .leaflet-control-attribution").attr("style","max-width: 238px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;");
 
-                var marker = L.marker([lat, lng],{icon: L.icon({
-                    iconUrl: 'http://www.geocaching.com/images/wpttypes/pins/' + unsafeWindow.mapLatLng.type + '.png',
-                    iconSize: [20, 23],
-                    iconAnchor: [10, 23],
-                })}).addTo(previewMap);
+                    function build_map_overview_marker(waitCount) { // GDPR
+                        if (typeof unsafeWindow.mapLatLng !== "undefined" && unsafeWindow.mapLatLng !== null) { // GDPR
+                            var marker = L.marker([lat, lng],{icon: L.icon({
+                                iconUrl: 'http://www.geocaching.com/images/wpttypes/pins/' + unsafeWindow.mapLatLng.type + '.png',
+                                iconSize: [20, 23],
+                                iconAnchor: [10, 23],
+                            })}).addTo(previewMap);
+                        } else {waitCount++; if (waitCount <= 100) setTimeout(function(){build_map_overview_marker(waitCount);}, 100);} // GDPR
+                    }
+                    build_map_overview_marker(0); // GDPR
+                } else {waitCount++; if (waitCount <= 100) setTimeout(function(){build_map_overview(waitCount);}, 100);} // GDPR
             }
-
-            // Adjustments due to GSs GDPR changes.
-            function check_for_build_map_overview(waitCount) {
-                if (typeof lat !== "undefined" && typeof lng !== "undefined") {
-                    build_map_overview();
-                } else {waitCount++; if (waitCount <= 50) setTimeout(function(){check_for_build_map_overview(waitCount);}, 200);}
-            }
-            check_for_build_map_overview(0);
+            build_map_overview(0); // GDPR
         } catch(e) {gclh_error("Build map overview",e);}
     }
 
@@ -2826,15 +2822,14 @@ var mainGC = function() {
 // Activate fancybox for pictures in the description.
     if (is_page("cache_listing")) {
         try {
-            // Adjustments due to GSs GDPR changes.
-            function check_for_fancybox(waitCount) {
-                if (typeof unsafeWindow.$ !== "undefined") {
+            function check_for_fancybox(waitCount) { // GDPR
+                if (typeof unsafeWindow.$ !== "undefined") { // GDPR
                     if (typeof unsafeWindow.$.fancybox != "undefined") {
                         unsafeWindow.$('.CachePageImages a[rel="lightbox"]').fancybox();
                     }
-                } else {waitCount++; if (waitCount <= 50) setTimeout(function(){check_for_fancybox(waitCount);}, 200);}
+                } else {waitCount++; if (waitCount <= 50) setTimeout(function(){check_for_fancybox(waitCount);}, 200);} // GDPR
             }
-            check_for_fancybox(0);
+            check_for_fancybox(0); // GDPR
         } catch(e) {gclh_error("Activate fancybox",e);}
     }
 
@@ -2852,54 +2847,61 @@ var mainGC = function() {
     if (settings_decrypt_hint && !settings_hide_hint && is_page("cache_listing")) {
         try {
             if ($('#ctl00_ContentBody_EncryptionKey')[0] && $('#ctl00_ContentBody_lnkDH')[0]) {
-                document.getElementById('ctl00_ContentBody_lnkDH').click();
+                decrypt_hints(0);
                 var decryptKey = $('#dk')[0];
                 if (decryptKey) decryptKey.parentNode.removeChild(decryptKey);
             }
         } catch(e) {gclh_error("Decrypt hints",e);}
     }
-
 // Hide hints.
     if (settings_hide_hint && is_page("cache_listing")) {
         try {
             // Replace hints by a link which shows the hints dynamically.
-            if ($('#ctl00_ContentBody_lnkDH')[0]) document.getElementById('ctl00_ContentBody_lnkDH').click();
-            var hint = $('#div_hint')[0];
-            var label = $('#ctl00_ContentBody_hints strong')[0];
-            if (hint && label && trim(hint.innerHTML).length > 0) {
-                var code =
-                    "function hide_hint() {" +
-                    "  var hint = document.getElementById('div_hint');" +
-                    "  if(hint.style.display == 'none') {" +
-                    "    hint.style.display = 'block';" +
-                    "    if (document.getElementById('ctl00_ContentBody_lnkDH')) {" +
-                    "      document.getElementById('ctl00_ContentBody_lnkDH').innerHTML = 'Hide'" +
-                    "    }" +
-                    "  } else {" +
-                    "    hint.style.display = 'none';" +
-                    "    if (document.getElementById('ctl00_ContentBody_lnkDH')) {" +
-                    "      document.getElementById('ctl00_ContentBody_lnkDH').innerHTML = 'Show'" +
-                    "    }" +
-                    "  }" +
-                    "    hint.innerHTML = convertROTStringWithBrackets(hint.innerHTML);" +
-                    "  return false;" +
-                    "}";
-                injectPageScript(code, 'body');
-                if ($('#ctl00_ContentBody_lnkDH')[0]) {
-                    var link = $('#ctl00_ContentBody_lnkDH')[0];
-                    link.setAttribute('onclick', 'hide_hint();');
-                    link.setAttribute('title', 'Show/Hide ' + decode_innerHTML(label));
-                    link.setAttribute('href', 'javascript:void(0);');
-                    link.setAttribute('style', 'font-size: 12px;');
-                    link.innerHTML = 'Show';
-                }
-                hint.style.marginBottom = '1.5em';
-                hint.style.display = 'none';
-            }
+            decrypt_hints(0, true);
             // Remove hint description.
             var decryptKey = $('#dk')[0];
             if (decryptKey) decryptKey.parentNode.removeChild(decryptKey);
         } catch(e) {gclh_error("Hide hints",e);}
+    }
+    function decrypt_hints(waitCount, hideHints) {
+        $('#ctl00_ContentBody_lnkDH').click();
+        if ($('#ctl00_ContentBody_lnkDH')[0].getAttribute('title') != 'Decrypt') {
+            if (hideHints) hide_hints();
+        } else {waitCount++; if (waitCount <= 50) setTimeout(function(){decrypt_hints(waitCount, hideHints);}, 200);}
+    }
+    function hide_hints() {
+        var hint = $('#div_hint')[0];
+        var label = $('#ctl00_ContentBody_hints strong')[0];
+        if (hint && label && trim(hint.innerHTML).length > 0) {
+            var code =
+                "function hide_hint() {" +
+                "  var hint = document.getElementById('div_hint');" +
+                "  if(hint.style.display == 'none') {" +
+                "    hint.style.display = 'block';" +
+                "    if (document.getElementById('ctl00_ContentBody_lnkDH')) {" +
+                "      document.getElementById('ctl00_ContentBody_lnkDH').innerHTML = 'Hide'" +
+                "    }" +
+                "  } else {" +
+                "    hint.style.display = 'none';" +
+                "    if (document.getElementById('ctl00_ContentBody_lnkDH')) {" +
+                "      document.getElementById('ctl00_ContentBody_lnkDH').innerHTML = 'Show'" +
+                "    }" +
+                "  }" +
+                "  hint.innerHTML = convertROTStringWithBrackets(hint.innerHTML);" +
+                "  return false;" +
+                "}";
+            injectPageScript(code, 'body');
+            if ($('#ctl00_ContentBody_lnkDH')[0]) {
+                var link = $('#ctl00_ContentBody_lnkDH')[0];
+                link.setAttribute('onclick', 'hide_hint();');
+                link.setAttribute('title', 'Show/Hide ' + decode_innerHTML(label));
+                link.setAttribute('href', 'javascript:void(0);');
+                link.setAttribute('style', 'font-size: 12px;');
+                link.innerHTML = 'Show';
+            }
+            hint.style.marginBottom = '1.5em';
+            hint.style.display = 'none';
+        }
     }
 
 // Improve inventory list in cache listing.
@@ -6573,37 +6575,43 @@ var mainGC = function() {
             $('body')[0].appendChild(new_tmpl_block);
 
             // Override standard templates.
-            document.getElementById('tmpl_CacheLogRow').innerHTML = new_tmpl;
-            var elem = unsafeWindow.$('#tmpl_CacheLogRow')[0];
-            unsafeWindow.$.removeData(elem, "tmpl");
-            unsafeWindow.$("#tmpl_CacheLogRow").template("tmplCacheLogRow");
-            if (browser === "chrome" || browser === "firefox") {
-                injectPageScriptFunction(function() {
-                    var elem = window.$('#tmpl_CacheLogRow')[0];
-                    window.$.removeData(elem, "tmpl");
-                    window.$("#tmpl_CacheLogRow").template("tmplCacheLogRow");
-                }, "()");
+            function override_standard_templates(waitCount) { // GDPR
+                if (typeof unsafeWindow.$ !== "undefined" && // GDPR
+                    typeof unsafeWindow.$("#tmpl_CacheLogRow").template !== "undefined" &&
+                    typeof unsafeWindow.initialLogs !== "undefined" &&
+                    unsafeWindow.initialLogs !== null &&
+                    (typeof chromeUserData.includeAvatars !== "undefined" || typeof unsafeWindow.includeAvatars !== "undefined" || typeof includeAvatars !== "undefined")) {
+
+                    document.getElementById('tmpl_CacheLogRow').innerHTML = new_tmpl;
+                    var elem = unsafeWindow.$('#tmpl_CacheLogRow')[0];
+                    unsafeWindow.$.removeData(elem, "tmpl");
+                    unsafeWindow.$("#tmpl_CacheLogRow").template("tmplCacheLogRow");
+                    if (browser === "chrome" || browser === "firefox") {
+                        injectPageScriptFunction(function() {
+                            var elem = window.$('#tmpl_CacheLogRow')[0];
+                            window.$.removeData(elem, "tmpl");
+                            window.$("#tmpl_CacheLogRow").template("tmplCacheLogRow");
+                        }, "()");
+                    }
+                    // Reinit initalLogs.
+                    // Timeout is necessary because otherwise the fancybox for images is not working (WTF??).
+                    setTimeout(function(){
+                        unsafeWindow.$("#cache_logs_table tbody").children().remove();
+                        var initialLogs = unsafeWindow.initialLogs;
+                        var inclAvatars = chromeUserData.includeAvatars || unsafeWindow.includeAvatars || includeAvatars;
+                        for (var i = 0; i < initialLogs.data.length; i++) {
+                            var newBody = unsafeWindow.$(document.createElement("TBODY"));
+                            unsafeWindow.$("#tmpl_CacheLogRow_gclh").tmpl(initialLogs.data[i]).appendTo(newBody);
+                            unsafeWindow.$(document.getElementById("cache_logs_table")).append(newBody.children());
+                        }
+                        unsafeWindow.$('a.tb_images').fancybox({'type': 'image', 'titlePosition': 'inside'});
+                        gclh_add_vip_icon();
+                        setLinesColorInCacheListing();
+                        unsafeWindow.$("#cache_logs_container").addClass('gclh_override_standard_templates_done');
+                    }, 0);
+                } else {waitCount++; if (waitCount <= 100) setTimeout(function(){override_standard_templates(waitCount);}, 100);} // GDPR
             }
-
-            // Reinit initalLogs.
-            // Timeout is necessary because otherwise the fancybox for images is not working (WTF??)
-            setTimeout(function(){
-                // Remove all logs
-                unsafeWindow.$("#cache_logs_table tbody").children().remove();
-
-                var initialLogs = unsafeWindow.initialLogs;
-                var inclAvatars = chromeUserData.includeAvatars || unsafeWindow.includeAvatars || includeAvatars;
-
-                for (var i = 0; i < initialLogs.data.length; i++) {
-                    var newBody = unsafeWindow.$(document.createElement("TBODY"));
-                    unsafeWindow.$("#tmpl_CacheLogRow_gclh").tmpl(initialLogs.data[i]).appendTo(newBody);
-                    unsafeWindow.$(document.getElementById("cache_logs_table")).append(newBody.children());
-                }
-
-                unsafeWindow.$('a.tb_images').fancybox({'type': 'image', 'titlePosition': 'inside'});
-                gclh_add_vip_icon();
-                setLinesColorInCacheListing();
-            }, 0);
+            override_standard_templates(0); // GDPR
 
             if (settings_hide_found_count){
                 var css = "#cache_logs_container .logOwnerStats"
@@ -6623,6 +6631,7 @@ var mainGC = function() {
                     if (ev.data === "setLinesColorInCacheListing") setLinesColorInCacheListing();
                 });
             }
+
             function disablePageAutoScroll() {
                 var unsafeWindow = (typeof(unsafeWindow) == "undefined" ? window : unsafeWindow);
                 unsafeWindow.currentPageIdx = 2;
@@ -6987,7 +6996,7 @@ var mainGC = function() {
                                     gclh_load_helper(curIdx);
                                 }
                             }
-                            if (requestCount <= 0) gclh_load_dataHelper();
+                            if (requestCount <= 0) gclh_load_dataHelper(0); // GDPR
                         }
                     });
                 }
@@ -7022,89 +7031,89 @@ var mainGC = function() {
                     });
                 }
 
-                function gclh_load_dataHelper() {
-                    logs = new Array();
-                    // Disable scroll Function on Page.
-                    if (browser === "chrome" || browser === "firefox") injectPageScriptFunction(disablePageAutoScroll, "()");
-                    else disablePageAutoScroll();
-                    if (isTM === true) (document.getElementById("cache_logs_table2") || document.getElementById("cache_logs_table")).removeEventListener('DOMNodeInserted', loadListener);
-                    // Hide initial Logs.
-                    var tbodys = document.getElementById("cache_logs_table").getElementsByTagName("tbody");
-                    if (tbodys.length > 0) {
-                        var shownLogs = tbodys[0].children.length;
-                        if (shownLogs > 0 && num < shownLogs) num = shownLogs;
-                    }
-                    var tableContent = unsafeWindow.$("#cache_logs_table").after('<table id="cache_logs_table2" class="LogsTable NoBottomSpacing"> </table>').hide().children().remove();
-                    unsafeWindow.$(tableContent).find('tbody').children().remove();
-                    unsafeWindow.$('#cache_logs_table2').append(tableContent);
-                    $(tableContent).find('.log-row').remove();
-                    for (var z = 1; z <= numPages; z++) {
-                        var all_ids = new Array();
-                        var json = data[z];
-                        logs = logs.concat(json.data);
-                        for (var i = 0; i < json.data.length; i++) {
-                            var user = json.data[i].UserName;
-                            all_ids.push(json.data[i].LogID);
-                            if (settings_show_vip_list) {
-                                all_users.push(user);
-                                if (!log_infos[user]) log_infos[user] = new Array();
-                                log_infos[user][index] = new Object();
-                                log_infos[user][index]["icon"] = "/images/logtypes/" + json.data[i].LogTypeImage;
-                                log_infos[user][index]["id"] = json.data[i].LogID;
-                                log_infos[user][index]["date"] = json.data[i].Visited;
-                                log_infos[user][index]["log"] = json.data[i].LogText;
-                                log_infos[user][index]["membership_level"] = json.data[i].creator.GroupTitle;
-                                log_infos_long[index] = new Object();
-                                log_infos_long[index]["user"] = user;
-                                log_infos_long[index]["icon"] = "/images/logtypes/" + json.data[i].LogTypeImage;
-                                log_infos_long[index]["id"] = json.data[i].LogID;
-                                log_infos_long[index]["date"] = json.data[i].Visited;
-                                log_infos_long[index]["log"] = json.data[i].LogText;
-                                log_infos_long[index]["membership_level"] = json.data[i].creator.GroupTitle;
-
-                                if(json.data[i].LogType == "Publish Listing"){
-                                    log_infos[user][index]["membership_level"] = "Reviewer";
-                                    log_infos_long[index]["membership_level"] = "Reviewer";
+                function gclh_load_dataHelper(waitCount) { // GDPR
+                    if (typeof unsafeWindow.$ !== "undefined" && $('.gclh_override_standard_templates_done')[0]) { // GDPR
+                        logs = new Array();
+                        // Disable scroll Function on Page.
+                        if (browser === "chrome" || browser === "firefox") injectPageScriptFunction(disablePageAutoScroll, "()");
+                        else disablePageAutoScroll();
+                        if (isTM === true) (document.getElementById("cache_logs_table2") || document.getElementById("cache_logs_table")).removeEventListener('DOMNodeInserted', loadListener);
+                        // Hide initial Logs.
+                        var tbodys = document.getElementById("cache_logs_table").getElementsByTagName("tbody");
+                        if (tbodys.length > 0) {
+                            var shownLogs = tbodys[0].children.length;
+                            if (shownLogs > 0 && num < shownLogs) num = shownLogs;
+                        }
+                        var tableContent = unsafeWindow.$("#cache_logs_table").after('<table id="cache_logs_table2" class="LogsTable NoBottomSpacing"> </table>').hide().children().remove();
+                        unsafeWindow.$(tableContent).find('tbody').children().remove();
+                        unsafeWindow.$('#cache_logs_table2').append(tableContent);
+                        $(tableContent).find('.log-row').remove();
+                        for (var z = 1; z <= numPages; z++) {
+                            var all_ids = new Array();
+                            var json = data[z];
+                            logs = logs.concat(json.data);
+                            for (var i = 0; i < json.data.length; i++) {
+                                var user = json.data[i].UserName;
+                                all_ids.push(json.data[i].LogID);
+                                if (settings_show_vip_list) {
+                                    all_users.push(user);
+                                    if (!log_infos[user]) log_infos[user] = new Array();
+                                    log_infos[user][index] = new Object();
+                                    log_infos[user][index]["icon"] = "/images/logtypes/" + json.data[i].LogTypeImage;
+                                    log_infos[user][index]["id"] = json.data[i].LogID;
+                                    log_infos[user][index]["date"] = json.data[i].Visited;
+                                    log_infos[user][index]["log"] = json.data[i].LogText;
+                                    log_infos[user][index]["membership_level"] = json.data[i].creator.GroupTitle;
+                                    log_infos_long[index] = new Object();
+                                    log_infos_long[index]["user"] = user;
+                                    log_infos_long[index]["icon"] = "/images/logtypes/" + json.data[i].LogTypeImage;
+                                    log_infos_long[index]["id"] = json.data[i].LogID;
+                                    log_infos_long[index]["date"] = json.data[i].Visited;
+                                    log_infos_long[index]["log"] = json.data[i].LogText;
+                                    log_infos_long[index]["membership_level"] = json.data[i].creator.GroupTitle;
+                                    if(json.data[i].LogType == "Publish Listing"){
+                                        log_infos[user][index]["membership_level"] = "Reviewer";
+                                        log_infos_long[index]["membership_level"] = "Reviewer";
+                                    }
+                                    index++;
                                 }
-
-                                index++;
+                            }
+                            // Add Great story / helpful data to logs
+                            // give starting index to the function, so it knows
+                            // what index has to be updated
+                            if(isUpvoteActive){
+                                getUpvoteData(all_ids,((z-1)*100));
                             }
                         }
-                        // Add Great story / helpful data to logs
-                        // give starting index to the function, so it knows
-                        // what index has to be updated
+
+                        // Add Links
+                        gclh_load_all(logs);
+                        gclh_filter(logs);
+                        gclh_search(logs);
+
+                        var log_ids = [];
+
+                        for (var i = 0; i < num; i++) {
+                            if (logs[i]) {
+                                log_ids.push(logs[i].LogID);
+                                var newBody = unsafeWindow.$(document.createElement("TBODY"));
+                                unsafeWindow.$("#tmpl_CacheLogRow_gclh").tmpl(logs[i]).appendTo(newBody);
+                                unsafeWindow.$(document.getElementById("cache_logs_table2") || document.getElementById("cache_logs_table")).append(newBody.children());
+                            }
+                        }
+                        unsafeWindow.$('a.tb_images').fancybox({'type': 'image', 'titlePosition': 'inside'});
                         if(isUpvoteActive){
-                            getUpvoteData(all_ids,((z-1)*100));
+                            unsafeWindow.appendUpvotesToLogs(log_ids);
+                            updateUpvoteEvents(logs);
                         }
-                    }
 
-                    // Add Links
-                    gclh_load_all(logs);
-                    gclh_filter(logs);
-                    gclh_search(logs);
-
-                    var log_ids = [];
-
-                    for (var i = 0; i < num; i++) {
-                        if (logs[i]) {
-                            log_ids.push(logs[i].LogID);
-                            var newBody = unsafeWindow.$(document.createElement("TBODY"));
-                            unsafeWindow.$("#tmpl_CacheLogRow_gclh").tmpl(logs[i]).appendTo(newBody);
-                            unsafeWindow.$(document.getElementById("cache_logs_table2") || document.getElementById("cache_logs_table")).append(newBody.children());
+                        gclh_dynamic_load(logs, num);
+                        if (settings_show_vip_list) {
+                            gclh_build_vip_list();
+                            gclh_add_vip_icon();
                         }
-                    }
-                    unsafeWindow.$('a.tb_images').fancybox({'type': 'image', 'titlePosition': 'inside'});
-                    if(isUpvoteActive){
-                        unsafeWindow.appendUpvotesToLogs(log_ids);
-                        updateUpvoteEvents(logs);
-                    }
-
-                    gclh_dynamic_load(logs, num);
-                    if (settings_show_vip_list) {
-                        gclh_build_vip_list();
-                        gclh_add_vip_icon();
-                    }
-                    setLinesColorInCacheListing();
+                        setLinesColorInCacheListing();
+                    } else {waitCount++; if (waitCount <= 100) setTimeout(function(){gclh_load_dataHelper(waitCount);}, 100);} // GDPR
                 }
                 gclh_load_helper(1);
             }
@@ -7676,14 +7685,17 @@ var mainGC = function() {
                                  + "<span title=''>#top#<img title='${Descr}' class='gclh_max' src='"+http+"://img.geocaching.com/cache/log/thumb/large/${FileName}'>#bot#</span></a>";
                     if (settings_imgcaption_on_top) newImTpl = newImTpl.replace('#top#', '${Name}').replace('#bot#', '');
                     else  newImTpl = newImTpl.replace('#top#', '').replace('#bot#', '${Name}');
-                    var code = "function gclh_updateTmpl() {"
-                             + " if ($.template != undefined) {"
-                             + "  delete $.template['tmplCacheLogImages'];"
-                             + "  $.template(\"tmplCacheLogImages\",\""+newImTpl+"\");"
-                             + "} }"
-                             + "gclh_updateTmpl();"
+
+                    var code = "function gclh_updateTmpl(waitCount) {" // GDPR
+                             + "    if (typeof $ !== 'undefined' && typeof $.template !== 'undefined') {" // GDPR
+                             + "        delete $.template['tmplCacheLogImages'];"
+                             + "        $.template(\"tmplCacheLogImages\",\""+newImTpl+"\");"
+                             + "    } else {waitCount++; if (waitCount <= 50) setTimeout(function(){gclh_updateTmpl(waitCount);}, 200);}" // GDPR
+                             + "}"
+                             + "gclh_updateTmpl(0);" // GDPR
                              + placeToolTip.toString();
                     injectPageScript(code, "body");
+
                     css += ".TableLogContent {padding-left: 0; border-left: none;}";
                     css += ".LogImagesTable {margin-left: 0;} .LogImagesTable a.lnk {white-space: initial;}";
                     css += ".LogImagesTable a.gclh_thumb img {margin-bottom: 1px !important; margin-top: 1px; vertical-align: sub;}";
