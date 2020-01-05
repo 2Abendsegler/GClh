@@ -1,6 +1,63 @@
+<a href="#v0102" title="GClh II version 0.10.2 (05.01.2020)">v0.10.2</a> &nbsp;
 <a href="#v0101" title="GClh II version 0.10.1 (20.12.2019)">v0.10.1</a> &nbsp;
 <a href="#v010" title="GClh II version 0.10 (13.12.2019)">v0.10</a> &nbsp;
 <a href="changelog_before.md" title="Go to earlier changelog">Earlier changelog</a> &nbsp;
+
+---
+## v0.10.2:
+<ul>
+	<li>
+		<strong>Info:</strong> The blocking of cookiebot.com is no longer necessary for the operation of the GClh.<br><br>
+	</li>
+	<li>
+		<strong>Fix:</strong> Errors due to GDPR changes of GS. [<a href="https://github.com/2Abendsegler/GClh/issues/1153" title="Issue 1153">1153</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>] Many thanks to <a href="https://www.geocaching.com/profile/?u=Chrono81" title="Thanks to Chrono81">Chrono81</a> for the great tip. 😊<br>
+		<ul>
+			<li>
+				Show favorite percentage in cache listing run into error.<br>
+			</li>
+			<li>
+				Build map overview in cache listing run into error.<br>
+			</li>
+			<li>
+				Activate fancybox in cache listing run into error.<br>
+			</li>
+			<li>
+				Decrypt hints in cache listing run into error.<br>
+			</li>
+			<li>
+				Replace Log-Loading function in cache listing run into error.<br>
+			</li>
+			<li>
+				Show thumbnails in cache listing run into ReferenceError.<br>
+			</li>
+			<li>
+				Hide hints in cache listing behind a link with show/hide do not decrypt.<br><br>
+			</li>
+		</ul>
+	</li>
+	<li>
+		<strong>New:</strong> Show percentage of found caches for every country on statistic map. [<a href="https://github.com/2Abendsegler/GClh/issues/1149" title="Issue 1149">1149</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		<img src="../images/0.10.2/Screen03.jpg" alt="Screen03.jpg"><br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_map_percentage_statistic" title="Link to your GClh Config">Settings -> Public profile:<br>
+		<img src="../images/0.10.2/Screen04.jpg" alt="Screen04.jpg"></a><br><br>
+	</li>
+	<li>
+		<strong>New:</strong> Show button to display all, only active or only archived caches in owned caches list. [<a href="https://github.com/2Abendsegler/GClh/issues/1145" title="Issue 1145">1145</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br>
+		<img src="../images/0.10.2/Screen02.gif" alt="Screen02.gif"><br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_show_button_for_hide_archived" title="Link to your GClh Config">Settings -> Others:<br>
+		<img src="../images/0.10.2/Screen01.jpg" alt="Screen01.jpg"></a><br><br>
+	</li>
+	<li>
+		<strong>Fix:</strong> Align dropdown menu under main menu. [<a href="https://github.com/2Abendsegler/GClh/issues/1145" title="Issue 1145">1145</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br><br>
+	</li>
+	<li>
+		<strong>Fix:</strong> Improve print page cache listing with hide disclaimer, decrypt hints, show other coord formats and hide side rights does not run. [<a href="https://github.com/2Abendsegler/GClh/issues/1153" title="Issue 1153">1153</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+</ul>
+<br>
+(05.01.2020)<br>
+released by <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a><br>
+<br>
 
 ---
 ## v0.10.1:
