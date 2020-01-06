@@ -565,8 +565,6 @@ var variablesInit = function(c) {
     c.settings_lists_back_to_top = getValue("settings_lists_back_to_top", false);
     c.settings_searchmap_autoupdate_after_dragging = getValue("settings_searchmap_autoupdate_after_dragging", true);
     c.settings_improve_character_counter = getValue("settings_improve_character_counter", true);
-    c.settings_limit_log_textarea = getValue("settings_limit_log_textarea", true);
-    c.setting_show_counter_for_limited_fields = getValue("setting_show_counter_for_limited_fields", true);
 
     try {
         if (c.userToken === null) {
@@ -3520,7 +3518,7 @@ var mainGC = function() {
     }
 
 // Maxlength of logtext and unsaved warning.
-    // This function will also used for "Show length of hint, geocachename and placed by"
+    // This function will also used for "Show length of hint, geocachename and placed by".
     function limitLogText(limitField, counterelement, limitNum) {
         changed = true;
         // Aus GC Funktion "checkLogInfoLength".
@@ -3529,18 +3527,11 @@ var mainGC = function() {
         var diff = length - $(editor).val().length;
         if (length >= limitNum) {
             counterelement.innerHTML = '<font color="red">' + length + '/' + limitNum + '</font>';
-            if (settings_limit_log_textarea) {
-                counterelement.innerHTML = '<font color="red">' + limitNum + '/' + limitNum + '</font>';
-                limitField.value = limitField.value.substring(0, (limitNum - diff));
-                limitField.scrollTop = limitField.scrollHeight;
-                limitField.selectionStart = limitNum;
-                limitField.selectionEnd = limitNum;
-            }
         } else counterelement.innerHTML = length + '/' + limitNum;
     }
     if (((document.location.href.match(/\.com\/seek\/log\.aspx\?(id|guid|ID|wp|LUID|PLogGuid)\=/) ||
-         document.location.href.match(/\.com\/track\/log\.aspx\?(id|wid|guid|ID|LUID|PLogGuid)\=/)) && $('#litDescrCharCount')[0]) ||
-         document.location.href.match(/\.com\/play\/geocache\/gc\w+\/log/)) {
+          document.location.href.match(/\.com\/track\/log\.aspx\?(id|wid|guid|ID|LUID|PLogGuid)\=/)) && $('#litDescrCharCount')[0]) ||
+          document.location.href.match(/\.com\/play\/geocache\/gc\w+\/log/)) {
         try {
             var newLogpage = document.location.href.match(/\.com\/play\/geocache\/gc\w+\/log/);
             var changed = false;
@@ -3556,29 +3547,41 @@ var mainGC = function() {
             if ($('#submitLog')[0]) $('#submitLog')[0].addEventListener("click", function() {changed = false;}, false);  // Keine Meldung beim Submit.
 
             var counterelement = document.createElement('span');
-            function waitForLoading(waitCount) {
+            function waitForLoadingLoggingPage(waitCount) {
                 if (!document.getElementsByClassName('loading')[0]) {
                     if (!newLogpage || (newLogpage && settings_improve_character_counter)) {
                         var logfield = (!newLogpage ? $('#ctl00_ContentBody_LogBookPanel1_uxLogInfo')[0] : $('#LogText')[0]);
-                        var counterpos = (!newLogpage ? document.getElementById('litDescrCharCount').parentNode : document.querySelector('#logContent'));
                         var counterspan = document.createElement('p');
                         counterspan.id = "logtextcounter";
-                        counterspan.innerHTML = "<b>Loglength:</b><br />";
+                        counterspan.innerHTML = "Loglength:" + (newLogpage ? '&nbsp;' : "<br />");
                         counterelement.innerHTML = '<span>' + $(logfield).val().replace(/\n/g, "\r\n").length + "/4000</span>";
                         counterspan.appendChild(counterelement);
-                        counterpos.appendChild(counterspan);
+                        if (!newLogpage) document.getElementById('litDescrCharCount').parentNode.appendChild(counterspan);
+                        else {
+                            document.querySelector('.btn-group-grow').insertBefore(counterspan, (document.querySelector('.btn-favorite') ? document.querySelector('.btn-favorite') : document.querySelector('.btn-problem')));
+                            var observerNewLog = new MutationObserver(function(mutations) {
+                                mutations.forEach(function(mutation) {
+                                    if (!document.querySelector('#logtextcounter')) document.querySelector('.btn-group-grow').insertBefore(counterspan, (document.querySelector('.btn-favorite') ? document.querySelector('.btn-favorite') : document.querySelector('.btn-problem')));
+                                });
+                            });
+                            var target = document.querySelector('body');
+                            var config = {attributes: true, childList: true, characterData: true, subtree: true};
+                            observerNewLog.observe(target, config);
+                        }
                         logfield.addEventListener("keyup", function() {limitLogText(logfield, document.querySelector('#logtextcounter span'), 4000);}, false);
                         logfield.addEventListener("change", function() {limitLogText(logfield, document.querySelector('#logtextcounter span'), 4000);}, false);
-                        if (settings_limit_log_textarea) logfield.setAttribute('maxlength', 4000);
                     }
-                } else {waitCount++; if (waitCount <= 200) setTimeout(function(){waitForLoading(waitCount);}, 50);}
+                } else {waitCount++; if (waitCount <= 200) setTimeout(function(){waitForLoadingLoggingPage(waitCount);}, 50);}
             }
-            waitForLoading(0)
+            waitForLoadingLoggingPage(0);
 
             // CSS
-            if (document.querySelector('.character-counter') && settings_improve_character_counter) {
-                var css = 'span.character-counter {display: none !important;}'
-                css += '#logtextcounter {width:100%; text-align: right;';
+            if (newLogpage && settings_improve_character_counter) {
+                var css = 'span.character-counter {display: none !important;}';
+                css += '#logtextcounter {margin: 0 !important;}'
+                css += '.btn-group-grow {flex: unset !important; display: flex; justify-content: space-between; width: 100%; align-items: center;}';
+                css += '.btn-problem {float: unset !important; margin-left: 0 !important;}'
+
                 appendCssStyle(css);
             }
         } catch(e) {gclh_error("Maxlength of logtext and unsaved warning",e);}
@@ -9476,7 +9479,8 @@ var mainGC = function() {
         } catch(e) {gclh_error("Auto check checkbox on hide cache process",e);}
     }
 
-    if (setting_show_counter_for_limited_fields && document.location.href.match(/\.com\/hide\/(report|description|edit)\.aspx/)) {
+// Show counter for limited fields.
+    if (document.location.href.match(/\.com\/hide\/(report|description|edit)\.aspx/)) {
         try {
             var name = ($('#tbNickname')[0] ? $('#tbNickname')[0] : $('#ctl00_ContentBody_tbGeocacheName')[0]);
             var placedBy = ($('#tbPlacedBy')[0] ? $('#tbPlacedBy')[0] : $('#ctl00_ContentBody_tbPlacedBy')[0]);
@@ -11454,9 +11458,6 @@ var mainGC = function() {
             html += "<div id='gclh_config_hide' class='gclh_block'>";
             html += checkboxy('settings_hide_cache_approvals', 'Auto set approval in hide cache process') + show_help("This option activates the checkbox for approval the \"terms of use agreement\" and the \"geocache hiding guidelines\" in the hide cache process.") + "<br>";
             html += content_settings_submit_log_button.replace("log_button","log_buttonX1");
-            html += newParameterOn1;
-            html += checkboxy('setting_show_counter_for_limited_fields', 'Show character counter for limitet field') + show_help("If you enable this option, you'll see a counter how shows you the length of geocachename, placed by and hint inputs") + "<br>";
-            html += newParameterVersionSetzen('0.10') + newParameterOff;
             html += "</div>";
 
             html += "<h4 class='gclh_headline2'>"+prepareHideable.replace("#name#","others")+"Others" + "</h4>";
@@ -11823,7 +11824,6 @@ var mainGC = function() {
             html += newParameterVersionSetzen(0.9) + newParameterOff;
             html += newParameterOn1;
             html += checkboxy('settings_improve_character_counter', 'Improve the character counter') + show_help("If you enable this option, the character counter shows the length of your log and not only the remaining number of characters. \nAt the old loggingpage this feature ist auto-enabled") + "<br>";
-            html += checkboxy('settings_limit_log_textarea', 'Limit the length of the log field') + show_help("Basically it is possible to insert more than 4000 characters in the log field. But you cannot send more than 4000 characters.") + "<br>";
             html += newParameterVersionSetzen('0.10') + newParameterOff;
             var placeholderDescription = "Possible placeholder:<br>&nbsp; #Found# : Your founds + 1<br>&nbsp; #Found_no# : Your founds<br>&nbsp; #Me# : Your username<br>&nbsp; #Owner# : Username of the owner<br>&nbsp; #Date# : Actual date<br>&nbsp; #Time# : Actual time in format hh:mm<br>&nbsp; #DateTime# : Actual date actual time<br>&nbsp; #GCTBName# : GC or TB name<br>&nbsp; #GCTBLink# : GC or TB link<br>&nbsp; #GCTBNameLink# : GC or TB name as a link<br>&nbsp; #LogDate# : Content of field \"Date Logged\"<br>(Upper and lower case is not required in the placeholder name.)";
             html += "&nbsp;" + "Log templates:" + show_help("Log templates are predefined texts. All your templates are shown beside the log form. You just have to click to a template and it will be placed in your log. <br><br>Also you are able to use placeholder for variables which will be replaced in the log. The smilies option has to be enabled. <br><br>Note: You have to set a title and a text. Click to the edit icon beside the template to edit the text.") + " &nbsp; (Possible placeholder:" + show_help_big(placeholderDescription) + ")<br>";
@@ -12884,8 +12884,6 @@ var mainGC = function() {
                 'settings_lists_back_to_top',
                 'settings_searchmap_autoupdate_after_dragging',
                 'settings_improve_character_counter',
-                'settings_limit_log_textarea',
-                'setting_show_counter_for_limited_fields',
             );
 
             for (var i = 0; i < checkboxes.length; i++) {
@@ -14066,7 +14064,6 @@ function is_page(name) {
             gclh_error("is_page", "is_page("+name+", ... ): unknown name");
             break;
     }
-    return status;
     return status;
 }
 
