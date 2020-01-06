@@ -2266,7 +2266,7 @@ var mainGC = function() {
                 }
                 if (g_note != null && (g_note != "" && g_note != "Click to enter a note" && g_note != "Klicken zum Eingeben einer Notiz")) {
                     // add user note
-                   el.value += "\n" + g_note;
+                   el.value += "\n" + g_note.replace(new RegExp('&gt;', 'g'),'>').replace(new RegExp('&lt;', 'g'),'<');
                 }
                 break;
             default:
