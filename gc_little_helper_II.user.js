@@ -236,7 +236,7 @@ var constInit = function(c) {
     bookmark("Trackables", "/track/", c.bookmarks);
     bookmark("GeoTours", "/play/geotours", c.bookmarks);
     bookmark("Unpublished Hides", "/account/dashboard/unpublishedcaches", c.bookmarks);
-    bookmark("Search Map", "/play/search", c.bookmarks);
+    bookmark("Search Map", "/play/map", c.bookmarks);
     bookmark("Ignore List", "/plan/lists/ignored", c.bookmarks);
     // Custom Bookmark-title.
     c.bookmarks_orig_title = new Array();
