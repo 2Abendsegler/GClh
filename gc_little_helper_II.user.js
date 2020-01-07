@@ -8658,7 +8658,7 @@ var mainGC = function() {
             }
         }
         // Handle cache search links in list or map.
-        if (document.location.href.match(/\.com\/play\/search\/@(.*)&nfb\[1\]=GClh/)) {
+        if (document.location.href.match(/\.com\/play\/search\?(.*)&nfb\[1\]=GClh/)) {
             $('#map_container').remove();
             $('.selected-filters').remove();
             if (document.location.href.match(/#GClhMap/)) {
