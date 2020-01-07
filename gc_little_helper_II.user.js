@@ -1152,7 +1152,7 @@ var mainGC = function() {
         var splitter = document.location.href.split("#");
         if (splitter && splitter[1] && splitter[1] == "gclhpb" && splitter[2] && splitter[2] != "") {
             var postbackValue = splitter[2];
-            // Take home coords in GClh.
+            // Adopt home coords in GClh.
             if (postbackValue == "errhomecoord") {
                 var mess = "To use this link, GClh has to know your home coordinates. \n"
                          + "Do you want to go to the special area and let GClh save \n"
@@ -1162,7 +1162,7 @@ var mainGC = function() {
                          + "(But, please wait until page \"Home Location\" is loading complete.)";
                 if (window.confirm(mess)) document.location.href = "/account/settings/homelocation";
                 else document.location.href = document.location.href.replace("?#"+splitter[1]+"#"+splitter[2]+"#", "");
-            // Take uid, own trackables in GClh.
+            // Adopt uid of own trackables in GClh.
             } else if (postbackValue == "errowntrackables") {
                 var mess = "To use this link, GClh has to know the identification of \n"
                          + "your trackables. Do you want to go to your dashboard and \n"
@@ -9394,7 +9394,7 @@ var mainGC = function() {
         }
     }
 
-// Save trackable uid from dashboard.
+// Save uid of own trackable from dashboard.
     if (is_page("profile") || is_page("dashboard")) {
        try {
             var link = $('a[href*="/track/search.aspx?o=1&uid="]')[0];
@@ -9404,7 +9404,7 @@ var mainGC = function() {
                     if (getValue("uid", "") != uid[1]) setValue("uid", uid[1]);
                 }
             }
-        } catch(e) {gclh_error("Save trackable uid",e);}
+        } catch(e) {gclh_error("Save uid of own trackable",e);}
     }
 
 // Add mailto link to profilpage.
