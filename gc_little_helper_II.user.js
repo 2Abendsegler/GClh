@@ -7849,12 +7849,12 @@ var mainGC = function() {
         } catch(e) {gclh_error("Show gallery images in 2 instead of 4 cols",e);}
     }
 
-// Improve search map.
+// Improve search map, improve new map.
     if (is_page('searchmap')) {
         try {
             // Virtually hit "Search this area" after dragging the map.
             function searchThisArea() {
-                if (!document.location.href.match(/\.com\/play\/map\?bm=/) && settings_searchmap_autoupdate_after_dragging) {
+                if (!document.location.href.match(/\.com\/play\/map\?(bm=|(.*)&nfb=GClh)/) && settings_searchmap_autoupdate_after_dragging) {
                     if (document.getElementById('clear-map-control')) {
                         document.getElementById('clear-map-control').click();
                     }
@@ -7891,7 +7891,7 @@ var mainGC = function() {
 
             var css = '';
             // Hide button search this area and icon loading.
-            if (!document.location.href.match(/\.com\/play\/map\?bm=/) && settings_searchmap_autoupdate_after_dragging) {
+            if (!document.location.href.match(/\.com\/play\/map\?(bm=|(.*)&nfb=GClh)/) && settings_searchmap_autoupdate_after_dragging) {
                 css += '#clear-map-control, .loading-container {display: none;}';
             }
             if (css != "") appendCssStyle(css);
