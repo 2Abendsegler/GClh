@@ -9491,7 +9491,7 @@ var mainGC = function() {
                 var counterspan = document.createElement('p');
                 counterspan.style = 'margin-bottom: 0px';
                 counterspan.id = countername;
-                counterspan.innerHTML = "<b>Length: </b>";
+                counterspan.innerHTML = "Length:&nbsp;";
                 counterelement.innerHTML = "<span>" + $(textbox).val().replace(/\n/g, "\r\n").length + "/" + maxLength + "</span>";
                 counterspan.appendChild(counterelement);
                 textbox.parentNode.append(counterspan);
@@ -9506,6 +9506,11 @@ var mainGC = function() {
             placedBy.addEventListener("change", function() {limitLogText(placedBy, document.querySelector('#placedByCounter span'), 50);}, false);
             hint.addEventListener("keyup", function() {limitLogText(hint, document.querySelector('#hintCounter span'), 250);}, false);
             hint.addEventListener("change", function() {limitLogText(hint, document.querySelector('#hintCounter span'), 250);}, false);
+
+            // CSS
+            var css = '#nameCounter, #placedByCounter, #hintCounter {text-align: right;}';
+            css += '#nameCounter, #placedByCounter {width: 400px;}';
+            appendCssStyle(css);
         } catch(e) {gclh_error("Show length of hint, geocachename and placed by",e);}
     }
 
