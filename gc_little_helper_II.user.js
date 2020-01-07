@@ -1148,45 +1148,48 @@ var mainGC = function() {
    if (!$('.li-user-info')[0]) return;
 
 // Run after redirect.
-    if (typeof(unsafeWindow.__doPostBack) == "function") {
-        try {
-            var splitter = document.location.href.split("#");
-            if (splitter && splitter[1] && splitter[1] == "gclhpb" && splitter[2] && splitter[2] != "") {
-                var postbackValue = splitter[2];
-                // Home coords in GClh übernehmen.
-                if (postbackValue == "errhomecoord") {
-                    var mess = "To use this link, GClh has to know your home coordinates. \n"
-                             + "Do you want to go to the special area and let GClh save \n"
-                             + "your home coordinates automatically?\n\n"
-                             + "GClh will save it automatically. You have nothing to do at the\n"
-                             + "following page \"Home Location\", except, to choose your link again.\n"
-                             + "(But, please wait until page \"Home Location\" is loading complete.)";
-                    if (window.confirm(mess)) document.location.href = "/account/settings/homelocation";
-                    else document.location.href = document.location.href.replace("?#"+splitter[1]+"#"+splitter[2]+"#", "");
-                // uid, own trackables in GClh übernehmen.
-                } else if (postbackValue == "errowntrackables") {
-                    var mess = "To use this link, GClh has to know the identification of \n"
-                             + "your trackables. Do you want to go to your dashboard and \n"
-                             + "let GClh save the identification (uid) automatically?\n\n"
-                             + "GClh will save it automatically. You have nothing to do at the\n"
-                             + "following page \"Dashboard\", except, to choose your link again.\n"
-                             + "(But, please wait until page \"Dashboard\" is loading complete.)";
-                    if (window.confirm(mess)) document.location.href = "/my/default.aspx";
-                    else  document.location.href = document.location.href.replace("?#"+splitter[1]+"#"+splitter[2], "");
-                // Postbacks.
-                } else {
-                    if (is_page("publicProfile")) {
-                        $('html').css("background-color", "white");
-                        $('#divContentSide').css("height", "1000px");
-                        $('#ProfileTabs').css("display", "none");
-                        $('footer').remove();
-                    }
-                    document.location.href = "";
-                    $('#'+postbackValue)[0].click();
+    try {
+        var splitter = document.location.href.split("#");
+        if (splitter && splitter[1] && splitter[1] == "gclhpb" && splitter[2] && splitter[2] != "") {
+            var postbackValue = splitter[2];
+            // Home coords in GClh übernehmen.
+            if (postbackValue == "errhomecoord") {
+                var mess = "To use this link, GClh has to know your home coordinates. \n"
+                         + "Do you want to go to the special area and let GClh save \n"
+                         + "your home coordinates automatically?\n\n"
+                         + "GClh will save it automatically. You have nothing to do at the\n"
+                         + "following page \"Home Location\", except, to choose your link again.\n"
+                         + "(But, please wait until page \"Home Location\" is loading complete.)";
+                if (window.confirm(mess)) document.location.href = "/account/settings/homelocation";
+                else document.location.href = document.location.href.replace("?#"+splitter[1]+"#"+splitter[2]+"#", "");
+            // uid, own trackables in GClh übernehmen.
+            } else if (postbackValue == "errowntrackables") {
+                var mess = "To use this link, GClh has to know the identification of \n"
+                         + "your trackables. Do you want to go to your dashboard and \n"
+                         + "let GClh save the identification (uid) automatically?\n\n"
+                         + "GClh will save it automatically. You have nothing to do at the\n"
+                         + "following page \"Dashboard\", except, to choose your link again.\n"
+                         + "(But, please wait until page \"Dashboard\" is loading complete.)";
+                if (window.confirm(mess)) document.location.href = "/my/default.aspx";
+                else  document.location.href = document.location.href.replace("?#"+splitter[1]+"#"+splitter[2], "");
+            // Postbacks.
+            } else {
+                if (is_page("publicProfile")) {
+                    $('html').css("background-color", "white");
+                    $('#divContentSide').css("height", "1000px");
+                    $('#ProfileTabs').css("display", "none");
+                    $('footer').remove();
                 }
+                function rarProfile(waitCount) { // GDPR
+                    if (typeof(unsafeWindow.__doPostBack) !== "undefined") { // GDPR
+                        document.location.href = "";
+                        $('#'+postbackValue)[0].click();
+                    } else {waitCount++; if (waitCount <= 100) setTimeout(function(){rarProfile(waitCount);}, 100);}
+                }
+                rarProfile(0); // GDPR
             }
-        } catch(e) {gclh_error("Run after redirect",e);}
-    }
+        }
+    } catch(e) {gclh_error("Run after redirect",e);}
 
 // After change of a bookmark respectively a bookmark list go automatically from confirmation screen to bookmark list.
    if (((settings_bm_changed_and_go && document.location.href.match(/\.com\/bookmarks\/mark\.aspx\?(guid=|ID=)/)) || (settings_bml_changed_and_go && document.location.href.match(/\.com\/bookmarks\/edit\.aspx/))) && $('#divContentMain')[0] && $('p.Success a[href*="/bookmarks/view.aspx?guid="]')[0]) {
