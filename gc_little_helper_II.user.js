@@ -8739,19 +8739,6 @@ var mainGC = function() {
                             }
                         });
 
-                        // get the number of favorite points
-                        var fav_points = $(text).find('.favorite-value').html();
-                        if(fav_points == null){
-                            // couldn't get Number of Favorits. This happens with event caches for example
-                            fav_points = 0;
-                        }else{
-                            fav_points = fav_points.replace('.','');
-                            fav_points = fav_points.replace(',','');
-                            fav_points = parseInt(fav_points);
-                        }
-                        // Set dummy favorite score.
-                        var fav_percent = ' ';
-
                         // get the place, where the cache was placed
                         var place = $(text).find('#ctl00_ContentBody_Location')[0].innerHTML;
 
@@ -8762,7 +8749,6 @@ var mainGC = function() {
                         if (settings_show_elevation_of_waypoints) {
                             new_text += '<span id="elevation-waypoint"></span>';
                         }
-                        new_text += '<span class="favi_points" title="Favorites in percent"><svg height="16" width="16"><image xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="/images/icons/fave_fill_16.svg" src="/images/icons/fave_fill_16.png" width="16" height="16" alt="Favorite points"></image></svg> ' + fav_percent + '</span> | ';
                         if(premium_only){
                             new_text += ' <span class="premium_only" title="Premium Only Cache"><img src="/images/icons/16/premium_only.png" width="16" height="16" alt="Premium Only Cache" /></span> | ';
                         }
