@@ -36,7 +36,7 @@
 				Automatically adopt home coordinates in GClh does not work. [<a href="https://github.com/2Abendsegler/GClh/issues/1165" title="Issue 1165">1165</a>]<br>
 			</li>
 			<li>
-				Set default language does not work in cache listing. [<a href="https://github.com/2Abendsegler/GClh/issues/1161" title="Issue 1161">1161</a>]<br>
+				Set default language does not work in cache listing. [<a href="https://github.com/2Abendsegler/GClh/issues/1161" title="Issue 1161">1161</a>]<br><br>
 			</li>
 		</ul>
 	</li>
@@ -53,10 +53,16 @@
 		<img src="../images/0.10.2/Screen01.jpg" alt="Screen01.jpg"></a><br><br>
 	</li>
 	<li>
-		<strong>Fix:</strong> Align dropdown menu under main menu. [<a href="https://github.com/2Abendsegler/GClh/issues/1145" title="Issue 1145">1145</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br><br>
+		<strong>Fix:</strong> No automatic cache loading if map comes from 81 matrix statistic. [<a href="https://github.com/2Abendsegler/GClh/issues/1172" title="Issue 1172">1172</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 	</li>
 	<li>
-		<strong>Fix:</strong> Improve print page cache listing with hide disclaimer, decrypt hints, show other coord formats and hide side rights does not run. [<a href="https://github.com/2Abendsegler/GClh/issues/1153" title="Issue 1153">1153</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		<strong>Fix:</strong> Link "Search Map" in Linklist is wrong. [<a href="https://github.com/2Abendsegler/GClh/issues/1163" title="Issue 1163">1163</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> Show the searched caches from the 81 matrix in a map doesn't work. [<a href="https://github.com/2Abendsegler/GClh/issues/1168" title="Issue 1168">1168</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> Menu misaligned on page "Edit your Trackable". [<a href="https://github.com/2Abendsegler/GClh/issues/1174" title="Issue 1174">1174</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br><br>
 	</li>
 </ul>
 <br>
