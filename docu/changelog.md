@@ -62,7 +62,7 @@
 		<strong>Fix:</strong> Show the searched caches from the 81 matrix in a map doesn't work. [<a href="https://github.com/2Abendsegler/GClh/issues/1168" title="Issue 1168">1168</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 	</li>
 	<li>
-		<strong>Fix:</strong> Menu misaligned on page "Edit your Trackable". [<a href="https://github.com/2Abendsegler/GClh/issues/1174" title="Issue 1174">1174</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br><br>
+		<strong>Fix:</strong> Menu misaligned on page "Edit your Trackable". [<a href="https://github.com/2Abendsegler/GClh/issues/1174" title="Issue 1174">1174</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 	</li>
 </ul>
 <br>
