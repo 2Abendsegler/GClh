@@ -8592,6 +8592,73 @@ var mainGC = function() {
        });
     }
 
+    // Display more information on new Search Map in left Sidebar
+    if (is_page('searchmap')) {
+        try {
+
+            // create an observer instance
+            var searchmap_observer = new MutationObserver(function(mutations) {
+                mutations.some(function(mutation) {
+                    console.log("Mutation");
+                    // Check if the sidebar displays a cache
+                    if(!document.querySelector('.cache-preview-attributes')){
+                        // No Cache in Sidebar
+                        console.log("1");
+                        return true; //breaks the "some" loop
+                    }
+
+                    new_gc_code = document.querySelector('.cache-preview-header .cache-metadata .cache-metadata-code').innerHTML;
+                    console.log(new_gc_code);
+
+                    var searchmap_sidebar_enhancements = document.querySelector('#searchmap_sidebar_enhancements');
+
+                    if(searchmap_sidebar_enhancements){
+                        // Element already present, so compare the two GC Codes, to see if we need to update
+                        console.log("2");
+                        if(new_gc_code == document.querySelector('#searchmap_sidebar_enhancements').innerHTML){
+                            console.log("2.1 old code");
+                            return true; //breaks the "some" loop
+                        }else{
+                            
+                            searchmap_sidebar_enhancements.parentNode.removeChild(searchmap_sidebar_enhancements);
+                            console.log("2.2: new code");
+                        }
+                    }
+
+                    console.log("3");
+
+                    searchmap_sidebar_enhancements = document.createElement("div");
+                    searchmap_sidebar_enhancements.setAttribute("id", "searchmap_sidebar_enhancements");
+                    searchmap_sidebar_enhancements.innerHTML = new_gc_code;
+
+                    insertAfter(searchmap_sidebar_enhancements, document.getElementsByClassName("geocache-owner")[0]);
+
+                });
+            });
+
+            function insertAfter(newNode, referenceNode) {
+                referenceNode.parentNode.insertBefore(newNode, referenceNode.nextSibling);
+            }
+            
+            // Wait for Sidebar to be loaded
+            function attacheSearchmapObserver(waitCount){
+
+                var node = document.querySelector('#sidebar');
+                if(node){
+                    // pass in the target node, as well as the observer options
+                    searchmap_observer.observe(document.querySelector('#sidebar'), { childList: true, subtree: true});
+
+                } else {waitCount++; if (waitCount <= 100) setTimeout(function(){attacheSearchmapObserver(waitCount);}, 100);}
+            }
+
+            attacheSearchmapObserver(0);
+
+            
+            
+
+        } catch(e) {gclh_error("searchmap sidebar Enhancements",e);}
+    }
+
 // Leaflet Map für Trackables vergrößern und Zoom per Mausrad zulassen.
     if (document.location.href.match(/\.com\/track\/map/)) {
         try{
