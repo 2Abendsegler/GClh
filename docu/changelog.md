@@ -47,10 +47,9 @@
 		<img src="../images/0.10.3/Screen02.jpg" alt="Screen02.jpg"></a><br><br>
 	</li>
 	<li>
-		<strong>New:</strong> Show button to display all, only active or only archived caches in owned caches list. [<a href="https://github.com/2Abendsegler/GClh/issues/1145" title="Issue 1145">1145</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br>
-		<img src="../images/0.10.2/Screen02.gif" alt="Screen02.gif"><br>
-		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_show_button_for_hide_archived" title="Link to your GClh Config">Settings -> Others:<br>
-		<img src="../images/0.10.2/Screen01.jpg" alt="Screen01.jpg"></a><br><br>
+		<strong>New:</strong> Show length of hint, cachename and placed by on hide edit page. [<a href="https://github.com/2Abendsegler/GClh/issues/1143" title="Issue 1143">1143</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br>
+		<img src="../images/0.10.3/Screen03.jpg" alt="Screen03.jpg"><br>
+		<img src="../images/0.10.3/Screen04.jpg" alt="Screen04.jpg"></a><br><br>
 	</li>
 	<li>
 		<strong>Fix:</strong> No automatic cache loading if map comes from 81 matrix statistic. [<a href="https://github.com/2Abendsegler/GClh/issues/1172" title="Issue 1172">1172</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
