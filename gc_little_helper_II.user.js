@@ -1201,16 +1201,21 @@ var mainGC = function() {
 // Set language to default language.
     if (settings_set_default_langu) {
         try {
-            var la = $('.language-list > li > a:contains(' + settings_default_langu + ')');
-            if (!la[0]) var la = $('.dropdown-menu > li > a:contains(' + settings_default_langu + ')');
-            if (la[0]) {
-                if (la[0].className == "selected" || la[0].parentNode.className == "selected");
-                else {
-                    var event = document.createEvent("MouseEvent");
-                    event.initEvent("click", true, true);
-                    la[0].dispatchEvent(event);
-                }
+            function set_default_langu(waitCount) { // GDPR
+                if (typeof __doPostBack !== "undefined" || !$('#ctl00_ctl30_uxLocaleList_uxLocaleList_ctl00_uxLocaleItem')[0]) { // GDPR
+                    var la = $('.language-list > li > a:contains(' + settings_default_langu + ')');
+                    if (!la[0]) var la = $('.dropdown-menu > li > a:contains(' + settings_default_langu + ')');
+                    if (la[0]) {
+                        if (la[0].className == "selected" || la[0].parentNode.className == "selected");
+                        else {
+                            var event = document.createEvent("MouseEvent");
+                            event.initEvent("click", true, true);
+                            la[0].dispatchEvent(event);
+                        }
+                    }
+                } else {waitCount++; if (waitCount <= 100) setTimeout(function(){set_default_langu(waitCount);}, 100);} // GDPR
             }
+            set_default_langu(0); // GDPR
         } catch(e) {gclh_error("Set language to default language",e);}
     }
 
