@@ -1182,7 +1182,7 @@ var mainGC = function() {
                     $('footer').remove();
                 }
                 function rarProfile(waitCount) { // GDPR
-                    if (typeof(unsafeWindow.__doPostBack) !== "undefined") { // GDPR
+                    if (typeof unsafeWindow.__doPostBack !== "undefined") { // GDPR
                         document.location.href = "";
                         $('#'+postbackValue)[0].click();
                     } else {waitCount++; if (waitCount <= 100) setTimeout(function(){rarProfile(waitCount);}, 100);}
@@ -2233,7 +2233,7 @@ var mainGC = function() {
             } else {
                 html += '    <div class="copydata-content-layer copydata_click" data-id="'+idCopyCoords+'">Coordinates</div>';
             }
-            html += '  </div>'
+            html += '  </div>';
             $('.copydata_click')[0].parentNode.innerHTML += html;
             $('.copydata_click').removeClass('working');
             $('.copydata_click').click(function() {
@@ -2299,9 +2299,9 @@ var mainGC = function() {
 
         var html = "";
         html += '<div class="GClhdropdown">';
-        html += '<a class="GClhdropbtn mapservice_click-{uniqueServiceId} {customclasses}" data-map="'+service_configuration.defaultMap+'">{linkText}</a>';
+        html += '<a class="GClhdropbtn mapservice_click-{uniqueServiceId} {customclasses} working" data-map="'+service_configuration.defaultMap+'">{linkText}</a>';
         var nodropbtn = (service_configuration.defaultMap == "" ? "noGClhdropbtn" : "");
-        html += '<div class="GClhdropdown-content '+nodropbtn+'">';
+        html += '<div class="GClhdropdown-content working '+nodropbtn+'">';
         for( var layer in service_configuration.layers ) {
             html += '<div class="{uniqueServiceId}-content-layer mapservice_click-{uniqueServiceId}" data-map="'+layer+'">'+service_configuration.layers[layer].displayName+'</div>';
         }
@@ -2322,9 +2322,17 @@ var mainGC = function() {
             tbl.next("p").append('<br>'+htmlWaypointTable);
         }
 
-        $('.mapservice_click-'+uniqueServiceId).click(function() {
-            service_configuration.action( this, service_configuration );
-        });
+        function check_wpdata(waitCount, uniqueServiceId) { // GDPR
+            if (check_wpdata_evaluable()) {
+                $('.mapservice_click-'+uniqueServiceId).removeClass('working');
+                var parent = $('.mapservice_click-'+uniqueServiceId)[0].parentNode;
+                $(parent).find('.GClhdropdown-content').removeClass('working');
+                $('.mapservice_click-'+uniqueServiceId).click(function() {
+                    service_configuration.action( this, service_configuration );
+                });
+            } else {waitCount++; if (waitCount <= 100) setTimeout(function(){check_wpdata(waitCount, uniqueServiceId);}, 100);} // GDPR
+        }
+        check_wpdata(0, uniqueServiceId);
     }
 
     function mapservice_open( thisObject, service_configuration ) {
@@ -2511,6 +2519,8 @@ var mainGC = function() {
         css += ".GClhdropdown-content-info:hover {";
         css += "  background-color: #ffffa5;";
         css += "  cursor: default;}";
+        css += ".GClhdropdown:hover .GClhdropdown-content.working {";
+        css += "  display: none;}";
         css += ".GClhdropdown:hover .GClhdropdown-content {";
         css += "  display: block;}";
         appendCssStyle(css);
@@ -2828,10 +2838,8 @@ var mainGC = function() {
     if (is_page("cache_listing")) {
         try {
             function check_for_fancybox(waitCount) { // GDPR
-                if (typeof unsafeWindow.$ !== "undefined") { // GDPR
-                    if (typeof unsafeWindow.$.fancybox != "undefined") {
-                        unsafeWindow.$('.CachePageImages a[rel="lightbox"]').fancybox();
-                    }
+                if (typeof unsafeWindow.$ !== "undefined" && typeof unsafeWindow.$.fancybox !== "undefined") { // GDPR
+                    unsafeWindow.$('.CachePageImages a[rel="lightbox"]').fancybox();
                 } else {waitCount++; if (waitCount <= 50) setTimeout(function(){check_for_fancybox(waitCount);}, 200);} // GDPR
             }
             check_for_fancybox(0); // GDPR
@@ -3038,7 +3046,7 @@ var mainGC = function() {
         } catch(e) {gclh_error("Driving direction for Waypoints",e);}
     }
 
-// Added elevation to every additional waypoint with shown coordinates.
+// Add elevation to every additional waypoint with shown coordinates.
     if (settings_show_elevation_of_waypoints && ((is_page("cache_listing") && !isMemberInPmoCache()) || is_page("map"))) {
         try {
             function formatElevation(elevation) {
@@ -3067,7 +3075,7 @@ var mainGC = function() {
                 } catch(e) {
                     gclh_error("addElevationToWaypoints_GoogleElevation()",e);
                     // This it not nice but in case of invalid character at the beginning of
-                    // responseText JSON.parse gives an exception. Exception handling have to be improved
+                    // responseText JSON.parse gives an exception. Exception handling have to be improved.
                     gclh_log( responseDetails.responseText );
                     getElevations(context.retries+1,context.locations);
                 }
@@ -3077,7 +3085,7 @@ var mainGC = function() {
                 try {
                     context = responseDetails.context;
                     if ( responseDetails.responseText[0] != '{' ) {
-                        // workaround: sometimes OpenElevation answers with an HTML formatted content not with JSON data
+                        // Workaround: sometimes OpenElevation answers with an HTML formatted content not with JSON data.
                         gclh_log("\naddElevationToWaypoints_OpenElevation():\n- Unexpected response data:"+responseDetails.responseText.substring(0,100)+"…");
                         getElevations(context.retries+1,context.locations);
                         return;
@@ -3103,7 +3111,7 @@ var mainGC = function() {
                 } catch(e) {
                     gclh_error("addElevationToWaypoints_OpenElevation()",e);
                     // This is not nice, but the OpenElevation service does not send any status information.
-                    // We have to figure out, what will be send in case of error
+                    // We have to figure out, what will be send in case of error.
                     gclh_log( responseDetails.responseText );
                     getElevations(context.retries+1,context.locations);
                 }
@@ -3146,13 +3154,13 @@ var mainGC = function() {
             }
 
             function prepareListingPageForElevations() {
-                // prepare cache listing
+                // Prepare cache listing.
                 var waypoints = queryListingWaypoints();
                 var locations = [];
                 var classAttribute = "waypoint-elevation-na";
                 var idAttribute = "";
 
-                // prepare cache listing - listing coordinates
+                // Prepare cache listing - listing coordinates.
                 classAttribute = "waypoint-elevation-na";
                 idAttribute = "";
                 for ( var j=0; j<waypoints.length; j++ ) {
@@ -3165,7 +3173,7 @@ var mainGC = function() {
                     }
                 }
                 $("#uxLatLonLink").after('<span title="Elevation">&nbsp;&nbsp;&nbsp;Elevation:&nbsp;<span class="'+classAttribute+'" id="'+idAttribute+'"></span></span>');
-                // prepare cache listing - waypoint table
+                // Prepare cache listing - waypoint table.
                 var tbl = getWaypointTable();
                 if (tbl.length > 0) {
                     tbl.find("thead > tr > th:eq(5)").after('<th scope="col">Elevation</th>');
@@ -3202,7 +3210,7 @@ var mainGC = function() {
                 elevationServices.push(elevationServicesData[settings_secondary_elevation_service]);
             }
 
-            // this function can be re-entered
+            // This function can be re-entered.
             function getElevations(serviceIndex,locations) {
                 if (serviceIndex >= elevationServices.length || elevationServices<0 ) {
                     $('.waypoint-elevation').each(function (index, value) {
@@ -3281,7 +3289,7 @@ var mainGC = function() {
                 var locations = prepareListingPageForElevations();
                 if ( locations.length > 0 ) getElevations(0,locations);
             }
-        } catch(e) {gclh_error("AddElevation",e);}
+        } catch(e) {gclh_error("Add elevation",e);}
     }
 
 // Hide greenToTopButton.
@@ -10547,15 +10555,12 @@ var mainGC = function() {
 // Trim decimal value to a given number of digits.
     function roundTO(val, decimals) {return Number(Math.round(val+'e'+decimals)+'e-'+decimals);}
 
-    function queryListingWaypoints( original ) {
+// Determine waypoints.
+    function queryListingWaypoints(original) {
         var waypoints = [];
+        if (check_wpdata_evaluable() == false) return waypoints;
         try {
-            if (unsafeWindow.mapLatLng == undefined) {
-                return [];
-            }
-
             var gccode = ($('#ctl00_ContentBody_CoordInfoLinkControl1_uxCoordInfoCode')[0]) ? $('#ctl00_ContentBody_CoordInfoLinkControl1_uxCoordInfoCode')[0].textContent : "n/a";
-
             var ListingCoords = {
                 name: unsafeWindow.mapLatLng.name,
                 gccode: gccode,
@@ -10589,9 +10594,18 @@ var mainGC = function() {
                 };
                 waypoints.push(waypoint);
             }
-
-        } catch(e) {gclh_error("queryListingWaypoints()",e);}
+        } catch(e) {gclh_error("Determine waypoints",e);}
         return waypoints;
+    }
+    function check_wpdata_evaluable() { // GDPR
+        if ( typeof unsafeWindow.mapLatLng !== "undefined" && unsafeWindow.mapLatLng !== null &&
+             typeof unsafeWindow.mapLatLng.name !== "undefined" &&
+             typeof unsafeWindow.mapLatLng.type !== "undefined" &&
+             typeof unsafeWindow.mapLatLng.lat !== "undefined" &&
+             typeof unsafeWindow.mapLatLng.lng !== "undefined" &&
+             typeof unsafeWindow.mapLatLng.isUserDefined !== "undefined") { // GDPR
+            return true;
+        } else return false;
     }
 
 // Calculate tile numbers X/Y from latitude/longitude or reverse.
