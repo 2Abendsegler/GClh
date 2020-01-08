@@ -3555,7 +3555,7 @@ var mainGC = function() {
     }
 
 // Maxlength of logtext and unsaved warning.
-    // This function will also used for "Show length of hint, geocachename and placed by".
+    // This function will also used for "Show length of hint, cachename and placed by on hide edit page".
     function limitLogText(limitField, counterelement, limitNum) {
         changed = true;
         // Aus GC Funktion "checkLogInfoLength".
@@ -3612,13 +3612,11 @@ var mainGC = function() {
             }
             waitForLoadingLoggingPage(0);
 
-            // CSS
             if (newLogpage && settings_improve_character_counter) {
                 var css = 'span.character-counter {display: none !important;}';
                 css += '#logtextcounter {margin: 0 !important;}'
                 css += '.btn-group-grow {flex: unset !important; display: flex; justify-content: space-between; width: 100%; align-items: center;}';
                 css += '.btn-problem {float: unset !important; margin-left: 0 !important;}'
-
                 appendCssStyle(css);
             }
         } catch(e) {gclh_error("Maxlength of logtext and unsaved warning",e);}
@@ -9605,7 +9603,7 @@ var mainGC = function() {
         } catch(e) {gclh_error("Auto check checkbox on hide cache process",e);}
     }
 
-// Show counter for limited fields.
+// Show length of hint, cachename and placed by on hide edit page.
     if (document.location.href.match(/\.com\/hide\/(report|description|edit)\.aspx/)) {
         try {
             var name = ($('#tbNickname')[0] ? $('#tbNickname')[0] : $('#ctl00_ContentBody_tbGeocacheName')[0]);
@@ -9625,7 +9623,7 @@ var mainGC = function() {
             createCounterElement('nameCounter', name, 50);
             createCounterElement('placedByCounter', placedBy, 50);
             createCounterElement('hintCounter', hint, 250);
-            
+
             name.addEventListener("keyup", function() {limitLogText(name, document.querySelector('#nameCounter span'), 50);}, false);
             name.addEventListener("change", function() {limitLogText(name, document.querySelector('#nameCounter span'), 50);}, false);
             placedBy.addEventListener("keyup", function() {limitLogText(placedBy, document.querySelector('#placedByCounter span'), 50);}, false);
@@ -9633,11 +9631,10 @@ var mainGC = function() {
             hint.addEventListener("keyup", function() {limitLogText(hint, document.querySelector('#hintCounter span'), 250);}, false);
             hint.addEventListener("change", function() {limitLogText(hint, document.querySelector('#hintCounter span'), 250);}, false);
 
-            // CSS
             var css = '#nameCounter, #placedByCounter, #hintCounter {text-align: right;}';
             css += '#nameCounter, #placedByCounter {width: 400px;}';
             appendCssStyle(css);
-        } catch(e) {gclh_error("Show length of hint, geocachename and placed by",e);}
+        } catch(e) {gclh_error("Show length of hint, cachename and placed by on hide edit page",e);}
     }
 
 // Improve Souvenirs
@@ -11960,7 +11957,7 @@ var mainGC = function() {
             html += checkboxy('settings_show_pseudo_as_owner', 'Take also owner pseudonym to replace placeholder owner') + show_help("If you enable this option, the placeholder for the owner is replaced possibly by the pseudonym of the owner if the real owner is not known.<br><br>On the new designed log page there is shown as owner of the cache not the real owner but possibly the pseudonym of the owner for the cache as it is shown in the cache listing under \"A cache by\". The real owner is not available in this cases.") + "<br>";
             html += newParameterVersionSetzen(0.9) + newParameterOff;
             html += newParameterOn1;
-            html += checkboxy('settings_improve_character_counter', 'Improve the character counter') + show_help("If you enable this option, the character counter shows the length of your log and not only the remaining number of characters. \nAt the old loggingpage this feature ist auto-enabled") + "<br>";
+            html += checkboxy('settings_improve_character_counter', 'Show length of log') + show_help("If you enable this option, a counter shows the length of your log and the maximum length.\nOn the old logging page this feature ist auto-enabled") + "<br>";
             html += newParameterVersionSetzen('0.10') + newParameterOff;
             var placeholderDescription = "Possible placeholder:<br>&nbsp; #Found# : Your founds + 1<br>&nbsp; #Found_no# : Your founds<br>&nbsp; #Me# : Your username<br>&nbsp; #Owner# : Username of the owner<br>&nbsp; #Date# : Actual date<br>&nbsp; #Time# : Actual time in format hh:mm<br>&nbsp; #DateTime# : Actual date actual time<br>&nbsp; #GCTBName# : GC or TB name<br>&nbsp; #GCTBLink# : GC or TB link<br>&nbsp; #GCTBNameLink# : GC or TB name as a link<br>&nbsp; #LogDate# : Content of field \"Date Logged\"<br>(Upper and lower case is not required in the placeholder name.)";
             html += "&nbsp;" + "Log templates:" + show_help("Log templates are predefined texts. All your templates are shown beside the log form. You just have to click to a template and it will be placed in your log. <br><br>Also you are able to use placeholder for variables which will be replaced in the log. The smilies option has to be enabled. <br><br>Note: You have to set a title and a text. Click to the edit icon beside the template to edit the text.") + " &nbsp; (Possible placeholder:" + show_help_big(placeholderDescription) + ")<br>";
