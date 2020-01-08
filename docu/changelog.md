@@ -12,31 +12,31 @@
 		<strong>Fix:</strong> Errors due to GDPR (General Data Protection Regulation) changes of GS. [<a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 		<ul>
 			<li>
-				Copy corrected coordinates to clipboard does not work. [<a href="https://github.com/2Abendsegler/GClh/issues/1179" title="Issue 1179">1179</a><br>
+				Copy corrected coordinates to clipboard does not work. [<a href="https://github.com/2Abendsegler/GClh/issues/1179" title="Issue 1179">1179</a>]<br>
 			</li>
 			<li>
-				All routing services in cache listing do not work proper. [<a href="https://github.com/2Abendsegler/GClh/issues/1181" title="Issue 1181">1181</a><br>
+				All routing services in cache listing do not work proper. [<a href="https://github.com/2Abendsegler/GClh/issues/1181" title="Issue 1181">1181</a>]<br>
 			</li>
 			<li>
-				Determination of elevation data does not work. [<a href="https://github.com/2Abendsegler/GClh/issues/1180" title="Issue 1180">1180</a><br>
+				Determination of elevation data does not work. [<a href="https://github.com/2Abendsegler/GClh/issues/1180" title="Issue 1180">1180</a>]<br>
 			</li>
 			<li>
-				Improve add to list in cache listing does not work. [<a href="https://github.com/2Abendsegler/GClh/issues/1182" title="Issue 1182">1182</a><br>
+				Improve add to list in cache listing does not work. [<a href="https://github.com/2Abendsegler/GClh/issues/1182" title="Issue 1182">1182</a>]<br>
 			</li>
 			<li>
-				Jump directly into one of the profile tabs does not work. [<a href="https://github.com/2Abendsegler/GClh/issues/1162" title="Issue 1162">1162</a><br>
+				Jump directly into one of the profile tabs does not work. [<a href="https://github.com/2Abendsegler/GClh/issues/1162" title="Issue 1162">1162</a>]<br>
 			</li>
 			<li>
-				Error when you open a TB-Listing without logs. [<a href="https://github.com/2Abendsegler/GClh/issues/1169" title="Issue 1169">1169</a><br>
+				Error when you open a TB-Listing without logs. [<a href="https://github.com/2Abendsegler/GClh/issues/1169" title="Issue 1169">1169</a>]<br>
 			</li>
 			<li>
-				Automatically adopt uid of own trackables in GClh does not work. [<a href="https://github.com/2Abendsegler/GClh/issues/1166" title="Issue 1166">1166</a><br>
+				Automatically adopt uid of own trackables in GClh does not work. [<a href="https://github.com/2Abendsegler/GClh/issues/1166" title="Issue 1166">1166</a>]<br>
 			</li>
 			<li>
-				Automatically adopt home coordinates in GClh does not work. [<a href="https://github.com/2Abendsegler/GClh/issues/1165" title="Issue 1165">1165</a><br>
+				Automatically adopt home coordinates in GClh does not work. [<a href="https://github.com/2Abendsegler/GClh/issues/1165" title="Issue 1165">1165</a>]<br>
 			</li>
 			<li>
-				Set default language does not work in cache listing. [<a href="https://github.com/2Abendsegler/GClh/issues/1161" title="Issue 1161">1161</a><br>
+				Set default language does not work in cache listing. [<a href="https://github.com/2Abendsegler/GClh/issues/1161" title="Issue 1161">1161</a>]<br>
 			</li>
 		</ul>
 	</li>
