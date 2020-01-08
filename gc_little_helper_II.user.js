@@ -1694,6 +1694,11 @@ var mainGC = function() {
         }catch(e) {gclh_error("Show draft indicator in header",e);}
     }
 
+// Define class working for cache listing.
+    if (is_page("cache_listing")) {
+        appendCssStyle(".working {opacity: 0.3; cursor: default !important; text-decoration: none !important;}");
+    }
+
 // Disabled and archived ...
     if (is_page("cache_listing")) {
         try {
@@ -2012,10 +2017,7 @@ var mainGC = function() {
 
 // Improve Ignore, Stop Ignoring, Watch button handling.
     if ((settings_show_remove_ignoring_link && settings_use_one_click_ignoring) || settings_use_one_click_watching) {
-        var css = '';
-        css += ".working {opacity: 0.3; cursor: default;}";
-        css += "#ignoreSaved, #watchSaved {display: none; color: #E0B70A; float: right;}";
-        appendCssStyle(css);
+        appendCssStyle("#ignoreSaved, #watchSaved {display: none; color: #E0B70A; float: right;}");
     }
 
 // Improve Ignore, Stop Ignoring button handling.
@@ -2210,33 +2212,39 @@ var mainGC = function() {
         css += "  background-image: url(" + global_copy_icon + ")}";
         appendCssStyle(css);
         var html = "";
-        var orgFlag = false;
         html += '<div class="GClhdropdown">';
-        html += '<a class="GClhdropbtn copydata_click copydata-sidebar-icon" data-id="'+idCopyName+'">Copy Data to Clipboard</a>';
-        html += '<div class="GClhdropdown-content" id="CopyDropDown">';
-        html += '<div class="copydata-content-layer copydata_click" data-id="'+idCopyName+'">Cache Name</div>';
-        html += '<div class="copydata-content-layer copydata_click" data-id="'+idCopyCode+'">GC Code</div>';
-        html += '<div class="copydata-content-layer copydata_click" data-id="'+idCopyUrl+'">Cache Link</div>';
-        // check for original coords
-        if (unsafeWindow.mapLatLng != undefined) {
-           if (unsafeWindow.mapLatLng.isUserDefined == true ) {
-              orgFlag = true;
-           }
-        }
-        if (orgFlag) {
-           html += '<div class="copydata-content-layer copydata_click" data-id="'+idCopyCoords+'">Corrected Coordinates</div>';
-           html += '<div class="copydata-content-layer copydata_click" data-id="'+idCopyOrg+'">Original Coordinates</div>';
-        } else {
-           html += '<div class="copydata-content-layer copydata_click" data-id="'+idCopyCoords+'">Coordinates</div>';
-        }
+        html += '  <a class="GClhdropbtn copydata_click copydata-sidebar-icon working" data-id="'+idCopyName+'">Copy Data to Clipboard</a>';
         html += '</div>'
-        html += '</div>';
         $('.CacheDetailNavigation ul').first().append('<li>'+html+'</li>');
-        $('.copydata_click').click(function() {
-            copydata_copy( this );
-        });
+        create_copydata_menu_content(0); // GDPR
     }
-
+    function create_copydata_menu_content(waitCount) { // GDPR
+        if ( typeof unsafeWindow.mapLatLng !== "undefined" && unsafeWindow.mapLatLng !== null &&
+             typeof unsafeWindow.mapLatLng.isUserDefined !== "undefined" ) { // GDPR
+            var html = "";
+            var orgFlag = false;
+            html += '  <div class="GClhdropdown-content" id="CopyDropDown">';
+            html += '    <div class="copydata-content-layer copydata_click" data-id="'+idCopyName+'">Cache Name</div>';
+            html += '    <div class="copydata-content-layer copydata_click" data-id="'+idCopyCode+'">GC Code</div>';
+            html += '    <div class="copydata-content-layer copydata_click" data-id="'+idCopyUrl+'">Cache Link</div>';
+            // Check for original coords.
+            if (unsafeWindow.mapLatLng.isUserDefined == true ) {
+                orgFlag = true;
+            }
+            if (orgFlag) {
+                html += '    <div class="copydata-content-layer copydata_click" data-id="'+idCopyCoords+'">Corrected Coordinates</div>';
+                html += '    <div class="copydata-content-layer copydata_click" data-id="'+idCopyOrg+'">Original Coordinates</div>';
+            } else {
+                html += '    <div class="copydata-content-layer copydata_click" data-id="'+idCopyCoords+'">Coordinates</div>';
+            }
+            html += '  </div>'
+            $('.copydata_click')[0].parentNode.innerHTML += html;
+            $('.copydata_click').removeClass('working');
+            $('.copydata_click').click(function() {
+                copydata_copy( this );
+            });
+        } else {waitCount++; if (waitCount <= 100) setTimeout(function(){create_copydata_menu_content(waitCount);}, 100);} // GDPR
+    }
     function copydata_copy( thisObject ) {
         const el = document.createElement('textarea');
         switch ($(thisObject).data('id')) {
@@ -2595,11 +2603,11 @@ var mainGC = function() {
                 });
             } catch(e) {gclh_error("Show button Openrouteservice and open Openrouteservice",e);}
         }
-        // Show 'Copy Data to Clipboard' Menu
+        // Create 'Copy Data to Clipboard' menu.
         if (settings_show_copydata_menu ) {
-           try {
-               create_copydata_menu();
-           } catch(e) {gclh_error("Create Menu 'Copy Data to Clipboard'",e);}
+            try {
+                create_copydata_menu();
+            } catch(e) {gclh_error("Create 'Copy Data to Clipboard' menu",e);}
         }
     }
 
