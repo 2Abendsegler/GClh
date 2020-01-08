@@ -2778,8 +2778,7 @@ var mainGC = function() {
                         });
                     }
                 }
-            // Audit Log
-            // ----------
+            // Audit Log:
             } else if (document.location.href.match(/\.com\/seek\/auditlog\.aspx/)) {
                 var links = document.getElementsByTagName('a');
                 for (var i = 0; i < links.length; i++) {
@@ -14114,7 +14113,7 @@ function is_page(name) {
             if (url.match(/^\/account\/dashboard/)) status = true;
             break;
         case "track":
-            if (url.match(/^\/track\/($|#$)/)) status = true;
+            if (url.match(/^\/track\/($|#$|edit)/)) status = true;
             break;
         case "souvenirs": /* only dashboard TODO public profile page */
             if (url.match(/^\/my\/souvenirs\.aspx/)) status = true;
