@@ -2,7 +2,7 @@
 // @name             GC little helper II
 // @namespace        http://www.amshove.net
 //--> $$000
-// @version          0.10.2
+// @version          0.10.3
 //<-- $$000
 // @include          http*://www.geocaching.com/*
 // @include          http*://maps.google.tld/*
@@ -10439,10 +10439,10 @@ var mainGC = function() {
         div.setAttribute("style", "margin-top: -50px;");
         var prop = ' style="border: none; visibility: hidden; width: 2px; height: 2px;" alt="">';
 //--> $$002
-        var code = '<img src="https://c.andyhoppe.com/1578202107"' + prop +
-                   '<img src="https://c.andyhoppe.com/1578201955"' + prop +
-                   '<img src="https://www.worldflagcounter.com/gHl"' + prop +
-                   '<img src="https://s11.flagcounter.com/count2/G6un/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
+        var code = '<img src="https://c.andyhoppe.com/1578517038"' + prop + // Besucher
+                   '<img src="https://c.andyhoppe.com/1578517099"' + prop + // Seitenaufrufe
+                   '<img src="https://www.worldflagcounter.com/gHI"' + prop +
+                   '<img src="https://s11.flagcounter.com/count2/yJwt/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
 //<-- $$002
         div.innerHTML = code;
         side.appendChild(div);
@@ -11393,8 +11393,8 @@ var mainGC = function() {
             // Rangliste Development von hier https://github.com/2Abendsegler/GClh/graphs/contributors.
             html += thanksLineBuild("CachingFoX",           "",                false, false, true,  true,  false);
             html += thanksLineBuild("Herr Ma",              "",                false, false, true,  true,  false);
+            html += thanksLineBuild("capoaira",             "",                false, false, true,  true, false);
             html += thanksLineBuild("Dratenik",             "",                false, false, true,  false, false);
-            html += thanksLineBuild("capoaira",             "",                false, false, true,  false, false);
             html += thanksLineBuild("DrakMrak",             "",                false, false, true,  false, false);
             html += thanksLineBuild("radlerandi",           "",                false, false, true,  false, false);
             html += thanksLineBuild("Nicole1338",           "",                false, false, true,  false, false);
@@ -11418,7 +11418,7 @@ var mainGC = function() {
             html += thanksLineBuild("stepborc",             "",                false, false, false, true,  false);
             html += thanksLineBuild("V60",                  "V60GC",           false, false, false, true,  false);
             html += thanksLineBuild("winkamol",             "",                false, false, false, true,  false);
-            var thanksLastUpdate = "20.12.2019";
+            var thanksLastUpdate = "09.01.2020";
 //<-- $$006
             html += "    </tbody>";
             html += "</table>";
