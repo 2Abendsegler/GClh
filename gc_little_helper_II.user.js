@@ -2322,17 +2322,17 @@ var mainGC = function() {
             tbl.next("p").append('<br>'+htmlWaypointTable);
         }
 
-        function check_wpdata(waitCount, uniqueServiceId) { // GDPR
-            if (check_wpdata_evaluable()) {
+        function check_wpdata_mapservice(waitCount, uniqueServiceId) { // GDPR
+            if (check_wpdata_evaluable()) { // GDPR
                 $('.mapservice_click-'+uniqueServiceId).removeClass('working');
                 var parent = $('.mapservice_click-'+uniqueServiceId)[0].parentNode;
                 $(parent).find('.GClhdropdown-content').removeClass('working');
                 $('.mapservice_click-'+uniqueServiceId).click(function() {
                     service_configuration.action( this, service_configuration );
                 });
-            } else {waitCount++; if (waitCount <= 100) setTimeout(function(){check_wpdata(waitCount, uniqueServiceId);}, 100);} // GDPR
+            } else {waitCount++; if (waitCount <= 100) setTimeout(function(){check_wpdata_mapservice(waitCount, uniqueServiceId);}, 100);} // GDPR
         }
-        check_wpdata(0, uniqueServiceId);
+        check_wpdata_mapservice(0, uniqueServiceId); // GDPR
     }
 
     function mapservice_open( thisObject, service_configuration ) {
@@ -3286,8 +3286,13 @@ var mainGC = function() {
             }
 
             if (is_page("cache_listing")) {
-                var locations = prepareListingPageForElevations();
-                if ( locations.length > 0 ) getElevations(0,locations);
+                function check_wpdata_elevation(waitCount) { // GDPR
+                    if (check_wpdata_evaluable()) { // GDPR
+                        var locations = prepareListingPageForElevations();
+                        if ( locations.length > 0 ) getElevations(0,locations);
+                    } else {waitCount++; if (waitCount <= 100) setTimeout(function(){check_wpdata_elevation(waitCount);}, 100);} // GDPR
+                }
+                check_wpdata_elevation(0); // GDPR
             }
         } catch(e) {gclh_error("Add elevation",e);}
     }
