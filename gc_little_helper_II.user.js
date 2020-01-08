@@ -2169,7 +2169,7 @@ var mainGC = function() {
     }
 
 // Improve Add to list in cache listing.
-    if (is_page("cache_listing") && settings_improve_add_to_list && $('.btn-add-to-list')[0]) {
+    if (is_page("cache_listing") && settings_improve_add_to_list && $('.add-to-list')[0]) {
         try {
             var height = ((parseInt(settings_improve_add_to_list_height) < 100) ? parseInt(100) : parseInt(settings_improve_add_to_list_height));
             var css = ".add-list {max-height: " + height + "px !important;}"
@@ -2178,7 +2178,7 @@ var mainGC = function() {
                     + ".status {font-size: 14px !important; width: unset !important;}"
                     + ".status.success, .success-message {right: 2px !important; padding: 0 5px !important; background-color: white !important; color: #E0B70A !important;}";
             appendCssStyle(css);
-            $('.btn-add-to-list')[0].addEventListener("click", function() {window.scroll(0, 0);});
+            $('.add-to-list')[0].addEventListener("click", function() {window.scroll(0, 0);});
         } catch(e) {gclh_error("Improve Add to list",e);}
     }
 
