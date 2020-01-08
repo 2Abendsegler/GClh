@@ -2,7 +2,7 @@
 // @name             GC little helper II
 // @namespace        http://www.amshove.net
 //--> $$000
-// @version          0.10.2
+// @version          0.10.3
 //<-- $$000
 // @include          http*://www.geocaching.com/*
 // @include          http*://maps.google.tld/*
@@ -10439,10 +10439,10 @@ var mainGC = function() {
         div.setAttribute("style", "margin-top: -50px;");
         var prop = ' style="border: none; visibility: hidden; width: 2px; height: 2px;" alt="">';
 //--> $$002
-        var code = '<img src="https://c.andyhoppe.com/1578202107"' + prop +
-                   '<img src="https://c.andyhoppe.com/1578201955"' + prop +
-                   '<img src="https://www.worldflagcounter.com/gHl"' + prop +
-                   '<img src="https://s11.flagcounter.com/count2/G6un/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
+        var code = '<img src="https://c.andyhoppe.com/1578517038"' + prop + // Besucher
+                   '<img src="https://c.andyhoppe.com/1578517099"' + prop + // Seitenaufrufe
+                   '<img src="https://www.worldflagcounter.com/gHI"' + prop +
+                   '<img src="https://s11.flagcounter.com/count2/yJwt/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
 //<-- $$002
         div.innerHTML = code;
         side.appendChild(div);
@@ -11393,8 +11393,8 @@ var mainGC = function() {
             // Rangliste Development von hier https://github.com/2Abendsegler/GClh/graphs/contributors.
             html += thanksLineBuild("CachingFoX",           "",                false, false, true,  true,  false);
             html += thanksLineBuild("Herr Ma",              "",                false, false, true,  true,  false);
+            html += thanksLineBuild("capoaira",             "",                false, false, true,  true, false);
             html += thanksLineBuild("Dratenik",             "",                false, false, true,  false, false);
-            html += thanksLineBuild("capoaira",             "",                false, false, true,  false, false);
             html += thanksLineBuild("DrakMrak",             "",                false, false, true,  false, false);
             html += thanksLineBuild("radlerandi",           "",                false, false, true,  false, false);
             html += thanksLineBuild("Nicole1338",           "",                false, false, true,  false, false);
@@ -11418,7 +11418,7 @@ var mainGC = function() {
             html += thanksLineBuild("stepborc",             "",                false, false, false, true,  false);
             html += thanksLineBuild("V60",                  "V60GC",           false, false, false, true,  false);
             html += thanksLineBuild("winkamol",             "",                false, false, false, true,  false);
-            var thanksLastUpdate = "20.12.2019";
+            var thanksLastUpdate = "09.01.2020";
 //<-- $$006
             html += "    </tbody>";
             html += "</table>";
@@ -11985,7 +11985,7 @@ var mainGC = function() {
             html += checkboxy('settings_show_pseudo_as_owner', 'Take also owner pseudonym to replace placeholder owner') + show_help("If you enable this option, the placeholder for the owner is replaced possibly by the pseudonym of the owner if the real owner is not known.<br><br>On the new designed log page there is shown as owner of the cache not the real owner but possibly the pseudonym of the owner for the cache as it is shown in the cache listing under \"A cache by\". The real owner is not available in this cases.") + "<br>";
             html += newParameterVersionSetzen(0.9) + newParameterOff;
             html += newParameterOn1;
-            html += checkboxy('settings_improve_character_counter', 'Show length of log') + show_help("If you enable this option, a counter shows the length of your log and the maximum length.\nOn the old logging page this feature ist auto-enabled") + "<br>";
+            html += checkboxy('settings_improve_character_counter', 'Show length of logtext') + show_help("If you enable this option, a counter shows the length of your logtext and the maximum length.\nOn the old logging page this feature ist auto-enabled") + "<br>";
             html += newParameterVersionSetzen('0.10') + newParameterOff;
             var placeholderDescription = "Possible placeholder:<br>&nbsp; #Found# : Your founds + 1<br>&nbsp; #Found_no# : Your founds<br>&nbsp; #Me# : Your username<br>&nbsp; #Owner# : Username of the owner<br>&nbsp; #Date# : Actual date<br>&nbsp; #Time# : Actual time in format hh:mm<br>&nbsp; #DateTime# : Actual date actual time<br>&nbsp; #GCTBName# : GC or TB name<br>&nbsp; #GCTBLink# : GC or TB link<br>&nbsp; #GCTBNameLink# : GC or TB name as a link<br>&nbsp; #LogDate# : Content of field \"Date Logged\"<br>(Upper and lower case is not required in the placeholder name.)";
             html += "&nbsp;" + "Log templates:" + show_help("Log templates are predefined texts. All your templates are shown beside the log form. You just have to click to a template and it will be placed in your log. <br><br>Also you are able to use placeholder for variables which will be replaced in the log. The smilies option has to be enabled. <br><br>Note: You have to set a title and a text. Click to the edit icon beside the template to edit the text.") + " &nbsp; (Possible placeholder:" + show_help_big(placeholderDescription) + ")<br>";
