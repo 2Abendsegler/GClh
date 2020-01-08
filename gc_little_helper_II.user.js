@@ -1694,7 +1694,7 @@ var mainGC = function() {
         }catch(e) {gclh_error("Show draft indicator in header",e);}
     }
 
-// Define class working for cache listing.
+// Define class "working" for cache listing.
     if (is_page("cache_listing")) {
         appendCssStyle(".working {opacity: 0.3; cursor: default !important; text-decoration: none !important;}");
     }
@@ -2222,16 +2222,12 @@ var mainGC = function() {
         if ( typeof unsafeWindow.mapLatLng !== "undefined" && unsafeWindow.mapLatLng !== null &&
              typeof unsafeWindow.mapLatLng.isUserDefined !== "undefined" ) { // GDPR
             var html = "";
-            var orgFlag = false;
             html += '  <div class="GClhdropdown-content" id="CopyDropDown">';
             html += '    <div class="copydata-content-layer copydata_click" data-id="'+idCopyName+'">Cache Name</div>';
             html += '    <div class="copydata-content-layer copydata_click" data-id="'+idCopyCode+'">GC Code</div>';
             html += '    <div class="copydata-content-layer copydata_click" data-id="'+idCopyUrl+'">Cache Link</div>';
             // Check for original coords.
             if (unsafeWindow.mapLatLng.isUserDefined == true ) {
-                orgFlag = true;
-            }
-            if (orgFlag) {
                 html += '    <div class="copydata-content-layer copydata_click" data-id="'+idCopyCoords+'">Corrected Coordinates</div>';
                 html += '    <div class="copydata-content-layer copydata_click" data-id="'+idCopyOrg+'">Original Coordinates</div>';
             } else {
