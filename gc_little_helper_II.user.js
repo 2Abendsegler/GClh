@@ -8596,8 +8596,16 @@ var mainGC = function() {
     if (is_page('searchmap')) {
         try {
 
-            var css = "#searchmap_sidebar_enhancements {border-top: 1px solid #e4e4e4;font-size: 14px;margin-top: 12px;padding: 12px 0 0;}"
-                    + "#searchmap_sidebar_enhancements .gccode {display: none;}";
+            var css = "#searchmap_sidebar_enhancements {border-top: 1px solid #e4e4e4;font-size: 14px;";
+
+            // Preperation for new map compact layout
+            // if(settings_searchmap_compactLayout){
+            //     css += "padding: 5px 0 0;"
+            // }else{
+                css += "margin-top: 12px;padding: 12px 0 0;"
+            // }
+            
+            css += "} #searchmap_sidebar_enhancements .gccode {display: none;}";
             appendCssStyle(css);
 
 
