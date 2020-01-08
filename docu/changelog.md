@@ -1,7 +1,68 @@
+<a href="#v0103" title="GClh II version 0.10.3 (09.01.2020)">v0.10.3</a> &nbsp;
 <a href="#v0102" title="GClh II version 0.10.2 (05.01.2020)">v0.10.2</a> &nbsp;
 <a href="#v0101" title="GClh II version 0.10.1 (20.12.2019)">v0.10.1</a> &nbsp;
 <a href="#v010" title="GClh II version 0.10 (13.12.2019)">v0.10</a> &nbsp;
 <a href="changelog_before.md" title="Go to earlier changelog">Earlier changelog</a> &nbsp;
+
+
+---
+## v0.10.3:
+<ul>
+	<li>
+		<strong>Fix:</strong> Errors due to GDPR changes of GS. [<a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		<ul>
+			<li>
+				Copy corrected coordinates to clipboard does not work. [<a href="https://github.com/2Abendsegler/GClh/issues/1179" title="Issue 1179">1179</a><br>
+			</li>
+			<li>
+				All routing services in cache listing do not work proper. [<a href="https://github.com/2Abendsegler/GClh/issues/1181" title="Issue 1181">1181</a><br>
+			</li>
+			<li>
+				Determination of elevation data does not work. [<a href="https://github.com/2Abendsegler/GClh/issues/1180" title="Issue 1180">1180</a><br>
+			</li>
+			<li>
+				Improve add to list in cache listing does not work. [<a href="https://github.com/2Abendsegler/GClh/issues/1182" title="Issue 1182">1182</a><br>
+			</li>
+			<li>
+				Jump directly into one of the profile tabs does not work. [<a href="https://github.com/2Abendsegler/GClh/issues/1162" title="Issue 1162">1162</a><br>
+			</li>
+			<li>
+				Error when you open a TB-Listing without logs. [<a href="https://github.com/2Abendsegler/GClh/issues/1169" title="Issue 1169">1169</a><br>
+			</li>
+			<li>
+				Automatically adopt uid of own trackables in GClh does not work. [<a href="https://github.com/2Abendsegler/GClh/issues/1166" title="Issue 1166">1166</a><br>
+			</li>
+			<li>
+				Automatically adopt home coordinates in GClh does not work. [<a href="https://github.com/2Abendsegler/GClh/issues/1165" title="Issue 1165">1165</a><br>
+			</li>
+			<li>
+				Set default language does not work in cache listing. [<a href="https://github.com/2Abendsegler/GClh/issues/1161" title="Issue 1161">1161</a><br>
+			</li>
+		</ul>
+	</li>
+	<li>
+		<strong>New:</strong> Show percentage of found caches for every country on statistic map. [<a href="https://github.com/2Abendsegler/GClh/issues/1149" title="Issue 1149">1149</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		<img src="../images/0.10.2/Screen03.jpg" alt="Screen03.jpg"><br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_map_percentage_statistic" title="Link to your GClh Config">Settings -> Public profile:<br>
+		<img src="../images/0.10.2/Screen04.jpg" alt="Screen04.jpg"></a><br><br>
+	</li>
+	<li>
+		<strong>New:</strong> Show button to display all, only active or only archived caches in owned caches list. [<a href="https://github.com/2Abendsegler/GClh/issues/1145" title="Issue 1145">1145</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br>
+		<img src="../images/0.10.2/Screen02.gif" alt="Screen02.gif"><br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_show_button_for_hide_archived" title="Link to your GClh Config">Settings -> Others:<br>
+		<img src="../images/0.10.2/Screen01.jpg" alt="Screen01.jpg"></a><br><br>
+	</li>
+	<li>
+		<strong>Fix:</strong> Align dropdown menu under main menu. [<a href="https://github.com/2Abendsegler/GClh/issues/1145" title="Issue 1145">1145</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br><br>
+	</li>
+	<li>
+		<strong>Fix:</strong> Improve print page cache listing with hide disclaimer, decrypt hints, show other coord formats and hide side rights does not run. [<a href="https://github.com/2Abendsegler/GClh/issues/1153" title="Issue 1153">1153</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+</ul>
+<br>
+(05.01.2020)<br>
+released by <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a><br>
+<br>
 
 ---
 ## v0.10.2:
