@@ -8596,10 +8596,38 @@ var mainGC = function() {
     if (is_page('searchmap')) {
         try {
 
+            var css = "#searchmap_sidebar_enhancements {border-top: 1px solid #e4e4e4;font-size: 14px;margin-top: 12px;padding: 12px 0 0;}"
+                    + "#searchmap_sidebar_enhancements .gccode {display: none;}";
+            appendCssStyle(css);
+
+
+
             // create an observer instance
             var searchmap_observer = new MutationObserver(function(mutations) {
+                
+                var found_key_element = false;
+
                 mutations.some(function(mutation) {
                     console.log("Mutation");
+
+                    found_key_element = false;
+                    
+                    $(mutation.addedNodes).each(function(){
+                        if(this.className == "cache-open-text-cta"){
+                            found_key_element = true;
+                        }
+                        // console.log(this.className);
+                    });
+
+                    // Abort if key element not found, so we don't need to update
+                    if(found_key_element){
+                        console.log('found_key_element found');
+                    }else{
+                        console.log('found_key_element not found');
+                        return true;
+                        console.log('found_key_element not found 2');
+                    }
+
                     // Check if the sidebar displays a cache
                     if(!document.querySelector('.cache-preview-attributes')){
                         // No Cache in Sidebar
@@ -8610,34 +8638,169 @@ var mainGC = function() {
                     new_gc_code = document.querySelector('.cache-preview-header .cache-metadata .cache-metadata-code').innerHTML;
                     console.log(new_gc_code);
 
-                    var searchmap_sidebar_enhancements = document.querySelector('#searchmap_sidebar_enhancements');
+                    var searchmap_sidebar_enhancements_code = document.querySelector('#searchmap_sidebar_enhancements .gccode');
 
-                    if(searchmap_sidebar_enhancements){
+                    if(searchmap_sidebar_enhancements_code){
                         // Element already present, so compare the two GC Codes, to see if we need to update
                         console.log("2");
-                        if(new_gc_code == document.querySelector('#searchmap_sidebar_enhancements').innerHTML){
+                        if(new_gc_code == searchmap_sidebar_enhancements_code.innerHTML){
                             console.log("2.1 old code");
                             return true; //breaks the "some" loop
                         }else{
-                            
-                            searchmap_sidebar_enhancements.parentNode.removeChild(searchmap_sidebar_enhancements);
+                            removeElement(document.querySelector('#searchmap_sidebar_enhancements'));
                             console.log("2.2: new code");
                         }
                     }
 
                     console.log("3");
 
-                    searchmap_sidebar_enhancements = document.createElement("div");
+                    var searchmap_sidebar_enhancements = document.createElement("div");
                     searchmap_sidebar_enhancements.setAttribute("id", "searchmap_sidebar_enhancements");
-                    searchmap_sidebar_enhancements.innerHTML = new_gc_code;
+                    var searchmap_sidebar_enhancements_code = document.createElement("div");
+                    searchmap_sidebar_enhancements_code.className = "gccode";
+                    searchmap_sidebar_enhancements_code.innerHTML = new_gc_code;
+
+                    var searchmap_sidebar_enhancements_loading = document.createElement("div");
+                    searchmap_sidebar_enhancements_loading.className = "searchmap_loading_container";
+                    searchmap_sidebar_enhancements_loading.innerHTML = '<img src="' + urlImages + 'ajax-loader.gif" />Loading additional Data...';
+
+                    searchmap_sidebar_enhancements.appendChild(searchmap_sidebar_enhancements_code);
+                    searchmap_sidebar_enhancements.appendChild(searchmap_sidebar_enhancements_loading);
 
                     insertAfter(searchmap_sidebar_enhancements, document.getElementsByClassName("geocache-owner")[0]);
+
+                    $.get('https://www.geocaching.com/geocache/'+new_gc_code, null, function(text){
+
+                        console.log('get');
+
+                        var local_gc_code = $(text).find('#ctl00_ContentBody_CoordInfoLinkControl1_uxCoordInfoCode').html();
+
+                        var premium_only = false;
+                        if($(text).find('p.Warning.NoBottomSpacing').html() != null){
+                            premium_only = true;
+                        }
+
+                        // get the last logs
+                        initalLogs_from_cachepage = text.substr(text.indexOf('initialLogs = {"status')+13, text.indexOf('} };') - text.indexOf('initialLogs = {"status') - 10);
+                        var initalLogs = JSON.parse(initalLogs_from_cachepage);
+                        var last_logs = document.createElement("div");
+                        var last_logs_to_show = settings_show_latest_logs_symbols_count_map;
+                        var lateLogs = new Array();
+                        for (var i = 0; i < initalLogs['data'].length; i++) {
+                            if (last_logs_to_show == i) break;
+                            var lateLog = new Object();
+                            lateLog['user'] = initalLogs['data'][i].UserName;
+                            lateLog['src']  = '/images/logtypes/' + initalLogs['data'][i].LogTypeImage;
+                            lateLog['type'] = initalLogs['data'][i].LogType;
+                            lateLog['date'] = initalLogs['data'][i].Visited;
+                            lateLog['log']  = initalLogs['data'][i].LogText;
+                            lateLogs[i]     = lateLog;
+                        }
+                        if (lateLogs.length > 0) {
+                            var div = document.createElement("div");
+                            div.id = "gclh_latest_logs";
+                            div.setAttribute("style", "padding-right: 0; padding-top: 5px; padding-bottom: 5px; display: flex;");
+
+                            var span = document.createElement("span");
+                            span.setAttribute("style", "white-space: nowrap; margin-right: 5px; margin-top: 5px;");
+                            span.appendChild(document.createTextNode('Latest logs:'));
+                            div.appendChild(span);
+                            var inner_div = document.createElement("div");
+                            inner_div.setAttribute("style", "display: flex; flex-wrap: wrap;");
+                            div.appendChild(inner_div);
+                            for (var i = 0; i < lateLogs.length; i++) {
+                                var div_log_wrapper = document.createElement("div");
+                                div_log_wrapper.className = "gclh_latest_log";
+                                var img = document.createElement("img");
+                                img.src = lateLogs[i]['src'];
+                                img.setAttribute("style", "padding-left: 2px; vertical-align: bottom; float:left;");
+                                var log_text = document.createElement("span");
+                                log_text.title = "";
+                                log_text.innerHTML = "<img src='" + lateLogs[i]['src'] + "'> <b>" + lateLogs[i]['user'] + " - " + lateLogs[i]['date'] + "</b><br>" + lateLogs[i]['log'];
+                                div_log_wrapper.appendChild(img);
+                                div_log_wrapper.appendChild(log_text);
+                                inner_div.appendChild(div_log_wrapper);
+                            }
+                            last_logs.appendChild(div);
+                        }
+
+                        // get all type of logs and their count
+                        var all_logs = $(text).find('.LogTotals')[0].innerHTML.replace(/alt="(.*?)"/g, "alt=\"...\"");
+
+                        // get the number of trackables in the cache
+                        var trachables = 0;
+                        // var tb_elements = $(text).find('.CacheDetailNavigationWidget').has('#ctl00_ContentBody_uxTravelBugList_uxInventoryLabel');
+                        $(text).find('.CacheDetailNavigationWidget').each(function(){
+                            tb_text = $(this).html();
+                            if(tb_text.indexOf('ctl00_ContentBody_uxTravelBugList_uxInventoryLabel') !== -1){
+                                // There are two Container with .CacheDetailNavigationWidget so we are only processing the
+                                // one that contains the TB informations
+                                trachables = (tb_text.match(/<li>/g)||[]).length;
+                            }
+                        });
+
+                        // get the number of favorite points
+                        var fav_points = $(text).find('.favorite-value').html();
+                        if(fav_points == null){
+                            // couldn't get Number of Favorits. This happens with event caches for example
+                            fav_points = 0;
+                        }else{
+                            fav_points = fav_points.replace('.','');
+                            fav_points = fav_points.replace(',','');
+                            fav_points = parseInt(fav_points);
+                        }
+                        // Set dummy favorite score.
+                        var fav_percent = ' ';
+
+                        // get the place, where the cache was placed
+                        var place = $(text).find('#ctl00_ContentBody_Location')[0].innerHTML;
+
+                        // Put all together
+                        var new_text = '<span style="margin-right: 5px;">Logs:</span>' + all_logs.replace(/&nbsp;/g, " ") + '<br>';
+                        // new_text += $(last_logs).prop('outerHTML');
+                        new_text += '<span title="Place">' + place + '</span> | ';
+                        if (settings_show_elevation_of_waypoints) {
+                            new_text += '<span id="elevation-waypoint"></span>';
+                        }
+                        new_text += '<span class="favi_points" title="Favorites in percent"><svg height="16" width="16"><image xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="/images/icons/fave_fill_16.svg" src="/images/icons/fave_fill_16.png" width="16" height="16" alt="Favorite points"></image></svg> ' + fav_percent + '</span> | ';
+                        if(premium_only){
+                            new_text += ' <span class="premium_only" title="Premium Only Cache"><img src="/images/icons/16/premium_only.png" width="16" height="16" alt="Premium Only Cache" /></span> | ';
+                        }
+                        new_text += '<span class="tackables" title="Number of trackables"><svg height="16" width="16" class="icon-sm"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="/account/app/ui-icons/sprites/global.svg#icon-travelbug-default"></use></svg> ' + trachables + '</span><br>';
+                        
+                        var text_element = document.createElement("div");
+                        text_element.innerHTML = new_text;
+                        searchmap_sidebar_enhancements.appendChild(text_element);
+
+                        searchmap_sidebar_enhancements_loading.setAttribute("style", "display: none;");
+                        insertAfter(searchmap_sidebar_enhancements, document.getElementsByClassName("geocache-owner")[0]);
+                        // $('#popup_additional_info_' + local_gc_code).html(new_text);
+
+                        // Get favorite score.
+                        // var from = text.indexOf('userToken', text.indexOf('MapTilesEnvironment')) + 13;
+                        // var length = text.indexOf("';", from) - from;
+                        // var userToken = text.substr(from, length);
+                        // getFavScore(local_gc_code, userToken);
+
+                        // // Get elevations.
+                        // if (settings_show_elevation_of_waypoints) {
+                        //     var coords = toDec($(text).find('#uxLatLon')[0].innerHTML);
+                        //     locations.push(coords[0]+","+coords[1]);
+                        //     if (locations && locations.length == countMapItems) getElevations(0,locations);
+                        // }
+
+                        insertAfter(searchmap_sidebar_enhancements, document.getElementsByClassName("geocache-owner")[0]);
+                    });
 
                 });
             });
 
             function insertAfter(newNode, referenceNode) {
                 referenceNode.parentNode.insertBefore(newNode, referenceNode.nextSibling);
+            }
+
+            function removeElement(element){
+                element.parentNode.removeChild(element);
             }
             
             // Wait for Sidebar to be loaded
