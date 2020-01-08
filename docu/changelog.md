@@ -41,10 +41,10 @@
 		</ul>
 	</li>
 	<li>
-		<strong>New:</strong> Show percentage of found caches for every country on statistic map. [<a href="https://github.com/2Abendsegler/GClh/issues/1149" title="Issue 1149">1149</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
-		<img src="../images/0.10.2/Screen03.jpg" alt="Screen03.jpg"><br>
-		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_map_percentage_statistic" title="Link to your GClh Config">Settings -> Public profile:<br>
-		<img src="../images/0.10.2/Screen04.jpg" alt="Screen04.jpg"></a><br><br>
+		<strong>New:</strong> Show length of logtext on new logging page. [<a href="https://github.com/2Abendsegler/GClh/issues/1143" title="Issue 1143">1143</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br>
+		<img src="../images/0.10.3/Screen01.jpg" alt="Screen01.jpg"><br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_improve_character_counter" title="Link to your GClh Config">Settings -> Logging:<br>
+		<img src="../images/0.10.3/Screen02.jpg" alt="Screen02.jpg"></a><br><br>
 	</li>
 	<li>
 		<strong>New:</strong> Show button to display all, only active or only archived caches in owned caches list. [<a href="https://github.com/2Abendsegler/GClh/issues/1145" title="Issue 1145">1145</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br>
@@ -66,7 +66,7 @@
 	</li>
 </ul>
 <br>
-(05.01.2020)<br>
+(09.01.2020)<br>
 released by <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a><br>
 <br>
 
