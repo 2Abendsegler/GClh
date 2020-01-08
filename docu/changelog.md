@@ -9,7 +9,7 @@
 ## v0.10.3:
 <ul>
 	<li>
-		<strong>Fix:</strong> Errors due to GDPR (General Data Protection Regulation) changes of GS. [<a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		<strong>Fix:</strong> Errors due to the current GDPR (General Data Protection Regulation) changes of GS. [<a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 		<ul>
 			<li>
 				Copy corrected coordinates to clipboard does not work. [<a href="https://github.com/2Abendsegler/GClh/issues/1179" title="Issue 1179">1179</a>]<br>
@@ -71,7 +71,7 @@ released by <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abends
 		<strong>Info:</strong> The blocking of cookiebot.com is no longer necessary for the operation of the GClh.<br><br>
 	</li>
 	<li>
-		<strong>Fix:</strong> Errors due to GDPR (General Data Protection Regulation) changes of GS. [<a href="https://github.com/2Abendsegler/GClh/issues/1153" title="Issue 1153">1153</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>] Many thanks to <a href="https://www.geocaching.com/profile/?u=Chrono81" title="Thanks to Chrono81">Chrono81</a> for the great tip. 😊<br>
+		<strong>Fix:</strong> Errors due to the current GDPR (General Data Protection Regulation) changes of GS. [<a href="https://github.com/2Abendsegler/GClh/issues/1153" title="Issue 1153">1153</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>] Many thanks to <a href="https://www.geocaching.com/profile/?u=Chrono81" title="Thanks to Chrono81">Chrono81</a> for the great tip. 😊<br>
 		<ul>
 			<li>
 				Show favorite percentage in cache listing run into error.<br>
