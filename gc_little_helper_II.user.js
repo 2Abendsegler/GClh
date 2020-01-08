@@ -2661,7 +2661,6 @@ var mainGC = function() {
 
 // Personal Cache Note at cache listing.
     if (is_page("cache_listing")) {
-
         // Personal Cache Note: Adapt height of edit field for Personal Cache Note
         function calcHeightOfCacheNote() {
             return $("#viewCacheNote").parent().height()*1.02+36;
@@ -2711,8 +2710,7 @@ var mainGC = function() {
         } catch(e) {gclh_error("Hide complete and Show/Hide Cache Note",e);}
 
         // Personal Cache Note: Focus Cachenote-Textarea on Click of the Note (to avoid double click to edit)
-        try
-        {
+        try {
             var editCacheNote = document.querySelector('#editCacheNote');
             if(editCacheNote){
                 var observer = new MutationObserver(function(mutations) {
@@ -9372,23 +9370,39 @@ var mainGC = function() {
     if (document.location.href.match(/\.com\/account\/settings\/homelocation/)) {
         try {
             function saveHomeCoordsWait(waitCount) {
-                if ($('#Query')[0]) {
+                if ($('#Query')[0] && $('#map-canvas')[0]) {
+                    // Handle current home coords.
                     saveHomeCoords();
-                    $('#Query')[0].addEventListener('change', saveHomeCoords, false);
-                } else {waitCount++; if (waitCount <= 20) setTimeout(function(){saveHomeCoordsWait(waitCount);}, 100);}
+                    // Handle changed home coords.
+                    var observerBody = new MutationObserver(function(mutations) {
+                        mutations.forEach(function(mutation) {
+                            saveHomeCoords();
+                        });
+                    });
+                    var target = document.querySelector('#map-canvas');
+                    var config = { attributes: true, subtree: true };
+                    observerBody.observe(target, config);
+                } else {waitCount++; if (waitCount <= 100) setTimeout(function(){saveHomeCoordsWait(waitCount);}, 100);}
             }
             saveHomeCoordsWait(0);
-        } catch(e) {gclh_error('Save Homecoords',e);}
+        } catch(e) {gclh_error('Save home coords',e);}
     }
     function saveHomeCoords() {
         var link = $('#Query')[0];
         if (link) {
-            var match = link.value.match(/((N|S) ([0-9]+)° ([0-9]+)\.([0-9]+)′ (E|W) ([0-9]+)° ([0-9]+)\.([0-9]+)′)/);
-            if (match && match[1]) {
-                match[1] = match[1].replace(/′/g, '');
-                var latlng = toDec(match[1]);
-                if (getValue('home_lat', 0) != parseInt(latlng[0] * 10000000)) setValue('home_lat', parseInt(latlng[0] * 10000000));
-                if (getValue('home_lng', 0) != parseInt(latlng[1] * 10000000)) setValue('home_lng', parseInt(latlng[1] * 10000000));
+            var latlng = toDec(link.value);
+            if (latlng) {
+                if (getValue('home_lat', 0) != parseInt(latlng[0] * 10000000) || getValue('home_lng', 0) != parseInt(latlng[1] * 10000000)) {
+                    // Save home coords.
+                    setValue('home_lat', parseInt(latlng[0] * 10000000));
+                    setValue('home_lng', parseInt(latlng[1] * 10000000));
+                    // Set home coords in config, if opened.
+                    if ($('#settings_home_lat_lng')[0]) {
+                        $('#settings_home_lat_lng')[0].value = DectoDeg(getValue("home_lat"), getValue("home_lng"));
+                    }
+                    // Set home coords in links of linklist.
+                    setSpecialLinks();
+                }
             }
         }
     }
