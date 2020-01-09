@@ -3035,7 +3035,7 @@ var mainGC = function() {
     }
 
 // Added elevation to every additional waypoint with shown coordinates.
-    if (settings_show_elevation_of_waypoints && ((is_page("cache_listing") && !isMemberInPmoCache()) || is_page("map"))) {
+    if (settings_show_elevation_of_waypoints && ((is_page("cache_listing") && !isMemberInPmoCache()) || is_page("map") || is_page("searchmap") )) {
         try {
             function formatElevation(elevation) {
                 return ((elevation>0)?"+":"")+((settings_distance_units != "Imperial")?(Math.round(elevation) + "m"):(Math.round(elevation*3.28084) + "ft"));
@@ -3134,7 +3134,7 @@ var mainGC = function() {
                     for (var i=0; i<elevations.length; i++) {
                         text = "n/a";
                         if (elevations[i] != undefined) text = formatElevation(elevations[i]);
-                        if (is_page("map")) text = " " + text + " | ";
+                        if (is_page("map") || is_page('searchmap')) text = " " + text + " | ";
                         $("#elevation-waypoint-"+(i+context.additionalListingIndex)).html(text);
                         $("#elevation-waypoint-"+(i+context.additionalListingIndex)).attr('title','Elevation data from '+context.serviceName);
                     }
@@ -8619,6 +8619,7 @@ var mainGC = function() {
                     console.log("Mutation");
 
                     found_key_element = false;
+                    var locations = []; // Location for the Cache
                     
                     $(mutation.addedNodes).each(function(){
                         if(this.className == "cache-open-text-cta"){
@@ -8755,7 +8756,7 @@ var mainGC = function() {
                         // new_text += $(last_logs).prop('outerHTML');
                         new_text += '<span title="Place">' + place + '</span> | ';
                         if (settings_show_elevation_of_waypoints) {
-                            new_text += '<span id="elevation-waypoint"></span>';
+                            new_text += '<span id="elevation-waypoint-0"></span>';
                         }
                         if(premium_only){
                             new_text += ' <span class="premium_only" title="Premium Only Cache"><img src="/images/icons/16/premium_only.png" width="16" height="16" alt="Premium Only Cache" /></span> | ';
@@ -8776,12 +8777,12 @@ var mainGC = function() {
                         // var userToken = text.substr(from, length);
                         // getFavScore(local_gc_code, userToken);
 
-                        // // Get elevations.
-                        // if (settings_show_elevation_of_waypoints) {
-                        //     var coords = toDec($(text).find('#uxLatLon')[0].innerHTML);
-                        //     locations.push(coords[0]+","+coords[1]);
-                        //     if (locations && locations.length == countMapItems) getElevations(0,locations);
-                        // }
+                        // Get elevations.
+                        if (settings_show_elevation_of_waypoints) {
+                            var coords = toDec($(text).find('#uxLatLon')[0].innerHTML);
+                            locations.push(coords[0]+","+coords[1]);
+                            if (locations && locations.length == 1) getElevations(0,locations);
+                        }
 
                         insertAfter(searchmap_sidebar_enhancements, document.getElementsByClassName("geocache-owner")[0]);
                     });
