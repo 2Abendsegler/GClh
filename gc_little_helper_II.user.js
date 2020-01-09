@@ -564,6 +564,7 @@ var variablesInit = function(c) {
     c.settings_lists_show_log_it = getValue("settings_lists_show_log_it", false);
     c.settings_lists_back_to_top = getValue("settings_lists_back_to_top", false);
     c.settings_searchmap_autoupdate_after_dragging = getValue("settings_searchmap_autoupdate_after_dragging", true);
+    c.settings_searchmap_strike_disabled = getValue("settings_searchmap_strike_disabled", true);
 
     try {
         if (c.userToken === null) {
@@ -7804,10 +7805,20 @@ var mainGC = function() {
                     }
                 }
             }
+            // Strike through title of disabled caches.
+            function strikeDisabled() {
+                if (settings_searchmap_strike_disabled) {
+                    if (document.querySelector('.cache-detail-preview') && document.querySelector('.status')) {
+                        document.querySelector('.status').style.display = 'none';
+                        document.querySelector('.header-top-left h1').style.textDecoration = 'line-through';
+                    }else if (document.querySelector('.cache-detail-preview')) document.querySelector('.header-top-left h1').style.textDecoration = 'unset';
+                }
+            }
 
             // Processing all steps.
             function processAllSearchMap() {
                 searchThisArea();
+                strikeDisabled();
             }
 
             // Build mutation observer for body.
@@ -11538,6 +11549,7 @@ var mainGC = function() {
             html += "<div class='gclh_old_new_line'>New map (search map) only</div>";
             html += newParameterOn1;
             html += checkboxy('settings_searchmap_autoupdate_after_dragging', 'Automatic search for new caches after dragging') + "<br>";
+            html += checkboxy('settings_searchmap_strike_disabled', 'Strike through title of disabled caches') + "<br>";
             html += newParameterVersionSetzen('0.10') + newParameterOff;
             html += "</div>";
 
@@ -12822,6 +12834,7 @@ var mainGC = function() {
                 'settings_lists_show_log_it',
                 'settings_lists_back_to_top',
                 'settings_searchmap_autoupdate_after_dragging',
+                'settings_searchmap_strike_disabled',
             );
 
             for (var i = 0; i < checkboxes.length; i++) {
