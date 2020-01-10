@@ -7161,6 +7161,17 @@ var mainGC = function() {
                             gclh_add_vip_icon();
                         }
                         setLinesColorInCacheListing();
+
+                        // Remove GC logs, so that the links to the log ids, e.g. from the VIPs or the Latest logs, work again. // GDPR
+                        // (Apparently GS simply creates the 25 logs again when they are gone. And that in the form <table> <tr>, there is
+                        // no <tbody>. There was earlier an error in the Release Notes that no logs are shown.)
+                        function removeGCLogs(waitCount) {
+                            if (unsafeWindow.$("#cache_logs_table").children().length > 0) {
+                          //      unsafeWindow.$("#cache_logs_table").children().remove();
+                            }
+                            waitCount++; if (waitCount <= 100) setTimeout(function(){removeGCLogs(waitCount);}, 100);
+                        }
+                        removeGCLogs(0)
                     } else {waitCount++; if (waitCount <= 100) setTimeout(function(){gclh_load_dataHelper(waitCount);}, 100);} // GDPR
                 }
                 gclh_load_helper(1);
