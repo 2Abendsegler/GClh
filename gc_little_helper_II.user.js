@@ -8593,7 +8593,7 @@ var mainGC = function() {
     }
 
     // Display more information on new Search Map in left Sidebar
-    if (is_page('searchmap')) {
+    if (is_page('searchmap') && settings_show_enhanced_map_popup ) {
         try {
 
             var css = "#searchmap_sidebar_enhancements {border-top: 1px solid #e4e4e4;font-size: 14px;";
