@@ -8762,7 +8762,15 @@ var mainGC = function() {
                             new_text += ' <span class="premium_only" title="Premium Only Cache"><img src="/images/icons/16/premium_only.png" width="16" height="16" alt="Premium Only Cache" /></span> | ';
                         }
                         new_text += '<span class="tackables" title="Number of trackables"><svg height="16" width="16" class="icon-sm"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="/account/app/ui-icons/sprites/global.svg#icon-travelbug-default"></use></svg> ' + trachables + '</span><br>';
-                        
+                            
+                        var coords = $(text).find('#uxLatLon')[0].innerHTML;
+                        var coorected = "";
+                        if($(text).find('#uxLatLon .myLatLon')[0]){
+                            coorected = "coorected ";
+                        }
+                        new_text += '<p><span class="coordinates" title="'+coorected+'Coordinates">' + coords + '</span></p>';
+
+                        // Create Element and insert everything
                         var text_element = document.createElement("div");
                         text_element.innerHTML = new_text;
                         searchmap_sidebar_enhancements.appendChild(text_element);
@@ -8777,10 +8785,11 @@ var mainGC = function() {
                         // var userToken = text.substr(from, length);
                         // getFavScore(local_gc_code, userToken);
 
+
                         // Get elevations.
                         if (settings_show_elevation_of_waypoints) {
-                            var coords = toDec($(text).find('#uxLatLon')[0].innerHTML);
-                            locations.push(coords[0]+","+coords[1]);
+                            var coords_for_elevation = toDec(coords);
+                            locations.push(coords_for_elevation[0]+","+coords_for_elevation[1]);
                             if (locations && locations.length == 1) getElevations(0,locations);
                         }
 
