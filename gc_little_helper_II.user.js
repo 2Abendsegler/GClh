@@ -7167,7 +7167,7 @@ var mainGC = function() {
                         // no <tbody>. There was earlier an error in the Release Notes that no logs are shown.)
                         function removeGCLogs(waitCount) {
                             if (unsafeWindow.$("#cache_logs_table").children().length > 0) {
-                          //      unsafeWindow.$("#cache_logs_table").children().remove();
+                                unsafeWindow.$("#cache_logs_table").children().remove();
                             }
                             waitCount++; if (waitCount <= 100) setTimeout(function(){removeGCLogs(waitCount);}, 100);
                         }
