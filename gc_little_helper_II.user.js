@@ -6513,14 +6513,12 @@ var mainGC = function() {
                 '      </div>' +
                 '      {{/if}}';
             else new_tmpl +=
-                '      </div>' +
-                '      {{if Images.length > 0}}' +
-                '      <div class="TableLogContent">' +
+                '        {{if Images.length > 0}}' +
                 '        <ul class="LogImagesTable">' +
                 '          {{tmpl(Images) "tmplCacheLogImages"}}' +
                 '        </ul>' +
-                '      </div>' +
-                '      {{/if}}';
+                '        {{/if}}' +
+                '      </div>';
             new_tmpl +=
                 '      <div class="AlignRight">' +
                 '        <small><a title="View Log" href="/seek/log.aspx?LUID=${LogGuid}" target="_blank">' +
@@ -6597,10 +6595,8 @@ var mainGC = function() {
             css += ".logOwnerProfileName {padding-top: 0; margin-bottom: 8px;} .logIcons, .logOwnerAvatar {margin-bottom: 4px;}";
             css += ".markdown-output {margin: unset;}";
             if (!settings_hide_avatar) css += ".markdown-output {min-height: 6em;}";
-            // Bilderrahmen im Log ausrichten.
-            css += ".TableLogContent {padding-left: 0; border-left: none;}";
-            css += ".LogImagesTable {margin-left: 0;} .LogImagesTable a.lnk {white-space: initial;}";
-            css += ".LogImagesTable a.gclh_thumb img {margin-bottom: 1px !important; margin-top: 1px; vertical-align: sub;}";
+            // Bilderrahmen im Log noch etwas ausrichten und Trenner von Text und User auch hier einbauen.
+            css += ".TableLogContent {padding-left: 0.5em; border-left: 1px solid #d7d7d7;}";
             // Länge der Usernamen in den Logs beschränken, damit sie nicht umgebrochen werden.
             css += ".logOwnerProfileName {max-width: 135px; display: inline-block; overflow: hidden; vertical-align: bottom; white-space: nowrap; text-overflow: ellipsis;}";
 
@@ -7759,6 +7755,9 @@ var mainGC = function() {
                              + "gclh_updateTmpl(0);" // GDPR
                              + placeToolTip.toString();
                     injectPageScript(code, "body");
+                    css += ".TableLogContent {padding-left: 0; border-left: none;}";
+                    css += ".LogImagesTable {margin-left: 0;} .LogImagesTable a.lnk {white-space: initial;}";
+                    css += ".LogImagesTable a.gclh_thumb img {margin-bottom: 1px !important; margin-top: 1px; vertical-align: sub;}";
                 }
                 // Listing.
                 css += ".CachePageImages li {margin-bottom: 12px; background: unset; padding-left: 0px;}";
