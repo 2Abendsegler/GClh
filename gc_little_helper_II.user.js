@@ -1893,7 +1893,7 @@ var mainGC = function() {
         } catch(e) {gclh_error("Show log totals symbols at the top",e);}
     }
 
-// Copy Coords to clipboard.
+// Copy coordinates to clipboard.
     if (is_page("cache_listing") && $('#uxLatLonLink')[0]) {
         try {
             var cc2c = false;
@@ -1910,13 +1910,13 @@ var mainGC = function() {
                 if (!cc2c) return;
                 // Gegebenenfalls markierter Bereich wird hier nicht beachtet.
                 e.preventDefault();
-                // angezeigte Koordinaten werden hier verarbeitet.
-                e.clipboardData.setData('text/plain', $('#uxLatLon')[0].innerHTML);
+                // Angezeigte Koordinaten werden hier verarbeitet.
+                e.clipboardData.setData('text/plain', determineListingCoords());
                 $('#gclh_cc2c')[0].style.opacity = '0.3';
                 setTimeout(function() { $('#gclh_cc2c')[0].style.opacity = 'unset'; }, 200);
                 cc2c = false;
             });
-        } catch(e) {gclh_error("Copy Coordinates to Clipboard:",e);}
+        } catch(e) {gclh_error("Copy coordinates to clipboard:",e);}
     }
 
 // Copy GC Code to clipboard.
@@ -2233,7 +2233,7 @@ var mainGC = function() {
             html += '    <div class="copydata-content-layer copydata_click" data-id="'+idCopyCode+'">GC Code</div>';
             html += '    <div class="copydata-content-layer copydata_click" data-id="'+idCopyUrl+'">Cache Link</div>';
             // Check for original coords.
-            if (unsafeWindow.mapLatLng.isUserDefined == true ) {
+            if (determineOriginalListingCoords() !== "") {
                 html += '    <div class="copydata-content-layer copydata_click" data-id="'+idCopyCoords+'">Corrected Coordinates</div>';
                 html += '    <div class="copydata-content-layer copydata_click" data-id="'+idCopyOrg+'">Original Coordinates</div>';
             } else {
@@ -2260,10 +2260,10 @@ var mainGC = function() {
                 el.value = "https://coord.info/"+$('#ctl00_ContentBody_CoordInfoLinkControl1_uxCoordInfoCode')[0].innerHTML;
                 break;
             case idCopyCoords:
-                el.value = $('#uxLatLon')[0].innerHTML;
+                el.value = determineListingCoords();
                 break;
             case idCopyOrg:
-                el.value = unsafeWindow.mapLatLng.oldLatLngDisplay.replace(new RegExp('\'', 'g'),'');
+                el.value = determineOriginalListingCoords();
                 break;
             default:
                 el.value = "";
@@ -6513,12 +6513,14 @@ var mainGC = function() {
                 '      </div>' +
                 '      {{/if}}';
             else new_tmpl +=
-                '        {{if Images.length > 0}}' +
+                '      </div>' +
+                '      {{if Images.length > 0}}' +
+                '      <div class="TableLogContent">' +
                 '        <ul class="LogImagesTable">' +
                 '          {{tmpl(Images) "tmplCacheLogImages"}}' +
                 '        </ul>' +
-                '        {{/if}}' +
-                '      </div>';
+                '      </div>' +
+                '      {{/if}}';
             new_tmpl +=
                 '      <div class="AlignRight">' +
                 '        <small><a title="View Log" href="/seek/log.aspx?LUID=${LogGuid}" target="_blank">' +
@@ -6595,8 +6597,10 @@ var mainGC = function() {
             css += ".logOwnerProfileName {padding-top: 0; margin-bottom: 8px;} .logIcons, .logOwnerAvatar {margin-bottom: 4px;}";
             css += ".markdown-output {margin: unset;}";
             if (!settings_hide_avatar) css += ".markdown-output {min-height: 6em;}";
-            // Bilderrahmen im Log noch etwas ausrichten und Trenner von Text und User auch hier einbauen.
-            css += ".TableLogContent {padding-left: 0.5em; border-left: 1px solid #d7d7d7;}";
+            // Bilderrahmen im Log ausrichten.
+            css += ".TableLogContent {padding-left: 0; border-left: none;}";
+            css += ".LogImagesTable {margin-left: 0;} .LogImagesTable a.lnk {white-space: initial;}";
+            css += ".LogImagesTable a.gclh_thumb img {margin-bottom: 1px !important; margin-top: 1px; vertical-align: sub;}";
             // Länge der Usernamen in den Logs beschränken, damit sie nicht umgebrochen werden.
             css += ".logOwnerProfileName {max-width: 135px; display: inline-block; overflow: hidden; vertical-align: bottom; white-space: nowrap; text-overflow: ellipsis;}";
 
@@ -7755,10 +7759,6 @@ var mainGC = function() {
                              + "gclh_updateTmpl(0);" // GDPR
                              + placeToolTip.toString();
                     injectPageScript(code, "body");
-
-                    css += ".TableLogContent {padding-left: 0; border-left: none;}";
-                    css += ".LogImagesTable {margin-left: 0;} .LogImagesTable a.lnk {white-space: initial;}";
-                    css += ".LogImagesTable a.gclh_thumb img {margin-bottom: 1px !important; margin-top: 1px; vertical-align: sub;}";
                 }
                 // Listing.
                 css += ".CachePageImages li {margin-bottom: 12px; background: unset; padding-left: 0px;}";
@@ -10816,6 +10816,30 @@ var mainGC = function() {
         if (waitCount == undefined) var waitCount = 0;
         if ($('.groundspeak-control-findmylocation')[0] && $('.leaflet-control-scale')[0]) fkt();
         else {waitCount++; if (waitCount <= 50) setTimeout(function(){isMapLoad(fkt);}, 200);}
+    }
+
+// Determine cache listing coordinates.
+    function determineListingCoords() {
+        var retCoords = "";
+        if ($('#uxLatLon')[0].innerHTML.match(/GCTour/)) {
+            var coords = $('#uxLatLon')[0].innerHTML.match(/([A-Z0-9°\.\s]*)([A-Za-z&;-\s]*)GCTour/);
+            if (coords && coords[1]) retCoords = coords[1].replace(/° /g, '°').replace(/°/g, '° ');
+        } else if ($('#uxLatLon')[0].innerHTML) {
+            retCoords = $('#uxLatLon')[0].innerHTML;
+        }
+        return retCoords;
+    }
+
+// Determine original cache listing coordinates.
+    function determineOriginalListingCoords() {
+        var retCoords = "";
+        if (unsafeWindow.mapLatLng.isUserDefined == true ) {
+            retCoords = unsafeWindow.mapLatLng.oldLatLngDisplay.replace(new RegExp('\'', 'g'),'');
+        } else if ($('#uxLatLon')[0].innerHTML.match(/GCTour/)) {
+            var coords = $('#uxLatLon')[0].innerHTML.match(/GCTour<\/div>\s\W([A-Z0-9°\.\s]*)/);
+            if (coords && coords[1]) retCoords = coords[1].replace(/° /g, '°').replace(/°/g, '° ');
+        }
+        return retCoords;
     }
 
 //////////////////////////////
