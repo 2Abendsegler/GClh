@@ -7950,6 +7950,38 @@ var mainGC = function() {
             if (!document.location.href.match(/\.com\/play\/map\?(bm=|(.*)&nfb=GClh)/) && settings_searchmap_autoupdate_after_dragging) {
                 css += '#clear-map-control, .loading-container {display: none;}';
             }
+            if (settings_searchmap_compactLayout) {
+                css += '.search-bar {padding: 10px !important;}';
+                // Cacheliste and Cache details.
+                css += '.geocache-item, .cache-preview-header {padding: 5px 15px !important;}';
+                css += '.cache-detail-preview {padding: unset !important;}';
+                css += '.more-info {top: 0 !important;}';
+                css += '.geocache-action-bar {padding: 0 10px 5px !important;}';
+                css += '.cache-preview-attributes, .cache-preview-action-menu {padding: 5px 12px !important;}';
+                css += '.cache-activity-log, .cache-open-text-cta {padding: 7px !important;}';
+                css += '.cache-preview-activities header {padding: 5px !important;}';
+                css += '.geocache-owner {margin-top: 0px !important; padding: 5px !important;} ';
+                css += '.geocache-owner-name, .geocache-placed-date {display: none !important;}';
+                css += '.gclhOwner {color: #9b9b9b;}'
+                css += '.attributes {margin-bottom: 0 !important; padding-bottom: 5px !important;}';
+                // Filter
+                css += '#search-filters-controls {padding-bottom: 7px !important;}';
+                css += '.search-filter-group label {padding: 5px !important;}';
+                css += '#search-filters-content .trinary-control, .search-filters-block.search-filters-attributes {margin-top: 0 !important;}';
+                css += '.search-filters-status .trinary-control {padding-top: 10px !important}';
+                css += '#search-filters-content .search-filters-block.search-filters-attributes > div + div {margin-top: 15px !important;}';
+                css += 'search-filters-content .search-filters-block {padding: 0 !important;}'
+                css += '.search-filters-block {padding: 10px !important;}';
+                css += '.search-filters-block.search-filters-status {padding-top:0 !important}';
+                css += '.label {text-transform: none !important;}';
+                css += '.chip-field-container, .text-field {min-height: unset !important; padding: 4px !important;}';
+                css += '#sidebar footer {padding: 5px 0 !important;}';
+                css += '.cache-preview-action-menu ul li span {display: none; !important;}';
+                css += 'lable {padding-top: 10px !important}';
+				// Pop up
+				css += '.leaflet-popup-content {margin: 5px 8px !important;}';
+				css += '.cache-action-log-geocache, cache-action-add-to-list, .cache-action-download-gpx, .cache-action-open-cache {padding: 5px 0 !important;}';
+            }
             if (css != "") appendCssStyle(css);
         } catch(e) {gclh_error("Improve search map",e);}
     }
