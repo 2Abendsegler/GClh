@@ -14,12 +14,12 @@
 <img src="/images/vivaldi_logo_small.png" title="Vivaldi" alt="Vivaldi" />
 
 ## How to install
-If you need any help with the installation, you can have a look at our [Installationtipps](https://github.com/2Abendsegler/GClh/blob/master/docu/tips_installation.md#en)
+If you need any help with the installation, you can have a look at our [Installationtipps](https://github.com/2Abendsegler/GClh/blob/master/docu/tips_installation.md#en).
 
 ## Our Goal
 *GC little helper II* is a tool to enhance and extend the functionality on www.geocaching.com. All functions can be configured in a configuration menue. It uses english as language.
 
-It is free of charge and without any advertising.
+It is free of charge, without any advertising and is already used by thousands of users.
 
 The tool is developed in Javascript and can be used with the script manager Tampermonkey under Firefox, Google Chrome, Safari, Opera, Microsoft Edge und Vivaldi.
 
@@ -53,7 +53,7 @@ Wer Hilfe bei der Installation benötigt, wird in den [Tipps zur Installation](h
 ## Unser Ziel
 Der *GC little helper II* ist ein Tool zur Verbesserung und Erweiterung der Geocaching Seiten auf www.geocaching.com. Alle Funktionen können flexibel über ein Konfigurationsmenü eingestellt werden. Das Tool ist in englisch. 
 
-Es ist kostenlos und ohne Werbung. 
+Es ist kostenlos, ohne Werbung und wird bereits von tausenden von Usern genutzt.
 
 Das Tool ist in Javascript entwickelt und läuft mit Script-Manager Tampermonkey unter Mozilla Firefox, Google Chrome, Safari, Opera, Microsoft Edge, Vivaldi.
 
