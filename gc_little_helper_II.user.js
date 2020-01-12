@@ -3968,7 +3968,7 @@ var mainGC = function() {
         } catch(e) {gclh_error("Update Standard Message on Click of a Username in Messagecenter",e);}
     }
 
-// Improve list of pocket queries (list of PQs).
+// Improve list of pocket queries (Improve list of PQs).
     if (document.location.href.match(/\.com\/pocket/) && document.getElementById("uxCreateNewPQ") && $('table.Table')[0]) {
         try {
             var css = "";
@@ -4064,15 +4064,20 @@ var mainGC = function() {
                 // Show both tabs (Active and Downloadable) of list of pqs on one page.
                 if ($('#ActivePQs')[0] && $('#DownloadablePQs')[0]) {
                     if (settings_both_tabs_list_of_pqs_one_page) {
-                        $('#ActivePQs, #DownloadablePQs').attr('aria-hidden', 'false');
-                        $('#ActivePQs, #DownloadablePQs').each(function() {
-                            this.style.display = 'block';
-                            this.children[0].children[0].style.margin = '0px';
-                        });
-                        $('#DownloadablePQs')[0].style.marginTop = '10px';
-                        $('#ActivePQs')[0].children[0].innerHTML = $('#ui-id-1')[0].innerHTML + $('#ActivePQs')[0].children[0].innerHTML;
-                        $('#DownloadablePQs')[0].children[0].innerHTML = $('#ui-id-2')[0].innerHTML + $('#DownloadablePQs')[0].children[0].innerHTML;
-                        $('ul.ui-tabs-nav')[0].remove();
+                        function showBothTabsOnOnePage(waitCount) { // GDPR
+                            if ($('#ui-id-1')[0] && $('#ui-id-2')[0]) { // GDPR
+                                $('#ActivePQs, #DownloadablePQs').attr('aria-hidden', 'false');
+                                $('#ActivePQs, #DownloadablePQs').each(function() {
+                                    this.style.display = 'block';
+                                    this.children[0].children[0].style.margin = '0px';
+                                });
+                                $('#DownloadablePQs')[0].style.marginTop = '10px';
+                                $('#ActivePQs')[0].children[0].innerHTML = $('#ui-id-1')[0].innerHTML + $('#ActivePQs')[0].children[0].innerHTML;
+                                $('#DownloadablePQs')[0].children[0].innerHTML = $('#ui-id-2')[0].innerHTML + $('#DownloadablePQs')[0].children[0].innerHTML;
+                                $('ul.ui-tabs-nav')[0].remove();
+                            } else {waitCount++; if (waitCount <= 100) setTimeout(function(){showBothTabsOnOnePage(waitCount);}, 100);} // GDPR
+                        }
+                        showBothTabsOnOnePage(0); // GDPR
                     } else {
                         if ($('#ActivePQs').attr('aria-hidden') == 'true') $('#ActivePQs')[0].style.display = 'none';
                         if ($('#DownloadablePQs').attr('aria-hidden') == 'true') $('#DownloadablePQs')[0].style.display = 'none';
