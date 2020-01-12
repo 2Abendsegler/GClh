@@ -567,6 +567,7 @@ var variablesInit = function(c) {
     c.settings_lists_back_to_top = getValue("settings_lists_back_to_top", false);
     c.settings_searchmap_autoupdate_after_dragging = getValue("settings_searchmap_autoupdate_after_dragging", true);
     c.settings_improve_character_counter = getValue("settings_improve_character_counter", true);
+    c.settings_searchmap_show_hint = getValue("settings_searchmap_show_hint", true);
 
     try {
         if (c.userToken === null) {
@@ -7916,10 +7917,35 @@ var mainGC = function() {
                     }
                 }
             }
+            // Show hint automatically.
+            function showHint() {
+                if (document.querySelector('.cache-preview-header') && settings_searchmap_show_hint) {
+                    function hintAddEventListener() {
+                        function waitForDescriptionBtn(waitCount) {
+                            if (document.querySelector('.cache-open-text-cta')) {
+                                // I used the event listener because the mutation observer is not triggered.
+                                document.querySelector('.cache-open-text-cta').addEventListener('click', function() {
+                                    function waitForDescription(waitCount) {
+                                        if (document.querySelector('.cache-hint-toggle')) {
+                                            $('.hint-text').addClass('is-visible');
+                                            document.querySelector('.cache-hint-toggle').innerHTML = 'Hide hint';
+                                            document.querySelector('.close-cta').addEventListener('click', hintAddEventListener);
+                                        }else {waitCount++; if (waitCount <= 50) setTimeout(function(){waitForDescription(waitCount);}, 50);}
+                                    }
+                                    waitForDescription(0);
+                                });
+                            }else {waitCount++; if (waitCount <= 100) setTimeout(function(){waitForDescriptionBtn(waitCount);}, 50);}
+                        }
+                        waitForDescriptionBtn(0);
+                    }
+                    hintAddEventListener();
+                }
+            }
 
             // Processing all steps.
             function processAllSearchMap() {
                 searchThisArea();
+                showHint();
             }
 
             // Build mutation observer for body.
@@ -11790,6 +11816,7 @@ var mainGC = function() {
             html += "<div class='gclh_old_new_line'>New map (search map) only</div>";
             html += newParameterOn1;
             html += checkboxy('settings_searchmap_autoupdate_after_dragging', 'Automatic search for new caches after dragging') + "<br>";
+            html += checkboxy('settings_searchmap_show_hint', 'Show hint automatically') + "<br>";
             html += newParameterVersionSetzen('0.10') + newParameterOff;
             html += "</div>";
 
@@ -13083,6 +13110,7 @@ var mainGC = function() {
                 'settings_lists_back_to_top',
                 'settings_searchmap_autoupdate_after_dragging',
                 'settings_improve_character_counter',
+                'settings_searchmap_show_hint',
             );
 
             for (var i = 0; i < checkboxes.length; i++) {
