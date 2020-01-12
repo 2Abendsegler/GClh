@@ -8606,9 +8606,11 @@ var mainGC = function() {
             // }
             
             css += "} #searchmap_sidebar_enhancements .gccode {display: none;}";
+            css += "div.gclh_latest_log {margin-top:5px;}";
+            css += "div.gclh_latest_log:hover {position: relative;}";
+            css += "div.gclh_latest_log span {display: none; position: absolute; left: 0px; width: 500px; padding: 5px; text-decoration:none; text-align:left; vertical-align:top; color: #000000;}";
+            css += "div.gclh_latest_log:hover span {font-size: 13px; display: block; top: 16px; border: 1px solid #8c9e65; background-color:#dfe1d2; z-index:10000;}";
             appendCssStyle(css);
-
-
 
             // create an observer instance
             var searchmap_observer = new MutationObserver(function(mutations) {
@@ -8753,7 +8755,7 @@ var mainGC = function() {
 
                         // Put all together
                         var new_text = '<span style="margin-right: 5px;">Logs:</span>' + all_logs.replace(/&nbsp;/g, " ") + '<br>';
-                        // new_text += $(last_logs).prop('outerHTML');
+                        new_text += $(last_logs).prop('outerHTML');
                         new_text += '<span title="Place">' + place + '</span> | ';
                         if (settings_show_elevation_of_waypoints) {
                             new_text += '<span id="elevation-waypoint-0"></span>';
