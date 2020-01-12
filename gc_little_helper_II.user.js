@@ -8439,8 +8439,6 @@ var mainGC = function() {
             css += "span.premium_only img {margin-right:0px;}";
             if (browser == 'firefox') css += ".gclh_owner {max-width: 110px;} .map-item h4 a {max-width: 265px;} .gclh_owner, .map-item h4 a {display: inline-block; white-space: nowrap; overflow: -moz-hidden-unscrollable; text-overflow: ellipsis;}";
             appendCssStyle(css);
-            var global_ctoc_flag = false;
-            var global_ctoc_cont = "";
 
             // create an observer instance
             var observer = new MutationObserver(function(mutations) {
@@ -8603,30 +8601,7 @@ var mainGC = function() {
                             side[0].appendChild(link);
                         }
 
-                        // Copy GC code to clipboard.
-                        var div = document.createElement('div');
-                        div.className = "gclh_ctoc";
-                        var code = gccode;
-                        div.id = "gclh_ctoc_" + code;
-                        div.innerHTML = '<a href="javascript:void(0);"><img src="'+global_copy_icon+'" title="Copy GC Code to clipboard"></a>';
-                        $(this).find('h4')[0].parentNode.insertBefore(div, $(this).find('h4')[0]);
-                        $(this).find('#gclh_ctoc_'+code)[0].addEventListener('click', function() {
-                            // Tastenkombination Strg+c ausführen für eigene Verarbeitung.
-                            global_ctoc_flag = true;
-                            global_ctoc_cont = code;
-                            document.execCommand('copy');
-                        }, false);
-                        document.addEventListener('copy', function(e){
-                            // Normale Tastenkombination Strg+c für markierten Bereich nicht verarbeiten, nur eigene Tastenkombination Strg+c verarbeiten.
-                            if (!global_ctoc_flag) return;
-                            global_ctoc_flag = false;
-                            // Gegebenenfalls markierter Bereich wird nicht beachtet.
-                            e.preventDefault();
-                            // GC Code verarbeiten.
-                            e.clipboardData.setData('text/plain', global_ctoc_cont);
-                            $('#gclh_ctoc_'+global_ctoc_cont)[0].style.opacity = '0.3';
-                            setTimeout(function() { $('#gclh_ctoc_'+global_ctoc_cont)[0].style.opacity = 'unset'; }, 200);
-                        });
+                        addCopyToClipboardLink(gccode, $(this).find('h4')[0], "GC Code", "float: right;");
                     });
                 });
             });
