@@ -1897,22 +1897,31 @@ var mainGC = function() {
         element_to_copy:    innerHtml of this element will be copied. If you pass
                             a string, the string will be the copied text. In this 
                             case you have to pass an anker_element!!!
+
         anker_element:      after this element the copy marker will be inserted,
                             if you set this to null, the element_to_copy will be
                             used as an anker
+
         title:              you can enter a text that will be displayed between 
                             Copy --TEXT OF TITLE-- to clipboard. If you leave it 
                             blank, it will just "Copy to clipboard" be displayed
+
+        style               You can add styles to the surrounding span by passing
+                            it in this variable
      */
-    function addCopyToClipboardLink(element_to_copy, anker_element = null, title=""){
+    function addCopyToClipboardLink(element_to_copy, anker_element= null, title="", style= ""){
         try {
             var ctoc = false;
             var span = document.createElement('span');
             span.innerHTML = '<a class="ctoc_link" href="javascript:void(0);"><img src="'+global_copy_icon+'" title="Copy ' + title + ' ' + 'to clipboard" style="vertical-align: text-top;"> </a>';
+            if(style != ""){
+                span.setAttribute("style", style);
+            }
             if(!anker_element) anker_element = element_to_copy;
+
             anker_element.parentNode.insertBefore(span, anker_element);
 
-           appendCssStyle(".ctoc_link:link {text-decoration: none ;}");
+            appendCssStyle(".ctoc_link:link {text-decoration: none ;}");
 
             span.addEventListener('click', function() {
                 // Tastenkombination Strg+c ausführen für eigene Verarbeitung.
