@@ -2395,12 +2395,12 @@ var mainGC = function() {
             } else if (waypoint.source == "original" ) {
                 radius = 0;
                 if (waypoint.typeid == 2 /* Traditional Geocache */ ) radius = 161; //  161m radius
-                else if (waypoint.typeid == 8 /* Mystery cache */) radius = 3000; // Mystery cache 3000m radius
+                else if (waypoint.typeid == 8 /* Mystery cache */) radius = 3200; // Mystery cache 3200m radius
                 name = normalizeName(waypoint.gccode+'_ORIGINAL');
             } else if (waypoint.source == "listing" ) {
                 radius = 0;
                 if (waypoint.typeid == 2 /* Traditional Geocache */ ) radius = 161; //  161m radius
-                else if (waypoint.typeid == 8 /* Mystery cache */) radius = 3000; // Mystery cache 3000m radius
+                else if (waypoint.typeid == 8 /* Mystery cache */) radius = 3200; // Mystery cache 3200m radius
                 name = normalizeName(waypoint.gccode);
             } else if (waypoint.source == "GClh Config" ) {
                 radius = 0;
