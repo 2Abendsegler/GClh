@@ -1893,40 +1893,28 @@ var mainGC = function() {
         } catch(e) {gclh_error("Show log totals symbols at the top",e);}
     }
 
-// Copy coordinates to clipboard.
-    if (is_page("cache_listing") && $('#uxLatLonLink')[0]) {
-        try {
-            var cc2c = false;
-            var span2 = document.createElement('span');
-            span2.innerHTML = '<a href="javascript:void(0);" id="gclh_cc2c"><img src="'+global_copy_icon+'" title="Copy Coordinates to Clipboard" style="vertical-align: text-top;"></a> ';
-            $('#uxLatLonLink')[0].parentNode.insertBefore(span2, $('#uxLatLonLink')[0] );
-            $('#gclh_cc2c')[0].addEventListener('click', function() {
-                // Tastenkombination Strg+c ausführen für eigene Verarbeitung.
-                cc2c = true;
-                document.execCommand('copy');
-            }, false);
-            document.addEventListener('copy', function(e){
-                // Normale Tastenkombination Strg+c für markierter Bereich hier nicht verarbeiten. Nur eigene Tastenkombination Strg+c hier verarbeiten.
-                if (!cc2c) return;
-                // Gegebenenfalls markierter Bereich wird hier nicht beachtet.
-                e.preventDefault();
-                // Angezeigte Koordinaten werden hier verarbeitet.
-                e.clipboardData.setData('text/plain', determineListingCoords());
-                $('#gclh_cc2c')[0].style.opacity = '0.3';
-                setTimeout(function() { $('#gclh_cc2c')[0].style.opacity = 'unset'; }, 200);
-                cc2c = false;
-            });
-        } catch(e) {gclh_error("Copy coordinates to clipboard:",e);}
-    }
-
-// Copy GC Code to clipboard.
-    if (is_page('cache_listing') && $('.CoordInfoLink')[0] && $('#ctl00_ContentBody_CoordInfoLinkControl1_uxCoordInfoCode')[0]) {
+    /*
+        element_to_copy:    innerHtml of this element will be copied. If you pass
+                            a string, the string will be the copied text. In this 
+                            case you have to pass an anker_element!!!
+        anker_element:      after this element the copy marker will be inserted,
+                            if you set this to null, the element_to_copy will be
+                            used as an anker
+        title:              you can enter a text that will be displayed between 
+                            Copy --TEXT OF TITLE-- to clipboard. If you leave it 
+                            blank, it will just "Copy to clipboard" be displayed
+     */
+    function addCopyToClipboardLink(element_to_copy, anker_element = null, title=""){
         try {
             var ctoc = false;
             var span = document.createElement('span');
-            span.innerHTML = '<a href="javascript:void(0);" id="gclh_ctoc"><img src="'+global_copy_icon+'" title="Copy GC Code to clipboard" style="vertical-align: text-top;"></a>';
-            $('.CoordInfoLink')[0].parentNode.insertBefore(span, $('.CoordInfoLink')[0]);
-            $('#gclh_ctoc')[0].addEventListener('click', function() {
+            span.innerHTML = '<a class="ctoc_link" href="javascript:void(0);"><img src="'+global_copy_icon+'" title="Copy ' + title + ' ' + 'to clipboard" style="vertical-align: text-top;"> </a>';
+            if(!anker_element) anker_element = element_to_copy;
+            anker_element.parentNode.insertBefore(span, anker_element);
+
+           appendCssStyle(".ctoc_link:link {text-decoration: none ;}");
+
+            span.addEventListener('click', function() {
                 // Tastenkombination Strg+c ausführen für eigene Verarbeitung.
                 ctoc = true;
                 document.execCommand('copy');
@@ -1936,13 +1924,29 @@ var mainGC = function() {
                 if (!ctoc) return;
                 // Gegebenenfalls markierter Bereich wird hier nicht beachtet.
                 e.preventDefault();
-                // GC Code wird hier verarbeitet.
-                e.clipboardData.setData('text/plain', $('#ctl00_ContentBody_CoordInfoLinkControl1_uxCoordInfoCode')[0].innerHTML);
-                $('#gclh_ctoc')[0].style.opacity = '0.3';
-                setTimeout(function() { $('#gclh_ctoc')[0].style.opacity = 'unset'; }, 200);
+                // Copy Data wird hier verarbeitet.
+                if (typeof element_to_copy === 'string' || element_to_copy instanceof String){
+                    e.clipboardData.setData('text/plain', element_to_copy);
+                }else{
+                    e.clipboardData.setData('text/plain', element_to_copy.innerHTML);
+                }
+                span.style.opacity = '0.3';
+                setTimeout(function() { span.style.opacity = 'unset'; }, 200);
                 ctoc = false;
             });
-        } catch(e) {gclh_error("Copy GC Code to clipboard",e);}
+        } catch(e) {gclh_error("Copy to clipboard",e);}
+    }
+
+// Copy coordinates to clipboard.
+    if (is_page("cache_listing") && $('#uxLatLonLink')[0]) {
+        
+        addCopyToClipboardLink(determineListingCoords(),$('#uxLatLonLink')[0], "Coordinates");
+    }
+
+// Copy GC Code to clipboard.
+    if (is_page('cache_listing') && $('.CoordInfoLink')[0] && $('#ctl00_ContentBody_CoordInfoLinkControl1_uxCoordInfoCode')[0]) {
+
+        addCopyToClipboardLink($('#ctl00_ContentBody_CoordInfoLinkControl1_uxCoordInfoCode')[0], $('.CoordInfoLink')[0], "GC Code");       
     }
 
 // Show favorite percentage.
