@@ -8005,6 +8005,9 @@ var mainGC = function() {
                 css += '#sidebar footer {padding: 5px 0 !important;}';
                 css += '.cache-preview-action-menu ul li span {display: none; !important;}';
                 css += 'lable {padding-top: 10px !important}';
+				// Pop up
+				css += '.leaflet-popup-content {margin: 5px 8px !important;}';
+				css += '.cache-action-log-geocache, cache-action-add-to-list, .cache-action-download-gpx, .cache-action-open-cache {padding: 5px 0 !important;}';
             }
             if (css != "") appendCssStyle(css);
         } catch(e) {gclh_error("Improve search map",e);}
