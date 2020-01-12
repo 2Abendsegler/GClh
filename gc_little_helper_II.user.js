@@ -567,7 +567,6 @@ var variablesInit = function(c) {
     c.settings_lists_back_to_top = getValue("settings_lists_back_to_top", false);
     c.settings_searchmap_autoupdate_after_dragging = getValue("settings_searchmap_autoupdate_after_dragging", true);
     c.settings_improve_character_counter = getValue("settings_improve_character_counter", true);
-    c.settings_searchmap_compactLayout = getValue("settings_searchmap_compactLayout", false);
 
     try {
         if (c.userToken === null) {
@@ -7917,36 +7916,10 @@ var mainGC = function() {
                     }
                 }
             }
-            // Compact Layout for searchmap.
-            function compactLayout() {
-                if (settings_searchmap_compactLayout) {
-                    // Filter
-                    if (document.querySelector('#search-filters') && document.querySelector('.text-field')) {
-                        document.querySelector('.text-field').setAttribute('class', 'chip-field-input');
-                    }
-                    // Cache details
-                    if (document.querySelector('.cache-preview-header')) {
-                        document.querySelector('.more-info-link').getElementsByTagName('span')[1].setAttribute('style', 'display:none;');
-                        var buttons = document.querySelectorAll('.cache-preview-action-menu ul li');
-                        for (let i=0; i<buttons.length; i++) {
-                            buttons[i].title = buttons[i].getElementsByTagName('span')[0].innerHTML;
-                        }
-                        if (document.querySelector('.gclhOwner')) {
-                            document.querySelector('.gclhOwner').remove();
-                        }
-                        let span = document.createElement('span');
-                        span.setAttribute('class', 'gclhOwner');
-                        span.innerHTML = document.querySelector('.geocache-owner-name').innerHTML + ' ' + document.querySelector('.geocache-placed-date').innerHTML;
-                        document.querySelector('.geocache-owner').appendChild(span);
-                        if (document.querySelector('.view-all-row a')) document.querySelector('.view-all-row a').href += '#logs_section';
-                    }
-                }
-            }
 
             // Processing all steps.
             function processAllSearchMap() {
                 searchThisArea();
-                compactLayout();
             }
 
             // Build mutation observer for body.
@@ -11849,7 +11822,6 @@ var mainGC = function() {
             html += "<div class='gclh_old_new_line'>New map (search map) only</div>";
             html += newParameterOn1;
             html += checkboxy('settings_searchmap_autoupdate_after_dragging', 'Automatic search for new caches after dragging') + "<br>";
-            html += checkboxy('settings_searchmap_compactLayout', 'Show compact Layout for searchmap') + "<br>";
             html += newParameterVersionSetzen('0.10') + newParameterOff;
             html += "</div>";
 
@@ -13143,7 +13115,6 @@ var mainGC = function() {
                 'settings_lists_back_to_top',
                 'settings_searchmap_autoupdate_after_dragging',
                 'settings_improve_character_counter',
-                'settings_searchmap_compactLayout',
             );
 
             for (var i = 0; i < checkboxes.length; i++) {
