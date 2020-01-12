@@ -3973,7 +3973,12 @@ var mainGC = function() {
         try {
             var css = "";
             // Number of Active Pocket Queries.
-            if ($('#ui-id-1')[0]) $('#ui-id-1').append("&nbsp;<span title='Number of Active Pocket Queries'>("+$('#pqRepeater tbody tr:not(.TableFooter)').length+")</span>");
+            function numberOfActivePQs(waitCount) { // GDPR
+                if ($('#ui-id-1')[0]) { // GDPR
+                    $('#ui-id-1').append("&nbsp;<span title='Number of Active Pocket Queries'>("+$('#pqRepeater tbody tr:not(.TableFooter)').length+")</span>");
+                } else {waitCount++; if (waitCount <= 100) setTimeout(function(){numberOfActivePQs(waitCount);}, 100);} // GDPR
+            }
+            numberOfActivePQs(0); // GDPR
             // Compact layout.
             if (settings_compact_layout_list_of_pqs) {
                 function lastGen(elem) {
