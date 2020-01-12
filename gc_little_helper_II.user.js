@@ -8814,13 +8814,23 @@ var mainGC = function() {
                             new_text += ' <span class="premium_only" title="Premium Only Cache"><img src="/images/icons/16/premium_only.png" width="16" height="16" alt="Premium Only Cache" /></span> | ';
                         }
                         new_text += '<span class="tackables" title="Number of trackables"><svg height="16" width="16" class="icon-sm"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="/account/app/ui-icons/sprites/global.svg#icon-travelbug-default"></use></svg> ' + trachables + '</span><br>';
-                            
+
                         var coords = $(text).find('#uxLatLon')[0].innerHTML;
                         var coorected = "";
                         if($(text).find('#uxLatLon .myLatLon')[0]){
                             coorected = "coorected ";
                         }
                         new_text += '<p><span class="coordinates" title="'+coorected+'Coordinates">' + coords + '</span></p>';
+
+                        if(text.match(/"isUserDefined":true/gm)){
+                            var original_coords = text.match(/oldLatLngDisplay":"N.*E.*?'"/gm);
+                            original_coords = String(original_coords[0]);
+                            
+                            original_coords = original_coords.replace("oldLatLngDisplay\":\"","");
+                            original_coords = original_coords.replace("\"","");
+                            original_coords = original_coords.replace(new RegExp('\'', 'g'),'');
+                            new_text += '<p><span class="coordinates" title="original Coordinates">original Coordinates: ' + original_coords + '</span></p>';
+                        }
 
                         // Create Element and insert everything
                         var text_element = document.createElement("div");
