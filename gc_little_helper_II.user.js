@@ -567,6 +567,7 @@ var variablesInit = function(c) {
     c.settings_lists_back_to_top = getValue("settings_lists_back_to_top", false);
     c.settings_searchmap_autoupdate_after_dragging = getValue("settings_searchmap_autoupdate_after_dragging", true);
     c.settings_improve_character_counter = getValue("settings_improve_character_counter", true);
+    c.settings_searchmap_show_hint = getValue("settings_searchmap_show_hint", true);
     c.settings_searchmap_strike_disabled = getValue("settings_searchmap_strike_disabled", true);
     c.settings_searchmap_strike_disabled_color = getValue("settings_searchmap_strike_disabled_color", '4A4A4A');
 
@@ -7918,6 +7919,30 @@ var mainGC = function() {
                     }
                 }
             }
+            // Show hint automatically.
+            function showHint() {
+                if (document.querySelector('.cache-preview-header') && settings_searchmap_show_hint) {
+                    function hintAddEventListener() {
+                        function waitForDescriptionBtn(waitCount) {
+                            if (document.querySelector('.cache-open-text-cta')) {
+                                // I used the event listener because the mutation observer is not triggered.
+                                document.querySelector('.cache-open-text-cta').addEventListener('click', function() {
+                                    function waitForDescription(waitCount) {
+                                        if (document.querySelector('.cache-hint-toggle')) {
+                                            $('.hint-text').addClass('is-visible');
+                                            document.querySelector('.cache-hint-toggle').innerHTML = 'Hide hint';
+                                            document.querySelector('.close-cta').addEventListener('click', hintAddEventListener);
+                                        }else {waitCount++; if (waitCount <= 50) setTimeout(function(){waitForDescription(waitCount);}, 50);}
+                                    }
+                                    waitForDescription(0);
+                                });
+                            }else {waitCount++; if (waitCount <= 100) setTimeout(function(){waitForDescriptionBtn(waitCount);}, 50);}
+                        }
+                        waitForDescriptionBtn(0);
+                    }
+                    hintAddEventListener();
+                }
+            }
             // Show button to collapse activity.
             function collapseActivity() {
                 if (document.querySelector('.cache-preview-header')) {
@@ -7962,6 +7987,7 @@ var mainGC = function() {
             // Processing all steps.
             function processAllSearchMap() {
                 searchThisArea();
+                showHint();
                 collapseActivity();
                 strikeDisabled();
             }
@@ -11872,6 +11898,7 @@ var mainGC = function() {
             html += "<div class='gclh_old_new_line'>New map (search map) only</div>";
             html += newParameterOn1;
             html += checkboxy('settings_searchmap_autoupdate_after_dragging', 'Automatic search for new caches after dragging') + "<br>";
+            html += checkboxy('settings_searchmap_show_hint', 'Show hint automatically') + "<br>";
             html += checkboxy('settings_searchmap_strike_disabled', 'Strike through title of disabled caches');
             html += "&nbsp;<input class='gclh_form color' type='text' size=6 id='settings_searchmap_strike_disabled_color' style='margin-left: 0px;' value='" + getValue("settings_searchmap_strike_disabled_color", "4A4A4A") + "'>";
             html += "<img src=" + global_restore_icon + " id='restore_settings_searchmap_strike_disabled_color' title='back to default' style='width: 12px; cursor: pointer;'><br>";
@@ -13172,6 +13199,7 @@ var mainGC = function() {
                 'settings_lists_back_to_top',
                 'settings_searchmap_autoupdate_after_dragging',
                 'settings_improve_character_counter',
+                'settings_searchmap_show_hint',
                 'settings_searchmap_strike_disabled',
             );
 
