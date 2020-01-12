@@ -4061,7 +4061,6 @@ var mainGC = function() {
                 if ($('#ctl00_ContentBody_PQListControl1_lbFoundGenerated').length > 0) {
                     $('#ctl00_ContentBody_PQListControl1_lbFoundGenerated')[0].innerHTML = $('#ctl00_ContentBody_PQListControl1_lbFoundGenerated')[0].innerHTML.replace(/\*/, "");
                 }
-//xxxx
                 // Show both tabs (Active and Downloadable) of list of pqs on one page.
                 if ($('#ActivePQs')[0] && $('#DownloadablePQs')[0]) {
                     if (settings_both_tabs_list_of_pqs_one_page) {
@@ -4084,7 +4083,7 @@ var mainGC = function() {
                         if ($('#DownloadablePQs').attr('aria-hidden') == 'true') $('#DownloadablePQs')[0].style.display = 'none';
                     }
                 }
-               // Footer:
+                // Footer:
                 if ($('.pq-legend').length > 0) {
                     for (var i = 0; i <= 4; i++) {$('.pq-legend')[0].nextElementSibling.remove();}
                     $('.pq-legend')[0].remove();
