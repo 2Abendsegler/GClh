@@ -567,6 +567,8 @@ var variablesInit = function(c) {
     c.settings_lists_back_to_top = getValue("settings_lists_back_to_top", false);
     c.settings_searchmap_autoupdate_after_dragging = getValue("settings_searchmap_autoupdate_after_dragging", true);
     c.settings_improve_character_counter = getValue("settings_improve_character_counter", true);
+    c.settings_searchmap_strike_disabled = getValue("settings_searchmap_strike_disabled", true);
+    c.settings_searchmap_strike_disabled_color = getValue("settings_searchmap_strike_disabled_color", '4A4A4A');
 
     try {
         if (c.userToken === null) {
@@ -7916,10 +7918,24 @@ var mainGC = function() {
                     }
                 }
             }
+            // Strike through title of disabled caches.
+            function strikeDisabled() {
+                if (settings_searchmap_strike_disabled) {
+                    if (document.querySelector('.cache-detail-preview') && document.querySelector('.status') && document.querySelector('.status span').style.color == 'rgb(211, 70, 39)') {
+                        document.querySelector('.status').style.display = 'none';
+                        document.querySelector('.header-top-left h1').style.textDecoration = 'line-through';
+                        document.querySelector('.header-top-left h1').style.color = '#' + settings_searchmap_strike_disabled_color;
+                    }else if (document.querySelector('.cache-detail-preview')) {
+						document.querySelector('.header-top-left h1').style.textDecoration = 'unset';
+						document.querySelector('.header-top-left h1').style.color = '#4a4a4a';
+					}
+				}
+            }
 
             // Processing all steps.
             function processAllSearchMap() {
                 searchThisArea();
+                strikeDisabled();
             }
 
             // Build mutation observer for body.
@@ -11822,6 +11838,9 @@ var mainGC = function() {
             html += "<div class='gclh_old_new_line'>New map (search map) only</div>";
             html += newParameterOn1;
             html += checkboxy('settings_searchmap_autoupdate_after_dragging', 'Automatic search for new caches after dragging') + "<br>";
+            html += checkboxy('settings_searchmap_strike_disabled', 'Strike through title of disabled caches');
+            html += "&nbsp;<input class='gclh_form color' type='text' size=6 id='settings_searchmap_strike_disabled_color' style='margin-left: 0px;' value='" + getValue("settings_searchmap_strike_disabled_color", "4A4A4A") + "'>";
+            html += "<img src=" + global_restore_icon + " id='restore_settings_searchmap_strike_disabled_color' title='back to default' style='width: 12px; cursor: pointer;'><br>";
             html += newParameterVersionSetzen('0.10') + newParameterOff;
             html += "</div>";
 
@@ -12574,6 +12593,7 @@ var mainGC = function() {
             $('#settings_process_vup')[0].addEventListener("click", alert_settings_process_vup, false);
             $('#restore_settings_lists_disabled_color')[0].addEventListener("click", restoreField, false);
             $('#restore_settings_lists_archived_color')[0].addEventListener("click", restoreField, false);
+            $('#restore_settings_searchmap_strike_disabled_color')[0].addEventListener("click", restoreField, false);
 
             // Events setzen für Parameter, die im GClh Config mehrfach ausgegeben wurden, weil sie zu mehreren Themen gehören. Es handelt sich hier um den Parameter selbst.
             // In der Function werden Events für den Parameter selbst (ZB: "settings_show_mail_in_viplist") und dessen Clone gesetzt, die hinten mit "X" und Nummerierung
@@ -12715,6 +12735,8 @@ var mainGC = function() {
             setEvForDepPara("settings_lists_archived","settings_lists_archived_strikethrough");
             setEvForDepPara("settings_lists_icons_visible","settings_lists_log_status_icons_visible");
             setEvForDepPara("settings_lists_icons_visible","settings_lists_cache_type_icons_visible");
+            setEvForDepPara("settings_searchmap_strike_disabled","settings_searchmap_strike_disabled_color");
+            setEvForDepPara("settings_searchmap_strike_disabled","restore_settings_searchmap_strike_disabled_color");
             // Abhängigkeiten der Linklist Parameter.
             for (var i = 0; i < 100; i++) {
                 // 2. Spalte: Links für Custom BMs.
@@ -12868,6 +12890,7 @@ var mainGC = function() {
             setValue("settings_showUnpublishedHides_sort", document.getElementById('settings_showUnpublishedHides_sort').value);
             setValue("settings_lists_disabled_color", document.getElementById('settings_lists_disabled_color').value.replace("#",""));
             setValue("settings_lists_archived_color", document.getElementById('settings_lists_archived_color').value.replace("#",""));
+            setValue("settings_searchmap_strike_disabled_color", document.getElementById('settings_searchmap_strike_disabled_color').value.replace("#",""));
 
             // Map Layers in vorgegebener Reihenfolge übernehmen.
             var new_map_layers_available = document.getElementById('settings_maplayers_available');
@@ -13115,6 +13138,7 @@ var mainGC = function() {
                 'settings_lists_back_to_top',
                 'settings_searchmap_autoupdate_after_dragging',
                 'settings_improve_character_counter',
+                'settings_searchmap_strike_disabled',
             );
 
             for (var i = 0; i < checkboxes.length; i++) {
@@ -13466,6 +13490,7 @@ var mainGC = function() {
                 case "settings_lines_color_vip": field.value = "F0F0A0"; break;
                 case "settings_lists_disabled_color": field.value = "4A4A4A"; break;
                 case "settings_lists_archived_color": field.value = "8C0B0B"; break;
+                case "settings_searchmap_strike_disabled_color": field.value = "4A4A4A"; break;
                 case "settings_font_color_menu": restoreColor("settings_font_color_menuX0", "restore_settings_font_color_menuX0", field.value); break;
                 case "settings_font_color_menuX0": restoreColor("settings_font_color_menu", "restore_settings_font_color_menu", field.value); break;
                 case "settings_font_color_submenu": restoreColor("settings_font_color_submenuX0", "restore_settings_font_color_submenuX0", field.value); break;
