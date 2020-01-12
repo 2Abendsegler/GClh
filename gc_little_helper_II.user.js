@@ -7921,7 +7921,7 @@ var mainGC = function() {
             // Strike through title of disabled caches.
             function strikeDisabled() {
                 if (settings_searchmap_strike_disabled) {
-                    if (document.querySelector('.cache-detail-preview') && document.querySelector('.status')) {
+                    if (document.querySelector('.cache-detail-preview') && document.querySelector('.status') && document.querySelector('.status span').style.color == 'rgb(211, 70, 39)') {
                         document.querySelector('.status').style.display = 'none';
                         document.querySelector('.header-top-left h1').style.textDecoration = 'line-through';
                         document.querySelector('.header-top-left h1').style.color = '#' + settings_searchmap_strike_disabled_color;
