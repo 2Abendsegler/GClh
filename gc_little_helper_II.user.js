@@ -10427,7 +10427,7 @@ var mainGC = function() {
 // Ist spezielle Verarbeitung auf aktueller Seite erlaubt?
     function checkTaskAllowed(task, doAlert) {
         if ((document.location.href.match(/^https?:\/\/(www\.wherigo|www\.waymarking|labs\.geocaching)\.com/) || isMemberInPmoCache()) ||
-            (task != "Find Player" &&  document.location.href.match(/(\.com\/map\/|\.com\/play\/map\/)/))) {
+            (task != "Find Player" &&  document.location.href.match(/(\.com\/map\/|\.com\/play\/map)/))) {
             if (doAlert != false) alert("This GC little helper functionality is not available at this page.\n\nPlease go to the \"Dashboard\" page, there is anyway all of these \nfunctionality available. ( www.geocaching.com/my )");
             return false;
         }
