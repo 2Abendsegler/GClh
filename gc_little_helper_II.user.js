@@ -567,7 +567,6 @@ var variablesInit = function(c) {
     c.settings_lists_back_to_top = getValue("settings_lists_back_to_top", false);
     c.settings_searchmap_autoupdate_after_dragging = getValue("settings_searchmap_autoupdate_after_dragging", true);
     c.settings_improve_character_counter = getValue("settings_improve_character_counter", true);
-    c.settings_searchmap_compactLayout = getValue("settings_searchmap_compactLayout", false);
 
     try {
         if (c.userToken === null) {
@@ -7917,36 +7916,10 @@ var mainGC = function() {
                     }
                 }
             }
-            // Compact Layout for searchmap.
-            function compactLayout() {
-                if (settings_searchmap_compactLayout) {
-                    // Filter
-                    if (document.querySelector('#search-filters') && document.querySelector('.text-field')) {
-                        document.querySelector('.text-field').setAttribute('class', 'chip-field-input');
-                    }
-                    // Cache details
-                    if (document.querySelector('.cache-preview-header')) {
-                        document.querySelector('.more-info-link').getElementsByTagName('span')[1].setAttribute('style', 'display:none;');
-                        var buttons = document.querySelectorAll('.cache-preview-action-menu ul li');
-                        for (let i=0; i<buttons.length; i++) {
-                            buttons[i].title = buttons[i].getElementsByTagName('span')[0].innerHTML;
-                        }
-                        if (document.querySelector('.gclhOwner')) {
-                            document.querySelector('.gclhOwner').remove();
-                        }
-                        let span = document.createElement('span');
-                        span.setAttribute('class', 'gclhOwner');
-                        span.innerHTML = document.querySelector('.geocache-owner-name').innerHTML + ' ' + document.querySelector('.geocache-placed-date').innerHTML;
-                        document.querySelector('.geocache-owner').appendChild(span);
-                        if (document.querySelector('.view-all-row a')) document.querySelector('.view-all-row a').href += '#logs_section';
-                    }
-                }
-            }
 
             // Processing all steps.
             function processAllSearchMap() {
                 searchThisArea();
-                compactLayout();
             }
 
             // Build mutation observer for body.
@@ -7976,35 +7949,6 @@ var mainGC = function() {
             // Hide button search this area and icon loading.
             if (!document.location.href.match(/\.com\/play\/map\?(bm=|(.*)&nfb=GClh)/) && settings_searchmap_autoupdate_after_dragging) {
                 css += '#clear-map-control, .loading-container {display: none;}';
-            }
-            if (settings_searchmap_compactLayout) {
-                css += '.search-bar {padding: 10px !important;}';
-                // Cacheliste and Cache details.
-                css += '.geocache-item, .cache-preview-header {padding: 5px 15px !important;}';
-                css += '.cache-detail-preview {padding: unset !important;}';
-                css += '.more-info {top: 0 !important;}';
-                css += '.geocache-action-bar {padding: 0 10px 5px !important;}';
-                css += '.cache-preview-attributes, .cache-preview-action-menu {padding: 5px 12px !important;}';
-                css += '.cache-activity-log, .cache-open-text-cta {padding: 7px !important;}';
-                css += '.cache-preview-activities header {padding: 5px !important;}';
-                css += '.geocache-owner {margin-top: 0px !important; padding: 5px !important;} ';
-                css += '.geocache-owner-name, .geocache-placed-date {display: none !important;}';
-                css += '.gclhOwner {color: #9b9b9b;}'
-                css += '.attributes {margin-bottom: 0 !important; padding-bottom: 5px !important;}';
-                // Filter
-                css += '#search-filters-controls {padding-bottom: 7px !important;}';
-                css += '.search-filter-group label {padding: 5px !important;}';
-                css += '#search-filters-content .trinary-control, .search-filters-block.search-filters-attributes {margin-top: 0 !important;}';
-                css += '.search-filters-status .trinary-control {padding-top: 10px !important}';
-                css += '#search-filters-content .search-filters-block.search-filters-attributes > div + div {margin-top: 15px !important;}';
-                css += 'search-filters-content .search-filters-block {padding: 0 !important;}'
-                css += '.search-filters-block {padding: 10px !important;}';
-                css += '.search-filters-block.search-filters-status {padding-top:0 !important}';
-                css += '.label {text-transform: none !important;}';
-                css += '.chip-field-container, .text-field {min-height: unset !important; padding: 4px !important;}';
-                css += '#sidebar footer {padding: 5px 0 !important;}';
-                css += '.cache-preview-action-menu ul li span {display: none; !important;}';
-                css += 'lable {padding-top: 10px !important}';
             }
             if (css != "") appendCssStyle(css);
         } catch(e) {gclh_error("Improve search map",e);}
@@ -11846,7 +11790,6 @@ var mainGC = function() {
             html += "<div class='gclh_old_new_line'>New map (search map) only</div>";
             html += newParameterOn1;
             html += checkboxy('settings_searchmap_autoupdate_after_dragging', 'Automatic search for new caches after dragging') + "<br>";
-            html += checkboxy('settings_searchmap_compactLayout', 'Show compact Layout for searchmap') + "<br>";
             html += newParameterVersionSetzen('0.10') + newParameterOff;
             html += "</div>";
 
@@ -13140,7 +13083,6 @@ var mainGC = function() {
                 'settings_lists_back_to_top',
                 'settings_searchmap_autoupdate_after_dragging',
                 'settings_improve_character_counter',
-                'settings_searchmap_compactLayout',
             );
 
             for (var i = 0; i < checkboxes.length; i++) {
