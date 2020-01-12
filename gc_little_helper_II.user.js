@@ -7941,38 +7941,11 @@ var mainGC = function() {
                     hintAddEventListener();
                 }
             }
-            // Show button to collapse activity.
-            function collapseActivity() {
-                if (document.querySelector('.cache-preview-header')) {
-                    if (!document.querySelector('.opener')) {
-                        $('.cache-preview-activities header').append('<svg height="22" width="22" class="opener"><use xlink:href="/account/app/ui-icons/sprites/global.svg#icon-expand-svg-fill"></use></svg>');
-                        document.querySelector('.cache-preview-activities header').setAttribute('class', 'panel-header');
-                        document.querySelector('.cache-preview-activities header').addEventListener('click', function() {
-                            if (getValue('seachmap_activity_visible', true)) {
-                                $('.cache-preview-activities header').removeClass('show');
-                                $('.cache-preview-activities header').addClass('hide');
-                                $('.cache-preview-activities > div:nth-child(2)').fadeOut(300);
-                                setValue('seachmap_activity_visible', false);
-                            }else {
-                                $('.cache-preview-activities header').addClass('show');
-                                $('.cache-preview-activities header').removeClass('hide');
-                                $('.cache-preview-activities > div:nth-child(2)').fadeIn(300);
-                                setValue('seachmap_activity_visible', true);
-                            }
-                        });
-                    }
-                    if (getValue('seachmap_activity_visible', true)) $('.cache-preview-activities header').addClass('show');
-                    else {
-                        document.querySelector('.cache-preview-activities > div:nth-child(2)').style.display = 'none';
-                        $('.cache-preview-activities header').addClass('hide');
-                    }
-                }
-            }
 
             // Processing all steps.
             function processAllSearchMap() {
                 searchThisArea();
-                collapseActivity();
+                showHint();
             }
 
             // Build mutation observer for body.
@@ -8003,12 +7976,6 @@ var mainGC = function() {
             if (!document.location.href.match(/\.com\/play\/map\?(bm=|(.*)&nfb=GClh)/) && settings_searchmap_autoupdate_after_dragging) {
                 css += '#clear-map-control, .loading-container {display: none;}';
             }
-            // Show button to collapse activity.
-            css += '.panel-header {display: flex; flex-flow: row wrap; justify-content: space-between; align-items: center; cursor: pointer;}';
-            css += '.hide .opener {animation: rotatehide 0.3s forwards;}';
-            css += '.show .opener {animation: rotateShow 0.3s forwards;}';
-            css += '@keyframes rotatehide {0% {transform: rotate(0deg);} 100% {transform: rotate(180deg);}}';
-            css += '@keyframes rotateShow {0% {transform: rotate(180deg);} 100% {transform: rotate(0deg);}}';
             if (css != "") appendCssStyle(css);
         } catch(e) {gclh_error("Improve search map",e);}
     }
