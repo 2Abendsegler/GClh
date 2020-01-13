@@ -567,11 +567,11 @@ var variablesInit = function(c) {
     c.settings_lists_back_to_top = getValue("settings_lists_back_to_top", false);
     c.settings_searchmap_autoupdate_after_dragging = getValue("settings_searchmap_autoupdate_after_dragging", true);
     c.settings_improve_character_counter = getValue("settings_improve_character_counter", true);
-    c.settings_searchmap_compact_layout = getValue("settings_searchmap_compact_layout", true);
+    c.settings_searchmap_compact_layout = getValue("settings_searchmap_compact_layout", false);
     c.settings_searchmap_adapt_width = getValue("settings_searchmap_adapt_width", true);
-    c.settings_searchmap_strike_disabled = getValue("settings_searchmap_strike_disabled", true);
+    c.settings_searchmap_strike_disabled = getValue("settings_searchmap_strike_disabled", false);
     c.settings_searchmap_strike_disabled_color = getValue("settings_searchmap_strike_disabled_color", '4A4A4A');
-    c.settings_searchmap_show_hint = getValue("settings_searchmap_show_hint", true);
+    c.settings_searchmap_show_hint = getValue("settings_searchmap_show_hint", false);
 
     try {
         if (c.userToken === null) {
@@ -8081,11 +8081,11 @@ var mainGC = function() {
                 css += '.leaflet-popup-content {margin: 5px 8px !important;}';
                 css += '.cache-action-log-geocache, .cache-action-add-to-list, .cache-action-download-gpx, .cache-action-open-cache {padding: 5px 0 !important;}';
             }
-			// Adapt the width of the pop up.
-			if (settings_searchmap_adapt_width) {
-				css += '.leaflet-popup.context-menu.geocache-context-menu.leaflet-zoom-animated {width: auto !important; min-width: 300px;}'
-				css += '.leaflet-popup-content {width: auto !important;}'
-			}
+            // Adapt the width of the pop up.
+            if (settings_searchmap_adapt_width) {
+                css += '.leaflet-popup.context-menu.geocache-context-menu.leaflet-zoom-animated {width: auto !important; min-width: 300px;}'
+                css += '.leaflet-popup-content {width: auto !important;}'
+            }
             // Show button to collapse activity.
             css += '.panel-header {display: flex; flex-flow: row wrap; justify-content: space-between; align-items: center; cursor: pointer;}';
             css += '.hide .opener {animation: rotatehide 0.3s forwards;}';
