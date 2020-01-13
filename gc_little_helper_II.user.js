@@ -567,9 +567,10 @@ var variablesInit = function(c) {
     c.settings_lists_back_to_top = getValue("settings_lists_back_to_top", false);
     c.settings_searchmap_autoupdate_after_dragging = getValue("settings_searchmap_autoupdate_after_dragging", true);
     c.settings_improve_character_counter = getValue("settings_improve_character_counter", true);
-    c.settings_searchmap_show_hint = getValue("settings_searchmap_show_hint", true);
+    c.settings_searchmap_compact_layout = getValue("settings_searchmap_compact_layout", true);
     c.settings_searchmap_strike_disabled = getValue("settings_searchmap_strike_disabled", true);
     c.settings_searchmap_strike_disabled_color = getValue("settings_searchmap_strike_disabled_color", '4A4A4A');
+    c.settings_searchmap_show_hint = getValue("settings_searchmap_show_hint", true);
 
     try {
         if (c.userToken === null) {
@@ -7919,54 +7920,25 @@ var mainGC = function() {
                     }
                 }
             }
-            // Show hint automatically.
-            function showHint() {
-                if (document.querySelector('.cache-preview-header') && settings_searchmap_show_hint) {
-                    function hintAddEventListener() {
-                        function waitForDescriptionBtn(waitCount) {
-                            if (document.querySelector('.cache-open-text-cta')) {
-                                // I used the event listener because the mutation observer is not triggered.
-                                document.querySelector('.cache-open-text-cta').addEventListener('click', function() {
-                                    function waitForDescription(waitCount) {
-                                        if (document.querySelector('.cache-hint-toggle')) {
-                                            $('.hint-text').addClass('is-visible');
-                                            document.querySelector('.cache-hint-toggle').innerHTML = 'Hide hint';
-                                            document.querySelector('.close-cta').addEventListener('click', hintAddEventListener);
-                                        }else {waitCount++; if (waitCount <= 50) setTimeout(function(){waitForDescription(waitCount);}, 50);}
-                                    }
-                                    waitForDescription(0);
-                                });
-                            }else {waitCount++; if (waitCount <= 100) setTimeout(function(){waitForDescriptionBtn(waitCount);}, 50);}
+            // Compact layout on detail screen.
+            function compactLayout() {
+                if (settings_searchmap_compact_layout) {
+                    // Filter
+                    if (document.querySelector('#search-filters') && document.querySelector('.text-field')) {
+                        document.querySelector('.text-field').setAttribute('class', 'chip-field-input');
+                    }
+                    // Cache details
+                    if (document.querySelector('.cache-preview-header')) {
+                        document.querySelector('.more-info-link').getElementsByTagName('span')[1].style = 'display:none;';
+                        var buttons = document.querySelectorAll('.cache-preview-action-menu ul li');
+                        for (let i=0; i<buttons.length; i++) {
+                            buttons[i].title = buttons[i].getElementsByTagName('span')[0].innerHTML;
                         }
-                        waitForDescriptionBtn(0);
-                    }
-                    hintAddEventListener();
-                }
-            }
-            // Show button to collapse activity.
-            function collapseActivity() {
-                if (document.querySelector('.cache-preview-header')) {
-                    if (!document.querySelector('.opener')) {
-                        $('.cache-preview-activities header').append('<svg height="22" width="22" class="opener"><use xlink:href="/account/app/ui-icons/sprites/global.svg#icon-expand-svg-fill"></use></svg>');
-                        document.querySelector('.cache-preview-activities header').setAttribute('class', 'panel-header');
-                        document.querySelector('.cache-preview-activities header').addEventListener('click', function() {
-                            if (getValue('seachmap_activity_visible', true)) {
-                                $('.cache-preview-activities header').removeClass('show');
-                                $('.cache-preview-activities header').addClass('hide');
-                                $('.cache-preview-activities > div:nth-child(2)').fadeOut();
-                                setValue('seachmap_activity_visible', false);
-                            }else {
-                                $('.cache-preview-activities header').addClass('show');
-                                $('.cache-preview-activities header').removeClass('hide');
-                                $('.cache-preview-activities > div:nth-child(2)').fadeIn();
-                                setValue('seachmap_activity_visible', true);
-                            }
-                        });
-                    }
-                    if (getValue('seachmap_activity_visible', true)) $('.cache-preview-activities header').addClass('show');
-                    else {
-                        document.querySelector('.cache-preview-activities > div:nth-child(2)').style.display = 'none';
-                        $('.cache-preview-activities header').addClass('hide');
+                        if (document.querySelector('.gclhOwner')) document.querySelector('.gclhOwner').remove();
+                        let span = document.createElement('span');
+                        span.setAttribute('class', 'gclhOwner');
+                        span.innerHTML = document.querySelector('.geocache-owner-name').innerHTML + ' ' + document.querySelector('.geocache-placed-date').innerHTML;
+                        document.querySelector('.geocache-owner').appendChild(span);
                     }
                 }
             }
@@ -7978,18 +7950,74 @@ var mainGC = function() {
                         document.querySelector('.header-top-left h1').style.textDecoration = 'line-through';
                         document.querySelector('.header-top-left h1').style.color = '#' + settings_searchmap_strike_disabled_color;
                     }else if (document.querySelector('.cache-detail-preview')) {
-						document.querySelector('.header-top-left h1').style.textDecoration = 'unset';
-						document.querySelector('.header-top-left h1').style.color = '#4a4a4a';
-					}
-				}
+                        document.querySelector('.header-top-left h1').style.textDecoration = 'unset';
+                        document.querySelector('.header-top-left h1').style.color = '#4a4a4a';
+                    }
+                }
+            }
+            // Show hint automatically.
+            function showHint() {
+                if (document.querySelector('.cache-preview-header')) {
+                    function hintAddEventListener() {
+                        function waitForDescriptionBtn(waitCount) {
+                            if (document.querySelector('.cache-open-text-cta')) {
+                                // I used the event listener because the mutation observer is not triggered when the description open or close.
+                                document.querySelector('.cache-open-text-cta').addEventListener('click', function() {
+                                    function waitForDescription(waitCount) {
+                                        if (document.querySelector('.cache-preview-description')) {
+                                            if (document.querySelector('.cache-hint-toggle') && settings_searchmap_show_hint) {
+                                                $('.hint-text').addClass('is-visible');
+                                                document.querySelector('.cache-hint-toggle').innerHTML = 'Hide hint';
+                                            }
+                                            // The Ownername and the collapse button have been deleted because the mutation observer is not triggered when the description open or close.
+                                            document.querySelector('.close-cta').addEventListener('click', function() {setTimeout(processAllSearchMap), 100});
+                                        } else {waitCount++; if (waitCount <= 50) setTimeout(function(){waitForDescription(waitCount);}, 50);}
+                                    }
+                                    waitForDescription(0);
+                                });
+                            } else {waitCount++; if (waitCount <= 100) setTimeout(function(){waitForDescriptionBtn(waitCount);}, 50);}
+                        }
+                        waitForDescriptionBtn(0);
+                    }
+                    hintAddEventListener();
+                }
+            }
+            // Show button to collapse activity.
+            function collapseActivity() {
+                if (document.querySelector('.cache-preview-header')) {
+                    var header = document.getElementsByClassName('cache-preview-activities')[0].getElementsByTagName('header')[0];
+                    if (!document.querySelector('.opener')) {
+                        $(header).append('<svg height="22" width="22" class="opener"><use xlink:href="/account/app/ui-icons/sprites/global.svg#icon-expand-svg-fill"></use></svg>');
+                        $(header).addClass('panel-header');
+                        document.querySelector('.cache-preview-activities header').addEventListener('click', function() {
+                            if (getValue('seachmap_activity_visible', true)) {
+                                $(header).removeClass('show');
+                                $(header).addClass('hide');
+                                $('.cache-preview-activities > div:nth-child(2)').fadeOut();
+                                setValue('seachmap_activity_visible', false);
+                            }else {
+                                $(header).addClass('show');
+                                $(header).removeClass('hide');
+                                $('.cache-preview-activities > div:nth-child(2)').fadeIn();
+                                setValue('seachmap_activity_visible', true);
+                            }
+                        });
+                    }
+                    if (getValue('seachmap_activity_visible', true)) $(header).addClass('show');
+                    else {
+                        document.querySelector('.cache-preview-activities > div:nth-child(2)').style.display = 'none';
+                        $(header).addClass('hide');
+                    }
+                }
             }
 
             // Processing all steps.
             function processAllSearchMap() {
                 searchThisArea();
+                compactLayout();
+                strikeDisabled();
                 showHint();
                 collapseActivity();
-                strikeDisabled();
             }
 
             // Build mutation observer for body.
@@ -8020,17 +8048,11 @@ var mainGC = function() {
             if (!document.location.href.match(/\.com\/play\/map\?(bm=|(.*)&nfb=GClh)/) && settings_searchmap_autoupdate_after_dragging) {
                 css += '#clear-map-control, .loading-container {display: none;}';
             }
-            // Show button to collapse activity.
-            css += '.panel-header {display: flex; flex-flow: row wrap; justify-content: space-between; align-items: center; cursor: pointer;}';
-            css += '.hide .opener {animation: rotatehide 0.4s forwards;}';
-            css += '.show .opener {animation: rotateShow 0.4s forwards;}';
-            css += '@keyframes rotatehide {0% {transform: rotate(0deg);} 100% {transform: rotate(180deg);}}';
-            css += '@keyframes rotateShow {0% {transform: rotate(180deg);} 100% {transform: rotate(0deg);}}';
-            if (settings_searchmap_compactLayout) {
+            if (settings_searchmap_compact_layout) {
                 css += '.search-bar {padding: 10px !important;}';
                 // Cacheliste and Cache details.
                 css += '.geocache-item, .cache-preview-header {padding: 5px 15px !important;}';
-                css += '.cache-detail-preview {padding: unset !important;}';
+                css += '.cache-detail-preview {padding: 0 !important; height: 100% !important;}';
                 css += '.more-info {top: 0 !important;}';
                 css += '.geocache-action-bar {padding: 0 10px 5px !important;}';
                 css += '.cache-preview-attributes, .cache-preview-action-menu {padding: 5px 12px !important;}';
@@ -8054,10 +8076,16 @@ var mainGC = function() {
                 css += '#sidebar footer {padding: 5px 0 !important;}';
                 css += '.cache-preview-action-menu ul li span {display: none; !important;}';
                 css += 'lable {padding-top: 10px !important}';
-				// Pop up
-				css += '.leaflet-popup-content {margin: 5px 8px !important;}';
-				css += '.cache-action-log-geocache, cache-action-add-to-list, .cache-action-download-gpx, .cache-action-open-cache {padding: 5px 0 !important;}';
+                // Pop up
+                css += '.leaflet-popup-content {margin: 5px 8px !important;}';
+                css += '.cache-action-log-geocache, .cache-action-add-to-list, .cache-action-download-gpx, .cache-action-open-cache {padding: 5px 0 !important;}';
             }
+            // Show button to collapse activity.
+            css += '.panel-header {display: flex; flex-flow: row wrap; justify-content: space-between; align-items: center; cursor: pointer;}';
+            css += '.hide .opener {animation: rotatehide 0.3s forwards;}';
+            css += '.show .opener {animation: rotateShow 0.3s forwards;}';
+            css += '@keyframes rotatehide {0% {transform: rotate(0deg);} 100% {transform: rotate(180deg);}}';
+            css += '@keyframes rotateShow {0% {transform: rotate(180deg);} 100% {transform: rotate(0deg);}}';
             if (css != "") appendCssStyle(css);
         } catch(e) {gclh_error("Improve search map",e);}
     }
@@ -11898,10 +11926,11 @@ var mainGC = function() {
             html += "<div class='gclh_old_new_line'>New map (search map) only</div>";
             html += newParameterOn1;
             html += checkboxy('settings_searchmap_autoupdate_after_dragging', 'Automatic search for new caches after dragging') + "<br>";
-            html += checkboxy('settings_searchmap_show_hint', 'Show hint automatically') + "<br>";
+            html += checkboxy('settings_searchmap_compact_layout', 'Show compact layout on detail screen') + "<br>";
             html += checkboxy('settings_searchmap_strike_disabled', 'Strike through title of disabled caches');
             html += "&nbsp;<input class='gclh_form color' type='text' size=6 id='settings_searchmap_strike_disabled_color' style='margin-left: 0px;' value='" + getValue("settings_searchmap_strike_disabled_color", "4A4A4A") + "'>";
             html += "<img src=" + global_restore_icon + " id='restore_settings_searchmap_strike_disabled_color' title='back to default' style='width: 12px; cursor: pointer;'><br>";
+            html += checkboxy('settings_searchmap_show_hint', 'Show hint automatically') + "<br>";
             html += newParameterVersionSetzen('0.10') + newParameterOff;
             html += "</div>";
 
@@ -13199,8 +13228,9 @@ var mainGC = function() {
                 'settings_lists_back_to_top',
                 'settings_searchmap_autoupdate_after_dragging',
                 'settings_improve_character_counter',
-                'settings_searchmap_show_hint',
+                'settings_searchmap_compact_layout',
                 'settings_searchmap_strike_disabled',
+                'settings_searchmap_show_hint',
             );
 
             for (var i = 0; i < checkboxes.length; i++) {
