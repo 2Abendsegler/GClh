@@ -7965,6 +7965,8 @@ var mainGC = function() {
                                 // I used the event listener because the mutation observer is not triggered when the description open or close.
                                 document.querySelector('.cache-open-text-cta').addEventListener('click', function() {
                                     function waitForDescription(waitCount) {
+                                        // Scroll up to top after "Description & Hint" was clicked.
+                                        document.querySelector('.preview-main-inner').scrollTo({top: 0, left: 0, behavior: "smooth"});
                                         if (document.querySelector('.cache-preview-description')) {
                                             if (document.querySelector('.cache-hint-toggle') && settings_searchmap_show_hint) {
                                                 $('.hint-text').addClass('is-visible');
