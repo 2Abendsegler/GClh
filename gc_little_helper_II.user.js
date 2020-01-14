@@ -149,6 +149,7 @@ var constInit = function(c) {
     c.idCopyUrl = "idUrl";
     c.idCopyCoords = "idCoords";
     c.idCopyOrg = "idOrg";
+    c.idCopyFull = "idFull";    
     // Define bookmarks:
     c.bookmarks = new Array();
     // WICHTIG: Die Reihenfolge darf hier auf keinen Fall geändert werden, weil dadurch eine falsche Zuordnung zu den gespeicherten Userdaten erfolgen würde!
@@ -2239,6 +2240,7 @@ var mainGC = function() {
             } else {
                 html += '    <div class="copydata-content-layer copydata_click" data-id="'+idCopyCoords+'">Coordinates</div>';
             }
+            html += '    <div class="copydata-content-layer copydata_click" data-id="'+idCopyFull+'">Complete Information</div>';
             html += '  </div>';
             $('.copydata_click')[0].parentNode.innerHTML += html;
             $('.copydata_click').removeClass('working');
@@ -2249,6 +2251,7 @@ var mainGC = function() {
     }
     function copydata_copy( thisObject ) {
         const el = document.createElement('textarea');
+        var g_note = $('#viewCacheNote')[0].innerHTML;        
         switch ($(thisObject).data('id')) {
             case idCopyName:
                 el.value = $('#ctl00_ContentBody_CacheName')[0].innerHTML.replace(new RegExp('&nbsp;', 'g'),' ');
@@ -2264,6 +2267,18 @@ var mainGC = function() {
                 break;
             case idCopyOrg:
                 el.value = determineOriginalListingCoords();
+                break;
+            case idCopyFull:
+                el.value =
+                    $('#ctl00_ContentBody_CacheName')[0].innerHTML.replace(new RegExp('&nbsp;', 'g'),' ') + "\n" +
+                    "https://coord.info/"+$('#ctl00_ContentBody_CoordInfoLinkControl1_uxCoordInfoCode')[0].innerHTML + "\n";
+                if (determineOriginalListingCoords() !== "") {
+                    e1.value += determineOriginalListingCoords() + "\n";
+                }
+                if (g_note != null && (g_note != "" && g_note != "Click to enter a note" && g_note != "Klicken zum Eingeben einer Notiz")) {
+                   // add user note
+                   el.value += "\n" + g_note.replace(new RegExp('&gt;', 'g'),'>').replace(new RegExp('&lt;', 'g'),'<');
+                }
                 break;
             default:
                 el.value = "";
