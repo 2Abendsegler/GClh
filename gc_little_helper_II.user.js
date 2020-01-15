@@ -1894,7 +1894,7 @@ var mainGC = function() {
         } catch(e) {gclh_error("Show log totals symbols at the top",e);}
     }
 
-// Copy coordinates to clipboard.
+// Copy Coords to clipboard.
     if (is_page("cache_listing") && $('#uxLatLonLink')[0]) {
         try {
             var cc2c = false;
@@ -1931,28 +1931,8 @@ var mainGC = function() {
 
 // Copy GC Code to clipboard.
     if (is_page('cache_listing') && $('.CoordInfoLink')[0] && $('#ctl00_ContentBody_CoordInfoLinkControl1_uxCoordInfoCode')[0]) {
-        try {
-            var ctoc = false;
-            var span = document.createElement('span');
-            span.innerHTML = '<a href="javascript:void(0);" id="gclh_ctoc"><img src="'+global_copy_icon+'" title="Copy GC Code to clipboard" style="vertical-align: text-top;"></a>';
-            $('.CoordInfoLink')[0].parentNode.insertBefore(span, $('.CoordInfoLink')[0]);
-            $('#gclh_ctoc')[0].addEventListener('click', function() {
-                // Tastenkombination Strg+c ausführen für eigene Verarbeitung.
-                ctoc = true;
-                document.execCommand('copy');
-            }, false);
-            document.addEventListener('copy', function(e){
-                // Normale Tastenkombination Strg+c für markierter Bereich hier nicht verarbeiten. Nur eigene Tastenkombination Strg+c hier verarbeiten.
-                if (!ctoc) return;
-                // Gegebenenfalls markierter Bereich wird hier nicht beachtet.
-                e.preventDefault();
-                // GC Code wird hier verarbeitet.
-                e.clipboardData.setData('text/plain', $('#ctl00_ContentBody_CoordInfoLinkControl1_uxCoordInfoCode')[0].innerHTML);
-                $('#gclh_ctoc')[0].style.opacity = '0.3';
-                setTimeout(function() { $('#gclh_ctoc')[0].style.opacity = 'unset'; }, 200);
-                ctoc = false;
-            });
-        } catch(e) {gclh_error("Copy GC Code to clipboard",e);}
+
+        addCopyToClipboardLink($('#ctl00_ContentBody_CoordInfoLinkControl1_uxCoordInfoCode')[0], $('.CoordInfoLink')[0], "GC Code");       
     }
 
 // Show favorite percentage.
@@ -8450,8 +8430,6 @@ var mainGC = function() {
             css += "span.premium_only img {margin-right:0px;}";
             if (browser == 'firefox') css += ".gclh_owner {max-width: 110px;} .map-item h4 a {max-width: 265px;} .gclh_owner, .map-item h4 a {display: inline-block; white-space: nowrap; overflow: -moz-hidden-unscrollable; text-overflow: ellipsis;}";
             appendCssStyle(css);
-            var global_ctoc_flag = false;
-            var global_ctoc_cont = "";
 
             // create an observer instance
             var observer = new MutationObserver(function(mutations) {
@@ -8614,30 +8592,7 @@ var mainGC = function() {
                             side[0].appendChild(link);
                         }
 
-                        // Copy GC code to clipboard.
-                        var div = document.createElement('div');
-                        div.className = "gclh_ctoc";
-                        var code = gccode;
-                        div.id = "gclh_ctoc_" + code;
-                        div.innerHTML = '<a href="javascript:void(0);"><img src="'+global_copy_icon+'" title="Copy GC Code to clipboard"></a>';
-                        $(this).find('h4')[0].parentNode.insertBefore(div, $(this).find('h4')[0]);
-                        $(this).find('#gclh_ctoc_'+code)[0].addEventListener('click', function() {
-                            // Tastenkombination Strg+c ausführen für eigene Verarbeitung.
-                            global_ctoc_flag = true;
-                            global_ctoc_cont = code;
-                            document.execCommand('copy');
-                        }, false);
-                        document.addEventListener('copy', function(e){
-                            // Normale Tastenkombination Strg+c für markierten Bereich nicht verarbeiten, nur eigene Tastenkombination Strg+c verarbeiten.
-                            if (!global_ctoc_flag) return;
-                            global_ctoc_flag = false;
-                            // Gegebenenfalls markierter Bereich wird nicht beachtet.
-                            e.preventDefault();
-                            // GC Code verarbeiten.
-                            e.clipboardData.setData('text/plain', global_ctoc_cont);
-                            $('#gclh_ctoc_'+global_ctoc_cont)[0].style.opacity = '0.3';
-                            setTimeout(function() { $('#gclh_ctoc_'+global_ctoc_cont)[0].style.opacity = 'unset'; }, 200);
-                        });
+                        addCopyToClipboardLink(gccode, $(this).find('h4')[0], "GC Code", "float: right;");
                     });
                 });
             });
@@ -10039,6 +9994,58 @@ var mainGC = function() {
         else if (tmp2.indexOf(".") != -1) tmp2 = tmp2 + n.slice(tmp2.length - tmp2.indexOf(".") - 1);
         var new_lng = pre + " " + tmp1 + "° " + tmp2;
         return new_lat + " " + new_lng;
+    }
+    /*
+        element_to_copy:    innerHtml of this element will be copied. If you pass
+                            a string, the string will be the copied text. In this 
+                            case you have to pass an anker_element!!!
+
+        anker_element:      after this element the copy marker will be inserted,
+                            if you set this to null, the element_to_copy will be
+                            used as an anker
+
+        title:              you can enter a text that will be displayed between 
+                            Copy --TEXT OF TITLE-- to clipboard. If you leave it 
+                            blank, it will just "Copy to clipboard" be displayed
+
+        style               You can add styles to the surrounding span by passing
+                            it in this variable
+     */
+    function addCopyToClipboardLink(element_to_copy, anker_element= null, title="", style= ""){
+        try {
+            var ctoc = false;
+            var span = document.createElement('span');
+            span.innerHTML = '<a class="ctoc_link" href="javascript:void(0);"><img src="'+global_copy_icon+'" title="Copy ' + title + ' ' + 'to clipboard" style="vertical-align: text-top;"> </a>';
+            if(style != ""){
+                span.setAttribute("style", style);
+            }
+            if(!anker_element) anker_element = element_to_copy;
+
+            anker_element.parentNode.insertBefore(span, anker_element);
+
+            appendCssStyle(".ctoc_link:link {text-decoration: none ;}");
+
+            span.addEventListener('click', function() {
+                // Tastenkombination Strg+c ausführen für eigene Verarbeitung.
+                ctoc = true;
+                document.execCommand('copy');
+            }, false);
+            document.addEventListener('copy', function(e){
+                // Normale Tastenkombination Strg+c für markierter Bereich hier nicht verarbeiten. Nur eigene Tastenkombination Strg+c hier verarbeiten.
+                if (!ctoc) return;
+                // Gegebenenfalls markierter Bereich wird hier nicht beachtet.
+                e.preventDefault();
+                // Copy Data wird hier verarbeitet.
+                if (typeof element_to_copy === 'string' || element_to_copy instanceof String){
+                    e.clipboardData.setData('text/plain', element_to_copy);
+                }else{
+                    e.clipboardData.setData('text/plain', element_to_copy.innerHTML);
+                }
+                span.style.opacity = '0.3';
+                setTimeout(function() { span.style.opacity = 'unset'; }, 200);
+                ctoc = false;
+            });
+        } catch(e) {gclh_error("Copy to clipboard",e);}
     }
 
 // Close Overlays, Find Player, Config, Sync.
