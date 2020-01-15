@@ -8700,7 +8700,7 @@ var mainGC = function() {
                     });
                     // Add it again
                     $('.cache-preview-header .cache-metadata .cache-metadata-code').each(function(){
-                        addCopyToClipboardLink(this, null, "GC Code");
+                        addCopyToClipboardLink(this, null, "GC Code", "margin-right: 3px;");
                     });
 
                     //Remove old Favi-Score
