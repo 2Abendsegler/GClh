@@ -147,8 +147,9 @@ var constInit = function(c) {
     c.idCopyName = "idName";
     c.idCopyCode = "idCode";
     c.idCopyUrl = "idUrl";
-    c.idCopyCoords = "idCoords";
-    c.idCopyOrg = "idOrg";
+    c.idCopyOrgCoords = "idOrgCoords";
+    c.idCopyCorrCoords = "idCorrCoords";
+    c.idCopyGCTourCoords = "idGCTourCoords";
     // Define bookmarks:
     c.bookmarks = new Array();
     // WICHTIG: Die Reihenfolge darf hier auf keinen Fall geändert werden, weil dadurch eine falsche Zuordnung zu den gespeicherten Userdaten erfolgen würde!
@@ -1893,56 +1894,45 @@ var mainGC = function() {
         } catch(e) {gclh_error("Show log totals symbols at the top",e);}
     }
 
-// Copy coordinates to clipboard.
+// Copy Coords to clipboard.
     if (is_page("cache_listing") && $('#uxLatLonLink')[0]) {
         try {
             var cc2c = false;
             var span2 = document.createElement('span');
-            span2.innerHTML = '<a href="javascript:void(0);" id="gclh_cc2c"><img src="'+global_copy_icon+'" title="Copy Coordinates to Clipboard" style="vertical-align: text-top;"></a> ';
+            span2.innerHTML = '<a href="javascript:void(0);" class="working" id="gclh_cc2c"><img src="'+global_copy_icon+'" style="vertical-align: text-top;"></a> ';
             $('#uxLatLonLink')[0].parentNode.insertBefore(span2, $('#uxLatLonLink')[0] );
-            $('#gclh_cc2c')[0].addEventListener('click', function() {
-                // Tastenkombination Strg+c ausführen für eigene Verarbeitung.
-                cc2c = true;
-                document.execCommand('copy');
-            }, false);
-            document.addEventListener('copy', function(e){
-                // Normale Tastenkombination Strg+c für markierter Bereich hier nicht verarbeiten. Nur eigene Tastenkombination Strg+c hier verarbeiten.
-                if (!cc2c) return;
-                // Gegebenenfalls markierter Bereich wird hier nicht beachtet.
-                e.preventDefault();
-                // Angezeigte Koordinaten werden hier verarbeitet.
-                e.clipboardData.setData('text/plain', determineListingCoords());
-                $('#gclh_cc2c')[0].style.opacity = '0.3';
-                setTimeout(function() { $('#gclh_cc2c')[0].style.opacity = 'unset'; }, 200);
-                cc2c = false;
-            });
+
+            function copyCoordinatesToClipboard(waitCount) { // GDPR
+                if ( typeof unsafeWindow.mapLatLng !== "undefined" && unsafeWindow.mapLatLng !== null &&
+                     typeof unsafeWindow.mapLatLng.isUserDefined !== "undefined" ) { // GDPR
+                    $('#gclh_cc2c').removeClass('working');
+                    $('#gclh_cc2c')[0].setAttribute('title', (determineListingCoords('Corr') !== "" ? "Copy Corrected Coordinates to Clipboard" : "Copy Coordinates to Clipboard"));
+                    $('#gclh_cc2c')[0].addEventListener('click', function() {
+                        // Tastenkombination Strg+c ausführen für eigene Verarbeitung.
+                        cc2c = true;
+                        document.execCommand('copy');
+                    }, false);
+                    document.addEventListener('copy', function(e){
+                        // Normale Tastenkombination Strg+c für markierter Bereich hier nicht verarbeiten. Nur eigene Tastenkombination Strg+c hier verarbeiten.
+                        if (!cc2c) return;
+                        // Gegebenenfalls markierter Bereich wird hier nicht beachtet.
+                        e.preventDefault();
+                        // Angezeigte Koordinaten werden hier verarbeitet.
+                        e.clipboardData.setData('text/plain', determineListingCoords('CorrOrg'));
+                        $('#gclh_cc2c')[0].style.opacity = '0.3';
+                        setTimeout(function() { $('#gclh_cc2c')[0].style.opacity = 'unset'; }, 200);
+                        cc2c = false;
+                    });
+                } else {waitCount++; if (waitCount <= 100) setTimeout(function(){copyCoordinatesToClipboard(waitCount);}, 100);} // GDPR
+            }
+            copyCoordinatesToClipboard(0); // GDPR
         } catch(e) {gclh_error("Copy coordinates to clipboard:",e);}
     }
 
 // Copy GC Code to clipboard.
     if (is_page('cache_listing') && $('.CoordInfoLink')[0] && $('#ctl00_ContentBody_CoordInfoLinkControl1_uxCoordInfoCode')[0]) {
-        try {
-            var ctoc = false;
-            var span = document.createElement('span');
-            span.innerHTML = '<a href="javascript:void(0);" id="gclh_ctoc"><img src="'+global_copy_icon+'" title="Copy GC Code to clipboard" style="vertical-align: text-top;"></a>';
-            $('.CoordInfoLink')[0].parentNode.insertBefore(span, $('.CoordInfoLink')[0]);
-            $('#gclh_ctoc')[0].addEventListener('click', function() {
-                // Tastenkombination Strg+c ausführen für eigene Verarbeitung.
-                ctoc = true;
-                document.execCommand('copy');
-            }, false);
-            document.addEventListener('copy', function(e){
-                // Normale Tastenkombination Strg+c für markierter Bereich hier nicht verarbeiten. Nur eigene Tastenkombination Strg+c hier verarbeiten.
-                if (!ctoc) return;
-                // Gegebenenfalls markierter Bereich wird hier nicht beachtet.
-                e.preventDefault();
-                // GC Code wird hier verarbeitet.
-                e.clipboardData.setData('text/plain', $('#ctl00_ContentBody_CoordInfoLinkControl1_uxCoordInfoCode')[0].innerHTML);
-                $('#gclh_ctoc')[0].style.opacity = '0.3';
-                setTimeout(function() { $('#gclh_ctoc')[0].style.opacity = 'unset'; }, 200);
-                ctoc = false;
-            });
-        } catch(e) {gclh_error("Copy GC Code to clipboard",e);}
+
+        addCopyToClipboardLink($('#ctl00_ContentBody_CoordInfoLinkControl1_uxCoordInfoCode')[0], $('.CoordInfoLink')[0], "GC Code");       
     }
 
 // Show favorite percentage.
@@ -2218,34 +2208,46 @@ var mainGC = function() {
         css += "  background-image: url(" + global_copy_icon + ")}";
         appendCssStyle(css);
         var html = "";
-        html += '<div class="GClhdropdown">';
+        html += '<div class="GClhdropdown copydata_head">';
         html += '  <a class="GClhdropbtn copydata_click copydata-sidebar-icon working" data-id="'+idCopyName+'">Copy Data to Clipboard</a>';
         html += '</div>'
         $('.CacheDetailNavigation ul').first().append('<li>'+html+'</li>');
-        create_copydata_menu_content(0); // GDPR
+        check_for_copydata_menu(0); // GDPR
     }
-    function create_copydata_menu_content(waitCount) { // GDPR
+    function check_for_copydata_menu(waitCount) { // GDPR
         if ( typeof unsafeWindow.mapLatLng !== "undefined" && unsafeWindow.mapLatLng !== null &&
              typeof unsafeWindow.mapLatLng.isUserDefined !== "undefined" ) { // GDPR
-            var html = "";
-            html += '  <div class="GClhdropdown-content" id="CopyDropDown">';
-            html += '    <div class="copydata-content-layer copydata_click" data-id="'+idCopyName+'">Cache Name</div>';
-            html += '    <div class="copydata-content-layer copydata_click" data-id="'+idCopyCode+'">GC Code</div>';
-            html += '    <div class="copydata-content-layer copydata_click" data-id="'+idCopyUrl+'">Cache Link</div>';
-            // Check for original coords.
-            if (determineOriginalListingCoords() !== "") {
-                html += '    <div class="copydata-content-layer copydata_click" data-id="'+idCopyCoords+'">Corrected Coordinates</div>';
-                html += '    <div class="copydata-content-layer copydata_click" data-id="'+idCopyOrg+'">Original Coordinates</div>';
-            } else {
-                html += '    <div class="copydata-content-layer copydata_click" data-id="'+idCopyCoords+'">Coordinates</div>';
-            }
-            html += '  </div>';
-            $('.copydata_click')[0].parentNode.innerHTML += html;
             $('.copydata_click').removeClass('working');
-            $('.copydata_click').click(function() {
-                copydata_copy( this );
-            });
-        } else {waitCount++; if (waitCount <= 100) setTimeout(function(){create_copydata_menu_content(waitCount);}, 100);} // GDPR
+            $('.copydata_head')[0].addEventListener('mouseover', create_copydata_menu_content);
+        } else {waitCount++; if (waitCount <= 100) setTimeout(function(){check_for_copydata_menu(waitCount);}, 100);} // GDPR
+    }
+    function create_copydata_menu_content() {
+        if ($('#CopyDropDown.hover')[0]) return;
+        remove_copydata_menu_content();
+        var html = "";
+        html += '  <div class="GClhdropdown-content" id="CopyDropDown">';
+        html += '    <div class="copydata-content-layer copydata_click" data-id="'+idCopyName+'">Cache Name</div>';
+        html += '    <div class="copydata-content-layer copydata_click" data-id="'+idCopyCode+'">GC Code</div>';
+        html += '    <div class="copydata-content-layer copydata_click" data-id="'+idCopyUrl+'">Cache Link</div>';
+        if (determineListingCoords("Corr") !== "") {
+            html += '    <div class="copydata-content-layer copydata_click" data-id="'+idCopyCorrCoords+'">Corrected Coordinates</div>';
+            html += '    <div class="copydata-content-layer copydata_click" data-id="'+idCopyOrgCoords+'">Original Coordinates</div>';
+        } else {
+            html += '    <div class="copydata-content-layer copydata_click" data-id="'+idCopyOrgCoords+'">Coordinates</div>';
+        }
+        if (determineListingCoords("GCTour") !== "") {
+            html += '    <div class="copydata-content-layer copydata_click" data-id="'+idCopyGCTourCoords+'">GCTour Coordinates</div>';
+        }
+        html += '  </div>';
+        $('.copydata_click')[0].parentNode.innerHTML += html;
+        $('#CopyDropDown').addClass('hover');
+        $('.copydata_head')[0].addEventListener('mouseleave', remove_copydata_menu_content);
+        $('.copydata_click').click(function() {
+            copydata_copy(this);
+        });
+    }
+    function remove_copydata_menu_content() {
+        $('#CopyDropDown').remove();
     }
     function copydata_copy( thisObject ) {
         const el = document.createElement('textarea');
@@ -2259,11 +2261,14 @@ var mainGC = function() {
             case idCopyUrl:
                 el.value = "https://coord.info/"+$('#ctl00_ContentBody_CoordInfoLinkControl1_uxCoordInfoCode')[0].innerHTML;
                 break;
-            case idCopyCoords:
-                el.value = determineListingCoords();
+            case idCopyCorrCoords:
+                el.value = determineListingCoords('Corr');
                 break;
-            case idCopyOrg:
-                el.value = determineOriginalListingCoords();
+            case idCopyOrgCoords:
+                el.value = determineListingCoords('Org');
+                break;
+            case idCopyGCTourCoords:
+                el.value = determineListingCoords('GCTour');
                 break;
             default:
                 el.value = "";
@@ -2272,8 +2277,7 @@ var mainGC = function() {
         el.select();
         document.execCommand('copy');
         document.body.removeChild(el);
-        $('#CopyDropDown')[0].style.visibility = 'hidden';
-        setTimeout(function() { $('#CopyDropDown')[0].style.visibility = 'unset'; }, 100);
+        remove_copydata_menu_content();
     }
 
 // Links BRouter, Flopps Map, GPSVisualizer and Openrouteservice at right sidebar.
@@ -8426,8 +8430,6 @@ var mainGC = function() {
             css += "span.premium_only img {margin-right:0px;}";
             if (browser == 'firefox') css += ".gclh_owner {max-width: 110px;} .map-item h4 a {max-width: 265px;} .gclh_owner, .map-item h4 a {display: inline-block; white-space: nowrap; overflow: -moz-hidden-unscrollable; text-overflow: ellipsis;}";
             appendCssStyle(css);
-            var global_ctoc_flag = false;
-            var global_ctoc_cont = "";
 
             // create an observer instance
             var observer = new MutationObserver(function(mutations) {
@@ -8590,30 +8592,7 @@ var mainGC = function() {
                             side[0].appendChild(link);
                         }
 
-                        // Copy GC code to clipboard.
-                        var div = document.createElement('div');
-                        div.className = "gclh_ctoc";
-                        var code = gccode;
-                        div.id = "gclh_ctoc_" + code;
-                        div.innerHTML = '<a href="javascript:void(0);"><img src="'+global_copy_icon+'" title="Copy GC Code to clipboard"></a>';
-                        $(this).find('h4')[0].parentNode.insertBefore(div, $(this).find('h4')[0]);
-                        $(this).find('#gclh_ctoc_'+code)[0].addEventListener('click', function() {
-                            // Tastenkombination Strg+c ausführen für eigene Verarbeitung.
-                            global_ctoc_flag = true;
-                            global_ctoc_cont = code;
-                            document.execCommand('copy');
-                        }, false);
-                        document.addEventListener('copy', function(e){
-                            // Normale Tastenkombination Strg+c für markierten Bereich nicht verarbeiten, nur eigene Tastenkombination Strg+c verarbeiten.
-                            if (!global_ctoc_flag) return;
-                            global_ctoc_flag = false;
-                            // Gegebenenfalls markierter Bereich wird nicht beachtet.
-                            e.preventDefault();
-                            // GC Code verarbeiten.
-                            e.clipboardData.setData('text/plain', global_ctoc_cont);
-                            $('#gclh_ctoc_'+global_ctoc_cont)[0].style.opacity = '0.3';
-                            setTimeout(function() { $('#gclh_ctoc_'+global_ctoc_cont)[0].style.opacity = 'unset'; }, 200);
-                        });
+                        addCopyToClipboardLink(gccode, $(this).find('h4')[0], "GC Code", "float: right;");
                     });
                 });
             });
@@ -10262,6 +10241,58 @@ var mainGC = function() {
         var new_lng = pre + " " + tmp1 + "° " + tmp2;
         return new_lat + " " + new_lng;
     }
+    /*
+        element_to_copy:    innerHtml of this element will be copied. If you pass
+                            a string, the string will be the copied text. In this 
+                            case you have to pass an anker_element!!!
+
+        anker_element:      after this element the copy marker will be inserted,
+                            if you set this to null, the element_to_copy will be
+                            used as an anker
+
+        title:              you can enter a text that will be displayed between 
+                            Copy --TEXT OF TITLE-- to clipboard. If you leave it 
+                            blank, it will just "Copy to clipboard" be displayed
+
+        style               You can add styles to the surrounding span by passing
+                            it in this variable
+     */
+    function addCopyToClipboardLink(element_to_copy, anker_element= null, title="", style= ""){
+        try {
+            var ctoc = false;
+            var span = document.createElement('span');
+            span.innerHTML = '<a class="ctoc_link" href="javascript:void(0);"><img src="'+global_copy_icon+'" title="Copy ' + title + ' ' + 'to clipboard" style="vertical-align: text-top;"> </a>';
+            if(style != ""){
+                span.setAttribute("style", style);
+            }
+            if(!anker_element) anker_element = element_to_copy;
+
+            anker_element.parentNode.insertBefore(span, anker_element);
+
+            appendCssStyle(".ctoc_link:link {text-decoration: none ;}");
+
+            span.addEventListener('click', function() {
+                // Tastenkombination Strg+c ausführen für eigene Verarbeitung.
+                ctoc = true;
+                document.execCommand('copy');
+            }, false);
+            document.addEventListener('copy', function(e){
+                // Normale Tastenkombination Strg+c für markierter Bereich hier nicht verarbeiten. Nur eigene Tastenkombination Strg+c hier verarbeiten.
+                if (!ctoc) return;
+                // Gegebenenfalls markierter Bereich wird hier nicht beachtet.
+                e.preventDefault();
+                // Copy Data wird hier verarbeitet.
+                if (typeof element_to_copy === 'string' || element_to_copy instanceof String){
+                    e.clipboardData.setData('text/plain', element_to_copy);
+                }else{
+                    e.clipboardData.setData('text/plain', element_to_copy.innerHTML);
+                }
+                span.style.opacity = '0.3';
+                setTimeout(function() { span.style.opacity = 'unset'; }, 200);
+                ctoc = false;
+            });
+        } catch(e) {gclh_error("Copy to clipboard",e);}
+    }
 
 // Close Overlays, Find Player, Config, Sync.
     function btnClose(clearUrl) {
@@ -11081,27 +11112,45 @@ var mainGC = function() {
     }
 
 // Determine cache listing coordinates.
-    function determineListingCoords() {
-        var retCoords = "";
-        if ($('#uxLatLon')[0].innerHTML.match(/GCTour/)) {
-            var coords = $('#uxLatLon')[0].innerHTML.match(/([A-Z0-9°\.\s]*)([A-Za-z&;-\s]*)GCTour/);
-            if (coords && coords[1]) retCoords = coords[1].replace(/° /g, '°').replace(/°/g, '° ');
-        } else if ($('#uxLatLon')[0].innerHTML) {
-            retCoords = $('#uxLatLon')[0].innerHTML;
-        }
-        return retCoords;
-    }
-
-// Determine original cache listing coordinates.
-    function determineOriginalListingCoords() {
-        var retCoords = "";
+    function determineListingCoords(whichCoords) {
+        var CorrCoords = ""; var OrgCoords = ""; var GCTourCoords = "";
         if (unsafeWindow.mapLatLng.isUserDefined == true ) {
-            retCoords = unsafeWindow.mapLatLng.oldLatLngDisplay.replace(new RegExp('\'', 'g'),'');
-        } else if ($('#uxLatLon')[0].innerHTML.match(/GCTour/)) {
-            var coords = $('#uxLatLon')[0].innerHTML.match(/GCTour<\/div>\s\W([A-Z0-9°\.\s]*)/);
-            if (coords && coords[1]) retCoords = coords[1].replace(/° /g, '°').replace(/°/g, '° ');
+            OrgCoords = unsafeWindow.mapLatLng.oldLatLngDisplay.replace(new RegExp('\'', 'g'),'');
         }
-        return retCoords;
+        if ($('#uxLatLon')[0].innerHTML.match(/GCTour/)) {
+            // Hier kann es gerade keinen update durch GC-internen Solution-Checker gegeben haben, sonst wäre "GCTour" nicht mehr vorhanden.
+            var coords = $('#uxLatLon')[0].innerHTML.match(/([A-Z0-9°\.\s]*)([A-Za-z&;-\s]*)GCTour/);
+            if (coords && coords[1]) {
+                GCTourCoords = coords[1].replace(/° /g, '°').replace(/°/g, '° ');
+            }
+            var coords = $('#uxLatLon')[0].innerHTML.match(/GCTour<\/div>\s\W([A-Z0-9°\.\s]*)/);
+            if (coords && coords[1]) {
+                if (OrgCoords == "") {
+                    OrgCoords = coords[1].replace(/° /g, '°').replace(/°/g, '° ');
+                } else {
+                    CorrCoords = coords[1].replace(/° /g, '°').replace(/°/g, '° ');
+                }
+            }
+        } else {
+            if (OrgCoords == "") {
+                // Gerade wurde update durch GC-internen Solution-Checker durchgeführt.
+                var uxLatLon = $('#uxLatLon')[0].innerHTML.replace(/(°|'|\s)/g, "");
+                var oldLatLng = unsafeWindow.mapLatLng.oldLatLngDisplay.replace(/(°|'|\s)/g, "");
+                if (uxLatLon !== oldLatLng) {
+                    OrgCoords = unsafeWindow.mapLatLng.oldLatLngDisplay.replace(new RegExp('\'', 'g'),'');
+                    CorrCoords = $('#uxLatLon')[0].innerHTML;
+                } else {
+                    OrgCoords = $('#uxLatLon')[0].innerHTML;
+                }
+            } else {
+                CorrCoords = $('#uxLatLon')[0].innerHTML;
+            }
+        }
+        if (whichCoords == 'Corr') return CorrCoords;
+        else if (whichCoords == 'Org') return OrgCoords;
+        else if (whichCoords == 'GCTour') return GCTourCoords;
+        else if (whichCoords == 'CorrOrg') return (CorrCoords !== "" ? CorrCoords : OrgCoords);
+        else return "";
     }
 
 //////////////////////////////
