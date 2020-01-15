@@ -8639,6 +8639,7 @@ var mainGC = function() {
             css += "div.gclh_latest_log:hover {position: relative;}";
             css += "div.gclh_latest_log span {display: none; position: absolute; left: 0px; width: 500px; padding: 5px; text-decoration:none; text-align:left; vertical-align:top; color: #000000;}";
             css += "div.gclh_latest_log:hover span {font-size: 13px; display: block; top: 16px; border: 1px solid #8c9e65; background-color:#dfe1d2; z-index:10000;}";
+            css += "#searchmap_sidebar_enhancements span.coordinates.original {font-size: 0.8em;}";
             appendCssStyle(css);
 
             // create an observer instance
@@ -8795,12 +8796,9 @@ var mainGC = function() {
                         new_text += '<span class="tackables" title="Number of trackables"><svg height="16" width="16" class="icon-sm"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="/account/app/ui-icons/sprites/global.svg#icon-travelbug-default"></use></svg> ' + trachables + '</span><br>';
 
                         var coords = $(text).find('#uxLatLon')[0].innerHTML;
-                        var coorected = "";
-                        if($(text).find('#uxLatLon .myLatLon')[0]){
-                            coorected = "coorected ";
-                        }
-                        
                         var original_coords = "";
+                        var coorected = "";
+                        
                         if(text.match(/"isUserDefined":true/gm)){
                             original_coords = text.match(/oldLatLngDisplay":"N.*E.*?'"/gm);
                             original_coords = String(original_coords[0]);
@@ -8809,6 +8807,7 @@ var mainGC = function() {
                             original_coords = original_coords.replace("\"","");
                             original_coords = original_coords.replace(new RegExp('\'', 'g'),'');
                             original_coords = ' <span class="coordinates original" title="original Coordinates">(' + original_coords + ')</span>';
+                            coorected = "coorected ";
                         }
 
                         new_text += '<p><span class="coordinates" title="'+coorected+'Coordinates">' + coords + '</span>' + original_coords + '</p>';
