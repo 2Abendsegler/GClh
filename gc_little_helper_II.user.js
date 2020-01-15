@@ -8621,7 +8621,7 @@ var mainGC = function() {
        });
     }
 
-    // Display more information on new Search Map in left Sidebar
+// Display more information on new Search Map in left Sidebar
     if (is_page('searchmap') && settings_show_enhanced_map_popup ) {
         try {
 
@@ -8799,17 +8799,19 @@ var mainGC = function() {
                         if($(text).find('#uxLatLon .myLatLon')[0]){
                             coorected = "coorected ";
                         }
-                        new_text += '<p><span class="coordinates" title="'+coorected+'Coordinates">' + coords + '</span></p>';
-
+                        
+                        var original_coords = "";
                         if(text.match(/"isUserDefined":true/gm)){
-                            var original_coords = text.match(/oldLatLngDisplay":"N.*E.*?'"/gm);
+                            original_coords = text.match(/oldLatLngDisplay":"N.*E.*?'"/gm);
                             original_coords = String(original_coords[0]);
                             
                             original_coords = original_coords.replace("oldLatLngDisplay\":\"","");
                             original_coords = original_coords.replace("\"","");
                             original_coords = original_coords.replace(new RegExp('\'', 'g'),'');
-                            new_text += '<p><span class="coordinates" title="original Coordinates">original Coordinates: ' + original_coords + '</span></p>';
+                            original_coords = ' <span class="coordinates original" title="original Coordinates">(' + original_coords + ')</span>';
                         }
+
+                        new_text += '<p><span class="coordinates" title="'+coorected+'Coordinates">' + coords + '</span>' + original_coords + '</p>';
 
                         // Create Element and insert everything
                         var text_element = document.createElement("div");
