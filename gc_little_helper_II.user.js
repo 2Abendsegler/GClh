@@ -1893,59 +1893,6 @@ var mainGC = function() {
         } catch(e) {gclh_error("Show log totals symbols at the top",e);}
     }
 
-    /*
-        element_to_copy:    innerHtml of this element will be copied. If you pass
-                            a string, the string will be the copied text. In this 
-                            case you have to pass an anker_element!!!
-
-        anker_element:      after this element the copy marker will be inserted,
-                            if you set this to null, the element_to_copy will be
-                            used as an anker
-
-        title:              you can enter a text that will be displayed between 
-                            Copy --TEXT OF TITLE-- to clipboard. If you leave it 
-                            blank, it will just "Copy to clipboard" be displayed
-
-        style               You can add styles to the surrounding span by passing
-                            it in this variable
-     */
-    function addCopyToClipboardLink(element_to_copy, anker_element= null, title="", style= ""){
-        try {
-            var ctoc = false;
-            var span = document.createElement('span');
-            span.innerHTML = '<a class="ctoc_link" href="javascript:void(0);"><img src="'+global_copy_icon+'" title="Copy ' + title + ' ' + 'to clipboard" style="vertical-align: text-top;"> </a>';
-            if(style != ""){
-                span.setAttribute("style", style);
-            }
-            if(!anker_element) anker_element = element_to_copy;
-
-            anker_element.parentNode.insertBefore(span, anker_element);
-
-            appendCssStyle(".ctoc_link:link {text-decoration: none ;}");
-
-            span.addEventListener('click', function() {
-                // Tastenkombination Strg+c ausführen für eigene Verarbeitung.
-                ctoc = true;
-                document.execCommand('copy');
-            }, false);
-            document.addEventListener('copy', function(e){
-                // Normale Tastenkombination Strg+c für markierter Bereich hier nicht verarbeiten. Nur eigene Tastenkombination Strg+c hier verarbeiten.
-                if (!ctoc) return;
-                // Gegebenenfalls markierter Bereich wird hier nicht beachtet.
-                e.preventDefault();
-                // Copy Data wird hier verarbeitet.
-                if (typeof element_to_copy === 'string' || element_to_copy instanceof String){
-                    e.clipboardData.setData('text/plain', element_to_copy);
-                }else{
-                    e.clipboardData.setData('text/plain', element_to_copy.innerHTML);
-                }
-                span.style.opacity = '0.3';
-                setTimeout(function() { span.style.opacity = 'unset'; }, 200);
-                ctoc = false;
-            });
-        } catch(e) {gclh_error("Copy to clipboard",e);}
-    }
-
 // Copy Coords to clipboard.
     if (is_page("cache_listing") && $('#uxLatLonLink')[0]) {
         try {
@@ -10023,6 +9970,58 @@ var mainGC = function() {
         else if (tmp2.indexOf(".") != -1) tmp2 = tmp2 + n.slice(tmp2.length - tmp2.indexOf(".") - 1);
         var new_lng = pre + " " + tmp1 + "° " + tmp2;
         return new_lat + " " + new_lng;
+    }
+    /*
+        element_to_copy:    innerHtml of this element will be copied. If you pass
+                            a string, the string will be the copied text. In this 
+                            case you have to pass an anker_element!!!
+
+        anker_element:      after this element the copy marker will be inserted,
+                            if you set this to null, the element_to_copy will be
+                            used as an anker
+
+        title:              you can enter a text that will be displayed between 
+                            Copy --TEXT OF TITLE-- to clipboard. If you leave it 
+                            blank, it will just "Copy to clipboard" be displayed
+
+        style               You can add styles to the surrounding span by passing
+                            it in this variable
+     */
+    function addCopyToClipboardLink(element_to_copy, anker_element= null, title="", style= ""){
+        try {
+            var ctoc = false;
+            var span = document.createElement('span');
+            span.innerHTML = '<a class="ctoc_link" href="javascript:void(0);"><img src="'+global_copy_icon+'" title="Copy ' + title + ' ' + 'to clipboard" style="vertical-align: text-top;"> </a>';
+            if(style != ""){
+                span.setAttribute("style", style);
+            }
+            if(!anker_element) anker_element = element_to_copy;
+
+            anker_element.parentNode.insertBefore(span, anker_element);
+
+            appendCssStyle(".ctoc_link:link {text-decoration: none ;}");
+
+            span.addEventListener('click', function() {
+                // Tastenkombination Strg+c ausführen für eigene Verarbeitung.
+                ctoc = true;
+                document.execCommand('copy');
+            }, false);
+            document.addEventListener('copy', function(e){
+                // Normale Tastenkombination Strg+c für markierter Bereich hier nicht verarbeiten. Nur eigene Tastenkombination Strg+c hier verarbeiten.
+                if (!ctoc) return;
+                // Gegebenenfalls markierter Bereich wird hier nicht beachtet.
+                e.preventDefault();
+                // Copy Data wird hier verarbeitet.
+                if (typeof element_to_copy === 'string' || element_to_copy instanceof String){
+                    e.clipboardData.setData('text/plain', element_to_copy);
+                }else{
+                    e.clipboardData.setData('text/plain', element_to_copy.innerHTML);
+                }
+                span.style.opacity = '0.3';
+                setTimeout(function() { span.style.opacity = 'unset'; }, 200);
+                ctoc = false;
+            });
+        } catch(e) {gclh_error("Copy to clipboard",e);}
     }
 
 // Close Overlays, Find Player, Config, Sync.
