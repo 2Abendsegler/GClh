@@ -8676,6 +8676,15 @@ var mainGC = function() {
                         return true; //breaks the "some" loop
                     }
 
+                    // Remove all Copy GC Codes (because otherwise they will be duplicated on selecting other cache)
+                    $('.cache-preview-header .cache-metadata span.ctoc_link').each(function(){
+                        removeElement(this);
+                    });
+                    // Add it again
+                    $('.cache-preview-header .cache-metadata .cache-metadata-code').each(function(){
+                        addCopyToClipboardLink(this, null, "GC Code");
+                    });
+
                     new_gc_code = document.querySelector('.cache-preview-header .cache-metadata .cache-metadata-code').innerHTML;
                     console.log(new_gc_code);
 
@@ -10264,6 +10273,7 @@ var mainGC = function() {
         try {
             var ctoc = false;
             var span = document.createElement('span');
+            span.setAttribute("class",'ctoc_link');
             span.innerHTML = '<a class="ctoc_link" href="javascript:void(0);"><img src="'+global_copy_icon+'" title="Copy ' + title + ' ' + 'to clipboard" style="vertical-align: text-top;"> </a>';
             if(style != ""){
                 span.setAttribute("style", style);
