@@ -10865,6 +10865,7 @@ var mainGC = function() {
             OrgCoords = unsafeWindow.mapLatLng.oldLatLngDisplay.replace(new RegExp('\'', 'g'),'');
         }
         if ($('#uxLatLon')[0].innerHTML.match(/GCTour/)) {
+            // Hier kann es gerade keinen update durch GC-internen Solution-Checker gegeben haben, sonst wäre "GCTour" nicht mehr vorhanden.
             var coords = $('#uxLatLon')[0].innerHTML.match(/([A-Z0-9°\.\s]*)([A-Za-z&;-\s]*)GCTour/);
             if (coords && coords[1]) {
                 GCTourCoords = coords[1].replace(/° /g, '°').replace(/°/g, '° ');
@@ -10879,7 +10880,13 @@ var mainGC = function() {
             }
         } else {
             if (OrgCoords == "") {
-                OrgCoords = $('#uxLatLon')[0].innerHTML;
+                // Gerade wurde update durch GC-internen Solution-Checker durchgeführt.
+                if ($('#uxLatLon')[0].innerHTML !== unsafeWindow.mapLatLng.oldLatLngDisplay) {
+                    OrgCoords = unsafeWindow.mapLatLng.oldLatLngDisplay.replace(new RegExp('\'', 'g'),'');
+                    CorrCoords = $('#uxLatLon')[0].innerHTML;
+                } else {
+                    OrgCoords = $('#uxLatLon')[0].innerHTML;
+                }
             } else {
                 CorrCoords = $('#uxLatLon')[0].innerHTML;
             }
