@@ -8797,20 +8797,22 @@ var mainGC = function() {
 
                         var coords = $(text).find('#uxLatLon')[0].innerHTML;
                         var original_coords = "";
+                        var original_coords_span = "";
                         var coorected = "";
-                        
+
                         if(text.match(/"isUserDefined":true/gm)){
-                            original_coords = text.match(/oldLatLngDisplay":"N.*E.*?'"/gm);
+                            var original_coords = text.match(/oldLatLngDisplay":"N.*E.*?'"/gm);
                             original_coords = String(original_coords[0]);
                             
                             original_coords = original_coords.replace("oldLatLngDisplay\":\"","");
                             original_coords = original_coords.replace("\"","");
                             original_coords = original_coords.replace(new RegExp('\'', 'g'),'');
-                            original_coords = ' <span class="coordinates original" title="original Coordinates">(' + original_coords + ')</span>';
+
+                            original_coords_span = ' <span class="coordinates original" title="original Coordinates">(<span class="anker"></span>' + original_coords + ')</span>';
                             coorected = "coorected ";
                         }
 
-                        new_text += '<p><span class="coordinates" title="'+coorected+'Coordinates">' + coords + '</span>' + original_coords + '</p>';
+                        new_text += '<p><span class="coordinates current" title="'+coorected+'Coordinates">' + coords + '</span>' + original_coords_span + '</p>';
 
                         // Create Element and insert everything
                         var text_element = document.createElement("div");
