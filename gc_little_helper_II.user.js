@@ -568,7 +568,7 @@ var variablesInit = function(c) {
     c.settings_searchmap_autoupdate_after_dragging = getValue("settings_searchmap_autoupdate_after_dragging", true);
     c.settings_improve_character_counter = getValue("settings_improve_character_counter", true);
     c.settings_searchmap_compact_layout = getValue("settings_searchmap_compact_layout", false);
-    c.settings_searchmap_adapt_width = getValue("settings_searchmap_adapt_width", true);
+    c.settings_searchmap_disabled = getValue("settings_searchmap_disabled", false);
     c.settings_searchmap_strike_disabled = getValue("settings_searchmap_strike_disabled", false);
     c.settings_searchmap_strike_disabled_color = getValue("settings_searchmap_strike_disabled_color", '4A4A4A');
     c.settings_searchmap_show_hint = getValue("settings_searchmap_show_hint", false);
@@ -7944,33 +7944,57 @@ var mainGC = function() {
                 }
             }
             // Strike through title of disabled caches.
-            function strikeDisabled() {
-                if (settings_searchmap_strike_disabled) {
-                    if (document.querySelector('.cache-detail-preview') && document.querySelector('.status') && document.querySelector('.status span').style.color == 'rgb(211, 70, 39)') {
-                        document.querySelector('.status').style.display = 'none';
-                        document.querySelector('.header-top-left h1').style.textDecoration = 'line-through';
-                        document.querySelector('.header-top-left h1').style.color = '#' + settings_searchmap_strike_disabled_color;
-                    }else if (document.querySelector('.cache-detail-preview')) {
-                        document.querySelector('.header-top-left h1').style.textDecoration = 'unset';
-                        document.querySelector('.header-top-left h1').style.color = '#4a4a4a';
-                    }
+            function strikeDisabledInCacheDetails() {
+                if (document.querySelector('.cache-detail-preview') && document.querySelector('.status') && document.querySelector('.status span').style.color == 'rgb(211, 70, 39)') {
+                    document.querySelector('.header-top-left h1').style.color = '#' + settings_searchmap_strike_disabled_color;
+                    if (settings_searchmap_strike_disabled) document.querySelector('.header-top-left h1').style.textDecoration = 'line-through';
+                }else if (document.querySelector('.cache-detail-preview')) {
+                    document.querySelector('.header-top-left h1').style.textDecoration = 'unset';
+                    document.querySelector('.header-top-left h1').style.color = '#4a4a4a';
                 }
             }
-            // Show hint automatically.
+            function strikeDisabledInList() {
+                if (document.querySelector('#geocache-list')) {
+                    var caches = $.find('#geocache-list li');
+                    caches.forEach(function(cache) {
+                        if (settings_searchmap_disabled && cache.querySelector('.geocache-item-disabled')) {
+                            cache.querySelector('.geocache-item-name').style.color = '#' + settings_searchmap_strike_disabled_color;
+                            if (settings_searchmap_strike_disabled) cache.querySelector('.geocache-item-name').style.textDecoration = 'line-through';
+                        }
+                    });
+                }
+                
+            }
+            // Show hint automatically and scroll up to top after "Description & Hint" was clicked.
             function showHint() {
                 if (document.querySelector('.cache-preview-header')) {
+                    if (document.querySelector('.eventListenerAdded')) return;
                     function hintAddEventListener() {
                         function waitForDescriptionBtn(waitCount) {
                             if (document.querySelector('.cache-open-text-cta')) {
                                 // I used the event listener because the mutation observer is not triggered when the description open or close.
+                                $('.cache-open-text-cta').addClass('eventListenerAdded');
                                 document.querySelector('.cache-open-text-cta').addEventListener('click', function() {
                                     function waitForDescription(waitCount) {
-                                        // Scroll up to top after "Description & Hint" was clicked.
-                                        document.querySelector('.preview-main-inner').scrollTo({top: 0, left: 0, behavior: "smooth"});
                                         if (document.querySelector('.cache-preview-description')) {
-                                            if (document.querySelector('.cache-hint-toggle') && settings_searchmap_show_hint) {
-                                                $('.hint-text').addClass('is-visible');
-                                                document.querySelector('.cache-hint-toggle').innerHTML = 'Hide hint';
+                                            // Scroll up to top after "Description & Hint" was clicked.
+                                            document.querySelector('.preview-main-inner').scrollTo({top: 0, left: 0, behavior: "smooth"});
+                                            // Show hint automatically.
+                                            if (document.querySelector('.cache-hint')) {
+                                                function hideShowHint() {
+                                                    if (document.querySelector('.cache-hint .toggle-handle.on')) {
+                                                        $('.cache-hint .toggle-handle').removeClass('on');
+                                                        $('.hint-text').removeClass('is-visible');
+                                                    }else {
+                                                        $('.cache-hint .toggle-handle').addClass('on');
+                                                        $('.hint-text').addClass('is-visible');
+                                                    }
+                                                }
+                                                if (!document.querySelector('.cache-hint h2 .toggle-handle')) {
+                                                    $('.cache-hint h2').append('<div class="toggle-handle"></div>');
+                                                    document.querySelector('.cache-hint h2').addEventListener('click', hideShowHint);
+                                                }
+                                                if (settings_searchmap_show_hint) hideShowHint();
                                             }
                                             // The Ownername and the collapse button have been deleted because the mutation observer is not triggered when the description open or close.
                                             document.querySelector('.close-cta').addEventListener('click', function() {setTimeout(processAllSearchMap), 100});
@@ -7987,7 +8011,7 @@ var mainGC = function() {
             }
             // Show button to collapse activity.
             function collapseActivity() {
-                if (document.querySelector('.cache-preview-header')) {
+                if (document.querySelector('.cache-preview-action-menu')) {
                     var header = document.getElementsByClassName('cache-preview-activities')[0].getElementsByTagName('header')[0];
                     if (!document.querySelector('.opener')) {
                         $(header).append('<svg height="22" width="22" class="opener"><use xlink:href="/account/app/ui-icons/sprites/global.svg#icon-expand-svg-fill"></use></svg>');
@@ -8018,7 +8042,8 @@ var mainGC = function() {
             function processAllSearchMap() {
                 searchThisArea();
                 compactLayout();
-                strikeDisabled();
+                strikeDisabledInCacheDetails();
+                strikeDisabledInList();
                 showHint();
                 collapseActivity();
             }
@@ -8083,11 +8108,14 @@ var mainGC = function() {
                 css += '.leaflet-popup-content {margin: 5px 8px !important;}';
                 css += '.cache-action-log-geocache, .cache-action-add-to-list, .cache-action-download-gpx, .cache-action-open-cache {padding: 5px 0 !important;}';
             }
-            // Adapt the width of the pop up.
-            if (settings_searchmap_adapt_width) {
-                css += '.leaflet-popup.context-menu.geocache-context-menu.leaflet-zoom-animated {width: auto !important; min-width: 300px;}'
-                css += '.leaflet-popup-content {width: auto !important;}'
-            }
+            // Change hide/show hint link to a sliding button.
+            css += '.cache-hint-toggle {display: none;}';;
+            css += '.cache-hint h2 {display: flex; align-items: center;}';
+            css += '.cache-hint .toggle-handle {height: 19px !important; margin-left: 8px;}';
+            css += '.cache-hint .toggle-handle::after {height: 17px !important; width: 17px !important;}';
+            // Adapt the width of the pop up.´
+            css += '.leaflet-popup.context-menu.geocache-context-menu.leaflet-zoom-animated {width: auto !important; min-width: 300px;}';;
+            css += '.leaflet-popup-content {width: auto !important;}';
             // Show button to collapse activity.
             css += '.panel-header {display: flex; flex-flow: row wrap; justify-content: space-between; align-items: center; cursor: pointer;}';
             css += '.hide .opener {animation: rotatehide 0.3s forwards;}';
@@ -11757,10 +11785,10 @@ var mainGC = function() {
             html += newParameterOn1;
             html += checkboxy('settings_lists_compact_layout', 'Show compact layout') + show_help("With this option the list of bookmark lists, the bookmark lists, the favorites list and the ignore list is displayed in compact layout.") + "<br>";
             var content_status_line = "If the name of disabled and archived caches are specially represented and the identifier of premium member only caches are shown in an own column, the cache status line above the cache name is hidden.";
-            html += checkboxy('settings_lists_disabled', 'Show name of disabled caches ') + checkboxy('settings_lists_disabled_strikethrough', 'strike through in color ');
+            html += checkboxy('settings_lists_disabled', 'Show name of disabled caches ') + checkboxy('settings_lists_disabled_strikethrough', 'strike through, in color ');
             html += "<input class='gclh_form color' type='text' size=6 id='settings_lists_disabled_color' style='margin-left: 0px;' value='" + getValue("settings_lists_disabled_color", "4A4A4A") + "'>";
             html += "<img src=" + global_restore_icon + " id='restore_settings_lists_disabled_color' title='back to default' style='width: 12px; cursor: pointer;'>" + show_help3(content_status_line) + "<br>";
-            html += checkboxy('settings_lists_archived', 'Show name of archived caches ') + checkboxy('settings_lists_archived_strikethrough', 'strike through in color ');
+            html += checkboxy('settings_lists_archived', 'Show name of archived caches ') + checkboxy('settings_lists_archived_strikethrough', 'strike through, in color ');
             html += "<input class='gclh_form color' type='text' size=6 id='settings_lists_archived_color' style='margin-left: 0px;' value='" + getValue("settings_lists_archived_color", "8C0B0B") + "'>";
             html += "<img src=" + global_restore_icon + " id='restore_settings_lists_archived_color' title='back to default' style='width: 12px; cursor: pointer;'>" + show_help3(content_status_line) + "<br>";
             html += checkboxy('settings_lists_icons_visible', 'Set visibility of cache type icons and log status icons') + show_help("The cache type icon and the log status icon are sometimes slightly invisible and sometimes visible, if the cache is disabled or archived. With this and the following options, you can set it consistently, if the cache is disabled or archived.") + "<br>";
@@ -11935,11 +11963,11 @@ var mainGC = function() {
             html += newParameterOn1;
             html += checkboxy('settings_searchmap_autoupdate_after_dragging', 'Automatic search for new caches after dragging') + "<br>";
             html += checkboxy('settings_searchmap_compact_layout', 'Show compact layout on detail screen') + "<br>";
-            html += checkboxy('settings_searchmap_adapt_width', 'Adapt the width of the pop up') + "<br>";
-            html += checkboxy('settings_searchmap_strike_disabled', 'Strike through title of disabled caches');
-            html += "&nbsp;<input class='gclh_form color' type='text' size=6 id='settings_searchmap_strike_disabled_color' style='margin-left: 0px;' value='" + getValue("settings_searchmap_strike_disabled_color", "4A4A4A") + "'>";
-            html += "<img src=" + global_restore_icon + " id='restore_settings_searchmap_strike_disabled_color' title='back to default' style='width: 12px; cursor: pointer;'><br>";
-            html += checkboxy('settings_searchmap_show_hint', 'Show hint automatically') + "<br>";
+            html += checkboxy('settings_searchmap_disabled', 'Show name of disabled caches ') + checkboxy('settings_searchmap_strike_disabled', 'strike through, in color ');
+            html += "<input class='gclh_form color' type='text' size=6 id='settings_searchmap_strike_disabled_color' style='margin-left: 0px;' value='" + getValue("settings_searchmap_strike_disabled_color", "4A4A4A") + "'>";
+            html += "<img src=" + global_restore_icon + " id='restore_settings_searchmap_strike_disabled_color' title='back to default' style='width: 12px; cursor: pointer;'>";
+            html += show_help3('If you disable the option "Show name of disabled caches", the cache name in the geocache list will be not strike through and will be also not colored.') + '<br>';
+            html += checkboxy('settings_searchmap_show_hint', 'Show hint of cache automatically on cache detail screen') + "<br>";
             html += newParameterVersionSetzen('0.10') + newParameterOff;
             html += "</div>";
 
@@ -12834,8 +12862,6 @@ var mainGC = function() {
             setEvForDepPara("settings_lists_archived","settings_lists_archived_strikethrough");
             setEvForDepPara("settings_lists_icons_visible","settings_lists_log_status_icons_visible");
             setEvForDepPara("settings_lists_icons_visible","settings_lists_cache_type_icons_visible");
-            setEvForDepPara("settings_searchmap_strike_disabled","settings_searchmap_strike_disabled_color");
-            setEvForDepPara("settings_searchmap_strike_disabled","restore_settings_searchmap_strike_disabled_color");
             // Abhängigkeiten der Linklist Parameter.
             for (var i = 0; i < 100; i++) {
                 // 2. Spalte: Links für Custom BMs.
@@ -13238,7 +13264,7 @@ var mainGC = function() {
                 'settings_searchmap_autoupdate_after_dragging',
                 'settings_improve_character_counter',
                 'settings_searchmap_compact_layout',
-                'settings_searchmap_adapt_width',
+                'settings_searchmap_disabled',
                 'settings_searchmap_strike_disabled',
                 'settings_searchmap_show_hint',
             );
