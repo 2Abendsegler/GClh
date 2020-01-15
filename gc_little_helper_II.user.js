@@ -8852,8 +8852,6 @@ var mainGC = function() {
                             locations.push(coords_for_elevation[0]+","+coords_for_elevation[1]);
                             if (locations && locations.length == 1) getElevations(0,locations);
                         }
-
-                        insertAfter(searchmap_sidebar_enhancements, document.getElementsByClassName("geocache-owner")[0]);
                     });
 
                 });
