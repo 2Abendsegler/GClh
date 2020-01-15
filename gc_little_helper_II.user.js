@@ -8621,6 +8621,24 @@ var mainGC = function() {
        });
     }
 
+    // Get favorite score.
+    function getFavScoreSearchmapSidebarEnhancements(anker_element, userToken) {
+       $.ajax({
+           type: "POST",
+           cache: false,
+           url: '/datastore/favorites.svc/score?u=' + userToken,
+           success: function (scoreResult) {
+               var score = 0;
+               if (scoreResult) score = scoreResult;
+               if (score > 100) score = 100;
+               
+               if ($(anker_element)[0]){
+                $(anker_element)[0].innerHTML = $(anker_element)[0].innerHTML + ' <span class="favi_score_percent">('+score+'%)';
+               }
+           }
+       });
+    }
+
 // Display more information on new Search Map in left Sidebar
     if (is_page('searchmap') && settings_show_enhanced_map_popup ) {
         try {
@@ -8683,6 +8701,11 @@ var mainGC = function() {
                     // Add it again
                     $('.cache-preview-header .cache-metadata .cache-metadata-code').each(function(){
                         addCopyToClipboardLink(this, null, "GC Code");
+                    });
+
+                    //Remove old Favi-Score
+                    $('.favi_score_percent').each(function(){
+                        removeElement(this);
                     });
 
                     new_gc_code = document.querySelector('.cache-preview-header .cache-metadata .cache-metadata-code').innerHTML;
@@ -8839,11 +8862,12 @@ var mainGC = function() {
 
                         // $('#popup_additional_info_' + local_gc_code).html(new_text);
 
-                        // Get favorite score.
-                        // var from = text.indexOf('userToken', text.indexOf('MapTilesEnvironment')) + 13;
-                        // var length = text.indexOf("';", from) - from;
-                        // var userToken = text.substr(from, length);
-                        // getFavScore(local_gc_code, userToken);
+                        //Get favorite score.
+                        var from = text.indexOf('userToken', text.indexOf('MapTilesEnvironment')) + 13;
+                        var length = text.indexOf("';", from) - from;
+                        var userToken = text.substr(from, length);
+
+                        getFavScoreSearchmapSidebarEnhancements($('.favorites-text'), userToken);
 
 
                         // Get elevations.
