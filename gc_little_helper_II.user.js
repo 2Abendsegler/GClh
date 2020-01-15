@@ -8666,8 +8666,7 @@ var mainGC = function() {
                 var found_key_element = false;
 
                 mutations.some(function(mutation) {
-                    console.log("Mutation");
-
+                    
                     found_key_element = false;
                     var locations = []; // Location for the Cache
                     
@@ -8679,18 +8678,13 @@ var mainGC = function() {
                     });
 
                     // Abort if key element not found, so we don't need to update
-                    if(found_key_element){
-                        console.log('found_key_element found');
-                    }else{
-                        console.log('found_key_element not found');
-                        return true;
-                        console.log('found_key_element not found 2');
+                    if(!found_key_element){
+                        return true; //breaks the "some" loop
                     }
 
                     // Check if the sidebar displays a cache
                     if(!document.querySelector('.cache-preview-attributes')){
                         // No Cache in Sidebar
-                        console.log("1");
                         return true; //breaks the "some" loop
                     }
 
@@ -8709,23 +8703,17 @@ var mainGC = function() {
                     });
 
                     new_gc_code = document.querySelector('.cache-preview-header .cache-metadata .cache-metadata-code').innerHTML;
-                    console.log(new_gc_code);
 
                     var searchmap_sidebar_enhancements_code = document.querySelector('#searchmap_sidebar_enhancements .gccode');
 
                     if(searchmap_sidebar_enhancements_code){
                         // Element already present, so compare the two GC Codes, to see if we need to update
-                        console.log("2");
                         if(new_gc_code == searchmap_sidebar_enhancements_code.innerHTML){
-                            console.log("2.1 old code");
                             return true; //breaks the "some" loop
                         }else{
                             removeElement(document.querySelector('#searchmap_sidebar_enhancements'));
-                            console.log("2.2: new code");
                         }
                     }
-
-                    console.log("3");
 
                     var searchmap_sidebar_enhancements = document.createElement("div");
                     searchmap_sidebar_enhancements.setAttribute("id", "searchmap_sidebar_enhancements");
@@ -8743,8 +8731,6 @@ var mainGC = function() {
                     insertAfter(searchmap_sidebar_enhancements, document.getElementsByClassName("geocache-owner")[0]);
 
                     $.get('https://www.geocaching.com/geocache/'+new_gc_code, null, function(text){
-
-                        console.log('get');
 
                         var local_gc_code = $(text).find('#ctl00_ContentBody_CoordInfoLinkControl1_uxCoordInfoCode').html();
 
