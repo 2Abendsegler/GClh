@@ -1,4 +1,4 @@
-// ==UserScript==
+​// ==UserScript==
 // @name             GC little helper II
 // @namespace        http://www.amshove.net
 //--> $$000
@@ -10881,7 +10881,9 @@ var mainGC = function() {
         } else {
             if (OrgCoords == "") {
                 // Gerade wurde update durch GC-internen Solution-Checker durchgeführt.
-                if ($('#uxLatLon')[0].innerHTML !== unsafeWindow.mapLatLng.oldLatLngDisplay) {
+                var uxLatLon = $('#uxLatLon')[0].innerHTML.replace(/(°|'|\s)/g, "");
+                var oldLatLng = unsafeWindow.mapLatLng.oldLatLngDisplay.replace(/(°|'|\s)/g, "");
+                if (uxLatLon !== oldLatLng) {
                     OrgCoords = unsafeWindow.mapLatLng.oldLatLngDisplay.replace(new RegExp('\'', 'g'),'');
                     CorrCoords = $('#uxLatLon')[0].innerHTML;
                 } else {
