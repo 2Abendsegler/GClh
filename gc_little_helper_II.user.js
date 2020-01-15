@@ -8830,6 +8830,13 @@ var mainGC = function() {
 
                         searchmap_sidebar_enhancements_loading.setAttribute("style", "display: none;");
                         insertAfter(searchmap_sidebar_enhancements, document.getElementsByClassName("geocache-owner")[0]);
+
+                        // Add Copy to Clipboard Links
+                        if(original_coords != ""){
+                            addCopyToClipboardLink(original_coords, $('span.coordinates.original .anker')[0], "original Coordinates");    
+                        }
+                        addCopyToClipboardLink(coords, $('span.coordinates.current')[0], coorected+"Coordinates");
+
                         // $('#popup_additional_info_' + local_gc_code).html(new_text);
 
                         // Get favorite score.
