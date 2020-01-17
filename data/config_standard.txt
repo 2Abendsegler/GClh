@@ -276,5 +276,10 @@
   "settings_lists_back_to_top": false,
   "settings_searchmap_autoupdate_after_dragging": true,
   "settings_map_percentage_statistic": true,
-  "settings_improve_character_counter": true
+  "settings_improve_character_counter": true,
+  "settings_searchmap_compact_layout": true,
+  "settings_searchmap_disabled": false,
+  "settings_searchmap_strike_disabled": true,
+  "settings_searchmap_strike_disabled_color": '4A4A4A',
+  "settings_searchmap_show_hint": false
 }
