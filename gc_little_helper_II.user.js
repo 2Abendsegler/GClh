@@ -4,21 +4,21 @@
 //--> $$000
 // @version          0.10.3
 //<-- $$000
-// @include          http*://www.geocaching.com/*
-// @include          http*://maps.google.tld/*
-// @include          http*://www.google.tld/maps*
-// @include          http*://project-gc.com/Tools/PQSplit*
-// @include          http*://www.openstreetmap.org*
+// @include          https://www.geocaching.com/*
+// @include          https://maps.google.tld/*
+// @include          https://www.google.tld/maps*
+// @include          https://project-gc.com/Tools/PQSplit*
+// @include          https://www.openstreetmap.org*
 // @exclude          /^https?://www\.geocaching\.com/(login|jobs|careers|brandedpromotions|promotions|blog|help|seek/sendtogps|profile/profilecontent)/
 // @resource jscolor https://raw.githubusercontent.com/2Abendsegler/GClh/master/data/jscolor.js
-// @require          http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js
-// @require          http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js
+// @require          https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js
+// @require          https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js
 // @require          https://cdnjs.cloudflare.com/ajax/libs/dropbox.js/2.5.2/Dropbox-sdk.min.js
 // @require          https://raw.githubusercontent.com/2Abendsegler/GClh/master/data/gclh_defi.js
 // @require          https://www.geocaching.com/scripts/MarkdownDeepLib.min.js
 // @require          https://www.geocaching.com/scripts/SmileyConverter.js
-// @resource leafletjs   https://raw.githubusercontent.com/2Abendsegler/GClh/master/data/leaflet.js
-// @resource leafletcss  https://raw.githubusercontent.com/2Abendsegler/GClh/master/data/leaflet.css
+// @resource leafletjs  https://raw.githubusercontent.com/2Abendsegler/GClh/master/data/leaflet.js
+// @resource leafletcss https://raw.githubusercontent.com/2Abendsegler/GClh/master/data/leaflet.css
 // @connect          maps.googleapis.com
 // @connect          raw.githubusercontent.com
 // @connect          api.open-elevation.com
@@ -176,10 +176,10 @@ var constInit = function(c) {
     bookmark("Statbar", "/my/statbar.aspx", c.bookmarks);
     bookmark("Guidelines", "/about/guidelines.aspx", c.bookmarks);
     profileSpecialBookmark(c.scriptShortNameConfig, "/my/default.aspx#GClhShowConfig", "lnk_gclhconfig", c.bookmarks);
-    externalBookmark("Forum Groundspeak", "http://forums.groundspeak.com/", c.bookmarks);
+    externalBookmark("Forum Groundspeak", "https://forums.groundspeak.com/", c.bookmarks);
     externalBookmark("Blog Groundspeak", "/blog/", c.bookmarks);
     bookmark("Favorites", "/my/favorites.aspx", c.bookmarks);
-    externalBookmark("Geoclub", "http://www.geoclub.de/", c.bookmarks);
+    externalBookmark("Geoclub", "https://www.geoclub.de/", c.bookmarks);
     profileSpecialBookmark("Public Profile Geocaches", "/profile/default.aspx?#gclhpb#ctl00_ContentBody_ProfilePanel1_lnkUserStats", "lnk_profilegeocaches", c.bookmarks);
     profileSpecialBookmark("Public Profile Trackables", "/profile/default.aspx?#gclhpb#ctl00_ContentBody_ProfilePanel1_lnkCollectibles", "lnk_profiletrackables", c.bookmarks);
     profileSpecialBookmark("Public Profile Gallery", "/profile/default.aspx?#gclhpb#ctl00_ContentBody_ProfilePanel1_lnkGallery", "lnk_profilegallery", c.bookmarks);
@@ -223,13 +223,13 @@ var constInit = function(c) {
     bookmark("Glossary of Terms", "/about/glossary.aspx", c.bookmarks);
     bookmark("Event Calendar", "/calendar/", c.bookmarks);
     bookmark("Geocache Adoption", "/adopt/", c.bookmarks);
-    externalBookmark("Flopps Karte", "http://flopp-caching.de/", c.bookmarks);
-    externalBookmark("Geokrety", "http://geokrety.org/", c.bookmarks);
-    externalBookmark("Project Geocaching", "http://project-gc.com/", c.bookmarks);
+    externalBookmark("Flopps Karte", "https://flopp-caching.de/", c.bookmarks);
+    externalBookmark("Geokrety", "https://geokrety.org/", c.bookmarks);
+    externalBookmark("Project Geocaching", "https://project-gc.com/", c.bookmarks);
     bookmark("Search TB adv.", "/track/search.aspx", c.bookmarks);
     bookmark("Map", "/map/", c.bookmarks);
     profileSpecialBookmark(scriptShortNameSync, defaultSyncLink, "lnk_gclhsync", c.bookmarks);
-    externalBookmark("Forum Geoclub", "http://geoclub.de/forum/index.php", c.bookmarks);
+    externalBookmark("Forum Geoclub", "https://geoclub.de/forum/index.php", c.bookmarks);
     externalBookmark("Changelog GClh II", urlChangelog, c.bookmarks);
     bookmark("Lists", "/my/lists.aspx", c.bookmarks);
     bookmark("Souvenirs", "/my/souvenirs.aspx", c.bookmarks);
@@ -1610,7 +1610,7 @@ var mainGC = function() {
             if (settings_bookmarks_search) {
                 var code = "function gclh_search_logs(){";
                 code += "  var search = document.getElementById('navi_search').value;";
-                code += "  if(search.match(/^GC[A-Z0-9]{1,10}\\b/i) || search.match(/^TB[A-Z0-9]{1,10}\\b/i) || search.match(/^GT[A-Z0-9]{1,10}\\b/i)) document.location.href = 'http://coord.info/'+search;";
+                code += "  if(search.match(/^GC[A-Z0-9]{1,10}\\b/i) || search.match(/^TB[A-Z0-9]{1,10}\\b/i) || search.match(/^GT[A-Z0-9]{1,10}\\b/i)) document.location.href = 'https://coord.info/'+search;";
                 code += "  else if(search.match(/^[A-Z0-9]{6}\\b$/i)) document.location.href = '/track/details.aspx?tracker='+search;";
                 code += "  else document.location.href = '/seek/nearest.aspx?navi_search='+search;";
                 code += "}";
@@ -1894,7 +1894,7 @@ var mainGC = function() {
         } catch(e) {gclh_error("Show log totals symbols at the top",e);}
     }
 
-// Copy Coords to clipboard.
+// Copy coordinates to clipboard.
     if (is_page("cache_listing") && $('#uxLatLonLink')[0]) {
         try {
             var cc2c = false;
@@ -1932,7 +1932,7 @@ var mainGC = function() {
 // Copy GC Code to clipboard.
     if (is_page('cache_listing') && $('.CoordInfoLink')[0] && $('#ctl00_ContentBody_CoordInfoLinkControl1_uxCoordInfoCode')[0]) {
 
-        addCopyToClipboardLink($('#ctl00_ContentBody_CoordInfoLinkControl1_uxCoordInfoCode')[0], $('.CoordInfoLink')[0], "GC Code");       
+        addCopyToClipboardLink($('#ctl00_ContentBody_CoordInfoLinkControl1_uxCoordInfoCode')[0], $('.CoordInfoLink')[0], "GC Code");
     }
 
 // Show favorite percentage.
@@ -2540,7 +2540,7 @@ var mainGC = function() {
             try {
                 mapservice_link( {
                     uniqueServiceId: "flopps",
-                    urlTemplate: 'http://flopp.net/?c={center_latitude}:{center_longitude}&z={zoom}&t={map}&d=O:C&m={waypoints}',
+                    urlTemplate: 'https://flopp.net/?c={center_latitude}:{center_longitude}&z={zoom}&t={map}&d=O:C&m={waypoints}',
                     layers: {'OSM': { maxZoom: 18, displayName: 'Openstreetmap' }, 'OSM/DE': { maxZoom: 18, displayName: 'OSM German Style' }, 'TOPO': { maxZoom: 15, displayName: 'OpenTopMap' }, 'roadmap':{ maxZoom: 20, displayName: 'Google Maps' }, 'hybrid': { maxZoom: 20, displayName: 'Google Maps Hybrid' }, 'terrain':{ maxZoom: 20, displayName: 'Google Maps Terrain' }, 'satellite':{ maxZoom: 20, displayName: 'Google Maps Satellite' }},
                     waypointSeparator : '*',
                     waypointFunction : floppsMapWaypoint,
@@ -2561,7 +2561,7 @@ var mainGC = function() {
             try {
                 mapservice_link( {
                     uniqueServiceId: "brouter",
-                    urlTemplate: 'http://brouter.de/brouter-web/#map={zoom}/{center_latitude}/{center_longitude}/{map}&lonlats={waypoints}',
+                    urlTemplate: 'https://brouter.de/brouter-web/#map={zoom}/{center_latitude}/{center_longitude}/{map}&lonlats={waypoints}',
                     layers: {'OpenStreetMap': { maxZoom: 18, displayName: 'OpenStreetMap' }, 'OpenStreetMap.de': { maxZoom: 17, displayName: 'OSM German Style' }, 'OpenTopoMap': { maxZoom: 17, displayName: 'OpenTopoMap' }, 'Esri World Imagery': { maxZoom: 18, displayName: 'Esri World Imagery' }},
                     waypointSeparator : ';',
                     waypointFunction : brouterWaypoint,
@@ -2582,7 +2582,7 @@ var mainGC = function() {
             try {
                 mapservice_link( {
                     uniqueServiceId: "gpsvisualizer",
-                    urlTemplate: 'http://www.gpsvisualizer.com/map_input?&width=1244&height=700&trk_list=0&wpt_list=desc_border&bg_map={map}&google_zoom_level=auto&google_street_view=1&google_wpt_labels=1&form:data=name,latitude,longitude,circle_radius,desc,symbol\n{waypoints}',
+                    urlTemplate: 'https://www.gpsvisualizer.com/map_input?&width=1244&height=700&trk_list=0&wpt_list=desc_border&bg_map={map}&google_zoom_level=auto&google_street_view=1&google_wpt_labels=1&form:data=name,latitude,longitude,circle_radius,desc,symbol\n{waypoints}',
                     layers: { 'google_map' : { displayName: 'Google street map', maxZoom: 20 }, 'google_satellite' : { displayName: 'Google satellite', maxZoom: 20 }, 'google_hybrid' : { displayName: 'Google hybrid', maxZoom: 20 }, 'google_physical' : { displayName: 'Google terrain', maxZoom: 20 }, 'google_openstreetmap' : { displayName: 'OpenStreetMap', maxZoom: 20 }, 'google_openstreetmap_tf' : { displayName: 'OSM ThunderForest', maxZoom: 20 }, 'google_openstreetmap_komoot' : { displayName: 'OSM Komoot', maxZoom: 20 }, 'google_opencyclemap' : { displayName: 'OpenCycleMap', maxZoom: 20 }, 'google_opentopomap' : { displayName: 'OpenTopoMap', maxZoom: 20 }, 'google_4umaps' : { displayName: 'World topo maps', maxZoom: 20 }},
                     waypointSeparator : '\n',
                     waypointFunction : gpsvisualizerWaypoint,
@@ -2671,7 +2671,7 @@ var mainGC = function() {
                     function build_map_overview_marker(waitCount) { // GDPR
                         if (typeof unsafeWindow.mapLatLng !== "undefined" && unsafeWindow.mapLatLng !== null) { // GDPR
                             var marker = L.marker([lat, lng],{icon: L.icon({
-                                iconUrl: 'http://www.geocaching.com/images/wpttypes/pins/' + unsafeWindow.mapLatLng.type + '.png',
+                                iconUrl: 'https://www.geocaching.com/images/wpttypes/pins/' + unsafeWindow.mapLatLng.type + '.png',
                                 iconSize: [20, 23],
                                 iconAnchor: [10, 23],
                             })}).addTo(previewMap);
@@ -3045,7 +3045,7 @@ var mainGC = function() {
                 var tmp_coords = toDec(cellCoordinates.text().trim());
                 if ((!settings_driving_direction_parking_area || icon.match(/pkg.jpg/g)) && typeof tmp_coords[0] !== 'undefined' && typeof tmp_coords[1] !== 'undefined') {
                     if (getValue("home_lat", 0) != 0 && getValue("home_lng") != 0) {
-                        var link = "http://maps.google.com/maps?f=d&hl=en&saddr="+getValue("home_lat", 0)/10000000+","+getValue("home_lng", 0)/10000000+"%20(Home%20Location)&daddr=";
+                        var link = "https://maps.google.com/maps?f=d&hl=en&saddr="+getValue("home_lat", 0)/10000000+","+getValue("home_lng", 0)/10000000+"%20(Home%20Location)&daddr=";
                         row1st.find("td:last").append('<a title="Driving Directions" href="'+link+tmp_coords[0]+","+tmp_coords[1]+" ("+name+')" target="_blank"><img src="/images/icons/16/directions.png"></a>');
                     } else {
                         var link = document.location + "&#gclhpb#errhomecoord";
@@ -3491,7 +3491,7 @@ var mainGC = function() {
                     '<div>' +
                         '<button type="button" id="log-preview-button" class="btn btn-handle handle-open" data-open="false">Log Preview' +
                             '<svg height="24" width="24" class="icon icon-svg-fill sea">' +
-                                '<use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="/play/app/ui-icons/sprites/global.svg#icon-expand-svg-fill"></use>' +
+                                '<use xmlns:xlink="https://www.w3.org/1999/xlink" xlink:href="/play/app/ui-icons/sprites/global.svg#icon-expand-svg-fill"></use>' +
                             '</svg>' +
                         '</button>' +
                         '<div class="inventory-panel" style="display: block;" id="log-preview-content">' +
@@ -5389,7 +5389,7 @@ var mainGC = function() {
                 // Location.
                 var friendlocation = trim(friend.getElementsByTagName("dd")[2].getElementsByTagName("span")[0].innerHTML);
                 if (friendlocation != "" && friendlocation != "not listed" && friendlocation.length > 3) {
-                    friend.getElementsByTagName("dd")[2].getElementsByTagName("span")[0].innerHTML = "<a href='http://maps.google.de/?q=" + (friendlocation.replace(/&/g, "")) + "' target='_blank'>" + friendlocation + "</a>";
+                    friend.getElementsByTagName("dd")[2].getElementsByTagName("span")[0].innerHTML = "<a href='https://maps.google.de/?q=" + (friendlocation.replace(/&/g, "")) + "' target='_blank'>" + friendlocation + "</a>";
                 }
                 // Bottom line.
                 friend.getElementsByTagName("p")[0].innerHTML = "<a name='lnk_profilegallery2' href='" + name.href + '#gclhpb#ctl00_ContentBody_ProfilePanel1_lnkGallery' + "'>Gallery</a> | " + friend.getElementsByTagName("p")[0].innerHTML;
@@ -6568,7 +6568,7 @@ var mainGC = function() {
                 '                         title="Was this a great story?"' +
                 '                     {{/if}}' +
                 '                     {{if userInfo.ID == AccountID}}disabled{{/if}}>                ' +
-                '                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">' +
+                '                 <svg xmlns="https://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">' +
                 '                   <g>' +
                 '                     <g stroke-width="1.125" transform="translate(4 3)">' +
                 '                       <path d="M2,0 L16,0 L16,18 L2,18 L2,18 C0.8954305,18 1.3527075e-16,17.1045695 0,16 L0,2 L0,2 C-1.3527075e-16,0.8954305 0.8954305,2.02906125e-16 2,0 Z"/>' +
@@ -6592,7 +6592,7 @@ var mainGC = function() {
                 '                         title="Was this helpful?"' +
                 '                     {{/if}}' +
                 '                     {{if userInfo.ID == AccountID}}disabled{{/if}}>' +
-                '                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 21.55 21.29">' +
+                '                 <svg xmlns="https://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 21.55 21.29">' +
                 '                   <g>' +
                 '                     <g>' +
                 '                       <path d="M21.3 13.38a1.08 1.08 0 0 1-.18.6 1 1 0 0 1-1.41.34l-1.29-.89-2.33-1.55-.15.21 3.63 2.43a1.12 1.12 0 0 1 .29 1.48 1.1 1.1 0 0 1-.7.47 1 1 0 0 1-.78-.17l-3.69-2.47-.14.19 3.81 2.59a1.1 1.1 0 0 1 .29 1.51 1 1 0 0 1-1.42.32L13.3 15.8l-.14.2L17 18.58a.48.48 0 0 1 .11.09 1.08 1.08 0 0 1 .17 1.42 1 1 0 0 1-.67.46 1 1 0 0 1-.8-.16l-1.43-1a1.84 1.84 0 0 0-.8-1.39 1.77 1.77 0 0 0-1-.31 1.84 1.84 0 0 0-.33 0 1.67 1.67 0 0 0-.3.08 1.83 1.83 0 0 0-.74-1.88 1.77 1.77 0 0 0-1-.3 1.5 1.5 0 0 0-.35 0 1.58 1.58 0 0 0-.31.09 1.77 1.77 0 0 0-1.73-2.19h-.33a1.7 1.7 0 0 0-.45.15 1.7 1.7 0 0 0-.66-1.83 1.58 1.58 0 0 0-.91-.28 1.35 1.35 0 0 0-.33 0 1.67 1.67 0 0 0-1.06.71l-.3.46a5.17 5.17 0 0 1-.43-2.13L0 8.31 4.92.9l3.32 2.31A2.67 2.67 0 0 1 11.52 3a4.19 4.19 0 0 0-2.75 1.16C7.79 5.33 6.17 7.79 6.05 8H6v.06a2 2 0 0 0 .3 1.68 1.07 1.07 0 0 0 .42.33 1.62 1.62 0 0 0 .72.17 1.54 1.54 0 0 0 1.09-.45l1.31-2a2.44 2.44 0 0 0 1.49.63 2 2 0 0 0 .42 0 2.12 2.12 0 0 0 .67-.3 2.61 2.61 0 0 0 .78-.7l6.58 4.41 1 .65a1.09 1.09 0 0 1 .45.69.82.82 0 0 1 .07.21z"/>' +
@@ -8239,7 +8239,7 @@ var mainGC = function() {
             }
             var urlGoogleMaps = 'https://maps.google.de/maps?q={markerLat},{markerLon}&z={zoom}&ll={lat},{lon}';
             var urlOSM = 'https://www.openstreetmap.org/?#map={zoom}/{lat}/{lon}';
-            var urlFlopps = 'http://flopp.net/?c={lat}:{lon}&z={zoom}&t=OSM&f=n&m=&d=';
+            var urlFlopps = 'https://flopp.net/?c={lat}:{lon}&z={zoom}&t=OSM&f=n&m=&d=';
             var urlGeoHack = "https://tools.wmflabs.org/geohack/geohack.php?pagename=Geocaching&params={latDeg}_{latMin}_{latSec}_{latOrient}_{lonDeg}_{lonMin}_{lonSec}_{lonOrient}";
             function replaceData(str, coords) {
                 re = new RegExp("\{[a-zA-Z]+\}", "g");
@@ -8553,11 +8553,11 @@ var mainGC = function() {
                             if (settings_show_elevation_of_waypoints) {
                                 new_text += '<span id="elevation-waypoint-'+indexMapItems+'"></span>';
                             }
-                            new_text += '<span class="favi_points" title="Favorites in percent"><svg height="16" width="16"><image xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="/images/icons/fave_fill_16.svg" src="/images/icons/fave_fill_16.png" width="16" height="16" alt="Favorite points"></image></svg> ' + fav_percent + '</span> | ';
+                            new_text += '<span class="favi_points" title="Favorites in percent"><svg height="16" width="16"><image xmlns:xlink="https://www.w3.org/1999/xlink" xlink:href="/images/icons/fave_fill_16.svg" src="/images/icons/fave_fill_16.png" width="16" height="16" alt="Favorite points"></image></svg> ' + fav_percent + '</span> | ';
                             if(premium_only){
                                 new_text += ' <span class="premium_only" title="Premium Only Cache"><img src="/images/icons/16/premium_only.png" width="16" height="16" alt="Premium Only Cache" /></span> | ';
                             }
-                            new_text += '<span class="tackables" title="Number of trackables"><svg height="16" width="16" class="icon-sm"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="/account/app/ui-icons/sprites/global.svg#icon-travelbug-default"></use></svg> ' + trachables + '</span><br>';
+                            new_text += '<span class="tackables" title="Number of trackables"><svg height="16" width="16" class="icon-sm"><use xmlns:xlink="https://www.w3.org/1999/xlink" xlink:href="/account/app/ui-icons/sprites/global.svg#icon-travelbug-default"></use></svg> ' + trachables + '</span><br>';
                             $('#popup_additional_info_' + local_gc_code).html(new_text);
 
                             // Get favorite score.
@@ -9616,7 +9616,7 @@ var mainGC = function() {
 // Append '&visitcount=1' to all geochecker.com links.
     if (settings_visitCount_geocheckerCom && is_page("cache_listing")) {
         try {
-            $('#ctl00_ContentBody_LongDescription a[href^="http://www.geochecker.com/index.php?code="]').filter(':not([href*="visitcount=1"])').attr('href', function(i, str) {
+            $('#ctl00_ContentBody_LongDescription a[href^="https://www.geochecker.com/index.php?code="]').filter(':not([href*="visitcount=1"])').attr('href', function(i, str) {
                 return str + '&visitcount=1';
             }).attr('rel', 'noreferrer');
         } catch(e) {gclh_error("Append '&visitcount=1' to all geochecker.com links",e);}
@@ -9995,22 +9995,23 @@ var mainGC = function() {
         var new_lng = pre + " " + tmp1 + "° " + tmp2;
         return new_lat + " " + new_lng;
     }
+
     /*
         element_to_copy:    innerHtml of this element will be copied. If you pass
-                            a string, the string will be the copied text. In this 
+                            a string, the string will be the copied text. In this
                             case you have to pass an anker_element!!!
 
         anker_element:      after this element the copy marker will be inserted,
                             if you set this to null, the element_to_copy will be
                             used as an anker
 
-        title:              you can enter a text that will be displayed between 
-                            Copy --TEXT OF TITLE-- to clipboard. If you leave it 
+        title:              you can enter a text that will be displayed between
+                            Copy --TEXT OF TITLE-- to clipboard. If you leave it
                             blank, it will just "Copy to clipboard" be displayed
 
         style               You can add styles to the surrounding span by passing
                             it in this variable
-     */
+    */
     function addCopyToClipboardLink(element_to_copy, anker_element= null, title="", style= ""){
         try {
             var ctoc = false;
@@ -10148,7 +10149,7 @@ var mainGC = function() {
                 g_name = $('.muted')[0].children[0].innerHTML;
             }
             if (g_code != "") {
-                g_link = "(http://coord.info/" + g_code + ")";
+                g_link = "(https://coord.info/" + g_code + ")";
                 g_code = "(" + g_code + ")";
             }
             g_founds = get_my_finds();
@@ -11454,7 +11455,7 @@ var mainGC = function() {
 
             html += "<div id='gclh_config_content1'>";
             html += "&nbsp;" + "<font style='float: right; font-size: 11px; ' >";
-            html += "<a href='http://geoclub.de/forum/viewforum.php?f=117' title='Help is available on the Geoclub forum' target='_blank'>Help</a> | ";
+            html += "<a href='https://geoclub.de/forum/viewforum.php?f=117' title='Help is available on the Geoclub forum' target='_blank'>Help</a> | ";
             html += "<a href='"+urlFaq+"' title='Frequently asked questions on GitHub' target='_blank'>FAQ</a> | ";
             html += "<a href='https://github.com/2Abendsegler/GClh/issues?q=is:issue is:open sort:created-desc' title='Show/open issues on GitHub' target='_blank'>Issues</a> | ";
             html += "<a href='"+urlChangelog+"' title='Documentation of changes and new features on GitHub' target='_blank'>Changelog</a> | ";
@@ -11867,7 +11868,7 @@ var mainGC = function() {
             var content_settings_show_thumbnails = checkboxy('settings_show_thumbnails', 'Show thumbnails of images') + show_help_big("With this option the images are displayed as thumbnails to have a preview. If you hover with your mouse over a thumbnail, you can see the big one.<br><br>This works in cache and TB logs, in the cache and TB image galleries, in public profile for the avatar and in the profile image gallery. <br><br>And after pressing button \"Show bigger avatars\" in cache listing, it works too for the avatars in the shown logs.") + "&nbsp; Max size of big image: <input class='gclh_form' size=3 type='text' id='settings_hover_image_max_size' value='" + settings_hover_image_max_size + "'> px <br>";
             html += content_settings_show_thumbnails;
             html += "&nbsp; " + checkboxy('settings_imgcaption_on_top', 'Show caption on top') + show_help("This option requires \"Show thumbnails of images\".");
-            var content_geothumbs = "<font class='gclh_small' style='margin-left: 130px; margin-top: 4px; position: absolute;'> (Alternative: <a href='http://benchmarks.org.uk/greasemonkey/geothumbs.php' target='_blank'>Geothumbs</a> " + show_help("A great alternative to the GClh bigger image functionality with \"Show thumbnails of images\" and \"Show bigger images in gallery\", provides the script Geothumbs (Geocaching Thumbnails). <br><br>The script works like GClh with Firefox, Google Chrome and Opera as Tampermonkey script. <br><br>If you use Geothumbs, you have to uncheck both GClh bigger image functionality \"Show thumbnails of images\" and \"Show bigger images in gallery\".") + ")</font>" + "<br>";
+            var content_geothumbs = "<font class='gclh_small' style='margin-left: 130px; margin-top: 4px; position: absolute;'> (Alternative: <a href='https://benchmarks.org.uk/greasemonkey/geothumbs.php' target='_blank'>Geothumbs</a> " + show_help("A great alternative to the GClh bigger image functionality with \"Show thumbnails of images\" and \"Show bigger images in gallery\", provides the script Geothumbs (Geocaching Thumbnails). <br><br>The script works like GClh with Firefox, Google Chrome and Opera as Tampermonkey script. <br><br>If you use Geothumbs, you have to uncheck both GClh bigger image functionality \"Show thumbnails of images\" and \"Show bigger images in gallery\".") + ")</font>" + "<br>";
             html += content_geothumbs;
             html += checkboxy('settings_show_big_gallery', 'Show bigger images in gallery') + show_help("With this option the images in the galleries of caches, TBs and public profiles are displayed bigger and not in 4 columns, but in 2 columns.<br><br>It runs not together with \"Show thumbnails of images\".");
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>Statistic</b>" + prem + "</div>";
@@ -13866,7 +13867,7 @@ var mainGC = function() {
                         var key = parts.shift();
                         var val = parts.length > 0 ? parts.join('=') : undefined;
                         key = decodeUnicodeURIComponent(key);
-                        // missing `=` should be `null`: (http://w3.org/TR/2012/WD-url-20120524/#collect-url-parameters)
+                        // missing `=` should be `null`: (https://w3.org/TR/2012/WD-url-20120524/#collect-url-parameters)
                         val = val === undefined ? null : decodeUnicodeURIComponent(val);
                         if (ret[key] === undefined) ret[key] = val;
                         else if (Array.isArray(ret[key])) ret[key].push(val);
@@ -14353,7 +14354,7 @@ function appendMetaId(id) {
     head.appendChild(meta);
 }
 
-// Calculates difference between two dates and returns it as a "humanized" string (borrowed from http://userscripts.org/scripts/show/36353).
+// Calculates difference between two dates and returns it as a "humanized" string.
 function adjustPlural(singularWord, timesNumber) {return singularWord + ((Math.abs(timesNumber) != 1) ? "s" : "");}
 function getDateDiffString(dateNew, dateOld) {
     var dateDiff = new Date(dateNew - dateOld);
