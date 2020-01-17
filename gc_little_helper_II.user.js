@@ -1064,13 +1064,13 @@ var asynchronGC = function() {
                 headerHTML = headerHTML.replace('<nav ', '<gclh_nav ').replace('</nav>', '</gclh_nav>').replace(/href="\.\./gi, 'href="');
                 // Build header and start mainGC.
                 function buildUpHeaderAndStart(waitCount, html) {
-                    if ($('nav.gc-nav-menu, #GCHeader')[0] && !html == "") {
+                    if ($('#gc-header')[0] && !html == "") {
                         // Part of core CSS of Groundspeak.
                         var css = corecss;
                         // Integrate html for new header.
-                        $('nav.gc-nav-menu, #GCHeader').before(html);
+                        $('#gc-header').before(html);
                         // Make GC header invisible.
-                        $('nav.gc-nav-menu, #GCHeader')[0].style.display = 'none';
+                        $('#gc-header')[0].style.display = 'none';
                         // User profile menu bend into shape.
                         css += '.gclh_open ul.submenu {visibility: visible; display: block;}';
                         $('#ctl00_uxLoginStatus_divSignedIn button.li-user-toggle')[0].addEventListener('click', function(){
@@ -4899,7 +4899,7 @@ var mainGC = function() {
                         checkForBuildObserverBodyLists(0);
                     });
                 });
-                var target = document.querySelector('.desktop-nav-display');
+                var target = document.querySelector('.gc-button-group');
                 var config = { attributes: true, childList: true, characterData: true };
                 observerButtonsLists.observe(target, config);
             }
