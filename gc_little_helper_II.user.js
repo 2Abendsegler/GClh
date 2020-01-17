@@ -568,6 +568,11 @@ var variablesInit = function(c) {
     c.settings_lists_back_to_top = getValue("settings_lists_back_to_top", false);
     c.settings_searchmap_autoupdate_after_dragging = getValue("settings_searchmap_autoupdate_after_dragging", true);
     c.settings_improve_character_counter = getValue("settings_improve_character_counter", true);
+    c.settings_searchmap_compact_layout = getValue("settings_searchmap_compact_layout", false);
+    c.settings_searchmap_disabled = getValue("settings_searchmap_disabled", false);
+    c.settings_searchmap_strike_disabled = getValue("settings_searchmap_strike_disabled", false);
+    c.settings_searchmap_strike_disabled_color = getValue("settings_searchmap_strike_disabled_color", '4A4A4A');
+    c.settings_searchmap_show_hint = getValue("settings_searchmap_show_hint", false);
 
     try {
         if (c.userToken === null) {
@@ -7937,10 +7942,131 @@ var mainGC = function() {
                     }
                 }
             }
+            // Compact layout on detail screen.
+            function compactLayout() {
+                if (settings_searchmap_compact_layout) {
+                    // Filter
+                    if (document.querySelector('#search-filters') && document.querySelector('.text-field')) {
+                        document.querySelector('.text-field').setAttribute('class', 'chip-field-input');
+                    }
+                    // Cache details
+                    if (document.querySelector('.cache-preview-header')) {
+                        document.querySelector('.more-info-link').getElementsByTagName('span')[1].style = 'display:none;';
+                        var buttons = document.querySelectorAll('.cache-preview-action-menu ul li');
+                        for (let i=0; i<buttons.length; i++) {
+                            buttons[i].title = buttons[i].getElementsByTagName('span')[0].innerHTML;
+                        }
+                        if (document.querySelector('.gclhOwner')) document.querySelector('.gclhOwner').remove();
+                        let span = document.createElement('span');
+                        span.setAttribute('class', 'gclhOwner');
+                        span.innerHTML = document.querySelector('.geocache-owner-name').innerHTML + ' ' + document.querySelector('.geocache-placed-date').innerHTML;
+                        document.querySelector('.geocache-owner').appendChild(span);
+                    }
+                }
+            }
+            // Strike through title of disabled caches.
+            function strikeDisabledInCacheDetails() {
+                if (document.querySelector('.cache-detail-preview') && document.querySelector('.status') && document.querySelector('.status span').style.color == 'rgb(211, 70, 39)') {
+                    document.querySelector('.header-top-left h1').style.color = '#' + settings_searchmap_strike_disabled_color;
+                    if (settings_searchmap_strike_disabled) document.querySelector('.header-top-left h1').style.textDecoration = 'line-through';
+                }else if (document.querySelector('.cache-detail-preview')) {
+                    document.querySelector('.header-top-left h1').style.textDecoration = 'unset';
+                    document.querySelector('.header-top-left h1').style.color = '#4a4a4a';
+                }
+            }
+            function strikeDisabledInList() {
+                if (document.querySelector('#geocache-list')) {
+                    var caches = $.find('#geocache-list li');
+                    caches.forEach(function(cache) {
+                        if (settings_searchmap_disabled && cache.querySelector('.geocache-item-disabled')) {
+                            cache.querySelector('.geocache-item-name').style.color = '#' + settings_searchmap_strike_disabled_color;
+                            if (settings_searchmap_strike_disabled) cache.querySelector('.geocache-item-name').style.textDecoration = 'line-through';
+                        }
+                    });
+                }
+                
+            }
+            // Show hint automatically and scroll up to top after "Description & Hint" was clicked.
+            function showHint() {
+                if (document.querySelector('.cache-preview-header')) {
+                    if (document.querySelector('.eventListenerAdded')) return;
+                    function hintAddEventListener() {
+                        function waitForDescriptionBtn(waitCount) {
+                            if (document.querySelector('.cache-open-text-cta')) {
+                                // I used the event listener because the mutation observer is not triggered when the description open or close.
+                                $('.cache-open-text-cta').addClass('eventListenerAdded');
+                                document.querySelector('.cache-open-text-cta').addEventListener('click', function() {
+                                    function waitForDescription(waitCount) {
+                                        if (document.querySelector('.cache-preview-description')) {
+                                            // Scroll up to top after "Description & Hint" was clicked.
+                                            document.querySelector('.preview-main-inner').scrollTo({top: 0, left: 0, behavior: "smooth"});
+                                            // Show hint automatically.
+                                            if (document.querySelector('.cache-hint')) {
+                                                function hideShowHint() {
+                                                    if (document.querySelector('.cache-hint .toggle-handle.on')) {
+                                                        $('.cache-hint .toggle-handle').removeClass('on');
+                                                        $('.hint-text').removeClass('is-visible');
+                                                    }else {
+                                                        $('.cache-hint .toggle-handle').addClass('on');
+                                                        $('.hint-text').addClass('is-visible');
+                                                    }
+                                                }
+                                                if (!document.querySelector('.cache-hint h2 .toggle-handle')) {
+                                                    $('.cache-hint h2').append('<div class="toggle-handle"></div>');
+                                                    document.querySelector('.cache-hint h2').addEventListener('click', hideShowHint);
+                                                }
+                                                if (settings_searchmap_show_hint) hideShowHint();
+                                            }
+                                            // The Ownername and the collapse button have been deleted because the mutation observer is not triggered when the description open or close.
+                                            document.querySelector('.close-cta').addEventListener('click', function() {setTimeout(processAllSearchMap), 100});
+                                        } else {waitCount++; if (waitCount <= 50) setTimeout(function(){waitForDescription(waitCount);}, 50);}
+                                    }
+                                    waitForDescription(0);
+                                });
+                            } else {waitCount++; if (waitCount <= 100) setTimeout(function(){waitForDescriptionBtn(waitCount);}, 50);}
+                        }
+                        waitForDescriptionBtn(0);
+                    }
+                    hintAddEventListener();
+                }
+            }
+            // Show button to collapse activity.
+            function collapseActivity() {
+                if (document.querySelector('.cache-preview-action-menu')) {
+                    var header = document.getElementsByClassName('cache-preview-activities')[0].getElementsByTagName('header')[0];
+                    if (!document.querySelector('.opener')) {
+                        $(header).append('<svg height="22" width="22" class="opener"><use xlink:href="/account/app/ui-icons/sprites/global.svg#icon-expand-svg-fill"></use></svg>');
+                        $(header).addClass('panel-header');
+                        document.querySelector('.cache-preview-activities header').addEventListener('click', function() {
+                            if (getValue('seachmap_activity_visible', true)) {
+                                $(header).removeClass('show');
+                                $(header).addClass('hide');
+                                $('.cache-preview-activities > div:nth-child(2)').fadeOut();
+                                setValue('seachmap_activity_visible', false);
+                            }else {
+                                $(header).addClass('show');
+                                $(header).removeClass('hide');
+                                $('.cache-preview-activities > div:nth-child(2)').fadeIn();
+                                setValue('seachmap_activity_visible', true);
+                            }
+                        });
+                    }
+                    if (getValue('seachmap_activity_visible', true)) $(header).addClass('show');
+                    else {
+                        document.querySelector('.cache-preview-activities > div:nth-child(2)').style.display = 'none';
+                        $(header).addClass('hide');
+                    }
+                }
+            }
 
             // Processing all steps.
             function processAllSearchMap() {
                 searchThisArea();
+                compactLayout();
+                strikeDisabledInCacheDetails();
+                strikeDisabledInList();
+                showHint();
+                collapseActivity();
             }
 
             // Build mutation observer for body.
@@ -7971,6 +8097,52 @@ var mainGC = function() {
             if (!document.location.href.match(/\.com\/play\/map\?(bm=|(.*)&nfb=GClh)/) && settings_searchmap_autoupdate_after_dragging) {
                 css += '#clear-map-control, .loading-container {display: none;}';
             }
+            if (settings_searchmap_compact_layout) {
+                css += '.search-bar {padding: 10px !important;}';
+                // Cacheliste and Cache details.
+                css += '.geocache-item, .cache-preview-header {padding: 5px 15px !important;}';
+                css += '.cache-detail-preview {padding: 0 !important; height: 100% !important;}';
+                css += '.more-info {top: 0 !important;}';
+                css += '.geocache-action-bar {padding: 0 10px 5px !important;}';
+                css += '.cache-preview-attributes, .cache-preview-action-menu {padding: 5px 12px !important;}';
+                css += '.cache-activity-log, .cache-open-text-cta {padding: 7px !important;}';
+                css += '.cache-preview-activities header {padding: 5px !important;}';
+                css += '.geocache-owner {margin-top: 0px !important; padding: 5px !important;} ';
+                css += '.geocache-owner-name, .geocache-placed-date {display: none !important;}';
+                css += '.gclhOwner {color: #9b9b9b;}'
+                css += '.attributes {margin-bottom: 0 !important; padding-bottom: 5px !important;}';
+                // Filter
+                css += '#search-filters-controls {padding-bottom: 7px !important;}';
+                css += '.search-filter-group label {padding: 5px !important;}';
+                css += '#search-filters-content .trinary-control, .search-filters-block.search-filters-attributes {margin-top: 0 !important;}';
+                css += '.search-filters-status .trinary-control {padding-top: 10px !important}';
+                css += '#search-filters-content .search-filters-block.search-filters-attributes > div + div {margin-top: 15px !important;}';
+                css += 'search-filters-content .search-filters-block {padding: 0 !important;}'
+                css += '.search-filters-block {padding: 10px !important;}';
+                css += '.search-filters-block.search-filters-status {padding-top:0 !important}';
+                css += '.label {text-transform: none !important;}';
+                css += '.chip-field-container, .text-field {min-height: unset !important; padding: 4px !important;}';
+                css += '#sidebar footer {padding: 5px 0 !important;}';
+                css += '.cache-preview-action-menu ul li span {display: none; !important;}';
+                css += 'lable {padding-top: 10px !important}';
+                // Pop up
+                css += '.leaflet-popup-content {margin: 5px 8px !important;}';
+                css += '.cache-action-log-geocache, .cache-action-add-to-list, .cache-action-download-gpx, .cache-action-open-cache {padding: 5px 0 !important;}';
+            }
+            // Change hide/show hint link to a sliding button.
+            css += '.cache-hint-toggle {display: none;}';;
+            css += '.cache-hint h2 {display: flex; align-items: center;}';
+            css += '.cache-hint .toggle-handle {height: 19px !important; margin-left: 8px;}';
+            css += '.cache-hint .toggle-handle::after {height: 17px !important; width: 17px !important;}';
+            // Adapt the width of the pop up.´
+            css += '.leaflet-popup.context-menu.geocache-context-menu.leaflet-zoom-animated {width: auto !important; min-width: 300px;}';;
+            css += '.leaflet-popup-content {width: auto !important;}';
+            // Show button to collapse activity.
+            css += '.panel-header {display: flex; flex-flow: row wrap; justify-content: space-between; align-items: center; cursor: pointer;}';
+            css += '.hide .opener {animation: rotatehide 0.3s forwards;}';
+            css += '.show .opener {animation: rotateShow 0.3s forwards;}';
+            css += '@keyframes rotatehide {0% {transform: rotate(0deg);} 100% {transform: rotate(180deg);}}';
+            css += '@keyframes rotateShow {0% {transform: rotate(180deg);} 100% {transform: rotate(0deg);}}';
             if (css != "") appendCssStyle(css);
         } catch(e) {gclh_error("Improve search map",e);}
     }
@@ -11680,10 +11852,10 @@ var mainGC = function() {
             html += newParameterOn1;
             html += checkboxy('settings_lists_compact_layout', 'Show compact layout') + show_help("With this option the list of bookmark lists, the bookmark lists, the favorites list and the ignore list is displayed in compact layout.") + "<br>";
             var content_status_line = "If the name of disabled and archived caches are specially represented and the identifier of premium member only caches are shown in an own column, the cache status line above the cache name is hidden.";
-            html += checkboxy('settings_lists_disabled', 'Show name of disabled caches ') + checkboxy('settings_lists_disabled_strikethrough', 'strike through in color ');
+            html += checkboxy('settings_lists_disabled', 'Show name of disabled caches ') + checkboxy('settings_lists_disabled_strikethrough', 'strike through, in color ');
             html += "<input class='gclh_form color' type='text' size=6 id='settings_lists_disabled_color' style='margin-left: 0px;' value='" + getValue("settings_lists_disabled_color", "4A4A4A") + "'>";
             html += "<img src=" + global_restore_icon + " id='restore_settings_lists_disabled_color' title='back to default' style='width: 12px; cursor: pointer;'>" + show_help3(content_status_line) + "<br>";
-            html += checkboxy('settings_lists_archived', 'Show name of archived caches ') + checkboxy('settings_lists_archived_strikethrough', 'strike through in color ');
+            html += checkboxy('settings_lists_archived', 'Show name of archived caches ') + checkboxy('settings_lists_archived_strikethrough', 'strike through, in color ');
             html += "<input class='gclh_form color' type='text' size=6 id='settings_lists_archived_color' style='margin-left: 0px;' value='" + getValue("settings_lists_archived_color", "8C0B0B") + "'>";
             html += "<img src=" + global_restore_icon + " id='restore_settings_lists_archived_color' title='back to default' style='width: 12px; cursor: pointer;'>" + show_help3(content_status_line) + "<br>";
             html += checkboxy('settings_lists_icons_visible', 'Set visibility of cache type icons and log status icons') + show_help("The cache type icon and the log status icon are sometimes slightly invisible and sometimes visible, if the cache is disabled or archived. With this and the following options, you can set it consistently, if the cache is disabled or archived.") + "<br>";
@@ -11857,6 +12029,12 @@ var mainGC = function() {
             html += "<div class='gclh_old_new_line'>New map (search map) only</div>";
             html += newParameterOn1;
             html += checkboxy('settings_searchmap_autoupdate_after_dragging', 'Automatic search for new caches after dragging') + "<br>";
+            html += checkboxy('settings_searchmap_compact_layout', 'Show compact layout on detail screen') + "<br>";
+            html += checkboxy('settings_searchmap_disabled', 'Show name of disabled caches ') + checkboxy('settings_searchmap_strike_disabled', 'strike through, in color ');
+            html += "<input class='gclh_form color' type='text' size=6 id='settings_searchmap_strike_disabled_color' style='margin-left: 0px;' value='" + getValue("settings_searchmap_strike_disabled_color", "4A4A4A") + "'>";
+            html += "<img src=" + global_restore_icon + " id='restore_settings_searchmap_strike_disabled_color' title='back to default' style='width: 12px; cursor: pointer;'>";
+            html += show_help3('If you disable the option "Show name of disabled caches", the cache name in the geocache list will be not strike through and will be also not colored.') + '<br>';
+            html += checkboxy('settings_searchmap_show_hint', 'Show hint of cache automatically on cache detail screen') + "<br>";
             html += newParameterVersionSetzen('0.10') + newParameterOff;
             html += "</div>";
 
@@ -12609,6 +12787,7 @@ var mainGC = function() {
             $('#settings_process_vup')[0].addEventListener("click", alert_settings_process_vup, false);
             $('#restore_settings_lists_disabled_color')[0].addEventListener("click", restoreField, false);
             $('#restore_settings_lists_archived_color')[0].addEventListener("click", restoreField, false);
+            $('#restore_settings_searchmap_strike_disabled_color')[0].addEventListener("click", restoreField, false);
 
             // Events setzen für Parameter, die im GClh Config mehrfach ausgegeben wurden, weil sie zu mehreren Themen gehören. Es handelt sich hier um den Parameter selbst.
             // In der Function werden Events für den Parameter selbst (ZB: "settings_show_mail_in_viplist") und dessen Clone gesetzt, die hinten mit "X" und Nummerierung
@@ -12903,6 +13082,7 @@ var mainGC = function() {
             setValue("settings_showUnpublishedHides_sort", document.getElementById('settings_showUnpublishedHides_sort').value);
             setValue("settings_lists_disabled_color", document.getElementById('settings_lists_disabled_color').value.replace("#",""));
             setValue("settings_lists_archived_color", document.getElementById('settings_lists_archived_color').value.replace("#",""));
+            setValue("settings_searchmap_strike_disabled_color", document.getElementById('settings_searchmap_strike_disabled_color').value.replace("#",""));
 
             // Map Layers in vorgegebener Reihenfolge übernehmen.
             var new_map_layers_available = document.getElementById('settings_maplayers_available');
@@ -13150,6 +13330,10 @@ var mainGC = function() {
                 'settings_lists_back_to_top',
                 'settings_searchmap_autoupdate_after_dragging',
                 'settings_improve_character_counter',
+                'settings_searchmap_compact_layout',
+                'settings_searchmap_disabled',
+                'settings_searchmap_strike_disabled',
+                'settings_searchmap_show_hint',
             );
 
             for (var i = 0; i < checkboxes.length; i++) {
@@ -13501,6 +13685,7 @@ var mainGC = function() {
                 case "settings_lines_color_vip": field.value = "F0F0A0"; break;
                 case "settings_lists_disabled_color": field.value = "4A4A4A"; break;
                 case "settings_lists_archived_color": field.value = "8C0B0B"; break;
+                case "settings_searchmap_strike_disabled_color": field.value = "4A4A4A"; break;
                 case "settings_font_color_menu": restoreColor("settings_font_color_menuX0", "restore_settings_font_color_menuX0", field.value); break;
                 case "settings_font_color_menuX0": restoreColor("settings_font_color_menu", "restore_settings_font_color_menu", field.value); break;
                 case "settings_font_color_submenu": restoreColor("settings_font_color_submenuX0", "restore_settings_font_color_submenuX0", field.value); break;
