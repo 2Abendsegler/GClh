@@ -1064,13 +1064,13 @@ var asynchronGC = function() {
                 headerHTML = headerHTML.replace('<nav ', '<gclh_nav ').replace('</nav>', '</gclh_nav>').replace(/href="\.\./gi, 'href="');
                 // Build header and start mainGC.
                 function buildUpHeaderAndStart(waitCount, html) {
-                    if ($('#gc-header')[0] && !html == "") {
+                    if ($('#gc-header, #GCHeader')[0] && !html == "") {
                         // Part of core CSS of Groundspeak.
                         var css = corecss;
                         // Integrate html for new header.
-                        $('#gc-header').before(html);
+                        $('#gc-header, #GCHeader').before(html);
                         // Make GC header invisible.
-                        $('#gc-header')[0].style.display = 'none';
+                        $('#gc-header, #GCHeader')[0].style.display = 'none';
                         // User profile menu bend into shape.
                         css += '.gclh_open ul.submenu {visibility: visible; display: block;}';
                         $('#ctl00_uxLoginStatus_divSignedIn button.li-user-toggle')[0].addEventListener('click', function(){
