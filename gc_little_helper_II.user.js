@@ -8014,7 +8014,7 @@ var mainGC = function() {
                                                     $('.cache-hint h2').append('<div class="toggle-handle"></div>');
                                                     document.querySelector('.cache-hint h2').addEventListener('click', hideShowHint);
                                                 }
-                                                if (settings_searchmap_show_hint) hideShowHint();
+                                                if (settings_searchmap_show_hint && !$('.hint-text').hasClass('is-visible')) hideShowHint();
                                             }
                                             // The Ownername and the collapse button have been deleted because the mutation observer is not triggered when the description open or close.
                                             document.querySelector('.close-cta').addEventListener('click', function() {setTimeout(processAllSearchMap), 100});
