@@ -48,6 +48,10 @@
 <img src="../images/overview/Profile 05.png" alt="Profile 05.png"><br>
 <br>
 
+### Friends:
+<img src="../images/overview/Friends 01.png" alt="Friends 01.png"><br>
+<br>
+
 ### Watchlist:
 <img src="../images/overview/Watchlist 01.png" alt="Watchlist 01.png"><br>
 <br>
@@ -57,4 +61,3 @@
 <br>
 
 <img src="../images/usw.png"><br>
-
