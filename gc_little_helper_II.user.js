@@ -4324,7 +4324,7 @@ var mainGC = function() {
                 $('.BottomSpacing')[0].remove();
                 $('.BreadcrumbWidget')[0].remove();
             }
-            if ($('#ctl00_ContentBody_LocationPanel1_OriginLabel').length > 0) {
+            if ($('#ctl00_ContentBody_LocationPanel1_OriginLabel').length > 0 && $('#ctl00_ContentBody_LocationPanel1_OriginLabel')[0].childNodes[0]) {
                 var span = document.createElement("span");
                 span.innerHTML = $('#ctl00_ContentBody_LocationPanel1_OriginLabel')[0].childNodes[0].data;
                 if ($('#ctl00_ContentBody_LocationPanel1_OriginLabel')[0].children.length > 0) {
