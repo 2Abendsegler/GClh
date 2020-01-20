@@ -1482,7 +1482,7 @@ var mainGC = function() {
                 gc_img.setAttribute("style", "clip: unset; width: 35px; margin-top: -3px;");
                 gc_img.setAttribute("title", "Geocaching");
                 gc_img.setAttribute("id", "newgclogo");
-                gc_img.setAttribute("src", global_gc_icon);
+                gc_img.setAttribute("src", global_gc_icon2);
                 gc_link.appendChild(gc_img);
                 gc_link.setAttribute("href", "/");
                 side.appendChild(gc_link);
