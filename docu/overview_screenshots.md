@@ -48,6 +48,10 @@
 <img src="../images/overview/Profile 05.png" alt="Profile 05.png"><br>
 <br>
 
+### Watchlist:
+<img src="../images/overview/Watchlist 01.png" alt="Watchlist 01.png"><br>
+<br>
+
 ### Configuration of GC little helper II:
 <img src="../images/overview/Config 01.png" alt="Config 01.png"><br>
 <br>
