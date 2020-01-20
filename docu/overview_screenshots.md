@@ -3,8 +3,8 @@
 (Extensions by the *GC little helper II* are marked.)
 
 ### Cache Listing:
-<img src="../images/overview/Cache Listing 01.png" alt="Cache Listing 01.png">
-### ...<br>
+<img src="../images/overview/Cache Listing 01.png" alt="Cache Listing 01.png"><br>
+# ...<br>
 <img src="../images/overview/Cache Listing 02.png" alt="Cache Listing 02.png"><br>
 <br>
 
