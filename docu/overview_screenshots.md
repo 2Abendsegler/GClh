@@ -15,6 +15,10 @@
 <img src="../images/overview/Navigationmenu 01.png" alt="Navigationmenu 01.png"><br>
 <br>
 
+### Dashboard:
+<img src="../images/overview/Dashboard 01.png" alt="Dashboard 01.png"><br>
+<br>
+
 ### Browse Map:
 <img src="../images/overview/Browse Map 01.png" alt="Browse Map 01.png"><br>
 <br>
@@ -27,8 +31,8 @@
 <img src="../images/overview/Pocket Query 01.png" alt="Pocket Query 01.png"><br>
 <br>
 
-### Dashboard:
-<img src="../images/overview/Dashboard 01.png" alt="Dashboard 01.png"><br>
+### Search:
+<img src="../images/overview/Search 01.png" alt="Search 01.png"><br>
 <br>
 
 ### Configuration of GC little helper II:
