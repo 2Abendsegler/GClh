@@ -2277,21 +2277,18 @@ var mainGC = function() {
                 break;
             case idCopyGCTourCoords:
                 el.value = determineListingCoords('GCTour');
-		break	
+		break;	
 	    case idCopyFull:
                 el.value =
                     $('#ctl00_ContentBody_CacheName')[0].innerHTML.replace(new RegExp('&nbsp;', 'g'),' ') + "\n" +
                     "https://coord.info/"+$('#ctl00_ContentBody_CoordInfoLinkControl1_uxCoordInfoCode')[0].innerHTML + "\n";
-
 		if (determineListingCoords('Corr') !== "") {
                     el.value += determineListingCoords('Corr') + "\n";
                 }
-/*			
                 if (g_note != null && (g_note != "" && g_note != "Click to enter a note" && g_note != "Klicken zum Eingeben einer Notiz")) {
                    // add user note
                    el.value += "\n" + g_note.replace(new RegExp('&gt;', 'g'),'>').replace(new RegExp('&lt;', 'g'),'<');
                 }
-*/		
                 break;
             default:
                 el.value = "";
