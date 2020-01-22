@@ -2244,7 +2244,7 @@ var mainGC = function() {
         if (determineListingCoords("GCTour") !== "") {
             html += '    <div class="copydata-content-layer copydata_click" data-id="'+idCopyGCTourCoords+'">GCTour Coordinates</div>';
         }
-		html += '    <div class="copydata-content-layer copydata_click" data-id="'+idCopyFull+'">Complete Information</div>';
+	html += '    <div class="copydata-content-layer copydata_click" data-id="'+idCopyFull+'">Complete Information</div>';
         html += '  </div>';
         $('.copydata_click')[0].parentNode.innerHTML += html;
         $('#CopyDropDown').addClass('hover');
@@ -2258,7 +2258,7 @@ var mainGC = function() {
     }
     function copydata_copy( thisObject ) {
         const el = document.createElement('textarea');
- 		var g_note = $('#viewCacheNote')[0].innerHTML;
+ 	var g_note = $('#viewCacheNote')[0].innerHTML;
         switch ($(thisObject).data('id')) {
             case idCopyName:
                 el.value = $('#ctl00_ContentBody_CacheName')[0].innerHTML.replace(new RegExp('&nbsp;', 'g'),' ');
@@ -2277,19 +2277,18 @@ var mainGC = function() {
                 break;
             case idCopyGCTourCoords:
                 el.value = determineListingCoords('GCTour');
-			case idCopyFull:
+		break	
+	    case idCopyFull:
                 el.value =
                     $('#ctl00_ContentBody_CacheName')[0].innerHTML.replace(new RegExp('&nbsp;', 'g'),' ') + "\n" +
                     "https://coord.info/"+$('#ctl00_ContentBody_CoordInfoLinkControl1_uxCoordInfoCode')[0].innerHTML + "\n";
-                if (determineOriginalListingCoords() !== "") {
-                    el.value += determineListingCoords() + "\n";
+                if (determineListingCoords("Corr") !== "") {
+                    el.value += determineListingCoords("Corr") + "\n";
                 }
                 if (g_note != null && (g_note != "" && g_note != "Click to enter a note" && g_note != "Klicken zum Eingeben einer Notiz")) {
                    // add user note
                    el.value += "\n" + g_note.replace(new RegExp('&gt;', 'g'),'>').replace(new RegExp('&lt;', 'g'),'<');
                 }
-                
-                break;
                 break;
             default:
                 el.value = "";
