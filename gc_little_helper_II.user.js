@@ -7569,7 +7569,7 @@ var mainGC = function() {
         return sort;
     }
 
-// Füge Unpublished Caches zum Dashboard.
+// Show unpublished hides in dashboard.
     if (is_page('dashboard') && settings_showUnpublishedHides) {
         try {
             $.get('https://www.geocaching.com/account/dashboard/unpublishedcaches', null, function(text) {
@@ -7647,11 +7647,10 @@ var mainGC = function() {
                             });
                         });
 
-                        // CSS
                         var css = '.activity-type-icon {display:flex; align-items:center; justify-content:flex-start;}';
-                           css += '.activity-type-icon span {font-size: .875rem !important;}';
-                           css += '.list {padding: 0;}';
-                           css += '.list p {margin-bottom: 0;}';
+                            css += '.activity-type-icon span {font-size: .875rem !important;}';
+                            css += '.list {padding: 0;}';
+                            css += '.list p {margin-bottom: 0;}';
                         appendCssStyle(css);
                     }
                 }
@@ -7659,8 +7658,8 @@ var mainGC = function() {
         } catch(e) {gclh_error("Show unpublished hides in dashboard", e);}
     }
 
-// Liste mit unveröffentlichten Caches sortieren.
-        if (settings_set_compactLayoutUnpublishedHides_sort && document.location.pathname.match(/^\/account\/dashboard\/unpublishedcaches/)) {
+// Sort unpublished caches.
+    if (settings_set_compactLayoutUnpublishedHides_sort && document.location.pathname.match(/^\/account\/dashboard\/unpublishedcaches/)) {
         try {
             var unpublishedCaches_ol = document.querySelectorAll('#LayoutFeed ol');
             // Damit nicht mehrere Listen (deaktiviert / eingereicht) durcheinander gewürfelt werden.
