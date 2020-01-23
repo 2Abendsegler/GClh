@@ -7570,7 +7570,7 @@ var mainGC = function() {
     }
 
 // Füge Unpublished Caches zum Dashboard.
-        if (is_page('dashboard') && settings_showUnpublishedHides) {
+    if (is_page('dashboard') && settings_showUnpublishedHides) {
         try {
             $.get('https://www.geocaching.com/account/dashboard/unpublishedcaches', null, function(text) {
                 // Look for unpublished Caches.
