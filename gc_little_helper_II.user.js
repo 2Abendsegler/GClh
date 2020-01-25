@@ -7921,7 +7921,6 @@ var mainGC = function() {
         } catch(e) {gclh_error("Show gallery images in 2 instead of 4 cols",e);}
     }
 
-//xxxx
 // Improve search map, improve new map.
     if (is_page('searchmap')) {
         try {
