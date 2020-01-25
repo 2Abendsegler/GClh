@@ -7956,6 +7956,9 @@ var mainGC = function() {
                             window.getComputedStyle($('.status-and-type .status span')[0]).color == 'rgb(4, 200, 214)') { // Premium color.
                             regroupCachelistSearchmap($('.cache-preview-header')[0], 'dot', '', '.cache-metadata', premium);
                         }
+                        if (!$('.header-top-left .gclh-cache-link')[0] && $('.header-top-left')[0] && $('.more-info-link')[0]) {
+                            $('.header-top-left')[0].innerHTML = '<a class="gclh-cache-link" href="' + $('.more-info-link')[0].href + '" target="_blank">' + $('.header-top-left')[0].innerHTML + '</a>';
+                        }
                         if (!$('.gclh_cache_type')[0] && $('.header-top-left')[0] && $('.header-top-left h1')[0] && $('.status-and-type')[0] && $('.status-and-type')[0].childNodes) {
                             var cacheTypeChildNode = $('.status-and-type')[0].childNodes.length - 1;
                             var cacheType = $('.status-and-type')[0].childNodes[cacheTypeChildNode].data;
@@ -8077,29 +8080,21 @@ var mainGC = function() {
             }
             // Show button to collapse activity.
             function collapseActivity() {
-                if (document.querySelector('.cache-preview-action-menu')) {
-                    var header = document.getElementsByClassName('cache-preview-activities')[0].getElementsByTagName('header')[0];
-                    if (!document.querySelector('.opener')) {
-                        $(header).append('<svg height="22" width="22" class="opener"><use xlink:href="/account/app/ui-icons/sprites/global.svg#icon-expand-svg-fill"></use></svg>');
-                        $(header).addClass('panel-header');
-                        document.querySelector('.cache-preview-activities header').addEventListener('click', function() {
-                            if (getValue('seachmap_activity_visible', true)) {
-                                $(header).removeClass('show');
-                                $(header).addClass('hide');
-                                $('.cache-preview-activities > div:nth-child(2)').fadeOut();
-                                setValue('seachmap_activity_visible', false);
+                if ($('.cache-preview-activities > header')[0] && $('.cache-preview-activities > div')[0]) {
+                    if (!$('.cache-preview-activities .opener')[0]) {
+                        $('.cache-preview-activities > header').append('<svg class="opener"><use xlink:href="/account/app/ui-icons/sprites/global.svg#icon-expand-svg-fill"></use></svg>');
+                        $('.cache-preview-activities')[0].addEventListener('click', function() {
+                            if (getValue('show_box_searchmap_activity', true)) {
+                                $('.cache-preview-activities').addClass('isHide');
+                                setValue('show_box_searchmap_activity', false);
                             }else {
-                                $(header).addClass('show');
-                                $(header).removeClass('hide');
-                                $('.cache-preview-activities > div:nth-child(2)').fadeIn();
-                                setValue('seachmap_activity_visible', true);
+                                $('.cache-preview-activities').removeClass('isHide');
+                                setValue('show_box_searchmap_activity', true);
                             }
                         });
                     }
-                    if (getValue('seachmap_activity_visible', true)) $(header).addClass('show');
-                    else {
-                        document.querySelector('.cache-preview-activities > div:nth-child(2)').style.display = 'none';
-                        $(header).addClass('hide');
+                    if (!getValue('show_box_searchmap_activity', true)) {
+                        $('.cache-preview-activities').addClass('isHide');
                     }
                 }
             }
@@ -8161,12 +8156,15 @@ var mainGC = function() {
                 }
                 css += '.cache-preview-header, .cache-preview-attributes, .cache-preview-action-menu, .cache-activity-log, .cache-open-text-cta, .cache-preview-activities h2, .cache-preview-description, .cache-preview-activities .view-all-row {padding: 5px 12px !important;}';
                 css += '.header-top-left h1 {display: flex;}';
-                css += '.gclh_cache_type {flex: 0 0 24px; height: 24px; margin-top: 1px; margin-left: -2px; margin-right: 8px;}';
+                css += '.gclh_cache_type {flex: 0 0 24px; height: 24px; margin-left: -2px; margin-right: 8px; margin-top: -1px;}';
                 css += '.cache-preview-header h1 {font-size: 16px;}';
                 if (settings_searchmap_disabled) css += '.cache-preview-header .more-info {top: 0px !important;}';
                 else css += '.cache-preview-header .more-info {top: 8px !important;}';
                 css += '.cache-preview-header .more-info-link {width: 52px; min-width: unset;}';
-                css += '.cache-preview-header .arrow-icon {height: 43px; width: 43px;}';
+                css += '.cache-preview-header .gclh-cache-link {text-decoration: none; color: #4a4a4a;}';
+                css += '.cache-preview-header .gclh-cache-link h1:hover {color: #02874d !important;}';
+                css += '.cache-preview-header > p.cache-metadata {margin-top: -3px;}';
+                css += '.cache-preview-header .arrow-icon {height: 40px; width: 40px;}';
                 css += '.cache-preview-action-menu ul {margin-bottom: -4px;}';
                 css += '.cache-preview-action-menu .log-geocache, .cache-preview-action-menu .log-geocache:visited {margin-bottom: 4px; padding: 8px;}';
                 css += '.cache-preview-action-menu .action-icon {margin: 0;}';
@@ -8178,7 +8176,9 @@ var mainGC = function() {
                 css += '.gclhOwner {color: #9b9b9b;}'
                 css += '.cache-preview-attributes .geocache-owner {font-size: 12px; margin-top: 0px; padding-top: 3px;}';
                 css += '.cache-preview-attributes .geocache-owner-name, .cache-preview-attributes .geocache-placed-date {display: none !important;}';
-                css += '.cache-open-text-cta, .cache-preview-activities h2 {font-size: 14px;}';
+                css += '.cache-open-text-cta, .cache-preview-activities header {font-size: 14px; color: #4a4a4a;}';
+                css += '.cache-preview-activities h2 {font-size: 14px;}';
+                css += '.cache-open-text-cta:hover, .cache-preview-activities header:hover {color: #02874d;}';
                 css += '.cache-open-text-cta span {margin-right: -2px;}';
                 css += '.cache-preview-activities {margin-bottom: 1px;}';
                 css += '.cache-preview-activities > header {padding: unset;}';
@@ -8229,12 +8229,10 @@ var mainGC = function() {
             css += '.leaflet-popup.context-menu.geocache-context-menu.leaflet-zoom-animated {width: auto !important; min-width: 300px;}';;
             css += '.leaflet-popup-content {width: auto !important;}';
             // Show button to collapse activity.
-            css += '.panel-header {display: flex; flex-flow: row wrap; justify-content: space-between; align-items: center; cursor: pointer;}';
-            css += '.panel-header .opener {color: #777777; margin-right: 9px;}';
-            css += '.hide .opener {animation: rotatehide 0.3s forwards;}';
-            css += '.show .opener {animation: rotateShow 0.3s forwards;}';
-            css += '@keyframes rotatehide {0% {transform: rotate(0deg);} 100% {transform: rotate(180deg);}}';
-            css += '@keyframes rotateShow {0% {transform: rotate(180deg);} 100% {transform: rotate(0deg);}}';
+            css += '.cache-preview-activities > header {display: flex; flex-flow: row wrap; justify-content: space-between; align-items: center; cursor: pointer;}';
+            css += '.cache-preview-activities .opener {height: 22px; width: 22px; margin-right: 9px; transition: all .3s ease; transform-origin: 50% 50%;}';
+            css += '.cache-preview-activities.isHide .opener {transform: rotate(180deg);}';
+            css += '.cache-preview-activities.isHide > div {display: none;}';
             if (css != "") appendCssStyle(css);
         } catch(e) {gclh_error("Improve search map",e);}
     }
