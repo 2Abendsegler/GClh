@@ -1617,7 +1617,6 @@ var mainGC = function() {
                 code += "  var search = document.getElementById('navi_search').value;";
                 code += "  if(search.match(/^GC[A-Z0-9]{1,10}\\b/i) || search.match(/^TB[A-Z0-9]{1,10}\\b/i) || search.match(/^GT[A-Z0-9]{1,10}\\b/i)) document.location.href = 'https://coord.info/'+search;";
                 code += "  else if(search.match(/^[A-Z0-9]{6}\\b$/i)) document.location.href = '/track/details.aspx?tracker='+search;";
-
                 code += "  else document.location.href = '/seek/nearest.aspx?navi_search='+search;";
                 code += "}";
                 injectPageScript(code, "body");
@@ -7922,6 +7921,7 @@ var mainGC = function() {
         } catch(e) {gclh_error("Show gallery images in 2 instead of 4 cols",e);}
     }
 
+//xxxx
 // Improve search map, improve new map.
     if (is_page('searchmap')) {
         try {
