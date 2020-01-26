@@ -3339,17 +3339,26 @@ var mainGC = function() {
             insert_smilie_fkt("LogText");
             insert_tpl_fkt(true);
             var liste = "";
-            build_tpls(true);
             if (settings_show_bbcode) build_smilies(true);
+            build_tpls(true);
             var box = document.createElement("div");
             box.innerHTML = liste;
-            side = $('#reportProblemInfo')[0];
-            side.parentNode.insertBefore(box, side);
-            var css = "";
-            css += ".flatpickr-wrapper {margin-bottom: unset !important; bottom: 6px !important;}";
-            css += "#gclh_log_tpls {position: relative; max-width: 240px; width: unset; border: 1px solid #9b9b9b; box-shadow: none; height: 40px; padding-top: 5px;}";
-            css += "select:hover, select:focus, select:active {background-image: url(/play/app/ui-icons/icons/global/caret-down-hover.svg);}";
-            appendCssStyle(css);
+            box.setAttribute('id', 'gclh_head');
+            function buildSmiliesAndLogtemplates(waitCount, box) { // GDPR
+                if ($('#logTypeSelector')[0]) { // GDPR
+                    side = $('#logTypeSelector')[0];
+                    side.append(box);
+                    var css = "";
+                    css += '#gclh_head {float: right; margin: ' + (settings_show_bbcode ? '-28px':'-39px') +' 0px 0px 50px;}';
+                    css += '#gclh_smilies {display: block; margin: -55px -5px 5px 0;}';
+                    css += '#gclh_log_tpls {max-width: 240px; border: 1px solid #9b9b9b; box-shadow: none; height: 40px; padding-top: 5px;}';
+                    css += 'select:hover, select:focus, select:active {background-image: url(/play/app/ui-icons/icons/global/caret-down-hover.svg);}';
+                    css += '.flatpickr-wrapper {bottom: 38px !important; margin-bottom: -30px !important;}';
+                    css += '.flatpickr-calendar.arrowTop::before, .flatpickr-calendar.arrowTop::after {margin-left: 55px;}';
+                    appendCssStyle(css);
+                } else {waitCount++; if (waitCount <= 100) setTimeout(function(){buildSmiliesAndLogtemplates(waitCount, box);}, 100);} // GDPR
+            }
+            buildSmiliesAndLogtemplates(0, box); // GDPR
         } catch(e) {gclh_error("Smilies and Log Templates new log page",e);}
     }
     // Script für insert Smilie by click.
@@ -3435,7 +3444,7 @@ var mainGC = function() {
     // Smilies aufbauen.
     function build_smilies(newLogPage) {
         var o = "<p style='margin: 5px;'>";
-        if (newLogPage) liste += "<div style='float: right; margin-right: -5px; display: inline-block;'>";
+        if (newLogPage) liste += "<div id='gclh_smilies'>";
         else liste += "<br>" + o;
         bs("[:)]", "");
         bs("[:D]", "_big");
@@ -3481,11 +3490,11 @@ var mainGC = function() {
             logicNew += "<option value='gclh_template[last_logtext]' style='color: #4a4a4a;'>[Last Cache-Log]</option>";
         }
         if (newLogPage) {
-            liste += "<br style='line-height: 40px'>" + texts;
-            liste += "<select id='gclh_log_tpls' onChange='gclh_insert_tpl(this.value)'; class='gclh_form' style='color: #9b9b9b; display: initial; font-family: Noto Sans; font-size: 14px;'>";
+            liste += texts;
+            liste += "<select id='gclh_log_tpls' onChange='gclh_insert_tpl(this.value)'; class='gclh_form' style='color: #9b9b9b; display: block; font-size: 14px;'>";
             liste += "<option value='-1' selected='selected'" + "style='display: none; visibility: hidden;'>- Log Templates -</option>";
             liste += logicNew;
-            liste += "</select>" + "<br>";
+            liste += "</select>";
         } else liste += "<br><p style='margin: 0;'>Templates:</p>" + texts + logicOld;
     }
 // Vorschau für Log, Log preview.
