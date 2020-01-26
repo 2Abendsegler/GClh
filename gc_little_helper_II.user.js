@@ -7924,6 +7924,30 @@ var mainGC = function() {
 // Improve search map, improve new map.
     if (is_page('searchmap')) {
         try {
+            // After go back from cache details to cache list, scroll to last position.
+            var global_scrollTop = 0;
+            var global_newScrollTop = 0;
+            function scrollInCacheList() {
+                // Cache list: Scroll to last position, if we come from back button in cache details.
+                if ($('#geocache-list')[0] && global_newScrollTop != 0) {
+                    document.querySelector('#geocache-list').scrollTo({top: global_newScrollTop, left: 0, behavior: "smooth"});
+                    global_newScrollTop = 0;
+                }
+                // Cache list: Notice scrolling.
+                if ($('#geocache-list')[0]) {
+                    global_scrollTop = $('#geocache-list').scrollTop();
+                }
+                // Search map: If map is changed, clear noticed scrolling.
+                if ($('#clear-map-control')[0]) {
+                    global_scrollTop = 0;
+                }
+                // Cache details: Set click event to back button in cache details.
+                if ($('.cache-preview-header')[0] && $('.search-bar-back-cta')[0] && !$('.search-bar-back-cta.gclh-scroll')[0]) {
+                    $('.search-bar-back-cta').addClass('gclh-scroll');
+                    $('.search-bar-back-cta')[0].addEventListener('mousedown', function() {global_newScrollTop = global_scrollTop;});
+                }
+            }
+
             // Virtually hit "Search this area" after dragging the map.
             function searchThisArea() {
                 if (!document.location.href.match(/\.com\/play\/map\?(bm=|(.*)&nfb=GClh)/) && settings_searchmap_autoupdate_after_dragging) {
@@ -7932,6 +7956,7 @@ var mainGC = function() {
                     }
                 }
             }
+
             // Compact layout on detail screen.
             function compactLayout() {
                 if (settings_searchmap_compact_layout) {
@@ -7954,10 +7979,7 @@ var mainGC = function() {
                         document.querySelector('.geocache-owner').appendChild(span);
                         if (!$('.gclh_premium')[0] && $('.cache-metadata')[0] && $('.status-and-type')[0] && $('.status-and-type .status')[0] && $('.status-and-type .status span')[0] &&
                             window.getComputedStyle($('.status-and-type .status span')[0]).color == 'rgb(4, 200, 214)') { // Premium color.
-                            regroupCachelistSearchmap($('.cache-preview-header')[0], 'dot', '', '.cache-metadata', premium);
-                        }
-                        if (!$('.header-top-left .gclh-cache-link')[0] && $('.header-top-left')[0] && $('.more-info-link')[0]) {
-                            $('.header-top-left')[0].innerHTML = '<a class="gclh-cache-link" href="' + $('.more-info-link')[0].href + '" target="_blank">' + $('.header-top-left')[0].innerHTML + '</a>';
+                            regroupCacheDataSearchmap($('.cache-preview-header')[0], 'dot', '', '.cache-metadata', premium);
                         }
                         if (!$('.gclh_cache_type')[0] && $('.header-top-left')[0] && $('.header-top-left h1')[0] && $('.status-and-type')[0] && $('.status-and-type')[0].childNodes) {
                             var cacheTypeChildNode = $('.status-and-type')[0].childNodes.length - 1;
@@ -7987,18 +8009,21 @@ var mainGC = function() {
                                 }
                             }
                         }
+                        if (!$('.header-top-left .gclh-cache-link')[0] && $('.header-top-left h1')[0] && $('.more-info-link')[0]) {
+                            $('.header-top-left h1')[0].innerHTML = '<a class="gclh-cache-link" href="' + $('.more-info-link')[0].href + '" target="_blank">' + $('.header-top-left h1')[0].innerHTML + '</a>';
+                        }
                     }
                     // Cache list.
                     if ($('#geocache-list')[0]) {
                         $('.geocache-list-container li').each(function () {
                             if ($(this).find('.geocache-item-info .geocache-item-code')[0]) {
-                                regroupCachelistSearchmap(this, '|', '.geocache-item-info .geocache-item-code', '.geocache-item-data');
+                                regroupCacheDataSearchmap(this, '|', '.geocache-item-info .geocache-item-code', '.geocache-item-data');
                             }
                             if ($(this).find('.geocache-item-info .geocache-item-favorites')[0]) {
-                                regroupCachelistSearchmap(this, '|', '.geocache-item-info .geocache-item-favorites', '.geocache-item-data');
+                                regroupCacheDataSearchmap(this, '|', '.geocache-item-info .geocache-item-favorites', '.geocache-item-data');
                             }
                             if ($(this).find('.geocache-item-premium')[0] && !$(this).find('.gclh_premium')[0]) {
-                                regroupCachelistSearchmap(this, '|', '', '.geocache-item-data', premium);
+                                regroupCacheDataSearchmap(this, '|', '', '.geocache-item-data', premium);
                             }
                             if (settings_searchmap_disabled && $(this).find('.geocache-item-info')[0] && window.getComputedStyle($(this).find('.geocache-item-info')[0]).display != 'none') {
                                 $(this).find('.geocache-item-info')[0].style.display = 'none';
@@ -8007,12 +8032,14 @@ var mainGC = function() {
                     }
                 }
             }
-            function regroupCachelistSearchmap(cache, separator, from, to, build) {
+            // Regroup cache data in cache list and cache details for compact layout.
+            function regroupCacheDataSearchmap(cache, separator, from, to, build) {
                 if (separator == '|') $(cache).find(to).append('<span>|</span>');
                 else if (separator == 'dot') $(cache).find(to).append('<span class="dot"></span>');
                 if (from == '') $(cache).find(to).append(build);
                 else $(cache).find(to).append($(cache).find(from).remove().get().reverse());
             }
+
             // Strike through title of disabled caches.
             function strikeDisabledInCacheDetails() {
                 if (document.querySelector('.cache-detail-preview') && document.querySelector('.status') && document.querySelector('.status span').style.color == 'rgb(211, 70, 39)') {
@@ -8034,6 +8061,7 @@ var mainGC = function() {
                     });
                 }
             }
+
             // Show hint automatically and scroll up to top after "Description & Hint" was clicked.
             function showHint() {
                 if (document.querySelector('.cache-preview-header')) {
@@ -8078,6 +8106,7 @@ var mainGC = function() {
                     hintAddEventListener();
                 }
             }
+
             // Show button to collapse activity.
             function collapseActivity() {
                 if ($('.cache-preview-activities > header')[0] && $('.cache-preview-activities > div')[0]) {
@@ -8101,6 +8130,7 @@ var mainGC = function() {
 
             // Processing all steps.
             function processAllSearchMap() {
+                scrollInCacheList(); // Has to be run before searchThisArea.
                 searchThisArea();
                 compactLayout();
                 strikeDisabledInCacheDetails();
@@ -8155,14 +8185,14 @@ var mainGC = function() {
                     css += '.geocache-item-status-icon {height: 18px; width: 18px;}';
                 }
                 css += '.cache-preview-header, .cache-preview-attributes, .cache-preview-action-menu, .cache-activity-log, .cache-open-text-cta, .cache-preview-activities h2, .cache-preview-description, .cache-preview-activities .view-all-row {padding: 5px 12px !important;}';
-                css += '.header-top-left h1 {display: flex;}';
+                css += '.gclh-cache-link {display: flex;}';
                 css += '.gclh_cache_type {flex: 0 0 24px; height: 24px; margin-left: -2px; margin-right: 8px; margin-top: -1px;}';
                 css += '.cache-preview-header h1 {font-size: 16px;}';
                 if (settings_searchmap_disabled) css += '.cache-preview-header .more-info {top: 0px !important;}';
                 else css += '.cache-preview-header .more-info {top: 8px !important;}';
                 css += '.cache-preview-header .more-info-link {width: 52px; min-width: unset;}';
                 css += '.cache-preview-header .gclh-cache-link {text-decoration: none; color: #4a4a4a;}';
-                css += '.cache-preview-header .gclh-cache-link h1:hover {color: #02874d !important;}';
+                css += '.cache-preview-header .gclh-cache-link:hover {color: #02874d !important;}';
                 css += '.cache-preview-header > p.cache-metadata {margin-top: -3px;}';
                 css += '.cache-preview-header .arrow-icon {height: 40px; width: 40px;}';
                 css += '.cache-preview-action-menu ul {margin-bottom: -4px;}';
