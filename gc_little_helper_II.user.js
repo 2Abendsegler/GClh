@@ -579,8 +579,8 @@ var variablesInit = function(c) {
     c.settings_improve_character_counter = getValue("settings_improve_character_counter", true);
     c.settings_searchmap_compact_layout = getValue("settings_searchmap_compact_layout", true);
     c.settings_searchmap_disabled = getValue("settings_searchmap_disabled", false);
-    c.settings_searchmap_strike_disabled = getValue("settings_searchmap_strike_disabled", true);
-    c.settings_searchmap_strike_disabled_color = getValue("settings_searchmap_strike_disabled_color", '4A4A4A');
+    c.settings_searchmap_disabled_strikethrough = getValue("settings_searchmap_disabled_strikethrough", true);
+    c.settings_searchmap_disabled_color = getValue("settings_searchmap_disabled_color", '4A4A4A');
     c.settings_searchmap_show_hint = getValue("settings_searchmap_show_hint", false);
 
     try {
@@ -7942,6 +7942,30 @@ var mainGC = function() {
 // Improve search map, improve new map.
     if (is_page('searchmap')) {
         try {
+            // After go back from cache details to cache list, scroll to last position.
+            var global_scrollTop = 0;
+            var global_newScrollTop = 0;
+            function scrollInCacheList() {
+                // Cache list: Scroll to last position, if we come from back button in cache details.
+                if ($('#geocache-list')[0] && global_newScrollTop != 0) {
+                    document.querySelector('#geocache-list').scrollTo({top: global_newScrollTop, behavior: 'smooth'});
+                    global_newScrollTop = 0;
+                }
+                // Cache list: Notice scrolling.
+                if ($('#geocache-list')[0]) {
+                    global_scrollTop = $('#geocache-list').scrollTop();
+                }
+                // Search map: If map is changed, clear noticed scrolling.
+                if ($('#clear-map-control')[0]) {
+                    global_scrollTop = 0;
+                }
+                // Cache details: Set click event to back button in cache details.
+                if ($('.cache-preview-header')[0] && $('.search-bar-back-cta')[0] && !$('.search-bar-back-cta.gclh-scroll')[0]) {
+                    $('.search-bar-back-cta').addClass('gclh-scroll');
+                    $('.search-bar-back-cta')[0].addEventListener('mousedown', function() {global_newScrollTop = global_scrollTop;});
+                }
+            }
+
             // Virtually hit "Search this area" after dragging the map.
             function searchThisArea() {
                 if (!document.location.href.match(/\.com\/play\/map\?(bm=|(.*)&nfb=GClh)/) && settings_searchmap_autoupdate_after_dragging) {
@@ -7950,16 +7974,18 @@ var mainGC = function() {
                     }
                 }
             }
+
             // Compact layout on detail screen.
             function compactLayout() {
                 if (settings_searchmap_compact_layout) {
+                    var premium = '<span><img class="gclh_premium" title="Premium Member Only Cache" src="/images/icons/16/premium_only.png"></span>';
                     // Filter
                     if (document.querySelector('#search-filters') && document.querySelector('.text-field')) {
                         document.querySelector('.text-field').setAttribute('class', 'chip-field-input');
                     }
-                    // Cache details
+                    // Cache details.
                     if (document.querySelector('.cache-preview-header')) {
-                        document.querySelector('.more-info-link').getElementsByTagName('span')[1].style = 'display:none;';
+                        document.querySelector('.more-info-link').getElementsByTagName('span')[1].style = 'display: none;';
                         var buttons = document.querySelectorAll('.cache-preview-action-menu ul li');
                         for (let i=0; i<buttons.length; i++) {
                             buttons[i].title = buttons[i].getElementsByTagName('span')[0].innerHTML;
@@ -7969,30 +7995,77 @@ var mainGC = function() {
                         span.setAttribute('class', 'gclhOwner');
                         span.innerHTML = document.querySelector('.geocache-owner-name').innerHTML + ' ' + document.querySelector('.geocache-placed-date').innerHTML;
                         document.querySelector('.geocache-owner').appendChild(span);
+                        if (!$('.gclh_premium')[0] && $('.cache-metadata')[0] && $('.status-and-type')[0] && $('.status-and-type .status')[0] && $('.status-and-type .status span')[0] &&
+                            window.getComputedStyle($('.status-and-type .status span')[0]).color == 'rgb(4, 200, 214)') { // Premium color.
+                            regroupCacheDataSearchmap($('.cache-preview-header')[0], 'dot', '', '.cache-metadata', premium);
+                        }
+                        if (!$('.gclh_cache_type')[0] && $('.header-top-left')[0] && $('.header-top-left h1')[0] && $('.status-and-type')[0] && $('.status-and-type')[0].childNodes) {
+                            var cacheTypeChildNode = $('.status-and-type')[0].childNodes.length - 1;
+                            var cacheType = $('.status-and-type')[0].childNodes[cacheTypeChildNode].data;
+                            var cacheSymbol = convertCachetypeToCachesymbol(cacheType);
+                            if (cacheSymbol != '') {
+                                $('.header-top-left h1')[0].innerHTML = '<svg class="gclh_cache_type"><use xlink:href="'+cacheSymbol+'"></use></svg>' + $('.header-top-left h1')[0].innerHTML;
+                                if (settings_searchmap_disabled && window.getComputedStyle($('.status-and-type')[0]).display != 'none') {
+                                    $('.status-and-type')[0].style.display = 'none';
+                                }
+                            }
+                        }
+                        if (!$('.header-top-left .gclh-cache-link')[0] && $('.header-top-left h1')[0] && $('.more-info-link')[0]) {
+                            $('.header-top-left h1')[0].innerHTML = '<a class="gclh-cache-link" href="' + $('.more-info-link')[0].href + '" target="_blank">' + $('.header-top-left h1')[0].innerHTML + '</a>';
+                        }
+                    }
+                    // Cache list.
+                    if ($('#geocache-list')[0]) {
+                        $('.geocache-list-container li').each(function () {
+                            if ($(this).find('.geocache-item-info .geocache-item-code')[0]) {
+                                regroupCacheDataSearchmap(this, '|', '.geocache-item-info .geocache-item-code', '.geocache-item-data');
+                            }
+                            if ($(this).find('.geocache-item-info .geocache-item-favorites')[0]) {
+                                regroupCacheDataSearchmap(this, '|', '.geocache-item-info .geocache-item-favorites', '.geocache-item-data');
+                            }
+                            if ($(this).find('.geocache-item-premium')[0] && !$(this).find('.gclh_premium')[0]) {
+                                regroupCacheDataSearchmap(this, '|', '', '.geocache-item-data', premium);
+                            }
+                            if (settings_searchmap_disabled && $(this).find('.geocache-item-info')[0] && window.getComputedStyle($(this).find('.geocache-item-info')[0]).display != 'none') {
+                                $(this).find('.geocache-item-info')[0].style.display = 'none';
+                            }
+                        });
                     }
                 }
             }
-            // Strike through title of disabled caches.
+            // Regroup cache data in cache list and cache details for compact layout.
+            function regroupCacheDataSearchmap(cache, separator, from, to, build) {
+                if (separator == '|') $(cache).find(to).append('<span>|</span>');
+                else if (separator == 'dot') $(cache).find(to).append('<span class="dot"></span>');
+                if (from == '') $(cache).find(to).append(build);
+                else $(cache).find(to).append($(cache).find(from).remove().get().reverse());
+            }
+
+            // Show name of disabled caches strike through in special color.
             function strikeDisabledInCacheDetails() {
-                if (document.querySelector('.cache-detail-preview') && document.querySelector('.status') && document.querySelector('.status span').style.color == 'rgb(211, 70, 39)') {
-                    document.querySelector('.header-top-left h1').style.color = '#' + settings_searchmap_strike_disabled_color;
-                    if (settings_searchmap_strike_disabled) document.querySelector('.header-top-left h1').style.textDecoration = 'line-through';
-                }else if (document.querySelector('.cache-detail-preview')) {
-                    document.querySelector('.header-top-left h1').style.textDecoration = 'unset';
-                    document.querySelector('.header-top-left h1').style.color = '#4a4a4a';
+                if (settings_searchmap_disabled && $('.cache-detail-preview')[0] && $('.header-top-left')[0] && $('.header-top-left h1')[0]) {
+                    if ($('.status')[0] && $('.status span')[0] && $('.status span')[0].style.color == 'rgb(211, 70, 39)') {
+                        if (!$('.header-top-left h1').hasClass('gclh_disabled')) {
+                            $('.header-top-left h1').addClass('gclh_disabled');
+                            if (settings_searchmap_disabled_strikethrough) $('.header-top-left h1').addClass('gclh_strikethrough');
+                        }
+                    } else {
+                        $('.header-top-left h1').removeClass('gclh_disabled');
+                        $('.header-top-left h1').removeClass('gclh_strikethrough');
+                    }
                 }
             }
             function strikeDisabledInList() {
-                if (document.querySelector('#geocache-list')) {
-                    var caches = $.find('#geocache-list li');
-                    caches.forEach(function(cache) {
-                        if (settings_searchmap_disabled && cache.querySelector('.geocache-item-disabled')) {
-                            cache.querySelector('.geocache-item-name').style.color = '#' + settings_searchmap_strike_disabled_color;
-                            if (settings_searchmap_strike_disabled) cache.querySelector('.geocache-item-name').style.textDecoration = 'line-through';
+                if (settings_searchmap_disabled && $('#geocache-list')[0]) {
+                    $('.geocache-item-disabled').each(function() {
+                        if (!$(this).find('.gclh_disabled')[0]) {
+                            $(this).find('.geocache-item-name').addClass('gclh_disabled');
+                            if (settings_searchmap_disabled_strikethrough) $(this).find('.geocache-item-name').addClass('gclh_strikethrough');
                         }
                     });
                 }
             }
+
             // Show hint automatically and scroll up to top after "Description & Hint" was clicked.
             function showHint() {
                 if (document.querySelector('.cache-preview-header')) {
@@ -8037,37 +8110,31 @@ var mainGC = function() {
                     hintAddEventListener();
                 }
             }
+
             // Show button to collapse activity.
             function collapseActivity() {
-                if (document.querySelector('.cache-preview-action-menu')) {
-                    var header = document.getElementsByClassName('cache-preview-activities')[0].getElementsByTagName('header')[0];
-                    if (!document.querySelector('.opener')) {
-                        $(header).append('<svg height="22" width="22" class="opener"><use xlink:href="/account/app/ui-icons/sprites/global.svg#icon-expand-svg-fill"></use></svg>');
-                        $(header).addClass('panel-header');
-                        document.querySelector('.cache-preview-activities header').addEventListener('click', function() {
-                            if (getValue('seachmap_activity_visible', true)) {
-                                $(header).removeClass('show');
-                                $(header).addClass('hide');
-                                $('.cache-preview-activities > div:nth-child(2)').fadeOut();
-                                setValue('seachmap_activity_visible', false);
+                if ($('.cache-preview-activities > header')[0] && $('.cache-preview-activities > div')[0]) {
+                    if (!$('.cache-preview-activities .opener')[0]) {
+                        $('.cache-preview-activities > header').append('<svg class="opener"><use xlink:href="/account/app/ui-icons/sprites/global.svg#icon-expand-svg-fill"></use></svg>');
+                        $('.cache-preview-activities')[0].addEventListener('click', function() {
+                            if (getValue('show_box_searchmap_activity', true)) {
+                                $('.cache-preview-activities').addClass('isHide');
+                                setValue('show_box_searchmap_activity', false);
                             }else {
-                                $(header).addClass('show');
-                                $(header).removeClass('hide');
-                                $('.cache-preview-activities > div:nth-child(2)').fadeIn();
-                                setValue('seachmap_activity_visible', true);
+                                $('.cache-preview-activities').removeClass('isHide');
+                                setValue('show_box_searchmap_activity', true);
                             }
                         });
                     }
-                    if (getValue('seachmap_activity_visible', true)) $(header).addClass('show');
-                    else {
-                        document.querySelector('.cache-preview-activities > div:nth-child(2)').style.display = 'none';
-                        $(header).addClass('hide');
+                    if (!getValue('show_box_searchmap_activity', true)) {
+                        $('.cache-preview-activities').addClass('isHide');
                     }
                 }
             }
 
             // Processing all steps.
             function processAllSearchMap() {
+                scrollInCacheList(); // Has to be run before searchThisArea.
                 searchThisArea();
                 compactLayout();
                 strikeDisabledInCacheDetails();
@@ -8105,34 +8172,85 @@ var mainGC = function() {
                 css += '#clear-map-control, .loading-container {display: none;}';
             }
             if (settings_searchmap_compact_layout) {
-                css += '.search-bar {padding: 10px !important;}';
-                // Cacheliste and Cache details.
-                css += '.geocache-item, .cache-preview-header {padding: 5px 15px !important;}';
+                css += '.search-bar {padding: 5px 10px !important;}';
+                css += '.search-bar-inner {margin-right: 10px !important;}';
+                // Cache list and cache details.
+                css += '.search-bar-back-cta svg {height: 24px; width: 24px;}';
+                css += '.search-term-input, .search-term-form button, .cache-preview-activities .view-all-row {font-size: 14px !important; height: 35px !important;}';
+                css += '.search-term-form svg {padding-top: 4px;}';
                 css += '.cache-detail-preview {padding: 0 !important; height: 100% !important;}';
-                css += '.more-info {top: 0 !important;}';
                 css += '.geocache-action-bar {padding: 0 10px 5px !important;}';
-                css += '.cache-preview-attributes, .cache-preview-action-menu {padding: 5px 12px !important;}';
-                css += '.cache-activity-log, .cache-open-text-cta {padding: 7px !important;}';
-                css += '.cache-preview-activities header {padding: 5px !important;}';
-                css += '.geocache-owner {margin-top: 0px !important; padding: 5px !important;} ';
-                css += '.geocache-owner-name, .geocache-placed-date {display: none !important;}';
-                css += '.gclhOwner {color: #9b9b9b;}'
-                css += '.attributes {margin-bottom: 0 !important; padding-bottom: 5px !important;}';
-                // Filter
-                css += '#search-filters-controls {padding-bottom: 7px !important;}';
-                css += '.search-filter-group label {padding: 5px !important;}';
-                css += '#search-filters-content .trinary-control, .search-filters-block.search-filters-attributes {margin-top: 0 !important;}';
-                css += '.search-filters-status .trinary-control {padding-top: 10px !important}';
-                css += '#search-filters-content .search-filters-block.search-filters-attributes > div + div {margin-top: 15px !important;}';
-                css += 'search-filters-content .search-filters-block {padding: 0 !important;}'
-                css += '.search-filters-block {padding: 10px !important;}';
-                css += '.search-filters-block.search-filters-status {padding-top:0 !important}';
-                css += '.label {text-transform: none !important;}';
-                css += '.chip-field-container, .text-field {min-height: unset !important; padding: 4px !important;}';
-                css += '#sidebar footer {padding: 5px 0 !important;}';
+                css += '.geocache-item {padding: 6px 10px;}';
+                css += '.geocache-item-data span {margin-right: 2px;}';
+                css += '.geocache-item-data span img, .cache-metadata span img {vertical-align: bottom; height: 14px; opacity: 0.8;}';
+                css += '.geocache-item-details {margin: 0 6px;}';
+                if (settings_searchmap_disabled) {
+                    css += '.geocache-item-icon {flex: 0 0 36px; height: 36px;}';
+                    css += '.geocache-item-status-icon {height: 18px; width: 18px;}';
+                }
+                css += '.cache-preview-header, .cache-preview-attributes, .cache-preview-action-menu, .cache-activity-log, .cache-open-text-cta, .cache-preview-activities h2, .cache-preview-description, .cache-preview-activities .view-all-row {padding: 5px 12px !important;}';
+                css += '.gclh-cache-link {display: flex;}';
+                css += '.gclh_cache_type {flex: 0 0 24px; height: 24px; width: 24px; margin-left: -2px; margin-right: 8px; margin-top: -1px;}';
+                css += '.cache-preview-header h1 {font-size: 16px;}';
+                if (settings_searchmap_disabled) css += '.cache-preview-header .more-info {top: 0px !important;}';
+                else css += '.cache-preview-header .more-info {top: 8px !important;}';
+                css += '.cache-preview-header .more-info-link {width: 52px; min-width: unset;}';
+                css += '.cache-preview-header .gclh-cache-link {text-decoration: none; color: #4a4a4a;}';
+                css += '.cache-preview-header .gclh-cache-link:hover {color: #02874d !important;}';
+                css += '.cache-preview-header > p.cache-metadata {margin-top: -3px;}';
+                css += '.cache-preview-header .arrow-icon {height: 40px; width: 40px;}';
+                css += '.cache-preview-action-menu ul {margin-bottom: -4px;}';
+                css += '.cache-preview-action-menu .log-geocache, .cache-preview-action-menu .log-geocache:visited {margin-bottom: 4px; padding: 8px;}';
+                css += '.cache-preview-action-menu .action-icon {margin: 0;}';
                 css += '.cache-preview-action-menu ul li span {display: none; !important;}';
-                css += 'lable {padding-top: 10px !important}';
-                // Pop up
+                css += '.cache-preview-attributes, .cache-open-text-cta {margin-bottom: 5px;}';
+                css += '.cache-preview-attributes > ul {font-size: 12px; margin-bottom: 0 !important; padding-bottom: 5px !important;}';
+                css += '.cache-preview-attributes .favorites-icon {height: 24px; width: 24px;}';
+                css += '.cache-preview-attributes .attribute-label {color: #777777;}';
+                css += '.gclhOwner {color: #9b9b9b;}'
+                css += '.cache-preview-attributes .geocache-owner {font-size: 12px; margin-top: 0px; padding-top: 3px;}';
+                css += '.cache-preview-attributes .geocache-owner-name, .cache-preview-attributes .geocache-placed-date {display: none !important;}';
+                css += '.cache-open-text-cta, .cache-preview-activities header {font-size: 14px; color: #4a4a4a;}';
+                css += '.cache-preview-activities h2 {font-size: 14px;}';
+                css += '.cache-open-text-cta:hover, .cache-preview-activities header:hover {color: #02874d;}';
+                css += '.cache-open-text-cta span {margin-right: -2px;}';
+                css += '.cache-preview-activities {margin-bottom: 1px;}';
+                css += '.cache-preview-activities > header {padding: unset;}';
+                css += '.cache-preview-activities .button.primary {padding: 8px;}';
+                css += '.cache-activity-log .username {font-size: 13px;}';
+                css += '.cache-preview-description h2 {margin-bottom: 6px;}';
+                css += '.cache-preview-description .close-cta-row {top: 0px; right: 5px;}';
+                css += '#geocache-list-pagination {padding: 5px 0;}';
+                css += '#geocache-list .label {padding: 8px 24px; border-top: 1px solid #e4e4e4; font-size: 12px;}';
+                css += '#sidebar footer {padding: 2px 0;}';
+                css += '#sidebar.has-selected-caches footer {margin-top: unset; padding: 12px 0;}';
+                css += '#add-to-list-control {padding: 20px 0; border-top: unset;}';
+                css += '#add-to-list-menu {padding: 0px; border-top: unset; margin-bottom: 5px;}';
+                css += '#add-to-list-menu button {padding: 6px 24px; margin-right: 16px;}';
+                // Filter
+                css += '#search-filters-controls {padding: 0px 10px 5px 10px;}';
+                css += '#search-filters-controls .gc-button {padding: 0px 10px; margin-right: 10px; border: 1px solid #9b9b9b; border-radius: 4px;}';
+                css += '#search-filters-controls .gc-button:hover {border-color: #02874d; color: #02874d; text-decoration: none;}';
+                css += '#search-filters-controls .control-apply {width: unset; padding-right: 11px !important; margin-right: 0px !important;}';
+                css += '#search-filters-content {margin-top: 17px; padding-top: 5px;}';
+                css += '.search-filters-block {padding: 0px !important; margin: 0px !important;}';
+                css += '.search-filters-block > div {padding: 5px 10px 2px 10px !important; margin: 0px !important;}';
+                css += '.search-filters-block > div > div, .search-filters-block > div > ul, .search-filters-block > div > span, .search-filters-block > div > label {margin: 0px !important;}';
+                css += '.search-filters-block ul label {padding: 3px 10px !important;}';
+                css += '.search-filters-block .gc-radio-control {padding-bottom: 2px;}';
+                css += '.search-filters-block .gc-radio-control:hover i {box-shadow: 0 0 0 3px #e4e4e4;}';
+                css += '.search-filters-block .label-text-field, .search-filters-block .text-filter .label {margin: 0px !important; padding-bottom: 2px !important;}';
+                css += '.trinary-control {width: unset !important}';
+                css += '.search-filters-block .chip-field-container {min-height: unset; padding: 0px; width: 100%;}';
+                css += '.search-filters-block .chip-field-input {height: 30px; margin-top: 0px; font-size: 14px; padding-left: 4px;}';
+                css += '.search-filters-block .chip {margin-bottom: 0px;}';
+                css += '.search-filters-block .user-typeahead-list-item {font-size: 14px;}';
+                css += '.search-filters-block .label.min, .search-filters-block .label.max {font-size: 14px;}';
+                css += '.search-filters-block .rc-slider-handle:focus {box-shadow: 0 0 0 0px;}';
+                css += '#search-filter-size li label {line-height: 30px; width: unset;}';
+                css += '.search-filters-block .number-filter .label {text-transform: none !important;}';
+                css += '.search-filters-block .number-filter input, .search-filters-block .number-filter input:focus {height: 30px; font-size: 14px; padding-left: 4px; box-shadow: 0 0 0 0px !important;}';
+                // Pop up by right mouse click to a cache in the map.
                 css += '.leaflet-popup-content {margin: 5px 8px !important;}';
                 css += '.cache-action-log-geocache, .cache-action-add-to-list, .cache-action-download-gpx, .cache-action-open-cache {padding: 5px 0 !important;}';
             }
@@ -8141,15 +8259,17 @@ var mainGC = function() {
             css += '.cache-hint h2 {display: flex; align-items: center;}';
             css += '.cache-hint .toggle-handle {height: 19px !important; margin-left: 8px;}';
             css += '.cache-hint .toggle-handle::after {height: 17px !important; width: 17px !important;}';
-            // Adapt the width of the pop up.
+            // Adapt the width of the pop up by right mouse click to a cache in the map.
             css += '.leaflet-popup.context-menu.geocache-context-menu.leaflet-zoom-animated {width: auto !important; min-width: 300px;}';;
             css += '.leaflet-popup-content {width: auto !important;}';
             // Show button to collapse activity.
-            css += '.panel-header {display: flex; flex-flow: row wrap; justify-content: space-between; align-items: center; cursor: pointer;}';
-            css += '.hide .opener {animation: rotatehide 0.3s forwards;}';
-            css += '.show .opener {animation: rotateShow 0.3s forwards;}';
-            css += '@keyframes rotatehide {0% {transform: rotate(0deg);} 100% {transform: rotate(180deg);}}';
-            css += '@keyframes rotateShow {0% {transform: rotate(180deg);} 100% {transform: rotate(0deg);}}';
+            css += '.cache-preview-activities > header {display: flex; flex-flow: row wrap; justify-content: space-between; align-items: center; cursor: pointer;}';
+            css += '.cache-preview-activities .opener {height: 22px; width: 22px; margin-right: 9px; transition: all .3s ease; transform-origin: 50% 50%;}';
+            css += '.cache-preview-activities.isHide .opener {transform: rotate(180deg);}';
+            css += '.cache-preview-activities.isHide > div {display: none;}';
+            // Show name of disabled caches strike through in special color.
+            css += '.gclh_disabled, .gclh_disabled a {color: #' + settings_searchmap_disabled_color + ' !important;}';
+            css += '.gclh_disabled.gclh_strikethrough, .gclh_disabled.gclh_strikethrough a {text-decoration: line-through;}';
             if (css != "") appendCssStyle(css);
         } catch(e) {gclh_error("Improve search map",e);}
     }
@@ -11087,6 +11207,30 @@ var mainGC = function() {
         else return "";
     }
 
+// Convert cache type to cache symbol.
+    function convertCachetypeToCachesymbol(cacheType) {
+        var cacheSymbol = '';
+        if (cacheType) {
+            if (cacheType.match(/traditional/i)) cacheSymbol = '#traditional';
+            else if (cacheType.match(/multi/i)) cacheSymbol = '#multi';
+            else if (cacheType.match(/mystery/i)) cacheSymbol = '#mystery';
+            else if (cacheType.match(/earth/i)) cacheSymbol = '#earth';
+            else if (cacheType.match(/letterbox/i)) cacheSymbol = '#letterbox';
+            else if (cacheType.match(/webcam/i)) cacheSymbol = '#webcam';
+            else if (cacheType.match(/wherigo/i)) cacheSymbol = '#wherigo';
+            else if (cacheType.match(/virtual/i)) cacheSymbol = '#virtual';
+            else if (cacheType.match(/mega/i)) cacheSymbol = '#mega';
+            else if (cacheType.match(/giga/i)) cacheSymbol = '#giga';
+            else if (cacheType.match(/trash/i)) cacheSymbol = '#cito';
+            else if (cacheType.match(/Community Celebration/i)) cacheSymbol = '#celebration';
+            else if (cacheType.match(/HQ Celebration/i)) cacheSymbol = '#hq_celebration';
+            else if (cacheType.match(/(Project A\.P\.E\.|Project APE)/i)) cacheSymbol = '#ape';
+            else if (cacheType.match(/Groundspeak HQ/i)) cacheSymbol = '#hq';
+            else if (cacheType.match(/event/i)) cacheSymbol = '#event';
+        }
+        return cacheSymbol;
+    }
+
 //////////////////////////////
 // User defined searchs Main
 //////////////////////////////
@@ -12036,11 +12180,11 @@ var mainGC = function() {
             html += "<div class='gclh_old_new_line'>New map (search map) only</div>";
             html += newParameterOn1;
             html += checkboxy('settings_searchmap_autoupdate_after_dragging', 'Automatic search for new caches after dragging') + "<br>";
-            html += checkboxy('settings_searchmap_compact_layout', 'Show compact layout on detail screen') + "<br>";
-            html += checkboxy('settings_searchmap_disabled', 'Show name of disabled caches ') + checkboxy('settings_searchmap_strike_disabled', 'strike through, in color ');
-            html += "<input class='gclh_form color' type='text' size=6 id='settings_searchmap_strike_disabled_color' style='margin-left: 0px;' value='" + getValue("settings_searchmap_strike_disabled_color", "4A4A4A") + "'>";
-            html += "<img src=" + global_restore_icon + " id='restore_settings_searchmap_strike_disabled_color' title='back to default' style='width: 12px; cursor: pointer;'>";
-            html += show_help3('If you disable the option "Show name of disabled caches", the cache name in the geocache list will be not strike through and will be also not colored.') + '<br>';
+            html += checkboxy('settings_searchmap_compact_layout', 'Show compact layout on detail screen') + show_help("If compact layout is enabled and the name of disabled caches are specially represented, the cache status line above the cache name is hidden.") + "<br>";
+            html += checkboxy('settings_searchmap_disabled', 'Show name of disabled caches ') + checkboxy('settings_searchmap_disabled_strikethrough', 'strike through, in color ');
+            html += "<input class='gclh_form color' type='text' size=6 id='settings_searchmap_disabled_color' style='margin-left: 0px;' value='" + getValue("settings_searchmap_disabled_color", "4A4A4A") + "'>";
+            html += "<img src=" + global_restore_icon + " id='restore_settings_searchmap_disabled_color' title='back to default' style='width: 12px; cursor: pointer;'>";
+            html += show_help3("If compact layout is enabled and the name of disabled caches are specially represented, the cache status line above the cache name is hidden.") + '<br>';
             html += checkboxy('settings_searchmap_show_hint', 'Show hint of cache automatically on cache detail screen') + "<br>";
             html += newParameterVersionSetzen('0.10') + newParameterOff;
             html += "</div>";
@@ -12794,7 +12938,7 @@ var mainGC = function() {
             $('#settings_process_vup')[0].addEventListener("click", alert_settings_process_vup, false);
             $('#restore_settings_lists_disabled_color')[0].addEventListener("click", restoreField, false);
             $('#restore_settings_lists_archived_color')[0].addEventListener("click", restoreField, false);
-            $('#restore_settings_searchmap_strike_disabled_color')[0].addEventListener("click", restoreField, false);
+            $('#restore_settings_searchmap_disabled_color')[0].addEventListener("click", restoreField, false);
 
             // Events setzen für Parameter, die im GClh Config mehrfach ausgegeben wurden, weil sie zu mehreren Themen gehören. Es handelt sich hier um den Parameter selbst.
             // In der Function werden Events für den Parameter selbst (ZB: "settings_show_mail_in_viplist") und dessen Clone gesetzt, die hinten mit "X" und Nummerierung
@@ -12936,6 +13080,9 @@ var mainGC = function() {
             setEvForDepPara("settings_lists_archived","settings_lists_archived_strikethrough");
             setEvForDepPara("settings_lists_icons_visible","settings_lists_log_status_icons_visible");
             setEvForDepPara("settings_lists_icons_visible","settings_lists_cache_type_icons_visible");
+            setEvForDepPara("settings_searchmap_disabled","settings_searchmap_disabled_strikethrough");
+            setEvForDepPara("settings_searchmap_disabled","settings_searchmap_disabled_color");
+            setEvForDepPara("settings_searchmap_disabled","restore_settings_searchmap_disabled_color");
             // Abhängigkeiten der Linklist Parameter.
             for (var i = 0; i < 100; i++) {
                 // 2. Spalte: Links für Custom BMs.
@@ -13089,7 +13236,7 @@ var mainGC = function() {
             setValue("settings_showUnpublishedHides_sort", document.getElementById('settings_showUnpublishedHides_sort').value);
             setValue("settings_lists_disabled_color", document.getElementById('settings_lists_disabled_color').value.replace("#",""));
             setValue("settings_lists_archived_color", document.getElementById('settings_lists_archived_color').value.replace("#",""));
-            setValue("settings_searchmap_strike_disabled_color", document.getElementById('settings_searchmap_strike_disabled_color').value.replace("#",""));
+            setValue("settings_searchmap_disabled_color", document.getElementById('settings_searchmap_disabled_color').value.replace("#",""));
 
             // Map Layers in vorgegebener Reihenfolge übernehmen.
             var new_map_layers_available = document.getElementById('settings_maplayers_available');
@@ -13339,7 +13486,7 @@ var mainGC = function() {
                 'settings_improve_character_counter',
                 'settings_searchmap_compact_layout',
                 'settings_searchmap_disabled',
-                'settings_searchmap_strike_disabled',
+                'settings_searchmap_disabled_strikethrough',
                 'settings_searchmap_show_hint',
             );
 
@@ -13692,7 +13839,7 @@ var mainGC = function() {
                 case "settings_lines_color_vip": field.value = "F0F0A0"; break;
                 case "settings_lists_disabled_color": field.value = "4A4A4A"; break;
                 case "settings_lists_archived_color": field.value = "8C0B0B"; break;
-                case "settings_searchmap_strike_disabled_color": field.value = "4A4A4A"; break;
+                case "settings_searchmap_disabled_color": field.value = "4A4A4A"; break;
                 case "settings_font_color_menu": restoreColor("settings_font_color_menuX0", "restore_settings_font_color_menuX0", field.value); break;
                 case "settings_font_color_menuX0": restoreColor("settings_font_color_menu", "restore_settings_font_color_menu", field.value); break;
                 case "settings_font_color_submenu": restoreColor("settings_font_color_submenuX0", "restore_settings_font_color_submenuX0", field.value); break;
