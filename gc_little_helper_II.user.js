@@ -8114,20 +8114,19 @@ var mainGC = function() {
                 }
             }
 
-            var sidebar_enhancements = {}
+            var sidebar_enhancements_buffer = {}
+            var sidebar_enhancements_favi_buffer = {}
 
-            function showSearchmapSidebarEnhancements(mutation = null){
+            function showSearchmapSidebarEnhancements(){
                 if(!settings_show_enhanced_map_popup) return true;
-
-                if(mutation == null) return true;
-
+                
                 if (!document.querySelector('.cache-open-text-cta')) return;
-
+                
                 var locations = []; // Location for the Cache
 
                 // Check if the sidebar displays a cache
                 if(!document.querySelector('.cache-preview-attributes')) return true;
-
+                
                 // Remove all Copy GC Codes (because otherwise they will be duplicated on selecting other cache)
                 $('.cache-preview-header .cache-metadata span.ctoc_link').each(function(){
                     removeElement(this);
@@ -8143,6 +8142,16 @@ var mainGC = function() {
                 });
 
                 new_gc_code = document.querySelector('.cache-preview-header .cache-metadata .cache-metadata-code').innerHTML;
+
+                if(sidebar_enhancements_buffer[new_gc_code]){
+                    // We already have the ode in our buffer, no need to reload everything
+                    removeElement(document.querySelector('#searchmap_sidebar_enhancements'));
+                    insertAfter(sidebar_enhancements_buffer[new_gc_code], (document.getElementsByClassName("geocache-owner")[0] || document.getElementsByClassName("gclhOwner")[0]));
+                    if ($('.favorites-text')[0]){
+                        $('.favorites-text')[0].innerHTML = $('.favorites-text')[0].innerHTML + sidebar_enhancements_favi_buffer[new_gc_code];
+                    }
+                    return true;
+                }
 
                 var searchmap_sidebar_enhancements_code = document.querySelector('#searchmap_sidebar_enhancements .gccode');
 
@@ -8168,7 +8177,7 @@ var mainGC = function() {
                 searchmap_sidebar_enhancements.appendChild(searchmap_sidebar_enhancements_code);
                 searchmap_sidebar_enhancements.appendChild(searchmap_sidebar_enhancements_loading);
 
-                insertAfter(searchmap_sidebar_enhancements, document.getElementsByClassName("geocache-owner")[0]);
+                insertAfter(searchmap_sidebar_enhancements, (document.getElementsByClassName("geocache-owner")[0] || document.getElementsByClassName("gclhOwner")[0]));
 
                 $.get('https://www.geocaching.com/geocache/'+new_gc_code, null, function(text){
 
@@ -8278,7 +8287,7 @@ var mainGC = function() {
                     searchmap_sidebar_enhancements.appendChild(text_element);
 
                     searchmap_sidebar_enhancements_loading.setAttribute("style", "display: none;");
-                    insertAfter(searchmap_sidebar_enhancements, document.getElementsByClassName("geocache-owner")[0]);
+                    insertAfter(searchmap_sidebar_enhancements, (document.getElementsByClassName("geocache-owner")[0] || document.getElementsByClassName("gclhOwner")[0]));
 
                     // Add Copy to Clipboard Links
                     if(original_coords != ""){
@@ -8293,7 +8302,7 @@ var mainGC = function() {
                     var length = text.indexOf("';", from) - from;
                     var userToken = text.substr(from, length);
 
-                    getFavScoreSearchmapSidebarEnhancements($('.favorites-text'), userToken);
+                    getFavScoreSearchmapSidebarEnhancements($('.favorites-text'), userToken, new_gc_code);
 
 
                     // Get elevations.
@@ -8302,12 +8311,14 @@ var mainGC = function() {
                         locations.push(coords_for_elevation[0]+","+coords_for_elevation[1]);
                         if (locations && locations.length == 1) getElevations(0,locations);
                     }
+
+                    sidebar_enhancements_buffer[new_gc_code] = searchmap_sidebar_enhancements;
                 });
 
             }
 
             // Processing all steps.
-            function processAllSearchMap(mutation) {
+            function processAllSearchMap() {
                 scrollInCacheList(); // Has to be run before searchThisArea.
                 searchThisArea();
                 compactLayout();
@@ -8315,14 +8326,14 @@ var mainGC = function() {
                 strikeDisabledInList();
                 showHint();
                 collapseActivity();
-                showSearchmapSidebarEnhancements(mutation);
+                showSearchmapSidebarEnhancements();
             }
 
             // Build mutation observer for body.
             function buildObserverBodySearchMap() {
                 var observerBodySearchMap = new MutationObserver(function(mutations) {
                     mutations.forEach(function(mutation) {
-                        processAllSearchMap(mutation);
+                        processAllSearchMap();
                     });
                 });
                 var target = document.querySelector('body');
@@ -9117,7 +9128,7 @@ var mainGC = function() {
     }
 
     // Get favorite score.
-    function getFavScoreSearchmapSidebarEnhancements(anker_element, userToken) {
+    function getFavScoreSearchmapSidebarEnhancements(anker_element, userToken, gccode) {
        $.ajax({
            type: "POST",
            cache: false,
@@ -9129,6 +9140,7 @@ var mainGC = function() {
                
                if ($(anker_element)[0]){
                 $(anker_element)[0].innerHTML = $(anker_element)[0].innerHTML + ' <span class="favi_score_percent">('+score+'%)';
+                sidebar_enhancements_favi_buffer[gccode] = ' <span class="favi_score_percent">('+score+'%)';
                }
            }
        });
@@ -10568,7 +10580,7 @@ var mainGC = function() {
     }
 
     function removeElement(element){
-        element.parentNode.removeChild(element);
+        if(element) element.parentNode.removeChild(element);
     }
 
 // Close Overlays, Find Player, Config, Sync.
