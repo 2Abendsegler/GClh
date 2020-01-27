@@ -45,19 +45,28 @@ var start = function(c) {
         .then(function() {return constInit(c);})
         .then(function() {return variablesInit(c);})
         .done(function() {
-            if (document.location.href.match(/^https?:\/\/maps\.google\./) || document.location.href.match(/^https?:\/\/www\.google\.[a-zA-Z.]*\/maps/)) {
-                mainGMaps();
-            } else if (document.location.href.match(/^https?:\/\/www\.openstreetmap\.org/)) {
-                mainOSM();
-            } else if (document.location.href.match(/^https?:\/\/www\.geocaching\.com/)) {
-                if (is_page('lists') || is_page('searchmap')) {
-                    asynchronGC();
-                } else {
-                    mainGC();
-                }
-            }else if (document.location.href.match(/^https?:\/\/project-gc\.com\/Tools\/PQSplit/)) {
-                mainPGC();
+            // Im Browser Edge vergehen etwa 200 millisekunden bis <body>, bis auf ein Children, Inhalte hat. Das führte dazu,
+            // dass der GClh bei der Prüfung "if (!$('.li-user-info')[0]) return;" im "mainGC" ausstieg. Bei allen anderen Browsern
+            // hat <body> sofort Inhalte, dort kommt es also nicht zu einer Verzögerung, nur im Browser Edge. Vermutlich handelt es
+            // sich auch hier um ein Problem der aktuellen (Anfang 2020) Änderungen von GS zur Datenschutz Grundverordnung ... .
+            function checkBodyContent(waitCount) { // GDPR
+                if ($('body').children().length > 1) { // GDPR
+                    if (document.location.href.match(/^https?:\/\/maps\.google\./) || document.location.href.match(/^https?:\/\/www\.google\.[a-zA-Z.]*\/maps/)) {
+                        mainGMaps();
+                    } else if (document.location.href.match(/^https?:\/\/www\.openstreetmap\.org/)) {
+                        mainOSM();
+                    } else if (document.location.href.match(/^https?:\/\/www\.geocaching\.com/)) {
+                        if (is_page('lists') || is_page('searchmap')) {
+                            asynchronGC();
+                        } else {
+                            mainGC();
+                        }
+                    }else if (document.location.href.match(/^https?:\/\/project-gc\.com\/Tools\/PQSplit/)) {
+                        mainPGC();
+                    }
+                } else {waitCount++; if (waitCount <= 1000) setTimeout(function(){checkBodyContent(waitCount);}, 10);} // GDPR
             }
+            checkBodyContent(0); // GDPR
         });
 };
 
@@ -3339,17 +3348,26 @@ var mainGC = function() {
             insert_smilie_fkt("LogText");
             insert_tpl_fkt(true);
             var liste = "";
-            build_tpls(true);
             if (settings_show_bbcode) build_smilies(true);
+            build_tpls(true);
             var box = document.createElement("div");
             box.innerHTML = liste;
-            side = $('#reportProblemInfo')[0];
-            side.parentNode.insertBefore(box, side);
-            var css = "";
-            css += ".flatpickr-wrapper {margin-bottom: unset !important; bottom: 6px !important;}";
-            css += "#gclh_log_tpls {position: relative; max-width: 240px; width: unset; border: 1px solid #9b9b9b; box-shadow: none; height: 40px; padding-top: 5px;}";
-            css += "select:hover, select:focus, select:active {background-image: url(/play/app/ui-icons/icons/global/caret-down-hover.svg);}";
-            appendCssStyle(css);
+            box.setAttribute('id', 'gclh_head');
+            function buildSmiliesAndLogtemplates(waitCount, box) { // GDPR
+                if ($('#logTypeSelector')[0]) { // GDPR
+                    side = $('#logTypeSelector')[0];
+                    side.append(box);
+                    var css = "";
+                    css += '#gclh_head {float: right; margin: ' + (settings_show_bbcode ? '-28px':'-39px') +' 0px 0px 50px;}';
+                    css += '#gclh_smilies {display: block; margin: -55px -5px 5px 0;}';
+                    css += '#gclh_log_tpls {max-width: 240px; border: 1px solid #9b9b9b; box-shadow: none; height: 40px; padding-top: 5px;}';
+                    css += 'select:hover, select:focus, select:active {background-image: url(/play/app/ui-icons/icons/global/caret-down-hover.svg);}';
+                    css += '.flatpickr-wrapper {bottom: 38px !important; margin-bottom: -30px !important;}';
+                    css += '.flatpickr-calendar.arrowTop::before, .flatpickr-calendar.arrowTop::after {margin-left: 55px;}';
+                    appendCssStyle(css);
+                } else {waitCount++; if (waitCount <= 100) setTimeout(function(){buildSmiliesAndLogtemplates(waitCount, box);}, 100);} // GDPR
+            }
+            buildSmiliesAndLogtemplates(0, box); // GDPR
         } catch(e) {gclh_error("Smilies and Log Templates new log page",e);}
     }
     // Script für insert Smilie by click.
@@ -3435,7 +3453,7 @@ var mainGC = function() {
     // Smilies aufbauen.
     function build_smilies(newLogPage) {
         var o = "<p style='margin: 5px;'>";
-        if (newLogPage) liste += "<div style='float: right; margin-right: -5px; display: inline-block;'>";
+        if (newLogPage) liste += "<div id='gclh_smilies'>";
         else liste += "<br>" + o;
         bs("[:)]", "");
         bs("[:D]", "_big");
@@ -3481,11 +3499,11 @@ var mainGC = function() {
             logicNew += "<option value='gclh_template[last_logtext]' style='color: #4a4a4a;'>[Last Cache-Log]</option>";
         }
         if (newLogPage) {
-            liste += "<br style='line-height: 40px'>" + texts;
-            liste += "<select id='gclh_log_tpls' onChange='gclh_insert_tpl(this.value)'; class='gclh_form' style='color: #9b9b9b; display: initial; font-family: Noto Sans; font-size: 14px;'>";
+            liste += texts;
+            liste += "<select id='gclh_log_tpls' onChange='gclh_insert_tpl(this.value)'; class='gclh_form' style='color: #9b9b9b; display: block; font-size: 14px;'>";
             liste += "<option value='-1' selected='selected'" + "style='display: none; visibility: hidden;'>- Log Templates -</option>";
             liste += logicNew;
-            liste += "</select>" + "<br>";
+            liste += "</select>";
         } else liste += "<br><p style='margin: 0;'>Templates:</p>" + texts + logicOld;
     }
 // Vorschau für Log, Log preview.
