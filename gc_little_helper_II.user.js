@@ -7930,7 +7930,7 @@ var mainGC = function() {
             function scrollInCacheList() {
                 // Cache list: Scroll to last position, if we come from back button in cache details.
                 if ($('#geocache-list')[0] && global_newScrollTop != 0) {
-                    document.querySelector('#geocache-list').scrollTo({top: global_newScrollTop, left: 0, behavior: "smooth"});
+                    document.querySelector('#geocache-list').scrollTo({top: global_newScrollTop, behavior: 'smooth'});
                     global_newScrollTop = 0;
                 }
                 // Cache list: Notice scrolling.
@@ -8172,7 +8172,7 @@ var mainGC = function() {
                 }
                 css += '.cache-preview-header, .cache-preview-attributes, .cache-preview-action-menu, .cache-activity-log, .cache-open-text-cta, .cache-preview-activities h2, .cache-preview-description, .cache-preview-activities .view-all-row {padding: 5px 12px !important;}';
                 css += '.gclh-cache-link {display: flex;}';
-                css += '.gclh_cache_type {flex: 0 0 24px; height: 24px; margin-left: -2px; margin-right: 8px; margin-top: -1px;}';
+                css += '.gclh_cache_type {flex: 0 0 24px; height: 24px; width: 24px; margin-left: -2px; margin-right: 8px; margin-top: -1px;}';
                 css += '.cache-preview-header h1 {font-size: 16px;}';
                 if (settings_searchmap_disabled) css += '.cache-preview-header .more-info {top: 0px !important;}';
                 else css += '.cache-preview-header .more-info {top: 8px !important;}';
