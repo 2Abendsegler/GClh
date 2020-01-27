@@ -50,12 +50,21 @@ var start = function(c) {
             } else if (document.location.href.match(/^https?:\/\/www\.openstreetmap\.org/)) {
                 mainOSM();
             } else if (document.location.href.match(/^https?:\/\/www\.geocaching\.com/)) {
-                if (is_page('lists') || is_page('searchmap')) {
-                    asynchronGC();
-                } else {
-                    mainGC();
+                // Im Browser Edge vergehen etwa 200 millisekunden bis <body>, bis auf ein Children, Inhalte hat. Das führte dazu,
+                // dass der GClh bei der Prüfung "if (!$('.li-user-info')[0]) return;" im "mainGC" ausstieg. Bei allen anderen Browsern
+                // hat <body> sofort Inhalte, dort kommt es also nicht zu einer Verzögerung, nur im Browser Edge. Vermutlich handelt es
+                // sich auch hier um ein Problem der aktuellen (Anfang 2020) Änderungen von GS zur Datenschutz Grundverordnung ... .
+                function checkBodyContent(waitCount) { // GDPR
+                    if ($('body').children().length > 1) { // GDPR
+                        if (is_page('lists') || is_page('searchmap')) {
+                            asynchronGC();
+                        } else {
+                            mainGC();
+                        }
+                    } else {waitCount++; if (waitCount <= 1000) setTimeout(function(){checkBodyContent(waitCount);}, 10);} // GDPR
                 }
-            }else if (document.location.href.match(/^https?:\/\/project-gc\.com\/Tools\/PQSplit/)) {
+                checkBodyContent(0); // GDPR
+             }else if (document.location.href.match(/^https?:\/\/project-gc\.com\/Tools\/PQSplit/)) {
                 mainPGC();
             }
         });
