@@ -582,6 +582,9 @@ var variablesInit = function(c) {
     c.settings_searchmap_disabled_strikethrough = getValue("settings_searchmap_disabled_strikethrough", true);
     c.settings_searchmap_disabled_color = getValue("settings_searchmap_disabled_color", '4A4A4A');
     c.settings_searchmap_show_hint = getValue("settings_searchmap_show_hint", false);
+    c.settings_show_copydata_own_stuff_show = getValue("settings_show_copydata_own_stuff_show", false);
+    c.settings_show_copydata_own_stuff_name = getValue("settings_show_copydata_own_stuff_name", 'Photo file name');
+    c.settings_show_copydata_own_stuff_value = getValue("settings_show_copydata_own_stuff_value", '#yyyy#.#mm#.#dd# - #GCName# - #GCCode# - 01');
 
     try {
         if (c.userToken === null) {
@@ -2250,7 +2253,10 @@ var mainGC = function() {
             html += '    <div class="copydata-content-layer copydata_click" data-id="'+idCopyOrgCoords+'">Coordinates</div>';
         }
         if (determineListingCoords("GCTour") !== "") {
-            html += '    <div class="copydata-content-layer copydata_click" data-id="'+idCopyGCTourCoords+'">GCTour Coordinates</div>';
+            html += '    <div class="copydata-content-layer copydata_click" data-id="'+idCopyName+'">GCTour Coordinates</div>';
+        }
+        if (settings_show_copydata_own_stuff_show) {
+            html += '    <div class="copydata-content-layer copydata_click" data-id="idOwnStuff" data-value="'+settings_show_copydata_own_stuff_value+'">'+settings_show_copydata_own_stuff_name+'</div>';
         }
         html += '  </div>';
         $('.copydata_click')[0].parentNode.innerHTML += html;
@@ -2263,7 +2269,7 @@ var mainGC = function() {
     function remove_copydata_menu_content() {
         $('#CopyDropDown').remove();
     }
-    function copydata_copy( thisObject ) {
+    function copydata_copy(thisObject) {
         const el = document.createElement('textarea');
         switch ($(thisObject).data('id')) {
             case idCopyName:
@@ -2284,7 +2290,18 @@ var mainGC = function() {
             case idCopyGCTourCoords:
                 el.value = determineListingCoords('GCTour');
                 break;
-            default:
+            case 'idOwnStuff':
+                if ($(thisObject).data('value')) {
+                    el.value = $(thisObject).data('value');
+                    [year, month, day] = determineCurrentDate();
+                    el.value = el.value.replace(/#yyyy#/ig, year);
+                    el.value = el.value.replace(/#mm#/ig, month);
+                    el.value = el.value.replace(/#dd#/ig, day);
+                    el.value = el.value.replace(/#GCName#/ig, $('#ctl00_ContentBody_CacheName')[0].innerHTML.replace(new RegExp('&nbsp;', 'g'),' '));
+                    el.value = el.value.replace(/#GCCode#/ig, $('#ctl00_ContentBody_CoordInfoLinkControl1_uxCoordInfoCode')[0].innerHTML);
+                }
+                break;
+            efault:
                 el.value = "";
         }
         document.body.appendChild(el);
@@ -11231,6 +11248,15 @@ var mainGC = function() {
         return cacheSymbol;
     }
 
+// Determine current date and deliver year, month and day.
+    function determineCurrentDate() {
+        var now = new Date();
+        var day = now.getDate().toString().length < 2 ? "0"+now.getDate() : now.getDate();
+        var month = (now.getMonth()+1).toString().length < 2 ? "0"+(now.getMonth()+1) : (now.getMonth()+1);
+        var year = now.getFullYear();
+        return [year, month, day];
+    }
+
 //////////////////////////////
 // User defined searchs Main
 //////////////////////////////
@@ -11524,6 +11550,7 @@ var mainGC = function() {
     function show_help(text) {return " <a class='gclh_info'><b>?</b><span class='gclh_span'>" + text + "</span></a>";}
     function show_help2(text) {return " <a class='gclh_info gclh_info2'><b>?</b><span class='gclh_span'>" + text + "</span></a>";}
     function show_help3(text) {return " <a class='gclh_info gclh_info3'><b>?</b><span class='gclh_span'>" + text + "</span></a>";}
+    function show_help3_big(text) {return " <a class='gclh_info gclh_info3_big'><b>?</b><span class='gclh_span'>" + text + "</span></a>";}
     function show_help_big(text) {return " <a class='gclh_info gclh_info_big'><b>?</b><span class='gclh_span'>" + text + "</span></a>";}
     function show_help_rc(text) {return " <a class='gclh_info gclh_info_rc'><b>?</b><span class='gclh_span'>" + text + "</span></a>";}
 
@@ -11653,7 +11680,11 @@ var mainGC = function() {
         html += "a.gclh_info2:hover span {left: -80px !important;}";
         html += "a.gclh_info3:hover span {";
         html += "  left: -200px !important;}";
-        html += "a.gclh_info_big:hover span {width: 350px !important;}";
+        html += "a.gclh_info3_big:hover span {";
+        html += "  left: -425px !important;";
+        html += "  width: 450px !important;}";
+        html += "a.gclh_info_big:hover span {";
+        html += "  width: 350px !important;}";
         html += "table.multi_homezone_settings {";
         html += "  margin: -2px 0 5px 10px;;";
         html += "  width: 550px;";
@@ -12388,6 +12419,13 @@ var mainGC = function() {
             html += "  <option value=\"3\" " + (settings_show_openrouteservice_medium == "3" ? "selected=\"selected\"" : "") + ">Wheelchair (only Europe)</option>";
             html += "</select>" + "<br>";
             html += checkboxy('settings_show_copydata_menu', 'Show "Copy Data to Clipboard" menu in sidebar') + show_help3("Shows a menu to copy various cache data to the clipboard.") + "<br>";
+            var copydataOwnStuffPlaceholder = "Possible placeholder:<br>&nbsp; #yyyy# : Current year<br>&nbsp; #mm# : Current month<br>&nbsp; #dd# : Current day<br>&nbsp; #GCName# : GC name<br>&nbsp; #GCCode# : GC code<br>(Upper and lower case is not required in the placeholder name.)";
+            html += "&nbsp;&nbsp;" + checkboxy('settings_show_copydata_own_stuff_show', 'Show');
+            html += " <input class='gclh_form' type='text' size='14' id='settings_show_copydata_own_stuff_name' value='" + settings_show_copydata_own_stuff_name + "'>";
+            html += "<img src=" + global_restore_icon + " id='restore_settings_show_copydata_own_stuff_name' title='back to default' style='width: 12px; cursor: pointer;'>";
+            html += " <input class='gclh_form' type='text' size='37' id='settings_show_copydata_own_stuff_value' value='" + settings_show_copydata_own_stuff_value + "'>";
+            html += "<img src=" + global_restore_icon + " id='restore_settings_show_copydata_own_stuff_value' title='back to default' style='width: 12px; cursor: pointer;'>";
+            html += show_help3_big("With the checkbox and the two input fields, you can generate an entry in the menu \"Copy Data to Clipbord\".<br><br>The first input field contains the name that is displayed in the menu.<br><br>The second input field contains the content that is copied to the clipboard if you click to this entry in the menu. You can use different placeholders in the second input field.<br>" + copydataOwnStuffPlaceholder) + '<br>';
             html += newParameterVersionSetzen("0.10") + newParameterOff;
             html += newParameterOn3;
             html += checkboxy('settings_show_all_logs_but', 'Show button \"Show all logs\" above the logs') + "<br>";
@@ -12939,6 +12977,8 @@ var mainGC = function() {
             $('#restore_settings_lists_disabled_color')[0].addEventListener("click", restoreField, false);
             $('#restore_settings_lists_archived_color')[0].addEventListener("click", restoreField, false);
             $('#restore_settings_searchmap_disabled_color')[0].addEventListener("click", restoreField, false);
+            $('#restore_settings_show_copydata_own_stuff_name')[0].addEventListener("click", restoreField, false);
+            $('#restore_settings_show_copydata_own_stuff_value')[0].addEventListener("click", restoreField, false);
 
             // Events setzen für Parameter, die im GClh Config mehrfach ausgegeben wurden, weil sie zu mehreren Themen gehören. Es handelt sich hier um den Parameter selbst.
             // In der Function werden Events für den Parameter selbst (ZB: "settings_show_mail_in_viplist") und dessen Clone gesetzt, die hinten mit "X" und Nummerierung
@@ -13083,6 +13123,15 @@ var mainGC = function() {
             setEvForDepPara("settings_searchmap_disabled","settings_searchmap_disabled_strikethrough");
             setEvForDepPara("settings_searchmap_disabled","settings_searchmap_disabled_color");
             setEvForDepPara("settings_searchmap_disabled","restore_settings_searchmap_disabled_color");
+            setEvForDepPara("settings_show_copydata_menu","settings_show_copydata_own_stuff_show");
+            setEvForDepPara("settings_show_copydata_menu","settings_show_copydata_own_stuff_name");
+            setEvForDepPara("settings_show_copydata_menu","restore_settings_show_copydata_own_stuff_name");
+            setEvForDepPara("settings_show_copydata_menu","settings_show_copydata_own_stuff_value");
+            setEvForDepPara("settings_show_copydata_menu","restore_settings_show_copydata_own_stuff_value");
+            setEvForDepPara("settings_show_copydata_own_stuff_show","settings_show_copydata_own_stuff_name");
+            setEvForDepPara("settings_show_copydata_own_stuff_show","restore_settings_show_copydata_own_stuff_name");
+            setEvForDepPara("settings_show_copydata_own_stuff_show","settings_show_copydata_own_stuff_value");
+            setEvForDepPara("settings_show_copydata_own_stuff_show","restore_settings_show_copydata_own_stuff_value");
             // Abhängigkeiten der Linklist Parameter.
             for (var i = 0; i < 100; i++) {
                 // 2. Spalte: Links für Custom BMs.
@@ -13237,6 +13286,8 @@ var mainGC = function() {
             setValue("settings_lists_disabled_color", document.getElementById('settings_lists_disabled_color').value.replace("#",""));
             setValue("settings_lists_archived_color", document.getElementById('settings_lists_archived_color').value.replace("#",""));
             setValue("settings_searchmap_disabled_color", document.getElementById('settings_searchmap_disabled_color').value.replace("#",""));
+            setValue("settings_show_copydata_own_stuff_name", document.getElementById('settings_show_copydata_own_stuff_name').value);
+            setValue("settings_show_copydata_own_stuff_value", document.getElementById('settings_show_copydata_own_stuff_value').value);
 
             // Map Layers in vorgegebener Reihenfolge übernehmen.
             var new_map_layers_available = document.getElementById('settings_maplayers_available');
@@ -13436,6 +13487,7 @@ var mainGC = function() {
                 'settings_show_openrouteservice_link',
                 'settings_show_openrouteservice_home',
                 'settings_show_copydata_menu',
+                'settings_show_copydata_own_stuff_show',
                 'settings_show_default_links',
                 'settings_bm_changed_and_go',
                 'settings_bml_changed_and_go',
@@ -13847,6 +13899,11 @@ var mainGC = function() {
                 case "settings_count_own_matrix_show_color_next": field.value = "5151FB"; field.style.color = "white"; break;
             }
             field.style.backgroundColor = "#" + field.value;
+        } else {
+            switch (fieldId) {
+                case "settings_show_copydata_own_stuff_name": field.value = "Photo file name"; break;
+                case "settings_show_copydata_own_stuff_value": field.value = "#yyyy#.#mm#.#dd# - #GCName# - #GCCode# - 01"; break;
+            }
         }
     }
     function restoreColor(p, r, v) {
