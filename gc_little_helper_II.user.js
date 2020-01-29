@@ -2253,7 +2253,7 @@ var mainGC = function() {
             html += '    <div class="copydata-content-layer copydata_click" data-id="'+idCopyOrgCoords+'">Coordinates</div>';
         }
         if (determineListingCoords("GCTour") !== "") {
-            html += '    <div class="copydata-content-layer copydata_click" data-id="'+idCopyName+'">GCTour Coordinates</div>';
+            html += '    <div class="copydata-content-layer copydata_click" data-id="'+idCopyGCTourCoords+'">GCTour Coordinates</div>';
         }
         if (settings_show_copydata_own_stuff_show) {
             html += '    <div class="copydata-content-layer copydata_click" data-id="idOwnStuff" data-value="'+settings_show_copydata_own_stuff_value+'">'+settings_show_copydata_own_stuff_name+'</div>';
