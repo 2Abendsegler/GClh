@@ -12421,9 +12421,9 @@ var mainGC = function() {
             html += checkboxy('settings_show_copydata_menu', 'Show "Copy Data to Clipboard" menu in sidebar') + show_help3("Shows a menu to copy various cache data to the clipboard.") + "<br>";
             var copydataOwnStuffPlaceholder = "Possible placeholder:<br>&nbsp; #yyyy# : Current year<br>&nbsp; #mm# : Current month<br>&nbsp; #dd# : Current day<br>&nbsp; #GCName# : GC name<br>&nbsp; #GCCode# : GC code<br>(Upper and lower case is not required in the placeholder name.)";
             html += "&nbsp;&nbsp;" + checkboxy('settings_show_copydata_own_stuff_show', 'Show');
-            html += " <input class='gclh_form' type='text' size='14' id='settings_show_copydata_own_stuff_name' value='" + settings_show_copydata_own_stuff_name + "'>";
+            html += " <input class='gclh_form' type='text' size='13' id='settings_show_copydata_own_stuff_name' value='" + settings_show_copydata_own_stuff_name + "'>";
             html += "<img src=" + global_restore_icon + " id='restore_settings_show_copydata_own_stuff_name' title='back to default' style='width: 12px; cursor: pointer;'>";
-            html += " <input class='gclh_form' type='text' size='37' id='settings_show_copydata_own_stuff_value' value='" + settings_show_copydata_own_stuff_value + "'>";
+            html += " <input class='gclh_form' type='text' size='33' id='settings_show_copydata_own_stuff_value' value='" + settings_show_copydata_own_stuff_value + "'>";
             html += "<img src=" + global_restore_icon + " id='restore_settings_show_copydata_own_stuff_value' title='back to default' style='width: 12px; cursor: pointer;'>";
             html += show_help3_big("With the checkbox and the two input fields, you can generate an entry in the menu \"Copy Data to Clipbord\".<br><br>The first input field contains the name that is displayed in the menu.<br><br>The second input field contains the content that is copied to the clipboard if you click to this entry in the menu. You can use different placeholders in the second input field.<br>" + copydataOwnStuffPlaceholder) + '<br>';
             html += newParameterVersionSetzen("0.10") + newParameterOff;
