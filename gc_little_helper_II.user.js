@@ -2301,7 +2301,7 @@ var mainGC = function() {
                     el.value = el.value.replace(/#GCCode#/ig, $('#ctl00_ContentBody_CoordInfoLinkControl1_uxCoordInfoCode')[0].innerHTML);
                 }
                 break;
-            efault:
+            default:
                 el.value = "";
         }
         document.body.appendChild(el);
