@@ -281,5 +281,8 @@
   "settings_searchmap_disabled": false,
   "settings_searchmap_disabled_strikethrough": true,
   "settings_searchmap_disabled_color": '4A4A4A',
-  "settings_searchmap_show_hint": false
+  "settings_searchmap_show_hint": false,
+  "settings_show_copydata_own_stuff_show": false,
+  "settings_show_copydata_own_stuff_name": 'Photo file name',
+  "settings_show_copydata_own_stuff_value": '#yyyy#.#mm#.#dd# - #GCName# - #GCCode# - 01'
 }
