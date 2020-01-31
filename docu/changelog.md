@@ -66,7 +66,7 @@
 		With this feature you can generate an entry in the menu "Copy Data to Clipbord" for example to generate file names of cache-specific photos.<br>
 		<img src="../images/0.10.4/Screen03.jpg" alt="Screen03.jpg"><br>
 		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_show_copydata_own_stuff_show" title="Link to your GClh Config">Settings -> Listing:<br>
-		<img src="../images/0.10.4/Screen02.jpg" alt="Screen04.jpg"></a><br>
+		<img src="../images/0.10.4/Screen02.jpg" alt="Screen02.jpg"></a><br>
 		If you want to use this feature, you have to customize the feature and you have to activate the parameter.<br>
 		If you click to the entry in menu "Copy Data to Clipbord", something like this could be in the clipboard.<br>
 		<img src="../images/0.10.4/Screen04.jpg" alt="Screen04.jpg"><br><br>
