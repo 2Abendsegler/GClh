@@ -15,6 +15,12 @@
 				Clicks on the latest logs icons or the log icons in the VIP tables do not work. [<a href="https://github.com/2Abendsegler/GClh/issues/1193" title="Issue 1193">1193</a>]<br>
 			</li>
 			<li>
+				The alignment of the new logging form is not correct. [<a href="https://github.com/2Abendsegler/GClh/issues/1248" title="Issue 1248">1248</a>]<br>
+			</li>
+			<li>
+				On new Lists page, GClh header with Linklist ... does not load. [<a href="https://github.com/2Abendsegler/GClh/issues/1227" title="Issue 1227">1227</a>]<br>
+			</li>
+			<li>
 				Some unnecessary sliders have recently been added to statistical data. [<a href="https://github.com/2Abendsegler/GClh/issues/1201" title="Issue 1201">1201</a>]<br>
 			</li>
 			<li>
@@ -33,18 +39,9 @@
 				On new Lists page, GClh does not work correct. [<a href="https://github.com/2Abendsegler/GClh/issues/1228" title="Issue 1228">1228</a>]<br>
 			</li>
 			<li>
-				On new Lists page, GClh header with Linklist ... does not load. [<a href="https://github.com/2Abendsegler/GClh/issues/1227" title="Issue 1227">1227</a>]<br>
-			</li>
-			<li>
-				The alignment of the new logging form is not correct. [<a href="https://github.com/2Abendsegler/GClh/issues/1248" title="Issue 1248">1248</a>]<br>
-			</li>
-			<li>
-				Edge no longer works with GClh. [<a href="https://github.com/2Abendsegler/GClh/issues/1251" title="Issue 1251">1251</a>]<br>
+				Edge no longer works with GClh. [<a href="https://github.com/2Abendsegler/GClh/issues/1251" title="Issue 1251">1251</a>]<br><br>
 			</li>
 		</ul>
-	</li>
-	<li>
-		<strong>New:</strong> Show own specified entry in menu of copy data to clipboard. [<a href="https://github.com/2Abendsegler/GClh/issues/1253" title="Issue 1253">1253</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br><br>
 	</li>
 	<li>
 		<strong>New:</strong> [New Map] Compact layout on detail screens. [<a href="https://github.com/2Abendsegler/GClh/issues/965" title="Issue 965">965</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br><br>
@@ -53,25 +50,28 @@
 		<strong>New:</strong> [New Map] After go back from cache details to cache list, scroll to last position. [<a href="https://github.com/2Abendsegler/GClh/issues/1247" title="Issue 1247">1247</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br><br>
 	</li>
 	<li>
-		<strong>New:</strong> Implement the newer GC logo in the page header. [<a href="https://github.com/2Abendsegler/GClh/issues/1237" title="Issue 1237">1237</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br><br>
-	</li>
-	<li>
 		<strong>New:</strong> [New Map] Show hint automatically. [<a href="https://github.com/2Abendsegler/GClh/issues/1199" title="Issue 1199">1199</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br><br>
-	</li>
-	<li>
-		<strong>New:</strong> Make "copy to clipboard" a function to reduce code duplication. [<a href="https://github.com/2Abendsegler/GClh/issues/1195" title="Issue 1195">1195</a> / <a href="https://www.geocaching.com/profile/?u=Ruko2010" title="Thanks to Ruko2010">Ruko2010</a>]<br><br>
-	</li>
-	<li>
-		<strong>New:</strong> [New Map] Strike through title of disabled caches. [<a href="https://github.com/2Abendsegler/GClh/issues/1197" title="Issue 1197">1197</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br><br>
 	</li>
 	<li>
 		<strong>New:</strong> [New Map] Show button to collapse activity. [<a href="https://github.com/2Abendsegler/GClh/issues/1198" title="Issue 1198">1198</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br><br>
 	</li>
 	<li>
+		<strong>New:</strong> [New Map] Strike through title of disabled caches. [<a href="https://github.com/2Abendsegler/GClh/issues/1197" title="Issue 1197">1197</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br><br>
+	</li>
+	<li>
 		<strong>New:</strong> [New Map] Adapt the width of the pop up. [<a href="https://github.com/2Abendsegler/GClh/issues/1219" title="Issue 1219">1219</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br><br>
 	</li>
 	<li>
+		<strong>New:</strong> Show own specified entry in menu of copy data to clipboard. [<a href="https://github.com/2Abendsegler/GClh/issues/1253" title="Issue 1253">1253</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br><br>
+	</li>
+	<li>
 		<strong>New:</strong> Consider script GCTour also in feature "copy corrected coordinates". [<a href="https://github.com/2Abendsegler/GClh/issues/1200" title="Issue 1200">1200</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>New:</strong> Make "copy to clipboard" a function to reduce code duplication. [<a href="https://github.com/2Abendsegler/GClh/issues/1195" title="Issue 1195">1195</a> / <a href="https://www.geocaching.com/profile/?u=Ruko2010" title="Thanks to Ruko2010">Ruko2010</a>]<br><br>
+	</li>
+	<li>
+		<strong>New:</strong> Implement the newer GC logo in the page header. [<a href="https://github.com/2Abendsegler/GClh/issues/1237" title="Issue 1237">1237</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br><br>
 	</li>
 	<li>
 		<strong>New:</strong> Remove all links to unsecure pages. [<a href="https://github.com/2Abendsegler/GClh/issues/1037" title="Issue 1037">1037</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
@@ -86,10 +86,10 @@
 		<strong>Fix:</strong> Do not allow GClh Config or GClh Sync on new map page. [<a href="https://github.com/2Abendsegler/GClh/issues/1207" title="Issue 1207">1207</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 	</li>
 	<li>
-		<strong>Fix:</strong> Allow Find Player on new map page. [<a href="https://github.com/2Abendsegler/GClh/issues/1209" title="Issue 1209">1209</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		<strong>Fix:</strong> Correct Mystery radius for Flopp's Map. [<a href="https://github.com/2Abendsegler/GClh/issues/1212" title="Issue 1212">1212</a> / <a href="https://www.geocaching.com/profile/?u=ztNFny" title="Thanks to ztNFny">ztNFny</a>]<br>
 	</li>
 	<li>
-		<strong>Fix:</strong> Correct Mystery radius for Flopp's Map. [<a href="https://github.com/2Abendsegler/GClh/issues/1212" title="Issue 1212">1212</a> / <a href="https://www.geocaching.com/profile/?u=ztNFny" title="Thanks to ztNFny">ztNFny</a>]<br>
+		<strong>Fix:</strong> Allow Find Player on new map page. [<a href="https://github.com/2Abendsegler/GClh/issues/1209" title="Issue 1209">1209</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 	</li>
 </ul>
 <br>
