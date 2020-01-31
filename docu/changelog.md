@@ -64,7 +64,7 @@
 	</li>
 	<li>
 		<strong>New:</strong> Show own specified entry in menu of copy data to clipboard. [<a href="https://github.com/2Abendsegler/GClh/issues/1253" title="Issue 1253">1253</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
-		With this feature you can generate an entry in the menu "Copy Data to Clipbord" for example to generate file names of cache-specific photos.<br>
+		With this feature you can generate an entry in the menu "Copy Data to Clipbord" for example to build file names of cache-specific photos.<br>
 		<img src="../images/0.10.4/Screen03.jpg" alt="Screen03.jpg"><br>
 		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_show_copydata_own_stuff_show" title="Link to your GClh Config">Settings -> Listing:<br>
 		<img src="../images/0.10.4/Screen02.jpg" alt="Screen02.jpg"></a><br>
