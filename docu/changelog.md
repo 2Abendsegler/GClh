@@ -68,10 +68,10 @@
 		<strong>New:</strong> Consider script GCTour also in feature "copy corrected coordinates". [<a href="https://github.com/2Abendsegler/GClh/issues/1200" title="Issue 1200">1200</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 	</li>
 	<li>
-		<strong>New:</strong> Make "copy to clipboard" a function to reduce code duplication. [<a href="https://github.com/2Abendsegler/GClh/issues/1195" title="Issue 1195">1195</a> / <a href="https://www.geocaching.com/profile/?u=Ruko2010" title="Thanks to Ruko2010">Ruko2010</a>]<br><br>
+		<strong>New:</strong> Make "copy to clipboard" a function to reduce code duplication. [<a href="https://github.com/2Abendsegler/GClh/issues/1195" title="Issue 1195">1195</a> / <a href="https://www.geocaching.com/profile/?u=Ruko2010" title="Thanks to Ruko2010">Ruko2010</a>]<br>
 	</li>
 	<li>
-		<strong>New:</strong> Implement the newer GC logo in the page header. [<a href="https://github.com/2Abendsegler/GClh/issues/1237" title="Issue 1237">1237</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br><br>
+		<strong>New:</strong> Implement the newer GC logo in the page header. [<a href="https://github.com/2Abendsegler/GClh/issues/1237" title="Issue 1237">1237</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 	</li>
 	<li>
 		<strong>New:</strong> Remove all links to unsecure pages. [<a href="https://github.com/2Abendsegler/GClh/issues/1037" title="Issue 1037">1037</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
