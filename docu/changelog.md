@@ -24,13 +24,13 @@
 				Some unnecessary sliders have recently been added to statistical data. [<a href="https://github.com/2Abendsegler/GClh/issues/1201" title="Issue 1201">1201</a>]<br>
 			</li>
 			<li>
-				At latest logs in cache listing, title of picture is shown as a second box next to the log. [<a href="https://github.com/2Abendsegler/GClh/issues/1191" title="Issue 1191">1191</a>]<br>
-			</li>
-			<li>
 				Show both tabs in list of pocket queries of one page does not work. [<a href="https://github.com/2Abendsegler/GClh/issues/1214" title="Issue 1214">1214</a>]<br>
 			</li>
 			<li>
 				The TB autovisit feature on the old log page does not work. [<a href="https://github.com/2Abendsegler/GClh/issues/1205" title="Issue 1205">1205</a>]<br>
+			</li>
+			<li>
+				At latest logs in cache listing, title of picture is shown as a second box next to the log. [<a href="https://github.com/2Abendsegler/GClh/issues/1191" title="Issue 1191">1191</a>]<br>
 			</li>
 			<li>
 				Show number of active pocket queries does not work. [<a href="https://github.com/2Abendsegler/GClh/issues/1216" title="Issue 1216">1216</a>]<br>
