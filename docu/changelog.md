@@ -44,20 +44,35 @@
 		</ul>
 	</li>
 	<li>
-		<strong>New:</strong> [New Map] Compact layout on detail screens. [<a href="https://github.com/2Abendsegler/GClh/issues/965" title="Issue 965">965</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br><br>
+		<strong>New:</strong> [New Map] Compact layout on detail screens. [<a href="https://github.com/2Abendsegler/GClh/issues/965" title="Issue 965">965</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		<img src="../images/0.10.4/Screen05.jpg" alt="Screen05.jpg"><br>
+		<img src="../images/0.10.4/Screen06.jpg" alt="Screen06.jpg"><br>
+		<img src="../images/0.10.4/Screen07.jpg" alt="Screen07.jpg"><br>
+		<img src="../images/0.10.4/Screen08.jpg" alt="Screen08.jpg"><br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_searchmap_compact_layout" title="Link to your GClh Config">Settings -> Map:<br>
+		<img src="../images/0.10.4/Screen09.jpg" alt="Screen09.jpg"></a><br><br>
 	</li>
 	<li>
 		<strong>New:</strong> [New Map] After go back from cache details to cache list, scroll to last position. [<a href="https://github.com/2Abendsegler/GClh/issues/1247" title="Issue 1247">1247</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 		<img src="../images/0.10.4/Screen01.gif" alt="Screen01.gif"><br><br>
 	</li>
 	<li>
-		<strong>New:</strong> [New Map] Show hint automatically. [<a href="https://github.com/2Abendsegler/GClh/issues/1199" title="Issue 1199">1199</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br><br>
+		<strong>New:</strong> [New Map] Show hint automatically. [<a href="https://github.com/2Abendsegler/GClh/issues/1199" title="Issue 1199">1199</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br>
+		<img src="../images/0.10.4/Screen10.jpg" alt="Screen10.jpg"><br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_searchmap_show_hint" title="Link to your GClh Config">Settings -> Map:<br>
+		<img src="../images/0.10.4/Screen11.jpg" alt="Screen11.jpg"></a><br>
+		If you want to use this feature, you have to activate the parameter.<br><br>
 	</li>
 	<li>
-		<strong>New:</strong> [New Map] Show button to collapse activity. [<a href="https://github.com/2Abendsegler/GClh/issues/1198" title="Issue 1198">1198</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br><br>
+		<strong>New:</strong> [New Map] Show button to collapse activity. [<a href="https://github.com/2Abendsegler/GClh/issues/1198" title="Issue 1198">1198</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br>
+		<img src="../images/0.10.4/Screen14.gif" alt="Screen14.gif"><br><br>
 	</li>
 	<li>
-		<strong>New:</strong> [New Map] Strike through title of disabled caches. [<a href="https://github.com/2Abendsegler/GClh/issues/1197" title="Issue 1197">1197</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br><br>
+		<strong>New:</strong> [New Map] Strike through title of disabled caches. [<a href="https://github.com/2Abendsegler/GClh/issues/1197" title="Issue 1197">1197</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br>
+		<img src="../images/0.10.4/Screen12.jpg" alt="Screen12.jpg"><br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_searchmap_disabled" title="Link to your GClh Config">Settings -> Map:<br>
+		<img src="../images/0.10.4/Screen13.jpg" alt="Screen13.jpg"></a><br>
+		If you want to use this feature, you have to activate the parameter.<br><br>
 	</li>
 	<li>
 		<strong>New:</strong> [New Map] Adapt the width of the pop up. [<a href="https://github.com/2Abendsegler/GClh/issues/1219" title="Issue 1219">1219</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br><br>
