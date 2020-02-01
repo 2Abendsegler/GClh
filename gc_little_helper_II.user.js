@@ -4644,7 +4644,7 @@ var mainGC = function() {
         try {
             // Set lines in color for user and in zebra.
             // Set correct number of columns in longtext. BMLs and Ignore List.
-            function setLinesInColorAndCorrectColspan(waitCount) {
+            function setLinesInColorAndCorrectColspan() {
                 if ($('.rt-table .rt-tbody .rt-tr')[0] || ($('.geocache-table tbody tr')[0])) {
                     var lines = $('.rt-table .rt-tbody .rt-tr, .geocache-table tbody tr');
                     if (lines && $('.geocache-table tbody tr')[0]) {
@@ -4659,11 +4659,11 @@ var mainGC = function() {
                     if (lines && settings_show_common_lists_in_zebra) {
                         setLinesColorInZebra(settings_show_common_lists_in_zebra, lines, 1);
                     }
-                } else {waitCount++; if (waitCount <= 50) setTimeout(function(){setLinesInColorAndCorrectColspan(waitCount);}, 200);}
+                }
             }
 
             // Improve layout.
-            function improveLayoutHead(waitCount) {
+            function improveLayoutHead() {
                 if ($('.rt-table .rt-thead .rt-tr')[0] || $('.geocache-table thead tr')[0]) {
                     if ($('.gclh_improveLayoutHead')[0]) return;
                     var css = '';
@@ -4733,9 +4733,9 @@ var mainGC = function() {
                     if (!css == '') appendCssStyle(css);
                     if ($('table')[0]) $('table').addClass('gclh_improveLayoutHead');
                     if ($('.rt-table')[0]) $('.rt-table').addClass('gclh_improveLayoutHead');
-                } else {waitCount++; if (waitCount <= 200) setTimeout(function(){improveLayoutHead(waitCount);}, 50);}
+                }
             }
-            function improveLayoutBody(waitCount) {
+            function improveLayoutBody() {
                 if ($('.rt-table .rt-tbody .rt-tr')[0] || $('.geocache-table tbody tr')[0]) {
                     var css = '';
                     // Compact layout.
@@ -4896,7 +4896,7 @@ var mainGC = function() {
                     if (!$('.gclh_improveLayoutBody')[0] && !css == '') appendCssStyle(css);
                     if ($('table')[0] && !$('table').hasClass('gclh_improveLayoutBody')) $('table').addClass('gclh_improveLayoutBody');
                     if ($('.rt-table')[0] && !$('table').hasClass('gclh_improveLayoutBody')) $('.rt-table').addClass('gclh_improveLayoutBody');
-                } else {waitCount++; if (waitCount <= 200) setTimeout(function(){improveLayoutBody(waitCount);}, 50);}
+                }
             }
 
             // Processing all steps.
@@ -4906,48 +4906,33 @@ var mainGC = function() {
                 setLinesInColorAndCorrectColspan(0);
             }
 
-            // Build mutation observer for body.
-            function buildObserverBodyLists() {
-                var observerBodyLists = new MutationObserver(function(mutations) {
+            // Build mutation observer for target.
+            function buildObserverLists(target) {
+                var observerLists = new MutationObserver(function(mutations) {
                     mutations.forEach(function(mutation) {
                         processAll();
+                        checkForBuildAllObserverLists();
                     });
                 });
-                var target = document.querySelector('body');
                 var config = { attributes: true, childList: true, characterData: true };
-                observerBodyLists.observe(target, config);
+                observerLists.observe($(target)[0], config);
             }
-            // Check if mutation observer for body can be build.
-            function checkForBuildObserverBodyLists(waitCount) {
-                if ($('body')[0]) {
-                    if ($('.gclh_buildObserverBodyLists')[0]) return;
-                    $('body').addClass('gclh_buildObserverBodyLists');
-                   buildObserverBodyLists();
-                } else {waitCount++; if (waitCount <= 200) setTimeout(function(){checkForBuildObserverBodyLists(waitCount);}, 50);}
+            // Check if mutation observer for target can be build.
+            function checkForBuildObserverLists(waitCount, target, observerClass) {
+                if ($(target)[0]) {
+                    if ($('.'+observerClass)[0]) return;
+                    $(target).addClass(observerClass);
+                    buildObserverLists(target);
+                } else {waitCount++; if (waitCount <= 200) setTimeout(function(){checkForBuildObserverLists(waitCount, target, observerClass);}, 50);}
+            }
+            // Check if mutation observer can be build.
+            function checkForBuildAllObserverLists() {
+                checkForBuildObserverLists(0, '#app-root > div > div', 'gclh_observer_app-root');
+                checkForBuildObserverLists(0, '.structure', 'gclh_observer_structure');
             }
 
-            // Build mutation observer for the buttons.
-            function buildObserverButtonsLists() {
-                var observerButtonsLists = new MutationObserver(function(mutations) {
-                    mutations.forEach(function(mutation) {
-                        processAll();
-                        checkForBuildObserverBodyLists(0);
-                    });
-                });
-                var target = document.querySelector('.gc-button-group');
-                var config = { attributes: true, childList: true, characterData: true };
-                observerButtonsLists.observe(target, config);
-            }
-            // Check if mutation observer for the buttons can be build.
-            function checkForBuildObserverButtonsLists(waitCount) {
-                if ($('.gc-button-group')[0]) {
-                    buildObserverButtonsLists();
-                } else {waitCount++; if (waitCount <= 200) setTimeout(function(){checkForBuildObserverButtonsLists(waitCount);}, 50);}
-            }
-
-            checkForBuildObserverBodyLists(0);
-            checkForBuildObserverButtonsLists(0);
             processAll();
+            checkForBuildAllObserverLists();
         } catch(e) {gclh_error("Improve new lists page",e);}
     }
 
