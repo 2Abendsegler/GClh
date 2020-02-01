@@ -4892,7 +4892,7 @@ var mainGC = function() {
                             }
                         }
                     }
-                    setLinesInColorAndCorrectColspan(0);
+                    setLinesInColorAndCorrectColspan();
                     if (!$('.gclh_improveLayoutBody')[0] && !css == '') appendCssStyle(css);
                     if ($('table')[0] && !$('table').hasClass('gclh_improveLayoutBody')) $('table').addClass('gclh_improveLayoutBody');
                     if ($('.rt-table')[0] && !$('table').hasClass('gclh_improveLayoutBody')) $('.rt-table').addClass('gclh_improveLayoutBody');
@@ -4901,9 +4901,9 @@ var mainGC = function() {
 
             // Processing all steps.
             function processAll() {
-                improveLayoutHead(0);
-                improveLayoutBody(0);
-                setLinesInColorAndCorrectColspan(0);
+                improveLayoutHead();
+                improveLayoutBody();
+                setLinesInColorAndCorrectColspan();
             }
 
             // Build mutation observer for target.
