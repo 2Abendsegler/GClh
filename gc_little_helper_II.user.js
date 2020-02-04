@@ -8338,9 +8338,6 @@ var mainGC = function() {
 
                     sidebar_enhancements_buffer[local_gc_code] = searchmap_sidebar_enhancements;
 
-                    console.log("Current Code in Page:" + document.querySelector('.cache-preview-header .cache-metadata .cache-metadata-code').innerHTML);
-                    console.log("Current Code Loading:" + local_gc_code);
-
                 });
 
             }
