@@ -8159,11 +8159,13 @@ var mainGC = function() {
                     removeElement(this);
                 });
 
+                // Just to be sure we are starting from scratch
+                removeElement(document.querySelector('#searchmap_sidebar_enhancements'));
+
                 new_gc_code = document.querySelector('.cache-preview-header .cache-metadata .cache-metadata-code').innerHTML;
 
                 if(sidebar_enhancements_buffer[new_gc_code]){
                     // We already have the ode in our buffer, no need to reload everything
-                    removeElement(document.querySelector('#searchmap_sidebar_enhancements'));
                     insertAfter(sidebar_enhancements_buffer[new_gc_code], (document.getElementsByClassName("geocache-owner")[0] || document.getElementsByClassName("gclhOwner")[0]));
                     if ($('.favorites-text')[0]){
                         $('.favorites-text')[0].innerHTML = $('.favorites-text')[0].innerHTML + sidebar_enhancements_favi_buffer[new_gc_code];
@@ -8176,7 +8178,7 @@ var mainGC = function() {
                 if(searchmap_sidebar_enhancements_code){
                     // Element already present, so compare the two GC Codes, to see if we need to update
                     if(new_gc_code == searchmap_sidebar_enhancements_code.innerHTML){
-                        return true; //breaks the "some" loop
+                        return true;
                     }else{
                         removeElement(document.querySelector('#searchmap_sidebar_enhancements'));
                     }
@@ -8195,6 +8197,8 @@ var mainGC = function() {
                 searchmap_sidebar_enhancements.appendChild(searchmap_sidebar_enhancements_code);
                 searchmap_sidebar_enhancements.appendChild(searchmap_sidebar_enhancements_loading);
 
+                // Just to be sure we are starting from scratch
+                removeElement(document.querySelector('#searchmap_sidebar_enhancements'));
                 insertAfter(searchmap_sidebar_enhancements, (document.getElementsByClassName("geocache-owner")[0] || document.getElementsByClassName("gclhOwner")[0]));
 
                 $.get('https://www.geocaching.com/geocache/'+new_gc_code, null, function(text){
@@ -8305,6 +8309,8 @@ var mainGC = function() {
                     searchmap_sidebar_enhancements.appendChild(text_element);
 
                     searchmap_sidebar_enhancements_loading.setAttribute("style", "display: none;");
+                    // Just to be sure we are starting from scratch
+                    removeElement(document.querySelector('#searchmap_sidebar_enhancements'));
                     insertAfter(searchmap_sidebar_enhancements, (document.getElementsByClassName("geocache-owner")[0] || document.getElementsByClassName("gclhOwner")[0]));
 
                     // Add Copy to Clipboard Links
@@ -8320,7 +8326,7 @@ var mainGC = function() {
                     var length = text.indexOf("';", from) - from;
                     var userToken = text.substr(from, length);
 
-                    getFavScoreSearchmapSidebarEnhancements($('.favorites-text'), userToken, new_gc_code);
+                    getFavScoreSearchmapSidebarEnhancements($('.favorites-text'), userToken, local_gc_code);
 
 
                     // Get elevations.
@@ -8330,7 +8336,11 @@ var mainGC = function() {
                         if (locations && locations.length == 1) getElevations(0,locations);
                     }
 
-                    sidebar_enhancements_buffer[new_gc_code] = searchmap_sidebar_enhancements;
+                    sidebar_enhancements_buffer[local_gc_code] = searchmap_sidebar_enhancements;
+
+                    console.log("Current Code in Page:" + document.querySelector('.cache-preview-header .cache-metadata .cache-metadata-code').innerHTML);
+                    console.log("Current Code Loading:" + local_gc_code);
+
                 });
 
             }
@@ -9157,6 +9167,9 @@ var mainGC = function() {
                if (score > 100) score = 100;
                
                if ($(anker_element)[0]){
+                $('.favi_score_percent').each(function(){
+                    removeElement(this);
+                });
                 $(anker_element)[0].innerHTML = $(anker_element)[0].innerHTML + ' <span class="favi_score_percent">('+score+'%)';
                 sidebar_enhancements_favi_buffer[gccode] = ' <span class="favi_score_percent">('+score+'%)';
                }
