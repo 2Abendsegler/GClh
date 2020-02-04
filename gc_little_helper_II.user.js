@@ -8319,8 +8319,6 @@ var mainGC = function() {
                     }
                     addCopyToClipboardLink(coords, $('span.coordinates.current')[0], coorected+"Coordinates");
 
-                    // $('#popup_additional_info_' + local_gc_code).html(new_text);
-
                     //Get favorite score.
                     var from = text.indexOf('userToken', text.indexOf('MapTilesEnvironment')) + 13;
                     var length = text.indexOf("';", from) - from;
