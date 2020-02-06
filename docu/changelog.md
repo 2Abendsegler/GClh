@@ -43,6 +43,10 @@
 			</li>
 		</ul>
 	</li>
+</ul>
+
+### Search Map:
+<ul>
 	<li>
 		<strong>New:</strong> [New Map] Compact layout on detail screens. [<a href="https://github.com/2Abendsegler/GClh/issues/965" title="Issue 965">965</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 		<img src="../images/0.10.4/Screen05.jpg" alt="Screen05.jpg"><br>
@@ -79,8 +83,12 @@
 		There is a pop up when you select an icon in the new map with the right mouse button.
 		<img src="../images/0.10.4/Screen15.jpg" alt="Screen15.jpg"><br><br>
 	</li>
+</ul>	
+
+### Cache Listing:
+<ul>
 	<li>
-		<strong>New:</strong> Cache listing - Add right mouse click to "Add to list" to open screen "Create a Bookmark". [<a href="https://github.com/2Abendsegler/GClh/issues/1259" title="Issue 1259">1259</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		<strong>New:</strong> Add right mouse click to "Add to list" to open screen "Create a Bookmark". [<a href="https://github.com/2Abendsegler/GClh/issues/1259" title="Issue 1259">1259</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 		This function was last deactivated by GS.<br>
 		<img src="../images/0.10.4/Screen16.jpg" alt="Screen16.jpg"><br>
 		<img src="../images/0.10.4/Screen17.jpg" alt="Screen17.jpg"><br><br>
@@ -97,12 +105,17 @@
 	</li>
 	<li>
 		<strong>New:</strong> Consider script GCTour also in feature "copy corrected coordinates". [<a href="https://github.com/2Abendsegler/GClh/issues/1200" title="Issue 1200">1200</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		<img src="../images/0.10.4/Screen018.jpg" alt="Screen018.jpg"><br><br>
 	</li>
+</ul>
+
+### Others:
+<ul>
 	<li>
 		<strong>New:</strong> Make "copy to clipboard" a function to reduce code duplication. [<a href="https://github.com/2Abendsegler/GClh/issues/1195" title="Issue 1195">1195</a> / <a href="https://www.geocaching.com/profile/?u=Ruko2010" title="Thanks to Ruko2010">Ruko2010</a>]<br>
 	</li>
 	<li>
-		<strong>New:</strong> Implement the newer GC logo in the page header. [<a href="https://github.com/2Abendsegler/GClh/issues/1237" title="Issue 1237">1237</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		<strong>New:</strong> Implement the newer GC logo in all page headers. [<a href="https://github.com/2Abendsegler/GClh/issues/1237" title="Issue 1237">1237</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 	</li>
 	<li>
 		<strong>New:</strong> Remove all links to unsecure pages. [<a href="https://github.com/2Abendsegler/GClh/issues/1037" title="Issue 1037">1037</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br><br>
@@ -277,7 +290,7 @@ released by <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abends
 ---
 ## v0.10:
 
-### Listing:
+### Cache Listing:
 <ul>
 	<li>
 		<strong>New:</strong> One click ignoring/restoring. [<a href="https://github.com/2Abendsegler/GClh/issues/1053" title="Issue 1053">1053</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
