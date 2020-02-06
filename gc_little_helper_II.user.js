@@ -2191,7 +2191,15 @@ var mainGC = function() {
                     + ".status {font-size: 14px !important; width: unset !important;}"
                     + ".status.success, .success-message {right: 2px !important; padding: 0 5px !important; background-color: white !important; color: #E0B70A !important;}";
             appendCssStyle(css);
-            $('.add-to-list')[0].addEventListener("click", function() {window.scroll(0, 0);});
+            $('.add-to-list').addClass('working');
+            function check_for_add_to_list(waitCount) { // GDPR
+                if ( typeof $('#fancybox-loading')[0] !== "undefined") { // GDPR
+                    $('.add-to-list').removeClass('working');
+                    $('.add-to-list')[0].addEventListener("click", function() {window.scroll(0, 0);});
+                    $('.add-to-list')[0].innerHTML = '<a href="' + $('.add-to-list').attr('data-href') + '" style="padding-left: unset;">' + $('.add-to-list')[0].innerHTML + '</a>';
+                } else {waitCount++; if (waitCount <= 100) setTimeout(function(){check_for_add_to_list(waitCount);}, 100);} // GDPR
+            }
+            check_for_add_to_list(0);
         } catch(e) {gclh_error("Improve Add to list",e);}
     }
 
