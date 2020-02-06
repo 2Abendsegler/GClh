@@ -105,7 +105,7 @@
 	</li>
 	<li>
 		<strong>New:</strong> Consider script GCTour also in feature "copy corrected coordinates". [<a href="https://github.com/2Abendsegler/GClh/issues/1200" title="Issue 1200">1200</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
-		<img src="../images/0.10.4/Screen018.jpg" alt="Screen018.jpg"><br><br>
+		<img src="../images/0.10.4/Screen18.jpg" alt="Screen18.jpg"><br><br>
 	</li>
 </ul>
 
