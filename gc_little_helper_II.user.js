@@ -10469,7 +10469,7 @@ var mainGC = function() {
 //--> $$002
         var code = '<img src="https://c.andyhoppe.com/1581032865"' + prop + // Besucher
                    '<img src="https://c.andyhoppe.com/1581032963"' + prop + // Seitenaufrufe
-                   '<img src="https://www.worldflagcounter.com/gHI"' + prop +
+                   '<img src="https://www.worldflagcounter.com/gKu"' + prop +
                    '<img src="https://s11.flagcounter.com/count2/CylX/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
 //<-- $$002
         div.innerHTML = code;
