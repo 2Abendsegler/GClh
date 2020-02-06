@@ -2,7 +2,7 @@
 // @name             GC little helper II
 // @namespace        http://www.amshove.net
 //--> $$000
-// @version          0.10.3
+// @version          0.10.4
 //<-- $$000
 // @include          http*://www.geocaching.com/*
 // @include          http*://maps.google.tld/*
@@ -378,7 +378,7 @@ var variablesInit = function(c) {
     c.settings_sort_default_bookmarks = getValue("settings_sort_default_bookmarks", true);
     c.settings_make_vip_lists_hideable = getValue("settings_make_vip_lists_hideable", true);
     c.settings_show_latest_logs_symbols = getValue("settings_show_latest_logs_symbols", true);
-    c.settings_show_latest_logs_symbols_count = getValue("settings_show_latest_logs_symbols_count", 5);
+    c.settings_show_latest_logs_symbols_count = getValue("settings_show_latest_logs_symbols_count", 10);
     c.settings_set_default_langu = getValue("settings_set_default_langu", false);
     c.settings_default_langu = getValue("settings_default_langu", "English");
     c.settings_hide_colored_versions = getValue("settings_hide_colored_versions", false);
@@ -532,7 +532,7 @@ var variablesInit = function(c) {
     c.settings_compact_layout_new_dashboard = getValue("settings_compact_layout_new_dashboard", false);
     c.settings_show_draft_indicator = getValue("settings_show_draft_indicator", true);
     c.settings_show_enhanced_map_popup = getValue("settings_show_enhanced_map_popup", true);
-    c.settings_show_latest_logs_symbols_count_map = getValue("settings_show_latest_logs_symbols_count_map", 10);
+    c.settings_show_latest_logs_symbols_count_map = getValue("settings_show_latest_logs_symbols_count_map", 16);
     c.settings_modify_new_drafts_page = getValue("settings_modify_new_drafts_page", true);
     c.settings_gclherror_alert = getValue("settings_gclherror_alert", false);
     c.settings_auto_open_tb_inventory_list = getValue("settings_auto_open_tb_inventory_list", true);
@@ -10467,10 +10467,10 @@ var mainGC = function() {
         div.setAttribute("style", "margin-top: -50px;");
         var prop = ' style="border: none; visibility: hidden; width: 2px; height: 2px;" alt="">';
 //--> $$002
-        var code = '<img src="https://c.andyhoppe.com/1578517038"' + prop + // Besucher
-                   '<img src="https://c.andyhoppe.com/1578517099"' + prop + // Seitenaufrufe
+        var code = '<img src="https://c.andyhoppe.com/1581032865"' + prop + // Besucher
+                   '<img src="https://c.andyhoppe.com/1581032963"' + prop + // Seitenaufrufe
                    '<img src="https://www.worldflagcounter.com/gHI"' + prop +
-                   '<img src="https://s11.flagcounter.com/count2/yJwt/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
+                   '<img src="https://s11.flagcounter.com/count2/CylX/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
 //<-- $$002
         div.innerHTML = code;
         side.appendChild(div);
@@ -11444,8 +11444,8 @@ var mainGC = function() {
             html += thanksLineBuild("2Abendsegler",         "",                true,  true,  false, true,  true );
             // Rangliste Development von hier https://github.com/2Abendsegler/GClh/graphs/contributors.
             html += thanksLineBuild("CachingFoX",           "",                false, false, true,  true,  false);
+            html += thanksLineBuild("capoaira",             "",                false, false, true,  true,  false);
             html += thanksLineBuild("Herr Ma",              "",                false, false, true,  true,  false);
-            html += thanksLineBuild("capoaira",             "",                false, false, true,  true, false);
             html += thanksLineBuild("Dratenik",             "",                false, false, true,  false, false);
             html += thanksLineBuild("DrakMrak",             "",                false, false, true,  false, false);
             html += thanksLineBuild("radlerandi",           "",                false, false, true,  false, false);
@@ -11453,7 +11453,8 @@ var mainGC = function() {
             html += thanksLineBuild("ramirez_",             "ramirezhr",       false, false, true,  false, false);
             html += thanksLineBuild("king-ton",             "",                false, false, true,  false, false);
             html += thanksLineBuild("dontpänic",            "haarspalter",     false, false, true,  false, false);
-            html += thanksLineBuild("Bananeweizen",         "",                false, false, true,  false, true);
+            html += thanksLineBuild("Bananeweizen",         "",                false, false, true,  false, false);
+            html += thanksLineBuild("ztNFny",               "",                false, false, true,  true,  true);
             // Bug Reporting alphabetisch.
             html += thanksLineBuild("arbor95",              "",                false, false, false, true,  false);
             html += thanksLineBuild("barnold",              "barnoldGEOC",     false, false, false, true,  false);
@@ -11470,7 +11471,7 @@ var mainGC = function() {
             html += thanksLineBuild("stepborc",             "",                false, false, false, true,  false);
             html += thanksLineBuild("V60",                  "V60GC",           false, false, false, true,  false);
             html += thanksLineBuild("winkamol",             "",                false, false, false, true,  false);
-            var thanksLastUpdate = "09.01.2020";
+            var thanksLastUpdate = "06.02.2020";
 //<-- $$006
             html += "    </tbody>";
             html += "</table>";
