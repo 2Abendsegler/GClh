@@ -2029,7 +2029,7 @@ var mainGC = function() {
 
 // Improve Ignore, Stop Ignoring, Watch button handling.
     if (is_page("cache_listing") && ((settings_show_remove_ignoring_link && settings_use_one_click_ignoring) || settings_use_one_click_watching)) {
-        appendCssStyle("#ignoreSaved, #watchSaved {display: none; color: #E0B70A; float: right;}");
+        appendCssStyle("#ignoreSaved, #watchSaved {display: none; color: #E0B70A; float: right; padding-left: 0px;}");
     }
 
 // Improve Ignore, Stop Ignoring button handling.
@@ -2108,7 +2108,7 @@ var mainGC = function() {
         var link = '#ctl00_ContentBody_GeoNav_uxIgnoreBtn a';
         if (saved && saved == 'saved') {
             $('#ignoreSaved')[0].style.display = 'inline';
-            $('#ignoreSaved').fadeOut(1500, 'swing');
+            $('#ignoreSaved').fadeOut(2000, 'swing');
         }
         $(link)[0].innerHTML = buttonSetTo;
         $(link)[0].style.backgroundImage = (buttonSetTo == 'Ignore' ? 'url(/images/icons/16/ignore.png)' : 'url('+global_stop_ignore_icon+')');
@@ -2167,7 +2167,7 @@ var mainGC = function() {
         var link = '#ctl00_ContentBody_GeoNav_uxWatchlistBtn a';
         if (saved && saved == 'saved') {
             $('#watchSaved')[0].style.display = 'inline';
-            $('#watchSaved').fadeOut(1500, 'swing');
+            $('#watchSaved').fadeOut(2000, 'swing');
         }
         $(link)[0].innerHTML = buttonSetTo;
         $(link)[0].style.backgroundImage = (buttonSetTo == 'Watch' ? 'url(/images/icons/16/watch.png)' : 'url(/images/icons/16/stop_watching.png)');
