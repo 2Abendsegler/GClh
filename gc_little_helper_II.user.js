@@ -1334,7 +1334,7 @@ var mainGC = function() {
             var font_color_submenu = settings_font_color_submenu;
             if (font_color_submenu == "") font_color_submenu = "93B516";
             // Background color on submenu if hover.
-            css += '.#sm a:hover, .#sm li:hover {background-color: #e8f6ef;}';s
+            css += '.#sm a:hover, .#sm li:hover {background-color: #e8f6ef;}';
             // Menüweite berechnen.
             var new_width = 950;
             var new_width_menu = 950;
