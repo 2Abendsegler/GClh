@@ -1948,7 +1948,6 @@ var mainGC = function() {
 
 // Copy GC Code to clipboard.
     if (is_page('cache_listing') && $('.CoordInfoLink')[0] && $('#ctl00_ContentBody_CoordInfoLinkControl1_uxCoordInfoCode')[0]) {
-
         addCopyToClipboardLink($('#ctl00_ContentBody_CoordInfoLinkControl1_uxCoordInfoCode')[0], $('.CoordInfoLink')[0], "GC Code");
     }
 
@@ -2029,7 +2028,7 @@ var mainGC = function() {
     }
 
 // Improve Ignore, Stop Ignoring, Watch button handling.
-    if ((settings_show_remove_ignoring_link && settings_use_one_click_ignoring) || settings_use_one_click_watching) {
+    if (is_page("cache_listing") && ((settings_show_remove_ignoring_link && settings_use_one_click_ignoring) || settings_use_one_click_watching)) {
         appendCssStyle("#ignoreSaved, #watchSaved {display: none; color: #E0B70A; float: right;}");
     }
 
@@ -2109,7 +2108,7 @@ var mainGC = function() {
         var link = '#ctl00_ContentBody_GeoNav_uxIgnoreBtn a';
         if (saved && saved == 'saved') {
             $('#ignoreSaved')[0].style.display = 'inline';
-            $('#ignoreSaved').fadeOut(2500, 'swing');
+            $('#ignoreSaved').fadeOut(1500, 'swing');
         }
         $(link)[0].innerHTML = buttonSetTo;
         $(link)[0].style.backgroundImage = (buttonSetTo == 'Ignore' ? 'url(/images/icons/16/ignore.png)' : 'url('+global_stop_ignore_icon+')');
@@ -2168,7 +2167,7 @@ var mainGC = function() {
         var link = '#ctl00_ContentBody_GeoNav_uxWatchlistBtn a';
         if (saved && saved == 'saved') {
             $('#watchSaved')[0].style.display = 'inline';
-            $('#watchSaved').fadeOut(2500, 'swing');
+            $('#watchSaved').fadeOut(1500, 'swing');
         }
         $(link)[0].innerHTML = buttonSetTo;
         $(link)[0].style.backgroundImage = (buttonSetTo == 'Watch' ? 'url(/images/icons/16/watch.png)' : 'url(/images/icons/16/stop_watching.png)');
@@ -8217,6 +8216,7 @@ var mainGC = function() {
                 css += '.cache-preview-attributes > ul {font-size: 12px; margin-bottom: 0 !important; padding-bottom: 5px !important;}';
                 css += '.cache-preview-attributes .favorites-icon {height: 24px; width: 24px;}';
                 css += '.cache-preview-attributes .attribute-label {color: #777777;}';
+                css += '.cache-preview-attributes .attribute-val {color: #4a4a4a;}';
                 css += '.gclhOwner {color: #9b9b9b;}'
                 css += '.cache-preview-attributes .geocache-owner {font-size: 12px; margin-top: 0px; padding-top: 3px;}';
                 css += '.cache-preview-attributes .geocache-owner-name, .cache-preview-attributes .geocache-placed-date {display: none !important;}';
