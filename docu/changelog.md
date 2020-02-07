@@ -127,7 +127,7 @@
 		<strong>Fix:</strong> Unpublished hides were shown in recently viewed list after an update from GS. [<a href="https://github.com/2Abendsegler/GClh/issues/1220" title="Issue 1220">1220</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br>
 	</li>
 	<li>
-		<strong>Fix:</strong> On cache listing, the "hidden or found by" links for a user with "+" in the name does not work. [<a href="https://github.com/2Abendsegler/GClh/issues/1233" title="Issue 1233">1233</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		<strong>Fix:</strong> Cache listing, the "hidden or found by" links for a user with "+" in name does not work. [<a href="https://github.com/2Abendsegler/GClh/issues/1233" title="Issue 1233">1233</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 	</li>
 	<li>
 		<strong>Fix:</strong> Do not allow GClh Config or GClh Sync on new map page. [<a href="https://github.com/2Abendsegler/GClh/issues/1207" title="Issue 1207">1207</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
