@@ -138,6 +138,12 @@
 	<li>
 		<strong>Fix:</strong> Allow Find Player on new map page. [<a href="https://github.com/2Abendsegler/GClh/issues/1209" title="Issue 1209">1209</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 	</li>
+	<li>
+		<strong>Fix:</strong> [New Map] The parameter for strike through disabled caches is ignored. [<a href="https://github.com/2Abendsegler/GClh/issues/1250" title="Issue 1250">1250</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> Type error on description and hint page of new search map. [<a href="https://github.com/2Abendsegler/GClh/issues/1263" title="Issue 1263">1263</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
 </ul>
 <br>
 (??.02.2020)<br>
