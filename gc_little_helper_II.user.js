@@ -8496,6 +8496,8 @@ var mainGC = function() {
             css += "div.gclh_latest_log:hover span {font-size: 13px; display: block; top: 100%; border: 1px solid #8c9e65; background-color:#dfe1d2; z-index:10000;}";
             css += "div.gclh_latest_log:hover img{opacity: 0.5;}"
             css += "#searchmap_sidebar_enhancements span.coordinates.original {font-size: 0.8em;}";
+            css += "#searchmap_sidebar_enhancements img {vertical-align: middle;}";
+            css += "#searchmap_sidebar_enhancements svg {vertical-align: middle;}";
             
             if (css != "") appendCssStyle(css);
 
