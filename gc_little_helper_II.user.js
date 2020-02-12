@@ -8482,7 +8482,7 @@ var mainGC = function() {
             
 
             // Sidebar Enhancements
-            css += "#searchmap_sidebar_enhancements {border-top: 1px solid #e4e4e4;font-size: 14px;";
+            css += "#searchmap_sidebar_enhancements {border-top: 1px solid #e4e4e4;font-size: 12px;";
             if(settings_searchmap_compact_layout){
                 css += "padding: 5px 0 0;"
             }else{
