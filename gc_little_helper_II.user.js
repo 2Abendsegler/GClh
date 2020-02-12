@@ -8273,7 +8273,7 @@ var mainGC = function() {
                     var place = $(text).find('#ctl00_ContentBody_Location')[0].innerHTML;
 
                     // Put all together
-                    var new_text = '<span style="margin-right: 5px;">Logs:</span>' + all_logs.replace(/&nbsp;/g, " ") + '<br>';
+                    var new_text = '<span class="title" style="margin-right: 5px;">Logs:</span>' + all_logs.replace(/&nbsp;/g, " ") + '<br>';
                     new_text += $(last_logs).prop('outerHTML');
                     new_text += '<span title="Place">' + place + '</span> | ';
                     if (settings_show_elevation_of_waypoints) {
@@ -8495,9 +8495,15 @@ var mainGC = function() {
             css += "div.gclh_latest_log span {display: none; position: absolute; left: 0px; width: 95%; padding: 5px; text-decoration:none; text-align:left; vertical-align:top; color: #000000;}";
             css += "div.gclh_latest_log:hover span {font-size: 13px; display: block; top: 100%; border: 1px solid #8c9e65; background-color:#dfe1d2; z-index:10000;}";
             css += "div.gclh_latest_log:hover img{opacity: 0.5;}"
+            css += "div.gclh_latest_log:hover span img{opacity: 1;}"
+            css += "#searchmap_sidebar_enhancements {color: #4a4a4a;}";
+            css += "#searchmap_sidebar_enhancements span.title {color: #9b9b9b;}";
+            css += "#searchmap_sidebar_enhancements #gclh_latest_logs span {color: #9b9b9b;}";
+            css += "#searchmap_sidebar_enhancements #gclh_latest_logs .gclh_latest_log span {color: #000000}";
             css += "#searchmap_sidebar_enhancements span.coordinates.original {font-size: 0.8em;}";
             css += "#searchmap_sidebar_enhancements img {vertical-align: middle;}";
             css += "#searchmap_sidebar_enhancements svg {vertical-align: middle;}";
+            css += "#searchmap_sidebar_enhancements .ctoc_link img {height: 14px;}";
             
             if (css != "") appendCssStyle(css);
 
