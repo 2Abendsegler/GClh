@@ -10584,7 +10584,7 @@ var mainGC = function() {
 
             anker_element.parentNode.insertBefore(span, anker_element);
 
-            appendCssStyle(".ctoc_link:link {text-decoration: none ;}");
+            appendCssStyle(".ctoc_link:link {text-decoration: none ;}", null, 'ctoc_link_style_id');
 
             span.addEventListener('click', function() {
                 // Tastenkombination Strg+c ausführen für eigene Verarbeitung.
@@ -14788,13 +14788,18 @@ function isLocation(path) {
 }
 
 // CSS Style hinzufügen.
-function appendCssStyle(css, name) {
+function appendCssStyle(css, name, id) {
+    
+    // test if ID is already used, if yes, don't append again
+    if(document.getElementById(id)) return;
+    
     if (css == "") return;
     if (name) var tag = $(name)[0];
     else var tag = $('head')[0];
     var style = document.createElement('style');
     style.innerHTML = 'GClhII{} ' + css;
     style.type = 'text/css';
+    if (id) style.id = id;
     tag.appendChild(style);
 }
 
