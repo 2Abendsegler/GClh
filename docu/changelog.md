@@ -52,13 +52,13 @@
 <ul>
 	<li>
 		<strong>New:</strong> [New Map] Own area on detail screen. [<a href="https://github.com/2Abendsegler/GClh/issues/964" title="Issue 964">964</a> / <a href="https://www.geocaching.com/profile/?u=Ruko2010" title="Thanks to Ruko2010">Ruko2010</a>]<br>
-		<img src="../images/0.10.4/Screen01.gif" alt="Screen01.gif"><br>
 	</li>
 	<li>
 		<strong>New:</strong> [New Map] Copy GC-Code to clipboard. [<a href="https://github.com/2Abendsegler/GClh/issues/1196" title="Issue 1196">1196</a> / <a href="https://www.geocaching.com/profile/?u=Ruko2010" title="Thanks to Ruko2010">Ruko2010</a>]<br>
 	</li>
 	<li>
 		<strong>New:</strong> [New Map] Show Elevation in Cache Details. [<a href="https://github.com/2Abendsegler/GClh/issues/953" title="Issue 953">953</a> / <a href="https://www.geocaching.com/profile/?u=Ruko2010" title="Thanks to Ruko2010">Ruko2010</a>]<br>
+		<img src="../images/0.10.4/Screen19.jpg" alt="Screen19.jpg"><br>
 	</li>
 	<li>
 		<strong>New:</strong> [New Map] Compact layout on detail screens. [<a href="https://github.com/2Abendsegler/GClh/issues/965" title="Issue 965">965</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
@@ -132,6 +132,9 @@
 	</li>
 	<li>
 		<strong>New:</strong> Remove all links to unsecure pages. [<a href="https://github.com/2Abendsegler/GClh/issues/1037" title="Issue 1037">1037</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br><br>
+	</li>
+	<li>
+		<strong>New:</strong> Update Overview/Screenshots. [<a href="https://github.com/2Abendsegler/GClh/issues/661" title="Issue 661">661</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br><br>
 	</li>
 	<li>
 		<strong>Fix:</strong> Unpublished hides were shown in recently viewed list after an update from GS. [<a href="https://github.com/2Abendsegler/GClh/issues/1220" title="Issue 1220">1220</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br>
