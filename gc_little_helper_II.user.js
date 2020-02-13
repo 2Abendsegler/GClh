@@ -248,6 +248,8 @@ var constInit = function(c) {
     bookmark("Unpublished Hides", "/account/dashboard/unpublishedcaches", c.bookmarks);
     bookmark("Search Map", "/play/map", c.bookmarks);
     bookmark("Ignore List", "/plan/lists/ignored", c.bookmarks);
+    bookmark("Found Geocaches", "/seek/nearest.aspx?ul={me}", c.bookmarks);
+    bookmark("Hidden Geocaches", "/seek/nearest.aspx?u={me}", c.bookmarks);
     // Custom Bookmark-title.
     c.bookmarks_orig_title = new Array();
     for (var i = 0; i < c.bookmarks.length; i++) {
@@ -1574,6 +1576,12 @@ var mainGC = function() {
 
 // Linklist on top.
     try {
+        // Replace {me} in bookmarks.
+        for (var i = 0; i < bookmarks.length; i++) {
+            if (bookmarks[i]['href'].match('{me}') && global_me && global_me != "") {
+                bookmarks[i]['href'] = bookmarks[i]['href'].replace('{me}', global_me);
+            }
+        }
         if (settings_bookmarks_on_top) {
             // Auch ohne Change Header Layout zwischen Menüname und Submenü keine Lücke lassen, sonst klappts nicht mit einfachem Aufklappen.
             if (!settings_change_header_layout) {
@@ -1681,12 +1689,12 @@ var mainGC = function() {
         );
     }
 
-// Show draft indicator in header
+// Show draft indicator in header.
     if(settings_show_draft_indicator){
         try{
             $.get('https://www.geocaching.com/account/dashboard', null, function(text){
 
-                // Look for drafts in old layout
+                // Look for drafts in old layout.
                 draft_list = $(text).find('#uxDraftLogs span');
                 if(draft_list != null){
                     drafts = draft_list[0];
@@ -1695,7 +1703,7 @@ var mainGC = function() {
                 }
 
                 if(!drafts){
-                    // if not found, Look for drafts in new layout
+                    // If not found, Look for drafts in new layout.
                     draft_list = $(text).find("nav a[href='/my/fieldnotes.aspx']");
                     if(draft_list != null){
                         drafts = draft_list[0];
@@ -1707,15 +1715,15 @@ var mainGC = function() {
                 if(drafts){
                     draft_count = parseInt(drafts.innerHTML.match(/\d+/));
                     if(Number.isInteger(draft_count) && draft_count > 0){
-                        // we found drafts, so show them in the header
+                        // We found drafts, so show them in the header.
                         appendCssStyle('.draft-indicator{ background-color: #e0b70a;font-weight:bold;position: absolute;padding: 0 5px;border-radius: 15px;top: -7px;left: -7px; } .draft-indicator a{width: auto !important; font-size: 14px;min-width: 10px; display: block; text-align: center;}');
                         $('.li-user-info .user-avatar').prepend('<span class="draft-indicator"><a href="/my/fieldnotes.aspx" title="Go to Drafts">' + draft_count + '</a></span>');
                     }else{
                         // No drafts found
                     }
                 }else{
-                    // Non of the content was found
-                    // This should not happen, only if GC changes something
+                    // Non of the content was found.
+                    // This should not happen, only if GC changes something.
                 }
             });
         }catch(e) {gclh_error("Show draft indicator in header",e);}
@@ -12957,7 +12965,7 @@ var mainGC = function() {
                     html += ">" + outTitle + "</a>";
                     if (num >= 69 && num <= 69) html += newParameterLL2;
                     if (num >= 70 && num <= 74 || num == 25) html += newParameterLL3;
-                    if (num >= 75 && num <= 76) html += newParameterLL1;
+                    if (num >= 75 && num <= 78) html += newParameterLL1;
                 }
                 html += "  </td>";
                 // Zweite linke Spalte mit abweichenden Bezeichnungen:
@@ -12968,7 +12976,7 @@ var mainGC = function() {
                     html += "<input style='padding-left: 2px !important; padding-right: 2px !important;' class='gclh_form' title='Differing description for standard link' id='bookmarks_name[" + num + "]' type='text' size='15' value='" + getValue("settings_bookmarks_title[" + num + "]", "") + "'>";
                     if (num >= 69 && num <= 69) html += newParameterLLVersionSetzen(0.8);
                     if (num >= 70 && num <= 74 || num == 25) html += newParameterLLVersionSetzen(0.9);
-                    if (num >= 75 && num <= 76) html += newParameterLLVersionSetzen("0.10");
+                    if (num >= 75 && num <= 78) html += newParameterLLVersionSetzen("0.10");
                 }
                 html += "  </td></tr>";
             }
@@ -12976,7 +12984,7 @@ var mainGC = function() {
             html += "</table>";
             html += "</div>";
 
-            // section Development
+            // Section Development.
             html += "<h4 class='gclh_headline2'>"+prepareHideable.replace("#name#","development")+"Development</h4>";
             html += "<div id='gclh_config_development' class='gclh_block'>";
             html += newParameterOn3;
@@ -12984,7 +12992,7 @@ var mainGC = function() {
             html += newParameterVersionSetzen(0.9) + newParameterOff;
             html += "</div>";
 
-            // footer
+            // Footer.
             html += "<br><br>";
             html += "&nbsp;" + "<input class='gclh_form' type='button' value='" + setValueInSaveButton() + "' id='btn_save'> <input class='gclh_form' type='button' value='save & upload' id='btn_saveAndUpload'> <input class='gclh_form' type='button' value='" + setValueInCloseButton() + "' id='btn_close2'>";
             html += "<br><div align='right' class='gclh_small' style='float: right; padding-top: 5px;'>License: <a href='"+urlDocu+"license.md#readme' target='_blank' title='GNU General Public License Version 2'>GPLv2</a> | Warranty: <a href='"+urlDocu+"warranty.md#readme' target='_blank' title='GC little helper II comes with ABSOLUTELY NO WARRANTY'>NO</a></div><br>";
