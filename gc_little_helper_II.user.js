@@ -7589,6 +7589,25 @@ var mainGC = function() {
                 var html = '<li><a id="gclh_goto_ignorelist" href="/plan/lists/ignored">Ignore List</a></li>';
                 sidebarLists.parent().after(html);
             }
+            // Show/Hide nearby events.
+            function showHideNearbyEvents(waitCount) {
+                if ($('#EventsWidget')[0] && $('#EventsWidget .panel-header')[0] && $('#EventsWidget .collapsible')[0]) {
+                    function waitForEvent(waitCount) {
+                        if (($('#EventsWidget .isActive')[0] && getValue('show_box_nearby_events', true) == false) ||
+                            (!$('#EventsWidget .isActive')[0] && getValue('show_box_nearby_events', true) == true)    ) {
+                            $('#EventsWidget .panel-header')[0].click();
+                            waitCount++; if (waitCount <= 100) setTimeout(function(){waitForEvent(waitCount);}, 100);
+                        } else {
+                            $('#EventsWidget .collapsible')[0].addEventListener('click', function() {
+                                if ($('#EventsWidget .isActive')[0]) setValue('show_box_nearby_events', true);
+                                else setValue('show_box_nearby_events', false);
+                            });
+                        }
+                    }
+                    waitForEvent(0);
+                } else {waitCount++; if (waitCount <= 100) setTimeout(function(){showHideNearbyEvents(waitCount);}, 100);}
+            }
+            showHideNearbyEvents(0);
             appendCssStyle(css);
         } catch(e) {gclh_error("Improve new dashboard",e);}
     }
