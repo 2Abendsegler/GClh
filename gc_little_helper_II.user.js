@@ -7996,16 +7996,18 @@ var mainGC = function() {
                     }
                     // Cache details.
                     if (document.querySelector('.cache-preview-header')) {
-                        document.querySelector('.more-info-link').getElementsByTagName('span')[1].style = 'display: none;';
+                        if ($('.more-info-link')[0]) document.querySelector('.more-info-link').getElementsByTagName('span')[1].style = 'display: none;';
                         var buttons = document.querySelectorAll('.cache-preview-action-menu ul li');
                         for (let i=0; i<buttons.length; i++) {
                             buttons[i].title = buttons[i].getElementsByTagName('span')[0].innerHTML;
                         }
-                        if (document.querySelector('.gclhOwner')) document.querySelector('.gclhOwner').remove();
+                        if ($('.gclhOwner')[0]) document.querySelector('.gclhOwner').remove();
                         let span = document.createElement('span');
                         span.setAttribute('class', 'gclhOwner');
-                        span.innerHTML = document.querySelector('.geocache-owner-name').innerHTML + ' ' + document.querySelector('.geocache-placed-date').innerHTML;
-                        document.querySelector('.geocache-owner').appendChild(span);
+                        if ($('.geocache-owner-name')[0] && $('.geocache-placed-date')[0] && $('.geocache-owner')[0]) {
+                            span.innerHTML = document.querySelector('.geocache-owner-name').innerHTML + ' ' + document.querySelector('.geocache-placed-date').innerHTML;
+                            document.querySelector('.geocache-owner').appendChild(span);
+                        }
                         if ($('.cache-metadata')[0] && $('.status-and-type')[0] && $('.status-and-type .status')[0] && $('.status-and-type .status span')[0] &&
                             window.getComputedStyle($('.status-and-type .status span')[0]).color == 'rgb(4, 200, 214)') { // Premium color.
                             if (!$('.gclh_premium')[0]) regroupCacheDataSearchmap($('.cache-preview-header')[0], 'dot', '', '.cache-metadata:last', premium);
