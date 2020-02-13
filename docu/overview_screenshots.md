@@ -3,65 +3,65 @@
 (Extensions by the *GC little helper II* are marked.)
 
 ### Cache Listing:
-<img src="../images/screenshot_listing01.jpg" title="Cache Listing" alt="listing01"><br>
-<img src="../images/screenshot_listing02.jpg" title="Cache Listing VIP Lists" alt="listing02"><br>
-<img src="../images/screenshot_listing03.jpg" title="Cache Listing Logs" alt="listing03"><br>
+<img src="../images/overview/Cache Listing 01.png" alt="Cache Listing 01.png"><br>
+<img src="../images/usw.png"><br>
+<img src="../images/overview/Cache Listing 02.png" alt="Cache Listing 02.png"><br>
+<br>
+
+### Cache Logging:
+<img src="../images/overview/Cache Logging 01.png" alt="Cache Listing 01.png"><br>
 <br>
 
 ### Navigationmenu:
-<img src="../images/screenshot_menue01.jpg" title="Navigationmenu different variants" alt="menue01"><br>
-<img src="../images/screenshot_menue02.jpg" title="Navigationmenu different variants" alt="menue02"><br>
-<img src="../images/screenshot_menue03.jpg" title="Navigationmenu different variants" alt="menue03"><br>
-<img src="../images/screenshot_menue04.jpg" title="Navigationmenu different variants" alt="menue04"><br>
-<img src="../images/screenshot_menue05.jpg" title="Navigationmenu different variants" alt="menue05"><br>
+<img src="../images/overview/Navigationmenu 01.png" alt="Navigationmenu 01.png"><br>
 <br>
 
-### Profile:
-<img src="../images/screenshot_profile01.jpg" title="Profile" alt="profile01"><br>
-<img src="../images/screenshot_profile02.jpg" title="Profile VIPs and VUPs" alt="profile02"><br>
+### Dashboard:
+<img src="../images/overview/Dashboard 01.png" alt="Dashboard 01.png"><br>
 <br>
 
-### Map:
-<img src="../images/screenshot_map01.jpg" title="Map" alt="map01"><br>
+### Browse Map:
+<img src="../images/overview/Browse Map 01.png" alt="Browse Map 01.png"><br>
 <br>
 
-### Pocket Query:
-<img src="../images/screenshot_pocketquery01.jpg" title="Active Pocket Queries (Compact Layout)" alt="pocketquery01"><br>
-<img src="../images/screenshot_pocketquery02.jpg" title="Pocket Queries Ready for Download (Compact Layout)" alt="pocketquery02"><br>
-<img src="../images/screenshot_pocketquery03.jpg" title="Pocket Query (Compact Layout)" alt="pocketquery03"><br>
+### Search Map:
+<img src="../images/overview/Search Map 01.png" alt="Search Map 01.png"><br>
 <br>
 
 ### Bookmark List:
-<img src="../images/screenshot_bookmarklist01.jpg" title="Bookmark Lists (Compact Layout)" alt="bookmarklist01"><br>
-<img src="../images/screenshot_bookmarklist02.jpg" title="Bookmark List (Compact Layout)" alt="bookmarklist02"><br>
+<img src="../images/overview/Bookmark List 01.png" alt="Bookmark List 01.png"><br>
+<br>
+
+### Pocket Query:
+<img src="../images/overview/Pocket Query 01.png" alt="Pocket Query 01.png"><br>
+<br>
+
+### Search:
+<img src="../images/overview/Search 01.png" alt="Search 01.png"><br>
+<br>
+
+### Profile:
+<img src="../images/overview/Profile 01.png" alt="Profile 01.png"><br>
+<img src="../images/usw.png"><br>
+<img src="../images/overview/Profile 02.png" alt="Profile 02.png"><br>
+<img src="../images/usw.png"><br>
+<img src="../images/overview/Profile 03.png" alt="Profile 03.png"><br>
+<img src="../images/usw.png"><br>
+<img src="../images/overview/Profile 04.png" alt="Profile 04.png"><br>
+<img src="../images/usw.png"><br>
+<img src="../images/overview/Profile 05.png" alt="Profile 05.png"><br>
 <br>
 
 ### Friends:
-<img src="../images/screenshot_friendslist01.jpg" title="Friends with New finds and New hides" alt="friendslist01"><br>
+<img src="../images/overview/Friends 01.png" alt="Friends 01.png"><br>
 <br>
 
 ### Watchlist:
-<img src="../images/screenshot_watchlist01.jpg" title="Watchlist" alt="watchlist01"><br>
+<img src="../images/overview/Watchlist 01.png" alt="Watchlist 01.png"><br>
 <br>
 
-### Find Caches:
-<img src="../images/screenshot_searchlist01.jpg" title="Find Caches with Filter Sets" alt="searchlist01"><br>
+### Configuration of GC little helper II:
+<img src="../images/overview/Config 01.png" alt="Config 01.png"><br>
 <br>
 
-### Statistic:
-<img src="../images/screenshot_statistic02.jpg" title="Statistic Logs" alt="statistic01"><br>
-<img src="../images/screenshot_statistic01.jpg" title="Statistic Matrix" alt="statistic01"><br>
-<br>
-
-### Configuration of the GC little helper:
-<img src="../images/screenshot_config01.jpg" title="Configuration Global" alt="config01"><br>
-<img src="../images/screenshot_config02.jpg" title="Configuration Pocket query and Bookmark list" alt="config02"><br>
-<img src="../images/screenshot_config03.jpg" title="Configuration Homezone and Map" alt="config03"><br>
-<img src="../images/screenshot_config04.jpg" title="Configuration Map Layer and other Maps" alt="config04"><br>
-<img src="../images/screenshot_config05.jpg" title="Configuration Profile" alt="config05"><br>
-<img src="../images/screenshot_config06.jpg" title="Configuration Listing" alt="config06"><br>
-<img src="../images/screenshot_config07.jpg" title="Configuration Listing" alt="config07"><br>
-<img src="../images/screenshot_config08.jpg" title="Configuration Logging" alt="config08"><br>
-<img src="../images/screenshot_config09.jpg" title="Configuration Linklist / Navigation" alt="config09"><br>
-
-### ...
+<img src="../images/usw.png"><br>
