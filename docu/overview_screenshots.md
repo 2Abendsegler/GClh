@@ -24,6 +24,10 @@
 <img src="../images/overview/Browse Map 01.png" alt="Browse Map 01.png"><br>
 <br>
 
+### Search Map:
+<img src="../images/overview/Search Map 01.png" alt="Search Map 01.png"><br>
+<br>
+
 ### Bookmark List:
 <img src="../images/overview/Bookmark List 01.png" alt="Bookmark List 01.png"><br>
 <br>
