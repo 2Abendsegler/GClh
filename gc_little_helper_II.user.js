@@ -585,6 +585,7 @@ var variablesInit = function(c) {
     c.settings_show_copydata_own_stuff_show = getValue("settings_show_copydata_own_stuff_show", false);
     c.settings_show_copydata_own_stuff_name = getValue("settings_show_copydata_own_stuff_name", 'Photo file name');
     c.settings_show_copydata_own_stuff_value = getValue("settings_show_copydata_own_stuff_value", '#yyyy#.#mm#.#dd# - #GCName# - #GCCode# - 01');
+    c.settings_relocate_other_map_buttons = getValue("settings_relocate_other_map_buttons", true);
 
     try {
         if (c.userToken === null) {
@@ -8632,6 +8633,10 @@ var mainGC = function() {
                         somethingDone++;
                         $('#gclh_geoservices_control.leaflet-control-layers:not(".gclh_used")').addClass('gclh_used');
                     }
+                    if ($('#gclh_search_map.leaflet-control-layers:not(".gclh_used")').length != 0) {
+                        somethingDone++;
+                        $('#gclh_search_map.leaflet-control-layers:not(".gclh_used")').addClass('gclh_used');
+                    }
                     if (somethingDone == 0) {
                         if ($('.leaflet-control-layers:not(".gclh_used"):not(".gclh_layers")').length != 0) {
                             somethingDone++;
@@ -8854,6 +8859,25 @@ var mainGC = function() {
             }
             attachGeoServiceControl(0);
         } catch(e) {gclh_error("Add links to Google, OSM, Flopp's und GeoHack Map on GC Map",e);}
+    }
+
+// Relocate button search geocaches on browse map.
+    if (is_page("map") && settings_relocate_other_map_buttons) {
+        try {
+            function relocatingSearchMapButton(waitCount) {
+                if ($('.leaflet-control-layers-base').find('input.leaflet-control-layers-selector')[0]) {
+                    setTimeout(function(){
+                        if ($('#search-map-cta')[0] && $('.leaflet-top.leaflet-right')[0]) {
+                            $('.leaflet-top.leaflet-right').append('<div id="gclh_search_map" class="leaflet-control-layers leaflet-control" title="Search geocaches"></div>');
+                            $('#gclh_search_map').append($('#search-map-cta').remove().get().reverse());
+                            $('#gclh_search_map a')[0].childNodes[2].remove();
+                            appendCssStyle('.leaflet-top.leaflet-right {top: unset;} .map-cta {background-color: rgb(248, 248, 249); border-radius: 7px; box-shadow: 0 1px 7px rgba(0,0,0,0.4); line-height: unset; padding: unset; position: unset;} #gclh_search_map svg {margin-left: 7px; margin-top: 8px;}');
+                        }
+                    }, 1100);
+                } else {waitCount++; if (waitCount <= 100) setTimeout(function(){relocatingSearchMapButton(waitCount);}, 100);}
+            }
+            relocatingSearchMapButton(0);
+        } catch(e) {gclh_error("Relocate button search geocaches on browse map",e);}
     }
 
 // Hide found/hidden Caches on Map. Add Buttons for hiding/showing all Caches.
@@ -12356,7 +12380,10 @@ var mainGC = function() {
 
             html += "<h4 class='gclh_headline2'>"+prepareHideable.replace("#name#","maps")+"Map</h4>";
             html += "<div id='gclh_config_maps' class='gclh_block'>";
-            html += "<div style='margin-left: 5px'><b>Homezone circles</b></div>";
+            html += newParameterOn1;
+            html += checkboxy('settings_relocate_other_map_buttons', 'Relocate buttons \"Search\" and \"Browse geocaches\" to the other buttons') + "<br>";
+            html += newParameterVersionSetzen('0.10') + newParameterOff;
+            html += "<div style='margin-top: 9px; margin-left: 5px'><b>Homezone circles</b></div>";
             html += checkboxy('settings_show_homezone', 'Show Homezone circles') + show_help("This option allows to draw Homezone circles around coordinates on the map.") + "<br>";
             html += "<div id='ShowHomezoneCircles' style='display: " + (settings_show_homezone ? "block":"none") + ";'>";
             html += "<table class='multi_homezone_settings'>";
@@ -13800,6 +13827,7 @@ var mainGC = function() {
                 'settings_searchmap_disabled',
                 'settings_searchmap_disabled_strikethrough',
                 'settings_searchmap_show_hint',
+                'settings_relocate_other_map_buttons',
             );
 
             for (var i = 0; i < checkboxes.length; i++) {
