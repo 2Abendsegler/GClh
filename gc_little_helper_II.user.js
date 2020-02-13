@@ -3196,7 +3196,7 @@ var mainGC = function() {
                     for (var i=0; i<elevations.length; i++) {
                         text = "n/a";
                         if (elevations[i] != undefined) text = formatElevation(elevations[i]);
-                        if (is_page("map") || is_page('searchmap')) text = " " + text + " | ";
+                        if (is_page("map") || is_page('searchmap')) text = " " + text + " | ";
                         $("#elevation-waypoint-"+(i+context.additionalListingIndex)).html(text);
                         $("#elevation-waypoint-"+(i+context.additionalListingIndex)).attr('title','Elevation data from '+context.serviceName);
                     }
@@ -5080,7 +5080,7 @@ var mainGC = function() {
             }
             $.get('https://www.geocaching.com/geocache/'+gccode, null, function(text){
                 var corr_gccode = $(text).find('#ctl00_ContentBody_CoordInfoLinkControl1_uxCoordInfoCode')[0].innerHTML;
-                // coorected coords
+                // Corrected coords.
                 if (text.includes('"isUserDefined":true,"newLatLng"')) $('#cc_'+corr_gccode)[0].innerHTML = '<img title="Corrected Coordinates" alt="Corr. Coords" src="'+global_green_tick+'">';
                 else $('#cc_'+corr_gccode)[0].innerHTML = '<img style="opacity: 0.8;" title="No Corrected Coordinates" alt="No Corr. Coords" src="'+global_red_tick+'">';
                 var diff = $(text).find("#ctl00_ContentBody_uxLegendScale img").attr("alt");
@@ -8008,9 +8008,14 @@ var mainGC = function() {
                             span.innerHTML = document.querySelector('.geocache-owner-name').innerHTML + ' ' + document.querySelector('.geocache-placed-date').innerHTML;
                             document.querySelector('.geocache-owner').appendChild(span);
                         }
-                        if (!$('.gclh_premium')[0] && $('.cache-metadata')[0] && $('.status-and-type')[0] && $('.status-and-type .status')[0] && $('.status-and-type .status span')[0] &&
+                        if ($('.cache-metadata')[0] && $('.status-and-type')[0] && $('.status-and-type .status')[0] && $('.status-and-type .status span')[0] &&
                             window.getComputedStyle($('.status-and-type .status span')[0]).color == 'rgb(4, 200, 214)') { // Premium color.
-                            regroupCacheDataSearchmap($('.cache-preview-header')[0], 'dot', '', '.cache-metadata', premium);
+                            if (!$('.gclh_premium')[0]) regroupCacheDataSearchmap($('.cache-preview-header')[0], 'dot', '', '.cache-metadata:last', premium);
+                        } else {
+                            $('.cache-preview-header .gclh_premium').each(function() {
+                                $(this)[0].parentNode.previousSibling.remove();
+                                $(this)[0].parentNode.remove();
+                            });
                         }
                         if (!$('.gclh_cache_type')[0] && $('.header-top-left')[0] && $('.header-top-left h1')[0] && $('.status-and-type')[0] && $('.status-and-type')[0].childNodes) {
                             var cacheTypeChildNode = $('.status-and-type')[0].childNodes.length - 1;
@@ -8129,7 +8134,7 @@ var mainGC = function() {
                 if ($('.cache-preview-activities > header')[0] && $('.cache-preview-activities > div')[0]) {
                     if (!$('.cache-preview-activities .opener')[0]) {
                         $('.cache-preview-activities > header').append('<svg class="opener"><use xlink:href="/account/app/ui-icons/sprites/global.svg#icon-expand-svg-fill"></use></svg>');
-                        $('.cache-preview-activities')[0].addEventListener('click', function() {
+                        $('.cache-preview-activities > header')[0].addEventListener('click', function() {
                             if (getValue('show_box_searchmap_activity', true)) {
                                 $('.cache-preview-activities').addClass('isHide');
                                 setValue('show_box_searchmap_activity', false);
@@ -8150,35 +8155,35 @@ var mainGC = function() {
 
             function showSearchmapSidebarEnhancements(){
                 if(!settings_show_enhanced_map_popup) return true;
-                
+
                 if (!document.querySelector('.cache-open-text-cta')) return;
-                
+
                 var locations = []; // Location for the Cache
 
-                // Check if the sidebar displays a cache
+                // Check if the sidebar displays a cache.
                 if(!document.querySelector('.cache-preview-attributes')) return true;
-                
-                // Remove all Copy GC Codes (because otherwise they will be duplicated on selecting other cache)
+
+                // Remove all Copy GC Codes (because otherwise they will be duplicated on selecting other cache).
                 $('.cache-preview-header .cache-metadata span.ctoc_link').each(function(){
                     removeElement(this);
                 });
-                // Add it again
+                // Add it again.
                 $('.cache-preview-header .cache-metadata .cache-metadata-code').each(function(){
                     addCopyToClipboardLink(this, null, "GC Code", "margin-right: 3px;");
                 });
 
-                //Remove old Favi-Score
+                // Remove old Favi-Score.
                 $('.favi_score_percent').each(function(){
                     removeElement(this);
                 });
 
-                // Just to be sure we are starting from scratch
+                // Just to be sure we are starting from scratch.
                 removeElement(document.querySelector('#searchmap_sidebar_enhancements'));
 
                 new_gc_code = document.querySelector('.cache-preview-header .cache-metadata .cache-metadata-code').innerHTML;
 
                 if(sidebar_enhancements_buffer[new_gc_code]){
-                    // We already have the ode in our buffer, no need to reload everything
+                    // We already have the ode in our buffer, no need to reload everything.
                     insertAfter(sidebar_enhancements_buffer[new_gc_code], (document.getElementsByClassName("geocache-owner")[0] || document.getElementsByClassName("gclhOwner")[0]));
                     if ($('.favorites-text')[0]){
                         $('.favorites-text')[0].innerHTML = $('.favorites-text')[0].innerHTML + sidebar_enhancements_favi_buffer[new_gc_code];
@@ -8189,7 +8194,7 @@ var mainGC = function() {
                 var searchmap_sidebar_enhancements_code = document.querySelector('#searchmap_sidebar_enhancements .gccode');
 
                 if(searchmap_sidebar_enhancements_code){
-                    // Element already present, so compare the two GC Codes, to see if we need to update
+                    // Element already present, so compare the two GC Codes, to see if we need to update.
                     if(new_gc_code == searchmap_sidebar_enhancements_code.innerHTML){
                         return true;
                     }else{
@@ -8210,7 +8215,7 @@ var mainGC = function() {
                 searchmap_sidebar_enhancements.appendChild(searchmap_sidebar_enhancements_code);
                 searchmap_sidebar_enhancements.appendChild(searchmap_sidebar_enhancements_loading);
 
-                // Just to be sure we are starting from scratch
+                // Just to be sure we are starting from scratch.
                 removeElement(document.querySelector('#searchmap_sidebar_enhancements'));
                 insertAfter(searchmap_sidebar_enhancements, (document.getElementsByClassName("geocache-owner")[0] || document.getElementsByClassName("gclhOwner")[0]));
 
@@ -8223,10 +8228,11 @@ var mainGC = function() {
                         premium_only = true;
                     }
 
-                    // get the last logs
+                    // get the last logs.
                     initalLogs_from_cachepage = text.substr(text.indexOf('initialLogs = {"status')+13, text.indexOf('} };') - text.indexOf('initialLogs = {"status') - 10);
                     var initalLogs = JSON.parse(initalLogs_from_cachepage);
                     var last_logs = document.createElement("div");
+                    last_logs.setAttribute("style", "display: block ruby;");
                     var last_logs_to_show = settings_show_latest_logs_symbols_count_map;
                     var lateLogs = new Array();
                     for (var i = 0; i < initalLogs['data'].length; i++) {
@@ -8245,7 +8251,7 @@ var mainGC = function() {
                         div.setAttribute("style", "padding-right: 0; padding-top: 5px; padding-bottom: 5px; display: flex;");
 
                         var span = document.createElement("span");
-                        span.setAttribute("style", "white-space: nowrap; margin-right: 5px; margin-top: 5px;");
+                        span.setAttribute("style", "white-space: nowrap; margin-right: 5px; margin-top: -1px;");
                         span.appendChild(document.createTextNode('Latest logs:'));
                         div.appendChild(span);
                         var inner_div = document.createElement("div");
@@ -8256,7 +8262,7 @@ var mainGC = function() {
                             div_log_wrapper.className = "gclh_latest_log";
                             var img = document.createElement("img");
                             img.src = lateLogs[i]['src'];
-                            img.setAttribute("style", "padding-left: 2px; vertical-align: bottom; float:left;");
+                            img.setAttribute("style", "padding-left: 2px; float:left; margin-top: 2px;");
                             var log_text = document.createElement("span");
                             log_text.title = "";
                             log_text.innerHTML = "<img src='" + lateLogs[i]['src'] + "'> <b>" + lateLogs[i]['user'] + " - " + lateLogs[i]['date'] + "</b><br>" + lateLogs[i]['log'];
@@ -8267,25 +8273,24 @@ var mainGC = function() {
                         last_logs.appendChild(div);
                     }
 
-                    // get all type of logs and their count
+                    // get all type of logs and their count.
                     var all_logs = $(text).find('.LogTotals')[0].innerHTML.replace(/alt="(.*?)"/g, "alt=\"...\"");
 
-                    // get the number of trackables in the cache
+                    // get the number of trackables in the cache.
                     var trachables = 0;
-                    // var tb_elements = $(text).find('.CacheDetailNavigationWidget').has('#ctl00_ContentBody_uxTravelBugList_uxInventoryLabel');
                     $(text).find('.CacheDetailNavigationWidget').each(function(){
                         tb_text = $(this).html();
                         if(tb_text.indexOf('ctl00_ContentBody_uxTravelBugList_uxInventoryLabel') !== -1){
                             // There are two Container with .CacheDetailNavigationWidget so we are only processing the
-                            // one that contains the TB informations
+                            // one that contains the TB informations.
                             trachables = (tb_text.match(/<li>/g)||[]).length;
                         }
                     });
 
-                    // get the place, where the cache was placed
+                    // get the place, where the cache was placed.
                     var place = $(text).find('#ctl00_ContentBody_Location')[0].innerHTML;
 
-                    // Put all together
+                    // Put all together.
                     var new_text = '<span class="title" style="margin-right: 5px;">Logs:</span>' + all_logs.replace(/&nbsp;/g, " ") + '<br>';
                     new_text += $(last_logs).prop('outerHTML');
                     new_text += '<span title="Place">' + place + '</span> | ';
@@ -8293,52 +8298,51 @@ var mainGC = function() {
                         new_text += '<span id="elevation-waypoint-0"></span>';
                     }
                     if(premium_only){
-                        new_text += ' <span class="premium_only" title="Premium Only Cache"><img src="/images/icons/16/premium_only.png" width="16" height="16" alt="Premium Only Cache" /></span> | ';
+                        new_text += ' <span class="premium_only" title="Premium Only Cache"><img src="/images/icons/16/premium_only.png" alt="Premium Only Cache" /></span> | ';
                     }
-                    new_text += '<span class="tackables" title="Number of trackables"><svg height="16" width="16" class="icon-sm"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="/account/app/ui-icons/sprites/global.svg#icon-travelbug-default"></use></svg> ' + trachables + '</span><br>';
+                    new_text += '<span class="tackables" title="Number of trackables"><svg class="icon-sm"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="/account/app/ui-icons/sprites/global.svg#icon-travelbug-default"></use></svg> ' + trachables + '</span><br>';
 
                     var coords = $(text).find('#uxLatLon')[0].innerHTML;
                     var original_coords = "";
                     var original_coords_span = "";
-                    var coorected = "";
+                    var corrected = "";
 
                     if(text.match(/"isUserDefined":true/gm)){
                         var original_coords = text.match(/oldLatLngDisplay":"N.*E.*?'"/gm);
                         original_coords = String(original_coords[0]);
-                        
+
                         original_coords = original_coords.replace("oldLatLngDisplay\":\"","");
                         original_coords = original_coords.replace("\"","");
                         original_coords = original_coords.replace(new RegExp('\'', 'g'),'');
 
                         original_coords_span = ' <span class="coordinates original" title="original Coordinates">(<span class="anker"></span>' + original_coords + ')</span>';
-                        coorected = "coorected ";
+                        corrected = "corrected ";
                     }
 
-                    new_text += '<p><span class="coordinates current" title="'+coorected+'Coordinates">' + coords + '</span>' + original_coords_span + '</p>';
+                    new_text += '<p><span class="coordinates current" title="'+corrected+'Coordinates">' + coords + '</span>' + original_coords_span + '</p>';
 
-                    // Create Element and insert everything
+                    // Create Element and insert everything.
                     var text_element = document.createElement("div");
                     text_element.innerHTML = new_text;
                     searchmap_sidebar_enhancements.appendChild(text_element);
 
                     searchmap_sidebar_enhancements_loading.setAttribute("style", "display: none;");
-                    // Just to be sure we are starting from scratch
+                    // Just to be sure we are starting from scratch.
                     removeElement(document.querySelector('#searchmap_sidebar_enhancements'));
                     insertAfter(searchmap_sidebar_enhancements, (document.getElementsByClassName("geocache-owner")[0] || document.getElementsByClassName("gclhOwner")[0]));
 
-                    // Add Copy to Clipboard Links
+                    // Add Copy to Clipboard Links.
                     if(original_coords != ""){
-                        addCopyToClipboardLink(original_coords, $('span.coordinates.original .anker')[0], "original Coordinates");    
+                        addCopyToClipboardLink(original_coords, $('span.coordinates.original .anker')[0], "original Coordinates");
                     }
-                    addCopyToClipboardLink(coords, $('span.coordinates.current')[0], coorected+"Coordinates");
+                    addCopyToClipboardLink(coords, $('span.coordinates.current')[0], corrected+"Coordinates");
 
-                    //Get favorite score.
+                    // Get favorite score.
                     var from = text.indexOf('userToken', text.indexOf('MapTilesEnvironment')) + 13;
                     var length = text.indexOf("';", from) - from;
                     var userToken = text.substr(from, length);
 
                     getFavScoreSearchmapSidebarEnhancements($('.favorites-text'), userToken, local_gc_code);
-
 
                     // Get elevations.
                     if (settings_show_elevation_of_waypoints) {
@@ -8348,9 +8352,7 @@ var mainGC = function() {
                     }
 
                     sidebar_enhancements_buffer[local_gc_code] = searchmap_sidebar_enhancements;
-
                 });
-
             }
 
             // Processing all steps.
@@ -8429,7 +8431,6 @@ var mainGC = function() {
                 css += '.cache-preview-attributes > ul {font-size: 12px; margin-bottom: 0 !important; padding-bottom: 5px !important;}';
                 css += '.cache-preview-attributes .favorites-icon {height: 24px; width: 24px;}';
                 css += '.cache-preview-attributes .attribute-label {color: #777777;}';
-                css += '.cache-preview-attributes .attribute-val {color: #4a4a4a;}';
                 css += '.gclhOwner {color: #9b9b9b;}'
                 css += '.cache-preview-attributes .geocache-owner {font-size: 12px; margin-top: 0px; padding-top: 3px;}';
                 css += '.cache-preview-attributes .geocache-owner-name, .cache-preview-attributes .geocache-placed-date {display: none !important;}';
@@ -8493,36 +8494,30 @@ var mainGC = function() {
             // Show name of disabled caches strike through in special color.
             css += '.gclh_disabled, .gclh_disabled a {color: #' + settings_searchmap_disabled_color + ' !important;}';
             css += '.gclh_disabled.gclh_strikethrough, .gclh_disabled.gclh_strikethrough a {text-decoration: line-through;}';
-            
-
             // Sidebar Enhancements
-            css += "#searchmap_sidebar_enhancements {border-top: 1px solid #e4e4e4;font-size: 12px;";
-            if(settings_searchmap_compact_layout){
-                css += "padding: 5px 0 0;"
-            }else{
-                css += "margin-top: 12px;padding: 12px 0 0;"
+            if (settings_show_enhanced_map_popup) {
+                css += '.cache-preview-attributes .geocache-owner {margin-bottom: 3px;}';
             }
-            
-            css += "} #searchmap_sidebar_enhancements .gccode {display: none;}";
-            css += "div.gclh_latest_log {margin-top:5px;}";
-            css += "#gclh_latest_logs {position: relative;}";
-            css += "div.gclh_latest_log span {display: none; position: absolute; left: 0px; width: 95%; padding: 5px; text-decoration:none; text-align:left; vertical-align:top; color: #000000;}";
-            css += "div.gclh_latest_log:hover span {font-size: 13px; display: block; top: 100%; border: 1px solid #8c9e65; background-color:#dfe1d2; z-index:10000;}";
-            css += "div.gclh_latest_log:hover img{opacity: 0.5;}"
-            css += "div.gclh_latest_log:hover span img{opacity: 1;}"
-            css += "#searchmap_sidebar_enhancements {color: #4a4a4a;}";
-            css += "#searchmap_sidebar_enhancements span.title {color: #9b9b9b;}";
-            css += "#searchmap_sidebar_enhancements #gclh_latest_logs span {color: #9b9b9b;}";
-            css += "#searchmap_sidebar_enhancements #gclh_latest_logs .gclh_latest_log span {color: #000000}";
-            css += "#searchmap_sidebar_enhancements span.coordinates.original {font-size: 0.8em;}";
-            css += "#searchmap_sidebar_enhancements img {vertical-align: middle;}";
-            css += "#searchmap_sidebar_enhancements svg {vertical-align: middle;}";
-            css += "#searchmap_sidebar_enhancements .ctoc_link img {height: 14px;}";
-            
+            if (settings_searchmap_compact_layout){
+                css += '#searchmap_sidebar_enhancements {border-top: 1px solid #e4e4e4; font-size: 12px; padding: 5px 0 0;}';
+            } else {
+                css += '#searchmap_sidebar_enhancements {border-top: 1px solid #e4e4e4; font-size: 12px; margin-top: 12px; padding: 12px 0 0;}';
+            }
+            css += '#searchmap_sidebar_enhancements .gccode {display: none;}';
+            css += '.premium_only img, .icon-sm {width: 14px; height: 14px; opacity: 0.8; vertical-align: sub !important;}';
+            css += '#gclh_latest_logs {position: relative;}';
+            css += 'div.gclh_latest_log span {display: none; position: absolute; left: 0px; width: 95%; padding: 5px; text-decoration:none; text-align:left; vertical-align:top; color: #000000;}';
+            css += 'div.gclh_latest_log:hover span {font-size: 13px; display: block; top: 100%; border: 1px solid #8c9e65; background-color:#dfe1d2; z-index:10000;}';
+            css += 'div.gclh_latest_log:hover img{opacity: 0.5;}';
+            css += 'div.gclh_latest_log:hover span img{opacity: 1;}';
+            css += '#searchmap_sidebar_enhancements {color: #4a4a4a;}';
+            css += '#searchmap_sidebar_enhancements span.title {color: #9b9b9b;}';
+            css += '#searchmap_sidebar_enhancements #gclh_latest_logs span {color: #9b9b9b;}';
+            css += '#searchmap_sidebar_enhancements #gclh_latest_logs .gclh_latest_log span {color: #000000}';
+            css += '#searchmap_sidebar_enhancements img {vertical-align: middle;}';
+            css += '#searchmap_sidebar_enhancements svg {vertical-align: middle;}';
+            css += '#searchmap_sidebar_enhancements .ctoc_link img {height: 14px;}';
             if (css != "") appendCssStyle(css);
-
-
-
         } catch(e) {gclh_error("Improve search map",e);}
     }
 
@@ -9171,7 +9166,6 @@ var mainGC = function() {
            }
        });
     }
-
     // Get favorite score.
     function getFavScoreSearchmapSidebarEnhancements(anker_element, userToken, gccode) {
        $.ajax({
@@ -9182,13 +9176,12 @@ var mainGC = function() {
                var score = 0;
                if (scoreResult) score = scoreResult;
                if (score > 100) score = 100;
-               
                if ($(anker_element)[0]){
-                $('.favi_score_percent').each(function(){
-                    removeElement(this);
-                });
-                $(anker_element)[0].innerHTML = $(anker_element)[0].innerHTML + ' <span class="favi_score_percent">('+score+'%)';
-                sidebar_enhancements_favi_buffer[gccode] = ' <span class="favi_score_percent">('+score+'%)';
+                   $('.favi_score_percent').each(function(){
+                       removeElement(this);
+                   });
+                   $(anker_element)[0].innerHTML = $(anker_element)[0].innerHTML + ' <span class="favi_score_percent">('+score+'%)';
+                   sidebar_enhancements_favi_buffer[gccode] = ' <span class="favi_score_percent">('+score+'%)';
                }
            }
        });
@@ -12141,7 +12134,7 @@ var mainGC = function() {
             html += thanksLineBuild("stepborc",             "",                false, false, false, true,  false);
             html += thanksLineBuild("V60",                  "V60GC",           false, false, false, true,  false);
             html += thanksLineBuild("winkamol",             "",                false, false, false, true,  false);
-            var thanksLastUpdate = "06.02.2020";
+            var thanksLastUpdate = "13.02.2020";
 //<-- $$006
             html += "    </tbody>";
             html += "</table>";
@@ -14844,10 +14837,8 @@ function isLocation(path) {
 
 // CSS Style hinzufügen.
 function appendCssStyle(css, name, id) {
-    
     // test if ID is already used, if yes, don't append again
     if(document.getElementById(id)) return;
-    
     if (css == "") return;
     if (name) var tag = $(name)[0];
     else var tag = $('head')[0];
