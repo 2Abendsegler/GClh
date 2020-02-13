@@ -142,7 +142,7 @@ var constInit = function(c) {
     c.scriptShortNameSync = "GClh Sync II";
     c.anzCustom = 10;
     c.anzTemplates = 10;
-    c.bookmarks_def = new Array(31, 69, 14, 16, 32, 33, 48, "0", 8, 18, 54, 51, 55, 47, 10, 2, 35, 9, 17, 67, 23, 22, 66, 68);
+    c.bookmarks_def = new Array(31, 69, 14, 16, 32, 33, 48, "0", 8, 18, 54, 51, 55, 47, 10, 2, 35, 9, 17, 22, 66, 68);
     c.defaultConfigLink = "/my/default.aspx#GClhShowConfig";
     c.defaultSyncLink = "/my/default.aspx#GClhShowSync";
     c.defaultFindPlayerLink = "/my/default.aspx#GClhShowFindPlayer";
@@ -178,7 +178,7 @@ var constInit = function(c) {
     bookmark("Drafts Upload", "/my/uploadfieldnotes.aspx", c.bookmarks);
     bookmark("Pocket Queries", "/pocket/default.aspx", c.bookmarks);
     bookmark("Pocket Queries Saved", "/pocket/default.aspx#DownloadablePQs", c.bookmarks);
-    bookmark("Bookmarks", "/account/lists", c.bookmarks);
+    bookmark("Bookmark Lists", "/account/lists", c.bookmarks);
     bookmark("Notifications", "/notify/default.aspx", c.bookmarks);
     profileSpecialBookmark("Find Player", defaultFindPlayerLink, "lnk_findplayer", c.bookmarks);
     bookmark("E-Mail", "/email/default.aspx", c.bookmarks);
@@ -236,7 +236,7 @@ var constInit = function(c) {
     externalBookmark("Geokrety", "https://geokrety.org/", c.bookmarks);
     externalBookmark("Project Geocaching", "https://project-gc.com/", c.bookmarks);
     bookmark("Search TB adv.", "/track/search.aspx", c.bookmarks);
-    bookmark("Map", "/map/", c.bookmarks);
+    bookmark("Browse Map", "/map/", c.bookmarks);
     profileSpecialBookmark(scriptShortNameSync, defaultSyncLink, "lnk_gclhsync", c.bookmarks);
     externalBookmark("Forum Geoclub", "https://geoclub.de/forum/index.php", c.bookmarks);
     externalBookmark("Changelog GClh II", urlChangelog, c.bookmarks);
