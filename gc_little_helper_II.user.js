@@ -8199,7 +8199,6 @@ var mainGC = function() {
                 $('.cache-preview-header .cache-metadata .cache-metadata-code').each(function(){
                     addCopyToClipboardLink(this, null, "GC Code", "margin-right: 3px;");
                 });
-
                 // Remove old Favi-Score.
                 $('.favi_score_percent').each(function(){
                     removeElement(this);
@@ -8248,7 +8247,6 @@ var mainGC = function() {
                 insertAfter(searchmap_sidebar_enhancements, (document.getElementsByClassName("geocache-owner")[0] || document.getElementsByClassName("gclhOwner")[0]));
 
                 $.get('https://www.geocaching.com/geocache/'+new_gc_code, null, function(text){
-
                     var local_gc_code = $(text).find('#ctl00_ContentBody_CoordInfoLinkControl1_uxCoordInfoCode').html();
 
                     var premium_only = false;
@@ -8256,7 +8254,7 @@ var mainGC = function() {
                         premium_only = true;
                     }
 
-                    // get the last logs.
+                    // Get the last logs.
                     initalLogs_from_cachepage = text.substr(text.indexOf('initialLogs = {"status')+13, text.indexOf('} };') - text.indexOf('initialLogs = {"status') - 10);
                     var initalLogs = JSON.parse(initalLogs_from_cachepage);
                     var last_logs = document.createElement("div");
@@ -8301,10 +8299,10 @@ var mainGC = function() {
                         last_logs.appendChild(div);
                     }
 
-                    // get all type of logs and their count.
+                    // Get all type of logs and their count.
                     var all_logs = $(text).find('.LogTotals')[0].innerHTML.replace(/alt="(.*?)"/g, "alt=\"...\"");
 
-                    // get the number of trackables in the cache.
+                    // Get the number of trackables in the cache.
                     var trachables = 0;
                     $(text).find('.CacheDetailNavigationWidget').each(function(){
                         tb_text = $(this).html();
@@ -8315,7 +8313,7 @@ var mainGC = function() {
                         }
                     });
 
-                    // get the place, where the cache was placed.
+                    // Get the place, where the cache was placed.
                     var place = $(text).find('#ctl00_ContentBody_Location')[0].innerHTML;
 
                     // Put all together.
@@ -8330,23 +8328,20 @@ var mainGC = function() {
                     }
                     new_text += '<span class="tackables" title="Number of trackables"><svg class="icon-sm"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="/account/app/ui-icons/sprites/global.svg#icon-travelbug-default"></use></svg> ' + trachables + '</span><br>';
 
+                    // Get coordinates.
                     var coords = $(text).find('#uxLatLon')[0].innerHTML;
                     var original_coords = "";
                     var original_coords_span = "";
                     var corrected = "";
-
-                    if(text.match(/"isUserDefined":true/gm)){
+                    if (text.match(/"isUserDefined":true/gm)){
                         var original_coords = text.match(/oldLatLngDisplay":"N.*E.*?'"/gm);
                         original_coords = String(original_coords[0]);
-
                         original_coords = original_coords.replace("oldLatLngDisplay\":\"","");
                         original_coords = original_coords.replace("\"","");
                         original_coords = original_coords.replace(new RegExp('\'', 'g'),'');
-
-                        original_coords_span = ' <span class="coordinates original" title="original Coordinates">(<span class="anker"></span>' + original_coords + ')</span>';
+                        original_coords_span = ' <span class="coordinates original" title="original Coordinates">&nbsp;( <span class="anker"></span>' + original_coords + ' )</span>';
                         corrected = "corrected ";
                     }
-
                     new_text += '<p><span class="coordinates current" title="'+corrected+'Coordinates">' + coords + '</span>' + original_coords_span + '</p>';
 
                     // Create Element and insert everything.
@@ -8527,11 +8522,11 @@ var mainGC = function() {
             // Show name of disabled caches strike through in special color.
             css += '.gclh_disabled, .gclh_disabled a {color: #' + settings_searchmap_disabled_color + ' !important;}';
             css += '.gclh_disabled.gclh_strikethrough, .gclh_disabled.gclh_strikethrough a {text-decoration: line-through;}';
-            // Sidebar Enhancements
+            // Sidebar Enhancements.
             if (settings_show_enhanced_map_popup) {
                 css += '.cache-preview-attributes .geocache-owner {margin-bottom: 3px;}';
             }
-            if (settings_searchmap_compact_layout){
+            if (settings_searchmap_compact_layout) {
                 css += '#searchmap_sidebar_enhancements {border-top: 1px solid #e4e4e4; font-size: 12px; padding: 5px 0 0;}';
             } else {
                 css += '#searchmap_sidebar_enhancements {border-top: 1px solid #e4e4e4; font-size: 12px; margin-top: 12px; padding: 12px 0 0;}';
@@ -8998,7 +8993,7 @@ var mainGC = function() {
         } catch(e) {gclh_error("Hide found/hidden Caches / Cache Types on Map",e);}
     }
 
-// Display more informations on map popup for a cache
+// Display more informations on map popup for a cache.
     if (document.location.href.match(/\.com\/map\//) && settings_show_enhanced_map_popup && getValue("gclhLeafletMapActive")) {
         try {
             var template = $("#cacheDetailsTemplate").html().trim();
@@ -9016,7 +9011,7 @@ var mainGC = function() {
 
             $("#cacheDetailsTemplate").html(template);
 
-            // select the target node
+            // Select the target node.
             var target = document.querySelector('.leaflet-popup-pane');
 
             var css = "div.popup_additional_info {min-height: 70px;}"
@@ -9033,7 +9028,7 @@ var mainGC = function() {
             if (browser == 'firefox') css += ".gclh_owner {max-width: 110px;} .map-item h4 a {max-width: 265px;} .gclh_owner, .map-item h4 a {display: inline-block; white-space: nowrap; overflow: -moz-hidden-unscrollable; text-overflow: ellipsis;}";
             appendCssStyle(css);
 
-            // create an observer instance
+            // Create an observer instance.
             var observer = new MutationObserver(function(mutations) {
                 mutations.forEach(function(mutation) {
                     gccode = $('#gmCacheInfo .code').html();
@@ -9055,7 +9050,7 @@ var mainGC = function() {
                             $(this).find('dl dd')[0].childNodes[0].innerHTML = '<span class="gclh_owner" title="' + $(this).find('dl dd')[0].childNodes[0].innerHTML + '">' + $(this).find('dl dd')[0].childNodes[0].innerHTML + '</span>';
                         }
 
-                        // Add hidden Div, so we can know, that we are already loading data
+                        // Add hidden Div, so we can know, that we are already loading data.
                         $(this).find('#popup_additional_info_' + gccode).append('<div id="already_loading_' + gccode +'"></div>');
 
                         // Get index of map items.
@@ -9063,9 +9058,8 @@ var mainGC = function() {
                         var indexMapItems = indexMapItems[1] -1;
 
                         $.get('https://www.geocaching.com/geocache/'+gccode, null, function(text){
-
                             // We need to retriev the gc_code from the loaded page, because in the
-                            // meantime the global varioable gc_code could (and will be ;-)) changed
+                            // meantime the global varioable gc_code could (and will be ;-)) changed.
                             var local_gc_code = $(text).find('#ctl00_ContentBody_CoordInfoLinkControl1_uxCoordInfoCode').html();
 
                             var premium_only = false;
@@ -9073,7 +9067,7 @@ var mainGC = function() {
                                 premium_only = true;
                             }
 
-                            // get the last logs
+                            // Get the last logs.
                             initalLogs_from_cachepage = text.substr(text.indexOf('initialLogs = {"status')+13, text.indexOf('} };') - text.indexOf('initialLogs = {"status') - 10);
                             var initalLogs = JSON.parse(initalLogs_from_cachepage);
                             var last_logs = document.createElement("div");
@@ -9117,38 +9111,38 @@ var mainGC = function() {
                                 last_logs.appendChild(div);
                             }
 
-                            // get all type of logs and their count
+                            // Get all type of logs and their count.
                             var all_logs = $(text).find('.LogTotals')[0].innerHTML.replace(/alt="(.*?)"/g, "alt=\"...\"");
 
-                            // get the number of trackables in the cache
+                            // Get the number of trackables in the cache.
                             var trachables = 0;
-                            // var tb_elements = $(text).find('.CacheDetailNavigationWidget').has('#ctl00_ContentBody_uxTravelBugList_uxInventoryLabel');
                             $(text).find('.CacheDetailNavigationWidget').each(function(){
                                 tb_text = $(this).html();
                                 if(tb_text.indexOf('ctl00_ContentBody_uxTravelBugList_uxInventoryLabel') !== -1){
                                     // There are two Container with .CacheDetailNavigationWidget so we are only processing the
-                                    // one that contains the TB informations
+                                    // one that contains the TB informations.
                                     trachables = (tb_text.match(/<li>/g)||[]).length;
                                 }
                             });
 
-                            // get the number of favorite points
+                            // Get the number of favorite points.
                             var fav_points = $(text).find('.favorite-value').html();
                             if(fav_points == null){
-                                // couldn't get Number of Favorits. This happens with event caches for example
+                                // Couldn't get Number of Favorits. This happens with event caches for example.
                                 fav_points = 0;
                             }else{
                                 fav_points = fav_points.replace('.','');
                                 fav_points = fav_points.replace(',','');
                                 fav_points = parseInt(fav_points);
                             }
+
                             // Set dummy favorite score.
                             var fav_percent = ' ';
 
-                            // get the place, where the cache was placed
+                            // Get the place, where the cache was placed.
                             var place = $(text).find('#ctl00_ContentBody_Location')[0].innerHTML;
 
-                            // Put all together
+                            // Put all together.
                             var new_text = '<span style="margin-right: 5px;">Logs:</span>' + all_logs.replace(/&nbsp;/g, " ") + '<br>';
                             new_text += $(last_logs).prop('outerHTML');
                             new_text += '<span title="Place">' + place + '</span> | ';
@@ -9160,7 +9154,30 @@ var mainGC = function() {
                                 new_text += ' <span class="premium_only" title="Premium Only Cache"><img src="/images/icons/16/premium_only.png" width="16" height="16" alt="Premium Only Cache" /></span> | ';
                             }
                             new_text += '<span class="tackables" title="Number of trackables"><svg height="16" width="16" class="icon-sm"><use xmlns:xlink="https://www.w3.org/1999/xlink" xlink:href="/account/app/ui-icons/sprites/global.svg#icon-travelbug-default"></use></svg> ' + trachables + '</span><br>';
+
+                            // Get coordinates.
+                            var coords = $(text).find('#uxLatLon')[0].innerHTML;
+                            var original_coords = "";
+                            var original_coords_span = "";
+                            var corrected = "";
+                            if (text.match(/"isUserDefined":true/gm)){
+                                var original_coords = text.match(/oldLatLngDisplay":"N.*E.*?'"/gm);
+                                original_coords = String(original_coords[0]);
+                                original_coords = original_coords.replace("oldLatLngDisplay\":\"","");
+                                original_coords = original_coords.replace("\"","");
+                                original_coords = original_coords.replace(new RegExp('\'', 'g'),'');
+                                original_coords_span = ' <span class="coordinates original" title="original Coordinates">&nbsp;( <span class="anker"></span>' + original_coords + ' )</span>';
+                                corrected = "corrected ";
+                            }
+                            new_text += '<span><span class="coordinates current" title="'+corrected+'Coordinates">' + coords + '</span>' + original_coords_span + '</span>';
+
                             $('#popup_additional_info_' + local_gc_code).html(new_text);
+
+                            // Add Copy to Clipboard Links.
+                            if (original_coords != ""){
+                                addCopyToClipboardLink(original_coords, $('#popup_additional_info_' + local_gc_code + ' span.coordinates.original .anker')[0], "original Coordinates", 'vertical-align: bottom; margin-right: -6px;');
+                            }
+                            addCopyToClipboardLink(coords, $('#popup_additional_info_' + local_gc_code + ' span.coordinates.current')[0], corrected+"Coordinates", 'vertical-align: bottom; margin-right: -6px;');
 
                             // Get favorite score.
                             var from = text.indexOf('userToken', text.indexOf('MapTilesEnvironment')) + 13;
@@ -9176,7 +9193,7 @@ var mainGC = function() {
                             }
                         });
 
-                        // Improve Original Box Content
+                        // Improve Original Box Content.
                         side = $(this).find('dl dd a');
                         guid = side.attr('href').substring(15,36+15);
                         username = side.text();
@@ -9199,10 +9216,9 @@ var mainGC = function() {
                 });
             });
 
-            // configuration of the observer:
+            // Configuration of the observer.
             var config = { attributes: true, childList: true, characterData: true };
-
-            // pass in the target node, as well as the observer options
+            // Pass in the target node, as well as the observer options.
             observer.observe(target, config);
 
         } catch(e) {gclh_error("enhance cache popup",e);}
