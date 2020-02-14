@@ -2319,6 +2319,13 @@ var mainGC = function() {
                     el.value = el.value.replace(/#dd#/ig, day);
                     el.value = el.value.replace(/#GCName#/ig, $('#ctl00_ContentBody_CacheName')[0].innerHTML.replace(new RegExp('&nbsp;', 'g'),' '));
                     el.value = el.value.replace(/#GCCode#/ig, $('#ctl00_ContentBody_CoordInfoLinkControl1_uxCoordInfoCode')[0].innerHTML);
+                    el.value = el.value.replace(/#GCLink#/ig, "https://coord.info/"+$('#ctl00_ContentBody_CoordInfoLinkControl1_uxCoordInfoCode')[0].innerHTML);
+                    el.value = el.value.replace(/#Coords#/ig, determineListingCoords('CorrOrg'));
+                    var g_note = $('#viewCacheNote')[0].innerHTML;
+                    if (g_note != null && (g_note != "" && g_note != "Click to enter a note" && g_note != "Klicken zum Eingeben einer Notiz")) {
+                      el.value = el.value.replace(/#Note#/ig, g_note.replace(new RegExp('&gt;', 'g'),'>').replace(new RegExp('&lt;', 'g'),'<'));
+                    }
+                    el.value = el.value.replace(/#CRLF#/ig, "\n");
                 }
                 break;
             default:
