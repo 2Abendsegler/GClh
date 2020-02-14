@@ -12778,7 +12778,7 @@ var mainGC = function() {
             html += "  <option value=\"3\" " + (settings_show_openrouteservice_medium == "3" ? "selected=\"selected\"" : "") + ">Wheelchair (only Europe)</option>";
             html += "</select>" + "<br>";
             html += checkboxy('settings_show_copydata_menu', 'Show "Copy Data to Clipboard" menu in sidebar') + show_help3("Shows a menu to copy various cache data to the clipboard.") + "<br>";
-            var copydataOwnStuffPlaceholder = "Possible placeholder:<br>&nbsp; #yyyy# : Current year<br>&nbsp; #mm# : Current month<br>&nbsp; #dd# : Current day<br>&nbsp; #GCName# : GC name<br>&nbsp; #GCCode# : GC code<br>#GCLink# : GC link<br>#Coords# : shown coordinates<br>#GCNote# : User note (if not empty)<br>#newline# : add new line<br>(Upper and lower case is not required in the placeholder name.)";
+            var copydataOwnStuffPlaceholder = "Possible placeholder:<br>&nbsp; #yyyy# : Current year<br>&nbsp; #mm# : Current month<br>&nbsp; #dd# : Current day<br>&nbsp; #GCName# : GC name<br>&nbsp; #GCCode# : GC code<br>&nbsp; #GCLink# : GC link<br>&nbsp; #Coords# : shown coordinates<br>&nbsp; #GCNote# : User note (if not empty)<br>&nbsp; #newline# : add new line<br>(Upper and lower case is not required in the placeholder name.)";
             html += "&nbsp;&nbsp;" + checkboxy('settings_show_copydata_own_stuff_show', 'Show');
             html += " <input class='gclh_form' type='text' size='13' id='settings_show_copydata_own_stuff_name' value='" + settings_show_copydata_own_stuff_name + "'>";
             html += "<img src=" + global_restore_icon + " id='restore_settings_show_copydata_own_stuff_name' title='back to default' style='width: 12px; cursor: pointer;'>";
