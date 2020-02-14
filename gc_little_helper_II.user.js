@@ -1294,7 +1294,9 @@ var mainGC = function() {
             }
             if (id && document.getElementById(id)) {
                 function keydownF2(e) {
-                    if (e.keyCode == 113 && noSpecialKey(e) && !check_config_page()) document.getElementById(id).click();
+                    if (e.keyCode == 113 && noSpecialKey(e) && !check_config_page() && $('#'+id)[0].offsetParent != null) {
+                        document.getElementById(id).click();
+                    }
                 }
                 document.getElementById(id).value += " (F2)";
                 window.addEventListener('keydown', keydownF2, true);
@@ -2783,7 +2785,7 @@ var mainGC = function() {
             }
         } catch(e) {gclh_error("Hide complete and Show/Hide Cache Note",e);}
 
-        // Personal Cache Note: Focus Cachenote-Textarea on Click of the Note (to avoid double click to edit)
+        // Personal Cache Note: Focus Cachenote-Textarea on Click of the Note (to avoid double click to edit).
         try {
             var editCacheNote = document.querySelector('#editCacheNote');
             if(editCacheNote){
@@ -2793,7 +2795,7 @@ var mainGC = function() {
                             if(document.getElementById('editCacheNote').style.display == ''){
                                 document.getElementById('cacheNoteText').focus();
                             } else {
-                                // take the parent, because empty lines are not handle by span-element #viewCacheNote
+                                // Take the parent, because empty lines are not handle by span-element #viewCacheNote.
                                 if (  $("#cacheNoteText").height() != calcHeightOfCacheNote() ) {
                                     $("#cacheNoteText").height(calcHeightOfCacheNote());
                                 }
@@ -2803,7 +2805,7 @@ var mainGC = function() {
                 });
 
                 observer.observe(editCacheNote, {
-                  attributes: true //configure it to listen to attribute changes
+                    attributes: true //configure it to listen to attribute changes
                 });
             }
         } catch(e) {gclh_error("Focus Cachenote-Textarea on Click of the Note",e);}
