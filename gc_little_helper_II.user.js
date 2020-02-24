@@ -8232,7 +8232,7 @@ var mainGC = function() {
                 if(sidebar_enhancements_buffer[new_gc_code]){
                     // We already have the ode in our buffer, no need to reload everything.
                     insertAfter(sidebar_enhancements_buffer[new_gc_code], (document.getElementsByClassName("geocache-owner")[0] || document.getElementsByClassName("gclhOwner")[0]));
-                    if ($('.favorites-text')[0]){
+                    if ($('.favorites-text')[0] && sidebar_enhancements_favi_buffer[new_gc_code]){
                         $('.favorites-text')[0].innerHTML = $('.favorites-text')[0].innerHTML + sidebar_enhancements_favi_buffer[new_gc_code];
                     }
                     return true;
