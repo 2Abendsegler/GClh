@@ -3656,7 +3656,7 @@ var mainGC = function() {
             for (let i=0; i<wordsArr.length; i++) {
                 if (wordsArr[i].trim() != '') words++;
             }
-            counterelement.innerHTML += '&nbsp; (' + words + ' words)';
+            counterelement.innerHTML += ' (' + words + ' words)';
         }
     }
     if (((document.location.href.match(/\.com\/seek\/log\.aspx\?(id|guid|ID|wp|LUID|PLogGuid)\=/) ||
