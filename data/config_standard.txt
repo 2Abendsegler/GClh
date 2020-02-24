@@ -279,7 +279,5 @@
   "settings_improve_character_counter": true,
   "settings_searchmap_compact_layout": true,
   "settings_searchmap_disabled": false,
-  "settings_searchmap_disabled_strikethrough": true,
-  "settings_searchmap_disabled_color": '4A4A4A',
-  "settings_searchmap_show_hint": false
+  "settings_searchmap_disabled_strikethrough": true
 }
