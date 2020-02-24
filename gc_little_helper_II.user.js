@@ -3769,7 +3769,6 @@ var mainGC = function() {
         } catch(e) {gclh_error("Autovisit Old",e);}
     }
 
-
 // Default Log Type and Log Signature Old Log Page.
     // Cache:
     if (document.location.href.match(/\.com\/seek\/log\.aspx\?(id|guid|ID|PLogGuid|wp)\=/) && $('#ctl00_ContentBody_LogBookPanel1_ddLogType')[0] && $('#ctl00_ContentBody_LogBookPanel1_lbConfirm').length == 0) {
