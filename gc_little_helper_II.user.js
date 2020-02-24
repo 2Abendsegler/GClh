@@ -1112,6 +1112,7 @@ var asynchronGC = function() {
                         // Special css for searchmap.
                         if (is_page('searchmap')) {
                             css += 'gclh_nav .wrapper {z-index: 1005;} gclh_nav li input {height: unset !important;}';
+                            css += '.profile-panel .li-user-toggle svg {height: 13px;}';
                         }
                         appendCssStyle(css);
                         // Start mainGC.
