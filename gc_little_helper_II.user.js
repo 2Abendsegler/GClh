@@ -3730,14 +3730,8 @@ var mainGC = function() {
                     tbs[i].appendChild(document.createTextNode(" AutoVisit"));
                 }
                 $('#ctl00_ContentBody_LogBookPanel1_ddLogType')[0].addEventListener("input", buildAutosO, false);
-                window.addEventListener("load", function(){checkBuildAutosO(0);}, false); // GDPR
-            }
-            function checkBuildAutosO(waitCount) { // GDPR
-                if (typeof unsafeWindow.setSelectedActions !== "undefined") {
-                    // Nach dem load Event werden die Inhalte der Dropdown Menüs der TBs nochmal auf No Action zurückgesetzt, sofern man
-                    // zuvor aktualisieren im Browser gewählt hat. Um das zu berücksichtigen ist die folgende Verzögerung notwendig.
-                    setTimeout(function(){buildAutosO(true);}, 10);
-                } else {waitCount++; if (waitCount <= 100) setTimeout(function(){checkBuildAutosO(waitCount);}, 100);}
+                buildAutosO(true);
+                window.addEventListener("load", function(){buildAutosO(true);}, false);
             }
             function buildAutosO(start) {
                 var type = getTypeO();
@@ -3746,7 +3740,7 @@ var mainGC = function() {
                     var [tbC, tbN] = getTbO(tbs[i].parentNode);
                     setAutoO(tbC, tbN, type, start, true);
                 }
-                unsafeWindow.setSelectedActions();
+                if (unsafeWindow.setSelectedActions) unsafeWindow.setSelectedActions();
             }
             function setAutoO(tbC, tbN, type, start, allTbs) {
                 if (!type) var type = getTypeO();
