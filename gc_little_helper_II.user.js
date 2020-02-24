@@ -3647,15 +3647,21 @@ var mainGC = function() {
 
 // Maxlength of logtext and unsaved warning.
     // This function will also used for "Show length of hint, cachename and placed by on hide edit page".
-    function limitLogText(limitField, counterelement, limitNum) {
+    function limitedField(editor, counterelement, limitNum, showWords) {
         changed = true;
         // Aus GC Funktion "checkLogInfoLength".
-        var editor = limitField;
         var length = $(editor).val().replace(/\n/g, "\r\n").length;
-        var diff = length - $(editor).val().length;
         if (length >= limitNum) {
             counterelement.innerHTML = '<font color="red">' + length + '/' + limitNum + '</font>';
         } else counterelement.innerHTML = length + '/' + limitNum;
+        if (showWords) {
+            var wordsArr = $(editor).val().replace(/\n/g, ' ').split(' ');
+            var words = 0;
+            for (let i=0; i<wordsArr.length; i++) {
+                if (wordsArr[i].trim() != '') words++;
+            }
+            counterelement.innerHTML += ' (' + words + ' words)';
+        }
     }
     if (((document.location.href.match(/\.com\/seek\/log\.aspx\?(id|guid|ID|wp|LUID|PLogGuid)\=/) ||
           document.location.href.match(/\.com\/track\/log\.aspx\?(id|wid|guid|ID|LUID|PLogGuid)\=/)) && $('#litDescrCharCount')[0]) ||
@@ -3681,8 +3687,14 @@ var mainGC = function() {
                         var logfield = (!newLogpage ? $('#ctl00_ContentBody_LogBookPanel1_uxLogInfo')[0] : $('#LogText')[0]);
                         var counterspan = document.createElement('p');
                         counterspan.id = "logtextcounter";
+                        var wordsArr = $(logfield).val().replace(/\n/g, ' ').split(' ');
+                        console.log(wordsArr)
+                        var words = 0;
+                        for (let i=0; i<wordsArr.length; i++) {
+                            if (wordsArr[i].trim() != '') words++;
+                        }
                         counterspan.innerHTML = "Loglength:" + (newLogpage ? '&nbsp;' : "<br />");
-                        counterelement.innerHTML = '<span>' + $(logfield).val().replace(/\n/g, "\r\n").length + "/4000</span>";
+                        counterelement.innerHTML = '<span>' + $(logfield).val().replace(/\n/g, "\r\n").length + '/4000 (' + words + ' words)</span>';
                         counterspan.appendChild(counterelement);
                         if (!newLogpage) document.getElementById('litDescrCharCount').parentNode.appendChild(counterspan);
                         else {
@@ -3696,20 +3708,21 @@ var mainGC = function() {
                             var config = {attributes: true, childList: true, characterData: true, subtree: true};
                             observerNewLog.observe(target, config);
                         }
-                        logfield.addEventListener("keyup", function() {limitLogText(logfield, document.querySelector('#logtextcounter span'), 4000);}, false);
-                        logfield.addEventListener("change", function() {limitLogText(logfield, document.querySelector('#logtextcounter span'), 4000);}, false);
+                        logfield.addEventListener("keyup", function() {limitedField(logfield, document.querySelector('#logtextcounter span'), 4000, true);}, false);
+                        logfield.addEventListener("change", function() {limitedField(logfield, document.querySelector('#logtextcounter span'), 4000, true);}, false);
                     }
                 } else {waitCount++; if (waitCount <= 200) setTimeout(function(){waitForLoadingLoggingPage(waitCount);}, 50);}
             }
             waitForLoadingLoggingPage(0);
 
+            var css = '#logtextcounter {font-weight: normal !important;}';
             if (newLogpage && settings_improve_character_counter) {
-                var css = 'span.character-counter {display: none !important;}';
+                css += 'span.character-counter {display: none !important;}';
                 css += '#logtextcounter {margin: 0 !important;}'
                 css += '.btn-group-grow {flex: unset !important; display: flex; justify-content: space-between; width: 100%; align-items: center;}';
                 css += '.btn-problem {float: unset !important; margin-left: 0 !important;}'
-                appendCssStyle(css);
             }
+            appendCssStyle(css);
         } catch(e) {gclh_error("Maxlength of logtext and unsaved warning",e);}
     }
 
@@ -10329,12 +10342,12 @@ var mainGC = function() {
             createCounterElement('placedByCounter', placedBy, 50);
             createCounterElement('hintCounter', hint, 250);
 
-            name.addEventListener("keyup", function() {limitLogText(name, document.querySelector('#nameCounter span'), 50);}, false);
-            name.addEventListener("change", function() {limitLogText(name, document.querySelector('#nameCounter span'), 50);}, false);
-            placedBy.addEventListener("keyup", function() {limitLogText(placedBy, document.querySelector('#placedByCounter span'), 50);}, false);
-            placedBy.addEventListener("change", function() {limitLogText(placedBy, document.querySelector('#placedByCounter span'), 50);}, false);
-            hint.addEventListener("keyup", function() {limitLogText(hint, document.querySelector('#hintCounter span'), 250);}, false);
-            hint.addEventListener("change", function() {limitLogText(hint, document.querySelector('#hintCounter span'), 250);}, false);
+            name.addEventListener("keyup", function() {limitedField(name, document.querySelector('#nameCounter span'), 50);}, false);
+            name.addEventListener("change", function() {limitedField(name, document.querySelector('#nameCounter span'), 50);}, false);
+            placedBy.addEventListener("keyup", function() {limitedField(placedBy, document.querySelector('#placedByCounter span'), 50);}, false);
+            placedBy.addEventListener("change", function() {limitedField(placedBy, document.querySelector('#placedByCounter span'), 50);}, false);
+            hint.addEventListener("keyup", function() {limitedField(hint, document.querySelector('#hintCounter span'), 250);}, false);
+            hint.addEventListener("change", function() {limitedField(hint, document.querySelector('#hintCounter span'), 250);}, false);
 
             var css = '#nameCounter, #placedByCounter, #hintCounter {text-align: right;}';
             css += '#nameCounter, #placedByCounter {width: 400px;}';
