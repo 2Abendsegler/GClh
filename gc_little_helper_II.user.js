@@ -14548,18 +14548,21 @@ var mainGC = function() {
     function rcConfigDataChange(stData) {
         var data = JSON.parse(stData);
         var changed = false;
+        var changedData = "";
         for (key in data) {
             if (data[key] != CONFIG[key]) {
                 changed = true;
-                document.getElementById('rc_configData').innerText += "change: " + key + ": " + CONFIG[key] + " -> " + data[key] + "\n";
+                changedData += "change: " + key + ": " + CONFIG[key] + " -> " + data[key] + "\n";
                 CONFIG[key] = data[key];
             }
         }
+        document.getElementById('rc_configData').innerText += changedData;
         rcConfigUpdate(changed);
     }
     function rcConfigDataNotInUseDel(data) {
         var config_tmp = {};
         var changed = false;
+        var changedData = "";
         for (key in CONFIG) {
             var kkey = key.split("[");
             var kkey = kkey[0];
@@ -14572,14 +14575,16 @@ var mainGC = function() {
                        kkey.match(/^(friends_founds_|friends_hides_)/) ||
                        kkey.match(/^(settings_DB_auth_token|new_version|class|token)$/)) {
                 changed = true;
-                document.getElementById('rc_configData').innerText += "delete: " + key + ": " + CONFIG[key] + "\n";
+                changedData += "delete: " + key + ": " + CONFIG[key] + "\n";
+
             } else if (data.match(kkey)) {
                 config_tmp[key] = CONFIG[key];
             } else {
                 changed = true;
-                document.getElementById('rc_configData').innerText += "delete: " + key + ": " + CONFIG[key] + "\n";
+                changedData += "delete: " + key + ": " + CONFIG[key] + "\n";
             }
         }
+        document.getElementById('rc_configData').innerText = changedData;
         CONFIG = config_tmp;
         rcConfigUpdate(changed);
     }
