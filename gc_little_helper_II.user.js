@@ -1404,8 +1404,9 @@ var mainGC = function() {
                 // Schriftgröße Untermenü.
                 ".#m ul.#sm, .#m ul.#sm li {font-size: 16px !important;}" +
                 ".#m ul.#sm li a {font-size: " + font_size_submenu + "px !important;}" +
-                // Abstände Untermenü.
-                ".#m ul.#sm li a {margin: " + (distance_submenu / 2) + "px 1em !important; padding: 0 0.5em !important;} .#m .#sm a {line-height: unset;} .#m a {overflow: initial}" +
+                // Abstände Untermenü und Seiten.
+                "ul.#sm li a, ul.#sm li button {margin: " + (distance_submenu / 2) + "px 9px !important; padding: 0px !important;} .#sm a {line-height: unset;} .#m a {overflow: initial}" +
+                "ul.#sm li {margin: 0px 9px;} ul.#sm li form {margin: 0px !important; padding: 0px !important}" +
                 // Menühöhe.
                 ".#m {height: 35px !important;}" +
                 // Verschieben Submenüs unterbinden.
