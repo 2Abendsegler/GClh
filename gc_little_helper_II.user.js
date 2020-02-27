@@ -1360,7 +1360,9 @@ var mainGC = function() {
             if (font_color_menu == "") font_color_menu = "93B516";
             var font_color_submenu = settings_font_color_submenu;
             if (font_color_submenu == "") font_color_submenu = "93B516";
-            // Background color on submenu if hover.
+            // Background color and cursor on submenu if hover.
+            css += '.#sm a.noLink, .#sm li.noLink {opacity: 0.7;}';
+            css += '.#sm a.noLink:hover, .#sm li.noLink:hover {background-color: unset; cursor: default;}';
             css += '.#sm a:hover, .#sm li:hover {background-color: #e8f6ef;}';
             // Menüweite berechnen.
             var new_width = 950;
@@ -1405,8 +1407,8 @@ var mainGC = function() {
                 ".#m ul.#sm, .#m ul.#sm li {font-size: 16px !important;}" +
                 ".#m ul.#sm li a {font-size: " + font_size_submenu + "px !important;}" +
                 // Abstände Untermenü und Seiten.
-                "ul.#sm li a, ul.#sm li button {margin: " + (distance_submenu / 2) + "px 9px !important; padding: 0px !important;} .#sm a {line-height: unset;} .#m a {overflow: initial}" +
-                "ul.#sm li {margin: 0px 9px;} ul.#sm li form {margin: 0px !important; padding: 0px !important}" +
+                "ul.#sm li a, ul.#sm li button {padding: " + (distance_submenu / 2) + "px 9px !important; margin: 0px !important;} .#sm a {line-height: unset;} .#m a {overflow: initial}" +
+                "ul.#sm li {margin: -1px 9px 1px 9px;} ul.#sm li form {margin: 0px !important; padding: 0px !important}" +
                 // Menühöhe.
                 ".#m {height: 35px !important;}" +
                 // Verschieben Submenüs unterbinden.
@@ -1621,6 +1623,10 @@ var mainGC = function() {
                     var hyperlink = document.createElement("a");
                     for (attr in bookmarks[x]) {
                         if (attr != "custom" && attr != "title") hyperlink.setAttribute(attr, bookmarks[x][attr]);
+                    }
+                    if (bookmarks[x]['href'].match(/^([#\s]*)$/)) {
+                        hyperlink.setAttribute('class', 'noLink');
+                        sublink.setAttribute('class', 'noLink');
                     }
                     hyperlink.appendChild(document.createTextNode(bookmarks[x]['title']));
                     sublink.appendChild(hyperlink);
