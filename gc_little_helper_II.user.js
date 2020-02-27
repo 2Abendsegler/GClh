@@ -1139,6 +1139,7 @@ var mainGC = function() {
             if ($('.disclaimer')[0]) $('.disclaimer')[0].style.display = "none";
             if ($('.login-with-facebook')[0]) $('.login-with-facebook')[0].style.display = "none";
             if ($('.horizontal-rule')[0]) $('.horizontal-rule')[0].style.display = "none";
+            if ($('.oauth-providers-login')[0]) $('.oauth-providers-login')[0].style.display = "none";
         } catch(e) {gclh_error("Hide Facebook",e);}
     }
 
