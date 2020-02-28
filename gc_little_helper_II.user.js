@@ -2324,6 +2324,13 @@ var mainGC = function() {
                     el.value = el.value.replace(/#dd#/ig, day);
                     el.value = el.value.replace(/#GCName#/ig, $('#ctl00_ContentBody_CacheName')[0].innerHTML.replace(new RegExp('&nbsp;', 'g'),' '));
                     el.value = el.value.replace(/#GCCode#/ig, $('#ctl00_ContentBody_CoordInfoLinkControl1_uxCoordInfoCode')[0].innerHTML);
+                    el.value = el.value.replace(/#GCLink#/ig, "https://coord.info/"+$('#ctl00_ContentBody_CoordInfoLinkControl1_uxCoordInfoCode')[0].innerHTML);
+                    el.value = el.value.replace(/#Coords#/ig, determineListingCoords('CorrOrg'));
+                    var g_note = $('#viewCacheNote')[0].innerHTML;
+                    if (g_note != null && (g_note != "" && g_note != "Click to enter a note" && g_note != "Klicken zum Eingeben einer Notiz")) {
+                      el.value = el.value.replace(/#GCNote#/ig, g_note.replace(new RegExp('&gt;', 'g'),'>').replace(new RegExp('&lt;', 'g'),'<'));
+                    }
+                    el.value = el.value.replace(/#newline#/ig, "\n");
                 }
                 break;
             default:
@@ -12806,7 +12813,7 @@ var mainGC = function() {
             html += "  <option value=\"3\" " + (settings_show_openrouteservice_medium == "3" ? "selected=\"selected\"" : "") + ">Wheelchair (only Europe)</option>";
             html += "</select>" + "<br>";
             html += checkboxy('settings_show_copydata_menu', 'Show "Copy Data to Clipboard" menu in sidebar') + show_help3("Shows a menu to copy various cache data to the clipboard.") + "<br>";
-            var copydataOwnStuffPlaceholder = "Possible placeholder:<br>&nbsp; #yyyy# : Current year<br>&nbsp; #mm# : Current month<br>&nbsp; #dd# : Current day<br>&nbsp; #GCName# : GC name<br>&nbsp; #GCCode# : GC code<br>(Upper and lower case is not required in the placeholder name.)";
+            var copydataOwnStuffPlaceholder = "Possible placeholder:<br>&nbsp; #yyyy# : Current year<br>&nbsp; #mm# : Current month<br>&nbsp; #dd# : Current day<br>&nbsp; #GCName# : GC name<br>&nbsp; #GCCode# : GC code<br>&nbsp; #GCLink# : GC link<br>&nbsp; #Coords# : Shown coordinates<br>&nbsp; #GCNote# : User note (if not empty)<br>&nbsp; #newline# : Add new line<br>(Upper and lower case is not required in the placeholder name.)";
             html += "&nbsp;&nbsp;" + checkboxy('settings_show_copydata_own_stuff_show', 'Show');
             html += " <input class='gclh_form' type='text' size='13' id='settings_show_copydata_own_stuff_name' value='" + settings_show_copydata_own_stuff_name + "'>";
             html += "<img src=" + global_restore_icon + " id='restore_settings_show_copydata_own_stuff_name' title='back to default' style='width: 12px; cursor: pointer;'>";
