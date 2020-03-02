@@ -37,6 +37,9 @@
 // @grant            GM_addStyle
 // ==/UserScript==
 
+//////////////////////////////////////
+// 1. Declaration, Init, Start ($$cap)
+//////////////////////////////////////
 var start = function(c) {
     checkRunningOnce();
     quitOnAdFrames()
@@ -626,9 +629,9 @@ var variablesInit = function(c) {
     return variablesInitDeref.promise();
 };
 
-//////////////////////////////////
-// Google Maps - Main
-//////////////////////////////////
+/////////////////////////
+// 2. Google Maps ($$cap)
+/////////////////////////
 var mainGMaps = function() {
     try {
         // Add link to GC Map on Google Maps page.
@@ -692,9 +695,9 @@ var mainGMaps = function() {
     } catch(e) {gclh_error("mainGMaps",e);}
 };
 
-//////////////////////////////////
-// Project GC - Main
-//////////////////////////////////
+////////////////////////
+// 3. Project GC ($$cap)
+////////////////////////
 var mainPGC = function() {
     try {
         // CSS Style hinzufügen.
@@ -1042,12 +1045,11 @@ var mainPGC = function() {
     } catch(e) {gclh_error("mainPGC",e);}
 };
 
-//////////////////////////////////
-// Openstreetmap - Main
-//////////////////////////////////
+///////////////////////////
+// 4. Openstreetmap ($$cap)
+///////////////////////////
 var mainOSM = function() {
     try {
-
         // Add link to GC Map on Openstreetmap.
         function addGCButton(waitCount) {
             if (document.location.href.match(/^https?:\/\/www\.openstreetmap\.org\/(.*)#map=/) && $(".control-key").length) {
@@ -1070,9 +1072,9 @@ var mainOSM = function() {
     } catch(e) {gclh_error("mainOSM",e);}
 };
 
-//////////////////////////////////
-// GClh asynchron - Main
-//////////////////////////////////
+//////////////////////////
+// 5. GC asynchron ($$cap)
+//////////////////////////
 var mainGCAsyn = function() {
     try {
         // Get header from other GC page.
@@ -1126,9 +1128,10 @@ var mainGCAsyn = function() {
     } catch(e) {gclh_error("asynchronGC",e);}
 };
 
-//////////////////////////////////
-// GClh - Main
-//////////////////////////////////
+////////////////////////
+// 6. GC ($$cap)         (For the geocaching webpages.)
+// 6.1 GC - Main ($$cap) (For the geocaching webpages.)
+////////////////////////
 var mainGC = function() {
 
 // Hide Facebook.
@@ -3679,23 +3682,6 @@ var mainGC = function() {
     }
 
 // Maxlength of logtext and unsaved warning.
-    // This function will also used for "Show length of hint, cachename and placed by on hide edit page".
-    function limitedField(editor, counterelement, limitNum, showWords) {
-        changed = true;
-        // Aus GC Funktion "checkLogInfoLength".
-        var length = $(editor).val().replace(/\n/g, "\r\n").length;
-        if (length >= limitNum) {
-            counterelement.innerHTML = '<font color="red">' + length + '/' + limitNum + '</font>';
-        } else counterelement.innerHTML = length + '/' + limitNum;
-        if (showWords) {
-            var wordsArr = $(editor).val().replace(/\n/g, ' ').split(' ');
-            var words = 0;
-            for (let i=0; i<wordsArr.length; i++) {
-                if (wordsArr[i].trim() != '') words++;
-            }
-            counterelement.innerHTML += ' (' + words + ' words)';
-        }
-    }
     if (((document.location.href.match(/\.com\/seek\/log\.aspx\?(id|guid|ID|wp|LUID|PLogGuid)\=/) ||
           document.location.href.match(/\.com\/track\/log\.aspx\?(id|wid|guid|ID|LUID|PLogGuid)\=/)) && $('#litDescrCharCount')[0]) ||
           document.location.href.match(/\.com\/play\/geocache\/gc\w+\/log/)) {
@@ -4247,7 +4233,6 @@ var mainGC = function() {
 // Try to find values from Project-GC PQSplit
     if (document.location.href.match(/\.com\/pocket\/gcquery\.aspx/)){
         try{
-
             function findGetParameter(parameterName) {
                 var result = null,
                     tmp = [];
@@ -4264,7 +4249,6 @@ var mainGC = function() {
 
                 //Test if we already saved the PQ. If yes => close the window
                 if($( "#divContentMain p.Success" ).length){
-
                     setTimeout(function(){
                         window.close();
                     },10);
@@ -7657,20 +7641,6 @@ var mainGC = function() {
         } catch(e) {gclh_error("Improve new dashboard",e);}
     }
 
-// Funktionen zum sortieren, in der unpublished Übersicht und in der Erweiterung im Dashboard.
-    function abc(a, b) {
-        var sort = (a.getElementsByTagName('strong')[0].innerHTML < b.getElementsByTagName('strong')[0].innerHTML) ? -1 : (b.getElementsByTagName('strong')[0].innerHTML < a.getElementsByTagName('strong')[0].innerHTML) ? 1 : 0;
-        return sort;
-    }
-    function gcOld(a, b) {
-        var sort = (a.getElementsByTagName('a')[0].href.substring(19, 26) < b.getElementsByTagName('a')[0].href.substring(19, 26)) ? -1 : (b.getElementsByTagName('a')[0].href.substring(19, 26) < a.getElementsByTagName('a')[0].href.substring(19, 26)) ? 1 : 0;
-        return sort;
-    }
-    function gcNew(a, b) {
-        var sort = (a.getElementsByTagName('a')[0].href.substring(19, 26) > b.getElementsByTagName('a')[0].href.substring(19, 26)) ? -1 : (b.getElementsByTagName('a')[0].href.substring(19, 26) > a.getElementsByTagName('a')[0].href.substring(19, 26)) ? 1 : 0;
-        return sort;
-    }
-
 // Show unpublished hides in dashboard.
     if (is_page('dashboard') && settings_showUnpublishedHides) {
         try {
@@ -8435,6 +8405,26 @@ var mainGC = function() {
 
                     sidebar_enhancements_buffer[local_gc_code] = searchmap_sidebar_enhancements;
                 });
+            }
+            // Get favorite score.
+            function getFavScoreSearchmapSidebarEnhancements(anker_element, userToken, gccode) {
+               $.ajax({
+                   type: "POST",
+                   cache: false,
+                   url: '/datastore/favorites.svc/score?u=' + userToken,
+                   success: function (scoreResult) {
+                       var score = 0;
+                       if (scoreResult) score = scoreResult;
+                       if (score > 100) score = 100;
+                       if ($(anker_element)[0]){
+                           $('.favi_score_percent').each(function(){
+                               removeElement(this);
+                           });
+                           $(anker_element)[0].innerHTML = $(anker_element)[0].innerHTML + ' <span class="favi_score_percent">('+score+'%)';
+                           sidebar_enhancements_favi_buffer[gccode] = ' <span class="favi_score_percent">('+score+'%)';
+                       }
+                   }
+               });
             }
 
             // Processing all steps.
@@ -9321,26 +9311,6 @@ var mainGC = function() {
            }
        });
     }
-    // Get favorite score.
-    function getFavScoreSearchmapSidebarEnhancements(anker_element, userToken, gccode) {
-       $.ajax({
-           type: "POST",
-           cache: false,
-           url: '/datastore/favorites.svc/score?u=' + userToken,
-           success: function (scoreResult) {
-               var score = 0;
-               if (scoreResult) score = scoreResult;
-               if (score > 100) score = 100;
-               if ($(anker_element)[0]){
-                   $('.favi_score_percent').each(function(){
-                       removeElement(this);
-                   });
-                   $(anker_element)[0].innerHTML = $(anker_element)[0].innerHTML + ' <span class="favi_score_percent">('+score+'%)';
-                   sidebar_enhancements_favi_buffer[gccode] = ' <span class="favi_score_percent">('+score+'%)';
-               }
-           }
-       });
-    }
 
 // Leaflet Map für Trackables vergrößern und Zoom per Mausrad zulassen.
     if (document.location.href.match(/\.com\/track\/map/)) {
@@ -9573,12 +9543,6 @@ var mainGC = function() {
                 $('#'+logsId+'reload')[0].title = "Reload " + logsName;
             }
         } else setLogStDummy(type, logsName, logsId);
-    }
-    function buildTimeString(min) {
-        if      (min < 2)    return (min + " minute");
-        else if (min < 121)  return (min + " minutes");
-        else if (min < 2881) return ("more than " + Math.floor(min / 60) + " hours");
-        else                 return ("more than " + Math.floor(min / (60*24)) + " days");
     }
     function setLogStClear(type, logsName, logsId) {
         $('#'+logsId+'body').children().each(function() {this.remove();});
@@ -10539,266 +10503,10 @@ var mainGC = function() {
         } catch(e) {gclh_error("Special days",e);}
     }
 
-//////////////////////////////////
-// GClh - Main Functions
-//////////////////////////////////
-    function in_array(search, arr) {
-        for (var i = 0; i < arr.length; i++) {if (arr[i] == search) return true;}
-        return false;
-    }
-
-    function caseInsensitiveSort(a, b) {
-        var ret = 0;
-        a = a.toLowerCase();
-        b = b.toLowerCase();
-        if (a > b) ret = 1;
-        if (a < b) ret = -1;
-        return ret;
-    }
-
-// decodeURIComponent for non-standard unicode encoding (issue-818)
-    function decodeUnicodeURIComponent(s) {
-        function unicodeToChar(text) {
-            return text.replace(/%u[\dA-F]{4}/gi,
-                function (match) {
-                    return String.fromCharCode(parseInt(match.replace(/%u/g, ''), 16));
-                });
-        }
-        return decodeURIComponent(unicodeToChar(s));
-    }
-
-// Enkodieren in url und dekodieren aus url.
-    function urlencode(s) {
-        s = s.replace(/&amp;/g, "&");
-        s = encodeURIComponent(s);  // Alles außer: A bis Z, a bis z und - _ . ! ~ * ' ( )
-        s = s.replace(/~/g, "%7e");
-        s = s.replace(/'/g, "%27");
-        s = s.replace(/%26amp%3b/g, "%26");
-        s = s.replace(/%26nbsp%3B/g, "%20");
-        s = s.replace(/ /g, "+");
-        return s;
-    }
-
-    function urldecode(s) {
-        s = s.replace(/\+/g, " ");
-        s = s.replace(/%252b/ig, "+");
-        s = s.replace(/%7e/g, "~");
-        s = s.replace(/%27/g, "'");
-        s = decodeUnicodeURIComponent(s);
-        return s;
-    }
-
-// HTML dekodieren, zB: "&amp;" in "&" (zB: User "Rajko & Dominik".)
-    function decode_innerHTML(v_mit_innerHTML) {
-        var elem = document.createElement('textarea');
-        elem.innerHTML = v_mit_innerHTML.innerHTML;
-        v_decode = elem.value;
-        v_new = v_decode.trim();
-        return v_new;
-    }
-    function html_to_str(s) {
-        s = s.replace(/\&amp;/g, "&");
-        s = s.replace(/\&nbsp;/g, " ");
-        return s;
-    }
-
-    function trim(s) {
-        var whitespace = ' \n ';
-        for (var i = 0; i < whitespace.length; i++) {
-            while (s.substring(0, 1) == whitespace.charAt(i)) {
-                s = s.substring(1, s.length);
-            }
-            while (s.substring(s.length - 1, s.length) == whitespace.charAt(i)) {
-                s = s.substring(0, s.length - 1);
-            }
-        }
-        if (s.substring(s.length - 6, s.length) == "&nbsp;") s = s.substring(0, s.length - 6);
-        return s;
-    }
-
-// Change coordinates from N/S/E/W Deg Min.Sec to Dec.
-    function toDec(coords) {
-        var match = coords.match(/([0-9]+)°([0-9]+)\.([0-9]+)′(N|S), ([0-9]+)°([0-9]+)\.([0-9]+)′(W|E)/);
-        if (match) {
-            var dec1 = parseInt(match[1], 10) + (parseFloat(match[2] + "." + match[3]) / 60);
-            if (match[4] == "S") dec1 = dec1 * -1;
-            dec1 = Math.round(dec1 * 10000000) / 10000000;
-            var dec2 = parseInt(match[5], 10) + (parseFloat(match[6] + "." + match[7]) / 60);
-            if (match[8] == "W") dec2 = dec2 * -1;
-            dec2 = Math.round(dec2 * 10000000) / 10000000;
-            return new Array(dec1, dec2);
-        } else {
-            match = coords.match(/(N|S) ([0-9]+)°? ([0-9]+)\.([0-9]+)′?'? (E|W) ([0-9]+)°? ([0-9]+)\.([0-9]+)/);
-            if (match) {
-                var dec1 = parseInt(match[2], 10) + (parseFloat(match[3] + "." + match[4]) / 60);
-                if (match[1] == "S") dec1 = dec1 * -1;
-                dec1 = Math.round(dec1 * 10000000) / 10000000;
-                var dec2 = parseInt(match[6], 10) + (parseFloat(match[7] + "." + match[8]) / 60);
-                if (match[5] == "W") dec2 = dec2 * -1;
-                dec2 = Math.round(dec2 * 10000000) / 10000000;
-                return new Array(dec1, dec2);
-            } else {
-                match = coords.match(/(N|S) ([0-9]+) ([0-9]+) ([0-9]+)\.([0-9]+) (E|W) ([0-9]+) ([0-9]+) ([0-9]+)\.([0-9]+)/);
-                if (match) {
-                    var dec1 = parseInt(match[2], 10) + (parseFloat(match[3]) / 60) + (parseFloat(match[4] + "." + match[5]) / 3600);
-                    if (match[1] == "S") dec1 = dec1 * -1;
-                    dec1 = Math.round(dec1 * 10000000) / 10000000;
-                    var dec2 = parseInt(match[7], 10) + (parseFloat(match[8]) / 60) + (parseFloat(match[9] + "." + match[10]) / 3600);
-                    if (match[6] == "W") dec2 = dec2 * -1;
-                    dec2 = Math.round(dec2 * 10000000) / 10000000;
-                    return new Array(dec1, dec2);
-                } else {
-                    match = coords.match(/(N|S) ([0-9]+) ([0-9]+) ([0-9]+\..[0-9].) (E|W) ([0-9]+) ([0-9]+) ([0-9]+\..[0-9].)/);
-                    if (match) {
-                        var dec1 = parseInt(match[2], 10) + (parseFloat(match[3]) / 60) + (parseFloat(match[4]) / 3600);
-                        if (match[1] == "S") dec1 = dec1 * -1;
-                        dec1 = Math.round(dec1 * 10000000) / 10000000;
-                        var dec2 = parseInt(match[6], 10) + (parseFloat(match[7]) / 60) + (parseFloat(match[8]) / 3600);
-                        if (match[5] == "W") dec2 = dec2 * -1;
-                        dec2 = Math.round(dec2 * 10000000) / 10000000;
-                        return new Array(dec1, dec2);
-                    } else return false;
-                }
-            }
-        }
-    }
-// Change coordinates from Deg to DMS.
-    function DegtoDMS(coords) {
-        var match = coords.match(/^(N|S) ([0-9][0-9]). ([0-9][0-9])\.([0-9][0-9][0-9]) (E|W) ([0-9][0-9][0-9]). ([0-9][0-9])\.([0-9][0-9][0-9])$/);
-        if (!match) return "";
-        var lat1 = parseInt(match[2], 10);
-        var lat2 = parseInt(match[3], 10);
-        var lat3 = parseFloat("0." + match[4]) * 60;
-        lat3 = Math.round(lat3 * 10000) / 10000;
-        var lng1 = parseInt(match[6], 10);
-        var lng2 = parseInt(match[7], 10);
-        var lng3 = parseFloat("0." + match[8]) * 60;
-        lng3 = Math.round(lng3 * 10000) / 10000;
-        return match[1] + " " + lat1 + "° " + lat2 + "' " + lat3 + "\" " + match[5] + " " + lng1 + "° " + lng2 + "' " + lng3 + "\"";
-    }
-// Change coordinates from Dec to Deg.
-    function DectoDeg(lat, lng) {
-        var n = "000";
-        lat = lat / 10000000;
-        var pre = "";
-        if (lat > 0) pre = "N";
-        else {
-            pre = "S";
-            lat = lat * -1;
-        }
-        var tmp1 = parseInt(lat);
-        var tmp2 = (lat - tmp1) * 60;
-        tmp1 = String(tmp1);
-        if (tmp1.length == 1) tmp1 = "0" + tmp1;
-        tmp2 = Math.round(tmp2 * 10000) / 10000;
-        tmp2 = String(tmp2);
-        if (tmp2.length == 0) tmp2 = tmp2 + "0.000";
-        else if (tmp2.indexOf(".") == -1) tmp2 = tmp2 + ".000";
-        else if (tmp2.indexOf(".") != -1) tmp2 = tmp2 + n.slice(tmp2.length - tmp2.indexOf(".") - 1);
-        var new_lat = pre + " " + tmp1 + "° " + tmp2;
-        lng = lng / 10000000;
-        var pre = "";
-        if (lng > 0) pre = "E";
-        else {
-            pre = "W";
-            lng = lng * -1;
-        }
-        var tmp1 = parseInt(lng);
-        var tmp2 = (lng - tmp1) * 60;
-        tmp1 = String(tmp1);
-        if (tmp1.length == 2) tmp1 = "0" + tmp1;
-        else if (tmp1.length == 1) tmp1 = "00" + tmp1;
-        tmp2 = Math.round(tmp2 * 10000) / 10000;
-        tmp2 = String(tmp2);
-        if (tmp2.length == 0) tmp2 = tmp2 + "0.000";
-        else if (tmp2.indexOf(".") == -1) tmp2 = tmp2 + ".000";
-        else if (tmp2.indexOf(".") != -1) tmp2 = tmp2 + n.slice(tmp2.length - tmp2.indexOf(".") - 1);
-        var new_lng = pre + " " + tmp1 + "° " + tmp2;
-        return new_lat + " " + new_lng;
-    }
-
-    /*
-        element_to_copy:    innerHtml of this element will be copied. If you pass
-                            a string, the string will be the copied text. In this
-                            case you have to pass an anker_element!!!
-
-        anker_element:      after this element the copy marker will be inserted,
-                            if you set this to null, the element_to_copy will be
-                            used as an anker
-
-        title:              you can enter a text that will be displayed between
-                            Copy --TEXT OF TITLE-- to clipboard. If you leave it
-                            blank, it will just "Copy to clipboard" be displayed
-
-        style               You can add styles to the surrounding span by passing
-                            it in this variable
-    */
-    function addCopyToClipboardLink(element_to_copy, anker_element= null, title="", style= ""){
-        try {
-            var ctoc = false;
-            var span = document.createElement('span');
-            span.setAttribute("class",'ctoc_link');
-            span.innerHTML = '<a class="ctoc_link" href="javascript:void(0);"><img src="'+global_copy_icon+'" title="Copy ' + title + ' ' + 'to clipboard" style="vertical-align: text-top;"> </a>';
-            if(style != ""){
-                span.setAttribute("style", style);
-            }
-            if(!anker_element) anker_element = element_to_copy;
-
-            anker_element.parentNode.insertBefore(span, anker_element);
-
-            appendCssStyle(".ctoc_link:link {text-decoration: none ;}", null, 'ctoc_link_style_id');
-
-            span.addEventListener('click', function() {
-                // Tastenkombination Strg+c ausführen für eigene Verarbeitung.
-                ctoc = true;
-                document.execCommand('copy');
-            }, false);
-            document.addEventListener('copy', function(e){
-                // Normale Tastenkombination Strg+c für markierter Bereich hier nicht verarbeiten. Nur eigene Tastenkombination Strg+c hier verarbeiten.
-                if (!ctoc) return;
-                // Gegebenenfalls markierter Bereich wird hier nicht beachtet.
-                e.preventDefault();
-                // Copy Data wird hier verarbeitet.
-                if (typeof element_to_copy === 'string' || element_to_copy instanceof String){
-                    e.clipboardData.setData('text/plain', element_to_copy);
-                }else{
-                    e.clipboardData.setData('text/plain', element_to_copy.innerHTML);
-                }
-                animateClick(span);
-                ctoc = false;
-            });
-        } catch(e) {gclh_error("Copy to clipboard",e);}
-    }
-
-    function insertAfter(newNode, referenceNode) {
-        referenceNode.parentNode.insertBefore(newNode, referenceNode.nextSibling);
-    }
-
-    function removeElement(element){
-        if(element) element.parentNode.removeChild(element);
-    }
-
-// Close Overlays, Find Player, Config, Sync.
-    function btnClose(clearUrl) {
-        if (global_mod_reset) {
-            rcClose();
-            return;
-        }
-        if ($('#bg_shadow')[0]) $('#bg_shadow')[0].style.display = "none";
-        if ($('#settings_overlay')[0]) $('#settings_overlay')[0].style.display = "none";
-        if ($('#sync_settings_overlay')[0]) $('#sync_settings_overlay')[0].style.display = "none";
-        if ($('#findplayer_overlay')[0]) $('#findplayer_overlay')[0].style.display = "none";
-        if (clearUrl != false) document.location.href = clearUrlAppendix(document.location.href, false);
-    }
-
-// Get Finds out of login text box.
-    function get_my_finds() {
-        var finds = "";
-        if ($('.cache-count').text()) finds = parseInt($('.cache-count').text().replace(/\s/g,'').match(/[0-9,\.]+/)[0].replace(/[,\.]/,""));
-        return finds;
-    }
-
-// Sucht Original Usernamen des Owners aus Listing.
+/////////////////////////////
+// 6.2 GC - Functions ($$cap) (Functions for the geocaching webpages.)
+/////////////////////////////
+// Searches for the owner's original username from the listing.
     function get_real_owner() {
         if ($('#ctl00_ContentBody_bottomSection')) {
             var links = $('#ctl00_ContentBody_bottomSection a[href*="/seek/nearest.aspx?u="]');
@@ -10821,7 +10529,7 @@ var mainGC = function() {
         }
     }
 
-// Zu lange Zeilen "kürzen", damit nicht umgebrochen wird.
+// "Shorten" lines that are too long so that they do not wrap.
     function noBreakInLine(n_side, n_maxwidth, n_title) {
         if (n_side == "" || n_side == undefined || n_maxwidth == 0) return;
         n_side.setAttribute("style", "max-width: " + n_maxwidth + "px; display: inline-block; overflow: hidden; vertical-align: bottom; white-space: nowrap; text-overflow: ellipsis;");
@@ -10963,7 +10671,7 @@ var mainGC = function() {
         return tpl;
     }
 
-// Zebra Look einfärben bzw. Einfärbung entfernen.
+// Zebra look: colorize or remove.
     function setLinesColorInZebra(para, lines, linesTogether) {
         if (lines.length == 0) return;
         var replaceSpec = /(AlternatingRow)(\s*)/g;
@@ -11017,7 +10725,7 @@ var mainGC = function() {
         }
     }
 
-// User, Owner, Reviewer, VIPs einfärben bzw. Einfärbung entfernen.
+// User, Owner, Reviewer, VIPs: colorize or remove.
     function setLinesColorUser(paraStamm, tasks, lines, linesTogether, owner, bookmarklist) {
         if (lines.length == 0) return;
         var user = global_me;
@@ -11134,7 +10842,7 @@ var mainGC = function() {
         }
     }
 
-// Spezifikation für Einfärbung Zeile entfernen.
+// Remove specification for coloring line.
     function setLinesColorNone(lines, replSpez) {
         if (lines.length == 0) return;
         for (var i = 0; i < lines.length; i++) {
@@ -11145,82 +10853,7 @@ var mainGC = function() {
         }
     }
 
-// Neue Parameter im GClh Config hervorheben und Versions Info setzen.
-    var d = "<div  style='background-color: rgba(240, 223, 198, #); width: 100%; height: 100%; padding: 2px 0px 2px 2px; margin-left: -2px;'>";
-    var s = "<span style='background-color: rgba(240, 223, 198, #); float: right; padding-top: 25px; width: 100%; margin: -22px 2px 0px 0px;'></span>";
-//--> $$001
-    newParameterOn1 = d.replace("#", "1.0");
-    newParameterOn2 = d.replace("#", "0.3");
-    newParameterOn3 = d.replace("#", "0.6");
-    newParameterLL1 = s.replace("#", "1.0");
-    newParameterLL2 = s.replace("#", "0.3");
-    newParameterLL3 = s.replace("#", "0.6");
-//<-- $$001
-    function newParameterVersionSetzen(version) {
-        var newParameterVers = "<span style='font-size: 70%; font-style: italic; float: right; margin-top: -14px; margin-right: 4px;' ";
-        if (version != "") newParameterVers += "title='Implemented with version " + version + "'>" + version + "</span>";
-        else newParameterVers += "></span>";
-        if (settings_hide_colored_versions) newParameterVers = "";
-        return newParameterVers;
-    }
-    newParameterOff = "</div>";
-    function newParameterLLVersionSetzen(version) {
-        var newParameterVers = '<span style="font-size: 70%; font-style: italic; margin-top: 10px; margin-left: -180px; position: absolute; cursor: default;"';
-        if (version != "") newParameterVers += 'title="Implemented with version ' + version + '">' + version + '</span>';
-        else newParameterVers += '></span>';
-        if (settings_hide_colored_versions) newParameterVers = "";
-        return newParameterVers;
-    }
-    if (settings_hide_colored_versions) newParameterOn1 = newParameterOn2 = newParameterOn3 = newParameterLL1 = newParameterLL2 = newParameterLL3 = newParameterOff = "";
-
-// Seite abdunkeln.
-    function buildBgShadow() {
-        var shadow = document.createElement("div");
-        shadow.setAttribute("id", "bg_shadow");
-        shadow.setAttribute("style", "z-index:1000; width: 100%; height: 100%; background-color: #000000; position:fixed; top: 0; left: 0; opacity: 0.5; filter: alpha(opacity=50);");
-        $('body')[0].appendChild(shadow);
-        $('#bg_shadow')[0].addEventListener("click", btnClose, false);
-    }
-
-// Ist Config aktiv?
-    function check_config_page() {
-        var config_page = false;
-        if ($('#bg_shadow')[0] && $('#bg_shadow')[0].style.display == "" && $('#settings_overlay')[0] && $('#settings_overlay')[0].style.display == "") config_page = true;
-        return config_page;
-    }
-// Ist Sync aktiv?
-    function check_sync_page() {
-        var sync_page = false;
-        if ($('#bg_shadow')[0] && $('#bg_shadow')[0].style.display == "" && $('#sync_settings_overlay')[0] && $('#sync_settings_overlay')[0].style.display == "") sync_page = true;
-        return sync_page;
-    }
-
-// Ist spezielle Verarbeitung auf aktueller Seite erlaubt?
-    function checkTaskAllowed(task, doAlert) {
-        if ((document.location.href.match(/^https?:\/\/(www\.wherigo|www\.waymarking|labs\.geocaching)\.com/) || isMemberInPmoCache()) ||
-            (task != "Find Player" &&  document.location.href.match(/(\.com\/map\/|\.com\/play\/map)/))) {
-            if (doAlert != false) alert("This GC little helper functionality is not available at this page.\n\nPlease go to the \"Dashboard\" page, there is anyway all of these \nfunctionality available. ( www.geocaching.com/my )");
-            return false;
-        }
-        return true;
-    }
-
-// Zusatz in url, eingeleitet durch "#", zurücksetzen bis auf "#".
-    function clearUrlAppendix(url, onlyTheFirst) {
-        var urlSplit = url.split('#');
-        var newUrl = "";
-        if (onlyTheFirst) newUrl = url.replace(urlSplit[1], "").replace("##", "#");
-        else newUrl = urlSplit[0] + "#";
-        return newUrl;
-    }
-
-// Ist Basic Member in PMO Cache?
-    function isMemberInPmoCache() {
-        if (is_page("cache_listing") && $('#premium-upgrade-widget')[0]) return true;
-        else return false;
-    }
-
-// Installationszähler simulieren.
+// Simulate installation counter.
     function instCount(declaredVersion) {
         var side = $('body')[0];
         var div = document.createElement("div");
@@ -11246,7 +10879,7 @@ var mainGC = function() {
         }, 1000);
     }
 
-// Migrationsaufgaben erledigen für neue Version.
+// Do migration tasks for new version.
     function migrationTasks() {
         // Migrate Mail signature to Mail template (zu v0.4).
         if (getValue("migration_task_01", false) != true) {
@@ -11260,20 +10893,7 @@ var mainGC = function() {
         }
     }
 
-// Aktuelles Datum, Zeit.
-    function getDateTime() {
-        var now = new Date();
-        var aDate = $.datepicker.formatDate('dd.mm.yy', now);
-        var hrs = now.getHours();
-        var min = now.getMinutes();
-        hrs = ((hrs < 10) ? '0' + hrs : hrs);
-        min = ((min < 10) ? '0' + min : min);
-        var aTime = hrs+':'+min;
-        var aDateTime = aDate+' '+aTime;
-        return [aDate, aTime, aDateTime];
-    }
-
-// GC/TB Name, GC/TB Link, GC/TB Name Link, vorläufiges LogDate.
+// GC/TB Name, GC/TB Link, GC/TB Name Link, preliminary LogDate.
     function getGCTBInfo(newLogPage) {
         var GCTBName = ""; var GCTBLink = ""; var GCTBNameLink = ""; var LogDate = "";
         if (newLogPage) {
@@ -11296,7 +10916,7 @@ var mainGC = function() {
         return [GCTBName, GCTBLink, GCTBNameLink, LogDate];
     }
 
-// Show, hide Box. Z.B.: Beide VIP Boxen im Cache Listing.
+// Show, hide box. e.g.: Both VIP boxes in the cache listing.
     function showHideBoxCL(id_lnk, first) {
         if (id_lnk.match("lnk_gclh_config_")) var is_config = true;
         else is_config = false;
@@ -11351,9 +10971,6 @@ var mainGC = function() {
         return tbl;
     }
 
-// Trim decimal value to a given number of digits.
-    function roundTO(val, decimals) {return Number(Math.round(val+'e'+decimals)+'e-'+decimals);}
-
 // Determine waypoints.
     function queryListingWaypoints(original) {
         var waypoints = [];
@@ -11406,12 +11023,6 @@ var mainGC = function() {
             return true;
         } else return false;
     }
-
-// Calculate tile numbers X/Y from latitude/longitude or reverse.
-    function lat2tile(lat,zoom)  {return (Math.floor((1-Math.log(Math.tan(lat*Math.PI/180) + 1/Math.cos(lat*Math.PI/180))/Math.PI)/2 *Math.pow(2,zoom)));}
-    function long2tile(lon,zoom) {return (Math.floor((lon+180)/360*Math.pow(2,zoom)));}
-    function tile2long(x,z) {return (x/Math.pow(2,z)*360-180);}
-    function tile2lat(y,z) {var n=Math.PI-2*Math.PI*y/Math.pow(2,z); return (180/Math.PI*Math.atan(0.5*(Math.exp(n)-Math.exp(-n))));}
 
 // Build box for VIPS, VUPS, All Links, Linklist on dashboard.
     function buildDashboardCss() {
@@ -11524,7 +11135,7 @@ var mainGC = function() {
         } catch(e) {gclh_error("showLogCounter",e);}
     }
 
-// Show/Hide comapct logs.
+// Show/Hide compact logs.
     function toggle_compact_logbook(){
         $('#cache_logs_container').toggleClass('compact_logbook');
         if ($('#cache_logs_container').hasClass('compact_logbook')) {
@@ -11551,21 +11162,7 @@ var mainGC = function() {
         $('#ctl00_ContentBody_uxLogbookLink')[0].parentNode.append(span);
     }
 
-// Ist Seite eigene Statistik?
-    function isOwnStatisticsPage(){
-        if ((document.location.href.match(/\.com\/my\/statistics\.aspx/)) ||
-            (is_page("publicProfile") && $('#ctl00_ContentBody_lblUserProfile')[0].innerHTML.match(global_me) && $('#ctl00_ContentBody_ProfilePanel1_lnkStatistics.Active')[0])) {
-            return true;
-        } else return false;
-    }
-
-// Consideration of special keys ctrl, alt, shift on keyboard input.
-    function noSpecialKey(e) {
-        if (e.ctrlKey != false || e.altKey != false || e.shiftKey != false) return false;
-        else return true;
-    }
-
-// User, guid aus nachgelesenem alten oder neuem Public Profile ermitteln.
+// Determine user, guid from the read old or new public profile.
     function getUserGuidFromProfile(respText) {
         var user = respText.match(/id="ctl00_(ProfileHead_ProfileHeader|ContentBody_ProfilePanel1)_lblMemberName">(.*?)<\/span>/);
         var guid = respText.match(/href="\/account\/messagecenter\?recipientId=(.*?)"/);
@@ -11579,7 +11176,7 @@ var mainGC = function() {
         return [false, false];
     }
 
-// User aus url ermitteln.
+// Determine user from url.
     function getUrlUser() {
         var urluser = document.location.href.match(/\.com\/seek\/nearest\.aspx(.*)(\?ul|\?u|&ul|&u)=(.*)/);
         urluser = urldecode(urluser[3].replace(/&([A-Za-z0-9]+)=(.*)/, ""));
@@ -11593,6 +11190,14 @@ var mainGC = function() {
         if (waitCount == undefined) var waitCount = 0;
         if ($('.groundspeak-control-findmylocation')[0] && $('.leaflet-control-scale')[0]) fkt();
         else {waitCount++; if (waitCount <= 50) setTimeout(function(){isMapLoad(fkt);}, 200);}
+    }
+
+    function insertAfter(newNode, referenceNode) {
+        referenceNode.parentNode.insertBefore(newNode, referenceNode.nextSibling);
+    }
+
+    function removeElement(element){
+        if(element) element.parentNode.removeChild(element);
     }
 
 // Determine cache listing coordinates.
@@ -11637,52 +11242,9 @@ var mainGC = function() {
         else return "";
     }
 
-// Convert cache type to cache symbol.
-    function convertCachetypeToCachesymbol(cacheType) {
-        var cacheSymbol = '';
-        if (cacheType) {
-            if (cacheType.match(/traditional/i)) cacheSymbol = '#traditional';
-            else if (cacheType.match(/multi/i)) cacheSymbol = '#multi';
-            else if (cacheType.match(/mystery/i)) cacheSymbol = '#mystery';
-            else if (cacheType.match(/earth/i)) cacheSymbol = '#earth';
-            else if (cacheType.match(/letterbox/i)) cacheSymbol = '#letterbox';
-            else if (cacheType.match(/webcam/i)) cacheSymbol = '#webcam';
-            else if (cacheType.match(/wherigo/i)) cacheSymbol = '#wherigo';
-            else if (cacheType.match(/virtual/i)) cacheSymbol = '#virtual';
-            else if (cacheType.match(/mega/i)) cacheSymbol = '#mega';
-            else if (cacheType.match(/giga/i)) cacheSymbol = '#giga';
-            else if (cacheType.match(/trash/i)) cacheSymbol = '#cito';
-            else if (cacheType.match(/Community Celebration/i)) cacheSymbol = '#celebration';
-            else if (cacheType.match(/HQ Celebration/i)) cacheSymbol = '#hq_celebration';
-            else if (cacheType.match(/(Project A\.P\.E\.|Project APE)/i)) cacheSymbol = '#ape';
-            else if (cacheType.match(/Groundspeak HQ/i)) cacheSymbol = '#hq';
-            else if (cacheType.match(/event/i)) cacheSymbol = '#event';
-        }
-        return cacheSymbol;
-    }
-
-// Determine current date and deliver year, month and day.
-    function determineCurrentDate() {
-        var now = new Date();
-        var day = now.getDate().toString().length < 2 ? "0"+now.getDate() : now.getDate();
-        var month = (now.getMonth()+1).toString().length < 2 ? "0"+(now.getMonth()+1) : (now.getMonth()+1);
-        var year = now.getFullYear();
-        return [year, month, day];
-    }
-
-// Animate Click.
-    function animateClick(element) {
-        var opacityOrg = window.getComputedStyle(element).opacity;
-        element.style.opacity = '0.3';
-        setTimeout(function() {
-            if (opacityOrg) element.style.opacity = opacityOrg;
-            else element.style.opacity = unset;
-        }, 200);
-    }
-
-//////////////////////////////////
-// GClh - Searchs Functions
-//////////////////////////////////
+////////////////////////////////////////
+// 6.3 GC - User defined searchs ($$cap) (User defined searchs on the geocaching webpages.)
+////////////////////////////////////////
     function create_config_css_search() {
         var html = "";
         html += ".btn-context {";
@@ -11898,9 +11460,9 @@ var mainGC = function() {
         } catch(e) {gclh_error("User defined search",e);}
     }
 
-//////////////////////////////////
-// GClh - Find Player Functions
-//////////////////////////////////
+///////////////////////////////
+// 6.4 GC - Find Player ($$cap) (Find Player on the geocaching webpages.)
+///////////////////////////////
 // Create and hide the "Find Player" Form.
     function createFindPlayerForm() {
         btnClose();
@@ -11961,9 +11523,10 @@ var mainGC = function() {
         $('#findplayer_field')[0].focus();
     }
 
-//////////////////////////////////
-// GClh - Config Functions - Main
-//////////////////////////////////
+//////////////////////////////
+// 6.5 Config ($$cap)          (GClh Config on the geocaching webpages.)
+// 6.5.1 Config - Main ($$cap) (GClh Config on the geocaching webpages.)
+//////////////////////////////
     function checkboxy(setting_id, label) {
         // Hier werden auch gegebenenfalls "Clone" von Parametern verarbeitet. (Siehe Erläuterung weiter unten bei "setEvForDouPara".)
         var setting_idX = setting_id;
@@ -14052,9 +13615,45 @@ var mainGC = function() {
         }
     }
 
-//////////////////////////////////
-// GClh - Config Functions
-//////////////////////////////////
+///////////////////////////////////
+// 6.5.2 Config - Functions ($$cap) (Functions for GClh Config on the geocaching webpages.)
+///////////////////////////////////
+// Highlight new parameters in GClh Config and set version info.
+    var d = "<div  style='background-color: rgba(240, 223, 198, #); width: 100%; height: 100%; padding: 2px 0px 2px 2px; margin-left: -2px;'>";
+    var s = "<span style='background-color: rgba(240, 223, 198, #); float: right; padding-top: 25px; width: 100%; margin: -22px 2px 0px 0px;'></span>";
+//--> $$001
+    newParameterOn1 = d.replace("#", "1.0");
+    newParameterOn2 = d.replace("#", "0.3");
+    newParameterOn3 = d.replace("#", "0.6");
+    newParameterLL1 = s.replace("#", "1.0");
+    newParameterLL2 = s.replace("#", "0.3");
+    newParameterLL3 = s.replace("#", "0.6");
+//<-- $$001
+    function newParameterVersionSetzen(version) {
+        var newParameterVers = "<span style='font-size: 70%; font-style: italic; float: right; margin-top: -14px; margin-right: 4px;' ";
+        if (version != "") newParameterVers += "title='Implemented with version " + version + "'>" + version + "</span>";
+        else newParameterVers += "></span>";
+        if (settings_hide_colored_versions) newParameterVers = "";
+        return newParameterVers;
+    }
+    newParameterOff = "</div>";
+    function newParameterLLVersionSetzen(version) {
+        var newParameterVers = '<span style="font-size: 70%; font-style: italic; margin-top: 10px; margin-left: -180px; position: absolute; cursor: default;"';
+        if (version != "") newParameterVers += 'title="Implemented with version ' + version + '">' + version + '</span>';
+        else newParameterVers += '></span>';
+        if (settings_hide_colored_versions) newParameterVers = "";
+        return newParameterVers;
+    }
+    if (settings_hide_colored_versions) newParameterOn1 = newParameterOn2 = newParameterOn3 = newParameterLL1 = newParameterLL2 = newParameterLL3 = newParameterOff = "";
+
+// Reload page.
+    function reloadPage() {
+        if (document.location.href.indexOf("#") == -1 || document.location.href.indexOf("#") == document.location.href.length - 1) {
+            $('html, body').animate({scrollTop: 0}, 0);
+            document.location.reload(true);
+        } else document.location.replace(document.location.href.slice(0, document.location.href.indexOf("#")));
+    }
+
 // Radio Buttons zur Linklist.
     function handleRadioTopMenu(first) {
         if (first == true) {
@@ -14701,9 +14300,9 @@ var mainGC = function() {
         return settingsElements;
     }
 
-//////////////////////////////////
-// GClh - Config Functions - Reset
-//////////////////////////////////
+///////////////////////////////
+// 6.5.3 Config - Reset ($$cap) (Functions for GClh Config Reset on the geocaching webpages.)
+///////////////////////////////
     function rcPrepare() {
         global_mod_reset = true;
         if (document.getElementById('settings_overlay')) document.getElementById('settings_overlay').style.overflow = "hidden";
@@ -14844,9 +14443,9 @@ var mainGC = function() {
         window.location.reload(false);
     }
 
-//////////////////////////////////
-// GClh - Sync Functions
-//////////////////////////////////
+//////////////////////////////
+// 6.5.4 Config - Sync ($$cap) (Functions for GClh Config Sync on the geocaching webpages.)
+//////////////////////////////
 // Get/Set Config Data.
     function sync_getConfigData() {
         var data = {};
@@ -15052,14 +14651,6 @@ var mainGC = function() {
         return deferred.promise();
     }
 
-// Reload page.
-    function reloadPage() {
-        if (document.location.href.indexOf("#") == -1 || document.location.href.indexOf("#") == document.location.href.length - 1) {
-            $('html, body').animate({scrollTop: 0}, 0);
-            document.location.reload(true);
-        } else document.location.replace(document.location.href.slice(0, document.location.href.indexOf("#")));
-    }
-
 // Sync anzeigen.
     function gclh_showSync() {
         btnClose();
@@ -15157,11 +14748,461 @@ var mainGC = function() {
             });
     }
 
+//////////////////////////////////////
+// 6.6. GC - General Functions ($$cap) (Functions generally usable on geocaching webpages.)
+//////////////////////////////////////
+// Search in array.
+    function in_array(search, arr) {
+        for (var i = 0; i < arr.length; i++) {if (arr[i] == search) return true;}
+        return false;
+    }
+
+// Sort case insensitive.
+    function caseInsensitiveSort(a, b) {
+        var ret = 0;
+        a = a.toLowerCase();
+        b = b.toLowerCase();
+        if (a > b) ret = 1;
+        if (a < b) ret = -1;
+        return ret;
+    }
+// Sort functions.
+    function abc(a, b) {
+        var sort = (a.getElementsByTagName('strong')[0].innerHTML < b.getElementsByTagName('strong')[0].innerHTML) ? -1 : (b.getElementsByTagName('strong')[0].innerHTML < a.getElementsByTagName('strong')[0].innerHTML) ? 1 : 0;
+        return sort;
+    }
+    function gcOld(a, b) {
+        var sort = (a.getElementsByTagName('a')[0].href.substring(19, 26) < b.getElementsByTagName('a')[0].href.substring(19, 26)) ? -1 : (b.getElementsByTagName('a')[0].href.substring(19, 26) < a.getElementsByTagName('a')[0].href.substring(19, 26)) ? 1 : 0;
+        return sort;
+    }
+    function gcNew(a, b) {
+        var sort = (a.getElementsByTagName('a')[0].href.substring(19, 26) > b.getElementsByTagName('a')[0].href.substring(19, 26)) ? -1 : (b.getElementsByTagName('a')[0].href.substring(19, 26) > a.getElementsByTagName('a')[0].href.substring(19, 26)) ? 1 : 0;
+        return sort;
+    }
+
+// Decode URI component for non-standard unicode encoding (issue-818).
+    function decodeUnicodeURIComponent(s) {
+        function unicodeToChar(text) {
+            return text.replace(/%u[\dA-F]{4}/gi,
+                function (match) {
+                    return String.fromCharCode(parseInt(match.replace(/%u/g, ''), 16));
+                });
+        }
+        return decodeURIComponent(unicodeToChar(s));
+    }
+// Encode in URL.
+    function urlencode(s) {
+        s = s.replace(/&amp;/g, "&");
+        s = encodeURIComponent(s);  // Alles außer: A bis Z, a bis z und - _ . ! ~ * ' ( )
+        s = s.replace(/~/g, "%7e");
+        s = s.replace(/'/g, "%27");
+        s = s.replace(/%26amp%3b/g, "%26");
+        s = s.replace(/%26nbsp%3B/g, "%20");
+        s = s.replace(/ /g, "+");
+        return s;
+    }
+// Decode from URL.
+    function urldecode(s) {
+        s = s.replace(/\+/g, " ");
+        s = s.replace(/%252b/ig, "+");
+        s = s.replace(/%7e/g, "~");
+        s = s.replace(/%27/g, "'");
+        s = decodeUnicodeURIComponent(s);
+        return s;
+    }
+// Decode HTML, e.g.: "&amp;" in "&" (e.g.: User "Rajko & Dominik").
+    function decode_innerHTML(v_mit_innerHTML) {
+        var elem = document.createElement('textarea');
+        elem.innerHTML = v_mit_innerHTML.innerHTML;
+        v_decode = elem.value;
+        v_new = v_decode.trim();
+        return v_new;
+    }
+    function html_to_str(s) {
+        s = s.replace(/\&amp;/g, "&");
+        s = s.replace(/\&nbsp;/g, " ");
+        return s;
+    }
+
+// Trim.
+    function trim(s) {
+        var whitespace = ' \n ';
+        for (var i = 0; i < whitespace.length; i++) {
+            while (s.substring(0, 1) == whitespace.charAt(i)) {
+                s = s.substring(1, s.length);
+            }
+            while (s.substring(s.length - 1, s.length) == whitespace.charAt(i)) {
+                s = s.substring(0, s.length - 1);
+            }
+        }
+        if (s.substring(s.length - 6, s.length) == "&nbsp;") s = s.substring(0, s.length - 6);
+        return s;
+    }
+// Trim decimal value to a given number of digits.
+    function roundTO(val, decimals) {return Number(Math.round(val+'e'+decimals)+'e-'+decimals);}
+
+// Change coordinates from N/S/E/W Deg Min.Sec to Dec.
+    function toDec(coords) {
+        var match = coords.match(/([0-9]+)°([0-9]+)\.([0-9]+)′(N|S), ([0-9]+)°([0-9]+)\.([0-9]+)′(W|E)/);
+        if (match) {
+            var dec1 = parseInt(match[1], 10) + (parseFloat(match[2] + "." + match[3]) / 60);
+            if (match[4] == "S") dec1 = dec1 * -1;
+            dec1 = Math.round(dec1 * 10000000) / 10000000;
+            var dec2 = parseInt(match[5], 10) + (parseFloat(match[6] + "." + match[7]) / 60);
+            if (match[8] == "W") dec2 = dec2 * -1;
+            dec2 = Math.round(dec2 * 10000000) / 10000000;
+            return new Array(dec1, dec2);
+        } else {
+            match = coords.match(/(N|S) ([0-9]+)°? ([0-9]+)\.([0-9]+)′?'? (E|W) ([0-9]+)°? ([0-9]+)\.([0-9]+)/);
+            if (match) {
+                var dec1 = parseInt(match[2], 10) + (parseFloat(match[3] + "." + match[4]) / 60);
+                if (match[1] == "S") dec1 = dec1 * -1;
+                dec1 = Math.round(dec1 * 10000000) / 10000000;
+                var dec2 = parseInt(match[6], 10) + (parseFloat(match[7] + "." + match[8]) / 60);
+                if (match[5] == "W") dec2 = dec2 * -1;
+                dec2 = Math.round(dec2 * 10000000) / 10000000;
+                return new Array(dec1, dec2);
+            } else {
+                match = coords.match(/(N|S) ([0-9]+) ([0-9]+) ([0-9]+)\.([0-9]+) (E|W) ([0-9]+) ([0-9]+) ([0-9]+)\.([0-9]+)/);
+                if (match) {
+                    var dec1 = parseInt(match[2], 10) + (parseFloat(match[3]) / 60) + (parseFloat(match[4] + "." + match[5]) / 3600);
+                    if (match[1] == "S") dec1 = dec1 * -1;
+                    dec1 = Math.round(dec1 * 10000000) / 10000000;
+                    var dec2 = parseInt(match[7], 10) + (parseFloat(match[8]) / 60) + (parseFloat(match[9] + "." + match[10]) / 3600);
+                    if (match[6] == "W") dec2 = dec2 * -1;
+                    dec2 = Math.round(dec2 * 10000000) / 10000000;
+                    return new Array(dec1, dec2);
+                } else {
+                    match = coords.match(/(N|S) ([0-9]+) ([0-9]+) ([0-9]+\..[0-9].) (E|W) ([0-9]+) ([0-9]+) ([0-9]+\..[0-9].)/);
+                    if (match) {
+                        var dec1 = parseInt(match[2], 10) + (parseFloat(match[3]) / 60) + (parseFloat(match[4]) / 3600);
+                        if (match[1] == "S") dec1 = dec1 * -1;
+                        dec1 = Math.round(dec1 * 10000000) / 10000000;
+                        var dec2 = parseInt(match[6], 10) + (parseFloat(match[7]) / 60) + (parseFloat(match[8]) / 3600);
+                        if (match[5] == "W") dec2 = dec2 * -1;
+                        dec2 = Math.round(dec2 * 10000000) / 10000000;
+                        return new Array(dec1, dec2);
+                    } else return false;
+                }
+            }
+        }
+    }
+// Change coordinates from Deg to DMS.
+    function DegtoDMS(coords) {
+        var match = coords.match(/^(N|S) ([0-9][0-9]). ([0-9][0-9])\.([0-9][0-9][0-9]) (E|W) ([0-9][0-9][0-9]). ([0-9][0-9])\.([0-9][0-9][0-9])$/);
+        if (!match) return "";
+        var lat1 = parseInt(match[2], 10);
+        var lat2 = parseInt(match[3], 10);
+        var lat3 = parseFloat("0." + match[4]) * 60;
+        lat3 = Math.round(lat3 * 10000) / 10000;
+        var lng1 = parseInt(match[6], 10);
+        var lng2 = parseInt(match[7], 10);
+        var lng3 = parseFloat("0." + match[8]) * 60;
+        lng3 = Math.round(lng3 * 10000) / 10000;
+        return match[1] + " " + lat1 + "° " + lat2 + "' " + lat3 + "\" " + match[5] + " " + lng1 + "° " + lng2 + "' " + lng3 + "\"";
+    }
+// Change coordinates from Dec to Deg.
+    function DectoDeg(lat, lng) {
+        var n = "000";
+        lat = lat / 10000000;
+        var pre = "";
+        if (lat > 0) pre = "N";
+        else {
+            pre = "S";
+            lat = lat * -1;
+        }
+        var tmp1 = parseInt(lat);
+        var tmp2 = (lat - tmp1) * 60;
+        tmp1 = String(tmp1);
+        if (tmp1.length == 1) tmp1 = "0" + tmp1;
+        tmp2 = Math.round(tmp2 * 10000) / 10000;
+        tmp2 = String(tmp2);
+        if (tmp2.length == 0) tmp2 = tmp2 + "0.000";
+        else if (tmp2.indexOf(".") == -1) tmp2 = tmp2 + ".000";
+        else if (tmp2.indexOf(".") != -1) tmp2 = tmp2 + n.slice(tmp2.length - tmp2.indexOf(".") - 1);
+        var new_lat = pre + " " + tmp1 + "° " + tmp2;
+        lng = lng / 10000000;
+        var pre = "";
+        if (lng > 0) pre = "E";
+        else {
+            pre = "W";
+            lng = lng * -1;
+        }
+        var tmp1 = parseInt(lng);
+        var tmp2 = (lng - tmp1) * 60;
+        tmp1 = String(tmp1);
+        if (tmp1.length == 2) tmp1 = "0" + tmp1;
+        else if (tmp1.length == 1) tmp1 = "00" + tmp1;
+        tmp2 = Math.round(tmp2 * 10000) / 10000;
+        tmp2 = String(tmp2);
+        if (tmp2.length == 0) tmp2 = tmp2 + "0.000";
+        else if (tmp2.indexOf(".") == -1) tmp2 = tmp2 + ".000";
+        else if (tmp2.indexOf(".") != -1) tmp2 = tmp2 + n.slice(tmp2.length - tmp2.indexOf(".") - 1);
+        var new_lng = pre + " " + tmp1 + "° " + tmp2;
+        return new_lat + " " + new_lng;
+    }
+
+// Calculate tile numbers X/Y from latitude/longitude or reverse.
+    function lat2tile(lat,zoom)  {return (Math.floor((1-Math.log(Math.tan(lat*Math.PI/180) + 1/Math.cos(lat*Math.PI/180))/Math.PI)/2 *Math.pow(2,zoom)));}
+    function long2tile(lon,zoom) {return (Math.floor((lon+180)/360*Math.pow(2,zoom)));}
+    function tile2long(x,z) {return (x/Math.pow(2,z)*360-180);}
+    function tile2lat(y,z) {var n=Math.PI-2*Math.PI*y/Math.pow(2,z); return (180/Math.PI*Math.atan(0.5*(Math.exp(n)-Math.exp(-n))));}
+
+// Ist Config aktiv?
+    function check_config_page() {
+        var config_page = false;
+        if ($('#bg_shadow')[0] && $('#bg_shadow')[0].style.display == "" && $('#settings_overlay')[0] && $('#settings_overlay')[0].style.display == "") config_page = true;
+        return config_page;
+    }
+
+// Ist Sync aktiv?
+    function check_sync_page() {
+        var sync_page = false;
+        if ($('#bg_shadow')[0] && $('#bg_shadow')[0].style.display == "" && $('#sync_settings_overlay')[0] && $('#sync_settings_overlay')[0].style.display == "") sync_page = true;
+        return sync_page;
+    }
+
+// Is special processing allowed on the current page?
+    function checkTaskAllowed(task, doAlert) {
+        if ((document.location.href.match(/^https?:\/\/(www\.wherigo|www\.waymarking|labs\.geocaching)\.com/) || isMemberInPmoCache()) ||
+            (task != "Find Player" &&  document.location.href.match(/(\.com\/map\/|\.com\/play\/map)/))) {
+            if (doAlert != false) alert("This GC little helper functionality is not available at this page.\n\nPlease go to the \"Dashboard\" page, there is anyway all of these \nfunctionality available. ( www.geocaching.com/my )");
+            return false;
+        }
+        return true;
+    }
+
+// Is page own statistics?
+    function isOwnStatisticsPage(){
+        if ((document.location.href.match(/\.com\/my\/statistics\.aspx/)) ||
+            (is_page("publicProfile") && $('#ctl00_ContentBody_lblUserProfile')[0].innerHTML.match(global_me) && $('#ctl00_ContentBody_ProfilePanel1_lnkStatistics.Active')[0])) {
+            return true;
+        } else return false;
+    }
+
+// Is Basic Member in PMO Cache?
+    function isMemberInPmoCache() {
+        if (is_page("cache_listing") && $('#premium-upgrade-widget')[0]) return true;
+        else return false;
+    }
+
+// Random number between max and min.
+    function random(max, min) {return Math.floor(Math.random() * (max - min + 1)) + min;}
+
+// Determine current date and deliver year, month and day.
+    function determineCurrentDate() {
+        var now = new Date();
+        var day = now.getDate().toString().length < 2 ? "0"+now.getDate() : now.getDate();
+        var month = (now.getMonth()+1).toString().length < 2 ? "0"+(now.getMonth()+1) : (now.getMonth()+1);
+        var year = now.getFullYear();
+        return [year, month, day];
+    }
+
+// Current date, time.
+    function getDateTime() {
+        var now = new Date();
+        var aDate = $.datepicker.formatDate('dd.mm.yy', now);
+        var hrs = now.getHours();
+        var min = now.getMinutes();
+        hrs = ((hrs < 10) ? '0' + hrs : hrs);
+        min = ((min < 10) ? '0' + min : min);
+        var aTime = hrs+':'+min;
+        var aDateTime = aDate+' '+aTime;
+        return [aDate, aTime, aDateTime];
+    }
+
+// Build time string.
+    function buildTimeString(min) {
+        if      (min < 2)    return (min + " minute");
+        else if (min < 121)  return (min + " minutes");
+        else if (min < 2881) return ("more than " + Math.floor(min / 60) + " hours");
+        else                 return ("more than " + Math.floor(min / (60*24)) + " days");
+    }
+
+// Calculates difference between two dates and returns it as a "humanized" string.
+    function adjustPlural(singularWord, timesNumber) {return singularWord + ((Math.abs(timesNumber) != 1) ? "s" : "");}
+    function getDateDiffString(dateNew, dateOld) {
+        var dateDiff = new Date(dateNew - dateOld);
+        dateDiff.setUTCFullYear(dateDiff.getUTCFullYear() - 1970);
+        var strDateDiff = "", timeunitValue = 0;
+        var timeunitsHash = {year: "getUTCFullYear", month: "getUTCMonth", day: "getUTCDate", hour: "getUTCHours", minute: "getUTCMinutes", second: "getUTCSeconds", millisecond: "getUTCMilliseconds"};
+        for (var timeunitName in timeunitsHash) {
+            timeunitValue = dateDiff[timeunitsHash[timeunitName]]() - ((timeunitName == "day") ? 1 : 0);
+            if (timeunitValue !== 0) {
+                if ((timeunitName == "millisecond") && (strDateDiff.length !== 0)) continue;  // Milliseconds won't be added unless difference is less than 1 second.
+                strDateDiff += ((strDateDiff.length === 0) ? "" : ", ") + timeunitValue + " " + adjustPlural(timeunitName, timeunitValue);
+            }
+        }
+        // Replaces last comma with "and" to humanize the string.
+        strDateDiff = strDateDiff.replace(/,([^,]*)$/, " and$1");
+        return strDateDiff;
+    }
+
+// Get Finds out of login text box.
+    function get_my_finds() {
+        var finds = "";
+        if ($('.cache-count').text()) finds = parseInt($('.cache-count').text().replace(/\s/g,'').match(/[0-9,\.]+/)[0].replace(/[,\.]/,""));
+        return finds;
+    }
+
+// Close Overlays, Find Player, Config, Sync.
+    function btnClose(clearUrl) {
+        if (global_mod_reset) {
+            rcClose();
+            return;
+        }
+        if ($('#bg_shadow')[0]) $('#bg_shadow')[0].style.display = "none";
+        if ($('#settings_overlay')[0]) $('#settings_overlay')[0].style.display = "none";
+        if ($('#sync_settings_overlay')[0]) $('#sync_settings_overlay')[0].style.display = "none";
+        if ($('#findplayer_overlay')[0]) $('#findplayer_overlay')[0].style.display = "none";
+        if (clearUrl != false) document.location.href = clearUrlAppendix(document.location.href, false);
+    }
+
+// Darken the side.
+    function buildBgShadow() {
+        var shadow = document.createElement("div");
+        shadow.setAttribute("id", "bg_shadow");
+        shadow.setAttribute("style", "z-index:1000; width: 100%; height: 100%; background-color: #000000; position:fixed; top: 0; left: 0; opacity: 0.5; filter: alpha(opacity=50);");
+        $('body')[0].appendChild(shadow);
+        $('#bg_shadow')[0].addEventListener("click", btnClose, false);
+    }
+
+// Get Geocaching Access Token.
+    function gclh_GetGcAccessToken( handler ) {
+        setTimeout(function() {
+            $.ajax({
+                    type: "POST",
+                    url: "/account/oauth/token",
+                    timeout: 10000
+                })
+                .done( function(r) {
+                    try {
+                        handler(r);
+                    } catch(e) {gclh_error("gclh_GetGcAccessToken()",e);}
+                });
+        }, 0);
+    }
+
+// Convert cache type to cache symbol.
+    function convertCachetypeToCachesymbol(cacheType) {
+        var cacheSymbol = '';
+        if (cacheType) {
+            if (cacheType.match(/traditional/i)) cacheSymbol = '#traditional';
+            else if (cacheType.match(/multi/i)) cacheSymbol = '#multi';
+            else if (cacheType.match(/mystery/i)) cacheSymbol = '#mystery';
+            else if (cacheType.match(/earth/i)) cacheSymbol = '#earth';
+            else if (cacheType.match(/letterbox/i)) cacheSymbol = '#letterbox';
+            else if (cacheType.match(/webcam/i)) cacheSymbol = '#webcam';
+            else if (cacheType.match(/wherigo/i)) cacheSymbol = '#wherigo';
+            else if (cacheType.match(/virtual/i)) cacheSymbol = '#virtual';
+            else if (cacheType.match(/mega/i)) cacheSymbol = '#mega';
+            else if (cacheType.match(/giga/i)) cacheSymbol = '#giga';
+            else if (cacheType.match(/trash/i)) cacheSymbol = '#cito';
+            else if (cacheType.match(/Community Celebration/i)) cacheSymbol = '#celebration';
+            else if (cacheType.match(/HQ Celebration/i)) cacheSymbol = '#hq_celebration';
+            else if (cacheType.match(/(Project A\.P\.E\.|Project APE)/i)) cacheSymbol = '#ape';
+            else if (cacheType.match(/Groundspeak HQ/i)) cacheSymbol = '#hq';
+            else if (cacheType.match(/event/i)) cacheSymbol = '#event';
+        }
+        return cacheSymbol;
+    }
+
+// Animate Click.
+    function animateClick(element) {
+        var opacityOrg = window.getComputedStyle(element).opacity;
+        element.style.opacity = '0.3';
+        setTimeout(function() {
+            if (opacityOrg) element.style.opacity = opacityOrg;
+            else element.style.opacity = unset;
+        }, 200);
+    }
+
+// Consideration of special keys ctrl, alt, shift on keyboard input.
+    function noSpecialKey(e) {
+        if (e.ctrlKey != false || e.altKey != false || e.shiftKey != false) return false;
+        else return true;
+    }
+
+// Addition in url, introduced by "#", reset to "#".
+    function clearUrlAppendix(url, onlyTheFirst) {
+        var urlSplit = url.split('#');
+        var newUrl = "";
+        if (onlyTheFirst) newUrl = url.replace(urlSplit[1], "").replace("##", "#");
+        else newUrl = urlSplit[0] + "#";
+        return newUrl;
+    }
+
+// Add a link to copy to clipboard.
+    /* element_to_copy: innerHtml of this element will be copied. If you pass
+                        a string, the string will be the copied text. In this
+                        case you have to pass an anker_element!!!
+       anker_element:   After this element the copy marker will be inserted,
+                        if you set this to null, the element_to_copy will be
+                        used as an anker.
+       title:           You can enter a text that will be displayed between
+                        Copy --TEXT OF TITLE-- to clipboard. If you leave it
+                        blank, it will just "Copy to clipboard" be displayed.
+       style            You can add styles to the surrounding span by passing
+                        it in this variable.  */
+    function addCopyToClipboardLink(element_to_copy, anker_element= null, title="", style= ""){
+        try {
+            var ctoc = false;
+            var span = document.createElement('span');
+            span.setAttribute("class",'ctoc_link');
+            span.innerHTML = '<a class="ctoc_link" href="javascript:void(0);"><img src="'+global_copy_icon+'" title="Copy ' + title + ' ' + 'to clipboard" style="vertical-align: text-top;"> </a>';
+            if(style != ""){
+                span.setAttribute("style", style);
+            }
+            if(!anker_element) anker_element = element_to_copy;
+
+            anker_element.parentNode.insertBefore(span, anker_element);
+
+            appendCssStyle(".ctoc_link:link {text-decoration: none ;}", null, 'ctoc_link_style_id');
+
+            span.addEventListener('click', function() {
+                // Tastenkombination Strg+c ausführen für eigene Verarbeitung.
+                ctoc = true;
+                document.execCommand('copy');
+            }, false);
+            document.addEventListener('copy', function(e){
+                // Normale Tastenkombination Strg+c für markierter Bereich hier nicht verarbeiten. Nur eigene Tastenkombination Strg+c hier verarbeiten.
+                if (!ctoc) return;
+                // Gegebenenfalls markierter Bereich wird hier nicht beachtet.
+                e.preventDefault();
+                // Copy Data wird hier verarbeitet.
+                if (typeof element_to_copy === 'string' || element_to_copy instanceof String){
+                    e.clipboardData.setData('text/plain', element_to_copy);
+                }else{
+                    e.clipboardData.setData('text/plain', element_to_copy.innerHTML);
+                }
+                animateClick(span);
+                ctoc = false;
+            });
+        } catch(e) {gclh_error("Copy to clipboard",e);}
+    }
+
+// Length, Maxlength of field and number of words.
+    function limitedField(editor, counterelement, limitNum, showWords) {
+        changed = true;
+        var length = $(editor).val().replace(/\n/g, "\r\n").length;
+        if (length >= limitNum) {
+            counterelement.innerHTML = '<font color="red">' + length + '/' + limitNum + '</font>';
+        } else counterelement.innerHTML = length + '/' + limitNum;
+        if (showWords) {
+            var wordsArr = $(editor).val().replace(/\n/g, ' ').split(' ');
+            var words = 0;
+            for (let i=0; i<wordsArr.length; i++) {
+                if (wordsArr[i].trim() != '') words++;
+            }
+            counterelement.innerHTML += ' (' + words + ' words)';
+        }
+    }
+
 };  // End of mainGC.
 
-//////////////////////////////////
-// Global - Functions
-//////////////////////////////////
+//////////////////////////////
+// 7. Global Functions ($$cap) (Functions global usable.)
+//////////////////////////////
 // Create bookmark to GC page.
 function bookmark(title, href, bookmarkArray) {
     var bm = new Object();
@@ -15188,17 +15229,7 @@ function profileSpecialBookmark(title, href, name, bookmarkArray) {
     bm['name'] = name;
 }
 
-// Matched the current document location the given path?
-function isLocation(path) {
-    path = path.toLowerCase();
-    if (path.indexOf("http") != 0) {
-        if (path.charAt(0) != '/') path = "/" + path;
-        path = http + "://www.geocaching.com" + path;
-    }
-    return document.location.href.toLowerCase().indexOf(path) == 0;
-}
-
-// CSS Style hinzufügen.
+// Add CSS Style.
 function appendCssStyle(css, name, id) {
     // test if ID is already used, if yes, don't append again
     if(document.getElementById(id)) return;
@@ -15211,15 +15242,21 @@ function appendCssStyle(css, name, id) {
     if (id) style.id = id;
     tag.appendChild(style);
 }
+// Add Meta Info.
+function appendMetaId(id) {
+    var head = document.getElementsByTagName('head')[0];
+    var meta = document.createElement('meta');
+    meta.id = id;
+    head.appendChild(meta);
+}
 
-// Logging.
+// Console logging.
 function gclh_log(log) {
     var txt = "GClh_LOG - " + document.location.href + ": " + log;
     if (typeof(console) != "undefined") console.info(txt);
     else if (typeof(GM_log) != "undefined") GM_log(txt);
 }
-
-// Error Logging.
+// Console error logging.
 function gclh_error(modul, err) {
     var txt = "GClh_ERROR - " + modul + " - " + document.location.href + ": " + err.message + "\nStacktrace:\n" + err.stack + (err.stacktrace ? ("\n" + err.stacktrace) : "");
     if (typeof(console) != "undefined") console.error(txt);
@@ -15260,9 +15297,6 @@ function gclh_error(modul, err) {
     }
 }
 
-// Zufallszahl zwischen max und min.
-function random(max, min) {return Math.floor(Math.random() * (max - min + 1)) + min;}
-
 // Set Get Values.
 function setValue(name, value) {
     var defer = $.Deferred();
@@ -15291,7 +15325,7 @@ function getValue(name, defaultValue) {
     return CONFIG[name];
 }
 
-// Auf welcher Seite bin ich?
+// Which webpage is it?
 function is_page(name) {
     var status = false;
     var url = document.location.pathname;
@@ -15367,48 +15401,5 @@ function injectPageScript(scriptContent, TagName, IdName) {
     pageHead.appendChild(script);
 }
 function injectPageScriptFunction(funct, functCall) {injectPageScript("(" + funct.toString() + ")" + functCall + ";");}
-
-// Meta Info hinzufügen.
-function appendMetaId(id) {
-    var head = document.getElementsByTagName('head')[0];
-    var meta = document.createElement('meta');
-    meta.id = id;
-    head.appendChild(meta);
-}
-
-// Calculates difference between two dates and returns it as a "humanized" string.
-function adjustPlural(singularWord, timesNumber) {return singularWord + ((Math.abs(timesNumber) != 1) ? "s" : "");}
-function getDateDiffString(dateNew, dateOld) {
-    var dateDiff = new Date(dateNew - dateOld);
-    dateDiff.setUTCFullYear(dateDiff.getUTCFullYear() - 1970);
-    var strDateDiff = "", timeunitValue = 0;
-    var timeunitsHash = {year: "getUTCFullYear", month: "getUTCMonth", day: "getUTCDate", hour: "getUTCHours", minute: "getUTCMinutes", second: "getUTCSeconds", millisecond: "getUTCMilliseconds"};
-    for (var timeunitName in timeunitsHash) {
-        timeunitValue = dateDiff[timeunitsHash[timeunitName]]() - ((timeunitName == "day") ? 1 : 0);
-        if (timeunitValue !== 0) {
-            if ((timeunitName == "millisecond") && (strDateDiff.length !== 0)) continue;  // Milliseconds won't be added unless difference is less than 1 second.
-            strDateDiff += ((strDateDiff.length === 0) ? "" : ", ") + timeunitValue + " " + adjustPlural(timeunitName, timeunitValue);
-        }
-    }
-    // Replaces last comma with "and" to humanize the string.
-    strDateDiff = strDateDiff.replace(/,([^,]*)$/, " and$1");
-    return strDateDiff;
-}
-
-// Get Geocaching Access Token
-function gclh_GetGcAccessToken( handler ) {
-    setTimeout(function() {
-        $.ajax({
-                type: "POST",
-                url: "/account/oauth/token",
-                timeout: 10000
-            })
-            .done( function(r) {
-                try {
-                    handler(r);
-                } catch(e) {gclh_error("gclh_GetGcAccessToken()",e);}
-            });
-    }, 0);
-}
 
 start(this);
