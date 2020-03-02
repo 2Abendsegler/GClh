@@ -57,7 +57,7 @@ var start = function(c) {
                         mainOSM();
                     } else if (document.location.href.match(/^https?:\/\/www\.geocaching\.com/)) {
                         if (is_page('lists') || is_page('searchmap')) {
-                            asynchronGC();
+                            mainGCAsyn();
                         } else {
                             mainGC();
                         }
@@ -591,6 +591,7 @@ var variablesInit = function(c) {
     c.settings_show_copydata_own_stuff_show = getValue("settings_show_copydata_own_stuff_show", false);
     c.settings_show_copydata_own_stuff_name = getValue("settings_show_copydata_own_stuff_name", 'Photo file name');
     c.settings_show_copydata_own_stuff_value = getValue("settings_show_copydata_own_stuff_value", '#yyyy#.#mm#.#dd# - #GCName# - #GCCode# - 01');
+    c.settings_show_copydata_own_stuff = JSON.parse(getValue("settings_show_copydata_own_stuff", "{}"));
     c.settings_relocate_other_map_buttons = getValue("settings_relocate_other_map_buttons", true);
 
     try {
@@ -625,9 +626,9 @@ var variablesInit = function(c) {
     return variablesInitDeref.promise();
 };
 
-//////////////////////////////
-// Google Maps
-//////////////////////////////
+//////////////////////////////////
+// Google Maps - Main
+//////////////////////////////////
 var mainGMaps = function() {
     try {
         // Add link to GC Map on Google Maps page.
@@ -691,9 +692,9 @@ var mainGMaps = function() {
     } catch(e) {gclh_error("mainGMaps",e);}
 };
 
-//////////////////////////////
-// Project GC
-//////////////////////////////
+//////////////////////////////////
+// Project GC - Main
+//////////////////////////////////
 var mainPGC = function() {
     try {
         // CSS Style hinzufügen.
@@ -1041,9 +1042,9 @@ var mainPGC = function() {
     } catch(e) {gclh_error("mainPGC",e);}
 };
 
-//////////////////////////////
-// Openstreetmap
-//////////////////////////////
+//////////////////////////////////
+// Openstreetmap - Main
+//////////////////////////////////
 var mainOSM = function() {
     try {
 
@@ -1069,10 +1070,10 @@ var mainOSM = function() {
     } catch(e) {gclh_error("mainOSM",e);}
 };
 
-//////////////////////////////
-// GClh asynchron GC pages
-//////////////////////////////
-var asynchronGC = function() {
+//////////////////////////////////
+// GClh asynchron - Main
+//////////////////////////////////
+var mainGCAsyn = function() {
     try {
         // Get header from other GC page.
         $.get('https://www.geocaching.com/adopt', null, function(response){
@@ -1125,9 +1126,9 @@ var asynchronGC = function() {
     } catch(e) {gclh_error("asynchronGC",e);}
 };
 
-//////////////////////////////
-// GClh Main
-//////////////////////////////
+//////////////////////////////////
+// GClh - Main
+//////////////////////////////////
 var mainGC = function() {
 
 // Hide Facebook.
@@ -1954,8 +1955,7 @@ var mainGC = function() {
                         e.preventDefault();
                         // Angezeigte Koordinaten werden hier verarbeitet.
                         e.clipboardData.setData('text/plain', determineListingCoords('CorrOrg'));
-                        $('#gclh_cc2c')[0].style.opacity = '0.3';
-                        setTimeout(function() { $('#gclh_cc2c')[0].style.opacity = 'unset'; }, 200);
+                        animateClick($('#gclh_cc2c')[0]);
                         cc2c = false;
                     });
                 } else {waitCount++; if (waitCount <= 100) setTimeout(function(){copyCoordinatesToClipboard(waitCount);}, 100);} // GDPR
@@ -2280,8 +2280,15 @@ var mainGC = function() {
         if (determineListingCoords("GCTour") !== "") {
             html += '    <div class="copydata-content-layer copydata_click" data-id="'+idCopyGCTourCoords+'">GCTour Coordinates</div>';
         }
-        if (settings_show_copydata_own_stuff_show) {
-            html += '    <div class="copydata-content-layer copydata_click" data-id="idOwnStuff" data-value="'+settings_show_copydata_own_stuff_value+'">'+settings_show_copydata_own_stuff_name+'</div>';
+        if (settings_show_copydata_menu) {
+            if (settings_show_copydata_own_stuff_show) {
+                html += '<div class="copydata-content-layer copydata_click" data-id="idOwnStuff" data-value="'+settings_show_copydata_own_stuff_value+'">'+settings_show_copydata_own_stuff_name+'</div>';
+            }
+            for (var i in settings_show_copydata_own_stuff) {
+                if (settings_show_copydata_own_stuff[i].show) {
+                    html += '<div class="copydata-content-layer copydata_click" data-id="idOwnStuff" data-value="'+settings_show_copydata_own_stuff[i].value+'">'+settings_show_copydata_own_stuff[i].name+'</div>';
+                }
+            }
         }
         html += '  </div>';
         $('.copydata_click')[0].parentNode.innerHTML += html;
@@ -2318,18 +2325,36 @@ var mainGC = function() {
             case 'idOwnStuff':
                 if ($(thisObject).data('value')) {
                     el.value = $(thisObject).data('value');
-                    [year, month, day] = determineCurrentDate();
+                    var [year, month, day] = determineCurrentDate();
                     el.value = el.value.replace(/#yyyy#/ig, year);
                     el.value = el.value.replace(/#mm#/ig, month);
                     el.value = el.value.replace(/#dd#/ig, day);
-                    el.value = el.value.replace(/#GCName#/ig, $('#ctl00_ContentBody_CacheName')[0].innerHTML.replace(new RegExp('&nbsp;', 'g'),' '));
-                    el.value = el.value.replace(/#GCCode#/ig, $('#ctl00_ContentBody_CoordInfoLinkControl1_uxCoordInfoCode')[0].innerHTML);
-                    el.value = el.value.replace(/#GCLink#/ig, "https://coord.info/"+$('#ctl00_ContentBody_CoordInfoLinkControl1_uxCoordInfoCode')[0].innerHTML);
+                    var [aDate, aTime, aDateTime] = getDateTime();
+                    el.value = el.value.replace(/#Date#/ig, aDate);
+                    el.value = el.value.replace(/#Time#/ig, aTime);
+                    el.value = el.value.replace(/#DateTime#/ig, aDateTime);
+                    var GCName = $('#ctl00_ContentBody_CacheName')[0].innerHTML.replace(new RegExp('&nbsp;', 'g'),' ');
+                    var GCCode = $('#ctl00_ContentBody_CoordInfoLinkControl1_uxCoordInfoCode')[0].innerHTML;
+                    var GCLink = "https://coord.info/"+$('#ctl00_ContentBody_CoordInfoLinkControl1_uxCoordInfoCode')[0].innerHTML;
+                    el.value = el.value.replace(/#GCName#/ig, GCName);
+                    el.value = el.value.replace(/#GCCode#/ig, GCCode);
+                    el.value = el.value.replace(/#GCLink#/ig, GCLink);
+                    el.value = el.value.replace(/#GCNameLink#/ig, "[" + GCName + "](" + GCLink + ")");
                     el.value = el.value.replace(/#Coords#/ig, determineListingCoords('CorrOrg'));
+                    el.value = el.value.replace(/#Elevation#/ig, ($('#elevation-waypoint-0 span')[0] ? $('#elevation-waypoint-0 span')[0].innerHTML : ($('#elevation-waypoint-0')[0] ? $('#elevation-waypoint-0')[0].innerHTML : '')));
+                    el.value = el.value.replace(/#Founds#/ig, ($('#ctl00_ContentBody_lblFindCounts').find('img[src*="/2.png"]')[0] ? $('#ctl00_ContentBody_lblFindCounts').find('img[src*="/2.png"]')[0].nextSibling.data.replace(/(\s*)/g,'') : 0));
+                    el.value = el.value.replace(/#FoundsPlus#/ig, ($('#ctl00_ContentBody_lblFindCounts img[src*="/11.png"], #ctl00_ContentBody_lblFindCounts img[src*="/10.png"], #ctl00_ContentBody_lblFindCounts img[src*="/2.png"]')[0] ? $('#ctl00_ContentBody_lblFindCounts img[src*="/11.png"], #ctl00_ContentBody_lblFindCounts img[src*="/10.png"], #ctl00_ContentBody_lblFindCounts img[src*="/2.png"]')[0].nextSibling.data.replace(/(\s*)/g,'') : 0));
+                    el.value = el.value.replace(/#DNFs#/ig, ($('#ctl00_ContentBody_lblFindCounts').find('img[src*="/3.png"]')[0] ? $('#ctl00_ContentBody_lblFindCounts').find('img[src*="/3.png"]')[0].nextSibling.data.replace(/(\s*)/g,'') : 0));
+                    el.value = el.value.replace(/#Diff#/ig, $('#ctl00_ContentBody_uxLegendScale img').attr('src').match(/stars(\d|\d_\d).gif/)[1].replace('_','.'));
+                    el.value = el.value.replace(/#Terr#/ig, $('#ctl00_ContentBody_Localize12 img').attr('src').match(/stars(\d|\d_\d).gif/)[1].replace('_','.'));
+                    el.value = el.value.replace(/#Size#/ig, $('#ctl00_ContentBody_size .minorCacheDetails small')[0].innerHTML.replace('(','').replace(')',''));
+                    el.value = el.value.replace(/#Owner#/ig, get_real_owner().replace(/'/g,"\\'"));
+                    el.value = el.value.replace(/#Favo#/ig, (($('#uxFavContainerLink')[0] && $('#uxFavContainerLink .favorite-value')[0]) ? $('#uxFavContainerLink .favorite-value')[0].innerHTML.replace(/(\s*)/g,'') : ''));
+                    el.value = el.value.replace(/#FavoPerc#/ig, (($('.favorite-dropdown')[0] && $('.favorite-dropdown .favorite-score')[0].innerHTML) ? $('.favorite-dropdown .favorite-score')[0].innerHTML.match(/(\d+)/)[1] + '%' : ''));
                     var g_note = $('#viewCacheNote')[0].innerHTML;
-                    if (g_note != null && (g_note != "" && g_note != "Click to enter a note" && g_note != "Klicken zum Eingeben einer Notiz")) {
-                      el.value = el.value.replace(/#GCNote#/ig, g_note.replace(new RegExp('&gt;', 'g'),'>').replace(new RegExp('&lt;', 'g'),'<'));
-                    }
+                    if (g_note != null && g_note != "" && g_note != "Click to enter a note" && g_note != "Klicken zum Eingeben einer Notiz") {
+                        el.value = el.value.replace(/#GCNote#/ig, g_note.replace(new RegExp('&gt;', 'g'),'>').replace(new RegExp('&lt;', 'g'),'<'));
+                    } else el.value = el.value.replace(/#GCNote#/ig, '');
                     el.value = el.value.replace(/#newline#/ig, "\n");
                 }
                 break;
@@ -2580,7 +2605,7 @@ var mainGC = function() {
         css += "  display: none;";
         css += "  position: absolute;";
         css += "  background-color: #f9f9f9;";
-        css += "  min-width: 170px;";
+        css += "  min-width: 202px;";
         css += "  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);";
         css += "  z-index: 1001;}";
         css += ".GClhdropdown-content-info {";
@@ -3696,7 +3721,6 @@ var mainGC = function() {
                         var counterspan = document.createElement('p');
                         counterspan.id = "logtextcounter";
                         var wordsArr = $(logfield).val().replace(/\n/g, ' ').split(' ');
-                        console.log(wordsArr)
                         var words = 0;
                         for (let i=0; i<wordsArr.length; i++) {
                             if (wordsArr[i].trim() != '') words++;
@@ -10515,9 +10539,9 @@ var mainGC = function() {
         } catch(e) {gclh_error("Special days",e);}
     }
 
-//////////////////////////////
-// GClh Functions
-//////////////////////////////
+//////////////////////////////////
+// GClh - Main Functions
+//////////////////////////////////
     function in_array(search, arr) {
         for (var i = 0; i < arr.length; i++) {if (arr[i] == search) return true;}
         return false;
@@ -10740,8 +10764,7 @@ var mainGC = function() {
                 }else{
                     e.clipboardData.setData('text/plain', element_to_copy.innerHTML);
                 }
-                span.style.opacity = '0.3';
-                setTimeout(function() { span.style.opacity = 'unset'; }, 200);
+                animateClick(span);
                 ctoc = false;
             });
         } catch(e) {gclh_error("Copy to clipboard",e);}
@@ -11647,9 +11670,19 @@ var mainGC = function() {
         return [year, month, day];
     }
 
-//////////////////////////////
-// User defined searchs Main
-//////////////////////////////
+// Animate Click.
+    function animateClick(element) {
+        var opacityOrg = window.getComputedStyle(element).opacity;
+        element.style.opacity = '0.3';
+        setTimeout(function() {
+            if (opacityOrg) element.style.opacity = opacityOrg;
+            else element.style.opacity = unset;
+        }, 200);
+    }
+
+//////////////////////////////////
+// GClh - Searchs Functions
+//////////////////////////////////
     function create_config_css_search() {
         var html = "";
         html += ".btn-context {";
@@ -11865,9 +11898,9 @@ var mainGC = function() {
         } catch(e) {gclh_error("User defined search",e);}
     }
 
-//////////////////////////////
-// Find Player Main
-//////////////////////////////
+//////////////////////////////////
+// GClh - Find Player Functions
+//////////////////////////////////
 // Create and hide the "Find Player" Form.
     function createFindPlayerForm() {
         btnClose();
@@ -11928,9 +11961,9 @@ var mainGC = function() {
         $('#findplayer_field')[0].focus();
     }
 
-//////////////////////////////
-// Config Main
-//////////////////////////////
+//////////////////////////////////
+// GClh - Config Functions - Main
+//////////////////////////////////
     function checkboxy(setting_id, label) {
         // Hier werden auch gegebenenfalls "Clone" von Parametern verarbeitet. (Siehe Erläuterung weiter unten bei "setEvForDouPara".)
         var setting_idX = setting_id;
@@ -12504,7 +12537,7 @@ var mainGC = function() {
             html += "  <tbody>";
             // Template.
             var hztp = "<tr class='multi_homezone_element'>";
-            hztp += "      <td><input class='gclh_form radius' type='text' size='2' value='" + settings_homezone_radius + "'><span> km</span></td>";
+            hztp += "      <td><input class='gclh_form radius' style='margin-top: 2px;' type='text' size='2' value='" + settings_homezone_radius + "'><span> km</span></td>";
             hztp += "      <td><input class='gclh_form color' type='text' size='6' value='" + settings_homezone_color + "'></td>";
             hztp += "      <td><input class='gclh_form opacity' type='text' size='2' value='" + settings_homezone_opacity + "'><span> %</span></td>";
             hztp += "      <td><input class='gclh_form coords' type='text' size='27' value='" + DectoDeg(getValue("home_lat"), getValue("home_lng")) + "'></td>";
@@ -12710,11 +12743,11 @@ var mainGC = function() {
             html += checkboxy('settings_decrypt_hint', 'Decrypt hints') + show_help("This option decrypt the hints on cache listing and print page and remove also the description of the decryption.") + "<br>";
             html += checkboxy('settings_visitCount_geocheckerCom', 'Show statistic on geochecker.com pages') + show_help("This option adds '&visitCount=1' to all geochecker.com links. This will show some statistics on geochecker.com page like the count of page visits and the count of right and wrong attempts.") + "<br>";
             html += checkboxy('settings_show_eventday', 'Show weekday of an event') + show_help("With this option the day of the week will be displayed next to the event date.") + "<br>";
-            html += checkboxy('settings_show_mail', 'Show mail link beside user') + show_help("With this option there will be an small mail icon beside every user. With this icon you get directly to the mail form to mail to this user. If you click it for example when you are in a listing, the cachename or GC code can be inserted into the mail form about placeholder in the mail / message form template.") + "<br>";
+            html += checkboxy('settings_show_mail', 'Show mail link beside user') + show_help("With this option there will be an small mail icon beside every user. With this icon you get directly to the mail form to mail to this user. If you click it for example when you are in a listing, the cachename or GC code can be inserted into the mail form about placeholders in the mail / message form template.") + "<br>";
             var content_settings_show_mail_in_viplist = "&nbsp; " + checkboxy('settings_show_mail_in_viplist', 'Show mail link beside user in "VIP-List" in listing') + "<br>";
             html += content_settings_show_mail_in_viplist;
             html += "&nbsp; " + checkboxy('settings_mail_icon_new_win', 'Open mail form in new tab') + "<br>";
-            html += checkboxy('settings_show_message', 'Show message link beside user') + show_help("With this option there will be an small message icon beside every user. With this icon you get directly to the message form to send a message to this user. If you click it for example when you are in a listing, the cachename or GC code can be inserted into the message form about placeholder in the mail / message form template.") + "<br>";
+            html += checkboxy('settings_show_message', 'Show message link beside user') + show_help("With this option there will be an small message icon beside every user. With this icon you get directly to the message form to send a message to this user. If you click it for example when you are in a listing, the cachename or GC code can be inserted into the message form about placeholders in the mail / message form template.") + "<br>";
             html += "&nbsp; " + checkboxy('settings_message_icon_new_win', 'Open message form in new tab') + "<br>";
             html += checkboxy('settings_show_google_maps', 'Show link to Google Maps') + show_help("This option shows a link at the top of the second map in the listing. With this link you get directly to Google Maps in the area, where the cache is.") + "<br>";
             html += checkboxy('settings_strike_archived', 'Strike through title of archived/disabled caches') + "<br>";
@@ -12813,13 +12846,29 @@ var mainGC = function() {
             html += "  <option value=\"3\" " + (settings_show_openrouteservice_medium == "3" ? "selected=\"selected\"" : "") + ">Wheelchair (only Europe)</option>";
             html += "</select>" + "<br>";
             html += checkboxy('settings_show_copydata_menu', 'Show "Copy Data to Clipboard" menu in sidebar') + show_help3("Shows a menu to copy various cache data to the clipboard.") + "<br>";
-            var copydataOwnStuffPlaceholder = "Possible placeholder:<br>&nbsp; #yyyy# : Current year<br>&nbsp; #mm# : Current month<br>&nbsp; #dd# : Current day<br>&nbsp; #GCName# : GC name<br>&nbsp; #GCCode# : GC code<br>&nbsp; #GCLink# : GC link<br>&nbsp; #Coords# : Shown coordinates<br>&nbsp; #GCNote# : User note (if not empty)<br>&nbsp; #newline# : Add new line<br>(Upper and lower case is not required in the placeholder name.)";
-            html += "&nbsp;&nbsp;" + checkboxy('settings_show_copydata_own_stuff_show', 'Show');
-            html += " <input class='gclh_form' type='text' size='13' id='settings_show_copydata_own_stuff_name' value='" + settings_show_copydata_own_stuff_name + "'>";
-            html += "<img src=" + global_restore_icon + " id='restore_settings_show_copydata_own_stuff_name' title='back to default' style='width: 12px; cursor: pointer;'>";
-            html += " <input class='gclh_form' type='text' size='33' id='settings_show_copydata_own_stuff_value' value='" + settings_show_copydata_own_stuff_value + "'>";
-            html += "<img src=" + global_restore_icon + " id='restore_settings_show_copydata_own_stuff_value' title='back to default' style='width: 12px; cursor: pointer;'>";
-            html += show_help3_big("With the checkbox and the two input fields, you can generate an entry in the menu \"Copy Data to Clipbord\".<br><br>The first input field contains the name that is displayed in the menu.<br><br>The second input field contains the content that is copied to the clipboard if you click to this entry in the menu. You can use different placeholders in the second input field.<br>" + copydataOwnStuffPlaceholder) + '<br>';
+            // Own entries in copy data to clipboard menu (copy data own stuff, cdos).
+            var ph = "Possible placeholders:<br>&nbsp; #GCName# : GC name<br>&nbsp; #GCCode# : GC code<br>&nbsp; #GCLink# : GC link<br>&nbsp; #GCNameLink# : GC name as a link<br>"
+                   + "&nbsp; #Owner# : Username of the owner<br>&nbsp; #Diff# : Difficulty<br>&nbsp; #Terr# : Terrain<br>&nbsp; #Size# : Size of the cache box<br>&nbsp; #Favo# : Favorites<br>&nbsp; #FavoPerc# : Favorites percentage<br>"
+                   + "&nbsp; #Elevation# : Elevation<br>&nbsp; #Coords# : Shown coordinates<br>&nbsp; #GCNote# : User note<br>&nbsp; #Founds# : Number of found logs<br>&nbsp; #FoundsPlus# : Number of found or synonym logs<br>&nbsp; #DNFs# : Number of DNF logs<br>"
+                   + "&nbsp; #Date# : Actual date<br>&nbsp; #Time# : Actual time in format hh:mm<br>&nbsp; #DateTime# : Actual date actual time<br>&nbsp; #yyyy# : Current year<br>&nbsp; #mm# : Current month<br>&nbsp; #dd# : Current day<br>"
+                   + "&nbsp; #newline# : Add new line<br>(Upper and lower case is not required in the placeholders name.)";
+            var header = "Show own copy data entries:" + show_help_big("With the checkbox and the two input fields, you can generate entries in the menu \"Copy Data to Clipbord\".<br><br>With the checkbox you can activate or deactivate an entry. The first input field contains the name that is displayed in the menu \"Copy Data to Clipbord\" for an entry. The second input field contains the content that is copied to the clipboard if you click to an entry in the menu \"Copy Data to Clipbord\". You can use different placeholders in the second input field.")
+                       + "&nbsp; &nbsp;" + "(Possible placeholders:" + show_help3_big(ph) + ")<br>";
+            var titleName = 'Name of entry in menu \"Copy Data to Clipbord\".';
+            var titleValue = 'Data in the clipboard when clicking on entry in menu \"Copy Data to Clipbord\".';
+            html += openCff('cdos', header, titleName, titleValue, 'settings_show_copydata_menu');
+            // First entry from non array.
+            var cdosData = buildDataCff(settings_show_copydata_own_stuff_show, settings_show_copydata_own_stuff_name, settings_show_copydata_own_stuff_value);
+            var idNr = 1;
+            html += buildEntryCff('cdos', cdosData, idNr, 'settings_show_copydata_own_stuff', false);
+            // Further entries from array.
+            for (var i in settings_show_copydata_own_stuff) {
+                var cdosData = settings_show_copydata_own_stuff[i];
+                idNr++;
+                html += buildEntryCff('cdos', cdosData, idNr, false, false);
+            }
+            html += closeCff('cdos');
+            cssCff('cdos', '14', '200', '460', '54');
             html += newParameterVersionSetzen("0.10") + newParameterOff;
             html += newParameterOn3;
             html += checkboxy('settings_show_all_logs_but', 'Show button \"Show all logs\" above the logs') + "<br>";
@@ -12850,18 +12899,18 @@ var mainGC = function() {
             html += newParameterOn1;
             html += checkboxy('settings_improve_character_counter', 'Show length of logtext') + show_help("If you enable this option, a counter shows the length of your logtext and the maximum length.\nOn the old logging page this feature ist auto-enabled") + "<br>";
             html += newParameterVersionSetzen('0.10') + newParameterOff;
-            var placeholderDescription = "Possible placeholder:<br>&nbsp; #Found# : Your founds + 1<br>&nbsp; #Found_no# : Your founds<br>&nbsp; #Me# : Your username<br>&nbsp; #Owner# : Username of the owner<br>&nbsp; #Date# : Actual date<br>&nbsp; #Time# : Actual time in format hh:mm<br>&nbsp; #DateTime# : Actual date actual time<br>&nbsp; #GCTBName# : GC or TB name<br>&nbsp; #GCTBLink# : GC or TB link<br>&nbsp; #GCTBNameLink# : GC or TB name as a link<br>&nbsp; #LogDate# : Content of field \"Date Logged\"<br>(Upper and lower case is not required in the placeholder name.)";
-            html += "&nbsp;" + "Log templates:" + show_help("Log templates are predefined texts. All your templates are shown beside the log form. You just have to click to a template and it will be placed in your log. <br><br>Also you are able to use placeholder for variables which will be replaced in the log. The smilies option has to be enabled. <br><br>Note: You have to set a title and a text. Click to the edit icon beside the template to edit the text.") + " &nbsp; (Possible placeholder:" + show_help_big(placeholderDescription) + ")<br>";
+            var placeholderDescription = "Possible placeholders:<br>&nbsp; #Found# : Your founds + 1<br>&nbsp; #Found_no# : Your founds<br>&nbsp; #Me# : Your username<br>&nbsp; #Owner# : Username of the owner<br>&nbsp; #Date# : Actual date<br>&nbsp; #Time# : Actual time in format hh:mm<br>&nbsp; #DateTime# : Actual date actual time<br>&nbsp; #GCTBName# : GC or TB name<br>&nbsp; #GCTBLink# : GC or TB link<br>&nbsp; #GCTBNameLink# : GC or TB name as a link<br>&nbsp; #LogDate# : Content of field \"Date Logged\"<br>(Upper and lower case is not required in the placeholders name.)";
+            html += "&nbsp;" + "Log templates:" + show_help("Log templates are predefined texts. All your templates are shown beside the log form. You just have to click to a template and it will be placed in your log. <br><br>Also you are able to use placeholders for variables which will be replaced in the log. The smilies option has to be enabled. <br><br>Note: You have to set a title and a text. Click to the edit icon beside the template to edit the text.") + " &nbsp; (Possible placeholders:" + show_help_big(placeholderDescription) + ")<br>";
             html += "<font class='gclh_small' style='font-style: italic; margin-left: 240px; margin-top: 25px; width: 320px; position: absolute; z-index: -1;' >Bitte beachte, dass Logtemplates nützlich sind, um automatisiert die Fundzahl, das Funddatum und ähnliches im Log einzutragen, dass aber Cache Owner Menschen sind, die sich über individuelle Logs zu ihrem Cache freuen. Beim Geocachen geht es nicht nur darum, die eigene Statistik zu puschen, sondern auch darum, etwas zu erleben. Bitte nimm dir doch etwas Zeit, den Ownern etwas wiederzugeben, indem du ihnen von Deinen Erlebnissen berichtest und ihnen gute Logs schreibst. Dann wird es auch in Zukunft Cacher geben, die sich gerne die Mühe machen, neue Caches auszulegen. Die Logtemplates sind also nützlich, können aber niemals ein vollständiges Log ersetzen.</font>";
             for (var i = 0; i < anzTemplates; i++) {
-                html += "&nbsp;" + "<input class='gclh_form' type='text' size='15' id='settings_log_template_name[" + i + "]' value='" + getValue('settings_log_template_name[' + i + ']', '') + "'> ";
-                html += "<a onClick=\"if(document.getElementById(\'settings_log_template_div[" + i + "]\').style.display == \'\') document.getElementById(\'settings_log_template_div[" + i + "]\').style.display = \'none\'; else document.getElementById(\'settings_log_template_div[" + i + "]\').style.display = \'\'; return false;\" href='#'><img src='/images/stockholm/16x16/page_white_edit.gif' border='0'></a><br>";
-                html += "<div id='settings_log_template_div[" + i + "]' style='display: none;'>&nbsp;&nbsp;&nbsp;&nbsp;<textarea class='gclh_form' rows='4' cols='54' id='settings_log_template[" + i + "]'>&zwnj;" + getValue("settings_log_template[" + i + "]", "") + "</textarea></div>";
+                html += "&nbsp;" + "<input class='gclh_form' type='text' size='15' id='settings_log_template_name[" + i + "]' value='" + getValue('settings_log_template_name[' + i + ']', '') + "' style='margin-top: 2px;'> ";
+                html += "<a onClick=\"if(document.getElementById(\'settings_log_template_div[" + i + "]\').style.display == \'\') document.getElementById(\'settings_log_template_div[" + i + "]\').style.display = \'none\'; else document.getElementById(\'settings_log_template_div[" + i + "]\').style.display = \'\'; return false;\" href='#'><img src='/images/stockholm/16x16/page_white_edit.gif' border='0' style='vertical-align: text-top;'></a><br>";
+                html += "<div id='settings_log_template_div[" + i + "]' style='display: none; margin-top: 2px; margin-bottom: -2px;'>&nbsp;&nbsp;&nbsp;&nbsp;<textarea class='gclh_form' rows='4' cols='54' id='settings_log_template[" + i + "]'>&zwnj;" + getValue("settings_log_template[" + i + "]", "") + "</textarea></div>";
             }
-            html += "&nbsp;" + "Cache log signature:" + show_help("The signature will automatically be inserted into your logs. <br><br>Also you are able to use placeholder for variables which will be replaced in the log.") + " &nbsp; (Possible placeholder:" + show_help_big(placeholderDescription) + ")<br>";
+            html += "&nbsp;" + "Cache log signature:" + show_help("The signature will automatically be inserted into your logs. <br><br>Also you are able to use placeholders for variables which will be replaced in the log.") + " &nbsp; (Possible placeholders:" + show_help_big(placeholderDescription) + ")<br>";
             html += "&nbsp;" + "<textarea class='gclh_form' rows='3' cols='56' id='settings_log_signature'>&zwnj;" + getValue("settings_log_signature", "") + "</textarea><br>";
             html += checkboxy('settings_log_signature_on_fieldnotes', 'Add log signature on drafts logs') + show_help('If this option is disabled, the log signature will not be used by logs out of drafts. You can use it, if you already have an signature in your drafts.') + "<br>";
-            html += "&nbsp;" + "TB log signature:" + show_help("The signature will automatically be inserted into your TB logs. <br><br>Also you are able to use placeholder for variables which will be replaced in the log.") + " &nbsp; (Possible placeholder:" + show_help_big(placeholderDescription) + ")<br>";
+            html += "&nbsp;" + "TB log signature:" + show_help("The signature will automatically be inserted into your TB logs. <br><br>Also you are able to use placeholders for variables which will be replaced in the log.") + " &nbsp; (Possible placeholders:" + show_help_big(placeholderDescription) + ")<br>";
             html += "&nbsp;" + "<textarea class='gclh_form' rows='3' cols='56' id='settings_tb_signature' style='margin-top: 2px;'>&zwnj;" + getValue("settings_tb_signature", "") + "</textarea><br>";
 
             html += "<div class='gclh_old_new_line'>Old logging page only</div>";
@@ -12903,8 +12952,8 @@ var mainGC = function() {
 
             html += "<h4 class='gclh_headline2'>"+prepareHideable.replace("#name#","mail")+"Mail / Message form</h4>";
             html += "<div id='gclh_config_mail' class='gclh_block'>";
-            var placeholderDescriptionMail = "Possible placeholder Mail / Message form:<br>&nbsp; #Found# : Your founds + 1<br>&nbsp; #Found_no# : Your founds<br>&nbsp; #Me# : Your username<br>&nbsp; #Receiver# : Username of the receiver<br>&nbsp; #Date# : Actual date<br>&nbsp; #Time# : Actual time in format hh:mm<br>&nbsp; #DateTime# : Actual date actual time<br>&nbsp; #GCTBName# : GC or TB name<br>&nbsp; #GCTBCode# : GC or TB code in brackets<br>&nbsp; #GCTBLink# : GC or TB link in brackets<br>(Upper and lower case is not required in the placeholder name.)";
-            html += "&nbsp;" + "Template:" + show_help2("The template will automatically be inserted into your mails and messages. <br><br>Also you are able to use placeholder for variables which will be replaced in the mail and in the message.") + " &nbsp; (Possible placeholder:" + show_help_big(placeholderDescriptionMail) + ")<br>";
+            var placeholderDescriptionMail = "Possible placeholders Mail / Message form:<br>&nbsp; #Found# : Your founds + 1<br>&nbsp; #Found_no# : Your founds<br>&nbsp; #Me# : Your username<br>&nbsp; #Receiver# : Username of the receiver<br>&nbsp; #Date# : Actual date<br>&nbsp; #Time# : Actual time in format hh:mm<br>&nbsp; #DateTime# : Actual date actual time<br>&nbsp; #GCTBName# : GC or TB name<br>&nbsp; #GCTBCode# : GC or TB code in brackets<br>&nbsp; #GCTBLink# : GC or TB link in brackets<br>(Upper and lower case is not required in the placeholders name.)";
+            html += "&nbsp;" + "Template:" + show_help2("The template will automatically be inserted into your mails and messages. <br><br>Also you are able to use placeholders for variables which will be replaced in the mail and in the message.") + " &nbsp; (Possible placeholders:" + show_help_big(placeholderDescriptionMail) + ")<br>";
             html += "&nbsp;" + "<textarea class='gclh_form' rows='7' cols='56' id='settings_mail_signature'>&zwnj;" + getValue("settings_mail_signature", "") + "</textarea><br>";
             html += "</div>";
 
@@ -13245,6 +13294,7 @@ var mainGC = function() {
                 return "<option value='" + name + "' " + (selected ? "selected='selected'" : "") + ">" + name + "</option>";
             }
             $("#btn_map_layer_right").click(function() {
+                animateClick(this);
                 var source = "#settings_maplayers_unavailable";
                 var destination = "#settings_maplayers_available";
                 $(source+" option:selected").each(function() {
@@ -13255,6 +13305,7 @@ var mainGC = function() {
                 $(source+" option:selected").remove();
             });
             $("#btn_map_layer_left").click(function() {
+                animateClick(this);
                 var source = "#settings_maplayers_available";
                 var destination = "#settings_maplayers_unavailable";
                 $(source+" option:selected").each(function() {
@@ -13268,6 +13319,7 @@ var mainGC = function() {
                 $(source+" option:selected").remove();
             });
             $("#btn_set_default_layer").click(function() {
+                animateClick(this);
                 $("#settings_maplayers_available option:selected").each(function() {
                     var name = $(this).html();
                     $("#settings_mapdefault_layer").html(name);
@@ -13334,6 +13386,11 @@ var mainGC = function() {
             $("#settings_show_homezone").click(function() {
                 $("#ShowHomezoneCircles").toggle();
             });
+
+            // Own entries in copy data to clipboard menu:
+            // -------------------------------------------
+            $('#cdos_main .cff_element').each(function() {buildAroundCff('cdos', this);});
+            buildEventCreateCff('cdos');
 
             // Rest:
             // -----
@@ -13526,6 +13583,7 @@ var mainGC = function() {
             setEvForDepPara("settings_show_copydata_own_stuff_show","restore_settings_show_copydata_own_stuff_name");
             setEvForDepPara("settings_show_copydata_own_stuff_show","settings_show_copydata_own_stuff_value");
             setEvForDepPara("settings_show_copydata_own_stuff_show","restore_settings_show_copydata_own_stuff_value");
+
             // Abhängigkeiten der Linklist Parameter.
             for (var i = 0; i < 100; i++) {
                 // 2. Spalte: Links für Custom BMs.
@@ -13631,6 +13689,10 @@ var mainGC = function() {
                 settings_multi_homezone[i].opacity = $curEl.find('.opacity:eq(0)').val();
             }
             setValue("settings_multi_homezone", JSON.stringify(settings_multi_homezone));
+
+            // Own entries in copy data to clipboard menu.
+            var settings_show_copydata_own_stuff = setDataCff('cdos');
+            setValue("settings_show_copydata_own_stuff", JSON.stringify(settings_show_copydata_own_stuff));
 
             setValue("settings_new_width", document.getElementById('settings_new_width').value);
             setValue("settings_default_logtype", document.getElementById('settings_default_logtype').value);
@@ -13990,9 +14052,9 @@ var mainGC = function() {
         }
     }
 
-//////////////////////////////
-// Config Functions
-//////////////////////////////
+//////////////////////////////////
+// GClh - Config Functions
+//////////////////////////////////
 // Radio Buttons zur Linklist.
     function handleRadioTopMenu(first) {
         if (first == true) {
@@ -14273,6 +14335,7 @@ var mainGC = function() {
 // Feldinhalt auf default zurücksetzen.
     function restoreField() {
         if (document.getElementById(this.id).disabled) return;
+        animateClick(this);
         var fieldId = this.id.replace(/restore_/, "");
         var field = document.getElementById(fieldId);
         if (this.id.match(/_color/)) {
@@ -14299,6 +14362,7 @@ var mainGC = function() {
                 case "settings_show_copydata_own_stuff_name": field.value = "Photo file name"; break;
                 case "settings_show_copydata_own_stuff_value": field.value = "#yyyy#.#mm#.#dd# - #GCName# - #GCCode# - 01"; break;
             }
+            $(field)[0].focus();
         }
     }
     function restoreColor(p, r, v) {
@@ -14478,9 +14542,168 @@ var mainGC = function() {
     }
     function thanksFlagBuild(flag) {return "<td><img src='" + (flag == true ? global_green_tick : "") + "'></td>";}
 
-//////////////////////////////
-// Config Reset Functions
-//////////////////////////////
+// Functions to provide cff (checkbox, input field and textarea field).
+    function openCff(ident, header, titleName, titleValue, depId) {
+        var c = '';
+        c +=   "<div id='" + ident + '_main' + "' class='cff_main' data-depId='" + (depId ? depId : '') + "' data-titleName='" + titleName + "' data-titleValue='" + titleValue + "'>";
+        c +=     "<div class='cff_header'>" + header + "</div>";
+        c +=     "<div class='cff_elements'>";
+        return c;
+    }
+    function buildEntryCff(ident, cffData, idNr, nonArray, createAction) {
+        var id = ident + '_#_' + idNr;
+        var c = '';
+        if (createAction) {
+            var div = document.createElement("div");
+            div.id = id.replace('#', 'element');
+            div.className = 'cff_element';
+        } else {
+            c +=   "<div id='" + id.replace('#', 'element') + "' class='cff_element'>";
+        }
+        c +=         "<input id='" + (nonArray ? nonArray + "_show" : id.replace('#', 'show')) + "' class='cff_show' type='checkbox' " + (cffData.show ? "checked='checked'" : "" ) + "'>";
+        c +=         "<input id='" + (nonArray ? nonArray + "_name" : id.replace('#', 'name')) + "' class='gclh_form cff_name' type='text' value='" + cffData.name + "'>";
+        if (nonArray) {
+            c +=     "<img id='restore_" + nonArray + "_name' class='cff_name_restore' src=" + global_restore_icon + " title='back to default' style='width: 12px; cursor: pointer;'>";
+        }
+        c +=         "<a class='cff_edit_delete' href='javascript:void(0);'>";
+        c +=           "<img class='cff_edit' title='edit' src='/images/stockholm/16x16/page_white_edit.gif'>";
+        if (!nonArray) {
+            c +=       "<img class='cff_delete' title ='delete' src='" + global_del_it_icon + "'/>";
+        }
+        c +=         "</a>";
+        c +=         "<div class='cff_content'" + (createAction ? "style='display: block;'" : "") + ">";
+        c +=           "<textarea id='" + (nonArray ? nonArray + "_value" : id.replace('#', 'value')) + "' class='gclh_form cff_value'>" + cffData.value + "</textarea>";
+        if (nonArray) {
+            c +=       "<img id='restore_" + nonArray + "_value' class='cff_value_restore' src=" + global_restore_icon + " title='back to default' style='width: 12px; cursor: pointer;'>";
+        }
+        c +=         "</div>";
+        c +=       "</div>";
+        if (createAction) {
+            div.innerHTML = c;
+            return div;
+        } else {
+            return c;
+        }
+    }
+    function buildDoubleEditCff(ident, idNr) {
+        var id = '#' + ident + '_main';
+        if ($(id + ' .cff_element')[0] && $(id + ' .cff_edit.first').length == 0) {
+            var a = document.createElement("a");
+            a.className = 'cff_edit_double';
+            a.href = 'javascript:void(0);';
+            a.innerHTML += "<img class='cff_edit first' title='edit all' src='/images/stockholm/16x16/page_white_edit.gif'>";
+            a.innerHTML += "<img class='cff_edit last' title='edit all' src='/images/stockholm/16x16/page_white_edit.gif'>";
+            $(id + ' .cff_edit_delete')[0].after(a);
+            a.addEventListener("click", function() {
+                animateClick($(this).closest('a')[0]);
+                var displayOrg = window.getComputedStyle($(this).closest('.cff_element').find('.cff_content')[0]).display;
+                if (displayOrg == 'none') var displayNew = 'block';
+                else var displayNew = 'none';
+                $(this).closest('.cff_elements').find('.cff_content').each(function() {
+                    $(this)[0].style.display = displayNew;
+                });
+                if (displayNew == 'block') $(this).closest('.cff_element').find('.cff_value')[0].focus();
+            });
+        }
+    }
+    function closeCff(ident) {
+        var c = '';
+        c +=     "</div>";
+        c +=     "<div class='cff_footer'><button class='gclh_form cff_create' type='button' title='create further entry'>create</button></div>";
+        c +=   "</div>";
+        return c;
+    }
+    function cssCff(ident, blockRight, widthName, widthValue, heightValue) {
+        var id = '#' + ident + '_main';
+        var css = '';
+        css += id + '{margin-left: ' + blockRight + 'px;}';
+        css += id + ' .cff_show {margin-left: 0px;}';
+        css += id + ' .cff_name {margin-top: 2px; margin-right: 12px; width: ' + widthName + 'px;}';
+        css += id + ' .cff_name_restore {margin-left: -12px;}';
+        css += id + ' a {cursor: default;}';
+        css += id + ' .cff_edit, ' + id + ' .cff_delete {margin-left: 4px; height: 16px; cursor: pointer; vertical-align: text-top; border: 0;}';
+        css += id + ' .cff_edit.first {margin-top: -2px; margin-left: 20px; height: 14px;}';
+        css += id + ' .cff_edit.last {margin-top: 3px; margin-left: -8px; height: 14px;}';
+        css += id + ' .cff_content {margin-left: 32px; margin-bottom: -2px; margin-top: 2px; display: none;}';
+        css += id + ' .cff_value {width: ' + widthValue + 'px; height: ' + heightValue + 'px;}';
+        css += id + ' .cff_create {margin-left: 0px; margin-top: 2px;}';
+        appendCssStyle(css, '', ident + '_main_css');
+    }
+    function getLastIdNrCff(ident) {
+        var id = '#' + ident + '_main';
+        if ($(id + ' .cff_element:last')[0]) {
+            var idNr = $(id + ' .cff_element:last')[0].id.match(/(\d*)$/);
+            if (idNr && idNr[1]) idNr = idNr[1];
+        }
+        if (!idNr) var idNr = 0;
+        idNr = parseInt(idNr);
+        return idNr;
+    }
+    function buildDataCff(show, name, value) {
+        var cffData = {};
+        cffData.show = show;
+        cffData.name = name;
+        cffData.value = value;
+        return cffData;
+    }
+    function buildAroundCff(ident, cff) {
+        $(cff).find('.cff_edit_delete .cff_edit')[0].addEventListener("click", function() {
+            animateClick(this);
+            $(this).closest('.cff_element').find('.cff_content').toggle();
+            if (window.getComputedStyle($(this).closest('.cff_element').find('.cff_content')[0]).display != 'none') {
+                $(this).closest('.cff_element').find('.cff_value')[0].focus();
+            }
+        });
+        if ($(cff).find('.cff_delete')[0]) {
+            $(cff).find('.cff_delete')[0].addEventListener("click", function() {
+                $(this).closest('.cff_element').remove();
+                buildDoubleEditCff(ident);
+            });
+        }
+        if ($(cff).find('.cff_show')[0].id.match('^'+ident)) {
+            if ($(cff).closest('.cff_main').attr('data-depId')) {
+                setEvForDepPara($(cff).closest('.cff_main').attr('data-depId'), $(cff).find('.cff_show')[0].id);
+                setEvForDepPara($(cff).closest('.cff_main').attr('data-depId'), $(cff).find('.cff_name')[0].id);
+                setEvForDepPara($(cff).closest('.cff_main').attr('data-depId'), $(cff).find('.cff_value')[0].id);
+            }
+            setEvForDepPara($(cff).find('.cff_show')[0].id, $(cff).find('.cff_name')[0].id);
+            setEvForDepPara($(cff).find('.cff_show')[0].id, $(cff).find('.cff_value')[0].id);
+            setStartForDepPara();
+        }
+        $(cff).find('.cff_name').attr('title', $(cff).closest('.cff_main').attr('data-titleName'));
+        $(cff).find('.cff_value').attr('title', $(cff).closest('.cff_main').attr('data-titleValue'));
+        buildDoubleEditCff(ident);
+    }
+    function buildEventCreateCff(ident) {
+        var id = '#' + ident + '_main';
+        $(id + ' .cff_create')[0].addEventListener("click", function() {
+            var ident = $(this).closest('.cff_main')[0].id.replace('_main','');
+            var cffData = buildDataCff(true, '', '');
+            var idNr = getLastIdNrCff(ident) + 1;
+            $(id + ' .cff_elements')[0].append(buildEntryCff(ident, cffData, idNr, false, true));
+            $(id + ' .cff_name:last')[0].focus();
+            buildAroundCff(ident, $(id + ' .cff_element:last')[0]);
+        });
+    }
+    function setDataCff(ident) {
+        var cffElements = $('#' + ident + '_main .cff_element');
+        var settingsElements = {};
+        var count = 0;
+        for (var i = 0; i < cffElements.length; i++) {
+            if (!$(cffElements[i]).find('.cff_show')[0].id.match('^'+ident)) continue;
+            if ($(cffElements[i]).find('.cff_name')[0].value.match(/^(\s*)$/) || $(cffElements[i]).find('.cff_value')[0].value.match(/^(\s*)$/)) continue;
+            settingsElements[count] = {};
+            settingsElements[count].show = $(cffElements[i]).find('.cff_show')[0].checked;
+            settingsElements[count].name = $(cffElements[i]).find('.cff_name')[0].value;
+            settingsElements[count].value = $(cffElements[i]).find('.cff_value')[0].value;
+            count++;
+        }
+        return settingsElements;
+    }
+
+//////////////////////////////////
+// GClh - Config Functions - Reset
+//////////////////////////////////
     function rcPrepare() {
         global_mod_reset = true;
         if (document.getElementById('settings_overlay')) document.getElementById('settings_overlay').style.overflow = "hidden";
@@ -14621,9 +14844,9 @@ var mainGC = function() {
         window.location.reload(false);
     }
 
-//////////////////////////////
-// Sync Main
-//////////////////////////////
+//////////////////////////////////
+// GClh - Sync Functions
+//////////////////////////////////
 // Get/Set Config Data.
     function sync_getConfigData() {
         var data = {};
@@ -14936,9 +15159,9 @@ var mainGC = function() {
 
 };  // End of mainGC.
 
-//////////////////////////////
-// Global Functions
-//////////////////////////////
+//////////////////////////////////
+// Global - Functions
+//////////////////////////////////
 // Create bookmark to GC page.
 function bookmark(title, href, bookmarkArray) {
     var bm = new Object();
