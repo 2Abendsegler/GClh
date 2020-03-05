@@ -14678,6 +14678,7 @@ var mainGC = function() {
             html += "<div style='display:none;' id='syncManual' >";
             html += "<pre class='gclh_form' style='display: block; width: 550px; height: 300px; overflow: auto; margin-top: 0; margin-bottom: 6px !important' type='text' value='' id='configData' size='28' contenteditable='true'></pre>";
             html += "<input class='gclh_form' type='button' value='export' id='btn_ExportConfig'> ";
+            html += "<input class='gclh_form' type='button' value='download TXT-File' id='btn_DownloadConfig'> ";
             html += "<input class='gclh_form' type='button' value='import' id='btn_ImportConfig'>";
             html += "</div>";
             html += "<br><br>";
@@ -14689,6 +14690,16 @@ var mainGC = function() {
             $('#btn_close3')[0].addEventListener("click", btnClose, false);
             $('#btn_ExportConfig')[0].addEventListener("click", function() {
                 $('#configData')[0].innerText = sync_getConfigData();
+            }, false);
+            $('#btn_DownloadConfig')[0].addEventListener("click", function() {
+                var element = document.createElement('a');
+                element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(sync_getConfigData()));
+                element.setAttribute('download', "config.txt");
+                element.style.display = 'none';
+                document.body.appendChild(element);
+                element.click();
+                document.body.removeChild(element);
+
             }, false);
             $('#btn_ImportConfig')[0].addEventListener("click", function() {
                 var data = $('#configData')[0].innerText;
