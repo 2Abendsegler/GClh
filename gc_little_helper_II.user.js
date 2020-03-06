@@ -2345,15 +2345,22 @@ var mainGC = function() {
                     el.value = el.value.replace(/#GCNameLink#/ig, "[" + GCName + "](" + GCLink + ")");
                     el.value = el.value.replace(/#Coords#/ig, determineListingCoords('CorrOrg'));
                     el.value = el.value.replace(/#Elevation#/ig, ($('#elevation-waypoint-0 span')[0] ? $('#elevation-waypoint-0 span')[0].innerHTML : ($('#elevation-waypoint-0')[0] ? $('#elevation-waypoint-0')[0].innerHTML : '')));
-                    el.value = el.value.replace(/#Founds#/ig, ($('#ctl00_ContentBody_lblFindCounts').find('img[src*="/2.png"]')[0] ? $('#ctl00_ContentBody_lblFindCounts').find('img[src*="/2.png"]')[0].nextSibling.data.replace(/(\s*)/g,'') : 0));
-                    el.value = el.value.replace(/#FoundsPlus#/ig, ($('#ctl00_ContentBody_lblFindCounts img[src*="/11.png"], #ctl00_ContentBody_lblFindCounts img[src*="/10.png"], #ctl00_ContentBody_lblFindCounts img[src*="/2.png"]')[0] ? $('#ctl00_ContentBody_lblFindCounts img[src*="/11.png"], #ctl00_ContentBody_lblFindCounts img[src*="/10.png"], #ctl00_ContentBody_lblFindCounts img[src*="/2.png"]')[0].nextSibling.data.replace(/(\s*)/g,'') : 0));
-                    el.value = el.value.replace(/#DNFs#/ig, ($('#ctl00_ContentBody_lblFindCounts').find('img[src*="/3.png"]')[0] ? $('#ctl00_ContentBody_lblFindCounts').find('img[src*="/3.png"]')[0].nextSibling.data.replace(/(\s*)/g,'') : 0));
+                    el.value = el.value.replace(/#Founds#/ig, ($('#ctl00_ContentBody_lblFindCounts img[src*="/2.png"]')[0] ? parseInt($('#ctl00_ContentBody_lblFindCounts img[src*="/2.png"]')[0].nextSibling.data.replace(/(,|\.)/g,'')) : 0));
+                    el.value = el.value.replace(/#Attended#/ig, ($('#ctl00_ContentBody_lblFindCounts img[src*="/10.png"]')[0] ? parseInt($('#ctl00_ContentBody_lblFindCounts img[src*="/10.png"]')[0].nextSibling.data.replace(/(,)/,'.')) : 0));
+                    var foundsPlus = 0;
+                    if ($('#ctl00_ContentBody_lblFindCounts img[src*="/2.png"]')[0]) foundsPlus += parseInt($('#ctl00_ContentBody_lblFindCounts img[src*="/2.png"]')[0].nextSibling.data.replace(/(,|\.)/g,''));
+                    if ($('#ctl00_ContentBody_lblFindCounts img[src*="/10.png"]')[0]) foundsPlus += parseInt($('#ctl00_ContentBody_lblFindCounts img[src*="/10.png"]')[0].nextSibling.data.replace(/(,|\.)/g,''));
+                    if ($('#ctl00_ContentBody_lblFindCounts img[src*="/11.png"]')[0]) foundsPlus += parseInt($('#ctl00_ContentBody_lblFindCounts img[src*="/11.png"]')[0].nextSibling.data.replace(/(,|\.)/g,''));
+                    el.value = el.value.replace(/#FoundsPlus#/ig, foundsPlus);
+                    el.value = el.value.replace(/#WillAttend#/ig, ($('#ctl00_ContentBody_lblFindCounts img[src*="/9.png"]')[0] ? parseInt($('#ctl00_ContentBody_lblFindCounts img[src*="/9.png"]')[0].nextSibling.data.replace(/(,|\.)/g,'')) : 0));
+                    el.value = el.value.replace(/#DNFs#/ig, ($('#ctl00_ContentBody_lblFindCounts img[src*="/3.png"]')[0] ? parseInt($('#ctl00_ContentBody_lblFindCounts img[src*="/3.png"]')[0].nextSibling.data.replace(/(,|\.)/g,'')) : 0));
                     el.value = el.value.replace(/#Diff#/ig, $('#ctl00_ContentBody_uxLegendScale img').attr('src').match(/stars(\d|\d_\d).gif/)[1].replace('_','.'));
                     el.value = el.value.replace(/#Terr#/ig, $('#ctl00_ContentBody_Localize12 img').attr('src').match(/stars(\d|\d_\d).gif/)[1].replace('_','.'));
                     el.value = el.value.replace(/#Size#/ig, $('#ctl00_ContentBody_size .minorCacheDetails small')[0].innerHTML.replace('(','').replace(')',''));
                     el.value = el.value.replace(/#Owner#/ig, get_real_owner().replace(/'/g,"\\'"));
                     el.value = el.value.replace(/#Favo#/ig, (($('#uxFavContainerLink')[0] && $('#uxFavContainerLink .favorite-value')[0]) ? $('#uxFavContainerLink .favorite-value')[0].innerHTML.replace(/(\s*)/g,'') : ''));
                     el.value = el.value.replace(/#FavoPerc#/ig, (($('.favorite-dropdown')[0] && $('.favorite-dropdown .favorite-score')[0].innerHTML) ? $('.favorite-dropdown .favorite-score')[0].innerHTML.match(/(\d+)/)[1] + '%' : ''));
+                    el.value = el.value.replace(/#Hints#/ig, (($('#div_hint')[0] && $('#div_hint')[0].innerHTML) ? $('#div_hint')[0].innerHTML.replace(/^(\s*)/,'').replace(/<br>/g,'\n') : ''));
                     var g_note = $('#viewCacheNote')[0].innerHTML;
                     if (g_note != null && g_note != "" && g_note != "Click to enter a note" && g_note != "Klicken zum Eingeben einer Notiz") {
                         el.value = el.value.replace(/#GCNote#/ig, g_note.replace(new RegExp('&gt;', 'g'),'>').replace(new RegExp('&lt;', 'g'),'<'));
@@ -12387,6 +12394,32 @@ var mainGC = function() {
                 html += "  <option value='" + i + "' " + (settings_improve_add_to_list_height == i ? "selected=\"selected\"" : "") + ">" + i + "</option>";
             }
             html += "</select> px" + show_help("With this option you can choose the height of the \"Add to list\" popup to bookmark a cache from 100 up to 520 pixel. The default is 205 pixel, similar to the standard.<br><br>This option requires \"Show compact layout in \"Add to list\" popup to bookmark a cache\".") + prem + "<br>";
+            html += newParameterOn3;
+            html += checkboxy('settings_show_copydata_menu', 'Show "Copy Data to Clipboard" menu in sidebar') + show_help3("Shows a menu to copy various cache data to the clipboard.") + "<br>";
+            // Own entries in copy data to clipboard menu (copy data own stuff, cdos).
+            var ph = "Possible placeholders:<br>&nbsp; #GCName# : GC name<br>&nbsp; #GCCode# : GC code<br>&nbsp; #GCLink# : GC link<br>&nbsp; #GCNameLink# : GC name as a link<br>"
+                   + "&nbsp; #Owner# : Username of the owner<br>&nbsp; #Diff# : Difficulty<br>&nbsp; #Terr# : Terrain<br>&nbsp; #Size# : Size of the cache box<br>&nbsp; #Favo# : Favorites<br>&nbsp; #FavoPerc# : Favorites percentage<br>"
+                   + "&nbsp; #Elevation# : Elevation<br>&nbsp; #Coords# : Shown coordinates<br>&nbsp; #Hints# : Additional hints<br>&nbsp; #GCNote# : User note<br>&nbsp; #Founds# : Number of found logs<br>&nbsp; #Attended# : Number of attended logs<br>&nbsp; #FoundsPlus# : Number of found, attended or webcam photo taken logs<br>&nbsp; #WillAttend# : Number of will attend logs<br>&nbsp; #DNFs# : Number of DNF logs<br>"
+                   + "&nbsp; #Date# : Actual date<br>&nbsp; #Time# : Actual time in format hh:mm<br>&nbsp; #DateTime# : Actual date actual time<br>&nbsp; #yyyy# : Current year<br>&nbsp; #mm# : Current month<br>&nbsp; #dd# : Current day<br>"
+                   + "(Upper and lower case is not required in the placeholders name.)";
+            var header = "Show own copy data entries:" + show_help_big("With the checkbox and the two input fields, you can generate entries in the menu \"Copy Data to Clipbord\".<br><br>With the checkbox you can activate or deactivate an entry. The first input field contains the name that is displayed in the menu \"Copy Data to Clipbord\" for an entry. The second input field contains the content that is copied to the clipboard if you click to an entry in the menu \"Copy Data to Clipbord\". You can use different placeholders in the second input field.")
+                       + "&nbsp; &nbsp;" + "(Possible placeholders:" + show_help3_big(ph) + ")<br>";
+            var titleName = 'Name of entry in menu \"Copy Data to Clipbord\".';
+            var titleValue = 'Data in the clipboard when clicking on entry in menu \"Copy Data to Clipbord\".';
+            html += openCff('cdos', header, titleName, titleValue, 'settings_show_copydata_menu');
+            // First entry from non array.
+            var cdosData = buildDataCff(settings_show_copydata_own_stuff_show, settings_show_copydata_own_stuff_name, settings_show_copydata_own_stuff_value);
+            var idNr = 1;
+            html += buildEntryCff('cdos', cdosData, idNr, 'settings_show_copydata_own_stuff', false);
+            // Further entries from array.
+            for (var i in settings_show_copydata_own_stuff) {
+                var cdosData = settings_show_copydata_own_stuff[i];
+                idNr++;
+                html += buildEntryCff('cdos', cdosData, idNr, false, false);
+            }
+            html += closeCff('cdos');
+            cssCff('cdos', '14', '200', '460', '54');
+            html += newParameterVersionSetzen("0.10") + newParameterOff;
             html += checkboxy('settings_show_flopps_link', 'Show Flopp\'s Map links in sidebar and under the "Additional Waypoints"') + show_help3("If there are no additional waypoints only the link in the sidebar is shown.") + "<br>";
             html += checkboxy('settings_show_brouter_link', 'Show BRouter links in sidebar and under the "Additional Waypoints"') + show_help3("If there are no additional waypoints only the link in the sidebar is shown.") + "<br>";
             html += newParameterVersionSetzen(0.8) + newParameterOff;
@@ -12408,30 +12441,6 @@ var mainGC = function() {
             html += "  <option value=\"2b\" " + (settings_show_openrouteservice_medium == "2b" ? "selected=\"selected\"" : "") + ">Pedestrian hiking</option>";
             html += "  <option value=\"3\" " + (settings_show_openrouteservice_medium == "3" ? "selected=\"selected\"" : "") + ">Wheelchair (only Europe)</option>";
             html += "</select>" + "<br>";
-            html += checkboxy('settings_show_copydata_menu', 'Show "Copy Data to Clipboard" menu in sidebar') + show_help3("Shows a menu to copy various cache data to the clipboard.") + "<br>";
-            // Own entries in copy data to clipboard menu (copy data own stuff, cdos).
-            var ph = "Possible placeholders:<br>&nbsp; #GCName# : GC name<br>&nbsp; #GCCode# : GC code<br>&nbsp; #GCLink# : GC link<br>&nbsp; #GCNameLink# : GC name as a link<br>"
-                   + "&nbsp; #Owner# : Username of the owner<br>&nbsp; #Diff# : Difficulty<br>&nbsp; #Terr# : Terrain<br>&nbsp; #Size# : Size of the cache box<br>&nbsp; #Favo# : Favorites<br>&nbsp; #FavoPerc# : Favorites percentage<br>"
-                   + "&nbsp; #Elevation# : Elevation<br>&nbsp; #Coords# : Shown coordinates<br>&nbsp; #GCNote# : User note<br>&nbsp; #Founds# : Number of found logs<br>&nbsp; #FoundsPlus# : Number of found or synonym logs<br>&nbsp; #DNFs# : Number of DNF logs<br>"
-                   + "&nbsp; #Date# : Actual date<br>&nbsp; #Time# : Actual time in format hh:mm<br>&nbsp; #DateTime# : Actual date actual time<br>&nbsp; #yyyy# : Current year<br>&nbsp; #mm# : Current month<br>&nbsp; #dd# : Current day<br>"
-                   + "&nbsp; #newline# : Add new line<br>(Upper and lower case is not required in the placeholders name.)";
-            var header = "Show own copy data entries:" + show_help_big("With the checkbox and the two input fields, you can generate entries in the menu \"Copy Data to Clipbord\".<br><br>With the checkbox you can activate or deactivate an entry. The first input field contains the name that is displayed in the menu \"Copy Data to Clipbord\" for an entry. The second input field contains the content that is copied to the clipboard if you click to an entry in the menu \"Copy Data to Clipbord\". You can use different placeholders in the second input field.")
-                       + "&nbsp; &nbsp;" + "(Possible placeholders:" + show_help3_big(ph) + ")<br>";
-            var titleName = 'Name of entry in menu \"Copy Data to Clipbord\".';
-            var titleValue = 'Data in the clipboard when clicking on entry in menu \"Copy Data to Clipbord\".';
-            html += openCff('cdos', header, titleName, titleValue, 'settings_show_copydata_menu');
-            // First entry from non array.
-            var cdosData = buildDataCff(settings_show_copydata_own_stuff_show, settings_show_copydata_own_stuff_name, settings_show_copydata_own_stuff_value);
-            var idNr = 1;
-            html += buildEntryCff('cdos', cdosData, idNr, 'settings_show_copydata_own_stuff', false);
-            // Further entries from array.
-            for (var i in settings_show_copydata_own_stuff) {
-                var cdosData = settings_show_copydata_own_stuff[i];
-                idNr++;
-                html += buildEntryCff('cdos', cdosData, idNr, false, false);
-            }
-            html += closeCff('cdos');
-            cssCff('cdos', '14', '200', '460', '54');
             html += newParameterVersionSetzen("0.10") + newParameterOff;
             html += newParameterOn3;
             html += checkboxy('settings_show_all_logs_but', 'Show button \"Show all logs\" above the logs') + "<br>";
@@ -14277,8 +14286,8 @@ var mainGC = function() {
         var id = '#' + ident + '_main';
         $(id + ' .cff_create')[0].addEventListener("click", function() {
             var ident = $(this).closest('.cff_main')[0].id.replace('_main','');
-            var cffData = buildDataCff(true, '', '');
             var idNr = getLastIdNrCff(ident) + 1;
+            var cffData = buildDataCff(true, idNr, '');
             $(id + ' .cff_elements')[0].append(buildEntryCff(ident, cffData, idNr, false, true));
             $(id + ' .cff_name:last')[0].focus();
             buildAroundCff(ident, $(id + ' .cff_element:last')[0]);
