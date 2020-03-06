@@ -14678,8 +14678,8 @@ var mainGC = function() {
             html += "<div style='display:none;' id='syncManual' >";
             html += "<pre class='gclh_form' style='display: block; width: 550px; height: 300px; overflow: auto; margin-top: 0; margin-bottom: 6px !important' type='text' value='' id='configData' size='28' contenteditable='true'></pre>";
             html += "<input class='gclh_form' type='button' value='export' id='btn_ExportConfig'> ";
-            html += "<input class='gclh_form' type='button' value='download TXT-File' id='btn_DownloadConfig'> ";
             html += "<input class='gclh_form' type='button' value='import' id='btn_ImportConfig'>";
+            html += " | <input class='gclh_form' type='button' value='download' id='btn_DownloadConfig' title='download config as txt-file'> ";
             html += "</div>";
             html += "<br><br>";
             html += "<input class='gclh_form' type='button' value='close' id='btn_close3'>";
