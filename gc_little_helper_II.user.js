@@ -2360,6 +2360,7 @@ var mainGC = function() {
                     el.value = el.value.replace(/#Owner#/ig, get_real_owner().replace(/'/g,"\\'"));
                     el.value = el.value.replace(/#Favo#/ig, (($('#uxFavContainerLink')[0] && $('#uxFavContainerLink .favorite-value')[0]) ? $('#uxFavContainerLink .favorite-value')[0].innerHTML.replace(/(\s*)/g,'') : ''));
                     el.value = el.value.replace(/#FavoPerc#/ig, (($('.favorite-dropdown')[0] && $('.favorite-dropdown .favorite-score')[0].innerHTML) ? $('.favorite-dropdown .favorite-score')[0].innerHTML.match(/(\d+)/)[1] + '%' : ''));
+                    el.value = el.value.replace(/#Hints#/ig, (($('#div_hint')[0] && $('#div_hint')[0].innerHTML) ? $('#div_hint')[0].innerHTML.replace(/^(\s*)/,'').replace(/<br>/g,'\n') : ''));
                     var g_note = $('#viewCacheNote')[0].innerHTML;
                     if (g_note != null && g_note != "" && g_note != "Click to enter a note" && g_note != "Klicken zum Eingeben einer Notiz") {
                         el.value = el.value.replace(/#GCNote#/ig, g_note.replace(new RegExp('&gt;', 'g'),'>').replace(new RegExp('&lt;', 'g'),'<'));
@@ -12398,7 +12399,7 @@ var mainGC = function() {
             // Own entries in copy data to clipboard menu (copy data own stuff, cdos).
             var ph = "Possible placeholders:<br>&nbsp; #GCName# : GC name<br>&nbsp; #GCCode# : GC code<br>&nbsp; #GCLink# : GC link<br>&nbsp; #GCNameLink# : GC name as a link<br>"
                    + "&nbsp; #Owner# : Username of the owner<br>&nbsp; #Diff# : Difficulty<br>&nbsp; #Terr# : Terrain<br>&nbsp; #Size# : Size of the cache box<br>&nbsp; #Favo# : Favorites<br>&nbsp; #FavoPerc# : Favorites percentage<br>"
-                   + "&nbsp; #Elevation# : Elevation<br>&nbsp; #Coords# : Shown coordinates<br>&nbsp; #GCNote# : User note<br>&nbsp; #Founds# : Number of found logs<br>&nbsp; #Attended# : Number of attended logs<br>&nbsp; #FoundsPlus# : Number of found, attended or webcam photo taken logs<br>&nbsp; #WillAttend# : Number of will attend logs<br>&nbsp; #DNFs# : Number of DNF logs<br>"
+                   + "&nbsp; #Elevation# : Elevation<br>&nbsp; #Coords# : Shown coordinates<br>&nbsp; #Hints# : Additional hints<br>&nbsp; #GCNote# : User note<br>&nbsp; #Founds# : Number of found logs<br>&nbsp; #Attended# : Number of attended logs<br>&nbsp; #FoundsPlus# : Number of found, attended or webcam photo taken logs<br>&nbsp; #WillAttend# : Number of will attend logs<br>&nbsp; #DNFs# : Number of DNF logs<br>"
                    + "&nbsp; #Date# : Actual date<br>&nbsp; #Time# : Actual time in format hh:mm<br>&nbsp; #DateTime# : Actual date actual time<br>&nbsp; #yyyy# : Current year<br>&nbsp; #mm# : Current month<br>&nbsp; #dd# : Current day<br>"
                    + "(Upper and lower case is not required in the placeholders name.)";
             var header = "Show own copy data entries:" + show_help_big("With the checkbox and the two input fields, you can generate entries in the menu \"Copy Data to Clipbord\".<br><br>With the checkbox you can activate or deactivate an entry. The first input field contains the name that is displayed in the menu \"Copy Data to Clipbord\" for an entry. The second input field contains the content that is copied to the clipboard if you click to an entry in the menu \"Copy Data to Clipbord\". You can use different placeholders in the second input field.")
@@ -14285,8 +14286,8 @@ var mainGC = function() {
         var id = '#' + ident + '_main';
         $(id + ' .cff_create')[0].addEventListener("click", function() {
             var ident = $(this).closest('.cff_main')[0].id.replace('_main','');
-            var cffData = buildDataCff(true, '', '');
             var idNr = getLastIdNrCff(ident) + 1;
+            var cffData = buildDataCff(true, idNr, '');
             $(id + ' .cff_elements')[0].append(buildEntryCff(ident, cffData, idNr, false, true));
             $(id + ' .cff_name:last')[0].focus();
             buildAroundCff(ident, $(id + ' .cff_element:last')[0]);
