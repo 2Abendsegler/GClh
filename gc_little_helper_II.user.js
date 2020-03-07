@@ -8036,6 +8036,16 @@ var mainGC = function() {
                 }
             }
 
+            // Set link to owner.
+            function setLinkToOwner() {
+                if ($('.geocache-owner')[0]) {
+                    var owner = ($('.geocache-owner-name span a')[0] ? $('.geocache-owner-name span a').html() : $('.geocache-owner-name span').html());
+                    if ($('#' + owner) [0]) return;
+                    var html = '<a id="' + owner + '" href="https://www.geocaching.com/profile/?u=' + urlencode(owner) + '" target="_blank">' + owner + '</a>';
+                    $('.geocache-owner-name span').html(html);
+                }
+            }
+
             // Compact layout on detail screen.
             function compactLayout() {
                 if (settings_searchmap_compact_layout) {
@@ -8438,6 +8448,7 @@ var mainGC = function() {
             function processAllSearchMap() {
                 scrollInCacheList(); // Has to be run before searchThisArea.
                 searchThisArea();
+                setLinkToOwner(); // Has to be run before compactLayout.
                 compactLayout();
                 strikeDisabledInCacheDetails();
                 strikeDisabledInList();
@@ -8475,6 +8486,9 @@ var mainGC = function() {
             if (!document.location.href.match(/\.com\/play\/map\?(bm=|(.*)&nfb=GClh)/) && settings_searchmap_autoupdate_after_dragging) {
                 css += '#clear-map-control, .loading-container {display: none;}';
             }
+            // Set link to owner.
+            css += '.geocache-owner-name a:hover, .gclhOwner a:hover {color: #02874d !important;}';
+            css += '.geocache-owner-name a, .gclhOwner a {color: #4a4a4a !important; text-decoration: none !important;}';
             if (settings_searchmap_compact_layout) {
                 css += '.search-bar {padding: 5px 10px !important;}';
                 css += '.search-bar-inner {margin-right: 10px !important;}';
@@ -8511,7 +8525,7 @@ var mainGC = function() {
                 css += '.cache-preview-attributes > ul {font-size: 12px; margin-bottom: 0 !important; padding-bottom: 5px !important;}';
                 css += '.cache-preview-attributes .favorites-icon {height: 24px; width: 24px;}';
                 css += '.cache-preview-attributes .attribute-label {color: #777777;}';
-                css += '.gclhOwner {color: #9b9b9b;}'
+                css += '.gclhOwner {color: #9b9b9b;}';
                 css += '.cache-preview-attributes .geocache-owner {font-size: 12px; margin-top: 0px; padding-top: 3px;}';
                 css += '.cache-preview-attributes .geocache-owner-name, .cache-preview-attributes .geocache-placed-date {display: none !important;}';
                 css += '.cache-open-text-cta, .cache-preview-activities header {font-size: 14px; color: #4a4a4a;}';
