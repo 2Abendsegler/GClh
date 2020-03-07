@@ -8034,11 +8034,11 @@ var mainGC = function() {
                 if ($('.geocache-owner')[0]) {
                     var owner = ($('.geocache-owner-name span a')[0] ? $('.geocache-owner-name span a').html() : $('.geocache-owner-name span').html());
                     if ($('#' + owner) [0]) return;
-                    var html = '<a id="' + owner + '" href="https://www.geocaching.com/p/default.aspx?u=' + urlencode(owner) + '" target="_blank">' + owner + '</a>';
+                    var html = '<a id="' + owner + '" href="https://www.geocaching.com/profile/?u=' + urlencode(owner) + '" target="_blank">' + owner + '</a>';
                     $('.geocache-owner-name span').html(html);
                 }
             }
-    
+
             // Compact layout on detail screen.
             function compactLayout() {
                 if (settings_searchmap_compact_layout) {
@@ -8479,6 +8479,7 @@ var mainGC = function() {
             if (!document.location.href.match(/\.com\/play\/map\?(bm=|(.*)&nfb=GClh)/) && settings_searchmap_autoupdate_after_dragging) {
                 css += '#clear-map-control, .loading-container {display: none;}';
             }
+            // Set link to owner.
             css += '.geocache-owner-name a:hover, .gclhOwner a:hover {color: #02874d !important;}';
             css += '.geocache-owner-name a, .gclhOwner a {color: #4a4a4a !important; text-decoration: none !important;}';
             if (settings_searchmap_compact_layout) {
