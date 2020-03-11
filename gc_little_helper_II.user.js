@@ -14837,17 +14837,17 @@ var mainGC = function() {
         s = s.replace(/\&nbsp;/g, " ");
         return s;
     }
-	
-	// Remove all special characters
-	function removeAllSpecialCharacters(t) {
-		var specialCharacters = '! " § $ % & / ( ) = ? ´ * \' \\ - : ; > < , . - # + ´ { } [ ] ² ³ ~ | ° ^';
-		specialCharacters = specialCharacters.split(' ')
-		var text = '';
-		for (let i=1; i<=t.length; i++) {
-			if (!specialCharacters.includes(t.substr(i, 1)) && t.substr(i, 1).trim() != '') text += t.substr(i, 1)
-		}
-		return text;
-	}
+
+    // Remove all special characters
+    function removeAllSpecialCharacters(t) {
+        var specialCharacters = '! " § $ % & / ( ) = ? ´ * \' \\ - : ; > < , . - # + ´ { } [ ] ² ³ ~ | ° ^';
+        specialCharacters = specialCharacters.split(' ')
+        var text = '';
+        for (let i=1; i<=t.length; i++) {
+            if (!specialCharacters.includes(t.substr(i, 1)) && t.substr(i, 1).trim() != '') text += t.substr(i, 1)
+        }
+        return text;
+    }
 
 // Trim.
     function trim(s) {
