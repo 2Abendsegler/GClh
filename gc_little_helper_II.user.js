@@ -8033,8 +8033,8 @@ var mainGC = function() {
             function setLinkToOwner() {
                 if ($('.geocache-owner')[0]) {
                     var owner = ($('.geocache-owner-name span a')[0] ? $('.geocache-owner-name span a').html() : $('.geocache-owner-name span').html());
-                    if ($('#' + urlencode(owner).replace('%', ''))[0]) return;
-                    var html = '<a id="' + urlencode(owner).replace('%', '') + '" href="https://www.geocaching.com/profile/?u=' + urlencode(owner) + '" target="_blank">' + owner + '</a>';
+                    if ($('#' + removeAllSpecialCharacters(owner))[0]) return;
+                    var html = '<a id="' + removeAllSpecialCharacters(owner) + '" href="https://www.geocaching.com/profile/?u=' + urlencode(owner) + '" target="_blank">' + owner + '</a>';
                     $('.geocache-owner-name span').html(html);
                 }
             }
@@ -14837,6 +14837,17 @@ var mainGC = function() {
         s = s.replace(/\&nbsp;/g, " ");
         return s;
     }
+	
+	// Remove all special characters
+	function removeAllSpecialCharacters(t) {
+		var specialCharacters = '! " § $ % & / ( ) = ? ´ * \' \\ - : ; > < , . - # + ´ { } [ ] ² ³ ~ | ° ^';
+		specialCharacters = specialCharacters.split(' ')
+		var text = '';
+		for (let i=1; i<=t.length; i++) {
+			if (!specialCharacters.includes(t.substr(i, 1)) && t.substr(i, 1).trim() != '') text += t.substr(i, 1)
+		}
+		return text;
+	}
 
 // Trim.
     function trim(s) {
