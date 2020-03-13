@@ -8038,10 +8038,10 @@ var mainGC = function() {
 
             // Set link to owner.
             function setLinkToOwner() {
-                if ($('.geocache-owner')[0]) {
+                if ($('.geocache-owner')[0] && $('.cache-metadata-code')[0]) {
+                    if ($('#' + $('.cache-metadata-code')[0].innerHTML + '_owner')[0]) return;
                     var owner = ($('.geocache-owner-name span a')[0] ? $('.geocache-owner-name span a').html() : $('.geocache-owner-name span').html());
-                    if ($('#' + owner) [0]) return;
-                    var html = '<a id="' + owner + '" href="https://www.geocaching.com/profile/?u=' + urlencode(owner) + '" target="_blank">' + owner + '</a>';
+                    var html = '<a id="' + $('.cache-metadata-code')[0].innerHTML + '_owner' + '" href="https://www.geocaching.com/profile/?u=' + urlencode(owner) + '" target="_blank">' + owner + '</a>';
                     $('.geocache-owner-name span').html(html);
                 }
             }
