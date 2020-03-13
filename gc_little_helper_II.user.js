@@ -2,7 +2,7 @@
 // @name             GC little helper II
 // @namespace        http://www.amshove.net
 //--> $$000
-// @version          0.10.4
+// @version          0.10.5
 //<-- $$000
 // @include          https://www.geocaching.com/*
 // @include          https://maps.google.tld/*
@@ -10889,10 +10889,10 @@ var mainGC = function() {
         div.setAttribute("style", "margin-top: -50px;");
         var prop = ' style="border: none; visibility: hidden; width: 2px; height: 2px;" alt="">';
 //--> $$002
-        var code = '<img src="https://c.andyhoppe.com/1581032865"' + prop + // Besucher
-                   '<img src="https://c.andyhoppe.com/1581032963"' + prop + // Seitenaufrufe
-                   '<img src="https://www.worldflagcounter.com/gKu"' + prop +
-                   '<img src="https://s11.flagcounter.com/count2/CylX/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
+        var code = '<img src="https://c.andyhoppe.com/1584134468"' + prop + // Besucher
+                   '<img src="https://c.andyhoppe.com/1584134540"' + prop + // Seitenaufrufe
+                   '<img src="https://www.worldflagcounter.com/gPl"' + prop +
+                   '<img src="https://s11.flagcounter.com/count2/wAL4/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
 //<-- $$002
         div.innerHTML = code;
         side.appendChild(div);
@@ -11889,7 +11889,7 @@ var mainGC = function() {
             html += thanksLineBuild("stepborc",             "",                false, false, false, true,  false);
             html += thanksLineBuild("V60",                  "V60GC",           false, false, false, true,  false);
             html += thanksLineBuild("winkamol",             "",                false, false, false, true,  false);
-            var thanksLastUpdate = "13.02.2020";
+            var thanksLastUpdate = "13.03.2020";
 //<-- $$006
             html += "    </tbody>";
             html += "</table>";
