@@ -11,10 +11,8 @@
 <ul>
 	<li>
 		<strong>New:</strong> New placeholders for own stuff in copy to clipboard menu in cache listing. [<a href="https://github.com/2Abendsegler/GClh/issues/1308" title="Issue 1308">1308</a> / <a href="https://www.geocaching.com/profile/?u=Herr-Ma" title="Thanks to Herr-Ma">Herr-Ma</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
-		<img src="../images/0.10.5/Screen15.jpg" alt="Screen15.jpg"><br><br>
-	</li>
-	<li>
 		<strong>New:</strong> Multi entries for own stuff in copy to clipboard menu in cache listing. [<a href="https://github.com/2Abendsegler/GClh/issues/1309" title="Issue 1309">1309</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		<img src="../images/0.10.5/Screen15.jpg" alt="Screen15.jpg"><br><br>
 		You can create for example something like this.<br>
 		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_show_copydata_menu" title="Link to your GClh Config">Settings -> Listing:<br>
 		<img src="../images/0.10.5/Screen12.jpg" alt="Screen12.jpg"></a><br>
