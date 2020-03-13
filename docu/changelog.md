@@ -11,8 +11,8 @@
 <ul>
 	<li>
 		<strong>New:</strong> New placeholders for own stuff in copy to clipboard menu in cache listing. [<a href="https://github.com/2Abendsegler/GClh/issues/1308" title="Issue 1308">1308</a> / <a href="https://www.geocaching.com/profile/?u=Herr-Ma" title="Thanks to Herr-Ma">Herr-Ma</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
-		<strong>New:</strong> Multi entries for own stuff in copy to clipboard menu in cache listing. [<a href="https://github.com/2Abendsegler/GClh/issues/1309" title="Issue 1309">1309</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 		<img src="../images/0.10.5/Screen15.jpg" alt="Screen15.jpg"><br><br>
+		<strong>New:</strong> Multi entries for own stuff in copy to clipboard menu in cache listing. [<a href="https://github.com/2Abendsegler/GClh/issues/1309" title="Issue 1309">1309</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 		You can create for example something like this.<br>
 		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_show_copydata_menu" title="Link to your GClh Config">Settings -> Listing:<br>
 		<img src="../images/0.10.5/Screen12.jpg" alt="Screen12.jpg"></a><br>
@@ -52,7 +52,7 @@
 		<img src="../images/0.10.5/Screen02.jpg" alt="Screen02.jpg"></a><br><br>
 	</li>
 	<li>
-		<strong>New:</strong> [Browse Map] Show coordinates in additional popup. [<a href="https://github.com/2Abendsegler/GClh/issues/1279" title="Issue 1279">1279</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br><br>
+		<strong>New:</strong> [Browse Map] Show coordinates in additional popup. [<a href="https://github.com/2Abendsegler/GClh/issues/1279" title="Issue 1279">1279</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 		<img src="../images/0.10.5/Screen04.jpg" alt="Screen04.jpg"><br><br>
 	</li>
 	<li>
@@ -69,7 +69,7 @@
 		If you want to use it in your Linklist, you have to set it.<br><br>
 	</li>
 	<li>
-		<strong>New:</strong> Note whether nearby events on dashboard are opened or closed. [<a href="https://github.com/2Abendsegler/GClh/issues/1270" title="Issue 1270">1270</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br><br>
+		<strong>New:</strong> Note whether nearby events on dashboard are opened or closed. [<a href="https://github.com/2Abendsegler/GClh/issues/1270" title="Issue 1270">1270</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 	</li>
 	<li>
 		<strong>New:</strong> Refactor helper functions. [<a href="https://github.com/2Abendsegler/GClh/issues/772" title="Issue 772">772</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br><br>
@@ -78,22 +78,22 @@
 		<strong>Fix:</strong> [New Map] Compact layout for new fields "placed date". [<a href="https://github.com/2Abendsegler/GClh/issues/1277" title="Issue 1277">1277</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 	</li>
 	<li>
-		<strong>Fix:</strong> [New Map] Search Map output of "undefined" behind the favorite points. [<a href="https://github.com/2Abendsegler/GClh/issues/1268" title="Issue 1268">1268</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a> / <a href="https://www.geocaching.com/profile/?u=Ruko2010" title="Thanks to Ruko2010">Ruko2010</a>]<br><br>
+		<strong>Fix:</strong> [New Map] Search Map output of "undefined" behind the favorite points. [<a href="https://github.com/2Abendsegler/GClh/issues/1268" title="Issue 1268">1268</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a> / <a href="https://www.geocaching.com/profile/?u=Ruko2010" title="Thanks to Ruko2010">Ruko2010</a>]<br>
 	</li>
 	<li>
-		<strong>Fix:</strong> Load trackables faster without images does not work correct. [<a href="https://github.com/2Abendsegler/GClh/issues/1297" title="Issue 1297">1297</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br><br>
+		<strong>Fix:</strong> Load trackables faster without images does not work correct. [<a href="https://github.com/2Abendsegler/GClh/issues/1297" title="Issue 1297">1297</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 	</li>
 	<li>
-		<strong>Fix:</strong> Parsing error on reset functionality. [<a href="https://github.com/2Abendsegler/GClh/issues/1294" title="Issue 1294">1294</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br><br>
+		<strong>Fix:</strong> Parsing error on reset functionality. [<a href="https://github.com/2Abendsegler/GClh/issues/1294" title="Issue 1294">1294</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 	</li>
 	<li>
-		<strong>Fix:</strong> Key F2 deletes personal note in cache listing. [<a href="https://github.com/2Abendsegler/GClh/issues/1281" title="Issue 1281">1281</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br><br>
+		<strong>Fix:</strong> Key F2 deletes personal note in cache listing. [<a href="https://github.com/2Abendsegler/GClh/issues/1281" title="Issue 1281">1281</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 	</li>
 	<li>
 		<strong>Fix:</strong> The alignment of the new logging form is not correct. [<a href="https://github.com/2Abendsegler/GClh/issues/1290" title="Issue 1290">1290</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 	</li>
 	<li>
-		<strong>Fix:</strong> Hide Facebook login doesn't run, again. [<a href="https://github.com/2Abendsegler/GClh/issues/1306" title="Issue 1306">1306</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br><br>
+		<strong>Fix:</strong> Hide Facebook login doesn't run, again. [<a href="https://github.com/2Abendsegler/GClh/issues/1306" title="Issue 1306">1306</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 	</li>
 </ul>
 <br>
