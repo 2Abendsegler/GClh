@@ -284,5 +284,6 @@
   "settings_searchmap_show_hint": false,
   "settings_show_copydata_own_stuff_show": false,
   "settings_show_copydata_own_stuff_name": "Photo file name",
-  "settings_show_copydata_own_stuff_value": "#yyyy#.#mm#.#dd# - #GCName# - #GCCode# - 01"
+  "settings_show_copydata_own_stuff_value": "#yyyy#.#mm#.#dd# - #GCName# - #GCCode# - 01",
+  "settings_relocate_other_map_buttons": true
 }
