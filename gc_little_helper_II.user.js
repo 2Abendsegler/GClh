@@ -2350,6 +2350,7 @@ var mainGC = function() {
                     el.value = el.value.replace(/#GCCode#/ig, GCCode);
                     el.value = el.value.replace(/#GCLink#/ig, GCLink);
                     el.value = el.value.replace(/#GCNameLink#/ig, "[" + GCName + "](" + GCLink + ")");
+                    el.value = el.value.replace(/#GCType#/ig, ($('.cacheImage')[0] ? $('.cacheImage').attr('title').replace(/(\sgeocache|\scache|-cache|\shybrid)/i,'') : ''))
                     el.value = el.value.replace(/#Coords#/ig, determineListingCoords('CorrOrg'));
                     el.value = el.value.replace(/#Elevation#/ig, ($('#elevation-waypoint-0 span')[0] ? $('#elevation-waypoint-0 span')[0].innerHTML : ($('#elevation-waypoint-0')[0] ? $('#elevation-waypoint-0')[0].innerHTML : '')));
                     el.value = el.value.replace(/#Founds#/ig, ($('#ctl00_ContentBody_lblFindCounts img[src*="/2.png"]')[0] ? parseInt($('#ctl00_ContentBody_lblFindCounts img[src*="/2.png"]')[0].nextSibling.data.replace(/(,|\.)/g,'')) : 0));
@@ -12422,7 +12423,7 @@ var mainGC = function() {
             html += newParameterOn3;
             html += checkboxy('settings_show_copydata_menu', 'Show "Copy Data to Clipboard" menu in sidebar') + show_help3("Shows a menu to copy various cache data to the clipboard.") + "<br>";
             // Own entries in copy data to clipboard menu (copy data own stuff, cdos).
-            var ph = "Possible placeholders:<br>&nbsp; #GCName# : GC name<br>&nbsp; #GCCode# : GC code<br>&nbsp; #GCLink# : GC link<br>&nbsp; #GCNameLink# : GC name as a link<br>"
+            var ph = "Possible placeholders:<br>&nbsp; #GCName# : GC name<br>&nbsp; #GCCode# : GC code<br>&nbsp; #GCLink# : GC link<br>&nbsp; #GCNameLink# : GC name as a link<br>&nbsp; #GCLink# : GC link<br>&nbsp; #GCType# : GC type (short form)<br>"
                    + "&nbsp; #Owner# : Username of the owner<br>&nbsp; #Diff# : Difficulty<br>&nbsp; #Terr# : Terrain<br>&nbsp; #Size# : Size of the cache box<br>&nbsp; #Favo# : Favorites<br>&nbsp; #FavoPerc# : Favorites percentage<br>"
                    + "&nbsp; #Elevation# : Elevation<br>&nbsp; #Coords# : Shown coordinates<br>&nbsp; #Hints# : Additional hints<br>&nbsp; #GCNote# : User note<br>&nbsp; #Founds# : Number of found logs<br>&nbsp; #Attended# : Number of attended logs<br>&nbsp; #FoundsPlus# : Number of found, attended or webcam photo taken logs<br>&nbsp; #WillAttend# : Number of will attend logs<br>&nbsp; #DNFs# : Number of DNF logs<br>"
                    + "&nbsp; #Date# : Actual date<br>&nbsp; #Time# : Actual time in format hh:mm<br>&nbsp; #DateTime# : Actual date actual time<br>&nbsp; #yyyy# : Current year<br>&nbsp; #mm# : Current month<br>&nbsp; #dd# : Current day<br>"
