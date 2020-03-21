@@ -2268,7 +2268,7 @@ var mainGC = function() {
     }
     function check_for_copydata_menu(waitCount) { // GDPR
         if ( typeof unsafeWindow.mapLatLng !== "undefined" && unsafeWindow.mapLatLng !== null &&
-             typeof unsafeWindow.mapLatLng.isUserDefined !== "undefined" ) { // GDPR
+             (typeof unsafeWindow.mapLatLng.isUserDefined !== "undefined" || is_page("unpublished_cache") )) { // GDPR
             $('.copydata_click').removeClass('working');
             $('.copydata_head')[0].addEventListener('mouseover', create_copydata_menu_content);
         } else {waitCount++; if (waitCount <= 100) setTimeout(function(){check_for_copydata_menu(waitCount);}, 100);} // GDPR
