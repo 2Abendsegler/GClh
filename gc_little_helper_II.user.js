@@ -1950,7 +1950,7 @@ var mainGC = function() {
 
             function copyCoordinatesToClipboard(waitCount) { // GDPR
                 if ( typeof unsafeWindow.mapLatLng !== "undefined" && unsafeWindow.mapLatLng !== null &&
-                     typeof unsafeWindow.mapLatLng.isUserDefined !== "undefined" ) { // GDPR
+                     (typeof unsafeWindow.mapLatLng.isUserDefined !== "undefined" || is_page("unpublished_cache")) ) { // GDPR
                     $('#gclh_cc2c').removeClass('working');
                     $('#gclh_cc2c')[0].setAttribute('title', (determineListingCoords('Corr') !== "" ? "Copy Corrected Coordinates to Clipboard" : "Copy Coordinates to Clipboard"));
                     $('#gclh_cc2c')[0].addEventListener('click', function() {
@@ -11257,12 +11257,16 @@ var mainGC = function() {
             if (OrgCoords == "") {
                 // Gerade wurde update durch GC-internen Solution-Checker durchgeführt.
                 var uxLatLon = $('#uxLatLon')[0].innerHTML.replace(/(°|'|\s)/g, "");
-                var oldLatLng = unsafeWindow.mapLatLng.oldLatLngDisplay.replace(/(°|'|\s)/g, "");
-                if (uxLatLon !== oldLatLng) {
-                    OrgCoords = unsafeWindow.mapLatLng.oldLatLngDisplay.replace(new RegExp('\'', 'g'),'');
-                    CorrCoords = $('#uxLatLon')[0].innerHTML;
-                } else {
+                if(is_page('unpublished_cache')){
                     OrgCoords = $('#uxLatLon')[0].innerHTML;
+                }else{
+                    var oldLatLng = unsafeWindow.mapLatLng.oldLatLngDisplay.replace(/(°|'|\s)/g, "");
+                    if (uxLatLon !== oldLatLng) {
+                        OrgCoords = unsafeWindow.mapLatLng.oldLatLngDisplay.replace(new RegExp('\'', 'g'),'');
+                        CorrCoords = $('#uxLatLon')[0].innerHTML;
+                    } else {
+                        OrgCoords = $('#uxLatLon')[0].innerHTML;
+                    }
                 }
             } else {
                 CorrCoords = $('#uxLatLon')[0].innerHTML;
