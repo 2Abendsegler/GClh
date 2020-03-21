@@ -11052,7 +11052,7 @@ var mainGC = function() {
              typeof unsafeWindow.mapLatLng.type !== "undefined" &&
              typeof unsafeWindow.mapLatLng.lat !== "undefined" &&
              typeof unsafeWindow.mapLatLng.lng !== "undefined" &&
-             typeof unsafeWindow.mapLatLng.isUserDefined !== "undefined") { // GDPR
+             (typeof unsafeWindow.mapLatLng.isUserDefined !== "undefined" || is_page("unpublished_cache"))) { // GDPR
             return true;
         } else return false;
     }
