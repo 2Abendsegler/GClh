@@ -15384,6 +15384,9 @@ function is_page(name) {
             // Exclude unpublished Caches
             if(document.getElementsByClassName('UnpublishedCacheSearchWidget').length > 0) status = false;
             break;
+        case "unpublished_cache":
+            if (document.getElementById("unpublishedMessage") !== null) status = true;
+            break;
         case "profile":
             if (url.match(/^\/my(\/default\.aspx)?/)) status = true;
             break;
