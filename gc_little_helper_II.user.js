@@ -15389,7 +15389,12 @@ function is_page(name) {
             if(document.getElementsByClassName('UnpublishedCacheSearchWidget').length > 0) status = false;
             break;
         case "unpublished_cache":
-            if (document.getElementById("unpublishedMessage") !== null) status = true;
+            if (
+                (document.getElementById("unpublishedMessage") !== null) ||
+                (document.getElementById("ctl00_ContentBody_GeoNav_uxPostReviewerNoteLogType") !== null)
+                ){
+                    status = true;
+                }
             break;
         case "profile":
             if (url.match(/^\/my(\/default\.aspx)?/)) status = true;
