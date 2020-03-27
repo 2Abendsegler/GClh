@@ -551,6 +551,7 @@ var variablesInit = function(c) {
     c.settings_compact_layout_new_dashboard = getValue("settings_compact_layout_new_dashboard", false);
     c.settings_show_draft_indicator = getValue("settings_show_draft_indicator", true);
     c.settings_show_enhanced_map_popup = getValue("settings_show_enhanced_map_popup", true);
+    c.settings_show_enhanced_map_coords = getValue("settings_show_enhanced_map_coords", true);
     c.settings_show_latest_logs_symbols_count_map = getValue("settings_show_latest_logs_symbols_count_map", 16);
     c.settings_modify_new_drafts_page = getValue("settings_modify_new_drafts_page", true);
     c.settings_gclherror_alert = getValue("settings_gclherror_alert", false);
@@ -8400,7 +8401,9 @@ var mainGC = function() {
                         original_coords_span = ' <span class="coordinates original" title="original Coordinates">&nbsp;( <span class="anker"></span>' + original_coords + ' )</span>';
                         corrected = "corrected ";
                     }
-                    new_text += '<p><span class="coordinates current" title="'+corrected+'Coordinates">' + coords + '</span>' + original_coords_span + '</p>';
+                    if (settings_show_enhanced_map_coords) {
+                        new_text += '<p><span class="coordinates current" title="'+corrected+'Coordinates">' + coords + '</span>' + original_coords_span + '</p>';
+                    }
 
                     // Create Element and insert everything.
                     var text_element = document.createElement("div");
@@ -8413,10 +8416,12 @@ var mainGC = function() {
                     insertAfter(searchmap_sidebar_enhancements, (document.getElementsByClassName("geocache-owner")[0] || document.getElementsByClassName("gclhOwner")[0]));
 
                     // Add Copy to Clipboard Links.
-                    if(original_coords != ""){
-                        addCopyToClipboardLink(original_coords, $('span.coordinates.original .anker')[0], "original Coordinates");
+                    if (settings_show_enhanced_map_coords) {
+                        if(original_coords != ""){
+                            addCopyToClipboardLink(original_coords, $('span.coordinates.original .anker')[0], "original Coordinates");
+                        }
+                        addCopyToClipboardLink(coords, $('span.coordinates.current')[0], corrected+"Coordinates");
                     }
-                    addCopyToClipboardLink(coords, $('span.coordinates.current')[0], corrected+"Coordinates");
 
                     // Get favorite score.
                     var from = text.indexOf('userToken', text.indexOf('MapTilesEnvironment')) + 13;
@@ -9120,10 +9125,11 @@ var mainGC = function() {
             // Select the target node.
             var target = document.querySelector('.leaflet-popup-pane');
 
-            var css = "div.popup_additional_info {min-height: 70px;}"
-                    + "div.popup_additional_info .loading_container{display: flex; justify-content: center; align-items: center;}"
-                    + "div.popup_additional_info .loading_container img{margin-right:5px;}"
-                    + "div.popup_additional_info span.favi_points svg, div.popup_additional_info span.tackables svg{position: relative;top: 4px;}";
+            if (settings_show_enhanced_map_coords) var css = "div.popup_additional_info {min-height: 88px;}";
+            else var css = "div.popup_additional_info {min-height: 70px;}";
+            css += "div.popup_additional_info .loading_container{display: flex; justify-content: center; align-items: center;}"
+            css += "div.popup_additional_info .loading_container img{margin-right:5px;}"
+            css += "div.popup_additional_info span.favi_points svg, div.popup_additional_info span.tackables svg{position: relative;top: 4px;}";
             css += ".leaflet-popup-content-wrapper, .leaflet-popup-close-button {margin: 16px 3px 0px 13px;}";
             css += ".gclh_ctoc img {width: 14px; padding: 3px 1px 0 0; float: right;}";
             css += "div.gclh_latest_log {margin-top:5px;}";
@@ -9275,15 +9281,19 @@ var mainGC = function() {
                                 original_coords_span = ' <span class="coordinates original" title="original Coordinates">&nbsp;( <span class="anker"></span>' + original_coords + ' )</span>';
                                 corrected = "corrected ";
                             }
-                            new_text += '<span><span class="coordinates current" title="'+corrected+'Coordinates">' + coords + '</span>' + original_coords_span + '</span>';
+                            if (settings_show_enhanced_map_coords) {
+                                new_text += '<span><span class="coordinates current" title="'+corrected+'Coordinates">' + coords + '</span>' + original_coords_span + '</span>';
+                            }
 
                             $('#popup_additional_info_' + local_gc_code).html(new_text);
 
                             // Add Copy to Clipboard Links.
-                            if (original_coords != ""){
-                                addCopyToClipboardLink(original_coords, $('#popup_additional_info_' + local_gc_code + ' span.coordinates.original .anker')[0], "original Coordinates", 'vertical-align: bottom; margin-right: -6px;');
+                            if (settings_show_enhanced_map_coords) {
+                                if (original_coords != ""){
+                                    addCopyToClipboardLink(original_coords, $('#popup_additional_info_' + local_gc_code + ' span.coordinates.original .anker')[0], "original Coordinates", 'vertical-align: bottom; margin-right: -6px;');
+                                }
+                                addCopyToClipboardLink(coords, $('#popup_additional_info_' + local_gc_code + ' span.coordinates.current')[0], corrected+"Coordinates", 'vertical-align: bottom; margin-right: -6px;');
                             }
-                            addCopyToClipboardLink(coords, $('#popup_additional_info_' + local_gc_code + ' span.coordinates.current')[0], corrected+"Coordinates", 'vertical-align: bottom; margin-right: -6px;');
 
                             // Get favorite score.
                             var from = text.indexOf('userToken', text.indexOf('MapTilesEnvironment')) + 13;
@@ -12230,6 +12240,9 @@ var mainGC = function() {
             }
             html += "</select> latest log symbols" + show_help("With this option, the choosen count of the latest logs symbols is shown at the map popup for a cache.") + "<br>";
             html += newParameterVersionSetzen(0.9) + newParameterOff;
+            html += newParameterOn1;
+            html += " &nbsp; " + checkboxy('settings_show_enhanced_map_coords', 'Show coordinates') + "<br>";
+            html += newParameterVersionSetzen('0.10') + newParameterOff;
 
             html += "<div class='gclh_old_new_line'>New map (search map) only</div>";
             html += newParameterOn1;
@@ -13560,6 +13573,7 @@ var mainGC = function() {
                 'settings_compact_layout_new_dashboard',
                 'settings_show_draft_indicator',
                 'settings_show_enhanced_map_popup',
+                'settings_show_enhanced_map_coords',
                 'settings_modify_new_drafts_page',
                 'settings_gclherror_alert',
                 'settings_auto_open_tb_inventory_list',
