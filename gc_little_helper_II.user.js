@@ -1941,12 +1941,12 @@ var mainGC = function() {
     }
 
 // Copy coordinates to clipboard.
-    if (is_page("cache_listing") && $('#uxLatLonLink')[0]) {
+    if (is_page("cache_listing") && $('#uxLatLon')[0]) {
         try {
             var cc2c = false;
             var span2 = document.createElement('span');
             span2.innerHTML = '<a href="javascript:void(0);" class="working" id="gclh_cc2c"><img src="'+global_copy_icon+'" style="vertical-align: text-top;"></a> ';
-            $('#uxLatLonLink')[0].parentNode.insertBefore(span2, $('#uxLatLonLink')[0] );
+            $('#uxLatLon')[0].parentNode.parentNode.insertBefore(span2, $('#uxLatLon')[0].parentNode );
 
             function copyCoordinatesToClipboard(waitCount) { // GDPR
                 if ( typeof unsafeWindow.mapLatLng !== "undefined" && unsafeWindow.mapLatLng !== null &&
@@ -2047,8 +2047,7 @@ var mainGC = function() {
     if (is_page("cache_listing") && $('#uxLatLon')[0]) {
         try {
             var coords = toDec($('#uxLatLon')[0].innerHTML);
-            if ($('#uxLatLonLink')[0] != null) var link = $('#uxLatLonLink')[0].parentNode;
-            else var link = $('#uxLatLon')[0].parentNode;
+            var link = $('#uxLatLon').parents(".NoBottomSpacing");
             var small = document.createElement("small");
             small.innerHTML = '<a href="'+map_url+'?ll='+coords[0]+','+coords[1]+'">Map this Location</a>';
             link.append(small);
@@ -3292,7 +3291,9 @@ var mainGC = function() {
                         break;
                     }
                 }
-                $("#uxLatLonLink").after('<span title="Elevation">&nbsp;&nbsp;&nbsp;Elevation:&nbsp;<span class="'+classAttribute+'" id="'+idAttribute+'"></span></span>');
+                var anker_element = $("#uxLatLon").parents("strong");
+                if($("#uxLatLonLink") != "undefined") anker_element = $("#uxLatLonLink");
+                anker_element.after('<span title="Elevation">&nbsp;&nbsp;&nbsp;Elevation:&nbsp;<span class="'+classAttribute+'" id="'+idAttribute+'"></span></span>');
                 // Prepare cache listing - waypoint table.
                 var tbl = getWaypointTable();
                 if (tbl.length > 0) {
