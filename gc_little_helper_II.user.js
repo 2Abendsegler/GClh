@@ -2651,7 +2651,7 @@ var mainGC = function() {
             try {
                 mapservice_link( {
                     uniqueServiceId: "flopps",
-                    urlTemplate: 'https://flopp.net/?c={center_latitude}:{center_longitude}&z={zoom}&t={map}&d=O:C&m={waypoints}',
+                    urlTemplate: 'https://flopp.net/?c={center_latitude}:{center_longitude}&z={zoom}&t={map}&d=O:L&m={waypoints}',
                     layers: {'OSM': { maxZoom: 18, displayName: 'Openstreetmap' }, 'OSM/DE': { maxZoom: 18, displayName: 'OSM German Style' }, 'TOPO': { maxZoom: 15, displayName: 'OpenTopMap' }, 'roadmap':{ maxZoom: 20, displayName: 'Google Maps' }, 'hybrid': { maxZoom: 20, displayName: 'Google Maps Hybrid' }, 'terrain':{ maxZoom: 20, displayName: 'Google Maps Terrain' }, 'satellite':{ maxZoom: 20, displayName: 'Google Maps Satellite' }},
                     waypointSeparator : '*',
                     waypointFunction : floppsMapWaypoint,
