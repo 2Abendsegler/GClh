@@ -1946,7 +1946,7 @@ var mainGC = function() {
             var cc2c = false;
             var span2 = document.createElement('span');
             span2.innerHTML = '<a href="javascript:void(0);" class="working" id="gclh_cc2c"><img src="'+global_copy_icon+'" style="vertical-align: text-top;"></a> ';
-            $('#uxLatLon')[0].parentNode.parentNode.insertBefore(span2, $('#uxLatLon')[0].parentNode );
+            $('#uxLatLon')[0].parentNode.parentNode.parentNode.insertBefore(span2, $('#uxLatLon')[0].parentNode.parentNode);
 
             function copyCoordinatesToClipboard(waitCount) { // GDPR
                 if ( typeof unsafeWindow.mapLatLng !== "undefined" && unsafeWindow.mapLatLng !== null &&
