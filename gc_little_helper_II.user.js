@@ -1946,7 +1946,8 @@ var mainGC = function() {
             var cc2c = false;
             var span2 = document.createElement('span');
             span2.innerHTML = '<a href="javascript:void(0);" class="working" id="gclh_cc2c"><img src="'+global_copy_icon+'" style="vertical-align: text-top;"></a> ';
-            $('#uxLatLon')[0].parentNode.parentNode.parentNode.insertBefore(span2, $('#uxLatLon')[0].parentNode.parentNode);
+            var cc2c_pos = ($('#uxLatLonLink')[0] ? $('#uxLatLonLink')[0] : $('#uxLatLon')[0])
+            cc2c_pos.parentNode.insertBefore(span2, cc2c_pos);
 
             function copyCoordinatesToClipboard(waitCount) { // GDPR
                 if ( typeof unsafeWindow.mapLatLng !== "undefined" && unsafeWindow.mapLatLng !== null &&
@@ -3293,7 +3294,8 @@ var mainGC = function() {
                 }
                 var anker_element = $("#uxLatLon").parents("strong");
                 if($("#uxLatLonLink") != "undefined") anker_element = $("#uxLatLonLink");
-                anker_element.after('<span title="Elevation">&nbsp;&nbsp;&nbsp;Elevation:&nbsp;<span class="'+classAttribute+'" id="'+idAttribute+'"></span></span>');
+                var elevation_pos = ($('#uxLatLonLink')[0] ? $('#uxLatLonLink')[0] : $('#uxLatLon')[0].parentNode)
+                $(elevation_pos).after('<span title="Elevation">&nbsp;&nbsp;&nbsp;Elevation:&nbsp;<span class="'+classAttribute+'" id="'+idAttribute+'"></span></span>');
                 // Prepare cache listing - waypoint table.
                 var tbl = getWaypointTable();
                 if (tbl.length > 0) {
