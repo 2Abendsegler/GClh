@@ -3292,8 +3292,6 @@ var mainGC = function() {
                         break;
                     }
                 }
-                var anker_element = $("#uxLatLon").parents("strong");
-                if($("#uxLatLonLink") != "undefined") anker_element = $("#uxLatLonLink");
                 var elevation_pos = ($('#uxLatLonLink')[0] ? $('#uxLatLonLink')[0] : $('#uxLatLon')[0].parentNode)
                 $(elevation_pos).after('<span title="Elevation">&nbsp;&nbsp;&nbsp;Elevation:&nbsp;<span class="'+classAttribute+'" id="'+idAttribute+'"></span></span>');
                 // Prepare cache listing - waypoint table.
