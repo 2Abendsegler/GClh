@@ -12465,10 +12465,13 @@ var mainGC = function() {
             html += closeCff('cdos');
             cssCff('cdos', '14', '200', '460', '54');
             html += newParameterVersionSetzen("0.10") + newParameterOff;
+            html += newParameterOn2;
             html += checkboxy('settings_show_flopps_link', 'Show Flopp\'s Map links in sidebar and under the "Additional Waypoints"') + show_help3("If there are no additional waypoints only the link in the sidebar is shown.") + "<br>";
+            html += newParameterVersionSetzen(0.8) + newParameterOff;
             html += newParameterOn1;
             html += "&nbsp;&nbsp;" + checkboxy('settings_show_radius_on_flopps', 'Show Radius around caches on Flopp\'s Map') + "<br>";
             html += newParameterVersionSetzen("0.10") + newParameterOff;
+            html += newParameterOn2;
             html += checkboxy('settings_show_brouter_link', 'Show BRouter links in sidebar and under the "Additional Waypoints"') + show_help3("If there are no additional waypoints only the link in the sidebar is shown.") + "<br>";
             html += newParameterVersionSetzen(0.8) + newParameterOff;
             html += newParameterOn3;
