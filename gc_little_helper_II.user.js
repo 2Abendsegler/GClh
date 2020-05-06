@@ -1943,16 +1943,17 @@ var mainGC = function() {
     }
 
 // Copy coordinates to clipboard.
-    if (is_page("cache_listing") && $('#uxLatLonLink')[0]) {
+    if (is_page("cache_listing") && $('#uxLatLon')[0]) {
         try {
             var cc2c = false;
             var span2 = document.createElement('span');
             span2.innerHTML = '<a href="javascript:void(0);" class="working" id="gclh_cc2c"><img src="'+global_copy_icon+'" style="vertical-align: text-top;"></a> ';
-            $('#uxLatLonLink')[0].parentNode.insertBefore(span2, $('#uxLatLonLink')[0] );
+            var cc2c_pos = ($('#uxLatLonLink')[0] ? $('#uxLatLonLink')[0] : $('#uxLatLon')[0])
+            cc2c_pos.parentNode.insertBefore(span2, cc2c_pos);
 
             function copyCoordinatesToClipboard(waitCount) { // GDPR
                 if ( typeof unsafeWindow.mapLatLng !== "undefined" && unsafeWindow.mapLatLng !== null &&
-                     typeof unsafeWindow.mapLatLng.isUserDefined !== "undefined" ) { // GDPR
+                     (typeof unsafeWindow.mapLatLng.isUserDefined !== "undefined" || is_page("unpublished_cache")) ) { // GDPR
                     $('#gclh_cc2c').removeClass('working');
                     $('#gclh_cc2c')[0].setAttribute('title', (determineListingCoords('Corr') !== "" ? "Copy Corrected Coordinates to Clipboard" : "Copy Coordinates to Clipboard"));
                     $('#gclh_cc2c')[0].addEventListener('click', function() {
@@ -2049,8 +2050,7 @@ var mainGC = function() {
     if (is_page("cache_listing") && $('#uxLatLon')[0]) {
         try {
             var coords = toDec($('#uxLatLon')[0].innerHTML);
-            if ($('#uxLatLonLink')[0] != null) var link = $('#uxLatLonLink')[0].parentNode;
-            else var link = $('#uxLatLon')[0].parentNode;
+            var link = $('#uxLatLon').parents(".NoBottomSpacing");
             var small = document.createElement("small");
             small.innerHTML = '<a href="'+map_url+'?ll='+coords[0]+','+coords[1]+'">Map this Location</a>';
             link.append(small);
@@ -2270,7 +2270,7 @@ var mainGC = function() {
     }
     function check_for_copydata_menu(waitCount) { // GDPR
         if ( typeof unsafeWindow.mapLatLng !== "undefined" && unsafeWindow.mapLatLng !== null &&
-             typeof unsafeWindow.mapLatLng.isUserDefined !== "undefined" ) { // GDPR
+             (typeof unsafeWindow.mapLatLng.isUserDefined !== "undefined" || is_page("unpublished_cache") )) { // GDPR
             $('.copydata_click').removeClass('working');
             $('.copydata_head')[0].addEventListener('mouseover', create_copydata_menu_content);
         } else {waitCount++; if (waitCount <= 100) setTimeout(function(){check_for_copydata_menu(waitCount);}, 100);} // GDPR
@@ -3298,7 +3298,8 @@ var mainGC = function() {
                         break;
                     }
                 }
-                $("#uxLatLonLink").after('<span title="Elevation">&nbsp;&nbsp;&nbsp;Elevation:&nbsp;<span class="'+classAttribute+'" id="'+idAttribute+'"></span></span>');
+                var elevation_pos = ($('#uxLatLonLink')[0] ? $('#uxLatLonLink')[0] : $('#uxLatLon')[0].parentNode)
+                $(elevation_pos).after('<span title="Elevation">&nbsp;&nbsp;&nbsp;Elevation:&nbsp;<span class="'+classAttribute+'" id="'+idAttribute+'"></span></span>');
                 // Prepare cache listing - waypoint table.
                 var tbl = getWaypointTable();
                 if (tbl.length > 0) {
@@ -11067,7 +11068,7 @@ var mainGC = function() {
              typeof unsafeWindow.mapLatLng.type !== "undefined" &&
              typeof unsafeWindow.mapLatLng.lat !== "undefined" &&
              typeof unsafeWindow.mapLatLng.lng !== "undefined" &&
-             typeof unsafeWindow.mapLatLng.isUserDefined !== "undefined") { // GDPR
+             (typeof unsafeWindow.mapLatLng.isUserDefined !== "undefined" || is_page("unpublished_cache"))) { // GDPR
             return true;
         } else return false;
     }
@@ -11272,12 +11273,16 @@ var mainGC = function() {
             if (OrgCoords == "") {
                 // Gerade wurde update durch GC-internen Solution-Checker durchgeführt.
                 var uxLatLon = $('#uxLatLon')[0].innerHTML.replace(/(°|'|\s)/g, "");
-                var oldLatLng = unsafeWindow.mapLatLng.oldLatLngDisplay.replace(/(°|'|\s)/g, "");
-                if (uxLatLon !== oldLatLng) {
-                    OrgCoords = unsafeWindow.mapLatLng.oldLatLngDisplay.replace(new RegExp('\'', 'g'),'');
-                    CorrCoords = $('#uxLatLon')[0].innerHTML;
-                } else {
+                if(is_page('unpublished_cache')){
                     OrgCoords = $('#uxLatLon')[0].innerHTML;
+                }else{
+                    var oldLatLng = unsafeWindow.mapLatLng.oldLatLngDisplay.replace(/(°|'|\s)/g, "");
+                    if (uxLatLon !== oldLatLng) {
+                        OrgCoords = unsafeWindow.mapLatLng.oldLatLngDisplay.replace(new RegExp('\'', 'g'),'');
+                        CorrCoords = $('#uxLatLon')[0].innerHTML;
+                    } else {
+                        OrgCoords = $('#uxLatLon')[0].innerHTML;
+                    }
                 }
             } else {
                 CorrCoords = $('#uxLatLon')[0].innerHTML;
@@ -15410,6 +15415,14 @@ function is_page(name) {
             if(url.match(/^\/(geocache\/).*\/log/)) status = false;
             // Exclude unpublished Caches
             if(document.getElementsByClassName('UnpublishedCacheSearchWidget').length > 0) status = false;
+            break;
+        case "unpublished_cache":
+            if (
+                (document.getElementById("unpublishedMessage") !== null) ||
+                (document.getElementById("ctl00_ContentBody_GeoNav_uxPostReviewerNoteLogType") !== null)
+                ){
+                    status = true;
+                }
             break;
         case "profile":
             if (url.match(/^\/my(\/default\.aspx)?/)) status = true;
