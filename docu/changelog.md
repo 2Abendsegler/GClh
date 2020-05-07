@@ -30,7 +30,7 @@
 		<img src="../images/0.10.6/Screen01.jpg" alt="Screen01.jpg"></a><br><br>
 	</li>
 	<li>
-		<strong>Fix:</strong>Flopp's Map distance line between coords and corrected coords does not work. [<a href="https://github.com/2Abendsegler/GClh/issues/1334" title="Issue 1334">1334</a> / <a href="https://www.geocaching.com/profile/?u=Ruko2010" title="Thanks to Ruko2010">Ruko2010</a>]<br>
+		<strong>Fix:</strong> Flopp's Map distance line between coords and corrected coords does not work. [<a href="https://github.com/2Abendsegler/GClh/issues/1334" title="Issue 1334">1334</a> / <a href="https://www.geocaching.com/profile/?u=Ruko2010" title="Thanks to Ruko2010">Ruko2010</a>]<br>
 	</li>
 	<li>
 		<strong>Fix:</strong> Favorits percentage for copy to clipboard is not recognized if it is <1% #FavoPerc#. [<a href="https://github.com/2Abendsegler/GClh/issues/1325" title="Issue 1325">1325</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
