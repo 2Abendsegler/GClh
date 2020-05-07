@@ -286,5 +286,6 @@
   "settings_show_copydata_own_stuff_name": "Photo file name",
   "settings_show_copydata_own_stuff_value": "#yyyy#.#mm#.#dd# - #GCName# - #GCCode# - 01",
   "settings_relocate_other_map_buttons": true,
+  "settings_show_enhanced_map_coords": true,
   "settings_show_radius_on_flopps": true
 }
