@@ -16,7 +16,7 @@
 	</li>
 	<li>
 		<strong>New:</strong> New placeholder cache type for own stuff in copy to clipboard menu in cache listing #GCType#. [<a href="https://github.com/2Abendsegler/GClh/issues/1327" title="Issue 1327">1327</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
-		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_show_copydata_menu" title="Link to your GClh Config">Settings -> Listing<br><br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_show_copydata_menu" title="Link to your GClh Config">Settings -> Listing</a><br><br>
 	</li>
 	<li>
 		<strong>New:</strong> Add parameter to show radius around caches on Flopp's Map. [<a href="https://github.com/2Abendsegler/GClh/issues/1334" title="Issue 1334">1334</a> / <a href="https://www.geocaching.com/profile/?u=Ruko2010" title="Thanks to Ruko2010">Ruko2010</a>]<br>
