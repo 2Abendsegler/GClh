@@ -1561,7 +1561,13 @@ var mainGC = function() {
                 else if (document.location.href.match(/\.com\/my\/statistics\.aspx/) || (is_page("publicProfile") && $('#ctl00_ContentBody_ProfilePanel1_lnkStatistics.Active')[0])) {
                     css += ".span-9 {width: " + ((new_width - 280) / 2) + "px !important; margin-right: 30px;} .last {margin-right: 0px;}";
                     css += ".StatsTable {width: " + (new_width - 250) + "px !important;}";
-                    css += ".ProfileStats {overflow-x: hidden; width: " + (new_width - 225) + "px;}";
+                    if (is_page("publicProfile")) {
+                        css += ".ProfileStats {overflow-x: hidden; width: " + (new_width - 210) + "px;}";
+                    } else {
+                        css += ".ProfileStats {overflow-x: hidden; width: " + (new_width - 180) + "px;}";
+                    }
+                    css += "#ctl00_ContentBody_ProfilePanel1_StatsChronologyControl1_FindsPerMonth, #ctl00_ContentBody_ProfilePanel1_StatsChronologyControl1_CumulativeFindsPerMonth, #CacheTypesFound, #ctl00_ContentBody_StatsChronologyControl1_FindsPerMonth, #ctl00_ContentBody_StatsChronologyControl1_CumulativeFindsPerMonth {margin-left: -15px;}";
+                    css += "#ctl00_ContentBody_ProfilePanel1_StatsChronologyControl1_FindsPerMonth h3, #ctl00_ContentBody_ProfilePanel1_StatsChronologyControl1_CumulativeFindsPerMonth h3, #CacheTypesFound h3, #ctl00_ContentBody_StatsChronologyControl1_FindsPerMonth h3, #ctl00_ContentBody_StatsChronologyControl1_CumulativeFindsPerMonth h3 {margin-left: 15px;}";
                 } else if (is_page("publicProfile")) {
                     if ($('#ctl00_ContentBody_ProfilePanel1_lnkCollectibles.Active')[0]) {
                         css += ".span-9 {width: " + ((new_width - 220) / 2) + "px !important;} .prepend-1 {padding-left: 10px;}";
