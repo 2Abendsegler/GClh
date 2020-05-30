@@ -6823,6 +6823,7 @@ var mainGC = function() {
 
             // Build VIP Icons.
             function gclh_add_vip_icon() {
+                if(!settings_show_vip_list) return;
                 var elements = $(document.getElementById("cache_logs_table2") || document.getElementById("cache_logs_table")).find("a.gclh_vip").not(".gclh_vip_hasIcon");
                 for (var i = 0; i < elements.length; i++) {
                     var link = elements[i];
@@ -6833,6 +6834,7 @@ var mainGC = function() {
             }
             // Build VUP Icons.
             function gclh_add_vup_icon() {
+                if(!settings_show_vip_list) return;
                 var elements = $(document.getElementById("cache_logs_table2") || document.getElementById("cache_logs_table")).find("a.gclh_vup").not(".gclh_vup_hasIcon");
                 for (var i = 0; i < elements.length; i++) {
                     var link = elements[i];
