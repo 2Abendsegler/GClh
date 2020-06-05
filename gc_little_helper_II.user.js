@@ -1081,8 +1081,8 @@ var mainGCAsyn = function() {
     try {
         // Get header from other GC page.
         $.get('https://www.geocaching.com/adopt', null, function(response){
-            var von = response.indexOf('<nav id="gcNavigation">');
-            var bis = response.indexOf('<section id="Content">');
+            var von = response.indexOf('<nav id="ctl00_gcNavigation"');
+            var bis = response.indexOf('<main id="Content"');
             if (von && bis && von != -1 && bis != -1) {
                 var headerHTML = response.slice(von, bis - 1);
                 headerHTML = headerHTML.replace('<nav ', '<gclh_nav ').replace('</nav>', '</gclh_nav>').replace(/href="\.\./gi, 'href="');
