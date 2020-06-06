@@ -1992,7 +1992,6 @@ var mainGC = function() {
     if (settings_show_fav_percentage && is_page("cache_listing") && $('#uxFavContainerLink')[0]) {
         try {
             function gclh_load_score(waitCount) {
-                console.log(waitCount);
                 if ($('.favorite-container')[0] && $('.favorite-score')[0].innerHTML.match("%") && $('.favorite-dropdown')[0]) {
                     if (typeof unsafeWindow.showFavoriteScore !== "undefined") { // GDPR
                         unsafeWindow.showFavoriteScore();
