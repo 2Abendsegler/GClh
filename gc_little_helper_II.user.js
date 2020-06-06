@@ -1992,9 +1992,9 @@ var mainGC = function() {
     if (settings_show_fav_percentage && is_page("cache_listing") && $('#uxFavContainerLink')[0]) {
         try {
             function gclh_load_score(waitCount) {
-                if (typeof unsafeWindow.showFavoriteScore !== "undefined") { // GDPR
-                    unsafeWindow.showFavoriteScore();
-                    if ($('.favorite-container')[0] && $('.favorite-score')[0].innerHTML.match("%") && $('.favorite-dropdown')[0]) {
+                if ($('.favorite-container')[0] && $('.favorite-score')[0].innerHTML.match("%") && $('.favorite-dropdown')[0]) {
+                    if (typeof unsafeWindow.showFavoriteScore !== "undefined") { // GDPR
+                        unsafeWindow.showFavoriteScore();
                         var fav = $('.favorite-container')[0];
                         var score = $('.favorite-score')[0].innerHTML.match(/(.*%)\.*/);
                         if (score && score[1]) {
@@ -2012,8 +2012,8 @@ var mainGC = function() {
                             dd.style.borderTopLeftRadius = "5px";
                             dd.style.minWidth = "190px";
                         }
-                    } else {waitCount++; if (waitCount <= 100) setTimeout(function(){gclh_load_score(waitCount);}, 100);}
-                } else {waitCount++; if (waitCount <= 100) setTimeout(function(){gclh_load_score(waitCount);}, 100);} // GDPR
+                    } else {waitCount++; if (waitCount <= 100) setTimeout(function(){gclh_load_score(waitCount);}, 100);} // GDPR
+                } else {waitCount++; if (waitCount <= 300) setTimeout(function(){gclh_load_score(waitCount);}, 1000);} // 5 Min
             }
             gclh_load_score(0);
         } catch(e) {gclh_error("Show favorite percentage",e);}
