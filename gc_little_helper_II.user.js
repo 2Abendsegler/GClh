@@ -2,7 +2,7 @@
 // @name             GC little helper II
 // @namespace        http://www.amshove.net
 //--> $$000
-// @version          0.10.6
+// @version          0.10.7
 //<-- $$000
 // @include          https://www.geocaching.com/*
 // @include          https://maps.google.tld/*
@@ -10920,10 +10920,10 @@ var mainGC = function() {
         div.setAttribute("style", "margin-top: -50px;");
         var prop = ' style="border: none; visibility: hidden; width: 2px; height: 2px;" alt="">';
 //--> $$002
-        var code = '<img src="https://c.andyhoppe.com/1588828232"' + prop + // Besucher
-                   '<img src="https://c.andyhoppe.com/1588828305"' + prop + // Seitenaufrufe
-                   '<img src="https://www.worldflagcounter.com/g4X"' + prop +
-                   '<img src="https://s11.flagcounter.com/count2/vDki/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
+        var code = '<img src="https://c.andyhoppe.com/1591560533"' + prop + // Besucher
+                   '<img src="https://c.andyhoppe.com/1591560628"' + prop + // Seitenaufrufe
+                   '<img src="https://www.worldflagcounter.com/g8w"' + prop +
+                   '<img src="https://s11.flagcounter.com/count2/ZdG4/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
 //<-- $$002
         div.innerHTML = code;
         side.appendChild(div);
@@ -11784,7 +11784,12 @@ var mainGC = function() {
         html += "  border-right-width: 2px;";
         html += "  max-width: 100px;";
         html += "  padding: 0px 4px;";
-        html += "  text-align: initial;}";
+        html += "  text-align: initial;";
+        html += "  max-width: 100px;";
+        html += "  overflow: hidden;";
+        html += "  vertical-align: bottom;";
+        html += "  white-space: nowrap;";
+        html += "  text-overflow: ellipsis;}";
         html += ".gclh_thanks_table td:nth-child(1) a {";
         html += "  max-width: 100px;";
         html += "  display: inline-block;";
@@ -11892,40 +11897,43 @@ var mainGC = function() {
             html += "    </thead>";
             html += "    <tbody>";
 //--> $$006
-            // Bezeichnung:         GC Name                 Abw. GitHub Name   ProjM  DevL   Dev    BugR   Separator
-            html += thanksLineBuild("Ruko2010",             "",                true,  true,  false, true,  false);
-            html += thanksLineBuild("2Abendsegler",         "",                true,  true,  false, true,  true );
+            // Bezeichnung:         GC Name                 Abw. GitHub Name            ProjM  DevL   Dev    BugR   Separator
+            html += thanksLineBuild("Ruko2010",             "",                         true,  true,  false, true,  false);
+            html += thanksLineBuild("2Abendsegler",         "",                         true,  true,  false, true,  true );
             // Rangliste Development von hier https://github.com/2Abendsegler/GClh/graphs/contributors.
-            html += thanksLineBuild("CachingFoX",           "",                false, false, true,  true,  false);
-            html += thanksLineBuild("capoaira",             "",                false, false, true,  true,  false);
-            html += thanksLineBuild("Herr Ma",              "",                false, false, true,  true,  false);
-            html += thanksLineBuild("Dratenik",             "",                false, false, true,  false, false);
-            html += thanksLineBuild("DrakMrak",             "",                false, false, true,  false, false);
-            html += thanksLineBuild("radlerandi",           "",                false, false, true,  false, false);
-            html += thanksLineBuild("Nicole1338",           "",                false, false, true,  false, false);
-            html += thanksLineBuild("ramirez_",             "ramirezhr",       false, false, true,  false, false);
-            html += thanksLineBuild("king-ton",             "",                false, false, true,  false, false);
-            html += thanksLineBuild("dontpänic",            "haarspalter",     false, false, true,  false, false);
-            html += thanksLineBuild("Bananeweizen",         "",                false, false, true,  false, false);
-            html += thanksLineBuild("ztNFny",               "",                false, false, true,  true,  true);
+            html += thanksLineBuild("CachingFoX",           "",                         false, false, true,  true,  false);
+            html += thanksLineBuild("capoaira",             "",                         false, false, true,  true,  false);
+            html += thanksLineBuild("Herr Ma",              "",                         false, false, true,  true,  false);
+            html += thanksLineBuild("Dratenik",             "",                         false, false, true,  false, false);
+            html += thanksLineBuild("DrakMrak",             "",                         false, false, true,  false, false);
+            html += thanksLineBuild("radlerandi",           "",                         false, false, true,  false, false);
+            html += thanksLineBuild("Nicole1338",           "",                         false, false, true,  false, false);
+            html += thanksLineBuild("ramirez_",             "ramirezhr",                false, false, true,  false, false);
+            html += thanksLineBuild("king-ton",             "",                         false, false, true,  false, false);
+            html += thanksLineBuild("dontpänic",            "haarspalter",              false, false, true,  false, false);
+            html += thanksLineBuild("Bananeweizen",         "",                         false, false, true,  false, false);
+            html += thanksLineBuild("ztNFny",               "",                         false, false, true,  true,  true);
             // Bug Reporting alphabetisch.
-            html += thanksLineBuild("",                     "AndyPuma",        false, false, false, true,  false);
-            html += thanksLineBuild("arbor95",              "",                false, false, false, true,  false);
-            html += thanksLineBuild("barnold",              "barnoldGEOC",     false, false, false, true,  false);
-            html += thanksLineBuild("BlueEagle23",          "",                false, false, false, true,  false);
-            html += thanksLineBuild("Cappa-d",              "",                false, false, false, true,  false);
-            html += thanksLineBuild("",                     "gboye",           false, false, false, true,  false);
-            html += thanksLineBuild("Die Batzen",           "DieBatzen",       false, false, false, true,  false);
-            html += thanksLineBuild("Donnerknispel",        "",                false, false, false, true,  false);
-            html += thanksLineBuild("Jipem",                "",                false, false, false, true,  false);
-            html += thanksLineBuild("Magpie42",             "MagpieFourtyTwo", false, false, false, true,  false);
-            html += thanksLineBuild("☺Mitchsa & firefly70", "Mitchsa",         false, false, false, true,  false);
-            html += thanksLineBuild("Pontiac_CZ",           "PontiacCZ",       false, false, false, true,  false);
-            html += thanksLineBuild("RoRo",                 "RolandRosenfeld", false, false, false, true,  false);
-            html += thanksLineBuild("stepborc",             "",                false, false, false, true,  false);
-            html += thanksLineBuild("V60",                  "V60GC",           false, false, false, true,  false);
-            html += thanksLineBuild("winkamol",             "",                false, false, false, true,  false);
-            var thanksLastUpdate = "13.03.2020";
+            html += thanksLineBuild("",                     "allyourcodearebelongtous", false, false, false, true,  false);
+            html += thanksLineBuild("",                     "AndyPuma",                 false, false, false, true,  false);
+            html += thanksLineBuild("",                     "anvanlaer",                false, false, false, true,  false);
+            html += thanksLineBuild("arbor95",              "",                         false, false, false, true,  false);
+            html += thanksLineBuild("barnold",              "barnoldGEOC",              false, false, false, true,  false);
+            html += thanksLineBuild("BlueEagle23",          "",                         false, false, false, true,  false);
+            html += thanksLineBuild("Cappa-d",              "",                         false, false, false, true,  false);
+            html += thanksLineBuild("",                     "gboye",                    false, false, false, true,  false);
+            html += thanksLineBuild("Die Batzen",           "DieBatzen",                false, false, false, true,  false);
+            html += thanksLineBuild("Donnerknispel",        "",                         false, false, false, true,  false);
+            html += thanksLineBuild("Jipem",                "",                         false, false, false, true,  false);
+            html += thanksLineBuild("Magpie42",             "MagpieFourtyTwo",          false, false, false, true,  false);
+            html += thanksLineBuild("☺Mitchsa & firefly70", "Mitchsa",                  false, false, false, true,  false);
+            html += thanksLineBuild("PHIL",                 "gcPhil",                   false, false, false, true,  false);
+            html += thanksLineBuild("Pontiac_CZ",           "PontiacCZ",                false, false, false, true,  false);
+            html += thanksLineBuild("RoRo",                 "RolandRosenfeld",          false, false, false, true,  false);
+            html += thanksLineBuild("stepborc",             "",                         false, false, false, true,  false);
+            html += thanksLineBuild("V60",                  "V60GC",                    false, false, false, true,  false);
+            html += thanksLineBuild("winkamol",             "",                         false, false, false, true,  false);
+            var thanksLastUpdate = "07.06.2020";
 //<-- $$006
             html += "    </tbody>";
             html += "</table>";
