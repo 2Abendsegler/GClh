@@ -11924,6 +11924,7 @@ var mainGC = function() {
             html += thanksLineBuild("",                     "gboye",                    false, false, false, true,  false);
             html += thanksLineBuild("Die Batzen",           "DieBatzen",                false, false, false, true,  false);
             html += thanksLineBuild("Donnerknispel",        "",                         false, false, false, true,  false);
+            html += thanksLineBuild("jet2mike",             "",                         false, false, false, true,  false);
             html += thanksLineBuild("Jipem",                "",                         false, false, false, true,  false);
             html += thanksLineBuild("Magpie42",             "MagpieFourtyTwo",          false, false, false, true,  false);
             html += thanksLineBuild("☺Mitchsa & firefly70", "Mitchsa",                  false, false, false, true,  false);
