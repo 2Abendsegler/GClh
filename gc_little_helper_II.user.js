@@ -2,7 +2,7 @@
 // @name             GC little helper II
 // @namespace        http://www.amshove.net
 //--> $$000
-// @version          0.10.6
+// @version          0.10.7
 //<-- $$000
 // @include          https://www.geocaching.com/*
 // @include          https://maps.google.tld/*
@@ -1081,8 +1081,8 @@ var mainGCAsyn = function() {
     try {
         // Get header from other GC page.
         $.get('https://www.geocaching.com/adopt', null, function(response){
-            var von = response.indexOf('<nav id="gcNavigation">');
-            var bis = response.indexOf('<section id="Content">');
+            var von = response.indexOf('<nav id="ctl00_gcNavigation"');
+            var bis = response.indexOf('<main id="Content"');
             if (von && bis && von != -1 && bis != -1) {
                 var headerHTML = response.slice(von, bis - 1);
                 headerHTML = headerHTML.replace('<nav ', '<gclh_nav ').replace('</nav>', '</gclh_nav>').replace(/href="\.\./gi, 'href="');
@@ -1561,7 +1561,13 @@ var mainGC = function() {
                 else if (document.location.href.match(/\.com\/my\/statistics\.aspx/) || (is_page("publicProfile") && $('#ctl00_ContentBody_ProfilePanel1_lnkStatistics.Active')[0])) {
                     css += ".span-9 {width: " + ((new_width - 280) / 2) + "px !important; margin-right: 30px;} .last {margin-right: 0px;}";
                     css += ".StatsTable {width: " + (new_width - 250) + "px !important;}";
-                    css += ".ProfileStats {overflow-x: hidden; width: " + (new_width - 225) + "px;}";
+                    if (is_page("publicProfile")) {
+                        css += ".ProfileStats {overflow-x: hidden; width: " + (new_width - 210) + "px;}";
+                    } else {
+                        css += ".ProfileStats {overflow-x: hidden; width: " + (new_width - 180) + "px;}";
+                    }
+                    css += "#ctl00_ContentBody_ProfilePanel1_StatsChronologyControl1_FindsPerMonth, #ctl00_ContentBody_ProfilePanel1_StatsChronologyControl1_CumulativeFindsPerMonth, #CacheTypesFound, #ctl00_ContentBody_StatsChronologyControl1_FindsPerMonth, #ctl00_ContentBody_StatsChronologyControl1_CumulativeFindsPerMonth {margin-left: -15px;}";
+                    css += "#ctl00_ContentBody_ProfilePanel1_StatsChronologyControl1_FindsPerMonth h3, #ctl00_ContentBody_ProfilePanel1_StatsChronologyControl1_CumulativeFindsPerMonth h3, #CacheTypesFound h3, #ctl00_ContentBody_StatsChronologyControl1_FindsPerMonth h3, #ctl00_ContentBody_StatsChronologyControl1_CumulativeFindsPerMonth h3 {margin-left: 15px;}";
                 } else if (is_page("publicProfile")) {
                     if ($('#ctl00_ContentBody_ProfilePanel1_lnkCollectibles.Active')[0]) {
                         css += ".span-9 {width: " + ((new_width - 220) / 2) + "px !important;} .prepend-1 {padding-left: 10px;}";
@@ -1790,7 +1796,7 @@ var mainGC = function() {
     }
 
 // Show eventday beside date.
-    if (settings_show_eventday && is_page("cache_listing") && $('#cacheDetails svg.cache-icon use')[0] && $('#cacheDetails svg.cache-icon use')[0].href.baseVal.match(/\/cache-types.svg\#icon-(6$|6-|453$|453-|13$|13-|7005$|7005-)/)) {  // Event, MegaEvent, Cito, GigaEvent
+    if (settings_show_eventday && is_page("cache_listing") && $('#cacheDetails svg.cache-icon use')[0] && $('#cacheDetails svg.cache-icon use')[0].href.baseVal.match(/\/cache-types.svg\#icon-(6$|6-|453$|453-|13$|13-|7005$|7005-|3653$|3653-)/)) {  // Event, MegaEvent, Cito, GigaEvent, CommunityCelebrationEvents
         try {
             var match = $('meta[name="og:description"]')[0].content.match(/([0-9]{2})\/([0-9]{2})\/([0-9]{4})/);
             if(match == null){
@@ -1986,9 +1992,9 @@ var mainGC = function() {
     if (settings_show_fav_percentage && is_page("cache_listing") && $('#uxFavContainerLink')[0]) {
         try {
             function gclh_load_score(waitCount) {
-                if (typeof unsafeWindow.showFavoriteScore !== "undefined") { // GDPR
-                    unsafeWindow.showFavoriteScore();
-                    if ($('.favorite-container')[0] && $('.favorite-score')[0].innerHTML.match("%") && $('.favorite-dropdown')[0]) {
+                if ($('.favorite-container')[0] && $('.favorite-score')[0].innerHTML.match("%") && $('.favorite-dropdown')[0]) {
+                    if (typeof unsafeWindow.showFavoriteScore !== "undefined") { // GDPR
+                        unsafeWindow.showFavoriteScore();
                         var fav = $('.favorite-container')[0];
                         var score = $('.favorite-score')[0].innerHTML.match(/(.*%)\.*/);
                         if (score && score[1]) {
@@ -2006,8 +2012,8 @@ var mainGC = function() {
                             dd.style.borderTopLeftRadius = "5px";
                             dd.style.minWidth = "190px";
                         }
-                    } else {waitCount++; if (waitCount <= 100) setTimeout(function(){gclh_load_score(waitCount);}, 100);}
-                } else {waitCount++; if (waitCount <= 100) setTimeout(function(){gclh_load_score(waitCount);}, 100);} // GDPR
+                    } else {waitCount++; if (waitCount <= 100) setTimeout(function(){gclh_load_score(waitCount);}, 100);} // GDPR
+                } else {waitCount++; if (waitCount <= 300) setTimeout(function(){gclh_load_score(waitCount);}, 1000);} // 5 Min
             }
             gclh_load_score(0);
         } catch(e) {gclh_error("Show favorite percentage",e);}
@@ -6817,6 +6823,7 @@ var mainGC = function() {
 
             // Build VIP Icons.
             function gclh_add_vip_icon() {
+                if(!settings_show_vip_list) return;
                 var elements = $(document.getElementById("cache_logs_table2") || document.getElementById("cache_logs_table")).find("a.gclh_vip").not(".gclh_vip_hasIcon");
                 for (var i = 0; i < elements.length; i++) {
                     var link = elements[i];
@@ -6827,6 +6834,7 @@ var mainGC = function() {
             }
             // Build VUP Icons.
             function gclh_add_vup_icon() {
+                if(!settings_show_vip_list) return;
                 var elements = $(document.getElementById("cache_logs_table2") || document.getElementById("cache_logs_table")).find("a.gclh_vup").not(".gclh_vup_hasIcon");
                 for (var i = 0; i < elements.length; i++) {
                     var link = elements[i];
@@ -8622,6 +8630,8 @@ var mainGC = function() {
             if (settings_relocate_other_map_buttons) {
                 css += '#browse-map-cta {display: none;}';
             }
+            // Arrange buttons and D, T and size area on detail cache sub screen.
+            css += 'ul.attributes, ul.attributes ul, .cache-preview-action-menu ul {padding-left: unset;}';
             // Sidebar Enhancements.
             if (settings_show_enhanced_map_popup) {
                 css += '.cache-preview-attributes .geocache-owner {margin-bottom: 3px;}';
@@ -10910,10 +10920,10 @@ var mainGC = function() {
         div.setAttribute("style", "margin-top: -50px;");
         var prop = ' style="border: none; visibility: hidden; width: 2px; height: 2px;" alt="">';
 //--> $$002
-        var code = '<img src="https://c.andyhoppe.com/1588828232"' + prop + // Besucher
-                   '<img src="https://c.andyhoppe.com/1588828305"' + prop + // Seitenaufrufe
-                   '<img src="https://www.worldflagcounter.com/g4X"' + prop +
-                   '<img src="https://s11.flagcounter.com/count2/vDki/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
+        var code = '<img src="https://c.andyhoppe.com/1591560533"' + prop + // Besucher
+                   '<img src="https://c.andyhoppe.com/1591560628"' + prop + // Seitenaufrufe
+                   '<img src="https://www.worldflagcounter.com/g8w"' + prop +
+                   '<img src="https://s11.flagcounter.com/count2/ZdG4/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
 //<-- $$002
         div.innerHTML = code;
         side.appendChild(div);
@@ -11774,7 +11784,12 @@ var mainGC = function() {
         html += "  border-right-width: 2px;";
         html += "  max-width: 100px;";
         html += "  padding: 0px 4px;";
-        html += "  text-align: initial;}";
+        html += "  text-align: initial;";
+        html += "  max-width: 100px;";
+        html += "  overflow: hidden;";
+        html += "  vertical-align: bottom;";
+        html += "  white-space: nowrap;";
+        html += "  text-overflow: ellipsis;}";
         html += ".gclh_thanks_table td:nth-child(1) a {";
         html += "  max-width: 100px;";
         html += "  display: inline-block;";
@@ -11882,40 +11897,44 @@ var mainGC = function() {
             html += "    </thead>";
             html += "    <tbody>";
 //--> $$006
-            // Bezeichnung:         GC Name                 Abw. GitHub Name   ProjM  DevL   Dev    BugR   Separator
-            html += thanksLineBuild("Ruko2010",             "",                true,  true,  false, true,  false);
-            html += thanksLineBuild("2Abendsegler",         "",                true,  true,  false, true,  true );
+            // Bezeichnung:         GC Name                 Abw. GitHub Name            ProjM  DevL   Dev    BugR   Separator
+            html += thanksLineBuild("Ruko2010",             "",                         true,  true,  false, true,  false);
+            html += thanksLineBuild("2Abendsegler",         "",                         true,  true,  false, true,  true );
             // Rangliste Development von hier https://github.com/2Abendsegler/GClh/graphs/contributors.
-            html += thanksLineBuild("CachingFoX",           "",                false, false, true,  true,  false);
-            html += thanksLineBuild("capoaira",             "",                false, false, true,  true,  false);
-            html += thanksLineBuild("Herr Ma",              "",                false, false, true,  true,  false);
-            html += thanksLineBuild("Dratenik",             "",                false, false, true,  false, false);
-            html += thanksLineBuild("DrakMrak",             "",                false, false, true,  false, false);
-            html += thanksLineBuild("radlerandi",           "",                false, false, true,  false, false);
-            html += thanksLineBuild("Nicole1338",           "",                false, false, true,  false, false);
-            html += thanksLineBuild("ramirez_",             "ramirezhr",       false, false, true,  false, false);
-            html += thanksLineBuild("king-ton",             "",                false, false, true,  false, false);
-            html += thanksLineBuild("dontpänic",            "haarspalter",     false, false, true,  false, false);
-            html += thanksLineBuild("Bananeweizen",         "",                false, false, true,  false, false);
-            html += thanksLineBuild("ztNFny",               "",                false, false, true,  true,  true);
+            html += thanksLineBuild("CachingFoX",           "",                         false, false, true,  true,  false);
+            html += thanksLineBuild("capoaira",             "",                         false, false, true,  true,  false);
+            html += thanksLineBuild("Herr Ma",              "",                         false, false, true,  true,  false);
+            html += thanksLineBuild("Dratenik",             "",                         false, false, true,  false, false);
+            html += thanksLineBuild("DrakMrak",             "",                         false, false, true,  false, false);
+            html += thanksLineBuild("radlerandi",           "",                         false, false, true,  false, false);
+            html += thanksLineBuild("Nicole1338",           "",                         false, false, true,  false, false);
+            html += thanksLineBuild("ramirez_",             "ramirezhr",                false, false, true,  false, false);
+            html += thanksLineBuild("king-ton",             "",                         false, false, true,  false, false);
+            html += thanksLineBuild("dontpänic",            "haarspalter",              false, false, true,  false, false);
+            html += thanksLineBuild("Bananeweizen",         "",                         false, false, true,  false, false);
+            html += thanksLineBuild("ztNFny",               "",                         false, false, true,  true,  true);
             // Bug Reporting alphabetisch.
-            html += thanksLineBuild("",                     "AndyPuma",        false, false, false, true,  false);
-            html += thanksLineBuild("arbor95",              "",                false, false, false, true,  false);
-            html += thanksLineBuild("barnold",              "barnoldGEOC",     false, false, false, true,  false);
-            html += thanksLineBuild("BlueEagle23",          "",                false, false, false, true,  false);
-            html += thanksLineBuild("Cappa-d",              "",                false, false, false, true,  false);
-            html += thanksLineBuild("",                     "gboye",           false, false, false, true,  false);
-            html += thanksLineBuild("Die Batzen",           "DieBatzen",       false, false, false, true,  false);
-            html += thanksLineBuild("Donnerknispel",        "",                false, false, false, true,  false);
-            html += thanksLineBuild("Jipem",                "",                false, false, false, true,  false);
-            html += thanksLineBuild("Magpie42",             "MagpieFourtyTwo", false, false, false, true,  false);
-            html += thanksLineBuild("☺Mitchsa & firefly70", "Mitchsa",         false, false, false, true,  false);
-            html += thanksLineBuild("Pontiac_CZ",           "PontiacCZ",       false, false, false, true,  false);
-            html += thanksLineBuild("RoRo",                 "RolandRosenfeld", false, false, false, true,  false);
-            html += thanksLineBuild("stepborc",             "",                false, false, false, true,  false);
-            html += thanksLineBuild("V60",                  "V60GC",           false, false, false, true,  false);
-            html += thanksLineBuild("winkamol",             "",                false, false, false, true,  false);
-            var thanksLastUpdate = "13.03.2020";
+            html += thanksLineBuild("",                     "allyourcodearebelongtous", false, false, false, true,  false);
+            html += thanksLineBuild("",                     "AndyPuma",                 false, false, false, true,  false);
+            html += thanksLineBuild("",                     "anvanlaer",                false, false, false, true,  false);
+            html += thanksLineBuild("arbor95",              "",                         false, false, false, true,  false);
+            html += thanksLineBuild("barnold",              "barnoldGEOC",              false, false, false, true,  false);
+            html += thanksLineBuild("BlueEagle23",          "",                         false, false, false, true,  false);
+            html += thanksLineBuild("Cappa-d",              "",                         false, false, false, true,  false);
+            html += thanksLineBuild("",                     "gboye",                    false, false, false, true,  false);
+            html += thanksLineBuild("Die Batzen",           "DieBatzen",                false, false, false, true,  false);
+            html += thanksLineBuild("Donnerknispel",        "",                         false, false, false, true,  false);
+            html += thanksLineBuild("",                     "jet2mike",                 false, false, false, true,  false);
+            html += thanksLineBuild("Jipem",                "",                         false, false, false, true,  false);
+            html += thanksLineBuild("Magpie42",             "MagpieFourtyTwo",          false, false, false, true,  false);
+            html += thanksLineBuild("☺Mitchsa & firefly70", "Mitchsa",                  false, false, false, true,  false);
+            html += thanksLineBuild("PHIL",                 "gcPhil",                   false, false, false, true,  false);
+            html += thanksLineBuild("Pontiac_CZ",           "PontiacCZ",                false, false, false, true,  false);
+            html += thanksLineBuild("RoRo",                 "RolandRosenfeld",          false, false, false, true,  false);
+            html += thanksLineBuild("stepborc",             "",                         false, false, false, true,  false);
+            html += thanksLineBuild("V60",                  "V60GC",                    false, false, false, true,  false);
+            html += thanksLineBuild("winkamol",             "",                         false, false, false, true,  false);
+            var thanksLastUpdate = "07.06.2020";
 //<-- $$006
             html += "    </tbody>";
             html += "</table>";
@@ -12403,7 +12422,7 @@ var mainGC = function() {
             html += checkboxy('settings_show_vip_list', 'Show VIP list') + show_help("The VIP list is a list, displayed at the right side on a cache listing. You can add any user to your VIP list by clicking the little VIP icon beside the user. If it is green, this person is a VIP. The VIP list only shows VIPs and the logs of VIPs, which already posted a log to this cache. With this option you are able to see which of your VIPs already found this cache. On your dashboard page there is an overview of all your VIPs.<br>(VIP: Very important person)") + "<br>";
             html += "&nbsp; " + checkboxy('settings_show_owner_vip_list', 'Show owner in VIP list')  + show_help("If you enable this option, the owner is a VIP for the cache, so you can see, what happened with the cache (disable, maint, enable, ...). Then the owner is shown not only in VIP list but also in VIP logs.<br>(VIP: Very important person)<br><br>" + t_reqSVl)+ "<br>";
             html += newParameterOn3;
-            html += "&nbsp; " + checkboxy('settings_show_reviewer_as_vip', 'Show reviewer/publisher in VIP list')  + show_help("If you enable this option, the reviewer or publisher of the cache is a VIP for the cache.<br><br>" + t_reqSVl)+ "<br>";
+            html += "&nbsp; " + checkboxy('settings_show_reviewer_as_vip', 'Show reviewer/publisher in VIP list')  + show_help("If you enable this option, the reviewer or publisher of the cache is a VIP for the cache.<br><br>" + t_reqSVl) + "<br>";
             html += newParameterVersionSetzen(0.9) + newParameterOff;
             html += "&nbsp; " + checkboxy('settings_show_long_vip', 'Show long VIP list (one row per log)') + show_help("This is another type of displaying the VIP list. If you disable this option you get the short list, one row per VIP and the logs as icons beside the VIP. If you enable this option, there is a row for every log.<br>(VIP: Very important person)<br><br>" + t_reqSVl) + "<br>";
             html += "&nbsp; " + checkboxy('settings_vip_show_nofound', 'Show a list of VIPs who have not found the cache') + "<br>";
@@ -13117,6 +13136,7 @@ var mainGC = function() {
             setEvForDepPara("settings_show_vip_list", "settings_show_tb_listings_color_vip");
             setEvForDepPara("settings_show_vip_list", "settings_lines_color_vip");
             setEvForDepPara("settings_show_vip_list", "restore_settings_lines_color_vip");
+            setEvForDepPara("settings_show_vip_list", "settings_show_reviewer_as_vip");
             setEvForDepPara("settings_show_vip_list", "settings_show_owner_vip_list");
             setEvForDepPara("settings_show_vip_list", "settings_show_long_vip");
             setEvForDepPara("settings_show_vip_list", "settings_vip_show_nofound");

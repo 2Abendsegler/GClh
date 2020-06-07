@@ -1,3 +1,4 @@
+<a href="#v0107" title="GClh II version 0.10.7 (07.06.2020)">v0.10.7</a> &nbsp;
 <a href="#v0106" title="GClh II version 0.10.6 (07.05.2020)">v0.10.6</a> &nbsp;
 <a href="#v0105" title="GClh II version 0.10.5 (13.03.2020)">v0.10.5</a> &nbsp;
 <a href="#v0104" title="GClh II version 0.10.4 (13.02.2020)">v0.10.4</a> &nbsp;
@@ -6,6 +7,36 @@
 <a href="#v0101" title="GClh II version 0.10.1 (20.12.2019)">v0.10.1</a> &nbsp;
 <a href="#v010" title="GClh II version 0.10 (13.12.2019)">v0.10</a> &nbsp;
 <a href="changelog_before.md" title="Go to earlier changelog">Earlier changelog</a> &nbsp;
+
+---
+## v0.10.7:
+<ul>
+	<li>
+		<strong>New:</strong> Show weekday for community celebration events. [<a href="https://github.com/2Abendsegler/GClh/issues/1352" title="Issue 1352">1352</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br><br>
+	</li>
+	<li>
+		<strong>Fix:</strong> "Submit" corrected coordinates does not react. [<a href="https://github.com/2Abendsegler/GClh/issues/1360" title="Issue 1360">1360</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> Cache listing page is very slow. [<a href="https://github.com/2Abendsegler/GClh/issues/1358" title="Issue 1358">1358</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [New Map] GClh doesn't work on new map page. [<a href="https://github.com/2Abendsegler/GClh/issues/1356" title="Issue 1356">1356</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> Logs shown twice with disabled VIP list. [<a href="https://github.com/2Abendsegler/GClh/issues/1350" title="Issue 1350">1350</a> / <a href="https://www.geocaching.com/profile/?u=Ruko2010" title="Thanks to Ruko2010">Ruko2010</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [New Map] Wrong position of "size" area in detail screen of a cache on new map page. [<a href="https://github.com/2Abendsegler/GClh/issues/1349" title="Issue 1349">1349</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> Scroll Bar at statistik page is missing respectively number of caches not recognizable everywhere. [<a href="https://github.com/2Abendsegler/GClh/issues/1344" title="Issue 1344">1344</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+</ul>
+<br>
+(07.06.2020)<br>
+released by <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a><br>
+<br>
 
 ---
 ## v0.10.6:
