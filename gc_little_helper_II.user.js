@@ -15485,7 +15485,7 @@ function is_page(name) {
             if (url.match(/^\/account\/dashboard/)) status = true;
             break;
         case "track":
-            if (url.match(/^\/track\/($|#$|edit)/)) status = true;
+            if (url.match(/^\/track\/($|#$|edit|upload)/)) status = true;
             break;
         case "souvenirs": /* only dashboard TODO public profile page */
             if (url.match(/^\/my\/souvenirs\.aspx/)) status = true;
