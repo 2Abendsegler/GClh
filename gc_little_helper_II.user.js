@@ -8542,6 +8542,9 @@ var mainGC = function() {
                     css += '.geocache-item-status-icon {height: 18px; width: 18px;}';
                 }
                 css += '.cache-preview-header, .cache-preview-attributes, .cache-preview-action-menu, .cache-activity-log, .cache-open-text-cta, .cache-preview-activities h2, .cache-preview-description, .cache-preview-activities .view-all-row {padding: 5px 12px !important;}';
+                css += '.cache-preview-activities h2 {margin: 0;}';
+                css += '.cache-preview-activities ul {margin: 0; padding: 0;}';
+                css += '.cache-activity-log header, .cache-activity-log .text {margin-bottom: -6px;}';
                 css += '.gclh-cache-link {display: flex;}';
                 css += '.gclh_cache_type {flex: 0 0 24px; height: 24px; width: 24px; margin-left: -2px; margin-right: 8px; margin-top: -1px;}';
                 css += '.cache-preview-header h1 {font-size: 16px;}';
