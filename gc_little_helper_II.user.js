@@ -8479,62 +8479,62 @@ var mainGC = function() {
                });
             }
 
-			// hide sidebar
-			let run2 = true; // run only once
-			function hideSidebar() {
-				if (!settings_map_hide_sidebar || !run2) return;
+            // hide sidebar
+            let run2 = true; // run only once
+            function hideSidebar() {
+                if (!settings_map_hide_sidebar || !run2) return;
 
-				run2 = false;
-				let wc = 0;
-				function clickToClose(wc) {
-					if ($('body').hasClass('sidebar-is-closed')) { // is closed
-						wc++;
-						if (wc <= 20) setTimeout(function() { clickToClose(wc); }, 200);
-					} else { // is open
-						$('div#sidebar-group>button.sidebar-toggle').click();
-					}
-				}
-				clickToClose(0);
-			}
+                run2 = false;
+                let wc = 0;
+                function clickToClose(wc) {
+                    if ($('body').hasClass('sidebar-is-closed')) { // is closed
+                        wc++;
+                        if (wc <= 20) setTimeout(function() { clickToClose(wc); }, 200);
+                    } else { // is open
+                        $('div#sidebar-group>button.sidebar-toggle').click();
+                    }
+                }
+                clickToClose(0);
+            }
 
-			// check if search URL already has filters set: if not then set default filters otherwise keep current filter
-			let urlIsFiltered = document.location.href.split('&').length>5 ? true : false;
-			let run = true; // run only once
+            // check if search URL already has filters set: if not then set default filters otherwise keep current filter
+            let urlIsFiltered = document.location.href.split('&').length>5 ? true : false;
+            let run = true; // run only once
             // set default filters (only if none set)
-			function setFilter() {
-				if (urlIsFiltered || !run || $('button.filter-toggle').length===0) return;
-
+            function setFilter() {
+                if (urlIsFiltered || !run || $('button.filter-toggle').length===0) return;
+                if (document.location.href.match(/\.com\/play\/map(\/BM|\?bm=)/)) return;
                 run = false;
-				
-				// each filter has to be clicked twice, otherwise the selection isn't reliable
-				function doubleClick(sel) {
-					$(sel).click().click();
-				}
-				
+
+                // each filter has to be clicked twice, otherwise the selection isn't reliable
+                function doubleClick(sel) {
+                    $(sel).click().click();
+                }
+
                 // open filter
                 $('button.filter-toggle').click();
 
-				// hide found caches
+                // hide found caches
                 if (settings_map_hide_found) {
-					doubleClick('input[name="hideFinds"][value="1"]');
+                    doubleClick('input[name="hideFinds"][value="1"]');
                 }
 
                 // hide owned caches
                 if (settings_map_hide_hidden) {
-					doubleClick('input[name="hideOwned"][value="1"]');
+                    doubleClick('input[name="hideOwned"][value="1"]');
                 }
 
                 // hide cache types
                 let cache_types = [2,3,4,5,6,8,11,137,1858];
                 for (let i=0; i<cache_types.length; i++) {
                     if (window['settings_map_hide_'+cache_types[i]]) {
-						doubleClick('input[value="'+cache_types[i]+'"]');
+                        doubleClick('input[value="'+cache_types[i]+'"]');
                     }
                 }
 
-				// apply filters to map and close
-				doubleClick('button.control-apply');
-			}
+                // apply filters to map and close
+                doubleClick('button.control-apply');
+            }
 
             // Processing all steps.
             function processAllSearchMap() {
@@ -8548,8 +8548,8 @@ var mainGC = function() {
                 collapseActivity();
                 showSearchmapSidebarEnhancements();
                 buildMapControlButtons();
-				hideSidebar();
-				setFilter();
+                hideSidebar();
+                setFilter();
             }
 
             // Build mutation observer for body.
