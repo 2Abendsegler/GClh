@@ -383,13 +383,15 @@ var variablesInit = function(c) {
     c.settings_count_own_matrix_links = getValue("settings_count_own_matrix_links", "map");
     c.settings_hide_left_sidebar_on_google_maps = getValue("settings_hide_left_sidebar_on_google_maps", true);
     c.settings_add_link_gc_map_on_google_maps = getValue("settings_add_link_gc_map_on_google_maps", true);
-    c.settings_switch_to_gc_map_in_same_tab = getValue("settings_switch_to_gc_map_in_same_tab", false);
+    c.settings_switch_from_google_maps_to_gc_map_in_same_tab = getValue("settings_switch_from_google_maps_to_gc_map_in_same_tab", false);
     c.settings_add_link_new_gc_map_on_google_maps = getValue("settings_add_link_new_gc_map_on_google_maps", true);
-    c.settings_switch_to_new_gc_map_in_same_tab = getValue("settings_switch_to_new_gc_map_in_same_tab", false);
+    c.settings_switch_from_google_maps_to_new_gc_map_in_same_tab = getValue("settings_switch_from_google_maps_to_new_gc_map_in_same_tab", false);
     c.settings_add_link_google_maps_on_gc_map = getValue("settings_add_link_google_maps_on_gc_map", true);
     c.settings_switch_to_google_maps_in_same_tab = getValue("settings_switch_to_google_maps_in_same_tab", false);
     c.settings_add_link_gc_map_on_osm = getValue("settings_add_link_gc_map_on_osm", true);
     c.settings_switch_from_osm_to_gc_map_in_same_tab = getValue("settings_switch_from_osm_to_gc_map_in_same_tab", false);
+    c.settings_add_link_new_gc_map_on_osm = getValue("settings_add_link_new_gc_map_on_osm", true);
+    c.settings_switch_from_osm_to_new_gc_map_in_same_tab = getValue("settings_switch_from_osm_to_new_gc_map_in_same_tab", false);
     c.settings_add_link_osm_on_gc_map = getValue("settings_add_link_osm_on_gc_map", true);
     c.settings_switch_to_osm_in_same_tab = getValue("settings_switch_to_osm_in_same_tab", false);
     c.settings_add_link_flopps_on_gc_map = getValue("settings_add_link_flopps_on_gc_map", true);
@@ -676,10 +678,10 @@ var mainGMaps = function() {
                     div.id = "gclh_map_links";
                     div.setAttribute("style", "display: inline-block;");
                     if (settings_add_link_new_gc_map_on_google_maps) {
-                        div.innerHTML += '<a title="Geocaching Search Map" onClick="openGcMap(\'new\', ' + settings_switch_to_new_gc_map_in_same_tab + ');">' + search_map_icon + '</a>';
+                        div.innerHTML += '<a title="Geocaching Search Map" onClick="openGcMap(\'new\', ' + settings_switch_from_google_maps_to_new_gc_map_in_same_tab + ');">' + search_map_icon + '</a>';
                     }
                     if (settings_add_link_gc_map_on_google_maps) {
-                        div.innerHTML += '<a title="Geocaching Browse Map" onClick="openGcMap(\'old\', ' + settings_switch_to_gc_map_in_same_tab + ');">' + browse_map_icon + '</a>';
+                        div.innerHTML += '<a title="Geocaching Browse Map" onClick="openGcMap(\'old\', ' + settings_switch_from_google_maps_to_gc_map_in_same_tab + ');">' + browse_map_icon + '</a>';
                     }
                     var side = document.getElementById("gbwa");
                     side.parentNode.insertBefore(div, side);
@@ -1064,19 +1066,32 @@ var mainOSM = function() {
         // Add link to GC Map on Openstreetmap.
         function addGCButton(waitCount) {
             if (document.location.href.match(/^https?:\/\/www\.openstreetmap\.org\/(.*)#map=/) && $(".control-key").length) {
-                if (settings_add_link_gc_map_on_osm) {
-                    var code = '<div class="control-gc leaflet-control"><a class="control-button" href="#" data-original-title="Go to GC Map"><img src="'+OSM_sidebar_gc_icon+'" width="40px" height="40px"></a></div>';
+                if (settings_add_link_new_gc_map_on_osm) {
+                    var code = '<div class="control-gc leaflet-control"><a class="control-button new-gc-map" href="#" title="Geocaching Search Map">' + search_map_icon + '</a></div>';
                     $(".control-share").after(code);
-                    $(".control-gc").click(function() {
-                        var matches = document.location.href.match(/=([0-9]+)\/(-?[0-9.]*)\/(-?[0-9.]*)/);
-                        if (matches != null) {
+                }
+                if (settings_add_link_gc_map_on_osm) {
+                    var code = '<div class="control-gc leaflet-control"><a class="control-button gc-map" href="#" title="Geocaching Browse Map">' + browse_map_icon + '</a></div>';
+                    $(".control-share").after(code);
+                }
+                $(".control-gc").click(function() {
+                    var matches = document.location.href.match(/=([0-9]+)\/(-?[0-9.]*)\/(-?[0-9.]*)/);
+                    if (matches != null) {
+                        if ($(this).find('.gc-map')[0]) {
                             var url = map_url + '?lat=' + matches[2] + '&lng=' + matches[3] + '#?ll=' + matches[2] + ',' + matches[3] + '&z=' + matches[1];
                             if (settings_switch_from_osm_to_gc_map_in_same_tab) location = url;
                             else window.open(url);
-                        } else alert('This map has no geographical coordinates in its link. Just zoom or drag the map, afterwards this will work fine.');
-                    });
-                }
-
+                        } else {
+                            var url = new_map_url + '?lat=' + matches[2] + '&lng=' + matches[3] + '&zoom=' + matches[1];
+                            if (settings_switch_from_osm_to_new_gc_map_in_same_tab) location = url;
+                            else window.open(url);
+                        }
+                    } else alert('This map has no geographical coordinates in its link. Just zoom or drag the map, afterwards this will work fine.');
+                });
+                var css = '';
+                css += '.control-gc svg {width: 25px; height: 25px; margin-left: 9px; margin-top: 8px; vertical-align: middle; color: white;}';
+                css += '#search_map_icon {margin-top: 11px;}';
+                appendCssStyle(css);
             } else {waitCount++; if (waitCount <= 50) setTimeout(function(){addGCButton(waitCount);}, 1000);}
         }
         addGCButton(0);
@@ -8997,7 +9012,7 @@ var mainGC = function() {
         $("#gclh_geoservices_control").append('<div id="gclh_geoservices_list" class="gclh-leaflet-list"></div>');
         $("#gclh_geoservices_list").append('<b>Go to ...</b>');
         if (settings_add_link_google_maps_on_gc_map) $("#gclh_geoservices_list").append('<a id="gclh_geoservice_googlemaps">Google Maps</a>');
-        if (settings_add_link_osm_on_gc_map) $("#gclh_geoservices_list").append('<a id="gclh_geoservice_osm">Openstreepmap</a>');
+        if (settings_add_link_osm_on_gc_map) $("#gclh_geoservices_list").append('<a id="gclh_geoservice_osm">Openstreetmap</a>');
         if (settings_add_link_flopps_on_gc_map) $("#gclh_geoservices_list").append('<a id="gclh_geoservice_flopps">Flopp\'s Map</a>');
         if (settings_add_link_geohack_on_gc_map) $("#gclh_geoservices_list").append('<a id="gclh_geoservice_geohack">GeoHack</a>');
         $("#gclh_geoservice_googlemaps").click(function() {callGeoService(urlGoogleMaps, settings_switch_to_google_maps_in_same_tab);});
@@ -12330,22 +12345,24 @@ var mainGC = function() {
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>Google Maps page</b></div>";
             html += checkboxy('settings_hide_left_sidebar_on_google_maps', 'Hide left sidebar on Google Maps by default') + "<br>";
             html += checkboxy('settings_add_link_gc_map_on_google_maps', 'Add link to old GC Map on Google Maps') + show_help("With this option an icon are placed on the Google Maps page to link to the same area in old GC Map.") + "<br>";
-            html += " &nbsp; " + checkboxy('settings_switch_to_gc_map_in_same_tab', 'Switch to old GC Map in same browser tab') + "<br>";
+            html += " &nbsp; " + checkboxy('settings_switch_from_google_maps_to_gc_map_in_same_tab', 'Switch in same browser tab') + "<br>";
             html += checkboxy('settings_add_link_new_gc_map_on_google_maps', 'Add link to new GC Map on Google Maps') + show_help("With this option an icon are placed on the Google Maps page to link to the same area in new GC Map.") + "<br>";
-            html += " &nbsp; " + checkboxy('settings_switch_to_new_gc_map_in_same_tab', 'Switch to new GC Map in same browser tab') + "<br>";
-            html += checkboxy('settings_add_link_google_maps_on_gc_map', 'Add link to Google Maps on GC Map') + show_help("With this option an icon are placed on the GC Map page to link to the same area in Google Maps.") + "<br>";
-            html += " &nbsp; " + checkboxy('settings_switch_to_google_maps_in_same_tab', 'Switch to Google Maps in same browser tab') + "<br>";
+            html += " &nbsp; " + checkboxy('settings_switch_from_google_maps_to_new_gc_map_in_same_tab', 'Switch in same browser tab') + "<br>";
+            html += checkboxy('settings_add_link_google_maps_on_gc_map', 'Add link to Google Maps on GC Maps') + show_help("With this option an icon are placed on the GC Map pages to link to the same area in Google Maps.") + "<br>";
+            html += " &nbsp; " + checkboxy('settings_switch_to_google_maps_in_same_tab', 'Switch in same browser tab') + "<br>";
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>Openstreetmap page</b></div>";
-            html += checkboxy('settings_add_link_gc_map_on_osm', 'Add link to GC Map on Openstreetmap') + show_help("With this option an icon are placed on the OpenstreetMap page to link to the same area in GC Map.") + "<br>";
-            html += " &nbsp; " + checkboxy('settings_switch_from_osm_to_gc_map_in_same_tab', 'Switch to GC Map in same browser tab') + "<br>";
-            html += checkboxy('settings_add_link_osm_on_gc_map', 'Add link to Openstreetmap on GC Map') + show_help("With this option an icon are placed on the GC Map page to link to the same area in Openstreetmap.") + "<br>";
-            html += " &nbsp; " + checkboxy('settings_switch_to_osm_in_same_tab', 'Switch to Openstreetmap in same browser tab') + "<br>";
+            html += checkboxy('settings_add_link_gc_map_on_osm', 'Add link to old GC Map on Openstreetmap') + show_help("With this option an icon are placed on the Openstreetmap page to link to the same area in old GC Map.") + "<br>";
+            html += " &nbsp; " + checkboxy('settings_switch_from_osm_to_gc_map_in_same_tab', 'Switch in same browser tab') + "<br>";
+            html += checkboxy('settings_add_link_new_gc_map_on_osm', 'Add link to new GC Map on Openstreetmap') + show_help("With this option an icon are placed on the Openstreetmap page to link to the same area in new GC Map.") + "<br>";
+            html += " &nbsp; " + checkboxy('settings_switch_from_osm_to_new_gc_map_in_same_tab', 'Switch in same browser tab') + "<br>";
+            html += checkboxy('settings_add_link_osm_on_gc_map', 'Add link to Openstreetmap on GC Maps') + show_help("With this option an icon are placed on the GC Map pages to link to the same area in Openstreetmap.") + "<br>";
+            html += " &nbsp; " + checkboxy('settings_switch_to_osm_in_same_tab', 'Switch in same browser tab') + "<br>";
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>Flopp's Map page</b></div>";
             html += checkboxy('settings_add_link_flopps_on_gc_map', 'Add link to Flopp\'s Map on GC Map') + show_help("With this option an icon are placed on the GC Map page to link to the same area in Flopp\'s Map.") + "<br>";
-            html += " &nbsp; " + checkboxy('settings_switch_to_flopps_in_same_tab', 'Switch to Flopp\'s Map in same browser tab') + "<br>";
+            html += " &nbsp; " + checkboxy('settings_switch_to_flopps_in_same_tab', 'Switch in same browser tab') + "<br>";
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>GeoHack page</b></div>";
             html += checkboxy('settings_add_link_geohack_on_gc_map', 'Add link to GeoHack on GC Map') + show_help("With this option an icon are placed on the GC Map page to link to the same area in GeoHack.") + "<br>";
-            html += " &nbsp; " + checkboxy('settings_switch_to_geohack_in_same_tab', 'Switch to GeoHack in same browser tab') + "<br>";
+            html += " &nbsp; " + checkboxy('settings_switch_to_geohack_in_same_tab', 'Switch in same browser tab') + "<br>";
             html += newParameterOn3;
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>Enhanced Map Popup</b></div>";
             html += checkboxy('settings_show_enhanced_map_popup', 'Enable enhanced map popup') + show_help("With this option there will be more informations on the map popup for a cache, like latest logs or trackable count.") + "<br>";
@@ -13255,10 +13272,11 @@ var mainGC = function() {
             setEvForDepPara("settings_count_own_matrix_show_next", "restore_settings_count_own_matrix_show_color_next");
             setEvForDepPara("settings_count_own_matrix_show_next", "settings_count_own_matrix_links_radius");
             setEvForDepPara("settings_count_own_matrix_show_next", "settings_count_own_matrix_links");
-            setEvForDepPara("settings_add_link_gc_map_on_google_maps", "settings_switch_to_gc_map_in_same_tab");
-            setEvForDepPara("settings_add_link_new_gc_map_on_google_maps", "settings_switch_to_new_gc_map_in_same_tab");
+            setEvForDepPara("settings_add_link_gc_map_on_google_maps", "settings_switch_from_google_maps_to_gc_map_in_same_tab");
+            setEvForDepPara("settings_add_link_new_gc_map_on_google_maps", "settings_switch_from_google_maps_to_new_gc_map_in_same_tab");
             setEvForDepPara("settings_add_link_google_maps_on_gc_map", "settings_switch_to_google_maps_in_same_tab");
             setEvForDepPara("settings_add_link_gc_map_on_osm", "settings_switch_from_osm_to_gc_map_in_same_tab");
+            setEvForDepPara("settings_add_link_new_gc_map_on_osm", "settings_switch_from_osm_to_new_gc_map_in_same_tab");
             setEvForDepPara("settings_add_link_osm_on_gc_map", "settings_switch_to_osm_in_same_tab");
             setEvForDepPara("settings_add_link_flopps_on_gc_map", "settings_switch_to_flopps_in_same_tab");
             setEvForDepPara("settings_add_link_geohack_on_gc_map", "settings_switch_to_geohack_in_same_tab");
@@ -13561,15 +13579,17 @@ var mainGC = function() {
                 'settings_count_own_matrix_show_next',
                 'settings_hide_left_sidebar_on_google_maps',
                 'settings_add_link_gc_map_on_google_maps',
-                'settings_switch_to_gc_map_in_same_tab',
+                'settings_switch_from_google_maps_to_gc_map_in_same_tab',
                 'settings_add_link_new_gc_map_on_google_maps',
-                'settings_switch_to_new_gc_map_in_same_tab',
+                'settings_switch_from_google_maps_to_new_gc_map_in_same_tab',
                 'settings_add_link_google_maps_on_gc_map',
                 'settings_switch_to_google_maps_in_same_tab',
-                'settings_add_link_osm_on_gc_map',
-                'settings_switch_to_osm_in_same_tab',
                 'settings_add_link_gc_map_on_osm',
                 'settings_switch_from_osm_to_gc_map_in_same_tab',
+                'settings_add_link_new_gc_map_on_osm',
+                'settings_switch_from_osm_to_new_gc_map_in_same_tab',
+                'settings_add_link_osm_on_gc_map',
+                'settings_switch_to_osm_in_same_tab',
                 'settings_add_link_flopps_on_gc_map',
                 'settings_switch_to_flopps_in_same_tab',
                 'settings_add_link_geohack_on_gc_map',
