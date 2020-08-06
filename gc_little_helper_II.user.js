@@ -1418,6 +1418,8 @@ var mainGC = function() {
                 "ul.#sm li {margin: -1px 9px 1px 9px;} ul.#sm li form {margin: 0px !important; padding: 0px !important}" +
                 // Menühöhe.
                 ".#m {height: 35px !important;}" +
+                // Markierung eines neuen Untermenüs.
+                "ul.#sm li span.flag-new {color: #3d76c5; margin-left: 16px;}" +
                 // Verschieben Submenüs unterbinden.
                 ".#m .#sm {margin-left: 0 !important}";
             // Vertikales Menü ausrichten.
