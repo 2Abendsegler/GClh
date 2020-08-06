@@ -9104,6 +9104,12 @@ var mainGC = function() {
     if (document.location.href.match(/\.com\/map\//) && !$('#uxGoogleMapsSelect')[0] &&  // Nicht bei Screen Map Preferences.
         !document.location.href.match(/\.com\/map\/default.aspx\?pq/)) {  // Nicht bei PQ-Anzeige.
         try {
+            $('#LegendRed ul')[0].innerHTML += '<li id="Legend3653" class="ct_toggle ct3653 ct_displayed" data-typeid="3653" style="display: none;"></li>';
+            if ($('#Legend6')[0]) {
+                $('#Legend6')[0].addEventListener("click", function() {$('#Legend3653').click(); $('#Legend1304').click();}, false);
+                $('#Legend6')[0].title = $('#Legend6')[0].title + " / Community Celebration Event";
+            }
+            if ($('#Legend2')[0]) $('#Legend2')[0].addEventListener("click", function() {$('#Legend9').click();}, false);
             function hideFoundCaches() {
                 // Kartenfilter bei externen Filtern (beispielsweise aus play/search) nicht verändern.
                 if (document.location.href.match(/&asq=/)) return;
