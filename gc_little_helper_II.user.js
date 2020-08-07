@@ -252,11 +252,18 @@ var constInit = function(c) {
     bookmark("Leaderboard", "/play/leaderboard", c.bookmarks);
     bookmark("Trackables", "/track/", c.bookmarks);
     bookmark("GeoTours", "/play/geotours", c.bookmarks);
-    bookmark("Unpublished Hides", "/account/dashboard/unpublishedcaches", c.bookmarks);
+    bookmark("Unpublished Hides", "/play/owner/unpublished", c.bookmarks);
     bookmark("Search Map", "/play/map", c.bookmarks);
     bookmark("Ignore List", "/plan/lists/ignored", c.bookmarks);
     bookmark("Found Geocaches", "/seek/nearest.aspx?ul={me}", c.bookmarks);
     bookmark("Hidden Geocaches", "/seek/nearest.aspx?u={me}", c.bookmarks);
+    bookmark("Archived Hides", "/play/owner/archived", c.bookmarks);
+    bookmark("Cache owner dashboard", "/play/owner", c.bookmarks);
+    bookmark("Published Disabled", "/play/owner/published?filter=disabledPublished", c.bookmarks);
+    bookmark("Published Hides", "/play/owner/published", c.bookmarks);
+    bookmark("Published Needs Maintenance", "/play/owner/published?filter=needsMaintenance", c.bookmarks);
+    bookmark("Published Reviewer Note", "/play/owner/published?filter=publishedReviewerNote", c.bookmarks);
+    bookmark("Unpublished Reviewer Note", "/play/owner/unpublished?filter=unpublishedReviewerNote", c.bookmarks);
     // Custom Bookmark-title.
     c.bookmarks_orig_title = new Array();
     for (var i = 0; i < c.bookmarks.length; i++) {
@@ -11794,6 +11801,11 @@ var mainGC = function() {
         html += "  font-size: 14px !important;";
         html += "  font-family: Verdana !important;";
         html += "  line-height: 18px !important;}";
+        html += ".gclh_LinkListElement {";
+        html += "  width: 202px;";
+        html += "  max-width: 202px;";
+        html += "  overflow: hidden;";
+        html += "  white-space: nowrap;}";
         html += ".gclh_ref {";
         html += "  color: #000000 !important;";
         html += "  text-decoration: none !important;";
@@ -12850,7 +12862,7 @@ var mainGC = function() {
                 var num = bookmarks[i]['number'];
                 html += "<tr>";
                 // Erste linke Spalte mit möglichen BMs:
-                html += "  <td style='width: 202px; z-index: 1004;' align='left' class='gclh_LinkListElement' id='gclh_LinkListElement_" + num + "' >";
+                html += "  <td align='left' class='gclh_LinkListElement' id='gclh_LinkListElement_" + num + "' >";
                 html += "    <img style='height: 12px; margin-right: 3px; cursor: grab;' title='' src='"+global_grab_it2_icon+"' />";
                 if (typeof(bookmarks[i]['custom']) != "undefined" && bookmarks[i]['custom'] == true) {
                     html += "<input style='padding-left: 2px !important; padding-right: 2px !important;' class='gclh_form' type='text' title='Custom link' id='settings_custom_bookmark[" + cust + "]' value='" + bookmarks[i]['href'] + "' size='15'> ";
@@ -12867,7 +12879,7 @@ var mainGC = function() {
                     html += ">" + outTitle + "</a>";
                     if (num >= 69 && num <= 69) html += newParameterLL2;
                     if (num >= 70 && num <= 74 || num == 25) html += newParameterLL3;
-                    if (num >= 75 && num <= 78) html += newParameterLL1;
+                    if (num >= 75 && num <= 85) html += newParameterLL1;
                 }
                 html += "  </td>";
                 // Zweite linke Spalte mit abweichenden Bezeichnungen:
@@ -12878,7 +12890,7 @@ var mainGC = function() {
                     html += "<input style='padding-left: 2px !important; padding-right: 2px !important;' class='gclh_form' title='Differing description for standard link' id='bookmarks_name[" + num + "]' type='text' size='15' value='" + getValue("settings_bookmarks_title[" + num + "]", "") + "'>";
                     if (num >= 69 && num <= 69) html += newParameterLLVersionSetzen(0.8);
                     if (num >= 70 && num <= 74 || num == 25) html += newParameterLLVersionSetzen(0.9);
-                    if (num >= 75 && num <= 78) html += newParameterLLVersionSetzen("0.10");
+                    if (num >= 75 && num <= 85) html += newParameterLLVersionSetzen("0.10");
                 }
                 html += "  </td></tr>";
             }
@@ -13838,7 +13850,7 @@ var mainGC = function() {
     }
     newParameterOff = "</div>";
     function newParameterLLVersionSetzen(version) {
-        var newParameterVers = '<span style="font-size: 70%; font-style: italic; margin-top: 10px; margin-left: -180px; position: absolute; cursor: default;"';
+        var newParameterVers = '<span style="font-size: 70%; font-style: italic; margin-top: 13px; margin-left: ' + (browser == "chrome" ? "-180px" : "-165px") + '; position: absolute; cursor: default;"';
         if (version != "") newParameterVers += 'title="Implemented with version ' + version + '">' + version + '</span>';
         else newParameterVers += '></span>';
         if (settings_hide_colored_versions) newParameterVers = "";
