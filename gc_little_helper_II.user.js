@@ -7856,6 +7856,88 @@ var mainGC = function() {
         } catch(e) {gclh_error("Compact layout for unpublished caches",e);}
     }
 
+// Improve Owner Dashboard.
+    if (is_page('owner_dashboard')) {
+        try {
+            // Functions for CO Dashboard Main Page.
+            // Set a link to the cachetypes.
+            function waitForCacheTypes(waitCount) {
+                if ($('.gclh_cacheTypeLinks')[0]) return; // Returns if the links have already been created.
+
+                if ($('.owned-geocache-types')[0]) {
+                    var linkToList = 'https://www.geocaching.com/seek/nearest.aspx?u=' + global_me + '&tx=';
+                    var cacheTypes = {
+                        'Traditional Cache'           : linkToList + '32bc9333-5e52-4957-b0f6-5a2c8fc7b257',
+                        'Multi-Cache'                 : linkToList + 'a5f6d0ad-d2f2-4011-8c14-940a9ebf3c74',
+                        'Mystery Cache'               : linkToList + '40861821-1835-4e11-b666-8d41064d03fe',
+                        'Letterbox Cache'             : linkToList + '4bdd8fb2-d7bc-453f-a9c5-968563b15d24',
+                        'Wherigo Cache'               : linkToList + '0544fa55-772d-4e5c-96a9-36a51ebcf5c9',
+                        'Earth Cache'                 : linkToList + 'c66f5cf3-9523-4549-b8dd-759cd2f18db8',
+                        'Virtual Cache'               : linkToList + '294d4360-ac86-4c83-84dd-8113ef678d7e',
+                        'Webcam Cache'                : linkToList + '31d2ae3c-c358-4b5f-8dcd-2185bf472d3d',
+                        'Event Cache'                 : linkToList + '69eb8534-b718-4b35-ae3c-a856a55b0874',
+                        'CITO Event'                  : linkToList + '57150806-bc1a-42d6-9cf0-538d171a2d22',
+                        'Community Celebration Event' : linkToList + '3ea6533d-bb52-42fe-b2d2-79a3424d4728',
+                        'Lab Cache'                   : 'https://labs.geocaching.com/builder/adventures'
+                    }
+
+                    let html = '<a href="' + linkToList + '" target="_blank" class="gclh_cacheTypeLinks" style="background:#f5f5f5;">';
+                    html += $('.owned-geocache-total').html() + '</a>';
+                    $('.owned-geocache-total').html(html);
+
+                    $('.owned-geocache-types ul li').each(function() {
+                        let ariaLabel = $(this).attr('aria-label');
+                        let html = '<a href="' + cacheTypes[ariaLabel] + '" title="Your ' + ariaLabel + 's" target="_blank">';
+                        html += this.innerHTML + '</a>';
+                        $(this).html(html);
+                    });
+                } else {waitCount++; if (waitCount <= 1000) setTimeout(function(){waitForCacheTypes(waitCount);}, 100);}
+            }
+
+            function processAllCODashboard() {
+                console.log('processAllCODashboard')
+                if (document.location.pathname.match(/play\/owner/)) { // This has to be run last, if features are add to the other CO Dashboard Pages
+                    console.log('processAllCODashboard')
+                    waitForCacheTypes(0);
+                }
+            }
+
+            // Build mutation observer.
+            function buildObserverBodyCODashboard() {
+                var observerBodyCODashboard = new MutationObserver(function(mutations) {
+                    mutations.forEach(function(mutation) {
+                        console.log('mutation')
+                        processAllCODashboard();
+                    });
+                });
+                var target = document.querySelector('#app-root div');
+                var config = { attributes: true, childList: true, characterData: true };
+                observerBodyCODashboard.observe(target, config);
+            }
+            // Check if mutation observer can be build.
+            function checkForBuildObserverBodyCODashboard(waitCount) {
+                if ($('#app-root div')[0]) {
+                    if ($('.gclh_buildObserverBodyCODashboard')[0]) return;
+                    $('#app-root div').addClass('gclh_buildObserverBodyCODashboard');
+                   buildObserverBodyCODashboard();
+                } else {waitCount++; if (waitCount <= 200) setTimeout(function(){checkForBuildObserverBodyCODashboard(waitCount);}, 50);}
+            }
+
+            checkForBuildObserverBodyCODashboard(0);
+            processAllCODashboard();
+
+            // CSS for Cache Owner Dashboard.
+            var css = '';
+            // Set a link to the cachetypes.
+            css += '.owned-geocache-types li, .owned-geocache-total {display:unset !important; padding: 0 !important}'
+            css += '.owned-geocache-types li a {display:flex; align-items:center; color:#4a4a4a; text-decoration:none; padding:4px 0;}';
+            css += '.owned-geocache-types li a:hover, .owned-geocache-total a:hover {font-weight:bold; color:#02874d; text-decoration:underline;}';
+            css += '.owned-geocache-total a {display:flex; align-items:center; color:#4a4a4a; text-decoration: none; justify-content:space-between; padding:12px 16px;}';
+
+            appendCssStyle(css);
+        } catch(e) {gclh_error("Improve Owner Dashboard",e);}
+    }
+
 // Show thumbnails.
     if (settings_show_thumbnails) {
         try {
@@ -15633,6 +15715,9 @@ function is_page(name) {
             break;
         case "dashboard":
             if (url.match(/^\/account\/dashboard$/)) status = true;
+            break;
+        case "owner_dashboard":
+            if (url.match(/^\/play\/owner/)) status = true;
             break;
         case "dashboard-section":
             if (url.match(/^\/account\/dashboard/)) status = true;
