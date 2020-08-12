@@ -23,6 +23,7 @@
 // @connect          raw.githubusercontent.com
 // @connect          api.open-elevation.com
 // @connect          api.geonames.org
+// @connect          coord.info
 // @description      Some little things to make life easy (on www.geocaching.com).
 // @copyright        2010-2016 Torsten Amshove, 2016-2019 2Abendsegler, 2017-2019 Ruko2010
 // @author           Torsten Amshove; 2Abendsegler; Ruko2010
@@ -603,6 +604,7 @@ var variablesInit = function(c) {
     c.settings_show_copydata_own_stuff = JSON.parse(getValue("settings_show_copydata_own_stuff", "{}"));
     c.settings_relocate_other_map_buttons = getValue("settings_relocate_other_map_buttons", true);
     c.settings_show_radius_on_flopps = getValue("settings_show_radius_on_flopps", true);
+    c.settings_show_edit_links_for_logs = getValue("settings_show_edit_links_for_logs", false);
 
     try {
         if (c.userToken === null) {
@@ -7701,6 +7703,102 @@ var mainGC = function() {
                 } else {waitCount++; if (waitCount <= 100) setTimeout(function(){showHideNearbyEvents(waitCount);}, 100);}
             }
             showHideNearbyEvents(0);
+            // Set real edit link in logs in area Latest Activity.
+            // (Ich habe keinen Weg gefunden mit MutationObserver Logs beim Wechsel zwischen Community Logs und Your Logs abzugreifen.)
+            var global_viewEditUrls = new Array();
+            function buildLinksAF(log) {
+                if (!$(log).find('.gclh_view-link')[0]) {
+                    $(log).find('.edit-link')[0].innerHTML = 'View log';
+                    $(log).find('.edit-link').addClass('gclh_view-link');
+                }
+                if ($(log).find('.activity-type-icon > a')[0].href.match(serverParameters["user:info"].referenceCode)) {
+                    if (!$(log).find('.gclh_edit-link')[0]) {
+                        var urls = $.grep(global_viewEditUrls, function(e){return e.view == $(log).find('.edit-link')[0].href;});
+                        if (urls && urls[0]) {
+                            var span = document.createElement('span');
+                            span.setAttribute('class', 'gclh_buttons');
+                            $(log).find('.edit-link')[0].before(span);
+                            var editLink = $( $(log).find('.edit-link')[0] ).clone()[0];
+                            $(editLink).prop('href', urls[0].edit).prop('class', 'gclh_edit-link').prop('style', 'margin-top: 12px').text('Edit log');
+                            $(log).find('.gclh_buttons')[0].append(editLink);
+                            var editLink = $( $(log).find('.edit-link')[0] ).clone()[0];
+                            $(log).find('.edit-link')[0].remove();
+                            $(log).find('.gclh_buttons')[0].append(editLink);
+                        }
+                    }
+                    buildEventMoreAF(log);
+                }
+            }
+            function buildLinksWaitAF(log, waitCount) {
+                buildLinksAF(log);
+                waitCount++; if (waitCount <= 20) setTimeout(function(){buildLinksWaitAF(log, waitCount);}, 100);
+            }
+            function buildEventMoreAF(log) {
+                if (!$(log).find('.expand-activity').hasClass('gclh_event')) {
+                    $(log).find('.expand-activity')[0].addEventListener("click", function(){buildLinksWaitAF($(this).closest('.activity-item'), 0);}, false);
+                    $($(log).find('.expand-activity')[0]).addClass('gclh_event');
+                }
+            }
+            function getEditUrlAF(log){
+                if (!$(log).hasClass('gclh_edit-url')) {
+                    $($(log)).addClass('gclh_edit-url');
+                    var viewUrl = $(log).find('.edit-link')[0].href;
+                    var urls = $.grep(global_viewEditUrls, function(e){return e.view == viewUrl;});
+                    if (!urls || !urls[0]) {
+                        GM_xmlhttpRequest({
+                            method: "GET",
+                            url: viewUrl,
+                            onload: function(response) {
+                                var editUrl = response.finalUrl;
+                                if (editUrl) {
+                                    editUrl += '&edit=true';
+                                    global_viewEditUrls.push({view: viewUrl, edit: editUrl});
+                                }
+                            }
+                        });
+                    }
+                }
+            }
+            function processLogsAF(waitCount) {
+                if ($('#ActivityFeed .activity-item').length > 0) {
+                    for (i=0; i<$('#ActivityFeed .activity-item').length; i++) {
+                        if ($($('#ActivityFeed .activity-item')[i]).find('.activity-type-icon > a')[0].href.match(serverParameters["user:info"].referenceCode)) {
+                            getEditUrlAF($('#ActivityFeed .activity-item')[i]);
+                            buildEventMoreAF($('#ActivityFeed .activity-item')[i]);
+                        }
+                    }
+                }
+                waitCount++; if (waitCount <= 25) setTimeout(function(){processLogsAF(waitCount);}, 200);
+            }
+            function buildEventQtipAF(waitCount) {
+                if ($('#ActivityFeed .btn-settings')[0] && $('#ActivityFeed .btn-settings').attr('data-hasqtip') && $('#qtip-' + $('#ActivityFeed .btn-settings').attr('data-hasqtip') + '-content')[0] && !$( $('#qtip-' + $('#ActivityFeed .btn-settings').attr('data-hasqtip') + '-content')[0] ).hasClass('gclh_event')) {
+                    var qtip = $('#qtip-' + $('#ActivityFeed .btn-settings').attr('data-hasqtip') + '-content');
+                    qtip[0].addEventListener("click", function(){startAF();}, false);
+                    $(qtip[0]).addClass('gclh_event');
+                } else {waitCount++; if (waitCount <= 100) setTimeout(function(){buildEventQtipAF(waitCount);}, 50);}
+            }
+            function buildEventLatestActivityAF(waitCount) {
+                if ($('#ActivityFeed .btn-settings')[0] && !$($('#ActivityFeed .btn-settings')[0]).hasClass('gclh_event')) {
+                    $('#ActivityFeed .btn-settings')[0].addEventListener("click", function(){buildEventQtipAF(0);}, false);
+                    $($('#ActivityFeed .btn-settings')[0]).addClass('gclh_event');
+                } else {waitCount++; if (waitCount <= 100) setTimeout(function(){buildEventLatestActivityAF(waitCount);}, 50);}
+            }
+            function buildEventLatestActivityPanelAF(waitCount) {
+                if ($('#ActivityFeed .panel-header')[0] && !$($('#ActivityFeed .panel-header')[0]).hasClass('gclh_event')) {
+                    $('#ActivityFeed .panel-header')[0].addEventListener("click", function(){startAF();}, false);
+                    $($('#ActivityFeed .panel-header')[0]).addClass('gclh_event');
+                } else {waitCount++; if (waitCount <= 100) setTimeout(function(){buildEventLatestActivityPanelAF(waitCount);}, 50);}
+            }
+            function startAF() {
+                buildEventLatestActivityPanelAF(0);
+                buildEventLatestActivityAF(0);
+                processLogsAF(0);
+            }
+            if (settings_show_edit_links_for_logs) {
+                startAF();
+                css += '.gclh_buttons {display: flex;}';
+                css += '.gclh_edit-link {margin-top: 12px; margin-right: 12px;}';
+            }
             appendCssStyle(css);
         } catch(e) {gclh_error("Improve new dashboard",e);}
     }
@@ -12460,6 +12558,7 @@ var mainGC = function() {
             html += "  <option value='gcOld' " + (settings_showUnpublishedHides_sort == 'gcOld' ? "selected='selected'" : "") + "> GC-Code (Oldest first)</option>";
             html += "  <option value='gcNew' " + (settings_showUnpublishedHides_sort == 'gcNew' ? "selected='selected'" : "") + "> GC-Code (Newest first)</option>";
             html += "</select><br>";
+            html += checkboxy('settings_show_edit_links_for_logs', 'Show edit links for your own logs') + show_help("With this option direct edit links are shown in your own logs on your dashboard. If you choose such a link, you are immediately in edit mode in your log.<br><br>When the function is activated, additional data of your logs must be loaded in the background, every time the dashboard page is called. This causes traffic over your internet connection. You should know that before you activate this feature.") + "<br>";
             html += newParameterVersionSetzen('0.10') + newParameterOff;
 
             html += "<div class='gclh_old_new_line'>Old dashboard only</div>";
@@ -13760,6 +13859,7 @@ var mainGC = function() {
                 'settings_searchmap_show_hint',
                 'settings_relocate_other_map_buttons',
                 'settings_show_radius_on_flopps',
+                'settings_show_edit_links_for_logs',
             );
 
             for (var i = 0; i < checkboxes.length; i++) {
