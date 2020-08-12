@@ -48,10 +48,6 @@ var start = function(c) {
         .then(function() {return constInit(c);})
         .then(function() {return variablesInit(c);})
         .done(function() {
-            // Im Browser Edge vergehen etwa 200 millisekunden bis <body>, bis auf ein Children, Inhalte hat. Das führte dazu,
-            // dass der GClh bei der Prüfung "if (!$('.li-user-info')[0]) return;" im "mainGC" ausstieg. Bei allen anderen Browsern
-            // hat <body> sofort Inhalte, dort kommt es also nicht zu einer Verzögerung, nur im Browser Edge. Vermutlich handelt es
-            // sich auch hier um ein Problem der aktuellen (Anfang 2020) Änderungen von GS zur Datenschutz Grundverordnung ... .
             function checkBodyContent(waitCount) { // GDPR
                 if ($('body').children().length > 1) { // GDPR
                     if (document.location.href.match(/^https?:\/\/maps\.google\./) || document.location.href.match(/^https?:\/\/www\.google\.[a-zA-Z.]*\/maps/)) {
@@ -59,7 +55,7 @@ var start = function(c) {
                     } else if (document.location.href.match(/^https?:\/\/www\.openstreetmap\.org/)) {
                         mainOSM();
                     } else if (document.location.href.match(/^https?:\/\/www\.geocaching\.com/)) {
-                        if (is_page('lists') || is_page('searchmap')) {
+                        if (is_page('lists') || is_page('searchmap') || is_page('owner_dashboard') || is_page('promos')) {
                             mainGCAsyn();
                         } else {
                             mainGC();
@@ -1560,7 +1556,7 @@ var mainGC = function() {
     new_width:
     try {
         // Keine Anpassungen.
-        if (is_page('lists') || is_page('searchmap') || is_page("messagecenter") || is_page("settings") || is_page("hide_cache") || is_page("find_cache") || is_page("geotours") || is_page("map") || is_page("dashboard-section") || is_page("track")) break new_width;
+        if (is_page('lists') || is_page('searchmap') || is_page("messagecenter") || is_page("settings") || is_page("hide_cache") || is_page("find_cache") || is_page("geotours") || is_page("map") || is_page("dashboard-section") || is_page("track") || is_page("promos")) break new_width;
 
         if (getValue("settings_new_width") > 0) {
             var new_width = parseInt(getValue("settings_new_width"));
@@ -15607,6 +15603,12 @@ function is_page(name) {
             break;
         case "dashboard-section":
             if (url.match(/^\/account\/dashboard/)) status = true;
+            break;
+        case "owner_dashboard":
+            if (url.match(/^\/play\/owner/)) status = true;
+            break;
+        case "promos": // Like 'Wonders of the World'.
+            if (url.match(/^\/promos/)) status = true;
             break;
         case "track":
             if (url.match(/^\/track\/($|#$|edit|upload)/)) status = true;
