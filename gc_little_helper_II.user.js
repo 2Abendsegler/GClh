@@ -3504,7 +3504,9 @@ var mainGC = function() {
                     css += '#gclh_smilies {display: block; margin: -55px -5px 5px 0;}';
                     css += '#gclh_log_tpls {width: 180px; border: 1px solid #9b9b9b; box-shadow: none; height: 40px; padding-top: 5px;}';
                     css += 'select:hover, select:focus, select:active {background-image: url(/play/app/ui-icons/icons/global/caret-down-hover.svg);}';
-                    css += '.flatpickr-wrapper {margin-bottom: unset !important; float: unset !important; right;top: -7px; left: 275px;}';
+                    css += '.flatpickr-wrapper {margin-bottom: unset !important; float: unset !important; right;top: -7px; left: 245px;}';
+                    css += '.flatpickr-wrapper .flatpickr-input {padding-top: 0px;}';
+                    css += '.flatpickr-wrapper .icon {top: 22px !important;}';
                     css += '.flatpickr-calendar.arrowTop::before, .flatpickr-calendar.arrowTop::after {margin-left: 55px;}';
                     appendCssStyle(css);
                 } else {waitCount++; if (waitCount <= 100) setTimeout(function(){buildSmiliesAndLogtemplates(waitCount, box);}, 100);} // GDPR
@@ -8316,7 +8318,7 @@ var mainGC = function() {
                 new_gc_code = document.querySelector('.cache-preview-header .cache-metadata .cache-metadata-code').innerHTML;
 
                 if(sidebar_enhancements_buffer[new_gc_code]){
-                    // We already have the code in our buffer, no need to reload everything.
+                    // We already have the ode in our buffer, no need to reload everything.
                     insertAfter(sidebar_enhancements_buffer[new_gc_code], (document.getElementsByClassName("geocache-owner")[0] || document.getElementsByClassName("gclhOwner")[0]));
                     if ($('.favorites-text')[0] && sidebar_enhancements_favi_buffer[new_gc_code]){
                         $('.favorites-text')[0].innerHTML = $('.favorites-text')[0].innerHTML + sidebar_enhancements_favi_buffer[new_gc_code];
@@ -8432,20 +8434,7 @@ var mainGC = function() {
                     if(premium_only){
                         new_text += ' <span class="premium_only" title="Premium Only Cache"><img src="/images/icons/16/premium_only.png" alt="Premium Only Cache" /></span> | ';
                     }
-                    new_text += '<span class="tackables" title="Number of trackables"><svg class="icon-sm"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="/account/app/ui-icons/sprites/global.svg#icon-travelbug-default"></use></svg> ' + trachables + '</span>';
-
-                    // Get link to image gallery and image count.
-                    var a = $(text).find('.CacheDetailNavigation ul li').first().find('a[href*="/seek/gallery.aspx?guid="]');
-                    if (a) {
-                        var galleryLink = a[0].href;
-                        var imgCount = a[0].nextSibling.data.match(/(\s*)\((\d+)\)/);
-                        if (galleryLink && imgCount && imgCount[2]) {
-                            if (imgCount[2] == "0") new_text += ' | <span title="No Image Gallery"><a>';
-                            else new_text += ' | <span title="View Image Gallery"><a class="gclh_link" href="' + galleryLink + '">';
-                            new_text += '<img src="/images/icons/16/photo_gallery.png"> ' + imgCount[2] + '</a></span>';
-                        }
-                    }
-                    new_text += '<br>';
+                    new_text += '<span class="tackables" title="Number of trackables"><svg class="icon-sm"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="/account/app/ui-icons/sprites/global.svg#icon-travelbug-default"></use></svg> ' + trachables + '</span><br>';
 
                     // Get coordinates.
                     var coords = $(text).find('#uxLatLon')[0].innerHTML;
@@ -8763,9 +8752,6 @@ var mainGC = function() {
             css += '#searchmap_sidebar_enhancements img {vertical-align: middle;}';
             css += '#searchmap_sidebar_enhancements svg {vertical-align: middle;}';
             css += '#searchmap_sidebar_enhancements .ctoc_link img {height: 14px;}';
-            css += '#searchmap_sidebar_enhancements .gclh_link:hover {color: #02874d;}';
-            css += '#searchmap_sidebar_enhancements a {color: #4a4a4a; text-decoration: none;}';
-            css += '#searchmap_sidebar_enhancements img {vertical-align: bottom; height: 14px;}';
             if (css != "") appendCssStyle(css);
         } catch(e) {gclh_error("Improve search map",e);}
     }
@@ -9398,20 +9384,7 @@ var mainGC = function() {
                             if(premium_only){
                                 new_text += ' <span class="premium_only" title="Premium Only Cache"><img src="/images/icons/16/premium_only.png" width="16" height="16" alt="Premium Only Cache" /></span> | ';
                             }
-                            new_text += '<span class="tackables" title="Number of trackables"><svg height="16" width="16" class="icon-sm"><use xmlns:xlink="https://www.w3.org/1999/xlink" xlink:href="/account/app/ui-icons/sprites/global.svg#icon-travelbug-default"></use></svg> ' + trachables + '</span>';
-
-                            // Get link to image gallery and image count.
-                            var a = $(text).find('.CacheDetailNavigation ul li').first().find('a[href*="/seek/gallery.aspx?guid="]');
-                            if (a) {
-                                var galleryLink = a[0].href;
-                                var imgCount = a[0].nextSibling.data.match(/(\s*)\((\d+)\)/);
-                                if (galleryLink && imgCount && imgCount[2]) {
-                                    if (imgCount[2] == "0") new_text += ' | <span title="No Image Gallery"><a style="color: #939597; text-decoration: none;">';
-                                    else new_text += ' | <span title="View Image Gallery"><a href="' + galleryLink + '">';
-                                    new_text += '<img src="/images/icons/16/photo_gallery.png" style="height: 14px; vertical-align: text-bottom;">' + imgCount[2] + '</a></span>';
-                                }
-                            }
-                            new_text += '<br>';
+                            new_text += '<span class="tackables" title="Number of trackables"><svg height="16" width="16" class="icon-sm"><use xmlns:xlink="https://www.w3.org/1999/xlink" xlink:href="/account/app/ui-icons/sprites/global.svg#icon-travelbug-default"></use></svg> ' + trachables + '</span><br>';
 
                             // Get coordinates.
                             var coords = $(text).find('#uxLatLon')[0].innerHTML;
