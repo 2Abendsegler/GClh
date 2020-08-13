@@ -6119,6 +6119,23 @@ var mainGC = function() {
                     }
                     users_found = new Array();
 
+                    // Nach Klick auf ein Log Icon im VIP Bereich, zum Log gehen.
+                    function gotoLogid(icon, logid, waitCount) {
+                        if ($('#'+logid)[0]) {
+                            document.location.href = clearUrlAppendix(document.location.href, false) + logid;
+                            window.scrollBy(0, -30);
+                            $(icon).attr('style', 'cursor: pointer;');
+                        } else {
+                            if (waitCount == 0) {
+                                $(icon).attr('style', 'cursor: progress;');
+                                $('#gclh_load_all_logs')[0].click();
+                            } else if (waitCount == 100) {
+                                $(icon).attr('style', 'cursor: pointer;');
+                            }
+                            waitCount++; if (waitCount <= 100) setTimeout(function(){gotoLogid(icon, logid, waitCount);}, 100);
+                        }
+                    }
+
                     function gclh_build_long_list() {
                         if (getValue("settings_load_logs_with_gclh") == false) return;
                         for (var i = 0; i < log_infos_long.length; i++) {
@@ -6143,10 +6160,11 @@ var mainGC = function() {
                                 log_text.innerHTML = "<img src='" + log_infos_long[i]["icon"] + "'> <b>" + user + " - " + log_infos_long[i]["date"] + "</b><br>" + log_infos_long[i]["log"];
                                 var log_img = document.createElement("img");
                                 var log_link = document.createElement("a");
-                                log_link.setAttribute("href", "#" + log_infos_long[i]["id"]);
+                                log_link.setAttribute("href", "javascript:void(0);");
+                                log_link.setAttribute("logid", log_infos_long[i]["id"]);
                                 log_link.className = "gclh_log";
                                 log_link.addEventListener("click", function() {
-                                    $('#gclh_load_all_logs')[0].click();
+                                    gotoLogid(this, $(this).attr('logid'), 0);
                                 }, false);
                                 log_img.setAttribute("src", log_infos_long[i]["icon"]);
                                 log_img.setAttribute("border", "0");
@@ -6204,10 +6222,11 @@ var mainGC = function() {
                                         image.setAttribute("alt", log_infos[user][x]["date"]);
                                     }
                                     var a = document.createElement("a");
-                                    a.setAttribute("href", "#" + log_infos[user][x]["id"]);
+                                    a.setAttribute("href", "javascript:void(0);");
+                                    a.setAttribute("logid", log_infos[user][x]["id"]);
                                     a.className = "gclh_log";
                                     a.addEventListener("click", function() {
-                                        $('#gclh_load_all_logs')[0].click();
+                                        gotoLogid(this, $(this).attr('logid'), 0);
                                     }, false);
                                     a.appendChild(image);
                                     a.appendChild(log_text);
@@ -6218,7 +6237,6 @@ var mainGC = function() {
                             list.appendChild(document.createElement("br"));
                         }
                     }
-
 
                     var reviewer = new Array();
                     owner_name = html_to_str(owner_name);
