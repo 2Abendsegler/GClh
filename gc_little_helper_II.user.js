@@ -2021,31 +2021,40 @@ var mainGC = function() {
     if (settings_show_fav_percentage && is_page("cache_listing") && $('#uxFavContainerLink')[0]) {
         try {
             function gclh_load_score(waitCount) {
-                if ($('.favorite-container')[0] && $('.favorite-score')[0].innerHTML.match("%") && $('.favorite-dropdown')[0]) {
-                    if (typeof unsafeWindow.showFavoriteScore !== "undefined") { // GDPR
-                        unsafeWindow.showFavoriteScore();
-                        var fav = $('.favorite-container')[0];
-                        var score = $('.favorite-score')[0].innerHTML.match(/(.*%)\.*/);
-                        if (score && score[1]) {
-                            // Eigener Favoritenpunkt. Class hideMe -> kein Favoritenpunkt. Keine class hideMe -> Favoritenpunkt.
-                            var myfav = $('#pnlFavoriteCache')[0];
-                            var myfavHTML = "";
-                            if (myfav) {
-                                if (myfav.className.match("hideMe")) myfavHTML = '&nbsp;<img src="/images/icons/reg_user.gif" />';
-                                else myfavHTML = '&nbsp;<img src="/images/icons/prem_user.gif" />';
-                            }
-                            fav.getElementsByTagName('span')[0].nextSibling.remove();
-                            fav.innerHTML += score[1] + myfavHTML;
-                            var dd = $('.favorite-dropdown')[0];
-                            dd.style.borderTop = "1px solid #f0edeb";
-                            dd.style.borderTopLeftRadius = "5px";
-                            dd.style.minWidth = "190px";
-                        }
-                    } else {waitCount++; if (waitCount <= 100) setTimeout(function(){gclh_load_score(waitCount);}, 100);} // GDPR
-                } else {waitCount++; if (waitCount <= 300) setTimeout(function(){gclh_load_score(waitCount);}, 1000);} // 5 Min
+                if ($('.favorite-container')[0] && $('.favorite-dropdown')[0]) {
+                    var fav = $('.favorite-container')[0];
+                    // Eigener Favoritenpunkt. Class hideMe -> kein Favoritenpunkt. Keine class hideMe -> Favoritenpunkt.
+                    var myfav = $('#pnlFavoriteCache')[0];
+                    var myfavHTML = "";
+                    if (myfav) {
+                        if (myfav.className.match("hideMe")) myfavHTML = '&nbsp;<img src="/images/icons/reg_user.gif" />';
+                        else myfavHTML = '&nbsp;<img src="/images/icons/prem_user.gif" />';
+                    }
+                    fav.getElementsByTagName('span')[0].nextSibling.remove();
+                    fav.innerHTML += myfavHTML;
+                    var dd = $('.favorite-dropdown')[0];
+                    dd.style.borderTop = "1px solid #f0edeb";
+                    dd.style.borderTopLeftRadius = "5px";
+                    dd.style.minWidth = "190px";
+                    getFavoriteScore(userToken);
+                } else {waitCount++; if (waitCount <= 100) setTimeout(function(){gclh_load_score(waitCount);}, 100);}
             }
             gclh_load_score(0);
         } catch(e) {gclh_error("Show favorite percentage",e);}
+    }
+    // Get favorite score.
+    function getFavoriteScore(userToken) {
+       $.ajax({
+           type: "POST",
+           cache: false,
+           url: '/datastore/favorites.svc/score?u=' + userToken,
+           success: function (scoreResult) {
+               var score = 0;
+               if (scoreResult) score = scoreResult;
+               if (score > 100) score = 100;
+               if ($('.favorite-value')[0]) $('.favorite-value').after('<span class="gclh_favorite-score">'+score+"%"+'</span>');
+           }
+       });
     }
 
 // Highlight usercoords.
@@ -2404,11 +2413,7 @@ var mainGC = function() {
                     el.value = el.value.replace(/#Size#/ig, $('#ctl00_ContentBody_size .minorCacheDetails small')[0].innerHTML.replace('(','').replace(')',''));
                     el.value = el.value.replace(/#Owner#/ig, get_real_owner().replace(/'/g,"\\'"));
                     el.value = el.value.replace(/#Favo#/ig, (($('#uxFavContainerLink')[0] && $('#uxFavContainerLink .favorite-value')[0]) ? $('#uxFavContainerLink .favorite-value')[0].innerHTML.replace(/(\s*)/g,'') : ''));
-                    var favoPerc = '0%';
-                    if ($('.favorite-dropdown')[0] && $('.favorite-dropdown .favorite-score')[0].innerHTML && !$('.favorite-dropdown .favorite-score')[0].innerHTML.match(/&lt;/) && $('.favorite-dropdown .favorite-score')[0].innerHTML.match(/(\d+)/)) {
-                        favoPerc = $('.favorite-dropdown .favorite-score')[0].innerHTML.match(/(\d+)/)[1] + '%';
-                    }
-                    el.value = el.value.replace(/#FavoPerc#/ig, favoPerc);
+                    el.value = el.value.replace(/#FavoPerc#/ig, $('.gclh_favorite-score')[0].innerHTML);
                     el.value = el.value.replace(/#Hints#/ig, (($('#div_hint')[0] && $('#div_hint')[0].innerHTML) ? $('#div_hint')[0].innerHTML.replace(/^(\s*)/,'').replace(/<br>/g,'\n') : ''));
                     var g_note = '';
                     if ($('#viewCacheNote')[0] && $('#viewCacheNote')[0].innerHTML && $('#editCacheNote')[0] && $('#editCacheNote textarea')[0] && $('#editCacheNote textarea').attr('placeholder') && $('#viewCacheNote')[0].innerHTML != $('#editCacheNote textarea').attr('placeholder') && $('#viewCacheNote')[0].innerHTML != null && $('#viewCacheNote')[0].innerHTML != '') {
