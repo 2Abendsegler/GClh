@@ -5708,7 +5708,7 @@ var mainGC = function() {
             var template = "";
             template = '';
             template += '<span class="draft-icon">';
-            template += '    <a href="https://coords.info/{{geocache.referenceCode}}">';
+            template += '    <a href="https://coord.info/{{geocache.referenceCode}}">';
             template += '       <div class="gclh-draft-graphics">';
             template += '           <svg class="gclh-draft-icon">';
             template += '               <use xlink:href="/account/app/ui-icons/sprites/cache-types.svg#icon-{{geocache.geocacheType.id}}{{#if disabled}}-disabled{{/if}}"></use>';
@@ -5743,7 +5743,7 @@ var mainGC = function() {
             template += '   </a>';
             template += '</div>';
             template += '<div class="draft-actions">';
-            template += '    <button type="button" class="btn-icon" title="Open Listing" onclick="window.open(\'https://coords.info/{{geocache.referenceCode}}\');" style="padding-right:6px;">';
+            template += '    <button type="button" class="btn-icon" title="Open Listing" onclick="window.open(\'https://coord.info/{{geocache.referenceCode}}\');" style="padding-right:6px;">';
             template += '        <svg class="xicon" height="22" width="22" style="transform: rotate(135deg); ">';
             template += '            <use xlink:href="/account/app/ui-icons/sprites/global.svg#icon-back-svg-fill"></use>';
             template += '        </svg>';
