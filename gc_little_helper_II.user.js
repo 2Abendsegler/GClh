@@ -7936,9 +7936,7 @@ var mainGC = function() {
             }
 
             function processAllCODashboard() {
-                console.log('processAllCODashboard')
                 if (document.location.pathname.match(/play\/owner/)) { // This has to be run last, if features are add to the other CO Dashboard Pages
-                    console.log('processAllCODashboard')
                     waitForCacheTypes(0);
                 }
             }
@@ -7947,7 +7945,6 @@ var mainGC = function() {
             function buildObserverBodyCODashboard() {
                 var observerBodyCODashboard = new MutationObserver(function(mutations) {
                     mutations.forEach(function(mutation) {
-                        console.log('mutation')
                         processAllCODashboard();
                     });
                 });
