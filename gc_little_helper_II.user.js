@@ -7902,7 +7902,7 @@ var mainGC = function() {
         try {
             // Functions for CO Dashboard Main Page.
             // Set a link to the cachetypes.
-            function waitForCacheTypes(waitCount) {
+            function setLinkToCacheTypes(waitCount) {
                 if ($('.gclh_cacheTypeLinks')[0]) return; // Returns if the links have already been created.
 
                 if ($('.owned-geocache-types')[0]) {
@@ -7932,12 +7932,12 @@ var mainGC = function() {
                         html += this.innerHTML + '</a>';
                         $(this).html(html);
                     });
-                } else {waitCount++; if (waitCount <= 1000) setTimeout(function(){waitForCacheTypes(waitCount);}, 100);}
+                } else {waitCount++; if (waitCount <= 1000) setTimeout(function(){setLinkToCacheTypes(waitCount);}, 100);}
             }
 
             function processAllCODashboard() {
                 if (document.location.pathname.match(/play\/owner/)) { // This has to be run last, if features are add to the other CO Dashboard Pages
-                    waitForCacheTypes(0);
+                    setLinkToCacheTypes(0);
                 }
             }
 
