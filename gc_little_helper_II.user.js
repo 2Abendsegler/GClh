@@ -573,9 +573,6 @@ var variablesInit = function(c) {
     c.settings_show_compact_logbook_but = getValue("settings_show_compact_logbook_but", true);
     c.settings_log_status_icon_visible = getValue("settings_log_status_icon_visible", true);
     c.settings_cache_type_icon_visible = getValue("settings_cache_type_icon_visible", true);
-    c.settings_compactLayout_unpublishedList = getValue("settings_compactLayout_unpublishedList", true);
-    c.settings_set_compactLayoutUnpublishedHides_sort = getValue("settings_set_compactLayoutUnpublishedHides_sort", true);
-    c.settings_compactLayoutUnpublishedHides_sort = getValue("settings_compactLayoutUnpublishedHides_sort", "abc");
     c.settings_showUnpublishedHides = getValue("settings_showUnpublishedHides", true);
     c.settings_set_showUnpublishedHides_sort = getValue("settings_set_showUnpublishedHides_sort", true);
     c.settings_showUnpublishedHides_sort = getValue("settings_showUnpublishedHides_sort", "abc");
@@ -7749,19 +7746,12 @@ var mainGC = function() {
                 } else {waitCount++; if (waitCount <= 100) setTimeout(function(){showHideNearbyEvents(waitCount);}, 100);}
             }
             showHideNearbyEvents(0);
-            appendCssStyle(css);
-        } catch(e) {gclh_error("Improve new dashboard",e);}
-    }
-
-// Show unpublished hides in dashboard.
-    if (is_page('dashboard') && settings_showUnpublishedHides) {
-        try {
-            $.get('https://www.geocaching.com/account/dashboard/unpublishedcaches', null, function(text) {
-                // Look for unpublished Caches.
-                var unpublished_list = $(text).find('#UnpublishedCaches li');
-                if (unpublished_list != null) {
-                    if(unpublished_list.length > 0){
-                        // We found unpublished.
+            // Show unpublished hides.
+            if (settings_showUnpublishedHides) {
+                getAsynData('https://www.geocaching.com/play/owner/unpublished', '.geocache-details', function(response) {
+                    var caches = $(response).find('.meta-data-display');
+                    getAsynData('https://www.geocaching.com/play/owner/unpublished/events', '.geocache-details', function(response) {
+                        var events = $(response).find('.meta-data-display');
                         var unpublishedCachesPanel = '<div id="GClh_unpublishedCaches" class="panel collapsible">';
                         unpublishedCachesPanel += '    <div class="panel-header isActive">';
                         unpublishedCachesPanel += '        <h1 class="h5 no-margin">Unpublished Hides</h1>';
@@ -7770,23 +7760,97 @@ var mainGC = function() {
                         unpublishedCachesPanel += '         </svg>';
                         unpublishedCachesPanel += '    </div>';
                         unpublishedCachesPanel += '    <div class="panel-body activity-feed">';
-                        unpublishedCachesPanel += '        <div class="activity-block-header">';
-                        unpublishedCachesPanel += '            <h2 class="activity-date no-margin">';
-                        unpublishedCachesPanel += '                <a id="loadStatus" href="javascript:void(0)">Load Status</a>';
-                        unpublishedCachesPanel += '            </h2>';
-                        unpublishedCachesPanel += '        </div>';
                         function showUnpublishedList() {
                             if (settings_set_showUnpublishedHides_sort) {
                                 switch (settings_showUnpublishedHides_sort) {
-                                    case 'abc': unpublished_list.sort(abc); break;
-                                    case 'gcNew': unpublished_list.sort(gcNew); break;
-                                    case 'gcOld': unpublished_list.sort(gcOld); break;
+                                    case 'abc': caches.sort(abc); break;
+                                    case 'gcNew': caches.sort(gcNew); break;
+                                    case 'gcOld': caches.sort(gcOld); break;
                                     default: gclh_error("Show unpublished hides in dashboard", 'Cannot sort caches');
                                 }
                             }
-                            var html = '<ul class="list">';
-                            for (let i=0; i<unpublished_list.length; i++) {
-                                html += '<li class="activity-item">' + unpublished_list[i].innerHTML + '</li>';
+                            var html = '<ul class="list" style="padding:0;margin:0;">';
+                            var typelist = {
+                                '#traditional' : 2,
+                                '#multi'       : 3,
+                                '#mystery'     : 8,
+                                '#earth'       : 137,
+                                '#letterbox'   : 5,
+                                '#wherigo'     : 1858,
+                                '#virtual'     : 4,
+                                '#cito'        : 13,
+                                '#event'       : 6,
+                                '#celebration' : 3653
+                            }
+                            for (let i=0; i<caches.length; i++) {
+                                let name = $(caches[i]).find('.geocache-name div a').html().trim();
+                                let type = typelist[$(caches[i]).find('.geocache-icon svg use').attr('xlink:href')];
+                                let details = $(caches[i]).find('.geocache-details').html().trim().split(' ');
+                                let gccode = details[0].split('<')[0];
+                                let d = details[1].split('</svg>')[1];
+                                let t = details[2].split('|')[1];
+                                let size = details[5].split('>')[1];
+                                html += '<li class="activity-item activity-item-head">';
+                                html += '    <div class="activity-type-icon">';
+                                html += '            <svg class="status-icon" role="img" height="22" width="22">';
+                                html += '                    <use xlink:href="/account/app/ui-icons/sprites/cache-types.svg#icon-owned"></use>';
+                                html += '            </svg>';
+                                html += '        <svg class="icon" height="40" width="40" role="img">';
+                                html += '            <use xlink:href="/account/app/ui-icons/sprites/cache-types.svg#icon-' + type + '"></use>';
+                                html += '        </svg>';
+                                html += '    </div>';
+                                html += '    <div class="activity-data">';
+                                html += '        <div class="activity-details"><a href="https://coord.info/' + gccode + '"><h3 class="activity-header">' + name + '</h3></a>';
+                                html += '            <dl class="activity-meta">';
+                                html += '                <dt title="Difficulty">';
+                                html += '                    <svg height="16" width="16" role="img">';
+                                html += '                        <use xlink:href="/account/app/ui-icons/sprites/search.svg#icon-difficulty-currentcolor"></use>';
+                                html += '                    </svg>';
+                                html += '                </dt>';
+                                html += '                <dd title="Difficulty">' + d + '</dd>';
+                                html += '                <dt title="Terrain">';
+                                html += '                    <svg height="16" width="16" role="img">';
+                                html += '                        <use xlink:href="/account/app/ui-icons/sprites/search.svg#icon-terrain-currentcolor"></use>';
+                                html += '                    </svg>';
+                                html += '                </dt>';
+                                html += '                <dd title="Terrain">' + t + '</dd>';
+                                html += '                <dt title="Size">';
+                                html += '                    <svg height="16" width="16" role="img">';
+                                html += '                        <use xlink:href="/account/app/ui-icons/sprites/search.svg#icon-size-currentcolor"></use>';
+                                html += '                    </svg>';
+                                html += '                </dt>';
+                                html += '                <dd title="Size">' + size + '</dd>';
+                                html += '                <dt class="left-separator">';
+                                html += '                    <span class="visuallyhidden">Geocache Code</span>';
+                                html += '                </dt>';
+                                html += '                <dd>' + gccode + '</dd>';
+                                html += '            </dl>';
+                                html += '        </div>';
+                                html += '    </div>';
+                                html += '</li>';
+                            }
+                            for (let i=0; i<events.length; i++) {
+                                let name = $(events[i]).find('.geocache-name div a').html().trim();
+                                let type = typelist[$(events[i]).find('.geocache-icon svg use').attr('xlink:href')];
+                                let details = $(events[i]).find('.geocache-details').html().trim();
+                                let gccode = details.split('|')[0].trim();
+                                html += '<li class="activity-item activity-item-head">';
+                                html += '    <div class="activity-type-icon">';
+                                html += '            <svg class="status-icon" role="img" height="22" width="22">';
+                                html += '                    <use xlink:href="/account/app/ui-icons/sprites/cache-types.svg#icon-owned"></use>';
+                                html += '            </svg>';
+                                html += '        <svg class="icon" height="40" width="40" role="img">';
+                                html += '            <use xlink:href="/account/app/ui-icons/sprites/cache-types.svg#icon-' + type + '"></use>';
+                                html += '        </svg>';
+                                html += '    </div>';
+                                html += '    <div class="activity-data">';
+                                html += '        <div class="activity-details"><a href="https://coord.info/' + gccode + '"><h3 class="activity-header">' + name + '</h3></a>';
+                                html += '            <dl class="activity-meta">';
+                                html += '                ' + details;
+                                html += '            </dl>';
+                                html += '        </div>';
+                                html += '    </div>';
+                                html += '</li>';
                             }
                             html += '</ul>';
                             html += '</div>';
@@ -7795,6 +7859,7 @@ var mainGC = function() {
                         unpublishedCachesPanel += showUnpublishedList();
                         unpublishedCachesPanel += '</div>';
                         $('.sidebar-right').append(unpublishedCachesPanel);
+
                         if (!getValue('unpublishedCaches_visible', false)) {
                             $('#GClh_unpublishedCaches .panel-header').removeClass('isActive');
                             $('#GClh_unpublishedCaches .panel-body').fadeOut(0);
@@ -7811,90 +7876,11 @@ var mainGC = function() {
                                 setValue('unpublishedCaches_visible', true);
                             }
                         });
-                        $('#loadStatus').bind('click', function () {
-                            $('#loadStatus').parent().parent().remove();
-                            $.find('#GClh_unpublishedCaches li').forEach(function(li) {
-                                var name = li.querySelector('.activity-data a');
-                                var cacheUrl = 'https://www.geocaching.com/geocache/' + name.href.substring(19, 26);
-                                $.get(cacheUrl, null, function(text){
-                                    var html = '<span>';
-                                    switch ($(text).find('#divContentMain div')[0].id) {
-                                        case 'unpublishedMessage': html += '<b>Status:</b> <em>Disabled</em>'; break;
-                                        case 'unpublishedReviewerNoteMessage': html += '<b>Status:</b> <em>Your reviewer has responded</em>'; break;
-                                        case 'unpublishedEnabledMessage': html += '<b>Status:</b> <em>Waiting for review</em>'; break;
-                                        case 'ctl00_ContentBody_lockedMessage': html += '<b>Status:</b> <em>Ready to publish</em>'; break;
-                                        default: gclh_error('Show status for', name.href.substring(19, 26));
-                                    }
-                                    html += '</span>';
-                                    $(li.querySelector('.activity-type-icon')).append(html);
-                                });
-                            });
-                        });
-
-                        var css = '.activity-type-icon {display:flex; align-items:center; justify-content:flex-start;}';
-                            css += '.activity-type-icon span {font-size: .875rem !important;}';
-                            css += '.list {padding: 0;}';
-                            css += '.list p {margin-bottom: 0;}';
-                        appendCssStyle(css);
-                    }
-                }
-            });
-        } catch(e) {gclh_error("Show unpublished hides in dashboard", e);}
-    }
-
-// Sort unpublished caches.
-    if (settings_set_compactLayoutUnpublishedHides_sort && document.location.pathname.match(/^\/account\/dashboard\/unpublishedcaches/)) {
-        try {
-            var unpublishedCaches_ol = document.querySelectorAll('#LayoutFeed ol');
-            // Damit nicht mehrere Listen (deaktiviert / eingereicht) durcheinander gewürfelt werden.
-            for (let index=0; index<unpublishedCaches_ol.length; index++) {
-                var unpublishedCaches_original = unpublishedCaches_ol[index].querySelectorAll('li');
-                var unpublishedCaches_list = new Array();
-                for (let i=0; i<unpublishedCaches_original.length; i++) { //in ein eigenes Array einfügen, damit .sort() funktioniert
-                    unpublishedCaches_list.push(unpublishedCaches_original[i]);
-                }
-                switch (settings_compactLayoutUnpublishedHides_sort) {
-                    case 'abc': unpublishedCaches_list.sort(abc); break;
-                    case 'gcNew': unpublishedCaches_list.sort(gcNew); break;
-                    case 'gcOld': unpublishedCaches_list.sort(gcOld); break;
-                    default: gclh_error("Sort unpublished caches", 'Cannot sort caches');
-                }
-                // Erst alle Listen Elemente entfernen, da .replace() nicht funtioniert.
-                for (let i=0; i<unpublishedCaches_original.length; i++) {
-                    unpublishedCaches_original[i].remove();
-                }
-                for (let i=0; i<unpublishedCaches_original.length; i++) {
-                    document.getElementById('LayoutFeed').getElementsByTagName('ol')[index].appendChild(unpublishedCaches_list[i]);
-                }
+                    }, 'events');
+                }, 'caches');
             }
-        } catch(e) {gclh_error("Sort unpublished caches",e);}
-    }
-
-// Compact Layout für unveröffentlichten Caches.
-    if (settings_compactLayout_unpublishedList && document.location.pathname.match(/^\/account\/dashboard\/unpublishedcaches/)) {
-        try {
-            document.getElementById('LayoutFeed').setAttribute('style', 'max-width:max-content; min-width:600px; width:unset;');
-            if (document.getElementById('UnpublishedCaches')) {
-                var unpublished_caches_list = document.querySelectorAll('#UnpublishedCaches li');
-                for (let i=0; i<unpublished_caches_list.length; i++) {
-                    let li = document.createElement('li');
-                    li.setAttribute('class', 'activity-item');
-                    let icon = unpublished_caches_list[i].getElementsByTagName('div')[0];
-                    let name = unpublished_caches_list[i].getElementsByTagName('a')[0];
-                    name.setAttribute('style', 'font-size: .875rem;');
-                    icon.appendChild(name);
-                    icon.setAttribute('style', 'display:flex; align-items:center; justify-content:flex-start;');
-                    icon.getElementsByTagName('svg')[0].setAttribute('style', 'margin-top:unset;');
-                    li.appendChild(icon);
-                    unpublished_caches_list[i].parentNode.replaceChild(li, unpublished_caches_list[i]);
-                }
-            }else {
-                var h6 = document.createElement('h6');
-                h6.setAttribute('class', 'h6');
-                h6.innerHTML = 'You Have No Unpublished Caches';
-                document.getElementById('LayoutFeed').appendChild(h6);
-            }
-        } catch(e) {gclh_error("Compact layout for unpublished caches",e);}
+            appendCssStyle(css);
+        } catch(e) {gclh_error("Improve new dashboard",e);}
     }
 
 // Show thumbnails.
@@ -12323,15 +12309,6 @@ var mainGC = function() {
             html += newParameterOn3;
             html += checkboxy('settings_modify_new_drafts_page', 'Modify draft items on the new drafts page') + show_help("Change the linkage of each draft. The title of the geocache now links to the geocaching listing and the cache icon, too (2nd line). The pen icon and the preview note links to the log composing page (3rd line). Add the log type as overlay icon onto the cache icon.") + "<br>";
             html += newParameterVersionSetzen(0.9) + newParameterOff;
-            html += newParameterOn1;
-            html += checkboxy('settings_compactLayout_unpublishedList', 'Show compact layout for unpublished caches') + "<br>";
-            html += checkboxy('settings_set_compactLayoutUnpublishedHides_sort', 'Sort unpublished caches') + " ";
-            html += "<select class='gclh_form' id='settings_compactLayoutUnpublishedHides_sort'>";
-            html += "  <option value='abc' " + (settings_compactLayoutUnpublishedHides_sort == 'abc' ? "selected='selected'" : "") + "> Alphabetical</option>";
-            html += "  <option value='gcOld' " + (settings_compactLayoutUnpublishedHides_sort == 'gcOld' ? "selected='selected'" : "") + "> GC-Code (oldest first)</option>";
-            html += "  <option value='gcNew' " + (settings_compactLayoutUnpublishedHides_sort == 'gcNew' ? "selected='selected'" : "") + "> GC-Code (newest first)</option>";
-            html += "</select><br>";
-            html += newParameterVersionSetzen("0.10") + newParameterOff;
             html += "</div>";
 
             html += "<h4 class='gclh_headline2'>"+prepareHideable.replace("#name#","maps")+"Map</h4>";
@@ -13398,7 +13375,6 @@ var mainGC = function() {
             setEvForDepPara("settings_show_openrouteservice_link","settings_show_openrouteservice_medium");
             setEvForDepPara("settings_show_log_counter_but","settings_show_log_counter");
             setEvForDepPara("settings_show_remove_ignoring_link","settings_use_one_click_ignoring");
-            setEvForDepPara("settings_set_compactLayoutUnpublishedHides_sort","settings_compactLayoutUnpublishedHides_sort");
             setEvForDepPara("settings_set_showUnpublishedHides_sort","settings_showUnpublishedHides_sort");
             setEvForDepPara("settings_showUnpublishedHides","settings_set_showUnpublishedHides_sort");
             setEvForDepPara("settings_showUnpublishedHides","settings_showUnpublishedHides_sort");
@@ -13576,7 +13552,6 @@ var mainGC = function() {
             setValue("settings_secondary_elevation_service", document.getElementById('settings_secondary_elevation_service').value);
             setValue("settings_show_latest_logs_symbols_count_map", document.getElementById('settings_show_latest_logs_symbols_count_map').value);
             setValue("settings_show_openrouteservice_medium", document.getElementById('settings_show_openrouteservice_medium').value);
-            setValue("settings_compactLayoutUnpublishedHides_sort", document.getElementById('settings_compactLayoutUnpublishedHides_sort').value);
             setValue("settings_showUnpublishedHides_sort", document.getElementById('settings_showUnpublishedHides_sort').value);
             setValue("settings_lists_disabled_color", document.getElementById('settings_lists_disabled_color').value.replace("#",""));
             setValue("settings_lists_archived_color", document.getElementById('settings_lists_archived_color').value.replace("#",""));
@@ -13818,8 +13793,6 @@ var mainGC = function() {
                 'settings_show_compact_logbook_but',
                 'settings_log_status_icon_visible',
                 'settings_cache_type_icon_visible',
-                'settings_compactLayout_unpublishedList',
-                'settings_set_compactLayoutUnpublishedHides_sort',
                 'settings_showUnpublishedHides',
                 'settings_set_showUnpublishedHides_sort',
                 'settings_lists_compact_layout',
@@ -15060,17 +15033,17 @@ var mainGC = function() {
         if (a < b) ret = -1;
         return ret;
     }
-// Sort functions.
+// Sort functions for unpublished in Dashboard.
     function abc(a, b) {
-        var sort = (a.getElementsByTagName('strong')[0].innerHTML < b.getElementsByTagName('strong')[0].innerHTML) ? -1 : (b.getElementsByTagName('strong')[0].innerHTML < a.getElementsByTagName('strong')[0].innerHTML) ? 1 : 0;
+        var sort = ($(a).find('.geocache-name div a').html().trim() < $(b).find('.geocache-name div a').html().trim()) ? -1 : ($(b).find('.geocache-name div a').html().trim() < $(a).find('.geocache-name div a').html().trim()) ? 1 : 0;
         return sort;
     }
     function gcOld(a, b) {
-        var sort = (a.getElementsByTagName('a')[0].href.substring(19, 26) < b.getElementsByTagName('a')[0].href.substring(19, 26)) ? -1 : (b.getElementsByTagName('a')[0].href.substring(19, 26) < a.getElementsByTagName('a')[0].href.substring(19, 26)) ? 1 : 0;
+        var sort = ($(a).find('.geocache-details').html().trim().split(' ')[0].split('<')[0] < $(b).find('.geocache-details').html().trim().split(' ')[0].split('<')[0]) ? -1 : ($(b).find('.geocache-details').html().trim().split(' ')[0].split('<')[0] < $(a).find('.geocache-details').html().trim().split(' ')[0].split('<')[0]) ? 1 : 0;
         return sort;
     }
     function gcNew(a, b) {
-        var sort = (a.getElementsByTagName('a')[0].href.substring(19, 26) > b.getElementsByTagName('a')[0].href.substring(19, 26)) ? -1 : (b.getElementsByTagName('a')[0].href.substring(19, 26) > a.getElementsByTagName('a')[0].href.substring(19, 26)) ? 1 : 0;
+        var sort = ($(a).find('.geocache-details').html().trim().split(' ')[0].split('<')[0] > $(b).find('.geocache-details').html().trim().split(' ')[0].split('<')[0]) ? -1 : ($(b).find('.geocache-details').html().trim().split(' ')[0].split('<')[0] > $(a).find('.geocache-details').html().trim().split(' ')[0].split('<')[0]) ? 1 : 0;
         return sort;
     }
 
@@ -15490,6 +15463,31 @@ var mainGC = function() {
             }
             counterelement.innerHTML += ' (' + words + ' words)';
         }
+    }
+
+// Get data from asynchron pages.
+    /* url:             requested url.
+     * requiredElement: This element is required for loding. Write it as text e.g. "div#content .loading"
+     * functionDone:    The function after the frame is loaded. e.g. function(response){$(response).doSomethink}
+     * id:              The ID of the iframe is required if more than one asynchronous page are requested.
+     * maxWaitCount:    How often you ask for the content. (optional; default: 100)
+     * waitTime:        How long you will wait in ms. (optional; default: 5000)
+    */
+    function getAsynData(url, requiredElement, functionDone, id='getAsynData', maxWaitCount=100, waitTime=5000) {
+        try {
+            iframe = document.createElement('iframe');
+            iframe.id = id;
+            iframe.src = url;
+            iframe.style = 'display:none;visibility:hidden;width:100%;position:fixed;';
+            document.getElementsByTagName('body')[0].appendChild(iframe);
+            function waitForContent(waitCount) {
+                if ($('#' + id).contents().find(requiredElement)[0]) {
+                    var response = $('#' + id).contents().find('html')[0];
+                    functionDone(response);
+                } else {waitCount++; if (waitCount <= maxWaitCount) setTimeout(function() {waitForContent(waitCount);}, waitTime/maxWaitCount);}
+            }
+            waitForContent(0);
+        }  catch(e) {gclh_error('Get asynchron data',e);}
     }
 
 };  // End of mainGC.
