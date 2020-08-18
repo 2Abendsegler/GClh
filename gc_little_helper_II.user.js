@@ -7935,9 +7935,15 @@ var mainGC = function() {
                 } else {waitCount++; if (waitCount <= 1000) setTimeout(function(){waitForCacheTypes(waitCount);}, 100);}
             }
 
+            // Set link to own Profil.
+            function setLinkToOwnProfil() {
+                $('.username').html('<a href="https://www.geocaching.com/p/default.aspx" title="My Profil">' + $('.username').html() + '</a>');
+            }
+
             function processAllCODashboard() {
                 if (document.location.pathname.match(/play\/owner/)) { // This has to be run last, if features are add to the other CO Dashboard Pages
                     waitForCacheTypes(0);
+                    setLinkToOwnProfil();
                 }
             }
 
@@ -7971,6 +7977,10 @@ var mainGC = function() {
             css += '.owned-geocache-types li a {display:flex; align-items:center; color:#4a4a4a; text-decoration:none; padding:4px 0;}';
             css += '.owned-geocache-types li a:hover, .owned-geocache-total a:hover {font-weight:bold; color:#02874d; text-decoration:underline;}';
             css += '.owned-geocache-total a {display:flex; align-items:center; color:#4a4a4a; text-decoration: none; justify-content:space-between; padding:12px 16px;}';
+
+            // Set link to own Profil.
+            css += '.username a {color:#4a4a4a; text-decoration:none;}';
+            css += '.username a:hover {color:#02874d; text-decoration:underline;}';
 
             appendCssStyle(css);
         } catch(e) {gclh_error("Improve Owner Dashboard",e);}
