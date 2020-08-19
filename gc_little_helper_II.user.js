@@ -9549,9 +9549,10 @@ var mainGC = function() {
 // Leaflet Map für Trackables vergrößern und Zoom per Mausrad zulassen.
     if (document.location.href.match(/\.com\/track\/map/)) {
         try{
-            $('#map_canvas').append('<div class="ui-resizable-handle ui-resizable-s" id="sgrip" style="width: 24px;height: 4px;background-color: transparent;border-top: 1px solid black;border-bottom: 1px solid black;bottom: 0px;left: 98%;transform: rotate(-45deg);"></div>');
-            appendCssStyle('#map_canvas{ height: 450px;} .leaflet-bottom.leaflet-right {margin-right: 20px;}');
-            var scriptText = "map.invalidateSize(); map.scrollWheelZoom.enable(); $('#map_canvas').resizable({handles: {'s': '#sgrip'}, minHeight: 300, maxHeight: 700, stop: function( event, ui ) {map.invalidateSize();}});";
+            $('#map_canvas').append('<div class="ui-resizable-handle ui-resizable-se" id="xgrip" style="position: absolute; width: 32px;height: 5px;background-color: transparent;border-top: 1px solid black;border-bottom: 1px solid black;bottom: 0px;right: -8px;cursor: se-resize;transform: rotate(-45deg); z-index: 1;"></div>');
+            appendCssStyle('#map_canvas {height: 450px;} .leaflet-bottom.leaflet-right {margin-right: 16px;}');
+            $('#map_canvas').resizable({minHeight: 300, maxHeight: 700});
+            var scriptText = "map.invalidateSize(); map.scrollWheelZoom.enable();";
             injectPageScript(scriptText, 'head');
         } catch(e) {gclh_error("tb_map_enhancement",e);}
     }
