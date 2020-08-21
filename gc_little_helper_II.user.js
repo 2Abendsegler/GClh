@@ -1109,54 +1109,72 @@ var mainOSM = function() {
 //////////////////////////
 var mainGCAsyn = function() {
     try {
-        // Get header from other GC page.
-        $.get('https://www.geocaching.com/adopt', null, function(response){
-            var von = response.indexOf('<nav id="ctl00_gcNavigation"');
-            var bis = response.indexOf('<main id="Content"');
-            if (von && bis && von != -1 && bis != -1) {
-                var headerHTML = response.slice(von, bis - 1);
-                headerHTML = headerHTML.replace('<nav ', '<gclh_nav ').replace('</nav>', '</gclh_nav>').replace(/href="\.\./gi, 'href="');
-                // Build header and start mainGC.
-                function buildUpHeaderAndStart(waitCount, html) {
-                    if ($('#gc-header, #GCHeader')[0] && !html == "") {
-                        // Part of core CSS of Groundspeak.
-                        var css = corecss;
-                        // Integrate html for new header.
-                        $('#gc-header, #GCHeader').before(html);
-                        // Make GC header invisible.
-                        $('#gc-header, #GCHeader')[0].style.display = 'none';
-                        // User profile menu bend into shape.
-                        css += '.gclh_open ul.submenu {visibility: visible; display: block;}';
-                        $('#ctl00_uxLoginStatus_divSignedIn button.li-user-toggle')[0].addEventListener('click', function(){
-                            $('#ctl00_uxLoginStatus_divSignedIn li.li-user').toggleClass('gclh_open');
-                        });
-                        // Logout bend into shape.
-                        $('.js-sign-out')[0].addEventListener('click', function(){
-                            GM_xmlhttpRequest({
-                                method: 'POST',
-                                url: 'https://www.geocaching.com/account/logout',
-                                headers: {
-                                    'Content-Type': 'application/x-www-form-urlencoded',
-                                    'Referer': document.location.pathname
-                                },
-                                onload: function(response) {
-                                    window.location.reload(false);
-                                }
-                            });
-                        });
-                        // Special css for searchmap.
-                        if (is_page('searchmap')) {
-                            css += 'gclh_nav .wrapper {z-index: 1005;} gclh_nav li input {height: unset !important;}';
-                            css += '.profile-panel .li-user-toggle svg {height: 13px;}';
+        // Build header and start mainGC.
+        function buildUpHeaderAndStart(waitCount, html) {
+            if ($('#gc-header, #GCHeader')[0] && !html == "") {
+                // Part of core CSS of Groundspeak.
+                var css = corecss;
+                // Integrate html for new header.
+                $('#gc-header, #GCHeader').before(html);
+                // Make GC header invisible.
+                $('#gc-header, #GCHeader')[0].style.display = 'none';
+                // User profile menu bend into shape.
+                css += '.gclh_open ul.submenu {visibility: visible; display: block;}';
+                $('#ctl00_uxLoginStatus_divSignedIn button.li-user-toggle')[0].addEventListener('click', function(){
+                    $('#ctl00_uxLoginStatus_divSignedIn li.li-user').toggleClass('gclh_open');
+                });
+                // Logout bend into shape.
+                $('.js-sign-out')[0].addEventListener('click', function(){
+                    GM_xmlhttpRequest({
+                        method: 'POST',
+                        url: 'https://www.geocaching.com/account/logout',
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded',
+                            'Referer': document.location.pathname
+                        },
+                        onload: function(response) {
+                            window.location.reload(false);
                         }
-                        appendCssStyle(css);
-                        // Start mainGC.
-                        mainGC();
-                    } else {waitCount++; if (waitCount <= 200) setTimeout(function(){buildUpHeaderAndStart(waitCount, html);}, 50);}
+                    });
+                });
+                // Special css for searchmap.
+                if (is_page('searchmap')) {
+                    css += 'gclh_nav .wrapper {z-index: 1005;} gclh_nav li input {height: unset !important;}';
+                    css += '.profile-panel .li-user-toggle svg {height: 13px;}';
                 }
-                buildUpHeaderAndStart(0, headerHTML);
-            }
-        });
+                appendCssStyle(css);
+                // Start mainGC.
+                mainGC();
+            } else {waitCount++; if (waitCount <= 200) setTimeout(function(){buildUpHeaderAndStart(waitCount, html);}, 50);}
+        }
+
+        // Get header replacement from other GC page.
+        function getHeaderReplacement() {
+            $.get('https://www.geocaching.com/adopt', null, function(response){
+                var von = response.indexOf('<nav id="ctl00_gcNavigation"');
+                var bis = response.indexOf('<main id="Content"');
+                if (von && bis && von != -1 && bis != -1) {
+                    var headerRep = {};
+                    headerRep.html = response.slice(von, bis - 1);
+                    headerRep.html = headerRep.html.replace('<nav ', '<gclh_nav ').replace('</nav>', '</gclh_nav>').replace(/href="\.\./gi, 'href="');
+                    var now = new Date();
+                    headerRep.date = new Date(now.getFullYear(), now.getMonth(), now.getDay());
+                    headerRep.date = headerRep.date.getTime();
+                    GM_setValue('headerReplacement', headerRep)
+                    buildUpHeaderAndStart(0, headerRep.html);
+                }
+            });
+        }
+
+        var headerRep = GM_getValue('headerReplacement', {});
+        var now = new Date();
+        var today = new Date(now.getFullYear(), now.getMonth(), now.getDay());
+        today = today.getTime();
+        if (headerRep.date == today) {
+            buildUpHeaderAndStart(0, headerRep.html);
+        } else {
+            getHeaderReplacement();
+        }
     } catch(e) {gclh_error("asynchronGC",e);}
 };
 
