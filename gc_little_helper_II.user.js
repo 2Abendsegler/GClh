@@ -606,7 +606,7 @@ var variablesInit = function(c) {
     c.settings_show_copydata_own_stuff = JSON.parse(getValue("settings_show_copydata_own_stuff", "{}"));
     c.settings_relocate_other_map_buttons = getValue("settings_relocate_other_map_buttons", true);
     c.settings_show_radius_on_flopps = getValue("settings_show_radius_on_flopps", true);
-    c.settings_show_copydata_plus = getValue("settings_show_copydata_plus", true);
+    c.settings_show_copydata_plus = getValue("settings_show_copydata_plus", false);
     c.settings_show_copydata_separator = getValue("settings_show_copydata_separator", "\n");
 
     try {
@@ -2393,11 +2393,11 @@ var mainGC = function() {
         if (settings_show_copydata_plus) {
             html = html.replace(/\{plus0\}/, ' plus');
             html = html.replace(/\{plus1\}/, '');
-            html = html.replace(/\{plus2\}/, '<span title="Reset Clipboard and copy \'' + dataName + '\' to Clipboard">');
-            html = html.replace(/\{plus3\}/, '</span><a title="Add \'' + dataName + '\' to existing Clipboard"><img src="'+plus_icon+'"></a>');
+            html = html.replace(/\{plus2\}/, '<span title="Clear Clipboard and copy \'' + dataName + '\' to Clipboard">');
+            html = html.replace(/\{plus3\}/, '</span><a title="Add \'' + dataName + '\' to Clipboard"><img src="'+plus_icon+'"></a>');
         } else {
             html = html.replace(/\{plus0\}/, '').replace(/\{plus2\}/, '').replace(/\{plus3\}/, '');
-            html = html.replace(/\{plus1\}/, ' title="Reset Clipboard and copy \'' + dataName + '\' to Clipboard"');
+            html = html.replace(/\{plus1\}/, ' title="Clear Clipboard and copy \'' + dataName + '\' to Clipboard"');
         }
         return html;
     }
@@ -2476,15 +2476,18 @@ var mainGC = function() {
             default:
                 el.value = "";
         }
-        var clipboard = document.createElement('textarea');
-        clipboard.value = getValue("clipboard_value", "") + settings_show_copydata_separator;
-        if (plus) clipboard.value += el.value;
-        else clipboard.value = el.value;
-        document.body.appendChild(clipboard);
-        clipboard.select();
+        var cb = document.createElement('textarea');
+        cb.value = GM_getValue('clipboard', '');
+        if (plus && cb.value !== '') {
+            cb.value += settings_show_copydata_separator.replace(/‌/g, "") + el.value;
+        } else {
+            cb.value = el.value;
+        }
+        GM_setValue('clipboard', cb.value);
+        document.body.appendChild(cb);
+        cb.select();
         document.execCommand('copy');
-        document.body.removeChild(clipboard);
-        setValue("clipboard_value", clipboard.value);
+        document.body.removeChild(cb);
         remove_copydata_menu_content();
     }
 
@@ -12704,16 +12707,10 @@ var mainGC = function() {
             html += newParameterVersionSetzen(0.8) + newParameterOff;
             html += newParameterOn1;
             html += checkboxy('settings_show_copydata_menu', 'Show "Copy data to Clipboard" menu in sidebar') + show_help3("Shows a menu to copy various cache data to the clipboard.") + "<br>";
-            var help = "This feature allows you not only to copy something to the clipboard after resetting the clipboard, but also to add "
-                     + "something to the existing clipboard without resetting it. This is how you can collect things on the clipboard.<br><br>"
-                     + "You can use it for example to collect GC codes with the feature \"Add Bulk GC codes\" on the \"My Lists\" page.<br><br>Restrictions:<br>"
-                     + "Please be aware, the GClh does not exchange data between open browser tabs. If data from the first browser tab should "
-                     + "be known in the following bowser tab, the following bowser tab may only be opened after the addition to the clipboard "
-                     + "in the first browser tab was taken.<br>For example, if you want to collect data of more than one cache listing, you have "
-                     + "to open the first cache listing. Then you have to add data from this cache listing to the clipboard. Only then you can "
-                     + "open a following cache listing.<br>You don\'t have to do all this in one single browser tab or in one browser. All you "
-                     + "have to do is make sure that the data has been added to the clipboard before opening a following browser tab.";
-            html += "&nbsp; " + checkboxy('settings_show_copydata_plus', 'Activate adding to existing Clipboard') + show_help_big(help) + "<br>";
+            var help = "This feature allows you not only to copy something to the clipboard after clearing the clipboard, but also to add "
+                     + "something to the clipboard without clearing it. This is how you can collect things on the clipboard.<br><br>"
+                     + "You can use it for example to collect GC codes with the feature \"Add Bulk GC codes\" on the \"My Lists\" page.";
+            html += "&nbsp; " + checkboxy('settings_show_copydata_plus', 'Activate adding to Clipboard') + show_help_big(help) + "<br>";
             html += " &nbsp; &nbsp; &nbsp;" + 'Separator between addings: <textarea cols="5" id="settings_show_copydata_separator" class="gclh_form" style="height: 38px; vertical-align: baseline;">&zwnj;' + getValue("settings_show_copydata_separator", "") + '</textarea>';
             html += "<img src=" + global_restore_icon + " id='restore_settings_show_copydata_separator' title='back to default' style='width: 12px; cursor: pointer;'>";
             html += show_help("Here you can enter a separator to use between the addings. The default value is a line feed.") + '<br>';
@@ -15683,7 +15680,7 @@ function setValueSet(data) {
     return defer.promise();
 }
 function getValue(name, defaultValue) {
-    if (CONFIG[name] === undefined) {  // Zum Migrieren aus alten Speicherformat
+    if (CONFIG[name] === undefined) {
         CONFIG[name] = GM_getValue(name, defaultValue);
         if (defaultValue === undefined) return undefined;
         setValue(name, CONFIG[name]);
