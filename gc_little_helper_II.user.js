@@ -7751,7 +7751,10 @@ var mainGC = function() {
                 getAsynData('https://www.geocaching.com/play/owner/unpublished', '.geocache-details', function(response) {
                     var caches = $(response).find('.meta-data-display');
                     getAsynData('https://www.geocaching.com/play/owner/unpublished/events', '.geocache-details', function(response) {
-                        var events = $(response).find('.meta-data-display');
+                        var events = (($(response).find('.meta-data-display .geocache-icon svg use').attr('xlink:href') == '#event'
+                                    || $(response).find('.meta-data-display .geocache-icon svg use').attr('xlink:href') == '#celebration')
+                                    ? $(response).find('.meta-data-display')
+                                    : {});
                         var unpublishedCachesPanel = '<div id="GClh_unpublishedCaches" class="panel collapsible">';
                         unpublishedCachesPanel += '    <div class="panel-header isActive">';
                         unpublishedCachesPanel += '        <h1 class="h5 no-margin">Unpublished Hides</h1>';
