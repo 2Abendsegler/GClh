@@ -15498,12 +15498,13 @@ var mainGC = function() {
     }
 
 // Get data from asynchron pages.
-    /* url:             requested url.
-     * requiredElement: This element is required for loding. Write it as text e.g. "div#content .loading"
-     * handler:         The function after the frame is loaded. e.g. function(response){$(response).doSomethink}
-     * id:              The ID of the iframe is required if more than one asynchronous page are requested.
-     * maxWaitCount:    How often you ask for the content. (optional; default: 100)
-     * waitTime:        How long you will wait in ms. (optional; default: 5000)
+    /* url:               requested url.
+     * requiredElement:   This element is required for loding. Write it as text e.g. "div#content .loading"
+     * handler:           The function after the frame is loaded. e.g. function(response){$(response).doSomethink}
+     * handlerOnNotFound: The function if the requiredElement not found.
+     * id:                The ID of the iframe is required if more than one asynchronous page are requested.
+     * maxWaitCount:      How often you ask for the content. (optional; default: 100)
+     * waitTime:          How long you will wait in ms. (optional; default: 5000)
     */
     function getAsynData(url, requiredElement, handler, handlerOnNotFound, id='getAsynData', maxWaitCount=100, waitTime=5000) {
         try {
