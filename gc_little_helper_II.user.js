@@ -7746,141 +7746,170 @@ var mainGC = function() {
                 } else {waitCount++; if (waitCount <= 100) setTimeout(function(){showHideNearbyEvents(waitCount);}, 100);}
             }
             showHideNearbyEvents(0);
+
             // Show unpublished hides.
             if (settings_showUnpublishedHides) {
+                var unpublishedCachesPanel = '<div id="GClh_unpublishedCaches" class="panel collapsible">';
+                unpublishedCachesPanel += '    <div class="panel-header isActive">';
+                unpublishedCachesPanel += '        <h1 class="h5 no-margin">Unpublished Hides</h1>';
+                unpublishedCachesPanel += '         <svg height="22" width="22" class="opener">';
+                unpublishedCachesPanel += '            <use xlink:href="/account/app/ui-icons/sprites/global.svg#icon-expand-svg-fill"></use>';
+                unpublishedCachesPanel += '         </svg>';
+                unpublishedCachesPanel += '    </div>';
+                unpublishedCachesPanel += '    <div id="GClh_unpublishedCaches_body" class="panel-body activity-feed" style="min-height: unset;">';
+                unpublishedCachesPanel += '        <div class="loading">';
+                unpublishedCachesPanel += '        </div>';
+                unpublishedCachesPanel += '    </div>';
+                unpublishedCachesPanel += '</div>';
+                $('.sidebar-right').append(unpublishedCachesPanel);
+
+                if (!getValue('unpublishedCaches_visible', false)) {
+                    $('#GClh_unpublishedCaches .panel-header').removeClass('isActive');
+                    $('#GClh_unpublishedCaches .panel-body').fadeOut(0);
+                }
+
+                $('#GClh_unpublishedCaches .panel-header').bind('click', function() {
+                    if (getValue('unpublishedCaches_visible', true)) {
+                        $('#GClh_unpublishedCaches .panel-header').removeClass('isActive');
+                        $('#GClh_unpublishedCaches .panel-body').fadeOut(300);
+                        setValue('unpublishedCaches_visible', false);
+                    }else {
+                        $('#GClh_unpublishedCaches .panel-header').addClass('isActive');
+                        $('#GClh_unpublishedCaches .panel-body').fadeIn(300);
+                        setValue('unpublishedCaches_visible', true);
+                    }
+                });
+
+                // Get the Cache information.
+                var caches = {};
+                var events = {};
                 getAsynData('https://www.geocaching.com/play/owner/unpublished', '.geocache-details', function(response) {
-                    var caches = $(response).find('.meta-data-display');
+                    caches = (($(response).find('.meta-data-display .geocache-icon svg use').attr('xlink:href') != '#event'
+                            && $(response).find('.meta-data-display .geocache-icon svg use').attr('xlink:href') != '#celebration')
+                            ? $(response).find('.meta-data-display')
+                            : {});
+                    loadEvents();
+                }, loadEvents, 'caches');
+                // Get the Events information.
+                function loadEvents() {
                     getAsynData('https://www.geocaching.com/play/owner/unpublished/events', '.geocache-details', function(response) {
-                        var events = (($(response).find('.meta-data-display .geocache-icon svg use').attr('xlink:href') == '#event'
-                                    || $(response).find('.meta-data-display .geocache-icon svg use').attr('xlink:href') == '#celebration')
-                                    ? $(response).find('.meta-data-display')
-                                    : {});
-                        var unpublishedCachesPanel = '<div id="GClh_unpublishedCaches" class="panel collapsible">';
-                        unpublishedCachesPanel += '    <div class="panel-header isActive">';
-                        unpublishedCachesPanel += '        <h1 class="h5 no-margin">Unpublished Hides</h1>';
-                        unpublishedCachesPanel += '         <svg height="22" width="22" class="opener">';
-                        unpublishedCachesPanel += '            <use xlink:href="/account/app/ui-icons/sprites/global.svg#icon-expand-svg-fill"></use>';
-                        unpublishedCachesPanel += '         </svg>';
-                        unpublishedCachesPanel += '    </div>';
-                        unpublishedCachesPanel += '    <div class="panel-body activity-feed">';
-                        function showUnpublishedList() {
-                            if (settings_set_showUnpublishedHides_sort) {
-                                switch (settings_showUnpublishedHides_sort) {
-                                    case 'abc': caches.sort(abc); break;
-                                    case 'gcNew': caches.sort(gcNew); break;
-                                    case 'gcOld': caches.sort(gcOld); break;
-                                    default: gclh_error("Show unpublished hides in dashboard", 'Cannot sort caches');
-                                }
+                        events = (($(response).find('.meta-data-display .geocache-icon svg use').attr('xlink:href') == '#event'
+                                || $(response).find('.meta-data-display .geocache-icon svg use').attr('xlink:href') == '#celebration')
+                                ? $(response).find('.meta-data-display')
+                                : {});
+                        buildList();
+                    }, buildList, 'events');
+                }
+                // Build list with unpublished caches.
+                function buildList() {
+                    // Message und return if no caches are found.
+                    if (!caches.length && !events.length) {
+                        var dnfHtml = '<div class="activity-message">';
+                        dnfHtml += '    <img class="margin-center" src="/account/app/ui-images/premium/GTmap.svg" alt="" aria-hidden="true" width="190" height="100">';
+                        dnfHtml += '    <h3 class="h5 no-margin-bottom">You don\'t have any unpublished caches.</h3>';
+                        dnfHtml += '</div>';
+                        $('#GClh_unpublishedCaches_body').html(dnfHtml);
+                    } else {
+                        // Sort Caches.
+                        if (settings_set_showUnpublishedHides_sort && caches.length > 0) {
+                            switch (settings_showUnpublishedHides_sort) {
+                                case 'abc': caches.sort(abc); break;
+                                case 'gcNew': caches.sort(gcNew); break;
+                                case 'gcOld': caches.sort(gcOld); break;
+                                default: gclh_error("Show unpublished hides in dashboard", 'Cannot sort caches');
                             }
-                            var html = '<ul class="list" style="padding:0;margin:0;">';
-                            var typelist = {
-                                '#traditional' : 2,
-                                '#multi'       : 3,
-                                '#mystery'     : 8,
-                                '#earth'       : 137,
-                                '#letterbox'   : 5,
-                                '#wherigo'     : 1858,
-                                '#virtual'     : 4,
-                                '#cito'        : 13,
-                                '#event'       : 6,
-                                '#celebration' : 3653
-                            }
-                            for (let i=0; i<caches.length; i++) {
-                                let name = $(caches[i]).find('.geocache-name div a').html().trim();
-                                let type = typelist[$(caches[i]).find('.geocache-icon svg use').attr('xlink:href')];
-                                let details = $(caches[i]).find('.geocache-details').html().trim().split(' ');
-                                let gccode = details[0].split('<')[0];
-                                let d = details[1].split('</svg>')[1];
-                                let t = details[2].split('|')[1];
-                                let size = details[5].split('>')[1];
-                                html += '<li class="activity-item activity-item-head">';
-                                html += '    <div class="activity-type-icon">';
-                                html += '            <svg class="status-icon" role="img" height="22" width="22">';
-                                html += '                    <use xlink:href="/account/app/ui-icons/sprites/cache-types.svg#icon-owned"></use>';
-                                html += '            </svg>';
-                                html += '        <svg class="icon" height="40" width="40" role="img">';
-                                html += '            <use xlink:href="/account/app/ui-icons/sprites/cache-types.svg#icon-' + type + '"></use>';
-                                html += '        </svg>';
-                                html += '    </div>';
-                                html += '    <div class="activity-data">';
-                                html += '        <div class="activity-details"><a href="https://coord.info/' + gccode + '"><h3 class="activity-header">' + name + '</h3></a>';
-                                html += '            <dl class="activity-meta">';
-                                html += '                <dt title="Difficulty">';
-                                html += '                    <svg height="16" width="16" role="img">';
-                                html += '                        <use xlink:href="/account/app/ui-icons/sprites/search.svg#icon-difficulty-currentcolor"></use>';
-                                html += '                    </svg>';
-                                html += '                </dt>';
-                                html += '                <dd title="Difficulty">' + d + '</dd>';
-                                html += '                <dt title="Terrain">';
-                                html += '                    <svg height="16" width="16" role="img">';
-                                html += '                        <use xlink:href="/account/app/ui-icons/sprites/search.svg#icon-terrain-currentcolor"></use>';
-                                html += '                    </svg>';
-                                html += '                </dt>';
-                                html += '                <dd title="Terrain">' + t + '</dd>';
-                                html += '                <dt title="Size">';
-                                html += '                    <svg height="16" width="16" role="img">';
-                                html += '                        <use xlink:href="/account/app/ui-icons/sprites/search.svg#icon-size-currentcolor"></use>';
-                                html += '                    </svg>';
-                                html += '                </dt>';
-                                html += '                <dd title="Size">' + size + '</dd>';
-                                html += '                <dt class="left-separator">';
-                                html += '                    <span class="visuallyhidden">Geocache Code</span>';
-                                html += '                </dt>';
-                                html += '                <dd>' + gccode + '</dd>';
-                                html += '            </dl>';
-                                html += '        </div>';
-                                html += '    </div>';
-                                html += '</li>';
-                            }
-                            for (let i=0; i<events.length; i++) {
-                                let name = $(events[i]).find('.geocache-name div a').html().trim();
-                                let type = typelist[$(events[i]).find('.geocache-icon svg use').attr('xlink:href')];
-                                let details = $(events[i]).find('.geocache-details').html().trim();
-                                let gccode = details.split('|')[0].trim();
-                                html += '<li class="activity-item activity-item-head">';
-                                html += '    <div class="activity-type-icon">';
-                                html += '            <svg class="status-icon" role="img" height="22" width="22">';
-                                html += '                    <use xlink:href="/account/app/ui-icons/sprites/cache-types.svg#icon-owned"></use>';
-                                html += '            </svg>';
-                                html += '        <svg class="icon" height="40" width="40" role="img">';
-                                html += '            <use xlink:href="/account/app/ui-icons/sprites/cache-types.svg#icon-' + type + '"></use>';
-                                html += '        </svg>';
-                                html += '    </div>';
-                                html += '    <div class="activity-data">';
-                                html += '        <div class="activity-details"><a href="https://coord.info/' + gccode + '"><h3 class="activity-header">' + name + '</h3></a>';
-                                html += '            <dl class="activity-meta">';
-                                html += '                ' + details;
-                                html += '            </dl>';
-                                html += '        </div>';
-                                html += '    </div>';
-                                html += '</li>';
-                            }
-                            html += '</ul>';
-                            html += '</div>';
-                            return html;
                         }
-                        unpublishedCachesPanel += showUnpublishedList();
-                        unpublishedCachesPanel += '</div>';
-                        $('.sidebar-right').append(unpublishedCachesPanel);
-
-                        if (!getValue('unpublishedCaches_visible', false)) {
-                            $('#GClh_unpublishedCaches .panel-header').removeClass('isActive');
-                            $('#GClh_unpublishedCaches .panel-body').fadeOut(0);
+                        // Build List.
+                        var list = '<ul class="list" style="padding:0;margin:0;">';
+                        var typelist = {
+                            '#traditional' : 2,
+                            '#multi'       : 3,
+                            '#mystery'     : 8,
+                            '#earth'       : 137,
+                            '#letterbox'   : 5,
+                            '#wherigo'     : 1858,
+                            '#virtual'     : 4,
+                            '#cito'        : 13,
+                            '#event'       : 6,
+                            '#celebration' : 3653
                         }
+                        for (let i=0; i<caches.length; i++) {
+                            let name = $(caches[i]).find('.geocache-name div a').html().trim();
+                            let type = typelist[$(caches[i]).find('.geocache-icon svg use').attr('xlink:href')];
+                            let details = $(caches[i]).find('.geocache-details').html().trim().split(' ');
+                            let gccode = details[0].match(/GC[A-Z0-9]{1,10}/)[0];
+                            let d = details[1].split('</svg>')[1];
+                            let t = details[2].split('|')[1];
+                            let size = details[5].split('>')[1];
+                            list += '<li class="activity-item activity-item-head">';
+                            list += '    <div class="activity-type-icon">';
+                            list += '            <svg class="status-icon" role="img" height="22" width="22">';
+                            list += '                    <use xlink:href="/account/app/ui-icons/sprites/cache-types.svg#icon-owned"></use>';
+                            list += '            </svg>';
+                            list += '        <svg class="icon" height="40" width="40" role="img">';
+                            list += '            <use xlink:href="/account/app/ui-icons/sprites/cache-types.svg#icon-' + type + '"></use>';
+                            list += '        </svg>';
+                            list += '    </div>';
+                            list += '    <div class="activity-data">';
+                            list += '        <div class="activity-details"><a href="https://coord.info/' + gccode + '"><h3 class="activity-header">' + name + '</h3></a>';
+                            list += '            <dl class="activity-meta">';
+                            list += '                <dt title="Difficulty">';
+                            list += '                    <svg height="16" width="16" role="img">';
+                            list += '                        <use xlink:href="/account/app/ui-icons/sprites/search.svg#icon-difficulty-currentcolor"></use>';
+                            list += '                    </svg>';
+                            list += '                </dt>';
+                            list += '                <dd title="Difficulty">' + d + '</dd>';
+                            list += '                <dt title="Terrain">';
+                            list += '                    <svg height="16" width="16" role="img">';
+                            list += '                        <use xlink:href="/account/app/ui-icons/sprites/search.svg#icon-terrain-currentcolor"></use>';
+                            list += '                    </svg>';
+                            list += '                </dt>';
+                            list += '                <dd title="Terrain">' + t + '</dd>';
+                            list += '                <dt title="Size">';
+                            list += '                    <svg height="16" width="16" role="img">';
+                            list += '                        <use xlink:href="/account/app/ui-icons/sprites/search.svg#icon-size-currentcolor"></use>';
+                            list += '                    </svg>';
+                            list += '                </dt>';
+                            list += '                <dd title="Size">' + size + '</dd>';
+                            list += '                <dt class="left-separator">';
+                            list += '                    <span class="visuallyhidden">Geocache Code</span>';
+                            list += '                </dt>';
+                            list += '                <dd>' + gccode + '</dd>';
+                            list += '            </dl>';
+                            list += '        </div>';
+                            list += '    </div>';
+                            list += '</li>';
+                        }
+                        for (let i=0; i<events.length; i++) {
+                            let name = $(events[i]).find('.geocache-name div a').html().trim();
+                            let type = typelist[$(events[i]).find('.geocache-icon svg use').attr('xlink:href')];
+                            let details = $(events[i]).find('.geocache-details').html().trim();
+                            let gccode = details.split('|')[0].trim();
+                            list += '<li class="activity-item activity-item-head">';
+                            list += '    <div class="activity-type-icon">';
+                            list += '            <svg class="status-icon" role="img" height="22" width="22">';
+                            list += '                    <use xlink:href="/account/app/ui-icons/sprites/cache-types.svg#icon-owned"></use>';
+                            list += '            </svg>';
+                            list += '        <svg class="icon" height="40" width="40" role="img">';
+                            list += '            <use xlink:href="/account/app/ui-icons/sprites/cache-types.svg#icon-' + type + '"></use>';
+                            list += '        </svg>';
+                            list += '    </div>';
+                            list += '    <div class="activity-data">';
+                            list += '        <div class="activity-details"><a href="https://coord.info/' + gccode + '"><h3 class="activity-header">' + name + '</h3></a>';
+                            list += '            <dl class="activity-meta">';
+                            list += '                ' + details;
+                            list += '            </dl>';
+                            list += '        </div>';
+                            list += '    </div>';
+                            list += '</li>';
+                        }
+                        list += '</ul>';
+                        list += '</div>';
 
-                        $('#GClh_unpublishedCaches .panel-header').bind('click', function() {
-                            if (getValue('unpublishedCaches_visible', true)) {
-                                $('#GClh_unpublishedCaches .panel-header').removeClass('isActive');
-                                $('#GClh_unpublishedCaches .panel-body').fadeOut(300);
-                                setValue('unpublishedCaches_visible', false);
-                            }else {
-                                $('#GClh_unpublishedCaches .panel-header').addClass('isActive');
-                                $('#GClh_unpublishedCaches .panel-body').fadeIn(300);
-                                setValue('unpublishedCaches_visible', true);
-                            }
-                        });
-                    }, 'events');
-                }, 'caches');
+                        // Append List
+                        $('#GClh_unpublishedCaches_body').html(list);
+                    }
+                }
             }
             appendCssStyle(css);
         } catch(e) {gclh_error("Improve new dashboard",e);}
@@ -15471,12 +15500,12 @@ var mainGC = function() {
 // Get data from asynchron pages.
     /* url:             requested url.
      * requiredElement: This element is required for loding. Write it as text e.g. "div#content .loading"
-     * functionDone:    The function after the frame is loaded. e.g. function(response){$(response).doSomethink}
+     * handler:         The function after the frame is loaded. e.g. function(response){$(response).doSomethink}
      * id:              The ID of the iframe is required if more than one asynchronous page are requested.
      * maxWaitCount:    How often you ask for the content. (optional; default: 100)
      * waitTime:        How long you will wait in ms. (optional; default: 5000)
     */
-    function getAsynData(url, requiredElement, functionDone, id='getAsynData', maxWaitCount=100, waitTime=5000) {
+    function getAsynData(url, requiredElement, handler, handlerOnNotFound, id='getAsynData', maxWaitCount=100, waitTime=5000) {
         try {
             iframe = document.createElement('iframe');
             iframe.id = id;
@@ -15486,8 +15515,15 @@ var mainGC = function() {
             function waitForContent(waitCount) {
                 if ($('#' + id).contents().find(requiredElement)[0]) {
                     var response = $('#' + id).contents().find('html')[0];
-                    functionDone(response);
-                } else {waitCount++; if (waitCount <= maxWaitCount) setTimeout(function() {waitForContent(waitCount);}, waitTime/maxWaitCount);}
+                    handler(response);
+                } else {
+                    waitCount++;
+                    if (waitCount <= maxWaitCount) {
+                        setTimeout(function() {waitForContent(waitCount);}, waitTime/maxWaitCount);
+                    } else {
+                        handlerOnNotFound();
+                    }
+                }
             }
             waitForContent(0);
         }  catch(e) {gclh_error('Get asynchron data',e);}
