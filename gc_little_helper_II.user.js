@@ -7153,7 +7153,7 @@ var mainGC = function() {
                     side.appendChild(link);
                 }
 
-                if (!$('.gclh_LogTotals')[0].childNodes[0]) return;
+                if (!$('.gclh_LogTotals')[0] || !$('.gclh_LogTotals')[0].childNodes[0]) return;
                 var legend = $('.gclh_LogTotals')[0].childNodes[0];
                 var new_legend = document.createElement('span');
                 for (var i = 0; i < legend.childNodes.length; i++) {
