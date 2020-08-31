@@ -14771,9 +14771,24 @@ var mainGC = function() {
                 changedData += "delete: " + key + ": " + CONFIG[key] + "\n";
             }
         }
+//--> $$007
+        // Reset data outside of CONFIG.
+        [changed, changedData] = rcNoConfigDataDel('clipboard', changed, changedData);
+        [changed, changedData] = rcNoConfigDataDel('urlLogs', changed, changedData);
+        [changed, changedData] = rcNoConfigDataDel('headerReplacement', changed, changedData);
+//<-- $$007
         document.getElementById('rc_configData').innerText = changedData;
         CONFIG = config_tmp;
         rcConfigUpdate(changed);
+    }
+    function rcNoConfigDataDel(dataName, changed, changedData){
+        var data = GM_getValue(dataName);
+        if (data != undefined && data != false) {
+            changed = true;
+            changedData += "delete: " + dataName + "\n";
+            GM_setValue(dataName, false);
+        }
+        return [changed, changedData];
     }
     function rcConfigUpdate(changed) {
         setTimeout(function(){
