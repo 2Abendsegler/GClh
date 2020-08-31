@@ -8126,7 +8126,7 @@ var mainGC = function() {
                         html += this.innerHTML + '</a>';
                         $(this).html(html);
                     });
-                } else {waitCount++; if (waitCount <= 1000) setTimeout(function(){setLinkToCacheTypes(waitCount);}, 100);}
+                } else {waitCount++; if (waitCount <= 1000) setTimeout(function(){waitForCacheTypes(waitCount);}, 100);}
             }
 
             // Set link to own Profil.
