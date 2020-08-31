@@ -7875,13 +7875,13 @@ var mainGC = function() {
                             onload: function(r) {
                                 var editUrl = r.finalUrl;
                                 if ($(r.response).find('#ctl00_ContentBody_LogBookPanel1_LogDate')[0] && $(r.response).find('#ctl00_ContentBody_LogBookPanel1_LogDate')[0].innerHTML) {
-                                    var timeLog = new Date($(r.response).find('#ctl00_ContentBody_LogBookPanel1_LogDate')[0].innerHTML);
-                                    if (timeLog) timeLog = timeLog.getTime();
+                                    var dateLog = new Date($(r.response).find('#ctl00_ContentBody_LogBookPanel1_LogDate')[0].innerHTML);
+                                    if (dateLog) dateLog = dateLog.getTime();
                                 }
-                                if (editUrl && timeLog) {
+                                if (editUrl && dateLog) {
                                     editUrl += '&edit=true';
                                     var urlLogs = GM_getValue('urlLogs', []);
-                                    urlLogs.push({view: viewUrl, edit: editUrl, time: timeLog});
+                                    urlLogs.push({view: viewUrl, edit: editUrl, date: dateLog});
                                     GM_setValue('urlLogs', urlLogs);
                                 }
                             }
@@ -7896,8 +7896,8 @@ var mainGC = function() {
                 var month = 1000*60*60*24*(31+1);
                 var urlLogsNew = [];
                 for (i=0; i<urlLogs.length; i++) {
-                    if (urlLogs[i].time > (today - month)) {
-                        urlLogsNew.push({view: urlLogs[i].view, edit: urlLogs[i].edit, time: urlLogs[i].time});
+                    if (urlLogs[i].date > (today - month)) {
+                        urlLogsNew.push({view: urlLogs[i].view, edit: urlLogs[i].edit, date: urlLogs[i].date});
                     }
                 }
                 GM_setValue('urlLogs', urlLogsNew);
