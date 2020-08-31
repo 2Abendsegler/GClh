@@ -7875,13 +7875,13 @@ var mainGC = function() {
                             onload: function(r) {
                                 var editUrl = r.finalUrl;
                                 if ($(r.response).find('#ctl00_ContentBody_LogBookPanel1_LogDate')[0] && $(r.response).find('#ctl00_ContentBody_LogBookPanel1_LogDate')[0].innerHTML) {
-                                    var timeLog = new Date($(r.response).find('#ctl00_ContentBody_LogBookPanel1_LogDate')[0].innerHTML);
-                                    if (timeLog) timeLog = timeLog.getTime();
+                                    var dateLog = new Date($(r.response).find('#ctl00_ContentBody_LogBookPanel1_LogDate')[0].innerHTML);
+                                    if (dateLog) dateLog = dateLog.getTime();
                                 }
-                                if (editUrl && timeLog) {
+                                if (editUrl && dateLog) {
                                     editUrl += '&edit=true';
                                     var urlLogs = GM_getValue('urlLogs', []);
-                                    urlLogs.push({view: viewUrl, edit: editUrl, time: timeLog});
+                                    urlLogs.push({view: viewUrl, edit: editUrl, date: dateLog});
                                     GM_setValue('urlLogs', urlLogs);
                                 }
                             }
@@ -7896,8 +7896,8 @@ var mainGC = function() {
                 var month = 1000*60*60*24*(31+1);
                 var urlLogsNew = [];
                 for (i=0; i<urlLogs.length; i++) {
-                    if (urlLogs[i].time > (today - month)) {
-                        urlLogsNew.push({view: urlLogs[i].view, edit: urlLogs[i].edit, time: urlLogs[i].time});
+                    if (urlLogs[i].date > (today - month)) {
+                        urlLogsNew.push({view: urlLogs[i].view, edit: urlLogs[i].edit, date: urlLogs[i].date});
                     }
                 }
                 GM_setValue('urlLogs', urlLogsNew);
@@ -8089,6 +8089,95 @@ var mainGC = function() {
                 document.getElementById('LayoutFeed').appendChild(h6);
             }
         } catch(e) {gclh_error("Compact layout for unpublished caches",e);}
+    }
+
+// Improve Owner Dashboard.
+    if (is_page('owner_dashboard')) {
+        try {
+            // Functions for CO Dashboard Main Page.
+            // Set a link to the cachetypes.
+            function waitForCacheTypes(waitCount) {
+                if ($('.gclh_cacheTypeLinks')[0]) return; // Returns if the links have already been created.
+
+                if ($('.owned-geocache-types')[0]) {
+                    var linkToList = 'https://www.geocaching.com/seek/nearest.aspx?u=' + global_me + '&tx=';
+                    var cacheTypes = {
+                        'Traditional Cache'           : linkToList + '32bc9333-5e52-4957-b0f6-5a2c8fc7b257',
+                        'Multi-Cache'                 : linkToList + 'a5f6d0ad-d2f2-4011-8c14-940a9ebf3c74',
+                        'Mystery Cache'               : linkToList + '40861821-1835-4e11-b666-8d41064d03fe',
+                        'Letterbox Cache'             : linkToList + '4bdd8fb2-d7bc-453f-a9c5-968563b15d24',
+                        'Wherigo Cache'               : linkToList + '0544fa55-772d-4e5c-96a9-36a51ebcf5c9',
+                        'Earth Cache'                 : linkToList + 'c66f5cf3-9523-4549-b8dd-759cd2f18db8',
+                        'Virtual Cache'               : linkToList + '294d4360-ac86-4c83-84dd-8113ef678d7e',
+                        'Webcam Cache'                : linkToList + '31d2ae3c-c358-4b5f-8dcd-2185bf472d3d',
+                        'Event Cache'                 : linkToList + '69eb8534-b718-4b35-ae3c-a856a55b0874',
+                        'CITO Event'                  : linkToList + '57150806-bc1a-42d6-9cf0-538d171a2d22',
+                        'Community Celebration Event' : linkToList + '3ea6533d-bb52-42fe-b2d2-79a3424d4728',
+                        'Lab Cache'                   : 'https://labs.geocaching.com/builder/adventures'
+                    }
+
+                    let html = '<a href="' + linkToList + '" target="_blank" class="gclh_cacheTypeLinks" style="background:#f5f5f5;">';
+                    html += $('.owned-geocache-total').html() + '</a>';
+                    $('.owned-geocache-total').html(html);
+
+                    $('.owned-geocache-types ul li').each(function() {
+                        let ariaLabel = $(this).attr('aria-label');
+                        let html = '<a href="' + cacheTypes[ariaLabel] + '" title="Your ' + ariaLabel + 's" target="_blank">';
+                        html += this.innerHTML + '</a>';
+                        $(this).html(html);
+                    });
+                } else {waitCount++; if (waitCount <= 1000) setTimeout(function(){waitForCacheTypes(waitCount);}, 100);}
+            }
+
+            // Set link to own Profil.
+            function setLinkToOwnProfil() {
+                $('.username').html('<a href="https://www.geocaching.com/p/default.aspx" title="My Profil">' + $('.username').html() + '</a>');
+            }
+
+            function processAllCODashboard() {
+                if (document.location.pathname.match(/play\/owner/)) { // This has to be run last, if features are add to the other CO Dashboard Pages
+                    waitForCacheTypes(0);
+                    setLinkToOwnProfil();
+                }
+            }
+
+            // Build mutation observer.
+            function buildObserverBodyCODashboard() {
+                var observerBodyCODashboard = new MutationObserver(function(mutations) {
+                    mutations.forEach(function(mutation) {
+                        processAllCODashboard();
+                    });
+                });
+                var target = document.querySelector('#app-root div');
+                var config = { attributes: true, childList: true, characterData: true };
+                observerBodyCODashboard.observe(target, config);
+            }
+            // Check if mutation observer can be build.
+            function checkForBuildObserverBodyCODashboard(waitCount) {
+                if ($('#app-root div')[0]) {
+                    if ($('.gclh_buildObserverBodyCODashboard')[0]) return;
+                    $('#app-root div').addClass('gclh_buildObserverBodyCODashboard');
+                   buildObserverBodyCODashboard();
+                } else {waitCount++; if (waitCount <= 200) setTimeout(function(){checkForBuildObserverBodyCODashboard(waitCount);}, 50);}
+            }
+
+            checkForBuildObserverBodyCODashboard(0);
+            processAllCODashboard();
+
+            // CSS for Cache Owner Dashboard.
+            var css = '';
+            // Set a link to the cachetypes.
+            css += '.owned-geocache-types li, .owned-geocache-total {display:unset !important; padding: 0 !important}'
+            css += '.owned-geocache-types li a {display:flex; align-items:center; color:#4a4a4a; text-decoration:none; padding:4px 0;}';
+            css += '.owned-geocache-types li a:hover, .owned-geocache-total a:hover {font-weight:bold; color:#02874d; text-decoration:underline;}';
+            css += '.owned-geocache-total a {display:flex; align-items:center; color:#4a4a4a; text-decoration: none; justify-content:space-between; padding:12px 16px;}';
+
+            // Set link to own Profil.
+            css += '.username a {color:#4a4a4a; text-decoration:none;}';
+            css += '.username a:hover {color:#02874d; text-decoration:underline;}';
+
+            appendCssStyle(css);
+        } catch(e) {gclh_error("Improve Owner Dashboard",e);}
     }
 
 // Show thumbnails.
@@ -14917,20 +15006,20 @@ var mainGC = function() {
         }
 //--> $$007
         // Reset data outside of CONFIG.
-        [changed, changedData] = rcNoConfigDataDel('clipboard', changed, changedData);
-        [changed, changedData] = rcNoConfigDataDel('urlLogs', changed, changedData);
-        [changed, changedData] = rcNoConfigDataDel('headerReplacement', changed, changedData);
+        [changed, changedData] = rcNoConfigDataDel('clipboard', false, changed, changedData);
+        [changed, changedData] = rcNoConfigDataDel('urlLogs', [], changed, changedData);
+        [changed, changedData] = rcNoConfigDataDel('headerReplacement', false, changed, changedData);
 //<-- $$007
         document.getElementById('rc_configData').innerText = changedData;
         CONFIG = config_tmp;
         rcConfigUpdate(changed);
     }
-    function rcNoConfigDataDel(dataName, changed, changedData){
+    function rcNoConfigDataDel(dataName, dataNew, changed, changedData){
         var data = GM_getValue(dataName);
         if (data != undefined && data != false) {
             changed = true;
             changedData += "delete: " + dataName + "\n";
-            GM_setValue(dataName, false);
+            GM_setValue(dataName, dataNew);
         }
         return [changed, changedData];
     }
@@ -15902,6 +15991,9 @@ function is_page(name) {
             break;
         case "dashboard":
             if (url.match(/^\/account\/dashboard$/)) status = true;
+            break;
+        case "owner_dashboard":
+            if (url.match(/^\/play\/owner/)) status = true;
             break;
         case "dashboard-section":
             if (url.match(/^\/account\/dashboard/)) status = true;
