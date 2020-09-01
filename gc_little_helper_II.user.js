@@ -15511,7 +15511,7 @@ var mainGC = function() {
             iframe = document.createElement('iframe');
             iframe.id = id;
             iframe.src = url;
-            iframe.style = 'display:none;visibility:hidden;width:100%;position:fixed;';
+            iframe.style = 'visibility:hidden;width:100%;min-width:605px;position:fixed;';
             document.getElementsByTagName('body')[0].appendChild(iframe);
             function waitForContent(waitCount) {
                 if ($('#' + id).contents().find(requiredElement)[0]) {
