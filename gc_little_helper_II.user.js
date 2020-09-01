@@ -7199,7 +7199,7 @@ var mainGC = function() {
                                         var newBody = unsafeWindow.$(document.createElement("TBODY"));
                                         unsafeWindow.$("#tmpl_CacheLogRow_gclh").tmpl(logs[i]).appendTo(newBody);
                                         unsafeWindow.$(document.getElementById("cache_logs_table2") || document.getElementById("cache_logs_table")).append(newBody.children());
-                                        continue;
+                                        break;
                                     }
                                 }
                             }
@@ -7244,6 +7244,7 @@ var mainGC = function() {
                 form.style.display = "inline";
                 search.setAttribute("type", "text");
                 search.setAttribute("size", "10");
+                search.setAttribute("title", "Use \"|\" for an OR correlation");
                 search.addEventListener("keyup", gclh_search_logs, false);
                 document.getElementById('ctl00_ContentBody_lblFindCounts').childNodes[0].appendChild(document.createTextNode("Search in logtext: "));
                 document.getElementById('ctl00_ContentBody_lblFindCounts').childNodes[0].appendChild(form);
