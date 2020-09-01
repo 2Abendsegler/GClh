@@ -10178,6 +10178,7 @@ var mainGC = function() {
     try {
         // iframe aufbauen und verbergen.
         if (settings_log_inline && is_page("cache_listing") && $('#ctl00_ContentBody_bottomSection')[0] && $('#ctl00_ContentBody_bottomSection')[0].children[0]) {
+            var css = "";
             var links = document.getElementsByTagName('a');
             var menu = false;
             var watch = false;
@@ -10206,16 +10207,12 @@ var mainGC = function() {
                     iframe.setAttribute("height", "600px");
                     iframe.setAttribute("style", "border-top: 1px solid #b0b0b0; border-right: 0px; border-bottom: 1px solid #b0b0b0; border-left: 0px; overflow: auto; display: none;");
                     iframe.setAttribute("src", "/seek/log.aspx?ID=" + match[1] + "&gclh=small");
-                    var a = document.createElement("a");
-                    a.setAttribute("href", "#gclhLogIt");
-                    a.setAttribute("name", "gclhLogIt");
-                    var img = document.createElement("img");
-                    img.setAttribute("src", global_log_it_icon);
-                    img.setAttribute("style", "margin-left: -10px;");
-                    img.setAttribute("border", "0");
-                    a.appendChild(img);
-                    a.addEventListener("click", hide_iframe, false);
-                    head.parentNode.insertBefore(a, head);
+                    css += ".logItButton {background-image: url(/images/stockholm/16x16/comment_add.gif); background-repeat: no-repeat; margin-bottom: 20px;}";
+                    css += ".logItButton:hover {background-color: aliceblue;}";
+                    var span = document.createElement("span");
+                    span.innerHTML = '<input type="button" id="gclhLogIt" class="logItButton" href="javascript:void(0);" title="" value="    Log your visit (inline)">';
+                    span.addEventListener("click", hide_iframe, false);
+                    head.parentNode.insertBefore(span, head);
                     head.parentNode.insertBefore(iframe, head);
                 }
                 var a = document.createElement("a");
@@ -10230,6 +10227,7 @@ var mainGC = function() {
                 if (gallery) link = gallery;
                 else link = watch;
                 if (link) link.parentNode.parentNode.insertBefore(li, link.parentNode);
+                if (css != '') appendCssStyle(css);
             }
         }
         // Im aufgebauten iframe, quasi nicht im Cache Listing. Nur auf old log page Veränderungen vornehmen.
@@ -10238,35 +10236,42 @@ var mainGC = function() {
 // Post log from PMO-Listing as Basic Member (inline).
     try {
         // iframe aufbauen und verbergen.
+        var css = "";
+        if (is_page("cache_listing") && $('.ul__cache-details.unstyled')[0]) {
+            var idParameter = null;
+            if (document.URL.match(/wp=[a-zA-Z0-9]*|guid=[a-zA-Z0-9-]*|id=[0-9]*/)) idParameter = document.URL.match(/wp=[a-zA-Z0-9]*|guid=[a-zA-Z0-9-]*|id=[0-9]*/)[0];
+            if (!idParameter | idParameter == "") idParameter = "wp=" + document.URL.match(/\/geocache\/([^_]*)/)[1];
+            var banner = $('.ul__cache-details.unstyled')[0].parentNode.nextSibling;
+            css += "section header {min-width: unset !important;}";
+            var div = document.createElement("div");
+            div.setAttribute("style", "text-align: center;");
+            div.innerHTML = '<a href="/seek/log.aspx?' + idParameter + '"><img src="/images/stockholm/16x16/add_comment.gif" style="vertical-align: bottom;"> Log your visit</a>';
+            banner.parentNode.insertBefore(div, banner);
+        }
         if (settings_log_inline_pmo4basic && is_page("cache_listing") && $('.ul__cache-details.unstyled')[0]) {
             function hide_iframe() {
                 var frame = document.getElementById('gclhFrame');
                 if (frame.style.display == "") frame.style.display = "none";
                 else frame.style.display = "";
             }
-            var idParameter = null;
-            if (document.URL.match(/wp=[a-zA-Z0-9]*|guid=[a-zA-Z0-9-]*|id=[0-9]*/)) idParameter = document.URL.match(/wp=[a-zA-Z0-9]*|guid=[a-zA-Z0-9-]*|id=[0-9]*/)[0];
-            if (!idParameter | idParameter == "") idParameter = "wp=" + document.URL.match(/\/geocache\/([^_]*)/)[1];
+            css += ".logItButton {background-image: url(/images/stockholm/16x16/comment_add.gif); background-repeat: no-repeat; margin-top: 20px; margin-bottom: 20px;}";
+            css += ".logItButton:hover {background-color: aliceblue;}";
             var iframe = document.createElement("iframe");
             iframe.setAttribute("id", "gclhFrame");
             iframe.setAttribute("width", "100%");
             iframe.setAttribute("height", "600px");
             iframe.setAttribute("style", "margin-bottom: 50px; border-top: 1px solid #b0b0b0; border-right: 0px; border-bottom: 1px solid #b0b0b0; border-left: 0px; overflow: auto; display: none;");
             iframe.setAttribute("src", "/seek/log.aspx?" + idParameter + "&gclh=small");
-            var a = document.createElement("a");
-            a.setAttribute("href", "#gclhLogIt");
-            a.setAttribute("name", "gclhLogIt");
-            a.setAttribute("style", "border-bottom: 0px;");
-            var img = document.createElement("img");
-            img.setAttribute("src", global_log_it_icon);
-            img.setAttribute("style", "margin-left: 350px; margin-top: 40px; margin-bottom: 50px;");
-            img.setAttribute("border", "0");
-            a.appendChild(img);
-            a.addEventListener("click", hide_iframe, false);
-            var banner = $('.ul__cache-details.unstyled')[0].parentNode.nextSibling;
-            banner.parentNode.insertBefore(a, banner);
+            var div = document.createElement("div");
+            div.setAttribute("style", "text-align: center;");
+            var span = document.createElement("span");
+            span.innerHTML = '<input type="button" id="gclhLogIt" class="logItButton" href="javascript:void(0);" value="    Log your visit (inline)">';
+            span.addEventListener("click", hide_iframe, false);
+            div.appendChild(span);
+            banner.parentNode.insertBefore(div, banner);
             banner.parentNode.insertBefore(iframe, banner);
         }
+        if (css != '') appendCssStyle(css);
         // Im aufgebauten iframe, quasi nicht im Cache Listing. Nur auf old log page Veränderungen vornehmen.
         if (document.location.href.match(/\.com\/seek\/log\.aspx\?(.*)\&gclh\=small/)) hideForInlineLogging(true);
     } catch(e) {gclh_error("Post log from PMO-Listing as Basic Member (inline)",e);}
@@ -12837,10 +12842,10 @@ var mainGC = function() {
 
             html += "<h4 class='gclh_headline2'>"+prepareHideable.replace("#name#","listing")+"Listing</h4>";
             html += "<div id='gclh_config_listing' class='gclh_block'>";
-            html += checkboxy('settings_log_inline', 'Log cache from listing (inline)') + show_help("With the inline log you can open a log form inside the listing, without loading a new page.<br><br>If you're using an ad-blocking add-on, such as uBlock, the embedded screen may not be allowed. To turn this off, you have to add \"geocaching.com\" and \"www.geocaching.com\" to the whitelist, or something similar, of your add-on.") + "<br>";
+            html += checkboxy('settings_log_inline', 'Log cache from listing (inline)') + show_help("With the inline log you can open a log form inside the listing, without loading a new page.<br><br>If you're using an ad-blocking add-on, such as uBlock, the embedded screen may not be allowed. To turn this off, you have to add \"www.geocaching.com\/geocache\/GC*\" to the whitelist, or something similar, of your add-on.") + "<br>";
             var content_settings_log_inline_tb = "&nbsp; " + checkboxy('settings_log_inline_tb', 'Show TB list') + "<br>";
             html += content_settings_log_inline_tb;
-            html += checkboxy('settings_log_inline_pmo4basic', 'Log cache from listing for PMO (for basic members)') + show_help("With this option you can select, if inline logs should appear for Premium Member Only (PMO) caches althought you are a basic member.<br><br>If you're using an ad-blocking add-on, such as uBlock, the embedded screen may not be allowed. To turn this off, you have to add \"geocaching.com\" and \"www.geocaching.com\" to the whitelist, or something similar, of your add-on.") + "<br>";
+            html += checkboxy('settings_log_inline_pmo4basic', 'Log cache from listing for PMO (for basic members)') + show_help("With this option you can select, if inline logs should appear for Premium Member Only (PMO) caches althought you are a basic member.<br><br>If you're using an ad-blocking add-on, such as uBlock, the embedded screen may not be allowed. To turn this off, you have to add \"www.geocaching.com\/geocache\/GC*\" to the whitelist, or something similar, of your add-on.") + "<br>";
             html += content_settings_log_inline_tb.replace("settings_log_inline_tb", "settings_log_inline_tbX0");
             html += checkboxy('settings_hide_empty_cache_notes', 'Hide Personal Cache Notes if empty') + show_help("You can hide the Personal Cache Notes if they are empty. There will be a link to show them to add a note.") + prem + "<br>";
             html += checkboxy('settings_hide_cache_notes', 'Hide Personal Cache Notes completely') + show_help("You can hide the Personal Cache Notes completely, if you don't want to use them.") + prem + "<br>";
