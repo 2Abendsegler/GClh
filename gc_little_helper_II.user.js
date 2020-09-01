@@ -1,4 +1,4 @@
-// ==UserScript==
+​// ==UserScript==
 // @name             GC little helper II
 // @namespace        http://www.amshove.net
 //--> $$000
@@ -7183,18 +7183,57 @@ var mainGC = function() {
                     var search_text = this.value;
                     if (!search_text) return false;
                     var regexp = new RegExp("(" + search_text + ")", "i");
+                    var regexpSplitComplete = new RegExp("(<.*?>|" + search_text + ")", "i");
+                    var regexpSplitNotUse = new RegExp("(<.*?>)", "i");
                     $(logsTab).find('tbody').children().remove();
                     for (var i = 0; i < logs.length; i++) {
-                        if (logs[i] && (logs[i].UserName.match(regexp) || logs[i].LogText.match(regexp))) {
+                        if (logs[i] && logs[i].UserName.match(regexp)) {
                             var newBody = unsafeWindow.$(document.createElement("TBODY"));
                             unsafeWindow.$("#tmpl_CacheLogRow_gclh").tmpl(logs[i]).appendTo(newBody);
                             unsafeWindow.$(document.getElementById("cache_logs_table2") || document.getElementById("cache_logs_table")).append(newBody.children());
+                        } else if (logs[i] && logs[i].LogText.match(regexp)) {
+                            var splits = logs[i].LogText.split(regexpSplitComplete);
+                            if (splits && splits.length > 0) {
+                                for (var j = 0; j < splits.length; j++) {
+                                    if (!splits[j].match(regexpSplitNotUse) && splits[j].match(regexp)) {
+                                        var newBody = unsafeWindow.$(document.createElement("TBODY"));
+                                        unsafeWindow.$("#tmpl_CacheLogRow_gclh").tmpl(logs[i]).appendTo(newBody);
+                                        unsafeWindow.$(document.getElementById("cache_logs_table2") || document.getElementById("cache_logs_table")).append(newBody.children());
+                                        continue;
+                                    }
+                                }
+                            }
                         }
                     }
                     unsafeWindow.$('a.tb_images').fancybox({'type': 'image', 'titlePosition': 'inside'});
                     gclh_add_vip_icon();
                     setLinesColorInCacheListing();
                     setMarkerDisableDynamicLogLoad();
+
+                    // Highlight the searchs.
+                    $(logsTab).find('tbody tr.log-row').each(function() {
+                        var oldBackgroundColor = window.getComputedStyle(this).backgroundColor;
+                        if (oldBackgroundColor == 'rgba(0, 0, 0, 0)') oldBackgroundColor = 'white';
+                        $(this).find('.logOwnerProfileName a, .LogContent').each(function() {
+                            var oldColor = window.getComputedStyle(this).color;
+                            if (oldColor == 'rgba(0, 0, 0, 0)') oldColor = 'white';
+                            var splits = $(this)[0].innerHTML.split(regexpSplitComplete);
+                            var html = "";
+                            if (splits && splits.length > 0) {
+                                for (var i = 0; i < splits.length; i++) {
+                                    if (splits[i].match(regexpSplitNotUse)) {
+                                        html += splits[i];
+                                    } else if (splits[i].match(regexpSplitComplete)) {
+                                        html += '<span style="color: ' + oldBackgroundColor+'; background-color: ' + oldColor + ' ;opacity: 0.8;">' + splits[i];
+                                    } else {
+                                        html += '</span>' + splits[i];
+                                    }
+                                }
+                                $(this)[0].innerHTML = html;
+                            }
+                        });
+                    });
+
                     if (document.getElementById("gclh_show_log_counter")) document.getElementById("gclh_show_log_counter").style.visibility = "hidden";
                 }
                 if (!document.getElementById("ctl00_ContentBody_lblFindCounts").childNodes[0]) return false;
