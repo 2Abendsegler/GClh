@@ -7945,8 +7945,6 @@ var mainGC = function() {
                 css += '.gclh_edit-link {margin-top: 12px; margin-right: 12px;}';
             }
             appendCssStyle(css);
-        } catch(e) {gclh_error("Improve new dashboard",e);}
-    }
 
             // Show unpublished hides.
             if (settings_showUnpublishedHides) {
