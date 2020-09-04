@@ -613,8 +613,6 @@ var variablesInit = function(c) {
     c.settings_show_edit_links_for_logs = getValue("settings_show_edit_links_for_logs", true);
     c.settings_show_copydata_plus = getValue("settings_show_copydata_plus", false);
     c.settings_show_copydata_separator = getValue("settings_show_copydata_separator", "\n");
-    c.settings_show_who_favorited_but = getValue("settings_show_who_favorited_but", true);
-    c.settings_show_who_favorited_loading_time = getValue("settings_show_who_favorited_loading_time", 120);
 
     try {
         if (c.userToken === null) {
@@ -1240,7 +1238,6 @@ var mainGC = function() {
         var splitter = document.location.href.split("#");
         if (splitter && splitter[1] && splitter[1] == "gclhpb" && splitter[2] && splitter[2] != "") {
             var postbackValue = splitter[2];
-
             // Adopt home coords in GClh.
             if (postbackValue == "errhomecoord") {
                 var mess = "To use this link, GClh has to know your home coordinates. \n"
@@ -1251,7 +1248,6 @@ var mainGC = function() {
                          + "(But, please wait until page \"Home Location\" is loading complete.)";
                 if (window.confirm(mess)) document.location.href = "/account/settings/homelocation";
                 else document.location.href = document.location.href.replace("?#"+splitter[1]+"#"+splitter[2]+"#", "");
-
             // Adopt uid of own trackables in GClh.
             } else if (postbackValue == "errowntrackables") {
                 var mess = "To use this link, GClh has to know the identification of \n"
@@ -1262,36 +1258,6 @@ var mainGC = function() {
                          + "(But, please wait until page \"Dashboard\" is loading complete.)";
                 if (window.confirm(mess)) document.location.href = "/my/default.aspx";
                 else  document.location.href = document.location.href.replace("?#"+splitter[1]+"#"+splitter[2], "");
-
-            // Get who favorited a cache on page "Users Who Favorited This Cache".
-            } else if (postbackValue == "whoFavorited") {
-                if (splitter[3] && splitter[3] != "") {
-                    // Process marked page "Users Who Favorited This Cache".
-                    whoFavoritedIframe($('#ctl00_ContentBody_pnlUsers').closest('form').prop('action'), 'whoFavorited', splitter[3], function(processId) {
-                        // Save guids who favorited a cache.
-                        var whoAll = GM_getValue('whoFavorited', []);
-                        var who = $.grep(whoAll, function(e){return e.processId == processId;});
-                        if (!who[0]) {
-                            whoAll.push({processId: processId, guids: []});
-                            var who = $.grep(whoAll, function(e){return e.processId == processId;});
-                        }
-                        $('#ctl00_ContentBody_pnlUsers table.Table tbody tr td:nth-child(1) > a:nth-child(2)').each(function() {
-                            who[0].guids[who[0].guids.length] = getGuid($(this)[0].href);
-                        });
-                        GM_setValue('whoFavorited', whoAll);
-                        // Get the next page.
-                        var buttons = $('#ctl00_ContentBody_pnlUsers table.NoBottomSpacing tbody tr')[0];
-                        var buttonNext = buttons.children[1].children[2];
-                        if ($(buttonNext).hasClass('aspNetDisabled') == false) {
-                            $('#ctl00_ContentBody_pnlUsers').closest('form').prop('action', $('#ctl00_ContentBody_pnlUsers').closest('form').prop('action') + '#gclhpb#whoFavorited#' + processId);
-                            buttonNext.click();
-                        } else {
-                            return;
-                        }
-                    });
-                    return;
-                }
-
             // Jump to profile tab.
             } else if (postbackValue.match(/_ContentBody_ProfilePanel1_/)) {
                 if (is_page("publicProfile")) {
@@ -1849,12 +1815,13 @@ var mainGC = function() {
 
 // Define class "working" for cache listing.
     if (is_page("cache_listing")) {
-        appendCssStyle(".working {opacity: 0.4; cursor: default !important; text-decoration: none !important;}");
+        appendCssStyle(".working {opacity: 0.3; cursor: default !important; text-decoration: none !important;}");
     }
 
 // Disabled and archived ...
     if (is_page("cache_listing")) {
         try {
+            if ($('#ctl00_ContentBody_uxGalleryImagesLink')[0]) $('#ctl00_ContentBody_uxGalleryImagesLink')[0].innerHTML = $('#ctl00_ContentBody_uxGalleryImagesLink')[0].innerHTML.replace("View the ", "");
             if ($('#ctl00_ContentBody_archivedMessage')[0] && $('#ctl00_ContentBody_CacheName')[0]) $('#ctl00_ContentBody_CacheName')[0].style.color = '#8C0B0B';
             // (If the cache is locked for new logs, the ctl00_ContentBody_archivedMessage respectively the ctl00_ContentBody_disabledMessage info is not available.)
             if (settings_strike_archived && $('#ctl00_ContentBody_CacheName')[0] && ($('#ctl00_ContentBody_archivedMessage')[0] || $('#ctl00_ContentBody_disabledMessage')[0])) {
@@ -6890,9 +6857,8 @@ var mainGC = function() {
 
             var css = "";
             // Log Text und User Bereich noch etwas ausrichten, keinen Platz in der Höhe verlieren.
-            css += ".LogDisplayRight .LogText {min-height: unset; padding-top: 0; margin-bottom: 8px;} .LogType img {vertical-align: sub;}";
-            css += ".logOwnerProfileName {padding-top: 0; margin-bottom: 8px;} .logIcons, .logOwnerAvatar {margin-bottom: 4px;} .logOwnerStats img {vertical-align: sub;}";
-            css += ".compact_logbook tbody tr > td:nth-child(1) {padding-top: 6px; padding-bottom: 0px;}";
+            css += ".LogDisplayRight .LogText {min-height: unset; padding-top: 0; margin-bottom: 8px;}";
+            css += ".logOwnerProfileName {padding-top: 0; margin-bottom: 8px;} .logIcons, .logOwnerAvatar {margin-bottom: 4px;}";
             css += ".markdown-output {margin: unset;}";
             if (!settings_hide_avatar) css += ".markdown-output {min-height: 6em;}";
             // Bilderrahmen im Log ausrichten.
@@ -6901,7 +6867,9 @@ var mainGC = function() {
             css += ".LogImagesTable a.gclh_thumb img {margin-bottom: 1px !important; margin-top: 1px; vertical-align: sub;}";
             // Länge der Usernamen in den Logs beschränken, damit sie nicht umgebrochen werden.
             css += ".logOwnerProfileName {max-width: 135px; display: inline-block; overflow: hidden; vertical-align: bottom; white-space: nowrap; text-overflow: ellipsis;}";
+
             if(isUpvoteActive) css += ".upvotes{display: block;}";
+
             appendCssStyle(css);
         } catch(e) {gclh_error("Define log-template",e);}
     }
@@ -7071,10 +7039,7 @@ var mainGC = function() {
             // Load all logs.
             function gclh_load_all(logs) {
                 function gclh_load_all_logs() {
-                    if ($('#gclh_load_all_logs.working')[0]) return;
                     $('#gclh_load_all_logs').addClass("working");
-                    $('#gclh_load_all_logs input')[0].setAttribute('disabled', '');
-
                     setTimeout(function() {
                         if (logs) {
                             $(logsTab).find('tbody').children().remove();
@@ -7088,12 +7053,10 @@ var mainGC = function() {
                             unsafeWindow.$('a.tb_images').fancybox({'type': 'image', 'titlePosition': 'inside'});
                             gclh_add_vip_icon();
                             setLinesColorInCacheListing();
-                            markLogsWhoFavorited();
                             setMarkerDisableDynamicLogLoad();
                             if (document.getElementById("gclh_show_log_counter")) document.getElementById("gclh_show_log_counter").style.visibility = "";
                         }
                         $('#gclh_load_all_logs').removeClass("working");
-                        $('#gclh_load_all_logs input')[0].removeAttribute('disabled');
                     }, 100);
                 }
                 var para = document.getElementById('ctl00_ContentBody_lblFindCounts').nextSibling.nextSibling.nextSibling.nextSibling;
@@ -7101,7 +7064,6 @@ var mainGC = function() {
                 if (settings_show_all_logs_but) addButtonOverLogs(gclh_load_all_logs, "gclh_load_all_logs", false, "Show all logs", "");
                 if (settings_show_bigger_avatars_but && !settings_hide_avatar && !isMemberInPmoCache() && settings_show_thumbnails) showBiggerAvatarsLink();
                 if (settings_show_log_counter_but) showLogCounterLink();
-                if (settings_show_who_favorited_but && $('#uxFavContainerLink .favorite-value')[0] && $('#uxFavContainerLink .favorite-value')[0].innerHTML.replace(/(\s*)/g,'') != "0") addButtonOverLogs(markWhoFavorited, "gclh_show_whoFavorited", true, "Show who favorited", "Mark user logs who favorited the cache");
                 if(isUpvoteActive){
                     $('#new_sort_element_upvote').prop( "disabled", false );
                     $('#new_sort_element_upvote').removeClass("isDisabled");
@@ -7147,7 +7109,6 @@ var mainGC = function() {
                     unsafeWindow.$('a.tb_images').fancybox({'type': 'image', 'titlePosition': 'inside'});
                     gclh_add_vip_icon();
                     setLinesColorInCacheListing();
-                    markLogsWhoFavorited();
                     setMarkerDisableDynamicLogLoad();
                     if (document.getElementById("gclh_show_log_counter")) document.getElementById("gclh_show_log_counter").style.visibility = "hidden";
                 }
@@ -7233,7 +7194,6 @@ var mainGC = function() {
                     unsafeWindow.$('a.tb_images').fancybox({'type': 'image', 'titlePosition': 'inside'});
                     gclh_add_vip_icon();
                     setLinesColorInCacheListing();
-                    markLogsWhoFavorited();
                     setMarkerDisableDynamicLogLoad();
                     if (document.getElementById("gclh_show_log_counter")) document.getElementById("gclh_show_log_counter").style.visibility = "hidden";
                 }
@@ -8374,9 +8334,7 @@ var mainGC = function() {
     }
     function showBiggerAvatars() {
         try {
-            if ($('#gclh_show_bigger_avatars.working')[0]) return;
             $('#gclh_show_bigger_avatars').addClass("working");
-            $('#gclh_show_bigger_avatars input')[0].setAttribute('disabled', '');
             setTimeout(function() {
                 var links = document.getElementsByClassName("logOwnerAvatar");
                 for (var i = 0; i < links.length; i++) {
@@ -8385,7 +8343,6 @@ var mainGC = function() {
                     }
                 }
                 $('#gclh_show_bigger_avatars').removeClass("working");
-                $('#gclh_show_bigger_avatars input')[0].removeAttribute('disabled');
             }, 100);
         } catch(e) {gclh_error("showBiggerAvatars",e);}
     }
@@ -11676,9 +11633,7 @@ var mainGC = function() {
     }
     function showLogCounter() {
         try {
-            if ($('#gclh_show_log_counter.working')[0]) return;
             $('#gclh_show_log_counter').addClass("working");
-            $('#gclh_show_log_counter input')[0].setAttribute('disabled', '');
             setTimeout(function() {
                 var logCounter = new Object();
                 logCounter["all"] = 0;
@@ -11703,113 +11658,18 @@ var mainGC = function() {
                     }
                 }
                 $('#gclh_show_log_counter').removeClass("working");
-                $('#gclh_show_log_counter input')[0].removeAttribute('disabled');
             }, 100);
         } catch(e) {gclh_error("showLogCounter",e);}
     }
 
 // Show/Hide compact logs.
     function toggle_compact_logbook(){
-        if ($('#toggle_compact_logbook.working')[0]) return;
-        $('#toggle_compact_logbook input')[0].setAttribute('disabled', '');
-        $('#toggle_compact_logbook').addClass("working");
-        setTimeout(function() {
-            $('#cache_logs_container').toggleClass('compact_logbook');
-            if ($('#cache_logs_container').hasClass('compact_logbook')) {
-                $('#toggle_compact_logbook')[0].children[0].value = 'Hide compact logs';
-            } else {
-                $('#toggle_compact_logbook')[0].children[0].value = 'Show compact logs';
-            }
-            $('#toggle_compact_logbook').removeClass("working");
-            $('#toggle_compact_logbook input')[0].removeAttribute('disabled');
-        }, 100);
-    }
-
-// Mark user logs who favorited the cache.
-    function markWhoFavorited() {
-        if ($('#gclh_show_whoFavorited.working')[0]) return;
-        $('#gclh_show_whoFavorited input')[0].removeAttribute('style');
-        $('#gclh_show_whoFavorited input')[0].removeAttribute('title');
-        $('#gclh_show_whoFavorited').addClass('loadstatus');
-        $('#gclh_show_whoFavorited').addClass('working');
-        $('#gclh_show_whoFavorited input')[0].setAttribute('disabled', '');
-        whoFavoritedIframe($('#hlViewWhoFavorited')[0].href, 'whoFavorited_cacheListing', new Date().getTime(), function(processId) {
-            function waitForWhoFavoritedGuids(waitCount, processId) {
-                var whoAll = GM_getValue('whoFavorited', []);
-                var who = $.grep(whoAll, function(e){return e.processId == processId;});
-                var favoritedCount = $('#uxFavContainerLink .favorite-value')[0].innerHTML.replace(/(\s*)/g,'');
-                var maxWaitCount = settings_show_who_favorited_loading_time * 1000 / 500;
-                if ((who && who[0] && favoritedCount == who[0].guids.length) || waitCount >= maxWaitCount) {
-                    global_whoFavoritedGuids = who[0].guids;
-                    whoFavoritedSavedRemove(processId);
-                    $('#gclh_show_whoFavorited input')[0].removeAttribute('style');
-                    $('#gclh_show_whoFavorited').removeClass('loadstatus');
-                    $('#gclh_show_whoFavorited').removeClass('working');
-                    $('#gclh_show_whoFavorited input')[0].removeAttribute('disabled');
-                    if ($('#whoFavorited_cacheListing')[0]) $('#whoFavorited_cacheListing')[0].remove();
-                    if (waitCount >= maxWaitCount) {
-                        $('#gclh_show_whoFavorited input')[0].setAttribute('title', 'Error by loading user who favorited the cache.\n(Timeout: Probably too much user.)')
-                        $('#gclh_show_whoFavorited').addClass('gclhError');
-                    } else {
-                        markLogsWhoFavorited();
-                    }
-                } else {
-                    if (who && who[0] && who[0].guids && who[0].guids.length > 0) {
-                        var loadstatus = roundTO( (who[0].guids.length * 100 / favoritedCount), 0);
-                        $('#gclh_show_whoFavorited input')[0].setAttribute('style', 'background-size: '+loadstatus+'% 2px;');
-                    }
-                    waitCount++; if (waitCount <= maxWaitCount) setTimeout(function() {waitForWhoFavoritedGuids(waitCount, processId);}, 500);
-                }
-            }
-            waitForWhoFavoritedGuids(0, processId);
-        });
-    }
-    // Assign guids who favorited to logs.
-    var global_whoFavoritedGuids = {};
-    function markLogsWhoFavorited() {
-        if (!global_whoFavoritedGuids || global_whoFavoritedGuids.length == 0) return;
-        $('#cache_logs_table2 tbody tr').each(function() {
-            if ($(this).find('.logOwnerProfileName a')[0] && $(this).find('.logOwnerProfileName a')[0].href && $(this).find('.LogType img')[0]) {
-                if (!$(this).find('.LogFavorite')[0]) {
-                    if (in_array(getGuid($(this).find('.logOwnerProfileName a')[0].href), global_whoFavoritedGuids)) {
-                        $(this).find('.LogType img').after('<img class="LogFavorite" title="Favorite" src="/images/icons/fave_fill_16.svg" style="padding-left: 1px;">');
-                    }
-                }
-            }
-        });
-    }
-    // Process Iframe for page "Users Who Favorited This Cache".
-    function whoFavoritedIframe(iframeUrl, iframeId, processId, functionDone) {
-        try {
-            // Nur iframe fürs cache_listing aufbauen. Bei Anderen wird die Verarbeitung quasi durch den Click auf next angestossen.
-            if (iframeId == 'whoFavorited_cacheListing') {
-                iframeUrl += '#gclhpb#whoFavorited#' + processId;
-                iframe = document.createElement('iframe');
-                iframe.id = iframeId;
-                iframe.src = iframeUrl;
-//xxxx
-//                iframe.style = 'display: none; visibility: hidden; width: 100%; position: fixed;';
-                iframe.style = 'width: 500px; height: 500px; position: fixed;';
-                $('body')[0].appendChild(iframe);
-                //iframe.style = 'width: 99%; height: 250px;'; // Testdata
-                //$('body')[0].before(iframe); // Testdata
-                $('table.Table tbody tr td a img').each(function() {this.src = "";});
-            }
-            function waitForIframeContent(waitCount, iframeId, processId) {
-                // Merke: Mit "$('#ctl00_ContentBody_pnlUsers')[0]" wird die Verarbeitung an die durch den Click auf next erzeugten Screen zurückgegeben.
-                // Merke: Mit "$('#'+iframeId)[0]" wird die Verarbeitung ans Cache Listing zurückgegeben.
-                if ($('#ctl00_ContentBody_pnlUsers')[0] || $('#'+iframeId)[0]) {
-                    functionDone(processId);
-                } else {waitCount++; if (waitCount <= 1000) setTimeout(function() {waitForIframeContent(waitCount, iframeId, processId);}, 10);}
-            }
-            waitForIframeContent(0, iframeId, processId);
-        }  catch(e) {gclh_error('Function whoFavoritedIframe',e);}
-    }
-    // Remove saved process id.
-    function whoFavoritedSavedRemove(processId) {
-        var whoAll = GM_getValue('whoFavorited', []);
-        var whoRest = $.grep(whoAll, function(e){return e.processId != processId;});
-        GM_setValue('whoFavorited', whoRest);
+        $('#cache_logs_container').toggleClass('compact_logbook');
+        if ($('#cache_logs_container').hasClass('compact_logbook')) {
+            $('#toggle_compact_logbook')[0].children[0].value = 'Hide compact logs';
+        } else {
+            $('#toggle_compact_logbook')[0].children[0].value = 'Show compact logs';
+        }
     }
 
 // Add button over logs in cache listing.
@@ -11817,23 +11677,12 @@ var mainGC = function() {
         if (!$('#ctl00_ContentBody_uxLogbookLink')[0]) return;
         var span = document.createElement("span");
         span.id = id;
-        if (title != "") span.title = title;
-        span.innerHTML = '<input type="button" href="javascript:void(0);" value="'+txt+'">';
+        span.innerHTML = '<input type="button" href="javascript:void(0);" title="'+title+'" value="'+txt+'">';
         span.addEventListener("click", func, false);
         if (right) span.className = "gclh_rlol";
         else span.className = "gclh_llol";
         if ($('.gclh_llol').length == 0 && $('.gclh_rlol').length == 0) {
-            if ($('#ctl00_ContentBody_uxLogbookLink')[0]) $('#ctl00_ContentBody_uxLogbookLink')[0].innerHTML = $('#ctl00_ContentBody_uxLogbookLink')[0].innerHTML.replace("View ", "").replace(" anzeigen", "").replace("Zobrazit l", "L");
-            if ($('#ctl00_ContentBody_uxGalleryImagesLink')[0]) $('#ctl00_ContentBody_uxGalleryImagesLink')[0].innerHTML = $('#ctl00_ContentBody_uxGalleryImagesLink')[0].innerHTML.replace("View the ", "").replace(" anzeigen", "").replace("Zobrazit f", "F");
-            var css = "";
-            css += ".gclh_llol {margin-right: 4px;} .gclh_rlol {float: right; margin-left: 4px;}";
-            css += ".gclh_llol input, .gclh_rlol input {background-image: inherit; padding-left: 4px; padding-right: 4px;}";
-            css += ".gclh_llol.working input, .gclh_rlol.working input {background-color: initial !important; background-image: initial !important; text-decoration: none;}";
-            css += ".gclh_llol.gclhError input, .gclh_rlol.gclhError input {background-color: #ffacac;}";
-            css += ".gclh_llol.gclhError:hover input, .gclh_rlol.gclhError:hover input {background-color: #febebe;}";
-            css += ".gclh_llol:hover input, .gclh_rlol:hover input {background-color: aliceblue;}";
-            css += ".gclh_llol.working.loadstatus input, .gclh_rlol.working.loadstatus input {background-repeat: no-repeat; background-size: 0% 2px; background-position-y: 16px; background-image: url("+blackPixel+") !important;}";
-            appendCssStyle(css);
+            appendCssStyle(".gclh_llol {margin-right: 4px;} .gclh_rlol {float: right; margin-right: 4px;} .gclh_llol.working input, .gclh_rlol.working input {opacity: 0.3;}");
             $('#ctl00_ContentBody_uxLogbookLink')[0].parentNode.style.width = "100%";
             $('#ctl00_ContentBody_uxLogbookLink')[0].parentNode.style.margin = "0";
         }
@@ -11850,14 +11699,8 @@ var mainGC = function() {
             var username = decode_innerHTML(span);
             return [username, guid[1]];
         }
-        return [false, false];
-    }
 
-// Get guid from string.
-    function getGuid(href) {
-        var guid = href.match(/\?guid=(.*)(#|$)/);
-        if (guid && guid[1]) return guid[1];
-        else return false;
+        return [false, false];
     }
 
 // Determine user from url.
@@ -13171,11 +13014,7 @@ var mainGC = function() {
             html += checkboxy('settings_show_bigger_avatars_but', 'Show button \"Show bigger avatars\" above the logs') + "<br>";
             html += newParameterVersionSetzen(0.9) + newParameterOff;
             html += newParameterOn1;
-            html += checkboxy('settings_show_compact_logbook_but', 'Show button \"Show compact logs\" above the logs') + "<br>";
-            html += checkboxy('settings_show_who_favorited_but', 'Show button \"Show who favorited\" above the logs') + "<br>";
-            html += ' &nbsp; &nbsp;' + "Maximum loading time for the favorites data: <input class='gclh_form' type='text' size='4' id='settings_show_who_favorited_loading_time' value='" + getValue("settings_show_who_favorited_loading_time", 120) + "'>";
-            html += "<img src=" + global_restore_icon + " id='restore_settings_show_who_favorited_loading_time' title='back to default' style='width: 12px; cursor: pointer;'>";
-            html += " seconds" + show_help3("With this option you can set the maximum time for the loading of the favorites data. The loading of this data takes a comparatively long time, because we can only read data for 10 favorites with one load, and only one 10 after the other. Default is \"120\" seconds (2 minutes).<br><br>This option requires \'Show button \"Show who favorited\" above the logs\'.") + "<br>";
+            html += checkboxy('settings_show_compact_logbook_but', 'Show button \"Show/Hide compact logs\" above the logs') + "<br>";
             html += checkboxy('settings_hide_found_count', 'Hide found count') + "<br>";
             html += checkboxy('settings_cache_type_icon_visible', 'Set cache type icon always visible') + show_help("With this option, the cache type icon is always displayed complete, even if the cache is deactivated or archived.") + "<br>";
             html += checkboxy('settings_log_status_icon_visible', 'Set log status icon always visible') + show_help("With this option, the log status icon is always displayed complete, even if the cache is deactivated or archived. The log status icon is located above the cache type icons and indicates for example if a cache was found, if there is a personal note or if there are corrected coordinates.") + "<br>";
@@ -13729,7 +13568,6 @@ var mainGC = function() {
             $('#restore_settings_show_copydata_own_stuff_name')[0].addEventListener("click", restoreField, false);
             $('#restore_settings_show_copydata_own_stuff_value')[0].addEventListener("click", restoreField, false);
             $('#restore_settings_show_copydata_separator')[0].addEventListener("click", restoreField, false);
-            $('#restore_settings_show_who_favorited_loading_time')[0].addEventListener("click", restoreField, false);
 
             // Events setzen für Parameter, die im GClh Config mehrfach ausgegeben wurden, weil sie zu mehreren Themen gehören. Es handelt sich hier um den Parameter selbst.
             // In der Function werden Events für den Parameter selbst (ZB: "settings_show_mail_in_viplist") und dessen Clone gesetzt, die hinten mit "X" und Nummerierung
@@ -13891,8 +13729,6 @@ var mainGC = function() {
             setEvForDepPara("settings_show_copydata_own_stuff_show","restore_settings_show_copydata_own_stuff_name");
             setEvForDepPara("settings_show_copydata_own_stuff_show","settings_show_copydata_own_stuff_value");
             setEvForDepPara("settings_show_copydata_own_stuff_show","restore_settings_show_copydata_own_stuff_value");
-            setEvForDepPara("settings_show_who_favorited_but","settings_show_who_favorited_loading_time");
-            setEvForDepPara("settings_show_who_favorited_but","restore_settings_show_who_favorited_loading_time");
 
             // Abhängigkeiten der Linklist Parameter.
             for (var i = 0; i < 100; i++) {
@@ -14055,7 +13891,6 @@ var mainGC = function() {
             setValue("settings_show_copydata_own_stuff_name", document.getElementById('settings_show_copydata_own_stuff_name').value);
             setValue("settings_show_copydata_own_stuff_value", document.getElementById('settings_show_copydata_own_stuff_value').value);
             setValue("settings_show_copydata_separator", document.getElementById('settings_show_copydata_separator').value);
-            setValue("settings_show_who_favorited_loading_time", document.getElementById('settings_show_who_favorited_loading_time').value);
 
             // Map Layers in vorgegebener Reihenfolge übernehmen.
             var new_map_layers_available = document.getElementById('settings_maplayers_available');
@@ -14317,7 +14152,6 @@ var mainGC = function() {
                 'settings_relocate_other_map_buttons',
                 'settings_show_radius_on_flopps',
                 'settings_show_edit_links_for_logs',
-                'settings_show_who_favorited_but',
             );
 
             for (var i = 0; i < checkboxes.length; i++) {
@@ -14719,7 +14553,6 @@ var mainGC = function() {
                 case "settings_show_copydata_own_stuff_name": field.value = "Photo file name"; break;
                 case "settings_show_copydata_own_stuff_value": field.value = "#yyyy#.#mm#.#dd# - #GCName# - #GCCode# - 01"; break;
                 case "settings_show_copydata_separator": field.value = "\n"; break;
-                case "settings_show_who_favorited_loading_time": field.value = "120"; break;
             }
             $(field)[0].focus();
         }
@@ -15185,7 +15018,6 @@ var mainGC = function() {
         [changed, changedData] = rcNoConfigDataDel('clipboard', false, changed, changedData);
         [changed, changedData] = rcNoConfigDataDel('urlLogs', [], changed, changedData);
         [changed, changedData] = rcNoConfigDataDel('headerReplacement', false, changed, changedData);
-        [changed, changedData] = rcNoConfigDataDel('whoFavorited', [], changed, changedData);
 //<-- $$007
         document.getElementById('rc_configData').innerText = changedData;
         CONFIG = config_tmp;
