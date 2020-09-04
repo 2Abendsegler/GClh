@@ -7074,7 +7074,6 @@ var mainGC = function() {
                     if ($('#gclh_load_all_logs.working')[0]) return;
                     $('#gclh_load_all_logs').addClass("working");
                     $('#gclh_load_all_logs input')[0].setAttribute('disabled', '');
-
                     setTimeout(function() {
                         if (logs) {
                             $(logsTab).find('tbody').children().remove();
@@ -11787,18 +11786,19 @@ var mainGC = function() {
                 iframe = document.createElement('iframe');
                 iframe.id = iframeId;
                 iframe.src = iframeUrl;
-//xxxx2
+//xxxx
 //                iframe.style = 'display: none; visibility: hidden; width: 100%; position: fixed;';
-                iframe.style = 'width: 500px; height: 500px; position: fixed;';
-                $('body')[0].appendChild(iframe);
-                //iframe.style = 'width: 99%; height: 250px;'; // Testdata
-                //$('body')[0].before(iframe); // Testdata
+//                $('body')[0].appendChild(iframe);
+                iframe.style = 'width: 99%; height: 250px;'; // Testdata
+                $('body')[0].before(iframe); // Testdata
                 $('table.Table tbody tr td a img').each(function() {this.src = "";});
             }
             function waitForIframeContent(waitCount, iframeId, processId) {
                 // Merke: Mit "$('#ctl00_ContentBody_pnlUsers')[0]" wird die Verarbeitung an die durch den Click auf next erzeugten Screen zurückgegeben.
                 // Merke: Mit "$('#'+iframeId)[0]" wird die Verarbeitung ans Cache Listing zurückgegeben.
-                if ($('#ctl00_ContentBody_pnlUsers')[0] || $('#'+iframeId)[0]) {
+//xxxx
+//                if ($('#ctl00_ContentBody_pnlUsers')[0] || $('#'+iframeId)[0]) {
+                if (($('#ctl00_ContentBody_pnlUsers')[0] && $('#ctl00_ContentBody_pnlUsers td.PageBuilderWidget').length >= 4) || $('#'+iframeId)[0]) {
                     functionDone(processId);
                 } else {waitCount++; if (waitCount <= 1000) setTimeout(function() {waitForIframeContent(waitCount, iframeId, processId);}, 10);}
             }
