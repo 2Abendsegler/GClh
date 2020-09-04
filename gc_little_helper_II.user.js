@@ -11778,7 +11778,7 @@ var mainGC = function() {
                 iframe = document.createElement('iframe');
                 iframe.id = iframeId;
                 iframe.src = iframeUrl;
-//xxxx
+//xxxx1
 //                iframe.style = 'display: none; visibility: hidden; width: 100%; position: fixed;';
                 iframe.style = 'width: 500px; height: 500px; position: fixed;';
                 $('body')[0].appendChild(iframe);
