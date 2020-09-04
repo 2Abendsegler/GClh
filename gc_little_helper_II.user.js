@@ -7191,7 +7191,7 @@ var mainGC = function() {
                     side.appendChild(link);
                 }
 
-                if (!$('.gclh_LogTotals')[0].childNodes[0]) return;
+                if (!$('.gclh_LogTotals')[0] || !$('.gclh_LogTotals')[0].childNodes[0]) return;
                 var legend = $('.gclh_LogTotals')[0].childNodes[0];
                 var new_legend = document.createElement('span');
                 for (var i = 0; i < legend.childNodes.length; i++) {
@@ -13163,7 +13163,7 @@ var mainGC = function() {
             html += checkboxy('settings_show_who_favorited_but', 'Show button \"Show who favorited\" above the logs') + "<br>";
             html += ' &nbsp; &nbsp;' + "Maximum loading time for the favorites data: <input class='gclh_form' type='text' size='4' id='settings_show_who_favorited_loading_time' value='" + getValue("settings_show_who_favorited_loading_time", 120) + "'>";
             html += "<img src=" + global_restore_icon + " id='restore_settings_show_who_favorited_loading_time' title='back to default' style='width: 12px; cursor: pointer;'>";
-            html += " secondes" + show_help3("With this option you can set the maximum time for the loading of the favorites data. The loading of this data takes a comparatively long time, because we can only read data for 10 favorites with one load, and only one 10 after the other. Default is \"120\" seconds (2 minutes).<br><br>This option requires \'Show button \"Show who favorited\" above the logs\'.") + "<br>";
+            html += " seconds" + show_help3("With this option you can set the maximum time for the loading of the favorites data. The loading of this data takes a comparatively long time, because we can only read data for 10 favorites with one load, and only one 10 after the other. Default is \"120\" seconds (2 minutes).<br><br>This option requires \'Show button \"Show who favorited\" above the logs\'.") + "<br>";
             html += checkboxy('settings_hide_found_count', 'Hide found count') + "<br>";
             html += checkboxy('settings_cache_type_icon_visible', 'Set cache type icon always visible') + show_help("With this option, the cache type icon is always displayed complete, even if the cache is deactivated or archived.") + "<br>";
             html += checkboxy('settings_log_status_icon_visible', 'Set log status icon always visible') + show_help("With this option, the log status icon is always displayed complete, even if the cache is deactivated or archived. The log status icon is located above the cache type icons and indicates for example if a cache was found, if there is a personal note or if there are corrected coordinates.") + "<br>";
