@@ -6888,6 +6888,7 @@ var mainGC = function() {
             // Log Text und User Bereich noch etwas ausrichten, keinen Platz in der Höhe verlieren.
             css += ".LogDisplayRight .LogText {min-height: unset; padding-top: 0; margin-bottom: 8px;} .LogType img {vertical-align: sub;}";
             css += ".logOwnerProfileName {padding-top: 0; margin-bottom: 8px;} .logIcons, .logOwnerAvatar {margin-bottom: 4px;} .logOwnerStats img {vertical-align: sub;}";
+            css += ".compact_logbook tbody tr > td:nth-child(1) {padding-top: 6px; padding-bottom: 0px;}";
             css += ".markdown-output {margin: unset;}";
             if (!settings_hide_avatar) css += ".markdown-output {min-height: 6em;}";
             // Bilderrahmen im Log ausrichten.
@@ -11777,7 +11778,9 @@ var mainGC = function() {
                 iframe = document.createElement('iframe');
                 iframe.id = iframeId;
                 iframe.src = iframeUrl;
-                iframe.style = 'display: none; visibility: hidden; width: 100%; position: fixed;';
+//xxxx
+//                iframe.style = 'display: none; visibility: hidden; width: 100%; position: fixed;';
+                iframe.style = 'width: 500px; height: 500px; position: fixed;';
                 $('body')[0].appendChild(iframe);
                 //iframe.style = 'width: 99%; height: 250px;'; // Testdata
                 //$('body')[0].before(iframe); // Testdata
@@ -15173,6 +15176,7 @@ var mainGC = function() {
         [changed, changedData] = rcNoConfigDataDel('clipboard', false, changed, changedData);
         [changed, changedData] = rcNoConfigDataDel('urlLogs', [], changed, changedData);
         [changed, changedData] = rcNoConfigDataDel('headerReplacement', false, changed, changedData);
+        [changed, changedData] = rcNoConfigDataDel('whoFavorited', [], changed, changedData);
 //<-- $$007
         document.getElementById('rc_configData').innerText = changedData;
         CONFIG = config_tmp;
