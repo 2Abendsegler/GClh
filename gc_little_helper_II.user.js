@@ -2,7 +2,7 @@
 // @name             GC little helper II
 // @namespace        http://www.amshove.net
 //--> $$000
-// @version          0.10.7.1
+// @version          0.10.7.2
 //<-- $$000
 // @include          https://www.geocaching.com/*
 // @include          https://maps.google.tld/*
@@ -1263,11 +1263,16 @@ var mainGC = function() {
                 if (window.confirm(mess)) document.location.href = "/my/default.aspx";
                 else  document.location.href = document.location.href.replace("?#"+splitter[1]+"#"+splitter[2], "");
 
+//xxxx
             // Get who favorited a cache on page "Users Who Favorited This Cache".
             } else if (postbackValue == "whoFavorited") {
                 if (splitter[3] && splitter[3] != "") {
                     // Process marked page "Users Who Favorited This Cache".
                     whoFavoritedIframe($('#ctl00_ContentBody_pnlUsers').closest('form').prop('action'), 'whoFavorited', splitter[3], function(processId) {
+//var buttons = $('#ctl00_ContentBody_pnlUsers table.NoBottomSpacing tbody tr')[0];
+//var buttonNext = buttons.children[1].children[2];
+//buttonNext.click();
+//return;
                         // Save guids who favorited a cache.
                         var whoAll = GM_getValue('whoFavorited', []);
                         var who = $.grep(whoAll, function(e){return e.processId == processId;});
@@ -1284,7 +1289,10 @@ var mainGC = function() {
                         var buttonNext = buttons.children[1].children[2];
                         if ($(buttonNext).hasClass('aspNetDisabled') == false) {
                             $('#ctl00_ContentBody_pnlUsers').closest('form').prop('action', $('#ctl00_ContentBody_pnlUsers').closest('form').prop('action') + '#gclhpb#whoFavorited#' + processId);
+//xxxx
+setTimeout(function(){
                             buttonNext.click();
+}, 1000);
                         } else {
                             return;
                         }
@@ -7056,6 +7064,7 @@ var mainGC = function() {
                             unsafeWindow.$('a.tb_images').fancybox({'type': 'image', 'titlePosition': 'inside'});
                             gclh_add_vip_icon();
                             setLinesColorInCacheListing();
+                            markLogsWhoFavorited();
                             if(isUpvoteActive){
                                 unsafeWindow.appendUpvotesToLogs(log_ids);
                                 updateUpvoteEvents(logs);
@@ -11792,6 +11801,10 @@ var mainGC = function() {
                 iframe.style = 'width: 99%; height: 250px;'; // Testdata
                 $('body')[0].before(iframe); // Testdata
                 $('table.Table tbody tr td a img').each(function() {this.src = "";});
+//var buttons = $('#ctl00_ContentBody_pnlUsers table.NoBottomSpacing tbody tr')[0];
+//var buttonNext = buttons.children[1].children[2];
+//buttonNext.click();
+//return;
             }
             function waitForIframeContent(waitCount, iframeId, processId) {
                 // Merke: Mit "$('#ctl00_ContentBody_pnlUsers')[0]" wird die Verarbeitung an die durch den Click auf next erzeugten Screen zurückgegeben.
