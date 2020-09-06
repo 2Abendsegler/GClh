@@ -2,7 +2,7 @@
 // @name             GC little helper II
 // @namespace        http://www.amshove.net
 //--> $$000
-// @version          0.10.7.2
+// @version          0.10.7.3
 //<-- $$000
 // @include          https://www.geocaching.com/*
 // @include          https://maps.google.tld/*
@@ -615,6 +615,10 @@ var variablesInit = function(c) {
     c.settings_show_copydata_separator = getValue("settings_show_copydata_separator", "\n");
     c.settings_show_who_favorited_but = getValue("settings_show_who_favorited_but", true);
     c.settings_show_who_favorited_loading_time = getValue("settings_show_who_favorited_loading_time", 120);
+//xxxx
+    c.settings_show_who_favorited_back = getValue("settings_show_who_favorited_back", true);
+    c.settings_show_who_favorited_visible = getValue("settings_show_who_favorited_visible", false);
+    c.settings_show_who_favorited_delay = getValue("settings_show_who_favorited_delay", '');
 
     try {
         if (c.userToken === null) {
@@ -1263,16 +1267,11 @@ var mainGC = function() {
                 if (window.confirm(mess)) document.location.href = "/my/default.aspx";
                 else  document.location.href = document.location.href.replace("?#"+splitter[1]+"#"+splitter[2], "");
 
-//xxxx
             // Get who favorited a cache on page "Users Who Favorited This Cache".
             } else if (postbackValue == "whoFavorited") {
                 if (splitter[3] && splitter[3] != "") {
                     // Process marked page "Users Who Favorited This Cache".
                     whoFavoritedIframe($('#ctl00_ContentBody_pnlUsers').closest('form').prop('action'), 'whoFavorited', splitter[3], function(processId) {
-//var buttons = $('#ctl00_ContentBody_pnlUsers table.NoBottomSpacing tbody tr')[0];
-//var buttonNext = buttons.children[1].children[2];
-//buttonNext.click();
-//return;
                         // Save guids who favorited a cache.
                         var whoAll = GM_getValue('whoFavorited', []);
                         var who = $.grep(whoAll, function(e){return e.processId == processId;});
@@ -1290,9 +1289,13 @@ var mainGC = function() {
                         if ($(buttonNext).hasClass('aspNetDisabled') == false) {
                             $('#ctl00_ContentBody_pnlUsers').closest('form').prop('action', $('#ctl00_ContentBody_pnlUsers').closest('form').prop('action') + '#gclhpb#whoFavorited#' + processId);
 //xxxx
-setTimeout(function(){
-                            buttonNext.click();
-}, 1000);
+                            if (settings_show_who_favorited_delay == '') {
+                                buttonNext.click();
+                            } else {
+                                setTimeout(function(){
+                                    buttonNext.click();
+                                }, settings_show_who_favorited_delay);
+                            }
                         } else {
                             return;
                         }
@@ -11796,22 +11799,26 @@ setTimeout(function(){
                 iframe.id = iframeId;
                 iframe.src = iframeUrl;
 //xxxx
-//                iframe.style = 'display: none; visibility: hidden; width: 100%; position: fixed;';
-//                $('body')[0].appendChild(iframe);
-                iframe.style = 'width: 99%; height: 250px;'; // Testdata
-                $('body')[0].before(iframe); // Testdata
+                if (settings_show_who_favorited_visible == true) {
+//                    iframe.style = 'width: 99%; height: 250px;'; // letzter Versuch
+                    iframe.style = 'width: 800px; height: 250px;'; // Testdata
+                } else {
+                    iframe.style = 'display: none; visibility: hidden; width: 100%; position: fixed;';
+                }
+//xxxx
+                if (settings_show_who_favorited_back == true) {
+                    $('body')[0].appendChild(iframe);
+                } else {
+                    $('body')[0].before(iframe); // Testdata
+                }
                 $('table.Table tbody tr td a img').each(function() {this.src = "";});
-//var buttons = $('#ctl00_ContentBody_pnlUsers table.NoBottomSpacing tbody tr')[0];
-//var buttonNext = buttons.children[1].children[2];
-//buttonNext.click();
-//return;
             }
             function waitForIframeContent(waitCount, iframeId, processId) {
                 // Merke: Mit "$('#ctl00_ContentBody_pnlUsers')[0]" wird die Verarbeitung an die durch den Click auf next erzeugten Screen zurückgegeben.
                 // Merke: Mit "$('#'+iframeId)[0]" wird die Verarbeitung ans Cache Listing zurückgegeben.
 //xxxx
-//                if ($('#ctl00_ContentBody_pnlUsers')[0] || $('#'+iframeId)[0]) {
-                if (($('#ctl00_ContentBody_pnlUsers')[0] && $('#ctl00_ContentBody_pnlUsers td.PageBuilderWidget').length >= 4) || $('#'+iframeId)[0]) {
+                if ($('#ctl00_ContentBody_pnlUsers')[0] || $('#'+iframeId)[0]) {
+//                if (($('#ctl00_ContentBody_pnlUsers')[0] && $('#ctl00_ContentBody_pnlUsers td.PageBuilderWidget').length >= 4) || $('#'+iframeId)[0]) { // letzter Versuch
                     functionDone(processId);
                 } else {waitCount++; if (waitCount <= 1000) setTimeout(function() {waitForIframeContent(waitCount, iframeId, processId);}, 10);}
             }
@@ -13189,6 +13196,11 @@ setTimeout(function(){
             html += ' &nbsp; &nbsp;' + "Maximum loading time for the favorites data: <input class='gclh_form' type='text' size='4' id='settings_show_who_favorited_loading_time' value='" + getValue("settings_show_who_favorited_loading_time", 120) + "'>";
             html += "<img src=" + global_restore_icon + " id='restore_settings_show_who_favorited_loading_time' title='back to default' style='width: 12px; cursor: pointer;'>";
             html += " seconds" + show_help3("With this option you can set the maximum time for the loading of the favorites data. The loading of this data takes a comparatively long time, because we can only read data for 10 favorites with one load, and only one 10 after the other. Default is \"120\" seconds (2 minutes).<br><br>This option requires \'Show button \"Show who favorited\" above the logs\'.") + "<br>";
+//xxxx
+            html += "&nbsp;&nbsp;" + checkboxy('settings_show_who_favorited_back', 'Build internal screen at the end') + "<br>";
+            html += "&nbsp;&nbsp;" + checkboxy('settings_show_who_favorited_visible', 'Show internal screen') + "<br>";
+            html += ' &nbsp; &nbsp;' + "Delay for clicking to button \"next\" in milliseconds: <input class='gclh_form' type='text' size='4' id='settings_show_who_favorited_delay' value='" + getValue("settings_show_who_favorited_delay", '') + "'><br>";
+
             html += checkboxy('settings_hide_found_count', 'Hide found count') + "<br>";
             html += checkboxy('settings_cache_type_icon_visible', 'Set cache type icon always visible') + show_help("With this option, the cache type icon is always displayed complete, even if the cache is deactivated or archived.") + "<br>";
             html += checkboxy('settings_log_status_icon_visible', 'Set log status icon always visible') + show_help("With this option, the log status icon is always displayed complete, even if the cache is deactivated or archived. The log status icon is located above the cache type icons and indicates for example if a cache was found, if there is a personal note or if there are corrected coordinates.") + "<br>";
@@ -13906,6 +13918,10 @@ setTimeout(function(){
             setEvForDepPara("settings_show_copydata_own_stuff_show","restore_settings_show_copydata_own_stuff_value");
             setEvForDepPara("settings_show_who_favorited_but","settings_show_who_favorited_loading_time");
             setEvForDepPara("settings_show_who_favorited_but","restore_settings_show_who_favorited_loading_time");
+//xxxx
+            setEvForDepPara("settings_show_who_favorited_but","settings_show_who_favorited_back");
+            setEvForDepPara("settings_show_who_favorited_but","settings_show_who_favorited_visible");
+            setEvForDepPara("settings_show_who_favorited_but","settings_show_who_favorited_delay");
 
             // Abhängigkeiten der Linklist Parameter.
             for (var i = 0; i < 100; i++) {
@@ -14069,6 +14085,8 @@ setTimeout(function(){
             setValue("settings_show_copydata_own_stuff_value", document.getElementById('settings_show_copydata_own_stuff_value').value);
             setValue("settings_show_copydata_separator", document.getElementById('settings_show_copydata_separator').value);
             setValue("settings_show_who_favorited_loading_time", document.getElementById('settings_show_who_favorited_loading_time').value);
+//xxxx
+            setValue("settings_show_who_favorited_delay", document.getElementById('settings_show_who_favorited_delay').value);
 
             // Map Layers in vorgegebener Reihenfolge übernehmen.
             var new_map_layers_available = document.getElementById('settings_maplayers_available');
@@ -14331,6 +14349,9 @@ setTimeout(function(){
                 'settings_show_radius_on_flopps',
                 'settings_show_edit_links_for_logs',
                 'settings_show_who_favorited_but',
+//xxxx
+                'settings_show_who_favorited_back',
+                'settings_show_who_favorited_visible',
             );
 
             for (var i = 0; i < checkboxes.length; i++) {
