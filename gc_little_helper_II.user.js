@@ -7912,9 +7912,9 @@ var mainGC = function() {
                 waitCount++; if (waitCount <= 50) setTimeout(function(){buildLinksWaitAF(log, waitCount);}, 100);
             }
             function buildEventMoreAF(log) {
-                if (!$(log).find('.expand-activity').hasClass('gclh_event')) {
-                    $(log).find('.expand-activity')[0].addEventListener("click", function(){buildLinksWaitAF($(this).closest('.activity-item'), 0);}, false);
-                    $($(log).find('.expand-activity')[0]).addClass('gclh_event');
+                if (!$(log).find('.activity-details').hasClass('gclh_event')) {
+                    $(log).find('.activity-details')[0].addEventListener("click", function(){buildLinksWaitAF($(this).closest('.activity-item'), 0);}, false);
+                    $($(log).find('.activity-details')[0]).addClass('gclh_event');
                 }
             }
             function getEditUrlAF(log){
