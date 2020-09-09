@@ -15833,9 +15833,9 @@ var mainGC = function() {
      * handlerOnNotFound: The function if the requiredElement not found.
      * id:                The ID of the iframe is required if more than one asynchronous page are requested.
      * maxWaitCount:      How often you ask for the content. (optional; default: 100)
-     * waitTime:          How long you will wait in ms. (optional; default: 10000 (=10s))
+     * waitTime:          How long you will wait in ms. (optional; default: 15000 (=15s))
     */
-    function getAsynData(url, requiredElement, handler, handlerOnNotFound, id='getAsynData', maxWaitCount=100, waitTime=10000) {
+    function getAsynData(url, requiredElement, handler, handlerOnNotFound, id='getAsynData', maxWaitCount=100, waitTime=15000) {
         try {
             iframe = document.createElement('iframe');
             iframe.id = id;
