@@ -7982,132 +7982,139 @@ var mainGC = function() {
                 // Get the Cache information.
                 var caches = {};
                 var events = {};
-                getAsynData('https://www.geocaching.com/play/owner/unpublished', '.geocache-details', function(response) {
-                    caches = (($(response).find('.meta-data-display .geocache-icon svg use').attr('xlink:href') != '#event'
-                            && $(response).find('.meta-data-display .geocache-icon svg use').attr('xlink:href') != '#celebration')
-                            ? $(response).find('.meta-data-display')
-                            : {});
-                    loadEvents();
-                }, loadEvents, 'caches');
-                // Get the Events information.
-                function loadEvents() {
-                    getAsynData('https://www.geocaching.com/play/owner/unpublished/events', '.geocache-details', function(response) {
-                        events = (($(response).find('.meta-data-display .geocache-icon svg use').attr('xlink:href') == '#event'
-                                || $(response).find('.meta-data-display .geocache-icon svg use').attr('xlink:href') == '#celebration')
+                if ($('a.bold[href="/account/dashboard/unpublishedcaches"]')[0]) {
+                    getAsynData('https://www.geocaching.com/play/owner/unpublished', '.geocache-details', function(response) {
+                        caches = (($(response).find('.meta-data-display .geocache-icon svg use').attr('xlink:href') != '#event'
+                                && $(response).find('.meta-data-display .geocache-icon svg use').attr('xlink:href') != '#celebration')
                                 ? $(response).find('.meta-data-display')
                                 : {});
-                        buildList();
-                    }, buildList, 'events');
-                }
-                // Build list with unpublished caches.
-                function buildList() {
-                    // Message und return if no caches are found.
-                    if (!caches.length && !events.length) {
-                        var dnfHtml = '<div class="activity-message">';
-                        dnfHtml += '    <img class="margin-center" src="/account/app/ui-images/premium/GTmap.svg" alt="" aria-hidden="true" width="190" height="100">';
-                        dnfHtml += '    <h3 class="h5 no-margin-bottom">You don\'t have any unpublished caches.</h3>';
-                        dnfHtml += '</div>';
-                        $('#GClh_unpublishedCaches_body').html(dnfHtml);
-                    } else {
-                        // Sort Caches.
-                        if (settings_set_showUnpublishedHides_sort && caches.length > 0) {
-                            switch (settings_showUnpublishedHides_sort) {
-                                case 'abc': caches.sort(abc); break;
-                                case 'gcNew': caches.sort(gcNew); break;
-                                case 'gcOld': caches.sort(gcOld); break;
-                                default: gclh_error("Show unpublished hides in dashboard", 'Cannot sort caches');
-                            }
-                        }
-                        // Build List.
-                        var list = '<ul class="list" style="padding:0;margin:0;">';
-                        var typelist = {
-                            '#traditional' : 2,
-                            '#multi'       : 3,
-                            '#mystery'     : 8,
-                            '#earth'       : 137,
-                            '#letterbox'   : 5,
-                            '#wherigo'     : 1858,
-                            '#virtual'     : 4,
-                            '#cito'        : 13,
-                            '#event'       : 6,
-                            '#celebration' : 3653
-                        }
-                        for (let i=0; i<caches.length; i++) {
-                            let name = $(caches[i]).find('.geocache-name div a').html().trim();
-                            let type = typelist[$(caches[i]).find('.geocache-icon svg use').attr('xlink:href')];
-                            let details = $(caches[i]).find('.geocache-details').html().trim().split(' ');
-                            let gccode = details[0].match(/GC[A-Z0-9]{1,10}/)[0];
-                            let d = details[1].split('</svg>')[1];
-                            let t = details[2].split('|')[1];
-                            let size = details[5].split('>')[1];
-                            list += '<li class="activity-item activity-item-head">';
-                            list += '    <div class="activity-type-icon">';
-                            list += '            <svg class="status-icon" role="img" height="22" width="22">';
-                            list += '                    <use xlink:href="/account/app/ui-icons/sprites/cache-types.svg#icon-owned"></use>';
-                            list += '            </svg>';
-                            list += '        <svg class="icon" height="40" width="40" role="img">';
-                            list += '            <use xlink:href="/account/app/ui-icons/sprites/cache-types.svg#icon-' + type + '"></use>';
-                            list += '        </svg>';
-                            list += '    </div>';
-                            list += '    <div class="activity-data">';
-                            list += '        <div class="activity-details"><a href="https://coord.info/' + gccode + '"><h3 class="activity-header">' + name + '</h3></a>';
-                            list += '            <dl class="activity-meta">';
-                            list += '                <dt title="Difficulty">';
-                            list += '                    <svg height="16" width="16" role="img">';
-                            list += '                        <use xlink:href="/account/app/ui-icons/sprites/search.svg#icon-difficulty-currentcolor"></use>';
-                            list += '                    </svg>';
-                            list += '                </dt>';
-                            list += '                <dd title="Difficulty">' + d + '</dd>';
-                            list += '                <dt title="Terrain">';
-                            list += '                    <svg height="16" width="16" role="img">';
-                            list += '                        <use xlink:href="/account/app/ui-icons/sprites/search.svg#icon-terrain-currentcolor"></use>';
-                            list += '                    </svg>';
-                            list += '                </dt>';
-                            list += '                <dd title="Terrain">' + t + '</dd>';
-                            list += '                <dt title="Size">';
-                            list += '                    <svg height="16" width="16" role="img">';
-                            list += '                        <use xlink:href="/account/app/ui-icons/sprites/search.svg#icon-size-currentcolor"></use>';
-                            list += '                    </svg>';
-                            list += '                </dt>';
-                            list += '                <dd title="Size">' + size + '</dd>';
-                            list += '                <dt class="left-separator">';
-                            list += '                    <span class="visuallyhidden">Geocache Code</span>';
-                            list += '                </dt>';
-                            list += '                <dd>' + gccode + '</dd>';
-                            list += '            </dl>';
-                            list += '        </div>';
-                            list += '    </div>';
-                            list += '</li>';
-                        }
-                        for (let i=0; i<events.length; i++) {
-                            let name = $(events[i]).find('.geocache-name div a').html().trim();
-                            let type = typelist[$(events[i]).find('.geocache-icon svg use').attr('xlink:href')];
-                            let details = $(events[i]).find('.geocache-details').html().trim();
-                            let gccode = details.split('|')[0].trim();
-                            list += '<li class="activity-item activity-item-head">';
-                            list += '    <div class="activity-type-icon">';
-                            list += '            <svg class="status-icon" role="img" height="22" width="22">';
-                            list += '                    <use xlink:href="/account/app/ui-icons/sprites/cache-types.svg#icon-owned"></use>';
-                            list += '            </svg>';
-                            list += '        <svg class="icon" height="40" width="40" role="img">';
-                            list += '            <use xlink:href="/account/app/ui-icons/sprites/cache-types.svg#icon-' + type + '"></use>';
-                            list += '        </svg>';
-                            list += '    </div>';
-                            list += '    <div class="activity-data">';
-                            list += '        <div class="activity-details"><a href="https://coord.info/' + gccode + '"><h3 class="activity-header">' + name + '</h3></a>';
-                            list += '            <dl class="activity-meta">';
-                            list += '                ' + details;
-                            list += '            </dl>';
-                            list += '        </div>';
-                            list += '    </div>';
-                            list += '</li>';
-                        }
-                        list += '</ul>';
-                        list += '</div>';
-
-                        // Append List
-                        $('#GClh_unpublishedCaches_body').html(list);
+                        loadEvents();
+                    }, loadEvents, 'caches');
+                    // Get the Events information.
+                    function loadEvents() {
+                        getAsynData('https://www.geocaching.com/play/owner/unpublished/events', '.geocache-details', function(response) {
+                            events = (($(response).find('.meta-data-display .geocache-icon svg use').attr('xlink:href') == '#event'
+                                    || $(response).find('.meta-data-display .geocache-icon svg use').attr('xlink:href') == '#celebration')
+                                    ? $(response).find('.meta-data-display')
+                                    : {});
+                            buildList();
+                        }, buildList, 'events');
                     }
+                    // Build list with unpublished caches.
+                    function buildList() {
+                        // Message und return if no caches are found.
+                        if (!caches.length && !events.length) {
+                            var dnfHtml = '<div class="activity-message error">'
+                            dnfHtml += '    <p>We couldn\'t load you unpublished hides. <br> Refresh the page to try again.</p>'
+                            dnfHtml += '</div>';
+                            $('#GClh_unpublishedCaches_body').html(dnfHtml);
+                        } else {
+                            // Sort Caches.
+                            if (settings_set_showUnpublishedHides_sort && caches.length > 0) {
+                                switch (settings_showUnpublishedHides_sort) {
+                                    case 'abc': caches.sort(abc); break;
+                                    case 'gcNew': caches.sort(gcNew); break;
+                                    case 'gcOld': caches.sort(gcOld); break;
+                                    default: gclh_error("Show unpublished hides in dashboard", 'Cannot sort caches');
+                                }
+                            }
+                            // Build List.
+                            var list = '<ul class="list" style="padding:0;margin:0;">';
+                            var typelist = {
+                                '#traditional' : 2,
+                                '#multi'       : 3,
+                                '#mystery'     : 8,
+                                '#earth'       : 137,
+                                '#letterbox'   : 5,
+                                '#wherigo'     : 1858,
+                                '#virtual'     : 4,
+                                '#cito'        : 13,
+                                '#event'       : 6,
+                                '#celebration' : 3653
+                            }
+                            for (let i=0; i<caches.length; i++) {
+                                let name = $(caches[i]).find('.geocache-name div a').html().trim();
+                                let type = typelist[$(caches[i]).find('.geocache-icon svg use').attr('xlink:href')];
+                                let details = $(caches[i]).find('.geocache-details').html().trim().split(' ');
+                                let gccode = details[0].match(/GC[A-Z0-9]{1,10}/)[0];
+                                let d = details[1].split('</svg>')[1];
+                                let t = details[2].split('|')[1];
+                                let size = details[5].split('>')[1];
+                                list += '<li class="activity-item activity-item-head">';
+                                list += '    <div class="activity-type-icon">';
+                                list += '            <svg class="status-icon" role="img" height="22" width="22">';
+                                list += '                    <use xlink:href="/account/app/ui-icons/sprites/cache-types.svg#icon-owned"></use>';
+                                list += '            </svg>';
+                                list += '        <svg class="icon" height="40" width="40" role="img">';
+                                list += '            <use xlink:href="/account/app/ui-icons/sprites/cache-types.svg#icon-' + type + '"></use>';
+                                list += '        </svg>';
+                                list += '    </div>';
+                                list += '    <div class="activity-data">';
+                                list += '        <div class="activity-details"><a href="https://coord.info/' + gccode + '"><h3 class="activity-header">' + name + '</h3></a>';
+                                list += '            <dl class="activity-meta">';
+                                list += '                <dt title="Difficulty">';
+                                list += '                    <svg height="16" width="16" role="img">';
+                                list += '                        <use xlink:href="/account/app/ui-icons/sprites/search.svg#icon-difficulty-currentcolor"></use>';
+                                list += '                    </svg>';
+                                list += '                </dt>';
+                                list += '                <dd title="Difficulty">' + d + '</dd>';
+                                list += '                <dt title="Terrain">';
+                                list += '                    <svg height="16" width="16" role="img">';
+                                list += '                        <use xlink:href="/account/app/ui-icons/sprites/search.svg#icon-terrain-currentcolor"></use>';
+                                list += '                    </svg>';
+                                list += '                </dt>';
+                                list += '                <dd title="Terrain">' + t + '</dd>';
+                                list += '                <dt title="Size">';
+                                list += '                    <svg height="16" width="16" role="img">';
+                                list += '                        <use xlink:href="/account/app/ui-icons/sprites/search.svg#icon-size-currentcolor"></use>';
+                                list += '                    </svg>';
+                                list += '                </dt>';
+                                list += '                <dd title="Size">' + size + '</dd>';
+                                list += '                <dt class="left-separator">';
+                                list += '                    <span class="visuallyhidden">Geocache Code</span>';
+                                list += '                </dt>';
+                                list += '                <dd>' + gccode + '</dd>';
+                                list += '            </dl>';
+                                list += '        </div>';
+                                list += '    </div>';
+                                list += '</li>';
+                            }
+                            for (let i=0; i<events.length; i++) {
+                                let name = $(events[i]).find('.geocache-name div a').html().trim();
+                                let type = typelist[$(events[i]).find('.geocache-icon svg use').attr('xlink:href')];
+                                let details = $(events[i]).find('.geocache-details').html().trim();
+                                let gccode = details.split('|')[0].trim();
+                                list += '<li class="activity-item activity-item-head">';
+                                list += '    <div class="activity-type-icon">';
+                                list += '            <svg class="status-icon" role="img" height="22" width="22">';
+                                list += '                    <use xlink:href="/account/app/ui-icons/sprites/cache-types.svg#icon-owned"></use>';
+                                list += '            </svg>';
+                                list += '        <svg class="icon" height="40" width="40" role="img">';
+                                list += '            <use xlink:href="/account/app/ui-icons/sprites/cache-types.svg#icon-' + type + '"></use>';
+                                list += '        </svg>';
+                                list += '    </div>';
+                                list += '    <div class="activity-data">';
+                                list += '        <div class="activity-details"><a href="https://coord.info/' + gccode + '"><h3 class="activity-header">' + name + '</h3></a>';
+                                list += '            <dl class="activity-meta">';
+                                list += '                ' + details;
+                                list += '            </dl>';
+                                list += '        </div>';
+                                list += '    </div>';
+                                list += '</li>';
+                            }
+                            list += '</ul>';
+                            list += '</div>';
+
+                            // Append List
+                            $('#GClh_unpublishedCaches_body').html(list);
+                        }
+                    }
+                } else {
+                    var dnfHtml = '<div class="activity-message">';
+                    dnfHtml += '    <img class="margin-center" src="/account/app/ui-images/premium/GTmap.svg" alt="" aria-hidden="true" width="190" height="100">';
+                    dnfHtml += '    <h3 class="h5 no-margin-bottom">You don\'t have any unpublished hides.</h3>';
+                    dnfHtml += '</div>';
+                    $('#GClh_unpublishedCaches_body').html(dnfHtml);
                 }
             }
             appendCssStyle(css);
@@ -15826,9 +15833,9 @@ var mainGC = function() {
      * handlerOnNotFound: The function if the requiredElement not found.
      * id:                The ID of the iframe is required if more than one asynchronous page are requested.
      * maxWaitCount:      How often you ask for the content. (optional; default: 100)
-     * waitTime:          How long you will wait in ms. (optional; default: 5000)
+     * waitTime:          How long you will wait in ms. (optional; default: 10000 (=10s))
     */
-    function getAsynData(url, requiredElement, handler, handlerOnNotFound, id='getAsynData', maxWaitCount=100, waitTime=5000) {
+    function getAsynData(url, requiredElement, handler, handlerOnNotFound, id='getAsynData', maxWaitCount=100, waitTime=10000) {
         try {
             iframe = document.createElement('iframe');
             iframe.id = id;
