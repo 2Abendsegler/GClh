@@ -17,6 +17,17 @@
 		<img src="../images/0.10.8/Screen14.jpg" alt="Screen14.jpg"><br><br>
 	</li>
 	<li>
+		<strong>Info:</strong> [New and old Map] Mark features which are only available on one of the maps, the old Map (Browse Map) or the new Map (Search Map). [<a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="2Abendsegler">2Abendsegler</a>]<br>
+		The following features are only available on the new Map (Search Map):<br>
+		<img src="../images/0.10.8/Screen16.jpg" alt="Screen16.jpg"><br>
+		The following features are only available on the old Map (Browse Map):<br>
+		<img src="../images/0.10.8/Screen17.jpg" alt="Screen17.jpg"><br>
+		<img src="../images/0.10.8/Screen18.jpg" alt="Screen18.jpg"><br>
+		<img src="../images/0.10.8/Screen19.jpg" alt="Screen19.jpg"><br>
+		<img src="../images/0.10.8/Screen20.jpg" alt="Screen20.jpg"><br>
+		<img src="../images/0.10.8/Screen21.jpg" alt="Screen21.jpg"><br><br>
+	</li>
+	<li>
 		<strong>Fix:</strong> [Cache listing] Display favorite percent and own favorite point in cache listing again. [<a href="https://github.com/2Abendsegler/GClh/issues/1366" title="Issue 1366">1366</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 	</li>
 	<li>
