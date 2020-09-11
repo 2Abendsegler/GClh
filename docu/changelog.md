@@ -31,19 +31,18 @@
 		<strong>New:</strong> [New Map] Add links on Google Maps and Openstreetmap to New GC Map. [<a href="https://github.com/2Abendsegler/GClh/issues/1374" title="Issue 1374">1374</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 		<img src="../images/0.10.8/Screen02.jpg" alt="Screen02.jpg"><br>
 		<img src="../images/0.10.8/Screen03.jpg" alt="Screen03.jpg"><br>
-		<img src="../images/0.10.8/Screen04.jpg" alt="Screen04.jpg"><br>
+		<img src="../images/0.10.8/Screen04.jpg" alt="Screen04.jpg"><br><br>
 	</li>
 	<li>
 		<strong>New:</strong> [Cache Listing] New feature for the menu "copy data to clipboard" in cache listing: Addition of data to clipboard. [<a href="https://github.com/2Abendsegler/GClh/issues/1365" title="Issue 1365">1365</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 		This feature allows you not only to copy something to the clipboard after clearing the clipboard, but also to add something to the clipboard without clearing it. This is how you can collect things on the clipboard.<br>
 You can enter a separator to use between the addings. The default value is a line feed.<br>
 		<img src="../images/0.10.8/Screen23.jpg" alt="Screen23.jpg"><br>
+		If you want to use this feature, you have to activate the parameter.<br>
 		For example: 
-		<ul>
-			<li>Copy a GC Code to clipboard</li>
-			<li>Than add a further GC Code to clipboard</li>
-			<li>Then paste the content of the clipboard with the keys on the keyboard "Strg" ("Ctrl") and "v".</li>
-		</ul>
+		- Copy a GC Code to clipboard<br>
+		- Than add a further GC Code to clipboard<br>
+		- Then paste the content of the clipboard with the keys on the keyboard "Strg" ("Ctrl") and "v"<br>
 		<img src="../images/0.10.8/Screen24.gif" alt="Screen24.gif"><br><br>
 	</li>
 	<li>
