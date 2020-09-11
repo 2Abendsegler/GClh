@@ -28,6 +28,12 @@
 		<img src="../images/0.10.8/Screen21.jpg" alt="Screen21.jpg"><br><br>
 	</li>
 	<li>
+		<strong>New:</strong> [New Map] Add links on Google Maps and Openstreetmap to New GC Map. [<a href="https://github.com/2Abendsegler/GClh/issues/1374" title="Issue 1374">1374</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		<img src="../images/0.10.8/Screen02.jpg" alt="Screen02.jpg"><br>
+		<img src="../images/0.10.8/Screen03.jpg" alt="Screen03.jpg"><br>
+		<img src="../images/0.10.8/Screen04.jpg" alt="Screen04.jpg"><br>
+	</li>
+	<li>
 		<strong>New:</strong> [Cache Listing] New feature for the menu "copy data to clipboard" in cache listing: Addition of data to clipboard. [<a href="https://github.com/2Abendsegler/GClh/issues/1365" title="Issue 1365">1365</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 		This feature allows you not only to copy something to the clipboard after clearing the clipboard, but also to add something to the clipboard without clearing it. This is how you can collect things on the clipboard.<br>
 You can enter a separator to use between the addings. The default value is a line feed.<br>
@@ -47,6 +53,10 @@ You can enter a separator to use between the addings. The default value is a lin
 	<li>
 		<strong>New:</strong> [Dashboard] Create direct "Edit log"-links on the dashboard to make logs editable without an extra-step. [<a href="https://github.com/2Abendsegler/GClh/issues/1353" title="Issue 1353">1353</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 		<img src="../images/0.10.8/Screen22.jpg" alt="Screen22.jpg"><br><br>
+	</li>
+	<li>
+		<strong>New:</strong> [Owner Dashboard] Add links to cachetypes. [<a href="https://github.com/2Abendsegler/GClh/issues/1377" title="Issue 1377">1377</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br>
+		<img src="../images/0.10.8/Screen11.jpg" alt="Screen11.jpg"><br><br>
 	</li>
 	<li>
 		<strong>Fix:</strong> [Cache listing] Display favorite percent and own favorite point in cache listing again. [<a href="https://github.com/2Abendsegler/GClh/issues/1366" title="Issue 1366">1366</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
