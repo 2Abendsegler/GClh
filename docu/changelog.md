@@ -13,6 +13,10 @@
 ## v0.10.8:
 <ul>
 	<li>
+		<strong>New:</strong> [New Map] Port hide found/own caches, cache types and sidebar to searchmap (set filter on map load). [<a href="https://github.com/2Abendsegler/GClh/issues/1304" title="Issue 1304">1304</a> / <a href="https://www.geocaching.com/profile/?u=Die Batzen" title="Thanks to Die Batzen">Die Batzen</a>]<br>
+		<img src="../images/0.10.8/Screen14.jpg" alt="Screen14.jpg"><br><br>
+	</li>
+	<li>
 		<strong>Fix:</strong> [Cache listing] Display favorite percent and own favorite point in cache listing again. [<a href="https://github.com/2Abendsegler/GClh/issues/1366" title="Issue 1366">1366</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 	</li>
 	<li>
