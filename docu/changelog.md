@@ -28,6 +28,22 @@
 		<img src="../images/0.10.8/Screen21.jpg" alt="Screen21.jpg"><br><br>
 	</li>
 	<li>
+		<strong>New:</strong> [Cache Listing] New feature for the menu "copy data to clipboard" in cache listing: Addition of data to clipboard. [<a href="https://github.com/2Abendsegler/GClh/issues/1365" title="Issue 1365">1365</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		This feature allows you not only to copy something to the clipboard after clearing the clipboard, but also to add something to the clipboard without clearing it. This is how you can collect things on the clipboard.<br>
+You can enter a separator to use between the addings. The default value is a line feed.<br>
+		<img src="../images/0.10.8/Screen23.jpg" alt="Screen23.jpg"><br>
+		For example: Copy a GC Code to clipboard. Than add a further GC Code to clipboard. Then paste the content of the clipboard with the keys on the keyboard "Strg" ("Ctrl") and "v".<br>
+		<img src="../images/0.10.8/Screen24.gif" alt="Screen24.gif"><br>
+	</li>
+	<li>
+		<strong>New:</strong> [Cache listing] Additional link for logging premium caches for non-premium cachers. [<a href="https://github.com/2Abendsegler/GClh/issues/1345" title="Issue 1345">1345</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		<img src="../images/0.10.8/Screen12.gif" alt="Screen12.gif"><br><br>
+	</li>
+	<li>
+		<strong>New:</strong> [Dashboard] Create direct "Edit log"-links on the dashboard to make logs editable without an extra-step. [<a href="https://github.com/2Abendsegler/GClh/issues/1353" title="Issue 1353">1353</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		<img src="../images/0.10.8/Screen22.jpg" alt="Screen22.jpg"><br><br>
+	</li>
+	<li>
 		<strong>Fix:</strong> [Cache listing] Display favorite percent and own favorite point in cache listing again. [<a href="https://github.com/2Abendsegler/GClh/issues/1366" title="Issue 1366">1366</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 	</li>
 	<li>
