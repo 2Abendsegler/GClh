@@ -17,7 +17,7 @@
 		<img src="../images/0.10.8/Screen14.jpg" alt="Screen14.jpg"><br><br>
 	</li>
 	<li>
-		<strong>Info:</strong> [New and old Map] Mark features which are only available on one of the maps, the old Map (Browse Map) or the new Map (Search Map). [<a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="2Abendsegler">2Abendsegler</a>]<br>
+		<strong>Info:</strong> [New and old Map] Mark features in Config which are only available on one of the maps. [<a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="2Abendsegler">2Abendsegler</a>]<br>
 		The following features are only available on the new Map (Search Map):<br>
 		<img src="../images/0.10.8/Screen16.jpg" alt="Screen16.jpg"><br>
 		The following features are only available on the old Map (Browse Map):<br>
