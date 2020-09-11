@@ -8028,19 +8028,26 @@ var mainGC = function() {
                 var events = {};
                 if ($('a.bold[href="/account/dashboard/unpublishedcaches"]')[0]) {
                     getAsynData('https://www.geocaching.com/play/owner/unpublished', '.geocache-details', function(response) {
-                        caches = (($(response).find('.meta-data-display .geocache-icon svg use').attr('xlink:href') != '#event'
-                                && $(response).find('.meta-data-display .geocache-icon svg use').attr('xlink:href') != '#celebration')
-                                ? $(response).find('.meta-data-display')
-                                : {});
-                        loadEvents();
+                        if ($(response).find('.meta-data-display .geocache-icon svg use').attr('xlink:href') == '#event'
+                         || $(response).find('.meta-data-display .geocache-icon svg use').attr('xlink:href') == '#celebration') {
+                            // No unpublished caches found.
+                            events = $(response).find('.meta-data-display');
+                            buildList();
+                        } else {
+                            // Unpublished caches found.
+                            caches = $(response).find('.meta-data-display');
+                            if (caches.length == $('a.bold[href="/account/dashboard/unpublishedcaches"]')[0].innerHTML.match(/\d{1,}/)[0]) {
+                                // No unpublished events found.
+                                buildList();
+                            } else {
+                                loadEvents();
+                            }
+                        }
                     }, loadEvents, 'caches');
                     // Get the Events information.
                     function loadEvents() {
                         getAsynData('https://www.geocaching.com/play/owner/unpublished/events', '.geocache-details', function(response) {
-                            events = (($(response).find('.meta-data-display .geocache-icon svg use').attr('xlink:href') == '#event'
-                                    || $(response).find('.meta-data-display .geocache-icon svg use').attr('xlink:href') == '#celebration')
-                                    ? $(response).find('.meta-data-display')
-                                    : {});
+                            events = $(response).find('.meta-data-display');
                             buildList();
                         }, buildList, 'events');
                     }
