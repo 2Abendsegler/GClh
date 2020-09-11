@@ -38,8 +38,8 @@
 		This feature allows you not only to copy something to the clipboard after clearing the clipboard, but also to add something to the clipboard without clearing it. This is how you can collect things on the clipboard.<br>
 You can enter a separator to use between the addings. The default value is a line feed.<br>
 		<img src="../images/0.10.8/Screen23.jpg" alt="Screen23.jpg"><br>
-		If you want to use this feature, you have to activate the parameter.<br>
-		For example: 
+		If you want to use this feature, you have to activate the parameter.<br><br>
+		For example:<br>
 		- Copy a GC Code to clipboard<br>
 		- Than add a further GC Code to clipboard<br>
 		- Then paste the content of the clipboard with the keys on the keyboard "Strg" ("Ctrl") and "v"<br>
