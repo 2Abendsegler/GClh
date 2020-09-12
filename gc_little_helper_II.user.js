@@ -2,7 +2,7 @@
 // @name             GC little helper II
 // @namespace        http://www.amshove.net
 //--> $$000
-// @version          0.10.7
+// @version          0.10.8
 //<-- $$000
 // @include          https://www.geocaching.com/*
 // @include          https://maps.google.tld/*
@@ -11468,10 +11468,10 @@ var mainGC = function() {
         div.setAttribute("style", "margin-top: -50px;");
         var prop = ' style="border: none; visibility: hidden; width: 2px; height: 2px;" alt="">';
 //--> $$002
-        var code = '<img src="https://c.andyhoppe.com/1591560533"' + prop + // Besucher
-                   '<img src="https://c.andyhoppe.com/1591560628"' + prop + // Seitenaufrufe
-                   '<img src="https://www.worldflagcounter.com/g8w"' + prop +
-                   '<img src="https://s11.flagcounter.com/count2/ZdG4/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
+        var code = '<img src="https://c.andyhoppe.com/1599903823"' + prop + // Besucher
+                   '<img src="https://c.andyhoppe.com/1599903899"' + prop + // Seitenaufrufe
+                   '<img src="https://www.worldflagcounter.com/hgF"' + prop +
+                   '<img src="https://s11.flagcounter.com/count2/idiW/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
 //<-- $$002
         div.innerHTML = code;
         side.appendChild(div);
@@ -12251,8 +12251,8 @@ var mainGC = function() {
         html += "  text-transform: unset;}";
         html += ".gclh_content .gclh_prem {";
         html += "  height: 14px;";
-        html += "  vertical-align: baseline;";
-        html += "  margin-bottom: -2px;}";
+        html += "  vertical-align: middle;";
+        html += "  margin-bottom: 1px;}";
         html += ".gclh_content a {";
         html += "  text-decoration: none;";
         html += "  color: #3d76c5;}";
@@ -12393,6 +12393,16 @@ var mainGC = function() {
         html += "  margin-top: 12px;";
         html += "  margin-bottom: 3px;";
         html += "  margin-left: 5px;}";
+        html += "span.browse_map_icon, span.search_map_icon {";
+        html += "  position: absolute;";
+        html += "  margin-top: 8px;}";
+        html += "svg.browse_map_icon, svg.search_map_icon {";
+        html += "  vertical-align: middle;";
+        html += "  margin-bottom: 1px;";
+        html += "  height: 12px;";
+        html += "  width: 12px;}";
+        html += "svg.search_map_icon {";
+        html += "  margin-top: 2px;}";
         appendCssStyle(html, "body");
     }
 
@@ -12402,9 +12412,12 @@ var mainGC = function() {
     var t_reqMDTc = "This option requires \"Mark D/T combinations for your next possible cache matrix\".";
     var t_reqChlSLoT = "This option requires \"Change header layout\" and \"Show Linklist on top\".";
     var t_reqSLoT = "This option requires \"Show Linklist on top\".";
-    var prem = " <img class='gclh_prem' title='The underlying feature of GC is a premium feature.' src='" + global_premium_icon + "'> ";
+    var prem = " <img class='gclh_prem' title='The underlying feature of GC is a Premium Member Only feature.' src='/images/icons/16/premium_only.png'> ";
     var dt_display = [ ["greater than or equal to",">="], ["equal to","="], ["less than or equal to","<="] ];
     var dt_score = [ ["1","1"], ["1.5","1.5"], ["2","2"], ["2.5","2.5"], ["3","3"], ["3.5","3.5"], ["4","4"], ["4.5","4.5"], ["5","5"] ];
+    var onlyBrowseMap = '<span title="This works only on the old GC Map (Browse Map)."> ' + browse_map_icon + '</span>';
+    var onlySearchMap = '<span title="This works only on the new GC Map (Search Map)."> ' + search_map_icon + '</span>';
+    var onlyBrowseMapBehindIcon = '<span class="browse_map_icon" title="This works only on the old Map (Browse Map).">' + browse_map_icon + '</span>';
 
     function gclh_createSelectOptionCode(id, data, selectedValue) {
         var html = "";
@@ -12488,6 +12501,7 @@ var mainGC = function() {
             html += thanksLineBuild("DrakMrak",             "",                         false, false, true,  false, false);
             html += thanksLineBuild("radlerandi",           "",                         false, false, true,  false, false);
             html += thanksLineBuild("Nicole1338",           "",                         false, false, true,  false, false);
+            html += thanksLineBuild("Die Batzen",           "DieBatzen",                false, false, true,  true,  false);
             html += thanksLineBuild("ramirez_",             "ramirezhr",                false, false, true,  false, false);
             html += thanksLineBuild("king-ton",             "",                         false, false, true,  false, false);
             html += thanksLineBuild("dontpänic",            "haarspalter",              false, false, true,  false, false);
@@ -12502,7 +12516,6 @@ var mainGC = function() {
             html += thanksLineBuild("BlueEagle23",          "",                         false, false, false, true,  false);
             html += thanksLineBuild("Cappa-d",              "",                         false, false, false, true,  false);
             html += thanksLineBuild("",                     "gboye",                    false, false, false, true,  false);
-            html += thanksLineBuild("Die Batzen",           "DieBatzen",                false, false, false, true,  false);
             html += thanksLineBuild("Donnerknispel",        "",                         false, false, false, true,  false);
             html += thanksLineBuild("",                     "jet2mike",                 false, false, false, true,  false);
             html += thanksLineBuild("Jipem",                "",                         false, false, false, true,  false);
@@ -12512,9 +12525,10 @@ var mainGC = function() {
             html += thanksLineBuild("Pontiac_CZ",           "PontiacCZ",                false, false, false, true,  false);
             html += thanksLineBuild("RoRo",                 "RolandRosenfeld",          false, false, false, true,  false);
             html += thanksLineBuild("stepborc",             "",                         false, false, false, true,  false);
+            html += thanksLineBuild("Tungstène",            "Tungstene",                false, false, false, true,  false);
             html += thanksLineBuild("V60",                  "V60GC",                    false, false, false, true,  false);
             html += thanksLineBuild("winkamol",             "",                         false, false, false, true,  false);
-            var thanksLastUpdate = "07.06.2020";
+            var thanksLastUpdate = "12.09.2020";
 //<-- $$006
             html += "    </tbody>";
             html += "</table>";
@@ -12729,8 +12743,15 @@ var mainGC = function() {
             html += "<div id='gclh_config_maps' class='gclh_block'>";
             html += newParameterOn1;
             html += checkboxy('settings_relocate_other_map_buttons', 'Relocate buttons \"Search\" and \"Browse geocaches\" to the other buttons') + "<br>";
+            html += checkboxy('settings_searchmap_autoupdate_after_dragging', 'Automatic search for new caches after dragging') + onlySearchMap + "<br>";
+            html += checkboxy('settings_searchmap_compact_layout', 'Show compact layout on detail screens') + show_help("If compact layout is enabled and the name of disabled caches are specially represented, the cache status line above the cache name is hidden.") + onlySearchMap + "<br>";
+            html += checkboxy('settings_searchmap_disabled', 'Show name of disabled caches ') + checkboxy('settings_searchmap_disabled_strikethrough', 'strike through, in color ');
+            html += "<input class='gclh_form color' type='text' size=6 id='settings_searchmap_disabled_color' style='margin-left: 0px;' value='" + getValue("settings_searchmap_disabled_color", "4A4A4A") + "'>";
+            html += "<img src=" + global_restore_icon + " id='restore_settings_searchmap_disabled_color' title='back to default' style='width: 12px; cursor: pointer;'>";
+            html += show_help3("If compact layout is enabled and the name of disabled caches are specially represented, the cache status line above the cache name is hidden.") + onlySearchMap + '<br>';
+            html += checkboxy('settings_searchmap_show_hint', 'Show hint of cache automatically on cache detail screen') + onlySearchMap + "<br>";
             html += newParameterVersionSetzen('0.10') + newParameterOff;
-            html += "<div style='margin-top: 9px; margin-left: 5px'><b>Homezone circles</b></div>";
+            html += "<div style='margin-top: 9px; margin-left: 5px'><b>Homezone circles</b>" + onlyBrowseMap + "</div>";
             html += checkboxy('settings_show_homezone', 'Show Homezone circles') + show_help("This option allows to draw Homezone circles around coordinates on the map.") + "<br>";
             html += "<div id='ShowHomezoneCircles' style='display: " + (settings_show_homezone ? "block":"none") + ";'>";
             html += "<table class='multi_homezone_settings'>";
@@ -12777,11 +12798,11 @@ var mainGC = function() {
 
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>Hide map elements</b></div>";
             html += checkboxy('settings_map_hide_sidebar', 'Hide sidebar by default') + "<br>";
-            html += checkboxy('settings_hide_map_header', 'Hide header by default') + "<br>";
+            html += checkboxy('settings_hide_map_header', 'Hide header by default') + onlyBrowseMap + "<br>";
             html += checkboxy('settings_map_hide_found', 'Hide found caches by default') + prem + "<br>";
             html += checkboxy('settings_map_hide_hidden', 'Hide own caches by default') + prem + "<br>";
             html += newParameterOn1;
-            html += checkboxy('settings_map_hide_dnfs', 'Hide DNF smileys by default') + prem + "<br>";
+            html += checkboxy('settings_map_hide_dnfs', 'Hide DNF smileys by default') + onlyBrowseMap + prem + "<br>";
             html += newParameterVersionSetzen('0.10') + newParameterOff;
             html += "&nbsp;" + "Hide cache types by default: " + prem + "<br>";
 
@@ -12789,10 +12810,10 @@ var mainGC = function() {
             var imageBaseUrl = "/map/images/mapicons/";
             html += " &nbsp; " + checkboxy('settings_map_hide_2', "<img "+imgStyle+" src='" + imageBaseUrl + "2.png' title='Traditional'>") + "<br>";
             html += " &nbsp; " + checkboxy('settings_map_hide_3', "<img "+imgStyle+" src='"  + imageBaseUrl + "3.png' title='Multi-Cache'>") + "<br>";
-            html += " &nbsp; " + checkboxy('settings_map_hide_6', "<img "+imgStyle+" src='" + imageBaseUrl + "6.png' title='Event'>");
-            html += " &nbsp; " + checkboxy('settings_map_hide_13', "<img "+imgStyle+" src='" + imageBaseUrl + "13.png' title='Cache In Trash Out'>");
-            html += " &nbsp; " + checkboxy('settings_map_hide_453', "<img "+imgStyle+" src='" + imageBaseUrl + "453.png' title='Mega-Event'>");
-            html += " &nbsp; " + checkboxy('settings_map_hide_7005', "<img "+imgStyle+" src='" + imageBaseUrl + "7005.png' title='Giga-Event'>") + "<br>";
+            html += " &nbsp; " + checkboxy('settings_map_hide_6', "<img "+imgStyle+" src='" + imageBaseUrl + "6.png' title='Event / Community Celebration Event'>");
+            html += " &nbsp; " + checkboxy('settings_map_hide_13', "<img "+imgStyle+" src='" + imageBaseUrl + "13.png' title='Cache In Trash Out'>") + onlyBrowseMapBehindIcon;
+            html += " &nbsp; " + checkboxy('settings_map_hide_453', "<img "+imgStyle+" src='" + imageBaseUrl + "453.png' title='Mega-Event'>") + onlyBrowseMapBehindIcon;
+            html += " &nbsp; " + checkboxy('settings_map_hide_7005', "<img "+imgStyle+" src='" + imageBaseUrl + "7005.png' title='Giga-Event'>") + onlyBrowseMapBehindIcon + "<br>";
             html += " &nbsp; " + checkboxy('settings_map_hide_137', "<img "+imgStyle+" src='" + imageBaseUrl + "137.png' title='EarthCache'>");
             html += " &nbsp; " + checkboxy('settings_map_hide_4', "<img "+imgStyle+" src='" + imageBaseUrl + "4.png' title='Virtual'>");
             html += " &nbsp; " + checkboxy('settings_map_hide_11', "<img "+imgStyle+" src='" + imageBaseUrl + "11.png' title='Webcam'>") + "<br>";
@@ -12800,7 +12821,7 @@ var mainGC = function() {
             html += " &nbsp; " + checkboxy('settings_map_hide_5', "<img "+imgStyle+" src='" + imageBaseUrl + "5.png' title='Letterbox'>");
             html += " &nbsp; " + checkboxy('settings_map_hide_1858', "<img "+imgStyle+" src='" + imageBaseUrl + "1858.png' title='Wherigo'>") + "<br>";
 
-            html += "<div style='margin-top: 9px; margin-left: 5px'><b>Layers in map</b>" + show_help("Here you can select the map layers which should be added into the layer menu with the map. With this option you can reduce the long list to the layers you really need. If the right list of layers is empty, all will be displayed. If you use other scripts like \"Geocaching Map Enhancements\" GClh will overwrite its layercontrol. With this option you can disable GClh layers to use the layers for example from GC or GME.") + "</div>";
+            html += "<div style='margin-top: 9px; margin-left: 5px'><b>Layers in map</b>" + show_help("Here you can select the map layers which should be added into the layer menu with the map. With this option you can reduce the long list to the layers you really need. If the right list of layers is empty, all will be displayed. If you use other scripts like \"Geocaching Map Enhancements\" GClh will overwrite its layercontrol. With this option you can disable GClh layers to use the layers for example from GC or GME.") + onlyBrowseMap + "</div>";
             html += checkboxy('settings_use_gclh_layercontrol', 'Replace layers by GClh') + show_help_big("GClh will replace the layers. With this option you can disable this replacement to use the layers from GC or other scripts like GME (Geocaching Map Enhancements). But you can use too the layers of GClh together with the functionality of GME.<br><br>It is important, that GClh run at first, particularly in front of other layer used scripts like GME or GCVote.<br><br>If there are problems with the layers by using GCVote at once, you have to clear the local storage of GCVote. You can do it about your dashboard. If that does not help, deinstall and install GCVote again. (GCVote use a local storage for its data. This storage can include incomplete layers which influence the layer control.)") + "<br>";
             html += "<div id='MapLayersConfiguration' style='display: " + (settings_use_gclh_layercontrol ? "block":"none") + ";'>";
             html += "<table cellspacing='0' cellpadding='0' border='0'><tbody>";
@@ -12851,17 +12872,6 @@ var mainGC = function() {
             html += newParameterVersionSetzen(0.9) + newParameterOff;
             html += newParameterOn1;
             html += " &nbsp; " + checkboxy('settings_show_enhanced_map_coords', 'Show coordinates') + "<br>";
-            html += newParameterVersionSetzen('0.10') + newParameterOff;
-
-            html += "<div class='gclh_old_new_line'>New map (search map) only</div>";
-            html += newParameterOn1;
-            html += checkboxy('settings_searchmap_autoupdate_after_dragging', 'Automatic search for new caches after dragging') + "<br>";
-            html += checkboxy('settings_searchmap_compact_layout', 'Show compact layout on detail screens') + show_help("If compact layout is enabled and the name of disabled caches are specially represented, the cache status line above the cache name is hidden.") + "<br>";
-            html += checkboxy('settings_searchmap_disabled', 'Show name of disabled caches ') + checkboxy('settings_searchmap_disabled_strikethrough', 'strike through, in color ');
-            html += "<input class='gclh_form color' type='text' size=6 id='settings_searchmap_disabled_color' style='margin-left: 0px;' value='" + getValue("settings_searchmap_disabled_color", "4A4A4A") + "'>";
-            html += "<img src=" + global_restore_icon + " id='restore_settings_searchmap_disabled_color' title='back to default' style='width: 12px; cursor: pointer;'>";
-            html += show_help3("If compact layout is enabled and the name of disabled caches are specially represented, the cache status line above the cache name is hidden.") + '<br>';
-            html += checkboxy('settings_searchmap_show_hint', 'Show hint of cache automatically on cache detail screen') + "<br>";
             html += newParameterVersionSetzen('0.10') + newParameterOff;
             html += "</div>";
 
@@ -13391,6 +13401,7 @@ var mainGC = function() {
             $('#gclh_config_content_thanks').hide();
             $('#settings_show_homezone,#settings_use_gclh_layercontrol,#settings_bookmarks_top_menu,#settings_bookmarks_top_menu_h').addClass('shadowBig');
             setSpecialLinks();
+            $(".gclh_content svg.browse_map_icon, .gclh_content svg.search_map_icon,").each(function(){$(this)[0].setAttribute("viewBox", "0 0 25 25");});
 
             // Config Content: Hauptbereiche hideable machen.
             // ---------------
