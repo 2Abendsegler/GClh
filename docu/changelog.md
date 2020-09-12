@@ -13,8 +13,9 @@
 ## v0.10.8:
 <ul>
 	<li>
-		<strong>New:</strong> [New Map] Port hide found/own caches, cache types and sidebar to searchmap (set filter on map load). [<a href="https://github.com/2Abendsegler/GClh/issues/1304" title="Issue 1304">1304</a> / <a href="https://www.geocaching.com/profile/?u=Die Batzen" title="Thanks to Die Batzen">Die Batzen</a>]<br>
-		<img src="../images/0.10.8/Screen14.jpg" alt="Screen14.jpg"><br><br>
+		<strong>New:</strong> [New Map] Hide found/own caches, cache types and sidebar also in new Map (Search Map). [<a href="https://github.com/2Abendsegler/GClh/issues/1304" title="Issue 1304">1304</a> / <a href="https://www.geocaching.com/profile/?u=Die Batzen" title="Thanks to Die Batzen">Die Batzen</a>]<br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#gclh_config_maps" title="Link to your GClh Config">Settings -> Maps:<br>
+		<img src="../images/0.10.8/Screen14.jpg" alt="Screen14.jpg"></a><br><br>
 	</li>
 	<li>
 		<strong>Info:</strong> [New and old Map] Mark features in Config which are only available on one of the maps. [<a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="2Abendsegler">2Abendsegler</a>]<br>
