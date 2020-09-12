@@ -67,11 +67,11 @@
 	</li>
 	<li>
 		<strong>New:</strong> [Cache listing] Additional link for logging premium caches for non-premium cachers. [<a href="https://github.com/2Abendsegler/GClh/issues/1345" title="Issue 1345">1345</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		<img src="../images/0.10.8/Screen12.gif" alt="Screen12.gif"><br><br>
+		To "Log your visit" not inline, you have to do nothing.<br><br>
 		To "Log your visit (inline)" you have to activate possibly the parameter. If you're using an ad-blocking add-on, such as uBlock, the embedded screen may not be allowed. To turn this off, you have to add "www.geocaching.com/geocache/GC*" to the whitelist, or something similar, of your add-on.<br>
 		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_log_inline_pmo4basic" title="Link to your GClh Config">Settings -> Listing:<br>
 		<img src="../images/0.10.8/Screen26.jpg" alt="Screen26.jpg"></a><br><br>
-		To "Log your visit" not inline, you have to do nothing.<br><br>
-		<img src="../images/0.10.8/Screen12.gif" alt="Screen12.gif"><br><br>
 	</li>
 	<li>
 		<strong>New:</strong> [Cache listing] After clicking on a log icon in the VIP area, go to the log, even if the log is not yet displayed. [<a href="https://github.com/2Abendsegler/GClh/issues/1411" title="Issue 1411">1411</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
