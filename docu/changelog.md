@@ -62,18 +62,6 @@
 ### Cache Listing:
 <ul>	
 	<li>
-		<strong>New:</strong> [Cache Listing] New feature for the menu "copy data to clipboard" in cache listing: Addition of data to clipboard. [<a href="https://github.com/2Abendsegler/GClh/issues/1365" title="Issue 1365">1365</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
-		This feature allows you not only to copy something to the clipboard after clearing the clipboard, but also to add something to the clipboard without clearing it. This is how you can collect things on the clipboard. You can enter a separator to use between the addings. The default value is a line feed.<br>
-		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_show_copydata_menu" title="Link to your GClh Config">Settings -> Listing:<br>
-		<img src="../images/0.10.8/Screen23.jpg" alt="Screen23.jpg"></a><br>
-		If you want to use this feature, you have to activate the parameter.<br><br>
-		For example:<br>
-		1. Copy a GC Code to clipboard<br>
-		2. Than add a further GC Code to clipboard<br>
-		3. Then paste the content of the clipboard with the keys on the keyboard "Strg" ("Ctrl") and "v"<br><br>
-		<img src="../images/0.10.8/Screen24.gif" alt="Screen24.gif" style="height: 200px;"><br><br>
-	</li>
-	<li>
 		<strong>New:</strong> [Cache listing] Highlight found places from cache listing "Search in logtext" in the logs. [<a href="https://github.com/2Abendsegler/GClh/issues/1437" title="Issue 1437">1437</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 		<img src="../images/0.10.8/Screen13.jpg" alt="Screen13.jpg"><br><br>
 	</li>
@@ -94,7 +82,20 @@
 		<img src="../images/0.10.8/Screen09.gif" alt="Screen09.gif"><br><br>
 	</li>
 	<li>
-		<strong>Fix:</strong> [Cache listing] Display favorite percent and own favorite point in cache listing again. [<a href="https://github.com/2Abendsegler/GClh/issues/1366" title="Issue 1366">1366</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br><br>
+		<strong>New:</strong> [Cache Listing] New feature for the menu "copy data to clipboard" in cache listing: Addition of data to clipboard. [<a href="https://github.com/2Abendsegler/GClh/issues/1365" title="Issue 1365">1365</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		This feature allows you not only to copy something to the clipboard after clearing the clipboard, but also to add something to the clipboard without clearing it. This is how you can collect things on the clipboard. You can enter a separator to use between the addings. The default value is a line feed.<br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_show_copydata_menu" title="Link to your GClh Config">Settings -> Listing:<br>
+		<img src="../images/0.10.8/Screen23.jpg" alt="Screen23.jpg"></a><br>
+		If you want to use this feature, you have to activate the parameter.<br><br>
+		For example:<br>
+		1. Copy a GC Code to clipboard<br>
+		2. Than add a further GC Code to clipboard<br>
+		3. Then paste the content of the clipboard with the keys on the keyboard "Strg" ("Ctrl") and "v"<br><br>
+		<img src="../images/0.10.8/Screen24.gif" alt="Screen24.gif"><br><br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Cache listing] Display favorite percent and own favorite point in cache listing again. [<a href="https://github.com/2Abendsegler/GClh/issues/1366" title="Issue 1366">1366</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		<img src="../images/0.10.8/Screen27.jpg" alt="Screen27.jpg"><br><br>
 	</li>
 	<li>
 		<strong>Fix:</strong> [Cache listing] "Photo file name" in "Copy Data to Clipboard" feature in cache listings use invalid characters. [<a href="https://github.com/2Abendsegler/GClh/issues/1348" title="Issue 1348">1348</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br><br>
