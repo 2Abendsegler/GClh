@@ -34,7 +34,9 @@
 		<strong>New:</strong> [New Map] Add links on Google Maps and Openstreetmap to new GC Map. [<a href="https://github.com/2Abendsegler/GClh/issues/1374" title="Issue 1374">1374</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_hide_left_sidebar_on_google_maps" title="Link to your GClh Config">Settings -> Maps:<br>
 		<img src="../images/0.10.8/Screen02.jpg" alt="Screen02.jpg"></a><br>
+		On Google Maps:<br>
 		<img src="../images/0.10.8/Screen03.jpg" alt="Screen03.jpg"><br>
+		On Openstreetmap:<br>
 		<img src="../images/0.10.8/Screen04.jpg" alt="Screen04.jpg"><br><br>
 	</li>
 	<li>
