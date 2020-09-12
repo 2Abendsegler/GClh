@@ -18,42 +18,47 @@
 		<img src="../images/0.10.8/Screen14.jpg" alt="Screen14.jpg"></a><br><br>
 	</li>
 	<li>
-		<strong>Info:</strong> [New and old Map] Mark features in Config which are only available on one of the maps. [<a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="2Abendsegler">2Abendsegler</a>]<br>
+		<strong>Info:</strong> [New/old Map] Mark features in Config which are only available in one of the maps. [<a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="2Abendsegler">2Abendsegler</a>]<br>
 		The following features are only available on the new Map (Search Map):<br>
-		<img src="../images/0.10.8/Screen16.jpg" alt="Screen16.jpg"><br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_searchmap_autoupdate_after_dragging" title="Link to your GClh Config">Settings -> Maps:<br>
+		<img src="../images/0.10.8/Screen16.jpg" alt="Screen16.jpg"></a><br>
 		The following features are only available on the old Map (Browse Map):<br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_show_homezone" title="Link to your GClh Config">Settings -> Maps:<br>
 		<img src="../images/0.10.8/Screen17.jpg" alt="Screen17.jpg"><br>
 		<img src="../images/0.10.8/Screen18.jpg" alt="Screen18.jpg"><br>
 		<img src="../images/0.10.8/Screen19.jpg" alt="Screen19.jpg"><br>
 		<img src="../images/0.10.8/Screen20.jpg" alt="Screen20.jpg"><br>
-		<img src="../images/0.10.8/Screen21.jpg" alt="Screen21.jpg"><br><br>
+		<img src="../images/0.10.8/Screen21.jpg" alt="Screen21.jpg"></a><br><br>
 	</li>
 	<li>
-		<strong>New:</strong> [New Map] Add links on Google Maps and Openstreetmap to New GC Map. [<a href="https://github.com/2Abendsegler/GClh/issues/1374" title="Issue 1374">1374</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
-		<img src="../images/0.10.8/Screen02.jpg" alt="Screen02.jpg"><br>
+		<strong>New:</strong> [New Map] Add links on Google Maps and Openstreetmap to new GC Map. [<a href="https://github.com/2Abendsegler/GClh/issues/1374" title="Issue 1374">1374</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_hide_left_sidebar_on_google_maps" title="Link to your GClh Config">Settings -> Maps:<br>
+		<img src="../images/0.10.8/Screen02.jpg" alt="Screen02.jpg"></a><br>
 		<img src="../images/0.10.8/Screen03.jpg" alt="Screen03.jpg"><br>
 		<img src="../images/0.10.8/Screen04.jpg" alt="Screen04.jpg"><br><br>
 	</li>
 	<li>
 		<strong>New:</strong> [Old Map] Hide and show "Community Celebration Events" together with "Events". [<a href="https://github.com/2Abendsegler/GClh/issues/1386" title="Issue 1386">1386</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
-		In the old map there is no icon to hide Community Celebration Events. Therefore, these events remain visible even if you have hidden all events with the event icons. Now, if you hide or show normal Events, the Community Celebration Events should also be hidden or showed.<br>
+		In the old Map there is no icon to hide "Community Celebration Events". Therefore, these events remain visible even if you have hidden all events with the event icons. Now, if you hide or show "Events", the "Community Celebration Events" should also be hidden or showed. This also works for the features "Show / hide all Cache types".<br>
 		<img src="../images/0.10.8/Screen01.jpg" alt="Screen01.jpg"><br><br>
 	</li>
 	<li>
-		<strong>New:</strong> [New/old Map] Show number of images in popup of the old map and in detail screen of the new map and provide a link to the image gallery.  [<a href="https://github.com/2Abendsegler/GClh/issues/1399" title="Issue 1399">1399</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		<strong>New:</strong> [New/old Map] Show number of images on the maps and provide a link to the image gallery. [<a href="https://github.com/2Abendsegler/GClh/issues/1399" title="Issue 1399">1399</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		Popup of the old Map (Browse Map):<br>
 		<img src="../images/0.10.8/Screen06.jpg" alt="Screen06.jpg"><br>
+		Detail screen of the new Map (Search Map):<br>
 		<img src="../images/0.10.8/Screen07.jpg" alt="Screen07.jpg"><br><br>
 	</li>
 	<li>
 		<strong>New:</strong> [Cache Listing] New feature for the menu "copy data to clipboard" in cache listing: Addition of data to clipboard. [<a href="https://github.com/2Abendsegler/GClh/issues/1365" title="Issue 1365">1365</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
-		This feature allows you not only to copy something to the clipboard after clearing the clipboard, but also to add something to the clipboard without clearing it. This is how you can collect things on the clipboard.<br>
-You can enter a separator to use between the addings. The default value is a line feed.<br>
-		<img src="../images/0.10.8/Screen23.jpg" alt="Screen23.jpg"><br>
+		This feature allows you not only to copy something to the clipboard after clearing the clipboard, but also to add something to the clipboard without clearing it. This is how you can collect things on the clipboard. You can enter a separator to use between the addings. The default value is a line feed.<br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_show_copydata_menu" title="Link to your GClh Config">Settings -> Listing:<br>
+		<img src="../images/0.10.8/Screen23.jpg" alt="Screen23.jpg"></a><br>
 		If you want to use this feature, you have to activate the parameter.<br><br>
 		For example:<br>
-		- Copy a GC Code to clipboard<br>
-		- Than add a further GC Code to clipboard<br>
-		- Then paste the content of the clipboard with the keys on the keyboard "Strg" ("Ctrl") and "v"<br>
+		1. Copy a GC Code to clipboard<br>
+		2. Than add a further GC Code to clipboard<br>
+		3. Then paste the content of the clipboard with the keys on the keyboard "Strg" ("Ctrl") and "v"<br>
 		<img src="../images/0.10.8/Screen24.gif" alt="Screen24.gif"><br><br>
 	</li>
 	<li>
@@ -62,6 +67,10 @@ You can enter a separator to use between the addings. The default value is a lin
 	</li>
 	<li>
 		<strong>New:</strong> [Cache listing] Additional link for logging premium caches for non-premium cachers. [<a href="https://github.com/2Abendsegler/GClh/issues/1345" title="Issue 1345">1345</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		To log your visit inline you have to activate possibly the parameter. If you're using an ad-blocking add-on, such as uBlock, the embedded screen may not be allowed. To turn this off, you have to add "www.geocaching.com/geocache/GC*" to the whitelist, or something similar, of your add-on.<br>
+		To log your visit not inline, you have to do nothing.
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_log_inline_pmo4basic" title="Link to your GClh Config">Settings -> Listing:<br>
+		<img src="../images/0.10.8/Screen26.jpg" alt="Screen26.jpg"></a><br>
 		<img src="../images/0.10.8/Screen12.gif" alt="Screen12.gif"><br><br>
 	</li>
 	<li>
