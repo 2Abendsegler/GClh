@@ -35,6 +35,7 @@
 	</li>
 	<li>
 		<strong>New:</strong> [Old Map] Hide and show "Community Celebration Events" together with "Events". [<a href="https://github.com/2Abendsegler/GClh/issues/1386" title="Issue 1386">1386</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		In the old map there is no icon to hide Community Celebration Events. Therefore, these events remain visible even if you have hidden all events with the event icons. Now, if you hide or show normal Events, the Community Celebration Events should also be hidden or showed.<br>
 		<img src="../images/0.10.8/Screen01.jpg" alt="Screen01.jpg"><br><br>
 	</li>
 	<li>
@@ -55,12 +56,20 @@ You can enter a separator to use between the addings. The default value is a lin
 		<img src="../images/0.10.8/Screen24.gif" alt="Screen24.gif"><br><br>
 	</li>
 	<li>
+		<strong>New:</strong> [Cache listing] Highlight found places from cache listing "Search in logtext" in the logs. [<a href="https://github.com/2Abendsegler/GClh/issues/1437" title="Issue 1437">1437</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		<img src="../images/0.10.8/Screen13.jpg" alt="Screen13.jpg"><br><br>
+	</li>
+	<li>
 		<strong>New:</strong> [Cache listing] Additional link for logging premium caches for non-premium cachers. [<a href="https://github.com/2Abendsegler/GClh/issues/1345" title="Issue 1345">1345</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 		<img src="../images/0.10.8/Screen12.gif" alt="Screen12.gif"><br><br>
 	</li>
 	<li>
 		<strong>New:</strong> [Cache listing] After clicking on a log icon in the VIP area, go to the log, even if the log is not yet displayed. [<a href="https://github.com/2Abendsegler/GClh/issues/1411" title="Issue 1411">1411</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 		<img src="../images/0.10.8/Screen08.gif" alt="Screen08.gif"><br><br>
+	</li>
+	<li>
+		<strong>New:</strong> [Cache listing] Build links to the log section, at the top log totals. [<a href="https://github.com/2Abendsegler/GClh/issues/1413" title="Issue 1413">1413</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		<img src="../images/0.10.8/Screen09.gif" alt="Screen09.gif"><br><br>
 	</li>
 	<li>
 		<strong>New:</strong> [New Dashboard] Create direct "Edit log"-links on the dashboard to make logs editable without an extra-step. [<a href="https://github.com/2Abendsegler/GClh/issues/1353" title="Issue 1353">1353</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
@@ -80,6 +89,9 @@ You can enter a separator to use between the addings. The default value is a lin
 	<li>
 		<strong>New:</strong> [Owner Dashboard] Build up the new links in Linklist. [<a href="https://github.com/2Abendsegler/GClh/issues/1384" title="Issue 1384">1384</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 		<img src="../images/0.10.8/Screen05.jpg" alt="Screen05.jpg"><br><br>
+	</li>
+	<li>
+		<strong>New:</strong> [Header] Get asynchron header replacement only once a day to speed up loading page. [<a href="https://github.com/2Abendsegler/GClh/issues/1427" title="Issue 1427">1427</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br><br>
 	</li>
 	<li>
 		<strong>New:</strong> [Wonders of the World] Build header with navigation menu and Linklist. [<a href="https://github.com/2Abendsegler/GClh/issues/1382" title="Issue 1382">1382</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br><br>
