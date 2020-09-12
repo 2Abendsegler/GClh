@@ -70,8 +70,8 @@
 		For example:<br>
 		1. Copy a GC Code to clipboard<br>
 		2. Than add a further GC Code to clipboard<br>
-		3. Then paste the content of the clipboard with the keys on the keyboard "Strg" ("Ctrl") and "v"<br>
-		<img src="../images/0.10.8/Screen24.gif" alt="Screen24.gif"><br><br>
+		3. Then paste the content of the clipboard with the keys on the keyboard "Strg" ("Ctrl") and "v"<br><br>
+		<img src="../images/0.10.8/Screen24.gif" alt="Screen24.gif" style="height: 200px;"><br><br>
 	</li>
 	<li>
 		<strong>New:</strong> [Cache listing] Highlight found places from cache listing "Search in logtext" in the logs. [<a href="https://github.com/2Abendsegler/GClh/issues/1437" title="Issue 1437">1437</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
