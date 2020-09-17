@@ -2302,10 +2302,10 @@ var mainGC = function() {
                     $('.add-to-list')[0].addEventListener("click", function() {window.scroll(0, 0);});
                     $('.add-to-list')[0].innerHTML = '<a href="' + $('.add-to-list').attr('data-href') + '" style="padding-left: unset;">' + $('.add-to-list')[0].innerHTML + '</a>';
                     if ($('.sidebar')[0] && $('#ctl00_ContentBody_GeoNav_uxAddToListBtn')[0]) {
-                        var [ownBMLsCount, ownBMLsText] = getOwnBMLs($('.sidebar')[0]);
+                        var [ownBMLsCount, ownBMLsText, ownBMLsList] = getOwnBMLs($('.sidebar')[0]);
                         $('#ctl00_ContentBody_GeoNav_uxAddToListBtn')[0].append($('<span class="add_to_list_count">(' + ownBMLsCount + ')</span>')[0]);
                         $('.add-to-list a')[0].setAttribute('title', ownBMLsText);
-                        $('.add_to_list_count')[0].setAttribute('title', ownBMLsText);
+                        $('.add_to_list_count')[0].setAttribute('title', ownBMLsList);
                     }
                 } else {waitCount++; if (waitCount <= 100) setTimeout(function(){check_for_add_to_list(waitCount);}, 100);} // GDPR
             }
@@ -8926,8 +8926,8 @@ var mainGC = function() {
 
                     // Get count and names of own bookmarklists.
                     if ($('.cache-preview-action-menu ul > li:nth-child(1)')[0]) {
-                        var [ownBMLsCount, ownBMLsText] = getOwnBMLs(text);
-                        sidebar_enhancements_addToList_buffer[local_gc_code] = $('<span class="add_to_list_count" title="' + ownBMLsText + '">(' + ownBMLsCount + ')</span>')[0];
+                        var [ownBMLsCount, ownBMLsText, ownBMLsList] = getOwnBMLs(text);
+                        sidebar_enhancements_addToList_buffer[local_gc_code] = $('<span class="add_to_list_count" title="' + ownBMLsText + (ownBMLsCount == 0 ? '' : ':\n') + ownBMLsList + '">(' + ownBMLsCount + ')</span>')[0];
                         $('.add_to_list_count').each(function(){removeElement(this);});
                         $('.cache-preview-action-menu ul > li:nth-child(1)')[0].append(sidebar_enhancements_addToList_buffer[local_gc_code]);
                     }
@@ -9872,10 +9872,10 @@ var mainGC = function() {
                             if ($('#popup_additional_info_' + local_gc_code).closest('.map-item')[0]) {
                                 var item = $('#popup_additional_info_' + local_gc_code).closest('.map-item')[0];
                                 if ( !$(item).find('#ownBMLsCount')[0] && $(item).find('.btn-add-to-list > span')[0] ) {
-                                    var [ownBMLsCount, ownBMLsText] = getOwnBMLs(text);
+                                    var [ownBMLsCount, ownBMLsText, ownBMLsList] = getOwnBMLs(text);
                                     $(item).find('.btn-add-to-list')[0].after($('<span id="ownBMLsCount"> (' + ownBMLsCount + ')</span>')[0]);
                                     $(item).find('.btn-add-to-list > span')[0].setAttribute('title', ownBMLsText);
-                                    $(item).find('#ownBMLsCount')[0].setAttribute('title', ownBMLsText);
+                                    $(item).find('#ownBMLsCount')[0].setAttribute('title', ownBMLsList);
                                 }
                             }
 
@@ -11918,15 +11918,16 @@ var mainGC = function() {
     function getOwnBMLs(content) {
         var count = 0;
         var text = '';
+        var list = '';
         $(content).find('ul.BookmarkList li').each(function() {
             if ( $(this).find('a[href*="/profile/?guid="]')[0] && $(this).find('a[href*="/profile/?guid="]')[0].innerHTML.match("2Abendsegler") &&
                  $(this).find('a[href*="/bookmarks/view.aspx?guid="]')[0] && $(this).find('a[href*="/bookmarks/view.aspx?guid="]')[0].innerHTML    ) {
                 count++;
-                text += (text == '' ? '' : '\n') + $(this).find('a[href*="/bookmarks/view.aspx?guid="]')[0].innerHTML;
+                list += (list == '' ? '' : '\n') + $(this).find('a[href*="/bookmarks/view.aspx?guid="]')[0].innerHTML;
             }
         });
-        text = 'Currently available in ' + count + ' lists' + (count == 0 ? '' : ':\n' + text);
-        return [count, text];
+        text = 'Currently available in ' + count + (count == 1 ? ' list' : ' lists');
+        return [count, text, list];
     }
 
 ////////////////////////////////////////
