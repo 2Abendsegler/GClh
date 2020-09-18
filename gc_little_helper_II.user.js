@@ -8063,7 +8063,7 @@ var mainGC = function() {
                         // Message und return if no caches are found.
                         if (!caches.length && !events.length) {
                             var dnfHtml = '<div class="activity-message error">'
-                            dnfHtml += '    <p>We couldn\'t load you unpublished hides. <br> Refresh the page to try again.</p>'
+                            dnfHtml += '    <p>We couldn\'t load your unpublished hides. <br> Refresh the page to try again.</p>'
                             dnfHtml += '</div>';
                             $('#GClh_unpublishedCaches_body').html(dnfHtml);
                         } else {
@@ -11926,7 +11926,7 @@ var mainGC = function() {
                 list += (list == '' ? '' : '\n') + $(this).find('a[href*="/bookmarks/view.aspx?guid="]')[0].innerHTML;
             }
         });
-        text = 'Currently available in ' + count + (count == 1 ? ' list' : ' lists');
+        text = 'Currently available in ' + count + (count == 1 ? ' own list' : ' own lists');
         return [count, text, list];
     }
 
