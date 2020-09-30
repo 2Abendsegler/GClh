@@ -8927,7 +8927,7 @@ var mainGC = function() {
                     // Get count and names of own bookmarklists.
                     if ($('.cache-preview-action-menu ul > li:nth-child(1)')[0]) {
                         var [ownBMLsCount, ownBMLsText, ownBMLsList] = getOwnBMLs(text);
-                        sidebar_enhancements_addToList_buffer[local_gc_code] = $('<span class="add_to_list_count" title="' + ownBMLsText + (ownBMLsCount == 0 ? '' : ':\n') + ownBMLsList + '">(' + ownBMLsCount + ')</span>')[0];
+                        sidebar_enhancements_addToList_buffer[local_gc_code] = $('<span class="add_to_list_count" title="' + ownBMLsList + '">(' + ownBMLsCount + ')</span>')[0];
                         $('.add_to_list_count').each(function(){removeElement(this);});
                         $('.cache-preview-action-menu ul > li:nth-child(1)')[0].append(sidebar_enhancements_addToList_buffer[local_gc_code]);
                     }
@@ -11918,14 +11918,19 @@ var mainGC = function() {
     function getOwnBMLs(content) {
         var count = 0;
         var text = '';
+        var ary = [];
         var list = '';
         $(content).find('ul.BookmarkList li').each(function() {
             if ( $(this).find('a[href*="/profile/?guid="]')[0] && $(this).find('a[href*="/profile/?guid="]')[0].innerHTML.match("2Abendsegler") &&
                  $(this).find('a[href*="/bookmarks/view.aspx?guid="]')[0] && $(this).find('a[href*="/bookmarks/view.aspx?guid="]')[0].innerHTML    ) {
                 count++;
-                list += (list == '' ? '' : '\n') + $(this).find('a[href*="/bookmarks/view.aspx?guid="]')[0].innerHTML;
+                ary.push($(this).find('a[href*="/bookmarks/view.aspx?guid="]')[0].innerHTML);
             }
         });
+        ary.sort(caseInsensitiveSort);
+        for (var i = 0; i < ary.length; i++) {
+            list += (list == '' ? '' : '\n') + ary[i];
+        }
         text = 'Currently available in ' + count + (count == 1 ? ' own list' : ' own lists');
         return [count, text, list];
     }
