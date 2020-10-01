@@ -233,7 +233,7 @@ Startet ein Script nicht, so handelt es sich in der Regel um Abstimmungsprobleme
 		Oder du kannst <a href="https://www.geocaching.com/account/dashboard#GClhShowConfig">hier</a> die Konfiguration für den GClh aufrufen.
 	</li>
 	<li>
-		Oder du kannst den entsprechenden Link in deinem <a href="https://www.geocaching.com/account/dashboard">Dashboard</a> unterhalb eines Benutzernamens verwenden.
+		Oder du kannst den entsprechenden Link in deinem <a href="https://www.geocaching.com/account/dashboard">Dashboard</a> unterhalb deines Benutzernamens verwenden.
 	</li>
 </ul>
 <br>
