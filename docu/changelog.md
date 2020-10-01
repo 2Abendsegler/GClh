@@ -28,6 +28,9 @@
 		<strong>New:</strong> [New Map] Show in cache detail screen behind the "Add to list" button if cache is available in own bookmarklists. [<a href="https://github.com/2Abendsegler/GClh/issues/1463" title="Issue 1463">1463</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 		<img src="../images/0.10.9/Screen03.jpg" alt="Screen03.jpg"><br><br>
 	</li>
+	<li>
+		<strong>New:</strong> Implement F2 key functionality on "Search" button of the filters screen of the search page. [<a href="https://github.com/2Abendsegler/GClh/issues/1469" title="Issue 1469">1469</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br><br>
+	</li>
 </ul>
 <br>
 (??.10.2020)<br>
