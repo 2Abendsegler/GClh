@@ -2407,7 +2407,7 @@ var mainGC = function() {
         html += '  </div>';
         $('.copydata_click')[0].parentNode.innerHTML += html;
         $('#CopyDropDown').addClass('hover');
-        $('.copydata_head')[0].addEventListener('mouseleave', remove_copydata_menu_content);
+//        $('.copydata_head')[0].addEventListener('mouseleave', remove_copydata_menu_content);
         if (settings_show_copydata_plus) {
             $('.copydata_click span').click(function() { copydata_copy($(this).closest('div'), false); });
             $('.copydata_click a').click(function() { copydata_copy($(this).closest('div'), true); });
@@ -2501,7 +2501,7 @@ var mainGC = function() {
                     }
                     el.value = el.value.replace(/#GCNote#/ig, g_note.replace(new RegExp('&gt;', 'g'),'>').replace(new RegExp('&lt;', 'g'),'<'));
                     // Photo file name: Remove the impossible characters for the file name "<>/\|:*?
-                    if ($(thisObject)[0].innerHTML && $(thisObject)[0].innerHTML == "Photo file name") {
+                    if ($(thisObject)[0].innerHTML && $(thisObject)[0].innerHTML.match(/Photo file name/)) {
                         el.value = el.value.replace(/(\/|\\|\||\*|\?|:|"|<|>)/g, '');
                     }
                 }
