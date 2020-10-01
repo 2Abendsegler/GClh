@@ -21,6 +21,9 @@
 		<strong>Fix:</strong> [Cache Listing] "Photo file name" in "Copy Data to Clipboard" feature does not filter invalid characters. [<a href="https://github.com/2Abendsegler/GClh/issues/1467" title="Issue 1467">1467</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br><br>
 	</li>
 	<li>
+		<strong>Fix:</strong> [Cache listing] Improve alignment in the header of event listings especially on smaller pages. [<a href="https://github.com/2Abendsegler/GClh/issues/1471" title="Issue 1471">1471</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br><br>
+	</li>
+	<li>
 		<strong>New:</strong> [Old Map] Show in cache popup behind the "Add to list" button if cache is available in own bookmarklists. [<a href="https://github.com/2Abendsegler/GClh/issues/1463" title="Issue 1463">1463</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 		<img src="../images/0.10.9/Screen02.jpg" alt="Screen02.jpg"><br><br>
 	</li>
@@ -29,7 +32,7 @@
 		<img src="../images/0.10.9/Screen03.jpg" alt="Screen03.jpg"><br><br>
 	</li>
 	<li>
-		<strong>New:</strong> Implement F2 key functionality on "Search" button of the filters screen of the search page. [<a href="https://github.com/2Abendsegler/GClh/issues/1469" title="Issue 1469">1469</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br><br>
+		<strong>New:</strong> [Search] Implement F2 key functionality on "Search" button of the filters screen of the search page. [<a href="https://github.com/2Abendsegler/GClh/issues/1469" title="Issue 1469">1469</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br><br>
 	</li>
 </ul>
 <br>
