@@ -112,7 +112,7 @@ If a script does not start, these are usually matching problems between the brow
 ## 5. How can I start the Config of the GClh?
 <ul>
 	<li>
-		If you are on a geocaching page, you can start the configuration for the GClh with the F4 key on your keyboard, if you have not switched off this feature.
+		If you are on a geocaching page you can start the Config for the GClh with the F4 key on your keyboard, if you have not switched off this feature.
 	</li>
 	<li>
 		Or you can start the Config for the GClh <a href="https://www.geocaching.com/account/dashboard#GClhShowConfig">here</a>.
