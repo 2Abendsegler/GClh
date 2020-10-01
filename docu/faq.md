@@ -57,7 +57,6 @@ If a script does not start, these are usually matching problems between the brow
 		(Android) Close tabs in the browser before closing the browser, so that the tabs are no longer available the next time you start the browser.<br>
 	</li>
 </ul>
-<br>
 
 <a id="4-en"></a>
 ## 4. Hints for using on Android devices.
@@ -106,13 +105,12 @@ If a script does not start, these are usually matching problems between the brow
 		</ul>
 	</li>
 </ul>
-<br>
 
 <a id="5-en"></a>
 ## 5. How can I start the Config of the GClh?
 <ul>
 	<li>
-		If you are on a geocaching page, you can start the configuration for the GClh with the F4 key on your keyboard, if you have not switched off this.
+		If you are on a geocaching page, you can start the configuration for the GClh with the F4 key on your keyboard, if you have not switched off this feature.
 	</li>
 	<li>
 		Or you can start the Config for the GClh <a href="https://www.geocaching.com/account/dashboard#GClhShowConfig">here</a>.
@@ -172,7 +170,6 @@ Startet ein Script nicht, so handelt es sich in der Regel um Abstimmungsprobleme
 		(Android) Tabs im Browser schließen bevor man den Browser schließt damit beim nächsten Aufruf des Browsers die Tabs nicht mehr vorhanden sind.<br>
 	</li>
 </ul>
-<br>
 
 <a id="4-de"></a>
 ## 4. Hinweise für die Nutzung auf Android Geräten.
@@ -221,13 +218,12 @@ Startet ein Script nicht, so handelt es sich in der Regel um Abstimmungsprobleme
 		</ul>
 	</li>
 </ul>
-<br>
 
 <a id="5-de"></a>
 ## 5. Wie kann ich die Konfiguration des GClh starten?
 <ul>
 	<li>
-		Wenn du auf einer Geocaching Seite bist kannst du mit der F4 Taste auf deinem Keyboard die Konfiguration für den GClh starten, sofern du das nicht ausgeschaltet hast. 
+		Wenn du auf einer Geocaching Seite bist kannst du mit der F4 Taste auf deinem Keyboard die Konfiguration für den GClh starten, sofern du dieses Feature nicht ausgeschaltet hast. 
 	</li>
 	<li>
 		Oder du kannst <a href="https://www.geocaching.com/account/dashboard#GClhShowConfig">hier</a> die Konfiguration für den GClh starten.
