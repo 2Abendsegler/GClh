@@ -1331,6 +1331,12 @@ var mainGC = function() {
     try {
         // F2 key.
         if (settings_submit_log_button) {
+            function setButtonDescInnerHTMLF2(waitCount, id) {
+                if (!document.getElementById(id).innerHTML.match(/(F2)/)) {
+                    document.getElementById(id).innerHTML += " (F2)";
+                }
+                if (waitCount <= 20) setTimeout(function(){setButtonDescInnerHTMLF2(waitCount, id);}, 100);
+            }
             // Log abschicken (Cache und TB).
             if (document.location.href.match(/\.com\/(seek|track)\/log\.aspx\?(id|wid|guid|ID|wp|LUID|PLogGuid)\=/)) var id = "ctl00_ContentBody_LogBookPanel1_btnSubmitLog";
             // PQ speichern | "Bookmark Pocket Query", aus BM PQ erzeugen | PQ zu Routen.
@@ -1353,7 +1359,13 @@ var mainGC = function() {
             if (is_page("cache_listing") && $('.js-pcn-submit')[0]) {
                 var id = "gclh_js-pcn-submit";
                 $('.js-pcn-submit')[0].id = id;
-                document.getElementById(id).innerHTML += " (F2)";
+                setButtonDescInnerHTMLF2(0, id);
+            }
+            // "Search" in the filters screen of search page.
+            if (is_page('find_cache') && $('footer .btn-primary')[0]) {
+                var id = "gclh_footer_btn-primary";
+                $('footer .btn-primary')[0].id = id;
+                setButtonDescInnerHTMLF2(0, id);
             }
             if (id && document.getElementById(id)) {
                 function keydownF2(e) {
