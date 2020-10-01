@@ -25,7 +25,7 @@
 // @connect          api.geonames.org
 // @connect          coord.info
 // @description      Some little things to make life easy (on www.geocaching.com).
-// @copyright        2010-2016 Torsten Amshove, 2016-2019 2Abendsegler, 2017-2019 Ruko2010
+// @copyright        2010-2016 Torsten Amshove, 2016-2020 2Abendsegler, 2017-2020 Ruko2010
 // @author           Torsten Amshove; 2Abendsegler; Ruko2010
 // @icon             https://raw.githubusercontent.com/2Abendsegler/GClh/master/images/gclh_logo.png
 // @license          GNU General Public License v2.0
@@ -1946,13 +1946,18 @@ var mainGC = function() {
                         lateLogs[i] = lateLog;
                     }
                     if (lateLogs.length > 0 && $('#ctl00_ContentBody_mcd1')[0].parentNode) {
-                        var side = $('#ctl00_ContentBody_mcd1')[0].parentNode;
-                        side.style.display = "initial";
                         var div = document.createElement("div");
                         var divTitle = "";
                         div.id = "gclh_latest_logs";
-                        div.setAttribute("style", "float: right; padding-right: 0; padding-top: 2px;");
                         div.appendChild(document.createTextNode("Latest logs:"));
+                        if (isEventInCacheListing() == true) {
+                            div.setAttribute("style", "float: right; padding-right: 0; padding-top: 0px; margin-top: -16px; font-size: 12px");
+                            var side = $('#ctl00_ContentBody_mcd1')[0].parentNode.parentNode;
+                        } else {
+                            div.setAttribute("style", "float: right; padding-right: 0; padding-top: 2px;");
+                            var side = $('#ctl00_ContentBody_mcd1')[0].parentNode;
+                            side.style.display = "initial";
+                        }
                         for (var i = 0; i < lateLogs.length; i++) {
                             var a = document.createElement("a");
                             a.className = "gclh_latest_log";
@@ -15768,6 +15773,13 @@ var mainGC = function() {
     function isOwnStatisticsPage(){
         if ((document.location.href.match(/\.com\/my\/statistics\.aspx/)) ||
             (is_page("publicProfile") && $('#ctl00_ContentBody_lblUserProfile')[0].innerHTML.match(global_me) && $('#ctl00_ContentBody_ProfilePanel1_lnkStatistics.Active')[0])) {
+            return true;
+        } else return false;
+    }
+
+// Is event in cache listing.
+    function isEventInCacheListing() {
+        if (is_page("cache_listing") && $('#cacheDetails svg.cache-icon use')[0] && $('#cacheDetails svg.cache-icon use')[0].href.baseVal.match(/\/cache-types.svg\#icon-(6$|6-|453$|453-|13$|13-|7005$|7005-|3653$|3653-)/)) {
             return true;
         } else return false;
     }
