@@ -1,3 +1,4 @@
+<a href="#v0109" title="GClh II version 0.10.9 (??.10.2020)">v0.10.9</a> &nbsp;
 <a href="#v0108" title="GClh II version 0.10.8 (12.09.2020)">v0.10.8</a> &nbsp;
 <a href="#v0107" title="GClh II version 0.10.7 (07.06.2020)">v0.10.7</a> &nbsp;
 <a href="#v0106" title="GClh II version 0.10.6 (07.05.2020)">v0.10.6</a> &nbsp;
@@ -8,6 +9,28 @@
 <a href="#v0101" title="GClh II version 0.10.1 (20.12.2019)">v0.10.1</a> &nbsp;
 <a href="#v010" title="GClh II version 0.10 (13.12.2019)">v0.10</a> &nbsp;
 <a href="changelog_before.md" title="Go to earlier changelog">Earlier changelog</a> &nbsp;
+
+---
+## v0.10.9:
+<ul>
+	<li>
+		<strong>New:</strong> [Cache listing] Show behind the "Add to list" button if cache is available in own bookmarklists. [<a href="https://github.com/2Abendsegler/GClh/issues/1463" title="Issue 1463">1463</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		<img src="../images/0.10.9/Screen01.jpg" alt="Screen01.jpg"><br><br>
+	</li>
+	<li>
+		<strong>New:</strong> [Old Map] Show in cache popup behind the "Add to list" button if cache is available in own bookmarklists. [<a href="https://github.com/2Abendsegler/GClh/issues/1463" title="Issue 1463">1463</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		<img src="../images/0.10.9/Screen02.jpg" alt="Screen02.jpg"><br><br>
+	</li>
+	<li>
+		<strong>New:</strong> [New Map] Show in cache detail screen behind the "Add to list" button if cache is available in own bookmarklists. [<a href="https://github.com/2Abendsegler/GClh/issues/1463" title="Issue 1463">1463</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		<img src="../images/0.10.9/Screen03.jpg" alt="Screen03.jpg"><br><br>
+	</li>
+</ul>
+<br>
+<br>
+(??.10.2020)<br>
+released by <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a><br>
+<br>
 
 ---
 ## v0.10.8:
