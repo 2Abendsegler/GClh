@@ -2501,7 +2501,7 @@ var mainGC = function() {
                     }
                     el.value = el.value.replace(/#GCNote#/ig, g_note.replace(new RegExp('&gt;', 'g'),'>').replace(new RegExp('&lt;', 'g'),'<'));
                     // Photo file name: Remove the impossible characters for the file name "<>/\|:*?
-                    if ($(thisObject)[0].innerHTML && $(thisObject)[0].innerHTML == "Photo file name") {
+                    if ($(thisObject)[0].innerHTML && $(thisObject)[0].innerHTML.match(/Photo file name/)) {
                         el.value = el.value.replace(/(\/|\\|\||\*|\?|:|"|<|>)/g, '');
                     }
                 }
