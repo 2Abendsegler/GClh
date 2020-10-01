@@ -2407,7 +2407,7 @@ var mainGC = function() {
         html += '  </div>';
         $('.copydata_click')[0].parentNode.innerHTML += html;
         $('#CopyDropDown').addClass('hover');
-//        $('.copydata_head')[0].addEventListener('mouseleave', remove_copydata_menu_content);
+        $('.copydata_head')[0].addEventListener('mouseleave', remove_copydata_menu_content);
         if (settings_show_copydata_plus) {
             $('.copydata_click span').click(function() { copydata_copy($(this).closest('div'), false); });
             $('.copydata_click a').click(function() { copydata_copy($(this).closest('div'), true); });
