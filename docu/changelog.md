@@ -27,7 +27,6 @@
 	</li>
 </ul>
 <br>
-<br>
 (??.10.2020)<br>
 released by <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a><br>
 <br>
