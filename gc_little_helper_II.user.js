@@ -2292,7 +2292,8 @@ var mainGC = function() {
                     + ".add-list li {padding: 2px 0 !important;}"
                     + ".add-list li button {font-size: 14px !important; margin: 0 !important; height: 18px !important;}"
                     + ".status {font-size: 14px !important; width: unset !important;}"
-                    + ".status.success, .success-message {right: 2px !important; padding: 0 5px !important; background-color: white !important; color: #E0B70A !important;}";
+                    + ".status.success, .success-message {right: 2px !important; padding: 0 5px !important; background-color: white !important; color: #E0B70A !important;}"
+                    + ".CacheDetailNavigation .add_to_list_count {cursor: default; color: #4a4a4a; list-style: none; padding-left: 4px; text-decoration: none !important;}";
             appendCssStyle(css);
             $('.add-to-list').addClass('working');
             function check_for_add_to_list(waitCount) { // GDPR
@@ -2300,6 +2301,12 @@ var mainGC = function() {
                     $('.add-to-list').removeClass('working');
                     $('.add-to-list')[0].addEventListener("click", function() {window.scroll(0, 0);});
                     $('.add-to-list')[0].innerHTML = '<a href="' + $('.add-to-list').attr('data-href') + '" style="padding-left: unset;">' + $('.add-to-list')[0].innerHTML + '</a>';
+                    if ($('.sidebar')[0] && $('#ctl00_ContentBody_GeoNav_uxAddToListBtn')[0]) {
+                        var [ownBMLsCount, ownBMLsText, ownBMLsList] = getOwnBMLs($('.sidebar')[0]);
+                        $('#ctl00_ContentBody_GeoNav_uxAddToListBtn')[0].append($('<span class="add_to_list_count">(' + ownBMLsCount + ')</span>')[0]);
+                        $('.add-to-list a')[0].setAttribute('title', ownBMLsText);
+                        $('.add_to_list_count')[0].setAttribute('title', ownBMLsList);
+                    }
                 } else {waitCount++; if (waitCount <= 100) setTimeout(function(){check_for_add_to_list(waitCount);}, 100);} // GDPR
             }
             check_for_add_to_list(0);
@@ -8056,7 +8063,7 @@ var mainGC = function() {
                         // Message und return if no caches are found.
                         if (!caches.length && !events.length) {
                             var dnfHtml = '<div class="activity-message error">'
-                            dnfHtml += '    <p>We couldn\'t load you unpublished hides. <br> Refresh the page to try again.</p>'
+                            dnfHtml += '    <p>We couldn\'t load your unpublished hides. <br> Refresh the page to try again.</p>'
                             dnfHtml += '</div>';
                             $('#GClh_unpublishedCaches_body').html(dnfHtml);
                         } else {
@@ -8698,6 +8705,7 @@ var mainGC = function() {
 
             var sidebar_enhancements_buffer = {}
             var sidebar_enhancements_favi_buffer = {}
+            var sidebar_enhancements_addToList_buffer = {}
 
             function showSearchmapSidebarEnhancements(){
                 if(!settings_show_enhanced_map_popup) return true;
@@ -8721,17 +8729,22 @@ var mainGC = function() {
                 $('.favi_score_percent').each(function(){
                     removeElement(this);
                 });
+                $('.add_to_list_count').each(function(){removeElement(this);});
 
                 // Just to be sure we are starting from scratch.
                 removeElement(document.querySelector('#searchmap_sidebar_enhancements'));
 
                 new_gc_code = document.querySelector('.cache-preview-header .cache-metadata .cache-metadata-code').innerHTML;
 
-                if(sidebar_enhancements_buffer[new_gc_code]){
+                if (sidebar_enhancements_buffer[new_gc_code]){
                     // We already have the code in our buffer, no need to reload everything.
                     insertAfter(sidebar_enhancements_buffer[new_gc_code], (document.getElementsByClassName("geocache-owner")[0] || document.getElementsByClassName("gclhOwner")[0]));
                     if ($('.favorites-text')[0] && sidebar_enhancements_favi_buffer[new_gc_code]){
                         $('.favorites-text')[0].innerHTML = $('.favorites-text')[0].innerHTML + sidebar_enhancements_favi_buffer[new_gc_code];
+                    }
+                    if ($('.cache-preview-action-menu ul > li:nth-child(1)')[0] && sidebar_enhancements_addToList_buffer[new_gc_code]){
+                        $('.add_to_list_count').each(function(){removeElement(this);});
+                        $('.cache-preview-action-menu ul > li:nth-child(1)')[0].append(sidebar_enhancements_addToList_buffer[new_gc_code]);
                     }
                     return true;
                 }
@@ -8910,6 +8923,14 @@ var mainGC = function() {
                     }
 
                     sidebar_enhancements_buffer[local_gc_code] = searchmap_sidebar_enhancements;
+
+                    // Get count and names of own bookmarklists.
+                    if ($('.cache-preview-action-menu ul > li:nth-child(1)')[0]) {
+                        var [ownBMLsCount, ownBMLsText, ownBMLsList] = getOwnBMLs(text);
+                        sidebar_enhancements_addToList_buffer[local_gc_code] = $('<span class="add_to_list_count" title="' + ownBMLsList + '">(' + ownBMLsCount + ')</span>')[0];
+                        $('.add_to_list_count').each(function(){removeElement(this);});
+                        $('.cache-preview-action-menu ul > li:nth-child(1)')[0].append(sidebar_enhancements_addToList_buffer[local_gc_code]);
+                    }
                 });
             }
             // Get favorite score.
@@ -9071,7 +9092,8 @@ var mainGC = function() {
                 css += '.cache-preview-action-menu ul {margin-bottom: -4px;}';
                 css += '.cache-preview-action-menu .log-geocache, .cache-preview-action-menu .log-geocache:visited {margin-bottom: 4px; padding: 8px;}';
                 css += '.cache-preview-action-menu .action-icon {margin: 0;}';
-                css += '.cache-preview-action-menu ul li span {display: none; !important;}';
+                css += '.cache-preview-action-menu ul li button span, .cache-preview-action-menu ul li a span {display: none; !important;}';
+                css += '.add_to_list_count {font-size: 12px; color: #4a4a4a; position: absolute; margin-top: 9px; margin-left: -5px; cursor: default;}';
                 css += '.cache-preview-attributes, .cache-open-text-cta {margin-bottom: 5px;}';
                 css += '.cache-preview-attributes > ul {font-size: 12px; margin-bottom: 0 !important; padding-bottom: 5px !important;}';
                 css += '.cache-preview-attributes .favorites-icon {height: 24px; width: 24px;}';
@@ -9682,6 +9704,7 @@ var mainGC = function() {
             css += "div.gclh_latest_log span {display: none; position: absolute; left: 0px; width: 500px; padding: 5px; text-decoration:none; text-align:left; vertical-align:top; color: #000000;}";
             css += "div.gclh_latest_log:hover span {font-size: 13px; display: block; top: 16px; border: 1px solid #8c9e65; background-color:#dfe1d2; z-index:10000;}";
             css += "span.premium_only img {margin-right:0px;}";
+            css += "#ownBMLsCount {cursor: default;} .map-item .send2gps img {margin-right: 0px;}";
             if (browser == 'firefox') css += ".gclh_owner {max-width: 110px;} .map-item h4 a {max-width: 265px;} .gclh_owner, .map-item h4 a {display: inline-block; white-space: nowrap; overflow: -moz-hidden-unscrollable; text-overflow: ellipsis;}";
             appendCssStyle(css);
 
@@ -9716,7 +9739,7 @@ var mainGC = function() {
 
                         $.get('https://www.geocaching.com/geocache/'+gccode, null, function(text){
                             // We need to retriev the gc_code from the loaded page, because in the
-                            // meantime the global varioable gc_code could (and will be ;-)) changed.
+                            // meantime the global variable gc_code could (and will be ;-)) changed.
                             var local_gc_code = $(text).find('#ctl00_ContentBody_CoordInfoLinkControl1_uxCoordInfoCode').html();
 
                             var premium_only = false;
@@ -9844,6 +9867,17 @@ var mainGC = function() {
                             }
 
                             $('#popup_additional_info_' + local_gc_code).html(new_text);
+
+                            // Get count and names of own bookmarklists.
+                            if ($('#popup_additional_info_' + local_gc_code).closest('.map-item')[0]) {
+                                var item = $('#popup_additional_info_' + local_gc_code).closest('.map-item')[0];
+                                if ( !$(item).find('#ownBMLsCount')[0] && $(item).find('.btn-add-to-list > span')[0] ) {
+                                    var [ownBMLsCount, ownBMLsText, ownBMLsList] = getOwnBMLs(text);
+                                    $(item).find('.btn-add-to-list')[0].after($('<span id="ownBMLsCount"> (' + ownBMLsCount + ')</span>')[0]);
+                                    $(item).find('.btn-add-to-list > span')[0].setAttribute('title', ownBMLsText);
+                                    $(item).find('#ownBMLsCount')[0].setAttribute('title', ownBMLsList);
+                                }
+                            }
 
                             // Add Copy to Clipboard Links.
                             if (settings_show_enhanced_map_coords) {
@@ -11878,6 +11912,27 @@ var mainGC = function() {
         else if (whichCoords == 'GCTour') return GCTourCoords;
         else if (whichCoords == 'CorrOrg') return (CorrCoords !== "" ? CorrCoords : OrgCoords);
         else return "";
+    }
+
+// Get count and names of own bookmarklists.
+    function getOwnBMLs(content) {
+        var count = 0;
+        var text = '';
+        var ary = [];
+        var list = '';
+        $(content).find('ul.BookmarkList li').each(function() {
+            if ( $(this).find('a[href*="/profile/?guid="]')[0] && $(this).find('a[href*="/profile/?guid="]')[0].innerHTML.match("2Abendsegler") &&
+                 $(this).find('a[href*="/bookmarks/view.aspx?guid="]')[0] && $(this).find('a[href*="/bookmarks/view.aspx?guid="]')[0].innerHTML    ) {
+                count++;
+                ary.push($(this).find('a[href*="/bookmarks/view.aspx?guid="]')[0].innerHTML);
+            }
+        });
+        ary.sort(caseInsensitiveSort);
+        for (var i = 0; i < ary.length; i++) {
+            list += (list == '' ? '' : '\n') + ary[i];
+        }
+        text = 'Currently available in ' + count + (count == 1 ? ' own list' : ' own lists');
+        return [count, text, list];
     }
 
 ////////////////////////////////////////
