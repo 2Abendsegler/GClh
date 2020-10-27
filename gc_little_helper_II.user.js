@@ -816,8 +816,13 @@ var mainPGC = function() {
                 if(urls_for_pqs_to_create[i] != ''){
                     if(open_popup_count < 5){
                         open_popups[i] = window.open(urls_for_pqs_to_create[i],'PQ_'+i,'scrollbars=1,menubar=0,resizable=1,width=500,height=500,left='+(i*40));
+                        
+                        if(open_popups[i] == null){
+                            open_popups[i] = false;
+                        }else{
+                            open_popup_count++;
+                        }
                         urls_for_pqs_to_create[i] = '';
-                        open_popup_count++;
                     }
                 }else{
                     already_done_count++;
