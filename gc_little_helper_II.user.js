@@ -2643,8 +2643,16 @@ var mainGC = function() {
             } else if (waypoint.source == "listing" ) {
                 radius = 0;
                 if(settings_show_radius_on_flopps){
+                    
+                    var hasCorrectedCoordinates = false;
+                    for (var j=0; j<data.waypoints.length; j++) {
+                        if (data.waypoints[j].source == "original" ) {
+                            hasCorrectedCoordinates = true;
+                        }
+                    }
+
                     if (waypoint.typeid == 2 /* Traditional Geocache */ ) radius = 161; //  161m radius
-                    else if (waypoint.typeid == 8 /* Mystery cache */) radius = 3200; // Mystery cache 3200m radius
+                    else if (waypoint.typeid == 8 /* Mystery cache */) radius = (hasCorrectedCoordinates ? 161 : 3200); // Mystery cache 3200m radius for unsolved, 161 for corrected coordinates
                 }
                 name = normalizeName(waypoint.gccode);
             } else if (waypoint.source == "GClh Config" ) {
