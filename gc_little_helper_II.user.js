@@ -817,11 +817,13 @@ var mainPGC = function() {
                     if(open_popup_count < 5){
                         open_popups[i] = window.open(urls_for_pqs_to_create[i],'PQ_'+i,'scrollbars=1,menubar=0,resizable=1,width=500,height=500,left='+(i*40));
                         
+                        // Ein Popup konnte nicht erzeugt werden, wahrscheinlich wegen eines Popup-Blockers
+                        // Wir brechen hier also ab und informieren den User
                         if(open_popups[i] == null){
-                            open_popups[i] = false;
-                        }else{
-                            open_popup_count++;
+                            alert("We detected a Popup Blocker. Please allow Popups for this site, reload the page and try again. Please be aware, that the first two PQs could already be created, so please go to Geocaching.com and delete them.");
+                            return false;
                         }
+                        open_popup_count++;
                         urls_for_pqs_to_create[i] = '';
                     }
                 }else{
