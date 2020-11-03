@@ -10841,6 +10841,22 @@ var mainGC = function() {
         } catch(e) {gclh_error("Add mailto-link to profilepage",e);}
     }
 
+// Add links to finds and hides on new profilpage.
+    if (is_page("publicProfile") && $('#ctl00_ProfileHead_ProfileHeader_divStats ul > li:nth-child(1)')[0] && $('#ctl00_ProfileHead_ProfileHeader_divStats ul > li:nth-child(2)')[0]) {
+        try {
+            $('#ctl00_ProfileHead_ProfileHeader_divStats ul > li:nth-child(1)')[0].innerHTML = '<a href="/seek/nearest.aspx?ul=' + $('#ctl00_ProfileHead_ProfileHeader_lblMemberName')[0].innerHTML + '" title="show finds">' + $('#ctl00_ProfileHead_ProfileHeader_divStats ul > li:nth-child(1)')[0].innerHTML + '</a>';
+            $('#ctl00_ProfileHead_ProfileHeader_divStats ul > li:nth-child(2)')[0].innerHTML = '<a href="/seek/nearest.aspx?u=' + $('#ctl00_ProfileHead_ProfileHeader_lblMemberName')[0].innerHTML + '" title="show hides">' + $('#ctl00_ProfileHead_ProfileHeader_divStats ul > li:nth-child(2)')[0].innerHTML + '</a>';
+            function deleteSpaceBeforeCounts(waitCount) {
+                if ($('#ctl00_ProfileHead_ProfileHeader_divStats ul > li:nth-child(1)')[0].innerHTML.match(/\s<span>/)) $('#ctl00_ProfileHead_ProfileHeader_divStats ul > li:nth-child(1)')[0].innerHTML = $('#ctl00_ProfileHead_ProfileHeader_divStats ul > li:nth-child(1)')[0].innerHTML.replace(/\s<span>/, '<span>');
+                if ($('#ctl00_ProfileHead_ProfileHeader_divStats ul > li:nth-child(2)')[0].innerHTML.match(/>\s/)) $('#ctl00_ProfileHead_ProfileHeader_divStats ul > li:nth-child(2)')[0].innerHTML = $('#ctl00_ProfileHead_ProfileHeader_divStats ul > li:nth-child(2)')[0].innerHTML.replace(/>\s/, '>');
+                waitCount++;
+                if (waitCount <= 50) setTimeout(function(){deleteSpaceBeforeCounts(waitCount);}, 100);
+            }
+            deleteSpaceBeforeCounts(0);
+            appendCssStyle('#ctl00_ProfileHead_ProfileHeader_divStats a:hover {color: #02874d;} #ctl00_ProfileHead_ProfileHeader_divStats a {color: #4a4a4a;} #ctl00_ProfileHead_ProfileHeader_divStats img {vertical-align: text-top;}');
+        } catch(e) {gclh_error("Add links to finds and hides on new profilpage",e);}
+    }
+
 // Hide GC Avatar Option.
     if (settings_load_logs_with_gclh && document.location.href.match(/\.com\/account\/settings\/preferences/) && $('#ShowAvatarsInCacheLogs')[0]) {
         try {
