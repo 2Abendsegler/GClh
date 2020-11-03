@@ -32,6 +32,10 @@
 		<img src="../images/0.10.9/Screen03.jpg" alt="Screen03.jpg"><br><br>
 	</li>
 	<li>
+		<strong>New:</strong> [New Profile] Add links to finds and hides on new profilpage. [<a href="https://github.com/2Abendsegler/GClh/issues/1481" title="Issue 1481">1481</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		<img src="../images/0.10.9/Screen04.jpg" alt="Screen04.jpg"><br><br>
+	</li>
+	<li>
 		<strong>New:</strong> [Search] Implement F2 key functionality on "Search" button of the filters screen of the search page. [<a href="https://github.com/2Abendsegler/GClh/issues/1469" title="Issue 1469">1469</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br><br>
 	</li>
 	<li>
