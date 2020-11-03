@@ -6663,6 +6663,11 @@ var mainGC = function() {
                     } else {waitCount++; if (waitCount <= 50) setTimeout(function(){checkLeagueAvailable(waitCount);}, 200);}
                 }
                 checkLeagueAvailable(0);
+
+            // Owner Dashbord:
+            // The VIP/VUP for the Owner Dashboard is in the Owner Dashboard section
+            // because a mutation observer is required.
+            // ----------
             }
         }
     } catch(e) {gclh_error("VIP VUP",e);}
@@ -8229,7 +8234,9 @@ var mainGC = function() {
                 for (var i = 0; i < links.length; i++) {
                     var user = $(links[i]).find('span').html();
                     if (user != null) {
-                        gclh_build_vipvupmail(links[i], user);
+                        $(links[i]).after('<span class="gclh_name" id="gclh_name_' + i + '"></span>')
+                        $(links[i]).appendTo('#gclh_name_' + i);
+                        gclh_build_vipvupmail(links[i].parentNode, user);
                     }
                 }
             }
@@ -8283,6 +8290,8 @@ var mainGC = function() {
             if (settings_show_mail) newFlexBasis += 21;
             css += '.latest-activity .log-item-finder {flex:0 0 ' + newFlexBasis + 'px !important;}';
             css += '.latest-activity .activity-item a {display: inline-block;}';
+            css += '.gclh_name {white-space: nowrap; display: flex; align-items: center;}';
+            css += '.gclh_name a {margin-right:5px;}';               
 
             appendCssStyle(css);
         } catch(e) {gclh_error("Improve Owner Dashboard",e);}
