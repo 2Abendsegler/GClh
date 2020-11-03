@@ -693,10 +693,11 @@ var mainGMaps = function() {
                     var side = document.getElementById("gbwa");
                     side.parentNode.insertBefore(div, side);
                     var css = '';
+                    css += '#gclh_map_links {margin-right: -11px;}';
                     css += '#gclh_map_links a {margin-left: 8px;}';
                     css += '#gclh_map_links svg {width: 25px; height: 25px; vertical-align: middle; color: black; opacity: 0.55;}';
                     css += '#gclh_map_links svg:hover {opacity: 0.85;}';
-                    css += '#search_map_icon {height: 20px !important;}';
+                    css += '.search_map_icon {height: 20px !important;}';
                     css += '.gb_nd {padding-left: 4px;}';
                     appendCssStyle(css);
                 } else {waitCount++; if (waitCount <= 50) setTimeout(function(){addGcButton(waitCount);}, 200);}
