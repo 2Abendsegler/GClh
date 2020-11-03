@@ -34,6 +34,9 @@
 	<li>
 		<strong>New:</strong> [Search] Implement F2 key functionality on "Search" button of the filters screen of the search page. [<a href="https://github.com/2Abendsegler/GClh/issues/1469" title="Issue 1469">1469</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br><br>
 	</li>
+	<li>
+		<strong>Fix:</strong> [Flopp] Circle around mystery corrected coordinates has wrong diameter. [<a href="https://github.com/2Abendsegler/GClh/issues/1475" title="Issue 1475">1475</a> / <a href="https://www.geocaching.com/profile/?u=Ruko2010" title="Thanks to Ruko2010">Ruko2010</a>]<br><br>
+	</li>
 </ul>
 <br>
 (??.10.2020)<br>
