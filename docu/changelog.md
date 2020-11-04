@@ -1,4 +1,4 @@
-<a href="#v0109" title="GClh II version 0.10.9 (??.10.2020)">v0.10.9</a> &nbsp;
+<a href="#v0109" title="GClh II version 0.10.9 (04.11.2020)">v0.10.9</a> &nbsp;
 <a href="#v0108" title="GClh II version 0.10.8 (12.09.2020)">v0.10.8</a> &nbsp;
 <a href="#v0107" title="GClh II version 0.10.7 (07.06.2020)">v0.10.7</a> &nbsp;
 <a href="#v0106" title="GClh II version 0.10.6 (07.05.2020)">v0.10.6</a> &nbsp;
@@ -49,7 +49,7 @@
 	</li>
 </ul>
 <br>
-(??.10.2020)<br>
+(04.11.2020)<br>
 released by <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a><br>
 <br>
 
