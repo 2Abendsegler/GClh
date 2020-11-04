@@ -2,7 +2,7 @@
 // @name             GC little helper II
 // @namespace        http://www.amshove.net
 //--> $$000
-// @version          0.10.8
+// @version          0.10.9
 //<-- $$000
 // @include          https://www.geocaching.com/*
 // @include          https://maps.google.tld/*
@@ -11502,10 +11502,10 @@ var mainGC = function() {
         div.setAttribute("style", "margin-top: -50px;");
         var prop = ' style="border: none; visibility: hidden; width: 2px; height: 2px;" alt="">';
 //--> $$002
-        var code = '<img src="https://c.andyhoppe.com/1599903823"' + prop + // Besucher
-                   '<img src="https://c.andyhoppe.com/1599903899"' + prop + // Seitenaufrufe
-                   '<img src="https://www.worldflagcounter.com/hgF"' + prop +
-                   '<img src="https://s11.flagcounter.com/count2/idiW/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
+        var code = '<img src="https://c.andyhoppe.com/1604466243"' + prop + // Besucher
+                   '<img src="https://c.andyhoppe.com/1604466312"' + prop + // Seitenaufrufe
+                   '<img src="https://www.worldflagcounter.com/hmR"' + prop +
+                   '<img src="https://s11.flagcounter.com/count2/OWDV/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
 //<-- $$002
         div.innerHTML = code;
         side.appendChild(div);
