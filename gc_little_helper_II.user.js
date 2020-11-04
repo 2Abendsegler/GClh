@@ -7678,6 +7678,14 @@ var mainGC = function() {
                 + "table.Table tr.QuaternaryRow td, .QuaternaryRow, table.Table tr td.QuaternaryRow {background-color: #" + getValue("settings_lines_color_owner") + " !important;}"
                 + "table.Table tr.QuinaryRow td, .QuinaryRow, table.Table tr td.QuinaryRow {background-color: #" + getValue("settings_lines_color_reviewer") + " !important;}"
                 + "table.Table tr.SenaryRow td, .SenaryRow, table.Table tr td.SenaryRow {background-color: #" + getValue("settings_lines_color_vip") + " !important;}";
+        // TB Listing:
+        if (document.location.href.match(/\.com\/track\/details\.aspx\?/)) {
+            css += "table.Table tr.AlternatingRow th {background-color: #" + getValue("settings_lines_color_zebra") + " !important;}"
+                +  "table.Table tr.TertiaryRow th {background-color: #" + getValue("settings_lines_color_user") + " !important;}"
+                +  "table.Table tr.QuaternaryRow th {background-color: #" + getValue("settings_lines_color_owner") + " !important;}"
+                +  "table.Table tr.QuinaryRow th {background-color: #" + getValue("settings_lines_color_reviewer") + " !important;}"
+                +  "table.Table tr.SenaryRow th {background-color: #" + getValue("settings_lines_color_vip") + " !important;}";
+        }
         appendCssStyle(css);
         // BMlisten ALT: Zeilen in Zebra und Funde User einfärben. BMlisten scheinen einzige Listen, bei denen das nicht vorgesehen ist.
         if (document.location.href.match(/\.com\/bookmarks\/(view\.aspx\?guid=|bulk\.aspx\?listid=|view\.aspx\?code=)/) && document.getElementById('ctl00_ContentBody_ListInfo_cboItemsPerPage')) {
