@@ -44,6 +44,9 @@
 	<li>
 		<strong>Fix:</strong> [Google maps] Improve the alignment of the icons on google maps. [<a href="https://github.com/2Abendsegler/GClh/issues/1479" title="Issue 1479">1479</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br><br>
 	</li>
+	<li>
+		<strong>Fix:</strong> [TB listing] Correct colors in TB listing logs. [<a href="https://github.com/2Abendsegler/GClh/issues/1483" title="Issue 1483">1483</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
 </ul>
 <br>
 (??.10.2020)<br>
