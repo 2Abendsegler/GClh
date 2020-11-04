@@ -5953,6 +5953,7 @@ var mainGC = function() {
             !document.location.href.match(/\.com\/my\/benchmarks\.aspx/)     &&          // Nicht bei eigenen Benchmark Logs
             !document.location.href.match(/\.com\/my\/favorites\.aspx/)      &&          // Nicht bei Eigene Favoriten, weil hier auch gegebenenfalls das Pseudonym steht
             (is_page("cache_listing")                                            ||      // Cache Listing (nicht in den Logs)
+             is_page("owner_dashboard")                                          ||      // Owner Dashboard
              is_page("publicProfile")                                            ||      // Öffentliches Profil
              document.location.href.match(/\.com\/track\/details\.aspx/)         ||      // TB Listing
              document.location.href.match(/\.com\/(seek|track)\/log\.aspx/)      ||      // Post, Edit, View Cache und TB Logs
@@ -6695,6 +6696,11 @@ var mainGC = function() {
                     } else {waitCount++; if (waitCount <= 50) setTimeout(function(){checkLeagueAvailable(waitCount);}, 200);}
                 }
                 checkLeagueAvailable(0);
+
+            // Owner Dashbord:
+            // The VIP/VUP for the Owner Dashboard is in the Owner Dashboard section
+            // because a mutation observer is required.
+            // ----------
             }
         }
     } catch(e) {gclh_error("VIP VUP",e);}
@@ -8256,10 +8262,31 @@ var mainGC = function() {
                 $('.username').html('<a href="https://www.geocaching.com/p/default.aspx" title="My Profil">' + $('.username').html() + '</a>');
             }
 
+            // Build VIP, Mail, Message icons
+            function waitForLatestActivityList(waitCount) {
+                if ($('ul.latest-activity-list')[0]) {
+                    buildVipVupMailMessage();
+                } else {waitCount++; if (waitCount <= 1000) setTimeout(function(){waitForLatestActivityList(waitCount);}, 100);}
+            }
+
+            function buildVipVupMailMessage() {
+                var links = $('a[href*="https://www.geocaching.com/p/default.aspx?u="]');
+                if ($('.gclh_vip')[0]) return;
+                for (var i = 0; i < links.length; i++) {
+                    var user = $(links[i]).find('span').html();
+                    if (user != null) {
+                        $(links[i]).after('<span class="gclh_name" id="gclh_name_' + i + '"></span>')
+                        $(links[i]).appendTo('#gclh_name_' + i);
+                        gclh_build_vipvupmail(links[i].parentNode, user);
+                    }
+                }
+            }
+
             function processAllCODashboard() {
                 if (document.location.pathname.match(/play\/owner/)) { // This has to be run last, if features are add to the other CO Dashboard Pages
                     waitForCacheTypes(0);
                     setLinkToOwnProfil();
+                    waitForLatestActivityList(0)
                 }
             }
 
@@ -8297,6 +8324,15 @@ var mainGC = function() {
             // Set link to own Profil.
             css += '.username a {color:#4a4a4a; text-decoration:none;}';
             css += '.username a:hover {color:#02874d; text-decoration:underline;}';
+
+            // Build VIP, Mail, Message icons
+            var newFlexBasis = 120 + 21;
+            if (settings_process_vup) newFlexBasis += 21;
+            if (settings_show_mail) newFlexBasis += 21;
+            css += '.latest-activity .log-item-finder {flex:0 0 ' + newFlexBasis + 'px !important;}';
+            css += '.latest-activity .activity-item a {display: inline-block;}';
+            css += '.gclh_name {white-space: nowrap; display: flex; align-items: center;}';
+            css += '.gclh_name a {margin-right:5px;}';               
 
             appendCssStyle(css);
         } catch(e) {gclh_error("Improve Owner Dashboard",e);}
