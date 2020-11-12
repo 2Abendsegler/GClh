@@ -9007,34 +9007,34 @@ var mainGC = function() {
                 if (document.location.href.match(/\.com\/play\/map(\/BM|\?bm=)/)) return;
                 run = false;
 
-                // each filter has to be clicked twice, otherwise the selection isn't reliable
-                function doubleClick(sel) {
-                    $(sel).click().click();
-                }
-
                 // open filter
                 $('button.filter-toggle').click();
 
-                // hide found caches
-                if (settings_map_hide_found) {
-                    doubleClick('input[name="hideFinds"][value="1"]');
-                }
+                function waitForFilter(waitCount) {
+                    if ($('#search-filter-type')[0]) {
+                        // hide found caches
+                        if (settings_map_hide_found) {
+                            $('input[name="hideFinds"][value="1"]').click();
+                        }
 
-                // hide owned caches
-                if (settings_map_hide_hidden) {
-                    doubleClick('input[name="hideOwned"][value="1"]');
-                }
+                        // hide owned caches
+                        if (settings_map_hide_hidden) {
+                            $('input[name="hideOwned"][value="1"]').click();
+                        }
 
-                // hide cache types
-                let cache_types = [2,3,4,5,6,8,11,137,1858];
-                for (let i=0; i<cache_types.length; i++) {
-                    if (window['settings_map_hide_'+cache_types[i]]) {
-                        doubleClick('input[value="'+cache_types[i]+'"]');
-                    }
-                }
+                        // hide cache types
+                        let cache_types = [2,3,4,5,6,8,11,137,1858];
+                        for (let i=0; i<cache_types.length; i++) {
+                            if (window['settings_map_hide_'+cache_types[i]]) {
+                                $('input[value="'+cache_types[i]+'"]').click();
+                            }
+                        }
 
-                // apply filters to map and close
-                doubleClick('button.control-apply');
+                        //apply filters to map and close
+                        $('button.control-apply').click();
+                    } else {waitCount++; if (waitCount <= 50) setTimeout(function(){waitForFilter(waitCount);}, 50);}
+                }
+                waitForFilter(0);
             }
 
             // Processing all steps.
