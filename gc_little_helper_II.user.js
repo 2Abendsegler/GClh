@@ -9097,27 +9097,48 @@ var mainGC = function() {
                 setFilter();
             }
 
-            // Build mutation observer for body.
-            function buildObserverBodySearchMap() {
-                var observerBodySearchMap = new MutationObserver(function(mutations) {
-                    mutations.forEach(function(mutation) {
-                        processAllSearchMap();
-                    });
-                });
-                var target = document.querySelector('body');
-                var config = { attributes: true, childList: true, characterData: true };
-                observerBodySearchMap.observe(target, config);
-            }
-            // Check if mutation observer for body can be build.
-            function checkForBuildObserverBodySearchMap(waitCount) {
-                if ($('body')[0]) {
-                    if ($('.gclh_buildObserverBodySearchMap')[0]) return;
-                    $('body').addClass('gclh_buildObserverBodySearchMap');
-                   buildObserverBodySearchMap();
-                } else {waitCount++; if (waitCount <= 200) setTimeout(function(){checkForBuildObserverBodySearchMap(waitCount);}, 50);}
+        	// observer callback for checking existence of sidebar
+            var cb_body = function(mutationsList, observer) {
+                processAllSearchMap();
+
+                if ($('div#sidebar')[0] && !$('.gclh_sidebar_observer')[0]) {
+                    console.log('add cb_sidebar')
+                    $('div#sidebar').addClass('gclh_sidebar_observer');
+                    // start observing sidebar for switches between search list and cache details view
+                    var target_sidebar = $('div#sidebar')[0];
+                    var config_sidebar = {
+                        childList: true,
+                        subtree: true
+                    };
+                    observer_sidebar.observe(target_sidebar, config_sidebar);
+                }
             }
 
-            checkForBuildObserverBodySearchMap(0);
+            // observer callback when sidebar switches between search list and cache details view
+            var cb_sidebar = function(mutationsList, observer) {
+                console.log('cb_sidebar')
+                observer_sidebar.disconnect();
+
+                processAllSearchMap();
+
+                var target_sidebar = $('div#sidebar')[0];
+                var config_sidebar = {
+                    childList: true,
+                    subtree: true
+                };
+                observer_sidebar.observe(target_sidebar, config_sidebar);
+            }
+
+            // create observer instances linked to callback functions
+            var observer_body    = new MutationObserver(cb_body);
+            var observer_sidebar = new MutationObserver(cb_sidebar); // ATTENTION: the order matters here
+            
+            var target_body = $('body')[0];
+            var config_body = {
+                childList: true,
+                attributes: true
+            };
+            observer_body.observe(target_body, config_body);
             processAllSearchMap();
 
             var css = '';
