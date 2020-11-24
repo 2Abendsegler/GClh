@@ -9097,12 +9097,11 @@ var mainGC = function() {
                 setFilter();
             }
 
-        	// observer callback for checking existence of sidebar
+            // observer callback for checking existence of sidebar
             var cb_body = function(mutationsList, observer) {
                 processAllSearchMap();
 
                 if ($('div#sidebar')[0] && !$('.gclh_sidebar_observer')[0]) {
-                    console.log('add cb_sidebar')
                     $('div#sidebar').addClass('gclh_sidebar_observer');
                     // start observing sidebar for switches between search list and cache details view
                     var target_sidebar = $('div#sidebar')[0];
@@ -9116,7 +9115,6 @@ var mainGC = function() {
 
             // observer callback when sidebar switches between search list and cache details view
             var cb_sidebar = function(mutationsList, observer) {
-                console.log('cb_sidebar')
                 observer_sidebar.disconnect();
 
                 processAllSearchMap();
@@ -9218,7 +9216,7 @@ var mainGC = function() {
                 css += '.search-filters-block {padding: 0px !important; margin: 0px !important;}';
                 css += '.search-filters-block > div {padding: 5px 10px 2px 10px !important; margin: 0px !important;}';
                 css += '.search-filters-block > div > div, .search-filters-block > div > ul, .search-filters-block > div > span, .search-filters-block > div > label {margin: 0px !important;}';
-                css += '.search-filters-block ul label {padding: 3px 10px !important;}';
+                css += '.search-filter-type ul label {padding: 3px 10px !important;}';
                 css += '.search-filters-block .gc-radio-control {padding-bottom: 2px;}';
                 css += '.search-filters-block .gc-radio-control:hover i {box-shadow: 0 0 0 3px #e4e4e4;}';
                 css += '.search-filters-block .label-text-field, .search-filters-block .text-filter .label, .search-filters-block .gc-form-label {margin: 0px !important; padding-bottom: 2px !important;}';
