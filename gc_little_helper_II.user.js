@@ -7926,20 +7926,18 @@ var mainGC = function() {
                     $(log).find('.edit-link').addClass('gclh_view-link');
                 }
                 if ($(log).find('.activity-type-icon > a')[0].href.match(serverParameters["user:info"].referenceCode)) {
-                    if (!$(log).find('.gclh_edit-link')[0]) {
-                        var urlLogs = GM_getValue('urlLogs', []);
-                        var urls = $.grep(urlLogs, function(e){return e.view == $(log).find('.edit-link')[0].href;});
-                        if (urls && urls[0]) {
-                            var span = document.createElement('span');
-                            span.setAttribute('class', 'gclh_buttons');
-                            $(log).find('.edit-link')[0].before(span);
-                            var editLink = $( $(log).find('.edit-link')[0] ).clone()[0];
-                            $(editLink).prop('href', urls[0].edit).prop('class', 'gclh_edit-link').prop('style', 'margin-top: 12px').text('Edit log');
-                            $(log).find('.gclh_buttons')[0].append(editLink);
-                            var editLink = $( $(log).find('.edit-link')[0] ).clone()[0];
-                            $(log).find('.edit-link')[0].remove();
-                            $(log).find('.gclh_buttons')[0].append(editLink);
-                        }
+                    if (!$(log).find('.gclh_edit-link')[0] && $(log).find('.edit-link')[0].href.match(/coord.info\/GL/)) {
+                        var span = document.createElement('span');
+                        span.setAttribute('class', 'gclh_buttons');
+                        $(log).find('.edit-link')[0].before(span);
+                        var editLink = $( $(log).find('.edit-link')[0] ).clone()[0];
+                        var href = $(editLink).prop('href');
+                        href = href.replace(/coord.info\/GL/, 'www.geocaching.com/seek/log.aspx?code=GL');
+                        $(editLink).prop('href', href + '&edit=true').prop('class', 'gclh_edit-link').prop('style', 'margin-top: 12px').text('Edit log');
+                        $(log).find('.gclh_buttons')[0].append(editLink);
+                        var editLink = $( $(log).find('.edit-link')[0] ).clone()[0];
+                        $(log).find('.edit-link')[0].remove();
+                        $(log).find('.gclh_buttons')[0].append(editLink);
                     }
                     buildEventMoreAF(log);
                 }
@@ -7954,51 +7952,10 @@ var mainGC = function() {
                     $($(log).find('.activity-details')[0]).addClass('gclh_event');
                 }
             }
-            function getEditUrlAF(log){
-                if (!$(log).hasClass('gclh_edit-url')) {
-                    $($(log)).addClass('gclh_edit-url');
-                    var viewUrl = $(log).find('.edit-link')[0].href;
-                    var urlLogs = GM_getValue('urlLogs', []);
-                    var urls = $.grep(urlLogs, function(e){return e.view == viewUrl;});
-                    if (!urls || !urls[0]) {
-                        GM_xmlhttpRequest({
-                            method: "GET",
-                            url: viewUrl,
-                            onload: function(r) {
-                                var editUrl = r.finalUrl;
-                                if ($(r.response).find('#ctl00_ContentBody_LogBookPanel1_LogDate')[0] && $(r.response).find('#ctl00_ContentBody_LogBookPanel1_LogDate')[0].innerHTML) {
-                                    var timeLog = new Date($(r.response).find('#ctl00_ContentBody_LogBookPanel1_LogDate')[0].innerHTML);
-                                    if (timeLog) timeLog = timeLog.getTime();
-                                }
-                                if (editUrl && timeLog) {
-                                    editUrl += '&edit=true';
-                                    var urlLogs = GM_getValue('urlLogs', []);
-                                    urlLogs.push({view: viewUrl, edit: editUrl, time: timeLog});
-                                    GM_setValue('urlLogs', urlLogs);
-                                }
-                            }
-                        });
-                    }
-                }
-            }
-            function deleteOldUrlLogs() {
-                var urlLogs = GM_getValue('urlLogs', []);
-                if (!urlLogs) return;
-                var today = new Date().getTime();
-                var month = 1000*60*60*24*(31+1);
-                var urlLogsNew = [];
-                for (i=0; i<urlLogs.length; i++) {
-                    if (urlLogs[i].time > (today - month)) {
-                        urlLogsNew.push({view: urlLogs[i].view, edit: urlLogs[i].edit, time: urlLogs[i].time});
-                    }
-                }
-                GM_setValue('urlLogs', urlLogsNew);
-            }
             function processLogsAF(waitCount) {
                 if ($('#ActivityFeed .activity-item').length > 0) {
                     for (i=0; i<$('#ActivityFeed .activity-item').length; i++) {
                         if ($($('#ActivityFeed .activity-item')[i]).find('.activity-type-icon > a')[0].href.match(serverParameters["user:info"].referenceCode)) {
-                            getEditUrlAF($('#ActivityFeed .activity-item')[i]);
                             buildEventMoreAF($('#ActivityFeed .activity-item')[i]);
                         }
                     }
@@ -8028,7 +7985,6 @@ var mainGC = function() {
                 buildEventLatestActivityPanelAF(0);
                 buildEventLatestActivityAF(0);
                 processLogsAF(0);
-                deleteOldUrlLogs();
             }
             if (settings_show_edit_links_for_logs) {
                 startAF();
@@ -11617,6 +11573,11 @@ var mainGC = function() {
                 setValue("settings_mail_signature", template);
             }
             setValue("migration_task_01", true);
+        }
+        // Migrate simplification edit button on new dashboard (zu v0.10.10).
+        if (getValue("migration_task_02", false) != true) {
+            GM_setValue('urlLogs', []);
+            setValue("migration_task_02", true);
         }
     }
 
@@ -15262,7 +15223,6 @@ var mainGC = function() {
 //--> $$007
         // Reset data outside of CONFIG.
         [changed, changedData] = rcNoConfigDataDel('clipboard', false, changed, changedData);
-        [changed, changedData] = rcNoConfigDataDel('urlLogs', [], changed, changedData);
         [changed, changedData] = rcNoConfigDataDel('headerReplacement', false, changed, changedData);
 //<-- $$007
         document.getElementById('rc_configData').innerText = changedData;
