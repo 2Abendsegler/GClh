@@ -9051,45 +9051,26 @@ var mainGC = function() {
                 if (document.location.href.match(/\.com\/play\/map(\/BM|\?bm=)/)) return;
                 run = false;
 
-                // each filter has to be clicked twice, otherwise the selection isn't reliable
-                function doubleClick(sel) {
-                    $(sel).click().click();
-                }
-
-                function allTypesSelected() {
-                    let count = 0;
-                    let cache_types = [2,3,4,5,6,8,11,137,1858];
-                    for (let i=0; i<cache_types.length; i++) {
-                        if (window['settings_map_hide_'+cache_types[i]]) {
-                            count++;
-                        }
-                    }
-                    return count = 9;
-                }
-
                 // open filter
                 $('button.filter-toggle').click();
 
                 function waitForFilter(waitCount) {
-                    if ($('#search-filter-type')[0] && $('input[name="hideFinds"][value="1"]')[0]) {
-
+                    if ($('#search-filter-type')[0]) {
                         // hide found caches
                         if (settings_map_hide_found) {
-                            doubleClick('input[name="hideFinds"][value="1"]');
+                            $('input[name="hideFinds"][value="1"]').click();
                         }
 
                         // hide owned caches
                         if (settings_map_hide_hidden) {
-                            doubleClick('input[name="hideOwned"][value="1"]');
+                            $('input[name="hideOwned"][value="1"]').click();
                         }
 
                         // hide cache types
-                        if (!allTypesSelected()) {
-                            let cache_types = [2,3,4,5,6,8,11,137,1858];
-                            for (let i=0; i<cache_types.length; i++) {
-                                if (window['settings_map_hide_'+cache_types[i]]) {
-                                    $('input[value="'+cache_types[i]+'"]').click();
-                                }
+                        let cache_types = [2,3,4,5,6,8,11,137,1858];
+                        for (let i=0; i<cache_types.length; i++) {
+                            if (window['settings_map_hide_'+cache_types[i]]) {
+                                $('input[value="'+cache_types[i]+'"]').click();
                             }
                         }
 
