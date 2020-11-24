@@ -8761,10 +8761,10 @@ var mainGC = function() {
 
             // Build map control buttons.
             function buildMapControlButtons() {
-                if (!$('.map-controls div section')[0]) return;
+                if (!$('.map-setting-controls ul')[0]) return;
                 // Relocate browse button to other buttons.
                 if (settings_relocate_other_map_buttons && !$('#gclh_browse_map')[0] && $('#browse-map-cta')[0]) {
-                    $('.map-controls div section:first').before('<section><button id="gclh_browse_map" class="map-control" title="Browse geocaches"><svg><use xlink:href="#globe"></use></svg></button></section>');
+                    $('.map-setting-controls ul li:first').before('<li role="menuitem"><button id="gclh_browse_map" class="map-control" title="Browse geocaches"><svg><use xlink:href="#globe"></use></svg></button></li>');
                     $('#gclh_browse_map')[0].addEventListener("click", function() { $('#browse-map-cta')[0].click(); }, false);
                 }
                 // Add links to Google, OSM, Flopp's and GeoHack Map.
@@ -9529,7 +9529,7 @@ var mainGC = function() {
         if (is_page('map')) {
             $('.leaflet-top.leaflet-right').append('<div id="gclh_geoservices_control"  class="gclh-leaflet-control browsemap"></div>');
         } else {
-            $('.map-controls div section:first').before('<section><button id="gclh_geoservices_control" class="gclh-leaflet-control searchmap"></button></section>');
+            $('.map-setting-controls ul li:first').before('<li role="menuitem"><button id="gclh_geoservices_control" class="gclh-leaflet-control map-control searchmap"></button></li>');
         }
         $('#gclh_geoservices_control').append('<a id="gclh_google_button"></a>');
         $("#gclh_geoservices_control").append('<div id="gclh_geoservices_list" class="gclh-leaflet-list"></div>');
