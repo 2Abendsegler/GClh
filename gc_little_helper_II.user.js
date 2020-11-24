@@ -1,4 +1,4 @@
-// ==UserScript==
+​// ==UserScript==
 // @name             GC little helper II
 // @namespace        http://www.amshove.net
 //--> $$000
@@ -10050,9 +10050,9 @@ var mainGC = function() {
                 for (var i = 0; i < cells.length; i++) {
                     var cell = cells[i];
                     if (cell.id.match(/^([1-9]{1})(_{1})([1-9]{1})$/)) {
-                        if (parseInt(cell.innerHTML) == smallest) count++;
-                        else if (parseInt(cell.innerHTML) < smallest) {
-                            smallest = parseInt(cell.innerHTML);
+                        if (parseInt(cell.children[0].innerHTML) == smallest) count++;
+                        else if (parseInt(cell.children[0].innerHTML) < smallest) {
+                            smallest = parseInt(cell.children[0].innerHTML);
                             count = 1;
                         }
                     }
@@ -10066,7 +10066,7 @@ var mainGC = function() {
                         side.nodeValue += matrix;
                     }
                 }
-                // Nächste mögliche Matrix farblich kennzeichnen und Search Link und Title setzen.
+                // Nächste mögliche Matrix farblich kennzeichnen und Search Link und Title überall ergänzen.
                 if (own == true && settings_count_own_matrix_show_next == true) {
                     var from = smallest;
                     var to = smallest - 1 + parseInt(settings_count_own_matrix_show_count_next);
@@ -10074,32 +10074,30 @@ var mainGC = function() {
                     for (var i = 0; i < cells.length; i++) {
                         var cell = cells[i];
                         if (cell.id.match(/^([1-9]{1})(_{1})([1-9]{1})$/)) {
-                            if (from <= parseInt(cell.innerHTML) && parseInt(cell.innerHTML) <= to) {
-                                cell.style.color = "black";
-                                var diff = parseInt(cell.innerHTML) - from;
+                            if (from <= parseInt(cell.children[0].innerHTML) && parseInt(cell.children[0].innerHTML) <= to) {
+                                cell.children[0].style.color = "black";
+                                var diff = parseInt(cell.children[0].innerHTML) - from;
                                 cell.style.backgroundColor = color;
+                                cell.children[0].style.backgroundColor = 'unset';
                                 switch (diff) {
                                     case 1: cell.style.backgroundColor = cell.style.backgroundColor.replace(/rgb/i, "rgba").replace(/\)/, ",0.6)"); break;
                                     case 2: cell.style.backgroundColor = cell.style.backgroundColor.replace(/rgb/i, "rgba").replace(/\)/, ",0.4)"); break;
                                     case 3: cell.style.backgroundColor = cell.style.backgroundColor.replace(/rgb/i, "rgba").replace(/\)/, ",0.25)"); break;
                                 }
-                                if (settings_count_own_matrix_links_radius != 0) {
-                                    var terrain = parseInt(cell.id.match(/^([1-9]{1})(_{1})([1-9]{1})$/)[3]) * 0.5 + 0.5;
-                                    var difficulty = parseInt(cell.id.match(/^([1-9]{1})(_{1})([1-9]{1})$/)[1]) * 0.5 + 0.5;
-                                    var user = global_me;
-                                    var aTag = document.createElement('a');
-                                    aTag.href = "/play/search/?origin=" + DectoDeg(getValue("home_lat"), getValue("home_lng"))
-                                              + "&radius=" + settings_count_own_matrix_links_radius + "km"
-                                              + "&t=" + terrain + "&d=" + difficulty + "&nfb[0]=" + user + "&f=2&o=2&nfb\[1\]=GClh";
-                                    if (settings_count_own_matrix_links == "map") aTag.href += "#GClhMap";
-                                    else aTag.href += "#searchResultsTable";
-                                    aTag.title = "Search D" + difficulty + "/T" + terrain + " radius " + settings_count_own_matrix_links_radius + " km from home";
-                                    aTag.target = "_blank";
-                                    aTag.style.color = "black";
-                                    aTag.appendChild(document.createTextNode(cell.innerHTML));
-                                    cell.innerHTML = "";
-                                    cell.appendChild(aTag);
+                            }
+                            if (settings_count_own_matrix_links_radius != 0) {
+                                cell.children[0].href +=
+                                    "&origin=" + DectoDeg(getValue("home_lat"), getValue("home_lng")) +
+                                    "&radius=" + settings_count_own_matrix_links_radius + "km" +
+                                    "&nfb[0]=" + global_me + "&o=2&nfb\[1\]=GClh";
+                                if (settings_count_own_matrix_links == "map") {
+                                    cell.children[0].href += "#GClhMap";
+                                    cell.children[0].title += ", on map";
+                                } else {
+                                    cell.children[0].href += "#searchResultsTable";
+                                    cell.children[0].title += ", on list";
                                 }
+                                cell.children[0].title += ", with radius " + settings_count_own_matrix_links_radius + " km from home";
                             }
                         }
                     }
