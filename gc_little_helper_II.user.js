@@ -4063,7 +4063,7 @@ var mainGC = function() {
                 }
 
                 // Kein Draft oder Draft mit Signatur.
-                if ((!document.location.href.match(/log\?d\=/) && $('.selectric')[0]) ||  // Kein Draft
+                if ((!document.location.href.match(/log\?d\=/)) ||  // Kein Draft
                     (document.location.href.match(/log\?d\=/) && document.getElementById('LogText').value != "" && settings_log_signature_on_fieldnotes)) {  // Draft
                     var initial_cursor_position = document.getElementById('LogText').selectionEnd;
                     var logtext = document.getElementById('LogText').value;
