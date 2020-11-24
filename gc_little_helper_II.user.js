@@ -3619,7 +3619,7 @@ var mainGC = function() {
                     side = $('#logTypeSelector')[0];
                     side.append(box);
                     var css = "";
-                    css += '#gclh_head {float: right; margin: ' + (settings_show_bbcode ? '-28px':'-39px') +' 0px 0px 50px;}';
+                    css += '#gclh_head {float: right; margin-top: ' + (settings_show_bbcode ? '9px;' : '0px') + ';}';
                     css += '#gclh_smilies {display: block; margin: -55px -5px 5px 0;}';
                     css += '#gclh_log_tpls {width: 180px; border: 1px solid #9b9b9b; box-shadow: none; height: 40px; padding-top: 5px;}';
                     css += 'select:hover, select:focus, select:active {background-image: url(/play/app/ui-icons/icons/global/caret-down-hover.svg);}';
