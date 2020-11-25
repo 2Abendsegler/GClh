@@ -8,7 +8,7 @@
 * Install the script [GC little helper II](https://github.com/2Abendsegler/GClh/raw/master/gc_little_helper_II.user.js) under the script manager Tampermonkey.<br>
 
 ### <a id="chrome_de"></a><img src="/images/google_chrome_logo_small.png" title="Google Chrom" alt="Google Chrom"> Google Chrome:
-### <a id="chrome_de"></a><img src="/images/google_chrome_logo_small.png" title="Google Chrom" alt="Google Chrom"> Google Chrome:
+### <a id="chrome_de"></a><img src="../images/google_chrome_logo_small.png" title="Google Chrom" alt="Google Chrom"> Google Chrome:
 * Install the script manager [Tampermonkey](https://chrome.google.com/webstore/detail/tampermonkey/dhdgffkkebhmkfjojejmpbldmpobfkfo) as Add-on in Chrome.<br>
 * Install the script [GC little helper II](https://github.com/2Abendsegler/GClh/raw/master/gc_little_helper_II.user.js) under the script manager Tampermonkey.<br>
 
