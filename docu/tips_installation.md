@@ -5,8 +5,7 @@
 
 ### <a id="firefox_en"></a><img src="/images/mozilla_firefox_logo_small.png" title="Mozilla Firefox" alt="Mozilla Firefox"> Mozilla Firefox:<br>
 * Install the script manager [Tampermonkey](https://addons.mozilla.org/en-US/firefox/addon/tampermonkey/) as Add-on in Firefox.<br> 
-* Install the script [GC little helper II](https://github.com/2Abendsegler/GClh/raw/master/gc_little_helper_II.user.js) under the script manager Tampermonkey.<br><br>
-* GC little helper II can not run from Firefox version 57 with script manager Greasemonkey 4. Therefore please install the script manager [Tampermonkey](https://addons.mozilla.org/en-US/firefox/addon/tampermonkey/). To take over the configuration of GC little helper II of script manager Greasemonkey to Tampermonkey see [Tips for migration - 6.](https://github.com/2Abendsegler/GClh/blob/master/docu/tips_migration.md#6en)<br>
+* Install the script [GC little helper II](https://github.com/2Abendsegler/GClh/raw/master/gc_little_helper_II.user.js) under the script manager Tampermonkey.<br>
 
 ### <a id="chrome_de"></a><img src="/images/google_chrome_logo_small.png" title="Google Chrom" alt="Google Chrom"> Google Chrome:
 * Install the script manager [Tampermonkey](https://chrome.google.com/webstore/detail/tampermonkey/dhdgffkkebhmkfjojejmpbldmpobfkfo) as Add-on in Chrome.<br>
@@ -31,12 +30,12 @@
 The key F4 for calling the GClh Config and the key F2 for saving from GClh Config respectively for saving of a log, a Bookmark, a Pocket Query ... , are enabled by default. They can be changed in GClh Config in the GClh Config / Sync area or in the Logging area.<br>
 In Vivaldi browser, these keys are also enabled by default. They can be changed in Vivaldi via settings / keyboard.<br>
 
-### <a id="android_firefox_en"></a><img src="/images/mozilla_firefox_android_logo_small.png" title="Android / Mozilla Firefox" alt="Android / Mozilla Firefox"> Android / Mozilla Firefox:
-* We do not support Android devices at the moment. Nevertheless, the script is functional on Android with only a few restrictions. Here is described one of the ways to install the srcipt on Android devices. In the [FAQ](https://github.com/2Abendsegler/GClh/blob/master/docu/faq.md#4-en) there are some hints for using on Android devices.<br>
-Process the following instructions on your Android device.<br><br>
-* Install [Firefox for Android](https://play.google.com/store/apps/details?id=org.mozilla.firefox) on your device.<br>
-* Install the script manager [Tampermonkey](https://addons.mozilla.org/de/firefox/addon/tampermonkey/) as Add-on in Firefox.<br>
-* Install the script [GC little helper II](https://github.com/2Abendsegler/GClh/raw/master/gc_little_helper_II.user.js) under the script manager Tampermonkey.<br>
+### <a id="android_en"><a id="android_firefox_en"></a><img src="/images/android_logo_small.png" title="Android" alt="Android"> Android:
+* We do not support Android devices at the moment. Nevertheless, the GClh is functional on Android with only a few restrictions. <a href="https://github.com/2Abendsegler/GClh/blob/master/docu/faq.md#4-en" title="Link to 'FAQ 4. Hints for using on Android devices.'">Here</a> are some hints for using the GClh on Android devices.<br>
+Process the following instructions on your Android device:<br><br>
+* Install a browser on your Android device.<br>
+* Install the script manager Tampermonkey as Add-on in your browser. (Don't install Tampermonkey on the desktop of your Android device.)<br>
+* Install the script [GC little helper II](https://github.com/2Abendsegler/GClh/raw/master/gc_little_helper_II.user.js) under the script manager Tampermonkey. If you click the link on your Android device on your browser, Tampermonkey should recognize it.<br>
 <br>
 
 ---
@@ -44,8 +43,7 @@ Process the following instructions on your Android device.<br><br>
 
 ### <a id="firefox_de"></a><img src="/images/mozilla_firefox_logo_small.png" title="Mozilla Firefox" alt="Mozilla Firefox"> Mozilla Firefox:
 * Installiere den Script-Manager [Tampermonkey](https://addons.mozilla.org/de/firefox/addon/tampermonkey/) als Add-On in Firefox.<br>
-* Installiere das Script [GC little helper II](https://github.com/2Abendsegler/GClh/raw/master/gc_little_helper_II.user.js) unter dem Script-Manager Tampermonkey.<br><br>
-* Der GC little helper II ist ab Firefox Version 57 unter dem Script-Manager Greasemonkey 4 nicht mehr lauffähig. Deshalb bitte den Script-Manager [Tampermonkey](https://addons.mozilla.org/de/firefox/addon/tampermonkey/) installieren. Um die Konfiguration des GC little helper II vom Script-Manager Greasemonkey nach Tampermonkey zu übernehmen siehe [Tipps für die Migration - 6.](https://github.com/2Abendsegler/GClh/blob/master/docu/tips_migration.md#6de)<br>
+* Installiere das Script [GC little helper II](https://github.com/2Abendsegler/GClh/raw/master/gc_little_helper_II.user.js) unter dem Script-Manager Tampermonkey.<br>
 
 ### <a id="chrome_de"></a><img src="/images/google_chrome_logo_small.png" title="Google Chrom" alt="Google Chrom"> Google Chrome:
 * Installiere den Script-Manager [Tampermonkey](https://chrome.google.com/webstore/detail/tampermonkey/dhdgffkkebhmkfjojejmpbldmpobfkfo) als Add-On in Chrome.<br>
@@ -70,10 +68,10 @@ Process the following instructions on your Android device.<br><br>
 Die Taste F4 zum Aufrufen des GClh Config und die Taste F2 zum Speichern im GClh Config bzw. zum Speichern eines Logs, einer Bookmark, einer Pocket Query ... , sind standardmäßig aktiviert. Sie können im GClh Config im Bereich GClh Config / Sync bzw. im Bereich Logging geändert werden. <br>
 Im Browser Vivaldi sind diese Tasten auch standardmäßig aktiviert. Sie können in Vivaldi über Einstellungen / Tastatur geändert werden.<br>
 
-### <a id="android_firefox_de"></a><img src="/images/mozilla_firefox_android_logo_small.png" title="Android / Mozilla Firefox" alt="Android / Mozilla Firefox"> Android / Mozilla Firefox:
-* Wir supporten Android Geräte zur Zeit nicht. Dennoch ist das Script auch unter Android funktionsfähig mit nur wenigen Einschränkungen. Hier wird eine der Möglichkeiten zur Installation des Scriptes auf Android Geräten beschrieben. In den [FAQ](https://github.com/2Abendsegler/GClh/blob/master/docu/faq.md#4-de) gibt es noch einige Hinweise zur Nutzung auf Android Geräten.<br>
-Führe die folgenden Anweisungen auf deinem Android Gerät aus.<br><br>
-* Installiere [Firefox für Android](https://play.google.com/store/apps/details?id=org.mozilla.firefox) auf deinem Gerät.<br>
-* Installiere den Script-Manager [Tampermonkey](https://addons.mozilla.org/de/firefox/addon/tampermonkey/) als Add-On in Firefox.<br>
-* Installiere das Script [GC little helper II](https://github.com/2Abendsegler/GClh/raw/master/gc_little_helper_II.user.js) unter dem Script-Manager Tampermonkey.<br><br>
+### <a id="android_de"><a id="android_firefox_de"></a><img src="/images/android_logo_small.png" title="Android" alt="Android"> Android:
+* Wir supporten Android Geräte zur Zeit nicht. Dennoch ist das Script auch unter Android funktionsfähig mit nur wenigen Einschränkungen. <a href="https://github.com/2Abendsegler/GClh/blob/master/docu/faq.md#4-en" title="Link to 'FAQ 4. Hints for using on Android devices.'">Hier</a> gibt es einige Hinweise für die Nutzung des GClh auf Anroid Geräten.<br>
+Führe die folgenden Anweisungen auf deinem Android Gerät aus:<br><br>
+* Installiere einen Browser auf deinem Android Gerät.<br>
+* Installiere den Script-Manager Tampermonkey als Add-on in deinem Browser. (Installiere Tampermonkey nicht auf dem Desktop deines Android Gerätes.)<br>
+* Installiere das Script [GC little helper II](https://github.com/2Abendsegler/GClh/raw/master/gc_little_helper_II.user.js) unter dem Script-Manager Tampermonkey. Wenn du den Link auf deinem Android Gerät in deinem Browser anklickst, sollte Tampermonkey das bemerken.<br>
 <br>
