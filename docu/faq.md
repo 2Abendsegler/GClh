@@ -73,6 +73,7 @@ If a script does not start, these are usually matching problems between the brow
 				Mark the geocaching page via the settings in the browser as "desktop page".<br>
 			</li>
 		</ul>
+		<br>
 	</li>
 	<li>
 		Drag & drop operations do not work.<br>
@@ -197,9 +198,10 @@ Abhilfe:<br>
 				Das Android Gerät im Querformat nutzen.<br>
 			</li>
 			<li>
-				Die Geocaching Seite über die einstellungen im Browser als "Desktop Seite" kennzeichen.<br>
+				Die Geocaching Seite über die Einstellungen im Browser als "Desktop Seite" kennzeichen.<br>
 			</li>
 		</ul>
+		<br>
 	</li>
 	<li>
 		Drag & Drop Operationen funktionieren nicht.<br>
