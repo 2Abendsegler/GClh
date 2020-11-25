@@ -8334,7 +8334,8 @@ var mainGC = function() {
                 css += '.latest-activity .activity-item a {display: inline-block;}';
                 css += '.gclh_name {white-space: nowrap; display: flex; align-items: center;}';
                 css += '.gclh_name a {margin-right:5px;}';
-            }             
+            }
+            css += '.gclh_name a:focus:not(:nth-child(1)) {box-shadow: none;}';
 
             appendCssStyle(css);
         } catch(e) {gclh_error("Improve Owner Dashboard",e);}
