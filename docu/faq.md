@@ -139,7 +139,7 @@ If a script does not start, these are usually matching problems between the brow
 
 <a id="6-en"></a>
 ## 6. How can I install the GClh on Android devices?
-See <a href="https://github.com/2Abendsegler/GClh/blob/master/docu/tips_installation.md#android_en" title="Link to 'Tips for the installation of GC little helper II - Android'">Tips for the installation of GC little helper II - Android</a><br>
+See <a href="../docu/tips_installation.md#android_en" title="Link to 'Tips for the installation of GC little helper II - Android'">Tips for the installation of GC little helper II - Android</a><br>
 <br>
 
 ---
