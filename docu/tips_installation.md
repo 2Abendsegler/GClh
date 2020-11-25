@@ -8,7 +8,6 @@
 * Install the script [GC little helper II](https://github.com/2Abendsegler/GClh/raw/master/gc_little_helper_II.user.js) under the script manager Tampermonkey.<br>
 
 ### <a id="chrome_de"></a><img src="/images/google_chrome_logo_small.png" title="Google Chrom" alt="Google Chrom"> Google Chrome:
-### <a id="chrome_de"></a><img src="../images/google_chrome_logo_small.png" title="Google Chrom" alt="Google Chrom"> Google Chrome:
 * Install the script manager [Tampermonkey](https://chrome.google.com/webstore/detail/tampermonkey/dhdgffkkebhmkfjojejmpbldmpobfkfo) as Add-on in Chrome.<br>
 * Install the script [GC little helper II](https://github.com/2Abendsegler/GClh/raw/master/gc_little_helper_II.user.js) under the script manager Tampermonkey.<br>
 
@@ -32,7 +31,7 @@ The key F4 for calling the GClh Config and the key F2 for saving from GClh Confi
 In Vivaldi browser, these keys are also enabled by default. They can be changed in Vivaldi via settings / keyboard.<br>
 
 ### <a id="android_en"><a id="android_firefox_en"></a><img src="/images/android_logo_small.png" title="Android" alt="Android"> Android under different browsers:
-* We do not support Android devices at the moment. Nevertheless, the GClh is functional on Android with only a few restrictions. <a href="https://github.com/2Abendsegler/GClh/blob/master/docu/faq.md#4-en" title="Link to 'FAQ 4. Hints for using on Android devices.'">Here</a> are some hints for using the GClh on Android devices.<br>
+* We do not support Android devices at the moment. Nevertheless, the GClh is functional on Android with only a few restrictions. <a href="/docu/faq.md#4-en" title="Link to 'FAQ 4. Hints for using on Android devices.'">Here</a> are some hints for using the GClh on Android devices.<br>
 Process the following instructions on your Android device:<br><br>
 * Install a browser on your Android device.<br>
 * Install the script manager Tampermonkey as Add-on in your browser. (Don't install Tampermonkey on the desktop of your Android device.)<br>
@@ -70,7 +69,7 @@ Die Taste F4 zum Aufrufen des GClh Config und die Taste F2 zum Speichern im GClh
 Im Browser Vivaldi sind diese Tasten auch standardmäßig aktiviert. Sie können in Vivaldi über Einstellungen / Tastatur geändert werden.<br>
 
 ### <a id="android_de"><a id="android_firefox_de"></a><img src="/images/android_logo_small.png" title="Android" alt="Android"> Android unter verschiedenen Browsern:
-* Wir supporten Android Geräte zur Zeit nicht. Dennoch ist das Script auch unter Android funktionsfähig mit nur wenigen Einschränkungen. <a href="https://github.com/2Abendsegler/GClh/blob/master/docu/faq.md#4-en" title="Link to 'FAQ 4. Hints for using on Android devices.'">Hier</a> gibt es einige Hinweise für die Nutzung des GClh auf Android Geräten.<br>
+* Wir supporten Android Geräte zur Zeit nicht. Dennoch ist das Script auch unter Android funktionsfähig mit nur wenigen Einschränkungen. <a href="/docu/faq.md#4-en" title="Link to 'FAQ 4. Hints for using on Android devices.'">Hier</a> gibt es einige Hinweise für die Nutzung des GClh auf Android Geräten.<br>
 Führe die folgenden Anweisungen auf deinem Android Gerät aus:<br><br>
 * Installiere einen Browser auf deinem Android Gerät.<br>
 * Installiere den Script-Manager Tampermonkey als Add-on in deinem Browser. (Installiere Tampermonkey nicht auf dem Desktop deines Android Gerätes.)<br>
