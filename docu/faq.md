@@ -7,6 +7,7 @@
 <a href="#3-en">3. GClh doesn't start.</a> | <a href="#3-de">3. GClh startet nicht.</a>
 <a href="#4-en">4. Hints for using on Android devices.</a> | <a href="#4-de">4. Hinweise für die Nutzung auf Android Geräten.</a>
 <a href="#5-en">5. How can I start the Config of the GClh?</a> | <a href="#5-de">5. Wie kann ich die Konfiguration des GClh starten?</a>
+<a href="#6-en">6. How can I contribute to GClh II?</a> | <a href="#6-de">6. Wie kann ich etwas zu GClh II beitragen?</a>
 
 ---
 <a id="en"></a><img src="../images/flag_en.png">
@@ -123,6 +124,12 @@ If a script does not start, these are usually matching problems between the brow
 </ul>
 <br>
 
+
+<a id="6-en"></a>
+## 6. How can I contribute to GClh II?
+We are happy about improvement suggestions, bugfixes or new Features. This is realized via Pull-Requests. You can read how to create a Pull-Request here: <a href="https://github.com/2Abendsegler/GClh/blob/master/docu/how_to_contribute.md#en">How to contribute</a>
+<br>
+
 ---
 <a id="de"></a><img src="../images/flag_de.png">
 
@@ -236,4 +243,10 @@ Startet ein Script nicht, so handelt es sich in der Regel um Abstimmungsprobleme
 		Oder du kannst den entsprechenden Link in deinem <a href="https://www.geocaching.com/account/dashboard">Dashboard</a> unterhalb deines Benutzernamens verwenden.
 	</li>
 </ul>
+<br>
+
+
+<a id="6-de"></a>
+## 6. Wie kann ich etwas zu GClh II beitragen?
+Wir freuen uns über Verbesserungsvorschläge, Bugfixes oder neue Features. Dies geschieht bei uns über Pull-Requests. Wie du so etwas anlegst kannst du hier nachlesen: <a href="https://github.com/2Abendsegler/GClh/blob/master/docu/how_to_contribute.md#de">Wie kannst du etwas beitragen?</a>
 <br>
