@@ -8265,7 +8265,7 @@ var mainGC = function() {
             // Build VIP, Mail, Message icons
             function waitForLatestActivityList(waitCount) {
                 if ($('ul.latest-activity-list')[0]) {
-                    buildVipVupMailMessage();
+                    if (settings_show_vip_list) buildVipVupMailMessage();
                 } else {waitCount++; if (waitCount <= 1000) setTimeout(function(){waitForLatestActivityList(waitCount);}, 100);}
             }
 
@@ -8326,13 +8326,15 @@ var mainGC = function() {
             css += '.username a:hover {color:#02874d; text-decoration:underline;}';
 
             // Build VIP, Mail, Message icons
-            var newFlexBasis = 120 + 21;
-            if (settings_process_vup) newFlexBasis += 21;
-            if (settings_show_mail) newFlexBasis += 21;
-            css += '.latest-activity .log-item-finder {flex:0 0 ' + newFlexBasis + 'px !important;}';
-            css += '.latest-activity .activity-item a {display: inline-block;}';
-            css += '.gclh_name {white-space: nowrap; display: flex; align-items: center;}';
-            css += '.gclh_name a {margin-right:5px;}';               
+            if (settings_show_vip_list) {
+                var newFlexBasis = 120 + 21;
+                if (settings_process_vup) newFlexBasis += 21;
+                if (settings_show_mail) newFlexBasis += 21;
+                css += '.latest-activity .log-item-finder {flex:0 0 ' + newFlexBasis + 'px !important;}';
+                css += '.latest-activity .activity-item a {display: inline-block;}';
+                css += '.gclh_name {white-space: nowrap; display: flex; align-items: center;}';
+                css += '.gclh_name a {margin-right:5px;}';
+            }             
 
             appendCssStyle(css);
         } catch(e) {gclh_error("Improve Owner Dashboard",e);}
