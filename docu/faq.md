@@ -197,7 +197,7 @@ Startet ein Script nicht, so handelt es sich in der Regel um Abstimmungsprobleme
 ## 4. Hinweise für die Nutzung auf Android Geräten.
 <ul>
 	<li>
-		Bei kleineren Android Geräten, wie zum Beispiel Smartphones, werden einige Geocaching Seiten in einem kleineren (Mobil) Layout dargestellt. Der GClh unterstützt solche Layouts nicht. Das kann dazu führen dass die Geocaching Seite nicht ordnungsgemäß angezeigt wird.<br>
+		Bei kleineren Android Geräten, wie zum Beispiel Smartphones, werden einige Geocaching Seiten in einem kleineren (Mobil) Layout dargestellt. Der GClh unterstützt solche Layouts nicht. Das kann dazu führen, dass die Geocaching Seite nicht ordnungsgemäß angezeigt wird.<br>
 Abhilfe:<br>
 		<ul>
 			<li>
