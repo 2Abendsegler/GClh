@@ -272,5 +272,5 @@ Abhilfe:<br>
 
 <a id="6-de"></a>
 ## 6. Wie kann ich den GClh auf Android Geräten installieren?
-Siehe <a href="https://github.com/2Abendsegler/GClh/blob/master/docu/tips_installation.md#android_de" title="Link zu 'Tipps für die Installation des GC little helper II - Android'">Tipps für die Installation des GC little helper II - Android</a><br>
+Siehe <a href="../docu/tips_installation.md#android_de" title="Link zu 'Tipps für die Installation des GC little helper II - Android'">Tipps für die Installation des GC little helper II - Android</a><br>
 <br>
