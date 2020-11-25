@@ -63,6 +63,18 @@ If a script does not start, these are usually matching problems between the brow
 ## 4. Hints for using on Android devices.
 <ul>
 	<li>
+		On smaller Android devices, such as smartphones, some geocaching pages are displayed in a smaller (mobile) layout. The GClh does not support such layouts. This can lead to the geocaching page not being displayed properly.<br>
+		Solution:<br>
+		<ul>
+			<li>
+				Use the Android device in landscape format.<br>
+			</li>
+			<li>
+				Mark the geocaching page via the settings in the browser as "desktop page".<br>
+			</li>
+		</ul>
+	</li>
+	<li>
 		Drag & drop operations do not work.<br>
 		<ul>
 			<li>
@@ -177,6 +189,18 @@ Startet ein Script nicht, so handelt es sich in der Regel um Abstimmungsprobleme
 <a id="4-de"></a>
 ## 4. Hinweise für die Nutzung auf Android Geräten.
 <ul>
+	<li>
+		Bei kleineren Android Geräten, wie zum Beispiel Smartphones, werden einige Geocaching Seiten in einem kleineren (Mobil) Layout dargestellt. Der GClh unterstützt solche Layouts nicht. Das kann dazu führen dass die Geocaching Seite nicht ordnungsgemäß angezeigt wird.<br>
+Abhilfe:<br>
+		<ul>
+			<li>
+				Das Android Gerät im Querformat nutzen.<br>
+			</li>
+			<li>
+				Die Geocaching Seite über die einstellungen im Browser als "Desktop Seite" kennzeichen.<br>
+			</li>
+		</ul>
+	</li>
 	<li>
 		Drag & Drop Operationen funktionieren nicht.<br>
 		<ul>
