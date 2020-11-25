@@ -35,7 +35,7 @@ In Vivaldi browser, these keys are also enabled by default. They can be changed 
 Process the following instructions on your Android device:<br><br>
 * Install a browser on your Android device.<br>
 * Install the script manager Tampermonkey as Add-on in your browser. (Don't install Tampermonkey on the desktop of your Android device.)<br>
-* Install the script [GC little helper II](https://github.com/2Abendsegler/GClh/raw/master/gc_little_helper_II.user.js) under the script manager Tampermonkey. If you click the link on your Android device on your browser, Tampermonkey should recognize it.<br>
+* Install the script [GC little helper II](https://github.com/2Abendsegler/GClh/raw/master/gc_little_helper_II.user.js) under the script manager Tampermonkey. If you click this link on your Android device on your browser, Tampermonkey should recognize it.<br>
 <br>
 
 ---
@@ -73,5 +73,5 @@ Im Browser Vivaldi sind diese Tasten auch standardmäßig aktiviert. Sie können
 Führe die folgenden Anweisungen auf deinem Android Gerät aus:<br><br>
 * Installiere einen Browser auf deinem Android Gerät.<br>
 * Installiere den Script-Manager Tampermonkey als Add-on in deinem Browser. (Installiere Tampermonkey nicht auf dem Desktop deines Android Gerätes.)<br>
-* Installiere das Script [GC little helper II](https://github.com/2Abendsegler/GClh/raw/master/gc_little_helper_II.user.js) unter dem Script-Manager Tampermonkey. Wenn du den Link auf deinem Android Gerät in deinem Browser anklickst, sollte Tampermonkey das bemerken.<br>
+* Installiere das Script [GC little helper II](https://github.com/2Abendsegler/GClh/raw/master/gc_little_helper_II.user.js) unter dem Script-Manager Tampermonkey. Wenn du diesen Link auf deinem Android Gerät in deinem Browser anklickst, sollte Tampermonkey das bemerken.<br>
 <br>
