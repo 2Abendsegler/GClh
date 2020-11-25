@@ -7,6 +7,7 @@
 <a href="#3-en">3. GClh doesn't start.</a> | <a href="#3-de">3. GClh startet nicht.</a>
 <a href="#4-en">4. Hints for using on Android devices.</a> | <a href="#4-de">4. Hinweise für die Nutzung auf Android Geräten.</a>
 <a href="#5-en">5. How can I start the Config of the GClh?</a> | <a href="#5-de">5. Wie kann ich die Konfiguration des GClh starten?</a>
+<a href="#6-en">6. How can I install the GClh on Android devices?</a> | <a href="#6-de">6. Wie kann ich den GClh auf Android Geräten installieren?</a>
 
 ---
 <a id="en"></a><img src="../images/flag_en.png">
@@ -136,6 +137,11 @@ If a script does not start, these are usually matching problems between the brow
 </ul>
 <br>
 
+<a id="6-en"></a>
+## 6. How can I install the GClh on Android devices?
+See <a href="https://github.com/2Abendsegler/GClh/blob/master/docu/tips_installation.md#android_en" title="Link to 'Tips for the installation of GC little helper II - Android'">Tips for the installation of GC little helper II - Android</a><br>
+<br>
+
 ---
 <a id="de"></a><img src="../images/flag_de.png">
 
@@ -262,4 +268,9 @@ Abhilfe:<br>
 		Oder du kannst den entsprechenden Link in deinem <a href="https://www.geocaching.com/account/dashboard">Dashboard</a> unterhalb deines Benutzernamens verwenden.
 	</li>
 </ul>
+<br>
+
+<a id="6-de"></a>
+## 6. Wie kann ich den GClh auf Android Geräten installieren?
+Siehe <a href="https://github.com/2Abendsegler/GClh/blob/master/docu/tips_installation.md#android_de" title="Link zu 'Tipps für die Installation des GC little helper II - Android'">Tipps für die Installation des GC little helper II - Android</a><br>
 <br>
