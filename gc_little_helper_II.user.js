@@ -5796,7 +5796,6 @@ var mainGC = function() {
              document.location.href.match(/\.com\/my\/default\.aspx/)            ||      // Profil (Quicklist)
              document.location.href.match(/\.com\/account\/dashboard/)           ||      // Dashboard
              document.location.href.match(/\.com\/seek\/nearest\.aspx(.*)(\?ul|\?u|&ul|&u)=/) ||  // Nearest Lists mit User
-             document.location.href.match(/\.com\/bookmarks\/(view|bulk)/)       ||      // Bookmark Lists
              document.location.href.match(/\.com\/play\/(friendleague|leaderboard)/) ||  // Friend League, Leaderboard
              document.location.href.match(/\.com\/seek\/auditlog\.aspx/)         ||      // Audit Log
              document.location.href.match(/\.com\/my\/myfriends\.aspx/)             )) { // Friends
@@ -6356,7 +6355,6 @@ var mainGC = function() {
             } else if (document.location.href.match(/\.com\/track\/details\.aspx/) ||
                        document.location.href.match(/\.com\/(seek|track)\/log\.aspx/) ||
                        document.location.href.match(/\.com\/email\//) ||
-                       document.location.href.match(/\.com\/bookmarks\/(view\.aspx\?guid=|bulk\.aspx\?listid=|view\.aspx\?code=)/) ||
                        document.location.href.match(/\.com\/seek\/auditlog\.aspx/) ||
                        document.location.href.match(/\.com\/my\/inventory\.aspx/)) {
                 var links = $('a[href*="/profile/?guid="]');
