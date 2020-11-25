@@ -69,7 +69,7 @@ Die Taste F4 zum Aufrufen des GClh Config und die Taste F2 zum Speichern im GClh
 Im Browser Vivaldi sind diese Tasten auch standardmäßig aktiviert. Sie können in Vivaldi über Einstellungen / Tastatur geändert werden.<br>
 
 ### <a id="android_de"><a id="android_firefox_de"></a><img src="/images/android_logo_small.png" title="Android" alt="Android"> Android:
-* Wir supporten Android Geräte zur Zeit nicht. Dennoch ist das Script auch unter Android funktionsfähig mit nur wenigen Einschränkungen. <a href="https://github.com/2Abendsegler/GClh/blob/master/docu/faq.md#4-en" title="Link to 'FAQ 4. Hints for using on Android devices.'">Hier</a> gibt es einige Hinweise für die Nutzung des GClh auf Anroid Geräten.<br>
+* Wir supporten Android Geräte zur Zeit nicht. Dennoch ist das Script auch unter Android funktionsfähig mit nur wenigen Einschränkungen. <a href="https://github.com/2Abendsegler/GClh/blob/master/docu/faq.md#4-en" title="Link to 'FAQ 4. Hints for using on Android devices.'">Hier</a> gibt es einige Hinweise für die Nutzung des GClh auf Android Geräten.<br>
 Führe die folgenden Anweisungen auf deinem Android Gerät aus:<br><br>
 * Installiere einen Browser auf deinem Android Gerät.<br>
 * Installiere den Script-Manager Tampermonkey als Add-on in deinem Browser. (Installiere Tampermonkey nicht auf dem Desktop deines Android Gerätes.)<br>
