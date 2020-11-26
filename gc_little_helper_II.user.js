@@ -8277,6 +8277,11 @@ var mainGC = function() {
                     if (user != null) {
                         $(links[i]).after('<span class="gclh_name" id="gclh_name_' + i + '"></span>')
                         $(links[i]).appendTo('#gclh_name_' + i);
+                        let GCTBName = $('#gclh_name_' + i).parent().find('h3 a').html().trim();
+                        let GCTBCode = $('#gclh_name_' + i).parent().parent().find('ul li')[0].innerHTML.match(/GC[A-Z0-9]{1,6}/)[0];
+                        global_name = GCTBName;
+                        global_code = '('+GCTBCode+')';
+                        global_link = '(https://coord.info/'+GCTBCode+')';
                         gclh_build_vipvupmail(links[i].parentNode, user);
                     }
                 }
@@ -8306,7 +8311,7 @@ var mainGC = function() {
                 if ($('#app-root div')[0]) {
                     if ($('.gclh_buildObserverBodyCODashboard')[0]) return;
                     $('#app-root div').addClass('gclh_buildObserverBodyCODashboard');
-                   buildObserverBodyCODashboard();
+                    buildObserverBodyCODashboard();
                 } else {waitCount++; if (waitCount <= 200) setTimeout(function(){checkForBuildObserverBodyCODashboard(waitCount);}, 50);}
             }
 
