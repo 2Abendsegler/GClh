@@ -9049,7 +9049,7 @@ var mainGC = function() {
                         }
 
                         //apply filters to map and close
-                        $('button.control-apply').click();
+                        doubleClick('button.control-apply');
                         
                         hideSidebar(); // Must run here, otherwise the filter will not be set.
                     } else {waitCount++; if (waitCount <= 50) setTimeout(function(){waitForFilter(waitCount);}, 50);}
