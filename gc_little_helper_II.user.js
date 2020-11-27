@@ -820,7 +820,7 @@ var mainPGC = function() {
                         // Ein Popup konnte nicht erzeugt werden, wahrscheinlich wegen eines Popup-Blockers
                         // Wir brechen hier also ab und informieren den User
                         if(open_popups[i] == null){
-                            alert("We detected a Popup Blocker. Please allow Popups for this site, reload the page and try again. Please be aware, that the first two PQs could already be created, so please go to Geocaching.com and delete them.");
+                            alert("We detected a Popup Blocker. Please allow Popups for this site, reload the page and try again.\nPlease be aware, that the first two PQs could already be created, so please go to Geocaching.com and delete them.");
                             return false;
                         }
                         open_popup_count++;
@@ -843,7 +843,7 @@ var mainPGC = function() {
                 // Restart function until everything is finished
                 setTimeout(function(){create_pqs(false);}, 1000);
             }else{
-                alert('We are done creating the Pocket Querys.');
+                alert('We are done creating your Pocket Querys.');
                 $("button[data='PQCreateButton']").prop("disabled",false);
             }
         }
