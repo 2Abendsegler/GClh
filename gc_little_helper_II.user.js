@@ -9236,8 +9236,6 @@ var mainGC = function() {
             if (settings_relocate_other_map_buttons) {
                 css += '#browse-map-cta {display: none;}';
             }
-            // Arrange buttons and D, T and size area on detail cache sub screen.
-            css += 'ul.attributes, ul.attributes ul, .cache-preview-action-menu ul {padding-left: unset;}';
             // Sidebar Enhancements.
             if (settings_show_enhanced_map_popup) {
                 css += '.cache-preview-attributes .geocache-owner {margin-bottom: 3px;}';
