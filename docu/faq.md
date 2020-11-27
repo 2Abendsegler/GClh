@@ -8,7 +8,7 @@
 <a href="#4-en">4. Hints for using on Android devices.</a> | <a href="#4-de">4. Hinweise für die Nutzung auf Android Geräten.</a>
 <a href="#5-en">5. How can I start the Config of the GClh?</a> | <a href="#5-de">5. Wie kann ich die Konfiguration des GClh starten?</a>
 <a href="#6-en">6. How can I install the GClh on Android devices?</a> | <a href="#6-de">6. Wie kann ich den GClh auf Android Geräten installieren?</a>
-<a href="#6-en">7. How can I contribute to GClh II?</a> | <a href="#6-de">6. Wie kann ich etwas zu GClh II beitragen?</a>
+<a href="#6-en">7. How can I contribute to GClh II?</a> | <a href="#7-de">7. Wie kann ich etwas zu GClh II beitragen?</a>
 
 ---
 <a id="en"></a><img src="../images/flag_en.png">
