@@ -21,6 +21,7 @@
 		</li>
 	<li>
 		<strong>New:</strong> [Owner Dashboard] Build VIP, VUP, Mail icons. [<a href="https://github.com/2Abendsegler/GClh/issues/1372" title="Issue 1372">1372</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br>
+		<img src="../images/0.10.10/Screen01.jpg" alt="Screen01.jpg"><br><br>
 	</li>
 	<li>
 		<strong>Fix:</strong> [New log form] Wrong alignment of smileys on new logging page. [<a href="https://github.com/2Abendsegler/GClh/issues/1490" title="Issue 1490">1490</a> / <a href="https://www.geocaching.com/profile/?u=???" title="Thanks to ???">???</a>]<br>
