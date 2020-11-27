@@ -8221,7 +8221,7 @@ var mainGC = function() {
             // Build VIP, Mail, Message icons
             function waitForLatestActivityList(waitCount) {
                 if ($('ul.latest-activity-list')[0]) {
-                    buildVipVupMailMessage();
+                    if (settings_show_vip_list) buildVipVupMailMessage();
                 } else {waitCount++; if (waitCount <= 1000) setTimeout(function(){waitForLatestActivityList(waitCount);}, 100);}
             }
 
@@ -8233,6 +8233,11 @@ var mainGC = function() {
                     if (user != null) {
                         $(links[i]).after('<span class="gclh_name" id="gclh_name_' + i + '"></span>')
                         $(links[i]).appendTo('#gclh_name_' + i);
+                        let GCTBName = $('#gclh_name_' + i).parent().find('h3 a').html().trim();
+                        let GCTBCode = $('#gclh_name_' + i).parent().parent().find('ul li')[0].innerHTML.match(/GC[A-Z0-9]{1,6}/)[0];
+                        global_name = GCTBName;
+                        global_code = '('+GCTBCode+')';
+                        global_link = '(https://coord.info/'+GCTBCode+')';
                         gclh_build_vipvupmail(links[i].parentNode, user);
                     }
                 }
@@ -8262,7 +8267,7 @@ var mainGC = function() {
                 if ($('#app-root div')[0]) {
                     if ($('.gclh_buildObserverBodyCODashboard')[0]) return;
                     $('#app-root div').addClass('gclh_buildObserverBodyCODashboard');
-                   buildObserverBodyCODashboard();
+                    buildObserverBodyCODashboard();
                 } else {waitCount++; if (waitCount <= 200) setTimeout(function(){checkForBuildObserverBodyCODashboard(waitCount);}, 50);}
             }
 
@@ -8282,13 +8287,16 @@ var mainGC = function() {
             css += '.username a:hover {color:#02874d; text-decoration:underline;}';
 
             // Build VIP, Mail, Message icons
-            var newFlexBasis = 120 + 21;
-            if (settings_process_vup) newFlexBasis += 21;
-            if (settings_show_mail) newFlexBasis += 21;
-            css += '.latest-activity .log-item-finder {flex:0 0 ' + newFlexBasis + 'px !important;}';
-            css += '.latest-activity .activity-item a {display: inline-block;}';
-            css += '.gclh_name {white-space: nowrap; display: flex; align-items: center;}';
-            css += '.gclh_name a {margin-right:5px;}';               
+            if (settings_show_vip_list) {
+                var newFlexBasis = 120 + 21;
+                if (settings_process_vup) newFlexBasis += 21;
+                if (settings_show_mail) newFlexBasis += 21;
+                css += '.latest-activity .log-item-finder {flex:0 0 ' + newFlexBasis + 'px !important;}';
+                css += '.latest-activity .activity-item a {display: inline-block;}';
+                css += '.gclh_name {white-space: nowrap; display: flex; align-items: center;}';
+                css += '.gclh_name a {margin-right:5px;}';
+            }
+            css += '.gclh_name a:focus:not(:nth-child(1)) {box-shadow: none;}';
 
             appendCssStyle(css);
         } catch(e) {gclh_error("Improve Owner Dashboard",e);}
