@@ -144,7 +144,7 @@ See <a href="../docu/tips_installation.md#android_en" title="Link to 'Tips for t
 <br>
 
 <a id="7-en"></a>
-## 6. How can I contribute to GClh II?
+## 7. How can I contribute to GClh II?
 We are happy about improvement suggestions, bugfixes or new Features. This is realized via Pull-Requests. You can read how to create a Pull-Request here: <a href="https://github.com/2Abendsegler/GClh/blob/master/docu/how_to_contribute.md#en">How to contribute</a>
 <br>
 
@@ -281,6 +281,6 @@ Abhilfe:<br>
 Siehe <a href="../docu/tips_installation.md#android_de" title="Link zu 'Tipps für die Installation des GC little helper II - Android'">Tipps für die Installation des GC little helper II - Android</a><br>
 <br>
 <a id="6-de"></a>
-## 6. Wie kann ich etwas zu GClh II beitragen?
+## 7. Wie kann ich etwas zu GClh II beitragen?
 Wir freuen uns über Verbesserungsvorschläge, Bugfixes oder neue Features. Dies geschieht bei uns über Pull-Requests. Wie du so etwas anlegst kannst du hier nachlesen: <a href="https://github.com/2Abendsegler/GClh/blob/master/docu/how_to_contribute.md#de">Wie kannst du etwas beitragen?</a>
 <br>
