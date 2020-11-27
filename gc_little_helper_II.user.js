@@ -8221,7 +8221,7 @@ var mainGC = function() {
             // Build VIP, Mail, Message icons
             function waitForLatestActivityList(waitCount) {
                 if ($('ul.latest-activity-list')[0]) {
-                    buildVipVupMailMessage();
+                    if (settings_show_vip_list) buildVipVupMailMessage();
                 } else {waitCount++; if (waitCount <= 1000) setTimeout(function(){waitForLatestActivityList(waitCount);}, 100);}
             }
 
@@ -8233,6 +8233,11 @@ var mainGC = function() {
                     if (user != null) {
                         $(links[i]).after('<span class="gclh_name" id="gclh_name_' + i + '"></span>')
                         $(links[i]).appendTo('#gclh_name_' + i);
+                        let GCTBName = $('#gclh_name_' + i).parent().find('h3 a').html().trim();
+                        let GCTBCode = $('#gclh_name_' + i).parent().parent().find('ul li')[0].innerHTML.match(/GC[A-Z0-9]{1,6}/)[0];
+                        global_name = GCTBName;
+                        global_code = '('+GCTBCode+')';
+                        global_link = '(https://coord.info/'+GCTBCode+')';
                         gclh_build_vipvupmail(links[i].parentNode, user);
                     }
                 }
@@ -8262,7 +8267,7 @@ var mainGC = function() {
                 if ($('#app-root div')[0]) {
                     if ($('.gclh_buildObserverBodyCODashboard')[0]) return;
                     $('#app-root div').addClass('gclh_buildObserverBodyCODashboard');
-                   buildObserverBodyCODashboard();
+                    buildObserverBodyCODashboard();
                 } else {waitCount++; if (waitCount <= 200) setTimeout(function(){checkForBuildObserverBodyCODashboard(waitCount);}, 50);}
             }
 
@@ -8282,13 +8287,16 @@ var mainGC = function() {
             css += '.username a:hover {color:#02874d; text-decoration:underline;}';
 
             // Build VIP, Mail, Message icons
-            var newFlexBasis = 120 + 21;
-            if (settings_process_vup) newFlexBasis += 21;
-            if (settings_show_mail) newFlexBasis += 21;
-            css += '.latest-activity .log-item-finder {flex:0 0 ' + newFlexBasis + 'px !important;}';
-            css += '.latest-activity .activity-item a {display: inline-block;}';
-            css += '.gclh_name {white-space: nowrap; display: flex; align-items: center;}';
-            css += '.gclh_name a {margin-right:5px;}';               
+            if (settings_show_vip_list) {
+                var newFlexBasis = 120 + 21;
+                if (settings_process_vup) newFlexBasis += 21;
+                if (settings_show_mail) newFlexBasis += 21;
+                css += '.latest-activity .log-item-finder {flex:0 0 ' + newFlexBasis + 'px !important;}';
+                css += '.latest-activity .activity-item a {display: inline-block;}';
+                css += '.gclh_name {white-space: nowrap; display: flex; align-items: center;}';
+                css += '.gclh_name a {margin-right:5px;}';
+            }
+            css += '.gclh_name a:focus:not(:nth-child(1)) {box-shadow: none;}';
 
             appendCssStyle(css);
         } catch(e) {gclh_error("Improve Owner Dashboard",e);}
@@ -8768,9 +8776,9 @@ var mainGC = function() {
                     if ($('.favorites-text')[0] && sidebar_enhancements_favi_buffer[new_gc_code]){
                         $('.favorites-text')[0].innerHTML = $('.favorites-text')[0].innerHTML + sidebar_enhancements_favi_buffer[new_gc_code];
                     }
-                    if ($('.cache-preview-action-menu ul > li:nth-child(1)')[0] && sidebar_enhancements_addToList_buffer[new_gc_code]){
+                    if ($('.cache-preview-action-menu ul li.add-to-list')[0] && sidebar_enhancements_addToList_buffer[new_gc_code]){
                         $('.add_to_list_count').each(function(){removeElement(this);});
-                        $('.cache-preview-action-menu ul > li:nth-child(1)')[0].append(sidebar_enhancements_addToList_buffer[new_gc_code]);
+                        $('.cache-preview-action-menu ul li.add-to-list')[0].append(sidebar_enhancements_addToList_buffer[new_gc_code]);
                     }
                     return true;
                 }
@@ -8951,11 +8959,11 @@ var mainGC = function() {
                     sidebar_enhancements_buffer[local_gc_code] = searchmap_sidebar_enhancements;
 
                     // Get count and names of own bookmarklists.
-                    if ($('.cache-preview-action-menu ul > li:nth-child(1)')[0]) {
+                    if ($('.cache-preview-action-menu ul li.add-to-list')[0]) {
                         var [ownBMLsCount, ownBMLsText, ownBMLsList] = getOwnBMLs(text);
                         sidebar_enhancements_addToList_buffer[local_gc_code] = $('<span class="add_to_list_count" title="' + ownBMLsList + '">(' + ownBMLsCount + ')</span>')[0];
                         $('.add_to_list_count').each(function(){removeElement(this);});
-                        $('.cache-preview-action-menu ul > li:nth-child(1)')[0].append(sidebar_enhancements_addToList_buffer[local_gc_code]);
+                        $('.cache-preview-action-menu ul li.add-to-list')[0].append(sidebar_enhancements_addToList_buffer[local_gc_code]);
                     }
                 });
             }
@@ -9012,29 +9020,49 @@ var mainGC = function() {
                     $(sel).click().click();
                 }
 
+                function allTypesSelected() {
+                    let count = 0;
+                    let cache_types = [2,3,4,5,6,8,11,137,1858];
+                    for (let i=0; i<cache_types.length; i++) {
+                        if (window['settings_map_hide_'+cache_types[i]]) {
+                            count++;
+                        }
+                    }
+                    return count == cache_types.length;
+                }
+
                 // open filter
                 $('button.filter-toggle').click();
 
-                // hide found caches
-                if (settings_map_hide_found) {
-                    doubleClick('input[name="hideFinds"][value="1"]');
-                }
+                function waitForFilter(waitCount) {
+                    if ($('#search-filter-type')[0] && $('input[name="hideFinds"][value="1"]')[0] && $('input[name="hideOwned"][value="1"]')[0]) {
+                        // hide found caches
+                        if (settings_map_hide_found) {
+                            doubleClick('input[name="hideFinds"][value="1"]');
+                        }
 
-                // hide owned caches
-                if (settings_map_hide_hidden) {
-                    doubleClick('input[name="hideOwned"][value="1"]');
-                }
+                        // hide owned caches
+                        if (settings_map_hide_hidden) {
+                            doubleClick('input[name="hideOwned"][value="1"]');
+                        }
 
-                // hide cache types
-                let cache_types = [2,3,4,5,6,8,11,137,1858];
-                for (let i=0; i<cache_types.length; i++) {
-                    if (window['settings_map_hide_'+cache_types[i]]) {
-                        doubleClick('input[value="'+cache_types[i]+'"]');
-                    }
-                }
+                        // hide cache types
+                        if (!allTypesSelected()) {
+                            let cache_types = [2,3,4,5,6,8,11,137,1858];
+                            for (let i=0; i<cache_types.length; i++) {
+                                if (window['settings_map_hide_'+cache_types[i]]) {
+                                    $('input[value="'+cache_types[i]+'"]').click();
+                                }
+                            }
+                        }
 
-                // apply filters to map and close
-                doubleClick('button.control-apply');
+                        //apply filters to map and close
+                        doubleClick('button.control-apply');
+                        
+                        hideSidebar(); // Must run here, otherwise the filter will not be set.
+                    } else {waitCount++; if (waitCount <= 50) setTimeout(function(){waitForFilter(waitCount);}, 50);}
+                }
+                waitForFilter(0);
             }
 
             // Processing all steps.
@@ -9049,31 +9077,49 @@ var mainGC = function() {
                 collapseActivity();
                 showSearchmapSidebarEnhancements();
                 buildMapControlButtons();
-                hideSidebar();
                 setFilter();
             }
 
-            // Build mutation observer for body.
-            function buildObserverBodySearchMap() {
-                var observerBodySearchMap = new MutationObserver(function(mutations) {
-                    mutations.forEach(function(mutation) {
-                        processAllSearchMap();
-                    });
-                });
-                var target = document.querySelector('body');
-                var config = { attributes: true, childList: true, characterData: true };
-                observerBodySearchMap.observe(target, config);
-            }
-            // Check if mutation observer for body can be build.
-            function checkForBuildObserverBodySearchMap(waitCount) {
-                if ($('body')[0]) {
-                    if ($('.gclh_buildObserverBodySearchMap')[0]) return;
-                    $('body').addClass('gclh_buildObserverBodySearchMap');
-                   buildObserverBodySearchMap();
-                } else {waitCount++; if (waitCount <= 200) setTimeout(function(){checkForBuildObserverBodySearchMap(waitCount);}, 50);}
+            // observer callback for checking existence of sidebar
+            var cb_body = function(mutationsList, observer) {
+                processAllSearchMap();
+
+                if ($('div#sidebar')[0] && !$('.gclh_sidebar_observer')[0]) {
+                    $('div#sidebar').addClass('gclh_sidebar_observer');
+                    // start observing sidebar for switches between search list and cache details view
+                    var target_sidebar = $('div#sidebar')[0];
+                    var config_sidebar = {
+                        childList: true,
+                        subtree: true
+                    };
+                    observer_sidebar.observe(target_sidebar, config_sidebar);
+                }
             }
 
-            checkForBuildObserverBodySearchMap(0);
+            // observer callback when sidebar switches between search list and cache details view
+            var cb_sidebar = function(mutationsList, observer) {
+                observer_sidebar.disconnect();
+
+                processAllSearchMap();
+
+                var target_sidebar = $('div#sidebar')[0];
+                var config_sidebar = {
+                    childList: true,
+                    subtree: true
+                };
+                observer_sidebar.observe(target_sidebar, config_sidebar);
+            }
+
+            // create observer instances linked to callback functions
+            var observer_body    = new MutationObserver(cb_body);
+            var observer_sidebar = new MutationObserver(cb_sidebar); // ATTENTION: the order matters here
+            
+            var target_body = $('body')[0];
+            var config_body = {
+                childList: true,
+                attributes: true
+            };
+            observer_body.observe(target_body, config_body);
             processAllSearchMap();
 
             var css = '';
@@ -9198,8 +9244,6 @@ var mainGC = function() {
             if (settings_relocate_other_map_buttons) {
                 css += '#browse-map-cta {display: none;}';
             }
-            // Arrange buttons and D, T and size area on detail cache sub screen.
-            css += 'ul.attributes, ul.attributes ul, .cache-preview-action-menu ul {padding-left: unset;}';
             // Sidebar Enhancements.
             if (settings_show_enhanced_map_popup) {
                 css += '.cache-preview-attributes .geocache-owner {margin-bottom: 3px;}';
@@ -10006,9 +10050,9 @@ var mainGC = function() {
                 for (var i = 0; i < cells.length; i++) {
                     var cell = cells[i];
                     if (cell.id.match(/^([1-9]{1})(_{1})([1-9]{1})$/)) {
-                        if (parseInt(cell.innerHTML) == smallest) count++;
-                        else if (parseInt(cell.innerHTML) < smallest) {
-                            smallest = parseInt(cell.innerHTML);
+                        if (parseInt(cell.children[0].innerHTML) == smallest) count++;
+                        else if (parseInt(cell.children[0].innerHTML) < smallest) {
+                            smallest = parseInt(cell.children[0].innerHTML);
                             count = 1;
                         }
                     }
@@ -10022,7 +10066,7 @@ var mainGC = function() {
                         side.nodeValue += matrix;
                     }
                 }
-                // Nächste mögliche Matrix farblich kennzeichnen und Search Link und Title setzen.
+                // Nächste mögliche Matrix farblich kennzeichnen und Search Link und Title überall ergänzen.
                 if (own == true && settings_count_own_matrix_show_next == true) {
                     var from = smallest;
                     var to = smallest - 1 + parseInt(settings_count_own_matrix_show_count_next);
@@ -10030,32 +10074,30 @@ var mainGC = function() {
                     for (var i = 0; i < cells.length; i++) {
                         var cell = cells[i];
                         if (cell.id.match(/^([1-9]{1})(_{1})([1-9]{1})$/)) {
-                            if (from <= parseInt(cell.innerHTML) && parseInt(cell.innerHTML) <= to) {
-                                cell.style.color = "black";
-                                var diff = parseInt(cell.innerHTML) - from;
+                            if (from <= parseInt(cell.children[0].innerHTML) && parseInt(cell.children[0].innerHTML) <= to) {
+                                cell.children[0].style.color = "black";
+                                var diff = parseInt(cell.children[0].innerHTML) - from;
                                 cell.style.backgroundColor = color;
+                                cell.children[0].style.backgroundColor = 'unset';
                                 switch (diff) {
                                     case 1: cell.style.backgroundColor = cell.style.backgroundColor.replace(/rgb/i, "rgba").replace(/\)/, ",0.6)"); break;
                                     case 2: cell.style.backgroundColor = cell.style.backgroundColor.replace(/rgb/i, "rgba").replace(/\)/, ",0.4)"); break;
                                     case 3: cell.style.backgroundColor = cell.style.backgroundColor.replace(/rgb/i, "rgba").replace(/\)/, ",0.25)"); break;
                                 }
-                                if (settings_count_own_matrix_links_radius != 0) {
-                                    var terrain = parseInt(cell.id.match(/^([1-9]{1})(_{1})([1-9]{1})$/)[3]) * 0.5 + 0.5;
-                                    var difficulty = parseInt(cell.id.match(/^([1-9]{1})(_{1})([1-9]{1})$/)[1]) * 0.5 + 0.5;
-                                    var user = global_me;
-                                    var aTag = document.createElement('a');
-                                    aTag.href = "/play/search/?origin=" + DectoDeg(getValue("home_lat"), getValue("home_lng"))
-                                              + "&radius=" + settings_count_own_matrix_links_radius + "km"
-                                              + "&t=" + terrain + "&d=" + difficulty + "&nfb[0]=" + user + "&f=2&o=2&nfb\[1\]=GClh";
-                                    if (settings_count_own_matrix_links == "map") aTag.href += "#GClhMap";
-                                    else aTag.href += "#searchResultsTable";
-                                    aTag.title = "Search D" + difficulty + "/T" + terrain + " radius " + settings_count_own_matrix_links_radius + " km from home";
-                                    aTag.target = "_blank";
-                                    aTag.style.color = "black";
-                                    aTag.appendChild(document.createTextNode(cell.innerHTML));
-                                    cell.innerHTML = "";
-                                    cell.appendChild(aTag);
+                            }
+                            if (settings_count_own_matrix_links_radius != 0) {
+                                cell.children[0].href +=
+                                    "&origin=" + DectoDeg(getValue("home_lat"), getValue("home_lng")) +
+                                    "&radius=" + settings_count_own_matrix_links_radius + "km" +
+                                    "&nfb[0]=" + global_me + "&o=2&nfb\[1\]=GClh";
+                                if (settings_count_own_matrix_links == "map") {
+                                    cell.children[0].href += "#GClhMap";
+                                    cell.children[0].title += ", on map";
+                                } else {
+                                    cell.children[0].href += "#searchResultsTable";
+                                    cell.children[0].title += ", on list";
                                 }
+                                cell.children[0].title += ", with radius " + settings_count_own_matrix_links_radius + " km from home";
                             }
                         }
                     }
@@ -11968,10 +12010,12 @@ var mainGC = function() {
         var ary = [];
         var list = '';
         $(content).find('ul.BookmarkList li').each(function() {
-            if ( $(this).find('a[href*="/profile/?guid="]')[0] && $(this).find('a[href*="/profile/?guid="]')[0].innerHTML.match("2Abendsegler") &&
+            if ( $(this).find('a[href*="/profile/?guid="]')[0] && $(this).find('a[href*="/profile/?guid="]')[0].innerHTML.match(global_me) &&
                  $(this).find('a[href*="/bookmarks/view.aspx?guid="]')[0] && $(this).find('a[href*="/bookmarks/view.aspx?guid="]')[0].innerHTML    ) {
-                count++;
-                ary.push($(this).find('a[href*="/bookmarks/view.aspx?guid="]')[0].innerHTML);
+                if (!ary.includes($(this).find('a[href*="/bookmarks/view.aspx?guid="]')[0].innerHTML)) {
+                    count++;
+                    ary.push($(this).find('a[href*="/bookmarks/view.aspx?guid="]')[0].innerHTML);
+                }
             }
         });
         ary.sort(caseInsensitiveSort);
