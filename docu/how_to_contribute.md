@@ -42,7 +42,7 @@ Bitte erstelle für jedes Feature einen separaten Pull Request. Das macht mögli
 ---
 ## <a id="en"></a>How can you contribute?
 <br>
-The easiest way to contribute is via a Pull Request. If you don't know how to do that, just read on. We give you a step by step instruction on how you can make changes or create new features. We'll audit the changes and possibly deploy them in the next version of GClh II.
+The easiest way to contribute is via a Pull Request. If you don't know how to do that, just read on. We'll give you a step by step instruction on how you can make changes or create new features. We'll audit the changes and possibly deploy them in the next version of GClh II.
 
 ###  <a id="1en"></a>1. Fork: Create a server-sided copy of the code in your Github Account
 Changes to the code are not directly possible in our Repository. You have to create a copy of the code in your personal Github Account, a so called fork.<br>
@@ -62,7 +62,7 @@ Now you can make your changes to the code within one or more commits.<br>
 This can be done by installing a local Git Client, to work on your computer or you can make the changes right on the Repository in your Github Account within the Webinterface. We described how to work with a local Git Client here: <a href="https://github.com/2Abendsegler/GClh/blob/master/docu/development-tampermonkey.md">GC little helper II — Development with Tampermonkey</a>
 
 ###  <a id="4en"></a>4. Pull Request: Submit your changes
-When you finished your changes/feature you can create a Pull Request in our Repository, a so called Pull Request. We will review your changes. Either we will deploy your code in the next version of GClh II or we will get in touch with you to notice you about necessary edits.<br>
+When you've finished your changes/feature you can create a Pull Request in our Repository. We will review your changes. Either we will deploy your code in the next version of GClh II or we will get in touch with you to notice you about necessary edits.<br>
 <br>
 This is how you create a Pull Requst:
 
@@ -71,7 +71,7 @@ This is how you create a Pull Requst:
 <br><img src="../images/how_to_contriubte/4_Pull_1.jpg" /><br><br>
 - Mind two things. First you'll have to click on *compare across forks* (1.) otherwise you can't create a Pull Request with changes in your Repository. After that you choose *2Abendsegler/GClh* as *base repository* (2.) and select the branch *collector* because there we gather all changes that will be deployed in the next version of GClh II. Select your local branch with your changes as *head repository* (3.). After that you click on *Create pull request* (4.).<br>
 <br><img src="../images/how_to_contriubte/4_Pull_2.jpg" /><br><br>
-- at last you have to name your Pull Request (1.), enter a description (2.) and click *Create pull request* (3.) to finish the process.<br>
-You don't have to fill in the fields on the right side (4.)<br>
-Please create for every feature a separate Pull Request. This make possible change requests more easy.<br>
+- At last you have to name your Pull Request (1.), enter a description (2.) and click *Create pull request* (3.) to finish the process.<br>
+You don't have to fill in the fields on the right side (4.).<br>
+Please create a separate Pull Request for every feature. This makes possible change requests more easy.<br>
 <br><img src="../images/how_to_contriubte/4_Pull_3.jpg" /><br>
