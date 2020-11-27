@@ -20,7 +20,7 @@ Hierfür klickt man auf den Branch *collector* (1.), gibt einen neuen Namen für
 
 ###  <a id="3de"></a>3. Entwicklung: Implementierung der Änderungen
 Nun kannst du die Änderungen über ein oder meherere Commits am Code durchführen.<br>
-Entweder du installierst dir einen Git Client um die Änderungen auf deinem Computer durchzuführen, oder du führst die Änderungen direkt im Repository in deinem Github Account auf der Webseite durch. Wie du dir einen Lokalen Git Client einrichten kannst, haben wir hier beschrieben: <a href="https://github.com/2Abendsegler/GClh/blob/master/docu/development-tampermonkey.md">GC little helper II — Entwicklung mit Tampermonkey</a>
+Entweder du installierst dir einen Git Client um die Änderungen auf deinem Computer durchzuführen, oder du führst die Änderungen direkt im Repository in deinem Github Account auf der Webseite durch. Wie du dir einen Lokalen Git Client einrichten kannst, haben wir hier beschrieben: <a href="https://github.com/2Abendsegler/GClh/blob/master/docu/development-tampermonkey.md">GC little helper II — Entwicklung mit Tampermonkey</a>.
 
 ###  <a id="4de"></a>4. Pull Request: Änderungsantrag einreichen
 Sind alle Änderungen gemacht, kannst du bei uns im Repository einen Änderungsantrag, einen sogenannten Pull Request, einreichen. Wir werden deine Änderungen dann prüfen. Entweder wir übernehmen die Änderungen in der nächsten Version vom GClh II, oder melden uns bei dir, falls noch Änderungsbedarf besteht.<br>
@@ -40,7 +40,38 @@ Bitte erstelle für jedes Feature einen separaten Pull Request. Das macht mögli
 
 
 ---
-## <a id="en"></a>How to contribute
+## <a id="en"></a>How can you contribute?
+<br>
+The easiest way to contribute is via a Pull Request. If you don't know how to do that, just read on. We give you a step by step instruction on how you can make changes or create new features. We'll audit the changes and possibly deploy them in the next version of GClh II.
+
+###  <a id="1en"></a>1. Fork: Create a server-sided copy of the code in your Github Account
+Changes to the code are not directly possible in our Repository. You have to create a copy of the code in your personal Github Account, a so called fork.<br>
+It is quite simple. Just log in to your Github Account and go to our Repository. You can just <a href="https://github.com/2Abendsegler/GClh">click here</a>.<br>
+At the top of the page, in the right hand corner you'll find the *Fork* Button.<br>
+<br><img src="../images/how_to_contriubte/1_fork.jpg" /><br><br>
+If you click it, a server-sided copy is created which can be modified by you.
 <br>
 
-### <a id="1en"></a>1. Fork: Erstelle eine Serverseitige Kopie des Codes in deinem Github Account
+###  <a id="2en"></a>2. Branch: Create a local feature branch
+In order for changes to be cohesive and maybe to work on more than one feature at once, you'll have to create a separat so called branch for every feature / change. This will happen in your local copy of the code, in your Repository.<br>
+To do that, you have to click the branch *collector* (1.), enter a name for the new feature branch (2.) and than click on *Create branch* (3.)<br>
+<br><img src="../images/how_to_contriubte/2_branch.jpg" /><br>
+
+###  <a id="3en"></a>3. Development: Implement your changes
+Now you can make your changes to the code within one or more commits.<br>
+This can be done by installing a local Git Client, to work on your computer or you can make the changes right on the Repository in your Github Account within the Webinterface. We described how to work with a local Git Client here: <a href="https://github.com/2Abendsegler/GClh/blob/master/docu/development-tampermonkey.md">GC little helper II — Development with Tampermonkey</a>
+
+###  <a id="4en"></a>4. Pull Request: Submit your changes
+When you finished your changes/feature you can create a Pull Request in our Repository, a so called Pull Request. We will review your changes. Either we will deploy your code in the next version of GClh II or we will get in touch with you to notice you about necessary edits.<br>
+<br>
+This is how you create a Pull Requst:
+
+- Log in to your Github Account and visit our Repository <a href="https://github.com/2Abendsegler/GClh">here</a>.
+- Click on the tab *Pull Requests* (1.) and then hit *New pull request* (2.)<br>
+<br><img src="../images/how_to_contriubte/4_Pull_1.jpg" /><br><br>
+- Mind two things. First you'll have to click on *compare across forks* (1.) otherwise you can't create a Pull Request with changes in your Repository. After that you choose *2Abendsegler/GClh* as *base repository* (2.) and select the branch *collector* because there we gather all changes that will be deployed in the next version of GClh II. Select your local branch with your changes as *head repository* (3.). After that you click on *Create pull request* (4.).<br>
+<br><img src="../images/how_to_contriubte/4_Pull_2.jpg" /><br><br>
+- at last you have to name your Pull Request (1.), enter a description (2.) and click *Create pull request* (3.) to finish the process.<br>
+You don't have to fill in the fields on the right side (4.)<br>
+Please create for every feature a separate Pull Request. This make possible change requests more easy.<br>
+<br><img src="../images/how_to_contriubte/4_Pull_3.jpg" /><br>
