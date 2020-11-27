@@ -9012,29 +9012,49 @@ var mainGC = function() {
                     $(sel).click().click();
                 }
 
+                function allTypesSelected() {
+                    let count = 0;
+                    let cache_types = [2,3,4,5,6,8,11,137,1858];
+                    for (let i=0; i<cache_types.length; i++) {
+                        if (window['settings_map_hide_'+cache_types[i]]) {
+                            count++;
+                        }
+                    }
+                    return count == cache_types.length;
+                }
+
                 // open filter
                 $('button.filter-toggle').click();
 
-                // hide found caches
-                if (settings_map_hide_found) {
-                    doubleClick('input[name="hideFinds"][value="1"]');
-                }
+                function waitForFilter(waitCount) {
+                    if ($('#search-filter-type')[0] && $('input[name="hideFinds"][value="1"]')[0] && $('input[name="hideOwned"][value="1"]')[0]) {
+                        // hide found caches
+                        if (settings_map_hide_found) {
+                            doubleClick('input[name="hideFinds"][value="1"]');
+                        }
 
-                // hide owned caches
-                if (settings_map_hide_hidden) {
-                    doubleClick('input[name="hideOwned"][value="1"]');
-                }
+                        // hide owned caches
+                        if (settings_map_hide_hidden) {
+                            doubleClick('input[name="hideOwned"][value="1"]');
+                        }
 
-                // hide cache types
-                let cache_types = [2,3,4,5,6,8,11,137,1858];
-                for (let i=0; i<cache_types.length; i++) {
-                    if (window['settings_map_hide_'+cache_types[i]]) {
-                        doubleClick('input[value="'+cache_types[i]+'"]');
-                    }
-                }
+                        // hide cache types
+                        if (!allTypesSelected()) {
+                            let cache_types = [2,3,4,5,6,8,11,137,1858];
+                            for (let i=0; i<cache_types.length; i++) {
+                                if (window['settings_map_hide_'+cache_types[i]]) {
+                                    $('input[value="'+cache_types[i]+'"]').click();
+                                }
+                            }
+                        }
 
-                // apply filters to map and close
-                doubleClick('button.control-apply');
+                        //apply filters to map and close
+                        doubleClick('button.control-apply');
+                        
+                        hideSidebar(); // Must run here, otherwise the filter will not be set.
+                    } else {waitCount++; if (waitCount <= 50) setTimeout(function(){waitForFilter(waitCount);}, 50);}
+                }
+                waitForFilter(0);
             }
 
             // Processing all steps.
@@ -9049,7 +9069,6 @@ var mainGC = function() {
                 collapseActivity();
                 showSearchmapSidebarEnhancements();
                 buildMapControlButtons();
-                hideSidebar();
                 setFilter();
             }
 
