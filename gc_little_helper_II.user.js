@@ -5169,175 +5169,6 @@ var mainGC = function() {
         } catch(e) {gclh_error("Improve new lists page",e);}
     }
 
-// Improve old bookmark lists.
-    if (document.location.href.match(/\.com\/bookmarks\/(view\.aspx\?guid=|bulk\.aspx\?listid=|view\.aspx\?code=)/) && document.getElementById('ctl00_ContentBody_ListInfo_cboItemsPerPage')) {
-        try {
-            var css = "";
-            // Compact layout.
-            if (settings_compact_layout_bm_lists) {
-                // Header:
-                css += "#ctl00_ContentBody_lbHeading a {font-weight: normal; font-size: 13px; margin-left: 10px;}";
-                css += "#ctl00_ContentBody_QuickAdd {margin-bottom: 1px; float: left; position: relative;} #ctl00_ContentBody_btnAddBookmark {margin-top: 1px; margin-left: -1px;}";
-                css += "#ctl00_ContentBody_ListInfo_uxAbuseReport > div:nth-child(1) {margin: 0 !important; padding: 4px 0;}";  // GC Tour
-                if ($('#ctl00_ContentBody_lbHeading').length > 0 && $('#divContentMain h2').length > 0) {
-                    var h3 = document.createElement("h3");
-                    $('#ctl00_ContentBody_lbHeading')[0].parentNode.parentNode.insertBefore(h3, $('#ctl00_ContentBody_lbHeading')[0].parentNode);
-                    $('#divContentMain h3').closest('h3').append($('#ctl00_ContentBody_lbHeading').remove().get().reverse());
-                    $('#divContentMain h2')[0].closest('h2').remove();
-                }
-                if ($('#ctl00_ContentBody_QuickAdd').length > 0) {
-                    css += "#divContentMain div.span-20.last {margin-top: -18px;}";
-                    $('#ctl00_ContentBody_QuickAdd')[0].children[0].childNodes[1].remove();
-                    $('#ctl00_ContentBody_QuickAdd')[0].children[0].childNodes[0].remove();
-                }
-                if ($('#ctl00_ContentBody_ListInfo_uxListOwner').length > 0) {
-                    var LO = $('#ctl00_ContentBody_ListInfo_uxListOwner')[0].parentNode;
-                    if (LO.nextElementSibling.nextElementSibling.innerHTML == "") LO.nextElementSibling.nextElementSibling.remove();
-                    else LO.nextElementSibling.nextElementSibling.style.marginBottom = "0";
-                    if (LO.nextElementSibling.innerHTML == "") LO.nextElementSibling.remove();
-                    else LO.nextElementSibling.style.marginBottom = "0";
-                    LO.style.marginBottom = "0";
-                }
-                // Table:
-                css += "table.Table tr {line-height: 16px;}";
-                css += "table.Table th, table.Table td {border-left: 1px solid #fff; border-right: 1px solid #fff;} tr.BorderTop td {border-top: 1px solid #fff;}";
-                css += "table.Table th {border-bottom: 2px solid #fff;} table.Table td, table.Table td img, table.Table td a {vertical-align: top !important;}";
-                var lines = $('table.Table tbody').find('tr');
-                for (var i = 0; i < lines.length; i += 2) {
-                    if (!lines[i].className.match(/BorderTop/)) lines[i].className += " BorderTop";
-                    if (lines[i].children[1].childNodes[3] && lines[i].children[1].childNodes[3].nodeName == "BR") {
-                        lines[i].children[1].childNodes[3].outerHTML = "&nbsp;&nbsp;";
-                    }
-                    lines[i].children[1].style.whiteSpace = "nowrap";
-                    if (lines[i].children[5]) lines[i].children[5].style.whiteSpace = "nowrap";
-                    if (lines[i+1].children[1].innerHTML == "") lines[i+1].style.display = "table-column";
-                }
-                // Footer:
-                if ($('#ctl00_ContentBody_ListInfo_btnDeleteBookmarkList')[0]) $('#ctl00_ContentBody_ListInfo_btnDeleteBookmarkList').closest('p').append($('#ctl00_ContentBody_btnCreatePocketQuery').remove().get().reverse());
-            }
-            // Build link "Map List" right above.
-            if ($('#ctl00_ContentBody_btnAddBookmark')[0] && $('#ctl00_ContentBody_ListInfo_cboItemsPerPage')[0]) {
-                var span = document.createElement("span");
-                span.innerHTML += '<a id="gclh_map" title="Map link not determined" class="gclh_link working" href="javascript:void(0);">Map List</a>';
-                $('#ctl00_ContentBody_btnAddBookmark')[0].parentNode.insertBefore(span, $('#ctl00_ContentBody_btnAddBookmark')[0].previousSibling.previousSibling);
-                css += ".gclh_link {margin-left: 4px;}";
-                if ($('#ctl00_ContentBody_lbHeading')[0].childNodes[0]) getBMLAct($('#ctl00_ContentBody_lbHeading')[0].childNodes[0].data.replace(/(\s+)$/,''));
-            }
-            // Build buttons "Add additional info" and "Hide Text" right beside button "Copy List".
-            if ($('#ctl00_ContentBody_ListInfo_btnCopyList')[0]) {
-                var span = document.createElement("span");
-                span.innerHTML += '<input id="gclh_linkAdditionalInfo" title="Add additional information (Corrected Coordinates - Difficulty/Terrain)" value="Add additional information" class="gclh_bt" type="button">';
-                span.innerHTML += '<input id="gclh_hideTextBm" title="Show/hide Longtext in Bookmark" value="Hide Text" class="gclh_bt gclh_lt" type="button">';
-                $('#ctl00_ContentBody_ListInfo_btnCopyList')[0].parentNode.insertBefore(span, $('#ctl00_ContentBody_ListInfo_btnCopyList')[0].nextSibling);
-                css += ".cc_cell {text-align: left !important}";
-                css += ".gclh_hideBm {display: table-column;}";
-                css += ".gclh_bt {margin-left: 4px;} .working {opacity: 0.3; cursor: default;}";
-                $('#gclh_linkAdditionalInfo')[0].addEventListener("click", addAdditionalInfoForBM, false);
-                $('#gclh_hideTextBm')[0].addEventListener("click", hideTextBm, false);
-            }
-            // Build button "Download as kml" right beside button "Download .LOC".
-            if ($('#ctl00_ContentBody_ListInfo_btnDownload')[0]) {
-                if (document.location.href.match(/guid=([a-zA-Z0-9-]*)/)) {
-                    var matches = document.location.href.match(/guid=([a-zA-Z0-9-]*)/);
-                    if (matches && matches[1]) {
-                        var uuidx = matches[1];
-                        var span = document.createElement("span");
-                        span.innerHTML += '<input id="gclh_kml" title="Download Google Earth kml" value="Download as kml" onClick="document.location.href=\'https://www.geocaching.com/kml/bmkml.aspx?bmguid='+uuidx+'\';" class="gclh_bt" type="button">';
-                        $('#ctl00_ContentBody_ListInfo_btnDownload')[0].parentNode.insertBefore(span, $('#ctl00_ContentBody_ListInfo_btnDownload')[0].nextSibling);
-                    }
-                }
-            }
-            appendCssStyle(css);
-        } catch(e) {gclh_error("Improve bookmark lists",e);}
-    }
-    // Daten der aktuellen BML ermitteln.
-    function getBMLAct(name) {
-        GM_xmlhttpRequest({
-            method: 'GET',
-            url: 'https://www.geocaching.com/account/oauth/token',
-            onload: function (result) {
-                if (result.status >= 200 && result.status < 300) {
-                    var response = JSON.parse(result.responseText);
-                    GM_xmlhttpRequest({
-                        method: 'GET',
-                        url: 'https://www.geocaching.com/api/proxy/web/v1/lists/?type=bm&take=1000',
-                        headers: {'Authorization': response.token_type + ' ' + response.access_token, 'Content-Type': 'application/json;charset=utf-8'},
-                        onload: function (result) {
-                            if (result.status >= 200 && result.status < 300) {
-                                var BML = JSON.parse(result.responseText);
-                                var BMLAct = {};
-                                var c = 0;
-                                for (i = 0; i < BML["total"]; i++) {
-                                    if (BML["data"][i].name == name) {
-                                        BMLAct = BML["data"][i];
-                                        c++;
-                                    }
-                                }
-                                if (BMLAct && c == 1 && $('#gclh_map')[0]) {
-                                    $('#gclh_map')[0].href = BMLAct.mapLink;
-                                    $('#gclh_map')[0].title = 'Map List';
-                                    $('#gclh_map').removeClass('working');
-                                }
-                            }
-                        },
-                    });
-                }
-            },
-        });
-    }
-    // Mark caches with corrected coords.
-    function addAdditionalInfoForBM() {
-        if ($('#gclh_linkAdditionalInfo.working')[0]) return;
-        $('#gclh_linkAdditionalInfo').addClass('working');
-        var anzLines = $('table.Table tbody tr').length / 2;
-        if ($('table.Table tbody tr').first().find('td:nth-child(4)').find('img[src*="WptTypes"]')[0]) var colGccode = 3;
-        else var colGccode = 4;
-        var colName = colGccode + 1;
-        $('table.Table tbody tr').each(function() {
-            if ($(this).find('td:nth-child('+colGccode+') a')[0]) {
-                var gccode = $(this).find('td:nth-child('+colGccode+') a')[0].innerHTML;
-                if (!$('#gclh_colAdditionalInfo')[0]) $(this).find('td:nth-child('+colName+')').after('<td id="cc_'+gccode+'" class="cc_cell"></td>');
-                else $('#cc_'+gccode)[0].innerHTML = "";
-            } else {
-                if (!$('#gclh_colAdditionalInfo')[0]) $(this).find('td:nth-child(2)').after('<td></td>');
-                return;
-            }
-            $.get('https://www.geocaching.com/geocache/'+gccode, null, function(text){
-                var corr_gccode = $(text).find('#ctl00_ContentBody_CoordInfoLinkControl1_uxCoordInfoCode')[0].innerHTML;
-                // Corrected coords.
-                if (text.includes('"isUserDefined":true,"newLatLng"')) $('#cc_'+corr_gccode)[0].innerHTML = '<img title="Corrected Coordinates" alt="Corr. Coords" src="'+global_green_tick+'">';
-                else $('#cc_'+corr_gccode)[0].innerHTML = '<img style="opacity: 0.8;" title="No Corrected Coordinates" alt="No Corr. Coords" src="'+global_red_tick+'">';
-                var diff = $(text).find("#ctl00_ContentBody_uxLegendScale img").attr("alt");
-                diff = diff.substr(0,diff.indexOf(' '));
-                var terr = $(text).find("#ctl00_ContentBody_Localize12 img").attr("alt");
-                terr = terr.substr(0,terr.indexOf(' '));
-                $('#cc_'+corr_gccode)[0].innerHTML = $('#cc_'+corr_gccode)[0].innerHTML + ' - D'+diff+'/T'+terr;
-                anzLines--;
-                if (anzLines == 0) $('#gclh_linkAdditionalInfo').removeClass('working');
-            });
-        });
-        if (!$('#gclh_colAdditionalInfo')[0]) $('table.Table thead tr th:nth-child('+colName+')').after('<th id="gclh_colAdditionalInfo" style="width: 92px;"><span title="Additional information (Corrected Coordinates - Difficulty/Terrain)">Corr.Coords - D/T</span></th>');
-        if (settings_new_width >= 1050) appendCssStyle("#gclh_colAdditionalInfo {width: 122px !important;}");
-    }
-    // Show, hide Longtext/Description.
-    function hideTextBm() {
-        if ($('#gclh_hideTextBm.working')[0]) return;
-        $('#gclh_hideTextBm').addClass('working');
-        setTimeout(function() {
-            if ($('#gclh_hideTextBm.gclh_lt')[0]) var qual = 'table.Table tbody tr[id$="_dataRow2"]';
-            else if ($('#gclh_hideTextBm.gclh_desc')[0]) var qual = 'table.Table tbody tr td:nth-child(4) span';
-            if (qual) {
-                $(qual).each(function() {
-                    if (!$('#gclh_hideTextBm.gclh_firstDone')[0] && !this.style.display) $(this).addClass('gclh_showHideBm');
-                    if (this.className.match("gclh_showHideBm")) this.classList.toggle('gclh_hideBm');
-                });
-                if (!$('#gclh_hideTextBm.gclh_firstDone')[0]) $('#gclh_hideTextBm').addClass('gclh_firstDone');
-                $('#gclh_hideTextBm')[0].value = ($('.gclh_hideBm')[0] ? "Show Text" : "Hide Text");
-                $('#gclh_hideTextBm').removeClass('working');
-            }
-        }, 200);
-    }
-
 // Add buttons to old bookmark lists and watchlist to select caches.
     var current_page;
     if (document.location.href.match(/\.com\/bookmarks/) && !document.location.href.match(/\.com\/bookmarks\/default/)) current_page = "bookmark";
@@ -5965,7 +5796,6 @@ var mainGC = function() {
              document.location.href.match(/\.com\/my\/default\.aspx/)            ||      // Profil (Quicklist)
              document.location.href.match(/\.com\/account\/dashboard/)           ||      // Dashboard
              document.location.href.match(/\.com\/seek\/nearest\.aspx(.*)(\?ul|\?u|&ul|&u)=/) ||  // Nearest Lists mit User
-             document.location.href.match(/\.com\/bookmarks\/(view|bulk)/)       ||      // Bookmark Lists
              document.location.href.match(/\.com\/play\/(friendleague|leaderboard)/) ||  // Friend League, Leaderboard
              document.location.href.match(/\.com\/seek\/auditlog\.aspx/)         ||      // Audit Log
              document.location.href.match(/\.com\/my\/myfriends\.aspx/)             )) { // Friends
@@ -6525,7 +6355,6 @@ var mainGC = function() {
             } else if (document.location.href.match(/\.com\/track\/details\.aspx/) ||
                        document.location.href.match(/\.com\/(seek|track)\/log\.aspx/) ||
                        document.location.href.match(/\.com\/email\//) ||
-                       document.location.href.match(/\.com\/bookmarks\/(view\.aspx\?guid=|bulk\.aspx\?listid=|view\.aspx\?code=)/) ||
                        document.location.href.match(/\.com\/seek\/auditlog\.aspx/) ||
                        document.location.href.match(/\.com\/my\/inventory\.aspx/)) {
                 var links = $('a[href*="/profile/?guid="]');
@@ -7693,13 +7522,8 @@ var mainGC = function() {
                 +  "table.Table tr.SenaryRow th {background-color: #" + getValue("settings_lines_color_vip") + " !important;}";
         }
         appendCssStyle(css);
-        // BMlisten ALT: Zeilen in Zebra und Funde User einfärben. BMlisten scheinen einzige Listen, bei denen das nicht vorgesehen ist.
-        if (document.location.href.match(/\.com\/bookmarks\/(view\.aspx\?guid=|bulk\.aspx\?listid=|view\.aspx\?code=)/) && document.getElementById('ctl00_ContentBody_ListInfo_cboItemsPerPage')) {
-            var lines = $("table.Table").find("tbody").find("tr");
-            setLinesColorInZebra(settings_show_common_lists_in_zebra, lines, 2);
-            setLinesColorUser("settings_show_common_lists_color", "user", lines, 2, "", true);
         // TB Listing: Zeilen in Zebra, für User, Owner, Reviewer und VIP einfärben.
-        } else if (document.location.href.match(/\.com\/track\/details\.aspx\?/)) {
+        if (document.location.href.match(/\.com\/track\/details\.aspx\?/)) {
             var lines = $("table.Table").find("tbody").find("tr");
             if (lines && lines[0] && lines[0].getAttribute('class').match(/BorderTop/)) {
                 var linesNew = lines.slice(0, -1);
@@ -12782,7 +12606,7 @@ var mainGC = function() {
             html += "<div id='gclh_config_pq' class='gclh_block'>";
             html += checkboxy('settings_fixed_pq_header', 'Show fixed header/footer in list of pocket queries') + show_help("Convenient for large PQ lists. With this option, you get a permanent view of the headers (weekday information) and footer (the number of running / remaining PQs) even if it is your list the larger as your monitor.") + "<br>"
             html += content_settings_show_log_it.replace("show_log_it","show_log_itX0");
-            var content_settings_submit_log_button = checkboxy('settings_submit_log_button', 'Submit log, pocket query, bookmark or hide cache on F2') + show_help("With this option you are able to submit your log by pressing key F2 instead of scrolling to the bottom and move the mouse to the button. <br><br>This feature also works to submit pocket queries and bookmarks. <br><br>And it works on the whole hide cache process with all of the buttons of the create and the change functionality. <br><br>It works also to save Personal Cache Notes in cache listings.") + "<br>";
+            var content_settings_submit_log_button = checkboxy('settings_submit_log_button', 'Submit log, pocket query, bookmark (old form) or hide cache on F2') + show_help3("With this option you are able to submit your log by pressing key F2 instead of scrolling to the bottom and move the mouse to the button. <br><br>This feature also works to submit pocket queries and bookmarks (old form). <br><br>And it works on the whole hide cache process with all of the buttons of the create and the change functionality. <br><br>It works also to save Personal Cache Notes in cache listings.") + "<br>";
             html += content_settings_submit_log_button;
             html += newParameterOn2;
             html += checkboxy('settings_compact_layout_list_of_pqs', 'Show compact layout in list of pocket queries') + "<br>";
@@ -12829,8 +12653,6 @@ var mainGC = function() {
 
             html += "<h4 class='gclh_headline2'>"+prepareHideable.replace("#name#","bm")+"Bookmark list" + prem + "</h4>";
             html += "<div id='gclh_config_bm' class='gclh_block'>";
-
-            html += "<div class='gclh_old_new_line'>New bookmark lists, favorites list, ignore list only</div>";
             html += newParameterOn1;
             html += checkboxy('settings_lists_compact_layout', 'Show compact layout') + show_help("With this option the list of bookmark lists, the bookmark lists, the favorites list and the ignore list is displayed in compact layout.") + "<br>";
             var content_status_line = "If the name of disabled and archived caches are specially represented and the identifier of premium member only caches are shown in an own column, the cache status line above the cache name is hidden.";
@@ -12848,13 +12670,9 @@ var mainGC = function() {
             html += checkboxy('settings_lists_show_log_it', 'Show GClh \"Log it\" icon') + show_help("Only in bookmark lists, not in favorites list and ignore list.<br><br>The GClh \"Log it\" icon is displayed beside cache titles. If you click it, you will be redirected directly to the log form. <br><br>You can use it too as basic member to log Premium Member Only (PMO) caches.") + "<br>";
             html += checkboxy('settings_lists_back_to_top', 'Hide \"Back to top\" icon') + "<br>";
             html += newParameterVersionSetzen("0.10") + newParameterOff;
-
-            html += "<div class='gclh_old_new_line'>Old bookmark lists only</div>";
-            html += checkboxy('settings_show_sums_in_bookmark_lists', 'Show number of caches in bookmark lists') + show_help("With this option the number of caches and the number of selected caches in the categories \"All\", \"Found\", \"Archived\" and \"Deactivated\", corresponding to the select buttons, are shown in bookmark lists at the end of the list.") + "<br>";
             html += content_settings_submit_log_button.replace("log_button","log_buttonX0");
             html += newParameterOn3;
-            html += checkboxy('settings_bm_changed_and_go', 'After change of bookmark go to bookmark list automatically') + show_help3("With this option you can switch to the bookmark list automatically after a change of a bookmark. The confirmation page of this change will skip.") + "<br>";
-            html += checkboxy('settings_bml_changed_and_go', 'After change of bookmark list go to bookmark list automatically') + show_help3("With this option you can switch to the bookmark list automatically after a change of the bookmark list. The confirmation page of this change will skip.") + "<br>";
+            html += checkboxy('settings_bm_changed_and_go', 'After change of bookmark (old form) go to bookmark list automatically') + show_help3("With this option you can switch to the bookmark list automatically after a change of a bookmark (old form). The confirmation page of this change will skip.") + "<br>";
             html += newParameterVersionSetzen(0.9) + newParameterOff;
             html += "</div>";
 
