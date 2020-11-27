@@ -35,6 +35,15 @@
 		<strong>Fix:</strong> [New Map] Buttons to "Search Map" and "Go to ..." are missing. [<a href="https://github.com/2Abendsegler/GClh/issues/1493" title="Issue 1493">1493</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br>
 	</li>
 	<li>
+		<strong>Fix:</strong> [New Map] Show behind the "Add to list" button if cache is available in own bookmarklists does not work. [<a href="https://github.com/2Abendsegler/GClh/issues/1500" title="Issue 1500">1500</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira 👍">capoaira</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Old Map] Show behind the "Add to list" button if cache is available in own bookmarklists does not work. [<a href="https://github.com/2Abendsegler/GClh/issues/1500" title="Issue 1500">1500</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira 👍">capoaira</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Cache listing] Show behind the "Add to list" button if cache is available in own bookmarklists does not work. [<a href="https://github.com/2Abendsegler/GClh/issues/1500" title="Issue 1500">1500</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira 👍">capoaira</a>]<br>
+	</li>
+	<li>
 		<strong>Fix:</strong> [Old bookmarklists] After change of bookmark go to bookmark list automatically does not work. [<a href="https://github.com/2Abendsegler/GClh/issues/1517" title="Issue 1517">1517</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 	</li>
 </ul>
