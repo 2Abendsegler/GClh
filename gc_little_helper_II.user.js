@@ -1151,7 +1151,7 @@ var mainGCAsyn = function() {
         }
 
         // Get header replacement from other GC page.
-        function getHeaderReplacement() {
+        function getHeaderReplacement(lang) {
             $.get('https://www.geocaching.com/adopt', null, function(response){
                 var von = response.indexOf('<nav id="ctl00_gcNavigation"');
                 var bis = response.indexOf('<main id="Content"');
@@ -1162,6 +1162,7 @@ var mainGCAsyn = function() {
                     var now = new Date();
                     headerRep.date = new Date(now.getFullYear(), now.getMonth(), now.getDay());
                     headerRep.date = headerRep.date.getTime();
+                    headerRep.lang = lang;
                     GM_setValue('headerReplacement', headerRep)
                     buildUpHeaderAndStart(0, headerRep.html);
                 }
@@ -1172,10 +1173,15 @@ var mainGCAsyn = function() {
         var now = new Date();
         var today = new Date(now.getFullYear(), now.getMonth(), now.getDay());
         today = today.getTime();
-        if (headerRep.date == today) {
+        // Language of pages: Lists, Search Map.
+        if ($('html')[0] && $('html')[0].lang) var lang = $('html')[0].lang.replace(/-(.*)/,'');
+        // Language of pages: Owner dashboard.
+        else if (_gcUser.locale) var lang = _gcUser.locale.replace(/-(.*)/,'');
+        else var lang = 'en';
+        if (headerRep.date == today && headerRep.lang && headerRep.lang == lang) {
             buildUpHeaderAndStart(0, headerRep.html);
         } else {
-            getHeaderReplacement();
+            getHeaderReplacement(lang);
         }
     } catch(e) {gclh_error("asynchronGC",e);}
 };
@@ -1284,7 +1290,8 @@ var mainGC = function() {
        document.location.href = $('p.Success a')[0].href;
    }
 
-// Set language to default language.
+// Set language to default language. (Not on asynchronous pages.)
+    var couldChangeLang = false;
     if (settings_set_default_langu) {
         try {
             function set_default_langu(waitCount) { // GDPR
@@ -1292,6 +1299,7 @@ var mainGC = function() {
                     var la = $('.language-list > li > a:contains(' + settings_default_langu + ')');
                     if (!la[0]) var la = $('.dropdown-menu > li > a:contains(' + settings_default_langu + ')');
                     if (la[0]) {
+                        couldChangeLang = true;
                         if (la[0].className == "selected" || la[0].parentNode.className == "selected");
                         else {
                             var event = document.createEvent("MouseEvent");
@@ -2668,7 +2676,7 @@ var mainGC = function() {
             } else if (waypoint.source == "listing" ) {
                 radius = 0;
                 if(settings_show_radius_on_flopps){
-                    
+
                     var hasCorrectedCoordinates = false;
                     for (var j=0; j<data.waypoints.length; j++) {
                         if (data.waypoints[j].source == "original" ) {
@@ -8288,7 +8296,7 @@ var mainGC = function() {
             css += '.latest-activity .log-item-finder {flex:0 0 ' + newFlexBasis + 'px !important;}';
             css += '.latest-activity .activity-item a {display: inline-block;}';
             css += '.gclh_name {white-space: nowrap; display: flex; align-items: center;}';
-            css += '.gclh_name a {margin-right:5px;}';               
+            css += '.gclh_name a {margin-right:5px;}';
 
             appendCssStyle(css);
         } catch(e) {gclh_error("Improve Owner Dashboard",e);}
@@ -12649,7 +12657,7 @@ var mainGC = function() {
             for (var i = 0; i < langus.length; i++) {
                 html += "  <option value='" + langus[i] + "' " + (settings_default_langu == langus[i] ? "selected='selected'" : "") + "> " + langus[i] + "</option>";
             }
-            html += "</select>" + show_help("Here you can change the default language to set on GC pages, in the case, apps changed the language.<br><br>In distant, very very distant future is planned to make the GClh multilingual. Until that is realized, the GClh is only in english.") + "<br>";
+            html += "</select>" + show_help("Here you can change the default language to set on GC pages, for example in the case, apps changed the language.<br><br>This does not run on asynchronous pages like \"Lists\" and \"Owner dashboard\". In these cases the language field is deactivated.<br><br>In distant, very very distant future is planned to make the GClh multilingual. Until that is realized, the GClh is only in english.") + "<br>";
             html += checkboxy('settings_change_header_layout', "Change header layout") + show_help("This option redesines the header layout on GC pages to save some vertical space.") + "<br>";
             html += " &nbsp; " + checkboxy('settings_show_smaller_gc_link', 'Show smaller GC logo top left') + show_help("With this option you can choose a smaller display of the GC logo top left on GC pages.<br><br>" + t_reqChl) + "<br>";
             html += " &nbsp; &nbsp; " + checkboxy('settings_remove_logo', 'Remove GC logo top left') + show_help_big("With this option you can remove the GC logo top left on GC pages.<br><br>This feature is not fully integrated in the diverse possibilities of the header layout and the navigation menus.<br><br>This option require \"Change header layout\" and \"Show smaller GC logo top left\".") + "<br>";
@@ -13495,7 +13503,7 @@ var mainGC = function() {
             html += "<div align='right' class='gclh_small' style='float: right;'>Copyright © 2010-2016 <a href='/profile/?u=Torsten-' target='_blank' title='GC profile for Torsten-'>Torsten Amshove</a>, 2016-"+end+" <a href='/profile/?u=2Abendsegler' target='_blank' title='GC profile for 2Abendsegler'>2Abendsegler</a>, 2017-"+end+" <a href='/profile/?u=Ruko2010' target='_blank' title='GC profile for Ruko2010'>Ruko2010</a></div>";
             html += "</div></div>";
 
-            // Config Content: Aufbauen, Reset Area verbergen, Special Links Nearest List/Map, Own Trackables versorgen.
+            // Config Content: Aufbauen, Reset Area verbergen, Special Links Nearest List/Map, Own Trackables versorgen. Adapt map icons.
             // ---------------
             div.innerHTML = html;
             $('body')[0].appendChild(div);
@@ -13889,6 +13897,13 @@ var mainGC = function() {
             setEvForDepPara("settings_driving_direction_link", "settings_driving_direction_parking_area");
             setEvForDepPara("settings_improve_add_to_list", "settings_improve_add_to_list_height");
             setEvForDepPara("settings_set_default_langu", "settings_default_langu");
+            // Deactivate choose language feature on asynchronous pages.
+            if (!couldChangeLang) {
+                setTimeout(function() {
+                    $('#settings_default_langu')[0].disabled = true;
+                    $('#settings_default_langu')[0].style.opacity = "0.5";
+                }, 0);
+            }
             setEvForDepPara("settings_pq_set_cachestotal", "settings_pq_cachestotal");
             setEvForDepPara("settings_pq_set_difficulty", "settings_pq_difficulty");
             setEvForDepPara("settings_pq_set_difficulty", "settings_pq_difficulty_score");
