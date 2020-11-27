@@ -24,6 +24,13 @@
 		<img src="../images/0.10.10/Screen01.jpg" alt="Screen01.jpg"><br><br>
 	</li>
 	<li>
+		<strong>Change:</strong> [Statistic] Rebuild D/T Matrix functionality together with implemented enhancements of GS. [<a href="https://github.com/2Abendsegler/GClh/issues/1491" title="Issue 1491">1491</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		The functionality is not new, but we have it redesigned to use it together with the newer enhancements of GS.<br>
+		<img src="../images/0.10.10/Screen03.jpg" alt="Screen03.jpg"></a><br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_count_own_matrix" title="Link to your GClh Config">Settings -> Public profile - Statistic:<br>
+		<img src="../images/0.10.10/Screen02.jpg" alt="Screen02.jpg"></a><br><br>
+	</li>
+	<li>
 		<strong>Fix:</strong> [New log form] Wrong alignment of smileys on new logging page. [<a href="https://github.com/2Abendsegler/GClh/issues/1490" title="Issue 1490">1490</a> / <span title="Thanks to Yannick-XY">Yannick-XY</span>]<br>
 	</li>
 	<li>
