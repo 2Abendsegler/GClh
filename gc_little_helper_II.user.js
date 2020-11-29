@@ -817,15 +817,8 @@ var mainPGC = function() {
                 if(urls_for_pqs_to_create[i] != ''){
                     if(open_popup_count < 5){
                         open_popups[i] = window.open(urls_for_pqs_to_create[i],'PQ_'+i,'scrollbars=1,menubar=0,resizable=1,width=500,height=500,left='+(i*40));
-                        
-                        // Ein Popup konnte nicht erzeugt werden, wahrscheinlich wegen eines Popup-Blockers
-                        // Wir brechen hier also ab und informieren den User
-                        if(open_popups[i] == null){
-                            alert("We detected a Popup Blocker. Please allow Popups for this site, reload the page and try again.\nPlease be aware, that the first two PQs could already be created, so please go to Geocaching.com and delete them.");
-                            return false;
-                        }
-                        open_popup_count++;
                         urls_for_pqs_to_create[i] = '';
+                        open_popup_count++;
                     }
                 }else{
                     already_done_count++;
@@ -844,7 +837,7 @@ var mainPGC = function() {
                 // Restart function until everything is finished
                 setTimeout(function(){create_pqs(false);}, 1000);
             }else{
-                alert('We are done creating your Pocket Querys.');
+                alert('We are done creating the Pocket Querys.');
                 $("button[data='PQCreateButton']").prop("disabled",false);
             }
         }
@@ -1158,7 +1151,7 @@ var mainGCAsyn = function() {
         }
 
         // Get header replacement from other GC page.
-        function getHeaderReplacement(lang) {
+        function getHeaderReplacement() {
             $.get('https://www.geocaching.com/adopt', null, function(response){
                 var von = response.indexOf('<nav id="ctl00_gcNavigation"');
                 var bis = response.indexOf('<main id="Content"');
@@ -1169,7 +1162,6 @@ var mainGCAsyn = function() {
                     var now = new Date();
                     headerRep.date = new Date(now.getFullYear(), now.getMonth(), now.getDay());
                     headerRep.date = headerRep.date.getTime();
-                    headerRep.lang = lang;
                     GM_setValue('headerReplacement', headerRep)
                     buildUpHeaderAndStart(0, headerRep.html);
                 }
@@ -1180,15 +1172,10 @@ var mainGCAsyn = function() {
         var now = new Date();
         var today = new Date(now.getFullYear(), now.getMonth(), now.getDay());
         today = today.getTime();
-        // Language of pages: Lists, Search Map.
-        if ($('html')[0] && $('html')[0].lang) var lang = $('html')[0].lang.replace(/-(.*)/,'');
-        // Language of pages: Owner dashboard.
-        else if (_gcUser.locale) var lang = _gcUser.locale.replace(/-(.*)/,'');
-        else var lang = 'en';
-        if (headerRep.date == today && headerRep.lang && headerRep.lang == lang) {
+        if (headerRep.date == today) {
             buildUpHeaderAndStart(0, headerRep.html);
         } else {
-            getHeaderReplacement(lang);
+            getHeaderReplacement();
         }
     } catch(e) {gclh_error("asynchronGC",e);}
 };
@@ -1297,16 +1284,14 @@ var mainGC = function() {
        document.location.href = $('p.Success a')[0].href;
    }
 
-// Set language to default language. (Not on asynchronous pages.)
+// Set language to default language.
     if (settings_set_default_langu) {
-    var couldChangeLang = false;
         try {
             function set_default_langu(waitCount) { // GDPR
                 if (typeof __doPostBack !== "undefined" || !$('#ctl00_ctl30_uxLocaleList_uxLocaleList_ctl00_uxLocaleItem')[0]) { // GDPR
                     var la = $('.language-list > li > a:contains(' + settings_default_langu + ')');
                     if (!la[0]) var la = $('.dropdown-menu > li > a:contains(' + settings_default_langu + ')');
                     if (la[0]) {
-                        couldChangeLang = true;
                         if (la[0].className == "selected" || la[0].parentNode.className == "selected");
                         else {
                             var event = document.createEvent("MouseEvent");
@@ -2683,12 +2668,14 @@ var mainGC = function() {
             } else if (waypoint.source == "listing" ) {
                 radius = 0;
                 if(settings_show_radius_on_flopps){
+                    
                     var hasCorrectedCoordinates = false;
                     for (var j=0; j<data.waypoints.length; j++) {
                         if (data.waypoints[j].source == "original" ) {
                             hasCorrectedCoordinates = true;
                         }
                     }
+
                     if (waypoint.typeid == 2 /* Traditional Geocache */ ) radius = 161; //  161m radius
                     else if (waypoint.typeid == 8 /* Mystery cache */) radius = (hasCorrectedCoordinates ? 161 : 3200); // Mystery cache 3200m radius for unsolved, 161 for corrected coordinates
                 }
@@ -8353,18 +8340,21 @@ var mainGC = function() {
 // Improve search map, improve new map.
     if (is_page('searchmap')) {
         try {
+//xxxx Vielleicht das Scrollen nur in Verbindung mit Compact layout weil der LazyLoad Dreck alles verschiebt.
             // After go back from cache details to cache list, scroll to last position.
             var global_scrollTop = 0;
             var global_newScrollTop = 0;
             function scrollInCacheList() {
                 // Cache list: Scroll to last position, if we come from back button in cache details.
                 if ($('#geocache-list')[0] && global_newScrollTop != 0) {
+console.log('Scrollen: ' +global_newScrollTop);
                     document.querySelector('#geocache-list').scrollTo({top: global_newScrollTop, behavior: 'smooth'});
                     global_newScrollTop = 0;
                 }
                 // Cache list: Notice scrolling.
                 if ($('#geocache-list')[0]) {
                     global_scrollTop = $('#geocache-list').scrollTop();
+console.log('Position merken: ' +global_scrollTop);
                 }
                 // Search map: If map is changed, clear noticed scrolling.
                 if ($('#clear-map-control')[0]) {
@@ -8404,6 +8394,9 @@ var mainGC = function() {
                     if (document.querySelector('#search-filters') && document.querySelector('.text-field')) {
                         document.querySelector('.text-field').setAttribute('class', 'chip-field-input');
                     }
+                    if ($('.search-filters-attributes .promo-filters .label span strong')[0]) {
+                        $('.search-filters-attributes .promo-filters .label span')[0].innerHTML = $('.search-filters-attributes .promo-filters .label span strong')[0].innerHTML;
+                    }
                     // Cache details.
                     if (document.querySelector('.cache-preview-header')) {
                         if ($('.more-info-link')[0]) document.querySelector('.more-info-link').getElementsByTagName('span')[1].style = 'display: none;';
@@ -8417,6 +8410,10 @@ var mainGC = function() {
                         if ($('.geocache-owner-name')[0] && $('.geocache-placed-date')[0] && $('.geocache-owner')[0]) {
                             span.innerHTML = document.querySelector('.geocache-owner-name').innerHTML + ' ' + document.querySelector('.geocache-placed-date').innerHTML;
                             document.querySelector('.geocache-owner').appendChild(span);
+                        }
+                        if ($('.cache-metadata .vertical-spacer')[0]) {
+                            $('.cache-metadata .vertical-spacer').after('<span class="dot"></span>');
+                            $('.cache-metadata .vertical-spacer').remove();
                         }
                         if ($('.cache-metadata')[0] && $('.status-and-type')[0] && $('.status-and-type .status')[0] && $('.status-and-type .status span')[0] &&
                             window.getComputedStyle($('.status-and-type .status span')[0]).color == 'rgb(4, 200, 214)') { // Premium color.
@@ -8441,6 +8438,9 @@ var mainGC = function() {
                         if (!$('.header-top-left .gclh-cache-link')[0] && $('.header-top-left h1')[0] && $('.more-info-link')[0]) {
                             $('.header-top-left h1')[0].innerHTML = '<a class="gclh-cache-link" href="' + $('.more-info-link')[0].href + '" target="_blank">' + $('.header-top-left h1')[0].innerHTML + '</a>';
                         }
+                        $('.cache-preview-activities .avatar-img').each(function() {
+                            $(this)[0].alt = '';
+                        });
                     }
                     // Cache list.
                     if ($('#geocache-list')[0]) {
@@ -8458,6 +8458,13 @@ var mainGC = function() {
                                 $(this).find('.geocache-item-info')[0].style.display = 'none';
                             }
                         });
+                        if ($('#geocache-list')[0]) {
+                            if ($('#add-to-list-control')[0]) {
+                                $('#geocache-list')[0].setAttribute("style", "margin-bottom: 68px !important;");
+                            } else {
+                                $('#geocache-list')[0].setAttribute("style", "margin-bottom: 22px !important;");
+                            }
+                        }
                     }
                 }
             }
@@ -8541,7 +8548,7 @@ var mainGC = function() {
 
             // Show button to collapse activity.
             function collapseActivity() {
-                if ($('.cache-preview-activities > header')[0] && $('.cache-preview-activities > div')[0]) {
+                if ($('.cache-preview-activities > header')[0] && $('.cache-preview-activities > ul')[0]) {
                     if (!$('.cache-preview-activities .opener')[0]) {
                         $('.cache-preview-activities > header').append('<svg class="opener"><use xlink:href="/account/app/ui-icons/sprites/global.svg#icon-expand-svg-fill"></use></svg>');
                         $('.cache-preview-activities > header')[0].addEventListener('click', function() {
@@ -8758,7 +8765,7 @@ var mainGC = function() {
                         corrected = "corrected ";
                     }
                     if (settings_show_enhanced_map_coords) {
-                        new_text += '<p><span class="coordinates current" title="'+corrected+'Coordinates">' + coords + '</span>' + original_coords_span + '</p>';
+                        new_text += '<p style="margin-top: 5px; margin-bottom: 0px;"><span class="coordinates current" title="'+corrected+'Coordinates">' + coords + '</span>' + original_coords_span + '</p>';
                     }
 
                     // Create Element and insert everything.
@@ -8895,7 +8902,7 @@ var mainGC = function() {
 
                         //apply filters to map and close
                         doubleClick('button.control-apply');
-                        
+
                         hideSidebar(); // Must run here, otherwise the filter will not be set.
                     } else {waitCount++; if (waitCount <= 50) setTimeout(function(){waitForFilter(waitCount);}, 50);}
                 }
@@ -8917,8 +8924,10 @@ var mainGC = function() {
                 setFilter();
             }
 
+//xxxx Nicht zuverlässig: Läuft manchmal gar nicht an.
             // observer callback for checking existence of sidebar
             var cb_body = function(mutationsList, observer) {
+console.log('cb_body');
                 processAllSearchMap();
 
                 if ($('div#sidebar')[0] && !$('.gclh_sidebar_observer')[0]) {
@@ -8933,16 +8942,19 @@ var mainGC = function() {
                 }
             }
 
+//xxxx Hier wird nur das Scrollen in neue Teile der Cache Liste bemerkt. Scrollt man wieder zurück wird das nicht bemerkt.
+//     Das hat zur Folge, dass das Positionieren nach Back aus den Cache Details nicht funktioniert.
             // observer callback when sidebar switches between search list and cache details view
             var cb_sidebar = function(mutationsList, observer) {
                 observer_sidebar.disconnect();
+console.log('cb_sidebar');
 
                 processAllSearchMap();
 
                 var target_sidebar = $('div#sidebar')[0];
                 var config_sidebar = {
-                    childList: true,
-                    subtree: true
+                        childList: true,
+                        subtree: true
                 };
                 observer_sidebar.observe(target_sidebar, config_sidebar);
             }
@@ -8950,7 +8962,7 @@ var mainGC = function() {
             // create observer instances linked to callback functions
             var observer_body    = new MutationObserver(cb_body);
             var observer_sidebar = new MutationObserver(cb_sidebar); // ATTENTION: the order matters here
-            
+
             var target_body = $('body')[0];
             var config_body = {
                 childList: true,
@@ -8968,75 +8980,92 @@ var mainGC = function() {
             css += '.geocache-owner-name a:hover, .gclhOwner a:hover {color: #02874d !important;}';
             css += '.geocache-owner-name a, .gclhOwner a {color: #4a4a4a !important; text-decoration: none !important;}';
             if (settings_searchmap_compact_layout) {
-                css += '.search-bar {padding: 5px 10px !important;}';
                 css += '.search-bar-inner {margin-right: 10px !important;}';
+                css += '.search-bar, .cache-preview-header, .cache-preview-attributes, .cache-preview-action-menu, .cache-open-text-cta, .cache-preview-description, .cache-preview-activities .view-all-row, .cache-preview-activities header {padding: 5px 12px !important;}';
+                css += '.sidebar-control .checkbox {margin-right: 2px;}';
                 // Cache list and cache details.
+                css += '.header-top {display: none !important;}';
+                css += '.search-bar-back-cta {height: 24px; width: 24px; padding: 6px 0px; margin-left: -2px;}';
                 css += '.search-bar-back-cta svg {height: 24px; width: 24px;}';
                 css += '.search-term-input, .search-term-form button, .cache-preview-activities .view-all-row {font-size: 14px !important; height: 35px !important;}';
                 css += '.search-term-form svg {padding-top: 4px;}';
-                css += '.cache-detail-preview {padding: 0 !important; height: 100% !important;}';
+                css += '.cache-detail-preview {height: calc(100% - 22px) !important; margin-top: -24px;}';
                 css += '.geocache-action-bar {padding: 0 10px 5px !important;}';
-                css += '.geocache-item {padding: 6px 10px;}';
+                css += '.geocache-item {padding: 6px 10px !important;}';
                 css += '.geocache-item-data span {margin-right: 2px;}';
                 css += '.geocache-item-data span img, .cache-metadata span img {vertical-align: bottom; height: 14px; opacity: 0.8;}';
                 css += '.geocache-item-details {margin: 0 6px;}';
-                if (settings_searchmap_disabled) {
-                    css += '.geocache-item-icon {flex: 0 0 36px; height: 36px;}';
-                    css += '.geocache-item-status-icon {height: 18px; width: 18px;}';
-                }
-                css += '.cache-preview-header, .cache-preview-attributes, .cache-preview-action-menu, .cache-activity-log, .cache-open-text-cta, .cache-preview-activities h2, .cache-preview-description, .cache-preview-activities .view-all-row {padding: 5px 12px !important;}';
+                css += '.geocache-item-name {color: #4a4a4a;}';
+                css += '.LazyLoad::before, .LazyLoad::after {margin: 8px 24px 8px 32px !important; height: 12px !important;}';
+                css += '.LazyLoad {height: 36.4px !important;}';
+                css += '.LazyLoad.is-visible {height: 48px !important;}';
+                css += '.geocache-item-icon {flex: 0 0 36px !important; height: 36.4px !important;}';
+                css += '.geocache-item {height: 36.4px !important;}';
+                if (settings_searchmap_disabled) css += '.geocache-item-status-icon {height: 18px; width: 18px;}';
                 css += '.cache-preview-activities h2 {margin: 0;}';
+                css += '.cache-preview-activities header {margin: 0; color: #4a4a4a;}';
                 css += '.cache-preview-activities ul {margin: 0; padding: 0;}';
-                css += '.cache-activity-log header, .cache-activity-log .text {margin-bottom: -6px;}';
                 css += '.gclh-cache-link {display: flex;}';
                 css += '.gclh_cache_type {flex: 0 0 24px; height: 24px; width: 24px; margin-left: -2px; margin-right: 8px; margin-top: -1px;}';
-                css += '.cache-preview-header h1 {font-size: 16px;}';
+                css += '.cache-preview-header h1 {font-size: 16px !important; margin-top: 0px;}';
                 if (settings_searchmap_disabled) css += '.cache-preview-header .more-info {top: 0px !important;}';
                 else css += '.cache-preview-header .more-info {top: 8px !important;}';
                 css += '.cache-preview-header .more-info-link {width: 52px; min-width: unset;}';
                 css += '.cache-preview-header .gclh-cache-link {text-decoration: none; color: #4a4a4a;}';
                 css += '.cache-preview-header .gclh-cache-link:hover {color: #02874d !important;}';
-                css += '.cache-preview-header > p.cache-metadata {margin-top: -3px;}';
-                css += '.cache-preview-header .arrow-icon {height: 40px; width: 40px;}';
+                css += '.cache-preview-header > p.cache-metadata {margin-top: -3px; margin-bottom: 2px;}';
+                css += '.cache-preview-header .arrow-icon {height: 40px !important; width: 40px !important;}';
                 css += '.cache-preview-action-menu ul {margin-bottom: -4px;}';
-                css += '.cache-preview-action-menu .log-geocache, .cache-preview-action-menu .log-geocache:visited {margin-bottom: 4px; padding: 8px;}';
+                css += '.cache-preview-action-menu .log-geocache, .cache-preview-action-menu .log-geocache:visited {margin-bottom: 6px !important; padding: 8px !important;}';
                 css += '.cache-preview-action-menu .action-icon {margin: 0;}';
                 css += '.cache-preview-action-menu ul li button span, .cache-preview-action-menu ul li a span {display: none; !important;}';
                 css += '.add_to_list_count {font-size: 12px; color: #4a4a4a; position: absolute; margin-top: 9px; margin-left: -5px; cursor: default;}';
-                css += '.cache-preview-attributes, .cache-open-text-cta {margin-bottom: 5px;}';
-                css += '.cache-preview-attributes > ul {font-size: 12px; margin-bottom: 0 !important; padding-bottom: 5px !important;}';
-                css += '.cache-preview-attributes .favorites-icon {height: 24px; width: 24px;}';
+                css += '.cache-preview-attributes, .cache-open-text-cta {margin-bottom: 5px !important;}';
+                css += '.cache-preview-attributes > ul {font-size: 12px; margin-bottom: 0 !important;}';
+                css += '.favorites-points {border-top: 1px solid #e4e4e4; margin-top: 5px;}';
+                css += '.cache-preview-attributes .favorites-icon {height: 24px !important; width: 24px !important;}';
+                css += '.cache-preview-attributes .attribute-val {color: #4a4a4a;}';
                 css += '.cache-preview-attributes .attribute-label {color: #777777;}';
                 css += '.gclhOwner {color: #9b9b9b;}';
-                css += '.cache-preview-attributes .geocache-owner {font-size: 12px; margin-top: 0px; padding-top: 3px;}';
+                css += '.cache-preview-attributes .geocache-owner {font-size: 12px !important; margin-top: 0px !important; padding-top: 4px !important;}';
                 css += '.cache-preview-attributes .geocache-owner-name, .cache-preview-attributes .geocache-placed-date {display: none !important;}';
-                css += '.cache-open-text-cta, .cache-preview-activities header {font-size: 14px; color: #4a4a4a;}';
-                css += '.cache-preview-activities h2 {font-size: 14px;}';
-                css += '.cache-open-text-cta:hover, .cache-preview-activities header:hover {color: #02874d;}';
-                css += '.cache-open-text-cta span {margin-right: -2px;}';
-                css += '.cache-preview-activities {margin-bottom: 1px;}';
+                css += '.cache-open-text-cta {font-size: 14px; color: #4a4a4a;}';
+                css += '.cache-open-text-cta span, .cache-preview-activities h2 {font-size: 14px !important;}';
+                css += '.cache-open-text-cta:hover, .cache-preview-activities header:hover, .cache-activity-log .username:hover {color: #02874d !important; text-decoration: none !important;}';
+                css += '.cache-open-text-cta span {margin-right: -2px; margin-left: -2px;}';
+                css += '.cache-preview-activities {margin-bottom: 1px !important;}';
                 css += '.cache-preview-activities > header {padding: unset;}';
                 css += '.cache-preview-activities .button.primary {padding: 8px;}';
-                css += '.cache-activity-log .username {font-size: 13px;}';
+                css += '.cache-activity-log {padding: 5px 12px !important;}';
+                css += '.cache-activity-log header {padding: 0px !important;}';
+                css += '.cache-activity-log .username {font-size: 12px !important; padding-bottom: 2px;}';
                 css += '.cache-preview-description h2 {margin-bottom: 6px;}';
                 css += '.cache-preview-description .close-cta-row {top: 0px; right: 5px;}';
-                css += '#geocache-list-pagination {padding: 5px 0;}';
-                css += '#geocache-list .label {padding: 8px 24px; border-top: 1px solid #e4e4e4; font-size: 12px;}';
+                css += '#geocache-list-pagination {padding: 5px 0 !important;}';
+                css += '#geocache-list-pagination a:focus {outline: unset !important;}';
+                css += '#geocache-list .label {padding: 8px 24px !important; border-top: 1px solid #e4e4e4 !important; font-size: 12px !important;}';
                 css += '#sidebar footer {padding: 2px 0;}';
                 css += '#sidebar.has-selected-caches footer {margin-top: unset; padding: 12px 0;}';
-                css += '#add-to-list-control {padding: 20px 0; border-top: unset;}';
-                css += '#add-to-list-menu {padding: 0px; border-top: unset; margin-bottom: 5px;}';
-                css += '#add-to-list-menu button {padding: 6px 24px; margin-right: 16px;}';
+                css += '#add-to-list-control {padding: 22px 0 24px 0;}';
+                css += '#add-to-list-menu {padding: 0px !important; border-top: unset !important; margin-bottom: 5px !important;}';
+                css += '#add-to-list-menu button {padding: 6px 24px !important; margin-right: 16px !important;}';
+                css += '.existing-list {margin-bottom: 0 !important;}';
                 // Filter
-                css += '#search-filters-controls {padding: 0px 10px 5px 10px;}';
-                css += '#search-filters-controls .gc-button {padding: 0px 10px; margin-right: 10px; border: 1px solid #9b9b9b; border-radius: 4px;}';
+                css += 'button:focus, #search-filter-type .type-label.focused, .search-filters-attributes ul.wonders .focused label {outline: unset !important;}';
+                css += '#search-filters-controls {padding: 0px 10px 5px 10px !important;}';
+                css += '#search-filters-controls .gc-button {padding: 0px 10px; margin-right: 10px !important; border: 1px solid #9b9b9b; border-radius: 4px;}';
                 css += '#search-filters-controls .gc-button:hover {border-color: #02874d; color: #02874d; text-decoration: none;}';
-                css += '#search-filters-controls .control-apply {width: unset; padding-right: 11px !important; margin-right: 0px !important;}';
-                css += '#search-filters-content {margin-top: 17px; padding-top: 5px;}';
-                css += '.search-filters-block {padding: 0px !important; margin: 0px !important;}';
-                css += '.search-filters-block > div {padding: 5px 10px 2px 10px !important; margin: 0px !important;}';
+                css += '#search-filters-controls .control-apply {width: unset !important; padding-right: 11px !important; margin-right: 2px !important;}';
+                css += '#search-filters-content {margin-top: 16px !important; color: #4a4a4a; font-size: 14px;}';
+                css += '.search-filters-block {padding: 6px 14px 4px 14px !important; margin: 0px !important;}';
+                css += '.search-filters-attributes .toggle-filter button.toggle-handle span {display: none;}';
+                css += '.search-filters-attributes {padding-top: 4px !important;}';
+                css += '.search-filters-text .search-filters-number {padding: 6px 0px 0px 0px !important;}';
+                css += '.search-filters-block > div {padding: 0px 10px 0px 10px; margin: 0px !important;}';
+                css += '.search-filters-attributes .promo-filters .toggle-filter, .search-filters-status .trinary-control:nth-child(1), .search-filters-text .text-filter:nth-child(1) {padding-top: 4px !important;}';
+                css += '.search-filters-attributes .promo-filters .checkbox-toggle-controls-container:nth-child(3) {padding-top: 6px !important;}';
+                css += '.search-filters-attributes .toggle-filter, #search-filter-type, .search-filters-attributes .promo-filters, .search-filters-attributes .trinary-control, .search-filters-attributes .text-filter, #search-filter-difficulty, #search-filter-terrain, #search-filter-size, .search-filters-status .trinary-control, .search-filters-text .text-filter {padding-top: 10px !important;}';
                 css += '.search-filters-block > div > div, .search-filters-block > div > ul, .search-filters-block > div > span, .search-filters-block > div > label {margin: 0px !important;}';
-                css += '.search-filters-block ul label {padding: 3px 10px !important;}';
                 css += '.search-filters-block .gc-radio-control {padding-bottom: 2px;}';
                 css += '.search-filters-block .gc-radio-control:hover i {box-shadow: 0 0 0 3px #e4e4e4;}';
                 css += '.search-filters-block .label-text-field, .search-filters-block .text-filter .label, .search-filters-block .gc-form-label {margin: 0px !important; padding-bottom: 2px !important;}';
@@ -9046,13 +9075,14 @@ var mainGC = function() {
                 css += '.gc-date-filter select, .gc-date-filter input {height: 30px; margin-top: 0px; padding: 0 0 0 4px !important;}';
                 css += '.gc-date-filter svg {bottom: 5px !important; height: 20px !important;}';
                 css += '.gc-labeled-select .gc-select select:active, .gc-labeled-select .gc-select select:focus {border-color: unset !important; box-shadow: unset !important;}';
-                css += '.gc-labeled-select .gc-select select + svg {top: 6px;}';
+                css += '.gc-labeled-select .gc-select select + svg {top: 6px !important;}';
                 css += '.search-filters-block .chip-field-input {height: 30px; margin-top: 0px; font-size: 14px; padding-left: 4px;}';
                 css += '.search-filters-block .chip {margin-bottom: 0px;}';
                 css += '.search-filters-block .user-typeahead-list-item {font-size: 14px;}';
                 css += '.search-filters-block .label.min, .search-filters-block .label.max {font-size: 14px;}';
                 css += '.search-filters-block .rc-slider-handle:focus {box-shadow: 0 0 0 0px;}';
-                css += '#search-filter-size li label {line-height: 30px; width: unset;}';
+                css += '#search-filter-type ul label, .search-filters-attributes ul.wonders label {padding: 3px 10px !important;}';
+                css += '#search-filter-size li label {line-height: 30px !important;}';
                 css += '.search-filters-block .number-filter .label {text-transform: none !important;}';
                 css += '.search-filters-block .number-filter input, .search-filters-block .number-filter input:focus {height: 30px; font-size: 14px; padding-left: 4px; box-shadow: 0 0 0 0px !important;}';
                 // Pop up by right mouse click to a cache in the map.
@@ -9069,9 +9099,9 @@ var mainGC = function() {
             css += '.leaflet-popup-content {width: auto !important;}';
             // Show button to collapse activity.
             css += '.cache-preview-activities > header {display: flex; flex-flow: row wrap; justify-content: space-between; align-items: center; cursor: pointer;}';
-            css += '.cache-preview-activities .opener {height: 22px; width: 22px; margin-right: 9px; transition: all .3s ease; transform-origin: 50% 50%;}';
+            css += '.cache-preview-activities .opener {height: 22px; width: 22px; transition: all .3s ease; transform-origin: 50% 50%;}';
             css += '.cache-preview-activities.isHide .opener {transform: rotate(180deg);}';
-            css += '.cache-preview-activities.isHide > div {display: none;}';
+            css += '.cache-preview-activities.isHide > ul {display: none;}';
             // Show name of disabled caches strike through in special color.
             css += '.gclh_disabled, .gclh_disabled a {color: #' + settings_searchmap_disabled_color + ' !important;}';
             css += '.gclh_disabled.gclh_strikethrough, .gclh_disabled.gclh_strikethrough a {text-decoration: line-through;}';
@@ -12530,7 +12560,7 @@ var mainGC = function() {
             for (var i = 0; i < langus.length; i++) {
                 html += "  <option value='" + langus[i] + "' " + (settings_default_langu == langus[i] ? "selected='selected'" : "") + "> " + langus[i] + "</option>";
             }
-            html += "</select>" + show_help("Here you can change the default language to set on GC pages, for example in the case, apps changed the language.<br><br>This does not run on asynchronous pages like \"Lists\" and \"Owner dashboard\". In these cases the language field is deactivated.<br><br>In distant, very very distant future is planned to make the GClh multilingual. Until that is realized, the GClh is only in english.") + "<br>";
+            html += "</select>" + show_help("Here you can change the default language to set on GC pages, in the case, apps changed the language.<br><br>In distant, very very distant future is planned to make the GClh multilingual. Until that is realized, the GClh is only in english.") + "<br>";
             html += checkboxy('settings_change_header_layout', "Change header layout") + show_help("This option redesines the header layout on GC pages to save some vertical space.") + "<br>";
             html += " &nbsp; " + checkboxy('settings_show_smaller_gc_link', 'Show smaller GC logo top left') + show_help("With this option you can choose a smaller display of the GC logo top left on GC pages.<br><br>" + t_reqChl) + "<br>";
             html += " &nbsp; &nbsp; " + checkboxy('settings_remove_logo', 'Remove GC logo top left') + show_help_big("With this option you can remove the GC logo top left on GC pages.<br><br>This feature is not fully integrated in the diverse possibilities of the header layout and the navigation menus.<br><br>This option require \"Change header layout\" and \"Show smaller GC logo top left\".") + "<br>";
@@ -13370,7 +13400,7 @@ var mainGC = function() {
             html += "<div align='right' class='gclh_small' style='float: right;'>Copyright © 2010-2016 <a href='/profile/?u=Torsten-' target='_blank' title='GC profile for Torsten-'>Torsten Amshove</a>, 2016-"+end+" <a href='/profile/?u=2Abendsegler' target='_blank' title='GC profile for 2Abendsegler'>2Abendsegler</a>, 2017-"+end+" <a href='/profile/?u=Ruko2010' target='_blank' title='GC profile for Ruko2010'>Ruko2010</a></div>";
             html += "</div></div>";
 
-            // Config Content: Aufbauen, Reset Area verbergen, Special Links Nearest List/Map, Own Trackables versorgen. Adapt map icons.
+            // Config Content: Aufbauen, Reset Area verbergen, Special Links Nearest List/Map, Own Trackables versorgen.
             // ---------------
             div.innerHTML = html;
             $('body')[0].appendChild(div);
@@ -13764,13 +13794,6 @@ var mainGC = function() {
             setEvForDepPara("settings_driving_direction_link", "settings_driving_direction_parking_area");
             setEvForDepPara("settings_improve_add_to_list", "settings_improve_add_to_list_height");
             setEvForDepPara("settings_set_default_langu", "settings_default_langu");
-            // Deactivate choose language feature on asynchronous pages.
-            if (!couldChangeLang) {
-                setTimeout(function() {
-                    $('#settings_default_langu')[0].disabled = true;
-                    $('#settings_default_langu')[0].style.opacity = "0.5";
-                }, 0);
-            }
             setEvForDepPara("settings_pq_set_cachestotal", "settings_pq_cachestotal");
             setEvForDepPara("settings_pq_set_difficulty", "settings_pq_difficulty");
             setEvForDepPara("settings_pq_set_difficulty", "settings_pq_difficulty_score");
