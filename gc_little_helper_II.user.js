@@ -8966,8 +8966,8 @@ console.log('cb_sidebar');
 
                 var target_sidebar = $('div#sidebar')[0];
                 var config_sidebar = {
-                        childList: true,
-                        subtree: true
+                    childList: true,
+                    subtree: true
                 };
                 observer_sidebar.observe(target_sidebar, config_sidebar);
             }
