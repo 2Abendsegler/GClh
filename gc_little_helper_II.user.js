@@ -9056,7 +9056,6 @@ console.log('cb_sidebar');
                 css += '.cache-preview-description h2 {margin-bottom: 6px;}';
                 css += '.cache-preview-description .close-cta-row {top: 0px; right: 5px;}';
                 css += '#geocache-list-pagination {padding: 5px 0 !important;}';
-                css += '#geocache-list-pagination a:focus {outline: unset !important;}';
                 css += '#geocache-list .label {padding: 8px 24px !important; border-top: 1px solid #e4e4e4 !important; font-size: 12px !important;}';
                 css += '#sidebar footer {padding: 2px 0;}';
                 css += '#sidebar.has-selected-caches footer {margin-top: unset; padding: 12px 0;}';
@@ -9065,7 +9064,7 @@ console.log('cb_sidebar');
                 css += '#add-to-list-menu button {padding: 6px 24px !important; margin-right: 16px !important;}';
                 css += '.existing-list {margin-bottom: 0 !important;}';
                 // Filter
-                css += 'button:focus, #search-filter-type .type-label.focused, .search-filters-attributes ul.wonders .focused label {outline: unset !important;}';
+                css += '#search-filter-type .type-label.focused, .search-filters-attributes ul.wonders .focused label {outline: unset !important;}';
                 css += '#search-filters-controls {padding: 0px 10px 5px 10px !important;}';
                 css += '#search-filters-controls .gc-button {padding: 0px 10px; margin-right: 10px !important; border: 1px solid #9b9b9b; border-radius: 4px;}';
                 css += '#search-filters-controls .gc-button:hover {border-color: #02874d; color: #02874d; text-decoration: none;}';
