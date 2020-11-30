@@ -14,7 +14,7 @@
 <img src="/images/vivaldi_logo_small.png" title="Vivaldi" alt="Vivaldi" />
 
 ## How to install
-If you need any help with the installation, you can have a look at our [Installationtipps](/docu/tips_installation.md#en).
+If you need any help with the installation, you can have a look at our <a href="../docu/tips_installation.md#en">Installationtipps</a>.
 
 ## Our Goal
 *GC little helper II* is a tool to enhance and extend the functionality on the geocaching pages of www.geocaching.com. All functions can be configured in a configuration menu. The tool uses english as language.
