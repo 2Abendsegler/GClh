@@ -8353,21 +8353,20 @@ var mainGC = function() {
 // Improve search map, improve new map.
     if (is_page('searchmap')) {
         try {
-//xxxx Vielleicht das Scrollen nur in Verbindung mit Compact layout weil der LazyLoad Dreck alles verschiebt.
-            // After go back from cache details to cache list, scroll to last position.
             var global_scrollTop = 0;
             var global_newScrollTop = 0;
             function scrollInCacheList() {
                 // Cache list: Scroll to last position, if we come from back button in cache details.
                 if ($('#geocache-list')[0] && global_newScrollTop != 0) {
-console.log('Scrollen: ' +global_newScrollTop);
                     document.querySelector('#geocache-list').scrollTo({top: global_newScrollTop, behavior: 'smooth'});
                     global_newScrollTop = 0;
                 }
                 // Cache list: Notice scrolling.
-                if ($('#geocache-list')[0]) {
-                    global_scrollTop = $('#geocache-list').scrollTop();
-console.log('Position merken: ' +global_scrollTop);
+                if ($('#geocache-list')[0] && !$('#geocache-list.gclh-scroll')[0]) {
+                    $('#geocache-list').addClass('gclh-scroll');
+                    $('#geocache-list')[0].addEventListener('scroll', function(e) {
+                        global_scrollTop = $('#geocache-list').scrollTop()
+                    });
                 }
                 // Search map: If map is changed, clear noticed scrolling.
                 if ($('#clear-map-control')[0]) {
@@ -8439,14 +8438,17 @@ console.log('Position merken: ' +global_scrollTop);
                         }
                         if (!$('.gclh_cache_type')[0] && $('.header-top-left')[0] && $('.header-top-left h1')[0] && $('.status-and-type')[0] && $('.status-and-type')[0].childNodes) {
                             var cacheTypeChildNode = $('.status-and-type')[0].childNodes.length - 1;
-                            var cacheType = $('.status-and-type')[0].childNodes[cacheTypeChildNode].data;
-                            var cacheSymbol = convertCachetypeToCachesymbol(cacheType);
-                            if (cacheSymbol != '') {
-                                $('.header-top-left h1')[0].innerHTML = '<svg class="gclh_cache_type"><use xlink:href="'+cacheSymbol+'"></use></svg>' + $('.header-top-left h1')[0].innerHTML;
-                                if (settings_searchmap_disabled && window.getComputedStyle($('.status-and-type')[0]).display != 'none') {
-                                    $('.status-and-type')[0].style.display = 'none';
+//xxxx das hier   $('.status-and-type')[0].childNodes[cacheTypeChildNode].data   verursacht fehler, gelegentlich
+ //neu                           if ($('.status-and-type')[0].childNodes[cacheTypeChildNode]) {
+                                var cacheType = $('.status-and-type')[0].childNodes[cacheTypeChildNode].data;
+                                var cacheSymbol = convertCachetypeToCachesymbol(cacheType);
+                                if (cacheSymbol != '') {
+                                    $('.header-top-left h1')[0].innerHTML = '<svg class="gclh_cache_type"><use xlink:href="'+cacheSymbol+'"></use></svg>' + $('.header-top-left h1')[0].innerHTML;
+                                    if (settings_searchmap_disabled && window.getComputedStyle($('.status-and-type')[0]).display != 'none') {
+                                        $('.status-and-type')[0].style.display = 'none';
+                                    }
                                 }
-                            }
+   //                         }
                         }
                         if (!$('.header-top-left .gclh-cache-link')[0] && $('.header-top-left h1')[0] && $('.more-info-link')[0]) {
                             $('.header-top-left h1')[0].innerHTML = '<a class="gclh-cache-link" href="' + $('.more-info-link')[0].href + '" target="_blank">' + $('.header-top-left h1')[0].innerHTML + '</a>';
@@ -8782,6 +8784,7 @@ console.log('Position merken: ' +global_scrollTop);
                     }
 
                     // Create Element and insert everything.
+                    if (!(document.getElementsByClassName("geocache-owner")[0] || document.getElementsByClassName("gclhOwner")[0])) return;
                     var text_element = document.createElement("div");
                     text_element.innerHTML = new_text;
                     searchmap_sidebar_enhancements.appendChild(text_element);
@@ -8937,12 +8940,11 @@ console.log('Position merken: ' +global_scrollTop);
                 setFilter();
             }
 
-//xxxx Nicht zuverlässig: Läuft manchmal gar nicht an.
+//xxxx
             // observer callback for checking existence of sidebar
             var cb_body = function(mutationsList, observer) {
 console.log('cb_body');
                 processAllSearchMap();
-
                 if ($('div#sidebar')[0] && !$('.gclh_sidebar_observer')[0]) {
                     $('div#sidebar').addClass('gclh_sidebar_observer');
                     // start observing sidebar for switches between search list and cache details view
@@ -8955,15 +8957,12 @@ console.log('cb_body');
                 }
             }
 
-//xxxx Hier wird nur das Scrollen in neue Teile der Cache Liste bemerkt. Scrollt man wieder zurück wird das nicht bemerkt.
-//     Das hat zur Folge, dass das Positionieren nach Back aus den Cache Details nicht funktioniert.
+//xxxx
             // observer callback when sidebar switches between search list and cache details view
             var cb_sidebar = function(mutationsList, observer) {
                 observer_sidebar.disconnect();
 console.log('cb_sidebar');
-
                 processAllSearchMap();
-
                 var target_sidebar = $('div#sidebar')[0];
                 var config_sidebar = {
                     childList: true,
@@ -8975,7 +8974,6 @@ console.log('cb_sidebar');
             // create observer instances linked to callback functions
             var observer_body    = new MutationObserver(cb_body);
             var observer_sidebar = new MutationObserver(cb_sidebar); // ATTENTION: the order matters here
-
             var target_body = $('body')[0];
             var config_body = {
                 childList: true,
@@ -9005,16 +9003,15 @@ console.log('cb_sidebar');
                 css += '.search-term-form svg {padding-top: 4px;}';
                 css += '.cache-detail-preview {height: calc(100% - 22px) !important; margin-top: -24px;}';
                 css += '.geocache-action-bar {padding: 0 10px 5px !important;}';
+                css += '.geocache-list-container ul li, .LazyLoad.is-visible {height: 48px !important}';
                 css += '.geocache-item {padding: 6px 10px !important;}';
                 css += '.geocache-item-data span {margin-right: 2px;}';
                 css += '.geocache-item-data span img, .cache-metadata span img {vertical-align: bottom; height: 14px; opacity: 0.8;}';
                 css += '.geocache-item-details {margin: 0 6px;}';
-                css += '.geocache-item-name {color: #4a4a4a;}';
-                css += '.LazyLoad::before, .LazyLoad::after {margin: 8px 24px 8px 32px !important; height: 12px !important;}';
-                css += '.LazyLoad {height: 36.4px !important;}';
-                css += '.LazyLoad.is-visible {height: 48px !important;}';
-                css += '.geocache-item-icon {flex: 0 0 36px !important; height: 36.4px !important;}';
-                css += '.geocache-item {height: 36.4px !important;}';
+                css += '.geocache-item-icon {flex: 0 0 36px !important; height: 36px !important;}';
+                css += '.geocache-item {height: 36px !important;}';
+                css += '.geocache-item-name {height: 20px; color: #4a4a4a;}';
+                css += '.geocache-item-data {height: 16px;}';
                 if (settings_searchmap_disabled) css += '.geocache-item-status-icon {height: 18px; width: 18px;}';
                 css += '.cache-preview-activities h2 {margin: 0;}';
                 css += '.cache-preview-activities header {margin: 0; color: #4a4a4a;}';
@@ -9101,6 +9098,9 @@ console.log('cb_sidebar');
                 // Pop up by right mouse click to a cache in the map.
                 css += '.leaflet-popup-content {margin: 5px 8px !important;}';
                 css += '.cache-action-log-geocache, .cache-action-add-to-list, .cache-action-download-gpx, .cache-action-open-cache {padding: 5px 0 !important;}';
+            // No compact layout.
+            } else {
+                css += '.geocache-list-container ul li, .LazyLoad.is-visible {height: 84px !important}';
             }
             // Change hide/show hint link to a sliding button.
             css += '.cache-hint-toggle {display: none;}';;
