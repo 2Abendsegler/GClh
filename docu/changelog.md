@@ -61,7 +61,10 @@
 		<strong>Fix:</strong> [New Map] Remove code for "Align logs again correctly in the detail screen" because GS has fixed it. [<a href="https://github.com/2Abendsegler/GClh/issues/1511" title="Issue 1511">1511</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br>
 	</li>
 	<li>
-		<strong>Fix:</strong> [New Map] Change of the language does not affect the header of the new map. [<a href="https://github.com/2Abendsegler/GClh/issues/1523" title="Issue 1523">1523</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br><br>
+		<strong>Fix:</strong> [New Map] Change of the language does not affect the header of the new map. [<a href="https://github.com/2Abendsegler/GClh/issues/1523" title="Issue 1523">1523</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [New Map] Show hint automatically does not work always. / Refactor show hint automatically. [<a href="https://github.com/2Abendsegler/GClh/issues/1531" title="Issue 1531">1531</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br><br>
 	</li>
 	<li>
 		<strong>Fix:</strong> [PQ-Splitter] Problems with Firefox Popup-Blocker. [<a href="https://github.com/2Abendsegler/GClh/issues/886" title="Issue 886">886</a> / <a href="https://www.geocaching.com/profile/?u=Ruko2010" title="Thanks to Ruko2010">Ruko2010</a>]<br><br>
