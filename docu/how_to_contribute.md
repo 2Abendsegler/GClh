@@ -2,7 +2,6 @@
 
 ---
 ## <a id="en"></a>How can you contribute?
-<br>
 The easiest way to contribute is via a pull request. If you don't know how to do that, just read on. We'll give you a step by step instruction on how you can make changes or create new features. We'll audit the changes and possibly deploy them in the next version of GClh II.
 
 ###  <a id="1en"></a>1. Fork: Create a server-sided copy of the code in your Github account
@@ -39,7 +38,6 @@ Please create a separate pull request for every feature. This makes possible cha
 
 ---
 ## <a id="de"></a>Wie kannst du etwas beitragen?
-<br>
 Am einfachsten ist es, wenn du direkt einen Pull Request einreichst. Falls du nicht weißt wie das geht, dann bist du hier genau richtig. Wir erklären dir Schritt für Schritt wie du Änderungen oder neue Features einreichen kannst. Wir prüfen diese Änderungen und lassen sie ggf. in die nächste Version vom GClh II einfließen.
 
 ###  <a id="1de"></a>1. Fork: Erstelle eine serverseitige Kopie des Codes in deinem Github Account
