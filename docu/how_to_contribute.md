@@ -28,7 +28,7 @@ When you've finished your feature / change you can create a pull request in our 
 This is how you create a pull request:
 
 - Log in to your Github account and visit our repository <a href="https://github.com/2Abendsegler/GClh">here</a>.
-- Click on the tab *pull requests* (1.) and then hit *New pull request* (2.)<br>
+- Click on the tab *Pull requests* (1.) and then hit *New pull request* (2.)<br>
 <br><img src="../images/how_to_contriubte/4_Pull_1.jpg" /><br><br>
 - Mind two things. First you'll have to click on *compare across forks* (1.) otherwise you can't create a pull request with changes in our repository. After that you choose *2Abendsegler/GClh* as *base repository* (2.) and select the branch *collector* because there we gather all changes that will be deployed in the next version of GClh II. Select your local branch with your changes as *head repository* (3.). After that you click on *Create pull request* (4.).<br>
 <br><img src="../images/how_to_contriubte/4_Pull_2.jpg" /><br><br>
