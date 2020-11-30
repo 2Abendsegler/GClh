@@ -1148,7 +1148,7 @@ var mainGCAsyn = function() {
                 });
                 // Special css for searchmap.
                 if (is_page('searchmap')) {
-                    css += 'gclh_nav .wrapper {z-index: 1005;} gclh_nav li input {height: unset !important;}';
+                    css += 'gclh_nav .wrapper {z-index: 1006;} gclh_nav li input {height: unset !important;}';
                     css += '.profile-panel .li-user-toggle svg {height: 13px;}';
                 }
                 appendCssStyle(css);
@@ -8519,46 +8519,13 @@ var mainGC = function() {
 
             // Show hint automatically and scroll up to top after "Description & Hint" was clicked.
             function showHint() {
-                if (document.querySelector('.cache-preview-header')) {
-                    if (document.querySelector('.eventListenerAdded')) return;
-                    function hintAddEventListener() {
-                        function waitForDescriptionBtn(waitCount) {
-                            if (document.querySelector('.cache-open-text-cta')) {
-                                // I used the event listener because the mutation observer is not triggered when the description open or close.
-                                $('.cache-open-text-cta').addClass('eventListenerAdded');
-                                document.querySelector('.cache-open-text-cta').addEventListener('click', function() {
-                                    function waitForDescription(waitCount) {
-                                        if (document.querySelector('.cache-preview-description')) {
-                                            // Scroll up to top after "Description & Hint" was clicked.
-                                            document.querySelector('.preview-main-inner').scrollTo({top: 0, left: 0, behavior: "smooth"});
-                                            // Show hint automatically.
-                                            if (document.querySelector('.cache-hint')) {
-                                                function hideShowHint() {
-                                                    if (document.querySelector('.cache-hint .toggle-handle.on')) {
-                                                        $('.cache-hint .toggle-handle').removeClass('on');
-                                                        $('.hint-text').removeClass('is-visible');
-                                                    }else {
-                                                        $('.cache-hint .toggle-handle').addClass('on');
-                                                        $('.hint-text').addClass('is-visible');
-                                                    }
-                                                }
-                                                if (!document.querySelector('.cache-hint h2 .toggle-handle')) {
-                                                    $('.cache-hint h2').append('<div class="toggle-handle"></div>');
-                                                    document.querySelector('.cache-hint h2').addEventListener('click', hideShowHint);
-                                                }
-                                                if (settings_searchmap_show_hint && !$('.hint-text').hasClass('is-visible')) hideShowHint();
-                                            }
-                                            // The Ownername and the collapse button have been deleted because the mutation observer is not triggered when the description open or close.
-                                            document.querySelector('.close-cta').addEventListener('click', function() {setTimeout(processAllSearchMap), 100});
-                                        } else {waitCount++; if (waitCount <= 50) setTimeout(function(){waitForDescription(waitCount);}, 50);}
-                                    }
-                                    waitForDescription(0);
-                                });
-                            } else {waitCount++; if (waitCount <= 100) setTimeout(function(){waitForDescriptionBtn(waitCount);}, 50);}
-                        }
-                        waitForDescriptionBtn(0);
-                    }
-                    hintAddEventListener();
+                // Show hint automatically.
+                if (settings_searchmap_show_hint && $('.cache-hint-toggle')[0] && !$('.cache-hint-toggle.gclh-show-hint')[0]) {
+                    // Create a mousedown event because GS uses this and not an onClick event.
+                    var clickEvent = document.createEvent('MouseEvents');
+                    clickEvent.initEvent('mousedown', true, true);
+                    $('.cache-hint-toggle')[0].dispatchEvent(clickEvent);
+                    $('.cache-hint-toggle').addClass('gclh-show-hint');
                 }
             }
 
@@ -9103,11 +9070,6 @@ console.log('cb_sidebar');
             } else {
                 css += '.geocache-list-container ul li, .LazyLoad.is-visible {height: 84px !important}';
             }
-            // Change hide/show hint link to a sliding button.
-            css += '.cache-hint-toggle {display: none;}';;
-            css += '.cache-hint h2 {display: flex; align-items: center;}';
-            css += '.cache-hint .toggle-handle {height: 19px !important; margin-left: 8px;}';
-            css += '.cache-hint .toggle-handle::after {height: 17px !important; width: 17px !important;}';
             // Adapt the width of the pop up by right mouse click to a cache in the map.
             css += '.leaflet-popup.context-menu.geocache-context-menu.leaflet-zoom-animated {width: auto !important; min-width: 300px;}';;
             css += '.leaflet-popup-content {width: auto !important;}';

@@ -1,67 +1,7 @@
-# <img src="../images/flag_de.png"> GC little helper II — Entwicklung mit Tampermonkey
+<a href="#en" title=""><img src="../images/flag_en.png"></a> &nbsp;<a href="#de" title=""><img src="../images/flag_de.png"></a>
 
-## Abstrakt
-
-Tampermonkey verwaltet Userskripte und deren Resourcen, im Gegensatz zu Greasemonkey, intern und legt diese nicht direkt zugänglich im Dateisystem ab. Somit sind die Userskripte nicht per Dateizugriff für Drittprogramme erreichbar. Für die Entwicklung muss der interne Editor verwendet werden. Versionsverwaltungstools wie Git können nicht verwendet werden.
-
-Dieser Artikel beschreibt, wie man das GC little helper II Userskript (GClh) außerhalb vom Tampermonkey als lokale Kopie ablegen und bearbeiten kann. Dies erleichtert die Entwicklung, ermöglicht den Einsatz eines externen Editors nach Wahl und die Verwendung eines Versionskontrollsystems.
-
-Dieser Artikel bezieht sich auf den Einsatz von Tampermonkey im Mozilla Firefox bzw. Google Chrome Browser. 
-
-## Schritt-für-Schritt Anleitung
-Im weiteren Verlauf wird davon ausgegangen, dass eine lokale Kopie vom GClh und dessen Resourcen besteht, z.B. ein geklontes Git Repository.
-
-### Schritt 1: Vorbereitung
-Damit Tampermonkey auf lokale Dateien zugreifen kann, muss die Konfiguration angepasst werden.
-**Achtung:** Diese Einstellungen gelten für alle Userscripte und stellen ein allgemeines Sicherheitsrisiko dar!
-
-#### Mozilla Firefox:
- - Im Tampermonkey Menü den Punkt *Übersicht* auswählen.
- - Den Tab *Einstellungen* auswählen
- - Die Sektion *Sicherheit* auswählen
- - Beim Punkt *Das Lesen von lokalen Dateien durch Scripte erlauben* in der Dropdown-Box `Externals @require and @resource` auswählen.
-
-#### Google Chrome:
- - Gehe zur Seite der Chrome Extensions: chrome://extensions/ (einfach in die Adresszeile eintippen)
- - Suche die Extension "Tampermonkey" und klicke auf *Details*
- - Aktiviere den Punkt *Zugriff auf Datei-URLs zulassen*
-
-### Schritt 2: Original GClh deaktivieren
-Um einen reibungslosen Betrieb zu gewährleisten darf nur eine Instanz von GClh aktiv sein. Das Original GClh muss deaktivieren werden. Sollte doch mehr als eine Instanz von GClh aktiv sein, wird eine Warnmeldung ausgegeben.
-
- - Im Tampermonkey Menü den Punkt Übersicht auswählen.
- - Den Tab "Installierte Userscripts" auswählen
- - Original "GC little helper II" über Schieberegler deaktivieren
- 
-### Schritt 3: Stub erstellen
-- Ein neues Userskript erstellen, z.B. mit dem Namen `GC little helper II (Dev)`
-- Den Header vom Original GClh in den Stub kopieren
-
-### Schritt 4: Einfügen des Verweises auf die lokale Kopie
-Ans Ende des Headers des Stubs muss ein Verweis auf die lokale Kopie vom GClh eingefügt werden.
-```
-// @require          file:///C://GClh-dev/gc_little_helper_II.user.js
-```
-
-### Schritt 5: Header Update
-Sollte sich in der lokale Kopie der Header ändern, muss dies auch im Stub nachgezogen werden.
-
-## Externe Resourcen lokal laden
-Möchte man externe Resourcen lokal bearbeiten müssen entsprechende Verweise im Stub angepasst werden
-
-```
-// @require          https://raw.githubusercontent.com/2Abendsegler/GClh/master/data/gclh_defi.js
-```
-zu
-```
-// @require          file:///C:/projects/gclh/GClh/data/gclh_defi.js
-```
-
-## Einschränkungen und Probleme
-- Ein Update überschreibt den erstellten Stub mit dem Original GClh. Daher sollte auf das Update über den eingebauten Update-Mechanismus verzichtet werden und das Script im lokalen Dateisystem per Git aktualisiert werden.
-- Wenn sich die Versionsnummer ändern, muss auch die Versionsnummer im Stub angepasst werden, da sonst Tampermonkey (bzw. der eingebaute Update-Mechanismus) eine neue Version des Scripts meldet und zu aktualisieren versucht.
-
-# <img src="../images/flag_en.png"> GC little helper II — Development with Tampermonkey
+---
+# <a id="en"></a>GC little helper II — Development with Tampermonkey
 
 ## Abstract
 
@@ -127,8 +67,66 @@ to
 - An updates overwrites your stub with the original GClh. Always dismiss an update over the build-in mechanism. Update your script manually in your local file system by Git.
 - If the version number of the script changes, you have to change the stub to the new verison, otherwise Tampermonkey (or the build-in update mechanism) shows the update info popup and tries to update your script 
 
+---
+# <a id="de"></a>GC little helper II - Entwicklung mit Tampermonkey
 
+## Abstrakt
 
+Tampermonkey verwaltet Userskripte und deren Resourcen, im Gegensatz zu Greasemonkey, intern und legt diese nicht direkt zugänglich im Dateisystem ab. Somit sind die Userskripte nicht per Dateizugriff für Drittprogramme erreichbar. Für die Entwicklung muss der interne Editor verwendet werden. Versionsverwaltungstools wie Git können nicht verwendet werden.
 
+Dieser Artikel beschreibt, wie man das GC little helper II Userskript (GClh) außerhalb vom Tampermonkey als lokale Kopie ablegen und bearbeiten kann. Dies erleichtert die Entwicklung, ermöglicht den Einsatz eines externen Editors nach Wahl und die Verwendung eines Versionskontrollsystems.
 
+Dieser Artikel bezieht sich auf den Einsatz von Tampermonkey im Mozilla Firefox bzw. Google Chrome Browser. 
 
+## Schritt-für-Schritt Anleitung
+Im weiteren Verlauf wird davon ausgegangen, dass eine lokale Kopie vom GClh und dessen Resourcen besteht, z.B. ein geklontes Git Repository.
+
+### Schritt 1: Vorbereitung
+Damit Tampermonkey auf lokale Dateien zugreifen kann, muss die Konfiguration angepasst werden.
+**Achtung:** Diese Einstellungen gelten für alle Userscripte und stellen ein allgemeines Sicherheitsrisiko dar!
+
+#### Mozilla Firefox:
+ - Im Tampermonkey Menü den Punkt *Übersicht* auswählen.
+ - Den Tab *Einstellungen* auswählen
+ - Die Sektion *Sicherheit* auswählen
+ - Beim Punkt *Das Lesen von lokalen Dateien durch Scripte erlauben* in der Dropdown-Box `Externals @require and @resource` auswählen.
+
+#### Google Chrome:
+ - Gehe zur Seite der Chrome Extensions: chrome://extensions/ (einfach in die Adresszeile eintippen)
+ - Suche die Extension "Tampermonkey" und klicke auf *Details*
+ - Aktiviere den Punkt *Zugriff auf Datei-URLs zulassen*
+
+### Schritt 2: Original GClh deaktivieren
+Um einen reibungslosen Betrieb zu gewährleisten darf nur eine Instanz von GClh aktiv sein. Das Original GClh muss deaktivieren werden. Sollte doch mehr als eine Instanz von GClh aktiv sein, wird eine Warnmeldung ausgegeben.
+
+ - Im Tampermonkey Menü den Punkt Übersicht auswählen.
+ - Den Tab "Installierte Userscripts" auswählen
+ - Original "GC little helper II" über Schieberegler deaktivieren
+ 
+### Schritt 3: Stub erstellen
+- Ein neues Userskript erstellen, z.B. mit dem Namen `GC little helper II (Dev)`
+- Den Header vom Original GClh in den Stub kopieren
+
+### Schritt 4: Einfügen des Verweises auf die lokale Kopie
+Ans Ende des Headers des Stubs muss ein Verweis auf die lokale Kopie vom GClh eingefügt werden.
+```
+// @require          file:///C://GClh-dev/gc_little_helper_II.user.js
+```
+
+### Schritt 5: Header Update
+Sollte sich in der lokale Kopie der Header ändern, muss dies auch im Stub nachgezogen werden.
+
+## Externe Resourcen lokal laden
+Möchte man externe Resourcen lokal bearbeiten müssen entsprechende Verweise im Stub angepasst werden
+
+```
+// @require          https://raw.githubusercontent.com/2Abendsegler/GClh/master/data/gclh_defi.js
+```
+zu
+```
+// @require          file:///C:/projects/gclh/GClh/data/gclh_defi.js
+```
+
+## Einschränkungen und Probleme
+- Ein Update überschreibt den erstellten Stub mit dem Original GClh. Daher sollte auf das Update über den eingebauten Update-Mechanismus verzichtet werden und das Script im lokalen Dateisystem per Git aktualisiert werden.
+- Wenn sich die Versionsnummer ändern, muss auch die Versionsnummer im Stub angepasst werden, da sonst Tampermonkey (bzw. der eingebaute Update-Mechanismus) eine neue Version des Scripts meldet und zu aktualisieren versucht.
