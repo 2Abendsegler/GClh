@@ -8,7 +8,7 @@
 <a href="#4-en">4. Hints for using on Android devices.</a> | <a href="#4-de">4. Hinweise für die Nutzung auf Android Geräten.</a>
 <a href="#5-en">5. How can I start the Config of the GClh?</a> | <a href="#5-de">5. Wie kann ich die Konfiguration des GClh starten?</a>
 <a href="#6-en">6. How can I install the GClh on Android devices?</a> | <a href="#6-de">6. Wie kann ich den GClh auf Android Geräten installieren?</a>
-<a href="#6-en">7. How can I contribute to GClh II?</a> | <a href="#7-de">7. Wie kann ich etwas zu GClh II beitragen?</a>
+<a href="#7-en">7. How can I contribute to GClh II?</a> | <a href="#7-de">7. Wie kann ich etwas zu GClh II beitragen?</a>
 
 ---
 <a id="en"></a><img src="../images/flag_en.png">
@@ -280,7 +280,8 @@ Abhilfe:<br>
 ## 6. Wie kann ich den GClh auf Android Geräten installieren?
 Siehe <a href="../docu/tips_installation.md#android_de" title="Link zu 'Tipps für die Installation des GC little helper II - Android'">Tipps für die Installation des GC little helper II - Android</a><br>
 <br>
-<a id="6-de"></a>
+
+<a id="7-de"></a>
 ## 7. Wie kann ich etwas zu GClh II beitragen?
 Wir freuen uns über Verbesserungsvorschläge, Bugfixes oder neue Features. Dies geschieht bei uns über Pull Requests. Wie du so etwas anlegst kannst du hier nachlesen: <a href="https://github.com/2Abendsegler/GClh/blob/master/docu/how_to_contribute.md#de">Wie kannst du etwas beitragen?</a>
 <br>
