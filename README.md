@@ -23,13 +23,13 @@ It is free of charge, without any advertising and is already used by thousands o
 
 The tool is developed in Javascript and can be used with the script manager Tampermonkey under the browsers Mozilla Firefox, Google Chrome, Safari, Opera, Microsoft Edge and Vivaldi.
 
-[Here](https://github.com/2Abendsegler/GClh/blob/master/docu/overview_screenshots.md#readme) are some screenshots of the geocaching pages with *GC little helper II* activated.
+[Here](../docu/overview_screenshots.md#readme) are some screenshots of the geocaching pages with *GC little helper II* activated.
 
 The originator of *GC little helper* is [Torsten Amshove](https://www.amshove.net/blog/webinterfaces/gc-little-helper/). After he stopped the work on *GC little helper* we agreed with him to continue his work under the new name *GC little helper II*. In 2016 we brought *GC little helper II* up to date and renewed some parts.
 
 ## How can you help?
 We use a [ticket system](https://github.com/2Abendsegler/GClh/issues) to track questions, wishes and issues.
-If you like to implement feature, bugfix or improvments yourself, you can read here [How to contribute](https://github.com/2Abendsegler/GClh/blob/master/docu/how_to_contribute.md#en).
+If you like to implement feature, bugfix or improvments yourself, you can read here [How to contribute](../docu/how_to_contribute.md#en).
 Furthermore there is a thread in the [Geoclub Forum](http://geoclub.de/forum/viewforum.php?f=117) where things can be discussed.
 
 All Geocacher and others are encouraged to help with the development or the support of this tool.
@@ -47,7 +47,7 @@ All Geocacher and others are encouraged to help with the development or the supp
 <img src="/images/vivaldi_logo_small.png" title="Vivaldi" alt="Vivaldi" />
 
 ## Installationshinweise
-Wer Hilfe bei der Installation benötigt, wird in den [Tipps zur Installation](https://github.com/2Abendsegler/GClh/blob/master/docu/tips_installation.md#de) fündig.
+Wer Hilfe bei der Installation benötigt, wird in den [Tipps zur Installation](../docu/tips_installation.md#de) fündig.
 
 ## Unser Ziel
 Der *GC little helper II* ist ein Tool zur Verbesserung und Erweiterung der Geocaching Seiten auf www.geocaching.com. Alle Funktionen können flexibel über ein Konfigurationsmenü eingestellt werden. Das Tool ist in englisch. 
@@ -56,13 +56,13 @@ Es ist kostenlos, ohne Werbung und wird bereits von tausenden von Usern genutzt.
 
 Das Tool ist in Javascript entwickelt und läuft mit Script-Manager Tampermonkey unter den Browsern Mozilla Firefox, Google Chrome, Safari, Opera, Microsoft Edge und Vivaldi.
 
-[Hier](https://github.com/2Abendsegler/GClh/blob/master/docu/overview_screenshots.md#readme) sind einige Screenshots von den Geocaching Seiten mit aktiviertem *GC little helper II*. 
+[Hier](../docu/overview_screenshots.md#readme) sind einige Screenshots von den Geocaching Seiten mit aktiviertem *GC little helper II*. 
 
 Ursprünglich erfunden und entwickelt wurde der *GC little helper* von [Torsten Amshove](https://www.amshove.net/blog/webinterfaces/gc-little-helper/). Wir haben das Tool 2016 auf den aktuellen Stand gebracht und etwas aufgefrischt, und haben uns in Abstimmung mit dem Erfinder entschlossen, es unter dem Namen *GC little helper II* zu betreiben und weiterzuentwickeln.
 
 ## Wie kannst du helfen?
 Dazu gibt es auf hiesiger Plattform ein [Ticketsystem](https://github.com/2Abendsegler/GClh/issues), auf dem Fragen, Wünsche und Probleme erfaßt und verfolgt werden können. 
-Wenn du selbst neue Feature, Bugfixes oder Verbesserungen betraben möchtest, kannst du hier nachlesen wie das geht: [Wie kannst du etwas beitragen?](https://github.com/2Abendsegler/GClh/blob/master/docu/how_to_contribute.md#de).
+Wenn du selbst neue Feature, Bugfixes oder Verbesserungen betraben möchtest, kannst du hier nachlesen wie das geht: [Wie kannst du etwas beitragen?](../docu/how_to_contribute.md#de).
 Im [Geoclub Forum](http://geoclub.de/forum/viewforum.php?f=117) gibt es außerdem eine Plattform, auf der diese Dinge diskutiert werden können.
 
 Alle Geocacher und Interessierte sind herzlich eingeladen, am Support und der Weiterentwicklung des Tools mitzuwirken.  
