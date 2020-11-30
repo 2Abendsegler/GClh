@@ -8353,6 +8353,7 @@ var mainGC = function() {
 // Improve search map, improve new map.
     if (is_page('searchmap')) {
         try {
+            // After go back from cache details to cache list, scroll to last position.
             var global_scrollTop = 0;
             var global_newScrollTop = 0;
             function scrollInCacheList() {
