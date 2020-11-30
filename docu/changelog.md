@@ -17,7 +17,7 @@
 	<li>
 		<strong>Info:</strong> How can you contribute? [<a href="https://github.com/2Abendsegler/GClh/issues/1498" title="Issue 1498">1498</a> / <a href="https://www.geocaching.com/profile/?u=Ruko2010" title="Thanks to Ruko2010">Ruko2010</a>]<br>
 		Have you ever wanted to participate in the GC little helper II script and you didn't know how to do that?<br>
-		Then take a look at the step by step instructions <a href="../docu/how_to_contribute.md#en" title="Link to 'How can you contribute?'">How can you contribute? (English)</a> / <a href="../docu/how_to_contribute.md#de" title="Link zu 'Wie kannst du etwas beitragen?'">(German)</a>
+		Then take a look at the step by step instructions <a href="../docu/how_to_contribute.md#en" title="Link to 'How can you contribute?'">How can you contribute? (English)</a> / <a href="../docu/how_to_contribute.md#de" title="Link zu 'Wie kannst du etwas beitragen?'">(German)</a><br><br>
 	</li>
 	<li>
 		<strong>Info:</strong> <img src="../images/android_logo_small.png" title="Android" alt="Android"> How you can install the GClh on Android devices. [<a href="https://github.com/2Abendsegler/GClh/issues/1519" title="Issue 1519">1519</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
