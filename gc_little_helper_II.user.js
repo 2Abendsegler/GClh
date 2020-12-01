@@ -8400,9 +8400,14 @@ var mainGC = function() {
             }
 
             // Compact layout on detail screen.
+            var global_cache_disabled = false;
+            var global_cache_premium = false;
+            var cache_details_premium = '<span><img class="gclh_cache_details_premium" title="Premium Member Only Cache" src="/images/icons/16/premium_only.png"></span>';
+            var cache_list_premium = '<span><img class="gclh_cache_list_premium" title="Premium Member Only Cache" src="/images/icons/16/premium_only.png"></span>';
+            var enhancement_premium = '<span><img class="gclh_enhancement_premium" title="Premium Member Only Cache" src="/images/icons/16/premium_only.png"></span>';
+
             function compactLayout() {
                 if (settings_searchmap_compact_layout) {
-                    var premium = '<span><img class="gclh_premium" title="Premium Member Only Cache" src="/images/icons/16/premium_only.png"></span>';
                     // Filter
                     if (document.querySelector('#search-filters') && document.querySelector('.text-field')) {
                         document.querySelector('.text-field').setAttribute('class', 'chip-field-input');
@@ -8428,28 +8433,28 @@ var mainGC = function() {
                             $('.cache-metadata .vertical-spacer').after('<span class="dot"></span>');
                             $('.cache-metadata .vertical-spacer').remove();
                         }
-                        if ($('.cache-metadata')[0] && $('.status-and-type')[0] && $('.status-and-type .status')[0] && $('.status-and-type .status span')[0] &&
-                            window.getComputedStyle($('.status-and-type .status span')[0]).color == 'rgb(4, 200, 214)') { // Premium color.
-                            if (!$('.gclh_premium')[0]) regroupCacheDataSearchmap($('.cache-preview-header')[0], 'dot', '', '.cache-metadata:last', premium);
-                        } else {
-                            $('.cache-preview-header .gclh_premium').each(function() {
-                                $(this)[0].parentNode.previousSibling.remove();
-                                $(this)[0].parentNode.remove();
-                            });
+//xxxx
+                        if (global_cache_premium == true && !$('.gclh_cache_details_premium')[0]) {
+console.log('Cache Details: Premium Icon setzen mit Info aus Cache List Mausclick.');
+                            regroupCacheDataSearchmap($('.cache-preview-header')[0], 'dot', '', '.cache-metadata:last', cache_details_premium);
+                            global_cache_premium = false;
                         }
                         if (!$('.gclh_cache_type')[0] && $('.header-top-left')[0] && $('.header-top-left h1')[0] && $('.status-and-type')[0] && $('.status-and-type')[0].childNodes) {
                             var cacheTypeChildNode = $('.status-and-type')[0].childNodes.length - 1;
-//xxxx das hier   $('.status-and-type')[0].childNodes[cacheTypeChildNode].data   verursacht fehler, gelegentlich
- //neu                           if ($('.status-and-type')[0].childNodes[cacheTypeChildNode]) {
+                            if (cacheTypeChildNode >= 0 && $('.status-and-type')[0].childNodes[cacheTypeChildNode]) {
                                 var cacheType = $('.status-and-type')[0].childNodes[cacheTypeChildNode].data;
                                 var cacheSymbol = convertCachetypeToCachesymbol(cacheType);
                                 if (cacheSymbol != '') {
-                                    $('.header-top-left h1')[0].innerHTML = '<svg class="gclh_cache_type"><use xlink:href="'+cacheSymbol+'"></use></svg>' + $('.header-top-left h1')[0].innerHTML;
-                                    if (settings_searchmap_disabled && window.getComputedStyle($('.status-and-type')[0]).display != 'none') {
-                                        $('.status-and-type')[0].style.display = 'none';
+                                    if (global_cache_disabled == true) {
+                                        global_cache_disabled = false;
+console.log('Cache Details: Cache Type Icon disabled setzen mit Info aus Cache List Mausclick.');
+                                        cacheSymbol += '_disabled';
+                                        setStrikeDisabledInDetails();
                                     }
+                                    $('.header-top-left h1')[0].innerHTML = '<svg class="gclh_cache_type"><use xlink:href="'+cacheSymbol+'"></use></svg>' + $('.header-top-left h1')[0].innerHTML;
+                                    $('.status-and-type')[0].style.display = 'none';
                                 }
-   //                         }
+                            }
                         }
                         if (!$('.header-top-left .gclh-cache-link')[0] && $('.header-top-left h1')[0] && $('.more-info-link')[0]) {
                             $('.header-top-left h1')[0].innerHTML = '<a class="gclh-cache-link" href="' + $('.more-info-link')[0].href + '" target="_blank">' + $('.header-top-left h1')[0].innerHTML + '</a>';
@@ -8463,15 +8468,24 @@ var mainGC = function() {
                         $('.geocache-list-container li').each(function () {
                             if ($(this).find('.geocache-item-info .geocache-item-code')[0]) {
                                 regroupCacheDataSearchmap(this, '|', '.geocache-item-info .geocache-item-code', '.geocache-item-data');
+                                $(this).find('.geocache-item-info')[0].style.display = 'none';
                             }
                             if ($(this).find('.geocache-item-info .geocache-item-favorites')[0]) {
                                 regroupCacheDataSearchmap(this, '|', '.geocache-item-info .geocache-item-favorites', '.geocache-item-data');
                             }
-                            if ($(this).find('.geocache-item-premium')[0] && !$(this).find('.gclh_premium')[0]) {
-                                regroupCacheDataSearchmap(this, '|', '', '.geocache-item-data', premium);
+//xxxx
+                            if ($(this).find('.geocache-item-premium')[0] && !$(this).find('.gclh_cache_list_premium')[0]) {
+                                regroupCacheDataSearchmap(this, '|', '', '.geocache-item-data', cache_list_premium);
+console.log('Cache List: Premium Icon setzen.');
                             }
-                            if (settings_searchmap_disabled && $(this).find('.geocache-item-info')[0] && window.getComputedStyle($(this).find('.geocache-item-info')[0]).display != 'none') {
-                                $(this).find('.geocache-item-info')[0].style.display = 'none';
+                            if (!$(this).find('.geocache-item.gclh_click_event')[0]) {
+                                $(this)[0].addEventListener('click', function() {
+                                    if ($(this).find('.geocache-item-disabled')[0]) global_cache_disabled = true;
+                                    else global_cache_disabled = false;
+                                    if ($(this).find('.geocache-item-premium')[0]) global_cache_premium = true;
+                                    else global_cache_premium = false;
+                                });
+                                $(this).find('.geocache-item').addClass('gclh_click_event');
                             }
                         });
                         if ($('#geocache-list')[0]) {
@@ -8491,22 +8505,16 @@ var mainGC = function() {
                 if (from == '') $(cache).find(to).append(build);
                 else $(cache).find(to).append($(cache).find(from).remove().get().reverse());
             }
-
-            // Show name of disabled caches strike through in special color.
-            function strikeDisabledInCacheDetails() {
-                if (settings_searchmap_disabled && $('.cache-detail-preview')[0] && $('.header-top-left')[0] && $('.header-top-left h1')[0]) {
-                    if ($('.status')[0] && $('.status span')[0] && $('.status span')[0].style.color == 'rgb(211, 70, 39)') {
-                        if (!$('.header-top-left h1').hasClass('gclh_disabled')) {
-                            $('.header-top-left h1').addClass('gclh_disabled');
-                            if (settings_searchmap_disabled_strikethrough) $('.header-top-left h1').addClass('gclh_strikethrough');
-                        }
-                    } else {
-                        $('.header-top-left h1').removeClass('gclh_disabled');
-                        $('.header-top-left h1').removeClass('gclh_strikethrough');
-                    }
+            // Set name of disabled caches in cache details as disabled, strikethrough.
+            function setStrikeDisabledInDetails() {
+                if (!$('.header-top-left h1').hasClass('gclh_disabled')) {
+                    $('.header-top-left h1').addClass('gclh_disabled');
+                    if (settings_searchmap_disabled && settings_searchmap_disabled_strikethrough) $('.header-top-left h1').addClass('gclh_strikethrough');
                 }
             }
-            function strikeDisabledInList() {
+
+            // Set name of disabled caches in cache list strike through in special color.
+            function setStrikeDisabledInList() {
                 if (settings_searchmap_disabled && $('#geocache-list')[0]) {
                     $('.geocache-item-disabled').each(function() {
                         if (!$(this).find('.gclh_disabled')[0]) {
@@ -8607,6 +8615,17 @@ var mainGC = function() {
                         $('.add_to_list_count').each(function(){removeElement(this);});
                         $('.cache-preview-action-menu ul li.add-to-list')[0].append(sidebar_enhancements_addToList_buffer[new_gc_code]);
                     }
+//xxxx
+                    if ($('#searchmap_sidebar_enhancements .gclh_enhancement_premium')[0] && !$('.gclh_cache_details_premium')[0]) {
+console.log('Cache Details: Premium Icon setzen aus Buffer Enhancement Daten.');
+                        regroupCacheDataSearchmap($('.cache-preview-header')[0], 'dot', '', '.cache-metadata:last', cache_details_premium);
+                    }
+                    if ($('#searchmap_sidebar_enhancements .gclh_enhancement_disabled')[0] &&
+                        $('.gclh_cache_type use')[0] && !$('.gclh_cache_type use')[0].getAttribute('xlink:href').match('_disabled')) {
+console.log('Cache Details: Cache Type Icon auf disabled verbessern aus Buffer Enhancement Daten.');
+                        $('.gclh_cache_type use')[0].setAttribute('xlink:href', $('.gclh_cache_type use')[0].getAttribute('xlink:href') + '_disabled');
+                        setStrikeDisabledInDetails();
+                    }
                     return true;
                 }
 
@@ -8642,7 +8661,7 @@ var mainGC = function() {
                     var local_gc_code = $(text).find('#ctl00_ContentBody_CoordInfoLinkControl1_uxCoordInfoCode').html();
 
                     var premium_only = false;
-                    if($(text).find('p.Warning.NoBottomSpacing').html() != null){
+                    if ($(text).find('p.Warning.NoBottomSpacing').html() != null){
                         premium_only = true;
                     }
 
@@ -8715,9 +8734,24 @@ var mainGC = function() {
                     if (settings_show_elevation_of_waypoints) {
                         new_text += '<span id="elevation-waypoint-0"></span>';
                     }
-                    if(premium_only){
-                        new_text += ' <span class="premium_only" title="Premium Only Cache"><img src="/images/icons/16/premium_only.png" alt="Premium Only Cache" /></span> | ';
+//xxxx
+                    if (premium_only){
+                        new_text += ' ' + enhancement_premium + ' | ';
+                        if (!$('.gclh_cache_details_premium')[0]) {
+console.log('Cache Details: Premium Icon setzen aus Enhancement Daten.');
+                            regroupCacheDataSearchmap($('.cache-preview-header')[0], 'dot', '', '.cache-metadata:last', cache_details_premium);
+                        }
                     }
+                    if ($(text).find('#ctl00_ContentBody_disabledMessage')[0]) {
+                        new_text += '<span class="gclh_enhancement_disabled">fup</span>';
+                        if ($('.gclh_cache_type use')[0] && !$('.gclh_cache_type use')[0].getAttribute('xlink:href').match('_disabled')) {
+console.log('Cache Details: Cache Type Icon auf disabled verbessern aus Enhancement Daten.');
+                            $('.gclh_cache_type use')[0].setAttribute('xlink:href', $('.gclh_cache_type use')[0].getAttribute('xlink:href') + '_disabled');
+                            setStrikeDisabledInDetails();
+                        }
+                    }
+
+
                     new_text += '<span class="tackables" title="Number of trackables"><svg class="icon-sm"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="/account/app/ui-icons/sprites/global.svg#icon-travelbug-default"></use></svg> ' + trachables + '</span>';
 
                     // Get link to image gallery and image count.
@@ -8899,8 +8933,7 @@ var mainGC = function() {
                 searchThisArea();
                 setLinkToOwner(); // Has to be run before compactLayout.
                 compactLayout();
-                strikeDisabledInCacheDetails();
-                strikeDisabledInList();
+                setStrikeDisabledInList();
                 showHint();
                 collapseActivity();
                 showSearchmapSidebarEnhancements();
@@ -8911,7 +8944,7 @@ var mainGC = function() {
 //xxxx
             // observer callback for checking existence of sidebar
             var cb_body = function(mutationsList, observer) {
-console.log('cb_body');
+//console.log('cb_body');
                 processAllSearchMap();
                 if ($('div#sidebar')[0] && !$('.gclh_sidebar_observer')[0]) {
                     $('div#sidebar').addClass('gclh_sidebar_observer');
@@ -8929,7 +8962,7 @@ console.log('cb_body');
             // observer callback when sidebar switches between search list and cache details view
             var cb_sidebar = function(mutationsList, observer) {
                 observer_sidebar.disconnect();
-console.log('cb_sidebar');
+//console.log('cb_sidebar');
                 processAllSearchMap();
                 var target_sidebar = $('div#sidebar')[0];
                 var config_sidebar = {
