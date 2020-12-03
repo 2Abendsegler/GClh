@@ -817,7 +817,7 @@ var mainPGC = function() {
                 if(urls_for_pqs_to_create[i] != ''){
                     if(open_popup_count < 5){
                         open_popups[i] = window.open(urls_for_pqs_to_create[i],'PQ_'+i,'scrollbars=1,menubar=0,resizable=1,width=500,height=500,left='+(i*40));
-                        
+
                         // Ein Popup konnte nicht erzeugt werden, wahrscheinlich wegen eines Popup-Blockers
                         // Wir brechen hier also ab und informieren den User
                         if(open_popups[i] == null){
@@ -8406,6 +8406,14 @@ var mainGC = function() {
             var cache_list_premium = '<span><img class="gclh_cache_list_premium" title="Premium Member Only Cache" src="/images/icons/16/premium_only.png"></span>';
             var enhancement_premium = '<span><img class="gclh_enhancement_premium" title="Premium Member Only Cache" src="/images/icons/16/premium_only.png"></span>';
 
+            function compactLayoutWait(waitCount) {
+                if ($('#geocache-list')[0]) {
+                    compactLayout();
+                } else {
+                    waitCount++;
+                    if (waitCount <= 100) setTimeout(function(){compactLayoutWait(waitCount);}, 50);
+                }
+            }
             function compactLayout() {
                 if (settings_searchmap_compact_layout) {
                     // Filter
@@ -8433,9 +8441,7 @@ var mainGC = function() {
                             $('.cache-metadata .vertical-spacer').after('<span class="dot"></span>');
                             $('.cache-metadata .vertical-spacer').remove();
                         }
-//xxxx
                         if (global_cache_premium == true && !$('.gclh_cache_details_premium')[0]) {
-console.log('Cache Details: Premium Icon setzen mit Info aus Cache List Mausclick.');
                             regroupCacheDataSearchmap($('.cache-preview-header')[0], 'dot', '', '.cache-metadata:last', cache_details_premium);
                             global_cache_premium = false;
                         }
@@ -8447,7 +8453,6 @@ console.log('Cache Details: Premium Icon setzen mit Info aus Cache List Mausclic
                                 if (cacheSymbol != '') {
                                     if (global_cache_disabled == true) {
                                         global_cache_disabled = false;
-console.log('Cache Details: Cache Type Icon disabled setzen mit Info aus Cache List Mausclick.');
                                         cacheSymbol += '_disabled';
                                         setStrikeDisabledInDetails();
                                     }
@@ -8473,10 +8478,8 @@ console.log('Cache Details: Cache Type Icon disabled setzen mit Info aus Cache L
                             if ($(this).find('.geocache-item-info .geocache-item-favorites')[0]) {
                                 regroupCacheDataSearchmap(this, '|', '.geocache-item-info .geocache-item-favorites', '.geocache-item-data');
                             }
-//xxxx
                             if ($(this).find('.geocache-item-premium')[0] && !$(this).find('.gclh_cache_list_premium')[0]) {
                                 regroupCacheDataSearchmap(this, '|', '', '.geocache-item-data', cache_list_premium);
-console.log('Cache List: Premium Icon setzen.');
                             }
                             if (!$(this).find('.geocache-item.gclh_click_event')[0]) {
                                 $(this)[0].addEventListener('click', function() {
@@ -8615,14 +8618,11 @@ console.log('Cache List: Premium Icon setzen.');
                         $('.add_to_list_count').each(function(){removeElement(this);});
                         $('.cache-preview-action-menu ul li.add-to-list')[0].append(sidebar_enhancements_addToList_buffer[new_gc_code]);
                     }
-//xxxx
                     if ($('#searchmap_sidebar_enhancements .gclh_enhancement_premium')[0] && !$('.gclh_cache_details_premium')[0]) {
-console.log('Cache Details: Premium Icon setzen aus Buffer Enhancement Daten.');
                         regroupCacheDataSearchmap($('.cache-preview-header')[0], 'dot', '', '.cache-metadata:last', cache_details_premium);
                     }
                     if ($('#searchmap_sidebar_enhancements .gclh_enhancement_disabled')[0] &&
                         $('.gclh_cache_type use')[0] && !$('.gclh_cache_type use')[0].getAttribute('xlink:href').match('_disabled')) {
-console.log('Cache Details: Cache Type Icon auf disabled verbessern aus Buffer Enhancement Daten.');
                         $('.gclh_cache_type use')[0].setAttribute('xlink:href', $('.gclh_cache_type use')[0].getAttribute('xlink:href') + '_disabled');
                         setStrikeDisabledInDetails();
                     }
@@ -8734,18 +8734,15 @@ console.log('Cache Details: Cache Type Icon auf disabled verbessern aus Buffer E
                     if (settings_show_elevation_of_waypoints) {
                         new_text += '<span id="elevation-waypoint-0"></span>';
                     }
-//xxxx
                     if (premium_only){
                         new_text += ' ' + enhancement_premium + ' | ';
                         if (!$('.gclh_cache_details_premium')[0]) {
-console.log('Cache Details: Premium Icon setzen aus Enhancement Daten.');
                             regroupCacheDataSearchmap($('.cache-preview-header')[0], 'dot', '', '.cache-metadata:last', cache_details_premium);
                         }
                     }
                     if ($(text).find('#ctl00_ContentBody_disabledMessage')[0]) {
                         new_text += '<span class="gclh_enhancement_disabled">fup</span>';
                         if ($('.gclh_cache_type use')[0] && !$('.gclh_cache_type use')[0].getAttribute('xlink:href').match('_disabled')) {
-console.log('Cache Details: Cache Type Icon auf disabled verbessern aus Enhancement Daten.');
                             $('.gclh_cache_type use')[0].setAttribute('xlink:href', $('.gclh_cache_type use')[0].getAttribute('xlink:href') + '_disabled');
                             setStrikeDisabledInDetails();
                         }
@@ -8941,10 +8938,8 @@ console.log('Cache Details: Cache Type Icon auf disabled verbessern aus Enhancem
                 setFilter();
             }
 
-//xxxx
             // observer callback for checking existence of sidebar
             var cb_body = function(mutationsList, observer) {
-//console.log('cb_body');
                 processAllSearchMap();
                 if ($('div#sidebar')[0] && !$('.gclh_sidebar_observer')[0]) {
                     $('div#sidebar').addClass('gclh_sidebar_observer');
@@ -8958,11 +8953,9 @@ console.log('Cache Details: Cache Type Icon auf disabled verbessern aus Enhancem
                 }
             }
 
-//xxxx
             // observer callback when sidebar switches between search list and cache details view
             var cb_sidebar = function(mutationsList, observer) {
                 observer_sidebar.disconnect();
-//console.log('cb_sidebar');
                 processAllSearchMap();
                 var target_sidebar = $('div#sidebar')[0];
                 var config_sidebar = {
@@ -8982,6 +8975,7 @@ console.log('Cache Details: Cache Type Icon auf disabled verbessern aus Enhancem
             };
             observer_body.observe(target_body, config_body);
             processAllSearchMap();
+            compactLayoutWait(0);
 
             var css = '';
             // Hide button search this area and icon loading.
