@@ -53,8 +53,11 @@
 	</li>
 	<li>
 		<strong>Change:</strong> [New Map] Show hint automatically does not work always. / Refactor show hint automatically. [<a href="https://github.com/2Abendsegler/GClh/issues/1531" title="Issue 1531">1531</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		Cache list:<br>
 		<img src="../images/0.10.10/Screen05.jpg" alt="Screen05.jpg"></a><br>
+		Cache details:<br>
 		<img src="../images/0.10.10/Screen06.jpg" alt="Screen06.jpg"></a><br>
+		Filter:<br>
 		<img src="../images/0.10.10/Screen07.jpg" alt="Screen07.jpg"></a><br><br>
 	</li>
 	<li>
