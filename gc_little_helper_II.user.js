@@ -8481,14 +8481,14 @@ var mainGC = function() {
                             if ($(this).find('.geocache-item-premium')[0] && !$(this).find('.gclh_cache_list_premium')[0]) {
                                 regroupCacheDataSearchmap(this, '|', '', '.geocache-item-data', cache_list_premium);
                             }
-                            if (!$(this).find('.geocache-item.gclh_click_event')[0]) {
-                                $(this)[0].addEventListener('click', function() {
-                                    if ($(this).find('.geocache-item-disabled')[0]) global_cache_disabled = true;
+                            if (!$(this).find('.gclh_click_event')[0] && $(this).find('.geocache-item')[0]) {
+                                $(this).find('.geocache-item').addClass('gclh_click_event');
+                                $(this).find('.geocache-item')[0].addEventListener('click', function() {
+                                    if ($(this).hasClass('geocache-item-disabled')) global_cache_disabled = true;
                                     else global_cache_disabled = false;
-                                    if ($(this).find('.geocache-item-premium')[0]) global_cache_premium = true;
+                                    if ($(this).hasClass('geocache-item-premium')) global_cache_premium = true;
                                     else global_cache_premium = false;
                                 });
-                                $(this).find('.geocache-item').addClass('gclh_click_event');
                             }
                         });
                         if ($('#geocache-list')[0]) {
