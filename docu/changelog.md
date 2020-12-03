@@ -48,16 +48,17 @@
 		<strong>Fix:</strong> [Old log form] Not all GClh features run if log form is called from dashboard. [<a href="https://github.com/2Abendsegler/GClh/issues/1485" title="Issue 1485">1485</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br><br>
 	</li>
 	<li>
-		<strong>Change:</strong> [New Map] Show hint automatically does not work always. / Refactor show hint automatically. [<a href="https://github.com/2Abendsegler/GClh/issues/1531" title="Issue 1531">1531</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br>
-		<img src="../images/0.10.10/Screen04.jpg" alt="Screen04.jpg"></a><br>
-	</li>
-		<strong>Change:</strong> [New Map] Refactoring compact layout. [<a href="https://github.com/2Abendsegler/GClh/issues/1507" title="Issue 1507">1507</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		<strong>Change:</strong> [New Map] Show hint automatically does not work always. / Refactor show hint automatically. [<a href="https://github.com/2Abendsegler/GClh/issues/1531" title="Issue 1531">1531</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 		<img src="../images/0.10.10/Screen05.jpg" alt="Screen05.jpg"></a><br>
-		<img src="../images/0.10.10/Screen05.jpg" alt="Screen06.jpg"></a><br>
-		<img src="../images/0.10.10/Screen05.jpg" alt="Screen07.jpg"></a><br>
+		<img src="../images/0.10.10/Screen06.jpg" alt="Screen06.jpg"></a><br>
+		<img src="../images/0.10.10/Screen07.jpg" alt="Screen07.jpg"></a><br><br>
 	</li>
 	<li>
-		<strong>Fix:</strong> [New Map] Buttons to "Search Map" and "Go to ..." are missing. [<a href="https://github.com/2Abendsegler/GClh/issues/1493" title="Issue 1493">1493</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br>
+		<strong>Change:</strong> [New Map] Refactoring compact layout. [<a href="https://github.com/2Abendsegler/GClh/issues/1507" title="Issue 1507">1507</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br>
+		<img src="../images/0.10.10/Screen04.jpg" alt="Screen04.jpg"></a><br><br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [New Map]  Buttons to "Search Map" and "Go to ..." are missing. [<a href="https://github.com/2Abendsegler/GClh/issues/1493" title="Issue 1493">1493</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br>
 	</li>
 	<li>
 		<strong>Fix:</strong> [New Map] Hide found/own caches, cache types does not work. [<a href="https://github.com/2Abendsegler/GClh/issues/1478" title="Issue 1478">1478</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br>
