@@ -51,6 +51,11 @@
 		<strong>Change:</strong> [New Map] Show hint automatically does not work always. / Refactor show hint automatically. [<a href="https://github.com/2Abendsegler/GClh/issues/1531" title="Issue 1531">1531</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br>
 		<img src="../images/0.10.10/Screen04.jpg" alt="Screen04.jpg"></a><br>
 	</li>
+		<strong>Change:</strong> [New Map] Refactoring compact layout. [<a href="https://github.com/2Abendsegler/GClh/issues/1507" title="Issue 1507">1507</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		<img src="../images/0.10.10/Screen05.jpg" alt="Screen05.jpg"></a><br>
+		<img src="../images/0.10.10/Screen05.jpg" alt="Screen06.jpg"></a><br>
+		<img src="../images/0.10.10/Screen05.jpg" alt="Screen07.jpg"></a><br>
+	</li>
 	<li>
 		<strong>Fix:</strong> [New Map] Buttons to "Search Map" and "Go to ..." are missing. [<a href="https://github.com/2Abendsegler/GClh/issues/1493" title="Issue 1493">1493</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br>
 	</li>
@@ -65,6 +70,9 @@
 	</li>
 	<li>
 		<strong>Fix:</strong> [New Map] Loading Spinner is visible if "Automatic search for new caches after dragging" is off. [<a href="https://github.com/2Abendsegler/GClh/issues/1534" title="Issue 1534">1534</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [New Map] After go back from cache details to cache list, scroll to last position does not work. [<a href="https://github.com/2Abendsegler/GClh/issues/1510" title="Issue 1510">1510</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 	</li>
 	<li>
 		<strong>Fix:</strong> [New Map] Show behind the "Add to list" button if cache is available in own bookmarklists does not work. [<a href="https://github.com/2Abendsegler/GClh/issues/1500" title="Issue 1500">1500</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br><br>
