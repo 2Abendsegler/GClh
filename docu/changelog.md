@@ -60,6 +60,9 @@
 		Filter:<br>
 		<img src="../images/0.10.10/Screen07.jpg" alt="Screen07.jpg"></a><br><br>
 	</li>
+	</li>
+		<strong>New:</strong> [New Map] Automatic search for new caches not only after dragging but also after zooming. [<a href="https://github.com/2Abendsegler/GClh/issues/1540" title="Issue 1540">1540</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
 	<li>
 		<strong>Fix:</strong> [New Map]  Buttons to "Search Map" and "Go to ..." are missing. [<a href="https://github.com/2Abendsegler/GClh/issues/1493" title="Issue 1493">1493</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br>
 	</li>
