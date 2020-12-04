@@ -8938,12 +8938,11 @@ var mainGC = function() {
                 setFilter();
             }
 
-            // observer callback for checking existence of sidebar
+            // Observer callback for body and checking existence of sidebar and map.
             var cb_body = function(mutationsList, observer) {
                 processAllSearchMap();
                 if ($('div#sidebar')[0] && !$('.gclh_sidebar_observer')[0]) {
                     $('div#sidebar').addClass('gclh_sidebar_observer');
-                    // start observing sidebar for switches between search list and cache details view
                     var target_sidebar = $('div#sidebar')[0];
                     var config_sidebar = {
                         childList: true,
@@ -8951,9 +8950,17 @@ var mainGC = function() {
                     };
                     observer_sidebar.observe(target_sidebar, config_sidebar);
                 }
+                if ($('.map-container')[0] && !$('.gclh_map_observer')[0]) {
+                    $('.map-container').addClass('gclh_map_observer');
+                    var target_map = $('.map-container')[0];
+                    var config_map = {
+                        childList: true,
+                        attributes: true
+                    };
+                    observer_map.observe(target_map, config_map);
+                }
             }
-
-            // observer callback when sidebar switches between search list and cache details view
+            // Observer callback for sidebar.
             var cb_sidebar = function(mutationsList, observer) {
                 observer_sidebar.disconnect();
                 processAllSearchMap();
@@ -8964,16 +8971,22 @@ var mainGC = function() {
                 };
                 observer_sidebar.observe(target_sidebar, config_sidebar);
             }
+            // Observer callback for map.
+            var cb_map = function(mutationsList, observer) {
+                processAllSearchMap();
+            }
 
-            // create observer instances linked to callback functions
+            // Create observer instances linked to callback functions.
             var observer_body    = new MutationObserver(cb_body);
             var observer_sidebar = new MutationObserver(cb_sidebar); // ATTENTION: the order matters here
+            var observer_map = new MutationObserver(cb_map);
             var target_body = $('body')[0];
             var config_body = {
                 childList: true,
                 attributes: true
             };
             observer_body.observe(target_body, config_body);
+
             processAllSearchMap();
             compactLayoutWait(0);
 
@@ -12754,7 +12767,7 @@ var mainGC = function() {
             html += "<div id='gclh_config_maps' class='gclh_block'>";
             html += newParameterOn1;
             html += checkboxy('settings_relocate_other_map_buttons', 'Relocate buttons \"Search\" and \"Browse geocaches\" to the other buttons') + "<br>";
-            html += checkboxy('settings_searchmap_autoupdate_after_dragging', 'Automatic search for new caches after dragging') + onlySearchMap + "<br>";
+            html += checkboxy('settings_searchmap_autoupdate_after_dragging', 'Automatic search for new caches after dragging or zooming') + onlySearchMap + "<br>";
             html += checkboxy('settings_searchmap_compact_layout', 'Show compact layout on detail screens') + show_help("If compact layout is enabled and the name of disabled caches are specially represented, the cache status line above the cache name is hidden.") + onlySearchMap + "<br>";
             html += checkboxy('settings_searchmap_disabled', 'Show name of disabled caches ') + checkboxy('settings_searchmap_disabled_strikethrough', 'strike through, in color ');
             html += "<input class='gclh_form color' type='text' size=6 id='settings_searchmap_disabled_color' style='margin-left: 0px;' value='" + getValue("settings_searchmap_disabled_color", "4A4A4A") + "'>";
