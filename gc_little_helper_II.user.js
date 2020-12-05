@@ -56,7 +56,8 @@ var start = function(c) {
                     } else if (document.location.href.match(/^https?:\/\/www\.openstreetmap\.org/)) {
                         mainOSM();
                     } else if (document.location.href.match(/^https?:\/\/www\.geocaching\.com/)) {
-                        if (is_page('lists') || is_page('searchmap') || is_page('owner_dashboard') || is_page('promos')) {
+                        //if (is_page('lists') || is_page('searchmap') || is_page('owner_dashboard') || is_page('promos') || is_page('hide_cache')) {
+                        if ($('#gc-header')[0]) {
                             mainGCAsyn();
                         } else {
                             mainGC();
@@ -16181,9 +16182,6 @@ function is_page(name) {
             break;
         case "dashboard-section":
             if (url.match(/^\/account\/dashboard/)) status = true;
-            break;
-        case "owner_dashboard":
-            if (url.match(/^\/play\/owner/)) status = true;
             break;
         case "promos": // Like 'Wonders of the World'.
             if (url.match(/^\/promos/)) status = true;
