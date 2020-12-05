@@ -12535,7 +12535,7 @@ var mainGC = function() {
             html += thanksLineBuild("king-ton",             "",                         false, false, true,  false, false);
             html += thanksLineBuild("dontpänic",            "haarspalter",              false, false, true,  false, false);
             html += thanksLineBuild("Bananeweizen",         "",                         false, false, true,  false, false);
-            html += thanksLineBuild("",                     "Yannick-XY",               false, false, true,  false, false);
+            html += thanksLineBuild("sunhillduo",           "Yannick-XY",               false, false, true,  false, false);
             html += thanksLineBuild("ztNFny",               "",                         false, false, true,  true,  true);
             // Bug Reporting alphabetisch.
             html += thanksLineBuild("",                     "allyourcodearebelongtous", false, false, false, true,  false);
