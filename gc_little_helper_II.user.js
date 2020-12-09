@@ -56,8 +56,7 @@ var start = function(c) {
                     } else if (document.location.href.match(/^https?:\/\/www\.openstreetmap\.org/)) {
                         mainOSM();
                     } else if (document.location.href.match(/^https?:\/\/www\.geocaching\.com/)) {
-                        //if (is_page('lists') || is_page('searchmap') || is_page('owner_dashboard') || is_page('promos') || is_page('hide_cache')) {
-                        if ($('#gc-header')[0]) {
+                        if (is_page('lists') || is_page('searchmap') || is_page('owner_dashboard') || is_page('promos') || document.location.href.match(/play\/hide/)) {
                             mainGCAsyn();
                         } else {
                             mainGC();
