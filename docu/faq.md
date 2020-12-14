@@ -6,6 +6,9 @@
 <a href="#2-en">2. In the Config I can't add new links to the Linklist because it is out of the view.</a> | <a href="#2-de">2. Ich kann in der Konfiguration keine neuen Links zur Linkliste hinzufügen, da die Linkliste außerhalb des Bildschirms ist.</a>
 <a href="#3-en">3. GClh doesn't start.</a> | <a href="#3-de">3. GClh startet nicht.</a>
 <a href="#4-en">4. Hints for using on Android devices.</a> | <a href="#4-de">4. Hinweise für die Nutzung auf Android Geräten.</a>
+<a href="#5-en">5. How can I start the Config of the GClh?</a> | <a href="#5-de">5. Wie kann ich die Konfiguration des GClh starten?</a>
+<a href="#6-en">6. How can I install the GClh on Android devices?</a> | <a href="#6-de">6. Wie kann ich den GClh auf Android Geräten installieren?</a>
+<a href="#7-en">7. How can I contribute to GClh II?</a> | <a href="#7-de">7. Wie kann ich etwas zu GClh II beitragen?</a>
 
 ---
 <a id="en"></a><img src="../images/flag_en.png">
@@ -62,6 +65,19 @@ If a script does not start, these are usually matching problems between the brow
 ## 4. Hints for using on Android devices.
 <ul>
 	<li>
+		On smaller Android devices, such as smartphones, some geocaching pages are displayed in a smaller (mobile) layout. The GClh does not support such layouts. This can lead to the geocaching page not being displayed properly.<br>
+		Solution:<br>
+		<ul>
+			<li>
+				Use the Android device in landscape format.<br>
+			</li>
+			<li>
+				Mark the geocaching page via the settings in the browser as "desktop page".<br>
+			</li>
+		</ul>
+		<br>
+	</li>
+	<li>
 		Drag & drop operations do not work.<br>
 		<ul>
 			<li>
@@ -105,6 +121,31 @@ If a script does not start, these are usually matching problems between the brow
 		</ul>
 	</li>
 </ul>
+<br>
+
+<a id="5-en"></a>
+## 5. How can I start the Config of the GClh?
+<ul>
+	<li>
+		If you are on a geocaching page you can start the Config for the GClh with the F4 key on your keyboard, if you have not switched off this feature.
+	</li>
+	<li>
+		Or you can start the Config for the GClh <a href="https://www.geocaching.com/account/dashboard#GClhShowConfig">here</a>.
+	</li>
+	<li>
+		Or you can use the corresponding link on your <a href="https://www.geocaching.com/account/dashboard">dashboard</a> below your user name.
+	</li>
+</ul>
+<br>
+
+<a id="6-en"></a>
+## 6. How can I install the GClh on Android devices?
+See <a href="../docu/tips_installation.md#android_en" title="Link to 'Tips for the installation of GC little helper II - Android'">Tips for the installation of GC little helper II - Android</a><br>
+<br>
+
+<a id="7-en"></a>
+## 7. How can I contribute to GClh II?
+We are happy about improvement suggestions, bugfixes or new features. This is realized via pull requests. You can read how to create a Pull-Request here: <a href="https://github.com/2Abendsegler/GClh/blob/master/docu/how_to_contribute.md#en">How to contribute</a>
 <br>
 
 ---
@@ -162,6 +203,19 @@ Startet ein Script nicht, so handelt es sich in der Regel um Abstimmungsprobleme
 ## 4. Hinweise für die Nutzung auf Android Geräten.
 <ul>
 	<li>
+		Bei kleineren Android Geräten, wie zum Beispiel Smartphones, werden einige Geocaching Seiten in einem kleineren (Mobil) Layout dargestellt. Der GClh unterstützt solche Layouts nicht. Das kann dazu führen, dass die Geocaching Seite nicht ordnungsgemäß angezeigt wird.<br>
+Abhilfe:<br>
+		<ul>
+			<li>
+				Das Android Gerät im Querformat nutzen.<br>
+			</li>
+			<li>
+				Die Geocaching Seite über die Einstellungen im Browser als "Desktop Seite" kennzeichen.<br>
+			</li>
+		</ul>
+		<br>
+	</li>
+	<li>
 		Drag & Drop Operationen funktionieren nicht.<br>
 		<ul>
 			<li>
@@ -205,4 +259,29 @@ Startet ein Script nicht, so handelt es sich in der Regel um Abstimmungsprobleme
 		</ul>
 	</li>
 </ul>
+<br>
+
+<a id="5-de"></a>
+## 5. Wie kann ich die Konfiguration des GClh starten?
+<ul>
+	<li>
+		Wenn du auf einer Geocaching Seite bist kannst du mit der F4 Taste auf deinem Keyboard die Konfiguration für den GClh starten, sofern du dieses Feature nicht ausgeschaltet hast. 
+	</li>
+	<li>
+		Oder du kannst <a href="https://www.geocaching.com/account/dashboard#GClhShowConfig">hier</a> die Konfiguration für den GClh aufrufen.
+	</li>
+	<li>
+		Oder du kannst den entsprechenden Link in deinem <a href="https://www.geocaching.com/account/dashboard">Dashboard</a> unterhalb deines Benutzernamens verwenden.
+	</li>
+</ul>
+<br>
+
+<a id="6-de"></a>
+## 6. Wie kann ich den GClh auf Android Geräten installieren?
+Siehe <a href="../docu/tips_installation.md#android_de" title="Link zu 'Tipps für die Installation des GC little helper II - Android'">Tipps für die Installation des GC little helper II - Android</a><br>
+<br>
+
+<a id="7-de"></a>
+## 7. Wie kann ich etwas zu GClh II beitragen?
+Wir freuen uns über Verbesserungsvorschläge, Bugfixes oder neue Features. Dies geschieht bei uns über Pull Requests. Wie du so etwas anlegst kannst du hier nachlesen: <a href="https://github.com/2Abendsegler/GClh/blob/master/docu/how_to_contribute.md#de">Wie kannst du etwas beitragen?</a>
 <br>
