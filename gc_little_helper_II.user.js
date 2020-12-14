@@ -8381,8 +8381,9 @@ var mainGC = function() {
             }
 
             // Virtually hit "Search this area" after dragging the map.
+            var global_isBM = document.location.href.match(/\.com\/play\/map\?bm=/);
             function searchThisArea() {
-                if (!document.location.href.match(/\.com\/play\/map\?(bm=|(.*)&nfb=GClh)/) && settings_searchmap_autoupdate_after_dragging) {
+                if (!global_isBM && !document.location.href.match(/\.com\/play\/map\?(.*)&nfb=GClh/) && settings_searchmap_autoupdate_after_dragging) {
                     if (document.getElementById('clear-map-control')) {
                         document.getElementById('clear-map-control').click();
                     }
