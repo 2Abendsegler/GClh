@@ -136,7 +136,8 @@ If a script does not start, these are usually matching problems between the brow
 		Or you can use the corresponding link on your <a href="https://www.geocaching.com/account/dashboard">dashboard</a> below your user name.
 	</li>
 	<li>
-		Or you can select the link to the configurator in the menu of your script manager (Tampermonkey) in your browser. It looks something like this:<br>
+		Or you can select the link to the configurator in the menu of your script manager (Tampermonkey) in your browser.<br>
+		It looks something like this:<br>
 		<img src="../images/scriptmanager_menue_with_config.jpg" alt="scriptmanager_menue_with_config.jpg"><br>
 	</li>
 </ul>
@@ -278,7 +279,8 @@ Abhilfe:<br>
 		Oder du kannst den entsprechenden Link in deinem <a href="https://www.geocaching.com/account/dashboard">Dashboard</a> unterhalb deines Benutzernamens verwenden.
 	</li>
 	<li>
-		Oder du kannst in deinem Browser im Menü deines Scriptmanagers (Tampermonkey) den Link zum Konfigurator auswählen. Das sieht dann etwa wie folgt aus:<br>
+		Oder du kannst in deinem Browser im Menü deines Scriptmanagers (Tampermonkey) den Link zum Konfigurator auswählen.<br>
+		Das sieht dann etwa wie folgt aus:<br>
 		<img src="../images/scriptmanager_menue_with_config.jpg" alt="scriptmanager_menue_with_config.jpg"><br>
 	</li>
 </ul>
