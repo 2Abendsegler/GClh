@@ -1656,7 +1656,7 @@ var mainGC = function() {
                     css += "#ctl00_ContentBody_ProfilePanel1_StatsChronologyControl1_FindsPerMonth h3, #ctl00_ContentBody_ProfilePanel1_StatsChronologyControl1_CumulativeFindsPerMonth h3, #CacheTypesFound h3, #ctl00_ContentBody_StatsChronologyControl1_FindsPerMonth h3, #ctl00_ContentBody_StatsChronologyControl1_CumulativeFindsPerMonth h3 {margin-left: 15px;}";
                 } else if (is_page("publicProfile")) {
                     if ($('#ctl00_ContentBody_ProfilePanel1_lnkCollectibles.Active')[0]) {
-                        css += ".span-9 {width: " + ((new_width - 220) / 2) + "px !important;} .prepend-1 {padding-left: 10px;}";
+                        css += ".span-9 {width: " + ((new_width - 250) / 2) + "px !important;} .prepend-1 {padding-left: 10px;}";
                     } else {
                         css += ".span-9 {width: " + ((new_width - 250) / 2) + "px !important;}";
                         css += ".StatsTable {width: " + (new_width - 250 - 30) + "px !important;}";
