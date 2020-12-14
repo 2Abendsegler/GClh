@@ -56,7 +56,7 @@ var start = function(c) {
                     } else if (document.location.href.match(/^https?:\/\/www\.openstreetmap\.org/)) {
                         mainOSM();
                     } else if (document.location.href.match(/^https?:\/\/www\.geocaching\.com/)) {
-                        if (is_page('lists') || is_page('searchmap') || is_page('owner_dashboard') || is_page('promos') || document.location.href.match(/play\/hide/)) {
+                        if (is_page('lists') || is_page('searchmap') || is_page('owner_dashboard') || is_page('promos') || is_page('hide_cache')) {
                             mainGCAsyn();
                         } else {
                             mainGC();
@@ -1181,10 +1181,12 @@ var mainGCAsyn = function() {
         var today = new Date(now.getFullYear(), now.getMonth(), now.getDay());
         today = today.getTime();
         // Language of pages: Lists, Search Map.
-        if ($('html')[0] && $('html')[0].lang) var lang = $('html')[0].lang.replace(/-(.*)/,'');
-        // Language of pages: Owner dashboard.
-        else if (_gcUser.locale) var lang = _gcUser.locale.replace(/-(.*)/,'');
-        else var lang = 'en';
+        if ($('html')[0] && $('html')[0].lang) {
+            var lang = $('html')[0].lang.replace(/-(.*)/,'');
+        // Language of pages: Owner dashboard, Hide cache startpage.
+        } else if (_gcUser.locale) {
+            var lang = _gcUser.locale.replace(/-(.*)/,'');
+        } else var lang = 'en';
         if (headerRep.date == today && headerRep.lang && headerRep.lang == lang) {
             buildUpHeaderAndStart(0, headerRep.html);
         } else {
@@ -1535,10 +1537,8 @@ var mainGC = function() {
 
             // Account Settings, Message Center, Cache suchen, Cache verstecken, Geotours, Karten, account/dashboard und track:
             // ----------
-            if (is_page("settings") || is_page("messagecenter") || is_page("find_cache") || is_page("hide_cache") || is_page("geotours") || is_page("map") || is_page("dashboard-section") || is_page("track")) {
+            if (is_page("settings") || is_page("messagecenter") || is_page("find_cache") || is_page("collection_1") || is_page("geotours") || is_page("map") || is_page("dashboard-section") || is_page("track")) {
                 css += "nav .wrapper {padding-right: " + new_padding_right + "px !important; width: unset;}";
-                // Fehler bei Plazierung Videos verursacht durch neues Logo korrigieren.
-                if (is_page("hide_cache")) css += ".video iframe {width: 90%;}";
                 // Vertikales Menü ausrichten.
                 if (settings_bookmarks_top_menu) {
                     css += ".#m ul.#sm {margin-top: 0px; margin-left: 32px !important;} .#m .submenu::after {left: 4px; width: 26px;}";
@@ -1613,7 +1613,7 @@ var mainGC = function() {
     new_width:
     try {
         // Keine Anpassungen.
-        if (is_page('lists') || is_page('searchmap') || is_page("messagecenter") || is_page("settings") || is_page("hide_cache") || is_page("find_cache") || is_page("geotours") || is_page("map") || is_page("dashboard-section") || is_page("track") || is_page("owner_dashboard") || is_page("promos")) break new_width;
+        if (is_page('lists') || is_page('searchmap') || is_page("messagecenter") || is_page("settings") || is_page("hide_cache") || is_page("collection_1") || is_page("find_cache") || is_page("geotours") || is_page("map") || is_page("dashboard-section") || is_page("track") || is_page("owner_dashboard") || is_page("promos")) break new_width;
 
         if (getValue("settings_new_width") > 0) {
             var new_width = parseInt(getValue("settings_new_width"));
@@ -1695,7 +1695,7 @@ var mainGC = function() {
             if (!settings_change_header_layout) {
                 if (is_page("map")) {
                     appendCssStyle(".menu > li, .Menu > li {height: 100%; padding-top: 2.0em;} .submenu, .SubMenu {margin-top: 1.9em;}");
-                } else if (is_page("find_cache") || is_page("hide_cache") || is_page("geotours") || is_page("dashboard-section") || is_page("track")) {
+                } else if (is_page("find_cache") || is_page("hide_cache") || is_page("collection_1") || is_page("geotours") || is_page("dashboard-section") || is_page("track")) {
                     appendCssStyle(".menu > li, .Menu > li {height: 100%; padding-top: 2.1em;} .submenu, .SubMenu {margin-top: 2.0em;}");
                 } else {
                     appendCssStyle(".menu > li, .Menu > li {height: 100%; padding-top: 2.0em;} .submenu, .SubMenu {margin-top: 2.0em;}");
@@ -16158,8 +16158,11 @@ function is_page(name) {
         case "find_cache":
             if (url.match(/^\/play\/(search|geocache)/)) status = true;
             break;
+        case "collection_1":
+            if (url.match(/^\/play\/(friendleague|leaderboard|souvenircampaign|guidelines)/)) status = true;
+            break;
         case "hide_cache":
-            if (url.match(/^\/play\/(hide|friendleague|leaderboard|souvenircampaign|guidelines)/)) status = true;
+            if (url.match(/^\/play\/hide/)) status = true;
             break;
         case "geotours":
             if (url.match(/^\/play\/geotours/)) status = true;
