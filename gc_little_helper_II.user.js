@@ -8771,7 +8771,7 @@ var mainGC = function() {
                     var original_coords_span = "";
                     var corrected = "";
                     if (text.match(/"isUserDefined":true/gm)){
-                        var original_coords = text.match(/oldLatLngDisplay":"N.*E.*?'"/gm);
+                        var original_coords = text.match(/oldLatLngDisplay":"(N|S).*(E|W).*?'"/gm);
                         original_coords = String(original_coords[0]);
                         original_coords = original_coords.replace("oldLatLngDisplay\":\"","");
                         original_coords = original_coords.replace("\"","");
@@ -9808,7 +9808,7 @@ var mainGC = function() {
                             var original_coords_span = "";
                             var corrected = "";
                             if (text.match(/"isUserDefined":true/gm)){
-                                var original_coords = text.match(/oldLatLngDisplay":"N.*E.*?'"/gm);
+                                var original_coords = text.match(/oldLatLngDisplay":"(N|S).*(E|W).*?'"/gm);
                                 original_coords = String(original_coords[0]);
                                 original_coords = original_coords.replace("oldLatLngDisplay\":\"","");
                                 original_coords = original_coords.replace("\"","");
