@@ -11505,6 +11505,14 @@ var mainGC = function() {
             GM_setValue('urlLogs', []);
             setValue("migration_task_02", true);
         }
+        // Migrate elevation parameters first service to 'GeoNames' and second service to 'Open-Elevation' (zu v0.10.11).
+        if (getValue("migration_task_03", false) != true) {
+            setValue("settings_primary_elevation_service", 3);
+            settings_primary_elevation_service = 3;
+            setValue("settings_secondary_elevation_service", 2);
+            settings_secondary_elevation_service = 2
+            setValue("migration_task_03", true);
+        }
     }
 
 // GC/TB Name, GC/TB Link, GC/TB Name Link, preliminary LogDate.
