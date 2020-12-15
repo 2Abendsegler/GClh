@@ -10770,8 +10770,8 @@ var mainGC = function() {
 // Add links to finds and hides on new profilpage.
     if (is_page("publicProfile") && $('#ctl00_ProfileHead_ProfileHeader_divStats ul > li:nth-child(1)')[0] && $('#ctl00_ProfileHead_ProfileHeader_divStats ul > li:nth-child(2)')[0]) {
         try {
-            $('#ctl00_ProfileHead_ProfileHeader_divStats ul > li:nth-child(1)')[0].innerHTML = '<a href="/seek/nearest.aspx?ul=' + $('#ctl00_ProfileHead_ProfileHeader_lblMemberName')[0].innerHTML + '" title="show finds">' + $('#ctl00_ProfileHead_ProfileHeader_divStats ul > li:nth-child(1)')[0].innerHTML + '</a>';
-            $('#ctl00_ProfileHead_ProfileHeader_divStats ul > li:nth-child(2)')[0].innerHTML = '<a href="/seek/nearest.aspx?u=' + $('#ctl00_ProfileHead_ProfileHeader_lblMemberName')[0].innerHTML + '" title="show hides">' + $('#ctl00_ProfileHead_ProfileHeader_divStats ul > li:nth-child(2)')[0].innerHTML + '</a>';
+            $('#ctl00_ProfileHead_ProfileHeader_divStats ul > li:nth-child(1)')[0].innerHTML = '<a href="/seek/nearest.aspx?ul=' + urlencode($('#ctl00_ProfileHead_ProfileHeader_lblMemberName')[0].innerHTML) + '" title="show finds">' + $('#ctl00_ProfileHead_ProfileHeader_divStats ul > li:nth-child(1)')[0].innerHTML + '</a>';
+            $('#ctl00_ProfileHead_ProfileHeader_divStats ul > li:nth-child(2)')[0].innerHTML = '<a href="/seek/nearest.aspx?u=' + urlencode($('#ctl00_ProfileHead_ProfileHeader_lblMemberName')[0].innerHTML) + '" title="show hides">' + $('#ctl00_ProfileHead_ProfileHeader_divStats ul > li:nth-child(2)')[0].innerHTML + '</a>';
             function deleteSpaceBeforeCounts(waitCount) {
                 if ($('#ctl00_ProfileHead_ProfileHeader_divStats ul > li:nth-child(1)')[0].innerHTML.match(/\s<span>/)) $('#ctl00_ProfileHead_ProfileHeader_divStats ul > li:nth-child(1)')[0].innerHTML = $('#ctl00_ProfileHead_ProfileHeader_divStats ul > li:nth-child(1)')[0].innerHTML.replace(/\s<span>/, '<span>');
                 if ($('#ctl00_ProfileHead_ProfileHeader_divStats ul > li:nth-child(2)')[0].innerHTML.match(/>\s/)) $('#ctl00_ProfileHead_ProfileHeader_divStats ul > li:nth-child(2)')[0].innerHTML = $('#ctl00_ProfileHead_ProfileHeader_divStats ul > li:nth-child(2)')[0].innerHTML.replace(/>\s/, '>');
@@ -11231,7 +11231,7 @@ var mainGC = function() {
         }
         // Message, Mail Template aufbauen.
         template_message = urlencode(buildSendTemplate());
-        template = urlencode(buildSendTemplate().replace(/#Receiver#/ig, b_username));
+        template = urlencode(buildSendTemplate().replace(/#Receiver#/ig, b_username), convertPlus = false);
         // Message Icon erzeugen.
         if (settings_show_message && b_art == "per guid") {
             var mess_link = document.createElement("a");
@@ -11263,7 +11263,7 @@ var mainGC = function() {
                 b_side.parentNode.insertBefore(document.createTextNode(" "), b_side.nextSibling);
             } else {
                 b_side.appendChild(document.createTextNode(" "));
-                mail_link.setAttribute("href", "/email/?u=" + urlencode(b_username) + "&text=" + template);
+                mail_link.setAttribute("href", "/email/?u=" + urlencode(b_username, convertPlus = false) + "&text=" + template);
                 b_side.appendChild(mail_link);
                 b_side.appendChild(document.createTextNode(" "));
             }
@@ -15555,13 +15555,16 @@ var mainGC = function() {
         return decodeURIComponent(unicodeToChar(s));
     }
 // Encode in URL.
-    function urlencode(s) {
+    function urlencode(s, convertPlus) {
         s = s.replace(/&amp;/g, "&");
         s = encodeURIComponent(s);  // Alles außer: A bis Z, a bis z und - _ . ! ~ * ' ( )
         s = s.replace(/~/g, "%7e");
         s = s.replace(/'/g, "%27");
         s = s.replace(/%26amp%3b/g, "%26");
         s = s.replace(/%26nbsp%3B/g, "%20");
+        if (convertPlus != false) {
+            s = s.replace(/%2B/ig, "%252b");
+        }
         s = s.replace(/ /g, "+");
         return s;
     }
