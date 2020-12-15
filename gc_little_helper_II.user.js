@@ -610,6 +610,8 @@ var variablesInit = function(c) {
     c.settings_show_edit_links_for_logs = getValue("settings_show_edit_links_for_logs", true);
     c.settings_show_copydata_plus = getValue("settings_show_copydata_plus", false);
     c.settings_show_copydata_separator = getValue("settings_show_copydata_separator", "\n");
+    c.settings_lists_show_dd = getValue("settings_lists_show_dd", true);
+    c.settings_lists_hide_desc = getValue("settings_lists_hide_desc", true);
 
     try {
         if (c.userToken === null) {
@@ -4908,6 +4910,61 @@ var mainGC = function() {
                 }
             }
 
+            // Build dropdown with gclh stuff.
+            function buildDDLists() {
+                var css = '';
+                // css for dropdown for BML, foreign BML and ignore list.
+                css += '.section-controls .control-group button {';
+                css += '  margin-right: 12px;}';
+                // css for dropdown for favorites list.
+                css += '.list-cta-controls li {';
+                css += '  display: block !important;';
+                css += '  text-align: unset !important;';
+                css += '  height: unset !important;';
+                css += '  width: unset !important;}';
+                css += '.list-favorites .list-cta-controls button {';
+                css += '  margin-right: 12px;}';
+                // css for dropdown entry 'Show/hide cache descriptions'.
+                css += '.geocache-table tr.gclh_dd-hidden {';
+                css += '  display: none;}';
+
+                // Build dropdown for BML and ignore list.
+                buildDD(settings_lists_show_dd, '.list-details .geocache-cta-controls', css);
+                // Build dropdown for foreign BML.
+                buildDD(settings_lists_show_dd, '.list-details .list-cta-controls', css);
+                // Build dropdown for favorites list.
+                buildDD(settings_lists_show_dd, '.list-favorites .list-cta-controls', css);
+
+                // Build and run dropdown entry 'Show/hide cache descriptions' for BML and ignore list and for foreign BML.
+                if ($('.list-details .geocache-cta-controls, .list-details .list-cta-controls')[0]) {
+                    buildChildDD(settings_lists_hide_desc, 'gclh_hide_desc', '', hideDescLists, 'Hide cache descriptions', 'Show/hide cache descriptions', true);
+                    hideDescLists(false);
+                }
+            }
+            // Dropdown entry 'Show/hide cache descriptions'.
+            function hideDescLists(click, entryDD) {
+                if (!$('#gclh_hide_desc')[0]) return;
+                if (click == true) {
+                    $('#gclh_hide_desc').toggleClass('gclh_dd-hide');
+                    if ($('#gclh_hide_desc').hasClass('gclh_dd-hide')) {
+                        changeValueDD('gclh_hide_desc', 'Hide', 'Show');
+                    } else {
+                        changeValueDD('gclh_hide_desc', 'Show', 'Hide');
+                    }
+                }
+                if ($('#gclh_hide_desc').hasClass('gclh_dd-hide')) {
+                    $('.geocache-table .cache-description').closest('tr').each(function() {
+                        if (!$(this).hasClass('gclh_dd-hidden')) {
+                            $(this).addClass('gclh_dd-hidden');
+                        }
+                    });
+                } else {
+                    $('.geocache-table .cache-description').closest('tr').each(function() {
+                        $(this).removeClass('gclh_dd-hidden');
+                    });
+                }
+            }
+
             // Improve layout.
             function improveLayoutHead() {
                 if ($('.rt-table .rt-thead .rt-tr')[0] || $('.geocache-table thead tr')[0]) {
@@ -5150,6 +5207,7 @@ var mainGC = function() {
                 improveLayoutHead();
                 improveLayoutBody();
                 setLinesInColorAndCorrectColspan();
+                buildDDLists();
             }
 
             // Build mutation observer for target.
@@ -11909,6 +11967,132 @@ var mainGC = function() {
         return [count, text, list];
     }
 
+// Build dropdown with caret-down icon and own specified dropdown entries for gclh stuff.
+    // Implement css, symbol and icon for dropdown functionality.
+    function buildDD(show, place, styles) {
+        if (show == false || !$(place)[0]) return;
+        // Implement css for dropdown functionality.
+        if (!$('#gclh_dd-css')[0]) {
+            var css = ' ';
+            if (styles && styles != '') css += styles;
+            css += '#gclh_dd-caret-down path {';
+            css += '  stroke-width: 1 !important;}';
+            css += '#gclh_dd, .gclh_dd-menu {';
+            css += '  margin: 0;';
+            css += '  padding: 0 !important;}';
+            css += '#gclh_dd a, .gclh_dd-icon, .gclh_dd-menu ul, .gclh_dd-menu ul li, .gclh_dd-menu ul li a {';
+            css += '  margin: 0 !important;';
+            css += '  padding: 0 !important;}';
+            css += '#gclh_dd, #gclh_dd li {';
+            css += '  display: block !important;';
+            css += '  text-align: unset !important;';
+            css += '  height: unset !important;';
+            css += '  width: unset !important;}';
+            css += '#gclh_dd {';
+            css += '  margin-right: 8px !important;';
+            css += '  margin-left: -1px !important;}';
+            css += '.gclh_dd-icon.gclh_dd-hidden {';
+            css += '  display: none;}';
+            css += '.gclh_dd-icon {';
+            css += '  background-color: transparent !important;';
+            css += '  border: 2px solid transparent !important;';
+            css += '  border-radius: 4px !important;';
+            css += '  cursor: pointer !important;';
+            css += '  outline: none !important;}';
+            css += '.gclh_dd-menu {';
+            css += '  visibility: hidden;';
+            css += '  position: absolute !important;';
+            css += '  background-color: white !important;';
+            css += '  white-space: nowrap !important;';
+            css += '  box-shadow: 0 2px 4px 0 rgba(137, 137, 137, 0.41) !important;';
+            css += '  z-index: 1001 !important;}';
+            css += '#gclh_dd:hover .gclh_dd-menu.gclh_dd-hidden {';
+            css += '  visibility: hidden;}';
+            css += '#gclh_dd:hover .gclh_dd-menu {';
+            css += '  visibility: visible;}';
+            css += '.gclh_dd-menu ul {';
+            css += '  cursor: pointer !important;';
+            css += '  list-style: none !important;}';
+            css += '.gclh_dd-menu ul li{';
+            css += '  padding: 5px 12px !important;}';
+            css += '.gclh_dd-menu ul li a {';
+            css += '  display: flex !important;';
+            css += '  color: black !important;';
+            css += '  text-decoration: none !important;}';
+            css += '.gclh_dd-menu ul li:hover {';
+            css += '  background-color: #e6f7ef;}';
+            appendCssStyle(css, place, 'gclh_dd-css');
+        }
+        // Implement symbol caret-down for dropdown icon.
+        if (!$('#gclh_dd-caret-down')[0]) {
+            var symbol = $('#caret-down').clone();
+            symbol[0].id = 'gclh_dd-caret-down';
+            $('#caret-down').after(symbol);
+        }
+        // Implement dropdown icon.
+        if (!$('#gclh_dd')[0] && $('#gclh_dd-caret-down')[0]) {
+            var dd = document.createElement(($(place)[0].tagName == 'UL' ? 'li' : 'div'));
+            dd.innerHTML = '<button class="gclh_dd-icon gclh_dd-hidden" title="GClh stuff"><svg><use xlink:href="#gclh_dd-caret-down"></use></svg></button>';
+            dd.id = 'gclh_dd';
+            $(place).append(dd);
+        }
+    }
+    // Implement dropdown menue and dropdown entry.
+    function buildChildDD(show, id, className, clickFunction, value, title, menuFloatLeft) {
+        if (show == false || !$('#gclh_dd')[0] || !id || id == '' || !value || value == '' || !clickFunction || clickFunction == '') return;
+        // Implement dropdown menue if not already available.
+        if (!$('#gclh_dd .gclh_dd-menu')[0]) {
+            $('#gclh_dd').append('<div class="gclh_dd-menu"><ul></ul></div>');
+        }
+        // Implement dropdown entry if not already available.
+        if (!$('#'+id)[0]) {
+            $('#gclh_dd .gclh_dd-menu ul').append('<li id="' + id + '" class="' + (className ? className:'') + '" title="' + (title ? title:'') + '"><a>' + value + '</a></li>');
+            $('#gclh_dd .gclh_dd-menu ul')[0].children[($('#gclh_dd .gclh_dd-menu ul li').length - 1)].addEventListener("click", function() {
+                clickFunction(true, this);
+                hideDD();
+            }, false);
+            // Make dropdown visible because dropdown entry is available.
+            $('#gclh_dd .gclh_dd-icon').removeClass('gclh_dd-hidden');
+            // Set dropdown menue with entries on the left side.
+            setMenuLeftDD(menuFloatLeft);
+        }
+    }
+    // Set dropdown menu with entries on the left side.
+    function setMenuLeftDD(menuFloatLeft) {
+        if (menuFloatLeft){
+            if (!$('.gclh_dd-menu').hasClass('gclh_dd-left')) {
+                $('.gclh_dd-menu').addClass('gclh_dd-left');
+            }
+            var width = window.getComputedStyle($('.gclh_dd-menu')[0]).width.match(/(\d*\.*\d*)/);
+            if (width && width[0]) {
+                $('.gclh_dd-menu')[0].style.marginLeft = '-' + (parseInt(width[0]) - 32) + 'px';
+            }
+        }
+    }
+    // Hide dropdown menue after click to an entry.
+    function hideDD() {
+        $('#gclh_dd .gclh_dd-menu').addClass('gclh_dd-hidden');
+        function removeHiddenClassDD(waitCount) {
+            if (!$('#gclh_dd .gclh_dd-menu').is(":hover")) {
+                $('#gclh_dd .gclh_dd-menu').removeClass('gclh_dd-hidden');
+            } else {waitCount++; if (waitCount <= 20) setTimeout(function(){removeHiddenClassDD(waitCount);}, 50);}
+        }
+        removeHiddenClassDD(0);
+    }
+    // Change the value in the dropdown menue entry.
+    function changeValueDD(id, from, to) {
+        if (id && id != '' && $('#'+id)[0] && from && from != '' && to) {
+            // Get entry with id.
+            var entryDD = $('#'+id)[0];
+            // Change value of entry.
+            if (entryDD && entryDD.children[0] && entryDD.children[0].innerHTML) {
+                entryDD.children[0].innerHTML = entryDD.children[0].innerHTML.replace(from, to);
+                // Set dropdown menu with entries again on the left side.
+                setMenuLeftDD($('.gclh_dd-menu.gclh_dd-left')[0])
+            }
+        }
+    }
+
 ////////////////////////////////////////
 // 6.3 GC - User defined searchs ($$cap) (User defined searchs on the geocaching webpages.)
 ////////////////////////////////////////
@@ -12729,6 +12913,8 @@ var mainGC = function() {
             html += checkboxy('settings_lists_found_column_bml', 'Set found smiley in own column') + show_help("Only in bookmark lists, not in favorites list and ignore list.") + "<br>";
             html += checkboxy('settings_lists_show_log_it', 'Show GClh \"Log it\" icon') + show_help("Only in bookmark lists, not in favorites list and ignore list.<br><br>The GClh \"Log it\" icon is displayed beside cache titles. If you click it, you will be redirected directly to the log form. <br><br>You can use it too as basic member to log Premium Member Only (PMO) caches.") + "<br>";
             html += checkboxy('settings_lists_back_to_top', 'Hide \"Back to top\" icon') + "<br>";
+            html += checkboxy('settings_lists_show_dd', 'Show dropdown menu with additional GClh stuff') + show_help("Add an icon with dropdown menu in own and foreign bookmark lists, in the favorites list and in the ignore list with additional GClh functionality.") + "<br>";
+            html += " &nbsp; " + checkboxy('settings_lists_hide_desc', 'Show/hide cache descriptions') + show_help("Add an entry in the dropdown menu to show and hide the cache descriptions.") + "<br>";
             html += newParameterVersionSetzen("0.10") + newParameterOff;
             html += content_settings_submit_log_button.replace("log_button","log_buttonX0");
             html += newParameterOn3;
@@ -13868,6 +14054,7 @@ var mainGC = function() {
             setEvForDepPara("settings_show_copydata_own_stuff_show","restore_settings_show_copydata_own_stuff_name");
             setEvForDepPara("settings_show_copydata_own_stuff_show","settings_show_copydata_own_stuff_value");
             setEvForDepPara("settings_show_copydata_own_stuff_show","restore_settings_show_copydata_own_stuff_value");
+            setEvForDepPara("settings_lists_show_dd","settings_lists_hide_desc");
 
             // Abhängigkeiten der Linklist Parameter.
             for (var i = 0; i < 100; i++) {
@@ -14288,6 +14475,8 @@ var mainGC = function() {
                 'settings_relocate_other_map_buttons',
                 'settings_show_radius_on_flopps',
                 'settings_show_edit_links_for_logs',
+                'settings_lists_show_dd',
+                'settings_lists_hide_desc',
             );
 
             for (var i = 0; i < checkboxes.length; i++) {
@@ -16026,7 +16215,7 @@ function profileSpecialBookmark(title, href, name, bookmarkArray) {
 
 // Add CSS Style.
 function appendCssStyle(css, name, id) {
-    // test if ID is already used, if yes, don't append again
+    // Test if ID is already used, if yes, don't append again.
     if(document.getElementById(id)) return;
     if (css == "") return;
     if (name) var tag = $(name)[0];
