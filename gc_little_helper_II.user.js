@@ -12366,8 +12366,8 @@ var mainGC = function() {
             html += "<h3 style='margin:5px; font-weight: bold; font-size: 19.5px; line-height: 1; color: #594a42;'>Find Player</h3>";
             html += "<form style='text-align: unset;' action=\"/find/default.aspx\" method=\"post\" name=\"aspnetForm\" >";
             html += "<input class='gclh_form' type='hidden' name='__VIEWSTATE' value=''>";
-            html += "<input style='width: 170px; height: unset;' class='gclh_form' id='findplayer_field' class=\"Text\" type=\"text\" maxlength=\"100\" name=\"ctl00$ContentBody$FindUserPanel1$txtUsername\"/>";
-            html += " <input style='cursor: pointer;' class='gclh_form' type=\"submit\" value=\"go\" name=\"ctl00$ContentBody$FindUserPanel1$GetUsers\"/>";
+            html += "<input style='width: 170px; height: unset;' class='gclh_form' id='findplayer_field' class=\"Text\" type=\"text\" maxlength=\"100\" name=\"ctl00$ContentBody$txtFindUser\"/>";
+            html += " <input style='cursor: pointer;' class='gclh_form' type=\"submit\" value=\"go\" name=\"ctl00$ContentBody$btnFindUser\"/>";
             html += " <input style='cursor: pointer;' class='gclh_form' id='btn_close1' type='button' value='close'>";
             html += "</form>";
             var side = $('body')[0];
