@@ -11230,7 +11230,7 @@ var mainGC = function() {
         }
         // Message, Mail Template aufbauen.
         template_message = urlencode(buildSendTemplate());
-        template = urlencode(buildSendTemplate().replace(/#Receiver#/ig, b_username));
+        template = urlencode(buildSendTemplate().replace(/#Receiver#/ig, b_username), convertPlus = false);
         // Message Icon erzeugen.
         if (settings_show_message && b_art == "per guid") {
             var mess_link = document.createElement("a");
@@ -11262,7 +11262,7 @@ var mainGC = function() {
                 b_side.parentNode.insertBefore(document.createTextNode(" "), b_side.nextSibling);
             } else {
                 b_side.appendChild(document.createTextNode(" "));
-                mail_link.setAttribute("href", "/email/?u=" + urlencode(b_username) + "&text=" + template);
+                mail_link.setAttribute("href", "/email/?u=" + urlencode(b_username, convertPlus = false) + "&text=" + template);
                 b_side.appendChild(mail_link);
                 b_side.appendChild(document.createTextNode(" "));
             }
@@ -15546,13 +15546,16 @@ var mainGC = function() {
         return decodeURIComponent(unicodeToChar(s));
     }
 // Encode in URL.
-    function urlencode(s) {
+    function urlencode(s, convertPlus) {
         s = s.replace(/&amp;/g, "&");
         s = encodeURIComponent(s);  // Alles außer: A bis Z, a bis z und - _ . ! ~ * ' ( )
         s = s.replace(/~/g, "%7e");
         s = s.replace(/'/g, "%27");
         s = s.replace(/%26amp%3b/g, "%26");
         s = s.replace(/%26nbsp%3B/g, "%20");
+        if (convertPlus != false) {
+            s = s.replace(/%2B/ig, "%252b");
+        }
         s = s.replace(/ /g, "+");
         return s;
     }
