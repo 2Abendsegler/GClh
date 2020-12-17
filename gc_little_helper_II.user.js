@@ -4913,6 +4913,7 @@ var mainGC = function() {
 
             // Build dropdown with gclh stuff.
             function buildDDLists() {
+                if (!settings_lists_show_dd) return;
                 if (!$('.geocache-cta-controls, .list-cta-controls')[0]) return;
                 // css for all stuff.
                 var css = '';
@@ -4955,7 +4956,6 @@ var mainGC = function() {
                     buildChildDD(settings_lists_upload_file, 'gclh_upload_file', '', uploadFileLists, 'Upload caches from file', '.gpx or .loc files, or files with separators', true, disableUploadFileLists);
                 }
             }
-//xxxx
             // Disable entry 'upload caches from file' if add caches functionality is not available.
             function disableUploadFileLists(mouseover) {
                 if (!$('button.add-geocache-cta')[0] || $('button.add-geocache-cta').prop('disabled') == true) {
@@ -12140,7 +12140,6 @@ var mainGC = function() {
         }
     }
 
-//xxxx
 // Internal call of File API.
     function internalCallFileAPI(comeFrom, callBack) {
         if (!comeFrom || !$(comeFrom) || !callBack) return;
@@ -12214,6 +12213,7 @@ var mainGC = function() {
 
         // Call add functionality of bookmark list page.
         function buildBulkUpdate() {
+//xxxx
             $('#bulk-input-field')[0].value = gcText;
             $('#bulk-input-form').after('<div style="font-size: 12px;"><p><b>' + gcCount + '</b> GC Codes' + from + '<br>Please click "Add geocaches" if this seems to be ok.</p></div>');
         }
