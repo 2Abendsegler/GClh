@@ -1184,7 +1184,7 @@ var mainGCAsyn = function() {
         if ($('html')[0] && $('html')[0].lang) {
             var lang = $('html')[0].lang.replace(/-(.*)/,'');
         // Language of pages: Owner dashboard, Hide cache startpage.
-        } else if (_gcUser.locale) {
+        } else if (typeof _gcUser !== "undefined" && _gcUser.locale) {
             var lang = _gcUser.locale.replace(/-(.*)/,'');
         } else var lang = 'en';
         if (headerRep.date == today && headerRep.lang && headerRep.lang == lang) {
@@ -1967,7 +1967,12 @@ var mainGC = function() {
                         div.id = "gclh_latest_logs";
                         div.appendChild(document.createTextNode("Latest logs:"));
                         if (isEventInCacheListing() == true) {
-                            div.setAttribute("style", "float: right; padding-right: 0; padding-top: 0px; margin-top: -16px; font-size: 12px");
+                            // Alte Events ohne Zeitangabe.
+                            if ($('#mcd4')[0] && $('#mcd4')[0].innerHTML.match(/^(\s*)$/)) {
+                                div.setAttribute("style", "float: right; padding-right: 0; padding-top: 0px; font-size: 12px");
+                            } else {
+                                div.setAttribute("style", "float: right; padding-right: 0; padding-top: 0px; margin-top: -16px; font-size: 12px");
+                            }
                             var side = $('#ctl00_ContentBody_mcd1')[0].parentNode.parentNode;
                         } else {
                             div.setAttribute("style", "float: right; padding-right: 0; padding-top: 2px;");
@@ -9019,7 +9024,7 @@ var mainGC = function() {
                 css += '.geocache-item-details {margin: 0 6px;}';
                 css += '.geocache-item-icon {flex: 0 0 36px !important; height: 36px !important;}';
                 css += '.geocache-item {height: 36px !important;}';
-                css += '.geocache-item-name {height: 20px; color: #4a4a4a;}';
+                css += '.geocache-item-name {height: 21px; color: #4a4a4a;}';
                 css += '.geocache-item-data {height: 16px;}';
                 if (settings_searchmap_disabled) css += '.geocache-item-status-icon {height: 18px; width: 18px;}';
                 css += '.cache-preview-activities h2 {margin: 0;}';
