@@ -36,6 +36,7 @@
 // @grant            GM_getResourceText
 // @grant            GM_info
 // @grant            GM_addStyle
+// @grant            GM_registerMenuCommand
 // ==/UserScript==
 
 //////////////////////////////////////
@@ -10953,6 +10954,11 @@ var mainGC = function() {
         if (document.getElementsByName(lnk)[1]) document.getElementsByName(lnk)[1].href = link;
     }
 
+// Build link to config in script manager menue. (Thanks to Geothumbs for the template.)
+    try {
+        GM_registerMenuCommand('Configurator', gclh_showConfig);
+    } catch(e) {} // Ignore error
+
 // Eingaben im Search Field verarbeiten.
     if (document.location.href.match(/\.com\/seek\/nearest\.aspx\?navi_search=/)) {
         try {
@@ -12654,6 +12660,10 @@ var mainGC = function() {
 // Configuration Menü.
     function gclh_showConfig() {
         btnClose(false);
+        if (is_page('searchmap') || is_page('map')) {
+            document.location.href = defaultConfigLink;
+            return;
+        }
         if (checkTaskAllowed("GClh Config", true) == false) return;
         window.scroll(0, 0);
         if ($('#bg_shadow')[0]) {
