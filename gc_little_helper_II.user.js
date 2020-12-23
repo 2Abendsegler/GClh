@@ -8421,11 +8421,15 @@ var mainGC = function() {
                     document.querySelector('#geocache-list').scrollTo({top: global_newScrollTop, behavior: 'smooth'});
                     global_newScrollTop = 0;
                 }
-                // Cache list: Notice scrolling.
+                // Cache list: Notice scrolling. Only if we are on the first part of the lists of the caches.
                 if ($('#geocache-list')[0] && !$('#geocache-list.gclh-scroll')[0]) {
                     $('#geocache-list').addClass('gclh-scroll');
                     $('#geocache-list')[0].addEventListener('scroll', function(e) {
-                        global_scrollTop = $('#geocache-list').scrollTop()
+                        if (!$('#geocache-list-pagination')[0] || $('#geocache-list-pagination .active a')[0].innerHTML == '1') {
+                            global_scrollTop = $('#geocache-list').scrollTop();
+                        } else {
+                            global_scrollTop = 0;
+                        }
                     });
                 }
                 // Search map: If map is changed, clear noticed scrolling.
