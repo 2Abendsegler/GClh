@@ -12213,8 +12213,10 @@ var mainGC = function() {
 
         // Call add functionality of bookmark list page.
         function buildBulkUpdate() {
-//xxxx
-            $('#bulk-input-field')[0].value = gcText;
+            let input = document.getElementById('bulk-input-field');
+            let nativeInputValueSetter = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, "value").set;
+            nativeInputValueSetter.call(input, gcText);
+            input.dispatchEvent(new Event('input', { bubbles: true }));
             $('#bulk-input-form').after('<div style="font-size: 12px;"><p><b>' + gcCount + '</b> GC Codes' + from + '<br>Please click "Add geocaches" if this seems to be ok.</p></div>');
         }
         function waitForBulkUpdate(waitCount) {
