@@ -613,6 +613,7 @@ var variablesInit = function(c) {
     c.settings_show_copydata_separator = getValue("settings_show_copydata_separator", "\n");
     c.settings_lists_show_dd = getValue("settings_lists_show_dd", true);
     c.settings_lists_hide_desc = getValue("settings_lists_hide_desc", true);
+    c.settings_lists_upload_file = getValue("settings_lists_upload_file", true);
 
     try {
         if (c.userToken === null) {
@@ -4913,6 +4914,9 @@ var mainGC = function() {
 
             // Build dropdown with gclh stuff.
             function buildDDLists() {
+                if (!settings_lists_show_dd) return;
+                if (!$('.geocache-cta-controls, .list-cta-controls')[0]) return;
+                // css for all stuff.
                 var css = '';
                 // css for dropdown for BML, foreign BML and ignore list.
                 css += '.section-controls .control-group button {';
@@ -4929,20 +4933,42 @@ var mainGC = function() {
                 css += '.geocache-table tr.gclh_dd-hidden {';
                 css += '  display: none;}';
 
-                // Build dropdown for BML and ignore list.
-                buildDD(settings_lists_show_dd, '.list-details .geocache-cta-controls', css);
-                // Build dropdown for foreign BML.
-                buildDD(settings_lists_show_dd, '.list-details .list-cta-controls', css);
+                // Build dropdown for own BML.
+                if ($('.list-details .owner-view')[0]) {
+                    buildDD(settings_lists_show_dd, '.geocache-cta-controls', css);
+                // Build dropdown for ignore list.
+                } else if ($('.list-details .ignore-header')[0]) {
+                    buildDD(settings_lists_show_dd, '.geocache-cta-controls', css);
                 // Build dropdown for favorites list.
-                buildDD(settings_lists_show_dd, '.list-favorites .list-cta-controls', css);
+                } else if ($('.list-favorites')[0]) {
+                    buildDD(settings_lists_show_dd, '.list-cta-controls', css);
+                // Build dropdown for foreign BML.
+                } else if ($('.list-details :not(.owner-view,.ignore-header)')[0]) {
+                    buildDD(settings_lists_show_dd, '.list-cta-controls', css);
+                }
 
-                // Build and run dropdown entry 'Show/hide cache descriptions' for BML and ignore list and for foreign BML.
-                if ($('.list-details .geocache-cta-controls, .list-details .list-cta-controls')[0]) {
+                // Build and run dropdown entry 'Show/hide cache descriptions' for own BML, ignore list and for foreign BML.
+                if ($('.list-details .owner-view')[0] || $('.list-details .ignore-header')[0] || $('.list-details :not(.owner-view,.ignore-header)')[0]) {
                     buildChildDD(settings_lists_hide_desc, 'gclh_hide_desc', '', hideDescLists, 'Hide cache descriptions', 'Show/hide cache descriptions', true);
                     hideDescLists(false);
                 }
+                // Build dropdown entry 'Upload caches from file' for own BML.
+                if ($('.list-details .owner-view')[0]) {
+                    buildChildDD(settings_lists_upload_file, 'gclh_upload_file', '', uploadFileLists, 'Upload caches from file', '.gpx or .loc files, or files with separators', true, disableUploadFileLists);
+                }
             }
-            // Dropdown entry 'Show/hide cache descriptions'.
+            // Disable entry 'upload caches from file' if add caches functionality is not available.
+            function disableUploadFileLists(mouseover) {
+                if (!$('button.add-geocache-cta')[0] || $('button.add-geocache-cta').prop('disabled') == true) {
+                    $('#gclh_upload_file').addClass('disabled');
+                }
+            }
+            // Upload caches from file.
+            function uploadFileLists(click, entryDD) {
+                if (!$('#gclh_upload_file')[0]) return;
+                internalCallFileAPI($('#gclh_upload_file')[0], addCachesBML);
+            }
+            // Show/hide cache descriptions.
             function hideDescLists(click, entryDD) {
                 if (!$('#gclh_hide_desc')[0]) return;
                 if (click == true) {
@@ -12030,9 +12056,12 @@ var mainGC = function() {
             css += '#gclh_dd:hover .gclh_dd-menu {';
             css += '  visibility: visible;}';
             css += '.gclh_dd-menu ul {';
-            css += '  cursor: pointer !important;';
             css += '  list-style: none !important;}';
-            css += '.gclh_dd-menu ul li{';
+            css += '.gclh_dd-menu ul li.disabled, .gclh_dd-menu ul li.disabled a {';
+            css += '  color: rgba(155, 155, 155, 0.5) !important;';
+            css += '  pointer-events: none !important;}';
+            css += '.gclh_dd-menu ul li {';
+            css += '  cursor: pointer !important;';
             css += '  padding: 5px 12px !important;}';
             css += '.gclh_dd-menu ul li a {';
             css += '  display: flex !important;';
@@ -12057,19 +12086,33 @@ var mainGC = function() {
         }
     }
     // Implement dropdown menue and dropdown entry.
-    function buildChildDD(show, id, className, clickFunction, value, title, menuFloatLeft) {
+    function buildChildDD(show, id, className, clickFunction, value, title, menuFloatLeft, mouseoverFunction) {
         if (show == false || !$('#gclh_dd')[0] || !id || id == '' || !value || value == '' || !clickFunction || clickFunction == '') return;
         // Implement dropdown menue if not already available.
         if (!$('#gclh_dd .gclh_dd-menu')[0]) {
             $('#gclh_dd').append('<div class="gclh_dd-menu"><ul></ul></div>');
+            // Mouseleave event to enable disabled childs.
+            $('#gclh_dd')[0].addEventListener("mouseleave", function() {
+                $('.gclh_dd-menu li.disabled').each(function() {
+                    $(this).removeClass('disabled');
+                });
+            }, false);
         }
         // Implement dropdown entry if not already available.
         if (!$('#'+id)[0]) {
             $('#gclh_dd .gclh_dd-menu ul').append('<li id="' + id + '" class="' + (className ? className:'') + '" title="' + (title ? title:'') + '"><a>' + value + '</a></li>');
+            // Implement click event for child.
             $('#gclh_dd .gclh_dd-menu ul')[0].children[($('#gclh_dd .gclh_dd-menu ul li').length - 1)].addEventListener("click", function() {
                 clickFunction(true, this);
+                // Hide dropdown menue after functional click to an entry.
                 hideDD();
             }, false);
+            // Implement mouseover event to prepare child before showing, if requested.
+            if (mouseoverFunction && mouseoverFunction != '') {
+                $('#gclh_dd')[0].addEventListener("mouseover", function() {
+                    mouseoverFunction(this);
+                }, false);
+            }
             // Make dropdown visible because dropdown entry is available.
             $('#gclh_dd .gclh_dd-icon').removeClass('gclh_dd-hidden');
             // Set dropdown menue with entries on the left side.
@@ -12088,13 +12131,17 @@ var mainGC = function() {
             }
         }
     }
-    // Hide dropdown menue after click to an entry.
+    // Hide dropdown menue after functional click to an entry.
     function hideDD() {
         $('#gclh_dd .gclh_dd-menu').addClass('gclh_dd-hidden');
         function removeHiddenClassDD(waitCount) {
             if (!$('#gclh_dd .gclh_dd-menu').is(":hover")) {
                 $('#gclh_dd .gclh_dd-menu').removeClass('gclh_dd-hidden');
-            } else {waitCount++; if (waitCount <= 20) setTimeout(function(){removeHiddenClassDD(waitCount);}, 50);}
+            } else {
+                waitCount++;
+                if (waitCount <= 20) setTimeout(function(){removeHiddenClassDD(waitCount);}, 50);
+                else $('#gclh_dd .gclh_dd-menu').removeClass('gclh_dd-hidden');
+            }
         }
         removeHiddenClassDD(0);
     }
@@ -12110,6 +12157,108 @@ var mainGC = function() {
                 setMenuLeftDD($('.gclh_dd-menu.gclh_dd-left')[0])
             }
         }
+    }
+
+// Internal call of File API.
+    function internalCallFileAPI(comeFrom, callBack) {
+        if (!comeFrom || !$(comeFrom) || !callBack) return;
+        // Check if File API is fully supported.
+        if (window.File && window.FileReader && window.FileList && window.Blob) {
+        } else {
+            alert('The File APIs are not fully supported in your browser.');
+            return;
+        }
+        // Build internal call of File API.
+        if (comeFrom && $(comeFrom).find('input')[0] == undefined) {
+            // Build input for File API.
+            $(comeFrom).append('<input type="file" class="gclh_file_input" style="display: none;">');
+            // File selection, file reader and callback.
+            $(comeFrom).find('.gclh_file_input')[0].addEventListener('change', function() {
+                if (this.files[0]) {
+                    var file = this.files[0];
+                    const reader = new FileReader();
+                    reader.readAsText(file);
+                    reader.onload = function() {
+                        callBack(file, reader.result);
+                    };
+                }
+            });
+        }
+        // Click to file selection of File API.
+        $(comeFrom).find('.gclh_file_input').click();
+    }
+
+// Callback from internal call of File API for adding Caches to a bookmark list.
+    function addCachesBML(file, content) {
+        var [gcText, gcCount] = getCachesFromContent(file, content);
+        bulkUpdateBML(gcText, gcCount, file);
+    }
+
+// Get Caches from content like for example uploaded file content.
+    function getCachesFromContent(contentFrom, content) {
+        if (contentFrom == 'undefined' || content == 'undefined') return ['', 0];
+        var from = (contentFrom.name ? contentFrom.name : contentFrom);
+        if (from.match(/\.gpx/i)) {
+            var gcCodes = content.match(/<name>GC[A-Z0-9]{1,6}<\/name>/ig);
+        } else if (from.match(/\.loc/i)) {
+            var gcCodes = content.match(/<name id="GC[A-Z0-9]{1,6}"/ig);
+        } else {
+            var gcCodes = content.match(/GC[A-Z0-9]{1,6}(,|\.|"|'|#|`|´|~|\*|=|&|\s|\(|\)|\{|\}|\[|\]|!|\?|\\|\/|-|\||<|>|$)/ig);
+        }
+        var gcText = '';
+        var gcCount = 0;
+        if (gcCodes) {
+            for (var i = 0; i < gcCodes.length; i++) {
+                var gcCode = gcCodes[i].replace(/(<name>|<\/name>|<name id="|,|\.|"|'|#|`|´|~|\*|=|&|\s|\(|\)|\{|\}|\[|\]|!|\?|\\|\/|-|\||<|>)/ig,'');
+                if (gcText.match(gcCode)) continue;
+                if (gcText == '') gcText = gcCode;
+                else gcText += ',' + gcCode;
+                gcCount++;
+            }
+        }
+        return [gcText, gcCount];
+    }
+
+// Bulk update to BML with caches.
+    function bulkUpdateBML(gcText, gcCount, contentFrom) {
+        if (gcText == 'undefined' || gcCount == 'undefined' ) return;
+        if (!contentFrom) var from = '';
+        else if (contentFrom.name) var from = ' from file <b>' + contentFrom.name + '</b>';
+        else var from = ' from <b>' + contentFrom + '</b>';
+        if (gcText == '' || gcCount == 0) {
+            alert ('No GC Codes' + from.replace(/(<b>|<\/b>)/g,'"'))
+            return;
+        }
+
+        // Call add functionality of bookmark list page.
+        function buildBulkUpdate() {
+            let input = document.getElementById('bulk-input-field');
+            let nativeInputValueSetter = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, "value").set;
+            nativeInputValueSetter.call(input, gcText);
+            input.dispatchEvent(new Event('input', { bubbles: true }));
+            $('#bulk-input-form').after('<div style="font-size: 12px;"><p><b>' + gcCount + '</b> GC Codes' + from + '<br>Please click "Add geocaches" if this seems to be ok.</p></div>');
+        }
+        function waitForBulkUpdate(waitCount) {
+            if ($('button.bulk-add-toggle')[0] && !$('#bulk-input-form')[0] && !$('button.bulk-add-toggle.gclh_click')[0]) {
+                $('button.bulk-add-toggle').click();
+                $('button.bulk-add-toggle').addClass('gclh_click');
+            }
+            if ($('button.bulk-add-toggle')[0] && $('#bulk-input-form')[0] &&
+                $('#bulk-input-field')[0] && $('#bulk-input-form')[0]) {
+                buildBulkUpdate();
+                return;
+            }
+            waitCount++;
+            if (waitCount <= 100) {
+                setTimeout(function(){waitForBulkUpdate(waitCount);}, 50);
+            } else {
+                var mess = "ERROR: Can not find the place for bulk updates. Probably changes\non the bookmark list page are responsible for that.\nPlease contact the development team of the script with a new issue\non this page: https://github.com/2Abendsegler/GClh/issues";
+                gclh_error("Upload caches from gpx file", {'message': '\n'+mess, 'stack': '' });
+                alert(mess);
+            }
+        }
+        if ($('button.add-geocache-cta')[0]) $('button.add-geocache-cta').click();
+        waitForBulkUpdate(0);
     }
 
 ////////////////////////////////////////
@@ -12938,6 +13087,7 @@ var mainGC = function() {
             html += checkboxy('settings_lists_back_to_top', 'Hide \"Back to top\" icon') + "<br>";
             html += checkboxy('settings_lists_show_dd', 'Show dropdown menu with additional GClh stuff') + show_help("Add an icon with dropdown menu in own and foreign bookmark lists, in the favorites list and in the ignore list with additional GClh functionality.") + "<br>";
             html += " &nbsp; " + checkboxy('settings_lists_hide_desc', 'Show/hide cache descriptions') + show_help("Add an entry in the dropdown menu to show and hide the cache descriptions.") + "<br>";
+            html += " &nbsp; " + checkboxy('settings_lists_upload_file', 'Upload caches from file') + show_help("Add an entry in the dropdown menu to upload caches from a file into the bookmark list.<br><br>The caches in .gpx and .loc files are expected in the standard scheme of such files.<br><br>The caches in other files are expected with an usual separator like for example a blank, a komma or an other usual sign.") + "<br>";
             html += newParameterVersionSetzen("0.10") + newParameterOff;
             html += content_settings_submit_log_button.replace("log_button","log_buttonX0");
             html += newParameterOn3;
@@ -14078,6 +14228,7 @@ var mainGC = function() {
             setEvForDepPara("settings_show_copydata_own_stuff_show","settings_show_copydata_own_stuff_value");
             setEvForDepPara("settings_show_copydata_own_stuff_show","restore_settings_show_copydata_own_stuff_value");
             setEvForDepPara("settings_lists_show_dd","settings_lists_hide_desc");
+            setEvForDepPara("settings_lists_show_dd","settings_lists_upload_file");
 
             // Abhängigkeiten der Linklist Parameter.
             for (var i = 0; i < 100; i++) {
@@ -14500,6 +14651,7 @@ var mainGC = function() {
                 'settings_show_edit_links_for_logs',
                 'settings_lists_show_dd',
                 'settings_lists_hide_desc',
+                'settings_lists_upload_file',
             );
 
             for (var i = 0; i < checkboxes.length; i++) {
