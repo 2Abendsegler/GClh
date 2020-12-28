@@ -2,7 +2,7 @@
 // @name             GC little helper II
 // @namespace        http://www.amshove.net
 //--> $$000
-// @version          0.10.10
+// @version          0.10.11
 //<-- $$000
 // @include          https://www.geocaching.com/*
 // @include          https://maps.google.tld/*
@@ -36,6 +36,7 @@
 // @grant            GM_getResourceText
 // @grant            GM_info
 // @grant            GM_addStyle
+// @grant            GM_registerMenuCommand
 // ==/UserScript==
 
 //////////////////////////////////////
@@ -56,7 +57,7 @@ var start = function(c) {
                     } else if (document.location.href.match(/^https?:\/\/www\.openstreetmap\.org/)) {
                         mainOSM();
                     } else if (document.location.href.match(/^https?:\/\/www\.geocaching\.com/)) {
-                        if (is_page('lists') || is_page('searchmap') || is_page('owner_dashboard') || is_page('promos')) {
+                        if (is_page('lists') || is_page('searchmap') || is_page('owner_dashboard') || is_page('promos') || is_page('hide_cache')) {
                             mainGCAsyn();
                         } else {
                             mainGC();
@@ -610,6 +611,9 @@ var variablesInit = function(c) {
     c.settings_show_edit_links_for_logs = getValue("settings_show_edit_links_for_logs", true);
     c.settings_show_copydata_plus = getValue("settings_show_copydata_plus", false);
     c.settings_show_copydata_separator = getValue("settings_show_copydata_separator", "\n");
+    c.settings_lists_show_dd = getValue("settings_lists_show_dd", true);
+    c.settings_lists_hide_desc = getValue("settings_lists_hide_desc", true);
+    c.settings_lists_upload_file = getValue("settings_lists_upload_file", true);
 
     try {
         if (c.userToken === null) {
@@ -1181,10 +1185,12 @@ var mainGCAsyn = function() {
         var today = new Date(now.getFullYear(), now.getMonth(), now.getDay());
         today = today.getTime();
         // Language of pages: Lists, Search Map.
-        if ($('html')[0] && $('html')[0].lang) var lang = $('html')[0].lang.replace(/-(.*)/,'');
-        // Language of pages: Owner dashboard.
-        else if (_gcUser.locale) var lang = _gcUser.locale.replace(/-(.*)/,'');
-        else var lang = 'en';
+        if ($('html')[0] && $('html')[0].lang) {
+            var lang = $('html')[0].lang.replace(/-(.*)/,'');
+        // Language of pages: Owner dashboard, Hide cache startpage.
+        } else if (typeof _gcUser !== "undefined" && _gcUser.locale) {
+            var lang = _gcUser.locale.replace(/-(.*)/,'');
+        } else var lang = 'en';
         if (headerRep.date == today && headerRep.lang && headerRep.lang == lang) {
             buildUpHeaderAndStart(0, headerRep.html);
         } else {
@@ -1535,10 +1541,8 @@ var mainGC = function() {
 
             // Account Settings, Message Center, Cache suchen, Cache verstecken, Geotours, Karten, account/dashboard und track:
             // ----------
-            if (is_page("settings") || is_page("messagecenter") || is_page("find_cache") || is_page("hide_cache") || is_page("geotours") || is_page("map") || is_page("dashboard-section") || is_page("track")) {
+            if (is_page("settings") || is_page("messagecenter") || is_page("find_cache") || is_page("collection_1") || is_page("geotours") || is_page("map") || is_page("dashboard-section") || is_page("track")) {
                 css += "nav .wrapper {padding-right: " + new_padding_right + "px !important; width: unset;}";
-                // Fehler bei Plazierung Videos verursacht durch neues Logo korrigieren.
-                if (is_page("hide_cache")) css += ".video iframe {width: 90%;}";
                 // Vertikales Menü ausrichten.
                 if (settings_bookmarks_top_menu) {
                     css += ".#m ul.#sm {margin-top: 0px; margin-left: 32px !important;} .#m .submenu::after {left: 4px; width: 26px;}";
@@ -1613,7 +1617,7 @@ var mainGC = function() {
     new_width:
     try {
         // Keine Anpassungen.
-        if (is_page('lists') || is_page('searchmap') || is_page("messagecenter") || is_page("settings") || is_page("hide_cache") || is_page("find_cache") || is_page("geotours") || is_page("map") || is_page("dashboard-section") || is_page("track") || is_page("owner_dashboard") || is_page("promos")) break new_width;
+        if (is_page('lists') || is_page('searchmap') || is_page("messagecenter") || is_page("settings") || is_page("hide_cache") || is_page("collection_1") || is_page("find_cache") || is_page("geotours") || is_page("map") || is_page("dashboard-section") || is_page("track") || is_page("owner_dashboard") || is_page("promos")) break new_width;
 
         if (getValue("settings_new_width") > 0) {
             var new_width = parseInt(getValue("settings_new_width"));
@@ -1656,7 +1660,7 @@ var mainGC = function() {
                     css += "#ctl00_ContentBody_ProfilePanel1_StatsChronologyControl1_FindsPerMonth h3, #ctl00_ContentBody_ProfilePanel1_StatsChronologyControl1_CumulativeFindsPerMonth h3, #CacheTypesFound h3, #ctl00_ContentBody_StatsChronologyControl1_FindsPerMonth h3, #ctl00_ContentBody_StatsChronologyControl1_CumulativeFindsPerMonth h3 {margin-left: 15px;}";
                 } else if (is_page("publicProfile")) {
                     if ($('#ctl00_ContentBody_ProfilePanel1_lnkCollectibles.Active')[0]) {
-                        css += ".span-9 {width: " + ((new_width - 220) / 2) + "px !important;} .prepend-1 {padding-left: 10px;}";
+                        css += ".span-9 {width: " + ((new_width - 250) / 2) + "px !important;} .prepend-1 {padding-left: 10px;}";
                     } else {
                         css += ".span-9 {width: " + ((new_width - 250) / 2) + "px !important;}";
                         css += ".StatsTable {width: " + (new_width - 250 - 30) + "px !important;}";
@@ -1695,7 +1699,7 @@ var mainGC = function() {
             if (!settings_change_header_layout) {
                 if (is_page("map")) {
                     appendCssStyle(".menu > li, .Menu > li {height: 100%; padding-top: 2.0em;} .submenu, .SubMenu {margin-top: 1.9em;}");
-                } else if (is_page("find_cache") || is_page("hide_cache") || is_page("geotours") || is_page("dashboard-section") || is_page("track")) {
+                } else if (is_page("find_cache") || is_page("hide_cache") || is_page("collection_1") || is_page("geotours") || is_page("dashboard-section") || is_page("track")) {
                     appendCssStyle(".menu > li, .Menu > li {height: 100%; padding-top: 2.1em;} .submenu, .SubMenu {margin-top: 2.0em;}");
                 } else {
                     appendCssStyle(".menu > li, .Menu > li {height: 100%; padding-top: 2.0em;} .submenu, .SubMenu {margin-top: 2.0em;}");
@@ -1967,7 +1971,12 @@ var mainGC = function() {
                         div.id = "gclh_latest_logs";
                         div.appendChild(document.createTextNode("Latest logs:"));
                         if (isEventInCacheListing() == true) {
-                            div.setAttribute("style", "float: right; padding-right: 0; padding-top: 0px; margin-top: -16px; font-size: 12px");
+                            // Alte Events ohne Zeitangabe.
+                            if ($('#mcd4')[0] && $('#mcd4')[0].innerHTML.match(/^(\s*)$/)) {
+                                div.setAttribute("style", "float: right; padding-right: 0; padding-top: 0px; font-size: 12px");
+                            } else {
+                                div.setAttribute("style", "float: right; padding-right: 0; padding-top: 0px; margin-top: -16px; font-size: 12px");
+                            }
                             var side = $('#ctl00_ContentBody_mcd1')[0].parentNode.parentNode;
                         } else {
                             div.setAttribute("style", "float: right; padding-right: 0; padding-top: 2px;");
@@ -4908,6 +4917,86 @@ var mainGC = function() {
                 }
             }
 
+            // Build dropdown with gclh stuff.
+            function buildDDLists() {
+                if (!settings_lists_show_dd) return;
+                if (!$('.geocache-cta-controls, .list-cta-controls')[0]) return;
+                // css for all stuff.
+                var css = '';
+                // css for dropdown for BML, foreign BML and ignore list.
+                css += '.section-controls .control-group button {';
+                css += '  margin-right: 12px;}';
+                // css for dropdown for favorites list.
+                css += '.list-cta-controls li {';
+                css += '  display: block !important;';
+                css += '  text-align: unset !important;';
+                css += '  height: unset !important;';
+                css += '  width: unset !important;}';
+                css += '.list-favorites .list-cta-controls button {';
+                css += '  margin-right: 12px;}';
+                // css for dropdown entry 'Show/hide cache descriptions'.
+                css += '.geocache-table tr.gclh_dd-hidden {';
+                css += '  display: none;}';
+
+                // Build dropdown for own BML.
+                if ($('.list-details .owner-view')[0]) {
+                    buildDD(settings_lists_show_dd, '.geocache-cta-controls', css);
+                // Build dropdown for ignore list.
+                } else if ($('.list-details .ignore-header')[0]) {
+                    buildDD(settings_lists_show_dd, '.geocache-cta-controls', css);
+                // Build dropdown for favorites list.
+                } else if ($('.list-favorites')[0]) {
+                    buildDD(settings_lists_show_dd, '.list-cta-controls', css);
+                // Build dropdown for foreign BML.
+                } else if ($('.list-details :not(.owner-view,.ignore-header)')[0]) {
+                    buildDD(settings_lists_show_dd, '.list-cta-controls', css);
+                }
+
+                // Build and run dropdown entry 'Show/hide cache descriptions' for own BML, ignore list and for foreign BML.
+                if ($('.list-details .owner-view')[0] || $('.list-details .ignore-header')[0] || $('.list-details :not(.owner-view,.ignore-header)')[0]) {
+                    buildChildDD(settings_lists_hide_desc, 'gclh_hide_desc', '', hideDescLists, 'Hide cache descriptions', 'Show/hide cache descriptions', true);
+                    hideDescLists(false);
+                }
+                // Build dropdown entry 'Upload caches from file' for own BML.
+                if ($('.list-details .owner-view')[0]) {
+                    buildChildDD(settings_lists_upload_file, 'gclh_upload_file', '', uploadFileLists, 'Upload caches from file', '.gpx or .loc files, or files with separators', true, disableUploadFileLists);
+                }
+            }
+            // Disable entry 'upload caches from file' if add caches functionality is not available.
+            function disableUploadFileLists(mouseover) {
+                if (!$('button.add-geocache-cta')[0] || $('button.add-geocache-cta').prop('disabled') == true) {
+                    $('#gclh_upload_file').addClass('disabled');
+                }
+            }
+            // Upload caches from file.
+            function uploadFileLists(click, entryDD) {
+                if (!$('#gclh_upload_file')[0]) return;
+                internalCallFileAPI($('#gclh_upload_file')[0], addCachesBML);
+            }
+            // Show/hide cache descriptions.
+            function hideDescLists(click, entryDD) {
+                if (!$('#gclh_hide_desc')[0]) return;
+                if (click == true) {
+                    $('#gclh_hide_desc').toggleClass('gclh_dd-hide');
+                    if ($('#gclh_hide_desc').hasClass('gclh_dd-hide')) {
+                        changeValueDD('gclh_hide_desc', 'Hide', 'Show');
+                    } else {
+                        changeValueDD('gclh_hide_desc', 'Show', 'Hide');
+                    }
+                }
+                if ($('#gclh_hide_desc').hasClass('gclh_dd-hide')) {
+                    $('.geocache-table .cache-description').closest('tr').each(function() {
+                        if (!$(this).hasClass('gclh_dd-hidden')) {
+                            $(this).addClass('gclh_dd-hidden');
+                        }
+                    });
+                } else {
+                    $('.geocache-table .cache-description').closest('tr').each(function() {
+                        $(this).removeClass('gclh_dd-hidden');
+                    });
+                }
+            }
+
             // Improve layout.
             function improveLayoutHead() {
                 if ($('.rt-table .rt-thead .rt-tr')[0] || $('.geocache-table thead tr')[0]) {
@@ -5150,6 +5239,7 @@ var mainGC = function() {
                 improveLayoutHead();
                 improveLayoutBody();
                 setLinesInColorAndCorrectColspan();
+                buildDDLists();
             }
 
             // Build mutation observer for target.
@@ -8362,11 +8452,15 @@ var mainGC = function() {
                     document.querySelector('#geocache-list').scrollTo({top: global_newScrollTop, behavior: 'smooth'});
                     global_newScrollTop = 0;
                 }
-                // Cache list: Notice scrolling.
+                // Cache list: Notice scrolling. Only if we are on the first part of the lists of the caches.
                 if ($('#geocache-list')[0] && !$('#geocache-list.gclh-scroll')[0]) {
                     $('#geocache-list').addClass('gclh-scroll');
                     $('#geocache-list')[0].addEventListener('scroll', function(e) {
-                        global_scrollTop = $('#geocache-list').scrollTop()
+                        if (!$('#geocache-list-pagination')[0] || $('#geocache-list-pagination .active a')[0].innerHTML == '1') {
+                            global_scrollTop = $('#geocache-list').scrollTop();
+                        } else {
+                            global_scrollTop = 0;
+                        }
                     });
                 }
                 // Search map: If map is changed, clear noticed scrolling.
@@ -8381,8 +8475,9 @@ var mainGC = function() {
             }
 
             // Virtually hit "Search this area" after dragging the map.
+            var global_isBM = document.location.href.match(/\.com\/play\/map\?bm=/);
             function searchThisArea() {
-                if (!document.location.href.match(/\.com\/play\/map\?(bm=|(.*)&nfb=GClh)/) && settings_searchmap_autoupdate_after_dragging) {
+                if (!global_isBM && !document.location.href.match(/\.com\/play\/map\?(.*)&nfb=GClh/) && settings_searchmap_autoupdate_after_dragging) {
                     if (document.getElementById('clear-map-control')) {
                         document.getElementById('clear-map-control').click();
                     }
@@ -8770,7 +8865,7 @@ var mainGC = function() {
                     var original_coords_span = "";
                     var corrected = "";
                     if (text.match(/"isUserDefined":true/gm)){
-                        var original_coords = text.match(/oldLatLngDisplay":"N.*E.*?'"/gm);
+                        var original_coords = text.match(/oldLatLngDisplay":"(N|S).*(E|W).*?'"/gm);
                         original_coords = String(original_coords[0]);
                         original_coords = original_coords.replace("oldLatLngDisplay\":\"","");
                         original_coords = original_coords.replace("\"","");
@@ -9018,7 +9113,7 @@ var mainGC = function() {
                 css += '.geocache-item-details {margin: 0 6px;}';
                 css += '.geocache-item-icon {flex: 0 0 36px !important; height: 36px !important;}';
                 css += '.geocache-item {height: 36px !important;}';
-                css += '.geocache-item-name {height: 20px; color: #4a4a4a;}';
+                css += '.geocache-item-name {height: 21px; color: #4a4a4a;}';
                 css += '.geocache-item-data {height: 16px;}';
                 if (settings_searchmap_disabled) css += '.geocache-item-status-icon {height: 18px; width: 18px;}';
                 css += '.cache-preview-activities h2 {margin: 0;}';
@@ -9679,7 +9774,7 @@ var mainGC = function() {
                         if ($('#already_loading_' + gccode)[0]) return;
                         $(this).find('dl dt')[0].innerHTML = "";
                         if (browser == 'firefox') {
-                            $(this).find('h4 a')[0].title = $(this).find('h4 a')[0].innerHTML;
+                            $(this).find('h4 a')[0].title = $(this).find('h4 a')[0].innerHTML.replace(/<strike>/,'').replace(/<\/strike>/,'');
                             $(this).find('dl dd')[0].childNodes[0].innerHTML = '<span class="gclh_owner" title="' + $(this).find('dl dd')[0].childNodes[0].innerHTML + '">' + $(this).find('dl dd')[0].childNodes[0].innerHTML + '</span>';
                         }
 
@@ -9807,7 +9902,7 @@ var mainGC = function() {
                             var original_coords_span = "";
                             var corrected = "";
                             if (text.match(/"isUserDefined":true/gm)){
-                                var original_coords = text.match(/oldLatLngDisplay":"N.*E.*?'"/gm);
+                                var original_coords = text.match(/oldLatLngDisplay":"(N|S).*(E|W).*?'"/gm);
                                 original_coords = String(original_coords[0]);
                                 original_coords = original_coords.replace("oldLatLngDisplay\":\"","");
                                 original_coords = original_coords.replace("\"","");
@@ -10769,8 +10864,8 @@ var mainGC = function() {
 // Add links to finds and hides on new profilpage.
     if (is_page("publicProfile") && $('#ctl00_ProfileHead_ProfileHeader_divStats ul > li:nth-child(1)')[0] && $('#ctl00_ProfileHead_ProfileHeader_divStats ul > li:nth-child(2)')[0]) {
         try {
-            $('#ctl00_ProfileHead_ProfileHeader_divStats ul > li:nth-child(1)')[0].innerHTML = '<a href="/seek/nearest.aspx?ul=' + $('#ctl00_ProfileHead_ProfileHeader_lblMemberName')[0].innerHTML + '" title="show finds">' + $('#ctl00_ProfileHead_ProfileHeader_divStats ul > li:nth-child(1)')[0].innerHTML + '</a>';
-            $('#ctl00_ProfileHead_ProfileHeader_divStats ul > li:nth-child(2)')[0].innerHTML = '<a href="/seek/nearest.aspx?u=' + $('#ctl00_ProfileHead_ProfileHeader_lblMemberName')[0].innerHTML + '" title="show hides">' + $('#ctl00_ProfileHead_ProfileHeader_divStats ul > li:nth-child(2)')[0].innerHTML + '</a>';
+            $('#ctl00_ProfileHead_ProfileHeader_divStats ul > li:nth-child(1)')[0].innerHTML = '<a href="/seek/nearest.aspx?ul=' + urlencode($('#ctl00_ProfileHead_ProfileHeader_lblMemberName')[0].innerHTML) + '" title="show finds">' + $('#ctl00_ProfileHead_ProfileHeader_divStats ul > li:nth-child(1)')[0].innerHTML + '</a>';
+            $('#ctl00_ProfileHead_ProfileHeader_divStats ul > li:nth-child(2)')[0].innerHTML = '<a href="/seek/nearest.aspx?u=' + urlencode($('#ctl00_ProfileHead_ProfileHeader_lblMemberName')[0].innerHTML) + '" title="show hides">' + $('#ctl00_ProfileHead_ProfileHeader_divStats ul > li:nth-child(2)')[0].innerHTML + '</a>';
             function deleteSpaceBeforeCounts(waitCount) {
                 if ($('#ctl00_ProfileHead_ProfileHeader_divStats ul > li:nth-child(1)')[0].innerHTML.match(/\s<span>/)) $('#ctl00_ProfileHead_ProfileHeader_divStats ul > li:nth-child(1)')[0].innerHTML = $('#ctl00_ProfileHead_ProfileHeader_divStats ul > li:nth-child(1)')[0].innerHTML.replace(/\s<span>/, '<span>');
                 if ($('#ctl00_ProfileHead_ProfileHeader_divStats ul > li:nth-child(2)')[0].innerHTML.match(/>\s/)) $('#ctl00_ProfileHead_ProfileHeader_divStats ul > li:nth-child(2)')[0].innerHTML = $('#ctl00_ProfileHead_ProfileHeader_divStats ul > li:nth-child(2)')[0].innerHTML.replace(/>\s/, '>');
@@ -10893,6 +10988,11 @@ var mainGC = function() {
         if (document.getElementsByName(lnk)[0]) document.getElementsByName(lnk)[0].href = link;
         if (document.getElementsByName(lnk)[1]) document.getElementsByName(lnk)[1].href = link;
     }
+
+// Build link to config in script manager menue. (Thanks to Geothumbs for the template.)
+    try {
+        GM_registerMenuCommand('Configurator', gclh_showConfig);
+    } catch(e) {} // Ignore error
 
 // Eingaben im Search Field verarbeiten.
     if (document.location.href.match(/\.com\/seek\/nearest\.aspx\?navi_search=/)) {
@@ -11230,7 +11330,7 @@ var mainGC = function() {
         }
         // Message, Mail Template aufbauen.
         template_message = urlencode(buildSendTemplate());
-        template = urlencode(buildSendTemplate().replace(/#Receiver#/ig, b_username));
+        template = urlencode(buildSendTemplate().replace(/#Receiver#/ig, b_username), convertPlus = false);
         // Message Icon erzeugen.
         if (settings_show_message && b_art == "per guid") {
             var mess_link = document.createElement("a");
@@ -11262,7 +11362,7 @@ var mainGC = function() {
                 b_side.parentNode.insertBefore(document.createTextNode(" "), b_side.nextSibling);
             } else {
                 b_side.appendChild(document.createTextNode(" "));
-                mail_link.setAttribute("href", "/email/?u=" + urlencode(b_username) + "&text=" + template);
+                mail_link.setAttribute("href", "/email/?u=" + urlencode(b_username, convertPlus = false) + "&text=" + template);
                 b_side.appendChild(mail_link);
                 b_side.appendChild(document.createTextNode(" "));
             }
@@ -11469,10 +11569,10 @@ var mainGC = function() {
         div.setAttribute("style", "margin-top: -50px;");
         var prop = ' style="border: none; visibility: hidden; width: 2px; height: 2px;" alt="">';
 //--> $$002
-        var code = '<img src="https://c.andyhoppe.com/1606985611"' + prop + // Besucher
-                   '<img src="https://c.andyhoppe.com/1606985652"' + prop + // Seitenaufrufe
-                   '<img src="https://www.worldflagcounter.com/hqh"' + prop +
-                   '<img src="https://s11.flagcounter.com/count2/fZbN/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
+        var code = '<img src="https://c.andyhoppe.com/1608013996"' + prop + // Besucher
+                   '<img src="https://c.andyhoppe.com/1608014031"' + prop + // Seitenaufrufe
+                   '<img src="https://www.worldflagcounter.com/hrv"' + prop +
+                   '<img src="https://s11.flagcounter.com/count2/y1ii/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
 //<-- $$002
         div.innerHTML = code;
         side.appendChild(div);
@@ -11503,6 +11603,14 @@ var mainGC = function() {
         if (getValue("migration_task_02", false) != true) {
             GM_setValue('urlLogs', []);
             setValue("migration_task_02", true);
+        }
+        // Migrate elevation parameters first service to 'GeoNames' and second service to 'Open-Elevation' (zu v0.10.11).
+        if (getValue("migration_task_03", false) != true) {
+            setValue("settings_primary_elevation_service", 3);
+            settings_primary_elevation_service = 3;
+            setValue("settings_secondary_elevation_service", 2);
+            settings_secondary_elevation_service = 2
+            setValue("migration_task_03", true);
         }
     }
 
@@ -11909,6 +12017,255 @@ var mainGC = function() {
         return [count, text, list];
     }
 
+// Build dropdown with caret-down icon and own specified dropdown entries for gclh stuff.
+    // Implement css, symbol and icon for dropdown functionality.
+    function buildDD(show, place, styles) {
+        if (show == false || !$(place)[0]) return;
+        // Implement css for dropdown functionality.
+        if (!$('#gclh_dd-css')[0]) {
+            var css = ' ';
+            if (styles && styles != '') css += styles;
+            css += '#gclh_dd-caret-down path {';
+            css += '  stroke-width: 1 !important;}';
+            css += '#gclh_dd, .gclh_dd-menu {';
+            css += '  margin: 0;';
+            css += '  padding: 0 !important;}';
+            css += '#gclh_dd a, .gclh_dd-icon, .gclh_dd-menu ul, .gclh_dd-menu ul li, .gclh_dd-menu ul li a {';
+            css += '  margin: 0 !important;';
+            css += '  padding: 0 !important;}';
+            css += '#gclh_dd, #gclh_dd li {';
+            css += '  display: block !important;';
+            css += '  text-align: unset !important;';
+            css += '  height: unset !important;';
+            css += '  width: unset !important;}';
+            css += '#gclh_dd {';
+            css += '  margin-right: 8px !important;';
+            css += '  margin-left: -1px !important;}';
+            css += '.gclh_dd-icon.gclh_dd-hidden {';
+            css += '  display: none;}';
+            css += '.gclh_dd-icon {';
+            css += '  background-color: transparent !important;';
+            css += '  border: 2px solid transparent !important;';
+            css += '  border-radius: 4px !important;';
+            css += '  cursor: pointer !important;';
+            css += '  outline: none !important;}';
+            css += '.gclh_dd-menu {';
+            css += '  visibility: hidden;';
+            css += '  position: absolute !important;';
+            css += '  background-color: white !important;';
+            css += '  white-space: nowrap !important;';
+            css += '  box-shadow: 0 2px 4px 0 rgba(137, 137, 137, 0.41) !important;';
+            css += '  z-index: 1001 !important;}';
+            css += '#gclh_dd:hover .gclh_dd-menu.gclh_dd-hidden {';
+            css += '  visibility: hidden;}';
+            css += '#gclh_dd:hover .gclh_dd-menu {';
+            css += '  visibility: visible;}';
+            css += '.gclh_dd-menu ul {';
+            css += '  list-style: none !important;}';
+            css += '.gclh_dd-menu ul li.disabled, .gclh_dd-menu ul li.disabled a {';
+            css += '  color: rgba(155, 155, 155, 0.5) !important;';
+            css += '  pointer-events: none !important;}';
+            css += '.gclh_dd-menu ul li {';
+            css += '  cursor: pointer !important;';
+            css += '  padding: 5px 12px !important;}';
+            css += '.gclh_dd-menu ul li a {';
+            css += '  display: flex !important;';
+            css += '  color: black !important;';
+            css += '  text-decoration: none !important;}';
+            css += '.gclh_dd-menu ul li:hover {';
+            css += '  background-color: #e6f7ef;}';
+            appendCssStyle(css, place, 'gclh_dd-css');
+        }
+        // Implement symbol caret-down for dropdown icon.
+        if (!$('#gclh_dd-caret-down')[0]) {
+            var symbol = $('#caret-down').clone();
+            symbol[0].id = 'gclh_dd-caret-down';
+            $('#caret-down').after(symbol);
+        }
+        // Implement dropdown icon.
+        if (!$('#gclh_dd')[0] && $('#gclh_dd-caret-down')[0]) {
+            var dd = document.createElement(($(place)[0].tagName == 'UL' ? 'li' : 'div'));
+            dd.innerHTML = '<button class="gclh_dd-icon gclh_dd-hidden" title="GClh stuff"><svg><use xlink:href="#gclh_dd-caret-down"></use></svg></button>';
+            dd.id = 'gclh_dd';
+            $(place).append(dd);
+        }
+    }
+    // Implement dropdown menue and dropdown entry.
+    function buildChildDD(show, id, className, clickFunction, value, title, menuFloatLeft, mouseoverFunction) {
+        if (show == false || !$('#gclh_dd')[0] || !id || id == '' || !value || value == '' || !clickFunction || clickFunction == '') return;
+        // Implement dropdown menue if not already available.
+        if (!$('#gclh_dd .gclh_dd-menu')[0]) {
+            $('#gclh_dd').append('<div class="gclh_dd-menu"><ul></ul></div>');
+            // Mouseleave event to enable disabled childs.
+            $('#gclh_dd')[0].addEventListener("mouseleave", function() {
+                $('.gclh_dd-menu li.disabled').each(function() {
+                    $(this).removeClass('disabled');
+                });
+            }, false);
+        }
+        // Implement dropdown entry if not already available.
+        if (!$('#'+id)[0]) {
+            $('#gclh_dd .gclh_dd-menu ul').append('<li id="' + id + '" class="' + (className ? className:'') + '" title="' + (title ? title:'') + '"><a>' + value + '</a></li>');
+            // Implement click event for child.
+            $('#gclh_dd .gclh_dd-menu ul')[0].children[($('#gclh_dd .gclh_dd-menu ul li').length - 1)].addEventListener("click", function() {
+                clickFunction(true, this);
+                // Hide dropdown menue after functional click to an entry.
+                hideDD();
+            }, false);
+            // Implement mouseover event to prepare child before showing, if requested.
+            if (mouseoverFunction && mouseoverFunction != '') {
+                $('#gclh_dd')[0].addEventListener("mouseover", function() {
+                    mouseoverFunction(this);
+                }, false);
+            }
+            // Make dropdown visible because dropdown entry is available.
+            $('#gclh_dd .gclh_dd-icon').removeClass('gclh_dd-hidden');
+            // Set dropdown menue with entries on the left side.
+            setMenuLeftDD(menuFloatLeft);
+        }
+    }
+    // Set dropdown menu with entries on the left side.
+    function setMenuLeftDD(menuFloatLeft) {
+        if (menuFloatLeft){
+            if (!$('.gclh_dd-menu').hasClass('gclh_dd-left')) {
+                $('.gclh_dd-menu').addClass('gclh_dd-left');
+            }
+            var width = window.getComputedStyle($('.gclh_dd-menu')[0]).width.match(/(\d*\.*\d*)/);
+            if (width && width[0]) {
+                $('.gclh_dd-menu')[0].style.marginLeft = '-' + (parseInt(width[0]) - 32) + 'px';
+            }
+        }
+    }
+    // Hide dropdown menue after functional click to an entry.
+    function hideDD() {
+        $('#gclh_dd .gclh_dd-menu').addClass('gclh_dd-hidden');
+        function removeHiddenClassDD(waitCount) {
+            if (!$('#gclh_dd .gclh_dd-menu').is(":hover")) {
+                $('#gclh_dd .gclh_dd-menu').removeClass('gclh_dd-hidden');
+            } else {
+                waitCount++;
+                if (waitCount <= 20) setTimeout(function(){removeHiddenClassDD(waitCount);}, 50);
+                else $('#gclh_dd .gclh_dd-menu').removeClass('gclh_dd-hidden');
+            }
+        }
+        removeHiddenClassDD(0);
+    }
+    // Change the value in the dropdown menue entry.
+    function changeValueDD(id, from, to) {
+        if (id && id != '' && $('#'+id)[0] && from && from != '' && to) {
+            // Get entry with id.
+            var entryDD = $('#'+id)[0];
+            // Change value of entry.
+            if (entryDD && entryDD.children[0] && entryDD.children[0].innerHTML) {
+                entryDD.children[0].innerHTML = entryDD.children[0].innerHTML.replace(from, to);
+                // Set dropdown menu with entries again on the left side.
+                setMenuLeftDD($('.gclh_dd-menu.gclh_dd-left')[0])
+            }
+        }
+    }
+
+// Internal call of File API.
+    function internalCallFileAPI(comeFrom, callBack) {
+        if (!comeFrom || !$(comeFrom) || !callBack) return;
+        // Check if File API is fully supported.
+        if (window.File && window.FileReader && window.FileList && window.Blob) {
+        } else {
+            alert('The File APIs are not fully supported in your browser.');
+            return;
+        }
+        // Build internal call of File API.
+        if (comeFrom && $(comeFrom).find('input')[0] == undefined) {
+            // Build input for File API.
+            $(comeFrom).append('<input type="file" class="gclh_file_input" style="display: none;">');
+            // File selection, file reader and callback.
+            $(comeFrom).find('.gclh_file_input')[0].addEventListener('change', function() {
+                if (this.files[0]) {
+                    var file = this.files[0];
+                    const reader = new FileReader();
+                    reader.readAsText(file);
+                    reader.onload = function() {
+                        callBack(file, reader.result);
+                    };
+                }
+            });
+        }
+        // Click to file selection of File API.
+        $(comeFrom).find('.gclh_file_input').click();
+    }
+
+// Callback from internal call of File API for adding Caches to a bookmark list.
+    function addCachesBML(file, content) {
+        var [gcText, gcCount] = getCachesFromContent(file, content);
+        bulkUpdateBML(gcText, gcCount, file);
+    }
+
+// Get Caches from content like for example uploaded file content.
+    function getCachesFromContent(contentFrom, content) {
+        if (contentFrom == 'undefined' || content == 'undefined') return ['', 0];
+        var from = (contentFrom.name ? contentFrom.name : contentFrom);
+        if (from.match(/\.gpx/i)) {
+            var gcCodes = content.match(/<name>GC[A-Z0-9]{1,6}<\/name>/ig);
+        } else if (from.match(/\.loc/i)) {
+            var gcCodes = content.match(/<name id="GC[A-Z0-9]{1,6}"/ig);
+        } else {
+            var gcCodes = content.match(/GC[A-Z0-9]{1,6}(,|\.|"|'|#|`|´|~|\*|=|&|\s|\(|\)|\{|\}|\[|\]|!|\?|\\|\/|-|\||<|>|$)/ig);
+        }
+        var gcText = '';
+        var gcCount = 0;
+        if (gcCodes) {
+            for (var i = 0; i < gcCodes.length; i++) {
+                var gcCode = gcCodes[i].replace(/(<name>|<\/name>|<name id="|,|\.|"|'|#|`|´|~|\*|=|&|\s|\(|\)|\{|\}|\[|\]|!|\?|\\|\/|-|\||<|>)/ig,'');
+                if (gcText.match(gcCode)) continue;
+                if (gcText == '') gcText = gcCode;
+                else gcText += ',' + gcCode;
+                gcCount++;
+            }
+        }
+        return [gcText, gcCount];
+    }
+
+// Bulk update to BML with caches.
+    function bulkUpdateBML(gcText, gcCount, contentFrom) {
+        if (gcText == 'undefined' || gcCount == 'undefined' ) return;
+        if (!contentFrom) var from = '';
+        else if (contentFrom.name) var from = ' from file <b>' + contentFrom.name + '</b>';
+        else var from = ' from <b>' + contentFrom + '</b>';
+        if (gcText == '' || gcCount == 0) {
+            alert ('No GC Codes' + from.replace(/(<b>|<\/b>)/g,'"'))
+            return;
+        }
+
+        // Call add functionality of bookmark list page.
+        function buildBulkUpdate() {
+            let input = document.getElementById('bulk-input-field');
+            let nativeInputValueSetter = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, "value").set;
+            nativeInputValueSetter.call(input, gcText);
+            input.dispatchEvent(new Event('input', { bubbles: true }));
+            $('#bulk-input-form').after('<div style="font-size: 12px;"><p><b>' + gcCount + '</b> GC Codes' + from + '<br>Please click "Add geocaches" if this seems to be ok.</p></div>');
+        }
+        function waitForBulkUpdate(waitCount) {
+            if ($('button.bulk-add-toggle')[0] && !$('#bulk-input-form')[0] && !$('button.bulk-add-toggle.gclh_click')[0]) {
+                $('button.bulk-add-toggle').click();
+                $('button.bulk-add-toggle').addClass('gclh_click');
+            }
+            if ($('button.bulk-add-toggle')[0] && $('#bulk-input-form')[0] &&
+                $('#bulk-input-field')[0] && $('#bulk-input-form')[0]) {
+                buildBulkUpdate();
+                return;
+            }
+            waitCount++;
+            if (waitCount <= 100) {
+                setTimeout(function(){waitForBulkUpdate(waitCount);}, 50);
+            } else {
+                var mess = "ERROR: Can not find the place for bulk updates. Probably changes\non the bookmark list page are responsible for that.\nPlease contact the development team of the script with a new issue\non this page: https://github.com/2Abendsegler/GClh/issues";
+                gclh_error("Upload caches from gpx file", {'message': '\n'+mess, 'stack': '' });
+                alert(mess);
+            }
+        }
+        if ($('button.add-geocache-cta')[0]) $('button.add-geocache-cta').click();
+        waitForBulkUpdate(0);
+    }
+
 ////////////////////////////////////////
 // 6.3 GC - User defined searchs ($$cap) (User defined searchs on the geocaching webpages.)
 ////////////////////////////////////////
@@ -12173,8 +12530,8 @@ var mainGC = function() {
             html += "<h3 style='margin:5px; font-weight: bold; font-size: 19.5px; line-height: 1; color: #594a42;'>Find Player</h3>";
             html += "<form style='text-align: unset;' action=\"/find/default.aspx\" method=\"post\" name=\"aspnetForm\" >";
             html += "<input class='gclh_form' type='hidden' name='__VIEWSTATE' value=''>";
-            html += "<input style='width: 170px; height: unset;' class='gclh_form' id='findplayer_field' class=\"Text\" type=\"text\" maxlength=\"100\" name=\"ctl00$ContentBody$FindUserPanel1$txtUsername\"/>";
-            html += " <input style='cursor: pointer;' class='gclh_form' type=\"submit\" value=\"go\" name=\"ctl00$ContentBody$FindUserPanel1$GetUsers\"/>";
+            html += "<input style='width: 170px; height: unset;' class='gclh_form' id='findplayer_field' class=\"Text\" type=\"text\" maxlength=\"100\" name=\"ctl00$ContentBody$txtFindUser\"/>";
+            html += " <input style='cursor: pointer;' class='gclh_form' type=\"submit\" value=\"go\" name=\"ctl00$ContentBody$btnFindUser\"/>";
             html += " <input style='cursor: pointer;' class='gclh_form' id='btn_close1' type='button' value='close'>";
             html += "</form>";
             var side = $('body')[0];
@@ -12461,6 +12818,10 @@ var mainGC = function() {
 // Configuration Menü.
     function gclh_showConfig() {
         btnClose(false);
+        if (is_page('searchmap') || is_page('map')) {
+            document.location.href = defaultConfigLink;
+            return;
+        }
         if (checkTaskAllowed("GClh Config", true) == false) return;
         window.scroll(0, 0);
         if ($('#bg_shadow')[0]) {
@@ -12545,10 +12906,11 @@ var mainGC = function() {
             html += thanksLineBuild("barnold",              "barnoldGEOC",              false, false, false, true,  false);
             html += thanksLineBuild("BlueEagle23",          "",                         false, false, false, true,  false);
             html += thanksLineBuild("Cappa-d",              "",                         false, false, false, true,  false);
-            html += thanksLineBuild("",                     "gboye",                    false, false, false, true,  false);
             html += thanksLineBuild("Donnerknispel",        "",                         false, false, false, true,  false);
+            html += thanksLineBuild("",                     "gboye",                    false, false, false, true,  false);
             html += thanksLineBuild("",                     "jet2mike",                 false, false, false, true,  false);
             html += thanksLineBuild("Jipem",                "",                         false, false, false, true,  false);
+            html += thanksLineBuild("lostinthegarden",      "Gitve3jf",                 false, false, false, true,  false);
             html += thanksLineBuild("Magpie42",             "MagpieFourtyTwo",          false, false, false, true,  false);
             html += thanksLineBuild("☺Mitchsa & firefly70", "Mitchsa",                  false, false, false, true,  false);
             html += thanksLineBuild("PHIL",                 "gcPhil",                   false, false, false, true,  false);
@@ -12558,7 +12920,7 @@ var mainGC = function() {
             html += thanksLineBuild("Tungstène",            "Tungstene",                false, false, false, true,  false);
             html += thanksLineBuild("V60",                  "V60GC",                    false, false, false, true,  false);
             html += thanksLineBuild("winkamol",             "",                         false, false, false, true,  false);
-            var thanksLastUpdate = "05.12.2020";
+            var thanksLastUpdate = "28.12.2020";
 //<-- $$006
             html += "    </tbody>";
             html += "</table>";
@@ -12729,6 +13091,9 @@ var mainGC = function() {
             html += checkboxy('settings_lists_found_column_bml', 'Set found smiley in own column') + show_help("Only in bookmark lists, not in favorites list and ignore list.") + "<br>";
             html += checkboxy('settings_lists_show_log_it', 'Show GClh \"Log it\" icon') + show_help("Only in bookmark lists, not in favorites list and ignore list.<br><br>The GClh \"Log it\" icon is displayed beside cache titles. If you click it, you will be redirected directly to the log form. <br><br>You can use it too as basic member to log Premium Member Only (PMO) caches.") + "<br>";
             html += checkboxy('settings_lists_back_to_top', 'Hide \"Back to top\" icon') + "<br>";
+            html += checkboxy('settings_lists_show_dd', 'Show dropdown menu with additional GClh stuff') + show_help("Add an icon with dropdown menu in own and foreign bookmark lists, in the favorites list and in the ignore list with additional GClh functionality.") + "<br>";
+            html += " &nbsp; " + checkboxy('settings_lists_hide_desc', 'Show/hide cache descriptions') + show_help("Add an entry in the dropdown menu to show and hide the cache descriptions.") + "<br>";
+            html += " &nbsp; " + checkboxy('settings_lists_upload_file', 'Upload caches from file') + show_help("Add an entry in the dropdown menu to upload caches from a file into the bookmark list.<br><br>The caches in .gpx and .loc files are expected in the standard scheme of such files.<br><br>The caches in other files are expected with an usual separator like for example a blank, a komma or an other usual sign.") + "<br>";
             html += newParameterVersionSetzen("0.10") + newParameterOff;
             html += content_settings_submit_log_button.replace("log_button","log_buttonX0");
             html += newParameterOn3;
@@ -13868,6 +14233,8 @@ var mainGC = function() {
             setEvForDepPara("settings_show_copydata_own_stuff_show","restore_settings_show_copydata_own_stuff_name");
             setEvForDepPara("settings_show_copydata_own_stuff_show","settings_show_copydata_own_stuff_value");
             setEvForDepPara("settings_show_copydata_own_stuff_show","restore_settings_show_copydata_own_stuff_value");
+            setEvForDepPara("settings_lists_show_dd","settings_lists_hide_desc");
+            setEvForDepPara("settings_lists_show_dd","settings_lists_upload_file");
 
             // Abhängigkeiten der Linklist Parameter.
             for (var i = 0; i < 100; i++) {
@@ -14288,6 +14655,9 @@ var mainGC = function() {
                 'settings_relocate_other_map_buttons',
                 'settings_show_radius_on_flopps',
                 'settings_show_edit_links_for_logs',
+                'settings_lists_show_dd',
+                'settings_lists_hide_desc',
+                'settings_lists_upload_file',
             );
 
             for (var i = 0; i < checkboxes.length; i++) {
@@ -15546,13 +15916,16 @@ var mainGC = function() {
         return decodeURIComponent(unicodeToChar(s));
     }
 // Encode in URL.
-    function urlencode(s) {
+    function urlencode(s, convertPlus) {
         s = s.replace(/&amp;/g, "&");
         s = encodeURIComponent(s);  // Alles außer: A bis Z, a bis z und - _ . ! ~ * ' ( )
         s = s.replace(/~/g, "%7e");
         s = s.replace(/'/g, "%27");
         s = s.replace(/%26amp%3b/g, "%26");
         s = s.replace(/%26nbsp%3B/g, "%20");
+        if (convertPlus != false) {
+            s = s.replace(/%2B/ig, "%252b");
+        }
         s = s.replace(/ /g, "+");
         return s;
     }
@@ -16026,7 +16399,7 @@ function profileSpecialBookmark(title, href, name, bookmarkArray) {
 
 // Add CSS Style.
 function appendCssStyle(css, name, id) {
-    // test if ID is already used, if yes, don't append again
+    // Test if ID is already used, if yes, don't append again.
     if(document.getElementById(id)) return;
     if (css == "") return;
     if (name) var tag = $(name)[0];
@@ -16158,8 +16531,11 @@ function is_page(name) {
         case "find_cache":
             if (url.match(/^\/play\/(search|geocache)/)) status = true;
             break;
+        case "collection_1":
+            if (url.match(/^\/play\/(friendleague|leaderboard|souvenircampaign|guidelines)/)) status = true;
+            break;
         case "hide_cache":
-            if (url.match(/^\/play\/(hide|friendleague|leaderboard|souvenircampaign|guidelines)/)) status = true;
+            if (url.match(/^\/play\/hide/)) status = true;
             break;
         case "geotours":
             if (url.match(/^\/play\/geotours/)) status = true;
@@ -16181,9 +16557,6 @@ function is_page(name) {
             break;
         case "dashboard-section":
             if (url.match(/^\/account\/dashboard/)) status = true;
-            break;
-        case "owner_dashboard":
-            if (url.match(/^\/play\/owner/)) status = true;
             break;
         case "promos": // Like 'Wonders of the World'.
             if (url.match(/^\/promos/)) status = true;
