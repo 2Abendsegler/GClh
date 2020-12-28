@@ -42,22 +42,22 @@
 		<strong>New:</strong> [Hide cache] Build header with navigation menu and linklist. [<a href="https://github.com/2Abendsegler/GClh/issues/1542" title="Issue 1542">1542</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br><br>
 	</li>
 	<li>
-		<strong>Fix:</strong> [Public profile] Both trackables lists are not displayed side by side. [<a href="https://github.com/2Abendsegler/GClh/issues/1560" title="Issue 1560">1560</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
-	</li>
-	<li>
-		<strong>Fix:</strong> [Old Map] Wrong cache name title in map popup. [<a href="https://github.com/2Abendsegler/GClh/issues/1558" title="Issue 1558">1558</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
-	</li>
-	<li>
-		<strong>Fix:</strong> [New profile] Links on new profile page to found and hidden caches don't work with user with special characters. [<a href="https://github.com/2Abendsegler/GClh/issues/1554" title="Issue 1554">1554</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
-	</li>
-	<li>
 		<strong>Fix:</strong> [New Map] Automatic search of new caches is available also for bookmarklists maps. [<a href="https://github.com/2Abendsegler/GClh/issues/1553" title="Issue 1553">1553</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [New Map] After go back from cache details to cache list, scroll to last position does not work, if the cache is not on the first part of the cache lists. [<a href="https://github.com/2Abendsegler/GClh/issues/1538" title="Issue 1538">1538</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 	</li>
 	<li>
 		<strong>Fix:</strong> [Old Map] Popups on maps not working properly when a cache has S or W corrected coordinates. [<a href="https://github.com/2Abendsegler/GClh/issues/1548" title="Issue 1548">1548</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br>
 	</li>
 	<li>
-		<strong>Fix:</strong> [New Map] After go back from cache details to cache list, scroll to last position does not work, if the cache is not on the first part of the cache lists. [<a href="https://github.com/2Abendsegler/GClh/issues/1538" title="Issue 1538">1538</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		<strong>Fix:</strong> [Old Map] Wrong cache name title in map popup. [<a href="https://github.com/2Abendsegler/GClh/issues/1558" title="Issue 1558">1558</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Profile] Both trackables lists are not displayed side by side. [<a href="https://github.com/2Abendsegler/GClh/issues/1560" title="Issue 1560">1560</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Profile] Links on new profile page to found and hidden caches don't work with user with special characters. [<a href="https://github.com/2Abendsegler/GClh/issues/1554" title="Issue 1554">1554</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 	</li>
 	<li>
 		<strong>Fix:</strong> [Find player] Link "Find Player" from Linklist doesn't work. [<a href="https://github.com/2Abendsegler/GClh/issues/1476" title="Issue 1476">1476</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
