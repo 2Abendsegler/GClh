@@ -1,3 +1,4 @@
+<a href="#v01011" title="GClh II version 0.10.11 (28.12.2020)">v0.10.11</a> &nbsp;
 <a href="#v01010" title="GClh II version 0.10.10 (06.12.2020)">v0.10.10</a> &nbsp;
 <a href="#v0109" title="GClh II version 0.10.9 (04.11.2020)">v0.10.9</a> &nbsp;
 <a href="#v0108" title="GClh II version 0.10.8 (12.09.2020)">v0.10.8</a> &nbsp;
@@ -10,6 +11,62 @@
 <a href="#v0101" title="GClh II version 0.10.1 (20.12.2019)">v0.10.1</a> &nbsp;
 <a href="#v010" title="GClh II version 0.10 (13.12.2019)">v0.10</a> &nbsp;
 <a href="changelog_before.md" title="Go to earlier changelog">Earlier changelog</a> &nbsp;
+
+---
+## v0.10.11:
+<ul>
+	<li>
+		<strong>Info:</strong> [Config] Migrate elevation parameters first service to 'GeoNames-Elevation' and second service to 'Open-Elevation'. [<a href="https://github.com/2Abendsegler/GClh/issues/1566" title="Issue 1566">1566</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		We have migrate this setting to all of you. You can change the parameters again, if you want.<br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_show_elevation_of_waypoints" title="Link to your GClh Config">Settings -> Listing:<br>
+		<img src="../images/0.10.11/Screen04.jpg" alt="Screen04.jpg"></a><br><br>
+	</li>
+	<li>
+		<strong>New:</strong> [Lists] Add feature to show/hide the cache descriptions in bookmark lists and ignore list. [<a href="https://github.com/2Abendsegler/GClh/issues/1570" title="Issue 1570">1570</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		<img src="../images/0.10.11/Screen02.jpg" alt="Screen02.jpg"></a><br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_lists_show_dd" title="Link to your GClh Config">Settings -> Bookmark list:<br>
+		<img src="../images/0.10.11/Screen03.jpg" alt="Screen03.jpg"></a><br><br>
+	</li>
+	<li>
+		<strong>New:</strong> [Lists] Upload caches to a bookmark list from .gpx or .loc file, or from file with separators. [<a href="https://github.com/2Abendsegler/GClh/issues/1571" title="Issue 1571">1571</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a> / <a href="https://www.geocaching.com/profile/?u=Die Batzen" title="Thanks to Die Batzen">Die Batzen</a>]<br>
+		Example: Upload a .gpx file to a bookmark list:<br>
+		<img src="../images/0.10.11/Screen05.gif" alt="Screen05.gif"></a><br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_lists_show_dd" title="Link to your GClh Config">Settings -> Bookmark list:<br>
+		<img src="../images/0.10.11/Screen06.jpg" alt="Screen06.jpg"></a><br><br>
+	</li>
+	<li>
+		<strong>New:</strong> [Global] Extend scriptmanager menu in browser with GClh configurator. [<a href="https://github.com/2Abendsegler/GClh/issues/1556" title="Issue 1556">1556</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		<img src="../images/0.10.11/Screen01.jpg" alt="Screen01.jpg"></a><br><br>
+	</li>
+	<li>
+		<strong>New:</strong> [Hide cache] Build header with navigation menu and linklist. [<a href="https://github.com/2Abendsegler/GClh/issues/1542" title="Issue 1542">1542</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br><br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [New Map] Automatic search of new caches is available also for bookmarklists maps. [<a href="https://github.com/2Abendsegler/GClh/issues/1553" title="Issue 1553">1553</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [New Map] After go back from cache details to cache list, scroll to last position does not work, if the cache is not on the first part of the cache lists. [<a href="https://github.com/2Abendsegler/GClh/issues/1538" title="Issue 1538">1538</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Old Map] Popups on maps not working properly when a cache has S or W corrected coordinates. [<a href="https://github.com/2Abendsegler/GClh/issues/1548" title="Issue 1548">1548</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Old Map] Wrong cache name title in map popup. [<a href="https://github.com/2Abendsegler/GClh/issues/1558" title="Issue 1558">1558</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Profile] Both trackables lists are not displayed side by side. [<a href="https://github.com/2Abendsegler/GClh/issues/1560" title="Issue 1560">1560</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Profile] Links on new profile page to found and hidden caches don't work with user with special characters. [<a href="https://github.com/2Abendsegler/GClh/issues/1554" title="Issue 1554">1554</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Find player] Link "Find Player" from Linklist doesn't work. [<a href="https://github.com/2Abendsegler/GClh/issues/1476" title="Issue 1476">1476</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+</ul>
+<br>
+(28.12.2020)<br>
+released by <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a><br>
+<br>
 
 ---
 ## v0.10.10:

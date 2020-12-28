@@ -2,7 +2,7 @@
 // @name             GC little helper II
 // @namespace        http://www.amshove.net
 //--> $$000
-// @version          0.10.10
+// @version          0.10.11
 //<-- $$000
 // @include          https://www.geocaching.com/*
 // @include          https://maps.google.tld/*
@@ -1188,7 +1188,7 @@ var mainGCAsyn = function() {
         if ($('html')[0] && $('html')[0].lang) {
             var lang = $('html')[0].lang.replace(/-(.*)/,'');
         // Language of pages: Owner dashboard, Hide cache startpage.
-        } else if (_gcUser.locale) {
+        } else if (typeof _gcUser !== "undefined" && _gcUser.locale) {
             var lang = _gcUser.locale.replace(/-(.*)/,'');
         } else var lang = 'en';
         if (headerRep.date == today && headerRep.lang && headerRep.lang == lang) {
@@ -1971,7 +1971,12 @@ var mainGC = function() {
                         div.id = "gclh_latest_logs";
                         div.appendChild(document.createTextNode("Latest logs:"));
                         if (isEventInCacheListing() == true) {
-                            div.setAttribute("style", "float: right; padding-right: 0; padding-top: 0px; margin-top: -16px; font-size: 12px");
+                            // Alte Events ohne Zeitangabe.
+                            if ($('#mcd4')[0] && $('#mcd4')[0].innerHTML.match(/^(\s*)$/)) {
+                                div.setAttribute("style", "float: right; padding-right: 0; padding-top: 0px; font-size: 12px");
+                            } else {
+                                div.setAttribute("style", "float: right; padding-right: 0; padding-top: 0px; margin-top: -16px; font-size: 12px");
+                            }
                             var side = $('#ctl00_ContentBody_mcd1')[0].parentNode.parentNode;
                         } else {
                             div.setAttribute("style", "float: right; padding-right: 0; padding-top: 2px;");
@@ -9108,7 +9113,7 @@ var mainGC = function() {
                 css += '.geocache-item-details {margin: 0 6px;}';
                 css += '.geocache-item-icon {flex: 0 0 36px !important; height: 36px !important;}';
                 css += '.geocache-item {height: 36px !important;}';
-                css += '.geocache-item-name {height: 20px; color: #4a4a4a;}';
+                css += '.geocache-item-name {height: 21px; color: #4a4a4a;}';
                 css += '.geocache-item-data {height: 16px;}';
                 if (settings_searchmap_disabled) css += '.geocache-item-status-icon {height: 18px; width: 18px;}';
                 css += '.cache-preview-activities h2 {margin: 0;}';
@@ -11564,10 +11569,10 @@ var mainGC = function() {
         div.setAttribute("style", "margin-top: -50px;");
         var prop = ' style="border: none; visibility: hidden; width: 2px; height: 2px;" alt="">';
 //--> $$002
-        var code = '<img src="https://c.andyhoppe.com/1606985611"' + prop + // Besucher
-                   '<img src="https://c.andyhoppe.com/1606985652"' + prop + // Seitenaufrufe
-                   '<img src="https://www.worldflagcounter.com/hqh"' + prop +
-                   '<img src="https://s11.flagcounter.com/count2/fZbN/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
+        var code = '<img src="https://c.andyhoppe.com/1608013996"' + prop + // Besucher
+                   '<img src="https://c.andyhoppe.com/1608014031"' + prop + // Seitenaufrufe
+                   '<img src="https://www.worldflagcounter.com/hrv"' + prop +
+                   '<img src="https://s11.flagcounter.com/count2/y1ii/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
 //<-- $$002
         div.innerHTML = code;
         side.appendChild(div);
@@ -12901,10 +12906,11 @@ var mainGC = function() {
             html += thanksLineBuild("barnold",              "barnoldGEOC",              false, false, false, true,  false);
             html += thanksLineBuild("BlueEagle23",          "",                         false, false, false, true,  false);
             html += thanksLineBuild("Cappa-d",              "",                         false, false, false, true,  false);
-            html += thanksLineBuild("",                     "gboye",                    false, false, false, true,  false);
             html += thanksLineBuild("Donnerknispel",        "",                         false, false, false, true,  false);
+            html += thanksLineBuild("",                     "gboye",                    false, false, false, true,  false);
             html += thanksLineBuild("",                     "jet2mike",                 false, false, false, true,  false);
             html += thanksLineBuild("Jipem",                "",                         false, false, false, true,  false);
+            html += thanksLineBuild("lostinthegarden",      "Gitve3jf",                 false, false, false, true,  false);
             html += thanksLineBuild("Magpie42",             "MagpieFourtyTwo",          false, false, false, true,  false);
             html += thanksLineBuild("☺Mitchsa & firefly70", "Mitchsa",                  false, false, false, true,  false);
             html += thanksLineBuild("PHIL",                 "gcPhil",                   false, false, false, true,  false);
@@ -12914,7 +12920,7 @@ var mainGC = function() {
             html += thanksLineBuild("Tungstène",            "Tungstene",                false, false, false, true,  false);
             html += thanksLineBuild("V60",                  "V60GC",                    false, false, false, true,  false);
             html += thanksLineBuild("winkamol",             "",                         false, false, false, true,  false);
-            var thanksLastUpdate = "05.12.2020";
+            var thanksLastUpdate = "28.12.2020";
 //<-- $$006
             html += "    </tbody>";
             html += "</table>";
