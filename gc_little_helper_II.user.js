@@ -618,6 +618,7 @@ var variablesInit = function(c) {
     c.settings_lists_show_dd = getValue("settings_lists_show_dd", true);
     c.settings_lists_hide_desc = getValue("settings_lists_hide_desc", true);
     c.settings_lists_upload_file = getValue("settings_lists_upload_file", true);
+    c.settings_searchmap_show_btn_save_as_pq = getValue("settings_searchmap_show_btn_save_as_pq", true);
 
     try {
         if (c.userToken === null) {
@@ -4886,6 +4887,179 @@ var mainGC = function() {
         else $("#warning").hide();
     }
 
+// Save as PQ from search map
+    if (document.location.href.match(/\.com\/pocket\/gcquery\.aspx\?.*&gclh_saveAsPQ=true/)) {
+        try {
+            // Calculate the radius.
+            function getRadius(lat, zoom, px) {
+                metersPerPx = 156543.03392 * Math.cos(lat * Math.PI / 180) / Math.pow(2, zoom);
+                return Number(Math.ceil((metersPerPx*px/2/1000)+'e'+3)+'e-'+3);
+            }
+            // Get the difficulty and the terrain rating.
+            function getTDMinMax() {
+                let d = getURLParam('d');
+                let d_min = d ? d.split('-')[0] : 1;
+                let d_max = d ? d.split('-')[1] : 5;
+                let t = getURLParam('t');
+                let t_min = t ? t.split('-')[0] : 1;
+                let t_max = t ? t.split('-')[1] : 5;
+                return {
+                    d_min: d_min,
+                    d_max: d_max,
+                    t_min: t_min,
+                    t_max: t_max
+                };
+            }
+
+            // Radius.
+            let lat = getURLParam('lat');
+            let zoom = getURLParam('zoom');
+            let px = getURLParam('gclh_px');
+            let radius = getRadius(lat, zoom, px);
+            // Cache Types.
+            let cacheTypes = getURLParam('ct') ? decodeURIComponent(getURLParam('ct')).split(',') : false;
+            // Found Status.
+            let showFound = getURLParam('hf') && getURLParam('hf') == 0 ? true : false;
+            let hideFound = getURLParam('hf') && getURLParam('hf') == 1 ? true : false;
+            // Hide Status.
+            let showOwn = getURLParam('ho') && getURLParam('ho') == 0 ? true : false;
+            let hideOwn = getURLParam('ho') && getURLParam('ho') == 1 ? true : false;
+            // Difficult and terrin rating.
+            let d_t = getTDMinMax();
+            // Cache Size.
+            let cacheSize = getURLParam('cs') ? decodeURIComponent(getURLParam('cs')).split(',') : false;
+            // Membership type.
+            let basic = getURLParam('sp') && getURLParam('sp') == 0 ? true : false;
+            let premium = getURLParam('sp') && getURLParam('sp') == 1 ? true : false;
+            // Cache Status.
+            let enabled = getURLParam('sd') && getURLParam('sd') == 0 ? true : false;
+            let disabled = getURLParam('sd') && getURLParam('sd') == 1 ? true : false;
+            // Placed Date.
+            let placedDateStart = false;
+            if (getURLParam('pad')) placedDateStart = getURLParam('pad');
+            if (getURLParam('psd')) placedDateStart = getURLParam('psd');
+            if (getURLParam('pod')) placedDateStart = getURLParam('pod');
+            let placedDateEnd = false;
+            if (getURLParam('pbd')) placedDateEnd = getURLParam('pbd');
+            if (getURLParam('ped')) placedDateEnd = getURLParam('ped');
+            if (getURLParam('pod')) placedDateEnd = getURLParam('pod');
+            // Attribute
+            let attr = getURLParam('att') ? decodeURIComponent(getURLParam('att')).split(',') : false;
+
+            // Warning if filters are not available at PQ.
+            let warningHTML = '<div id="gclh_warning" style="color:#f00"><span>Warning: You have set filters that cannot be implemented in Pocket Queries.<br>This applies to the following filters:</span><ul></ul></div>'
+            if (getURLParam('tr') || getURLParam('sgt') || (getURLParam('nfb') && getURLParam('nfb') != global_me) || (getURLParam('hb') && getURLParam('hb') != global_me) || getURLParam('cc') || getURLParam('cn') || getURLParam('fp')) {
+                $('#ctl00_ContentBody_QueryPanel').before(warningHTML);
+                let unavailableFilters = '';
+                if (getURLParam('tr')) unavailableFilters += '<li>Filter by Wonder</li>';
+                if (getURLParam('sgt')) unavailableFilters += '<li>Only show caches that are part of a GeoTour</li>';
+                if (getURLParam('nfb')) unavailableFilters += '<li>Not found by</li>';
+                if (getURLParam('hb')) unavailableFilters += '<li>Hidden by</li>';
+                if (getURLParam('cc')) unavailableFilters += '<li>Corrected coordinates</li>';
+                if (getURLParam('cn')) unavailableFilters += '<li>Geocache name contains</li>';
+                if (getURLParam('fps')) unavailableFilters += '<li>Minimum Favorite points</li>';
+                $('#gclh_warning ul')[0].innerHTML += unavailableFilters;
+            }
+
+            // Set available filters.
+            $('#ctl00_ContentBody_tbResults').val(1000);
+            // Radius.
+            $('#ctl00_ContentBody_tbRadius').val(radius);
+            $('#ctl00_ContentBody_rbUnitType_1').click();
+            // Cache types.
+            if (cacheTypes !== false) {
+                cacheTypes.forEach(function(elem) {
+                    $(`#ctl00_ContentBody_cbTaxonomy input[value="${elem}"]`).click();
+                });
+            }
+            // Found Status.
+            if (showFound) $('#ctl00_ContentBody_cbOptions_1').click();
+            if (hideFound) $('#ctl00_ContentBody_cbOptions_0').click();
+            // Hide Status.
+            if (showOwn) $('#ctl00_ContentBody_cbOptions_3').click();
+            if (hideOwn) $('#ctl00_ContentBody_cbOptions_2').click();
+            // Difficult and terrin rating.
+            if (d_t['d_min'] > 1 && d_t['d_max'] < 5 && d_t['d_min'] != d_t['d_max']) {
+                // Parameters that are BETWEEN 1 and 5 (1 < x < 5) cannot be implemented.
+                if (!$('#gclh_warning')[0]) $('#ctl00_ContentBody_QueryPanel').before(warningHTML);
+                let unavailableFilters = '<li>The difficulty rating is greater than 1 and less than 5</li>';
+                $('#gclh_warning ul')[0].innerHTML += unavailableFilters;
+            } else {
+                if (d_t['d_min'] == d_t['d_max']) {
+                    $('#ctl00_ContentBody_ddDifficulty')[0].selectedIndex = 1;
+                    $('#ctl00_ContentBody_ddDifficultyScore')[0].selectedIndex = d_t['d_min']*2 - 2;
+                } else if (d_t['d_min'] > 1) {
+                    $('#ctl00_ContentBody_ddDifficultyScore')[0].selectedIndex = d_t['d_min']*2 - 2;
+                } else if ((d_t['d_max'] < 5)) {
+                    $('#ctl00_ContentBody_ddDifficulty')[0].selectedIndex = 2;
+                    $('#ctl00_ContentBody_ddDifficultyScore')[0].selectedIndex = d_t['d_max']*2 - 2;
+                }
+            }
+            if (d_t['t_min'] > 1 && d_t['t_max'] < 5 && d_t['t_min'] != d_t['t_max']) {
+                // Parameters that are BETWEEN 1 and 5 (1 < x < 5) cannot be implemented.
+                if (!$('#gclh_warning')[0]) $('#ctl00_ContentBody_QueryPanel').before(warningHTML);
+                let unavailableFilters = '<li>The terrain rating is greater than 1 and less than 5</li>';
+                $('#gclh_warning ul')[0].innerHTML += unavailableFilters;
+            } else {
+                if (d_t['t_min'] == d_t['t_max']) {
+                    $('#ctl00_ContentBody_ddTerrain')[0].selectedIndex = 1;
+                    $('#ctl00_ContentBody_ddTerrainScore')[0].selectedIndex = d_t['t_min']*2 - 2;
+                } else if (d_t['t_min'] > 1) {
+                    $('#ctl00_ContentBody_ddTerrainScore')[0].selectedIndex = d_t['t_min']*2 - 2;
+                } else if ((d_t['t_max'] < 5)) {
+                    $('#ctl00_ContentBody_ddTerrain')[0].selectedIndex = 2;
+                    $('#ctl00_ContentBody_ddTerrainScore')[0].selectedIndex = d_t['t_max']*2 - 2;
+                }
+            }
+            // Cache Size.
+            if (cacheSize !== false) {
+                cacheSize.forEach(function(elem) {
+                    $(`#ctl00_ContentBody_cbContainers input[value="${elem}"]`).click();
+                });
+            }
+            // Membership type.
+            if (basic) $('#ctl00_ContentBody_cbOptions_4').click();
+            if (premium) $('#ctl00_ContentBody_cbOptions_5').click();
+            // Cache Status.
+            if (enabled) $('#ctl00_ContentBody_cbOptions_13').click();
+            if (disabled) $('#ctl00_ContentBody_cbOptions_12').click();
+            // Date
+            if (placedDateStart !== false || placedDateEnd !== false) {
+                $('#ctl00_ContentBody_rbPlacedBetween').click();
+                // Start Date.
+                if (placedDateStart !== false) {
+                    let date = placedDateStart.split('-');
+                    let yearIndex = $('#ctl00_ContentBody_DateTimeBegin_Year')[0].selectedIndex;
+                    let yearNumber = $('#ctl00_ContentBody_DateTimeBegin_Year option')[yearIndex].innerHTML;
+                    let difference = yearNumber-date[0];
+                    $('#ctl00_ContentBody_DateTimeBegin_Month')[0].selectedIndex = date[1]-1;
+                    $('#ctl00_ContentBody_DateTimeBegin_Day')[0].selectedIndex = date[2]-1;
+                    $('#ctl00_ContentBody_DateTimeBegin_Year')[0].selectedIndex = yearIndex+difference;
+                } else {
+                    $('#ctl00_ContentBody_DateTimeBegin_Month')[0].selectedIndex = 0;
+                    $('#ctl00_ContentBody_DateTimeBegin_Day')[0].selectedIndex = 0;
+                    $('#ctl00_ContentBody_DateTimeBegin_Year')[0].selectedIndex =  $('#ctl00_ContentBody_DateTimeBegin_Year option').length-1;
+                }
+                // End Date
+                if (placedDateEnd !== false) {
+                    let date = placedDateEnd.split('-');
+                    let yearIndex = $('#ctl00_ContentBody_DateTimeEnd_Year')[0].selectedIndex;
+                    let yearNumber = $('#ctl00_ContentBody_DateTimeEnd_Year option')[yearIndex].innerHTML;
+                    let difference = yearNumber-date[0];
+                    $('#ctl00_ContentBody_DateTimeEnd_Month')[0].selectedIndex = date[1]-1;
+                    $('#ctl00_ContentBody_DateTimeEnd_Day')[0].selectedIndex = date[2]-1;
+                    $('#ctl00_ContentBody_DateTimeEnd_Year')[0].selectedIndex = yearIndex+difference;
+                }
+            }
+            // Attributes
+            if (attr !== false) {
+                attr.forEach(function(elem) {
+                    $(`#ctl00_ContentBody_ctlAttrInclude_dtlAttributeIcons input[attid="${elem}"]`).parent().find('.btn-attribute img').click();
+                });
+            }
+        } catch(e) {gclh_error("Save as PQ from search map",e);}
+    }
+
 // Map on create pocket query page.
     if (settings_pq_previewmap && document.location.href.match(/\.com\/pocket\/gcquery\.aspx/)) {
         try {
@@ -9111,6 +9285,22 @@ var mainGC = function() {
                 waitForFilter(0);
             }
 
+            // Create Button to save map as PQ
+            function addCreatePQButton() {
+                if (settings_searchmap_show_btn_save_as_pq && $('#geocache-list')[0] && !$('#gclh_saveAsPQ')[0]) {
+                    let html = '<div class="geocache-action-bar"><a id="gclh_saveAsPQ" href="javascript:void(0)"><img src="../../images/icons/16/pocket_query.png" height="12px">Save as Pocket Query</a></div>';
+                    $('.geocache-action-bar.sidebar-control').after(html);
+                    $('#gclh_saveAsPQ').bind('click', function() {
+                        let px = document.querySelector('.leaflet-gl-layer.mapboxgl-map').offsetWidth;
+                        let url = 'https://www.geocaching.com/pocket/gcquery.aspx';
+                        url += document.location.search.replace(/&asc=(true|false)&sort=\w+/, '');
+                        url += '&gclh_px='+px;
+                        url += '&gclh_saveAsPQ=true';
+                        window.open(url, '_blank');
+                    });
+                }
+            }
+
             // Processing all steps.
             function processAllSearchMap() {
                 setFilter();
@@ -9123,6 +9313,8 @@ var mainGC = function() {
                 collapseActivity();
                 showSearchmapSidebarEnhancements();
                 buildMapControlButtons();
+                setFilter();
+                addCreatePQButton();
             }
 
             // Observer callback for body and checking existence of sidebar and map.
@@ -9358,6 +9550,10 @@ var mainGC = function() {
             css += '#searchmap_sidebar_enhancements .gclh_link:hover {color: #02874d;}';
             css += '#searchmap_sidebar_enhancements a {color: #4a4a4a; text-decoration: none;}';
             css += '#searchmap_sidebar_enhancements img {vertical-align: bottom; height: 14px;}';
+            // Save to PQ
+            css += '#gclh_saveAsPQ {color: #4a4a4a; font-weight: bold; text-decoration: none; font-size: 12px;}';
+            css += '#gclh_saveAsPQ:hover {color: #02874d !important;}';
+            css += '#gclh_saveAsPQ img {vertical-align: middle;}';
             if (css != "") appendCssStyle(css);
         } catch(e) {gclh_error("Improve search map",e);}
     }
@@ -13318,6 +13514,7 @@ var mainGC = function() {
             html += "<img src=" + global_restore_icon + " id='restore_settings_searchmap_disabled_color' title='back to default' style='width: 12px; cursor: pointer;'>";
             html += show_help3("If compact layout is enabled and the name of disabled caches are specially represented, the cache status line above the cache name is hidden.") + onlySearchMap + '<br>';
             html += checkboxy('settings_searchmap_show_hint', 'Show hint of cache automatically on cache detail screen') + onlySearchMap + "<br>";
+            html += checkboxy('settings_searchmap_show_btn_save_as_pq', 'Show button "Save as Pocket Query"') + show_help("Adds a button in the sidebar of the search map to save the actual map view as a pocket query (like on the browse map).<br>Note that not all filters on the map are also available on Pocket Query.") + onlySearchMap + "<br>";
             html += newParameterVersionSetzen('0.10') + newParameterOff;
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>Homezone circles</b>" + onlyBrowseMap + "</div>";
             html += checkboxy('settings_show_homezone', 'Show Homezone circles') + show_help("This option allows to draw Homezone circles around coordinates on the map.") + "<br>";
@@ -14833,6 +15030,7 @@ var mainGC = function() {
                 'settings_lists_show_dd',
                 'settings_lists_hide_desc',
                 'settings_lists_upload_file',
+                'settings_searchmap_show_btn_save_as_pq',
             );
 
             for (var i = 0; i < checkboxes.length; i++) {
@@ -16539,6 +16737,21 @@ var mainGC = function() {
             waitForContent(0);
         }  catch(e) {gclh_error('Get asynchron data',e);}
     }
+
+// get url parameter
+    function getURLParam(key) {
+        var query = window.location.search.substring(1); 
+        var pairs = query.split('&');
+
+        for (let i=0; i<pairs.length; i++) {
+            var pair = pairs[i].split('=');
+            if (pair[0] == key) {
+                if (pair[1].length > 0) return pair[1];
+            }  
+        }
+
+        return undefined;  
+    };
 
 };  // End of mainGC.
 
