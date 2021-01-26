@@ -4007,6 +4007,78 @@ var mainGC = function() {
             function getTbO(tb) {return [$(tb).find('td a')[0].innerHTML, $(tb).find('td select option')[0].value];}
         } catch(e) {gclh_error("Autovisit Old",e);}
     }
+    // Autovisit New Log Page.
+    if (settings_autovisit && document.location.href.match(/\.com\/play\/geocache\/gc\w+\/log/i)) {
+        try {
+            function getTbs() {return $('#tbList .trackables-list li:not(.tb_action_buttons)');}
+            function getType() {return $('.log-types').val();} // returns the log type.
+            function getTb(tb) {return $(tb).find('.stats dd')[1].innerHTML;}; // returns the tb code.
+            function getTbType(tb) {
+                let r = $(tb).find('input[type="radio"]');
+                for (let i=0; i<3; i++) {
+                    if (r[i].checked) {
+                        return r[i].value;
+                    }
+                }
+            }
+            function buildAutos() {
+                let tbs = getTbs();
+                if (tbs.length > 0) {
+                    for (let i=0; i<tbs.length; i++) {
+                        let tbC = getTb(tbs[i]);
+                        if (getType() == 2 || getType() == 10 || getType() == 11) {
+                            if (getValue("autovisit_"+tbC, false) && getTbType(tbs[i]) == 0) {
+                                $(tbs[i]).find('input[type="radio"][value="75"]').click();
+                            }
+                        } else if (getTbType(tbs[i]) == 75) {
+                            $(tbs[i]).find('input[type="radio"][value="0"]').click();
+                        }
+                    }
+                }
+            }
+
+            function waitForContent(waitCount) {
+                if ($('#tbList .trackables-list li')[0] && $('#tbList .trackables-list li').length > 1) {
+                    var tbs = getTbs();
+                    if (tbs.length > 0) {
+                        for (let i=0; i<tbs.length; i++) {
+                            let tbC = getTb(tbs[i]);
+                            // Build UI.
+                            $(tbs[i]).find('.details').after('<div id="gclh_action_list_'+tbC+'"></div>');
+                            $(tbs[i]).find('.actions.radio-toggle-group').appendTo('#gclh_action_list_'+tbC+'');
+                            let html = '<div class="actions radio-toggle-group gclh_autovisit" role="radiogroup">'
+                                    + '    <label>'
+                                    + '        <input type="radio" value="0" name="autovisit_'+tbC+'"'+(getValue("autovisit_"+tbC, false) ? '' : ' checked')+'>'
+                                    + '        <span class="label">No action</span>'
+                                    + '    </label>'
+                                    + '    <label>'
+                                    + '        <input type="radio" value="1" name="autovisit_'+tbC+'"'+(getValue("autovisit_"+tbC, false) ? ' checked' : '')+'>'
+                                    + '        <span class="label">Auto Visit</span>'
+                                    + '    </label>'
+                                    + '</div>';
+                            $('#gclh_action_list_'+tbC).append(html);
+                            // Save TB in autovisit if it new.
+                            if (getValue("autovisit_"+tbC, "new") === "new") {
+                                setValue("autovisit_"+tbC, false);
+                            }
+                            // Save autovisit status onchange
+                            $('.gclh_autovisit input').each(function() {
+                                this.addEventListener('change', function(evt) {
+                                    setValue(evt.target.name, (evt.target.value==1 ? true : false));
+                                    buildAutos();
+                                })
+                            });
+                        }
+                        // Set Autovisit.
+                        buildAutos();
+                        // Change autovisit if the logtype changed
+                        $('select.log-types').bind('change', buildAutos);
+                    }
+                } else {waitCount++; if (waitCount <= 1000) setTimeout(function(){waitForContent(waitCount);}, 100);}
+            }
+            waitForContent(0);
+        } catch(e) {gclh_error("Autovisit New",e);}
+    }
 
 // Default Log Type and Log Signature Old Log Page.
     // Cache:
