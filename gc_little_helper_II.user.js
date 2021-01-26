@@ -465,7 +465,8 @@ var variablesInit = function(c) {
     c.settings_show_fav_percentage = getValue('settings_show_fav_percentage', true);
     c.settings_show_vip_list = getValue('settings_show_vip_list', true);
     c.settings_show_owner_vip_list = getValue('settings_show_owner_vip_list', true);
-    c.settings_autovisit = getValue("settings_autovisit", "true");
+    c.settings_autovisit = getValue("settings_autovisit", true);
+    c.settings_autovisit_default = getValue("settings_autovisit_default", false);
     c.settings_show_thumbnails = getValue("settings_show_thumbnails", true);
     c.settings_imgcaption_on_top = getValue("settings_imgcaption_on_top", false);
     c.settings_hide_avatar = getValue("settings_hide_avatar", false);
@@ -3989,7 +3990,7 @@ var mainGC = function() {
                 var autos = $('#gclh_'+tbC)[0];
                 if (!type || !tbC || !tbN || !select[0] || options.length < 2 || !autos) return;
                 if (start) {
-                    if (getValue("autovisit_"+tbC, false)) autos.checked = true;
+                    if (getValue("autovisit_"+tbC, settings_autovisit_default)) autos.checked = true;
                     else autos.checked = false;
                 }
                 if (options.length == 2 || (options.length == 3 && select[0].selectedIndex != 1)) {
@@ -4048,18 +4049,18 @@ var mainGC = function() {
                             $(tbs[i]).find('.actions.radio-toggle-group').appendTo('#gclh_action_list_'+tbC+'');
                             let html = '<div class="actions radio-toggle-group gclh_autovisit" role="radiogroup">'
                                     + '    <label>'
-                                    + '        <input type="radio" value="0" name="autovisit_'+tbC+'"'+(getValue("autovisit_"+tbC, false) ? '' : ' checked')+'>'
+                                    + '        <input type="radio" value="0" name="autovisit_'+tbC+'"'+(getValue("autovisit_"+tbC, settings_autovisit_default) ? '' : ' checked')+'>'
                                     + '        <span class="label">No action</span>'
                                     + '    </label>'
                                     + '    <label>'
-                                    + '        <input type="radio" value="1" name="autovisit_'+tbC+'"'+(getValue("autovisit_"+tbC, false) ? ' checked' : '')+'>'
+                                    + '        <input type="radio" value="1" name="autovisit_'+tbC+'"'+(getValue("autovisit_"+tbC, settings_autovisit_default) ? ' checked' : '')+'>'
                                     + '        <span class="label">Auto Visit</span>'
                                     + '    </label>'
                                     + '</div>';
                             $('#gclh_action_list_'+tbC).append(html);
                             // Save TB in autovisit if it new.
                             if (getValue("autovisit_"+tbC, "new") === "new") {
-                                setValue("autovisit_"+tbC, false);
+                                setValue("autovisit_"+tbC, settings_autovisit_default);
                             }
                             // Save autovisit status onchange
                             $('.gclh_autovisit input').each(function() {
@@ -13597,6 +13598,8 @@ var mainGC = function() {
             html += newParameterOn3;
             html += checkboxy('settings_auto_open_tb_inventory_list', 'Auto open Trackable Inventory') + show_help("If you enable this option, the list of your Trackables is automatically expended when you load the log page.") + "<br>";
             html += newParameterVersionSetzen(0.9) + newParameterOff;
+            html += checkboxy('settings_autovisit', 'Enable \"AutoVisit\" feature for trackables') + show_help("With this option you are able to select trackables which should be automatically set from \"No action\" to \"Visited\" on every log, if the logtype is \"Found It\", \"Webcam Photo Taken\" or \"Attended\". For other logtypes trackables are automatically set from \"Visited\" to \"No action\". You can select \"AutoVisit\" for each trackable in the list on the bottom of the log form.") + "<br>";
+            html += "&nbsp;&nbsp;" + checkboxy('settings_autovisit_default', 'Set \"AutoVisit\" for all TBs by default') + show_help("With this option all new TBs in your inventory are automatically set to \"AutoVisit\".") + "<br>"
             html += content_settings_show_log_it.replace("show_log_it", "show_log_itX2");
             html += content_settings_logit_for_basic_in_pmo.replace("basic_in_pmo","basic_in_pmoX0");
             html += newParameterOn3;
@@ -13621,7 +13624,6 @@ var mainGC = function() {
 
             html += "<div class='gclh_old_new_line'>Old logging page only</div>";
             html += content_settings_submit_log_button.replace("log_button","log_buttonX2");
-            html += checkboxy('settings_autovisit', 'Enable \"AutoVisit\" feature for trackables') + show_help("With this option you are able to select trackables which should be automatically set from \"No action\" to \"Visited\" on every log, if the logtype is \"Found It\", \"Webcam Photo Taken\" or \"Attended\". For other logtypes trackables are automatically set from \"Visited\" to \"No action\". You can select \"AutoVisit\" for each trackable in the list on the bottom of the log form.") + "<br>";
             html += checkboxy('settings_fieldnotes_old_fashioned', 'Logging drafts old-fashioned') + show_help("This option deactivates on old drafts page the logging of drafts by the new log page and activates logging of drafts by the old-fashioned log page.") + "<br>";
             html += "<table><tbody>";
             html += "  <tr><td>Default log type:</td>";
@@ -14307,6 +14309,7 @@ var mainGC = function() {
             setEvForDepPara("settings_show_copydata_own_stuff_show","restore_settings_show_copydata_own_stuff_value");
             setEvForDepPara("settings_lists_show_dd","settings_lists_hide_desc");
             setEvForDepPara("settings_lists_show_dd","settings_lists_upload_file");
+            setEvForDepPara("settings_autovisit","settings_autovisit_default");
 
             // Abhängigkeiten der Linklist Parameter.
             for (var i = 0; i < 100; i++) {
@@ -14610,6 +14613,7 @@ var mainGC = function() {
                 'settings_show_vip_list',
                 'settings_show_owner_vip_list',
                 'settings_autovisit',
+                'settings_autovisit_default',
                 'settings_show_thumbnails',
                 'settings_imgcaption_on_top',
                 'settings_hide_avatar',
