@@ -4032,7 +4032,7 @@ var mainGC = function() {
                                 $(tbs[i]).find('input[type="radio"][value="75"]').click();
                             }
                         } else if (getTbType(tbs[i]) == 75) {
-                            $(tbs[i]).find('input[type="radio"][value="0"]').click();
+                            $(tbs[i]).find('input[type="radio"][value="0"]')[0].click();
                         }
                     }
                 }
@@ -4063,7 +4063,7 @@ var mainGC = function() {
                                 setValue("autovisit_"+tbC, settings_autovisit_default);
                             }
                             // Save autovisit status onchange
-                            $('.gclh_autovisit input').each(function() {
+                            $(tbs[i]).find('.gclh_autovisit input').each(function() {
                                 this.addEventListener('change', function(evt) {
                                     setValue(evt.target.name, (evt.target.value==1 ? true : false));
                                     buildAutos();
