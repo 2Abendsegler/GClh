@@ -2899,7 +2899,7 @@ var mainGC = function() {
             try {
                 mapservice_link( {
                     uniqueServiceId: "openrouteservice",
-                    urlTemplate: 'https://maps.openrouteservice.org/directions?b='+settings_show_openrouteservice_medium+'&c=0&a={waypoints}',
+                    urlTemplate: 'https://classic-maps.openrouteservice.org/directions?b='+settings_show_openrouteservice_medium+'&c=0&a={waypoints}',
                     layers: {'': { maxZoom: '', displayName: ''}},
                     waypointSeparator: ',',
                     waypointFunction: openrouteserviceWaypoint,
