@@ -2899,7 +2899,7 @@ var mainGC = function() {
             try {
                 mapservice_link( {
                     uniqueServiceId: "openrouteservice",
-                    urlTemplate: 'https://maps.openrouteservice.org/directions?b='+settings_show_openrouteservice_medium+'&c=0&a={waypoints}',
+                    urlTemplate: 'https://classic-maps.openrouteservice.org/directions?b='+settings_show_openrouteservice_medium+'&c=0&a={waypoints}',
                     layers: {'': { maxZoom: '', displayName: ''}},
                     waypointSeparator: ',',
                     waypointFunction: openrouteserviceWaypoint,
@@ -13495,7 +13495,7 @@ var mainGC = function() {
             html += "&nbsp;&nbsp;" + checkboxy('settings_show_openrouteservice_home', 'Use home coordinates as start point') + show_help("You can use your home coordinates, here in the GClh Config, as start point and first waypoint for the route calculation.") + "<br>";
             html += "&nbsp;&nbsp;&nbsp;" + "Medium for locomotion: <select class='gclh_form' id='settings_show_openrouteservice_medium' style='width: 200px;'>";
             html += "  <option value=\"0\" " + (settings_show_openrouteservice_medium == "0" ? "selected=\"selected\"" : "") + ">Car</option>";
-            html += "  <option value=\"1\" " + (settings_show_openrouteservice_medium == "1" ? "selected=\"selected\"" : "") + ">Bike</option>";
+            html += "  <option value=\"1a\" " + (settings_show_openrouteservice_medium == "1a" ? "selected=\"selected\"" : "") + ">Bike</option>";
             html += "  <option value=\"1b\" " + (settings_show_openrouteservice_medium == "1b" ? "selected=\"selected\"" : "") + ">Mountain bike</option>";
             html += "  <option value=\"1c\" " + (settings_show_openrouteservice_medium == "1c" ? "selected=\"selected\"" : "") + ">Racing bike</option>";
             html += "  <option value=\"1f\" " + (settings_show_openrouteservice_medium == "1f" ? "selected=\"selected\"" : "") + ">E-Bike</option>";
