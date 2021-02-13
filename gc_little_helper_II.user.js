@@ -2265,6 +2265,7 @@ var mainGC = function() {
         try {
             // Prepare one click watching.
             var link = '#ctl00_ContentBody_GeoNav_uxWatchlistBtn a';
+            var nr = $('#ctl00_ContentBody_GeoNav_uxWatchlistBtn a').html().match(/\d+/);
             if ($(link)[0].href.match(/action=rem/)) {
                 $(link)[0].innerHTML = 'Stop Watching';
             } else {
@@ -2274,7 +2275,7 @@ var mainGC = function() {
                 $(link).attr('data-wID', wID[1]);
                 $(link)[0].href = 'javascript:void(0);';
                 $(link)[0].addEventListener("click", oneClickWatching, false);
-                changeWatchButton($(link)[0].innerHTML);
+                changeWatchButton($(link)[0].innerHTML, '', nr);
                 var saved = document.createElement('span');
                 saved.setAttribute('id', 'watchSaved');
                 saved.appendChild(document.createTextNode('saved'));
@@ -2288,7 +2289,7 @@ var mainGC = function() {
         $(link).addClass('working');
 
         var url = $(link)[0].getAttribute('data-url');
-        var nr = $('#ctl00_ContentBody_GeoNav_uxWatchlistBtn')[0].childNodes[1].data.replace(/\(|\)|\s/g, '');
+        var nr = $('#ctl00_ContentBody_GeoNav_uxWatchlistBtn a').html().match(/\d+/);
 
         // Watching.
         if (!url.match(/action=rem/)) {
@@ -2315,9 +2316,8 @@ var mainGC = function() {
             $('#watchSaved')[0].style.display = 'inline';
             $('#watchSaved').fadeOut(2000, 'swing');
         }
-        $(link)[0].innerHTML = buttonSetTo;
+        $(link)[0].innerHTML = buttonSetTo+' ('+nr+')';
         $(link)[0].style.backgroundImage = (buttonSetTo == 'Watch' ? 'url(/images/icons/16/watch.png)' : 'url(/images/icons/16/stop_watching.png)');
-        if (nr) $('#ctl00_ContentBody_GeoNav_uxWatchlistBtn')[0].childNodes[1].data = ' (' + nr + ')';
         if (buttonSetTo != 'Watch') {
             $(link)[0].removeEventListener("click", oneClickWatching);
             var wID = $(link)[0].getAttribute('data-wID');
