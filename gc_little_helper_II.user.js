@@ -8233,7 +8233,7 @@ var mainGC = function() {
                     if (user != null) {
                         $(links[i]).after('<span class="gclh_name" id="gclh_name_' + i + '"></span>')
                         $(links[i]).appendTo('#gclh_name_' + i);
-                        let GCTBName = $('#gclh_name_' + i).parent().find('h3 a').html().trim();
+                        let GCTBName = $('#gclh_name_' + i).parent().parent().find('h3 a').html().trim();
                         let GCTBCode = $('#gclh_name_' + i).parent().parent().find('ul li')[0].innerHTML.match(/GC[A-Z0-9]{1,6}/)[0];
                         global_name = GCTBName;
                         global_code = '('+GCTBCode+')';
