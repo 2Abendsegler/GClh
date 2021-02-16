@@ -8920,10 +8920,10 @@ var mainGC = function() {
                     new_text += '<span class="tackables" title="Number of trackables"><svg class="icon-sm"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="/account/app/ui-icons/sprites/global.svg#icon-travelbug-default"></use></svg> ' + trachables + '</span>';
 
                     // Get link to image gallery and image count.
-                    var a = $(text).find('.CacheDetailNavigation ul li').first().find('a[href*="/seek/gallery.aspx?guid="]');
+                    var a = $(text).find('.CacheDetailNavigation ul li').find('a[href*="/seek/gallery.aspx?guid="]');
                     if (a) {
                         var galleryLink = a[0].href;
-                        var imgCount = a[0].nextSibling.data.match(/(\s*)\((\d+)\)/);
+                        var imgCount = a[0].innerHTML.match(/(\s*)\((\d+)\)/);
                         if (galleryLink && imgCount && imgCount[2]) {
                             if (imgCount[2] == "0") new_text += ' | <span title="No Image Gallery"><a>';
                             else new_text += ' | <span title="View Image Gallery"><a class="gclh_link" href="' + galleryLink + '">';
@@ -9957,10 +9957,10 @@ var mainGC = function() {
                             new_text += '<span class="tackables" title="Number of trackables"><svg height="16" width="16" class="icon-sm"><use xmlns:xlink="https://www.w3.org/1999/xlink" xlink:href="/account/app/ui-icons/sprites/global.svg#icon-travelbug-default"></use></svg> ' + trachables + '</span>';
 
                             // Get link to image gallery and image count.
-                            var a = $(text).find('.CacheDetailNavigation ul li').first().find('a[href*="/seek/gallery.aspx?guid="]');
+                            var a = $(text).find('.CacheDetailNavigation ul li').find('a[href*="/seek/gallery.aspx?guid="]');
                             if (a) {
                                 var galleryLink = a[0].href;
-                                var imgCount = a[0].nextSibling.data.match(/(\s*)\((\d+)\)/);
+                                var imgCount = a[0].innerHTML.match(/(\s*)\((\d+)\)/);
                                 if (galleryLink && imgCount && imgCount[2]) {
                                     if (imgCount[2] == "0") new_text += ' | <span title="No Image Gallery"><a style="color: #939597; text-decoration: none;">';
                                     else new_text += ' | <span title="View Image Gallery"><a href="' + galleryLink + '">';
