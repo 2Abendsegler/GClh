@@ -6546,7 +6546,7 @@ var mainGC = function() {
             // Post cache log new page:
             // ----------
             } else if (document.location.href.match(/\.com\/play\/geocache\/gc\w+\/log/) && $('.muted')[0] && $('.muted')[0].children[1]) {
-                var id = $('.muted')[0].children[1].href.match(/^https?:\/\/www\.geocaching\.com\/profile\/\?id=(\d+)/);
+                var id = $('.muted')[0].children[1].href.match(/^https?:\/\/www\.geocaching\.com\/(profile|p)\/\?id=(\d+)/);
                 if (id && id[1]) {
                     var idLink = "/p/default.aspx?id=" + id[1] + "&tab=geocaches";
                     GM_xmlhttpRequest({
@@ -6630,7 +6630,7 @@ var mainGC = function() {
                             span.addEventListener("click", doNotChangeDetailsByClick, false);
                             side[i].appendChild(span);
                             var last = side[i].children.length - 1;
-                            var user = links[i].href.match(/https?:\/\/www\.geocaching\.com\/profile\/\?u=(.*)/);
+                            var user = links[i].href.match(/https?:\/\/www\.geocaching\.com\/(profile|p)\/\?u=(.*)/);
                             gclh_build_vipvupmail(side[i].children[last], decodeUnicodeURIComponent(user[1]));
                         }
 
@@ -6666,7 +6666,7 @@ var mainGC = function() {
                             span.addEventListener("click", doNotChangeDetailsByClick, false);
                             side[i].appendChild(span);
                             var last = side[i].children.length - 1;
-                            var user = links[i].href.match(/https?:\/\/www\.geocaching\.com\/profile\/\?u=(.*)/);
+                            var user = links[i].href.match(/https?:\/\/www\.geocaching\.com\/(profile|p)\/\?u=(.*)/);
                             gclh_build_vipvupmail(side[i].children[last], decodeUnicodeURIComponent(user[1]));
                         }
 
