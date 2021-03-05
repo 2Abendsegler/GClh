@@ -5951,6 +5951,7 @@ var mainGC = function() {
             (is_page("cache_listing")                                            ||      // Cache Listing (nicht in den Logs)
              is_page("owner_dashboard")                                          ||      // Owner Dashboard
              is_page("publicProfile")                                            ||      // Öffentliches Profil
+             is_page("searchmap")                                                ||      // Search Map / New Map
              document.location.href.match(/\.com\/track\/details\.aspx/)         ||      // TB Listing
              document.location.href.match(/\.com\/(seek|track)\/log\.aspx/)      ||      // Post, Edit, View Cache und TB Logs
              document.location.href.match(/\.com\/play\/geocache\/gc\w+\/log/)   ||      // Post Cache Logs neue Seite
@@ -6689,6 +6690,10 @@ var mainGC = function() {
 
             // Owner Dashbord:
             // The VIP/VUP for the Owner Dashboard is in the Owner Dashboard section
+            // because a mutation observer is required.
+            // ----------
+            // Search Map / New Map:
+            // The VIP/VUP for the Search Map is in the Search Map section
             // because a mutation observer is required.
             // ----------
             }
@@ -9077,6 +9082,26 @@ var mainGC = function() {
                 waitForFilter(0);
             }
 
+            function mapVipVup() {
+                if ($('.geocache-owner-name')[0]) {
+                    if ($('.gclh_vip')[0]) $('.gclh_vip')[0].parentNode.remove();
+                    if ($('a[href^="/email/?u="]')[0]) $('a[href^="/email/?u="]')[0].remove();
+                    let link = $('.geocache-owner-name a[href^="https://www.geocaching.com/profile/?u="]')[0];
+                    if (!link) link = $('.geocache-owner-name a[href^="https://www.geocaching.com/p/?u="]')[0];
+                    let user = link.innerHTML;
+                    if ($('.header-top-left h1')[0]) var GCTBName = $('.header-top-left h1').html().trim();
+                    else var GCTBName = $('.gclh-cache-link').html().replace(/<svg.*<\/svg>/, '').trim();
+                    let GCTBCode = $('.cache-metadata-code')[0].innerHTML.trim();
+                    global_name = GCTBName;
+                    global_code = '('+GCTBCode+')';
+                    global_link = '(https://coord.info/'+GCTBCode+')';
+                    gclh_build_vipvupmail(link.parentNode, user);
+                    if (settings_searchmap_compact_layout && $('.gclhOwner .gclh_vip')[0]) {
+                        $('.gclhOwner .gclh_vip')[0].parentNode.addEventListener('click', gclh_add_vip);
+                    }
+                }
+            }
+
             // Processing all steps.
             function processAllSearchMap() {
                 scrollInCacheList(); // Has to be run before searchThisArea.
@@ -9089,6 +9114,7 @@ var mainGC = function() {
                 showSearchmapSidebarEnhancements();
                 buildMapControlButtons();
                 setFilter();
+                mapVipVup();
             }
 
             // Observer callback for body and checking existence of sidebar and map.
