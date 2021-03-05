@@ -4949,7 +4949,7 @@ var mainGC = function() {
             // Cache types.
             if (cacheTypes !== false) {
                 cacheTypes.forEach(function(elem) {
-                    $(`#ctl00_ContentBody_cbTaxonomy input[value="${elem}"]`).click();
+                    $('#ctl00_ContentBody_cbTaxonomy input[value="'+elem+'"]').click();
                 });
             }
             // Found Status.
@@ -4994,7 +4994,7 @@ var mainGC = function() {
             // Cache Size.
             if (cacheSize !== false) {
                 cacheSize.forEach(function(elem) {
-                    $(`#ctl00_ContentBody_cbContainers input[value="${elem}"]`).click();
+                    $('#ctl00_ContentBody_cbContainers input[value="'+elem+'"]').click();
                 });
             }
             // Membership type.
@@ -5034,7 +5034,7 @@ var mainGC = function() {
             // Attributes
             if (attr !== false) {
                 attr.forEach(function(elem) {
-                    $(`#ctl00_ContentBody_ctlAttrInclude_dtlAttributeIcons input[attid="${elem}"]`).parent().find('.btn-attribute img').click();
+                    $('#ctl00_ContentBody_ctlAttrInclude_dtlAttributeIcons input[attid="'+elem+'"]').parent().find('.btn-attribute img').click();
                 });
             }
         } catch(e) {gclh_error("Save as PQ from search map",e);}
