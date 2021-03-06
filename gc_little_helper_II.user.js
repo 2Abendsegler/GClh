@@ -9246,7 +9246,7 @@ var mainGC = function() {
                 css += '#add-to-list-menu button {padding: 6px 24px !important; margin-right: 16px !important;}';
                 css += '.existing-list {margin-bottom: 0 !important;}';
                 // BML
-                css += '.list-cache-navigation.has-label {padding: 29px 0 6px !important;}';
+                css += '.list-cache-navigation.has-label {padding: 5px 0 6px !important;}';
                 css += '.mode-toggle-container {padding: 5px 14px 5px 12px;} .mode-toggle {padding: 6px;}';
                 css += '.dismiss-list-cache-button {margin: 2px !important;}';
                 css += '.dismiss-active-list-button {padding: 0px 0px 5px 0px;}';
@@ -9261,7 +9261,7 @@ var mainGC = function() {
                 css += '.list-details-left .list-name {overflow: hidden; text-overflow: ellipsis; max-width: 285px;}';
                 css += '.geocache-list-container.lom-ld-flag-padding {padding-bottom: 0px !important;}';
                 css += '.geocache-list-container .pagination-label {padding: 0 0 5px 0 !important;}';
-                css += '.cache-detail-preview.list-cache {height: calc(100% + 48px) !important; margin-top: -24px;}';
+                css += '.cache-detail-preview.list-cache {height: calc(100% + 24px) !important;}';
                 css += '#map-chip {display: none !important;}';
                 // Filter
                 css += '#search-filter-type .type-label.focused, .search-filters-attributes ul.wonders .focused label {outline: unset !important;}';
