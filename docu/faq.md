@@ -175,7 +175,7 @@ You can also open a <a href="https://github.com/2Abendsegler/GClh/issues/new/cho
 <a id="9-en"></a>
 ## 9. How can I report a bug or a feature request?
 For a bug or a feature request you can open a <a href="https://github.com/2Abendsegler/GClh/issues/new/choose">new issue</a> on our development platform at Github.<br>
-Or you can create a note in one of the forums. See <a href="#8-de">FAQ 8</a>.<br>
+Or you can create a note in one of the forums. See <a href="#8-en">FAQ 8</a>.<br>
 <br>
 
 ---
