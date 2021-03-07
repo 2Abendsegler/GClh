@@ -8,7 +8,7 @@
 <a href="#4-en">4. Hints for using on Android devices.</a> | <a href="#4-de">4. Hinweise f체r die Nutzung auf Android Ger채ten.</a>
 <a href="#5-en">5. How can I start the Config of the GClh?</a> | <a href="#5-de">5. Wie kann ich die Konfiguration des GClh starten?</a>
 <a href="#6-en">6. How can I install the GClh on Android devices?</a> | <a href="#6-de">6. Wie kann ich den GClh auf Android Ger채ten installieren?</a>
-<a href="#7-en">7. How can I contribute to GClh II?</a> | <a href="#7-de">7. Wie kann ich etwas zu GClh II beitragen?</a>
+<a href="#7-en">7. How can I contribute to GClh?</a> | <a href="#7-de">7. Wie kann ich etwas zu GClh beitragen?</a>
 
 ---
 <a id="en"></a><img src="../images/flag_en.png">
@@ -149,7 +149,7 @@ See <a href="../docu/tips_installation.md#android_en" title="Link to 'Tips for t
 <br>
 
 <a id="7-en"></a>
-## 7. How can I contribute to GClh II?
+## 7. How can I contribute to GClh?
 We are happy about improvement suggestions, bugfixes or new features. This is realized via pull requests. You can read how to create a Pull-Request here: <a href="https://github.com/2Abendsegler/GClh/blob/master/docu/how_to_contribute.md#en">How to contribute</a>
 <br>
 
@@ -292,6 +292,6 @@ Siehe <a href="../docu/tips_installation.md#android_de" title="Link zu 'Tipps f�
 <br>
 
 <a id="7-de"></a>
-## 7. Wie kann ich etwas zu GClh II beitragen?
+## 7. Wie kann ich etwas zu GClh beitragen?
 Wir freuen uns 체ber Verbesserungsvorschl채ge, Bugfixes oder neue Features. Dies geschieht bei uns 체ber Pull Requests. Wie du so etwas anlegst kannst du hier nachlesen: <a href="https://github.com/2Abendsegler/GClh/blob/master/docu/how_to_contribute.md#de">Wie kannst du etwas beitragen?</a>
 <br>
