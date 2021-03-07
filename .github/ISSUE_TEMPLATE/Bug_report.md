@@ -1,12 +1,12 @@
 ---
-name: Bug report or question
-about: Create a report to help us improve
+name: Bug report
+about: Create a bug report to help us improve
 custom_fields: []
 
 ---
 
-**Describe the bug or question**
-A clear and concise description of what the bug or question is.
+**Describe the bug**
+A clear and concise description of what the bug is.
 
 **To Reproduce**
 Steps to reproduce the behavior:
