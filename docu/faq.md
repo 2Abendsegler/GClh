@@ -151,12 +151,12 @@ See <a href="../docu/tips_installation.md#android_en" title="Link to 'Tips for t
 
 <a id="7-en"></a>
 ## 7. How can I contribute to GClh?
-We are happy about improvement suggestions, bugfixes or new features. This is realized via pull requests. You can read how to create a Pull-Request here: <a href="https://github.com/2Abendsegler/GClh/blob/master/docu/how_to_contribute.md#en">How to contribute</a>
+We are happy about improvement suggestions, bugfixes or new features. This is realized via pull requests. You can read how to create a Pull-Request here: <a href="https://github.com/2Abendsegler/GClh/blob/master/docu/how_to_contribute.md#en">How to contribute</a><br>
 <br>
 
 <a id="8-en"></a>
 ## 8. Where can I get help to GClh?
-If you need help with the GClh, or if you have questions about the GClh, you can create a note in the following forums:
+If you need help with the GClh, or if you have questions about the GClh, you can create a note in the following forums:<br>
 <ul>
 	<li>
 		<a href="https://geoclub.de/forum/viewforum.php?f=117">Geoclub Forum</a>
@@ -168,7 +168,7 @@ If you need help with the GClh, or if you have questions about the GClh, you can
 		<a href="https://www.swissgeocacheforum.ch/forum/topic/12872-gc-little-helper-ii/">Swiss Geocache Forum</a>
 	</li>
 </ul>
-You can also open a <a href="https://github.com/2Abendsegler/GClh/issues/new/choose">new issue</a> on our development platform at Github.
+You can also open a <a href="https://github.com/2Abendsegler/GClh/issues/new/choose">new issue</a> on our development platform at Github.<br>
 <br>
 
 ---
@@ -311,12 +311,12 @@ Siehe <a href="../docu/tips_installation.md#android_de" title="Link zu 'Tipps f�
 
 <a id="7-de"></a>
 ## 7. Wie kann ich etwas zu GClh beitragen?
-Wir freuen uns über Verbesserungsvorschläge, Bugfixes oder neue Features. Dies geschieht bei uns über Pull Requests. Wie du so etwas anlegst kannst du hier nachlesen: <a href="https://github.com/2Abendsegler/GClh/blob/master/docu/how_to_contribute.md#de">Wie kannst du etwas beitragen?</a>
+Wir freuen uns über Verbesserungsvorschläge, Bugfixes oder neue Features. Dies geschieht bei uns über Pull Requests. Wie du so etwas anlegst kannst du hier nachlesen: <a href="https://github.com/2Abendsegler/GClh/blob/master/docu/how_to_contribute.md#de">Wie kannst du etwas beitragen?</a><br>
 <br>
 
 <a id="8-de"></a>
 ## 8. Wo bekomme ich Hilfe zum GClh?
-Wenn du Hilfe zum GClh benötigst, oder wenn du Fragen zum GClh hast, dann kannst du dich in folgenden Foren melden:
+Wenn du Hilfe zum GClh benötigst, oder wenn du Fragen zum GClh hast, dann kannst du dich in folgenden Foren melden:<br>
 <ul>
 	<li>
 		<a href="https://geoclub.de/forum/viewforum.php?f=117">Geoclub Forum</a>
@@ -328,6 +328,6 @@ Wenn du Hilfe zum GClh benötigst, oder wenn du Fragen zum GClh hast, dann kanns
 		<a href="https://www.swissgeocacheforum.ch/forum/topic/12872-gc-little-helper-ii/">Swiss Geocache Forum</a>
 	</li>
 </ul>
-Außerdem kannst du auch ein <a href="https://github.com/2Abendsegler/GClh/issues/new/choose">neues Issue</a> auf unserer Entwicklungsplattform bei Github eröffnen.
+Außerdem kannst du auch ein <a href="https://github.com/2Abendsegler/GClh/issues/new/choose">neues Issue</a> auf unserer Entwicklungsplattform bei Github eröffnen.<br>
 <br>
 
