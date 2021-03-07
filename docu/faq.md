@@ -9,6 +9,7 @@
 <a href="#5-en">5. How can I start the Config of the GClh?</a> | <a href="#5-de">5. Wie kann ich die Konfiguration des GClh starten?</a>
 <a href="#6-en">6. How can I install the GClh on Android devices?</a> | <a href="#6-de">6. Wie kann ich den GClh auf Android Geräten installieren?</a>
 <a href="#7-en">7. How can I contribute to GClh?</a> | <a href="#7-de">7. Wie kann ich etwas zu GClh beitragen?</a>
+<a href="#8-en">8. Where can I get help to GClh?</a> | <a href="#8-de">8. Wo bekomme ich Hilfe zum GClh?</a>
 
 ---
 <a id="en"></a><img src="../images/flag_en.png">
@@ -151,6 +152,23 @@ See <a href="../docu/tips_installation.md#android_en" title="Link to 'Tips for t
 <a id="7-en"></a>
 ## 7. How can I contribute to GClh?
 We are happy about improvement suggestions, bugfixes or new features. This is realized via pull requests. You can read how to create a Pull-Request here: <a href="https://github.com/2Abendsegler/GClh/blob/master/docu/how_to_contribute.md#en">How to contribute</a>
+<br>
+
+<a id="8-en"></a>
+## 5. Where can I get help to GClh?
+Wenn du Hilfe zum GClh benötigst, oder wenn du Fragen zum GClh hast, dann kannst du dich in folgenden Foren melden:
+<ul>
+	<li>
+		<a href="https://geoclub.de/forum/viewforum.php?f=117">Geoclub Forum</a>
+	</li>
+	<li>
+		<a href="https://forums.geocaching.com/GC/index.php?/topic/343005-gc-little-helper-ii/">Geocaching Forum</a>
+	</li>
+	<li>
+		<a href="https://www.swissgeocacheforum.ch/forum/topic/12872-gc-little-helper-ii/">Swiss Geocache Forum</a>
+	</li>
+</ul>
+Außerdem kannst du auch ein <a href="https://github.com/2Abendsegler/GClh/issues/new/choose">neues Issue</a> auf unserer Entwicklungsplattform bei Github eröffnen.
 <br>
 
 ---
