@@ -13,7 +13,7 @@
 <a href="#9-en">9. How can I report a bug or a feature request?</a> | <a href="#9-de">9. Wie kann ich einen Fehler melden oder eine Anfrage zu einem neuen Feature stellen?</a>
 
 ---
-<a id="en"></a><img src="../images/flag_en.png">
+<a id="en" href="#en"></a><img src="../images/flag_en.png">
 
 <a id="1-en"></a>
 ## 1. What can I do if the Warning is displayed "GClh is running more than once"?
