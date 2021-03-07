@@ -25,7 +25,7 @@
 // @connect          api.geonames.org
 // @connect          coord.info
 // @description      Some little things to make life easy (on www.geocaching.com).
-// @copyright        2010-2016 Torsten Amshove, 2016-2020 2Abendsegler, 2017-2020 Ruko2010
+// @copyright        2010-2016 Torsten Amshove, 2016-2021 2Abendsegler, 2017-2021 Ruko2010
 // @author           Torsten Amshove; 2Abendsegler; Ruko2010
 // @icon             https://raw.githubusercontent.com/2Abendsegler/GClh/master/images/gclh_logo.png
 // @license          GNU General Public License v2.0
@@ -151,6 +151,8 @@ var constInit = function(c) {
     c.urlConfigSt = "https://raw.githubusercontent.com/2Abendsegler/GClh/master/data/config_standard.txt";
     c.urlChangelog = "https://github.com/2Abendsegler/GClh/blob/master/docu/changelog.md#readme";
     c.urlFaq = "https://github.com/2Abendsegler/GClh/blob/master/docu/faq.md#readme";
+    c.urlFaqHelp = "https://github.com/2Abendsegler/GClh/blob/master/docu/faq.md#8-en";
+    c.urlFaqReport = "https://github.com/2Abendsegler/GClh/blob/master/docu/faq.md#9-en";
     c.urlDocu = "https://github.com/2Abendsegler/GClh/blob/master/docu/";
     c.urlImages = "https://raw.githubusercontent.com/2Abendsegler/GClh/master/images/";
     c.urlImagesSvg = "https://rawgit.com/2Abendsegler/GClh/master/images/";
@@ -2681,13 +2683,13 @@ var mainGC = function() {
 
             if (waypoint.source == "waypoint") {
                 data.context.temp.count++;
-                radius = ((waypoint.typeid == 219 /*Physical Stage*/ || waypoint.typeid == 220 /*Final Location*/ ) ? 161 : 0);
+                radius = ((waypoint.typeid == 219 || waypoint.typeid == 220) ? 161 : 0); // 219 Physical Stage, 220 Final Location
                 name = normalizeName(waypoint.prefixedName);
             } else if (waypoint.source == "original" ) {
                 radius = 0;
                 if(settings_show_radius_on_flopps){
-                    if (waypoint.typeid == 2 /* Traditional Geocache */ ) radius = 161; //  161m radius
-                    else if (waypoint.typeid == 8 /* Mystery cache */) radius = 3200; // Mystery cache 3200m radius
+                    if (waypoint.typeid == 2) radius = 161; //  161m radius
+                    else if (waypoint.typeid == 8) radius = 3200; // Mystery cache 3200m radius
                 }
                 name = normalizeName(waypoint.gccode+'_ORIGINAL');
             } else if (waypoint.source == "listing" ) {
@@ -2699,8 +2701,8 @@ var mainGC = function() {
                             hasCorrectedCoordinates = true;
                         }
                     }
-                    if (waypoint.typeid == 2 /* Traditional Geocache */ ) radius = 161; //  161m radius
-                    else if (waypoint.typeid == 8 /* Mystery cache */) radius = (hasCorrectedCoordinates ? 161 : 3200); // Mystery cache 3200m radius for unsolved, 161 for corrected coordinates
+                    if (waypoint.typeid == 2) radius = 161; //  161m radius
+                    else if (waypoint.typeid == 8) radius = (hasCorrectedCoordinates ? 161 : 3200); // Mystery cache 3200m radius for unsolved, 161 for corrected coordinates
                 }
                 name = normalizeName(waypoint.gccode);
             } else if (waypoint.source == "GClh Config" ) {
@@ -3836,7 +3838,12 @@ var mainGC = function() {
                 $('#log-previewPanel button').toggleClass('handle-open');
             });
 
-            appendCssStyle('.markdown-output span.WaypointLog{color:#4a4a4a;display:block;font-weight:bold;margin-bottom:2em}.markdown-output{font-size:1.08em;line-height:1.375em;overflow:hidden;word-wrap:break-word}.markdown-output h1{color:#4a4a4a;font-size:1.285em;font-weight:bold;line-height:1.375em;margin:0}.markdown-output h2{color:#4a4a4a;font-size:1.285em;font-weight:normal;line-height:1.375em;margin:0}.markdown-output h3{color:#00b265;font-size:1.285em;font-weight:normal;line-height:1.375em;margin:0;text-transform:uppercase}.markdown-output hr{background:#d8d8d8;height:2px;margin:1.45em 0}.markdown-output p{color:#4a4a4a;margin:0 0 1.5em}.markdown-output li{list-style:inherit}.markdown-output ul{list-style-type:disc}.markdown-output ol{list-style-type:decimal}.markdown-output ul,.markdown-output ol{color:#4a4a4a;margin:0 1.5em 1.5em .75em;padding-left:1.5em}.markdown-output li ul{list-style-type:none;margin-left:0;margin-bottom:0;padding-left:0}.markdown-output li ul li::before{background-color:#e0b70a;border-radius:50%;content:"";display:inline-block;height:5px;margin-right:.75em;margin-top:-1px;width:5px;vertical-align:middle}.markdown-output li ol{margin-left:0;margin-bottom:0}.markdown-output blockquote{background:none;font-style:normal;margin:1.5em .75em;padding:0}.markdown-output blockquote p{color:#00b265;font-weight:bold}.markdown-output blockquote p::before{content:\'“\'}.markdown-output blockquote p::after{content:\'”\'}.markdown-output a,#bd .markdown-output a{color:#006cff;text-decoration:none}.markdown-output a:hover,.markdown-output a:focus{border-bottom:1px solid #006cff;color:#006cff}.markdown-output .AlignRight a{color:#00447c}.markdown-output .AlignRight a:visited{color:#00a0b0}.markdown-output .AlignRight a:hover,.markdown-output .AlignRight a:focus{border-bottom:none;color:#6c8e10}.markdown-output~.AlternatingRow,table .markdown-output~tr.AlternatingRow td{background:#fff}.markdown-output.BorderBottom td{border-bottom-color:#9b9b9b}.markdown-output.BorderBottom:last-child td{border-bottom:none}.markdown-output>td:last-child{padding-bottom:2.5em}');
+            var css = '';
+            css += '.markdown-output img {vertical-align: middle;}';
+            css += '.markdown-output span.WaypointLog{color:#4a4a4a;display:block;font-weight:bold;margin-bottom:2em}.markdown-output{font-size:1.08em;line-height:1.375em;overflow:hidden;word-wrap:break-word}.markdown-output h1{color:#4a4a4a;font-size:1.285em;font-weight:bold;line-height:1.375em;margin:0}.markdown-output h2{color:#4a4a4a;font-size:1.285em;font-weight:normal;line-height:1.375em;margin:0}.markdown-output h3{color:#00b265;font-size:1.285em;font-weight:normal;line-height:1.375em;margin:0;text-transform:uppercase}.markdown-output hr{background:#d8d8d8;height:2px;margin:1.45em 0}.markdown-output p{color:#4a4a4a;margin:0 0 1.5em}.markdown-output li{list-style:inherit}.markdown-output ul{list-style-type:disc}';
+            css += '.markdown-output ol{list-style-type:decimal}.markdown-output ul,.markdown-output ol{color:#4a4a4a;margin:0 1.5em 1.5em .75em;padding-left:1.5em}.markdown-output li ul{list-style-type:none;margin-left:0;margin-bottom:0;padding-left:0}.markdown-output li ul li::before{background-color:#e0b70a;border-radius:50%;content:"";display:inline-block;height:5px;margin-right:.75em;margin-top:-1px;width:5px;vertical-align:middle}.markdown-output li ol{margin-left:0;margin-bottom:0}.markdown-output blockquote{background:none;font-style:normal;margin:1.5em .75em;padding:0}.markdown-output blockquote p{color:#00b265;font-weight:bold}.markdown-output blockquote p::before{content:\'“\'}.markdown-output blockquote p::after{content:\'”\'}';
+            css += '.markdown-output a,#bd .markdown-output a{color:#006cff;text-decoration:none}.markdown-output a:hover,.markdown-output a:focus{border-bottom:1px solid #006cff;color:#006cff}.markdown-output .AlignRight a{color:#00447c}.markdown-output .AlignRight a:visited{color:#00a0b0}.markdown-output .AlignRight a:hover,.markdown-output .AlignRight a:focus{border-bottom:none;color:#6c8e10}.markdown-output~.AlternatingRow,table .markdown-output~tr.AlternatingRow td{background:#fff}.markdown-output.BorderBottom td{border-bottom-color:#9b9b9b}.markdown-output.BorderBottom:last-child td{border-bottom:none}.markdown-output>td:last-child{padding-bottom:2.5em}';
+            appendCssStyle(css);
         } catch(e) {gclh_error("Logpage Log Preview",e);}
     }
 // Replicate TB-Header to bottom
@@ -5086,8 +5093,8 @@ var mainGC = function() {
                         }
                         // BML: Disable "Add a description about your List".
                         css += '.list-description.faded {display: none;}';
-                        // BML: Disable ratings if no ratings available.
-                        if ($('.list-details-ratings .no-list-ratings')[0]) {
+                        // BML: Disable ratings in own BML if no ratings available.
+                        if (!$('.list-details-ratings .rate-list-link')[0] && !$('.list-details-ratings .list-ratings-link')[0]) {
                             css += '.list-details-ratings {display: none;}';
                         }
                         // FAVORITES: Disable description.
@@ -8548,7 +8555,7 @@ var mainGC = function() {
             }
 
             // Virtually hit "Search this area" after dragging the map.
-            var global_isBM = document.location.href.match(/\.com\/play\/map\?bm=/);
+            var global_isBM = document.location.href.match(/\.com\/play\/(map\?bm=|map\/BM|map\/lists\/BM)/);
             function searchThisArea() {
                 if (!global_isBM && !document.location.href.match(/\.com\/play\/map\?(.*)&nfb=GClh/) && settings_searchmap_autoupdate_after_dragging) {
                     if (document.getElementById('clear-map-control')) {
@@ -8748,9 +8755,8 @@ var mainGC = function() {
             var sidebar_enhancements_addToList_buffer = {}
 
             function showSearchmapSidebarEnhancements(){
-                if(!settings_show_enhanced_map_popup) return true;
 
-                if (!document.querySelector('.cache-open-text-cta')) return;
+                if(!settings_show_enhanced_map_popup) return true;
 
                 var locations = []; // Location for the Cache
 
@@ -10342,26 +10348,24 @@ var mainGC = function() {
                         var item = undefined;
                         var countries = $.grep(country_id, function(e){return e.n == name;});
                         var states = $.grep(states_id, function(e){return e.n == name;});
-
-                        /* ambiguous matches of state (or country) name are not handled. Known cases:
-                            Distrito Federal - Mexiko: Distrito Federal (state) / Brazil: Distrito Federal (state)
-                            Limburg    - Belgium: Limburg (state) / Netherlands: Limburg (state)
-                        */
+                        // ambiguous matches of state (or country) name are not handled. Known cases:
+                        // Distrito Federal - Mexiko: Distrito Federal (state) / Brazil: Distrito Federal (state)
+                        // Limburg    - Belgium: Limburg (state) / Netherlands: Limburg (state)
                         if        (  (countries && countries[0]) && !(states && states[0]) ) {
                             parameter = "c";
                             item = countries;
                         } else if ( !(countries && countries[0]) &&  (states && states[0]) ) {
                             parameter = "r";
                             item = states;
-                        /* case: country/state */
+                        // case: country/state
                         } else if (  (countries && countries[0]) &&  (states && states[0]) ) {
-                            /* Known case: Georgia - United States/Georgia (state) and Georgia (country) */
+                            // Known case: Georgia - United States/Georgia (state) and Georgia (country)
                             if ( indecator[0].getAttribute("id") == "ctl00_ContentBody_ProfilePanel1_USMapControl1_uxTotalCount") {
                                 parameter = "r";
                                 item = states;
                             } else {
-                                /* Main rule: country first
-                                 Known case: Luxembourg - Luxembourg (country) / Belgium: Luxembourg (state) */
+                                //Main rule: country first
+                                // Known case: Luxembourg - Luxembourg (country) / Belgium: Luxembourg (state)
                                 parameter = "c";
                                 item = countries;
                             }
@@ -11642,10 +11646,10 @@ var mainGC = function() {
         div.setAttribute("style", "margin-top: -50px;");
         var prop = ' style="border: none; visibility: hidden; width: 2px; height: 2px;" alt="">';
 //--> $$002
-        var code = '<img src="https://c.andyhoppe.com/1608013996"' + prop + // Besucher
-                   '<img src="https://c.andyhoppe.com/1608014031"' + prop + // Seitenaufrufe
-                   '<img src="https://www.worldflagcounter.com/hrv"' + prop +
-                   '<img src="https://s11.flagcounter.com/count2/y1ii/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
+        var code = '<img src="https://c.andyhoppe.com/1615114985"' + prop + // Besucher
+                   '<img src="https://c.andyhoppe.com/1615115037"' + prop + // Seitenaufrufe
+                   '<img src="https://www.worldflagcounter.com/hBI"' + prop +
+                   '<img src="https://s11.flagcounter.com/count2/aQ3T/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
 //<-- $$002
         div.innerHTML = code;
         side.appendChild(div);
@@ -12919,12 +12923,12 @@ var mainGC = function() {
 
             html += "<div id='gclh_config_content1'>";
             html += "&nbsp;" + "<font style='float: right; font-size: 11px; ' >";
-            html += "<a href='https://geoclub.de/forum/viewforum.php?f=117' title='Help is available on the Geoclub forum' target='_blank'>Help</a> | ";
-            html += "<a href='"+urlFaq+"' title='Frequently asked questions on GitHub' target='_blank'>FAQ</a> | ";
-            html += "<a href='https://github.com/2Abendsegler/GClh/issues?q=is:issue is:open sort:created-desc' title='Show/open issues on GitHub' target='_blank'>Issues</a> | ";
-            html += "<a href='"+urlChangelog+"' title='Documentation of changes and new features on GitHub' target='_blank'>Changelog</a> | ";
+            html += "<a href='"+urlFaqHelp+"' title='How can I get help? (GitHub)' target='_blank'>Help</a> | ";
+            html += "<a href='"+urlFaq+"' title='Frequently asked questions (GitHub)' target='_blank'>FAQ</a> | ";
+            html += "<a href='"+urlFaqReport+"' title='Bug report and feature request (GitHub)' target='_blank'>Bug & new feature</a> | ";
+            html += "<a href='"+urlChangelog+"' title='Documentation of changes and new features (GitHub)' target='_blank'>Changelog</a> | ";
             html += "<a id='check_for_upgrade' href='#' style='cursor: pointer' title='Check for new version'>Upgrade</a> | ";
-            html += "<a href='https://github.com/2Abendsegler/GClh/tree/master' title='Development plattform and issue system' target='_blank'>GitHub</a> | ";
+            html += "<a href='https://github.com/2Abendsegler/GClh/tree/master' title='Development plattform and issue system (GitHub)' target='_blank'>GitHub</a> | ";
             html += "<a id='rc_link' href='#' style='cursor: pointer' title='Reset some configuration data'>Reset</a> | ";
             html += "<a id='thanks_link' href='#' style='cursor: pointer' title='Note of thanks'>Thanks</a></font>";
             html += "</div>";
@@ -12970,6 +12974,7 @@ var mainGC = function() {
             html += thanksLineBuild("dontpänic",            "haarspalter",              false, false, true,  false, false);
             html += thanksLineBuild("Bananeweizen",         "",                         false, false, true,  false, false);
             html += thanksLineBuild("sunhillduo",           "Yannick-XY",               false, false, true,  false, false);
+            html += thanksLineBuild("ColleIsarco",          "",                         false, false, true,  true, false);
             html += thanksLineBuild("ztNFny",               "",                         false, false, true,  true,  true);
             // Bug Reporting alphabetisch.
             html += thanksLineBuild("",                     "allyourcodearebelongtous", false, false, false, true,  false);
@@ -12993,7 +12998,7 @@ var mainGC = function() {
             html += thanksLineBuild("Tungstène",            "Tungstene",                false, false, false, true,  false);
             html += thanksLineBuild("V60",                  "V60GC",                    false, false, false, true,  false);
             html += thanksLineBuild("winkamol",             "",                         false, false, false, true,  false);
-            var thanksLastUpdate = "28.12.2020";
+            var thanksLastUpdate = "07.03.2021";
 //<-- $$006
             html += "    </tbody>";
             html += "</table>";
@@ -16344,17 +16349,17 @@ var mainGC = function() {
     }
 
 // Add a link to copy to clipboard.
-    /* element_to_copy: innerHtml of this element will be copied. If you pass
-                        a string, the string will be the copied text. In this
-                        case you have to pass an anker_element!!!
-       anker_element:   After this element the copy marker will be inserted,
-                        if you set this to null, the element_to_copy will be
-                        used as an anker.
-       title:           You can enter a text that will be displayed between
-                        Copy --TEXT OF TITLE-- to clipboard. If you leave it
-                        blank, it will just "Copy to clipboard" be displayed.
-       style            You can add styles to the surrounding span by passing
-                        it in this variable.  */
+    // element_to_copy: innerHtml of this element will be copied. If you pass
+    //                  a string, the string will be the copied text. In this
+    //                  case you have to pass an anker_element!!!
+    // anker_element:   After this element the copy marker will be inserted,
+    //                  if you set this to null, the element_to_copy will be
+    //                  used as an anker.
+    // title:           You can enter a text that will be displayed between
+    //                  Copy --TEXT OF TITLE-- to clipboard. If you leave it
+    //                  blank, it will just "Copy to clipboard" be displayed.
+    // style:           You can add styles to the surrounding span by passing
+    //                  it in this variable.
     function addCopyToClipboardLink(element_to_copy, anker_element= null, title="", style= ""){
         try {
             var ctoc = false;
@@ -16410,14 +16415,13 @@ var mainGC = function() {
     }
 
 // Get data from asynchron pages.
-    /* url:               requested url.
-     * requiredElement:   This element is required for loding. Write it as text e.g. "div#content .loading"
-     * handler:           The function after the frame is loaded. e.g. function(response){$(response).doSomethink}
-     * handlerOnNotFound: The function if the requiredElement not found.
-     * id:                The ID of the iframe is required if more than one asynchronous page are requested.
-     * maxWaitCount:      How often you ask for the content. (optional; default: 100)
-     * waitTime:          How long you will wait in ms. (optional; default: 15000 (=15s))
-    */
+    // url:               requested url.
+    // requiredElement:   This element is required for loding. Write it as text e.g. "div#content .loading"
+    // handler:           The function after the frame is loaded. e.g. function(response){$(response).doSomethink}
+    // handlerOnNotFound: The function if the requiredElement not found.
+    // id:                The ID of the iframe is required if more than one asynchronous page are requested.
+    // maxWaitCount:      How often you ask for the content. (optional; default: 100)
+    // waitTime:          How long you will wait in ms. (optional; default: 15000 (=15s))
     function getAsynData(url, requiredElement, handler, handlerOnNotFound, id='getAsynData', maxWaitCount=100, waitTime=15000) {
         try {
             iframe = document.createElement('iframe');
@@ -16638,9 +16642,9 @@ function is_page(name) {
             if (url.match(/^\/promos/)) status = true;
             break;
         case "track":
-            if (url.match(/^\/track\/($|#$|edit|upload)/)) status = true;
+            if (url.match(/^\/track\/($|#$|edit|upload|default.aspx)/)) status = true;
             break;
-        case "souvenirs": /* only dashboard TODO public profile page */
+        case "souvenirs": // only dashboard TODO public profile page
             if (url.match(/^\/my\/souvenirs\.aspx/)) status = true;
             break;
         default:
