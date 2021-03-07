@@ -179,7 +179,7 @@ Or you can create a note in one of the forums. See <a href="#8-en">FAQ 8</a>.<br
 <br>
 
 ---
-<a id="de"></a><img src="../images/flag_de.png">
+<a id="de" href="#de"><img src="../images/flag_de.png"></a>
 
 <a id="1-de"></a>
 ## 1. Was kann ich tun wenn die Warnung angezeigt wird, dass GClh mehr als einmal läuft?
