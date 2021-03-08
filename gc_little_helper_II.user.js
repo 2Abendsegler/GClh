@@ -2268,7 +2268,7 @@ var mainGC = function() {
             var link = '#ctl00_ContentBody_GeoNav_uxWatchlistBtn a';
             var nr = $('#ctl00_ContentBody_GeoNav_uxWatchlistBtn a').html().match(/\d+/);
             if ($(link)[0].href.match(/action=rem/)) {
-                $(link)[0].innerHTML = 'Stop Watching';
+                $(link)[0].innerHTML = 'Stop Watching ('+nr+')';
             } else {
                 $(link)[0].innerHTML = 'Watch';
                 $(link).attr('data-url', $(link)[0].href);
