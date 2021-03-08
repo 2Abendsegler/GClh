@@ -8,10 +8,12 @@
 <a href="#4-en">4. Hints for using on Android devices.</a> | <a href="#4-de">4. Hinweise für die Nutzung auf Android Geräten.</a>
 <a href="#5-en">5. How can I start the Config of the GClh?</a> | <a href="#5-de">5. Wie kann ich die Konfiguration des GClh starten?</a>
 <a href="#6-en">6. How can I install the GClh on Android devices?</a> | <a href="#6-de">6. Wie kann ich den GClh auf Android Geräten installieren?</a>
-<a href="#7-en">7. How can I contribute to GClh II?</a> | <a href="#7-de">7. Wie kann ich etwas zu GClh II beitragen?</a>
+<a href="#7-en">7. How can I contribute to GClh?</a> | <a href="#7-de">7. Wie kann ich etwas zu GClh beitragen?</a>
+<a href="#8-en">8. How can I get help to GClh?</a> | <a href="#8-de">8. Wie bekomme ich Hilfe zum GClh?</a>
+<a href="#9-en">9. How can I report a bug or a feature request?</a> | <a href="#9-de">9. Wie kann ich einen Fehler melden oder eine Anfrage zu einem neuen Feature stellen?</a>
 
 ---
-<a id="en"></a><img src="../images/flag_en.png">
+<a id="en" href="#en"><img src="../images/flag_en.png"></a>
 
 <a id="1-en"></a>
 ## 1. What can I do if the Warning is displayed "GClh is running more than once"?
@@ -149,12 +151,35 @@ See <a href="../docu/tips_installation.md#android_en" title="Link to 'Tips for t
 <br>
 
 <a id="7-en"></a>
-## 7. How can I contribute to GClh II?
-We are happy about improvement suggestions, bugfixes or new features. This is realized via pull requests. You can read how to create a Pull-Request here: <a href="https://github.com/2Abendsegler/GClh/blob/master/docu/how_to_contribute.md#en">How to contribute</a>
+## 7. How can I contribute to GClh?
+We are happy about improvement suggestions, bugfixes or new features. This is realized via pull requests. You can read how to create a Pull-Request here: <a href="https://github.com/2Abendsegler/GClh/blob/master/docu/how_to_contribute.md#en">How to contribute</a><br>
+<br>
+
+<a id="8-en"></a>
+## 8. How can I get help to GClh?
+If you need help with the GClh, or if you have questions about the GClh, you can create a note in the following forums:<br>
+<ul>
+	<li>
+		<a href="https://geoclub.de/forum/viewforum.php?f=117">Geoclub Forum</a>
+	</li>
+	<li>
+		<a href="https://forums.geocaching.com/GC/index.php?/topic/343005-gc-little-helper-ii/">Geocaching Forum</a>
+	</li>
+	<li>
+		<a href="https://www.swissgeocacheforum.ch/forum/topic/12872-gc-little-helper-ii/">Swiss Geocache Forum</a>
+	</li>
+</ul>
+You can also open a <a href="https://github.com/2Abendsegler/GClh/issues/new/choose">new issue</a> on our development platform at Github.<br>
+<br>
+
+<a id="9-en"></a>
+## 9. How can I report a bug or a feature request?
+For a bug or a feature request you can open a <a href="https://github.com/2Abendsegler/GClh/issues/new/choose">new issue</a> on our development platform at Github.<br>
+Or you can create a note in one of the forums. See <a href="#8-en">FAQ 8</a>.<br>
 <br>
 
 ---
-<a id="de"></a><img src="../images/flag_de.png">
+<a id="de" href="#de"><img src="../images/flag_de.png"></a>
 
 <a id="1-de"></a>
 ## 1. Was kann ich tun wenn die Warnung angezeigt wird, dass GClh mehr als einmal läuft?
@@ -292,6 +317,29 @@ Siehe <a href="../docu/tips_installation.md#android_de" title="Link zu 'Tipps f�
 <br>
 
 <a id="7-de"></a>
-## 7. Wie kann ich etwas zu GClh II beitragen?
-Wir freuen uns über Verbesserungsvorschläge, Bugfixes oder neue Features. Dies geschieht bei uns über Pull Requests. Wie du so etwas anlegst kannst du hier nachlesen: <a href="https://github.com/2Abendsegler/GClh/blob/master/docu/how_to_contribute.md#de">Wie kannst du etwas beitragen?</a>
+## 7. Wie kann ich etwas zu GClh beitragen?
+Wir freuen uns über Verbesserungsvorschläge, Bugfixes oder neue Features. Dies geschieht bei uns über Pull Requests. Wie du so etwas anlegst kannst du hier nachlesen: <a href="https://github.com/2Abendsegler/GClh/blob/master/docu/how_to_contribute.md#de">Wie kannst du etwas beitragen?</a><br>
+<br>
+
+<a id="8-de"></a>
+## 8. Wie bekomme ich Hilfe zum GClh?
+Wenn du Hilfe zum GClh benötigst, oder wenn du Fragen zum GClh hast, dann kannst du dich in folgenden Foren melden:<br>
+<ul>
+	<li>
+		<a href="https://geoclub.de/forum/viewforum.php?f=117">Geoclub Forum</a>
+	</li>
+	<li>
+		<a href="https://forums.geocaching.com/GC/index.php?/topic/343005-gc-little-helper-ii/">Geocaching Forum</a>
+	</li>
+	<li>
+		<a href="https://www.swissgeocacheforum.ch/forum/topic/12872-gc-little-helper-ii/">Swiss Geocache Forum</a>
+	</li>
+</ul>
+Außerdem kannst du auch ein <a href="https://github.com/2Abendsegler/GClh/issues/new/choose">neues Issue</a> auf unserer Entwicklungsplattform bei Github eröffnen.<br>
+<br>
+
+<a id="9-de"></a>
+## 9. Wie kann ich einen Fehler melden oder eine Anfrage zu einem neuen Feature stellen?
+Zu einem Fehler oder einer Anfrage zu einem neuen Feature kannst du ein <a href="https://github.com/2Abendsegler/GClh/issues/new/choose">neues Issue</a> auf unserer Entwicklungsplattform bei Github eröffnen.<br>
+Oder du kannst dich in einem der Foren melden. Siehe dazu <a href="#8-de">FAQ 8</a>.<br>
 <br>

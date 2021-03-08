@@ -28,8 +28,7 @@ The tool is developed in Javascript and can be used with the script manager Tamp
 The originator of *GC little helper* is [Torsten Amshove](https://www.amshove.net/blog/webinterfaces/gc-little-helper/). After he stopped the work on *GC little helper* we agreed with him to continue his work under the new name *GC little helper II*. In 2016 we brought *GC little helper II* up to date and renewed some parts.
 
 ## How can you help?
-We use a [ticket system](https://github.com/2Abendsegler/GClh/issues) to track questions, wishes and issues.
-If you like to implement feature, bugfix or improvements yourself, you can read here [how to contribute](https://github.com/2Abendsegler/GClh/blob/master/docu/how_to_contribute.md#en).
+We use a [ticket system](https://github.com/2Abendsegler/GClh/issues) to report and track bugs, questions and feature requests. If you like to implement features, bugfixes or improvements yourself, you can read here [how to contribute](https://github.com/2Abendsegler/GClh/blob/master/docu/how_to_contribute.md#en).
 Furthermore there is a thread in the [Geoclub Forum](http://geoclub.de/forum/viewforum.php?f=117) where things can be discussed.
 
 All Geocacher and others are encouraged to help with the development or the support of this tool.
@@ -61,8 +60,7 @@ Das Tool ist in Javascript entwickelt und läuft mit Script-Manager Tampermonkey
 Ursprünglich erfunden und entwickelt wurde der *GC little helper* von [Torsten Amshove](https://www.amshove.net/blog/webinterfaces/gc-little-helper/). Wir haben das Tool 2016 auf den aktuellen Stand gebracht und etwas aufgefrischt, und haben uns in Abstimmung mit dem Erfinder entschlossen, es unter dem Namen *GC little helper II* zu betreiben und weiterzuentwickeln.
 
 ## Wie kannst du helfen?
-Dazu gibt es auf hiesiger Plattform ein [Ticketsystem](https://github.com/2Abendsegler/GClh/issues), auf dem Fragen, Wünsche und Probleme erfaßt und verfolgt werden können. 
-Wenn du selbst neue Feature, Bugfixes oder Verbesserungen beitragen möchtest, kannst du hier nachlesen wie das geht: [Wie kannst du etwas beitragen?](https://github.com/2Abendsegler/GClh/blob/master/docu/how_to_contribute.md#de).
+Wir verwenden auf hiesiger Platform ein [Ticketsystem](https://github.com/2Abendsegler/GClh/issues), um Fehler, Fragen und Anfragen zu neuen Features zu melden und zu verfolgen. Wenn du selbst neue Features, Bugfixes oder Verbesserungen beitragen möchtest, kannst du hier nachlesen wie das geht: [Wie kannst du etwas beitragen?](https://github.com/2Abendsegler/GClh/blob/master/docu/how_to_contribute.md#de).
 Im [Geoclub Forum](http://geoclub.de/forum/viewforum.php?f=117) gibt es außerdem eine Plattform, auf der diese Dinge diskutiert werden können.
 
 Alle Geocacher und Interessierte sind herzlich eingeladen, am Support und der Weiterentwicklung des Tools mitzuwirken.  
