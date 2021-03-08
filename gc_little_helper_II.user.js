@@ -11159,20 +11159,30 @@ var mainGC = function() {
         } catch(e) {gclh_error("Show length of hint, cachename and placed by on hide edit page",e);}
     }
 
-// Improve Souvenirs
+// Improve Souvenirs.
     if ( is_page("souvenirs") || is_page("publicProfile") ) {
         try {
+            var css = "";
+            css += ".gclhSort, .gclhShow {margin-right: 4px;}";
+            css += ".gclhSort input, .gclhShow input {background-image: inherit;}";
+            css += ".gclhSort input.active, .gclhShow input.active {background-color: #a9a9a9cf;}";
+            css += ".gclhSort input:hover, .gclhShow input:hover {cursor: pointer;}";
+            css += ".gclhShowCountry:not(.active), .gclhShowState:not(.active), .gclhShowOther:not(.active) {display: none;}";
+            appendCssStyle(css);
+
             var SouvenirsDashboard = $(".ProfileSouvenirsList");
             if (SouvenirsDashboard.length) {
-                SouvenirsDashboard.before('<div id="gclhSouvenirsSortButtons"></div><p></p>');
-                $("#gclhSouvenirsSortButtons").append('<input id="actionSouvenirsSortAcquiredDateNewestTop" title="Sort newest first" value="Newest first" type="button" href="javascript:void(0);" style="opacity: 0.5; margin-right: 4px" disabled="true">');
-                $("#gclhSouvenirsSortButtons").append('<input id="actionSouvenirsSortAcquiredDateOldestTop" title="Sort oldest first" value="Oldest first" type="button" href="javascript:void(0);" style="opacity: 0.5; margin-right: 4px" disabled="true">');
-                $("#gclhSouvenirsSortButtons").append('<input id="actionSouvenirsSortAcquiredTitleAtoZ" title="Sort title A-Z" value="Title A-Z" type="button" href="javascript:void(0);" style="margin-right: 4px">');
-                $("#gclhSouvenirsSortButtons").append('<input id="actionSouvenirsSortAcquiredTitleZtoA" title="Sort title Z-A" value="Title Z-A" type="button" href="javascript:void(0);">');
-
+                SouvenirsDashboard.before('<div id="gclhSouvenirsButtons"></div><p></p>');
+                $("#gclhSouvenirsButtons").append('<span class="gclhSort">Sort &nbsp;<input id="actionSouvenirsSortAcquiredDateNewestTop" title="Sort newest first" value="Newest first" type="button" href="javascript:void(0);" style="opacity: 0.5;" disabled="true"></span>');
+                $("#gclhSouvenirsButtons").append('<span class="gclhSort"><input id="actionSouvenirsSortAcquiredDateOldestTop" title="Sort oldest first" value="Oldest first" type="button" href="javascript:void(0);" style="opacity: 0.5;" disabled="true"></span>');
+                $("#gclhSouvenirsButtons").append('<span class="gclhSort"><input id="actionSouvenirsSortAcquiredTitleAtoZ" title="Sort title A-Z" value="Title A-Z" type="button" href="javascript:void(0);"></span>');
+                $("#gclhSouvenirsButtons").append('<span class="gclhSort"><input id="actionSouvenirsSortAcquiredTitleZtoA" title="Sort title Z-A" value="Title Z-A" type="button" href="javascript:void(0);"></span>');
+                $("#gclhSouvenirsButtons").append('<span class="gclhShow">&nbsp; | &nbsp;Show &nbsp;<input id="gclhShowCountry" class="active" title="Show country souvenirs" value="Countries" type="button" href="javascript:void(0);" style="opacity: 0.5;" disabled="true"></span>');
+                $("#gclhSouvenirsButtons").append('<span class="gclhShow"><input id="gclhShowState" class="active" title="Show state souvenirs" value="States" type="button" href="javascript:void(0);" style="opacity: 0.5;" disabled="true"></span>');
+                $("#gclhSouvenirsButtons").append('<span class="gclhShow"><input id="gclhShowOther" class="active" title="Show other souvenirs" value="Others" type="button" href="javascript:void(0);" style="opacity: 0.5;" disabled="true"></span>');
                 var Souvenirs = SouvenirsDashboard.children('div');
-                var htmlFragment = "&nbsp;<span title='Number of souvenirs'>("+Souvenirs.length+")</span>";
-                $("#divContentMain > h2").append(htmlFragment); // private probfile
+                var htmlFragment = "&nbsp;<span id='gclhNumberSouvenirs' title='Number of souvenirs'>("+Souvenirs.length+")</span>";
+                $("#divContentMain > h2").append(htmlFragment); // private profile
                 $("#ctl00_ContentBody_ProfilePanel1_pnlSouvenirs > h3").append(htmlFragment); // new public profile
 
                 var jqui_date_format = "";
@@ -11184,6 +11194,7 @@ var mainGC = function() {
                     jqui_date_format = dateFormatConversion(date_format);
                     $('#actionSouvenirsSortAcquiredDateNewestTop')[0].disabled = $('#actionSouvenirsSortAcquiredDateOldestTop')[0].disabled = "";
                     $('#actionSouvenirsSortAcquiredDateNewestTop')[0].style.opacity = $('#actionSouvenirsSortAcquiredDateOldestTop')[0].style.opacity = "1";
+                    $('#actionSouvenirsSortAcquiredTitleAtoZ').addClass('active');
                 });
                 function dateFormatConversion(format) {return format.replace(/yy/g,'y').replace(/M/g,'m').replace(/mmm/,'M');}
                 function getSouvenirAcquiredDate(souvenirDiv) {return $(souvenirDiv).text().match( /Acquired on (.*)/ )[1];}
@@ -11213,16 +11224,79 @@ var mainGC = function() {
                     var bT = $(b).children('a').attr('title');
                     return bT.localeCompare(aT);
                 }
-                function ReorderSouvenirs(orderfunction) {
+                function ReorderSouvenirs(orderfunction, button) {
+                    $('.gclhSort input').each(function() {
+                        $(this).removeClass('active');
+                    });
+                    $(button).addClass('active');
                     SouvenirsDashboard = $(".ProfileSouvenirsList");
                     Souvenirs = SouvenirsDashboard.children('div');
                     Souvenirs.detach().sort(orderfunction);
                     SouvenirsDashboard.append(Souvenirs);
                 }
-                $("#actionSouvenirsSortAcquiredDateNewestTop").click(function() {ReorderSouvenirs(AcquiredDateNewestFirst);});
-                $("#actionSouvenirsSortAcquiredDateOldestTop").click(function() {ReorderSouvenirs(AcquiredDateOldestFirst);});
-                $("#actionSouvenirsSortAcquiredTitleAtoZ").click(function() {ReorderSouvenirs(TitleAtoZ);});
-                $("#actionSouvenirsSortAcquiredTitleZtoA").click(function() {ReorderSouvenirs(TitleZtoA);});
+                $("#actionSouvenirsSortAcquiredDateNewestTop").click(function() {ReorderSouvenirs(AcquiredDateNewestFirst, this);});
+                $("#actionSouvenirsSortAcquiredDateOldestTop").click(function() {ReorderSouvenirs(AcquiredDateOldestFirst, this);});
+                $("#actionSouvenirsSortAcquiredTitleAtoZ").click(function() {ReorderSouvenirs(TitleAtoZ, this);});
+                $("#actionSouvenirsSortAcquiredTitleZtoA").click(function() {ReorderSouvenirs(TitleZtoA, this);});
+
+                function correctSouvenirName(name) {
+                    name = name.replace(/(^\s|\s$)/g,'');
+                    if (name == 'Åland Islands') name = 'Aland Islands';
+                    if (name == 'Česká Republika') name = 'Czechia';
+                    if (name == 'China (中国)') name = 'China';
+                    if (name == 'Commonwealth of the Bahamas') name = 'Bahamas';
+                    if (name == 'Deutschland') name = 'Germany';
+                    if (name == 'Montenegro | Црна Гора | Crna Gora') name = 'Montenegro';
+                    if (name == 'România') name = 'Romania';
+                    if (name == 'Rzeczpospolita Polska') name = 'Poland';
+                    if (name == 'Singapore (Republik Singapura)') name = 'Singapore';
+                    if (name == 'Slovenská republika') name = 'Slovakia';
+                    if (name == 'United States of America') name = 'United States';
+                    if (name == 'Yukon') name = 'Yukon Territory';
+                    return name;
+                }
+                function prepareSouvenirs() {
+                    $('.ProfileSouvenirsList div').each(function() {
+                        var ident = '';
+                        var name = $(this).find('a:first')[0].title;
+                        if (name) {
+                            name = correctSouvenirName(name);
+                            var country = $.grep(country_id, function(e){return e.n == name;});
+                            if (country && country[0]) {
+                                ident = 'gclhShowCountry';
+                            } else {
+                                var name = name.replace(/\sstate$/i,'');
+                                var state = $.grep(states_id, function(e){return e.n == name;});
+                                if (state && state[0]) {
+                                    ident = 'gclhShowState';
+                                } else {
+                                    ident = 'gclhShowOther';
+                                }
+                            }
+                            $(this).addClass(ident+' active');
+                        }
+                    });
+                    $('.gclhShow input').each(function() {
+                        $(this)[0].disabled = "";
+                        $(this)[0].style.opacity = "1";
+                    });
+                }
+                function showSouvenirs(button) {
+                    if ($(button).hasClass('active')) {
+                        $(button).removeClass('active');
+                        $('.ProfileSouvenirsList div.'+$(button)[0].id).each(function() {$(this).removeClass('active');});
+                    } else {
+                        $(button).addClass('active');
+                        $('.ProfileSouvenirsList div.'+$(button)[0].id).each(function() {$(this).addClass('active');});
+                    }
+                    var nr = $('.ProfileSouvenirsList .active').length;
+                    if (nr == Souvenirs.length) $('#gclhNumberSouvenirs')[0].innerHTML = '(' + Souvenirs.length + ')';
+                    else $('#gclhNumberSouvenirs')[0].innerHTML = '(' + nr + '/' + Souvenirs.length + ')';
+                }
+                prepareSouvenirs();
+                $("#gclhShowCountry").click(function() {showSouvenirs(this);});
+                $("#gclhShowState").click(function() {showSouvenirs(this);});
+                $("#gclhShowOther").click(function() {showSouvenirs(this);});
             }
         } catch(e) {gclh_error("Improve Souvenirs",e);}
     }
