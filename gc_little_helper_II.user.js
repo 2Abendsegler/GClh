@@ -1,4 +1,4 @@
-​// ==UserScript==
+// ==UserScript==
 // @name             GC little helper II
 // @namespace        http://www.amshove.net
 //--> $$000
