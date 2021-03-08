@@ -6121,7 +6121,7 @@ var mainGC = function() {
                 var log_infos = new Object();
                 var log_infos_long = new Array();
                 var index = 0;
-                var links = $('#divContentMain .span-17, #divContentMain .sidebar').find('a[href*="/p/?guid="]');
+                var links = $('#divContentMain .span-17, #divContentMain .sidebar').find('a[href*="/(profile|p)/?guid="]');
                 var owner = "";
                 var owner_name = "";
                 if ($('#ctl00_ContentBody_mcd1')[0]) {
@@ -6133,7 +6133,7 @@ var mainGC = function() {
                 for (var i = 0; i < links.length; i++) {
                     if (links[i].parentNode.className != "logOwnerStats" && links[i].childNodes[0] && !links[i].childNodes[0].src) {
                         if (links[i].id) links[i].name = links[i].id; // To be able to jump to this location
-                        var matches = links[i].href.match(/https?:\/\/www\.geocaching\.com\/p\/\?guid=([a-zA-Z0-9]*)/);
+                        var matches = links[i].href.match(/https?:\/\/www\.geocaching\.com\/(profile|p)\/\?guid=([a-zA-Z0-9]*)/);
                         var user = decode_innerHTML(links[i]);
                         if (links[i].parentNode.id == "ctl00_ContentBody_mcd1") user = owner;
                         // Build VUP Icon.
@@ -6502,7 +6502,7 @@ var mainGC = function() {
                     $('.gclh_vip').closest('a').remove();
                     $('.gclh_vup').closest('a').remove();
                     // VIP, VUP Icons aufbauen.
-                    var links = $('a[href*="/p/?guid="]');
+                    var links = $('a[href*="/(profile|p)/?guid="]');
                     for (var i = 0; i < links.length; i++) {
                         if (links[i].id) {
                             var user = links[i].innerHTML.replace(/&amp;/, '&');
@@ -6528,8 +6528,7 @@ var mainGC = function() {
                        document.location.href.match(/\.com\/(seek|track)\/log\.aspx/) ||
                        document.location.href.match(/\.com\/email\//) ||
                        document.location.href.match(/\.com\/my\/inventory\.aspx/)) {
-                var links = $('a[href*="/p/?guid="]');
-                if (links.length < 1) links = $('a[href*="/profile/?guid="]');
+                var links = $('a[href*="/(profile|p)/?guid="]');
                 for (var i = 0; i < links.length; i++) {
                     // Wenn es hier um User "In the hands of ..." im TB Listing geht, dann nicht weitermachen weil Username nicht wirklich bekannt ist.
                     if (links[i].id == "ctl00_ContentBody_BugDetails_BugLocation") continue;
@@ -6696,12 +6695,7 @@ var mainGC = function() {
                 checkLeagueAvailable(0);
 
             // Owner Dashbord:
-            // The VIP/VUP for the Owner Dashboard is in the Owner Dashboard section
-            // because a mutation observer is required.
-            // ----------
-            // Search Map / New Map:
-            // The VIP/VUP for the Search Map is in the Search Map section
-            // because a mutation observer is required.
+            // The VIP/VUP for the Owner Dashboard is in the Owner Dashboard section because a mutation observer is required.
             // ----------
             }
         }
@@ -9097,26 +9091,6 @@ var mainGC = function() {
                 waitForFilter(0);
             }
 
-            function mapVipVup() {
-                if ($('.geocache-owner-name')[0]) {
-                    if ($('.gclh_vip')[0]) $('.gclh_vip')[0].parentNode.remove();
-                    if ($('a[href^="/email/?u="]')[0]) $('a[href^="/email/?u="]')[0].remove();
-                    let link = $('.geocache-owner-name a[href^="https://www.geocaching.com/profile/?u="]')[0];
-                    if (!link) link = $('.geocache-owner-name a[href^="https://www.geocaching.com/p/?u="]')[0];
-                    let user = link.innerHTML;
-                    if ($('.header-top-left h1')[0]) var GCTBName = $('.header-top-left h1').html().trim();
-                    else var GCTBName = $('.gclh-cache-link').html().replace(/<svg.*<\/svg>/, '').trim();
-                    let GCTBCode = $('.cache-metadata-code')[0].innerHTML.trim();
-                    global_name = GCTBName;
-                    global_code = '('+GCTBCode+')';
-                    global_link = '(https://coord.info/'+GCTBCode+')';
-                    gclh_build_vipvupmail(link.parentNode, user);
-                    if (settings_searchmap_compact_layout && $('.gclhOwner .gclh_vip')[0]) {
-                        $('.gclhOwner .gclh_vip')[0].parentNode.addEventListener('click', gclh_add_vip);
-                    }
-                }
-            }
-
             // Processing all steps.
             function processAllSearchMap() {
                 setFilter();
@@ -9129,8 +9103,6 @@ var mainGC = function() {
                 collapseActivity();
                 showSearchmapSidebarEnhancements();
                 buildMapControlButtons();
-// Das funktioniert nicht korrekt.
-//                mapVipVup();
             }
 
             // Observer callback for body and checking existence of sidebar and map.
