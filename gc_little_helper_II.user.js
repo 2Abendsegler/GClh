@@ -2268,7 +2268,7 @@ var mainGC = function() {
             var link = '#ctl00_ContentBody_GeoNav_uxWatchlistBtn a';
             var nr = $('#ctl00_ContentBody_GeoNav_uxWatchlistBtn a').html().match(/\d+/);
             if ($(link)[0].href.match(/action=rem/)) {
-                $(link)[0].innerHTML = 'Stop Watching ('+nr+')';
+                $(link)[0].innerHTML = 'Stop Watching';
             } else {
                 $(link)[0].innerHTML = 'Watch';
                 $(link).attr('data-url', $(link)[0].href);
@@ -3096,6 +3096,17 @@ var mainGC = function() {
                                 }
                             }
                         });
+                    }
+                }
+            // Audit Log:
+            } else if (document.location.href.match(/\.com\/seek\/auditlog\.aspx/)) {
+                var links = document.getElementsByTagName('a');
+                for (var i = 0; i < links.length; i++) {
+                    if (links[i].href.match(/profile\?guid=/)) {
+                        side = $(links[i]);
+                        guid = side.attr('href').substring(14,36+14);
+                        username = side.text();
+                        buildSendIcons(side[0], username, "per guid", guid);
                     }
                 }
             // Rest:
@@ -5951,7 +5962,6 @@ var mainGC = function() {
             (is_page("cache_listing")                                            ||      // Cache Listing (nicht in den Logs)
              is_page("owner_dashboard")                                          ||      // Owner Dashboard
              is_page("publicProfile")                                            ||      // Öffentliches Profil
-             is_page("searchmap")                                                ||      // Search Map / New Map
              document.location.href.match(/\.com\/track\/details\.aspx/)         ||      // TB Listing
              document.location.href.match(/\.com\/(seek|track)\/log\.aspx/)      ||      // Post, Edit, View Cache und TB Logs
              document.location.href.match(/\.com\/play\/geocache\/gc\w+\/log/)   ||      // Post Cache Logs neue Seite
@@ -5963,6 +5973,7 @@ var mainGC = function() {
              document.location.href.match(/\.com\/account\/dashboard/)           ||      // Dashboard
              document.location.href.match(/\.com\/seek\/nearest\.aspx(.*)(\?ul|\?u|&ul|&u)=/) ||  // Nearest Lists mit User
              document.location.href.match(/\.com\/play\/(friendleague|leaderboard)/) ||  // Friend League, Leaderboard
+             document.location.href.match(/\.com\/seek\/auditlog\.aspx/)         ||      // Audit Log
              document.location.href.match(/\.com\/my\/myfriends\.aspx/)             )) { // Friends
             var myself = global_me;
             var gclh_build_vip_list = function() {};
@@ -6114,7 +6125,7 @@ var mainGC = function() {
                 var log_infos = new Object();
                 var log_infos_long = new Array();
                 var index = 0;
-                var links = $('#divContentMain .span-17, #divContentMain .sidebar').find('a[href*="/p/?guid="]');
+                var links = $('#divContentMain .span-17, #divContentMain .sidebar').find('a[href*="/profile/?guid="]');
                 var owner = "";
                 var owner_name = "";
                 if ($('#ctl00_ContentBody_mcd1')[0]) {
@@ -6126,7 +6137,7 @@ var mainGC = function() {
                 for (var i = 0; i < links.length; i++) {
                     if (links[i].parentNode.className != "logOwnerStats" && links[i].childNodes[0] && !links[i].childNodes[0].src) {
                         if (links[i].id) links[i].name = links[i].id; // To be able to jump to this location
-                        var matches = links[i].href.match(/https?:\/\/www\.geocaching\.com\/p\/\?guid=([a-zA-Z0-9]*)/);
+                        var matches = links[i].href.match(/https?:\/\/www\.geocaching\.com\/profile\/\?guid=([a-zA-Z0-9]*)/);
                         var user = decode_innerHTML(links[i]);
                         if (links[i].parentNode.id == "ctl00_ContentBody_mcd1") user = owner;
                         // Build VUP Icon.
@@ -6495,7 +6506,7 @@ var mainGC = function() {
                     $('.gclh_vip').closest('a').remove();
                     $('.gclh_vup').closest('a').remove();
                     // VIP, VUP Icons aufbauen.
-                    var links = $('a[href*="/p/?guid="]');
+                    var links = $('a[href*="/profile/?guid="]');
                     for (var i = 0; i < links.length; i++) {
                         if (links[i].id) {
                             var user = links[i].innerHTML.replace(/&amp;/, '&');
@@ -6515,18 +6526,21 @@ var mainGC = function() {
                 };
                 gclh_build_vip_list();
 
-            // TB Listing. Post, Edit, View Cache und TB Logs. Mail schreiben, Bookmark lists, Trackable Inventory. (Nicht post cache log new page.)
+            // TB Listing. Post, Edit, View Cache und TB Logs. Mail schreiben, Bookmark lists, Trackable Inventory, Audit log. (Nicht post cache log new page.)
             // ----------
             } else if (document.location.href.match(/\.com\/track\/details\.aspx/) ||
                        document.location.href.match(/\.com\/(seek|track)\/log\.aspx/) ||
                        document.location.href.match(/\.com\/email\//) ||
+                       document.location.href.match(/\.com\/seek\/auditlog\.aspx/) ||
                        document.location.href.match(/\.com\/my\/inventory\.aspx/)) {
-                var links = $('a[href*="/p/?guid="]');
-                if (links.length < 1) links = $('a[href*="/profile/?guid="]');
+                var links = $('a[href*="/profile/?guid="]');
+                if(document.location.href.match(/\.com\/seek\/auditlog\.aspx/)){
+                    var links = $('a[href*="/profile?guid="]');
+                }
                 for (var i = 0; i < links.length; i++) {
                     // Wenn es hier um User "In the hands of ..." im TB Listing geht, dann nicht weitermachen weil Username nicht wirklich bekannt ist.
                     if (links[i].id == "ctl00_ContentBody_BugDetails_BugLocation") continue;
-                    var matches = links[i].href.match(/https?:\/\/www\.geocaching\.com\/(profile|p)\/\?guid=([a-zA-Z0-9]*)/);
+                    var matches = links[i].href.match(/https?:\/\/www\.geocaching\.com\/profile\/\?guid=([a-zA-Z0-9]*)/);
                     var user = decode_innerHTML(links[i]);
                     // Build VUP Icon.
                     if (settings_process_vup && user != global_activ_username) {
@@ -6547,7 +6561,7 @@ var mainGC = function() {
             // Post cache log new page:
             // ----------
             } else if (document.location.href.match(/\.com\/play\/geocache\/gc\w+\/log/) && $('.muted')[0] && $('.muted')[0].children[1]) {
-                var id = $('.muted')[0].children[1].href.match(/^https?:\/\/www\.geocaching\.com\/(profile|p)\/\?id=(\d+)/);
+                var id = $('.muted')[0].children[1].href.match(/^https?:\/\/www\.geocaching\.com\/profile\/\?id=(\d+)/);
                 if (id && id[1]) {
                     var idLink = "/p/default.aspx?id=" + id[1] + "&tab=geocaches";
                     GM_xmlhttpRequest({
@@ -6631,7 +6645,7 @@ var mainGC = function() {
                             span.addEventListener("click", doNotChangeDetailsByClick, false);
                             side[i].appendChild(span);
                             var last = side[i].children.length - 1;
-                            var user = links[i].href.match(/https?:\/\/www\.geocaching\.com\/(profile|p)\/\?u=(.*)/);
+                            var user = links[i].href.match(/https?:\/\/www\.geocaching\.com\/profile\/\?u=(.*)/);
                             gclh_build_vipvupmail(side[i].children[last], decodeUnicodeURIComponent(user[1]));
                         }
 
@@ -6667,7 +6681,7 @@ var mainGC = function() {
                             span.addEventListener("click", doNotChangeDetailsByClick, false);
                             side[i].appendChild(span);
                             var last = side[i].children.length - 1;
-                            var user = links[i].href.match(/https?:\/\/www\.geocaching\.com\/(profile|p)\/\?u=(.*)/);
+                            var user = links[i].href.match(/https?:\/\/www\.geocaching\.com\/profile\/\?u=(.*)/);
                             gclh_build_vipvupmail(side[i].children[last], decodeUnicodeURIComponent(user[1]));
                         }
 
@@ -6690,10 +6704,6 @@ var mainGC = function() {
 
             // Owner Dashbord:
             // The VIP/VUP for the Owner Dashboard is in the Owner Dashboard section
-            // because a mutation observer is required.
-            // ----------
-            // Search Map / New Map:
-            // The VIP/VUP for the Search Map is in the Search Map section
             // because a mutation observer is required.
             // ----------
             }
@@ -8513,7 +8523,9 @@ var mainGC = function() {
                 // Cache list: Scroll to last position, if we come from back button in cache details.
                 if ($('#geocache-list')[0] && global_newScrollTop != 0) {
                     document.querySelector('#geocache-list').scrollTo({top: global_newScrollTop, behavior: 'smooth'});
-                    global_newScrollTop = 0;
+                    // Das Scrollen funktionierte nicht immer, vermutlich weil es zu lange dauert bis die Caches gelistet sind bzw.
+                    // die Platzhalter dafür aufgebaut sind. Durch das verzögerte Zurücksetzen wird das Scrollen nun mehrfach durchgeführt.
+                    setTimeout(function(){global_newScrollTop = 0;}, 250);
                 }
                 // Cache list: Notice scrolling. Only if we are on the first part of the lists of the caches.
                 if ($('#geocache-list')[0] && !$('#geocache-list.gclh-scroll')[0]) {
@@ -8534,6 +8546,11 @@ var mainGC = function() {
                 if ($('.cache-preview-header')[0] && $('.search-bar-back-cta')[0] && !$('.search-bar-back-cta.gclh-scroll')[0]) {
                     $('.search-bar-back-cta').addClass('gclh-scroll');
                     $('.search-bar-back-cta')[0].addEventListener('mousedown', function() {global_newScrollTop = global_scrollTop;});
+                }
+                // Cache details: Set click event to back button in BML cache details.
+                if ($('.cache-preview-header')[0] && $('.dismiss-list-cache-button')[0] && !$('.dismiss-list-cache-button.gclh-scroll')[0]) {
+                    $('.dismiss-list-cache-button').addClass('gclh-scroll');
+                    $('.dismiss-list-cache-button')[0].addEventListener('mousedown', function() {global_newScrollTop = global_scrollTop;});
                 }
             }
 
@@ -8650,10 +8667,10 @@ var mainGC = function() {
                             }
                         });
                         if ($('#geocache-list')[0]) {
-                            if ($('#add-to-list-control')[0]) {
-                                $('#geocache-list')[0].setAttribute("style", "margin-bottom: 68px !important;");
+                            if ($('.dismiss-active-list-button')[0]) {
+                                $('#geocache-list')[0].setAttribute("style", "margin-bottom: 60px !important;");
                             } else {
-                                $('#geocache-list')[0].setAttribute("style", "margin-bottom: 22px !important;");
+                                $('#geocache-list')[0].setAttribute("style", "margin-bottom: 68px !important;");
                             }
                         }
                     }
@@ -9076,34 +9093,17 @@ var mainGC = function() {
                         //apply filters to map and close
                         doubleClick('button.control-apply');
 
-                        hideSidebar(); // Must run here, otherwise the filter will not be set.
+                        setTimeout(function(){
+                            hideSidebar(); // Must run here, otherwise the filter will not be set.
+                        }, 750);
                     } else {waitCount++; if (waitCount <= 50) setTimeout(function(){waitForFilter(waitCount);}, 50);}
                 }
                 waitForFilter(0);
             }
 
-            function mapVipVup() {
-                if ($('.geocache-owner-name')[0]) {
-                    if ($('.gclh_vip')[0]) $('.gclh_vip')[0].parentNode.remove();
-                    if ($('a[href^="/email/?u="]')[0]) $('a[href^="/email/?u="]')[0].remove();
-                    let link = $('.geocache-owner-name a[href^="https://www.geocaching.com/profile/?u="]')[0];
-                    if (!link) link = $('.geocache-owner-name a[href^="https://www.geocaching.com/p/?u="]')[0];
-                    let user = link.innerHTML;
-                    if ($('.header-top-left h1')[0]) var GCTBName = $('.header-top-left h1').html().trim();
-                    else var GCTBName = $('.gclh-cache-link').html().replace(/<svg.*<\/svg>/, '').trim();
-                    let GCTBCode = $('.cache-metadata-code')[0].innerHTML.trim();
-                    global_name = GCTBName;
-                    global_code = '('+GCTBCode+')';
-                    global_link = '(https://coord.info/'+GCTBCode+')';
-                    gclh_build_vipvupmail(link.parentNode, user);
-                    if (settings_searchmap_compact_layout && $('.gclhOwner .gclh_vip')[0]) {
-                        $('.gclhOwner .gclh_vip')[0].parentNode.addEventListener('click', gclh_add_vip);
-                    }
-                }
-            }
-
             // Processing all steps.
             function processAllSearchMap() {
+                setFilter();
                 scrollInCacheList(); // Has to be run before searchThisArea.
                 searchThisArea();
                 setLinkToOwner(); // Has to be run before compactLayout.
@@ -9113,8 +9113,6 @@ var mainGC = function() {
                 collapseActivity();
                 showSearchmapSidebarEnhancements();
                 buildMapControlButtons();
-                setFilter();
-                mapVipVup();
             }
 
             // Observer callback for body and checking existence of sidebar and map.
@@ -9188,13 +9186,13 @@ var mainGC = function() {
                 css += '.search-bar-back-cta svg {height: 24px; width: 24px;}';
                 css += '.search-term-input, .search-term-form button, .cache-preview-activities .view-all-row {font-size: 14px !important; height: 35px !important;}';
                 css += '.search-term-form svg {padding-top: 4px;}';
-                css += '.cache-detail-preview {height: calc(100% - 22px) !important; margin-top: -24px;}';
+                css += '.cache-detail-preview:not(.list-cache) {height: calc(100% - 22px) !important; margin-top: -24px;}';
                 css += '.geocache-action-bar {padding: 0 10px 5px !important;}';
-                css += '.geocache-list-container ul li, .LazyLoad.is-visible {height: 48px !important}';
+                css += '.geocache-list-container ul li, .LazyLoad.is-visible {height: 48px !important;}';
                 css += '.geocache-item {padding: 6px 10px !important;}';
                 css += '.geocache-item-data span {margin-right: 2px;}';
                 css += '.geocache-item-data span img, .cache-metadata span img {vertical-align: bottom; height: 14px; opacity: 0.8;}';
-                css += '.geocache-item-details {margin: 0 6px;}';
+                css += '.geocache-item-details {margin: 0 6px !important;}';
                 css += '.geocache-item-icon {flex: 0 0 36px !important; height: 36px !important;}';
                 css += '.geocache-item {height: 36px !important;}';
                 css += '.geocache-item-name {height: 21px; color: #4a4a4a;}';
@@ -9239,7 +9237,7 @@ var mainGC = function() {
                 css += '.cache-activity-log .username {font-size: 12px !important; padding-bottom: 2px;}';
                 css += '.cache-preview-description h2 {margin-bottom: 6px;}';
                 css += '.cache-preview-description .close-cta-row {top: 0px; right: 5px;}';
-                css += '#geocache-list-pagination {padding: 5px 0 !important;}';
+                css += '#geocache-list-pagination {padding: 5px 0 0 0 !important;}';
                 css += '#geocache-list .label {padding: 8px 24px !important; border-top: 1px solid #e4e4e4 !important; font-size: 12px !important;}';
                 css += '#sidebar footer {padding: 2px 0;}';
                 css += '#sidebar.has-selected-caches footer {margin-top: unset; padding: 12px 0;}';
@@ -9247,6 +9245,24 @@ var mainGC = function() {
                 css += '#add-to-list-menu {padding: 0px !important; border-top: unset !important; margin-bottom: 5px !important;}';
                 css += '#add-to-list-menu button {padding: 6px 24px !important; margin-right: 16px !important;}';
                 css += '.existing-list {margin-bottom: 0 !important;}';
+                // BML
+                css += '.list-cache-navigation.has-label {padding: 5px 0 6px !important;}';
+                css += '.mode-toggle-container {padding: 5px 14px 5px 12px;} .mode-toggle {padding: 6px;}';
+                css += '.dismiss-list-cache-button {margin: 2px !important;}';
+                css += '.dismiss-active-list-button {padding: 0px 0px 5px 0px;}';
+                css += '.dismiss-active-list-button-label {height: 34px; margin-right: 12px;}';
+                css += '.dismiss-active-list-button-icon svg {height: 24px !important; width: 24px !important; margin-left: 2px;}';
+                css += '.list-hub {padding-bottom: 0px !important; overflow: auto !important; margin-bottom: 22px;}';
+                css += '.list-hub ul li {height: 48px !important;}';
+                css += '.list-hub ul li + li {border-top: 1px solid #e4e4e4;}';
+                css += '.list-details {padding: 6px 10px !important; border: none !important;}';
+                css += '.list-details-left, .list-details-right {height: 36px !important; margin: 0px !important;}';
+                css += '.list-details-left .list-name, .list-details-right .list-counts {padding-bottom: 2px !important;}';
+                css += '.list-details-left .list-name {overflow: hidden; text-overflow: ellipsis; max-width: 285px;}';
+                css += '.geocache-list-container.lom-ld-flag-padding {padding-bottom: 0px !important;}';
+                css += '.geocache-list-container .pagination-label {padding: 0 0 5px 0 !important;}';
+                css += '.cache-detail-preview.list-cache {height: calc(100% + 24px) !important;}';
+                css += '#map-chip {display: none !important;}';
                 // Filter
                 css += '#search-filter-type .type-label.focused, .search-filters-attributes ul.wonders .focused label {outline: unset !important;}';
                 css += '#search-filters-controls {padding: 0px 10px 5px 10px !important;}';
