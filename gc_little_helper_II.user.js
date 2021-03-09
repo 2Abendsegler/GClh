@@ -1908,7 +1908,6 @@ var mainGC = function() {
         } catch(e) {gclh_error("Show eventday beside date",e);}
     }
 
-
 // Show real owner.
     if (is_page("cache_listing") && $('#ctl00_ContentBody_mcd1')) {
         try {
