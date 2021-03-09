@@ -22,6 +22,10 @@
 		<img src="../images/0.10.12/Screen01.jpg" alt="Screen01.jpg"><br><br>
 	</li>
 	<li>
+		<strong>New:</strong> [Souvenirs] Classify souvenirs by country, state and other. [<a href="https://github.com/2Abendsegler/GClh/issues/1603" title="Issue 1603">1603</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		<img src="../images/0.10.12/Screen03.jpg" alt="Screen03.jpg"><br><br>
+	</li>
+	<li>
 		<strong>New:</strong> GClh Search can now search for bookmarklists "BM...", profiles "PR..." and logs "GL...". [<a href="https://github.com/2Abendsegler/GClh/issues/1586" title="Issue 1586">1586</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br>
 		For example to call the bookmarklist of the best Jigsaw Puzzle collection:<br>
 		<img src="../images/0.10.12/Screen02.jpg" alt="Screen02.jpg"><br><br>
@@ -43,6 +47,13 @@
 	</li>
 	<li>
 		<strong>Fix:</strong> [Pocket query] Error if there is no PQ. [<a href="https://github.com/2Abendsegler/GClh/issues/1579" title="Issue 1579">1579</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> User related features don't work correct on several pages. [<a href="https://github.com/2Abendsegler/GClh/issues/1612" title="Issue 1612">1612</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br>
+		[Cache listing, New log form, Old log form, Friends, TB listing, Mail, TB log form, TB inventury] VIP, VUP, mail, message corrected.<br>
+		[Cache listing] One click ignoring corrected.<br>
+		[Cache listing] Counter of "Add to List" corrected.<br>
+		[TB listing] VIP, VUP, own, owner, reviewer coloring in TB listing corrected.<br>
 	</li>
 	<li>
 		<strong>Fix:</strong> Small bugs and features collection. [<a href="https://github.com/2Abendsegler/GClh/issues/1601" title="Issue 1601">1601</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
