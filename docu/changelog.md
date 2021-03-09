@@ -27,6 +27,9 @@
 		<img src="../images/0.10.12/Screen02.jpg" alt="Screen02.jpg"><br><br>
 	</li>
 	<li>
+		<strong>New:</strong> [New Map] Integrate new BML feature in compact layout feature in new map. [<a href="https://github.com/2Abendsegler/GClh/issues/1597" title="Issue 1597">1597</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br><br>
+	</li>
+	<li>
 		<strong>Fix:</strong> [Cache listing] Openroutemaps has been changed their url. [<a href="https://github.com/2Abendsegler/GClh/issues/1585" title="Issue 1585">1585</a> / <a href="https://www.geocaching.com/profile/?u=ColleIsarco" title="Thanks to ColleIsarco">ColleIsarco</a>]<br>
 	</li>
 	<li>
@@ -40,6 +43,18 @@
 	</li>
 	<li>
 		<strong>Fix:</strong> [Pocket query] Error if there is no PQ. [<a href="https://github.com/2Abendsegler/GClh/issues/1579" title="Issue 1579">1579</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> Small bug and feature collection. [<a href="https://github.com/2Abendsegler/GClh/issues/1601" title="Issue 1601">1601</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		New FAQ 8. How can I get help to GClh?<br>
+		New FAQ 9. How can I report a bug or a feature request?<br>
+		[TB search] Alignment TB search page.<br>
+		[New Map] If no long text is given in the cache listing, no additional data was displayed in the new map.<br>
+		[Bookmarklist] The display of the rating for bookmark lists may only be suppressed if there is no rating and the link to create a rating is not available either.<br>
+		[New Map] New map due to BML may not be automatically updated if it has been moved.<br>
+		[New log form] Alignment of smilies in preview in the new log form.<br>
+		[Cache listing] A locked cache is equated with an archived cache so that the cache name also appears in red.<br>
+		[Cache listing] Migrate Openroutemaps settings_show_openrouteservice_medium from 1 to 1a.<br>
 	</li>
 </ul>
 <br>
