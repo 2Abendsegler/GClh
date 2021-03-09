@@ -46,15 +46,15 @@
 	</li>
 	<li>
 		<strong>Fix:</strong> Small bug and feature collection. [<a href="https://github.com/2Abendsegler/GClh/issues/1601" title="Issue 1601">1601</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
-		New FAQ 8. How can I get help to GClh?<br>
-		New FAQ 9. How can I report a bug or a feature request?<br>
-		[TB search] Alignment TB search page.<br>
-		[New Map] If no long text is given in the cache listing, no additional data was displayed in the new map.<br>
-		[Bookmarklist] The display of the rating for bookmark lists may only be suppressed if there is no rating and the link to create a rating is not available either.<br>
-		[New Map] New map due to BML may not be automatically updated if it has been moved.<br>
-		[New log form] Alignment of smilies in preview in the new log form.<br>
 		[Cache listing] A locked cache is equated with an archived cache so that the cache name also appears in red.<br>
 		[Cache listing] Migrate Openroutemaps settings_show_openrouteservice_medium from 1 to 1a.<br>
+		[New Map] If no long text is given in the cache listing, no additional data was displayed in the new map.<br>
+		[New Map] New map due to BML may not be automatically updated if it has been moved.<br>
+		[New log form] Alignment of smilies in preview in the new log form.<br>
+		[Bookmarklist] The display of the rating for bookmark lists may only be suppressed if there is no rating and the link to create a rating is not available either.<br>
+		[TB search] Alignment TB search page.<br>
+		[FAQ] New FAQ 8. How can I get help to GClh?<br>
+		[FAQ] New FAQ 9. How can I report a bug or a feature request?<br>
 	</li>
 </ul>
 <br>
