@@ -2,7 +2,7 @@
 // @name             GC little helper II
 // @namespace        http://www.amshove.net
 //--> $$000
-// @version          0.10.11
+// @version          0.10.12
 //<-- $$000
 // @include          https://www.geocaching.com/*
 // @include          https://maps.google.tld/*
@@ -1762,7 +1762,7 @@ var mainGC = function() {
                 code += "  else document.location.href = '/seek/nearest.aspx?navi_search='+search;";
                 code += "}";
                 injectPageScript(code, "body");
-                var searchfield = "<li><input onKeyDown='if(event.keyCode==13 && event.ctrlKey == false && event.altKey == false && event.shiftKey == false) {gclh_search_logs(); return false;}' type='text' size='6' name='navi_search' id='navi_search' style='padding: 1px; font-weight: bold; font-family: sans-serif; border: 2px solid #778555; border-radius: 7px 7px 7px 7px; background-color:#d8cd9d' value='" + settings_bookmarks_search_default + "'></li>";
+                var searchfield = "<li><input onKeyDown='if(event.keyCode==13 && event.ctrlKey == false && event.altKey == false && event.shiftKey == false) {gclh_search_logs(); return false;}' type='text' size='7' name='navi_search' id='navi_search' style='padding: 1px; font-weight: bold; font-family: sans-serif; border: 2px solid #778555; border-radius: 7px 7px 7px 7px; background-color:#d8cd9d' value='" + settings_bookmarks_search_default + "'></li>";
                 $(".Menu, .menu").append(searchfield);
             }
             // Hover für alle Dropdowns aufbauen.
@@ -1856,9 +1856,10 @@ var mainGC = function() {
 // Disabled and archived ...
     if (is_page("cache_listing")) {
         try {
-            if ($('#ctl00_ContentBody_archivedMessage')[0] && $('#ctl00_ContentBody_CacheName')[0]) $('#ctl00_ContentBody_CacheName')[0].style.color = '#8C0B0B';
-            // (If the cache is locked for new logs, the ctl00_ContentBody_archivedMessage respectively the ctl00_ContentBody_disabledMessage info is not available.)
-            if (settings_strike_archived && $('#ctl00_ContentBody_CacheName')[0] && ($('#ctl00_ContentBody_archivedMessage')[0] || $('#ctl00_ContentBody_disabledMessage')[0])) {
+            // Ist die letzte Meldung oberhalb des Cachenamens eine archiert oder locked Meldung, dann Cachename in rot.
+            if (($('#ctl00_ContentBody_archivedMessage')[0] || $('#ctl00_ContentBody_lockedMessage')[0]) && $('#ctl00_ContentBody_CacheName')[0]) $('#ctl00_ContentBody_CacheName')[0].style.color = '#8C0B0B';
+            // Ist die letzte Meldung oberhalb des Cachenamens eine archiert, locked oder disabled Meldung, dann Cachename durchstreichen.
+            if (settings_strike_archived && $('#ctl00_ContentBody_CacheName')[0] && ($('#ctl00_ContentBody_archivedMessage')[0] || $('#ctl00_ContentBody_disabledMessage')[0] || $('#ctl00_ContentBody_lockedMessage')[0])) {
                 $('#ctl00_ContentBody_CacheName')[0].style.textDecoration = 'line-through';
             }
             if ($('.more-cache-logs-link')[0] && $('.more-cache-logs-link')[0].href) $('.more-cache-logs-link')[0].href = "#logs_section";
@@ -13075,7 +13076,7 @@ var mainGC = function() {
             html += thanksLineBuild("Tungstène",            "Tungstene",                false, false, false, true,  false);
             html += thanksLineBuild("V60",                  "V60GC",                    false, false, false, true,  false);
             html += thanksLineBuild("winkamol",             "",                         false, false, false, true,  false);
-            var thanksLastUpdate = "07.03.2021";
+            var thanksLastUpdate = "09.03.2021";
 //<-- $$006
             html += "    </tbody>";
             html += "</table>";
