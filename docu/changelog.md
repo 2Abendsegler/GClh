@@ -45,7 +45,7 @@
 		<strong>Fix:</strong> [Pocket query] Error if there is no PQ. [<a href="https://github.com/2Abendsegler/GClh/issues/1579" title="Issue 1579">1579</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br>
 	</li>
 	<li>
-		<strong>Fix:</strong> Small bug and feature collection. [<a href="https://github.com/2Abendsegler/GClh/issues/1601" title="Issue 1601">1601</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		<strong>Fix:</strong> Small bugs and features collection. [<a href="https://github.com/2Abendsegler/GClh/issues/1601" title="Issue 1601">1601</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 		[Cache listing] A locked cache is equated with an archived cache so that the cache name also appears in red.<br>
 		[Cache listing] Migrate Openroutemaps settings_show_openrouteservice_medium from 1 to 1a.<br>
 		[New Map] If no long text is given in the cache listing, no additional data was displayed in the new map.<br>
