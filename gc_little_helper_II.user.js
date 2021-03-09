@@ -1912,7 +1912,7 @@ var mainGC = function() {
     if (is_page("cache_listing") && $('#ctl00_ContentBody_mcd1')) {
         try {
             var real_owner = get_real_owner();
-            var link_owner = $('#ctl00_ContentBody_mcd1 a[href*="/profile/?guid="]')[0];
+            var link_owner = $('#ctl00_ContentBody_mcd1 a[href*="/profile/?guid="], #ctl00_ContentBody_mcd1 a[href*="/p/?guid="]')[0];
             if (link_owner && real_owner) {
                 var pseudo = link_owner.innerText;
                 link_owner.innerHTML = (settings_show_real_owner ? real_owner : pseudo);
@@ -1955,11 +1955,11 @@ var mainGC = function() {
                         var lateLog = new Object();
                         if(gcLogs){
                             // Using initial GCLogs, they look different
-                            lateLog['user'] = $(logs[i]).find('a[href*="/profile/?guid="]').text();
+                            lateLog['user'] = $(logs[i]).find('a[href*="/profile/?guid="], a[href*="/p/?guid="]').text();
                             lateLog['id'] = $(logs[i]).attr('class').match(/l-\d+/)[0].substr(2);
                         }else{
-                            lateLog['user'] = $(logs[i]).find('.logOwnerProfileName a[href*="/profile/?guid="]').text();
-                            lateLog['id'] = $(logs[i]).find('.logOwnerProfileName a[href*="/profile/?guid="]').attr('id');
+                            lateLog['user'] = $(logs[i]).find('.logOwnerProfileName a[href*="/profile/?guid="], .logOwnerProfileName a[href*="/p/?guid="]').text();
+                            lateLog['id'] = $(logs[i]).find('.logOwnerProfileName a[href*="/profile/?guid="], .logOwnerProfileName a[href*="/p/?guid="]').attr('id');
                         }
                         lateLog['src'] = $(logs[i]).find('.LogType img[src*="/images/logtypes/"]').attr('src');
                         lateLog['type'] = $(logs[i]).find('.LogType img[src*="/images/logtypes/"]').attr('title');
@@ -2201,7 +2201,7 @@ var mainGC = function() {
             }
 
             // Set Stop Ignoring.
-            var bmLs = $('.BookmarkList').last().find('li a[href*="/bookmarks/view.aspx?guid="], li a[href*="/profile/?guid="]');
+            var bmLs = $('.BookmarkList').last().find('li a[href*="/bookmarks/view.aspx?guid="], li a[href*="/profile/?guid="], li a[href*="/p/?guid="]');
             for (var i=0; (i+1) < bmLs.length; i=i+2) {
                 if (bmLs[i].innerHTML.match(/^Ignore List$/) && bmLs[i+1] && bmLs[i+1].innerHTML == global_me) {
                     changeIgnoreButton('Stop Ignoring');
@@ -2338,7 +2338,7 @@ var mainGC = function() {
                     + ".add-list li button {font-size: 14px !important; margin: 0 !important; height: 18px !important;}"
                     + ".status {font-size: 14px !important; width: unset !important;}"
                     + ".status.success, .success-message {right: 2px !important; padding: 0 5px !important; background-color: white !important; color: #E0B70A !important;}"
-                    + ".CacheDetailNavigation .add_to_list_count {cursor: default; color: #4a4a4a; list-style: none; padding-left: 4px; text-decoration: none !important;}";
+                    + ".CacheDetailNavigation .add_to_list_count {padding-left: 4px; color: inherit;}";
             appendCssStyle(css);
             $('.add-to-list').addClass('working');
             function check_for_add_to_list(waitCount) { // GDPR
@@ -2348,7 +2348,7 @@ var mainGC = function() {
                     $('.add-to-list')[0].innerHTML = '<a href="' + $('.add-to-list').attr('data-href') + '" style="padding-left: unset;">' + $('.add-to-list')[0].innerHTML + '</a>';
                     if ($('.sidebar')[0] && $('#ctl00_ContentBody_GeoNav_uxAddToListBtn')[0]) {
                         var [ownBMLsCount, ownBMLsText, ownBMLsList] = getOwnBMLs($('.sidebar')[0]);
-                        $('#ctl00_ContentBody_GeoNav_uxAddToListBtn')[0].append($('<span class="add_to_list_count">(' + ownBMLsCount + ')</span>')[0]);
+                        $('#ctl00_ContentBody_GeoNav_uxAddToListBtn a')[0].append($('<span class="add_to_list_count">(' + ownBMLsCount + ')</span>')[0]);
                         $('.add-to-list a')[0].setAttribute('title', ownBMLsText);
                         $('.add_to_list_count')[0].setAttribute('title', ownBMLsList);
                     }
@@ -3071,7 +3071,7 @@ var mainGC = function() {
             // Public Profile:
             if (is_page("publicProfile")) {
                 if ($('#lnkSendMessage')[0] || $('#ctl00_ProfileHead_ProfileHeader_lnkSendMessage')[0]) {
-                    var guid = ($('#lnkSendMessage')[0] || $('#ctl00_ProfileHead_ProfileHeader_lnkSendMessage')[0]).href.match(/https?:\/\/www\.geocaching\.com\/account\/messagecenter\?recipientId=(.*)/);
+                    var guid = ($('#lnkSendMessage')[0] || $('#ctl00_ProfileHead_ProfileHeader_lnkSendMessage')[0]).href.match(/https?:\/\/www\.geocaching\.com\/account\/messagecenter\?recipientId=([a-zA-Z0-9-]*)/);
                     guid = guid[1];
                     if ($('#ctl00_ContentBody_ProfilePanel1_lblMemberName, #ctl00_ProfileHead_ProfileHeader_lblMemberName')[0]) {
                         var username = decode_innerHTML($('#ctl00_ContentBody_ProfilePanel1_lblMemberName, #ctl00_ProfileHead_ProfileHeader_lblMemberName')[0]);
@@ -3102,14 +3102,14 @@ var mainGC = function() {
                 }
             // Rest:
             } else {
-                if (is_page("cache_listing")) var links = $('#divContentMain .span-17, #divContentMain .sidebar').find('a[href*="/profile/?guid="]');
+                if (is_page("cache_listing")) var links = $('#divContentMain .span-17, #divContentMain .sidebar').find('a[href*="/profile/?guid="], a[href*="/p/?guid="]');
                 else var links = document.getElementsByTagName('a');
                 for (var i = 0; i < links.length; i++) {
-                    if (links[i].href.match(/https?:\/\/www\.geocaching\.com\/profile\/\?guid=/)) {
+                    if (links[i].href.match(/https?:\/\/www\.geocaching\.com\/(profile|p)\/\?guid=/)) {
                         // Avatare haben auch mal guid, hier keine Icons erzeugen.
                         if (links[i].children[0] && (links[i].children[0].tagName == "IMG" || links[i].children[0].tagName == "img")) continue;
-                        var guid = links[i].href.match(/https?:\/\/www\.geocaching\.com\/profile\/\?guid=(.*)/);
-                        guid = guid[1];
+                        var guid = links[i].href.match(/https?:\/\/www\.geocaching\.com\/(profile|p)\/\?guid=([a-zA-Z0-9-]*)/);
+                        guid = guid[2];
                         var username = decode_innerHTML(links[i]);
                         buildSendIcons(links[i], username, "per guid");
                     }
@@ -4087,7 +4087,7 @@ var mainGC = function() {
                 var select_val = "-1";
                 if (cache_type.match(/event/i)) {
                     select_val = settings_default_logtype_event;
-                } else if ($('.PostLogList').find('a[href*="https://www.geocaching.com/profile/?guid="]').text().trim() == global_me.trim()) {
+                } else if ($('.PostLogList').find('a[href*="https://www.geocaching.com/profile/?guid="], a[href*="https://www.geocaching.com/p/?guid="]').text().trim() == global_me.trim()) {
                     select_val = settings_default_logtype_owner;
                 } else select_val = settings_default_logtype;
                 var select = document.getElementById('ctl00_ContentBody_LogBookPanel1_ddLogType');
@@ -6121,7 +6121,7 @@ var mainGC = function() {
                 var log_infos = new Object();
                 var log_infos_long = new Array();
                 var index = 0;
-                var links = $('#divContentMain .span-17, #divContentMain .sidebar').find('a[href*="/(profile|p)/?guid="]');
+                var links = $('#divContentMain .span-17, #divContentMain .sidebar').find('a[href*="/profile/?guid="], a[href*="/p/?guid="]');
                 var owner = "";
                 var owner_name = "";
                 if ($('#ctl00_ContentBody_mcd1')[0]) {
@@ -6133,7 +6133,6 @@ var mainGC = function() {
                 for (var i = 0; i < links.length; i++) {
                     if (links[i].parentNode.className != "logOwnerStats" && links[i].childNodes[0] && !links[i].childNodes[0].src) {
                         if (links[i].id) links[i].name = links[i].id; // To be able to jump to this location
-                        var matches = links[i].href.match(/https?:\/\/www\.geocaching\.com\/(profile|p)\/\?guid=([a-zA-Z0-9]*)/);
                         var user = decode_innerHTML(links[i]);
                         if (links[i].parentNode.id == "ctl00_ContentBody_mcd1") user = owner;
                         // Build VUP Icon.
@@ -6502,7 +6501,7 @@ var mainGC = function() {
                     $('.gclh_vip').closest('a').remove();
                     $('.gclh_vup').closest('a').remove();
                     // VIP, VUP Icons aufbauen.
-                    var links = $('a[href*="/(profile|p)/?guid="]');
+                    var links = $('a[href*="/profile/?guid="], a[href*="/p/?guid="]');
                     for (var i = 0; i < links.length; i++) {
                         if (links[i].id) {
                             var user = links[i].innerHTML.replace(/&amp;/, '&');
@@ -6528,11 +6527,10 @@ var mainGC = function() {
                        document.location.href.match(/\.com\/(seek|track)\/log\.aspx/) ||
                        document.location.href.match(/\.com\/email\//) ||
                        document.location.href.match(/\.com\/my\/inventory\.aspx/)) {
-                var links = $('a[href*="/(profile|p)/?guid="]');
+                var links = $('a[href*="/profile/?guid="], a[href*="/p/?guid="]');
                 for (var i = 0; i < links.length; i++) {
                     // Wenn es hier um User "In the hands of ..." im TB Listing geht, dann nicht weitermachen weil Username nicht wirklich bekannt ist.
                     if (links[i].id == "ctl00_ContentBody_BugDetails_BugLocation") continue;
-                    var matches = links[i].href.match(/https?:\/\/www\.geocaching\.com\/(profile|p)\/\?guid=([a-zA-Z0-9]*)/);
                     var user = decode_innerHTML(links[i]);
                     // Build VUP Icon.
                     if (settings_process_vup && user != global_activ_username) {
@@ -6553,7 +6551,7 @@ var mainGC = function() {
             // Post cache log new page:
             // ----------
             } else if (document.location.href.match(/\.com\/play\/geocache\/gc\w+\/log/) && $('.muted')[0] && $('.muted')[0].children[1]) {
-                var id = $('.muted')[0].children[1].href.match(/^https?:\/\/www\.geocaching\.com\/(profile|p)\/\?id=(\d+)/);
+                var id = $('.muted')[0].children[1].href.match(/^https?:\/\/www\.geocaching\.com\/profile\/\?id=(\d+)/);
                 if (id && id[1]) {
                     var idLink = "/p/default.aspx?id=" + id[1] + "&tab=geocaches";
                     GM_xmlhttpRequest({
@@ -11634,7 +11632,7 @@ var mainGC = function() {
                 // Cache, TB Listing. Anhand guid prüfen, ob Einfärbung für User oder Owner notwendig ist.
                 if (para["user"] || para["owner"]) {
                     for (var j = 0; j < aTags.length; j++) {
-                        if (aTags[j].href.match(/\/profile\/\?guid=/)) {
+                        if (aTags[j].href.match(/\/(profile|p)\/\?guid=/)) {
                             if (decode_innerHTML(aTags[j]) == user && para["user"]) newClass = setSpecUser;
                             else if (decode_innerHTML(aTags[j]) == owner && para["owner"]) newClass = setSpecOwner;
                             break;
@@ -11683,7 +11681,7 @@ var mainGC = function() {
                     for (var j = 0; j < imgTags.length; j++) {
                         if (imgTags[j].title.match(/from VIP-List/)) {
                             for (var k = 0; k < aTags.length; k++) {
-                                if (aTags[k].href.match(/\/profile\/\?guid=/)) {
+                                if (aTags[k].href.match(/\/(profile|p)\/\?guid=/)) {
                                     if (in_array(decode_innerHTML(aTags[k]), vips)) {
                                         newClass = setSpecVip;
                                     }
@@ -12070,7 +12068,7 @@ var mainGC = function() {
 // Determine user, guid from the read old or new public profile.
     function getUserGuidFromProfile(respText) {
         var user = respText.match(/id="ctl00_(ProfileHead_ProfileHeader|ContentBody_ProfilePanel1)_lblMemberName">(.*?)<\/span>/);
-        var guid = respText.match(/href="\/account\/messagecenter\?recipientId=(.*?)"/);
+        var guid = respText.match(/href="\/account\/messagecenter\?recipientId=([a-zA-Z0-9-]*)"/);
         if (user && user[1] && user[2] && guid && guid[1]) {
             var span = document.createElement('span');
             span.innerHTML = user[2];
@@ -12078,13 +12076,6 @@ var mainGC = function() {
             return [username, guid[1]];
         }
         return [false, false];
-    }
-
-// Get guid from string.
-    function getGuid(href) {
-        var guid = href.match(/\?guid=(.*)(#|$)/);
-        if (guid && guid[1]) return guid[1];
-        else return false;
     }
 
 // Determine user from url.
@@ -12164,8 +12155,8 @@ var mainGC = function() {
         var ary = [];
         var list = '';
         $(content).find('ul.BookmarkList li').each(function() {
-            if ( $(this).find('a[href*="/profile/?guid="]')[0] && $(this).find('a[href*="/profile/?guid="]')[0].innerHTML.match(global_me) &&
-                 $(this).find('a[href*="/bookmarks/view.aspx?guid="]')[0] && $(this).find('a[href*="/bookmarks/view.aspx?guid="]')[0].innerHTML    ) {
+            if ( $(this).find('a[href*="/profile/?guid="], a[href*="/p/?guid="]')[0] && $(this).find('a[href*="/profile/?guid="], a[href*="/p/?guid="]')[0].innerHTML.match(global_me) &&
+                 $(this).find('a[href*="/bookmarks/view.aspx?guid="]')[0] && $(this).find('a[href*="/bookmarks/view.aspx?guid="]')[0].innerHTML                                           ) {
                 if (!ary.includes($(this).find('a[href*="/bookmarks/view.aspx?guid="]')[0].innerHTML)) {
                     count++;
                     ary.push($(this).find('a[href*="/bookmarks/view.aspx?guid="]')[0].innerHTML);
