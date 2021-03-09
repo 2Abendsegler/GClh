@@ -1,3 +1,4 @@
+<a href="#v01012" title="GClh II version 0.10.12 (09.03.2021)">v0.10.12</a> &nbsp;
 <a href="#v01011" title="GClh II version 0.10.11 (28.12.2020)">v0.10.11</a> &nbsp;
 <a href="#v01010" title="GClh II version 0.10.10 (06.12.2020)">v0.10.10</a> &nbsp;
 <a href="#v0109" title="GClh II version 0.10.9 (04.11.2020)">v0.10.9</a> &nbsp;
@@ -11,6 +12,66 @@
 <a href="#v0101" title="GClh II version 0.10.1 (20.12.2019)">v0.10.1</a> &nbsp;
 <a href="#v010" title="GClh II version 0.10 (13.12.2019)">v0.10</a> &nbsp;
 <a href="changelog_before.md" title="Go to earlier changelog">Earlier changelog</a> &nbsp;
+
+---
+## v0.10.12:
+<ul>
+	<li>
+		<strong>New:</strong> [Log forms] Convert TB autovisit feature of old log form to asynchronous, and integrate new log form. [<a href="https://github.com/2Abendsegler/GClh/issues/1301" title="Issue 1301">1301</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br>
+		TB autovisit feature in new log form:<br>
+		<img src="../images/0.10.12/Screen01.jpg" alt="Screen01.jpg"><br><br>
+	</li>
+	<li>
+		<strong>New:</strong> [Souvenirs] Classify souvenirs by country, state and other. [<a href="https://github.com/2Abendsegler/GClh/issues/1603" title="Issue 1603">1603</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		<img src="../images/0.10.12/Screen03.jpg" alt="Screen03.jpg"><br><br>
+	</li>
+	<li>
+		<strong>New:</strong> GClh Search can now search for bookmarklists "BM...", profiles "PR..." and logs "GL...". [<a href="https://github.com/2Abendsegler/GClh/issues/1586" title="Issue 1586">1586</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br>
+		For example to call the bookmarklist of the best Jigsaw Puzzle collection:<br>
+		<img src="../images/0.10.12/Screen02.jpg" alt="Screen02.jpg"><br><br>
+	</li>
+	<li>
+		<strong>New:</strong> [New Map] Integrate new BML feature in compact layout feature in new map. [<a href="https://github.com/2Abendsegler/GClh/issues/1597" title="Issue 1597">1597</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br><br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Cache listing] Openroutemaps has been changed their url. [<a href="https://github.com/2Abendsegler/GClh/issues/1585" title="Issue 1585">1585</a> / <a href="https://www.geocaching.com/profile/?u=ColleIsarco" title="Thanks to ColleIsarco">ColleIsarco</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Cache listing] Oneclick watching does not work. [<a href="https://github.com/2Abendsegler/GClh/issues/1589" title="Issue 1589">1589</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [New/Old Map] Additional cache data not loaded. [<a href="https://github.com/2Abendsegler/GClh/issues/1591" title="Issue 1591">1591</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Owner Dashboard] Build VIP, VUP, Mail icons does not work. [<a href="https://github.com/2Abendsegler/GClh/issues/1583" title="Issue 1583">1583</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Pocket query] Error if there is no PQ. [<a href="https://github.com/2Abendsegler/GClh/issues/1579" title="Issue 1579">1579</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> User related features don't work correct on several pages. [<a href="https://github.com/2Abendsegler/GClh/issues/1612" title="Issue 1612">1612</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br>
+		[Cache listing, New log form, Old log form, Friends, TB listing, Mail, TB log form, TB inventury] VIP, VUP, mail, message corrected.<br>
+		[Cache listing] One click ignoring corrected.<br>
+		[Cache listing] Counter of "Add to List" corrected.<br>
+		[TB listing] VIP, VUP, own, owner, reviewer coloring in TB listing corrected.<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> Small bugs and features collection. [<a href="https://github.com/2Abendsegler/GClh/issues/1601" title="Issue 1601">1601</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		[Cache listing] A locked cache is equated with an archived cache so that the cache name also appears in red.<br>
+		[Cache listing] Migrate Openroutemaps settings_show_openrouteservice_medium from 1 to 1a.<br>
+		[New Map] If no long text is given in the cache listing, no additional data was displayed in the new map.<br>
+		[New Map] New map due to BML may not be automatically updated if it has been moved.<br>
+		[New log form] Alignment of smilies in preview in the new log form.<br>
+		[Bookmarklist] The display of the rating for bookmark lists may only be suppressed if there is no rating and the link to create a rating is not available either.<br>
+		[TB search] Alignment TB search page.<br>
+		[FAQ] New FAQ 8. How can I get help to GClh?<br>
+		[FAQ] New FAQ 9. How can I report a bug or a feature request?<br>
+	</li>
+</ul>
+<br>
+(09.03.2021)<br>
+released by <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a><br>
+<br>
 
 ---
 ## v0.10.11:
