@@ -7026,7 +7026,7 @@ var mainGC = function() {
                     global_logs = logs;
                     global_num = num;
                     window.addEventListener("scroll", function (event) {
-                        gclh_dynamic_load();
+                        gclh_dynamic_load(logs, num);
                         event.stopPropagation();
                     }, true);
                 }
