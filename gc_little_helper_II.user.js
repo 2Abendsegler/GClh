@@ -4942,101 +4942,103 @@ var mainGC = function() {
             }
 
             // Set available filters.
-            $('#ctl00_ContentBody_tbResults').val(1000);
-            // Radius.
-            $('#ctl00_ContentBody_tbRadius').val(radius);
-            $('#ctl00_ContentBody_rbUnitType_1').click();
-            // Cache types.
-            if (cacheTypes !== false) {
-                cacheTypes.forEach(function(elem) {
-                    $('#ctl00_ContentBody_cbTaxonomy input[value="'+elem+'"]').click();
-                });
-            }
-            // Found Status.
-            if (showFound) $('#ctl00_ContentBody_cbOptions_1').click();
-            if (hideFound) $('#ctl00_ContentBody_cbOptions_0').click();
-            // Hide Status.
-            if (showOwn) $('#ctl00_ContentBody_cbOptions_3').click();
-            if (hideOwn) $('#ctl00_ContentBody_cbOptions_2').click();
-            // Difficult and terrin rating.
-            if (d_t['d_min'] > 1 && d_t['d_max'] < 5 && d_t['d_min'] != d_t['d_max']) {
-                // Parameters that are BETWEEN 1 and 5 (1 < x < 5) cannot be implemented.
-                if (!$('#gclh_warning')[0]) $('#ctl00_ContentBody_QueryPanel').before(warningHTML);
-                let unavailableFilters = '<li>The difficulty rating is greater than 1 and less than 5</li>';
-                $('#gclh_warning ul')[0].innerHTML += unavailableFilters;
-            } else {
-                if (d_t['d_min'] == d_t['d_max']) {
-                    $('#ctl00_ContentBody_ddDifficulty')[0].selectedIndex = 1;
-                    $('#ctl00_ContentBody_ddDifficultyScore')[0].selectedIndex = d_t['d_min']*2 - 2;
-                } else if (d_t['d_min'] > 1) {
-                    $('#ctl00_ContentBody_ddDifficultyScore')[0].selectedIndex = d_t['d_min']*2 - 2;
-                } else if ((d_t['d_max'] < 5)) {
-                    $('#ctl00_ContentBody_ddDifficulty')[0].selectedIndex = 2;
-                    $('#ctl00_ContentBody_ddDifficultyScore')[0].selectedIndex = d_t['d_max']*2 - 2;
+            setTimeout(function() {
+                $('#ctl00_ContentBody_tbResults').val(1000);
+                // Radius.
+                $('#ctl00_ContentBody_tbRadius').val(radius);
+                $('#ctl00_ContentBody_rbUnitType_1').click();
+                // Cache types.
+                if (cacheTypes !== false) {
+                    cacheTypes.forEach(function(elem) {
+                        $('#ctl00_ContentBody_cbTaxonomy input[value="'+elem+'"]').click();
+                    });
                 }
-            }
-            if (d_t['t_min'] > 1 && d_t['t_max'] < 5 && d_t['t_min'] != d_t['t_max']) {
-                // Parameters that are BETWEEN 1 and 5 (1 < x < 5) cannot be implemented.
-                if (!$('#gclh_warning')[0]) $('#ctl00_ContentBody_QueryPanel').before(warningHTML);
-                let unavailableFilters = '<li>The terrain rating is greater than 1 and less than 5</li>';
-                $('#gclh_warning ul')[0].innerHTML += unavailableFilters;
-            } else {
-                if (d_t['t_min'] == d_t['t_max']) {
-                    $('#ctl00_ContentBody_ddTerrain')[0].selectedIndex = 1;
-                    $('#ctl00_ContentBody_ddTerrainScore')[0].selectedIndex = d_t['t_min']*2 - 2;
-                } else if (d_t['t_min'] > 1) {
-                    $('#ctl00_ContentBody_ddTerrainScore')[0].selectedIndex = d_t['t_min']*2 - 2;
-                } else if ((d_t['t_max'] < 5)) {
-                    $('#ctl00_ContentBody_ddTerrain')[0].selectedIndex = 2;
-                    $('#ctl00_ContentBody_ddTerrainScore')[0].selectedIndex = d_t['t_max']*2 - 2;
-                }
-            }
-            // Cache Size.
-            if (cacheSize !== false) {
-                cacheSize.forEach(function(elem) {
-                    $('#ctl00_ContentBody_cbContainers input[value="'+elem+'"]').click();
-                });
-            }
-            // Membership type.
-            if (basic) $('#ctl00_ContentBody_cbOptions_4').click();
-            if (premium) $('#ctl00_ContentBody_cbOptions_5').click();
-            // Cache Status.
-            if (enabled) $('#ctl00_ContentBody_cbOptions_13').click();
-            if (disabled) $('#ctl00_ContentBody_cbOptions_12').click();
-            // Date
-            if (placedDateStart !== false || placedDateEnd !== false) {
-                $('#ctl00_ContentBody_rbPlacedBetween').click();
-                // Start Date.
-                if (placedDateStart !== false) {
-                    let date = placedDateStart.split('-');
-                    let yearIndex = $('#ctl00_ContentBody_DateTimeBegin_Year')[0].selectedIndex;
-                    let yearNumber = $('#ctl00_ContentBody_DateTimeBegin_Year option')[yearIndex].innerHTML;
-                    let difference = yearNumber-date[0];
-                    $('#ctl00_ContentBody_DateTimeBegin_Month')[0].selectedIndex = date[1]-1;
-                    $('#ctl00_ContentBody_DateTimeBegin_Day')[0].selectedIndex = date[2]-1;
-                    $('#ctl00_ContentBody_DateTimeBegin_Year')[0].selectedIndex = yearIndex+difference;
+                // Found Status.
+                if (showFound) $('#ctl00_ContentBody_cbOptions_1').click();
+                if (hideFound) $('#ctl00_ContentBody_cbOptions_0').click();
+                // Hide Status.
+                if (showOwn) $('#ctl00_ContentBody_cbOptions_3').click();
+                if (hideOwn) $('#ctl00_ContentBody_cbOptions_2').click();
+                // Difficult and terrin rating.
+                if (d_t['d_min'] > 1 && d_t['d_max'] < 5 && d_t['d_min'] != d_t['d_max']) {
+                    // Parameters that are BETWEEN 1 and 5 (1 < x < 5) cannot be implemented.
+                    if (!$('#gclh_warning')[0]) $('#ctl00_ContentBody_QueryPanel').before(warningHTML);
+                    let unavailableFilters = '<li>The difficulty rating is greater than 1 and less than 5</li>';
+                    $('#gclh_warning ul')[0].innerHTML += unavailableFilters;
                 } else {
-                    $('#ctl00_ContentBody_DateTimeBegin_Month')[0].selectedIndex = 0;
-                    $('#ctl00_ContentBody_DateTimeBegin_Day')[0].selectedIndex = 0;
-                    $('#ctl00_ContentBody_DateTimeBegin_Year')[0].selectedIndex =  $('#ctl00_ContentBody_DateTimeBegin_Year option').length-1;
+                    if (d_t['d_min'] == d_t['d_max']) {
+                        $('#ctl00_ContentBody_ddDifficulty')[0].selectedIndex = 1;
+                        $('#ctl00_ContentBody_ddDifficultyScore')[0].selectedIndex = d_t['d_min']*2 - 2;
+                    } else if (d_t['d_min'] > 1) {
+                        $('#ctl00_ContentBody_ddDifficultyScore')[0].selectedIndex = d_t['d_min']*2 - 2;
+                    } else if ((d_t['d_max'] < 5)) {
+                        $('#ctl00_ContentBody_ddDifficulty')[0].selectedIndex = 2;
+                        $('#ctl00_ContentBody_ddDifficultyScore')[0].selectedIndex = d_t['d_max']*2 - 2;
+                    }
                 }
-                // End Date
-                if (placedDateEnd !== false) {
-                    let date = placedDateEnd.split('-');
-                    let yearIndex = $('#ctl00_ContentBody_DateTimeEnd_Year')[0].selectedIndex;
-                    let yearNumber = $('#ctl00_ContentBody_DateTimeEnd_Year option')[yearIndex].innerHTML;
-                    let difference = yearNumber-date[0];
-                    $('#ctl00_ContentBody_DateTimeEnd_Month')[0].selectedIndex = date[1]-1;
-                    $('#ctl00_ContentBody_DateTimeEnd_Day')[0].selectedIndex = date[2]-1;
-                    $('#ctl00_ContentBody_DateTimeEnd_Year')[0].selectedIndex = yearIndex+difference;
+                if (d_t['t_min'] > 1 && d_t['t_max'] < 5 && d_t['t_min'] != d_t['t_max']) {
+                    // Parameters that are BETWEEN 1 and 5 (1 < x < 5) cannot be implemented.
+                    if (!$('#gclh_warning')[0]) $('#ctl00_ContentBody_QueryPanel').before(warningHTML);
+                    let unavailableFilters = '<li>The terrain rating is greater than 1 and less than 5</li>';
+                    $('#gclh_warning ul')[0].innerHTML += unavailableFilters;
+                } else {
+                    if (d_t['t_min'] == d_t['t_max']) {
+                        $('#ctl00_ContentBody_ddTerrain')[0].selectedIndex = 1;
+                        $('#ctl00_ContentBody_ddTerrainScore')[0].selectedIndex = d_t['t_min']*2 - 2;
+                    } else if (d_t['t_min'] > 1) {
+                        $('#ctl00_ContentBody_ddTerrainScore')[0].selectedIndex = d_t['t_min']*2 - 2;
+                    } else if ((d_t['t_max'] < 5)) {
+                        $('#ctl00_ContentBody_ddTerrain')[0].selectedIndex = 2;
+                        $('#ctl00_ContentBody_ddTerrainScore')[0].selectedIndex = d_t['t_max']*2 - 2;
+                    }
                 }
-            }
-            // Attributes
-            if (attr !== false) {
-                attr.forEach(function(elem) {
-                    $('#ctl00_ContentBody_ctlAttrInclude_dtlAttributeIcons input[attid="'+elem+'"]').parent().find('.btn-attribute img').click();
-                });
-            }
+                // Cache Size.
+                if (cacheSize !== false) {
+                    cacheSize.forEach(function(elem) {
+                        $('#ctl00_ContentBody_cbContainers input[value="'+elem+'"]').click();
+                    });
+                }
+                // Membership type.
+                if (basic) $('#ctl00_ContentBody_cbOptions_4').click();
+                if (premium) $('#ctl00_ContentBody_cbOptions_5').click();
+                // Cache Status.
+                if (enabled) $('#ctl00_ContentBody_cbOptions_13').click();
+                if (disabled) $('#ctl00_ContentBody_cbOptions_12').click();
+                // Date
+                if (placedDateStart !== false || placedDateEnd !== false) {
+                    $('#ctl00_ContentBody_rbPlacedBetween').click();
+                    // Start Date.
+                    if (placedDateStart !== false) {
+                        let date = placedDateStart.split('-');
+                        let yearIndex = $('#ctl00_ContentBody_DateTimeBegin_Year')[0].selectedIndex;
+                        let yearNumber = $('#ctl00_ContentBody_DateTimeBegin_Year option')[yearIndex].innerHTML;
+                        let difference = yearNumber-date[0];
+                        $('#ctl00_ContentBody_DateTimeBegin_Month')[0].selectedIndex = date[1]-1;
+                        $('#ctl00_ContentBody_DateTimeBegin_Day')[0].selectedIndex = date[2]-1;
+                        $('#ctl00_ContentBody_DateTimeBegin_Year')[0].selectedIndex = yearIndex+difference;
+                    } else {
+                        $('#ctl00_ContentBody_DateTimeBegin_Month')[0].selectedIndex = 0;
+                        $('#ctl00_ContentBody_DateTimeBegin_Day')[0].selectedIndex = 0;
+                        $('#ctl00_ContentBody_DateTimeBegin_Year')[0].selectedIndex =  $('#ctl00_ContentBody_DateTimeBegin_Year option').length-1;
+                    }
+                    // End Date
+                    if (placedDateEnd !== false) {
+                        let date = placedDateEnd.split('-');
+                        let yearIndex = $('#ctl00_ContentBody_DateTimeEnd_Year')[0].selectedIndex;
+                        let yearNumber = $('#ctl00_ContentBody_DateTimeEnd_Year option')[yearIndex].innerHTML;
+                        let difference = yearNumber-date[0];
+                        $('#ctl00_ContentBody_DateTimeEnd_Month')[0].selectedIndex = date[1]-1;
+                        $('#ctl00_ContentBody_DateTimeEnd_Day')[0].selectedIndex = date[2]-1;
+                        $('#ctl00_ContentBody_DateTimeEnd_Year')[0].selectedIndex = yearIndex+difference;
+                    }
+                }
+                // Attributes
+                if (attr !== false) {
+                    attr.forEach(function(elem) {
+                        $('#ctl00_ContentBody_ctlAttrInclude_dtlAttributeIcons input[attid="'+elem+'"]').parent().find('.btn-attribute img').click();
+                    });
+                }
+            }, 1000);
         } catch(e) {gclh_error("Save as PQ from search map",e);}
     }
 
@@ -9266,17 +9268,22 @@ var mainGC = function() {
 
             // Create Button to save map as PQ
             function addCreatePQButton() {
-                if (settings_searchmap_show_btn_save_as_pq && $('#geocache-list')[0] && !$('#gclh_saveAsPQ')[0]) {
-                    let html = '<div class="geocache-action-bar"><a id="gclh_saveAsPQ" href="javascript:void(0)"><img src="../../images/icons/16/pocket_query.png" height="12px">Save as Pocket Query</a></div>';
-                    $('.geocache-action-bar.sidebar-control').after(html);
-                    $('#gclh_saveAsPQ').bind('click', function() {
-                        let px = document.querySelector('.leaflet-gl-layer.mapboxgl-map').offsetWidth;
-                        let url = 'https://www.geocaching.com/pocket/gcquery.aspx';
-                        url += document.location.search.replace(/&asc=(true|false)&sort=\w+/, '');
-                        url += '&gclh_px='+px;
-                        url += '&gclh_saveAsPQ=true';
-                        window.open(url, '_blank');
-                    });
+                if (settings_searchmap_show_btn_save_as_pq) {
+                    if ($('.list-hub')[0] && $('#gclh_saveAsPQ')[0]) {
+                        $('#gclh_saveAsPQ').parent().remove();
+                    }
+                    if ($('#geocache-list')[0] && !$('#gclh_saveAsPQ')[0]) {
+                        let html = '<div class="geocache-action-bar"><a id="gclh_saveAsPQ" href="javascript:void(0)"><img src="../../images/icons/16/pocket_query.png" height="12px">Save as Pocket Query</a></div>';
+                        $('.geocache-action-bar.sidebar-control').after(html);
+                        $('#gclh_saveAsPQ').bind('click', function() {
+                            let px = document.querySelector('.leaflet-gl-layer.mapboxgl-map').offsetWidth;
+                            let url = 'https://www.geocaching.com/pocket/gcquery.aspx';
+                            url += document.location.search.replace(/&asc=(true|false)&sort=\w+/, '');
+                            url += '&gclh_px='+px;
+                            url += '&gclh_saveAsPQ=true';
+                            window.open(url, '_blank');
+                        });
+                    }
                 }
             }
 
