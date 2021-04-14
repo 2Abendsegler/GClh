@@ -9007,11 +9007,10 @@ var mainGC = function() {
                 if (!settings_map_hide_sidebar || !run2) return;
 
                 run2 = false;
-                let wc = 0;
                 function clickToClose(wc) {
                     if ($('body').hasClass('sidebar-is-closed')) { // is closed
                         wc++;
-                        if (wc <= 20) setTimeout(function() { clickToClose(wc); }, 200);
+                        if (wc <= 100) setTimeout(function() { clickToClose(wc); }, 200);
                     } else { // is open
                         $('div#sidebar-group>button.sidebar-toggle').click();
                     }
@@ -9025,7 +9024,7 @@ var mainGC = function() {
             // set default filters (only if none set)
             function setFilter() {
                 if (urlIsFiltered || !run || $('button.filter-toggle').length===0) return;
-                if (document.location.href.match(/\.com\/play\/map(\/BM|\?bm=)/)) return;
+                if (document.location.href.match(/\.com\/play\/map(\/BM|\?bm=|\/lists)/)) return;
                 run = false;
 
                 // each filter has to be clicked twice, otherwise the selection isn't reliable
@@ -9083,6 +9082,7 @@ var mainGC = function() {
             // Processing all steps.
             function processAllSearchMap() {
                 setFilter();
+                if (document.location.href.match(/\.com\/play\/map(\/BM|\?bm=|\/lists)/)) hideSidebar();
                 scrollInCacheList(); // Has to be run before searchThisArea.
                 searchThisArea();
                 setLinkToOwner(); // Has to be run before compactLayout.
