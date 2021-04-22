@@ -2,7 +2,7 @@
 // @name             GC little helper II
 // @namespace        http://www.amshove.net
 //--> $$000
-// @version          0.10.13
+// @version          0.10.14
 //<-- $$000
 // @include          https://www.geocaching.com/*
 // @include          https://maps.google.tld/*
@@ -1323,7 +1323,7 @@ var mainGC = function() {
         function buildUpHeader(waitCount, html) {
             if ($('#gc-header, #GCHeader')[0] && !html == "") {
                 // Integrate html of new header.
-                $('#gc-header-root').prepend(html);
+                $('#gc-header-root, #header-root, #root').prepend(html);
                 // Set user avatar, user and found count in new header.
                 if ($('#ctl00_uxLoginStatus_hlHeaderAvatar')[0] && $('#ctl00_uxLoginStatus_hlHeaderAvatar')[0].src && $('.player-profile img')[0] && $('.player-profile img')[0].src) {
                     $('#ctl00_uxLoginStatus_hlHeaderAvatar')[0].src = $('.player-profile img')[0].src;
