@@ -8894,9 +8894,8 @@ var mainGC = function() {
                             regroupCacheDataSearchmap($('.cache-preview-header')[0], 'dot', '', '.cache-metadata:last', cache_details_premium);
                         }
                     }
-//xxxx
+//xxxx fup?
                     if ($(text).find('#ctl00_ContentBody_disabledMessage')[0]) {
-console.log('hier steht fup');
                         new_text += '<span class="gclh_enhancement_disabled">fup</span>';
                         if ($('.gclh_cache_type use')[0] && !$('.gclh_cache_type use')[0].getAttribute('xlink:href').match('_disabled')) {
                             $('.gclh_cache_type use')[0].setAttribute('xlink:href', $('.gclh_cache_type use')[0].getAttribute('xlink:href') + '_disabled');
