@@ -1,3 +1,4 @@
+<a href="#v01015" title="GClh II version 0.10.15 (23.04.2021)">v0.10.15</a> &nbsp;
 <a href="#v01014" title="GClh II version 0.10.14 (22.04.2021)">v0.10.14</a> &nbsp;
 <a href="#v01013" title="GClh II version 0.10.13 (22.04.2021)">v0.10.13</a> &nbsp;
 <a href="#v01012" title="GClh II version 0.10.12 (09.03.2021)">v0.10.12</a> &nbsp;
@@ -14,6 +15,17 @@
 <a href="#v0101" title="GClh II version 0.10.1 (20.12.2019)">v0.10.1</a> &nbsp;
 <a href="#v010" title="GClh II version 0.10 (13.12.2019)">v0.10</a> &nbsp;
 <a href="changelog_before.md" title="Go to earlier changelog">Earlier changelog</a> &nbsp;
+
+---
+## v0.10.15:
+<ul>
+	<li>
+		<strong>Fix:</strong> [My List] No page header. [<a href="https://github.com/2Abendsegler/GClh/issues/1637" title="Issue 1637">1637</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+</ul>
+(23.04.2021)<br>
+released by <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a><br>
+<br>
 
 ---
 ## v0.10.14:
