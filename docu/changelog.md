@@ -21,7 +21,6 @@
 		<strong>Fix:</strong> [Global] GClh doesn't run because of changing all page headers. [<a href="https://github.com/2Abendsegler/GClh/issues/1630" title="Issue 1630">1630</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 	</li>
 </ul>
-<br>
 (22.04.2021)<br>
 released by <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a><br>
 <br>
