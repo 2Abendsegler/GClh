@@ -2,7 +2,7 @@
 // @name             GC little helper II
 // @namespace        http://www.amshove.net
 //--> $$000
-// @version          0.10.14
+// @version          0.10.15
 //<-- $$000
 // @include          https://www.geocaching.com/*
 // @include          https://maps.google.tld/*
@@ -1312,7 +1312,6 @@ var mainGC = function() {
         css += '#gc-header, #GCHeader, #gc-mobile-nav {display: none;}';
         // User profile menu bend into shape.
         css += '.gclh_open ul.submenu {visibility: visible; display: block !important;}';
-//xxxx
         // Special css for searchmap.
         if (is_page('searchmap')) {
             css += 'gclh_nav .wrapper {z-index: 1006;} gclh_nav li input {height: unset !important;}';
@@ -1323,7 +1322,7 @@ var mainGC = function() {
         function buildUpHeader(waitCount, html) {
             if ($('#gc-header, #GCHeader')[0] && !html == "") {
                 // Integrate html of new header.
-                $('#gc-header-root, #header-root, #root').prepend(html);
+                $('#gc-header-root, #header-root, #root, #app-root').prepend(html);
                 // Set user avatar, user and found count in new header.
                 if ($('#ctl00_uxLoginStatus_hlHeaderAvatar')[0] && $('#ctl00_uxLoginStatus_hlHeaderAvatar')[0].src && $('.player-profile img')[0] && $('.player-profile img')[0].src) {
                     $('#ctl00_uxLoginStatus_hlHeaderAvatar')[0].src = $('.player-profile img')[0].src;
@@ -8894,9 +8893,8 @@ var mainGC = function() {
                             regroupCacheDataSearchmap($('.cache-preview-header')[0], 'dot', '', '.cache-metadata:last', cache_details_premium);
                         }
                     }
-//xxxx fup?
                     if ($(text).find('#ctl00_ContentBody_disabledMessage')[0]) {
-                        new_text += '<span class="gclh_enhancement_disabled">fup</span>';
+                        new_text += '<span class="gclh_enhancement_disabled"></span>';
                         if ($('.gclh_cache_type use')[0] && !$('.gclh_cache_type use')[0].getAttribute('xlink:href').match('_disabled')) {
                             $('.gclh_cache_type use')[0].setAttribute('xlink:href', $('.gclh_cache_type use')[0].getAttribute('xlink:href') + '_disabled');
                             setStrikeDisabledInDetails();
@@ -11721,10 +11719,10 @@ var mainGC = function() {
         div.setAttribute("style", "margin-top: -50px;");
         var prop = ' style="border: none; visibility: hidden; width: 2px; height: 2px;" alt="">';
 //--> $$002
-        var code = '<img src="https://c.andyhoppe.com/1619082261"' + prop + // Besucher
-                   '<img src="https://c.andyhoppe.com/1619082304"' + prop + // Seitenaufrufe
-                   '<img src="https://www.worldflagcounter.com/hGT"' + prop +
-                   '<img src="https://s11.flagcounter.com/count2/g3gX/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
+        var code = '<img src="https://c.andyhoppe.com/1619130842"' + prop + // Besucher
+                   '<img src="https://c.andyhoppe.com/1619130885"' + prop + // Seitenaufrufe
+                   '<img src="https://www.worldflagcounter.com/hGW"' + prop +
+                   '<img src="https://s11.flagcounter.com/count2/5KtM/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
 //<-- $$002
         div.innerHTML = code;
         side.appendChild(div);
@@ -13066,7 +13064,7 @@ var mainGC = function() {
             html += thanksLineBuild("Tungstène",            "Tungstene",                false, false, false, true,  false);
             html += thanksLineBuild("V60",                  "V60GC",                    false, false, false, true,  false);
             html += thanksLineBuild("winkamol",             "",                         false, false, false, true,  false);
-            var thanksLastUpdate = "22.04.2021";
+            var thanksLastUpdate = "23.04.2021";
 //<-- $$006
             html += "    </tbody>";
             html += "</table>";
