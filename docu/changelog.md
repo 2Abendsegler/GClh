@@ -25,7 +25,7 @@
 		<strong>Fix:</strong> [Global] GClh doesn't run because of changing page header. [<a href="https://github.com/2Abendsegler/GClh/issues/1630" title="Issue 1630">1630</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 		All problems from the last changes of GS should now have been eliminated.<br>
 		The menu of all geocaching pages is now in English and cannot be changed via the language setting in the GClh config or on the geocaching page.<br>
-		Some user had problems in such a way, that the GClh did not want to run despite the last update or even sometimes ran and sometimes didn't. That should be fixed now also. <br>
+		Some user had problems in such a way, that the GClh did not want to run despite the last update or even sometimes ran and sometimes didn't. That should be fixed now also. <br><br>
 	</li>
 	<li>
 		<strong>Fix:</strong> [Global] Found count in header not displayed. [<a href="https://github.com/2Abendsegler/GClh/issues/1644" title="Issue 1644">1644</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
