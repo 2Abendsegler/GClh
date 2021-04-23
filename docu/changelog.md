@@ -1,3 +1,4 @@
+<a href="#v01018" title="GClh II version 0.10.18 (24.04.2021)">v0.10.18</a> &nbsp;
 <a href="#v01016" title="GClh II version 0.10.16 (23.04.2021)">v0.10.16</a> &nbsp;
 <a href="#v01015" title="GClh II version 0.10.15 (23.04.2021)">v0.10.15</a> &nbsp;
 <a href="#v01014" title="GClh II version 0.10.14 (22.04.2021)">v0.10.14</a> &nbsp;
@@ -16,6 +17,29 @@
 <a href="#v0101" title="GClh II version 0.10.1 (20.12.2019)">v0.10.1</a> &nbsp;
 <a href="#v010" title="GClh II version 0.10 (13.12.2019)">v0.10</a> &nbsp;
 <a href="changelog_before.md" title="Go to earlier changelog">Earlier changelog</a> &nbsp;
+
+---
+## v0.10.18:
+<ul>
+	<li>
+		<strong>Fix:</strong> [Global] GClh doesn't run because of changing page header. [<a href="https://github.com/2Abendsegler/GClh/issues/1630" title="Issue 1630">1630</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		All problems from the last changes of GS should now have been eliminated.<br>
+		The menu of all geocaching pages is now in English and cannot be changed via the language setting in the GClh config or on the geocaching page.<br>
+		Some user had problems in such a way, that the GClh did not want to run despite the last update or even sometimes ran and sometimes didn't. That should be fixed now also. <br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Global] Found count in header not displayed. [<a href="https://github.com/2Abendsegler/GClh/issues/1644" title="Issue 1644">1644</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Global] Message center message indicator in header not displayed. [<a href="https://github.com/2Abendsegler/GClh/issues/1647" title="Issue 1647">1647</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Global] Set a language of the geocaching pages through the GClh. [<a href="https://github.com/2Abendsegler/GClh/issues/1648" title="Issue 1648">1648</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+</ul>
+(24.04.2021)<br>
+released by <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a><br>
+<br>
 
 ---
 ## v0.10.16:
