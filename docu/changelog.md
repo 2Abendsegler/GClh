@@ -37,6 +37,7 @@
 		<strong>Fix:</strong> [Global] Set a language of the geocaching pages through the GClh. [<a href="https://github.com/2Abendsegler/GClh/issues/1648" title="Issue 1648">1648</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 	</li>
 </ul>
+<br>
 (24.04.2021)<br>
 released by <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a><br>
 <br>
