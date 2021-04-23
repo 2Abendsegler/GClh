@@ -2,7 +2,7 @@
 // @name             GC little helper II
 // @namespace        http://www.amshove.net
 //--> $$000
-// @version          0.10.15
+// @version          0.10.16
 //<-- $$000
 // @include          https://www.geocaching.com/*
 // @include          https://maps.google.tld/*
@@ -1322,7 +1322,10 @@ var mainGC = function() {
         function buildUpHeader(waitCount, html) {
             if ($('#gc-header, #GCHeader')[0] && !html == "") {
                 // Integrate html of new header.
-                $('#gc-header-root, #header-root, #root, #app-root').prepend(html);
+                if ($('#gc-header-root')[0]) $('#gc-header-root').prepend(html);
+                else if ($('#header-root')[0]) $('#header-root').prepend(html);
+                else if ($('#root')[0]) $('#root').prepend(html);
+                else if ($('#app-root')[0]) $('#app-root').prepend(html);
                 // Set user avatar, user and found count in new header.
                 if ($('#ctl00_uxLoginStatus_hlHeaderAvatar')[0] && $('#ctl00_uxLoginStatus_hlHeaderAvatar')[0].src && $('.player-profile img')[0] && $('.player-profile img')[0].src) {
                     $('#ctl00_uxLoginStatus_hlHeaderAvatar')[0].src = $('.player-profile img')[0].src;
@@ -5272,14 +5275,16 @@ var mainGC = function() {
                         if (items) {
                             for (var i = 0; i < items.length; i++) {
                                 if ($(items[i]).find('.geocache-status.archived, .geocache-status.disabled')[0]) {
-                                    var attrib = $(items[i]).find(pfad)[0].getAttribute('xlink:href');
-                                    if (visible == true) {
-                                        if (attrib && attrib.match(/#(.*)_disabled/)) {
-                                            $(items[i]).find(pfad)[0].setAttribute('xlink:href', attrib.replace('_disabled', ''));
-                                        }
-                                    } else {
-                                        if (attrib && !attrib.match(/#(.*)_disabled/)) {
-                                            $(items[i]).find(pfad)[0].setAttribute('xlink:href', attrib + '_disabled');
+                                    if ($(items[i]).find(pfad)[0]) {
+                                        var attrib = $(items[i]).find(pfad)[0].getAttribute('xlink:href');
+                                        if (visible == true) {
+                                            if (attrib && attrib.match(/#(.*)_disabled/)) {
+                                                $(items[i]).find(pfad)[0].setAttribute('xlink:href', attrib.replace('_disabled', ''));
+                                            }
+                                        } else {
+                                            if (attrib && !attrib.match(/#(.*)_disabled/)) {
+                                                $(items[i]).find(pfad)[0].setAttribute('xlink:href', attrib + '_disabled');
+                                            }
                                         }
                                     }
                                 }
@@ -11367,9 +11372,9 @@ var mainGC = function() {
 // Searches for the owner's original username from the listing.
     function get_real_owner() {
         if ($('#ctl00_ContentBody_bottomSection')) {
-            var links = $('#ctl00_ContentBody_bottomSection a[href*="/seek/nearest.aspx?u="]');
+            var links = $('#ctl00_ContentBody_bottomSection a[href*="/play/search?owner[0]="]');
             for (var i = 0; i < links.length; i++) {
-                var match = links[i].href.match(/\/seek\/nearest\.aspx\?u\=(.*)$/);
+                var match = links[i].href.match(/\/play\/search\?owner\[0\]=(.*)&/);
                 if (match) return urldecode(match[1]);
             }
             return false;
@@ -11719,10 +11724,10 @@ var mainGC = function() {
         div.setAttribute("style", "margin-top: -50px;");
         var prop = ' style="border: none; visibility: hidden; width: 2px; height: 2px;" alt="">';
 //--> $$002
-        var code = '<img src="https://c.andyhoppe.com/1619130842"' + prop + // Besucher
-                   '<img src="https://c.andyhoppe.com/1619130885"' + prop + // Seitenaufrufe
-                   '<img src="https://www.worldflagcounter.com/hGW"' + prop +
-                   '<img src="https://s11.flagcounter.com/count2/5KtM/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
+        var code = '<img src="https://c.andyhoppe.com/1619141188"' + prop + // Besucher
+                   '<img src="https://c.andyhoppe.com/1619141226"' + prop + // Seitenaufrufe
+                   '<img src="https://www.worldflagcounter.com/hG0"' + prop +
+                   '<img src="https://s11.flagcounter.com/count2/Ruo1/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
 //<-- $$002
         div.innerHTML = code;
         side.appendChild(div);
