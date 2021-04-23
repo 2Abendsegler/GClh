@@ -2,7 +2,7 @@
 // @name             GC little helper II
 // @namespace        http://www.amshove.net
 //--> $$000
-// @version          0.10.16
+// @version          0.10.17
 //<-- $$000
 // @include          https://www.geocaching.com/*
 // @include          https://maps.google.tld/*
@@ -57,7 +57,7 @@ var start = function(c) {
                     } else if (document.location.href.match(/^https?:\/\/www\.openstreetmap\.org/)) {
                         mainOSM();
                     } else if (document.location.href.match(/^https?:\/\/www\.geocaching\.com/)) {
-                        mainGC();
+                        mainGCWait();
                     } else if (document.location.href.match(/^https?:\/\/project-gc\.com\/Tools\/PQSplit/)) {
                         mainPGC();
                     }
@@ -300,6 +300,7 @@ var variablesInit = function(c) {
     c.global_mod_reset = false;
     c.global_rc_data = "";
     c.global_rc_status = "";
+    c.global_me = "";
     c.settings_submit_log_button = getValue("settings_submit_log_button", true);
     c.settings_log_inline = getValue("settings_log_inline", false);
     c.settings_log_inline_tb = getValue("settings_log_inline_tb", false);
@@ -1117,11 +1118,12 @@ var mainOSM = function() {
     } catch(e) {gclh_error("mainOSM",e);}
 };
 
-////////////////////////
-// 5. GC ($$cap)         (For the geocaching webpages.)
-// 5.1 GC - Main ($$cap) (For the geocaching webpages.)
-////////////////////////
-var mainGC = function() {
+////////////////////////////
+// 5. GC ($$cap)             (For the geocaching webpages.)
+// 5.1 GC - Main     ($$cap) (For the geocaching webpages.)
+// 5.1.1 GC - Main 1 ($$cap) (For the geocaching webpages.)
+////////////////////////////
+var mainGCWait = function() {
 
 // Hide Facebook.
     if (settings_hide_facebook && (document.location.href.match(/\.com\/(play|account\/register|login|account\/login|seek\/log\.aspx?(.*)|account\/signin)/))) {
@@ -1166,18 +1168,30 @@ var mainGC = function() {
     }
 
 // Set global data and check if logged in.
-    try {
-        if (typeof serverParameters !== 'undefined') {
-            if (!serverParameters["user:info"] || !serverParameters["user:info"].username) return;
-            else var global_me = serverParameters["user:info"].username;
-        } else if (typeof _gcUser !== 'undefined') {
-            if (!_gcUser.username) return;
-            else var global_me = _gcUser.username;
-        } else if (typeof headerSettings !== 'undefined') {
-            if (!headerSettings.username) return;
-            else var global_me = headerSettings.username;
-        } else return;
-    } catch(e) {gclh_error("Set global data and check if logged in",e);}
+    function waitingForUserParameter(waitCount) {
+        // Example: Dashboard and the most other pages.
+        if (typeof serverParameters !== 'undefined' && serverParameters["user:info"] && serverParameters["user:info"].username) {
+            global_me = serverParameters["user:info"].username;
+        // Example: New map.
+        } else if (typeof _gcUser !== 'undefined' && _gcUser.username) {
+            global_me = _gcUser.username;
+        // Example: Old map.
+        } else if (typeof headerSettings !== 'undefined' && headerSettings.username) {
+            global_me = headerSettings.username;
+        }
+        if (global_me != '') {
+            mainGC();
+        } else {
+            waitCount++; if (waitCount <= 200) setTimeout(function(){waitingForUserParameter(waitCount);}, 50);
+        }
+    }
+    waitingForUserParameter(0);
+};
+
+////////////////////////////
+// 5.1.2 GC - Main 2 ($$cap) (For the geocaching webpages.)
+////////////////////////////
+var mainGC = function() {
 
 // After change of a bookmark respectively a bookmark list go automatically from confirmation screen to bookmark list.
    if (((settings_bm_changed_and_go && document.location.href.match(/\.com\/bookmarks\/mark\.aspx\?(guid=|ID=|view=legacy&guid=|view=legacy&ID=)/)) || (settings_bml_changed_and_go && document.location.href.match(/\.com\/bookmarks\/edit\.aspx/))) && $('#divContentMain')[0] && $('p.Success a[href*="/bookmarks/view.aspx?guid="]')[0]) {
