@@ -1,3 +1,4 @@
+<a href="#v01016" title="GClh II version 0.10.16 (23.04.2021)">v0.10.16</a> &nbsp;
 <a href="#v01015" title="GClh II version 0.10.15 (23.04.2021)">v0.10.15</a> &nbsp;
 <a href="#v01014" title="GClh II version 0.10.14 (22.04.2021)">v0.10.14</a> &nbsp;
 <a href="#v01013" title="GClh II version 0.10.13 (22.04.2021)">v0.10.13</a> &nbsp;
@@ -15,6 +16,23 @@
 <a href="#v0101" title="GClh II version 0.10.1 (20.12.2019)">v0.10.1</a> &nbsp;
 <a href="#v010" title="GClh II version 0.10 (13.12.2019)">v0.10</a> &nbsp;
 <a href="changelog_before.md" title="Go to earlier changelog">Earlier changelog</a> &nbsp;
+
+---
+## v0.10.16:
+<ul>
+	<li>
+		<strong>Fix:</strong> [Cache listing] Copy to clipboard menu will not work for own entries. [<a href="https://github.com/2Abendsegler/GClh/issues/1629" title="Issue 1629">1629</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Favorites] Log status not longer available. [<a href="https://github.com/2Abendsegler/GClh/issues/1640" title="Issue 1640">1640</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [My List, Owner Dashboard, New Map] Build header page. [<a href="https://github.com/2Abendsegler/GClh/issues/1641" title="Issue 1641">1641</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+</ul>
+(23.04.2021)<br>
+released by <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a><br>
+<br>
 
 ---
 ## v0.10.15:
