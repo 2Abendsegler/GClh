@@ -2,7 +2,7 @@
 // @name             GC little helper II
 // @namespace        http://www.amshove.net
 //--> $$000
-// @version          0.10.19
+// @version          0.10.18
 //<-- $$000
 // @include          https://www.geocaching.com/*
 // @include          https://maps.google.tld/*
@@ -5051,40 +5051,7 @@ var mainGC = function() {
                 if ($('.list-details .owner-view')[0]) {
                     buildChildDD(settings_lists_upload_file, 'gclh_upload_file', '', uploadFileLists, 'Upload caches from file', '.gpx or .loc files, or files with separators', true, disableUploadFileLists);
                 }
-//>xxxx
-                // Build dropdown entry 'fup1' for own BML.
-                if ($('.list-details .owner-view')[0] || $('.list-details .ignore-header')[0] || $('.list-details :not(.owner-view,.ignore-header)')[0]) {
-                    buildChildDD(settings_lists_upload_file, 'gclh_fup1', '', fup1, 'fup1', 'fup1', true);
-                }
-//<xxxx
             }
-//>xxxx
-            // fup1.
-// Zum disablen während dem Lauf muss working class gesetzt und entsprechend per css vorgesehen werden, vielleicht auch beim Aufbau des Menüs.
-// In button als erstes Child span mit Zähler und dann img wenn fertig.
-// <img src=    global_green_tick
-// Aufberietung für span: position: absolute; margin-top: 18px; font-size: 12px;
-            function fup1(click, entryDD) {
-                if (!$('#gclh_fup1')[0]) return;
-                $('#gclh_fup1').addClass('working');
-                var count = $('.geocache-table .geocache-name').length;
-                var search_count = 0;
-                $('.geocache-table .geocache-name').each(function() {
-                    var link = this.children[0].href;
-                    $.get(link, null, function(text){
-                        search_count++;
-console.log(search_count+' / '+count);
-                   //     if (count == search_count) $('#gclh_fup1').removeClass('disabled');
-                        $(text).find('.UserSuppliedContent').each(function() {
-                            if (this.innerHTML.match(/jigidi.com/i)) {
-                                $('.geocache-table .geocache-name').find('a[href="'+link+'"]').closest('tr').find('.gc-checkbox:not(.checked) input').click();
-                                return;
-                            }
-                        });
-                    });
-                });
-            }
-//<xxxx
             // Disable entry 'upload caches from file' if add caches functionality is not available.
             function disableUploadFileLists(mouseover) {
                 if (!$('button.add-geocache-cta')[0] || $('button.add-geocache-cta').prop('disabled') == true) {
@@ -11349,7 +11316,7 @@ console.log(search_count+' / '+count);
             var next_check = parseInt(getValue("update_next_check"), 10);
             if (!next_check) next_check = 0;
             var time = new Date().getTime();
-
+next_check = 0;
             if (next_check < time || manual == true) {
                 time += 1 * 60 * 60 * 1000;  // 1 Stunde warten, bis zum nächsten Check.
                 setValue('update_next_check', time.toString());
