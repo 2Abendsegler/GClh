@@ -1,3 +1,4 @@
+<a href="#v01019" title="GClh II version 0.10.19 (24.04.2021)">v0.10.19</a> &nbsp;
 <a href="#v01018" title="GClh II version 0.10.18 (24.04.2021)">v0.10.18</a> &nbsp;
 <a href="#v01016" title="GClh II version 0.10.16 (23.04.2021)">v0.10.16</a> &nbsp;
 <a href="#v01015" title="GClh II version 0.10.15 (23.04.2021)">v0.10.15</a> &nbsp;
@@ -17,6 +18,17 @@
 <a href="#v0101" title="GClh II version 0.10.1 (20.12.2019)">v0.10.1</a> &nbsp;
 <a href="#v010" title="GClh II version 0.10 (13.12.2019)">v0.10</a> &nbsp;
 <a href="changelog_before.md" title="Go to earlier changelog">Earlier changelog</a> &nbsp;
+
+---
+## v0.10.19:
+<ul>
+	<li>
+		<strong>Fix:</strong> [Cache listing] Determination of actual owner wrong. [<a href="https://github.com/2Abendsegler/GClh/issues/1652" title="Issue 1652">1652</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+</ul>
+(24.04.2021)<br>
+released by <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a><br>
+<br>
 
 ---
 ## v0.10.18:
