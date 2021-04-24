@@ -2,7 +2,7 @@
 // @name             GC little helper II
 // @namespace        http://www.amshove.net
 //--> $$000
-// @version          0.10.18
+// @version          0.10.19
 //<-- $$000
 // @include          https://www.geocaching.com/*
 // @include          https://maps.google.tld/*
@@ -5051,7 +5051,40 @@ var mainGC = function() {
                 if ($('.list-details .owner-view')[0]) {
                     buildChildDD(settings_lists_upload_file, 'gclh_upload_file', '', uploadFileLists, 'Upload caches from file', '.gpx or .loc files, or files with separators', true, disableUploadFileLists);
                 }
+//>xxxx
+                // Build dropdown entry 'fup1' for own BML.
+                if ($('.list-details .owner-view')[0] || $('.list-details .ignore-header')[0] || $('.list-details :not(.owner-view,.ignore-header)')[0]) {
+                    buildChildDD(settings_lists_upload_file, 'gclh_fup1', '', fup1, 'fup1', 'fup1', true);
+                }
+//<xxxx
             }
+//>xxxx
+            // fup1.
+// Zum disablen während dem Lauf muss working class gesetzt und entsprechend per css vorgesehen werden, vielleicht auch beim Aufbau des Menüs.
+// In button als erstes Child span mit Zähler und dann img wenn fertig.
+// <img src=    global_green_tick
+// Aufberietung für span: position: absolute; margin-top: 18px; font-size: 12px;
+            function fup1(click, entryDD) {
+                if (!$('#gclh_fup1')[0]) return;
+                $('#gclh_fup1').addClass('working');
+                var count = $('.geocache-table .geocache-name').length;
+                var search_count = 0;
+                $('.geocache-table .geocache-name').each(function() {
+                    var link = this.children[0].href;
+                    $.get(link, null, function(text){
+                        search_count++;
+console.log(search_count+' / '+count);
+                   //     if (count == search_count) $('#gclh_fup1').removeClass('disabled');
+                        $(text).find('.UserSuppliedContent').each(function() {
+                            if (this.innerHTML.match(/jigidi.com/i)) {
+                                $('.geocache-table .geocache-name').find('a[href="'+link+'"]').closest('tr').find('.gc-checkbox:not(.checked) input').click();
+                                return;
+                            }
+                        });
+                    });
+                });
+            }
+//<xxxx
             // Disable entry 'upload caches from file' if add caches functionality is not available.
             function disableUploadFileLists(mouseover) {
                 if (!$('button.add-geocache-cta')[0] || $('button.add-geocache-cta').prop('disabled') == true) {
@@ -11402,7 +11435,8 @@ var mainGC = function() {
         if ($('#ctl00_ContentBody_bottomSection')) {
             var links = $('#ctl00_ContentBody_bottomSection a[href*="/play/search?owner[0]="]');
             for (var i = 0; i < links.length; i++) {
-                var match = links[i].href.match(/\/play\/search\?owner\[0\]=(.*)&/);
+                // Das "?" in "(.*?)" bedeutet "nicht gierig", das heißt es wird nur bis zum ersten Vorkommen des "&" verwendet.
+                var match = links[i].href.match(/\/play\/search\?owner\[0\]=(.*?)&/);
                 if (match) return urldecode(match[1]);
             }
             return false;
@@ -11752,10 +11786,10 @@ var mainGC = function() {
         div.setAttribute("style", "margin-top: -50px;");
         var prop = ' style="border: none; visibility: hidden; width: 2px; height: 2px;" alt="">';
 //--> $$002
-        var code = '<img src="https://c.andyhoppe.com/1619217735"' + prop + // Besucher
-                   '<img src="https://c.andyhoppe.com/1619217766"' + prop + // Seitenaufrufe
-                   '<img src="https://www.worldflagcounter.com/hHe"' + prop +
-                   '<img src="https://s11.flagcounter.com/count2/oAb4/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
+        var code = '<img src="https://c.andyhoppe.com/1619236069"' + prop + // Besucher
+                   '<img src="https://c.andyhoppe.com/1619236119"' + prop + // Seitenaufrufe
+                   '<img src="https://www.worldflagcounter.com/hHh"' + prop +
+                   '<img src="https://s11.flagcounter.com/count2/MDeA/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
 //<-- $$002
         div.innerHTML = code;
         side.appendChild(div);
