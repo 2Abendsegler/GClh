@@ -5155,6 +5155,8 @@ var mainGC = function() {
                     if (settings_lists_back_to_top) {
                         css += '.scroll-to-top {display: none;}';
                     }
+                    // Change cursor from not allowed to default.
+                    css += '.gc-button.gc-button-disabled {cursor: default;}';
                     if (!css == '') appendCssStyle(css);
                     if ($('table')[0]) $('table').addClass('gclh_improveLayoutHead');
                     if ($('.rt-table')[0]) $('.rt-table').addClass('gclh_improveLayoutHead');
@@ -9315,6 +9317,8 @@ var mainGC = function() {
             } else {
                 css += '.geocache-list-container ul li, .LazyLoad.is-visible {height: 84px !important}';
             }
+            // No unsuitably field border if field focused.
+            css += '#main a:focus {outline: none !important;}';
             // Adapt the width of the pop up by right mouse click to a cache in the map.
             css += '.leaflet-popup.context-menu.geocache-context-menu.leaflet-zoom-animated {width: auto !important; min-width: 300px;}';;
             css += '.leaflet-popup-content {width: auto !important;}';
