@@ -9039,14 +9039,14 @@ var mainGC = function() {
 
                 run2 = false;
                 function clickToClose(wc) {
-                    if ($('body').hasClass('sidebar-is-closed')) { // is closed
+                    if ($('.sidebar-toggle')[0] && $('body').hasClass('sidebar-is-closed')) { // is closed
                         wc++;
                         if (wc <= 100) setTimeout(function() { clickToClose(wc); }, 200);
                     } else { // is open
                         $('div#sidebar-group>button.sidebar-toggle').click();
                     }
                 }
-                clickToClose(0);
+                window.setTimeout(function(){clickToClose(0);}, 500);
             }
 
             // check if search URL already has filters set: if not then set default filters otherwise keep current filter
