@@ -11796,6 +11796,12 @@ var mainGC = function() {
             settings_secondary_elevation_service = 2
             setValue("migration_task_03", true);
         }
+        // Migrate new map layer ÖPNVMap to the available map layers (zu v0.10.20).
+        if (getValue("migration_task_04", false) != true) {
+            settings_map_layers.push('ÖPNVMap');
+            setValue('settings_map_layers', settings_map_layers.join("###"));
+            setValue("migration_task_04", true);
+        }
     }
 
 // GC/TB Name, GC/TB Link, GC/TB Name Link, preliminary LogDate.
