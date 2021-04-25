@@ -618,6 +618,7 @@ var variablesInit = function(c) {
     c.settings_lists_show_dd = getValue("settings_lists_show_dd", true);
     c.settings_lists_hide_desc = getValue("settings_lists_hide_desc", true);
     c.settings_lists_upload_file = getValue("settings_lists_upload_file", true);
+    c.settings_profile_old_links = getValue("settings_profile_old_links", false);
 
     try {
         if (c.userToken === null) {
@@ -10985,7 +10986,7 @@ var mainGC = function() {
         } catch(e) {gclh_error("Add links to finds and hides on new profilpage",e);}
     }
 // Change links to found/hide caches to the old link on profilpage.
-    if (is_page("publicProfile") && document.location.search.match(/tab=geocaches/)) {
+    if (settings_profile_old_links && is_page("publicProfile") && document.location.search.match(/tab=geocaches/)) {
         function getCacheype(typ) {
             let typId;
             switch (typ) {
@@ -13488,7 +13489,11 @@ var mainGC = function() {
 
             html += "<h4 class='gclh_headline2'>"+prepareHideable.replace("#name#","profile")+"Public profile</h4>";
             html += "<div id='gclh_config_profile' class='gclh_block'>";
-            html += "<div style='margin-left: 5px'><b>Trackables</b></div>";
+            html += "<div style='margin-left: 5px'><b>Geocaches</b></div>";
+            html += newParameterOn1;
+            html += checkboxy('settings_profile_old_links', 'Show old Links to found and hide caches') + show_help("With an update GS changed alle Links to found and hide caches in the public profile to the new search. With this option you can use the old search.") + "<br>";
+            html += newParameterVersionSetzen('0.10') + newParameterOff;
+            html += "<div style='margin-top: 9px; margin-left: 5px'><b>Trackables</b></div>";
             html += checkboxy('settings_faster_profile_trackables', 'Load trackables faster without images') + show_help("With this option you can stop the load on the trackable pages after the necessary datas are loaded. You disclaim of the lengthy load of the images of the trackables. This procedure is much faster as load all datas, because every image is loaded separate and not in a bigger bundle like it is for the non image data.") + "<br>";
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>Gallery</b></div>";
             var content_settings_show_thumbnails = checkboxy('settings_show_thumbnails', 'Show thumbnails of images') + show_help_big("With this option the images are displayed as thumbnails to have a preview. If you hover with your mouse over a thumbnail, you can see the big one.<br><br>This works in cache and TB logs, in the cache and TB image galleries, in public profile for the avatar and in the profile image gallery. <br><br>And after pressing button \"Show bigger avatars\" in cache listing, it works too for the avatars in the shown logs.") + "&nbsp; Max size of big image: <input class='gclh_form' size=3 type='text' id='settings_hover_image_max_size' value='" + settings_hover_image_max_size + "'> px <br>";
@@ -14876,6 +14881,7 @@ var mainGC = function() {
                 'settings_lists_show_dd',
                 'settings_lists_hide_desc',
                 'settings_lists_upload_file',
+                'settings_profile_old_links',
             );
 
             for (var i = 0; i < checkboxes.length; i++) {
