@@ -10984,6 +10984,49 @@ var mainGC = function() {
             appendCssStyle('#ctl00_ProfileHead_ProfileHeader_divStats a:hover {color: #02874d;} #ctl00_ProfileHead_ProfileHeader_divStats a {color: #4a4a4a;} #ctl00_ProfileHead_ProfileHeader_divStats img {vertical-align: text-top;}');
         } catch(e) {gclh_error("Add links to finds and hides on new profilpage",e);}
     }
+// Change links to found/hide caches to the old link on profilpage.
+    if (is_page("publicProfile") && document.location.search.match(/tab=geocaches/)) {
+        function getCacheype(typ) {
+            let typId;
+            switch (typ) {
+                case '2': typId = '&tx=32bc9333-5e52-4957-b0f6-5a2c8fc7b257'; break; // Tradi
+                case '3': typId = '&tx=a5f6d0ad-d2f2-4011-8c14-940a9ebf3c74'; break; // Multi
+                case '4': typId = '&tx=294d4360-ac86-4c83-84dd-8113ef678d7e'; break; // Virtual
+                case '5': typId = '&tx=4bdd8fb2-d7bc-453f-a9c5-968563b15d24'; break; // Letterbox
+                case '6': typId = '&tx=69eb8534-b718-4b35-ae3c-a856a55b0874'; break; // Event
+                case '8': typId = '&tx=40861821-1835-4e11-b666-8d41064d03fe'; break; // Mystery
+                case '9': typId = '&tx=2555690d-b2bc-4b55-b5ac-0cb704c0b768'; break; // APE
+                case '11': typId = '&tx=31d2ae3c-c358-4b5f-8dcd-2185bf472d3d'; break; // WebCam
+                case '12': typId = '&tx=8F6DD7BC-FF39-4997-BD2E-225A0D2ADF9D'; break; // Reverse
+                case '13': typId = '&tx=57150806-bc1a-42d6-9cf0-538d171a2d22'; break; // Cito
+                case '137': typId = '&tx=c66f5cf3-9523-4549-b8dd-759cd2f18db8'; break; // Earth Cache
+                case '453': typId = '&tx=69eb8535-b718-4b35-ae3c-a856a55b0874'; break; // Mega
+                case '1304': typId = '&tx=72e69af2-7986-4990-afd9-bc16cbbb4ce3'; break; // GPS Adventures Exhibit
+                case '1858': typId = '&tx=0544fa55-772d-4e5c-96a9-36a51ebcf5c9'; break; // Wherigo
+                case '3653': typId = '&tx=3ea6533d-bb52-42fe-b2d2-79a3424d4728'; break; // Community Celebration
+                case '4738': typId = '&tx=bc2f3df2-1aab-4601-b2ff-b5091f6c02e3'; break; // Geocaching HQ Block Party
+                case '3773': typId = '&tx=416f2494-dc17-4b6a-9bab-1a29dd292d8c'; break; // Geocaching HQ
+                case '3774': typId = '&tx=af820035-787a-47af-b52b-becc8b0c0c88'; break; // Geocaching HQ Celebration
+                case '7005': typId = '&tx=51420629-5739-4945-8bdd-ccfd434c0ead'; break; // Giga
+                default: typId = '&tx=9a79e6ce-3344-409c-bbe9-496530baf758'; // Alle Caches
+            }
+            return typId;
+        }
+        $('.span-9 table tbody tr a').each(function() {
+            // Founds
+            $('.minorDetails a')[0].href = '/seek/nearest.aspx?ul='+urlencode($('#ctl00_ProfileHead_ProfileHeader_lblMemberName')[0].innerHTML);
+            let match = /\/play\/search\?types=(\d+).*&sc=(False|True)&fb=([^&]+).*/gi.exec(this.href);
+            if (match) {
+                this.href = '/seek/nearest.aspx?ul=' + match[3] + getCacheype(match[1]);
+            }
+            // Hides
+            $('.minorDetails a')[1].href = '/seek/nearest.aspx?u='+urlencode($('#ctl00_ProfileHead_ProfileHeader_lblMemberName')[0].innerHTML);
+            match = /\/play\/search\?types=(\d+).*&sc=(False|True)&owner\[0\]=([^&]+).*/gi.exec(this.href);
+            if (match) {
+                this.href = '/seek/nearest.aspx?u=' + match[3] + getCacheype(match[1]);
+            }
+        });
+    }
 
 // Hide GC Avatar Option.
     if (settings_load_logs_with_gclh && document.location.href.match(/\.com\/account\/settings\/preferences/) && $('#ShowAvatarsInCacheLogs')[0]) {
