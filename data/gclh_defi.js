@@ -102,7 +102,6 @@ function layersInit(c) {
     c.map_overlays = new Object();
     c.map_overlays = {
          "Hillshadow" : { tileUrl: "http://{s}.tiles.wmflabs.org/hillshading/{z}/{x}/{y}.png",  attribution: 'hillshadow \u00a9 <a href="http://tiles.wmflabs.org/" target=\'_blank\'>tiles.wmflabs.org</a>',  tileSize: 256,  minZoom: 0,  maxZoom: 17 }
-        ,"Public Transport Lines" : { tileUrl: "http://openptmap.org/tiles/{z}/{x}/{y}.png",  attribution: 'Public Transport Lines\u00a9 <a href="http://openptmap.org/" target=\'_blank\'>OpenPTMap</a>',  tileSize: 256,  minZoom: 0,  maxZoom: 17 }
     };
 }
 
