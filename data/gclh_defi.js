@@ -97,7 +97,7 @@ function layersInit(c) {
         ,"Google Maps" : { tileUrl: "http://mt.google.com/vt?x={x}&y={y}&z={z}",  attribution: "Google Maps",  tileSize: 256,  minZoom: 0,  maxZoom: 20 }
         ,"Google Maps Satellite" : { tileUrl: "http://mt.google.com/vt?lyrs=s&x={x}&y={y}&z={z}",  attribution: "Google Maps",  tileSize: 256,  minZoom: 3,  maxZoom: 20 }
         ,"Google Maps Hybrid" : { tileUrl: "http://mt0.google.com/vt/lyrs=s,m@110&hl=en&x={x}&y={y}&z={z}",  attribution: "Google Maps",  tileSize: 256,  minZoom: 0,  maxZoom: 20 }
-        ,"ÖPNVMap" : { tileUrl: "http://tile.memomaps.de/tilegen/{z}/{x}/{y}.png",  attribution: 'Map <a href="https://memomaps.de">memomaps.de</a> <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Tiles <a href="http://openstreetmap.org/">Openstreetmap</a> <a href="http://opendatacommons.org/licenses/odbl/1.0">ODbL</a>' }
+        ,"ÖPNVMap" : { tileUrl: "http://tile.memomaps.de/tilegen/{z}/{x}/{y}.png",  attribution: 'Map <a href="https://memomaps.de">memomaps.de</a> <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Tiles <a href="http://openstreetmap.org/">Openstreetmap</a> <a href="http://opendatacommons.org/licenses/odbl/1.0">ODbL</a>, <a href="https://öpnvkarte.de/#map_key">Legend</a>' }
     };
     c.map_overlays = new Object();
     c.map_overlays = {
