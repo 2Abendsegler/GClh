@@ -11757,10 +11757,10 @@ var mainGC = function() {
         div.setAttribute("style", "margin-top: -50px;");
         var prop = ' style="border: none; visibility: hidden; width: 2px; height: 2px;" alt="">';
 //--> $$002
-        var code = '<img src="https://c.andyhoppe.com/1619236069"' + prop + // Besucher
-                   '<img src="https://c.andyhoppe.com/1619236119"' + prop + // Seitenaufrufe
-                   '<img src="https://www.worldflagcounter.com/hHh"' + prop +
-                   '<img src="https://s11.flagcounter.com/count2/MDeA/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
+        var code = '<img src="https://c.andyhoppe.com/1619416674"' + prop + // Besucher
+                   '<img src="https://c.andyhoppe.com/1619416706"' + prop + // Seitenaufrufe
+                   '<img src="https://www.worldflagcounter.com/hHx"' + prop +
+                   '<img src="https://s11.flagcounter.com/count2/yAuO/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
 //<-- $$002
         div.innerHTML = code;
         side.appendChild(div);
