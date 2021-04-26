@@ -4953,8 +4953,8 @@ var mainGC = function() {
                 let unavailableFilters = '';
                 if (getURLParam('tr')) unavailableFilters += '<li>Filter by Wonder</li>';
                 if (getURLParam('sgt')) unavailableFilters += '<li>Only show caches that are part of a GeoTour</li>';
-                if (getURLParam('nfb')) unavailableFilters += '<li>Not found by</li>';
-                if (getURLParam('hb')) unavailableFilters += '<li>Hidden by</li>';
+                if (getURLParam('nfb') && getURLParam('nfb') != global_me) unavailableFilters += '<li>Not found by</li>';
+                if (getURLParam('hb') && getURLParam('hb') != global_me) unavailableFilters += '<li>Hidden by</li>';
                 if (getURLParam('cc')) unavailableFilters += '<li>Corrected coordinates</li>';
                 if (getURLParam('cn')) unavailableFilters += '<li>Geocache name contains</li>';
                 if (getURLParam('fps')) unavailableFilters += '<li>Minimum Favorite points</li>';
