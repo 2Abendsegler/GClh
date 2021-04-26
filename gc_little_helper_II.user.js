@@ -16722,7 +16722,7 @@ function is_page(name) {
             if (url.match(/^\/account\/drafts/)) status = true;
             break;
         case "settings":
-            if (url.match(/^\/account\/(settings|lists|drafts)/)) status = true;
+            if (url.match(/^\/account\/(settings|lists|drafts|documents)/)) status = true;
             break;
         case "messagecenter":
             if (url.match(/^\/account\/messagecenter/)) status = true;
