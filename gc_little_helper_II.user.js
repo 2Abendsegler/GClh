@@ -7130,15 +7130,8 @@ var mainGC = function() {
 
                 if (settings_show_compact_logbook_but){
                     addButtonOverLogs(toggle_compact_logbook, "toggle_compact_logbook", false, "Show compact logs", "Show/hide compact logs");
-                    var unimportant_css =
-                              ".compact_logbook .logIcons,"
-                            + ".compact_logbook .logOwnerAvatar,"
-                            + ".compact_logbook .logOwnerStats,"
-                            + ".compact_logbook .LogContent,"
-                            + ".compact_logbook .TableLogContent,"
-                            + ".compact_logbook .upvotes,"
-                            + ".compact_logbook .AlignRight small"
-                            + "{display:none;}";
+                    var unimportant_css = ".compact_logbook .logIcons, .compact_logbook .logOwnerAvatar, .compact_logbook .logOwnerStats, .compact_logbook .LogContent, .compact_logbook .TableLogContent, .compact_logbook .AlignRight small {display:none;}"
+                                        + ".compact_logbook .upvotes {display:none !important;}";
                     appendCssStyle(unimportant_css);
                 }
             }
