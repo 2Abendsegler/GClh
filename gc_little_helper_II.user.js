@@ -4958,7 +4958,7 @@ var mainGC = function() {
                 if (getURLParam('hb') && getURLParam('hb') != global_me) unavailableFilters += '<li>Hidden by</li>';
                 if (getURLParam('cc')) unavailableFilters += '<li>Corrected coordinates</li>';
                 if (getURLParam('cn')) unavailableFilters += '<li>Geocache name contains</li>';
-                if (getURLParam('fps')) unavailableFilters += '<li>Minimum Favorite points</li>';
+                if (getURLParam('fp')) unavailableFilters += '<li>Minimum Favorite points</li>';
                 $('#gclh_warning ul')[0].innerHTML += unavailableFilters;
             }
 
@@ -4996,6 +4996,7 @@ var mainGC = function() {
                         $('#ctl00_ContentBody_ddDifficulty')[0].selectedIndex = 2;
                         $('#ctl00_ContentBody_ddDifficultyScore')[0].selectedIndex = d_t['d_max']*2 - 2;
                     }
+                    $('#ctl00_ContentBody_cbDifficulty').click();
                 }
                 if (d_t['t_min'] > 1 && d_t['t_max'] < 5 && d_t['t_min'] != d_t['t_max']) {
                     // Parameters that are BETWEEN 1 and 5 (1 < x < 5) cannot be implemented.
@@ -5012,6 +5013,7 @@ var mainGC = function() {
                         $('#ctl00_ContentBody_ddTerrain')[0].selectedIndex = 2;
                         $('#ctl00_ContentBody_ddTerrainScore')[0].selectedIndex = d_t['t_max']*2 - 2;
                     }
+                    $('#ctl00_ContentBody_cbTerrain').click();
                 }
                 // Cache Size.
                 if (cacheSize !== false) {
