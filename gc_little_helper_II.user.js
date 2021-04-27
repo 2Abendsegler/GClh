@@ -11221,22 +11221,21 @@ var mainGC = function() {
             css += '.gclhSort input:hover, .gclhShow input:hover {cursor: pointer;}';
             css += '.gclhShowCountry:not(.active), .gclhShowState:not(.active), .gclhShowOther:not(.active) {display: none;}';
             css += '.ProfileSouvenirsList div {margin-left: 0 !important;}';
+            css += '.souvenir-gallery-list li {width: 175px;}';
             appendCssStyle(css);
+
+            var Souvenirs = $("#souvenirsList li");
+            var htmlFragment = "&nbsp;<span id='gclhNumberSouvenirs' title='Number of souvenirs'>("+Souvenirs.length+")</span>";
+            $("#divContentMain > h2").append(htmlFragment); // private profile
+            $("#ctl00_ContentBody_ProfilePanel1_pnlSouvenirs > h3").append(htmlFragment); // new public profile
 
             var SouvenirsDashboard = $(".ProfileSouvenirsList");
             if (SouvenirsDashboard.length) {
                 SouvenirsDashboard.before('<div id="gclhSouvenirsButtons"></div><p></p>');
-                $("#gclhSouvenirsButtons").append('<span class="gclhSort">Sort &nbsp;<input id="actionSouvenirsSortAcquiredDateNewestTop" title="Sort newest first" value="Newest first" type="button" href="javascript:void(0);" style="opacity: 0.5;" disabled="true"></span>');
-                $("#gclhSouvenirsButtons").append('<span class="gclhSort"><input id="actionSouvenirsSortAcquiredDateOldestTop" title="Sort oldest first" value="Oldest first" type="button" href="javascript:void(0);" style="opacity: 0.5;" disabled="true"></span>');
-                $("#gclhSouvenirsButtons").append('<span class="gclhSort"><input id="actionSouvenirsSortAcquiredTitleAtoZ" title="Sort title A-Z" value="Title A-Z" type="button" href="javascript:void(0);"></span>');
-                $("#gclhSouvenirsButtons").append('<span class="gclhSort"><input id="actionSouvenirsSortAcquiredTitleZtoA" title="Sort title Z-A" value="Title Z-A" type="button" href="javascript:void(0);"></span>');
-                $("#gclhSouvenirsButtons").append('<span class="gclhShow">&nbsp; | &nbsp;Show &nbsp;<input id="gclhShowCountry" class="active" title="Show country souvenirs" value="Countries" type="button" href="javascript:void(0);" style="opacity: 0.5;" disabled="true"></span>');
-                $("#gclhSouvenirsButtons").append('<span class="gclhShow"><input id="gclhShowState" class="active" title="Show state souvenirs" value="States" type="button" href="javascript:void(0);" style="opacity: 0.5;" disabled="true"></span>');
-                $("#gclhSouvenirsButtons").append('<span class="gclhShow"><input id="gclhShowOther" class="active" title="Show other souvenirs" value="Others" type="button" href="javascript:void(0);" style="opacity: 0.5;" disabled="true"></span>');
-                var Souvenirs = SouvenirsDashboard.children('div');
-                var htmlFragment = "&nbsp;<span id='gclhNumberSouvenirs' title='Number of souvenirs'>("+Souvenirs.length+")</span>";
-                $("#divContentMain > h2").append(htmlFragment); // private profile
-                $("#ctl00_ContentBody_ProfilePanel1_pnlSouvenirs > h3").append(htmlFragment); // new public profile
+                $("#gclhSouvenirsButtons").append('<span class="gclhSort">Sort &nbsp;<input id="actionSouvenirsSortAcquiredDateNewestTop" title="Sort by newest first" value="Newest first" type="button" href="javascript:void(0);" style="opacity: 0.5;" disabled="true"></span>');
+                $("#gclhSouvenirsButtons").append('<span class="gclhSort"><input id="actionSouvenirsSortAcquiredDateOldestTop" title="Sort by oldest first" value="Oldest first" type="button" href="javascript:void(0);" style="opacity: 0.5;" disabled="true"></span>');
+                $("#gclhSouvenirsButtons").append('<span class="gclhSort"><input id="actionSouvenirsSortAcquiredTitleAtoZ" title="Sort by name A-Z" value="Name A-Z" type="button" href="javascript:void(0);"></span>');
+                $("#gclhSouvenirsButtons").append('<span class="gclhSort"><input id="actionSouvenirsSortAcquiredTitleZtoA" title="Sort by name Z-A" value="Name Z-A" type="button" href="javascript:void(0);"></span>');
 
                 var jqui_date_format = "";
                 var accessTokenPromise = $.get('/account/settings/preferences');
@@ -11250,7 +11249,9 @@ var mainGC = function() {
                     $('#actionSouvenirsSortAcquiredTitleAtoZ').addClass('active');
                 });
                 function dateFormatConversion(format) {return format.replace(/yy/g,'y').replace(/M/g,'m').replace(/mmm/,'M');}
-                function getSouvenirAcquiredDate(souvenirDiv) {return $(souvenirDiv).text().match( /Acquired on (.*)/ )[1];}
+                function getSouvenirAcquiredDate(souvenirLi) {
+                    return $(souvenirLi).find('span')[0].childNodes[4].data.match( /Acquired on (.*)/ )[1];
+                }
                 function AcquiredDateNewestFirst(a, b) {
                     var ada = getSouvenirAcquiredDate(a);
                     var adb = getSouvenirAcquiredDate(b);
@@ -11268,13 +11269,13 @@ var mainGC = function() {
                     return date1 < date2 ? -1 : 1;
                 }
                 function TitleAtoZ(a, b) {
-                    var aT = $(a).children('a').attr('title');
-                    var bT = $(b).children('a').attr('title');
+                    var aT = $(a).find('span').children('a').attr('title');
+                    var bT = $(b).find('span').children('a').attr('title');
                     return aT.localeCompare(bT);
                 }
                 function TitleZtoA(a, b) {
-                    var aT = $(a).children('a').attr('title');
-                    var bT = $(b).children('a').attr('title');
+                    var aT = $(a).find('span').children('a').attr('title');
+                    var bT = $(b).find('span').children('a').attr('title');
                     return bT.localeCompare(aT);
                 }
                 function ReorderSouvenirs(orderfunction, button) {
@@ -11282,16 +11283,19 @@ var mainGC = function() {
                         $(this).removeClass('active');
                     });
                     $(button).addClass('active');
-                    SouvenirsDashboard = $(".ProfileSouvenirsList");
-                    Souvenirs = SouvenirsDashboard.children('div');
+                    var SouvenirsList = $("#souvenirsList");
+                    Souvenirs = $("#souvenirsList li");
                     Souvenirs.detach().sort(orderfunction);
-                    SouvenirsDashboard.append(Souvenirs);
+                    SouvenirsList.append(Souvenirs);
                 }
                 $("#actionSouvenirsSortAcquiredDateNewestTop").click(function() {ReorderSouvenirs(AcquiredDateNewestFirst, this);});
                 $("#actionSouvenirsSortAcquiredDateOldestTop").click(function() {ReorderSouvenirs(AcquiredDateOldestFirst, this);});
                 $("#actionSouvenirsSortAcquiredTitleAtoZ").click(function() {ReorderSouvenirs(TitleAtoZ, this);});
                 $("#actionSouvenirsSortAcquiredTitleZtoA").click(function() {ReorderSouvenirs(TitleZtoA, this);});
+            }
 
+            var SouvenirsDashboard = $("#souvenirsControlsContainer .sort-select-group, #gclhSouvenirsButtons");
+            if (SouvenirsDashboard.length) {
                 function correctSouvenirName(name) {
                     name = name.replace(/(^\s|\s$)/g,'');
                     if (name == 'Åland Islands') name = 'Aland Islands';
@@ -11309,7 +11313,7 @@ var mainGC = function() {
                     return name;
                 }
                 function prepareSouvenirs() {
-                    $('.ProfileSouvenirsList div').each(function() {
+                    $('#souvenirsList li').each(function() {
                         var ident = '';
                         var name = $(this).find('a:first')[0].title;
                         if (name) {
@@ -11337,15 +11341,18 @@ var mainGC = function() {
                 function showSouvenirs(button) {
                     if ($(button).hasClass('active')) {
                         $(button).removeClass('active');
-                        $('.ProfileSouvenirsList div.'+$(button)[0].id).each(function() {$(this).removeClass('active');});
+                        $('#souvenirsList li.'+$(button)[0].id).each(function() {$(this).removeClass('active');});
                     } else {
                         $(button).addClass('active');
-                        $('.ProfileSouvenirsList div.'+$(button)[0].id).each(function() {$(this).addClass('active');});
+                        $('#souvenirsList li.'+$(button)[0].id).each(function() {$(this).addClass('active');});
                     }
-                    var nr = $('.ProfileSouvenirsList .active').length;
+                    var nr = $('#souvenirsList .active').length;
                     if (nr == Souvenirs.length) $('#gclhNumberSouvenirs')[0].innerHTML = '(' + Souvenirs.length + ')';
                     else $('#gclhNumberSouvenirs')[0].innerHTML = '(' + nr + '/' + Souvenirs.length + ')';
                 }
+                SouvenirsDashboard.append('<span class="gclhShow">&nbsp; | &nbsp;Show &nbsp;<input id="gclhShowCountry" class="active" title="Show country souvenirs" value="Countries" type="button" href="javascript:void(0);" style="opacity: 0.5;" disabled="true"></span>');
+                SouvenirsDashboard.append('<span class="gclhShow"><input id="gclhShowState" class="active" title="Show state souvenirs" value="States" type="button" href="javascript:void(0);" style="opacity: 0.5;" disabled="true"></span>');
+                SouvenirsDashboard.append('<span class="gclhShow"><input id="gclhShowOther" class="active" title="Show other souvenirs" value="Others" type="button" href="javascript:void(0);" style="opacity: 0.5;" disabled="true"></span>');
                 prepareSouvenirs();
                 $("#gclhShowCountry").click(function() {showSouvenirs(this);});
                 $("#gclhShowState").click(function() {showSouvenirs(this);});
