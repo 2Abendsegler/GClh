@@ -9033,88 +9033,77 @@ var mainGC = function() {
                });
             }
 
-            // hide sidebar
-            let run2 = true; // run only once
+            // Hide sidebar.
+            let runHideSidebar = true;
             function hideSidebar() {
-                if (!settings_map_hide_sidebar || !run2) return;
-
-                run2 = false;
+                // Run only once.
+                if (!settings_map_hide_sidebar || !runHideSidebar) return;
+                runHideSidebar = false;
+                // Close the sidebar.
                 function clickToClose(wc) {
-                    if ($('.sidebar-toggle')[0] && $('body').hasClass('sidebar-is-closed')) { // is closed
+                    // The sidebar is still closed from the start, so wait.
+                    if ($('.sidebar-toggle')[0] && $('body').hasClass('sidebar-is-closed')) {
                         wc++;
-                        if (wc <= 100) setTimeout(function() { clickToClose(wc); }, 200);
-                    } else { // is open
+                        if (wc <= 25) setTimeout(function() { clickToClose(wc); }, 200);
+                    // The sidebar is now open.
+                    } else {
                         $('div#sidebar-group>button.sidebar-toggle').click();
                     }
                 }
-                window.setTimeout(function(){clickToClose(0);}, 500);
+                clickToClose(0);
             }
 
-            // check if search URL already has filters set: if not then set default filters otherwise keep current filter
+            // Check if search URL already has filters set: if not then set default filters otherwise keep current filter.
             let urlIsFiltered = document.location.href.split('&').length>5 ? true : false;
-            let run = true; // run only once
-            // set default filters (only if none set)
+            let runSetFilter = true;
+            // Set default filters.
             function setFilter() {
-                if (urlIsFiltered || !run || $('button.filter-toggle').length===0) return;
-                if (document.location.href.match(/\.com\/play\/map(\/BM|\?bm=|\/lists)/)) return;
-                run = false;
-
-                // each filter has to be clicked twice, otherwise the selection isn't reliable
-                function doubleClick(sel) {
-                    $(sel).click().click();
-                }
-
-                function allTypesSelected() {
-                    let count = 0;
-                    let cache_types = [2,3,4,5,6,8,11,137,1858];
-                    for (let i=0; i<cache_types.length; i++) {
-                        if (window['settings_map_hide_'+cache_types[i]]) {
-                            count++;
-                        }
+                // Bookmarklist.
+                if (document.location.href.match(/\.com\/play\/map(\/BM|\?bm=|\/lists)/)) {
+                    // Hide sidebar.
+                    window.setTimeout(function(){hideSidebar();}, 500);
+                // No bookmarklist.
+                } else {
+                    // Run only once.
+                    if (urlIsFiltered || !runSetFilter || $('button.filter-toggle').length===0) return;
+                    runSetFilter = false;
+                    // Each filter has to be clicked twice, otherwise the selection isn't reliable.
+                    function doubleClick(sel) {
+                        $(sel).click().click();
                     }
-                    return count == cache_types.length;
-                }
-
-                // open filter
-                $('button.filter-toggle').click();
-
-                function waitForFilter(waitCount) {
-                    if ($('#search-filter-type')[0] && $('input[name="hideFinds"][value="1"]')[0] && $('input[name="hideOwned"][value="1"]')[0]) {
-                        // hide found caches
-                        if (settings_map_hide_found) {
-                            doubleClick('input[name="hideFinds"][value="1"]');
-                        }
-
-                        // hide owned caches
-                        if (settings_map_hide_hidden) {
-                            doubleClick('input[name="hideOwned"][value="1"]');
-                        }
-
-                        // hide cache types
-                        if (!allTypesSelected()) {
+                    // Open filter.
+                    $('button.filter-toggle').click();
+                    // Wait for filter.
+                    function waitForFilter(waitCount) {
+                        if ($('#search-filter-type')[0] && $('input[name="hideFinds"][value="1"]')[0] && $('input[name="hideOwned"][value="1"]')[0]) {
+                            // Hide found caches.
+                            if (settings_map_hide_found) {
+                                doubleClick('input[name="hideFinds"][value="1"]');
+                            }
+                            // Hide owned caches.
+                            if (settings_map_hide_hidden) {
+                                doubleClick('input[name="hideOwned"][value="1"]');
+                            }
+                            // Hide cache types.
                             let cache_types = [2,3,4,5,6,8,11,137,1858];
                             for (let i=0; i<cache_types.length; i++) {
                                 if (window['settings_map_hide_'+cache_types[i]]) {
                                     $('input[value="'+cache_types[i]+'"]').click();
                                 }
                             }
-                        }
-
-                        //apply filters to map and close
-                        doubleClick('button.control-apply');
-
-                        setTimeout(function(){
-                            hideSidebar(); // Must run here, otherwise the filter will not be set.
-                        }, 750);
-                    } else {waitCount++; if (waitCount <= 50) setTimeout(function(){waitForFilter(waitCount);}, 50);}
+                            // Apply filters to map and close.
+                            window.setTimeout(function(){doubleClick('button.control-apply');}, 990);
+                            // Hide sidebar.
+                            window.setTimeout(function(){hideSidebar();}, 1000);
+                        } else {waitCount++; if (waitCount <= 100) setTimeout(function(){waitForFilter(waitCount);}, 50);}
+                    }
+                    waitForFilter(0);
                 }
-                waitForFilter(0);
             }
 
             // Processing all steps.
             function processAllSearchMap() {
                 setFilter();
-                if (document.location.href.match(/\.com\/play\/map(\/BM|\?bm=|\/lists)/)) hideSidebar();
                 scrollInCacheList(); // Has to be run before searchThisArea.
                 searchThisArea();
                 setLinkToOwner(); // Has to be run before compactLayout.
