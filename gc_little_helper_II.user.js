@@ -1669,16 +1669,14 @@ var mainGC = function() {
                     bookmarks[i]['href'] = bookmarks[i]['href'].replace('{me}', global_me);
                 }
             }
-            if (settings_bookmarks_on_top) {
-                // Auch ohne Change Header Layout zwischen Menüname und Submenü keine Lücke lassen, sonst klappts nicht mit einfachem Aufklappen.
-                if (!settings_change_header_layout) {
-                    if (is_page("map")) {
-                        appendCssStyle(".menu > li, .Menu > li {height: 100%; padding-top: 2.0em;} .submenu, .SubMenu {margin-top: 1.9em;}");
-                    } else if (is_page("find_cache") || is_page("hide_cache") || is_page("collection_1") || is_page("geotours") || is_page("dashboard-section") || is_page("track")) {
-                        appendCssStyle(".menu > li, .Menu > li {height: 100%; padding-top: 2.1em;} .submenu, .SubMenu {margin-top: 2.0em;}");
-                    } else {
-                        appendCssStyle(".menu > li, .Menu > li {height: 100%; padding-top: 2.0em;} .submenu, .SubMenu {margin-top: 2.0em;}");
-                    }
+            // Auch ohne Change Header Layout zwischen Menüname und Submenü keine Lücke lassen, sonst klappts nicht mit einfachem Aufklappen.
+            if (!settings_change_header_layout) {
+                if (is_page("map")) {
+                    appendCssStyle(".menu > li, .Menu > li {height: 100%; padding-top: 2.0em;} .submenu, .SubMenu {margin-top: 1.9em;}");
+                } else if (is_page("find_cache") || is_page("hide_cache") || is_page("collection_1") || is_page("geotours") || is_page("dashboard-section") || is_page("track")) {
+                    appendCssStyle(".menu > li, .Menu > li {height: 100%; padding-top: 2.1em;} .submenu, .SubMenu {margin-top: 2.0em;}");
+                } else {
+                    appendCssStyle(".menu > li, .Menu > li {height: 100%; padding-top: 2.0em;} .submenu, .SubMenu {margin-top: 2.0em;}");
                 }
             }
             if (settings_bookmarks_on_top && $('.Menu, .menu').length > 0) {
@@ -1737,8 +1735,6 @@ var mainGC = function() {
                     var searchfield = "<li><input onKeyDown='if(event.keyCode==13 && event.ctrlKey == false && event.altKey == false && event.shiftKey == false) {gclh_search_logs(); return false;}' type='text' size='7' name='navi_search' id='navi_search' style='padding: 1px; font-weight: bold; font-family: sans-serif; border: 2px solid #778555; border-radius: 7px 7px 7px 7px; background-color:#d8cd9d' value='" + settings_bookmarks_search_default + "'></li>";
                     $(".Menu, .menu").append(searchfield);
                 }
-                // Hover für alle Dropdowns aufbauen.
-                buildHover();
 
                 if (settings_menu_show_separator) {
                     if (settings_bookmarks_top_menu || settings_change_header_layout == false);  // Navi vertikal
@@ -1763,6 +1759,10 @@ var mainGC = function() {
                         }
                     }
                 }
+            }
+            // Hover für alle Dropdowns aufbauen, auch für die von GS.
+            if ($('.Menu, .menu').length > 0) {
+                buildHover();
             }
         } catch(e) {gclh_error("Linklist on top",e);}
     }
