@@ -1622,7 +1622,7 @@ var mainGC = function () {
             // Search field.
             if (settings_bookmarks_search) {
                 var code = "function gclh_search_logs(){";
-                code += "  var search = document.getElementById('navi_search').value;";
+                code += "  var search = document.getElementById('navi_search').value.trim();";
                 code += "  if(search.match(/^GC[A-Z0-9]{1,10}\\b/i) || search.match(/^TB[A-Z0-9]{1,10}\\b/i)) document.location.href = 'http://coord.info/'+search;";
                 code += "  else if(search.match(/^[A-Z0-9]{6}\\b$/i)) document.location.href = 'https://www.geocaching.com/track/details.aspx?tracker='+search;";
                 code += "  else document.location.href = 'https://www.geocaching.com/seek/nearest.aspx?navi_search='+search;";
