@@ -9292,12 +9292,12 @@ var mainGC = function() {
 
             // Create Button to save map as PQ
             function addCreatePQButton() {
-                if (settings_searchmap_show_btn_save_as_pq) {
+                if (settings_searchmap_show_btn_save_as_pq && !document.location.href.match(/\.com\/play\/map\/lists\/BM/)) {
                     if ($('.list-hub')[0] && $('#gclh_saveAsPQ')[0]) {
                         $('#gclh_saveAsPQ').parent().remove();
                     }
                     if ($('#geocache-list')[0] && !$('#gclh_saveAsPQ')[0]) {
-                        let html = '<div class="geocache-action-bar"><a id="gclh_saveAsPQ" href="javascript:void(0)"><img src="../../images/icons/16/pocket_query.png" height="12px">Save as Pocket Query</a></div>';
+                        let html = '<div class="geocache-action-bar"><a id="gclh_saveAsPQ" href="javascript:void(0)"><img src="/images/icons/16/pocket_query.png" height="12px">Save as Pocket Query</a></div>';
                         $('.geocache-action-bar.sidebar-control').after(html);
                         $('#gclh_saveAsPQ').bind('click', function() {
                             let px = document.querySelector('.leaflet-gl-layer.mapboxgl-map').offsetWidth;
