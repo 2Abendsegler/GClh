@@ -1726,7 +1726,7 @@ var mainGC = function() {
                 // Search field.
                 if (settings_bookmarks_search) {
                     var code = "function gclh_search_logs(){";
-                    code += "  var search = document.getElementById('navi_search').value;";
+                    code += "  var search = document.getElementById('navi_search').value.trim();";
                     code += "  if(search.match(/^(GC|TB|GT|PR|BM|GL)[A-Z0-9]{1,10}\\b/i)) document.location.href = 'https://coord.info/'+search;";
                     code += "  else if(search.match(/^[A-Z0-9]{6}\\b$/i)) document.location.href = '/track/details.aspx?tracker='+search;";
                     code += "  else document.location.href = '/seek/nearest.aspx?navi_search='+search;";
