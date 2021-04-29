@@ -1173,15 +1173,30 @@ var mainGCWait = function() {
 // Set global data and check if logged in.
     function waitingForUserParameter(waitCount) {
         // All pages with the exception of the new map.
-        if (typeof headerSettings !== 'undefined' && headerSettings.username && headerSettings.avatarUrl && headerSettings.findCount && headerSettings.locale) {
+        if (typeof headerSettings !== 'undefined' && headerSettings.username && headerSettings.avatarUrl && headerSettings.locale) {
+console.log('headerSettings');
+console.log(headerSettings);
             global_me = headerSettings.username;
             global_avatarUrl = headerSettings.avatarUrl;
-            global_findCount = headerSettings.findCount;
+            if (typeof headerSettings.findCount == 'undefined') {
+console.log('headerSettings.findCount == undefined');
+                global_findCount = 0;
+            } else {
+                global_findCount = headerSettings.findCount;
+            }
             global_locale = headerSettings.locale;
         // New map.
-        } else if (typeof _gcUser !== 'undefined' && _gcUser.username && _gcUser.image && _gcUser.image.imageUrl && _gcUser.findCount && _gcUser.locale) {
+        } else if (typeof _gcUser !== 'undefined' && _gcUser.username && _gcUser.image && _gcUser.image.imageUrl && _gcUser.locale) {
+console.log('_gcUser');
+console.log(_gcUser);
             global_me = _gcUser.username;
             global_avatarUrl = _gcUser.image.imageUrl.replace(/\{0\}/,'avatar');
+            if (typeof _gcUser.findCount == 'undefined') {
+console.log('_gcUser.findCount == undefined');
+                global_findCount = 0;
+            } else {
+                global_findCount = _gcUser.findCount;
+            }
             global_findCount = _gcUser.findCount;
             global_locale = _gcUser.locale;
         }
