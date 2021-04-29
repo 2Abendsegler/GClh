@@ -3691,7 +3691,7 @@ var mainGC = function() {
     }
     // Script für insert Log Template by click.
     function insert_tpl_fkt(newLogPage) {
-        finds = get_my_finds();
+        finds = global_findCount;
         var [aDate, aTime, aDateTime] = getDateTime();
         var me = global_me;
         aOwner = aOwner.replace(/'/g,"\\'");
@@ -4203,7 +4203,7 @@ var mainGC = function() {
         if (newLogPage) var id = "LogText";
         else var id = "ctl00_ContentBody_LogBookPanel1_uxLogInfo";
         window.addEventListener("load", gclh_setFocus, false);
-        var finds = get_my_finds();
+        var finds = global_findCount;
         var me = global_me;
         if (newLogPage) var owner = $('.muted')[0].children[1].childNodes[0].textContent;
         else var owner = document.getElementById('ctl00_ContentBody_LogBookPanel1_WaypointLink').nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.innerHTML;
@@ -11726,7 +11726,7 @@ var mainGC = function() {
                 g_link = "(https://coord.info/" + g_code + ")";
                 g_code = "(" + g_code + ")";
             }
-            g_founds = get_my_finds();
+            g_founds = global_findCount;
             [g_date, g_time, g_dateTime] = getDateTime();
             g_activ_username = global_me;
         }
@@ -16598,13 +16598,6 @@ var mainGC = function() {
         // Replaces last comma with "and" to humanize the string.
         strDateDiff = strDateDiff.replace(/,([^,]*)$/, " and$1");
         return strDateDiff;
-    }
-
-// Get Finds out of login text box.
-    function get_my_finds() {
-        var finds = "";
-        if ($('.cache-count').text()) finds = parseInt($('.cache-count').text().replace(/\s/g,'').match(/[0-9,\.]+/)[0].replace(/[,\.]/,""));
-        return finds;
     }
 
 // Close Overlays, Find Player, Config, Sync.
