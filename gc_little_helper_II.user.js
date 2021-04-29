@@ -1143,35 +1143,6 @@ var mainGCWait = function() {
         } catch(e) {gclh_error("Hide Facebook",e);}
     }
 
-// Improve print page cache listing.
-    if (document.location.href.match(/\.com\/seek\/cdpf\.aspx/)) {
-        try {
-            // Hide disclaimer.
-            if (settings_hide_disclaimer) {
-                var d = ($('.Note.Disclaimer')[0] || $('.DisclaimerWidget')[0] || $('.TermsWidget.no-print')[0]);
-                if (d) d.remove();
-            }
-            // Decrypt hints.
-            if (settings_decrypt_hint) {
-                if ($('#uxDecryptedHint')[0]) $('#uxDecryptedHint')[0].style.display = 'none';
-                if ($('#uxEncryptedHint')[0]) $('#uxEncryptedHint')[0].style.display = '';
-                if ($('.EncryptionKey')[0]) $('.EncryptionKey')[0].remove();
-            }
-            // Show other coord formats.
-            var box = document.getElementsByClassName("UTM Meta")[0];
-            var coords = document.getElementsByClassName("LatLong Meta")[0];
-            if (box && coords) {
-                var match = coords.innerHTML.match(/((N|S) [0-9][0-9]. [0-9][0-9]\.[0-9][0-9][0-9] (E|W) [0-9][0-9][0-9]. [0-9][0-9]\.[0-9][0-9][0-9])/);
-                if (match && match[1]) {
-                    coords = match[1];
-                    otherFormats("<br>");
-                }
-            }
-            // Hide side rights.
-            if ($('#Footer')[0]) $('#Footer')[0].remove();
-        } catch(e) {gclh_error("Improve print page cache listing",e);}
-    }
-
 // Set global data and check if logged in.
     function waitingForUserParameter(waitCount) {
         // All pages with the exception of the new map.
@@ -1206,6 +1177,35 @@ var mainGC = function() {
        $('#divContentMain').css("visibility", "hidden");
        document.location.href = $('p.Success a')[0].href;
    }
+
+// Improve print page cache listing.
+    if (document.location.href.match(/\.com\/seek\/cdpf\.aspx/)) {
+        try {
+            // Hide disclaimer.
+            if (settings_hide_disclaimer) {
+                var d = ($('.Note.Disclaimer')[0] || $('.DisclaimerWidget')[0] || $('.TermsWidget.no-print')[0]);
+                if (d) d.remove();
+            }
+            // Decrypt hints.
+            if (settings_decrypt_hint) {
+                if ($('#uxDecryptedHint')[0]) $('#uxDecryptedHint')[0].style.display = 'none';
+                if ($('#uxEncryptedHint')[0]) $('#uxEncryptedHint')[0].style.display = '';
+                if ($('.EncryptionKey')[0]) $('.EncryptionKey')[0].remove();
+            }
+            // Show other coord formats.
+            var box = document.getElementsByClassName("UTM Meta")[0];
+            var coords = document.getElementsByClassName("LatLong Meta")[0];
+            if (box && coords) {
+                var match = coords.innerHTML.match(/((N|S) [0-9][0-9]. [0-9][0-9]\.[0-9][0-9][0-9] (E|W) [0-9][0-9][0-9]. [0-9][0-9]\.[0-9][0-9][0-9])/);
+                if (match && match[1]) {
+                    coords = match[1];
+                    otherFormats("<br>");
+                }
+            }
+            // Hide side rights.
+            if ($('#Footer')[0]) $('#Footer')[0].remove();
+        } catch(e) {gclh_error("Improve print page cache listing",e);}
+    }
 
 // Set language to default language.
     try {
