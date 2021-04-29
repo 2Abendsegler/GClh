@@ -1186,7 +1186,7 @@ var mainGCWait = function() {
             global_locale = _gcUser.locale;
         }
         if (global_me != '') {
-console.log('start mainGC');
+console.log('waitingForUserParameter: start mainGC bei waitCount '+waitCount);
             mainGC();
         } else {
             waitCount++;
@@ -1194,6 +1194,7 @@ console.log('start mainGC');
                 setTimeout(function(){waitingForUserParameter(waitCount);}, 50);
             } else {
 console.log('waitingForUserParameter: waitCount ist 200 -> Ende');
+            }
         }
     }
 console.log('start waitingForUserParameter');
