@@ -1186,11 +1186,17 @@ var mainGCWait = function() {
             global_locale = _gcUser.locale;
         }
         if (global_me != '') {
+console.log('start mainGC');
             mainGC();
         } else {
-            waitCount++; if (waitCount <= 200) setTimeout(function(){waitingForUserParameter(waitCount);}, 50);
+            waitCount++;
+            if (waitCount <= 200) {
+                setTimeout(function(){waitingForUserParameter(waitCount);}, 50);
+            } else {
+console.log('waitingForUserParameter: waitCount ist 200 -> Ende');
         }
     }
+console.log('start waitingForUserParameter');
     waitingForUserParameter(0);
 };
 
