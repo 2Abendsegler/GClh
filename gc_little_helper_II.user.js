@@ -1454,7 +1454,7 @@ var mainGC = function() {
                     ".#m li a, .#m li a:link, .#m li a:visited, .#m li {color: #" + font_color_menu + " !important;}" +
                     ".#m li a:hover, .#m li a:focus {color: #FFFFFF !important; outline: unset !important;}" +
                     // Schriftfarbe Search Field.
-                    "#navi_search {color: #4a4a4a} #navi_search:focus {outline: none;}" +
+                    "#navi_search {color: #4a4a4a;} #navi_search:focus {outline: none;}" +
                     // Menü nicht flex.
                     ".#m {display: unset;}" +
                     // Submenü im Vordergrund.
@@ -13071,7 +13071,8 @@ var mainGC = function() {
             html += thanksLineBuild("dontpänic",            "haarspalter",              false, false, true,  false, false);
             html += thanksLineBuild("Bananeweizen",         "",                         false, false, true,  false, false);
             html += thanksLineBuild("sunhillduo",           "Yannick-XY",               false, false, true,  false, false);
-            html += thanksLineBuild("ColleIsarco",          "",                         false, false, true,  true, false);
+            html += thanksLineBuild("ColleIsarco",          "",                         false, false, true,  true,  false);
+            html += thanksLineBuild("ChristianGK",          "ChristianGK-GC",           false, false, true,  false, false);
             html += thanksLineBuild("ztNFny",               "",                         false, false, true,  true,  true);
             // Bug Reporting alphabetisch.
             html += thanksLineBuild("",                     "allyourcodearebelongtous", false, false, false, true,  false);
@@ -13096,7 +13097,7 @@ var mainGC = function() {
             html += thanksLineBuild("Tungstène",            "Tungstene",                false, false, false, true,  false);
             html += thanksLineBuild("V60",                  "V60GC",                    false, false, false, true,  false);
             html += thanksLineBuild("winkamol",             "",                         false, false, false, true,  false);
-            var thanksLastUpdate = "24.04.2021";
+            var thanksLastUpdate = "29.04.2021";
 //<-- $$006
             html += "    </tbody>";
             html += "</table>";
