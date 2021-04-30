@@ -44,7 +44,7 @@
 		<strong>New:</strong> [Global] Remove whitespace from search field in header. [<a href="https://github.com/2Abendsegler/GClh/issues/1676" title="Issue 1676">1676</a> / <a href="https://www.geocaching.com/profile/?u=ChristianGK" title="Thanks to ChristianGK">ChristianGK</a>]<br><br>
 	</li>
 	<li>
-		<strong>Fix:</strong> [Global] GS menue do not work with no "Change header layout" and no "Linklist on top". [<a href="https://github.com/2Abendsegler/GClh/issues/1664" title="Issue 1664">1664</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		<strong>Fix:</strong> [Global] GS menues do not work with no "Change header layout" and no "Linklist on top". [<a href="https://github.com/2Abendsegler/GClh/issues/1664" title="Issue 1664">1664</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 	</li>
 	<li>
 		<strong>Fix:</strong> [Global] GClh does not always run if finds are null. [<a href="https://github.com/2Abendsegler/GClh/issues/1674" title="Issue 1674">1674</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
