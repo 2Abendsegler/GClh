@@ -25,16 +25,16 @@
 <ul>
 	<li>
 		<strong>New:</strong> [Public Profile] Change links to found/hide caches to the old link again. [<a href="https://github.com/2Abendsegler/GClh/issues/1656" title="Issue 1656">1656</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br>
-		<img src="../images/0.10.20/Screen02.gif" alt="Screen02.gif"><br><br>
 		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_profile_old_links" title="Link to your GClh Config">Settings -> Public profile - Geocaches:</a><br>
 		<img src="../images/0.10.20/Screen04.jpg" alt="Screen04.jpg"><br>
 		If you want to use these old links again, you have to activate it.<br><br>
+		<img src="../images/0.10.20/Screen02.gif" alt="Screen02.gif"><br><br>
 	</li>
 	<li>
 		<strong>New:</strong> [Old Map] Install map layer ÖPNVMap. [<a href="https://github.com/2Abendsegler/GClh/issues/1657" title="Issue 1657">1657</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
-		<img src="../images/0.10.20/Screen01.gif" alt="Screen01.gif"><br><br>
 		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_use_gclh_layercontrol" title="Link to your GClh Config">Settings -> Map - Layers in map:</a><br>
 		This map layer is set automatically. It is the replacement for "Public Transport Lines" which is no longer available. If you don't want it, then you can deactivate it.<br><br>
+		<img src="../images/0.10.20/Screen01.gif" alt="Screen01.gif"><br><br>
 	</li>
 	<li>
 		<strong>New:</strong> [New Map / Pocket query] Save as PQ button on search map. [<a href="https://github.com/2Abendsegler/GClh/issues/1578" title="Issue 1578">1578</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br>
