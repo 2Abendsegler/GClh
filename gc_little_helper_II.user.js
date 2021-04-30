@@ -71,7 +71,7 @@ var checkRunningOnce = function(c) {
     if (document.getElementsByTagName('head')[0]) {
         if (document.getElementById('GClh_II_running')){
             var text = 'The script "GC little helper II" is already running.\nPlease make sure that it runs only once.\n\nDo you want to see tips on how this could happen \nand what you can do about it?';
-            var url  = 'https://github.com/2Abendsegler/GClh/blob/master/docu/faq.md';
+            var url = 'https://github.com/2Abendsegler/GClh/blob/master/docu/faq.md';
             if (window.confirm(text)) window.open(url, '_blank');
         } else appendMetaId("GClh_II_running");
     }
@@ -959,19 +959,19 @@ var mainPGC = function() {
                                 var start_array = start.split('/');
 
                                 var start_month = getMonthNumber(language,start_array[0]);
-                                var start_day   = parseInt(start_array[1]);
-                                var start_year  = parseInt(start_array[2]);
+                                var start_day = parseInt(start_array[1]);
+                                var start_year = parseInt(start_array[2]);
 
                                 var end = $(this).children().eq(2).text();
                                 if(end.indexOf("/") != -1){
                                     var end_array = end.split('/');
                                     var end_month = getMonthNumber(language,end_array[0]);
-                                    var end_day   = parseInt(end_array[1]);
-                                    var end_year  = parseInt(end_array[2]);
+                                    var end_day = parseInt(end_array[1]);
+                                    var end_year = parseInt(end_array[2]);
                                 }else{
                                     var end_month = "";
-                                    var end_day   = "";
-                                    var end_year  = "";
+                                    var end_day = "";
+                                    var end_year = "";
                                 }
 
                                 var cache_count = 1000;
@@ -5042,7 +5042,7 @@ var mainGC = function() {
                     } else {
                         $('#ctl00_ContentBody_DateTimeBegin_Month')[0].selectedIndex = 0;
                         $('#ctl00_ContentBody_DateTimeBegin_Day')[0].selectedIndex = 0;
-                        $('#ctl00_ContentBody_DateTimeBegin_Year')[0].selectedIndex =  $('#ctl00_ContentBody_DateTimeBegin_Year option').length-1;
+                        $('#ctl00_ContentBody_DateTimeBegin_Year')[0].selectedIndex = $('#ctl00_ContentBody_DateTimeBegin_Year option').length-1;
                     }
                     // End Date
                     if (placedDateEnd !== false) {
@@ -6911,7 +6911,7 @@ var mainGC = function() {
             if($('#cache_logs_container #sortOrder').length) isUpvoteActive = true
 
             var vupUserString = 'if UserName == "#" ';
-            var vupHideAvatarString  = 'if (UserName != "#" ';
+            var vupHideAvatarString = 'if (UserName != "#" ';
             var vupHideCompleteLog = vupUserString;
             if (settings_process_vup && global_vups && global_vups.length > 0) {
                 for (var i = 0; i < global_vups.length; i++) {
@@ -9044,11 +9044,11 @@ var mainGC = function() {
                         if (last_logs_to_show == i) break;
                         var lateLog = new Object();
                         lateLog['user'] = initalLogs['data'][i].UserName;
-                        lateLog['src']  = '/images/logtypes/' + initalLogs['data'][i].LogTypeImage;
+                        lateLog['src'] = '/images/logtypes/' + initalLogs['data'][i].LogTypeImage;
                         lateLog['type'] = initalLogs['data'][i].LogType;
                         lateLog['date'] = initalLogs['data'][i].Visited;
-                        lateLog['log']  = initalLogs['data'][i].LogText;
-                        lateLogs[i]     = lateLog;
+                        lateLog['log'] = initalLogs['data'][i].LogText;
+                        lateLogs[i] = lateLog;
                     }
                     if (lateLogs.length > 0) {
                         var div = document.createElement("div");
@@ -9359,7 +9359,7 @@ var mainGC = function() {
             }
 
             // Create observer instances linked to callback functions.
-            var observer_body    = new MutationObserver(cb_body);
+            var observer_body = new MutationObserver(cb_body);
             var observer_sidebar = new MutationObserver(cb_sidebar); // ATTENTION: the order matters here
             var observer_map = new MutationObserver(cb_map);
             var target_body = $('body')[0];
@@ -10114,11 +10114,11 @@ var mainGC = function() {
                                 if (last_logs_to_show == i) break;
                                 var lateLog = new Object();
                                 lateLog['user'] = initalLogs['data'][i].UserName;
-                                lateLog['src']  = '/images/logtypes/' + initalLogs['data'][i].LogTypeImage;
+                                lateLog['src'] = '/images/logtypes/' + initalLogs['data'][i].LogTypeImage;
                                 lateLog['type'] = initalLogs['data'][i].LogType;
                                 lateLog['date'] = initalLogs['data'][i].Visited;
-                                lateLog['log']  = initalLogs['data'][i].LogText;
-                                lateLogs[i]     = lateLog;
+                                lateLog['log'] = initalLogs['data'][i].LogText;
+                                lateLogs[i] = lateLog;
                             }
                             if (lateLogs.length > 0) {
                                 var div = document.createElement("div");
@@ -10998,7 +10998,7 @@ var mainGC = function() {
                         if ($('tr')[loaded-1].children[2] && $('tr')[loaded-1].children[2].innerHTML.match(/(\S+)/)) var lastLog = loaded-1;
                         else if ($('tr')[loaded-2].children[2] && $('tr')[loaded-2].children[2].innerHTML.match(/(\S+)/)) var lastLog = loaded-2;
                         else var lastLog = "";
-                        if (lastLog != "") var dateLastLog =  ". Last date is " + $('tr')[lastLog].children[2].innerHTML.replace(/\s/g, "");
+                        if (lastLog != "") var dateLastLog = ". Last date is " + $('tr')[lastLog].children[2].innerHTML.replace(/\s/g, "");
                         else var dateLastLog = "";
                         result.innerHTML = result.innerHTML + " (Only " + loaded + " logs loaded" + dateLastLog + ".)";
                     }
@@ -14137,7 +14137,7 @@ var mainGC = function() {
                     html += "    <tr style='height: 25px;' class='gclh_LinkListInlist' id='gclh_LinkListTop_" + order[i] + "' name='" + textName + "' title='" + textTitle + "'>";
                     html += "      <td style='vertical-align: top; text-overflow: ellipsis; max-width: 166px; overflow: hidden; white-space: nowrap;'>";
                     html += "        <img style='height: 12px; margin-right: 3px; cursor: grab;' title='Grab it' src='" + global_grab_it_icon + "'/>";
-                    html +=          text;
+                    html += text;
                     html += "      </td>";
                     html += "      <td><img style='height: 20px; margin-left: 0px; vertical-align: top; cursor: pointer;' title ='Delete it' class='gclh_LinkListDelIcon' src='" + global_del_it_icon + "'/></td></tr>";
                 }
@@ -14174,7 +14174,7 @@ var mainGC = function() {
                     html += "<a class='gclh_ref' title='Standard link with description' ";
                     for (attr in bookmarks[i]) {
                         if (attr != "title") {
-                            html +=      attr + "='" + bookmarks[i][attr] + "' ";
+                            html += attr + "='" + bookmarks[i][attr] + "' ";
                         }
                     }
                     var outTitle = (typeof(bookmarks_orig_title[num]) != "undefined" && bookmarks_orig_title[num] != "" ? bookmarks_orig_title[num] : bookmarks[i]['title']);
@@ -14336,7 +14336,7 @@ var mainGC = function() {
                     var htmlRight = "";
                     htmlRight += "<td style='vertical-align: top; text-overflow: ellipsis; max-width: 166px; overflow: hidden; white-space: nowrap;'>";
                     htmlRight += "  <img style='height: 12px; margin-right: 3px; cursor: grab;' title ='Grab it' src='"+global_grab_it_icon+"' />";
-                    htmlRight +=    text;
+                    htmlRight += text;
                     htmlRight += "</td>";
                     htmlRight += "<td>";
                     htmlRight += " <img class='gclh_LinkListDelIcon' style='height: 20px; margin-left: 0px; vertical-align: top; cursor: pointer;' title ='Delete it' src='" + global_del_it_icon + "' />";
@@ -15674,9 +15674,9 @@ var mainGC = function() {
 // Functions to provide cff (checkbox, input field and textarea field).
     function openCff(ident, header, titleName, titleValue, depId) {
         var c = '';
-        c +=   "<div id='" + ident + '_main' + "' class='cff_main' data-depId='" + (depId ? depId : '') + "' data-titleName='" + titleName + "' data-titleValue='" + titleValue + "'>";
-        c +=     "<div class='cff_header'>" + header + "</div>";
-        c +=     "<div class='cff_elements'>";
+        c += "<div id='" + ident + '_main' + "' class='cff_main' data-depId='" + (depId ? depId : '') + "' data-titleName='" + titleName + "' data-titleValue='" + titleValue + "'>";
+        c += "<div class='cff_header'>" + header + "</div>";
+        c += "<div class='cff_elements'>";
         return c;
     }
     function buildEntryCff(ident, cffData, idNr, nonArray, createAction) {
@@ -15687,26 +15687,26 @@ var mainGC = function() {
             div.id = id.replace('#', 'element');
             div.className = 'cff_element';
         } else {
-            c +=   "<div id='" + id.replace('#', 'element') + "' class='cff_element'>";
+            c += "<div id='" + id.replace('#', 'element') + "' class='cff_element'>";
         }
-        c +=         "<input id='" + (nonArray ? nonArray + "_show" : id.replace('#', 'show')) + "' class='cff_show' type='checkbox' " + (cffData.show ? "checked='checked'" : "" ) + "'>";
-        c +=         "<input id='" + (nonArray ? nonArray + "_name" : id.replace('#', 'name')) + "' class='gclh_form cff_name' type='text' value='" + cffData.name + "'>";
+        c += "<input id='" + (nonArray ? nonArray + "_show" : id.replace('#', 'show')) + "' class='cff_show' type='checkbox' " + (cffData.show ? "checked='checked'" : "" ) + "'>";
+        c += "<input id='" + (nonArray ? nonArray + "_name" : id.replace('#', 'name')) + "' class='gclh_form cff_name' type='text' value='" + cffData.name + "'>";
         if (nonArray) {
-            c +=     "<img id='restore_" + nonArray + "_name' class='cff_name_restore' src=" + global_restore_icon + " title='back to default' style='width: 12px; cursor: pointer;'>";
+            c += "<img id='restore_" + nonArray + "_name' class='cff_name_restore' src=" + global_restore_icon + " title='back to default' style='width: 12px; cursor: pointer;'>";
         }
-        c +=         "<a class='cff_edit_delete' href='javascript:void(0);'>";
-        c +=           "<img class='cff_edit' title='edit' src='/images/stockholm/16x16/page_white_edit.gif'>";
+        c += "<a class='cff_edit_delete' href='javascript:void(0);'>";
+        c += "<img class='cff_edit' title='edit' src='/images/stockholm/16x16/page_white_edit.gif'>";
         if (!nonArray) {
-            c +=       "<img class='cff_delete' title ='delete' src='" + global_del_it_icon + "'/>";
+            c += "<img class='cff_delete' title ='delete' src='" + global_del_it_icon + "'/>";
         }
-        c +=         "</a>";
-        c +=         "<div class='cff_content'" + (createAction ? "style='display: block;'" : "") + ">";
-        c +=           "<textarea id='" + (nonArray ? nonArray + "_value" : id.replace('#', 'value')) + "' class='gclh_form cff_value'>" + cffData.value + "</textarea>";
+        c += "</a>";
+        c += "<div class='cff_content'" + (createAction ? "style='display: block;'" : "") + ">";
+        c += "<textarea id='" + (nonArray ? nonArray + "_value" : id.replace('#', 'value')) + "' class='gclh_form cff_value'>" + cffData.value + "</textarea>";
         if (nonArray) {
-            c +=       "<img id='restore_" + nonArray + "_value' class='cff_value_restore' src=" + global_restore_icon + " title='back to default' style='width: 12px; cursor: pointer;'>";
+            c += "<img id='restore_" + nonArray + "_value' class='cff_value_restore' src=" + global_restore_icon + " title='back to default' style='width: 12px; cursor: pointer;'>";
         }
-        c +=         "</div>";
-        c +=       "</div>";
+        c += "</div>";
+        c += "</div>";
         if (createAction) {
             div.innerHTML = c;
             return div;
@@ -15737,9 +15737,9 @@ var mainGC = function() {
     }
     function closeCff(ident) {
         var c = '';
-        c +=     "</div>";
-        c +=     "<div class='cff_footer'><button class='gclh_form cff_create' type='button' title='create further entry'>create</button></div>";
-        c +=   "</div>";
+        c += "</div>";
+        c += "<div class='cff_footer'><button class='gclh_form cff_create' type='button' title='create further entry'>create</button></div>";
+        c += "</div>";
         return c;
     }
     function cssCff(ident, blockRight, widthName, widthValue, heightValue) {
