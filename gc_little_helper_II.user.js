@@ -3939,7 +3939,7 @@ var mainGC = function() {
                         for (let i=0; i<wordsArr.length; i++) {
                             if (wordsArr[i].trim() != '') words++;
                         }
-                        counterspan.innerHTML = "Loglength:" + (newLogpage ? '&nbsp;' : "<br />");
+                        counterspan.innerHTML = "Loglength:" + (newLogpage ? '&nbsp;' : "<br>");
                         counterelement.innerHTML = '<span>' + $(logfield).val().replace(/\n/g, "\r\n").length + '/4000 (' + words + ' words)</span>';
                         counterspan.appendChild(counterelement);
                         if (!newLogpage) document.getElementById('litDescrCharCount').parentNode.appendChild(counterspan);
