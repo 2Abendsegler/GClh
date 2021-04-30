@@ -8841,8 +8841,9 @@ var mainGC = function() {
                                 regroupCacheDataSearchmap(this, '|', '.geocache-item-info .geocache-item-code', '.geocache-item-data');
                                 $(this).find('.geocache-item-info')[0].style.display = 'none';
                             }
-                            if ($(this).find('.geocache-item-info .geocache-item-favorites')[0]) {
-                                regroupCacheDataSearchmap(this, '|', '.geocache-item-info .geocache-item-favorites', '.geocache-item-data');
+                            // (Das ursprüngliche Löschen der Favoriten verursachte den weißen Bildschirm. Nun wird nur noch geclont.)
+                            if ($(this).find('.geocache-item-info .geocache-item-favorites')[0] && !$(this).find('.geocache-item-data .geocache-item-favorites')[0]) {
+                                regroupCacheDataSearchmap(this, '|', '', '.geocache-item-data', $(this).find('.geocache-item-info .geocache-item-favorites').clone());
                             }
                             if ($(this).find('.geocache-item-premium')[0] && !$(this).find('.gclh_cache_list_premium')[0]) {
                                 regroupCacheDataSearchmap(this, '|', '', '.geocache-item-data', cache_list_premium);
@@ -8868,6 +8869,8 @@ var mainGC = function() {
                 }
             }
             // Regroup cache data in cache list and cache details for compact layout.
+            // (Diese Ersetzungen sind nicht sauber. Eigentlich sollten die Originale nur ausgeblendet werden und nicht gelöscht werden.)
+            // (Das ursprüngliche Löschen der Favoriten verursachte den weißen Bildschirm. Nun wird nur noch geclont.)
             function regroupCacheDataSearchmap(cache, separator, from, to, build) {
                 if (separator == '|') $(cache).find(to).append('<span>|</span>');
                 else if (separator == 'dot') $(cache).find(to).append('<span class="dot"></span>');
@@ -9340,6 +9343,7 @@ var mainGC = function() {
             }
             // Observer callback for sidebar.
             var cb_sidebar = function(mutationsList, observer) {
+                if (!$('div#sidebar')[0]) return;
                 observer_sidebar.disconnect();
                 processAllSearchMap();
                 var target_sidebar = $('div#sidebar')[0];
