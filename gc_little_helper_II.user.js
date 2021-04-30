@@ -2,7 +2,7 @@
 // @name             GC little helper II
 // @namespace        http://www.amshove.net
 //--> $$000
-// @version          0.10.19
+// @version          0.10.20
 //<-- $$000
 // @include          https://www.geocaching.com/*
 // @include          https://maps.google.tld/*
@@ -1456,7 +1456,7 @@ var mainGC = function() {
                     ".#m li a, .#m li a:link, .#m li a:visited, .#m li {color: #" + font_color_menu + " !important;}" +
                     ".#m li a:hover, .#m li a:focus {color: #FFFFFF !important; outline: unset !important;}" +
                     // Schriftfarbe Search Field.
-                    "#navi_search {color: #4a4a4a};" +
+                    "#navi_search {color: #4a4a4a;} #navi_search:focus {outline: none;}" +
                     // Menü nicht flex.
                     ".#m {display: unset;}" +
                     // Submenü im Vordergrund.
@@ -5334,6 +5334,8 @@ var mainGC = function() {
                     if (settings_lists_back_to_top) {
                         css += '.scroll-to-top {display: none;}';
                     }
+                    // Change cursor from not allowed to default.
+                    css += '.gc-button.gc-button-disabled {cursor: default;}';
                     if (!css == '') appendCssStyle(css);
                     if ($('table')[0]) $('table').addClass('gclh_improveLayoutHead');
                     if ($('.rt-table')[0]) $('.rt-table').addClass('gclh_improveLayoutHead');
@@ -7307,15 +7309,8 @@ var mainGC = function() {
 
                 if (settings_show_compact_logbook_but){
                     addButtonOverLogs(toggle_compact_logbook, "toggle_compact_logbook", false, "Show compact logs", "Show/hide compact logs");
-                    var unimportant_css =
-                              ".compact_logbook .logIcons,"
-                            + ".compact_logbook .logOwnerAvatar,"
-                            + ".compact_logbook .logOwnerStats,"
-                            + ".compact_logbook .LogContent,"
-                            + ".compact_logbook .TableLogContent,"
-                            + ".compact_logbook .upvotes,"
-                            + ".compact_logbook .AlignRight small"
-                            + "{display:none;}";
+                    var unimportant_css = ".compact_logbook .logIcons, .compact_logbook .logOwnerAvatar, .compact_logbook .logOwnerStats, .compact_logbook .LogContent, .compact_logbook .TableLogContent, .compact_logbook .AlignRight small {display:none;}"
+                                        + ".compact_logbook .upvotes {display:none !important;}";
                     appendCssStyle(unimportant_css);
                 }
             }
@@ -9510,6 +9505,8 @@ var mainGC = function() {
             } else {
                 css += '.geocache-list-container ul li, .LazyLoad.is-visible {height: 84px !important}';
             }
+            // No unsuitably field border if field focused.
+            css += '#main a:focus {outline: none !important;}';
             // Adapt the width of the pop up by right mouse click to a cache in the map.
             css += '.leaflet-popup.context-menu.geocache-context-menu.leaflet-zoom-animated {width: auto !important; min-width: 300px;}';;
             css += '.leaflet-popup-content {width: auto !important;}';
@@ -12002,10 +11999,10 @@ var mainGC = function() {
         div.setAttribute("style", "margin-top: -50px;");
         var prop = ' style="border: none; visibility: hidden; width: 2px; height: 2px;" alt="">';
 //--> $$002
-        var code = '<img src="https://c.andyhoppe.com/1619236069"' + prop + // Besucher
-                   '<img src="https://c.andyhoppe.com/1619236119"' + prop + // Seitenaufrufe
-                   '<img src="https://www.worldflagcounter.com/hHh"' + prop +
-                   '<img src="https://s11.flagcounter.com/count2/MDeA/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
+        var code = '<img src="https://c.andyhoppe.com/1619416674"' + prop + // Besucher
+                   '<img src="https://c.andyhoppe.com/1619416706"' + prop + // Seitenaufrufe
+                   '<img src="https://www.worldflagcounter.com/hHx"' + prop +
+                   '<img src="https://s11.flagcounter.com/count2/yAuO/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
 //<-- $$002
         div.innerHTML = code;
         side.appendChild(div);
@@ -13329,7 +13326,8 @@ var mainGC = function() {
             html += thanksLineBuild("dontpänic",            "haarspalter",              false, false, true,  false, false);
             html += thanksLineBuild("Bananeweizen",         "",                         false, false, true,  false, false);
             html += thanksLineBuild("sunhillduo",           "Yannick-XY",               false, false, true,  false, false);
-            html += thanksLineBuild("ColleIsarco",          "",                         false, false, true,  true, false);
+            html += thanksLineBuild("ColleIsarco",          "",                         false, false, true,  true,  false);
+            html += thanksLineBuild("ChristianGK",          "ChristianGK-GC",           false, false, true,  false, false);
             html += thanksLineBuild("ztNFny",               "",                         false, false, true,  true,  true);
             // Bug Reporting alphabetisch.
             html += thanksLineBuild("",                     "allyourcodearebelongtous", false, false, false, true,  false);
@@ -13354,7 +13352,7 @@ var mainGC = function() {
             html += thanksLineBuild("Tungstène",            "Tungstene",                false, false, false, true,  false);
             html += thanksLineBuild("V60",                  "V60GC",                    false, false, false, true,  false);
             html += thanksLineBuild("winkamol",             "",                         false, false, false, true,  false);
-            var thanksLastUpdate = "24.04.2021";
+            var thanksLastUpdate = "01.05.2021";
 //<-- $$006
             html += "    </tbody>";
             html += "</table>";
@@ -16988,7 +16986,7 @@ function is_page(name) {
             if (url.match(/^\/account\/drafts/)) status = true;
             break;
         case "settings":
-            if (url.match(/^\/account\/(settings|lists|drafts)/)) status = true;
+            if (url.match(/^\/account\/(settings|lists|drafts|documents)/)) status = true;
             break;
         case "messagecenter":
             if (url.match(/^\/account\/messagecenter/)) status = true;

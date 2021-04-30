@@ -295,5 +295,6 @@
   "settings_lists_show_dd": true,
   "settings_lists_hide_desc": true,
   "settings_lists_upload_file": true,
-  "settings_searchmap_show_btn_save_as_pq": true
+  "settings_searchmap_show_btn_save_as_pq": true,
+  "settings_profile_old_links": false
 }
