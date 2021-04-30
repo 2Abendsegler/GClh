@@ -39,28 +39,28 @@
 		<strong>New:</strong> [Global] Remove whitespace from search field in header. [<a href="https://github.com/2Abendsegler/GClh/issues/1676" title="Issue 1676">1676</a> / <a href="https://www.geocaching.com/profile/?u=ChristianGK" title="Thanks to ChristianGK">ChristianGK</a>]<br><br>
 	</li>
 	<li>
-		<strong>Fix:</strong> [Global] GClh does not always run if finds are null. [<a href="https://github.com/2Abendsegler/GClh/issues/1674" title="Issue 1674">1674</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		<strong>Fix:</strong> [Global] GS menue do not work with no "Change header layout" and no "Linklist on top". [<a href="https://github.com/2Abendsegler/GClh/issues/1664" title="Issue 1664">1664</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 	</li>
 	<li>
-		<strong>Fix:</strong> [Log form, Draft] "Found" placeholders do not work. [<a href="https://github.com/2Abendsegler/GClh/issues/1672" title="Issue 1672">1672</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		<strong>Fix:</strong> [Global] GClh does not always run if finds are null. [<a href="https://github.com/2Abendsegler/GClh/issues/1674" title="Issue 1674">1674</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 	</li>
 	<li>
 		<strong>Fix:</strong> [Cache listing] Print page cache listing has coords format error. [<a href="https://github.com/2Abendsegler/GClh/issues/1670" title="Issue 1670">1670</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 	</li>
 	<li>
-		<strong>Fix:</strong> [Global] GS menue do not work with no "Change header layout" and no "Linklist on top". [<a href="https://github.com/2Abendsegler/GClh/issues/1664" title="Issue 1664">1664</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
-	</li>
-	<li>
-		<strong>Fix:</strong> [Souvenirs] GS has now an own souvenirs sort feature. Display group of souvenirs do not work. [<a href="https://github.com/2Abendsegler/GClh/issues/1661" title="Issue 1661">1661</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		<strong>Fix:</strong> [Old Map] "Public Transport Lines" are not shown. This map layer is no longer available. [<a href="https://github.com/2Abendsegler/GClh/issues/1594" title="Issue 1594">1594</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 	</li>
 	<li>
 		<strong>Fix:</strong> [New Map] Shows white screen. [<a href="https://github.com/2Abendsegler/GClh/issues/1595" title="Issue 1595">1595</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 	</li>
 	<li>
-		<strong>Fix:</strong> [Old Map] "Public Transport Lines" are not shown. This map layer is no longer available. [<a href="https://github.com/2Abendsegler/GClh/issues/1594" title="Issue 1594">1594</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		<strong>Fix:</strong> [New Map] Hide sidebar by default does not work on list hub. [<a href="https://github.com/2Abendsegler/GClh/issues/1627" title="Issue 1627">1627</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 	</li>
 	<li>
-		<strong>Fix:</strong> [New Map] Hide sidebar by default does not work on list hub. [<a href="https://github.com/2Abendsegler/GClh/issues/1627" title="Issue 1627">1627</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		<strong>Fix:</strong> [Log form, Draft] "Found" placeholders do not work. [<a href="https://github.com/2Abendsegler/GClh/issues/1672" title="Issue 1672">1672</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Souvenirs] GS has now an own souvenirs sort feature. Display group of souvenirs do not work. [<a href="https://github.com/2Abendsegler/GClh/issues/1661" title="Issue 1661">1661</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 	</li>
 </ul>
 <br>
