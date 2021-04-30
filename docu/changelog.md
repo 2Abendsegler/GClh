@@ -24,16 +24,16 @@
 ## v0.10.20:
 <ul>
 	<li>
-		<strong>New:</strong> [New Map / Pocket query] Save as PQ button on search map. [<a href="https://github.com/2Abendsegler/GClh/issues/1578" title="Issue 1578">1578</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br>
-	</li>
-	<li>
 		<strong>New:</strong> [Public Profile] Change links to found/hide caches to the old link. [<a href="https://github.com/2Abendsegler/GClh/issues/1656" title="Issue 1656">1656</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br>
 	</li>
 	<li>
 		<strong>New:</strong> [Old Map] Install map layer ÖPNVMap. [<a href="https://github.com/2Abendsegler/GClh/issues/1657" title="Issue 1657">1657</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_use_gclh_layercontrol" title="Link to your GClh Config">Settings -> Map - Layers in map:<br>
-		This map layer is set automatically. If you don't want it, then you can deactivate it.<br>
+		This map layer is set automatically. It is the replacement for "Public Transport Lines" which is no longer available. If you don't want it, then you can deactivate it.<br>
 		<img src="../images/0.10.20/Screen01.gif" alt="Screen01.gif"><br><br>
+	</li>
+	<li>
+		<strong>New:</strong> [New Map / Pocket query] Save as PQ button on search map. [<a href="https://github.com/2Abendsegler/GClh/issues/1578" title="Issue 1578">1578</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br>
 	</li>
 	<li>
 		<strong>New:</strong> [Global] Remove whitespace from search field in header. [<a href="https://github.com/2Abendsegler/GClh/issues/1676" title="Issue 1676">1676</a> / <a href="https://www.geocaching.com/profile/?u=ChristianGK" title="Thanks to ChristianGK">ChristianGK</a>]<br><br>
@@ -52,6 +52,12 @@
 	</li>
 	<li>
 		<strong>Fix:</strong> [Souvenirs] GS has now an own souvenirs sort feature. Display group of souvenirs do not work. [<a href="https://github.com/2Abendsegler/GClh/issues/1661" title="Issue 1661">1661</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [New Map] Shows white screen. [<a href="https://github.com/2Abendsegler/GClh/issues/1595" title="Issue 1595">1595</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Old Map] "Public Transport Lines" are not shown. This map layer is no longer available. [<a href="https://github.com/2Abendsegler/GClh/issues/1594" title="Issue 1594">1594</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 	</li>
 	<li>
 		<strong>Fix:</strong> [New Map] Hide sidebar by default does not work on list hub. [<a href="https://github.com/2Abendsegler/GClh/issues/1627" title="Issue 1627">1627</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
