@@ -16719,8 +16719,8 @@ var mainGC = function() {
             if(style != ""){
                 span.setAttribute("style", style);
             }
-            if(!anker_element) anker_element = element_to_copy;
-
+            if (!anker_element) anker_element = element_to_copy;
+            if (!anker_element.parentNode) return;
             anker_element.parentNode.insertBefore(span, anker_element);
 
             appendCssStyle(".ctoc_link:link {text-decoration: none ;}", null, 'ctoc_link_style_id');
