@@ -11180,6 +11180,7 @@ var mainGC = function() {
             appendCssStyle('#ctl00_ProfileHead_ProfileHeader_divStats a:hover {color: #02874d;} #ctl00_ProfileHead_ProfileHeader_divStats a {color: #4a4a4a;} #ctl00_ProfileHead_ProfileHeader_divStats img {vertical-align: text-top;}');
         } catch(e) {gclh_error("Add links to finds and hides on new profilpage",e);}
     }
+
 // Change links to found/hide caches to the old link on profilpage.
     if (settings_profile_old_links && is_page("publicProfile") && document.location.search.match(/tab=geocaches/)) {
         function getCacheype(typ) {
@@ -11208,15 +11209,17 @@ var mainGC = function() {
             }
             return typId;
         }
+        // All founds.
+        if ($('.span-9 .minorDetails a')[0]) $('.span-9 .minorDetails a')[0].href = '/seek/nearest.aspx?ul='+urlencode($('#ctl00_ProfileHead_ProfileHeader_lblMemberName')[0].innerHTML);
+        // All hides.
+        if ($('.span-9.last .minorDetails a')[0]) $('.span-9.last .minorDetails a')[0].href = '/seek/nearest.aspx?u='+urlencode($('#ctl00_ProfileHead_ProfileHeader_lblMemberName')[0].innerHTML);
         $('.span-9 table tbody tr a').each(function() {
-            // Founds
-            $('.minorDetails a')[0].href = '/seek/nearest.aspx?ul='+urlencode($('#ctl00_ProfileHead_ProfileHeader_lblMemberName')[0].innerHTML);
+            // Cache type founds.
             let match = /\/play\/search\?types=(\d+).*&sc=(False|True)&fb=([^&]+).*/gi.exec(this.href);
             if (match) {
                 this.href = '/seek/nearest.aspx?ul=' + match[3] + getCacheype(match[1]);
             }
-            // Hides
-            $('.minorDetails a')[1].href = '/seek/nearest.aspx?u='+urlencode($('#ctl00_ProfileHead_ProfileHeader_lblMemberName')[0].innerHTML);
+            // Cache type hides.
             match = /\/play\/search\?types=(\d+).*&sc=(False|True)&owner\[0\]=([^&]+).*/gi.exec(this.href);
             if (match) {
                 this.href = '/seek/nearest.aspx?u=' + match[3] + getCacheype(match[1]);
