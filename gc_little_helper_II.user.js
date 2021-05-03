@@ -1457,8 +1457,6 @@ var mainGC = function() {
                     ".#m li a:hover, .#m li a:focus {color: #FFFFFF !important; outline: unset !important;}" +
                     // Schriftfarbe Search Field.
                     "#navi_search {color: #4a4a4a;} #navi_search:focus {outline: none;}" +
-                    // Menü nicht flex.
-                    ".#m {display: unset;}" +
                     // Submenü im Vordergrund.
                     ".#m .#sm {z-index: 1001;}" +
                     // Schriftfarbe Untermenü.
