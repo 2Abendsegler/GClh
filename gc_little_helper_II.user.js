@@ -3619,6 +3619,20 @@ var mainGC = function() {
         } catch(e) {gclh_error("Add elevation",e);}
     }
 
+// Change new links to found/hides by owner to the old links.
+    if (is_page("cache_listing") && settings_profile_old_links) {
+        try {
+            // Replace link to founds.
+            let linkFound = $('#ctl00_ContentBody_bottomSection a[href*="/play/search?fb=')[0].href;
+            let match = linkFound.match(/\/play\/search\?fb=(.*?)&.*/);
+            $('#ctl00_ContentBody_bottomSection a[href*="/play/search?fb=')[0].href = "/seek/nearest.aspx?ul="+urlencode(match[1]);
+            // Replace link do hides.
+            let linkHidden = $('#ctl00_ContentBody_bottomSection a[href*="/play/search?owner[0]="]')[0].href;
+            match = linkHidden.match(/\/play\/search\?owner\[0\]=(.*?)&.*/);
+            $('#ctl00_ContentBody_bottomSection a[href*="/play/search?owner[0]="]')[0].href = "/seek/nearest.aspx?u="+urlencode(match[1]);
+        } catch(e) {gclh_error("Change new links to found/hides by owner to the old links",e);}
+    }
+
 // Hide greenToTopButton.
     if (settings_hide_top_button) $("#topScroll").attr("id", "_topScroll").hide();
 
@@ -11645,11 +11659,13 @@ var mainGC = function() {
 // Searches for the owner's original username from the listing.
     function get_real_owner() {
         if ($('#ctl00_ContentBody_bottomSection')) {
-            var links = $('#ctl00_ContentBody_bottomSection a[href*="/play/search?owner[0]="]');
+            var links = $('#ctl00_ContentBody_bottomSection a[href*="/play/search?owner[0]="], #ctl00_ContentBody_bottomSection a[href*="/seek/nearest.aspx?u="]');
             for (var i = 0; i < links.length; i++) {
                 // Das "?" in "(.*?)" bedeutet "nicht gierig", das heißt es wird nur bis zum ersten Vorkommen des "&" verwendet.
                 var match = links[i].href.match(/\/play\/search\?owner\[0\]=(.*?)&/);
                 if (match) return urldecode(match[1]);
+                var match = links[i].href.match(/\/seek\/nearest\.aspx\?u\=(.*)$/);
+                if (match) return urldecode(match[1], true);
             }
             return false;
         } else return false;
@@ -13550,6 +13566,9 @@ var mainGC = function() {
             html += newParameterOn3;
             html += checkboxy('settings_modify_new_drafts_page', 'Modify draft items on the new drafts page') + show_help("Change the linkage of each draft. The title of the geocache now links to the geocaching listing and the cache icon, too (2nd line). The pen icon and the preview note links to the log composing page (3rd line). Add the log type as overlay icon onto the cache icon.") + "<br>";
             html += newParameterVersionSetzen(0.9) + newParameterOff;
+            html += newParameterOn1;
+            html += checkboxy('settings_profile_old_links', 'Show old Links to found and hide caches') + show_help("With an update GS changed all Links to found and hide caches in the public profile and cachedetails to the new search. With this option you can use the old search.") + "<br>";
+            html += newParameterVersionSetzen('0.10') + newParameterOff;
             html += "</div>";
 
             html += "<h4 class='gclh_headline2'>"+prepareHideable.replace("#name#","maps")+"Map</h4>";
@@ -13691,11 +13710,7 @@ var mainGC = function() {
 
             html += "<h4 class='gclh_headline2'>"+prepareHideable.replace("#name#","profile")+"Public profile</h4>";
             html += "<div id='gclh_config_profile' class='gclh_block'>";
-            html += "<div style='margin-left: 5px'><b>Geocaches</b></div>";
-            html += newParameterOn1;
-            html += checkboxy('settings_profile_old_links', 'Show old Links to found and hide caches') + show_help("With an update GS changed alle Links to found and hide caches in the public profile to the new search. With this option you can use the old search.") + "<br>";
-            html += newParameterVersionSetzen('0.10') + newParameterOff;
-            html += "<div style='margin-top: 9px; margin-left: 5px'><b>Trackables</b></div>";
+            html += "<div style='margin-left: 5px'><b>Trackables</b></div>";
             html += checkboxy('settings_faster_profile_trackables', 'Load trackables faster without images') + show_help("With this option you can stop the load on the trackable pages after the necessary datas are loaded. You disclaim of the lengthy load of the images of the trackables. This procedure is much faster as load all datas, because every image is loaded separate and not in a bigger bundle like it is for the non image data.") + "<br>";
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>Gallery</b></div>";
             var content_settings_show_thumbnails = checkboxy('settings_show_thumbnails', 'Show thumbnails of images') + show_help_big("With this option the images are displayed as thumbnails to have a preview. If you hover with your mouse over a thumbnail, you can see the big one.<br><br>This works in cache and TB logs, in the cache and TB image galleries, in public profile for the avatar and in the profile image gallery. <br><br>And after pressing button \"Show bigger avatars\" in cache listing, it works too for the avatars in the shown logs.") + "&nbsp; Max size of big image: <input class='gclh_form' size=3 type='text' id='settings_hover_image_max_size' value='" + settings_hover_image_max_size + "'> px <br>";
@@ -16357,12 +16372,15 @@ var mainGC = function() {
         return s;
     }
 // Decode from URL.
-    function urldecode(s) {
+    function urldecode(s, convertSpace=false) {
         s = s.replace(/\+/g, " ");
         s = s.replace(/%252b/ig, "+");
         s = s.replace(/%7e/g, "~");
         s = s.replace(/%27/g, "'");
         s = decodeUnicodeURIComponent(s);
+        if (convertSpace) {
+            s = s.replace(/%20/g, " ");
+        }
         return s;
     }
 // Decode HTML, e.g.: "&amp;" in "&" (e.g.: User "Rajko & Dominik").
