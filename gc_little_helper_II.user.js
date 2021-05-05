@@ -61,7 +61,7 @@ var start = function(c) {
                     } else if (document.location.href.match(/^https?:\/\/project-gc\.com\/Tools\/PQSplit/)) {
                         mainPGC();
                     }
-                } else {waitCount++; if (waitCount <= 1000) setTimeout(function(){checkBodyContent(waitCount);}, 10);} // GDPR
+                } else {waitCount++; if (waitCount <= 5000) setTimeout(function(){checkBodyContent(waitCount);}, 10);} // GDPR
             }
             checkBodyContent(0); // GDPR
         });
@@ -79,11 +79,10 @@ var checkRunningOnce = function(c) {
 
 var quitOnAdFrames = function(c) {
     var quitOnAdFramesDeref = new jQuery.Deferred();
-    if(window.name) {
+    if (window.name) {
         if (window.name.substring(0, 18) !== 'google_ads_iframe_') quitOnAdFramesDeref.resolve();
         else quitOnAdFramesDeref.reject();
-    }
-    else {
+    } else {
         quitOnAdFramesDeref.resolve();
     }
     return quitOnAdFramesDeref.promise();
@@ -107,9 +106,8 @@ var leafletInit = function(c) {
                 injectPageScript(newJS, "body", 'gclh_leafletjs');
             }
         }
-
         if ( L.version != "0.7.2" ) {
-            gclh_error("Unexpected vesion of leaflet. Version 0.7.2 required, version "+L.version+" is loaded.");
+            gclh_error("Unexpected version of leaflet. Version 0.7.2 required, version "+L.version+" is loaded.");
         }
     } catch(e) { gclh_error("leafletInit failed",e);}
 };
@@ -1172,11 +1170,27 @@ var mainGCWait = function() {
 ////////////////////////////
 var mainGC = function() {
 
+// CSS for header.
+    // Make GC header invisible.
+    var css = '#gc-header, #GCHeader, #gc-mobile-nav {display: none;}';
+    // Part of core CSS of GS.
+    css += corecss;
+    // User profile menu bend into shape.
+    css += '.gclh_open ul.submenu {visibility: visible; display: block !important;}';
+    // Message center message indicator.
+    css += '.gclh_message-indicator {background-color: #e0b70a; position: absolute; border-radius: 15px; width: 10px; height: 10px; margin-top: -18px; margin-left: 28px;}';
+    // Special css for searchmap.
+    if (is_page('searchmap')) {
+        css += 'gclh_nav .wrapper {z-index: 1006;} gclh_nav li input {height: unset !important;}';
+        css += '.profile-panel .li-user-toggle svg {height: 13px;}';
+    }
+    appendCssStyle(css);
+
 // After change of a bookmark respectively a bookmark list go automatically from confirmation screen to bookmark list.
-   if (((settings_bm_changed_and_go && document.location.href.match(/\.com\/bookmarks\/mark\.aspx\?(guid=|ID=|view=legacy&guid=|view=legacy&ID=)/)) || (settings_bml_changed_and_go && document.location.href.match(/\.com\/bookmarks\/edit\.aspx/))) && $('#divContentMain')[0] && $('p.Success a[href*="/bookmarks/view.aspx?guid="]')[0]) {
-       $('#divContentMain').css("visibility", "hidden");
-       document.location.href = $('p.Success a')[0].href;
-   }
+    if (((settings_bm_changed_and_go && document.location.href.match(/\.com\/bookmarks\/mark\.aspx\?(guid=|ID=|view=legacy&guid=|view=legacy&ID=)/)) || (settings_bml_changed_and_go && document.location.href.match(/\.com\/bookmarks\/edit\.aspx/))) && $('#divContentMain')[0] && $('p.Success a[href*="/bookmarks/view.aspx?guid="]')[0]) {
+        $('#divContentMain').css("visibility", "hidden");
+        document.location.href = $('p.Success a')[0].href;
+    }
 
 // Improve print page cache listing.
     if (document.location.href.match(/\.com\/seek\/cdpf\.aspx/)) {
@@ -1328,28 +1342,13 @@ var mainGC = function() {
 
 // Wait for header and build up header.
     try {
-        // Part of core CSS of GS.
-        var css = corecss;
-        // Make GC header invisible.
-        css += '#gc-header, #GCHeader, #gc-mobile-nav {display: none;}';
-        // User profile menu bend into shape.
-        css += '.gclh_open ul.submenu {visibility: visible; display: block !important;}';
-        // Message center message indicator.
-        css += '.gclh_message-indicator {background-color: #e0b70a; position: absolute; border-radius: 15px; width: 10px; height: 10px; margin-top: -18px; margin-left: 28px;}';
-        // Special css for searchmap.
-        if (is_page('searchmap')) {
-            css += 'gclh_nav .wrapper {z-index: 1006;} gclh_nav li input {height: unset !important;}';
-            css += '.profile-panel .li-user-toggle svg {height: 13px;}';
-        }
-        appendCssStyle(css);
-
-        function buildUpHeader(waitCount, html) {
-            if ($('#gc-header, #GCHeader')[0] && !html == "") {
-                // Integrate html of new header.
-                if ($('#gc-header-root')[0]) $('#gc-header-root').prepend(html);
-                else if ($('#header-root')[0]) $('#header-root').prepend(html);
-                else if ($('#root')[0]) $('#root').prepend(html);
-                else if ($('#app-root')[0]) $('#app-root').prepend(html);
+        function buildUpHeader(waitCount) {
+            if ($('#gc-header, #GCHeader')[0]) {
+                // Integrate old header.
+                if ($('#gc-header-root')[0]) $('#gc-header-root').prepend(header_old);
+                else if ($('#header-root')[0]) $('#header-root').prepend(header_old);
+                else if ($('#root')[0]) $('#root').prepend(header_old);
+                else if ($('#app-root')[0]) $('#app-root').prepend(header_old);
                 // Run header relevant features.
                 setUserParameter();
                 setMessageIndicator(0);
@@ -1377,9 +1376,9 @@ var mainGC = function() {
                         }
                     });
                 });
-            } else {waitCount++; if (waitCount <= 200) setTimeout(function(){buildUpHeader(waitCount, html);}, 50);}
+            } else {waitCount++; if (waitCount <= 1000) setTimeout(function(){buildUpHeader(waitCount);}, 10);}
         }
-        buildUpHeader(0, header_old);
+        buildUpHeader(0);
     } catch(e) {gclh_error("Wait for header and build up header",e);}
 
 // Set user avatar, user and found count in new header.
@@ -1520,16 +1519,16 @@ var mainGC = function() {
                         if (settings_menu_float_right) {
                             css += "ul.#m > li {margin-top: " + (3 + (16 - font_size_menu) / 2) + "px;}";
                         } else {
-                            if (is_page("map")) css += "ul.#m > li {margin-top: " + (-2 + (16 - font_size_menu) / 2) + "px;}";
-                            else css += "ul.#m > li {margin-top: " + (3 + (16 - font_size_menu) / 2) + "px;}";
+                            if (is_page("map")) css += "ul.#m > li {margin-top: " + (3 + (16 - font_size_menu) / 2) + "px;}";
+                            else css += "ul.#m > li {margin-top: " + (4 + (16 - font_size_menu) / 2) + "px;}";
                         }
                         // Menü in Karte ausrichten.
                         if (is_page("map") && !settings_menu_float_right) css += ".#m {height: unset !important;}";
                         if (is_page("map") && settings_menu_float_right) css += "#navi_search {margin: 0 !important;}";
                     }
 
-                    // Altes Seiten Design und restliche Seiten:
-                    // ----------
+                // Altes Seiten Design und restliche Seiten:
+                // ----------
                 } else {
                     if (settings_fixed_header_layout) {
                         css += "nav .wrapper, gclh_nav .wrapper {width: " + new_width + "px !important; padding-left: 50px; padding-right: 30px; min-width: unset}";
@@ -1550,7 +1549,7 @@ var mainGC = function() {
                         } else {
                             css += "ul.#m > li {margin-top: " + (5 + (16 - font_size_menu) / 2) + "px;}";
                         }
-                        // Horizontales Menü ausrichten in Abhängigkeit von Anzahl Zeilen.
+                    // Horizontales Menü ausrichten in Abhängigkeit von Anzahl Zeilen.
                     } else {
                         if      (settings_menu_number_of_lines == 1) css += "ul.#m {top:   4px !important;}";
                         else if (settings_menu_number_of_lines == 2) css += "ul.#m {top:  -8px !important;}";
@@ -10181,7 +10180,7 @@ var mainGC = function() {
                             if (settings_show_elevation_of_waypoints) {
                                 new_text += '<span id="elevation-waypoint-'+indexMapItems+'"></span>';
                             }
-                            new_text += '<span class="favi_points" title="Favorites in percent"><svg height="16" width="16"><image xmlns:xlink="https://www.w3.org/1999/xlink" xlink:href="/images/icons/fave_fill_16.svg" src="/images/icons/fave_fill_16.png" width="16" height="16" alt="Favorite points"></image></svg> ' + fav_percent + '</span> | ';
+                            new_text += '<span class="favi_points" title="Favorites in percent"><svg height="16.5" width="16.5"><image xmlns:xlink="https://www.w3.org/1999/xlink" xlink:href="/images/icons/fave_fill_16.svg" src="/images/icons/fave_fill_16.png" width="16" height="16" alt="Favorite points"></image></svg> ' + fav_percent + '</span> | ';
                             if(premium_only){
                                 new_text += ' <span class="premium_only" title="Premium Only Cache"><img src="/images/icons/16/premium_only.png" width="16" height="16" alt="Premium Only Cache" /></span> | ';
                             }
@@ -11490,70 +11489,73 @@ var mainGC = function() {
                 $("#actionSouvenirsSortAcquiredTitleZtoA").click(function() {ReorderSouvenirs(TitleZtoA, this);});
             }
 
-            var SouvenirsDashboard = $("#souvenirsControlsContainer .sort-select-group, #gclhSouvenirsButtons");
-            if (SouvenirsDashboard.length) {
-                function correctSouvenirName(name) {
-                    name = name.replace(/(^\s|\s$)/g,'');
-                    if (name == 'Åland Islands') name = 'Aland Islands';
-                    if (name == 'Česká Republika') name = 'Czechia';
-                    if (name == 'China (中国)') name = 'China';
-                    if (name == 'Commonwealth of the Bahamas') name = 'Bahamas';
-                    if (name == 'Deutschland') name = 'Germany';
-                    if (name == 'Montenegro | Црна Гора | Crna Gora') name = 'Montenegro';
-                    if (name == 'România') name = 'Romania';
-                    if (name == 'Rzeczpospolita Polska') name = 'Poland';
-                    if (name == 'Singapore (Republik Singapura)') name = 'Singapore';
-                    if (name == 'Slovenská republika') name = 'Slovakia';
-                    if (name == 'United States of America') name = 'United States';
-                    if (name == 'Yukon') name = 'Yukon Territory';
-                    return name;
-                }
-                function prepareSouvenirs() {
-                    $('#souvenirsList li').each(function() {
-                        var ident = '';
-                        var name = $(this).find('a:first')[0].title;
-                        if (name) {
-                            name = correctSouvenirName(name);
-                            var country = $.grep(country_id, function(e){return e.n == name;});
-                            if (country && country[0]) {
-                                ident = 'gclhShowCountry';
-                            } else {
-                                var name = name.replace(/\sstate$/i,'');
-                                var state = $.grep(states_id, function(e){return e.n == name;});
-                                if (state && state[0]) {
-                                    ident = 'gclhShowState';
-                                } else {
-                                    ident = 'gclhShowOther';
-                                }
-                            }
-                            $(this).addClass(ident+' active');
-                        }
-                    });
-                    $('.gclhShow input').each(function() {
-                        $(this)[0].disabled = "";
-                        $(this)[0].style.opacity = "1";
-                    });
-                }
-                function showSouvenirs(button) {
-                    if ($(button).hasClass('active')) {
-                        $(button).removeClass('active');
-                        $('#souvenirsList li.'+$(button)[0].id).each(function() {$(this).removeClass('active');});
-                    } else {
-                        $(button).addClass('active');
-                        $('#souvenirsList li.'+$(button)[0].id).each(function() {$(this).addClass('active');});
+            function checkSouvenirsDashboard(waitCount) {
+                var SouvenirsDashboard = $("#souvenirsControlsContainer .sort-select-group, #gclhSouvenirsButtons");
+                if (SouvenirsDashboard.length) {
+                    function correctSouvenirName(name) {
+                        name = name.replace(/(^\s|\s$)/g,'');
+                        if (name == 'Åland Islands') name = 'Aland Islands';
+                        if (name == 'Česká Republika') name = 'Czechia';
+                        if (name == 'China (中国)') name = 'China';
+                        if (name == 'Commonwealth of the Bahamas') name = 'Bahamas';
+                        if (name == 'Deutschland') name = 'Germany';
+                        if (name == 'Montenegro | Црна Гора | Crna Gora') name = 'Montenegro';
+                        if (name == 'România') name = 'Romania';
+                        if (name == 'Rzeczpospolita Polska') name = 'Poland';
+                        if (name == 'Singapore (Republik Singapura)') name = 'Singapore';
+                        if (name == 'Slovenská republika') name = 'Slovakia';
+                        if (name == 'United States of America') name = 'United States';
+                        if (name == 'Yukon') name = 'Yukon Territory';
+                        return name;
                     }
-                    var nr = $('#souvenirsList .active').length;
-                    if (nr == Souvenirs.length) $('#gclhNumberSouvenirs')[0].innerHTML = '(' + Souvenirs.length + ')';
-                    else $('#gclhNumberSouvenirs')[0].innerHTML = '(' + nr + '/' + Souvenirs.length + ')';
-                }
-                SouvenirsDashboard.append('<span class="gclhShow">&nbsp; | &nbsp;Show &nbsp;<input id="gclhShowCountry" class="active" title="Show country souvenirs" value="Countries" type="button" href="javascript:void(0);" style="opacity: 0.5;" disabled="true"></span>');
-                SouvenirsDashboard.append('<span class="gclhShow"><input id="gclhShowState" class="active" title="Show state souvenirs" value="States" type="button" href="javascript:void(0);" style="opacity: 0.5;" disabled="true"></span>');
-                SouvenirsDashboard.append('<span class="gclhShow"><input id="gclhShowOther" class="active" title="Show other souvenirs" value="Others" type="button" href="javascript:void(0);" style="opacity: 0.5;" disabled="true"></span>');
-                prepareSouvenirs();
-                $("#gclhShowCountry").click(function() {showSouvenirs(this);});
-                $("#gclhShowState").click(function() {showSouvenirs(this);});
-                $("#gclhShowOther").click(function() {showSouvenirs(this);});
+                    function prepareSouvenirs() {
+                        $('#souvenirsList li').each(function() {
+                            var ident = '';
+                            var name = $(this).find('a:first')[0].title;
+                            if (name) {
+                                name = correctSouvenirName(name);
+                                var country = $.grep(country_id, function(e){return e.n == name;});
+                                if (country && country[0]) {
+                                    ident = 'gclhShowCountry';
+                                } else {
+                                    var name = name.replace(/\sstate$/i,'');
+                                    var state = $.grep(states_id, function(e){return e.n == name;});
+                                    if (state && state[0]) {
+                                        ident = 'gclhShowState';
+                                    } else {
+                                        ident = 'gclhShowOther';
+                                    }
+                                }
+                                $(this).addClass(ident+' active');
+                            }
+                        });
+                        $('.gclhShow input').each(function() {
+                            $(this)[0].disabled = "";
+                            $(this)[0].style.opacity = "1";
+                        });
+                    }
+                    function showSouvenirs(button) {
+                        if ($(button).hasClass('active')) {
+                            $(button).removeClass('active');
+                            $('#souvenirsList li.'+$(button)[0].id).each(function() {$(this).removeClass('active');});
+                        } else {
+                            $(button).addClass('active');
+                            $('#souvenirsList li.'+$(button)[0].id).each(function() {$(this).addClass('active');});
+                        }
+                        var nr = $('#souvenirsList .active').length;
+                        if (nr == Souvenirs.length) $('#gclhNumberSouvenirs')[0].innerHTML = '(' + Souvenirs.length + ')';
+                        else $('#gclhNumberSouvenirs')[0].innerHTML = '(' + nr + '/' + Souvenirs.length + ')';
+                    }
+                    SouvenirsDashboard.append('<span class="gclhShow">&nbsp; | &nbsp;Show &nbsp;<input id="gclhShowCountry" class="active" title="Show country souvenirs" value="Countries" type="button" href="javascript:void(0);" style="opacity: 0.5;" disabled="true"></span>');
+                    SouvenirsDashboard.append('<span class="gclhShow"><input id="gclhShowState" class="active" title="Show state souvenirs" value="States" type="button" href="javascript:void(0);" style="opacity: 0.5;" disabled="true"></span>');
+                    SouvenirsDashboard.append('<span class="gclhShow"><input id="gclhShowOther" class="active" title="Show other souvenirs" value="Others" type="button" href="javascript:void(0);" style="opacity: 0.5;" disabled="true"></span>');
+                    prepareSouvenirs();
+                    $("#gclhShowCountry").click(function() {showSouvenirs(this);});
+                    $("#gclhShowState").click(function() {showSouvenirs(this);});
+                    $("#gclhShowOther").click(function() {showSouvenirs(this);});
+                } else {waitCount++; if (waitCount <= 25) setTimeout(function(){checkSouvenirsDashboard(waitCount);}, 200);}
             }
+            checkSouvenirsDashboard(0);
         } catch(e) {gclh_error("Improve Souvenirs",e);}
     }
 
@@ -16717,8 +16719,8 @@ var mainGC = function() {
             if(style != ""){
                 span.setAttribute("style", style);
             }
-            if(!anker_element) anker_element = element_to_copy;
-
+            if (!anker_element) anker_element = element_to_copy;
+            if (!anker_element.parentNode) return;
             anker_element.parentNode.insertBefore(span, anker_element);
 
             appendCssStyle(".ctoc_link:link {text-decoration: none ;}", null, 'ctoc_link_style_id');
