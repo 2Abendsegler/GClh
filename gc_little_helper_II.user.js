@@ -2561,7 +2561,7 @@ var mainGC = function() {
                     el.value = el.value.replace(/#Size#/ig, $('#ctl00_ContentBody_size .minorCacheDetails small')[0].innerHTML.replace('(','').replace(')',''));
                     el.value = el.value.replace(/#Owner#/ig, get_real_owner().replace(/'/g,"\\'"));
                     el.value = el.value.replace(/#Favo#/ig, (($('#uxFavContainerLink')[0] && $('#uxFavContainerLink .favorite-value')[0]) ? $('#uxFavContainerLink .favorite-value')[0].innerHTML.replace(/(\s*)/g,'') : ''));
-                    el.value = el.value.replace(/#FavoPerc#/ig, $('.gclh_favorite-score')[0].innerHTML);
+                    el.value = el.value.replace(/#FavoPerc#/ig, ($('.gclh_favorite-score')[0] ? $('.gclh_favorite-score')[0].innerHTML : ''));
                     el.value = el.value.replace(/#Hints#/ig, (($('#div_hint')[0] && $('#div_hint')[0].innerHTML) ? $('#div_hint')[0].innerHTML.replace(/^(\s*)/,'').replace(/<br>/g,'\n') : ''));
                     var g_note = '';
                     if ($('#viewCacheNote')[0] && $('#viewCacheNote')[0].innerHTML && $('#editCacheNote')[0] && $('#editCacheNote textarea')[0] && $('#editCacheNote textarea').attr('placeholder') && $('#viewCacheNote')[0].innerHTML != $('#editCacheNote textarea').attr('placeholder') && $('#viewCacheNote')[0].innerHTML != null && $('#viewCacheNote')[0].innerHTML != '') {
