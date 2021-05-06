@@ -1273,7 +1273,7 @@ var mainGC = function() {
         // F2 key.
         if (settings_submit_log_button) {
             function setButtonDescInnerHTMLF2(waitCount, id) {
-                if (!document.getElementById(id).innerHTML.match(/(F2)/)) {
+                if (document.getElementById(id) && document.getElementById(id).innerHTML && !document.getElementById(id).innerHTML.match(/(F2)/)) {
                     document.getElementById(id).innerHTML += " (F2)";
                 }
                 if (waitCount <= 20) setTimeout(function(){setButtonDescInnerHTMLF2(waitCount, id);}, 100);
