@@ -1129,7 +1129,7 @@ var mainOSM = function() {
 var mainGCWait = function() {
 
 // Hide Facebook.
-    if (settings_hide_facebook && (document.location.href.match(/\.com\/(play|account\/register|login|account\/login|seek\/log\.aspx?(.*)|account\/signin)/))) {
+    if (settings_hide_facebook && (document.location.href.match(/\.com\/(play|account\/register|login|account\/login|seek\/log\.aspx?(.*)|account\/signin|account\/join)/))) {
         try {
             if ($('.btn.btn-facebook')[0]) $('.btn.btn-facebook')[0].style.display = "none";
             if ($('.divider-flex')[0]) $('.divider-flex')[0].style.display = "none";
@@ -1139,6 +1139,37 @@ var mainGCWait = function() {
             if ($('.horizontal-rule')[0]) $('.horizontal-rule')[0].style.display = "none";
             if ($('.oauth-providers-login')[0]) $('.oauth-providers-login')[0].style.display = "none";
         } catch(e) {gclh_error("Hide Facebook",e);}
+    }
+
+// Improve print page cache listing.
+    if (document.location.href.match(/\.com\/seek\/cdpf\.aspx/)) {
+        try {
+            // Hide disclaimer.
+            if (settings_hide_disclaimer) {
+                var d = ($('.Note.Disclaimer')[0] || $('.DisclaimerWidget')[0] || $('.TermsWidget.no-print')[0]);
+                if (d) d.remove();
+            }
+            // Decrypt hints.
+            if (settings_decrypt_hint) {
+                if ($('#uxDecryptedHint')[0]) $('#uxDecryptedHint')[0].style.display = 'none';
+                if ($('#uxEncryptedHint')[0]) $('#uxEncryptedHint')[0].style.display = '';
+                if ($('.EncryptionKey')[0]) $('.EncryptionKey')[0].remove();
+            }
+            // Show other coord formats.
+            var box = document.getElementsByClassName("UTM Meta")[0];
+            var coords = document.getElementsByClassName("LatLong Meta")[0];
+            if (box && coords) {
+                var match = coords.innerHTML.match(/((N|S) [0-9][0-9]. [0-9][0-9]\.[0-9][0-9][0-9] (E|W) [0-9][0-9][0-9]. [0-9][0-9]\.[0-9][0-9][0-9])/);
+                if (match && match[1]) {
+                    coords = match[1];
+                    otherFormats(box, coords, "<br>");
+                }
+            }
+            // Hide side rights.
+            if ($('#Footer')[0]) $('#Footer')[0].remove();
+            // Display listing images in maximum available width for FF and chrome. Only for display, print was ok.
+            appendCssStyle('.item-content img {max-width: -moz-available; max-width: -webkit-fill-available;}');
+        } catch(e) {gclh_error("Improve print page cache listing",e);}
     }
 
 // Set global data and check if logged in.
@@ -1158,9 +1189,7 @@ var mainGCWait = function() {
         }
         if (global_me != '') {
             mainGC();
-        } else {
-            waitCount++; if (waitCount <= 200) setTimeout(function(){waitingForUserParameter(waitCount);}, 50);
-        }
+        } else {waitCount++; if (waitCount <= 200) setTimeout(function(){waitingForUserParameter(waitCount);}, 50);}
     }
     waitingForUserParameter(0);
 };
@@ -1190,35 +1219,6 @@ var mainGC = function() {
     if (((settings_bm_changed_and_go && document.location.href.match(/\.com\/bookmarks\/mark\.aspx\?(guid=|ID=|view=legacy&guid=|view=legacy&ID=)/)) || (settings_bml_changed_and_go && document.location.href.match(/\.com\/bookmarks\/edit\.aspx/))) && $('#divContentMain')[0] && $('p.Success a[href*="/bookmarks/view.aspx?guid="]')[0]) {
         $('#divContentMain').css("visibility", "hidden");
         document.location.href = $('p.Success a')[0].href;
-    }
-
-// Improve print page cache listing.
-    if (document.location.href.match(/\.com\/seek\/cdpf\.aspx/)) {
-        try {
-            // Hide disclaimer.
-            if (settings_hide_disclaimer) {
-                var d = ($('.Note.Disclaimer')[0] || $('.DisclaimerWidget')[0] || $('.TermsWidget.no-print')[0]);
-                if (d) d.remove();
-            }
-            // Decrypt hints.
-            if (settings_decrypt_hint) {
-                if ($('#uxDecryptedHint')[0]) $('#uxDecryptedHint')[0].style.display = 'none';
-                if ($('#uxEncryptedHint')[0]) $('#uxEncryptedHint')[0].style.display = '';
-                if ($('.EncryptionKey')[0]) $('.EncryptionKey')[0].remove();
-            }
-            // Show other coord formats.
-            var box = document.getElementsByClassName("UTM Meta")[0];
-            var coords = document.getElementsByClassName("LatLong Meta")[0];
-            if (box && coords) {
-                var match = coords.innerHTML.match(/((N|S) [0-9][0-9]. [0-9][0-9]\.[0-9][0-9][0-9] (E|W) [0-9][0-9][0-9]. [0-9][0-9]\.[0-9][0-9][0-9])/);
-                if (match && match[1]) {
-                    coords = match[1];
-                    otherFormats("<br>");
-                }
-            }
-            // Hide side rights.
-            if ($('#Footer')[0]) $('#Footer')[0].remove();
-        } catch(e) {gclh_error("Improve print page cache listing",e);}
     }
 
 // Set language to default language.
@@ -1867,9 +1867,9 @@ var mainGC = function() {
         }
     }
 
-// Define class "working" for cache listing.
+// Define class "working" for cache listing and display listing images not over the maximum available width for FF and chrome.
     if (is_page("cache_listing")) {
-        appendCssStyle(".working {opacity: 0.4; cursor: default !important; text-decoration: none !important;}");
+        appendCssStyle(".working {opacity: 0.4; cursor: default !important; text-decoration: none !important;} .UserSuppliedContent img {max-width: -moz-available; max-width: -webkit-fill-available;}");
     }
 
 // Disabled and archived ...
@@ -2168,21 +2168,9 @@ var mainGC = function() {
             var box = $('#ctl00_ContentBody_LocationSubPanel')[0];
             box.innerHTML = box.innerHTML.replace("<br>", "");
             var coords = $('#uxLatLon')[0].innerHTML;
-            otherFormats(" - ");
+            otherFormats(box, coords, " - ");
             box.innerHTML = "<font style='font-size: 10px;'>" + box.innerHTML + "</font><br>";
         } catch(e) {gclh_error("Show other coord formats listing",e);}
-    }
-    function otherFormats(trenn) {
-        var dec = toDec(coords);
-        var lat = dec[0];
-        var lng = dec[1];
-        if (lat < 0) lat = "S "+(lat * -1);
-        else lat = "N "+lat;
-        if (lng < 0) lng = "W "+(lng * -1);
-        else lng = "E "+lng;
-        box.innerHTML += trenn+"Dec: "+lat+" "+lng;
-        var dms = DegtoDMS(coords);
-        box.innerHTML += trenn+"DMS: "+dms;
     }
 
 // Map this Location.
@@ -2558,7 +2546,7 @@ var mainGC = function() {
                     el.value = el.value.replace(/#Size#/ig, $('#ctl00_ContentBody_size .minorCacheDetails small')[0].innerHTML.replace('(','').replace(')',''));
                     el.value = el.value.replace(/#Owner#/ig, get_real_owner().replace(/'/g,"\\'"));
                     el.value = el.value.replace(/#Favo#/ig, (($('#uxFavContainerLink')[0] && $('#uxFavContainerLink .favorite-value')[0]) ? $('#uxFavContainerLink .favorite-value')[0].innerHTML.replace(/(\s*)/g,'') : ''));
-                    el.value = el.value.replace(/#FavoPerc#/ig, $('.gclh_favorite-score')[0].innerHTML);
+                    el.value = el.value.replace(/#FavoPerc#/ig, ($('.gclh_favorite-score')[0] ? $('.gclh_favorite-score')[0].innerHTML : ''));
                     el.value = el.value.replace(/#Hints#/ig, (($('#div_hint')[0] && $('#div_hint')[0].innerHTML) ? $('#div_hint')[0].innerHTML.replace(/^(\s*)/,'').replace(/<br>/g,'\n') : ''));
                     var g_note = '';
                     if ($('#viewCacheNote')[0] && $('#viewCacheNote')[0].innerHTML && $('#editCacheNote')[0] && $('#editCacheNote textarea')[0] && $('#editCacheNote textarea').attr('placeholder') && $('#viewCacheNote')[0].innerHTML != $('#editCacheNote textarea').attr('placeholder') && $('#viewCacheNote')[0].innerHTML != null && $('#viewCacheNote')[0].innerHTML != '') {
@@ -5039,7 +5027,7 @@ var mainGC = function() {
                     } else {
                         $('#ctl00_ContentBody_DateTimeBegin_Month')[0].selectedIndex = 0;
                         $('#ctl00_ContentBody_DateTimeBegin_Day')[0].selectedIndex = 0;
-                        $('#ctl00_ContentBody_DateTimeBegin_Year')[0].selectedIndex =  $('#ctl00_ContentBody_DateTimeBegin_Year option').length-1;
+                        $('#ctl00_ContentBody_DateTimeBegin_Year')[0].selectedIndex = $('#ctl00_ContentBody_DateTimeBegin_Year option').length-1;
                     }
                     // End Date
                     if (placedDateEnd !== false) {
@@ -6910,7 +6898,7 @@ var mainGC = function() {
             if($('#cache_logs_container #sortOrder').length) isUpvoteActive = true
 
             var vupUserString = 'if UserName == "#" ';
-            var vupHideAvatarString  = 'if (UserName != "#" ';
+            var vupHideAvatarString = 'if (UserName != "#" ';
             var vupHideCompleteLog = vupUserString;
             if (settings_process_vup && global_vups && global_vups.length > 0) {
                 for (var i = 0; i < global_vups.length; i++) {
@@ -10992,7 +10980,7 @@ var mainGC = function() {
                         if ($('tr')[loaded-1].children[2] && $('tr')[loaded-1].children[2].innerHTML.match(/(\S+)/)) var lastLog = loaded-1;
                         else if ($('tr')[loaded-2].children[2] && $('tr')[loaded-2].children[2].innerHTML.match(/(\S+)/)) var lastLog = loaded-2;
                         else var lastLog = "";
-                        if (lastLog != "") var dateLastLog =  ". Last date is " + $('tr')[lastLog].children[2].innerHTML.replace(/\s/g, "");
+                        if (lastLog != "") var dateLastLog = ". Last date is " + $('tr')[lastLog].children[2].innerHTML.replace(/\s/g, "");
                         else var dateLastLog = "";
                         result.innerHTML = result.innerHTML + " (Only " + loaded + " logs loaded" + dateLastLog + ".)";
                     }
@@ -16407,107 +16395,6 @@ var mainGC = function() {
 // Trim decimal value to a given number of digits.
     function roundTO(val, decimals) {return Number(Math.round(val+'e'+decimals)+'e-'+decimals);}
 
-// Change coordinates from N/S/E/W Deg Min.Sec to Dec.
-    function toDec(coords) {
-        var match = coords.match(/([0-9]+)°([0-9]+)\.([0-9]+)′(N|S), ([0-9]+)°([0-9]+)\.([0-9]+)′(W|E)/);
-        if (match) {
-            var dec1 = parseInt(match[1], 10) + (parseFloat(match[2] + "." + match[3]) / 60);
-            if (match[4] == "S") dec1 = dec1 * -1;
-            dec1 = Math.round(dec1 * 10000000) / 10000000;
-            var dec2 = parseInt(match[5], 10) + (parseFloat(match[6] + "." + match[7]) / 60);
-            if (match[8] == "W") dec2 = dec2 * -1;
-            dec2 = Math.round(dec2 * 10000000) / 10000000;
-            return new Array(dec1, dec2);
-        } else {
-            match = coords.match(/(N|S) ([0-9]+)°? ([0-9]+)\.([0-9]+)′?'? (E|W) ([0-9]+)°? ([0-9]+)\.([0-9]+)/);
-            if (match) {
-                var dec1 = parseInt(match[2], 10) + (parseFloat(match[3] + "." + match[4]) / 60);
-                if (match[1] == "S") dec1 = dec1 * -1;
-                dec1 = Math.round(dec1 * 10000000) / 10000000;
-                var dec2 = parseInt(match[6], 10) + (parseFloat(match[7] + "." + match[8]) / 60);
-                if (match[5] == "W") dec2 = dec2 * -1;
-                dec2 = Math.round(dec2 * 10000000) / 10000000;
-                return new Array(dec1, dec2);
-            } else {
-                match = coords.match(/(N|S) ([0-9]+) ([0-9]+) ([0-9]+)\.([0-9]+) (E|W) ([0-9]+) ([0-9]+) ([0-9]+)\.([0-9]+)/);
-                if (match) {
-                    var dec1 = parseInt(match[2], 10) + (parseFloat(match[3]) / 60) + (parseFloat(match[4] + "." + match[5]) / 3600);
-                    if (match[1] == "S") dec1 = dec1 * -1;
-                    dec1 = Math.round(dec1 * 10000000) / 10000000;
-                    var dec2 = parseInt(match[7], 10) + (parseFloat(match[8]) / 60) + (parseFloat(match[9] + "." + match[10]) / 3600);
-                    if (match[6] == "W") dec2 = dec2 * -1;
-                    dec2 = Math.round(dec2 * 10000000) / 10000000;
-                    return new Array(dec1, dec2);
-                } else {
-                    match = coords.match(/(N|S) ([0-9]+) ([0-9]+) ([0-9]+\..[0-9].) (E|W) ([0-9]+) ([0-9]+) ([0-9]+\..[0-9].)/);
-                    if (match) {
-                        var dec1 = parseInt(match[2], 10) + (parseFloat(match[3]) / 60) + (parseFloat(match[4]) / 3600);
-                        if (match[1] == "S") dec1 = dec1 * -1;
-                        dec1 = Math.round(dec1 * 10000000) / 10000000;
-                        var dec2 = parseInt(match[6], 10) + (parseFloat(match[7]) / 60) + (parseFloat(match[8]) / 3600);
-                        if (match[5] == "W") dec2 = dec2 * -1;
-                        dec2 = Math.round(dec2 * 10000000) / 10000000;
-                        return new Array(dec1, dec2);
-                    } else return false;
-                }
-            }
-        }
-    }
-// Change coordinates from Deg to DMS.
-    function DegtoDMS(coords) {
-        var match = coords.match(/^(N|S) ([0-9][0-9]). ([0-9][0-9])\.([0-9][0-9][0-9]) (E|W) ([0-9][0-9][0-9]). ([0-9][0-9])\.([0-9][0-9][0-9])$/);
-        if (!match) return "";
-        var lat1 = parseInt(match[2], 10);
-        var lat2 = parseInt(match[3], 10);
-        var lat3 = parseFloat("0." + match[4]) * 60;
-        lat3 = Math.round(lat3 * 10000) / 10000;
-        var lng1 = parseInt(match[6], 10);
-        var lng2 = parseInt(match[7], 10);
-        var lng3 = parseFloat("0." + match[8]) * 60;
-        lng3 = Math.round(lng3 * 10000) / 10000;
-        return match[1] + " " + lat1 + "° " + lat2 + "' " + lat3 + "\" " + match[5] + " " + lng1 + "° " + lng2 + "' " + lng3 + "\"";
-    }
-// Change coordinates from Dec to Deg.
-    function DectoDeg(lat, lng) {
-        var n = "000";
-        lat = lat / 10000000;
-        var pre = "";
-        if (lat > 0) pre = "N";
-        else {
-            pre = "S";
-            lat = lat * -1;
-        }
-        var tmp1 = parseInt(lat);
-        var tmp2 = (lat - tmp1) * 60;
-        tmp1 = String(tmp1);
-        if (tmp1.length == 1) tmp1 = "0" + tmp1;
-        tmp2 = Math.round(tmp2 * 10000) / 10000;
-        tmp2 = String(tmp2);
-        if (tmp2.length == 0) tmp2 = tmp2 + "0.000";
-        else if (tmp2.indexOf(".") == -1) tmp2 = tmp2 + ".000";
-        else if (tmp2.indexOf(".") != -1) tmp2 = tmp2 + n.slice(tmp2.length - tmp2.indexOf(".") - 1);
-        var new_lat = pre + " " + tmp1 + "° " + tmp2;
-        lng = lng / 10000000;
-        var pre = "";
-        if (lng > 0) pre = "E";
-        else {
-            pre = "W";
-            lng = lng * -1;
-        }
-        var tmp1 = parseInt(lng);
-        var tmp2 = (lng - tmp1) * 60;
-        tmp1 = String(tmp1);
-        if (tmp1.length == 2) tmp1 = "0" + tmp1;
-        else if (tmp1.length == 1) tmp1 = "00" + tmp1;
-        tmp2 = Math.round(tmp2 * 10000) / 10000;
-        tmp2 = String(tmp2);
-        if (tmp2.length == 0) tmp2 = tmp2 + "0.000";
-        else if (tmp2.indexOf(".") == -1) tmp2 = tmp2 + ".000";
-        else if (tmp2.indexOf(".") != -1) tmp2 = tmp2 + n.slice(tmp2.length - tmp2.indexOf(".") - 1);
-        var new_lng = pre + " " + tmp1 + "° " + tmp2;
-        return new_lat + " " + new_lng;
-    }
-
 // Calculate tile numbers X/Y from latitude/longitude or reverse.
     function lat2tile(lat,zoom)  {return (Math.floor((1-Math.log(Math.tan(lat*Math.PI/180) + 1/Math.cos(lat*Math.PI/180))/Math.PI)/2 *Math.pow(2,zoom)));}
     function long2tile(lon,zoom) {return (Math.floor((lon+180)/360*Math.pow(2,zoom)));}
@@ -16798,17 +16685,15 @@ var mainGC = function() {
 
 // get url parameter
     function getURLParam(key) {
-        var query = window.location.search.substring(1); 
+        var query = window.location.search.substring(1);
         var pairs = query.split('&');
-
         for (let i=0; i<pairs.length; i++) {
             var pair = pairs[i].split('=');
             if (pair[0] == key) {
                 if (pair[1].length > 0) return pair[1];
-            }  
+            }
         }
-
-        return undefined;  
+        return undefined;
     };
 
 };  // End of mainGC.
@@ -16816,6 +16701,120 @@ var mainGC = function() {
 //////////////////////////////
 // 6. Global Functions ($$cap) (Functions global usable.)
 //////////////////////////////
+// Change coordinates from N/S/E/W Deg Min.Sec to Dec.
+function toDec(coords) {
+    var match = coords.match(/([0-9]+)°([0-9]+)\.([0-9]+)′(N|S), ([0-9]+)°([0-9]+)\.([0-9]+)′(W|E)/);
+    if (match) {
+        var dec1 = parseInt(match[1], 10) + (parseFloat(match[2] + "." + match[3]) / 60);
+        if (match[4] == "S") dec1 = dec1 * -1;
+        dec1 = Math.round(dec1 * 10000000) / 10000000;
+        var dec2 = parseInt(match[5], 10) + (parseFloat(match[6] + "." + match[7]) / 60);
+        if (match[8] == "W") dec2 = dec2 * -1;
+        dec2 = Math.round(dec2 * 10000000) / 10000000;
+        return new Array(dec1, dec2);
+    } else {
+        match = coords.match(/(N|S) ([0-9]+)°? ([0-9]+)\.([0-9]+)′?'? (E|W) ([0-9]+)°? ([0-9]+)\.([0-9]+)/);
+        if (match) {
+            var dec1 = parseInt(match[2], 10) + (parseFloat(match[3] + "." + match[4]) / 60);
+            if (match[1] == "S") dec1 = dec1 * -1;
+            dec1 = Math.round(dec1 * 10000000) / 10000000;
+            var dec2 = parseInt(match[6], 10) + (parseFloat(match[7] + "." + match[8]) / 60);
+            if (match[5] == "W") dec2 = dec2 * -1;
+            dec2 = Math.round(dec2 * 10000000) / 10000000;
+            return new Array(dec1, dec2);
+        } else {
+            match = coords.match(/(N|S) ([0-9]+) ([0-9]+) ([0-9]+)\.([0-9]+) (E|W) ([0-9]+) ([0-9]+) ([0-9]+)\.([0-9]+)/);
+            if (match) {
+                var dec1 = parseInt(match[2], 10) + (parseFloat(match[3]) / 60) + (parseFloat(match[4] + "." + match[5]) / 3600);
+                if (match[1] == "S") dec1 = dec1 * -1;
+                dec1 = Math.round(dec1 * 10000000) / 10000000;
+                var dec2 = parseInt(match[7], 10) + (parseFloat(match[8]) / 60) + (parseFloat(match[9] + "." + match[10]) / 3600);
+                if (match[6] == "W") dec2 = dec2 * -1;
+                dec2 = Math.round(dec2 * 10000000) / 10000000;
+                return new Array(dec1, dec2);
+            } else {
+                match = coords.match(/(N|S) ([0-9]+) ([0-9]+) ([0-9]+\..[0-9].) (E|W) ([0-9]+) ([0-9]+) ([0-9]+\..[0-9].)/);
+                if (match) {
+                    var dec1 = parseInt(match[2], 10) + (parseFloat(match[3]) / 60) + (parseFloat(match[4]) / 3600);
+                    if (match[1] == "S") dec1 = dec1 * -1;
+                    dec1 = Math.round(dec1 * 10000000) / 10000000;
+                    var dec2 = parseInt(match[6], 10) + (parseFloat(match[7]) / 60) + (parseFloat(match[8]) / 3600);
+                    if (match[5] == "W") dec2 = dec2 * -1;
+                    dec2 = Math.round(dec2 * 10000000) / 10000000;
+                    return new Array(dec1, dec2);
+                } else return false;
+            }
+        }
+    }
+}
+// Change coordinates from Deg to DMS.
+function DegtoDMS(coords) {
+    var match = coords.match(/^(N|S) ([0-9][0-9]). ([0-9][0-9])\.([0-9][0-9][0-9]) (E|W) ([0-9][0-9][0-9]). ([0-9][0-9])\.([0-9][0-9][0-9])$/);
+    if (!match) return "";
+    var lat1 = parseInt(match[2], 10);
+    var lat2 = parseInt(match[3], 10);
+    var lat3 = parseFloat("0." + match[4]) * 60;
+    lat3 = Math.round(lat3 * 10000) / 10000;
+    var lng1 = parseInt(match[6], 10);
+    var lng2 = parseInt(match[7], 10);
+    var lng3 = parseFloat("0." + match[8]) * 60;
+    lng3 = Math.round(lng3 * 10000) / 10000;
+    return match[1] + " " + lat1 + "° " + lat2 + "' " + lat3 + "\" " + match[5] + " " + lng1 + "° " + lng2 + "' " + lng3 + "\"";
+}
+// Change coordinates from Dec to Deg.
+function DectoDeg(lat, lng) {
+    var n = "000";
+    lat = lat / 10000000;
+    var pre = "";
+    if (lat > 0) pre = "N";
+    else {
+        pre = "S";
+        lat = lat * -1;
+    }
+    var tmp1 = parseInt(lat);
+    var tmp2 = (lat - tmp1) * 60;
+    tmp1 = String(tmp1);
+    if (tmp1.length == 1) tmp1 = "0" + tmp1;
+    tmp2 = Math.round(tmp2 * 10000) / 10000;
+    tmp2 = String(tmp2);
+    if (tmp2.length == 0) tmp2 = tmp2 + "0.000";
+    else if (tmp2.indexOf(".") == -1) tmp2 = tmp2 + ".000";
+    else if (tmp2.indexOf(".") != -1) tmp2 = tmp2 + n.slice(tmp2.length - tmp2.indexOf(".") - 1);
+    var new_lat = pre + " " + tmp1 + "° " + tmp2;
+    lng = lng / 10000000;
+    var pre = "";
+    if (lng > 0) pre = "E";
+    else {
+        pre = "W";
+        lng = lng * -1;
+    }
+    var tmp1 = parseInt(lng);
+    var tmp2 = (lng - tmp1) * 60;
+    tmp1 = String(tmp1);
+    if (tmp1.length == 2) tmp1 = "0" + tmp1;
+    else if (tmp1.length == 1) tmp1 = "00" + tmp1;
+    tmp2 = Math.round(tmp2 * 10000) / 10000;
+    tmp2 = String(tmp2);
+    if (tmp2.length == 0) tmp2 = tmp2 + "0.000";
+    else if (tmp2.indexOf(".") == -1) tmp2 = tmp2 + ".000";
+    else if (tmp2.indexOf(".") != -1) tmp2 = tmp2 + n.slice(tmp2.length - tmp2.indexOf(".") - 1);
+    var new_lng = pre + " " + tmp1 + "° " + tmp2;
+    return new_lat + " " + new_lng;
+}
+// Show other coordinates.
+function otherFormats(box, coords, trenn) {
+    var dec = toDec(coords);
+    var lat = dec[0];
+    var lng = dec[1];
+    if (lat < 0) lat = "S "+(lat * -1);
+    else lat = "N "+lat;
+    if (lng < 0) lng = "W "+(lng * -1);
+    else lng = "E "+lng;
+    box.innerHTML += trenn+"Dec: "+lat+" "+lng;
+    var dms = DegtoDMS(coords);
+    box.innerHTML += trenn+"DMS: "+dms;
+}
+
 // Create bookmark to GC page.
 function bookmark(title, href, bookmarkArray) {
     var bm = new Object();
