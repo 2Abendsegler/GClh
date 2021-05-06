@@ -61,7 +61,7 @@ var start = function(c) {
                     } else if (document.location.href.match(/^https?:\/\/project-gc\.com\/Tools\/PQSplit/)) {
                         mainPGC();
                     }
-                } else {waitCount++; if (waitCount <= 1000) setTimeout(function(){checkBodyContent(waitCount);}, 10);} // GDPR
+                } else {waitCount++; if (waitCount <= 5000) setTimeout(function(){checkBodyContent(waitCount);}, 10);} // GDPR
             }
             checkBodyContent(0); // GDPR
         });
@@ -79,11 +79,10 @@ var checkRunningOnce = function(c) {
 
 var quitOnAdFrames = function(c) {
     var quitOnAdFramesDeref = new jQuery.Deferred();
-    if(window.name) {
+    if (window.name) {
         if (window.name.substring(0, 18) !== 'google_ads_iframe_') quitOnAdFramesDeref.resolve();
         else quitOnAdFramesDeref.reject();
-    }
-    else {
+    } else {
         quitOnAdFramesDeref.resolve();
     }
     return quitOnAdFramesDeref.promise();
@@ -107,9 +106,8 @@ var leafletInit = function(c) {
                 injectPageScript(newJS, "body", 'gclh_leafletjs');
             }
         }
-
         if ( L.version != "0.7.2" ) {
-            gclh_error("Unexpected vesion of leaflet. Version 0.7.2 required, version "+L.version+" is loaded.");
+            gclh_error("Unexpected version of leaflet. Version 0.7.2 required, version "+L.version+" is loaded.");
         }
     } catch(e) { gclh_error("leafletInit failed",e);}
 };
@@ -1131,7 +1129,7 @@ var mainOSM = function() {
 var mainGCWait = function() {
 
 // Hide Facebook.
-    if (settings_hide_facebook && (document.location.href.match(/\.com\/(play|account\/register|login|account\/login|seek\/log\.aspx?(.*)|account\/signin)/))) {
+    if (settings_hide_facebook && (document.location.href.match(/\.com\/(play|account\/register|login|account\/login|seek\/log\.aspx?(.*)|account\/signin|account\/join)/))) {
         try {
             if ($('.btn.btn-facebook')[0]) $('.btn.btn-facebook')[0].style.display = "none";
             if ($('.divider-flex')[0]) $('.divider-flex')[0].style.display = "none";
@@ -1142,41 +1140,6 @@ var mainGCWait = function() {
             if ($('.oauth-providers-login')[0]) $('.oauth-providers-login')[0].style.display = "none";
         } catch(e) {gclh_error("Hide Facebook",e);}
     }
-
-// Set global data and check if logged in.
-    function waitingForUserParameter(waitCount) {
-        // All pages with the exception of the new map.
-        if (typeof headerSettings !== 'undefined' && headerSettings.username && headerSettings.avatarUrl && headerSettings.locale) {
-            global_me = headerSettings.username;
-            global_avatarUrl = headerSettings.avatarUrl;
-            global_findCount = headerSettings.findCount;
-            global_locale = headerSettings.locale;
-        // New map.
-        } else if (typeof _gcUser !== 'undefined' && _gcUser.username && _gcUser.image && _gcUser.image.imageUrl && _gcUser.locale) {
-            global_me = _gcUser.username;
-            global_avatarUrl = _gcUser.image.imageUrl.replace(/\{0\}/,'avatar');
-            global_findCount = _gcUser.findCount;
-            global_locale = _gcUser.locale;
-        }
-        if (global_me != '') {
-            mainGC();
-        } else {
-            waitCount++; if (waitCount <= 200) setTimeout(function(){waitingForUserParameter(waitCount);}, 50);
-        }
-    }
-    waitingForUserParameter(0);
-};
-
-////////////////////////////
-// 5.1.2 GC - Main 2 ($$cap) (For the geocaching webpages.)
-////////////////////////////
-var mainGC = function() {
-
-// After change of a bookmark respectively a bookmark list go automatically from confirmation screen to bookmark list.
-   if (((settings_bm_changed_and_go && document.location.href.match(/\.com\/bookmarks\/mark\.aspx\?(guid=|ID=|view=legacy&guid=|view=legacy&ID=)/)) || (settings_bml_changed_and_go && document.location.href.match(/\.com\/bookmarks\/edit\.aspx/))) && $('#divContentMain')[0] && $('p.Success a[href*="/bookmarks/view.aspx?guid="]')[0]) {
-       $('#divContentMain').css("visibility", "hidden");
-       document.location.href = $('p.Success a')[0].href;
-   }
 
 // Improve print page cache listing.
     if (document.location.href.match(/\.com\/seek\/cdpf\.aspx/)) {
@@ -1199,12 +1162,63 @@ var mainGC = function() {
                 var match = coords.innerHTML.match(/((N|S) [0-9][0-9]. [0-9][0-9]\.[0-9][0-9][0-9] (E|W) [0-9][0-9][0-9]. [0-9][0-9]\.[0-9][0-9][0-9])/);
                 if (match && match[1]) {
                     coords = match[1];
-                    otherFormats("<br>");
+                    otherFormats(box, coords, "<br>");
                 }
             }
             // Hide side rights.
             if ($('#Footer')[0]) $('#Footer')[0].remove();
+            // Display listing images in maximum available width for FF and chrome. Only for display, print was ok.
+            appendCssStyle('.item-content img {max-width: -moz-available; max-width: -webkit-fill-available;}');
         } catch(e) {gclh_error("Improve print page cache listing",e);}
+    }
+
+// Set global data and check if logged in.
+    function waitingForUserParameter(waitCount) {
+        // All pages with the exception of the new map.
+        if (typeof headerSettings !== 'undefined' && headerSettings.username && headerSettings.avatarUrl && headerSettings.locale) {
+            global_me = headerSettings.username;
+            global_avatarUrl = headerSettings.avatarUrl;
+            global_findCount = headerSettings.findCount;
+            global_locale = headerSettings.locale;
+        // New map.
+        } else if (typeof _gcUser !== 'undefined' && _gcUser.username && _gcUser.image && _gcUser.image.imageUrl && _gcUser.locale) {
+            global_me = _gcUser.username;
+            global_avatarUrl = _gcUser.image.imageUrl.replace(/\{0\}/,'avatar');
+            global_findCount = _gcUser.findCount;
+            global_locale = _gcUser.locale;
+        }
+        if (global_me != '') {
+            mainGC();
+        } else {waitCount++; if (waitCount <= 200) setTimeout(function(){waitingForUserParameter(waitCount);}, 50);}
+    }
+    waitingForUserParameter(0);
+};
+
+////////////////////////////
+// 5.1.2 GC - Main 2 ($$cap) (For the geocaching webpages.)
+////////////////////////////
+var mainGC = function() {
+
+// CSS for header.
+    // Make GC header invisible.
+    var css = '#gc-header, #GCHeader, #gc-mobile-nav {display: none;}';
+    // Part of core CSS of GS.
+    css += corecss;
+    // User profile menu bend into shape.
+    css += '.gclh_open ul.submenu {visibility: visible; display: block !important;}';
+    // Message center message indicator.
+    css += '.gclh_message-indicator {background-color: #e0b70a; position: absolute; border-radius: 15px; width: 10px; height: 10px; margin-top: -18px; margin-left: 28px;}';
+    // Special css for searchmap.
+    if (is_page('searchmap')) {
+        css += 'gclh_nav .wrapper {z-index: 1006;} gclh_nav li input {height: unset !important;}';
+        css += '.profile-panel .li-user-toggle svg {height: 13px;}';
+    }
+    appendCssStyle(css);
+
+// After change of a bookmark respectively a bookmark list go automatically from confirmation screen to bookmark list.
+    if (((settings_bm_changed_and_go && document.location.href.match(/\.com\/bookmarks\/mark\.aspx\?(guid=|ID=|view=legacy&guid=|view=legacy&ID=)/)) || (settings_bml_changed_and_go && document.location.href.match(/\.com\/bookmarks\/edit\.aspx/))) && $('#divContentMain')[0] && $('p.Success a[href*="/bookmarks/view.aspx?guid="]')[0]) {
+        $('#divContentMain').css("visibility", "hidden");
+        document.location.href = $('p.Success a')[0].href;
     }
 
 // Set language to default language.
@@ -1259,7 +1273,7 @@ var mainGC = function() {
         // F2 key.
         if (settings_submit_log_button) {
             function setButtonDescInnerHTMLF2(waitCount, id) {
-                if (!document.getElementById(id).innerHTML.match(/(F2)/)) {
+                if (document.getElementById(id) && document.getElementById(id).innerHTML && !document.getElementById(id).innerHTML.match(/(F2)/)) {
                     document.getElementById(id).innerHTML += " (F2)";
                 }
                 if (waitCount <= 20) setTimeout(function(){setButtonDescInnerHTMLF2(waitCount, id);}, 100);
@@ -1328,28 +1342,13 @@ var mainGC = function() {
 
 // Wait for header and build up header.
     try {
-        // Part of core CSS of GS.
-        var css = corecss;
-        // Make GC header invisible.
-        css += '#gc-header, #GCHeader, #gc-mobile-nav {display: none;}';
-        // User profile menu bend into shape.
-        css += '.gclh_open ul.submenu {visibility: visible; display: block !important;}';
-        // Message center message indicator.
-        css += '.gclh_message-indicator {background-color: #e0b70a; position: absolute; border-radius: 15px; width: 10px; height: 10px; margin-top: -18px; margin-left: 28px;}';
-        // Special css for searchmap.
-        if (is_page('searchmap')) {
-            css += 'gclh_nav .wrapper {z-index: 1006;} gclh_nav li input {height: unset !important;}';
-            css += '.profile-panel .li-user-toggle svg {height: 13px;}';
-        }
-        appendCssStyle(css);
-
-        function buildUpHeader(waitCount, html) {
-            if ($('#gc-header, #GCHeader')[0] && !html == "") {
-                // Integrate html of new header.
-                if ($('#gc-header-root')[0]) $('#gc-header-root').prepend(html);
-                else if ($('#header-root')[0]) $('#header-root').prepend(html);
-                else if ($('#root')[0]) $('#root').prepend(html);
-                else if ($('#app-root')[0]) $('#app-root').prepend(html);
+        function buildUpHeader(waitCount) {
+            if ($('#gc-header, #GCHeader')[0]) {
+                // Integrate old header.
+                if ($('#gc-header-root')[0]) $('#gc-header-root').prepend(header_old);
+                else if ($('#header-root')[0]) $('#header-root').prepend(header_old);
+                else if ($('#root')[0]) $('#root').prepend(header_old);
+                else if ($('#app-root')[0]) $('#app-root').prepend(header_old);
                 // Run header relevant features.
                 setUserParameter();
                 setMessageIndicator(0);
@@ -1377,9 +1376,9 @@ var mainGC = function() {
                         }
                     });
                 });
-            } else {waitCount++; if (waitCount <= 200) setTimeout(function(){buildUpHeader(waitCount, html);}, 50);}
+            } else {waitCount++; if (waitCount <= 1000) setTimeout(function(){buildUpHeader(waitCount);}, 10);}
         }
-        buildUpHeader(0, header_old);
+        buildUpHeader(0);
     } catch(e) {gclh_error("Wait for header and build up header",e);}
 
 // Set user avatar, user and found count in new header.
@@ -1520,16 +1519,16 @@ var mainGC = function() {
                         if (settings_menu_float_right) {
                             css += "ul.#m > li {margin-top: " + (3 + (16 - font_size_menu) / 2) + "px;}";
                         } else {
-                            if (is_page("map")) css += "ul.#m > li {margin-top: " + (-2 + (16 - font_size_menu) / 2) + "px;}";
-                            else css += "ul.#m > li {margin-top: " + (3 + (16 - font_size_menu) / 2) + "px;}";
+                            if (is_page("map")) css += "ul.#m > li {margin-top: " + (3 + (16 - font_size_menu) / 2) + "px;}";
+                            else css += "ul.#m > li {margin-top: " + (4 + (16 - font_size_menu) / 2) + "px;}";
                         }
                         // Menü in Karte ausrichten.
                         if (is_page("map") && !settings_menu_float_right) css += ".#m {height: unset !important;}";
                         if (is_page("map") && settings_menu_float_right) css += "#navi_search {margin: 0 !important;}";
                     }
 
-                    // Altes Seiten Design und restliche Seiten:
-                    // ----------
+                // Altes Seiten Design und restliche Seiten:
+                // ----------
                 } else {
                     if (settings_fixed_header_layout) {
                         css += "nav .wrapper, gclh_nav .wrapper {width: " + new_width + "px !important; padding-left: 50px; padding-right: 30px; min-width: unset}";
@@ -1550,7 +1549,7 @@ var mainGC = function() {
                         } else {
                             css += "ul.#m > li {margin-top: " + (5 + (16 - font_size_menu) / 2) + "px;}";
                         }
-                        // Horizontales Menü ausrichten in Abhängigkeit von Anzahl Zeilen.
+                    // Horizontales Menü ausrichten in Abhängigkeit von Anzahl Zeilen.
                     } else {
                         if      (settings_menu_number_of_lines == 1) css += "ul.#m {top:   4px !important;}";
                         else if (settings_menu_number_of_lines == 2) css += "ul.#m {top:  -8px !important;}";
@@ -1868,9 +1867,9 @@ var mainGC = function() {
         }
     }
 
-// Define class "working" for cache listing.
+// Define class "working" for cache listing and display listing images not over the maximum available width for FF and chrome.
     if (is_page("cache_listing")) {
-        appendCssStyle(".working {opacity: 0.4; cursor: default !important; text-decoration: none !important;}");
+        appendCssStyle(".working {opacity: 0.4; cursor: default !important; text-decoration: none !important;} .UserSuppliedContent img {max-width: -moz-available; max-width: -webkit-fill-available;}");
     }
 
 // Disabled and archived ...
@@ -2169,21 +2168,9 @@ var mainGC = function() {
             var box = $('#ctl00_ContentBody_LocationSubPanel')[0];
             box.innerHTML = box.innerHTML.replace("<br>", "");
             var coords = $('#uxLatLon')[0].innerHTML;
-            otherFormats(" - ");
+            otherFormats(box, coords, " - ");
             box.innerHTML = "<font style='font-size: 10px;'>" + box.innerHTML + "</font><br>";
         } catch(e) {gclh_error("Show other coord formats listing",e);}
-    }
-    function otherFormats(trenn) {
-        var dec = toDec(coords);
-        var lat = dec[0];
-        var lng = dec[1];
-        if (lat < 0) lat = "S "+(lat * -1);
-        else lat = "N "+lat;
-        if (lng < 0) lng = "W "+(lng * -1);
-        else lng = "E "+lng;
-        box.innerHTML += trenn+"Dec: "+lat+" "+lng;
-        var dms = DegtoDMS(coords);
-        box.innerHTML += trenn+"DMS: "+dms;
     }
 
 // Map this Location.
@@ -2365,7 +2352,10 @@ var mainGC = function() {
             function check_for_add_to_list(waitCount) { // GDPR
                 if ( typeof $('#fancybox-loading')[0] !== "undefined") { // GDPR
                     $('.add-to-list').removeClass('working');
-                    $('.add-to-list')[0].addEventListener("click", function() {window.scroll(0, 0);});
+                    $('.add-to-list')[0].addEventListener("click", function() {
+                        window.scroll(0, 0);
+                        setFocusToField(0, '#newListName');
+                    });
                     $('.add-to-list')[0].innerHTML = '<a href="' + $('.add-to-list').attr('data-href') + '" style="padding-left: unset;">' + $('.add-to-list')[0].innerHTML + '</a>';
                     if ($('.sidebar')[0] && $('#ctl00_ContentBody_GeoNav_uxAddToListBtn')[0]) {
                         var [ownBMLsCount, ownBMLsText, ownBMLsList] = getOwnBMLs($('.sidebar')[0]);
@@ -2559,7 +2549,7 @@ var mainGC = function() {
                     el.value = el.value.replace(/#Size#/ig, $('#ctl00_ContentBody_size .minorCacheDetails small')[0].innerHTML.replace('(','').replace(')',''));
                     el.value = el.value.replace(/#Owner#/ig, get_real_owner().replace(/'/g,"\\'"));
                     el.value = el.value.replace(/#Favo#/ig, (($('#uxFavContainerLink')[0] && $('#uxFavContainerLink .favorite-value')[0]) ? $('#uxFavContainerLink .favorite-value')[0].innerHTML.replace(/(\s*)/g,'') : ''));
-                    el.value = el.value.replace(/#FavoPerc#/ig, $('.gclh_favorite-score')[0].innerHTML);
+                    el.value = el.value.replace(/#FavoPerc#/ig, ($('.gclh_favorite-score')[0] ? $('.gclh_favorite-score')[0].innerHTML : ''));
                     el.value = el.value.replace(/#Hints#/ig, (($('#div_hint')[0] && $('#div_hint')[0].innerHTML) ? $('#div_hint')[0].innerHTML.replace(/^(\s*)/,'').replace(/<br>/g,'\n') : ''));
                     var g_note = '';
                     if ($('#viewCacheNote')[0] && $('#viewCacheNote')[0].innerHTML && $('#editCacheNote')[0] && $('#editCacheNote textarea')[0] && $('#editCacheNote textarea').attr('placeholder') && $('#viewCacheNote')[0].innerHTML != $('#editCacheNote textarea').attr('placeholder') && $('#viewCacheNote')[0].innerHTML != null && $('#viewCacheNote')[0].innerHTML != '') {
@@ -3057,15 +3047,15 @@ var mainGC = function() {
         // Personal Cache Note: Focus Cachenote-Textarea on Click of the Note (to avoid double click to edit).
         try {
             var editCacheNote = document.querySelector('#editCacheNote');
-            if(editCacheNote){
+            if (editCacheNote){
                 var observer = new MutationObserver(function(mutations) {
                     mutations.forEach(function(mutation) {
                         if (mutation.type == "attributes") {
-                            if(document.getElementById('editCacheNote').style.display == ''){
+                            if (document.getElementById('editCacheNote').style.display == ''){
                                 document.getElementById('cacheNoteText').focus();
                             } else {
                                 // Take the parent, because empty lines are not handle by span-element #viewCacheNote.
-                                if (  $("#cacheNoteText").height() != calcHeightOfCacheNote() ) {
+                                if ($("#cacheNoteText").height() != calcHeightOfCacheNote()) {
                                     $("#cacheNoteText").height(calcHeightOfCacheNote());
                                 }
                             }
@@ -5040,7 +5030,7 @@ var mainGC = function() {
                     } else {
                         $('#ctl00_ContentBody_DateTimeBegin_Month')[0].selectedIndex = 0;
                         $('#ctl00_ContentBody_DateTimeBegin_Day')[0].selectedIndex = 0;
-                        $('#ctl00_ContentBody_DateTimeBegin_Year')[0].selectedIndex =  $('#ctl00_ContentBody_DateTimeBegin_Year option').length-1;
+                        $('#ctl00_ContentBody_DateTimeBegin_Year')[0].selectedIndex = $('#ctl00_ContentBody_DateTimeBegin_Year option').length-1;
                     }
                     // End Date
                     if (placedDateEnd !== false) {
@@ -6911,7 +6901,7 @@ var mainGC = function() {
             if($('#cache_logs_container #sortOrder').length) isUpvoteActive = true
 
             var vupUserString = 'if UserName == "#" ';
-            var vupHideAvatarString  = 'if (UserName != "#" ';
+            var vupHideAvatarString = 'if (UserName != "#" ';
             var vupHideCompleteLog = vupUserString;
             if (settings_process_vup && global_vups && global_vups.length > 0) {
                 for (var i = 0; i < global_vups.length; i++) {
@@ -9296,11 +9286,23 @@ var mainGC = function() {
                 }
             }
 
+            // Improve add to list popup.
+            function improveAddtolistPopup() {
+                function checkAddtolistPopup(waitCount) {
+                    if ($('.Popover')[0]) {
+                        setFocusToField(0, '.add-to-list-view .create-new-list-textfield');
+                    }
+                    waitCount++; if (waitCount <= 20) setTimeout(function(){checkAddtolistPopup(waitCount);}, 100);
+                }
+                checkAddtolistPopup(0);
+            }
+
             // Processing all steps.
             function processAllSearchMap() {
                 setFilter();
                 scrollInCacheList(); // Has to be run before searchThisArea.
                 searchThisArea();
+                improveAddtolistPopup();
                 setLinkToOwner(); // Has to be run before compactLayout.
                 compactLayout();
                 setStrikeDisabledInList();
@@ -10181,7 +10183,7 @@ var mainGC = function() {
                             if (settings_show_elevation_of_waypoints) {
                                 new_text += '<span id="elevation-waypoint-'+indexMapItems+'"></span>';
                             }
-                            new_text += '<span class="favi_points" title="Favorites in percent"><svg height="16" width="16"><image xmlns:xlink="https://www.w3.org/1999/xlink" xlink:href="/images/icons/fave_fill_16.svg" src="/images/icons/fave_fill_16.png" width="16" height="16" alt="Favorite points"></image></svg> ' + fav_percent + '</span> | ';
+                            new_text += '<span class="favi_points" title="Favorites in percent"><svg height="16.5" width="16.5"><image xmlns:xlink="https://www.w3.org/1999/xlink" xlink:href="/images/icons/fave_fill_16.svg" src="/images/icons/fave_fill_16.png" width="16" height="16" alt="Favorite points"></image></svg> ' + fav_percent + '</span> | ';
                             if(premium_only){
                                 new_text += ' <span class="premium_only" title="Premium Only Cache"><img src="/images/icons/16/premium_only.png" width="16" height="16" alt="Premium Only Cache" /></span> | ';
                             }
@@ -10993,7 +10995,7 @@ var mainGC = function() {
                         if ($('tr')[loaded-1].children[2] && $('tr')[loaded-1].children[2].innerHTML.match(/(\S+)/)) var lastLog = loaded-1;
                         else if ($('tr')[loaded-2].children[2] && $('tr')[loaded-2].children[2].innerHTML.match(/(\S+)/)) var lastLog = loaded-2;
                         else var lastLog = "";
-                        if (lastLog != "") var dateLastLog =  ". Last date is " + $('tr')[lastLog].children[2].innerHTML.replace(/\s/g, "");
+                        if (lastLog != "") var dateLastLog = ". Last date is " + $('tr')[lastLog].children[2].innerHTML.replace(/\s/g, "");
                         else var dateLastLog = "";
                         result.innerHTML = result.innerHTML + " (Only " + loaded + " logs loaded" + dateLastLog + ".)";
                     }
@@ -11490,70 +11492,73 @@ var mainGC = function() {
                 $("#actionSouvenirsSortAcquiredTitleZtoA").click(function() {ReorderSouvenirs(TitleZtoA, this);});
             }
 
-            var SouvenirsDashboard = $("#souvenirsControlsContainer .sort-select-group, #gclhSouvenirsButtons");
-            if (SouvenirsDashboard.length) {
-                function correctSouvenirName(name) {
-                    name = name.replace(/(^\s|\s$)/g,'');
-                    if (name == 'Åland Islands') name = 'Aland Islands';
-                    if (name == 'Česká Republika') name = 'Czechia';
-                    if (name == 'China (中国)') name = 'China';
-                    if (name == 'Commonwealth of the Bahamas') name = 'Bahamas';
-                    if (name == 'Deutschland') name = 'Germany';
-                    if (name == 'Montenegro | Црна Гора | Crna Gora') name = 'Montenegro';
-                    if (name == 'România') name = 'Romania';
-                    if (name == 'Rzeczpospolita Polska') name = 'Poland';
-                    if (name == 'Singapore (Republik Singapura)') name = 'Singapore';
-                    if (name == 'Slovenská republika') name = 'Slovakia';
-                    if (name == 'United States of America') name = 'United States';
-                    if (name == 'Yukon') name = 'Yukon Territory';
-                    return name;
-                }
-                function prepareSouvenirs() {
-                    $('#souvenirsList li').each(function() {
-                        var ident = '';
-                        var name = $(this).find('a:first')[0].title;
-                        if (name) {
-                            name = correctSouvenirName(name);
-                            var country = $.grep(country_id, function(e){return e.n == name;});
-                            if (country && country[0]) {
-                                ident = 'gclhShowCountry';
-                            } else {
-                                var name = name.replace(/\sstate$/i,'');
-                                var state = $.grep(states_id, function(e){return e.n == name;});
-                                if (state && state[0]) {
-                                    ident = 'gclhShowState';
-                                } else {
-                                    ident = 'gclhShowOther';
-                                }
-                            }
-                            $(this).addClass(ident+' active');
-                        }
-                    });
-                    $('.gclhShow input').each(function() {
-                        $(this)[0].disabled = "";
-                        $(this)[0].style.opacity = "1";
-                    });
-                }
-                function showSouvenirs(button) {
-                    if ($(button).hasClass('active')) {
-                        $(button).removeClass('active');
-                        $('#souvenirsList li.'+$(button)[0].id).each(function() {$(this).removeClass('active');});
-                    } else {
-                        $(button).addClass('active');
-                        $('#souvenirsList li.'+$(button)[0].id).each(function() {$(this).addClass('active');});
+            function checkSouvenirsDashboard(waitCount) {
+                var SouvenirsDashboard = $("#souvenirsControlsContainer .sort-select-group, #gclhSouvenirsButtons");
+                if (SouvenirsDashboard.length) {
+                    function correctSouvenirName(name) {
+                        name = name.replace(/(^\s|\s$)/g,'');
+                        if (name == 'Åland Islands') name = 'Aland Islands';
+                        if (name == 'Česká Republika') name = 'Czechia';
+                        if (name == 'China (中国)') name = 'China';
+                        if (name == 'Commonwealth of the Bahamas') name = 'Bahamas';
+                        if (name == 'Deutschland') name = 'Germany';
+                        if (name == 'Montenegro | Црна Гора | Crna Gora') name = 'Montenegro';
+                        if (name == 'România') name = 'Romania';
+                        if (name == 'Rzeczpospolita Polska') name = 'Poland';
+                        if (name == 'Singapore (Republik Singapura)') name = 'Singapore';
+                        if (name == 'Slovenská republika') name = 'Slovakia';
+                        if (name == 'United States of America') name = 'United States';
+                        if (name == 'Yukon') name = 'Yukon Territory';
+                        return name;
                     }
-                    var nr = $('#souvenirsList .active').length;
-                    if (nr == Souvenirs.length) $('#gclhNumberSouvenirs')[0].innerHTML = '(' + Souvenirs.length + ')';
-                    else $('#gclhNumberSouvenirs')[0].innerHTML = '(' + nr + '/' + Souvenirs.length + ')';
-                }
-                SouvenirsDashboard.append('<span class="gclhShow">&nbsp; | &nbsp;Show &nbsp;<input id="gclhShowCountry" class="active" title="Show country souvenirs" value="Countries" type="button" href="javascript:void(0);" style="opacity: 0.5;" disabled="true"></span>');
-                SouvenirsDashboard.append('<span class="gclhShow"><input id="gclhShowState" class="active" title="Show state souvenirs" value="States" type="button" href="javascript:void(0);" style="opacity: 0.5;" disabled="true"></span>');
-                SouvenirsDashboard.append('<span class="gclhShow"><input id="gclhShowOther" class="active" title="Show other souvenirs" value="Others" type="button" href="javascript:void(0);" style="opacity: 0.5;" disabled="true"></span>');
-                prepareSouvenirs();
-                $("#gclhShowCountry").click(function() {showSouvenirs(this);});
-                $("#gclhShowState").click(function() {showSouvenirs(this);});
-                $("#gclhShowOther").click(function() {showSouvenirs(this);});
+                    function prepareSouvenirs() {
+                        $('#souvenirsList li').each(function() {
+                            var ident = '';
+                            var name = $(this).find('a:first')[0].title;
+                            if (name) {
+                                name = correctSouvenirName(name);
+                                var country = $.grep(country_id, function(e){return e.n == name;});
+                                if (country && country[0]) {
+                                    ident = 'gclhShowCountry';
+                                } else {
+                                    var name = name.replace(/\sstate$/i,'');
+                                    var state = $.grep(states_id, function(e){return e.n == name;});
+                                    if (state && state[0]) {
+                                        ident = 'gclhShowState';
+                                    } else {
+                                        ident = 'gclhShowOther';
+                                    }
+                                }
+                                $(this).addClass(ident+' active');
+                            }
+                        });
+                        $('.gclhShow input').each(function() {
+                            $(this)[0].disabled = "";
+                            $(this)[0].style.opacity = "1";
+                        });
+                    }
+                    function showSouvenirs(button) {
+                        if ($(button).hasClass('active')) {
+                            $(button).removeClass('active');
+                            $('#souvenirsList li.'+$(button)[0].id).each(function() {$(this).removeClass('active');});
+                        } else {
+                            $(button).addClass('active');
+                            $('#souvenirsList li.'+$(button)[0].id).each(function() {$(this).addClass('active');});
+                        }
+                        var nr = $('#souvenirsList .active').length;
+                        if (nr == Souvenirs.length) $('#gclhNumberSouvenirs')[0].innerHTML = '(' + Souvenirs.length + ')';
+                        else $('#gclhNumberSouvenirs')[0].innerHTML = '(' + nr + '/' + Souvenirs.length + ')';
+                    }
+                    SouvenirsDashboard.append('<span class="gclhShow">&nbsp; | &nbsp;Show &nbsp;<input id="gclhShowCountry" class="active" title="Show country souvenirs" value="Countries" type="button" href="javascript:void(0);" style="opacity: 0.5;" disabled="true"></span>');
+                    SouvenirsDashboard.append('<span class="gclhShow"><input id="gclhShowState" class="active" title="Show state souvenirs" value="States" type="button" href="javascript:void(0);" style="opacity: 0.5;" disabled="true"></span>');
+                    SouvenirsDashboard.append('<span class="gclhShow"><input id="gclhShowOther" class="active" title="Show other souvenirs" value="Others" type="button" href="javascript:void(0);" style="opacity: 0.5;" disabled="true"></span>');
+                    prepareSouvenirs();
+                    $("#gclhShowCountry").click(function() {showSouvenirs(this);});
+                    $("#gclhShowState").click(function() {showSouvenirs(this);});
+                    $("#gclhShowOther").click(function() {showSouvenirs(this);});
+                } else {waitCount++; if (waitCount <= 25) setTimeout(function(){checkSouvenirsDashboard(waitCount);}, 200);}
             }
+            checkSouvenirsDashboard(0);
         } catch(e) {gclh_error("Improve Souvenirs",e);}
     }
 
@@ -12629,7 +12634,7 @@ var mainGC = function() {
         bulkUpdateBML(gcText, gcCount, file);
     }
 
-// Get Caches from content like for example uploaded file content.
+// Get caches from content like for example uploaded file content.
     function getCachesFromContent(contentFrom, content) {
         if (contentFrom == 'undefined' || content == 'undefined') return ['', 0];
         var from = (contentFrom.name ? contentFrom.name : contentFrom);
@@ -12694,6 +12699,13 @@ var mainGC = function() {
         }
         if ($('button.add-geocache-cta')[0]) $('button.add-geocache-cta').click();
         waitForBulkUpdate(0);
+    }
+
+// Set focus to a field.
+    function setFocusToField(waitCount, field) {
+        if ($(field)[0]) {
+            $(field).focus();
+        } else {waitCount++; if (waitCount <= 100) setTimeout(function(){setFocusToField(waitCount, field);}, 50);}
     }
 
 ////////////////////////////////////////
@@ -16405,107 +16417,6 @@ var mainGC = function() {
 // Trim decimal value to a given number of digits.
     function roundTO(val, decimals) {return Number(Math.round(val+'e'+decimals)+'e-'+decimals);}
 
-// Change coordinates from N/S/E/W Deg Min.Sec to Dec.
-    function toDec(coords) {
-        var match = coords.match(/([0-9]+)°([0-9]+)\.([0-9]+)′(N|S), ([0-9]+)°([0-9]+)\.([0-9]+)′(W|E)/);
-        if (match) {
-            var dec1 = parseInt(match[1], 10) + (parseFloat(match[2] + "." + match[3]) / 60);
-            if (match[4] == "S") dec1 = dec1 * -1;
-            dec1 = Math.round(dec1 * 10000000) / 10000000;
-            var dec2 = parseInt(match[5], 10) + (parseFloat(match[6] + "." + match[7]) / 60);
-            if (match[8] == "W") dec2 = dec2 * -1;
-            dec2 = Math.round(dec2 * 10000000) / 10000000;
-            return new Array(dec1, dec2);
-        } else {
-            match = coords.match(/(N|S) ([0-9]+)°? ([0-9]+)\.([0-9]+)′?'? (E|W) ([0-9]+)°? ([0-9]+)\.([0-9]+)/);
-            if (match) {
-                var dec1 = parseInt(match[2], 10) + (parseFloat(match[3] + "." + match[4]) / 60);
-                if (match[1] == "S") dec1 = dec1 * -1;
-                dec1 = Math.round(dec1 * 10000000) / 10000000;
-                var dec2 = parseInt(match[6], 10) + (parseFloat(match[7] + "." + match[8]) / 60);
-                if (match[5] == "W") dec2 = dec2 * -1;
-                dec2 = Math.round(dec2 * 10000000) / 10000000;
-                return new Array(dec1, dec2);
-            } else {
-                match = coords.match(/(N|S) ([0-9]+) ([0-9]+) ([0-9]+)\.([0-9]+) (E|W) ([0-9]+) ([0-9]+) ([0-9]+)\.([0-9]+)/);
-                if (match) {
-                    var dec1 = parseInt(match[2], 10) + (parseFloat(match[3]) / 60) + (parseFloat(match[4] + "." + match[5]) / 3600);
-                    if (match[1] == "S") dec1 = dec1 * -1;
-                    dec1 = Math.round(dec1 * 10000000) / 10000000;
-                    var dec2 = parseInt(match[7], 10) + (parseFloat(match[8]) / 60) + (parseFloat(match[9] + "." + match[10]) / 3600);
-                    if (match[6] == "W") dec2 = dec2 * -1;
-                    dec2 = Math.round(dec2 * 10000000) / 10000000;
-                    return new Array(dec1, dec2);
-                } else {
-                    match = coords.match(/(N|S) ([0-9]+) ([0-9]+) ([0-9]+\..[0-9].) (E|W) ([0-9]+) ([0-9]+) ([0-9]+\..[0-9].)/);
-                    if (match) {
-                        var dec1 = parseInt(match[2], 10) + (parseFloat(match[3]) / 60) + (parseFloat(match[4]) / 3600);
-                        if (match[1] == "S") dec1 = dec1 * -1;
-                        dec1 = Math.round(dec1 * 10000000) / 10000000;
-                        var dec2 = parseInt(match[6], 10) + (parseFloat(match[7]) / 60) + (parseFloat(match[8]) / 3600);
-                        if (match[5] == "W") dec2 = dec2 * -1;
-                        dec2 = Math.round(dec2 * 10000000) / 10000000;
-                        return new Array(dec1, dec2);
-                    } else return false;
-                }
-            }
-        }
-    }
-// Change coordinates from Deg to DMS.
-    function DegtoDMS(coords) {
-        var match = coords.match(/^(N|S) ([0-9][0-9]). ([0-9][0-9])\.([0-9][0-9][0-9]) (E|W) ([0-9][0-9][0-9]). ([0-9][0-9])\.([0-9][0-9][0-9])$/);
-        if (!match) return "";
-        var lat1 = parseInt(match[2], 10);
-        var lat2 = parseInt(match[3], 10);
-        var lat3 = parseFloat("0." + match[4]) * 60;
-        lat3 = Math.round(lat3 * 10000) / 10000;
-        var lng1 = parseInt(match[6], 10);
-        var lng2 = parseInt(match[7], 10);
-        var lng3 = parseFloat("0." + match[8]) * 60;
-        lng3 = Math.round(lng3 * 10000) / 10000;
-        return match[1] + " " + lat1 + "° " + lat2 + "' " + lat3 + "\" " + match[5] + " " + lng1 + "° " + lng2 + "' " + lng3 + "\"";
-    }
-// Change coordinates from Dec to Deg.
-    function DectoDeg(lat, lng) {
-        var n = "000";
-        lat = lat / 10000000;
-        var pre = "";
-        if (lat > 0) pre = "N";
-        else {
-            pre = "S";
-            lat = lat * -1;
-        }
-        var tmp1 = parseInt(lat);
-        var tmp2 = (lat - tmp1) * 60;
-        tmp1 = String(tmp1);
-        if (tmp1.length == 1) tmp1 = "0" + tmp1;
-        tmp2 = Math.round(tmp2 * 10000) / 10000;
-        tmp2 = String(tmp2);
-        if (tmp2.length == 0) tmp2 = tmp2 + "0.000";
-        else if (tmp2.indexOf(".") == -1) tmp2 = tmp2 + ".000";
-        else if (tmp2.indexOf(".") != -1) tmp2 = tmp2 + n.slice(tmp2.length - tmp2.indexOf(".") - 1);
-        var new_lat = pre + " " + tmp1 + "° " + tmp2;
-        lng = lng / 10000000;
-        var pre = "";
-        if (lng > 0) pre = "E";
-        else {
-            pre = "W";
-            lng = lng * -1;
-        }
-        var tmp1 = parseInt(lng);
-        var tmp2 = (lng - tmp1) * 60;
-        tmp1 = String(tmp1);
-        if (tmp1.length == 2) tmp1 = "0" + tmp1;
-        else if (tmp1.length == 1) tmp1 = "00" + tmp1;
-        tmp2 = Math.round(tmp2 * 10000) / 10000;
-        tmp2 = String(tmp2);
-        if (tmp2.length == 0) tmp2 = tmp2 + "0.000";
-        else if (tmp2.indexOf(".") == -1) tmp2 = tmp2 + ".000";
-        else if (tmp2.indexOf(".") != -1) tmp2 = tmp2 + n.slice(tmp2.length - tmp2.indexOf(".") - 1);
-        var new_lng = pre + " " + tmp1 + "° " + tmp2;
-        return new_lat + " " + new_lng;
-    }
-
 // Calculate tile numbers X/Y from latitude/longitude or reverse.
     function lat2tile(lat,zoom)  {return (Math.floor((1-Math.log(Math.tan(lat*Math.PI/180) + 1/Math.cos(lat*Math.PI/180))/Math.PI)/2 *Math.pow(2,zoom)));}
     function long2tile(lon,zoom) {return (Math.floor((lon+180)/360*Math.pow(2,zoom)));}
@@ -16717,8 +16628,8 @@ var mainGC = function() {
             if(style != ""){
                 span.setAttribute("style", style);
             }
-            if(!anker_element) anker_element = element_to_copy;
-
+            if (!anker_element) anker_element = element_to_copy;
+            if (!anker_element.parentNode) return;
             anker_element.parentNode.insertBefore(span, anker_element);
 
             appendCssStyle(".ctoc_link:link {text-decoration: none ;}", null, 'ctoc_link_style_id');
@@ -16794,19 +16705,17 @@ var mainGC = function() {
         }  catch(e) {gclh_error('Get asynchron data',e);}
     }
 
-// get url parameter
+// Get url parameter.
     function getURLParam(key) {
-        var query = window.location.search.substring(1); 
+        var query = window.location.search.substring(1);
         var pairs = query.split('&');
-
         for (let i=0; i<pairs.length; i++) {
             var pair = pairs[i].split('=');
             if (pair[0] == key) {
                 if (pair[1].length > 0) return pair[1];
-            }  
+            }
         }
-
-        return undefined;  
+        return undefined;
     };
 
 };  // End of mainGC.
@@ -16814,6 +16723,120 @@ var mainGC = function() {
 //////////////////////////////
 // 6. Global Functions ($$cap) (Functions global usable.)
 //////////////////////////////
+// Change coordinates from N/S/E/W Deg Min.Sec to Dec.
+function toDec(coords) {
+    var match = coords.match(/([0-9]+)°([0-9]+)\.([0-9]+)′(N|S), ([0-9]+)°([0-9]+)\.([0-9]+)′(W|E)/);
+    if (match) {
+        var dec1 = parseInt(match[1], 10) + (parseFloat(match[2] + "." + match[3]) / 60);
+        if (match[4] == "S") dec1 = dec1 * -1;
+        dec1 = Math.round(dec1 * 10000000) / 10000000;
+        var dec2 = parseInt(match[5], 10) + (parseFloat(match[6] + "." + match[7]) / 60);
+        if (match[8] == "W") dec2 = dec2 * -1;
+        dec2 = Math.round(dec2 * 10000000) / 10000000;
+        return new Array(dec1, dec2);
+    } else {
+        match = coords.match(/(N|S) ([0-9]+)°? ([0-9]+)\.([0-9]+)′?'? (E|W) ([0-9]+)°? ([0-9]+)\.([0-9]+)/);
+        if (match) {
+            var dec1 = parseInt(match[2], 10) + (parseFloat(match[3] + "." + match[4]) / 60);
+            if (match[1] == "S") dec1 = dec1 * -1;
+            dec1 = Math.round(dec1 * 10000000) / 10000000;
+            var dec2 = parseInt(match[6], 10) + (parseFloat(match[7] + "." + match[8]) / 60);
+            if (match[5] == "W") dec2 = dec2 * -1;
+            dec2 = Math.round(dec2 * 10000000) / 10000000;
+            return new Array(dec1, dec2);
+        } else {
+            match = coords.match(/(N|S) ([0-9]+) ([0-9]+) ([0-9]+)\.([0-9]+) (E|W) ([0-9]+) ([0-9]+) ([0-9]+)\.([0-9]+)/);
+            if (match) {
+                var dec1 = parseInt(match[2], 10) + (parseFloat(match[3]) / 60) + (parseFloat(match[4] + "." + match[5]) / 3600);
+                if (match[1] == "S") dec1 = dec1 * -1;
+                dec1 = Math.round(dec1 * 10000000) / 10000000;
+                var dec2 = parseInt(match[7], 10) + (parseFloat(match[8]) / 60) + (parseFloat(match[9] + "." + match[10]) / 3600);
+                if (match[6] == "W") dec2 = dec2 * -1;
+                dec2 = Math.round(dec2 * 10000000) / 10000000;
+                return new Array(dec1, dec2);
+            } else {
+                match = coords.match(/(N|S) ([0-9]+) ([0-9]+) ([0-9]+\..[0-9].) (E|W) ([0-9]+) ([0-9]+) ([0-9]+\..[0-9].)/);
+                if (match) {
+                    var dec1 = parseInt(match[2], 10) + (parseFloat(match[3]) / 60) + (parseFloat(match[4]) / 3600);
+                    if (match[1] == "S") dec1 = dec1 * -1;
+                    dec1 = Math.round(dec1 * 10000000) / 10000000;
+                    var dec2 = parseInt(match[6], 10) + (parseFloat(match[7]) / 60) + (parseFloat(match[8]) / 3600);
+                    if (match[5] == "W") dec2 = dec2 * -1;
+                    dec2 = Math.round(dec2 * 10000000) / 10000000;
+                    return new Array(dec1, dec2);
+                } else return false;
+            }
+        }
+    }
+}
+// Change coordinates from Deg to DMS.
+function DegtoDMS(coords) {
+    var match = coords.match(/^(N|S) ([0-9][0-9]). ([0-9][0-9])\.([0-9][0-9][0-9]) (E|W) ([0-9][0-9][0-9]). ([0-9][0-9])\.([0-9][0-9][0-9])$/);
+    if (!match) return "";
+    var lat1 = parseInt(match[2], 10);
+    var lat2 = parseInt(match[3], 10);
+    var lat3 = parseFloat("0." + match[4]) * 60;
+    lat3 = Math.round(lat3 * 10000) / 10000;
+    var lng1 = parseInt(match[6], 10);
+    var lng2 = parseInt(match[7], 10);
+    var lng3 = parseFloat("0." + match[8]) * 60;
+    lng3 = Math.round(lng3 * 10000) / 10000;
+    return match[1] + " " + lat1 + "° " + lat2 + "' " + lat3 + "\" " + match[5] + " " + lng1 + "° " + lng2 + "' " + lng3 + "\"";
+}
+// Change coordinates from Dec to Deg.
+function DectoDeg(lat, lng) {
+    var n = "000";
+    lat = lat / 10000000;
+    var pre = "";
+    if (lat > 0) pre = "N";
+    else {
+        pre = "S";
+        lat = lat * -1;
+    }
+    var tmp1 = parseInt(lat);
+    var tmp2 = (lat - tmp1) * 60;
+    tmp1 = String(tmp1);
+    if (tmp1.length == 1) tmp1 = "0" + tmp1;
+    tmp2 = Math.round(tmp2 * 10000) / 10000;
+    tmp2 = String(tmp2);
+    if (tmp2.length == 0) tmp2 = tmp2 + "0.000";
+    else if (tmp2.indexOf(".") == -1) tmp2 = tmp2 + ".000";
+    else if (tmp2.indexOf(".") != -1) tmp2 = tmp2 + n.slice(tmp2.length - tmp2.indexOf(".") - 1);
+    var new_lat = pre + " " + tmp1 + "° " + tmp2;
+    lng = lng / 10000000;
+    var pre = "";
+    if (lng > 0) pre = "E";
+    else {
+        pre = "W";
+        lng = lng * -1;
+    }
+    var tmp1 = parseInt(lng);
+    var tmp2 = (lng - tmp1) * 60;
+    tmp1 = String(tmp1);
+    if (tmp1.length == 2) tmp1 = "0" + tmp1;
+    else if (tmp1.length == 1) tmp1 = "00" + tmp1;
+    tmp2 = Math.round(tmp2 * 10000) / 10000;
+    tmp2 = String(tmp2);
+    if (tmp2.length == 0) tmp2 = tmp2 + "0.000";
+    else if (tmp2.indexOf(".") == -1) tmp2 = tmp2 + ".000";
+    else if (tmp2.indexOf(".") != -1) tmp2 = tmp2 + n.slice(tmp2.length - tmp2.indexOf(".") - 1);
+    var new_lng = pre + " " + tmp1 + "° " + tmp2;
+    return new_lat + " " + new_lng;
+}
+// Show other coordinates.
+function otherFormats(box, coords, trenn) {
+    var dec = toDec(coords);
+    var lat = dec[0];
+    var lng = dec[1];
+    if (lat < 0) lat = "S "+(lat * -1);
+    else lat = "N "+lat;
+    if (lng < 0) lng = "W "+(lng * -1);
+    else lng = "E "+lng;
+    box.innerHTML += trenn+"Dec: "+lat+" "+lng;
+    var dms = DegtoDMS(coords);
+    box.innerHTML += trenn+"DMS: "+dms;
+}
+
 // Create bookmark to GC page.
 function bookmark(title, href, bookmarkArray) {
     var bm = new Object();
