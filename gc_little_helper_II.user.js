@@ -618,6 +618,8 @@ var variablesInit = function(c) {
     c.settings_lists_upload_file = getValue("settings_lists_upload_file", true);
     c.settings_profile_old_links = getValue("settings_profile_old_links", false);
     c.settings_searchmap_show_btn_save_as_pq = getValue("settings_searchmap_show_btn_save_as_pq", true);
+    c.settings_map_overview_browse_map_icon = getValue("settings_map_overview_browse_map_icon", true);
+    c.settings_map_overview_search_map_icon = getValue("settings_map_overview_search_map_icon", true);
 
     try {
         if (c.userToken === null) {
@@ -2942,12 +2944,30 @@ var mainGC = function() {
         try {
             leafletInit();
 
+            var css = '';
+            css += '.mapIcons {position: relative; z-index: 1000; margin-top: 10px; margin-right: 10px; float: right; height: 22px; border-radius: 4px;}';
+            css += '.mapIcons:hover {background-color: white; box-shadow: 0 1px 5px rgba(0,0,0,.65);}';
+            css += '.mapIcons svg {width: 18px; height: 18px; color: #4a4a4a; opacity: 0.85; padding: 2px;}';
+            css += '.search_map_icon {margin-top: 2px; margin-bottom: -2px; margin-left: 2px;}';
+            appendCssStyle(css);
+
             var html = "";
             html += "<div class='CacheDetailNavigationWidget' style='margin-top: 1.5em;'>";
             html += "<div id='gclh_map_overview' class='WidgetBody' style='padding: 0; height: 248px; width: 248px;'>";
+            if (settings_map_overview_search_map_icon || settings_map_overview_browse_map_icon) {
+                html += "<span class='mapIcons'>";
+                if (settings_map_overview_search_map_icon) {
+                    html += "<a href='" + new_map_url + "?lat=" + lat + "&lng=" + lng + "' title='Search Map'>" + search_map_icon + "</a>";
+                }
+                if (settings_map_overview_browse_map_icon) {
+                    html += "<a href='" + map_url + "?lat=" + lat + "&lng=" + lng + "' title='Browse Map'>" + browse_map_icon + "</a>";
+                }
+                html += "</span>'>";
+            }
             html += "</div>";
             html += "</div>";
             $(".CacheDetailNavigation").after(html);
+            $(".mapIcons svg").each(function(){$(this)[0].setAttribute("viewBox", "0 0 25 25");});
 
             function build_map_overview(waitCount) { // GDPR
                 if (typeof lat !== "undefined" && typeof lng !== "undefined") { // GDPR
@@ -13848,6 +13868,10 @@ var mainGC = function() {
             }
             html += "</select>" + show_help3("With this option you can choose the zoom value to start in the map. \"1\" is the hole world and \"19\" is the maximal enlargement. Default is \"11\". <br><br>This option requires \"Show cache location in overview map\".") + "<br>";
             html += newParameterVersionSetzen(0.9) + newParameterOff;
+            html += newParameterOn1;
+            html += "&nbsp; " + checkboxy('settings_map_overview_browse_map_icon', 'Show icon with link to old map in overview map') + "<br>";
+            html += "&nbsp; " + checkboxy('settings_map_overview_search_map_icon', 'Show icon with link to new map in overview map') + "<br>";
+            html += newParameterVersionSetzen('0.10') + newParameterOff;
             html += checkboxy('settings_show_vip_list', 'Show VIP list') + show_help("The VIP list is a list, displayed at the right side on a cache listing. You can add any user to your VIP list by clicking the little VIP icon beside the user. If it is green, this person is a VIP. The VIP list only shows VIPs and the logs of VIPs, which already posted a log to this cache. With this option you are able to see which of your VIPs already found this cache. On your dashboard page there is an overview of all your VIPs.<br>(VIP: Very important person)") + "<br>";
             html += "&nbsp; " + checkboxy('settings_show_owner_vip_list', 'Show owner in VIP list')  + show_help("If you enable this option, the owner is a VIP for the cache, so you can see, what happened with the cache (disable, maint, enable, ...). Then the owner is shown not only in VIP list but also in VIP logs.<br>(VIP: Very important person)<br><br>" + t_reqSVl)+ "<br>";
             html += newParameterOn3;
@@ -14604,6 +14628,8 @@ var mainGC = function() {
             setEvForDepPara("settings_show_thumbnailsX0", "settings_imgcaption_on_top");
             setEvForDepPara("settings_map_overview_build", "settings_map_overview_zoom");
             setEvForDepPara("settings_map_overview_build", "settings_map_overview_layer");
+            setEvForDepPara("settings_map_overview_build", "settings_map_overview_browse_map_icon");
+            setEvForDepPara("settings_map_overview_build", "settings_map_overview_search_map_icon");
             setEvForDepPara("settings_count_own_matrix_show_next", "settings_count_own_matrix_show_count_next");
             setEvForDepPara("settings_count_own_matrix_show_next", "settings_count_own_matrix_show_color_next");
             setEvForDepPara("settings_count_own_matrix_show_next", "restore_settings_count_own_matrix_show_color_next");
@@ -15106,6 +15132,8 @@ var mainGC = function() {
                 'settings_lists_upload_file',
                 'settings_profile_old_links',
                 'settings_searchmap_show_btn_save_as_pq',
+                'settings_map_overview_browse_map_icon',
+                'settings_map_overview_search_map_icon',
             );
 
             for (var i = 0; i < checkboxes.length; i++) {
