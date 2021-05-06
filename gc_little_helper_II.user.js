@@ -2352,7 +2352,10 @@ var mainGC = function() {
             function check_for_add_to_list(waitCount) { // GDPR
                 if ( typeof $('#fancybox-loading')[0] !== "undefined") { // GDPR
                     $('.add-to-list').removeClass('working');
-                    $('.add-to-list')[0].addEventListener("click", function() {window.scroll(0, 0);});
+                    $('.add-to-list')[0].addEventListener("click", function() {
+                        window.scroll(0, 0);
+                        setFocusToField(0, '#newListName');
+                    });
                     $('.add-to-list')[0].innerHTML = '<a href="' + $('.add-to-list').attr('data-href') + '" style="padding-left: unset;">' + $('.add-to-list')[0].innerHTML + '</a>';
                     if ($('.sidebar')[0] && $('#ctl00_ContentBody_GeoNav_uxAddToListBtn')[0]) {
                         var [ownBMLsCount, ownBMLsText, ownBMLsList] = getOwnBMLs($('.sidebar')[0]);
@@ -3044,15 +3047,15 @@ var mainGC = function() {
         // Personal Cache Note: Focus Cachenote-Textarea on Click of the Note (to avoid double click to edit).
         try {
             var editCacheNote = document.querySelector('#editCacheNote');
-            if(editCacheNote){
+            if (editCacheNote){
                 var observer = new MutationObserver(function(mutations) {
                     mutations.forEach(function(mutation) {
                         if (mutation.type == "attributes") {
-                            if(document.getElementById('editCacheNote').style.display == ''){
+                            if (document.getElementById('editCacheNote').style.display == ''){
                                 document.getElementById('cacheNoteText').focus();
                             } else {
                                 // Take the parent, because empty lines are not handle by span-element #viewCacheNote.
-                                if (  $("#cacheNoteText").height() != calcHeightOfCacheNote() ) {
+                                if ($("#cacheNoteText").height() != calcHeightOfCacheNote()) {
                                     $("#cacheNoteText").height(calcHeightOfCacheNote());
                                 }
                             }
@@ -9283,11 +9286,23 @@ var mainGC = function() {
                 }
             }
 
+            // Improve add to list popup.
+            function improveAddtolistPopup() {
+                function checkAddtolistPopup(waitCount) {
+                    if ($('.Popover')[0]) {
+                        setFocusToField(0, '.add-to-list-view .create-new-list-textfield');
+                    }
+                    waitCount++; if (waitCount <= 20) setTimeout(function(){checkAddtolistPopup(waitCount);}, 100);
+                }
+                checkAddtolistPopup(0);
+            }
+
             // Processing all steps.
             function processAllSearchMap() {
                 setFilter();
                 scrollInCacheList(); // Has to be run before searchThisArea.
                 searchThisArea();
+                improveAddtolistPopup();
                 setLinkToOwner(); // Has to be run before compactLayout.
                 compactLayout();
                 setStrikeDisabledInList();
@@ -12619,7 +12634,7 @@ var mainGC = function() {
         bulkUpdateBML(gcText, gcCount, file);
     }
 
-// Get Caches from content like for example uploaded file content.
+// Get caches from content like for example uploaded file content.
     function getCachesFromContent(contentFrom, content) {
         if (contentFrom == 'undefined' || content == 'undefined') return ['', 0];
         var from = (contentFrom.name ? contentFrom.name : contentFrom);
@@ -12684,6 +12699,13 @@ var mainGC = function() {
         }
         if ($('button.add-geocache-cta')[0]) $('button.add-geocache-cta').click();
         waitForBulkUpdate(0);
+    }
+
+// Set focus to a field.
+    function setFocusToField(waitCount, field) {
+        if ($(field)[0]) {
+            $(field).focus();
+        } else {waitCount++; if (waitCount <= 100) setTimeout(function(){setFocusToField(waitCount, field);}, 50);}
     }
 
 ////////////////////////////////////////
@@ -16683,7 +16705,7 @@ var mainGC = function() {
         }  catch(e) {gclh_error('Get asynchron data',e);}
     }
 
-// get url parameter
+// Get url parameter.
     function getURLParam(key) {
         var query = window.location.search.substring(1);
         var pairs = query.split('&');
