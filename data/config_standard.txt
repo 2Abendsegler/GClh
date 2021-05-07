@@ -298,5 +298,6 @@
   "settings_searchmap_show_btn_save_as_pq": true,
   "settings_profile_old_links": false,
   "settings_map_overview_browse_map_icon": true,
-  "settings_map_overview_search_map_icon": true
+  "settings_map_overview_search_map_icon": true,
+  "settings_cache_notes_min_size": 54
 }
