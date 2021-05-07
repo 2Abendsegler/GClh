@@ -296,5 +296,7 @@
   "settings_lists_hide_desc": true,
   "settings_lists_upload_file": true,
   "settings_searchmap_show_btn_save_as_pq": true,
-  "settings_profile_old_links": false
+  "settings_profile_old_links": false,
+  "settings_map_overview_browse_map_icon": true,
+  "settings_map_overview_search_map_icon": true
 }
