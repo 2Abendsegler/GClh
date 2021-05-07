@@ -299,5 +299,6 @@
   "settings_profile_old_links": false,
   "settings_map_overview_browse_map_icon": true,
   "settings_map_overview_search_map_icon": true,
-  "settings_cache_notes_min_size": 54
+  "settings_cache_notes_min_size": 54,
+  "settings_show_link_to_browse_map": false
 }
