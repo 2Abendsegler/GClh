@@ -11,7 +11,7 @@
   "settings_bookmarks_search_default": "",
   "settings_redirect_to_map": false,
   "settings_new_width": "1000",
-  "settings_hide_facebook": true,
+  "settings_hide_facebook": false,
   "settings_hide_socialshare": true,
   "settings_hide_disclaimer": true,
   "settings_hide_cache_notes": false,
