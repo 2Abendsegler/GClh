@@ -1360,6 +1360,7 @@ var mainGC = function() {
                 newWidth();
                 removeGCMenues();
                 linklistOnTop();
+                buildSpecialLinklistLinks();
                 runAfterRedirect();
                 showDraftIndicatorInHeader();
                 // User profile menu bend into shape.
@@ -1780,6 +1781,25 @@ var mainGC = function() {
                 $('ul:first', this).css('visibility', 'hidden');
             }
         );
+    }
+
+// Aufbau Links zum Aufruf von Config, Sync und Find Player aus Linklist (1. Schritt).
+    function buildSpecialLinklistLinks() {
+        try {
+            // GClh Config, Sync und Find Player Aufrufe aus Linklist heraus.
+            if (checkTaskAllowed("GClh Config", false) == true && document.getElementsByName("lnk_gclhconfig")[0]) {
+                document.getElementsByName("lnk_gclhconfig")[0].href = "#GClhShowConfig";
+                document.getElementsByName("lnk_gclhconfig")[0].addEventListener('click', gclh_showConfig, false);
+            }
+            if (checkTaskAllowed("GClh Sync", false) == true && document.getElementsByName("lnk_gclhsync")[0]) {
+                document.getElementsByName("lnk_gclhsync")[0].href = "#GClhShowSync";
+                document.getElementsByName("lnk_gclhsync")[0].addEventListener('click', gclh_showSync, false);
+            }
+            if (checkTaskAllowed("Find Player", false) == true && document.getElementsByName("lnk_findplayer")[0]) {
+                document.getElementsByName("lnk_findplayer")[0].href = "#GClhShowFindPlayer";
+                document.getElementsByName("lnk_findplayer")[0].addEventListener('click', createFindPlayerForm, false);
+            }
+        } catch(e) {gclh_error("Aufbau Links zum Aufruf von Config, Sync und Find Player aus Linklist (1. Schritt)",e);}
     }
 
 // Run after redirect.
@@ -11275,21 +11295,9 @@ var mainGC = function() {
         } catch(e) {gclh_error("Hide GC Avatar Option",e);}
     }
 
-// Aufbau Links zum Aufruf von Config, Sync und Find Player. Und Changelog im Profile.
+// Aufbau Links zum Aufruf von Config, Sync und Find Player (2. Schritt). Und Changelog im Profile.
     try {
-        // GClh Config, Sync und Find Player Aufrufe aus Linklist heraus.
-        if (checkTaskAllowed("GClh Config", false) == true && document.getElementsByName("lnk_gclhconfig")[0]) {
-            document.getElementsByName("lnk_gclhconfig")[0].href = "#GClhShowConfig";
-            document.getElementsByName("lnk_gclhconfig")[0].addEventListener('click', gclh_showConfig, false);
-        }
-        if (checkTaskAllowed("GClh Sync", false) == true && document.getElementsByName("lnk_gclhsync")[0]) {
-            document.getElementsByName("lnk_gclhsync")[0].href = "#GClhShowSync";
-            document.getElementsByName("lnk_gclhsync")[0].addEventListener('click', gclh_showSync, false);
-        }
-        if (checkTaskAllowed("Find Player", false) == true && document.getElementsByName("lnk_findplayer")[0]) {
-            document.getElementsByName("lnk_findplayer")[0].href = "#GClhShowFindPlayer";
-            document.getElementsByName("lnk_findplayer")[0].addEventListener('click', createFindPlayerForm, false);
-        }
+        // (1. Schritt: Siehe function buildSpecialLinklistLinks.)
         // GClh Config, Sync und Find Player Aufrufe mit Zusatz #GClhShowConfig bzw. #GClhShowSync bzw. #GClhShowFindPlayer.
         // 2. Schritt derzeit im Link bei Settings, Preferences Avatar, teils in den Links aus der Linklist, mit rechter Maustaste aus Links neben
         // Avatar auf Profile Seite und teils F4 bei Aufruf Config.
@@ -11330,7 +11338,7 @@ var mainGC = function() {
                 document.getElementsByName("lnk_findplayer_profile")[0].addEventListener('click', createFindPlayerForm, false);
             }
         }
-    } catch(e) {gclh_error("Aufbau Links zum Aufruf von Config, Sync und Find Player",e);}
+    } catch(e) {gclh_error("Aufbau Links zum Aufruf von Config, Sync und Find Player (2. Schritt)",e);}
 
 // Special Links aus Linklist bzw. Default Links versorgen.
     try {
@@ -12993,7 +13001,9 @@ var mainGC = function() {
             html += "  padding-top: 0px !important;";
             html += "  padding-bottom: 0px !important;";
             html += "  box-shadow: unset !important;";
+            html += "  height: 22px;";
             html += "  display: unset;}";
+            html += ".gclh_form:focus {outline: none;}";
             appendCssStyle(html, "body");
             // Overlay erstellen
             var html = "";
