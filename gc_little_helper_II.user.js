@@ -620,6 +620,7 @@ var variablesInit = function(c) {
     c.settings_searchmap_show_btn_save_as_pq = getValue("settings_searchmap_show_btn_save_as_pq", true);
     c.settings_map_overview_browse_map_icon = getValue("settings_map_overview_browse_map_icon", true);
     c.settings_map_overview_search_map_icon = getValue("settings_map_overview_search_map_icon", true);
+    c.settings_cache_notes_min_size = getValue("settings_cache_notes_min_size", 54);
 
     try {
         if (c.userToken === null) {
@@ -3018,7 +3019,7 @@ var mainGC = function() {
     if (is_page("cache_listing")) {
         // Personal Cache Note: Adapt height of edit field for Personal Cache Note
         function calcHeightOfCacheNote() {
-            return $("#viewCacheNote").parent().height()*1.02+36;
+            return ($("#viewCacheNote").parent().height()*1.02+36 > settings_cache_notes_min_size ? $("#viewCacheNote").parent().height()*1.02+36 : settings_cache_notes_min_size);
         }
 
         if (settings_adapt_height_cache_notes) {
@@ -13818,6 +13819,13 @@ var mainGC = function() {
             html += content_settings_log_inline_tb;
             html += checkboxy('settings_log_inline_pmo4basic', 'Log cache from listing for PMO (for basic members)') + show_help("With this option you can select, if inline logs should appear for Premium Member Only (PMO) caches althought you are a basic member.<br><br>If you're using an ad-blocking add-on, such as uBlock, the embedded screen may not be allowed. To turn this off, you have to add \"www.geocaching.com\/geocache\/GC*\" to the whitelist, or something similar, of your add-on.") + "<br>";
             html += content_settings_log_inline_tb.replace("settings_log_inline_tb", "settings_log_inline_tbX0");
+            html += newParameterOn1;
+            html += "&nbsp;" + "Personal Cache Note minimum size: <select class='gclh_form' id='settings_cache_notes_min_size'>";
+            for (var i = 54; i < 501; i++) {
+                html += "  <option value='" + i + "' " + (settings_cache_notes_min_size == i ? "selected=\"selected\"" : "") + ">" + i + "</option>";
+            }
+            html += "</select> px" + prem + "<br>";
+            html += newParameterVersionSetzen('0.10') + newParameterOff;
             html += checkboxy('settings_hide_empty_cache_notes', 'Hide Personal Cache Notes if empty') + show_help("You can hide the Personal Cache Notes if they are empty. There will be a link to show them to add a note.") + prem + "<br>";
             html += checkboxy('settings_hide_cache_notes', 'Hide Personal Cache Notes completely') + show_help("You can hide the Personal Cache Notes completely, if you don't want to use them.") + prem + "<br>";
             html += newParameterOn3;
@@ -14867,6 +14875,7 @@ var mainGC = function() {
             setValue("settings_show_copydata_own_stuff_name", document.getElementById('settings_show_copydata_own_stuff_name').value);
             setValue("settings_show_copydata_own_stuff_value", document.getElementById('settings_show_copydata_own_stuff_value').value);
             setValue("settings_show_copydata_separator", document.getElementById('settings_show_copydata_separator').value);
+            setValue("settings_cache_notes_min_size", document.getElementById('settings_cache_notes_min_size').value);
 
             // Map Layers in vorgegebener Reihenfolge übernehmen.
             var new_map_layers_available = document.getElementById('settings_maplayers_available');
