@@ -12,7 +12,7 @@
   "settings_redirect_to_map": false,
   "settings_new_width": "1000",
   "settings_hide_facebook": false,
-  "settings_hide_socialshare": true,
+  "settings_hide_socialshare": false,
   "settings_hide_disclaimer": true,
   "settings_hide_cache_notes": false,
   "settings_hide_empty_cache_notes": true,
