@@ -622,6 +622,7 @@ var variablesInit = function(c) {
     c.settings_map_overview_search_map_icon = getValue("settings_map_overview_search_map_icon", true);
     c.settings_cache_notes_min_size = getValue("settings_cache_notes_min_size", 54);
     c.settings_show_link_to_browse_map = getValue("settings_show_link_to_browse_map", false);
+    c.settings_hide_upvotes = getValue("settings_hide_upvotes", false);
 
     try {
         if (c.userToken === null) {
@@ -1891,9 +1892,16 @@ var mainGC = function() {
         }
     }
 
-// Define class "working" for cache listing and display listing images not over the maximum available width for FF and chrome.
+// Collection of css for cache listings.
     if (is_page("cache_listing")) {
-        appendCssStyle(".working {opacity: 0.4; cursor: default !important; text-decoration: none !important;} .UserSuppliedContent img {max-width: -moz-available; max-width: -webkit-fill-available;}");
+        var css = ''
+        // Define class "working".
+        css += ".working {opacity: 0.4; cursor: default !important; text-decoration: none !important;}";
+        // Display listing images not over the maximum available width for FF and chrome.
+        css += ".UserSuppliedContent img {max-width: -moz-available; max-width: -webkit-fill-available;}";
+        // Hide "Great story" and "Helpful" feature.
+        if (settings_hide_upvotes) css += ".sort-logs, .upvotes {display: none !important;}";
+        appendCssStyle(css);
     }
 
 // Disabled and archived ...
@@ -14067,6 +14075,8 @@ var mainGC = function() {
             html += newParameterVersionSetzen(0.9) + newParameterOff;
             html += checkboxy('settings_hide_spoilerwarning', 'Hide spoiler warning') + "<br>";
             html += checkboxy('settings_hide_top_button', 'Hide the green "To Top" button') + show_help("Hide the green \"To Top\" button, which appears if you are reading logs.") + "<br>";
+            var content_settings_hide_upvotes = checkboxy('settings_hide_upvotes', 'Hide upvote feature with logs sort and "Great story", "Helpful" buttons') + show_help3("This option hides the whole upvote feature consist of the logs sort functionality and the buttons \"Great story\" and \"Helpful\" in the logs.") + "<br>";
+            html += content_settings_hide_upvotes;
 
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>Logs</b>" + "</div>";
             html += checkboxy('settings_load_logs_with_gclh', 'Load logs with GClh') + show_help("This option should be enabled. <br><br>You just should disable it, if you have problems with loading the logs. <br><br>If this option is disabled, there are no VIP-, VUP-, mail-, message- and top icons, no line colors and no mouse activated big images at the logs. Also the VIP and VUP lists, hide avatars, log filter and log search won't work.") + "<br>";
@@ -14077,6 +14087,7 @@ var mainGC = function() {
             html += "&nbsp; " + checkboxy('settings_imgcaption_on_topX0', 'Show caption on top') + show_help("This option requires \"Show thumbnails of images\".");
             html += content_geothumbs;
             html += " &nbsp; &nbsp;" + "Spoiler filter: <input class='gclh_form' type='text' id='settings_spoiler_stringsX0' value='" + settings_spoiler_strings + "'> " + show_help("If one of these words is found in the caption of the image, there will be no real thumbnail. It is to prevent seeing spoilers. Words have to be divided by |. If the field is empty, no checking is done. Default is \"spoiler|hinweis\".<br><br>This option requires \"Show thumbnails of images\".") + "<br>";
+            html += content_settings_hide_upvotes.replace("settings_hide_upvotes", "settings_hide_upvotesX0");
             html += "</div>";
 
             html += "<h4 class='gclh_headline2'>"+prepareHideable.replace("#name#","logging")+"Logging</h4>";
@@ -14653,10 +14664,11 @@ var mainGC = function() {
             setEvForDouPara("settings_show_elevation_of_waypoints", "click");
             setEvForDouPara("settings_primary_elevation_service", "input");
             setEvForDouPara("settings_secondary_elevation_service", "input");
+            setEvForDouPara("settings_hide_upvotes", "click");
 
             // Events setzen für Parameter, die im GClh Config eine Abhängigkeit derart auslösen, dass andere Parameter aktiviert bzw.
             // deaktiviert werden müssen. ZB. können Mail Icons in VIP List (Parameter "settings_show_mail_in_viplist") nur aufgebaut
-            // werden, wenn die VIP Liste erzeugt wird (Parameter "settings_show_vip_list"). Clone auch berücksichtigen.
+            // werden, wenn die VIP Liste erzeugt wird (Parameter "settings_show_vip_list"). Clone müssen hier auch berücksichtigt werden.
             setEvForDepPara("settings_change_header_layout", "settings_show_smaller_gc_link");
             setEvForDepPara("settings_change_header_layout", "settings_remove_logo");
             setEvForDepPara("settings_show_smaller_gc_link", "settings_remove_logo");
@@ -15251,6 +15263,7 @@ var mainGC = function() {
                 'settings_map_overview_browse_map_icon',
                 'settings_map_overview_search_map_icon',
                 'settings_show_link_to_browse_map',
+                'settings_hide_upvotes',
             );
 
             for (var i = 0; i < checkboxes.length; i++) {
@@ -15378,9 +15391,9 @@ var mainGC = function() {
         }
     }
 
-// Events setzen für Parameter, die im GClh Config mehrfach ausgegeben wurden, weil sie zu mehreren Themen gehören. Es handelt sich hier um den Parameter selbst. Hier
-// werden Events für den Parameter selbst (ZB: "settings_show_mail_in_viplist") und dessen Clone gesetzt, die hinten mit einem "X" und Nummerierung von 0-9 enden können
-// (ZB: "settings_show_mail_in_viplistX0").
+// Events setzen für Parameter, die im GClh Config mehrfach ausgegeben wurden, weil sie zu mehreren Themen gehören. Es handelt
+// sich hier um den Parameter selbst. In der Function werden Events für den Parameter selbst (ZB: "settings_show_vip_list")
+// und dessen Clone gesetzt, die hinten mit "X" und Nummerierung von 0-9 enden können (ZB: "settings_show_vip_listX0").
     function setEvForDouPara(paraName, event) {
         var paId = paraName;
         if (document.getElementById(paId)) {
@@ -15394,8 +15407,8 @@ var mainGC = function() {
         }
     }
 
-// Handling von Events zu Parametern, die im GClh Config mehrfach ausgegeben wurden, weil sie zu mehreren Themen gehören. Es kann sich hier um den Parameter selbst handeln
-// (ZB: "settings_show_mail_in_viplist"), oder um dessen Clone, die hinten mit "X" und Nummerierung von 0-9 enden können (ZB: "settings_show_mail_in_viplistX0"). Hier wird
+// Handling von Events zu Parametern, die im GClh Config mehrfach ausgegeben wurden, weil sie zu mehreren Themen gehören. Es kann sich hier um den Parameter selbst 
+// handeln (ZB: "settings_show_vip_list"), oder um dessen Clone, die hinten mit "X" und Nummerierung von 0-9 enden können (ZB: "settings_show_vip_listX0"). Hier wird
 // Wert des eventauslösenden Parameters, das kann auch Clone sein, an den eigentlichen Parameter und dessen Clone weitergereicht.
     function handleEvForDouPara(para) {
         var paId = para.id.replace(/(X[0-9]*)/, "");
@@ -15428,9 +15441,9 @@ var mainGC = function() {
         }
     }
 
-// Events setzen für Parameter, die im GClh Config eine Abhängigkeit derart auslösen, dass andere Parameter aktiviert bzw. deaktiviert
-// werden müssen. ZB: können Mail Icons in VIP List (Parameter "settings_show_mail_in_viplist") nur dann aufgebaut werden, wenn Mail Icons
-// überhaupt erzeugt werden (Parameter "settings_show_mail"). Clone müssen hier auch berücksichtigt werden.
+// Events setzen für Parameter, die im GClh Config eine Abhängigkeit derart auslösen, dass andere Parameter aktiviert bzw.
+// deaktiviert werden müssen. ZB. können Mail Icons in VIP List (Parameter "settings_show_mail_in_viplist") nur aufgebaut
+// werden, wenn die VIP Liste erzeugt wird (Parameter "settings_show_vip_list"). Clone müssen hier auch berücksichtigt werden.
     function setEvForDepPara(paraName, paraNameDep, allActivated) {
         var paId = paraName;
         var paIdDep = paraNameDep;
