@@ -300,5 +300,9 @@
   "settings_map_overview_browse_map_icon": true,
   "settings_map_overview_search_map_icon": true,
   "settings_cache_notes_min_size": 54,
-  "settings_show_link_to_browse_map": false
+  "settings_show_link_to_browse_map": false,
+  "settings_show_hide_upvotes_but": false,
+  "settings_hide_upvotes": false,
+  "settings_smaller_upvotes_icons": true,
+  "settings_no_wiggle_upvotes_click": true
 }
