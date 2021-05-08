@@ -622,7 +622,10 @@ var variablesInit = function(c) {
     c.settings_map_overview_search_map_icon = getValue("settings_map_overview_search_map_icon", true);
     c.settings_cache_notes_min_size = getValue("settings_cache_notes_min_size", 54);
     c.settings_show_link_to_browse_map = getValue("settings_show_link_to_browse_map", false);
+    c.settings_show_hide_upvotes_but = getValue("settings_show_hide_upvotes_but", false);
     c.settings_hide_upvotes = getValue("settings_hide_upvotes", false);
+    c.settings_smaller_upvotes_icons = getValue("settings_smaller_upvotes_icons", true);
+    c.settings_no_wiggle_upvotes_click = getValue("settings_no_wiggle_upvotes_click", true);
 
     try {
         if (c.userToken === null) {
@@ -1892,15 +1895,13 @@ var mainGC = function() {
         }
     }
 
-// Collection of css for cache listings.
+// Collection of css for cache listings and small features.
     if (is_page("cache_listing")) {
         var css = ''
         // Define class "working".
         css += ".working {opacity: 0.4; cursor: default !important; text-decoration: none !important;}";
         // Display listing images not over the maximum available width for FF and chrome.
         css += ".UserSuppliedContent img {max-width: -moz-available; max-width: -webkit-fill-available;}";
-        // Hide "Great story" and "Helpful" feature.
-        if (settings_hide_upvotes) css += ".sort-logs, .upvotes {display: none !important;}";
         appendCssStyle(css);
     }
 
@@ -6948,7 +6949,8 @@ var mainGC = function() {
             global_MailTemplate = global_MailTemplate.replace(/__Receiver__/ig, "${UserName}");
 
             var isUpvoteActive = false;
-            if($('#cache_logs_container #sortOrder').length) isUpvoteActive = true
+            if ($('#cache_logs_container div.sort-logs').length) isUpvoteActive = true;
+            var upvoteIconPixel = (settings_smaller_upvotes_icons ? 16:24);
 
             var vupUserString = 'if UserName == "#" ';
             var vupHideAvatarString = 'if (UserName != "#" ';
@@ -7060,71 +7062,73 @@ var mainGC = function() {
                 '      </div>' +
                 '      {{/if}}';
             new_tmpl +=
-                '      <div class="AlignRight">' +
-                '        <small><a title="View Log" href="/seek/log.aspx?LUID=${LogGuid}" target="_blank">' +
-                '        {{if (userInfo.ID==AccountID)}}' +
-                '        View / Edit Log / Images' +
-                '        {{else}}' +
-                '        View Log' +
-                '        {{/if}}' +
-                '        </a></small>&nbsp;' +
-                '        {{if (userInfo.ID==AccountID)}}' +
-                '        <small><a title="Upload Image" href="/seek/upload.aspx?LID=${LogID}" target="_blank">Upload Image</a></small>' +
-                '        {{/if}}' +
-                '      </div>';
+                '      <div class="log-cta">';
             if(isUpvoteActive) new_tmpl +=
-                '     {{if LogType === "Found it" || LogType === "Didn\'t find it" || LogType === "Webcam photo taken" || LogType === "Attended" || LogType === "Announcement" }}' +
-                '         <div class="upvotes">' +
-                '             <button class="great-story-btn{{if (typeof greatStoryupvotedByUser != "undefined") && greatStoryupvotedByUser}} upvoted{{/if}}"' +
-                '                     type="button" ' +
-                '                     data-log-id="${LogID}" ' +
-                '                     data-upvoted="false" ' +
-                '                     data-upvote-type="1" ' +
-                '                     {{if userInfo.ID == AccountID}}' +
-                '                         title="You cannot vote for your own logs."' +
-                '                     {{else}}' +
-                '                         title="Was this a great story?"' +
-                '                     {{/if}}' +
-                '                     {{if userInfo.ID == AccountID}}disabled{{/if}}>                ' +
-                '                 <svg xmlns="https://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">' +
-                '                   <g>' +
-                '                     <g stroke-width="1.125" transform="translate(4 3)">' +
-                '                       <path d="M2,0 L16,0 L16,18 L2,18 L2,18 C0.8954305,18 1.3527075e-16,17.1045695 0,16 L0,2 L0,2 C-1.3527075e-16,0.8954305 0.8954305,2.02906125e-16 2,0 Z"/>' +
-                '                       <path d="M4.5,0.5 L4.5,17.5" stroke-linecap="square"/>' +
-                '                       <polygon points="9 0 13 0 13 8 11 6 9 8"/>' +
-                '                     </g>' +
-                '                   </g>' +
-                '                 </svg>' +
-                '                 <span>Great story{{if (typeof greatStory != "undefined") && greatStory > 0}} (${greatStory}){{/if}}</span>' +
-                '             </button>' +
-                '             <span class="loading-container hide loading-${LogID}">' +
-                '                 <img src="/app/ui-images/branding/loading-spinner.svg"></img>' +
-                '             </span>' +
-                '             <button class="helpful-btn{{if (typeof helpfulupvotedByUser != "undefined") && helpfulupvotedByUser}} upvoted{{/if}}" ' +
-                '                     type="button" data-log-id="${LogID}"' +
-                '                     data-upvoted="false" ' +
-                '                     data-upvote-type="2" ' +
-                '                     {{if userInfo.ID == AccountID}}' +
-                '                         title="You cannot vote for your own logs."' +
-                '                     {{else}}' +
-                '                         title="Was this helpful?"' +
-                '                     {{/if}}' +
-                '                     {{if userInfo.ID == AccountID}}disabled{{/if}}>' +
-                '                 <svg xmlns="https://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 21.55 21.29">' +
-                '                   <g>' +
-                '                     <g>' +
-                '                       <path d="M21.3 13.38a1.08 1.08 0 0 1-.18.6 1 1 0 0 1-1.41.34l-1.29-.89-2.33-1.55-.15.21 3.63 2.43a1.12 1.12 0 0 1 .29 1.48 1.1 1.1 0 0 1-.7.47 1 1 0 0 1-.78-.17l-3.69-2.47-.14.19 3.81 2.59a1.1 1.1 0 0 1 .29 1.51 1 1 0 0 1-1.42.32L13.3 15.8l-.14.2L17 18.58a.48.48 0 0 1 .11.09 1.08 1.08 0 0 1 .17 1.42 1 1 0 0 1-.67.46 1 1 0 0 1-.8-.16l-1.43-1a1.84 1.84 0 0 0-.8-1.39 1.77 1.77 0 0 0-1-.31 1.84 1.84 0 0 0-.33 0 1.67 1.67 0 0 0-.3.08 1.83 1.83 0 0 0-.74-1.88 1.77 1.77 0 0 0-1-.3 1.5 1.5 0 0 0-.35 0 1.58 1.58 0 0 0-.31.09 1.77 1.77 0 0 0-1.73-2.19h-.33a1.7 1.7 0 0 0-.45.15 1.7 1.7 0 0 0-.66-1.83 1.58 1.58 0 0 0-.91-.28 1.35 1.35 0 0 0-.33 0 1.67 1.67 0 0 0-1.06.71l-.3.46a5.17 5.17 0 0 1-.43-2.13L0 8.31 4.92.9l3.32 2.31A2.67 2.67 0 0 1 11.52 3a4.19 4.19 0 0 0-2.75 1.16C7.79 5.33 6.17 7.79 6.05 8H6v.06a2 2 0 0 0 .3 1.68 1.07 1.07 0 0 0 .42.33 1.62 1.62 0 0 0 .72.17 1.54 1.54 0 0 0 1.09-.45l1.31-2a2.44 2.44 0 0 0 1.49.63 2 2 0 0 0 .42 0 2.12 2.12 0 0 0 .67-.3 2.61 2.61 0 0 0 .78-.7l6.58 4.41 1 .65a1.09 1.09 0 0 1 .45.69.82.82 0 0 1 .07.21z"/>' +
-                '                       <path d="M9.23 15.31a1 1 0 0 1 0 .17.8.8 0 0 1 0 .15 1.33 1.33 0 0 1 0 .19l-.15.18a1.09 1.09 0 0 1-.08.15l-.16.24L8 17.55a1.43 1.43 0 0 1-.2.23 1.43 1.43 0 0 1-.7.36 1.23 1.23 0 0 1-.27 0 1.42 1.42 0 0 1-.8-.24 1.49 1.49 0 0 1-.5-1.8 1.74 1.74 0 0 1 .1-.19l1-1.44a1.43 1.43 0 0 1 .89-.57 1.23 1.23 0 0 1 .27 0 1.44 1.44 0 0 1 .8.24 1.55 1.55 0 0 1 .27.24 1.32 1.32 0 0 1 .19.29 2.19 2.19 0 0 1 .12.33 1.39 1.39 0 0 1 .06.31zM11.58 17.75a2.33 2.33 0 0 1-.14.33.34.34 0 0 1-.06.12l-.75 1.14a1 1 0 0 1-.13.16 1.38 1.38 0 0 1-.79.45 1.14 1.14 0 0 1-.26 0 1.38 1.38 0 0 1-.8-.25 1.47 1.47 0 0 1-.53-1.7 1.22 1.22 0 0 1 .14-.28L9 16.56a1.48 1.48 0 0 1 .33-.33 1.33 1.33 0 0 1 .6-.23 1.23 1.23 0 0 1 .27 0 1.41 1.41 0 0 1 .79.24 1.48 1.48 0 0 1 .59 1.51zM13.76 20.3l-.37.55a1.29 1.29 0 0 1-1.13.44 5 5 0 0 1-.88-.09 1.48 1.48 0 0 1-.55-1.56.27.27 0 0 0 .09-.1l.75-1.14.05-.08.08-.07a1.26 1.26 0 0 1 .26-.13 1.05 1.05 0 0 1 .24-.06 1.06 1.06 0 0 1 .25 0A1.41 1.41 0 0 1 14 19.15a1.48 1.48 0 0 1-.24 1.15zM11.8 18.24l-.08.07z"/>' +
-                '                       <path d="M11.72 18.3l.08-.07z" />' +
-                '                       <path d="M20.05 9.92a2.33 2.33 0 0 1-.19 1.44l-6.68-4.48-.06.12a2.34 2.34 0 0 1-.92.85 2 2 0 0 1-.48.19 1.24 1.24 0 0 1-.33 0A2.15 2.15 0 0 1 10 7.36l-.11-.12L8.3 9.57a1.22 1.22 0 0 1-.85.35 1.17 1.17 0 0 1-.57-.14.83.83 0 0 1-.31-.24 1.17 1.17 0 0 1-.23-.44 2.21 2.21 0 0 1 0-.93C6.5 7.93 8.09 5.52 9 4.39a4 4 0 0 1 2.71-1h.54L14.53 0l7 4.93-2.17 3.33v.07a5.38 5.38 0 0 1 .69 1.59zM6.52 14l-.13.2v.06l-1 1.45a1.36 1.36 0 0 1-.84.55 1 1 0 0 1-.24 0 1.26 1.26 0 0 1-.73-.23 1.37 1.37 0 0 1-.35-1.84l1.14-1.71a1.33 1.33 0 0 1 .84-.48 1.06 1.06 0 0 1 .25 0 1.22 1.22 0 0 1 .71.22A1.37 1.37 0 0 1 6.52 14z"/>' +
-                '                     </g>' +
-                '                   </g>' +
-                '                 </svg>' +
-                '                 <span>Helpful{{if (typeof helpful != "undefined") && helpful > 0}} (${helpful}){{/if}}</span>' +
-                '             </button>' +
-                '         </div>' +
-                '     {{/if}}';
+                '        {{if LogType === "Found it" || LogType === "Didn\'t find it" || LogType === "Webcam photo taken" || LogType === "Attended" || LogType === "Announcement" }}' +
+                '          <div class="upvotes">' +
+                '              <button class="great-story-btn{{if (typeof greatStoryupvotedByUser != "undefined") && greatStoryupvotedByUser}} upvoted{{/if}}"' +
+                '                      type="button" ' +
+                '                      data-log-id="${LogID}" ' +
+                '                      data-upvoted="false" ' +
+                '                      data-upvote-type="1" ' +
+                '                      {{if userInfo.ID == AccountID}}' +
+                '                          title="You cannot vote for your own logs."' +
+                '                      {{else}}' +
+                '                          title="Was this a great story?"' +
+                '                      {{/if}}' +
+                '                      {{if userInfo.ID == AccountID}}disabled{{/if}}>                ' +
+                '                  <svg xmlns="https://www.w3.org/2000/svg" width="' + upvoteIconPixel + '" height="' + upvoteIconPixel + '" viewBox="0 0 24 24">' +
+                '                    <g>' +
+                '                      <g stroke-width="1.125" transform="translate(4 3)">' +
+                '                        <path d="M2,0 L16,0 L16,18 L2,18 L2,18 C0.8954305,18 1.3527075e-16,17.1045695 0,16 L0,2 L0,2 C-1.3527075e-16,0.8954305 0.8954305,2.02906125e-16 2,0 Z"/>' +
+                '                        <path d="M4.5,0.5 L4.5,17.5" stroke-linecap="square"/>' +
+                '                        <polygon points="9 0 13 0 13 8 11 6 9 8"/>' +
+                '                      </g>' +
+                '                    </g>' +
+                '                  </svg>' +
+                '                  <span>Great story{{if (typeof greatStory != "undefined") && greatStory > 0}} (${greatStory}){{/if}}</span>' +
+                '              </button>' +
+                '              <span class="loading-container hide loading-${LogID}">' +
+                '                  <img src="/app/ui-images/branding/loading-spinner.svg"></img>' +
+                '              </span>' +
+                '              <button class="helpful-btn{{if (typeof helpfulupvotedByUser != "undefined") && helpfulupvotedByUser}} upvoted{{/if}}" ' +
+                '                      type="button" data-log-id="${LogID}"' +
+                '                      data-upvoted="false" ' +
+                '                      data-upvote-type="2" ' +
+                '                      {{if userInfo.ID == AccountID}}' +
+                '                          title="You cannot vote for your own logs."' +
+                '                      {{else}}' +
+                '                          title="Was this helpful?"' +
+                '                      {{/if}}' +
+                '                      {{if userInfo.ID == AccountID}}disabled{{/if}}>' +
+                '                  <svg xmlns="https://www.w3.org/2000/svg" width="' + upvoteIconPixel + '" height="' + upvoteIconPixel + '" viewBox="0 0 21.55 21.29">' +
+                '                    <g>' +
+                '                      <g>' +
+                '                        <path d="M21.3 13.38a1.08 1.08 0 0 1-.18.6 1 1 0 0 1-1.41.34l-1.29-.89-2.33-1.55-.15.21 3.63 2.43a1.12 1.12 0 0 1 .29 1.48 1.1 1.1 0 0 1-.7.47 1 1 0 0 1-.78-.17l-3.69-2.47-.14.19 3.81 2.59a1.1 1.1 0 0 1 .29 1.51 1 1 0 0 1-1.42.32L13.3 15.8l-.14.2L17 18.58a.48.48 0 0 1 .11.09 1.08 1.08 0 0 1 .17 1.42 1 1 0 0 1-.67.46 1 1 0 0 1-.8-.16l-1.43-1a1.84 1.84 0 0 0-.8-1.39 1.77 1.77 0 0 0-1-.31 1.84 1.84 0 0 0-.33 0 1.67 1.67 0 0 0-.3.08 1.83 1.83 0 0 0-.74-1.88 1.77 1.77 0 0 0-1-.3 1.5 1.5 0 0 0-.35 0 1.58 1.58 0 0 0-.31.09 1.77 1.77 0 0 0-1.73-2.19h-.33a1.7 1.7 0 0 0-.45.15 1.7 1.7 0 0 0-.66-1.83 1.58 1.58 0 0 0-.91-.28 1.35 1.35 0 0 0-.33 0 1.67 1.67 0 0 0-1.06.71l-.3.46a5.17 5.17 0 0 1-.43-2.13L0 8.31 4.92.9l3.32 2.31A2.67 2.67 0 0 1 11.52 3a4.19 4.19 0 0 0-2.75 1.16C7.79 5.33 6.17 7.79 6.05 8H6v.06a2 2 0 0 0 .3 1.68 1.07 1.07 0 0 0 .42.33 1.62 1.62 0 0 0 .72.17 1.54 1.54 0 0 0 1.09-.45l1.31-2a2.44 2.44 0 0 0 1.49.63 2 2 0 0 0 .42 0 2.12 2.12 0 0 0 .67-.3 2.61 2.61 0 0 0 .78-.7l6.58 4.41 1 .65a1.09 1.09 0 0 1 .45.69.82.82 0 0 1 .07.21z"/>' +
+                '                        <path d="M9.23 15.31a1 1 0 0 1 0 .17.8.8 0 0 1 0 .15 1.33 1.33 0 0 1 0 .19l-.15.18a1.09 1.09 0 0 1-.08.15l-.16.24L8 17.55a1.43 1.43 0 0 1-.2.23 1.43 1.43 0 0 1-.7.36 1.23 1.23 0 0 1-.27 0 1.42 1.42 0 0 1-.8-.24 1.49 1.49 0 0 1-.5-1.8 1.74 1.74 0 0 1 .1-.19l1-1.44a1.43 1.43 0 0 1 .89-.57 1.23 1.23 0 0 1 .27 0 1.44 1.44 0 0 1 .8.24 1.55 1.55 0 0 1 .27.24 1.32 1.32 0 0 1 .19.29 2.19 2.19 0 0 1 .12.33 1.39 1.39 0 0 1 .06.31zM11.58 17.75a2.33 2.33 0 0 1-.14.33.34.34 0 0 1-.06.12l-.75 1.14a1 1 0 0 1-.13.16 1.38 1.38 0 0 1-.79.45 1.14 1.14 0 0 1-.26 0 1.38 1.38 0 0 1-.8-.25 1.47 1.47 0 0 1-.53-1.7 1.22 1.22 0 0 1 .14-.28L9 16.56a1.48 1.48 0 0 1 .33-.33 1.33 1.33 0 0 1 .6-.23 1.23 1.23 0 0 1 .27 0 1.41 1.41 0 0 1 .79.24 1.48 1.48 0 0 1 .59 1.51zM13.76 20.3l-.37.55a1.29 1.29 0 0 1-1.13.44 5 5 0 0 1-.88-.09 1.48 1.48 0 0 1-.55-1.56.27.27 0 0 0 .09-.1l.75-1.14.05-.08.08-.07a1.26 1.26 0 0 1 .26-.13 1.05 1.05 0 0 1 .24-.06 1.06 1.06 0 0 1 .25 0A1.41 1.41 0 0 1 14 19.15a1.48 1.48 0 0 1-.24 1.15zM11.8 18.24l-.08.07z"/>' +
+                '                        <path d="M11.72 18.3l.08-.07z" />' +
+                '                        <path d="M20.05 9.92a2.33 2.33 0 0 1-.19 1.44l-6.68-4.48-.06.12a2.34 2.34 0 0 1-.92.85 2 2 0 0 1-.48.19 1.24 1.24 0 0 1-.33 0A2.15 2.15 0 0 1 10 7.36l-.11-.12L8.3 9.57a1.22 1.22 0 0 1-.85.35 1.17 1.17 0 0 1-.57-.14.83.83 0 0 1-.31-.24 1.17 1.17 0 0 1-.23-.44 2.21 2.21 0 0 1 0-.93C6.5 7.93 8.09 5.52 9 4.39a4 4 0 0 1 2.71-1h.54L14.53 0l7 4.93-2.17 3.33v.07a5.38 5.38 0 0 1 .69 1.59zM6.52 14l-.13.2v.06l-1 1.45a1.36 1.36 0 0 1-.84.55 1 1 0 0 1-.24 0 1.26 1.26 0 0 1-.73-.23 1.37 1.37 0 0 1-.35-1.84l1.14-1.71a1.33 1.33 0 0 1 .84-.48 1.06 1.06 0 0 1 .25 0 1.22 1.22 0 0 1 .71.22A1.37 1.37 0 0 1 6.52 14z"/>' +
+                '                      </g>' +
+                '                    </g>' +
+                '                  </svg>' +
+                '                  <span>Helpful{{if (typeof helpful != "undefined") && helpful > 0}} (${helpful}){{/if}}</span>' +
+                '              </button>' +
+                '          </div>' +
+                '        {{/if}}' +
+                '        <div class="AlignRight">' +
+                '          <small><a title="View Log" href="/seek/log.aspx?LUID=${LogGuid}" target="_blank">' +
+                '          {{if (userInfo.ID==AccountID)}}' +
+                '          View / Edit Log / Images' +
+                '          {{else}}' +
+                '          View Log' +
+                '          {{/if}}' +
+                '          </a></small>&nbsp;' +
+                '          {{if (userInfo.ID==AccountID)}}' +
+                '          <small><a title="Upload Image" href="/seek/upload.aspx?LID=${LogID}" target="_blank">Upload Image</a></small>' +
+                '          {{/if}}' +
+                '        </div>';
             new_tmpl +=
+                '       </div>' +
                 '     </div>' +
                 '   </td>' +
                 '</tr>';
@@ -7137,12 +7141,16 @@ var mainGC = function() {
             css += ".markdown-output {margin: unset;}";
             if (!settings_hide_avatar) css += ".markdown-output {min-height: 6em;}";
             // Bilderrahmen im Log ausrichten.
-            css += ".TableLogContent {padding-left: 0; border-left: none;}";
             css += ".LogImagesTable {margin-left: 0;} .LogImagesTable a.lnk {white-space: initial;}";
             css += ".LogImagesTable a.gclh_thumb img {margin-bottom: 1px !important; margin-top: 1px; vertical-align: sub;}";
             // Länge der Usernamen in den Logs beschränken, damit sie nicht umgebrochen werden.
             css += ".logOwnerProfileName {max-width: 135px; display: inline-block; overflow: hidden; vertical-align: bottom; white-space: nowrap; text-overflow: ellipsis;}";
-            if(isUpvoteActive) css += ".upvotes{display: block;}";
+            // For upvotes functionality.
+            if (isUpvoteActive) css += ".upvotes{display: block;}";
+            css += ".TableLogContent {padding-left: 0; border-left: none; margin-bottom: 0.5em;}";
+            css += ".log-cta {margin-bottom: -0.5em;}";
+            css += ".gclh_hide_upvotes div.sort-logs, .gclh_hide_upvotes div.upvotes {display: none!important;}";
+            if (settings_no_wiggle_upvotes_click) css += ".upvotes .loading-container {height: " + (settings_smaller_upvotes_icons ? 20:26) +"px;}";
             appendCssStyle(css);
         } catch(e) {gclh_error("Define log-template",e);}
     }
@@ -7267,7 +7275,7 @@ var mainGC = function() {
                     global_logs = logs;
                     global_num = num;
                     window.addEventListener("scroll", function (event) {
-                        gclh_dynamic_load();
+                        gclh_dynamic_load(logs, num);
                         event.stopPropagation();
                     }, true);
                 }
@@ -7338,6 +7346,8 @@ var mainGC = function() {
                 var para = document.getElementById('ctl00_ContentBody_lblFindCounts').nextSibling.nextSibling.nextSibling.nextSibling;
                 if (para && para.nodeName == 'P') para.className = para.className + ' Clear';
                 if (settings_show_all_logs_but) addButtonOverLogs(gclh_load_all_logs, "gclh_load_all_logs", false, "Show all logs", "");
+                if (settings_hide_upvotes) showHideUpvotes();
+                if (isUpvoteActive && settings_show_hide_upvotes_but) showHideUpvotesLink();
                 if (settings_show_bigger_avatars_but && !settings_hide_avatar && !isMemberInPmoCache() && settings_show_thumbnails) showBiggerAvatarsLink();
                 if (settings_show_log_counter_but) showLogCounterLink();
                 if(isUpvoteActive){
@@ -12305,6 +12315,34 @@ var mainGC = function() {
         (this.className.match("isHide") ? $(this).removeClass("isHide") : $(this).addClass("isHide"));
     }
 
+// Show/hide upvotes with "Order by", "Great story" and "Helpful".
+    function showHideUpvotesLink() {
+        addButtonOverLogs(showHideUpvotes, "gclh_show_hide_upvotes", true, "Hide upvotes", "Show/hide upvotes with \"Order by\", \"Great story\" and \"Helpful\"");
+        setUpvotesButTitle();
+    }
+    function showHideUpvotes() {
+        if (isUpvoteActive == false || $('#gclh_show_hide_upvotes.working')[0]) return;
+        $('#cache_logs_container').toggleClass('gclh_hide_upvotes');
+        if ($('#gclh_show_hide_upvotes')[0]) {
+            $('#gclh_show_hide_upvotes input')[0].setAttribute('disabled', '');
+            $('#gclh_show_hide_upvotes').addClass("working");
+            setTimeout(function() {
+                setUpvotesButTitle();
+                $('#gclh_show_hide_upvotes').removeClass("working");
+                $('#gclh_show_hide_upvotes input')[0].removeAttribute('disabled');
+            }, 100);
+        }
+    }
+    function setUpvotesButTitle() {
+        if ($('#gclh_show_hide_upvotes')[0] && $('#cache_logs_container')[0]) {
+            if ($('#cache_logs_container').hasClass('gclh_hide_upvotes')) {
+                $('#gclh_show_hide_upvotes')[0].children[0].value = 'Show upvotes';
+            } else {
+                $('#gclh_show_hide_upvotes')[0].children[0].value = 'Hide upvotes';
+            }
+        }
+    }
+
 // Show log counter.
     function showLogCounterLink() {
         addButtonOverLogs(showLogCounter, "gclh_show_log_counter", true, "Show log counter", "Show log counter for log type and total");
@@ -14073,10 +14111,16 @@ var mainGC = function() {
             html += "&nbsp;&nbsp;" + checkboxy('settings_show_log_counter', 'Show log counter when opening cache listing') + "<br>";
             html += checkboxy('settings_show_bigger_avatars_but', 'Show button \"Show bigger avatars\" above the logs') + "<br>";
             html += newParameterVersionSetzen(0.9) + newParameterOff;
+            html += newParameterOn2;
+            var content_upvotes_help = show_help3("With this option you can show/hide the whole upvotes feature consist of the logs sort button \"Order by\" above the logs and the buttons \"Great story\" and \"Helpful\" in the logs.");
+            html += checkboxy('settings_show_hide_upvotes_but', 'Show button \"Hide upvotes\" above the logs') + content_upvotes_help + "<br>";
+            html += newParameterVersionSetzen('0.11') + newParameterOff;
             html += checkboxy('settings_hide_spoilerwarning', 'Hide spoiler warning') + "<br>";
-            html += checkboxy('settings_hide_top_button', 'Hide the green "To Top" button') + show_help("Hide the green \"To Top\" button, which appears if you are reading logs.") + "<br>";
-            var content_settings_hide_upvotes = checkboxy('settings_hide_upvotes', 'Hide upvote feature with logs sort and "Great story", "Helpful" buttons') + show_help3("This option hides the whole upvote feature consist of the logs sort functionality and the buttons \"Great story\" and \"Helpful\" in the logs.") + "<br>";
+            html += newParameterOn2;
+            var content_settings_hide_upvotes = checkboxy('settings_hide_upvotes', 'Hide upvotes with "Order by", "Great story" and "Helpful" buttons') + content_upvotes_help + "<br>";
             html += content_settings_hide_upvotes;
+            html += newParameterVersionSetzen('0.11') + newParameterOff;
+            html += checkboxy('settings_hide_top_button', 'Hide the green "To Top" button') + show_help("Hide the green \"To Top\" button, which appears if you are reading logs.") + "<br>";
 
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>Logs</b>" + "</div>";
             html += checkboxy('settings_load_logs_with_gclh', 'Load logs with GClh') + show_help("This option should be enabled. <br><br>You just should disable it, if you have problems with loading the logs. <br><br>If this option is disabled, there are no VIP-, VUP-, mail-, message- and top icons, no line colors and no mouse activated big images at the logs. Also the VIP and VUP lists, hide avatars, log filter and log search won't work.") + "<br>";
@@ -14087,7 +14131,11 @@ var mainGC = function() {
             html += "&nbsp; " + checkboxy('settings_imgcaption_on_topX0', 'Show caption on top') + show_help("This option requires \"Show thumbnails of images\".");
             html += content_geothumbs;
             html += " &nbsp; &nbsp;" + "Spoiler filter: <input class='gclh_form' type='text' id='settings_spoiler_stringsX0' value='" + settings_spoiler_strings + "'> " + show_help("If one of these words is found in the caption of the image, there will be no real thumbnail. It is to prevent seeing spoilers. Words have to be divided by |. If the field is empty, no checking is done. Default is \"spoiler|hinweis\".<br><br>This option requires \"Show thumbnails of images\".") + "<br>";
+            html += newParameterOn2;
             html += content_settings_hide_upvotes.replace("settings_hide_upvotes", "settings_hide_upvotesX0");
+            html += checkboxy('settings_smaller_upvotes_icons', 'Make upvotes icons for \"Great story\" and \"Helpful\" smaller') + show_help("This option makes the upvotes icons used for the buttons \"Great story\" and \"Helpful\" smaller, as is the case with other icons in the logs.") + "<br>";
+            html += checkboxy('settings_no_wiggle_upvotes_click', 'No wiggle on click to upvotes buttons \"Great story\" and \"Helpful\"') + show_help3("With this option you can prevent the page wiggle if you click to the button \"Great story\" or \"Helpful\".") + "<br>";
+            html += newParameterVersionSetzen('0.11') + newParameterOff;
             html += "</div>";
 
             html += "<h4 class='gclh_headline2'>"+prepareHideable.replace("#name#","logging")+"Logging</h4>";
@@ -15263,7 +15311,10 @@ var mainGC = function() {
                 'settings_map_overview_browse_map_icon',
                 'settings_map_overview_search_map_icon',
                 'settings_show_link_to_browse_map',
+                'settings_show_hide_upvotes_but',
                 'settings_hide_upvotes',
+                'settings_smaller_upvotes_icons',
+                'settings_no_wiggle_upvotes_click',
             );
 
             for (var i = 0; i < checkboxes.length; i++) {
