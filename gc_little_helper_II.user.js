@@ -1895,7 +1895,7 @@ var mainGC = function() {
         }
     }
 
-// Collection of css for cache listings and small features.
+// Collection of css for cache listings.
     if (is_page("cache_listing")) {
         var css = ''
         // Define class "working".
@@ -11608,6 +11608,12 @@ var mainGC = function() {
             }
             checkSouvenirsDashboard(0);
         } catch(e) {gclh_error("Improve Souvenirs",e);}
+    }
+
+// Improve view log and edit log page.
+    if (document.location.href.match(/\.com\/(seek\/log\.aspx\?code=|track\/log\.aspx\?LUID=|track\/log\.aspx\?LogReferenceCode)/)) {
+        // Improve alignment of icons.
+        appendCssStyle('.logPanel h3 img {vertical-align: baseline;}');
     }
 
 // Check for upgrade.
