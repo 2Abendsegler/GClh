@@ -2,7 +2,7 @@
 // @name             GC little helper II
 // @namespace        http://www.amshove.net
 //--> $$000
-// @version          0.10.20
+// @version          0.11
 //<-- $$000
 // @include          https://www.geocaching.com/*
 // @include          https://maps.google.tld/*
@@ -7305,7 +7305,7 @@ var mainGC = function() {
                             unsafeWindow.$('a.tb_images').fancybox({'type': 'image', 'titlePosition': 'inside'});
                             gclh_add_vip_icon();
                             setLinesColorInCacheListing();
-                            if(isUpvoteActive){
+                            if (isUpvoteActive){
                                 unsafeWindow.appendUpvotesToLogs(log_ids);
                                 updateUpvoteEvents(logs);
                             }
@@ -7336,6 +7336,9 @@ var mainGC = function() {
                             unsafeWindow.$('a.tb_images').fancybox({'type': 'image', 'titlePosition': 'inside'});
                             gclh_add_vip_icon();
                             setLinesColorInCacheListing();
+                            if (isUpvoteActive){
+                                updateUpvoteEvents(logs);
+                            }
                             setMarkerDisableDynamicLogLoad();
                             if (document.getElementById("gclh_show_log_counter")) document.getElementById("gclh_show_log_counter").style.visibility = "";
                         }
@@ -7388,6 +7391,9 @@ var mainGC = function() {
                     unsafeWindow.$('a.tb_images').fancybox({'type': 'image', 'titlePosition': 'inside'});
                     gclh_add_vip_icon();
                     setLinesColorInCacheListing();
+                    if (isUpvoteActive){
+                        updateUpvoteEvents(logs);
+                    }
                     setMarkerDisableDynamicLogLoad();
                     if (document.getElementById("gclh_show_log_counter")) document.getElementById("gclh_show_log_counter").style.visibility = "hidden";
                 }
@@ -7487,6 +7493,9 @@ var mainGC = function() {
                     unsafeWindow.$('a.tb_images').fancybox({'type': 'image', 'titlePosition': 'inside'});
                     gclh_add_vip_icon();
                     setLinesColorInCacheListing();
+                    if (isUpvoteActive){
+                        updateUpvoteEvents(logs);
+                    }
                     setMarkerDisableDynamicLogLoad();
 
                     // Highlight the searchs.
