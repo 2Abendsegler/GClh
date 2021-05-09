@@ -30,10 +30,10 @@
 		<strong>New:</strong> [Config] New structuring of the topics "Global" and "Listing" in config. [<a href="https://github.com/2Abendsegler/GClh/issues/1697" title="Issue 1697">1697</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#gclh_config_global" title="Link to your GClh Config">Settings -> Global:</a><br>
 		New structuring of the topic "Global".<br>
-		<img src="../images/0.11/Screen01.jpg" alt="Screen01.jpg"><br>
+		<img src="../images/0.11/Screen01.png" alt="Screen01.png"><br>
 		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#gclh_config_listing" title="Link to your GClh Config">Settings -> Listing:</a><br>
 		New structuring of the topic "Listing".<br>
-		<img src="../images/0.11/Screen02.jpg" alt="Screen02.jpg"><br><br>
+		<img src="../images/0.11/Screen02.png" alt="Screen02.png"><br><br>
 	</li>
 </ul>
 
