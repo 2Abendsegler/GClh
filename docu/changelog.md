@@ -31,7 +31,7 @@
 		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#gclh_config_global" title="Link to your GClh Config">Settings -> Global:</a><br>
 		New structuring of the topic "Global".<br>
 		<img src="../images/0.11/Screen01.jpg" alt="Screen01.jpg"><br>
-		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#gclh_config_listing" title="Link to your GClh Config">Settings -> Global:</a><br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#gclh_config_listing" title="Link to your GClh Config">Settings -> Listing:</a><br>
 		New structuring of the topic "Listing".<br>
 		<img src="../images/0.11/Screen02.jpg" alt="Screen02.jpg"><br><br>
 	</li>
@@ -49,6 +49,14 @@
 		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_map_overview_browse_map_icon" title="Link to your GClh Config">Settings -> Listing - Overview map (right sidebar):</a><br>
 		<img src="../images/0.11/Screen04.jpg" alt="Screen04.jpg"><br><br>
 		<img src="../images/0.11/Screen05.gif" alt="Screen05.gif"><br><br>
+	</li>
+	<li>
+		<strong>New:</strong> [Cache listing] Show button "Hide upvotes" above the logs. [<a href="https://github.com/2Abendsegler/GClh/issues/1623" title="Issue 1623">1623</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		With this option you can show/hide the whole upvotes feature consist of the logs sort button "Order by" above the logs and the buttons "Great story" and "Helpful" in the logs.<br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_show_hide_upvotes_but" title="Link to your GClh Config">Settings -> Listing - Logs header:</a><br>
+		<img src="../images/0.11/Screen09.jpg" alt="Screen09.jpg"><br>
+		If you want to use this feature, you have to activate it.<br><br>
+		<img src="../images/0.11/Screen10.jpg" alt="Screen10.jpg"><br><br>
 	</li>
 	<li>
 		<strong>New:</strong> [Cache listing] Hide upvote feature with logs sort and "Great story", "Helpful" buttons. [<a href="https://github.com/2Abendsegler/GClh/issues/1623" title="Issue 1623">1623</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
