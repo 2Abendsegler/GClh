@@ -11,8 +11,8 @@
   "settings_bookmarks_search_default": "",
   "settings_redirect_to_map": false,
   "settings_new_width": "1000",
-  "settings_hide_facebook": true,
-  "settings_hide_socialshare": true,
+  "settings_hide_facebook": false,
+  "settings_hide_socialshare": false,
   "settings_hide_disclaimer": true,
   "settings_hide_cache_notes": false,
   "settings_hide_empty_cache_notes": true,
@@ -296,5 +296,13 @@
   "settings_lists_hide_desc": true,
   "settings_lists_upload_file": true,
   "settings_searchmap_show_btn_save_as_pq": true,
-  "settings_profile_old_links": false
+  "settings_profile_old_links": false,
+  "settings_map_overview_browse_map_icon": true,
+  "settings_map_overview_search_map_icon": true,
+  "settings_cache_notes_min_size": 54,
+  "settings_show_link_to_browse_map": false,
+  "settings_show_hide_upvotes_but": false,
+  "settings_hide_upvotes": false,
+  "settings_smaller_upvotes_icons": true,
+  "settings_no_wiggle_upvotes_click": true
 }

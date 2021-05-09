@@ -2,7 +2,7 @@
 // @name             GC little helper II
 // @namespace        http://www.amshove.net
 //--> $$000
-// @version          0.10.20
+// @version          0.11
 //<-- $$000
 // @include          https://www.geocaching.com/*
 // @include          https://maps.google.tld/*
@@ -61,7 +61,7 @@ var start = function(c) {
                     } else if (document.location.href.match(/^https?:\/\/project-gc\.com\/Tools\/PQSplit/)) {
                         mainPGC();
                     }
-                } else {waitCount++; if (waitCount <= 1000) setTimeout(function(){checkBodyContent(waitCount);}, 10);} // GDPR
+                } else {waitCount++; if (waitCount <= 5000) setTimeout(function(){checkBodyContent(waitCount);}, 10);} // GDPR
             }
             checkBodyContent(0); // GDPR
         });
@@ -79,11 +79,10 @@ var checkRunningOnce = function(c) {
 
 var quitOnAdFrames = function(c) {
     var quitOnAdFramesDeref = new jQuery.Deferred();
-    if(window.name) {
+    if (window.name) {
         if (window.name.substring(0, 18) !== 'google_ads_iframe_') quitOnAdFramesDeref.resolve();
         else quitOnAdFramesDeref.reject();
-    }
-    else {
+    } else {
         quitOnAdFramesDeref.resolve();
     }
     return quitOnAdFramesDeref.promise();
@@ -107,9 +106,8 @@ var leafletInit = function(c) {
                 injectPageScript(newJS, "body", 'gclh_leafletjs');
             }
         }
-
         if ( L.version != "0.7.2" ) {
-            gclh_error("Unexpected vesion of leaflet. Version 0.7.2 required, version "+L.version+" is loaded.");
+            gclh_error("Unexpected version of leaflet. Version 0.7.2 required, version "+L.version+" is loaded.");
         }
     } catch(e) { gclh_error("leafletInit failed",e);}
 };
@@ -319,8 +317,8 @@ var variablesInit = function(c) {
     c.settings_bookmarks_search_default = getValue("settings_bookmarks_search_default", "");
     c.settings_redirect_to_map = getValue("settings_redirect_to_map", false);
     c.settings_new_width = getValue("settings_new_width", 1000);
-    c.settings_hide_facebook = getValue("settings_hide_facebook", true);
-    c.settings_hide_socialshare = getValue("settings_hide_socialshare", true);
+    c.settings_hide_facebook = getValue("settings_hide_facebook", false);
+    c.settings_hide_socialshare = getValue("settings_hide_socialshare", false);
     c.settings_hide_disclaimer = getValue("settings_hide_disclaimer", true);
     c.settings_hide_cache_notes = getValue("settings_hide_cache_notes", false);
     c.settings_adapt_height_cache_notes = getValue("settings_adapt_height_cache_notes", true);
@@ -620,6 +618,14 @@ var variablesInit = function(c) {
     c.settings_lists_upload_file = getValue("settings_lists_upload_file", true);
     c.settings_profile_old_links = getValue("settings_profile_old_links", false);
     c.settings_searchmap_show_btn_save_as_pq = getValue("settings_searchmap_show_btn_save_as_pq", true);
+    c.settings_map_overview_browse_map_icon = getValue("settings_map_overview_browse_map_icon", true);
+    c.settings_map_overview_search_map_icon = getValue("settings_map_overview_search_map_icon", true);
+    c.settings_cache_notes_min_size = getValue("settings_cache_notes_min_size", 54);
+    c.settings_show_link_to_browse_map = getValue("settings_show_link_to_browse_map", false);
+    c.settings_show_hide_upvotes_but = getValue("settings_show_hide_upvotes_but", false);
+    c.settings_hide_upvotes = getValue("settings_hide_upvotes", false);
+    c.settings_smaller_upvotes_icons = getValue("settings_smaller_upvotes_icons", true);
+    c.settings_no_wiggle_upvotes_click = getValue("settings_no_wiggle_upvotes_click", true);
 
     try {
         if (c.userToken === null) {
@@ -1130,8 +1136,8 @@ var mainOSM = function() {
 ////////////////////////////
 var mainGCWait = function() {
 
-// Hide Facebook.
-    if (settings_hide_facebook && (document.location.href.match(/\.com\/(play|account\/register|login|account\/login|seek\/log\.aspx?(.*)|account\/signin)/))) {
+// Hide login procedures via Facebook, Google, Apple ... .
+    if (settings_hide_facebook && (document.location.href.match(/\.com\/(account\/register|login|account\/login|account\/signin|account\/join)/))) {
         try {
             if ($('.btn.btn-facebook')[0]) $('.btn.btn-facebook')[0].style.display = "none";
             if ($('.divider-flex')[0]) $('.divider-flex')[0].style.display = "none";
@@ -1142,41 +1148,6 @@ var mainGCWait = function() {
             if ($('.oauth-providers-login')[0]) $('.oauth-providers-login')[0].style.display = "none";
         } catch(e) {gclh_error("Hide Facebook",e);}
     }
-
-// Set global data and check if logged in.
-    function waitingForUserParameter(waitCount) {
-        // All pages with the exception of the new map.
-        if (typeof headerSettings !== 'undefined' && headerSettings.username && headerSettings.avatarUrl && headerSettings.locale) {
-            global_me = headerSettings.username;
-            global_avatarUrl = headerSettings.avatarUrl;
-            global_findCount = headerSettings.findCount;
-            global_locale = headerSettings.locale;
-        // New map.
-        } else if (typeof _gcUser !== 'undefined' && _gcUser.username && _gcUser.image && _gcUser.image.imageUrl && _gcUser.locale) {
-            global_me = _gcUser.username;
-            global_avatarUrl = _gcUser.image.imageUrl.replace(/\{0\}/,'avatar');
-            global_findCount = _gcUser.findCount;
-            global_locale = _gcUser.locale;
-        }
-        if (global_me != '') {
-            mainGC();
-        } else {
-            waitCount++; if (waitCount <= 200) setTimeout(function(){waitingForUserParameter(waitCount);}, 50);
-        }
-    }
-    waitingForUserParameter(0);
-};
-
-////////////////////////////
-// 5.1.2 GC - Main 2 ($$cap) (For the geocaching webpages.)
-////////////////////////////
-var mainGC = function() {
-
-// After change of a bookmark respectively a bookmark list go automatically from confirmation screen to bookmark list.
-   if (((settings_bm_changed_and_go && document.location.href.match(/\.com\/bookmarks\/mark\.aspx\?(guid=|ID=|view=legacy&guid=|view=legacy&ID=)/)) || (settings_bml_changed_and_go && document.location.href.match(/\.com\/bookmarks\/edit\.aspx/))) && $('#divContentMain')[0] && $('p.Success a[href*="/bookmarks/view.aspx?guid="]')[0]) {
-       $('#divContentMain').css("visibility", "hidden");
-       document.location.href = $('p.Success a')[0].href;
-   }
 
 // Improve print page cache listing.
     if (document.location.href.match(/\.com\/seek\/cdpf\.aspx/)) {
@@ -1199,12 +1170,63 @@ var mainGC = function() {
                 var match = coords.innerHTML.match(/((N|S) [0-9][0-9]. [0-9][0-9]\.[0-9][0-9][0-9] (E|W) [0-9][0-9][0-9]. [0-9][0-9]\.[0-9][0-9][0-9])/);
                 if (match && match[1]) {
                     coords = match[1];
-                    otherFormats("<br>");
+                    otherFormats(box, coords, "<br>");
                 }
             }
             // Hide side rights.
             if ($('#Footer')[0]) $('#Footer')[0].remove();
+            // Display listing images in maximum available width for FF and chrome. Only for display, print was ok.
+            appendCssStyle('.item-content img {max-width: -moz-available; max-width: -webkit-fill-available;}');
         } catch(e) {gclh_error("Improve print page cache listing",e);}
+    }
+
+// Set global data and check if logged in.
+    function waitingForUserParameter(waitCount) {
+        // All pages with the exception of the new map.
+        if (typeof headerSettings !== 'undefined' && headerSettings.username && headerSettings.avatarUrl && headerSettings.locale) {
+            global_me = headerSettings.username;
+            global_avatarUrl = headerSettings.avatarUrl;
+            global_findCount = headerSettings.findCount;
+            global_locale = headerSettings.locale;
+        // New map.
+        } else if (typeof _gcUser !== 'undefined' && _gcUser.username && _gcUser.image && _gcUser.image.imageUrl && _gcUser.locale) {
+            global_me = _gcUser.username;
+            global_avatarUrl = _gcUser.image.imageUrl.replace(/\{0\}/,'avatar');
+            global_findCount = _gcUser.findCount;
+            global_locale = _gcUser.locale;
+        }
+        if (global_me != '') {
+            mainGC();
+        } else {waitCount++; if (waitCount <= 200) setTimeout(function(){waitingForUserParameter(waitCount);}, 50);}
+    }
+    waitingForUserParameter(0);
+};
+
+////////////////////////////
+// 5.1.2 GC - Main 2 ($$cap) (For the geocaching webpages.)
+////////////////////////////
+var mainGC = function() {
+
+// CSS for header.
+    // Make GC header invisible.
+    var css = '#gc-header, #GCHeader, #gc-mobile-nav {display: none;}';
+    // Part of core CSS of GS.
+    css += corecss;
+    // User profile menu bend into shape.
+    css += '.gclh_open ul.submenu {visibility: visible; display: block !important;}';
+    // Message center message indicator.
+    css += '.gclh_message-indicator {background-color: #e0b70a; position: absolute; border-radius: 15px; width: 10px; height: 10px; margin-top: -18px; margin-left: 28px;}';
+    // Special css for searchmap.
+    if (is_page('searchmap')) {
+        css += 'gclh_nav .wrapper {z-index: 1006;} gclh_nav li input {height: unset !important;}';
+        css += '.profile-panel .li-user-toggle svg {height: 13px;}';
+    }
+    appendCssStyle(css);
+
+// After change of a bookmark respectively a bookmark list go automatically from confirmation screen to bookmark list.
+    if (((settings_bm_changed_and_go && document.location.href.match(/\.com\/bookmarks\/mark\.aspx\?(guid=|ID=|view=legacy&guid=|view=legacy&ID=)/)) || (settings_bml_changed_and_go && document.location.href.match(/\.com\/bookmarks\/edit\.aspx/))) && $('#divContentMain')[0] && $('p.Success a[href*="/bookmarks/view.aspx?guid="]')[0]) {
+        $('#divContentMain').css("visibility", "hidden");
+        document.location.href = $('p.Success a')[0].href;
     }
 
 // Set language to default language.
@@ -1259,7 +1281,7 @@ var mainGC = function() {
         // F2 key.
         if (settings_submit_log_button) {
             function setButtonDescInnerHTMLF2(waitCount, id) {
-                if (!document.getElementById(id).innerHTML.match(/(F2)/)) {
+                if (document.getElementById(id) && document.getElementById(id).innerHTML && !document.getElementById(id).innerHTML.match(/(F2)/)) {
                     document.getElementById(id).innerHTML += " (F2)";
                 }
                 if (waitCount <= 20) setTimeout(function(){setButtonDescInnerHTMLF2(waitCount, id);}, 100);
@@ -1328,28 +1350,13 @@ var mainGC = function() {
 
 // Wait for header and build up header.
     try {
-        // Part of core CSS of GS.
-        var css = corecss;
-        // Make GC header invisible.
-        css += '#gc-header, #GCHeader, #gc-mobile-nav {display: none;}';
-        // User profile menu bend into shape.
-        css += '.gclh_open ul.submenu {visibility: visible; display: block !important;}';
-        // Message center message indicator.
-        css += '.gclh_message-indicator {background-color: #e0b70a; position: absolute; border-radius: 15px; width: 10px; height: 10px; margin-top: -18px; margin-left: 28px;}';
-        // Special css for searchmap.
-        if (is_page('searchmap')) {
-            css += 'gclh_nav .wrapper {z-index: 1006;} gclh_nav li input {height: unset !important;}';
-            css += '.profile-panel .li-user-toggle svg {height: 13px;}';
-        }
-        appendCssStyle(css);
-
-        function buildUpHeader(waitCount, html) {
-            if ($('#gc-header, #GCHeader')[0] && !html == "") {
-                // Integrate html of new header.
-                if ($('#gc-header-root')[0]) $('#gc-header-root').prepend(html);
-                else if ($('#header-root')[0]) $('#header-root').prepend(html);
-                else if ($('#root')[0]) $('#root').prepend(html);
-                else if ($('#app-root')[0]) $('#app-root').prepend(html);
+        function buildUpHeader(waitCount) {
+            if ($('#gc-header, #GCHeader')[0]) {
+                // Integrate old header.
+                if ($('#gc-header-root')[0]) $('#gc-header-root').prepend(header_old);
+                else if ($('#header-root')[0]) $('#header-root').prepend(header_old);
+                else if ($('#root')[0]) $('#root').prepend(header_old);
+                else if ($('#app-root')[0]) $('#app-root').prepend(header_old);
                 // Run header relevant features.
                 setUserParameter();
                 setMessageIndicator(0);
@@ -1357,6 +1364,7 @@ var mainGC = function() {
                 newWidth();
                 removeGCMenues();
                 linklistOnTop();
+                buildSpecialLinklistLinks();
                 runAfterRedirect();
                 showDraftIndicatorInHeader();
                 // User profile menu bend into shape.
@@ -1377,9 +1385,9 @@ var mainGC = function() {
                         }
                     });
                 });
-            } else {waitCount++; if (waitCount <= 200) setTimeout(function(){buildUpHeader(waitCount, html);}, 50);}
+            } else {waitCount++; if (waitCount <= 1000) setTimeout(function(){buildUpHeader(waitCount);}, 10);}
         }
-        buildUpHeader(0, header_old);
+        buildUpHeader(0);
     } catch(e) {gclh_error("Wait for header and build up header",e);}
 
 // Set user avatar, user and found count in new header.
@@ -1457,8 +1465,6 @@ var mainGC = function() {
                     ".#m li a:hover, .#m li a:focus {color: #FFFFFF !important; outline: unset !important;}" +
                     // Schriftfarbe Search Field.
                     "#navi_search {color: #4a4a4a;} #navi_search:focus {outline: none;}" +
-                    // Menü nicht flex.
-                    ".#m {display: unset;}" +
                     // Submenü im Vordergrund.
                     ".#m .#sm {z-index: 1001;}" +
                     // Schriftfarbe Untermenü.
@@ -1522,16 +1528,16 @@ var mainGC = function() {
                         if (settings_menu_float_right) {
                             css += "ul.#m > li {margin-top: " + (3 + (16 - font_size_menu) / 2) + "px;}";
                         } else {
-                            if (is_page("map")) css += "ul.#m > li {margin-top: " + (-2 + (16 - font_size_menu) / 2) + "px;}";
-                            else css += "ul.#m > li {margin-top: " + (3 + (16 - font_size_menu) / 2) + "px;}";
+                            if (is_page("map")) css += "ul.#m > li {margin-top: " + (3 + (16 - font_size_menu) / 2) + "px;}";
+                            else css += "ul.#m > li {margin-top: " + (4 + (16 - font_size_menu) / 2) + "px;}";
                         }
                         // Menü in Karte ausrichten.
                         if (is_page("map") && !settings_menu_float_right) css += ".#m {height: unset !important;}";
                         if (is_page("map") && settings_menu_float_right) css += "#navi_search {margin: 0 !important;}";
                     }
 
-                    // Altes Seiten Design und restliche Seiten:
-                    // ----------
+                // Altes Seiten Design und restliche Seiten:
+                // ----------
                 } else {
                     if (settings_fixed_header_layout) {
                         css += "nav .wrapper, gclh_nav .wrapper {width: " + new_width + "px !important; padding-left: 50px; padding-right: 30px; min-width: unset}";
@@ -1552,7 +1558,7 @@ var mainGC = function() {
                         } else {
                             css += "ul.#m > li {margin-top: " + (5 + (16 - font_size_menu) / 2) + "px;}";
                         }
-                        // Horizontales Menü ausrichten in Abhängigkeit von Anzahl Zeilen.
+                    // Horizontales Menü ausrichten in Abhängigkeit von Anzahl Zeilen.
                     } else {
                         if      (settings_menu_number_of_lines == 1) css += "ul.#m {top:   4px !important;}";
                         else if (settings_menu_number_of_lines == 2) css += "ul.#m {top:  -8px !important;}";
@@ -1781,6 +1787,25 @@ var mainGC = function() {
         );
     }
 
+// Aufbau Links zum Aufruf von Config, Sync und Find Player aus Linklist (1. Schritt).
+    function buildSpecialLinklistLinks() {
+        try {
+            // GClh Config, Sync und Find Player Aufrufe aus Linklist heraus.
+            if (checkTaskAllowed("GClh Config", false) == true && document.getElementsByName("lnk_gclhconfig")[0]) {
+                document.getElementsByName("lnk_gclhconfig")[0].href = "#GClhShowConfig";
+                document.getElementsByName("lnk_gclhconfig")[0].addEventListener('click', gclh_showConfig, false);
+            }
+            if (checkTaskAllowed("GClh Sync", false) == true && document.getElementsByName("lnk_gclhsync")[0]) {
+                document.getElementsByName("lnk_gclhsync")[0].href = "#GClhShowSync";
+                document.getElementsByName("lnk_gclhsync")[0].addEventListener('click', gclh_showSync, false);
+            }
+            if (checkTaskAllowed("Find Player", false) == true && document.getElementsByName("lnk_findplayer")[0]) {
+                document.getElementsByName("lnk_findplayer")[0].href = "#GClhShowFindPlayer";
+                document.getElementsByName("lnk_findplayer")[0].addEventListener('click', createFindPlayerForm, false);
+            }
+        } catch(e) {gclh_error("Aufbau Links zum Aufruf von Config, Sync und Find Player aus Linklist (1. Schritt)",e);}
+    }
+
 // Run after redirect.
     function runAfterRedirect() {
         try {
@@ -1870,9 +1895,14 @@ var mainGC = function() {
         }
     }
 
-// Define class "working" for cache listing.
+// Collection of css for cache listings.
     if (is_page("cache_listing")) {
-        appendCssStyle(".working {opacity: 0.4; cursor: default !important; text-decoration: none !important;}");
+        var css = ''
+        // Define class "working".
+        css += ".working {opacity: 0.4; cursor: default !important; text-decoration: none !important;}";
+        // Display listing images not over the maximum available width for FF and chrome.
+        css += ".UserSuppliedContent img {max-width: -moz-available; max-width: -webkit-fill-available;}";
+        appendCssStyle(css);
     }
 
 // Disabled and archived ...
@@ -2171,25 +2201,13 @@ var mainGC = function() {
             var box = $('#ctl00_ContentBody_LocationSubPanel')[0];
             box.innerHTML = box.innerHTML.replace("<br>", "");
             var coords = $('#uxLatLon')[0].innerHTML;
-            otherFormats(" - ");
+            otherFormats(box, coords, " - ");
             box.innerHTML = "<font style='font-size: 10px;'>" + box.innerHTML + "</font><br>";
         } catch(e) {gclh_error("Show other coord formats listing",e);}
     }
-    function otherFormats(trenn) {
-        var dec = toDec(coords);
-        var lat = dec[0];
-        var lng = dec[1];
-        if (lat < 0) lat = "S "+(lat * -1);
-        else lat = "N "+lat;
-        if (lng < 0) lng = "W "+(lng * -1);
-        else lng = "E "+lng;
-        box.innerHTML += trenn+"Dec: "+lat+" "+lng;
-        var dms = DegtoDMS(coords);
-        box.innerHTML += trenn+"DMS: "+dms;
-    }
 
 // Map this Location.
-    if (is_page("cache_listing") && $('#uxLatLon')[0]) {
+    if (is_page("cache_listing") && settings_show_link_to_browse_map && $('#uxLatLon')[0]) {
         try {
             var coords = toDec($('#uxLatLon')[0].innerHTML);
             var link = $('#uxLatLon').parents(".NoBottomSpacing");
@@ -2367,7 +2385,10 @@ var mainGC = function() {
             function check_for_add_to_list(waitCount) { // GDPR
                 if ( typeof $('#fancybox-loading')[0] !== "undefined") { // GDPR
                     $('.add-to-list').removeClass('working');
-                    $('.add-to-list')[0].addEventListener("click", function() {window.scroll(0, 0);});
+                    $('.add-to-list')[0].addEventListener("click", function() {
+                        window.scroll(0, 0);
+                        setFocusToField(0, '#newListName');
+                    });
                     $('.add-to-list')[0].innerHTML = '<a href="' + $('.add-to-list').attr('data-href') + '" style="padding-left: unset;">' + $('.add-to-list')[0].innerHTML + '</a>';
                     if ($('.sidebar')[0] && $('#ctl00_ContentBody_GeoNav_uxAddToListBtn')[0]) {
                         var [ownBMLsCount, ownBMLsText, ownBMLsList] = getOwnBMLs($('.sidebar')[0]);
@@ -2561,7 +2582,7 @@ var mainGC = function() {
                     el.value = el.value.replace(/#Size#/ig, $('#ctl00_ContentBody_size .minorCacheDetails small')[0].innerHTML.replace('(','').replace(')',''));
                     el.value = el.value.replace(/#Owner#/ig, get_real_owner().replace(/'/g,"\\'"));
                     el.value = el.value.replace(/#Favo#/ig, (($('#uxFavContainerLink')[0] && $('#uxFavContainerLink .favorite-value')[0]) ? $('#uxFavContainerLink .favorite-value')[0].innerHTML.replace(/(\s*)/g,'') : ''));
-                    el.value = el.value.replace(/#FavoPerc#/ig, $('.gclh_favorite-score')[0].innerHTML);
+                    el.value = el.value.replace(/#FavoPerc#/ig, ($('.gclh_favorite-score')[0] ? $('.gclh_favorite-score')[0].innerHTML : ''));
                     el.value = el.value.replace(/#Hints#/ig, (($('#div_hint')[0] && $('#div_hint')[0].innerHTML) ? $('#div_hint')[0].innerHTML.replace(/^(\s*)/,'').replace(/<br>/g,'\n') : ''));
                     var g_note = '';
                     if ($('#viewCacheNote')[0] && $('#viewCacheNote')[0].innerHTML && $('#editCacheNote')[0] && $('#editCacheNote textarea')[0] && $('#editCacheNote textarea').attr('placeholder') && $('#viewCacheNote')[0].innerHTML != $('#editCacheNote textarea').attr('placeholder') && $('#viewCacheNote')[0].innerHTML != null && $('#viewCacheNote')[0].innerHTML != '') {
@@ -2954,12 +2975,30 @@ var mainGC = function() {
         try {
             leafletInit();
 
+            var css = '';
+            css += '.mapIcons {position: relative; z-index: 1000; margin-top: 10px; margin-right: 10px; float: right; height: 22px; border-radius: 4px;}';
+            css += '.mapIcons:hover {background-color: white; box-shadow: 0 1px 5px rgba(0,0,0,.65);}';
+            css += '.mapIcons svg {width: 18px; height: 18px; color: #4a4a4a; opacity: 0.85; padding: 2px;}';
+            css += '.search_map_icon {margin-top: 2px; margin-bottom: -2px; margin-left: 2px;}';
+            appendCssStyle(css);
+
             var html = "";
             html += "<div class='CacheDetailNavigationWidget' style='margin-top: 1.5em;'>";
             html += "<div id='gclh_map_overview' class='WidgetBody' style='padding: 0; height: 248px; width: 248px;'>";
+            if (settings_map_overview_search_map_icon || settings_map_overview_browse_map_icon) {
+                html += "<span class='mapIcons'>";
+                if (settings_map_overview_search_map_icon) {
+                    html += "<a href='" + new_map_url + "?lat=" + lat + "&lng=" + lng + "' title='Search Map'>" + search_map_icon + "</a>";
+                }
+                if (settings_map_overview_browse_map_icon) {
+                    html += "<a href='" + map_url + "?lat=" + lat + "&lng=" + lng + "' title='Browse Map'>" + browse_map_icon + "</a>";
+                }
+                html += "</span>'>";
+            }
             html += "</div>";
             html += "</div>";
             $(".CacheDetailNavigation").after(html);
+            $(".mapIcons svg").each(function(){$(this)[0].setAttribute("viewBox", "0 0 25 25");});
 
             function build_map_overview(waitCount) { // GDPR
                 if (typeof lat !== "undefined" && typeof lng !== "undefined") { // GDPR
@@ -3010,7 +3049,7 @@ var mainGC = function() {
     if (is_page("cache_listing")) {
         // Personal Cache Note: Adapt height of edit field for Personal Cache Note
         function calcHeightOfCacheNote() {
-            return $("#viewCacheNote").parent().height()*1.02+36;
+            return ($("#viewCacheNote").parent().height()*1.02+36 > settings_cache_notes_min_size ? $("#viewCacheNote").parent().height()*1.02+36 : settings_cache_notes_min_size);
         }
 
         if (settings_adapt_height_cache_notes) {
@@ -3059,15 +3098,15 @@ var mainGC = function() {
         // Personal Cache Note: Focus Cachenote-Textarea on Click of the Note (to avoid double click to edit).
         try {
             var editCacheNote = document.querySelector('#editCacheNote');
-            if(editCacheNote){
+            if (editCacheNote){
                 var observer = new MutationObserver(function(mutations) {
                     mutations.forEach(function(mutation) {
                         if (mutation.type == "attributes") {
-                            if(document.getElementById('editCacheNote').style.display == ''){
+                            if (document.getElementById('editCacheNote').style.display == ''){
                                 document.getElementById('cacheNoteText').focus();
                             } else {
                                 // Take the parent, because empty lines are not handle by span-element #viewCacheNote.
-                                if (  $("#cacheNoteText").height() != calcHeightOfCacheNote() ) {
+                                if ($("#cacheNoteText").height() != calcHeightOfCacheNote()) {
                                     $("#cacheNoteText").height(calcHeightOfCacheNote());
                                 }
                             }
@@ -4238,7 +4277,7 @@ var mainGC = function() {
         } catch(e) {gclh_error("Last Log-Text speichern",e);}
     }
 
-// Hide socialshare.
+// Hide social sharing via Facebook, Twitter ... .
     if (settings_hide_socialshare && document.location.href.match(/\.com\/seek\/log\.aspx?(.*)/)) {
         try {
             if ($('#sharing_container')[0]) $('#sharing_container')[0].style.display = "none";
@@ -5042,7 +5081,7 @@ var mainGC = function() {
                     } else {
                         $('#ctl00_ContentBody_DateTimeBegin_Month')[0].selectedIndex = 0;
                         $('#ctl00_ContentBody_DateTimeBegin_Day')[0].selectedIndex = 0;
-                        $('#ctl00_ContentBody_DateTimeBegin_Year')[0].selectedIndex =  $('#ctl00_ContentBody_DateTimeBegin_Year option').length-1;
+                        $('#ctl00_ContentBody_DateTimeBegin_Year')[0].selectedIndex = $('#ctl00_ContentBody_DateTimeBegin_Year option').length-1;
                     }
                     // End Date
                     if (placedDateEnd !== false) {
@@ -6910,10 +6949,11 @@ var mainGC = function() {
             global_MailTemplate = global_MailTemplate.replace(/__Receiver__/ig, "${UserName}");
 
             var isUpvoteActive = false;
-            if($('#cache_logs_container #sortOrder').length) isUpvoteActive = true
+            if ($('#cache_logs_container div.sort-logs').length) isUpvoteActive = true;
+            var upvoteIconPixel = (settings_smaller_upvotes_icons ? 16:24);
 
             var vupUserString = 'if UserName == "#" ';
-            var vupHideAvatarString  = 'if (UserName != "#" ';
+            var vupHideAvatarString = 'if (UserName != "#" ';
             var vupHideCompleteLog = vupUserString;
             if (settings_process_vup && global_vups && global_vups.length > 0) {
                 for (var i = 0; i < global_vups.length; i++) {
@@ -7022,71 +7062,73 @@ var mainGC = function() {
                 '      </div>' +
                 '      {{/if}}';
             new_tmpl +=
-                '      <div class="AlignRight">' +
-                '        <small><a title="View Log" href="/seek/log.aspx?LUID=${LogGuid}" target="_blank">' +
-                '        {{if (userInfo.ID==AccountID)}}' +
-                '        View / Edit Log / Images' +
-                '        {{else}}' +
-                '        View Log' +
-                '        {{/if}}' +
-                '        </a></small>&nbsp;' +
-                '        {{if (userInfo.ID==AccountID)}}' +
-                '        <small><a title="Upload Image" href="/seek/upload.aspx?LID=${LogID}" target="_blank">Upload Image</a></small>' +
-                '        {{/if}}' +
-                '      </div>';
+                '      <div class="log-cta">';
             if(isUpvoteActive) new_tmpl +=
-                '     {{if LogType === "Found it" || LogType === "Didn\'t find it" || LogType === "Webcam photo taken" || LogType === "Attended" || LogType === "Announcement" }}' +
-                '         <div class="upvotes">' +
-                '             <button class="great-story-btn{{if (typeof greatStoryupvotedByUser != "undefined") && greatStoryupvotedByUser}} upvoted{{/if}}"' +
-                '                     type="button" ' +
-                '                     data-log-id="${LogID}" ' +
-                '                     data-upvoted="false" ' +
-                '                     data-upvote-type="1" ' +
-                '                     {{if userInfo.ID == AccountID}}' +
-                '                         title="You cannot vote for your own logs."' +
-                '                     {{else}}' +
-                '                         title="Was this a great story?"' +
-                '                     {{/if}}' +
-                '                     {{if userInfo.ID == AccountID}}disabled{{/if}}>                ' +
-                '                 <svg xmlns="https://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">' +
-                '                   <g>' +
-                '                     <g stroke-width="1.125" transform="translate(4 3)">' +
-                '                       <path d="M2,0 L16,0 L16,18 L2,18 L2,18 C0.8954305,18 1.3527075e-16,17.1045695 0,16 L0,2 L0,2 C-1.3527075e-16,0.8954305 0.8954305,2.02906125e-16 2,0 Z"/>' +
-                '                       <path d="M4.5,0.5 L4.5,17.5" stroke-linecap="square"/>' +
-                '                       <polygon points="9 0 13 0 13 8 11 6 9 8"/>' +
-                '                     </g>' +
-                '                   </g>' +
-                '                 </svg>' +
-                '                 <span>Great story{{if (typeof greatStory != "undefined") && greatStory > 0}} (${greatStory}){{/if}}</span>' +
-                '             </button>' +
-                '             <span class="loading-container hide loading-${LogID}">' +
-                '                 <img src="/app/ui-images/branding/loading-spinner.svg"></img>' +
-                '             </span>' +
-                '             <button class="helpful-btn{{if (typeof helpfulupvotedByUser != "undefined") && helpfulupvotedByUser}} upvoted{{/if}}" ' +
-                '                     type="button" data-log-id="${LogID}"' +
-                '                     data-upvoted="false" ' +
-                '                     data-upvote-type="2" ' +
-                '                     {{if userInfo.ID == AccountID}}' +
-                '                         title="You cannot vote for your own logs."' +
-                '                     {{else}}' +
-                '                         title="Was this helpful?"' +
-                '                     {{/if}}' +
-                '                     {{if userInfo.ID == AccountID}}disabled{{/if}}>' +
-                '                 <svg xmlns="https://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 21.55 21.29">' +
-                '                   <g>' +
-                '                     <g>' +
-                '                       <path d="M21.3 13.38a1.08 1.08 0 0 1-.18.6 1 1 0 0 1-1.41.34l-1.29-.89-2.33-1.55-.15.21 3.63 2.43a1.12 1.12 0 0 1 .29 1.48 1.1 1.1 0 0 1-.7.47 1 1 0 0 1-.78-.17l-3.69-2.47-.14.19 3.81 2.59a1.1 1.1 0 0 1 .29 1.51 1 1 0 0 1-1.42.32L13.3 15.8l-.14.2L17 18.58a.48.48 0 0 1 .11.09 1.08 1.08 0 0 1 .17 1.42 1 1 0 0 1-.67.46 1 1 0 0 1-.8-.16l-1.43-1a1.84 1.84 0 0 0-.8-1.39 1.77 1.77 0 0 0-1-.31 1.84 1.84 0 0 0-.33 0 1.67 1.67 0 0 0-.3.08 1.83 1.83 0 0 0-.74-1.88 1.77 1.77 0 0 0-1-.3 1.5 1.5 0 0 0-.35 0 1.58 1.58 0 0 0-.31.09 1.77 1.77 0 0 0-1.73-2.19h-.33a1.7 1.7 0 0 0-.45.15 1.7 1.7 0 0 0-.66-1.83 1.58 1.58 0 0 0-.91-.28 1.35 1.35 0 0 0-.33 0 1.67 1.67 0 0 0-1.06.71l-.3.46a5.17 5.17 0 0 1-.43-2.13L0 8.31 4.92.9l3.32 2.31A2.67 2.67 0 0 1 11.52 3a4.19 4.19 0 0 0-2.75 1.16C7.79 5.33 6.17 7.79 6.05 8H6v.06a2 2 0 0 0 .3 1.68 1.07 1.07 0 0 0 .42.33 1.62 1.62 0 0 0 .72.17 1.54 1.54 0 0 0 1.09-.45l1.31-2a2.44 2.44 0 0 0 1.49.63 2 2 0 0 0 .42 0 2.12 2.12 0 0 0 .67-.3 2.61 2.61 0 0 0 .78-.7l6.58 4.41 1 .65a1.09 1.09 0 0 1 .45.69.82.82 0 0 1 .07.21z"/>' +
-                '                       <path d="M9.23 15.31a1 1 0 0 1 0 .17.8.8 0 0 1 0 .15 1.33 1.33 0 0 1 0 .19l-.15.18a1.09 1.09 0 0 1-.08.15l-.16.24L8 17.55a1.43 1.43 0 0 1-.2.23 1.43 1.43 0 0 1-.7.36 1.23 1.23 0 0 1-.27 0 1.42 1.42 0 0 1-.8-.24 1.49 1.49 0 0 1-.5-1.8 1.74 1.74 0 0 1 .1-.19l1-1.44a1.43 1.43 0 0 1 .89-.57 1.23 1.23 0 0 1 .27 0 1.44 1.44 0 0 1 .8.24 1.55 1.55 0 0 1 .27.24 1.32 1.32 0 0 1 .19.29 2.19 2.19 0 0 1 .12.33 1.39 1.39 0 0 1 .06.31zM11.58 17.75a2.33 2.33 0 0 1-.14.33.34.34 0 0 1-.06.12l-.75 1.14a1 1 0 0 1-.13.16 1.38 1.38 0 0 1-.79.45 1.14 1.14 0 0 1-.26 0 1.38 1.38 0 0 1-.8-.25 1.47 1.47 0 0 1-.53-1.7 1.22 1.22 0 0 1 .14-.28L9 16.56a1.48 1.48 0 0 1 .33-.33 1.33 1.33 0 0 1 .6-.23 1.23 1.23 0 0 1 .27 0 1.41 1.41 0 0 1 .79.24 1.48 1.48 0 0 1 .59 1.51zM13.76 20.3l-.37.55a1.29 1.29 0 0 1-1.13.44 5 5 0 0 1-.88-.09 1.48 1.48 0 0 1-.55-1.56.27.27 0 0 0 .09-.1l.75-1.14.05-.08.08-.07a1.26 1.26 0 0 1 .26-.13 1.05 1.05 0 0 1 .24-.06 1.06 1.06 0 0 1 .25 0A1.41 1.41 0 0 1 14 19.15a1.48 1.48 0 0 1-.24 1.15zM11.8 18.24l-.08.07z"/>' +
-                '                       <path d="M11.72 18.3l.08-.07z" />' +
-                '                       <path d="M20.05 9.92a2.33 2.33 0 0 1-.19 1.44l-6.68-4.48-.06.12a2.34 2.34 0 0 1-.92.85 2 2 0 0 1-.48.19 1.24 1.24 0 0 1-.33 0A2.15 2.15 0 0 1 10 7.36l-.11-.12L8.3 9.57a1.22 1.22 0 0 1-.85.35 1.17 1.17 0 0 1-.57-.14.83.83 0 0 1-.31-.24 1.17 1.17 0 0 1-.23-.44 2.21 2.21 0 0 1 0-.93C6.5 7.93 8.09 5.52 9 4.39a4 4 0 0 1 2.71-1h.54L14.53 0l7 4.93-2.17 3.33v.07a5.38 5.38 0 0 1 .69 1.59zM6.52 14l-.13.2v.06l-1 1.45a1.36 1.36 0 0 1-.84.55 1 1 0 0 1-.24 0 1.26 1.26 0 0 1-.73-.23 1.37 1.37 0 0 1-.35-1.84l1.14-1.71a1.33 1.33 0 0 1 .84-.48 1.06 1.06 0 0 1 .25 0 1.22 1.22 0 0 1 .71.22A1.37 1.37 0 0 1 6.52 14z"/>' +
-                '                     </g>' +
-                '                   </g>' +
-                '                 </svg>' +
-                '                 <span>Helpful{{if (typeof helpful != "undefined") && helpful > 0}} (${helpful}){{/if}}</span>' +
-                '             </button>' +
-                '         </div>' +
-                '     {{/if}}';
+                '        {{if LogType === "Found it" || LogType === "Didn\'t find it" || LogType === "Webcam photo taken" || LogType === "Attended" || LogType === "Announcement" }}' +
+                '          <div class="upvotes">' +
+                '              <button class="great-story-btn{{if (typeof greatStoryupvotedByUser != "undefined") && greatStoryupvotedByUser}} upvoted{{/if}}"' +
+                '                      type="button" ' +
+                '                      data-log-id="${LogID}" ' +
+                '                      data-upvoted="false" ' +
+                '                      data-upvote-type="1" ' +
+                '                      {{if userInfo.ID == AccountID}}' +
+                '                          title="You cannot vote for your own logs."' +
+                '                      {{else}}' +
+                '                          title="Was this a great story?"' +
+                '                      {{/if}}' +
+                '                      {{if userInfo.ID == AccountID}}disabled{{/if}}>                ' +
+                '                  <svg xmlns="https://www.w3.org/2000/svg" width="' + upvoteIconPixel + '" height="' + upvoteIconPixel + '" viewBox="0 0 24 24">' +
+                '                    <g>' +
+                '                      <g stroke-width="1.125" transform="translate(4 3)">' +
+                '                        <path d="M2,0 L16,0 L16,18 L2,18 L2,18 C0.8954305,18 1.3527075e-16,17.1045695 0,16 L0,2 L0,2 C-1.3527075e-16,0.8954305 0.8954305,2.02906125e-16 2,0 Z"/>' +
+                '                        <path d="M4.5,0.5 L4.5,17.5" stroke-linecap="square"/>' +
+                '                        <polygon points="9 0 13 0 13 8 11 6 9 8"/>' +
+                '                      </g>' +
+                '                    </g>' +
+                '                  </svg>' +
+                '                  <span>Great story{{if (typeof greatStory != "undefined") && greatStory > 0}} (${greatStory}){{/if}}</span>' +
+                '              </button>' +
+                '              <span class="loading-container hide loading-${LogID}">' +
+                '                  <img src="/app/ui-images/branding/loading-spinner.svg"></img>' +
+                '              </span>' +
+                '              <button class="helpful-btn{{if (typeof helpfulupvotedByUser != "undefined") && helpfulupvotedByUser}} upvoted{{/if}}" ' +
+                '                      type="button" data-log-id="${LogID}"' +
+                '                      data-upvoted="false" ' +
+                '                      data-upvote-type="2" ' +
+                '                      {{if userInfo.ID == AccountID}}' +
+                '                          title="You cannot vote for your own logs."' +
+                '                      {{else}}' +
+                '                          title="Was this helpful?"' +
+                '                      {{/if}}' +
+                '                      {{if userInfo.ID == AccountID}}disabled{{/if}}>' +
+                '                  <svg xmlns="https://www.w3.org/2000/svg" width="' + upvoteIconPixel + '" height="' + upvoteIconPixel + '" viewBox="0 0 21.55 21.29">' +
+                '                    <g>' +
+                '                      <g>' +
+                '                        <path d="M21.3 13.38a1.08 1.08 0 0 1-.18.6 1 1 0 0 1-1.41.34l-1.29-.89-2.33-1.55-.15.21 3.63 2.43a1.12 1.12 0 0 1 .29 1.48 1.1 1.1 0 0 1-.7.47 1 1 0 0 1-.78-.17l-3.69-2.47-.14.19 3.81 2.59a1.1 1.1 0 0 1 .29 1.51 1 1 0 0 1-1.42.32L13.3 15.8l-.14.2L17 18.58a.48.48 0 0 1 .11.09 1.08 1.08 0 0 1 .17 1.42 1 1 0 0 1-.67.46 1 1 0 0 1-.8-.16l-1.43-1a1.84 1.84 0 0 0-.8-1.39 1.77 1.77 0 0 0-1-.31 1.84 1.84 0 0 0-.33 0 1.67 1.67 0 0 0-.3.08 1.83 1.83 0 0 0-.74-1.88 1.77 1.77 0 0 0-1-.3 1.5 1.5 0 0 0-.35 0 1.58 1.58 0 0 0-.31.09 1.77 1.77 0 0 0-1.73-2.19h-.33a1.7 1.7 0 0 0-.45.15 1.7 1.7 0 0 0-.66-1.83 1.58 1.58 0 0 0-.91-.28 1.35 1.35 0 0 0-.33 0 1.67 1.67 0 0 0-1.06.71l-.3.46a5.17 5.17 0 0 1-.43-2.13L0 8.31 4.92.9l3.32 2.31A2.67 2.67 0 0 1 11.52 3a4.19 4.19 0 0 0-2.75 1.16C7.79 5.33 6.17 7.79 6.05 8H6v.06a2 2 0 0 0 .3 1.68 1.07 1.07 0 0 0 .42.33 1.62 1.62 0 0 0 .72.17 1.54 1.54 0 0 0 1.09-.45l1.31-2a2.44 2.44 0 0 0 1.49.63 2 2 0 0 0 .42 0 2.12 2.12 0 0 0 .67-.3 2.61 2.61 0 0 0 .78-.7l6.58 4.41 1 .65a1.09 1.09 0 0 1 .45.69.82.82 0 0 1 .07.21z"/>' +
+                '                        <path d="M9.23 15.31a1 1 0 0 1 0 .17.8.8 0 0 1 0 .15 1.33 1.33 0 0 1 0 .19l-.15.18a1.09 1.09 0 0 1-.08.15l-.16.24L8 17.55a1.43 1.43 0 0 1-.2.23 1.43 1.43 0 0 1-.7.36 1.23 1.23 0 0 1-.27 0 1.42 1.42 0 0 1-.8-.24 1.49 1.49 0 0 1-.5-1.8 1.74 1.74 0 0 1 .1-.19l1-1.44a1.43 1.43 0 0 1 .89-.57 1.23 1.23 0 0 1 .27 0 1.44 1.44 0 0 1 .8.24 1.55 1.55 0 0 1 .27.24 1.32 1.32 0 0 1 .19.29 2.19 2.19 0 0 1 .12.33 1.39 1.39 0 0 1 .06.31zM11.58 17.75a2.33 2.33 0 0 1-.14.33.34.34 0 0 1-.06.12l-.75 1.14a1 1 0 0 1-.13.16 1.38 1.38 0 0 1-.79.45 1.14 1.14 0 0 1-.26 0 1.38 1.38 0 0 1-.8-.25 1.47 1.47 0 0 1-.53-1.7 1.22 1.22 0 0 1 .14-.28L9 16.56a1.48 1.48 0 0 1 .33-.33 1.33 1.33 0 0 1 .6-.23 1.23 1.23 0 0 1 .27 0 1.41 1.41 0 0 1 .79.24 1.48 1.48 0 0 1 .59 1.51zM13.76 20.3l-.37.55a1.29 1.29 0 0 1-1.13.44 5 5 0 0 1-.88-.09 1.48 1.48 0 0 1-.55-1.56.27.27 0 0 0 .09-.1l.75-1.14.05-.08.08-.07a1.26 1.26 0 0 1 .26-.13 1.05 1.05 0 0 1 .24-.06 1.06 1.06 0 0 1 .25 0A1.41 1.41 0 0 1 14 19.15a1.48 1.48 0 0 1-.24 1.15zM11.8 18.24l-.08.07z"/>' +
+                '                        <path d="M11.72 18.3l.08-.07z" />' +
+                '                        <path d="M20.05 9.92a2.33 2.33 0 0 1-.19 1.44l-6.68-4.48-.06.12a2.34 2.34 0 0 1-.92.85 2 2 0 0 1-.48.19 1.24 1.24 0 0 1-.33 0A2.15 2.15 0 0 1 10 7.36l-.11-.12L8.3 9.57a1.22 1.22 0 0 1-.85.35 1.17 1.17 0 0 1-.57-.14.83.83 0 0 1-.31-.24 1.17 1.17 0 0 1-.23-.44 2.21 2.21 0 0 1 0-.93C6.5 7.93 8.09 5.52 9 4.39a4 4 0 0 1 2.71-1h.54L14.53 0l7 4.93-2.17 3.33v.07a5.38 5.38 0 0 1 .69 1.59zM6.52 14l-.13.2v.06l-1 1.45a1.36 1.36 0 0 1-.84.55 1 1 0 0 1-.24 0 1.26 1.26 0 0 1-.73-.23 1.37 1.37 0 0 1-.35-1.84l1.14-1.71a1.33 1.33 0 0 1 .84-.48 1.06 1.06 0 0 1 .25 0 1.22 1.22 0 0 1 .71.22A1.37 1.37 0 0 1 6.52 14z"/>' +
+                '                      </g>' +
+                '                    </g>' +
+                '                  </svg>' +
+                '                  <span>Helpful{{if (typeof helpful != "undefined") && helpful > 0}} (${helpful}){{/if}}</span>' +
+                '              </button>' +
+                '          </div>' +
+                '        {{/if}}' +
+                '        <div class="AlignRight">' +
+                '          <small><a title="View Log" href="/seek/log.aspx?LUID=${LogGuid}" target="_blank">' +
+                '          {{if (userInfo.ID==AccountID)}}' +
+                '          View / Edit Log / Images' +
+                '          {{else}}' +
+                '          View Log' +
+                '          {{/if}}' +
+                '          </a></small>&nbsp;' +
+                '          {{if (userInfo.ID==AccountID)}}' +
+                '          <small><a title="Upload Image" href="/seek/upload.aspx?LID=${LogID}" target="_blank">Upload Image</a></small>' +
+                '          {{/if}}' +
+                '        </div>';
             new_tmpl +=
+                '       </div>' +
                 '     </div>' +
                 '   </td>' +
                 '</tr>';
@@ -7099,12 +7141,16 @@ var mainGC = function() {
             css += ".markdown-output {margin: unset;}";
             if (!settings_hide_avatar) css += ".markdown-output {min-height: 6em;}";
             // Bilderrahmen im Log ausrichten.
-            css += ".TableLogContent {padding-left: 0; border-left: none;}";
             css += ".LogImagesTable {margin-left: 0;} .LogImagesTable a.lnk {white-space: initial;}";
             css += ".LogImagesTable a.gclh_thumb img {margin-bottom: 1px !important; margin-top: 1px; vertical-align: sub;}";
             // Länge der Usernamen in den Logs beschränken, damit sie nicht umgebrochen werden.
             css += ".logOwnerProfileName {max-width: 135px; display: inline-block; overflow: hidden; vertical-align: bottom; white-space: nowrap; text-overflow: ellipsis;}";
-            if(isUpvoteActive) css += ".upvotes{display: block;}";
+            // For upvotes functionality.
+            if (isUpvoteActive) css += ".upvotes{display: block;}";
+            css += ".TableLogContent {padding-left: 0; border-left: none; margin-bottom: 0.5em;}";
+            css += ".log-cta {margin-bottom: -0.5em;}";
+            css += ".gclh_hide_upvotes div.sort-logs, .gclh_hide_upvotes div.upvotes {display: none!important;}";
+            if (settings_no_wiggle_upvotes_click) css += ".upvotes .loading-container {height: " + (settings_smaller_upvotes_icons ? 20:26) +"px;}";
             appendCssStyle(css);
         } catch(e) {gclh_error("Define log-template",e);}
     }
@@ -7229,7 +7275,7 @@ var mainGC = function() {
                     global_logs = logs;
                     global_num = num;
                     window.addEventListener("scroll", function (event) {
-                        gclh_dynamic_load();
+                        gclh_dynamic_load(logs, num);
                         event.stopPropagation();
                     }, true);
                 }
@@ -7259,7 +7305,7 @@ var mainGC = function() {
                             unsafeWindow.$('a.tb_images').fancybox({'type': 'image', 'titlePosition': 'inside'});
                             gclh_add_vip_icon();
                             setLinesColorInCacheListing();
-                            if(isUpvoteActive){
+                            if (isUpvoteActive){
                                 unsafeWindow.appendUpvotesToLogs(log_ids);
                                 updateUpvoteEvents(logs);
                             }
@@ -7290,6 +7336,9 @@ var mainGC = function() {
                             unsafeWindow.$('a.tb_images').fancybox({'type': 'image', 'titlePosition': 'inside'});
                             gclh_add_vip_icon();
                             setLinesColorInCacheListing();
+                            if (isUpvoteActive){
+                                updateUpvoteEvents(logs);
+                            }
                             setMarkerDisableDynamicLogLoad();
                             if (document.getElementById("gclh_show_log_counter")) document.getElementById("gclh_show_log_counter").style.visibility = "";
                         }
@@ -7300,6 +7349,8 @@ var mainGC = function() {
                 var para = document.getElementById('ctl00_ContentBody_lblFindCounts').nextSibling.nextSibling.nextSibling.nextSibling;
                 if (para && para.nodeName == 'P') para.className = para.className + ' Clear';
                 if (settings_show_all_logs_but) addButtonOverLogs(gclh_load_all_logs, "gclh_load_all_logs", false, "Show all logs", "");
+                if (settings_hide_upvotes) showHideUpvotes();
+                if (isUpvoteActive && settings_show_hide_upvotes_but) showHideUpvotesLink();
                 if (settings_show_bigger_avatars_but && !settings_hide_avatar && !isMemberInPmoCache() && settings_show_thumbnails) showBiggerAvatarsLink();
                 if (settings_show_log_counter_but) showLogCounterLink();
                 if(isUpvoteActive){
@@ -7340,6 +7391,9 @@ var mainGC = function() {
                     unsafeWindow.$('a.tb_images').fancybox({'type': 'image', 'titlePosition': 'inside'});
                     gclh_add_vip_icon();
                     setLinesColorInCacheListing();
+                    if (isUpvoteActive){
+                        updateUpvoteEvents(logs);
+                    }
                     setMarkerDisableDynamicLogLoad();
                     if (document.getElementById("gclh_show_log_counter")) document.getElementById("gclh_show_log_counter").style.visibility = "hidden";
                 }
@@ -7439,6 +7493,9 @@ var mainGC = function() {
                     unsafeWindow.$('a.tb_images').fancybox({'type': 'image', 'titlePosition': 'inside'});
                     gclh_add_vip_icon();
                     setLinesColorInCacheListing();
+                    if (isUpvoteActive){
+                        updateUpvoteEvents(logs);
+                    }
                     setMarkerDisableDynamicLogLoad();
 
                     // Highlight the searchs.
@@ -9298,11 +9355,23 @@ var mainGC = function() {
                 }
             }
 
+            // Improve add to list popup.
+            function improveAddtolistPopup() {
+                function checkAddtolistPopup(waitCount) {
+                    if ($('.Popover')[0]) {
+                        setFocusToField(0, '.add-to-list-view .create-new-list-textfield');
+                    }
+                    waitCount++; if (waitCount <= 20) setTimeout(function(){checkAddtolistPopup(waitCount);}, 100);
+                }
+                checkAddtolistPopup(0);
+            }
+
             // Processing all steps.
             function processAllSearchMap() {
                 setFilter();
                 scrollInCacheList(); // Has to be run before searchThisArea.
                 searchThisArea();
+                improveAddtolistPopup();
                 setLinkToOwner(); // Has to be run before compactLayout.
                 compactLayout();
                 setStrikeDisabledInList();
@@ -10183,7 +10252,7 @@ var mainGC = function() {
                             if (settings_show_elevation_of_waypoints) {
                                 new_text += '<span id="elevation-waypoint-'+indexMapItems+'"></span>';
                             }
-                            new_text += '<span class="favi_points" title="Favorites in percent"><svg height="16" width="16"><image xmlns:xlink="https://www.w3.org/1999/xlink" xlink:href="/images/icons/fave_fill_16.svg" src="/images/icons/fave_fill_16.png" width="16" height="16" alt="Favorite points"></image></svg> ' + fav_percent + '</span> | ';
+                            new_text += '<span class="favi_points" title="Favorites in percent"><svg height="16.5" width="16.5"><image xmlns:xlink="https://www.w3.org/1999/xlink" xlink:href="/images/icons/fave_fill_16.svg" src="/images/icons/fave_fill_16.png" width="16" height="16" alt="Favorite points"></image></svg> ' + fav_percent + '</span> | ';
                             if(premium_only){
                                 new_text += ' <span class="premium_only" title="Premium Only Cache"><img src="/images/icons/16/premium_only.png" width="16" height="16" alt="Premium Only Cache" /></span> | ';
                             }
@@ -10995,7 +11064,7 @@ var mainGC = function() {
                         if ($('tr')[loaded-1].children[2] && $('tr')[loaded-1].children[2].innerHTML.match(/(\S+)/)) var lastLog = loaded-1;
                         else if ($('tr')[loaded-2].children[2] && $('tr')[loaded-2].children[2].innerHTML.match(/(\S+)/)) var lastLog = loaded-2;
                         else var lastLog = "";
-                        if (lastLog != "") var dateLastLog =  ". Last date is " + $('tr')[lastLog].children[2].innerHTML.replace(/\s/g, "");
+                        if (lastLog != "") var dateLastLog = ". Last date is " + $('tr')[lastLog].children[2].innerHTML.replace(/\s/g, "");
                         else var dateLastLog = "";
                         result.innerHTML = result.innerHTML + " (Only " + loaded + " logs loaded" + dateLastLog + ".)";
                     }
@@ -11180,6 +11249,7 @@ var mainGC = function() {
             appendCssStyle('#ctl00_ProfileHead_ProfileHeader_divStats a:hover {color: #02874d;} #ctl00_ProfileHead_ProfileHeader_divStats a {color: #4a4a4a;} #ctl00_ProfileHead_ProfileHeader_divStats img {vertical-align: text-top;}');
         } catch(e) {gclh_error("Add links to finds and hides on new profilpage",e);}
     }
+
 // Change links to found/hide caches to the old link on profilpage.
     if (settings_profile_old_links && is_page("publicProfile") && document.location.search.match(/tab=geocaches/)) {
         function getCacheype(typ) {
@@ -11208,15 +11278,17 @@ var mainGC = function() {
             }
             return typId;
         }
+        // All founds.
+        if ($('.span-9 .minorDetails a')[0]) $('.span-9 .minorDetails a')[0].href = '/seek/nearest.aspx?ul='+urlencode($('#ctl00_ProfileHead_ProfileHeader_lblMemberName')[0].innerHTML);
+        // All hides.
+        if ($('.span-9.last .minorDetails a')[0]) $('.span-9.last .minorDetails a')[0].href = '/seek/nearest.aspx?u='+urlencode($('#ctl00_ProfileHead_ProfileHeader_lblMemberName')[0].innerHTML);
         $('.span-9 table tbody tr a').each(function() {
-            // Founds
-            $('.minorDetails a')[0].href = '/seek/nearest.aspx?ul='+urlencode($('#ctl00_ProfileHead_ProfileHeader_lblMemberName')[0].innerHTML);
+            // Cache type founds.
             let match = /\/play\/search\?types=(\d+).*&sc=(False|True)&fb=([^&]+).*/gi.exec(this.href);
             if (match) {
                 this.href = '/seek/nearest.aspx?ul=' + match[3] + getCacheype(match[1]);
             }
-            // Hides
-            $('.minorDetails a')[1].href = '/seek/nearest.aspx?u='+urlencode($('#ctl00_ProfileHead_ProfileHeader_lblMemberName')[0].innerHTML);
+            // Cache type hides.
             match = /\/play\/search\?types=(\d+).*&sc=(False|True)&owner\[0\]=([^&]+).*/gi.exec(this.href);
             if (match) {
                 this.href = '/seek/nearest.aspx?u=' + match[3] + getCacheype(match[1]);
@@ -11250,21 +11322,9 @@ var mainGC = function() {
         } catch(e) {gclh_error("Hide GC Avatar Option",e);}
     }
 
-// Aufbau Links zum Aufruf von Config, Sync und Find Player. Und Changelog im Profile.
+// Aufbau Links zum Aufruf von Config, Sync und Find Player (2. Schritt). Und Changelog im Profile.
     try {
-        // GClh Config, Sync und Find Player Aufrufe aus Linklist heraus.
-        if (checkTaskAllowed("GClh Config", false) == true && document.getElementsByName("lnk_gclhconfig")[0]) {
-            document.getElementsByName("lnk_gclhconfig")[0].href = "#GClhShowConfig";
-            document.getElementsByName("lnk_gclhconfig")[0].addEventListener('click', gclh_showConfig, false);
-        }
-        if (checkTaskAllowed("GClh Sync", false) == true && document.getElementsByName("lnk_gclhsync")[0]) {
-            document.getElementsByName("lnk_gclhsync")[0].href = "#GClhShowSync";
-            document.getElementsByName("lnk_gclhsync")[0].addEventListener('click', gclh_showSync, false);
-        }
-        if (checkTaskAllowed("Find Player", false) == true && document.getElementsByName("lnk_findplayer")[0]) {
-            document.getElementsByName("lnk_findplayer")[0].href = "#GClhShowFindPlayer";
-            document.getElementsByName("lnk_findplayer")[0].addEventListener('click', createFindPlayerForm, false);
-        }
+        // (1. Schritt: Siehe function buildSpecialLinklistLinks.)
         // GClh Config, Sync und Find Player Aufrufe mit Zusatz #GClhShowConfig bzw. #GClhShowSync bzw. #GClhShowFindPlayer.
         // 2. Schritt derzeit im Link bei Settings, Preferences Avatar, teils in den Links aus der Linklist, mit rechter Maustaste aus Links neben
         // Avatar auf Profile Seite und teils F4 bei Aufruf Config.
@@ -11305,7 +11365,7 @@ var mainGC = function() {
                 document.getElementsByName("lnk_findplayer_profile")[0].addEventListener('click', createFindPlayerForm, false);
             }
         }
-    } catch(e) {gclh_error("Aufbau Links zum Aufruf von Config, Sync und Find Player",e);}
+    } catch(e) {gclh_error("Aufbau Links zum Aufruf von Config, Sync und Find Player (2. Schritt)",e);}
 
 // Special Links aus Linklist bzw. Default Links versorgen.
     try {
@@ -11489,71 +11549,80 @@ var mainGC = function() {
                 $("#actionSouvenirsSortAcquiredTitleZtoA").click(function() {ReorderSouvenirs(TitleZtoA, this);});
             }
 
-            var SouvenirsDashboard = $("#souvenirsControlsContainer .sort-select-group, #gclhSouvenirsButtons");
-            if (SouvenirsDashboard.length) {
-                function correctSouvenirName(name) {
-                    name = name.replace(/(^\s|\s$)/g,'');
-                    if (name == 'Åland Islands') name = 'Aland Islands';
-                    if (name == 'Česká Republika') name = 'Czechia';
-                    if (name == 'China (中国)') name = 'China';
-                    if (name == 'Commonwealth of the Bahamas') name = 'Bahamas';
-                    if (name == 'Deutschland') name = 'Germany';
-                    if (name == 'Montenegro | Црна Гора | Crna Gora') name = 'Montenegro';
-                    if (name == 'România') name = 'Romania';
-                    if (name == 'Rzeczpospolita Polska') name = 'Poland';
-                    if (name == 'Singapore (Republik Singapura)') name = 'Singapore';
-                    if (name == 'Slovenská republika') name = 'Slovakia';
-                    if (name == 'United States of America') name = 'United States';
-                    if (name == 'Yukon') name = 'Yukon Territory';
-                    return name;
-                }
-                function prepareSouvenirs() {
-                    $('#souvenirsList li').each(function() {
-                        var ident = '';
-                        var name = $(this).find('a:first')[0].title;
-                        if (name) {
-                            name = correctSouvenirName(name);
-                            var country = $.grep(country_id, function(e){return e.n == name;});
-                            if (country && country[0]) {
-                                ident = 'gclhShowCountry';
-                            } else {
-                                var name = name.replace(/\sstate$/i,'');
-                                var state = $.grep(states_id, function(e){return e.n == name;});
-                                if (state && state[0]) {
-                                    ident = 'gclhShowState';
-                                } else {
-                                    ident = 'gclhShowOther';
-                                }
-                            }
-                            $(this).addClass(ident+' active');
-                        }
-                    });
-                    $('.gclhShow input').each(function() {
-                        $(this)[0].disabled = "";
-                        $(this)[0].style.opacity = "1";
-                    });
-                }
-                function showSouvenirs(button) {
-                    if ($(button).hasClass('active')) {
-                        $(button).removeClass('active');
-                        $('#souvenirsList li.'+$(button)[0].id).each(function() {$(this).removeClass('active');});
-                    } else {
-                        $(button).addClass('active');
-                        $('#souvenirsList li.'+$(button)[0].id).each(function() {$(this).addClass('active');});
+            function checkSouvenirsDashboard(waitCount) {
+                var SouvenirsDashboard = $("#souvenirsControlsContainer .sort-select-group, #gclhSouvenirsButtons");
+                if (SouvenirsDashboard.length) {
+                    function correctSouvenirName(name) {
+                        name = name.replace(/(^\s|\s$)/g,'');
+                        if (name == 'Åland Islands') name = 'Aland Islands';
+                        if (name == 'Česká Republika') name = 'Czechia';
+                        if (name == 'China (中国)') name = 'China';
+                        if (name == 'Commonwealth of the Bahamas') name = 'Bahamas';
+                        if (name == 'Deutschland') name = 'Germany';
+                        if (name == 'Montenegro | Црна Гора | Crna Gora') name = 'Montenegro';
+                        if (name == 'România') name = 'Romania';
+                        if (name == 'Rzeczpospolita Polska') name = 'Poland';
+                        if (name == 'Singapore (Republik Singapura)') name = 'Singapore';
+                        if (name == 'Slovenská republika') name = 'Slovakia';
+                        if (name == 'United States of America') name = 'United States';
+                        if (name == 'Yukon') name = 'Yukon Territory';
+                        return name;
                     }
-                    var nr = $('#souvenirsList .active').length;
-                    if (nr == Souvenirs.length) $('#gclhNumberSouvenirs')[0].innerHTML = '(' + Souvenirs.length + ')';
-                    else $('#gclhNumberSouvenirs')[0].innerHTML = '(' + nr + '/' + Souvenirs.length + ')';
-                }
-                SouvenirsDashboard.append('<span class="gclhShow">&nbsp; | &nbsp;Show &nbsp;<input id="gclhShowCountry" class="active" title="Show country souvenirs" value="Countries" type="button" href="javascript:void(0);" style="opacity: 0.5;" disabled="true"></span>');
-                SouvenirsDashboard.append('<span class="gclhShow"><input id="gclhShowState" class="active" title="Show state souvenirs" value="States" type="button" href="javascript:void(0);" style="opacity: 0.5;" disabled="true"></span>');
-                SouvenirsDashboard.append('<span class="gclhShow"><input id="gclhShowOther" class="active" title="Show other souvenirs" value="Others" type="button" href="javascript:void(0);" style="opacity: 0.5;" disabled="true"></span>');
-                prepareSouvenirs();
-                $("#gclhShowCountry").click(function() {showSouvenirs(this);});
-                $("#gclhShowState").click(function() {showSouvenirs(this);});
-                $("#gclhShowOther").click(function() {showSouvenirs(this);});
+                    function prepareSouvenirs() {
+                        $('#souvenirsList li').each(function() {
+                            var ident = '';
+                            var name = $(this).find('a:first')[0].title;
+                            if (name) {
+                                name = correctSouvenirName(name);
+                                var country = $.grep(country_id, function(e){return e.n == name;});
+                                if (country && country[0]) {
+                                    ident = 'gclhShowCountry';
+                                } else {
+                                    var name = name.replace(/\sstate$/i,'');
+                                    var state = $.grep(states_id, function(e){return e.n == name;});
+                                    if (state && state[0]) {
+                                        ident = 'gclhShowState';
+                                    } else {
+                                        ident = 'gclhShowOther';
+                                    }
+                                }
+                                $(this).addClass(ident+' active');
+                            }
+                        });
+                        $('.gclhShow input').each(function() {
+                            $(this)[0].disabled = "";
+                            $(this)[0].style.opacity = "1";
+                        });
+                    }
+                    function showSouvenirs(button) {
+                        if ($(button).hasClass('active')) {
+                            $(button).removeClass('active');
+                            $('#souvenirsList li.'+$(button)[0].id).each(function() {$(this).removeClass('active');});
+                        } else {
+                            $(button).addClass('active');
+                            $('#souvenirsList li.'+$(button)[0].id).each(function() {$(this).addClass('active');});
+                        }
+                        var nr = $('#souvenirsList .active').length;
+                        if (nr == Souvenirs.length) $('#gclhNumberSouvenirs')[0].innerHTML = '(' + Souvenirs.length + ')';
+                        else $('#gclhNumberSouvenirs')[0].innerHTML = '(' + nr + '/' + Souvenirs.length + ')';
+                    }
+                    SouvenirsDashboard.append('<span class="gclhShow">&nbsp; | &nbsp;Show &nbsp;<input id="gclhShowCountry" class="active" title="Show country souvenirs" value="Countries" type="button" href="javascript:void(0);" style="opacity: 0.5;" disabled="true"></span>');
+                    SouvenirsDashboard.append('<span class="gclhShow"><input id="gclhShowState" class="active" title="Show state souvenirs" value="States" type="button" href="javascript:void(0);" style="opacity: 0.5;" disabled="true"></span>');
+                    SouvenirsDashboard.append('<span class="gclhShow"><input id="gclhShowOther" class="active" title="Show other souvenirs" value="Others" type="button" href="javascript:void(0);" style="opacity: 0.5;" disabled="true"></span>');
+                    prepareSouvenirs();
+                    $("#gclhShowCountry").click(function() {showSouvenirs(this);});
+                    $("#gclhShowState").click(function() {showSouvenirs(this);});
+                    $("#gclhShowOther").click(function() {showSouvenirs(this);});
+                } else {waitCount++; if (waitCount <= 25) setTimeout(function(){checkSouvenirsDashboard(waitCount);}, 200);}
             }
+            checkSouvenirsDashboard(0);
         } catch(e) {gclh_error("Improve Souvenirs",e);}
+    }
+
+// Improve view log and edit log page.
+    if (document.location.href.match(/\.com\/(seek\/log\.aspx\?code=|track\/log\.aspx\?LUID=|track\/log\.aspx\?LogReferenceCode)/)) {
+        // Improve alignment of icons.
+        appendCssStyle('.logPanel h3 img {vertical-align: baseline;}');
     }
 
 // Check for upgrade.
@@ -11999,10 +12068,10 @@ var mainGC = function() {
         div.setAttribute("style", "margin-top: -50px;");
         var prop = ' style="border: none; visibility: hidden; width: 2px; height: 2px;" alt="">';
 //--> $$002
-        var code = '<img src="https://c.andyhoppe.com/1619416674"' + prop + // Besucher
-                   '<img src="https://c.andyhoppe.com/1619416706"' + prop + // Seitenaufrufe
-                   '<img src="https://www.worldflagcounter.com/hHx"' + prop +
-                   '<img src="https://s11.flagcounter.com/count2/yAuO/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
+        var code = '<img src="https://c.andyhoppe.com/1620350200"' + prop + // Besucher
+                   '<img src="https://c.andyhoppe.com/1620350234"' + prop + // Seitenaufrufe
+                   '<img src="https://www.worldflagcounter.com/hI1"' + prop +
+                   '<img src="https://s11.flagcounter.com/count2/dEIl/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
 //<-- $$002
         div.innerHTML = code;
         side.appendChild(div);
@@ -12047,6 +12116,12 @@ var mainGC = function() {
             settings_map_layers.push('ÖPNVMap');
             setValue('settings_map_layers', settings_map_layers.join("###"));
             setValue("migration_task_04", true);
+        }
+        // Migrate new parameter for "Map this Location" in cache listings to true (zu v0.11).
+        if (getValue("migration_task_05", false) != true) {
+            setValue("settings_show_link_to_browse_map", true);
+            settings_show_link_to_browse_map = true;
+            setValue("migration_task_05", true);
         }
     }
 
@@ -12253,6 +12328,34 @@ var mainGC = function() {
         (this.className.match("isHide") ? setValue("show_box_dashboard_" + ident, true) : setValue("show_box_dashboard_" + ident, false));
         (this.className.match("isHide") ? $(this.nextElementSibling).removeClass("isHide") : $(this.nextElementSibling).addClass("isHide"));
         (this.className.match("isHide") ? $(this).removeClass("isHide") : $(this).addClass("isHide"));
+    }
+
+// Show/hide upvotes with "Order by", "Great story" and "Helpful".
+    function showHideUpvotesLink() {
+        addButtonOverLogs(showHideUpvotes, "gclh_show_hide_upvotes", true, "Hide upvotes", "Show/hide upvotes with \"Order by\", \"Great story\" and \"Helpful\"");
+        setUpvotesButTitle();
+    }
+    function showHideUpvotes() {
+        if (isUpvoteActive == false || $('#gclh_show_hide_upvotes.working')[0]) return;
+        $('#cache_logs_container').toggleClass('gclh_hide_upvotes');
+        if ($('#gclh_show_hide_upvotes')[0]) {
+            $('#gclh_show_hide_upvotes input')[0].setAttribute('disabled', '');
+            $('#gclh_show_hide_upvotes').addClass("working");
+            setTimeout(function() {
+                setUpvotesButTitle();
+                $('#gclh_show_hide_upvotes').removeClass("working");
+                $('#gclh_show_hide_upvotes input')[0].removeAttribute('disabled');
+            }, 100);
+        }
+    }
+    function setUpvotesButTitle() {
+        if ($('#gclh_show_hide_upvotes')[0] && $('#cache_logs_container')[0]) {
+            if ($('#cache_logs_container').hasClass('gclh_hide_upvotes')) {
+                $('#gclh_show_hide_upvotes')[0].children[0].value = 'Show upvotes';
+            } else {
+                $('#gclh_show_hide_upvotes')[0].children[0].value = 'Hide upvotes';
+            }
+        }
     }
 
 // Show log counter.
@@ -12628,7 +12731,7 @@ var mainGC = function() {
         bulkUpdateBML(gcText, gcCount, file);
     }
 
-// Get Caches from content like for example uploaded file content.
+// Get caches from content like for example uploaded file content.
     function getCachesFromContent(contentFrom, content) {
         if (contentFrom == 'undefined' || content == 'undefined') return ['', 0];
         var from = (contentFrom.name ? contentFrom.name : contentFrom);
@@ -12693,6 +12796,13 @@ var mainGC = function() {
         }
         if ($('button.add-geocache-cta')[0]) $('button.add-geocache-cta').click();
         waitForBulkUpdate(0);
+    }
+
+// Set focus to a field.
+    function setFocusToField(waitCount, field) {
+        if ($(field)[0]) {
+            $(field).focus();
+        } else {waitCount++; if (waitCount <= 100) setTimeout(function(){setFocusToField(waitCount, field);}, 50);}
     }
 
 ////////////////////////////////////////
@@ -12952,7 +13062,9 @@ var mainGC = function() {
             html += "  padding-top: 0px !important;";
             html += "  padding-bottom: 0px !important;";
             html += "  box-shadow: unset !important;";
+            html += "  height: 22px;";
             html += "  display: unset;}";
+            html += ".gclh_form:focus {outline: none;}";
             appendCssStyle(html, "body");
             // Overlay erstellen
             var html = "";
@@ -13077,6 +13189,9 @@ var mainGC = function() {
         html += ".gclh_content table {";
         html += "  margin-bottom: 0px;";
         html += "  font-size: 14px;}";
+        html += ".gclh_content .gclh_list_layout th {";
+        html += "  font-weight: normal;";
+        html += "  font-style: italic;}";
         html += ".gclh_content th {font-weight: bold;}";
         html += ".gclh_content td, .gclh_content th {";
         html += "  padding: 0px 0px 0px 4px;";
@@ -13223,7 +13338,7 @@ var mainGC = function() {
 
     var t_reqChl = "This option requires \"Change header layout\".";
     var t_reqLlwG = "This option requires \"Load logs with GClh\".";
-    var t_reqSVl = "This option requires \"Show VIP list\".";
+    var t_reqSVl = "This option requires \"Process VIPs\".";
     var t_reqMDTc = "This option requires \"Mark D/T combinations for your next possible cache matrix\".";
     var t_reqChlSLoT = "This option requires \"Change header layout\" and \"Show Linklist on top\".";
     var t_reqSLoT = "This option requires \"Show Linklist on top\".";
@@ -13334,6 +13449,7 @@ var mainGC = function() {
             html += thanksLineBuild("",                     "AndyPuma",                 false, false, false, true,  false);
             html += thanksLineBuild("",                     "anvanlaer",                false, false, false, true,  false);
             html += thanksLineBuild("arbor95",              "",                         false, false, false, true,  false);
+            html += thanksLineBuild("Arnos99",              "",                         false, false, false, true,  false);
             html += thanksLineBuild("barnold",              "barnoldGEOC",              false, false, false, true,  false);
             html += thanksLineBuild("BlueEagle23",          "",                         false, false, false, true,  false);
             html += thanksLineBuild("Cappa-d",              "",                         false, false, false, true,  false);
@@ -13344,6 +13460,7 @@ var mainGC = function() {
             html += thanksLineBuild("lostinthegarden",      "Gitve3jf",                 false, false, false, true,  false);
             html += thanksLineBuild("Magpie42",             "MagpieFourtyTwo",          false, false, false, true,  false);
             html += thanksLineBuild("☺Mitchsa & firefly70", "Mitchsa",                  false, false, false, true,  false);
+            html += thanksLineBuild("MrZaibot",             "",                         false, false, false, true,  false);
             html += thanksLineBuild("PHIL",                 "gcPhil",                   false, false, false, true,  false);
             html += thanksLineBuild("Pontiac_CZ",           "PontiacCZ",                false, false, false, true,  false);
             html += thanksLineBuild("reodor09",              "",                        false, false, false, true,  false);
@@ -13352,7 +13469,7 @@ var mainGC = function() {
             html += thanksLineBuild("Tungstène",            "Tungstene",                false, false, false, true,  false);
             html += thanksLineBuild("V60",                  "V60GC",                    false, false, false, true,  false);
             html += thanksLineBuild("winkamol",             "",                         false, false, false, true,  false);
-            var thanksLastUpdate = "01.05.2021";
+            var thanksLastUpdate = "08.05.2021";
 //<-- $$006
             html += "    </tbody>";
             html += "</table>";
@@ -13372,6 +13489,9 @@ var mainGC = function() {
                 html += "  <option value='" + langus[i] + "' " + (settings_default_langu == langus[i] ? "selected='selected'" : "") + "> " + langus[i] + "</option>";
             }
             html += "</select>" + show_help("Here you can change the default language to set on GC pages, for example in the case, apps changed the language.<br><br>This does not run on asynchronous pages like \"Lists\" and \"Owner dashboard\". In these cases the language field is deactivated.<br><br>In distant, very very distant future is planned to make the GClh multilingual. Until that is realized, the GClh is only in english.") + "<br>";
+            html += "&nbsp;" + "Page width: <input class='gclh_form' type='text' size='4' id='settings_new_width' value='" + getValue("settings_new_width", 1000) + "'> px" + show_help("With this option you can expand the small layout on GC pages. The default value on GC pages is 950 pixel.") + "<br>";
+
+            html += "<div style='margin-top: 9px; margin-left: 5px'><b>Header layout</b>" + "</div>";
             html += checkboxy('settings_change_header_layout', "Change header layout") + show_help("This option redesines the header layout on GC pages to save some vertical space.") + "<br>";
             html += " &nbsp; " + checkboxy('settings_show_smaller_gc_link', 'Show smaller GC logo top left') + show_help("With this option you can choose a smaller display of the GC logo top left on GC pages.<br><br>" + t_reqChl) + "<br>";
             html += " &nbsp; &nbsp; " + checkboxy('settings_remove_logo', 'Remove GC logo top left') + show_help_big("With this option you can remove the GC logo top left on GC pages.<br><br>This feature is not fully integrated in the diverse possibilities of the header layout and the navigation menus.<br><br>This option require \"Change header layout\" and \"Show smaller GC logo top left\".") + "<br>";
@@ -13379,20 +13499,31 @@ var mainGC = function() {
             html += " &nbsp; " + checkboxy('settings_gc_tour_is_working', 'Reserve a place for GC Tour icon') + show_help("If the script GC Tour is running, you can reserve a place top left on GC pages for the GC Tour icon.<br><br>" + t_reqChl) + "<br>";
             html += " &nbsp; " + checkboxy('settings_fixed_header_layout', 'Arrange header layout on content') + show_help_big("With this option you can arrange the header width on the width of the content of GC pages. This is an easy feature with some restrictions, like for example the available place, especially for horizontal navigation menues.<br><br>This feature is available on GC pages in the oldest design like for example cache and TB listings, bookmarks, pocket queries, nearest lists, old dashboards (profiles), statistics, watchlists and drafts, to name just a few. <br><br>On map page and on pages in the newer and newest design it is not available, partly because the content on these pages are not yet in an accurate width, like the newer search cache page or the message center page. Also this feature is not fully integrated in the diverse possibilities of the header layout and the navigation menus. But we hope the friends of this specific header design can deal with it.<br><br>" + t_reqChl) + "<br>";
             html += checkboxy('settings_bookmarks_on_top', "Show <a class='gclh_ref' href='#gclh_linklist' title='Link to topic \"Linklist / Navigation\"' id='gclh_linklist_link_1'>Linklist</a> on top") + show_help_big("Show the Linklist on the top of GC pages, beside the other links. You can configure the links in the Linklist at the end of this configuration page.<br><br>Some of the features of the Linklist on top, like for example the font size or the distance between drop-down links, requires \"Change header layout\". Details you can see at the end of this configuration page by the features of the Linklist.") + "<br>";
+
+            html += "<div style='margin-top: 9px; margin-left: 5px'><b>User related layout</b>" + "</div>";
+            var content_settings_show_vip_list = "The VIPs (Very Important Persons) feature consist of<br>- the user related icon on numerous pages,<br>- the VIP lists in the cache and event listings and<br>- the VIP list in the dashboard.<br><br>You can add any user on numerous pages to your VIP lists by clicking the little VIP icon beside the user. If it is green, this person is a VIP.<br><br>The VIP lists in the cache and event listings are lists, displayed at the right side in the cache and event listings. The main VIP list in the cache and event listings only shows VIPs and the logs of VIPs, which already posted a log to this listing. So, you are able to see which of your VIPs already found this cache.<br><br>On your dashboard page there is an overview list of all your VIPs.";
+            html += checkboxy('settings_show_vip_list', 'Process VIPs') + show_help_big(content_settings_show_vip_list + "<br><br>You can adjust details about this feature in the Listing and Dashboard topics.") + "<br>";
+            var content_settings_process_vup = "The VUPs (Very Unimportant Persons) feature consist of<br>- the user related icon on numerous pages,<br>- the restrict display of content from this user in the cache and event listings and<br>- the VUP list in the dashboard.<br><br>You can add any user on numerous pages to your VUP list by clicking the little VUP icon beside the user. If it is red, this person is a VUP.<br><br>In the logs of VUPs in the cache and event listings will only shown \"censored\" instead of the log text.<br><br>On your dashboard page there is an overview of all your VUPs.";
+            html += "&nbsp; " + checkboxy('settings_process_vup', 'Process VUPs') + show_help_big(content_settings_process_vup + "<br><br>You can adjust details about this feature in the Listing and Dashboard topics.<br><br>" + t_reqSVl) + "<br>";
+            html += checkboxy('settings_show_mail', 'Show mail link beside user') + show_help("With this option there will be an small mail icon beside every user on numerous pages. With this icon you get directly to the mail form to mail to this user. If you click it for example when you are in a listing, the cachename or GC code can be inserted into the mail form about placeholders in the mail / message form template.") + "<br>";
+            html += "&nbsp; " + checkboxy('settings_mail_icon_new_win', 'Open mail form in new tab') + "<br>";
+            html += checkboxy('settings_show_message', 'Show message link beside user') + show_help("With this option there will be an small message icon beside every user on numerous pages. With this icon you get directly to the message form to send a message to this user. If you click it for example when you are in a listing, the cachename or GC code can be inserted into the message form about placeholders in the mail / message form template.") + "<br>";
+            html += "&nbsp; " + checkboxy('settings_message_icon_new_win', 'Open message form in new tab') + "<br>";
+
+            html += "<div style='margin-top: 9px; margin-left: 5px'><b>Hidding</b>" + "</div>";
             html += checkboxy('settings_hide_advert_link', 'Hide link to advertisement instructions') + "<br>";
-            html += "&nbsp;" + "Page width: <input class='gclh_form' type='text' size='4' id='settings_new_width' value='" + getValue("settings_new_width", 1000) + "'> px" + show_help("With this option you can expand the small layout on GC pages. The default value on GC pages is 950 pixel.") + "<br>";
-            html += checkboxy('settings_hide_facebook', 'Hide Facebook login') + "<br>";
-            html += checkboxy('settings_hide_socialshare', 'Hide social sharing Facebook and Twitter') + "<br>";
+            html += checkboxy('settings_hide_facebook', 'Hide login procedures via Facebook, Google, Apple ...') + "<br>";
+            html += checkboxy('settings_hide_socialshare', 'Hide social sharing via Facebook, Twitter ...') + "<br>";
             html += newParameterOn3;
             html += checkboxy('settings_hide_feedback_icon', 'Hide green feedback icon') + "<br>";
             html += newParameterVersionSetzen(0.9) + newParameterOff;
             html += checkboxy('settings_hide_warning_message', 'Hide warning message') + show_help_big("With this option you can choose the possibility to hide a potential warning message of the masters of the GC pages.<br><br>One example is the down time warning message which comes from time to time and is placed unnecessarily a lot of days at the top of pages. You can hide it except for a small line in the top right side of the pages. You can activate the warning message again if your mouse goes to this area.<br><br>If the warning message is deleted of the masters, this small area is deleted too.") + "<br>";
-            html += newParameterOn2;
-            html += checkboxy('settings_remove_banner', 'Remove banner') + "<br>";
+            html += checkboxy('settings_remove_banner', 'Hide banner') + "<br>";
             html += " &nbsp; " + checkboxy('settings_remove_banner_for_garminexpress', 'for \"Garmin Express\"') + "<br>";
-            html += " &nbsp; " + checkboxy('settings_remove_banner_blue', 'Try to remove all blue banner to new designed pages') + "<br>";
-            html += newParameterVersionSetzen(0.8) + newParameterOff;
-            html += "<table style='width: 550px; text-align: left; margin-top: 9px;'>";
+            html += " &nbsp; " + checkboxy('settings_remove_banner_blue', 'Try to hide all blue banner to new designed pages') + "<br>";
+
+            html += "<div style='margin-top: 9px; margin-left: 5px'><b>List layout</b>" + "</div>";
+            html += "<table class='gclh_list_layout' style='width: 550px; text-align: left;'>";
             html += "  <thead>";
             html += "    <tr><th><span>Show lines in</span></th>";
             html += "      <th><span>lists </span>" + show_help("Lists are all common lists but not the TB listing and not the cache listing.") + "</th>";
@@ -13431,9 +13562,7 @@ var mainGC = function() {
             html += "<div id='gclh_config_config' class='gclh_block'>";
             html += checkboxy('settings_f4_call_gclh_config', 'Call GClh Config on F4') + show_help("With this option you are able to call the GClh Config page (this page) by pressing key F4 from all GC pages.") + "<br>";
             html += checkboxy('settings_f2_save_gclh_config', 'Save GClh Config on F2') + show_help("With this option you are able to save the GClh Config page (this page) by pressing key F2 instead of scrolling to the bottom and choose the save button.") + "<br>";
-            html += newParameterOn2;
             html += checkboxy('settings_esc_close_gclh_config', 'Close GClh Config on ESC') + show_help("With this option you are able to close the GClh Config page (this page) by pressing ESC.") + "<br>";
-            html += newParameterVersionSetzen(0.8) + newParameterOff;
             html += checkboxy('settings_f10_call_gclh_sync', 'Call GClh Sync on F10') + show_help("With this option you are able to call the GClh Sync page by pressing key F10.") + "<br>";
             html += checkboxy('settings_sync_autoImport', 'Auto apply DB Sync') + show_help("If you enable this option, settings from DropBox will be applied automatically about GClh Sync every 10 hours.") + "<br>";
             html += checkboxy('settings_show_save_message', 'Show info message if GClh data are saved') + show_help("With this option an info message is displayed if the GClh Config data are saved respectively if the GClh Sync data are imported.") + "<br>";
@@ -13448,9 +13577,7 @@ var mainGC = function() {
             html += checkboxy('settings_show_nearestuser_profil_link', 'Show profile link at search lists for caches created or found by') + show_help("This option adds an link to the public user profile when searching for caches created or found by a certain user.") + "<br>";
             var content_settings_show_log_it = checkboxy('settings_show_log_it', 'Show GClh \"Log it\" icon on nearest lists, PQs, recently viewed caches list') + show_help3("The GClh \"Log it\" icon is displayed beside cache titles in nearest lists, pocket queries and the recently viewed caches list. If you click it, you will be redirected directly to the log form. <br><br>You can use it too as basic member to log Premium Member Only (PMO) caches.") + "<br>";
             html += content_settings_show_log_it;
-            html += newParameterOn2;
             html += checkboxy('settings_compact_layout_nearest', 'Show compact layout in all nearest lists (without PQ)') + show_help("For pocket queries, please go to the section \"Pocket query\", there is a special parameter for pocket queries.") + "<br>";
-            html += newParameterVersionSetzen(0.8) + newParameterOff;
             html += newParameterOn3;
             html += " &nbsp; " + checkboxy('settings_fav_proz_nearest', 'Show favorites percentage') + "<br>";
             html += newParameterVersionSetzen(0.9) + newParameterOff;
@@ -13462,15 +13589,11 @@ var mainGC = function() {
             html += content_settings_show_log_it.replace("show_log_it","show_log_itX0");
             var content_settings_submit_log_button = checkboxy('settings_submit_log_button', 'Submit log, pocket query, bookmark (old form) or hide cache on F2') + show_help3("With this option you are able to submit your log by pressing key F2 instead of scrolling to the bottom and move the mouse to the button. <br><br>This feature also works to submit pocket queries and bookmarks (old form). <br><br>And it works on the whole hide cache process with all of the buttons of the create and the change functionality. <br><br>It works also to save Personal Cache Notes in cache listings.") + "<br>";
             html += content_settings_submit_log_button;
-            html += newParameterOn2;
             html += checkboxy('settings_compact_layout_list_of_pqs', 'Show compact layout in list of pocket queries') + "<br>";
-            html += newParameterVersionSetzen(0.8) + newParameterOff;
             html += newParameterOn3;
             html += " &nbsp; " + checkboxy('settings_both_tabs_list_of_pqs_one_page', 'Show both tabs in list of pocket queries of one page') + show_help("Show the both tabs \"Active Pocket Queries\" and \"Pocket Queries Ready for Download\" together of one page.") + "<br>";
             html += newParameterVersionSetzen(0.9) + newParameterOff;
-            html += newParameterOn2;
             html += checkboxy('settings_compact_layout_pqs', 'Show compact layout in pocket queries') + "<br>";
-            html += newParameterVersionSetzen(0.8) + newParameterOff;
             html += newParameterOn3;
             html += " &nbsp; " + checkboxy('settings_fav_proz_pqs', 'Show favorites percentage') + "<br>";
             html += newParameterVersionSetzen(0.9) + newParameterOff;
@@ -13538,7 +13661,7 @@ var mainGC = function() {
             html += checkboxy('settings_automatic_friend_reset', 'Reset difference counter on friends list automatically') + show_help("If you enable this option, the difference counter at friends list will automatically reset if you have seen the difference and if the day changed.") + "<br>";
             html += checkboxy('settings_friendlist_summary', 'Show summary for new finds/hides in friends list') + show_help("With this option you can show a summary of all new finds/hides of your friends on the friends list page") + "<br>";
             html += " &nbsp; " + checkboxy('settings_friendlist_summary_viponly', 'Show summary only for friends in VIP list') + "<br>";
-            html += checkboxy('settings_show_vup_friends', 'Show VUP icons on friends list') + show_help_big("With this option you can choose if VUP icons are shown addional on friends list or not. If you deactivate this option and a friend is a VUP, then the VIP icon is replaced by the VUP icon anyway.<br>(VUP: Very unimportant person)<br>(VIP: Very important person)<br><br>This option requires \"Process VUPs\" and \"Show VIP list\".") + "<br>";
+            html += checkboxy('settings_show_vup_friends', 'Show VUP icons on friends list') + show_help_big("With this option you can choose if VUP icons are shown addional on friends list or not. If you deactivate this option and a friend is a VUP, then the VIP icon is replaced by the VUP icon anyway.<br>(VUP: Very unimportant person)<br>(VIP: Very important person)<br><br>This option requires \"Process VUPs\" and \"Process VIPs\".") + "<br>";
             html += "</div>";
 
             html += "<h4 class='gclh_headline2'>"+prepareHideable.replace("#name#","hide")+"Hide cache" + "</h4>";
@@ -13549,7 +13672,7 @@ var mainGC = function() {
 
             html += "<h4 class='gclh_headline2'>"+prepareHideable.replace("#name#","others")+"Others" + "</h4>";
             html += "<div id='gclh_config_others' class='gclh_block'>";
-            html += checkboxy('settings_search_enable_user_defined', 'Enable user defined filter sets for geocache searchs') + show_help("This features enables you to store favourites filter settings in the geocache search and call them quickly.") + prem + "<br>";
+            html += checkboxy('settings_search_enable_user_defined', 'Enable user defined filter sets for geocache searchs') + show_help("This features enables you to store favorites filter settings in the geocache search and call them quickly.") + prem + "<br>";
             html += checkboxy('settings_show_sums_in_watchlist', 'Show number of caches in your watchlist') + show_help("With this option the number of caches and the number of selected caches in the categories \"All\", \"Archived\" and \"Deactivated\", corresponding to the select buttons, are shown in your watchlist at the end of the list.") + "<br>";
             html += checkboxy('settings_hide_archived_in_owned', 'Hide archived caches in owned list') + "<br>";
             html += newParameterOn1;
@@ -13707,9 +13830,9 @@ var mainGC = function() {
             html += checkboxy('settings_faster_profile_trackables', 'Load trackables faster without images') + show_help("With this option you can stop the load on the trackable pages after the necessary datas are loaded. You disclaim of the lengthy load of the images of the trackables. This procedure is much faster as load all datas, because every image is loaded separate and not in a bigger bundle like it is for the non image data.") + "<br>";
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>Gallery</b></div>";
             var content_settings_show_thumbnails = checkboxy('settings_show_thumbnails', 'Show thumbnails of images') + show_help_big("With this option the images are displayed as thumbnails to have a preview. If you hover with your mouse over a thumbnail, you can see the big one.<br><br>This works in cache and TB logs, in the cache and TB image galleries, in public profile for the avatar and in the profile image gallery. <br><br>And after pressing button \"Show bigger avatars\" in cache listing, it works too for the avatars in the shown logs.") + "&nbsp; Max size of big image: <input class='gclh_form' size=3 type='text' id='settings_hover_image_max_size' value='" + settings_hover_image_max_size + "'> px <br>";
-            html += content_settings_show_thumbnails;
-            html += "&nbsp; " + checkboxy('settings_imgcaption_on_top', 'Show caption on top') + show_help("This option requires \"Show thumbnails of images\".");
-            var content_geothumbs = "<font class='gclh_small' style='margin-left: 130px; margin-top: 4px; position: absolute;'> (Alternative: <a href='https://benchmarks.org.uk/greasemonkey/geothumbs.php' target='_blank'>Geothumbs</a> " + show_help("A great alternative to the GClh bigger image functionality with \"Show thumbnails of images\" and \"Show bigger images in gallery\", provides the script Geothumbs (Geocaching Thumbnails). <br><br>The script works like GClh with Firefox, Google Chrome and Opera as Tampermonkey script. <br><br>If you use Geothumbs, you have to uncheck both GClh bigger image functionality \"Show thumbnails of images\" and \"Show bigger images in gallery\".") + ")</font>" + "<br>";
+            html += content_settings_show_thumbnails.replace("show_thumbnails", "show_thumbnailsX1").replace("max_size", "max_sizeX1");
+            html += "&nbsp; " + checkboxy('settings_imgcaption_on_topX1', 'Show caption on top') + show_help("This option requires \"Show thumbnails of images\".");
+            var content_geothumbs = "<font class='gclh_small' style='margin-left: 130px; margin-top: 4px; position: absolute;'> (Alternative: <a href='https://benchmarks.org.uk/greasemonkey/geothumbs.php' target='_blank'>Geothumbs</a> " + show_help3_big("A great alternative to the GClh bigger image functionality with \"Show thumbnails of images\" and \"Show bigger images in gallery\", provides the script Geothumbs (Geocaching Thumbnails). <br><br>The script works like GClh with Firefox, Google Chrome and Opera as Tampermonkey script. <br><br>If you use Geothumbs, you have to uncheck both GClh bigger image functionality \"Show thumbnails of images\" and \"Show bigger images in gallery\".") + ")</font>" + "<br>";
             html += content_geothumbs;
             html += checkboxy('settings_show_big_gallery', 'Show bigger images in gallery') + show_help("With this option the images in the galleries of caches, TBs and public profiles are displayed bigger and not in 4 columns, but in 2 columns.<br><br>It runs not together with \"Show thumbnails of images\".");
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>Statistic</b>" + prem + "</div>";
@@ -13739,9 +13862,7 @@ var mainGC = function() {
                 html += "  <option value='" + i + "' " + (settings_log_statistic_reload == i ? "selected=\"selected\"" : "") + ">" + i + "</option>";
             }
             html += "</select> hours" + show_help("Choose no hours, if you want to load/reload only manual.") + "<br>";
-            html += newParameterOn2;
             html += checkboxy('settings_map_links_statistic', 'Show links to found caches for every country on statistic map') + show_help("With this option, you can improve your own statistic maps page for you with links to caches you have found for every country.") + "<br>";
-            html += newParameterVersionSetzen(0.8) + newParameterOff;
             html += newParameterOn1;
             html += checkboxy('settings_map_percentage_statistic', 'Show percentage of found caches for every country on statistic map') + "<br>";
             html += newParameterVersionSetzen('0.10') + newParameterOff;
@@ -13780,85 +13901,30 @@ var mainGC = function() {
 
             html += "<h4 class='gclh_headline2'>"+prepareHideable.replace("#name#","listing")+"Listing</h4>";
             html += "<div id='gclh_config_listing' class='gclh_block'>";
-            html += checkboxy('settings_log_inline', 'Log cache from listing (inline)') + show_help("With the inline log you can open a log form inside the listing, without loading a new page.<br><br>If you're using an ad-blocking add-on, such as uBlock, the embedded screen may not be allowed. To turn this off, you have to add \"www.geocaching.com\/geocache\/GC*\" to the whitelist, or something similar, of your add-on.") + "<br>";
-            var content_settings_log_inline_tb = "&nbsp; " + checkboxy('settings_log_inline_tb', 'Show TB list') + "<br>";
-            html += content_settings_log_inline_tb;
-            html += checkboxy('settings_log_inline_pmo4basic', 'Log cache from listing for PMO (for basic members)') + show_help("With this option you can select, if inline logs should appear for Premium Member Only (PMO) caches althought you are a basic member.<br><br>If you're using an ad-blocking add-on, such as uBlock, the embedded screen may not be allowed. To turn this off, you have to add \"www.geocaching.com\/geocache\/GC*\" to the whitelist, or something similar, of your add-on.") + "<br>";
-            html += content_settings_log_inline_tb.replace("settings_log_inline_tb", "settings_log_inline_tbX0");
-            html += checkboxy('settings_hide_empty_cache_notes', 'Hide Personal Cache Notes if empty') + show_help("You can hide the Personal Cache Notes if they are empty. There will be a link to show them to add a note.") + prem + "<br>";
-            html += checkboxy('settings_hide_cache_notes', 'Hide Personal Cache Notes completely') + show_help("You can hide the Personal Cache Notes completely, if you don't want to use them.") + prem + "<br>";
-            html += newParameterOn3;
-            html += checkboxy('settings_adapt_height_cache_notes', 'Adapt the height of the Personal Cache Note edit field') + show_help("The height of the Personal Cache Note edit field will be expand to show the complete note.") + prem + "<br>";
-            html += newParameterVersionSetzen(0.9) + newParameterOff;
-            html += checkboxy('settings_hide_disclaimer', 'Hide disclaimer') + "<br>";
-            html += checkboxy('settings_hide_spoilerwarning', 'Hide spoiler warning') + "<br>";
-            html += checkboxy('settings_hide_top_button', 'Hide the green "To Top" button') + show_help("Hide the green \"To Top\" button, which appears if you are reading logs.") + "<br>";
-            html += checkboxy('settings_show_all_logs', 'Show at least ') + " <input class='gclh_form' type='text' size='2' id='settings_show_all_logs_count' value='" + settings_show_all_logs_count + "'> logs (0 = all)" + show_help("With this option you can choose how many logs should be shown at least if you load the listing - if you type 0, all logs are shown by default.") + "<br>";
-            html += checkboxy('settings_hide_hint', 'Hide hints behind a link') + show_help("This option hides the hints behind a link. You have to click it to display the hints (already decrypted). This option remove also the description of the decryption.") + "<br>";
-            html += checkboxy('settings_decrypt_hint', 'Decrypt hints') + show_help("This option decrypt the hints on cache listing and print page and remove also the description of the decryption.") + "<br>";
-            html += checkboxy('settings_visitCount_geocheckerCom', 'Show statistic on geochecker.com pages') + show_help("This option adds '&visitCount=1' to all geochecker.com links. This will show some statistics on geochecker.com page like the count of page visits and the count of right and wrong attempts.") + "<br>";
-            html += checkboxy('settings_show_eventday', 'Show weekday of an event') + show_help("With this option the day of the week will be displayed next to the event date.") + "<br>";
-            html += checkboxy('settings_show_mail', 'Show mail link beside user') + show_help("With this option there will be an small mail icon beside every user. With this icon you get directly to the mail form to mail to this user. If you click it for example when you are in a listing, the cachename or GC code can be inserted into the mail form about placeholders in the mail / message form template.") + "<br>";
-            var content_settings_show_mail_in_viplist = "&nbsp; " + checkboxy('settings_show_mail_in_viplist', 'Show mail link beside user in "VIP-List" in listing') + "<br>";
-            html += content_settings_show_mail_in_viplist;
-            html += "&nbsp; " + checkboxy('settings_mail_icon_new_win', 'Open mail form in new tab') + "<br>";
-            html += checkboxy('settings_show_message', 'Show message link beside user') + show_help("With this option there will be an small message icon beside every user. With this icon you get directly to the message form to send a message to this user. If you click it for example when you are in a listing, the cachename or GC code can be inserted into the message form about placeholders in the mail / message form template.") + "<br>";
-            html += "&nbsp; " + checkboxy('settings_message_icon_new_win', 'Open message form in new tab') + "<br>";
-            html += checkboxy('settings_show_google_maps', 'Show link to Google Maps') + show_help("This option shows a link at the top of the second map in the listing. With this link you get directly to Google Maps in the area, where the cache is.") + "<br>";
+            html += "<div style='margin-top: 9px; margin-left: 5px'><b>Listing header</b>" + "</div>";
+            html += newParameterOn1;
+            html += checkboxy('settings_cache_type_icon_visible', 'Set cache type icon always visible') + show_help("With this option, the cache type icon is always displayed complete, even if the cache is deactivated or archived.") + "<br>";
+            html += checkboxy('settings_log_status_icon_visible', 'Set log status icon always visible') + show_help("With this option, the log status icon is always displayed complete, even if the cache is deactivated or archived. The log status icon is located above the cache type icons and indicates for example if a cache was found, if there is a personal note or if there are corrected coordinates.") + "<br>";
+            html += newParameterVersionSetzen("0.10") + newParameterOff;
             html += checkboxy('settings_strike_archived', 'Strike through title of archived/disabled caches') + "<br>";
-            html += "&nbsp;" + "Highlight user changed coords with " + checkboxy('settings_highlight_usercoords', 'red textcolor ') + checkboxy('settings_highlight_usercoords_bb', 'underline ') + checkboxy('settings_highlight_usercoords_it', 'italic') + "<br>";
-            html += checkboxy('settings_show_fav_percentage', 'Show percentage of favourite points') + show_help("This option loads the favourite stats of a cache in the backround and display the percentage under the amount of favourites a cache got.") + "<br>";
+            html += checkboxy('settings_show_real_owner', 'Show real owner name') + show_help("If the option is enabled, GClh will replace the pseudonym a owner took to publish the cache with the real owner name.") + "<br>";
+            html += checkboxy('settings_show_eventday', 'Show weekday of an event') + show_help("With this option the day of the week will be displayed next to the event date.") + "<br>";
             html += checkboxy('settings_show_latest_logs_symbols', 'Show the ');
             html += "<select class='gclh_form' id='settings_show_latest_logs_symbols_count'>";
             for (var i = 1; i < 11; i++) {
                 html += "  <option value='" + i + "' " + (settings_show_latest_logs_symbols_count == i ? "selected=\"selected\"" : "") + ">" + i + "</option>";
             }
             html += "</select> latest logs symbols at the top" + show_help("With this option, the choosen count of the latest logs symbols is shown at the top of the cache listing.<br><br>" + t_reqLlwG) + "<br>";
+            html += checkboxy('settings_show_fav_percentage', 'Show percentage of favorite points') + show_help("This option loads the favorite stats of a cache in the backround and display the percentage under the amount of favorites a cache got.") + "<br>";
             html += newParameterOn3;
             html += checkboxy('settings_show_log_totals', 'Show the log totals symbols at the top') + "<br>";
             html += newParameterVersionSetzen(0.9) + newParameterOff;
-            html += checkboxy('settings_show_remove_ignoring_link', 'Show \"Stop Ignoring\", if cache is already ignored') + show_help("This option replace the \"Ignore\" link description with the \"Stop Ignoring\" link description in the cache listing, if the cache is already ignored.") + prem + "<br>";
-            html += newParameterOn1;
-            html += "&nbsp; " + checkboxy('settings_use_one_click_ignoring', 'One click ignoring/restoring') + show_help("With this option you will be able to ignore respectively restore a cache in cache listing with only one click.") + "<br>";
-            html += checkboxy('settings_use_one_click_watching', 'Add cache with one click to watchlist') + show_help("With this option, you can add a cache in cache listing to your watchlist with just one click.") + "<br>";
-            html += newParameterVersionSetzen('0.10') + newParameterOff;
-            html += checkboxy('settings_map_overview_build', 'Show cache location in overview map') + show_help("With this option there will be an additional map top right in the cache listing as an overview of the cache location. This was available earlier on GC standard.") + "<br>";
-            html += newParameterOn3;
-            html += ' &nbsp; &nbsp;Map layer: <select class="gclh_form" id="settings_map_overview_layer">';
-            for (name in all_map_layers) {
-                html += "  <option value='" + name + "' " + (settings_map_overview_layer == name ? "selected='selected'" : "") + "> " + name + "</option>";
-            }
-            html += '</select>';
-            html += " &nbsp;" + "Map zoom value: <select class='gclh_form' id='settings_map_overview_zoom'>";
-            for (var i = 1; i < 20; i++) {
-                html += "  <option value='" + i + "' " + (settings_map_overview_zoom == i ? "selected=\"selected\"" : "") + ">" + i + "</option>";
-            }
-            html += "</select>" + show_help3("With this option you can choose the zoom value to start in the map. \"1\" is the hole world and \"19\" is the maximal enlargement. Default is \"11\". <br><br>This option requires \"Show cache location in overview map\".") + "<br>";
-            html += newParameterVersionSetzen(0.9) + newParameterOff;
-            html += checkboxy('settings_show_vip_list', 'Show VIP list') + show_help("The VIP list is a list, displayed at the right side on a cache listing. You can add any user to your VIP list by clicking the little VIP icon beside the user. If it is green, this person is a VIP. The VIP list only shows VIPs and the logs of VIPs, which already posted a log to this cache. With this option you are able to see which of your VIPs already found this cache. On your dashboard page there is an overview of all your VIPs.<br>(VIP: Very important person)") + "<br>";
-            html += "&nbsp; " + checkboxy('settings_show_owner_vip_list', 'Show owner in VIP list')  + show_help("If you enable this option, the owner is a VIP for the cache, so you can see, what happened with the cache (disable, maint, enable, ...). Then the owner is shown not only in VIP list but also in VIP logs.<br>(VIP: Very important person)<br><br>" + t_reqSVl)+ "<br>";
-            html += newParameterOn3;
-            html += "&nbsp; " + checkboxy('settings_show_reviewer_as_vip', 'Show reviewer/publisher in VIP list')  + show_help("If you enable this option, the reviewer or publisher of the cache is a VIP for the cache.<br><br>" + t_reqSVl) + "<br>";
-            html += newParameterVersionSetzen(0.9) + newParameterOff;
-            html += "&nbsp; " + checkboxy('settings_show_long_vip', 'Show long VIP list (one row per log)') + show_help("This is another type of displaying the VIP list. If you disable this option you get the short list, one row per VIP and the logs as icons beside the VIP. If you enable this option, there is a row for every log.<br>(VIP: Very important person)<br><br>" + t_reqSVl) + "<br>";
-            html += "&nbsp; " + checkboxy('settings_vip_show_nofound', 'Show a list of VIPs who have not found the cache') + "<br>";
-            html += "&nbsp; " + checkboxy('settings_make_vip_lists_hideable', 'Make VIP lists in listing hideable') + show_help("With this option you can hide and show the VIP lists \"VIP-List\" and \"VIP-List not found\" in cache listing with one click.<br>(VIP: Very important person)<br><br>" + t_reqSVl) + "<br>";
-            html += content_settings_show_mail_in_viplist.replace("in_viplist", "in_viplistX0");
-            html += "&nbsp; " + checkboxy('settings_process_vup', 'Process VUPs') + show_help("With this option you can activate the processing to add any user to a VUP list by clicking the little VUP icon beside the user. If it is red, this person is a VUP. For such persons in cache logs will only shown \"censored\" instead of the log text. On your dashboard page there is an overview of all your VUPs.<br>(VUP: Very unimportant person)<br><br>" + t_reqSVl) + "<br>";
-            html += " &nbsp; &nbsp; " + checkboxy('settings_vup_hide_avatar', 'Also hide name, avatar and counter from log') + "<br>";
-            html += " &nbsp; &nbsp; &nbsp; " + checkboxy('settings_vup_hide_log', 'Hide complete log') + "<br>";
-            html += checkboxy('settings_link_big_listing', 'Replace image links in cache listing to bigger image') + show_help("With this option the links of owner images in the cache listing points to the bigger, original image.") + "<br>";
-            html += content_settings_show_thumbnails.replace("show_thumbnails", "show_thumbnailsX0").replace("max_size", "max_sizeX0");
-            html += " &nbsp; &nbsp;" + "Spoiler filter: <input class='gclh_form' type='text' id='settings_spoiler_strings' value='" + settings_spoiler_strings + "'> " + show_help("If one of these words is found in the caption of the image, there will be no real thumbnail. It is to prevent seeing spoilers. Words have to be divided by |. If the field is empty, no checking is done. Default is \"spoiler|hinweis\".<br><br>This option requires \"Show thumbnails of images\".") + "<br>";
-            html += "&nbsp; " + checkboxy('settings_imgcaption_on_topX0', 'Show caption on top') + show_help("This option requires \"Show thumbnails of images\".");
-            html += content_geothumbs;
-            html += checkboxy('settings_hide_avatar', 'Hide avatars in listing') + show_help("This option hides the avatars in logs. This prevents loading the hundreds of images. You have to change the option here, because GClh overrides the log-load-logic of GC, so the avatar option of GC doesn't work with GClh.") + "<br>";
-            html += checkboxy('settings_load_logs_with_gclh', 'Load logs with GClh') + show_help("This option should be enabled. <br><br>You just should disable it, if you have problems with loading the logs. <br><br>If this option is disabled, there are no VIP-, VUP-, mail-, message- and top icons, no line colors and no mouse activated big images at the logs. Also the VIP and VUP lists, hide avatars, log filter and log search won't work.") + "<br>";
-            html += checkboxy('settings_show_real_owner', 'Show real owner name') + show_help("If the option is enabled, GClh will replace the pseudonym a owner took to publish the cache with the real owner name.") + "<br>";
-            html += checkboxy('settings_img_warning', 'Show warning for unavailable images') + show_help("With this option the images in the cache listing will be checked for existence before trying to load it. If an image is unreachable or dosen't exists, a placeholder is shown. The mouse over the placeholder will shown the image link. A mouse click to the placeholder will open the link in a new tab.") + "<br>";
-            html += checkboxy('settings_driving_direction_link', 'Show link to Google driving direction for every waypoint') + show_help("Shows for every waypoint in the waypoint list a link to Google driving direction from home location to coordinates of the waypoint.") + "<br>";
-            html += "&nbsp; " + checkboxy('settings_driving_direction_parking_area', 'Only for parking area waypoints') + "<br>";
-            html += checkboxy('settings_show_elevation_of_waypoints', 'Show elevations for waypoints and listing coordinates') + show_help("Shows the elevation of every additional waypoint and the (changed) listing coordinates. Select the order of the elevation service or deactivate it. Queries from the Google Elevation service is limited. Use the Open Elevation service as second source. Hover of the elevation data of a waypoint shows a tooltip with the used service.") + "<br>";
+            html += checkboxy('settings_log_inline_pmo4basic', 'Log cache from listing for PMO (for basic members)') + show_help("With this option you can select, if inline logs should appear for Premium Member Only (PMO) caches althought you are a basic member.<br><br>If you're using an ad-blocking add-on, such as uBlock, the embedded screen may not be allowed. To turn this off, you have to add \"www.geocaching.com\/geocache\/GC*\" to the whitelist, or something similar, of your add-on.") + "<br>";
+            html += "&nbsp; " + checkboxy('settings_log_inline_tb', 'Show TB list') + "<br>";
+
+            html += "<div style='margin-top: 9px; margin-left: 5px'><b>Location</b>" + "</div>";
+            html += "&nbsp;" + "Highlight user changed coords with " + checkboxy('settings_highlight_usercoords', 'red textcolor ') + checkboxy('settings_highlight_usercoords_bb', 'underline ') + checkboxy('settings_highlight_usercoords_it', 'italic') + "<br>";
+            html += checkboxy('settings_show_elevation_of_waypoints', 'Show elevations for listing coordinates and additional waypoints') + show_help3("Shows the elevation of the listing coordinates and of every additional waypoint. Select the order of the elevation service or deactivate it. Queries to the Google Elevation service are limited. Hover of the elevation data of a waypoint shows a tooltip with the used service.") + "<br>";
             html += " &nbsp; &nbsp;" + "Measure unit can be set in <a href=\"/account/settings/preferences\">Preferences</a>" + "<br>";
             html += newParameterOn3;
             html += "&nbsp;&nbsp;&nbsp;" + "First service: <select class='gclh_form' id='settings_primary_elevation_service' style='width: 160px;'>";
@@ -13872,15 +13938,64 @@ var mainGC = function() {
             }
             html += "</select><br>";
             html += newParameterVersionSetzen(0.9) + newParameterOff;
+            html += checkboxy('settings_show_link_to_browse_map', 'Show link to browse map') + show_help("With this option, a link called \"Map this Location\" is shown under the listing coordinates.") + "<br>";
+
+            html += "<div style='margin-top: 9px; margin-left: 5px'><b>Disclaimer</b>" + "</div>";
+            html += checkboxy('settings_hide_disclaimer', 'Hide disclaimer') + "<br>";
+
+            html += "<div style='margin-top: 9px; margin-left: 5px'><b>Personal cache note</b>" + prem + "</div>";
             html += newParameterOn2;
+            html += "&nbsp;" + "Personal Cache Note minimum size: <select class='gclh_form' id='settings_cache_notes_min_size'>";
+            for (var i = 54; i < 501; i++) {
+                html += "  <option value='" + i + "' " + (settings_cache_notes_min_size == i ? "selected=\"selected\"" : "") + ">" + i + "</option>";
+            }
+            html += "</select> px" + "<br>";
+            html += newParameterVersionSetzen('0.11') + newParameterOff;
+            html += newParameterOn3;
+            html += checkboxy('settings_adapt_height_cache_notes', 'Adapt the height of the Personal Cache Note edit field') + show_help("The height of the Personal Cache Note edit field will be expand to show the complete note.") + "<br>";
+            html += newParameterVersionSetzen(0.9) + newParameterOff;
+            html += checkboxy('settings_hide_empty_cache_notes', 'Hide Personal Cache Notes if empty') + show_help("You can hide the Personal Cache Notes if they are empty. There will be a link to show them to add a note.") + "<br>";
+            html += checkboxy('settings_hide_cache_notes', 'Hide Personal Cache Notes completely') + show_help("You can hide the Personal Cache Notes completely, if you don't want to use them.") + "<br>";
+
+            html += "<div style='margin-top: 9px; margin-left: 5px'><b>Cache detail navigation (right sidebar)</b>" + "</div>";
+            html += checkboxy('settings_log_inline', 'Log cache from listing (inline)') + show_help("With the inline log you can open a log form inside the listing, without loading a new page.<br><br>If you're using an ad-blocking add-on, such as uBlock, the embedded screen may not be allowed. To turn this off, you have to add \"www.geocaching.com\/geocache\/GC*\" to the whitelist, or something similar, of your add-on.") + "<br>";
+            html += "&nbsp; " + checkboxy('settings_log_inline_tbX0', 'Show TB list') + "<br>";
+            html += newParameterOn1;
+            html += checkboxy('settings_use_one_click_watching', 'Add cache with one click to watchlist') + show_help("With this option, you can add a cache in cache listing to your watchlist with just one click.") + "<br>";
+            html += newParameterVersionSetzen('0.10') + newParameterOff;
             html += checkboxy('settings_improve_add_to_list', 'Show compact layout in \"Add to list\" popup to bookmark a cache') + prem + "<br>";
             html += " &nbsp; &nbsp;" + "Height of popup: <select class='gclh_form' id='settings_improve_add_to_list_height' >";
             for (var i = 100; i < 521; i++) {
                 html += "  <option value='" + i + "' " + (settings_improve_add_to_list_height == i ? "selected=\"selected\"" : "") + ">" + i + "</option>";
             }
-            html += "</select> px" + show_help("With this option you can choose the height of the \"Add to list\" popup to bookmark a cache from 100 up to 520 pixel. The default is 205 pixel, similar to the standard.<br><br>This option requires \"Show compact layout in \"Add to list\" popup to bookmark a cache\".") + prem + "<br>";
-            html += newParameterVersionSetzen(0.8) + newParameterOff;
+            html += "</select> px" + show_help("With this option you can choose the height of the \"Add to list\" popup to bookmark a cache from 100 up to 520 pixel. The default is 205 pixel, similar to the standard.<br><br>This option requires \"Show compact layout in \"Add to list\" popup to bookmark a cache\".") + "<br>";
+            html += checkboxy('settings_show_remove_ignoring_link', 'Show \"Stop Ignoring\", if cache is already ignored') + show_help("This option replace the \"Ignore\" link description with the \"Stop Ignoring\" link description in the cache listing, if the cache is already ignored.") + prem + "<br>";
             html += newParameterOn1;
+            html += "&nbsp; " + checkboxy('settings_use_one_click_ignoring', 'One click ignoring/restoring') + show_help("With this option you will be able to ignore respectively restore a cache in cache listing with only one click.") + "<br>";
+            html += newParameterVersionSetzen('0.10') + newParameterOff;
+            html += checkboxy('settings_show_flopps_link', 'Show Flopp\'s Map links in sidebar and under the "Additional Waypoints"') + show_help3("If there are no additional waypoints only the link in the sidebar is shown.") + "<br>";
+            html += newParameterOn1;
+            html += "&nbsp;&nbsp;" + checkboxy('settings_show_radius_on_flopps', 'Show Radius around caches on Flopp\'s Map') + "<br>";
+            html += newParameterVersionSetzen("0.10") + newParameterOff;
+            html += checkboxy('settings_show_brouter_link', 'Show BRouter links in sidebar and under the "Additional Waypoints"') + show_help3("If there are no additional waypoints only the link in the sidebar is shown.") + "<br>";
+            html += newParameterOn3;
+            html += checkboxy('settings_show_gpsvisualizer_link', 'Show GPSVisualizer links in sidebar and under the "Additional Waypoints"') + show_help3("If there are no additional waypoints only the link in the sidebar is shown.") + "<br>";
+            html += "&nbsp;&nbsp;" + checkboxy('settings_show_gpsvisualizer_gcsymbols', 'Use Geocaching symbols on GPSVisualizer map') + show_help3("Instead of default icon/pin Geocaching symbols are used. If the URL is too long deactivate this option.") + "<br>";
+            html += "&nbsp;&nbsp;" + checkboxy('settings_show_gpsvisualizer_typedesc', 'Transfer type of the waypoint as description') + show_help3("Transfer for every waypoint the type as text in the description. If the URL is too long deactivate this option.") + "<br>";
+            html += newParameterVersionSetzen(0.9) + newParameterOff;
+            html += newParameterOn1;
+            html += checkboxy('settings_show_openrouteservice_link', 'Show Openrouteservice links in sidebar and under the "Add. Waypoints"') + show_help3("If there are no additional waypoints only the link in the sidebar is shown.") + "<br>";
+            html += "&nbsp;&nbsp;" + checkboxy('settings_show_openrouteservice_home', 'Use home coordinates as start point') + show_help("You can use your home coordinates, here in the GClh Config, as start point and first waypoint for the route calculation.") + "<br>";
+            html += "&nbsp;&nbsp;&nbsp;" + "Medium for locomotion: <select class='gclh_form' id='settings_show_openrouteservice_medium' style='width: 200px;'>";
+            html += "  <option value=\"0\" " + (settings_show_openrouteservice_medium == "0" ? "selected=\"selected\"" : "") + ">Car</option>";
+            html += "  <option value=\"1a\" " + (settings_show_openrouteservice_medium == "1a" ? "selected=\"selected\"" : "") + ">Bike</option>";
+            html += "  <option value=\"1b\" " + (settings_show_openrouteservice_medium == "1b" ? "selected=\"selected\"" : "") + ">Mountain bike</option>";
+            html += "  <option value=\"1c\" " + (settings_show_openrouteservice_medium == "1c" ? "selected=\"selected\"" : "") + ">Racing bike</option>";
+            html += "  <option value=\"1f\" " + (settings_show_openrouteservice_medium == "1f" ? "selected=\"selected\"" : "") + ">E-Bike</option>";
+            html += "  <option value=\"2\" " + (settings_show_openrouteservice_medium == "2" ? "selected=\"selected\"" : "") + ">Pedestrian walking</option>";
+            html += "  <option value=\"2b\" " + (settings_show_openrouteservice_medium == "2b" ? "selected=\"selected\"" : "") + ">Pedestrian hiking</option>";
+            html += "  <option value=\"3\" " + (settings_show_openrouteservice_medium == "3" ? "selected=\"selected\"" : "") + ">Wheelchair (only Europe)</option>";
+            html += "</select>" + "<br>";
             html += checkboxy('settings_show_copydata_menu', 'Show "Copy data to Clipboard" menu in sidebar') + show_help3("Shows a menu to copy various cache data to the clipboard.") + "<br>";
             var help = "This feature allows you not only to copy something to the clipboard after clearing the clipboard, but also to add "
                      + "something to the clipboard without clearing it. This is how you can collect things on the clipboard.<br><br>"
@@ -13913,46 +14028,113 @@ var mainGC = function() {
             html += closeCff('cdos');
             cssCff('cdos', '14', '200', '460', '54');
             html += newParameterVersionSetzen("0.10") + newParameterOff;
-            html += newParameterOn2;
-            html += checkboxy('settings_show_flopps_link', 'Show Flopp\'s Map links in sidebar and under the "Additional Waypoints"') + show_help3("If there are no additional waypoints only the link in the sidebar is shown.") + "<br>";
-            html += newParameterVersionSetzen(0.8) + newParameterOff;
-            html += newParameterOn1;
-            html += "&nbsp;&nbsp;" + checkboxy('settings_show_radius_on_flopps', 'Show Radius around caches on Flopp\'s Map') + "<br>";
-            html += newParameterVersionSetzen("0.10") + newParameterOff;
-            html += newParameterOn2;
-            html += checkboxy('settings_show_brouter_link', 'Show BRouter links in sidebar and under the "Additional Waypoints"') + show_help3("If there are no additional waypoints only the link in the sidebar is shown.") + "<br>";
-            html += newParameterVersionSetzen(0.8) + newParameterOff;
+
+            html += "<div style='margin-top: 9px; margin-left: 5px'><b>Overview map (right sidebar)</b>" + "</div>";
+            html += checkboxy('settings_map_overview_build', 'Show cache location in overview map') + show_help("With this option there will be an additional map top right in the cache listing as an overview of the cache location. This was available earlier on GC standard.") + "<br>";
             html += newParameterOn3;
-            html += checkboxy('settings_show_gpsvisualizer_link', 'Show GPSVisualizer links in sidebar and under the "Additional Waypoints"') + show_help3("If there are no additional waypoints only the link in the sidebar is shown.") + "<br>";
-            html += "&nbsp;&nbsp;" + checkboxy('settings_show_gpsvisualizer_gcsymbols', 'Use Geocaching symbols on GPSVisualizer map') + show_help3("Instead of default icon/pin Geocaching symbols are used. If the URL is too long deactivate this option.") + "<br>";
-            html += "&nbsp;&nbsp;" + checkboxy('settings_show_gpsvisualizer_typedesc', 'Transfer type of the waypoint as description') + show_help3("Transfer for every waypoint the type as text in the description. If the URL is too long deactivate this option.") + "<br>";
+            html += ' &nbsp; &nbsp;Map layer: <select class="gclh_form" id="settings_map_overview_layer">';
+            for (name in all_map_layers) {
+                html += "  <option value='" + name + "' " + (settings_map_overview_layer == name ? "selected='selected'" : "") + "> " + name + "</option>";
+            }
+            html += '</select>';
+            html += " &nbsp;" + "Map zoom value: <select class='gclh_form' id='settings_map_overview_zoom'>";
+            for (var i = 1; i < 20; i++) {
+                html += "  <option value='" + i + "' " + (settings_map_overview_zoom == i ? "selected=\"selected\"" : "") + ">" + i + "</option>";
+            }
+            html += "</select>" + show_help3("With this option you can choose the zoom value to start in the map. \"1\" is the hole world and \"19\" is the maximal enlargement. Default is \"11\". <br><br>This option requires \"Show cache location in overview map\".") + "<br>";
             html += newParameterVersionSetzen(0.9) + newParameterOff;
-            html += newParameterOn1;
-            html += checkboxy('settings_show_openrouteservice_link', 'Show Openrouteservice links in sidebar and under the "Add. Waypoints"') + show_help3("If there are no additional waypoints only the link in the sidebar is shown.") + "<br>";
-            html += "&nbsp;&nbsp;" + checkboxy('settings_show_openrouteservice_home', 'Use home coordinates as start point') + show_help("You can use your home coordinates, here in the GClh Config, as start point and first waypoint for the route calculation.") + "<br>";
-            html += "&nbsp;&nbsp;&nbsp;" + "Medium for locomotion: <select class='gclh_form' id='settings_show_openrouteservice_medium' style='width: 200px;'>";
-            html += "  <option value=\"0\" " + (settings_show_openrouteservice_medium == "0" ? "selected=\"selected\"" : "") + ">Car</option>";
-            html += "  <option value=\"1a\" " + (settings_show_openrouteservice_medium == "1a" ? "selected=\"selected\"" : "") + ">Bike</option>";
-            html += "  <option value=\"1b\" " + (settings_show_openrouteservice_medium == "1b" ? "selected=\"selected\"" : "") + ">Mountain bike</option>";
-            html += "  <option value=\"1c\" " + (settings_show_openrouteservice_medium == "1c" ? "selected=\"selected\"" : "") + ">Racing bike</option>";
-            html += "  <option value=\"1f\" " + (settings_show_openrouteservice_medium == "1f" ? "selected=\"selected\"" : "") + ">E-Bike</option>";
-            html += "  <option value=\"2\" " + (settings_show_openrouteservice_medium == "2" ? "selected=\"selected\"" : "") + ">Pedestrian walking</option>";
-            html += "  <option value=\"2b\" " + (settings_show_openrouteservice_medium == "2b" ? "selected=\"selected\"" : "") + ">Pedestrian hiking</option>";
-            html += "  <option value=\"3\" " + (settings_show_openrouteservice_medium == "3" ? "selected=\"selected\"" : "") + ">Wheelchair (only Europe)</option>";
-            html += "</select>" + "<br>";
-            html += newParameterVersionSetzen("0.10") + newParameterOff;
+            html += newParameterOn2;
+            html += "&nbsp; " + checkboxy('settings_map_overview_browse_map_icon', 'Show icon with link to old map in overview map') + "<br>";
+            html += "&nbsp; " + checkboxy('settings_map_overview_search_map_icon', 'Show icon with link to new map in overview map') + "<br>";
+            html += newParameterVersionSetzen('0.11') + newParameterOff;
+
+            html += "<div style='margin-top: 9px; margin-left: 5px'><b>VIP-Lists (right sidebar)</b>" + "</div>";
+            html += checkboxy('settings_show_vip_listX0', 'Process VIPs') + show_help_big(content_settings_show_vip_list + "<br><br>You can adjust details about this feature also in the Dashboard topic.") + "<br>";
+            html += "&nbsp; " + checkboxy('settings_show_owner_vip_list', 'Show owner in VIP list')  + show_help("If you enable this option, the owner is a VIP for the cache, so you can see, what happened with the cache (disable, maint, enable, ...). Then the owner is shown not only in VIP list but also in VIP logs.<br><br>" + t_reqSVl)+ "<br>";
+            html += newParameterOn3;
+            html += "&nbsp; " + checkboxy('settings_show_reviewer_as_vip', 'Show reviewer/publisher in VIP list')  + show_help("If you enable this option, the reviewer or publisher of the cache is a VIP for the cache.<br><br>" + t_reqSVl) + "<br>";
+            html += newParameterVersionSetzen(0.9) + newParameterOff;
+            html += "&nbsp; " + checkboxy('settings_show_long_vip', 'Show long VIP list (one row per log)') + show_help("This is another type of displaying the VIP list. If you disable this option you get the short list, one row per VIP and the logs as icons beside the VIP. If you enable this option, there is a row for every log.<br><br>" + t_reqSVl) + "<br>";
+            html += "&nbsp; " + checkboxy('settings_vip_show_nofound', 'Show a list of VIPs who have not found the cache') + "<br>";
+            html += "&nbsp; " + checkboxy('settings_make_vip_lists_hideable', 'Make VIP lists in listing hideable') + show_help("With this option you can hide and show the VIP lists \"VIP-List\" and \"VIP-List not found\" in cache listing with one click.<br><br>" + t_reqSVl) + "<br>";
+            html += "&nbsp; " + checkboxy('settings_show_mail_in_viplist', 'Show mail link beside user in "VIP-List" in listing') + show_help("This option requires \"Process VIPs\" and \"Show mail link beside user\".") + "<br>";
+            html += "&nbsp; " + checkboxy('settings_process_vupX0', 'Process VUPs') + show_help_big(content_settings_process_vup + "<br><br>You can adjust details about this feature also in the Dashboard topic.<br><br>" + t_reqSVl) + "<br>";
+            html += " &nbsp; &nbsp; " + checkboxy('settings_vup_hide_avatar', 'Also hide name, avatar and counter from log') + "<br>";
+            html += " &nbsp; &nbsp; &nbsp; " + checkboxy('settings_vup_hide_log', 'Hide complete log') + "<br>";
+
+            html += "<div style='margin-top: 9px; margin-left: 5px'><b>Cache description</b>" + "</div>";
+            html += checkboxy('settings_img_warning', 'Show warning for unavailable images') + show_help("With this option the images in the cache listing will be checked for existence before trying to load it. If an image is unreachable or dosen't exists, a placeholder is shown. The mouse over the placeholder will shown the image link. A mouse click to the placeholder will open the link in a new tab.") + "<br>";
+            html += checkboxy('settings_visitCount_geocheckerCom', 'Show statistic on geochecker.com pages') + show_help("This option adds '&visitCount=1' to all geochecker.com links. This will show some statistics on geochecker.com page like the count of page visits and the count of right and wrong attempts.") + "<br>";
+
+            html += "<div style='margin-top: 9px; margin-left: 5px'><b>Additional hints</b>" + "</div>";
+            html += checkboxy('settings_decrypt_hint', 'Decrypt hints') + show_help("This option decrypt the hints on cache listing and print page and remove also the description of the decryption.") + "<br>";
+            html += checkboxy('settings_hide_hint', 'Hide the additional hints behind a link') + show_help("This option hides the hints behind a link. You have to click it to display the hints (already decrypted). This option remove also the description of the decryption.") + "<br>";
+
+            html += "<div style='margin-top: 9px; margin-left: 5px'><b>Additional waypoints</b>" + "</div>";
+            html += checkboxy('settings_driving_direction_link', 'Show link to Google driving direction for every waypoint') + show_help("Shows for every waypoint in the waypoint list a link to Google driving direction from home location to coordinates of the waypoint.") + "<br>";
+            html += "&nbsp; " + checkboxy('settings_driving_direction_parking_area', 'Only for parking area waypoints') + "<br>";
+            html += checkboxy('settings_show_elevation_of_waypointsX0', 'Show elevations for listing coordinates and additional waypoints') + show_help3("Shows the elevation of the listing coordinates and of every additional waypoint. Select the order of the elevation service or deactivate it. Queries to the Google Elevation service are limited. Hover of the elevation data of a waypoint shows a tooltip with the used service.") + "<br>";
+            html += " &nbsp; &nbsp;" + "Measure unit can be set in <a href=\"/account/settings/preferences\">Preferences</a>" + "<br>";
+            html += newParameterOn3;
+            html += "&nbsp;&nbsp;&nbsp;" + "First service: <select class='gclh_form' id='settings_primary_elevation_serviceX0' style='width: 160px;'>";
+            for (var i = 1; i < elevationServicesData.length; i++) {
+                html += "  <option value='"+i+"' " + (settings_primary_elevation_service == i ? "selected=\"selected\"" : "") + ">"+elevationServicesData[i]['name']+"</option>";
+            }
+            html += "</select>";
+            html += "&nbsp;&nbsp;" + "Second service: <select class='gclh_form' id='settings_secondary_elevation_serviceX0' style='width: 160px;'>";
+            for (var i = 0; i < elevationServicesData.length; i++) {
+                html += "  <option value='"+i+"' " + (settings_secondary_elevation_service == i ? "selected=\"selected\"" : "") + ">"+elevationServicesData[i]['name']+"</option>";
+            }
+            html += "</select><br>";
+            html += newParameterVersionSetzen(0.9) + newParameterOff;
+
+            html += "<div style='margin-top: 9px; margin-left: 5px'><b>Owner images</b>" + "</div>";
+            html += checkboxy('settings_link_big_listing', 'Replace image links in cache listing to bigger image') + show_help("With this option the links of owner images in the cache listing points to the bigger, original image.") + "<br>";
+            html += content_settings_show_thumbnails;
+            html += "&nbsp; " + checkboxy('settings_imgcaption_on_top', 'Show caption on top') + show_help("This option requires \"Show thumbnails of images\".");
+            html += content_geothumbs;
+            html += " &nbsp; &nbsp;" + "Spoiler filter: <input class='gclh_form' type='text' id='settings_spoiler_strings' value='" + settings_spoiler_strings + "'> " + show_help("If one of these words is found in the caption of the image, there will be no real thumbnail. It is to prevent seeing spoilers. Words have to be divided by |. If the field is empty, no checking is done. Default is \"spoiler|hinweis\".<br><br>This option requires \"Show thumbnails of images\".") + "<br>";
+
+            html += "<div style='margin-top: 9px; margin-left: 5px'><b>Map preview</b>" + "</div>";
+            html += checkboxy('settings_show_google_maps', 'Show link to Google Maps') + show_help("This option shows a link at the top of the second map in the listing. With this link you get directly to Google Maps in the area, where the cache is.") + "<br>";
+
+            html += "<div style='margin-top: 9px; margin-left: 5px'><b>Logs header</b>" + "</div>";
             html += newParameterOn3;
             html += checkboxy('settings_show_all_logs_but', 'Show button \"Show all logs\" above the logs') + "<br>";
+            html += newParameterVersionSetzen(0.9) + newParameterOff;
+            html += newParameterOn1;
+            html += checkboxy('settings_show_compact_logbook_but', 'Show button \"Show compact logs\" above the logs') + "<br>";
+            html += newParameterVersionSetzen("0.10") + newParameterOff;
+            html += newParameterOn3;
             html += checkboxy('settings_show_log_counter_but', 'Show button \"Show log counter\" above the logs') + "<br>";
             html += "&nbsp;&nbsp;" + checkboxy('settings_show_log_counter', 'Show log counter when opening cache listing') + "<br>";
             html += checkboxy('settings_show_bigger_avatars_but', 'Show button \"Show bigger avatars\" above the logs') + "<br>";
             html += newParameterVersionSetzen(0.9) + newParameterOff;
-            html += newParameterOn1;
-            html += checkboxy('settings_show_compact_logbook_but', 'Show button \"Show compact logs\" above the logs') + "<br>";
+            html += newParameterOn2;
+            var content_upvotes_help = show_help3("With this option you can show/hide the whole upvotes feature consist of the logs sort button \"Order by\" above the logs and the buttons \"Great story\" and \"Helpful\" in the logs.");
+            html += checkboxy('settings_show_hide_upvotes_but', 'Show button \"Hide upvotes\" above the logs') + content_upvotes_help + "<br>";
+            html += newParameterVersionSetzen('0.11') + newParameterOff;
+            html += checkboxy('settings_hide_spoilerwarning', 'Hide spoiler warning') + "<br>";
+            html += newParameterOn2;
+            var content_settings_hide_upvotes = checkboxy('settings_hide_upvotes', 'Hide upvotes with "Order by", "Great story" and "Helpful" buttons') + content_upvotes_help + "<br>";
+            html += content_settings_hide_upvotes;
+            html += newParameterVersionSetzen('0.11') + newParameterOff;
+            html += checkboxy('settings_hide_top_button', 'Hide the green "To Top" button') + show_help("Hide the green \"To Top\" button, which appears if you are reading logs.") + "<br>";
+
+            html += "<div style='margin-top: 9px; margin-left: 5px'><b>Logs</b>" + "</div>";
+            html += checkboxy('settings_load_logs_with_gclh', 'Load logs with GClh') + show_help("This option should be enabled. <br><br>You just should disable it, if you have problems with loading the logs. <br><br>If this option is disabled, there are no VIP-, VUP-, mail-, message- and top icons, no line colors and no mouse activated big images at the logs. Also the VIP and VUP lists, hide avatars, log filter and log search won't work.") + "<br>";
+            html += checkboxy('settings_show_all_logs', 'Show at least ') + " <input class='gclh_form' type='text' size='2' id='settings_show_all_logs_count' value='" + settings_show_all_logs_count + "'> logs (0 = all)" + show_help("With this option you can choose how many logs should be shown at least if you load the listing - if you type 0, all logs are shown by default.") + "<br>";
+            html += checkboxy('settings_hide_avatar', 'Hide avatars in logs') + show_help("This option hides the avatars in logs. This prevents loading the hundreds of images. You have to change the option here, because GClh overrides the log-load-logic of GC, so the avatar option of GC doesn't work with GClh.") + "<br>";
             html += checkboxy('settings_hide_found_count', 'Hide found count') + "<br>";
-            html += checkboxy('settings_cache_type_icon_visible', 'Set cache type icon always visible') + show_help("With this option, the cache type icon is always displayed complete, even if the cache is deactivated or archived.") + "<br>";
-            html += checkboxy('settings_log_status_icon_visible', 'Set log status icon always visible') + show_help("With this option, the log status icon is always displayed complete, even if the cache is deactivated or archived. The log status icon is located above the cache type icons and indicates for example if a cache was found, if there is a personal note or if there are corrected coordinates.") + "<br>";
-            html += newParameterVersionSetzen("0.10") + newParameterOff;
+            html += content_settings_show_thumbnails.replace("show_thumbnails", "show_thumbnailsX0").replace("max_size", "max_sizeX0");
+            html += "&nbsp; " + checkboxy('settings_imgcaption_on_topX0', 'Show caption on top') + show_help("This option requires \"Show thumbnails of images\".");
+            html += content_geothumbs;
+            html += " &nbsp; &nbsp;" + "Spoiler filter: <input class='gclh_form' type='text' id='settings_spoiler_stringsX0' value='" + settings_spoiler_strings + "'> " + show_help("If one of these words is found in the caption of the image, there will be no real thumbnail. It is to prevent seeing spoilers. Words have to be divided by |. If the field is empty, no checking is done. Default is \"spoiler|hinweis\".<br><br>This option requires \"Show thumbnails of images\".") + "<br>";
+            html += newParameterOn2;
+            html += content_settings_hide_upvotes.replace("settings_hide_upvotes", "settings_hide_upvotesX0");
+            html += checkboxy('settings_smaller_upvotes_icons', 'Make upvotes icons for \"Great story\" and \"Helpful\" smaller') + show_help("This option makes the upvotes icons used for the buttons \"Great story\" and \"Helpful\" smaller, as is the case with other icons in the logs.") + "<br>";
+            html += checkboxy('settings_no_wiggle_upvotes_click', 'No wiggle on click to upvotes buttons \"Great story\" and \"Helpful\"') + show_help3("With this option you can prevent the page wiggle if you click to the button \"Great story\" or \"Helpful\".") + "<br>";
+            html += newParameterVersionSetzen('0.11') + newParameterOff;
             html += "</div>";
 
             html += "<h4 class='gclh_headline2'>"+prepareHideable.replace("#name#","logging")+"Logging</h4>";
@@ -14183,7 +14365,6 @@ var mainGC = function() {
                     }
                     var outTitle = (typeof(bookmarks_orig_title[num]) != "undefined" && bookmarks_orig_title[num] != "" ? bookmarks_orig_title[num] : bookmarks[i]['title']);
                     html += ">" + outTitle + "</a>";
-                    if (num >= 69 && num <= 69) html += newParameterLL2;
                     if (num >= 70 && num <= 74 || num == 25) html += newParameterLL3;
                     if (num >= 75 && num <= 88) html += newParameterLL1;
                 }
@@ -14194,7 +14375,6 @@ var mainGC = function() {
                     html += "<input style='padding-left: 2px !important; padding-right: 2px !important;' class='gclh_form' title='Description for custom link' id='bookmarks_name[" + num + "]' type='text' size='15' value='" + getValue("settings_bookmarks_title[" + num + "]", "") + "'>";
                 } else {
                     html += "<input style='padding-left: 2px !important; padding-right: 2px !important;' class='gclh_form' title='Differing description for standard link' id='bookmarks_name[" + num + "]' type='text' size='15' value='" + getValue("settings_bookmarks_title[" + num + "]", "") + "'>";
-                    if (num >= 69 && num <= 69) html += newParameterLLVersionSetzen(0.8);
                     if (num >= 70 && num <= 74 || num == 25) html += newParameterLLVersionSetzen(0.9);
                     if (num >= 75 && num <= 88) html += newParameterLLVersionSetzen("0.10");
                 }
@@ -14505,10 +14685,11 @@ var mainGC = function() {
             $('#restore_settings_show_copydata_own_stuff_value')[0].addEventListener("click", restoreField, false);
             $('#restore_settings_show_copydata_separator')[0].addEventListener("click", restoreField, false);
 
-            // Events setzen für Parameter, die im GClh Config mehrfach ausgegeben wurden, weil sie zu mehreren Themen gehören. Es handelt sich hier um den Parameter selbst.
-            // In der Function werden Events für den Parameter selbst (ZB: "settings_show_mail_in_viplist") und dessen Clone gesetzt, die hinten mit "X" und Nummerierung
-            // von 0-9 enden können (ZB: "settings_show_mail_in_viplistX0").
-            setEvForDouPara("settings_show_mail_in_viplist", "click");
+            // Events setzen für Parameter, die im GClh Config mehrfach ausgegeben wurden, weil sie zu mehreren Themen gehören. Es handelt
+            // sich hier um den Parameter selbst. In der Function werden Events für den Parameter selbst (ZB: "settings_show_vip_list")
+            // und dessen Clone gesetzt, die hinten mit "X" und Nummerierung von 0-9 enden können (ZB: "settings_show_vip_listX0").
+            setEvForDouPara("settings_show_vip_list", "click");
+            setEvForDouPara("settings_process_vup", "click");
             setEvForDouPara("settings_log_inline_tb", "click");
             setEvForDouPara("settings_font_color_menu", "input");
             setEvForDouPara("settings_font_color_menu", "change");
@@ -14523,11 +14704,16 @@ var mainGC = function() {
             setEvForDouPara("settings_show_thumbnails", "click");
             setEvForDouPara("settings_hover_image_max_size", "input");
             setEvForDouPara("settings_imgcaption_on_top", "click");
+            setEvForDouPara("settings_spoiler_strings", "input");
             setEvForDouPara("settings_submit_log_button", "click");
+            setEvForDouPara("settings_show_elevation_of_waypoints", "click");
+            setEvForDouPara("settings_primary_elevation_service", "input");
+            setEvForDouPara("settings_secondary_elevation_service", "input");
+            setEvForDouPara("settings_hide_upvotes", "click");
 
-            // Events setzen für Parameter, die im GClh Config eine Abhängigkeit derart auslösen, dass andere Parameter aktiviert bzw. deaktiviert werden müssen.
-            // ZB. können Mail Icons in VIP List (Parameter "settings_show_mail_in_viplist") nur aufgebaut werden, wenn Mail Icons überhaupt erzeugt werden (Parameter
-            // "settings_show_mail"). Clone auch berücksichtigen.
+            // Events setzen für Parameter, die im GClh Config eine Abhängigkeit derart auslösen, dass andere Parameter aktiviert bzw.
+            // deaktiviert werden müssen. ZB. können Mail Icons in VIP List (Parameter "settings_show_mail_in_viplist") nur aufgebaut
+            // werden, wenn die VIP Liste erzeugt wird (Parameter "settings_show_vip_list"). Clone müssen hier auch berücksichtigt werden.
             setEvForDepPara("settings_change_header_layout", "settings_show_smaller_gc_link");
             setEvForDepPara("settings_change_header_layout", "settings_remove_logo");
             setEvForDepPara("settings_show_smaller_gc_link", "settings_remove_logo");
@@ -14573,24 +14759,47 @@ var mainGC = function() {
             setEvForDepPara("settings_show_vip_list", "settings_show_vup_friends");
             setEvForDepPara("settings_show_vip_list", "settings_vup_hide_avatar");
             setEvForDepPara("settings_show_vip_list", "settings_vup_hide_log");
+            setEvForDepPara("settings_show_vip_listX0", "settings_show_cache_listings_color_vip");
+            setEvForDepPara("settings_show_vip_listX0", "settings_show_tb_listings_color_vip");
+            setEvForDepPara("settings_show_vip_listX0", "settings_lines_color_vip");
+            setEvForDepPara("settings_show_vip_listX0", "restore_settings_lines_color_vip");
+            setEvForDepPara("settings_show_vip_listX0", "settings_show_reviewer_as_vip");
+            setEvForDepPara("settings_show_vip_listX0", "settings_show_owner_vip_list");
+            setEvForDepPara("settings_show_vip_listX0", "settings_show_long_vip");
+            setEvForDepPara("settings_show_vip_listX0", "settings_vip_show_nofound");
+            setEvForDepPara("settings_show_vip_listX0", "settings_show_mail_in_viplist");
+            setEvForDepPara("settings_show_vip_listX0", "settings_show_mail_in_allmyvips");
+            setEvForDepPara("settings_show_vip_listX0", "settings_make_vip_lists_hideable");
+            setEvForDepPara("settings_show_vip_listX0", "settings_process_vup");
+            setEvForDepPara("settings_show_vip_listX0", "settings_show_vup_friends");
+            setEvForDepPara("settings_show_vip_listX0", "settings_vup_hide_avatar");
+            setEvForDepPara("settings_show_vip_listX0", "settings_vup_hide_log");
             setEvForDepPara("settings_process_vup", "settings_show_vup_friends");
             setEvForDepPara("settings_process_vup", "settings_vup_hide_avatar");
             setEvForDepPara("settings_process_vup", "settings_vup_hide_log");
+            setEvForDepPara("settings_process_vupX0", "settings_show_vup_friends");
+            setEvForDepPara("settings_process_vupX0", "settings_vup_hide_avatar");
+            setEvForDepPara("settings_process_vupX0", "settings_vup_hide_log");
             setEvForDepPara("settings_vup_hide_avatar", "settings_vup_hide_log");
-            setEvForDepPara("settings_log_inline", "settings_log_inline_tb", false);
             setEvForDepPara("settings_log_inline_pmo4basic", "settings_log_inline_tb", false);
+            setEvForDepPara("settings_log_inline", "settings_log_inline_tb", false);
             setEvForDepPara("settings_show_mail", "settings_show_mail_in_viplist");
             setEvForDepPara("settings_show_mail", "settings_show_mail_in_allmyvips");
             setEvForDepPara("settings_show_mail", "settings_mail_icon_new_win");
             setEvForDepPara("settings_show_message", "settings_message_icon_new_win");
             setEvForDepPara("settings_show_thumbnails", "settings_hover_image_max_size");
-            setEvForDepPara("settings_show_thumbnails", "settings_spoiler_strings");
             setEvForDepPara("settings_show_thumbnails", "settings_imgcaption_on_top");
+            setEvForDepPara("settings_show_thumbnails", "settings_spoiler_strings");
             setEvForDepPara("settings_show_thumbnailsX0", "settings_hover_image_max_size");
-            setEvForDepPara("settings_show_thumbnailsX0", "settings_spoiler_strings");
             setEvForDepPara("settings_show_thumbnailsX0", "settings_imgcaption_on_top");
+            setEvForDepPara("settings_show_thumbnailsX0", "settings_spoiler_strings");
+            setEvForDepPara("settings_show_thumbnailsX1", "settings_hover_image_max_size");
+            setEvForDepPara("settings_show_thumbnailsX1", "settings_imgcaption_on_top");
+            setEvForDepPara("settings_show_thumbnailsX1", "settings_spoiler_strings");
             setEvForDepPara("settings_map_overview_build", "settings_map_overview_zoom");
             setEvForDepPara("settings_map_overview_build", "settings_map_overview_layer");
+            setEvForDepPara("settings_map_overview_build", "settings_map_overview_browse_map_icon");
+            setEvForDepPara("settings_map_overview_build", "settings_map_overview_search_map_icon");
             setEvForDepPara("settings_count_own_matrix_show_next", "settings_count_own_matrix_show_count_next");
             setEvForDepPara("settings_count_own_matrix_show_next", "settings_count_own_matrix_show_color_next");
             setEvForDepPara("settings_count_own_matrix_show_next", "restore_settings_count_own_matrix_show_color_next");
@@ -14630,6 +14839,8 @@ var mainGC = function() {
             setEvForDepPara("settings_compact_layout_recviewed", "settings_fav_proz_recviewed");
             setEvForDepPara("settings_show_elevation_of_waypoints","settings_primary_elevation_service");
             setEvForDepPara("settings_show_elevation_of_waypoints","settings_secondary_elevation_service");
+            setEvForDepPara("settings_show_elevation_of_waypointsX0","settings_primary_elevation_service");
+            setEvForDepPara("settings_show_elevation_of_waypointsX0","settings_secondary_elevation_service");
             setEvForDepPara("settings_show_gpsvisualizer_link","settings_show_gpsvisualizer_gcsymbols");
             setEvForDepPara("settings_show_gpsvisualizer_link","settings_show_gpsvisualizer_typedesc");
             setEvForDepPara("settings_show_openrouteservice_link","settings_show_openrouteservice_home");
@@ -14828,6 +15039,7 @@ var mainGC = function() {
             setValue("settings_show_copydata_own_stuff_name", document.getElementById('settings_show_copydata_own_stuff_name').value);
             setValue("settings_show_copydata_own_stuff_value", document.getElementById('settings_show_copydata_own_stuff_value').value);
             setValue("settings_show_copydata_separator", document.getElementById('settings_show_copydata_separator').value);
+            setValue("settings_cache_notes_min_size", document.getElementById('settings_cache_notes_min_size').value);
 
             // Map Layers in vorgegebener Reihenfolge übernehmen.
             var new_map_layers_available = document.getElementById('settings_maplayers_available');
@@ -15093,6 +15305,13 @@ var mainGC = function() {
                 'settings_lists_upload_file',
                 'settings_profile_old_links',
                 'settings_searchmap_show_btn_save_as_pq',
+                'settings_map_overview_browse_map_icon',
+                'settings_map_overview_search_map_icon',
+                'settings_show_link_to_browse_map',
+                'settings_show_hide_upvotes_but',
+                'settings_hide_upvotes',
+                'settings_smaller_upvotes_icons',
+                'settings_no_wiggle_upvotes_click',
             );
 
             for (var i = 0; i < checkboxes.length; i++) {
@@ -15155,12 +15374,12 @@ var mainGC = function() {
     var d = "<div  style='background-color: rgba(240, 223, 198, #); width: 100%; height: 100%; padding: 2px 0px 2px 2px; margin-left: -2px;'>";
     var s = "<span style='background-color: rgba(240, 223, 198, #); float: right; padding-top: 25px; width: 100%; margin: -22px 2px 0px 0px;'></span>";
 //--> $$001
-    newParameterOn1 = d.replace("#", "1.0");
-    newParameterOn2 = d.replace("#", "0.3");
-    newParameterOn3 = d.replace("#", "0.6");
-    newParameterLL1 = s.replace("#", "1.0");
-    newParameterLL2 = s.replace("#", "0.3");
-    newParameterLL3 = s.replace("#", "0.6");
+    newParameterOn1 = d.replace("#", "0.6");
+    newParameterOn2 = d.replace("#", "1.0");
+    newParameterOn3 = d.replace("#", "0.3");
+    newParameterLL1 = s.replace("#", "0.6");
+    newParameterLL2 = s.replace("#", "1.0");
+    newParameterLL3 = s.replace("#", "0.3");
 //<-- $$001
     function newParameterVersionSetzen(version) {
         var newParameterVers = "<span style='font-size: 70%; font-style: italic; float: right; margin-top: -14px; margin-right: 4px;' ";
@@ -15220,9 +15439,9 @@ var mainGC = function() {
         }
     }
 
-// Events setzen für Parameter, die im GClh Config mehrfach ausgegeben wurden, weil sie zu mehreren Themen gehören. Es handelt sich hier um den Parameter selbst. Hier
-// werden Events für den Parameter selbst (ZB: "settings_show_mail_in_viplist") und dessen Clone gesetzt, die hinten mit einem "X" und Nummerierung von 0-9 enden können
-// (ZB: "settings_show_mail_in_viplistX0").
+// Events setzen für Parameter, die im GClh Config mehrfach ausgegeben wurden, weil sie zu mehreren Themen gehören. Es handelt
+// sich hier um den Parameter selbst. In der Function werden Events für den Parameter selbst (ZB: "settings_show_vip_list")
+// und dessen Clone gesetzt, die hinten mit "X" und Nummerierung von 0-9 enden können (ZB: "settings_show_vip_listX0").
     function setEvForDouPara(paraName, event) {
         var paId = paraName;
         if (document.getElementById(paId)) {
@@ -15236,8 +15455,8 @@ var mainGC = function() {
         }
     }
 
-// Handling von Events zu Parametern, die im GClh Config mehrfach ausgegeben wurden, weil sie zu mehreren Themen gehören. Es kann sich hier um den Parameter selbst handeln
-// (ZB: "settings_show_mail_in_viplist"), oder um dessen Clone, die hinten mit "X" und Nummerierung von 0-9 enden können (ZB: "settings_show_mail_in_viplistX0"). Hier wird
+// Handling von Events zu Parametern, die im GClh Config mehrfach ausgegeben wurden, weil sie zu mehreren Themen gehören. Es kann sich hier um den Parameter selbst 
+// handeln (ZB: "settings_show_vip_list"), oder um dessen Clone, die hinten mit "X" und Nummerierung von 0-9 enden können (ZB: "settings_show_vip_listX0"). Hier wird
 // Wert des eventauslösenden Parameters, das kann auch Clone sein, an den eigentlichen Parameter und dessen Clone weitergereicht.
     function handleEvForDouPara(para) {
         var paId = para.id.replace(/(X[0-9]*)/, "");
@@ -15270,9 +15489,9 @@ var mainGC = function() {
         }
     }
 
-// Events setzen für Parameter, die im GClh Config eine Abhängigkeit derart auslösen, dass andere Parameter aktiviert bzw. deaktiviert
-// werden müssen. ZB: können Mail Icons in VIP List (Parameter "settings_show_mail_in_viplist") nur dann aufgebaut werden, wenn Mail Icons
-// überhaupt erzeugt werden (Parameter "settings_show_mail"). Clone müssen hier auch berücksichtigt werden.
+// Events setzen für Parameter, die im GClh Config eine Abhängigkeit derart auslösen, dass andere Parameter aktiviert bzw.
+// deaktiviert werden müssen. ZB. können Mail Icons in VIP List (Parameter "settings_show_mail_in_viplist") nur aufgebaut
+// werden, wenn die VIP Liste erzeugt wird (Parameter "settings_show_vip_list"). Clone müssen hier auch berücksichtigt werden.
     function setEvForDepPara(paraName, paraNameDep, allActivated) {
         var paId = paraName;
         var paIdDep = paraNameDep;
@@ -16404,107 +16623,6 @@ var mainGC = function() {
 // Trim decimal value to a given number of digits.
     function roundTO(val, decimals) {return Number(Math.round(val+'e'+decimals)+'e-'+decimals);}
 
-// Change coordinates from N/S/E/W Deg Min.Sec to Dec.
-    function toDec(coords) {
-        var match = coords.match(/([0-9]+)°([0-9]+)\.([0-9]+)′(N|S), ([0-9]+)°([0-9]+)\.([0-9]+)′(W|E)/);
-        if (match) {
-            var dec1 = parseInt(match[1], 10) + (parseFloat(match[2] + "." + match[3]) / 60);
-            if (match[4] == "S") dec1 = dec1 * -1;
-            dec1 = Math.round(dec1 * 10000000) / 10000000;
-            var dec2 = parseInt(match[5], 10) + (parseFloat(match[6] + "." + match[7]) / 60);
-            if (match[8] == "W") dec2 = dec2 * -1;
-            dec2 = Math.round(dec2 * 10000000) / 10000000;
-            return new Array(dec1, dec2);
-        } else {
-            match = coords.match(/(N|S) ([0-9]+)°? ([0-9]+)\.([0-9]+)′?'? (E|W) ([0-9]+)°? ([0-9]+)\.([0-9]+)/);
-            if (match) {
-                var dec1 = parseInt(match[2], 10) + (parseFloat(match[3] + "." + match[4]) / 60);
-                if (match[1] == "S") dec1 = dec1 * -1;
-                dec1 = Math.round(dec1 * 10000000) / 10000000;
-                var dec2 = parseInt(match[6], 10) + (parseFloat(match[7] + "." + match[8]) / 60);
-                if (match[5] == "W") dec2 = dec2 * -1;
-                dec2 = Math.round(dec2 * 10000000) / 10000000;
-                return new Array(dec1, dec2);
-            } else {
-                match = coords.match(/(N|S) ([0-9]+) ([0-9]+) ([0-9]+)\.([0-9]+) (E|W) ([0-9]+) ([0-9]+) ([0-9]+)\.([0-9]+)/);
-                if (match) {
-                    var dec1 = parseInt(match[2], 10) + (parseFloat(match[3]) / 60) + (parseFloat(match[4] + "." + match[5]) / 3600);
-                    if (match[1] == "S") dec1 = dec1 * -1;
-                    dec1 = Math.round(dec1 * 10000000) / 10000000;
-                    var dec2 = parseInt(match[7], 10) + (parseFloat(match[8]) / 60) + (parseFloat(match[9] + "." + match[10]) / 3600);
-                    if (match[6] == "W") dec2 = dec2 * -1;
-                    dec2 = Math.round(dec2 * 10000000) / 10000000;
-                    return new Array(dec1, dec2);
-                } else {
-                    match = coords.match(/(N|S) ([0-9]+) ([0-9]+) ([0-9]+\..[0-9].) (E|W) ([0-9]+) ([0-9]+) ([0-9]+\..[0-9].)/);
-                    if (match) {
-                        var dec1 = parseInt(match[2], 10) + (parseFloat(match[3]) / 60) + (parseFloat(match[4]) / 3600);
-                        if (match[1] == "S") dec1 = dec1 * -1;
-                        dec1 = Math.round(dec1 * 10000000) / 10000000;
-                        var dec2 = parseInt(match[6], 10) + (parseFloat(match[7]) / 60) + (parseFloat(match[8]) / 3600);
-                        if (match[5] == "W") dec2 = dec2 * -1;
-                        dec2 = Math.round(dec2 * 10000000) / 10000000;
-                        return new Array(dec1, dec2);
-                    } else return false;
-                }
-            }
-        }
-    }
-// Change coordinates from Deg to DMS.
-    function DegtoDMS(coords) {
-        var match = coords.match(/^(N|S) ([0-9][0-9]). ([0-9][0-9])\.([0-9][0-9][0-9]) (E|W) ([0-9][0-9][0-9]). ([0-9][0-9])\.([0-9][0-9][0-9])$/);
-        if (!match) return "";
-        var lat1 = parseInt(match[2], 10);
-        var lat2 = parseInt(match[3], 10);
-        var lat3 = parseFloat("0." + match[4]) * 60;
-        lat3 = Math.round(lat3 * 10000) / 10000;
-        var lng1 = parseInt(match[6], 10);
-        var lng2 = parseInt(match[7], 10);
-        var lng3 = parseFloat("0." + match[8]) * 60;
-        lng3 = Math.round(lng3 * 10000) / 10000;
-        return match[1] + " " + lat1 + "° " + lat2 + "' " + lat3 + "\" " + match[5] + " " + lng1 + "° " + lng2 + "' " + lng3 + "\"";
-    }
-// Change coordinates from Dec to Deg.
-    function DectoDeg(lat, lng) {
-        var n = "000";
-        lat = lat / 10000000;
-        var pre = "";
-        if (lat > 0) pre = "N";
-        else {
-            pre = "S";
-            lat = lat * -1;
-        }
-        var tmp1 = parseInt(lat);
-        var tmp2 = (lat - tmp1) * 60;
-        tmp1 = String(tmp1);
-        if (tmp1.length == 1) tmp1 = "0" + tmp1;
-        tmp2 = Math.round(tmp2 * 10000) / 10000;
-        tmp2 = String(tmp2);
-        if (tmp2.length == 0) tmp2 = tmp2 + "0.000";
-        else if (tmp2.indexOf(".") == -1) tmp2 = tmp2 + ".000";
-        else if (tmp2.indexOf(".") != -1) tmp2 = tmp2 + n.slice(tmp2.length - tmp2.indexOf(".") - 1);
-        var new_lat = pre + " " + tmp1 + "° " + tmp2;
-        lng = lng / 10000000;
-        var pre = "";
-        if (lng > 0) pre = "E";
-        else {
-            pre = "W";
-            lng = lng * -1;
-        }
-        var tmp1 = parseInt(lng);
-        var tmp2 = (lng - tmp1) * 60;
-        tmp1 = String(tmp1);
-        if (tmp1.length == 2) tmp1 = "0" + tmp1;
-        else if (tmp1.length == 1) tmp1 = "00" + tmp1;
-        tmp2 = Math.round(tmp2 * 10000) / 10000;
-        tmp2 = String(tmp2);
-        if (tmp2.length == 0) tmp2 = tmp2 + "0.000";
-        else if (tmp2.indexOf(".") == -1) tmp2 = tmp2 + ".000";
-        else if (tmp2.indexOf(".") != -1) tmp2 = tmp2 + n.slice(tmp2.length - tmp2.indexOf(".") - 1);
-        var new_lng = pre + " " + tmp1 + "° " + tmp2;
-        return new_lat + " " + new_lng;
-    }
-
 // Calculate tile numbers X/Y from latitude/longitude or reverse.
     function lat2tile(lat,zoom)  {return (Math.floor((1-Math.log(Math.tan(lat*Math.PI/180) + 1/Math.cos(lat*Math.PI/180))/Math.PI)/2 *Math.pow(2,zoom)));}
     function long2tile(lon,zoom) {return (Math.floor((lon+180)/360*Math.pow(2,zoom)));}
@@ -16716,8 +16834,8 @@ var mainGC = function() {
             if(style != ""){
                 span.setAttribute("style", style);
             }
-            if(!anker_element) anker_element = element_to_copy;
-
+            if (!anker_element) anker_element = element_to_copy;
+            if (!anker_element.parentNode) return;
             anker_element.parentNode.insertBefore(span, anker_element);
 
             appendCssStyle(".ctoc_link:link {text-decoration: none ;}", null, 'ctoc_link_style_id');
@@ -16793,19 +16911,17 @@ var mainGC = function() {
         }  catch(e) {gclh_error('Get asynchron data',e);}
     }
 
-// get url parameter
+// Get url parameter.
     function getURLParam(key) {
-        var query = window.location.search.substring(1); 
+        var query = window.location.search.substring(1);
         var pairs = query.split('&');
-
         for (let i=0; i<pairs.length; i++) {
             var pair = pairs[i].split('=');
             if (pair[0] == key) {
                 if (pair[1].length > 0) return pair[1];
-            }  
+            }
         }
-
-        return undefined;  
+        return undefined;
     };
 
 };  // End of mainGC.
@@ -16813,6 +16929,120 @@ var mainGC = function() {
 //////////////////////////////
 // 6. Global Functions ($$cap) (Functions global usable.)
 //////////////////////////////
+// Change coordinates from N/S/E/W Deg Min.Sec to Dec.
+function toDec(coords) {
+    var match = coords.match(/([0-9]+)°([0-9]+)\.([0-9]+)′(N|S), ([0-9]+)°([0-9]+)\.([0-9]+)′(W|E)/);
+    if (match) {
+        var dec1 = parseInt(match[1], 10) + (parseFloat(match[2] + "." + match[3]) / 60);
+        if (match[4] == "S") dec1 = dec1 * -1;
+        dec1 = Math.round(dec1 * 10000000) / 10000000;
+        var dec2 = parseInt(match[5], 10) + (parseFloat(match[6] + "." + match[7]) / 60);
+        if (match[8] == "W") dec2 = dec2 * -1;
+        dec2 = Math.round(dec2 * 10000000) / 10000000;
+        return new Array(dec1, dec2);
+    } else {
+        match = coords.match(/(N|S) ([0-9]+)°? ([0-9]+)\.([0-9]+)′?'? (E|W) ([0-9]+)°? ([0-9]+)\.([0-9]+)/);
+        if (match) {
+            var dec1 = parseInt(match[2], 10) + (parseFloat(match[3] + "." + match[4]) / 60);
+            if (match[1] == "S") dec1 = dec1 * -1;
+            dec1 = Math.round(dec1 * 10000000) / 10000000;
+            var dec2 = parseInt(match[6], 10) + (parseFloat(match[7] + "." + match[8]) / 60);
+            if (match[5] == "W") dec2 = dec2 * -1;
+            dec2 = Math.round(dec2 * 10000000) / 10000000;
+            return new Array(dec1, dec2);
+        } else {
+            match = coords.match(/(N|S) ([0-9]+) ([0-9]+) ([0-9]+)\.([0-9]+) (E|W) ([0-9]+) ([0-9]+) ([0-9]+)\.([0-9]+)/);
+            if (match) {
+                var dec1 = parseInt(match[2], 10) + (parseFloat(match[3]) / 60) + (parseFloat(match[4] + "." + match[5]) / 3600);
+                if (match[1] == "S") dec1 = dec1 * -1;
+                dec1 = Math.round(dec1 * 10000000) / 10000000;
+                var dec2 = parseInt(match[7], 10) + (parseFloat(match[8]) / 60) + (parseFloat(match[9] + "." + match[10]) / 3600);
+                if (match[6] == "W") dec2 = dec2 * -1;
+                dec2 = Math.round(dec2 * 10000000) / 10000000;
+                return new Array(dec1, dec2);
+            } else {
+                match = coords.match(/(N|S) ([0-9]+) ([0-9]+) ([0-9]+\..[0-9].) (E|W) ([0-9]+) ([0-9]+) ([0-9]+\..[0-9].)/);
+                if (match) {
+                    var dec1 = parseInt(match[2], 10) + (parseFloat(match[3]) / 60) + (parseFloat(match[4]) / 3600);
+                    if (match[1] == "S") dec1 = dec1 * -1;
+                    dec1 = Math.round(dec1 * 10000000) / 10000000;
+                    var dec2 = parseInt(match[6], 10) + (parseFloat(match[7]) / 60) + (parseFloat(match[8]) / 3600);
+                    if (match[5] == "W") dec2 = dec2 * -1;
+                    dec2 = Math.round(dec2 * 10000000) / 10000000;
+                    return new Array(dec1, dec2);
+                } else return false;
+            }
+        }
+    }
+}
+// Change coordinates from Deg to DMS.
+function DegtoDMS(coords) {
+    var match = coords.match(/^(N|S) ([0-9][0-9]). ([0-9][0-9])\.([0-9][0-9][0-9]) (E|W) ([0-9][0-9][0-9]). ([0-9][0-9])\.([0-9][0-9][0-9])$/);
+    if (!match) return "";
+    var lat1 = parseInt(match[2], 10);
+    var lat2 = parseInt(match[3], 10);
+    var lat3 = parseFloat("0." + match[4]) * 60;
+    lat3 = Math.round(lat3 * 10000) / 10000;
+    var lng1 = parseInt(match[6], 10);
+    var lng2 = parseInt(match[7], 10);
+    var lng3 = parseFloat("0." + match[8]) * 60;
+    lng3 = Math.round(lng3 * 10000) / 10000;
+    return match[1] + " " + lat1 + "° " + lat2 + "' " + lat3 + "\" " + match[5] + " " + lng1 + "° " + lng2 + "' " + lng3 + "\"";
+}
+// Change coordinates from Dec to Deg.
+function DectoDeg(lat, lng) {
+    var n = "000";
+    lat = lat / 10000000;
+    var pre = "";
+    if (lat > 0) pre = "N";
+    else {
+        pre = "S";
+        lat = lat * -1;
+    }
+    var tmp1 = parseInt(lat);
+    var tmp2 = (lat - tmp1) * 60;
+    tmp1 = String(tmp1);
+    if (tmp1.length == 1) tmp1 = "0" + tmp1;
+    tmp2 = Math.round(tmp2 * 10000) / 10000;
+    tmp2 = String(tmp2);
+    if (tmp2.length == 0) tmp2 = tmp2 + "0.000";
+    else if (tmp2.indexOf(".") == -1) tmp2 = tmp2 + ".000";
+    else if (tmp2.indexOf(".") != -1) tmp2 = tmp2 + n.slice(tmp2.length - tmp2.indexOf(".") - 1);
+    var new_lat = pre + " " + tmp1 + "° " + tmp2;
+    lng = lng / 10000000;
+    var pre = "";
+    if (lng > 0) pre = "E";
+    else {
+        pre = "W";
+        lng = lng * -1;
+    }
+    var tmp1 = parseInt(lng);
+    var tmp2 = (lng - tmp1) * 60;
+    tmp1 = String(tmp1);
+    if (tmp1.length == 2) tmp1 = "0" + tmp1;
+    else if (tmp1.length == 1) tmp1 = "00" + tmp1;
+    tmp2 = Math.round(tmp2 * 10000) / 10000;
+    tmp2 = String(tmp2);
+    if (tmp2.length == 0) tmp2 = tmp2 + "0.000";
+    else if (tmp2.indexOf(".") == -1) tmp2 = tmp2 + ".000";
+    else if (tmp2.indexOf(".") != -1) tmp2 = tmp2 + n.slice(tmp2.length - tmp2.indexOf(".") - 1);
+    var new_lng = pre + " " + tmp1 + "° " + tmp2;
+    return new_lat + " " + new_lng;
+}
+// Show other coordinates.
+function otherFormats(box, coords, trenn) {
+    var dec = toDec(coords);
+    var lat = dec[0];
+    var lng = dec[1];
+    if (lat < 0) lat = "S "+(lat * -1);
+    else lat = "N "+lat;
+    if (lng < 0) lng = "W "+(lng * -1);
+    else lng = "E "+lng;
+    box.innerHTML += trenn+"Dec: "+lat+" "+lng;
+    var dms = DegtoDMS(coords);
+    box.innerHTML += trenn+"DMS: "+dms;
+}
+
 // Create bookmark to GC page.
 function bookmark(title, href, bookmarkArray) {
     var bm = new Object();
