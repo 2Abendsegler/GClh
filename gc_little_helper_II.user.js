@@ -2,7 +2,7 @@
 // @name             GC little helper II
 // @namespace        http://www.amshove.net
 //--> $$000
-// @version          0.10.20
+// @version          0.11
 //<-- $$000
 // @include          https://www.geocaching.com/*
 // @include          https://maps.google.tld/*
@@ -7305,7 +7305,7 @@ var mainGC = function() {
                             unsafeWindow.$('a.tb_images').fancybox({'type': 'image', 'titlePosition': 'inside'});
                             gclh_add_vip_icon();
                             setLinesColorInCacheListing();
-                            if(isUpvoteActive){
+                            if (isUpvoteActive){
                                 unsafeWindow.appendUpvotesToLogs(log_ids);
                                 updateUpvoteEvents(logs);
                             }
@@ -7336,6 +7336,9 @@ var mainGC = function() {
                             unsafeWindow.$('a.tb_images').fancybox({'type': 'image', 'titlePosition': 'inside'});
                             gclh_add_vip_icon();
                             setLinesColorInCacheListing();
+                            if (isUpvoteActive){
+                                updateUpvoteEvents(logs);
+                            }
                             setMarkerDisableDynamicLogLoad();
                             if (document.getElementById("gclh_show_log_counter")) document.getElementById("gclh_show_log_counter").style.visibility = "";
                         }
@@ -7388,6 +7391,9 @@ var mainGC = function() {
                     unsafeWindow.$('a.tb_images').fancybox({'type': 'image', 'titlePosition': 'inside'});
                     gclh_add_vip_icon();
                     setLinesColorInCacheListing();
+                    if (isUpvoteActive){
+                        updateUpvoteEvents(logs);
+                    }
                     setMarkerDisableDynamicLogLoad();
                     if (document.getElementById("gclh_show_log_counter")) document.getElementById("gclh_show_log_counter").style.visibility = "hidden";
                 }
@@ -7487,6 +7493,9 @@ var mainGC = function() {
                     unsafeWindow.$('a.tb_images').fancybox({'type': 'image', 'titlePosition': 'inside'});
                     gclh_add_vip_icon();
                     setLinesColorInCacheListing();
+                    if (isUpvoteActive){
+                        updateUpvoteEvents(logs);
+                    }
                     setMarkerDisableDynamicLogLoad();
 
                     // Highlight the searchs.
@@ -13440,6 +13449,7 @@ var mainGC = function() {
             html += thanksLineBuild("",                     "AndyPuma",                 false, false, false, true,  false);
             html += thanksLineBuild("",                     "anvanlaer",                false, false, false, true,  false);
             html += thanksLineBuild("arbor95",              "",                         false, false, false, true,  false);
+            html += thanksLineBuild("Arnos99",              "",                         false, false, false, true,  false);
             html += thanksLineBuild("barnold",              "barnoldGEOC",              false, false, false, true,  false);
             html += thanksLineBuild("BlueEagle23",          "",                         false, false, false, true,  false);
             html += thanksLineBuild("Cappa-d",              "",                         false, false, false, true,  false);
@@ -13450,6 +13460,7 @@ var mainGC = function() {
             html += thanksLineBuild("lostinthegarden",      "Gitve3jf",                 false, false, false, true,  false);
             html += thanksLineBuild("Magpie42",             "MagpieFourtyTwo",          false, false, false, true,  false);
             html += thanksLineBuild("☺Mitchsa & firefly70", "Mitchsa",                  false, false, false, true,  false);
+            html += thanksLineBuild("MrZaibot",             "",                         false, false, false, true,  false);
             html += thanksLineBuild("PHIL",                 "gcPhil",                   false, false, false, true,  false);
             html += thanksLineBuild("Pontiac_CZ",           "PontiacCZ",                false, false, false, true,  false);
             html += thanksLineBuild("reodor09",              "",                        false, false, false, true,  false);
@@ -13458,7 +13469,7 @@ var mainGC = function() {
             html += thanksLineBuild("Tungstène",            "Tungstene",                false, false, false, true,  false);
             html += thanksLineBuild("V60",                  "V60GC",                    false, false, false, true,  false);
             html += thanksLineBuild("winkamol",             "",                         false, false, false, true,  false);
-            var thanksLastUpdate = "07.05.2021";
+            var thanksLastUpdate = "08.05.2021";
 //<-- $$006
             html += "    </tbody>";
             html += "</table>";
@@ -13507,11 +13518,9 @@ var mainGC = function() {
             html += checkboxy('settings_hide_feedback_icon', 'Hide green feedback icon') + "<br>";
             html += newParameterVersionSetzen(0.9) + newParameterOff;
             html += checkboxy('settings_hide_warning_message', 'Hide warning message') + show_help_big("With this option you can choose the possibility to hide a potential warning message of the masters of the GC pages.<br><br>One example is the down time warning message which comes from time to time and is placed unnecessarily a lot of days at the top of pages. You can hide it except for a small line in the top right side of the pages. You can activate the warning message again if your mouse goes to this area.<br><br>If the warning message is deleted of the masters, this small area is deleted too.") + "<br>";
-            html += newParameterOn2;
             html += checkboxy('settings_remove_banner', 'Hide banner') + "<br>";
             html += " &nbsp; " + checkboxy('settings_remove_banner_for_garminexpress', 'for \"Garmin Express\"') + "<br>";
             html += " &nbsp; " + checkboxy('settings_remove_banner_blue', 'Try to hide all blue banner to new designed pages') + "<br>";
-            html += newParameterVersionSetzen(0.8) + newParameterOff;
 
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>List layout</b>" + "</div>";
             html += "<table class='gclh_list_layout' style='width: 550px; text-align: left;'>";
@@ -13553,9 +13562,7 @@ var mainGC = function() {
             html += "<div id='gclh_config_config' class='gclh_block'>";
             html += checkboxy('settings_f4_call_gclh_config', 'Call GClh Config on F4') + show_help("With this option you are able to call the GClh Config page (this page) by pressing key F4 from all GC pages.") + "<br>";
             html += checkboxy('settings_f2_save_gclh_config', 'Save GClh Config on F2') + show_help("With this option you are able to save the GClh Config page (this page) by pressing key F2 instead of scrolling to the bottom and choose the save button.") + "<br>";
-            html += newParameterOn2;
             html += checkboxy('settings_esc_close_gclh_config', 'Close GClh Config on ESC') + show_help("With this option you are able to close the GClh Config page (this page) by pressing ESC.") + "<br>";
-            html += newParameterVersionSetzen(0.8) + newParameterOff;
             html += checkboxy('settings_f10_call_gclh_sync', 'Call GClh Sync on F10') + show_help("With this option you are able to call the GClh Sync page by pressing key F10.") + "<br>";
             html += checkboxy('settings_sync_autoImport', 'Auto apply DB Sync') + show_help("If you enable this option, settings from DropBox will be applied automatically about GClh Sync every 10 hours.") + "<br>";
             html += checkboxy('settings_show_save_message', 'Show info message if GClh data are saved') + show_help("With this option an info message is displayed if the GClh Config data are saved respectively if the GClh Sync data are imported.") + "<br>";
@@ -13570,9 +13577,7 @@ var mainGC = function() {
             html += checkboxy('settings_show_nearestuser_profil_link', 'Show profile link at search lists for caches created or found by') + show_help("This option adds an link to the public user profile when searching for caches created or found by a certain user.") + "<br>";
             var content_settings_show_log_it = checkboxy('settings_show_log_it', 'Show GClh \"Log it\" icon on nearest lists, PQs, recently viewed caches list') + show_help3("The GClh \"Log it\" icon is displayed beside cache titles in nearest lists, pocket queries and the recently viewed caches list. If you click it, you will be redirected directly to the log form. <br><br>You can use it too as basic member to log Premium Member Only (PMO) caches.") + "<br>";
             html += content_settings_show_log_it;
-            html += newParameterOn2;
             html += checkboxy('settings_compact_layout_nearest', 'Show compact layout in all nearest lists (without PQ)') + show_help("For pocket queries, please go to the section \"Pocket query\", there is a special parameter for pocket queries.") + "<br>";
-            html += newParameterVersionSetzen(0.8) + newParameterOff;
             html += newParameterOn3;
             html += " &nbsp; " + checkboxy('settings_fav_proz_nearest', 'Show favorites percentage') + "<br>";
             html += newParameterVersionSetzen(0.9) + newParameterOff;
@@ -13584,15 +13589,11 @@ var mainGC = function() {
             html += content_settings_show_log_it.replace("show_log_it","show_log_itX0");
             var content_settings_submit_log_button = checkboxy('settings_submit_log_button', 'Submit log, pocket query, bookmark (old form) or hide cache on F2') + show_help3("With this option you are able to submit your log by pressing key F2 instead of scrolling to the bottom and move the mouse to the button. <br><br>This feature also works to submit pocket queries and bookmarks (old form). <br><br>And it works on the whole hide cache process with all of the buttons of the create and the change functionality. <br><br>It works also to save Personal Cache Notes in cache listings.") + "<br>";
             html += content_settings_submit_log_button;
-            html += newParameterOn2;
             html += checkboxy('settings_compact_layout_list_of_pqs', 'Show compact layout in list of pocket queries') + "<br>";
-            html += newParameterVersionSetzen(0.8) + newParameterOff;
             html += newParameterOn3;
             html += " &nbsp; " + checkboxy('settings_both_tabs_list_of_pqs_one_page', 'Show both tabs in list of pocket queries of one page') + show_help("Show the both tabs \"Active Pocket Queries\" and \"Pocket Queries Ready for Download\" together of one page.") + "<br>";
             html += newParameterVersionSetzen(0.9) + newParameterOff;
-            html += newParameterOn2;
             html += checkboxy('settings_compact_layout_pqs', 'Show compact layout in pocket queries') + "<br>";
-            html += newParameterVersionSetzen(0.8) + newParameterOff;
             html += newParameterOn3;
             html += " &nbsp; " + checkboxy('settings_fav_proz_pqs', 'Show favorites percentage') + "<br>";
             html += newParameterVersionSetzen(0.9) + newParameterOff;
@@ -13861,9 +13862,7 @@ var mainGC = function() {
                 html += "  <option value='" + i + "' " + (settings_log_statistic_reload == i ? "selected=\"selected\"" : "") + ">" + i + "</option>";
             }
             html += "</select> hours" + show_help("Choose no hours, if you want to load/reload only manual.") + "<br>";
-            html += newParameterOn2;
             html += checkboxy('settings_map_links_statistic', 'Show links to found caches for every country on statistic map') + show_help("With this option, you can improve your own statistic maps page for you with links to caches you have found for every country.") + "<br>";
-            html += newParameterVersionSetzen(0.8) + newParameterOff;
             html += newParameterOn1;
             html += checkboxy('settings_map_percentage_statistic', 'Show percentage of found caches for every country on statistic map') + "<br>";
             html += newParameterVersionSetzen('0.10') + newParameterOff;
@@ -13945,13 +13944,13 @@ var mainGC = function() {
             html += checkboxy('settings_hide_disclaimer', 'Hide disclaimer') + "<br>";
 
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>Personal cache note</b>" + prem + "</div>";
-            html += newParameterOn1;
+            html += newParameterOn2;
             html += "&nbsp;" + "Personal Cache Note minimum size: <select class='gclh_form' id='settings_cache_notes_min_size'>";
             for (var i = 54; i < 501; i++) {
                 html += "  <option value='" + i + "' " + (settings_cache_notes_min_size == i ? "selected=\"selected\"" : "") + ">" + i + "</option>";
             }
             html += "</select> px" + "<br>";
-            html += newParameterVersionSetzen('0.10') + newParameterOff;
+            html += newParameterVersionSetzen('0.11') + newParameterOff;
             html += newParameterOn3;
             html += checkboxy('settings_adapt_height_cache_notes', 'Adapt the height of the Personal Cache Note edit field') + show_help("The height of the Personal Cache Note edit field will be expand to show the complete note.") + "<br>";
             html += newParameterVersionSetzen(0.9) + newParameterOff;
@@ -13964,27 +13963,21 @@ var mainGC = function() {
             html += newParameterOn1;
             html += checkboxy('settings_use_one_click_watching', 'Add cache with one click to watchlist') + show_help("With this option, you can add a cache in cache listing to your watchlist with just one click.") + "<br>";
             html += newParameterVersionSetzen('0.10') + newParameterOff;
-            html += newParameterOn2;
             html += checkboxy('settings_improve_add_to_list', 'Show compact layout in \"Add to list\" popup to bookmark a cache') + prem + "<br>";
             html += " &nbsp; &nbsp;" + "Height of popup: <select class='gclh_form' id='settings_improve_add_to_list_height' >";
             for (var i = 100; i < 521; i++) {
                 html += "  <option value='" + i + "' " + (settings_improve_add_to_list_height == i ? "selected=\"selected\"" : "") + ">" + i + "</option>";
             }
             html += "</select> px" + show_help("With this option you can choose the height of the \"Add to list\" popup to bookmark a cache from 100 up to 520 pixel. The default is 205 pixel, similar to the standard.<br><br>This option requires \"Show compact layout in \"Add to list\" popup to bookmark a cache\".") + "<br>";
-            html += newParameterVersionSetzen(0.8) + newParameterOff;
             html += checkboxy('settings_show_remove_ignoring_link', 'Show \"Stop Ignoring\", if cache is already ignored') + show_help("This option replace the \"Ignore\" link description with the \"Stop Ignoring\" link description in the cache listing, if the cache is already ignored.") + prem + "<br>";
             html += newParameterOn1;
             html += "&nbsp; " + checkboxy('settings_use_one_click_ignoring', 'One click ignoring/restoring') + show_help("With this option you will be able to ignore respectively restore a cache in cache listing with only one click.") + "<br>";
             html += newParameterVersionSetzen('0.10') + newParameterOff;
-            html += newParameterOn2;
             html += checkboxy('settings_show_flopps_link', 'Show Flopp\'s Map links in sidebar and under the "Additional Waypoints"') + show_help3("If there are no additional waypoints only the link in the sidebar is shown.") + "<br>";
-            html += newParameterVersionSetzen(0.8) + newParameterOff;
             html += newParameterOn1;
             html += "&nbsp;&nbsp;" + checkboxy('settings_show_radius_on_flopps', 'Show Radius around caches on Flopp\'s Map') + "<br>";
             html += newParameterVersionSetzen("0.10") + newParameterOff;
-            html += newParameterOn2;
             html += checkboxy('settings_show_brouter_link', 'Show BRouter links in sidebar and under the "Additional Waypoints"') + show_help3("If there are no additional waypoints only the link in the sidebar is shown.") + "<br>";
-            html += newParameterVersionSetzen(0.8) + newParameterOff;
             html += newParameterOn3;
             html += checkboxy('settings_show_gpsvisualizer_link', 'Show GPSVisualizer links in sidebar and under the "Additional Waypoints"') + show_help3("If there are no additional waypoints only the link in the sidebar is shown.") + "<br>";
             html += "&nbsp;&nbsp;" + checkboxy('settings_show_gpsvisualizer_gcsymbols', 'Use Geocaching symbols on GPSVisualizer map') + show_help3("Instead of default icon/pin Geocaching symbols are used. If the URL is too long deactivate this option.") + "<br>";
@@ -14050,10 +14043,10 @@ var mainGC = function() {
             }
             html += "</select>" + show_help3("With this option you can choose the zoom value to start in the map. \"1\" is the hole world and \"19\" is the maximal enlargement. Default is \"11\". <br><br>This option requires \"Show cache location in overview map\".") + "<br>";
             html += newParameterVersionSetzen(0.9) + newParameterOff;
-            html += newParameterOn1;
+            html += newParameterOn2;
             html += "&nbsp; " + checkboxy('settings_map_overview_browse_map_icon', 'Show icon with link to old map in overview map') + "<br>";
             html += "&nbsp; " + checkboxy('settings_map_overview_search_map_icon', 'Show icon with link to new map in overview map') + "<br>";
-            html += newParameterVersionSetzen('0.10') + newParameterOff;
+            html += newParameterVersionSetzen('0.11') + newParameterOff;
 
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>VIP-Lists (right sidebar)</b>" + "</div>";
             html += checkboxy('settings_show_vip_listX0', 'Process VIPs') + show_help_big(content_settings_show_vip_list + "<br><br>You can adjust details about this feature also in the Dashboard topic.") + "<br>";
@@ -14372,7 +14365,6 @@ var mainGC = function() {
                     }
                     var outTitle = (typeof(bookmarks_orig_title[num]) != "undefined" && bookmarks_orig_title[num] != "" ? bookmarks_orig_title[num] : bookmarks[i]['title']);
                     html += ">" + outTitle + "</a>";
-                    if (num >= 69 && num <= 69) html += newParameterLL2;
                     if (num >= 70 && num <= 74 || num == 25) html += newParameterLL3;
                     if (num >= 75 && num <= 88) html += newParameterLL1;
                 }
@@ -14383,7 +14375,6 @@ var mainGC = function() {
                     html += "<input style='padding-left: 2px !important; padding-right: 2px !important;' class='gclh_form' title='Description for custom link' id='bookmarks_name[" + num + "]' type='text' size='15' value='" + getValue("settings_bookmarks_title[" + num + "]", "") + "'>";
                 } else {
                     html += "<input style='padding-left: 2px !important; padding-right: 2px !important;' class='gclh_form' title='Differing description for standard link' id='bookmarks_name[" + num + "]' type='text' size='15' value='" + getValue("settings_bookmarks_title[" + num + "]", "") + "'>";
-                    if (num >= 69 && num <= 69) html += newParameterLLVersionSetzen(0.8);
                     if (num >= 70 && num <= 74 || num == 25) html += newParameterLLVersionSetzen(0.9);
                     if (num >= 75 && num <= 88) html += newParameterLLVersionSetzen("0.10");
                 }
@@ -15383,12 +15374,12 @@ var mainGC = function() {
     var d = "<div  style='background-color: rgba(240, 223, 198, #); width: 100%; height: 100%; padding: 2px 0px 2px 2px; margin-left: -2px;'>";
     var s = "<span style='background-color: rgba(240, 223, 198, #); float: right; padding-top: 25px; width: 100%; margin: -22px 2px 0px 0px;'></span>";
 //--> $$001
-    newParameterOn1 = d.replace("#", "1.0");
-    newParameterOn2 = d.replace("#", "0.3");
-    newParameterOn3 = d.replace("#", "0.6");
-    newParameterLL1 = s.replace("#", "1.0");
-    newParameterLL2 = s.replace("#", "0.3");
-    newParameterLL3 = s.replace("#", "0.6");
+    newParameterOn1 = d.replace("#", "0.6");
+    newParameterOn2 = d.replace("#", "1.0");
+    newParameterOn3 = d.replace("#", "0.3");
+    newParameterLL1 = s.replace("#", "0.6");
+    newParameterLL2 = s.replace("#", "1.0");
+    newParameterLL3 = s.replace("#", "0.3");
 //<-- $$001
     function newParameterVersionSetzen(version) {
         var newParameterVers = "<span style='font-size: 70%; font-style: italic; float: right; margin-top: -14px; margin-right: 4px;' ";
