@@ -70,26 +70,26 @@
 		<img src="../images/0.11/Screen08.jpg" alt="Screen08.jpg"><br><br>
 	</li>
 	<li>
-		<strong>New:</strong> [Cache listing] Set focus in add to list popup to new list field. No mouse click to the field required. [<a href="https://github.com/2Abendsegler/GClh/issues1685" title="Issue 1685">1685</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		<strong>New:</strong> [Cache listing] Set focus in add to list popup to new list field. No mouse click to the field required. [<a href="https://github.com/2Abendsegler/GClh/pull/1685" title="Issue 1685">1685</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 	</li>
 	<li>
 		<strong>Fix:</strong> [Cache listing] "Great story" and "Helpful" Button does not work. [<a href="https://github.com/2Abendsegler/GClh/issues1622" title="Issue 1622">1622</a> / <a href="https://www.geocaching.com/profile/?u=Ruko2010" title="Thanks to Ruko2010">Ruko2010</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 	</li>
 	<li>
-		<strong>Fix:</strong> [Cache listing / Event] GClh TypeError with click to dynamical copy to clipboard entries: Events have no favorite score. [<a href="https://github.com/2Abendsegler/GClh/issues1685" title="Issue 1685">1685</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br>
+		<strong>Fix:</strong> [Cache listing / Event] GClh TypeError with click to dynamical copy to clipboard entries: Events have no favorite score. [<a href="https://github.com/2Abendsegler/GClh/pull/1685" title="Issue 1685">1685</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br>
 	</li>
 	<li>
-		<strong>Fix:</strong> [Cache listing / Print] Process additional features like other coordinates, decrypt hints ... again on print page. [<a href="https://github.com/2Abendsegler/GClh/issues1685" title="Issue 1685">1685</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		<strong>Fix:</strong> [Cache listing / Print] Process additional features like other coordinates, decrypt hints ... again on print page. [<a href="https://github.com/2Abendsegler/GClh/pull/1685" title="Issue 1685">1685</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 	</li>
 	<li>
-		<strong>Fix:</strong> [Cache listing / Print] Display listing images on print page not over the maximum available width. [<a href="https://github.com/2Abendsegler/GClh/issues1685" title="Issue 1685">1685</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br><br>
+		<strong>Fix:</strong> [Cache listing / Print] Display listing images on print page not over the maximum available width. [<a href="https://github.com/2Abendsegler/GClh/pull/1685" title="Issue 1685">1685</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br><br>
 	</li>
 </ul>
 
 ### Global:
 <ul>
 	<li>
-		<strong>New:</strong> [Global] Menus aligned evenly. [<a href="https://github.com/2Abendsegler/GClh/issues1685" title="Issue 1685">1685</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		<strong>New:</strong> [Global] Menus aligned evenly. [<a href="https://github.com/2Abendsegler/GClh/pull/1685" title="Issue 1685">1685</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 	</li>
 	<li>
 		<strong>New:</strong> [Global] Make Linklist calls to "GClh Config II" and "GClh Sync II" available on all pages except on both maps. [<a href="https://github.com/2Abendsegler/GClh/issues1699" title="Issue 1699">1699</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
@@ -98,7 +98,7 @@
 		<strong>New:</strong> [Global] Make Linklist call to "Find Player" available on all pages. [<a href="https://github.com/2Abendsegler/GClh/issues1699" title="Issue 1699">1699</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 	</li>
 	<li>
-		<strong>New:</strong> [Global] Faster CSS loading for deactivate GS header. [<a href="https://github.com/2Abendsegler/GClh/issues1685" title="Issue 1685">1685</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		<strong>New:</strong> [Global] Faster CSS loading for deactivate GS header. [<a href="https://github.com/2Abendsegler/GClh/pull/1685" title="Issue 1685">1685</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 	</li>
 	<li>
 		<strong>Fix:</strong> [Global] Break of the Linklist with horizontal menu. [<a href="https://github.com/2Abendsegler/GClh/issues1686" title="Issue 1686">1686</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br><br>
@@ -108,28 +108,28 @@
 ### Others:
 <ul>
 	<li>
-		<strong>New:</strong> [New Map] Set focus in add to list popup to new list field. No mouse click to the field required. [<a href="https://github.com/2Abendsegler/GClh/issues1685" title="Issue 1685">1685</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		<strong>New:</strong> [New Map] Set focus in add to list popup to new list field. No mouse click to the field required. [<a href="https://github.com/2Abendsegler/GClh/pull/1685" title="Issue 1685">1685</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 	</li>
 	<li>
 		<strong>New:</strong> [View Log] Improve alignment of icons. [<a href="https://github.com/2Abendsegler/GClh/issues1706" title="Issue 1706">1706</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 	</li>
 	<li>
-		<strong>Fix:</strong> [Old Map] GClh Error: Copy to clipboard: anker_element.parentNode is undefined. [<a href="https://github.com/2Abendsegler/GClh/issues1685" title="Issue 1685">1685</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		<strong>Fix:</strong> [Old Map] GClh Error: Copy to clipboard: anker_element.parentNode is undefined. [<a href="https://github.com/2Abendsegler/GClh/pull/1685" title="Issue 1685">1685</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 	</li>
 	<li>
-		<strong>Fix:</strong> [Old Map] Additional data: Do not cut own favorite Icon. [<a href="https://github.com/2Abendsegler/GClh/issues1685" title="Issue 1685">1685</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		<strong>Fix:</strong> [Old Map] Additional data: Do not cut own favorite Icon. [<a href="https://github.com/2Abendsegler/GClh/pull/1685" title="Issue 1685">1685</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 	</li>
 	<li>
 		<strong>Fix:</strong> [Public Profile] Change links to hide caches to the old link do not work for basic members. [<a href="https://github.com/2Abendsegler/GClh/issues1683" title="Issue 1683">1683</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 	</li>
 	<li>
-		<strong>Fix:</strong> [Souvenirs] Show buttons are not always displayed because the souvenirs dashboard is not there yet. [<a href="https://github.com/2Abendsegler/GClh/issues1685" title="Issue 1685">1685</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		<strong>Fix:</strong> [Souvenirs] Show buttons are not always displayed because the souvenirs dashboard is not there yet. [<a href="https://github.com/2Abendsegler/GClh/pull/1685" title="Issue 1685">1685</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 	</li>
 	<li>
-		<strong>Fix:</strong> [Statistic] GClh TypeError, if matrix links to search caches are forwarded to map. [<a href="https://github.com/2Abendsegler/GClh/issues1685" title="Issue 1685">1685</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		<strong>Fix:</strong> [Statistic] GClh TypeError, if matrix links to search caches are forwarded to map. [<a href="https://github.com/2Abendsegler/GClh/pull/1685" title="Issue 1685">1685</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 	</li>
 	<li>
-		<strong>Fix:</strong> [Login] Hide other login partner like facebook ... also for create an account. [<a href="https://github.com/2Abendsegler/GClh/issues1685" title="Issue 1685">1685</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		<strong>Fix:</strong> [Login] Hide other login partner like facebook ... also for create an account. [<a href="https://github.com/2Abendsegler/GClh/pull/1685" title="Issue 1685">1685</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 	</li>
 </ul>
 <br>
