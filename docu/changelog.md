@@ -56,7 +56,7 @@
 		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_show_hide_upvotes_but" title="Link to your GClh Config">Settings -> Listing - Logs header:</a><br>
 		<img src="../images/0.11/Screen09.jpg" alt="Screen09.jpg"><br>
 		If you want to use this feature, you have to activate it.<br><br>
-		<img src="../images/0.11/Screen10.jpg" alt="Screen10.jpg"><br><br>
+		<img src="../images/0.11/Screen10.gif" alt="Screen10.gif"><br><br>
 	</li>
 	<li>
 		<strong>New:</strong> [Cache listing] Hide upvote feature with logs sort and "Great story", "Helpful" buttons. [<a href="https://github.com/2Abendsegler/GClh/issues/1623" title="Issue 1623">1623</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
