@@ -1,3 +1,4 @@
+<a href="#v011" title="GClh II version 0.11 (09.05.2021)">v0.11</a> &nbsp;
 <a href="#v01020" title="GClh II version 0.10.20 (01.05.2021)">v0.10.20</a> &nbsp;
 <a href="#v01019" title="GClh II version 0.10.19 (24.04.2021)">v0.10.19</a> &nbsp;
 <a href="#v01018" title="GClh II version 0.10.18 (24.04.2021)">v0.10.18</a> &nbsp;
@@ -19,6 +20,94 @@
 <a href="#v0101" title="GClh II version 0.10.1 (20.12.2019)">v0.10.1</a> &nbsp;
 <a href="#v010" title="GClh II version 0.10 (13.12.2019)">v0.10</a> &nbsp;
 <a href="changelog_before.md" title="Go to earlier changelog">Earlier changelog</a> &nbsp;
+
+---
+## v0.11:
+
+### Config:
+<ul>
+	<li>
+		<strong>New:</strong> [Config] New structuring of the topics "Global" and "Listing" in config. [<a href="https://github.com/2Abendsegler/GClh/issues/1697" title="Issue 1697">1697</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#gclh_config_global" title="Link to your GClh Config">Settings -> Global:</a><br>
+		New structuring of the topic "Global".<br>
+		<img src="../images/0.11/Screen01.jpg" alt="Screen01.jpg"><br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#gclh_config_listing" title="Link to your GClh Config">Settings -> Global:</a><br>
+		New structuring of the topic "Listing".<br>
+		<img src="../images/0.11/Screen02.jpg" alt="Screen02.jpg"><br><br>
+	</li>
+</ul>
+
+### Cache listing:
+<ul>
+	<li>
+		<strong>New:</strong> [Cache listing] Open Personal Cache Note in minimum size. [<a href="https://github.com/2Abendsegler/GClh/issues/1695" title="Issue 1695">1695</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_cache_notes_min_size" title="Link to your GClh Config">Settings -> Listing - Personal cache note:</a><br>
+		<img src="../images/0.11/Screen03.jpg" alt="Screen03.jpg"><br><br>
+	</li>
+	<li>
+		<strong>New:</strong> [Cache listing] Show icons to new and old map in overview map. [<a href="https://github.com/2Abendsegler/GClh/issues1692" title="Issue 1692">1692</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_map_overview_browse_map_icon" title="Link to your GClh Config">Settings -> Listing - Overview map (right sidebar):</a><br>
+		<img src="../images/0.11/Screen04.jpg" alt="Screen04.jpg"><br><br>
+		<img src="../images/0.11/Screen05.gif" alt="Screen05.gif"><br><br>
+	</li>
+	<li>
+		<strong>New:</strong> [Cache listing] Hide upvote feature with logs sort and "Great story", "Helpful" buttons. [<a href="https://github.com/2Abendsegler/GClh/issues1623" title="Issue 1623">1623</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		With this option you can show/hide the whole upvotes feature consist of the logs sort button "Order by" above the logs and the buttons "Great story" and "Helpful" in the logs.<br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_hide_upvotes" title="Link to your GClh Config">Settings -> Listing - Logs header:</a><br>
+		<img src="../images/0.11/Screen06.jpg" alt="Screen06.jpg"><br>
+		If you want to use this feature, you have to activate it.<br><br>
+	</li>
+	<li>
+		<strong>New:</strong> [Cache listing] No wiggle on click to upvotes buttons "Great story" and "Helpful". [<a href="https://github.com/2Abendsegler/GClh/issues1703" title="Issue 1703">1703</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		With this option you can prevent the page wiggle if you click to the button "Great story" or "Helpful".<br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_no_wiggle_upvotes_click" title="Link to your GClh Config">Settings -> Listing - Logs:</a><br>
+		<img src="../images/0.11/Screen07.jpg" alt="Screen07.jpg"><br><br>
+	</li>
+	<li>
+		<strong>New:</strong> [Cache listing] Make upvotes icons for "Great story" and "Helpful" smaller. [<a href="https://github.com/2Abendsegler/GClh/issues1702" title="Issue 1702">1702</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		This option makes the upvotes icons used for the buttons "Great story" and "Helpful" smaller, as is the case with other icons in the logs.<br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_smaller_upvotes_icons" title="Link to your GClh Config">Settings -> Listing - Logs:</a><br>
+		<img src="../images/0.11/Screen08.jpg" alt="Screen08.jpg"><br><br>
+	</li>
+	<li>
+		<strong>New:</strong> [Cache listing] Set focus in add to list popup to new list field. No mouse click to the field required. [<a href="https://github.com/2Abendsegler/GClh/issues1685" title="Issue 1685">1685</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Cache listing] "Great story" and "Helpful" Button does not work. [<a href="https://github.com/2Abendsegler/GClh/issues1622" title="Issue 1622">1622</a> / <a href="https://www.geocaching.com/profile/?u=Ruko2010" title="Thanks to Ruko2010">Ruko2010</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Cache listing / Event] GClh TypeError with click to dynamical copy to clipboard entries: Events have no favorite score. [<a href="https://github.com/2Abendsegler/GClh/issues1685" title="Issue 1685">1685</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Cache listing / Print] Process additional features like other coordinates, decrypt hints ... again on print page. [<a href="https://github.com/2Abendsegler/GClh/issues1685" title="Issue 1685">1685</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Cache listing / Print] Display listing images on print page not over the maximum available width. [<a href="https://github.com/2Abendsegler/GClh/issues1685" title="Issue 1685">1685</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br><br>
+	</li>
+</ul>
+
+### Global:
+<ul>
+	<li>
+		<strong>New:</strong> [Global] Menus aligned evenly. [<a href="https://github.com/2Abendsegler/GClh/issues1685" title="Issue 1685">1685</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>New:</strong> [Global] Make Linklist calls to "GClh Config II" and "GClh Sync II" available on all pages except on both maps. [<a href="https://github.com/2Abendsegler/GClh/issues1699" title="Issue 1699">1699</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>New:</strong> [Global] Make Linklist call to "Find Player" available on all pages. [<a href="https://github.com/2Abendsegler/GClh/issues1699" title="Issue 1699">1699</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>New:</strong> [Global] Faster CSS loading for deactivate GS header. [<a href="https://github.com/2Abendsegler/GClh/issues1685" title="Issue 1685">1685</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Global] Break of the Linklist with horizontal menu. [<a href="https://github.com/2Abendsegler/GClh/issues1686" title="Issue 1686">1686</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br><br>
+	</li>
+</ul>
+<br>
+(09.05.2021)<br>
+released by <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a><br>
+<br>
 
 ---
 ## v0.10.20:
