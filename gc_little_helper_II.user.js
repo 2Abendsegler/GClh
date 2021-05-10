@@ -1380,8 +1380,27 @@ var mainGC = function() {
                             'Content-Type': 'application/x-www-form-urlencoded',
                             'Referer': document.location.pathname
                         },
-                        onload: function(response) {
+//xxxx
+                        onload: function(responseDetails) {
+                            GM_log("Logout", { 'message': 'GM_xmlhttpRequest() reported load.', '': '' });
+                            console.log(responseDetails);
                             window.location.reload(false);
+                        },
+//xxxx
+                        onerror: function(responseDetails) {
+                            var context = responseDetails.context;
+                            gclh_error("Logout("+context.context+")", { 'message': 'GM_xmlhttpRequest() reported error.', 'stack': '' });
+                            console.log(responseDetails);
+                        },
+                        onabort: function(responseDetails) {
+                            var context = responseDetails.context;
+                            gclh_error("Logout("+context.context+")", { 'message': 'GM_xmlhttpRequest() reported error.', 'stack': '' });
+                            console.log(responseDetails);
+                        },
+                        ontimeout: function(responseDetails) {
+                            var context = responseDetails.context;
+                            gclh_error("Logout("+context.context+")", { 'message': 'GM_xmlhttpRequest() reported error.', 'stack': '' });
+                            console.log(responseDetails);
                         }
                     });
                 });
@@ -11476,7 +11495,6 @@ var mainGC = function() {
             css += '.gclhSort input:hover, .gclhShow input:hover {cursor: pointer;}';
             css += '.gclhShowCountry:not(.active), .gclhShowState:not(.active), .gclhShowOther:not(.active) {display: none;}';
             css += '.ProfileSouvenirsList div {margin-left: 0 !important;}';
-            css += '.souvenir-gallery-list li {width: 175px;}';
             appendCssStyle(css);
 
             var Souvenirs = $("#souvenirsList li");
