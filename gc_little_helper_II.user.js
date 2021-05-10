@@ -11495,6 +11495,7 @@ var mainGC = function() {
             css += '.gclhSort input:hover, .gclhShow input:hover {cursor: pointer;}';
             css += '.gclhShowCountry:not(.active), .gclhShowState:not(.active), .gclhShowOther:not(.active) {display: none;}';
             css += '.ProfileSouvenirsList div {margin-left: 0 !important;}';
+            css += '.souvenir-gallery-list li {width: 175px;}';
             appendCssStyle(css);
 
             var Souvenirs = $("#souvenirsList li");
