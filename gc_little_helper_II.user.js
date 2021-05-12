@@ -4419,8 +4419,8 @@ var mainGC = function() {
                     elem.style.whiteSpace = "nowrap";
                 }
                 // Header:
-                css += ".pq-info-wrapper {margin: 0; padding: 10px 0 0 0; background-color: unset; box-shadow: unset;} .pq-info-wrapper p:last-child {padding: 0;}";
-                css += "#Content .ui-tabs {margin-top: 3.4em;} .ui-tabs-active {box-shadow: 2px 0px 0 rgba(0,0,0,.2);} .ui-tabs .ui-tabs-nav li {margin-right: 4px;}";
+                css += ".pq-info-wrapper {margin: 0; padding: 10px 0 0 0; background-color: unset; box-shadow: unset;} .pq-info-wrapper .btn {padding: .5em 2em;} .pq-info-wrapper p:last-child {padding: 0;}";
+                css += "#Content .ui-tabs {margin-top: 2em;} .ui-tabs-active {box-shadow: 2px 0px 0 rgba(0,0,0,.2);} .ui-tabs .ui-tabs-panel {padding: 0.5em 1.4em;} .ui-tabs .ui-tabs-nav li {margin-right: 4px;}";
                 css += ".Success {margin: 5px 0 0 0;}";
                 css += ".BreadcrumbWidget p {margin-top: 0;}";
                 if ($('#ctl00_ContentBody_lbHeading').length > 0 && $('#divContentMain h2').length > 0) {
@@ -4434,7 +4434,7 @@ var mainGC = function() {
                 }
                 $('#ActivePQs, #DownloadablePQs').each(function() {
                     this.setAttribute("style", "box-shadow: 2px 2px 0 rgba(0,0,0,.2);");
-                    this.children[0].children[0].setAttribute("style", "font-size: .6rem; margin: -35px -15px 0 0; float: right;");
+                    this.children[0].children[0].setAttribute("style", "font-size: .6rem; margin: -28px -15px 0 0; float: right;");
                 });
                 // Table active PQs:
                 css += "table {margin-bottom: 0;} table.Table, table.Table th, table.Table td {padding: 5px; border: 1px solid #fff;}";
@@ -4525,6 +4525,7 @@ var mainGC = function() {
                     for (var i = 0; i <= 4; i++) {$('.pq-legend')[0].nextElementSibling.remove();}
                     $('.pq-legend')[0].remove();
                 }
+                appendCssStyle(css);
             }
             // "Find cache along a route" als Button.
             if ($('#uxFindCachesAlongaRoute.btn.btn-secondary').length > 0) $('#uxFindCachesAlongaRoute')[0].className = "btn btn-primary";
