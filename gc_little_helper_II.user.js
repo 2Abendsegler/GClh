@@ -9514,6 +9514,8 @@ var mainGC = function() {
                 css += '#add-to-list-menu {padding: 0px !important; border-top: unset !important; margin-bottom: 5px !important;}';
                 css += '#add-to-list-menu button {padding: 6px 24px !important; margin-right: 16px !important;}';
                 css += '.existing-list {margin-bottom: 0 !important;}';
+                // Change cursor from not allowed to default.
+                css += '.gc-button.gc-button-disabled {cursor: default;}';
                 // BML
                 css += '.list-cache-navigation.has-label {padding: 5px 0 6px !important;}';
                 css += '.mode-toggle-container {padding: 5px 14px 5px 12px;} .mode-toggle {padding: 6px;}';
@@ -11476,7 +11478,7 @@ var mainGC = function() {
             css += '.gclhSort input:hover, .gclhShow input:hover {cursor: pointer;}';
             css += '.gclhShowCountry:not(.active), .gclhShowState:not(.active), .gclhShowOther:not(.active) {display: none;}';
             css += '.ProfileSouvenirsList div {margin-left: 0 !important;}';
-            css += '.souvenir-gallery-list li {width: 175px;}';
+            css += '.souvenir-gallery-list li {width: 175px !important;}';
             appendCssStyle(css);
 
             var Souvenirs = $("#souvenirsList li");
