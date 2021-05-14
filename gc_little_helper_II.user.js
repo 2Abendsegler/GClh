@@ -10310,7 +10310,7 @@ var mainGC = function() {
                                 original_coords = original_coords.replace("oldLatLngDisplay\":\"","");
                                 original_coords = original_coords.replace("\"","");
                                 original_coords = original_coords.replace(new RegExp('\'', 'g'),'');
-                                original_coords_span = ' <span style="" class="coordinates original" title="original Coordinates">&nbsp;( <span class="anker"></span>' + original_coords + ' )</span>';
+                                original_coords_span = ' <span class="coordinates original" title="original Coordinates">&nbsp;( <span class="anker"></span>' + original_coords + ' )</span>';
                                 corrected = "corrected ";
                             }
                             if (settings_show_enhanced_map_coords) {
