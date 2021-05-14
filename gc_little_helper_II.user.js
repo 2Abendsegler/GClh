@@ -1371,20 +1371,6 @@ var mainGC = function() {
                 $('#ctl00_uxLoginStatus_divSignedIn button.li-user-toggle')[0].addEventListener('click', function(){
                     $('#ctl00_uxLoginStatus_divSignedIn li.li-user').toggleClass('gclh_open');
                 });
-                // Logout bend into shape.
-                $('.js-sign-out')[0].addEventListener('click', function(){
-                    GM_xmlhttpRequest({
-                        method: 'POST',
-                        url: 'https://www.geocaching.com/account/logout',
-                        headers: {
-                            'Content-Type': 'application/x-www-form-urlencoded',
-                            'Referer': document.location.pathname
-                        },
-                        onload: function(response) {
-                            window.location.reload(false);
-                        }
-                    });
-                });
             } else {waitCount++; if (waitCount <= 1000) setTimeout(function(){buildUpHeader(waitCount);}, 10);}
         }
         buildUpHeader(0);
