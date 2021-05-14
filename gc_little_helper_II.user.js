@@ -626,6 +626,7 @@ var variablesInit = function(c) {
     c.settings_hide_upvotes = getValue("settings_hide_upvotes", false);
     c.settings_smaller_upvotes_icons = getValue("settings_smaller_upvotes_icons", true);
     c.settings_no_wiggle_upvotes_click = getValue("settings_no_wiggle_upvotes_click", true);
+    c.settings_show_country_in_place = getValue("settings_show_country_in_place", true);
 
     try {
         if (c.userToken === null) {
@@ -1496,6 +1497,7 @@ var mainGC = function() {
                 } else {
                     // Menüzeilenhöhe.
                     css += "ul.#m {line-height: 16px !important;}";
+                    css += "ul.#m > li{margin-bottom: 2px;}";
                     // Zeilenabstand in Abhängigkeit von Anzahl Zeilen.
                     if      (settings_menu_number_of_lines == 2) css += "ul.#m li a {padding-top: 4px !important; padding-bottom: 4px !important;}";
                     else if (settings_menu_number_of_lines == 3) css += "ul.#m li a {padding-top: 1px !important; padding-bottom: 1px !important;}";
@@ -1738,7 +1740,7 @@ var mainGC = function() {
                     code += "  else document.location.href = '/seek/nearest.aspx?navi_search='+search;";
                     code += "}";
                     injectPageScript(code, "body");
-                    var searchfield = "<li><input onKeyDown='if(event.keyCode==13 && event.ctrlKey == false && event.altKey == false && event.shiftKey == false) {gclh_search_logs(); return false;}' type='text' size='7' name='navi_search' id='navi_search' style='padding: 1px; font-weight: bold; font-family: sans-serif; border: 2px solid #778555; border-radius: 7px 7px 7px 7px; background-color:#d8cd9d' value='" + settings_bookmarks_search_default + "'></li>";
+                    var searchfield = "<li><input onKeyDown='if(event.keyCode==13 && event.ctrlKey == false && event.altKey == false && event.shiftKey == false) {gclh_search_logs(); return false;}' type='text' size='7' name='navi_search' id='navi_search' style='margin-bottom: -1px; padding: 1px; font-weight: bold; font-family: sans-serif; border: 2px solid #778555; border-radius: 7px 7px 7px 7px; background-color:#d8cd9d' value='" + settings_bookmarks_search_default + "'></li>";
                     $(".Menu, .menu").append(searchfield);
                 }
 
@@ -9069,7 +9071,7 @@ var mainGC = function() {
 
                 var searchmap_sidebar_enhancements_loading = document.createElement("div");
                 searchmap_sidebar_enhancements_loading.className = "searchmap_loading_container";
-                searchmap_sidebar_enhancements_loading.innerHTML = '<img src="' + urlImages + 'ajax-loader.gif" />Loading additional Data...';
+                searchmap_sidebar_enhancements_loading.innerHTML = '<img src="' + urlImages + 'ajax-loader.gif" /> Loading additional Data ...';
 
                 searchmap_sidebar_enhancements.appendChild(searchmap_sidebar_enhancements_code);
                 searchmap_sidebar_enhancements.appendChild(searchmap_sidebar_enhancements_loading);
@@ -9146,12 +9148,15 @@ var mainGC = function() {
                     });
 
                     // Get the place, where the cache was placed.
-                    var place = $(text).find('#ctl00_ContentBody_Location')[0].innerHTML;
+                    if ($(text).find('#ctl00_ContentBody_Location a')[0]) var place = $(text).find('#ctl00_ContentBody_Location a')[0].innerHTML;
+                    else var place = $(text).find('#ctl00_ContentBody_Location')[0].innerHTML.replace(/(.*?)\s/,'');
 
                     // Put all together.
                     var new_text = '<span class="title" style="margin-right: 5px;">Logs:</span>' + all_logs.replace(/&nbsp;/g, " ") + '<br>';
                     new_text += $(last_logs).prop('outerHTML');
-                    new_text += '<span title="Place">' + place + '</span> | ';
+                    new_text += '<div id="gclh_third_line">';
+                    if (settings_show_country_in_place) new_text += '<span title="Place">' + place + '</span> | ';
+                    else new_text += '<span title="' + place + '">' + place.replace(/(,.*)/,'') + '</span> | ';
                     if (settings_show_elevation_of_waypoints) {
                         new_text += '<span id="elevation-waypoint-0"></span>';
                     }
@@ -9182,7 +9187,16 @@ var mainGC = function() {
                             new_text += '<img src="/images/icons/16/photo_gallery.png"> ' + imgCount[2] + '</a></span>';
                         }
                     }
-                    new_text += '<br>';
+
+                    // Get Personal Cache Note.
+                    if ($(text).find('#viewCacheNote')[0]) {
+                        if (!$(text).find('#viewCacheNote')[0].innerHTML || $(text).find('#viewCacheNote')[0].innerHTML == '') {
+                            new_text += ' | <span title="No Personal Cache Note"><svg style="opacity: 0.5; vertical-align: middle;" height="16" width="16" src=""><use xlink:href="#messages"></use></svg></span>';
+                        } else {
+                            new_text += ' | <span class="gclh_cache_note"><svg style="color: #4a4a4ad4; vertical-align: middle;" height="16" width="16"><use xlink:href="#messages"></use></svg><span>' + $(text).find('#viewCacheNote')[0].innerHTML.replace(/\n/gi,'<br>') + '</span></span>';
+                        }
+                    }
+                    new_text += '</div>';
 
                     // Get coordinates.
                     var coords = $(text).find('#uxLatLon')[0].innerHTML;
@@ -9207,7 +9221,6 @@ var mainGC = function() {
                     var text_element = document.createElement("div");
                     text_element.innerHTML = new_text;
                     searchmap_sidebar_enhancements.appendChild(text_element);
-
                     searchmap_sidebar_enhancements_loading.setAttribute("style", "display: none;");
                     // Just to be sure we are starting from scratch.
                     removeElement(document.querySelector('#searchmap_sidebar_enhancements'));
@@ -9606,12 +9619,13 @@ var mainGC = function() {
                 css += '#searchmap_sidebar_enhancements {border-top: 1px solid #e4e4e4; font-size: 12px; margin-top: 12px; padding: 12px 0 0;}';
             }
             css += '#searchmap_sidebar_enhancements .gccode {display: none;}';
-            css += '.premium_only img, .icon-sm {width: 14px; height: 14px; opacity: 0.8; vertical-align: sub !important;}';
-            css += '#gclh_latest_logs {position: relative;}';
-            css += 'div.gclh_latest_log span {display: none; position: absolute; left: 0px; width: 95%; padding: 5px; text-decoration:none; text-align:left; vertical-align:top; color: #000000;}';
-            css += 'div.gclh_latest_log:hover span {font-size: 13px; display: block; top: 100%; border: 1px solid #8c9e65; background-color:#dfe1d2; z-index:10000;}';
-            css += 'div.gclh_latest_log:hover img{opacity: 0.5;}';
-            css += 'div.gclh_latest_log:hover span img{opacity: 1;}';
+            css += '.premium_only img, .icon-sm {width: 14px; height: 14px; opacity: 0.8;}';
+            css += '#gclh_third_line img, #gclh_third_line svg {vertical-align: middle !important;}';
+            css += '#gclh_latest_logs, #gclh_third_line {position: relative;}';
+            css += 'div.gclh_latest_log span, span.gclh_cache_note span {display: none; position: absolute; left: 0px; width: 95%; padding: 5px; text-decoration:none; text-align:left; vertical-align:top; color: #000000;}';
+            css += 'div.gclh_latest_log:hover span, span.gclh_cache_note:hover span {font-size: 13px; display: block; top: 100%; border: 1px solid #8c9e65; background-color:#dfe1d2; z-index:10000;}';
+            css += 'div.gclh_latest_log:hover img, span.gclh_cache_note:hover svg {opacity: 0.5;}';
+            css += 'div.gclh_latest_log:hover span img {opacity: 1;}';
             css += '#searchmap_sidebar_enhancements {color: #4a4a4a;}';
             css += '#searchmap_sidebar_enhancements span.title {color: #9b9b9b;}';
             css += '#searchmap_sidebar_enhancements #gclh_latest_logs span {color: #9b9b9b;}';
@@ -10097,7 +10111,7 @@ var mainGC = function() {
         } catch(e) {gclh_error("Hide found/hidden Caches / Cache Types on Map",e);}
     }
 
-// Display more informations on map popup for a cache.
+// Display more informations on browse map popup for a cache.
     if (document.location.href.match(/\.com\/map\//) && settings_show_enhanced_map_popup && getValue("gclhLeafletMapActive")) {
         try {
             var template = $("#cacheDetailsTemplate").html().trim();
@@ -10106,7 +10120,7 @@ var mainGC = function() {
             var new_template = '';
                 new_template += '<div id="popup_additional_info_{{=gc}}" class="links Clear popup_additional_info">';
                 new_template += '    <div class="loading_container">';
-                new_template += '        <img src="' + urlImages + 'ajax-loader.gif" />Loading additional Data...';
+                new_template += '        <img src="' + urlImages + 'ajax-loader.gif" /> Loading additional Data ...';
                 new_template += '    </div>';
                 new_template += '</div>';
 
@@ -10118,17 +10132,17 @@ var mainGC = function() {
             // Select the target node.
             var target = document.querySelector('.leaflet-popup-pane');
 
-            if (settings_show_enhanced_map_coords) var css = "div.popup_additional_info {min-height: 88px;}";
-            else var css = "div.popup_additional_info {min-height: 70px;}";
+            if (settings_show_enhanced_map_coords) var css = "div.popup_additional_info {min-height: 82px;}";
+            else var css = "div.popup_additional_info {min-height: 64px;}";
             css += "div.popup_additional_info .loading_container{display: flex; justify-content: center; align-items: center;}"
             css += "div.popup_additional_info .loading_container img{margin-right:5px;}"
             css += "div.popup_additional_info span.favi_points svg, div.popup_additional_info span.tackables svg{position: relative;top: 4px;}";
             css += ".leaflet-popup-content-wrapper, .leaflet-popup-close-button {margin: 16px 3px 0px 13px;}";
             css += ".gclh_ctoc img {width: 14px; padding: 3px 1px 0 0; float: right;}";
-            css += "div.gclh_latest_log {margin-top:5px;}";
-            css += "div.gclh_latest_log:hover {position: relative;}";
-            css += "div.gclh_latest_log span {display: none; position: absolute; left: 0px; width: 500px; padding: 5px; text-decoration:none; text-align:left; vertical-align:top; color: #000000;}";
-            css += "div.gclh_latest_log:hover span {font-size: 13px; display: block; top: 16px; border: 1px solid #8c9e65; background-color:#dfe1d2; z-index:10000;}";
+            css += "div.gclh_latest_log, span.gclh_cache_note {margin-top:5px;}";
+            css += "div.gclh_latest_log:hover, span.gclh_cache_note:hover {position: relative;}";
+            css += "div.gclh_latest_log span, span.gclh_cache_note span {display: none; position: absolute; left: 0px; width: 500px; padding: 5px; text-decoration:none; text-align:left; vertical-align:top; color: #000000;}";
+            css += "div.gclh_latest_log:hover span, span.gclh_cache_note:hover span {font-size: 13px; display: block; top: 16px; border: 1px solid #8c9e65; background-color:#dfe1d2; z-index:10000;}";
             css += "span.premium_only img {margin-right:0px;}";
             css += "#ownBMLsCount {cursor: default;} .map-item .send2gps img {margin-right: 0px;}";
             if (browser == 'firefox') css += ".gclh_owner {max-width: 110px;} .map-item h4 a {max-width: 265px;} .gclh_owner, .map-item h4 a {display: inline-block; white-space: nowrap; overflow: -moz-hidden-unscrollable; text-overflow: ellipsis;}";
@@ -10192,8 +10206,7 @@ var mainGC = function() {
                             if (lateLogs.length > 0) {
                                 var div = document.createElement("div");
                                 div.id = "gclh_latest_logs";
-                                div.setAttribute("style", "padding-right: 0; padding-top: 5px; padding-bottom: 5px; display: flex;");
-
+                                div.setAttribute("style", "padding-right: 0; display: flex;");
                                 var span = document.createElement("span");
                                 span.setAttribute("style", "white-space: nowrap; margin-right: 5px; margin-top: 5px;");
                                 span.appendChild(document.createTextNode('Latest logs:'));
@@ -10246,12 +10259,15 @@ var mainGC = function() {
                             var fav_percent = ' ';
 
                             // Get the place, where the cache was placed.
-                            var place = $(text).find('#ctl00_ContentBody_Location')[0].innerHTML;
+                            if ($(text).find('#ctl00_ContentBody_Location a')[0]) var place = $(text).find('#ctl00_ContentBody_Location a')[0].innerHTML;
+                            else var place = $(text).find('#ctl00_ContentBody_Location')[0].innerHTML.replace(/(.*?)\s/,'');
 
                             // Put all together.
                             var new_text = '<span style="margin-right: 5px;">Logs:</span>' + all_logs.replace(/&nbsp;/g, " ") + '<br>';
                             new_text += $(last_logs).prop('outerHTML');
-                            new_text += '<span title="Place">' + place + '</span> | ';
+                            new_text += '<div style="padding-bottom: 3px;">';
+                            if (settings_show_country_in_place) new_text += '<span title="Place">' + place + '</span> | ';
+                            else new_text += '<span title="' + place + '">' + place.replace(/(,.*)/,'') + '</span> | ';
                             if (settings_show_elevation_of_waypoints) {
                                 new_text += '<span id="elevation-waypoint-'+indexMapItems+'"></span>';
                             }
@@ -10272,7 +10288,16 @@ var mainGC = function() {
                                     new_text += '<img src="/images/icons/16/photo_gallery.png" style="height: 14px; vertical-align: text-bottom;">' + imgCount[2] + '</a></span>';
                                 }
                             }
-                            new_text += '<br>';
+
+                            // Get Personal Cache Note.
+                            if ($(text).find('#viewCacheNote')[0]) {
+                                if (!$(text).find('#viewCacheNote')[0].innerHTML || $(text).find('#viewCacheNote')[0].innerHTML == '') {
+                                    new_text += ' | <span title="No Personal Cache Note"><svg style="opacity: 0.5; vertical-align: middle;" height="16" width="16"><use xlink:href="#messages--inline"></use></svg></span>';
+                                } else {
+                                    new_text += ' | <span class="gclh_cache_note"><svg style="color: #4a4a4ad4; vertical-align: middle;" height="16" width="16"><use xlink:href="#messages--inline"></use></svg><span style="left: -250px; width: 300px;">' + $(text).find('#viewCacheNote')[0].innerHTML.replace(/\n/gi,'<br>') + '</span></span>';
+                                }
+                            }
+                            new_text += '</div>';
 
                             // Get coordinates.
                             var coords = $(text).find('#uxLatLon')[0].innerHTML;
@@ -10285,7 +10310,7 @@ var mainGC = function() {
                                 original_coords = original_coords.replace("oldLatLngDisplay\":\"","");
                                 original_coords = original_coords.replace("\"","");
                                 original_coords = original_coords.replace(new RegExp('\'', 'g'),'');
-                                original_coords_span = ' <span class="coordinates original" title="original Coordinates">&nbsp;( <span class="anker"></span>' + original_coords + ' )</span>';
+                                original_coords_span = ' <span style="" class="coordinates original" title="original Coordinates">&nbsp;( <span class="anker"></span>' + original_coords + ' )</span>';
                                 corrected = "corrected ";
                             }
                             if (settings_show_enhanced_map_coords) {
@@ -13810,14 +13835,17 @@ var mainGC = function() {
             html += checkboxy('settings_add_link_geohack_on_gc_map', 'Add link to GeoHack on GC Map') + show_help("With this option an icon are placed on the GC Map page to link to the same area in GeoHack.") + "<br>";
             html += " &nbsp; " + checkboxy('settings_switch_to_geohack_in_same_tab', 'Switch in same browser tab') + "<br>";
             html += newParameterOn3;
-            html += "<div style='margin-top: 9px; margin-left: 5px'><b>Enhanced Map Popup</b></div>";
-            html += checkboxy('settings_show_enhanced_map_popup', 'Enable enhanced map popup') + show_help("With this option there will be more informations on the map popup for a cache, like latest logs or trackable count.") + "<br>";
+            html += "<div style='margin-top: 9px; margin-left: 5px'><b>Enhanced cache data</b>" + show_help("In this topic you can configure the additional cache data in the popup of the old map and the additional cache data in cache detail screen on the left side of the new map.") + "</div>";
+            html += checkboxy('settings_show_enhanced_map_popup', 'Show enhanced cache data') + show_help("With this option there will be additional cache data in the popup of the old map and additional cache data in cache detail screen on the left side of the new map. For example the latest logs, trackable count ... .") + "<br>";
             html += " &nbsp; &nbsp;" + "Show the <select class='gclh_form' id='settings_show_latest_logs_symbols_count_map'>";
             for (var i = 1; i <= 25; i++) {
                 html += "  <option value='" + i + "' " + (settings_show_latest_logs_symbols_count_map == i ? "selected=\"selected\"" : "") + ">" + i + "</option>";
             }
-            html += "</select> latest log symbols" + show_help("With this option, the choosen count of the latest logs symbols is shown at the map popup for a cache.") + "<br>";
+            html += "</select> latest log symbols" + show_help("With this option, the choosen count of the latest logs symbols is shown.") + "<br>";
             html += newParameterVersionSetzen(0.9) + newParameterOff;
+            html += newParameterOn2;
+            html += " &nbsp; " + checkboxy('settings_show_country_in_place', 'Show country as part of the place') + show_help("With this option the place of the cache is displayed with state and country separated by a comma or only with state. In the latter case the complete place is displayed if you hover with the mouse over the field.<br><br>You can use this also to prevent the line from being broken.") + "<br>";
+            html += newParameterVersionSetzen('0.11') + newParameterOff;
             html += newParameterOn1;
             html += " &nbsp; " + checkboxy('settings_show_enhanced_map_coords', 'Show coordinates') + "<br>";
             html += newParameterVersionSetzen('0.10') + newParameterOff;
@@ -15315,6 +15343,7 @@ var mainGC = function() {
                 'settings_hide_upvotes',
                 'settings_smaller_upvotes_icons',
                 'settings_no_wiggle_upvotes_click',
+                'settings_show_country_in_place',
             );
 
             for (var i = 0; i < checkboxes.length; i++) {
@@ -17239,7 +17268,7 @@ function is_page(name) {
         case "track":
             if (url.match(/^\/track\/($|#$|edit|upload|default.aspx)/)) status = true;
             break;
-        case "souvenirs": // only dashboard TODO public profile page
+        case "souvenirs":
             if (url.match(/^\/my\/souvenirs\.aspx/)) status = true;
             break;
         default:
