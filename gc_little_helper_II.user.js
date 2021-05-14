@@ -6939,6 +6939,10 @@ var mainGC = function() {
             // Owner Dashbord:
             // The VIP/VUP for the Owner Dashboard is in the Owner Dashboard section because a mutation observer is required.
             // ----------
+
+            // Search Map:
+            // The VIP/VUP for the Search Map is in the Search Map section because a mutation observer is required.
+            // ----------
             }
         }
     } catch(e) {gclh_error("VIP VUP",e);}
@@ -8818,6 +8822,21 @@ var mainGC = function() {
                 }
             }
 
+            // Add VIP, VUP and mail icon to owner.
+            function addVipVupMailToOwner() {
+                if ($('.gclhOwner a')[0] && !$('.gclhOwner .gclh_vip')[0]) {
+                    var user = $('.gclhOwner a')[0].href.match(/https?:\/\/www\.geocaching\.com\/(profile|p)\/\?u=(.*)/);
+                    if (user && user[2]) {
+                        if ($('.gclh-cache-link')[0] && $('.gclh-cache-link')[0].childNodes[1] && $('.gclh-cache-link')[0].childNodes[1].data && $('.cache-metadata-code')[0]) {
+                            global_name = $('.gclh-cache-link')[0].childNodes[1].data;
+                            global_code = $('.cache-metadata-code')[0].innerHTML;
+                            global_link = 'https://coord.info/' + global_code;
+                        }
+                        gclh_build_vipvupmail($('.gclhOwner a')[0], decodeUnicodeURIComponent(user[2]));
+                    }
+                }
+            }
+
             // Compact layout on detail screen.
             var global_cache_disabled = false;
             var global_cache_premium = false;
@@ -8849,12 +8868,13 @@ var mainGC = function() {
                         for (let i=0; i<buttons.length; i++) {
                             buttons[i].title = buttons[i].getElementsByTagName('span')[0].innerHTML;
                         }
-                        if ($('.gclhOwner')[0]) document.querySelector('.gclhOwner').remove();
-                        let span = document.createElement('span');
-                        span.setAttribute('class', 'gclhOwner');
-                        if ($('.geocache-owner-name')[0] && $('.geocache-placed-date')[0] && $('.geocache-owner')[0]) {
-                            span.innerHTML = document.querySelector('.geocache-owner-name').innerHTML + ' ' + document.querySelector('.geocache-placed-date').innerHTML;
-                            document.querySelector('.geocache-owner').appendChild(span);
+                        if (!$('.gclhOwner')[0]) {
+                            let span = document.createElement('span');
+                            span.setAttribute('class', 'gclhOwner');
+                            if ($('.geocache-owner-name')[0] && $('.geocache-placed-date')[0] && $('.geocache-owner')[0]) {
+                                span.innerHTML = document.querySelector('.geocache-owner-name').innerHTML + ' ' + document.querySelector('.geocache-placed-date').innerHTML;
+                                document.querySelector('.geocache-owner').appendChild(span);
+                            }
                         }
                         if ($('.cache-metadata .vertical-spacer')[0]) {
                             $('.cache-metadata .vertical-spacer').after('<span class="dot"></span>');
@@ -9047,6 +9067,8 @@ var mainGC = function() {
                         $('.gclh_cache_type use')[0].setAttribute('xlink:href', $('.gclh_cache_type use')[0].getAttribute('xlink:href') + '_disabled');
                         setStrikeDisabledInDetails();
                     }
+                    // VIP, VUP icons have to be rebuilt, something could have changed in the meantime.
+                    addVipVupMailToOwner();
                     return true;
                 }
 
@@ -9375,6 +9397,7 @@ var mainGC = function() {
                 improveAddtolistPopup();
                 setLinkToOwner(); // Has to be run before compactLayout.
                 compactLayout();
+                addVipVupMailToOwner(); // Has to be run after compactLayout.
                 setStrikeDisabledInList();
                 showHint();
                 collapseActivity();
