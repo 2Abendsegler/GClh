@@ -11082,6 +11082,8 @@ var mainGC = function() {
                         result.innerHTML = result.innerHTML + " (Only " + loaded + " logs loaded" + dateLastLog + ".)";
                     }
                 }
+                // Do not break the "View log" column.
+                $('table.Table tr').find('td:last').css('white-space', 'nowrap');
             } catch(e) {gclh_error("Stopped logs loading",e);}
         }
     }
