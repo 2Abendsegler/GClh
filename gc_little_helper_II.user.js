@@ -8824,15 +8824,15 @@ var mainGC = function() {
 
             // Add VIP, VUP and mail icon to owner.
             function addVipVupMailToOwner() {
-                if ($('.gclhOwner a')[0] && !$('.gclhOwner .gclh_vip')[0]) {
-                    var user = $('.gclhOwner a')[0].href.match(/https?:\/\/www\.geocaching\.com\/(profile|p)\/\?u=(.*)/);
+                if (($('.gclhOwner a')[0] && !$('.gclhOwner .gclh_vip')[0]) || ($('.geocache-owner-name a')[0] && !$('.geocache-owner-name .gclh_vip')[0])) {
+                    var user = $('.gclhOwner a, .geocache-owner-name a')[0].href.match(/https?:\/\/www\.geocaching\.com\/(profile|p)\/\?u=(.*)/);
                     if (user && user[2]) {
                         if ($('.gclh-cache-link')[0] && $('.gclh-cache-link')[0].childNodes[1] && $('.gclh-cache-link')[0].childNodes[1].data && $('.cache-metadata-code')[0]) {
                             global_name = $('.gclh-cache-link')[0].childNodes[1].data;
                             global_code = $('.cache-metadata-code')[0].innerHTML;
                             global_link = 'https://coord.info/' + global_code;
                         }
-                        gclh_build_vipvupmail($('.gclhOwner a')[0], decodeUnicodeURIComponent(user[2]));
+                        gclh_build_vipvupmail($('.gclhOwner a, .geocache-owner-name a')[0], decodeUnicodeURIComponent(user[2]));
                     }
                 }
             }
