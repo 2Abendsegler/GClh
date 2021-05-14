@@ -11515,7 +11515,6 @@ var mainGC = function() {
                     $('#actionSouvenirsSortAcquiredDateNewestTop')[0].disabled = $('#actionSouvenirsSortAcquiredDateOldestTop')[0].disabled = "";
                     $('#actionSouvenirsSortAcquiredDateNewestTop')[0].style.opacity = $('#actionSouvenirsSortAcquiredDateOldestTop')[0].style.opacity = "1";
                     $("#actionSouvenirsSortAcquiredDateNewestTop").click();
-
                 });
                 function dateFormatConversion(format) {return format.replace(/yy/g,'y').replace(/M/g,'m').replace(/mmm/,'M');}
                 function getSouvenirAcquiredDate(souvenirLi) {
