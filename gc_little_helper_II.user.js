@@ -190,10 +190,10 @@ var constInit = function(c) {
     externalBookmark("Blog Groundspeak", "/blog/", c.bookmarks);
     bookmark("Favorites", "/my/favorites.aspx", c.bookmarks);
     externalBookmark("Geoclub", "https://www.geoclub.de/", c.bookmarks);
-    profileSpecialBookmark("Public Profile Geocaches", "/profile/default.aspx?#gclhpb#ctl00_ContentBody_ProfilePanel1_lnkUserStats", "lnk_profilegeocaches", c.bookmarks);
-    profileSpecialBookmark("Public Profile Trackables", "/profile/default.aspx?#gclhpb#ctl00_ContentBody_ProfilePanel1_lnkCollectibles", "lnk_profiletrackables", c.bookmarks);
-    profileSpecialBookmark("Public Profile Gallery", "/profile/default.aspx?#gclhpb#ctl00_ContentBody_ProfilePanel1_lnkGallery", "lnk_profilegallery", c.bookmarks);
-    profileSpecialBookmark("Public Profile Lists", "/profile/default.aspx?#gclhpb#ctl00_ContentBody_ProfilePanel1_lnkLists", "lnk_profilebookmarks", c.bookmarks);
+    bookmark("Public Profile Geocaches", "/p/default.aspx?tab=geocaches#profilepanel", c.bookmarks);
+    bookmark("Public Profile Trackables", "/p/default.aspx?tab=trackables#profilepanel", c.bookmarks);
+    bookmark("Public Profile Gallery", "/p/default.aspx?tab=gallery#profilepanel", c.bookmarks);
+    bookmark("Public Profile Lists", "/p/default.aspx?tab=lists#profilepanel", c.bookmarks);
     bookmark("Dashboard", "/my/", c.bookmarks);
     profileSpecialBookmark("Nearest List", "/seek/nearest.aspx?#gclhpb#errhomecoord", "lnk_nearestlist", c.bookmarks);
     profileSpecialBookmark("Nearest Map", "/seek/nearest.aspx?#gclhpb#errhomecoord", "lnk_nearestmap", c.bookmarks);
@@ -218,10 +218,10 @@ var constInit = function(c) {
         num++;
     }
     // More Bookmarks.
-    profileSpecialBookmark("Public Profile Souvenirs", "/profile/default.aspx?#gclhpb#ctl00_ContentBody_ProfilePanel1_lnkSouvenirs", "lnk_profilesouvenirs", c.bookmarks);
+    bookmark("Public Profile Souvenirs", "/p/default.aspx?tab=souvenirs#profilepanel", c.bookmarks);
     bookmark("Statistics", "/my/statistics.aspx", c.bookmarks);
     bookmark("Drafts", "/my/fieldnotes.aspx", c.bookmarks);
-    profileSpecialBookmark("Public Profile Statistics", "/profile/default.aspx?#gclhpb#ctl00_ContentBody_ProfilePanel1_lnkStatistics", "lnk_profilestatistics", c.bookmarks);
+    bookmark("Public Profile Statistics", "/p/default.aspx?tab=stats#profilepanel", c.bookmarks);
     bookmark("Geocaches RecViewed", "/my/recentlyviewedcaches.aspx", c.bookmarks);
     bookmark("Search TB", "/track/travelbug.aspx", c.bookmarks);
     bookmark("Search Geocoin", "/track/geocoin.aspx", c.bookmarks);
@@ -233,7 +233,7 @@ var constInit = function(c) {
     bookmark("Glossary of Terms", "/about/glossary.aspx", c.bookmarks);
     bookmark("Event Calendar", "/calendar/", c.bookmarks);
     bookmark("Geocache Adoption", "/adopt/", c.bookmarks);
-    externalBookmark("Flopps Karte", "https://flopp-caching.de/", c.bookmarks);
+    externalBookmark("Flopps Karte", "https://flopp.net/", c.bookmarks);
     externalBookmark("Geokrety", "https://geokrety.org/", c.bookmarks);
     externalBookmark("Project Geocaching", "https://project-gc.com/", c.bookmarks);
     bookmark("Search TB adv.", "/track/search.aspx", c.bookmarks);
