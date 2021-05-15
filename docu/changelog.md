@@ -1,3 +1,4 @@
+<a href="#v0111" title="GClh II version 0.11.1 (16.05.2021)">v0.11.1</a> &nbsp;
 <a href="#v011" title="GClh II version 0.11 (09.05.2021)">v0.11</a> &nbsp;
 <a href="#v01020" title="GClh II version 0.10.20 (01.05.2021)">v0.10.20</a> &nbsp;
 <a href="#v01019" title="GClh II version 0.10.19 (24.04.2021)">v0.10.19</a> &nbsp;
@@ -20,6 +21,53 @@
 <a href="#v0101" title="GClh II version 0.10.1 (20.12.2019)">v0.10.1</a> &nbsp;
 <a href="#v010" title="GClh II version 0.10 (13.12.2019)">v0.10</a> &nbsp;
 <a href="changelog_before.md" title="Go to earlier changelog">Earlier changelog</a> &nbsp;
+
+---
+## v0.11.1:
+<ul>
+	<li>
+		<strong>Fix:</strong> [Global] GClh doesn't run because of changing page header. [<a href="https://github.com/2Abendsegler/GClh/issues/1630" title="Issue 1630">1630</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#gclh_config_listing" title="Link to your GClh Config">Settings -> Listing:</a><br>
+		<img src="../images/0.11.1/Screen01.jpg" alt="Screen01.jpg"><br><br>
+		If you want to use this feature, you have to activate it.<br><br>
+	</li>
+	<li>
+	</li>
+	<li>
+		<strong>New:</strong> [Cache listing] Change to old search on cache listing page. [<a href="https://github.com/2Abendsegler/GClh/issues/1682" title="Issue 1682">1682</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br>
+		The links in cache listing to find caches run through the new search. With this option you can use the old search again.
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_listing_old_links" title="Link to your GClh Config">Settings -> Listing:</a><br>
+		<img src="../images/0.11.1/Screen08.jpg" alt="Screen08.jpg"><br><br>
+		The following links in the find section of the cache listing are changed:<br>
+		<img src="../images/0.11.1/Screen07.jpg" alt="Screen07.jpg"><br><br>
+		Example for using this old search feature:<br>
+		<img src="../images/0.11.1/Screen09.gif" alt="Screen09.gif"><br><br>
+	</li>
+	<li>
+		<strong>New:</strong> [New Map/Old Map] Expand the additional cache data of new and old map with the personal cache note. [<a href="https://github.com/2Abendsegler/GClh/issues/1716" title="Issue 1716">1716</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		New Map:<br>
+		<img src="../images/0.11.1/Screen02.gif" alt="Screen02.gif"><br><br>
+		Old Map:<br>
+		<img src="../images/0.11.1/Screen01.jpg" alt="Screen01.jpg"><br><br>
+	</li>
+	<li>
+		<strong>New:</strong> [New Map] VIP, VUP and Mail for owner in cache detail. [<a href="https://github.com/2Abendsegler/GClh/issues/1593" title="Issue 1593">1593</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		<img src="../images/0.11.1/Screen06.jpg" alt="Screen06.jpg"><br><br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Global] Sign out does not always work. [<a href="https://github.com/2Abendsegler/GClh/issues/1711" title="Issue 1711">1711</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Souvenirs] Show more than four souvenirs in a row again. [<a href="https://github.com/2Abendsegler/GClh/issues/1712" title="Issue 1712">1712</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Pocket Query] Activate full compact layout on pocket queries again. [<a href="https://github.com/2Abendsegler/GClh/issues/1714" title="Issue 1714">1714</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+</ul>
+<br>
+(16.05.2021)<br>
+released by <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a><br>
+<br>
 
 ---
 ## v0.11:
