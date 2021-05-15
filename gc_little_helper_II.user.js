@@ -617,6 +617,7 @@ var variablesInit = function(c) {
     c.settings_lists_hide_desc = getValue("settings_lists_hide_desc", true);
     c.settings_lists_upload_file = getValue("settings_lists_upload_file", true);
     c.settings_profile_old_links = getValue("settings_profile_old_links", false);
+    c.settings_listing_old_links = getValue("settings_listing_old_links", false);
     c.settings_searchmap_show_btn_save_as_pq = getValue("settings_searchmap_show_btn_save_as_pq", true);
     c.settings_map_overview_browse_map_icon = getValue("settings_map_overview_browse_map_icon", true);
     c.settings_map_overview_search_map_icon = getValue("settings_map_overview_search_map_icon", true);
@@ -3625,6 +3626,33 @@ var mainGC = function() {
                 check_wpdata_elevation(0); // GDPR
             }
         } catch(e) {gclh_error("Add elevation",e);}
+    }
+
+// Change new links for find caches to the old links.
+    if (is_page("cache_listing") && settings_listing_old_links) {
+        try {
+            var links = $('#ctl00_ContentBody_bottomSection a[href*="/play/search?"]');
+            for (var i = 0; i < links.length; i++) {
+                // Other caches hidden by this user.
+                var match = links[i].href.match(/\/play\/search\?owner\[0\]=(.*?)&.*/);
+                if (match && match[1]) {links[i].href = "/seek/nearest.aspx?u="+urlencode(match[1]); continue;}
+                // Other caches found by this user.
+                var match = links[i].href.match(/\/play\/search\?fb=(.*?)&.*/);
+                if (match && match[1]) {links[i].href = "/seek/nearest.aspx?ul="+urlencode(match[1]); continue;}
+                // Nearby caches of this type, that I haven't found.
+                var match = links[i].href.match(/\/play\/search\?types=(.*?)&origin=(.*?),(.*?)&f=2&o=2/);
+                if (match && match[1] && match[2] && match[3]) {links[i].href = "/seek/nearest.aspx?lat="+match[2]+"&lng="+match[3]+"&ex=1"+getCacheTx(match[1]); continue;}
+                // Nearby caches of this type.
+                var match = links[i].href.match(/\/play\/search\?types=(.*?)&origin=(.*?),(.*?)(&|$)/);
+                if (match && match[1] && match[2] && match[3]) {links[i].href = "/seek/nearest.aspx?lat="+match[2]+"&lng="+match[3]+getCacheTx(match[1]); continue;}
+                // All nearby caches, that I haven't found.
+                var match = links[i].href.match(/\/play\/search\?origin=(.*?),(.*?)&f=2&o=2/);
+                if (match && match[1] && match[2]) {links[i].href = "/seek/nearest.aspx?lat="+match[1]+"&lng="+match[2]+"&ex=1"; continue;}
+                // All nearby caches.
+                var match = links[i].href.match(/\/play\/search\?origin=(.*?),(.*?)(&|$)/);
+                if (match && match[1] && match[2]) {links[i].href = "/seek/nearest.aspx?lat="+match[1]+"&lng="+match[2]; continue;}
+            }
+        } catch(e) {gclh_error("Change new links for find caches to the old links",e);}
     }
 
 // Hide greenToTopButton.
@@ -11248,34 +11276,8 @@ var mainGC = function() {
         } catch(e) {gclh_error("Add links to finds and hides on new profilpage",e);}
     }
 
-// Change links to found/hide caches to the old link on profilpage.
+// Change new links to found/hide caches to the old link on profile page.
     if (settings_profile_old_links && is_page("publicProfile") && document.location.search.match(/tab=geocaches/)) {
-        function getCacheype(typ) {
-            let typId;
-            switch (typ) {
-                case '2': typId = '&tx=32bc9333-5e52-4957-b0f6-5a2c8fc7b257'; break; // Tradi
-                case '3': typId = '&tx=a5f6d0ad-d2f2-4011-8c14-940a9ebf3c74'; break; // Multi
-                case '4': typId = '&tx=294d4360-ac86-4c83-84dd-8113ef678d7e'; break; // Virtual
-                case '5': typId = '&tx=4bdd8fb2-d7bc-453f-a9c5-968563b15d24'; break; // Letterbox
-                case '6': typId = '&tx=69eb8534-b718-4b35-ae3c-a856a55b0874'; break; // Event
-                case '8': typId = '&tx=40861821-1835-4e11-b666-8d41064d03fe'; break; // Mystery
-                case '9': typId = '&tx=2555690d-b2bc-4b55-b5ac-0cb704c0b768'; break; // APE
-                case '11': typId = '&tx=31d2ae3c-c358-4b5f-8dcd-2185bf472d3d'; break; // WebCam
-                case '12': typId = '&tx=8F6DD7BC-FF39-4997-BD2E-225A0D2ADF9D'; break; // Reverse
-                case '13': typId = '&tx=57150806-bc1a-42d6-9cf0-538d171a2d22'; break; // Cito
-                case '137': typId = '&tx=c66f5cf3-9523-4549-b8dd-759cd2f18db8'; break; // Earth Cache
-                case '453': typId = '&tx=69eb8535-b718-4b35-ae3c-a856a55b0874'; break; // Mega
-                case '1304': typId = '&tx=72e69af2-7986-4990-afd9-bc16cbbb4ce3'; break; // GPS Adventures Exhibit
-                case '1858': typId = '&tx=0544fa55-772d-4e5c-96a9-36a51ebcf5c9'; break; // Wherigo
-                case '3653': typId = '&tx=3ea6533d-bb52-42fe-b2d2-79a3424d4728'; break; // Community Celebration
-                case '4738': typId = '&tx=bc2f3df2-1aab-4601-b2ff-b5091f6c02e3'; break; // Geocaching HQ Block Party
-                case '3773': typId = '&tx=416f2494-dc17-4b6a-9bab-1a29dd292d8c'; break; // Geocaching HQ
-                case '3774': typId = '&tx=af820035-787a-47af-b52b-becc8b0c0c88'; break; // Geocaching HQ Celebration
-                case '7005': typId = '&tx=51420629-5739-4945-8bdd-ccfd434c0ead'; break; // Giga
-                default: typId = '&tx=9a79e6ce-3344-409c-bbe9-496530baf758'; // Alle Caches
-            }
-            return typId;
-        }
         // All founds.
         if ($('.span-9 .minorDetails a')[0]) $('.span-9 .minorDetails a')[0].href = '/seek/nearest.aspx?ul='+urlencode($('#ctl00_ProfileHead_ProfileHeader_lblMemberName')[0].innerHTML);
         // All hides.
@@ -11284,12 +11286,12 @@ var mainGC = function() {
             // Cache type founds.
             let match = /\/play\/search\?types=(\d+).*&sc=(False|True)&fb=([^&]+).*/gi.exec(this.href);
             if (match) {
-                this.href = '/seek/nearest.aspx?ul=' + match[3] + getCacheype(match[1]);
+                this.href = '/seek/nearest.aspx?ul=' + match[3] + getCacheTx(match[1]);
             }
             // Cache type hides.
             match = /\/play\/search\?types=(\d+).*&sc=(False|True)&owner\[0\]=([^&]+).*/gi.exec(this.href);
             if (match) {
-                this.href = '/seek/nearest.aspx?u=' + match[3] + getCacheype(match[1]);
+                this.href = '/seek/nearest.aspx?u=' + match[3] + getCacheTx(match[1]);
             }
         });
     }
@@ -11713,11 +11715,13 @@ var mainGC = function() {
 // Searches for the owner's original username from the listing.
     function get_real_owner() {
         if ($('#ctl00_ContentBody_bottomSection')) {
-            var links = $('#ctl00_ContentBody_bottomSection a[href*="/play/search?owner[0]="]');
+            var links = $('#ctl00_ContentBody_bottomSection a[href*="/play/search?owner[0]="], #ctl00_ContentBody_bottomSection a[href*="/seek/nearest.aspx?u="]');
             for (var i = 0; i < links.length; i++) {
                 // Das "?" in "(.*?)" bedeutet "nicht gierig", das heißt es wird nur bis zum ersten Vorkommen des "&" verwendet.
                 var match = links[i].href.match(/\/play\/search\?owner\[0\]=(.*?)&/);
                 if (match) return urldecode(match[1]);
+                var match = links[i].href.match(/\/seek\/nearest\.aspx\?u\=(.*)$/);
+                if (match) return urldecode(match[1], true);
             }
             return false;
         } else return false;
@@ -12803,6 +12807,34 @@ var mainGC = function() {
         } else {waitCount++; if (waitCount <= 100) setTimeout(function(){setFocusToField(waitCount, field);}, 50);}
     }
 
+// Convert cache type to cache tx.
+    function getCacheTx(type) {
+        let tx;
+        switch (type) {
+            case '2': tx = '&tx=32bc9333-5e52-4957-b0f6-5a2c8fc7b257'; break; // Tradi
+            case '3': tx = '&tx=a5f6d0ad-d2f2-4011-8c14-940a9ebf3c74'; break; // Multi
+            case '4': tx = '&tx=294d4360-ac86-4c83-84dd-8113ef678d7e'; break; // Virtual
+            case '5': tx = '&tx=4bdd8fb2-d7bc-453f-a9c5-968563b15d24'; break; // Letterbox
+            case '6': tx = '&tx=69eb8534-b718-4b35-ae3c-a856a55b0874'; break; // Event
+            case '8': tx = '&tx=40861821-1835-4e11-b666-8d41064d03fe'; break; // Mystery
+            case '9': tx = '&tx=2555690d-b2bc-4b55-b5ac-0cb704c0b768'; break; // APE
+            case '11': tx = '&tx=31d2ae3c-c358-4b5f-8dcd-2185bf472d3d'; break; // WebCam
+            case '12': tx = '&tx=8F6DD7BC-FF39-4997-BD2E-225A0D2ADF9D'; break; // Reverse
+            case '13': tx = '&tx=57150806-bc1a-42d6-9cf0-538d171a2d22'; break; // Cito
+            case '137': tx = '&tx=c66f5cf3-9523-4549-b8dd-759cd2f18db8'; break; // Earth Cache
+            case '453': tx = '&tx=69eb8535-b718-4b35-ae3c-a856a55b0874'; break; // Mega
+            case '1304': tx = '&tx=72e69af2-7986-4990-afd9-bc16cbbb4ce3'; break; // GPS Adventures Exhibit
+            case '1858': tx = '&tx=0544fa55-772d-4e5c-96a9-36a51ebcf5c9'; break; // Wherigo
+            case '3653': tx = '&tx=3ea6533d-bb52-42fe-b2d2-79a3424d4728'; break; // Community Celebration
+            case '4738': tx = '&tx=bc2f3df2-1aab-4601-b2ff-b5091f6c02e3'; break; // Geocaching HQ Block Party
+            case '3773': tx = '&tx=416f2494-dc17-4b6a-9bab-1a29dd292d8c'; break; // Geocaching HQ
+            case '3774': tx = '&tx=af820035-787a-47af-b52b-becc8b0c0c88'; break; // Geocaching HQ Celebration
+            case '7005': tx = '&tx=51420629-5739-4945-8bdd-ccfd434c0ead'; break; // Giga
+            default: tx = '&tx=9a79e6ce-3344-409c-bbe9-496530baf758'; // Alle Caches
+        }
+        return tx;
+    }
+
 ////////////////////////////////////////
 // 5.3 GC - User defined searchs ($$cap) (User defined searchs on the geocaching webpages.)
 ////////////////////////////////////////
@@ -13825,7 +13857,7 @@ var mainGC = function() {
             html += "<div id='gclh_config_profile' class='gclh_block'>";
             html += "<div style='margin-left: 5px'><b>Geocaches</b></div>";
             html += newParameterOn1;
-            html += checkboxy('settings_profile_old_links', 'Show old Links to found and hide caches') + show_help("With an update GS changed alle Links to found and hide caches in the public profile to the new search. With this option you can use the old search.") + "<br>";
+            html += checkboxy('settings_profile_old_links', 'Use old links to finds and hides caches') + show_help("The links to finds and hides caches in the public profile run through the new search. With this option you can use the old search.") + "<br>";
             html += newParameterVersionSetzen('0.10') + newParameterOff;
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>Trackables</b></div>";
             html += checkboxy('settings_faster_profile_trackables', 'Load trackables faster without images') + show_help("With this option you can stop the load on the trackable pages after the necessary datas are loaded. You disclaim of the lengthy load of the images of the trackables. This procedure is much faster as load all datas, because every image is loaded separate and not in a bigger bundle like it is for the non image data.") + "<br>";
@@ -14095,6 +14127,11 @@ var mainGC = function() {
             html += "&nbsp; " + checkboxy('settings_imgcaption_on_top', 'Show caption on top') + show_help("This option requires \"Show thumbnails of images\".");
             html += content_geothumbs;
             html += " &nbsp; &nbsp;" + "Spoiler filter: <input class='gclh_form' type='text' id='settings_spoiler_strings' value='" + settings_spoiler_strings + "'> " + show_help("If one of these words is found in the caption of the image, there will be no real thumbnail. It is to prevent seeing spoilers. Words have to be divided by |. If the field is empty, no checking is done. Default is \"spoiler|hinweis\".<br><br>This option requires \"Show thumbnails of images\".") + "<br>";
+
+            html += "<div style='margin-top: 9px; margin-left: 5px'><b>Links to find caches</b>" + "</div>";
+            html += newParameterOn2;
+            html += checkboxy('settings_listing_old_links', 'Use old links to find caches') + show_help("The links to find caches run through the new search. With this option you can use the old search.") + "<br>";
+            html += newParameterVersionSetzen('0.11') + newParameterOff;
 
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>Map preview</b>" + "</div>";
             html += checkboxy('settings_show_google_maps', 'Show link to Google Maps') + show_help("This option shows a link at the top of the second map in the listing. With this link you get directly to Google Maps in the area, where the cache is.") + "<br>";
@@ -15305,6 +15342,7 @@ var mainGC = function() {
                 'settings_lists_hide_desc',
                 'settings_lists_upload_file',
                 'settings_profile_old_links',
+                'settings_listing_old_links',
                 'settings_searchmap_show_btn_save_as_pq',
                 'settings_map_overview_browse_map_icon',
                 'settings_map_overview_search_map_icon',
@@ -16586,12 +16624,15 @@ var mainGC = function() {
         return s;
     }
 // Decode from URL.
-    function urldecode(s) {
+    function urldecode(s, convertSpace=false) {
         s = s.replace(/\+/g, " ");
         s = s.replace(/%252b/ig, "+");
         s = s.replace(/%7e/g, "~");
         s = s.replace(/%27/g, "'");
         s = decodeUnicodeURIComponent(s);
+        if (convertSpace) {
+            s = s.replace(/%20/g, " ");
+        }
         return s;
     }
 // Decode HTML, e.g.: "&amp;" in "&" (e.g.: User "Rajko & Dominik").
