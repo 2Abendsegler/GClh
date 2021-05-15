@@ -30,15 +30,16 @@
 		The links in cache listing to find caches run through the new search. With this option you can use the old search again.<br>
 		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_listing_old_links" title="Link to your GClh Config">Settings -> Listing:</a><br>
 		<img src="../images/0.11.1/Screen08.jpg" alt="Screen08.jpg"><br>
+		If you want to use this feature, you have to activate it.<br><br>
 		The following links in the find section of the cache listing are changed:<br>
-		<img src="../images/0.11.1/Screen07.jpg" alt="Screen07.jpg"><br>
+		<img src="../images/0.11.1/Screen07.jpg" alt="Screen07.jpg"><br><br>
 		Example for using this old search feature:<br>
 		<img src="../images/0.11.1/Screen09.gif" alt="Screen09.gif"><br><br>
 	</li>
 	<li>
-		<strong>New:</strong> [New Map/Old Map] Expand the additional cache data in new and old map with the personal cache note. [<a href="https://github.com/2Abendsegler/GClh/issues/1716" title="Issue 1716">1716</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		<strong>New:</strong> [New Map/Old Map] Expand the additional cache data in new and old map with the personal cache note. [<a href="https://github.com/2Abendsegler/GClh/issues/1716" title="Issue 1716">1716</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br><br>
 		Example for the new map:<br>
-		<img src="../images/0.11.1/Screen02.gif" alt="Screen02.gif"><br>
+		<img src="../images/0.11.1/Screen02.gif" alt="Screen02.gif"><br><br>
 		Example for the old map:<br>
 		<img src="../images/0.11.1/Screen01.jpg" alt="Screen01.jpg"><br><br>
 	</li>
@@ -47,9 +48,9 @@
 		With this option the place of the cache is displayed with state and country separated by a comma or only with state. In the latter case the complete place is displayed if you hover with the mouse over the field.<br>
 		You can use this also to prevent the line from being broken.<br>
 		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_show_country_in_place" title="Link to your GClh Config">Settings -> Map:</a><br>
-		<img src="../images/0.11.1/Screen03.jpg" alt="Screen03.jpg"><br>
+		<img src="../images/0.11.1/Screen03.jpg" alt="Screen03.jpg"><br><br>
 		Example for the new map with state and country:<br>
-		<img src="../images/0.11.1/Screen04.jpg" alt="Screen04.jpg"><br>
+		<img src="../images/0.11.1/Screen04.jpg" alt="Screen04.jpg"><br><br>
 		Example for the new map only with state:<br>
 		<img src="../images/0.11.1/Screen05.jpg" alt="Screen05.jpg"><br><br>
 	</li>
@@ -62,7 +63,7 @@
 		This feature add an entry in the dropdown menu to open selected caches in new browser tabs. The feature is available in own and foreign bookmark lists and in the ignore list.<br>
 		If you have only two or three caches to open, you can also open the listings manually. However, if you want to do this for a full page with for example twenty caches, this feature can be helpful.<br>
 		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_lists_open_tabs" title="Link to your GClh Config">Settings -> Bookmark list:</a><br>
-		<img src="../images/0.11.1/Screen12.jpg" alt="Screen12.jpg"><br>
+		<img src="../images/0.11.1/Screen12.jpg" alt="Screen12.jpg"><br><br>
 		Example:<br>
 		<img src="../images/0.11.1/Screen11.gif" alt="Screen11.gif"><br><br>
 	</li>
@@ -73,7 +74,7 @@
 		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_open_tabs_nearest" title="Link to your GClh Config">Settings -> Nearest list:</a><br>
 		<img src="../images/0.11.1/Screen13.jpg" alt="Screen13.jpg"><br>
 		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_open_tabs_pqs" title="Link to your GClh Config">Settings -> Pocket query:</a><br>
-		<img src="../images/0.11.1/Screen14.jpg" alt="Screen14.jpg"><br>
+		<img src="../images/0.11.1/Screen14.jpg" alt="Screen14.jpg"><br><br>
 		Example for a nearest list:<br>
 		<img src="../images/0.11.1/Screen10.gif" alt="Screen10.gif"><br><br>
 	</li>
