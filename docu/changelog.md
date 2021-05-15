@@ -34,14 +34,14 @@
 		The following links in the find section of the cache listing are changed:<br>
 		<img src="../images/0.11.1/Screen07.jpg" alt="Screen07.jpg"><br><br>
 		Example for using this old search feature:<br>
-		<img src="../images/0.11.1/Screen09.gif" alt="Screen09.gif"><br><br>
+		<img src="../images/0.11.1/Screen09.gif" alt="Screen09.gif"><br><br><br>
 	</li>
 	<li>
 		<strong>New:</strong> [New Map/Old Map] Expand the additional cache data in new and old map with the personal cache note. [<a href="https://github.com/2Abendsegler/GClh/issues/1716" title="Issue 1716">1716</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 		Example for the new map:<br>
 		<img src="../images/0.11.1/Screen02.gif" alt="Screen02.gif"><br><br>
 		Example for the old map:<br>
-		<img src="../images/0.11.1/Screen01.jpg" alt="Screen01.jpg"><br><br>
+		<img src="../images/0.11.1/Screen01.jpg" alt="Screen01.jpg"><br><br><br>
 	</li>
 	<li>
 		<strong>New:</strong> [New Map/Old Map] Show country as part of the place in the additional cache data of new and old map. [<a href="https://github.com/2Abendsegler/GClh/issues/1717" title="Issue 1717">1717</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
@@ -52,11 +52,11 @@
 		Example for the new map with state and country:<br>
 		<img src="../images/0.11.1/Screen04.jpg" alt="Screen04.jpg"><br><br>
 		Example for the new map only with state:<br>
-		<img src="../images/0.11.1/Screen05.jpg" alt="Screen05.jpg"><br><br>
+		<img src="../images/0.11.1/Screen05.jpg" alt="Screen05.jpg"><br><br><br>
 	</li>
 	<li>
 		<strong>New:</strong> [New Map] VIP, VUP and Mail for owner in cache detail. [<a href="https://github.com/2Abendsegler/GClh/issues/1593" title="Issue 1593">1593</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
-		<img src="../images/0.11.1/Screen06.jpg" alt="Screen06.jpg"><br><br>
+		<img src="../images/0.11.1/Screen06.jpg" alt="Screen06.jpg"><br><br><br>
 	</li>
 	<li>
 		<strong>New:</strong> [Lists] Open selected caches in new browser tabs. [<a href="https://github.com/2Abendsegler/GClh/issues/1737" title="Issue 1737">1737</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
@@ -65,7 +65,7 @@
 		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_lists_open_tabs" title="Link to your GClh Config">Settings -> Bookmark list:</a><br>
 		<img src="../images/0.11.1/Screen12.jpg" alt="Screen12.jpg"><br><br>
 		Example:<br>
-		<img src="../images/0.11.1/Screen11.gif" alt="Screen11.gif"><br><br>
+		<img src="../images/0.11.1/Screen11.gif" alt="Screen11.gif"><br><br><br>
 	</li>
 	<li>
 		<strong>New:</strong> [Pocket query / Nearest list] Open selected caches in new browser tabs. [<a href="https://github.com/2Abendsegler/GClh/issues/1736" title="Issue 1736">1736</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
@@ -76,11 +76,11 @@
 		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_open_tabs_pqs" title="Link to your GClh Config">Settings -> Pocket query:</a><br>
 		<img src="../images/0.11.1/Screen14.jpg" alt="Screen14.jpg"><br><br>
 		Example for a nearest list:<br>
-		<img src="../images/0.11.1/Screen10.gif" alt="Screen10.gif"><br><br>
+		<img src="../images/0.11.1/Screen10.gif" alt="Screen10.gif"><br><br><br>
 	</li>
 	<li>
 		<strong>New:</strong> [Public Profile - Souvenirs] Standard sort changed to newest first as it is done on the souvenirs page. [<a href="https://github.com/2Abendsegler/GClh/issues/1724" title="Issue 1724">1724</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
-		<img src="../images/0.11.1/Screen15.jpg" alt="Screen15.jpg"><br><br>
+		<img src="../images/0.11.1/Screen15.jpg" alt="Screen15.jpg"><br><br><br>
 	</li>
 	<li>
 		<strong>New:</strong> [Profile] Build back coding of the old profile page. [<a href="https://github.com/2Abendsegler/GClh/issues/1730" title="Issue 1730">1730</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
