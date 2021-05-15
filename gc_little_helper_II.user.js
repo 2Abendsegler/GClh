@@ -1822,22 +1822,6 @@ var mainGC = function() {
                              + "(But, please wait until page \"Dashboard\" is loading complete.)";
                     if (window.confirm(mess)) document.location.href = "/my/default.aspx";
                     else  document.location.href = document.location.href.replace("?#"+splitter[1]+"#"+splitter[2], "");
-
-                // Jump to profile tab.
-                } else if (postbackValue.match(/_ContentBody_ProfilePanel1_/)) {
-                    if (is_page("publicProfile")) {
-                        $('html').css("background-color", "white");
-                        $('#divContentSide').css("height", "1000px");
-                        $('#ProfileTabs').css("display", "none");
-                        $('footer').remove();
-                    }
-                    function rarProfile(waitCount) { // GDPR
-                        if (typeof unsafeWindow.__doPostBack !== "undefined") { // GDPR
-                            document.location.href = "";
-                            $('#'+postbackValue)[0].click();
-                        } else {waitCount++; if (waitCount <= 100) setTimeout(function(){rarProfile(waitCount);}, 100);}
-                    }
-                    rarProfile(0); // GDPR
                 }
             }
         } catch(e) {gclh_error("Run after redirect",e);}
@@ -5885,7 +5869,7 @@ var mainGC = function() {
                     friend.getElementsByTagName("dd")[2].getElementsByTagName("span")[0].innerHTML = "<a href='https://maps.google.de/?q=" + (friendlocation.replace(/&/g, "")) + "' target='_blank'>" + friendlocation + "</a>";
                 }
                 // Bottom line.
-                friend.getElementsByTagName("p")[0].innerHTML = "<a name='lnk_profilegallery2' href='" + name.href + '#gclhpb#ctl00_ContentBody_ProfilePanel1_lnkGallery' + "'>Gallery</a> | " + friend.getElementsByTagName("p")[0].innerHTML;
+                friend.getElementsByTagName("p")[0].innerHTML = "<a name='lnk_profilegallery2' href='" + name.href + '&tab=gallery#profilepanel' + "'>Gallery</a> | " + friend.getElementsByTagName("p")[0].innerHTML;
             }
             function gclh_reset_counter() {
                 var friends = document.getElementsByClassName("FriendText");
@@ -8607,15 +8591,6 @@ var mainGC = function() {
                     buildThumb(links[i].href, links[i].innerHTML, true, "-70px");
                 }
 
-            // Public Profile Avatar.
-            } else if (is_page("publicProfile") && $('#ctl00_ContentBody_ProfilePanel1_uxProfilePhoto')[0]) {
-                var image = $('#ctl00_ContentBody_ProfilePanel1_uxProfilePhoto')[0];
-                var aPseudo = document.createElement("a");
-                aPseudo.appendChild(image.cloneNode(true));
-                image.parentNode.replaceChild(aPseudo, image);
-                var link = $('#ctl00_ContentBody_ProfilePanel1_uxProfilePhoto').closest('a')[0];
-                avatarThumbnail(link);
-
             // Galerien Public Profile, Cache, TB.
             } else if ((is_page("publicProfile") && $('#ctl00_ContentBody_ProfilePanel1_lnkGallery.Active')[0]) ||
                        document.location.href.match(/\.com\/(seek\/gallery\.aspx?|track\/gallery\.aspx?)/)) {
@@ -11258,20 +11233,6 @@ var mainGC = function() {
                 }
             }
         } catch(e) {gclh_error("Save uid of own trackable",e);}
-    }
-
-// Add mailto link to profilpage.
-    if (is_page("publicProfile") && $('#ctl00_ContentBody_ProfilePanel1_lnkEmailUser')[0]) {
-        try {
-            var link = $('#ctl00_ContentBody_ProfilePanel1_lnkEmailUser')[0];
-            if (link && link.innerHTML.match(/^.+@.+\..+$/)) {
-                var mailto = document.createElement('a');
-                mailto.href = "mailto:" + link.innerHTML + '?subject=[GC]';
-                mailto.appendChild(document.createTextNode("(@)"));
-                link.parentNode.appendChild(document.createTextNode(" "));
-                link.parentNode.appendChild(mailto);
-            }
-        } catch(e) {gclh_error("Add mailto-link to profilepage",e);}
     }
 
 // Add links to finds and hides on new profilpage.
