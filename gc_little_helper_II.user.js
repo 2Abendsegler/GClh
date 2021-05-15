@@ -2,7 +2,7 @@
 // @name             GC little helper II
 // @namespace        http://www.amshove.net
 //--> $$000
-// @version          0.11.1
+// @version          0.11
 //<-- $$000
 // @include          https://www.geocaching.com/*
 // @include          https://maps.google.tld/*
@@ -15203,6 +15203,7 @@ var mainGC = function() {
             setValue('settings_map_layers', new_settings_map_layers.join("###"));
 
             var checkboxes = new Array(
+                'settings_console',
                 'settings_submit_log_button',
                 'settings_log_inline',
                 'settings_log_inline_pmo4basic',
@@ -15465,7 +15466,6 @@ var mainGC = function() {
                 'settings_smaller_upvotes_icons',
                 'settings_no_wiggle_upvotes_click',
                 'settings_show_country_in_place',
-                'settings_console',
             );
 
             for (var i = 0; i < checkboxes.length; i++) {
