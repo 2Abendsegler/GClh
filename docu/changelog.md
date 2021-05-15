@@ -67,8 +67,34 @@
 		<img src="../images/0.11.1/Screen06.jpg" alt="Screen06.jpg"><br><br>
 	</li>
 	<li>
+		<strong>New:</strong> [Lists] Open selected caches in new browser tabs. [<a href="https://github.com/2Abendsegler/GClh/issues/1737" title="Issue 1737">1737</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		This feature add an entry in the dropdown menu to open selected caches in new browser tabs. The feature is available in own and foreign bookmark lists and in the ignore list.<br>
+		If you have only two or three caches to open, you can also open the listings manually. However, if you want to do this for a full page with for example twenty caches, this feature can be helpful.<br><br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_lists_open_tabs" title="Link to your GClh Config">Settings -> Bookmark list:</a><br>
+		<img src="../images/0.11.1/Screen12.jpg" alt="Screen12.jpg"><br><br>
+		Example:<br>
+		<img src="../images/0.11.1/Screen11.gif" alt="Screen11.gif"><br><br>
+	</li>
+	<li>
+		<strong>New:</strong> [Pocket query / Nearest list] Open selected caches in new browser tabs. [<a href="https://github.com/2Abendsegler/GClh/issues/1736" title="Issue 1736">1736</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		This option displays a button to open selected caches in new browser tabs. The feature is available in pocket queries and nearest lists if the compact layout feature for pocket queries respectively the compact layout for nearest lists is activated.<br>
+		If you have only two or three caches to open, you can also open the listings manually. However, if you want to do this for a full page with for example twenty caches, this feature can be helpful.<br><br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_open_tabs_nearest" title="Link to your GClh Config">Settings -> Nearest list:</a><br>
+		<img src="../images/0.11.1/Screen13.jpg" alt="Screen13.jpg"><br><br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_open_tabs_pqs" title="Link to your GClh Config">Settings -> Pocket query:</a><br>
+		<img src="../images/0.11.1/Screen14.jpg" alt="Screen14.jpg"><br><br>
+		Example for a nearest list:<br>
+		<img src="../images/0.11.1/Screen10.gif" alt="Screen10.gif"><br><br>
+	</li>
+	<li>
 		<strong>New:</strong> [Public Profile - Souvenirs] Standard sort changed to newest first as it is done on the souvenirs page. [<a href="https://github.com/2Abendsegler/GClh/issues/1724" title="Issue 1724">1724</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 		<img src="../images/0.11.1/Screen15.jpg" alt="Screen15.jpg"><br><br>
+	</li>
+	<li>
+		<strong>New:</strong> [Profile] Build back coding of the old profile page. [<a href="https://github.com/2Abendsegler/GClh/issues/1730" title="Issue 1730">1730</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br><br>
+	</li>
+	<li>
+		<strong>New:</strong> [Show logs] Do not break the column "View log" in my Geocaching Logs and my Trackable Logs. [<a href="https://github.com/2Abendsegler/GClh/issues/1728" title="Issue 1728">1728</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 	</li>
 	<li>
 		<strong>Fix:</strong> [Global] Sign out does not always work. [<a href="https://github.com/2Abendsegler/GClh/issues/1711" title="Issue 1711">1711</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
@@ -78,6 +104,11 @@
 	</li>
 	<li>
 		<strong>Fix:</strong> [Pocket Query] Activate full compact layout on pocket queries again. [<a href="https://github.com/2Abendsegler/GClh/issues/1714" title="Issue 1714">1714</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Linklist] Correct links in Linklist. [<a href="https://github.com/2Abendsegler/GClh/issues/1726" title="Issue 1726">1726</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		Correct Flopp's Map link in Linklist.<br>
+		Convert the two-stage direct links to the public profile tabs into one-stage.<br>
 	</li>
 </ul>
 <br>
