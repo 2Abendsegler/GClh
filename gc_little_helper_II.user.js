@@ -3635,7 +3635,6 @@ var mainGC = function() {
             for (var i = 0; i < links.length; i++) {
                 // Other caches hidden by this user.
                 var match = links[i].href.match(/\/play\/search\?owner\[0\]=(.*?)&.*/);
-            if (match && match[1]) console.log(match[1]);
                 if (match && match[1]) {links[i].href = "/seek/nearest.aspx?u="+urlencode(urldecode(match[1])); continue;}
                 // Other caches found by this user.
                 var match = links[i].href.match(/\/play\/search\?fb=(.*?)&.*/);
