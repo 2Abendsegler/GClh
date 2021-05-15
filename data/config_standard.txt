@@ -1,4 +1,5 @@
 {
+  "settings_console": false,
   "settings_submit_log_button": true,
   "settings_log_inline": false,
   "settings_log_inline_tb": false,
@@ -232,8 +233,10 @@
   "settings_but_search_map": true,
   "settings_but_search_map_new_tab": false,
   "settings_show_pseudo_as_owner": true,
-  "settings_fav_proz_pqs": true,
   "settings_fav_proz_nearest": true,
+  "settings_open_tabs_nearest": true,
+  "settings_fav_proz_pqs": true,
+  "settings_open_tabs_pqs": true,
   "settings_fav_proz_recviewed": true,
   "settings_show_all_logs_but": true,
   "settings_show_log_counter_but": true,
@@ -295,8 +298,10 @@
   "settings_lists_show_dd": true,
   "settings_lists_hide_desc": true,
   "settings_lists_upload_file": true,
+  "settings_lists_open_tabs": true,
   "settings_searchmap_show_btn_save_as_pq": true,
   "settings_profile_old_links": false,
+  "settings_listing_old_links": false,
   "settings_map_overview_browse_map_icon": true,
   "settings_map_overview_search_map_icon": true,
   "settings_cache_notes_min_size": 54,
@@ -304,5 +309,6 @@
   "settings_show_hide_upvotes_but": false,
   "settings_hide_upvotes": false,
   "settings_smaller_upvotes_icons": true,
-  "settings_no_wiggle_upvotes_click": true
+  "settings_no_wiggle_upvotes_click": true,
+  "settings_show_country_in_place": true
 }
