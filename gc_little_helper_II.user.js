@@ -1353,11 +1353,8 @@ var mainGC = function() {
     try {
         function buildUpHeader(waitCount) {
             if ($('#gc-header, #GCHeader')[0]) {
-                // Integrate old header.
-                if ($('#gc-header-root')[0]) $('#gc-header-root').prepend(header_old);
-                else if ($('#header-root')[0]) $('#header-root').prepend(header_old);
-                else if ($('#root')[0]) $('#root').prepend(header_old);
-                else if ($('#app-root')[0]) $('#app-root').prepend(header_old);
+                // Integrate old header. closest examples: Dashboard, Owner Dashboard, New Map, My Lists.
+                ($('#gc-header') || $('#GCHeader')).closest('#gc-header-root, #header-root, #root, #app-root').prepend(header_old);
                 // Run header relevant features.
                 setUserParameter();
                 setMessageIndicator(0);
