@@ -27,7 +27,7 @@
 <ul>
 	<li>
 		<strong>New:</strong> [Cache listing] Change to old search on cache listing page. [<a href="https://github.com/2Abendsegler/GClh/issues/1682" title="Issue 1682">1682</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br>
-		The links in cache listing to find caches run through the new search. With this option you can use the old search again.<br><br>
+		The links in cache listing to find caches run through the new search. With this option you can use the old search again.<br>
 		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_listing_old_links" title="Link to your GClh Config">Settings -> Listing:</a><br>
 		<img src="../images/0.11.1/Screen08.jpg" alt="Screen08.jpg"><br>
 		The following links in the find section of the cache listing are changed:<br>
@@ -37,9 +37,9 @@
 	</li>
 	<li>
 		<strong>New:</strong> [New Map/Old Map] Expand the additional cache data in new and old map with the personal cache note. [<a href="https://github.com/2Abendsegler/GClh/issues/1716" title="Issue 1716">1716</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
-		New Map:<br>
+		Example for the new map:<br>
 		<img src="../images/0.11.1/Screen02.gif" alt="Screen02.gif"><br>
-		Old Map:<br>
+		Example for the old map:<br>
 		<img src="../images/0.11.1/Screen01.jpg" alt="Screen01.jpg"><br><br>
 	</li>
 	<li>
