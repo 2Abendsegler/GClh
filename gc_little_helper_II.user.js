@@ -12070,10 +12070,10 @@ var mainGC = function() {
         div.setAttribute("style", "margin-top: -50px;");
         var prop = ' style="border: none; visibility: hidden; width: 2px; height: 2px;" alt="">';
 //--> $$002
-        var code = '<img src="https://c.andyhoppe.com/1620350200"' + prop + // Besucher
-                   '<img src="https://c.andyhoppe.com/1620350234"' + prop + // Seitenaufrufe
-                   '<img src="https://www.worldflagcounter.com/hI1"' + prop +
-                   '<img src="https://s11.flagcounter.com/count2/dEIl/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
+        var code = '<img src="https://c.andyhoppe.com/1621078718"' + prop + // Besucher
+                   '<img src="https://c.andyhoppe.com/1621078751"' + prop + // Seitenaufrufe
+                   '<img src="https://www.worldflagcounter.com/hKk"' + prop +
+                   '<img src="https://s11.flagcounter.com/count2/mzIe/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
 //<-- $$002
         div.innerHTML = code;
         side.appendChild(div);
@@ -13499,7 +13499,7 @@ var mainGC = function() {
             html += thanksLineBuild("Tungstène",            "Tungstene",                false, false, false, true,  false);
             html += thanksLineBuild("V60",                  "V60GC",                    false, false, false, true,  false);
             html += thanksLineBuild("winkamol",             "",                         false, false, false, true,  false);
-            var thanksLastUpdate = "08.05.2021";
+            var thanksLastUpdate = "15.05.2021";
 //<-- $$006
             html += "    </tbody>";
             html += "</table>";
