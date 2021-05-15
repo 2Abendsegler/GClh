@@ -26,14 +26,6 @@
 ## v0.11.1:
 <ul>
 	<li>
-		<strong>Fix:</strong> [Global] GClh doesn't run because of changing page header. [<a href="https://github.com/2Abendsegler/GClh/issues/1630" title="Issue 1630">1630</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
-		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#gclh_config_listing" title="Link to your GClh Config">Settings -> Listing:</a><br>
-		<img src="../images/0.11.1/Screen01.jpg" alt="Screen01.jpg"><br><br>
-		If you want to use this feature, you have to activate it.<br><br>
-	</li>
-	<li>
-	</li>
-	<li>
 		<strong>New:</strong> [Cache listing] Change to old search on cache listing page. [<a href="https://github.com/2Abendsegler/GClh/issues/1682" title="Issue 1682">1682</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br><br>
 		The links in cache listing to find caches run through the new search. With this option you can use the old search again.
 		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_listing_old_links" title="Link to your GClh Config">Settings -> Listing:</a><br>
@@ -44,7 +36,7 @@
 		<img src="../images/0.11.1/Screen09.gif" alt="Screen09.gif"><br><br>
 	</li>
 	<li>
-		<strong>New:</strong> [New Map/Old Map] Expand the additional cache data of new and old map with the personal cache note. [<a href="https://github.com/2Abendsegler/GClh/issues/1716" title="Issue 1716">1716</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br><br>
+		<strong>New:</strong> [New Map/Old Map] Expand the additional cache data in new and old map with the personal cache note. [<a href="https://github.com/2Abendsegler/GClh/issues/1716" title="Issue 1716">1716</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br><br>
 		New Map:<br>
 		<img src="../images/0.11.1/Screen02.gif" alt="Screen02.gif"><br><br>
 		Old Map:<br>
