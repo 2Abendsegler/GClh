@@ -34,7 +34,7 @@
 	<li>
 	</li>
 	<li>
-		<strong>New:</strong> [Cache listing] Change to old search on cache listing page. [<a href="https://github.com/2Abendsegler/GClh/issues/1682" title="Issue 1682">1682</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br>
+		<strong>New:</strong> [Cache listing] Change to old search on cache listing page. [<a href="https://github.com/2Abendsegler/GClh/issues/1682" title="Issue 1682">1682</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br><br>
 		The links in cache listing to find caches run through the new search. With this option you can use the old search again.
 		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_listing_old_links" title="Link to your GClh Config">Settings -> Listing:</a><br>
 		<img src="../images/0.11.1/Screen08.jpg" alt="Screen08.jpg"><br><br>
@@ -44,15 +44,31 @@
 		<img src="../images/0.11.1/Screen09.gif" alt="Screen09.gif"><br><br>
 	</li>
 	<li>
-		<strong>New:</strong> [New Map/Old Map] Expand the additional cache data of new and old map with the personal cache note. [<a href="https://github.com/2Abendsegler/GClh/issues/1716" title="Issue 1716">1716</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		<strong>New:</strong> [New Map/Old Map] Expand the additional cache data of new and old map with the personal cache note. [<a href="https://github.com/2Abendsegler/GClh/issues/1716" title="Issue 1716">1716</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br><br>
 		New Map:<br>
 		<img src="../images/0.11.1/Screen02.gif" alt="Screen02.gif"><br><br>
 		Old Map:<br>
 		<img src="../images/0.11.1/Screen01.jpg" alt="Screen01.jpg"><br><br>
 	</li>
 	<li>
+		<strong>New:</strong> [New Map/Old Map] Show country as part of the place in the additional cache data of new and old map. [<a href="https://github.com/2Abendsegler/GClh/issues/1717" title="Issue 1717">1717</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br><br>
+		With this option the place of the cache is displayed with state and country separated by a comma or only with state. In the latter case the complete place is displayed if you hover with the mouse over the field.<br>
+		You can use this also to prevent the line from being broken.<br><br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_show_country_in_place" title="Link to your GClh Config">Settings -> Map:</a><br>
+		<img src="../images/0.11.1/Screen03.jpg" alt="Screen03.jpg"><br><br>
+		Example for the new map:<br>
+		State and country:<br>
+		<img src="../images/0.11.1/Screen04.jpg" alt="Screen04.jpg"><br><br>
+		Only state:<br>
+		<img src="../images/0.11.1/Screen05.jpg" alt="Screen05.jpg"><br><br>
+	</li>
+	<li>
 		<strong>New:</strong> [New Map] VIP, VUP and Mail for owner in cache detail. [<a href="https://github.com/2Abendsegler/GClh/issues/1593" title="Issue 1593">1593</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 		<img src="../images/0.11.1/Screen06.jpg" alt="Screen06.jpg"><br><br>
+	</li>
+	<li>
+		<strong>New:</strong> [Public Profile - Souvenirs] Standard sort changed to newest first as it is done on the souvenirs page. [<a href="https://github.com/2Abendsegler/GClh/issues/1724" title="Issue 1724">1724</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		<img src="../images/0.11.1/Screen15.jpg" alt="Screen15.jpg"><br><br>
 	</li>
 	<li>
 		<strong>Fix:</strong> [Global] Sign out does not always work. [<a href="https://github.com/2Abendsegler/GClh/issues/1711" title="Issue 1711">1711</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
