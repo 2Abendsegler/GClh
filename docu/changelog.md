@@ -37,7 +37,7 @@
 		<img src="../images/0.11.1/Screen09.gif" alt="Screen09.gif"><br><br>
 	</li>
 	<li>
-		<strong>New:</strong> [New Map/Old Map] Expand the additional cache data in new and old map with the personal cache note. [<a href="https://github.com/2Abendsegler/GClh/issues/1716" title="Issue 1716">1716</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br><br>
+		<strong>New:</strong> [New Map/Old Map] Expand the additional cache data in new and old map with the personal cache note. [<a href="https://github.com/2Abendsegler/GClh/issues/1716" title="Issue 1716">1716</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 		Example for the new map:<br>
 		<img src="../images/0.11.1/Screen02.gif" alt="Screen02.gif"><br><br>
 		Example for the old map:<br>
