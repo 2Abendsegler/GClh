@@ -3635,10 +3635,10 @@ var mainGC = function() {
             for (var i = 0; i < links.length; i++) {
                 // Other caches hidden by this user.
                 var match = links[i].href.match(/\/play\/search\?owner\[0\]=(.*?)&.*/);
-                if (match && match[1]) {links[i].href = "/seek/nearest.aspx?u="+urlencode(match[1]); continue;}
+                if (match && match[1]) {links[i].href = "/seek/nearest.aspx?u="+urlencode(urldecode(match[1])); continue;}
                 // Other caches found by this user.
                 var match = links[i].href.match(/\/play\/search\?fb=(.*?)&.*/);
-                if (match && match[1]) {links[i].href = "/seek/nearest.aspx?ul="+urlencode(match[1]); continue;}
+                if (match && match[1]) {links[i].href = "/seek/nearest.aspx?ul="+urlencode(urldecode(match[1])); continue;}
                 // Nearby caches of this type, that I haven't found.
                 var match = links[i].href.match(/\/play\/search\?types=(.*?)&origin=(.*?),(.*?)&f=2&o=2/);
                 if (match && match[1] && match[2] && match[3]) {links[i].href = "/seek/nearest.aspx?lat="+match[2]+"&lng="+match[3]+"&ex=1"+getCacheTx(match[1]); continue;}
@@ -11286,12 +11286,12 @@ var mainGC = function() {
             // Cache type founds.
             let match = /\/play\/search\?types=(\d+).*&sc=(False|True)&fb=([^&]+).*/gi.exec(this.href);
             if (match) {
-                this.href = '/seek/nearest.aspx?ul=' + match[3] + getCacheTx(match[1]);
+                this.href = '/seek/nearest.aspx?ul=' + urlencode($('#ctl00_ProfileHead_ProfileHeader_lblMemberName')[0].innerHTML) + getCacheTx(match[1]);
             }
             // Cache type hides.
             match = /\/play\/search\?types=(\d+).*&sc=(False|True)&owner\[0\]=([^&]+).*/gi.exec(this.href);
             if (match) {
-                this.href = '/seek/nearest.aspx?u=' + match[3] + getCacheTx(match[1]);
+                this.href = '/seek/nearest.aspx?u=' + urlencode($('#ctl00_ProfileHead_ProfileHeader_lblMemberName')[0].innerHTML) + getCacheTx(match[1]);
             }
         });
     }
