@@ -616,6 +616,7 @@ var variablesInit = function(c) {
     c.settings_lists_show_dd = getValue("settings_lists_show_dd", true);
     c.settings_lists_hide_desc = getValue("settings_lists_hide_desc", true);
     c.settings_lists_upload_file = getValue("settings_lists_upload_file", true);
+    c.settings_lists_open_tabs = getValue("settings_lists_open_tabs", true);
     c.settings_profile_old_links = getValue("settings_profile_old_links", false);
     c.settings_listing_old_links = getValue("settings_listing_old_links", false);
     c.settings_searchmap_show_btn_save_as_pq = getValue("settings_searchmap_show_btn_save_as_pq", true);
@@ -4717,7 +4718,7 @@ var mainGC = function() {
 
 // Improve pocket queries, nearest lists, recently viewed. Compact layout, favorites percentage.
     if (settings_compact_layout_pqs && document.location.href.match(/\.com\/seek\/nearest\.aspx\?pq=/)) var li0 = "p";
-    else if (settings_compact_layout_nearest && document.location.href.match(/\.com\/seek\/nearest\.aspx\?/)) var li0 = "n";
+    else if (settings_compact_layout_nearest && document.location.href.match(/\.com\/seek\/nearest\.aspx\?/) && !document.location.href.match(/\.com\/seek\/nearest\.aspx\?pq=/)) var li0 = "n";
     else if (settings_compact_layout_recviewed && document.location.href.match(/\.com\/my\/recentlyviewedcaches\.aspx/)) var li0 = "r";
     if (li0) {
         try {
@@ -4845,6 +4846,22 @@ var mainGC = function() {
                         }
                     });
                 });
+            }
+            if ($('.gclh_last_line')[0]) {
+                // Button "Open in new tabs" for pqs and nearest.
+                $('.gclh_last_line').append(' <input type="button" id="gclh_open_tabs" value="Open in new tabs" title="Open selected caches in new tabs">');
+                $('#gclh_open_tabs')[0].addEventListener("click", function() {
+                    var caches = [];
+                    $('table.Table tr').each(function() {
+                        if ($(this).find('input.Checkbox')[0] && $(this).find('input.Checkbox')[0].checked && $(this).find('.lnk')[0] && $(this).find('.lnk')[0].href) {
+                            var match = $(this).find('.lnk')[0].href.match(/\.com\/geocache\/(.*?)(_|$)/);
+                            if (match && match[1]) caches.push(match[1]);
+                        }
+                    });
+                    for (var i=caches.length-1; i>=0; i--) {
+                        window.open('https://coord.info/'+caches[i]);
+                    }
+                } , false);
             }
             appendCssStyle(css);
         } catch(e) {gclh_error("Improve PQs ...",e);}
@@ -5266,6 +5283,29 @@ var mainGC = function() {
                 // Build dropdown entry 'Upload caches from file' for own BML.
                 if ($('.list-details .owner-view')[0]) {
                     buildChildDD(settings_lists_upload_file, 'gclh_upload_file', '', uploadFileLists, 'Upload caches from file', '.gpx or .loc files, or files with separators', true, disableUploadFileLists);
+                }
+                // Build dropdown entry 'Open selected caches in new tabs' for own BML, ignore list and for foreign BML.
+                if ($('.list-details .owner-view')[0] || $('.list-details .ignore-header')[0] || $('.list-details :not(.owner-view,.ignore-header)')[0]) {
+                    buildChildDD(settings_lists_open_tabs, 'gclh_open_tabs', '', openTabsLists, 'Open caches in new tabs', 'Open selected caches in new tabs', true, disableOpenTabsLists);
+                }
+            }
+            // Disable entry 'Open selected caches in new tabs' if no caches are selected.
+            function disableOpenTabsLists(mouseover) {
+                if (!$('table.geocache-table tr .checked')[0]) {
+                    $('#gclh_open_tabs').addClass('disabled');
+                }
+            }
+            // 'Open selected caches in new tabs'.
+            function openTabsLists(click, entryDD) {
+                if (!$('#gclh_open_tabs')[0]) return;
+                var caches = [];
+                $('table.geocache-table tr').each(function() {
+                    if ($(this).find('.checked')[0] && $(this).find('.geocache-name a')[0] && $(this).find('.geocache-name a')[0].href) {
+                        caches.push($(this).find('.geocache-name a')[0].href);
+                    }
+                });
+                for (var i=caches.length-1; i>=0; i--) {
+                    window.open(caches[i]);
                 }
             }
             // Disable entry 'upload caches from file' if add caches functionality is not available.
@@ -6840,7 +6880,7 @@ var mainGC = function() {
             } else if (document.location.href.match(/\.com\/seek\/nearest\.aspx(.*)(\?ul|\?u|&ul|&u)=/)) {
                 var id = "ctl00_ContentBody_LocationPanel1_OriginLabel";
                 if (document.getElementById(id)) {
-                    appendCssStyle("#"+id+" a img {margin-right: -5px;}");
+                    if (settings_compact_layout_nearest) appendCssStyle("#"+id+" a img {margin-right: -5px;}");
                     var side = document.getElementById(id);
                     var user = getUrlUser();
                     gclh_build_vipvupmail(side, user);
@@ -13680,6 +13720,9 @@ var mainGC = function() {
             html += " &nbsp; " + checkboxy('settings_lists_hide_desc', 'Show/hide cache descriptions') + show_help("Add an entry in the dropdown menu to show and hide the cache descriptions.") + "<br>";
             html += " &nbsp; " + checkboxy('settings_lists_upload_file', 'Upload caches from file') + show_help("Add an entry in the dropdown menu to upload caches from a file into the bookmark list.<br><br>The caches in .gpx and .loc files are expected in the standard scheme of such files.<br><br>The caches in other files are expected with an usual separator like for example a blank, a komma or an other usual sign.") + "<br>";
             html += newParameterVersionSetzen("0.10") + newParameterOff;
+            html += newParameterOn2;
+            html += " &nbsp; " + checkboxy('settings_lists_open_tabs', 'Open selected caches in new tabs') + show_help("Add an entry in the dropdown menu to open selected caches in new tabs.") + "<br>";
+            html += newParameterVersionSetzen("0.11") + newParameterOff;
             html += content_settings_submit_log_button.replace("log_button","log_buttonX0");
             html += newParameterOn3;
             html += checkboxy('settings_bm_changed_and_go', 'After change of bookmark (old form) go to bookmark list automatically') + show_help3("With this option you can switch to the bookmark list automatically after a change of a bookmark (old form). The confirmation page of this change will skip.") + "<br>";
@@ -14915,6 +14958,7 @@ var mainGC = function() {
             setEvForDepPara("settings_show_copydata_own_stuff_show","restore_settings_show_copydata_own_stuff_value");
             setEvForDepPara("settings_lists_show_dd","settings_lists_hide_desc");
             setEvForDepPara("settings_lists_show_dd","settings_lists_upload_file");
+            setEvForDepPara("settings_lists_show_dd","settings_lists_open_tabs");
             setEvForDepPara("settings_autovisit","settings_autovisit_default");
 
             // Abhängigkeiten der Linklist Parameter.
@@ -15341,6 +15385,7 @@ var mainGC = function() {
                 'settings_lists_show_dd',
                 'settings_lists_hide_desc',
                 'settings_lists_upload_file',
+                'settings_lists_open_tabs',
                 'settings_profile_old_links',
                 'settings_listing_old_links',
                 'settings_searchmap_show_btn_save_as_pq',
