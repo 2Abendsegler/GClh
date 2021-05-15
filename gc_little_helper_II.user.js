@@ -2,7 +2,7 @@
 // @name             GC little helper II
 // @namespace        http://www.amshove.net
 //--> $$000
-// @version          0.11
+// @version          0.11.1
 //<-- $$000
 // @include          https://www.geocaching.com/*
 // @include          https://maps.google.tld/*
