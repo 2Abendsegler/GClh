@@ -53,8 +53,8 @@ var start = function(c) {
         .then(function() {return constInit(c);})
         .then(function() {return variablesInit(c);})
         .done(function() {
-            function checkBodyContent(waitCount) { // GDPR
-                if ($('body').children().length > 1) { // GDPR
+            function checkBodyContent(waitCount) {
+                if ($('body').children().length > 1) {
                     tlc('BodyContent found');
                     if (document.location.href.match(/^https?:\/\/maps\.google\./) || document.location.href.match(/^https?:\/\/www\.google\.[a-zA-Z.]*\/maps/)) {
                         mainGMaps();
@@ -65,10 +65,10 @@ var start = function(c) {
                     } else if (document.location.href.match(/^https?:\/\/project-gc\.com\/Tools\/PQSplit/)) {
                         mainPGC();
                     }
-                } else {waitCount++; if (waitCount <= 5000) setTimeout(function(){checkBodyContent(waitCount);}, 10);} // GDPR
+                } else {waitCount++; if (waitCount <= 5000) setTimeout(function(){checkBodyContent(waitCount);}, 10);}
             }
             tlc('START checkBodyContent');
-            checkBodyContent(0); // GDPR
+            checkBodyContent(0);
         });
 };
 
@@ -2138,9 +2138,9 @@ var mainGC = function() {
             var cc2c_pos = ($('#uxLatLonLink')[0] ? $('#uxLatLonLink')[0] : $('#uxLatLon')[0])
             cc2c_pos.parentNode.insertBefore(span2, cc2c_pos);
 
-            function copyCoordinatesToClipboard(waitCount) { // GDPR
+            function copyCoordinatesToClipboard(waitCount) {
                 if ( typeof unsafeWindow.mapLatLng !== "undefined" && unsafeWindow.mapLatLng !== null &&
-                     (typeof unsafeWindow.mapLatLng.isUserDefined !== "undefined" || is_page("unpublished_cache")) ) { // GDPR
+                     (typeof unsafeWindow.mapLatLng.isUserDefined !== "undefined" || is_page("unpublished_cache")) ) {
                     $('#gclh_cc2c').removeClass('working');
                     $('#gclh_cc2c')[0].setAttribute('title', (determineListingCoords('Corr') !== "" ? "Copy Corrected Coordinates to Clipboard" : "Copy Coordinates to Clipboard"));
                     $('#gclh_cc2c')[0].addEventListener('click', function() {
@@ -2158,9 +2158,9 @@ var mainGC = function() {
                         animateClick($('#gclh_cc2c')[0]);
                         cc2c = false;
                     });
-                } else {waitCount++; if (waitCount <= 100) setTimeout(function(){copyCoordinatesToClipboard(waitCount);}, 100);} // GDPR
+                } else {waitCount++; if (waitCount <= 100) setTimeout(function(){copyCoordinatesToClipboard(waitCount);}, 100);}
             }
-            copyCoordinatesToClipboard(0); // GDPR
+            copyCoordinatesToClipboard(0);
         } catch(e) {gclh_error("Copy coordinates to clipboard:",e);}
     }
 
@@ -2406,8 +2406,8 @@ var mainGC = function() {
                     + ".CacheDetailNavigation .add_to_list_count {padding-left: 4px; color: inherit;}";
             appendCssStyle(css);
             $('.add-to-list').addClass('working');
-            function check_for_add_to_list(waitCount) { // GDPR
-                if ( typeof $('#fancybox-loading')[0] !== "undefined") { // GDPR
+            function check_for_add_to_list(waitCount) {
+                if ( typeof $('#fancybox-loading')[0] !== "undefined") {
                     $('.add-to-list').removeClass('working');
                     $('.add-to-list')[0].addEventListener("click", function() {
                         window.scroll(0, 0);
@@ -2420,7 +2420,7 @@ var mainGC = function() {
                         $('.add-to-list a')[0].setAttribute('title', ownBMLsText);
                         $('.add_to_list_count')[0].setAttribute('title', ownBMLsList);
                     }
-                } else {waitCount++; if (waitCount <= 100) setTimeout(function(){check_for_add_to_list(waitCount);}, 100);} // GDPR
+                } else {waitCount++; if (waitCount <= 100) setTimeout(function(){check_for_add_to_list(waitCount);}, 100);}
             }
             check_for_add_to_list(0);
         } catch(e) {gclh_error("Improve Add to list",e);}
@@ -2481,14 +2481,14 @@ var mainGC = function() {
         html += '  <a class="GClhdropbtn copydata_click copydata-sidebar-icon working" data-id="'+idCopyName+'">Copy data to Clipboard</a>';
         html += '</div>'
         $('.CacheDetailNavigation ul').first().append('<li>'+html+'</li>');
-        check_for_copydata_menu(0); // GDPR
+        check_for_copydata_menu(0);
     }
-    function check_for_copydata_menu(waitCount) { // GDPR
+    function check_for_copydata_menu(waitCount) {
         if ( typeof unsafeWindow.mapLatLng !== "undefined" && unsafeWindow.mapLatLng !== null &&
-             (typeof unsafeWindow.mapLatLng.isUserDefined !== "undefined" || is_page("unpublished_cache") )) { // GDPR
+             (typeof unsafeWindow.mapLatLng.isUserDefined !== "undefined" || is_page("unpublished_cache") )) {
             $('.copydata_click').removeClass('working');
             $('.copydata_head')[0].addEventListener('mouseover', create_copydata_menu_content);
-        } else {waitCount++; if (waitCount <= 100) setTimeout(function(){check_for_copydata_menu(waitCount);}, 100);} // GDPR
+        } else {waitCount++; if (waitCount <= 100) setTimeout(function(){check_for_copydata_menu(waitCount);}, 100);}
     }
     function create_copydata_menu_content() {
         if ($('#CopyDropDown.hover')[0]) return;
@@ -2681,17 +2681,17 @@ var mainGC = function() {
             tbl.next("p").append('<br>'+htmlWaypointTable);
         }
 
-        function check_wpdata_mapservice(waitCount, uniqueServiceId) { // GDPR
-            if (check_wpdata_evaluable()) { // GDPR
+        function check_wpdata_mapservice(waitCount, uniqueServiceId) {
+            if (check_wpdata_evaluable()) {
                 $('.mapservice_click-'+uniqueServiceId).removeClass('working');
                 var parent = $('.mapservice_click-'+uniqueServiceId)[0].parentNode;
                 $(parent).find('.GClhdropdown-content').removeClass('working');
                 $('.mapservice_click-'+uniqueServiceId).click(function() {
                     service_configuration.action( this, service_configuration );
                 });
-            } else {waitCount++; if (waitCount <= 100) setTimeout(function(){check_wpdata_mapservice(waitCount, uniqueServiceId);}, 100);} // GDPR
+            } else {waitCount++; if (waitCount <= 100) setTimeout(function(){check_wpdata_mapservice(waitCount, uniqueServiceId);}, 100);}
         }
-        check_wpdata_mapservice(0, uniqueServiceId); // GDPR
+        check_wpdata_mapservice(0, uniqueServiceId);
     }
 
     function mapservice_open( thisObject, service_configuration ) {
@@ -3016,8 +3016,8 @@ var mainGC = function() {
             $(".CacheDetailNavigation").after(html);
             $(".mapIcons svg").each(function(){$(this)[0].setAttribute("viewBox", "0 0 25 25");});
 
-            function build_map_overview(waitCount) { // GDPR
-                if (typeof lat !== "undefined" && typeof lng !== "undefined") { // GDPR
+            function build_map_overview(waitCount) {
+                if (typeof lat !== "undefined" && typeof lng !== "undefined") {
                     var previewMap = L.map('gclh_map_overview', {
                           dragging: true,
                           zoomControl: true,
@@ -3045,19 +3045,19 @@ var mainGC = function() {
                     // Länge der Kartenbezeichnung ... begrenzen.
                     $("#gclh_map_overview .leaflet-control-attribution").attr("style","max-width: 238px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;");
 
-                    function build_map_overview_marker(waitCount) { // GDPR
-                        if (typeof unsafeWindow.mapLatLng !== "undefined" && unsafeWindow.mapLatLng !== null) { // GDPR
+                    function build_map_overview_marker(waitCount) {
+                        if (typeof unsafeWindow.mapLatLng !== "undefined" && unsafeWindow.mapLatLng !== null) {
                             var marker = L.marker([lat, lng],{icon: L.icon({
                                 iconUrl: 'https://www.geocaching.com/images/wpttypes/pins/' + unsafeWindow.mapLatLng.type + '.png',
                                 iconSize: [20, 23],
                                 iconAnchor: [10, 23],
                             })}).addTo(previewMap);
-                        } else {waitCount++; if (waitCount <= 100) setTimeout(function(){build_map_overview_marker(waitCount);}, 100);} // GDPR
+                        } else {waitCount++; if (waitCount <= 100) setTimeout(function(){build_map_overview_marker(waitCount);}, 100);}
                     }
-                    build_map_overview_marker(0); // GDPR
-                } else {waitCount++; if (waitCount <= 100) setTimeout(function(){build_map_overview(waitCount);}, 100);} // GDPR
+                    build_map_overview_marker(0);
+                } else {waitCount++; if (waitCount <= 100) setTimeout(function(){build_map_overview(waitCount);}, 100);}
             }
-            build_map_overview(0); // GDPR
+            build_map_overview(0);
         } catch(e) {gclh_error("Build map overview",e);}
     }
 
@@ -3213,12 +3213,12 @@ var mainGC = function() {
 // Activate fancybox for pictures in the description.
     if (is_page("cache_listing")) {
         try {
-            function check_for_fancybox(waitCount) { // GDPR
-                if (typeof unsafeWindow.$ !== "undefined" && typeof unsafeWindow.$.fancybox !== "undefined") { // GDPR
+            function check_for_fancybox(waitCount) {
+                if (typeof unsafeWindow.$ !== "undefined" && typeof unsafeWindow.$.fancybox !== "undefined") {
                     unsafeWindow.$('.CachePageImages a[rel="lightbox"]').fancybox();
-                } else {waitCount++; if (waitCount <= 50) setTimeout(function(){check_for_fancybox(waitCount);}, 200);} // GDPR
+                } else {waitCount++; if (waitCount <= 50) setTimeout(function(){check_for_fancybox(waitCount);}, 200);}
             }
-            check_for_fancybox(0); // GDPR
+            check_for_fancybox(0);
         } catch(e) {gclh_error("Activate fancybox",e);}
     }
 
@@ -3663,13 +3663,13 @@ var mainGC = function() {
             }
 
             if (is_page("cache_listing")) {
-                function check_wpdata_elevation(waitCount) { // GDPR
-                    if (check_wpdata_evaluable()) { // GDPR
+                function check_wpdata_elevation(waitCount) {
+                    if (check_wpdata_evaluable()) {
                         var locations = prepareListingPageForElevations();
                         if ( locations.length > 0 ) getElevations(0,locations);
-                    } else {waitCount++; if (waitCount <= 100) setTimeout(function(){check_wpdata_elevation(waitCount);}, 100);} // GDPR
+                    } else {waitCount++; if (waitCount <= 100) setTimeout(function(){check_wpdata_elevation(waitCount);}, 100);}
                 }
-                check_wpdata_elevation(0); // GDPR
+                check_wpdata_elevation(0);
             }
         } catch(e) {gclh_error("Add elevation",e);}
     }
@@ -3733,8 +3733,8 @@ var mainGC = function() {
             var box = document.createElement("div");
             box.innerHTML = liste;
             box.setAttribute('id', 'gclh_head');
-            function buildSmiliesAndLogtemplates(waitCount, box) { // GDPR
-                if ($('#logTypeSelector')[0]) { // GDPR
+            function buildSmiliesAndLogtemplates(waitCount, box) {
+                if ($('#logTypeSelector')[0]) {
                     side = $('#logTypeSelector')[0];
                     side.append(box);
                     var css = "";
@@ -3747,9 +3747,9 @@ var mainGC = function() {
                     css += '.flatpickr-wrapper .icon {top: 22px !important;}';
                     css += '.flatpickr-calendar.arrowTop::before, .flatpickr-calendar.arrowTop::after {margin-left: 55px;}';
                     appendCssStyle(css);
-                } else {waitCount++; if (waitCount <= 100) setTimeout(function(){buildSmiliesAndLogtemplates(waitCount, box);}, 100);} // GDPR
+                } else {waitCount++; if (waitCount <= 100) setTimeout(function(){buildSmiliesAndLogtemplates(waitCount, box);}, 100);}
             }
-            buildSmiliesAndLogtemplates(0, box); // GDPR
+            buildSmiliesAndLogtemplates(0, box);
         } catch(e) {gclh_error("Smilies and Log Templates new log page",e);}
     }
     // Script für insert Smilie by click.
@@ -4448,12 +4448,12 @@ var mainGC = function() {
         try {
             var css = "";
             // Number of Active Pocket Queries.
-            function numberOfActivePQs(waitCount) { // GDPR
-                if ($('#ui-id-1')[0]) { // GDPR
+            function numberOfActivePQs(waitCount) {
+                if ($('#ui-id-1')[0]) {
                     $('#ui-id-1').append("&nbsp;<span title='Number of Active Pocket Queries'>("+$('#pqRepeater tbody tr:not(.TableFooter)').length+")</span>");
-                } else {waitCount++; if (waitCount <= 100) setTimeout(function(){numberOfActivePQs(waitCount);}, 100);} // GDPR
+                } else {waitCount++; if (waitCount <= 100) setTimeout(function(){numberOfActivePQs(waitCount);}, 100);}
             }
-            numberOfActivePQs(0); // GDPR
+            numberOfActivePQs(0);
             // Compact layout.
             if (settings_compact_layout_list_of_pqs) {
                 function lastGen(elem) {
@@ -4544,8 +4544,8 @@ var mainGC = function() {
                 // Show both tabs (Active and Downloadable) of list of pqs on one page.
                 if ($('#ActivePQs')[0] && $('#DownloadablePQs')[0]) {
                     if (settings_both_tabs_list_of_pqs_one_page) {
-                        function showBothTabsOnOnePage(waitCount) { // GDPR
-                            if ($('#ui-id-1')[0] && $('#ui-id-2')[0]) { // GDPR
+                        function showBothTabsOnOnePage(waitCount) {
+                            if ($('#ui-id-1')[0] && $('#ui-id-2')[0]) {
                                 $('#ActivePQs, #DownloadablePQs').attr('aria-hidden', 'false');
                                 $('#ActivePQs, #DownloadablePQs').each(function() {
                                     this.style.display = 'block';
@@ -4555,9 +4555,9 @@ var mainGC = function() {
                                 $('#ActivePQs')[0].children[0].innerHTML = $('#ui-id-1')[0].innerHTML + $('#ActivePQs')[0].children[0].innerHTML;
                                 $('#DownloadablePQs')[0].children[0].innerHTML = $('#ui-id-2')[0].innerHTML + $('#DownloadablePQs')[0].children[0].innerHTML;
                                 $('ul.ui-tabs-nav')[0].remove();
-                            } else {waitCount++; if (waitCount <= 100) setTimeout(function(){showBothTabsOnOnePage(waitCount);}, 100);} // GDPR
+                            } else {waitCount++; if (waitCount <= 100) setTimeout(function(){showBothTabsOnOnePage(waitCount);}, 100);}
                         }
-                        showBothTabsOnOnePage(0); // GDPR
+                        showBothTabsOnOnePage(0);
                     } else {
                         if ($('#ActivePQs').attr('aria-hidden') == 'true') $('#ActivePQs')[0].style.display = 'none';
                         if ($('#DownloadablePQs').attr('aria-hidden') == 'true') $('#DownloadablePQs')[0].style.display = 'none';
@@ -7232,8 +7232,8 @@ var mainGC = function() {
             $('body')[0].appendChild(new_tmpl_block);
 
             // Override standard templates.
-            function override_standard_templates(waitCount) { // GDPR
-                if (typeof unsafeWindow.$ !== "undefined" && // GDPR
+            function override_standard_templates(waitCount) {
+                if (typeof unsafeWindow.$ !== "undefined" &&
                     typeof unsafeWindow.$("#tmpl_CacheLogRow").template !== "undefined" &&
                     typeof unsafeWindow.initialLogs !== "undefined" &&
                     unsafeWindow.initialLogs !== null &&
@@ -7266,9 +7266,9 @@ var mainGC = function() {
                         setLinesColorInCacheListing();
                         unsafeWindow.$("#cache_logs_container").addClass('gclh_override_standard_templates_done');
                     }, 0);
-                } else {waitCount++; if (waitCount <= 100) setTimeout(function(){override_standard_templates(waitCount);}, 100);} // GDPR
+                } else {waitCount++; if (waitCount <= 100) setTimeout(function(){override_standard_templates(waitCount);}, 100);}
             }
-            override_standard_templates(0); // GDPR
+            override_standard_templates(0);
 
             if (settings_hide_found_count){
                 var css = "#cache_logs_container .logOwnerStats"
@@ -7713,7 +7713,7 @@ var mainGC = function() {
                                     gclh_load_helper(curIdx);
                                 }
                             }
-                            if (requestCount <= 0) gclh_load_dataHelper(0); // GDPR
+                            if (requestCount <= 0) gclh_load_dataHelper(0);
                         }
                     });
                 }
@@ -7748,8 +7748,8 @@ var mainGC = function() {
                     });
                 }
 
-                function gclh_load_dataHelper(waitCount) { // GDPR
-                    if (typeof unsafeWindow.$ !== "undefined" && $('.gclh_override_standard_templates_done')[0]) { // GDPR
+                function gclh_load_dataHelper(waitCount) {
+                    if (typeof unsafeWindow.$ !== "undefined" && $('.gclh_override_standard_templates_done')[0]) {
                         logs = new Array();
                         // Disable scroll Function on Page.
                         if (browser === "chrome" || browser === "firefox") injectPageScriptFunction(disablePageAutoScroll, "()");
@@ -7831,7 +7831,7 @@ var mainGC = function() {
                         }
                         setLinesColorInCacheListing();
 
-                        // Remove GC logs, so that the links to the log ids, e.g. from the VIPs or the Latest logs, work again. // GDPR
+                        // Remove GC logs, so that the links to the log ids, e.g. from the VIPs or the Latest logs, work again.
                         // (Apparently GS simply creates the 25 logs again when they are gone. And that in the form <table> <tr>, there is
                         // no <tbody>. There was earlier an error in the Release Notes that no logs are shown.)
                         function removeGCLogs(waitCount) {
@@ -7841,7 +7841,7 @@ var mainGC = function() {
                             waitCount++; if (waitCount <= 100) setTimeout(function(){removeGCLogs(waitCount);}, 100);
                         }
                         removeGCLogs(0)
-                    } else {waitCount++; if (waitCount <= 100) setTimeout(function(){gclh_load_dataHelper(waitCount);}, 100);} // GDPR
+                    } else {waitCount++; if (waitCount <= 100) setTimeout(function(){gclh_load_dataHelper(waitCount);}, 100);}
                 }
                 gclh_load_helper(1);
             }
@@ -8647,13 +8647,13 @@ var mainGC = function() {
                     if (settings_imgcaption_on_top) newImTpl = newImTpl.replace('#top#', '${Name}').replace('#bot#', '');
                     else  newImTpl = newImTpl.replace('#top#', '').replace('#bot#', '${Name}');
 
-                    var code = "function gclh_updateTmpl(waitCount) {" // GDPR
-                             + "    if (typeof $ !== 'undefined' && typeof $.template !== 'undefined') {" // GDPR
+                    var code = "function gclh_updateTmpl(waitCount) {"
+                             + "    if (typeof $ !== 'undefined' && typeof $.template !== 'undefined') {"
                              + "        delete $.template['tmplCacheLogImages'];"
                              + "        $.template(\"tmplCacheLogImages\",\""+newImTpl+"\");"
-                             + "    } else {waitCount++; if (waitCount <= 50) setTimeout(function(){gclh_updateTmpl(waitCount);}, 200);}" // GDPR
+                             + "    } else {waitCount++; if (waitCount <= 50) setTimeout(function(){gclh_updateTmpl(waitCount);}, 200);}"
                              + "}"
-                             + "gclh_updateTmpl(0);" // GDPR
+                             + "gclh_updateTmpl(0);"
                              + placeToolTip.toString();
                     injectPageScript(code, "body");
                 }
@@ -12302,13 +12302,13 @@ var mainGC = function() {
         } catch(e) {gclh_error("Determine waypoints",e);}
         return waypoints;
     }
-    function check_wpdata_evaluable() { // GDPR
+    function check_wpdata_evaluable() {
         if ( typeof unsafeWindow.mapLatLng !== "undefined" && unsafeWindow.mapLatLng !== null &&
              typeof unsafeWindow.mapLatLng.name !== "undefined" &&
              typeof unsafeWindow.mapLatLng.type !== "undefined" &&
              typeof unsafeWindow.mapLatLng.lat !== "undefined" &&
              typeof unsafeWindow.mapLatLng.lng !== "undefined" &&
-             (typeof unsafeWindow.mapLatLng.isUserDefined !== "undefined" || is_page("unpublished_cache"))) { // GDPR
+             (typeof unsafeWindow.mapLatLng.isUserDefined !== "undefined" || is_page("unpublished_cache"))) {
             return true;
         } else return false;
     }
