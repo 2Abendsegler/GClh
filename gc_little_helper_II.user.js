@@ -636,7 +636,9 @@ var variablesInit = function(c) {
     c.settings_listing_old_links = getValue("settings_listing_old_links", false);
     c.settings_searchmap_show_btn_save_as_pq = getValue("settings_searchmap_show_btn_save_as_pq", true);
     c.settings_map_overview_browse_map_icon = getValue("settings_map_overview_browse_map_icon", true);
+    c.settings_map_overview_browse_map_icon_new_tab = getValue("settings_map_overview_browse_map_icon_new_tab", false);
     c.settings_map_overview_search_map_icon = getValue("settings_map_overview_search_map_icon", true);
+    c.settings_map_overview_search_map_icon_new_tab = getValue("settings_map_overview_search_map_icon_new_tab", false);
     c.settings_cache_notes_min_size = getValue("settings_cache_notes_min_size", 54);
     c.settings_show_link_to_browse_map = getValue("settings_show_link_to_browse_map", false);
     c.settings_show_hide_upvotes_but = getValue("settings_show_hide_upvotes_but", false);
@@ -3002,10 +3004,10 @@ var mainGC = function() {
             if (settings_map_overview_search_map_icon || settings_map_overview_browse_map_icon) {
                 html += "<span class='mapIcons'>";
                 if (settings_map_overview_search_map_icon) {
-                    html += "<a href='" + new_map_url + "?lat=" + lat + "&lng=" + lng + "' title='Search Map'>" + search_map_icon + "</a>";
+                    html += "<a href='" + new_map_url + "?lat=" + lat + "&lng=" + lng + "' title='Search Map' " + (settings_map_overview_search_map_icon_new_tab ? "target='_blank'":"") + ">" + search_map_icon + "</a>";
                 }
                 if (settings_map_overview_browse_map_icon) {
-                    html += "<a href='" + map_url + "?lat=" + lat + "&lng=" + lng + "' title='Browse Map'>" + browse_map_icon + "</a>";
+                    html += "<a href='" + map_url + "?lat=" + lat + "&lng=" + lng + "' title='Browse Map' " + (settings_map_overview_browse_map_icon_new_tab ? "target='_blank'":"") + ">" + browse_map_icon + "</a>";
                 }
                 html += "</span>'>";
             }
@@ -13587,9 +13589,9 @@ var mainGC = function() {
             var content_settings_process_vup = "The VUPs (Very Unimportant Persons) feature consist of<br>- the user related icon on numerous pages,<br>- the restrict display of content from this user in the cache and event listings and<br>- the VUP list in the dashboard.<br><br>You can add any user on numerous pages to your VUP list by clicking the little VUP icon beside the user. If it is red, this person is a VUP.<br><br>In the logs of VUPs in the cache and event listings will only shown \"censored\" instead of the log text.<br><br>On your dashboard page there is an overview of all your VUPs.";
             html += "&nbsp; " + checkboxy('settings_process_vup', 'Process VUPs') + show_help_big(content_settings_process_vup + "<br><br>You can adjust details about this feature in the Listing and Dashboard topics.<br><br>" + t_reqSVl) + "<br>";
             html += checkboxy('settings_show_mail', 'Show mail link beside user') + show_help("With this option there will be an small mail icon beside every user on numerous pages. With this icon you get directly to the mail form to mail to this user. If you click it for example when you are in a listing, the cachename or GC code can be inserted into the mail form about placeholders in the mail / message form template.") + "<br>";
-            html += "&nbsp; " + checkboxy('settings_mail_icon_new_win', 'Open mail form in new tab') + "<br>";
+            html += "&nbsp; " + checkboxy('settings_mail_icon_new_win', 'Open mail form in new browser tab') + "<br>";
             html += checkboxy('settings_show_message', 'Show message link beside user') + show_help("With this option there will be an small message icon beside every user on numerous pages. With this icon you get directly to the message form to send a message to this user. If you click it for example when you are in a listing, the cachename or GC code can be inserted into the message form about placeholders in the mail / message form template.") + "<br>";
-            html += "&nbsp; " + checkboxy('settings_message_icon_new_win', 'Open message form in new tab') + "<br>";
+            html += "&nbsp; " + checkboxy('settings_message_icon_new_win', 'Open message form in new browser tab') + "<br>";
 
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>Hidding</b>" + "</div>";
             html += checkboxy('settings_hide_advert_link', 'Hide link to advertisement instructions') + "<br>";
@@ -13972,7 +13974,7 @@ var mainGC = function() {
             html += checkboxy('settings_show_default_links', 'Show all default links on your dashboard') + show_help("Show all the default links for the Linklist sorted at the sidebar on your dashboard.") + "<br>";
             html += checkboxy('settings_show_tb_inv', 'Show trackables inventory on your dashboard') + show_help("With this option a maximum of ten trackables of your trackables inventory is shown on your new dashboard. (On old dashboard it is GC standard to show it.)") + "<br>";
             html += checkboxy('settings_but_search_map', 'Show buttons "Search" and "Map" on your dashboard') + "<br>";
-            html += " &nbsp; " + checkboxy('settings_but_search_map_new_tab', 'Open links in new tab') + "<br>";
+            html += " &nbsp; " + checkboxy('settings_but_search_map_new_tab', 'Open links in new browser tab') + "<br>";
             html += checkboxy('settings_compact_layout_new_dashboard', 'Show compact layout on your dashboard') + "<br>";
             html += checkboxy('settings_embedded_smartlink_ignorelist', 'Show link to Ignore List in sidebar section Lists') + show_help("Embedded a link in the section Lists to your Ignore List into the sidebar of the new dashboard.") + "<br>";
             html += newParameterVersionSetzen(0.9) + newParameterOff;
@@ -14139,7 +14141,9 @@ var mainGC = function() {
             html += newParameterVersionSetzen(0.9) + newParameterOff;
             html += newParameterOn2;
             html += "&nbsp; " + checkboxy('settings_map_overview_browse_map_icon', 'Show icon with link to old map in overview map') + "<br>";
+            html += " &nbsp; &nbsp; " + checkboxy('settings_map_overview_browse_map_icon_new_tab', 'Open link in new browser tab') + "<br>";
             html += "&nbsp; " + checkboxy('settings_map_overview_search_map_icon', 'Show icon with link to new map in overview map') + "<br>";
+            html += " &nbsp; &nbsp; " + checkboxy('settings_map_overview_search_map_icon_new_tab', 'Open link in new browser tab') + "<br>";
             html += newParameterVersionSetzen('0.11') + newParameterOff;
 
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>VIP-Lists (right sidebar)</b>" + "</div>";
@@ -14983,6 +14987,8 @@ var mainGC = function() {
             setEvForDepPara("settings_lists_show_dd","settings_lists_upload_file");
             setEvForDepPara("settings_lists_show_dd","settings_lists_open_tabs");
             setEvForDepPara("settings_autovisit","settings_autovisit_default");
+            setEvForDepPara("settings_map_overview_browse_map_icon", "settings_map_overview_browse_map_icon_new_tab");
+            setEvForDepPara("settings_map_overview_search_map_icon", "settings_map_overview_search_map_icon_new_tab");
 
             // Abhängigkeiten der Linklist Parameter.
             for (var i = 0; i < 100; i++) {
@@ -15424,6 +15430,8 @@ var mainGC = function() {
                 'settings_no_wiggle_upvotes_click',
                 'settings_show_country_in_place',
                 'settings_test_log_console',
+                'settings_map_overview_browse_map_icon_new_tab',
+                'settings_map_overview_search_map_icon_new_tab',
             );
             for (var i = 0; i < checkboxes.length; i++) {
                 if (document.getElementById(checkboxes[i])) setValue(checkboxes[i], document.getElementById(checkboxes[i]).checked);
