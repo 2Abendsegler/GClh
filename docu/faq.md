@@ -74,7 +74,7 @@ If the GClh does not start, these are usually matching problems between the brow
 				Use the Android device in landscape format.<br>
 			</li>
 			<li>
-				Mark the geocaching page via the settings in the browser as "desktop page".<br>
+				Mark the geocaching page via the settings in the browser as "Desktop Page".<br>
 			</li>
 		</ul>
 		<br>
@@ -98,7 +98,7 @@ If the GClh does not start, these are usually matching problems between the brow
 				Icons on map: The icon "Go to Map" can not be selected in the map. All other icons in the map work.<br>
 			</li>
 			<li>
-				Preview pictures (thumbnails) in Listings and Galleries: They work by touching, but at the same time touching also activates the normal display of the large picture. The <a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_show_thumbnailsX0" title="Link to your GClh Config">preview of the pictures</a> should be deactivated.<br>
+				Preview pictures (thumbnails) in listings and galleries: They work by touching, but at the same time touching also activates the normal display of the large picture. The <a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_show_thumbnailsX0" title="Link to your GClh Config">preview of the pictures</a> should be deactivated.<br>
 				<br/>
 			</li>
 		</ul>
@@ -108,7 +108,7 @@ If the GClh does not start, these are usually matching problems between the brow
 		<br/>
 	</li>
 	<li>
-		Linklist and usual menu are not always visible. It is then hidden at the top right in a side menu, for example on the pages Dashboard, Geocache Search or Map. If you activate "Desktop Page" in the browser, the Linklist and the menu are displayed as usual.<br>
+		Linklist and usual menu are not always visible. It is then hidden at the top right in a side menu, for example on the pages dashboard, geocache search or map. If you activate "Desktop Page" in the browser, the Linklist and the menu are displayed as usual.<br>
 		<br/>
 	</li>
 	<li>
@@ -138,7 +138,7 @@ If the GClh does not start, these are usually matching problems between the brow
 		Or you can use the corresponding link on your <a href="https://www.geocaching.com/account/dashboard">dashboard</a> below your user name.
 	</li>
 	<li>
-		Or you can select the corresponding link in the menu of your script manager (Tampermonkey) in your browser.<br>
+		Or you can select the corresponding link in the menu of your script manager in your browser.<br>
 		It looks something like this:<br>
 		<img src="../images/scriptmanager_menue_with_config.jpg" alt="scriptmanager_menue_with_config.jpg"><br>
 	</li>
@@ -304,7 +304,7 @@ Abhilfe:<br>
 		Oder du kannst den entsprechenden Link in deinem <a href="https://www.geocaching.com/account/dashboard">Dashboard</a> unterhalb deines Benutzernamens verwenden.
 	</li>
 	<li>
-		Oder du kannst in deinem Browser im Menü deines Scriptmanagers (Tampermonkey) den entsprechenden Link auswählen.<br>
+		Oder du kannst in deinem Browser im Menü deines Scriptmanagers den entsprechenden Link auswählen.<br>
 		Das sieht dann etwa wie folgt aus:<br>
 		<img src="../images/scriptmanager_menue_with_config.jpg" alt="scriptmanager_menue_with_config.jpg"><br>
 	</li>
