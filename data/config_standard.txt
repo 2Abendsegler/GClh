@@ -1,5 +1,4 @@
 {
-  "settings_console": false,
   "settings_submit_log_button": true,
   "settings_log_inline": false,
   "settings_log_inline_tb": false,
