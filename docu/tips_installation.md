@@ -58,7 +58,7 @@ Process the following instructions on your Android device:<br><br>
 * Installiere das Script [GC little helper II](https://github.com/2Abendsegler/GClh/raw/master/gc_little_helper_II.user.js) unter dem Scriptmanager.<br>
 
 ### <a id="edge_de"></a><img src="/images/microsoft_edge_logo_small.png" title="Microsoft Edge" alt="Microsoft Edge"> Microsoft Edge:
-* Installiere den Scriptmanager [Tampermonkey](https://www.microsoft.com/en-us/store/p/tampermonkey/9nblggh5162s) als Add-On in Edge.<br>
+* Installiere den Scriptmanager [Tampermonkey](https://www.microsoft.com/en-us/store/p/tampermonkey/9nblggh5162s) oder [Violentmonkey](https://microsoftedge.microsoft.com/addons/detail/eeagobfjdenkkddmbclomhiblgggliao) als Add-On in Edge.<br>
 * Installiere das Script [GC little helper II](https://github.com/2Abendsegler/GClh/raw/master/gc_little_helper_II.user.js) unter dem Scriptmanager.<br>
 
 ### <a id="vivaldi_de"></a><img src="/images/vivaldi_logo_small.png" title="Vivaldi" alt="Vivaldi"> Vivaldi:
