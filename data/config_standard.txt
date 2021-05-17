@@ -1,5 +1,4 @@
 {
-  "settings_console": false,
   "settings_submit_log_button": true,
   "settings_log_inline": false,
   "settings_log_inline_tb": false,
@@ -303,7 +302,9 @@
   "settings_profile_old_links": false,
   "settings_listing_old_links": false,
   "settings_map_overview_browse_map_icon": true,
+  "settings_map_overview_browse_map_icon_new_tab": false,
   "settings_map_overview_search_map_icon": true,
+  "settings_map_overview_search_map_icon_new_tab": false,
   "settings_cache_notes_min_size": 54,
   "settings_show_link_to_browse_map": false,
   "settings_show_hide_upvotes_but": false,

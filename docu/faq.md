@@ -18,16 +18,16 @@
 <a id="1-en"></a>
 ## 1. What can I do if the Warning is displayed "GClh is running more than once"?
 *GC little helper II* is only working correctly, if it's just running once at a time. Because of that, the script itself checks if it's the only GClh running.<br>
-If this warning is displayed, it is mostly true. So you can check some points:<br>
+If this warning is displayed, it is true. So you can check some points:<br>
 <ol>
 	<li>
-		Please check if you have more than one Scriptmanger (i.e. Tampermonkey and Greasemonkey) installed. Maybe GClh is installed in both of the Scriptmanager. In this case you just have to uninstall GClh in one of this Scriptmanagers. Since we only support Tampermonkey, you should uninstall it in Greasemonkey.<br>
+		Please check if you have more than one script manger (i.e. Tampermonkey and Violentmonkey) installed. The GClh may be installed in more than one script manager. If so, uninstall all but one instance of the GClh and the problem should be resolved.<br>
 	</li>
 	<li>
-		Maybe GClh is installed more than once in your Scriptmanger. You can check this for example in Tampermonkey by viewing the Scriptoverview. If this is the case, just uninstall all but one instance of GClh.<br>
+		Maybe the GClh is installed more than once in a single script manager. You can check this by viewing the script overview. If so, uninstall all but one instance of the GClh and the problem should be resolved.<br>
 	</li>
 </ol>
-If you still get the warning, please leave a bugreport <a href="https://github.com/2Abendsegler/GClh/issues">here</a> and we will try to assist you.<br>
+If you still get the warning, please leave a bug report <a href="https://github.com/2Abendsegler/GClh/issues">here</a> and we will try to assist you.<br>
 <br>
 
 <a id="2-en"></a>
@@ -37,7 +37,7 @@ If you have problems to drag & drop the lower links because the Linklist area is
 
 <a id="3-en"></a>
 ## 3. GClh doesn't start.
-If a script does not start, these are usually matching problems between the browser and the script manager Tampermonkey. These problems mainly occur when a tab in a browser passes beyond a session. This can be caused by the user by leaving tabs in the browser, for example, when hibernating. It can also be caused by the browser, for example, when restoring tabs after a cancellation.<br>
+If the GClh does not start, these are usually matching problems between the browser and the script manager. These problems mainly occur when a tab in a browser passes beyond a session. This can be caused by the user by leaving tabs in the browser, for example when hibernating. It can also be caused by the browser, for example when restoring tabs after a cancellation.<br>
 
 *Resolve problems:* Problems can be resolved depending on the situation regularly with one of the following points.<br>
 <ul>
@@ -48,7 +48,7 @@ If a script does not start, these are usually matching problems between the brow
 		Close tabs in browser, close browser, start browser, re-select tabs.<br>
 	</li>
 	<li>
-		Deactivate the script manager Tampermonkey and reactivate it after a few seconds (unless you have deactivated "Automatic page reload" in Tampermonkey).<br>
+		Deactivate the script manager and reactivate it after a few seconds (unless you have deactivated "Automatic page reload").<br>
 	</li>
 </ul>
 
@@ -74,7 +74,7 @@ If a script does not start, these are usually matching problems between the brow
 				Use the Android device in landscape format.<br>
 			</li>
 			<li>
-				Mark the geocaching page via the settings in the browser as "desktop page".<br>
+				Mark the geocaching page via the settings in the browser as "Desktop Page".<br>
 			</li>
 		</ul>
 		<br>
@@ -98,7 +98,7 @@ If a script does not start, these are usually matching problems between the brow
 				Icons on map: The icon "Go to Map" can not be selected in the map. All other icons in the map work.<br>
 			</li>
 			<li>
-				Preview pictures (thumbnails) in Listings and Galleries: They work by touching, but at the same time touching also activates the normal display of the large picture. The <a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_show_thumbnailsX0" title="Link to your GClh Config">preview of the pictures</a> should be deactivated.<br>
+				Preview pictures (thumbnails) in listings and galleries: They work by touching, but at the same time touching also activates the normal display of the large picture. The <a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_show_thumbnailsX0" title="Link to your GClh Config">preview of the pictures</a> should be deactivated.<br>
 				<br/>
 			</li>
 		</ul>
@@ -108,7 +108,7 @@ If a script does not start, these are usually matching problems between the brow
 		<br/>
 	</li>
 	<li>
-		Linklist and usual menu are not always visible. It is then hidden at the top right in a side menu, for example on the pages Dashboard, Geocache Search or Map. If you activate "Desktop Page" in the browser, the Linklist and the menu are displayed as usual.<br>
+		Linklist and usual menu are not always visible. It is then hidden at the top right in a side menu, for example on the pages dashboard, geocache search or map. If you activate "Desktop Page" in the browser, the Linklist and the menu are displayed as usual.<br>
 		<br/>
 	</li>
 	<li>
@@ -138,7 +138,7 @@ If a script does not start, these are usually matching problems between the brow
 		Or you can use the corresponding link on your <a href="https://www.geocaching.com/account/dashboard">dashboard</a> below your user name.
 	</li>
 	<li>
-		Or you can select the corresponding link in the menu of your script manager (Tampermonkey) in your browser.<br>
+		Or you can select the corresponding link in the menu of your script manager in your browser.<br>
 		It looks something like this:<br>
 		<img src="../images/scriptmanager_menue_with_config.jpg" alt="scriptmanager_menue_with_config.jpg"><br>
 	</li>
@@ -152,7 +152,7 @@ See <a href="../docu/tips_installation.md#android_en" title="Link to 'Tips for t
 
 <a id="7-en"></a>
 ## 7. How can I contribute to GClh?
-We are happy about improvement suggestions, bugfixes or new features. This is realized via pull requests. You can read how to create a Pull-Request here: <a href="https://github.com/2Abendsegler/GClh/blob/master/docu/how_to_contribute.md#en">How to contribute</a><br>
+We are happy about improvement suggestions, bugfixes or new features. This is realised via pull requests. You can read how to create a Pull-Request here: <a href="https://github.com/2Abendsegler/GClh/blob/master/docu/how_to_contribute.md#en">How to contribute</a><br>
 <br>
 
 <a id="8-en"></a>
@@ -184,13 +184,13 @@ Or you can create a note in one of the forums. See <a href="#8-en">FAQ 8</a>.<br
 <a id="1-de"></a>
 ## 1. Was kann ich tun wenn die Warnung angezeigt wird, dass GClh mehr als einmal läuft?
 *GC little helper II* funktioniert nur richtig, wenn es nur einmal im Browser ausgeführt wird. Deshalb prüft das Script selbst, ob dies der Fall ist.<br>
-Wenn die Meldung angezeigt wird, dass GClh mehr als einmal läuft, dann ist das auch meist der Fall. Daher sollten folgende Sachen geprüft werden:<br>
+Wenn die Meldung angezeigt wird, dass der GClh mehr als einmal läuft, dann ist das auch der Fall. In diesen Fällen sollte folgendes überprüft werden:<br>
 <ol>
 	<li>
-		Bitte prüfe, ob mehr als ein Scriptmanager installiert ist (zum Beispiel neben Tampermonkey auch noch Greasemonkey). Wahrscheinlich ist GClh in beiden Scriptmanagern installiert. GClh muss in diesem Fall in einem der Scriptmanager deinstalliert werden. Da wir nur Tampermonkey unterstützen, deinstalliere GClh bitte in allen anderen Scriptmanagern.<br>
+		Bitte prüfe, ob mehr als ein Scriptmanager installiert ist (zum Beispiel neben Tampermonkey auch noch Violentmonkey). Womöglich ist der GClh in mehr als einem Scriptmanager installiert. Wenn das der Fall ist, dann deinstalliere alle Versionen bis auf eine und das Problem sollte behoben sein.<br>
 	</li>
 	<li>
-		Eventuell ist GClh mehr als einmal installiert. Dies kann zum Beispiel bei Tampermonkey in der Scritpübersicht geprüft werden. Wenn dies der Fall ist, dann deinstalliere alle Versionen bis auf eine und das Problem sollte behoben sein.<br>
+		Eventuell ist der GClh mehr als einmal in einem einzigen Scriptmanager installiert. Das kann in der Scriptübersicht geprüft werden. Wenn das der Fall ist, dann deinstalliere alle Versionen bis auf eine und das Problem sollte behoben sein.<br>
 	</li>
 </ol>
 Sollte die Warnung dann immer noch auftauchen, dann erstelle bitte <a href="https://github.com/2Abendsegler/GClh/issues">hier</a> einen Bugreport und wir werden versuchen dir zu helfen.<br>
@@ -203,7 +203,7 @@ Wenn du Probleme mit dem Drag & Drop hast beim Hinzufügen neuer Links zur Linkl
 
 <a id="3-de"></a>
 ## 3. GClh startet nicht.
-Startet ein Script nicht, so handelt es sich in der Regel um Abstimmungsprobleme zwischen dem Browser und dem Script-Manager Tampermonkey. Diese Probleme treten hauptsächlich dann auf, wenn ein Tab in einem Browser über eine Session hinaus besteht. Das kann durch den User veranlaßt sein indem er Tabs im Browser beispielsweise im Ruhezustand bestehen läßt. Es kann aber auch durch den Browser veranlaßt sein beispielweise bei einer Wiederherstellung von Tabs nach einem Abbruch.<br>
+Startet der GClh nicht, so handelt es sich in der Regel um Abstimmungsprobleme zwischen dem Browser und dem Scriptmanager. Diese Probleme treten hauptsächlich dann auf, wenn ein Tab in einem Browser über eine Session hinaus besteht. Das kann durch den User veranlaßt sein indem er Tabs im Browser beispielsweise im Ruhezustand bestehen läßt. Es kann aber auch durch den Browser veranlaßt sein beispielweise bei einer Wiederherstellung von Tabs nach einem Abbruch.<br>
 
 *Probleme beheben:* Probleme können je nach Sachlage regelmäßig mit einem der folgenden Punkte behoben werden.<br>
 <ul>
@@ -214,7 +214,7 @@ Startet ein Script nicht, so handelt es sich in der Regel um Abstimmungsprobleme
 		Tabs im Browser schließen, Browser schließen, Browser starten, Tabs neu anwählen.<br>
 	</li>
 	<li>
-		Script-Manager Tampermonkey deaktivieren und nach einigen Sekunden wieder aktivieren (sofern man "Automatisches Seiten-Neu-Laden" in Tampermonkey nicht deaktiviert hat).<br>
+		Scriptmanager deaktivieren und nach einigen Sekunden wieder aktivieren (sofern man "Automatisches Seiten-Neu-Laden" icht deaktiviert hat).<br>
 	</li>
 </ul>
 
@@ -304,7 +304,7 @@ Abhilfe:<br>
 		Oder du kannst den entsprechenden Link in deinem <a href="https://www.geocaching.com/account/dashboard">Dashboard</a> unterhalb deines Benutzernamens verwenden.
 	</li>
 	<li>
-		Oder du kannst in deinem Browser im Menü deines Scriptmanagers (Tampermonkey) den entsprechenden Link auswählen.<br>
+		Oder du kannst in deinem Browser im Menü deines Scriptmanagers den entsprechenden Link auswählen.<br>
 		Das sieht dann etwa wie folgt aus:<br>
 		<img src="../images/scriptmanager_menue_with_config.jpg" alt="scriptmanager_menue_with_config.jpg"><br>
 	</li>
