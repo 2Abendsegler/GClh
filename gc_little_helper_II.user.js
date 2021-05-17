@@ -12173,7 +12173,7 @@ var mainGC = function() {
             settings_show_link_to_browse_map = true;
             setValue("migration_task_05", true);
         }
-        // Migrate: Delete old parameter (zu v0.11.2).
+        // Migrate: Delete old parameter (zu v0.11.3).
         if (getValue("migration_task_06", false) != true) {
             GM_deleteValue('isTampermonkey');
             GM_deleteValue('urlLogs');
