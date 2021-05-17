@@ -11664,7 +11664,7 @@ var mainGC = function() {
     }
 
 // Improve view log and edit log page.
-    if (document.location.href.match(/\.com\/(seek\/log\.aspx\?code=|track\/log\.aspx\?LUID=|track\/log\.aspx\?LogReferenceCode)/)) {
+    if (document.location.href.match(/\.com\/(seek|track)\/log\.aspx\?/)) {
         // Improve alignment of icons.
         appendCssStyle('.logPanel h3 img {vertical-align: baseline;}');
     }
