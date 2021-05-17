@@ -2,7 +2,7 @@
 // @name             GC little helper II
 // @namespace        http://www.amshove.net
 //--> $$000
-// @version          0.11.1
+// @version          0.11.2
 //<-- $$000
 // @include          https://www.geocaching.com/*
 // @include          https://maps.google.tld/*
@@ -2551,75 +2551,67 @@ var mainGC = function() {
     }
     function copydata_copy(thisObject, plus) {
         const el = document.createElement('textarea');
-        switch ($(thisObject).data('id')) {
-            case idCopyName:
-                el.value = $('#ctl00_ContentBody_CacheName')[0].innerHTML.replace(new RegExp('&nbsp;', 'g'),' ');
-                break;
-            case idCopyCode:
-                el.value = $('#ctl00_ContentBody_CoordInfoLinkControl1_uxCoordInfoCode')[0].innerHTML;
-                break;
-            case idCopyUrl:
-                el.value = "https://coord.info/"+$('#ctl00_ContentBody_CoordInfoLinkControl1_uxCoordInfoCode')[0].innerHTML;
-                break;
-            case idCopyCorrCoords:
-                el.value = determineListingCoords('Corr');
-                break;
-            case idCopyOrgCoords:
-                el.value = determineListingCoords('Org');
-                break;
-            case idCopyGCTourCoords:
-                el.value = determineListingCoords('GCTour');
-                break;
-            case 'idOwnStuff':
-                if ($(thisObject).data('value')) {
-                    el.value = $(thisObject).data('value');
-                    var [year, month, day] = determineCurrentDate();
-                    el.value = el.value.replace(/#yyyy#/ig, year);
-                    el.value = el.value.replace(/#mm#/ig, month);
-                    el.value = el.value.replace(/#dd#/ig, day);
-                    var [aDate, aTime, aDateTime] = getDateTime();
-                    el.value = el.value.replace(/#Date#/ig, aDate);
-                    el.value = el.value.replace(/#Time#/ig, aTime);
-                    el.value = el.value.replace(/#DateTime#/ig, aDateTime);
-                    var GCName = $('#ctl00_ContentBody_CacheName')[0].innerHTML.replace(new RegExp('&nbsp;', 'g'),' ');
-                    var GCCode = $('#ctl00_ContentBody_CoordInfoLinkControl1_uxCoordInfoCode')[0].innerHTML;
-                    var GCLink = "https://coord.info/"+$('#ctl00_ContentBody_CoordInfoLinkControl1_uxCoordInfoCode')[0].innerHTML;
-                    el.value = el.value.replace(/#GCName#/ig, GCName);
-                    el.value = el.value.replace(/#GCCode#/ig, GCCode);
-                    el.value = el.value.replace(/#GCLink#/ig, GCLink);
-                    el.value = el.value.replace(/#GCNameLink#/ig, "[" + GCName + "](" + GCLink + ")");
-                    el.value = el.value.replace(/#GCType#/ig, ($('.cacheImage')[0] ? $('.cacheImage').attr('title').replace(/(\sgeocache|\scache|-cache|\shybrid)/i,'') : ''))
-                    el.value = el.value.replace(/#Coords#/ig, determineListingCoords('CorrOrg'));
-                    el.value = el.value.replace(/#Elevation#/ig, ($('#elevation-waypoint-0 span')[0] ? $('#elevation-waypoint-0 span')[0].innerHTML : ($('#elevation-waypoint-0')[0] ? $('#elevation-waypoint-0')[0].innerHTML : '')));
-                    el.value = el.value.replace(/#Founds#/ig, ($('#ctl00_ContentBody_lblFindCounts img[src*="/2.png"]')[0] ? parseInt($('#ctl00_ContentBody_lblFindCounts img[src*="/2.png"]')[0].nextSibling.data.replace(/(,|\.)/g,'')) : 0));
-                    el.value = el.value.replace(/#Attended#/ig, ($('#ctl00_ContentBody_lblFindCounts img[src*="/10.png"]')[0] ? parseInt($('#ctl00_ContentBody_lblFindCounts img[src*="/10.png"]')[0].nextSibling.data.replace(/(,)/,'.')) : 0));
-                    var foundsPlus = 0;
-                    if ($('#ctl00_ContentBody_lblFindCounts img[src*="/2.png"]')[0]) foundsPlus += parseInt($('#ctl00_ContentBody_lblFindCounts img[src*="/2.png"]')[0].nextSibling.data.replace(/(,|\.)/g,''));
-                    if ($('#ctl00_ContentBody_lblFindCounts img[src*="/10.png"]')[0]) foundsPlus += parseInt($('#ctl00_ContentBody_lblFindCounts img[src*="/10.png"]')[0].nextSibling.data.replace(/(,|\.)/g,''));
-                    if ($('#ctl00_ContentBody_lblFindCounts img[src*="/11.png"]')[0]) foundsPlus += parseInt($('#ctl00_ContentBody_lblFindCounts img[src*="/11.png"]')[0].nextSibling.data.replace(/(,|\.)/g,''));
-                    el.value = el.value.replace(/#FoundsPlus#/ig, foundsPlus);
-                    el.value = el.value.replace(/#WillAttend#/ig, ($('#ctl00_ContentBody_lblFindCounts img[src*="/9.png"]')[0] ? parseInt($('#ctl00_ContentBody_lblFindCounts img[src*="/9.png"]')[0].nextSibling.data.replace(/(,|\.)/g,'')) : 0));
-                    el.value = el.value.replace(/#DNFs#/ig, ($('#ctl00_ContentBody_lblFindCounts img[src*="/3.png"]')[0] ? parseInt($('#ctl00_ContentBody_lblFindCounts img[src*="/3.png"]')[0].nextSibling.data.replace(/(,|\.)/g,'')) : 0));
-                    el.value = el.value.replace(/#Diff#/ig, $('#ctl00_ContentBody_uxLegendScale img').attr('src').match(/stars(\d|\d_\d).gif/)[1].replace('_','.'));
-                    el.value = el.value.replace(/#Terr#/ig, $('#ctl00_ContentBody_Localize12 img').attr('src').match(/stars(\d|\d_\d).gif/)[1].replace('_','.'));
-                    el.value = el.value.replace(/#Size#/ig, $('#ctl00_ContentBody_size .minorCacheDetails small')[0].innerHTML.replace('(','').replace(')',''));
-                    el.value = el.value.replace(/#Owner#/ig, get_real_owner().replace(/'/g,"\\'"));
-                    el.value = el.value.replace(/#Favo#/ig, (($('#uxFavContainerLink')[0] && $('#uxFavContainerLink .favorite-value')[0]) ? $('#uxFavContainerLink .favorite-value')[0].innerHTML.replace(/(\s*)/g,'') : ''));
-                    el.value = el.value.replace(/#FavoPerc#/ig, ($('.gclh_favorite-score')[0] ? $('.gclh_favorite-score')[0].innerHTML : ''));
-                    el.value = el.value.replace(/#Hints#/ig, (($('#div_hint')[0] && $('#div_hint')[0].innerHTML) ? $('#div_hint')[0].innerHTML.replace(/^(\s*)/,'').replace(/<br>/g,'\n') : ''));
-                    var g_note = '';
-                    if ($('#viewCacheNote')[0] && $('#viewCacheNote')[0].innerHTML && $('#editCacheNote')[0] && $('#editCacheNote textarea')[0] && $('#editCacheNote textarea').attr('placeholder') && $('#viewCacheNote')[0].innerHTML != $('#editCacheNote textarea').attr('placeholder') && $('#viewCacheNote')[0].innerHTML != null && $('#viewCacheNote')[0].innerHTML != '') {
-                        var g_note = $('#viewCacheNote')[0].innerHTML;
-                    }
-                    el.value = el.value.replace(/#GCNote#/ig, g_note.replace(new RegExp('&gt;', 'g'),'>').replace(new RegExp('&lt;', 'g'),'<'));
-                    // Photo file name: Remove the impossible characters for the file name "<>/\|:*?
-                    if ($(thisObject)[0].innerHTML && $(thisObject)[0].innerHTML.match(/Photo file name/)) {
-                        el.value = el.value.replace(/(\/|\\|\||\*|\?|:|"|<|>)/g, '');
-                    }
+        if ($(thisObject).data('id') == idCopyName) {
+            el.value = $('#ctl00_ContentBody_CacheName')[0].innerHTML.replace(new RegExp('&nbsp;', 'g'),' ');
+        } else if ($(thisObject).data('id') == idCopyCode) {
+            el.value = $('#ctl00_ContentBody_CoordInfoLinkControl1_uxCoordInfoCode')[0].innerHTML;
+        } else if ($(thisObject).data('id') == idCopyUrl) {
+            el.value = "https://coord.info/"+$('#ctl00_ContentBody_CoordInfoLinkControl1_uxCoordInfoCode')[0].innerHTML;
+        } else if ($(thisObject).data('id') == idCopyCorrCoords) {
+            el.value = determineListingCoords('Corr');
+        } else if ($(thisObject).data('id') == idCopyOrgCoords) {
+            el.value = determineListingCoords('Org');
+        } else if ($(thisObject).data('id') == idCopyGCTourCoords) {
+            el.value = determineListingCoords('GCTour');
+        } else if ($(thisObject).data('id') == 'idOwnStuff') {
+            if ($(thisObject).data('value')) {
+                el.value = $(thisObject).data('value');
+                var [year, month, day] = determineCurrentDate();
+                el.value = el.value.replace(/#yyyy#/ig, year);
+                el.value = el.value.replace(/#mm#/ig, month);
+                el.value = el.value.replace(/#dd#/ig, day);
+                var [aDate, aTime, aDateTime] = getDateTime();
+                el.value = el.value.replace(/#Date#/ig, aDate);
+                el.value = el.value.replace(/#Time#/ig, aTime);
+                el.value = el.value.replace(/#DateTime#/ig, aDateTime);
+                var GCName = $('#ctl00_ContentBody_CacheName')[0].innerHTML.replace(new RegExp('&nbsp;', 'g'),' ');
+                var GCCode = $('#ctl00_ContentBody_CoordInfoLinkControl1_uxCoordInfoCode')[0].innerHTML;
+                var GCLink = "https://coord.info/"+$('#ctl00_ContentBody_CoordInfoLinkControl1_uxCoordInfoCode')[0].innerHTML;
+                el.value = el.value.replace(/#GCName#/ig, GCName);
+                el.value = el.value.replace(/#GCCode#/ig, GCCode);
+                el.value = el.value.replace(/#GCLink#/ig, GCLink);
+                el.value = el.value.replace(/#GCNameLink#/ig, "[" + GCName + "](" + GCLink + ")");
+                el.value = el.value.replace(/#GCType#/ig, ($('.cacheImage')[0] ? $('.cacheImage').attr('title').replace(/(\sgeocache|\scache|-cache|\shybrid)/i,'') : ''))
+                el.value = el.value.replace(/#Coords#/ig, determineListingCoords('CorrOrg'));
+                el.value = el.value.replace(/#Elevation#/ig, ($('#elevation-waypoint-0 span')[0] ? $('#elevation-waypoint-0 span')[0].innerHTML : ($('#elevation-waypoint-0')[0] ? $('#elevation-waypoint-0')[0].innerHTML : '')));
+                el.value = el.value.replace(/#Founds#/ig, ($('#ctl00_ContentBody_lblFindCounts img[src*="/2.png"]')[0] ? parseInt($('#ctl00_ContentBody_lblFindCounts img[src*="/2.png"]')[0].nextSibling.data.replace(/(,|\.)/g,'')) : 0));
+                el.value = el.value.replace(/#Attended#/ig, ($('#ctl00_ContentBody_lblFindCounts img[src*="/10.png"]')[0] ? parseInt($('#ctl00_ContentBody_lblFindCounts img[src*="/10.png"]')[0].nextSibling.data.replace(/(,)/,'.')) : 0));
+                var foundsPlus = 0;
+                if ($('#ctl00_ContentBody_lblFindCounts img[src*="/2.png"]')[0]) foundsPlus += parseInt($('#ctl00_ContentBody_lblFindCounts img[src*="/2.png"]')[0].nextSibling.data.replace(/(,|\.)/g,''));
+                if ($('#ctl00_ContentBody_lblFindCounts img[src*="/10.png"]')[0]) foundsPlus += parseInt($('#ctl00_ContentBody_lblFindCounts img[src*="/10.png"]')[0].nextSibling.data.replace(/(,|\.)/g,''));
+                if ($('#ctl00_ContentBody_lblFindCounts img[src*="/11.png"]')[0]) foundsPlus += parseInt($('#ctl00_ContentBody_lblFindCounts img[src*="/11.png"]')[0].nextSibling.data.replace(/(,|\.)/g,''));
+                el.value = el.value.replace(/#FoundsPlus#/ig, foundsPlus);
+                el.value = el.value.replace(/#WillAttend#/ig, ($('#ctl00_ContentBody_lblFindCounts img[src*="/9.png"]')[0] ? parseInt($('#ctl00_ContentBody_lblFindCounts img[src*="/9.png"]')[0].nextSibling.data.replace(/(,|\.)/g,'')) : 0));
+                el.value = el.value.replace(/#DNFs#/ig, ($('#ctl00_ContentBody_lblFindCounts img[src*="/3.png"]')[0] ? parseInt($('#ctl00_ContentBody_lblFindCounts img[src*="/3.png"]')[0].nextSibling.data.replace(/(,|\.)/g,'')) : 0));
+                el.value = el.value.replace(/#Diff#/ig, $('#ctl00_ContentBody_uxLegendScale img').attr('src').match(/stars(\d|\d_\d).gif/)[1].replace('_','.'));
+                el.value = el.value.replace(/#Terr#/ig, $('#ctl00_ContentBody_Localize12 img').attr('src').match(/stars(\d|\d_\d).gif/)[1].replace('_','.'));
+                el.value = el.value.replace(/#Size#/ig, $('#ctl00_ContentBody_size .minorCacheDetails small')[0].innerHTML.replace('(','').replace(')',''));
+                el.value = el.value.replace(/#Owner#/ig, get_real_owner().replace(/'/g,"\\'"));
+                el.value = el.value.replace(/#Favo#/ig, (($('#uxFavContainerLink')[0] && $('#uxFavContainerLink .favorite-value')[0]) ? $('#uxFavContainerLink .favorite-value')[0].innerHTML.replace(/(\s*)/g,'') : ''));
+                el.value = el.value.replace(/#FavoPerc#/ig, ($('.gclh_favorite-score')[0] ? $('.gclh_favorite-score')[0].innerHTML : ''));
+                el.value = el.value.replace(/#Hints#/ig, (($('#div_hint')[0] && $('#div_hint')[0].innerHTML) ? $('#div_hint')[0].innerHTML.replace(/^(\s*)/,'').replace(/<br>/g,'\n') : ''));
+                var g_note = '';
+                if ($('#viewCacheNote')[0] && $('#viewCacheNote')[0].innerHTML && $('#editCacheNote')[0] && $('#editCacheNote textarea')[0] && $('#editCacheNote textarea').attr('placeholder') && $('#viewCacheNote')[0].innerHTML != $('#editCacheNote textarea').attr('placeholder') && $('#viewCacheNote')[0].innerHTML != null && $('#viewCacheNote')[0].innerHTML != '') {
+                    var g_note = $('#viewCacheNote')[0].innerHTML;
                 }
-                break;
-            default:
-                el.value = "";
+                el.value = el.value.replace(/#GCNote#/ig, g_note.replace(new RegExp('&gt;', 'g'),'>').replace(new RegExp('&lt;', 'g'),'<'));
+                // Photo file name: Remove the impossible characters for the file name "<>/\|:*?
+                if ($(thisObject)[0].innerHTML && $(thisObject)[0].innerHTML.match(/Photo file name/)) {
+                    el.value = el.value.replace(/(\/|\\|\||\*|\?|:|"|<|>)/g, '');
+                }
+            }
+        } else {
+            el.value = "";
         }
         var cb = document.createElement('textarea');
         cb.value = GM_getValue('clipboard', '');
@@ -4588,15 +4580,13 @@ var mainGC = function() {
             var matches = document.getElementById('ActivePQs').childNodes[1].innerHTML.match(/([A-Za-z]*),/);
             if (matches) {
                 var highlight = 0;
-                switch (matches[1]) {
-                    case "Sunday"   : highlight = 5; break;
-                    case "Monday"   : highlight = 6; break;
-                    case "Tuesday"  : highlight = 7; break;
-                    case "Wednesday": highlight = 8; break;
-                    case "Thursday" : highlight = 9; break;
-                    case "Friday"   : highlight = 10; break;
-                    case "Saturday" : highlight = 11; break;
-                }
+                if      (matches[1] == "Sunday"   ) highlight = 5;
+                else if (matches[1] == "Monday"   ) highlight = 6;
+                else if (matches[1] == "Tuesday"  ) highlight = 7;
+                else if (matches[1] == "Wednesday") highlight = 8;
+                else if (matches[1] == "Thursday" ) highlight = 9;
+                else if (matches[1] == "Friday"   ) highlight = 10;
+                else if (matches[1] == "Saturday" ) highlight = 11;
                 if (highlight > 0) {
                     var trs = $('#pqRepeater tbody tr:not(.TableFooter)');
                     for (var i = 0; i < trs.length; i++) {trs[i].children[highlight].style.backgroundColor = "#ede5dc";}
@@ -4606,7 +4596,7 @@ var mainGC = function() {
             if (settings_fixed_pq_header && (document.getElementById("pqRepeater") || document.getElementById("uxOfflinePQTable"))) {
               var positionPx = 0;
               if (browser === "chrome") {
-                positionPx = -1; // Mitigate ugly gap for header/footer
+                  positionPx = -1; // Mitigate ugly gap for header/footer
               }
               var css = "";
               // Fixed PQ header and footer - used TH and TD selector is hack for Chrome, Edge # see on bug https://bugs.chromium.org/p/chromium/issues/detail?id=702927
@@ -4620,7 +4610,7 @@ var mainGC = function() {
         } catch(e) {gclh_error("Improve list of PQs",e);}
     }
 
-// Try to find values from Project-GC PQSplit
+// Try to find values from Project-GC PQSplit.
     if (document.location.href.match(/\.com\/pocket\/gcquery\.aspx/)){
         try{
             function findGetParameter(parameterName) {
@@ -4634,11 +4624,11 @@ var mainGC = function() {
                 return result;
             }
 
-            if(findGetParameter('PQSplit')){
-                // Yes we come from PQSplitter
+            if (findGetParameter('PQSplit')){
+                // Yes we come from PQSplitter.
 
-                //Test if we already saved the PQ. If yes => close the window
-                if($( "#divContentMain p.Success" ).length){
+                // Test if we already saved the PQ. If yes => close the window.
+                if ($( "#divContentMain p.Success" ).length){
                     setTimeout(function(){
                         window.close();
                     },10);
@@ -4648,83 +4638,61 @@ var mainGC = function() {
                 $('#ctl00_ContentBody_tbName').val(findGetParameter('n'));
                 $('#ctl00_ContentBody_tbResults').val(findGetParameter('c'));
 
-                // How often should the query run
-                switch(findGetParameter('ho')){
-                    case "1":
-                        $("#ctl00_ContentBody_rbRunOption_0").prop("checked", true);
-                        break;
+                // How often should the query run.
+                if      (findGetParameter('ho') == "1") $("#ctl00_ContentBody_rbRunOption_0").prop("checked", true);
+                else if (findGetParameter('ho') == "2") $("#ctl00_ContentBody_rbRunOption_1").prop("checked", true);
+                else if (findGetParameter('ho') == "3") $("#ctl00_ContentBody_rbRunOption_2").prop("checked", true);
 
-                    case "2":
-                        $("#ctl00_ContentBody_rbRunOption_1").prop("checked", true);
-                        break;
-
-                    case "3":
-                        $("#ctl00_ContentBody_rbRunOption_2").prop("checked", true);
-                        break;
-                }
-
-                // Select the output Email Address
-                if(findGetParameter('e') == 2){
-                    // look if we have secondary email
-                    if($('#ctl00_ContentBody_ddlAltEmails')){
+                // Select the output Email Address.
+                if (findGetParameter('e') == 2){
+                    // Look if we have secondary email.
+                    if ($('#ctl00_ContentBody_ddlAltEmails')){
                         $('#ctl00_ContentBody_ddlAltEmails option:eq(1)').attr('selected', 'selected');
                     }
                 }
 
                 var type = findGetParameter('t');
                 var cr_name = findGetParameter('s');
-                switch (type) {
-                    case "region":
-                        // Modifiction for Countries with "," in the name. There is a "+" after the ","
-                        cr_name = cr_name.split(/,(?!\+)/);
-
-                        if(cr_name.length >= 1){
-                            for (var i = 0; i < cr_name.length; i++) {
-                                cr_name[i] = cr_name[i].replace(/\+/g, " ");
-
-                                var region = cr_name[i].substr(cr_name[i].indexOf('|')+1);
-
-                                var state = $.grep(states_id, function(e){return e.n == region;});
-
-                                if(state.length == 0){
-                                    alert('No corresponding Region Name not found for Region: ' + region);
-                                    throw Error('No corresponding Region Name not found for Region: ' + region);
-                                }
-
-                                $('#ctl00_ContentBody_rbStates').attr('checked', true);
-                                $('#ctl00_ContentBody_lbStates option[value=' + state[0].id + ']').attr('selected', true);
+                if (type == "region") {
+                    // Modifiction for Countries with "," in the name. There is a "+" after the ",".
+                    cr_name = cr_name.split(/,(?!\+)/);
+                    if (cr_name.length >= 1) {
+                        for (var i = 0; i < cr_name.length; i++) {
+                            cr_name[i] = cr_name[i].replace(/\+/g, " ");
+                            var region = cr_name[i].substr(cr_name[i].indexOf('|')+1);
+                            var state = $.grep(states_id, function(e){return e.n == region;});
+                            if (state.length == 0) {
+                                alert('No corresponding Region Name not found for Region: ' + region);
+                                throw Error('No corresponding Region Name not found for Region: ' + region);
                             }
-                        }else{
-                            alert('No Region Name found.');
-                            throw Error('No Region Name found.');
+                            $('#ctl00_ContentBody_rbStates').attr('checked', true);
+                            $('#ctl00_ContentBody_lbStates option[value=' + state[0].id + ']').attr('selected', true);
                         }
-                        break;
-
-                    case "country":
-                        // Modifiction for Countries with "," in the name. There is a "+" after the ","
-                        cr_name = cr_name.split(/,(?!\+)/);
-                        if(cr_name.length >= 1){
-                            for (var i = 0; i < cr_name.length; i++) {
-                                cr_name[i] = cr_name[i].replace(/\+/g, " ");
-
-                                var country = $.grep(country_id, function(e){return e.n == cr_name[i];});
-
-                                if(country.length == 0){
-                                    alert('No corresponding Country Name found for Country: ' + cr_name[i]);
-                                    throw Error('No corresponding Country Name found for Country: ' + cr_name[i]);
-                                }
-
-                                $('#ctl00_ContentBody_rbCountries').attr('checked', true);
-                                $('#ctl00_ContentBody_lbCountries option[value=' + country[0].id + ']').attr('selected', true);
+                    } else {
+                        alert('No Region Name found.');
+                        throw Error('No Region Name found.');
+                    }
+                } else if (type == "country") {
+                    // Modifiction for Countries with "," in the name. There is a "+" after the ",".
+                    cr_name = cr_name.split(/,(?!\+)/);
+                    if (cr_name.length >= 1) {
+                        for (var i = 0; i < cr_name.length; i++) {
+                            cr_name[i] = cr_name[i].replace(/\+/g, " ");
+                            var country = $.grep(country_id, function(e){return e.n == cr_name[i];});
+                            if (country.length == 0) {
+                                alert('No corresponding Country Name found for Country: ' + cr_name[i]);
+                                throw Error('No corresponding Country Name found for Country: ' + cr_name[i]);
                             }
-                        }else{
-                            alert('No Country Name found.');
-                            throw Error('No Country Name found.');
+                            $('#ctl00_ContentBody_rbCountries').attr('checked', true);
+                            $('#ctl00_ContentBody_lbCountries option[value=' + country[0].id + ']').attr('selected', true);
                         }
-                        break;
-                   default:
-                        alert('Unknown Type for area. Please contact an admin of GClh.');
-                        throw new Error('unknown Type: ' + type);
+                    } else {
+                        alert('No Country Name found.');
+                        throw Error('No Country Name found.');
+                    }
+                } else {
+                    alert('Unknown Type for area. Please contact an admin of GClh.');
+                    throw new Error('unknown Type: ' + type);
                 }
 
                 $('#ctl00_ContentBody_rbPlacedBetween').attr('checked', true);
@@ -4733,11 +4701,11 @@ var mainGC = function() {
                 $('#ctl00_ContentBody_DateTimeBegin_Day option[value=' + findGetParameter('sd') + ']').attr('selected', true);
                 $('#ctl00_ContentBody_DateTimeBegin_Year option[value=' + findGetParameter('sy') + ']').attr('selected', true);
 
-                if((findGetParameter('em') != '') && (findGetParameter('ed') != '') && (findGetParameter('ey') != '')){
-                   var month = findGetParameter('em');
-                   var day = findGetParameter('ed');
-                   var year = findGetParameter('ey');
-                }else{
+                if ((findGetParameter('em') != '') && (findGetParameter('ed') != '') && (findGetParameter('ey') != '')) {
+                    var month = findGetParameter('em');
+                    var day = findGetParameter('ed');
+                    var year = findGetParameter('ey');
+                } else {
                     var month = 12;
                     var day = 31;
                     var year = (new Date()).getFullYear()+1;
@@ -4747,7 +4715,7 @@ var mainGC = function() {
                 $('#ctl00_ContentBody_DateTimeEnd_Day option[value=' + day + ']').attr('selected', true);
                 $('#ctl00_ContentBody_DateTimeEnd_Year option[value=' + year + ']').attr('selected', true);
 
-                // All values are set, submit the form
+                // All values are set, submit the form.
                 document.getElementById('ctl00_ContentBody_btnSubmit').click();
             }
         } catch(e) {gclh_error("Create Automated PQs from project-gc PQ splitter",e);}
@@ -5224,25 +5192,21 @@ var mainGC = function() {
                 var westEast = $(westField.options[westField.selectedIndex]).text().replace('.', '');
                 var lat = "";
                 var lng = "";
-                switch (coordType) {
-                    case "2":  //DMS
-                        lat = northSouth + " " + $('#ctl00_ContentBody_LatLong__inputLatDegs')[0].value + " " + $('#ctl00_ContentBody_LatLong__inputLatMins')[0].value + ' ' + $('#ctl00_ContentBody_LatLong__inputLatSecs')[0].value;
-                        lng = westEast + " " + $('#ctl00_ContentBody_LatLong__inputLongDegs')[0].value + " " + $('#ctl00_ContentBody_LatLong__inputLongMins')[0].value + ' ' + $('#ctl00_ContentBody_LatLong__inputLongSecs')[0].value;
-                        var converted = toDec(lat + " " + lng);
-                        lat = converted[0];
-                        lng = converted[1];
-                        break;
-                    case "1":  //MinDec
-                        lat = northSouth + " " + $('#ctl00_ContentBody_LatLong__inputLatDegs')[0].value + " " + $('#ctl00_ContentBody_LatLong__inputLatMins')[0].value;
-                        lng = westEast + " " + $('#ctl00_ContentBody_LatLong__inputLongDegs')[0].value + " " + $('#ctl00_ContentBody_LatLong__inputLongMins')[0].value;
-                        var converted = toDec(lat + " " + lng);
-                        lat = converted[0];
-                        lng = converted[1];
-                        break;
-                    case "0":  //DegDec
-                        lat = (northSouth == "S" ? "-" : "") + $('#ctl00_ContentBody_LatLong__inputLatDegs')[0].value;
-                        lng = (westEast == "W" ? "-" : "") + $('#ctl00_ContentBody_LatLong__inputLongDegs')[0].value;
-                        break;
+                if (coordType == "2") { // DMS
+                    lat = northSouth + " " + $('#ctl00_ContentBody_LatLong__inputLatDegs')[0].value + " " + $('#ctl00_ContentBody_LatLong__inputLatMins')[0].value + ' ' + $('#ctl00_ContentBody_LatLong__inputLatSecs')[0].value;
+                    lng = westEast + " " + $('#ctl00_ContentBody_LatLong__inputLongDegs')[0].value + " " + $('#ctl00_ContentBody_LatLong__inputLongMins')[0].value + ' ' + $('#ctl00_ContentBody_LatLong__inputLongSecs')[0].value;
+                    var converted = toDec(lat + " " + lng);
+                    lat = converted[0];
+                    lng = converted[1];
+                } else if (coordType == "1") { // MinDec
+                    lat = northSouth + " " + $('#ctl00_ContentBody_LatLong__inputLatDegs')[0].value + " " + $('#ctl00_ContentBody_LatLong__inputLatMins')[0].value;
+                    lng = westEast + " " + $('#ctl00_ContentBody_LatLong__inputLongDegs')[0].value + " " + $('#ctl00_ContentBody_LatLong__inputLongMins')[0].value;
+                    var converted = toDec(lat + " " + lng);
+                    lat = converted[0];
+                    lng = converted[1];
+                } else if (coordType == "0") { // DegDec
+                    lat = (northSouth == "S" ? "-" : "") + $('#ctl00_ContentBody_LatLong__inputLatDegs')[0].value;
+                    lng = (westEast == "W" ? "-" : "") + $('#ctl00_ContentBody_LatLong__inputLongDegs')[0].value;
                 }
                 if (!$('#ctl00_ContentBody_rbOriginWpt')[0].checked) {
                     lat = lng = "";
@@ -5252,10 +5216,8 @@ var mainGC = function() {
                     previewMap.setView([lat, lng]);
                     marker.setLatLng([lat, lng]);
                     radius.setLatLng([lat, lng]);
-
                     var factor = (($("input[name='ctl00$ContentBody$rbUnitType']:checked").val() == "mi")?1609:1000);
                     radius.setRadius(parseInt($("#ctl00_ContentBody_tbRadius").val())*factor);
-
                     previewMap.fitBounds(group.getBounds(), { padding: [20, 20] });
                 }
             });
@@ -8404,12 +8366,10 @@ var mainGC = function() {
                         } else {
                             // Sort Caches.
                             if (settings_set_showUnpublishedHides_sort && caches.length > 0) {
-                                switch (settings_showUnpublishedHides_sort) {
-                                    case 'abc': caches.sort(abc); break;
-                                    case 'gcNew': caches.sort(gcNew); break;
-                                    case 'gcOld': caches.sort(gcOld); break;
-                                    default: gclh_error("Show unpublished hides in dashboard", 'Cannot sort caches');
-                                }
+                                if (settings_showUnpublishedHides_sort == 'abc') caches.sort(abc);
+                                else if (settings_showUnpublishedHides_sort == 'gcNew') caches.sort(gcNew);
+                                else if (settings_showUnpublishedHides_sort == 'gcOld') caches.sort(gcOld);
+                                else gclh_error("Show unpublished hides in dashboard", 'Cannot sort caches');
                             }
                             // Build List.
                             var list = '<ul class="list" style="padding:0;margin:0;">';
@@ -10564,11 +10524,9 @@ var mainGC = function() {
                                 var diff = parseInt(cell.children[0].innerHTML) - from;
                                 cell.style.backgroundColor = color;
                                 cell.children[0].style.backgroundColor = 'unset';
-                                switch (diff) {
-                                    case 1: cell.style.backgroundColor = cell.style.backgroundColor.replace(/rgb/i, "rgba").replace(/\)/, ",0.6)"); break;
-                                    case 2: cell.style.backgroundColor = cell.style.backgroundColor.replace(/rgb/i, "rgba").replace(/\)/, ",0.4)"); break;
-                                    case 3: cell.style.backgroundColor = cell.style.backgroundColor.replace(/rgb/i, "rgba").replace(/\)/, ",0.25)"); break;
-                                }
+                                if      (diff == 1) cell.style.backgroundColor = cell.style.backgroundColor.replace(/rgb/i, "rgba").replace(/\)/, ",0.6)");
+                                else if (diff == 2) cell.style.backgroundColor = cell.style.backgroundColor.replace(/rgb/i, "rgba").replace(/\)/, ",0.4)");
+                                else if (diff == 3) cell.style.backgroundColor = cell.style.backgroundColor.replace(/rgb/i, "rgba").replace(/\)/, ",0.25)");
                             }
                             if (settings_count_own_matrix_links_radius != 0) {
                                 cell.children[0].href +=
@@ -12164,10 +12122,10 @@ var mainGC = function() {
         div.setAttribute("style", "margin-top: -50px;");
         var prop = ' style="border: none; visibility: hidden; width: 2px; height: 2px;" alt="">';
 //--> $$002
-        var code = '<img src="https://c.andyhoppe.com/1621078718"' + prop + // Besucher
-                   '<img src="https://c.andyhoppe.com/1621078751"' + prop + // Seitenaufrufe
-                   '<img src="https://www.worldflagcounter.com/hKk"' + prop +
-                   '<img src="https://s11.flagcounter.com/count2/mzIe/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
+        var code = '<img src="https://c.andyhoppe.com/1621215748"' + prop + // Besucher
+                   '<img src="https://c.andyhoppe.com/1621215779"' + prop + // Seitenaufrufe
+                   '<img src="https://www.worldflagcounter.com/hKt"' + prop +
+                   '<img src="https://s11.flagcounter.com/count2/pBUN/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
 //<-- $$002
         div.innerHTML = code;
         side.appendChild(div);
@@ -12904,28 +12862,26 @@ var mainGC = function() {
 // Convert cache type to cache tx.
     function getCacheTx(type) {
         let tx;
-        switch (type) {
-            case '2': tx = '&tx=32bc9333-5e52-4957-b0f6-5a2c8fc7b257'; break; // Tradi
-            case '3': tx = '&tx=a5f6d0ad-d2f2-4011-8c14-940a9ebf3c74'; break; // Multi
-            case '4': tx = '&tx=294d4360-ac86-4c83-84dd-8113ef678d7e'; break; // Virtual
-            case '5': tx = '&tx=4bdd8fb2-d7bc-453f-a9c5-968563b15d24'; break; // Letterbox
-            case '6': tx = '&tx=69eb8534-b718-4b35-ae3c-a856a55b0874'; break; // Event
-            case '8': tx = '&tx=40861821-1835-4e11-b666-8d41064d03fe'; break; // Mystery
-            case '9': tx = '&tx=2555690d-b2bc-4b55-b5ac-0cb704c0b768'; break; // APE
-            case '11': tx = '&tx=31d2ae3c-c358-4b5f-8dcd-2185bf472d3d'; break; // WebCam
-            case '12': tx = '&tx=8F6DD7BC-FF39-4997-BD2E-225A0D2ADF9D'; break; // Reverse
-            case '13': tx = '&tx=57150806-bc1a-42d6-9cf0-538d171a2d22'; break; // Cito
-            case '137': tx = '&tx=c66f5cf3-9523-4549-b8dd-759cd2f18db8'; break; // Earth Cache
-            case '453': tx = '&tx=69eb8535-b718-4b35-ae3c-a856a55b0874'; break; // Mega
-            case '1304': tx = '&tx=72e69af2-7986-4990-afd9-bc16cbbb4ce3'; break; // GPS Adventures Exhibit
-            case '1858': tx = '&tx=0544fa55-772d-4e5c-96a9-36a51ebcf5c9'; break; // Wherigo
-            case '3653': tx = '&tx=3ea6533d-bb52-42fe-b2d2-79a3424d4728'; break; // Community Celebration
-            case '4738': tx = '&tx=bc2f3df2-1aab-4601-b2ff-b5091f6c02e3'; break; // Geocaching HQ Block Party
-            case '3773': tx = '&tx=416f2494-dc17-4b6a-9bab-1a29dd292d8c'; break; // Geocaching HQ
-            case '3774': tx = '&tx=af820035-787a-47af-b52b-becc8b0c0c88'; break; // Geocaching HQ Celebration
-            case '7005': tx = '&tx=51420629-5739-4945-8bdd-ccfd434c0ead'; break; // Giga
-            default: tx = '&tx=9a79e6ce-3344-409c-bbe9-496530baf758'; // Alle Caches
-        }
+        if      (type == '2'   ) tx = '&tx=32bc9333-5e52-4957-b0f6-5a2c8fc7b257'; // Tradi
+        else if (type == '3'   ) tx = '&tx=a5f6d0ad-d2f2-4011-8c14-940a9ebf3c74'; // Multi
+        else if (type == '4'   ) tx = '&tx=294d4360-ac86-4c83-84dd-8113ef678d7e'; // Virtual
+        else if (type == '5'   ) tx = '&tx=4bdd8fb2-d7bc-453f-a9c5-968563b15d24'; // Letterbox
+        else if (type == '6'   ) tx = '&tx=69eb8534-b718-4b35-ae3c-a856a55b0874'; // Event
+        else if (type == '8'   ) tx = '&tx=40861821-1835-4e11-b666-8d41064d03fe'; // Mystery
+        else if (type == '9'   ) tx = '&tx=2555690d-b2bc-4b55-b5ac-0cb704c0b768'; // APE
+        else if (type == '11'  ) tx = '&tx=31d2ae3c-c358-4b5f-8dcd-2185bf472d3d'; // WebCam
+        else if (type == '12'  ) tx = '&tx=8F6DD7BC-FF39-4997-BD2E-225A0D2ADF9D'; // Reverse
+        else if (type == '13'  ) tx = '&tx=57150806-bc1a-42d6-9cf0-538d171a2d22'; // Cito
+        else if (type == '137' ) tx = '&tx=c66f5cf3-9523-4549-b8dd-759cd2f18db8'; // Earth Cache
+        else if (type == '453' ) tx = '&tx=69eb8535-b718-4b35-ae3c-a856a55b0874'; // Mega
+        else if (type == '1304') tx = '&tx=72e69af2-7986-4990-afd9-bc16cbbb4ce3'; // GPS Adventures Exhibit
+        else if (type == '1858') tx = '&tx=0544fa55-772d-4e5c-96a9-36a51ebcf5c9'; // Wherigo
+        else if (type == '3653') tx = '&tx=3ea6533d-bb52-42fe-b2d2-79a3424d4728'; // Community Celebration
+        else if (type == '4738') tx = '&tx=bc2f3df2-1aab-4601-b2ff-b5091f6c02e3'; // Geocaching HQ Block Party
+        else if (type == '3773') tx = '&tx=416f2494-dc17-4b6a-9bab-1a29dd292d8c'; // Geocaching HQ
+        else if (type == '3774') tx = '&tx=af820035-787a-47af-b52b-becc8b0c0c88'; // Geocaching HQ Celebration
+        else if (type == '7005') tx = '&tx=51420629-5739-4945-8bdd-ccfd434c0ead'; // Giga
+        else                     tx = '&tx=9a79e6ce-3344-409c-bbe9-496530baf758'; // Alle Caches
         return tx;
     }
 
@@ -13593,7 +13549,7 @@ var mainGC = function() {
             html += thanksLineBuild("Tungstène",            "Tungstene",                false, false, false, true,  false);
             html += thanksLineBuild("V60",                  "V60GC",                    false, false, false, true,  false);
             html += thanksLineBuild("winkamol",             "",                         false, false, false, true,  false);
-            var thanksLastUpdate = "15.05.2021";
+            var thanksLastUpdate = "16.05.2021";
 //<-- $$006
             html += "    </tbody>";
             html += "</table>";
@@ -15846,28 +15802,24 @@ var mainGC = function() {
         if (this.id.match(/_color/)) {
             field.value = "93B516";
             field.style.color = "black";
-            switch (fieldId) {
-                case "settings_lines_color_zebra": field.value = "EBECED"; break;
-                case "settings_lines_color_user": field.value = "C2E0C3"; break;
-                case "settings_lines_color_owner": field.value = "E0E0C3"; break;
-                case "settings_lines_color_reviewer": field.value = "EAD0C3"; break;
-                case "settings_lines_color_vip": field.value = "F0F0A0"; break;
-                case "settings_lists_disabled_color": field.value = "4A4A4A"; break;
-                case "settings_lists_archived_color": field.value = "8C0B0B"; break;
-                case "settings_searchmap_disabled_color": field.value = "4A4A4A"; break;
-                case "settings_font_color_menu": restoreColor("settings_font_color_menuX0", "restore_settings_font_color_menuX0", field.value); break;
-                case "settings_font_color_menuX0": restoreColor("settings_font_color_menu", "restore_settings_font_color_menu", field.value); break;
-                case "settings_font_color_submenu": restoreColor("settings_font_color_submenuX0", "restore_settings_font_color_submenuX0", field.value); break;
-                case "settings_font_color_submenuX0": restoreColor("settings_font_color_submenu", "restore_settings_font_color_submenu", field.value); break;
-                case "settings_count_own_matrix_show_color_next": field.value = "5151FB"; field.style.color = "white"; break;
-            }
+            if (fieldId == "settings_lines_color_zebra") field.value = "EBECED";
+            else if (fieldId == "settings_lines_color_user") field.value = "C2E0C3";
+            else if (fieldId == "settings_lines_color_owner") field.value = "E0E0C3";
+            else if (fieldId == "settings_lines_color_reviewer") field.value = "EAD0C3";
+            else if (fieldId == "settings_lines_color_vip") field.value = "F0F0A0";
+            else if (fieldId == "settings_lists_disabled_color") field.value = "4A4A4A";
+            else if (fieldId == "settings_lists_archived_color") field.value = "8C0B0B";
+            else if (fieldId == "settings_searchmap_disabled_color") field.value = "4A4A4A";
+            else if (fieldId == "settings_font_color_menu") restoreColor("settings_font_color_menuX0", "restore_settings_font_color_menuX0", field.value);
+            else if (fieldId == "settings_font_color_menuX0") restoreColor("settings_font_color_menu", "restore_settings_font_color_menu", field.value);
+            else if (fieldId == "settings_font_color_submenu") restoreColor("settings_font_color_submenuX0", "restore_settings_font_color_submenuX0", field.value);
+            else if (fieldId == "settings_font_color_submenuX0") restoreColor("settings_font_color_submenu", "restore_settings_font_color_submenu", field.value);
+            else if (fieldId == "settings_count_own_matrix_show_color_next") {field.value = "5151FB"; field.style.color = "white";}
             field.style.backgroundColor = "#" + field.value;
         } else {
-            switch (fieldId) {
-                case "settings_show_copydata_own_stuff_name": field.value = "Photo file name"; break;
-                case "settings_show_copydata_own_stuff_value": field.value = "#yyyy#.#mm#.#dd# - #GCName# - #GCCode# - 01"; break;
-                case "settings_show_copydata_separator": field.value = "\n"; break;
-            }
+            if (fieldId == "settings_show_copydata_own_stuff_name") field.value = "Photo file name";
+            else if (fieldId == "settings_show_copydata_own_stuff_value") field.value = "#yyyy#.#mm#.#dd# - #GCName# - #GCCode# - 01";
+            else if (fieldId == "settings_show_copydata_separator") field.value = "\n";
             $(field)[0].focus();
         }
     }
@@ -17331,79 +17283,52 @@ function getValue(name, defaultValue) {
 function is_page(name) {
     var status = false;
     var url = document.location.pathname;
-    switch (name) {
-        case "cache_listing":
-            if (url.match(/^\/(seek\/cache_details\.aspx|geocache\/)/) && !document.getElementById("cspSubmit") && !document.getElementById("cspGoBack")) status = true;
-            // Exclude (new) Log Page
-            if(url.match(/^\/(geocache\/).*\/log/)) status = false;
-            // Exclude unpublished Caches
-            if(document.getElementsByClassName('UnpublishedCacheSearchWidget').length > 0) status = false;
-            break;
-        case "unpublished_cache":
-            if (
-                (document.getElementById("unpublishedMessage") !== null) ||
-                (document.getElementById("ctl00_ContentBody_GeoNav_uxPostReviewerNoteLogType") !== null)
-                ){
-                    status = true;
-                }
-            break;
-        case "profile":
-            if (url.match(/^\/my(\/default\.aspx)?/)) status = true;
-            break;
-        case "publicProfile":
-            if (url.match(/^\/(profile|p\/)/)) status = true;
-            break;
-        case "lists":
-            if (url.match(/^\/plan\/lists/)) status = true;
-            break;
-        case "searchmap":
-            if (url.match(/^\/play\/map/)) status = true;
-            break;
-        case "map":
-            if (url.match(/^\/map/)) status = true;
-            break;
-        case "find_cache":
-            if (url.match(/^\/play\/(search|geocache)/)) status = true;
-            break;
-        case "collection_1":
-            if (url.match(/^\/play\/(friendleague|leaderboard|souvenircampaign|guidelines)/)) status = true;
-            break;
-        case "hide_cache":
-            if (url.match(/^\/play\/hide/)) status = true;
-            break;
-        case "geotours":
-            if (url.match(/^\/play\/geotours/)) status = true;
-            break;
-        case "drafts":
-            if (url.match(/^\/account\/drafts/)) status = true;
-            break;
-        case "settings":
-            if (url.match(/^\/account\/(settings|lists|drafts|documents)/)) status = true;
-            break;
-        case "messagecenter":
-            if (url.match(/^\/account\/messagecenter/)) status = true;
-            break;
-        case "dashboard":
-            if (url.match(/^\/account\/dashboard$/)) status = true;
-            break;
-        case "owner_dashboard":
-            if (url.match(/^\/play\/owner/)) status = true;
-            break;
-        case "dashboard-section":
-            if (url.match(/^\/account\/dashboard/)) status = true;
-            break;
-        case "promos": // Like 'Wonders of the World'.
-            if (url.match(/^\/promos/)) status = true;
-            break;
-        case "track":
-            if (url.match(/^\/track\/($|#$|edit|upload|default.aspx)/)) status = true;
-            break;
-        case "souvenirs":
-            if (url.match(/^\/my\/souvenirs\.aspx/)) status = true;
-            break;
-        default:
-            gclh_error("is_page", "is_page("+name+", ... ): unknown name");
-            break;
+    if (name == "cache_listing") {
+        if (url.match(/^\/(seek\/cache_details\.aspx|geocache\/)/) && !document.getElementById("cspSubmit") && !document.getElementById("cspGoBack")) status = true;
+        // Exclude (new) Log Page
+        if(url.match(/^\/(geocache\/).*\/log/)) status = false;
+        // Exclude unpublished Caches
+        if(document.getElementsByClassName('UnpublishedCacheSearchWidget').length > 0) status = false;
+    } else if (name == "unpublished_cache") {
+        if (document.getElementById("unpublishedMessage") !== null || document.getElementById("ctl00_ContentBody_GeoNav_uxPostReviewerNoteLogType") !== null) status = true;
+    } else if (name == "profile") {
+        if (url.match(/^\/my(\/default\.aspx)?/)) status = true;
+    } else if (name == "publicProfile") {
+        if (url.match(/^\/(profile|p\/)/)) status = true;
+    } else if (name == "lists") {
+        if (url.match(/^\/plan\/lists/)) status = true;
+    } else if (name == "searchmap") {
+        if (url.match(/^\/play\/map/)) status = true;
+    } else if (name == "map") {
+        if (url.match(/^\/map/)) status = true;
+    } else if (name == "find_cache") {
+        if (url.match(/^\/play\/(search|geocache)/)) status = true;
+    } else if (name == "collection_1") {
+        if (url.match(/^\/play\/(friendleague|leaderboard|souvenircampaign|guidelines)/)) status = true;
+    } else if (name == "hide_cache") {
+        if (url.match(/^\/play\/hide/)) status = true;
+    } else if (name == "geotours") {
+        if (url.match(/^\/play\/geotours/)) status = true;
+    } else if (name == "drafts") {
+        if (url.match(/^\/account\/drafts/)) status = true;
+    } else if (name == "settings") {
+        if (url.match(/^\/account\/(settings|lists|drafts|documents)/)) status = true;
+    } else if (name == "messagecenter") {
+        if (url.match(/^\/account\/messagecenter/)) status = true;
+    } else if (name == "dashboard") {
+        if (url.match(/^\/account\/dashboard$/)) status = true;
+    } else if (name == "owner_dashboard") {
+        if (url.match(/^\/play\/owner/)) status = true;
+    } else if (name == "dashboard-section") {
+        if (url.match(/^\/account\/dashboard/)) status = true;
+    } else if (name == "promos") { // Like 'Wonders of the World'.
+        if (url.match(/^\/promos/)) status = true;
+    } else if (name == "track") {
+        if (url.match(/^\/track\/($|#$|edit|upload|default.aspx)/)) status = true;
+    } else if (name == "souvenirs") {
+        if (url.match(/^\/my\/souvenirs\.aspx/)) status = true;
+    } else {
+        gclh_error("is_page", "is_page("+name+", ... ): unknown name");
     }
     return status;
 }

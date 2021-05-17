@@ -1,3 +1,4 @@
+<a href="#v0112" title="GClh II version 0.11.2 (17.05.2021)">v0.11.2</a> &nbsp;
 <a href="#v0111" title="GClh II version 0.11.1 (16.05.2021)">v0.11.1</a> &nbsp;
 <a href="#v011" title="GClh II version 0.11 (09.05.2021)">v0.11</a> &nbsp;
 <a href="#v01020" title="GClh II version 0.10.20 (01.05.2021)">v0.10.20</a> &nbsp;
@@ -21,6 +22,18 @@
 <a href="#v0101" title="GClh II version 0.10.1 (20.12.2019)">v0.10.1</a> &nbsp;
 <a href="#v010" title="GClh II version 0.10 (13.12.2019)">v0.10</a> &nbsp;
 <a href="changelog_before.md" title="Go to earlier changelog">Earlier changelog</a> &nbsp;
+
+---
+## v0.11.2:
+<ul>
+	<li>
+		<strong>Fix:</strong> [Global / Chrome] "switch" handling in Chrome inconsistent (Chrome bug). [<a href="https://github.com/2Abendsegler/GClh/issues/1743" title="Issue 1743">1743</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		"switch" related functions were the starting point of the problems. Because some of these functions are very central, practically nothing works, if chrome no longer wants to. Or all works, if chrome just wants to. Fortunately, we haven't changed anything in the affected parts of the program for months. 😅 <br>
+	</li>
+</ul>
+(17.05.2021)<br>
+released by <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a><br>
+<br>
 
 ---
 ## v0.11.1:
