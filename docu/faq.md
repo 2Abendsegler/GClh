@@ -37,7 +37,7 @@ If you have problems to drag & drop the lower links because the Linklist area is
 
 <a id="3-en"></a>
 ## 3. GClh doesn't start.
-If a script does not start, these are usually matching problems between the browser and the script manager Tampermonkey. These problems mainly occur when a tab in a browser passes beyond a session. This can be caused by the user by leaving tabs in the browser, for example, when hibernating. It can also be caused by the browser, for example, when restoring tabs after a cancellation.<br>
+If the GClh does not start, these are usually matching problems between the browser and the script manager. These problems mainly occur when a tab in a browser passes beyond a session. This can be caused by the user by leaving tabs in the browser, for example when hibernating. It can also be caused by the browser, for example when restoring tabs after a cancellation.<br>
 
 *Resolve problems:* Problems can be resolved depending on the situation regularly with one of the following points.<br>
 <ul>
@@ -48,7 +48,7 @@ If a script does not start, these are usually matching problems between the brow
 		Close tabs in browser, close browser, start browser, re-select tabs.<br>
 	</li>
 	<li>
-		Deactivate the script manager Tampermonkey and reactivate it after a few seconds (unless you have deactivated "Automatic page reload" in Tampermonkey).<br>
+		Deactivate the script manager and reactivate it after a few seconds (unless you have deactivated "Automatic page reload").<br>
 	</li>
 </ul>
 
@@ -203,7 +203,7 @@ Wenn du Probleme mit dem Drag & Drop hast beim Hinzufügen neuer Links zur Linkl
 
 <a id="3-de"></a>
 ## 3. GClh startet nicht.
-Startet ein Script nicht, so handelt es sich in der Regel um Abstimmungsprobleme zwischen dem Browser und dem Script-Manager Tampermonkey. Diese Probleme treten hauptsächlich dann auf, wenn ein Tab in einem Browser über eine Session hinaus besteht. Das kann durch den User veranlaßt sein indem er Tabs im Browser beispielsweise im Ruhezustand bestehen läßt. Es kann aber auch durch den Browser veranlaßt sein beispielweise bei einer Wiederherstellung von Tabs nach einem Abbruch.<br>
+Startet der GClh nicht, so handelt es sich in der Regel um Abstimmungsprobleme zwischen dem Browser und dem Scriptmanager. Diese Probleme treten hauptsächlich dann auf, wenn ein Tab in einem Browser über eine Session hinaus besteht. Das kann durch den User veranlaßt sein indem er Tabs im Browser beispielsweise im Ruhezustand bestehen läßt. Es kann aber auch durch den Browser veranlaßt sein beispielweise bei einer Wiederherstellung von Tabs nach einem Abbruch.<br>
 
 *Probleme beheben:* Probleme können je nach Sachlage regelmäßig mit einem der folgenden Punkte behoben werden.<br>
 <ul>
@@ -214,7 +214,7 @@ Startet ein Script nicht, so handelt es sich in der Regel um Abstimmungsprobleme
 		Tabs im Browser schließen, Browser schließen, Browser starten, Tabs neu anwählen.<br>
 	</li>
 	<li>
-		Script-Manager Tampermonkey deaktivieren und nach einigen Sekunden wieder aktivieren (sofern man "Automatisches Seiten-Neu-Laden" in Tampermonkey nicht deaktiviert hat).<br>
+		Scriptmanager deaktivieren und nach einigen Sekunden wieder aktivieren (sofern man "Automatisches Seiten-Neu-Laden" icht deaktiviert hat).<br>
 	</li>
 </ul>
 
