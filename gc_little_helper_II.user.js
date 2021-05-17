@@ -31,10 +31,12 @@
 // @license          GNU General Public License v2.0
 // @grant            GM_getValue
 // @grant            GM_setValue
+// @grant            GM_deleteValue
 // @grant            GM_log
 // @grant            GM_xmlhttpRequest
 // @grant            GM_getResourceText
 // @grant            GM_info
+// @grant            GM.info
 // @grant            GM_addStyle
 // @grant            GM_registerMenuCommand
 // ==/UserScript==
@@ -43,7 +45,8 @@
 // 1. Declaration, Init, Start ($$cap)
 //////////////////////////////////////
 var start = function(c) {
-    checkRunningOnce();
+    checksBeforeRunning();
+    setTestLogConsole();
     quitOnAdFrames()
         .then(function() {return jqueryInit(c);})
         .then(function() {return browserInit(c);})
@@ -52,7 +55,7 @@ var start = function(c) {
         .done(function() {
             function checkBodyContent(waitCount) { // GDPR
                 if ($('body').children().length > 1) { // GDPR
-                    clog('BodyContent found');
+                    tlc('BodyContent found');
                     if (document.location.href.match(/^https?:\/\/maps\.google\./) || document.location.href.match(/^https?:\/\/www\.google\.[a-zA-Z.]*\/maps/)) {
                         mainGMaps();
                     } else if (document.location.href.match(/^https?:\/\/www\.openstreetmap\.org/)) {
@@ -64,22 +67,33 @@ var start = function(c) {
                     }
                 } else {waitCount++; if (waitCount <= 5000) setTimeout(function(){checkBodyContent(waitCount);}, 10);} // GDPR
             }
-            clog('START checkBodyContent');
+            tlc('START checkBodyContent');
             checkBodyContent(0); // GDPR
         });
 };
 
-var checkRunningOnce = function(c) {
-    if (document.getElementsByTagName('head')[0]) {
-        if (document.getElementById('GClh_II_running')){
-            var text = 'The script "GC little helper II" is already running.\nPlease make sure that it runs only once.\n\nDo you want to see tips on how this could happen \nand what you can do about it?';
-            var url  = 'https://github.com/2Abendsegler/GClh/blob/master/docu/faq.md';
-            if (window.confirm(text)) window.open(url, '_blank');
-        } else appendMetaId("GClh_II_running");
+var checksBeforeRunning = function() {
+    if (typeof GM.info != "undefined" && typeof GM.info.scriptHandler != "undefined" && GM.info.scriptHandler == 'Greasemonkey') {
+        var text = 'Sorry, the script "GC little helper II" does not run with script manager Greasemonkey.\nPlease use the script manager Tampermonkey or an other similar script manager.\n\nDo you want to see the "Tips for the installation"?\n ';
+        var url  = 'https://github.com/2Abendsegler/GClh/blob/master/docu/tips_installation.md#en';
+        if (window.confirm(text)) window.open(url, '_blank');
+        throw Error('Abort because of GClh installation under script manager Greasemonkey.');
     }
+    if (document.getElementsByTagName('head')[0] && document.getElementById('GClh_II_running')) {
+        var text = 'Sorry, the script "GC little helper II" is already running.\nPlease make sure that it runs only once.\n\nDo you want to see tips on how this could happen \nand what you can do about it?';
+        var url  = 'https://github.com/2Abendsegler/GClh/blob/master/docu/faq.md#1-en';
+        if (window.confirm(text)) window.open(url, '_blank');
+        throw Error('Abort because of GClh already running.');
+    } else appendMetaId("GClh_II_running");
+};
+
+var setTestLogConsole = function() {
+    test_log_console = GM_getValue('test_log_console', false);
+    GM_setValue('test_log_console', test_log_console);
 };
 
 var quitOnAdFrames = function(c) {
+    tlc('START quitOnAdFrames');
     var quitOnAdFramesDeref = new jQuery.Deferred();
     if (window.name) {
         if (window.name.substring(0, 18) !== 'google_ads_iframe_') quitOnAdFramesDeref.resolve();
@@ -91,6 +105,7 @@ var quitOnAdFrames = function(c) {
 };
 
 var jqueryInit = function(c) {
+    tlc('START jqueryInit');
     if (typeof c.$ === "undefined") c.$ = c.$ || unsafeWindow.$ || window.$ || null;
     if (typeof c.jQuery === "undefined") c.jQuery = c.jQuery || unsafeWindow.jQuery || window.jQuery || null;
     var jqueryInitDeref = new jQuery.Deferred();
@@ -98,39 +113,24 @@ var jqueryInit = function(c) {
     return jqueryInitDeref.promise();
 };
 
-var leafletInit = function(c) {
-    try {
-        if ( typeof L == "undefined" ) {
-            if ( !$('#gclh_leafletjs').length ) {
-                var newCSS = GM_getResourceText ("leafletcss");
-                GM_addStyle (newCSS);
-                var newJS = GM_getResourceText("leafletjs");
-                injectPageScript(newJS, "body", 'gclh_leafletjs');
-            }
-        }
-        if ( L.version != "0.7.2" ) {
-            gclh_error("Unexpected version of leaflet. Version 0.7.2 required, version "+L.version+" is loaded.");
-        }
-    } catch(e) { gclh_error("leafletInit failed",e);}
-};
-
 var browserInit = function(c) {
+    tlc('START browserInit');
     var browserInitDeref = new jQuery.Deferred();
-    c.CONFIG = {};
-    // Browser ermitteln. Opera ... ist auch chrome.
-    c.browser = (typeof(chrome) !== "undefined") ? "chrome" : "firefox";
-    c.GM_setValue("browser", browser);
     c.CONFIG = JSON.parse(GM_getValue("CONFIG", '{}'));
-    // Ist Tampermonkey der Scriptmanager.
-    c.isTM = (typeof GM_info != "undefined" && typeof GM_info.scriptHandler != "undefined" && GM_info.scriptHandler == "Tampermonkey") ? true : false;
-    c.GM_setValue("isTampermonkey", isTM);
-    c.settings_console = getValue("settings_console", false);
+    if (test_log_console != getValue('settings_test_log_console', false)) setValue('settings_test_log_console', test_log_console);
+    c.browser = (typeof(chrome) !== "undefined") ? "chrome" : "firefox";
+    c.GM_setValue("browser", c.browser);
+    tlc('Browser is '+c.browser);
+    if (typeof GM_info != "undefined" && typeof GM_info.scriptHandler != "undefined") c.scriptHandler = GM_info.scriptHandler;
+    else c.scriptHandler = false;
+    c.GM_setValue("scriptHandler", c.scriptHandler);
+    tlc('Script manager is '+c.scriptHandler);
     browserInitDeref.resolve();
     return browserInitDeref.promise();
 };
 
 var constInit = function(c) {
-    clog('START constInit');
+    tlc('START constInit');
     var constInitDeref = new jQuery.Deferred();
 
     c.scriptName = GM_info.script.name;
@@ -274,23 +274,23 @@ var constInit = function(c) {
         }
     }
 
-    c.gclhConfigKeysIgnoreForBackup = {"declared_version": true, "migration_task_01": true, "update_next_check": true};
+    c.gclhConfigKeysIgnoreForBackup = {"declared_version": true, "update_next_check": true};
 
-    clog('START iconsInit');
+    tlc('START iconsInit');
     iconsInit(c);
-    clog('START langInit');
+    tlc('START langInit');
     langInit(c);
-    clog('START layersInit');
+    tlc('START layersInit');
     layersInit(c);
-    clog('START elevationServicesDataInit');
+    tlc('START elevationServicesDataInit');
     elevationServicesDataInit(c);
-    clog('START headerHtmlInit');
+    tlc('START headerHtmlInit');
     headerHtmlInit(c);
-    clog('START corecssInit');
+    tlc('START corecssInit');
     corecssInit(c);
-    clog('START country_idInit');
+    tlc('START country_idInit');
     country_idInit(c);
-    clog('START states_idInit');
+    tlc('START states_idInit');
     states_idInit(c);
 
     constInitDeref.resolve();
@@ -298,7 +298,7 @@ var constInit = function(c) {
 };
 
 var variablesInit = function(c) {
-    clog('START variablesInit');
+    tlc('START variablesInit');
     var variablesInitDeref = new jQuery.Deferred();
 
     c.userInfo = c.userInfo || window.userInfo || null;
@@ -315,7 +315,6 @@ var variablesInit = function(c) {
     c.global_avatarUrl = "";
     c.global_findCount = "";
     c.global_locale = "";
-    c.settings_console = getValue("settings_console", false);
     c.settings_submit_log_button = getValue("settings_submit_log_button", true);
     c.settings_log_inline = getValue("settings_log_inline", false);
     c.settings_log_inline_tb = getValue("settings_log_inline_tb", false);
@@ -646,7 +645,7 @@ var variablesInit = function(c) {
     c.settings_no_wiggle_upvotes_click = getValue("settings_no_wiggle_upvotes_click", true);
     c.settings_show_country_in_place = getValue("settings_show_country_in_place", true);
 
-    clog('START userToken');
+    tlc('START userToken');
     try {
         if (c.userToken === null) {
             c.userData = $('#aspnetForm script:not([src])').filter(function() {
@@ -973,7 +972,7 @@ var mainPGC = function() {
                                 language = 'EN';
                             }else{
                                 // Lang not supported
-                                alert('Language not supported. Please switch to German or English to use this funktion');
+                                alert('Language not supported. Please switch to German or English to use this function.');
                                 language = 'NONE';
                             }
                         }else{
@@ -1155,7 +1154,7 @@ var mainOSM = function() {
 // 5.1.1 GC - Main 1 ($$cap) (For the geocaching webpages.)
 ////////////////////////////
 var mainGCWait = function() {
-    clog('START mainGCWait');
+    tlc('START mainGCWait');
 
 // Hide login procedures via Facebook, Google, Apple ... .
     if (settings_hide_facebook && (document.location.href.match(/\.com\/(account\/register|login|account\/login|account\/signin|account\/join)/))) {
@@ -1171,7 +1170,7 @@ var mainGCWait = function() {
     }
 
 // Improve print page cache listing.
-    clog('START Improve print page');
+    tlc('START Improve print page');
     if (document.location.href.match(/\.com\/seek\/cdpf\.aspx/)) {
         try {
             // Hide disclaimer.
@@ -1203,31 +1202,31 @@ var mainGCWait = function() {
     }
 
 // Set global data and check if logged in.
-    clog('START waitingForUserParameter');
+    tlc('START waitingForUserParameter');
     function waitingForUserParameter(waitCount) {
         // All pages with the exception of the new map.
         if (typeof headerSettings !== 'undefined' && headerSettings.username && headerSettings.avatarUrl && headerSettings.locale) {
-            clog('Global data headerSettings found');
+            tlc('Global data headerSettings found');
             global_me = headerSettings.username;
             global_avatarUrl = headerSettings.avatarUrl;
             global_findCount = headerSettings.findCount;
             global_locale = headerSettings.locale;
         // New map.
         } else if (typeof _gcUser !== 'undefined' && _gcUser.username && _gcUser.image && _gcUser.image.imageUrl && _gcUser.locale) {
-            clog('Global data _gcUser found');
+            tlc('Global data _gcUser found');
             global_me = _gcUser.username;
             global_avatarUrl = _gcUser.image.imageUrl.replace(/\{0\}/,'avatar');
             global_findCount = _gcUser.findCount;
             global_locale = _gcUser.locale;
         }
         if (global_me != '') {
-            clog('global_me: '+global_me+' / global_avatarUrl: '+global_avatarUrl);
-            clog('global_findCount: '+global_findCount+' / global_locale: '+global_locale);
+            tlc('global_me: '+global_me+' / global_avatarUrl: '+global_avatarUrl);
+            tlc('global_findCount: '+global_findCount+' / global_locale: '+global_locale);
             mainGC();
         } else {
             waitCount++;
             if (waitCount <= 200) {setTimeout(function(){waitingForUserParameter(waitCount);}, 50);}
-            else {clog('STOP No global data found');}
+            else {tlc('STOP No global data found');}
         }
     }
     waitingForUserParameter(0);
@@ -1237,7 +1236,7 @@ var mainGCWait = function() {
 // 5.1.2 GC - Main 2 ($$cap) (For the geocaching webpages.)
 ////////////////////////////
 var mainGC = function() {
-    clog('START maingc');
+    tlc('START maingc');
 
 // CSS for header.
     // Make GC header invisible.
@@ -1256,14 +1255,14 @@ var mainGC = function() {
     appendCssStyle(css);
 
 // After change of a bookmark respectively a bookmark list go automatically from confirmation screen to bookmark list.
-    clog('START After change');
+    tlc('START After change');
     if (((settings_bm_changed_and_go && document.location.href.match(/\.com\/bookmarks\/mark\.aspx\?(guid=|ID=|view=legacy&guid=|view=legacy&ID=)/)) || (settings_bml_changed_and_go && document.location.href.match(/\.com\/bookmarks\/edit\.aspx/))) && $('#divContentMain')[0] && $('p.Success a[href*="/bookmarks/view.aspx?guid="]')[0]) {
         $('#divContentMain').css("visibility", "hidden");
         document.location.href = $('p.Success a')[0].href;
     }
 
 // Set language to default language.
-    clog('START Set language');
+    tlc('START Set language');
     try {
         var langu_string = langus_code[langus.indexOf(settings_default_langu)] + '-';
         if (settings_set_default_langu && !global_locale.match(langu_string)) {
@@ -1288,7 +1287,7 @@ var mainGC = function() {
     } catch(e) {gclh_error("Set language to default language",e);}
 
 // Faster loading trackables without images.
-    clog('START Faster loading');
+    tlc('START Faster loading');
     if (settings_faster_profile_trackables && is_page("publicProfile") && $('#ctl00_ContentBody_ProfilePanel1_lnkCollectibles.Active')[0]) {
         try {
             $('table.Table tbody tr td a img').each(function() {this.src = "/images/icons/16/watch.png"; this.title = ""; this.style.paddingLeft = "15px";});
@@ -1296,7 +1295,7 @@ var mainGC = function() {
     }
 
 // Migration: Installationszähler. Migrationsaufgaben erledigen.
-    clog('START Migration');
+    tlc('START Migration');
     var declaredVersion = getValue("declared_version");
     if (declaredVersion != scriptVersion) {
         try {
@@ -1306,7 +1305,7 @@ var mainGC = function() {
     }
 
 // Redirect to Map (von Search Liste direkt in Karte springen).
-    clog('START Redirect');
+    tlc('START Redirect');
     if (settings_redirect_to_map && document.location.href.match(/\.com\/seek\/nearest\.aspx\?/)) {
         if (!document.location.href.match(/&disable_redirect=/) && !document.location.href.match(/key=/) && !document.location.href.match(/ul=/) && $('#ctl00_ContentBody_LocationPanel1_lnkMapIt')[0]) {
             $('#ctl00_ContentBody_LocationPanel1_lnkMapIt')[0].click();
@@ -1314,7 +1313,7 @@ var mainGC = function() {
     }
 
 // F2, F4, F10 keys.
-    clog('START F-keys');
+    tlc('START F-keys');
     try {
         // F2 key.
         if (settings_submit_log_button) {
@@ -1387,42 +1386,42 @@ var mainGC = function() {
     } catch(e) {gclh_error("F2, F4, F10 keys",e);}
 
 // Wait for header and build up header.
-    clog('START buildUpHeader');
+    tlc('START buildUpHeader');
     try {
         function buildUpHeader(waitCount) {
             if ($('#gc-header, #GCHeader')[0]) {
-                clog('Header found');
+                tlc('Header found');
                 // Integrate old header. closest examples: Dashboard, Owner Dashboard, New Map, My Lists.
                 ($('#gc-header') || $('#GCHeader')).closest('#gc-header-root, #header-root, #root, #app-root').prepend(header_old);
                 // Run header relevant features.
-                clog('START setUserParameter');
+                tlc('START setUserParameter');
                 setUserParameter();
-                clog('START setMessageIndicator');
+                tlc('START setMessageIndicator');
                 setMessageIndicator(0);
-                clog('START changeHeaderLayout');
+                tlc('START changeHeaderLayout');
                 changeHeaderLayout();
-                clog('START newWidth');
+                tlc('START newWidth');
                 newWidth();
-                clog('START removeGCMenues');
+                tlc('START removeGCMenues');
                 removeGCMenues();
-                clog('START linklistOnTop');
+                tlc('START linklistOnTop');
                 linklistOnTop();
-                clog('START buildSpecialLinklistLinks');
+                tlc('START buildSpecialLinklistLinks');
                 buildSpecialLinklistLinks();
-                clog('START runAfterRedirect');
+                tlc('START runAfterRedirect');
                 runAfterRedirect();
-                clog('START showDraftIndicatorInHeader');
+                tlc('START showDraftIndicatorInHeader');
                 showDraftIndicatorInHeader();
                 // User profile menu bend into shape.
-                clog('START User profile');
+                tlc('START User profile');
                 $('#ctl00_uxLoginStatus_divSignedIn button.li-user-toggle')[0].addEventListener('click', function(){
                     $('#ctl00_uxLoginStatus_divSignedIn li.li-user').toggleClass('gclh_open');
                 });
-                clog('START OK');
+                tlc('START OK');
             } else {
                 waitCount++;
                 if (waitCount <= 1000) {setTimeout(function(){buildUpHeader(waitCount);}, 10);}
-                else {clog('STOP No header found');}
+                else {tlc('STOP No header found');}
             }
         }
         buildUpHeader(0);
@@ -7280,13 +7279,14 @@ var mainGC = function() {
                 setLinesColorInCacheListing();
             }
             (document.getElementById("cache_logs_table2") || document.getElementById("cache_logs_table")).addEventListener('DOMNodeInserted', loadListener);
-            if (isTM === false) {
-                window.addEventListener("message", function(ev) {
-                    if (ev.origin !== "https://www.geocaching.com" && ev.origin !== "https://www.geocaching.com") return;
-                    if (ev.data === "gclh_add_vip_icon") gclh_add_vip_icon();
-                    if (ev.data === "setLinesColorInCacheListing") setLinesColorInCacheListing();
-                });
-            }
+//xxxx
+//            if (isTM === false) {
+//                window.addEventListener("message", function(ev) {
+//                    if (ev.origin !== "https://www.geocaching.com" && ev.origin !== "https://www.geocaching.com") return;
+//                    if (ev.data === "gclh_add_vip_icon") gclh_add_vip_icon();
+//                    if (ev.data === "setLinesColorInCacheListing") setLinesColorInCacheListing();
+//                });
+//            }
 
             function disablePageAutoScroll() {
                 var unsafeWindow = (typeof(unsafeWindow) == "undefined" ? window : unsafeWindow);
@@ -7760,7 +7760,9 @@ var mainGC = function() {
                         // Disable scroll Function on Page.
                         if (browser === "chrome" || browser === "firefox") injectPageScriptFunction(disablePageAutoScroll, "()");
                         else disablePageAutoScroll();
-                        if (isTM === true) (document.getElementById("cache_logs_table2") || document.getElementById("cache_logs_table")).removeEventListener('DOMNodeInserted', loadListener);
+//xxxx
+//                        if (isTM === true) (document.getElementById("cache_logs_table2") || document.getElementById("cache_logs_table")).removeEventListener('DOMNodeInserted', loadListener);
+                        (document.getElementById("cache_logs_table2") || document.getElementById("cache_logs_table")).removeEventListener('DOMNodeInserted', loadListener);
                         // Hide initial Logs.
                         var tbodys = document.getElementById("cache_logs_table").getElementsByTagName("tbody");
                         if (tbodys.length > 0) {
@@ -11764,6 +11766,23 @@ var mainGC = function() {
 /////////////////////////////
 // 5.2 GC - Functions ($$cap) (Functions for the geocaching webpages.)
 /////////////////////////////
+// Leaflet init.
+    function leafletInit() {
+        try {
+            if ( typeof L == "undefined" ) {
+                if ( !$('#gclh_leafletjs').length ) {
+                    var newCSS = GM_getResourceText ("leafletcss");
+                    GM_addStyle (newCSS);
+                    var newJS = GM_getResourceText("leafletjs");
+                    injectPageScript(newJS, "body", 'gclh_leafletjs');
+                }
+            }
+            if ( L.version != "0.7.2" ) {
+                console.error("Unexpected version of leaflet. Version 0.7.2 required, version "+L.version+" is loaded.");
+            }
+        } catch(e) {gclh_error("function leafletInit",e);}
+    }
+
 // Searches for the owner's original username from the listing.
     function get_real_owner() {
         if ($('#ctl00_ContentBody_bottomSection')) {
@@ -12142,21 +12161,6 @@ var mainGC = function() {
 
 // Do migration tasks for new version.
     function migrationTasks() {
-        // Migrate Mail signature to Mail template (zu v0.4).
-        if (getValue("migration_task_01", false) != true) {
-            if (settings_show_mail || settings_show_message) {
-                var template = "Hi #Receiver#,";
-                if (getValue("settings_show_mail_coordslink") == true || getValue("settings_show_message_coordslink") == true) template += "\n\n#GCTBName# #GCTBLink#";
-                if (getValue("settings_mail_signature", "") != "") template += "\n\n" + getValue("settings_mail_signature");
-                setValue("settings_mail_signature", template);
-            }
-            setValue("migration_task_01", true);
-        }
-        // Migrate simplification edit button on new dashboard (zu v0.10.10).
-        if (getValue("migration_task_02", false) != true) {
-            GM_setValue('urlLogs', []);
-            setValue("migration_task_02", true);
-        }
         // Migrate elevation parameters first service to 'GeoNames' and second service to 'Open-Elevation' (zu v0.10.11).
         if (getValue("migration_task_03", false) != true) {
             setValue("settings_primary_elevation_service", 3);
@@ -12176,6 +12180,13 @@ var mainGC = function() {
             setValue("settings_show_link_to_browse_map", true);
             settings_show_link_to_browse_map = true;
             setValue("migration_task_05", true);
+        }
+        // Migrate: Delete old parameter (zu v0.11.2).
+        if (getValue("migration_task_06", false) != true) {
+            GM_deleteValue('isTampermonkey');
+            GM_deleteValue('urlLogs');
+            GM_deleteValue('headerReplacement');
+            setValue("migration_task_06", true);
         }
     }
 
@@ -14489,7 +14500,7 @@ var mainGC = function() {
             html += checkboxy('settings_gclherror_alert', 'Show an alert if an internal error occurs') + show_help("Show an alert on the top of the page, if gclh_error() is called.") + "<br>";
             html += newParameterVersionSetzen(0.9) + newParameterOff;
             html += newParameterOn2;
-            html += checkboxy('settings_console', 'Console output') + "<br>";
+            html += checkboxy('settings_test_log_console', 'Test log console') + "<br>";
             html += newParameterVersionSetzen('0.11') + newParameterOff;
             html += "</div>";
 
@@ -15158,8 +15169,8 @@ var mainGC = function() {
             }
             setValue('settings_map_layers', new_settings_map_layers.join("###"));
 
+            // Checkboxes übernehmen.
             var checkboxes = new Array(
-                'settings_console',
                 'settings_submit_log_button',
                 'settings_log_inline',
                 'settings_log_inline_pmo4basic',
@@ -15422,8 +15433,8 @@ var mainGC = function() {
                 'settings_smaller_upvotes_icons',
                 'settings_no_wiggle_upvotes_click',
                 'settings_show_country_in_place',
+                'settings_test_log_console',
             );
-
             for (var i = 0; i < checkboxes.length; i++) {
                 if (document.getElementById(checkboxes[i])) setValue(checkboxes[i], document.getElementById(checkboxes[i]).checked);
             }
@@ -15434,7 +15445,7 @@ var mainGC = function() {
                 var text = document.getElementById('settings_log_template[' + i + ']');
                 if (name && text) {
                     setValue('settings_log_template_name[' + i + ']', name.value);
-                    setValue('settings_log_template[' + i + ']', text.value.replace(/‌/g, ""));  // Entfernt das Steuerzeichen.
+                    setValue('settings_log_template[' + i + ']', text.value.replace(/‌/g, "")); // Entfernt das Steuerzeichen.
                 }
             }
 
@@ -15470,6 +15481,9 @@ var mainGC = function() {
                         });
                 } else window.location.reload(false);
             });
+
+            GM_setValue('test_log_console', getValue('settings_test_log_console', false));
+
             if (getValue("settings_show_save_message")) {
                 document.getElementById("save_overlay_h3").innerHTML = "saved";
                 if (type === "upload") $("#save_overlay").fadeOut(400);
@@ -15565,7 +15579,7 @@ var mainGC = function() {
         }
     }
 
-// Handling von Events zu Parametern, die im GClh Config mehrfach ausgegeben wurden, weil sie zu mehreren Themen gehören. Es kann sich hier um den Parameter selbst 
+// Handling von Events zu Parametern, die im GClh Config mehrfach ausgegeben wurden, weil sie zu mehreren Themen gehören. Es kann sich hier um den Parameter selbst
 // handeln (ZB: "settings_show_vip_list"), oder um dessen Clone, die hinten mit "X" und Nummerierung von 0-9 enden können (ZB: "settings_show_vip_listX0"). Hier wird
 // Wert des eventauslösenden Parameters, das kann auch Clone sein, an den eigentlichen Parameter und dessen Clone weitergereicht.
     function handleEvForDouPara(para) {
@@ -16282,7 +16296,6 @@ var mainGC = function() {
 //--> $$007
         // Reset data outside of CONFIG.
         [changed, changedData] = rcNoConfigDataDel('clipboard', false, changed, changedData);
-        [changed, changedData] = rcNoConfigDataDel('headerReplacement', false, changed, changedData);
 //<-- $$007
         document.getElementById('rc_configData').innerText = changedData;
         CONFIG = config_tmp;
@@ -16365,7 +16378,7 @@ var mainGC = function() {
                         else ret[key] = [ret[key], val];
                     });
                     return ret;
-                } catch(e) { gclh_error("parseQueryString()",e)};
+                } catch(e) {gclh_error("parseQueryString()",e)};
             }
         };
     })(window);
@@ -17017,7 +17030,7 @@ var mainGC = function() {
                 }
             }
             waitForContent(0);
-        }  catch(e) {gclh_error('Get asynchron data',e);}
+        } catch(e) {gclh_error('Get asynchron data',e);}
     }
 
 // Get url parameter.
@@ -17152,11 +17165,6 @@ function otherFormats(box, coords, trenn) {
     box.innerHTML += trenn+"DMS: "+dms;
 }
 
-// Output to console.
-function clog(output) {
-    if (settings_console && output != '') console.log('GClh: '+output);
-}
-
 // Create bookmark to GC page.
 function bookmark(title, href, bookmarkArray) {
     var bm = new Object();
@@ -17249,6 +17257,10 @@ function gclh_error(modul, err) {
         }
         $("#gclh-gurumeditation > div > div").append( "<p>"+modul + ": " + err.message+"</p>");
     }
+}
+// Test log console.
+function tlc(output) {
+    if (test_log_console && output != '') console.log('GClh: '+output);
 }
 
 // Set Get Values.
