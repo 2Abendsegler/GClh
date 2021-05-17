@@ -152,7 +152,7 @@ See <a href="../docu/tips_installation.md#android_en" title="Link to 'Tips for t
 
 <a id="7-en"></a>
 ## 7. How can I contribute to GClh?
-We are happy about improvement suggestions, bugfixes or new features. This is realized via pull requests. You can read how to create a Pull-Request here: <a href="https://github.com/2Abendsegler/GClh/blob/master/docu/how_to_contribute.md#en">How to contribute</a><br>
+We are happy about improvement suggestions, bugfixes or new features. This is realised via pull requests. You can read how to create a Pull-Request here: <a href="https://github.com/2Abendsegler/GClh/blob/master/docu/how_to_contribute.md#en">How to contribute</a><br>
 <br>
 
 <a id="8-en"></a>
