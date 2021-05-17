@@ -55,7 +55,7 @@ Die Konfiguration muß unbedingt vor den Upgrades auf Firefox 57 und Greasemonke
 <br>
 
 ### <a id="6en"></a>6. Copy configuration of "GC little helper II" in Firefox from Greasemonkey to Tampermonkey or Violentmonkey:
-The GC little helper II can not run from Firefox version 57 with script manager Greasemonkey 4. Therefore please install the script manager [Tampermonkey](https://addons.mozilla.org/en-US/firefox/addon/tampermonkey/) oder [Violentmonkey](https://addons.mozilla.org/firefox/addon/violentmonkey/).<br>
+The GC little helper II can not run from Firefox version 57 with script manager Greasemonkey 4. Therefore please install the script manager [Tampermonkey](https://addons.mozilla.org/en-US/firefox/addon/tampermonkey/) or [Violentmonkey](https://addons.mozilla.org/firefox/addon/violentmonkey/).<br>
 <br>
 The configuration must necessarily be copied before upgrading to Firefox 57 and Greasemonkey 4, because the necessary functionality of the GClh will no longer work with these upgrades.
 <ul>
