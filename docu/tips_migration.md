@@ -37,14 +37,14 @@ Einen Link zum "GC little helper Sync II" gibt es im <a href="http://www.geocach
 <br>
 
 ### <a id="6de"></a>6. Konfiguration des "GC little helper II" in Firefox von Greasemonkey nach Tampermonkey kopieren:
-Der GC little helper II ist ab Firefox Version 57 unter dem Script-Manager Greasemonkey 4 nicht mehr lauffähig. Deshalb bitte den Script-Manager [Tampermonkey](https://addons.mozilla.org/de/firefox/addon/tampermonkey/) installieren.<br>
+Der GC little helper II ist ab Firefox Version 57 unter dem Scriptmanager Greasemonkey 4 nicht mehr lauffähig. Deshalb bitte den Scriptmanager [Tampermonkey](https://addons.mozilla.org/de/firefox/addon/tampermonkey/) installieren.<br>
 <br>
 Die Konfiguration muß unbedingt vor den Upgrades auf Firefox 57 und Greasemonkey 4 kopiert werden, weil die dazu notwendige Funktionalität des GClhs mit diesen Upgrades nicht mehr funktioniert.
 <ul>
-<li>Aktiviert Script-Manager Greasemonkey und deaktiviert Script-Manager Tampermonkey.</li>
+<li>Aktiviert Scriptmanager Greasemonkey und deaktiviert Scriptmanager Tampermonkey.</li>
 <li>Geht ins <a href="http://www.geocaching.com/my/">eigene Dashboard</a> und wählt beim Avatar den "GClh Sync II" aus oder wählt alternativ folgenden <a href="https://www.geocaching.com/geocache/GC40#GClhShowSync">Link</a>.</li>
 <li>Wählt dann "Manual" und den Button "export". Im Fenster dann mit rechter Maustaste "Alles markieren" und anschließend mit rechter Maustaste "kopieren" und dann Button "close".</li>
-<li>Deaktiviert Script-Manager Greasemonkey und aktiviert Script-Manager Tampermonkey.</li>
+<li>Deaktiviert Scriptmanager Greasemonkey und aktiviert Scriptmanager Tampermonkey.</li>
 <li>Geht ins <a href="http://www.geocaching.com/my/">eigene Dashboard</a> und wählt neben dem Avatar den "GClh Sync II" aus oder wählt alternativ folgenden <a href="https://www.geocaching.com/geocache/GC40#GClhShowSync">Link</a>.</li>
 <li>Wählt dann "Manual". Im Fenster dann mit rechter Maustaste "Einfügen" und anschließend den Button "import" wählen.</li>
 </ul>
