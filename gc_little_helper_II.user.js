@@ -7279,14 +7279,6 @@ var mainGC = function() {
                 setLinesColorInCacheListing();
             }
             (document.getElementById("cache_logs_table2") || document.getElementById("cache_logs_table")).addEventListener('DOMNodeInserted', loadListener);
-//xxxx
-//            if (isTM === false) {
-//                window.addEventListener("message", function(ev) {
-//                    if (ev.origin !== "https://www.geocaching.com" && ev.origin !== "https://www.geocaching.com") return;
-//                    if (ev.data === "gclh_add_vip_icon") gclh_add_vip_icon();
-//                    if (ev.data === "setLinesColorInCacheListing") setLinesColorInCacheListing();
-//                });
-//            }
 
             function disablePageAutoScroll() {
                 var unsafeWindow = (typeof(unsafeWindow) == "undefined" ? window : unsafeWindow);
@@ -7760,8 +7752,6 @@ var mainGC = function() {
                         // Disable scroll Function on Page.
                         if (browser === "chrome" || browser === "firefox") injectPageScriptFunction(disablePageAutoScroll, "()");
                         else disablePageAutoScroll();
-//xxxx
-//                        if (isTM === true) (document.getElementById("cache_logs_table2") || document.getElementById("cache_logs_table")).removeEventListener('DOMNodeInserted', loadListener);
                         (document.getElementById("cache_logs_table2") || document.getElementById("cache_logs_table")).removeEventListener('DOMNodeInserted', loadListener);
                         // Hide initial Logs.
                         var tbodys = document.getElementById("cache_logs_table").getElementsByTagName("tbody");
