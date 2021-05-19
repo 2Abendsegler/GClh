@@ -384,7 +384,9 @@ var variablesInit = function(c) {
     c.settings_f2_save_gclh_config = getValue("settings_f2_save_gclh_config", true);
     c.settings_esc_close_gclh_config = getValue("settings_esc_close_gclh_config", true);
     c.settings_f4_call_gclh_config = getValue("settings_f4_call_gclh_config", true);
+    c.settings_call_config_via_sriptmanager = getValue("settings_call_config_via_sriptmanager", true);
     c.settings_f10_call_gclh_sync = getValue("settings_f10_call_gclh_sync", true);
+    c.settings_call_sync_via_sriptmanager = getValue("settings_call_sync_via_sriptmanager", true);
     c.settings_show_sums_in_bookmark_lists = getValue("settings_show_sums_in_bookmark_lists", true);
     c.settings_show_sums_in_watchlist = getValue("settings_show_sums_in_watchlist", true);
     c.settings_hide_warning_message = getValue("settings_hide_warning_message", true);
@@ -11154,8 +11156,9 @@ var mainGC = function() {
 
 // Build link to config in script manager menue. (Thanks to Geothumbs for the template.)
     try {
-        GM_registerMenuCommand('Configurator', gclh_showConfig);
-    } catch(e) {} // Ignore error
+        if (settings_call_config_via_sriptmanager) GM_registerMenuCommand('Configurator', gclh_showConfig);
+        if (settings_call_sync_via_sriptmanager) GM_registerMenuCommand('Synchronizer', gclh_showSync);
+    } catch(e) {} // Ignore error.
 
 // Eingaben im Search Field verarbeiten.
     if (document.location.href.match(/\.com\/seek\/nearest\.aspx\?navi_search=/)) {
@@ -13337,17 +13340,24 @@ var mainGC = function() {
             html += "</table>";
             html += "</div>";
 
-            html += "<h4 class='gclh_headline2' title='this page'>"+prepareHideable.replace("#name#","config")+"GClh Config / Sync</h4>";
+            html += "<h4 class='gclh_headline2' title='this page'>"+prepareHideable.replace("#name#","config")+"GClh II Configurator<span title='' style='font-size: 14px'>" + show_help("This topic contains the settings for the current page itself, the GClh II Configurator (short Config).") + "</span></h4>";
             html += "<div id='gclh_config_config' class='gclh_block'>";
-            html += checkboxy('settings_f4_call_gclh_config', 'Call GClh Config on F4') + show_help("With this option you are able to call the GClh Config page (this page) by pressing key F4 from all GC pages.") + "<br>";
-            html += checkboxy('settings_f2_save_gclh_config', 'Save GClh Config on F2') + show_help("With this option you are able to save the GClh Config page (this page) by pressing key F2 instead of scrolling to the bottom and choose the save button.") + "<br>";
-            html += checkboxy('settings_esc_close_gclh_config', 'Close GClh Config on ESC') + show_help("With this option you are able to close the GClh Config page (this page) by pressing ESC.") + "<br>";
-            html += checkboxy('settings_f10_call_gclh_sync', 'Call GClh Sync on F10') + show_help("With this option you are able to call the GClh Sync page by pressing key F10.") + "<br>";
-            html += checkboxy('settings_sync_autoImport', 'Auto apply DB Sync') + show_help("If you enable this option, settings from DropBox will be applied automatically about GClh Sync every 10 hours.") + "<br>";
-            html += checkboxy('settings_show_save_message', 'Show info message if GClh data are saved') + show_help("With this option an info message is displayed if the GClh Config data are saved respectively if the GClh Sync data are imported.") + "<br>";
-            html += checkboxy('settings_sort_default_bookmarks', 'Sort default links for the Linklist') + show_help("With this option you can sort the default links for the Linklist by description. You can configure these default links to use in your Linklist at the end of this configuration page.<br><br>A change at this option evolute its effect only after a save.") + "<br>";
-            html += checkboxy('settings_hide_colored_versions', 'Hide colored illustration of versions') + show_help("With this option the colored illustration of the versions and the version numbers in GClh Config (this page) are selectable.<br><br>A change at this option evolute its effect only after a save.") + "<br>";
-            html += checkboxy('settings_make_config_main_areas_hideable', 'Make main areas in GClh Config hideable') + show_help("With this option you can hide and show the main areas in GClh Config (this page) with a left mouse click. With a right mouse click you can hide and show all the main areas in GClh Config together.<br><br>A change at this option evolute its effect only after a save.") + "<br>";
+            html += checkboxy('settings_f4_call_gclh_config', 'Call via F4 key') + show_help("This option allows you to access the GClh II Configurator (this page) by pressing the F4 key on your keyboard from any geocaching.com page.") + "<br>";
+            html += checkboxy('settings_call_config_via_sriptmanager', 'Call via the script manager') + show_help("This option creates a link to the GClh II Configurator in the menu of the script manager (Tampermonkey, Violentmonkey ...). With a click on the icon of the script manager you get to the menu of the script manager. The link to the GClh II Configurator is then located below the GClh II. The link is available on any geocaching.com page.") + "<br>";
+            html += checkboxy('settings_f2_save_gclh_config', 'Save via F2 key') + show_help("This option allows you to save the GClh II Configurator (this page) by pressing the F2 key on your keyboard instead of scrolling down and selecting the Save button.") + "<br>";
+            html += checkboxy('settings_esc_close_gclh_config', 'Close via ESC key') + show_help("This option allows you to close the GClh II Configurator (this page) by pressing the ESC key on your keyboard instead of scrolling down and selecting the Close button.") + "<br>";
+            html += checkboxy('settings_show_save_message', 'Show info message when data are saved') + show_help("With this option an info message is displayed when the data of the GClh II Configurator (this page) has been saved or when the data of the GClh II Synchronizer has been imported.") + "<br>";
+            html += checkboxy('settings_sort_default_bookmarks', 'Sort the default links for the Linklist') + show_help("This option allows you to sort the default links for the Linklist by description. You can configure these default links for use in your Linklist at the bottom of this GClh II Configurator.<br><br>Changing this option will only take effect after saving.") + "<br>";
+            html += checkboxy('settings_hide_colored_versions', 'Hide colored representation of the versions') + show_help("With this option the color representation of the versions and the version numbers in the GClh II Configurator (this page) can be selected.<br><br>Changing this option will only take effect after saving.") + "<br>";
+            html += checkboxy('settings_make_config_main_areas_hideable', 'Make the main areas hideable') + show_help("With this option you can show and hide the main areas in the GClh II Configurator (this page) with a left mouse click. With a right click you can show and hide all main areas in the GClh II Configurator.<br><br>Changing this option will only take effect after saving.") + "<br>";
+            html += "</div>";
+
+            html += "<h4 class='gclh_headline2''>"+prepareHideable.replace("#name#","sync")+"GClh II Synchronizer<span style='font-size: 14px'>" + show_help("This topic contains the settings for the GClh II Synchronizer (short Sync).") + "</span></h4>";
+            html += "<div id='gclh_config_sync' class='gclh_block'>";
+            html += checkboxy('settings_f10_call_gclh_sync', 'Call via F10 key') + show_help("This option allows you to access the GClh II Synchronizer by pressing the F10 key on your keyboard from any geocaching.com page.") + "<br>";
+            html += checkboxy('settings_call_sync_via_sriptmanager', 'Call via the script manager') + show_help("This option creates a link to the GClh II Synchronizer in the menu of the script manager (Tampermonkey, Violentmonkey ...). With a click on the icon of the script manager you get to the menu of the script manager. The link to the GClh II Synchronizer is then located below the GClh II. The link is available on any geocaching.com page.") + "<br>";
+            html += checkboxy('settings_show_save_messageX0', 'Show info message when data are imported') + show_help("With this option an info message is displayed when the data of the GClh II Configurator (this page) has been saved or when the data of the GClh II Synchronizer has been imported.") + "<br>";
+            html += checkboxy('settings_sync_autoImport', 'Automatic synchronization with your Dropbox') + show_help("With this option you can automatically synchronize the data every 10 hours via the GClh II Synchronizer from your Dropbox. That means uploading the data from your Dropbox to the GClh II Configurator.") + "<br>";
             html += "</div>";
 
             html += "<h4 class='gclh_headline2'>"+prepareHideable.replace("#name#","nearestlist")+"Nearest list</h4>";
@@ -14227,6 +14237,7 @@ var mainGC = function() {
             if (settings_make_config_main_areas_hideable && !document.location.href.match(/#a#/i)) {
                 makeConfigAreaHideable("global");
                 makeConfigAreaHideable("config");
+                makeConfigAreaHideable("sync");
                 makeConfigAreaHideable("nearestlist");
                 makeConfigAreaHideable("pq");
                 makeConfigAreaHideable("bm");
@@ -14490,6 +14501,7 @@ var mainGC = function() {
             // Events setzen für Parameter, die im GClh Config mehrfach ausgegeben wurden, weil sie zu mehreren Themen gehören. Es handelt
             // sich hier um den Parameter selbst. In der Function werden Events für den Parameter selbst (ZB: "settings_show_vip_list")
             // und dessen Clone gesetzt, die hinten mit "X" und Nummerierung von 0-9 enden können (ZB: "settings_show_vip_listX0").
+            setEvForDouPara("settings_show_save_message", "click");
             setEvForDouPara("settings_show_vip_list", "click");
             setEvForDouPara("settings_process_vup", "click");
             setEvForDouPara("settings_log_inline_tb", "click");
@@ -14916,7 +14928,9 @@ var mainGC = function() {
                 'settings_f2_save_gclh_config',
                 'settings_esc_close_gclh_config',
                 'settings_f4_call_gclh_config',
+                'settings_call_config_via_sriptmanager',
                 'settings_f10_call_gclh_sync',
+                'settings_call_sync_via_sriptmanager',
                 'settings_show_sums_in_bookmark_lists',
                 'settings_show_sums_in_watchlist',
                 'settings_hide_warning_message',
@@ -15658,6 +15672,7 @@ var mainGC = function() {
         showHide = showHideBoxCL(id_lnk, false);
         setShowHideConfigAll("gclh_config_global", showHide);
         setShowHideConfigAll("gclh_config_config", showHide);
+        setShowHideConfigAll("gclh_config_sync", showHide);
         setShowHideConfigAll("gclh_config_nearestlist", showHide);
         setShowHideConfigAll("gclh_config_pq", showHide);
         setShowHideConfigAll("gclh_config_bm", showHide);
@@ -16318,7 +16333,7 @@ var mainGC = function() {
         if ($('.hover.open')[0]) $('.hover.open')[0].className = "";
     }
 
-// Auto import.
+// Auto import from Dropbox.
     if (settings_sync_autoImport && (settings_sync_last.toString() === "Invalid Date" || (new Date() - settings_sync_last) > settings_sync_time) && document.URL.indexOf("#access_token") === -1) {
         gclh_sync_DBHash()
             .done(function(hash) {
