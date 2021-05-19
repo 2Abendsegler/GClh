@@ -2941,8 +2941,8 @@ var mainGC = function() {
         try {
             leafletInit();
             var css = '';
-            css += '.mapIcons {position: relative; z-index: 1000; margin-top: 10px; margin-right: 10px; float: right; height: 22px; border-radius: 4px;}';
-            css += '.mapIcons:hover {background-color: white; box-shadow: 0 1px 5px rgba(0,0,0,.65);}';
+            css += '.mapIcons {position: relative; z-index: 1000; margin-top: 10px; margin-right: 10px; float: right; height: 22px; border-radius: 4px; box-shadow: 0 1px 5px rgba(0, 0, 0, 0.65); background-color: #fff;}';
+            css += '.mapIcons:hover {background-color: #fdf7f7; box-shadow: 0 1px 5px rgba(0,0,0,.65);}';
             css += '.mapIcons svg {width: 18px; height: 18px; color: #4a4a4a; opacity: 0.85; padding: 2px;}';
             css += '.search_map_icon {margin-top: 2px; margin-bottom: -2px; margin-left: 2px;}';
             appendCssStyle(css);
