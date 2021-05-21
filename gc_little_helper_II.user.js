@@ -2942,7 +2942,7 @@ var mainGC = function() {
             leafletInit();
             var css = '';
             css += '.mapIcons {position: relative; z-index: 1000; margin-top: 10px; margin-right: 10px; float: right; height: 22px; border-radius: 4px; box-shadow: 0 1px 5px rgba(0, 0, 0, 0.65); background-color: #fff;}';
-            css += '.mapIcons:hover {background-color: #fdf7f7; box-shadow: 0 1px 5px rgba(0,0,0,.65);}';
+            css += '.mapIcons:hover {background-color: #f4f4f4; box-shadow: 0 1px 5px rgba(0,0,0,.65);}';
             css += '.mapIcons svg {width: 18px; height: 18px; color: #4a4a4a; opacity: 0.85; padding: 2px;}';
             css += '.search_map_icon {margin-top: 2px; margin-bottom: -2px; margin-left: 2px;}';
             appendCssStyle(css);
@@ -2952,10 +2952,10 @@ var mainGC = function() {
             if (settings_map_overview_search_map_icon || settings_map_overview_browse_map_icon) {
                 html += "<span class='mapIcons'>";
                 if (settings_map_overview_search_map_icon) {
-                    html += "<a href='" + new_map_url + "?lat=" + lat + "&lng=" + lng + "' title='Search Map' " + (settings_map_overview_search_map_icon_new_tab ? "target='_blank'":"") + ">" + search_map_icon + "</a>";
+                    html += "<a href='" + new_map_url + "?lat=" + lat + "&lng=" + lng + "' title='overview new map' " + (settings_map_overview_search_map_icon_new_tab ? "target='_blank'":"") + ">" + search_map_icon + "</a>";
                 }
                 if (settings_map_overview_browse_map_icon) {
-                    html += "<a href='" + map_url + "?lat=" + lat + "&lng=" + lng + "' title='Browse Map' " + (settings_map_overview_browse_map_icon_new_tab ? "target='_blank'":"") + ">" + browse_map_icon + "</a>";
+                    html += "<a href='" + map_url + "?lat=" + lat + "&lng=" + lng + "' title='overview old map' " + (settings_map_overview_browse_map_icon_new_tab ? "target='_blank'":"") + ">" + browse_map_icon + "</a>";
                 }
                 html += "</span>'>";
             }
@@ -13836,9 +13836,9 @@ var mainGC = function() {
             html += "</select>" + show_help3("With this option you can choose the zoom value to start in the map. \"1\" is the hole world and \"19\" is the maximal enlargement. Default is \"11\". <br><br>This option requires \"Show cache location in overview map\".") + "<br>";
             html += newParameterVersionSetzen(0.9) + newParameterOff;
             html += newParameterOn2;
-            html += "&nbsp; " + checkboxy('settings_map_overview_browse_map_icon', 'Show icon with link to old map in overview map') + "<br>";
+            html += "&nbsp; " + checkboxy('settings_map_overview_browse_map_icon', 'Show icon with link to <b>old map</b> in overview map') + "<br>";
             html += " &nbsp; &nbsp; " + checkboxy('settings_map_overview_browse_map_icon_new_tab', 'Open link in new browser tab') + "<br>";
-            html += "&nbsp; " + checkboxy('settings_map_overview_search_map_icon', 'Show icon with link to new map in overview map') + "<br>";
+            html += "&nbsp; " + checkboxy('settings_map_overview_search_map_icon', 'Show icon with link to <b>new map</b> in overview map') + "<br>";
             html += " &nbsp; &nbsp; " + checkboxy('settings_map_overview_search_map_icon_new_tab', 'Open link in new browser tab') + "<br>";
             html += newParameterVersionSetzen('0.11') + newParameterOff;
 
