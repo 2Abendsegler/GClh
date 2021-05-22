@@ -3,7 +3,7 @@
 
 ---
 # GC little helper II <a id="user-content-en"></a>
-*Some little things to make life easier (on www.geocaching.com).*
+*Some little things to make life easier (on www.geocaching.com).*<br>
 *Powerful, configurable tool to improve and expand the geocaching pages.*
 
 ## Supported Browsers
@@ -22,7 +22,7 @@ If you want to ask questions, report bugs or request new features, you can do so
 - [Geocaching Forum - GC little helper II](https://forums.geocaching.com/GC/index.php?/topic/343005-gc-little-helper-ii/)
 - [Geoclub Geocaching Forum - Scripte](https://geoclub.de/forum/viewforum.php?f=117)
 - [Swiss Geocache Forum - GC little helper II](https://www.swissgeocacheforum.ch/forum/topic/12872-gc-little-helper-ii/)
-- Our [ticket system](https://github.com/2Abendsegler/GClh/issues) on this platform
+- Our [Ticket System](https://github.com/2Abendsegler/GClh/issues) on this platform
 
 ## Our Goal
 *GC little helper II* is a powerful tool to enhance and extend the functionality on the geocaching pages of www.geocaching.com. All functions can be configured in a configuration menu. The tool uses english as language.
