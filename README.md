@@ -35,6 +35,7 @@ The tool is developed in Javascript and can be used with the script manager Tamp
 
 ## How can you help?
 If you'd like to implement features, bug fixes, or improvements yourself, read [here](https://github.com/2Abendsegler/GClh/blob/master/docu/how_to_contribute.md#en) how you can contribute. 
+
 All Geocacher and others are encouraged to help with the development or the support of this tool.
 
 ---
