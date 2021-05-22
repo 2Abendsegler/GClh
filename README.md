@@ -26,8 +26,6 @@ The tool is developed in Javascript and can be used with the script manager Tamp
 
 [Here](https://github.com/2Abendsegler/GClh/blob/master/docu/overview_screenshots.md#readme) are some screenshots of the geocaching pages with *GC little helper II* activated.
 
-The originator of *GC little helper* is [Torsten Amshove](https://www.amshove.net/blog/webinterfaces/gc-little-helper/). After he stopped the work on *GC little helper* we agreed with him to continue his work under the new name *GC little helper II*. In 2016 we brought *GC little helper II* up to date and renewed some parts.
-
 ## How can you help?
 We use a [ticket system](https://github.com/2Abendsegler/GClh/issues) to report and track bugs, questions and feature requests. If you like to implement features, bugfixes or improvements yourself, you can read here [how to contribute](https://github.com/2Abendsegler/GClh/blob/master/docu/how_to_contribute.md#en).
 Furthermore there is a thread in the [Geoclub Forum](http://geoclub.de/forum/viewforum.php?f=117) where things can be discussed.
@@ -50,19 +48,34 @@ All Geocacher and others are encouraged to help with the development or the supp
 ## Installationshinweise
 Wer Hilfe bei der Installation benötigt, wird in den [Tipps zur Installation](https://github.com/2Abendsegler/GClh/blob/master/docu/tips_installation.md#de) fündig.
 
+## Hilfe
+Wer Fehler melden möchte, Fragen stellen möchte oder neue Features beantragen möchte, der kann das auf folgenden Platformen tun: 
+
+<ul>
+	<li>
+		[Geocaching Forum - GC little helper II](https://forums.geocaching.com/GC/index.php?/topic/343005-gc-little-helper-ii/)<br>
+	</li>
+	<li>
+		[Geoclub Geocaching Forum - Scripte](https://geoclub.de/forum/viewforum.php?f=117)<br>
+	</li>
+	<li>
+		[Swiss Geocache Forum - GC little helper II](https://www.swissgeocacheforum.ch/forum/topic/12872-gc-little-helper-ii/)<br>
+	</li>
+	<li>
+		Unser [Ticketsystem](https://github.com/2Abendsegler/GClh/issues) auf hiesiger Platform<br>
+	</li>
+</ul>
+
 ## Unser Ziel
 Der *GC little helper II* ist ein mächtiges Tool zur Verbesserung und Erweiterung der Geocaching Seiten auf www.geocaching.com. Alle Funktionen können flexibel über ein Konfigurationsmenü eingestellt werden. Das Tool ist in englisch. 
 
 Es ist kostenlos, ohne Werbung und wird bereits von tausenden von Usern genutzt.
 
-Das Tool ist in Javascript entwickelt und läuft mit Script-Manager Tampermonkey unter den Browsern Mozilla Firefox, Google Chrome, Safari, Opera, Microsoft Edge und Vivaldi.
+Das Tool ist in Javascript entwickelt und läuft mit den Script-Managern Tampermonkey, Violentmonkey und anderen unter den Browsern Mozilla Firefox, Google Chrome, Safari, Opera, Microsoft Edge und Vivaldi.
 
 [Hier](https://github.com/2Abendsegler/GClh/blob/master/docu/overview_screenshots.md#readme) sind einige Screenshots von den Geocaching Seiten mit aktiviertem *GC little helper II*. 
 
-Ursprünglich erfunden und entwickelt wurde der *GC little helper* von [Torsten Amshove](https://www.amshove.net/blog/webinterfaces/gc-little-helper/). Wir haben das Tool 2016 auf den aktuellen Stand gebracht und etwas aufgefrischt, und haben uns in Abstimmung mit dem Erfinder entschlossen, es unter dem Namen *GC little helper II* zu betreiben und weiterzuentwickeln.
-
 ## Wie kannst du helfen?
-Wir verwenden auf hiesiger Platform ein [Ticketsystem](https://github.com/2Abendsegler/GClh/issues), um Fehler, Fragen und Anfragen zu neuen Features zu melden und zu verfolgen. Wenn du selbst neue Features, Bugfixes oder Verbesserungen beitragen möchtest, kannst du hier nachlesen wie das geht: [Wie kannst du etwas beitragen?](https://github.com/2Abendsegler/GClh/blob/master/docu/how_to_contribute.md#de).
-Im [Geoclub Forum](http://geoclub.de/forum/viewforum.php?f=117) gibt es außerdem eine Plattform, auf der diese Dinge diskutiert werden können.
+Wenn du selbst neue Features, Bugfixes oder Verbesserungen beitragen möchtest, kannst du hier nachlesen wie das geht: [Wie kannst du etwas beitragen?](https://github.com/2Abendsegler/GClh/blob/master/docu/how_to_contribute.md#de).
 
 Alle Geocacher und Interessierte sind herzlich eingeladen, am Support und der Weiterentwicklung des Tools mitzuwirken.  
