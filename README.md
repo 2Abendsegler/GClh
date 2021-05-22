@@ -3,8 +3,8 @@
 
 ---
 # GC little helper II <a id="user-content-en"></a>
-*Some little things to make life easier (on www.geocaching.com.)
-Powerful, configurable tool to improve and expand the geocaching pages.*
+*Some little things to make life easier (on www.geocaching.com).*<br>
+*Powerful, configurable tool to improve and expand the geocaching pages.*
 
 ## Supported Browsers
 <img src="/images/mozilla_firefox_logo_small.png" title="Mozilla Firefox" alt="Mozilla Firefox" />&nbsp;
@@ -18,7 +18,7 @@ Powerful, configurable tool to improve and expand the geocaching pages.*
 If you need any help with the installation, you can have a look at our [Installationtipps](https://github.com/2Abendsegler/GClh/blob/master/docu/tips_installation.md#en).
 
 ## Our Goal
-*GC little helper II* is a tool to enhance and extend the functionality on the geocaching pages of www.geocaching.com. All functions can be configured in a configuration menu. The tool uses english as language.
+*GC little helper II* is a powerful tool to enhance and extend the functionality on the geocaching pages of www.geocaching.com. All functions can be configured in a configuration menu. The tool uses english as language.
 
 It is free of charge, without any advertising and is already used by thousands of users.
 
@@ -36,7 +36,8 @@ All Geocacher and others are encouraged to help with the development or the supp
 
 ---
 # GC little helper II <a id="user-content-de"></a>
-*Ein paar Kleinigkeiten um das Leben auf www.geocaching.com einfacher zu machen.* 
+*Ein paar Kleinigkeiten um das Leben einfacher zu machen (auf www.geocaching.com).*<br>
+*Mächtiges, konfigurierbares Tool zur Verbesserung und Erweiterung der Geocaching Seiten.*
 
 ## Unterstützte Browsers
 <img src="/images/mozilla_firefox_logo_small.png" title="Mozilla Firefox" alt="Mozilla Firefox" />&nbsp;
@@ -50,7 +51,7 @@ All Geocacher and others are encouraged to help with the development or the supp
 Wer Hilfe bei der Installation benötigt, wird in den [Tipps zur Installation](https://github.com/2Abendsegler/GClh/blob/master/docu/tips_installation.md#de) fündig.
 
 ## Unser Ziel
-Der *GC little helper II* ist ein Tool zur Verbesserung und Erweiterung der Geocaching Seiten auf www.geocaching.com. Alle Funktionen können flexibel über ein Konfigurationsmenü eingestellt werden. Das Tool ist in englisch. 
+Der *GC little helper II* ist ein mächtiges Tool zur Verbesserung und Erweiterung der Geocaching Seiten auf www.geocaching.com. Alle Funktionen können flexibel über ein Konfigurationsmenü eingestellt werden. Das Tool ist in englisch. 
 
 Es ist kostenlos, ohne Werbung und wird bereits von tausenden von Usern genutzt.
 
