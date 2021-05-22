@@ -313,5 +313,10 @@
   "settings_hide_upvotes": false,
   "settings_smaller_upvotes_icons": true,
   "settings_no_wiggle_upvotes_click": true,
-  "settings_show_country_in_place": true
+  "settings_show_country_in_place": true,
+  "settings_color_bg": "D8CD9D",
+  "settings_color_if": "D8CD9D",
+  "settings_color_ht": "D8CD9D",
+  "settings_color_bh": "D8CD9D",
+  "settings_color_bu": "D8CD9D"
 }
