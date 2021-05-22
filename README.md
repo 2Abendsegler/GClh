@@ -3,8 +3,8 @@
 
 ---
 # GC little helper II <a id="user-content-en"></a>
-*Some little things to make life easier (on www.geocaching.com.)<br>
-Powerful, configurable tool to improve and expand the geocaching pages. 
+*Some little things to make life easier (on www.geocaching.com.)
+Powerful, configurable tool to improve and expand the geocaching pages.*
 
 ## Supported Browsers
 <img src="/images/mozilla_firefox_logo_small.png" title="Mozilla Firefox" alt="Mozilla Firefox" />&nbsp;
