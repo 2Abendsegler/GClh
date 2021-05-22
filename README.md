@@ -40,7 +40,7 @@ All Geocacher and others are encouraged to help with the development or the supp
 
 ---
 # GC little helper II <a id="user-content-de"></a>
-*Ein paar Kleinigkeiten um das Leben einfacher zu machen (auf www.geocaching.com).*
+*Ein paar Kleinigkeiten um das Leben einfacher zu machen (auf www.geocaching.com).*<br>
 *Mächtiges, konfigurierbares Tool zur Verbesserung und Erweiterung der Geocaching Seiten.*
 
 ## Unterstützte Browsers
@@ -71,5 +71,5 @@ Das Tool ist in Javascript entwickelt und läuft mit den Script-Managern Tamperm
 [Hier](https://github.com/2Abendsegler/GClh/blob/master/docu/overview_screenshots.md#readme) sind einige Screenshots von den Geocaching Seiten mit aktiviertem *GC little helper II*. 
 
 ## Wie kannst du helfen?
-Wenn du selbst neue Features, Bugfixes oder Verbesserungen beitragen möchtest, kannst du [hier](https://github.com/2Abendsegler/GClh/blob/master/docu/how_to_contribute.md#de) nachlesen wie das geht.
+Wenn du selbst neue Features, Bugfixes oder Verbesserungen beitragen möchtest, kannst du [hier](https://github.com/2Abendsegler/GClh/blob/master/docu/how_to_contribute.md#de) nachlesen wie das geht.<br>
 Alle Geocacher und Interessierte sind herzlich eingeladen, am Support und der Weiterentwicklung des Tools mitzuwirken.  
