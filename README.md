@@ -18,7 +18,7 @@
 If you need any help with the installation, you can have a look at our [Installationtipps](https://github.com/2Abendsegler/GClh/blob/master/docu/tips_installation.md#en).
 
 ## Hilfe
-If you want to ask questions, report bugs or request new features, you can do so on the following platforms: 
+If you want to ask questions, report bugs or request new features, you can do so on the following platforms (German and English): 
 - [Geocaching Forum - GC little helper II](https://forums.geocaching.com/GC/index.php?/topic/343005-gc-little-helper-ii/)
 - [Geoclub Geocaching Forum - Scripte](https://geoclub.de/forum/viewforum.php?f=117)
 - [Swiss Geocache Forum - GC little helper II](https://www.swissgeocacheforum.ch/forum/topic/12872-gc-little-helper-ii/)
@@ -55,7 +55,7 @@ All Geocacher and others are encouraged to help with the development or the supp
 Wer Hilfe bei der Installation benötigt, wird in den [Tipps zur Installation](https://github.com/2Abendsegler/GClh/blob/master/docu/tips_installation.md#de) fündig.
 
 ## Hilfe
-Wer Fehler melden möchte, Fragen stellen möchte oder neue Features beantragen möchte, der kann das auf folgenden Platformen tun: 
+Wer Fehler melden möchte, Fragen stellen möchte oder neue Features beantragen möchte, der kann das auf folgenden Platformen tun (Deutsch und Englisch): 
 - [Geocaching Forum - GC little helper II](https://forums.geocaching.com/GC/index.php?/topic/343005-gc-little-helper-ii/)
 - [Geoclub Geocaching Forum - Scripte](https://geoclub.de/forum/viewforum.php?f=117)
 - [Swiss Geocache Forum - GC little helper II](https://www.swissgeocacheforum.ch/forum/topic/12872-gc-little-helper-ii/)
