@@ -29,7 +29,7 @@
 <ul>
 	<li>
 		<strong>Fix:</strong> [Global] Script does not work because of missing user data. [<a href="https://github.com/2Abendsegler/GClh/issues/1755" title="Issue 1755">1755</a> / <a href="https://github.com/2Abendsegler/GClh/issues/1757" title="Issue 1757">1757</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
-		The data of the logged in user was saved under a different name. The script could not determine whether it was a registered user or not.<br>
+		The data of the logged in user was saved under a different name. The script could not determine whether it was a registered user or not.<br><br>
 		Last affected pages:<br>
 		- New Log Form<br>
 		- <a href="https://www.geocaching.com/play/search">Search</a><br>
