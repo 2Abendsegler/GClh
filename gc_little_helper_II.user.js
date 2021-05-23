@@ -2,7 +2,7 @@
 // @name             GC little helper II
 // @namespace        http://www.amshove.net
 //--> $$000
-// @version          0.11.2
+// @version          0.11.3
 //<-- $$000
 // @include          https://www.geocaching.com/*
 // @include          https://maps.google.tld/*
@@ -1206,15 +1206,21 @@ var mainGCWait = function() {
             tlc('Global data headerSettings found');
             global_me = headerSettings.username;
             global_avatarUrl = headerSettings.avatarUrl;
-            global_findCount = headerSettings.findCount;
             global_locale = headerSettings.locale;
+            global_findCount = headerSettings.findCount;
+        } else if (typeof chromeSettings !== 'undefined' && chromeSettings.username && chromeSettings.avatarUrl && chromeSettings.locale) {
+            clog('Global data chromeSettings found');
+            global_me = chromeSettings.username;
+            global_avatarUrl = chromeSettings.avatarUrl;
+            global_locale = chromeSettings.locale;
+            global_findCount = chromeSettings.findCount;
         // New map.
         } else if (typeof _gcUser !== 'undefined' && _gcUser.username && _gcUser.image && _gcUser.image.imageUrl && _gcUser.locale) {
             tlc('Global data _gcUser found');
             global_me = _gcUser.username;
             global_avatarUrl = _gcUser.image.imageUrl.replace(/\{0\}/,'avatar');
-            global_findCount = _gcUser.findCount;
             global_locale = _gcUser.locale;
+            global_findCount = _gcUser.findCount;
         }
         if (global_me != '') {
             tlc('global_me: '+global_me+' / global_avatarUrl: '+global_avatarUrl);
@@ -11835,11 +11841,12 @@ var mainGC = function() {
         div.id = "gclh_simu";
         div.setAttribute("style", "margin-top: -50px;");
         var prop = ' style="border: none; visibility: hidden; width: 2px; height: 2px;" alt="">';
+        var code = '<img src="https://s11.flagcounter.com/count2/906f/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
 //--> $$002
-        var code = '<img src="https://c.andyhoppe.com/1621215748"' + prop + // Besucher
-                   '<img src="https://c.andyhoppe.com/1621215779"' + prop + // Seitenaufrufe
-                   '<img src="https://www.worldflagcounter.com/hKt"' + prop +
-                   '<img src="https://s11.flagcounter.com/count2/pBUN/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
+        code += '<img src="https://c.andyhoppe.com/1621215748"' + prop; // Besucher
+        code += '<img src="https://c.andyhoppe.com/1621215779"' + prop; // Seitenaufrufe
+        code += '<img src="https://www.worldflagcounter.com/hKt"' + prop;
+        code += '<img src="https://s11.flagcounter.com/count2/pBUN/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
 //<-- $$002
         div.innerHTML = code;
         side.appendChild(div);
