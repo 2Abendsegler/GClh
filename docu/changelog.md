@@ -1,3 +1,4 @@
+<a href="#v0113" title="GClh II version 0.11.3 (23.05.2021)">v0.11.3</a> &nbsp;
 <a href="#v0112" title="GClh II version 0.11.2 (17.05.2021)">v0.11.2</a> &nbsp;
 <a href="#v0111" title="GClh II version 0.11.1 (16.05.2021)">v0.11.1</a> &nbsp;
 <a href="#v011" title="GClh II version 0.11 (09.05.2021)">v0.11</a> &nbsp;
@@ -22,6 +23,24 @@
 <a href="#v0101" title="GClh II version 0.10.1 (20.12.2019)">v0.10.1</a> &nbsp;
 <a href="#v010" title="GClh II version 0.10 (13.12.2019)">v0.10</a> &nbsp;
 <a href="changelog_before.md" title="Go to earlier changelog">Earlier changelog</a> &nbsp;
+
+---
+## v0.11.3:
+<ul>
+	<li>
+		<strong>Fix:</strong> [Global] Script does not work because of missing user data. [<a href="https://github.com/2Abendsegler/GClh/issues/1755" title="Issue 1755">1755</a> / <a href="https://github.com/2Abendsegler/GClh/issues/1757" title="Issue 1757">1757</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		The data of the logged in user was saved under a different name. The script could not determine whether it was a registered user or not.<br>
+		Last affected pages:<br>
+		- New Log Form<br>
+		- <a href="https://www.geocaching.com/play/search">Search</a><br>
+		- <a href="https://www.geocaching.com/play/leaderboard">Leaderboard</a><br>
+		- <a href="https://www.geocaching.com/play/geotours">Geotours</a><br>
+		- <a href="https://www.geocaching.com/play/guidelines">Guidlines</a><br>
+	</li>
+</ul>
+(23.05.2021)<br>
+released by <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a><br>
+<br>
 
 ---
 ## v0.11.2:
