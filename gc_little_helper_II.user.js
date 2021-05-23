@@ -1560,7 +1560,7 @@ var mainGC = function() {
 
                 // Account Settings, Message Center, Cache suchen, Cache verstecken, Geotours, Karten, account/dashboard und track:
                 // ----------
-                if (is_page("settings") || is_page("messagecenter") || is_page("find_cache") || is_page("collection_1") || is_page("geotours") || is_page("map") || is_page("dashboard-section") || is_page("track")) {
+                if (is_page("settings") || is_page("messagecenter") || is_page("find_cache") || is_page("collection_1") || is_page("geotours") || is_page("map") || is_page("dashboard-section") || is_page("track") || is_page("searchmap")) {
                     css += "nav .wrapper {padding-right: " + new_padding_right + "px !important; width: unset;}";
                     // Vertikales Menü ausrichten.
                     if (settings_bookmarks_top_menu) {
