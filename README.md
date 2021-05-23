@@ -17,7 +17,7 @@
 ## How to install
 If you need any help with the installation, you can have a look at our [Installationtipps](https://github.com/2Abendsegler/GClh/blob/master/docu/tips_installation.md#en).
 
-## Hilfe
+## Help
 If you want to ask questions, report bugs or request new features, you can do so on the following platforms (German and English): 
 - [Geocaching Forum](https://forums.geocaching.com/GC/index.php?/topic/343005-gc-little-helper-ii/)
 - [Geoclub Geocaching Forum](https://geoclub.de/forum/viewforum.php?f=117)
