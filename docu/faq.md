@@ -158,17 +158,9 @@ We are happy about improvement suggestions, bugfixes or new features. This is re
 <a id="8-en"></a>
 ## 8. How can I get help to GClh?
 If you need help with the GClh, or if you have questions about the GClh, you can create a note in the following forums:<br>
-<ul>
-	<li>
-		<a href="https://geoclub.de/forum/viewforum.php?f=117">Geoclub Forum</a>
-	</li>
-	<li>
-		<a href="https://forums.geocaching.com/GC/index.php?/topic/343005-gc-little-helper-ii/">Geocaching Forum</a>
-	</li>
-	<li>
-		<a href="https://www.swissgeocacheforum.ch/forum/topic/12872-gc-little-helper-ii/">Swiss Geocache Forum</a>
-	</li>
-</ul>
+- [Geocaching Forum](https://forums.geocaching.com/GC/index.php?/topic/343005-gc-little-helper-ii/)
+- [Geoclub Geocaching Forum](https://geoclub.de/forum/viewforum.php?f=117)
+- [Swiss Geocache Forum](https://www.swissgeocacheforum.ch/forum/topic/12872-gc-little-helper-ii/)
 You can also open a <a href="https://github.com/2Abendsegler/GClh/issues/new/choose">new issue</a> on our development platform at Github.<br>
 <br>
 
@@ -324,17 +316,9 @@ Wir freuen uns über Verbesserungsvorschläge, Bugfixes oder neue Features. Dies
 <a id="8-de"></a>
 ## 8. Wie bekomme ich Hilfe zum GClh?
 Wenn du Hilfe zum GClh benötigst, oder wenn du Fragen zum GClh hast, dann kannst du dich in folgenden Foren melden:<br>
-<ul>
-	<li>
-		<a href="https://geoclub.de/forum/viewforum.php?f=117">Geoclub Forum</a>
-	</li>
-	<li>
-		<a href="https://forums.geocaching.com/GC/index.php?/topic/343005-gc-little-helper-ii/">Geocaching Forum</a>
-	</li>
-	<li>
-		<a href="https://www.swissgeocacheforum.ch/forum/topic/12872-gc-little-helper-ii/">Swiss Geocache Forum</a>
-	</li>
-</ul>
+- [Geocaching Forum](https://forums.geocaching.com/GC/index.php?/topic/343005-gc-little-helper-ii/)
+- [Geoclub Geocaching Forum](https://geoclub.de/forum/viewforum.php?f=117)
+- [Swiss Geocache Forum](https://www.swissgeocacheforum.ch/forum/topic/12872-gc-little-helper-ii/)
 Außerdem kannst du auch ein <a href="https://github.com/2Abendsegler/GClh/issues/new/choose">neues Issue</a> auf unserer Entwicklungsplattform bei Github eröffnen.<br>
 <br>
 
