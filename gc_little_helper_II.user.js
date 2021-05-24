@@ -9176,6 +9176,29 @@ var mainGC = function() {
                 }
                 checkAddtolistPopup(0);
             }
+            // Hide Header
+            let runHideHeader = false;
+            function toggelHeader() {
+                let newPx = $('.app-main').css('top') == '80px' ? 0 : '80px';
+                $('.app-main').css('top', newPx);
+                $('.hideHeaderLink .toggle-handle').toggleClass('on');
+                $('#ctl00_gcNavigation').toggle('slow');
+                window.dispatchEvent(new Event('resize'));
+            }
+            function hideHeader() {
+                if (!runHideHeader && settings_hide_map_header && $('.geocache-action-bar.sidebar-control')[0]) {
+                    runHideHeader = true;
+                    toggelHeader();
+                }
+                if ($('.geocache-action-bar.sidebar-control')[0] && !$('#gclh_hideHeader')[0]) {
+                    let html = '<div id="gclh_hideHeader" class="geocache-action-bar hideHeaderLink toggle-filter"><span class="label">Hide header</span><div class="toggle-handle"></div></div>';
+                    $('.geocache-action-bar.sidebar-control').after(html);
+                    $('.hideHeaderLink .toggle-handle')[0].onclick = function() {toggelHeader();};
+                    if ($('.app-main').css('top') == '0px') {
+                        $('.hideHeaderLink .toggle-handle').addClass('on');
+                    }
+                }
+            }
 
             // Processing all steps.
             function processAllSearchMap() {
@@ -9193,6 +9216,7 @@ var mainGC = function() {
                 buildMapControlButtons();
                 setFilter();
                 addCreatePQButton();
+                hideHeader();
             }
 
             // Observer callback for body and checking existence of sidebar and map.
@@ -9437,6 +9461,13 @@ var mainGC = function() {
             css += '#gclh_saveAsPQ {color: #4a4a4a; font-weight: bold; text-decoration: none; font-size: 12px;}';
             css += '#gclh_saveAsPQ:hover {color: #02874d !important;}';
             css += '#gclh_saveAsPQ img {vertical-align: middle;}';
+            css += '.geocache-action-bar {padding: 5px 10px !important;}';
+            // Hide header
+            css += '.hideHeaderLink {font-size: 12px;}';
+            // In the list section of the map, the CSS for the toggle is not loaded, so we have to insert it manually
+            css += '#search-filters .toggle-filter .toggle-handle {flex: 0 0 32px;}';
+            css += '.toggle-handle {background-color: #e4e4e4; border: none; border-radius: 10px; cursor: pointer; height: 21px; left: 0; padding: 0; position: relative; right: auto; width: 32px;}.toggle-handle::after {background-color: white; background-clip: padding-box; border: 1px solid #4a4a4a; border-radius: 12px; box-shadow: 0 0 0 3px transparent; content: \'\'; height: 19px; left: 0; position: absolute; width: 19px; top: 0;}.toggle-handle:hover, .toggle-handle:focus {outline: 0 !important;}.toggle-handle:hover::after, .toggle-handle:focus::after {border-color: #02874d; box-shadow: 0 0 0 3px #e4e4e4;}.toggle-handle.is-disabled {pointer-events: none;}.toggle-handle.on {background-color: #02874d;}.toggle-handle.on::after {border: 1px solid #02874d; left: auto; right: 0;}';
+
             if (css != "") appendCssStyle(css);
         } catch(e) {gclh_error("Improve search map",e);}
     }
