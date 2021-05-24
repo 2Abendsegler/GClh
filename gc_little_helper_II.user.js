@@ -13639,7 +13639,7 @@ var mainGC = function() {
 
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>Hide Map Elements</b></div>";
             html += checkboxy('settings_map_hide_sidebar', 'Hide sidebar by default') + "<br>";
-            html += checkboxy('settings_hide_map_header', 'Hide header by default') + onlyBrowseMap + "<br>";
+            html += checkboxy('settings_hide_map_header', 'Hide header by default') + "<br>";
             html += checkboxy('settings_map_hide_found', 'Hide found caches by default') + prem + "<br>";
             html += checkboxy('settings_map_hide_hidden', 'Hide own caches by default') + prem + "<br>";
             html += newParameterOn1;
