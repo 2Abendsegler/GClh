@@ -1209,7 +1209,7 @@ var mainGCWait = function() {
             global_locale = headerSettings.locale;
             global_findCount = headerSettings.findCount;
         } else if (typeof chromeSettings !== 'undefined' && chromeSettings.username && chromeSettings.avatarUrl && chromeSettings.locale) {
-            clog('Global data chromeSettings found');
+            tlc('Global data chromeSettings found');
             global_me = chromeSettings.username;
             global_avatarUrl = chromeSettings.avatarUrl;
             global_locale = chromeSettings.locale;
@@ -1394,6 +1394,7 @@ var mainGC = function() {
         function buildUpHeader(waitCount) {
             if ($('#gc-header, #GCHeader')[0]) {
                 tlc('Header found');
+//xxxx
                 // Integrate old header. closest examples: Dashboard, Owner Dashboard, New Map, My Lists.
                 ($('#gc-header') || $('#GCHeader')).closest('#gc-header-root, #header-root, #root, #app-root').prepend(header_old);
                 // Run header relevant features.
@@ -1560,7 +1561,7 @@ var mainGC = function() {
 
                 // Account Settings, Message Center, Cache suchen, Cache verstecken, Geotours, Karten, account/dashboard und track:
                 // ----------
-                if (is_page("settings") || is_page("messagecenter") || is_page("find_cache") || is_page("collection_1") || is_page("geotours") || is_page("map") || is_page("dashboard-section") || is_page("track") || is_page("searchmap")) {
+                if (is_page("settings") || is_page("messagecenter") || is_page("find_cache") || is_page("collection_1") || is_page("geotours") || is_page("map") || is_page("dashboard-section") || is_page("track")) {
                     css += "nav .wrapper {padding-right: " + new_padding_right + "px !important; width: unset;}";
                     // Vertikales Menü ausrichten.
                     if (settings_bookmarks_top_menu) {
@@ -1580,7 +1581,7 @@ var mainGC = function() {
                 // Altes Seiten Design und restliche Seiten:
                 // ----------
                 } else {
-                    if (settings_fixed_header_layout) {
+                    if (settings_fixed_header_layout && !is_page("searchmap")) {
                         css += "nav .wrapper, gclh_nav .wrapper {width: " + new_width + "px !important; padding-left: 50px; padding-right: 30px; min-width: unset}";
                         if (settings_remove_logo && settings_show_smaller_gc_link) css += ".#m {margin-left: -28px !important;}";
                     }
