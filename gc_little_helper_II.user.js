@@ -8235,7 +8235,7 @@ var mainGC = function() {
         try {
             // Functions for CO Dashboard Main Page.
             // Set a link to the cachetypes.
-            function waitForCacheTypes(waitCount) {
+            function setLinksToCacheTypes(waitCount) {
                 if ($('.gclh_cacheTypeLinks')[0]) return; // Returns if the links have already been created.
                 if ($('.owned-geocache-types')[0]) {
                     var linkToList = 'https://www.geocaching.com/seek/nearest.aspx?u=' + global_me + '&tx=';
@@ -8262,12 +8262,16 @@ var mainGC = function() {
                         html += this.innerHTML + '</a>';
                         $(this).html(html);
                     });
-                } else {waitCount++; if (waitCount <= 1000) setTimeout(function(){waitForCacheTypes(waitCount);}, 100);}
+                } else {waitCount++; if (waitCount <= 1000) setTimeout(function(){setLinksToCacheTypes(waitCount);}, 100);}
             }
+
             // Set link to own Profil.
-            function setLinkToOwnProfil() {
-                $('.username').html('<a href="https://www.geocaching.com/p/default.aspx" title="My Profil">' + $('.username').html() + '</a>');
+            function setLinkToOwnProfil(waitCount) {
+                if ($('ul.latest-activity-list')[0]) {
+                    $('.info .username').html('<a href="https://www.geocaching.com/p/default.aspx" title="My Profil">' + $('.username').html() + '</a>');
+                } else {waitCount++; if (waitCount <= 1000) setTimeout(function(){setLinkToOwnProfil(waitCount);}, 100);}
             }
+
             // Build VIP, Mail, Message icons
             function waitForLatestActivityList(waitCount) {
                 if ($('ul.latest-activity-list')[0]) {
@@ -8294,8 +8298,8 @@ var mainGC = function() {
 
             function processAllCODashboard() {
                 if (document.location.pathname.match(/play\/owner/)) { // This has to be run last, if features are add to the other CO Dashboard Pages
-                    waitForCacheTypes(0);
-                    setLinkToOwnProfil();
+                    setLinksToCacheTypes(0);
+                    setLinkToOwnProfil(0);
                     waitForLatestActivityList(0)
                 }
             }
