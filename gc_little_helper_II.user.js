@@ -3825,7 +3825,7 @@ var mainGC = function() {
             var log_preview_wrapper =
                 '<section class="region trackables-wrapper" id="log-previewPanel">' +
                     '<div>' +
-                        '<button type="button" id="log-preview-button" class="btn btn-handle handle-open" data-open="false">Log preview' +
+                        '<button type="button" id="log-preview-button" class="btn btn-handle handle-open" data-open="false">Log Preview' +
                             '<svg height="24" width="24" class="icon icon-svg-fill sea">' +
                                 '<use xmlns:xlink="https://www.w3.org/1999/xlink" xlink:href="/play/app/ui-icons/sprites/global.svg#icon-expand-svg-fill"></use>' +
                             '</svg>' +
@@ -13536,7 +13536,6 @@ var mainGC = function() {
             html += checkboxy('settings_modify_new_drafts_page', 'Modify draft items on the new drafts page') + show_help("Change the linkage of each draft. The title of the geocache now links to the geocaching listing and the cache icon, too (2nd line). The pen icon and the preview note links to the log composing page (3rd line). Add the log type as overlay icon onto the cache icon.") + "<br>";
             html += newParameterVersionSetzen(0.9) + newParameterOff;
             html += "</div>";
-
 
             html += "<h4 class='gclh_headline2'>"+prepareHideable.replace("#name#","maps")+"Map</h4>";
             html += "<div id='gclh_config_maps' class='gclh_block'>";
