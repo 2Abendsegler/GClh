@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name             GC little helper II
 // @namespace        http://www.amshove.net
-//--> $$000l
+//--> $$000
 // @version          0.11.3
 //<-- $$000
 // @include          https://www.geocaching.com/*
