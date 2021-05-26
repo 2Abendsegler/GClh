@@ -647,6 +647,7 @@ var variablesInit = function(c) {
     c.settings_color_bo = getValue("settings_color_bo", "778555");
     c.settings_color_nv = getValue("settings_color_nv", "F0DFC6");
     c.settings_color_navi_search = getValue("settings_color_navi_search", false);
+    c.settings_map_show_btn_hide_header = getValue("settings_map_show_btn_hide_header", true);
 
     tlc('START userToken');
     try {
@@ -9145,15 +9146,25 @@ var mainGC = function() {
                 }
             }
 
+            // Improve add to list popup.
+            function improveAddtolistPopup() {
+                function checkAddtolistPopup(waitCount) {
+                    if ($('.Popover')[0]) {
+                        setFocusToField(0, '.add-to-list-view .create-new-list-textfield');
+                    }
+                    waitCount++; if (waitCount <= 20) setTimeout(function(){checkAddtolistPopup(waitCount);}, 100);
+                }
+                checkAddtolistPopup(0);
+            }
+
             // Create Button to save map as PQ
             function addCreatePQButton() {
-                if (settings_searchmap_show_btn_save_as_pq && !document.location.href.match(/\.com\/play\/map\/lists\/BM/)) {
-                    if ($('.list-hub')[0] && $('#gclh_saveAsPQ')[0]) {
-                        $('#gclh_saveAsPQ').parent().remove();
-                    }
+                if ($('.list-hub')[0] || document.location.href.match(/\.com\/play\/map\/lists\/BM/)) {
+                    if ($('#gclh_saveAsPQ')[0]) $('#gclh_saveAsPQ').remove();
+                } else {
                     if ($('#geocache-list')[0] && !$('#gclh_saveAsPQ')[0]) {
-                        let html = '<div class="geocache-action-bar"><a id="gclh_saveAsPQ" href="javascript:void(0)"><img src="/images/icons/16/pocket_query.png" height="12px">Save as Pocket Query</a></div>';
-                        $('.geocache-action-bar.sidebar-control').after(html);
+                        let html = '<a id="gclh_saveAsPQ" href="javascript:void(0)"><img src="/images/icons/16/pocket_query.png" height="12px">Save as Pocket Query</a>';
+                        $('#gclh_action_bar').append(html);
                         $('#gclh_saveAsPQ').bind('click', function() {
                             let px = document.querySelector('.leaflet-gl-layer.mapboxgl-map').offsetWidth;
                             let url = 'https://www.geocaching.com/pocket/gcquery.aspx';
@@ -9166,15 +9177,40 @@ var mainGC = function() {
                 }
             }
 
-            // Improve add to list popup.
-            function improveAddtolistPopup() {
-                function checkAddtolistPopup(waitCount) {
-                    if ($('.Popover')[0]) {
-                        setFocusToField(0, '.add-to-list-view .create-new-list-textfield');
+            // Hide Header
+            let runHideHeader = false;
+            function toggelHeader() {
+                let newPx = $('.app-main').css('top') == '80px' ? 0 : '80px';
+                $('.app-main').css('top', newPx);
+                $('.hideHeaderLink .toggle-handle').toggleClass('on');
+                $('#ctl00_gcNavigation').toggle();
+                window.dispatchEvent(new Event('resize'));
+            }
+            function addHideHeaderButton() {
+                if ($('.geocache-action-bar.sidebar-control')[0] && !$('#gclh_hideHeader')[0]) {
+                    let html = '<div id="gclh_hideHeader" class="hideHeaderLink toggle-filter"><span class="label">Hide header</span><div class="toggle-handle"></div></div>';
+                    $('#gclh_action_bar').append(html);
+                    $('.hideHeaderLink .toggle-handle')[0].onclick = function() {toggelHeader();};
+                    if ($('.app-main').css('top') == '0px') {
+                        $('.hideHeaderLink .toggle-handle').addClass('on');
                     }
-                    waitCount++; if (waitCount <= 20) setTimeout(function(){checkAddtolistPopup(waitCount);}, 100);
                 }
-                checkAddtolistPopup(0);
+            }
+
+            // Root for "Save as PQ" and "Hide Header".
+            function geocacheActionBar() {
+                if ((settings_searchmap_show_btn_save_as_pq || settings_map_show_btn_hide_header)) {
+                    if (!$('#gclh_action_bar')[0]) {
+                        $('.geocache-action-bar.sidebar-control').after('<div id="gclh_action_bar" class="geocache-action-bar"></div>');
+                    }
+                    if (settings_map_show_btn_hide_header) addHideHeaderButton();
+                    if (settings_searchmap_show_btn_save_as_pq) addCreatePQButton();
+                    // Hide header by default.
+                    if (!runHideHeader && settings_hide_map_header && settings_map_show_btn_hide_header && $('.geocache-action-bar.sidebar-control')[0]) {
+                        runHideHeader = true;
+                        toggelHeader();
+                    }
+                }
             }
 
             // Processing all steps.
@@ -9192,7 +9228,7 @@ var mainGC = function() {
                 showSearchmapSidebarEnhancements();
                 buildMapControlButtons();
                 setFilter();
-                addCreatePQButton();
+                geocacheActionBar(); // "Save as PQ" and "Hide Header".
             }
 
             // Observer callback for body and checking existence of sidebar and map.
@@ -9433,10 +9469,19 @@ var mainGC = function() {
             css += '#searchmap_sidebar_enhancements .gclh_link:hover {color: #02874d;}';
             css += '#searchmap_sidebar_enhancements a {color: #4a4a4a; text-decoration: none;}';
             css += '#searchmap_sidebar_enhancements img {vertical-align: bottom; height: 14px;}';
-            // Save to PQ
+            // GClh Action Bar (Save as PQ and Hide Header Buttons).
+            css += '#gclh_action_bar {display: flex; justify-content: space-between;}'
+            // Save as PQ.
             css += '#gclh_saveAsPQ {color: #4a4a4a; font-weight: bold; text-decoration: none; font-size: 12px;}';
             css += '#gclh_saveAsPQ:hover {color: #02874d !important;}';
             css += '#gclh_saveAsPQ img {vertical-align: middle;}';
+            css += '.geocache-action-bar {padding: 5px 10px !important;}';
+            // Hide header.
+            css += '.hideHeaderLink {font-size: 12px; display: flex; gap: 1em;}';
+            // In the list section of the map, the CSS for the toggle is not loaded, so we have to insert it manually.
+            css += '#search-filters .toggle-filter .toggle-handle {flex: 0 0 32px;}';
+            css += '.toggle-handle {background-color: #e4e4e4; border: none; border-radius: 10px; cursor: pointer; height: 21px; left: 0; padding: 0; position: relative; right: auto; width: 32px;}.toggle-handle::after {background-color: white; background-clip: padding-box; border: 1px solid #4a4a4a; border-radius: 12px; box-shadow: 0 0 0 3px transparent; content: \'\'; height: 19px; left: 0; position: absolute; width: 19px; top: 0;}.toggle-handle:hover, .toggle-handle:focus {outline: 0 !important;}.toggle-handle:hover::after, .toggle-handle:focus::after {border-color: #02874d; box-shadow: 0 0 0 3px #e4e4e4;}.toggle-handle.is-disabled {pointer-events: none;}.toggle-handle.on {background-color: #02874d;}.toggle-handle.on::after {border: 1px solid #02874d; left: auto; right: 0;}';
+
             if (css != "") appendCssStyle(css);
         } catch(e) {gclh_error("Improve search map",e);}
     }
@@ -9606,7 +9651,7 @@ var mainGC = function() {
                     appendCssStyle("#searchtabs {height: 63px !important; margin-top: 6px !important;} #searchtabs li a {padding: 0.625em 0.5em !important;}");
                 } else {waitCount++; if (waitCount <= 50) setTimeout(function(){checkMapLeaflet(waitCount);}, 100);}
             }
-            checkMapLeaflet(0);
+            if (settings_map_show_btn_hide_header) checkMapLeaflet(0);
             gclh_GetGcAccessToken( function(r) {
                 all_map_layers["Geocaching"].accessToken = r.access_token;
             });
@@ -13561,6 +13606,9 @@ var mainGC = function() {
             html += checkboxy('settings_searchmap_show_hint', 'Show hint of cache automatically on cache detail screen') + onlySearchMap + "<br>";
             html += checkboxy('settings_searchmap_show_btn_save_as_pq', 'Show button "Save as Pocket Query"') + show_help("Adds a button in the sidebar of the search map to save the actual map view as a pocket query (like on the browse map).<br>Note that not all filters on the map are also available on Pocket Query.") + onlySearchMap + "<br>";
             html += newParameterVersionSetzen('0.10') + newParameterOff;
+            html += newParameterOn2;
+            html += checkboxy('settings_map_show_btn_hide_header', 'Show button "Hide Header"') + '<br>'
+            html += newParameterVersionSetzen('0.11') + newParameterOff;
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>Homezone circles</b>" + onlyBrowseMap + "</div>";
             html += checkboxy('settings_show_homezone', 'Show homezone circles') + show_help("This option allows to draw homezone circles around coordinates on the map.") + "<br>";
             html += "<div id='ShowHomezoneCircles' style='display: " + (settings_show_homezone ? "block":"none") + ";'>";
@@ -13608,7 +13656,7 @@ var mainGC = function() {
 
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>Hide Map Elements</b></div>";
             html += checkboxy('settings_map_hide_sidebar', 'Hide sidebar by default') + "<br>";
-            html += checkboxy('settings_hide_map_header', 'Hide header by default') + onlyBrowseMap + "<br>";
+            html += checkboxy('settings_hide_map_header', 'Hide header by default') + show_help('Note that you can only hide the header by default if you have activated the "Show button "Hide Header"" setting.') + "<br>";
             html += checkboxy('settings_map_hide_found', 'Hide found caches by default') + prem + "<br>";
             html += checkboxy('settings_map_hide_hidden', 'Hide own caches by default') + prem + "<br>";
             html += newParameterOn1;
@@ -14772,6 +14820,7 @@ var mainGC = function() {
             setEvForDepPara("settings_autovisit","settings_autovisit_default");
             setEvForDepPara("settings_map_overview_browse_map_icon", "settings_map_overview_browse_map_icon_new_tab");
             setEvForDepPara("settings_map_overview_search_map_icon", "settings_map_overview_search_map_icon_new_tab");
+            setEvForDepPara("settings_map_show_btn_hide_header","settings_hide_map_header");
 
             // Abhängigkeiten der Linklist Parameter.
             for (var i = 0; i < 100; i++) {
@@ -15225,6 +15274,7 @@ var mainGC = function() {
                 'settings_map_overview_browse_map_icon_new_tab',
                 'settings_map_overview_search_map_icon_new_tab',
                 'settings_color_navi_search',
+                'settings_map_show_btn_hide_header',
             );
             for (var i = 0; i < checkboxes.length; i++) {
                 if (document.getElementById(checkboxes[i])) setValue(checkboxes[i], document.getElementById(checkboxes[i]).checked);
