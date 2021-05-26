@@ -1399,7 +1399,7 @@ var mainGC = function() {
             if ($('#gc-header, #GCHeader')[0]) {
                 clog('Header found');
                 // Integrate old header. closest examples: Dashboard, Owner Dashboard, New Map, My Lists.
-                ($('#gc-header') || $('#GCHeader')).closest('#gc-header-root, #header-root, #root, #app-root').prepend(header_old);
+                ($('#gc-header') || $('#GCHeader')).after(header_old);
                 // Run header relevant features.
                 clog('START setUserParameter');
                 setUserParameter();
@@ -1584,7 +1584,7 @@ var mainGC = function() {
                 // Altes Seiten Design und restliche Seiten:
                 // ----------
                 } else {
-                    if (settings_fixed_header_layout) {
+                    if (settings_fixed_header_layout && !is_page("searchmap")) {
                         css += "nav .wrapper, gclh_nav .wrapper {width: " + new_width + "px !important; padding-left: 50px; padding-right: 30px; min-width: unset}";
                         if (settings_remove_logo && settings_show_smaller_gc_link) css += ".#m {margin-left: -28px !important;}";
                     }
@@ -8485,9 +8485,8 @@ var mainGC = function() {
         try {
             // Functions for CO Dashboard Main Page.
             // Set a link to the cachetypes.
-            function waitForCacheTypes(waitCount) {
+            function setLinksToCacheTypes(waitCount) {
                 if ($('.gclh_cacheTypeLinks')[0]) return; // Returns if the links have already been created.
-
                 if ($('.owned-geocache-types')[0]) {
                     var linkToList = 'https://www.geocaching.com/seek/nearest.aspx?u=' + global_me + '&tx=';
                     var cacheTypes = {
@@ -8504,23 +8503,23 @@ var mainGC = function() {
                         'Community Celebration Event' : linkToList + '3ea6533d-bb52-42fe-b2d2-79a3424d4728',
                         'Lab Cache'                   : 'https://labs.geocaching.com/builder/adventures'
                     }
-
                     let html = '<a href="' + linkToList + '" target="_blank" class="gclh_cacheTypeLinks" style="background:#f5f5f5;">';
                     html += $('.owned-geocache-total').html() + '</a>';
                     $('.owned-geocache-total').html(html);
-
                     $('.owned-geocache-types ul li').each(function() {
                         let ariaLabel = $(this).attr('aria-label');
                         let html = '<a href="' + cacheTypes[ariaLabel] + '" title="Your ' + ariaLabel + 's" target="_blank">';
                         html += this.innerHTML + '</a>';
                         $(this).html(html);
                     });
-                } else {waitCount++; if (waitCount <= 1000) setTimeout(function(){waitForCacheTypes(waitCount);}, 100);}
+                } else {waitCount++; if (waitCount <= 1000) setTimeout(function(){setLinksToCacheTypes(waitCount);}, 100);}
             }
 
             // Set link to own Profil.
-            function setLinkToOwnProfil() {
-                $('.username').html('<a href="https://www.geocaching.com/p/default.aspx" title="My Profil">' + $('.username').html() + '</a>');
+            function setLinkToOwnProfil(waitCount) {
+                if ($('ul.latest-activity-list')[0]) {
+                    $('.info .username').html('<a href="https://www.geocaching.com/p/default.aspx" title="My Profil">' + $('.username').html() + '</a>');
+                } else {waitCount++; if (waitCount <= 1000) setTimeout(function(){setLinkToOwnProfil(waitCount);}, 100);}
             }
 
             // Build VIP, Mail, Message icons
@@ -8529,7 +8528,6 @@ var mainGC = function() {
                     if (settings_show_vip_list) buildVipVupMailMessage();
                 } else {waitCount++; if (waitCount <= 1000) setTimeout(function(){waitForLatestActivityList(waitCount);}, 100);}
             }
-
             function buildVipVupMailMessage() {
                 var links = $('a[href*="https://www.geocaching.com/p/default.aspx?u="]');
                 if ($('.gclh_vip')[0]) return;
@@ -8550,12 +8548,11 @@ var mainGC = function() {
 
             function processAllCODashboard() {
                 if (document.location.pathname.match(/play\/owner/)) { // This has to be run last, if features are add to the other CO Dashboard Pages
-                    waitForCacheTypes(0);
-                    setLinkToOwnProfil();
+                    setLinksToCacheTypes(0);
+                    setLinkToOwnProfil(0);
                     waitForLatestActivityList(0)
                 }
             }
-
             // Build mutation observer.
             function buildObserverBodyCODashboard() {
                 var observerBodyCODashboard = new MutationObserver(function(mutations) {
@@ -8575,7 +8572,6 @@ var mainGC = function() {
                     buildObserverBodyCODashboard();
                 } else {waitCount++; if (waitCount <= 200) setTimeout(function(){checkForBuildObserverBodyCODashboard(waitCount);}, 50);}
             }
-
             checkForBuildObserverBodyCODashboard(0);
             processAllCODashboard();
 
@@ -8586,11 +8582,9 @@ var mainGC = function() {
             css += '.owned-geocache-types li a {display:flex; align-items:center; color:#4a4a4a; text-decoration:none; padding:4px 0;}';
             css += '.owned-geocache-types li a:hover, .owned-geocache-total a:hover {font-weight:bold; color:#02874d; text-decoration:underline;}';
             css += '.owned-geocache-total a {display:flex; align-items:center; color:#4a4a4a; text-decoration: none; justify-content:space-between; padding:12px 16px;}';
-
             // Set link to own Profil.
             css += '.username a {color:#4a4a4a; text-decoration:none;}';
             css += '.username a:hover {color:#02874d; text-decoration:underline;}';
-
             // Build VIP, Mail, Message icons
             if (settings_show_vip_list) {
                 var newFlexBasis = 120 + 21;
@@ -8602,7 +8596,6 @@ var mainGC = function() {
                 css += '.gclh_name a {margin-right:5px;}';
             }
             css += '.gclh_name a:focus:not(:nth-child(1)) {box-shadow: none;}';
-
             appendCssStyle(css);
         } catch(e) {gclh_error("Improve Owner Dashboard",e);}
     }
