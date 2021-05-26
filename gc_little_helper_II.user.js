@@ -22,7 +22,7 @@
 // @connect          maps.googleapis.com
 // @connect          raw.githubusercontent.com
 // @connect          api.open-elevation.com
-// @connect          api.geonames.org
+// @connect          secure.geonames.org
 // @connect          coord.info
 // @description      Some little things to make life easy (on www.geocaching.com).
 // @copyright        2010-2016 Torsten Amshove, 2016-2021 2Abendsegler, 2017-2021 Ruko2010
