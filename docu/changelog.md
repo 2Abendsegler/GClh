@@ -40,10 +40,10 @@
 		<strong>Fix:</strong> [Search Map] Space around the header without "Change header layout". [<a href="https://github.com/2Abendsegler/GClh/issues/1762" title="Issue 1762">1762</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br>
 	</li>
 	<li>
-		<strong>Fix:</strong> [Owner Dashboard] Set Link to Profile does not work. [<a href="https://github.com/2Abendsegler/GClh/issues/1765" title="Issue 1765">1765</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br>
+		<strong>Fix:</strong> [Pocket query / Nearest list / Lists] Correct the order when opening selected caches in new browser tabs for Chrome. [<a href="https://github.com/2Abendsegler/GClh/issues/1772" title="Issue 1772">1772</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 	</li>
 	<li>
-		<strong>Fix:</strong> [Pocket query / Nearest list / Lists] Correct the order when opening selected caches in new browser tabs for Chrome. [<a href="https://github.com/2Abendsegler/GClh/issues/1772" title="Issue 1772">1772</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		<strong>Fix:</strong> [Owner Dashboard] Set Link to Profile does not work. [<a href="https://github.com/2Abendsegler/GClh/issues/1765" title="Issue 1765">1765</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br>
 	</li>
 </ul>
 (29.05.2021)<br>
