@@ -2689,8 +2689,10 @@ var mainGC = function() {
         function check_wpdata_mapservice(waitCount, uniqueServiceId) { // GDPR
             if (check_wpdata_evaluable()) { // GDPR
                 $('.mapservice_click-'+uniqueServiceId).removeClass('working');
-                var parent = $('.mapservice_click-'+uniqueServiceId)[0].parentNode;
-                $(parent).find('.GClhdropdown-content').removeClass('working');
+                $('.mapservice_click-'+uniqueServiceId).each(function(){
+                    var parent = $(this)[0].parentNode;
+                    $(parent).find('.GClhdropdown-content').removeClass('working');
+                });
                 $('.mapservice_click-'+uniqueServiceId).click(function() {
                     service_configuration.action( this, service_configuration );
                 });
