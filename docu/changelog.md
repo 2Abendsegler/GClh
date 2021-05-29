@@ -31,7 +31,7 @@
 	<li>
 		<strong>Info:</strong> [Global / Google Chrome] Script does not start sometimes under Google Chrome. [<a href="https://github.com/2Abendsegler/GClh/issues/1760" title="Issue 1760">1760</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a> / <a href="https://www.geocaching.com/profile/?u=Die Batzen" title="Thanks to Die Batzen">Die Batzen</a>]<br>
 		Only affects the Google Chrome browser:<br>
-		The problem should be solved with Tampermonkey version 4.13 for Google Chrome. Please upgrade your Tampermonkey to version 4.13 or higher.<br><br>
+		There was a bug in Tampermonkey. The bug should be fixed with Tampermonkey version 4.13 for Google Chrome. Please upgrade your Tampermonkey to version 4.13 or higher.<br><br>
 	</li>
 	<li>
 		<strong>Fix:</strong> [Cache Listing] No dropdown with map selection for map services under waypoint table. [<a href="https://github.com/2Abendsegler/GClh/issues/1774" title="Issue 1774">1774</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
