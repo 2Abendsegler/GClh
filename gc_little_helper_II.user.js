@@ -2,7 +2,7 @@
 // @name             GC little helper II
 // @namespace        http://www.amshove.net
 //--> $$000
-// @version          0.11.3
+// @version          0.11.4
 //<-- $$000
 // @include          https://www.geocaching.com/*
 // @include          https://maps.google.tld/*
@@ -8567,18 +8567,22 @@ var mainGC = function() {
             function buildObserverBodyCODashboard() {
                 var observerBodyCODashboard = new MutationObserver(function(mutations) {
                     mutations.forEach(function(mutation) {
+//xxxx
+console.log('y2');
                         processAllCODashboard();
                     });
                 });
-                var target = document.querySelector('#app-root div');
+                var target = document.querySelector('#app-root');
                 var config = { attributes: true, childList: true, characterData: true };
                 observerBodyCODashboard.observe(target, config);
             }
             // Check if mutation observer can be build.
             function checkForBuildObserverBodyCODashboard(waitCount) {
-                if ($('#app-root div')[0]) {
+                if ($('#app-root')[0]) {
+console.log('y0');
                     if ($('.gclh_buildObserverBodyCODashboard')[0]) return;
-                    $('#app-root div').addClass('gclh_buildObserverBodyCODashboard');
+console.log('y1');
+                    $('#app-root').addClass('gclh_buildObserverBodyCODashboard');
                     buildObserverBodyCODashboard();
                 } else {waitCount++; if (waitCount <= 200) setTimeout(function(){checkForBuildObserverBodyCODashboard(waitCount);}, 50);}
             }
