@@ -4882,11 +4882,16 @@ var mainGC = function() {
                         $('table.Table tr').each(function() {
                             if ($(this).find('input.Checkbox')[0] && $(this).find('input.Checkbox')[0].checked && $(this).find('.lnk')[0] && $(this).find('.lnk')[0].href) {
                                 var match = $(this).find('.lnk')[0].href.match(/\.com\/geocache\/(.*?)(_|$)/);
-                                if (match && match[1]) caches.push(match[1]);
+                                if (match && match[1]) {
+                                    if (browser == 'chrome') window.open('https://coord.info/'+match[1]);
+                                    else caches.push(match[1]);
+                                }
                             }
                         });
-                        for (var i=caches.length-1; i>=0; i--) {
-                            window.open('https://coord.info/'+caches[i]);
+                        if (browser != 'chrome') {
+                            for (var i=caches.length-1; i>=0; i--) {
+                                window.open('https://coord.info/'+caches[i]);
+                            }
                         }
                     } , false);
                 }
@@ -5323,11 +5328,14 @@ var mainGC = function() {
                 var caches = [];
                 $('table.geocache-table tr').each(function() {
                     if ($(this).find('.checked')[0] && $(this).find('.geocache-name a')[0] && $(this).find('.geocache-name a')[0].href) {
-                        caches.push($(this).find('.geocache-name a')[0].href);
+                        if (browser == 'chrome') window.open($(this).find('.geocache-name a')[0].href);
+                        else caches.push($(this).find('.geocache-name a')[0].href);
                     }
                 });
-                for (var i=caches.length-1; i>=0; i--) {
-                    window.open(caches[i]);
+                if (browser != 'chrome') {
+                    for (var i=caches.length-1; i>=0; i--) {
+                        window.open(caches[i]);
+                    }
                 }
             }
             // Disable entry 'upload caches from file' if add caches functionality is not available.
