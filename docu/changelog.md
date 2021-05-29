@@ -1,3 +1,4 @@
+<a href="#v0114" title="GClh II version 0.11.4 (29.05.2021)">v0.11.4</a> &nbsp;
 <a href="#v0113" title="GClh II version 0.11.3 (23.05.2021)">v0.11.3</a> &nbsp;
 <a href="#v0112" title="GClh II version 0.11.2 (17.05.2021)">v0.11.2</a> &nbsp;
 <a href="#v0111" title="GClh II version 0.11.1 (16.05.2021)">v0.11.1</a> &nbsp;
@@ -23,6 +24,31 @@
 <a href="#v0101" title="GClh II version 0.10.1 (20.12.2019)">v0.10.1</a> &nbsp;
 <a href="#v010" title="GClh II version 0.10 (13.12.2019)">v0.10</a> &nbsp;
 <a href="changelog_before.md" title="Go to earlier changelog">Earlier changelog</a> &nbsp;
+
+---
+## v0.11.4:
+<ul>
+	<li>
+		<strong>Info:</strong> [Global / Google Chrome] Script does not start sometimes under Google Chrome. [<a href="https://github.com/2Abendsegler/GClh/issues/1760" title="Issue 1760">1760</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a> / <a href="https://www.geocaching.com/profile/?u=Die Batzen" title="Thanks to Die Batzen">Die Batzen</a>]<br>
+		Only affects the Google Chrome browser:<br>
+		The problem should be solved with Tampermonkey version 4.13 for Google Chrome. Please upgrade your Tampermonkey to version 4.13 or higher.<br><br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Cache Listing] No dropdown with map selection for map services under waypoint table. [<a href="https://github.com/2Abendsegler/GClh/issues/1774" title="Issue 1774">1774</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Search Map] Space around the header without "Change header layout". [<a href="https://github.com/2Abendsegler/GClh/issues/1762" title="Issue 1762">1762</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Owner Dashboard] Set Link to Profile does not work. [<a href="https://github.com/2Abendsegler/GClh/issues/1765" title="Issue 1765">1765</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Pocket query / Nearest list / Lists] Correct the order when opening selected caches in new browser tabs for Chrome. [<a href="https://github.com/2Abendsegler/GClh/issues/1772" title="Issue 1772">1772</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+</ul>
+(29.05.2021)<br>
+released by <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a><br>
+<br>
 
 ---
 ## v0.11.3:
