@@ -8330,6 +8330,7 @@ var mainGC = function() {
             }
 
             function processAllCODashboard() {
+                console.log('processAllCODashboard');
                 if (document.location.pathname.match(/play\/owner/)) { // This has to be run last, if features are add to the other CO Dashboard Pages
                     setLinksToCacheTypes(0);
                     setLinkToOwnProfil(0);
@@ -8338,13 +8339,18 @@ var mainGC = function() {
             }
             // Build mutation observer.
             function buildObserverBodyCODashboard() {
-                var observerBodyCODashboard = new MutationObserver(function(mutations) {
-                    mutations.forEach(function(mutation) {
-                        processAllCODashboard();
-                    });
+                var observerBodyCODashboard = new MutationObserver(function() {
+                    observerBodyCODashboard.disconnect();
+                    processAllCODashboard();
+                    observerBodyCODashboard.observe(target, config);
                 });
                 var target = document.querySelector('#app-root div');
-                var config = { attributes: true, childList: true, characterData: true };
+                var config = {
+                    attributes: true,
+                    childList: true,
+                    childNodes: true,
+                    characterData: true
+                };
                 observerBodyCODashboard.observe(target, config);
             }
             // Check if mutation observer can be build.
