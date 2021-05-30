@@ -1215,7 +1215,7 @@ var mainGCWait = function() {
             global_locale = headerSettings.locale;
             global_findCount = headerSettings.findCount;
         } else if (typeof chromeSettings !== 'undefined' && chromeSettings.username && chromeSettings.avatarUrl && chromeSettings.locale) {
-            clog('Global data chromeSettings found');
+            tlc('Global data chromeSettings found');
             global_me = chromeSettings.username;
             global_avatarUrl = chromeSettings.avatarUrl;
             global_locale = chromeSettings.locale;
@@ -1364,8 +1364,14 @@ var mainGC = function() {
             }
             if (id && document.getElementById(id)) {
                 function keydownF2(e) {
-                    if (e.keyCode == 113 && noSpecialKey(e) && !check_config_page() && $('#'+id)[0].offsetParent != null) {
-                        document.getElementById(id).click();
+                    if (!check_config_page() && $('#'+id)[0].offsetParent != null) {
+                        if (e.keyCode == 113 && noSpecialKey(e)) {
+                            document.getElementById(id).click();
+                        }
+                        if (e.keyCode == 83 && e.ctrlKey == true && e.altKey == false && e.shiftKey == false) {
+                            e.preventDefault();
+                            document.getElementById(id).click();
+                        }
                     }
                 }
                 document.getElementById(id).value += " (F2)";
@@ -1425,6 +1431,12 @@ var mainGC = function() {
                 tlc('START User profile');
                 $('#ctl00_uxLoginStatus_divSignedIn button.li-user-toggle')[0].addEventListener('click', function(){
                     $('#ctl00_uxLoginStatus_divSignedIn li.li-user').toggleClass('gclh_open');
+                });
+                // Disable user profile menu by clicking anywhere else.
+                $(document).click(function(){
+                    if (!$(this)[0].activeElement.className.match(/li-user-toggle/)) {
+                        $('#ctl00_uxLoginStatus_divSignedIn li.li-user').removeClass('gclh_open');
+                    }
                 });
                 tlc('START OK');
             } else {
@@ -2969,10 +2981,10 @@ var mainGC = function() {
             if (settings_map_overview_search_map_icon || settings_map_overview_browse_map_icon) {
                 html += "<span class='mapIcons'>";
                 if (settings_map_overview_search_map_icon) {
-                    html += "<a href='" + new_map_url + "?lat=" + lat + "&lng=" + lng + "' title='overview new map' " + (settings_map_overview_search_map_icon_new_tab ? "target='_blank'":"") + ">" + search_map_icon + "</a>";
+                    html += "<a href='" + new_map_url + "?lat=" + lat + "&lng=" + lng + "' title='Search Map' " + (settings_map_overview_search_map_icon_new_tab ? "target='_blank'":"") + ">" + search_map_icon + "</a>";
                 }
                 if (settings_map_overview_browse_map_icon) {
-                    html += "<a href='" + map_url + "?lat=" + lat + "&lng=" + lng + "' title='overview old map' " + (settings_map_overview_browse_map_icon_new_tab ? "target='_blank'":"") + ">" + browse_map_icon + "</a>";
+                    html += "<a href='" + map_url + "?lat=" + lat + "&lng=" + lng + "' title='Browse Map' " + (settings_map_overview_browse_map_icon_new_tab ? "target='_blank'":"") + ">" + browse_map_icon + "</a>";
                 }
                 html += "</span>'>";
             }
@@ -9734,7 +9746,7 @@ var mainGC = function() {
                 checkForAddHomeZoneMap(0);
             }
             isMapLoad(changeMap);
-            appendCssStyle(".leaflet-control-layers-base {min-width: 135px;} .add-list li {padding: 2px 0} .add-list li button {font-size: 14px; margin-bottom: 0px;}");
+            appendCssStyle(".leaflet-control-layers-base {min-width: 135px;} .add-list li {padding: 2px 0} .add-list li button {font-size: 14px; margin-bottom: 0px;} .pq-dl {margin-top: 1em; margin-bottom: 0 !important;}");
         } catch(e) {gclh_error("Change map parameter and add homezone to map",e);}
     }
 
@@ -13458,8 +13470,9 @@ var mainGC = function() {
             html += checkboxy('settings_show_save_message', 'Show info message when data are saved') + show_help("With this option an info message is displayed when the data of the GClh II Config (this page) has been saved or when the data of the GClh II Sync has been imported.") + "<br>";
             html += checkboxy('settings_sort_default_bookmarks', 'Sort the default links for the Linklist') + show_help("This option allows you to sort the default links for the Linklist by description. You can configure these default links for use in your Linklist at the bottom of this GClh II Config.<br><br>Changing this option will only take effect after saving.") + "<br>";
             html += checkboxy('settings_make_config_main_areas_hideable', 'Make the main areas hideable') + show_help("With this option you can show and hide the main areas in the GClh II Config (this page) with a left mouse click. With a right click you can show and hide all main areas in the GClh II Config.<br><br>Changing this option will only take effect after saving.") + "<br>";
-            html += checkboxy('settings_hide_colored_versions', 'Hide colored schema of the versions') + show_help("With this option the color representation of the versions and the version numbers in the GClh II Config (this page) can be selected.<br><br>Changing this option will only take effect after saving.") + "<br>";
+            html += checkboxy('settings_hide_colored_versions', 'Hide color scheme of the versions') + show_help("With this option the color representation of the versions and the version numbers in the GClh II Config (this page) can be selected.<br><br>Changing this option will only take effect after saving.") + "<br>";
             html += newParameterOn2;
+            html += checkboxy('settings_color_navi_search', 'Coloring also search field in page header') + "<br>";
             html += "<table><tbody>";
             var c = "<tr><td>#1</td><td>&nbsp;<input class='gclh_form color' type='text' size=6 id='settings_color_#2' value='#3'><img src=" + global_restore_icon + " id='restore_settings_color_#2' title='back to default' style='width: 12px; cursor: pointer;'></td><td>&nbsp;<button class='gclh_form set' style='height: 23px;' id='set_color_#2' type='button'>Preview</button>#4</td></tr>";
             var h = " " + show_help("To change a color, click on a color code. With the small buttons behind the color codes you can go back to the default color. With the preview buttons you can view and try out the settings for the colors before you save the color scheme.<br><br>With these parameters the color scheme of the GClh II screens and fields can be adjusted. The settings affect the screens of the GClh II Config, with the main, reset and thanks screens, as well as the GClh II Sync screen and the GClh II Find player screen.<br><br>Within the GClh II Config main screen there is also the color scheme for the versions, in which the last three versions are highlighted in color. The last version is given the color. For the previous two, the intensity of the color is reduced.<br><br>The settings also have an effect on the search field in the header of the geocaching pages, provided this feature is activated.");
@@ -13469,9 +13482,8 @@ var mainGC = function() {
             html += c.replace(/#1/g, 'Coloring buttons with mouse' + show_help("The color of the button can be set here, in case the mouse is over it.")).replace(/#2/g, 'bh').replace(/#3/, settings_color_bh).replace(/#4/, '');
             html += c.replace(/#1/g, 'Coloring buttons').replace(/#2/g, 'bu').replace(/#3/, settings_color_bu).replace(/#4/, '');
             html += c.replace(/#1/g, 'Coloring frame of fields, screens').replace(/#2/g, 'bo').replace(/#3/, settings_color_bo).replace(/#4/, '');
-            html += c.replace(/#1/g, 'Coloring schema of the versions').replace(/#2/g, 'nv').replace(/#3/, settings_color_nv).replace(/#4/, '');
+            html += c.replace(/#1/g, 'Coloring new versions').replace(/#2/g, 'nv').replace(/#3/, settings_color_nv).replace(/#4/, '');
             html += "</table></tbody>";
-            html += checkboxy('settings_color_navi_search', 'Coloring also search field in page header') + "<br>";
             html += newParameterVersionSetzen('0.11') + newParameterOff;
             html += "</div>";
 
@@ -13974,9 +13986,9 @@ var mainGC = function() {
             html += "</select>" + show_help("With this option you can choose the zoom value to start in the map. \"1\" is the hole world and \"19\" is the maximal enlargement. Default is \"11\". <br><br>This option requires \"Show cache location in overview map\".") + "<br>";
             html += newParameterVersionSetzen(0.9) + newParameterOff;
             html += newParameterOn2;
-            html += "&nbsp; " + checkboxy('settings_map_overview_browse_map_icon', 'Show icon with link to <b>old map</b> in overview map') + "<br>";
+            html += "&nbsp; " + checkboxy('settings_map_overview_browse_map_icon', 'Show icon with link to browse map in overview map') + "<br>";
             html += " &nbsp; &nbsp; " + checkboxy('settings_map_overview_browse_map_icon_new_tab', 'Open link in new browser tab') + "<br>";
-            html += "&nbsp; " + checkboxy('settings_map_overview_search_map_icon', 'Show icon with link to <b>new map</b> in overview map') + "<br>";
+            html += "&nbsp; " + checkboxy('settings_map_overview_search_map_icon', 'Show icon with link to search map in overview map') + "<br>";
             html += " &nbsp; &nbsp; " + checkboxy('settings_map_overview_search_map_icon_new_tab', 'Open link in new browser tab') + "<br>";
             html += newParameterVersionSetzen('0.11') + newParameterOff;
 
