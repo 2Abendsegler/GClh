@@ -121,6 +121,7 @@ function headerHtmlInit(c) {
 
 // Part of core CSS of Groundspeak. All nav changed in gclh_nav.
 function corecssInit(c) {
+    c.gclhToggleHandle = '.gclh_toggle-handle {background-color: #e4e4e4; border: none; border-radius: 10px; cursor: pointer; height: 21px; left: 0; padding: 0; position: relative; right: auto; width: 32px;}.gclh_toggle-handle::after {background-color: white; background-clip: padding-box; border: 1px solid #4a4a4a; border-radius: 12px; box-shadow: 0 0 0 3px transparent; content: \'\'; height: 19px; left: 0; position: absolute; width: 19px; top: 0;}.gclh_toggle-handle:hover, .gclh_toggle-handle:focus {outline: 0 !important;}.gclh_toggle-handle:hover::after, .gclh_toggle-handle:focus::after {border-color: #02874d; box-shadow: 0 0 0 3px #e4e4e4;}.gclh_toggle-handle.is-disabled {pointer-events: none;}.gclh_toggle-handle.on {background-color: #02874d;}.gclh_toggle-handle.on::after {border: 1px solid #02874d; left: auto; right: 0;}';
     c.corecss = "" +
         "gclh_nav {" +
         "  display:block" +
