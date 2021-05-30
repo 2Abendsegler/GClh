@@ -8330,7 +8330,6 @@ var mainGC = function() {
             }
 
             function processAllCODashboard() {
-                console.log('processAllCODashboard');
                 if (document.location.pathname.match(/play\/owner/)) { // This has to be run last, if features are add to the other CO Dashboard Pages
                     setLinksToCacheTypes(0);
                     setLinkToOwnProfil(0);
