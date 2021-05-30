@@ -9189,12 +9189,13 @@ var mainGC = function() {
             }
 
             // Create button to save map as PQ.
+            var set_defaults = false;
             function addCreatePQButton() {
                 if ($('.list-hub')[0] || document.location.href.match(/\.com\/play\/map\/lists\/BM/)) {
-                    if ($('#gclh_saveAsPQ')[0]) $('#gclh_saveAsPQ').remove();
+                    if ($('#gclh_saveAsPQ')[0]) $('.gclh_PQHead').remove();
                 } else {
-                    if ($('#geocache-list')[0] && !$('#gclh_saveAsPQ')[0]) {
-                        let html = '<div class="gclh_PQHead"><a id="gclh_saveAsPQ" href="javascript:void(0)" title="Save as Pocket Query"><img src="/images/icons/16/pocket_query.png" height="12px">Save as PQ</a><div class="set_defaults toggle-filter"><span class="label" title="Set GClh defaults for new PQs">&nbsp;|&nbsp;Set defaults</span><div class="gclh_toggle-handle"></div></div></div>';
+                    if ($('#geocache-list')[0] && !$('.gclh_PQHead')[0]) {
+                        let html = '<div class="gclh_PQHead"><a id="gclh_saveAsPQ" href="javascript:void(0)" title="Save as Pocket Query"><img src="/images/icons/16/pocket_query.png" height="12px">Save as PQ</a><div class="set_defaults toggle-filter"><span class="label" title="Set GClh defaults for new PQs.\nThe Map Filters overwrite the GClh defaults.">&nbsp;|&nbsp;Set defaults</span><div class="gclh_toggle-handle"></div></div></div>';
                         $('#gclh_action_bar').append(html);
                         $('#gclh_saveAsPQ').bind('click', function() {
                             let px = document.querySelector('.leaflet-gl-layer.mapboxgl-map').offsetWidth;
@@ -9205,8 +9206,12 @@ var mainGC = function() {
                             url += '&gclh_setDefaults=' + ($('.set_defaults .gclh_toggle-handle.on')[0] ? true:false);
                             window.open(url, '_blank');
                         });
-                        $('.set_defaults .gclh_toggle-handle')[0].onclick = function() {$('.set_defaults .gclh_toggle-handle').toggleClass('on');};
+                        $('.set_defaults .gclh_toggle-handle')[0].onclick = function() {
+                            $('.set_defaults .gclh_toggle-handle').toggleClass('on');
+                            set_defaults = (set_defaults == true ? false : true);
+                        };
                     }
+                    if ($('.set_defaults .gclh_toggle-handle')[0] && set_defaults == true) {$('.set_defaults .gclh_toggle-handle').addClass('on');}
                 }
             }
 
@@ -9991,13 +9996,13 @@ var mainGC = function() {
         try {
             function waitForSavePQ(waitCount) {
                 if ($('.pq-dl')[0] && $('#lnk_savepq')[0]) {
-                    $('.pq-dl').append('<div class="set_defaults toggle-filter"><span class="label" title="Set GClh defaults for new PQs">&nbsp;|&nbsp;Set defaults</span></div><div class="gclh_toggle-handle"></div>');
+                    $('.pq-dl').append('<div class="set_defaults toggle-filter"><span class="label" title="Set GClh defaults for new PQs.\nThe Map Filters overwrite the GClh defaults.">&nbsp;|&nbsp;Set defaults</span></div><div class="gclh_toggle-handle"></div>');
                     $('.pq-dl .gclh_toggle-handle')[0].onclick = function() {$('.pq-dl .gclh_toggle-handle').toggleClass('on');};
                     $('#lnk_savepq')[0].onclick = function() {setValue('settings_save_as_pq_set_defaults', $('.pq-dl .gclh_toggle-handle.on')[0] ? true:false);};
                 } else {waitCount++; if (waitCount <= 100) setTimeout(function(){saveHomeCoordsWait(waitCount);}, 50);}
             }
             waitForSavePQ(0)
-            var css = '.pq-dl {margin-top: 1em; margin-bottom: 0 !important; display: flex;}';
+            var css = '.pq-dl {margin-top: 1em; margin-bottom: 0 !important; display: flex; cursor: default;}';
             css += '.set_defaults {margin-right: 6px;}';
             css += gclhToggleHandle;
             appendCssStyle(css);
