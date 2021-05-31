@@ -4822,13 +4822,15 @@ var mainGC = function() {
                  (document.location.href.match(/aspx\?ll=/) && settings_save_as_pq_set_defaults) ||  // Save as PQ from browse map.
                  (document.location.href.match(/aspx\?.*&gclh_saveAsPQ=true&gclh_setDefaults=true/)) )) {  // Save as PQ from search map.
                 if (settings_pq_set_cachestotal) $(idCB+"tbResults").val(settings_pq_cachestotal);
-                if (settings_pq_option_ihaventfound) {
-                    $(idOp+"0").prop('checked', true);
-                    $(idOp+"1").prop('checked', false);
-                }
-                if (settings_pq_option_idontown) {
-                    $(idOp+"2").prop('checked', true);
-                    $(idOp+"3").prop('checked', false);
+                if (!document.location.href.match(/aspx\?ll=/)) { // Not for Save as PQ from browse map.
+                    if (settings_pq_option_ihaventfound) {
+                        $(idOp+"0").prop('checked', true);
+                        $(idOp+"1").prop('checked', false);
+                    }
+                    if (settings_pq_option_idontown) {
+                        $(idOp+"2").prop('checked', true);
+                        $(idOp+"3").prop('checked', false);
+                    }
                 }
                 if (settings_pq_option_ignorelist) $(idOp+"6").prop('checked', true);
                 if (settings_pq_option_isenabled) {
