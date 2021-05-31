@@ -8344,7 +8344,7 @@ var mainGC = function() {
                     });
                 });
                 var target = document.querySelector('#app-root div');
-                var config = {attributes: true, childList: true, childNodes: true, characterData: true};
+                var config = {attributes: true, childList: true, characterData: true};
                 observerCODashboard.observe(target, config);
             }
             // Check if mutation observer can be build.
