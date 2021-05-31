@@ -8313,19 +8313,33 @@ var mainGC = function() {
             }
             function buildVipVupMailMessage() {
                 var links = $('a[href*="https://www.geocaching.com/p/default.aspx?u="]');
-                if ($('.gclh_vip')[0]) return;
+                // Add Event Listener for "Load more" button.
+                if ($('.latest-activity-load')[0] && !$('.gclh_eventListener')[0]) {
+                    $('.latest-activity-load')[0].addEventListener('click', function() {
+                        function waitForLatestActivityPart2(waitCount) {
+                            if ($('.latest-activity-loaded')[0]) {
+                                waitForLatestActivityList(0);
+                            } else {waitCount++; if (waitCount <= 1000) setTimeout(function(){waitForLatestActivityPart2(waitCount);}, 100);}
+                        }
+                        waitForLatestActivityPart2(0);
+                    });
+                    $('.latest-activity-load').addClass('gclh_eventListener');
+                }
                 for (var i = 0; i < links.length; i++) {
                     var user = $(links[i]).find('span').html();
-                    if (user != null) {
-                        $(links[i]).after('<span class="gclh_name" id="gclh_name_' + i + '"></span>')
-                        $(links[i]).appendTo('#gclh_name_' + i);
-                        let GCTBName = $('#gclh_name_' + i).parent().parent().find('h3 a').html().trim();
-                        let GCTBCode = $('#gclh_name_' + i).parent().parent().find('ul li')[0].innerHTML.match(/GC[A-Z0-9]{1,6}/)[0];
-                        global_name = GCTBName;
-                        global_code = '('+GCTBCode+')';
-                        global_link = '(https://coord.info/'+GCTBCode+')';
-                        gclh_build_vipvupmail(links[i].parentNode, user);
-                    }
+                    // The profile pictures also have a link, but there shouldn't be any Vip/Vip/Mail icons.
+                    if (user == null)  continue;
+                    // Avoid double Vip/Vip/Mail icons.
+                    if ($('#gclh_name_' + i)[0]) continue;
+                    // Set the Vip/Vip/Mail icons.
+                    $(links[i]).after('<span class="gclh_name" id="gclh_name_' + i + '"></span>');
+                    $(links[i]).appendTo('#gclh_name_' + i);
+                    let GCTBName = $('#gclh_name_' + i).parent().parent().find('h3 a').html().trim();
+                    let GCTBCode = $('#gclh_name_' + i).parent().parent().find('ul li')[0].innerHTML.match(/GC[A-Z0-9]{1,6}/)[0];
+                    global_name = GCTBName;
+                    global_code = '('+GCTBCode+')';
+                    global_link = '(https://coord.info/'+GCTBCode+')';
+                    gclh_build_vipvupmail(links[i].parentNode, user);
                 }
             }
 
@@ -8333,7 +8347,7 @@ var mainGC = function() {
                 if (document.location.pathname.match(/play\/owner/)) { // This has to be run last, if features are add to the other CO Dashboard Pages
                     setLinksToCacheTypes(0);
                     setLinkToOwnProfil(0);
-                    waitForLatestActivityList(0)
+                    waitForLatestActivityList(0);
                 }
             }
             // Build mutation observer.
