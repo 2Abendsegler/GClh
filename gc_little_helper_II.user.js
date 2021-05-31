@@ -8337,25 +8337,25 @@ var mainGC = function() {
                 }
             }
             // Build mutation observer.
-            function buildObserverBodyCODashboard() {
-                var observerBodyCODashboard = new MutationObserver(function(mutations) {
+            function buildObserverCODashboard() {
+                var observerCODashboard = new MutationObserver(function(mutations) {
                     mutations.forEach(function(mutation) {
                         processAllCODashboard();
                     });
                 });
                 var target = document.querySelector('#app-root div');
-                var config = { attributes: true, childList: true, characterData: true };
-                observerBodyCODashboard.observe(target, config);
+                var config = {attributes: true, childList: true, childNodes: true, characterData: true};
+                observerCODashboard.observe(target, config);
             }
             // Check if mutation observer can be build.
-            function checkForBuildObserverBodyCODashboard(waitCount) {
-                if ($('#app-root div')[0]) {
-                    if ($('.gclh_buildObserverBodyCODashboard')[0]) return;
-                    $('#app-root div').addClass('gclh_buildObserverBodyCODashboard');
-                    buildObserverBodyCODashboard();
-                } else {waitCount++; if (waitCount <= 200) setTimeout(function(){checkForBuildObserverBodyCODashboard(waitCount);}, 50);}
+            function checkForBuildObserverCODashboard(waitCount) {
+                if ($('#app-root div div')[0]) {
+                    if ($('.gclh_buildObserverCODashboard')[0]) return;
+                    $('#app-root').addClass('gclh_buildObserverCODashboard');
+                    buildObserverCODashboard();
+                } else {waitCount++; if (waitCount <= 200) setTimeout(function(){checkForBuildObserverCODashboard(waitCount);}, 50);}
             }
-            checkForBuildObserverBodyCODashboard(0);
+            checkForBuildObserverCODashboard(0);
             processAllCODashboard();
 
             // CSS for Cache Owner Dashboard.
