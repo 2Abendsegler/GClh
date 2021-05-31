@@ -649,6 +649,7 @@ var variablesInit = function(c) {
     c.settings_color_navi_search = getValue("settings_color_navi_search", false);
     c.settings_map_show_btn_hide_header = getValue("settings_map_show_btn_hide_header", true);
     c.settings_save_as_pq_set_defaults = getValue("settings_save_as_pq_set_defaults", false);
+    c.settings_save_as_pq_set_all = getValue("settings_save_as_pq_set_all", true);
 
     tlc('START userToken');
     try {
@@ -4817,9 +4818,9 @@ var mainGC = function() {
             var idOp = "#ctl00_ContentBody_cbOptions_";
             var idDa = "#ctl00_ContentBody_cbDays_";
             if ($("p.Success").length <= 0 &&
-                 (document.location.href.match(/\.com\/pocket\/gcquery\.aspx$/) ||  // New PQ.
-                 (document.location.href.match(/\.com\/pocket\/gcquery\.aspx\?ll=/) && settings_save_as_pq_set_defaults) ||  // Save as PQ from browse map.
-                 (document.location.href.match(/\.com\/pocket\/gcquery\.aspx\?.*&gclh_saveAsPQ=true&gclh_setDefaults=true/)) )) {  // Save as PQ from search map.
+                 (document.location.href.match(/aspx$/) ||  // New PQ.
+                 (document.location.href.match(/aspx\?ll=/) && settings_save_as_pq_set_defaults) ||  // Save as PQ from browse map.
+                 (document.location.href.match(/aspx\?.*&gclh_saveAsPQ=true&gclh_setDefaults=true/)) )) {  // Save as PQ from search map.
                 if (settings_pq_set_cachestotal) $(idCB+"tbResults").val(settings_pq_cachestotal);
                 if (settings_pq_option_ihaventfound) {
                     $(idOp+"0").prop('checked', true);
@@ -4939,7 +4940,7 @@ var mainGC = function() {
             if (getURLParam('pbd')) placedDateEnd = getURLParam('pbd');
             if (getURLParam('ped')) placedDateEnd = getURLParam('ped');
             if (getURLParam('pod')) placedDateEnd = getURLParam('pod');
-            // Attribute
+            // Attribute.
             let attr = getURLParam('att') ? decodeURIComponent(getURLParam('att')).split(',') : false;
             // Warning if filters are not available at PQ.
             let warningHTML = '<div id="gclh_warning" style="color:#f00"><span>Warning: You have set filters that cannot be implemented in Pocket Queries.<br>This applies to the following filters:</span><ul></ul></div>'
@@ -4966,11 +4967,15 @@ var mainGC = function() {
                     cacheTypes.forEach(function(elem) {$('#ctl00_ContentBody_cbTaxonomy input[value="'+elem+'"]').click();});
                 }
                 // Found Status.
-                $('#ctl00_ContentBody_cbOptions_1').prop('checked', showFound);
-                $('#ctl00_ContentBody_cbOptions_0').prop('checked', hideFound);
+                if (settings_save_as_pq_set_all || getURLParam('hf')) {
+                    $('#ctl00_ContentBody_cbOptions_1').prop('checked', showFound);
+                    $('#ctl00_ContentBody_cbOptions_0').prop('checked', hideFound);
+                }
                 // Hide Status.
-                $('#ctl00_ContentBody_cbOptions_3').prop('checked', showOwn);
-                $('#ctl00_ContentBody_cbOptions_2').prop('checked', hideOwn);
+                if (settings_save_as_pq_set_all || getURLParam('ho')) {
+                    $('#ctl00_ContentBody_cbOptions_3').prop('checked', showOwn);
+                    $('#ctl00_ContentBody_cbOptions_2').prop('checked', hideOwn);
+                }
                 // Difficult and terrin rating.
                 if (d_t['d_min'] > 1 && d_t['d_max'] < 5 && d_t['d_min'] != d_t['d_max']) {
                     // Parameters that are BETWEEN 1 and 5 (1 < x < 5) cannot be implemented.
@@ -5013,11 +5018,15 @@ var mainGC = function() {
                     });
                 }
                 // Membership type.
-                if (basic) $('#ctl00_ContentBody_cbOptions_4').click();
-                if (premium) $('#ctl00_ContentBody_cbOptions_5').click();
+                if (settings_save_as_pq_set_all || getURLParam('sp')) {
+                    if (basic) $('#ctl00_ContentBody_cbOptions_4').click();
+                    if (premium) $('#ctl00_ContentBody_cbOptions_5').click();
+                }
                 // Cache Status.
-                $('#ctl00_ContentBody_cbOptions_13').prop('checked', enabled);
-                $('#ctl00_ContentBody_cbOptions_12').prop('checked', disabled);
+                if (settings_save_as_pq_set_all || getURLParam('sd')) {
+                    $('#ctl00_ContentBody_cbOptions_13').prop('checked', enabled);
+                    $('#ctl00_ContentBody_cbOptions_12').prop('checked', disabled);
+                }
                 // Date.
                 if (placedDateStart !== false || placedDateEnd !== false) {
                     $('#ctl00_ContentBody_rbPlacedBetween').click();
@@ -13663,6 +13672,7 @@ var mainGC = function() {
             html += checkboxy('settings_searchmap_show_btn_save_as_pq', 'Show button "Save as Pocket Query"') + show_help("Adds a button in the sidebar of the search map to save the actual map view as a pocket query (like on the browse map).<br>Note that not all filters on the map are also available on Pocket Query.") + onlySearchMap + "<br>";
             html += newParameterVersionSetzen('0.10') + newParameterOff;
             html += newParameterOn2;
+            html += " &nbsp; " + checkboxy('settings_save_as_pq_set_all', 'Set filter values of "All"') + show_help("If filter values of \"All\" are set and the map parameter \"Set defaults\" is enabled, the default values are still prevented from asserting themselves. Otherwise, the defaults prevail. This makes it possible, for example, to see caches found and not found on the map, this is \"All\". So you can see on the map whether you have been around here before. At the same time, however, a default value for \"I haven't found\" may be set in the PQ. After all, the caches found are of little interest in the PQ. That might sound complicated, but it can be valuable if you understand it because you don't have to make any more changes to the map's filter before generating the PQ.") + "<br>";
             html += checkboxy('settings_map_show_btn_hide_header', 'Show button "Hide Header"') + '<br>'
             html += newParameterVersionSetzen('0.11') + newParameterOff;
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>Homezone circles</b>" + onlyBrowseMap + "</div>";
@@ -14877,6 +14887,7 @@ var mainGC = function() {
             setEvForDepPara("settings_map_overview_browse_map_icon", "settings_map_overview_browse_map_icon_new_tab");
             setEvForDepPara("settings_map_overview_search_map_icon", "settings_map_overview_search_map_icon_new_tab");
             setEvForDepPara("settings_map_show_btn_hide_header","settings_hide_map_header");
+            setEvForDepPara("settings_searchmap_show_btn_save_as_pq","settings_save_as_pq_set_all");
 
             // Abhängigkeiten der Linklist Parameter.
             for (var i = 0; i < 100; i++) {
@@ -15318,6 +15329,7 @@ var mainGC = function() {
                 'settings_profile_old_links',
                 'settings_listing_old_links',
                 'settings_searchmap_show_btn_save_as_pq',
+                'settings_save_as_pq_set_all',
                 'settings_map_overview_browse_map_icon',
                 'settings_map_overview_search_map_icon',
                 'settings_show_link_to_browse_map',
