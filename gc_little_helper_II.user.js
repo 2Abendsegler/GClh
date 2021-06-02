@@ -1432,7 +1432,7 @@ var mainGC = function() {
                 // User profile menu bend into shape.
                 tlc('START User profile');
                 $('#ctl00_uxLoginStatus_divSignedIn button.li-user-toggle')[0].addEventListener('click', function(){
-                    $('#ctl00_uxLoginStatus_divSignedIn li.li-user').toggleClass('gclh_open');
+                    $('#ctl00_uxLoginStatus_divSignedIn li.li-user:not(#pgc_gclh)').toggleClass('gclh_open');
                 });
                 // Disable user profile menu by clicking anywhere else.
                 $(document).click(function(){
