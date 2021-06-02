@@ -7023,7 +7023,7 @@ var mainGC = function() {
             global_MailTemplate = global_MailTemplate.replace(/__Receiver__/ig, "${UserName}");
 
             var isUpvoteActive = false;
-            if ($('#cache_logs_container div.sort-logs').length) isUpvoteActive = true;
+            if ($('#cache_logs_container div.sort-logs')[0] || $('div.upvotes')[0]) isUpvoteActive = true;
             var upvoteIconPixel = (settings_smaller_upvotes_icons ? 16:24);
 
             var vupUserString = 'if UserName == "#" ';
@@ -7188,7 +7188,8 @@ var mainGC = function() {
                 '                  <span>Helpful{{if (typeof helpful != "undefined") && helpful > 0}} (${helpful}){{/if}}</span>' +
                 '              </button>' +
                 '          </div>' +
-                '        {{/if}}' +
+                '        {{/if}}';
+            new_tmpl +=
                 '        <div class="AlignRight">' +
                 '          <small><a title="View Log" href="/seek/log.aspx?LUID=${LogGuid}" target="_blank">' +
                 '          {{if (userInfo.ID==AccountID)}}' +
@@ -7200,8 +7201,7 @@ var mainGC = function() {
                 '          {{if (userInfo.ID==AccountID)}}' +
                 '          <small><a title="Upload Image" href="/seek/upload.aspx?LID=${LogID}" target="_blank">Upload Image</a></small>' +
                 '          {{/if}}' +
-                '        </div>';
-            new_tmpl +=
+                '        </div>' +
                 '       </div>' +
                 '     </div>' +
                 '   </td>' +
@@ -7427,7 +7427,7 @@ var mainGC = function() {
                 if (isUpvoteActive && settings_show_hide_upvotes_but) showHideUpvotesLink();
                 if (settings_show_bigger_avatars_but && !settings_hide_avatar && !isMemberInPmoCache() && settings_show_thumbnails) showBiggerAvatarsLink();
                 if (settings_show_log_counter_but) showLogCounterLink();
-                if(isUpvoteActive){
+                if (isUpvoteActive) {
                     $('#new_sort_element_upvote').prop( "disabled", false );
                     $('#new_sort_element_upvote').removeClass("isDisabled");
                 }
@@ -7465,7 +7465,7 @@ var mainGC = function() {
                     unsafeWindow.$('a.tb_images').fancybox({'type': 'image', 'titlePosition': 'inside'});
                     gclh_add_vip_icon();
                     setLinesColorInCacheListing();
-                    if (isUpvoteActive){
+                    if (isUpvoteActive) {
                         updateUpvoteEvents(logs);
                     }
                     setMarkerDisableDynamicLogLoad();
@@ -7567,7 +7567,7 @@ var mainGC = function() {
                     unsafeWindow.$('a.tb_images').fancybox({'type': 'image', 'titlePosition': 'inside'});
                     gclh_add_vip_icon();
                     setLinesColorInCacheListing();
-                    if (isUpvoteActive){
+                    if (isUpvoteActive) {
                         updateUpvoteEvents(logs);
                     }
                     setMarkerDisableDynamicLogLoad();
@@ -7638,7 +7638,7 @@ var mainGC = function() {
                     document.getElementById("gclh_vip_list_nofound").appendChild(span_loading);
                 }
 
-                if(isUpvoteActive){
+                if (isUpvoteActive) {
                     // remove the sorting select
 
                     appendCssStyle("#new_sort_element_upvote.isDisabled{opacity: 0.5;}")
@@ -7820,7 +7820,7 @@ var mainGC = function() {
                             // Add Great story / helpful data to logs
                             // give starting index to the function, so it knows
                             // what index has to be updated
-                            if(isUpvoteActive){
+                            if (isUpvoteActive) {
                                 getUpvoteData(all_ids,((z-1)*100));
                             }
                         }
@@ -7841,7 +7841,7 @@ var mainGC = function() {
                             }
                         }
                         unsafeWindow.$('a.tb_images').fancybox({'type': 'image', 'titlePosition': 'inside'});
-                        if(isUpvoteActive){
+                        if (isUpvoteActive) {
                             unsafeWindow.appendUpvotesToLogs(log_ids);
                             updateUpvoteEvents(logs);
                         }
