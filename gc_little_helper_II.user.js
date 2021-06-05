@@ -660,6 +660,7 @@ var variablesInit = function(c) {
     c.settings_save_as_pq_set_defaults = getValue("settings_save_as_pq_set_defaults", false);
     c.settings_save_as_pq_set_all = getValue("settings_save_as_pq_set_all", true);
     c.settings_compact_layout_cod = getValue("settings_compact_layout_cod", false);
+    c.settings_fav_proz_cod = getValue("settings_fav_proz_cod", true)
 
     tlc('START userToken');
     try {
@@ -8357,8 +8358,34 @@ var mainGC = function() {
                 global_running = false;
             }
 
+            // Show favorites percentage
+            function favPercent(waitCount) {
+                if (settings_fav_proz_cod) {
+                    if ($('.geocache-table tbody tr')[0]) {
+                        $('.geocache-table tbody tr').each((i, elem) => {
+                            let id = $(elem).find('.geocache-details span').html().gcCodeToID();
+                            let favs = $(elem).find('.favorites-display').html();
+                            $.ajax({
+                                url: '/seek/nearest.aspx/FavoriteScore',
+                                type: 'POST',
+                                contentType: "application/json; charset=utf-8",
+                                data: JSON.stringify({dto: {data: id, ut: 2, p: favs}}),
+                                dataType: 'json',
+                                success: function (result) {
+                                    if (!$(elem).find('.favorites-display .gclh_favScore')[0]) {
+                                        $(elem).find('.favorites-display').html(favs + ' <span class="gclh_favScore">(' + result.d.score + '%)</span>');
+                                    }
+                                }
+                            });
+                        });
+                    } else {waitCount++; if (waitCount <= 1000) setTimeout(function(){favPercent(waitCount);}, 100);}
+                }
+            }
+
             function processAllCODashboard() {
-                if (document.location.pathname.match(/play\/owner/)) { // This has to be run last, if features are add to the other CO Dashboard Pages
+                if (document.location.pathname.match(/play\/owner\/(archived|published)($|\/$)/)) {
+                    favPercent(0);
+                } else if (document.location.pathname.match(/play\/owner/)) { // This has to be run last, if features are add to the other CO Dashboard Pages
                     setLinksToCacheTypes(0);
                     setLinkToOwnProfil(0);
                     waitForLatestActivityList(0);
@@ -13389,6 +13416,7 @@ var mainGC = function() {
             html += newParameterVersionSetzen(0.9) + newParameterOff;
             html += newParameterOn2;
             html += checkboxy('settings_compact_layout_cod', 'Show compact layout on your cache owner dashboard') + "<br>";
+            html += checkboxy('settings_fav_proz_cod', 'Show favorites percentage') + "<br>";
             html += newParameterVersionSetzen("0.11") + newParameterOff;
             html += "</div>";
 
@@ -15122,6 +15150,7 @@ var mainGC = function() {
                 'settings_color_navi_search',
                 'settings_map_show_btn_hide_header',
                 'settings_compact_layout_cod',
+                'settings_fav_proz_cod',
             );
             for (var i = 0; i < checkboxes.length; i++) {
                 if (document.getElementById(checkboxes[i])) setValue(checkboxes[i], document.getElementById(checkboxes[i]).checked);
@@ -17069,5 +17098,22 @@ function injectPageScript(scriptContent, TagName, IdName) {
     pageHead.appendChild(script);
 }
 function injectPageScriptFunction(funct, functCall) {injectPageScript("(" + funct.toString() + ")" + functCall + ";");}
+
+// Convert GCCode to id.
+String.prototype.gcCodeToID = function () {
+    gcCode = this.trim().toUpperCase().substring(2);
+    let abc = '0123456789ABCDEFGHJKMNPQRTVWXYZ';
+    let base = 31;
+    let id = -411120;
+    if (gcCode.length <= 3 || (gcCode.length == 4 && gcCode.match(/[0-9A-F]/))) {
+        abc = '0123456789ABCDEF';
+        base = 16;
+        id = 0;
+    }
+    gcCode.split('').reverse().forEach((letter, i) => {
+        id += abc.indexOf(letter) * Math.pow(base, i);
+    });
+    return id;
+}
 
 start(this);
