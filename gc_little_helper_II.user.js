@@ -650,6 +650,7 @@ var variablesInit = function(c) {
     c.settings_map_show_btn_hide_header = getValue("settings_map_show_btn_hide_header", true);
     c.settings_save_as_pq_set_defaults = getValue("settings_save_as_pq_set_defaults", false);
     c.settings_save_as_pq_set_all = getValue("settings_save_as_pq_set_all", true);
+    c.settings_fav_proz_cod = getValue("settings_fav_proz_cod", true)
 
     tlc('START userToken');
     try {
@@ -8359,8 +8360,34 @@ var mainGC = function() {
                 }
             }
 
+            // Show favorites percentage
+            function favPercent(waitCount) {
+                if (settings_fav_proz_cod) {
+                    if ($('.geocache-table tbody tr')[0]) {
+                        $('.geocache-table tbody tr').each((i, elem) => {
+                            let id = $(elem).find('.geocache-details span').html().gcCodeToID();
+                            let favs = $(elem).find('.favorites-display').html();
+                            $.ajax({
+                                url: '/seek/nearest.aspx/FavoriteScore',
+                                type: 'POST',
+                                contentType: "application/json; charset=utf-8",
+                                data: JSON.stringify({dto: {data: id, ut: 2, p: favs}}),
+                                dataType: 'json',
+                                success: function (result) {
+                                    if (!$(elem).find('.favorites-display .gclh_favScore')[0]) {
+                                        $(elem).find('.favorites-display').html(favs + ' <span class="gclh_favScore">(' + result.d.score + '%)</span>');
+                                    }
+                                }
+                            });
+                        });
+                    } else {waitCount++; if (waitCount <= 1000) setTimeout(function(){favPercent(waitCount);}, 100);}
+                }
+            }
+
             function processAllCODashboard() {
-                if (document.location.pathname.match(/play\/owner/)) { // This has to be run last, if features are add to the other CO Dashboard Pages
+                if (document.location.pathname.match(/play\/owner\/(archived|published)($|\/$)/)) {
+                    favPercent(0);
+                } else if (document.location.pathname.match(/play\/owner/)) { // This has to be run last, if features are add to the other CO Dashboard Pages
                     setLinksToCacheTypes(0);
                     setLinkToOwnProfil(0);
                     waitForLatestActivityList(0);
@@ -13672,6 +13699,9 @@ var mainGC = function() {
             html += newParameterOn3;
             html += checkboxy('settings_modify_new_drafts_page', 'Modify draft items on the new drafts page') + show_help("Change the linkage of each draft. The title of the geocache now links to the geocaching listing and the cache icon, too (2nd line). The pen icon and the preview note links to the log composing page (3rd line). Add the log type as overlay icon onto the cache icon.") + "<br>";
             html += newParameterVersionSetzen(0.9) + newParameterOff;
+            html += newParameterOn2;
+            html += checkboxy('settings_fav_proz_cod', 'Show favorites percentage') + "<br>";
+            html += newParameterVersionSetzen("0.11") + newParameterOff;
             html += "</div>";
 
             html += "<h4 class='gclh_headline2'>"+prepareHideable.replace("#name#","maps")+"Map</h4>";
@@ -15359,6 +15389,7 @@ var mainGC = function() {
                 'settings_map_overview_search_map_icon_new_tab',
                 'settings_color_navi_search',
                 'settings_map_show_btn_hide_header',
+                'settings_fav_proz_cod',
             );
             for (var i = 0; i < checkboxes.length; i++) {
                 if (document.getElementById(checkboxes[i])) setValue(checkboxes[i], document.getElementById(checkboxes[i]).checked);
@@ -17321,5 +17352,22 @@ function injectPageScript(scriptContent, TagName, IdName) {
     pageHead.appendChild(script);
 }
 function injectPageScriptFunction(funct, functCall) {injectPageScript("(" + funct.toString() + ")" + functCall + ";");}
+
+// Convert GCCode to id.
+String.prototype.gcCodeToID = function () {
+    gcCode = this.trim().toUpperCase().substring(2);
+    let abc = '0123456789ABCDEFGHJKMNPQRTVWXYZ';
+    let base = 31;
+    let id = -411120;
+    if (gcCode.length <= 3 || (gcCode.length == 4 && gcCode.match(/[0-9A-F]/))) {
+        abc = '0123456789ABCDEF';
+        base = 16;
+        id = 0;
+    }
+    gcCode.split('').reverse().forEach((letter, i) => {
+        id += abc.indexOf(letter) * Math.pow(base, i);
+    });
+    return id;
+}
 
 start(this);
