@@ -66,12 +66,33 @@ function iconsInit(c) {
         '    </g>' +
         '  </g>' +
         '</svg>';
-}
+    c.expand_icon =
+        '<svg id="#id#" class="expand_icon" >' +
+        '  <use xlink:href="#expand_icon">' +
+        '    <symbol viewBox="0 0 32 32" id="expand_icon" xmlns="http://www.w3.org/2000/svg">' +
+        '      <path fill="currentColor" d="M16.7 19.1l-7.4-7.4L8 13l7.4 7.4 1.3-1.3zm-1.3 1.3c.9.9 2.2-.4 1.3-1.3l-7.4-7.4c-.9-.9-2.2.4-1.3 1.3l7.4 7.4zm1.3 0L24 13l-1.3-1.3-7.3 7.4 1.3 1.3zm-1.3-1.3c-.9.9.5 2.2 1.3 1.3L24 13c.9-.9-.5-2.2-1.3-1.3l-7.3 7.4zm.6 11C8.2 30.1 1.9 23.8 1.9 16S8.2 1.9 16 1.9 30.1 8.2 30.1 16 23.8 30.1 16 30.1zm0 1.9c8.8 0 16-7.2 16-16S24.8 0 16 0 0 7.2 0 16s7.2 16 16 16z"></path>' +
+        '    </symbol>' +
+        '  </use>' +
+        '</svg>';}
 
-function langInit(c) {
+function collectionInit(c) {
     c.langus =      new Array("Català", "Čeština", "Dansk", "Deutsch", "English", "Ελληνικά", "Eesti", "Español", "Français", "Italiano", "日本語", "한국어", "Latviešu", "Lëtzebuergesch", "Magyar", "Nederlands", "Norsk, Bokmål", "Polski", "Português", "Română", "Русский", "Slovenščina", "Suomi", "Svenska");
     c.langus_code = new Array("ca",     "cs",      "da",    "de",      "en",      "el",       "et",    "es",      "fr",       "it",       "ja",     "ko",    "lv",       "lb",             "hu",     "nl",         "nb",            "pl",     "pt",        "ro",     "ru",      "sl",          "fi",    "sv"     );
     c.langus_flag_url = "https://raw.githubusercontent.com/2Abendsegler/GClh/master/images/flag_##.png";
+    c.colorSchemes = [
+        {name: '- Select a Color Scheme -', bg: '', ht: '', if: '', bh: '', bu: '', bo: '', nv: ''},
+        {name: 'Autumn Forest', bg: 'BAAE94', ht: 'B3968A', if: 'BA7261', bh: 'BF866F', bu: 'BF6F6F', bo: '15520F', nv: '86C27F'},
+        {name: 'Classic', bg: 'D8CD9D', ht: 'D8CD9D', if: 'D8CD9D', bh: 'D8CD9D', bu: 'D8CD9D', bo: '778555', nv: 'F0DFC6'},
+        {name: 'Classic Plus', bg: 'D8CD9D', ht: 'CBC193', if: 'DCD3AA', bh: 'D1C89B', bu: 'CBC193', bo: '778555', nv: 'F0DFC6'},
+        {name: 'Green Petling', bg: 'CDDECA', ht: 'C5D6C2', if: 'D5E7D2', bh: 'C8DCC5', bu: 'C5D6C2', bo: '418234', nv: 'BEEBB6'},
+        {name: 'I am Groot', bg: 'C9AF95', ht: '85AD7D', if: 'BA8059', bh: '708767', bu: 'AB7863', bo: '196312', nv: 'BFA584'},
+        {name: 'Ice and Snow', bg: 'F3F5F4', ht: 'E6F5F5', if: 'FDFFFE', bh: 'D9FAF8', bu: 'FFFFFF', bo: '484852', nv: 'CFE3E2'},
+        {name: 'Lemon Sorbet', bg: 'CEEDE0', ht: 'E0EDDC', if: 'D1E5E6', bh: 'ACCFBC', bu: 'C5EDD8', bo: '8FA691', nv: 'D0E0D2'},
+        {name: 'Mountain Lake', bg: 'C6FAF8', ht: 'C2CCFF', if: 'D6FCFF', bh: 'B8C8FC', bu: 'A1B7FF', bo: '6D79C9', nv: 'CEE1F3'},
+        {name: 'Pink Panther', bg: 'E0BAE8', ht: 'F26FE9', if: 'FF1DBC', bh: 'FE7BFC', bu: 'F211EE', bo: 'B30D76', nv: 'F569E7'},
+        {name: 'Strawberry Ice', bg: 'E8A0A6', ht: 'EDD3DC', if: 'E6BABE', bh: 'E2C0CC', bu: 'EDD3DC', bo: 'A66471', nv: 'EDD3DC'},
+        {name: 'Summer Forest', bg: 'A5C79B', ht: 'B3A382', if: 'C3DBBC', bh: 'A0D191', bu: '92BF84', bo: '15520F', nv: '86C27F'}
+    ];
 }
 
 function layersInit(c) {
@@ -121,6 +142,7 @@ function headerHtmlInit(c) {
 
 // Part of core CSS of Groundspeak. All nav changed in gclh_nav.
 function corecssInit(c) {
+    c.gclhToggleHandle = '.gclh_toggle-handle {background-color: #e4e4e4; border: none; border-radius: 10px; cursor: pointer; height: 21px; left: 0; padding: 0; position: relative; right: auto; width: 32px;}.gclh_toggle-handle::after {background-color: white; background-clip: padding-box; border: 1px solid #4a4a4a; border-radius: 12px; box-shadow: 0 0 0 3px transparent; content: \'\'; height: 19px; left: 0; position: absolute; width: 19px; top: 0;}.gclh_toggle-handle:hover, .gclh_toggle-handle:focus {outline: 0 !important;}.gclh_toggle-handle:hover::after, .gclh_toggle-handle:focus::after {border-color: #02874d; box-shadow: 0 0 0 3px #e4e4e4;}.gclh_toggle-handle.is-disabled {pointer-events: none;}.gclh_toggle-handle.on {background-color: #02874d;}.gclh_toggle-handle.on::after {border: 1px solid #02874d; left: auto; right: 0;}';
     c.corecss = "" +
         "gclh_nav {" +
         "  display:block" +
