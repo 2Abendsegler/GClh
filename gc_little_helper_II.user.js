@@ -650,6 +650,7 @@ var variablesInit = function(c) {
     c.settings_map_show_btn_hide_header = getValue("settings_map_show_btn_hide_header", true);
     c.settings_save_as_pq_set_defaults = getValue("settings_save_as_pq_set_defaults", false);
     c.settings_save_as_pq_set_all = getValue("settings_save_as_pq_set_all", true);
+    c.settings_compact_layout_cache_owner_dashboard = getValue("settings_compact_layout_cache_owner_dashboard", false);
 
     tlc('START userToken');
     try {
@@ -8391,24 +8392,43 @@ var mainGC = function() {
             // CSS for Cache Owner Dashboard.
             var css = '';
             // Set a link to the cachetypes.
-            css += '.owned-geocache-types li, .owned-geocache-total {display:unset !important; padding: 0 !important}'
-            css += '.owned-geocache-types li a {display:flex; align-items:center; color:#4a4a4a; text-decoration:none; padding:4px 0;}';
+            css += '.owned-geocache-total, .owned-geocache-types li a {padding: 0 !important}'
+            css += '.owned-geocache-types li a, .gclh_cacheTypeLinks {display:flex; align-items:center; width: 100%; color:#4a4a4a; text-decoration:none; padding:4px 0;}';
             css += '.owned-geocache-types li a:hover, .owned-geocache-total a:hover {font-weight:bold; color:#02874d; text-decoration:underline;}';
             css += '.owned-geocache-total a {display:flex; align-items:center; color:#4a4a4a; text-decoration: none; justify-content:space-between; padding:12px 16px;}';
             // Set link to own Profil.
             css += '.username a {color:#4a4a4a; text-decoration:none;}';
             css += '.username a:hover {color:#02874d; text-decoration:underline;}';
-            // Build VIP, Mail, Message icons
-            if (settings_show_vip_list) {
-                var newFlexBasis = 120 + 21;
-                if (settings_process_vup) newFlexBasis += 21;
-                if (settings_show_mail) newFlexBasis += 21;
-                css += '.latest-activity .log-item-finder {flex:0 0 ' + newFlexBasis + 'px !important;}';
-                css += '.latest-activity .activity-item a {display: inline-block;}';
-                css += '.gclh_name {white-space: nowrap; display: flex; align-items: center;}';
-                css += '.gclh_name a {margin-right:5px;}';
-            }
+            // Build VIP, Mail, Message icons.
+            var newFlexBasis = 120 + 21;
+            if (settings_process_vup) newFlexBasis += 21;
+            if (settings_show_mail) newFlexBasis += 21;
+            css += '.latest-activity .log-item-finder {flex:0 0 ' + newFlexBasis + 'px !important;}';
+            css += '.latest-activity .activity-item a {display: inline-block;}';
+            css += '.gclh_name {white-space: nowrap; display: flex; align-items: center;}';
+            css += '.gclh_name a {margin-right:5px;}';
             css += '.gclh_name a:focus:not(:nth-child(1)) {box-shadow: none;}';
+            css += '.latest-activity .mobile-log-item-wrapper {margin-top: -8px !important; padding: 0 8px !important;}';
+            // Compact Layout
+            if (settings_compact_layout_cache_owner_dashboard) {
+                css += '.banner-wrapper {height: 90px !important; background-size: 100% 140% !important;}';
+                css += '.avatar-wrapper {margin-top: 40px !important;}';
+                css += '.dashboard-navigation ul a {padding: 5px 20px !important;}';
+                css += '.widget-title {padding: 7px 12px 7px 20px !important;}';
+                css += '.owned-geocache-types .owned-geocache-type-icon {height: 25px !important; width: 25px; !important}';
+                css += '.gclh_cacheTypeLinks, .owned-geocache-types .owned-geocache-type-label {padding: 0 !important}';
+                css += '.helpful-links li {margin-top: 5px !important;}';
+                css += '.page-header.cod {margin-bottom: 10px !important;}'
+                css += '.quick-filters .quick-filters-header {padding: 0 12px !important;}';
+                css += '.latest-activity h2 {padding: 5px 12px !important;}';
+                css += '.latest-activity .mobile-log-item-wrapper {margin-top: -24px !important;}';
+                css += '.page-header.cod {font-size:20px !important;}';
+                css += '.quick-filters .quick-filters-header button {height:36px !important; width:36px !important;}';
+                css += '.quick-filters .quick-filters-header .scroll-left span,';
+                css += '.quick-filters .quick-filters-header .scroll-right span {height:24px !important; width:24px !important;}';
+                css += '.quick-filters .quick-filters-header button svg {height:12px !important; width:12p !important;}';
+            }
+
             appendCssStyle(css);
         } catch(e) {gclh_error("Improve Owner Dashboard",e);}
     }
@@ -13672,6 +13692,9 @@ var mainGC = function() {
             html += newParameterOn3;
             html += checkboxy('settings_modify_new_drafts_page', 'Modify draft items on the new drafts page') + show_help("Change the linkage of each draft. The title of the geocache now links to the geocaching listing and the cache icon, too (2nd line). The pen icon and the preview note links to the log composing page (3rd line). Add the log type as overlay icon onto the cache icon.") + "<br>";
             html += newParameterVersionSetzen(0.9) + newParameterOff;
+            html += newParameterOn2;
+            html += checkboxy('settings_compact_layout_cache_owner_dashboard', 'Show compact layout on your cache owner dashboard') + "<br>";
+            html += newParameterVersionSetzen("0.11") + newParameterOff;
             html += "</div>";
 
             html += "<h4 class='gclh_headline2'>"+prepareHideable.replace("#name#","maps")+"Map</h4>";
@@ -15359,6 +15382,7 @@ var mainGC = function() {
                 'settings_map_overview_search_map_icon_new_tab',
                 'settings_color_navi_search',
                 'settings_map_show_btn_hide_header',
+                'settings_compact_layout_cache_owner_dashboard',
             );
             for (var i = 0; i < checkboxes.length; i++) {
                 if (document.getElementById(checkboxes[i])) setValue(checkboxes[i], document.getElementById(checkboxes[i]).checked);
