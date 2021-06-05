@@ -8,6 +8,7 @@
 // @author       Torsten Amshove; 2Abendsegler; Ruko2010
 // @license      GNU General Public License v2.0
 // @supportURL   https://github.com/2Abendsegler/GClh/issues
+///////******@run-at*****document-start
 // @namespace    http://www.amshove.net
 // @icon         https://raw.githubusercontent.com/2Abendsegler/GClh/master/images/gclh_logo.png
 // @include      https://www.geocaching.com/*
@@ -9239,35 +9240,20 @@ var mainGC = function() {
 
             // Processing all steps.
             function processAllSearchMap() {
-console.log('1');
                 setFilter();
-console.log('2');
                 scrollInCacheList(); // Has to be run before searchThisArea.
-console.log('3');
                 searchThisArea();
-console.log('4');
                 improveAddtolistPopup();
-console.log('5');
                 setLinkToOwner(); // Has to be run before compactLayout.
-console.log('6');
                 compactLayout();
-console.log('7');
                 addVipVupMailToOwner(); // Has to be run after compactLayout.
-console.log('8');
                 setStrikeDisabledInList();
-console.log('9');
                 showHint();
-console.log('10');
                 collapseActivity();
-console.log('11');
                 showSearchmapSidebarEnhancements();
-console.log('12');
                 buildMapControlButtons();
-console.log('13');
                 setFilter();
-console.log('14');
                 geocacheActionBar(); // "Save as PQ" and "Hide Header".
-console.log('15');
             }
 
             // Observer callback for body and checking existence of sidebar and map.
