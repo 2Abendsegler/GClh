@@ -650,7 +650,7 @@ var variablesInit = function(c) {
     c.settings_map_show_btn_hide_header = getValue("settings_map_show_btn_hide_header", true);
     c.settings_save_as_pq_set_defaults = getValue("settings_save_as_pq_set_defaults", false);
     c.settings_save_as_pq_set_all = getValue("settings_save_as_pq_set_all", true);
-    c.settings_compact_layout_cache_owner_dashboard = getValue("settings_compact_layout_cache_owner_dashboard", false);
+    c.settings_compact_layout_cod = getValue("settings_compact_layout_cod", false);
 
     tlc('START userToken');
     try {
@@ -8410,7 +8410,7 @@ var mainGC = function() {
             css += '.gclh_name a:focus:not(:nth-child(1)) {box-shadow: none;}';
             css += '.latest-activity .mobile-log-item-wrapper {margin-top: -8px !important; padding: 0 8px !important;}';
             // Compact Layout
-            if (settings_compact_layout_cache_owner_dashboard) {
+            if (settings_compact_layout_cod) {
                 css += '.banner-wrapper {height: 90px !important; background-size: 100% 140% !important;}';
                 css += '.avatar-wrapper {margin-top: 40px !important;}';
                 css += '.dashboard-navigation ul a {padding: 5px 20px !important;}';
@@ -13693,7 +13693,7 @@ var mainGC = function() {
             html += checkboxy('settings_modify_new_drafts_page', 'Modify draft items on the new drafts page') + show_help("Change the linkage of each draft. The title of the geocache now links to the geocaching listing and the cache icon, too (2nd line). The pen icon and the preview note links to the log composing page (3rd line). Add the log type as overlay icon onto the cache icon.") + "<br>";
             html += newParameterVersionSetzen(0.9) + newParameterOff;
             html += newParameterOn2;
-            html += checkboxy('settings_compact_layout_cache_owner_dashboard', 'Show compact layout on your cache owner dashboard') + "<br>";
+            html += checkboxy('settings_compact_layout_cod', 'Show compact layout on your cache owner dashboard') + "<br>";
             html += newParameterVersionSetzen("0.11") + newParameterOff;
             html += "</div>";
 
@@ -15382,7 +15382,7 @@ var mainGC = function() {
                 'settings_map_overview_search_map_icon_new_tab',
                 'settings_color_navi_search',
                 'settings_map_show_btn_hide_header',
-                'settings_compact_layout_cache_owner_dashboard',
+                'settings_compact_layout_cod',
             );
             for (var i = 0; i < checkboxes.length; i++) {
                 if (document.getElementById(checkboxes[i])) setValue(checkboxes[i], document.getElementById(checkboxes[i]).checked);
