@@ -6882,7 +6882,7 @@ var mainGC = function() {
             global_MailTemplate = global_MailTemplate.replace(/__Receiver__/ig, "${UserName}");
 
             var isUpvoteActive = false;
-            if ($('#cache_logs_container div.sort-logs').length) isUpvoteActive = true;
+            if ($('#cache_logs_container div.sort-logs')[0] || $('div.upvotes')[0]) isUpvoteActive = true;
             var upvoteIconPixel = (settings_smaller_upvotes_icons ? 16:24);
 
             var vupUserString = 'if UserName == "#" ';
@@ -7047,7 +7047,8 @@ var mainGC = function() {
                 '                  <span>Helpful{{if (typeof helpful != "undefined") && helpful > 0}} (${helpful}){{/if}}</span>' +
                 '              </button>' +
                 '          </div>' +
-                '        {{/if}}' +
+                '        {{/if}}';
+            new_tmpl +=
                 '        <div class="AlignRight">' +
                 '          <small><a title="View Log" href="/seek/log.aspx?LUID=${LogGuid}" target="_blank">' +
                 '          {{if (userInfo.ID==AccountID)}}' +
@@ -7059,8 +7060,7 @@ var mainGC = function() {
                 '          {{if (userInfo.ID==AccountID)}}' +
                 '          <small><a title="Upload Image" href="/seek/upload.aspx?LID=${LogID}" target="_blank">Upload Image</a></small>' +
                 '          {{/if}}' +
-                '        </div>';
-            new_tmpl +=
+                '        </div>' +
                 '       </div>' +
                 '     </div>' +
                 '   </td>' +
