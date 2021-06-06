@@ -9497,12 +9497,16 @@ var mainGC = function() {
                 if (!$('div#sidebar')[0]) return;
                 observer_sidebar.disconnect();
                 processAllSearchMap();
-                var target_sidebar = $('div#sidebar')[0];
-                var config_sidebar = {
-                    childList: true,
-                    subtree: true
-                };
-                observer_sidebar.observe(target_sidebar, config_sidebar);
+
+                // Trigger the observer a maximum of 10 times per second to avoid a mutation observer endless loop.
+                window.setTimeout(function(){
+                    var target_sidebar = $('div#sidebar')[0];
+                    var config_sidebar = {
+                        childList: true,
+                        subtree: true
+                    };
+                    observer_sidebar.observe(target_sidebar, config_sidebar);
+                }, 100);
             }
             // Observer callback for map.
             var cb_map = function(mutationsList, observer) {
