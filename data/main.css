@@ -464,6 +464,79 @@ gclh_nav .profile-panel ul: : after {
     z-index: 1004;
 }
 
+/* Main for dropdown for gclh stuff. */
+#gclh_dd-caret-down path {
+    stroke-width: 1 !important;
+}
+#gclh_dd, 
+.gclh_dd-menu {
+    margin: 0;
+    padding: 0 !important;
+}
+#gclh_dd a, 
+.gclh_dd-icon, 
+.gclh_dd-menu ul, 
+.gclh_dd-menu ul li, 
+.gclh_dd-menu ul li a {
+    margin: 0 !important;
+    padding: 0 !important;
+}
+#gclh_dd, 
+#gclh_dd li {
+    display: block !important;
+    text-align: unset !important;
+    height: unset !important;
+    width: unset !important;
+}
+#gclh_dd {
+    margin-right: 8px !important;
+    margin-left: -1px !important;
+}
+.gclh_dd-icon.gclh_dd-hidden {
+    display: none;
+}
+.gclh_dd-icon {
+    background-color: transparent !important;
+    border: 2px solid transparent !important;
+    border-radius: 4px !important;
+    cursor: pointer !important;
+    outline: none !important;
+}
+.gclh_dd-menu {
+    visibility: hidden;
+    position: absolute !important;
+    background-color: white !important;
+    white-space: nowrap !important;
+    box-shadow: 0 2px 4px 0 rgba(137, 137, 137, 0.41) !important;
+    z-index: 1001 !important;
+}
+#gclh_dd:hover .gclh_dd-menu.gclh_dd-hidden {
+    visibility: hidden;
+}
+#gclh_dd:hover .gclh_dd-menu {
+    visibility: visible;
+}
+.gclh_dd-menu ul {
+    list-style: none !important;
+}
+.gclh_dd-menu ul li.disabled, 
+.gclh_dd-menu ul li.disabled a {
+    color: rgba(155, 155, 155, 0.5) !important;
+    pointer-events: none !important;
+}
+.gclh_dd-menu ul li {
+    cursor: pointer !important;
+    padding: 5px 12px !important;
+}
+.gclh_dd-menu ul li a {
+    display: flex !important;
+    color: black !important;
+    text-decoration: none !important;
+}
+.gclh_dd-menu ul li:hover {
+    background-color: #e6f7ef;
+}
+
 /* Markdown output. */
 .markdown-output img {
     vertical-align: middle;
