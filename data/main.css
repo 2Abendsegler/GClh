@@ -368,6 +368,12 @@ gclh_nav .profile-panel ul: : after {
     right: 14px;
 }
 
+/* User profile menu bend into shape. */
+.gclh_open ul.submenu {
+    visibility: visible;
+    display: block !important;
+}
+
 /* Toggle css, used in maps. */
 .gclh_toggle-handle {
     background-color: #e4e4e4;
