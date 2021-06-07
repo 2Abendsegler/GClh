@@ -1,0 +1,415 @@
+// Part of core CSS of GS. All nav changed in gclh_nav.
+gclh_nav {
+    display: block;
+}
+gclh_nav {
+    min-width: 1030px;
+}
+gclh_nav {
+    flex-shrink: 0;
+}
+gclh_nav,
+gclh_nav * {
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+.logo {
+    color: #fff;
+    fill: currentColor;
+    float: left;
+    height: 32px;
+    margin-top: 0;
+    overflow: hidden;
+    flex: 0 0 216px;
+    margin-top: 0;
+    width: 216px;
+}
+.logo svg {
+    height: 100%;
+    min-width: 100%;
+    width: 216px;
+}
+.logo img {
+    position: absolute;
+    clip: rect(29px,196px,58px,0);
+    height: auto;
+    margin-top: -29px;
+}
+gclh_nav {
+    align-items: center;
+    background-color: #02874d;
+    font-size: 14px;
+    height: 80px;
+    position: static;
+    right: 0;
+    top: 0;
+    width: 100%;
+}
+gclh_nav .wrapper {
+    align-items: center;
+    background-color: #02874d;
+    display: flex;
+    flex-direction: row;
+    margin: 0 auto;
+    min-width: 990px;
+    max-width: 1300px;
+    position: relative;
+    height: 100%;
+    padding-left: 32px;
+    padding-right: 32px;
+    width: 100%;
+}
+gclh_nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+gclh_nav ul {
+    list-style: none;
+    list-style-image: none;
+}
+.menu {
+    align-items: center;
+    background: none;
+    display: flex;
+    height: 100%;
+    margin-left: 0;
+}
+.menu>li {
+    display: inline-block;
+    margin-left: 32px;
+    padding: 0;
+    position: relative;
+    overflow: initial;
+    white-space: initial;
+    text-overflow: ellipsis;
+}
+.menu>li.mobile {
+    display: none;
+}
+.menu a,
+.menu form {
+    align-items: center;
+    overflow: hidden;
+    text-decoration: none;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.menu a: hover,
+.menu a: focus {
+    text-decoration: none;
+}
+.menu>li>a {
+    font-size: 16px;
+    text-transform: initial;
+}
+.menu a svg,
+.menu form svg {
+    height: 18px;
+    margin: 0 .5em 0 0;
+    position: relative;
+    width: 18px;
+}
+.menu .hover .submenu {
+    display: block;
+}
+.submenu {
+    background: #fff;
+    border: 1px solid #e1e1e1;
+    border-top: 0;
+    box-shadow: 0 1px 10px rgba(0,0,0,.1);
+    display: none;
+    margin-top: 2.1em;
+    margin-left: 50%;
+    min-width: 12em;
+    padding: 12px 0;
+    position: absolute;
+    transform: translateX(-2em);
+    z-index: 100;
+    color: #4a4a4a;
+}
+.submenu: : after {
+    background-color: #fff;
+    content: '';
+    height: 24px;
+    left: 20px;
+    position: absolute;
+    top: -12px;
+    transform: rotate(45deg);
+    width: 24px;
+    z-index: -1;
+}
+.submenu li {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.menu .li-attention {
+    border-bottom: 1px solid #e1e1e1;
+}
+.menu .li-attention a {
+    padding-top: 12px;
+    padding-bottom: 12px;
+}
+.menu .li-attention+li: not(.li-attention) {
+    margin-top: 12px;
+}
+.submenu a,
+.submenu button {
+    color: #4a4a4a;
+    display: flex;
+    font-size: 16px;
+    line-height: 1.5em;
+    padding: 8px 24px;
+}
+.submenu a,
+.submenu a: visited {
+    color: #4a4a4a;
+}
+.submenu a: hover,
+.submenu button: hover {
+    background-color: #e8f6ef;
+    color: #4a4a4a;
+    text-decoration: none;
+}
+.menu>li>a {
+    font-size: 16px;
+    text-transform: initial;
+}
+.menu>li .dropdown {
+    color: rgba(255,255,255,.8);
+    cursor: pointer;
+    margin: 0;
+    padding: 0;
+}
+.menu>li .dropdown: focus {
+    color: #fff;
+}
+gclh_nav .profile-panel,
+.logged-out-user {
+    align-items: center;
+    display: flex;
+    flex-direction: row;
+    height: auto;
+    margin-left: auto;
+    padding: 0;
+    position: initial;
+    width: auto;
+    background-color: #02874d;
+    color: #fff;
+    order: 1;
+}
+gclh_nav .profile-panel a {
+    color: #fff;
+    text-decoration: none;
+}
+.profile-panel>li {
+    height: 40px;
+}
+.profile-panel .li-membership {
+    display: initial;
+    margin: 0;
+    order: unset;
+}
+.profile-panel .li-membership.tablet {
+    display: none;
+}
+.logged-out-user .btn-loggedout {
+    color: #fff;
+}
+.logged-out-user .btn-loggedout,
+.profile-panel .btn-upgrade {
+    width: 160px;
+    border: 1px solid #fff;
+    border-radius: 3px;
+    display: inline-block;
+    position: relative;
+    text-align: center;
+}
+.logged-out-user .btn-loggedout: hover,
+.logged-out-user .btn-loggedout: focus,
+.profile-panel .btn-upgrade: hover,
+.profile-panel .btn-upgrade: focus {
+    background-color: #fff;
+    color: #02874d;
+}
+.profile-panel .li-user-info a,
+.profile-panel .btn-loggedout,
+.profile-panel .btn-upgrade,
+.profile-panel .user-avatar~span {
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.logged-out-user .btn+.btn,
+.profile-panel>li+li {
+    margin-left: 24px;
+}
+.profile-panel>li {
+    height: 40px;
+}
+.li-messages {
+    align-items: center;
+    display: flex;
+    right: 24px;
+    top: 24px;
+}
+.li-messages a {
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    height: 40px;
+    position: relative;
+    width: 48px;
+}
+.li-messages a: hover,
+.li-messages a: focus,
+.li-messages a: active {
+    color: #fff;
+}
+.li-messages svg {
+    height: 30px;
+    width: auto;
+}
+.profile-panel .li-user {
+    align-items: center;
+    display: flex;
+    margin-bottom: 0;
+    order: unset;
+    position: initial;
+    left: 24px;
+    top: 24px;
+    white-space: nowrap;
+}
+.profile-panel .li-user-info {
+    display: initial;
+    width: 160px;
+}
+.profile-panel .user-avatar {
+    display: block;
+    float: left;
+    margin-right: 12px;
+    position: relative;
+}
+.profile-panel .li-user-info .user-avatar {
+    font-size: 16px;
+    margin-right: 12px;
+}
+.profile-panel .user-avatar,
+.profile-panel .user-avatar img {
+    border-radius: 3px;
+    height: 40px;
+    width: 40px;
+}
+.profile-panel .user-name {
+    font-size: 16px;
+    line-height: 21px;
+}
+.profile-panel .li-user-info .cache-count,
+.profile-panel .li-user-info .user-name {
+    display: block;
+    width: auto;
+}
+.profile-panel .li-user-toggle {
+    background: none;
+    border: 0;
+    border-radius: 3px;
+    color: #fff;
+    cursor: pointer;
+    display: inline-block;
+    height: 32px;
+    margin-left: 24px;
+    outline: none;
+    -webkit-transition: .3s all;
+    -moz-transition: .3s all;
+    -o-transition: .3s all;
+    padding: 0;
+    transition: .3s all;
+    width: 32px;
+}
+.profile-panel .li-user-toggle: hover,
+.profile-panel .li-user-toggle: focus {
+    color: #02874d;
+}
+.profile-panel .li-user-toggle svg {
+    fill: currentColor;
+    pointer-events: none;
+    margin-top: 5px;
+}
+.profile-panel .li-user-toggle: hover,
+.profile-panel .li-user-toggle: focus {
+    background: #fff;
+}
+gclh_nav .profile-panel ul {
+    display: none;
+    margin-left: 0;
+    right: -.5em;
+    top: 3.6em;
+}
+.profile-panel .submenu.user-expanded {
+    display: block;
+}
+gclh_nav .profile-panel .submenu a,
+.profile-panel .submenu button {
+    color: #4a4a4a;
+}
+gclh_nav .profile-panel .submenu button {
+    width: 100%;
+}
+.submenu button {
+    background: none;
+    border: 0;
+    cursor: pointer;
+}
+gclh_nav .profile-panel ul: : after {
+    left: initial;
+    right: 14px;
+}
+
+// Toggle.
+.gclh_toggle-handle {
+    background-color: #e4e4e4;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    height: 21px;
+    left: 0;
+    padding: 0;
+    position: relative;
+    right: auto;
+    width: 32px;
+}
+.gclh_toggle-handle::after {
+    background-color: white;
+    background-clip: padding-box;
+    border: 1px solid #4a4a4a;
+    border-radius: 12px;
+    box-shadow: 0 0 0 3px transparent;
+    content: \'\';
+    height: 19px;
+    left: 0;
+    position: absolute;
+    width: 19px;
+    top: 0;
+}
+.gclh_toggle-handle:hover,
+.gclh_toggle-handle:focus {
+    outline: 0 !important;
+}
+.gclh_toggle-handle:hover::after,
+.gclh_toggle-handle:focus::after {
+    border-color: #02874d;
+    box-shadow: 0 0 0 3px #e4e4e4;
+}
+.gclh_toggle-handle.is-disabled {
+    pointer-events: none;
+}
+.gclh_toggle-handle.on {
+    background-color: #02874d;
+}
+.gclh_toggle-handle.on::after {
+    border: 1px solid #02874d;
+    left: auto; right: 0;
+}
