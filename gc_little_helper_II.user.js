@@ -8,7 +8,6 @@
 // @author       Torsten Amshove; 2Abendsegler; Ruko2010
 // @license      GNU General Public License v2.0
 // @supportURL   https://github.com/2Abendsegler/GClh/issues
-///////******@run-at*****document-start
 // @namespace    http://www.amshove.net
 // @icon         https://raw.githubusercontent.com/2Abendsegler/GClh/master/images/gclh_logo.png
 // @include      https://www.geocaching.com/*
@@ -21,7 +20,7 @@
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js
 // @require      https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js
 // @require      https://cdnjs.cloudflare.com/ajax/libs/dropbox.js/2.5.2/Dropbox-sdk.min.js
-// @require      https://raw.githubusercontent.com/2Abendsegler/GClh/master/data/gclh_defi.js
+// @require      https://raw.githubusercontent.com/2Abendsegler/GClh/master/data/init.js
 // @require      https://www.geocaching.com/scripts/MarkdownDeepLib.min.js
 // @require      https://www.geocaching.com/scripts/SmileyConverter.js
 // @resource leafletjs https://raw.githubusercontent.com/2Abendsegler/GClh/master/data/leaflet.js
