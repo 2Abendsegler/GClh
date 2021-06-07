@@ -3,7 +3,7 @@
 
 ---
 # GC little helper II <a id="user-content-en"></a>
-*Some little things to make life easier (on www.geocaching.com).*<br>
+*Some little things to make life easy (on www.geocaching.com).*<br>
 *Powerful, configurable tool to improve and expand the geocaching pages.*
 
 ## Supported Browsers
@@ -40,7 +40,7 @@ All Geocacher and others are encouraged to help with the development or the supp
 
 ---
 # GC little helper II <a id="user-content-de"></a>
-*Ein paar Kleinigkeiten um das Leben einfacher zu machen (auf www.geocaching.com).*<br>
+*Ein paar Kleinigkeiten um das Leben einfach zu machen (auf www.geocaching.com).*<br>
 *Mächtiges, konfigurierbares Tool zur Verbesserung und Erweiterung der Geocaching Seiten.*
 
 ## Unterstützte Browsers
