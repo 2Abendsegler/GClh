@@ -22,7 +22,6 @@ Unsere Branches unterteilen sich in die drei Stufen *User*, *Collector* und *Pro
 | 1. User | 2. Collector        | 3. Projects / Issues        |
 | :------ | :------------------ | :-------------------------- |
 | master  | collector (default) | upvote_buttons_for_non_pmo  |
-|         |                     |                             |
 
 Anpassungen sollten mit den Resourcen aus der Branch *collector* erfolgen.  
 Pull requests sollten in die Branch *collector* erfolgen.  
