@@ -16,19 +16,24 @@
 // @include      https://project-gc.com/Tools/PQSplit*
 // @include      https://www.openstreetmap.org*
 // @exclude      /^https?://www\.geocaching\.com/(login|jobs|careers|brandedpromotions|promotions|blog|help|seek/sendtogps|profile/profilecontent)/
-// @resource jscolor https://raw.githubusercontent.com/2Abendsegler/GClh/master/data/jscolor.js
+//xxxx
+// @require      https://raw.githubusercontent.com/2Abendsegler/GClh/collector/data/init.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js
 // @require      https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js
 // @require      https://cdnjs.cloudflare.com/ajax/libs/dropbox.js/2.5.2/Dropbox-sdk.min.js
-// @require      https://raw.githubusercontent.com/2Abendsegler/GClh/master/data/init.js
 // @require      https://www.geocaching.com/scripts/MarkdownDeepLib.min.js
 // @require      https://www.geocaching.com/scripts/SmileyConverter.js
+//xxxx
+// @resource maincss https://raw.githubusercontent.com/2Abendsegler/GClh/collection-of-change3/data/main.css
+//xxxx
+// @resource headerhtml https://raw.githubusercontent.com/2Abendsegler/GClh/collection-of-change3/data/header.html
+// @resource jscolor https://raw.githubusercontent.com/2Abendsegler/GClh/master/data/jscolor.js
 // @resource leafletjs https://raw.githubusercontent.com/2Abendsegler/GClh/master/data/leaflet.js
 // @resource leafletcss https://raw.githubusercontent.com/2Abendsegler/GClh/master/data/leaflet.css
 // @connect      maps.googleapis.com
 // @connect      raw.githubusercontent.com
 // @connect      api.open-elevation.com
-// @connect      api.geonames.org
+// @connect      secure.geonames.org
 // @connect      coord.info
 // @grant        GM_getValue
 // @grant        GM_setValue
@@ -272,20 +277,23 @@ var constInit = function(c) {
     c.gclhConfigKeysIgnoreForBackup = {"declared_version": true, "update_next_check": true};
     tlc('START iconsInit');
     iconsInit(c);
-    tlc('START collectionInit');
-    collectionInit(c);
     tlc('START layersInit');
     layersInit(c);
     tlc('START elevationServicesDataInit');
     elevationServicesDataInit(c);
-    tlc('START headerHtmlInit');
-    headerHtmlInit(c);
-    tlc('START corecssInit');
-    corecssInit(c);
     tlc('START country_idInit');
     country_idInit(c);
     tlc('START states_idInit');
     states_idInit(c);
+    tlc('START collectionInit');
+    collectionInit(c);
+//xxxx
+    // Old header of GS.
+    tlc('START headerhtml');
+    c.header_old = GM_getResourceText('headerhtml');
+    // Part of core css of GS, Config and others.
+    tlc('START maincss');
+    c.main_css = GM_getResourceText('maincss');
     constInitDeref.resolve();
     return constInitDeref.promise();
 };
@@ -1250,15 +1258,9 @@ var mainGCWait = function() {
 var mainGC = function() {
     tlc('START maingc');
 
-// CSS for header.
-    // Make GC header invisible.
-    var css = '#gc-header, #GCHeader, #gc-mobile-nav {display: none;}';
-    // Part of core CSS of GS.
-    css += corecss;
-    // User profile menu bend into shape.
-    css += '.gclh_open ul.submenu {visibility: visible; display: block !important;}';
-    // Message center message indicator.
-    css += '.gclh_message-indicator {background-color: #e0b70a; position: absolute; border-radius: 15px; width: 10px; height: 10px; margin-top: -18px; margin-left: 28px;}';
+//xxxx
+    // Part of core css of GS, Config and others.
+    var css = main_css;
     // Special css for searchmap.
     if (is_page('searchmap')) {
         css += 'gclh_nav .wrapper {z-index: 1006;} gclh_nav li input {height: unset !important;}';
@@ -1920,12 +1922,6 @@ var mainGC = function() {
                     if (drafts) {
                         draft_count = parseInt(drafts.innerHTML.match(/\d+/));
                         if (Number.isInteger(draft_count) && draft_count > 0) {
-                            var css = '';
-                            css += '.draft-indicator {background-color: #e0b70a; font-weight:bold; position: absolute; padding: 0 5px; border-radius: 15px;}';
-                            css += '.draft-indicator a {width: auto !important; font-size: 14px; min-width: 10px; display: block; text-align: center; color: white;}';
-                            css += '.li-user-info .user-avatar .draft-indicator {top: -7px; left: -7px;}';
-                            css += '.player-profile .draft-indicator {top: -3px; left: -52px; z-index: 1004;}';
-                            appendCssStyle(css);
                             $('.li-user-info .user-avatar, .player-profile').prepend('<span class="draft-indicator"><a href="/my/fieldnotes.aspx" title="Go to Drafts">' + draft_count + '</a></span>');
                         }
                     }
@@ -3884,12 +3880,6 @@ var mainGC = function() {
                 $('#log-preview-content').toggle();
                 $('#log-previewPanel button').toggleClass('handle-open');
             });
-            var css = '';
-            css += '.markdown-output img {vertical-align: middle;}';
-            css += '.markdown-output span.WaypointLog{color:#4a4a4a;display:block;font-weight:bold;margin-bottom:2em}.markdown-output{font-size:1.08em;line-height:1.375em;overflow:hidden;word-wrap:break-word}.markdown-output h1{color:#4a4a4a;font-size:1.285em;font-weight:bold;line-height:1.375em;margin:0}.markdown-output h2{color:#4a4a4a;font-size:1.285em;font-weight:normal;line-height:1.375em;margin:0}.markdown-output h3{color:#00b265;font-size:1.285em;font-weight:normal;line-height:1.375em;margin:0;text-transform:uppercase}.markdown-output hr{background:#d8d8d8;height:2px;margin:1.45em 0}.markdown-output p{color:#4a4a4a;margin:0 0 1.5em}.markdown-output li{list-style:inherit}.markdown-output ul{list-style-type:disc}';
-            css += '.markdown-output ol{list-style-type:decimal}.markdown-output ul,.markdown-output ol{color:#4a4a4a;margin:0 1.5em 1.5em .75em;padding-left:1.5em}.markdown-output li ul{list-style-type:none;margin-left:0;margin-bottom:0;padding-left:0}.markdown-output li ul li::before{background-color:#e0b70a;border-radius:50%;content:"";display:inline-block;height:5px;margin-right:.75em;margin-top:-1px;width:5px;vertical-align:middle}.markdown-output li ol{margin-left:0;margin-bottom:0}.markdown-output blockquote{background:none;font-style:normal;margin:1.5em .75em;padding:0}.markdown-output blockquote p{color:#00b265;font-weight:bold}.markdown-output blockquote p::before{content:\'“\'}.markdown-output blockquote p::after{content:\'”\'}';
-            css += '.markdown-output a,#bd .markdown-output a{color:#006cff;text-decoration:none}.markdown-output a:hover,.markdown-output a:focus{border-bottom:1px solid #006cff;color:#006cff}.markdown-output .AlignRight a{color:#00447c}.markdown-output .AlignRight a:visited{color:#00a0b0}.markdown-output .AlignRight a:hover,.markdown-output .AlignRight a:focus{border-bottom:none;color:#6c8e10}.markdown-output~.AlternatingRow,table .markdown-output~tr.AlternatingRow td{background:#fff}.markdown-output.BorderBottom td{border-bottom-color:#9b9b9b}.markdown-output.BorderBottom:last-child td{border-bottom:none}.markdown-output>td:last-child{padding-bottom:2.5em}';
-            appendCssStyle(css);
         } catch(e) {gclh_error("Logpage Log Preview",e);}
     }
 // Replicate TB-Header to bottom
@@ -9534,7 +9524,6 @@ var mainGC = function() {
             css += '#gclh_action_bar {display: flex; color: #4a4a4a; cursor: default;}'
             css += '.geocache-action-bar {padding: 5px 10px !important;}';
             css += '#gclh_action_bar span, #gclh_action_bar a {margin-top: 2px;}';
-            css += gclhToggleHandle;
             // Save as PQ.
             css += '.gclh_PQHead {display: flex;}';
             css += '#gclh_saveAsPQ {color: #4a4a4a; font-weight: bold; text-decoration: none; font-size: 12px;}';
@@ -10025,7 +10014,6 @@ var mainGC = function() {
             waitForSavePQ(0)
             var css = '.pq-dl {margin-top: 1em; margin-bottom: 0 !important; display: flex; cursor: default;}';
             css += '.set_defaults {margin-right: 6px;}';
-            css += gclhToggleHandle;
             appendCssStyle(css);
         } catch(e) {gclh_error("Save as PQ and set defaults for browse map",e);}
     }
@@ -12467,56 +12455,7 @@ var mainGC = function() {
         if (!$('#gclh_dd-css')[0]) {
             var css = ' ';
             if (styles && styles != '') css += styles;
-            css += '#gclh_dd-caret-down path {';
-            css += '  stroke-width: 1 !important;}';
-            css += '#gclh_dd, .gclh_dd-menu {';
-            css += '  margin: 0;';
-            css += '  padding: 0 !important;}';
-            css += '#gclh_dd a, .gclh_dd-icon, .gclh_dd-menu ul, .gclh_dd-menu ul li, .gclh_dd-menu ul li a {';
-            css += '  margin: 0 !important;';
-            css += '  padding: 0 !important;}';
-            css += '#gclh_dd, #gclh_dd li {';
-            css += '  display: block !important;';
-            css += '  text-align: unset !important;';
-            css += '  height: unset !important;';
-            css += '  width: unset !important;}';
-            css += '#gclh_dd {';
-            css += '  margin-right: 8px !important;';
-            css += '  margin-left: -1px !important;}';
-            css += '.gclh_dd-icon.gclh_dd-hidden {';
-            css += '  display: none;}';
-            css += '.gclh_dd-icon {';
-            css += '  background-color: transparent !important;';
-            css += '  border: 2px solid transparent !important;';
-            css += '  border-radius: 4px !important;';
-            css += '  cursor: pointer !important;';
-            css += '  outline: none !important;}';
-            css += '.gclh_dd-menu {';
-            css += '  visibility: hidden;';
-            css += '  position: absolute !important;';
-            css += '  background-color: white !important;';
-            css += '  white-space: nowrap !important;';
-            css += '  box-shadow: 0 2px 4px 0 rgba(137, 137, 137, 0.41) !important;';
-            css += '  z-index: 1001 !important;}';
-            css += '#gclh_dd:hover .gclh_dd-menu.gclh_dd-hidden {';
-            css += '  visibility: hidden;}';
-            css += '#gclh_dd:hover .gclh_dd-menu {';
-            css += '  visibility: visible;}';
-            css += '.gclh_dd-menu ul {';
-            css += '  list-style: none !important;}';
-            css += '.gclh_dd-menu ul li.disabled, .gclh_dd-menu ul li.disabled a {';
-            css += '  color: rgba(155, 155, 155, 0.5) !important;';
-            css += '  pointer-events: none !important;}';
-            css += '.gclh_dd-menu ul li {';
-            css += '  cursor: pointer !important;';
-            css += '  padding: 5px 12px !important;}';
-            css += '.gclh_dd-menu ul li a {';
-            css += '  display: flex !important;';
-            css += '  color: black !important;';
-            css += '  text-decoration: none !important;}';
-            css += '.gclh_dd-menu ul li:hover {';
-            css += '  background-color: #e6f7ef;}';
-            appendCssStyle(css, place, 'gclh_dd-css');
+            if (css != ' ') appendCssStyle(css, place, 'gclh_dd-css');
         }
         // Implement symbol caret-down for dropdown icon.
         if (!$('#gclh_dd-caret-down')[0]) {
@@ -12969,37 +12908,6 @@ var mainGC = function() {
         } else buildBgShadow();
         if ($('#findplayer_overlay')[0] &&$('#findplayer_overlay')[0].style.display == "none") $('#findplayer_overlay')[0].style.display = "";
         else {
-            var css = "";
-            css += "#findplayer_overlay {";
-            css += "  box-sizing: border-box;";
-            css += "  width: 350px;";
-            css += "  padding: 10px;";
-            css += "  position: absolute;";
-            css += "  left: 30%;";
-            css += "  top: 60px;";
-            css += "  z-index: 1006;";
-            css += "  border-radius: 30px;";
-            css += "  overflow: auto;}";
-            css += ".gclh_form_fp {";
-            css += "  border-radius: 7px !important;";
-            css += "  padding-left: 5px !important;";
-            css += "  padding-right: 5px !important;";
-            css += "  font-family: inherit;";
-            css += "  font-size: 13px !important;";
-            css += "  font-weight: normal !important;";
-            css += "  margin: 0px !important;";
-            css += "  color: #4A4A4A;";
-            css += "  padding-top: 0px !important;";
-            css += "  padding-bottom: 0px !important;";
-            css += "  height: 25px;";
-            css += "  display: unset;}";
-            css += "#findplayer_field {";
-            css += "  box-shadow: unset !important;";
-            css += "  color: rgb(0, 0, 0);";
-            css += "  box-sizing: border-box;}";
-            css += ".gclh_form_fp:focus {outline: none;}";
-            css += create_coloring_css();
-            appendCssStyle(css, "body");
             // Overlay erstellen
             var html = "";
             html += "<h3 style='margin:5px; font-weight: bold; font-size: 19.5px; line-height: 1; color: #4A4A4A;'>Find Player</h3>";
@@ -13078,253 +12986,6 @@ var mainGC = function() {
         css += ".gclh_new_para03 {background-color: #" + settings_color_nv + "47;}";
         return css;
     }
-    function create_config_css() {
-        var css = "";
-        css += ".settings_overlay {";
-        css += "  width: 600px;";
-        css += "  overflow: auto;";
-        css += "  padding: 10px;";
-        css += "  position: absolute;";
-        css += "  left: 30%;";
-        css += "  top: 10px;";
-        css += "  z-index: 1001;";
-        css += "  border-radius: 30px;";
-        css += "  box-sizing: unset;}";
-        css += ".gclh_headline {";
-        css += "  height: 21px;";
-        css += "  margin: 5px;";
-        css += "  color: #FFFFFF;";
-        css += "  border-radius: 30px;";
-        css += "  text-align: center;";
-        css += "  line-height: 1;";
-        css += "  font-size: 19.5px;}";
-        css += ".gclh_headline2 {";
-        css += "  margin: 8px 5px 5px -2px;";
-        css += "  line-height: 1.25;";
-        css += "  font-size: 1.2em;}";
-        css += ".gclh_headline2 label {";
-        css += "  cursor: default;";
-        css += "  font-size: 1em !important;";
-        css += "  font-weight: bold;}";
-        css += ".gclh_headline2 .expand_icon {";
-        css += "  cursor: pointer;";
-        css += "  height: 20px;";
-        css += "  width: 20px;";
-        css += "  color: #343434;";
-        css += "  vertical-align: bottom;";
-        css += "  margin-bottom: 1px;";
-        css += "  margin-right: 4px;";
-        css += "  transition: all .3s ease;";
-        css += "  transform-origin: 50% 50%;}";
-        css += ".gclh_headline2:not(.gclh_hide) .expand_icon {";
-        css += "  transform: rotate(0);}";
-        css += ".gclh_headline2.gclh_hide .expand_icon {";
-        css += "  transform: rotate(-180deg);";
-        css += "  -moz-transform: rotate(-180deg);}";
-        css += ".gclh_block {";
-        css += "  margin-top: 5px;";
-        css += "  margin-bottom: 12px;}";
-        css += ".gclh_content {";
-        css += "  color: #4A4A4A;";
-        css += "  padding: 2px 10px 10px 10px;";
-        css += "  font-family: Verdana;";
-        css += "  font-size: 14px;";
-        css += "  font-size: 14px;";
-        css += "  line-height: 1.5;}";
-        css += ".gclh_content input, .gclh_content input:focus, .gclh_content input:active, .gclh_content textarea, .gclh_content select, .gclh_content button, .gclh_content pre {";
-        css += "  display: inline;";
-        css += "  width: unset;";
-        css += "  border-radius: 7px;";
-        css += "  box-shadow: none;";
-        css += "  background: unset;";
-        css += "  background-image: none;";
-        css += "  margin: 0;}";
-        css += ".gclh_content input, .gclh_content textarea, .gclh_content button, .gclh_content pre {padding: 1px 5px;}";
-        css += ".gclh_content input[type='text'], .gclh_content textarea, .gclh_content select, .gclh_content pre {color: rgb(0, 0, 0) !important;}";
-        css += ".gclh_content input[type='button'], .gclh_content button {color: #4A4A4A !important;}";
-        css += ".gclh_content input[type='checkbox'], .gclh_content input:focus[type='checkbox'], .gclh_content input:active[type='checkbox'], .gclh_content input[type='radio'], .gclh_content input:focus[type='radio'], .gclh_content input:active[type='radio'] {";
-        css += "  margin-left: 4px;";
-        css += "  margin-right: 4px;}";
-        css += ".gclh_content input[type='checkbox'] {";
-        css += "  opacity: 1;";
-        css += "  position: unset;";
-        css += "  height: unset;}";
-        css += ".gclh_content span::before {display: none !important;}";
-        css += ".gclh_content button, .gclh_content input[type='button'] {";
-        css += "  cursor: pointer;}";
-        css += ".gclh_content .shadowBig {box-shadow: 1px 1px 2px 2px rgb(119, 133, 85);}";
-        css += ".gclh_content textarea, .gclh_content pre {resize: vertical;}";
-        css += ".gclh_content select {";
-        css += "  -moz-appearance: button;";
-        css += "  -webkit-appearance: menulist-button;";  // Chrome
-        css += "  cursor: default;";
-        css += "  padding: 0;}";
-        css += ".gclh_content label {";
-        css += "  display: inline;";
-        css += "  font-size: 14px;";
-        css += "  text-transform: unset;}";
-        css += ".gclh_content .gclh_prem {";
-        css += "  height: 14px;";
-        css += "  vertical-align: middle;";
-        css += "  margin-bottom: 1px;}";
-        css += ".gclh_content a {";
-        css += "  text-decoration: none;";
-        css += "  color: #3d76c5;}";
-        css += ".gclh_content a:hover, .gclh_content a:active, .gclh_content a:focus {";
-        css += "  text-decoration: underline;";
-        css += "  color: #3d76c5;}";
-        css += ".gclh_content table {";
-        css += "  margin-bottom: 0px;";
-        css += "  font-size: 14px;}";
-        css += ".gclh_content .gclh_list_layout th {";
-        css += "  font-weight: normal;";
-        css += "  font-style: italic;}";
-        css += ".gclh_content th {font-weight: bold;}";
-        css += ".gclh_content td, .gclh_content th {";
-        css += "  padding: 0px 0px 0px 4px;";
-        css += "  vertical-align: middle;}";
-        css += ".gclh_content table, .gclh_content thead, .gclh_content tbody, .gclh_content tr, .gclh_content td, .gclh_content th {box-sizing: unset;}";
-        css += ".gclh_form {";
-        css += "  font-size: 14px !important;";
-        css += "  font-family: Verdana !important;";
-        css += "  line-height: 18px !important;}";
-        css += ".gclh_LinkListElement {";
-        css += "  width: 202px;";
-        css += "  font-size: 12px;";
-        css += "  line-height: 20px;";
-        css += "  max-width: 202px;";
-        css += "  overflow: hidden;";
-        css += "  white-space: nowrap;}";
-        css += ".gclh_ref {";
-        css += "  color: #4A4A4A !important;";
-        css += "  text-decoration: none !important;";
-        css += "  border-bottom: dotted 1.5px #4A4A4A;}";
-        css += ".gclh_ref_ht_int {";
-        css += "  color: #343434 !important;";
-        css += "  text-decoration: none !important;";
-        css += "  border-bottom: dotted 1.5px #4A4A4A;}";
-        css += ".gclh_ref_ht_ext {";
-        css += "  color: #3d76c5 !important;";
-        css += "  text-decoration: none;}";
-        css += ".gclh_ref_ht_ext:hover {text-decoration: underline;}";
-        css += ".gclh_small {font-size: 10px;}";
-        css += "a.gclh_info b {padding: 0px 5px 5px 5px;}";
-        css += "a.gclh_info {";
-        css += "  color: #4A4A4A !important;";
-        css += "  text-decoration: none !important;";
-        css += "  cursor: help;";
-        css += "  white-space: normal;}";
-        css += "a.gclh_info.mouseover:hover span {visibility: visible;}";
-        css += "a.gclh_info:hover b {opacity: 0.5;}";
-        css += "a.gclh_info span {";
-        css += "  visibility: hidden;";
-        css += "  position: absolute;";
-        css += "  z-index: 105;";
-        css += "  left: 0px;";
-        css += "  min-height: 36px;";
-        css += "  width: 82%;";
-        css += "  margin-left: 12%;";
-        css += "  margin-top: 20px;";
-        css += "  padding: 4px 8px 6px 8px;";
-        css += "  line-height: 1.5;";
-        css += "  font-size: 12px;";
-        css += "  font-weight: normal;";
-        css += "  font-style: normal;";
-        css += "  text-decoration: none;";
-        css += "  text-align: left;";
-        css += "  white-space: normal;";
-        css += "  word-break: break-word;";
-        css += "  cursor: text;";
-        css += "  color: #343434 !important;";
-        css += "  border-radius: 7px;}";
-        css += "table.multi_homezone_settings {";
-        css += "  margin: -2px 0 5px 10px;;";
-        css += "  width: 550px;";
-        css += "  text-align: left;";
-        css += "  vertical-align: baseline;";
-        css += "  white-space: nowrap;}";
-        css += ".multi_homezone_settings .remove {";
-        css += "  height: 20px;";
-        css += "  margin-left: 0px;";
-        css += "  vertical-align: top;";
-        css += "  cursor: pointer;}";
-        css += ".multi_homezone_settings .disabled {";
-        css += "  cursor: unset !important;";
-        css += "  opacity: 0.5;}";
-        css += ".multi_homezone_settings .addentry {margin-top: 2px;}";
-        css += ".gclh_rc_area, .gclh_thanks_area {";
-        css += "  z-index: 1001;";
-        css += "  border: 1px solid #778555;";
-        css += "  border-radius: 30px;";
-        css += "  padding: 20px;";
-        css += "  margin-top: 15px;}";
-        css += ".gclh_rc_area_button {margin-left: 185px;}";
-        css += ".gclh_rc_form, .gclh_thanks_form {";
-        css += "  margin-bottom: 15px !important;";
-        css += "  margin-left: 15px !important;}";
-        css += ".gclh_thanks_area_button {margin-left: 230px;}";
-        css += ".gclh_thanks_table {border-collapse: collapse;}";
-        css += ".gclh_thanks_table th {";
-        css += "  border: 1px solid #778555;";
-        css += "  border-bottom-width: 2px;";
-        css += "  padding: 0px 4px;";
-        css += "  vertical-align: initial;";
-        css += "  font-weight: initial;}";
-        css += ".gclh_thanks_table th span:not(.gclh_span) {font-variant: all-petite-caps;}";
-        css += ".gclh_thanks_table th:nth-child(1) {";
-        css += "  border-right-width: 2px;";
-        css += "  max-width: 100px;}";
-        css += ".gclh_thanks_table td {";
-        css += "  border: 1px solid #778555;";
-        css += "  vertical-align: initial;";
-        css += "  text-align: center;}";
-        css += ".gclh_thanks_table td:nth-child(1) {";
-        css += "  border-right-width: 2px;";
-        css += "  max-width: 100px;";
-        css += "  padding: 0px 4px;";
-        css += "  text-align: initial;";
-        css += "  max-width: 100px;";
-        css += "  overflow: hidden;";
-        css += "  vertical-align: bottom;";
-        css += "  white-space: nowrap;";
-        css += "  text-overflow: ellipsis;}";
-        css += ".gclh_thanks_table td:nth-child(1) a {";
-        css += "  max-width: 100px;";
-        css += "  display: inline-block;";
-        css += "  overflow: hidden;";
-        css += "  vertical-align: bottom;";
-        css += "  white-space: nowrap;";
-        css += "  text-overflow: ellipsis;}";
-        css += ".gclh_thanks_table td img {vertical-align: text-top}";
-        css += ".gclh_thanks_table tr.separator td {border-bottom-width: 2px;}";
-        css += ".ll_heading {";
-        css += "  margin-top: 0px;";
-        css += "  margin-bottom: 0px;";
-        css += "  font-family: Verdana;";
-        css += "  font-size: 14px;";
-        css += "  font-style: normal;";
-        css += "  font-weight: bold;}";
-        css += ".gclh_old_new_line {";
-        css += "  font-size: 14px;";
-        css += "  font-style: italic;";
-        css += "  font-weight: bold;";
-        css += "  margin-top: 12px;";
-        css += "  margin-bottom: 3px;";
-        css += "  margin-left: 5px;}";
-        css += "span.browse_map_icon, span.search_map_icon {";
-        css += "  position: absolute;";
-        css += "  margin-top: 8px;}";
-        css += "svg.browse_map_icon, svg.search_map_icon {";
-        css += "  vertical-align: middle;";
-        css += "  margin-bottom: 1px;";
-        css += "  margin-left: 1px;";
-        css += "  height: 14px;";
-        css += "  width: 14px;}";
-        css += "svg.search_map_icon {";
-        css += "  margin-top: 2px;}";
-        css += create_coloring_css();
-        appendCssStyle(css, "body");
-    }
 
     var t_reqChl = "This option requires \"Change header layout\".";
     var t_reqChlSLoT = "This option requires \"Change header layout\" and \"Show Linklist on top\".";
@@ -13362,7 +13023,6 @@ var mainGC = function() {
             $('#gclh_config_content3').show();
             $('#settings_overlay')[0].style.display = "";
         } else {
-            create_config_css();
             var div = document.createElement("div");
             div.setAttribute("id", "settings_overlay");
             div.setAttribute("class", "settings_overlay");
@@ -16601,7 +16261,6 @@ var mainGC = function() {
         } else buildBgShadow();
         if ($('#sync_settings_overlay')[0] && $('#sync_settings_overlay')[0].style.display == "none") $('#sync_settings_overlay')[0].style.display = "";
         else {
-            create_config_css();
             var div = document.createElement("div");
             div.setAttribute("id", "sync_settings_overlay");
             div.setAttribute("class", "settings_overlay");
@@ -17279,29 +16938,6 @@ function gclh_error(modul, err) {
             $("#gclh-gurumeditation > div").append('<p style="font-weight: bold; font-size: x-large;">GC little helper II Error</p>');
             $("#gclh-gurumeditation > div").append('<div></div>');
             $("#gclh-gurumeditation > div").append('<p style="font-size: smaller;">For more information see the console. <a href="https://github.com/2Abendsegler/GClh/issues" target="_blank">Create a new issue / bug report at GitHub.</a></p>');
-            var css = "";
-            css += "#gclh-gurumeditation {";
-            css += "    background-color:black;";
-            css += "    padding: 5px;";
-            css += "    color: red;";
-            css += "    text-align: center;"
-            css += "}";
-            css += "#gclh-gurumeditation a:link, #gclh-gurumeditation a:visited, #gclh-gurumeditation a:hover {"
-            css += "    color: red;";
-            css += "    text-decoration: underline;"
-            css += "}";
-            css += "#gclh-gurumeditation > div > p {";
-            css += "    margin: 0;";
-            css += "    padding: 15px;";
-            css += "    font-family:Arial;";
-            css += "}";
-            css += "#gclh-gurumeditation > div > div > p {";
-            css += "    margin: 0;"
-            css += "    font-family:Consolas,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New, monospace;";
-            css += "}";
-            css += ".gclh_monospace {";
-            css += "}";
-            appendCssStyle(css);
         }
         $("#gclh-gurumeditation > div > div").append( "<p>"+modul + ": " + err.message+"</p>");
     }
