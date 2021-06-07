@@ -1,3 +1,10 @@
+/* Make GC header invisible. */
+#gc-header, 
+#GCHeader, 
+#gc-mobile-nav {
+    display: none;
+}
+
 /* Part of core css of GS. All nav changed in gclh_nav. */
 gclh_nav {
     display: block;
@@ -372,13 +379,6 @@ gclh_nav .profile-panel ul: : after {
 .gclh_open ul.submenu {
     visibility: visible;
     display: block !important;
-}
-
-/* Make GC header invisible. */
-#gc-header, 
-#GCHeader, 
-#gc-mobile-nav {
-    display: none;
 }
 
 /* Toggle css, used in maps. */
