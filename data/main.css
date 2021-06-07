@@ -413,3 +413,14 @@ gclh_nav .profile-panel ul: : after {
     border: 1px solid #02874d;
     left: auto; right: 0;
 }
+
+/* Message center message indicator. */
+.gclh_message-indicator {
+    background-color: #e0b70a;
+    position: absolute;
+    border-radius: 15px;
+    width: 10px;
+    height: 10px;
+    margin-top: -18px;
+    margin-left: 28px;
+}
