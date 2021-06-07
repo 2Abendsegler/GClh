@@ -463,3 +463,137 @@ gclh_nav .profile-panel ul: : after {
     left: -52px;
     z-index: 1004;
 }
+
+/* Markdown output. */
+.markdown-output img {
+    vertical-align: middle;
+}
+.markdown-output span.WaypointLog {
+    color: #4a4a4a;
+    display: block;
+    font-weight: bold;
+    margin-bottom: 2em;
+}
+.markdown-output {
+    font-size: 1.08em;
+    line-height: 1.375em;
+    overflow: hidden;
+    word-wrap: break-word;
+}
+.markdown-output h1 {
+    color: #4a4a4a;
+    font-size: 1.285em;
+    font-weight: bold;
+    line-height: 1.375em;
+    margin: 0;
+}
+.markdown-output h2 {
+    color: #4a4a4a;
+    font-size: 1.285em;
+    font-weight: normal;
+    line-height: 1.375em;
+    margin: 0;
+}
+.markdown-output h3 {
+    color: #00b265;
+    font-size: 1.285em;
+    font-weight: normal;
+    line-height: 1.375em;
+    margin: 0;
+    text-transform: uppercase;
+}
+.markdown-output hr {
+    background: #d8d8d8;
+    height: 2px;
+    margin: 1.45em 0;
+}
+.markdown-output p {
+    color: #4a4a4a;
+    margin: 0 0 1.5em;
+}
+.markdown-output li {
+    list-style: inherit;
+}
+.markdown-output ul {
+    list-style-type: disc;
+}
+.markdown-output ol {
+    list-style-type: decimal;
+}
+.markdown-output ul,
+.markdown-output ol {
+    color: #4a4a4a;
+    margin: 0 1.5em 1.5em .75em;
+    padding-left: 1.5em;
+}
+.markdown-output li ul {
+    list-style-type: none;
+    margin-left: 0;
+    margin-bottom: 0;
+    padding-left: 0;
+}
+.markdown-output li ul li::before {
+    background-color: #e0b70a;
+    border-radius: 50%;
+    content: "";
+    display: inline-block;
+    height: 5px;
+    margin-right: .75em;
+    margin-top: -1px;
+    width: 5px;
+    vertical-align: middle;
+}
+.markdown-output li ol {
+    margin-left: 0;
+    margin-bottom: 0;
+}
+.markdown-output blockquote {
+    background: none;
+    font-style: normal;
+    margin: 1.5em .75em;
+    padding: 0;
+}
+.markdown-output blockquote p {
+    color: #00b265;
+    font-weight: bold;
+}
+.markdown-output blockquote p::before {
+    content: '“';
+}
+.markdown-output blockquote p::after {
+    content: '”';
+}
+.markdown-output a,
+#bd .markdown-output a {
+    color: #006cff;
+    text-decoration: none;
+}
+.markdown-output a:hover,
+.markdown-output a:focus {
+    border-bottom: 1px solid #006cff;
+    color: #006cff;
+}
+.markdown-output .AlignRight a {
+    color: #00447c;
+}
+.markdown-output .AlignRight a:visited {
+    color: #00a0b0;
+}
+.markdown-output .AlignRight a:hover,
+.markdown-output .AlignRight a:focus {
+    border-bottom: none;
+    color: #6c8e10;
+}
+.markdown-output~.AlternatingRow,
+table .markdown-output~tr.AlternatingRow td {
+    background: #fff;
+}
+.markdown-output.BorderBottom td {
+    border-bottom-color: #9b9b9b;
+}
+.markdown-output.BorderBottom:last-child td {
+    border-bottom: none;
+}
+.markdown-output>td:last-child {
+    padding-bottom: 2.5em;
+}
