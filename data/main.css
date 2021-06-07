@@ -400,7 +400,7 @@ gclh_nav .profile-panel ul: : after {
     border: 1px solid #4a4a4a;
     border-radius: 12px;
     box-shadow: 0 0 0 3px transparent;
-    content: \'\';
+    content: '';
     height: 19px;
     left: 0;
     position: absolute;
