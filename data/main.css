@@ -1,4 +1,4 @@
-// Part of core CSS of GS. All nav changed in gclh_nav.
+/* Part of core CSS of GS. All nav changed in gclh_nav. */
 gclh_nav {
     display: block;
 }
@@ -368,7 +368,7 @@ gclh_nav .profile-panel ul: : after {
     right: 14px;
 }
 
-// Toggle.
+/* Toggle, used in maps. */
 .gclh_toggle-handle {
     background-color: #e4e4e4;
     border: none;
