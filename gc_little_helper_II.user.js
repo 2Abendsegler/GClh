@@ -8387,6 +8387,7 @@ var mainGC = function() {
                 } else {waitCount++; if (waitCount <= 200) setTimeout(function(){checkForBuildObserverCODashboard(waitCount);}, 50);}
             }
             checkForBuildObserverCODashboard(0);
+            window.addEventListener("resize", processAllCODashboard);
             processAllCODashboard();
 
             // CSS for Cache Owner Dashboard.
@@ -8400,29 +8401,30 @@ var mainGC = function() {
             css += '.username a {color:#4a4a4a; text-decoration:none;}';
             css += '.username a:hover {color:#02874d; text-decoration:underline;}';
             // Build VIP, Mail, Message icons.
-            var newFlexBasis = 120 + 21;
-            if (settings_process_vup) newFlexBasis += 21;
-            if (settings_show_mail) newFlexBasis += 21;
-            css += '.latest-activity .log-item-finder {flex:0 0 ' + newFlexBasis + 'px !important;}';
-            css += '.latest-activity .activity-item a {display: inline-block;}';
-            css += '.gclh_name {white-space: nowrap; display: flex; align-items: center;}';
-            css += '.gclh_name a {margin-right:5px;}';
-            css += '.gclh_name a:focus:not(:nth-child(1)) {box-shadow: none;}';
-            css += '.latest-activity .mobile-log-item-wrapper {margin-top: -8px !important; padding: 0 8px !important;}';
+            if (settings_show_vip_list) {
+                var newFlexBasis = 120 + 21;
+                if (settings_process_vup) newFlexBasis += 21;
+                if (settings_show_mail) newFlexBasis += 21;
+                css += '.latest-activity .log-item-finder {flex:0 0 ' + newFlexBasis + 'px !important;}';
+                css += '.gclh_name {white-space: nowrap; display: flex; align-items: center;}';
+                css += '.gclh_name a {margin-right:5px;}';
+                css += '.gclh_name a:focus:not(:nth-child(1)) {box-shadow: none;}';
+                css += '.latest-activity .mobile-log-item-wrapper {margin-top: -8px !important; padding: 0 8px !important;}';
+            }
             // Compact Layout
             if (settings_compact_layout_cod) {
                 css += '.banner-wrapper {height: 90px !important; background-size: 100% 140% !important;}';
                 css += '.avatar-wrapper {margin-top: 40px !important;}';
-                css += '.dashboard-navigation ul a {padding: 5px 20px !important;}';
-                css += '.widget-title {padding: 7px 12px 7px 20px !important;}';
-                css += '.owned-geocache-types .owned-geocache-type-icon {height: 25px !important; width: 25px; !important}';
+                css += '.dashboard-navigation ul a, .helpful-links ul a {padding: 5px 12px !important; line-height: unset !important;}';
+                css += '.widget-title {padding: 7px 12px !important;}';
+                css += '.owned-geocache-types .owned-geocache-type-icon {height: 25px !important; width: 25px !important; margin: 0 12px !important;}';
+                css += '.owned-geocache-types li, .gclh_cacheTypeLinks {padding: 0 0 4px 0 !important;}';
                 css += '.gclh_cacheTypeLinks, .owned-geocache-types .owned-geocache-type-label {padding: 0 !important}';
-                css += '.helpful-links li {margin-top: 5px !important;}';
-                css += '.page-header.cod {margin-bottom: 10px !important;}'
+                css += '.helpful-links ul {padding: 0 0 5px 0 !important;}';
+                css += '.helpful-links li {margin-top: 0 !important;}';
+                css += '.page-header.cod {margin-bottom: 10px !important; font-size:20px !important;}';
                 css += '.quick-filters .quick-filters-header {padding: 0 12px !important;}';
                 css += '.latest-activity h2 {padding: 5px 12px !important;}';
-                css += '.latest-activity .mobile-log-item-wrapper {margin-top: -24px !important;}';
-                css += '.page-header.cod {font-size:20px !important;}';
                 css += '.quick-filters .quick-filters-header button {height:36px !important; width:36px !important;}';
                 css += '.quick-filters .quick-filters-header .scroll-left span,';
                 css += '.quick-filters .quick-filters-header .scroll-right span {height:24px !important; width:24px !important;}';
