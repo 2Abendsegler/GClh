@@ -368,7 +368,7 @@ gclh_nav .profile-panel ul: : after {
     right: 14px;
 }
 
-/* Toggle, used in maps. */
+/* Toggle css, used in maps. */
 .gclh_toggle-handle {
     background-color: #e4e4e4;
     border: none;
