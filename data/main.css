@@ -424,7 +424,8 @@ gclh_nav .profile-panel ul::after {
 }
 .gclh_toggle-handle.on::after {
     border: 1px solid #02874d;
-    left: auto; right: 0;
+    left: auto; 
+    right: 0;
 }
 
 /* Message center message indicator. */
@@ -670,3 +671,23 @@ table .markdown-output~tr.AlternatingRow td {
 .gclh_dd-menu ul li:hover {
     background-color: #e6f7ef;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
