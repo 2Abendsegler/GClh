@@ -21,7 +21,7 @@ Unsere Branches unterteilen sich in die drei Stufen *User*, *Collector* und *Pro
 
 | 1. User | 2. Collector        | 3. Projects / Issues        |
 | :------ | :------------------ | :-------------------------- |
-| master  | collector (default) | upvotes_buttons_for_non_pmo |
+| master  | collector (default) | upvote_buttons_for_non_pmo  |
 |         |                     | v0.5_cf_geoservices         |
 
 Anpassungen sollten mit den Resourcen aus der Branch *collector* erfolgen.  
