@@ -103,8 +103,8 @@ gclh_nav ul {
     text-overflow: ellipsis;
     white-space: nowrap;
 }
-.menu a: hover,
-.menu a: focus {
+.menu a:hover,
+.menu a:focus {
     text-decoration: none;
 }
 .menu>li>a {
@@ -136,7 +136,7 @@ gclh_nav ul {
     z-index: 100;
     color: #4a4a4a;
 }
-.submenu: : after {
+.submenu::after {
     background-color: #fff;
     content: '';
     height: 24px;
@@ -159,7 +159,7 @@ gclh_nav ul {
     padding-top: 12px;
     padding-bottom: 12px;
 }
-.menu .li-attention+li: not(.li-attention) {
+.menu .li-attention+li:not(.li-attention) {
     margin-top: 12px;
 }
 .submenu a,
@@ -171,11 +171,11 @@ gclh_nav ul {
     padding: 8px 24px;
 }
 .submenu a,
-.submenu a: visited {
+.submenu a:visited {
     color: #4a4a4a;
 }
-.submenu a: hover,
-.submenu button: hover {
+.submenu a:hover,
+.submenu button:hover {
     background-color: #e8f6ef;
     color: #4a4a4a;
     text-decoration: none;
@@ -190,7 +190,7 @@ gclh_nav ul {
     margin: 0;
     padding: 0;
 }
-.menu>li .dropdown: focus {
+.menu>li .dropdown:focus {
     color: #fff;
 }
 gclh_nav .profile-panel,
@@ -234,10 +234,10 @@ gclh_nav .profile-panel a {
     position: relative;
     text-align: center;
 }
-.logged-out-user .btn-loggedout: hover,
-.logged-out-user .btn-loggedout: focus,
-.profile-panel .btn-upgrade: hover,
-.profile-panel .btn-upgrade: focus {
+.logged-out-user .btn-loggedout:hover,
+.logged-out-user .btn-loggedout:focus,
+.profile-panel .btn-upgrade:hover,
+.profile-panel .btn-upgrade:focus {
     background-color: #fff;
     color: #02874d;
 }
@@ -271,9 +271,9 @@ gclh_nav .profile-panel a {
     position: relative;
     width: 48px;
 }
-.li-messages a: hover,
-.li-messages a: focus,
-.li-messages a: active {
+.li-messages a:hover,
+.li-messages a:focus,
+.li-messages a:active {
     color: #fff;
 }
 .li-messages svg {
@@ -336,8 +336,8 @@ gclh_nav .profile-panel a {
     transition: .3s all;
     width: 32px;
 }
-.profile-panel .li-user-toggle: hover,
-.profile-panel .li-user-toggle: focus {
+.profile-panel .li-user-toggle:hover,
+.profile-panel .li-user-toggle:focus {
     color: #02874d;
 }
 .profile-panel .li-user-toggle svg {
@@ -345,8 +345,8 @@ gclh_nav .profile-panel a {
     pointer-events: none;
     margin-top: 5px;
 }
-.profile-panel .li-user-toggle: hover,
-.profile-panel .li-user-toggle: focus {
+.profile-panel .li-user-toggle:hover,
+.profile-panel .li-user-toggle:focus {
     background: #fff;
 }
 gclh_nav .profile-panel ul {
@@ -370,7 +370,7 @@ gclh_nav .profile-panel .submenu button {
     border: 0;
     cursor: pointer;
 }
-gclh_nav .profile-panel ul: : after {
+gclh_nav .profile-panel ul::after {
     left: initial;
     right: 14px;
 }
