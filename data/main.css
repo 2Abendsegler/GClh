@@ -437,3 +437,29 @@ gclh_nav .profile-panel ul: : after {
     margin-top: -18px;
     margin-left: 28px;
 }
+
+/* Draft indicator. */
+.draft-indicator {
+    background-color: #e0b70a;
+    font-weight: bold;
+    position: absolute;
+    padding: 0 5px;
+    border-radius: 15px;
+}
+.draft-indicator a {
+    width: auto !important;
+    font-size: 14px;
+    min-width: 10px;
+    display: block;
+    text-align: center;
+    color: white;
+}
+.li-user-info .user-avatar .draft-indicator {
+    top: -7px;
+    left: -7px;
+}
+.player-profile .draft-indicator {
+    top: -3px;
+    left: -52px;
+    z-index: 1004;
+}
