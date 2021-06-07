@@ -24,9 +24,9 @@
 // @require      https://www.geocaching.com/scripts/MarkdownDeepLib.min.js
 // @require      https://www.geocaching.com/scripts/SmileyConverter.js
 //xxxx
-// @resource maincss https://raw.githubusercontent.com/2Abendsegler/GClh/collection-of-change3/data/main.css
+// @resource maincss https://raw.githubusercontent.com/2Abendsegler/GClh/collector/data/main.css
 //xxxx
-// @resource headerhtml https://raw.githubusercontent.com/2Abendsegler/GClh/collection-of-change3/data/header.html
+// @resource headerhtml https://raw.githubusercontent.com/2Abendsegler/GClh/collector/data/header.html
 // @resource jscolor https://raw.githubusercontent.com/2Abendsegler/GClh/master/data/jscolor.js
 // @resource leafletjs https://raw.githubusercontent.com/2Abendsegler/GClh/master/data/leaflet.js
 // @resource leafletcss https://raw.githubusercontent.com/2Abendsegler/GClh/master/data/leaflet.css
@@ -287,7 +287,6 @@ var constInit = function(c) {
     states_idInit(c);
     tlc('START collectionInit');
     collectionInit(c);
-//xxxx
     // Old header of GS.
     tlc('START headerhtml');
     c.header_old = GM_getResourceText('headerhtml');
@@ -1258,7 +1257,6 @@ var mainGCWait = function() {
 var mainGC = function() {
     tlc('START maingc');
 
-//xxxx
     // Part of core css of GS, Config and others.
     var css = main_css;
     // Special css for searchmap.
