@@ -19,12 +19,10 @@
 Unsere Branches unterteilen sich in die drei Stufen *User*, *Collector* und *Projects / Developer*.  
 (Beispiel)
 
-| 1. User | 2. Collector        | 3. Projects / Developer  |
-| :------ | :------------------ | :----------------------- |
-| master  | collector (default) | v0.5_f                   |
-|         |                     | v0.5_cf_geoservices      |
-|         |                     | VUP_Herr_Ma              |
-|         |                     | translation              |
+| 1. User | 2. Collector        | 3. Projects / Issues        |
+| :------ | :------------------ | :-------------------------- |
+| master  | collector (default) | upvotes_buttons_for_non_pmo |
+|         |                     | v0.5_cf_geoservices         |
 
 Anpassungen sollten mit den Resourcen aus der Branch *collector* erfolgen.  
 Pull requests sollten in die Branch *collector* erfolgen.  
@@ -54,7 +52,7 @@ Sprache: Englisch wo nötig, ansonsten auch deutsch.
 * **Neues Issue:**
   * Kategorie (Label) setzen: *bug*, *enhancement*, *improvement*, *help wanted*, *question* ... 
   * Priorität (Label) setzen, zumindest wenn sie absehbar hoch ist. 
-    * Die Kategorie *bug* hat in der Regel mindestens die Priorität *high*.
+    * Die Kategorie *bug* hat in der Regel mindestens die Priorität *middle*.
     * *help wanted* und *question* haben in der Regel nicht mehr als Priorität *middle*.
   * Handelt es sich um einen Wunsch der User, dann den Tag (Label) *wish* setzen.  
   
@@ -80,8 +78,6 @@ Sprache: Englisch wo nötig, ansonsten auch deutsch.
 
 Es sollte eine aussagekräftige *Dokumentation im Issue* bzw. im *Pull request* erfolgen. (Dokumentation wird für Changelog verwendet.)  
 
-Eine *Änderungsdokumentation im Programmkopf* ist nicht erforderlich. Möchte jemand solche Dokumentation erfassen, dann kann er dies aber tun. Von Zeit zu Zeit wird solche Dokumentation aber entfernt, um das Programm nicht aufzublähen.  
-
 Eine *Änderungsdokumentation im Programmcode* ist nicht erforderlich. Bei komplexen Zusammenhängen oder wenn besondere Beachtung geboten ist, dann sollte eine Dokumentation an der entsprechenden Programmstelle erfolgen. Ob eine solche Dokumentation sinnvoll ist, entscheidet der jeweilige Entwickler.
 <br>
 <br>
@@ -100,8 +96,6 @@ https://github.com/2Abendsegler/GClh/raw/collector/gc_little_helper_II.user.js
 https://raw.githubusercontent.com/2Abendsegler/GClh/master/License
 * Open Issues auf GitHub aufrufen:  
 https://github.com/2Abendsegler/GClh/issues?q=is:issue%20is:open%20sort:created-desc
-* Open Wishes auf GitHub aufrufen:  
-https://github.com/2Abendsegler/GClh/issues?q=is:issue%20is:open%20label:%22tag:%20wish%22%20sort:created-desc
 * Changelog auf GitHub anzeigen:  
 https://github.com/2Abendsegler/GClh/blob/master/docu/changelog.md#readme
 * License auf GitHub anzeigen:  
@@ -132,14 +126,12 @@ https://www.apple.com/safari/
 #### Foren:  
 * Geoclub Forum, Help (Greasemonkey-Scripte):  
 http://geoclub.de/forum/viewforum.php?f=117  
-* Geoclub Forum, neuer Sammelthread für GC little helper II:  
-http://geoclub.de/forum/viewtopic.php?f=117&t=79372  
-* Geoclub Forum, alter Sammelthread für GC little helper:  
-http://geoclub.de/forum/viewtopic.php?f=117&t=46168  
 * Groundspeak Forum, Sammelthread für GC little helper II (mit v0.3):  
 http://forums.groundspeak.com/GC/index.php?showtopic=343005  
 * Swisscacher Forum, Sammelthread für GC little helper II (mit v0.5):  
 http://www.swissgeocacheforum.ch/forum/topic/12872-gc-little-helper-ii/  
+* Geoleaks Forum, Sammelthread für GC little helper II (mit v0.10.4):  
+https://geoleaks.com/forum/showthread.php?tid=34330  
 <br>
 
 #### Sonstiges:  
