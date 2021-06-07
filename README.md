@@ -3,7 +3,7 @@
 
 ---
 # GC little helper II <a id="user-content-en"></a>
-*Some little things to make life easier (on www.geocaching.com).*<br>
+*Some little things to make life easy (on www.geocaching.com).*<br>
 *Powerful, configurable tool to improve and expand the geocaching pages.*
 
 ## Supported Browsers
@@ -22,7 +22,8 @@ If you want to ask questions, report bugs or request new features, you can do so
 - [Geocaching Forum](https://forums.geocaching.com/GC/index.php?/topic/343005-gc-little-helper-ii/)
 - [Geoclub Geocaching Forum](https://geoclub.de/forum/viewforum.php?f=117)
 - [Swiss Geocache Forum](https://www.swissgeocacheforum.ch/forum/topic/12872-gc-little-helper-ii/)
-- Our [Ticket System](https://github.com/2Abendsegler/GClh/issues) on this platform
+- [Forum](https://github.com/2Abendsegler/GClh/discussions) on our development platform at Github
+- [Ticket System](https://github.com/2Abendsegler/GClh/issues) on our development platform at Github
 
 ## Our Goal
 *GC little helper II* is a powerful tool to enhance and extend the functionality on the geocaching pages of www.geocaching.com. All features can be configured in a configuration menu. The tool uses english as language.
@@ -40,7 +41,7 @@ All Geocacher and others are encouraged to help with the development or the supp
 
 ---
 # GC little helper II <a id="user-content-de"></a>
-*Ein paar Kleinigkeiten um das Leben einfacher zu machen (auf www.geocaching.com).*<br>
+*Ein paar Kleinigkeiten um das Leben einfach zu machen (auf www.geocaching.com).*<br>
 *Mächtiges, konfigurierbares Tool zur Verbesserung und Erweiterung der Geocaching Seiten.*
 
 ## Unterstützte Browsers
@@ -59,7 +60,8 @@ Wer Fehler melden möchte, Fragen stellen möchte oder neue Features beantragen 
 - [Geocaching Forum](https://forums.geocaching.com/GC/index.php?/topic/343005-gc-little-helper-ii/)
 - [Geoclub Geocaching Forum](https://geoclub.de/forum/viewforum.php?f=117)
 - [Swiss Geocache Forum](https://www.swissgeocacheforum.ch/forum/topic/12872-gc-little-helper-ii/)
-- Unser [Ticketsystem](https://github.com/2Abendsegler/GClh/issues) auf hiesiger Platform
+- [Forum](https://github.com/2Abendsegler/GClh/discussions) auf unserer Entwicklungsplattform bei Github
+- [Ticket System](https://github.com/2Abendsegler/GClh/issues) auf unserer Entwicklungsplattform bei Github
 
 ## Unser Ziel
 Der *GC little helper II* ist ein mächtiges Tool zur Verbesserung und Erweiterung der Geocaching Seiten auf www.geocaching.com. Alle Features können flexibel über ein Konfigurationsmenü eingestellt werden. Das Tool ist in englisch. 
