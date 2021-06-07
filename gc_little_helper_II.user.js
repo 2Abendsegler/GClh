@@ -1,46 +1,44 @@
 // ==UserScript==
-// @name         GC little helper II
-// @description  Some little things to make life easy (on www.geocaching.com).
+// @name             GC little helper II
+// @namespace        http://www.amshove.net
 //--> $$000
-// @version      0.11.4
+// @version          0.11.3
 //<-- $$000
-// @copyright    2010-2016 Torsten Amshove, 2016-2021 2Abendsegler, 2017-2021 Ruko2010
-// @author       Torsten Amshove; 2Abendsegler; Ruko2010
-// @license      GNU General Public License v2.0
-// @supportURL   https://github.com/2Abendsegler/GClh/issues
-///////******@run-at*****document-start
-// @namespace    http://www.amshove.net
-// @icon         https://raw.githubusercontent.com/2Abendsegler/GClh/master/images/gclh_logo.png
-// @include      https://www.geocaching.com/*
-// @include      https://maps.google.tld/*
-// @include      https://www.google.tld/maps*
-// @include      https://project-gc.com/Tools/PQSplit*
-// @include      https://www.openstreetmap.org*
-// @exclude      /^https?://www\.geocaching\.com/(login|jobs|careers|brandedpromotions|promotions|blog|help|seek/sendtogps|profile/profilecontent)/
+// @include          https://www.geocaching.com/*
+// @include          https://maps.google.tld/*
+// @include          https://www.google.tld/maps*
+// @include          https://project-gc.com/Tools/PQSplit*
+// @include          https://www.openstreetmap.org*
+// @exclude          /^https?://www\.geocaching\.com/(login|jobs|careers|brandedpromotions|promotions|blog|help|seek/sendtogps|profile/profilecontent)/
 // @resource jscolor https://raw.githubusercontent.com/2Abendsegler/GClh/master/data/jscolor.js
-// @require      https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js
-// @require      https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js
-// @require      https://cdnjs.cloudflare.com/ajax/libs/dropbox.js/2.5.2/Dropbox-sdk.min.js
-// @require      https://raw.githubusercontent.com/2Abendsegler/GClh/master/data/gclh_defi.js
-// @require      https://www.geocaching.com/scripts/MarkdownDeepLib.min.js
-// @require      https://www.geocaching.com/scripts/SmileyConverter.js
-// @resource leafletjs https://raw.githubusercontent.com/2Abendsegler/GClh/master/data/leaflet.js
+// @require          https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js
+// @require          https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js
+// @require          https://cdnjs.cloudflare.com/ajax/libs/dropbox.js/2.5.2/Dropbox-sdk.min.js
+// @require          https://raw.githubusercontent.com/2Abendsegler/GClh/master/data/gclh_defi.js
+// @require          https://www.geocaching.com/scripts/MarkdownDeepLib.min.js
+// @require          https://www.geocaching.com/scripts/SmileyConverter.js
+// @resource leafletjs  https://raw.githubusercontent.com/2Abendsegler/GClh/master/data/leaflet.js
 // @resource leafletcss https://raw.githubusercontent.com/2Abendsegler/GClh/master/data/leaflet.css
-// @connect      maps.googleapis.com
-// @connect      raw.githubusercontent.com
-// @connect      api.open-elevation.com
-// @connect      api.geonames.org
-// @connect      coord.info
-// @grant        GM_getValue
-// @grant        GM_setValue
-// @grant        GM_deleteValue
-// @grant        GM_log
-// @grant        GM_xmlhttpRequest
-// @grant        GM_getResourceText
-// @grant        GM_info
-// @grant        GM.info
-// @grant        GM_addStyle
-// @grant        GM_registerMenuCommand
+// @connect          maps.googleapis.com
+// @connect          raw.githubusercontent.com
+// @connect          api.open-elevation.com
+// @connect          secure.geonames.org
+// @connect          coord.info
+// @description      Some little things to make life easy (on www.geocaching.com).
+// @copyright        2010-2016 Torsten Amshove, 2016-2021 2Abendsegler, 2017-2021 Ruko2010
+// @author           Torsten Amshove; 2Abendsegler; Ruko2010
+// @icon             https://raw.githubusercontent.com/2Abendsegler/GClh/master/images/gclh_logo.png
+// @license          GNU General Public License v2.0
+// @grant            GM_getValue
+// @grant            GM_setValue
+// @grant            GM_deleteValue
+// @grant            GM_log
+// @grant            GM_xmlhttpRequest
+// @grant            GM_getResourceText
+// @grant            GM_info
+// @grant            GM.info
+// @grant            GM_addStyle
+// @grant            GM_registerMenuCommand
 // ==/UserScript==
 
 //////////////////////////////////////
