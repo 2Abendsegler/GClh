@@ -161,8 +161,8 @@ If you need help with the GClh, or if you have questions about the GClh, you can
 - [Geocaching Forum](https://forums.geocaching.com/GC/index.php?/topic/343005-gc-little-helper-ii/)
 - [Geoclub Geocaching Forum](https://geoclub.de/forum/viewforum.php?f=117)
 - [Swiss Geocache Forum](https://www.swissgeocacheforum.ch/forum/topic/12872-gc-little-helper-ii/)
-
-You can also open a <a href="https://github.com/2Abendsegler/GClh/issues/new/choose">new issue</a> on our development platform at Github.<br>
+- [Forum](https://github.com/2Abendsegler/GClh/discussions) on our development platform at Github
+- [Ticket System](https://github.com/2Abendsegler/GClh/issues) on our development platform at Github
 <br>
 
 <a id="9-en"></a>
@@ -320,8 +320,8 @@ Wenn du Hilfe zum GClh benötigst, oder wenn du Fragen zum GClh hast, dann kanns
 - [Geocaching Forum](https://forums.geocaching.com/GC/index.php?/topic/343005-gc-little-helper-ii/)
 - [Geoclub Geocaching Forum](https://geoclub.de/forum/viewforum.php?f=117)
 - [Swiss Geocache Forum](https://www.swissgeocacheforum.ch/forum/topic/12872-gc-little-helper-ii/)
-
-Außerdem kannst du auch ein <a href="https://github.com/2Abendsegler/GClh/issues/new/choose">neues Issue</a> auf unserer Entwicklungsplattform bei Github eröffnen.<br>
+- [Forum](https://github.com/2Abendsegler/GClh/discussions) auf unserer Entwicklungsplattform bei Github
+- [Ticket System](https://github.com/2Abendsegler/GClh/issues) auf unserer Entwicklungsplattform bei Github
 <br>
 
 <a id="9-de"></a>
