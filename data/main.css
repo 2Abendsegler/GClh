@@ -374,6 +374,13 @@ gclh_nav .profile-panel ul: : after {
     display: block !important;
 }
 
+/* Make GC header invisible. */
+#gc-header, 
+#GCHeader, 
+#gc-mobile-nav {
+    display: none;
+}
+
 /* Toggle css, used in maps. */
 .gclh_toggle-handle {
     background-color: #e4e4e4;
