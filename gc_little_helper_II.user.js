@@ -314,6 +314,7 @@ var variablesInit = function(c) {
     c.global_avatarUrl = "";
     c.global_findCount = "";
     c.global_locale = "";
+    c.global_running = false;
     c.map_url = "https://www.geocaching.com/map/default.aspx";
     c.new_map_url = "https://www.geocaching.com/play/map/";
     c.remove_navi_play = getValue("remove_navi_play", false);
@@ -8311,42 +8312,49 @@ var mainGC = function() {
                 } else {waitCount++; if (waitCount <= 1000) setTimeout(function(){setLinkToOwnProfil(waitCount);}, 100);}
             }
 
-            // Build VIP, Mail, Message icons
+            // Build VIP, Mail, Message icons.
             function waitForLatestActivityList(waitCount) {
-                if ($('ul.latest-activity-list')[0]) {
+                if (global_running) return;
+                if (waitCount > 0 && $('ul.latest-activity-list li')[0]) {
+                    if (global_running) return;
+                    global_running = true;
                     if (settings_show_vip_list) buildVipVupMailMessage();
-                } else {waitCount++; if (waitCount <= 1000) setTimeout(function(){waitForLatestActivityList(waitCount);}, 100);}
+                } else {waitCount++; if (waitCount <= 100) setTimeout(function(){waitForLatestActivityList(waitCount);}, 100);}
             }
             function buildVipVupMailMessage() {
-                var links = $('a[href*="https://www.geocaching.com/p/default.aspx?u="]');
                 // Add Event Listener for "Load more" button.
                 if ($('.latest-activity-load')[0] && !$('.gclh_eventListener')[0]) {
                     $('.latest-activity-load')[0].addEventListener('click', function() {
                         function waitForLatestActivityPart2(waitCount) {
                             if ($('.latest-activity-loaded')[0]) {
                                 waitForLatestActivityList(0);
-                            } else {waitCount++; if (waitCount <= 1000) setTimeout(function(){waitForLatestActivityPart2(waitCount);}, 100);}
+                            } else {waitCount++; if (waitCount <= 100) setTimeout(function(){waitForLatestActivityPart2(waitCount);}, 100);}
                         }
                         waitForLatestActivityPart2(0);
                     });
                     $('.latest-activity-load').addClass('gclh_eventListener');
                 }
+                // Build Vip, Vup, Mail.
+                var links = $('a[href*="https://www.geocaching.com/p/default.aspx?u="] span.finder-username').closest('a');
                 for (var i = 0; i < links.length; i++) {
-                    var user = $(links[i]).find('span').html();
-                    // The profile pictures also have a link, but there shouldn't be any Vip/Vip/Mail icons.
-                    if (user == null)  continue;
-                    // Avoid double Vip/Vip/Mail icons.
-                    if ($('#gclh_name_' + i)[0]) continue;
-                    // Set the Vip/Vip/Mail icons.
-                    $(links[i]).after('<span class="gclh_name" id="gclh_name_' + i + '"></span>');
-                    $(links[i]).appendTo('#gclh_name_' + i);
-                    let GCTBName = $('#gclh_name_' + i).parent().parent().find('h3 a').html().trim();
-                    let GCTBCode = $('#gclh_name_' + i).parent().parent().find('ul li')[0].innerHTML.match(/GC[A-Z0-9]{1,6}/)[0];
+                    if ($(links[i]).closest('.activity-item').find('.gclh_name')[0]) continue;
+                    var user = $(links[i]).find('.finder-username')[0];
+                    if ($('.mobile-log-item')[0]) {
+                        $(user).after('<span class="gclh_name"></span>');
+                        $(user).appendTo($(links[i]).find('.gclh_name'));
+                    } else {
+                        $(links[i]).after('<span class="gclh_name"></span>');
+                    }
+                    var item = $(user).closest('.activity-item');
+                    var GCTBName = $(item).find('h3 a').html().trim();
+                    var GCTBCode = $(item).find('.log-meta li')[0].childNodes[1].data;
                     global_name = GCTBName;
                     global_code = '('+GCTBCode+')';
                     global_link = '(https://coord.info/'+GCTBCode+')';
-                    gclh_build_vipvupmail(links[i].parentNode, user);
+                    var iconPlace = $(links[i]).closest('.activity-item').find('.gclh_name')[0];
+                    gclh_build_vipvupmail(iconPlace, user.innerHTML);
                 }
+                global_running = false;
             }
 
             function processAllCODashboard() {
@@ -8391,29 +8399,25 @@ var mainGC = function() {
             css += '.username a:hover {color:#02874d; text-decoration:underline;}';
             // Build VIP, Mail, Message icons.
             if (settings_show_vip_list) {
-                var newFlexBasis = 120 + 21;
-                if (settings_process_vup) newFlexBasis += 21;
-                if (settings_show_mail) newFlexBasis += 21;
-                css += '.latest-activity .log-item-finder {flex:0 0 ' + newFlexBasis + 'px !important;}';
                 css += '.gclh_name {white-space: nowrap; display: flex; align-items: center;}';
-                css += '.gclh_name a {margin-right:5px;}';
-                css += '.gclh_name a:focus:not(:nth-child(1)) {box-shadow: none;}';
+                css += '.gclh_name a {margin-right: 5px;}';
+                css += '.mobile-log-item-wrapper .gclh_name span {margin-right: 5px;}';
+                css += '.log-item .gclh_name {margin-left: 5px; margin-top: -3px; padding-bottom: 2px; line-height: 1;}';
+                css += '.log-item .finder-username, .log-item .finder-type, .log-item .finder-find-count {line-height: 1.3 !important;}';
+                css += '.mobile-log-item-wrapper .gclh_name a:focus:not(:nth-child(1)), .log-item .gclh_name a:focus {box-shadow: none;}';
                 css += '.latest-activity .mobile-log-item-wrapper {margin-top: -8px !important; padding: 0 8px !important;}';
             }
             // Compact Layout
             if (settings_compact_layout_cod) {
-                css += '.banner-wrapper {height: 90px !important; background-size: 100% 140% !important;}';
-                css += '.avatar-wrapper {margin-top: 40px !important;}';
-                css += '.dashboard-navigation ul a, .helpful-links ul a {padding: 5px 12px !important; line-height: unset !important;}';
-                css += '.widget-title {padding: 7px 12px !important;}';
-                css += '.owned-geocache-types .owned-geocache-type-icon {height: 25px !important; width: 25px !important; margin: 0 12px !important;}';
-                css += '.owned-geocache-types li, .gclh_cacheTypeLinks {padding: 0 0 4px 0 !important;}';
-                css += '.gclh_cacheTypeLinks, .owned-geocache-types .owned-geocache-type-label {padding: 0 !important}';
-                css += '.helpful-links ul {padding: 0 0 5px 0 !important;}';
-                css += '.helpful-links li {margin-top: 0 !important;}';
-                css += '.page-header.cod {margin-bottom: 10px !important; font-size:20px !important;}';
+                css += '.widget {z-index: 1;}';
+                css += '.widget > div, .widget > ul, .widget > ul > li, .widget > ul span, .widget > div span, .mobile-log-item-wrapper .log-item-meta {padding: 0 !important; margin: 0 !important;}';
+                css += '.widget .widget-title a, .widget ul a, .widget > span {padding: 5px 10px !important;}';
+                css += '.widget li, .widget li a {height: 30.8px; line-height: 1.3;}';
+                css += '.widget ul a svg {padding: 0 5px 0 0 !important; margin: 0 !important; height: 24px !important; width: 29px !important;}';
+                css += '.page-header.cod {margin-bottom: 12px !important; font-size: 20px !important;}';
                 css += '.quick-filters .quick-filters-header {padding: 0 12px !important;}';
-                css += '.latest-activity h2 {padding: 5px 12px !important;}';
+                css += '.latest-activity {margin-top: 12px !important;}';
+                css += '.latest-activity h2 {padding: 5px 10px !important;}';
                 css += '.quick-filters .quick-filters-header button {height:36px !important; width:36px !important;}';
                 css += '.quick-filters .quick-filters-header .scroll-left span,';
                 css += '.quick-filters .quick-filters-header .scroll-right span {height:24px !important; width:24px !important;}';
