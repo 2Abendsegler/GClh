@@ -1409,7 +1409,7 @@ var mainGC = function() {
         function buildUpHeader(waitCount) {
             if ($('#gc-header, #GCHeader')[0]) {
                 tlc('Header found');
-                // Integrate old header. closest examples: Dashboard, Owner Dashboard, New Map, My Lists.
+                // Integrate old header.
                 ($('#gc-header') || $('#GCHeader')).after(header_old);
                 // Run header relevant features.
                 tlc('START setUserParameter');
@@ -3765,7 +3765,7 @@ var mainGC = function() {
         }
         code += "  if (id.match(/last_logtext/) && settings_replace_log_by_last_log) {";
         code += "    input.value = inhalt;";
-        code += "  }else{";
+        code += "  } else {";
         code += "    if (typeof input.selectionStart != 'undefined' && inhalt) {";
         code += "      var start = input.selectionStart;";
         code += "      var end = input.selectionEnd;";
@@ -4193,12 +4193,14 @@ var mainGC = function() {
                         document.getElementById('LogText').innerHTML = signature;
                     }
                     replacePlaceholder(true);
-                    if (document.location.href.match(/log\?d\=/)) {
+                    if (document.location.href.match(/log\?d\=/)) {  // Draft
                         // 2 Zeilen sinngemäß von DieBatzen ausgeliehen, um "<" und ">" richtig darzustellen.
                         var textarea = document.createElement('textarea');
                         var value = $('<textarea>').html(document.getElementById('LogText').innerHTML).val();
                         document.getElementById('LogText').value += value;
+                        document.getElementById('gclh_log_tpls').value = -1;
                     }
+                    document.getElementById('LogText').focus();
                     document.getElementById('LogText').selectionEnd = initial_cursor_position;
                     // Auch im Log Preview zur Anzeige bringen.
                     document.getElementById('LogText').dispatchEvent(new KeyboardEvent('keyup', {'keyCode': 32}));
