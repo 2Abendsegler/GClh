@@ -661,6 +661,7 @@ var variablesInit = function(c) {
     c.settings_save_as_pq_set_all = getValue("settings_save_as_pq_set_all", true);
     c.settings_compact_layout_cod = getValue("settings_compact_layout_cod", false);
     c.settings_fav_proz_cod = getValue("settings_fav_proz_cod", true);
+    c.settings_fav_proz_bml = getValue("settings_fav_proz_bml", true);
 
     tlc('START userToken');
     try {
@@ -5495,6 +5496,26 @@ var mainGC = function() {
                     if (!$('.gclh_improveLayoutBody')[0] && !css == '') appendCssStyle(css);
                     if ($('table')[0] && !$('table').hasClass('gclh_improveLayoutBody')) $('table').addClass('gclh_improveLayoutBody');
                     if ($('.rt-table')[0] && !$('table').hasClass('gclh_improveLayoutBody')) $('.rt-table').addClass('gclh_improveLayoutBody');
+                    // Add the favorite percentage to the total number of FPs
+                    if (settings_fav_proz_bml) {
+                        $('.geocache-table tbody tr').each((i, elem) => {
+                            let id = $(elem).find('.geocache-code').html().match(/GC[A-Z0-9]+/gi)[0].gcCodeToID();
+                            let favSelector = 'td:nth-child(' + ($('.header-favorites').index()+1) + ')';
+                            let favs = $(elem).find(favSelector).html();
+                            $.ajax({
+                                url: '/seek/nearest.aspx/FavoriteScore',
+                                type: 'POST',
+                                contentType: "application/json; charset=utf-8",
+                                data: JSON.stringify({dto: {data: id, ut: 2, p: favs}}),
+                                dataType: 'json',
+                                success: function (result) {
+                                    if (!$(elem).find(favSelector + ' .gclh_favScore')[0]) {
+                                        $(elem).find(favSelector).html(favs + ' <span class="gclh_favScore">(' + result.d.score + '%)</span>');
+                                    }
+                                }
+                            });
+                        });
+                    }
                 }
             }
             // Processing all steps.
@@ -13387,6 +13408,9 @@ var mainGC = function() {
             html += newParameterOn3;
             html += checkboxy('settings_bm_changed_and_go', 'After change of old bookmark go to bookmark list automatically') + show_help("With this option you can switch to the bookmark list automatically after a change of a bookmark (old form). The confirmation page of this change will skip.") + "<br>";
             html += newParameterVersionSetzen(0.9) + newParameterOff;
+            html += newParameterOn2;
+            html += checkboxy('settings_fav_proz_bml', 'Show favorites percentage') + "<br>";
+            html += newParameterVersionSetzen("0.11") + newParameterOff;
             html += "</div>";
 
             html += "<h4 class='gclh_headline2'>"+prepareHideable.replace("#id#","friends")+"<label for='lnk_gclh_config_friends'>Friends List</label></h4>";
@@ -15151,6 +15175,7 @@ var mainGC = function() {
                 'settings_map_show_btn_hide_header',
                 'settings_compact_layout_cod',
                 'settings_fav_proz_cod',
+                'settings_fav_proz_bml',
             );
             for (var i = 0; i < checkboxes.length; i++) {
                 if (document.getElementById(checkboxes[i])) setValue(checkboxes[i], document.getElementById(checkboxes[i]).checked);
