@@ -12023,6 +12023,14 @@ var mainGC = function() {
             GM_deleteValue('headerReplacement');
             setValue("migration_task_06", true);
         }
+        // Migrate new map layer "CyclOSM: OSM-based bicycle map" to the available map layers (zu v0.12).
+        if (getValue("migration_task_07", false) != true) {
+            if (settings_map_layers.length > 1) {
+                settings_map_layers.push('CyclOSM: OSM-based bicycle map');
+                setValue('settings_map_layers', settings_map_layers.join("###"));
+            }
+            setValue("migration_task_07", true);
+        }
     }
 
 // GC/TB Name, GC/TB Link, GC/TB Name Link, preliminary LogDate.
