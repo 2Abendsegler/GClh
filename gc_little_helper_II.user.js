@@ -660,7 +660,7 @@ var variablesInit = function(c) {
     c.settings_save_as_pq_set_defaults = getValue("settings_save_as_pq_set_defaults", false);
     c.settings_save_as_pq_set_all = getValue("settings_save_as_pq_set_all", true);
     c.settings_compact_layout_cod = getValue("settings_compact_layout_cod", false);
-    c.settings_fav_proz_cod = getValue("settings_fav_proz_cod", true)
+    c.settings_fav_proz_cod = getValue("settings_fav_proz_cod", true);
 
     tlc('START userToken');
     try {
@@ -8383,9 +8383,9 @@ var mainGC = function() {
             }
 
             function processAllCODashboard() {
-                if (document.location.pathname.match(/play\/owner\/(archived|published)($|\/$)/)) {
+                if (document.location.pathname.match(/play\/owner\/(archived|published)\/?$/)) {
                     favPercent(0);
-                } else if (document.location.pathname.match(/play\/owner/)) { // This has to be run last, if features are add to the other CO Dashboard Pages
+                } else if (document.location.pathname.match(/play\/owner\/?$/)) {
                     setLinksToCacheTypes(0);
                     setLinkToOwnProfil(0);
                     waitForLatestActivityList(0);
