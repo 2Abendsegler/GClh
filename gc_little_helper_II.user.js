@@ -5493,9 +5493,6 @@ var mainGC = function() {
                         }
                     }
                     setLinesInColorAndCorrectColspan();
-                    if (!$('.gclh_improveLayoutBody')[0] && !css == '') appendCssStyle(css);
-                    if ($('table')[0] && !$('table').hasClass('gclh_improveLayoutBody')) $('table').addClass('gclh_improveLayoutBody');
-                    if ($('.rt-table')[0] && !$('table').hasClass('gclh_improveLayoutBody')) $('.rt-table').addClass('gclh_improveLayoutBody');
                     // Add the favorite percentage to the total number of FPs
                     if (settings_fav_proz_bml) {
                         $('.geocache-table tbody tr').each((i, elem) => {
@@ -5515,7 +5512,11 @@ var mainGC = function() {
                                 }
                             });
                         });
+                        css += '.geocache-table tbody td {white-space: nowrap;}';
                     }
+                    if (!$('.gclh_improveLayoutBody')[0] && !css == '') appendCssStyle(css);
+                    if ($('table')[0] && !$('table').hasClass('gclh_improveLayoutBody')) $('table').addClass('gclh_improveLayoutBody');
+                    if ($('.rt-table')[0] && !$('table').hasClass('gclh_improveLayoutBody')) $('.rt-table').addClass('gclh_improveLayoutBody');
                 }
             }
             // Processing all steps.
