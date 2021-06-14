@@ -1,4 +1,4 @@
-// ==UserScript==
+​// ==UserScript==
 // @name         GC little helper II
 // @description  Some little things to make life easy (on www.geocaching.com).
 //--> $$000
@@ -8645,10 +8645,57 @@ var mainGC = function() {
             }
 
             // Virtually hit "Search this area" after dragging the map, if not BML and not link from matrix.
-            function searchThisArea() {
-                if (!$('li.active svg.my-lists-toggle-icon')[0] && !document.location.href.match(/=GClhMatrix/i) && settings_searchmap_autoupdate_after_dragging) {
-                    if ($('#clear-map-control')[0]) $('#clear-map-control').click();
-                }
+//xxxx1
+//- Wenn man nur zoomed wird das vom observer nicht erkannt.
+            var latHighG = false;
+            var latLowG = false;
+            var lngHighG = false;
+            var lngLowG = false;
+            var firstRun = true;
+            var timeG = new Date().getTime() - 1000;
+            function searchThisArea(waitCount) {
+                /// For the first run.
+                if ($('.leaflet-gl-layer.mapboxgl-map')[0]) {
+                    if (!$('.loading-container.show')[0] && !$('li.active svg.my-lists-toggle-icon')[0] && ($('#clear-map-control')[0] || firstRun) && !document.location.href.match(/=GClhMatrix/i) && settings_searchmap_autoupdate_after_dragging) {
+                        // Delay, so that the last values of a movement are used.
+                        setTimeout(function() {
+                            if ($('.loading-container.show')[0]) return;
+                            // Determine whether a new search is necessary, because we have not yet searched of a part of the map area.
+                            var pxHeight = parseInt($('.leaflet-gl-layer.mapboxgl-map')[0].offsetHeight);
+                            var pxWidth = parseInt($('.leaflet-gl-layer.mapboxgl-map')[0].offsetWidth);
+                            var lat = parseFloat(getURLParam('lat'));
+                            var lng = parseFloat(getURLParam('lng'));
+                            var zoom = parseInt(getURLParam('zoom'));
+                            var metersPerPx = 156543.03392 * Math.cos(lat * Math.PI / 180) / Math.pow(2, zoom);
+                            var latMeterDistance = metersPerPx * pxHeight;
+                            var lngMeterDistance = metersPerPx * pxWidth;
+                            var latHalfDezDistance = latMeterDistance / 1850 / 60 / 2;
+                            var lngHalfDezDistance = lngMeterDistance / (1850 * Math.cos(lat * Math.PI / 180)) / 60 / 2;
+                            var latHigh = (lat + latHalfDezDistance).toFixed(4);
+                            var latLow = (lat - latHalfDezDistance).toFixed(4);
+                            var lngHigh = (lng + lngHalfDezDistance).toFixed(4);
+                            var lngLow = (lng - lngHalfDezDistance).toFixed(4);
+                            if (latHighG == false || latHigh > latHighG || latLow < latLowG || lngHigh > lngHighG || lngLow < lngLowG) {
+//console.log('pxWidth: '+pxWidth+' | pxHeight: '+pxHeight+' | lat: '+lat+' | lng: '+lng+' | zoom: '+zoom);
+//console.log('metersPerPx: '+metersPerPx+' | latMeterDistance: '+latMeterDistance+' | lngMeterDistance: '+lngMeterDistance);
+//console.log('latHalfDezDistance: '+latHalfDezDistance+' | lngHalfDezDistance: '+lngHalfDezDistance);
+//console.log('latHigh: '+latHigh+' | latLow: '+latLow+' | lngHigh: '+lngHigh+' | lngLow: '+lngLow);
+//console.log('latHighG: '+latHighG+' | latLowG: '+latLowG+' | lngHighG: '+lngHighG+' | lngLowG: '+lngLowG);
+                                var time = new Date().getTime();
+                                if ((time - timeG) < 1000) return;
+                                timeG = time;
+                                latHighG = latHigh;
+                                latLowG = latLow;
+                                lngHighG = lngHigh;
+                                lngLowG = lngLow;
+                                if (!firstRun) {
+                                    $('#clear-map-control').click();
+                                }
+                                firstRun = false;
+                            }
+                        }, 500);
+                    }
+                } else {waitCount++; if (waitCount <= 200) setTimeout(function(){searchThisArea(waitCount);}, 50);}
             }
 
             // Set link to owner.
@@ -9219,10 +9266,13 @@ var mainGC = function() {
                             url += '&gclh_setDefaults=' + ($('.set_defaults .gclh_toggle-handle.on')[0] ? true:false);
                             window.open(url, '_blank');
                         });
-                        $('.set_defaults .gclh_toggle-handle')[0].onclick = function() {
-                            $('.set_defaults .gclh_toggle-handle').toggleClass('on');
-                            set_defaults = (set_defaults == true ? false : true);
-                        };
+//xxxx
+                        if ($('.set_defaults .gclh_toggle-handle')[0]) {
+                            $('.set_defaults .gclh_toggle-handle')[0].onclick = function() {
+                                $('.set_defaults .gclh_toggle-handle').toggleClass('on');
+                                set_defaults = (set_defaults == true ? false : true);
+                            };
+                        }
                     }
                     if ($('.set_defaults .gclh_toggle-handle')[0] && set_defaults == true) {$('.set_defaults .gclh_toggle-handle').addClass('on');}
                 }
@@ -9268,7 +9318,7 @@ var mainGC = function() {
             function processAllSearchMap() {
                 setFilter();
                 scrollInCacheList(); // Has to be run before searchThisArea.
-                searchThisArea();
+                searchThisArea(0);
                 improveAddtolistPopup();
                 setLinkToOwner(); // Has to be run before compactLayout.
                 compactLayout();
