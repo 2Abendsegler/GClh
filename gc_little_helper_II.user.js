@@ -1734,7 +1734,7 @@ var mainGC = function() {
 // Linklist on top.
     function linklistOnTop() {
         try {
-            // Replace {me} and apostrophes in bookmarks.
+            // Replace {me} in bookmarks.
             for (var i = 0; i < bookmarks.length; i++) {
                 if (bookmarks[i]['href'].match('{me}') && global_me && global_me != "") {
                     bookmarks[i]['href'] = bookmarks[i]['href'].replace('{me}', global_me);
