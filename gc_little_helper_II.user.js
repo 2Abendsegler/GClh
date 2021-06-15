@@ -332,7 +332,7 @@ var variablesInit = function(c) {
     c.settings_bookmarks_on_top = getValue("settings_bookmarks_on_top", true);
     c.settings_bookmarks_top_menu = getValue("settings_bookmarks_top_menu", "true");
     c.settings_bookmarks_search = getValue("settings_bookmarks_search", "true");
-    c.settings_bookmarks_search_default = getValue("settings_bookmarks_search_default", "");
+    c.settings_bookmarks_search_default = repApo(getValue("settings_bookmarks_search_default", ""));
     c.settings_redirect_to_map = getValue("settings_redirect_to_map", false);
     c.settings_new_width = getValue("settings_new_width", 1000);
     c.settings_hide_facebook = getValue("settings_hide_facebook", false);
@@ -497,7 +497,7 @@ var variablesInit = function(c) {
     c.settings_map_add_layer = getValue("settings_map_add_layer", true);
     c.settings_map_default_layer = getValue("settings_map_default_layer", "OpenStreetMap Default");
     c.settings_hide_map_header = getValue("settings_hide_map_header", false);
-    c.settings_spoiler_strings = getValue("settings_spoiler_strings", "spoiler|hinweis");
+    c.settings_spoiler_strings = repApo(getValue("settings_spoiler_strings", "spoiler|hinweis"));
     c.settings_replace_log_by_last_log = getValue("settings_replace_log_by_last_log", false);
     c.settings_hide_top_button = getValue("settings_hide_top_button", false);
     c.settings_show_real_owner = getValue("settings_show_real_owner", false);
@@ -1734,7 +1734,7 @@ var mainGC = function() {
 // Linklist on top.
     function linklistOnTop() {
         try {
-            // Replace {me} in bookmarks.
+            // Replace {me} and apostrophes in bookmarks.
             for (var i = 0; i < bookmarks.length; i++) {
                 if (bookmarks[i]['href'].match('{me}') && global_me && global_me != "") {
                     bookmarks[i]['href'] = bookmarks[i]['href'].replace('{me}', global_me);
@@ -2510,11 +2510,11 @@ var mainGC = function() {
         }
         if (settings_show_copydata_menu) {
             if (settings_show_copydata_own_stuff_show) {
-                html += '<div class="copydata-content-layer copydata_click{plus0}" data-id="idOwnStuff" data-value="'+settings_show_copydata_own_stuff_value+'"{plus1}>{plus2}'+settings_show_copydata_own_stuff_name+'{plus3}</div>'; html = replacePlus(html);
+                html += '<div class="copydata-content-layer copydata_click{plus0}" data-id="idOwnStuff" data-value="'+settings_show_copydata_own_stuff_value+'"{plus1}>{plus2}'+repApo(settings_show_copydata_own_stuff_name)+'{plus3}</div>'; html = replacePlus(html);
             }
             for (var i in settings_show_copydata_own_stuff) {
                 if (settings_show_copydata_own_stuff[i].show) {
-                    html += '<div class="copydata-content-layer copydata_click{plus0}" data-id="idOwnStuff" data-value="'+settings_show_copydata_own_stuff[i].value+'"{plus1}>{plus2}'+settings_show_copydata_own_stuff[i].name+'{plus3}</div>'; html = replacePlus(html);
+                    html += '<div class="copydata-content-layer copydata_click{plus0}" data-id="idOwnStuff" data-value="'+settings_show_copydata_own_stuff[i].value+'"{plus1}>{plus2}'+repApo(settings_show_copydata_own_stuff[i].name)+'{plus3}</div>'; html = replacePlus(html);
                 }
             }
         }
@@ -3823,8 +3823,8 @@ var mainGC = function() {
         for (var i = 0; i < anzTemplates; i++) {
             if (getValue("settings_log_template_name["+i+"]", "") != "") {
                 texts += "<div id='gclh_template["+i+"]' style='display: none;'>" + getValue("settings_log_template["+i+"]", "") + "</div>";
-                logicOld += "<a href='#' onClick='gclh_insert_tpl(\"gclh_template["+i+"]\"); return false;' style='color: #000000; text-decoration: none; font-weight: normal;'> - " + getValue("settings_log_template_name["+i+"]", "") + "</a><br>";
-                logicNew += "<option value='gclh_template["+i+"]' style='color: #4a4a4a;'>" + getValue("settings_log_template_name["+i+"]", "") + "</option>";
+                logicOld += "<a href='#' onClick='gclh_insert_tpl(\"gclh_template["+i+"]\"); return false;' style='color: #000000; text-decoration: none; font-weight: normal;'> - " + repApo(getValue("settings_log_template_name["+i+"]", "")) + "</a><br>";
+                logicNew += "<option value='gclh_template["+i+"]' style='color: #4a4a4a;'>" + repApo(getValue("settings_log_template_name["+i+"]", "")) + "</option>";
             }
         }
         if (getValue("last_logtext", "") != "") {
@@ -9319,7 +9319,6 @@ var mainGC = function() {
                             url += '&gclh_setDefaults=' + ($('.set_defaults .gclh_toggle-handle.on')[0] ? true:false);
                             window.open(url, '_blank');
                         });
-//xxxx
                         if ($('.set_defaults .gclh_toggle-handle')[0]) {
                             $('.set_defaults .gclh_toggle-handle')[0].onclick = function() {
                                 $('.set_defaults .gclh_toggle-handle').toggleClass('on');
@@ -13821,11 +13820,12 @@ var mainGC = function() {
             var titleValue = 'Data in the clipboard when clicking on entry in menu \"Copy data to Clipbord\".';
             html += openCff('cdos', header, titleName, titleValue, 'settings_show_copydata_menu');
             // First entry from non array.
-            var cdosData = buildDataCff(settings_show_copydata_own_stuff_show, settings_show_copydata_own_stuff_name, settings_show_copydata_own_stuff_value);
+            var cdosData = buildDataCff(settings_show_copydata_own_stuff_show, repApo(settings_show_copydata_own_stuff_name), settings_show_copydata_own_stuff_value);
             var idNr = 1;
             html += buildEntryCff('cdos', cdosData, idNr, 'settings_show_copydata_own_stuff', false);
             // Further entries from array.
             for (var i in settings_show_copydata_own_stuff) {
+                settings_show_copydata_own_stuff[i].name = repApo(settings_show_copydata_own_stuff[i].name);
                 var cdosData = settings_show_copydata_own_stuff[i];
                 idNr++;
                 html += buildEntryCff('cdos', cdosData, idNr, false, false);
@@ -13970,7 +13970,7 @@ var mainGC = function() {
             html += "&nbsp;" + "Log templates" + show_help("Log templates are predefined texts. All of your templates will be displayed next to the log form. All you have to do is click on a template and it will be placed in your log. You can also use placeholders for variables that will be replaced in the log. The smilies option must be activated.") + " &nbsp; ( Possible placeholders" + show_help(placeholderDescription) + ")<br>";
             html += "<font class='gclh_small' style='font-style: italic; margin-left: 240px; margin-top: 25px; width: 320px; position: absolute; z-index: -1;' >Please note that log templates are useful for automatically entering the number of finds, the date of discovery and the like in the log, but that cache owners are people who are happy about individual logs for their cache. Geocaching is not just about pushing your own statistics, but also about experiencing something. Please take some time to give something back to the owners by telling them about your experiences and writing them good logs. Then there will also be cachers in the future who like to take the trouble to set up new caches. The log templates are useful, but can never replace a complete log.</font>";
             for (var i = 0; i < anzTemplates; i++) {
-                html += "&nbsp;" + "<input class='gclh_form' type='text' size='15' id='settings_log_template_name[" + i + "]' value='" + getValue('settings_log_template_name[' + i + ']', '') + "' style='margin-top: 2px;'> ";
+                html += "&nbsp;" + "<input class='gclh_form' type='text' size='15' id='settings_log_template_name[" + i + "]' value='" + repApo(getValue('settings_log_template_name[' + i + ']', '')) + "' style='margin-top: 2px;'> ";
                 html += "<a onClick=\"if (document.getElementById(\'settings_log_template_div[" + i + "]\').style.display == \'\') document.getElementById(\'settings_log_template_div[" + i + "]\').style.display = \'none\'; else document.getElementById(\'settings_log_template_div[" + i + "]\').style.display = \'\'; return false;\" href='#'><img src='/images/stockholm/16x16/page_white_edit.gif' border='0' style='vertical-align: text-top;'></a><br>";
                 html += "<div id='settings_log_template_div[" + i + "]' style='display: none; margin-top: 2px; margin-bottom: -2px;'>&nbsp;&nbsp;&nbsp;&nbsp;<textarea class='gclh_form' rows='4' cols='54' id='settings_log_template[" + i + "]'>&zwnj;" + getValue("settings_log_template[" + i + "]", "") + "</textarea></div>";
             }
@@ -14165,7 +14165,7 @@ var mainGC = function() {
                 html += "  <td align='left' class='gclh_LinkListElement' id='gclh_LinkListElement_" + num + "'>";
                 html += "    <img style='height: 12px; margin-right: 3px; cursor: grab;' title='' src='"+global_grab_it2_icon+"' />";
                 if (typeof(bookmarks[i]['custom']) != "undefined" && bookmarks[i]['custom'] == true) {
-                    html += "<input style='padding-left: 2px !important; padding-right: 2px !important;' class='gclh_form' type='text' title='Custom link' id='settings_custom_bookmark[" + cust + "]' value='" + bookmarks[i]['href'] + "' size='15'> ";
+                    html += "<input style='padding-left: 2px !important; padding-right: 2px !important;' class='gclh_form' type='text' title='Custom link' id='settings_custom_bookmark[" + cust + "]' value='" + repApo(bookmarks[i]['href']) + "' size='15'> ";
                     html += "<input type='checkbox' style='margin-left: 1px;' title='Open in new window' " + (bookmarks[i]['target'] == "_blank" ? "checked='checked'" : "" ) + " id='settings_custom_bookmark_target[" + cust + "]'>";
                     cust++;
                 } else {
@@ -14184,9 +14184,9 @@ var mainGC = function() {
                 // Zweite linke Spalte mit abweichenden Bezeichnungen:
                 html += "  <td align='left' style='padding: 0px 2px 1px 2px;'>";
                 if (typeof(bookmarks[i]['custom']) != "undefined" && bookmarks[i]['custom'] == true) {
-                    html += "<input style='padding-left: 2px !important; padding-right: 2px !important;' class='gclh_form' title='Description for custom link' id='bookmarks_name[" + num + "]' type='text' size='15' value='" + getValue("settings_bookmarks_title[" + num + "]", "") + "'>";
+                    html += "<input style='padding-left: 2px !important; padding-right: 2px !important;' class='gclh_form' title='Description for custom link' id='bookmarks_name[" + num + "]' type='text' size='15' value='" + repApo(getValue("settings_bookmarks_title[" + num + "]", "")) + "'>";
                 } else {
-                    html += "<input style='padding-left: 2px !important; padding-right: 2px !important;' class='gclh_form' title='Differing description for standard link' id='bookmarks_name[" + num + "]' type='text' size='15' value='" + getValue("settings_bookmarks_title[" + num + "]", "") + "'>";
+                    html += "<input style='padding-left: 2px !important; padding-right: 2px !important;' class='gclh_form' title='Differing description for standard link' id='bookmarks_name[" + num + "]' type='text' size='15' value='" + repApo(getValue("settings_bookmarks_title[" + num + "]", "")) + "'>";
                     if (num >= 70 && num <= 74 || num == 25) html += newParameterLLVersionSetzen(0.9);
                     if (num >= 75 && num <= 88) html += newParameterLLVersionSetzen("0.10");
                 }
@@ -17016,6 +17016,11 @@ function profileBookmark(title, id, bookmarkArray) {
 function profileSpecialBookmark(title, href, name, bookmarkArray) {
     var bm = bookmark(title, href, bookmarkArray);
     bm['name'] = name;
+}
+
+// Replace apostrophes.
+function repApo(s) {
+    return s.replace(/'/g, '&#39;');
 }
 
 // Add CSS Style.
