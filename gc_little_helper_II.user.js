@@ -13134,6 +13134,7 @@ var mainGC = function() {
             $('#gclh_config_content3').show();
             $('#settings_overlay')[0].style.display = "";
         } else {
+            appendCssStyle(create_coloring_css());
             var div = document.createElement("div");
             div.setAttribute("id", "settings_overlay");
             div.setAttribute("class", "settings_overlay");
