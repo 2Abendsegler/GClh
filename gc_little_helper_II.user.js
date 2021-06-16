@@ -1734,7 +1734,7 @@ var mainGC = function() {
 // Linklist on top.
     function linklistOnTop() {
         try {
-            // Replace {me} in bookmarks.
+            // Replace {me} and apostrophes in bookmarks.
             for (var i = 0; i < bookmarks.length; i++) {
                 if (bookmarks[i]['href'].match('{me}') && global_me && global_me != "") {
                     bookmarks[i]['href'] = bookmarks[i]['href'].replace('{me}', global_me);
@@ -13134,6 +13134,7 @@ var mainGC = function() {
             $('#gclh_config_content3').show();
             $('#settings_overlay')[0].style.display = "";
         } else {
+            appendCssStyle(create_coloring_css());
             var div = document.createElement("div");
             div.setAttribute("id", "settings_overlay");
             div.setAttribute("class", "settings_overlay");
