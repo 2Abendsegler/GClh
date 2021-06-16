@@ -1262,6 +1262,8 @@ var mainGC = function() {
 
     // Part of core css of GS, Config and others.
     var css = main_css;
+    // Css for config, sync ... coloring.
+    appendCssStyle(create_coloring_css());
     // Special css for searchmap.
     if (is_page('searchmap')) {
         css += 'gclh_nav .wrapper {z-index: 1006;} gclh_nav li input {height: unset !important;}';
@@ -1805,7 +1807,6 @@ var mainGC = function() {
                     injectPageScript(code, "body");
                     var searchfield = "<li><input onKeyDown='if (event.keyCode==13 && event.ctrlKey == false && event.altKey == false && event.shiftKey == false) {gclh_search_logs(); return false;}' type='text' size='7' name='navi_search' id='navi_search' style='margin-bottom: -1px; padding: 1px; font-weight: bold; font-family: sans-serif; border-radius: 7px 7px 7px 7px;' value='" + settings_bookmarks_search_default + "'></li>";
                     $(".Menu, .menu").append(searchfield);
-                    appendCssStyle(create_coloring_css());
                 }
 
                 if (settings_menu_show_separator) {
@@ -13134,7 +13135,6 @@ var mainGC = function() {
             $('#gclh_config_content3').show();
             $('#settings_overlay')[0].style.display = "";
         } else {
-            appendCssStyle(create_coloring_css());
             var div = document.createElement("div");
             div.setAttribute("id", "settings_overlay");
             div.setAttribute("class", "settings_overlay");
@@ -15691,7 +15691,6 @@ var mainGC = function() {
             var css = "";
             css += "#save_overlay {width:560px; margin-left: 20px; overflow: auto; padding:10px; position: absolute; left:30%; top:70px; z-index:1004; border-radius: 10px;}";
             css += "h3 {margin: 0;}";
-            css += create_coloring_css();
             appendCssStyle(css);
             var side = $('body')[0];
             var html = "<h3 id='save_overlay_h3'></h3>";
