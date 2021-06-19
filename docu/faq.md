@@ -9,7 +9,7 @@
 <a href="#5-en">5. How can I open the configuration (Config) of the GClh?</a> | <a href="#5-de">5. Wie kann ich die Konfiguration (Config) des GClh öffnen?</a>
 <a href="#6-en">6. How can I install the GClh on Android devices?</a> | <a href="#6-de">6. Wie kann ich den GClh auf Android Geräten installieren?</a>
 <a href="#7-en">7. How can I contribute to GClh?</a> | <a href="#7-de">7. Wie kann ich etwas zum GClh beitragen?</a>
-<a href="#8-en">8. How can I get help to GClh?</a> | <a href="#8-de">8. Wie bekomme ich Hilfe zum GClh?</a>
+<a href="#8-en">8. Where can I get help with the GClh?</a> | <a href="#8-de">8. Wo bekomme ich Hilfe zum GClh?</a>
 <a href="#9-en">9. How can I report a bug or a feature request?</a> | <a href="#9-de">9. Wie kann ich einen Fehler melden oder eine Anfrage zu einem neuen Feature stellen?</a>
 
 ---
@@ -17,8 +17,7 @@
 
 <a id="1-en"></a>
 ## 1. What can I do if the Warning is displayed "GClh is running more than once"?
-*GC little helper II* is only working correctly, if it's just running once at a time. Because of that, the script itself checks if it's the only GClh running.<br>
-If this warning is displayed, it is true. So you can check some points:<br>
+*GC little helper II* is only working correctly, if it's just running once at a time. Because of that, the script itself checks if it's the only GClh running. If this warning is displayed, it is true. So you can check some points:<br>
 <ol>
 	<li>
 		Please check if you have more than one script manger (i.e. Tampermonkey and Violentmonkey) installed. The GClh may be installed in more than one script manager. If so, uninstall all but one instance of the GClh and the problem should be resolved.<br>
@@ -152,12 +151,12 @@ See <a href="../docu/tips_installation.md#android_en" title="Link to 'Tips for t
 
 <a id="7-en"></a>
 ## 7. How can I contribute to GClh?
-We are happy about improvement suggestions, bugfixes or new features. This is realised via pull requests. You can read how to create a Pull-Request here: <a href="https://github.com/2Abendsegler/GClh/blob/master/docu/how_to_contribute.md#en">How to contribute</a><br>
+We are happy about improvement suggestions, bugfixes or new features. This is realised via pull requests on the plattform GitHub. You can read how to create a Pull-Request here: <a href="https://github.com/2Abendsegler/GClh/blob/master/docu/how_to_contribute.md#en">How to contribute</a><br>
 <br>
 
 <a id="8-en"></a>
-## 8. How can I get help to GClh?
-If you need help with the GClh, or if you have questions about the GClh, you can create a note in the following forums:<br>
+## 8. Where can I get help with the GClh?
+If you need help with the GClh, or if you have questions about the GClh, you can create a note in the following forums ... :<br>
 - [Geocaching Forum](https://forums.geocaching.com/GC/index.php?/topic/343005-gc-little-helper-ii/)
 - [Geoclub Geocaching Forum](https://geoclub.de/forum/viewforum.php?f=117)
 - [Swiss Geocache Forum](https://www.swissgeocacheforum.ch/forum/topic/12872-gc-little-helper-ii/)
@@ -176,8 +175,7 @@ Or you can create a note in one of the forums or on our discussions page. See <a
 
 <a id="1-de"></a>
 ## 1. Was kann ich tun wenn die Warnung angezeigt wird, dass der GClh mehr als einmal läuft?
-Der *GC little helper II* funktioniert nur korrekt, wenn er nur einmal im Browser ausgeführt wird. Deshalb prüft das Script selbst, ob das der Fall ist.<br>
-Wenn die Meldung angezeigt wird, dass der GClh mehr als einmal läuft, dann ist das auch der Fall. In diesen Fällen sollte folgendes überprüft werden:<br>
+Der *GC little helper II* funktioniert nur korrekt, wenn er nur einmal im Browser ausgeführt wird. Deshalb prüft das Script selbst, ob das der Fall ist. Wenn die Meldung angezeigt wird, dass der GClh mehr als einmal läuft, dann ist das auch der Fall. In diesen Fällen sollte folgendes überprüft werden:<br>
 <ol>
 	<li>
 		Bitte prüfe, ob mehr als ein Scriptmanager installiert ist (zum Beispiel neben Tampermonkey auch noch Violentmonkey). Womöglich ist der GClh in mehr als einem Scriptmanager installiert. Wenn das der Fall ist, dann deinstalliere alle Versionen bis auf eine und das Problem sollte behoben sein.<br>
@@ -311,12 +309,12 @@ Siehe <a href="../docu/tips_installation.md#android_de" title="Link zu 'Tipps f�
 
 <a id="7-de"></a>
 ## 7. Wie kann ich etwas zum GClh beitragen?
-Wir freuen uns über Verbesserungsvorschläge, Bugfixes oder neue Features. Dies geschieht bei uns über Pull Requests. Wie du so etwas anlegst kannst du hier nachlesen: <a href="https://github.com/2Abendsegler/GClh/blob/master/docu/how_to_contribute.md#de">Wie kannst du etwas beitragen?</a><br>
+Wir freuen uns über Verbesserungsvorschläge, Bugfixes oder neue Features. Dies geschieht über Pull Requests auf der Plattform GitHub. Wie du dort einen Pull Request anlegst, kannst du hier nachlesen: <a href="https://github.com/2Abendsegler/GClh/blob/master/docu/how_to_contribute.md#de">Wie kannst du etwas beitragen?</a><br>
 <br>
 
 <a id="8-de"></a>
-## 8. Wie bekomme ich Hilfe zum GClh?
-Wenn du Hilfe zum GClh benötigst, oder wenn du Fragen zum GClh hast, dann kannst du dich in folgenden Foren melden:<br>
+## 8. Wo bekomme ich Hilfe zum GClh?
+Wenn du Hilfe zum GClh benötigst, oder wenn du Fragen zum GClh hast, dann kannst du dich in folgenden Foren ... melden:<br>
 - [Geocaching Forum](https://forums.geocaching.com/GC/index.php?/topic/343005-gc-little-helper-ii/)
 - [Geoclub Geocaching Forum](https://geoclub.de/forum/viewforum.php?f=117)
 - [Swiss Geocache Forum](https://www.swissgeocacheforum.ch/forum/topic/12872-gc-little-helper-ii/)
