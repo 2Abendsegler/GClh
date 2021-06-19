@@ -6,7 +6,7 @@
 <a href="#2-en">2. In the Config I can't add new links to the Linklist because it is out of the view.</a> | <a href="#2-de">2. Ich kann in der Konfiguration keine neuen Links zur Linkliste hinzufügen, da die Linkliste außerhalb des Bildschirms ist.</a>
 <a href="#3-en">3. GClh doesn't start.</a> | <a href="#3-de">3. GClh startet nicht.</a>
 <a href="#4-en">4. Hints for using on Android devices.</a> | <a href="#4-de">4. Hinweise für die Nutzung auf Android Geräten.</a>
-<a href="#5-en">5. How can I start the Config of the GClh?</a> | <a href="#5-de">5. Wie kann ich die Konfiguration des GClh starten?</a>
+<a href="#5-en">5. How can I open the configuration (Config) of the GClh?</a> | <a href="#5-de">5. Wie kann ich die Konfiguration (Config) des GClh öffnen?</a>
 <a href="#6-en">6. How can I install the GClh on Android devices?</a> | <a href="#6-de">6. Wie kann ich den GClh auf Android Geräten installieren?</a>
 <a href="#7-en">7. How can I contribute to GClh?</a> | <a href="#7-de">7. Wie kann ich etwas zu GClh beitragen?</a>
 <a href="#8-en">8. How can I get help to GClh?</a> | <a href="#8-de">8. Wie bekomme ich Hilfe zum GClh?</a>
@@ -126,13 +126,13 @@ If the GClh does not start, these are usually matching problems between the brow
 <br>
 
 <a id="5-en"></a>
-## 5. How can I start the Config of the GClh?
+## 5. How can I open the configuration (Config) of the GClh?
 <ul>
 	<li>
-		If you are on a geocaching page you can start the Config for the GClh with the F4 key on your keyboard, if you have not switched off this feature.
+		If you are on a geocaching page you can open the Config for the GClh with the F4 key on your keyboard, if you have not switched off this feature.
 	</li>
 	<li>
-		Or you can start the Config for the GClh <a href="https://www.geocaching.com/account/dashboard#GClhShowConfig">here</a>.
+		Or you can open the Config for the GClh <a href="https://www.geocaching.com/account/dashboard#GClhShowConfig">here</a>.
 	</li>
 	<li>
 		Or you can use the corresponding link on your <a href="https://www.geocaching.com/account/dashboard">dashboard</a> below your user name.
@@ -285,10 +285,10 @@ Abhilfe:<br>
 <br>
 
 <a id="5-de"></a>
-## 5. Wie kann ich die Konfiguration des GClh starten?
+## 5. Wie kann ich die Konfiguration (Config) des GClh öffnen?
 <ul>
 	<li>
-		Wenn du auf einer Geocaching Seite bist kannst du mit der F4 Taste auf deinem Keyboard die Konfiguration für den GClh starten, sofern du dieses Feature nicht ausgeschaltet hast. 
+		Wenn du auf einer Geocaching Seite bist kannst du mit der F4 Taste auf deinem Keyboard die Konfiguration für den GClh öffnen, sofern du dieses Feature nicht ausgeschaltet hast. 
 	</li>
 	<li>
 		Oder du kannst <a href="https://www.geocaching.com/account/dashboard#GClhShowConfig">hier</a> die Konfiguration für den GClh aufrufen.
