@@ -6811,7 +6811,7 @@ var mainGC = function() {
                             side[i].appendChild(span);
                             var last = side[i].children.length - 1;
                             var user = links[i].href.match(/https?:\/\/www\.geocaching\.com\/(profile|p)\/\?u=(.*)/);
-                            gclh_build_vipvupmail(side[i].children[last], decodeUnicodeURIComponent(user[1]));
+                            gclh_build_vipvupmail(side[i].children[last], decodeUnicodeURIComponent(user[2]));
                         }
                         table_length = $(leaderboard_table).children().length;
                         var LeaderboardFooter = document.getElementById('LeaderboardFooter');
@@ -6842,7 +6842,7 @@ var mainGC = function() {
                             side[i].appendChild(span);
                             var last = side[i].children.length - 1;
                             var user = links[i].href.match(/https?:\/\/www\.geocaching\.com\/(profile|p)\/\?u=(.*)/);
-                            gclh_build_vipvupmail(side[i].children[last], decodeUnicodeURIComponent(user[1]));
+                            gclh_build_vipvupmail(side[i].children[last], decodeUnicodeURIComponent(user[2]));
                         }
                         var leaderboard_table = document.getElementById('LeaderboardTable').getElementsByTagName("table")[0];
                         var table_length = $(leaderboard_table).children().length;
