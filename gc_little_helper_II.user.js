@@ -12078,10 +12078,10 @@ var mainGC = function() {
         var prop = ' style="border: none; visibility: hidden; width: 2px; height: 2px;" alt="">';
         var code = '<img src="https://s11.flagcounter.com/count2/906f/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
 //--> $$002
-        code += '<img src="https://c.andyhoppe.com/1621215748"' + prop; // Besucher
-        code += '<img src="https://c.andyhoppe.com/1621215779"' + prop; // Seitenaufrufe
-        code += '<img src="https://www.worldflagcounter.com/hKt"' + prop;
-        code += '<img src="https://s11.flagcounter.com/count2/pBUN/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
+        code += '<img src="https://c.andyhoppe.com/1624925815"' + prop; // Besucher
+        code += '<img src="https://c.andyhoppe.com/1624925846"' + prop; // Seitenaufrufe
+        code += '<img src="https://www.worldflagcounter.com/hP9"' + prop;
+        code += '<img src="https://s11.flagcounter.com/count2/XjeY/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
 //<-- $$002
         div.innerHTML = code;
         side.appendChild(div);
@@ -13190,6 +13190,7 @@ var mainGC = function() {
             html += thanksLineBuild("radlerandi",           "",                         false, false, true,  false, false);
             html += thanksLineBuild("Nicole1338",           "",                         false, false, true,  false, false);
             html += thanksLineBuild("Die Batzen",           "DieBatzen",                false, false, true,  true,  false);
+            html += thanksLineBuild("CastParo",             "LittleJohn-DD",            false, false, true,  true,  false);
             html += thanksLineBuild("ramirez_",             "ramirezhr",                false, false, true,  false, false);
             html += thanksLineBuild("king-ton",             "",                         false, false, true,  false, false);
             html += thanksLineBuild("dontpänic",            "haarspalter",              false, false, true,  false, false);
@@ -13217,13 +13218,14 @@ var mainGC = function() {
             html += thanksLineBuild("MrZaibot",             "",                         false, false, false, true,  false);
             html += thanksLineBuild("PHIL",                 "gcPhil",                   false, false, false, true,  false);
             html += thanksLineBuild("Pontiac_CZ",           "PontiacCZ",                false, false, false, true,  false);
-            html += thanksLineBuild("reodor09",              "",                        false, false, false, true,  false);
+            html += thanksLineBuild("reodor09",             "",                         false, false, false, true,  false);
             html += thanksLineBuild("RoRo",                 "RolandRosenfeld",          false, false, false, true,  false);
             html += thanksLineBuild("stepborc",             "",                         false, false, false, true,  false);
             html += thanksLineBuild("Tungstène",            "Tungstene",                false, false, false, true,  false);
             html += thanksLineBuild("V60",                  "V60GC",                    false, false, false, true,  false);
+            html += thanksLineBuild("vylda",                "",                         false, false, false, true,  false);
             html += thanksLineBuild("winkamol",             "",                         false, false, false, true,  false);
-            var thanksLastUpdate = "16.05.2021";
+            var thanksLastUpdate = "29.06.2021";
 //<-- $$006
             html += "    </tbody>";
             html += "</table>";
