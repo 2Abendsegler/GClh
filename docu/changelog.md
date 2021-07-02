@@ -151,7 +151,7 @@
 	</li>
 	<li>
 		<strong>New:</strong> [Config] New color in config. [<a href="https://github.com/2Abendsegler/GClh/issues/1797" title="Issue 1797">1797</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
-		We thought that we could all certainly use beautiful and bright colors in our dreary Corona everyday life. That's why there are new colors for the config, we hope you like the pretty colors.🤭😂 <a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_color_schemes" title="Link to your GClh II Config">They only really work when you look at them in the config.</a><br><br>
+		We thought that we could all certainly use beautiful and bright colors in our dreary Corona everyday life. That's why there are new colors for the config, we hope you like the pretty colors.🤭😂 <a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_make_config_main_areas_hideable" title="Link to your GClh II Config">They only really work when you look at them in the config.</a><br><br>
 		<img src="../images/0.11.5/Screen13.jpg" alt="Screen13.jpg"><br><br>
 	</li>
 	<li>
