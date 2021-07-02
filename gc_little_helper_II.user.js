@@ -310,10 +310,10 @@ var variablesInit = function(c) {
     c.global_mod_reset = false;
     c.global_rc_data = "";
     c.global_rc_status = "";
-    c.global_me = "";
-    c.global_avatarUrl = "";
-    c.global_findCount = "";
-    c.global_locale = "";
+    c.global_me = false;
+    c.global_avatarUrl = false;
+    c.global_findCount = false;
+    c.global_locale = false;
     c.global_running = false;
     c.map_url = "https://www.geocaching.com/map/default.aspx";
     c.new_map_url = "https://www.geocaching.com/play/map/";
@@ -1218,40 +1218,45 @@ var mainGCWait = function() {
     }
 
 // Set global user data and check if logged in.
-    tlc('START waitingForUserParameter');
-    function waitingForUserParameter(waitCount) {
-        // All pages with the exception of the new map.
-        if (typeof headerSettings !== 'undefined' && headerSettings.username && headerSettings.avatarUrl && headerSettings.locale) {
-            tlc('Global data headerSettings found');
-            global_me = headerSettings.username;
-            global_avatarUrl = headerSettings.avatarUrl;
-            global_locale = headerSettings.locale;
-            global_findCount = headerSettings.findCount;
-        } else if (typeof chromeSettings !== 'undefined' && chromeSettings.username && chromeSettings.avatarUrl && chromeSettings.locale) {
-            tlc('Global data chromeSettings found');
-            global_me = chromeSettings.username;
-            global_avatarUrl = chromeSettings.avatarUrl;
-            global_locale = chromeSettings.locale;
-            global_findCount = chromeSettings.findCount;
-        // New map.
-        } else if (typeof _gcUser !== 'undefined' && _gcUser.username && _gcUser.image && _gcUser.image.imageUrl && _gcUser.locale) {
-            tlc('Global data _gcUser found');
-            global_me = _gcUser.username;
-            global_avatarUrl = _gcUser.image.imageUrl.replace(/\{0\}/,'avatar');
-            global_locale = _gcUser.locale;
-            global_findCount = _gcUser.findCount;
+    tlc('START waitingForUserData');
+    function waitingForUserData(waitCount) {
+        if (typeof headerSettings !== 'undefined') {
+            tlc('Global user data headerSettings found');
+            if (typeof headerSettings.username !== 'undefined') global_me = headerSettings.username;
+            if (typeof headerSettings.avatarUrl !== 'undefined') global_avatarUrl = headerSettings.avatarUrl;
+            if (typeof headerSettings.locale !== 'undefined') global_locale = headerSettings.locale;
+            if (typeof headerSettings.findCount !== 'undefined') global_findCount = headerSettings.findCount;
         }
-        if (global_me != '') {
-            tlc('global_me: '+global_me+' / global_avatarUrl: '+global_avatarUrl);
-            tlc('global_findCount: '+global_findCount+' / global_locale: '+global_locale);
+        if (typeof chromeSettings !== 'undefined') {
+            tlc('Global user data chromeSettings found');
+            if (typeof chromeSettings.username !== 'undefined') global_me = chromeSettings.username;
+            if (typeof chromeSettings.avatarUrl !== 'undefined') global_avatarUrl = chromeSettings.avatarUrl;
+            if (typeof chromeSettings.locale !== 'undefined') global_locale = chromeSettings.locale;
+            if (typeof chromeSettings.findCount !== 'undefined') global_findCount = chromeSettings.findCount;
+        }
+        if (typeof _gcUser !== 'undefined') {
+            tlc('Global user data _gcUser found');
+            if (typeof _gcUser.username !== 'undefined') global_me = _gcUser.username;
+            if (typeof _gcUser.image !== 'undefined' && typeof _gcUser.image.imageUrl !== 'undefined') global_avatarUrl = _gcUser.image.imageUrl.replace(/\{0\}/,'avatar');
+            if (typeof _gcUser.locale !== 'undefined') global_locale = _gcUser.locale;
+            if (typeof _gcUser.findCount !== 'undefined') global_findCount = _gcUser.findCount;
+        }
+        if (global_me !== false && global_avatarUrl !== false && global_locale !== false && global_findCount !== false) {
+            tlc('All global user data found');
+            tlc('- global_me: '+global_me+' / global_avatarUrl: '+global_avatarUrl);
+            tlc('- global_findCount: '+global_findCount+' / global_locale: '+global_locale);
             mainGC();
         } else {
             waitCount++;
-            if (waitCount <= 200) {setTimeout(function(){waitingForUserParameter(waitCount);}, 50);}
-            else {tlc('STOP No global user data found');}
+            if (waitCount <= 200) {setTimeout(function(){waitingForUserData(waitCount);}, 50);}
+            else {
+                tlc('STOP not all global user data found');
+                tlc('- global_me: '+global_me+' / global_avatarUrl: '+global_avatarUrl);
+                tlc('- global_findCount: '+global_findCount+' / global_locale: '+global_locale);
+            }
         }
     }
-    waitingForUserParameter(0);
+    waitingForUserData(0);
 };
 
 ////////////////////////////
