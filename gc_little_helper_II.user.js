@@ -8402,15 +8402,13 @@ var mainGC = function() {
                 function loadMore() {
                     if ($('#gclh_loadFavPerc')[0].style.display == 'none') {
                         $('#gclh_loadFavPerc_loading').show();
-                        window.setTimeout(function() {
-                            function waitForNewCaches(waitCount) {
-                                let allCaches = $('.view-status').html().trim().match(/.*- (\d{2}).*\d{2}$/)[1];
-                                let loadedCaches = $('.geocache-table tbody tr').length;
-                                if (allCaches == loadedCaches) showFavPerc();
-                                else {waitCount++; if (waitCount <= 100) setTimeout(function(){waitForNewCaches(waitCount);}, 100);}
-                            }
-                            waitForNewCaches(0);
-                        }, 1000);
+                        function waitForNewCaches(waitCount) {
+                            let allCaches = $('.geocache-table tbody tr').length;
+                            let loadedCaches = $('.gclh_favScore').length;
+                            if (allCaches != loadedCaches) showFavPerc();
+                            else {waitCount++; if (waitCount <= 100) setTimeout(function(){waitForNewCaches(waitCount);}, 100);}
+                        }
+                        waitForNewCaches(0);
                     }
                 }
 
