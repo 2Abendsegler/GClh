@@ -98,7 +98,12 @@
 		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_compact_layout_cod" title="Link to your GClh II Config">Settings -> Others</a><br>
 		<img src="../images/0.11.5/Screen11.jpg" alt="Screen11.jpg"><br>
 		If you want to use this feature, you have to activate it.<br><br>
-	</li>	
+	</li>
+	<li>
+		<strong>New:</strong> [Config] New color in config. [<a href="https://github.com/2Abendsegler/GClh/issues/1797" title="Issue 1797">1797</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a><br>
+		We thought that we could all certainly use beautiful and bright colors in our dreary Corona everyday life. That's why there are new colors for the config, we hope you like the pretty colors.🤭😂 <a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_color_schemes" title="Link to your GClh II Config">They only really work when you look at them in the config.</a><br>
+		<img src="../images/0.11.5/Screen13.jpg" alt="Screen13.jpg"><br>
+	</li>
 	<li>
 		<strong>Fix:</strong> [Owner Dashboard] GClh does not work after changing view. [<a href="https://github.com/2Abendsegler/GClh/issues/1761" title="Issue 1761">1761</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a><br>
 	</li>
