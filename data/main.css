@@ -559,10 +559,10 @@ gclh_nav .profile-panel ul::after {
     font-weight: bold;
 }
 .markdown-output blockquote p::before {
-    content: '“';
+    content: 'â';
 }
 .markdown-output blockquote p::after {
-    content: '”';
+    content: 'â';
 }
 .markdown-output a,
 #bd .markdown-output a {
@@ -1056,7 +1056,7 @@ svg.search_map_icon {
     color: #4A4A4A;
     padding-top: 0px !important;
     padding-bottom: 0px !important;
-    height: 25px;
+    height: 25px !important;
     display: unset;
 }
 #findplayer_field {
