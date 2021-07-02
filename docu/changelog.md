@@ -52,6 +52,30 @@
 		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#gclh_config_sync" title="Link to your GClh II  Synchronizer">Settings -> GClh II Synchronizer</a><br>
 		<img src="../images/0.11.5/Screen07.jpg" alt="Screen07.jpg"><br><br>
 	</li>
+	<li>
+		<strong>New:</strong> [Listing] Open map links from overview map with left mouse click optional in new browser tab. [<a href="https://github.com/2Abendsegler/GClh/issues/1748" title="Issue 1748">1748</a> / <a href="https://www.geocaching.com/profile/?u=CastParo" title="Thanks to CastParo">CastParo</a><br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_map_overview_browse_map_icon_new_tab" title="Link to your GClh Config">Settings -> Listing - Overview map</a><br>
+		<img src="../images/0.11.5/Screen01.jpg" alt="Screen01.jpg"><br>
+		If you want to use this feature, you have to activate it.<br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_map_overview_search_map_icon_new_tab" title="Link to your GClh Config">Settings -> Listing - Overview map</a><br>
+		<img src="../images/0.11.5/Screen02.jpg" alt="Screen02.jpg"><br>
+		If you want to use this feature, you have to activate it.<br><br>
+	</li>
+	<li>
+		<strong>New:</strong> [Global] Build error message if running under Greasemonkey. [<a href="https://github.com/2Abendsegler/GClh/issues/1747" title="Issue 1747">1747</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a><br>
+	</li>
+	<li>
+		<strong>New:</strong> [Global] Set up checks log to console. [<a href="https://github.com/2Abendsegler/GClh/issues/1747" title="Issue 1747">1747</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a><br>
+	</li>
+	<li>
+		<strong>New:</strong> [Config] Delete older and not longer used config parameter. [<a href="https://github.com/2Abendsegler/GClh/issues/1747" title="Issue 1747">1747</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a><br>
+	</li>
+	<li>
+		<strong>New:</strong> [Global] Delete script manager related functions. [<a href="https://github.com/2Abendsegler/GClh/issues/1747" title="Issue 1747">1747</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a><br>
+	</li>
+	<li>
+		<strong>New:</strong> [Global] Test script manager Violentmonkey and revise some related documentation. [<a href="https://github.com/2Abendsegler/GClh/issues/1747" title="Issue 1747">1747</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a><br>
+	</li>
 </ul>
 (03.07.2021)<br>
 released by <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a><br>
