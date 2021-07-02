@@ -300,9 +300,9 @@
   "settings_lists_hide_desc": true,
   "settings_lists_upload_file": true,
   "settings_lists_open_tabs": true,
-  "settings_searchmap_show_btn_save_as_pq": true,
   "settings_profile_old_links": false,
   "settings_listing_old_links": false,
+  "settings_searchmap_show_btn_save_as_pq": true,
   "settings_map_overview_browse_map_icon": true,
   "settings_map_overview_browse_map_icon_new_tab": false,
   "settings_map_overview_search_map_icon": true,
@@ -323,5 +323,8 @@
   "settings_color_nv": "F0DFC6",
   "settings_color_navi_search": false,
   "settings_map_show_btn_hide_header": true,
-  "settings_save_as_pq_set_all": true
+  "settings_save_as_pq_set_defaults": false,
+  "settings_save_as_pq_set_all": true,
+  "settings_compact_layout_cod": false,
+  "settings_show_button_fav_proz_cod": true
 }
