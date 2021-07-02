@@ -95,7 +95,7 @@
 		If you want to use this feature, you have to activate it.<br><br>
 	</li>
 	<li>
-		<strong>New:</strong> [Cache Listing] Switch Geonames service to more secure https. [<a href="https://github.com/2Abendsegler/GClh/issues/1770" title="Issue 1770">1770</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		<strong>New:</strong> [Cache Listing] Switch Geonames service to more secure https. [<a href="https://github.com/2Abendsegler/GClh/issues/1770" title="Issue 1770">1770</a> / <a href="https://www.geocaching.com/profile/?u=Die Batzen" title="Thanks to Die Batzen">Die Batzen</a>]<br>
 	</li>
 	<li>
 		<strong>Fix:</strong> [Cache Listing] Upvote buttons and log edit button are not displayed for basic members. [<a href="https://github.com/2Abendsegler/GClh/issues/1792" title="Issue 1792">1792</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br><br>
