@@ -36,28 +36,28 @@
 		<strong>New:</strong> [Config] Extend script manager menu in browser with GClh II Configurator. [<a href="https://github.com/2Abendsegler/GClh/issues/1752" title="Issue 1752">1752</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a><br>
 		The setting of the menu entry is not new. Only the config parameter to enable or disable it is new.<br>
 		<img src="../images/0.11.5/Screen04.jpg" alt="Screen04.jpg"><br>
-		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_call_config_via_sriptmanager" title="Link to your GClh II Configurator">Settings -> GClh II Configurator</a><br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_call_config_via_sriptmanager" title="Link to your GClh II Config">Settings -> GClh II Config</a><br>
 		<img src="../images/0.11.5/Screen03.jpg" alt="Screen03.jpg"><br><br>
 	</li>
 	<li>
 		<strong>New:</strong> [Sync] Extend script manager menu in browser with GClh II Synchronizer. [<a href="https://github.com/2Abendsegler/GClh/issues/1753" title="Issue 1753">1753</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a><br>
 		<img src="../images/0.11.5/Screen05.jpg" alt="Screen05.jpg"><br>
-		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_call_sync_via_sriptmanager" title="Link to your GClh II Synchronizer">Settings -> GClh II Synchronizer</a><br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_call_sync_via_sriptmanager" title="Link to your GClh II Sync">Settings -> GClh II Sync</a><br>
 		<img src="../images/0.11.5/Screen03.jpg" alt="Screen03.jpg"><br><br>
 	</li>
 	<li>
 		<strong>New:</strong> [Config / Sync] Split of the topic "Config / Sync" in two topics. [<a href="https://github.com/2Abendsegler/GClh/issues/1754" title="Issue 1754">1754</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a><br>
-		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#gclh_config_config" title="Link to your GClh II Configurator">Settings -> GClh II Configurator</a><br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#gclh_config_config" title="Link to your GClh II Config">Settings -> GClh II Config</a><br>
 		<img src="../images/0.11.5/Screen06.jpg" alt="Screen06.jpg"><br>
-		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#gclh_config_sync" title="Link to your GClh II  Synchronizer">Settings -> GClh II Synchronizer</a><br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#gclh_config_sync" title="Link to your GClh II Sync">Settings -> GClh II Sync</a><br>
 		<img src="../images/0.11.5/Screen07.jpg" alt="Screen07.jpg"><br><br>
 	</li>
 	<li>
 		<strong>New:</strong> [Listing] Open map links from overview map with left mouse click optional in new browser tab. [<a href="https://github.com/2Abendsegler/GClh/issues/1748" title="Issue 1748">1748</a> / <a href="https://www.geocaching.com/profile/?u=CastParo" title="Thanks to CastParo">CastParo</a><br>
-		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_map_overview_browse_map_icon_new_tab" title="Link to your GClh Config">Settings -> Listing - Overview map</a><br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_map_overview_browse_map_icon_new_tab" title="Link to your GClh II Config">Settings -> Listing - Overview map</a><br>
 		<img src="../images/0.11.5/Screen01.jpg" alt="Screen01.jpg"><br>
 		If you want to use this feature, you have to activate it.<br>
-		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_map_overview_search_map_icon_new_tab" title="Link to your GClh Config">Settings -> Listing - Overview map</a><br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_map_overview_search_map_icon_new_tab" title="Link to your GClh II Config">Settings -> Listing - Overview map</a><br>
 		<img src="../images/0.11.5/Screen02.jpg" alt="Screen02.jpg"><br>
 		If you want to use this feature, you have to activate it.<br><br>
 	</li>
@@ -76,6 +76,34 @@
 	<li>
 		<strong>New:</strong> [Global] Test script manager Violentmonkey and revise some related documentation. [<a href="https://github.com/2Abendsegler/GClh/issues/1747" title="Issue 1747">1747</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a><br>
 	</li>
+	<li>
+		<strong>New:</strong> [New Map] Hide header. [<a href="https://github.com/2Abendsegler/GClh/issues/1117" title="Issue 1117">1117</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a><br>
+		<img src="../images/0.11.5/Screen08.gif" alt="Screen08.gif"><br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_map_show_btn_hide_header" title="Link to your GClh II Config">Settings -> Map</a><br>
+		<img src="../images/0.11.5/Screen09.jpg" alt="Screen09.jpg"><br><br>
+	</li>
+	<li>
+		<strong>New:</strong> [Search Map / Browse Map / Pocket Query] Before saving as PQ from map, determine whether the GClh default settings for new PQs should be set or not. [<a href="https://github.com/2Abendsegler/GClh/issues/1574" title="Issue 1574">1574</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a><br>
+		<img src="../images/0.11.5/Screen10.jpg" alt="Screen10.jpg"><br><br>
+	</li>
+	<li>
+		<strong>New:</strong> [Global] Handle the key combination ctrl + s like the key F2. [<a href="https://github.com/2Abendsegler/GClh/issues/1779" title="Issue 1779">1779</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a><br>
+	</li>
+	<li>
+		<strong>New:</strong> [Global] Disable user profile menu by clicking anywhere else. [<a href="https://github.com/2Abendsegler/GClh/issues/1779" title="Issue 1779">1779</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a><br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Owner Dashboard] GClh does not work after changing view. [<a href="https://github.com/2Abendsegler/GClh/issues/1761" title="Issue 1761">1761</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a><br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Global / Project-GC] Project-GC script does not work because of changed page header. [<a href="https://github.com/2Abendsegler/GClh/issues/1783" title="Issue 1783">1783</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a><br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Owner Dashboard] No VIP, VUP, Mail icons if "Load More" button below the logs is clicked. [<a href="https://github.com/2Abendsegler/GClh/issues/1786" title="Issue 1786">1786</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a><br>
+	</li>
+
+	
+	
 </ul>
 (03.07.2021)<br>
 released by <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a><br>
