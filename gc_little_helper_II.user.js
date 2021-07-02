@@ -1268,7 +1268,7 @@ var mainGC = function() {
     // Part of core css of GS, Config and others.
     var css = main_css;
     // Css for config, sync ... coloring.
-    appendCssStyle(create_coloring_css());
+    css += create_coloring_css();
     // Special css for searchmap.
     if (is_page('searchmap')) {
         css += 'gclh_nav .wrapper {z-index: 1006;} gclh_nav li input {height: unset !important;}';
@@ -13455,7 +13455,7 @@ var mainGC = function() {
             html += newParameterVersionSetzen(0.9) + newParameterOff;
             html += newParameterOn2;
             html += checkboxy('settings_compact_layout_cod', 'Show compact layout on your cache owner dashboard') + "<br>";
-            html += checkboxy('settings_show_button_fav_proz_cod', 'Show button to show the favorite percentage of your hidden caches (published and archived, no events and unpublished)') + "<br>";
+            html += checkboxy('settings_show_button_fav_proz_cod', 'Show button to show the favorite percentage of your hidden caches') + show_help("Only for published and archived caches, not for events and unpublished caches.") + "<br>";
             html += newParameterVersionSetzen("0.11") + newParameterOff;
             html += "</div>";
 
