@@ -1,3 +1,4 @@
+<a href="#v0115" title="GClh II version 0.11.5 (03.07.2021)">v0.11.5</a> &nbsp;
 <a href="#v0114" title="GClh II version 0.11.4 (29.05.2021)">v0.11.4</a> &nbsp;
 <a href="#v0113" title="GClh II version 0.11.3 (23.05.2021)">v0.11.3</a> &nbsp;
 <a href="#v0112" title="GClh II version 0.11.2 (17.05.2021)">v0.11.2</a> &nbsp;
@@ -24,6 +25,37 @@
 <a href="#v0101" title="GClh II version 0.10.1 (20.12.2019)">v0.10.1</a> &nbsp;
 <a href="#v010" title="GClh II version 0.10 (13.12.2019)">v0.10</a> &nbsp;
 <a href="changelog_before.md" title="Go to earlier changelog">Earlier changelog</a> &nbsp;
+
+---
+## v0.11.5:
+<ul>
+	<li>
+		<strong>New:</strong> [View Log] Improve alignment of icons on further log screens. [<a href="https://github.com/2Abendsegler/GClh/issues/1749" title="Issue 1749">1749</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a><br>
+	</li>
+	<li>
+		<strong>New:</strong> [Config] Extend script manager menu in browser with GClh II Configurator. [<a href="https://github.com/2Abendsegler/GClh/issues/1752" title="Issue 1752">1752</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a><br>
+		The setting of the menu entry is not new. Only the config parameter to enable or disable it is new.<br>
+		<img src="../images/0.11.5/Screen04.jpg" alt="Screen04.jpg"><br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_call_config_via_sriptmanager" title="Link to your GClh II Configurator">Settings -> GClh II Configurator</a><br>
+		<img src="../images/0.11.5/Screen03.jpg" alt="Screen03.jpg"><br><br>
+	</li>
+	<li>
+		<strong>New:</strong> [Sync] Extend script manager menu in browser with GClh II Synchronizer. [<a href="https://github.com/2Abendsegler/GClh/issues/1753" title="Issue 1753">1753</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a><br>
+		<img src="../images/0.11.5/Screen05.jpg" alt="Screen05.jpg"><br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_call_sync_via_sriptmanager" title="Link to your GClh II Synchronizer">Settings -> GClh II Synchronizer</a><br>
+		<img src="../images/0.11.5/Screen03.jpg" alt="Screen03.jpg"><br><br>
+	</li>
+	<li>
+		<strong>New:</strong> [Config / Sync] Split of the topic "Config / Sync" in two topics. [<a href="https://github.com/2Abendsegler/GClh/issues/1754" title="Issue 1754">1754</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a><br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#gclh_config_config" title="Link to your GClh II Configurator">Settings -> GClh II Configurator</a><br>
+		<img src="../images/0.11.5/Screen06.jpg" alt="Screen06.jpg"><br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#gclh_config_sync" title="Link to your GClh II  Synchronizer">Settings -> GClh II Synchronizer</a><br>
+		<img src="../images/0.11.5/Screen07.jpg" alt="Screen07.jpg"><br><br>
+	</li>
+</ul>
+(03.07.2021)<br>
+released by <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a><br>
+<br>
 
 ---
 ## v0.11.4:
