@@ -660,7 +660,7 @@ var variablesInit = function(c) {
     c.settings_save_as_pq_set_defaults = getValue("settings_save_as_pq_set_defaults", false);
     c.settings_save_as_pq_set_all = getValue("settings_save_as_pq_set_all", true);
     c.settings_compact_layout_cod = getValue("settings_compact_layout_cod", false);
-    c.settings_fav_proz_cod = getValue("settings_fav_proz_cod", true);
+    c.settings_show_button_fav_proz_cod = getValue("settings_show_button_fav_proz_cod", true);
 
     tlc('START userToken');
     try {
@@ -8360,11 +8360,30 @@ var mainGC = function() {
 
             // Show favorites percentage
             function favPercent(waitCount) {
-                if (settings_fav_proz_cod) {
-                    if ($('.geocache-table tbody tr')[0]) {
-                        $('.geocache-table tbody tr').each((i, elem) => {
-                            let id = $(elem).find('.geocache-details span').html().gcCodeToID();
-                            let favs = $(elem).find('.favorites-display').html();
+                // Function to load the fav score.
+                function showFavPerc() {
+                    // Check if all scores are loaded.
+                    function checkForLoaded() {
+                        if (loaded == $('.geocache-table tbody tr').length) {
+                            $('#gclh_loadFavPerc_loading').hide();
+                        }
+                    }
+                    // Hide heart and show loading-spinner.
+                    $('#gclh_loadFavPerc').hide();
+                    $('#gclh_loadFavPerc_loading').show();
+                    let loaded = 0;
+                    // Load the fav score
+                    $('.geocache-table tbody tr').each((i, elem) => {
+                        let id = $(elem).find('.geocache-details span').html().gcCodeToID();
+                        let favs = $(elem).find('.favorites-display').html();
+                        if (favs == 0) {
+                            $(elem).find('.favorites-display').html(favs + ' <span class="gclh_favScore">(0%)</span>');
+                            loaded++;
+                            checkForLoaded();
+                        } else if ($(elem).find('.favorites-display .gclh_favScore')[0]) {
+                            loaded++;
+                            checkForLoaded();
+                        } else {
                             $.ajax({
                                 url: '/seek/nearest.aspx/FavoriteScore',
                                 type: 'POST',
@@ -8372,19 +8391,48 @@ var mainGC = function() {
                                 data: JSON.stringify({dto: {data: id, ut: 2, p: favs}}),
                                 dataType: 'json',
                                 success: function (result) {
-                                    if (!$(elem).find('.favorites-display .gclh_favScore')[0]) {
-                                        $(elem).find('.favorites-display').html(favs + ' <span class="gclh_favScore">(' + result.d.score + '%)</span>');
-                                    }
+                                    $(elem).find('.favorites-display').html(favs + ' <span class="gclh_favScore">(' + result.d.score + '%)</span>');
+                                    loaded++;
+                                    checkForLoaded();
                                 }
                             });
-                        });
-                    } else {waitCount++; if (waitCount <= 1000) setTimeout(function(){favPercent(waitCount);}, 100);}
+                        }
+                    });
                 }
+                function loadMore() {
+                    if ($('#gclh_loadFavPerc')[0].style.display == 'none') {
+                        $('#gclh_loadFavPerc_loading').show();
+                        window.setTimeout(function() {
+                            function waitForNewCaches(waitCount) {
+                                let allCaches = $('.view-status').html().trim().match(/.*- (\d{2}).*\d{2}$/)[1];
+                                let loadedCaches = $('.geocache-table tbody tr').length;
+                                if (allCaches == loadedCaches) showFavPerc();
+                                else {waitCount++; if (waitCount <= 100) setTimeout(function(){waitForNewCaches(waitCount);}, 100);}
+                            }
+                            waitForNewCaches(0);
+                        }, 1000);
+                    }
+                }
+
+                if (!settings_show_button_fav_proz_cod) return;
+                if ($('.geocache-table tbody tr')[0]) {
+                    if ($('#gclh_loadFavPerc')[0]) return;
+                    let html = '<a id="gclh_loadFavPerc" data-event-category="data" href="javascript:void(0)" title="Show favorites percentage" style="margin-right: .5em !important;"><svg><use xlink:href="/play/app/ui-icons/sprites/global.svg#icon-heart-svg-fill"></use></svg></a>';
+                    html += '<a id="gclh_loadFavPerc_loading" data-event-category="data" href="javascript:void(0)" title="Show favorites percentage" style="margin-right: .5em !important; display:none;"><svg><use xlink:href="#loading-spinner"></use></svg></a>';
+                    if ($('.map-controls')[0]) $('.map-controls').prepend(html);
+                    else $('.section-controls').append('<div class="control-group">'+html+'</div>');
+                    $('#gclh_loadFavPerc')[0].addEventListener('click', showFavPerc);
+                    // Add Event Listener for Changes (Oberserver does not work).
+                    $('.section-controls #gcsel-4JnpBxk').bind('change', loadMore);
+                    $('.gc-button').bind('click', loadMore);
+                } else {waitCount++; if (waitCount <= 100) setTimeout(function(){favPercent(waitCount);}, 100);}
             }
 
             function processAllCODashboard() {
+                // Published and archivied caches excluding events.
                 if (document.location.pathname.match(/play\/owner\/(archived|published)\/?$/)) {
                     favPercent(0);
+                // Main Page
                 } else if (document.location.pathname.match(/play\/owner\/?$/)) {
                     setLinksToCacheTypes(0);
                     setLinkToOwnProfil(0);
@@ -13416,7 +13464,7 @@ var mainGC = function() {
             html += newParameterVersionSetzen(0.9) + newParameterOff;
             html += newParameterOn2;
             html += checkboxy('settings_compact_layout_cod', 'Show compact layout on your cache owner dashboard') + "<br>";
-            html += checkboxy('settings_fav_proz_cod', 'Show favorites percentage') + "<br>";
+            html += checkboxy('settings_show_button_fav_proz_cod', 'Show button to show the favorite percentage of your hidden caches (published and archived, no events and unpublished)') + "<br>";
             html += newParameterVersionSetzen("0.11") + newParameterOff;
             html += "</div>";
 
@@ -15150,7 +15198,7 @@ var mainGC = function() {
                 'settings_color_navi_search',
                 'settings_map_show_btn_hide_header',
                 'settings_compact_layout_cod',
-                'settings_fav_proz_cod',
+                'settings_show_button_fav_proz_cod',
             );
             for (var i = 0; i < checkboxes.length; i++) {
                 if (document.getElementById(checkboxes[i])) setValue(checkboxes[i], document.getElementById(checkboxes[i]).checked);
