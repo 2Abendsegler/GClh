@@ -93,6 +93,13 @@
 		<strong>New:</strong> [Global] Disable user profile menu by clicking anywhere else. [<a href="https://github.com/2Abendsegler/GClh/issues/1779" title="Issue 1779">1779</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a><br>
 	</li>
 	<li>
+		<strong>New:</strong> [Owner Dashboard] Compact Layout. [<a href="https://github.com/2Abendsegler/GClh/issues/1370" title="Issue 1370">1370</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a><br>
+		<img src="../images/0.11.5/Screen12.jpg" alt="Screen12.jpg"><br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_compact_layout_cod" title="Link to your GClh II Config">Settings -> Others</a><br>
+		<img src="../images/0.11.5/Screen11.jpg" alt="Screen11.jpg"><br>
+		If you want to use this feature, you have to activate it.<br><br>
+	</li>	
+	<li>
 		<strong>Fix:</strong> [Owner Dashboard] GClh does not work after changing view. [<a href="https://github.com/2Abendsegler/GClh/issues/1761" title="Issue 1761">1761</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a><br>
 	</li>
 	<li>
@@ -101,9 +108,12 @@
 	<li>
 		<strong>Fix:</strong> [Owner Dashboard] No VIP, VUP, Mail icons if "Load More" button below the logs is clicked. [<a href="https://github.com/2Abendsegler/GClh/issues/1786" title="Issue 1786">1786</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a><br>
 	</li>
-
-	
-	
+	<li>
+		<strong>Fix:</strong> [Search Map] Problems between GClh and Send to c:geo. [<a href="https://github.com/2Abendsegler/GClh/issues/1796" title="Issue 1796">1796</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a><br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Cache Listing] Upvote buttons and log edit button are not displayed for basic members. [<a href="https://github.com/2Abendsegler/GClh/issues/1792" title="Issue 1792">1792</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a><br>
+	</li>
 </ul>
 (03.07.2021)<br>
 released by <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a><br>
