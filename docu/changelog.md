@@ -69,6 +69,13 @@
 		If you want to use this feature, you have to activate it.<br><br>
 	</li>
 	<li>
+		<strong>New:</strong> [Owner Dashboard] Add the favorite percentage in the cache list. [<a href="https://github.com/2Abendsegler/GClh/issues/1378" title="Issue 1378">1378</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a><br>
+		<img src="../images/0.11.5/Screen16.jpg" alt="Screen16.jpg"><br>
+		<img src="../images/0.11.5/Screen15.jpg" alt="Screen15.jpg"><br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_show_button_fav_proz_cod" title="Link to your GClh II Config">Settings -> Others</a><br>
+		<img src="../images/0.11.5/Screen17.jpg" alt="Screen17.jpg"><br>
+	</li>
+	<li>
 		<strong>Fix:</strong> [Owner Dashboard] GClh does not work after changing view. [<a href="https://github.com/2Abendsegler/GClh/issues/1761" title="Issue 1761">1761</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a><br>
 	</li>
 	<li>
