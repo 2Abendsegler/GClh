@@ -2976,10 +2976,10 @@ var mainGC = function() {
         try {
             leafletInit();
             var css = '';
-            css += '.mapIcons {position: relative; z-index: 1000; margin-top: 10px; margin-right: 10px; float: right; height: 22px; border-radius: 4px; box-shadow: 0 1px 5px rgba(0, 0, 0, 0.65); background-color: #fff;}';
+            css += '.mapIcons {position: relative; z-index: 1000; margin-top: 10px; margin-right: 10px; float: right; height: 23px; border-radius: 4px; box-shadow: 0 1px 5px rgba(0, 0, 0, 0.65); background-color: #fff;}';
             css += '.mapIcons:hover {background-color: #f4f4f4; box-shadow: 0 1px 5px rgba(0,0,0,.65);}';
             css += '.mapIcons svg {width: 18px; height: 18px; color: #4a4a4a; opacity: 0.85; padding: 2px;}';
-            css += '.search_map_icon {margin-top: 2px; margin-bottom: -2px; margin-left: 2px;}';
+            css += '.search_map_icon {margin-left: 2px !important;}';
             appendCssStyle(css);
             var html = "";
             html += "<div class='CacheDetailNavigationWidget' style='margin-top: 1.5em;'>";
@@ -4819,10 +4819,10 @@ var mainGC = function() {
             var idDa = "#ctl00_ContentBody_cbDays_";
             if ($("p.Success").length <= 0 &&
                  (document.location.href.match(/aspx$/) ||  // New PQ.
-                 (document.location.href.match(/aspx\?ll=/) && settings_save_as_pq_set_defaults) ||  // Save as PQ from browse map.
-                 (document.location.href.match(/aspx\?.*&gclh_saveAsPQ=true&gclh_setDefaults=true/)) )) {  // Save as PQ from search map.
+                 (document.location.href.match(/aspx\?ll=/) && settings_save_as_pq_set_defaults) ||  // Save as PQ from Browse Map.
+                 (document.location.href.match(/aspx\?.*&gclh_saveAsPQ=true&gclh_setDefaults=true/)) )) {  // Save as PQ from Search Map.
                 if (settings_pq_set_cachestotal) $(idCB+"tbResults").val(settings_pq_cachestotal);
-                if (!document.location.href.match(/aspx\?ll=/)) { // Not for Save as PQ from browse map.
+                if (!document.location.href.match(/aspx\?ll=/)) { // Not for Save as PQ from Browse Map.
                     if (settings_pq_option_ihaventfound) {
                         $(idOp+"0").prop('checked', true);
                         $(idOp+"1").prop('checked', false);
@@ -4892,7 +4892,7 @@ var mainGC = function() {
         else $("#warning").hide();
     }
 
-// Save as PQ from search map.
+// Save as PQ from Search Map.
     if (document.location.href.match(/\.com\/pocket\/gcquery\.aspx\?.*&gclh_saveAsPQ=true/)) {
         try {
             // Calculate the radius.
@@ -5064,7 +5064,7 @@ var mainGC = function() {
                     });
                 }
             }, 1000);
-        } catch(e) {gclh_error("Save as PQ from search map",e);}
+        } catch(e) {gclh_error("Save as PQ from Search Map",e);}
     }
 
 // Map on create pocket query page.
@@ -8710,7 +8710,7 @@ var mainGC = function() {
         } catch(e) {gclh_error("Show gallery images in 2 instead of 4 cols",e);}
     }
 
-// Improve search map, improve new map.
+// Improve Search Map, improve new map.
     if (is_page('searchmap')) {
         try {
             // After go back from cache details to cache list, scroll to last position.
@@ -8750,16 +8750,13 @@ var mainGC = function() {
             }
 
             // Virtually hit "Search this area" after dragging the map, if not BML and not link from matrix.
-//xxxx1
-//- Wenn man nur zoomed wird das vom observer nicht erkannt.
             var latHighG = false;
             var latLowG = false;
             var lngHighG = false;
             var lngLowG = false;
             var firstRun = true;
-            var timeG = new Date().getTime() - 1000;
             function searchThisArea(waitCount) {
-                /// For the first run.
+                // For the first run.
                 if ($('.leaflet-gl-layer.mapboxgl-map')[0]) {
                     if (!$('.loading-container.show')[0] && !$('li.active svg.my-lists-toggle-icon')[0] && ($('#clear-map-control')[0] || firstRun) && !document.location.href.match(/=GClhMatrix/i) && settings_searchmap_autoupdate_after_dragging) {
                         // Delay, so that the last values of a movement are used.
@@ -8781,14 +8778,6 @@ var mainGC = function() {
                             var lngHigh = (lng + lngHalfDezDistance).toFixed(4);
                             var lngLow = (lng - lngHalfDezDistance).toFixed(4);
                             if (latHighG == false || latHigh > latHighG || latLow < latLowG || lngHigh > lngHighG || lngLow < lngLowG) {
-//console.log('pxWidth: '+pxWidth+' | pxHeight: '+pxHeight+' | lat: '+lat+' | lng: '+lng+' | zoom: '+zoom);
-//console.log('metersPerPx: '+metersPerPx+' | latMeterDistance: '+latMeterDistance+' | lngMeterDistance: '+lngMeterDistance);
-//console.log('latHalfDezDistance: '+latHalfDezDistance+' | lngHalfDezDistance: '+lngHalfDezDistance);
-//console.log('latHigh: '+latHigh+' | latLow: '+latLow+' | lngHigh: '+lngHigh+' | lngLow: '+lngLow);
-//console.log('latHighG: '+latHighG+' | latLowG: '+latLowG+' | lngHighG: '+lngHighG+' | lngLowG: '+lngLowG);
-                                var time = new Date().getTime();
-                                if ((time - timeG) < 1000) return;
-                                timeG = time;
                                 latHighG = latHigh;
                                 latLowG = latLow;
                                 lngHighG = lngHigh;
@@ -8798,7 +8787,7 @@ var mainGC = function() {
                                 }
                                 firstRun = false;
                             }
-                        }, 500);
+                        }, 400);
                     }
                 } else {waitCount++; if (waitCount <= 200) setTimeout(function(){searchThisArea(waitCount);}, 50);}
             }
@@ -9422,7 +9411,6 @@ var mainGC = function() {
             function processAllSearchMap() {
                 setFilter();
                 scrollInCacheList(); // Has to be run before searchThisArea.
-//xxxx1
                 searchThisArea(0);
                 improveAddtolistPopup();
                 setLinkToOwner(); // Has to be run before compactLayout.
@@ -9687,7 +9675,7 @@ var mainGC = function() {
             // Hide header.
             css += '.hideHeaderLink, .set_defaults {font-size: 12px; display: flex; gap: 0.5em;}';
             appendCssStyle(css);
-        } catch(e) {gclh_error("Improve search map",e);}
+        } catch(e) {gclh_error("Improve Search Map",e);}
     }
 
 // Display Google-Maps warning, wenn Leaflet-Map nicht aktiv ist.
@@ -9928,7 +9916,7 @@ var mainGC = function() {
         } catch(e) {gclh_error("Change map parameter and add homezone to map",e);}
     }
 
-// Add links to Google, OSM, Flopp's and GeoHack Map on browse map.
+// Add links to Google, OSM, Flopp's and GeoHack Map on Browse Map.
     if (is_page("map") && (settings_add_link_google_maps_on_gc_map || settings_add_link_osm_on_gc_map || settings_add_link_flopps_on_gc_map || settings_add_link_geohack_on_gc_map)) {
         try {
             function attachGeoServiceControl(waitCount) {
@@ -9971,7 +9959,7 @@ var mainGC = function() {
         appendCssStyle(css, null, 'gclh_geoservices_css');
     }
     function getMapCooords() {
-        // Mögliche url Zusammensetzungen browse map, Beispiele: https://www.geocaching.com/map ...
+        // Mögliche url Zusammensetzungen Browse Map, Beispiele: https://www.geocaching.com/map ...
         // 1. /default.aspx?lat=50.889233&lng=13.386967#?ll=50.89091,13.39551&z=14
         //    /default.aspx?lat=50.889233&lng=13.386967#clist?ll=50.89172,13.36779&z=14
         //    /default.aspx?lat=50.889233&lng=13.386967#pq?ll=50.89204,13.36667&z=14
@@ -10040,7 +10028,7 @@ var mainGC = function() {
         }
     }
 
-// Relocate button search geocaches on browse map.
+// Relocate button search geocaches on Browse Map.
     if (is_page("map") && settings_relocate_other_map_buttons) {
         try {
             function relocatingSearchMapButton(waitCount) {
@@ -10060,7 +10048,7 @@ var mainGC = function() {
                 } else {waitCount++; if (waitCount <= 100) setTimeout(function(){relocatingSearchMapButton(waitCount);}, 100);}
             }
             relocatingSearchMapButton(0);
-        } catch(e) {gclh_error("Relocate button search geocaches on browse map",e);}
+        } catch(e) {gclh_error("Relocate button search geocaches on Browse Map",e);}
     }
 
 // Hide found/hidden Caches on Map. Add Buttons for hiding/showing all Caches.
@@ -10155,7 +10143,7 @@ var mainGC = function() {
         } catch(e) {gclh_error("Hide found/hidden Caches / Cache Types on Map",e);}
     }
 
-// Save as PQ and set defaults for browse map.
+// Save as PQ and set defaults for Browse Map.
     if (document.location.href.match(/\.com\/map\//)) {
         setValue('settings_save_as_pq_set_defaults', false);
         try {
@@ -10170,10 +10158,10 @@ var mainGC = function() {
             var css = '.pq-dl {margin-top: 1em; margin-bottom: 0 !important; display: flex; cursor: default;}';
             css += '.set_defaults {margin-right: 6px;}';
             appendCssStyle(css);
-        } catch(e) {gclh_error("Save as PQ and set defaults for browse map",e);}
+        } catch(e) {gclh_error("Save as PQ and set defaults for Browse Map",e);}
     }
 
-// Display more informations on browse map popup for a cache.
+// Display more informations on Browse Map popup for a cache.
     if (document.location.href.match(/\.com\/map\//) && settings_show_enhanced_map_popup && getValue("gclhLeafletMapActive")) {
         try {
             var template = $("#cacheDetailsTemplate").html().trim();
@@ -12066,10 +12054,10 @@ var mainGC = function() {
         var prop = ' style="border: none; visibility: hidden; width: 2px; height: 2px;" alt="">';
         var code = '<img src="https://s11.flagcounter.com/count2/906f/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
 //--> $$002
-        code += '<img src="https://c.andyhoppe.com/1621215748"' + prop; // Besucher
-        code += '<img src="https://c.andyhoppe.com/1621215779"' + prop; // Seitenaufrufe
-        code += '<img src="https://www.worldflagcounter.com/hKt"' + prop;
-        code += '<img src="https://s11.flagcounter.com/count2/pBUN/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
+        code += '<img src="https://c.andyhoppe.com/1624925815"' + prop; // Besucher
+        code += '<img src="https://c.andyhoppe.com/1624925846"' + prop; // Seitenaufrufe
+        code += '<img src="https://www.worldflagcounter.com/hP9"' + prop;
+        code += '<img src="https://s11.flagcounter.com/count2/XjeY/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
 //<-- $$002
         div.innerHTML = code;
         side.appendChild(div);
@@ -13169,15 +13157,16 @@ var mainGC = function() {
             // Bezeichnung:         GC Name                 Abw. GitHub Name            ProjM  DevL   Dev    BugR   Separator
             html += thanksLineBuild("2Abendsegler",         "",                         true,  true,  false, true,  false);
             html += thanksLineBuild("Ruko2010",             "",                         true,  true,  false, true,  true );
+            html += thanksLineBuild("capoaira",             "",                         false, true,  false, true,  false);
             // Rangliste Development von hier https://github.com/2Abendsegler/GClh/graphs/contributors.
             html += thanksLineBuild("CachingFoX",           "",                         false, false, true,  true,  false);
-            html += thanksLineBuild("capoaira",             "",                         false, false, true,  true,  false);
             html += thanksLineBuild("Herr Ma",              "",                         false, false, true,  true,  false);
             html += thanksLineBuild("Dratenik",             "",                         false, false, true,  false, false);
             html += thanksLineBuild("DrakMrak",             "",                         false, false, true,  false, false);
             html += thanksLineBuild("radlerandi",           "",                         false, false, true,  false, false);
             html += thanksLineBuild("Nicole1338",           "",                         false, false, true,  false, false);
             html += thanksLineBuild("Die Batzen",           "DieBatzen",                false, false, true,  true,  false);
+            html += thanksLineBuild("CastParo",             "LittleJohn-DD",            false, false, true,  true,  false);
             html += thanksLineBuild("ramirez_",             "ramirezhr",                false, false, true,  false, false);
             html += thanksLineBuild("king-ton",             "",                         false, false, true,  false, false);
             html += thanksLineBuild("dontpänic",            "haarspalter",              false, false, true,  false, false);
@@ -13205,13 +13194,14 @@ var mainGC = function() {
             html += thanksLineBuild("MrZaibot",             "",                         false, false, false, true,  false);
             html += thanksLineBuild("PHIL",                 "gcPhil",                   false, false, false, true,  false);
             html += thanksLineBuild("Pontiac_CZ",           "PontiacCZ",                false, false, false, true,  false);
-            html += thanksLineBuild("reodor09",              "",                        false, false, false, true,  false);
+            html += thanksLineBuild("reodor09",             "",                         false, false, false, true,  false);
             html += thanksLineBuild("RoRo",                 "RolandRosenfeld",          false, false, false, true,  false);
             html += thanksLineBuild("stepborc",             "",                         false, false, false, true,  false);
             html += thanksLineBuild("Tungstène",            "Tungstene",                false, false, false, true,  false);
             html += thanksLineBuild("V60",                  "V60GC",                    false, false, false, true,  false);
+            html += thanksLineBuild("vylda",                "",                         false, false, false, true,  false);
             html += thanksLineBuild("winkamol",             "",                         false, false, false, true,  false);
-            var thanksLastUpdate = "16.05.2021";
+            var thanksLastUpdate = "02.07.2021";
 //<-- $$006
             html += "    </tbody>";
             html += "</table>";
@@ -13480,7 +13470,7 @@ var mainGC = function() {
             html += "<img src=" + global_restore_icon + " id='restore_settings_searchmap_disabled_color' title='back to default' style='width: 12px; cursor: pointer;'>";
             html += show_help("If compact layout is enabled and the name of disabled caches are specially represented, the cache status line above the cache name is hidden.") + onlySearchMap + '<br>';
             html += checkboxy('settings_searchmap_show_hint', 'Show hint of cache automatically on cache detail screen') + onlySearchMap + "<br>";
-            html += checkboxy('settings_searchmap_show_btn_save_as_pq', 'Show button "Save as Pocket Query"') + show_help("Adds a button in the sidebar of the search map to save the actual map view as a pocket query (like on the browse map).<br>Note that not all filters on the map are also available on Pocket Query.") + onlySearchMap + "<br>";
+            html += checkboxy('settings_searchmap_show_btn_save_as_pq', 'Show button "Save as Pocket Query"') + show_help("Adds a button in the sidebar of the Search Map to save the actual map view as a pocket query (like on the Browse Map).<br>Note that not all filters on the map are also available on Pocket Query.") + onlySearchMap + "<br>";
             html += newParameterVersionSetzen('0.10') + newParameterOff;
             html += newParameterOn2;
             html += " &nbsp; " + checkboxy('settings_save_as_pq_set_all', 'Set filter values "All"') + show_help("If filter values \"All\" are set and the map parameter \"Set defaults\" is enabled, the default values are still prevented from asserting themselves. Otherwise, the defaults prevail. This makes it possible, for example, to see caches found and not found on the map, this is \"All\". So you can see on the map whether you have been around here before. At the same time, however, a default value for \"I haven't found\" may be set in the PQ. After all, the caches found are of little interest in the PQ. That might sound complicated, but it can be valuable if you understand it because you don't have to make any more changes to the map's filter before generating the PQ.") + "<br>";
@@ -13731,7 +13721,7 @@ var mainGC = function() {
             }
             html += "</select><br>";
             html += newParameterVersionSetzen(0.9) + newParameterOff;
-            html += checkboxy('settings_show_link_to_browse_map', 'Show link to browse map') + show_help("With this option, a link called \"Map this Location\" is shown under the listing coordinates.") + "<br>";
+            html += checkboxy('settings_show_link_to_browse_map', 'Show link to Browse Map') + show_help("With this option, a link called \"Map this Location\" is shown under the listing coordinates.") + "<br>";
 
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>Disclaimer</b>" + "</div>";
             html += checkboxy('settings_hide_disclaimer', 'Hide disclaimer') + "<br>";
@@ -13838,9 +13828,9 @@ var mainGC = function() {
             html += "</select>" + show_help("With this option you can choose the zoom value to start in the map. \"1\" is the hole world and \"19\" is the maximal enlargement. Default is \"11\".") + "<br>";
             html += newParameterVersionSetzen(0.9) + newParameterOff;
             html += newParameterOn2;
-            html += "&nbsp; " + checkboxy('settings_map_overview_browse_map_icon', 'Show icon with link to browse map in overview map') + "<br>";
+            html += "&nbsp; " + checkboxy('settings_map_overview_browse_map_icon', 'Show icon with link to Browse Map in overview map') + "<br>";
             html += " &nbsp; &nbsp; " + checkboxy('settings_map_overview_browse_map_icon_new_tab', 'Open link in new browser tab') + "<br>";
-            html += "&nbsp; " + checkboxy('settings_map_overview_search_map_icon', 'Show icon with link to search map in overview map') + "<br>";
+            html += "&nbsp; " + checkboxy('settings_map_overview_search_map_icon', 'Show icon with link to Search Map in overview map') + "<br>";
             html += " &nbsp; &nbsp; " + checkboxy('settings_map_overview_search_map_icon_new_tab', 'Open link in new browser tab') + "<br>";
             html += newParameterVersionSetzen('0.11') + newParameterOff;
 

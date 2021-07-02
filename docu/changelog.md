@@ -1,3 +1,4 @@
+<a href="#v0115" title="GClh II version 0.11.5 (03.07.2021)">v0.11.5</a> &nbsp;
 <a href="#v0114" title="GClh II version 0.11.4 (29.05.2021)">v0.11.4</a> &nbsp;
 <a href="#v0113" title="GClh II version 0.11.3 (23.05.2021)">v0.11.3</a> &nbsp;
 <a href="#v0112" title="GClh II version 0.11.2 (17.05.2021)">v0.11.2</a> &nbsp;
@@ -24,6 +25,164 @@
 <a href="#v0101" title="GClh II version 0.10.1 (20.12.2019)">v0.10.1</a> &nbsp;
 <a href="#v010" title="GClh II version 0.10 (13.12.2019)">v0.10</a> &nbsp;
 <a href="changelog_before.md" title="Go to earlier changelog">Earlier changelog</a> &nbsp;
+
+---
+## v0.11.5:
+
+## Search Map / Browse Map:
+<ul>	
+	<li>
+		<strong>New:</strong> [Search Map] Hide header. [<a href="https://github.com/2Abendsegler/GClh/issues/1117" title="Issue 1117">1117</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a><br>
+		<img src="../images/0.11.5/Screen08.gif" alt="Screen08.gif"><br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_map_show_btn_hide_header" title="Link to your GClh II Config">Settings -> Map</a><br>
+		<img src="../images/0.11.5/Screen09.jpg" alt="Screen09.jpg"><br><br>
+	</li>
+	<li>
+		<strong>New:</strong> [Browse Map / Layer] New map layer "CyclOSM: OSM-based bicycle map". [<a href="https://github.com/2Abendsegler/GClh/issues/1814" title="Issue 1814">1814</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a><br>
+		<img src="../images/0.11.5/Screen14.jpg" alt="Screen14.jpg"><br><br>
+	</li>
+	<li>
+		<strong>New:</strong> [Search Map / Browse Map / Pocket Query] Before saving as PQ from map, determine whether the GClh default settings for new PQs should be set or not. [<a href="https://github.com/2Abendsegler/GClh/issues/1574" title="Issue 1574">1574</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a><br>
+		<img src="../images/0.11.5/Screen10.jpg" alt="Screen10.jpg"><br><br>
+	</li>
+	<li>
+		<strong>New:</strong> [Statistic / Search Map] Zoom out fittingly for links from D/T matrix to map. [<a href="https://github.com/2Abendsegler/GClh/issues/1814" title="Issue 1814">1814</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a><br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Search Map] "set default" toggle runs on error. [<a href="https://github.com/2Abendsegler/GClh/issues/1819" title="Issue 1819">1819</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a><br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Search Map] Problems between GClh and Send to c:geo. [<a href="https://github.com/2Abendsegler/GClh/issues/1796" title="Issue 1796">1796</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a><br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Search Map] Undefined Finds in header. [<a href="https://github.com/2Abendsegler/GClh/issues/1831" title="Issue 1831">1831</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a><br>
+	</li>
+</ul>	
+
+## Cache Owner Dashboard:
+<ul>	
+	<li>
+		<strong>New:</strong> [Owner Dashboard] Compact Layout. [<a href="https://github.com/2Abendsegler/GClh/issues/1370" title="Issue 1370">1370</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a><br>
+		<img src="../images/0.11.5/Screen12.jpg" alt="Screen12.jpg"><br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_compact_layout_cod" title="Link to your GClh II Config">Settings -> Others</a><br>
+		<img src="../images/0.11.5/Screen11.jpg" alt="Screen11.jpg"><br>
+		If you want to use this feature, you have to activate it.<br><br>
+	</li>
+	<li>
+		<strong>New:</strong> [Owner Dashboard] Add the favorite percentage in the cache list. [<a href="https://github.com/2Abendsegler/GClh/issues/1378" title="Issue 1378">1378</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a><br>
+		<img src="../images/0.11.5/Screen16.jpg" alt="Screen16.jpg"><br>
+		<img src="../images/0.11.5/Screen15.jpg" alt="Screen15.jpg"><br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_show_button_fav_proz_cod" title="Link to your GClh II Config">Settings -> Others</a><br>
+		<img src="../images/0.11.5/Screen17.jpg" alt="Screen17.jpg"><br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Owner Dashboard] GClh does not work after changing view. [<a href="https://github.com/2Abendsegler/GClh/issues/1761" title="Issue 1761">1761</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a><br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Owner Dashboard] No VIP, VUP, Mail icons if "Load More" button below the logs is clicked. [<a href="https://github.com/2Abendsegler/GClh/issues/1786" title="Issue 1786">1786</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a><br>
+	</li>
+</ul>	
+
+## Cache Listing:
+<ul>	
+	<li>
+		<strong>New:</strong> [Listing] Open map links from overview map with left mouse click optional in new browser tab. [<a href="https://github.com/2Abendsegler/GClh/issues/1748" title="Issue 1748">1748</a> / <a href="https://www.geocaching.com/profile/?u=CastParo" title="Thanks to CastParo">CastParo</a><br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_map_overview_browse_map_icon_new_tab" title="Link to your GClh II Config">Settings -> Listing - Overview map</a><br>
+		<img src="../images/0.11.5/Screen01.jpg" alt="Screen01.jpg"><br>
+		If you want to use this feature, you have to activate it.<br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_map_overview_search_map_icon_new_tab" title="Link to your GClh II Config">Settings -> Listing - Overview map</a><br>
+		<img src="../images/0.11.5/Screen02.jpg" alt="Screen02.jpg"><br>
+		If you want to use this feature, you have to activate it.<br><br>
+	</li>
+	<li>
+		<strong>New:</strong> [Cache Listing] Switch Geonames service to more secure https. [<a href="https://github.com/2Abendsegler/GClh/issues/1770" title="Issue 1770">1770</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a><br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Cache Listing] Upvote buttons and log edit button are not displayed for basic members. [<a href="https://github.com/2Abendsegler/GClh/issues/1792" title="Issue 1792">1792</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a><br>
+	</li>
+</ul>	
+
+## Global:
+<ul>	
+	<li>
+		<strong>New:</strong> [Global] Handle the key combination ctrl + s like the key F2. [<a href="https://github.com/2Abendsegler/GClh/issues/1779" title="Issue 1779">1779</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a><br>
+	</li>
+	<li>
+		<strong>New:</strong> [Global] Build error message if running under Greasemonkey. [<a href="https://github.com/2Abendsegler/GClh/issues/1747" title="Issue 1747">1747</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a><br>
+	</li>
+	<li>
+		<strong>New:</strong> [Global] Test script manager Violentmonkey and revise some related documentation. [<a href="https://github.com/2Abendsegler/GClh/issues/1747" title="Issue 1747">1747</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a><br>
+	</li>
+	<li>
+		<strong>New:</strong> [Global] Delete script manager related functions. [<a href="https://github.com/2Abendsegler/GClh/issues/1747" title="Issue 1747">1747</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a><br>
+	</li>
+	<li>
+		<strong>New:</strong> [Global] Disable user profile menu by clicking anywhere else. [<a href="https://github.com/2Abendsegler/GClh/issues/1779" title="Issue 1779">1779</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a><br>
+	</li>
+	<li>
+		<strong>New:</strong> [Global] Set up checks log to console. [<a href="https://github.com/2Abendsegler/GClh/issues/1747" title="Issue 1747">1747</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a><br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Global / Project-GC] Project-GC script does not work because of changed page header. [<a href="https://github.com/2Abendsegler/GClh/issues/1783" title="Issue 1783">1783</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a><br>
+	</li>
+</ul>	
+
+### Config / Sync:
+<ul>
+	<li>
+		<strong>New:</strong> [Config] Extend script manager menu in browser with GClh II Configurator. [<a href="https://github.com/2Abendsegler/GClh/issues/1752" title="Issue 1752">1752</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a><br>
+		The setting of the menu entry is not new. Only the config parameter to enable or disable it is new.<br>
+		<img src="../images/0.11.5/Screen04.jpg" alt="Screen04.jpg"><br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_call_config_via_sriptmanager" title="Link to your GClh II Config">Settings -> GClh II Config</a><br>
+		<img src="../images/0.11.5/Screen03.jpg" alt="Screen03.jpg"><br><br>
+	</li>
+	<li>
+		<strong>New:</strong> [Sync] Extend script manager menu in browser with GClh II Synchronizer. [<a href="https://github.com/2Abendsegler/GClh/issues/1753" title="Issue 1753">1753</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a><br>
+		<img src="../images/0.11.5/Screen05.jpg" alt="Screen05.jpg"><br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_call_sync_via_sriptmanager" title="Link to your GClh II Sync">Settings -> GClh II Sync</a><br>
+		<img src="../images/0.11.5/Screen03.jpg" alt="Screen03.jpg"><br><br>
+	</li>
+	<li>
+		<strong>New:</strong> [Config / Sync] Split of the topic "Config / Sync" in two topics. [<a href="https://github.com/2Abendsegler/GClh/issues/1754" title="Issue 1754">1754</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a><br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#gclh_config_config" title="Link to your GClh II Config">Settings -> GClh II Config</a><br>
+		<img src="../images/0.11.5/Screen06.jpg" alt="Screen06.jpg"><br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#gclh_config_sync" title="Link to your GClh II Sync">Settings -> GClh II Sync</a><br>
+		<img src="../images/0.11.5/Screen07.jpg" alt="Screen07.jpg"><br><br>
+	</li>
+	<li>
+		<strong>New:</strong> [Config] Delete older and not longer used config parameter. [<a href="https://github.com/2Abendsegler/GClh/issues/1747" title="Issue 1747">1747</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a><br>
+	</li>
+	<li>
+		<strong>New:</strong> [Config] New color in config. [<a href="https://github.com/2Abendsegler/GClh/issues/1797" title="Issue 1797">1797</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a><br>
+		We thought that we could all certainly use beautiful and bright colors in our dreary Corona everyday life. That's why there are new colors for the config, we hope you like the pretty colors.🤭😂 <a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_color_schemes" title="Link to your GClh II Config">They only really work when you look at them in the config.</a><br>
+		<img src="../images/0.11.5/Screen13.jpg" alt="Screen13.jpg"><br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Config] Apostrophes in input fields do not work properly. [<a href="https://github.com/2Abendsegler/GClh/issues/1818" title="Issue 1818">1818</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a><br>
+	</li>
+</ul>	
+
+## Others:
+<ul>	
+	<li>
+		<strong>New:</strong> [View Log] Improve alignment of icons on further log screens. [<a href="https://github.com/2Abendsegler/GClh/issues/1749" title="Issue 1749">1749</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a><br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [New Log Form] Focus is not set to the Logtext. [<a href="https://github.com/2Abendsegler/GClh/issues/1814" title="Issue 1814">1814</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a><br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Drafts / New Log Form] Log templates field doesn't show "- Log Templates -". [<a href="https://github.com/2Abendsegler/GClh/issues/1814" title="Issue 1814">1814</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a><br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Public Profile] GS's souvenir sorting is now also available in the public profile. Our sorting and hiding functions need to be changed. [<a href="https://github.com/2Abendsegler/GClh/issues/1824" title="Issue 1824">1824</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a><br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Leaderboard] VipVupMail does not work. [<a href="https://github.com/2Abendsegler/GClh/issues/1829" title="Issue 1829">1829</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a><br>
+	</li>
+</ul>
+(03.07.2021)<br>
+released by <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a><br>
+<br>
 
 ---
 ## v0.11.4:

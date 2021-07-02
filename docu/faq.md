@@ -2,14 +2,14 @@
 
 <a href="#en" title=""><img src="../images/flag_en.png"></a> | <a href="#de" title=""><img src="../images/flag_de.png"></a>
 --- | --- 
-<a href="#1-en">1. What can I do if the Warning is displayed "GClh is running more than once"?</a> | <a href="#1-de">1. Was kann ich tun wenn die Warnung angezeigt wird, dass GClh mehr als einmal läuft?</a>
+<a href="#1-en">1. What can I do if the warning is displayed "GClh is running more than once"?</a> | <a href="#1-de">1. Was kann ich tun wenn die Warnung angezeigt wird, dass der GClh mehr als einmal läuft?</a>
 <a href="#2-en">2. In the Config I can't add new links to the Linklist because it is out of the view.</a> | <a href="#2-de">2. Ich kann in der Konfiguration keine neuen Links zur Linkliste hinzufügen, da die Linkliste außerhalb des Bildschirms ist.</a>
-<a href="#3-en">3. GClh doesn't start.</a> | <a href="#3-de">3. GClh startet nicht.</a>
+<a href="#3-en">3. The GClh doesn't start.</a> | <a href="#3-de">3. Der GClh startet nicht.</a>
 <a href="#4-en">4. Hints for using on Android devices.</a> | <a href="#4-de">4. Hinweise für die Nutzung auf Android Geräten.</a>
-<a href="#5-en">5. How can I start the Config of the GClh?</a> | <a href="#5-de">5. Wie kann ich die Konfiguration des GClh starten?</a>
+<a href="#5-en">5. How can I open the configuration (Config) of the GClh?</a> | <a href="#5-de">5. Wie kann ich die Konfiguration (Config) des GClh öffnen?</a>
 <a href="#6-en">6. How can I install the GClh on Android devices?</a> | <a href="#6-de">6. Wie kann ich den GClh auf Android Geräten installieren?</a>
-<a href="#7-en">7. How can I contribute to GClh?</a> | <a href="#7-de">7. Wie kann ich etwas zu GClh beitragen?</a>
-<a href="#8-en">8. How can I get help to GClh?</a> | <a href="#8-de">8. Wie bekomme ich Hilfe zum GClh?</a>
+<a href="#7-en">7. How can I contribute to GClh?</a> | <a href="#7-de">7. Wie kann ich etwas zum GClh beitragen?</a>
+<a href="#8-en">8. Where can I get help with the GClh?</a> | <a href="#8-de">8. Wo bekomme ich Hilfe zum GClh?</a>
 <a href="#9-en">9. How can I report a bug or a feature request?</a> | <a href="#9-de">9. Wie kann ich einen Fehler melden oder eine Anfrage zu einem neuen Feature stellen?</a>
 
 ---
@@ -17,8 +17,7 @@
 
 <a id="1-en"></a>
 ## 1. What can I do if the Warning is displayed "GClh is running more than once"?
-*GC little helper II* is only working correctly, if it's just running once at a time. Because of that, the script itself checks if it's the only GClh running.<br>
-If this warning is displayed, it is true. So you can check some points:<br>
+*GC little helper II* is only working correctly, if it's just running once at a time. Because of that, the script itself checks if it's the only GClh running. If this warning is displayed, it is true. So you can check some points:<br>
 <ol>
 	<li>
 		Please check if you have more than one script manger (i.e. Tampermonkey and Violentmonkey) installed. The GClh may be installed in more than one script manager. If so, uninstall all but one instance of the GClh and the problem should be resolved.<br>
@@ -36,7 +35,7 @@ If you have problems to drag & drop the lower links because the Linklist area is
 <br>
 
 <a id="3-en"></a>
-## 3. GClh doesn't start.
+## 3. The GClh doesn't start.
 If the GClh does not start, these are usually matching problems between the browser and the script manager. These problems mainly occur when a tab in a browser passes beyond a session. This can be caused by the user by leaving tabs in the browser, for example when hibernating. It can also be caused by the browser, for example when restoring tabs after a cancellation.<br>
 
 *Resolve problems:* Problems can be resolved depending on the situation regularly with one of the following points.<br>
@@ -126,13 +125,13 @@ If the GClh does not start, these are usually matching problems between the brow
 <br>
 
 <a id="5-en"></a>
-## 5. How can I start the Config of the GClh?
+## 5. How can I open the configuration (Config) of the GClh?
 <ul>
 	<li>
-		If you are on a geocaching page you can start the Config for the GClh with the F4 key on your keyboard, if you have not switched off this feature.
+		If you are on a geocaching page you can open the Config for the GClh with the F4 key on your keyboard, if you have not switched off this feature.
 	</li>
 	<li>
-		Or you can start the Config for the GClh <a href="https://www.geocaching.com/account/dashboard#GClhShowConfig">here</a>.
+		Or you can open the Config for the GClh <a href="https://www.geocaching.com/account/dashboard#GClhShowConfig">here</a>.
 	</li>
 	<li>
 		Or you can use the corresponding link on your <a href="https://www.geocaching.com/account/dashboard">dashboard</a> below your user name.
@@ -152,32 +151,31 @@ See <a href="../docu/tips_installation.md#android_en" title="Link to 'Tips for t
 
 <a id="7-en"></a>
 ## 7. How can I contribute to GClh?
-We are happy about improvement suggestions, bugfixes or new features. This is realised via pull requests. You can read how to create a Pull-Request here: <a href="https://github.com/2Abendsegler/GClh/blob/master/docu/how_to_contribute.md#en">How to contribute</a><br>
+We are happy about improvement suggestions, bugfixes or new features. This is realised via pull requests on the plattform GitHub. You can read how to create a Pull-Request here: <a href="https://github.com/2Abendsegler/GClh/blob/master/docu/how_to_contribute.md#en">How to contribute</a><br>
 <br>
 
 <a id="8-en"></a>
-## 8. How can I get help to GClh?
-If you need help with the GClh, or if you have questions about the GClh, you can create a note in the following forums:<br>
+## 8. Where can I get help with the GClh?
+If you need help with the GClh, or if you have questions about the GClh, you can create a note in the following forums ... :<br>
 - [Geocaching Forum](https://forums.geocaching.com/GC/index.php?/topic/343005-gc-little-helper-ii/)
 - [Geoclub Geocaching Forum](https://geoclub.de/forum/viewforum.php?f=117)
 - [Swiss Geocache Forum](https://www.swissgeocacheforum.ch/forum/topic/12872-gc-little-helper-ii/)
-- [Forum](https://github.com/2Abendsegler/GClh/discussions) on our development platform at Github
+- [Discussions page](https://github.com/2Abendsegler/GClh/discussions) on our development platform at Github
 - [Ticket System](https://github.com/2Abendsegler/GClh/issues) on our development platform at Github
 <br>
 
 <a id="9-en"></a>
 ## 9. How can I report a bug or a feature request?
 For a bug or a feature request you can open a <a href="https://github.com/2Abendsegler/GClh/issues/new/choose">new issue</a> on our development platform at Github.<br>
-Or you can create a note in one of the forums. See <a href="#8-en">FAQ 8</a>.<br>
+Or you can create a note in one of the forums or on our discussions page. See <a href="#8-en">FAQ 8</a>.<br>
 <br>
 
 ---
 <a id="de" href="#de"><img src="../images/flag_de.png"></a>
 
 <a id="1-de"></a>
-## 1. Was kann ich tun wenn die Warnung angezeigt wird, dass GClh mehr als einmal läuft?
-*GC little helper II* funktioniert nur richtig, wenn es nur einmal im Browser ausgeführt wird. Deshalb prüft das Script selbst, ob dies der Fall ist.<br>
-Wenn die Meldung angezeigt wird, dass der GClh mehr als einmal läuft, dann ist das auch der Fall. In diesen Fällen sollte folgendes überprüft werden:<br>
+## 1. Was kann ich tun wenn die Warnung angezeigt wird, dass der GClh mehr als einmal läuft?
+Der *GC little helper II* funktioniert nur korrekt, wenn er nur einmal im Browser ausgeführt wird. Deshalb prüft das Script selbst, ob das der Fall ist. Wenn die Meldung angezeigt wird, dass der GClh mehr als einmal läuft, dann ist das auch der Fall. In diesen Fällen sollte folgendes überprüft werden:<br>
 <ol>
 	<li>
 		Bitte prüfe, ob mehr als ein Scriptmanager installiert ist (zum Beispiel neben Tampermonkey auch noch Violentmonkey). Womöglich ist der GClh in mehr als einem Scriptmanager installiert. Wenn das der Fall ist, dann deinstalliere alle Versionen bis auf eine und das Problem sollte behoben sein.<br>
@@ -186,16 +184,16 @@ Wenn die Meldung angezeigt wird, dass der GClh mehr als einmal läuft, dann ist 
 		Eventuell ist der GClh mehr als einmal in einem einzigen Scriptmanager installiert. Das kann in der Scriptübersicht geprüft werden. Wenn das der Fall ist, dann deinstalliere alle Versionen bis auf eine und das Problem sollte behoben sein.<br>
 	</li>
 </ol>
-Sollte die Warnung dann immer noch auftauchen, dann erstelle bitte <a href="https://github.com/2Abendsegler/GClh/issues">hier</a> einen Bugreport und wir werden versuchen dir zu helfen.<br>
+Sollte die Warnung dann immer noch auftauchen, dann erstelle bitte <a href="https://github.com/2Abendsegler/GClh/issues">hier</a> ein neues Issue und wir werden versuchen dir zu helfen.<br>
 <br>
 
 <a id="2-de"></a>
 ## 2. Ich kann im GClh Config keine neuen Links zur Linkliste hinzufügen, da die Linkliste außerhalb des Bildschirms ist.
-Wenn du Probleme mit dem Drag & Drop hast beim Hinzufügen neuer Links zur Linkliste, da die Links zu tief sind und die Liste aus dem sichtbaren Bereich rausscollt, dann nutze einfach die Pfeiltasten (Pfeiltaste nach oben) während du das neue Element weiter fest hälst.<br>
+Wenn du Probleme mit dem Drag & Drop beim Hinzufügen neuer Links zur Linkliste hast, da die Links zu weit unten stehen und die Linkliste zu weit oben steht und nicht mehr auf dem Bildschirm ist, dann nutze einfach die Pfeiltaste nach oben während du den neuen Link weiter mit der Maus fest hälst.<br>
 <br>
 
 <a id="3-de"></a>
-## 3. GClh startet nicht.
+## 3. Der GClh startet nicht.
 Startet der GClh nicht, so handelt es sich in der Regel um Abstimmungsprobleme zwischen dem Browser und dem Scriptmanager. Diese Probleme treten hauptsächlich dann auf, wenn ein Tab in einem Browser über eine Session hinaus besteht. Das kann durch den User veranlaßt sein indem er Tabs im Browser beispielsweise im Ruhezustand bestehen läßt. Es kann aber auch durch den Browser veranlaßt sein beispielweise bei einer Wiederherstellung von Tabs nach einem Abbruch.<br>
 
 *Probleme beheben:* Probleme können je nach Sachlage regelmäßig mit einem der folgenden Punkte behoben werden.<br>
@@ -207,7 +205,7 @@ Startet der GClh nicht, so handelt es sich in der Regel um Abstimmungsprobleme z
 		Tabs im Browser schließen, Browser schließen, Browser starten, Tabs neu anwählen.<br>
 	</li>
 	<li>
-		Scriptmanager deaktivieren und nach einigen Sekunden wieder aktivieren (sofern man "Automatisches Seiten-Neu-Laden" icht deaktiviert hat).<br>
+		Scriptmanager deaktivieren und nach einigen Sekunden wieder aktivieren (sofern man "Automatisches Seiten-Neu-Laden" nicht deaktiviert hat).<br>
 	</li>
 </ul>
 
@@ -242,10 +240,10 @@ Abhilfe:<br>
 		Drag & Drop Operationen funktionieren nicht.<br>
 		<ul>
 			<li>
-				GClh Config: Im Kapitel "Linklist / Navigation" können von der linken Spalte <a href="https://www.geocaching.com/my/#GClhShowConfig#a#ll#settings_bookmarks_top_menu_h" title="Link zu deinem GClh Config">Default links</a> keine neuen Einträge in die rechte Spalte "Linklist" gehängt werden.<br>
+				GClh Config: Im Kapitel "Linklist / Navigation" können von der linken Spalte <a href="https://www.geocaching.com/my/#GClhShowConfig#a#ll#settings_bookmarks_top_menu_h" title="Link zu deinem GClh Config">Default links</a> keine neuen Einträge in die rechte Spalte "Linkliste" gehängt werden.<br>
 			</li>
 			<li>
-				GClh Config: Im Kapitel "Linklist / Navigation" kann in der rechten Spalte <a href="https://www.geocaching.com/my/#GClhShowConfig#a#ll#settings_bookmarks_top_menu_h" title="Link zu deinem GClh Config">Linklist</a> die Reihenfolge nicht geändert werden.<br>
+				GClh Config: Im Kapitel "Linklist / Navigation" kann in der rechten Spalte <a href="https://www.geocaching.com/my/#GClhShowConfig#a#ll#settings_bookmarks_top_menu_h" title="Link zu deinem GClh Config">Linkliste</a> die Reihenfolge nicht geändert werden.<br>
 				<br/>
 			</li>
 		</ul>
@@ -257,7 +255,7 @@ Abhilfe:<br>
 				Icons auf Karte: In der Karte läßt sich das Icon "Go to Map" nicht anwählen. Alle anderen Icons in der Karte funktionieren.<br>
 			</li>
 			<li>
-				Vorschau der Bilder (thumbnails) in Listings and Gallerien: Sie funktionieren durch antippen, gleichzeitig wird durchs Antippen jedoch auch die normale Anzeige des Bildes in groß aktiviert. Die <a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_show_thumbnailsX0" title="Link zu deinem GClh Config">Vorschau der Bilder</a> sollte deaktiviert werden.<br>
+				Vorschau der Bilder (thumbnails) in Listings and Gallerien: Sie funktionieren durch antippen, gleichzeitig wird durch das Antippen jedoch auch die normale Anzeige des Bildes in groß aktiviert. Die <a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_show_thumbnailsX0" title="Link zu deinem GClh Config">Vorschau der Bilder</a> sollte im Config deaktiviert werden.<br>
 				<br/>
 			</li>
 		</ul>
@@ -267,14 +265,14 @@ Abhilfe:<br>
 		<br/>
 	</li>
 	<li>
-		Linklist und gewohntes Menü sind nicht immer sichtbar. Sie verstecken sich dann rechts oben in einem seitlichen Menü, beispielsweise auf den Seiten Dashboard, Geocache Suche oder Karte. Aktiviert man im Browser "Desktop-Seite", wird die Linklist und das Menü wie gewohnt angezeigt.<br>
+		Linkliste und gewohntes Menü sind nicht immer sichtbar. Sie verstecken sich dann rechts oben in einem seitlichen Menü, beispielsweise auf den Seiten Dashboard, Geocache Suche oder Karte. Aktiviert man im Browser "Desktop-Seite", wird die Linkliste und das Menü wie gewohnt angezeigt.<br>
 		<br/>
 	</li>
 	<li>
 		Es gibt keine Funktionstasten / F-Tasten mit der Standard Android Tastatur.<br>
 		<ul>
 			<li>
-				F2 zum Speichern ... funktioniert nicht (GClh Config, Bookmarklisten, PQ, Verstecken ...).<br>
+				F2 zum Speichern ... funktioniert nicht (GClh Config, alte Bookmarklisten, PQ, Verstecken ...).<br>
 			</li>
 			<li>
 				F4 bzw. F10 zum Aufrufen des GClh Config bzw. GClh Sync funktionieren nicht.<br>
@@ -285,10 +283,10 @@ Abhilfe:<br>
 <br>
 
 <a id="5-de"></a>
-## 5. Wie kann ich die Konfiguration des GClh starten?
+## 5. Wie kann ich die Konfiguration (Config) des GClh öffnen?
 <ul>
 	<li>
-		Wenn du auf einer Geocaching Seite bist kannst du mit der F4 Taste auf deinem Keyboard die Konfiguration für den GClh starten, sofern du dieses Feature nicht ausgeschaltet hast. 
+		Wenn du auf einer Geocaching Seite bist kannst du mit der F4 Taste auf deinem Keyboard die Konfiguration für den GClh öffnen, sofern du dieses Feature nicht ausgeschaltet hast. 
 	</li>
 	<li>
 		Oder du kannst <a href="https://www.geocaching.com/account/dashboard#GClhShowConfig">hier</a> die Konfiguration für den GClh aufrufen.
@@ -310,22 +308,22 @@ Siehe <a href="../docu/tips_installation.md#android_de" title="Link zu 'Tipps f�
 <br>
 
 <a id="7-de"></a>
-## 7. Wie kann ich etwas zu GClh beitragen?
-Wir freuen uns über Verbesserungsvorschläge, Bugfixes oder neue Features. Dies geschieht bei uns über Pull Requests. Wie du so etwas anlegst kannst du hier nachlesen: <a href="https://github.com/2Abendsegler/GClh/blob/master/docu/how_to_contribute.md#de">Wie kannst du etwas beitragen?</a><br>
+## 7. Wie kann ich etwas zum GClh beitragen?
+Wir freuen uns über Verbesserungsvorschläge, Bugfixes oder neue Features. Dies geschieht über Pull Requests auf der Plattform GitHub. Wie du dort einen Pull Request anlegst, kannst du hier nachlesen: <a href="https://github.com/2Abendsegler/GClh/blob/master/docu/how_to_contribute.md#de">Wie kannst du etwas beitragen?</a><br>
 <br>
 
 <a id="8-de"></a>
-## 8. Wie bekomme ich Hilfe zum GClh?
-Wenn du Hilfe zum GClh benötigst, oder wenn du Fragen zum GClh hast, dann kannst du dich in folgenden Foren melden:<br>
+## 8. Wo bekomme ich Hilfe zum GClh?
+Wenn du Hilfe zum GClh benötigst, oder wenn du Fragen zum GClh hast, dann kannst du dich in folgenden Foren ... melden:<br>
 - [Geocaching Forum](https://forums.geocaching.com/GC/index.php?/topic/343005-gc-little-helper-ii/)
 - [Geoclub Geocaching Forum](https://geoclub.de/forum/viewforum.php?f=117)
 - [Swiss Geocache Forum](https://www.swissgeocacheforum.ch/forum/topic/12872-gc-little-helper-ii/)
-- [Forum](https://github.com/2Abendsegler/GClh/discussions) auf unserer Entwicklungsplattform bei Github
+- [Diskussions Seite](https://github.com/2Abendsegler/GClh/discussions) auf unserer Entwicklungsplattform bei Github
 - [Ticket System](https://github.com/2Abendsegler/GClh/issues) auf unserer Entwicklungsplattform bei Github
 <br>
 
 <a id="9-de"></a>
 ## 9. Wie kann ich einen Fehler melden oder eine Anfrage zu einem neuen Feature stellen?
 Zu einem Fehler oder einer Anfrage zu einem neuen Feature kannst du ein <a href="https://github.com/2Abendsegler/GClh/issues/new/choose">neues Issue</a> auf unserer Entwicklungsplattform bei Github eröffnen.<br>
-Oder du kannst dich in einem der Foren melden. Siehe dazu <a href="#8-de">FAQ 8</a>.<br>
+Oder du kannst dich in einem der Foren oder auf unserer Diskussions Seite melden. Siehe dazu <a href="#8-de">FAQ 8</a>.<br>
 <br>
