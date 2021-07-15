@@ -2335,66 +2335,58 @@ var mainGC = function() {
     }
 
 // Improve Watch button handling. (Not for Stop Watching handling.)
-    if (is_page("cache_listing") && settings_use_one_click_watching && $('#ctl00_ContentBody_GeoNav_uxWatchlistBtn a')[0]) {
+    if (is_page("cache_listing") && settings_use_one_click_watching) {
         try {
             // Prepare one click watching.
-            var link = '#ctl00_ContentBody_GeoNav_uxWatchlistBtn a';
-            var nr = $('#ctl00_ContentBody_GeoNav_uxWatchlistBtn a').html().match(/\d+/);
-            if ($(link)[0].href.match(/action=rem/)) {
-                $(link)[0].innerHTML = 'Stop Watching ('+nr+')';
-            } else {
-                $(link)[0].innerHTML = 'Watch';
-                $(link).attr('data-url', $(link)[0].href);
-                var wID = $(link)[0].href.match(/aspx\?w=([0-9]+)/);
-                $(link).attr('data-wID', wID[1]);
-                $(link)[0].href = 'javascript:void(0);';
-                $(link)[0].addEventListener("click", oneClickWatching, false);
-                changeWatchButton($(link)[0].innerHTML, '', nr);
-                var saved = document.createElement('span');
-                saved.setAttribute('id', 'watchSaved');
-                saved.appendChild(document.createTextNode('saved'));
-                $('#ctl00_ContentBody_GeoNav_uxWatchlistBtn')[0].append(saved);
-            }
+            let link = '#ctl00_ContentBody_GeoNav_uxWatchlistBtn span:nth-child(1)';
+            let watchNr = $('#ctl00_ContentBody_GeoNav_uxWatchlistBtn span').html().match(/\d+/);
+            // Name in english.
+            $(link)[0].innerHTML = ($(link).hasClass('add-to-watchlist') ? 'Watch ('+watchNr+')' : 'Stop Watching ('+watchNr+')');
+            // This removes the event listener by GS.
+            $(link).parent().html($(link).parent().html());
+            // Add the saved information.
+            let saved = document.createElement('span');
+            saved.setAttribute('id', 'watchSaved');
+            saved.appendChild(document.createTextNode('saved'));
+            $('#ctl00_ContentBody_GeoNav_uxWatchlistBtn')[0].append(saved);
+            // Function that handle the one click watching.
+            $(link).bind('click', oneClickWatching);
         } catch(e) {gclh_error("Improve Watch button handling.",e);}
     }
     function oneClickWatching() {
-        var link = '#ctl00_ContentBody_GeoNav_uxWatchlistBtn a';
-        if ($(link+'.working')[0]) return;
-        $(link).addClass('working');
-        var url = $(link)[0].getAttribute('data-url');
-        var nr = $('#ctl00_ContentBody_GeoNav_uxWatchlistBtn a').html().match(/\d+/);
-        // Watching.
-        if (!url.match(/action=rem/)) {
-            GM_xmlhttpRequest({
-                method: 'POST',
-                url: url,
-                onload: function(response) {
-                    if (response.responseText.indexOf('ctl00_ContentBody_lbAction') !== -1) {
-                        // Cache was just watched, set button to stop watching.
-                        nr++;
-                        changeWatchButton('Stop Watching', 'saved', nr);
-                    }
-                    $(link).removeClass('working');
-                },
-                onerror: function(response) {$(link).removeClass('working');},
-                ontimeout: function(response) {$(link).removeClass('working');},
-                onabort: function(response) {$(link).removeClass('working');}
-            });
+        $('#ctl00_ContentBody_GeoNav_uxWatchlistBtn span:nth-child(1)').addClass('working');
+        let text = $('body').html();
+        let from = text.indexOf('userToken', text.indexOf('MapTilesEnvironment')) + 13;
+        let length = text.indexOf("';", from) - from;
+        let userToken = text.substr(from, length);
+        let data = {
+            'Add': $(this).hasClass('add-to-watchlist'),
+            'userToken': userToken
         }
+
+        $.ajax({
+            type: "POST",
+            url: "/seek/cache_details.aspx/HandleWatchlistAction",
+            data: JSON.stringify(data),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                gclh_error("Improve Watch button handling.", 'AJAX call failed');
+            },
+            success: function (result) {changeWatchButton(result);}
+        });
     }
-    function changeWatchButton(buttonSetTo, saved, nr) {
-        var link = '#ctl00_ContentBody_GeoNav_uxWatchlistBtn a';
-        if (saved && saved == 'saved') {
+    function changeWatchButton(result) {
+        if (result) {
+            let link = '#ctl00_ContentBody_GeoNav_uxWatchlistBtn span:nth-child(1)';
+            let watchNr = +$('#ctl00_ContentBody_GeoNav_uxWatchlistBtn span').html().match(/\d+/);
+            watchNr = ($(link).hasClass('add-to-watchlist') ? watchNr+1 : watchNr-1);
+            $(link).toggleClass('add-to-watchlist');
+            $(link).toggleClass('remove-from-watchlist');
+            $(link)[0].innerHTML = ($(link).hasClass('add-to-watchlist') ? 'Watch ('+watchNr+')' : 'Stop Watching ('+watchNr+')');
+            $(link).removeClass('working');
             $('#watchSaved')[0].style.display = 'inline';
             $('#watchSaved').fadeOut(2000, 'swing');
-        }
-        $(link)[0].innerHTML = buttonSetTo+' ('+nr+')';
-        $(link)[0].style.backgroundImage = (buttonSetTo == 'Watch' ? 'url(/images/icons/16/watch.png)' : 'url(/images/icons/16/stop_watching.png)');
-        if (buttonSetTo != 'Watch') {
-            $(link)[0].removeEventListener("click", oneClickWatching);
-            var wID = $(link)[0].getAttribute('data-wID');
-            var urlNew = '/my/watchlist.aspx?' + (buttonSetTo == 'Watch' ? 'w='+wID : 'ds=1&id='+wID+'&action=rem');
-            $(link)[0].href = urlNew;
         }
     }
 
@@ -13741,7 +13733,7 @@ var mainGC = function() {
             html += checkboxy('settings_log_inline', 'Log cache from listing (inline)') + show_help("With the inline log you can open a log form inside the listing, without loading a new page.<br><br>If you're using an ad-blocking add-on, such as uBlock, the embedded screen may not be allowed. To turn this off, you have to add \"www.geocaching.com\/geocache\/GC*\" to the whitelist, or something similar, of your add-on.") + "<br>";
             html += "&nbsp; " + checkboxy('settings_log_inline_tbX0', 'Show TB list') + "<br>";
             html += newParameterOn1;
-            html += checkboxy('settings_use_one_click_watching', 'Add cache with one click to watchlist') + show_help("With this option, you can add a cache in cache listing to your watchlist with just one click.") + "<br>";
+            html += checkboxy('settings_use_one_click_watching', 'Add/Remove the cache with one click to watchlist') + show_help("With this option, you can add and remove a cache in cache listing to your watchlist with just one click.") + "<br>";
             html += newParameterVersionSetzen('0.10') + newParameterOff;
             html += checkboxy('settings_improve_add_to_list', 'Show compact layout in \"Add to list\" popup to bookmark a cache') + prem + "<br>";
             html += " &nbsp; &nbsp;" + "Height of popup <select class='gclh_form' id='settings_improve_add_to_list_height' >";
