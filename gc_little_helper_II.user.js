@@ -2334,7 +2334,7 @@ var mainGC = function() {
         $(link)[0].style.backgroundImage = (buttonSetTo == 'Ignore' ? 'url(/images/icons/16/ignore.png)' : 'url('+global_stop_ignore_icon+')');
     }
 
-// Improve Watch button handling. (Not for Stop Watching handling.)
+// Improve Watch button handling.
     if (is_page("cache_listing") && settings_use_one_click_watching) {
         try {
             // Prepare one click watching.
@@ -2354,6 +2354,7 @@ var mainGC = function() {
         } catch(e) {gclh_error("Improve Watch button handling.",e);}
     }
     function oneClickWatching() {
+        if ($('#ctl00_ContentBody_GeoNav_uxWatchlistBtn .working')[0]) return;
         $('#ctl00_ContentBody_GeoNav_uxWatchlistBtn span:nth-child(1)').addClass('working');
         let text = $('body').html();
         let from = text.indexOf('userToken', text.indexOf('MapTilesEnvironment')) + 13;
