@@ -2,7 +2,7 @@
 // @name         GC little helper II
 // @description  Some little things to make life easy (on www.geocaching.com).
 //--> $$000
-// @version      0.11.5
+// @version      0.11.5.1
 //<-- $$000
 // @copyright    2010-2016 Torsten Amshove, 2016-2021 2Abendsegler, 2017-2021 Ruko2010
 // @author       Torsten Amshove; 2Abendsegler; Ruko2010
@@ -2334,67 +2334,60 @@ var mainGC = function() {
         $(link)[0].style.backgroundImage = (buttonSetTo == 'Ignore' ? 'url(/images/icons/16/ignore.png)' : 'url('+global_stop_ignore_icon+')');
     }
 
-// Improve Watch button handling. (Not for Stop Watching handling.)
-    if (is_page("cache_listing") && settings_use_one_click_watching && $('#ctl00_ContentBody_GeoNav_uxWatchlistBtn a')[0]) {
+// Improve Watch button handling.
+    if (is_page("cache_listing") && settings_use_one_click_watching) {
         try {
             // Prepare one click watching.
-            var link = '#ctl00_ContentBody_GeoNav_uxWatchlistBtn a';
-            var nr = $('#ctl00_ContentBody_GeoNav_uxWatchlistBtn a').html().match(/\d+/);
-            if ($(link)[0].href.match(/action=rem/)) {
-                $(link)[0].innerHTML = 'Stop Watching ('+nr+')';
-            } else {
-                $(link)[0].innerHTML = 'Watch';
-                $(link).attr('data-url', $(link)[0].href);
-                var wID = $(link)[0].href.match(/aspx\?w=([0-9]+)/);
-                $(link).attr('data-wID', wID[1]);
-                $(link)[0].href = 'javascript:void(0);';
-                $(link)[0].addEventListener("click", oneClickWatching, false);
-                changeWatchButton($(link)[0].innerHTML, '', nr);
-                var saved = document.createElement('span');
-                saved.setAttribute('id', 'watchSaved');
-                saved.appendChild(document.createTextNode('saved'));
-                $('#ctl00_ContentBody_GeoNav_uxWatchlistBtn')[0].append(saved);
-            }
+            let link = '#ctl00_ContentBody_GeoNav_uxWatchlistBtn span:nth-child(1)';
+            let watchNr = $('#ctl00_ContentBody_GeoNav_uxWatchlistBtn span').html().match(/\d+/);
+            // Name in english.
+            $(link)[0].innerHTML = ($(link).hasClass('add-to-watchlist') ? 'Watch ('+watchNr+')' : 'Stop Watching ('+watchNr+')');
+            // This removes the event listener by GS.
+            $(link).parent().html($(link).parent().html());
+            // Add the saved information.
+            let saved = document.createElement('span');
+            saved.setAttribute('id', 'watchSaved');
+            saved.appendChild(document.createTextNode('saved'));
+            $('#ctl00_ContentBody_GeoNav_uxWatchlistBtn')[0].append(saved);
+            // Function that handle the one click watching.
+            $(link).bind('click', oneClickWatching);
         } catch(e) {gclh_error("Improve Watch button handling.",e);}
     }
     function oneClickWatching() {
-        var link = '#ctl00_ContentBody_GeoNav_uxWatchlistBtn a';
-        if ($(link+'.working')[0]) return;
-        $(link).addClass('working');
-        var url = $(link)[0].getAttribute('data-url');
-        var nr = $('#ctl00_ContentBody_GeoNav_uxWatchlistBtn a').html().match(/\d+/);
-        // Watching.
-        if (!url.match(/action=rem/)) {
-            GM_xmlhttpRequest({
-                method: 'POST',
-                url: url,
-                onload: function(response) {
-                    if (response.responseText.indexOf('ctl00_ContentBody_lbAction') !== -1) {
-                        // Cache was just watched, set button to stop watching.
-                        nr++;
-                        changeWatchButton('Stop Watching', 'saved', nr);
-                    }
-                    $(link).removeClass('working');
-                },
-                onerror: function(response) {$(link).removeClass('working');},
-                ontimeout: function(response) {$(link).removeClass('working');},
-                onabort: function(response) {$(link).removeClass('working');}
-            });
+        if ($('#ctl00_ContentBody_GeoNav_uxWatchlistBtn .working')[0]) return;
+        $('#ctl00_ContentBody_GeoNav_uxWatchlistBtn span:nth-child(1)').addClass('working');
+        let text = $('body').html();
+        let from = text.indexOf('userToken', text.indexOf('MapTilesEnvironment')) + 13;
+        let length = text.indexOf("';", from) - from;
+        let userToken = text.substr(from, length);
+        let data = {
+            'Add': $(this).hasClass('add-to-watchlist'),
+            'userToken': userToken
         }
+
+        $.ajax({
+            type: "POST",
+            url: "/seek/cache_details.aspx/HandleWatchlistAction",
+            data: JSON.stringify(data),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                gclh_error("Improve Watch button handling.", 'AJAX call failed');
+            },
+            success: function (result) {changeWatchButton(result);}
+        });
     }
-    function changeWatchButton(buttonSetTo, saved, nr) {
-        var link = '#ctl00_ContentBody_GeoNav_uxWatchlistBtn a';
-        if (saved && saved == 'saved') {
+    function changeWatchButton(result) {
+        if (result) {
+            let link = '#ctl00_ContentBody_GeoNav_uxWatchlistBtn span:nth-child(1)';
+            let watchNr = +$('#ctl00_ContentBody_GeoNav_uxWatchlistBtn span').html().match(/\d+/);
+            watchNr = ($(link).hasClass('add-to-watchlist') ? watchNr+1 : watchNr-1);
+            $(link).toggleClass('add-to-watchlist');
+            $(link).toggleClass('remove-from-watchlist');
+            $(link)[0].innerHTML = ($(link).hasClass('add-to-watchlist') ? 'Watch ('+watchNr+')' : 'Stop Watching ('+watchNr+')');
+            $(link).removeClass('working');
             $('#watchSaved')[0].style.display = 'inline';
             $('#watchSaved').fadeOut(2000, 'swing');
-        }
-        $(link)[0].innerHTML = buttonSetTo+' ('+nr+')';
-        $(link)[0].style.backgroundImage = (buttonSetTo == 'Watch' ? 'url(/images/icons/16/watch.png)' : 'url(/images/icons/16/stop_watching.png)');
-        if (buttonSetTo != 'Watch') {
-            $(link)[0].removeEventListener("click", oneClickWatching);
-            var wID = $(link)[0].getAttribute('data-wID');
-            var urlNew = '/my/watchlist.aspx?' + (buttonSetTo == 'Watch' ? 'w='+wID : 'ds=1&id='+wID+'&action=rem');
-            $(link)[0].href = urlNew;
         }
     }
 
@@ -2605,11 +2598,7 @@ var mainGC = function() {
                 el.value = el.value.replace(/#Favo#/ig, (($('#uxFavContainerLink')[0] && $('#uxFavContainerLink .favorite-value')[0]) ? $('#uxFavContainerLink .favorite-value')[0].innerHTML.replace(/(\s*)/g,'') : ''));
                 el.value = el.value.replace(/#FavoPerc#/ig, ($('.gclh_favorite-score')[0] ? $('.gclh_favorite-score')[0].innerHTML : ''));
                 el.value = el.value.replace(/#Hints#/ig, (($('#div_hint')[0] && $('#div_hint')[0].innerHTML) ? $('#div_hint')[0].innerHTML.replace(/^(\s*)/,'').replace(/<br>/g,'\n') : ''));
-                var g_note = '';
-                if ($('#viewCacheNote')[0] && $('#viewCacheNote')[0].innerHTML && $('#editCacheNote')[0] && $('#editCacheNote textarea')[0] && $('#editCacheNote textarea').attr('placeholder') && $('#viewCacheNote')[0].innerHTML != $('#editCacheNote textarea').attr('placeholder') && $('#viewCacheNote')[0].innerHTML != null && $('#viewCacheNote')[0].innerHTML != '') {
-                    var g_note = $('#viewCacheNote')[0].innerHTML;
-                }
-                el.value = el.value.replace(/#GCNote#/ig, g_note.replace(new RegExp('&gt;', 'g'),'>').replace(new RegExp('&lt;', 'g'),'<'));
+                el.value = el.value.replace(/#GCNote#/ig, $('#srOnlyCacheNote').html().replace(new RegExp('&gt;', 'g'),'>').replace(new RegExp('&lt;', 'g'),'<'));
                 // Photo file name: Remove the impossible characters for the file name "<>/\|:*?
                 if ($(thisObject)[0].innerHTML && $(thisObject)[0].innerHTML.match(/Photo file name/)) {
                     el.value = el.value.replace(/(\/|\\|\||\*|\?|:|"|<|>)/g, '');
@@ -9169,11 +9158,11 @@ var mainGC = function() {
                     }
 
                     // Get personal cache note.
-                    if ($(text).find('#viewCacheNote')[0]) {
-                        if (!$(text).find('#viewCacheNote')[0].innerHTML || $(text).find('#viewCacheNote')[0].innerHTML == '') {
+                    if ($(text).find('#srOnlyCacheNote')[0]) {
+                        if (!$(text).find('#srOnlyCacheNote')[0].innerHTML || $(text).find('#srOnlyCacheNote')[0].innerHTML == '') {
                             new_text += ' | <span title="No personal cache note"><svg style="opacity: 0.5; vertical-align: middle;" height="16" width="16" src=""><use xlink:href="#messages"></use></svg></span>';
                         } else {
-                            new_text += ' | <span class="gclh_cache_note"><svg style="color: #4a4a4ad4; vertical-align: middle;" height="16" width="16"><use xlink:href="#messages"></use></svg><span>' + $(text).find('#viewCacheNote')[0].innerHTML.replace(/\n/gi,'<br>') + '</span></span>';
+                            new_text += ' | <span class="gclh_cache_note"><svg style="color: #4a4a4ad4; vertical-align: middle;" height="16" width="16"><use xlink:href="#messages"></use></svg><span>' + $(text).find('#srOnlyCacheNote').html().replace(/\n/gi,'<br>') + '</span></span>';
                         }
                     }
                     new_text += '</div>';
@@ -10335,11 +10324,11 @@ var mainGC = function() {
                             }
 
                             // Get personal cache note.
-                            if ($(text).find('#viewCacheNote')[0]) {
-                                if (!$(text).find('#viewCacheNote')[0].innerHTML || $(text).find('#viewCacheNote')[0].innerHTML == '') {
+                            if ($(text).find('#srOnlyCacheNote')[0]) {
+                                if (!$(text).find('#srOnlyCacheNote')[0].innerHTML || $(text).find('#srOnlyCacheNote')[0].innerHTML == '') {
                                     new_text += ' | <span title="No personal cache note"><svg style="opacity: 0.5; vertical-align: middle;" height="16" width="16"><use xlink:href="#messages--inline"></use></svg></span>';
                                 } else {
-                                    new_text += ' | <span class="gclh_cache_note"><svg style="color: #4a4a4ad4; vertical-align: middle;" height="16" width="16"><use xlink:href="#messages--inline"></use></svg><span style="left: -250px; width: 300px;">' + $(text).find('#viewCacheNote')[0].innerHTML.replace(/\n/gi,'<br>') + '</span></span>';
+                                    new_text += ' | <span class="gclh_cache_note"><svg style="color: #4a4a4ad4; vertical-align: middle;" height="16" width="16"><use xlink:href="#messages--inline"></use></svg><span style="left: -250px; width: 300px;">' + $(text).find('#srOnlyCacheNote').html().replace(/\n/gi,'<br>') + '</span></span>';
                                 }
                             }
                             new_text += '</div>';
@@ -12051,10 +12040,10 @@ var mainGC = function() {
         var prop = ' style="border: none; visibility: hidden; width: 2px; height: 2px;" alt="">';
         var code = '<img src="https://s11.flagcounter.com/count2/906f/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
 //--> $$002
-        code += '<img src="https://c.andyhoppe.com/1624925815"' + prop; // Besucher
-        code += '<img src="https://c.andyhoppe.com/1624925846"' + prop; // Seitenaufrufe
-        code += '<img src="https://www.worldflagcounter.com/hP9"' + prop;
-        code += '<img src="https://s11.flagcounter.com/count2/XjeY/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
+        code += '<img src="https://c.andyhoppe.com/1626461566"' + prop; // Besucher
+        code += '<img src="https://c.andyhoppe.com/1626461669"' + prop; // Seitenaufrufe
+        code += '<img src="https://www.worldflagcounter.com/hSk"' + prop;
+        code += '<img src="https://s11.flagcounter.com/count2/swo5/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
 //<-- $$002
         div.innerHTML = code;
         side.appendChild(div);
@@ -13741,7 +13730,7 @@ var mainGC = function() {
             html += checkboxy('settings_log_inline', 'Log cache from listing (inline)') + show_help("With the inline log you can open a log form inside the listing, without loading a new page.<br><br>If you're using an ad-blocking add-on, such as uBlock, the embedded screen may not be allowed. To turn this off, you have to add \"www.geocaching.com\/geocache\/GC*\" to the whitelist, or something similar, of your add-on.") + "<br>";
             html += "&nbsp; " + checkboxy('settings_log_inline_tbX0', 'Show TB list') + "<br>";
             html += newParameterOn1;
-            html += checkboxy('settings_use_one_click_watching', 'Add cache with one click to watchlist') + show_help("With this option, you can add a cache in cache listing to your watchlist with just one click.") + "<br>";
+            html += checkboxy('settings_use_one_click_watching', 'Add/Remove the cache with one click to watchlist') + show_help("With this option, you can add and remove a cache in cache listing to your watchlist with just one click.") + "<br>";
             html += newParameterVersionSetzen('0.10') + newParameterOff;
             html += checkboxy('settings_improve_add_to_list', 'Show compact layout in \"Add to list\" popup to bookmark a cache') + prem + "<br>";
             html += " &nbsp; &nbsp;" + "Height of popup <select class='gclh_form' id='settings_improve_add_to_list_height' >";
@@ -13785,7 +13774,7 @@ var mainGC = function() {
             html += "<img src=" + global_restore_icon + " id='restore_settings_show_copydata_separator' title='back to default' style='width: 12px; cursor: pointer;'>";
             html += show_help("Here you can enter a separator to use between the addings. The default value is a line feed.") + '<br>';
             // Own entries in copy data to clipboard menu (copy data own stuff, cdos).
-            var ph = "Possible placeholders:<br>&nbsp; #GCName# : GC name<br>&nbsp; #GCCode# : GC code<br>&nbsp; #GCLink# : GC link<br>&nbsp; #GCNameLink# : GC name as a link<br>&nbsp; #GCLink# : GC link<br>&nbsp; #GCType# : GC type (short form)<br>"
+            var ph = "Possible placeholders:<br>&nbsp; #GCName# : GC name<br>&nbsp; #GCCode# : GC code<br>&nbsp; #GCLink# : GC link<br>&nbsp; #GCNameLink# : GC name as a link<br>&nbsp; #GCType# : GC type (short form)<br>"
                    + "&nbsp; #Owner# : Username of the owner<br>&nbsp; #Diff# : Difficulty<br>&nbsp; #Terr# : Terrain<br>&nbsp; #Size# : Size of the cache box<br>&nbsp; #Favo# : Favorites<br>&nbsp; #FavoPerc# : Favorites percentage<br>"
                    + "&nbsp; #Elevation# : Elevation<br>&nbsp; #Coords# : Shown coordinates<br>&nbsp; #Hints# : Additional hints<br>&nbsp; #GCNote# : User note<br>&nbsp; #Founds# : Number of found logs<br>&nbsp; #Attended# : Number of attended logs<br>&nbsp; #FoundsPlus# : Number of found, attended or webcam photo taken logs<br>&nbsp; #WillAttend# : Number of will attend logs<br>&nbsp; #DNFs# : Number of DNF logs<br>"
                    + "&nbsp; #Date# : Actual date<br>&nbsp; #Time# : Actual time in format hh:mm<br>&nbsp; #DateTime# : Actual date actual time<br>&nbsp; #yyyy# : Current year<br>&nbsp; #mm# : Current month<br>&nbsp; #dd# : Current day<br>"

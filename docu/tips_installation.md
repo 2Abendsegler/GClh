@@ -12,7 +12,8 @@
 * Install the script [GC little helper II](https://github.com/2Abendsegler/GClh/raw/master/gc_little_helper_II.user.js) under the script manager.<br>
 
 ### <a id="safari_de"></a><img src="/images/safari_logo_small.png" title="Safari" alt="Safari"> Safari:
-* Install the script manager [Tampermonkey](https://safari.tampermonkey.net/tampermonkey.safariextz) as Add-On in Safari.<br>
+* Up to Safari 11: Install the script manager [Tampermonkey](https://safari.tampermonkey.net/tampermonkey.safariextz) as Add-On in Safari.<br>
+* From Safari 12: Install the script manager [Tampermonkey](https://apps.apple.com/app/apple-store/id1482490089?pt=117945903&ct=tm.net&mt=8) as Add-On in Safari.<br>
 * Install the script [GC little helper II](https://github.com/2Abendsegler/GClh/raw/master/gc_little_helper_II.user.js) under the script manager.<br>
 
 ### <a id="opera_de"></a><img src="/images/opera_logo_small.png" title="Opera" alt="Opera"> Opera:
@@ -50,7 +51,8 @@ Process the following instructions on your Android device:<br><br>
 * Installiere das Script [GC little helper II](https://github.com/2Abendsegler/GClh/raw/master/gc_little_helper_II.user.js) unter dem Scriptmanager.<br>
 
 ### <a id="safari_de"></a><img src="/images/safari_logo_small.png" title="Safari" alt="Safari"> Safari:
-* Installiere den Scriptmanager [Tampermonkey](https://safari.tampermonkey.net/tampermonkey.safariextz) als Add-On in Safari.<br>
+* Bis Safari 11: Installiere den Scriptmanager [Tampermonkey](https://safari.tampermonkey.net/tampermonkey.safariextz) als Add-On in Safari.<br>
+* Ab Safari 12: Installiere den Scriptmanager [Tampermonkey](https://apps.apple.com/app/apple-store/id1482490089?pt=117945903&ct=tm.net&mt=8) als Add-On in Safari.<br>
 * Installiere das Script [GC little helper II](https://github.com/2Abendsegler/GClh/raw/master/gc_little_helper_II.user.js) unter dem Scriptmanager.<br>
 
 ### <a id="opera_de"></a><img src="/images/opera_logo_small.png" title="Opera" alt="Opera"> Opera:
