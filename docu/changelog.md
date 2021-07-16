@@ -46,7 +46,7 @@
 		<strong>Fix:</strong> [Cache Listing] "#GCNote# : User note" in "Copy Data to Clipboard" feature does not work anymore. [<a href="https://github.com/2Abendsegler/GClh/issues/1843" title="Issue 1843">1843</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br>
 	</li>
 	<li>
-		<strong>Fix:</strong> [Browse Map, Search Map] The display of the Personal Cache Note in the additional cache data is not correct. [<a href="https://github.com/2Abendsegler/GClh/issues/1845" title="Issue 1845">1845</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br>
+		<strong>Fix:</strong> [Browse Map, Search Map] The display of the Personal Cache Note in the additional cache data is not correct. [<a href="https://github.com/2Abendsegler/GClh/issues/1845" title="Issue 1845">1845</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br><br>
 	</li>
 </ul>
 (17.07.2021)<br>
