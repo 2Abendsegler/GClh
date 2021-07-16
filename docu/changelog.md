@@ -32,12 +32,12 @@
 ## v0.11.5.1:
 <ul>	
 	<li>
-		<strong>Info:</strong> Script manager Tampermonkey not longer free Safari browser.<br>
-		It seems that the script manager Tampermonkey is no longer free from Safari 12 onwards. If you want to use the script manager Tampermonkey for free, you can do so with the browsers Mozilla Firefox, Google Chrome ... .<br>
+		<strong>Info:</strong> Script manager Tampermonkey not longer free under Safari browser.<br>
+		It seems that the script manager Tampermonkey is no longer free from Safari 12 onwards. If you want to use the script manager Tampermonkey for free, you can do so with the browsers Mozilla Firefox, Google Chrome ... .<br><br>
 	</li>
 	<li>
 		<strong>New:</strong> [Cache Listing] Enable "one click Stop Watching". [<a href="https://github.com/2Abendsegler/GClh/issues/1822" title="Issue 1822">1822</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br>
-		<img src="../images/0.11.5.1/Screen01.gif" alt="Screen01.gif"><br>
+		<img src="../images/0.11.5.1/Screen01.gif" alt="Screen01.gif"><br><br>
 	</li>
 	<li>
 		<strong>Fix:</strong> [Cache Listing] Fix "one click Watching". [<a href="https://github.com/2Abendsegler/GClh/issues/1822" title="Issue 1822">1822</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br>
