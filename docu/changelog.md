@@ -1,3 +1,4 @@
+<a href="#v01151" title="GClh II version 0.11.5.1 (17.07.2021)">v0.11.5.1</a> &nbsp;
 <a href="#v0115" title="GClh II version 0.11.5 (03.07.2021)">v0.11.5</a> &nbsp;
 <a href="#v0114" title="GClh II version 0.11.4 (29.05.2021)">v0.11.4</a> &nbsp;
 <a href="#v0113" title="GClh II version 0.11.3 (23.05.2021)">v0.11.3</a> &nbsp;
@@ -25,6 +26,32 @@
 <a href="#v0101" title="GClh II version 0.10.1 (20.12.2019)">v0.10.1</a> &nbsp;
 <a href="#v010" title="GClh II version 0.10 (13.12.2019)">v0.10</a> &nbsp;
 <a href="changelog_before.md" title="Go to earlier changelog">Earlier changelog</a> &nbsp;
+
+
+---
+## v0.11.5.1:
+<ul>	
+	<li>
+		<strong>Info:</strong> Script manager Tampermonkey not longer free under Safari browser.<br>
+		It seems that the script manager Tampermonkey is no longer free from Safari 12 onwards. If you want to use the script manager Tampermonkey for free, you can do so with the browsers Mozilla Firefox, Google Chrome ... .<br><br>
+	</li>
+	<li>
+		<strong>New:</strong> [Cache Listing] Enable "one click Stop Watching". [<a href="https://github.com/2Abendsegler/GClh/issues/1822" title="Issue 1822">1822</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br>
+		<img src="../images/0.11.5.1/Screen01.gif" alt="Screen01.gif"><br><br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Cache Listing] Fix "one click Watching". [<a href="https://github.com/2Abendsegler/GClh/issues/1822" title="Issue 1822">1822</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Cache Listing] "#GCNote# : User note" in "Copy Data to Clipboard" feature does not work anymore. [<a href="https://github.com/2Abendsegler/GClh/issues/1843" title="Issue 1843">1843</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Browse Map, Search Map] The display of the Personal Cache Note in the additional cache data is not correct. [<a href="https://github.com/2Abendsegler/GClh/issues/1845" title="Issue 1845">1845</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br><br>
+	</li>
+</ul>
+(17.07.2021)<br>
+released by <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a><br>
+<br>
 
 ---
 ## v0.11.5:
