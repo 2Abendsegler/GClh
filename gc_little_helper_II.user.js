@@ -337,8 +337,7 @@ var variablesInit = function(c) {
     c.settings_hide_disclaimer = getValue("settings_hide_disclaimer", true);
     c.settings_hide_cache_notes = getValue("settings_hide_cache_notes", false);
     c.settings_adapt_height_cache_notes = getValue("settings_adapt_height_cache_notes", true);
-    c.settings_hide_empty_cache_notes = getValue("settings_hide_empty_cache_notes", true);	
-	c.settings_change_font_cache_notes = getValue("settings_change_font_cache_notes", true);	
+    c.settings_hide_empty_cache_notes = getValue("settings_hide_empty_cache_notes", true);
     c.settings_show_all_logs = getValue("settings_show_all_logs", true);
     c.settings_show_all_logs_count = getValue("settings_show_all_logs_count", "30");
     c.settings_decrypt_hint = getValue("settings_decrypt_hint", true);
@@ -639,9 +638,6 @@ var variablesInit = function(c) {
     c.settings_map_overview_browse_map_icon_new_tab = getValue("settings_map_overview_browse_map_icon_new_tab", false);
     c.settings_map_overview_search_map_icon = getValue("settings_map_overview_search_map_icon", true);
     c.settings_map_overview_search_map_icon_new_tab = getValue("settings_map_overview_search_map_icon_new_tab", false);
-
-    c.settings_map_previewmap_oldstyle = getValue("settings_map_previewmap_oldstyle", true);
-
     c.settings_cache_notes_min_size = getValue("settings_cache_notes_min_size", 54);
     c.settings_show_link_to_browse_map = getValue("settings_show_link_to_browse_map", false);
     c.settings_show_hide_upvotes_but = getValue("settings_show_hide_upvotes_but", false);
@@ -662,7 +658,8 @@ var variablesInit = function(c) {
     c.settings_save_as_pq_set_all = getValue("settings_save_as_pq_set_all", true);
     c.settings_compact_layout_cod = getValue("settings_compact_layout_cod", false);
     c.settings_show_button_fav_proz_cod = getValue("settings_show_button_fav_proz_cod", true);
-
+    c.settings_change_font_cache_notes = getValue("settings_change_font_cache_notes", true);
+    c.settings_map_previewmap_oldstyle = getValue("settings_map_previewmap_oldstyle", true);
 
     tlc('START userToken');
     try {
@@ -3030,27 +3027,26 @@ var mainGC = function() {
         } catch(e) {gclh_error("Build map overview",e);}
     }
 
+// Personal cache note at cache listing.
     if (is_page("cache_listing")) {
         // Personal cache note: Adapt height of edit field for personal cache note.
         function calcHeightOfCacheNote() {
             return ($("#viewCacheNote").parent().height()*1.02+36 > settings_cache_notes_min_size ? $("#viewCacheNote").parent().height()*1.02+36 : settings_cache_notes_min_size);
         }
-		
-		// Personal cache note at cache listing.
-		// Change font in personal cache note to monospaced
-		if (settings_change_font_cache_notes) {
-			$("#viewCacheNote").css("font-family", "monospace").css("font-size", "14px").css("text-decoration", "none");
-			
-		}
-		
+
+        // Change font in personal cache note to monospaced.
+        if (settings_change_font_cache_notes) {
+            $("#viewCacheNote").css("font-family", "monospace").css("font-size", "14px").css("text-decoration", "none");
+            
+        }
+
         if (settings_adapt_height_cache_notes) {
             try {
                 var note = ($('.Note.PersonalCacheNote')[0] || $('.NotesWidget')[0]);
                 if (note) $("#cacheNoteText").height(calcHeightOfCacheNote());
             } catch(e) {gclh_error("Adapt size of edit field for personal cache note",e);}
         }
-			
-		
+
         // Personal cache note: Hide complete and Show/Hide Cache Note.
         try {
             var note = ($('.Note.PersonalCacheNote')[0] || $('.NotesWidget')[0]);
@@ -3275,13 +3271,11 @@ var mainGC = function() {
 
 // Open preview map in a new browser tab (old style) on Cache Listing Page.
     if ((settings_map_previewmap_oldstyle) && is_page("cache_listing") && $('#uxLatLon')[0]) {
-
-    // open new Tab in listing map
+    // Open new Tab in listing map.
         try {
             var newstrPROStyle = '<a id="ctl00_ContentBody_uxViewLargerMap" title="View Larger Map in the old style" href="https://www.geocaching.com/map/?lat='+lat+'&lng='+lng+'" target="_blank" rel="noopener noreferrer">View Larger Map (Old map style)</a>';
             document.getElementById('ctl00_ContentBody_uxViewLargerMap').outerHTML = newstrPROStyle;
-
-        }   catch(e) {gclh_error("Open preview map in a new browser tab",e)};
+        } catch(e) {gclh_error("Open preview map in a new browser tab",e)};
     }
 
 
@@ -3307,8 +3301,6 @@ var mainGC = function() {
             span.appendChild(document.createTextNode("Show area on Google Maps"));
             link.appendChild(span);
             box.appendChild(link);
-
-
         } catch(e) {gclh_error("Show google maps link",e);}
     }
 
@@ -6033,7 +6025,7 @@ var mainGC = function() {
             var template = "";
             template = '';
             template += '<span class="draft-icon">';
-            template += '    <a target="_blank" href="https://coord.info/{{geocache.referenceCode}}">';
+            template += '    <a href="https://coord.info/{{geocache.referenceCode}}">';
             template += '       <div class="gclh-draft-graphics">';
             template += '           <svg class="gclh-draft-icon">';
             template += '               <use xlink:href="/account/app/ui-icons/sprites/cache-types.svg#icon-{{geocache.geocacheType.id}}{{#if disabled}}-disabled{{/if}}"></use>';
@@ -13309,7 +13301,7 @@ var mainGC = function() {
             html += checkboxy('settings_f4_call_gclh_config', 'Call via F4 key') + show_help("This option allows you to access the GClh II Config (this page) by pressing the F4 key on your keyboard from any GC page.") + "<br>";
             html += newParameterOn2;
             html += checkboxy('settings_call_config_via_sriptmanager', 'Call via the script manager') + show_help("This option creates a link to the GClh II Config in the menu of the script manager (Tampermonkey, Violentmonkey ...). With a click on the icon of the script manager you get to the menu of the script manager. The link to the GClh II Config is then located below the GC little helper II. The link is available on any GC page.") + "<br>";
-            html += newParameterVersionSetzen('0.11') + newParameterOff;
+            html += newParameterVersionSetzen('0.11') + newParameterOff;       
             html += checkboxy('settings_f2_save_gclh_config', 'Save via F2 key') + show_help("This option allows you to save the GClh II Config (this page) by pressing the F2 key on your keyboard instead of scrolling down and selecting the Save button.") + "<br>";
             html += checkboxy('settings_esc_close_gclh_config', 'Close via ESC key') + show_help("This option allows you to close the GClh II Config (this page) by pressing the ESC key on your keyboard instead of scrolling down and selecting the Close button.") + "<br>";
             html += checkboxy('settings_show_save_message', 'Show info message when data are saved') + "<br>";
@@ -13753,9 +13745,10 @@ var mainGC = function() {
             html += newParameterVersionSetzen(0.9) + newParameterOff;
             html += checkboxy('settings_hide_empty_cache_notes', 'Hide personal cache notes if empty') + show_help("You can hide the personal cache notes if they are empty. There will be a link to show them to add a note.") + "<br>";
             html += checkboxy('settings_hide_cache_notes', 'Hide personal cache notes completely') + show_help("You can hide the personal cache notes completely, if you don't want to use them.") + "<br>";
-			html += newParameterOn2;
-			html += checkboxy('settings_change_font_cache_notes', 'Change personal cache notes to monospace') + show_help("Change personal cache notes to monospace.") + "<br>";
-			html += newParameterVersionSetzen('0.11cp') + newParameterOff;
+            html += newParameterOn2;
+            html += checkboxy('settings_change_font_cache_notes', 'Change personal cache notes to monospace') + show_help("Change personal cache notes to monospace.") + "<br>";
+            html += newParameterVersionSetzen('0.11') + newParameterOff;
+
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>Cache Detail Navigation <font class='gclh_small' style='vertical-align: text-bottom;'>(right sidebar)</font></b>" + "</div>";
             html += checkboxy('settings_log_inline', 'Log cache from listing (inline)') + show_help("With the inline log you can open a log form inside the listing, without loading a new page.<br><br>If you're using an ad-blocking add-on, such as uBlock, the embedded screen may not be allowed. To turn this off, you have to add \"www.geocaching.com\/geocache\/GC*\" to the whitelist, or something similar, of your add-on.") + "<br>";
             html += "&nbsp; " + checkboxy('settings_log_inline_tbX0', 'Show TB list') + "<br>";
@@ -13906,7 +13899,8 @@ var mainGC = function() {
             html += checkboxy('settings_show_google_maps', 'Show link to Google Maps') + show_help("This option shows a link at the top of the second map in the listing. With this link you get directly to Google Maps in the area, where the cache is.") + "<br>";
             html += newParameterOn2;
             html += checkboxy('settings_map_previewmap_oldstyle', 'Open the map in oldstyle') + show_help("This option open the second map in the listing in the old style. With this link you get directly to overview map, where the cache is.") + "<br>";
-			html += newParameterVersionSetzen('0.11cp') + newParameterOff;
+			html += newParameterVersionSetzen('0.11') + newParameterOff;
+
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>Logs Header</b>" + "</div>";
             html += newParameterOn3;
             html += checkboxy('settings_show_all_logs_but', 'Show button \"Show all logs\" above the logs') + "<br>";
@@ -15029,7 +15023,6 @@ var mainGC = function() {
                 'settings_make_config_main_areas_hideable',
                 'settings_faster_profile_trackables',
                 'settings_show_google_maps',
-                'settings_map_previewmap_oldstyle',
                 'settings_show_log_it',
                 'settings_show_nearestuser_profil_link',
                 'settings_show_homezone',
@@ -15210,7 +15203,8 @@ var mainGC = function() {
                 'settings_map_show_btn_hide_header',
                 'settings_compact_layout_cod',
                 'settings_show_button_fav_proz_cod',
-				'settings_change_font_cache_notes',
+                'settings_change_font_cache_notes',
+                'settings_map_previewmap_oldstyle',
             );
             for (var i = 0; i < checkboxes.length; i++) {
                 if (document.getElementById(checkboxes[i])) setValue(checkboxes[i], document.getElementById(checkboxes[i]).checked);
