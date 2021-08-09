@@ -1433,6 +1433,8 @@ var mainGC = function() {
                 linklistOnTop();
                 tlc('START buildSpecialLinklistLinks');
                 buildSpecialLinklistLinks();
+                tlc('START setSpecialLinks');
+                setSpecialLinks();
                 tlc('START runAfterRedirect');
                 runAfterRedirect();
                 tlc('START showDraftIndicatorInHeader');
@@ -1875,6 +1877,34 @@ var mainGC = function() {
         } catch(e) {gclh_error("Aufbau Links zum Aufruf von Config, Sync und Find Player aus Linklist (1. Schritt)",e);}
     }
 
+// Special Links aus Linklist bzw. Default Links versorgen.
+    function setSpecialLinks() {
+        try {
+            // Links zu Nearest Lists/Map in Linklist und Default Links setzen.
+            if (getValue("home_lat", 0) != 0 && getValue("home_lng") != 0) {
+                var link = "/seek/nearest.aspx?lat=" + (getValue("home_lat") / 10000000) + "&lng=" + (getValue("home_lng") / 10000000) + "&dist=25&disable_redirect=";
+                setLnk("lnk_nearestlist", link);
+                setLnk("lnk_nearestlist_profile", link);
+                var link = map_url + "?lat=" + (getValue("home_lat") / 10000000) + "&lng=" + (getValue("home_lng") / 10000000);
+                setLnk("lnk_nearestmap", link);
+                setLnk("lnk_nearestmap_profile", link);
+                var link = "/seek/nearest.aspx?lat=" + (getValue("home_lat") / 10000000) + "&lng=" + (getValue("home_lng") / 10000000) + "&dist=25&f=1&disable_redirect=";
+                setLnk("lnk_nearestlist_wo", link);
+                setLnk("lnk_nearestlist_wo_profile", link);
+            }
+            // Links zu den eigenen Trackables in Linklist und Default Links setzen.
+            if (getValue("uid", "") != "") {
+                var link = "/track/search.aspx?o=1&uid=" + getValue("uid");
+                setLnk("lnk_my_trackables", link);
+                setLnk("lnk_my_trackables_profile", link);
+            }
+        } catch(e) {gclh_error("Special Links",e);}
+    }
+    function setLnk(lnk, link) {
+        if (document.getElementsByName(lnk)[0]) document.getElementsByName(lnk)[0].href = link;
+        if (document.getElementsByName(lnk)[1]) document.getElementsByName(lnk)[1].href = link;
+    }
+
 // Run after redirect.
     function runAfterRedirect() {
         try {
@@ -1884,10 +1914,10 @@ var mainGC = function() {
 
                 // Adopt home coords in GClh.
                 if (postbackValue == "errhomecoord") {
-                    var mess = "To use this link, the GC little helper II has to know your home coordinates. \n"
-                    + "Do you want to go to the special area and let GC little helper II save \n"
+                    var mess = "To use this link, the GC little helper II has to know your home coordinates. "
+                    + "Do you want to go to the special area and let GC little helper II save "
                     + "your home coordinates automatically?\n\n"
-                    + "GC little helper II will save it automatically. You have nothing to do at the\n"
+                    + "GC little helper II will save it automatically. You have nothing to do at the "
                     + "following page \"Home Location\", except, to choose your link again.\n"
                     + "(But, please wait until page \"Home Location\" is loading complete.)";
                     if (window.confirm(mess)) document.location.href = "/account/settings/homelocation";
@@ -1895,10 +1925,10 @@ var mainGC = function() {
 
                 // Adopt uid of own trackables in GClh.
                 } else if (postbackValue == "errowntrackables") {
-                    var mess = "To use this link, GC little helper II has to know the identification of \n"
-                             + "your trackables. Do you want to go to your dashboard and \n"
+                    var mess = "To use this link, GC little helper II has to know the identification of "
+                             + "your trackables. Do you want to go to your dashboard and "
                              + "let GC little helper II save the identification (uid) automatically?\n\n"
-                             + "GC little helper II will save it automatically. You have nothing to do at the\n"
+                             + "GC little helper II will save it automatically. You have nothing to do at the "
                              + "following page \"Dashboard\", except, to choose your link again.\n"
                              + "(But, please wait until page \"Dashboard\" is loading complete.)";
                     if (window.confirm(mess)) document.location.href = "/my/default.aspx";
@@ -11382,35 +11412,6 @@ var mainGC = function() {
             }
         }
     } catch(e) {gclh_error("Aufbau Links zum Aufruf von Config, Sync und Find Player (2. Schritt)",e);}
-
-// Special Links aus Linklist bzw. Default Links versorgen.
-    try {
-        setSpecialLinks();
-    } catch(e) {gclh_error("Special Links",e);}
-    function setSpecialLinks() {
-        // Links zu Nearest Lists/Map in Linklist und Default Links setzen.
-        if (getValue("home_lat", 0) != 0 && getValue("home_lng") != 0) {
-            var link = "/seek/nearest.aspx?lat=" + (getValue("home_lat") / 10000000) + "&lng=" + (getValue("home_lng") / 10000000) + "&dist=25&disable_redirect=";
-            setLnk("lnk_nearestlist", link);
-            setLnk("lnk_nearestlist_profile", link);
-            var link = map_url + "?lat=" + (getValue("home_lat") / 10000000) + "&lng=" + (getValue("home_lng") / 10000000);
-            setLnk("lnk_nearestmap", link);
-            setLnk("lnk_nearestmap_profile", link);
-            var link = "/seek/nearest.aspx?lat=" + (getValue("home_lat") / 10000000) + "&lng=" + (getValue("home_lng") / 10000000) + "&dist=25&f=1&disable_redirect=";
-            setLnk("lnk_nearestlist_wo", link);
-            setLnk("lnk_nearestlist_wo_profile", link);
-        }
-        // Links zu den eigenen Trackables in Linklist und Default Links setzen.
-        if (getValue("uid", "") != "") {
-            var link = "/track/search.aspx?o=1&uid=" + getValue("uid");
-            setLnk("lnk_my_trackables", link);
-            setLnk("lnk_my_trackables_profile", link);
-        }
-    }
-    function setLnk(lnk, link) {
-        if (document.getElementsByName(lnk)[0]) document.getElementsByName(lnk)[0].href = link;
-        if (document.getElementsByName(lnk)[1]) document.getElementsByName(lnk)[1].href = link;
-    }
 
 // Build link to config and sync in script manager menue.
     try {
