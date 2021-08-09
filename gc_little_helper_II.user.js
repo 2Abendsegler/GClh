@@ -1884,10 +1884,10 @@ var mainGC = function() {
 
                 // Adopt home coords in GClh.
                 if (postbackValue == "errhomecoord") {
-                    var mess = "To use this link, the GC little helper II has to know your home coordinates. \n"
-                    + "Do you want to go to the special area and let GC little helper II save \n"
+                    var mess = "To use this link, the GC little helper II has to know your home coordinates. "
+                    + "Do you want to go to the special area and let GC little helper II save "
                     + "your home coordinates automatically?\n\n"
-                    + "GC little helper II will save it automatically. You have nothing to do at the\n"
+                    + "GC little helper II will save it automatically. You have nothing to do at the "
                     + "following page \"Home Location\", except, to choose your link again.\n"
                     + "(But, please wait until page \"Home Location\" is loading complete.)";
                     if (window.confirm(mess)) document.location.href = "/account/settings/homelocation";
@@ -1895,10 +1895,10 @@ var mainGC = function() {
 
                 // Adopt uid of own trackables in GClh.
                 } else if (postbackValue == "errowntrackables") {
-                    var mess = "To use this link, GC little helper II has to know the identification of \n"
-                             + "your trackables. Do you want to go to your dashboard and \n"
+                    var mess = "To use this link, GC little helper II has to know the identification of "
+                             + "your trackables. Do you want to go to your dashboard and "
                              + "let GC little helper II save the identification (uid) automatically?\n\n"
-                             + "GC little helper II will save it automatically. You have nothing to do at the\n"
+                             + "GC little helper II will save it automatically. You have nothing to do at the "
                              + "following page \"Dashboard\", except, to choose your link again.\n"
                              + "(But, please wait until page \"Dashboard\" is loading complete.)";
                     if (window.confirm(mess)) document.location.href = "/my/default.aspx";
