@@ -1433,6 +1433,8 @@ var mainGC = function() {
                 linklistOnTop();
                 tlc('START buildSpecialLinklistLinks');
                 buildSpecialLinklistLinks();
+                tlc('START setSpecialLinks');
+                setSpecialLinks();
                 tlc('START runAfterRedirect');
                 runAfterRedirect();
                 tlc('START showDraftIndicatorInHeader');
@@ -1873,6 +1875,34 @@ var mainGC = function() {
                 document.getElementsByName("lnk_findplayer")[0].addEventListener('click', createFindPlayerForm, false);
             }
         } catch(e) {gclh_error("Aufbau Links zum Aufruf von Config, Sync und Find Player aus Linklist (1. Schritt)",e);}
+    }
+
+// Special Links aus Linklist bzw. Default Links versorgen.
+    function setSpecialLinks() {
+        try {
+            // Links zu Nearest Lists/Map in Linklist und Default Links setzen.
+            if (getValue("home_lat", 0) != 0 && getValue("home_lng") != 0) {
+                var link = "/seek/nearest.aspx?lat=" + (getValue("home_lat") / 10000000) + "&lng=" + (getValue("home_lng") / 10000000) + "&dist=25&disable_redirect=";
+                setLnk("lnk_nearestlist", link);
+                setLnk("lnk_nearestlist_profile", link);
+                var link = map_url + "?lat=" + (getValue("home_lat") / 10000000) + "&lng=" + (getValue("home_lng") / 10000000);
+                setLnk("lnk_nearestmap", link);
+                setLnk("lnk_nearestmap_profile", link);
+                var link = "/seek/nearest.aspx?lat=" + (getValue("home_lat") / 10000000) + "&lng=" + (getValue("home_lng") / 10000000) + "&dist=25&f=1&disable_redirect=";
+                setLnk("lnk_nearestlist_wo", link);
+                setLnk("lnk_nearestlist_wo_profile", link);
+            }
+            // Links zu den eigenen Trackables in Linklist und Default Links setzen.
+            if (getValue("uid", "") != "") {
+                var link = "/track/search.aspx?o=1&uid=" + getValue("uid");
+                setLnk("lnk_my_trackables", link);
+                setLnk("lnk_my_trackables_profile", link);
+            }
+        } catch(e) {gclh_error("Special Links",e);}
+    }
+    function setLnk(lnk, link) {
+        if (document.getElementsByName(lnk)[0]) document.getElementsByName(lnk)[0].href = link;
+        if (document.getElementsByName(lnk)[1]) document.getElementsByName(lnk)[1].href = link;
     }
 
 // Run after redirect.
@@ -11382,35 +11412,6 @@ var mainGC = function() {
             }
         }
     } catch(e) {gclh_error("Aufbau Links zum Aufruf von Config, Sync und Find Player (2. Schritt)",e);}
-
-// Special Links aus Linklist bzw. Default Links versorgen.
-    try {
-        setSpecialLinks();
-    } catch(e) {gclh_error("Special Links",e);}
-    function setSpecialLinks() {
-        // Links zu Nearest Lists/Map in Linklist und Default Links setzen.
-        if (getValue("home_lat", 0) != 0 && getValue("home_lng") != 0) {
-            var link = "/seek/nearest.aspx?lat=" + (getValue("home_lat") / 10000000) + "&lng=" + (getValue("home_lng") / 10000000) + "&dist=25&disable_redirect=";
-            setLnk("lnk_nearestlist", link);
-            setLnk("lnk_nearestlist_profile", link);
-            var link = map_url + "?lat=" + (getValue("home_lat") / 10000000) + "&lng=" + (getValue("home_lng") / 10000000);
-            setLnk("lnk_nearestmap", link);
-            setLnk("lnk_nearestmap_profile", link);
-            var link = "/seek/nearest.aspx?lat=" + (getValue("home_lat") / 10000000) + "&lng=" + (getValue("home_lng") / 10000000) + "&dist=25&f=1&disable_redirect=";
-            setLnk("lnk_nearestlist_wo", link);
-            setLnk("lnk_nearestlist_wo_profile", link);
-        }
-        // Links zu den eigenen Trackables in Linklist und Default Links setzen.
-        if (getValue("uid", "") != "") {
-            var link = "/track/search.aspx?o=1&uid=" + getValue("uid");
-            setLnk("lnk_my_trackables", link);
-            setLnk("lnk_my_trackables_profile", link);
-        }
-    }
-    function setLnk(lnk, link) {
-        if (document.getElementsByName(lnk)[0]) document.getElementsByName(lnk)[0].href = link;
-        if (document.getElementsByName(lnk)[1]) document.getElementsByName(lnk)[1].href = link;
-    }
 
 // Build link to config and sync in script manager menue.
     try {
