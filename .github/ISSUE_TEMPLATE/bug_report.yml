@@ -55,6 +55,7 @@ body:
         - Chrome
         - Opera
         - Safari
+        - Vivaldi
         - Edge
         - Other
       multiple: true
@@ -63,8 +64,8 @@ body:
   - type: input
     id: version
     attributes:
-      label: Version
-      placeholder: e.g. 0.9.12
+      label: GClh Version
+      placeholder: e.g. 0.11.5
     validations:
       required: true
   - type: textarea

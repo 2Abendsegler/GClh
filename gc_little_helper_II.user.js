@@ -658,8 +658,8 @@ var variablesInit = function(c) {
     c.settings_save_as_pq_set_all = getValue("settings_save_as_pq_set_all", true);
     c.settings_compact_layout_cod = getValue("settings_compact_layout_cod", false);
     c.settings_show_button_fav_proz_cod = getValue("settings_show_button_fav_proz_cod", true);
-    c.settings_change_font_cache_notes = getValue("settings_change_font_cache_notes", true);
-    c.settings_map_previewmap_oldstyle = getValue("settings_map_previewmap_oldstyle", true);
+    c.settings_change_font_cache_notes = getValue("settings_change_font_cache_notes", false);
+    c.settings_larger_map_as_browse_map = getValue("settings_larger_map_as_browse_map", false);
 
     tlc('START userToken');
     try {
@@ -3029,25 +3029,19 @@ var mainGC = function() {
 
 // Personal cache note at cache listing.
     if (is_page("cache_listing")) {
-        // Personal cache note: Adapt height of edit field for personal cache note.
+        // Adapt height of edit field for personal cache note.
         function calcHeightOfCacheNote() {
             return ($("#viewCacheNote").parent().height()*1.02+36 > settings_cache_notes_min_size ? $("#viewCacheNote").parent().height()*1.02+36 : settings_cache_notes_min_size);
         }
-
-        // Change font in personal cache note to monospaced.
-        if (settings_change_font_cache_notes) {
-            $("#viewCacheNote").css("font-family", "monospace").css("font-size", "14px").css("text-decoration", "none");
-            
-        }
-
         if (settings_adapt_height_cache_notes) {
             try {
                 var note = ($('.Note.PersonalCacheNote')[0] || $('.NotesWidget')[0]);
                 if (note) $("#cacheNoteText").height(calcHeightOfCacheNote());
             } catch(e) {gclh_error("Adapt size of edit field for personal cache note",e);}
         }
-
-        // Personal cache note: Hide complete and Show/Hide Cache Note.
+        // Change font to monospace.
+        if (settings_change_font_cache_notes) $("#viewCacheNote, #cacheNoteText").css("font-family", "monospace");
+        // Hide complete and Show/Hide Cache Note.
         try {
             var note = ($('.Note.PersonalCacheNote')[0] || $('.NotesWidget')[0]);
             if (settings_hide_cache_notes && note) note.remove();
@@ -3080,7 +3074,7 @@ var mainGC = function() {
                 injectPageScript(code, 'body');
             }
         } catch(e) {gclh_error("Hide complete and Show/Hide Cache Note",e);}
-        // Personal cache note: Focus Cachenote-Textarea on Click of the Note (to avoid double click to edit).
+        // Focus Cachenote-Textarea on Click of the Note (to avoid double click to edit).
         try {
             var editCacheNote = document.querySelector('#editCacheNote');
             if (editCacheNote) {
@@ -3098,9 +3092,7 @@ var mainGC = function() {
                         }
                     });
                 });
-                observer.observe(editCacheNote, {
-                    attributes: true // Configure it to listen to attribute changes.
-                });
+                observer.observe(editCacheNote, {attributes: true});
             }
         } catch(e) {gclh_error("Focus Cachenote-Textarea on Click of the Note",e);}
     }
@@ -3269,15 +3261,13 @@ var mainGC = function() {
         } catch(e) {gclh_error("Improve inventory list",e);}
     }
 
-// Open preview map in a new browser tab (old style) on Cache Listing Page.
-    if ((settings_map_previewmap_oldstyle) && is_page("cache_listing") && $('#uxLatLon')[0]) {
-    // Open new Tab in listing map.
+// Replace link to larger map in preview map in cache listing with the Browse Map.
+    if (settings_larger_map_as_browse_map && is_page("cache_listing") && $('#uxLatLon')[0]) {
         try {
-            var newstrPROStyle = '<a id="ctl00_ContentBody_uxViewLargerMap" title="View Larger Map in the old style" href="https://www.geocaching.com/map/?lat='+lat+'&lng='+lng+'" target="_blank" rel="noopener noreferrer">View Larger Map (Old map style)</a>';
+            var newstrPROStyle = '<a id="ctl00_ContentBody_uxViewLargerMap" title="View Larger Browse Map" href="https://www.geocaching.com/map/?lat='+lat+'&lng='+lng+'" target="_blank" rel="noopener noreferrer">View Larger Browse Map</a>';
             document.getElementById('ctl00_ContentBody_uxViewLargerMap').outerHTML = newstrPROStyle;
-        } catch(e) {gclh_error("Open preview map in a new browser tab",e)};
+        } catch(e) {gclh_error("Replace link to larger map in preview map in cache listing with the Browse Map",e);}
     }
-
 
 // Show Google-Maps Link on Cache Listing Page.
     if (settings_show_google_maps && is_page("cache_listing") && $('#ctl00_ContentBody_uxViewLargerMap')[0] && $('#uxLatLon')[0] && $('#ctl00_ContentBody_CoordInfoLinkControl1_uxCoordInfoCode')[0]) {
@@ -13746,7 +13736,7 @@ var mainGC = function() {
             html += checkboxy('settings_hide_empty_cache_notes', 'Hide personal cache notes if empty') + show_help("You can hide the personal cache notes if they are empty. There will be a link to show them to add a note.") + "<br>";
             html += checkboxy('settings_hide_cache_notes', 'Hide personal cache notes completely') + show_help("You can hide the personal cache notes completely, if you don't want to use them.") + "<br>";
             html += newParameterOn2;
-            html += checkboxy('settings_change_font_cache_notes', 'Change personal cache notes to monospace') + show_help("Change personal cache notes to monospace.") + "<br>";
+            html += checkboxy('settings_change_font_cache_notes', 'Change font of personal cache notes to monospace') + "<br>";
             html += newParameterVersionSetzen('0.11') + newParameterOff;
 
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>Cache Detail Navigation <font class='gclh_small' style='vertical-align: text-bottom;'>(right sidebar)</font></b>" + "</div>";
@@ -13896,10 +13886,10 @@ var mainGC = function() {
             html += newParameterVersionSetzen('0.11') + newParameterOff;
 
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>Map Preview</b>" + "</div>";
-            html += checkboxy('settings_show_google_maps', 'Show link to Google Maps') + show_help("This option shows a link at the top of the second map in the listing. With this link you get directly to Google Maps in the area, where the cache is.") + "<br>";
             html += newParameterOn2;
-            html += checkboxy('settings_map_previewmap_oldstyle', 'Open the map in oldstyle') + show_help("This option open the second map in the listing in the old style. With this link you get directly to overview map, where the cache is.") + "<br>";
+            html += checkboxy('settings_larger_map_as_browse_map', 'Replace link to larger map with the Browse Map') + "<br>";
             html += newParameterVersionSetzen('0.11') + newParameterOff;
+            html += checkboxy('settings_show_google_maps', 'Show link to Google Maps') + show_help("This option shows a link at the top of the second map in the listing. With this link you get directly to Google Maps in the area, where the cache is.") + "<br>";
 
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>Logs Header</b>" + "</div>";
             html += newParameterOn3;
@@ -15204,7 +15194,7 @@ var mainGC = function() {
                 'settings_compact_layout_cod',
                 'settings_show_button_fav_proz_cod',
                 'settings_change_font_cache_notes',
-                'settings_map_previewmap_oldstyle',
+                'settings_larger_map_as_browse_map',
             );
             for (var i = 0; i < checkboxes.length; i++) {
                 if (document.getElementById(checkboxes[i])) setValue(checkboxes[i], document.getElementById(checkboxes[i]).checked);
