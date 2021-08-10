@@ -13301,7 +13301,7 @@ var mainGC = function() {
             html += checkboxy('settings_f4_call_gclh_config', 'Call via F4 key') + show_help("This option allows you to access the GClh II Config (this page) by pressing the F4 key on your keyboard from any GC page.") + "<br>";
             html += newParameterOn2;
             html += checkboxy('settings_call_config_via_sriptmanager', 'Call via the script manager') + show_help("This option creates a link to the GClh II Config in the menu of the script manager (Tampermonkey, Violentmonkey ...). With a click on the icon of the script manager you get to the menu of the script manager. The link to the GClh II Config is then located below the GC little helper II. The link is available on any GC page.") + "<br>";
-            html += newParameterVersionSetzen('0.11') + newParameterOff;       
+            html += newParameterVersionSetzen('0.11') + newParameterOff;
             html += checkboxy('settings_f2_save_gclh_config', 'Save via F2 key') + show_help("This option allows you to save the GClh II Config (this page) by pressing the F2 key on your keyboard instead of scrolling down and selecting the Save button.") + "<br>";
             html += checkboxy('settings_esc_close_gclh_config', 'Close via ESC key') + show_help("This option allows you to close the GClh II Config (this page) by pressing the ESC key on your keyboard instead of scrolling down and selecting the Close button.") + "<br>";
             html += checkboxy('settings_show_save_message', 'Show info message when data are saved') + "<br>";
@@ -13899,7 +13899,7 @@ var mainGC = function() {
             html += checkboxy('settings_show_google_maps', 'Show link to Google Maps') + show_help("This option shows a link at the top of the second map in the listing. With this link you get directly to Google Maps in the area, where the cache is.") + "<br>";
             html += newParameterOn2;
             html += checkboxy('settings_map_previewmap_oldstyle', 'Open the map in oldstyle') + show_help("This option open the second map in the listing in the old style. With this link you get directly to overview map, where the cache is.") + "<br>";
-			html += newParameterVersionSetzen('0.11') + newParameterOff;
+            html += newParameterVersionSetzen('0.11') + newParameterOff;
 
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>Logs Header</b>" + "</div>";
             html += newParameterOn3;
