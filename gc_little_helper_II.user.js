@@ -13139,9 +13139,9 @@ var mainGC = function() {
             html += "    <tbody>";
 //--> $$006
             // Bezeichnung:         GC Name                 Abw. GitHub Name            ProjM  DevL   Dev    BugR   Separator
-            html += thanksLineBuild("2Abendsegler",         "",                         true,  true,  false, true,  false);
-            html += thanksLineBuild("Ruko2010",             "",                         true,  true,  false, true,  true );
-            html += thanksLineBuild("capoaira",             "",                         false, true,  false, true,  false);
+            html += thanksLineBuild("2Abendsegler",         "",                         true,  true,  true,  true,  false);
+            html += thanksLineBuild("Ruko2010",             "",                         true,  true,  true,  true,  false);
+            html += thanksLineBuild("capoaira",             "",                         false, true,  true,  true,  true );
             // Rangliste Development von hier https://github.com/2Abendsegler/GClh/graphs/contributors.
             html += thanksLineBuild("CachingFoX",           "",                         false, false, true,  true,  false);
             html += thanksLineBuild("Herr Ma",              "",                         false, false, true,  true,  false);
