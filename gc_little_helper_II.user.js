@@ -3058,6 +3058,9 @@ var mainGC = function() {
 
 // Personal cache note at cache listing.
     if (is_page("cache_listing")) {
+        // Personal cache note: Alignment and look.
+        $('h3.h4').append($('#pcn_help').remove().get().reverse());
+        appendCssStyle('#viewCacheNote {text-decoration: none !important;}');
         // Personal cache note: Adapt height of edit field for personal cache note.
         function calcHeightOfCacheNote() {
             return ($("#viewCacheNote").parent().height()*1.02+36 > settings_cache_notes_min_size ? $("#viewCacheNote").parent().height()*1.02+36 : settings_cache_notes_min_size);
@@ -9506,6 +9509,7 @@ var mainGC = function() {
                 css += '.search-bar-inner {margin-right: 10px !important;}';
                 css += '.search-bar, .cache-preview-header, .cache-preview-attributes, .cache-preview-action-menu, .cache-open-text-cta, .cache-preview-description, .cache-preview-activities .view-all-row, .cache-preview-activities header {padding: 5px 12px !important;}';
                 css += '.sidebar-control .checkbox {margin-right: 2px;}';
+                css += '#search-term-input {height: 34px !important;}';
                 // Cache list and cache details.
                 css += '.header-top {display: none !important;}';
                 css += '.search-bar-back-cta {height: 24px; width: 24px; padding: 6px 0px; margin-left: -2px;}';
@@ -9513,7 +9517,7 @@ var mainGC = function() {
                 css += '.search-term-input, .search-term-form button, .cache-preview-activities .view-all-row {font-size: 14px !important; height: 35px !important;}';
                 css += '.search-term-form svg {padding-top: 4px;}';
                 css += '.cache-detail-preview:not(.list-cache) {height: calc(100% - 22px) !important; margin-top: -24px;}';
-                css += '.geocache-action-bar {padding: 0 10px 5px !important;}';
+                css += '.geocache-action-bar {padding: 0 12px 5px !important;}';
                 css += '.geocache-list-container ul li, .LazyLoad.is-visible {height: 48px !important;}';
                 css += '.geocache-item {padding: 6px 10px !important;}';
                 css += '.geocache-item-data span {margin-right: 2px;}';
@@ -9580,7 +9584,8 @@ var mainGC = function() {
                 css += '.dismiss-list-cache-button {margin: 2px !important;}';
                 css += '.dismiss-active-list-button {padding: 0px 0px 5px 0px;}';
                 css += '.dismiss-active-list-button-label {height: 34px; margin-right: 12px;}';
-                css += '.dismiss-active-list-button-icon svg {height: 24px !important; width: 24px !important; margin-left: 2px;}';
+                css += '.dismiss-active-list-button-icon svg {height: 24px !important; width: 24px !important; margin-left: 6px; display: flex;}';
+                css += '.dismiss-list-cache-button svg {height: 24px !important; width: 24px !important; margin-left: 4px; display: flex;}';
                 css += '.list-hub {padding-bottom: 0px !important; overflow: auto !important; margin-bottom: 22px;}';
                 css += '.list-hub ul li {height: 48px !important;}';
                 css += '.list-hub ul li + li {border-top: 1px solid #e4e4e4;}';
@@ -9682,7 +9687,9 @@ var mainGC = function() {
             css += '#searchmap_sidebar_enhancements img {vertical-align: bottom; height: 14px;}';
             // GClh Action Bar (Save as PQ and Hide Header Buttons).
             css += '#gclh_action_bar {display: flex; color: #4a4a4a; cursor: default;}'
-            css += '.geocache-action-bar {padding: 5px 10px !important;}';
+            css += '.geocache-action-bar.sidebar-control {padding-top: 0px !important;}';
+            css += 'div.sidebar-control:nth-child(3) .search-bar {padding-top: 0px !important;}';
+            css += '.geocache-action-bar {padding: 5px 12px !important;}';
             css += '#gclh_action_bar span, #gclh_action_bar a {margin-top: 2px;}';
             // Save as PQ.
             css += '.gclh_PQHead {display: flex;}';
