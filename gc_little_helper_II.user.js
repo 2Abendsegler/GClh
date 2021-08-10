@@ -31,6 +31,7 @@
 // @connect      raw.githubusercontent.com
 // @connect      api.open-elevation.com
 // @connect      secure.geonames.org
+// @connect      api.geonames.org
 // @connect      coord.info
 // @grant        GM_getValue
 // @grant        GM_setValue
@@ -3533,6 +3534,10 @@ var mainGC = function() {
             }
             if (settings_secondary_elevation_service > 0) {
                 elevationServices.push(elevationServicesData[settings_secondary_elevation_service]);
+            }
+            // Fallback for Geonames
+            if (elevationServices[0].name == "Geonames-Elevation" || elevationServices[1].name == "Geonames-Elevation") {
+                elevationServices.push(elevationServicesData[4]);
             }
             // This function can be re-entered.
             function getElevations(serviceIndex,locations) {
