@@ -326,5 +326,7 @@
   "settings_save_as_pq_set_defaults": false,
   "settings_save_as_pq_set_all": true,
   "settings_compact_layout_cod": false,
-  "settings_show_button_fav_proz_cod": true
+  "settings_show_button_fav_proz_cod": true,
+  "settings_change_font_cache_notes": false,
+  "settings_larger_map_as_browse_map": false
 }
