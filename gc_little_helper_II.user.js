@@ -77,13 +77,13 @@ var start = function(c) {
 
 var checksBeforeRunning = function() {
     if (typeof GM.info != "undefined" && typeof GM.info.scriptHandler != "undefined" && GM.info.scriptHandler == 'Greasemonkey') {
-        var text = 'Sorry, the script GC little helper II does not run with script manager Greasemonkey.\nPlease use the script manager Tampermonkey or an other similar script manager.\n\nDo you want to see the "Tips for the installation"?\n ';
+        var text = 'Sorry, the script GC little helper II does not run with script manager Greasemonkey. Please use the script manager Tampermonkey or an other similar script manager.\n\nDo you want to see the "Tips for the installation"?\n ';
         var url = 'https://github.com/2Abendsegler/GClh/blob/master/docu/tips_installation.md#en';
         if (window.confirm(text)) window.open(url, '_blank');
         throw Error('Abort because of GClh II installation under script manager Greasemonkey.');
     }
     if (document.getElementsByTagName('head')[0] && document.getElementById('GClh_II_running')) {
-        var text = 'Sorry, the script GC little helper II is already running.\nPlease make sure that it runs only once.\n\nDo you want to see tips on how this could happen \nand what you can do about it?';
+        var text = 'Sorry, the script GC little helper II is already running. Please make sure that it runs only once.\n\nDo you want to see tips on how this could happen and what you can do about it?';
         var url = 'https://github.com/2Abendsegler/GClh/blob/master/docu/faq.md#1-en';
         if (window.confirm(text)) window.open(url, '_blank');
         throw Error('Abort because of GClh II already running.');
@@ -9706,10 +9706,8 @@ var mainGC = function() {
                 // Prüfen, ob zuvor Leaflet-Map aktiv war, Status sich also geändert hat, dann Meldung ausgeben, neuen Status "nicht aktiv" merken.
                 if (getValue("gclhLeafletMapActive", true)) {
                     setValue("gclhLeafletMapActive", false);
-                    var mess = "Please note, that GC little helper II only supports\n"
-                             + "the Leaflet-Map. You are using the Google-Map.\n\n"
-                             + "You can change the map in the left sidebar with \n"
-                             + "the button \"Set Map Preferences\".";
+                    var mess = "Please note, that GC little helper II only supports the Leaflet-Map. You are using the Google-Map.\n\n"
+                             + "You can change the map in the left sidebar with the button \"Set Map Preferences\".";
                     alert(mess);
                 }
             }
@@ -12053,8 +12051,7 @@ var mainGC = function() {
         setTimeout(function() {
             var url = urlChangelog;
             var text = "Version " + scriptVersion + " of  GC little helper II  was successfully installed.\n\n"
-                     + "Do you want to open the changelog in a new tab, to have a quick\n"
-                     + "look at changes and new features?\n";
+                     + "Do you want to open the changelog in a new tab, to have a quick look at changes and new features?\n";
             if (window.confirm(text)) window.open(url, '_blank');
         }, 1000);
     }
@@ -12712,7 +12709,7 @@ var mainGC = function() {
             if (waitCount <= 100) {
                 setTimeout(function(){waitForBulkUpdate(waitCount);}, 50);
             } else {
-                var mess = "ERROR: Can not find the place for bulk updates. Probably changes\non the bookmark list page are responsible for that.\nPlease contact the development team of the script with a new issue\non this page: https://github.com/2Abendsegler/GClh/issues";
+                var mess = "ERROR: Can not find the place for bulk updates. Probably changes on the bookmark list page are responsible for that.\nPlease contact the development team of the script with a new issue on this page: https://github.com/2Abendsegler/GClh/issues";
                 gclh_error("Upload caches from gpx file", {'message': '\n'+mess, 'stack': '' });
                 alert(mess);
             }
@@ -15220,7 +15217,7 @@ var mainGC = function() {
                             });
                         })
                         .fail(function(){
-                            alert('The GC little helper II is not authorized to use your Dropbox. Please go to the GClh II Config and \nauthenticate your Dropbox first. Nevertheless your configuration is saved localy.');
+                            alert('The GC little helper II is not authorized to use your Dropbox. Please go to the GClh II Sync and authenticate it for your Dropbox first. Nevertheless your configuration is saved localy.');
                             window.location.reload(false);
                         });
                 } else window.location.reload(false);
@@ -15523,9 +15520,9 @@ var mainGC = function() {
 // Warnung, wenn Logs nicht durch GClh geladen werden sollen.
     function alert_settings_load_logs_with_gclh() {
         if (!document.getElementById("settings_load_logs_with_gclh").checked) {
-            var mess = "If this option is disabled, there are no VIP-, VUP-, mail-, message-\n"
-                     + "and top icons, no line colors and no mouse activated big images \n"
-                     + "at the logs. Also the VIP and VUP lists, hide avatars, log filter and \n"
+            var mess = "If this option is disabled, there are no VIP-, VUP-, mail-, message- "
+                     + "and top icons, no line colors and no mouse activated big images "
+                     + "at the logs. Also the VIP and VUP lists, hide avatars, log filter and "
                      + "log search and the latest logs won't work.";
             alert(mess);
         }
@@ -15539,9 +15536,7 @@ var mainGC = function() {
             vups = vups.replace(/, (?=,)/g, ",null");
             vups = JSON.parse(vups);
             if (vups.length > 0) {
-                var text = "You have " + vups.length + " VUPs (very unimportant persons) saved. \n"
-                         + "If you disable this feature of VUP processing, the VUPs\n"
-                         + "are deleted. Please note, it can not be revoked.\n\n"
+                var text = "You have " + vups.length + " VUPs (very unimportant persons) saved. If you disable this feature of VUP processing, the VUPs are deleted. Please note, it can not be revoked.\n\n"
                          + "Click OK to delete the VUPs now and disable the feature.";
                 if (window.confirm(text)) {
                     var vups = new Array();
