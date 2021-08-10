@@ -2365,7 +2365,7 @@ var mainGC = function() {
     }
 
 // Improve Watch button handling.
-    if (is_page("cache_listing") && settings_use_one_click_watching) {
+    if (is_page("cache_listing") && settings_use_one_click_watching && $('#ctl00_ContentBody_GeoNav_uxWatchlistBtn a')[0]) {
         try {
             // Prepare one click watching.
             let link = '#ctl00_ContentBody_GeoNav_uxWatchlistBtn span:nth-child(1)';
