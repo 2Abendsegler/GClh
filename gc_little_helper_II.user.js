@@ -9694,8 +9694,48 @@ var mainGC = function() {
         } catch(e) {gclh_error("Improve Search Map",e);}
     }
 
+// Improve Browse Map, improve old map.
+    if (is_page("map")) {
+        try {
+            function checkBrowseMap(waitCount) {
+                if ($('.leaflet-container')[0] || $('.Map.Google')[0]) {
+                    // Display Google-Maps warning, wenn Leaflet-Map nicht aktiv ist.
+                    googleMapsWarningOnBrowseMap();
+                    // Add layers, control to map and set default layers.
+                    if (settings_use_gclh_layercontrol && getValue("gclhLeafletMapActive")) {
+                        addLayersOnBrowseMap();
+                    }
+                    // Hide Map Header.
+                    hideHeaderOnBrowseMap();
+                    // Change map parameter and add homezone to map.
+                    changeParameterAddHomezoneOnBrowseMap();
+                    // Add links to Google, OSM, Flopp's and GeoHack Map on Browse Map.
+                    if (settings_add_link_google_maps_on_gc_map || settings_add_link_osm_on_gc_map || settings_add_link_flopps_on_gc_map || settings_add_link_geohack_on_gc_map) {
+                        addLinksOnBrowseMap();
+                    }
+                    // Relocate button search geocaches on Browse Map.
+                    if (settings_relocate_other_map_buttons) {
+                        relocateButtonOnBrowseMap();
+                    }
+                    // Hide found/hidden Caches on Map. Add Buttons for hiding/showing all Caches.
+                    // Nicht bei Screen Map Preferences und nicht bei PQ-Anzeige.
+                    if (!$('#uxGoogleMapsSelect')[0] && !document.location.href.match(/\.com\/map\/default.aspx\?pq/)) {
+                        hideCachesOnBrowseMap();
+                    }
+                    // Save as PQ and set defaults for Browse Map.
+                    saveAsPQOnBrowseMap();
+                    // Display more informations on Browse Map popup for a cache.
+                    if (settings_show_enhanced_map_popup && getValue("gclhLeafletMapActive")) {
+                        cachePopupOnBrowseMap();
+                    }
+                } else {waitCount++; if (waitCount <= 100) setTimeout(function(){checkBrowseMap(waitCount);}, 100);}
+            }
+            checkBrowseMap(0);
+        } catch(e) {gclh_error("Improve Browse Map",e);}
+    }
+
 // Display Google-Maps warning, wenn Leaflet-Map nicht aktiv ist.
-    if (document.location.href.match(/\.com\/map\//)) {
+    function googleMapsWarningOnBrowseMap() {
         try {
             // Wenn Leaflet-Map aktiv, alles ok, Kz aktiv merken.
             if ($('.leaflet-container')[0]) setValue("gclhLeafletMapActive", true);
@@ -9715,7 +9755,7 @@ var mainGC = function() {
     }
 
 // Add layers, control to map and set default layers.
-    if (settings_use_gclh_layercontrol && document.location.href.match(/\.com\/map\//) && getValue("gclhLeafletMapActive")) {
+    function addLayersOnBrowseMap() {
         try {
             // Auswahl nur bestimmter Layer.
             var map_layers = new Object();
@@ -9840,7 +9880,7 @@ var mainGC = function() {
     }
 
 // Hide Map Header.
-    if (document.location.href.match(/\.com\/map\//)) {
+    function hideHeaderOnBrowseMap() {
         try {
             function checkMapLeaflet(waitCount) {
                 if ($('.leaflet-container')[0]) {
@@ -9865,7 +9905,7 @@ var mainGC = function() {
     }
 
 // Change map parameter and add homezone to map.
-    if (document.location.href.match(/\.com\/map\//)) {
+    function changeParameterAddHomezoneOnBrowseMap() {
         try {
             function changeMap() {
                 if (settings_map_hide_sidebar) {
@@ -9931,7 +9971,7 @@ var mainGC = function() {
     }
 
 // Add links to Google, OSM, Flopp's and GeoHack Map on Browse Map.
-    if (is_page("map") && (settings_add_link_google_maps_on_gc_map || settings_add_link_osm_on_gc_map || settings_add_link_flopps_on_gc_map || settings_add_link_geohack_on_gc_map)) {
+    function addLinksOnBrowseMap() {
         try {
             function attachGeoServiceControl(waitCount) {
                 // Prüfen, ob Layers schon vorhanden sind, erst dann den Button hinzufügen.
@@ -10043,7 +10083,7 @@ var mainGC = function() {
     }
 
 // Relocate button search geocaches on Browse Map.
-    if (is_page("map") && settings_relocate_other_map_buttons) {
+    function relocateButtonOnBrowseMap() {
         try {
             function relocatingSearchMapButton(waitCount) {
                 if ($('.leaflet-control-layers-base').find('input.leaflet-control-layers-selector')[0]) {
@@ -10066,8 +10106,7 @@ var mainGC = function() {
     }
 
 // Hide found/hidden Caches on Map. Add Buttons for hiding/showing all Caches.
-    if (document.location.href.match(/\.com\/map\//) && !$('#uxGoogleMapsSelect')[0] &&  // Nicht bei Screen Map Preferences.
-        !document.location.href.match(/\.com\/map\/default.aspx\?pq/)) {  // Nicht bei PQ-Anzeige.
+    function hideCachesOnBrowseMap() {
         try {
             $('#LegendRed ul')[0].innerHTML += '<li id="Legend3653" class="ct_toggle ct3653 ct_displayed" data-typeid="3653" style="display: none;"></li>';
             if ($('#Legend6')[0]) {
@@ -10158,7 +10197,7 @@ var mainGC = function() {
     }
 
 // Save as PQ and set defaults for Browse Map.
-    if (document.location.href.match(/\.com\/map\//)) {
+    function saveAsPQOnBrowseMap() {
         setValue('settings_save_as_pq_set_defaults', false);
         try {
             function waitForSavePQ(waitCount) {
@@ -10176,7 +10215,7 @@ var mainGC = function() {
     }
 
 // Display more informations on Browse Map popup for a cache.
-    if (document.location.href.match(/\.com\/map\//) && settings_show_enhanced_map_popup && getValue("gclhLeafletMapActive")) {
+    function cachePopupOnBrowseMap() {
         try {
             var template = $("#cacheDetailsTemplate").html().trim();
 
