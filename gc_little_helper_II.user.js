@@ -9759,7 +9759,10 @@ var mainGC = function() {
         try {
             // Auswahl nur bestimmter Layer.
             var map_layers = new Object();
-            if (settings_map_layers == "" || settings_map_layers.length < 1) map_layers = all_map_layers;
+            // Sind keine Layer im Config ausgewählt, werden alle Layer verwendet.
+            // Ist nur ein Layer im Config ausgewählt, wäre er nicht klickbar, weil es sich um einen Radio Button handelt. Deshalb wird dafür
+            // gesorgt, dass mindestens zwei Layer vorhanden sind.
+            if (settings_map_layers == "" || settings_map_layers.length < 2) map_layers = all_map_layers;
             else {
                 for (var i = 0; i < settings_map_layers.length; i++) map_layers[settings_map_layers[i]] = all_map_layers[settings_map_layers[i]];
             }
@@ -9819,6 +9822,11 @@ var mainGC = function() {
                 if (labels) {
                     for (var i=0; i<labels.length; i++) {
                         if (labels[i].children[1].innerHTML.match(defaultLayer)) {
+                            // Wenn der erste Layer der Default Layer ist, wird er hiermit erneut klickbar gemacht.
+                            if (labels[i].children[0].checked && labels.length > 1) {
+                                if (i == 0) labels[i+1].children[0].click();
+                                else labels[i-1].children[0].click();
+                            }
                             labels[i].children[0].click();
                             break;
                         }
@@ -9869,7 +9877,7 @@ var mainGC = function() {
             css += '#gclh_layers .leaflet-control-layers-base label, #gclh_layers .leaflet-control-layers-overlays label {padding: 0px 6px;}';
             css += '#gclh_layers .leaflet-control-layers-base label:hover, #gclh_layers .leaflet-control-layers-overlays label:hover {background-color: #e6f7ef;}';
             // Prevent the buttons from flashing.
-            css += '.leaflet-control-layers.gclh_used {display: inherit;}';
+            css += '.leaflet-control-layers.gclh_used:not(#gclh_geoservices_control) {display: inherit;}';
             css += '.leaflet-control-layers:not(.gclh_used) {display: none;}';
             if (is_page('map')) {
                 // Damit auch mehr als 2 Buttons handlebar.
@@ -9985,7 +9993,7 @@ var mainGC = function() {
     // Common Geoservice functions.
     function initGeoServiceControl() {
         if (is_page('map')) {
-            $('.leaflet-top.leaflet-right').append('<div id="gclh_geoservices_control"  class="gclh-leaflet-control browsemap"></div>');
+            $('.leaflet-top.leaflet-right').append('<div id="gclh_geoservices_control" class="leaflet-control-layers gclh-leaflet-control browsemap"></div>');
         } else {
             $('.map-setting-controls ul li:first').before('<li role="menuitem"><button id="gclh_geoservices_control" class="gclh-leaflet-control map-control searchmap"></button></li>');
         }
@@ -14407,8 +14415,8 @@ var mainGC = function() {
                 });
             });
             // Fill layer lists.
-            var layerListAvailable="";
-            var layerListUnAvailable="";
+            var layerListAvailable = "";
+            var layerListUnAvailable = "";
 
             // Wenn bisher keine Layer ausgewählt, alle auswählen.
             if (settings_map_layers == "" || settings_map_layers.length < 1) {
