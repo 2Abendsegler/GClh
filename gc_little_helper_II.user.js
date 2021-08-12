@@ -31,6 +31,7 @@
 // @connect      raw.githubusercontent.com
 // @connect      api.open-elevation.com
 // @connect      secure.geonames.org
+// @connect      api.geonames.org
 // @connect      coord.info
 // @grant        GM_getValue
 // @grant        GM_setValue
@@ -3418,6 +3419,7 @@ var mainGC = function() {
             elevationServicesData[1]['function'] = addElevationToWaypoints_GoogleElevation;
             elevationServicesData[2]['function'] = addElevationToWaypoints_OpenElevation;
             elevationServicesData[3]['function'] = addElevationToWaypoints_GeonamesElevation;
+            elevationServicesDataFallback[0]['function'] = addElevationToWaypoints_GeonamesElevation;
             function addElevationToWaypoints_GoogleElevation(responseDetails) {
                 try {
                     context = responseDetails.context;
@@ -3481,9 +3483,9 @@ var mainGC = function() {
                     context = responseDetails.context;
                     if (responseDetails.responseText.match(/<html>/)) {
                         if (responseDetails.responseText.match(/Service Unavailable/)) {
-                            gclh_log("\naddElevationToWaypoints_GeonamesElevation():\n- Info: Service Unavailable");
+                            gclh_log("\naddElevationToWaypoints_GeonamesElevation():\n- Info: Service Unavailable\n- url: "+responseDetails.finalUrl);
                         } else {
-                            gclh_log("\naddElevationToWaypoints_GeonamesElevation():\n- Error:\n"+responseDetails.responseText);
+                            gclh_log("\naddElevationToWaypoints_GeonamesElevation():\n- Error:\n"+responseDetails.responseText+"\n- url: "+responseDetails.finalUrl);
                         }
                         getElevations(context.retries+1,context.locations);
                         return;
@@ -3560,9 +3562,15 @@ var mainGC = function() {
             var elevationServices = [];
             if (settings_primary_elevation_service > 0) {
                 elevationServices.push(elevationServicesData[settings_primary_elevation_service]);
+                if (elevationServicesData[settings_primary_elevation_service] && elevationServicesData[settings_primary_elevation_service]['name'] == "Geonames-Elevation") {
+                    elevationServices.push(elevationServicesDataFallback[0]);
+                }
             }
             if (settings_secondary_elevation_service > 0) {
                 elevationServices.push(elevationServicesData[settings_secondary_elevation_service]);
+                if (elevationServicesData[settings_secondary_elevation_service] && elevationServicesData[settings_secondary_elevation_service]['name'] == "Geonames-Elevation") {
+                    elevationServices.push(elevationServicesDataFallback[0]);
+                }
             }
             // This function can be re-entered.
             function getElevations(serviceIndex,locations) {
