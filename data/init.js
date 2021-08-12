@@ -134,6 +134,9 @@ function elevationServicesDataInit(c) {
         { "url" : "https://api.open-elevation.com/api/v1/lookup?locations={locations}", "function": undefined, 'name': 'Open-Elevation' },
         { "url" : "http://api.geonames.org/astergdemJSON?{locations}", "function": undefined, 'name': 'Geonames-Elevation' }
     ];
+    c.elevationServicesDataFallback = [
+        { "url" : "http://api.geonames.org/astergdemJSON?{locations}", "function": undefined, 'name': 'Geonames-Elevation' }
+    ];
 }
 
 function country_idInit(c) {
