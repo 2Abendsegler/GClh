@@ -42,10 +42,16 @@
 		<strong>Fix:</strong> [Cache Listing] Unpublish: Improve Watch button handling. [<a href="https://github.com/2Abendsegler/GClh/issues/1856" title="Issue 1856">1856</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br>
 	</li>
 	<li>
+		<strong>Fix:</strong> [Cache Listing] Alignment and look of personal cache note. [<a href="https://github.com/2Abendsegler/GClh/issues/1869" title="Issue 1869">1869</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
 		<strong>Fix:</strong> [Cache Listing / Maps] Elevation data with geonames run into errors. [<a href="https://github.com/2Abendsegler/GClh/issues/1857" title="Issue 1857">1857</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 	</li>
 	<li>
 		<strong>Fix:</strong> [Browse Map] Map layer replacement doesn't work under Violentmonkey. [<a href="https://github.com/2Abendsegler/GClh/issues/1862" title="Issue 1862">1862</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Search Map] Alignment of sidebar header. [<a href="https://github.com/2Abendsegler/GClh/issues/1869" title="Issue 1869">1869</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 	</li>
 	<li>
 		<strong>Fix:</strong> [Public Profile] Links "show hides" and "show finds" don't work for user ">Doppelherz<". [<a href="https://github.com/2Abendsegler/GClh/issues/1861" title="Issue 1861">1861</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
@@ -54,7 +60,7 @@
 		<strong>Fix:</strong> [Config] Errormessage after press button "Save & Upload" has wrong text if there is no authentication. [<a href="https://github.com/2Abendsegler/GClh/issues/1867" title="Issue 1867">1867</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 	</li>
 	<li>
-		<strong>Fix:</strong> [Global] Nearest links and own trackable link from Linklist don't work. [<a href="https://github.com/2Abendsegler/GClh/issues/1863" title="Issue 1863">1863</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		<strong>Fix:</strong> [Global] Nearest links and own trackable link from Linklist don't work. [<a href="https://github.com/2Abendsegler/GClh/issues/1863" title="Issue 1863">1863</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br><br>
 	</li>
 </ul>
 (20.08.2021)<br>
