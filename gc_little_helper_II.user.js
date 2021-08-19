@@ -1217,21 +1217,21 @@ var mainGCWait = function() {
 // Set global user data and check if logged in.
     tlc('START waitingForUserData');
     function waitingForUserData(waitCount) {
-        if (typeof headerSettings !== 'undefined') {
+        if (typeof headerSettings !== 'undefined' && typeof headerSettings.username !== 'undefined' && headerSettings.username !== null) {
             tlc('Global user data headerSettings found');
             if (typeof headerSettings.username !== 'undefined') global_me = headerSettings.username;
             if (typeof headerSettings.avatarUrl !== 'undefined') global_avatarUrl = headerSettings.avatarUrl;
             if (typeof headerSettings.locale !== 'undefined') global_locale = headerSettings.locale;
             if (typeof headerSettings.findCount !== 'undefined') global_findCount = headerSettings.findCount;
         }
-        if (typeof chromeSettings !== 'undefined') {
+        if (typeof chromeSettings !== 'undefined' && typeof chromeSettings.username !== 'undefined' && chromeSettings.username !== null) {
             tlc('Global user data chromeSettings found');
             if (typeof chromeSettings.username !== 'undefined') global_me = chromeSettings.username;
             if (typeof chromeSettings.avatarUrl !== 'undefined') global_avatarUrl = chromeSettings.avatarUrl;
             if (typeof chromeSettings.locale !== 'undefined') global_locale = chromeSettings.locale;
             if (typeof chromeSettings.findCount !== 'undefined') global_findCount = chromeSettings.findCount;
         }
-        if (typeof _gcUser !== 'undefined') {
+        if (typeof _gcUser !== 'undefined' && typeof _gcUser.username !== 'undefined' && _gcUser.username !== null) {
             tlc('Global user data _gcUser found');
             if (typeof _gcUser.username !== 'undefined') global_me = _gcUser.username;
             if (typeof _gcUser.image !== 'undefined' && typeof _gcUser.image.imageUrl !== 'undefined') global_avatarUrl = _gcUser.image.imageUrl.replace(/\{0\}/,'avatar');
