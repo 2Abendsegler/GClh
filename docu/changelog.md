@@ -1,3 +1,4 @@
+<a href="#v01152" title="GClh II version 0.11.5.2 (20.08.2021)">v0.11.5.2</a> &nbsp;
 <a href="#v01151" title="GClh II version 0.11.5.1 (17.07.2021)">v0.11.5.1</a> &nbsp;
 <a href="#v0115" title="GClh II version 0.11.5 (03.07.2021)">v0.11.5</a> &nbsp;
 <a href="#v0114" title="GClh II version 0.11.4 (29.05.2021)">v0.11.4</a> &nbsp;
@@ -27,6 +28,38 @@
 <a href="#v010" title="GClh II version 0.10 (13.12.2019)">v0.10</a> &nbsp;
 <a href="changelog_before.md" title="Go to earlier changelog">Earlier changelog</a> &nbsp;
 
+
+---
+## v0.11.5.2:
+<ul>	
+	<li>
+		<strong>Fix:</strong> [Cache Listing] Log in button missing if not logged in. [<a href="https://github.com/2Abendsegler/GClh/issues/1877" title="Issue 1877">1877</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Cache Listing] Limited calls on geonames https page result in errors. [<a href="https://github.com/2Abendsegler/GClh/issues/1876" title="Issue 1876">1876</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Cache Listing] Unpublish: Improve Watch button handling. [<a href="https://github.com/2Abendsegler/GClh/issues/1856" title="Issue 1856">1856</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Cache Listing / Maps] Elevation data with geonames run into errors. [<a href="https://github.com/2Abendsegler/GClh/issues/1857" title="Issue 1857">1857</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Browse Map] Map layer replacement doesn't work under Violentmonkey. [<a href="https://github.com/2Abendsegler/GClh/issues/1862" title="Issue 1862">1862</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Public Profile] Links "show hides" and "show finds" don't work for user ">Doppelherz<". [<a href="https://github.com/2Abendsegler/GClh/issues/1861" title="Issue 1861">1861</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Config] Errormessage after press button "Save & Upload" has wrong text if there is no authentication. [<a href="https://github.com/2Abendsegler/GClh/issues/1867" title="Issue 1867">1867</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Global] Nearest links and own trackable link from Linklist don't work. [<a href="https://github.com/2Abendsegler/GClh/issues/1863" title="Issue 1863">1863</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+</ul>
+(20.08.2021)<br>
+released by <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a><br>
+<br>
 
 ---
 ## v0.11.5.1:
