@@ -3372,7 +3372,6 @@ var mainGC = function() {
             elevationServicesData[1]['function'] = addElevationToWaypoints_GoogleElevation;
             elevationServicesData[2]['function'] = addElevationToWaypoints_OpenElevation;
             elevationServicesData[3]['function'] = addElevationToWaypoints_GeonamesElevation;
-            elevationServicesDataFallback[0]['function'] = addElevationToWaypoints_GeonamesElevation;
             function addElevationToWaypoints_GoogleElevation(responseDetails) {
                 try {
                     context = responseDetails.context;
@@ -3515,15 +3514,9 @@ var mainGC = function() {
             var elevationServices = [];
             if (settings_primary_elevation_service > 0) {
                 elevationServices.push(elevationServicesData[settings_primary_elevation_service]);
-                if (elevationServicesData[settings_primary_elevation_service] && elevationServicesData[settings_primary_elevation_service]['name'] == "Geonames-Elevation") {
-                    elevationServices.push(elevationServicesDataFallback[0]);
-                }
             }
             if (settings_secondary_elevation_service > 0) {
                 elevationServices.push(elevationServicesData[settings_secondary_elevation_service]);
-                if (elevationServicesData[settings_secondary_elevation_service] && elevationServicesData[settings_secondary_elevation_service]['name'] == "Geonames-Elevation") {
-                    elevationServices.push(elevationServicesDataFallback[0]);
-                }
             }
             // This function can be re-entered.
             function getElevations(serviceIndex,locations) {
