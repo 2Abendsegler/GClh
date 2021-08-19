@@ -30,7 +30,7 @@
 // @connect      maps.googleapis.com
 // @connect      raw.githubusercontent.com
 // @connect      api.open-elevation.com
-// @connect      secure.geonames.org
+// @connect      api.geonames.org
 // @connect      coord.info
 // @grant        GM_getValue
 // @grant        GM_setValue
@@ -3481,9 +3481,9 @@ var mainGC = function() {
                     context = responseDetails.context;
                     if (responseDetails.responseText.match(/<html>/)) {
                         if (responseDetails.responseText.match(/Service Unavailable/)) {
-                            gclh_log("\naddElevationToWaypoints_GeonamesElevation():\n- Info: Service Unavailable");
+                            gclh_log("\naddElevationToWaypoints_GeonamesElevation():\n- Info: Service Unavailable\n- url: "+responseDetails.finalUrl);
                         } else {
-                            gclh_log("\naddElevationToWaypoints_GeonamesElevation():\n- Error:\n"+responseDetails.responseText);
+                            gclh_log("\naddElevationToWaypoints_GeonamesElevation():\n- Error:\n"+responseDetails.responseText+"\n- url: "+responseDetails.finalUrl);
                         }
                         getElevations(context.retries+1,context.locations);
                         return;
