@@ -16534,6 +16534,8 @@ var mainGC = function() {
 // Encode in URL.
     function urlencode(s, convertPlus) {
         s = s.replace(/&amp;/g, "&");
+        s = s.replace(/&lt;/g, "%3C");
+        s = s.replace(/&gt;/g, "%3E");
         s = encodeURIComponent(s);  // Alles außer: A bis Z, a bis z und - _ . ! ~ * ' ( )
         s = s.replace(/~/g, "%7e");
         s = s.replace(/'/g, "%27");
@@ -16551,6 +16553,8 @@ var mainGC = function() {
         s = s.replace(/%252b/ig, "+");
         s = s.replace(/%7e/g, "~");
         s = s.replace(/%27/g, "'");
+        s = s.replace(/%253C/ig, "<");
+        s = s.replace(/%253E/ig, ">");
         s = decodeUnicodeURIComponent(s);
         if (convertSpace) {
             s = s.replace(/%20/g, " ");
