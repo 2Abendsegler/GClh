@@ -2,7 +2,7 @@
 // @name         GC little helper II
 // @description  Some little things to make life easy (on www.geocaching.com).
 //--> $$000
-// @version      0.11.5.1
+// @version      0.11.5.2
 //<-- $$000
 // @copyright    2010-2016 Torsten Amshove, 2016-2021 2Abendsegler, 2017-2021 Ruko2010
 // @author       Torsten Amshove; 2Abendsegler; Ruko2010
@@ -2202,7 +2202,7 @@ var mainGC = function() {
                 } else {waitCount++; if (waitCount <= 100) setTimeout(function(){copyCoordinatesToClipboard(waitCount);}, 100);}
             }
             copyCoordinatesToClipboard(0);
-        } catch(e) {gclh_error("Copy coordinates to clipboard:",e);}
+        } catch(e) {gclh_error("Copy coordinates to clipboard",e);}
     }
 
 // Copy GC Code to clipboard.
@@ -2381,7 +2381,7 @@ var mainGC = function() {
             $('#ctl00_ContentBody_GeoNav_uxWatchlistBtn')[0].append(saved);
             // Function that handle the one click watching.
             $(link).bind('click', oneClickWatching);
-        } catch(e) {gclh_error("Improve Watch button handling.",e);}
+        } catch(e) {gclh_error("Improve Watch button handling",e);}
     }
     function oneClickWatching() {
         if ($('#ctl00_ContentBody_GeoNav_uxWatchlistBtn .working')[0]) return;
@@ -12047,10 +12047,10 @@ var mainGC = function() {
         var prop = ' style="border: none; visibility: hidden; width: 2px; height: 2px;" alt="">';
         var code = '<img src="https://s11.flagcounter.com/count2/906f/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
 //--> $$002
-        code += '<img src="https://c.andyhoppe.com/1626461566"' + prop; // Besucher
-        code += '<img src="https://c.andyhoppe.com/1626461669"' + prop; // Seitenaufrufe
-        code += '<img src="https://www.worldflagcounter.com/hSk"' + prop;
-        code += '<img src="https://s11.flagcounter.com/count2/swo5/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
+        code += '<img src="https://c.andyhoppe.com/1629414582"' + prop; // Besucher
+        code += '<img src="https://c.andyhoppe.com/1629414625"' + prop; // Seitenaufrufe
+        code += '<img src="https://www.worldflagcounter.com/hWn"' + prop;
+        code += '<img src="https://s11.flagcounter.com/count2/wdK8/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
 //<-- $$002
         div.innerHTML = code;
         side.appendChild(div);
@@ -13193,7 +13193,7 @@ var mainGC = function() {
             html += thanksLineBuild("V60",                  "V60GC",                    false, false, false, true,  false);
             html += thanksLineBuild("vylda",                "",                         false, false, false, true,  false);
             html += thanksLineBuild("winkamol",             "",                         false, false, false, true,  false);
-            var thanksLastUpdate = "02.07.2021";
+            var thanksLastUpdate = "19.08.2021";
 //<-- $$006
             html += "    </tbody>";
             html += "</table>";
