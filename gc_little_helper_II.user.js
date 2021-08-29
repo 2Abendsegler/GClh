@@ -9314,7 +9314,7 @@ var mainGC = function() {
             }
 
             // Check if search URL already has filters set: if not then set default filters otherwise keep current filter.
-            let urlIsFiltered = document.location.href.split('&').length>7 ? true : false;
+            let urlIsFiltered = document.location.href.split('&').length>5 ? true : false;
             let runSetFilter = true;
             // Set default filters.
             function setFilter() {
@@ -9325,48 +9325,39 @@ var mainGC = function() {
                 // No bookmarklist.
                 } else {
                     // Run only once.
-                    if (urlIsFiltered || !runSetFilter) return;
+                    if (urlIsFiltered || !runSetFilter || $('button.filter-toggle').length===0) return;
                     runSetFilter = false;
                     // Each filter has to be clicked twice, otherwise the selection isn't reliable.
                     function doubleClick(sel) {
                         $(sel).click().click();
                     }
+                    // Open filter.
+                    $('button.filter-toggle').click();
                     // Wait for filter.
                     function waitForFilter(waitCount) {
-                        if ($('#gc-search-filters')[0] &&
-                            $('#found-status-filter .gc-radio-control-container:nth-child(3) label')[0] &&
-                            $('#cache-owner-filter .gc-radio-control-container:nth-child(3) label')) {
+                        if ($('#search-filter-type')[0] && $('input[name="hideFinds"][value="1"]')[0] && $('input[name="hideOwned"][value="1"]')[0]) {
                             // Hide found caches.
                             if (settings_map_hide_found) {
-                                doubleClick('#found-status-filter .gc-radio-control-container:nth-child(3) label');
+                                doubleClick('input[name="hideFinds"][value="1"]');
                             }
                             // Hide owned caches.
                             if (settings_map_hide_hidden) {
-                                doubleClick('#cache-owner-filter .gc-radio-control-container:nth-child(3) label');
+                                doubleClick('input[name="hideOwned"][value="1"]');
                             }
                             // Hide cache types.
                             let cache_types = [2,3,4,5,6,8,11,137,1858];
-                            $('input[value="2"][id*="cache-type"]').parents('.filter-container').find('button.gc-selection-toggle').click();
                             for (let i=0; i<cache_types.length; i++) {
                                 if (window['settings_map_hide_'+cache_types[i]]) {
-                                    $('input[value="'+cache_types[i]+'"][id*="cache-type"]').click();
+                                    $('input[value="'+cache_types[i]+'"]').click();
                                 }
                             }
                             // Apply filters to map and close.
-                            console.log('apply')
-                            window.setTimeout(function(){doubleClick('#gc-search-filters .last-filter-control');}, 990);
+                            window.setTimeout(function(){doubleClick('button.control-apply');}, 990);
                             // Hide sidebar.
                             window.setTimeout(function(){hideSidebar();}, 1000);
                         } else {waitCount++; if (waitCount <= 100) setTimeout(function(){waitForFilter(waitCount);}, 50);}
                     }
-                    // Open filter.
-                    function waitForFilterButton(waitCount) {
-                        if ($('button.gc-filter-toggle')[0]) {
-                            $('button.gc-filter-toggle').click();
-                            waitForFilter(0);
-                        } else {waitCount++; if (waitCount <= 100) setTimeout(function(){waitForFilterButton(waitCount);}, 100);}
-                    }
-                    waitForFilterButton(0);
+                    waitForFilter(0);
                 }
             }
 
