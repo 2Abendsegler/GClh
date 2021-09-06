@@ -660,6 +660,8 @@ var variablesInit = function(c) {
     c.settings_show_button_fav_proz_cod = getValue("settings_show_button_fav_proz_cod", true);
     c.settings_change_font_cache_notes = getValue("settings_change_font_cache_notes", false);
     c.settings_larger_map_as_browse_map = getValue("settings_larger_map_as_browse_map", false);
+    c.settings_fav_proz_cod = getValue("settings_fav_proz_cod", true);
+    c.settings_logs_old_fashioned = getValue("settings_logs_old_fashioned", false);
 
     tlc('START userToken');
     try {
@@ -4284,6 +4286,17 @@ var mainGC = function() {
             function sendNewLog(e) {setValue("last_logtext", $('#LogText')[0].value);}
             if ($('.btn-submit')[0] && $('.btn-submit')[0].parentNode) $('.btn-submit')[0].parentNode.addEventListener('click', sendNewLog, true);
         } catch(e) {gclh_error("Last Log-Text speichern",e);}
+    }
+// Automatic opt out to the old log page.
+    if (settings_logs_old_fashioned && document.location.href.match(/\.com\/play\/geocache\/gc\w+\/log\/?$/)) {
+        let gccode = document.location.href.match(/\.com\/play\/geocache\/(gc\w+)\/log/)[1];
+        console.log(gccode);
+        let url = 'https://www.geocaching.com/play/geocache/optout/'+gccode.gcCodeToID();
+        document.location.href = url;
+    }
+    // Prevents that if you click on the blue banner, you will be redirected back to the old page. 
+    if (document.location.href.match(/\.com\/seek\/log\.aspx/)) {
+        $('#uxNewLoggingBannerLink')[0].href += '?gclhNewLog=true';
     }
 
 // Hide social sharing via Facebook, Twitter ... .
@@ -14017,6 +14030,9 @@ var mainGC = function() {
             html += "<div class='gclh_old_new_line'>Old Logging Page Only</div>";
             html += content_settings_submit_log_button.replace("log_button","log_buttonX2");
             html += checkboxy('settings_fieldnotes_old_fashioned', 'Logging drafts old-fashioned') + show_help("This option deactivates on old drafts page the logging of drafts by the new log page and activates logging of drafts by the old-fashioned log page.") + "<br>";
+            html += newParameterOn2;
+            html += checkboxy('settings_logs_old_fashioned', 'Log caches always old-fashioned') + show_help("If you enable this option, you always get the old log page instead of the new one. This does not apply to drafts / field notes. <br> Background: geocaching.com saves the log page you are using in a cookie. If you always delete cookies when you close your browser, the data will be lost.<br>To get the old design for Fieldnotes, you have to use the old Fieldnotes page and activate \"Logging drafts old-fashioned\" here in the GClh config.") + "<br>";
+            html += newParameterVersionSetzen('0.11') + newParameterOff;
             html += "<table><tbody>";
             html += "  <tr><td>Default log type</td>";
             html += "    <td><select class='gclh_form' id='settings_default_logtype'>";
@@ -15248,6 +15264,8 @@ var mainGC = function() {
                 'settings_show_button_fav_proz_cod',
                 'settings_change_font_cache_notes',
                 'settings_larger_map_as_browse_map',
+                'settings_fav_proz_cod',
+                'settings_logs_old_fashioned',
             );
             for (var i = 0; i < checkboxes.length; i++) {
                 if (document.getElementById(checkboxes[i])) setValue(checkboxes[i], document.getElementById(checkboxes[i]).checked);
@@ -17204,7 +17222,7 @@ function injectPageScriptFunction(funct, functCall) {injectPageScript("(" + func
 
 // Convert GCCode to id.
 String.prototype.gcCodeToID = function () {
-    gcCode = this.trim().toUpperCase().substring(2);
+    let gcCode = this.trim().toUpperCase().substring(2);
     let abc = '0123456789ABCDEFGHJKMNPQRTVWXYZ';
     let base = 31;
     let id = -411120;
