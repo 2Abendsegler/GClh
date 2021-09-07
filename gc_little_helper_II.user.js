@@ -12986,39 +12986,45 @@ var mainGC = function() {
         try {
             if (!($(".results").length || settings_search_data.length)) {
             } else {
-                create_config_css_search();
-                $(".filters-toggle").append('&nbsp;<button id="filterCtxMenu" class="btn btn-user" type="button">Manage Filter Sets</button>  ');
-                $(".filters-toggle").append('<div id="ctxMenu" style="display:none;"></div>');
-                $('#filterCtxMenu').click(function() {
-                    var element = $('#ctxMenu');
-                    if (element.css('display') == 'none') {
-                       updateUI();
-                       element.show();
-                       $(this).addClass('btn-user-active');
-                    } else {
-                       element.hide();
-                       $(this).removeClass('btn-user-active');
-                    }
-                });
-                var currentFilter = "";
-                for (var i = 0; i < settings_search_data.length; i++) {
-                    if (settings_search_data[i].url == document.location.href.split("#")[0]) {
-                        currentFilter = "Current Filter Set: "+settings_search_data[i].name;
-                    }
-                }
-                $(".button-group-dynamic").append('<span>'+currentFilter+'</span>');
-                // Close the dialog div if a mouse click outside.
-                $(document).mouseup(function(e) {
-                    var container = $('#ctxMenu');
-                    if (container.css('display') != 'none') {
-                        if (!container.is(e.target) && !($('#filterCtxMenu').is(e.target)) &&  // If the target of the click isn't the container...
-                            container.has(e.target).length === 0) {  // ... nor a descendant of the container
-                            container.hide();
-                            $('#filterCtxMenu').removeClass('btn-user-active');
+                //create_config_css_search();
+                function waitForSearchForm(waitCount) {
+                    if ($("#gc-search-form")[0]) {
+                        $("#gc-search-form").append('<button id="filterCtxMenu" class="gc-filter-toggle"><span aria-hidden="true" class="gc-filter-toggle-icon"><svg><use xlink:href="#filters--inline"></use></svg></span>Manage Filter Sets</button>');
+                        $("#gc-search-form").append('<div id="ctxMenu" style="display:none;"></div>');
+                        $('#filterCtxMenu').click(function(e) {
+                            e.preventDefault();
+                            var element = $('#ctxMenu');
+                            if (element.css('display') == 'none') {
+                               updateUI();
+                               element.show();
+                               $(this).addClass('btn-user-active');
+                            } else {
+                               element.hide();
+                               $(this).removeClass('btn-user-active');
+                            }
+                        });
+                        var currentFilter = "";
+                        for (var i = 0; i < settings_search_data.length; i++) {
+                            if (settings_search_data[i].url == document.location.href.split("#")[0]) {
+                                currentFilter = "Current Filter Set: "+settings_search_data[i].name;
+                            }
                         }
-                    }
-                    return false;
-                });
+                        $(".button-group-dynamic").append('<span>'+currentFilter+'</span>');
+                        // Close the dialog div if a mouse click outside.
+                        $(document).mouseup(function(e) {
+                            var container = $('#ctxMenu');
+                            if (container.css('display') != 'none') {
+                                if (!container.is(e.target) && !($('#filterCtxMenu').is(e.target)) &&  // If the target of the click isn't the container...
+                                    container.has(e.target).length === 0) {  // ... nor a descendant of the container
+                                    container.hide();
+                                    $('#filterCtxMenu').removeClass('btn-user-active');
+                                }
+                            }
+                            return false;
+                        });
+                    } else {waitCount++; if (waitCount <= 100) setTimeout(function(){waitForSearchForm(waitCount);}, 100);}
+                }
+                waitForSearchForm(0);
             }
         } catch(e) {gclh_error("User defined search",e);}
     }
