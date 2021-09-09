@@ -3102,7 +3102,7 @@ var mainGC = function() {
                 }
             // Post Cache new log page:
             } else if (document.location.href.match(/\.com\/play\/geocache\/gc\w+\/log/)) {
-                var id = $('.hidden-by a')[0].href.match(/\/profile\/\?id=(\d+)/);
+                var id = $('.hidden-by a')[0].href.match(/\/profile\/\?id=(\d+)/); 
                 if (id && id[1]) {
                     var idLink = "/p/default.aspx?id=" + id[1] + "&tab=geocaches";
                     GM_xmlhttpRequest({
