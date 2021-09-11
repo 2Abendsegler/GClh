@@ -36,7 +36,6 @@
   "settings_show_message": true,
   "settings_show_remove_ignoring_link": true,
   "settings_use_one_click_ignoring": true,
-  "settings_use_one_click_watching": true,
   "settings_show_common_lists_in_zebra": true,
   "settings_show_common_lists_color_user": true,
   "settings_show_cache_listings_in_zebra": false,
@@ -326,5 +325,9 @@
   "settings_save_as_pq_set_defaults": false,
   "settings_save_as_pq_set_all": true,
   "settings_compact_layout_cod": false,
-  "settings_show_button_fav_proz_cod": true
+  "settings_show_button_fav_proz_cod": true,
+  "settings_change_font_cache_notes": false,
+  "settings_larger_map_as_browse_map": false,
+  "settings_fav_proz_cod": true,
+  "settings_logs_old_fashioned": false
 }
