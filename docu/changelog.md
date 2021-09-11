@@ -47,6 +47,12 @@
 		If you want to use this feature, you have to activate it.<br><br>
 	</li>
 	<li>
+		<strong>New:</strong> [Log Form] Automatic opt out to the old log form. [<a href="https://github.com/2Abendsegler/GClh/issues/1884" title="Issue 1884">1884</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_logs_old_fashioned" title="Link to your GClh II Config">Settings -> Logging</a><br>
+		<img src="../images/0.11.7/Screen05.jpg" alt="Screen05.jpg"><br>
+		If you want to use this feature, you have to activate it.<br><br>
+	</li>
+	<li>
 		<strong>Fix:</strong> [New Log Form] Templates, Smilies and VUP/VUP/Mail missing, Placeholders and Signature does not work. [<a href="https://github.com/2Abendsegler/GClh/issues/1855" title="Issue 1855">1855</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br>
 	</li>
 </ul>
