@@ -1,4 +1,4 @@
-<a href="#v0117" title="GClh II version 0.11.7 (13.09.2021)">v0.11.7</a> &nbsp;
+<a href="#v0117" title="GClh II version 0.11.7 (12.09.2021)">v0.11.7</a> &nbsp;
 <a href="#v01152" title="GClh II version 0.11.5.2 (20.08.2021)">v0.11.5.2</a> &nbsp;
 <a href="#v01151" title="GClh II version 0.11.5.1 (17.07.2021)">v0.11.5.1</a> &nbsp;
 <a href="#v0115" title="GClh II version 0.11.5 (03.07.2021)">v0.11.5</a> &nbsp;
@@ -72,7 +72,7 @@
 		<strong>Fix:</strong> [Cache Listing] Remove One-Click Watching, because it was added by GS. [<a href="https://github.com/2Abendsegler/GClh/issues/1902" title="Issue 1902">1902</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br>
 	</li>
 </ul>
-(13.09.2021)<br>
+(12.09.2021)<br>
 released by <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a><br>
 <br>
 
