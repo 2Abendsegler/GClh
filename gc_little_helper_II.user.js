@@ -3676,6 +3676,7 @@ var mainGC = function() {
                     css += '.flatpickr-wrapper .icon {top: 22px !important;}';
                     css += '.flatpickr-calendar.arrowTop::before, .flatpickr-calendar.arrowTop::after {margin-left: 55px;}';
                     css += 'a:hover, a:focus {outline: none !important;}';
+                    css += '.log-view-wrapper a {text-decoration: none !important;} .log-view-wrapper a:hover {text-decoration: underline !important;}';
                     appendCssStyle(css);
                 } else {waitCount++; if (waitCount <= 100) setTimeout(function(){buildSmiliesAndLogtemplates(waitCount, box);}, 100);}
             }
