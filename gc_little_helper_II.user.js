@@ -9654,6 +9654,15 @@ var mainGC = function() {
                     // Add layers, control to map and set default layers.
                     if (settings_use_gclh_layercontrol && getValue("gclhLeafletMapActive")) {
                         addLayersOnBrowseMap();
+                    } else {
+                        // Buttons auch ohne GClh halbwegs ausrichten. (GC Layer sind ok, GME ist etwas verrutscht, geht aber.)
+                        var css = '';
+                        css += '.leaflet-control-layers-list {right: 0px; top: 0px; height: inherit; display: none; position: absolute !important; border-radius: 7px; box-shadow: 0 1px 7px rgba(0,0,0,0.4); background-color: white; white-space: nowrap; padding: 6px;}';
+                        if (is_page('map')) {
+                            // Damit auch mehr als 2 Buttons handlebar.
+                            css += '.leaflet-control-layers + .leaflet-control {position: unset; right: unset;} .leaflet-control {clear: left}';
+                        }
+                        appendCssStyle(css);
                     }
                     // Hide Map Header.
                     hideHeaderOnBrowseMap();
