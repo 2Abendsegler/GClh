@@ -3150,24 +3150,22 @@ var mainGC = function() {
                 }
             // Post Cache new log page:
             } else if (document.location.href.match(/\.com\/play\/geocache\/gc\w+\/log/)) {
-                if ($('.muted')[0] && $('.muted')[0].children[1]) {
-                    var id = $('.muted')[0].children[1].href.match(/^https?:\/\/www\.geocaching\.com\/profile\/\?id=(\d+)/);
-                    if (id && id[1]) {
-                        var idLink = "/p/default.aspx?id=" + id[1] + "&tab=geocaches";
-                        GM_xmlhttpRequest({
-                            method: "GET",
-                            url: idLink,
-                            onload: function(response) {
-                                if (response.responseText) {
-                                    var [username, guid] = getUserGuidFromProfile(response.responseText);
-                                    if (username && guid) {
-                                        var side = $('.muted')[0].children[1];
-                                        buildSendIcons(side, username, "per guid", guid);
-                                    }
+                var id = $('.hidden-by a')[0].href.match(/\/profile\/\?id=(\d+)/);
+                if (id && id[1]) {
+                    var idLink = "/p/default.aspx?id=" + id[1] + "&tab=geocaches";
+                    GM_xmlhttpRequest({
+                        method: "GET",
+                        url: idLink,
+                        onload: function(response) {
+                            if (response.responseText) {
+                                var [username, guid] = getUserGuidFromProfile(response.responseText);
+                                if (username && guid) {
+                                    var side = $('.hidden-by a')[0];
+                                    buildSendIcons(side, username, "per guid", guid);
                                 }
                             }
-                        });
-                    }
+                        }
+                    });
                 }
             // Rest:
             } else {
@@ -3699,10 +3697,11 @@ var mainGC = function() {
     }
 // Show Smilies und Log Templates new log page.
     if (document.location.href.match(/\.com\/play\/geocache\/gc\w+\/log/) &&
-        $('.muted')[0] && $('#LogDate')[0] && $('#logContent')[0] && $('#LogText')[0] && $('#reportProblemInfo')[0]) {
+        $('#LogDate')[0] && $('#logContent')[0] && $('#LogText')[0] && $('#reportProblemInfo')[0]) {
         try {
             var [aGCTBName, aGCTBLink, aGCTBNameLink, aLogDate] = getGCTBInfo(true);
-            var aOwner = decode_innerHTML($('.muted')[0].children[1]);
+            var aOwner = decode_innerHTML($('.hidden-by a')[0]);
+            aOwner = aOwner.match(/(.*)(<a href=)?/)[1];
             insert_smilie_fkt("LogText");
             insert_tpl_fkt(true);
             var liste = "";
@@ -4243,7 +4242,7 @@ var mainGC = function() {
         window.addEventListener("load", gclh_setFocus, false);
         var finds = global_findCount;
         var me = global_me;
-        if (newLogPage) var owner = $('.muted')[0].children[1].childNodes[0].textContent;
+        if (newLogPage) var owner = $('.hidden-by a')[0].innerHTML;
         else var owner = document.getElementById('ctl00_ContentBody_LogBookPanel1_WaypointLink').nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.innerHTML;
         document.getElementById(id).innerHTML = document.getElementById(id).innerHTML.replace(/#found_no#/ig, finds);
         finds++;
@@ -6753,8 +6752,8 @@ var mainGC = function() {
 
             // Post cache log new page:
             // ----------
-            } else if (document.location.href.match(/\.com\/play\/geocache\/gc\w+\/log/) && $('.muted')[0] && $('.muted')[0].children[1]) {
-                var id = $('.muted')[0].children[1].href.match(/^https?:\/\/www\.geocaching\.com\/profile\/\?id=(\d+)/);
+            } else if (document.location.href.match(/\.com\/play\/geocache\/gc\w+\/log/) && $('.hidden-by a')[0]) {
+                var id = $('.hidden-by a')[0].href.match(/\/profile\/\?id=(\d+)/);
                 if (id && id[1]) {
                     var idLink = "/p/default.aspx?id=" + id[1] + "&tab=geocaches";
                     GM_xmlhttpRequest({
@@ -6765,7 +6764,7 @@ var mainGC = function() {
                                 [user, guid] = getUserGuidFromProfile(response.responseText);
                                 if (user) {
                                     appendCssStyle(".gclh_vip {margin-left: 8px; margin-right: 4px;}");
-                                    var side = document.getElementsByClassName('muted')[0].children[1];
+                                    var side = $('.hidden-by a')[0];
                                     link = gclh_build_vipvup(user, global_vips, "vip");
                                     side.appendChild(link);
                                     if (settings_process_vup && user != global_activ_username) {
@@ -11817,9 +11816,9 @@ var mainGC = function() {
                     g_name = $('#ctl00_ContentBody_LogBookPanel1_WaypointLink')[0].parentNode.children[2].innerHTML;
                 }
             // Log post cache new log page.
-            } else if ($('.muted')[0] && $('.muted')[0].children[0].innerHTML) {
+            } else if ($('.hidden-by a')[0] && $('.hidden-by a')[0].innerHTML) {
                 g_gc = true;
-                g_name = $('.muted')[0].children[0].innerHTML;
+                g_name = $('.hidden-by a')[0].innerHTML;
             }
             if (g_code != "") {
                 g_link = "(https://coord.info/" + g_code + ")";
@@ -12158,12 +12157,10 @@ var mainGC = function() {
         var GCTBName = ""; var GCTBLink = ""; var GCTBNameLink = ""; var LogDate = "";
         if (newLogPage) {
             if ($('#LogDate'[0])) var LogDate = $('#LogDate')[0].value;
-            if ($('.muted')[0] && $('.muted')[0].children[0]) {
-                var GCTBName = $('.muted')[0].children[0].innerHTML;
-                GCTBName = GCTBName.replace(/'/g,"");
-                var GCTBLink = $('.muted')[0].children[0].href;
-                var GCTBNameLink = "[" + GCTBName + "](" + GCTBLink + ")";
-            }
+            var GCTBName = $('a.log-subheading')[0].innerHTML;
+            GCTBName = GCTBName.replace(/'/g,"");
+            var GCTBLink = $('a.log-subheading')[0].href;
+            var GCTBNameLink = "[" + GCTBName + "](" + GCTBLink + ")";
         } else {
             if ($('#uxDateVisited')[0]) var LogDate = $('#uxDateVisited')[0].value;
             if ($('#ctl00_ContentBody_LogBookPanel1_WaypointLink')[0].nextSibling.nextSibling) {
