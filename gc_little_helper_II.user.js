@@ -2,7 +2,7 @@
 // @name         GC little helper II
 // @description  Some little things to make life easy (on www.geocaching.com).
 //--> $$000
-// @version      0.11.5.2
+// @version      0.11.7
 //<-- $$000
 // @copyright    2010-2016 Torsten Amshove, 2016-2021 2Abendsegler, 2017-2021 Ruko2010
 // @author       Torsten Amshove; 2Abendsegler; Ruko2010
@@ -359,7 +359,6 @@ var variablesInit = function(c) {
     c.settings_show_message = getValue("settings_show_message", true);
     c.settings_show_remove_ignoring_link = getValue("settings_show_remove_ignoring_link", true);
     c.settings_use_one_click_ignoring = getValue("settings_use_one_click_ignoring", true);
-    c.settings_use_one_click_watching = getValue("settings_use_one_click_watching", true);
     c.settings_show_common_lists_in_zebra = getValue("settings_show_common_lists_in_zebra", true);
     c.settings_show_common_lists_color_user = getValue("settings_show_common_lists_color_user", true);
     c.settings_show_cache_listings_in_zebra = getValue("settings_show_cache_listings_in_zebra", false);
@@ -658,6 +657,10 @@ var variablesInit = function(c) {
     c.settings_save_as_pq_set_all = getValue("settings_save_as_pq_set_all", true);
     c.settings_compact_layout_cod = getValue("settings_compact_layout_cod", false);
     c.settings_show_button_fav_proz_cod = getValue("settings_show_button_fav_proz_cod", true);
+    c.settings_change_font_cache_notes = getValue("settings_change_font_cache_notes", false);
+    c.settings_larger_map_as_browse_map = getValue("settings_larger_map_as_browse_map", false);
+    c.settings_fav_proz_cod = getValue("settings_fav_proz_cod", true);
+    c.settings_logs_old_fashioned = getValue("settings_logs_old_fashioned", false);
 
     tlc('START userToken');
     try {
@@ -2282,12 +2285,10 @@ var mainGC = function() {
         } catch(e) {gclh_error("Map this Location",e);}
     }
 
-// Improve Ignore, Stop Ignoring, Watch button handling.
-    if (is_page("cache_listing") && ((settings_show_remove_ignoring_link && settings_use_one_click_ignoring) || settings_use_one_click_watching)) {
-        appendCssStyle("#ignoreSaved, #watchSaved {display: none; color: #E0B70A; float: right; padding-left: 0px;}");
-    }
-
 // Improve Ignore, Stop Ignoring button handling.
+    if (is_page("cache_listing") && (settings_show_remove_ignoring_link && settings_use_one_click_ignoring)) {
+        appendCssStyle("#ignoreSaved {display: none; color: #E0B70A; float: right; padding-left: 0px;}");
+    }
     if (is_page("cache_listing") && settings_show_remove_ignoring_link && $('#ctl00_ContentBody_GeoNav_uxIgnoreBtn')[0]) {
         try {
             // Set Ignore.
@@ -2362,63 +2363,6 @@ var mainGC = function() {
         }
         $(link)[0].innerHTML = buttonSetTo;
         $(link)[0].style.backgroundImage = (buttonSetTo == 'Ignore' ? 'url(/images/icons/16/ignore.png)' : 'url('+global_stop_ignore_icon+')');
-    }
-
-// Improve Watch button handling.
-    if (is_page("cache_listing") && settings_use_one_click_watching && $('#ctl00_ContentBody_GeoNav_uxWatchlistBtn a')[0]) {
-        try {
-            // Prepare one click watching.
-            let link = '#ctl00_ContentBody_GeoNav_uxWatchlistBtn span:nth-child(1)';
-            let watchNr = $('#ctl00_ContentBody_GeoNav_uxWatchlistBtn span').html().match(/\d+/);
-            // Name in english.
-            $(link)[0].innerHTML = ($(link).hasClass('add-to-watchlist') ? 'Watch ('+watchNr+')' : 'Stop Watching ('+watchNr+')');
-            // This removes the event listener by GS.
-            $(link).parent().html($(link).parent().html());
-            // Add the saved information.
-            let saved = document.createElement('span');
-            saved.setAttribute('id', 'watchSaved');
-            saved.appendChild(document.createTextNode('saved'));
-            $('#ctl00_ContentBody_GeoNav_uxWatchlistBtn')[0].append(saved);
-            // Function that handle the one click watching.
-            $(link).bind('click', oneClickWatching);
-        } catch(e) {gclh_error("Improve Watch button handling",e);}
-    }
-    function oneClickWatching() {
-        if ($('#ctl00_ContentBody_GeoNav_uxWatchlistBtn .working')[0]) return;
-        $('#ctl00_ContentBody_GeoNav_uxWatchlistBtn span:nth-child(1)').addClass('working');
-        let text = $('body').html();
-        let from = text.indexOf('userToken', text.indexOf('MapTilesEnvironment')) + 13;
-        let length = text.indexOf("';", from) - from;
-        let userToken = text.substr(from, length);
-        let data = {
-            'Add': $(this).hasClass('add-to-watchlist'),
-            'userToken': userToken
-        }
-
-        $.ajax({
-            type: "POST",
-            url: "/seek/cache_details.aspx/HandleWatchlistAction",
-            data: JSON.stringify(data),
-            contentType: "application/json; charset=utf-8",
-            dataType: "json",
-            error: function (XMLHttpRequest, textStatus, errorThrown) {
-                gclh_error("Improve Watch button handling.", 'AJAX call failed');
-            },
-            success: function (result) {changeWatchButton(result);}
-        });
-    }
-    function changeWatchButton(result) {
-        if (result) {
-            let link = '#ctl00_ContentBody_GeoNav_uxWatchlistBtn span:nth-child(1)';
-            let watchNr = +$('#ctl00_ContentBody_GeoNav_uxWatchlistBtn span').html().match(/\d+/);
-            watchNr = ($(link).hasClass('add-to-watchlist') ? watchNr+1 : watchNr-1);
-            $(link).toggleClass('add-to-watchlist');
-            $(link).toggleClass('remove-from-watchlist');
-            $(link)[0].innerHTML = ($(link).hasClass('add-to-watchlist') ? 'Watch ('+watchNr+')' : 'Stop Watching ('+watchNr+')');
-            $(link).removeClass('working');
-            $('#watchSaved')[0].style.display = 'inline';
-            $('#watchSaved').fadeOut(2000, 'swing');
-        }
     }
 
 // Improve Add to list in cache listing.
@@ -3058,7 +3002,7 @@ var mainGC = function() {
 
 // Personal cache note at cache listing.
     if (is_page("cache_listing")) {
-        // Personal cache note: Alignment and look.
+        // Adapt height of edit field for personal cache note.
         $('h3.h4').append($('#pcn_help').remove().get().reverse());
         appendCssStyle('#viewCacheNote {text-decoration: none !important;}');
         // Personal cache note: Adapt height of edit field for personal cache note.
@@ -3071,7 +3015,9 @@ var mainGC = function() {
                 if (note) $("#cacheNoteText").height(calcHeightOfCacheNote());
             } catch(e) {gclh_error("Adapt size of edit field for personal cache note",e);}
         }
-        // Personal cache note: Hide complete and Show/Hide Cache Note.
+        // Change font to monospace.
+        if (settings_change_font_cache_notes) $("#viewCacheNote, #cacheNoteText").css("font-family", "monospace");
+        // Hide complete and Show/Hide Cache Note.
         try {
             var note = ($('.Note.PersonalCacheNote')[0] || $('.NotesWidget')[0]);
             if (settings_hide_cache_notes && note) note.remove();
@@ -3104,7 +3050,7 @@ var mainGC = function() {
                 injectPageScript(code, 'body');
             }
         } catch(e) {gclh_error("Hide complete and Show/Hide Cache Note",e);}
-        // Personal cache note: Focus Cachenote-Textarea on Click of the Note (to avoid double click to edit).
+        // Focus Cachenote-Textarea on Click of the Note (to avoid double click to edit).
         try {
             var editCacheNote = document.querySelector('#editCacheNote');
             if (editCacheNote) {
@@ -3122,9 +3068,7 @@ var mainGC = function() {
                         }
                     });
                 });
-                observer.observe(editCacheNote, {
-                    attributes: true // Configure it to listen to attribute changes.
-                });
+                observer.observe(editCacheNote, {attributes: true});
             }
         } catch(e) {gclh_error("Focus Cachenote-Textarea on Click of the Note",e);}
     }
@@ -3150,24 +3094,22 @@ var mainGC = function() {
                 }
             // Post Cache new log page:
             } else if (document.location.href.match(/\.com\/play\/geocache\/gc\w+\/log/)) {
-                if ($('.muted')[0] && $('.muted')[0].children[1]) {
-                    var id = $('.muted')[0].children[1].href.match(/^https?:\/\/www\.geocaching\.com\/profile\/\?id=(\d+)/);
-                    if (id && id[1]) {
-                        var idLink = "/p/default.aspx?id=" + id[1] + "&tab=geocaches";
-                        GM_xmlhttpRequest({
-                            method: "GET",
-                            url: idLink,
-                            onload: function(response) {
-                                if (response.responseText) {
-                                    var [username, guid] = getUserGuidFromProfile(response.responseText);
-                                    if (username && guid) {
-                                        var side = $('.muted')[0].children[1];
-                                        buildSendIcons(side, username, "per guid", guid);
-                                    }
+                var id = $('.hidden-by a')[0].href.match(/\/profile\/\?id=(\d+)/);
+                if (id && id[1]) {
+                    var idLink = "/p/default.aspx?id=" + id[1] + "&tab=geocaches";
+                    GM_xmlhttpRequest({
+                        method: "GET",
+                        url: idLink,
+                        onload: function(response) {
+                            if (response.responseText) {
+                                var [username, guid] = getUserGuidFromProfile(response.responseText);
+                                if (username && guid) {
+                                    var side = $('.hidden-by a')[0];
+                                    buildSendIcons(side, username, "per guid", guid);
                                 }
                             }
-                        });
-                    }
+                        }
+                    });
                 }
             // Rest:
             } else {
@@ -3291,6 +3233,14 @@ var mainGC = function() {
             var inventory = $('#ctl00_ContentBody_uxTravelBugList_uxInventoryLabel').closest('.CacheDetailNavigationWidget').find('.WidgetBody span');
             for (var i = 0; i < inventory.length; i++) {noBreakInLine(inventory[i], 201, inventory[i].innerHTML);}
         } catch(e) {gclh_error("Improve inventory list",e);}
+    }
+
+// Replace link to larger map in preview map in cache listing with the Browse Map.
+    if (settings_larger_map_as_browse_map && is_page("cache_listing") && $('#uxLatLon')[0]) {
+        try {
+            var newstrPROStyle = '<a id="ctl00_ContentBody_uxViewLargerMap" title="View Larger Browse Map" href="https://www.geocaching.com/map/?lat='+lat+'&lng='+lng+'" target="_blank" rel="noopener noreferrer">View Larger Browse Map</a>';
+            document.getElementById('ctl00_ContentBody_uxViewLargerMap').outerHTML = newstrPROStyle;
+        } catch(e) {gclh_error("Replace link to larger map in preview map in cache listing with the Browse Map",e);}
     }
 
 // Show Google-Maps Link on Cache Listing Page.
@@ -3699,10 +3649,11 @@ var mainGC = function() {
     }
 // Show Smilies und Log Templates new log page.
     if (document.location.href.match(/\.com\/play\/geocache\/gc\w+\/log/) &&
-        $('.muted')[0] && $('#LogDate')[0] && $('#logContent')[0] && $('#LogText')[0] && $('#reportProblemInfo')[0]) {
+        $('#LogDate')[0] && $('#logContent')[0] && $('#LogText')[0] && $('#reportProblemInfo')[0]) {
         try {
             var [aGCTBName, aGCTBLink, aGCTBNameLink, aLogDate] = getGCTBInfo(true);
-            var aOwner = decode_innerHTML($('.muted')[0].children[1]);
+            var aOwner = decode_innerHTML($('.hidden-by a')[0]);
+            aOwner = aOwner.match(/(.*)(<a href=)?/)[1];
             insert_smilie_fkt("LogText");
             insert_tpl_fkt(true);
             var liste = "";
@@ -3724,6 +3675,8 @@ var mainGC = function() {
                     css += '.flatpickr-wrapper .flatpickr-input {padding-top: 0px;}';
                     css += '.flatpickr-wrapper .icon {top: 22px !important;}';
                     css += '.flatpickr-calendar.arrowTop::before, .flatpickr-calendar.arrowTop::after {margin-left: 55px;}';
+                    css += 'a:hover, a:focus {outline: none !important;}';
+                    css += '.log-view-wrapper a {text-decoration: none !important;} .log-view-wrapper a:hover {text-decoration: underline !important;}';
                     appendCssStyle(css);
                 } else {waitCount++; if (waitCount <= 100) setTimeout(function(){buildSmiliesAndLogtemplates(waitCount, box);}, 100);}
             }
@@ -4069,7 +4022,7 @@ var mainGC = function() {
             function getTbO(tb) {return [$(tb).find('td a')[0].innerHTML, $(tb).find('td select option')[0].value];}
         } catch(e) {gclh_error("Autovisit Old",e);}
     }
-    // Autovisit New Log Page.
+// Autovisit New Log Page.
     if (settings_autovisit && document.location.href.match(/\.com\/play\/geocache\/gc\w+\/log/i)) {
         try {
             function getTbs() {return $('#tbList .trackables-list li:not(.tb_action_buttons)');}
@@ -4243,7 +4196,7 @@ var mainGC = function() {
         window.addEventListener("load", gclh_setFocus, false);
         var finds = global_findCount;
         var me = global_me;
-        if (newLogPage) var owner = $('.muted')[0].children[1].childNodes[0].textContent;
+        if (newLogPage) var owner = $('.hidden-by a')[0].innerHTML;
         else var owner = document.getElementById('ctl00_ContentBody_LogBookPanel1_WaypointLink').nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.innerHTML;
         document.getElementById(id).innerHTML = document.getElementById(id).innerHTML.replace(/#found_no#/ig, finds);
         finds++;
@@ -4274,6 +4227,17 @@ var mainGC = function() {
             function sendNewLog(e) {setValue("last_logtext", $('#LogText')[0].value);}
             if ($('.btn-submit')[0] && $('.btn-submit')[0].parentNode) $('.btn-submit')[0].parentNode.addEventListener('click', sendNewLog, true);
         } catch(e) {gclh_error("Last Log-Text speichern",e);}
+    }
+
+// Automatic opt out to the old log page.
+    if (settings_logs_old_fashioned && document.location.href.match(/\.com\/play\/geocache\/gc\w+\/log\/?$/)) {
+        let gccode = document.location.href.match(/\.com\/play\/geocache\/(gc\w+)\/log/)[1];
+        let url = 'https://www.geocaching.com/play/geocache/optout/'+gccode.gcCodeToID();
+        document.location.href = url;
+    }
+    // Prevents that if you click on the blue banner, you will be redirected back to the old page.
+    if (document.location.href.match(/\.com\/seek\/log\.aspx/)) {
+        $('#uxNewLoggingBannerLink')[0].href += '?gclhNewLog=true';
     }
 
 // Hide social sharing via Facebook, Twitter ... .
@@ -4920,23 +4884,13 @@ var mainGC = function() {
                 metersPerPx = 156543.03392 * Math.cos(lat * Math.PI / 180) / Math.pow(2, zoom);
                 return Number(Math.ceil((metersPerPx*px/2/1000)+'e'+3)+'e-'+3);
             }
-            // Get the difficulty and the terrain rating.
-            function getTDMinMax() {
-                let d = getURLParam('d');
-                let d_min = d ? d.split('-')[0] : 1;
-                let d_max = d ? d.split('-')[1] : 5;
-                let t = getURLParam('t');
-                let t_min = t ? t.split('-')[0] : 1;
-                let t_max = t ? t.split('-')[1] : 5;
-                return {d_min: d_min, d_max: d_max, t_min: t_min, t_max: t_max};
-            }
             // Radius.
             let lat = getURLParam('lat');
             let zoom = getURLParam('zoom');
             let px = getURLParam('gclh_px');
             let radius = getRadius(lat, zoom, px);
             // Cache Types.
-            let cacheTypes = getURLParam('ct') ? decodeURIComponent(getURLParam('ct')).split(',') : false;
+            let cacheTypes = getURLParam('ct') ? getURLParam('ct').split('%2C') : false;
             // Found Status.
             let showFound = getURLParam('hf') && getURLParam('hf') == 0 ? true : false;
             let hideFound = getURLParam('hf') && getURLParam('hf') == 1 ? true : false;
@@ -4944,9 +4898,12 @@ var mainGC = function() {
             let showOwn = getURLParam('ho') && getURLParam('ho') == 0 ? true : false;
             let hideOwn = getURLParam('ho') && getURLParam('ho') == 1 ? true : false;
             // Difficult and terrin rating.
-            let d_t = getTDMinMax();
+            let difficulity = new Array();
+            let terrain = new Array();
+            difficulity = getURLParam('d') ? getURLParam('d').split('%2C') : [];
+            terrain = getURLParam('t') ? getURLParam('t').split('%2C') : [];
             // Cache Size.
-            let cacheSize = getURLParam('cs') ? decodeURIComponent(getURLParam('cs')).split(',') : false;
+            let cacheSize = getURLParam('cs') ? getURLParam('cs').split('%2C') : false;
             // Membership type.
             let basic = getURLParam('sp') && getURLParam('sp') == 0 ? true : false;
             let premium = getURLParam('sp') && getURLParam('sp') == 1 ? true : false;
@@ -4963,19 +4920,19 @@ var mainGC = function() {
             if (getURLParam('ped')) placedDateEnd = getURLParam('ped');
             if (getURLParam('pod')) placedDateEnd = getURLParam('pod');
             // Attribute.
-            let attr = getURLParam('att') ? decodeURIComponent(getURLParam('att')).split(',') : false;
+            let attr = getURLParam('att') ? getURLParam('att').split('%2C') : false;
             // Warning if filters are not available at PQ.
-            let warningHTML = '<div id="gclh_warning" style="color:#f00"><span>Warning: You have set filters that cannot be implemented in Pocket Queries.<br>This applies to the following filters:</span><ul></ul></div>'
-            if (getURLParam('tr') || getURLParam('sgt') || (getURLParam('nfb') && getURLParam('nfb') != global_me) || (getURLParam('hb') && getURLParam('hb') != global_me) || getURLParam('cc') || getURLParam('cn') || getURLParam('fp')) {
+            let warningHTML = '<div id="gclh_warning" style="color:#f00"><span>Warning: You have set filters that cannot be implemented in Pocket Queries.<br>This applies to the following filters:</span><ul></ul></div>';
+            if (getURLParam('tr') || getURLParam('sgt') || (getURLParam('nfb') && getURLParam('nfb') != global_me) || (getURLParam('hb') && getURLParam('hb') != global_me) || getURLParam('cc') || getURLParam('cn') || getURLParam('fp') || getURLParam('m')) {
                 $('#ctl00_ContentBody_QueryPanel').before(warningHTML);
                 let unavailableFilters = '';
                 if (getURLParam('tr')) unavailableFilters += '<li>Filter by Wonder</li>';
-                if (getURLParam('sgt')) unavailableFilters += '<li>Only show caches that are part of a GeoTour</li>';
                 if (getURLParam('nfb') && getURLParam('nfb') != global_me) unavailableFilters += '<li>Not found by</li>';
                 if (getURLParam('hb') && getURLParam('hb') != global_me) unavailableFilters += '<li>Hidden by</li>';
                 if (getURLParam('cc')) unavailableFilters += '<li>Corrected coordinates</li>';
                 if (getURLParam('cn')) unavailableFilters += '<li>Geocache name contains</li>';
                 if (getURLParam('fp')) unavailableFilters += '<li>Minimum Favorite points</li>';
+                if (getURLParam('m')) unavailableFilters += '<li>Fill in your D/T grid</li>';
                 $('#gclh_warning ul')[0].innerHTML += unavailableFilters;
             }
             // Set available filters.
@@ -4999,39 +4956,47 @@ var mainGC = function() {
                     $('#ctl00_ContentBody_cbOptions_2').prop('checked', hideOwn);
                 }
                 // Difficult and terrin rating.
-                if (d_t['d_min'] > 1 && d_t['d_max'] < 5 && d_t['d_min'] != d_t['d_max']) {
-                    // Parameters that are BETWEEN 1 and 5 (1 < x < 5) cannot be implemented.
-                    if (!$('#gclh_warning')[0]) $('#ctl00_ContentBody_QueryPanel').before(warningHTML);
-                    let unavailableFilters = '<li>The difficulty rating is greater than 1 and less than 5</li>';
-                    $('#gclh_warning ul')[0].innerHTML += unavailableFilters;
-                } else {
-                    if (d_t['d_min'] == d_t['d_max']) {
-                        $('#ctl00_ContentBody_ddDifficulty')[0].selectedIndex = 1;
-                        $('#ctl00_ContentBody_ddDifficultyScore')[0].selectedIndex = d_t['d_min']*2 - 2;
-                    } else if (d_t['d_min'] > 1) {
-                        $('#ctl00_ContentBody_ddDifficultyScore')[0].selectedIndex = d_t['d_min']*2 - 2;
-                    } else if ((d_t['d_max'] < 5)) {
-                        $('#ctl00_ContentBody_ddDifficulty')[0].selectedIndex = 2;
-                        $('#ctl00_ContentBody_ddDifficultyScore')[0].selectedIndex = d_t['d_max']*2 - 2;
+                if (difficulity.length !== 0) {
+                    let min = Math.min(...difficulity);
+                    let max = Math.max(...difficulity);
+                    // Check if the values are a straight and start at 1 or end with 5
+                    if ((max-min)*2+1 == difficulity.length && !(min > 1 && max < 5 && min != max)) {
+                        if (min == max) {
+                            $('#ctl00_ContentBody_ddDifficulty')[0].selectedIndex = 1;
+                            $('#ctl00_ContentBody_ddDifficultyScore')[0].selectedIndex = min*2 - 2;
+                        } else if (min > 1) {
+                            $('#ctl00_ContentBody_ddDifficultyScore')[0].selectedIndex = min*2 - 2;
+                        } else if ((max < 5)) {
+                            $('#ctl00_ContentBody_ddDifficulty')[0].selectedIndex = 2;
+                            $('#ctl00_ContentBody_ddDifficultyScore')[0].selectedIndex = max*2 - 2;
+                        }
+                        $('#ctl00_ContentBody_cbDifficulty').prop('checked', true);
+                    } else {
+                        if (!$('#gclh_warning')[0]) $('#ctl00_ContentBody_QueryPanel').before(warningHTML);
+                        let unavailableFilters = '<li>The difficulty rating does not match to the criteria of PQs</li>';
+                        $('#gclh_warning ul')[0].innerHTML += unavailableFilters;
                     }
-                    $('#ctl00_ContentBody_cbDifficulty').prop('checked', true);
                 }
-                if (d_t['t_min'] > 1 && d_t['t_max'] < 5 && d_t['t_min'] != d_t['t_max']) {
-                    // Parameters that are BETWEEN 1 and 5 (1 < x < 5) cannot be implemented.
-                    if (!$('#gclh_warning')[0]) $('#ctl00_ContentBody_QueryPanel').before(warningHTML);
-                    let unavailableFilters = '<li>The terrain rating is greater than 1 and less than 5</li>';
-                    $('#gclh_warning ul')[0].innerHTML += unavailableFilters;
-                } else {
-                    if (d_t['t_min'] == d_t['t_max']) {
-                        $('#ctl00_ContentBody_ddTerrain')[0].selectedIndex = 1;
-                        $('#ctl00_ContentBody_ddTerrainScore')[0].selectedIndex = d_t['t_min']*2 - 2;
-                    } else if (d_t['t_min'] > 1) {
-                        $('#ctl00_ContentBody_ddTerrainScore')[0].selectedIndex = d_t['t_min']*2 - 2;
-                    } else if ((d_t['t_max'] < 5)) {
-                        $('#ctl00_ContentBody_ddTerrain')[0].selectedIndex = 2;
-                        $('#ctl00_ContentBody_ddTerrainScore')[0].selectedIndex = d_t['t_max']*2 - 2;
+                if (terrain.length !== 0) {
+                    let min = Math.min(...terrain);
+                    let max = Math.max(...terrain);
+                    // Check if the values are a straight and start at 1 or end with 5
+                    if ((max-min)*2+1 == terrain.length && !(min > 1 && max < 5 && min != max)) {
+                        if (min == max) {
+                            $('#ctl00_ContentBody_ddTerrain')[0].selectedIndex = 1;
+                            $('#ctl00_ContentBody_ddTerrainScore')[0].selectedIndex = min*2 - 2;
+                        } else if (min > 1) {
+                            $('#ctl00_ContentBody_ddTerrainScore')[0].selectedIndex = min*2 - 2;
+                        } else if ((max < 5)) {
+                            $('#ctl00_ContentBody_ddTerrain')[0].selectedIndex = 2;
+                            $('#ctl00_ContentBody_ddTerrainScore')[0].selectedIndex = max*2 - 2;
+                        }
+                        $('#ctl00_ContentBody_cbTerrain').prop('checked', true);
+                    } else {
+                        if (!$('#gclh_warning')[0]) $('#ctl00_ContentBody_QueryPanel').before(warningHTML);
+                        let unavailableFilters = '<li>The terrain rating does not match to the criteria of PQs</li>';
+                        $('#gclh_warning ul')[0].innerHTML += unavailableFilters;
                     }
-                    $('#ctl00_ContentBody_cbTerrain').prop('checked', true);
                 }
                 // Cache Size.
                 if (cacheSize !== false) {
@@ -6752,8 +6717,8 @@ var mainGC = function() {
 
             // Post cache log new page:
             // ----------
-            } else if (document.location.href.match(/\.com\/play\/geocache\/gc\w+\/log/) && $('.muted')[0] && $('.muted')[0].children[1]) {
-                var id = $('.muted')[0].children[1].href.match(/^https?:\/\/www\.geocaching\.com\/profile\/\?id=(\d+)/);
+            } else if (document.location.href.match(/\.com\/play\/geocache\/gc\w+\/log/) && $('.hidden-by a')[0]) {
+                var id = $('.hidden-by a')[0].href.match(/\/profile\/\?id=(\d+)/);
                 if (id && id[1]) {
                     var idLink = "/p/default.aspx?id=" + id[1] + "&tab=geocaches";
                     GM_xmlhttpRequest({
@@ -6764,7 +6729,7 @@ var mainGC = function() {
                                 [user, guid] = getUserGuidFromProfile(response.responseText);
                                 if (user) {
                                     appendCssStyle(".gclh_vip {margin-left: 8px; margin-right: 4px;}");
-                                    var side = document.getElementsByClassName('muted')[0].children[1];
+                                    var side = $('.hidden-by a')[0];
                                     link = gclh_build_vipvup(user, global_vips, "vip");
                                     side.appendChild(link);
                                     if (settings_process_vup && user != global_activ_username) {
@@ -9323,7 +9288,6 @@ var mainGC = function() {
                     }
                     // Wait for filter.
                     function waitForFilter(waitCount) {
-//xxxx
                         if ($('#gc-search-filters')[0] &&
                             $('#found-status-filter .gc-radio-control-container:nth-child(1) label')[0] &&
                             $('#cache-owner-filter .gc-radio-control-container:nth-child(1) label')[0]) {
@@ -9371,7 +9335,7 @@ var mainGC = function() {
                 checkAddtolistPopup(0);
             }
 
-            // Create button to save map as PQ.
+            // Create Save as PQ Button.
             var set_defaults = false;
             function addCreatePQButton() {
                 if ($('.list-hub')[0] || document.location.href.match(/\.com\/play\/map\/lists\/BM/)) {
@@ -9514,6 +9478,10 @@ var mainGC = function() {
             css += '.geocache-owner-name a:hover, .gclhOwner a:hover {color: #02874d !important;}';
             css += '.geocache-owner-name a, .gclhOwner a {color: #4a4a4a !important; text-decoration: none !important;}';
             if (settings_searchmap_compact_layout) {
+                css += '#gc-search-typeahead-form .gc-search-typeahead-submit, #gc-search-typeahead-form .inner-wrapper, .search-bar.v3, .search-bar.v3 .gc-filter-toggle {height: 34px !important;}';
+                css += '#gc-search-typeahead-form .gc-autocomplete .inner-wrapper {box-shadow: 0 0 0 0.9px #9b9b9b !important;}';
+                css += '.gc-filter-toggle-icon {height: 18px !important; width: 18px !important;}';
+                css += '.geocache-item-name {font-size: 14px !important;}';
                 css += 'a:focus, button:focus {outline: unset !important;}';
                 css += '.search-bar-inner {margin-right: 10px !important;}';
                 css += '.search-bar, .cache-preview-header, .cache-preview-attributes, .cache-preview-action-menu, .cache-open-text-cta, .cache-preview-description, .cache-preview-activities .view-all-row, .cache-preview-activities header {padding: 5px 12px !important;}';
@@ -9697,7 +9665,7 @@ var mainGC = function() {
             // GClh Action Bar (Save as PQ and Hide Header Buttons).
             css += '#gclh_action_bar {display: flex; color: #4a4a4a; cursor: default;}'
             css += '.geocache-action-bar.sidebar-control {padding-top: 0px !important;}';
-            css += 'div.sidebar-control:nth-child(3) .search-bar {padding-top: 0px !important;}';
+            css += 'div.sidebar-control:nth-child(3) .search-bar {padding-top: 1px !important; height: 40px !important;}';
             css += '.geocache-action-bar {padding: 5px 12px !important;}';
             css += '#gclh_action_bar span, #gclh_action_bar a {margin-top: 2px;}';
             // Save as PQ.
@@ -9721,6 +9689,15 @@ var mainGC = function() {
                     // Add layers, control to map and set default layers.
                     if (settings_use_gclh_layercontrol && getValue("gclhLeafletMapActive")) {
                         addLayersOnBrowseMap();
+                    } else {
+                        // Buttons auch ohne GClh halbwegs ausrichten. (GC Layer sind ok, GME ist etwas verrutscht, geht aber.)
+                        var css = '';
+                        css += '.leaflet-control-layers-list {right: 0px; top: 0px; height: inherit; display: none; position: absolute !important; border-radius: 7px; box-shadow: 0 1px 7px rgba(0,0,0,0.4); background-color: white; white-space: nowrap; padding: 6px;}';
+                        if (is_page('map')) {
+                            // Damit auch mehr als 2 Buttons handlebar.
+                            css += '.leaflet-control-layers + .leaflet-control {position: unset; right: unset;} .leaflet-control {clear: left}';
+                        }
+                        appendCssStyle(css);
                     }
                     // Hide Map Header.
                     hideHeaderOnBrowseMap();
@@ -11825,9 +11802,9 @@ var mainGC = function() {
                     g_name = $('#ctl00_ContentBody_LogBookPanel1_WaypointLink')[0].parentNode.children[2].innerHTML;
                 }
             // Log post cache new log page.
-            } else if ($('.muted')[0] && $('.muted')[0].children[0].innerHTML) {
+            } else if ($('.hidden-by a')[0] && $('.hidden-by a')[0].innerHTML) {
                 g_gc = true;
-                g_name = $('.muted')[0].children[0].innerHTML;
+                g_name = $('.hidden-by a')[0].innerHTML;
             }
             if (g_code != "") {
                 g_link = "(https://coord.info/" + g_code + ")";
@@ -12103,10 +12080,10 @@ var mainGC = function() {
         var prop = ' style="border: none; visibility: hidden; width: 2px; height: 2px;" alt="">';
         var code = '<img src="https://s11.flagcounter.com/count2/906f/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
 //--> $$002
-        code += '<img src="https://c.andyhoppe.com/1629414582"' + prop; // Besucher
-        code += '<img src="https://c.andyhoppe.com/1629414625"' + prop; // Seitenaufrufe
-        code += '<img src="https://www.worldflagcounter.com/hWn"' + prop;
-        code += '<img src="https://s11.flagcounter.com/count2/wdK8/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
+        code += '<img src="https://c.andyhoppe.com/1631377382"' + prop; // Besucher
+        code += '<img src="https://c.andyhoppe.com/1631377443"' + prop; // Seitenaufrufe
+        code += '<img src="https://www.worldflagcounter.com/hYT"' + prop;
+        code += '<img src="https://s11.flagcounter.com/count2/ioWB/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
 //<-- $$002
         div.innerHTML = code;
         side.appendChild(div);
@@ -12166,12 +12143,10 @@ var mainGC = function() {
         var GCTBName = ""; var GCTBLink = ""; var GCTBNameLink = ""; var LogDate = "";
         if (newLogPage) {
             if ($('#LogDate'[0])) var LogDate = $('#LogDate')[0].value;
-            if ($('.muted')[0] && $('.muted')[0].children[0]) {
-                var GCTBName = $('.muted')[0].children[0].innerHTML;
-                GCTBName = GCTBName.replace(/'/g,"");
-                var GCTBLink = $('.muted')[0].children[0].href;
-                var GCTBNameLink = "[" + GCTBName + "](" + GCTBLink + ")";
-            }
+            var GCTBName = $('a.log-subheading')[0].innerHTML;
+            GCTBName = GCTBName.replace(/'/g,"");
+            var GCTBLink = $('a.log-subheading')[0].href;
+            var GCTBNameLink = "[" + GCTBName + "](" + GCTBLink + ")";
         } else {
             if ($('#uxDateVisited')[0]) var LogDate = $('#uxDateVisited')[0].value;
             if ($('#ctl00_ContentBody_LogBookPanel1_WaypointLink')[0].nextSibling.nextSibling) {
@@ -12995,39 +12970,45 @@ var mainGC = function() {
         try {
             if (!($(".results").length || settings_search_data.length)) {
             } else {
-                create_config_css_search();
-                $(".filters-toggle").append('&nbsp;<button id="filterCtxMenu" class="btn btn-user" type="button">Manage Filter Sets</button>  ');
-                $(".filters-toggle").append('<div id="ctxMenu" style="display:none;"></div>');
-                $('#filterCtxMenu').click(function() {
-                    var element = $('#ctxMenu');
-                    if (element.css('display') == 'none') {
-                       updateUI();
-                       element.show();
-                       $(this).addClass('btn-user-active');
-                    } else {
-                       element.hide();
-                       $(this).removeClass('btn-user-active');
-                    }
-                });
-                var currentFilter = "";
-                for (var i = 0; i < settings_search_data.length; i++) {
-                    if (settings_search_data[i].url == document.location.href.split("#")[0]) {
-                        currentFilter = "Current Filter Set: "+settings_search_data[i].name;
-                    }
-                }
-                $(".button-group-dynamic").append('<span>'+currentFilter+'</span>');
-                // Close the dialog div if a mouse click outside.
-                $(document).mouseup(function(e) {
-                    var container = $('#ctxMenu');
-                    if (container.css('display') != 'none') {
-                        if (!container.is(e.target) && !($('#filterCtxMenu').is(e.target)) &&  // If the target of the click isn't the container...
-                            container.has(e.target).length === 0) {  // ... nor a descendant of the container
-                            container.hide();
-                            $('#filterCtxMenu').removeClass('btn-user-active');
+                //create_config_css_search();
+                function waitForSearchForm(waitCount) {
+                    if ($("#gc-search-form")[0]) {
+                        $("#gc-search-form").append('<button id="filterCtxMenu" class="gc-filter-toggle"><span aria-hidden="true" class="gc-filter-toggle-icon"><svg><use xlink:href="#filters--inline"></use></svg></span>Manage Filter Sets</button>');
+                        $("#gc-search-form").append('<div id="ctxMenu" style="display:none;"></div>');
+                        $('#filterCtxMenu').click(function(e) {
+                            e.preventDefault();
+                            var element = $('#ctxMenu');
+                            if (element.css('display') == 'none') {
+                               updateUI();
+                               element.show();
+                               $(this).addClass('btn-user-active');
+                            } else {
+                               element.hide();
+                               $(this).removeClass('btn-user-active');
+                            }
+                        });
+                        var currentFilter = "";
+                        for (var i = 0; i < settings_search_data.length; i++) {
+                            if (settings_search_data[i].url == document.location.href.split("#")[0]) {
+                                currentFilter = "Current Filter Set: "+settings_search_data[i].name;
+                            }
                         }
-                    }
-                    return false;
-                });
+                        $(".button-group-dynamic").append('<span style="font-size: 13px; color: #7e7d7a; line-height: 29px;">'+currentFilter+'</span>');
+                        // Close the dialog div if a mouse click outside.
+                        $(document).mouseup(function(e) {
+                            var container = $('#ctxMenu');
+                            if (container.css('display') != 'none') {
+                                if (!container.is(e.target) && !($('#filterCtxMenu').is(e.target)) &&  // If the target of the click isn't the container...
+                                    container.has(e.target).length === 0) {  // ... nor a descendant of the container
+                                    container.hide();
+                                    $('#filterCtxMenu').removeClass('btn-user-active');
+                                }
+                            }
+                            return false;
+                        });
+                    } else {waitCount++; if (waitCount <= 100) setTimeout(function(){waitForSearchForm(waitCount);}, 100);}
+                }
+                waitForSearchForm(0);
             }
         } catch(e) {gclh_error("User defined search",e);}
     }
@@ -13230,6 +13211,7 @@ var mainGC = function() {
             html += thanksLineBuild("arbor95",              "",                         false, false, false, true,  false);
             html += thanksLineBuild("Arnos99",              "",                         false, false, false, true,  false);
             html += thanksLineBuild("barnold",              "barnoldGEOC",              false, false, false, true,  false);
+            html += thanksLineBuild("bogmen",               "Bogmen",                   false, false, false, true,  false);
             html += thanksLineBuild("BlueEagle23",          "",                         false, false, false, true,  false);
             html += thanksLineBuild("Cappa-d",              "",                         false, false, false, true,  false);
             html += thanksLineBuild("Donnerknispel",        "",                         false, false, false, true,  false);
@@ -13239,6 +13221,7 @@ var mainGC = function() {
             html += thanksLineBuild("lostinthegarden",      "Gitve3jf",                 false, false, false, true,  false);
             html += thanksLineBuild("Magpie42",             "MagpieFourtyTwo",          false, false, false, true,  false);
             html += thanksLineBuild("☺Mitchsa & firefly70", "Mitchsa",                  false, false, false, true,  false);
+            html += thanksLineBuild("muddypuddles",         "MuddyPuddles",             false, false, false, true,  false);
             html += thanksLineBuild("MrZaibot",             "",                         false, false, false, true,  false);
             html += thanksLineBuild("PHIL",                 "gcPhil",                   false, false, false, true,  false);
             html += thanksLineBuild("Pontiac_CZ",           "PontiacCZ",                false, false, false, true,  false);
@@ -13249,7 +13232,7 @@ var mainGC = function() {
             html += thanksLineBuild("V60",                  "V60GC",                    false, false, false, true,  false);
             html += thanksLineBuild("vylda",                "",                         false, false, false, true,  false);
             html += thanksLineBuild("winkamol",             "",                         false, false, false, true,  false);
-            var thanksLastUpdate = "19.08.2021";
+            var thanksLastUpdate = "12.09.2021";
 //<-- $$006
             html += "    </tbody>";
             html += "</table>";
@@ -13787,13 +13770,13 @@ var mainGC = function() {
             html += newParameterVersionSetzen(0.9) + newParameterOff;
             html += checkboxy('settings_hide_empty_cache_notes', 'Hide personal cache notes if empty') + show_help("You can hide the personal cache notes if they are empty. There will be a link to show them to add a note.") + "<br>";
             html += checkboxy('settings_hide_cache_notes', 'Hide personal cache notes completely') + show_help("You can hide the personal cache notes completely, if you don't want to use them.") + "<br>";
+            html += newParameterOn2;
+            html += checkboxy('settings_change_font_cache_notes', 'Change font of personal cache notes to monospace') + "<br>";
+            html += newParameterVersionSetzen('0.11') + newParameterOff;
 
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>Cache Detail Navigation <font class='gclh_small' style='vertical-align: text-bottom;'>(right sidebar)</font></b>" + "</div>";
             html += checkboxy('settings_log_inline', 'Log cache from listing (inline)') + show_help("With the inline log you can open a log form inside the listing, without loading a new page.<br><br>If you're using an ad-blocking add-on, such as uBlock, the embedded screen may not be allowed. To turn this off, you have to add \"www.geocaching.com\/geocache\/GC*\" to the whitelist, or something similar, of your add-on.") + "<br>";
             html += "&nbsp; " + checkboxy('settings_log_inline_tbX0', 'Show TB list') + "<br>";
-            html += newParameterOn1;
-            html += checkboxy('settings_use_one_click_watching', 'Add/Remove the cache with one click to watchlist') + show_help("With this option, you can add and remove a cache in cache listing to your watchlist with just one click.") + "<br>";
-            html += newParameterVersionSetzen('0.10') + newParameterOff;
             html += checkboxy('settings_improve_add_to_list', 'Show compact layout in \"Add to list\" popup to bookmark a cache') + prem + "<br>";
             html += " &nbsp; &nbsp;" + "Height of popup <select class='gclh_form' id='settings_improve_add_to_list_height' >";
             for (var i = 100; i < 521; i++) {
@@ -13935,6 +13918,9 @@ var mainGC = function() {
             html += newParameterVersionSetzen('0.11') + newParameterOff;
 
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>Map Preview</b>" + "</div>";
+            html += newParameterOn2;
+            html += checkboxy('settings_larger_map_as_browse_map', 'Replace link to larger map with the Browse Map') + "<br>";
+            html += newParameterVersionSetzen('0.11') + newParameterOff;
             html += checkboxy('settings_show_google_maps', 'Show link to Google Maps') + show_help("This option shows a link at the top of the second map in the listing. With this link you get directly to Google Maps in the area, where the cache is.") + "<br>";
 
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>Logs Header</b>" + "</div>";
@@ -14010,6 +13996,9 @@ var mainGC = function() {
             html += "<div class='gclh_old_new_line'>Old Logging Page Only</div>";
             html += content_settings_submit_log_button.replace("log_button","log_buttonX2");
             html += checkboxy('settings_fieldnotes_old_fashioned', 'Logging drafts old-fashioned') + show_help("This option deactivates on old drafts page the logging of drafts by the new log page and activates logging of drafts by the old-fashioned log page.") + "<br>";
+            html += newParameterOn2;
+            html += checkboxy('settings_logs_old_fashioned', 'Log caches always old-fashioned') + show_help("If you enable this option, you always get the old log page instead of the new one. This does not apply to drafts / field notes. <br> Background: geocaching.com saves the log page you are using in a cookie. If you always delete cookies when you close your browser, the data will be lost.<br>To get the old design for Fieldnotes, you have to use the old Fieldnotes page and activate \"Logging drafts old-fashioned\" here in the GClh config.") + "<br>";
+            html += newParameterVersionSetzen('0.11') + newParameterOff;
             html += "<table><tbody>";
             html += "  <tr><td>Default log type</td>";
             html += "    <td><select class='gclh_form' id='settings_default_logtype'>";
@@ -14998,7 +14987,6 @@ var mainGC = function() {
                 'settings_show_message',
                 'settings_show_remove_ignoring_link',
                 'settings_use_one_click_ignoring',
-                'settings_use_one_click_watching',
                 'settings_show_common_lists_in_zebra',
                 'settings_show_common_lists_color_user',
                 'settings_show_cache_listings_in_zebra',
@@ -15239,6 +15227,10 @@ var mainGC = function() {
                 'settings_map_show_btn_hide_header',
                 'settings_compact_layout_cod',
                 'settings_show_button_fav_proz_cod',
+                'settings_change_font_cache_notes',
+                'settings_larger_map_as_browse_map',
+                'settings_fav_proz_cod',
+                'settings_logs_old_fashioned',
             );
             for (var i = 0; i < checkboxes.length; i++) {
                 if (document.getElementById(checkboxes[i])) setValue(checkboxes[i], document.getElementById(checkboxes[i]).checked);
@@ -17195,7 +17187,7 @@ function injectPageScriptFunction(funct, functCall) {injectPageScript("(" + func
 
 // Convert GCCode to id.
 String.prototype.gcCodeToID = function () {
-    gcCode = this.trim().toUpperCase().substring(2);
+    let gcCode = this.trim().toUpperCase().substring(2);
     let abc = '0123456789ABCDEFGHJKMNPQRTVWXYZ';
     let base = 31;
     let id = -411120;
