@@ -55,6 +55,21 @@
 	<li>
 		<strong>Fix:</strong> [New Log Form] Templates, Smilies and VUP/VUP/Mail missing, Placeholders and Signature does not work. [<a href="https://github.com/2Abendsegler/GClh/issues/1855" title="Issue 1855">1855</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br>
 	</li>
+	<li>
+		<strong>Fix:</strong> [Search] Button to GClh-Filtersets not visible. [<a href="https://github.com/2Abendsegler/GClh/issues/1887" title="Issue 1887">1887</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Search Map / PQ] Save as PQ doesn't note D/T ratings. [<a href="https://github.com/2Abendsegler/GClh/issues/1888" title="Issue 1888">1888</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Browse Map] Enable non GClh layers like GME or GC. [<a href="https://github.com/2Abendsegler/GClh/issues/1892" title="Issue 1892">1892</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Cache Listing] Remove One-Click Watching, because it was added by GS. [<a href="https://github.com/2Abendsegler/GClh/issues/1902" title="Issue 1902">1902</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Search Map] Automatic hide caches do not work. [<a href="https://github.com/2Abendsegler/GClh/issues/1886" title="Issue 1886">1886</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br>
+	</li>
 </ul>
 (13.09.2021)<br>
 released by <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a><br>
