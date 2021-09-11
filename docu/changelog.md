@@ -1,3 +1,4 @@
+<a href="#v0117" title="GClh II version 0.11.7 (13.09.2021)">v0.11.7</a> &nbsp;
 <a href="#v01152" title="GClh II version 0.11.5.2 (20.08.2021)">v0.11.5.2</a> &nbsp;
 <a href="#v01151" title="GClh II version 0.11.5.1 (17.07.2021)">v0.11.5.1</a> &nbsp;
 <a href="#v0115" title="GClh II version 0.11.5 (03.07.2021)">v0.11.5</a> &nbsp;
@@ -28,6 +29,23 @@
 <a href="#v010" title="GClh II version 0.10 (13.12.2019)">v0.10</a> &nbsp;
 <a href="changelog_before.md" title="Go to earlier changelog">Earlier changelog</a> &nbsp;
 
+
+---
+## v0.11.7:
+<ul>
+	<li>
+		<strong>New:</strong> [Cache Listing] Change preview map link from search map to browse map. [<a href="https://github.com/2Abendsegler/GClh/issues/1859" title="Issue 1859">1859</a> / <a href="https://www.geocaching.com/profile/?u=CastParo" title="Thanks to CastParo">CastParo</a>]<br>
+		<img src="../images/0.11.7/Screen01.jpg" alt="Screen01.jpg"><br><br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_larger_map_as_browse_map" title="Link to your GClh II Config">Settings -> Listing</a><br>
+		<img src="../images/0.11.7/Screen02.jpg" alt="Screen02.jpg"><br><br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [New Log Form] Templates, Smilies and VUP/VUP/Mail missing, Placeholders and Signature does not work. [<a href="https://github.com/2Abendsegler/GClh/issues/1855" title="Issue 1855">1855</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br>
+	</li>
+</ul>
+(13.09.2021)<br>
+released by <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a><br>
+<br>
 
 ---
 ## v0.11.5.2:
