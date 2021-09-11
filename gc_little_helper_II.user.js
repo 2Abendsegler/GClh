@@ -3675,6 +3675,7 @@ var mainGC = function() {
                     css += '.flatpickr-wrapper .flatpickr-input {padding-top: 0px;}';
                     css += '.flatpickr-wrapper .icon {top: 22px !important;}';
                     css += '.flatpickr-calendar.arrowTop::before, .flatpickr-calendar.arrowTop::after {margin-left: 55px;}';
+                    css += 'a:hover, a:focus {outline: none !important;}';
                     appendCssStyle(css);
                 } else {waitCount++; if (waitCount <= 100) setTimeout(function(){buildSmiliesAndLogtemplates(waitCount, box);}, 100);}
             }
@@ -4020,7 +4021,7 @@ var mainGC = function() {
             function getTbO(tb) {return [$(tb).find('td a')[0].innerHTML, $(tb).find('td select option')[0].value];}
         } catch(e) {gclh_error("Autovisit Old",e);}
     }
-    // Autovisit New Log Page.
+// Autovisit New Log Page.
     if (settings_autovisit && document.location.href.match(/\.com\/play\/geocache\/gc\w+\/log/i)) {
         try {
             function getTbs() {return $('#tbList .trackables-list li:not(.tb_action_buttons)');}
