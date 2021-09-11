@@ -13232,7 +13232,7 @@ var mainGC = function() {
             html += thanksLineBuild("V60",                  "V60GC",                    false, false, false, true,  false);
             html += thanksLineBuild("vylda",                "",                         false, false, false, true,  false);
             html += thanksLineBuild("winkamol",             "",                         false, false, false, true,  false);
-            var thanksLastUpdate = "12.09.2021";
+            var thanksLastUpdate = "11.09.2021";
 //<-- $$006
             html += "    </tbody>";
             html += "</table>";
