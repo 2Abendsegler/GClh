@@ -2285,12 +2285,10 @@ var mainGC = function() {
         } catch(e) {gclh_error("Map this Location",e);}
     }
 
-// Improve Ignore, Stop Ignoring, Watch button handling.
+// Improve Ignore, Stop Ignoring button handling.
     if (is_page("cache_listing") && (settings_show_remove_ignoring_link && settings_use_one_click_ignoring)) {
         appendCssStyle("#ignoreSaved {display: none; color: #E0B70A; float: right; padding-left: 0px;}");
     }
-
-// Improve Ignore, Stop Ignoring button handling.
     if (is_page("cache_listing") && settings_show_remove_ignoring_link && $('#ctl00_ContentBody_GeoNav_uxIgnoreBtn')[0]) {
         try {
             // Set Ignore.
@@ -9470,6 +9468,10 @@ var mainGC = function() {
             css += '.geocache-owner-name a:hover, .gclhOwner a:hover {color: #02874d !important;}';
             css += '.geocache-owner-name a, .gclhOwner a {color: #4a4a4a !important; text-decoration: none !important;}';
             if (settings_searchmap_compact_layout) {
+                css += '#gc-search-typeahead-form .gc-search-typeahead-submit, #gc-search-typeahead-form .inner-wrapper, .search-bar.v3, .search-bar.v3 .gc-filter-toggle {height: 34px !important;}';
+                css += '#gc-search-typeahead-form .gc-autocomplete .inner-wrapper {box-shadow: 0 0 0 0.9px #9b9b9b !important;}';
+                css += '.gc-filter-toggle-icon {height: 18px !important; width: 18px !important;}';
+                css += '.geocache-item-name {font-size: 14px !important;}';
                 css += 'a:focus, button:focus {outline: unset !important;}';
                 css += '.search-bar-inner {margin-right: 10px !important;}';
                 css += '.search-bar, .cache-preview-header, .cache-preview-attributes, .cache-preview-action-menu, .cache-open-text-cta, .cache-preview-description, .cache-preview-activities .view-all-row, .cache-preview-activities header {padding: 5px 12px !important;}';
@@ -9653,7 +9655,7 @@ var mainGC = function() {
             // GClh Action Bar (Save as PQ and Hide Header Buttons).
             css += '#gclh_action_bar {display: flex; color: #4a4a4a; cursor: default;}'
             css += '.geocache-action-bar.sidebar-control {padding-top: 0px !important;}';
-            css += 'div.sidebar-control:nth-child(3) .search-bar {padding-top: 0px !important;}';
+            css += 'div.sidebar-control:nth-child(3) .search-bar {padding-top: 1px !important; height: 40px !important;}';
             css += '.geocache-action-bar {padding: 5px 12px !important;}';
             css += '#gclh_action_bar span, #gclh_action_bar a {margin-top: 2px;}';
             // Save as PQ.
@@ -12981,7 +12983,7 @@ var mainGC = function() {
                                 currentFilter = "Current Filter Set: "+settings_search_data[i].name;
                             }
                         }
-                        $(".button-group-dynamic").append('<span>'+currentFilter+'</span>');
+                        $(".button-group-dynamic").append('<span style="font-size: 13px; color: #7e7d7a; line-height: 29px;">'+currentFilter+'</span>');
                         // Close the dialog div if a mouse click outside.
                         $(document).mouseup(function(e) {
                             var container = $('#ctxMenu');
