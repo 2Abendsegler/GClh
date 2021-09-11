@@ -1,3 +1,4 @@
+<a href="#v0117" title="GClh II version 0.11.7 (12.09.2021)">v0.11.7</a> &nbsp;
 <a href="#v01152" title="GClh II version 0.11.5.2 (20.08.2021)">v0.11.5.2</a> &nbsp;
 <a href="#v01151" title="GClh II version 0.11.5.1 (17.07.2021)">v0.11.5.1</a> &nbsp;
 <a href="#v0115" title="GClh II version 0.11.5 (03.07.2021)">v0.11.5</a> &nbsp;
@@ -28,6 +29,52 @@
 <a href="#v010" title="GClh II version 0.10 (13.12.2019)">v0.10</a> &nbsp;
 <a href="changelog_before.md" title="Go to earlier changelog">Earlier changelog</a> &nbsp;
 
+
+---
+## v0.11.7:
+<ul>
+	<li>
+		<strong>New:</strong> [Cache Listing] Change preview map link from Search Map to Browse Map. [<a href="https://github.com/2Abendsegler/GClh/issues/1859" title="Issue 1859">1859</a> / <a href="https://www.geocaching.com/profile/?u=CastParo" title="Thanks to CastParo">CastParo</a>]<br>
+		<img src="../images/0.11.7/Screen01.jpg" alt="Screen01.jpg"><br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_larger_map_as_browse_map" title="Link to your GClh II Config">Settings -> Listing</a><br>
+		<img src="../images/0.11.7/Screen02.jpg" alt="Screen02.jpg"><br>
+		If you want to use this feature, you have to activate it.<br><br>
+	</li>
+	<li>
+		<strong>New:</strong> [Cache Listing] Font of personal cache note in monospace. [<a href="https://github.com/2Abendsegler/GClh/issues/1860" title="Issue 1860">1860</a> / <a href="https://www.geocaching.com/profile/?u=CastParo" title="Thanks to CastParo">CastParo</a>]<br>
+		<img src="../images/0.11.7/Screen03.jpg" alt="Screen03.jpg"><br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_change_font_cache_notes" title="Link to your GClh II Config">Settings -> Listing</a><br>
+		<img src="../images/0.11.7/Screen04.jpg" alt="Screen04.jpg"><br>
+		If you want to use this feature, you have to activate it.<br><br>
+	</li>
+	<li>
+		<strong>New:</strong> [Log Form] Automatic opt out to the old log form. [<a href="https://github.com/2Abendsegler/GClh/issues/1884" title="Issue 1884">1884</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_logs_old_fashioned" title="Link to your GClh II Config">Settings -> Logging</a><br>
+		<img src="../images/0.11.7/Screen05.jpg" alt="Screen05.jpg"><br>
+		If you want to use this feature, you have to activate it.<br><br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [New Log Form] Templates, Smilies and VUP/VUP/Mail missing, Placeholders and Signature does not work. [<a href="https://github.com/2Abendsegler/GClh/issues/1855" title="Issue 1855">1855</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Search Map] Automatic hide caches do not work. [<a href="https://github.com/2Abendsegler/GClh/issues/1886" title="Issue 1886">1886</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Search Map / PQ] Save as PQ doesn't note D/T ratings. [<a href="https://github.com/2Abendsegler/GClh/issues/1888" title="Issue 1888">1888</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Browse Map] Enable non GClh layers like GME or GC. [<a href="https://github.com/2Abendsegler/GClh/issues/1892" title="Issue 1892">1892</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Search] Button to GClh-Filtersets not visible. [<a href="https://github.com/2Abendsegler/GClh/issues/1887" title="Issue 1887">1887</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Cache Listing] Remove One-Click Watching, because it was added by GS. [<a href="https://github.com/2Abendsegler/GClh/issues/1902" title="Issue 1902">1902</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br>
+	</li>
+</ul>
+(12.09.2021)<br>
+released by <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a><br>
+<br>
 
 ---
 ## v0.11.5.2:
