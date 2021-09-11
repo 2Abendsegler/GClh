@@ -4920,23 +4920,13 @@ var mainGC = function() {
                 metersPerPx = 156543.03392 * Math.cos(lat * Math.PI / 180) / Math.pow(2, zoom);
                 return Number(Math.ceil((metersPerPx*px/2/1000)+'e'+3)+'e-'+3);
             }
-            // Get the difficulty and the terrain rating.
-            function getTDMinMax() {
-                let d = getURLParam('d');
-                let d_min = d ? d.split('-')[0] : 1;
-                let d_max = d ? d.split('-')[1] : 5;
-                let t = getURLParam('t');
-                let t_min = t ? t.split('-')[0] : 1;
-                let t_max = t ? t.split('-')[1] : 5;
-                return {d_min: d_min, d_max: d_max, t_min: t_min, t_max: t_max};
-            }
             // Radius.
             let lat = getURLParam('lat');
             let zoom = getURLParam('zoom');
             let px = getURLParam('gclh_px');
             let radius = getRadius(lat, zoom, px);
             // Cache Types.
-            let cacheTypes = getURLParam('ct') ? decodeURIComponent(getURLParam('ct')).split(',') : false;
+            let cacheTypes = getURLParam('ct') ? getURLParam('ct').split('%2C') : false;
             // Found Status.
             let showFound = getURLParam('hf') && getURLParam('hf') == 0 ? true : false;
             let hideFound = getURLParam('hf') && getURLParam('hf') == 1 ? true : false;
@@ -4944,9 +4934,12 @@ var mainGC = function() {
             let showOwn = getURLParam('ho') && getURLParam('ho') == 0 ? true : false;
             let hideOwn = getURLParam('ho') && getURLParam('ho') == 1 ? true : false;
             // Difficult and terrin rating.
-            let d_t = getTDMinMax();
+            let difficulity = new Array();
+            let terrain = new Array();
+            difficulity = getURLParam('d') ? getURLParam('d').split('%2C') : [];
+            terrain = getURLParam('t') ? getURLParam('t').split('%2C') : [];
             // Cache Size.
-            let cacheSize = getURLParam('cs') ? decodeURIComponent(getURLParam('cs')).split(',') : false;
+            let cacheSize = getURLParam('cs') ? getURLParam('cs').split('%2C') : false;
             // Membership type.
             let basic = getURLParam('sp') && getURLParam('sp') == 0 ? true : false;
             let premium = getURLParam('sp') && getURLParam('sp') == 1 ? true : false;
@@ -4963,19 +4956,19 @@ var mainGC = function() {
             if (getURLParam('ped')) placedDateEnd = getURLParam('ped');
             if (getURLParam('pod')) placedDateEnd = getURLParam('pod');
             // Attribute.
-            let attr = getURLParam('att') ? decodeURIComponent(getURLParam('att')).split(',') : false;
+            let attr = getURLParam('att') ? getURLParam('att').split('%2C') : false;
             // Warning if filters are not available at PQ.
-            let warningHTML = '<div id="gclh_warning" style="color:#f00"><span>Warning: You have set filters that cannot be implemented in Pocket Queries.<br>This applies to the following filters:</span><ul></ul></div>'
-            if (getURLParam('tr') || getURLParam('sgt') || (getURLParam('nfb') && getURLParam('nfb') != global_me) || (getURLParam('hb') && getURLParam('hb') != global_me) || getURLParam('cc') || getURLParam('cn') || getURLParam('fp')) {
+            let warningHTML = '<div id="gclh_warning" style="color:#f00"><span>Warning: You have set filters that cannot be implemented in Pocket Queries.<br>This applies to the following filters:</span><ul></ul></div>';
+            if (getURLParam('tr') || getURLParam('sgt') || (getURLParam('nfb') && getURLParam('nfb') != global_me) || (getURLParam('hb') && getURLParam('hb') != global_me) || getURLParam('cc') || getURLParam('cn') || getURLParam('fp') || getURLParam('m')) {
                 $('#ctl00_ContentBody_QueryPanel').before(warningHTML);
                 let unavailableFilters = '';
                 if (getURLParam('tr')) unavailableFilters += '<li>Filter by Wonder</li>';
-                if (getURLParam('sgt')) unavailableFilters += '<li>Only show caches that are part of a GeoTour</li>';
                 if (getURLParam('nfb') && getURLParam('nfb') != global_me) unavailableFilters += '<li>Not found by</li>';
                 if (getURLParam('hb') && getURLParam('hb') != global_me) unavailableFilters += '<li>Hidden by</li>';
                 if (getURLParam('cc')) unavailableFilters += '<li>Corrected coordinates</li>';
                 if (getURLParam('cn')) unavailableFilters += '<li>Geocache name contains</li>';
                 if (getURLParam('fp')) unavailableFilters += '<li>Minimum Favorite points</li>';
+                if (getURLParam('m')) unavailableFilters += '<li>Fill in your D/T grid</li>';
                 $('#gclh_warning ul')[0].innerHTML += unavailableFilters;
             }
             // Set available filters.
@@ -4999,39 +4992,47 @@ var mainGC = function() {
                     $('#ctl00_ContentBody_cbOptions_2').prop('checked', hideOwn);
                 }
                 // Difficult and terrin rating.
-                if (d_t['d_min'] > 1 && d_t['d_max'] < 5 && d_t['d_min'] != d_t['d_max']) {
-                    // Parameters that are BETWEEN 1 and 5 (1 < x < 5) cannot be implemented.
-                    if (!$('#gclh_warning')[0]) $('#ctl00_ContentBody_QueryPanel').before(warningHTML);
-                    let unavailableFilters = '<li>The difficulty rating is greater than 1 and less than 5</li>';
-                    $('#gclh_warning ul')[0].innerHTML += unavailableFilters;
-                } else {
-                    if (d_t['d_min'] == d_t['d_max']) {
-                        $('#ctl00_ContentBody_ddDifficulty')[0].selectedIndex = 1;
-                        $('#ctl00_ContentBody_ddDifficultyScore')[0].selectedIndex = d_t['d_min']*2 - 2;
-                    } else if (d_t['d_min'] > 1) {
-                        $('#ctl00_ContentBody_ddDifficultyScore')[0].selectedIndex = d_t['d_min']*2 - 2;
-                    } else if ((d_t['d_max'] < 5)) {
-                        $('#ctl00_ContentBody_ddDifficulty')[0].selectedIndex = 2;
-                        $('#ctl00_ContentBody_ddDifficultyScore')[0].selectedIndex = d_t['d_max']*2 - 2;
+                if (difficulity.length !== 0) {
+                    let min = Math.min(...difficulity);
+                    let max = Math.max(...difficulity);
+                    // Check if the values are a straight and start at 1 or end with 5
+                    if ((max-min)*2+1 == difficulity.length && !(min > 1 && max < 5 && min != max)) {
+                        if (min == max) {
+                            $('#ctl00_ContentBody_ddDifficulty')[0].selectedIndex = 1;
+                            $('#ctl00_ContentBody_ddDifficultyScore')[0].selectedIndex = min*2 - 2;
+                        } else if (min > 1) {
+                            $('#ctl00_ContentBody_ddDifficultyScore')[0].selectedIndex = min*2 - 2;
+                        } else if ((max < 5)) {
+                            $('#ctl00_ContentBody_ddDifficulty')[0].selectedIndex = 2;
+                            $('#ctl00_ContentBody_ddDifficultyScore')[0].selectedIndex = max*2 - 2;
+                        }
+                        $('#ctl00_ContentBody_cbDifficulty').prop('checked', true);
+                    } else {
+                        if (!$('#gclh_warning')[0]) $('#ctl00_ContentBody_QueryPanel').before(warningHTML);
+                        let unavailableFilters = '<li>The difficulty rating does not match to the criteria of PQs</li>';
+                        $('#gclh_warning ul')[0].innerHTML += unavailableFilters;
                     }
-                    $('#ctl00_ContentBody_cbDifficulty').prop('checked', true);
                 }
-                if (d_t['t_min'] > 1 && d_t['t_max'] < 5 && d_t['t_min'] != d_t['t_max']) {
-                    // Parameters that are BETWEEN 1 and 5 (1 < x < 5) cannot be implemented.
-                    if (!$('#gclh_warning')[0]) $('#ctl00_ContentBody_QueryPanel').before(warningHTML);
-                    let unavailableFilters = '<li>The terrain rating is greater than 1 and less than 5</li>';
-                    $('#gclh_warning ul')[0].innerHTML += unavailableFilters;
-                } else {
-                    if (d_t['t_min'] == d_t['t_max']) {
-                        $('#ctl00_ContentBody_ddTerrain')[0].selectedIndex = 1;
-                        $('#ctl00_ContentBody_ddTerrainScore')[0].selectedIndex = d_t['t_min']*2 - 2;
-                    } else if (d_t['t_min'] > 1) {
-                        $('#ctl00_ContentBody_ddTerrainScore')[0].selectedIndex = d_t['t_min']*2 - 2;
-                    } else if ((d_t['t_max'] < 5)) {
-                        $('#ctl00_ContentBody_ddTerrain')[0].selectedIndex = 2;
-                        $('#ctl00_ContentBody_ddTerrainScore')[0].selectedIndex = d_t['t_max']*2 - 2;
+                if (terrain.length !== 0) {
+                    let min = Math.min(...terrain);
+                    let max = Math.max(...terrain);
+                    // Check if the values are a straight and start at 1 or end with 5
+                    if ((max-min)*2+1 == terrain.length && !(min > 1 && max < 5 && min != max)) {
+                        if (min == max) {
+                            $('#ctl00_ContentBody_ddTerrain')[0].selectedIndex = 1;
+                            $('#ctl00_ContentBody_ddTerrainScore')[0].selectedIndex = min*2 - 2;
+                        } else if (min > 1) {
+                            $('#ctl00_ContentBody_ddTerrainScore')[0].selectedIndex = min*2 - 2;
+                        } else if ((max < 5)) {
+                            $('#ctl00_ContentBody_ddTerrain')[0].selectedIndex = 2;
+                            $('#ctl00_ContentBody_ddTerrainScore')[0].selectedIndex = max*2 - 2;
+                        }
+                        $('#ctl00_ContentBody_cbTerrain').prop('checked', true);
+                    } else {
+                        if (!$('#gclh_warning')[0]) $('#ctl00_ContentBody_QueryPanel').before(warningHTML);
+                        let unavailableFilters = '<li>The terrain rating does not match to the criteria of PQs</li>';
+                        $('#gclh_warning ul')[0].innerHTML += unavailableFilters;
                     }
-                    $('#ctl00_ContentBody_cbTerrain').prop('checked', true);
                 }
                 // Cache Size.
                 if (cacheSize !== false) {
@@ -9362,7 +9363,7 @@ var mainGC = function() {
                 checkAddtolistPopup(0);
             }
 
-            // Create button to save map as PQ.
+            // Create Save as PQ Button.
             var set_defaults = false;
             function addCreatePQButton() {
                 if ($('.list-hub')[0] || document.location.href.match(/\.com\/play\/map\/lists\/BM/)) {
