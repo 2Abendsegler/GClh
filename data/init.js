@@ -866,6 +866,6 @@ function states_idInit(c) {
         {"n":"Zlínský kraj","id":"285"},
         {"n":"Zug","id":"521"},
         {"n":"Zuid-Holland","id":"390"},
-        {"n":"Zürich","id":"522"}
+         {"n":"Zürich","id":"522"}
     ];
 }
