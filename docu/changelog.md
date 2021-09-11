@@ -40,6 +40,13 @@
 		<img src="../images/0.11.7/Screen02.jpg" alt="Screen02.jpg"><br><br>
 	</li>
 	<li>
+		<strong>New:</strong> [Cache Listing] Font of personal cache note in monospace. [<a href="https://github.com/2Abendsegler/GClh/issues/1860" title="Issue 1860">1860</a> / <a href="https://www.geocaching.com/profile/?u=CastParo" title="Thanks to CastParo">CastParo</a>]<br>
+		<img src="../images/0.11.7/Screen03.jpg" alt="Screen03.jpg"><br><br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_change_font_cache_notes" title="Link to your GClh II Config">Settings -> Listing</a><br>
+		<img src="../images/0.11.7/Screen04.jpg" alt="Screen04.jpg"><br>
+		If you want to use this feature, you have to activate it.<br><br>
+	</li>
+	<li>
 		<strong>Fix:</strong> [New Log Form] Templates, Smilies and VUP/VUP/Mail missing, Placeholders and Signature does not work. [<a href="https://github.com/2Abendsegler/GClh/issues/1855" title="Issue 1855">1855</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br>
 	</li>
 </ul>
