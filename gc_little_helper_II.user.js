@@ -88,6 +88,14 @@ var checksBeforeRunning = function() {
         if (window.confirm(text)) window.open(url, '_blank');
         throw Error('Abort because of GClh II already running.');
     } else appendMetaId("GClh_II_running");
+    function checkForOldGClh(waitCount) {
+        if ($('gclh_nav ul li a.Dropdown').length > 1) {
+            var text = 'Sorry, the script GC little helper II does not run together with the OLD GC little helper (without the "II").\n\nYou have installed also the OLD GC little helper as script in your script manager or as add on in your browser. This old GC little helper has not been maintained since 2016 and works not correctly.\n\nPlease delete this old GC little helper.\n';
+            alert(text);
+            throw Error('Abort because of OLD GClh installation.');
+        } else {waitCount++; if (waitCount <= 20) setTimeout(function(){checkForOldGClh(waitCount);}, 500);}
+    }
+    checkForOldGClh(0);
 };
 
 var setTestLogConsole = function() {
