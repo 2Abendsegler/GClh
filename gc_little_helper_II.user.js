@@ -4184,7 +4184,7 @@ var mainGC = function() {
         window.addEventListener("load", gclh_setFocus, false);
         var finds = global_findCount;
         var me = global_me;
-        if (newLogPage) var owner = $('.hidden-by a')[0].innerHTML;
+        if (newLogPage) var owner = $('.hidden-by a')[0].innerHTML.match(/(.*)<a href=/)[1];
         else var owner = document.getElementById('ctl00_ContentBody_LogBookPanel1_WaypointLink').nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.innerHTML;
         document.getElementById(id).innerHTML = document.getElementById(id).innerHTML.replace(/#found_no#/ig, finds);
         finds++;
@@ -11767,9 +11767,9 @@ var mainGC = function() {
                     g_name = $('#ctl00_ContentBody_LogBookPanel1_WaypointLink')[0].parentNode.children[2].innerHTML;
                 }
             // Log post cache new log page.
-            } else if ($('.hidden-by a')[0] && $('.hidden-by a')[0].innerHTML) {
+            } else if ($('#logType a')[0] && $('#logType a')[0].innerHTML) {
                 g_gc = true;
-                g_name = $('.hidden-by a')[0].innerHTML;
+                g_name = $('#logType a')[0].innerHTML;
             }
             if (g_code != "") {
                 g_link = "(https://coord.info/" + g_code + ")";
