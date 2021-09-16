@@ -669,6 +669,7 @@ var variablesInit = function(c) {
     c.settings_larger_map_as_browse_map = getValue("settings_larger_map_as_browse_map", false);
     c.settings_fav_proz_cod = getValue("settings_fav_proz_cod", true);
     c.settings_logs_old_fashioned = getValue("settings_logs_old_fashioned", false);
+    c.settings_prevent_watchclick_popup = getValue("settings_prevent_watchclick_popup", false);
 
     tlc('START userToken');
     try {
@@ -2291,6 +2292,11 @@ var mainGC = function() {
             small.innerHTML = '<a href="'+map_url+'?ll='+coords[0]+','+coords[1]+'">Map this Location</a>';
             link.append(small);
         } catch(e) {gclh_error("Map this Location",e);}
+    }
+
+// Prevent popup when clicking on "Watch" or "Stop Watching".
+    if (is_page("cache_listing") && settings_prevent_watchclick_popup) {
+        appendCssStyle('.qtip.qtip-light.qtip-pos-rc:not(.qtip-shadow):not(.pop-modal) {display: none !important;}');
     }
 
 // Improve Ignore, Stop Ignoring button handling.
@@ -13791,6 +13797,9 @@ var mainGC = function() {
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>Cache Detail Navigation <font class='gclh_small' style='vertical-align: text-bottom;'>(right sidebar)</font></b>" + "</div>";
             html += checkboxy('settings_log_inline', 'Log cache from listing (inline)') + show_help("With the inline log you can open a log form inside the listing, without loading a new page.<br><br>If you're using an ad-blocking add-on, such as uBlock, the embedded screen may not be allowed. To turn this off, you have to add \"www.geocaching.com\/geocache\/GC*\" to the whitelist, or something similar, of your add-on.") + "<br>";
             html += "&nbsp; " + checkboxy('settings_log_inline_tbX0', 'Show TB list') + "<br>";
+            html += newParameterOn2;
+            html += checkboxy('settings_prevent_watchclick_popup', 'Prevent popup when clicking on "Watch" or "Stop Watching"') + "<br>";
+            html += newParameterVersionSetzen('0.11') + newParameterOff;
             html += checkboxy('settings_improve_add_to_list', 'Show compact layout in \"Add to list\" popup to bookmark a cache') + prem + "<br>";
             html += " &nbsp; &nbsp;" + "Height of popup <select class='gclh_form' id='settings_improve_add_to_list_height' >";
             for (var i = 100; i < 521; i++) {
@@ -15245,6 +15254,7 @@ var mainGC = function() {
                 'settings_larger_map_as_browse_map',
                 'settings_fav_proz_cod',
                 'settings_logs_old_fashioned',
+                'settings_prevent_watchclick_popup',
             );
             for (var i = 0; i < checkboxes.length; i++) {
                 if (document.getElementById(checkboxes[i])) setValue(checkboxes[i], document.getElementById(checkboxes[i]).checked);
