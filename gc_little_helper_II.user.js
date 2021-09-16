@@ -2296,7 +2296,7 @@ var mainGC = function() {
 
 // Prevent popup when clicking on "Watch" or "Stop Watching".
     if (is_page("cache_listing") && settings_prevent_watchclick_popup) {
-        appendCssStyle('.qtip.qtip-light.qtip-pos-rc {display: none !important;}');
+        appendCssStyle('.qtip.qtip-light.qtip-pos-rc:not(.qtip-shadow):not(.pop-modal) {display: none !important;}');
     }
 
 // Improve Ignore, Stop Ignoring button handling.
