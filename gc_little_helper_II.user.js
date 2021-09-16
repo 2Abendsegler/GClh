@@ -4238,15 +4238,17 @@ var mainGC = function() {
     }
 
 // Automatic opt out to the old log page.
-    if (settings_logs_old_fashioned && document.location.href.match(/\.com\/play\/geocache\/gc\w+\/log\/?$/)) {
-        let gccode = document.location.href.match(/\.com\/play\/geocache\/(gc\w+)\/log/)[1];
-        let url = 'https://www.geocaching.com/play/geocache/optout/'+gccode.gcCodeToID();
-        document.location.href = url;
-    }
-    // Prevents that if you click on the blue banner, you will be redirected back to the old page.
-    if (document.location.href.match(/\.com\/seek\/log\.aspx/)) {
-        $('#uxNewLoggingBannerLink')[0].href += '?gclhNewLog=true';
-    }
+    try {
+        if (settings_logs_old_fashioned && document.location.href.match(/\.com\/play\/geocache\/gc\w+\/log\/?$/)) {
+            let gccode = document.location.href.match(/\.com\/play\/geocache\/(gc\w+)\/log/)[1];
+            let url = 'https://www.geocaching.com/play/geocache/optout/'+gccode.gcCodeToID();
+            document.location.href = url;
+        }
+        // Prevents that if you click on the blue banner, you will be redirected back to the old page. 
+        if (document.location.href.match(/\.com\/seek\/log\.aspx/) && $('#uxNewLoggingBannerLink')[0]) {
+            $('#uxNewLoggingBannerLink')[0].href += '?gclhNewLog=true';
+        }
+    } catch(e) {gclh_error("Automatic opt out to the old log page",e);}
 
 // Hide social sharing via Facebook, Twitter ... .
     if (settings_hide_socialshare && document.location.href.match(/\.com\/seek\/log\.aspx?(.*)/)) {
