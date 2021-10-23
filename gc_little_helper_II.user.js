@@ -7443,6 +7443,7 @@ var mainGC = function() {
                 search.setAttribute("type", "text");
                 search.setAttribute("size", "10");
                 search.setAttribute("title", "Use \"|\" for an OR correlation");
+                search.setAttribute("style", "padding: 1px 2px; width: unset; margin-bottom: unset;");
                 search.addEventListener("keyup", gclh_search_logs, false);
                 document.getElementById('ctl00_ContentBody_lblFindCounts').childNodes[0].appendChild(document.createTextNode("Search in logtext: "));
                 document.getElementById('ctl00_ContentBody_lblFindCounts').childNodes[0].appendChild(form);
