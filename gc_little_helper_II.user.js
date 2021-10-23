@@ -11183,7 +11183,7 @@ var mainGC = function() {
             if (settings_show_button_for_hide_archived)    {
                 var button = document.createElement('input');
                 button.type = 'button';
-                button.value = 'Show activate';
+                button.value = 'Show active';
                 document.querySelector('#divContentMain').insertBefore(button, document.querySelector('.MyOwnedCachesTable'));
                 button.onclick = showActive;
                 var css = 'input {cursor: pointer;}'
