@@ -17167,7 +17167,7 @@ function is_page(name) {
     } else if (name == "find_cache") {
         if (url.match(/^\/play\/(search|geocache)/)) status = true;
     } else if (name == "collection_1") {
-        if (url.match(/^\/play\/(friendleague|leaderboard|souvenircampaign|guidelines)/)) status = true;
+        if (url.match(/^\/play\/(friendleague|leaderboard|souvenircampaign|guidelines|promotions)/)) status = true;
     } else if (name == "hide_cache") {
         if (url.match(/^\/play\/hide/)) status = true;
     } else if (name == "geotours") {
