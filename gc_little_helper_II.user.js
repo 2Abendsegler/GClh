@@ -9657,7 +9657,7 @@ var mainGC = function() {
             css += '.map-control svg {vertical-align: middle;}';
             css += '.map-controls section button, .map-controls .zoom-controls {margin-bottom: 10px; margin-top: 0px !important;}';
             if (settings_relocate_other_map_buttons) {
-                css += '#browse-map-cta {display: none;}';
+                css += '#browse-map-cta {display: none !important;}';
             }
             // Sidebar Enhancements.
             if (settings_show_enhanced_map_popup) {
