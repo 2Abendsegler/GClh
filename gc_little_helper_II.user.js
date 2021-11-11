@@ -9578,12 +9578,12 @@ var mainGC = function() {
                 css += '.gc-button.gc-button-disabled {cursor: default;}';
                 // BML
                 css += '.list-cache-navigation.has-label {padding: 5px 0 6px !important;}';
-                css += '.mode-toggle-container {padding: 5px 14px 5px 12px;} .mode-toggle {padding: 6px;}';
+                css += '.mode-toggle-container {padding: 5px 14px 5px 12px !important;} .mode-toggle {padding: 6px !important;}';
                 css += '.dismiss-list-cache-button {margin: 2px !important;}';
                 css += '.dismiss-active-list-button {padding: 0px 0px 5px 0px;}';
-                css += '.dismiss-active-list-button-label {height: 34px; margin-right: 12px;}';
+                css += '.dismiss-active-list-button-label {height: 34px !important; margin-right: 12px;}';
                 css += '.dismiss-active-list-button-icon svg {height: 24px !important; width: 24px !important; margin-left: 6px; display: flex;}';
-                css += '.dismiss-list-cache-button svg {height: 24px !important; width: 24px !important; margin-left: 4px; display: flex;}';
+                css += '.dismiss-list-cache-button svg {height: 24px !important; width: 24px !important; margin-left: 4px; display: flex; color: #4a4a4a !important;}';
                 css += '.list-hub {padding-bottom: 0px !important; overflow: auto !important; margin-bottom: 22px;}';
                 css += '.list-hub ul li {height: 48px !important;}';
                 css += '.list-hub ul li + li {border-top: 1px solid #e4e4e4;}';
