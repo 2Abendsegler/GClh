@@ -8741,8 +8741,11 @@ var mainGC = function() {
                         }
                     });
                 }
-                // Search map: If map is changed, clear noticed scrolling.
-                if ($('#clear-map-control')[0]) global_scrollTop = 0;
+                // Search map: Set click event to "Search this area" button to clear noticed scrolling if caches on map have changed.
+                if ($('#clear-map-control')[0] && !$('#clear-map-control.gclh-scroll')[0]) {
+                    $('#clear-map-control').addClass('gclh-scroll');
+                    $('#clear-map-control')[0].addEventListener('click', function() {global_scrollTop = 0;});
+                }
                 // Cache details: Set click event to back button in cache details.
                 if ($('.cache-preview-header')[0] && $('.search-bar-back-cta')[0] && !$('.search-bar-back-cta.gclh-scroll')[0]) {
                     $('.search-bar-back-cta').addClass('gclh-scroll');
