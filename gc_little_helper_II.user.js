@@ -7082,6 +7082,8 @@ var mainGC = function() {
             css += ".log-cta {margin-bottom: -0.5em;}";
             css += ".gclh_hide_upvotes div.sort-logs, .gclh_hide_upvotes div.upvotes {display: none!important;}";
             if (settings_no_wiggle_upvotes_click) css += ".upvotes .loading-container {height: " + (settings_smaller_upvotes_icons ? 20:26) +"px;}";
+            if (settings_no_wiggle_upvotes_click) css += "#sort_logs_working {display: none;}";
+            css += "#new_sort_element_upvote {width: unset; background-position-x: 95%;" + (settings_smaller_upvotes_icons ? " background-position-y: 60%; background-size: 22px; padding-top: 4px; padding-bottom: 4px;":"") + "}";
             appendCssStyle(css);
         } catch(e) {gclh_error("Define log-template",e);}
     }
@@ -14027,8 +14029,12 @@ var mainGC = function() {
             html += newParameterVersionSetzen('0.11') + newParameterOff;
             html += checkboxy('settings_hide_spoilerwarning', 'Hide spoiler warning') + "<br>";
             html += newParameterOn2;
-            var content_settings_hide_upvotes = checkboxy('settings_hide_upvotes', 'Hide upvotes with "Order by", "Great story" and "Helpful" buttons') + content_upvotes_help + "<br>";
+            var content_settings_hide_upvotes = checkboxy('settings_hide_upvotes', 'Hide upvotes elements "Order by", "Great story" and "Helpful"') + content_upvotes_help + "<br>";
             html += content_settings_hide_upvotes;
+            var content_settings_smaller_upvotes_icons = checkboxy('settings_smaller_upvotes_icons', 'Make upvotes elements "Order by", "Great story" and "Helpful" smaller') + show_help("This option makes the upvotes elements \"Order by\", \"Great story\" and \"Helpful\" smaller, as is the case with other elements.") + "<br>";
+            html += content_settings_smaller_upvotes_icons;
+            var content_settings_no_wiggle_upvotes_click = checkboxy('settings_no_wiggle_upvotes_click', 'No wiggle on click to upvotes elements "Order by", "Great story" and ...') + show_help("With this option you can prevent the page wiggle if you click to the upvotes elements \"Order by\", \"Great story\" and \"Helpful\".") + "<br>";
+            html += content_settings_no_wiggle_upvotes_click;
             html += newParameterVersionSetzen('0.11') + newParameterOff;
             html += checkboxy('settings_hide_top_button', 'Hide the green "To Top" button') + show_help("Hide the green \"To Top\" button, which appears if you are reading logs.") + "<br>";
 
@@ -14043,8 +14049,8 @@ var mainGC = function() {
             html += " &nbsp; &nbsp;" + "Spoiler filter <input class='gclh_form' type='text' id='settings_spoiler_stringsX0' value='" + settings_spoiler_strings + "'>" + show_help("If one of these words is found in the caption of the image, there will be no real thumbnail. It is to prevent seeing spoilers. Words have to be divided by |. If the field is empty, no checking is done. Default is \"spoiler|hinweis\".") + "<br>";
             html += newParameterOn2;
             html += content_settings_hide_upvotes.replace("settings_hide_upvotes", "settings_hide_upvotesX0");
-            html += checkboxy('settings_smaller_upvotes_icons', 'Make upvotes icons for \"Great story\" and \"Helpful\" smaller') + show_help("This option makes the upvotes icons used for the buttons \"Great story\" and \"Helpful\" smaller, as is the case with other icons in the logs.") + "<br>";
-            html += checkboxy('settings_no_wiggle_upvotes_click', 'No wiggle on click to upvotes buttons \"Great story\" and \"Helpful\"') + show_help("With this option you can prevent the page wiggle if you click to the button \"Great story\" or \"Helpful\".") + "<br>";
+            html += content_settings_smaller_upvotes_icons.replace("settings_smaller_upvotes_icons", "settings_smaller_upvotes_iconsX0");
+            html += content_settings_no_wiggle_upvotes_click.replace("settings_no_wiggle_upvotes_click", "settings_no_wiggle_upvotes_clickX0");
             html += newParameterVersionSetzen('0.11') + newParameterOff;
             html += "</div>";
 
@@ -14680,6 +14686,8 @@ var mainGC = function() {
             setEvForDouPara("settings_primary_elevation_service", "input");
             setEvForDouPara("settings_secondary_elevation_service", "input");
             setEvForDouPara("settings_hide_upvotes", "click");
+            setEvForDouPara("settings_smaller_upvotes_icons", "click");
+            setEvForDouPara("settings_no_wiggle_upvotes_click", "click");
 
             // Events setzen für Parameter, die im GClh Config eine Abhängigkeit derart auslösen, dass andere Parameter aktiviert bzw.
             // deaktiviert werden müssen. ZB. können Mail Icons in VIP List (Parameter "settings_show_mail_in_viplist") nur aufgebaut
