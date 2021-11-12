@@ -7739,13 +7739,8 @@ var mainGC = function() {
                 });
             }
 
-            if (settings_show_all_logs) {
-                var logsCount = parseInt(settings_show_all_logs_count);
-                if (logsCount == 0) logsCount = 5000;
-                else if (logsCount < 26) logsCount = 26;
-                else if (logsCount%2 != 0) logsCount += 1;
-                gclh_load_logs(logsCount);
-            } else gclh_load_logs(30);
+            if (settings_show_all_logs) gclh_load_logs(countOfLogsInListing());
+            else gclh_load_logs(30);
 
         } catch(e) {gclh_error("Replace Log-Loading function",e);}
     }
@@ -12870,6 +12865,16 @@ var mainGC = function() {
         }
     }
 
+// Count of logs displayed when starting the listing.
+    function countOfLogsInListing() {
+        var logsCountSign = ' 0' + settings_show_all_logs_count;
+        var logsCount = parseInt(logsCountSign);
+        if (logsCount < 30) logsCount = 30;
+        else if (logsCount > 500) logsCount = 500;
+        else if (logsCount%2 != 0) logsCount += 1;
+        return logsCount;
+    }
+
 ////////////////////////////////////////
 // 5.3 GC - User defined searchs ($$cap) (User defined searchs on the geocaching webpages.)
 ////////////////////////////////////////
@@ -14029,7 +14034,7 @@ var mainGC = function() {
 
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>Logs</b>" + "</div>";
             html += checkboxy('settings_load_logs_with_gclh', 'Load logs with GClh II') + show_help("This option should be enabled. <br><br>You just should disable it, if you have problems with loading the logs. <br><br>If this option is disabled, there are no VIP-, VUP-, mail-, message- and top icons, no line colors and no mouse activated big images at the logs. Also the VIP and VUP lists, hide avatars, log filter and log search won't work.") + "<br>";
-            html += checkboxy('settings_show_all_logs', 'Show at least ') + " <input class='gclh_form' type='text' size='2' id='settings_show_all_logs_count' value='" + settings_show_all_logs_count + "'> logs (0 = all)" + show_help("With this option you can choose how many logs should be shown at least if you load the listing - if you type 0, all logs are shown by default.") + "<br>";
+            html += checkboxy('settings_show_all_logs', 'Show at least ') + " <input class='gclh_form' type='text' size='2' id='settings_show_all_logs_count' value='" + countOfLogsInListing() + "'> logs" + show_help("With this option you can choose how many logs should be shown at least if you start with the listing. The default and the minimum are 30 logs. The maximum are 500 logs, because of performance reasons. <br><br>(If you want to list more then 500 logs, you can use the button \"Show all logs\" above the logs section. And if you go to the end of the listed logs, the logs will be dynamically loaded there anyway.)") + "<br>";
             html += checkboxy('settings_hide_avatar', 'Hide avatars in logs') + show_help("This option hides the avatars in logs. This prevents loading the hundreds of images. You have to change the option here, because GC little helper II overrides the log-load-logic of GC, so the avatar option of GC doesn't work with GC little helper II.") + "<br>";
             html += checkboxy('settings_hide_found_count', 'Hide found count') + "<br>";
             html += content_settings_show_thumbnails.replace("show_thumbnails", "show_thumbnailsX0").replace("max_size", "max_sizeX0");
@@ -14936,7 +14941,8 @@ var mainGC = function() {
                 if (getValue("home_lng", 0) != parseInt(latlng[1] * 10000000)) setValue("home_lng", parseInt(latlng[1] * 10000000));
             }
             setValue("settings_bookmarks_search_default", document.getElementById('settings_bookmarks_search_default').value);
-            setValue("settings_show_all_logs_count", document.getElementById('settings_show_all_logs_count').value);
+            settings_show_all_logs_count = document.getElementById('settings_show_all_logs_count').value;
+            setValue("settings_show_all_logs_count", countOfLogsInListing());
 
             // Homezone circle.
             setValue("settings_homezone_radius", document.getElementById('settings_homezone_radius').value);
