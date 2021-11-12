@@ -60,7 +60,6 @@ gclh_nav .wrapper {
     flex-direction: row;
     margin: 0 auto;
     min-width: 990px;
-    max-width: 1300px;
     position: relative;
     height: 100%;
     padding-left: 32px;
