@@ -1347,6 +1347,7 @@ var mainGC = function() {
     tlc('START F-keys');
     try {
         // F2 key.
+        // (For F2 key in filter screens of Search Map and search page, see "prepareKeydownF2InFilterScreen".)
         if (settings_submit_log_button) {
             function setButtonDescInnerHTMLF2(waitCount, id) {
                 if (document.getElementById(id) && document.getElementById(id).innerHTML && !document.getElementById(id).innerHTML.match(/(F2)/)) {
@@ -1376,12 +1377,6 @@ var mainGC = function() {
             if (is_page("cache_listing") && $('.js-pcn-submit')[0]) {
                 var id = "gclh_js-pcn-submit";
                 $('.js-pcn-submit')[0].id = id;
-                setButtonDescInnerHTMLF2(0, id);
-            }
-            // "Search" in the filters screen of search page.
-            if (is_page('find_cache') && $('footer .btn-primary')[0]) {
-                var id = "gclh_footer_btn-primary";
-                $('footer .btn-primary')[0].id = id;
                 setButtonDescInnerHTMLF2(0, id);
             }
             if (id && document.getElementById(id)) {
@@ -9474,6 +9469,8 @@ var mainGC = function() {
                 buildMapControlButtons();
                 setFilter();
                 geocacheActionBar(); // "Save as PQ" and "Hide Header".
+                // Prepare keydown F2 and Ctrl+s in filter screen.
+                prepareKeydownF2InFilterScreen();
             }
 
             // Observer callback for body and checking existence of sidebar and map.
@@ -12849,6 +12846,30 @@ var mainGC = function() {
         return tx;
     }
 
+// Prepare keydown F2 and Ctrl+s in filter screens of Search Map and search page.
+    function prepareKeydownF2InFilterScreen() {
+        if (settings_submit_log_button && $('button.gc-filter-toggle')[0] && !$('.set_clickevent_to_filter_button')[0]) {
+            $('button.gc-filter-toggle').addClass('set_clickevent_to_filter_button');
+            $('button.gc-filter-toggle')[0].addEventListener('click', function() {
+                function waitForFilterScreen(waitCount) {
+                    if ($('.gc-button-primary')[0]) {
+                        function keydownF2InFilterScreen(e) {
+                            if (e.keyCode == 113 && noSpecialKey(e)) {
+                                $('.gc-button-primary').click();
+                            }
+                            if (e.keyCode == 83 && e.ctrlKey == true && e.altKey == false && e.shiftKey == false) {
+                                e.preventDefault();
+                                $('.gc-button-primary').click();
+                            }
+                        }
+                        window.addEventListener('keydown', keydownF2InFilterScreen, true);
+                    } else {waitCount++; if (waitCount <= 100) setTimeout(function(){waitForFilterScreen(waitCount);}, 50);}
+                }
+                waitForFilterScreen(0);
+            }, false);
+        }
+    }
+
 ////////////////////////////////////////
 // 5.3 GC - User defined searchs ($$cap) (User defined searchs on the geocaching webpages.)
 ////////////////////////////////////////
@@ -13029,7 +13050,6 @@ var mainGC = function() {
         try {
             if (!($(".results").length || settings_search_data.length)) {
             } else {
-                //create_config_css_search();
                 function waitForSearchForm(waitCount) {
                     if ($("#gc-search-form")[0]) {
                         $("#gc-search-form").append('<button id="filterCtxMenu" class="gc-filter-toggle"><span aria-hidden="true" class="gc-filter-toggle-icon"><svg><use xlink:href="#filters--inline"></use></svg></span>Manage Filter Sets</button>');
@@ -13065,6 +13085,8 @@ var mainGC = function() {
                             }
                             return false;
                         });
+                        // Prepare keydown F2 and Ctrl+s in filter screen of search page.
+                        prepareKeydownF2InFilterScreen();
                     } else {waitCount++; if (waitCount <= 100) setTimeout(function(){waitForSearchForm(waitCount);}, 100);}
                 }
                 waitForSearchForm(0);
@@ -13312,6 +13334,7 @@ var mainGC = function() {
             }
             html += "</select>" + show_help("Here you can set the default language for the geocaching pages. In the case that apps change the language on the geocaching pages, the default language is automatically set again.") + "<br>";
             html += "&nbsp;" + "Page width <input class='gclh_form' type='text' size='4' id='settings_new_width' value='" + getValue("settings_new_width", 1000) + "'> px" + show_help("With this option you can expand the page width on the geocaching pages. The default value on the geocaching pages is 950 pixels.") + "<br>";
+            html += checkboxy('settings_submit_log_button', 'Activate F2 key to finish certain operations') + show_help("With this option you are able to finish certain operations by pressing the F2 key or by pressing the Ctrl and s keys together, instead of scrolling to the button and pressing the button with the mouse.<br><br>Supported operations:<br>- Logging: Post new cache log (old logging page only)<br>- Logging: Post changed cache log<br>- Logging: Post new TB log<br>- Logging: Post changed TB log<br>- Cache listing: Save Personal Cache Note<br>- Pocket Query: Save Pocket Query<br>- Search Map: Apply filters<br>- Search caches: Apply filters<br>- Hide a cache: Complete process<br>- Create a bookmark for a cache (old bookmark process)") + "<br>";
 
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>Header Layout</b>" + "</div>";
             html += checkboxy('settings_change_header_layout', "Change header layout") + show_help("This allows you to redesign the header layout on the geocaching pages.") + "<br>";
@@ -13443,8 +13466,6 @@ var mainGC = function() {
             html += "<div id='gclh_config_pq' class='gclh_block'>";
             html += checkboxy('settings_fixed_pq_header', 'Show fixed header and footer in list of pocket queries') + show_help("Convenient for large PQ lists. With this option, you get a permanent view of the headers (weekday information) and footer (the number of running / remaining PQs) even if it is your list the larger as your monitor.") + "<br>"
             html += content_settings_show_log_it.replace("show_log_it","show_log_itX0");
-            var content_settings_submit_log_button = checkboxy('settings_submit_log_button', 'Submit log, PQ, old bookmark or hide cache via F2 key') + show_help("With this option you are able to submit your log by pressing key F2 instead of scrolling to the bottom and move the mouse to the button. This feature also works to submit pocket queries and old bookmarks. And it works on the whole hide cache process with all of the buttons of the create and the change functionality. It works also to save personal cache notes in cache listings.") + "<br>";
-            html += content_settings_submit_log_button;
             html += checkboxy('settings_compact_layout_list_of_pqs', 'Show compact layout in list of pocket queries') + "<br>";
             html += newParameterOn3;
             html += " &nbsp; " + checkboxy('settings_both_tabs_list_of_pqs_one_page', 'Show both tabs in list of pocket queries of one page') + show_help("Show the both tabs \"Active Pocket Queries\" and \"Pocket Queries Ready for Download\" together of one page.") + "<br>";
@@ -13512,7 +13533,6 @@ var mainGC = function() {
             html += newParameterOn2;
             html += " &nbsp; " + checkboxy('settings_lists_open_tabs', 'Open selected caches in new browser tabs') + show_help("This feature add an entry in the dropdown menu to open selected caches in new browser tabs. The feature is available in own and foreign bookmark lists and in the ignore list.<br><br>If you have only two or three caches to open, you can also open the listings manually. However, if you want to do this for a full page with for example twenty caches, this feature can be helpful.") + "<br>";
             html += newParameterVersionSetzen("0.11") + newParameterOff;
-            html += content_settings_submit_log_button.replace("log_button","log_buttonX0");
             html += newParameterOn3;
             html += checkboxy('settings_bm_changed_and_go', 'After change of old bookmark go to bookmark list automatically') + show_help("With this option you can switch to the bookmark list automatically after a change of a bookmark (old form). The confirmation page of this change will skip.") + "<br>";
             html += newParameterVersionSetzen(0.9) + newParameterOff;
@@ -13529,7 +13549,6 @@ var mainGC = function() {
             html += "<h4 class='gclh_headline2'>"+prepareHideable.replace("#id#","hide")+"<label for='lnk_gclh_config_hide'>Hide Cache</label></h4>";
             html += "<div id='gclh_config_hide' class='gclh_block'>";
             html += checkboxy('settings_hide_cache_approvals', 'Auto set approval in hide cache process') + show_help("This option activates the checkbox for approval the \"terms of use agreement\" and the \"geocache hiding guidelines\" in the hide cache process.") + "<br>";
-            html += content_settings_submit_log_button.replace("log_button","log_buttonX1");
             html += "</div>";
 
             html += "<h4 class='gclh_headline2'>"+prepareHideable.replace("#id#","others")+"<label for='lnk_gclh_config_others'>Others</label></h4>";
@@ -14056,7 +14075,6 @@ var mainGC = function() {
             html += "&nbsp;" + "<textarea class='gclh_form' rows='3' cols='56' id='settings_tb_signature' style='margin-top: 2px;'>&zwnj;" + getValue("settings_tb_signature", "") + "</textarea><br>";
 
             html += "<div class='gclh_old_new_line'>Old Logging Page Only</div>";
-            html += content_settings_submit_log_button.replace("log_button","log_buttonX2");
             html += checkboxy('settings_fieldnotes_old_fashioned', 'Logging drafts old-fashioned') + show_help("This option deactivates on old drafts page the logging of drafts by the new log page and activates logging of drafts by the old-fashioned log page.") + "<br>";
             html += newParameterOn2;
             html += checkboxy('settings_logs_old_fashioned', 'Log caches always old-fashioned') + show_help("If you enable this option, you always get the old log page instead of the new one. This does not apply to drafts / field notes. <br> Background: geocaching.com saves the log page you are using in a cookie. If you always delete cookies when you close your browser, the data will be lost.<br>To get the old design for Fieldnotes, you have to use the old Fieldnotes page and activate \"Logging drafts old-fashioned\" here in the GClh config.") + "<br>";
@@ -14653,7 +14671,6 @@ var mainGC = function() {
             setEvForDouPara("settings_hover_image_max_size", "input");
             setEvForDouPara("settings_imgcaption_on_top", "click");
             setEvForDouPara("settings_spoiler_strings", "input");
-            setEvForDouPara("settings_submit_log_button", "click");
             setEvForDouPara("settings_show_elevation_of_waypoints", "click");
             setEvForDouPara("settings_primary_elevation_service", "input");
             setEvForDouPara("settings_secondary_elevation_service", "input");
