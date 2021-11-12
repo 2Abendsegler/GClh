@@ -9281,7 +9281,7 @@ var mainGC = function() {
                 // Close the sidebar.
                 function clickToClose(wc) {
                     // The sidebar is still closed from the start, so wait.
-                    if ($('.sidebar-toggle')[0] && $('body').hasClass('sidebar-is-closed')) {
+                    if (!$('.sidebar-toggle')[0] || $('body').hasClass('sidebar-is-closed')) {
                         wc++;
                         if (wc <= 25) setTimeout(function() { clickToClose(wc); }, 200);
                     // The sidebar is now open.
@@ -9292,29 +9292,60 @@ var mainGC = function() {
                 clickToClose(0);
             }
 
-            // Check if search URL already has filters set: if not then set default filters otherwise keep current filter.
-            let urlIsFiltered = document.location.href.split('&').length>7 ? true : false;
+            // Default filters.
             let runSetFilter = true;
+            let cache_types = [2,3,4,5,6,8,11,137,1858];
+            // Check if filters are to set.
+            var filtersAreToSet = false;
+            if (!settings_map_hide_found || !settings_map_hide_hidden) {
+                filtersAreToSet = true;
+            } else {
+                for (let i=0; i<cache_types.length; i++) {
+                    if (window['settings_map_hide_'+cache_types[i]]) {
+                        filtersAreToSet = true;
+                    }
+                }
+            }
             // Set default filters.
             function setFilter() {
-                // Bookmarklist.
-                if (document.location.href.match(/\.com\/play\/map(\/BM|\?bm=|\/lists)/)) {
+                // If bookmarklist or no filter is to set.
+                if (document.location.href.match(/\.com\/play\/map(\/BM|\?bm=|\/lists)/) || !filtersAreToSet) {
                     // Hide sidebar.
                     window.setTimeout(function(){hideSidebar();}, 500);
-                // No bookmarklist.
+                // If no bookmarklist and filters are to set.
                 } else {
                     // Run only once.
-                    if (urlIsFiltered || !runSetFilter) return;
+                    if (!runSetFilter) return;
                     runSetFilter = false;
-                    // Each filter has to be clicked twice, otherwise the selection isn't reliable.
+                    // Check if search URL already has filters set: if not then set default filters otherwise keep current filter.
+                    if (!document.location.href.split('&').length > 7) return;
+                    // Check if there isn't already an input in search field of detail screen.
+                    // (Das betrifft auch eine Umschaltung von My Lists auf Search. Auch hier dürfen keine Defaults gesetzt werden.)
+                    if ($('#gc-search-typeahead-input')[0] && !$('#gc-search-typeahead-input').attr('value') == "") return;
+                    // Don't display the filter screen during the default settings are running.
+                    $('body').addClass('default_settings_running');
+                    // Some filters have to be clicked twice, otherwise the selection isn't reliable.
                     function doubleClick(sel) {
                         $(sel).click().click();
                     }
-                    // Wait for filter.
+                    // Wait for filter screen.
                     function waitForFilter(waitCount) {
                         if ($('#gc-search-filters')[0] &&
                             $('#found-status-filter .gc-radio-control-container:nth-child(1) label')[0] &&
-                            $('#cache-owner-filter .gc-radio-control-container:nth-child(1) label')[0]) {
+                            $('#cache-owner-filter .gc-radio-control-container:nth-child(1) label')[0] &&
+                            $('.gc-location-typeahead .inner-wrapper')[0]) {
+                            // Set location "Home Location" to prevent zoom out, if there isn't already a location.
+                            if (!$('.gc-location-typeahead .inner-wrapper button.chip')[0]) {
+                                if ($('.filter-group-header:first').hasClass('collapsed')) {
+                                    var collapsed = true;
+                                    $('.filter-group-header:first').click();
+                                } else var collapsed = false;
+                                $('.gc-location-typeahead .inner-wrapper').click();
+                                $('.gc-autocomplete-menu li').click();
+                                if (collapsed == true) {
+                                    $('.filter-group-header:first').click();
+                                }
+                            }
                             // Hide found caches.
                             if (!settings_map_hide_found) {
                                 doubleClick('#found-status-filter .gc-radio-control-container:nth-child(1) label');
@@ -9324,7 +9355,6 @@ var mainGC = function() {
                                 doubleClick('#cache-owner-filter .gc-radio-control-container:nth-child(1) label');
                             }
                             // Hide cache types.
-                            let cache_types = [2,3,4,5,6,8,11,137,1858];
                             $('input[value="2"][id*="cache-type"]').parents('.filter-container').find('button.gc-selection-toggle').click();
                             for (let i=0; i<cache_types.length; i++) {
                                 if (window['settings_map_hide_'+cache_types[i]]) {
@@ -9332,12 +9362,16 @@ var mainGC = function() {
                                 }
                             }
                             // Apply filters to map and close.
-                            window.setTimeout(function(){doubleClick('#gc-search-filters .last-filter-control');}, 90);
+                            window.setTimeout(function(){
+                                doubleClick('#gc-search-filters .last-filter-control');
+                                // Display the filter screen again after the default settings.
+                                $('body').removeClass('default_settings_running');
+                            }, 90);
                             // Hide sidebar.
                             window.setTimeout(function(){hideSidebar();}, 100);
                         } else {waitCount++; if (waitCount <= 100) setTimeout(function(){waitForFilter(waitCount);}, 50);}
                     }
-                    // Open filter.
+                    // Wait for filter button and open filter.
                     function waitForFilterButton(waitCount) {
                         if ($('button.gc-filter-toggle')[0]) {
                             $('button.gc-filter-toggle').click();
@@ -9599,6 +9633,7 @@ var mainGC = function() {
                 css += '.cache-detail-preview.list-cache {height: calc(100% + 24px) !important;}';
                 css += '#map-chip {display: none !important;}';
                 // Filter
+                css += 'body.default_settings_running .gc-filter-modal {z-index: -1 !important;}';
                 css += '#search-filter-type .type-label.focused, .search-filters-attributes ul.wonders .focused label {outline: unset !important;}';
                 css += '#search-filters-controls {padding: 0px 10px 5px 10px !important;}';
                 css += '#search-filters-controls .gc-button {padding: 0px 10px; margin-right: 10px !important; border: 1px solid #9b9b9b; border-radius: 4px;}';
