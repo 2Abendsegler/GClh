@@ -329,5 +329,6 @@
   "settings_change_font_cache_notes": false,
   "settings_larger_map_as_browse_map": false,
   "settings_fav_proz_cod": true,
-  "settings_logs_old_fashioned": false
+  "settings_logs_old_fashioned": false,
+  "settings_upgrade_button_header_remove": false
 }
