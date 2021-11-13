@@ -316,6 +316,7 @@ var variablesInit = function(c) {
     c.global_rc_data = "";
     c.global_rc_status = "";
     c.global_me = false;
+    c.global_isBasic = false;
     c.global_avatarUrl = false;
     c.global_findCount = false;
     c.global_locale = false;
@@ -1236,6 +1237,7 @@ var mainGCWait = function() {
             if (typeof headerSettings.avatarUrl !== 'undefined') global_avatarUrl = headerSettings.avatarUrl;
             if (typeof headerSettings.locale !== 'undefined') global_locale = headerSettings.locale;
             if (typeof headerSettings.findCount !== 'undefined') global_findCount = headerSettings.findCount;
+            if (typeof headerSettings.isBasic !== 'undefined') global_isBasic = headerSettings.isBasic;
         }
         if (typeof chromeSettings !== 'undefined' && typeof chromeSettings.username !== 'undefined' && chromeSettings.username !== null) {
             tlc('Global user data chromeSettings found');
@@ -1243,6 +1245,7 @@ var mainGCWait = function() {
             if (typeof chromeSettings.avatarUrl !== 'undefined') global_avatarUrl = chromeSettings.avatarUrl;
             if (typeof chromeSettings.locale !== 'undefined') global_locale = chromeSettings.locale;
             if (typeof chromeSettings.findCount !== 'undefined') global_findCount = chromeSettings.findCount;
+            if (typeof chromeSettings.isBasic !== 'undefined') global_isBasic = chromeSettings.isBasic;
         }
         if (typeof _gcUser !== 'undefined' && typeof _gcUser.username !== 'undefined' && _gcUser.username !== null) {
             tlc('Global user data _gcUser found');
@@ -1250,11 +1253,12 @@ var mainGCWait = function() {
             if (typeof _gcUser.image !== 'undefined' && typeof _gcUser.image.imageUrl !== 'undefined') global_avatarUrl = _gcUser.image.imageUrl.replace(/\{0\}/,'avatar');
             if (typeof _gcUser.locale !== 'undefined') global_locale = _gcUser.locale;
             if (typeof _gcUser.findCount !== 'undefined') global_findCount = _gcUser.findCount;
+            if (typeof _gcUser.membershipLevel !== 'undefined' && _gcUser.membershipLevel == 1) global_isBasic = true;
         }
         if (global_me !== false && global_avatarUrl !== false && global_locale !== false && global_findCount !== false) {
             tlc('All global user data found');
             tlc('- global_me: '+global_me+' / global_avatarUrl: '+global_avatarUrl);
-            tlc('- global_findCount: '+global_findCount+' / global_locale: '+global_locale);
+            tlc('- global_findCount: '+global_findCount+' / global_locale: '+global_locale+' / global_isBasic: '+global_isBasic);
             mainGC();
         } else {
             waitCount++;
@@ -1262,7 +1266,7 @@ var mainGCWait = function() {
             else {
                 tlc('STOP not all global user data found');
                 tlc('- global_me: '+global_me+' / global_avatarUrl: '+global_avatarUrl);
-                tlc('- global_findCount: '+global_findCount+' / global_locale: '+global_locale);
+                tlc('- global_findCount: '+global_findCount+' / global_locale: '+global_locale+' / global_isBasic: '+global_isBasic);
             }
         }
     }
@@ -1431,6 +1435,8 @@ var mainGC = function() {
                 setUserParameter();
                 tlc('START setMessageIndicator');
                 setMessageIndicator(0);
+                tlc('START setUpgradeButton');
+                setUpgradeButton();
                 tlc('START changeHeaderLayout');
                 changeHeaderLayout();
                 tlc('START newWidth');
@@ -1482,6 +1488,13 @@ var mainGC = function() {
         } else {waitCount++; if (waitCount <= 20) setTimeout(function(){setMessageIndicator(waitCount);}, 500);}
     }
 
+// Set upgrade button.
+    function setUpgradeButton() {
+        if (global_isBasic && !settings_upgrade_button_header_remove) {
+            $('.messagecenterheaderwidget.li-messages').before('<li><a class="cta-upgrade desktop-upgrade-cta" data-event-action="Header Click" data-event-category="data" data-event-label="Upgrade CTA" href="https://payments.geocaching.com//?upgrade=true" title="Upgrade">Upgrade</a></li>');
+        }
+    }
+
 // Change Header layout.
     function changeHeaderLayout() {
         try {
@@ -1529,8 +1542,6 @@ var mainGC = function() {
                     new_width_menu = new_width - 261 + 20 - 190;
                     new_width_menu_cut_old = 190;
                 }
-                // Remove basic member upgrade button in header.
-                if (settings_upgrade_button_header_remove && $('.li-membership')[0]) $('.li-membership')[0].remove();
                 // Im neuen Dashboard Upgrade Erinnerung entfernen.
                 $('.sidebar-upsell').remove();
                 // Icons aus Play Menü entfernen.
