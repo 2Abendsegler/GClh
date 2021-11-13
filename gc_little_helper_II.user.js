@@ -8099,7 +8099,6 @@ var mainGC = function() {
                 css += '.gclh_buttons {display: flex;}';
                 css += '.gclh_edit-link {margin-top: 12px; margin-right: 12px;}';
             }
-            appendCssStyle(css);
 
             // Show unpublished hides.
             if (settings_showUnpublishedHides) {
@@ -8272,7 +8271,10 @@ var mainGC = function() {
                     dnfHtml += '</div>';
                     $('#GClh_unpublishedCaches_body').html(dnfHtml);
                 }
-            }
+                // Prevent lower scroll bar.
+                css += '#GClh_unpublishedCaches_body .activity-item .activity-meta dd {margin-right: 10px;}';
+                css += '#GClh_unpublishedCaches_body .activity-item .activity-meta .left-separator {padding-left: 7px;}';
+             }
             appendCssStyle(css);
         } catch(e) {gclh_error("Improve new dashboard",e);}
     }
