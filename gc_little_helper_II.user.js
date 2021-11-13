@@ -670,6 +670,7 @@ var variablesInit = function(c) {
     c.settings_fav_proz_cod = getValue("settings_fav_proz_cod", true);
     c.settings_logs_old_fashioned = getValue("settings_logs_old_fashioned", false);
     c.settings_prevent_watchclick_popup = getValue("settings_prevent_watchclick_popup", false);
+    c.settings_upgrade_button_header_remove = getValue("settings_upgrade_button_header_remove", false);
 
     tlc('START userToken');
     try {
@@ -1528,9 +1529,8 @@ var mainGC = function() {
                     new_width_menu = new_width - 261 + 20 - 190;
                     new_width_menu_cut_old = 190;
                 }
-                // Member Upgrade Button entfernen.
-                $('.li-upgrade').remove();
-                if ($('.li-membership')[0]) $('.li-membership')[0].remove();
+                // Remove basic member upgrade button in header.
+                if (settings_upgrade_button_header_remove && $('.li-membership')[0]) $('.li-membership')[0].remove();
                 // Im neuen Dashboard Upgrade Erinnerung entfernen.
                 $('.sidebar-upsell').remove();
                 // Icons aus Play Menü entfernen.
@@ -13351,6 +13351,9 @@ var mainGC = function() {
             html += " &nbsp; " + checkboxy('settings_gc_tour_is_working', 'Reserve place for GC Tour icon') + show_help("If the script GC Tour is running, you can reserve a place top left on GC pages for the GC Tour icon.") + "<br>";
             html += " &nbsp; " + checkboxy('settings_fixed_header_layout', 'Arrange header layout on content') + show_help("With this option you can arrange the header width on the width of the content of GC pages. This is an easy feature with some restrictions, like for example the available place, especially for horizontal navigation menues.<br><br>This feature is available on GC pages in the oldest design like for example cache and TB listings, pocket queries, nearest lists, old dashboards (profiles), statistics, watchlists and drafts, to name just a few. <br><br>On map page and on pages in the newer and newest design it is not available, partly because the content on these pages are not yet in an accurate width, like the newer search cache page or the message center page. Also this feature is not fully integrated in the diverse possibilities of the header layout and the navigation menus. But we hope the friends of this specific header design can deal with it.") + "<br>";
             html += checkboxy('settings_bookmarks_on_top', "Show <a class='gclh_ref' href='#gclh_linklist' title='Link to topic \"Linklist and Navigation\"' id='gclh_linklist_link_1'>Linklist</a> on top") + show_help("Show the Linklist on the top of GC pages, beside the other links. You can configure the links in the <a class='gclh_ref_ht_int' href='#gclh_linklist' title='Link to topic \"Linklist and Navigation\"'>Linklist</a> at the end of this configuration page.") + "<br>";
+            html += newParameterOn2;
+            html += checkboxy('settings_upgrade_button_header_remove', 'Remove Upgrade button (basic members)') + "<br>";
+            html += newParameterVersionSetzen('0.11') + newParameterOff;
 
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>User Related Layout</b>" + "</div>";
             var content_settings_show_vip_list = "The VIPs (Very Important Persons) feature consist of<br>- the user related icon on numerous pages,<br>- the VIP lists in the cache and event listings and<br>- the VIP list in the dashboard.<br><br>You can add any user on numerous pages to your VIP lists by clicking the little VIP icon beside the user. If it is green, this person is a VIP.<br><br>The VIP lists in the cache and event listings are lists, displayed at the right side in the cache and event listings. The main VIP list only shows VIPs and the logs of VIPs, which already posted a log to this listing. So, you are able to see which of your VIPs already found this cache.<br><br>On your dashboard page there is an overview list of all your VIPs.";
@@ -15325,6 +15328,7 @@ var mainGC = function() {
                 'settings_fav_proz_cod',
                 'settings_logs_old_fashioned',
                 'settings_prevent_watchclick_popup',
+                'settings_upgrade_button_header_remove',
             );
             for (var i = 0; i < checkboxes.length; i++) {
                 if (document.getElementById(checkboxes[i])) setValue(checkboxes[i], document.getElementById(checkboxes[i]).checked);
