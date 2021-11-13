@@ -8272,7 +8272,7 @@ var mainGC = function() {
                     dnfHtml += '</div>';
                     $('#GClh_unpublishedCaches_body').html(dnfHtml);
                 }
-             }
+            }
             appendCssStyle(css);
         } catch(e) {gclh_error("Improve new dashboard",e);}
     }
