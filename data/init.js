@@ -120,6 +120,7 @@ function layersInit(c) {
         ,"Google Maps Hybrid" : { tileUrl: "http://mt0.google.com/vt/lyrs=s,m@110&hl=en&x={x}&y={y}&z={z}",  attribution: "Google Maps",  tileSize: 256,  minZoom: 0,  maxZoom: 20 }
         ,"ÖPNVMap" : { tileUrl: "http://tile.memomaps.de/tilegen/{z}/{x}/{y}.png",  attribution: 'Map <a href="https://memomaps.de">memomaps.de</a> <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Tiles <a href="http://openstreetmap.org/">Openstreetmap</a> <a href="http://opendatacommons.org/licenses/odbl/1.0">ODbL</a>, <a href="https://öpnvkarte.de/#map_key">Legend</a>' }
         ,"CyclOSM: OSM-based bicycle map" : { tileUrl: "https://{s}.tile-cyclosm.openstreetmap.fr/cyclosm/{z}/{x}/{y}.png",  attribution: ' | Styles <a href="https://github.com/cyclosm/cyclosm-cartocss-style">CyclOSM</a> <a href="https://github.com/cyclosm/cyclosm-cartocss-style/blob/master/LICENSE.md">License</a> | Tiles <a href="https://www.openstreetmap.fr/">OpenStreetMap-France</a> <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>',  maxZoom: 15}
+        ,"OpenTopoMap" : { tileUrl: "http://{s}.tile.opentopomap.org/{z}/{x}/{y}.png",  attribution: '&copy; <a href="http://opentopomap.org">OpenTopoMapMap</a>, <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>' }
     };
     c.map_overlays = new Object();
     c.map_overlays = {
