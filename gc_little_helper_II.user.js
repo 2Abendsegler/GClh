@@ -5231,7 +5231,7 @@ var mainGC = function() {
             }
             // Disable entry 'Open selected caches in new browser tabs' if no caches are selected.
             function disableOpenTabsLists(mouseover) {
-                if (!$('table.geocache-table tr .checked')[0]) {
+                if (!$('table.geocache-table tbody tr input:checked')[0]) {
                     $('#gclh_open_tabs').addClass('disabled');
                 }
             }
@@ -5239,8 +5239,8 @@ var mainGC = function() {
             function openTabsLists(click, entryDD) {
                 if (!$('#gclh_open_tabs')[0]) return;
                 var caches = [];
-                $('table.geocache-table tr').each(function() {
-                    if ($(this).find('.checked')[0] && $(this).find('.geocache-name a')[0] && $(this).find('.geocache-name a')[0].href) {
+                $('table.geocache-table tbody tr').each(function() {
+                    if ($(this).find('input:checked')[0] && $(this).find('.geocache-name a')[0] && $(this).find('.geocache-name a')[0].href) {
                         if (browser == 'chrome') window.open($(this).find('.geocache-name a')[0].href);
                         else caches.push($(this).find('.geocache-name a')[0].href);
                     }
