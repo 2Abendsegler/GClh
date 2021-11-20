@@ -35,10 +35,16 @@
 ## v0.11.8:
 <ul>
 	<li>
+		<strong>New:</strong> [Browse Map] New map layer "OpenTopoMap". [<a href="https://github.com/2Abendsegler/GClh/issues/1937" title="Issue 1937">1937</a> / <a href="https://www.geocaching.com/profile/?u=Pzi" title="Thanks to Pzi">Pzi</a>]<br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_use_gclh_layercontrol" title="Link to your GClh II Config">Settings -> Map - Layers in Map:</a><br>
+		<img src="../images/0.11.8/Screen10.jpg" alt="Screen10.jpg"><br>
+	</li>
+	<li>
 		<strong>New:</strong> [Search Map / Search] Implement F2 key functionality on "Apply" button of the filters screens of both pages Search Map and Search. [<a href="https://github.com/2Abendsegler/GClh/issues/1945" title="Issue 1945">1945</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
-		The parameter is not new, it already exists for other F2 activities. We have now placed the parameter in the Global area.
+		The parameter is not new, it already exists for other F2 activities. We have now placed the parameter in the Global area.<br>
 		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_submit_log_button" title="Link to your GClh II Config">Settings -> Global:</a><br>
 		<img src="../images/0.11.8/Screen09.jpg" alt="Screen09.jpg"><br>
+		If you want to use this feature, you have to activate it.<br><br>
 	</li>
 	<li>
 		<strong>New:</strong> [Cache Listing] Integrate the new styled upvotes element "Order by" in the available settings. [<a href="https://github.com/2Abendsegler/GClh/issues/1948" title="Issue 1948">1948</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
@@ -50,13 +56,15 @@
 		<img src="../images/0.11.8/Screen07.jpg" alt="Screen07.jpg"><br>
 	</li>
 	<li>
+		<strong>Change:</strong> [Cache Listing] Limit the number of logs to be displayed when opening the Listing. [<a href="https://github.com/2Abendsegler/GClh/issues/1939" title="Issue 1939">1939</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		The parameter is not new, but we have limited the initial load to 500 logs so that we don't overwhelm the browser. You have nothing to do.
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_show_all_logs" title="Link to your GClh II Config">Settings -> Listing - Logs:</a><br>
+		<img src="../images/0.11.8/Screen04.jpg" alt="Screen04.jpg"><br>
+	</li>
+	<li>
 		<strong>Fix:</strong> [Cache Listing] Remove One-Click Watching, because it was added by GS. [<a href="https://github.com/2Abendsegler/GClh/issues/1902" title="Issue 1902">1902</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br>
 	</li>
 </ul>
-
-		If you want to use this feature, you have to activate it.<br><br>
-
-
 (20.11.2021)<br>
 released by <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a><br>
 <br>
