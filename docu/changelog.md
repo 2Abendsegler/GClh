@@ -1,3 +1,4 @@
+<a href="#v0118" title="GClh II version 0.11.8 (20.11.2021)">v0.11.8</a> &nbsp;
 <a href="#v0117" title="GClh II version 0.11.7 (12.09.2021)">v0.11.7</a> &nbsp;
 <a href="#v01152" title="GClh II version 0.11.5.2 (20.08.2021)">v0.11.5.2</a> &nbsp;
 <a href="#v01151" title="GClh II version 0.11.5.1 (17.07.2021)">v0.11.5.1</a> &nbsp;
@@ -29,6 +30,36 @@
 <a href="#v010" title="GClh II version 0.10 (13.12.2019)">v0.10</a> &nbsp;
 <a href="changelog_before.md" title="Go to earlier changelog">Earlier changelog</a> &nbsp;
 
+
+---
+## v0.11.8:
+<ul>
+	<li>
+		<strong>New:</strong> [Search Map / Search] Implement F2 key functionality on "Apply" button of the filters screens of both pages Search Map and Search. [<a href="https://github.com/2Abendsegler/GClh/issues/1945" title="Issue 1945">1945</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		The parameter is not new, it already exists for other F2 activities. We have now placed the parameter in the Global area.
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_submit_log_button" title="Link to your GClh II Config">Settings -> Global:</a><br>
+		<img src="../images/0.11.8/Screen09.jpg" alt="Screen09.jpg"><br>
+	</li>
+	<li>
+		<strong>New:</strong> [Cache Listing] Integrate the new styled upvotes element "Order by" in the available settings. [<a href="https://github.com/2Abendsegler/GClh/issues/1948" title="Issue 1948">1948</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		Old:<br>
+		<img src="../images/0.11.8/Screen05.jpg" alt="Screen05.jpg"><br>
+		New:<br>
+		<img src="../images/0.11.8/Screen06.jpg" alt="Screen06.jpg"><br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_smaller_upvotes_icons" title="Link to your GClh II Config">Settings -> Listing - Logs Header and Logs:</a><br>
+		<img src="../images/0.11.8/Screen07.jpg" alt="Screen07.jpg"><br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Cache Listing] Remove One-Click Watching, because it was added by GS. [<a href="https://github.com/2Abendsegler/GClh/issues/1902" title="Issue 1902">1902</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br>
+	</li>
+</ul>
+
+		If you want to use this feature, you have to activate it.<br><br>
+
+
+(20.11.2021)<br>
+released by <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a><br>
+<br>
 
 ---
 ## v0.11.7:
