@@ -43,8 +43,7 @@
 		<strong>New:</strong> [Search Map / Search] Implement F2 key functionality on "Apply" button of the filters screens of both pages Search Map and Search. [<a href="https://github.com/2Abendsegler/GClh/issues/1945" title="Issue 1945">1945</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 		The parameter is not new, it already exists for other F2 activities. We have now placed the parameter in the Global area.<br>
 		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_submit_log_button" title="Link to your GClh II Config">Settings -> Global:</a><br>
-		<img src="../images/0.11.8/Screen09.jpg" alt="Screen09.jpg"><br>
-		If you want to use this feature, you have to activate it.<br><br><br>
+		<img src="../images/0.11.8/Screen09.jpg" alt="Screen09.jpg"><br><br>
 	</li>
 	<li>
 		<strong>New:</strong> [Search Map] Don't display the filters screen during the GClh default filters setting are running. [<a href="https://github.com/2Abendsegler/GClh/issues/1921" title="Issue 1921">1921</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br><br>
@@ -77,7 +76,7 @@
 	</li>
 	<li>
 		<strong>Change:</strong> [Cache Listing] Limit the number of logs to be displayed when opening the Listing. [<a href="https://github.com/2Abendsegler/GClh/issues/1939" title="Issue 1939">1939</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
-		The parameter is not new, but we have limited the initial load to 500 logs so that we don't overwhelm the browser. You have nothing to do.
+		The parameter is not new, but we have limited the initial load to 500 logs so that we don't overwhelm the browser. You have nothing to do, we migrate it.<br>
 		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_show_all_logs" title="Link to your GClh II Config">Settings -> Listing - Logs:</a><br>
 		<img src="../images/0.11.8/Screen04.jpg" alt="Screen04.jpg"><br><br>
 	</li>
@@ -109,13 +108,13 @@
 		<strong>Fix:</strong> [Old log form] Automatic opt out to the old log form with a draft run into error on old log form. [<a href="https://github.com/2Abendsegler/GClh/issues/1917" title="Issue 1917">1917</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br>
 	</li>
 	<li>
+		<strong>Fix:</strong> [New log form] Placeholder "Owner" include VIP/VUP/Mail Icons. [<a href="https://github.com/2Abendsegler/GClh/issues/1911" title="Issue 1911">1911</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br>
+	</li>
+	<li>
 		<strong>Fix:</strong> [Own caches] Different button descriptions for the same thing. [<a href="https://github.com/2Abendsegler/GClh/issues/1924" title="Issue 1924">1924</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 	</li>
 	<li>
-		<strong>Fix:</strong> [Menue / WoW] On the newer World of Warcraft page the submenus are moved. [<a href="https://github.com/2Abendsegler/GClh/issues/1922" title="Issue 1922">1922</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
-	</li>
-	<li>
-		<strong>Fix:</strong> [New Log] Placeholder "Owner" include VIP/VUP/Mail Icons. [<a href="https://github.com/2Abendsegler/GClh/issues/1911" title="Issue 1911">1911</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br><br>
+		<strong>Fix:</strong> [Menue / WoW] On the newer World of Warcraft page the submenus are moved. [<a href="https://github.com/2Abendsegler/GClh/issues/1922" title="Issue 1922">1922</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br><br>
 	</li>
 </ul>
 (20.11.2021)<br>
