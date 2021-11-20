@@ -47,6 +47,9 @@
 		If you want to use this feature, you have to activate it.<br><br>
 	</li>
 	<li>
+		<strong>New:</strong> [Search Map] Don't display the filters screen during the GClh default filters setting are running. [<a href="https://github.com/2Abendsegler/GClh/issues/1921" title="Issue 1921">1921</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
 		<strong>New:</strong> [Cache Listing] Integrate the new styled upvotes element "Order by" in the available settings. [<a href="https://github.com/2Abendsegler/GClh/issues/1948" title="Issue 1948">1948</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 		Old:<br>
 		<img src="../images/0.11.8/Screen05.jpg" alt="Screen05.jpg"><br>
@@ -62,7 +65,31 @@
 		<img src="../images/0.11.8/Screen04.jpg" alt="Screen04.jpg"><br>
 	</li>
 	<li>
-		<strong>Fix:</strong> [Cache Listing] Remove One-Click Watching, because it was added by GS. [<a href="https://github.com/2Abendsegler/GClh/issues/1902" title="Issue 1902">1902</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br>
+		<strong>Fix:</strong> [Search Map] After clicking the back button in the cache detail screen, the positioning in the list of caches doesn't work. [<a href="https://github.com/2Abendsegler/GClh/issues/1932" title="Issue 1932">1932</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Search Map] Header has white space border if "Change header layout" is disabled. [<a href="https://github.com/2Abendsegler/GClh/issues/1936" title="Issue 1936">1936</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Search Map] The first line of buttons in sidebar is again bigger then necessary in compact layout. [<a href="https://github.com/2Abendsegler/GClh/issues/1929" title="Issue 1929">1929</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Search Map] Button "Browse geocaches" remains, even if it is relocated to the other buttons. [<a href="https://github.com/2Abendsegler/GClh/issues/1927" title="Issue 1927">1927</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Search Map] The GClh default filters setting change map zoom. [<a href="https://github.com/2Abendsegler/GClh/issues/1921" title="Issue 1921">1921</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Cache Listing] An "Add to List" popup is displayed in front of the GClh config. [<a href="https://github.com/2Abendsegler/GClh/issues/1931" title="Issue 1931">1931</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Bookmarklists] Menue item "Open Caches in new tab" not selectable. [<a href="https://github.com/2Abendsegler/GClh/issues/1926" title="Issue 1926">1926</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Own caches] Different button descriptions for the same thing. [<a href="https://github.com/2Abendsegler/GClh/issues/1924" title="Issue 1924">1924</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Menue / WoW] On the newer World of Warcraft page the submenus are moved. [<a href="https://github.com/2Abendsegler/GClh/issues/1922" title="Issue 1922">1922</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 	</li>
 </ul>
 (20.11.2021)<br>
