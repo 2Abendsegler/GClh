@@ -1,3 +1,4 @@
+<a href="#v01181" title="GClh II version 0.11.8.1 (22.11.2021)">v0.11.8.1</a> &nbsp;
 <a href="#v0118" title="GClh II version 0.11.8 (20.11.2021)">v0.11.8</a> &nbsp;
 <a href="#v0117" title="GClh II version 0.11.7 (12.09.2021)">v0.11.7</a> &nbsp;
 <a href="#v01152" title="GClh II version 0.11.5.2 (20.08.2021)">v0.11.5.2</a> &nbsp;
@@ -30,6 +31,18 @@
 <a href="#v010" title="GClh II version 0.10 (13.12.2019)">v0.10</a> &nbsp;
 <a href="changelog_before.md" title="Go to earlier changelog">Earlier changelog</a> &nbsp;
 
+
+---
+## v0.11.8.1:
+<ul>
+	<li>
+		<strong>Roll back:</strong> [Search Map] Header has white space border if "Change header layout" is disabled. [<a href="https://github.com/2Abendsegler/GClh/issues/1955" title="Issue 1955">1955</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		We rolled back the development because with certain settings the menu in the header was no longer centered.<br>
+	</li>
+</ul>
+(22.11.2021)<br>
+released by <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a><br>
+<br>
 
 ---
 ## v0.11.8:
