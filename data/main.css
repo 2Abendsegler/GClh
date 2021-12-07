@@ -60,7 +60,6 @@ gclh_nav .wrapper {
     flex-direction: row;
     margin: 0 auto;
     min-width: 990px;
-    max-width: 1300px;
     position: relative;
     height: 100%;
     padding-left: 32px;
@@ -373,6 +372,14 @@ gclh_nav .profile-panel .submenu button {
 gclh_nav .profile-panel ul::after {
     left: initial;
     right: 14px;
+}
+
+/* Handle wide screens on search map */
+@media only screen and (min-width: 1300px) {
+    gclh_nav .wrapper {
+        padding-left: calc((100% - 1300px) / 2 + 32px);
+        padding-right: calc((100% - 1300px) / 2 + 32px);
+    }
 }
 
 /* User profile menu bend into shape. */
