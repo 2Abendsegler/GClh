@@ -2418,12 +2418,12 @@ var mainGC = function() {
     }
 
 // Add link to waypoint list and cache logs to right sidebar.
-    if (is_page("cache_listing") && $("#cache_logs_container")[0]) {
+    if (is_page("cache_listing") && $("#cache_logs_container")[0] && $(".InformationWidget")[0]) {
         try {
             if (getWaypointTable().length > 0) {
                 $(".CacheDetailNavigation:first > ul:first").append('<li><a href="#ctl00_ContentBody_bottomSection">Go to Waypoint List</a></li>');
             }
-            $("#cache_logs_container").prev("div").attr('id','logs_section');
+            $(".InformationWidget").attr('id','logs_section');
             $(".CacheDetailNavigation:first > ul:first").append('<li><a href="#logs_section">Go to Logs</a></li>');
             var css = "";
             css += '.CacheDetailNavigation a[href*="#ctl00_ContentBody_bottomSection"]{background-image:url(/images/icons/16/waypoints.png);}';
