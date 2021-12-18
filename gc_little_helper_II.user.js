@@ -2395,6 +2395,8 @@ var mainGC = function() {
                     + ".status {font-size: 14px !important; width: unset !important;}"
                     + ".status.success, .success-message {right: 2px !important; padding: 0 5px !important; background-color: white !important; color: #E0B70A !important;}"
                     + ".CacheDetailNavigation .add_to_list_count {padding-left: 4px; color: inherit;}";
+            // Ugly display in Add to List Popup (GS bug since weeks).
+            css += "#newListName {height: 42px;} .add-list-submit {display: block;}";
             appendCssStyle(css);
             $('.add-to-list').addClass('working');
             function check_for_add_to_list(waitCount) {
