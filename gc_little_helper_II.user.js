@@ -8885,24 +8885,24 @@ var mainGC = function() {
                             regroupCacheDataSearchmap($('.cache-preview-header')[0], 'dot', '', '.cache-metadata:last', cache_details_premium);
                             global_cache_premium = false;
                         }
-                        if (!$('.gclh_cache_type')[0] && $('.header-top-left')[0] && $('.header-top-left h1')[0] && $('.status-and-type')[0] && $('.status-and-type')[0].childNodes) {
-                            var cacheTypeChildNode = $('.status-and-type')[0].childNodes.length - 1;
-                            if (cacheTypeChildNode >= 0 && $('.status-and-type')[0].childNodes[cacheTypeChildNode]) {
-                                var cacheType = $('.status-and-type')[0].childNodes[cacheTypeChildNode].data;
-                                var cacheSymbol = convertCachetypeToCachesymbol(cacheType);
-                                if (cacheSymbol != '') {
-                                    if (global_cache_disabled == true) {
-                                        global_cache_disabled = false;
-                                        cacheSymbol += '_disabled';
-                                        setStrikeDisabledInDetails();
+                        if ($('.header-top-left')[0] && $('.header-top-left h1')[0] && $('.status-and-type')[0] && $('.status-and-type')[0].childNodes && $('.more-info-link')[0]) {
+                            if (!$('.header-top-left .gclh_cache_type')[0] && !$('.header-top-left .gclh-cache-link')[0]) {
+                                var cacheTypeChildNode = $('.status-and-type')[0].childNodes.length - 1;
+                                if (cacheTypeChildNode >= 0 && $('.status-and-type')[0].childNodes[cacheTypeChildNode]) {
+                                    var cacheType = $('.status-and-type')[0].childNodes[cacheTypeChildNode].data;
+                                    var cacheSymbol = convertCachetypeToCachesymbol(cacheType);
+                                    if (cacheSymbol != '') {
+                                        if (global_cache_disabled == true) {
+                                            global_cache_disabled = false;
+                                            cacheSymbol += '_disabled';
+                                            setStrikeDisabledInDetails();
+                                        }
+                                        $('.header-top-left h1')[0].innerHTML = '<svg class="gclh_cache_type"><use xlink:href="'+cacheSymbol+'"></use></svg>' + $('.header-top-left h1')[0].innerHTML;
+                                        $('.status-and-type')[0].style.display = 'none';
                                     }
-                                    $('.header-top-left h1')[0].innerHTML = '<svg class="gclh_cache_type"><use xlink:href="'+cacheSymbol+'"></use></svg>' + $('.header-top-left h1')[0].innerHTML;
-                                    $('.status-and-type')[0].style.display = 'none';
                                 }
+                                $('.header-top-left h1')[0].innerHTML = '<a class="gclh-cache-link" href="' + $('.more-info-link')[0].href + '" target="_blank">' + $('.header-top-left h1')[0].innerHTML + '</a>';
                             }
-                        }
-                        if (!$('.header-top-left .gclh-cache-link')[0] && $('.header-top-left h1')[0] && $('.more-info-link')[0]) {
-                            $('.header-top-left h1')[0].innerHTML = '<a class="gclh-cache-link" href="' + $('.more-info-link')[0].href + '" target="_blank">' + $('.header-top-left h1')[0].innerHTML + '</a>';
                         }
                         $('.cache-preview-activities .avatar-img').each(function() {
                             $(this)[0].alt = '';
