@@ -5550,8 +5550,9 @@ var mainGC = function() {
             }
             // Check if mutation observer can be build.
             function checkForBuildAllObserverLists() {
-                checkForBuildObserverLists(0, '#app-root > div > div', 'gclh_observer_app-root');
-                checkForBuildObserverLists(0, '.structure', 'gclh_observer_structure');
+                checkForBuildObserverLists(0, '#app-root', 'gclh_observer_app-root');
+                checkForBuildObserverLists(0, '#app-root .structure', 'gclh_observer_structure');
+                checkForBuildObserverLists(0, '#app-root .structure .content', 'gclh_observer_content');
             }
             processAll();
             checkForBuildAllObserverLists();
