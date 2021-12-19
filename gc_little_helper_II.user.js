@@ -9779,9 +9779,8 @@ var mainGC = function() {
                     if (settings_relocate_other_map_buttons) {
                         relocateButtonOnBrowseMap();
                     }
-                    // Hide found/hidden Caches on Map. Add Buttons for hiding/showing all Caches.
-                    // Nicht bei Screen Map Preferences und nicht bei PQ-Anzeige.
-                    if (!$('#uxGoogleMapsSelect')[0] && !document.location.href.match(/\.com\/map\/default.aspx\?pq/)) {
+                    // Hide found/hidden Caches on Map. Add Buttons for hiding/showing all Caches. Nicht bei Screen Map Preferences.
+                    if (!$('#uxGoogleMapsSelect')[0]) {
                         hideCachesOnBrowseMap();
                     }
                     // Save as PQ and set defaults for Browse Map.
