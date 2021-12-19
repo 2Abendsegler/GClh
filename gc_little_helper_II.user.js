@@ -674,6 +674,7 @@ var variablesInit = function(c) {
     c.settings_logs_old_fashioned = getValue("settings_logs_old_fashioned", false);
     c.settings_prevent_watchclick_popup = getValue("settings_prevent_watchclick_popup", false);
     c.settings_upgrade_button_header_remove = getValue("settings_upgrade_button_header_remove", false);
+    c.settings_unsaved_log_message = getValue("settings_unsaved_log_message", true);
 
     tlc('START userToken');
     try {
@@ -3939,7 +3940,7 @@ var mainGC = function() {
             var changed = false;
             // Meldung bei ungespeichertem Log.
             window.onbeforeunload = function(e) {
-                if (changed) {
+                if (changed && settings_unsaved_log_message) {
                     var mess = "You have changed a log and haven't saved it yet. Do you want to leave this page and lose your changes?";
                     e.returnValue = mess;
                     return mess;
@@ -14102,6 +14103,9 @@ var mainGC = function() {
             html += newParameterOn1;
             html += checkboxy('settings_improve_character_counter', 'Show length of logtext') + show_help("If you enable this option, a counter shows the length of your logtext and the maximum length.\nOn the old logging page this feature ist auto-enabled") + "<br>";
             html += newParameterVersionSetzen('0.10') + newParameterOff;
+            html += newParameterOn2;
+            html += checkboxy('settings_unsaved_log_message', 'Show message in case of unsaved log') + "<br>";
+            html += newParameterVersionSetzen('0.11') + newParameterOff;
             var placeholderDescription = "Possible placeholders:<br>&nbsp; #Found# : Your founds + 1<br>&nbsp; #Found_no# : Your founds<br>&nbsp; #Me# : Your username<br>&nbsp; #Owner# : Username of the owner<br>&nbsp; #Date# : Actual date<br>&nbsp; #Time# : Actual time in format hh:mm<br>&nbsp; #DateTime# : Actual date actual time<br>&nbsp; #GCTBName# : GC or TB name<br>&nbsp; #GCTBLink# : GC or TB link<br>&nbsp; #GCTBNameLink# : GC or TB name as a link<br>&nbsp; #LogDate# : Content of field \"Date Logged\"<br>(Upper and lower case is not required in the placeholders name.)";
             html += "&nbsp;" + "Log templates" + show_help("Log templates are predefined texts. All of your templates will be displayed next to the log form. All you have to do is click on a template and it will be placed in your log. You can also use placeholders for variables that will be replaced in the log. The smilies option must be activated.") + " &nbsp; ( Possible placeholders" + show_help(placeholderDescription) + ")<br>";
             html += "<font class='gclh_small' style='font-style: italic; margin-left: 240px; margin-top: 25px; width: 320px; position: absolute; z-index: -1;' >Please note that log templates are useful for automatically entering the number of finds, the date of discovery and the like in the log, but that cache owners are people who are happy about individual logs for their cache. Geocaching is not just about pushing your own statistics, but also about experiencing something. Please take some time to give something back to the owners by telling them about your experiences and writing them good logs. Then there will also be cachers in the future who like to take the trouble to set up new caches. The log templates are useful, but can never replace a complete log.</font>";
@@ -15357,6 +15361,7 @@ var mainGC = function() {
                 'settings_logs_old_fashioned',
                 'settings_prevent_watchclick_popup',
                 'settings_upgrade_button_header_remove',
+                'settings_unsaved_log_message',
             );
             for (var i = 0; i < checkboxes.length; i++) {
                 if (document.getElementById(checkboxes[i])) setValue(checkboxes[i], document.getElementById(checkboxes[i]).checked);
