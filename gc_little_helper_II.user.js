@@ -11322,6 +11322,7 @@ var mainGC = function() {
         try {
             // Images in listing.
             function checkImage(element, newUrl, oldUrl) {
+                if (!element.src) return;
                 var img = new Image();
                 img.onerror =
                     function(){
@@ -17316,3 +17317,4 @@ String.prototype.gcCodeToID = function () {
 }
 
 start(this);
+
