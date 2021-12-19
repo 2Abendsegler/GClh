@@ -675,6 +675,7 @@ var variablesInit = function(c) {
     c.settings_prevent_watchclick_popup = getValue("settings_prevent_watchclick_popup", false);
     c.settings_upgrade_button_header_remove = getValue("settings_upgrade_button_header_remove", false);
     c.settings_unsaved_log_message = getValue("settings_unsaved_log_message", true);
+    c.settings_sort_map_layers = getValue("settings_sort_map_layers", false);
 
     tlc('START userToken');
     try {
@@ -9827,13 +9828,18 @@ var mainGC = function() {
         try {
             // Auswahl nur bestimmter Layer.
             var map_layers = new Object();
+            var new_settings_map_layers = new Array();
             // Sind keine Layer im Config ausgewählt, werden alle Layer verwendet.
             // Ist nur ein Layer im Config ausgewählt, wäre er nicht klickbar, weil es sich um einen Radio Button handelt. Deshalb wird dafür
             // gesorgt, dass mindestens zwei Layer vorhanden sind.
-            if (settings_map_layers == "" || settings_map_layers.length < 2) map_layers = all_map_layers;
-            else {
-                for (var i = 0; i < settings_map_layers.length; i++) map_layers[settings_map_layers[i]] = all_map_layers[settings_map_layers[i]];
+            if (settings_map_layers == "" || settings_map_layers.length < 2) {
+                for (name in map_layers) { new_settings_map_layers.push(name); }
+            } else {
+                new_settings_map_layers = settings_map_layers;
             }
+            // Map layer sort.
+            if (settings_sort_map_layers) new_settings_map_layers.sort(function(a, b){return a.toUpperCase()>b.toUpperCase();});
+            for (var i = 0; i < new_settings_map_layers.length; i++) { map_layers[new_settings_map_layers[i]] = all_map_layers[new_settings_map_layers[i]]; }
             // Layer Control aufbauen.
             function addLayerControl() {
                 injectPageScriptFunction(function(map_layers, map_overlays, settings_map_default_layer, settings_show_hillshadow) {
@@ -13696,7 +13702,7 @@ var mainGC = function() {
 
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>Layers in Map</b>" + show_help("Here you can select the map layers which should be added into the layer menu of the map. With this option you can reduce the long list to the layers you really need. If the right list of layers is empty, all will be displayed. If you use other scripts like \"Geocaching Map Enhancements\" GC little helper II will overwrite its layercontrol. With this option you can disable GC little helper II layers to use the layers for example from GME or also from GC.<br><br>It is important, that GC little helper II run at first, particularly in front of other layer used scripts like GME.") + onlyBrowseMap + "</div>";
             html += checkboxy('settings_use_gclh_layercontrol', 'Replace layers') + "<br>";
-            html += "<div id='MapLayersConfiguration' style='display: " + (settings_use_gclh_layercontrol ? "block":"none") + ";'>";
+            html += "<div id='MapLayersConfiguration' style='display: " + (settings_use_gclh_layercontrol ? "block":"none") + "; margin-left: 10px;'>";
             html += "<table cellspacing='0' cellpadding='0' border='0'><tbody>";
             html += "<tr>";
             html += "<td><select class='gclh_form' style='width: 260px; height: 150px;' id='settings_maplayers_unavailable' multiple='single' size='7'></select></td>";
@@ -13708,7 +13714,11 @@ var mainGC = function() {
             html += "<span style='float: right; margin-top: 0px;' ><input class='gclh_form' style='height: 25px;' value='Set default layer' type='button' id='btn_set_default_layer'></span><br><span style='margin-left: -4px'></span>";
             html += checkboxy('settings_show_hillshadow', 'Show hillshadow by default') + show_help("If you want 3D-like-Shadow to be displayed by default, activate this feature.") + "<br>";
             html += "</td></tr>";
-            html += "</tbody></table></div>";
+            html += "</tbody></table>";
+            html += newParameterOn2;
+            html += checkboxy('settings_sort_map_layers', 'Sort map layers in map') + "<br>";
+            html += newParameterVersionSetzen('0.11') + newParameterOff;
+            html += "</div>";
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>Google Maps Page</b></div>";
             html += checkboxy('settings_hide_left_sidebar_on_google_maps', 'Hide left sidebar on Google Maps by default') + "<br>";
             html += checkboxy('settings_add_link_gc_map_on_google_maps', 'Add link to Browse Map on Google Maps') + show_help("With this option an icon are placed on the Google Maps page to link to the same area in Browse Map.") + "<br>";
@@ -15362,6 +15372,7 @@ var mainGC = function() {
                 'settings_prevent_watchclick_popup',
                 'settings_upgrade_button_header_remove',
                 'settings_unsaved_log_message',
+                'settings_sort_map_layers',
             );
             for (var i = 0; i < checkboxes.length; i++) {
                 if (document.getElementById(checkboxes[i])) setValue(checkboxes[i], document.getElementById(checkboxes[i]).checked);
