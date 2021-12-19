@@ -4828,15 +4828,15 @@ var mainGC = function() {
 // Pocket query set default value for new one, set warning message.
     if (document.location.href.match(/\.com\/pocket\/gcquery\.aspx/)) {
         try {
-            var idCB = "#ctl00_ContentBody_";
-            var idOp = "#ctl00_ContentBody_cbOptions_";
-            var idDa = "#ctl00_ContentBody_cbDays_";
-            if ($("p.Success").length <= 0 &&
-                 (document.location.href.match(/aspx$/) ||  // New PQ.
-                 (document.location.href.match(/aspx\?ll=/) && settings_save_as_pq_set_defaults) ||  // Save as PQ from Browse Map.
-                 (document.location.href.match(/aspx\?.*&gclh_saveAsPQ=true&gclh_setDefaults=true/)) )) {  // Save as PQ from Search Map.
-                if (settings_pq_set_cachestotal) $(idCB+"tbResults").val(settings_pq_cachestotal);
-                if (!document.location.href.match(/aspx\?ll=/)) { // Not for Save as PQ from Browse Map.
+            function setDefaultsInPQ() {
+                var idCB = "#ctl00_ContentBody_";
+                var idOp = "#ctl00_ContentBody_cbOptions_";
+                var idDa = "#ctl00_ContentBody_cbDays_";
+                if ($("p.Success").length <= 0 &&
+                    (document.location.href.match(/aspx$/) ||  // New PQ.
+                     (document.location.href.match(/aspx\?ll=/) && settings_save_as_pq_set_defaults) ||  // Save as PQ from Browse Map.
+                     (document.location.href.match(/aspx\?.*&gclh_saveAsPQ=true&gclh_setDefaults=true/)) )) {  // Save as PQ from Search Map.
+                    if (settings_pq_set_cachestotal) $(idCB+"tbResults").val(settings_pq_cachestotal);
                     if (settings_pq_option_ihaventfound) {
                         $(idOp+"0").prop('checked', true);
                         $(idOp+"1").prop('checked', false);
@@ -4845,40 +4845,41 @@ var mainGC = function() {
                         $(idOp+"2").prop('checked', true);
                         $(idOp+"3").prop('checked', false);
                     }
+                    if (settings_pq_option_ignorelist) $(idOp+"6").prop('checked', true);
+                    if (settings_pq_option_isenabled) {
+                        $(idOp+"13").prop('checked', true);
+                        $(idOp+"12").prop('checked', false);
+                    }
+                    if (settings_pq_option_filename) $(idCB+"cbIncludePQNameInFileName").prop('checked', true);
+                    if (settings_pq_set_difficulty) {
+                        $(idCB+"cbDifficulty").prop('checked', true);
+                        $(idCB+"ddDifficulty").val(settings_pq_difficulty);
+                        $(idCB+"ddDifficultyScore").val(settings_pq_difficulty_score);
+                    }
+                    if (settings_pq_set_terrain) {
+                        $(idCB+"cbTerrain").prop('checked', true);
+                        $(idCB+"ddTerrain").val(settings_pq_terrain);
+                        $(idCB+"ddTerrainScore").val(settings_pq_terrain_score);
+                    }
+                    if (settings_pq_automatically_day) {
+                        var time = $(idCB+'QueryPanel legend').first().text();
+                        if (time.match(/.*Sunday.*/))         $(idDa+"0").prop('checked', true);
+                        else if (time.match(/.*Monday.*/))    $(idDa+"1").prop('checked', true);
+                        else if (time.match(/.*Tuesday.*/))   $(idDa+"2").prop('checked', true);
+                        else if (time.match(/.*Wednesday.*/)) $(idDa+"3").prop('checked', true);
+                        else if (time.match(/.*Thursday.*/))  $(idDa+"4").prop('checked', true);
+                        else if (time.match(/.*Friday.*/))    $(idDa+"5").prop('checked', true);
+                        else if (time.match(/.*Saturday.*/))  $(idDa+"6").prop('checked', true);
+                    }
                 }
-                if (settings_pq_option_ignorelist) $(idOp+"6").prop('checked', true);
-                if (settings_pq_option_isenabled) {
-                    $(idOp+"13").prop('checked', true);
-                    $(idOp+"12").prop('checked', false);
+                if (settings_pq_warning) {
+                    $(idCB+"cbOptions").after("<div id='warning' style='display: none; border: 1px solid #dfdf80; background-color: #ffffa5; padding: 10px;'><div style='float: left'><img src='/play/app/ui-icons/icons/global/attention.svg'></div><div>&nbsp;&nbsp;One or more options are in conflict and creates an empty result set. Please change your selection.</div></div>");
+                    for (var i=0; i<=13; i++) {$(idOp+i).change(verifyPqOpt);}
+                    verifyPqOpt();
                 }
-                if (settings_pq_option_filename) $(idCB+"cbIncludePQNameInFileName").prop('checked', true);
-                if (settings_pq_set_difficulty) {
-                    $(idCB+"cbDifficulty").prop('checked', true);
-                    $(idCB+"ddDifficulty").val(settings_pq_difficulty);
-                    $(idCB+"ddDifficultyScore").val(settings_pq_difficulty_score);
-                }
-                if (settings_pq_set_terrain) {
-                    $(idCB+"cbTerrain").prop('checked', true);
-                    $(idCB+"ddTerrain").val(settings_pq_terrain);
-                    $(idCB+"ddTerrainScore").val(settings_pq_terrain_score);
-                }
-                if (settings_pq_automatically_day) {
-                    var time = $(idCB+'QueryPanel legend').first().text();
-                    if (time.match(/.*Sunday.*/))         $(idDa+"0").prop('checked', true);
-                    else if (time.match(/.*Monday.*/))    $(idDa+"1").prop('checked', true);
-                    else if (time.match(/.*Tuesday.*/))   $(idDa+"2").prop('checked', true);
-                    else if (time.match(/.*Wednesday.*/)) $(idDa+"3").prop('checked', true);
-                    else if (time.match(/.*Thursday.*/))  $(idDa+"4").prop('checked', true);
-                    else if (time.match(/.*Friday.*/))    $(idDa+"5").prop('checked', true);
-                    else if (time.match(/.*Saturday.*/))  $(idDa+"6").prop('checked', true);
-                }
+                setValue('settings_save_as_pq_set_defaults', false);
             }
-            if (settings_pq_warning) {
-                $(idCB+"cbOptions").after("<div id='warning' style='display: none; border: 1px solid #dfdf80; background-color: #ffffa5; padding: 10px;'><div style='float: left'><img src='/play/app/ui-icons/icons/global/attention.svg'></div><div>&nbsp;&nbsp;One or more options are in conflict and creates an empty result set. Please change your selection.</div></div>");
-                for (var i=0; i<=13; i++) {$(idOp+i).change(verifyPqOpt);}
-                verifyPqOpt();
-            }
-            setValue('settings_save_as_pq_set_defaults', false);
+            setDefaultsInPQ();
         } catch(e) {gclh_error("Pocket query set defaults, set warning",e);}
     }
     // Marks two PQ options, which are in rejection.
@@ -5078,6 +5079,7 @@ var mainGC = function() {
                         $('#ctl00_ContentBody_ctlAttrInclude_dtlAttributeIcons input[attid="'+elem+'"]').parent().find('.btn-attribute img').click();
                     });
                 }
+                setDefaultsInPQ();
             }, 1000);
         } catch(e) {gclh_error("Save as PQ from Search Map",e);}
     }
@@ -9403,7 +9405,7 @@ var mainGC = function() {
             }
 
             // Create Save as PQ Button.
-            var set_defaults = false;
+            var set_defaults = getValue('set_switch_searchmap_set_defaults', false);
             function addCreatePQButton() {
                 if ($('.list-hub')[0] || document.location.href.match(/\.com\/play\/map\/lists\/BM/)) {
                     if ($('#gclh_saveAsPQ')[0]) $('.gclh_PQHead').remove();
@@ -9424,6 +9426,7 @@ var mainGC = function() {
                             $('.set_defaults .gclh_toggle-handle')[0].onclick = function() {
                                 $('.set_defaults .gclh_toggle-handle').toggleClass('on');
                                 set_defaults = (set_defaults == true ? false : true);
+                                setValue('set_switch_searchmap_set_defaults', set_defaults);
                             };
                         }
                     }
@@ -10274,9 +10277,15 @@ var mainGC = function() {
             function waitForSavePQ(waitCount) {
                 if ($('.pq-dl')[0] && $('#lnk_savepq')[0]) {
                     $('.pq-dl').append('<div class="set_defaults toggle-filter"><span class="label" title="Set GClh defaults for new PQs.\nThe Map Filters overwrite the GClh defaults.">&nbsp;|&nbsp;Set defaults</span></div><div class="gclh_toggle-handle"></div>');
-                    $('.pq-dl .gclh_toggle-handle')[0].onclick = function() {$('.pq-dl .gclh_toggle-handle').toggleClass('on');};
-                    $('#lnk_savepq')[0].onclick = function() {setValue('settings_save_as_pq_set_defaults', $('.pq-dl .gclh_toggle-handle.on')[0] ? true:false);};
-                } else {waitCount++; if (waitCount <= 100) setTimeout(function(){saveHomeCoordsWait(waitCount);}, 50);}
+                    $('.pq-dl .gclh_toggle-handle')[0].onclick = function() {
+                        $('.pq-dl .gclh_toggle-handle').toggleClass('on');
+                        setValue('set_switch_browsemap_set_defaults', $('.pq-dl .gclh_toggle-handle.on')[0] ? true:false);
+                    };
+                    $('#lnk_savepq')[0].onclick = function() {
+                        setValue('settings_save_as_pq_set_defaults', $('.pq-dl .gclh_toggle-handle.on')[0] ? true:false);
+                    };
+                    if ($('.gclh_toggle-handle')[0] && getValue('set_switch_browsemap_set_defaults', false) == true) {$('.gclh_toggle-handle').addClass('on');}
+                } else {waitCount++; if (waitCount <= 100) setTimeout(function(){waitForSavePQ(waitCount);}, 50);}
             }
             waitForSavePQ(0)
             var css = '.pq-dl {margin-top: 1em; margin-bottom: 0 !important; display: flex; cursor: default;}';
@@ -16241,7 +16250,7 @@ var mainGC = function() {
             var kkey = key.split("[");
             var kkey = kkey[0];
 //--> $$005
-            if (kkey.match(/^(show_box)/) ||
+            if (kkey.match(/^(show_box|set_switch)/) ||
                 kkey.match(/^gclh_(.*)(_logs_get_last|_logs_count)$/)) {
                 config_tmp[key] = CONFIG[key];
 //<-- $$005
