@@ -8773,6 +8773,7 @@ var mainGC = function() {
             }
 
             // Virtually hit "Search this area" after dragging the map, if not BML and not link from matrix.
+            var isGclhMatrix = document.location.href.match(/#GClhMatrix/i);
             var latHighG = false;
             var latLowG = false;
             var lngHighG = false;
@@ -8781,7 +8782,7 @@ var mainGC = function() {
             function searchThisArea(waitCount) {
                 // For the first run.
                 if ($('.leaflet-gl-layer.mapboxgl-map')[0]) {
-                    if (!$('.loading-container.show')[0] && !$('li.active svg.my-lists-toggle-icon')[0] && ($('#clear-map-control')[0] || firstRun) && !document.location.href.match(/=GClhMatrix/i) && settings_searchmap_autoupdate_after_dragging) {
+                    if (!$('.loading-container.show')[0] && !$('li.active svg.my-lists-toggle-icon')[0] && ($('#clear-map-control')[0] || firstRun) && !isGclhMatrix && settings_searchmap_autoupdate_after_dragging) {
                         // Delay, so that the last values of a movement are used.
                         setTimeout(function() {
                             if ($('.loading-container.show')[0]) return;
@@ -9320,6 +9321,7 @@ var mainGC = function() {
                     }
                 }
             }
+            if (isGclhMatrix) filtersAreToSet = false;
             // Set default filters.
             function setFilter() {
                 // If bookmarklist or no filter is to set.
@@ -9546,7 +9548,7 @@ var mainGC = function() {
 
             var css = '';
             // Hide button search this area and icon loading, if not link from matrix.
-            if (!document.location.href.match(/=GClhMatrix/i) && settings_searchmap_autoupdate_after_dragging) {
+            if (!isGclhMatrix && settings_searchmap_autoupdate_after_dragging) {
                 css += '#clear-map-control, .loading-container {display: none;}';
             }
             // Set link to owner.
@@ -10653,7 +10655,7 @@ var mainGC = function() {
                                 cell.children[0].href +=
                                     "&origin=" + DectoDeg(getValue("home_lat"), getValue("home_lng")) +
                                     "&radius=" + settings_count_own_matrix_links_radius + "km" +
-                                    "&nfb[0]=" + global_me + "&o=2&nfb\[1\]=GClhMatrix";
+                                    "&nfb[0]=" + global_me + "&o=2#GClhMatrix";
                                 if (settings_count_own_matrix_links == "map") {
                                     var zoom = Math.round(24 - Math.log2(settings_count_own_matrix_links_radius * 1000));
                                     cell.children[0].href += "#GClhMap#zoom=" + zoom;
@@ -10670,14 +10672,15 @@ var mainGC = function() {
             }
         }
         // Handle cache search links in list or map.
-        if (document.location.href.match(/\.com\/play\/search\?(.*)=GClhMatrix/i)) {
+        if (document.location.href.match(/\.com\/play\/search\?(.*)#GClhMatrix/i)) {
             $('#map_container').remove();
             $('.selected-filters').remove();
+            $('.btn-map-these')[0].href += '#GClhMatrix';
             if (document.location.href.match(/#GClhMap/i)) {
                 if ($('.btn-map-these')[0] && document.location.href.match(/#GClhMap#zoom=(\d{1,2})/i)) {
                     var zoom = document.location.href.match(/#GClhMap#zoom=(\d{1,2})/i)[1];
                     var link = $('.btn-map-these')[0].href.replace(/&zoom=(\d{1,2})/i, '&zoom=' + zoom);
-                    location.replace(link);
+                    document.location = link;
                 }
             }
         }
