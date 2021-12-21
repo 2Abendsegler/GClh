@@ -2975,6 +2975,7 @@ var mainGC = function() {
             css += '.mapIconRight {border-radius: 0px 4px 4px 0px; border-left: 1px solid #ccc;}';
             css += '.mapIcon:hover {background-color: #f4f4f4;}';
             css += '.mapIcons svg {width: 18px; height: 18px; color: #4a4a4a; opacity: 0.85; padding: 2px;}';
+            css += '.mapIconRight svg {padding: 3px;}';
             css += '.search_map_icon {margin-left: 2px !important;}';
             if (!settings_map_overview_search_map_icon) css += '.browse_map_icon {margin-top: 1px;}';
             appendCssStyle(css);
