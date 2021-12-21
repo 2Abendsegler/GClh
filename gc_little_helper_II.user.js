@@ -11813,25 +11813,27 @@ var mainGC = function() {
             if ((date >= 10 && date <= 13 && month == 4 && year == 2020)) {
                 $(".CacheDetailNavigation:first > ul:first").append('<li><img src="'+urlImages+'easter_bunny_001.jpg" style="margin-bottom: -35px;" title="Happy Easter"></li>');
             }
-            // Weihnachten 2019.
-            if (month == 12 && year == 2019) {
+            // Weihnachten 2021.
+            if (month == 12 && year == 2021) {
                 var max = 0;
-                if      (date == 1) max = 64;
-                else if (date == 5 || date == 6) max = 64;
-                else if (date == 7 || date == 8) max = 64;
-                else if (date == 14 || date == 15) max = 64;
-                else if (date >= 22 && date <= 26) max = 48;
+                if (date >= 24 && date <= 26) max = 100;
                 if (max > 0) {
                     function checkChristmasData(waitCount) {
-                        if ($('#gclh_vip_list span').length > 0 && $('#gclh_vip_list .StatusIcon').length == 0) {
+                        if ($('.gclh_latest_log').length > 0) {
                             setTimeout(function() {
-                                var icons = $('#gclh_latest_logs,#gclh_vip_list').find('img[src*="/images/logtypes/2.png"]');
+                                var icons = $('#gclh_latest_logs').find('img[src*="/images/logtypes/2.png"]');
+                                var count = 0;
                                 for (var i = 0; i < icons.length; i += 2) {
                                     var num = random(max, 1);
-                                    if (num > 0 && num < 9) icons[i].src = urlImages+"nicolaus_head_0" + num + ".png";
+                                    if (num > 0 && num < 9) {
+                                        icons[i].src = urlImages+"nicolaus_head_0" + num + ".png";
+                                        icons[i].style = "margin-top: -12px; vertical-align: sub;";
+                                        count++;
+                                        if (count >= 2) break;
+                                    }
                                 }
-                            }, 500);
-                        } else {waitCount++; if (waitCount <= 40) setTimeout(function(){checkChristmasData(waitCount);}, 500);}
+                            }, 1000);
+                        } else {waitCount++; if (waitCount <= 100) setTimeout(function(){checkChristmasData(waitCount);}, 100);}
                     }
                     checkChristmasData(0);
                 }
