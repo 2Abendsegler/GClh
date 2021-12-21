@@ -2970,11 +2970,11 @@ var mainGC = function() {
             leafletInit();
             var css = '';
             css += '.mapIcons {position: relative; z-index: 1000; margin-top: 10px; margin-right: 10px; float: right; height: 23px; border-radius: 4px; box-shadow: 0 1px 5px rgba(0, 0, 0, 0.65); background-color: #fff;}';
-            css += '.mapIconLeft, .mapIconRight {margin-top: 0px; margin-right: 0px; box-shadow: unset;}';
+            css += '.mapIcon {margin-top: 0px; margin-right: 0px; box-shadow: unset;}';
             css += '.mapIconLeft {border-radius: 4px 0px 0px 4px;}';
             css += '.mapIconRight {border-radius: 0px 4px 4px 0px; border-left: 1px solid #ccc;}';
-            css += '.mapIconLeft:hover, .mapIconRight:hover {background-color: #f4f4f4;}';
-            css += '.mapIcons svg {width: 18px; height: 18px; color: #4a4a4a; opacity: 0.85; padding: 3px;}';
+            css += '.mapIcon:hover {background-color: #f4f4f4;}';
+            css += '.mapIcons svg {width: 18px; height: 18px; color: #4a4a4a; opacity: 0.85; padding: 2px;}';
             css += '.search_map_icon {margin-left: 2px !important;}';
             if (!settings_map_overview_search_map_icon) css += '.browse_map_icon {margin-top: 1px;}';
             appendCssStyle(css);
@@ -2986,10 +2986,10 @@ var mainGC = function() {
                 else var bothIcons = false;
                 html += "<span class='mapIcons'>";
                 if (settings_map_overview_browse_map_icon) {
-                    html += "<span class='mapIcons " + (bothIcons ? 'mapIconRight':'') + "'><a href='" + map_url + "?lat=" + lat + "&lng=" + lng + "' title='Browse Map' " + (settings_map_overview_browse_map_icon_new_tab ? "target='_blank'":"") + ">" + browse_map_icon + "</a></span>";
+                    html += "<span class='mapIcons mapIcon " + (bothIcons ? 'mapIconRight':'') + "'><a href='" + map_url + "?lat=" + lat + "&lng=" + lng + "' title='Browse Map' " + (settings_map_overview_browse_map_icon_new_tab ? "target='_blank'":"") + ">" + browse_map_icon + "</a></span>";
                 }
                 if (settings_map_overview_search_map_icon) {
-                    html += "<span class='mapIcons " + (bothIcons ? 'mapIconLeft':'') + "'><a href='" + new_map_url + "?lat=" + lat + "&lng=" + lng + "' title='Search Map' " + (settings_map_overview_search_map_icon_new_tab ? "target='_blank'":"") + ">" + search_map_icon + "</a></span>";
+                    html += "<span class='mapIcons mapIcon " + (bothIcons ? 'mapIconLeft':'') + "'><a href='" + new_map_url + "?lat=" + lat + "&lng=" + lng + "' title='Search Map' " + (settings_map_overview_search_map_icon_new_tab ? "target='_blank'":"") + ">" + search_map_icon + "</a></span>";
                 }
                 html += "</span>'>";
             }
