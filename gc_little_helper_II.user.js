@@ -2115,7 +2115,6 @@ var mainGC = function() {
                         var divTitle = "";
                         div.id = "gclh_latest_logs";
                         div.appendChild(document.createTextNode("Latest logs:"));
-//xxxx
                         if (isEventInCacheListing() == true) {
                             // Alte Events ohne Zeitangabe.
                             if ($('#mcd4')[0] && $('#mcd4')[0].innerHTML.match(/^(\s*)$/)) {
