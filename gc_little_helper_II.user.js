@@ -676,6 +676,7 @@ var variablesInit = function(c) {
     c.settings_upgrade_button_header_remove = getValue("settings_upgrade_button_header_remove", false);
     c.settings_unsaved_log_message = getValue("settings_unsaved_log_message", true);
     c.settings_sort_map_layers = getValue("settings_sort_map_layers", false);
+    c.settings_add_search_in_logs_func = getValue("settings_add_search_in_logs_func", true);
 
     tlc('START userToken');
     try {
@@ -4266,7 +4267,7 @@ var mainGC = function() {
             let url = 'https://www.geocaching.com/play/geocache/optout/'+gccode.gcCodeToID();
             document.location.href = url;
         }
-        // Prevents that if you click on the blue banner, you will be redirected back to the old page. 
+        // Prevents that if you click on the blue banner, you will be redirected back to the old page.
         if (document.location.href.match(/\.com\/seek\/log\.aspx/) && $('#uxNewLoggingBannerLink')[0]) {
             $('#uxNewLoggingBannerLink')[0].href += '?gclhNewLog=true';
         }
@@ -7257,29 +7258,7 @@ var mainGC = function() {
             // Load all logs.
             function gclh_load_all(logs) {
                 function gclh_load_all_logs() {
-                    if ($('#gclh_load_all_logs.working')[0]) return;
-                    $('#gclh_load_all_logs').addClass("working");
-                    $('#gclh_load_all_logs input')[0].setAttribute('disabled', '');
-                    setTimeout(function() {
-                        if (logs) {
-                            $(logsTab).find('tbody').children().remove();
-                            for (var i = 0; i < logs.length; i++) {
-                                if (logs[i]) {
-                                    var newBody = unsafeWindow.$(document.createElement("TBODY"));
-                                    unsafeWindow.$("#tmpl_CacheLogRow_gclh").tmpl(logs[i]).appendTo(newBody);
-                                    unsafeWindow.$(document.getElementById("cache_logs_table2") || document.getElementById("cache_logs_table")).append(newBody.children());
-                                }
-                            }
-                            unsafeWindow.$('a.tb_images').fancybox({'type': 'image', 'titlePosition': 'inside'});
-                            gclh_add_vip_icon();
-                            setLinesColorInCacheListing();
-                            if (isUpvoteActive) updateUpvoteEvents(logs);
-                            setMarkerDisableDynamicLogLoad();
-                            if (document.getElementById("gclh_show_log_counter")) document.getElementById("gclh_show_log_counter").style.visibility = "";
-                        }
-                        $('#gclh_load_all_logs').removeClass("working");
-                        $('#gclh_load_all_logs input')[0].removeAttribute('disabled');
-                    }, 100);
+                    searchLogsReset(logs, true);
                 }
                 var para = document.getElementById('ctl00_ContentBody_lblFindCounts').nextSibling.nextSibling.nextSibling.nextSibling;
                 if (para && para.nodeName == 'P') para.className = para.className + ' Clear';
@@ -7298,6 +7277,28 @@ var mainGC = function() {
                                         + ".compact_logbook .upvotes {display:none !important;}";
                     appendCssStyle(unimportant_css);
                 }
+            }
+            // Load number of logs.
+            function loadNumLogs(logs, countLogs) {
+                setTimeout(function() {
+                    if (logs) {
+                        $(logsTab).find('tbody').children().remove();
+                        for (var i = 0; i < countLogs; i++) {
+                            if (logs[i]) {
+                                var newBody = unsafeWindow.$(document.createElement("TBODY"));
+                                unsafeWindow.$("#tmpl_CacheLogRow_gclh").tmpl(logs[i]).appendTo(newBody);
+                                unsafeWindow.$(document.getElementById("cache_logs_table2") || document.getElementById("cache_logs_table")).append(newBody.children());
+                            }
+                        }
+                        unsafeWindow.$('a.tb_images').fancybox({'type': 'image', 'titlePosition': 'inside'});
+                        gclh_add_vip_icon();
+                        setLinesColorInCacheListing();
+                        if (isUpvoteActive) updateUpvoteEvents(logs);
+                        setMarkerDisableDynamicLogLoad();
+                        if (document.getElementById("gclh_show_log_counter")) document.getElementById("gclh_show_log_counter").style.visibility = "";
+                    }
+                    activateLoadAndSearch();
+                }, 100);
             }
 
             // Filter logs.
@@ -7394,10 +7395,13 @@ var mainGC = function() {
             // Search logs.
             function gclh_search(logs) {
                 function gclh_search_logs(e) {
-                    if (e.keyCode != 13  || noSpecialKey(e) == false) return false;
+                    if (e.type == 'keyup' && (e.keyCode != 13  || noSpecialKey(e) == false)) return false;
                     if (!logs) return false;
-                    var search_text = this.value;
+                    var search_text = $('#search_logs_input')[0].value;
                     if (!search_text) return false;
+                    if ($('#search_logs_input.working')[0]) return;
+                    deactivateLoadAndSearch();
+
                     var regexp = new RegExp("(" + search_text + ")", "i");
                     var regexpSplitComplete = new RegExp("(<.*?>|" + search_text + ")", "i");
                     var regexpSplitNotUse = new RegExp("(<.*?>)", "i");
@@ -7421,12 +7425,15 @@ var mainGC = function() {
                             }
                         }
                     }
+
                     unsafeWindow.$('a.tb_images').fancybox({'type': 'image', 'titlePosition': 'inside'});
                     gclh_add_vip_icon();
                     setLinesColorInCacheListing();
                     if (isUpvoteActive) updateUpvoteEvents(logs);
                     setMarkerDisableDynamicLogLoad();
-                    // Highlight the searchs.
+
+                    // Mark the hits.
+                    var numberOfHits = 0;
                     $(logsTab).find('tbody tr.log-row').each(function() {
                         var oldBackgroundColor = window.getComputedStyle(this).backgroundColor;
                         if (oldBackgroundColor == 'rgba(0, 0, 0, 0)') oldBackgroundColor = 'white';
@@ -7441,6 +7448,7 @@ var mainGC = function() {
                                         html += splits[i];
                                     } else if (splits[i].match(regexpSplitComplete)) {
                                         html += '<span style="color: ' + oldBackgroundColor+'; background-color: ' + oldColor + ' ;opacity: 0.8;">' + splits[i];
+                                        numberOfHits++;
                                     } else {
                                         html += '</span>' + splits[i];
                                     }
@@ -7449,21 +7457,51 @@ var mainGC = function() {
                             }
                         });
                     });
+
+                    $('#search_logs_number_of_hits')[0].innerHTML = numberOfHits + ' / ' + $('#cache_logs_table2 .log-row').length;
                     if (document.getElementById("gclh_show_log_counter")) document.getElementById("gclh_show_log_counter").style.visibility = "hidden";
+                    activateLoadAndSearch();
                 }
-                if (!document.getElementById("ctl00_ContentBody_lblFindCounts").childNodes[0]) return false;
-                var form = document.createElement("form");
-                var search = document.createElement("input");
-                form.setAttribute("action", "javascript:void(0);");
-                form.appendChild(search);
-                form.style.display = "inline";
-                search.setAttribute("type", "text");
-                search.setAttribute("size", "10");
-                search.setAttribute("title", "Use \"|\" for an OR correlation");
-                search.setAttribute("style", "padding: 1px 2px; width: unset; margin-bottom: unset;");
-                search.addEventListener("keyup", gclh_search_logs, false);
-                document.getElementById('ctl00_ContentBody_lblFindCounts').childNodes[0].appendChild(document.createTextNode("Search in logtext: "));
-                document.getElementById('ctl00_ContentBody_lblFindCounts').childNodes[0].appendChild(form);
+
+                if (!$('#ctl00_ContentBody_lblFindCounts p')[0]) return false;
+                $('#ctl00_ContentBody_lblFindCounts p').append('<span id="search_logs"><span title="Search in logtext and username">Search in logs: </span></span>');
+                if (!settings_add_search_in_logs_func) $('#search_logs')[0].style.display = 'none';
+                $('#search_logs').append('<form action="javascript:void(0);" style="display: inline;"><input type="text" size="10" title="Use &quot;|&quot; for an OR correlation" style="padding: 2px 2px; width: unset; margin-bottom: unset; margin-right: 4px;" id="search_logs_input"></form>');
+                $('#search_logs_input')[0].addEventListener("keyup", gclh_search_logs, false);
+                addButtonOverLogs(gclh_search_logs, "search_logs_go", false, "Go", "", $('#search_logs'));
+                addButtonOverLogs(function(){searchLogsReset(logs);}, "search_logs_reset", false, "Reset", "", $('#search_logs'));
+                $('#search_logs').append('<span id="search_logs_number_of_hits" style="padding: 0px 5px; cursor: default;" title="Number of hits / Number of logs with hits"></span>');
+            }
+
+            // Reset search logs.
+            function searchLogsReset(logs, all) {
+                try {
+                    if ($('#search_logs_reset.working')[0]) return;
+                    deactivateLoadAndSearch();
+                    $('#search_logs_input')[0].value = '';
+                    $('#search_logs_number_of_hits')[0].innerHTML = '';
+                    if (all) loadNumLogs(logs, logs.length);
+                    else if (settings_show_all_logs) loadNumLogs(logs, countOfLogsInListing());
+                    else loadNumLogs(logs, 30);
+                } catch(e) {gclh_error("function searchLogsReset",e);}
+            }
+
+            // Deactivate/activate load and search buttons and fields.
+            function deactivateLoadAndSearch() {
+                $('#gclh_load_all_logs, #search_logs_input, #search_logs_go, #search_logs_reset').addClass("working");
+                $('#gclh_load_all_logs input')[0].setAttribute('disabled', '');
+                $('#search_logs_input')[0].setAttribute('disabled', '');
+                $('#search_logs_go input')[0].setAttribute('disabled', '');
+                $('#search_logs_reset input')[0].setAttribute('disabled', '');
+            }
+            function activateLoadAndSearch() {
+                setTimeout(function() {
+                    $('#gclh_load_all_logs, #search_logs_input, #search_logs_go, #search_logs_reset').removeClass("working");
+                    $('#gclh_load_all_logs input')[0].removeAttribute('disabled', '');
+                    $('#search_logs_input')[0].removeAttribute('disabled');
+                    $('#search_logs_go input')[0].removeAttribute('disabled');
+                    $('#search_logs_reset input')[0].removeAttribute('disabled');
+                }, 200);
             }
 
             // Marker to disable dynamic log load.
@@ -7500,6 +7538,7 @@ var mainGC = function() {
                     new_sort_element.classList.add("isDisabled");;
                     new_sort_element.disabled = true;
                     new_sort_element.onchange = function() {
+                        if (!$('#search_logs_number_of_hits')[0].innerHTML == '') searchLogsReset(logs);
                         var sorting_key = this.value;
                         // Deactivate gclh_show_log_counter_button when sorting is not "newest".
                         var gclh_show_log_counter_button = $("#gclh_show_log_counter input")[0];
@@ -12515,7 +12554,7 @@ var mainGC = function() {
     }
 
 // Add button over logs in cache listing.
-    function addButtonOverLogs(func, id, right, txt, title) {
+    function addButtonOverLogs(func, id, right, txt, title, adhere) {
         if (!$('#ctl00_ContentBody_uxLogbookLink')[0]) return;
         var span = document.createElement("span");
         span.id = id;
@@ -12539,7 +12578,8 @@ var mainGC = function() {
             $('#ctl00_ContentBody_uxLogbookLink')[0].parentNode.style.width = "100%";
             $('#ctl00_ContentBody_uxLogbookLink')[0].parentNode.style.margin = "0";
         }
-        $('#ctl00_ContentBody_uxLogbookLink')[0].parentNode.append(span);
+        if (adhere) adhere.append(span);
+        else $('#ctl00_ContentBody_uxLogbookLink')[0].parentNode.append(span);
     }
 
 // Determine user, guid from the read old or new public profile.
@@ -14057,6 +14097,9 @@ var mainGC = function() {
             html += checkboxy('settings_show_google_maps', 'Show link to Google Maps') + show_help("This option shows a link at the top of the second map in the listing. With this link you get directly to Google Maps in the area, where the cache is.") + "<br>";
 
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>Logs Header</b>" + "</div>";
+            html += newParameterOn2;
+            html += checkboxy('settings_add_search_in_logs_func', 'Add "Search in logs" feature') + "<br>";
+            html += newParameterVersionSetzen('0.11') + newParameterOff;
             html += newParameterOn3;
             html += checkboxy('settings_show_all_logs_but', 'Show button \"Show all logs\" above the logs') + "<br>";
             html += newParameterVersionSetzen(0.9) + newParameterOff;
@@ -15376,6 +15419,7 @@ var mainGC = function() {
                 'settings_upgrade_button_header_remove',
                 'settings_unsaved_log_message',
                 'settings_sort_map_layers',
+                'settings_add_search_in_logs_func',
             );
             for (var i = 0; i < checkboxes.length; i++) {
                 if (document.getElementById(checkboxes[i])) setValue(checkboxes[i], document.getElementById(checkboxes[i]).checked);
