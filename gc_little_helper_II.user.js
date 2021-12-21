@@ -2273,12 +2273,18 @@ var mainGC = function() {
        });
     }
 
-// Highlight usercoords.
+// Highlight usercoords. Improve screen "Enter solved coordinates" (only in english).
     if (is_page("cache_listing")) {
         try {
             var css = (settings_highlight_usercoords ? ".myLatLon {color: #FF0000; " : ".myLatLon {color: unset; ")
                     + (settings_highlight_usercoords_bb ? "border-bottom: 2px solid #999; " : "border-bottom: unset; ")
                     + (settings_highlight_usercoords_it ? "font-style: italic;}" : "font-style: unset;}");
+            if ($('#tmpl_CacheCoordinateUpdate')[0] && $('#tmpl_CacheCoordinateUpdate')[0].innerHTML.match(/Enter solved coordinates/)) {
+                css += '#coordinateParse dl dd {padding-bottom: 7px;}';
+                css += '#newCoordinates {width: unset; padding: 6px 6px; margin-top: -7px; margin-bottom: 0px;}';
+                css += '#updatedCoords {font-style: normal;}';
+                $('#tmpl_CacheCoordinateUpdate')[0].innerHTML = $('#tmpl_CacheCoordinateUpdate')[0].innerHTML.replace('size="35"', 'size="30"');
+            }
             appendCssStyle(css);
         } catch(e) {gclh_error("Highlight usercoords",e);}
     }
