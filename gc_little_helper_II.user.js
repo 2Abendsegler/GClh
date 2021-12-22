@@ -7407,7 +7407,7 @@ var mainGC = function() {
             // Search logs.
             function gclh_search(logs) {
                 function gclh_search_logs(e) {
-                    if (e.type == 'keyup' && (e.keyCode != 13  || noSpecialKey(e) == false)) return false;
+                    if (e.type == 'keyup' && (e.keyCode != 13 || noSpecialKey(e) == false)) return false;
                     if (!logs) return false;
                     var search_text = $('#search_logs_input')[0].value;
                     if (!search_text) return false;
@@ -11759,6 +11759,26 @@ var mainGC = function() {
     if (document.location.href.match(/\.com\/(seek|track)\/log\.aspx\?/)) {
         // Improve alignment of icons.
         appendCssStyle('.logPanel h3 img {vertical-align: baseline;}');
+    }
+
+// Improve trackable search page.
+    if (document.location.href.match(/\.com\/track\/travelbug\.aspx/)) {
+        try {
+            function waitForTrackablePage(waitCount) {
+                if ($('#ctl00_ContentBody_txtTBCode')[0] && $('#ctl00_ContentBody_btnTBLookup')[0]) {
+                    // Place the cursor directly in the input field with the start of the page.
+                    $('#ctl00_ContentBody_txtTBCode')[0].focus();
+                    // Enable the search to be started by pressing the Enter key.
+                    $('#ctl00_ContentBody_txtTBCode')[0].addEventListener("keyup", searchTrackable, false);
+                    function searchTrackable(e) {
+                        if (e.type == 'keyup' && e.keyCode == 13 && noSpecialKey(e) == true) {
+                            $('#ctl00_ContentBody_btnTBLookup')[0].click();
+                        }
+                    }
+                } else {waitCount++; if (waitCount <= 100) setTimeout(function(){waitForTrackablePage(waitCount);}, 100);}
+            }
+            waitForTrackablePage(0);
+        } catch(e) {gclh_error("Improve trackable search page",e);}
     }
 
 // Check for upgrade.
