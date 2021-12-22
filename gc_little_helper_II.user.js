@@ -4210,7 +4210,7 @@ var mainGC = function() {
                     var initial_cursor_position = document.getElementById('LogText').selectionEnd;
                     var logtext = document.getElementById('LogText').value;
                     var signature = getValue("settings_log_signature", "");
-                    if (!logtext.includes(signature)) {
+                    if (!logtext.includes(signature.replace(/^\s*/, ''))) {
                         document.getElementById('LogText').innerHTML = signature;
                     }
                     replacePlaceholder(true);
