@@ -13511,7 +13511,7 @@ var mainGC = function() {
             html += newParameterOn2;
             html += checkboxy('settings_call_config_via_sriptmanager', 'Call via the script manager') + show_help("This option creates a link to the GClh II Config in the menu of the script manager (Tampermonkey, Violentmonkey ...). With a click on the icon of the script manager you get to the menu of the script manager. The link to the GClh II Config is then located below the GC little helper II. The link is available on any GC page.") + "<br>";
             html += newParameterVersionSetzen('0.11') + newParameterOff;
-            html += checkboxy('settings_f2_save_gclh_config', 'Save via F2 key') + show_help("This option allows you to save the GClh II Config (this page) by pressing the F2 key on your keyboard instead of scrolling down and selecting the Save button.") + "<br>";
+            html += checkboxy('settings_f2_save_gclh_config', 'Save via F2 key') + show_help("This option allows you to save the GClh II Config (this page) by pressing the F2 key or by pressing the Ctrl and s keys together on your keyboard instead of scrolling down and selecting the Save button.") + "<br>";
             html += checkboxy('settings_esc_close_gclh_config', 'Close via ESC key') + show_help("This option allows you to close the GClh II Config (this page) by pressing the ESC key on your keyboard instead of scrolling down and selecting the Close button.") + "<br>";
             html += checkboxy('settings_show_save_message', 'Show info message when data are saved') + "<br>";
             html += checkboxy('settings_sort_default_bookmarks', 'Sort the default links for the Linklist') + show_help("This option allows you to sort the default links for the <a class='gclh_ref_ht_int' href='#gclh_linklist' title='Link to topic \"Linklist and Navigation\"'>Linklist</a> by description. You can configure these default links for use in your <a class='gclh_ref_ht_int' href='#gclh_linklist' title='Link to topic \"Linklist and Navigation\"'>Linklist</a> at the bottom of this GClh II Config.<br><br>Changing this option will only take effect after saving.") + "<br>";
@@ -15024,12 +15024,16 @@ var mainGC = function() {
         }
         if ($('.hover.open')[0]) $('.hover.open')[0].className = "";
 
-        // Bei F2 Save, bei ESC Close im Config durchführen.
+        // Save by pressing the F2 key or by pressing the Ctrl+s keys together. Close by pressing the ESC key.
         if (check_config_page()) window.addEventListener('keydown', keydown, true);
         function keydown(e) {
             if (check_config_page()) {
                 if ($('#settings_f2_save_gclh_config')[0].checked && !global_mod_reset) {
                     if (e.keyCode == 113 && noSpecialKey(e)) $('#btn_save')[0].click();
+                    if (e.keyCode == 83 && e.ctrlKey == true && e.altKey == false && e.shiftKey == false) {
+                        e.preventDefault();
+                        $('#btn_save')[0].click();
+                    }
                 }
                 if ($('#settings_esc_close_gclh_config')[0].checked && !global_mod_reset) {
                     if (e.keyCode == 27 && noSpecialKey(e)) $('#btn_close2')[0].click();
