@@ -4160,7 +4160,7 @@ var mainGC = function() {
             var initial_cursor_position = document.getElementById('ctl00_ContentBody_LogBookPanel1_uxLogInfo').selectionEnd;
             // Draft.
             if (document.location.href.match(/\.com\/seek\/log\.aspx\?PLogGuid\=/)) {
-                if (settings_log_signature_on_fieldnotes && !logtext.includes(signature)) {
+                if (settings_log_signature_on_fieldnotes && !logtext.includes(signature.replace(/^\s*/, ''))) {
                     document.getElementById('ctl00_ContentBody_LogBookPanel1_uxLogInfo').innerHTML += signature;
                 }
             // Kein Draft.
