@@ -37,11 +37,11 @@
 ## v0.11.9:
 <ul>
 	<li>
-		<strong>New:</strong> [Log forms] Show number and percentage of favorites and number of watcher. [<a href="https://github.com/2Abendsegler/GClh/issues/1965" title="Issue 1965">1965</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br><br>
+		<strong>New:</strong> [Log forms] Show number and percentage of favorites and number of watcher. [<a href="https://github.com/2Abendsegler/GClh/issues/1965" title="Issue 1965">1965</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 		Old log form:<br>
-		<img src="../images/0.11.9/Screen08.jpg" alt="Screen08.jpg"><br>
+		<img src="../images/0.11.9/Screen08.jpg" alt="Screen08.jpg"><br><br>
 		New log form:<br>
-		<img src="../images/0.11.9/Screen09.jpg" alt="Screen09.jpg"><br>
+		<img src="../images/0.11.9/Screen09.jpg" alt="Screen09.jpg"><br><br>
 		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_show_add_cache_info_in_log_page" title="Link to your GClh II Config">Settings -> Logging:</a><br>
 		<img src="../images/0.11.9/Screen10.jpg" alt="Screen10.jpg"><br><br>
 	</li>
@@ -51,7 +51,7 @@
 		<img src="../images/0.11.9/Screen01.jpg" alt="Screen01.jpg"><br><br>
 	</li>
 	<li>
-		<strong>New:</strong>[Browse Map] Optionally an alphabetical sorting of the layers in the selection display on the map. [<a href="https://github.com/2Abendsegler/GClh/issues/1873" title="Issue 1873">1873</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		<strong>New:</strong> [Browse Map] Optionally an alphabetical sorting of the layers in the selection display on the map. [<a href="https://github.com/2Abendsegler/GClh/issues/1873" title="Issue 1873">1873</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 		<img src="../images/0.11.9/Screen03.jpg" alt="Screen03.jpg"><br>
 		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_sort_map_layers" title="Link to your GClh II Config">Settings -> Map - Layers in Map:</a><br>
 		<img src="../images/0.11.9/Screen02.jpg" alt="Screen02.jpg"><br>
@@ -62,16 +62,16 @@
 	</li>
 	<li>
 		<strong>New:</strong> [Cache Listing] Revision of "Search in logs". [<a href="https://github.com/2Abendsegler/GClh/issues/1983" title="Issue 1983">1983</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
-		The feature is not new. The previous functionality is retained. There is also new functionality.<br>
+		The feature is not new. The previous functionality is retained. There is also new functionality.<br><br>
 		- As before, several possible search terms are marked with the "|" separated from each other.<br>
 		- During the search, the log texts and the user names are examined.<br>
 		- The search can be started with the new "Go" button.<br>
 		- The search can still be started by pressing the "Enter" key when the cursor is in the search field.<br>
 		- The search can be reset with the new "Reset" button. It is no longer necessary to refresh the page via the browser or to press the "Show all logs" button.<br>
 		- The number of hits and the number of logs with hits are displayed.<br> 
-		<img src="../images/0.11.9/Screen04.jpg" alt="Screen04.jpg"><br>
+		<img src="../images/0.11.9/Screen04.jpg" alt="Screen04.jpg"><br><br>
 		- The hits are still highlighted in color in the logs.<br> 
-		<img src="../images/0.11.9/Screen05.jpg" alt="Screen05.jpg"><br>
+		<img src="../images/0.11.9/Screen05.jpg" alt="Screen05.jpg"><br><br>
 		- There is a new parameter with which the entire feature can be hidden.<br> 
 		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_add_search_in_logs_func" title="Link to your GClh II Config">Settings -> Listing - Logs Header:</a><br>
 		<img src="../images/0.11.9/Screen06.jpg" alt="Screen06.jpg"><br><br>
@@ -122,6 +122,7 @@
 		<strong>Fix:</strong> [Pocket Query] Some default values are not set if the PQ is created from map. [<a href="https://github.com/2Abendsegler/GClh/issues/1920" title="Issue 1920">1920</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 	</li>
 </ul>
+<br>
 (23.12.2021)<br>
 released by <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a><br>
 <br>
