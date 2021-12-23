@@ -2,7 +2,7 @@
 // @name         GC little helper II
 // @description  Some little things to make life easy (on www.geocaching.com).
 //--> $$000
-// @version      0.11.8.1
+// @version      0.11.9
 //<-- $$000
 // @copyright    2010-2016 Torsten Amshove, 2016-2021 2Abendsegler, 2017-2021 Ruko2010
 // @author       Torsten Amshove; 2Abendsegler; Ruko2010
@@ -12314,10 +12314,10 @@ var mainGC = function() {
         var prop = ' style="border: none; visibility: hidden; width: 2px; height: 2px;" alt="">';
         var code = '<img src="https://s11.flagcounter.com/count2/906f/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
 //--> $$002
-        code += '<img src="https://c.andyhoppe.com/1637376471"' + prop; // Besucher
-        code += '<img src="https://c.andyhoppe.com/1637376528"' + prop; // Seitenaufrufe
-//        code += '<img src="https://www.worldflagcounter.com/hYT"' + prop;
-        code += '<img src="https://s11.flagcounter.com/count2/K8W5/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
+        code += '<img src="https://c.andyhoppe.com/1640009677"' + prop; // Besucher
+        code += '<img src="https://c.andyhoppe.com/1640009710"' + prop; // Seitenaufrufe
+        code += '<img src="https://www.worldflagcounter.com/h3R"' + prop;
+        code += '<img src="https://s11.flagcounter.com/count2/3uBe/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
 //<-- $$002
         div.innerHTML = code;
         side.appendChild(div);
@@ -12333,22 +12333,6 @@ var mainGC = function() {
 
 // Do migration tasks for new version.
     function migrationTasks() {
-        // Migrate elevation parameters first service to 'GeoNames' and second service to 'Open-Elevation' (zu v0.10.11).
-        if (getValue("migration_task_03", false) != true) {
-            setValue("settings_primary_elevation_service", 3);
-            settings_primary_elevation_service = 3;
-            setValue("settings_secondary_elevation_service", 2);
-            settings_secondary_elevation_service = 2
-            setValue("migration_task_03", true);
-        }
-        // Migrate new map layer ÖPNVMap to the available map layers (zu v0.10.20).
-        if (getValue("migration_task_04", false) != true) {
-            if (settings_map_layers.length > 1) {
-                settings_map_layers.push('ÖPNVMap');
-                setValue('settings_map_layers', settings_map_layers.join("###"));
-            }
-            setValue("migration_task_04", true);
-        }
         // Migrate new parameter for "Map this Location" in cache listings to true (zu v0.11).
         if (getValue("migration_task_05", false) != true) {
             setValue("settings_show_link_to_browse_map", true);
@@ -12362,7 +12346,7 @@ var mainGC = function() {
             GM_deleteValue('headerReplacement');
             setValue("migration_task_06", true);
         }
-        // Migrate new map layer "CyclOSM: OSM-based bicycle map" to the available map layers (zu v0.12).
+        // Migrate new map layer "CyclOSM: OSM-based bicycle map" to the available map layers (zu ?).
         if (getValue("migration_task_07", false) != true) {
             if (settings_map_layers.length > 1) {
                 settings_map_layers.push('CyclOSM: OSM-based bicycle map');
@@ -13524,7 +13508,7 @@ var mainGC = function() {
             html += thanksLineBuild("V60",                  "V60GC",                    false, false, false, true,  false);
             html += thanksLineBuild("vylda",                "",                         false, false, false, true,  false);
             html += thanksLineBuild("winkamol",             "",                         false, false, false, true,  false);
-            var thanksLastUpdate = "21.11.2021";
+            var thanksLastUpdate = "23.12.2021";
 //<-- $$006
             html += "    </tbody>";
             html += "</table>";
