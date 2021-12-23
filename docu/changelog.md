@@ -54,14 +54,19 @@
 	<li>
 		As before, several possible search terms are marked with the "|" separated from each other.<br>
 	</li>
+	<li>
 		During the search, the log texts and the user names are examined.<br>
+	</li>
 	<li>
 		The search can be started with the new "Go" button.<br>
 	</li>
+	<li>
 		The search can still be started by pressing the "Enter" key when the cursor is in the search field.<br>
+	</li>
 	<li>
 		The search can be reset with the new "Reset" button. It is no longer necessary to refresh the page via the browser or to press the "Show all logs" button.<br>
 	</li>
+	<li>
 		The number of hits and the number of logs with hits are displayed.<br> 
 	<li>
 </ul>
