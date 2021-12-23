@@ -64,7 +64,51 @@
 		<img src="../images/0.11.9/Screen06.jpg" alt="Screen06.jpg"><br><br>
 	</li>
 	<li>
+		<strong>New:</strong> [Log forms] Prevents a message from being displayed if the log is not saved. [<a href="https://github.com/2Abendsegler/GClh/issues/1979" title="Issue 1979">1979</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_unsaved_log_message" title="Link to your GClh II Config">Settings -> Logging:</a><br>
+		<img src="../images/0.11.9/Screen01.jpg" alt="Screen01.jpg"><br><br>
+	</li>
+	<li>
+		<strong>New:</strong> [Log forms] Show number and percentage of favorites and number of watcher. [<a href="https://github.com/2Abendsegler/GClh/issues/1965" title="Issue 1965">1965</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br><br>
+		Old log form:<br>
+		<img src="../images/0.11.9/Screen08.jpg" alt="Screen08.jpg"><br><br>
+		New log form:<br>
+		<img src="../images/0.11.9/Screen09.jpg" alt="Screen09.jpg"><br><br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_show_add_cache_info_in_log_page" title="Link to your GClh II Config">Settings -> Logging:</a><br>
+		<img src="../images/0.11.9/Screen10.jpg" alt="Screen10.jpg"><br><br>
+	</li>
+	<li>
+		<strong>New:</strong> [Browse Map / Search Map] Keep "Set default" parameter in mind. [<a href="https://github.com/2Abendsegler/GClh/issues/1920" title="Issue 1920">1920</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br><br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Statistik Matrix] Possible D/T combinations no longer works. [<a href="https://github.com/2Abendsegler/GClh/issues/1959" title="Issue 1959">1959</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Search Map] Header has white space border if "Change header layout" is disabled. [<a href="https://github.com/2Abendsegler/GClh/issues/1936" title="Issue 1936">1936</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br>
+	</li>
+	<li>
 		<strong>Fix:</strong> [Log forms] Double signature in both log forms when coming from the drafts. [<a href="https://github.com/2Abendsegler/GClh/issues/1991" title="Issue 1991">1991</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Search Map] Sometimes there is a line break between the cache type icon and the cache name in the cache details screen. [<a href="https://github.com/2Abendsegler/GClh/issues/1976" title="Issue 1976">1976</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Cache Listing] Display "Image not available" is wrong. [<a href="https://github.com/2Abendsegler/GClh/issues/1972" title="Issue 1972">1972</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Browse Map] No "Hide/Show all Cachetypes" buttons if we comes from pocket query. [<a href="https://github.com/2Abendsegler/GClh/issues/1970" title="Issue 1970">1970</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Cache Listing] Ugly display in "Add to List" popup. [<a href="https://github.com/2Abendsegler/GClh/issues/1968" title="Issue 1968">1968</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Cache Listing] "Go to Logs" doesn't work. [<a href="https://github.com/2Abendsegler/GClh/issues/1966" title="Issue 1966">1966</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [My Lists] Compact layout doesn't always work. [<a href="https://github.com/2Abendsegler/GClh/issues/1930" title="Issue 1930">1930</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Pocket Query] Some default values are not set if the PQ is created from map. [<a href="https://github.com/2Abendsegler/GClh/issues/1920" title="Issue 1920">1920</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 	</li>
 </ul>
 (23.12.2021)<br>
