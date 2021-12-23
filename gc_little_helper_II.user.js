@@ -3673,7 +3673,7 @@ var mainGC = function() {
     if (settings_hide_top_button) $("#topScroll").attr("id", "_topScroll").hide();
 
 // Show additional cache info in old log page.
-    if (document.location.href.match(/\.com\/seek\/log\.aspx\?(id|guid|ID|wp|LUID|PLogGuid|code)\=/) && settings_show_add_cache_info_in_log_page && $('.PostLogList > dd:nth-child(2)')[0]) {
+    if (document.location.href.match(/\.com\/seek\/log\.aspx\?(ID|wp|PLogGuid)\=/) && settings_show_add_cache_info_in_log_page && $('.PostLogList > dd:nth-child(2)')[0]) {
         try {
             $('.PostLogList > dd:nth-child(2)')[0].append(createAreaACI());
             buildContentACI($('#ctl00_ContentBody_LogBookPanel1_WaypointLink')[0].nextSibling.href);
