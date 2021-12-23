@@ -1,3 +1,4 @@
+<a href="#v0119" title="GClh II version 0.11.9 (23.12.2021)">v0.11.9</a> &nbsp;
 <a href="#v01181" title="GClh II version 0.11.8.1 (22.11.2021)">v0.11.8.1</a> &nbsp;
 <a href="#v0118" title="GClh II version 0.11.8 (20.11.2021)">v0.11.8</a> &nbsp;
 <a href="#v0117" title="GClh II version 0.11.7 (12.09.2021)">v0.11.7</a> &nbsp;
@@ -31,6 +32,44 @@
 <a href="#v010" title="GClh II version 0.10 (13.12.2019)">v0.10</a> &nbsp;
 <a href="changelog_before.md" title="Go to earlier changelog">Earlier changelog</a> &nbsp;
 
+
+---
+## v0.11.9:
+<ul>
+	<li>
+		<strong>New:</strong> [Trackable search] Simplify trackable search. [<a href="https://github.com/2Abendsegler/GClh/issues/1996" title="Issue 1996">1996</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		Place the cursor directly in the input field with the start of the page.<br>
+		Enable the search to be started by pressing the Enter key.<br><br>
+	</li>
+	<li>
+		<strong>New:</strong> [Config] Handle the key combination ctrl + s like the key F2 to save config. [<a href="https://github.com/2Abendsegler/GClh/issues/1994" title="Issue 1994">1994</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br><br>
+	</li>
+	<li>
+		<strong>New:</strong> [Cache Listing] Improve screen "Enter solved coordinates" (only in english). [<a href="https://github.com/2Abendsegler/GClh/issues/1985" title="Issue 1985">1985</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br><br>
+	</li>
+	<li>
+		<strong>New:</strong> [Cache Listing] Revision of "Search in logs". [<a href="https://github.com/2Abendsegler/GClh/issues/1983" title="Issue 1983">1983</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		The feature is not new. The previous functionality is retained. There is also new functionality.<br><br>
+		- As before, several possible search terms are marked with the "|" separated from each other.<br>
+		- During the search, the log texts and the user names are examined.<br>
+		- The search can be started with the new "Go" button.<br>
+		- The search can still be started by pressing the "Enter" key when the cursor is in the search field.<br>
+		- The search can be reset with the new "Reset" button. It is no longer necessary to refresh the page via the browser or to press the "Show all logs" button.<br>
+		- The number of hits and the number of logs with hits are displayed.<br> 
+		<img src="../images/0.11.9/Screen04.jpg" alt="Screen04.jpg"><br><br>
+		- The hits are still highlighted in color in the logs.<br> 
+		<img src="../images/0.11.9/Screen05.jpg" alt="Screen05.jpg"><br><br>
+		- There is a new parameter with which the entire feature can be hidden.<br> 
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_add_search_in_logs_func" title="Link to your GClh II Config">Settings -> Listing - Logs Header:</a><br>
+		<img src="../images/0.11.9/Screen06.jpg" alt="Screen06.jpg"><br><br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Log forms] Double signature in both log forms when coming from the drafts. [<a href="https://github.com/2Abendsegler/GClh/issues/1991" title="Issue 1991">1991</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+</ul>
+(23.12.2021)<br>
+released by <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a><br>
+<br>
 
 ---
 ## v0.11.8.1:
