@@ -330,5 +330,9 @@
   "settings_larger_map_as_browse_map": false,
   "settings_fav_proz_cod": true,
   "settings_logs_old_fashioned": false,
-  "settings_upgrade_button_header_remove": false
+  "settings_upgrade_button_header_remove": false,
+  "settings_add_search_in_logs_func true": true,
+  "settings_unsaved_log_message": true,
+  "settings_show_add_cache_info_in_log_page": true,
+  "settings_sort_map_layers": false
 }
