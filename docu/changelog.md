@@ -78,6 +78,17 @@
 		<img src="../images/0.11.9/Screen10.jpg" alt="Screen10.jpg"><br><br>
 	</li>
 	<li>
+		<strong>New:</strong> [Cache Listing] Let icons on overview map gray separately when hovering. [<a href="https://github.com/2Abendsegler/GClh/issues/1891" title="Issue 1891">1891</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		<img src="../images/0.11.9/Screen07.gif" alt="Screen07.gif"><br><br>
+	</li>
+	<li>
+		<strong>New:</strong>[Browse Map] Optionally an alphabetical sorting of the layers in the selection display on the map. [<a href="https://github.com/2Abendsegler/GClh/issues/1873" title="Issue 1873">1873</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		<img src="../images/0.11.9/Screen03.jpg" alt="Screen03.jpg"><br><br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_sort_map_layers" title="Link to your GClh II Config">Settings -> Map - Layers in Map:</a><br>
+		<img src="../images/0.11.9/Screen02.jpg" alt="Screen02.jpg"><br>
+		If you want to use this feature, you have to activate it.<br><br>
+	</li>
+	<li>
 		<strong>New:</strong> [Browse Map / Search Map] Keep "Set default" parameter in mind. [<a href="https://github.com/2Abendsegler/GClh/issues/1920" title="Issue 1920">1920</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br><br>
 	</li>
 	<li>
