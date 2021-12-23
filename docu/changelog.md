@@ -68,9 +68,9 @@
 	</li>
 	<li>
 		The number of hits and the number of logs with hits are displayed.<br> 
-	<li>
+	</li>
 </ul>
-		<img src="../images/0.11.9/Screen04.jpg" alt="Screen04.jpg"><br><br>
+			<img src="../images/0.11.9/Screen04.jpg" alt="Screen04.jpg"><br><br>
 <ul>
 	<li>
 		The hits are still highlighted in color in the logs.<br> 
