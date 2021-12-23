@@ -677,6 +677,7 @@ var variablesInit = function(c) {
     c.settings_unsaved_log_message = getValue("settings_unsaved_log_message", true);
     c.settings_sort_map_layers = getValue("settings_sort_map_layers", false);
     c.settings_add_search_in_logs_func = getValue("settings_add_search_in_logs_func", true);
+    c.settings_show_add_cache_info_in_log_page = getValue("settings_show_add_cache_info_in_log_page", true);
 
     tlc('START userToken');
     try {
@@ -3671,6 +3672,74 @@ var mainGC = function() {
 // Hide greenToTopButton.
     if (settings_hide_top_button) $("#topScroll").attr("id", "_topScroll").hide();
 
+// Show additional cache info in old log page.
+    if (document.location.href.match(/\.com\/seek\/log\.aspx\?(id|guid|ID|wp|LUID|PLogGuid|code)\=/) && settings_show_add_cache_info_in_log_page && $('.PostLogList > dd:nth-child(2)')[0]) {
+        try {
+            $('.PostLogList > dd:nth-child(2)')[0].append(createAreaACI());
+            buildContentACI($('#ctl00_ContentBody_LogBookPanel1_WaypointLink')[0].nextSibling.href);
+            buildCssACI();
+        } catch(e) {gclh_error("Show additional cache info in old log page",e);}
+    }
+// Show additional cache info in new log page.
+    if (document.location.href.match(/\.com\/play\/geocache\/gc\w+\/log/) && settings_show_add_cache_info_in_log_page) {
+        try {
+            function waitForNewLogPageForACI(waitCount) {
+                if ($('#logType .log-subheading')[0]) {
+                    $('#logType .log-subheading')[0].after(createAreaACI());
+                    buildContentACI($('#logType .log-subheading')[0].href);
+                    buildCssACI();
+                } else {waitCount++; if (waitCount <= 100) setTimeout(function(){waitForNewLogPageForACI(waitCount);}, 100);}
+            }
+            waitForNewLogPageForACI(0);
+        } catch(e) {gclh_error("Show additional cache info in new log page",e);}
+    }
+    function buildCssACI(css) {
+        if (!css) var css = '';
+        css += '#aci {margin-left: 20px; margin-right: 2px; cursor: default; float: right;} ';
+        css += '#aci svg {vertical-align: text-bottom;} ';
+        css += '#aci img {vertical-align: sub;} ';
+        appendCssStyle(css);
+    }
+    function createAreaACI() {
+        var span = document.createElement('span');
+        span.id = 'aci';
+        return span;
+    }
+    function buildContentACI(url) {
+        $.get(url, null, function(text){
+            var aci = '';
+            // Favorite points and favorite percent.
+            var favoritePoints = $(text).find('.favorite-value').html();
+            if (favoritePoints) {
+                favoritePoints = favoritePoints.replace('.','').replace(',','');
+                favoritePoints = parseInt(favoritePoints);
+                var favoritePercent = ' ';
+                var from = text.indexOf('userToken', text.indexOf('MapTilesEnvironment')) + 13;
+                var length = text.indexOf("';", from) - from;
+                var userTokenACI = text.substr(from, length);
+                aci += separator(aci) + '<span class="favorites" title="Favorites">';
+                aci += '<svg height="16.5" width="16.5"><image xmlns:xlink="https://www.w3.org/1999/xlink" xlink:href="/images/icons/fave_fill_16.svg" src="/images/icons/fave_fill_16.png" width="16" height="16"></image></svg>';
+                aci += '<span class="favorite_points" title="Favorite points"> ' + favoritePoints + '</span>';
+                aci += '<span class="favorite_percent" title="Favorites in percent"> ' + favoritePercent + '</span>';
+                aci += '</span>';
+            }
+            // Watcher.
+            var watchNumber = $(text).find('#watchlistLinkMount');
+            if (watchNumber[0]) {
+                watchNumber = watchNumber[0].getAttribute("data-watchcount");
+                aci += separator(aci) + '<span class="watcher" title="Watcher">';
+                aci += '<img src="/images/icons/16/watch.png">';
+                aci += '<span class="watch-number" title="Number of watcher"> ' + watchNumber + '</span>';
+                aci += '</span>';
+            }
+            // Output and further load.
+            if (aci != '') {
+                $('#aci')[0].innerHTML = aci;
+                if (favoritePoints) getFavoritePercent(userTokenACI, $('.favorite_percent')[0]);
+            }
+        });
+    }
+
 // Show Smilies und Log Templates old log page.
     if ((document.location.href.match(/\.com\/seek\/log\.aspx\?(id|guid|ID|wp|LUID|PLogGuid|code)\=/) || document.location.href.match(/\.com\/track\/log\.aspx\?(id|wid|guid|ID|LUID|PLogGuid|code)\=/)) &&
         $('#litDescrCharCount')[0] && $('#ctl00_ContentBody_LogBookPanel1_WaypointLink')[0] && $('#ctl00_ContentBody_LogBookPanel1_uxLogInfo')[0] && $('#uxDateVisited')[0]) {
@@ -3858,6 +3927,7 @@ var mainGC = function() {
             liste += "</select>";
         } else liste += "<br><p style='margin: 0;'>Templates:</p>" + texts + logicOld;
     }
+
 // Vorschau für Log, Log preview.
     if (document.location.href.match(/\.com\/play\/geocache\/gc\w+\/log/)) {
         try {
@@ -3901,6 +3971,7 @@ var mainGC = function() {
             });
         } catch(e) {gclh_error("Logpage Log Preview",e);}
     }
+
 // Replicate TB-Header to bottom
     if (document.location.href.match(/\.com\/play\/geocache\/gc\w+\/log/)) {
         try {
@@ -12988,6 +13059,27 @@ var mainGC = function() {
         return logsCount;
     }
 
+// Output field separator.
+    function separator(output) {
+        if (output == '') return '';
+        else return ' | ';
+    }
+
+// Get favorite percent.
+    function getFavoritePercent(userToken, position) {
+       $.ajax({
+           type: "POST",
+           cache: false,
+           url: '/datastore/favorites.svc/score?u=' + userToken,
+           success: function (scoreResult) {
+               var score = 0;
+               if (scoreResult) score = ' ' + scoreResult + '%';
+               if (score > 100) score = ' ' + 100 + '%';
+               position.innerHTML = score;
+           }
+       });
+    }
+
 ////////////////////////////////////////
 // 5.3 GC - User defined searchs ($$cap) (User defined searchs on the geocaching webpages.)
 ////////////////////////////////////////
@@ -14191,10 +14283,11 @@ var mainGC = function() {
             html += checkboxy('settings_show_pseudo_as_owner', 'Take also owner pseudonym to replace placeholder owner') + show_help("If you enable this option, the placeholder for the owner is replaced possibly by the pseudonym of the owner if the real owner is not known.<br><br>On the new designed log page there is shown as owner of the cache not the real owner but possibly the pseudonym of the owner for the cache as it is shown in the cache listing under \"A cache by\". The real owner is not available in this cases.") + "<br>";
             html += newParameterVersionSetzen(0.9) + newParameterOff;
             html += newParameterOn1;
-            html += checkboxy('settings_improve_character_counter', 'Show length of logtext') + show_help("If you enable this option, a counter shows the length of your logtext and the maximum length.\nOn the old logging page this feature ist auto-enabled") + "<br>";
+            html += checkboxy('settings_improve_character_counter', 'Show length of logtext') + show_help("If you enable this option, a counter shows the length of your logtext and the maximum length.\nOn the old logging page this feature ist auto-enabled.") + "<br>";
             html += newParameterVersionSetzen('0.10') + newParameterOff;
             html += newParameterOn2;
             html += checkboxy('settings_unsaved_log_message', 'Show message in case of unsaved log') + "<br>";
+            html += checkboxy('settings_show_add_cache_info_in_log_page', 'Show additional cache info') + show_help("If you enable this option, additional cache information such as the favorite points or the favorite percent are shown in the log form next to the cache name.") + "<br>";
             html += newParameterVersionSetzen('0.11') + newParameterOff;
             var placeholderDescription = "Possible placeholders:<br>&nbsp; #Found# : Your founds + 1<br>&nbsp; #Found_no# : Your founds<br>&nbsp; #Me# : Your username<br>&nbsp; #Owner# : Username of the owner<br>&nbsp; #Date# : Actual date<br>&nbsp; #Time# : Actual time in format hh:mm<br>&nbsp; #DateTime# : Actual date actual time<br>&nbsp; #GCTBName# : GC or TB name<br>&nbsp; #GCTBLink# : GC or TB link<br>&nbsp; #GCTBNameLink# : GC or TB name as a link<br>&nbsp; #LogDate# : Content of field \"Date Logged\"<br>(Upper and lower case is not required in the placeholders name.)";
             html += "&nbsp;" + "Log templates" + show_help("Log templates are predefined texts. All of your templates will be displayed next to the log form. All you have to do is click on a template and it will be placed in your log. You can also use placeholders for variables that will be replaced in the log. The smilies option must be activated.") + " &nbsp; ( Possible placeholders" + show_help(placeholderDescription) + ")<br>";
@@ -15458,6 +15551,7 @@ var mainGC = function() {
                 'settings_unsaved_log_message',
                 'settings_sort_map_layers',
                 'settings_add_search_in_logs_func',
+                'settings_show_add_cache_info_in_log_page',
             );
             for (var i = 0; i < checkboxes.length; i++) {
                 if (document.getElementById(checkboxes[i])) setValue(checkboxes[i], document.getElementById(checkboxes[i]).checked);
