@@ -50,16 +50,33 @@
 	<li>
 		<strong>New:</strong> [Cache Listing] Revision of "Search in logs". [<a href="https://github.com/2Abendsegler/GClh/issues/1983" title="Issue 1983">1983</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 		The feature is not new. The previous functionality is retained. There is also new functionality.<br><br>
-		- As before, several possible search terms are marked with the "|" separated from each other.<br>
-		- During the search, the log texts and the user names are examined.<br>
-		- The search can be started with the new "Go" button.<br>
-		- The search can still be started by pressing the "Enter" key when the cursor is in the search field.<br>
-		- The search can be reset with the new "Reset" button. It is no longer necessary to refresh the page via the browser or to press the "Show all logs" button.<br>
-		- The number of hits and the number of logs with hits are displayed.<br> 
+<ul>
+	<li>
+		As before, several possible search terms are marked with the "|" separated from each other.<br>
+	</li>
+		During the search, the log texts and the user names are examined.<br>
+	<li>
+		The search can be started with the new "Go" button.<br>
+	</li>
+		The search can still be started by pressing the "Enter" key when the cursor is in the search field.<br>
+	<li>
+		The search can be reset with the new "Reset" button. It is no longer necessary to refresh the page via the browser or to press the "Show all logs" button.<br>
+	</li>
+		The number of hits and the number of logs with hits are displayed.<br> 
+	<li>
+</ul>
 		<img src="../images/0.11.9/Screen04.jpg" alt="Screen04.jpg"><br><br>
-		- The hits are still highlighted in color in the logs.<br> 
+<ul>
+	<li>
+		The hits are still highlighted in color in the logs.<br> 
+	</li>
+</ul>
 		<img src="../images/0.11.9/Screen05.jpg" alt="Screen05.jpg"><br><br>
-		- There is a new parameter with which the entire feature can be hidden.<br> 
+<ul>
+	<li>
+		There is a new parameter with which the entire feature can be hidden.<br> 
+	</li>
+</ul>
 		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_add_search_in_logs_func" title="Link to your GClh II Config">Settings -> Listing - Logs Header:</a><br>
 		<img src="../images/0.11.9/Screen06.jpg" alt="Screen06.jpg"><br><br>
 	</li>
