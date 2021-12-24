@@ -9012,7 +9012,7 @@ var mainGC = function() {
                             global_cache_premium = false;
                         }
                         if ($('.header-top-left')[0] && $('.header-top-left h1')[0] && $('.status-and-type')[0] && $('.status-and-type')[0].childNodes && $('.more-info-link')[0]) {
-                            if (!$('.header-top-left .gclh_cache_type')[0] && !$('.header-top-left .gclh-cache-link')[0]) {
+                            if (!$('.header-top-left .gclh-cache-link')[0]) {
                                 var cacheTypeChildNode = $('.status-and-type')[0].childNodes.length - 1;
                                 if (cacheTypeChildNode >= 0 && $('.status-and-type')[0].childNodes[cacheTypeChildNode]) {
                                     var cacheType = $('.status-and-type')[0].childNodes[cacheTypeChildNode].data;
@@ -9023,11 +9023,10 @@ var mainGC = function() {
                                             cacheSymbol += '_disabled';
                                             setStrikeDisabledInDetails();
                                         }
-                                        $('.header-top-left h1')[0].innerHTML = '<svg class="gclh_cache_type"><use xlink:href="'+cacheSymbol+'"></use></svg>' + $('.header-top-left h1')[0].innerHTML;
+                                        $('.header-top-left h1')[0].innerHTML = '<a class="gclh-cache-link" href="' + $('.more-info-link')[0].href + '" target="_blank"><svg class="gclh_cache_type"><use xlink:href="'+cacheSymbol+'"></use></svg>' + $('.header-top-left h1')[0].innerHTML + '</a>';
                                         $('.status-and-type')[0].style.display = 'none';
                                     }
                                 }
-                                $('.header-top-left h1')[0].innerHTML = '<a class="gclh-cache-link" href="' + $('.more-info-link')[0].href + '" target="_blank">' + $('.header-top-left h1')[0].innerHTML + '</a>';
                             }
                         }
                         $('.cache-preview-activities .avatar-img').each(function() {
