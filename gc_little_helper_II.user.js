@@ -10478,7 +10478,7 @@ var mainGC = function() {
                         if ($('#already_loading_' + gccode)[0]) return;
                         $(this).find('dl dt')[0].innerHTML = "";
                         if (browser == 'firefox') {
-                            $(this).find('h4 a')[0].title = $(this).find('h4 a')[0].innerHTML.replace(/<strike>/,'').replace(/<\/strike>/,'');
+                            $(this).find('h4 a')[0].title = decode_innerHTML($(this).find('h4 a')[0]).replace(/<strike>/,'').replace(/<\/strike>/,'');
                             $(this).find('dl dd')[0].childNodes[0].innerHTML = '<span class="gclh_owner" title="' + $(this).find('dl dd')[0].childNodes[0].innerHTML + '">' + $(this).find('dl dd')[0].childNodes[0].innerHTML + '</span>';
                         }
 
