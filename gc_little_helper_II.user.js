@@ -9676,7 +9676,8 @@ var mainGC = function() {
             css += '.geocache-owner-name a:hover, .gclhOwner a:hover {color: #02874d !important;}';
             css += '.geocache-owner-name a, .gclhOwner a {color: #4a4a4a !important; text-decoration: none !important;}';
             if (settings_searchmap_compact_layout) {
-                css += '#gc-search-typeahead-form .gc-search-typeahead-submit, #gc-search-typeahead-form .inner-wrapper, .search-bar.v3, .search-bar.v3 .gc-filter-toggle {height: 34px !important;}';
+                css += '#gc-search-typeahead-form, #gc-search-typeahead-form .gc-search-typeahead-submit, #gc-search-typeahead-form .inner-wrapper, .search-bar.v3, #search-term-input {height: 34px !important;}';
+                css += '.search-bar.v3 .gc-filter-toggle {height: 35.5px !important;}';
                 css += '#gc-search-typeahead-form .gc-autocomplete .inner-wrapper {box-shadow: 0 0 0 0.9px #9b9b9b !important;}';
                 css += '.gc-filter-toggle-icon {height: 18px !important; width: 18px !important;}';
                 css += '.geocache-item-name {font-size: 14px !important;}';
@@ -9684,7 +9685,6 @@ var mainGC = function() {
                 css += '.search-bar-inner {margin-right: 10px !important;}';
                 css += '.search-bar, .cache-preview-header, .cache-preview-attributes, .cache-preview-action-menu, .cache-open-text-cta, .cache-preview-description, .cache-preview-activities .view-all-row, .cache-preview-activities header {padding: 5px 12px !important;}';
                 css += '.sidebar-control .checkbox {margin-right: 2px;}';
-                css += '#search-term-input {height: 34px !important;}';
                 // Cache list and cache details.
                 css += '.header-top {display: none !important;}';
                 css += '.search-bar-back-cta {height: 24px; width: 24px; padding: 6px 0px; margin-left: -2px;}';
