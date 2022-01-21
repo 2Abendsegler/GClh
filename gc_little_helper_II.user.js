@@ -11009,6 +11009,7 @@ var mainGC = function() {
                             var a = document.createElement("a");
                             a.setAttribute("title", "Show caches you have found in " + item[0]["n"]);
                             a.setAttribute("href", "/play/search?ot=4&"+parameter+"=" + item[0]["id"] + "&f=1&sort=FoundDate&asc=True#myListsLink");
+                            a.setAttribute("target", "_blank");
                             a.setAttribute("style", "color: #3d76c5;");
                             a.innerHTML = tableItems[i].children[0].innerHTML;
                             tableItems[i].children[0].innerHTML = "";
@@ -11017,6 +11018,20 @@ var mainGC = function() {
                     }
                 }
             }
+            function waitForMap(waitCount) {
+                if ($('#stats_tabs-maps svg')[0]) {
+                    $.each($('#stats_tabs-maps svg'), (_i, map) => {
+                        map.addEventListener('click', () => {
+                            if ($(map).find('g.google-visualization-tooltip')[0]) {
+                                let cc = $(map).find('g.google-visualization-tooltip text').html().toLowerCase();
+                                let url = $('img[src="/images/icons/flags/png/' + cc + '.png"]').parent()[0].href;
+                                window.open(url, '_blank');
+                            }
+                        });
+                    });
+                } else {waitCount++; if (waitCount <= 100) setTimeout(function(){waitForMap(waitCount);}, 100);}
+            }
+            waitForMap();
         } catch(e) {gclh_error("Improve own statistic map page",e);}
     }
 
