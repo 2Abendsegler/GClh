@@ -11575,10 +11575,10 @@ var mainGC = function() {
 // Change new links to found/hide caches to the old link on profile page.
     if (settings_profile_old_links && is_page("publicProfile") && document.location.search.match(/tab=geocaches/)) {
         // All founds.
-        if ($('.span-9 .minorDetails a')[0]) $('.span-9 .minorDetails a')[0].href = '/seek/nearest.aspx?ul='+urlencode($('#ctl00_ProfileHead_ProfileHeader_lblMemberName')[0].innerHTML);
+        if ($('.finds-col-header .minorDetails a')[0]) $('.finds-col-header .minorDetails a')[0].href = '/seek/nearest.aspx?ul='+urlencode($('#ctl00_ProfileHead_ProfileHeader_lblMemberName')[0].innerHTML);
         // All hides.
-        if ($('.span-9.last .minorDetails a')[0]) $('.span-9.last .minorDetails a')[0].href = '/seek/nearest.aspx?u='+urlencode($('#ctl00_ProfileHead_ProfileHeader_lblMemberName')[0].innerHTML);
-        $('.span-9 table tbody tr a').each(function() {
+        if ($('.hides-col-header .minorDetails a')[0]) $('.hides-col-header .minorDetails a')[0].href = '/seek/nearest.aspx?u='+urlencode($('#ctl00_ProfileHead_ProfileHeader_lblMemberName')[0].innerHTML);
+        $('.finds-col table tbody tr a, .hides-col table tbody tr a').each(function() {
             // Cache type founds.
             let match = /\/play\/search\?types=(\d+).*&sc=(False|True)&fb=([^&]+).*/gi.exec(this.href);
             if (match) {
