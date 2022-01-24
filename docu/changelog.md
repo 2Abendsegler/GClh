@@ -52,7 +52,7 @@
 		<img src="../images/0.11.10/Screen03.gif" alt="Screen03.gif"><br><br><br>
 	</li>
 	<li>
-		<strong>New:</strong> [New Log form] Improve the description of parameter "settings_show_pseudo_as_owner". [<a href="https://github.com/2Abendsegler/GClh/issues/1920" title="Issue 1920">1920</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		<strong>New:</strong> [New Log form] Improve the description of parameter "settings_show_pseudo_as_owner". [<a href="https://github.com/2Abendsegler/GClh/issues/1920" title="Issue 1920">1920</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br><br>
 	</li>
 	<li>
 		<strong>Fix:</strong> [Old Log form] Show additional cache info only in post mode. [<a href="https://github.com/2Abendsegler/GClh/issues/2002" title="Issue 2002">2002</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
