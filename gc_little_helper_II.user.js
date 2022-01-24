@@ -11003,7 +11003,7 @@ var mainGC = function() {
     }
 
 // Improve own statistic map page with links to caches for every country.
-    if (settings_map_links_statistic) {
+    if (settings_map_links_statistic && isOwnStatisticsPage() ) {
         try {
             var countriesList = $('#stats_tabs-maps .StatisticsWrapper');
             for (var j = 0; j < countriesList.length; j++) {
