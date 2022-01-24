@@ -323,6 +323,8 @@ var variablesInit = function(c) {
     c.global_findCount = false;
     c.global_locale = false;
     c.global_running = false;
+    c.global_open_popup_count = 0;
+    c.global_open_popups = new Array();
     c.map_url = "https://www.geocaching.com/map/default.aspx";
     c.new_map_url = "https://www.geocaching.com/play/map/";
     c.remove_navi_play = getValue("remove_navi_play", false);
@@ -678,6 +680,9 @@ var variablesInit = function(c) {
     c.settings_sort_map_layers = getValue("settings_sort_map_layers", false);
     c.settings_add_search_in_logs_func = getValue("settings_add_search_in_logs_func", true);
     c.settings_show_add_cache_info_in_log_page = getValue("settings_show_add_cache_info_in_log_page", true);
+    c.settings_pq_splitter_pqname = getValue("settings_pq_splitter_pqname", 'PQ_Splitter_');
+    c.settings_pq_splitter_how_often = getValue("settings_pq_splitter_how_often", 2);
+    c.settings_pq_splitter_email = getValue("settings_pq_splitter_email", 1);
 
     tlc('START userToken');
     try {
@@ -784,362 +789,315 @@ var mainGMaps = function() {
     } catch(e) {gclh_error("mainGMaps",e);}
 };
 
-////////////////////////
-// 3. Project GC ($$cap)
-////////////////////////
+////////////////////////////////
+// 3. Project GC         ($$cap)
+// 3.1 Project GC - Main ($$cap)
+////////////////////////////////
 var mainPGC = function() {
     try {
-        // CSS Style hinzufügen.
-        function appendCssStyle(css, name) {
-            if (css == "") return;
-            if (name) var tag = $(name)[0];
-            else var tag = $('head')[0];
-            var style = document.createElement('style');
-            style.innerHTML = 'GClhII{} ' + css;
-            style.type = 'text/css';
-            tag.appendChild(style);
-        }
-
-        function createRadioElement( name, id = false, checked = false ) {
-            var radioInput;
-            try {
-                var radioHtml = '<input type="radio" name="' + name + '"';
-                if ( checked ) {
-                    radioHtml += ' checked="checked"';
-                }
-                if (id) {
-                    radioHtml += ' id="' + id + '"';
-                }
-                radioHtml += '/>';
-                radioInput = document.createElement(radioHtml);
-            } catch( err ) {
-                radioInput = document.createElement('input');
-                radioInput.setAttribute('type', 'radio');
-                radioInput.setAttribute('name', name);
-                if ( checked ) {
-                    radioInput.setAttribute('checked', 'checked');
-                }
-                if ( id ) {
-                    radioInput.setAttribute('id', id);
-                }
-            }
-
-            return radioInput;
-        }
-
-        function getMonthNumber(lang, input){
-            if(lang = 'DE'){
-                if(input == 'Januar') return 1;
-                if(input == 'Februar') return 2;
-                if(input == 'März') return 3;
-                if(input == 'April') return 4;
-                if(input == 'Mai') return 5;
-                if(input == 'Juni') return 6;
-                if(input == 'Juli') return 7;
-                if(input == 'August') return 8;
-                if(input == 'September') return 9;
-                if(input == 'Oktober') return 10;
-                if(input == 'November') return 11;
-                if(input == 'Dezember') return 12;
-            }
-
-            if(lang = 'EN'){
-                if(input == 'January') return 1;
-                if(input == 'February') return 2;
-                if(input == 'March') return 3;
-                if(input == 'April') return 4;
-                if(input == 'May') return 5;
-                if(input == 'June') return 6;
-                if(input == 'July') return 7;
-                if(input == 'August') return 8;
-                if(input == 'September') return 9;
-                if(input == 'October') return 10;
-                if(input == 'November') return 11;
-                if(input == 'December') return 12;
-            }
-
-            return false;
-        }
-
-        var open_popup_count = 0;
-        var open_popups = null;
-        function create_pqs(first_run = true){
-
-            if(first_run){
-                // Cleanup last run (if there is one!)
-                if((open_popups != null) && (Array.isArray(open_popups))){
-                    for (var i = 0; i < open_popups.length; i++) {
-                        if(typeof open_popups[i] !== 'undefined' && open_popups[i] !== false){
-                            open_popups[i].close();
-                        }
-                    }
-                }
-
-                open_popups = new Array(urls_for_pqs_to_create.length);
-                open_popup_count = 0;
-            }
-
-            var already_done_count = 0;
-
-            for (var i = 0; i < urls_for_pqs_to_create.length; i++) {
-                if(urls_for_pqs_to_create[i] != ''){
-                    if(open_popup_count < 5){
-                        open_popups[i] = window.open(urls_for_pqs_to_create[i],'PQ_'+i,'scrollbars=1,menubar=0,resizable=1,width=500,height=500,left='+(i*40));
-
-                        // Ein Popup konnte nicht erzeugt werden, wahrscheinlich wegen eines Popup-Blockers
-                        // Wir brechen hier also ab und informieren den User
-                        if(open_popups[i] == null){
-                            alert("We detected a Popup Blocker. Please allow Popups for this site, reload the page and try again.\nPlease be aware, that the first two PQs could already be created, so please go to Geocaching.com and delete them.");
-                            return false;
-                        }
-                        open_popup_count++;
-                        urls_for_pqs_to_create[i] = '';
-                    }
-                }else{
-                    already_done_count++;
-                }
-
-                if(typeof open_popups[i] !== 'undefined' && open_popups[i] !== false && open_popups[i].closed){
-                    open_popup_count--;
-                    open_popups[i] = false;
-                }
-            }
-
-            if(
-                (already_done_count < urls_for_pqs_to_create.length) ||
-                (open_popup_count > 0)
-            ){
-                // Restart function until everything is finished
-                setTimeout(function(){create_pqs(false);}, 1000);
-            }else{
-                alert('We are done creating your Pocket Querys.');
-                $("button[data='PQCreateButton']").prop("disabled",false);
-            }
-        }
-
-        if($('.row table').length > 0){
-
-            // Add some CSS
-            var css = "";
-                css += "tfoot{";
-                css += "    background-color: #d4edda;";
-                css += "}";
-
-            appendCssStyle(css);
-
-            var urls_for_pqs_to_create = [];
-
-            // Only one of the Multiselects has a value. Either the Country or the Region
-
-            // Check if other Filters are set!
-
-            var error_text = '';
-
-            if($('#inputlist li').length > 1){
-                error_text = "More than one filter was set! You can not use this function. Please remove all filters except country/region.";
-            }
-
-            if($('#multi_countryselect').val() != null){
-                name = $('#multi_countryselect').val();
-                type = "country";
-            }else if($('#multi_countryregionselect').val() != null){
-                name = $('#multi_countryregionselect').val();
-                type = "region";
-            }else{
-                error_text = 'No Country/Region selected.';
-            }
-
-            $('.row table').each(function(table_index){
-                var tfoot = document.createElement('tfoot');
-                var tr = document.createElement('tr');
-                var td = document.createElement('td');
-                td.colSpan = "5";
-
-                var heading = document.createElement("h4");
-                heading.appendChild(document.createTextNode("Create PQ(s) on geocaching.com"));
-
-                var info_text = document.createElement("span");
-                info_text.appendChild(heading);
-
-                // Check if we need to add the function, or if we have an error before
-                if(error_text != ''){
-                    info_text.appendChild(document.createTextNode(error_text));
-                    td.appendChild(info_text);
-                    tr.appendChild(td);
-                    tfoot.appendChild(tr);
-                    $(this).append(tfoot);
-                    return;
-                }
-
-                info_text.appendChild(document.createTextNode("PQ-Name (Prefix):"));
-
-                var button = document.createElement('button');
-                var t = document.createTextNode("Create PQ(s)");
-                button.appendChild(t);
-                button.setAttribute("data", "PQCreateButton");
-
-                var input = document.createElement("input");
-                input.setAttribute("type", "text");
-                input.setAttribute("value", "PQName");
-                input.setAttribute("id", "pq_name_"+table_index);
-
-                button.addEventListener("click", function(){
-                    var current_table = $(this).closest('table');
-                    var counter = 0;
-                    var language;
-                    var data = new Array();
-
-                    // Cleanup old Data (if there is any)
-                    urls_for_pqs_to_create = [];
-
-                    $("button[data='PQCreateButton']").prop("disabled",true);
-
-                    $(current_table).find('tr').each(function(){
-                        counter++;
-                        if(counter == 1){
-                            // first tr, determine Language
-                            var lang_text = $(this).children().eq(1).text();
-                            if(lang_text == 'Startdatum'){
-                                language = 'DE';
-                            }else if(lang_text == 'Start date'){
-                                language = 'EN';
-                            }else{
-                                // Lang not supported
-                                alert('Language not supported. Please switch to German or English to use this function.');
-                                language = 'NONE';
-                            }
-                        }else{
-                            // Other td, here is the Data we need
-                            // Only process if the first column has Data in it
-                            if($(this).children().eq(1).text() != ""){
-
-                                var start = $(this).children().eq(1).text();
-                                var start_array = start.split('/');
-
-                                var start_month = getMonthNumber(language,start_array[0]);
-                                var start_day   = parseInt(start_array[1]);
-                                var start_year  = parseInt(start_array[2]);
-
-                                var end = $(this).children().eq(2).text();
-                                if(end.indexOf("/") != -1){
-                                    var end_array = end.split('/');
-                                    var end_month = getMonthNumber(language,end_array[0]);
-                                    var end_day   = parseInt(end_array[1]);
-                                    var end_year  = parseInt(end_array[2]);
-                                }else{
-                                    var end_month = "";
-                                    var end_day   = "";
-                                    var end_year  = "";
-                                }
-
-                                var cache_count = 1000;
-                                if(table_index == 1) cache_count = 500;
-
-                                var pq_name = $("#pq_name_"+table_index).val()+"_"+(counter-1);
-                                if(counter <= 10){
-                                    pq_name = $("#pq_name_"+table_index).val()+"_0"+(counter-1);
-                                }
-
-                                var temp_id = $("input[name=how_often_"+table_index+"]:checked").attr('id');
-                                var how_often = temp_id.substr(temp_id.lastIndexOf("_")+1);
-
-                                var email = $("#output_email_"+table_index).val();
-
-                                var param =
-                                    {
-                                        PQSplit: 1,
-                                        n: pq_name,
-                                        t: type,
-                                        s: name,
-                                        c: cache_count,
-                                        ho: how_often,
-                                        e: email,
-
-                                        sm: start_month,
-                                        sd: start_day,
-                                        sy: start_year,
-
-                                        em: end_month,
-                                        ed: end_day,
-                                        ey: end_year
-
-                                    };
-
-                                var new_url = "https://www.geocaching.com/pocket/gcquery.aspx?"+$.param( param );
-
-                                if(new_url.length > 2000){
-                                    alert("The URL is too long! Please use fewer countries/regions or you can't use this funciton. Some of the PQs could already be created!");
-                                    return false;
-                                }else{
-                                    urls_for_pqs_to_create.push(new_url);
-                                }
-
-                                // Only one for now...
-                                // return false;
-                            }
-                        }
-                    });
-
-                    create_pqs();
-
-                }, false);
-
-                td.appendChild(info_text);
-                td.appendChild(input);
-                td.appendChild(button);
-
-                var heading_instructions = document.createElement("h5");
-                heading_instructions.appendChild(document.createTextNode("Instruction"));
-
-                td.appendChild(heading_instructions);
-                td.appendChild(document.createTextNode("This function will only work, if you don't set any other filter except country or region!"));
-                td.appendChild(document.createElement("br"));
-                td.appendChild(document.createTextNode("If you click the \"Create PQ(s)\" Button GClh will open as many Pop-ups as PQs should be created. Please wait until all Pop-ups are loaded. The number of simultaneously loaded Popups is limited to 5. We will display a message if all PQs are created. The Popups will close themselves after the PQs are created. "));
-
-                var span = document.createElement('span');
-                span.innerHTML = 'Please make sure you do not have a Pop-up-Blocker enabled. Otherwise this function will not work as expected. ';
-                span.style.fontWeight = 'bold';
-                td.appendChild(span);
-
-                td.appendChild(document.createTextNode("All PQs will get the Name that you enter in the text field and an ongoing number."));
-
-                var heading_config = document.createElement("h5");
-                heading_config.appendChild(document.createTextNode("Configuration"));
-                td.appendChild(heading_config);
-
-                td.appendChild(document.createTextNode("Choose how often your query should run:"));
-                td.appendChild(document.createElement("br"));
-
-                td.appendChild(createRadioElement('how_often_'+table_index, 'how_often_'+table_index+'_1', true));
-                td.appendChild(document.createTextNode(" Uncheck the day of the week after the query runs"));
-                td.appendChild(document.createElement("br"));
-                td.appendChild(createRadioElement('how_often_'+table_index, 'how_often_'+table_index+'_2', false));
-                td.appendChild(document.createTextNode(" Run this query every week on the days checked"));
-                td.appendChild(document.createElement("br"));
-                td.appendChild(createRadioElement('how_often_'+table_index, 'how_often_'+table_index+'_3', false));
-                td.appendChild(document.createTextNode(" Run this query once then delete it"));
-                td.appendChild(document.createElement("br"));
-                td.appendChild(document.createElement("br"));
-
-                td.appendChild(document.createTextNode("Output to Email:"));
-                td.appendChild(document.createElement("br"));
-
-                var output_email = document.createElement("select");
-                output_email.setAttribute("id", "output_email_"+table_index);
-                output_email.appendChild(new Option("Primary", "1"));
-                output_email.appendChild(new Option("Secondary", "2"));
-                td.appendChild(output_email);
-                td.appendChild(document.createElement("br"));
-                td.appendChild(document.createTextNode("Attention: This will only work if you have 2 or more Email addresses in your Profile."));
-                td.appendChild(document.createElement("br"));
-
-                tr.appendChild(td);
-                tfoot.appendChild(tr);
-                $(this).append(tfoot);
+        // Tables with PQ definitions are available.
+        if ($('.row table').length > 0) {
+            // No errors available for month name related functions.
+            global_error = false;
+            // Get user language of the page.
+            var lang = getLanguage();
+            // Build output boxes for both tables with the PQ definitions.
+            $('.row table').each(function(table_index) {
+                buildOutputBox(this, table_index);
             });
+            // Build css.
+            buildCss();
         }
     } catch(e) {gclh_error("mainPGC",e);}
-};
+
+/////////////////////////////////////
+// 3.2 Project GC - Functions ($$cap)
+/////////////////////////////////////
+// Build output box.
+    function buildOutputBox(side, table_index) {
+        var html = '';
+        html += '<tfoot><tr><td colSpan="5">';
+        html += '<h4>Create PQ(s) on geocaching.com<span class="gclh_counter">';
+        html += '<span class="gclh_counter_completed" title="Number of PQs completed">0</span> | <span class="gclh_counter_started" title="Number of PQs started">0</span> | <span class="gclh_counter_total" title="Total number of PQs to be done">0</span></span></h4>';
+        var error_text = checkSelectErrorAvailable();
+        if (error_text != '') {
+            html += '<h5>Error:</h5>';
+            html += '<p>' + error_text + '</p>';
+            html += '</td></tr></tfoot>';
+            $(side).append(html);
+        } else {
+            html += '<p>PQ name (prefix): ';
+            html += '<input class="pq_name" type="text" value="' + settings_pq_splitter_pqname + '" cache_count="' + (table_index == 0 ? '1000':'500') + '"> ';
+            html += '<button class="button_create_pq">Create PQ(s)</button></p>';
+            html += '<h5>Configuration:</h5>';
+            html += '<p>Choose how often your PQ(s) should run:<br>';
+            html += '<input id="how_often_' + table_index + '_0" class="how_often" name="how_often_' + table_index + '" type="radio" index="0"><label for="how_often_' + table_index + '_0">Uncheck the day of the week after the PQ(s) run</label><br>';
+            html += '<input id="how_often_' + table_index + '_1" class="how_often" name="how_often_' + table_index + '" type="radio" index="1"><label for="how_often_' + table_index + '_1">Run the PQ(s) every week on the days checked</label><br>';
+            html += '<input id="how_often_' + table_index + '_2" class="how_often" name="how_often_' + table_index + '" type="radio" index="2"><label for="how_often_' + table_index + '_2">Run the PQ(s) once then delete it</label></p>';
+            html += '<p>Output to email: <select class="output_email">';
+            html += '<option value="1">Primary</option>';
+            html += '<option value="2">Secondary</option></select><br>';
+            html += '<span>The secondary email will only work if you have two or more email addresses in your profile.</span></p>';
+            html += '<h5>Instruction:</h5>';
+            html += '<p>If you click the "Create PQ(s)" button, the GC little helper II will open as many pop-ups as PQs should be created. The number of simultaneously loaded pop-ups is limited to 5. All PQs will get the name that you entered in the field above and an ongoing digit prefix. The pop-ups close by themselves after the associated PQ has been created. We will display a message if all PQs are created. Please wait until all pop-ups are loaded. </p>';
+            html += '<p>Please make sure you do not have a pop-up blocker enabled. Otherwise this feature will not work as expected.</p>';
+            html += '</td></tr></tfoot>';
+            $(side).append(html);
+            $(side).find('.pq_name')[0].addEventListener("change", function() {
+                if ($(this)[0].value != '') setValue('settings_pq_splitter_pqname', $(this)[0].value);
+            });
+            $(side).find('.button_create_pq')[0].addEventListener("click", prepareCreatePQ, false);
+            $(side).find('#how_often_' + table_index + '_' + settings_pq_splitter_how_often).attr('checked', true);
+            $(side).find('.how_often').each(function() {
+                $(this)[0].addEventListener("click", function() {
+                    setValue('settings_pq_splitter_how_often', $(this).attr('index'));
+                });
+            });
+            $(side).find('.output_email')[0].value = settings_pq_splitter_email;
+            $(side).find('.output_email')[0].addEventListener("change", function() {
+                setValue('settings_pq_splitter_email', $(this)[0].value);
+            });
+        }
+    }
+
+// Build css.
+    function buildCss() {
+        var css = '';
+        css += 'tfoot {background-color: #d4edda;}';
+        css += 'tfoot h4 > span {font-size: 14px; font-weight: normal; float: right; margin-top: 2px;}';
+        css += 'tfoot h5 {margin-top: 18px;}';
+        css += 'tfoot label {padding-left: 4px; margin-bottom: 0px; font-weight: normal;}';
+        css += 'tfoot h4, tfoot h5, tfoot p {margin-left: 9px; margin-right: 9px;}';
+        css += '.working {opacity: 0.6;}';
+        css += '.gclh_counter.gclh_running {display: block;}';
+        css += '.gclh_counter {display: none; cursor: default;}';
+        appendCssStyle(css);
+    }
+
+// Prepare create PQ(s).
+    function prepareCreatePQ() {
+        var urls_for_pqs_to_create = [];
+        var current_table = $(this).closest('table');
+        // Determine number of PQs and number of digits for the ongoing digit prefix.
+        var nPQs = 0;
+        $(current_table).find('tr').each(function() {
+            if ($(this).context.rowIndex > 0 && $(this).children().eq(1).text() != "") {
+                nPQs++;
+            }
+        });
+        var nDigits = parseInt((nPQs + '').length);
+        // Build urls.
+        $(current_table).find('tr').each(function() {
+            if ($(this).context.rowIndex > 0 && $(this).children().eq(1).text() != "") {
+                var [start_month, start_day, start_year] = getDateParts($(this).children().eq(1).text());
+                var [end_month, end_day, end_year] = getDateParts($(this).children().eq(2).text());
+                var cache_count = parseInt($(current_table).find('.pq_name').attr('cache_count'));
+                var fup = $(this).context.rowIndex.toString(10);
+                var pq_name = $(current_table).find('.pq_name').val() + $(this).context.rowIndex.toString(10).padStart(nDigits, '0');
+                var how_often = $(current_table).find('.how_often:checked').attr('index');
+                var email = $(current_table).find('.output_email').val();
+                var param = {PQSplit: 1, n: pq_name, c: cache_count, ho: how_often, e: email, sm: start_month, sd: start_day, sy: start_year, em: end_month, ed: end_day, ey: end_year};
+                var sel = getSelection();
+                var new_url = "https://www.geocaching.com/pocket/gcquery.aspx?" + $.param(param) + '&' + $.param(sel);
+                urls_for_pqs_to_create.push(new_url);
+            }
+        });
+        // Process error or rather create PQs.
+        if (checkEndErrorAvailable(urls_for_pqs_to_create)) {
+            setRunSettings(false);
+            return false;
+        } else {
+            setRunSettings(true);
+            $(current_table).find('.gclh_counter_total')[0].innerHTML = urls_for_pqs_to_create.length;
+            $(current_table).find('.gclh_counter').addClass('gclh_running');
+            create_pqs(urls_for_pqs_to_create, true);
+        }
+    }
+
+// Check whether select errors are available.
+    function checkSelectErrorAvailable() {
+        // There are restrictions for difficulty and terrain. Not all combinations can be specified on the PQ page.
+        function checkDT(name) {
+            var error = '';
+            var n = 0;
+            var first = false;
+            var last = false;
+            var next = '';
+            var all = '';
+            $('#' + name + 'select option[selected=""]').each(function() {
+                var content = $(this).val();
+                if (!first || content < first) first = content;
+                if (!last || content > last) last = content;
+                if (next == '' || next == parseInt(content.replace(/(\.|,)/, ''))) {
+                    next = parseInt(content.replace(/(\.|,)/, '')) + 5;
+                } else if (!next) {
+                } else {
+                    next = false;
+                }
+                all += (n == 0 ? '' : '/') + content;
+                n++;
+            });
+            if (n <= 1 || (n > 1 && first == '1.0' && next) || (n > 1 && last == '5.0' && next)) {
+            } else {
+                error = "Your " + name + " specifications " + all + " can not be specified on the PQ page.<br>";
+            }
+            return error;
+        }
+        return checkDT('difficulty') + checkDT('terrain');
+    }
+
+// Get selection parameter.
+    function getSelection() {
+        var sel = new Object();
+        $('#filtertoggle2div > div:not(.row) select, #filtertoggle2div > div:not(.row) input').each(function() {
+            if ($(this).val() != null && $(this).val() != '') {
+                var name = $(this).attr('name').replace(/(\[|\])/g, '');
+                if ($(this).attr('multiple')) {
+                    for (var i = 0; i < $(this).val().length; i++) {
+                        sel[name+"["+i+"]"] = $(this).val()[i];
+                    }
+                } else if ($(this)[0].id.match(/hidden_to(yyyy|mm|dd)/)) {
+                    sel[name] = $(this).val();
+                } else if ($(this)[0].type == 'checkbox' && $(this)[0].checked) {
+                    sel[name] = $(this).val();
+                } else if ($(this)[0].type == 'text' && $(this).val() != '') {
+                    sel[name] = $(this).val();
+                }
+            }
+        });
+        return sel;
+    }
+
+// Create PQ(s).
+    function create_pqs(urls_for_pqs_to_create, first_run) {
+        // Cleanup last run, if there is one.
+        if (first_run) {
+            if (typeof global_open_popups !== 'undefined' && global_open_popups != null && Array.isArray(global_open_popups)) {
+                for (var i = 0; i < global_open_popups.length; i++) {
+                    if (typeof global_open_popups[i] !== 'undefined' && global_open_popups[i] != null && global_open_popups[i] !== false) {
+                        global_open_popups[i].close();
+                    }
+                }
+            }
+            global_open_popups = new Array(urls_for_pqs_to_create.length);
+            global_open_popup_count = 0;
+            $('.gclh_running .gclh_counter_total').innerHTML = urls_for_pqs_to_create.length;
+        }
+        // Handle pop-ups.
+        var already_done_count = 0;
+        for (var i = 0; i < urls_for_pqs_to_create.length; i++) {
+            if (urls_for_pqs_to_create[i] != '') {
+                if (global_open_popup_count < 5) {
+                    global_open_popups[i] = window.open(urls_for_pqs_to_create[i], 'PQ_' + i, 'scrollbars=1, menubar=0, resizable=1, width=400, height=250, top=0, left=10000');
+                    $('.gclh_running .gclh_counter_started').innerHTML = $('.gclh_running .gclh_counter_started').innerHTML + 1;
+                    // A pop-up could not be opened in browser, probably because of a pop-up blocker, so we'll stop here and inform the user.
+                    if (global_open_popups[i] == null) {
+                        setRunSettings(false);
+                        alert("A pop-up blocker was detected. Please allow pop-ups for this site, reload the page and try again. Please be aware, that the first two PQs should already be created. So please go to geocaching.com and delete them.");
+                        return false;
+                    }
+                    global_open_popup_count++;
+                    urls_for_pqs_to_create[i] = '';
+                    $('.gclh_running .gclh_counter_started')[0].innerHTML = parseInt($('.gclh_running .gclh_counter_started')[0].innerHTML) + 1;
+                }
+            } else {
+                already_done_count++;
+            }
+            if (typeof global_open_popups[i] !== 'undefined' && global_open_popups[i] !== false && global_open_popups[i].closed) {
+                global_open_popup_count--;
+                global_open_popups[i] = false;
+                $('.gclh_running .gclh_counter_completed')[0].innerHTML = parseInt($('.gclh_running .gclh_counter_completed')[0].innerHTML) + 1;
+            }
+        }
+        // Restart creating of PQs until everything is finished.
+        if (already_done_count < urls_for_pqs_to_create.length || global_open_popup_count > 0) {
+            setTimeout(function(){create_pqs(urls_for_pqs_to_create, false);}, 250);
+        } else {
+            setRunSettings(false);
+            alert("The GC little helper II is done creating your " + already_done_count + " PQ(s).");
+        }
+    }
+
+// Set or stop the running environment.
+    function setRunSettings(set) {
+        if (set) {
+            $('.gclh_running').removeClass('gclh_running');
+            $('.gclh_counter span').each(function(){this.innerHTML = 0;});
+            $('.button_create_pq').prop("disabled", true);
+            $('.button_create_pq').addClass('working');
+        } else {
+            $('.button_create_pq').prop("disabled", false);
+            $('.button_create_pq').removeClass('working');
+        }
+    }
+
+// Check whether errors during the identification of the language related month names or the length of the URLs are available.
+    function checkEndErrorAvailable(urls) {
+        var err = '';
+        if (global_error) {
+            err += "One or more of the determined, month name and language related, start and end dates are failed. Please select another language, such as English or German, at the top right of the page and try again.\n";
+        }
+        for (var i = 0; i < urls.length; i++) {
+            if (urls[i].length > 2000) {
+                err += "One or more of the determined URLs to calling geocaching.com and creating PQ(s) are too long. You are using too many filters. Please reduce the filters and try again.\n";
+                break;
+            }
+        }
+        if (err != '') {
+            alert(err);
+            return true;
+        } else return false;
+    }
+
+// Get user language of the page.
+    function getLanguage() {
+        if ($('ul.navbar-right .drowdown-toggle img[src*="country_flags"]')[0]) {
+            var match = $('ul.navbar-right .drowdown-toggle img[src*="country_flags"]')[0].src.match(/country_flags(2\/png|_manual)\/(.*)\./);
+            if (match && match[1] && match[2]) {
+                lang = match[2].replace(/catalonia/, 'es').toUpperCase();
+                if ($('#menu_locales a[href*="_' + lang + '"]')[0]) {
+                    var match = $('#menu_locales a[href*="_' + lang + '"]')[0].href.match(/#(.{2})/);
+                    if (match && match[1]) {
+                        return match[1];
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+// Break down the date string and return its components.
+    function getDateParts(str) {
+        if (str.indexOf("/") == -1) return ['', '', ''];
+        var arr = str.split('/');
+        var m = convertMonthNameToNumber(lang, arr[0]);
+        var d = parseInt(arr[1]);
+        var y = parseInt(arr[2]);
+        return [m, d, y];
+    }
+
+// Convert the name of a month with a given language to the month number.
+    function convertMonthNameToNumber(lang, name) {
+        var name_l = name.toLowerCase();
+        for (var nr = 1; nr <= 12; nr++) {
+            var [month, month_l] = convertMonthNumberToName(lang, nr);
+            if (name == month || name_l == month_l) return nr;
+        }
+        global_error = true;
+        return false;
+    }
+
+// Convert the number of a month to the month name with a given language.
+    function convertMonthNumberToName(lang, nr) {
+        if (new Intl.DateTimeFormat(lang, {month:'long'}).format(new Date(nr + '/1/2000'))) {
+            var month = new Intl.DateTimeFormat(lang, {month:'long'}).format(new Date(nr + '/1/2000'));
+        } else {
+            var month = false;
+        }
+        var month_l = month.toLowerCase();
+        return [month, month_l];
+    }
+};  // End of mainPGC.
 
 ///////////////////////////
 // 4. Openstreetmap ($$cap)
@@ -4644,94 +4602,172 @@ var mainGC = function() {
     if (document.location.href.match(/\.com\/pocket\/gcquery\.aspx/)) {
         try{
             function findGetParameter(parameterName) {
-                var result = null,
-                    tmp = [];
-                var items = location.search.substr(1).split("&");
+                var result = null;
+                var tmp = [];
+                var items = decodeURIComponent(location.search.substr(1)).split("&");
                 for (var index = 0; index < items.length; index++) {
                     tmp = items[index].split("=");
                     if (tmp[0] === parameterName) result = decodeURIComponent(tmp[1]);
                 }
                 return result;
             }
+            // Do we come from PQ Splitter.
             if (findGetParameter('PQSplit')) {
-                // Yes we come from PQSplitter.
-                // Test if we already saved the PQ. If yes => close the window.
+                // Test if we already saved the PQ. If yes, close the window.
                 if ($( "#divContentMain p.Success" ).length) {
                     setTimeout(function() {window.close();},10);
                     return true;
                 }
+                // Query Name.
                 $('#ctl00_ContentBody_tbName').val(findGetParameter('n'));
-                $('#ctl00_ContentBody_tbResults').val(findGetParameter('c'));
                 // How often should the query run.
-                if      (findGetParameter('ho') == "1") $("#ctl00_ContentBody_rbRunOption_0").prop("checked", true);
-                else if (findGetParameter('ho') == "2") $("#ctl00_ContentBody_rbRunOption_1").prop("checked", true);
-                else if (findGetParameter('ho') == "3") $("#ctl00_ContentBody_rbRunOption_2").prop("checked", true);
-                // Select the output Email Address.
-                if (findGetParameter('e') == 2) {
-                    // Look if we have secondary email.
-                    if ($('#ctl00_ContentBody_ddlAltEmails')) {
-                        $('#ctl00_ContentBody_ddlAltEmails option:eq(1)').attr('selected', 'selected');
+                $('#ctl00_ContentBody_rbRunOption_' + findGetParameter('ho')).prop("checked", true);
+                // Caches Total, caches count.
+                $('#ctl00_ContentBody_tbResults').val(findGetParameter('c'));
+                // Cache types.
+                var n = 0;
+                while (findGetParameter('type[' + n + ']')) {
+                    var type = findGetParameter('type[' + n + ']').replace(/\+/g, ' ');
+                    $('#ctl00_ContentBody_rbTypeSelect').attr('checked', true);
+                    if (type.match(/traditional/i)) $('#ctl00_ContentBody_cbTaxonomy_0').attr('checked', true);
+                    else if (type.match(/multi/i)) $('#ctl00_ContentBody_cbTaxonomy_1').attr('checked', true);
+                    else if (type.match(/virtual/i)) $('#ctl00_ContentBody_cbTaxonomy_2').attr('checked', true);
+                    else if (type.match(/letterbox/i)) $('#ctl00_ContentBody_cbTaxonomy_3').attr('checked', true);
+                    else if (type.match(/(event|party|celebration)/i)) $('#ctl00_ContentBody_cbTaxonomy_4').attr('checked', true);
+                    else if (type.match(/(unknown|mystery|hq)/i)) $('#ctl00_ContentBody_cbTaxonomy_5').attr('checked', true);
+                    else if (type.match(/ape/i)) $('#ctl00_ContentBody_cbTaxonomy_6').attr('checked', true);
+                    else if (type.match(/webcam/i)) $('#ctl00_ContentBody_cbTaxonomy_7').attr('checked', true);
+                    else if (type.match(/earth/i)) $('#ctl00_ContentBody_cbTaxonomy_8').attr('checked', true);
+                    else if (type.match(/exhibit/i)) $('#ctl00_ContentBody_cbTaxonomy_9').attr('checked', true);
+                    else if (type.match(/wherigo/i)) $('#ctl00_ContentBody_cbTaxonomy_10').attr('checked', true);
+                    else alert('No corresponding cache type found for "' + type + '"');
+                    n++;
+                }
+                // Cache size.
+                var n = 0;
+                while (findGetParameter('size[' + n + ']')) {
+                    var size = findGetParameter('size[' + n + ']').replace(/\+/g, ' ');
+                    $('#ctl00_ContentBody_rbContainerSelect').attr('checked', true);
+                    if (size.match(/small/i)) $('#ctl00_ContentBody_cbContainers_0').attr('checked', true);
+                    else if (size.match(/large/i)) $('#ctl00_ContentBody_cbContainers_3').attr('checked', true);
+                    else if (size.match(/micro/i)) $('#ctl00_ContentBody_cbContainers_5').attr('checked', true);
+                    else if (size.match(/other/i)) $('#ctl00_ContentBody_cbContainers_1').attr('checked', true);
+                    else if (size.match(/regular/i)) $('#ctl00_ContentBody_cbContainers_4').attr('checked', true);
+                    else if (size.match(/not/i)) $('#ctl00_ContentBody_cbContainers_6').attr('checked', true);
+                    else if (size.match(/virtual/i)) $('#ctl00_ContentBody_cbContainers_2').attr('checked', true);
+                    else alert('No corresponding container found for "' + size + '"');
+                    n++;
+                }
+                // Hide found.
+                if (findGetParameter('hidefound')) $('#ctl00_ContentBody_cbOptions_0').attr('checked', true);
+                // Hide not found.
+                if (findGetParameter('hidenotfound')) $('#ctl00_ContentBody_cbOptions_1').attr('checked', true);
+                // Hide owned.
+                if (findGetParameter('hideowned')) $('#ctl00_ContentBody_cbOptions_2').attr('checked', true);
+                // Hide premium.
+                if (findGetParameter('hidepremium')) $('#ctl00_ContentBody_cbOptions_4').attr('checked', true);
+                // Difficulty and terrain. We assume that feasible combinations will be delivered.
+                function setDtFromPQSplit(dt) {
+                    var n = 0;
+                    var first = false;
+                    var last = false;
+                    while (findGetParameter(dt.toLowerCase() + '[' + n + ']')) {
+                        var content = findGetParameter(dt.toLowerCase() + '[' + n + ']');
+                        if (!first || content < first) first = content;
+                        if (!last || content > last) last = content;
+                        n++;
+                        $('#ctl00_ContentBody_cb' + dt).attr('checked', true);
+                    }
+                    if (n == 0) {
+                    } else if (n == 1) {
+                        $('#ctl00_ContentBody_dd' + dt + ' option[value="="]').attr('selected', true);
+                        $('#ctl00_ContentBody_dd' + dt + 'Score option[value="' + first.replace('.0','') + '"]').attr('selected', true);
+                    } else if (n > 1 && first == '1.0') {
+                        $('#ctl00_ContentBody_dd' + dt + ' option[value="<="]').attr('selected', true);
+                        $('#ctl00_ContentBody_dd' + dt + 'Score option[value="' + last.replace('.0','') + '"]').attr('selected', true);
+                    } else if (n > 1 && last == '5.0') {
+                        $('#ctl00_ContentBody_dd' + dt + ' option[value=">="]').attr('selected', true);
+                        $('#ctl00_ContentBody_dd' + dt + 'Score option[value="' + first.replace('.0','') + '"]').attr('selected', true);
                     }
                 }
-                var type = findGetParameter('t');
-                var cr_name = findGetParameter('s');
-                if (type == "region") {
-                    // Modifiction for Countries with "," in the name. There is a "+" after the ",".
-                    cr_name = cr_name.split(/,(?!\+)/);
-                    if (cr_name.length >= 1) {
-                        for (var i = 0; i < cr_name.length; i++) {
-                            cr_name[i] = cr_name[i].replace(/\+/g, " ");
-                            var region = cr_name[i].substr(cr_name[i].indexOf('|')+1);
-                            var state = $.grep(states_id, function(e){return e.n == region;});
-                            if (state.length == 0) {
-                                alert('No corresponding Region Name not found for Region: ' + region);
-                                throw Error('No corresponding Region Name not found for Region: ' + region);
-                            }
-                            $('#ctl00_ContentBody_rbStates').attr('checked', true);
-                            $('#ctl00_ContentBody_lbStates option[value=' + state[0].id + ']').attr('selected', true);
-                        }
-                    } else {
-                        alert('No Region Name found.');
-                        throw Error('No Region Name found.');
-                    }
-                } else if (type == "country") {
-                    // Modifiction for Countries with "," in the name. There is a "+" after the ",".
-                    cr_name = cr_name.split(/,(?!\+)/);
-                    if (cr_name.length >= 1) {
-                        for (var i = 0; i < cr_name.length; i++) {
-                            cr_name[i] = cr_name[i].replace(/\+/g, " ");
-                            var country = $.grep(country_id, function(e){return e.n == cr_name[i];});
-                            if (country.length == 0) {
-                                alert('No corresponding Country Name found for Country: ' + cr_name[i]);
-                                throw Error('No corresponding Country Name found for Country: ' + cr_name[i]);
-                            }
-                            $('#ctl00_ContentBody_rbCountries').attr('checked', true);
-                            $('#ctl00_ContentBody_lbCountries option[value=' + country[0].id + ']').attr('selected', true);
-                        }
-                    } else {
-                        alert('No Country Name found.');
-                        throw Error('No Country Name found.');
-                    }
-                } else {
-                    alert('Unknown Type for area. Please contact an admin of GC little helper II.');
-                    throw new Error('unknown Type: ' + type);
+                // Difficulty.
+                setDtFromPQSplit('Difficulty');
+                // Terrain.
+                setDtFromPQSplit('Terrain');
+                // Countries.
+                var n = 0;
+                while (findGetParameter('multi_country[' + n + ']')) {
+                    var country = findGetParameter('multi_country[' + n + ']').replace(/\+/g, ' ');
+                    var countryId = $.grep(country_id, function(e){return e.n == country;});
+                    if (countryId.length > 0) {
+                        $('#ctl00_ContentBody_rbCountries').attr('checked', true);
+                        $('#ctl00_ContentBody_lbCountries option[value=' + countryId[0].id + ']').attr('selected', true);
+                    } else alert('No corresponding country name found for "' + country + '"');
+                    n++;
                 }
+                // States.
+                var n = 0;
+                while (findGetParameter('multi_countryregion[' + n + ']')) {
+                    var state = findGetParameter('multi_countryregion[' + n + ']').replace(/^.*\|/, '').replace(/\+/g, ' ');
+                    var statesId = $.grep(states_id, function(e){return e.n == state;});
+                    if (statesId.length > 0) {
+                        $('#ctl00_ContentBody_rbStates').attr('checked', true);
+                        $('#ctl00_ContentBody_lbStates option[value=' + statesId[0].id + ']').attr('selected', true);
+                    } else alert('No corresponding state / province name found for "' + state + '"');
+                    n++;
+                }
+                // By Coordinates.
+                if (findGetParameter('location')) {
+                    var deg = findGetParameter('location').replace(/\+/g, ' ');
+                    if (deg) {
+                        var match = deg.match(/(N|S)\s?(\d{1,3})°?\s(\d{1,2}\.\d{0,3})\s(E|W)\s?(\d{1,3})°?\s(\d{1,2}\.\d{0,3})/);
+                        if (match && match.length == 7) {
+                            $('#ctl00_ContentBody_rbOriginWpt').attr('checked', true);
+                            if (match[1] == 'N') $('#ctl00_ContentBody_LatLong\\:_selectNorthSouth option[value="1"]').attr('selected', true);
+                            else $('#ctl00_ContentBody_LatLong\\:_selectNorthSouth option[value="-1"]').attr('selected', true);
+                            $('#ctl00_ContentBody_LatLong__inputLatDegs').val(match[2]);
+                            $('#ctl00_ContentBody_LatLong__inputLatMins').val(match[3]);
+                            if (match[4] == 'E') $('#ctl00_ContentBody_LatLong\\:_selectEastWest option[value="1"]').attr('selected', true);
+                            else $('#ctl00_ContentBody_LatLong\\:_selectEastWest option[value="-1"]').attr('selected', true);
+                            $('#ctl00_ContentBody_LatLong__inputLongDegs').val(match[5]);
+                            $('#ctl00_ContentBody_LatLong__inputLongMins').val(match[6]);
+                        } else alert('Coordinates could not be interpreted "' + deg + '"');
+                    }
+                }
+                // Within a Radius of km.
+                if (findGetParameter('max_distance')) {
+                    $('#ctl00_ContentBody_tbRadius').val(findGetParameter('max_distance'));
+                    $('#ctl00_ContentBody_rbUnitType_1').attr('checked', true);
+                }
+                // Placed During.
                 $('#ctl00_ContentBody_rbPlacedBetween').attr('checked', true);
                 $('#ctl00_ContentBody_DateTimeBegin_Month option[value=' + findGetParameter('sm') + ']').attr('selected', true);
                 $('#ctl00_ContentBody_DateTimeBegin_Day option[value=' + findGetParameter('sd') + ']').attr('selected', true);
                 $('#ctl00_ContentBody_DateTimeBegin_Year option[value=' + findGetParameter('sy') + ']').attr('selected', true);
-                if ((findGetParameter('em') != '') && (findGetParameter('ed') != '') && (findGetParameter('ey') != '')) {
-                    var month = findGetParameter('em');
+                if ((findGetParameter('ed') != '') && (findGetParameter('em') != '') && (findGetParameter('ey') != '')) {
                     var day = findGetParameter('ed');
+                    var month = findGetParameter('em');
                     var year = findGetParameter('ey');
                 } else {
-                    var month = 12;
-                    var day = 31;
-                    var year = (new Date()).getFullYear()+1;
+                    if ((findGetParameter('hidden_todd') != '') && (findGetParameter('hidden_tomm') != '') && (findGetParameter('hidden_toyyyy') != '')) {
+                        var day = findGetParameter('hidden_todd');
+                        var month = findGetParameter('hidden_tomm');
+                        var year = findGetParameter('hidden_toyyyy');
+                    } else {
+                        var day = 31;
+                        var month = 12;
+                        var year = (new Date()).getFullYear()+1;
+                    }
                 }
                 $('#ctl00_ContentBody_DateTimeEnd_Month option[value=' + month + ']').attr('selected', true);
                 $('#ctl00_ContentBody_DateTimeEnd_Day option[value=' + day + ']').attr('selected', true);
                 $('#ctl00_ContentBody_DateTimeEnd_Year option[value=' + year + ']').attr('selected', true);
+                // Select the secondary output Email Address.
+                if (findGetParameter('e') == 2) {
+                    if ($('#ctl00_ContentBody_ddlAltEmails option:eq(1)')[0]) {
+                        $('#ctl00_ContentBody_ddlAltEmails option:eq(1)').attr('selected', 'selected');
+                    }
+                }
                 // All values are set, submit the form.
                 document.getElementById('ctl00_ContentBody_btnSubmit').click();
             }
@@ -10967,7 +11003,7 @@ var mainGC = function() {
     }
 
 // Improve own statistic map page with links to caches for every country.
-    if (settings_map_links_statistic && isOwnStatisticsPage() ) {
+    if (settings_map_links_statistic) {
         try {
             var countriesList = $('#stats_tabs-maps .StatisticsWrapper');
             for (var j = 0; j < countriesList.length; j++) {
@@ -11673,8 +11709,8 @@ var mainGC = function() {
             if (checkTaskAllowed('Sync', false) == true) gclh_showSync();
             else document.location.href = defaultSyncLink;
         }
-        if (settings_call_config_via_sriptmanager) GM_registerMenuCommand('Configurator', configFromMenuCommand);
-        if (settings_call_sync_via_sriptmanager) GM_registerMenuCommand('Synchronizer', syncFromMenuCommand);
+        if (settings_call_config_via_sriptmanager) GM_registerMenuCommand('configure', configFromMenuCommand);
+        if (settings_call_sync_via_sriptmanager) GM_registerMenuCommand('synchronize', syncFromMenuCommand);
     } catch(e) {} // Ignore error.
 
 // Eingaben im Search Field verarbeiten.
@@ -15064,6 +15100,9 @@ var mainGC = function() {
             setEvForDepPara("settings_map_overview_search_map_icon", "settings_map_overview_search_map_icon_new_tab");
             setEvForDepPara("settings_map_show_btn_hide_header","settings_hide_map_header");
             setEvForDepPara("settings_searchmap_show_btn_save_as_pq","settings_save_as_pq_set_all");
+            setEvForDepPara("settings_show_enhanced_map_popup","settings_show_latest_logs_symbols_count_map");
+            setEvForDepPara("settings_show_enhanced_map_popup","settings_show_country_in_place");
+            setEvForDepPara("settings_show_enhanced_map_popup","settings_show_enhanced_map_coords");
 
             // Abhängigkeiten der Linklist Parameter.
             for (var i = 0; i < 100; i++) {
@@ -16834,60 +16873,6 @@ var mainGC = function() {
         return sort;
     }
 
-// Decode URI component for non-standard unicode encoding (issue-818).
-    function decodeUnicodeURIComponent(s) {
-        function unicodeToChar(text) {
-            return text.replace(/%u[\dA-F]{4}/gi,
-                function (match) {
-                    return String.fromCharCode(parseInt(match.replace(/%u/g, ''), 16));
-                });
-        }
-        return decodeURIComponent(unicodeToChar(s));
-    }
-// Encode in URL.
-    function urlencode(s, convertPlus) {
-        s = s.replace(/&amp;/g, "&");
-        s = s.replace(/&lt;/g, "%3C");
-        s = s.replace(/&gt;/g, "%3E");
-        s = encodeURIComponent(s);  // Alles außer: A bis Z, a bis z und - _ . ! ~ * ' ( )
-        s = s.replace(/~/g, "%7e");
-        s = s.replace(/'/g, "%27");
-        s = s.replace(/%26amp%3b/g, "%26");
-        s = s.replace(/%26nbsp%3B/g, "%20");
-        if (convertPlus != false) {
-            s = s.replace(/%2B/ig, "%252b");
-        }
-        s = s.replace(/ /g, "+");
-        return s;
-    }
-// Decode from URL.
-    function urldecode(s, convertSpace=false) {
-        s = s.replace(/\+/g, " ");
-        s = s.replace(/%252b/ig, "+");
-        s = s.replace(/%7e/g, "~");
-        s = s.replace(/%27/g, "'");
-        s = s.replace(/%253C/ig, "<");
-        s = s.replace(/%253E/ig, ">");
-        s = decodeUnicodeURIComponent(s);
-        if (convertSpace) {
-            s = s.replace(/%20/g, " ");
-        }
-        return s;
-    }
-// Decode HTML, e.g.: "&amp;" in "&" (e.g.: User "Rajko & Dominik").
-    function decode_innerHTML(v_mit_innerHTML) {
-        var elem = document.createElement('textarea');
-        elem.innerHTML = v_mit_innerHTML.innerHTML;
-        v_decode = elem.value;
-        v_new = v_decode.trim();
-        return v_new;
-    }
-    function html_to_str(s) {
-        s = s.replace(/\&amp;/g, "&");
-        s = s.replace(/\&nbsp;/g, " ");
-        return s;
-    }
-
 // Trim.
     function trim(s) {
         var whitespace = ' \n ';
@@ -17214,7 +17199,7 @@ function toDec(coords) {
         dec2 = Math.round(dec2 * 10000000) / 10000000;
         return new Array(dec1, dec2);
     } else {
-        match = coords.match(/(N|S) ([0-9]+)°? ([0-9]+)\.([0-9]+)′?'? (E|W) ([0-9]+)°? ([0-9]+)\.([0-9]+)/);
+        match = coords.match(/(N|S)\s?([0-9]+)°?\s?([0-9]+)\.([0-9]+)′?'?\s?(E|W)\s?([0-9]+)°?\s?([0-9]+)\.([0-9]+)/);
         if (match) {
             var dec1 = parseInt(match[2], 10) + (parseFloat(match[3] + "." + match[4]) / 60);
             if (match[1] == "S") dec1 = dec1 * -1;
@@ -17314,6 +17299,59 @@ function otherFormats(box, coords, trenn) {
     box.innerHTML += trenn+"Dec: "+lat+" "+lng;
     var dms = DegtoDMS(coords);
     box.innerHTML += trenn+"DMS: "+dms;
+}
+
+// Decode URI component for non-standard unicode encoding (issue-818).
+function decodeUnicodeURIComponent(s) {
+    function unicodeToChar(text) {
+        return text.replace(/%u[\dA-F]{4}/gi, function (match) {
+            return String.fromCharCode(parseInt(match.replace(/%u/g, ''), 16));
+        });
+    }
+    return decodeURIComponent(unicodeToChar(s));
+}
+// Encode in URL.
+function urlencode(s, convertPlus) {
+    s = s.replace(/&amp;/g, "&");
+    s = s.replace(/&lt;/g, "%3C");
+    s = s.replace(/&gt;/g, "%3E");
+    s = encodeURIComponent(s);  // Alles außer: A bis Z, a bis z und - _ . ! ~ * ' ( )
+    s = s.replace(/~/g, "%7e");
+    s = s.replace(/'/g, "%27");
+    s = s.replace(/%26amp%3b/g, "%26");
+    s = s.replace(/%26nbsp%3B/g, "%20");
+    if (convertPlus != false) {
+        s = s.replace(/%2B/ig, "%252b");
+    }
+    s = s.replace(/ /g, "+");
+    return s;
+}
+// Decode from URL.
+function urldecode(s, convertSpace=false) {
+    s = s.replace(/\+/g, " ");
+    s = s.replace(/%252b/ig, "+");
+    s = s.replace(/%7e/g, "~");
+    s = s.replace(/%27/g, "'");
+    s = s.replace(/%253C/ig, "<");
+    s = s.replace(/%253E/ig, ">");
+    s = decodeUnicodeURIComponent(s);
+    if (convertSpace) {
+        s = s.replace(/%20/g, " ");
+    }
+    return s;
+}
+// Decode HTML, e.g.: "&amp;" in "&" (e.g.: User "Rajko & Dominik").
+function decode_innerHTML(v_mit_innerHTML) {
+    var elem = document.createElement('textarea');
+    elem.innerHTML = v_mit_innerHTML.innerHTML;
+    v_decode = elem.value;
+    v_new = v_decode.trim();
+    return v_new;
+}
+function html_to_str(s) {
+    s = s.replace(/\&amp;/g, "&");
+    s = s.replace(/\&nbsp;/g, " ");
+    return s;
 }
 
 // Create bookmark to GC page.
