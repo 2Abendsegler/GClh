@@ -1,3 +1,4 @@
+<a href="#v01110" title="GClh II version 0.11.10 (25.01.2022)">v0.11.10</a> &nbsp;
 <a href="#v0119" title="GClh II version 0.11.9 (23.12.2021)">v0.11.9</a> &nbsp;
 <a href="#v01181" title="GClh II version 0.11.8.1 (22.11.2021)">v0.11.8.1</a> &nbsp;
 <a href="#v0118" title="GClh II version 0.11.8 (20.11.2021)">v0.11.8</a> &nbsp;
@@ -32,6 +33,47 @@
 <a href="#v010" title="GClh II version 0.10 (13.12.2019)">v0.10</a> &nbsp;
 <a href="changelog_before.md" title="Go to earlier changelog">Earlier changelog</a> &nbsp;
 
+
+---
+## v0.11.10:
+<ul>
+	<li>
+		<strong>Info:</strong> [Browse Map] The map overlay "<i>Hillshadow</i>" and the map layers "<i>OpenStreetMap Hike and Bike</i>" und "<i>OpenStreetMap Black and White</i>" don't work correctly. [<a href="https://github.com/2Abendsegler/GClh/issues/2016" title="Issue 2016">2016</a>]<br><br>
+		The service based on OpenStreetMap is currently no longer available correctly and could also be switched off completely in the future. There is nothing we can do here, except wait for the service to be restored. Please disable the map overlay "<i>Hillshadow</i>" and uses other map layers. Maybe the map layer "<i>CyclOSM: OSM-based bicycle map</i>" could be used as a replacement for "<i>OpenStreetMap Hike and Bike</i>".<br>
+		<img src="../images/0.11.10/Screen04.jpg" alt="Screen04.jpg"><br><br><br>
+	</li>
+	<li>
+		<strong>New:</strong> [PQ splitter] Implement all filter for PQ splitter, show progress of created PQs, work with suggested values, work with all languages. [<a href="https://github.com/2Abendsegler/GClh/issues/843" title="Issue 843">843</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br><br>
+		The feature now includes all filters currently provided by Project-GC.<br>
+		<img src="../images/0.11.10/Screen02.jpg" alt="Screen02.jpg"><br><br>
+		The feature can now be started under all languages supported by Project-GC, even if the description of the feature is always in English.<br>
+		<img src="../images/0.11.10/Screen01.jpg" alt="Screen01.jpg"><br><br>
+		Here is an example process with Project-GC language English, with all caches in the Region "Sachsen-Anhalt" in Germany, with creating of 16 PQs and displaying the progress of creating PQs.<br>
+		<img src="../images/0.11.10/Screen03.gif" alt="Screen03.gif"><br><br><br>
+	</li>
+	<li>
+		<strong>New:</strong> [New Log form] Improve the description of parameter "settings_show_pseudo_as_owner". [<a href="https://github.com/2Abendsegler/GClh/issues/1920" title="Issue 1920">1920</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br><br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Old Log form] Show additional cache info only in post mode. [<a href="https://github.com/2Abendsegler/GClh/issues/2002" title="Issue 2002">2002</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Public Profile] Change links to found/hide caches to the old link no longer works. [<a href="https://github.com/2Abendsegler/GClh/issues/2012" title="Issue 2012">2012</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Browse Map] Special character in title of cache name in popup of additional cache data are not displayed correctly. [<a href="https://github.com/2Abendsegler/GClh/issues/2006" title="Issue 2006">2006</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Search Map] Incorrect display of the search field. [<a href="https://github.com/2Abendsegler/GClh/issues/2008" title="Issue 2008">2008</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Search Map] Sometimes there is a line break between the cache type icon and the cache name in the cache details screen. [<a href="https://github.com/2Abendsegler/GClh/issues/1976" title="Issue 1976">1976</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+</ul>
+<br>
+(25.01.2022)<br>
+released by <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a><br>
+<br>
 
 ---
 ## v0.11.9:
