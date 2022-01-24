@@ -43,16 +43,32 @@
 Please disable the map overlay "Hillshadow" and uses other map layers. Maybe the map layer "CyclOSM: OSM-based bicycle map" could be used as a replacement for "OpenStreetMap Hike and Bike".<br>
 		<img src="../images/0.11.10/Screen04.jpg" alt="Screen04.jpg"><br><br>
 	</li>
-		<strong>New:</strong> [Log forms] Show number and percentage of favorites and number of watcher. [<a href="https://github.com/2Abendsegler/GClh/issues/1965" title="Issue 1965">1965</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
-		Old log form:<br>
-		<img src="../images/0.11.9/Screen08.jpg" alt="Screen08.jpg"><br><br>
-		New log form:<br>
-		<img src="../images/0.11.9/Screen09.jpg" alt="Screen09.jpg"><br><br>
-		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_show_add_cache_info_in_log_page" title="Link to your GClh II Config">Settings -> Logging:</a><br>
-		<img src="../images/0.11.9/Screen10.jpg" alt="Screen10.jpg"><br><br>
+	<li>
+		<strong>New:</strong> [PQ splitter] Implement all filter for PQ splitter, show progress of created PQs, work with suggested values, work with all languages. [<a href="https://github.com/2Abendsegler/GClh/issues/843" title="Issue 843">843</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		The feature now includes all filters currently provided by Project-GC.<br>
+		<img src="../images/0.11.10/Screen02.jpg" alt="Screen02.jpg"><br><br>
+		The feature can now be started under all languages supported by Project-GC, even if the description of the feature is always in English.<br>
+		<img src="../images/0.11.10/Screen01.jpg" alt="Screen01.jpg"><br><br>
+		Here is an example process with Project-GC language English, with all caches in the Region "Sachsen-Anhalt" in Germany, with creating of 16 PQs and displaying the progress of creating PQs.<br>
+		<img src="../images/0.11.10/Screen03.gif" alt="Screen03.gif"><br><br>
 	</li>
 	<li>
-		<strong>Fix:</strong> [Pocket Query] Some default values are not set if the PQ is created from map. [<a href="https://github.com/2Abendsegler/GClh/issues/1920" title="Issue 1920">1920</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		<strong>New:</strong> [New Log form] Improve the description of parameter "settings_show_pseudo_as_owner". [<a href="https://github.com/2Abendsegler/GClh/issues/1920" title="Issue 1920">1920</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Old Log form] Show additional cache info only in post mode. [<a href="https://github.com/2Abendsegler/GClh/issues/2002" title="Issue 2002">2002</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Public Profile] Change links to found/hide caches to the old link no longer works. [<a href="https://github.com/2Abendsegler/GClh/issues/2012" title="Issue 2012">2012</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Browse Map] Special character in title of cache name in popup of additional cache data are not displayed correctly. [<a href="https://github.com/2Abendsegler/GClh/issues/2006" title="Issue 2006">2006</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Search Map] Incorrect display of the search field. [<a href="https://github.com/2Abendsegler/GClh/issues/2008" title="Issue 2008">2008</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Search Map] Sometimes there is a line break between the cache type icon and the cache name in the cache details screen. [<a href="https://github.com/2Abendsegler/GClh/issues/1976" title="Issue 1976">1976</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 	</li>
 </ul>
 <br>
