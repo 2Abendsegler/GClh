@@ -38,13 +38,13 @@
 ## v0.11.10:
 <ul>
 	<li>
-		<strong>Info:</strong> [Browse Map] The map overlay "<i>Hillshadow</i>" and the map layers "<i>OpenStreetMap Hike and Bike</i>" und "<i>OpenStreetMap Black and White</i>" don't work correctly. [<a href="https://github.com/2Abendsegler/GClh/issues/2016" title="Issue 2016">2016</a>]<br>
+		<strong>Info:</strong> [Browse Map] The map overlay "<i>Hillshadow</i>" and the map layers "<i>OpenStreetMap Hike and Bike</i>" und "<i>OpenStreetMap Black and White</i>" don't work correctly. [<a href="https://github.com/2Abendsegler/GClh/issues/2016" title="Issue 2016">2016</a>]<br><br>
 		The service based on OpenStreetMap is currently no longer available correctly and could also be switched off completely in the future. There is nothing we can do here, except wait for the service to be restored.<br>
 Please disable the map overlay "<i>Hillshadow</i>" and uses other map layers. Maybe the map layer "<i>CyclOSM: OSM-based bicycle map</i>" could be used as a replacement for "<i>OpenStreetMap Hike and Bike</i>".<br>
 		<img src="../images/0.11.10/Screen04.jpg" alt="Screen04.jpg"><br><br>
 	</li>
 	<li>
-		<strong>New:</strong> [PQ splitter] Implement all filter for PQ splitter, show progress of created PQs, work with suggested values, work with all languages. [<a href="https://github.com/2Abendsegler/GClh/issues/843" title="Issue 843">843</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		<strong>New:</strong> [PQ splitter] Implement all filter for PQ splitter, show progress of created PQs, work with suggested values, work with all languages. [<a href="https://github.com/2Abendsegler/GClh/issues/843" title="Issue 843">843</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br><br>
 		The feature now includes all filters currently provided by Project-GC.<br>
 		<img src="../images/0.11.10/Screen02.jpg" alt="Screen02.jpg"><br><br>
 		The feature can now be started under all languages supported by Project-GC, even if the description of the feature is always in English.<br>
