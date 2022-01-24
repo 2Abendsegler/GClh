@@ -38,7 +38,7 @@
 ## v0.11.10:
 <ul>
 	<li>
-		<strong>Info:</strong> [Browse Map] The map overlay "_Hillshadow_" and the map layers "OpenStreetMap Hike and Bike" und "OpenStreetMap Black and White" don't work correctly. [<a href="https://github.com/2Abendsegler/GClh/issues/2016" title="Issue 2016">2016</a>]<br>
+		<strong>Info:</strong> [Browse Map] The map overlay "<i>Hillshadow</i>" and the map layers "OpenStreetMap Hike and Bike" und "OpenStreetMap Black and White" don't work correctly. [<a href="https://github.com/2Abendsegler/GClh/issues/2016" title="Issue 2016">2016</a>]<br>
 		The service based on OpenStreetMap is currently no longer available correctly and could also be switched off completely in the future. There is nothing we can do here, except wait for the service to be restored.<br>
 Please disable the map overlay "Hillshadow" and uses other map layers. Maybe the map layer "CyclOSM: OSM-based bicycle map" could be used as a replacement for "OpenStreetMap Hike and Bike".<br>
 		<img src="../images/0.11.10/Screen04.jpg" alt="Screen04.jpg"><br><br>
