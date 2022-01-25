@@ -683,6 +683,7 @@ var variablesInit = function(c) {
     c.settings_pq_splitter_pqname = getValue("settings_pq_splitter_pqname", 'PQ_Splitter_');
     c.settings_pq_splitter_how_often = getValue("settings_pq_splitter_how_often", 2);
     c.settings_pq_splitter_email = getValue("settings_pq_splitter_email", 1);
+    c.settings_show_create_pq_from_pq_splitter = getValue("settings_show_create_pq_from_pq_splitter", true);
 
     tlc('START userToken');
     try {
@@ -796,7 +797,7 @@ var mainGMaps = function() {
 var mainPGC = function() {
     try {
         // Tables with PQ definitions are available.
-        if ($('.row table').length > 0) {
+        if ($('.row table').length > 0 && settings_show_create_pq_from_pq_splitter) {
             // No errors available for month name related functions.
             global_error = false;
             // Get user language of the page.
@@ -13756,6 +13757,9 @@ var mainGC = function() {
             }
             html += '</select>'+ "<br>";
             html += newParameterVersionSetzen(0.9) + newParameterOff;
+            html += newParameterOn2;
+            html += checkboxy('settings_show_create_pq_from_pq_splitter', "Show feature to create PQs on Project-GC's PQ Splitter page") + show_help("On the Project-GC page there is a feature to split caches in pocket queries into packets of 1000 and 500 caches. For this purpose, lists with entries with publish date from and publish date to are generated. Thank you for this feature!<br><br>With the help of the GC little helper II feature, the entries in these lists can be used to create corresponding pocket queries automatically. Deactivate this option if you do not want this feature to be displayed on the Project-GC page.") + "<br>";
+            html += newParameterVersionSetzen('0.11') + newParameterOff;
 
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>Default Values for New Pocket Query</b></div>";
             html += checkboxy('settings_pq_set_cachestotal', "Set number of caches to ") + "<input class='gclh_form' size=4 type='text' id='settings_pq_cachestotal' value='" + settings_pq_cachestotal + "'><br>";
@@ -15613,6 +15617,7 @@ var mainGC = function() {
                 'settings_sort_map_layers',
                 'settings_add_search_in_logs_func',
                 'settings_show_add_cache_info_in_log_page',
+                'settings_show_create_pq_from_pq_splitter',
             );
             for (var i = 0; i < checkboxes.length; i++) {
                 if (document.getElementById(checkboxes[i])) setValue(checkboxes[i], document.getElementById(checkboxes[i]).checked);
