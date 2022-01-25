@@ -4484,15 +4484,18 @@ var mainGC = function() {
                     }
                 }
                 $('#pqRepeater tbody').find('img[src*="/images/icons/16/checkbox_"]').closest('a').each(function() {
-                    this.name = this.href;
-                    this.href = 'javascript:void(0);';
-                    this.children[0].title = '';
-                    this.addEventListener('click', function() {
+                    function setCheckbox(cb, eventType) {
                         var img = '/images/icons/16/checkbox_off.png';
-                        var cb = this;
-                        if (cb.children[0].src.match('loader')) return;
-                        if (cb.children[0].src == global_red_tick) { cb.children[0].src = img; return; }
-                        cb.children[0].src = urlImages + 'ajax-loader.gif';
+                        var run = false;
+                        if (cb.children[0].src.match('loader')) {}
+                        else if (cb.children[0].src == global_red_tick && eventType == 'click') { cb.children[0].src = img; }
+                        else { cb.children[0].src = urlImages + 'ajax-loader.gif'; run = true; }
+                        return [cb, img, run];
+                    }
+                    function setTitle(cb) {
+                        cb.children[0].title = (cb.name.match('&opt=1') ? 'click to activate\n(right click to activate all)' : 'click to deactivate\n(right click to deactivate all)');
+                    }
+                    function buildSchedule(cb, img) {
                         var schedulePQ = $.get(cb.name);
                         schedulePQ.done(function (result) {
                             if ($(result).find('#ActivePQs .Warning')[0]) {
@@ -4503,8 +4506,41 @@ var mainGC = function() {
                                 (cb.name.match('&opt=0') ? counter.innerHTML-- : counter.innerHTML++);
                                 cb.children[0].src = (cb.name.match('&opt=0') ? img : img.replace('_off', '_on'));
                                 cb.name = (cb.name.match('&opt=0') ? cb.name.replace('&opt=0', '&opt=1') : cb.name.replace('&opt=1', '&opt=0'));
+                                setTitle(cb);
                             }
                         }, false);
+                    }
+                    this.name = this.href;
+                    this.href = 'javascript:void(0);';
+                    setTitle(this);
+                    this.addEventListener('click', function(e) {
+                        [cb, img, run] = setCheckbox(this, e.type);
+                        if (run) buildSchedule(cb, img);
+                    });
+                    this.oncontextmenu = function(){return false;};
+                    $(this).bind('contextmenu.new', function(e) {
+                        if (this.closest('tr').rowIndex) var rowIndex = this.closest('tr').rowIndex;
+                        if (this.name.match('&d=(\.*)&opt')) var d = this.name.match('&d=(\.*)&opt')[1];
+                        if (!rowIndex || !d) return;
+                        if (!$('#pqRepeater tbody').find('a[name*="&d='+d+'&opt"] img[src*="loader"]').length == 0) return;
+                        if (this.name.match('&opt=0')) {
+                            $('#pqRepeater tbody').find('a[name*="&d='+d+'&opt=0"]').closest('a').each(function() {
+                                [cb, img, run] = setCheckbox(this, e.type);
+                                if (run) buildSchedule(cb, img);
+                            });
+                        } else {
+                            var on = $('#pqRepeater tbody').find('a[name*="&d='+d+'&opt=0"]').length;
+                            $('#pqRepeater tbody').find('a[name*="&d='+d+'&opt=1"]').closest('a').each(function() {
+                                if (on == 10) return;
+                                if (this.closest('tr').rowIndex >= rowIndex) {
+                                    [cb, img, run] = setCheckbox(this, e.type);
+                                    if (run) {
+                                        buildSchedule(cb, img);
+                                        on++;
+                                    }
+                                }
+                            });
+                        }
                     });
                 });
                 // Table My Finds:
