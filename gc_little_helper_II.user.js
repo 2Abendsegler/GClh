@@ -12729,12 +12729,7 @@ var mainGC = function() {
             if ($('#ctl00_ContentBody_uxGalleryImagesLink')[0]) $('#ctl00_ContentBody_uxGalleryImagesLink')[0].innerHTML = $('#ctl00_ContentBody_uxGalleryImagesLink')[0].innerHTML.replace("View the ", "").replace(" anzeigen", "").replace("Zobrazit f", "F");
             var css = "";
             css += ".gclh_llol {margin-right: 4px;} .gclh_rlol {float: right; margin-left: 4px;}";
-            css += ".gclh_llol input, .gclh_rlol input {background-image: inherit; padding-left: 4px; padding-right: 4px; cursor: pointer;}";
-            css += ".gclh_llol.working input, .gclh_rlol.working input {background-color: initial !important; background-image: initial !important; text-decoration: none;}";
-            css += ".gclh_llol.gclhError input, .gclh_rlol.gclhError input {background-color: #ffacac;}";
-            css += ".gclh_llol.gclhError:hover input, .gclh_rlol.gclhError:hover input {background-color: #febebe;}";
-            css += ".gclh_llol:hover input, .gclh_rlol:hover input {background-color: aliceblue;}";
-            css += ".gclh_llol.working.loadstatus input, .gclh_rlol.working.loadstatus input {background-repeat: no-repeat; background-size: 0% 2px; background-position-y: 16px; background-image: url("+blackPixel+") !important;}";
+            css += ".gclh_llol input, .gclh_rlol input {padding-left: 4px; padding-right: 4px; cursor: pointer;}";
             appendCssStyle(css);
             $('#ctl00_ContentBody_uxLogbookLink')[0].parentNode.style.width = "100%";
             $('#ctl00_ContentBody_uxLogbookLink')[0].parentNode.style.margin = "0";
