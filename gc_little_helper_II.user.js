@@ -4554,13 +4554,6 @@ var mainGC = function() {
                     $('#ctl00_ContentBody_PQListControl1_tblMyFinds tbody tr')[1].children[0].children[0].remove();
                     $('#ctl00_ContentBody_PQListControl1_tblMyFinds tbody tr')[1].children[0].children[0].style.margin = "0";
                 }
-                if ($('#ctl00_ContentBody_PQListControl1_btnScheduleNow').length > 0) {
-                    if ($('#ctl00_ContentBody_PQListControl1_btnScheduleNow').prop("disabled")) {
-                        $('#ctl00_ContentBody_PQListControl1_btnScheduleNow')[0].parentNode.parentNode.innerHTML = "<a style='opacity: 0.4; cursor: default' title='\"My Finds\" pocket query can only run once every 3 days'>Add to Queue</a>";
-                    } else {
-                        $('#ctl00_ContentBody_PQListControl1_btnScheduleNow')[0].parentNode.parentNode.innerHTML = "<a href='javascript:__doPostBack(\"ctl00$ContentBody$PQListControl1$btnScheduleNow\",\"\")' title='Add \"My Finds\" pocket query to Queue'>Add to Queue</a>";
-                    }
-                }
                 // Table downloadable PQs (additional):
                 if ($('#uxOfflinePQTable thead tr').length > 0) lastGen($('#uxOfflinePQTable thead tr')[0].children[5]);
                 if ($('#uxOfflinePQTable tbody tr').length > 0) $('#uxOfflinePQTable tbody tr').each(function() {if (this.children[5]) this.children[5].style.whiteSpace = "nowrap";});
@@ -4598,11 +4591,24 @@ var mainGC = function() {
             }
             // "Find cache along a route" als Button.
             if ($('#uxFindCachesAlongaRoute.btn.btn-secondary').length > 0) $('#uxFindCachesAlongaRoute')[0].className = "btn btn-primary";
-            // Refresh button.
-            var refreshButton = document.createElement("p");
-            refreshButton.innerHTML = "<a href='/pocket/default.aspx' title='Refresh Page'>Refresh Page</a>";
-            if (settings_compact_layout_list_of_pqs) $('.TableFooter').each(function() {this.lastElementChild.innerHTML = refreshButton.innerHTML;});
-            else document.getElementById('uxCreateNewPQ').parentNode.parentNode.parentNode.appendChild(refreshButton);
+            // Delete button on both tabs (Active and Downloadable).
+            $('.TableFooter .PQDelete').each(function() {
+                if ($(this).find('a')[0] && $(this).find('a')[0].innerHTML) {
+                    this.innerHTML = this.innerHTML.replace(/<a /, '<input type="button"').replace('>' + $(this).find('a')[0].innerHTML + '</a>', ' value="' + $(this).find('a')[0].innerHTML + '">');
+                }
+            });
+            // Refresh button on both tabs (Active and Downloadable).
+            $('#ActivePQs .TableFooter, #DownloadablePQs .TableFooter').each(function() {
+                $(this)[0].lastElementChild.innerHTML = "<input type='button' style='float: right;' onclick=\"document.location.href = 'https://www.geocaching.com/pocket/default.aspx';\" title='Refresh Page' value='Refresh Page'>";
+            });
+            // Add to Queue button.
+            if ($('#ctl00_ContentBody_PQListControl1_btnScheduleNow').length > 0) {
+                if ($('#ctl00_ContentBody_PQListControl1_btnScheduleNow').prop("disabled")) {
+                    $('#ctl00_ContentBody_PQListControl1_btnScheduleNow')[0].parentNode.parentNode.innerHTML = "<input type='button' style='opacity: 0.4; cursor: default;' disabled='' title='\"My Finds\" pocket query can only run once every 3 days' value='Add to Queue'>";
+                } else {
+                    $('#ctl00_ContentBody_PQListControl1_btnScheduleNow')[0].parentNode.parentNode.innerHTML = "<input type='button' onhref='javascript:__doPostBack(\"ctl00$ContentBody$PQListControl1$btnScheduleNow\",\"\")' title='Add \"My Finds\" pocket query to Queue' value='Add to Queue'>";
+                }
+            }
             // Highlight column of current day.
             var matches = document.getElementById('ActivePQs').childNodes[1].innerHTML.match(/([A-Za-z]*),/);
             if (matches) {
@@ -4623,15 +4629,15 @@ var mainGC = function() {
             if (settings_fixed_pq_header && (document.getElementById("pqRepeater") || document.getElementById("uxOfflinePQTable"))) {
                 var positionPx = 0;
                 if (browser === "chrome") positionPx = -1; // Mitigate ugly gap for header/footer.
-                var css = "";
                 // Fixed PQ header and footer - used TH and TD selector is hack for Chrome, Edge # see on bug https://bugs.chromium.org/p/chromium/issues/detail?id=702927.
                 css += "#uxOfflinePQTable thead th, #pqRepeater thead th { position: -webkit-sticky; position: sticky; top: " + positionPx + "px; } ";
                 css += ".PocketQueryListTable tr.TableFooter td { background-color: #E3DDC2; position: -webkit-sticky; position: sticky; bottom: " + positionPx + "px; } ";
                 // Link from footer as button for better UX.
                 css += "#uxOfflinePQTable .TableFooter A, #pqRepeater .TableFooter A { -moz-appearance: button; -webkit-appearance: button; appearance: button; "
                     + " text-decoration: none; font: menu; color: ButtonText; display: inline-block; padding: 2px 8px; white-space: nowrap; } ";
-                appendCssStyle(css);
             }
+            css += "td input[type='button'] {padding: 2px 4px;}";
+            appendCssStyle(css);
         } catch(e) {gclh_error("Improve list of PQs",e);}
     }
 
