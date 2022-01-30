@@ -3001,9 +3001,12 @@ var mainGC = function() {
 
 // Personal cache note at cache listing.
     if (is_page("cache_listing")) {
+        var css = '';
+        // Improve cursor when displaying or editing the personal cache note. It's upside down.
+        css += '#viewCacheNote {cursor: pointer;} #cacheNoteText {cursor: text;}';
         // Adapt height of edit field for personal cache note.
         $('h3.h4').append($('#pcn_help').remove().get().reverse());
-        appendCssStyle('#viewCacheNote {text-decoration: none !important;}');
+        css += '#viewCacheNote {text-decoration: none !important;}';
         // Personal cache note: Adapt height of edit field for personal cache note.
         function calcHeightOfCacheNote() {
             return ($("#viewCacheNote").parent().height()*1.02+36 > settings_cache_notes_min_size ? $("#viewCacheNote").parent().height()*1.02+36 : settings_cache_notes_min_size);
@@ -3070,6 +3073,7 @@ var mainGC = function() {
                 observer.observe(editCacheNote, {attributes: true});
             }
         } catch(e) {gclh_error("Focus Cachenote-Textarea on Click of the Note",e);}
+        appendCssStyle(css);
     }
 
 // Show eMail and Message Center Link beside user. (Nicht in Cache Logs im Listing, das erfolgt später bei Log-Template.)
