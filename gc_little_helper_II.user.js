@@ -2,7 +2,7 @@
 // @name         GC little helper II
 // @description  Some little things to make life easy (on www.geocaching.com).
 //--> $$000
-// @version      0.11.10
+// @version      0.11.11
 //<-- $$000
 // @copyright    2010-2016 Torsten Amshove, 2016-2022 2Abendsegler, 2017-2022 Ruko2010
 // @author       Torsten Amshove; 2Abendsegler; Ruko2010
@@ -683,6 +683,7 @@ var variablesInit = function(c) {
     c.settings_pq_splitter_pqname = getValue("settings_pq_splitter_pqname", 'PQ_Splitter_');
     c.settings_pq_splitter_how_often = getValue("settings_pq_splitter_how_often", 2);
     c.settings_pq_splitter_email = getValue("settings_pq_splitter_email", 1);
+    c.settings_show_create_pq_from_pq_splitter = getValue("settings_show_create_pq_from_pq_splitter", true);
 
     tlc('START userToken');
     try {
@@ -796,7 +797,7 @@ var mainGMaps = function() {
 var mainPGC = function() {
     try {
         // Tables with PQ definitions are available.
-        if ($('.row table').length > 0) {
+        if ($('.row table').length > 0 && settings_show_create_pq_from_pq_splitter) {
             // No errors available for month name related functions.
             global_error = false;
             // Get user language of the page.
@@ -3000,9 +3001,12 @@ var mainGC = function() {
 
 // Personal cache note at cache listing.
     if (is_page("cache_listing")) {
+        var css = '';
+        // Improve cursor when displaying or editing the personal cache note. It's upside down.
+        css += '#viewCacheNote {cursor: pointer;} #cacheNoteText {cursor: text;}';
         // Adapt height of edit field for personal cache note.
         $('h3.h4').append($('#pcn_help').remove().get().reverse());
-        appendCssStyle('#viewCacheNote {text-decoration: none !important;}');
+        css += '#viewCacheNote {text-decoration: none !important;}';
         // Personal cache note: Adapt height of edit field for personal cache note.
         function calcHeightOfCacheNote() {
             return ($("#viewCacheNote").parent().height()*1.02+36 > settings_cache_notes_min_size ? $("#viewCacheNote").parent().height()*1.02+36 : settings_cache_notes_min_size);
@@ -3069,6 +3073,7 @@ var mainGC = function() {
                 observer.observe(editCacheNote, {attributes: true});
             }
         } catch(e) {gclh_error("Focus Cachenote-Textarea on Click of the Note",e);}
+        appendCssStyle(css);
     }
 
 // Show eMail and Message Center Link beside user. (Nicht in Cache Logs im Listing, das erfolgt später bei Log-Template.)
@@ -4484,15 +4489,18 @@ var mainGC = function() {
                     }
                 }
                 $('#pqRepeater tbody').find('img[src*="/images/icons/16/checkbox_"]').closest('a').each(function() {
-                    this.name = this.href;
-                    this.href = 'javascript:void(0);';
-                    this.children[0].title = '';
-                    this.addEventListener('click', function() {
+                    function setCheckbox(cb, eventType) {
                         var img = '/images/icons/16/checkbox_off.png';
-                        var cb = this;
-                        if (cb.children[0].src.match('loader')) return;
-                        if (cb.children[0].src == global_red_tick) { cb.children[0].src = img; return; }
-                        cb.children[0].src = urlImages + 'ajax-loader.gif';
+                        var run = false;
+                        if (cb.children[0].src.match('loader')) {}
+                        else if (cb.children[0].src == global_red_tick && eventType == 'click') { cb.children[0].src = img; }
+                        else { cb.children[0].src = urlImages + 'ajax-loader.gif'; run = true; }
+                        return [cb, img, run];
+                    }
+                    function setTitle(cb) {
+                        cb.children[0].title = (cb.name.match('&opt=1') ? 'click to activate\n(right click to activate all)' : 'click to deactivate\n(right click to deactivate all)');
+                    }
+                    function buildSchedule(cb, img) {
                         var schedulePQ = $.get(cb.name);
                         schedulePQ.done(function (result) {
                             if ($(result).find('#ActivePQs .Warning')[0]) {
@@ -4503,8 +4511,41 @@ var mainGC = function() {
                                 (cb.name.match('&opt=0') ? counter.innerHTML-- : counter.innerHTML++);
                                 cb.children[0].src = (cb.name.match('&opt=0') ? img : img.replace('_off', '_on'));
                                 cb.name = (cb.name.match('&opt=0') ? cb.name.replace('&opt=0', '&opt=1') : cb.name.replace('&opt=1', '&opt=0'));
+                                setTitle(cb);
                             }
                         }, false);
+                    }
+                    this.name = this.href;
+                    this.href = 'javascript:void(0);';
+                    setTitle(this);
+                    this.addEventListener('click', function(e) {
+                        [cb, img, run] = setCheckbox(this, e.type);
+                        if (run) buildSchedule(cb, img);
+                    });
+                    this.oncontextmenu = function(){return false;};
+                    $(this).bind('contextmenu.new', function(e) {
+                        if (this.closest('tr').rowIndex) var rowIndex = this.closest('tr').rowIndex;
+                        if (this.name.match('&d=(\.*)&opt')) var d = this.name.match('&d=(\.*)&opt')[1];
+                        if (!rowIndex || !d) return;
+                        if (!$('#pqRepeater tbody').find('a[name*="&d='+d+'&opt"] img[src*="loader"]').length == 0) return;
+                        if (this.name.match('&opt=0')) {
+                            $('#pqRepeater tbody').find('a[name*="&d='+d+'&opt=0"]').closest('a').each(function() {
+                                [cb, img, run] = setCheckbox(this, e.type);
+                                if (run) buildSchedule(cb, img);
+                            });
+                        } else {
+                            var on = $('#pqRepeater tbody').find('a[name*="&d='+d+'&opt=0"]').length;
+                            $('#pqRepeater tbody').find('a[name*="&d='+d+'&opt=1"]').closest('a').each(function() {
+                                if (on == 10) return;
+                                if (this.closest('tr').rowIndex >= rowIndex) {
+                                    [cb, img, run] = setCheckbox(this, e.type);
+                                    if (run) {
+                                        buildSchedule(cb, img);
+                                        on++;
+                                    }
+                                }
+                            });
+                        }
                     });
                 });
                 // Table My Finds:
@@ -4516,13 +4557,6 @@ var mainGC = function() {
                     $('#ctl00_ContentBody_PQListControl1_tblMyFinds tbody tr')[1].children[0].children[1].remove();
                     $('#ctl00_ContentBody_PQListControl1_tblMyFinds tbody tr')[1].children[0].children[0].remove();
                     $('#ctl00_ContentBody_PQListControl1_tblMyFinds tbody tr')[1].children[0].children[0].style.margin = "0";
-                }
-                if ($('#ctl00_ContentBody_PQListControl1_btnScheduleNow').length > 0) {
-                    if ($('#ctl00_ContentBody_PQListControl1_btnScheduleNow').prop("disabled")) {
-                        $('#ctl00_ContentBody_PQListControl1_btnScheduleNow')[0].parentNode.parentNode.innerHTML = "<a style='opacity: 0.4; cursor: default' title='\"My Finds\" pocket query can only run once every 3 days'>Add to Queue</a>";
-                    } else {
-                        $('#ctl00_ContentBody_PQListControl1_btnScheduleNow')[0].parentNode.parentNode.innerHTML = "<a href='javascript:__doPostBack(\"ctl00$ContentBody$PQListControl1$btnScheduleNow\",\"\")' title='Add \"My Finds\" pocket query to Queue'>Add to Queue</a>";
-                    }
                 }
                 // Table downloadable PQs (additional):
                 if ($('#uxOfflinePQTable thead tr').length > 0) lastGen($('#uxOfflinePQTable thead tr')[0].children[5]);
@@ -4561,11 +4595,24 @@ var mainGC = function() {
             }
             // "Find cache along a route" als Button.
             if ($('#uxFindCachesAlongaRoute.btn.btn-secondary').length > 0) $('#uxFindCachesAlongaRoute')[0].className = "btn btn-primary";
-            // Refresh button.
-            var refreshButton = document.createElement("p");
-            refreshButton.innerHTML = "<a href='/pocket/default.aspx' title='Refresh Page'>Refresh Page</a>";
-            if (settings_compact_layout_list_of_pqs) $('.TableFooter').each(function() {this.lastElementChild.innerHTML = refreshButton.innerHTML;});
-            else document.getElementById('uxCreateNewPQ').parentNode.parentNode.parentNode.appendChild(refreshButton);
+            // Delete button on both tabs (Active and Downloadable).
+            $('.TableFooter .PQDelete').each(function() {
+                if ($(this).find('a')[0] && $(this).find('a')[0].innerHTML) {
+                    this.innerHTML = this.innerHTML.replace(/<a /, '<input type="button"').replace('>' + $(this).find('a')[0].innerHTML + '</a>', ' value="' + $(this).find('a')[0].innerHTML + '">');
+                }
+            });
+            // Refresh button on both tabs (Active and Downloadable).
+            $('#ActivePQs .TableFooter, #DownloadablePQs .TableFooter').each(function() {
+                $(this)[0].lastElementChild.innerHTML = "<input type='button' style='float: right;' onclick=\"document.location.href = 'https://www.geocaching.com/pocket/default.aspx';\" title='Refresh Page' value='Refresh Page'>";
+            });
+            // Add to Queue button.
+            if ($('#ctl00_ContentBody_PQListControl1_btnScheduleNow').length > 0) {
+                if ($('#ctl00_ContentBody_PQListControl1_btnScheduleNow').prop("disabled")) {
+                    $('#ctl00_ContentBody_PQListControl1_btnScheduleNow')[0].parentNode.parentNode.innerHTML = "<input type='button' style='opacity: 0.4; cursor: default;' disabled='' title='\"My Finds\" pocket query can only run once every 3 days' value='Add to Queue'>";
+                } else {
+                    $('#ctl00_ContentBody_PQListControl1_btnScheduleNow')[0].parentNode.parentNode.innerHTML = "<input type='button' onhref='javascript:__doPostBack(\"ctl00$ContentBody$PQListControl1$btnScheduleNow\",\"\")' title='Add \"My Finds\" pocket query to Queue' value='Add to Queue'>";
+                }
+            }
             // Highlight column of current day.
             var matches = document.getElementById('ActivePQs').childNodes[1].innerHTML.match(/([A-Za-z]*),/);
             if (matches) {
@@ -4586,15 +4633,15 @@ var mainGC = function() {
             if (settings_fixed_pq_header && (document.getElementById("pqRepeater") || document.getElementById("uxOfflinePQTable"))) {
                 var positionPx = 0;
                 if (browser === "chrome") positionPx = -1; // Mitigate ugly gap for header/footer.
-                var css = "";
                 // Fixed PQ header and footer - used TH and TD selector is hack for Chrome, Edge # see on bug https://bugs.chromium.org/p/chromium/issues/detail?id=702927.
                 css += "#uxOfflinePQTable thead th, #pqRepeater thead th { position: -webkit-sticky; position: sticky; top: " + positionPx + "px; } ";
                 css += ".PocketQueryListTable tr.TableFooter td { background-color: #E3DDC2; position: -webkit-sticky; position: sticky; bottom: " + positionPx + "px; } ";
                 // Link from footer as button for better UX.
                 css += "#uxOfflinePQTable .TableFooter A, #pqRepeater .TableFooter A { -moz-appearance: button; -webkit-appearance: button; appearance: button; "
                     + " text-decoration: none; font: menu; color: ButtonText; display: inline-block; padding: 2px 8px; white-space: nowrap; } ";
-                appendCssStyle(css);
             }
+            css += "td input[type='button'] {padding: 2px 4px;}";
+            appendCssStyle(css);
         } catch(e) {gclh_error("Improve list of PQs",e);}
     }
 
@@ -12351,8 +12398,8 @@ var mainGC = function() {
 //--> $$002
         code += '<img src="https://c.andyhoppe.com/1643060379"' + prop; // Besucher
         code += '<img src="https://c.andyhoppe.com/1643060408"' + prop; // Seitenaufrufe
-        code += '<img src="https://www.worldflagcounter.com/h6j"' + prop;
-        code += '<img src="https://s11.flagcounter.com/count2/1zg7/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
+        code += '<img src="https://www.worldflagcounter.com/h6U"' + prop;
+        code += '<img src="https://s11.flagcounter.com/count2/QLT1/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
 //<-- $$002
         div.innerHTML = code;
         side.appendChild(div);
@@ -12692,12 +12739,7 @@ var mainGC = function() {
             if ($('#ctl00_ContentBody_uxGalleryImagesLink')[0]) $('#ctl00_ContentBody_uxGalleryImagesLink')[0].innerHTML = $('#ctl00_ContentBody_uxGalleryImagesLink')[0].innerHTML.replace("View the ", "").replace(" anzeigen", "").replace("Zobrazit f", "F");
             var css = "";
             css += ".gclh_llol {margin-right: 4px;} .gclh_rlol {float: right; margin-left: 4px;}";
-            css += ".gclh_llol input, .gclh_rlol input {background-image: inherit; padding-left: 4px; padding-right: 4px; cursor: pointer;}";
-            css += ".gclh_llol.working input, .gclh_rlol.working input {background-color: initial !important; background-image: initial !important; text-decoration: none;}";
-            css += ".gclh_llol.gclhError input, .gclh_rlol.gclhError input {background-color: #ffacac;}";
-            css += ".gclh_llol.gclhError:hover input, .gclh_rlol.gclhError:hover input {background-color: #febebe;}";
-            css += ".gclh_llol:hover input, .gclh_rlol:hover input {background-color: aliceblue;}";
-            css += ".gclh_llol.working.loadstatus input, .gclh_rlol.working.loadstatus input {background-repeat: no-repeat; background-size: 0% 2px; background-position-y: 16px; background-image: url("+blackPixel+") !important;}";
+            css += ".gclh_llol input, .gclh_rlol input {padding-left: 4px; padding-right: 4px; cursor: pointer;}";
             appendCssStyle(css);
             $('#ctl00_ContentBody_uxLogbookLink')[0].parentNode.style.width = "100%";
             $('#ctl00_ContentBody_uxLogbookLink')[0].parentNode.style.margin = "0";
@@ -13544,7 +13586,7 @@ var mainGC = function() {
             html += thanksLineBuild("V60",                  "V60GC",                    false, false, false, true,  false);
             html += thanksLineBuild("vylda",                "",                         false, false, false, true,  false);
             html += thanksLineBuild("winkamol",             "",                         false, false, false, true,  false);
-            var thanksLastUpdate = "24.01.2022";
+            var thanksLastUpdate = "01.02.2022";
 //<-- $$006
             html += "    </tbody>";
             html += "</table>";
@@ -13720,6 +13762,9 @@ var mainGC = function() {
             }
             html += '</select>'+ "<br>";
             html += newParameterVersionSetzen(0.9) + newParameterOff;
+            html += newParameterOn2;
+            html += checkboxy('settings_show_create_pq_from_pq_splitter', "Show feature to create PQs on Project-GC's PQ Splitter page") + show_help("On the Project-GC page there is a feature to split caches in pocket queries into packets of 1000 and 500 caches. For this purpose, lists with entries with publish date from and publish date to are generated. Thank you for this feature!<br><br>With the help of the GC little helper II feature, the entries in these lists can be used to create corresponding pocket queries automatically. Deactivate this option if you do not want this feature to be displayed on the Project-GC page.") + "<br>";
+            html += newParameterVersionSetzen('0.11') + newParameterOff;
 
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>Default Values for New Pocket Query</b></div>";
             html += checkboxy('settings_pq_set_cachestotal', "Set number of caches to ") + "<input class='gclh_form' size=4 type='text' id='settings_pq_cachestotal' value='" + settings_pq_cachestotal + "'><br>";
@@ -15577,6 +15622,7 @@ var mainGC = function() {
                 'settings_sort_map_layers',
                 'settings_add_search_in_logs_func',
                 'settings_show_add_cache_info_in_log_page',
+                'settings_show_create_pq_from_pq_splitter',
             );
             for (var i = 0; i < checkboxes.length; i++) {
                 if (document.getElementById(checkboxes[i])) setValue(checkboxes[i], document.getElementById(checkboxes[i]).checked);
