@@ -41,7 +41,7 @@
 	<li>
 		<strong>New:</strong> [Pocket Query] Schedule all possible PQs for a day with right mouse click. [<a href="https://github.com/2Abendsegler/GClh/issues/2022" title="Issue 2022">2022</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 		Schedule all possible PQs for a day with right mouse click, if the actual checkbox is deactivated and unschedule all PQs for a day with right mouse click, if the actual checkbox is activated.<br>
-		<img src="../images/0.11.11/Screen01.gif" alt="Screen01.gif"><br>
+		<img src="../images/0.11.11/Screen01.gif" alt="Screen01.gif"><br><br>
 	</li>
 	<li>
 		<strong>New:</strong> [Pocket Query Splitter] Show/hide feature to create PQs on Project-GC's PQ Splitter page. [<a href="https://github.com/2Abendsegler/GClh/issues/2024" title="Issue 2024">2024</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
@@ -58,7 +58,7 @@
 		<img src="../images/0.11.11/Screen04.jpg" alt="Screen04.jpg"><br><br>
 	</li>
 	<li>
-		<strong>New:</strong> [Cache Listing] Revise the look of the buttons above the logs. [<a href="https://github.com/2Abendsegler/GClh/issues/2026" title="Issue 2026">2026</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br><br>
+		<strong>New:</strong> [Cache Listing] Revise the look of the buttons above the logs. [<a href="https://github.com/2Abendsegler/GClh/issues/2026" title="Issue 2026">2026</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 		<img src="../images/0.11.11/Screen05.jpg" alt="Screen05.jpg"><br><br>
 	</li>
 	<li>
