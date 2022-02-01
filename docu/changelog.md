@@ -48,8 +48,8 @@
 		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_show_create_pq_from_pq_splitter" title="Link to your GClh II Config">Settings -> Pocket Query:</a><br>
 		<img src="../images/0.11.11/Screen03.jpg" alt="Screen03.jpg"><br>
 		Deactivate this option if you do not want this feature to be displayed on the Project-GC page.<br><br>
-		This short explanation due to some inquiries:<br>
-		On the Project-GC page there is a feature to split caches in pocket queries into packets of 1000 and 500 caches. For this purpose, lists with entries with publish date from and publish date to are generated. Thank you for this feature!<br>
+		Short explanation due to some inquiries:<br>
+		On the Project-GC page there is a <a href="https://project-gc.com/Tools/PQSplit">feature to split caches in pocket queries</a> into packets of 1000 and 500 caches. For this purpose, lists with entries with publish date from and publish date to are generated. Thank you for this feature!<br>
 		With the help of a GC little helper II feature, the entries in these lists can be used to create corresponding pocket queries automatically.<br>
 		<img src="../images/0.11.11/Screen02.jpg" alt="Screen02.jpg"><br><br>
 	</li>
