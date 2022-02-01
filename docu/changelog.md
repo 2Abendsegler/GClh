@@ -1,3 +1,4 @@
+<a href="#v01111" title="GClh II version 0.11.11 (02.02.2022)">v0.11.11</a> &nbsp;
 <a href="#v01110" title="GClh II version 0.11.10 (25.01.2022)">v0.11.10</a> &nbsp;
 <a href="#v0119" title="GClh II version 0.11.9 (23.12.2021)">v0.11.9</a> &nbsp;
 <a href="#v01181" title="GClh II version 0.11.8.1 (22.11.2021)">v0.11.8.1</a> &nbsp;
@@ -33,6 +34,41 @@
 <a href="#v010" title="GClh II version 0.10 (13.12.2019)">v0.10</a> &nbsp;
 <a href="changelog_before.md" title="Go to earlier changelog">Earlier changelog</a> &nbsp;
 
+
+---
+## v0.11.11:
+<ul>
+	<li>
+		<strong>New:</strong> [Pocket Query] Schedule all possible PQs for a day with right mouse click. [<a href="https://github.com/2Abendsegler/GClh/issues/2022" title="Issue 2022">2022</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		Schedule all possible PQs for a day with right mouse click, if the actual checkbox is deactivated and unschedule all PQs for a day with right mouse click, if the actual checkbox is activated.<br>
+		<img src="../images/0.11.11/Screen01.gif" alt="Screen01.gif"><br>
+	</li>
+	<li>
+		<strong>New:</strong> [Pocket Query Splitter] Show/hide feature to create PQs on Project-GC's PQ Splitter page. [<a href="https://github.com/2Abendsegler/GClh/issues/2024" title="Issue 2024">2024</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		On the Project-GC page there is a feature to split caches in pocket queries into packets of 1000 and 500 caches. For this purpose, lists with entries with publish date from and publish date to are generated. Thank you for this feature!<br>
+		With the help of a GC little helper II feature, the entries in these lists can be used to create corresponding pocket queries automatically.<br>
+		<img src="../images/0.11.11/Screen02.jpg" alt="Screen02.jpg"><br>
+		(This short explanation due to some inquiries.)<br><br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_show_create_pq_from_pq_splitter" title="Link to your GClh II Config">Settings -> Pocket Query:</a><br>
+		<img src="../images/0.11.11/Screen03.jpg" alt="Screen03.jpg"><br>
+		Deactivate this option if you do not want this feature to be displayed on the Project-GC page.<br><br>
+	</li>
+	<li>
+		<strong>New:</strong> [Pocket Query] Revise the look of the buttons. [<a href="https://github.com/2Abendsegler/GClh/issues/2028" title="Issue 2028">2028</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		<img src="../images/0.11.11/Screen04.jpg" alt="Screen04.jpg"><br><br>
+	</li>
+	<li>
+		<strong>New:</strong> [Cache Listing] Revise the look of the buttons above the logs. [<a href="https://github.com/2Abendsegler/GClh/issues/2026" title="Issue 2026">2026</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br><br>
+		<img src="../images/0.11.11/Screen05.jpg" alt="Screen05.jpg"><br><br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Cache Listing] Improve cursor when displaying or editing the personal cache note. [<a href="https://github.com/2Abendsegler/GClh/issues/2030" title="Issue 2030">2030</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+</ul>
+<br>
+(02.02.2022)<br>
+released by <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a><br>
+<br>
 
 ---
 ## v0.11.10:
