@@ -40,7 +40,7 @@
 <ul>
 	<li>
 		<strong>New:</strong> [Pocket Query] Schedule all possible PQs for a day with right mouse click. [<a href="https://github.com/2Abendsegler/GClh/issues/2022" title="Issue 2022">2022</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
-		Schedule all possible PQs for a day with right mouse click, if the actual checkbox is deactivated and unschedule all PQs for a day with right mouse click, if the actual checkbox is activated.<br>
+		Schedule all possible PQs for a day with right mouse click, if the checkbox hovered with the mouse is deactivated and unschedule all PQs for a day with right mouse click, if the checkbox hovered with the mouse is activated.<br>
 		<img src="../images/0.11.11/Screen01.gif" alt="Screen01.gif"><br><br>
 	</li>
 	<li>
