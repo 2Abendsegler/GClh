@@ -45,13 +45,13 @@
 	</li>
 	<li>
 		<strong>New:</strong> [Pocket Query Splitter] Show/hide feature to create PQs on Project-GC's PQ Splitter page. [<a href="https://github.com/2Abendsegler/GClh/issues/2024" title="Issue 2024">2024</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
-		On the Project-GC page there is a feature to split caches in pocket queries into packets of 1000 and 500 caches. For this purpose, lists with entries with publish date from and publish date to are generated. Thank you for this feature!<br>
-		With the help of a GC little helper II feature, the entries in these lists can be used to create corresponding pocket queries automatically.<br>
-		<img src="../images/0.11.11/Screen02.jpg" alt="Screen02.jpg"><br>
-		(This short explanation due to some inquiries.)<br><br>
 		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_show_create_pq_from_pq_splitter" title="Link to your GClh II Config">Settings -> Pocket Query:</a><br>
 		<img src="../images/0.11.11/Screen03.jpg" alt="Screen03.jpg"><br>
 		Deactivate this option if you do not want this feature to be displayed on the Project-GC page.<br><br>
+		This short explanation due to some inquiries:<br>
+		On the Project-GC page there is a feature to split caches in pocket queries into packets of 1000 and 500 caches. For this purpose, lists with entries with publish date from and publish date to are generated. Thank you for this feature!<br>
+		With the help of a GC little helper II feature, the entries in these lists can be used to create corresponding pocket queries automatically.<br>
+		<img src="../images/0.11.11/Screen02.jpg" alt="Screen02.jpg"><br><br>
 	</li>
 	<li>
 		<strong>New:</strong> [Pocket Query] Revise the look of the buttons. [<a href="https://github.com/2Abendsegler/GClh/issues/2028" title="Issue 2028">2028</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
