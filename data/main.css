@@ -353,7 +353,7 @@ gclh_nav .profile-panel ul {
     display: none;
     margin-left: 0;
     right: -30px;
-    top: 31px;
+    top: 30px;
 }
 .profile-panel .submenu.user-expanded {
     display: block;
@@ -372,7 +372,7 @@ gclh_nav .profile-panel .submenu button {
 }
 gclh_nav .profile-panel ul::after {
     left: initial;
-    right: 5px;
+    right: 5px !important;
 }
 
 /* Handle wide screens on search map */
@@ -567,10 +567,10 @@ gclh_nav .profile-panel ul::after {
     font-weight: bold;
 }
 .markdown-output blockquote p::before {
-    content: 'â';
+    content: 'Ã¢ÂÂ';
 }
 .markdown-output blockquote p::after {
-    content: 'â';
+    content: 'Ã¢ÂÂ';
 }
 .markdown-output a,
 #bd .markdown-output a {
