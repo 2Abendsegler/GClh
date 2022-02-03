@@ -2,7 +2,7 @@
 // @name         GC little helper II
 // @description  Some little things to make life easy (on www.geocaching.com).
 //--> $$000
-// @version      0.11.11
+// @version      0.11.12
 //<-- $$000
 // @copyright    2010-2016 Torsten Amshove, 2016-2022 2Abendsegler, 2017-2022 Ruko2010
 // @author       Torsten Amshove; 2Abendsegler; Ruko2010
@@ -6179,6 +6179,8 @@ var mainGC = function() {
     }
 
 // Improve drafts new page.
+/* xxxx Temporär deaktiviert bis mindestens 15.02., bis zu dem GS die alte Draft Seite abschalten will und gegebenenfalls noch
+        Erweiterungen für die neue Draft Seite machen wird. Anschließend werden wir sehen was wir noch brauchen und was nicht.
     if ( settings_modify_new_drafts_page && is_page("drafts") ) {
         try {
             var css = "";
@@ -6256,6 +6258,7 @@ var mainGC = function() {
             $("#draftItem").html(template);
         } catch(e) {gclh_error("New drafts page",e);}
     }
+*/
 
 // Linklist on old dashboard.
     if (settings_bookmarks_show && is_page("profile") && $('#ctl00_ContentBody_WidgetMiniProfile1_LoggedInPanel')[0]) {
@@ -12398,7 +12401,7 @@ var mainGC = function() {
 //--> $$002
         code += '<img src="https://c.andyhoppe.com/1643060379"' + prop; // Besucher
         code += '<img src="https://c.andyhoppe.com/1643060408"' + prop; // Seitenaufrufe
-        code += '<img src="https://www.worldflagcounter.com/h6U"' + prop;
+        code += '<img src="https://www.worldflagcounter.com/h6W"' + prop;
         code += '<img src="https://s11.flagcounter.com/count2/QLT1/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
 //<-- $$002
         div.innerHTML = code;
@@ -13586,7 +13589,7 @@ var mainGC = function() {
             html += thanksLineBuild("V60",                  "V60GC",                    false, false, false, true,  false);
             html += thanksLineBuild("vylda",                "",                         false, false, false, true,  false);
             html += thanksLineBuild("winkamol",             "",                         false, false, false, true,  false);
-            var thanksLastUpdate = "01.02.2022";
+            var thanksLastUpdate = "02.02.2022";
 //<-- $$006
             html += "    </tbody>";
             html += "</table>";
