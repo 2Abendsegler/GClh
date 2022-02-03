@@ -40,15 +40,14 @@
 ## v0.11.12:
 <ul>
 	<li>
-		<strong>Fix:</strong> [New Drafts] The GClh causes an error on the website. [<a href="https://github.com/2Abendsegler/GClh/issues/2037" title="Issue 2037">2037</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
-		We have disabled the GClh adjustments on the newer draft website, until the developments on the website are finished. <br>
-		If you wish to make changes to the newer draft website, you can express them in the <a href="https://forums.geocaching.com/GC/index.php?/topic/370029-release-notes-website-upcoming-retirement-of-the-old-drafts-pages-february-1-2022/&tab=comments#comment-5962920">geocaching forum</a>.<br><br>
+		<strong>Fix:</strong> [New Drafts] The GClh causes an error on the webpage. [<a href="https://github.com/2Abendsegler/GClh/issues/2037" title="Issue 2037">2037</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		We have disabled the GClh adjustments on the newer draft webpage, until the developments on the webpage are finished. <br>
+		If you wish to make changes to the newer draft webpage, you can express them in the <a href="https://forums.geocaching.com/GC/index.php?/topic/370029-release-notes-website-upcoming-retirement-of-the-old-drafts-pages-february-1-2022/&tab=comments#comment-5962920">geocaching forum</a>.<br><br>
 	</li>
 	<li>
 		<strong>Fix:</strong> [Header] Submenu is displayed on wrong position on wide screens. [<a href="https://github.com/2Abendsegler/GClh/issues/2035" title="Issue 2035">2035</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br>
 	</li>
 </ul>
-<br>
 (03.02.2022)<br>
 released by <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a><br>
 <br>
