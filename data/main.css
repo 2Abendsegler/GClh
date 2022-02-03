@@ -280,13 +280,14 @@ gclh_nav .profile-panel a {
     width: auto;
 }
 .profile-panel .li-user {
+    position: relative !important;
     align-items: center;
     display: flex;
     margin-bottom: 0;
     order: unset;
     position: initial;
     left: 24px;
-    top: 24px;
+    top: 0;
     white-space: nowrap;
 }
 .profile-panel .li-user-info {
@@ -351,8 +352,8 @@ gclh_nav .profile-panel a {
 gclh_nav .profile-panel ul {
     display: none;
     margin-left: 0;
-    right: -.5em;
-    top: 3.6em;
+    right: -30px;
+    top: 31px;
 }
 .profile-panel .submenu.user-expanded {
     display: block;
@@ -371,7 +372,7 @@ gclh_nav .profile-panel .submenu button {
 }
 gclh_nav .profile-panel ul::after {
     left: initial;
-    right: 14px;
+    right: 5px;
 }
 
 /* Handle wide screens on search map */
