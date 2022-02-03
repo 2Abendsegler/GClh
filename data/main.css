@@ -567,10 +567,10 @@ gclh_nav .profile-panel ul::after {
     font-weight: bold;
 }
 .markdown-output blockquote p::before {
-    content: 'Ã¢ÂÂ';
+    content: 'â';
 }
 .markdown-output blockquote p::after {
-    content: 'Ã¢ÂÂ';
+    content: 'â';
 }
 .markdown-output a,
 #bd .markdown-output a {
