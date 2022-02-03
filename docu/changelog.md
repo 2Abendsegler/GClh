@@ -48,6 +48,7 @@
 		<strong>Fix:</strong> [Header] Submenu is displayed on wrong position on wide screens. [<a href="https://github.com/2Abendsegler/GClh/issues/2035" title="Issue 2035">2035</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br>
 	</li>
 </ul>
+<br>
 (03.02.2022)<br>
 released by <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a><br>
 <br>
