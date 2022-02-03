@@ -6179,6 +6179,8 @@ var mainGC = function() {
     }
 
 // Improve drafts new page.
+/* xxxx Temporär deaktiviert bis mindestens 15.02., bis zu dem GS die alte Draft Seite abschalten will und gegebenenfalls noch
+        Erweiterungen für die neue Draft Seite machen wird. Anschließend werden wir sehen was wir noch brauchen und was nicht.
     if ( settings_modify_new_drafts_page && is_page("drafts") ) {
         try {
             var css = "";
@@ -6256,6 +6258,7 @@ var mainGC = function() {
             $("#draftItem").html(template);
         } catch(e) {gclh_error("New drafts page",e);}
     }
+*/
 
 // Linklist on old dashboard.
     if (settings_bookmarks_show && is_page("profile") && $('#ctl00_ContentBody_WidgetMiniProfile1_LoggedInPanel')[0]) {
