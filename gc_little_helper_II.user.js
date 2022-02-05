@@ -10633,6 +10633,7 @@ var mainGC = function() {
                             if ($(text).find('#ctl00_ContentBody_lblFindCounts')[0]) {
                                 var all_logs = $(text).find('#ctl00_ContentBody_lblFindCounts')[0].innerHTML.replace(/alt="(.*?)"/g, "alt=\"...\"").replace(/&nbsp;/g, " ");
                             } else var all_logs = '';
+
                             // Get the number of trackables in the cache.
                             var trachables = 0;
                             $(text).find('.CacheDetailNavigationWidget').each(function(){
