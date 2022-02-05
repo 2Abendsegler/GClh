@@ -10544,6 +10544,7 @@ var mainGC = function() {
             css += "div.gclh_latest_log:hover span, span.gclh_cache_note:hover span {font-size: 13px; display: block; top: 16px; border: 1px solid #8c9e65; background-color:#dfe1d2; z-index:10000;}";
             css += "span.premium_only img {margin-right:0px;}";
             css += "#ownBMLsCount {cursor: default;} .map-item .send2gps img {margin-right: 0px;}";
+            css += ".LogTotals, .LogTotals li {display: inline-block; margin: 0;} .LogTotals li {margin-right: 5px;}";
             if (browser == 'firefox') css += ".gclh_owner {max-width: 110px;} .map-item h4 a {max-width: 265px;} .gclh_owner, .map-item h4 a {display: inline-block; white-space: nowrap; overflow: -moz-hidden-unscrollable; text-overflow: ellipsis;}";
             appendCssStyle(css);
 
@@ -10629,8 +10630,9 @@ var mainGC = function() {
                             }
 
                             // Get all type of logs and their count.
-                            var all_logs = $(text).find('.LogTotals')[0].innerHTML.replace(/alt="(.*?)"/g, "alt=\"...\"");
-
+                            if ($(text).find('#ctl00_ContentBody_lblFindCounts')[0]) {
+                                var all_logs = $(text).find('#ctl00_ContentBody_lblFindCounts')[0].innerHTML.replace(/alt="(.*?)"/g, "alt=\"...\"").replace(/&nbsp;/g, " ");
+                            } else var all_logs = '';
                             // Get the number of trackables in the cache.
                             var trachables = 0;
                             $(text).find('.CacheDetailNavigationWidget').each(function(){
@@ -10661,7 +10663,7 @@ var mainGC = function() {
                             else var place = $(text).find('#ctl00_ContentBody_Location')[0].innerHTML.replace(/(.*?)\s/,'');
 
                             // Put all together.
-                            var new_text = '<span style="margin-right: 5px;">Logs:</span>' + all_logs.replace(/&nbsp;/g, " ") + '<br>';
+                            var new_text = '<span style="margin-right: 5px;">Logs:</span>' + all_logs + '<br>';
                             new_text += $(last_logs).prop('outerHTML');
                             new_text += '<div style="padding-bottom: 3px;">';
                             if (settings_show_country_in_place) new_text += '<span title="Place">' + place + '</span> | ';
