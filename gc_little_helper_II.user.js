@@ -4548,7 +4548,7 @@ var mainGC = function() {
                         }
                     });
                 });
-                // Table My Finds:
+                // Table My Finds and Add to Queue button:
                 css += "#ctl00_ContentBody_PQListControl1_tblMyFinds tbody tr th {border: unset;}";
                 if ($('#ctl00_ContentBody_PQListControl1_tblMyFinds tbody tr').length > 1 && $('#pqRepeater thead tr')[0] && $('#pqRepeater thead tr')[0].children.length > 12) {
                     lastGen($('#ctl00_ContentBody_PQListControl1_tblMyFinds tbody tr')[0].children[1]);
@@ -4557,6 +4557,11 @@ var mainGC = function() {
                     $('#ctl00_ContentBody_PQListControl1_tblMyFinds tbody tr')[1].children[0].children[1].remove();
                     $('#ctl00_ContentBody_PQListControl1_tblMyFinds tbody tr')[1].children[0].children[0].remove();
                     $('#ctl00_ContentBody_PQListControl1_tblMyFinds tbody tr')[1].children[0].children[0].style.margin = "0";
+                    if ($('#ctl00_ContentBody_PQListControl1_btnScheduleNow')[0] && $('#ctl00_ContentBody_PQListControl1_btnScheduleNow').prop('disabled')) {
+                        $('#ctl00_ContentBody_PQListControl1_btnScheduleNow')[0].title = '\"My Finds\" pocket query can only run once every 3 days';
+                    } else {
+                        $('#ctl00_ContentBody_PQListControl1_btnScheduleNow')[0].title = 'Add \"My Finds\" pocket query to Queue';
+                    }
                 }
                 // Table downloadable PQs (additional):
                 if ($('#uxOfflinePQTable thead tr').length > 0) lastGen($('#uxOfflinePQTable thead tr')[0].children[5]);
@@ -4591,7 +4596,6 @@ var mainGC = function() {
                     for (var i = 0; i <= 4; i++) {$('.pq-legend')[0].nextElementSibling.remove();}
                     $('.pq-legend')[0].remove();
                 }
-                appendCssStyle(css);
             }
             // "Find cache along a route" als Button.
             if ($('#uxFindCachesAlongaRoute.btn.btn-secondary').length > 0) $('#uxFindCachesAlongaRoute')[0].className = "btn btn-primary";
@@ -4605,14 +4609,6 @@ var mainGC = function() {
             $('#ActivePQs .TableFooter, #DownloadablePQs .TableFooter').each(function() {
                 $(this)[0].lastElementChild.innerHTML = "<input type='button' style='float: right;' onclick=\"document.location.href = 'https://www.geocaching.com/pocket/default.aspx';\" title='Refresh Page' value='Refresh Page'>";
             });
-            // Add to Queue button.
-            if ($('#ctl00_ContentBody_PQListControl1_btnScheduleNow').length > 0) {
-                if ($('#ctl00_ContentBody_PQListControl1_btnScheduleNow').prop("disabled")) {
-                    $('#ctl00_ContentBody_PQListControl1_btnScheduleNow')[0].parentNode.parentNode.innerHTML = "<input type='button' style='opacity: 0.4; cursor: default;' disabled='' title='\"My Finds\" pocket query can only run once every 3 days' value='Add to Queue'>";
-                } else {
-                    $('#ctl00_ContentBody_PQListControl1_btnScheduleNow')[0].parentNode.parentNode.innerHTML = "<input type='button' onhref='javascript:__doPostBack(\"ctl00$ContentBody$PQListControl1$btnScheduleNow\",\"\")' title='Add \"My Finds\" pocket query to Queue' value='Add to Queue'>";
-                }
-            }
             // Highlight column of current day.
             var matches = document.getElementById('ActivePQs').childNodes[1].innerHTML.match(/([A-Za-z]*),/);
             if (matches) {
@@ -4640,7 +4636,8 @@ var mainGC = function() {
                 css += "#uxOfflinePQTable .TableFooter A, #pqRepeater .TableFooter A { -moz-appearance: button; -webkit-appearance: button; appearance: button; "
                     + " text-decoration: none; font: menu; color: ButtonText; display: inline-block; padding: 2px 8px; white-space: nowrap; } ";
             }
-            css += "td input[type='button'] {padding: 2px 4px;}";
+            css += "td input[type='button'], td input[type='submit'] {padding: 2px 4px; cursor: pointer;}";
+            css += "td input[type='submit'][disabled='disabled'] {opacity: 0.4; cursor: default;}";
             appendCssStyle(css);
         } catch(e) {gclh_error("Improve list of PQs",e);}
     }
