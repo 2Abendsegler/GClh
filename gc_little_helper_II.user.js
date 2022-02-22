@@ -1350,7 +1350,7 @@ var mainGC = function() {
                 setButtonDescInnerHTMLF2(0, id);
             }
             // Geocache-Listing --> Back to drafts
-            if (document.location.href.match(/\.com\/geocache\/GC[A-Z0-9]{1,10}\?dluid/)) var id = "#uxNewLogExtraLink";
+            if (document.location.href.match(/\.com\/geocache\/GC[A-Z0-9]{1,10}\?dluid/)) var id = "uxNewLogExtraLink";
             if (id && document.getElementById(id)) {
                 function keydownF2(e) {
                     if (!check_config_page() && $('#'+id)[0].offsetParent != null) {
