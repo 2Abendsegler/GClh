@@ -3632,6 +3632,14 @@ var mainGC = function() {
         } catch(e) {gclh_error("Change new links for find caches to the old links",e);}
     }
 
+// Set language in Driving Directions links for the cache coordinates and the waypoints.
+    if (is_page("cache_listing")) {
+        $('#ctl00_ContentBody_lnkPrintDirectionsSimple')[0].href = $('#ctl00_ContentBody_lnkPrintDirectionsSimple')[0].href.replace('http://', 'https://');
+        $('a[href*="https://maps.google.com/maps?f=d&hl=en&saddr="]').each((_i, elem) => {
+            elem.href = elem.href.replace('&hl=en', '');
+        });
+    }
+
 // Hide greenToTopButton.
     if (settings_hide_top_button) $("#topScroll").attr("id", "_topScroll").hide();
 
