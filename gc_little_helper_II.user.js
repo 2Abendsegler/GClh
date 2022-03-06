@@ -13631,7 +13631,7 @@ var mainGC = function() {
             html += checkboxy('settings_show_message', 'Show message link beside user') + "<br>";
             html += "&nbsp; " + checkboxy('settings_message_icon_new_win', 'Open message form in new browser tab') + "<br>";
 
-            html += "<div style='margin-top: 9px; margin-left: 5px'><b>Hidding</b>" + "</div>";
+            html += "<div style='margin-top: 9px; margin-left: 5px'><b>Hiding</b>" + "</div>";
             html += checkboxy('settings_hide_advert_link', 'Hide link to advertisement instructions') + "<br>";
             html += checkboxy('settings_hide_facebook', 'Hide login procedures via Facebook, Google, Apple') + "<br>";
             html += checkboxy('settings_hide_socialshare', 'Hide social sharing via Facebook, Twitter') + "<br>";
