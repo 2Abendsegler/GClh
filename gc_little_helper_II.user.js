@@ -3676,14 +3676,13 @@ var mainGC = function() {
             if (favoritePoints) {
                 favoritePoints = favoritePoints.replace('.','').replace(',','');
                 favoritePoints = parseInt(favoritePoints);
-                var favoritePercent = ' ';
                 var from = text.indexOf('userToken', text.indexOf('MapTilesEnvironment')) + 13;
                 var length = text.indexOf("';", from) - from;
                 var userTokenACI = text.substr(from, length);
                 aci += separator(aci) + '<span class="favorites" title="Favorites">';
                 aci += '<svg height="16.5" width="16.5"><image xmlns:xlink="https://www.w3.org/1999/xlink" xlink:href="/images/icons/fave_fill_16.svg" src="/images/icons/fave_fill_16.png" width="16" height="16"></image></svg>';
                 aci += '<span class="favorite_points" title="Favorite points"> ' + favoritePoints + '</span>';
-                aci += '<span class="favorite_percent" title="Favorites in percent"> ' + favoritePercent + '</span>';
+                aci += '<span class="favorite_percent" title="Favorites in percent"></span>';
                 aci += '</span>';
             }
             // Watcher.
@@ -13134,9 +13133,9 @@ var mainGC = function() {
            url: '/datastore/favorites.svc/score?u=' + userToken,
            success: function (scoreResult) {
                var score = 0;
-               if (scoreResult) score = ' ' + scoreResult + '%';
-               if (score > 100) score = ' ' + 100 + '%';
-               position.innerHTML = score;
+               if (scoreResult) score = scoreResult;
+               if (score > 100) score = 100;
+               position.innerHTML = ' ' + score + '%';
            }
        });
     }
