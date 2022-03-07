@@ -2146,7 +2146,7 @@ var mainGC = function() {
             var div = document.createElement('div');
             div.className = "gclh_LogTotals Clear";
             var span = document.createElement('span');
-            span.innerHTML = $('.LogTotals')[0].innerHTML.replace(/alt="(.*?)"/g, "alt=\" \"").replace(/(&nbsp;){5}/g, "&nbsp;&nbsp;");
+            span.innerHTML = $('.LogTotals')[0].outerHTML;
             div.appendChild(span);
             $('#ctl00_ContentBody_size')[0].parentNode.insertBefore(div, $('#ctl00_ContentBody_size')[0].nextSibling.nextSibling.nextSibling);
             appendCssStyle('.gclh_LogTotals {float: right;} .gclh_LogTotals img {vertical-align: bottom;}');
@@ -7545,18 +7545,17 @@ var mainGC = function() {
                 }
                 if (!$('.gclh_LogTotals')[0] || !$('.gclh_LogTotals')[0].childNodes[0]) return;
                 var legend = $('.gclh_LogTotals')[0].childNodes[0];
-                var new_legend = document.createElement('span');
+                var new_legend = document.createElement('ul');
+                new_legend.className = "LogTotals";
                 for (var i = 0; i < legend.childNodes.length; i++) {
-                    if (legend.childNodes[i].tagName == "IMG") {
-                        var link = document.createElement("a");
-                        link.setAttribute("href", clearUrlAppendix(document.location.href, false) + 'logs_section');
-                        link.style.textDecoration = 'none';
-                        link.addEventListener("click", gclh_filter_logs, false);
-                        link.appendChild(legend.childNodes[i].cloneNode(true));
-                        i++;
-                        link.appendChild(legend.childNodes[i].cloneNode(true));
-                        new_legend.appendChild(link);
-                    }
+                    var li = document.createElement("li");
+                    var link = document.createElement("a");
+                    link.setAttribute("href", clearUrlAppendix(document.location.href, false) + 'logs_section');
+                    link.style.textDecoration = 'none';
+                    link.addEventListener("click", gclh_filter_logs, false);
+                    link.appendChild(legend.childNodes[i].cloneNode(true));
+                    li.appendChild(link);
+                    new_legend.appendChild(li);
                 }
                 $('.gclh_LogTotals')[0].replaceChild(new_legend, legend);
             }
