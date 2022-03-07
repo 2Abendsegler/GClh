@@ -7473,8 +7473,8 @@ var mainGC = function() {
             // Filter logs.
             function gclh_filter(logs) {
                 function gclh_filter_logs() {
-                    if (!this.childNodes[0]) return false;
-                    var log_type = this.childNodes[0].title;
+                    if (!this.childNodes[0].childNodes[0]) return false;
+                    var log_type = this.childNodes[0].childNodes[0].title;
                     if (!log_type) return false;
                     if (log_type.match(/VIP/)) log_type = "VIP";
                     if (this.name && this.name == "vip_list") {
@@ -7502,21 +7502,20 @@ var mainGC = function() {
 
                 if (!document.getElementById("ctl00_ContentBody_lblFindCounts").childNodes[0]) return false;
                 var legend = document.getElementById("ctl00_ContentBody_lblFindCounts").childNodes[0];
-                var new_legend = document.createElement("p");
+                var new_legend = document.createElement("ul");
                 new_legend.className = "LogTotals";
                 for (var i = 0; i < legend.childNodes.length; i++) {
-                    if (legend.childNodes[i].tagName == "IMG") {
-                        var link = document.createElement("a");
-                        link.setAttribute("href", "javascript:void(0);");
-                        link.style.textDecoration = 'none';
-                        link.addEventListener("click", gclh_filter_logs, false);
-                        link.appendChild(legend.childNodes[i].cloneNode(true));
-                        i++;
-                        link.appendChild(legend.childNodes[i].cloneNode(true));
-                        new_legend.appendChild(link);
-                    }
+                    var li = document.createElement("li");
+                    var link = document.createElement("a");
+                    link.setAttribute("href", "javascript:void(0);");
+                    link.style.textDecoration = 'none';
+                    link.addEventListener("click", gclh_filter_logs, false);
+                    link.appendChild(legend.childNodes[i].cloneNode(true));
+                    li.appendChild(link);
+                    new_legend.appendChild(li);
                 }
                 if (settings_show_vip_list) {
+                    var li = document.createElement("li");
                     var link = document.createElement("a");
                     link.setAttribute("href", "javascript:void(0);");
                     link.setAttribute("style", "text-decoration: 'none'; padding-right: 18px;");
@@ -7526,7 +7525,8 @@ var mainGC = function() {
                     img.setAttribute("src", global_logs_vip_icon);
                     img.setAttribute("title", "VIP logs");
                     link.appendChild(img);
-                    new_legend.appendChild(link);
+                    li.appendChild(link);
+                    new_legend.appendChild(li);
                 }
                 document.getElementById('ctl00_ContentBody_lblFindCounts').replaceChild(new_legend, legend);
                 if (document.getElementById("lnk_gclh_vip_list")) {
@@ -7632,8 +7632,8 @@ var mainGC = function() {
                     activateLoadAndSearch();
                 }
 
-                if (!$('#ctl00_ContentBody_lblFindCounts p')[0]) return false;
-                $('#ctl00_ContentBody_lblFindCounts p').append('<span id="search_logs"><span title="Search in logtext and username">Search in logs: </span></span>');
+                if (!$('#ctl00_ContentBody_lblFindCounts ul')[0]) return false;
+                $('#ctl00_ContentBody_lblFindCounts ul').append('<li><span id="search_logs"><span title="Search in logtext and username">Search in logs: </span></span></li>');
                 if (!settings_add_search_in_logs_func) $('#search_logs')[0].style.display = 'none';
                 $('#search_logs').append('<form action="javascript:void(0);" style="display: inline;"><input type="text" size="10" title="Use &quot;|&quot; for an OR correlation" style="padding: 2px 2px; width: unset; margin-bottom: unset; margin-right: 4px;" id="search_logs_input"></form>');
                 $('#search_logs_input')[0].addEventListener("keyup", gclh_search_logs, false);
@@ -12692,7 +12692,7 @@ var mainGC = function() {
                 for (var i = 0; i < logTypes.length; i++) {
                     var matches = logTypes[i].innerHTML.replace(/(,|\.)/g, "").match(/>(\s*)(\d+)/);
                     if (matches && matches[2]) {
-                        logCounter[logTypes[i].childNodes[0].title] = parseInt(matches[2]);
+                        logCounter[logTypes[i].childNodes[0].childNodes[0].title] = parseInt(matches[2]);
                         logCounter["all"] += parseInt(matches[2]);
                     }
                 }
