@@ -2146,10 +2146,10 @@ var mainGC = function() {
             var div = document.createElement('div');
             div.className = "gclh_LogTotals Clear";
             var span = document.createElement('span');
-            span.innerHTML = $('.LogTotals')[0].innerHTML.replace(/alt="(.*?)"/g, "alt=\" \"").replace(/(&nbsp;){5}/g, "&nbsp;&nbsp;");
+            span.innerHTML = $('.LogTotals')[0].outerHTML;
             div.appendChild(span);
             $('#ctl00_ContentBody_size')[0].parentNode.insertBefore(div, $('#ctl00_ContentBody_size')[0].nextSibling.nextSibling.nextSibling);
-            appendCssStyle('.gclh_LogTotals {float: right;} .gclh_LogTotals img {vertical-align: bottom;}');
+            appendCssStyle('.gclh_LogTotals {float: right;} .gclh_LogTotals img {vertical-align: bottom;} .LogTotals li + li {margin-left: 8px;} .LogTotals {margin-bottom: 0px;}');
         } catch(e) {gclh_error("Show log totals symbols at the top",e);}
     }
 
@@ -7508,21 +7508,21 @@ var mainGC = function() {
 
                 if (!document.getElementById("ctl00_ContentBody_lblFindCounts").childNodes[0]) return false;
                 var legend = document.getElementById("ctl00_ContentBody_lblFindCounts").childNodes[0];
-                var new_legend = document.createElement("p");
+                var new_legend = document.createElement("ul");
                 new_legend.className = "LogTotals";
                 for (var i = 0; i < legend.childNodes.length; i++) {
-                    if (legend.childNodes[i].tagName == "IMG") {
-                        var link = document.createElement("a");
-                        link.setAttribute("href", "javascript:void(0);");
-                        link.style.textDecoration = 'none';
-                        link.addEventListener("click", gclh_filter_logs, false);
-                        link.appendChild(legend.childNodes[i].cloneNode(true));
-                        i++;
-                        link.appendChild(legend.childNodes[i].cloneNode(true));
-                        new_legend.appendChild(link);
-                    }
+                    var li = document.createElement("li");
+                    var link = document.createElement("a");
+                    link.setAttribute("href", "javascript:void(0);");
+                    link.style.textDecoration = 'none';
+                    link.addEventListener("click", gclh_filter_logs, false);
+                    link.appendChild(legend.childNodes[i].childNodes[0].cloneNode(true));
+                    link.appendChild(legend.childNodes[i].childNodes[1].cloneNode(true));
+                    li.appendChild(link);
+                    new_legend.appendChild(li);
                 }
                 if (settings_show_vip_list) {
+                    var li = document.createElement("li");
                     var link = document.createElement("a");
                     link.setAttribute("href", "javascript:void(0);");
                     link.setAttribute("style", "text-decoration: 'none'; padding-right: 18px;");
@@ -7532,7 +7532,8 @@ var mainGC = function() {
                     img.setAttribute("src", global_logs_vip_icon);
                     img.setAttribute("title", "VIP logs");
                     link.appendChild(img);
-                    new_legend.appendChild(link);
+                    li.appendChild(link);
+                    new_legend.appendChild(li);
                 }
                 document.getElementById('ctl00_ContentBody_lblFindCounts').replaceChild(new_legend, legend);
                 if (document.getElementById("lnk_gclh_vip_list")) {
@@ -7551,18 +7552,18 @@ var mainGC = function() {
                 }
                 if (!$('.gclh_LogTotals')[0] || !$('.gclh_LogTotals')[0].childNodes[0]) return;
                 var legend = $('.gclh_LogTotals')[0].childNodes[0];
-                var new_legend = document.createElement('span');
-                for (var i = 0; i < legend.childNodes.length; i++) {
-                    if (legend.childNodes[i].tagName == "IMG") {
-                        var link = document.createElement("a");
-                        link.setAttribute("href", clearUrlAppendix(document.location.href, false) + 'logs_section');
-                        link.style.textDecoration = 'none';
-                        link.addEventListener("click", gclh_filter_logs, false);
-                        link.appendChild(legend.childNodes[i].cloneNode(true));
-                        i++;
-                        link.appendChild(legend.childNodes[i].cloneNode(true));
-                        new_legend.appendChild(link);
-                    }
+                var new_legend = document.createElement('ul');
+                new_legend.className = "LogTotals";
+                for (var i = 0; i < legend.childNodes[0].childNodes.length; i++) {
+                    var li = document.createElement("li");
+                    var link = document.createElement("a");
+                    link.setAttribute("href", clearUrlAppendix(document.location.href, false) + 'logs_section');
+                    link.style.textDecoration = 'none';
+                    link.addEventListener("click", gclh_filter_logs, false);
+                    link.appendChild(legend.childNodes[0].childNodes[i].childNodes[0].cloneNode(true));
+                    link.appendChild(legend.childNodes[0].childNodes[i].childNodes[1].cloneNode(true));
+                    li.appendChild(link);
+                    new_legend.appendChild(li);
                 }
                 $('.gclh_LogTotals')[0].replaceChild(new_legend, legend);
             }
@@ -7638,8 +7639,8 @@ var mainGC = function() {
                     activateLoadAndSearch();
                 }
 
-                if (!$('#ctl00_ContentBody_lblFindCounts p')[0]) return false;
-                $('#ctl00_ContentBody_lblFindCounts p').append('<span id="search_logs"><span title="Search in logtext and username">Search in logs: </span></span>');
+                if (!$('#ctl00_ContentBody_lblFindCounts ul')[0]) return false;
+                $('#ctl00_ContentBody_lblFindCounts ul').append('<li><span id="search_logs"><span title="Search in logtext and username">Search in logs: </span></span></li>');
                 if (!settings_add_search_in_logs_func) $('#search_logs')[0].style.display = 'none';
                 $('#search_logs').append('<form action="javascript:void(0);" style="display: inline;"><input type="text" size="10" title="Use &quot;|&quot; for an OR correlation" style="padding: 2px 2px; width: unset; margin-bottom: unset; margin-right: 4px;" id="search_logs_input"></form>');
                 $('#search_logs_input')[0].addEventListener("keyup", gclh_search_logs, false);
@@ -9953,6 +9954,7 @@ var mainGC = function() {
             css += '#searchmap_sidebar_enhancements .gclh_link:hover {color: #02874d;}';
             css += '#searchmap_sidebar_enhancements a {color: #4a4a4a; text-decoration: none;}';
             css += '#searchmap_sidebar_enhancements img {vertical-align: bottom; height: 14px;}';
+            css += "#searchmap_sidebar_enhancements li {display: inline-block; margin-right: 5px;}";
             // GClh Action Bar (Save as PQ and Hide Header Buttons).
             css += '#gclh_action_bar {display: flex; color: #4a4a4a; cursor: default;}'
             css += '.geocache-action-bar.sidebar-control {padding-top: 0px !important;}';
@@ -10550,6 +10552,7 @@ var mainGC = function() {
             css += "div.gclh_latest_log:hover span, span.gclh_cache_note:hover span {font-size: 13px; display: block; top: 16px; border: 1px solid #8c9e65; background-color:#dfe1d2; z-index:10000;}";
             css += "span.premium_only img {margin-right:0px;}";
             css += "#ownBMLsCount {cursor: default;} .map-item .send2gps img {margin-right: 0px;}";
+            css += ".LogTotals, .LogTotals li {display: inline-block; margin: 0;} .LogTotals li {margin-right: 5px;}";
             if (browser == 'firefox') css += ".gclh_owner {max-width: 110px;} .map-item h4 a {max-width: 265px;} .gclh_owner, .map-item h4 a {display: inline-block; white-space: nowrap; overflow: -moz-hidden-unscrollable; text-overflow: ellipsis;}";
             appendCssStyle(css);
 
@@ -10635,7 +10638,9 @@ var mainGC = function() {
                             }
 
                             // Get all type of logs and their count.
-                            var all_logs = $(text).find('.LogTotals')[0].innerHTML.replace(/alt="(.*?)"/g, "alt=\"...\"");
+                            if ($(text).find('#ctl00_ContentBody_lblFindCounts')[0]) {
+                                var all_logs = $(text).find('#ctl00_ContentBody_lblFindCounts')[0].innerHTML.replace(/alt="(.*?)"/g, "alt=\"...\"").replace(/&nbsp;/g, " ");
+                            } else var all_logs = '';
 
                             // Get the number of trackables in the cache.
                             var trachables = 0;
@@ -10667,7 +10672,7 @@ var mainGC = function() {
                             else var place = $(text).find('#ctl00_ContentBody_Location')[0].innerHTML.replace(/(.*?)\s/,'');
 
                             // Put all together.
-                            var new_text = '<span style="margin-right: 5px;">Logs:</span>' + all_logs.replace(/&nbsp;/g, " ") + '<br>';
+                            var new_text = '<span style="margin-right: 5px;">Logs:</span>' + all_logs + '<br>';
                             new_text += $(last_logs).prop('outerHTML');
                             new_text += '<div style="padding-bottom: 3px;">';
                             if (settings_show_country_in_place) new_text += '<span title="Place">' + place + '</span> | ';
@@ -12690,7 +12695,7 @@ var mainGC = function() {
             setTimeout(function() {
                 var logCounter = new Object();
                 logCounter["all"] = 0;
-                var logTypes = $('.LogTotals a');
+                var logTypes = $('#ctl00_ContentBody_lblFindCounts .LogTotals a');
                 for (var i = 0; i < logTypes.length; i++) {
                     var matches = logTypes[i].innerHTML.replace(/(,|\.)/g, "").match(/>(\s*)(\d+)/);
                     if (matches && matches[2]) {
