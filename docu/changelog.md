@@ -44,19 +44,19 @@
 		<strong>New:</strong> [Cache Listing] Set language in Driving Directions links for the cache coordinates and the waypoints to system language. [<a href="https://github.com/2Abendsegler/GClh/issues/2045" title="Issue 2045">2045</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br><br>
 	</li>
 	<li>
-		<strong>Fix:</strong> [New Log Form] Favorite percentages are displayed incorrectly. [<a href="https://github.com/2Abendsegler/GClh/issues/2061" title="Issue 2061">2061</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br><br>
+		<strong>Fix:</strong> [New Log Form] Favorite percentages are displayed incorrectly. [<a href="https://github.com/2Abendsegler/GClh/issues/2061" title="Issue 2061">2061</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br>
 	</li>
 	<li>
-		<strong>Fix:</strong> [Cache Listing] "Show log counter" button doesn't work anymore. [<a href="https://github.com/2Abendsegler/GClh/issues/2060" title="Issue 2060">2060</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br><br>
+		<strong>Fix:</strong> [Cache Listing] "Show log counter" button doesn't work anymore. [<a href="https://github.com/2Abendsegler/GClh/issues/2060" title="Issue 2060">2060</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br>
 	</li>
 	<li>
-		<strong>Fix:</strong> [Config] Typo in settings. [<a href="https://github.com/2Abendsegler/GClh/issues/2054" title="Issue 2054">2054</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br><br>
+		<strong>Fix:</strong> [Config] Typo in settings. [<a href="https://github.com/2Abendsegler/GClh/issues/2054" title="Issue 2054">2054</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br>
 	</li>
 	<li>
-		<strong>Fix:</strong> [Cache Listing / Browse Map / Search Map] Log type counters are no longer displayed correct. [<a href="https://github.com/2Abendsegler/GClh/issues/2044" title="Issue 2044">2044</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br><br>
+		<strong>Fix:</strong> [Cache Listing / Browse Map / Search Map] Log type counters are no longer displayed correct. [<a href="https://github.com/2Abendsegler/GClh/issues/2044" title="Issue 2044">2044</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br>
 	</li>
 	<li>
-		<strong>Fix:</strong> [Header] Submenu is displayed on wrong position on wide screens. [<a href="https://github.com/2Abendsegler/GClh/issues/2035" title="Issue 2035">2035</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br><br>
+		<strong>Fix:</strong> [Header] Submenu is displayed on wrong position on wide screens. [<a href="https://github.com/2Abendsegler/GClh/issues/2035" title="Issue 2035">2035</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br>
 	</li>
 	<li>
 		<strong>Fix:</strong> [Pocket Query] "Add to Queue" and "Delete" buttons doesn't work anymore. [<a href="https://github.com/2Abendsegler/GClh/issues/2028" title="Issue 2028">2028</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
