@@ -7473,8 +7473,8 @@ var mainGC = function() {
             // Filter logs.
             function gclh_filter(logs) {
                 function gclh_filter_logs() {
-                    if (!this.childNodes[0].childNodes[0]) return false;
-                    var log_type = this.childNodes[0].childNodes[0].title;
+                    if (!this.childNodes[0]) return false;
+                    var log_type = this.childNodes[0].title;
                     if (!log_type) return false;
                     if (log_type.match(/VIP/)) log_type = "VIP";
                     if (this.name && this.name == "vip_list") {
@@ -7510,7 +7510,8 @@ var mainGC = function() {
                     link.setAttribute("href", "javascript:void(0);");
                     link.style.textDecoration = 'none';
                     link.addEventListener("click", gclh_filter_logs, false);
-                    link.appendChild(legend.childNodes[i].cloneNode(true));
+                    link.appendChild(legend.childNodes[i].childNodes[0].cloneNode(true));
+                    link.appendChild(legend.childNodes[i].childNodes[1].cloneNode(true));
                     li.appendChild(link);
                     new_legend.appendChild(li);
                 }
@@ -7547,13 +7548,14 @@ var mainGC = function() {
                 var legend = $('.gclh_LogTotals')[0].childNodes[0];
                 var new_legend = document.createElement('ul');
                 new_legend.className = "LogTotals";
-                for (var i = 0; i < legend.childNodes.length; i++) {
+                for (var i = 0; i < legend.childNodes[0].childNodes.length; i++) {
                     var li = document.createElement("li");
                     var link = document.createElement("a");
                     link.setAttribute("href", clearUrlAppendix(document.location.href, false) + 'logs_section');
                     link.style.textDecoration = 'none';
                     link.addEventListener("click", gclh_filter_logs, false);
-                    link.appendChild(legend.childNodes[i].cloneNode(true));
+                    link.appendChild(legend.childNodes[0].childNodes[i].childNodes[0].cloneNode(true));
+                    link.appendChild(legend.childNodes[0].childNodes[i].childNodes[1].cloneNode(true));
                     li.appendChild(link);
                     new_legend.appendChild(li);
                 }
@@ -12687,11 +12689,11 @@ var mainGC = function() {
             setTimeout(function() {
                 var logCounter = new Object();
                 logCounter["all"] = 0;
-                var logTypes = $('.LogTotals a');
+                var logTypes = $('#ctl00_ContentBody_lblFindCounts .LogTotals a');
                 for (var i = 0; i < logTypes.length; i++) {
                     var matches = logTypes[i].innerHTML.replace(/(,|\.)/g, "").match(/>(\s*)(\d+)/);
                     if (matches && matches[2]) {
-                        logCounter[logTypes[i].childNodes[0].childNodes[0].title] = parseInt(matches[2]);
+                        logCounter[logTypes[i].childNodes[0].title] = parseInt(matches[2]);
                         logCounter["all"] += parseInt(matches[2]);
                     }
                 }
