@@ -76,8 +76,8 @@ function iconsInit(c) {
         '</svg>';}
 
 function collectionInit(c) {
-    c.langus =      new Array("Català", "Čeština", "Dansk", "Deutsch", "English", "Ελληνικά", "Eesti", "Español", "Français", "Italiano", "日本語", "한국어", "Latviešu", "Lëtzebuergesch", "Magyar", "Nederlands", "Norsk, Bokmål", "Polski", "Português", "Română", "Русский", "Slovenščina", "Suomi", "Svenska");
-    c.langus_code = new Array("ca",     "cs",      "da",    "de",      "en",      "el",       "et",    "es",      "fr",       "it",       "ja",     "ko",    "lv",       "lb",             "hu",     "nl",         "nb",            "pl",     "pt",        "ro",     "ru",      "sl",          "fi",    "sv"     );
+    c.langus =      new Array("Català", "Čeština", "Dansk", "Deutsch", "English", "Ελληνικά", "Eesti", "Español", "Français", "Italiano", "日本語", "한국어", "Latviešu", "Lëtzebuergesch", "Magyar", "Nederlands", "Norsk, Bokmål", "Polski", "Português", "Русский", "Română", "Slovenščina", "Suomi", "Svenska");
+    c.langus_code = new Array("ca",     "cs",      "da",    "de",      "en",      "el",       "et",    "es",      "fr",       "it",       "ja",     "ko",    "lv",       "lb",             "hu",     "nl",         "nb",            "pl",     "pt",        "ru",      "ro",     "sl",          "fi",    "sv"     );
     c.langus_flag_url = "https://raw.githubusercontent.com/2Abendsegler/GClh/master/images/flag_##.png";
     c.colorSchemes = [
         {name: '- Select a Color Scheme -', bg: '', ht: '', if: '', bh: '', bu: '', bo: '', nv: ''},
