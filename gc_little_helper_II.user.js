@@ -4602,7 +4602,9 @@ var mainGC = function() {
             // Delete button on both tabs (Active and Downloadable).
             $('.TableFooter .PQDelete').each(function() {
                 if ($(this).find('a')[0] && $(this).find('a')[0].innerHTML) {
-                    this.innerHTML = this.innerHTML.replace(/<a /, '<input type="button"').replace('>' + $(this).find('a')[0].innerHTML + '</a>', ' value="' + $(this).find('a')[0].innerHTML + '">');
+                    $(this).find('a').css('color','inherit');
+                    $(this).find('a').css('font','inherit');
+                    $(this).find('a')[0].innerHTML = '<input type="button" value="Delete Selected">';
                 }
             });
             // Refresh button on both tabs (Active and Downloadable).
