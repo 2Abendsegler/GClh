@@ -40,7 +40,7 @@
 ---
 ## v0.11.13:
 <ul>
-	<img src="../images/flag_uk.png" alt="" title="Stand with Ukraine"><br>
+	<img src="../images/flag_uk.png" alt="" title="Stand with Ukraine"><br><br>
 	<li>
 		<strong>Fix:</strong> [New Drafts] The GClh causes an error on the webpage. [<a href="https://github.com/2Abendsegler/GClh/issues/2037" title="Issue 2037">2037</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 		We have disabled the GClh adjustments on the newer draft webpage, until the developments on the webpage are finished. <br>
