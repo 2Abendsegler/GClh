@@ -2149,7 +2149,7 @@ var mainGC = function() {
             span.innerHTML = $('.LogTotals')[0].outerHTML;
             div.appendChild(span);
             $('#ctl00_ContentBody_size')[0].parentNode.insertBefore(div, $('#ctl00_ContentBody_size')[0].nextSibling.nextSibling.nextSibling);
-            appendCssStyle('.gclh_LogTotals {float: right;} .gclh_LogTotals img {vertical-align: bottom;}');
+            appendCssStyle('.gclh_LogTotals {float: right;} .gclh_LogTotals img {vertical-align: bottom;} .LogTotals li + li {margin-left: 8px;} .LogTotals {margin-bottom: 0px;}');
         } catch(e) {gclh_error("Show log totals symbols at the top",e);}
     }
 
