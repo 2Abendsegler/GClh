@@ -1,3 +1,4 @@
+<a href="#v01113" title="GClh II version 0.11.13 (09.03.2022)">v0.11.13</a> &nbsp;
 <a href="#v01112" title="GClh II version 0.11.12 (03.02.2022)">v0.11.12</a> &nbsp;
 <a href="#v01111" title="GClh II version 0.11.11 (02.02.2022)">v0.11.11</a> &nbsp;
 <a href="#v01110" title="GClh II version 0.11.10 (25.01.2022)">v0.11.10</a> &nbsp;
@@ -35,6 +36,24 @@
 <a href="#v010" title="GClh II version 0.10 (13.12.2019)">v0.10</a> &nbsp;
 <a href="changelog_before.md" title="Go to earlier changelog">Earlier changelog</a> &nbsp;
 
+
+---
+## v0.11.13: <img src="../images/flag_uk.png" alt="" title="Stand with Ukraine">
+
+<ul>
+	<li>
+		<strong>Fix:</strong> [New Drafts] The GClh causes an error on the webpage. [<a href="https://github.com/2Abendsegler/GClh/issues/2037" title="Issue 2037">2037</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		We have disabled the GClh adjustments on the newer draft webpage, until the developments on the webpage are finished. <br>
+		If you wish to make changes to the newer draft webpage, you can express them in the <a href="https://forums.geocaching.com/GC/index.php?/topic/370029-release-notes-website-upcoming-retirement-of-the-old-drafts-pages-february-1-2022/&tab=comments#comment-5962920">geocaching forum</a>.<br><br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Header] Submenu is displayed on wrong position on wide screens. [<a href="https://github.com/2Abendsegler/GClh/issues/2035" title="Issue 2035">2035</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br>
+	</li>
+</ul>
+<br>
+(09.03.2022)<br>
+released by <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a><br>
+<br>
 
 ---
 ## v0.11.12:
