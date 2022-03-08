@@ -2,7 +2,7 @@
 // @name         GC little helper II
 // @description  Some little things to make life easy (on www.geocaching.com).
 //--> $$000
-// @version      0.11.12
+// @version      0.11.13
 //<-- $$000
 // @copyright    2010-2016 Torsten Amshove, 2016-2022 2Abendsegler, 2017-2022 Ruko2010
 // @author       Torsten Amshove; 2Abendsegler; Ruko2010
@@ -2146,10 +2146,10 @@ var mainGC = function() {
             var div = document.createElement('div');
             div.className = "gclh_LogTotals Clear";
             var span = document.createElement('span');
-            span.innerHTML = $('.LogTotals')[0].innerHTML.replace(/alt="(.*?)"/g, "alt=\" \"").replace(/(&nbsp;){5}/g, "&nbsp;&nbsp;");
+            span.innerHTML = $('.LogTotals')[0].outerHTML;
             div.appendChild(span);
             $('#ctl00_ContentBody_size')[0].parentNode.insertBefore(div, $('#ctl00_ContentBody_size')[0].nextSibling.nextSibling.nextSibling);
-            appendCssStyle('.gclh_LogTotals {float: right;} .gclh_LogTotals img {vertical-align: bottom;}');
+            appendCssStyle('.gclh_LogTotals {float: right;} .gclh_LogTotals img {vertical-align: bottom;} .LogTotals li + li {margin-left: 8px;} .LogTotals {margin-bottom: 0px;}');
         } catch(e) {gclh_error("Show log totals symbols at the top",e);}
     }
 
@@ -3632,6 +3632,14 @@ var mainGC = function() {
         } catch(e) {gclh_error("Change new links for find caches to the old links",e);}
     }
 
+// Set language in Driving Directions links for the cache coordinates and the waypoints.
+    if (is_page("cache_listing")) {
+        $('#ctl00_ContentBody_lnkPrintDirectionsSimple')[0].href = $('#ctl00_ContentBody_lnkPrintDirectionsSimple')[0].href.replace('http://', 'https://');
+        $('a[href*="https://maps.google.com/maps?f=d&hl=en&saddr="]').each((_i, elem) => {
+            elem.href = elem.href.replace('&hl=en', '');
+        });
+    }
+
 // Hide greenToTopButton.
     if (settings_hide_top_button) $("#topScroll").attr("id", "_topScroll").hide();
 
@@ -3676,14 +3684,13 @@ var mainGC = function() {
             if (favoritePoints) {
                 favoritePoints = favoritePoints.replace('.','').replace(',','');
                 favoritePoints = parseInt(favoritePoints);
-                var favoritePercent = ' ';
                 var from = text.indexOf('userToken', text.indexOf('MapTilesEnvironment')) + 13;
                 var length = text.indexOf("';", from) - from;
                 var userTokenACI = text.substr(from, length);
                 aci += separator(aci) + '<span class="favorites" title="Favorites">';
                 aci += '<svg height="16.5" width="16.5"><image xmlns:xlink="https://www.w3.org/1999/xlink" xlink:href="/images/icons/fave_fill_16.svg" src="/images/icons/fave_fill_16.png" width="16" height="16"></image></svg>';
                 aci += '<span class="favorite_points" title="Favorite points"> ' + favoritePoints + '</span>';
-                aci += '<span class="favorite_percent" title="Favorites in percent"> ' + favoritePercent + '</span>';
+                aci += '<span class="favorite_percent" title="Favorites in percent"></span>';
                 aci += '</span>';
             }
             // Watcher.
@@ -4548,7 +4555,7 @@ var mainGC = function() {
                         }
                     });
                 });
-                // Table My Finds:
+                // Table My Finds and Add to Queue button:
                 css += "#ctl00_ContentBody_PQListControl1_tblMyFinds tbody tr th {border: unset;}";
                 if ($('#ctl00_ContentBody_PQListControl1_tblMyFinds tbody tr').length > 1 && $('#pqRepeater thead tr')[0] && $('#pqRepeater thead tr')[0].children.length > 12) {
                     lastGen($('#ctl00_ContentBody_PQListControl1_tblMyFinds tbody tr')[0].children[1]);
@@ -4557,6 +4564,11 @@ var mainGC = function() {
                     $('#ctl00_ContentBody_PQListControl1_tblMyFinds tbody tr')[1].children[0].children[1].remove();
                     $('#ctl00_ContentBody_PQListControl1_tblMyFinds tbody tr')[1].children[0].children[0].remove();
                     $('#ctl00_ContentBody_PQListControl1_tblMyFinds tbody tr')[1].children[0].children[0].style.margin = "0";
+                    if ($('#ctl00_ContentBody_PQListControl1_btnScheduleNow')[0] && $('#ctl00_ContentBody_PQListControl1_btnScheduleNow').prop('disabled')) {
+                        $('#ctl00_ContentBody_PQListControl1_btnScheduleNow')[0].title = '\"My Finds\" pocket query can only run once every 3 days';
+                    } else {
+                        $('#ctl00_ContentBody_PQListControl1_btnScheduleNow')[0].title = 'Add \"My Finds\" pocket query to Queue';
+                    }
                 }
                 // Table downloadable PQs (additional):
                 if ($('#uxOfflinePQTable thead tr').length > 0) lastGen($('#uxOfflinePQTable thead tr')[0].children[5]);
@@ -4591,28 +4603,21 @@ var mainGC = function() {
                     for (var i = 0; i <= 4; i++) {$('.pq-legend')[0].nextElementSibling.remove();}
                     $('.pq-legend')[0].remove();
                 }
-                appendCssStyle(css);
             }
             // "Find cache along a route" als Button.
             if ($('#uxFindCachesAlongaRoute.btn.btn-secondary').length > 0) $('#uxFindCachesAlongaRoute')[0].className = "btn btn-primary";
             // Delete button on both tabs (Active and Downloadable).
             $('.TableFooter .PQDelete').each(function() {
                 if ($(this).find('a')[0] && $(this).find('a')[0].innerHTML) {
-                    this.innerHTML = this.innerHTML.replace(/<a /, '<input type="button"').replace('>' + $(this).find('a')[0].innerHTML + '</a>', ' value="' + $(this).find('a')[0].innerHTML + '">');
+                    $(this).find('a').css('color','inherit');
+                    $(this).find('a').css('font','inherit');
+                    $(this).find('a')[0].innerHTML = '<input type="button" value="Delete Selected">';
                 }
             });
             // Refresh button on both tabs (Active and Downloadable).
             $('#ActivePQs .TableFooter, #DownloadablePQs .TableFooter').each(function() {
                 $(this)[0].lastElementChild.innerHTML = "<input type='button' style='float: right;' onclick=\"document.location.href = 'https://www.geocaching.com/pocket/default.aspx';\" title='Refresh Page' value='Refresh Page'>";
             });
-            // Add to Queue button.
-            if ($('#ctl00_ContentBody_PQListControl1_btnScheduleNow').length > 0) {
-                if ($('#ctl00_ContentBody_PQListControl1_btnScheduleNow').prop("disabled")) {
-                    $('#ctl00_ContentBody_PQListControl1_btnScheduleNow')[0].parentNode.parentNode.innerHTML = "<input type='button' style='opacity: 0.4; cursor: default;' disabled='' title='\"My Finds\" pocket query can only run once every 3 days' value='Add to Queue'>";
-                } else {
-                    $('#ctl00_ContentBody_PQListControl1_btnScheduleNow')[0].parentNode.parentNode.innerHTML = "<input type='button' onhref='javascript:__doPostBack(\"ctl00$ContentBody$PQListControl1$btnScheduleNow\",\"\")' title='Add \"My Finds\" pocket query to Queue' value='Add to Queue'>";
-                }
-            }
             // Highlight column of current day.
             var matches = document.getElementById('ActivePQs').childNodes[1].innerHTML.match(/([A-Za-z]*),/);
             if (matches) {
@@ -4640,7 +4645,8 @@ var mainGC = function() {
                 css += "#uxOfflinePQTable .TableFooter A, #pqRepeater .TableFooter A { -moz-appearance: button; -webkit-appearance: button; appearance: button; "
                     + " text-decoration: none; font: menu; color: ButtonText; display: inline-block; padding: 2px 8px; white-space: nowrap; } ";
             }
-            css += "td input[type='button'] {padding: 2px 4px;}";
+            css += "td input[type='button'], td input[type='submit'] {padding: 2px 4px; cursor: pointer;}";
+            css += "td input[type='submit'][disabled='disabled'] {opacity: 0.4; cursor: default;}";
             appendCssStyle(css);
         } catch(e) {gclh_error("Improve list of PQs",e);}
     }
@@ -7502,21 +7508,21 @@ var mainGC = function() {
 
                 if (!document.getElementById("ctl00_ContentBody_lblFindCounts").childNodes[0]) return false;
                 var legend = document.getElementById("ctl00_ContentBody_lblFindCounts").childNodes[0];
-                var new_legend = document.createElement("p");
+                var new_legend = document.createElement("ul");
                 new_legend.className = "LogTotals";
                 for (var i = 0; i < legend.childNodes.length; i++) {
-                    if (legend.childNodes[i].tagName == "IMG") {
-                        var link = document.createElement("a");
-                        link.setAttribute("href", "javascript:void(0);");
-                        link.style.textDecoration = 'none';
-                        link.addEventListener("click", gclh_filter_logs, false);
-                        link.appendChild(legend.childNodes[i].cloneNode(true));
-                        i++;
-                        link.appendChild(legend.childNodes[i].cloneNode(true));
-                        new_legend.appendChild(link);
-                    }
+                    var li = document.createElement("li");
+                    var link = document.createElement("a");
+                    link.setAttribute("href", "javascript:void(0);");
+                    link.style.textDecoration = 'none';
+                    link.addEventListener("click", gclh_filter_logs, false);
+                    link.appendChild(legend.childNodes[i].childNodes[0].cloneNode(true));
+                    link.appendChild(legend.childNodes[i].childNodes[1].cloneNode(true));
+                    li.appendChild(link);
+                    new_legend.appendChild(li);
                 }
                 if (settings_show_vip_list) {
+                    var li = document.createElement("li");
                     var link = document.createElement("a");
                     link.setAttribute("href", "javascript:void(0);");
                     link.setAttribute("style", "text-decoration: 'none'; padding-right: 18px;");
@@ -7526,7 +7532,8 @@ var mainGC = function() {
                     img.setAttribute("src", global_logs_vip_icon);
                     img.setAttribute("title", "VIP logs");
                     link.appendChild(img);
-                    new_legend.appendChild(link);
+                    li.appendChild(link);
+                    new_legend.appendChild(li);
                 }
                 document.getElementById('ctl00_ContentBody_lblFindCounts').replaceChild(new_legend, legend);
                 if (document.getElementById("lnk_gclh_vip_list")) {
@@ -7545,18 +7552,18 @@ var mainGC = function() {
                 }
                 if (!$('.gclh_LogTotals')[0] || !$('.gclh_LogTotals')[0].childNodes[0]) return;
                 var legend = $('.gclh_LogTotals')[0].childNodes[0];
-                var new_legend = document.createElement('span');
-                for (var i = 0; i < legend.childNodes.length; i++) {
-                    if (legend.childNodes[i].tagName == "IMG") {
-                        var link = document.createElement("a");
-                        link.setAttribute("href", clearUrlAppendix(document.location.href, false) + 'logs_section');
-                        link.style.textDecoration = 'none';
-                        link.addEventListener("click", gclh_filter_logs, false);
-                        link.appendChild(legend.childNodes[i].cloneNode(true));
-                        i++;
-                        link.appendChild(legend.childNodes[i].cloneNode(true));
-                        new_legend.appendChild(link);
-                    }
+                var new_legend = document.createElement('ul');
+                new_legend.className = "LogTotals";
+                for (var i = 0; i < legend.childNodes[0].childNodes.length; i++) {
+                    var li = document.createElement("li");
+                    var link = document.createElement("a");
+                    link.setAttribute("href", clearUrlAppendix(document.location.href, false) + 'logs_section');
+                    link.style.textDecoration = 'none';
+                    link.addEventListener("click", gclh_filter_logs, false);
+                    link.appendChild(legend.childNodes[0].childNodes[i].childNodes[0].cloneNode(true));
+                    link.appendChild(legend.childNodes[0].childNodes[i].childNodes[1].cloneNode(true));
+                    li.appendChild(link);
+                    new_legend.appendChild(li);
                 }
                 $('.gclh_LogTotals')[0].replaceChild(new_legend, legend);
             }
@@ -7632,8 +7639,8 @@ var mainGC = function() {
                     activateLoadAndSearch();
                 }
 
-                if (!$('#ctl00_ContentBody_lblFindCounts p')[0]) return false;
-                $('#ctl00_ContentBody_lblFindCounts p').append('<span id="search_logs"><span title="Search in logtext and username">Search in logs: </span></span>');
+                if (!$('#ctl00_ContentBody_lblFindCounts ul')[0]) return false;
+                $('#ctl00_ContentBody_lblFindCounts ul').append('<li><span id="search_logs"><span title="Search in logtext and username">Search in logs: </span></span></li>');
                 if (!settings_add_search_in_logs_func) $('#search_logs')[0].style.display = 'none';
                 $('#search_logs').append('<form action="javascript:void(0);" style="display: inline;"><input type="text" size="10" title="Use &quot;|&quot; for an OR correlation" style="padding: 2px 2px; width: unset; margin-bottom: unset; margin-right: 4px;" id="search_logs_input"></form>');
                 $('#search_logs_input')[0].addEventListener("keyup", gclh_search_logs, false);
@@ -9947,6 +9954,7 @@ var mainGC = function() {
             css += '#searchmap_sidebar_enhancements .gclh_link:hover {color: #02874d;}';
             css += '#searchmap_sidebar_enhancements a {color: #4a4a4a; text-decoration: none;}';
             css += '#searchmap_sidebar_enhancements img {vertical-align: bottom; height: 14px;}';
+            css += "#searchmap_sidebar_enhancements li {display: inline-block; margin-right: 5px;}";
             // GClh Action Bar (Save as PQ and Hide Header Buttons).
             css += '#gclh_action_bar {display: flex; color: #4a4a4a; cursor: default;}'
             css += '.geocache-action-bar.sidebar-control {padding-top: 0px !important;}';
@@ -10544,6 +10552,7 @@ var mainGC = function() {
             css += "div.gclh_latest_log:hover span, span.gclh_cache_note:hover span {font-size: 13px; display: block; top: 16px; border: 1px solid #8c9e65; background-color:#dfe1d2; z-index:10000;}";
             css += "span.premium_only img {margin-right:0px;}";
             css += "#ownBMLsCount {cursor: default;} .map-item .send2gps img {margin-right: 0px;}";
+            css += ".LogTotals, .LogTotals li {display: inline-block; margin: 0;} .LogTotals li {margin-right: 5px;}";
             if (browser == 'firefox') css += ".gclh_owner {max-width: 110px;} .map-item h4 a {max-width: 265px;} .gclh_owner, .map-item h4 a {display: inline-block; white-space: nowrap; overflow: -moz-hidden-unscrollable; text-overflow: ellipsis;}";
             appendCssStyle(css);
 
@@ -10629,7 +10638,9 @@ var mainGC = function() {
                             }
 
                             // Get all type of logs and their count.
-                            var all_logs = $(text).find('.LogTotals')[0].innerHTML.replace(/alt="(.*?)"/g, "alt=\"...\"");
+                            if ($(text).find('#ctl00_ContentBody_lblFindCounts')[0]) {
+                                var all_logs = $(text).find('#ctl00_ContentBody_lblFindCounts')[0].innerHTML.replace(/alt="(.*?)"/g, "alt=\"...\"").replace(/&nbsp;/g, " ");
+                            } else var all_logs = '';
 
                             // Get the number of trackables in the cache.
                             var trachables = 0;
@@ -10661,7 +10672,7 @@ var mainGC = function() {
                             else var place = $(text).find('#ctl00_ContentBody_Location')[0].innerHTML.replace(/(.*?)\s/,'');
 
                             // Put all together.
-                            var new_text = '<span style="margin-right: 5px;">Logs:</span>' + all_logs.replace(/&nbsp;/g, " ") + '<br>';
+                            var new_text = '<span style="margin-right: 5px;">Logs:</span>' + all_logs + '<br>';
                             new_text += $(last_logs).prop('outerHTML');
                             new_text += '<div style="padding-bottom: 3px;">';
                             if (settings_show_country_in_place) new_text += '<span title="Place">' + place + '</span> | ';
@@ -12401,7 +12412,7 @@ var mainGC = function() {
 //--> $$002
         code += '<img src="https://c.andyhoppe.com/1643060379"' + prop; // Besucher
         code += '<img src="https://c.andyhoppe.com/1643060408"' + prop; // Seitenaufrufe
-        code += '<img src="https://www.worldflagcounter.com/h6W"' + prop;
+        code += '<img src="https://www.worldflagcounter.com/iba"' + prop;
         code += '<img src="https://s11.flagcounter.com/count2/QLT1/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
 //<-- $$002
         div.innerHTML = code;
@@ -12684,7 +12695,7 @@ var mainGC = function() {
             setTimeout(function() {
                 var logCounter = new Object();
                 logCounter["all"] = 0;
-                var logTypes = $('.LogTotals a');
+                var logTypes = $('#ctl00_ContentBody_lblFindCounts .LogTotals a');
                 for (var i = 0; i < logTypes.length; i++) {
                     var matches = logTypes[i].innerHTML.replace(/(,|\.)/g, "").match(/>(\s*)(\d+)/);
                     if (matches && matches[2]) {
@@ -13137,9 +13148,9 @@ var mainGC = function() {
            url: '/datastore/favorites.svc/score?u=' + userToken,
            success: function (scoreResult) {
                var score = 0;
-               if (scoreResult) score = ' ' + scoreResult + '%';
-               if (score > 100) score = ' ' + 100 + '%';
-               position.innerHTML = score;
+               if (scoreResult) score = scoreResult;
+               if (score > 100) score = 100;
+               position.innerHTML = ' ' + score + '%';
            }
        });
     }
@@ -13503,6 +13514,7 @@ var mainGC = function() {
             html += "<div class='gclh_content'>";
 
             html += "<div id='gclh_config_content1'>";
+            html += "<img src='" + urlImages + "flag_uk.png' alt='' title='Stand with Ukraine' style='margin-bottom: -14px;'>";
             html += "&nbsp;" + "<font style='float: right; font-size: 11px; ' >";
             html += "<a href='"+urlFaqHelp+"' title='How can I get help? (GitHub)' target='_blank'>Help</a> | ";
             html += "<a href='"+urlFaq+"' title='Frequently asked questions (GitHub)' target='_blank'>FAQ</a> | ";
@@ -13570,12 +13582,14 @@ var mainGC = function() {
             html += thanksLineBuild("bogmen",               "Bogmen",                   false, false, false, true,  false);
             html += thanksLineBuild("BlueEagle23",          "",                         false, false, false, true,  false);
             html += thanksLineBuild("Cappa-d",              "",                         false, false, false, true,  false);
+            html += thanksLineBuild("Chrono81",             "",                         false, false, false, true,  false);
             html += thanksLineBuild("Donnerknispel",        "",                         false, false, false, true,  false);
             html += thanksLineBuild("",                     "gboye",                    false, false, false, true,  false);
             html += thanksLineBuild("",                     "jet2mike",                 false, false, false, true,  false);
             html += thanksLineBuild("Jipem",                "",                         false, false, false, true,  false);
             html += thanksLineBuild("joemadder",            "",                         false, false, false, true,  false);
             html += thanksLineBuild("lostinthegarden",      "Gitve3jf",                 false, false, false, true,  false);
+            html += thanksLineBuild("Lineflyer",            "",                         false, false, false, true,  false);
             html += thanksLineBuild("Magpie42",             "MagpieFourtyTwo",          false, false, false, true,  false);
             html += thanksLineBuild("☺Mitchsa & firefly70", "Mitchsa",                  false, false, false, true,  false);
             html += thanksLineBuild("muddypuddles",         "MuddyPuddles",             false, false, false, true,  false);
@@ -13589,7 +13603,7 @@ var mainGC = function() {
             html += thanksLineBuild("V60",                  "V60GC",                    false, false, false, true,  false);
             html += thanksLineBuild("vylda",                "",                         false, false, false, true,  false);
             html += thanksLineBuild("winkamol",             "",                         false, false, false, true,  false);
-            var thanksLastUpdate = "02.02.2022";
+            var thanksLastUpdate = "08.03.2022";
 //<-- $$006
             html += "    </tbody>";
             html += "</table>";
@@ -13634,7 +13648,7 @@ var mainGC = function() {
             html += checkboxy('settings_show_message', 'Show message link beside user') + "<br>";
             html += "&nbsp; " + checkboxy('settings_message_icon_new_win', 'Open message form in new browser tab') + "<br>";
 
-            html += "<div style='margin-top: 9px; margin-left: 5px'><b>Hidding</b>" + "</div>";
+            html += "<div style='margin-top: 9px; margin-left: 5px'><b>Hiding</b>" + "</div>";
             html += checkboxy('settings_hide_advert_link', 'Hide link to advertisement instructions') + "<br>";
             html += checkboxy('settings_hide_facebook', 'Hide login procedures via Facebook, Google, Apple') + "<br>";
             html += checkboxy('settings_hide_socialshare', 'Hide social sharing via Facebook, Twitter') + "<br>";

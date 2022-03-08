@@ -1,3 +1,4 @@
+<a href="#v01113" title="GClh II version 0.11.13 (08.03.2022)">v0.11.13</a> &nbsp;
 <a href="#v01112" title="GClh II version 0.11.12 (03.02.2022)">v0.11.12</a> &nbsp;
 <a href="#v01111" title="GClh II version 0.11.11 (02.02.2022)">v0.11.11</a> &nbsp;
 <a href="#v01110" title="GClh II version 0.11.10 (25.01.2022)">v0.11.10</a> &nbsp;
@@ -35,6 +36,36 @@
 <a href="#v010" title="GClh II version 0.10 (13.12.2019)">v0.10</a> &nbsp;
 <a href="changelog_before.md" title="Go to earlier changelog">Earlier changelog</a> &nbsp;
 
+---
+## v0.11.13:
+&nbsp; &nbsp; <img src="../images/flag_uk.png" alt="" title="Stand with Ukraine"><br>
+<ul>
+	<li>
+		<strong>New:</strong> [Cache Listing] Set language in Driving Directions links for the cache coordinates and the waypoints to system language. [<a href="https://github.com/2Abendsegler/GClh/issues/2045" title="Issue 2045">2045</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br><br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Cache Listing / Browse Map / Search Map] Log type counters are no longer displayed correct. [<a href="https://github.com/2Abendsegler/GClh/issues/2044" title="Issue 2044">2044</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Cache Listing] "Show log counter" button doesn't work anymore. [<a href="https://github.com/2Abendsegler/GClh/issues/2060" title="Issue 2060">2060</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Pocket Query] "Add to Queue" and "Delete" buttons doesn't work anymore. [<a href="https://github.com/2Abendsegler/GClh/issues/2028" title="Issue 2028">2028</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [New Log Form] Favorite percentages are displayed incorrectly. [<a href="https://github.com/2Abendsegler/GClh/issues/2061" title="Issue 2061">2061</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Header] Submenu is displayed on wrong position on wide screens. [<a href="https://github.com/2Abendsegler/GClh/issues/2035" title="Issue 2035">2035</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Config] Typo in settings. [<a href="https://github.com/2Abendsegler/GClh/issues/2054" title="Issue 2054">2054</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br>
+	</li>
+</ul>
+<br>
+(08.03.2022)<br>
+released by <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a><br>
+<br>
 
 ---
 ## v0.11.12:
