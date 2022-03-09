@@ -550,7 +550,6 @@ var variablesInit = function(c) {
     c.settings_secondary_elevation_service = getValue("settings_secondary_elevation_service", 2);
     c.settings_distance_units = getValue("settings_distance_units", "");
     c.settings_img_warning = getValue("settings_img_warning", false);
-    c.settings_fieldnotes_old_fashioned = getValue("settings_fieldnotes_old_fashioned", false);
     c.settings_remove_banner = getValue("settings_remove_banner", false);
     c.settings_remove_banner_for_garminexpress = getValue("settings_remove_banner_for_garminexpress", false);
     c.settings_remove_banner_blue = getValue("settings_remove_banner_blue", false);
@@ -684,6 +683,10 @@ var variablesInit = function(c) {
     c.settings_pq_splitter_how_often = getValue("settings_pq_splitter_how_often", 2);
     c.settings_pq_splitter_email = getValue("settings_pq_splitter_email", 1);
     c.settings_show_create_pq_from_pq_splitter = getValue("settings_show_create_pq_from_pq_splitter", true);
+    c.settings_drafts_cache_link = getValue("settings_drafts_cache_link", true);
+    c.settings_drafts_cache_link_visit_color = getValue("settings_drafts_cache_link_visit_color", true);
+    c.settings_drafts_cache_link_new_tab = getValue("settings_drafts_cache_link_new_tab", false);
+    c.settings_drafts_old_log_form = getValue("settings_drafts_old_log_form", false);
 
     tlc('START userToken');
     try {
@@ -6115,156 +6118,53 @@ var mainGC = function() {
         } catch(e) {gclh_error("Improve friends list",e);}
     }
 
-// Improve drafts old page.
-    if (document.location.href.match(/\.com\/my\/fieldnotes\.aspx/) && $('table.Table tbody')[0]) {
-        try {
-            // Mark duplicate drafts.
-            var existingNotes = {};
-            var link = null; var date = null; var type = null;
-            $('.Table tr').each(function(i, e) {
-                link = $(e).find('td a[href*="cache_details.aspx?guid"]');
-                if (link.length > 0) {
-                    date = $($(e).find('td')[2]).text();
-                    type = $($(e).find('td')[3]).text();
-                    if (existingNotes[link[0].href + date + type]) {
-                        $(existingNotes[link[0].href + date + type]).find('td').css("background-color", "#FE9C9C");
-                        $(e).find('td').css("background-color", "#FE9C9C");
-                    } else existingNotes[link[0].href + date + type] = e;
-                }
-            });
-            // Drafts auf alte Log Seite umbiegen.
-            if (settings_fieldnotes_old_fashioned) {
-                var link = $('table.Table tbody td a[href*="fieldnotes.aspx?composeLog=true"]');
-                for (var i = 0; i < link.length; i++) {
-                    var matches = link[i].href.match(/&draftGuid=(.*)&/i);
-                    if (matches && matches[1]) link[i].href = "/seek/log.aspx?PLogGuid=" + matches[1];
-                }
-            }
-            // Grüner Haken Kopfzeile.
-            var desc = "Check/Uncheck all Items";
-            var haken = '<a href="javascript:void(0);"><img id="#" src="/images/silk/tick.png" alt="'+desc+'" title="'+desc+'"></a>';
-            $('table.Table thead th')[0].innerHTML = haken.replace("#","gclh_all_t");
-            $('#gclh_all_t')[0].addEventListener("click", gclhSelAll, false);
-            // Check/Uncheck all Items.
-            var mark = false;
-            function gclhSelAll() {
-                mark = (mark == false ? true : false);
-                var cbs = $('table.Table tbody tr input');
-                for (var i = 0; i < cbs.length; i++) {cbs[i].checked = mark;}
-            }
-            // Summenzeile.
-            function buildDraftSL() {
-                var tr = document.createElement('tr');
-                var t = '<td style="background-color: #DFE1D2;">';
-                var html = t+ haken.replace("#","gclh_all_b") +'</td>'+t;
-                for (src in types) {html += ' <img src="'+src+'"> '+types[src];}
-                html += t+'<b>Statistics</b></td>'+t;
-                for (src in stats) {html += ' <img src="'+src+'"> '+stats[src];}
-                html += t+'Sum: '+count+'</td>';
-                tr.innerHTML = html;
-                return tr;
-            }
-            var imgs = $('table.Table tbody tr img');
-            var stats = new Object();
-            var types = new Object();
-            var count = 0;
-            for (var i = 0; i < imgs.length; i++) {
-                if (imgs[i].src.match(/images\/logtypes/)) {
-                    if (!stats[imgs[i].src]) stats[imgs[i].src] = 0;
-                    stats[imgs[i].src]++;
-                    count++;
-                } else {
-                    if (!types[imgs[i].src]) types[imgs[i].src] = 0;
-                    types[imgs[i].src]++;
-                }
-            }
-            tr = buildDraftSL();
-            $('table.Table tbody')[0].append(tr);
-            $('#gclh_all_b')[0].addEventListener("click", gclhSelAll, false);
-        } catch(e) {gclh_error("Improve drafts old page",e);}
-    }
-
 // Improve drafts new page.
-/* xxxx Temporär deaktiviert bis mindestens 15.02., bis zu dem GS die alte Draft Seite abschalten will und gegebenenfalls noch
-        Erweiterungen für die neue Draft Seite machen wird. Anschließend werden wir sehen was wir noch brauchen und was nicht.
-    if ( settings_modify_new_drafts_page && is_page("drafts") ) {
+    if (settings_modify_new_drafts_page && is_page('drafts')) {
         try {
-            var css = "";
-            css += '.gclh-draft-graphics {';
-            css += '    top: 0px;';
-            css += '    left: 0px;';
-            css += '    position: relative;';
-            css += '}';
-            css += '.gclh-draft-icon {';
-            css += '    width: 48px;';
-            css += '    height: 48px;';
-            css += '    left: 0px;';
-            css += '    position: relative;';
-            css += '    top: 0px;';
-            css += '}';
-            css += '.gclh-draft-badge {';
-            css += '    width: 24px;';
-            css += '    height: 24px;';
-            css += '    left: -3px;';
-            css += '    position: absolute;';
-            css += '    top: -3px;';
-            css += '    z-index: 2;';
-            css += '}';
-            appendCssStyle(css);
-            var template = "";
-            template = '';
-            template += '<span class="draft-icon">';
-            template += '    <a href="https://coord.info/{{geocache.referenceCode}}">';
-            template += '       <div class="gclh-draft-graphics">';
-            template += '           <svg class="gclh-draft-icon">';
-            template += '               <use xlink:href="/account/app/ui-icons/sprites/cache-types.svg#icon-{{geocache.geocacheType.id}}{{#if disabled}}-disabled{{/if}}"></use>';
-            template += '           </svg>';
-            template += '           <svg class="gclh-draft-badge">';
-            template += '               <use xlink:href="https://www.geocaching.com/account/app/ui-icons/sprites/log-types.svg#icon-{{logType}}"></use>';
-            template += '           </svg>';
-            template += '       </div>';
-            template += '   </a>';
-            template += '</span>';
-            template += '<div class="draft-content">';
-            template += '    <a href="/account/drafts/home/compose?gc={{geocache.referenceCode}}&d={{referenceCode}}&dGuid={{guid}}&lt={{logTypeId}}">';
-            template += '       <dl class="meta">';
-            template += '           {{#if geocache.state.isArchived}}';
-            template += '           <dt class="state">';
-            template += '               {{ localize "archivedLabel" }}';
-            template += '           </dt>';
-            template += '           <dd></dd>';
-            template += '           {{else}}';
-            template += '               {{#if geocache.state.isAvailable}}';
-            template += '               {{else}}';
-            template += '                   <dt class="state">';
-            template += '                       {{ localize "disabledLabel" }}';
-            template += '                   </dt>';
-            template += '                   <dd></dd>';
-            template += '               {{/if}}';
-            template += '           {{/if}}';
-            template += '           <dt>{{cacheLogType logType}}:</dt><dd><span class="date">{{happyDates logDate}}</span> <span class="timestamp">{{timestamp}}</span></dd>';
-            template += '       </dl>';
-            template += '       <h2 class="title">{{geocache.name}}</h2>';
-            template += '       <p>{{notePreview}}</p>';
-            template += '   </a>';
-            template += '</div>';
-            template += '<div class="draft-actions">';
-            template += '    <button type="button" class="btn-icon" title="Open Listing" onclick="window.open(\'https://coord.info/{{geocache.referenceCode}}\');" style="padding-right:6px;">';
-            template += '        <svg class="xicon" height="22" width="22" style="transform: rotate(135deg); ">';
-            template += '            <use xlink:href="/account/app/ui-icons/sprites/global.svg#icon-back-svg-fill"></use>';
-            template += '        </svg>';
-            template += '    </button>';
-            template += '    <button type="button" class="btn-icon js-delete" title="Delete">';
-            template += '        <svg class="icon" height="24" width="24">';
-            template += '            <use xlink:href="/account/app/ui-icons/sprites/global.svg#icon-delete"></use>';
-            template += '        </svg>';
-            template += '        <span class="visuallyhidden">{{ localize "deleteOne" }}</span>';
-            template += '    </button>';
-            template += '</div>';
-            $("#draftItem").html(template);
+            // Processing drafts.
+            function processDrafts() {
+                $('li.draft-item:not(.gclh_done)').each(function() {
+                    $(this).addClass('gclh_done');
+                    // Link zum Cache Listing einbauen.
+                    if (settings_drafts_cache_link && $(this).find('h2.title')[0] && $(this).find('div.draft-content a[href*="compose?gc="]')[0] && $(this).find('div.draft-content a[href*="compose?gc="]')[0].href) {
+                        var gcCode = $(this).find('div.draft-content a[href*="compose?gc="]')[0].href.match(/compose\?gc=(.*?)&/);
+                        if (gcCode && gcCode[1]) {
+                            $(this).find('h2.title')[0].outerHTML = '<a class="cache_name" href="https://coord.info/' + gcCode[1] + '" title="Link to Cache Listing"' + (settings_drafts_cache_link_new_tab ? 'target="_blank" ':'') + '>' + $(this).find('h2.title')[0].outerHTML + '</a>';
+                        }
+                    }
+                    // Link zum Loggen auf altes Log Formular ändern.
+                    if (settings_drafts_old_log_form && $(this).find('div.draft-content a[href*="dGuid="]')[0]) {
+                        var dGuide = $(this).find('div.draft-content a[href*="dGuid="]')[0].href.match(/dGuid=(.*?)&/);
+                        if (dGuide && dGuide[1]) {
+                            $(this).find('div.draft-content a[href*="dGuid="]')[0].href = '/seek/log.aspx?PLogGuid=' + dGuide[1];
+                        }
+                    }
+                });
+            }
+            // Build mutation observer.
+            function buildObserverDrafts() {
+                var observerDrafts = new MutationObserver(function(mutations) {
+                    mutations.forEach(function(mutation) {
+                        processDrafts();
+                    });
+                });
+                observerDrafts.observe($('ul.draft-list')[0], {childList: true});
+            }
+            function checkDraftsAvailable(waitCount) {
+                if ($('ul.draft-list')[0]) {
+                    processDrafts();
+                    buildObserverDrafts();
+                } else {waitCount++; if (waitCount <= 100) setTimeout(function(){checkDraftsAvailable(waitCount);}, 100);}
+            }
+            checkDraftsAvailable(0);
+            var css = '';
+            // Color visited link to the cache listing.
+            if (settings_drafts_cache_link_visit_color) {
+                css += 'a.cache_name:visited {color: #551a8b !important;}';
+            }
+            if (css != '') appendCssStyle(css);
         } catch(e) {gclh_error("New drafts page",e);}
     }
-*/
 
 // Linklist on old dashboard.
     if (settings_bookmarks_show && is_page("profile") && $('#ctl00_ContentBody_WidgetMiniProfile1_LoggedInPanel')[0]) {
@@ -13855,9 +13755,6 @@ var mainGC = function() {
             html += newParameterOn1;
             html += checkboxy('settings_show_button_for_hide_archived', 'Show button to display all, active or archived caches in owned list') + show_help('With this option a button is shown in owned caches list to display all caches, only active caches or only archived caches in the owned caches list.') + "<br>";
             html += newParameterVersionSetzen("0.10") + newParameterOff;
-            html += newParameterOn3;
-            html += checkboxy('settings_modify_new_drafts_page', 'Modify draft items on the new drafts page') + show_help("With this option the cache icon and the new arrow icon links to the cache listing. Also the log type of the cache is displayed as overlay icon onto the cache icon.") + "<br>";
-            html += newParameterVersionSetzen(0.9) + newParameterOff;
             html += newParameterOn2;
             html += checkboxy('settings_compact_layout_cod', 'Show compact layout on your cache owner dashboard') + "<br>";
             html += checkboxy('settings_show_button_fav_proz_cod', 'Show button to show the favorite percentage of your hidden caches') + show_help("Only for published and archived caches, not for events and unpublished caches.") + "<br>";
@@ -14233,7 +14130,7 @@ var mainGC = function() {
                 html += "  <option value='" + name + "' " + (settings_map_overview_layer == name ? "selected='selected'" : "") + "> " + name + "</option>";
             }
             html += '</select>';
-            html += " &nbsp;" + "Map zoom value <select class='gclh_form' id='settings_map_overview_zoom'>";
+            html += " &nbsp;" + "Map zoom <select class='gclh_form' id='settings_map_overview_zoom'>";
             for (var i = 1; i < 20; i++) {
                 html += "  <option value='" + i + "' " + (settings_map_overview_zoom == i ? "selected=\"selected\"" : "") + ">" + i + "</option>";
             }
@@ -14350,7 +14247,20 @@ var mainGC = function() {
             html += newParameterVersionSetzen('0.11') + newParameterOff;
             html += "</div>";
 
-            html += "<h4 class='gclh_headline2'>"+prepareHideable.replace("#id#","logging")+"<label for='lnk_gclh_config_logging'>Logging</label></h4>";
+            html += "<h4 class='gclh_headline2'>"+prepareHideable.replace("#id#","draft")+"<label for='lnk_gclh_config_draft'>Draft</label></h4>";
+            html += "<div id='gclh_config_draft' class='gclh_block'>";
+            html += newParameterOn3;
+            html += checkboxy('settings_modify_new_drafts_page', 'Change the look and functionality of draft items') + "<br>";
+            html += newParameterVersionSetzen(0.9) + newParameterOff;
+            html += newParameterOn2;
+            html += "&nbsp; " + checkboxy('settings_drafts_cache_link', 'Use cache name as link to the cache listing') + "<br>";
+            html += " &nbsp; &nbsp; " + checkboxy('settings_drafts_cache_link_visit_color', 'Color visited link') + "<br>";
+            html += " &nbsp; &nbsp; " + checkboxy('settings_drafts_cache_link_new_tab', 'Open link in new browser tab') + "<br>";
+            html += "&nbsp; " + checkboxy('settings_drafts_old_log_form', 'Use old-fashioned log form to log a draft') + "<br>";
+            html += newParameterVersionSetzen('0.11') + newParameterOff;
+            html += "</div>";
+
+            html += "<h4 class='gclh_headline2'>"+prepareHideable.replace("#id#","logging")+"<label for='lnk_gclh_config_logging'>Log</label></h4>";
             html += "<div id='gclh_config_logging' class='gclh_block'>";
             html += checkboxy('settings_show_bbcode', 'Show smilies') + show_help("This option displays smilies options beside the log form. If you click on a smilie, it is inserted into your log.") + "<br>";
             html += checkboxy('settings_replace_log_by_last_log', 'Replace log by last log template') + show_help("If you enable this option, the last log template will replace the whole log. If you disable it, it will be appended to the log.") + "<br>";
@@ -14382,13 +14292,12 @@ var mainGC = function() {
             html += "&nbsp;" + "TB log signature" + show_help("The signature is automatically added to your TB logs. You can also use placeholders for variables that will be replaced in the log.") + " &nbsp; ( Possible placeholders" + show_help(placeholderDescription) + ")<br>";
             html += "&nbsp;" + "<textarea class='gclh_form' rows='3' cols='56' id='settings_tb_signature' style='margin-top: 2px;'>&zwnj;" + getValue("settings_tb_signature", "") + "</textarea><br>";
 
-            html += "<div class='gclh_old_new_line'>New Logging Page Only</div>";
+            html += "<div class='gclh_old_new_line'>New Log Page Only</div>";
             html += newParameterOn3;
             html += checkboxy('settings_show_pseudo_as_owner', 'Replace placeholder owner, although there could be a pseudonym') + show_help("If you disable this option, the placeholder for the owner cannot be replaced on the newly designed log page.<br><br>If you enable this option, the placeholder for the owner is replaced possibly by the pseudonym of the owner if the real owner is not known.<br><br>On the new designed log page there is shown as owner of the cache not the real owner but possibly the pseudonym of the owner for the cache as it is shown in the cache listing under \"A cache by\". The real owner is not available in this cases.") + "<br>";
             html += newParameterVersionSetzen(0.9) + newParameterOff;
 
-            html += "<div class='gclh_old_new_line'>Old Logging Page Only</div>";
-            html += checkboxy('settings_fieldnotes_old_fashioned', 'Logging drafts old-fashioned') + show_help("This option deactivates on old drafts page the logging of drafts by the new log page and activates logging of drafts by the old-fashioned log page.") + "<br>";
+            html += "<div class='gclh_old_new_line'>Old Log Page Only</div>";
             html += newParameterOn2;
             html += checkboxy('settings_logs_old_fashioned', 'Log caches always old-fashioned') + show_help("If you enable this option, you always get the old log page instead of the new one. This does not apply to drafts / field notes. <br> Background: geocaching.com saves the log page you are using in a cookie. If you always delete cookies when you close your browser, the data will be lost.<br>To get the old design for Fieldnotes, you have to use the old Fieldnotes page and activate \"Logging drafts old-fashioned\" here in the GClh config.") + "<br>";
             html += newParameterVersionSetzen('0.11') + newParameterOff;
@@ -14654,6 +14563,7 @@ var mainGC = function() {
                 }
             }
             // Anfangsbestand, Events setzen.
+            // (Bei neuen Hauptthemen muss auch function showHideConfigAll gepflegt werden.)
             if (settings_make_config_main_areas_hideable && !document.location.href.match(/#a#/i)) {
                 makeConfigAreaHideable("global");
                 makeConfigAreaHideable("config");
@@ -14669,6 +14579,7 @@ var mainGC = function() {
                 makeConfigAreaHideable("profile");
                 makeConfigAreaHideable("db");
                 makeConfigAreaHideable("listing");
+                makeConfigAreaHideable("draft");
                 makeConfigAreaHideable("logging");
                 makeConfigAreaHideable("mail");
                 makeConfigAreaHideable("linklist");
@@ -15168,6 +15079,11 @@ var mainGC = function() {
             setEvForDepPara("settings_show_enhanced_map_popup","settings_show_latest_logs_symbols_count_map");
             setEvForDepPara("settings_show_enhanced_map_popup","settings_show_country_in_place");
             setEvForDepPara("settings_show_enhanced_map_popup","settings_show_enhanced_map_coords");
+            setEvForDepPara("settings_modify_new_drafts_page", "settings_drafts_cache_link");
+            setEvForDepPara("settings_modify_new_drafts_page", "settings_drafts_cache_link_visit_color");
+            setEvForDepPara("settings_modify_new_drafts_page", "settings_drafts_cache_link_new_tab");
+            setEvForDepPara("settings_drafts_cache_link", "settings_drafts_cache_link_visit_color");
+            setEvForDepPara("settings_drafts_cache_link", "settings_drafts_cache_link_new_tab");
 
             // Abhängigkeiten der Linklist Parameter.
             for (var i = 0; i < 100; i++) {
@@ -15528,7 +15444,6 @@ var mainGC = function() {
                 'settings_driving_direction_parking_area',
                 'settings_show_elevation_of_waypoints',
                 'settings_img_warning',
-                'settings_fieldnotes_old_fashioned',
                 'settings_remove_banner',
                 'settings_remove_banner_for_garminexpress',
                 'settings_remove_banner_blue',
@@ -15640,6 +15555,10 @@ var mainGC = function() {
                 'settings_add_search_in_logs_func',
                 'settings_show_add_cache_info_in_log_page',
                 'settings_show_create_pq_from_pq_splitter',
+                'settings_drafts_cache_link',
+                'settings_drafts_cache_link_visit_color',
+                'settings_drafts_cache_link_new_tab',
+                'settings_drafts_old_log_form',
             );
             for (var i = 0; i < checkboxes.length; i++) {
                 if (document.getElementById(checkboxes[i])) setValue(checkboxes[i], document.getElementById(checkboxes[i]).checked);
@@ -16223,6 +16142,7 @@ var mainGC = function() {
         setShowHideConfig(show, "profile");
         setShowHideConfig(show, "db");
         setShowHideConfig(show, "listing");
+        setShowHideConfig(show, "draft");
         setShowHideConfig(show, "logging");
         setShowHideConfig(show, "mail");
         setShowHideConfig(show, "linklist");
