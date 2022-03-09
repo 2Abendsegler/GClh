@@ -6160,10 +6160,12 @@ var mainGC = function() {
             var css = '';
             // Color visited link.
             if (settings_drafts_color_visited_link) {
-                css += 'a.cache_name:visited {color: #551a8b !important;}';
-                css += 'a.cache_name {color: #4a4a4a !important;}';
+                if (settings_drafts_cache_link) {
+                    css += 'a.cache_name:visited {color: #551a8b !important;}';
+                    css += 'a.cache_name {color: #4a4a4a !important;}';
+                }
+                css += '.draft-content a:visited {color: #551a8b !important;}';
             }
-            css += '.draft-content a:visited {color: #551a8b !important;}';
             appendCssStyle(css);
         } catch(e) {gclh_error("New drafts page",e);}
     }
