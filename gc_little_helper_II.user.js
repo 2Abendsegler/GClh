@@ -684,8 +684,8 @@ var variablesInit = function(c) {
     c.settings_pq_splitter_email = getValue("settings_pq_splitter_email", 1);
     c.settings_show_create_pq_from_pq_splitter = getValue("settings_show_create_pq_from_pq_splitter", true);
     c.settings_drafts_cache_link = getValue("settings_drafts_cache_link", true);
-    c.settings_drafts_color_visited_link = getValue("settings_drafts_color_visited_link", true);
     c.settings_drafts_cache_link_new_tab = getValue("settings_drafts_cache_link_new_tab", false);
+    c.settings_drafts_color_visited_link = getValue("settings_drafts_color_visited_link", true);
     c.settings_drafts_old_log_form = getValue("settings_drafts_old_log_form", false);
 
     tlc('START userToken');
