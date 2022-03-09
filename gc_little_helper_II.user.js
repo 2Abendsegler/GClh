@@ -684,7 +684,7 @@ var variablesInit = function(c) {
     c.settings_pq_splitter_email = getValue("settings_pq_splitter_email", 1);
     c.settings_show_create_pq_from_pq_splitter = getValue("settings_show_create_pq_from_pq_splitter", true);
     c.settings_drafts_cache_link = getValue("settings_drafts_cache_link", true);
-    c.settings_drafts_cache_link_visit_color = getValue("settings_drafts_cache_link_visit_color", true);
+    c.settings_drafts_color_visited_link = getValue("settings_drafts_color_visited_link", true);
     c.settings_drafts_cache_link_new_tab = getValue("settings_drafts_cache_link_new_tab", false);
     c.settings_drafts_old_log_form = getValue("settings_drafts_old_log_form", false);
 
@@ -6158,9 +6158,11 @@ var mainGC = function() {
             }
             checkDraftsAvailable(0);
             var css = '';
-            // Color visited link to the cache listing.
-            if (settings_drafts_cache_link_visit_color) {
+            // Color visited link.
+            if (settings_drafts_color_visited_link) {
                 css += 'a.cache_name:visited {color: #551a8b !important;}';
+                css += 'a.cache_name {color: #4a4a4a !important;}';
+                css += '.draft-content a:visited {color: #551a8b !important;}';
             }
             if (css != '') appendCssStyle(css);
         } catch(e) {gclh_error("New drafts page",e);}
@@ -14254,8 +14256,8 @@ var mainGC = function() {
             html += newParameterVersionSetzen(0.9) + newParameterOff;
             html += newParameterOn2;
             html += "&nbsp; " + checkboxy('settings_drafts_cache_link', 'Use cache name as link to the cache listing') + "<br>";
-            html += " &nbsp; &nbsp; " + checkboxy('settings_drafts_cache_link_visit_color', 'Color visited link') + "<br>";
             html += " &nbsp; &nbsp; " + checkboxy('settings_drafts_cache_link_new_tab', 'Open link in new browser tab') + "<br>";
+            html += "&nbsp; " + checkboxy('settings_drafts_color_visited_link', 'Color a visited link') + "<br>";
             html += "&nbsp; " + checkboxy('settings_drafts_old_log_form', 'Use old-fashioned log form to log a draft') + "<br>";
             html += newParameterVersionSetzen('0.11') + newParameterOff;
             html += "</div>";
@@ -15080,9 +15082,9 @@ var mainGC = function() {
             setEvForDepPara("settings_show_enhanced_map_popup","settings_show_country_in_place");
             setEvForDepPara("settings_show_enhanced_map_popup","settings_show_enhanced_map_coords");
             setEvForDepPara("settings_modify_new_drafts_page", "settings_drafts_cache_link");
-            setEvForDepPara("settings_modify_new_drafts_page", "settings_drafts_cache_link_visit_color");
             setEvForDepPara("settings_modify_new_drafts_page", "settings_drafts_cache_link_new_tab");
-            setEvForDepPara("settings_drafts_cache_link", "settings_drafts_cache_link_visit_color");
+            setEvForDepPara("settings_modify_new_drafts_page", "settings_drafts_color_visited_link");
+            setEvForDepPara("settings_modify_new_drafts_page", "settings_drafts_old_log_form");
             setEvForDepPara("settings_drafts_cache_link", "settings_drafts_cache_link_new_tab");
 
             // Abhängigkeiten der Linklist Parameter.
@@ -15556,7 +15558,7 @@ var mainGC = function() {
                 'settings_show_add_cache_info_in_log_page',
                 'settings_show_create_pq_from_pq_splitter',
                 'settings_drafts_cache_link',
-                'settings_drafts_cache_link_visit_color',
+                'settings_drafts_color_visited_link',
                 'settings_drafts_cache_link_new_tab',
                 'settings_drafts_old_log_form',
             );
