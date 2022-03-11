@@ -1,3 +1,4 @@
+<a href="#v01114" title="GClh II version 0.11.14 (12.03.2022)">v0.11.14</a> &nbsp;
 <a href="#v01113" title="GClh II version 0.11.13 (08.03.2022)">v0.11.13</a> &nbsp;
 <a href="#v01112" title="GClh II version 0.11.12 (03.02.2022)">v0.11.12</a> &nbsp;
 <a href="#v01111" title="GClh II version 0.11.11 (02.02.2022)">v0.11.11</a> &nbsp;
@@ -35,6 +36,36 @@
 <a href="#v0101" title="GClh II version 0.10.1 (20.12.2019)">v0.10.1</a> &nbsp;
 <a href="#v010" title="GClh II version 0.10 (13.12.2019)">v0.10</a> &nbsp;
 <a href="changelog_before.md" title="Go to earlier changelog">Earlier changelog</a> &nbsp;
+
+---
+## v0.11.14:
+&nbsp; &nbsp; <img src="../images/flag_uk.png" alt="" title="Stand with Ukraine"><br>
+<ul>
+	<li>
+		<strong>Info:</strong> Info: [Browse Map] Map layer errors regarding "<i>Hillshadow</i>". [<a href="https://github.com/2Abendsegler/GClh/issues/2016" title="Issue 2016">2016</a>]<br>
+		The map layers "<i>OpenStreetMap Hike and Bike</i>" and "<i>OpenStreetMap Black and White</i>" work properly again and can be used again. In <a href="https://github.com/2Abendsegler/GClh/blob/collector/docu/changelog.md#v01110" title="Issue 2016">changelog to v0.11.10</a> we pointed out that these map layers no longer worked.<br>
+		However, the "<i>Hillshadow</i>" map overlay still doesn't work properly.<br><br>
+	</li>
+	<li>
+		<strong>New:</strong> [Draft] Improve drafts page. [<a href="https://github.com/2Abendsegler/GClh/issues/2079" title="Issue 2079">2079</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		In the config there is now the new topic "Draft". With the options in this topic you can use the cache name in a draft as link to the cache listing, you can color a visited link like we know it from a normal link, and you can use currently also the old log form to log a draft.<br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_modify_new_drafts_page" title="Link to your GClh II Config">Settings -> Draft:</a><br>
+		<img src="../images/0.11.14/Screen03.jpg" alt="Screen03.jpg"><br>
+		Some of the features may need to be activated in order to use them.<br><br>
+	</li>
+	<li>
+		<strong>New:</strong> [Cache Listing] Hide external link warning message. [<a href="https://github.com/2Abendsegler/GClh/issues/2053" title="Issue 2053">2053</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		With this option you can hide the warning message for external links in the cache listing description. The warning message is a security feature and is intended to inform you that the external link has not been reviewed by the operator of the website.<br>
+		<img src="../images/0.11.14/Screen01.jpg" alt="Screen01.jpg"><br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_listing_hide_external_link_warning" title="Link to your GClh II Config">Settings -> Listing - Cache Description:</a><br>
+		<img src="../images/0.11.14/Screen02.jpg" alt="Screen02.jpg"><br>
+		If you want to use this feature, you have to activate it.<br>
+	</li>
+</ul>
+<br>
+(12.03.2022)<br>
+released by <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a><br>
+<br>
 
 ---
 ## v0.11.13:

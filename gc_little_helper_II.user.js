@@ -2,7 +2,7 @@
 // @name         GC little helper II
 // @description  Some little things to make life easy (on www.geocaching.com).
 //--> $$000
-// @version      0.11.13
+// @version      0.11.14
 //<-- $$000
 // @copyright    2010-2016 Torsten Amshove, 2016-2022 2Abendsegler, 2017-2022 Ruko2010
 // @author       Torsten Amshove; 2Abendsegler; Ruko2010
@@ -682,12 +682,12 @@ var variablesInit = function(c) {
     c.settings_pq_splitter_pqname = getValue("settings_pq_splitter_pqname", 'PQ_Splitter_');
     c.settings_pq_splitter_how_often = getValue("settings_pq_splitter_how_often", 2);
     c.settings_pq_splitter_email = getValue("settings_pq_splitter_email", 1);
-    c.settings_listing_hide_external_link_warning = getValue("settings_listing_hide_external_link_warning", false);
     c.settings_show_create_pq_from_pq_splitter = getValue("settings_show_create_pq_from_pq_splitter", true);
     c.settings_drafts_cache_link = getValue("settings_drafts_cache_link", true);
     c.settings_drafts_cache_link_new_tab = getValue("settings_drafts_cache_link_new_tab", false);
     c.settings_drafts_color_visited_link = getValue("settings_drafts_color_visited_link", true);
     c.settings_drafts_old_log_form = getValue("settings_drafts_old_log_form", false);
+    c.settings_listing_hide_external_link_warning = getValue("settings_listing_hide_external_link_warning", false);
 
     tlc('START userToken');
     try {
@@ -12326,7 +12326,7 @@ var mainGC = function() {
 //--> $$002
         code += '<img src="https://c.andyhoppe.com/1643060379"' + prop; // Besucher
         code += '<img src="https://c.andyhoppe.com/1643060408"' + prop; // Seitenaufrufe
-        code += '<img src="https://www.worldflagcounter.com/iba"' + prop;
+        code += '<img src="https://www.worldflagcounter.com/ibq"' + prop;
         code += '<img src="https://s11.flagcounter.com/count2/QLT1/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
 //<-- $$002
         div.innerHTML = code;
@@ -13517,7 +13517,7 @@ var mainGC = function() {
             html += thanksLineBuild("V60",                  "V60GC",                    false, false, false, true,  false);
             html += thanksLineBuild("vylda",                "",                         false, false, false, true,  false);
             html += thanksLineBuild("winkamol",             "",                         false, false, false, true,  false);
-            var thanksLastUpdate = "08.03.2022";
+            var thanksLastUpdate = "11.03.2022";
 //<-- $$006
             html += "    </tbody>";
             html += "</table>";
@@ -15577,12 +15577,12 @@ var mainGC = function() {
                 'settings_sort_map_layers',
                 'settings_add_search_in_logs_func',
                 'settings_show_add_cache_info_in_log_page',
-                'settings_listing_hide_external_link_warning',
                 'settings_show_create_pq_from_pq_splitter',
                 'settings_drafts_cache_link',
                 'settings_drafts_color_visited_link',
                 'settings_drafts_cache_link_new_tab',
                 'settings_drafts_old_log_form',
+                'settings_listing_hide_external_link_warning',
             );
             for (var i = 0; i < checkboxes.length; i++) {
                 if (document.getElementById(checkboxes[i])) setValue(checkboxes[i], document.getElementById(checkboxes[i]).checked);
