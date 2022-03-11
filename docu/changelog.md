@@ -43,7 +43,7 @@
 <ul>
 	<li>
 		<strong>Info:</strong> Info: [Browse Map] Map layer errors regarding "<i>Hillshadow</i>". [<a href="https://github.com/2Abendsegler/GClh/issues/2016" title="Issue 2016">2016</a>]<br>
-		The map layers "<i>OpenStreetMap Hike and Bike</i>" and "<i>OpenStreetMap Black and White</i>" work properly again and can be used again. In [changelog to v0.11.10](https://github.com/2Abendsegler/GClh/blob/collector/docu/changelog.md#v01110) we pointed out that these map layers no longer worked.<br>
+		The map layers "<i>OpenStreetMap Hike and Bike</i>" and "<i>OpenStreetMap Black and White</i>" work properly again and can be used again. In <a href="https://github.com/2Abendsegler/GClh/blob/collector/docu/changelog.md#v01110" title="Issue 2016">changelog to v0.11.10</a> we pointed out that these map layers no longer worked.<br>
 		However, the "<i>Hillshadow</i>" map overlay still doesn't work properly.<br><br>
 	</li>
 	<li>
