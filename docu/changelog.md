@@ -1,3 +1,4 @@
+<a href="#v01114" title="GClh II version 0.11.14 (12.03.2022)">v0.11.14</a> &nbsp;
 <a href="#v01113" title="GClh II version 0.11.13 (08.03.2022)">v0.11.13</a> &nbsp;
 <a href="#v01112" title="GClh II version 0.11.12 (03.02.2022)">v0.11.12</a> &nbsp;
 <a href="#v01111" title="GClh II version 0.11.11 (02.02.2022)">v0.11.11</a> &nbsp;
@@ -35,6 +36,24 @@
 <a href="#v0101" title="GClh II version 0.10.1 (20.12.2019)">v0.10.1</a> &nbsp;
 <a href="#v010" title="GClh II version 0.10 (13.12.2019)">v0.10</a> &nbsp;
 <a href="changelog_before.md" title="Go to earlier changelog">Earlier changelog</a> &nbsp;
+
+---
+## v0.11.13:
+&nbsp; &nbsp; <img src="../images/flag_uk.png" alt="" title="Stand with Ukraine"><br>
+<ul>
+	<li>
+		<strong>Info:</strong> Info: [Browse Map] Map layer errors regarding "<i>Hillshadow</i>". [<a href="https://github.com/2Abendsegler/GClh/issues/2016" title="Issue 2016">2016</a>]<br>
+		The map layers "<i>OpenStreetMap Hike and Bike</i>" and "<i>OpenStreetMap Black and White</i>" work properly again and can be used again. In [changelog to v0.11.10](https://github.com/2Abendsegler/GClh/blob/collector/docu/changelog.md#v01110) we pointed out that these map layers no longer worked.<br>
+		However, the "<i>Hillshadow</i>" map overlay still doesn't work properly.<br><br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Config] Typo in settings. [<a href="https://github.com/2Abendsegler/GClh/issues/2054" title="Issue 2054">2054</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br>
+	</li>
+</ul>
+<br>
+(08.03.2022)<br>
+released by <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a><br>
+<br>
 
 ---
 ## v0.11.13:
