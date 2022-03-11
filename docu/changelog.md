@@ -38,7 +38,7 @@
 <a href="changelog_before.md" title="Go to earlier changelog">Earlier changelog</a> &nbsp;
 
 ---
-## v0.11.13:
+## v0.11.14:
 &nbsp; &nbsp; <img src="../images/flag_uk.png" alt="" title="Stand with Ukraine"><br>
 <ul>
 	<li>
@@ -47,7 +47,11 @@
 		However, the "<i>Hillshadow</i>" map overlay still doesn't work properly.<br><br>
 	</li>
 	<li>
-		<strong>Fix:</strong> [Config] Typo in settings. [<a href="https://github.com/2Abendsegler/GClh/issues/2054" title="Issue 2054">2054</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br>
+		<strong>New:</strong> [Draft] Improve drafts page. [<a href="https://github.com/2Abendsegler/GClh/issues/2079" title="Issue 2079">2079</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		In the config there is now the new topic "Draft". With these options in this topic you can use the cache name in the draft as link to the cache listing, you can color visit links like we know it from normal links, and you can use currently also the old log form to log a draft.<br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#lnk_gclh_config_draft" title="Link to your GClh II Config">Settings -> Draft:</a><br>
+		<img src="../images/0.11.14/Screen03.jpg" alt="Screen03.jpg"><br>
+		Some of the features may need to be activated in order to use them.<br><br>
 	</li>
 </ul>
 <br>
