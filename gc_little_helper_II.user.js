@@ -682,12 +682,12 @@ var variablesInit = function(c) {
     c.settings_pq_splitter_pqname = getValue("settings_pq_splitter_pqname", 'PQ_Splitter_');
     c.settings_pq_splitter_how_often = getValue("settings_pq_splitter_how_often", 2);
     c.settings_pq_splitter_email = getValue("settings_pq_splitter_email", 1);
-    c.settings_listing_hide_external_link_warning = getValue("settings_listing_hide_external_link_warning", false);
     c.settings_show_create_pq_from_pq_splitter = getValue("settings_show_create_pq_from_pq_splitter", true);
     c.settings_drafts_cache_link = getValue("settings_drafts_cache_link", true);
     c.settings_drafts_cache_link_new_tab = getValue("settings_drafts_cache_link_new_tab", false);
     c.settings_drafts_color_visited_link = getValue("settings_drafts_color_visited_link", true);
     c.settings_drafts_old_log_form = getValue("settings_drafts_old_log_form", false);
+    c.settings_listing_hide_external_link_warning = getValue("settings_listing_hide_external_link_warning", false);
 
     tlc('START userToken');
     try {
@@ -15577,12 +15577,12 @@ var mainGC = function() {
                 'settings_sort_map_layers',
                 'settings_add_search_in_logs_func',
                 'settings_show_add_cache_info_in_log_page',
-                'settings_listing_hide_external_link_warning',
                 'settings_show_create_pq_from_pq_splitter',
                 'settings_drafts_cache_link',
                 'settings_drafts_color_visited_link',
                 'settings_drafts_cache_link_new_tab',
                 'settings_drafts_old_log_form',
+                'settings_listing_hide_external_link_warning',
             );
             for (var i = 0; i < checkboxes.length; i++) {
                 if (document.getElementById(checkboxes[i])) setValue(checkboxes[i], document.getElementById(checkboxes[i]).checked);
