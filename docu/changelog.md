@@ -49,7 +49,7 @@
 	<li>
 		<strong>New:</strong> [Draft] Improve drafts page. [<a href="https://github.com/2Abendsegler/GClh/issues/2079" title="Issue 2079">2079</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 		In the config there is now the new topic "Draft". With these options in this topic you can use the cache name in the draft as link to the cache listing, you can color visit links like we know it from normal links, and you can use currently also the old log form to log a draft.<br>
-		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#lnk_gclh_config_draft" title="Link to your GClh II Config">Settings -> Draft:</a><br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_modify_new_drafts_page" title="Link to your GClh II Config">Settings -> Draft:</a><br>
 		<img src="../images/0.11.14/Screen03.jpg" alt="Screen03.jpg"><br>
 		Some of the features may need to be activated in order to use them.<br><br>
 	</li>
