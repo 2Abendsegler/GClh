@@ -53,6 +53,14 @@
 		<img src="../images/0.11.14/Screen03.jpg" alt="Screen03.jpg"><br>
 		Some of the features may need to be activated in order to use them.<br><br>
 	</li>
+	<li>
+		<strong>New:</strong> [Cache Listing] Hide external link warning message. [<a href="https://github.com/2Abendsegler/GClh/issues/2053" title="Issue 2053">2053</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		With this option you can hide the warning message for external links in the cache listing description. The warning message is a security feature and is intended to inform you that the external link has not been reviewed by the operator of the website.<br>
+		<img src="../images/0.11.14/Screen01.jpg" alt="Screen01.jpg"><br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_listing_hide_external_link_warning" title="Link to your GClh II Config">Settings -> Listing - Cache Description:</a><br>
+		<img src="../images/0.11.14/Screen02.jpg" alt="Screen02.jpg"><br>
+		If you want to use this feature, you have to activate it.<br>
+	</li>
 </ul>
 <br>
 (08.03.2022)<br>
