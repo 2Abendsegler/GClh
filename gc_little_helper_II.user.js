@@ -683,6 +683,7 @@ var variablesInit = function(c) {
     c.settings_pq_splitter_pqname = getValue("settings_pq_splitter_pqname", 'PQ_Splitter_');
     c.settings_pq_splitter_how_often = getValue("settings_pq_splitter_how_often", 2);
     c.settings_pq_splitter_email = getValue("settings_pq_splitter_email", 1);
+    c.settings_listing_hide_external_link_warning = getValue("settings_listing_hide_external_link_warning", false);
     c.settings_show_create_pq_from_pq_splitter = getValue("settings_show_create_pq_from_pq_splitter", true);
 
     tlc('START userToken');
@@ -3146,15 +3147,24 @@ var mainGC = function() {
         } catch(e) {gclh_error("Remove banner",e);}
     }
 
-// Activate fancybox for pictures in the description.
+// Improve cache description.
     if (is_page("cache_listing")) {
         try {
+            // Activate fancybox for pictures in the description.
             function check_for_fancybox(waitCount) {
                 if (typeof unsafeWindow.$ !== "undefined" && typeof unsafeWindow.$.fancybox !== "undefined") {
                     unsafeWindow.$('.CachePageImages a[rel="lightbox"]').fancybox();
                 } else {waitCount++; if (waitCount <= 50) setTimeout(function(){check_for_fancybox(waitCount);}, 200);}
             }
             check_for_fancybox(0);
+            // Deactivate external link warning. (Thanks to mustakorppi for the template: https://greasyfork.org/de/scripts/439287)
+            if (settings_listing_hide_external_link_warning) {
+                $('.UserSuppliedContent a').each(function(){
+                    $(this)[0].addEventListener("click", function() {
+                        event.stopImmediatePropagation();
+                    }, true);
+                });
+            }
         } catch(e) {gclh_error("Activate fancybox",e);}
     }
 
@@ -14269,6 +14279,9 @@ var mainGC = function() {
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>Cache Description</b>" + "</div>";
             html += checkboxy('settings_img_warning', 'Show warning for unavailable images') + show_help("With this option the images in the cache listing will be checked for existence before trying to load it. If an image is unreachable or dosen't exists, a placeholder is shown. The mouse over the placeholder will shown the image link. A mouse click to the placeholder will open the link in a new tab.") + "<br>";
             html += checkboxy('settings_visitCount_geocheckerCom', 'Show statistic on geochecker.com pages') + show_help("This option adds '&visitCount=1' to all geochecker.com links. This will show some statistics on geochecker.com page like the count of page visits and the count of right and wrong attempts.") + "<br>";
+            html += newParameterOn2;
+            html += checkboxy('settings_listing_hide_external_link_warning', 'Hide external link warning message') + show_help("With this option you can hide the warning message for external links in the cache listing description. The warning message is a security feature and is intended to inform you that the external link has not been reviewed by the operator of the website.") + "<br>";
+            html += newParameterVersionSetzen('0.11') + newParameterOff;
 
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>Additional Hints</b>" + "</div>";
             html += checkboxy('settings_decrypt_hint', 'Decrypt hints') + show_help("This option decrypt the hints on cache listing and print page and remove also the description of the decryption.") + "<br>";
@@ -15645,6 +15658,7 @@ var mainGC = function() {
                 'settings_sort_map_layers',
                 'settings_add_search_in_logs_func',
                 'settings_show_add_cache_info_in_log_page',
+                'settings_listing_hide_external_link_warning',
                 'settings_show_create_pq_from_pq_splitter',
             );
             for (var i = 0; i < checkboxes.length; i++) {

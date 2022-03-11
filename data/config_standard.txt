@@ -338,5 +338,6 @@
   "settings_pq_splitter_pqname": 'PQ_Splitter_',
   "settings_pq_splitter_how_often": 2,
   "settings_pq_splitter_email": 1,
+  "settings_listing_hide_external_link_warning": false,
   "settings_show_create_pq_from_pq_splitter": true
 }
