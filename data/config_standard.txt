@@ -202,7 +202,6 @@
   "settings_primary_elevation_service": 3,
   "settings_secondary_elevation_service": 2,
   "settings_img_warning": false,
-  "settings_fieldnotes_old_fashioned": false,
   "settings_remove_banner": false,
   "settings_remove_banner_for_garminexpress": false,
   "settings_remove_banner_blue": false,
@@ -338,6 +337,10 @@
   "settings_pq_splitter_pqname": 'PQ_Splitter_',
   "settings_pq_splitter_how_often": 2,
   "settings_pq_splitter_email": 1,
+  "settings_show_create_pq_from_pq_splitter": true,
   "settings_listing_hide_external_link_warning": false,
-  "settings_show_create_pq_from_pq_splitter": true
+  "settings_drafts_cache_link": true,
+  "settings_drafts_cache_link_new_tab": false,
+  "settings_drafts_color_visited_link": true,
+  "settings_drafts_old_log_form": false
 }
