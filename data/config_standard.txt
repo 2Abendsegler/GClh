@@ -338,6 +338,7 @@
   "settings_pq_splitter_how_often": 2,
   "settings_pq_splitter_email": 1,
   "settings_show_create_pq_from_pq_splitter": true,
+  "settings_listing_hide_external_link_warning": false,
   "settings_drafts_cache_link": true,
   "settings_drafts_cache_link_new_tab": false,
   "settings_drafts_color_visited_link": true,
