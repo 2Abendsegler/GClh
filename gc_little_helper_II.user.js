@@ -1367,6 +1367,29 @@ var mainGC = function() {
                 }
                 document.getElementById(id).value += " (F2)";
                 window.addEventListener('keydown', keydownF2, true);
+
+            // Submit log on new logging page
+            } else if (document.location.href.match(/\.com\/play\/geocache\/.*\/log/)) {
+              var waitCount = 0;
+              function keySubmitLogNewLoggingPage(waitcount) {
+                  // Wait until loading finished
+                  if (!document.querySelector('.log-view.app-loading')) {
+                      var id = '#submitLog button';
+                      function keydownF2(e) {
+                          if (!check_config_page()) {
+                              if (e.keyCode == 113 && noSpecialKey(e)) {
+                                  document.querySelector(id).click();
+                              }
+                          }
+                      }
+                      document.querySelector(id).innerHTML += " (F2)";
+                      window.addEventListener('keydown', keydownF2, true);
+                  } else {
+                      waitCount++;
+                      if (waitCount <= 1000) {setTimeout(function(){keySubmitLogNewLoggingPage(waitCount);}, 10);}
+                  }
+              }
+              keySubmitLogNewLoggingPage(0);
             }
         }
         // Aufruf Config per F4 Taste. Nur auf erlaubten Seiten. Nicht im Config.
