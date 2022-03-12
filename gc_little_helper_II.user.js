@@ -688,6 +688,7 @@ var variablesInit = function(c) {
     c.settings_drafts_color_visited_link = getValue("settings_drafts_color_visited_link", true);
     c.settings_drafts_old_log_form = getValue("settings_drafts_old_log_form", false);
     c.settings_listing_hide_external_link_warning = getValue("settings_listing_hide_external_link_warning", false);
+    c.settings_experimental_logging_new_submit_f2 = getValue("settings_experimental_logging_new_submit_f2", false);
 
     tlc('START userToken');
     try {
@@ -1369,7 +1370,7 @@ var mainGC = function() {
                 window.addEventListener('keydown', keydownF2, true);
 
             // Submit log on new logging page
-            } else if (document.location.href.match(/\.com\/play\/geocache\/.*\/log/)) {
+            } else if (document.location.href.match(/\.com\/play\/geocache\/.*\/log/) && settings_experimental_logging_new_submit_f2) {
               var waitCount = 0;
               function keySubmitLogNewLoggingPage(waitcount) {
                   // Wait until loading finished
@@ -14571,6 +14572,15 @@ var mainGC = function() {
             html += newParameterVersionSetzen('0.11') + newParameterOff;
             html += "</div>";
 
+            // Section Experimental.
+            html += "<h4 class='gclh_headline2'>"+prepareHideable.replace("#id#","experimental")+"<label for='lnk_gclh_config_experimental'>Experimental</label></h4>";
+            html += "<div id='gclh_config_experimental' class='gclh_block'>";
+            html += "<div class='gclh_old_new_line'>New Log Page Only</div>";
+            html += newParameterOn2;
+            html += checkboxy('settings_experimental_logging_new_submit_f2', 'Submit logs on new logging page with F2') + "<br>";
+            html += newParameterVersionSetzen('0.11') + newParameterOff;
+            html += "</div>";
+
             // Footer.
             html += "<br><br>";
             html += "&nbsp;" + "<input class='gclh_form' type='button' style='height: 25px;' value='" + setValueInSaveButton() + "' id='btn_save'> <input class='gclh_form' type='button' title='Save the configuration data and\nupload it to your own DropBox' style='height: 25px;' value='Save & Upload' id='btn_saveAndUpload'> <input class='gclh_form' type='button' style='height: 25px;' value='" + setValueInCloseButton() + "' id='btn_close2'>";
@@ -15606,6 +15616,7 @@ var mainGC = function() {
                 'settings_drafts_cache_link_new_tab',
                 'settings_drafts_old_log_form',
                 'settings_listing_hide_external_link_warning',
+                'settings_experimental_logging_new_submit_f2',
             );
             for (var i = 0; i < checkboxes.length; i++) {
                 if (document.getElementById(checkboxes[i])) setValue(checkboxes[i], document.getElementById(checkboxes[i]).checked);
