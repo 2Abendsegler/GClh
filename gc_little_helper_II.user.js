@@ -688,6 +688,7 @@ var variablesInit = function(c) {
     c.settings_drafts_color_visited_link = getValue("settings_drafts_color_visited_link", true);
     c.settings_drafts_old_log_form = getValue("settings_drafts_old_log_form", false);
     c.settings_listing_hide_external_link_warning = getValue("settings_listing_hide_external_link_warning", false);
+    c.settings_listing_links_new_tab = getValue("settings_listing_links_new_tab", false);
 
     tlc('START userToken');
     try {
@@ -3161,11 +3162,16 @@ var mainGC = function() {
             }
             check_for_fancybox(0);
             // Deactivate external link warning. (Thanks to mustakorppi for the template: https://greasyfork.org/de/scripts/439287)
-            if (settings_listing_hide_external_link_warning) {
+            if (settings_listing_hide_external_link_warning || settings_listing_links_new_tab) {
                 $('.UserSuppliedContent a').each(function(){
-                    $(this)[0].addEventListener("click", function() {
-                        event.stopImmediatePropagation();
-                    }, true);
+                    if (settings_listing_hide_external_link_warning) {
+                        $(this)[0].addEventListener("click", function() {
+                            event.stopImmediatePropagation();
+                        }, true);
+                    }
+                    if (settings_listing_links_new_tab) {
+                        $(this).attr('target', '_blank');
+                    }
                 });
             }
         } catch(e) {gclh_error("Activate fancybox",e);}
@@ -14182,6 +14188,7 @@ var mainGC = function() {
             html += checkboxy('settings_visitCount_geocheckerCom', 'Show statistic on geochecker.com pages') + show_help("This option adds '&visitCount=1' to all geochecker.com links. This will show some statistics on geochecker.com page like the count of page visits and the count of right and wrong attempts.") + "<br>";
             html += newParameterOn2;
             html += checkboxy('settings_listing_hide_external_link_warning', 'Hide external link warning message') + show_help("With this option you can hide the warning message for external links in the cache listing description. The warning message is a security feature and is intended to inform you that the external link has not been reviewed by the operator of the website.") + "<br>";
+            html += checkboxy('settings_listing_links_new_tab', 'Open links in cache description in a new tab') + "<br>";
             html += newParameterVersionSetzen('0.11') + newParameterOff;
 
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>Additional Hints</b>" + "</div>";
@@ -15583,6 +15590,7 @@ var mainGC = function() {
                 'settings_drafts_cache_link_new_tab',
                 'settings_drafts_old_log_form',
                 'settings_listing_hide_external_link_warning',
+                'settings_listing_links_new_tab',
             );
             for (var i = 0; i < checkboxes.length; i++) {
                 if (document.getElementById(checkboxes[i])) setValue(checkboxes[i], document.getElementById(checkboxes[i]).checked);
