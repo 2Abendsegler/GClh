@@ -4275,6 +4275,9 @@ var mainGC = function() {
                         document.getElementById('LogText').value += value;
                         document.getElementById('gclh_log_tpls').value = -1;
                     }
+                    var selLogText = '#LogText';
+                    $(selLogText).css('overflow', 'hidden scroll');
+                    $(selLogText).css('min-height', '300px');
                     document.getElementById('LogText').focus();
                     document.getElementById('LogText').selectionEnd = initial_cursor_position;
                     // Auch im Log Preview zur Anzeige bringen.
