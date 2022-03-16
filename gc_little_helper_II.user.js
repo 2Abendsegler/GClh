@@ -10984,7 +10984,7 @@ var mainGC = function() {
     }
 
 // Improve Finds for Each Day of the Year on own statistics page
-    if (settings_log_statistic && isOwnStatisticsPage()) {
+    if (isOwnStatisticsPage()) {
         try {
             // Mark current date
             var today = new Date();
