@@ -10983,6 +10983,15 @@ var mainGC = function() {
         }
     }
 
+// Improve Finds for Each Day of the Year on own statistics page
+    if (isOwnStatisticsPage()) {
+        try {
+            // Mark current date
+            var today = new Date();
+            $('#'+(today.getMonth()+1)+'_'+today.getDate()).css("border","2px solid red");
+        } catch(e) {gclh_error("Improve Finds for Each Day of the Year",e);}
+    }
+
 // Improve own statistic map page with links to caches for every country.
     if (settings_map_links_statistic && isOwnStatisticsPage() ) {
         try {
