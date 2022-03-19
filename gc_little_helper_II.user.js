@@ -687,6 +687,7 @@ var variablesInit = function(c) {
     c.settings_drafts_cache_link_new_tab = getValue("settings_drafts_cache_link_new_tab", false);
     c.settings_drafts_color_visited_link = getValue("settings_drafts_color_visited_link", true);
     c.settings_drafts_old_log_form = getValue("settings_drafts_old_log_form", false);
+    c.settings_drafts_log_icons = getValue("settings_drafts_log_icons", true);
     c.settings_listing_hide_external_link_warning = getValue("settings_listing_hide_external_link_warning", false);
     c.settings_listing_links_new_tab = getValue("settings_listing_links_new_tab", false);
 
@@ -6155,6 +6156,29 @@ var mainGC = function() {
                             $(this).find('div.draft-content a[href*="dGuid="]')[0].href = '/seek/log.aspx?PLogGuid=' + dGuide[1];
                         }
                     }
+                    // Show Logtype as icon
+                    if (settings_drafts_log_icons && $(this).find('.meta dt')[0] && $(this).find('.draft-icon')[0]) {
+                        let type = $(this).find('.meta dt').html().trim();
+                        getTypeIcon = {
+                            'Found it:': 2,
+                            'Didn\'t find it:': 3,
+                            'Write note:': 4,
+                            'Archive:': 5,
+                            'Will attend:': 9,
+                            'Attended:': 10,
+                            'Disable:': 22,
+                            'Enable:': 23,
+                            'Webcam photo taken:': 11,
+                            'Needs maintenance:': 45,
+                            'Owner maintenance:': 46,
+                            'Announcement:': 74, // Not tested
+                        };
+                        let typeHtml = `<div class="gclh_icon">
+                                            ${$(this).find('.draft-icon').html()}
+                                            <svg class="status-icon" height="22" width="22"><use xlink:href="https://www.geocaching.com/account/app/ui-icons/sprites/log-types.svg#icon-${getTypeIcon[type]}"></use></svg>
+                                        </div>`;
+                        $(this).find('.draft-icon').append(typeHtml);
+                    }
                 });
             }
             // Build mutation observer.
@@ -6182,6 +6206,14 @@ var mainGC = function() {
                 }
                 css += '.draft-content a:visited {color: #551a8b !important;}';
             }
+            // Icons
+            if (settings_drafts_log_icons) {
+                css += '.gclh_icon {position: relative;}'
+                css += '.status-icon {position: absolute; top: 0; left: 0;}';
+                css += '.meta dt, .draft-icon > svg {display: none !important;}';
+            }
+            // Show time
+            css += '.timestamp {display: inline !important;}';
             appendCssStyle(css);
         } catch(e) {gclh_error("New drafts page",e);}
     }
@@ -14296,6 +14328,7 @@ var mainGC = function() {
             html += " &nbsp; &nbsp; " + checkboxy('settings_drafts_cache_link_new_tab', 'Open link in new browser tab') + "<br>";
             html += "&nbsp; " + checkboxy('settings_drafts_color_visited_link', 'Color a visited link') + "<br>";
             html += "&nbsp; " + checkboxy('settings_drafts_old_log_form', 'Use old-fashioned log form to log a draft') + "<br>";
+            html += "&nbsp; " + checkboxy('settings_drafts_log_icons', 'Show logtype icon instead of text') + "<br>";
             html += newParameterVersionSetzen('0.11') + newParameterOff;
             html += "</div>";
 
@@ -15122,6 +15155,7 @@ var mainGC = function() {
             setEvForDepPara("settings_modify_new_drafts_page", "settings_drafts_cache_link_new_tab");
             setEvForDepPara("settings_modify_new_drafts_page", "settings_drafts_color_visited_link");
             setEvForDepPara("settings_modify_new_drafts_page", "settings_drafts_old_log_form");
+            setEvForDepPara("settings_modify_new_drafts_page", "settings_drafts_log_icons");
             setEvForDepPara("settings_drafts_cache_link", "settings_drafts_cache_link_new_tab");
 
             // Abhängigkeiten der Linklist Parameter.
@@ -15598,6 +15632,7 @@ var mainGC = function() {
                 'settings_drafts_color_visited_link',
                 'settings_drafts_cache_link_new_tab',
                 'settings_drafts_old_log_form',
+                'settings_drafts_log_icons',
                 'settings_listing_hide_external_link_warning',
                 'settings_listing_links_new_tab',
             );
