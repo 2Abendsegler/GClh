@@ -10796,29 +10796,21 @@ var mainGC = function() {
                                     "&nfb[0]=" + global_me + "&o=2#GClhMatrix";
                                 if (settings_count_own_matrix_links == "map") {
                                     var zoom = Math.round(24 - Math.log2(settings_count_own_matrix_links_radius * 1000));
-                                    cell.children[0].href += "#GClhMap#zoom=" + zoom;
+                                    var dt = cell.children[0].href.match(/d=(.*?)&t=(.*?)&/i);
+                                    cell.children[0].href = 'https://www.geocaching.com/play/map?lat=' + (getValue("home_lat") / 10000000)
+                                                          + '&lng=' + (getValue("home_lng") / 10000000) + '&zoom=' + zoom
+                                                          + '&asc=true&sort=distance&ot=coords&r=' + settings_count_own_matrix_links_radius
+                                                          + '&d=' + dt[1] + '&t=' + dt[2] + '&hf=1&nfb=' + global_me + '#GClhMatrix';
                                     cell.children[0].title += ", on map";
                                 } else {
                                     cell.children[0].href += "#searchResultsTable";
                                     cell.children[0].title += ", on list";
                                 }
                                 cell.children[0].title += ", with radius " + settings_count_own_matrix_links_radius + " km from home";
+                                cell.children[0].target = '_blank';
                             }
                         }
                     }
-                }
-            }
-        }
-        // Handle cache search links in list or map.
-        if (document.location.href.match(/\.com\/play\/search\?(.*)#GClhMatrix/i)) {
-            $('#map_container').remove();
-            $('.selected-filters').remove();
-            $('.btn-map-these')[0].href += '#GClhMatrix';
-            if (document.location.href.match(/#GClhMap/i)) {
-                if ($('.btn-map-these')[0] && document.location.href.match(/#GClhMap#zoom=(\d{1,2})/i)) {
-                    var zoom = document.location.href.match(/#GClhMap#zoom=(\d{1,2})/i)[1];
-                    var link = $('.btn-map-these')[0].href.replace(/&zoom=(\d{1,2})/i, '&zoom=' + zoom);
-                    document.location = link;
                 }
             }
         }
