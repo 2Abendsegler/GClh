@@ -3199,7 +3199,7 @@ var mainGC = function() {
         } catch(e) {gclh_error("Decrypt hints",e);}
     }
 // Hide hints.
-    if (settings_hide_hint && is_page("cache_listing")) {
+    if (settings_hide_hint && is_page("cache_listing") && $('#dk')[0]) {
         try {
             // Replace hints by a link which shows the hints dynamically.
             decrypt_hints(0, true);
@@ -3653,7 +3653,7 @@ var mainGC = function() {
     }
 
 // Set language in Driving Directions links for the cache coordinates and the waypoints.
-    if (is_page("cache_listing")) {
+    if (is_page("cache_listing") && $('#ctl00_ContentBody_lnkPrintDirectionsSimple')[0]) {
         $('#ctl00_ContentBody_lnkPrintDirectionsSimple')[0].href = $('#ctl00_ContentBody_lnkPrintDirectionsSimple')[0].href.replace('http://', 'https://');
         $('a[href*="https://maps.google.com/maps?f=d&hl=en&saddr="]').each((_i, elem) => {
             elem.href = elem.href.replace('&hl=en', '');
