@@ -688,6 +688,7 @@ var variablesInit = function(c) {
     c.settings_drafts_color_visited_link = getValue("settings_drafts_color_visited_link", true);
     c.settings_drafts_old_log_form = getValue("settings_drafts_old_log_form", false);
     c.settings_drafts_log_icons = getValue("settings_drafts_log_icons", true);
+    c.settings_drafts_go_automatic_back = getValue("settings_drafts_go_automatic_back", false);
     c.settings_listing_hide_external_link_warning = getValue("settings_listing_hide_external_link_warning", false);
     c.settings_listing_links_new_tab = getValue("settings_listing_links_new_tab", false);
 
@@ -6156,7 +6157,7 @@ var mainGC = function() {
                             $(this).find('div.draft-content a[href*="dGuid="]')[0].href = '/seek/log.aspx?PLogGuid=' + dGuide[1];
                         }
                     }
-                    // Show Logtype as icon
+                    // Show Logtype as icon.
                     if (settings_drafts_log_icons && $(this).find('.meta dt')[0] && $(this).find('.draft-icon')[0]) {
                         let type = $(this).find('.meta dt').html().trim();
                         getTypeIcon = {
@@ -6216,6 +6217,10 @@ var mainGC = function() {
             css += '.timestamp {display: inline !important;}';
             appendCssStyle(css);
         } catch(e) {gclh_error("New drafts page",e);}
+    }
+    // Automatic back to Drafts after sending log.
+    if (settings_drafts_go_automatic_back && document.location.href.match(/\.com\/geocache\/GC[A-Z0-9]{1,10}\?dluid/)) {
+        document.location = 'https://www.geocaching.com/account/drafts';
     }
 
 // Linklist on old dashboard.
@@ -14329,6 +14334,7 @@ var mainGC = function() {
             html += "&nbsp; " + checkboxy('settings_drafts_color_visited_link', 'Color a visited link') + "<br>";
             html += "&nbsp; " + checkboxy('settings_drafts_old_log_form', 'Use old-fashioned log form to log a draft') + "<br>";
             html += "&nbsp; " + checkboxy('settings_drafts_log_icons', 'Show logtype icon instead of text') + "<br>";
+            html += checkboxy('settings_drafts_go_automatic_back', 'Automatic go back to Drafts after sending to log') + "<br>";
             html += newParameterVersionSetzen('0.11') + newParameterOff;
             html += "</div>";
 
@@ -15633,6 +15639,7 @@ var mainGC = function() {
                 'settings_drafts_cache_link_new_tab',
                 'settings_drafts_old_log_form',
                 'settings_drafts_log_icons',
+                'settings_drafts_go_automatic_back',
                 'settings_listing_hide_external_link_warning',
                 'settings_listing_links_new_tab',
             );
