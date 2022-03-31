@@ -1,3 +1,4 @@
+<a href="#v01115" title="GClh II version 0.11.15 (31.03.2022)">v0.11.15</a> &nbsp;
 <a href="#v01114" title="GClh II version 0.11.14 (12.03.2022)">v0.11.14</a> &nbsp;
 <a href="#v01113" title="GClh II version 0.11.13 (08.03.2022)">v0.11.13</a> &nbsp;
 <a href="#v01112" title="GClh II version 0.11.12 (03.02.2022)">v0.11.12</a> &nbsp;
@@ -36,6 +37,46 @@
 <a href="#v0101" title="GClh II version 0.10.1 (20.12.2019)">v0.10.1</a> &nbsp;
 <a href="#v010" title="GClh II version 0.10 (13.12.2019)">v0.10</a> &nbsp;
 <a href="changelog_before.md" title="Go to earlier changelog">Earlier changelog</a> &nbsp;
+
+---
+## v0.11.15:
+&nbsp; &nbsp; <img src="../images/flag_uk.png" alt="" title="Stand with Ukraine"><br>
+<ul>
+	<li>
+		<strong>New:</strong> [Draft] Show log type icons and show time always. [<a href="https://github.com/2Abendsegler/GClh/issues/2095" title="Issue 2095">2095</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br>
+		Times in drafts are now always shown instead of just when you mouse over them.<br>
+		Icons of the log type are displayed instead of the log type texts, if the parameter is activated.<br>
+		<img src="../images/0.11.15/Screen04.jpg" alt="Screen04.jpg"><br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_drafts_log_icons" title="Link to your GClh II Config">Settings -> Draft:</a><br>
+		<img src="../images/0.11.15/Screen03.jpg" alt="Screen03.jpg"><br><br>
+	</li>
+	<li>
+		<strong>New:</strong> [Draft] Automatic go back to Drafts after sending to log. [<a href="https://github.com/2Abendsegler/GClh/issues/2098" title="Issue 2098">2098</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_drafts_go_automatic_back" title="Link to your GClh II Config">Settings -> Draft:</a><br>
+		<img src="../images/0.11.15/Screen02.jpg" alt="Screen02.jpg"><br>
+		If you want to use this feature, you have to activate it.<br><br>
+	</li>
+	<li>
+		<strong>New:</strong> [Statistic] Mark current date on "Finds for Each Day of the Year" statistic. [<a href="https://github.com/2Abendsegler/GClh/issues/2092" title="Issue 2092">2092</a> / <span title="Thanks to sdennler">sdennler</a>]<br>
+		<img src="../images/0.11.15/Screen05.jpg" alt="Screen05.jpg"><br><br>
+	</li>
+	<li>
+		<strong>New:</strong> [Cache Listing] Open Links in a new Tab. [<a href="https://github.com/2Abendsegler/GClh/issues/2084" title="Issue 2084">2084</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_listing_links_new_tab" title="Link to your GClh II Config">Settings -> Listing - Cache Description:</a><br>
+		<img src="../images/0.11.15/Screen01.jpg" alt="Screen01.jpg"><br>
+		If you want to use this feature, you have to activate it.<br><br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Cache Listing] Log from Listing for Basic Members does not work. [<a href="https://github.com/2Abendsegler/GClh/issues/2096" title="Issue 2096">2096</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Statistic] Link to map in 81er does not work. [<a href="https://github.com/2Abendsegler/GClh/issues/2093" title="Issue 2093">2093</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br>
+	</li>
+</ul>
+<br>
+(31.03.2022)<br>
+released by <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a><br>
+<br>
 
 ---
 ## v0.11.14:
