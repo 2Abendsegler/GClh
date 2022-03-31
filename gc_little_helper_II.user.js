@@ -2,7 +2,7 @@
 // @name         GC little helper II
 // @description  Some little things to make life easy (on www.geocaching.com).
 //--> $$000
-// @version      0.11.14
+// @version      0.11.15
 //<-- $$000
 // @copyright    2010-2016 Torsten Amshove, 2016-2022 2Abendsegler, 2017-2022 Ruko2010
 // @author       Torsten Amshove; 2Abendsegler; Ruko2010
@@ -687,7 +687,10 @@ var variablesInit = function(c) {
     c.settings_drafts_cache_link_new_tab = getValue("settings_drafts_cache_link_new_tab", false);
     c.settings_drafts_color_visited_link = getValue("settings_drafts_color_visited_link", true);
     c.settings_drafts_old_log_form = getValue("settings_drafts_old_log_form", false);
+    c.settings_drafts_log_icons = getValue("settings_drafts_log_icons", true);
+    c.settings_drafts_go_automatic_back = getValue("settings_drafts_go_automatic_back", false);
     c.settings_listing_hide_external_link_warning = getValue("settings_listing_hide_external_link_warning", false);
+    c.settings_listing_links_new_tab = getValue("settings_listing_links_new_tab", false);
 
     tlc('START userToken');
     try {
@@ -3161,11 +3164,16 @@ var mainGC = function() {
             }
             check_for_fancybox(0);
             // Deactivate external link warning. (Thanks to mustakorppi for the template: https://greasyfork.org/de/scripts/439287)
-            if (settings_listing_hide_external_link_warning) {
+            if (settings_listing_hide_external_link_warning || settings_listing_links_new_tab) {
                 $('.UserSuppliedContent a').each(function(){
-                    $(this)[0].addEventListener("click", function() {
-                        event.stopImmediatePropagation();
-                    }, true);
+                    if (settings_listing_hide_external_link_warning) {
+                        $(this)[0].addEventListener("click", function() {
+                            event.stopImmediatePropagation();
+                        }, true);
+                    }
+                    if (settings_listing_links_new_tab) {
+                        $(this).attr('target', '_blank');
+                    }
                 });
             }
         } catch(e) {gclh_error("Activate fancybox",e);}
@@ -3192,7 +3200,7 @@ var mainGC = function() {
         } catch(e) {gclh_error("Decrypt hints",e);}
     }
 // Hide hints.
-    if (settings_hide_hint && is_page("cache_listing")) {
+    if (settings_hide_hint && is_page("cache_listing") && $('#dk')[0]) {
         try {
             // Replace hints by a link which shows the hints dynamically.
             decrypt_hints(0, true);
@@ -3646,7 +3654,7 @@ var mainGC = function() {
     }
 
 // Set language in Driving Directions links for the cache coordinates and the waypoints.
-    if (is_page("cache_listing")) {
+    if (is_page("cache_listing") && $('#ctl00_ContentBody_lnkPrintDirectionsSimple')[0]) {
         $('#ctl00_ContentBody_lnkPrintDirectionsSimple')[0].href = $('#ctl00_ContentBody_lnkPrintDirectionsSimple')[0].href.replace('http://', 'https://');
         $('a[href*="https://maps.google.com/maps?f=d&hl=en&saddr="]').each((_i, elem) => {
             elem.href = elem.href.replace('&hl=en', '');
@@ -6149,6 +6157,29 @@ var mainGC = function() {
                             $(this).find('div.draft-content a[href*="dGuid="]')[0].href = '/seek/log.aspx?PLogGuid=' + dGuide[1];
                         }
                     }
+                    // Show Logtype as icon.
+                    if (settings_drafts_log_icons && $(this).find('.meta dt')[0] && $(this).find('.draft-icon')[0]) {
+                        let type = $(this).find('.meta dt').html().trim();
+                        getTypeIcon = {
+                            'Found it:': 2,
+                            'Didn\'t find it:': 3,
+                            'Write note:': 4,
+                            'Archive:': 5,
+                            'Will attend:': 9,
+                            'Attended:': 10,
+                            'Disable:': 22,
+                            'Enable:': 23,
+                            'Webcam photo taken:': 11,
+                            'Needs maintenance:': 45,
+                            'Owner maintenance:': 46,
+                            'Announcement:': 74, // Not tested
+                        };
+                        let typeHtml = `<div class="gclh_icon">
+                                            ${$(this).find('.draft-icon').html()}
+                                            <svg class="status-icon" height="22" width="22"><use xlink:href="https://www.geocaching.com/account/app/ui-icons/sprites/log-types.svg#icon-${getTypeIcon[type]}"></use></svg>
+                                        </div>`;
+                        $(this).find('.draft-icon').append(typeHtml);
+                    }
                 });
             }
             // Build mutation observer.
@@ -6176,8 +6207,20 @@ var mainGC = function() {
                 }
                 css += '.draft-content a:visited {color: #551a8b !important;}';
             }
+            // Show Logtype as icon.
+            if (settings_drafts_log_icons) {
+                css += '.gclh_icon {position: relative;}'
+                css += '.status-icon {position: absolute; top: 0; left: 0;}';
+                css += '.meta dt, .draft-icon > svg {display: none !important;}';
+            }
+            // Always show time.
+            css += '.timestamp {display: inline !important;}';
             appendCssStyle(css);
         } catch(e) {gclh_error("New drafts page",e);}
+    }
+    // Automatic back to Drafts after sending log.
+    if (settings_drafts_go_automatic_back && document.location.href.match(/\.com\/geocache\/GC[A-Z0-9]{1,10}\?dluid/)) {
+        document.location = 'https://www.geocaching.com/account/drafts';
     }
 
 // Linklist on old dashboard.
@@ -10790,29 +10833,21 @@ var mainGC = function() {
                                     "&nfb[0]=" + global_me + "&o=2#GClhMatrix";
                                 if (settings_count_own_matrix_links == "map") {
                                     var zoom = Math.round(24 - Math.log2(settings_count_own_matrix_links_radius * 1000));
-                                    cell.children[0].href += "#GClhMap#zoom=" + zoom;
+                                    var dt = cell.children[0].href.match(/d=(.*?)&t=(.*?)&/i);
+                                    cell.children[0].href = 'https://www.geocaching.com/play/map?lat=' + (getValue("home_lat") / 10000000)
+                                                          + '&lng=' + (getValue("home_lng") / 10000000) + '&zoom=' + zoom
+                                                          + '&asc=true&sort=distance&ot=coords&r=' + settings_count_own_matrix_links_radius
+                                                          + '&d=' + dt[1] + '&t=' + dt[2] + '&hf=1&nfb=' + global_me + '#GClhMatrix';
                                     cell.children[0].title += ", on map";
                                 } else {
                                     cell.children[0].href += "#searchResultsTable";
                                     cell.children[0].title += ", on list";
                                 }
                                 cell.children[0].title += ", with radius " + settings_count_own_matrix_links_radius + " km from home";
+                                cell.children[0].target = '_blank';
                             }
                         }
                     }
-                }
-            }
-        }
-        // Handle cache search links in list or map.
-        if (document.location.href.match(/\.com\/play\/search\?(.*)#GClhMatrix/i)) {
-            $('#map_container').remove();
-            $('.selected-filters').remove();
-            $('.btn-map-these')[0].href += '#GClhMatrix';
-            if (document.location.href.match(/#GClhMap/i)) {
-                if ($('.btn-map-these')[0] && document.location.href.match(/#GClhMap#zoom=(\d{1,2})/i)) {
-                    var zoom = document.location.href.match(/#GClhMap#zoom=(\d{1,2})/i)[1];
-                    var link = $('.btn-map-these')[0].href.replace(/&zoom=(\d{1,2})/i, '&zoom=' + zoom);
-                    document.location = link;
                 }
             }
         }
@@ -10975,6 +11010,15 @@ var mainGC = function() {
             $('#'+logsId+'reload')[0].innerHTML = "Load";
             $('#'+logsId+'reload')[0].title = "Load " + logsName;
         }
+    }
+
+// Improve Finds for Each Day of the Year on own statistics page
+    if (isOwnStatisticsPage()) {
+        try {
+            // Mark current date
+            var today = new Date();
+            $('#'+(today.getMonth()+1)+'_'+today.getDate()).css("border","2px solid red");
+        } catch(e) {gclh_error("Improve Finds for Each Day of the Year",e);}
     }
 
 // Improve own statistic map page with links to caches for every country.
@@ -12326,8 +12370,8 @@ var mainGC = function() {
 //--> $$002
         code += '<img src="https://c.andyhoppe.com/1643060379"' + prop; // Besucher
         code += '<img src="https://c.andyhoppe.com/1643060408"' + prop; // Seitenaufrufe
-        code += '<img src="https://www.worldflagcounter.com/ibq"' + prop;
-        code += '<img src="https://s11.flagcounter.com/count2/QLT1/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
+        code += '<img src="https://www.worldflagcounter.com/icJ"' + prop;
+        code += '<img src="https://s11.flagcounter.com/count2/LJqg/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
 //<-- $$002
         div.innerHTML = code;
         side.appendChild(div);
@@ -13485,6 +13529,7 @@ var mainGC = function() {
             html += thanksLineBuild("ColleIsarco",          "",                         false, false, true,  true,  false);
             html += thanksLineBuild("Pzi",                  "PetziAt",                  false, false, true,  false, false);
             html += thanksLineBuild("ChristianGK",          "ChristianGK-GC",           false, false, true,  false, false);
+            html += thanksLineBuild("",                     "sdennler",                 false, false, true,  false, false);
             html += thanksLineBuild("ztNFny",               "",                         false, false, true,  true,  true);
             // Bug Reporting alphabetisch.
             html += thanksLineBuild("",                     "allyourcodearebelongtous", false, false, false, true,  false);
@@ -13517,7 +13562,7 @@ var mainGC = function() {
             html += thanksLineBuild("V60",                  "V60GC",                    false, false, false, true,  false);
             html += thanksLineBuild("vylda",                "",                         false, false, false, true,  false);
             html += thanksLineBuild("winkamol",             "",                         false, false, false, true,  false);
-            var thanksLastUpdate = "11.03.2022";
+            var thanksLastUpdate = "31.03.2022";
 //<-- $$006
             html += "    </tbody>";
             html += "</table>";
@@ -14182,6 +14227,7 @@ var mainGC = function() {
             html += checkboxy('settings_visitCount_geocheckerCom', 'Show statistic on geochecker.com pages') + show_help("This option adds '&visitCount=1' to all geochecker.com links. This will show some statistics on geochecker.com page like the count of page visits and the count of right and wrong attempts.") + "<br>";
             html += newParameterOn2;
             html += checkboxy('settings_listing_hide_external_link_warning', 'Hide external link warning message') + show_help("With this option you can hide the warning message for external links in the cache listing description. The warning message is a security feature and is intended to inform you that the external link has not been reviewed by the operator of the website.") + "<br>";
+            html += checkboxy('settings_listing_links_new_tab', 'Open links in cache description in a new tab') + "<br>";
             html += newParameterVersionSetzen('0.11') + newParameterOff;
 
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>Additional Hints</b>" + "</div>";
@@ -14280,6 +14326,8 @@ var mainGC = function() {
             html += " &nbsp; &nbsp; " + checkboxy('settings_drafts_cache_link_new_tab', 'Open link in new browser tab') + "<br>";
             html += "&nbsp; " + checkboxy('settings_drafts_color_visited_link', 'Color a visited link') + "<br>";
             html += "&nbsp; " + checkboxy('settings_drafts_old_log_form', 'Use old-fashioned log form to log a draft') + "<br>";
+            html += "&nbsp; " + checkboxy('settings_drafts_log_icons', 'Show logtype icon instead of text') + "<br>";
+            html += checkboxy('settings_drafts_go_automatic_back', 'Automatic go back to Drafts after sending to log') + "<br>";
             html += newParameterVersionSetzen('0.11') + newParameterOff;
             html += "</div>";
 
@@ -15106,6 +15154,7 @@ var mainGC = function() {
             setEvForDepPara("settings_modify_new_drafts_page", "settings_drafts_cache_link_new_tab");
             setEvForDepPara("settings_modify_new_drafts_page", "settings_drafts_color_visited_link");
             setEvForDepPara("settings_modify_new_drafts_page", "settings_drafts_old_log_form");
+            setEvForDepPara("settings_modify_new_drafts_page", "settings_drafts_log_icons");
             setEvForDepPara("settings_drafts_cache_link", "settings_drafts_cache_link_new_tab");
 
             // Abhängigkeiten der Linklist Parameter.
@@ -15582,7 +15631,10 @@ var mainGC = function() {
                 'settings_drafts_color_visited_link',
                 'settings_drafts_cache_link_new_tab',
                 'settings_drafts_old_log_form',
+                'settings_drafts_log_icons',
+                'settings_drafts_go_automatic_back',
                 'settings_listing_hide_external_link_warning',
+                'settings_listing_links_new_tab',
             );
             for (var i = 0; i < checkboxes.length; i++) {
                 if (document.getElementById(checkboxes[i])) setValue(checkboxes[i], document.getElementById(checkboxes[i]).checked);
