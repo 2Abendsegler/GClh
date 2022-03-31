@@ -52,7 +52,7 @@
 	</li>
 	<li>
 		<strong>New:</strong> [Draft] Automatic go back to Drafts after sending to log. [<a href="https://github.com/2Abendsegler/GClh/issues/2098" title="Issue 2098">2098</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br>
-		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_drafts_go_back_automatic" title="Link to your GClh II Config">Settings -> Draft:</a><br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_drafts_go_automatic_back" title="Link to your GClh II Config">Settings -> Draft:</a><br>
 		<img src="../images/0.11.15/Screen02.jpg" alt="Screen02.jpg"><br>
 		If you want to use this feature, you have to activate it.<br><br>
 	</li>
