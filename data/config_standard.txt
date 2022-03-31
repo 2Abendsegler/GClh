@@ -343,7 +343,7 @@
   "settings_drafts_color_visited_link": true,
   "settings_drafts_old_log_form": false,
   "settings_drafts_log_icons": true,
-  "settings_drafts_go_back_automatic": false,
+  "settings_drafts_go_automatic_back": false,
   "settings_listing_hide_external_link_warning": false,
   "settings_listing_links_new_tab": false
 }
